@@ -48,6 +48,11 @@ public class FEstFase extends FDetalhe {
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
   private int iCodProd;
+  
+  public FEstFase() {
+  	this(0);
+  }
+  
   public FEstFase(int iCodProd) {
     setTitulo("Fases da estrutura");
     setAtribos( 70, 40, 550, 390);
