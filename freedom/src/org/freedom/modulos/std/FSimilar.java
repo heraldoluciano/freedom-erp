@@ -42,6 +42,8 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
   private JTextFieldPad txtCodSim = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescSim = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtCodBarras = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   public FSimilar () {
@@ -50,14 +52,15 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
 
 //  ********************  Lista campos adicional *****************************************************************    
     
-    lcProd.setUsaME(false);
-    lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
-    lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-    lcProd.montaSql(false, "PRODUTO", "EQ");
-    lcProd.setQueryCommit(false);
-    lcProd.setReadOnly(true);
-    txtCodProd.setListaCampos(lcProd);
-    txtCodProd.setTabelaExterna(lcProd);   
+	lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, txtDescProd, false));
+	lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+	lcProd.add(new GuardaCampo( txtRefProd,  "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
+	lcProd.add(new GuardaCampo( txtCodBarras, "CodBarProd", "Código de barras", ListaCampos.DB_SI, false));
+	lcProd.setWhereAdic("ATIVOPROD='S'");
+	lcProd.montaSql(false, "PRODUTO", "EQ");
+	lcProd.setQueryCommit(false);
+	lcProd.setReadOnly(true);
+	txtCodProd.setTabelaExterna(lcProd);
     
 //********************  Master ***********************************************************************************
     
@@ -81,7 +84,7 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     setListaCampos(lcDet);
     setNavegador(navRod);
      
-    adicCampo(txtCodProd,7,20,60,20,"CodProd","Cód.prod",ListaCampos.DB_PK,true);
+    adicCampo(txtCodProd,7,20,60,20,"CodProd","Cód.prod",ListaCampos.DB_PF,txtDescProd,true);
     adicDescFK(txtDescProd,70,20,217,20,"Descprod","Descrição do produto");
 
     setListaCampos( true, "ITSIMILAR", "EQ");
@@ -89,8 +92,6 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     lcDet.setQueryInsert(true);    
     lcDet.setQueryCommit(false);
     
-    navRod.setAtivo(4,false);
-    navRod.setAtivo(5,false);
     montaTab();
     lcCampos.addCarregaListener(this);
     lcCampos.addInsertListener(this);
