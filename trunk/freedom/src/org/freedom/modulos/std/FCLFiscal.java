@@ -44,18 +44,18 @@ import org.freedom.telas.FDados;
 import org.freedom.telas.FPrincipal;
 
 public class FCLFiscal extends FDados implements CarregaListener {
-  private JTextFieldPad txtCodFisc = new JTextFieldPad(13);
-  private JTextFieldPad txtDescFisc = new JTextFieldPad(50);
-  private JTextFieldPad txtCodRegra = new JTextFieldPad(5);
-  private JTextFieldFK txtDescRegra = new JTextFieldFK();
-  private JTextFieldPad txtCodTratTrib = new JTextFieldPad(5);
-  private JTextFieldFK txtDescTratTrib = new JTextFieldFK();
+  private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+  private JTextFieldPad txtDescFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtCodRegra = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
+  private JTextFieldFK txtDescRegra = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldFK txtDescTratTrib = new JTextFieldFK(JTextFieldPad.TP_STRING,60,0);
   private JTextFieldPad txtCodMens = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescMens = new JTextFieldFK(JTextFieldPad.TP_STRING,10000,0);
-  private JTextFieldPad txtAliqFisc = new JTextFieldPad(8);
-  private JTextFieldPad txtAliqlFisc = new JTextFieldPad(8);
-  private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad(8);
-  private JTextFieldPad txtRedFisc = new JTextFieldPad(50);
+  private JTextFieldPad txtAliqFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
+  private JTextFieldPad txtAliqlFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
+  private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
+  private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
   private JButton btItClFiscal = new JButton("Exceções");
   private ListaCampos lcRegraFiscal = new ListaCampos(this,"RA");
   private ListaCampos lcTratTrib = new ListaCampos(this,"TT");
@@ -77,27 +77,23 @@ public class FCLFiscal extends FDados implements CarregaListener {
     setTitulo("Cadastro de Classificações Fiscais");
     setAtribos( 0, 0, 420, 470);
 
-    txtCodRegra.setTipo(JTextFieldPad.TP_STRING,5,0);
-    txtDescRegra.setTipo(JTextFieldPad.TP_STRING,40,0);    
-    lcRegraFiscal.add(new GuardaCampo( txtCodRegra, 7, 100, 80, 20, "CodRegra", "Cód.reg.fisc.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodRegrax");
-    lcRegraFiscal.add(new GuardaCampo( txtDescRegra, 90, 100, 207, 20, "DescRegra", "Descrição da regra fiscal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescRegrax");
+    lcRegraFiscal.add(new GuardaCampo( txtCodRegra, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_PK, null, true));
+    lcRegraFiscal.add(new GuardaCampo( txtDescRegra, "DescRegra", "Descrição da regra fiscal", ListaCampos.DB_SI, null, false));
     lcRegraFiscal.montaSql(false, "REGRAFISCAL", "LF");
     lcRegraFiscal.setQueryCommit(false);
     lcRegraFiscal.setReadOnly(true);
     txtCodRegra.setTabelaExterna(lcRegraFiscal);
     
-    txtCodTratTrib.setTipo(JTextFieldPad.TP_STRING,2,0);
-    txtDescTratTrib.setTipo(JTextFieldPad.TP_STRING,60,0);    
-
-    lcTratTrib.add(new GuardaCampo( txtCodTratTrib, 7, 100, 80, 20, "CodTratTrib", "Cód.t.trib.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodRegrax");
-    lcTratTrib.add(new GuardaCampo( txtDescTratTrib, 90, 100, 207, 20, "DescTratTrib", "Descrição do tratamento tributario", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescRegrax");
+    
+    lcTratTrib.add(new GuardaCampo( txtCodTratTrib, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_PK, null, true));
+    lcTratTrib.add(new GuardaCampo( txtDescTratTrib, "DescTratTrib", "Descrição do tratamento tributario", ListaCampos.DB_SI, null,false));
     lcTratTrib.montaSql(false, "TRATTRIB", "LF");
     lcTratTrib.setQueryCommit(false);
     lcTratTrib.setReadOnly(true);
     txtCodTratTrib.setTabelaExterna(lcTratTrib);
 
-	lcMens.add(new GuardaCampo( txtCodMens, 7, 100, 80, 20, "CodMens", "Cód.mens.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodRegrax");
-	lcMens.add(new GuardaCampo( txtDescMens, 90, 100, 207, 20, "Mens", "Mensagem", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescRegrax");
+	lcMens.add(new GuardaCampo( txtCodMens, "CodMens", "Cód.mens.", ListaCampos.DB_PK, null, false));
+	lcMens.add(new GuardaCampo( txtDescMens, "Mens", "Mensagem", ListaCampos.DB_SI, null, false));
 	lcMens.montaSql(false, "MENSAGEM", "LF");
 	lcMens.setQueryCommit(false);
 	lcMens.setReadOnly(true);
@@ -138,22 +134,22 @@ public class FCLFiscal extends FDados implements CarregaListener {
     cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig);
     
 
-    adicCampo(txtCodFisc, 7, 20, 94, 20, "CodFisc", "Cód.c.fisc.", JTextFieldPad.TP_STRING, 13, 0, true, false, null, true);
-    adicCampo(txtDescFisc, 104, 20, 290, 20, "DescFisc", "Descrição da classificação fiscal", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
-    adicCampo(txtCodRegra, 7, 60, 94, 20, "CodRegra", "Cód.reg.fisc.", JTextFieldPad.TP_STRING, 5, 0, false, true, txtDescRegra, true);
-    adicDescFK(txtDescRegra, 104, 60, 290, 20, "DescRegra", "Descrição da regra fiscal", JTextFieldPad.TP_STRING, 50, 0);
-    adicDB(cbOrig, 7, 100, 387, 30, "OrigFisc", "Origem",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtCodTratTrib, 7, 150, 94, 20, "CodTratTrib", "Cód.t.trib.", JTextFieldPad.TP_STRING, 2, 0, false, true, txtDescTratTrib, true);
-    adicDescFK(txtDescTratTrib, 104, 150, 290, 20, "DescTratTrib", "Descrição da tratamento tributário", JTextFieldPad.TP_STRING, 60, 0);
-    adicCampo(txtAliqFisc, 7, 190, 94, 20, "AliqFisc", "Aliq. Fiscal", JTextFieldPad.TP_DECIMAL, 6, 2, false, false, null, false);
-    adicCampo(txtAliqlFisc, 104, 190, 94, 20, "AliqlFisc", "Aliq. Liv. Fiscal", JTextFieldPad.TP_DECIMAL, 6, 2, false, false, null, false);
-    adicCampo(txtAliqIPIFisc, 201, 190, 94, 20, "AliqIPIFisc", "Aliq. de IPI", JTextFieldPad.TP_DECIMAL, 6, 2, false, false, null, false);
-    adicCampo(txtRedFisc, 298, 190, 94, 20, "RedFisc", "Redução Fiscal", JTextFieldPad.TP_DECIMAL, 6, 2, false, false, null, false);
-	adicCampo(txtCodMens, 7, 230, 94, 20, "CodMens", "Cód.mens.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescMens, false);
-	adicDescFK(txtDescMens, 104, 230, 290, 20, "Mens", "Mensagem", JTextFieldPad.TP_STRING, 10000, 0);
-    adicDB(rgTipoFisc, 7, 270, 120, 100, "TipoFisc", "Situação do ICMS:",JTextFieldPad.TP_STRING,true);
-    adicDB(rgSitPis, 130, 270, 120, 80, "SitPisFisc", "Situação do PIS:",JTextFieldPad.TP_STRING,true);
-    adicDB(rgSitCofins, 253, 270, 120, 80, "SitCofinsFisc", "Situação do COFINS:",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtCodFisc, 7, 20, 94, 20, "CodFisc", "Cód.c.fisc.", ListaCampos.DB_PK, null, true);
+    adicCampo(txtDescFisc, 104, 20, 290, 20, "DescFisc", "Descrição da classificação fiscal", ListaCampos.DB_SI, null, true);
+    adicCampo(txtCodRegra, 7, 60, 94, 20, "CodRegra", "Cód.reg.fisc.", ListaCampos.DB_FK , txtDescRegra, true);
+    adicDescFK(txtDescRegra, 104, 60, 290, 20, "DescRegra", "Descrição da regra fiscal");
+    adicDB(cbOrig, 7, 100, 387, 30, "OrigFisc", "Origem",true);
+    adicCampo(txtCodTratTrib, 7, 150, 94, 20, "CodTratTrib", "Cód.t.trib.", ListaCampos.DB_FK, txtDescTratTrib, true);
+    adicDescFK(txtDescTratTrib, 104, 150, 290, 20, "DescTratTrib", "Descrição da tratamento tributário");
+    adicCampo(txtAliqFisc, 7, 190, 94, 20, "AliqFisc", "Aliq.fiscal", ListaCampos.DB_SI, null, false);
+    adicCampo(txtAliqlFisc, 104, 190, 94, 20, "AliqlFisc", "Aliq.liv.fiscal", ListaCampos.DB_SI, null, false);
+    adicCampo(txtAliqIPIFisc, 201, 190, 94, 20, "AliqIPIFisc", "Aliq. de IPI", ListaCampos.DB_SI, null, false);
+    adicCampo(txtRedFisc, 298, 190, 94, 20, "RedFisc", "Redução fiscal", ListaCampos.DB_SI, null, false);
+	adicCampo(txtCodMens, 7, 230, 94, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtDescMens, false);
+	adicDescFK(txtDescMens, 104, 230, 290, 20, "Mens", "Mensagem");
+    adicDB(rgTipoFisc, 7, 270, 120, 100, "TipoFisc", "Situação do ICMS:",true);
+    adicDB(rgSitPis, 130, 270, 120, 80, "SitPisFisc", "Situação do PIS:",true);
+    adicDB(rgSitCofins, 253, 270, 120, 80, "SitCofinsFisc", "Situação do COFINS:",true);
     rgTipoFisc.setVlrString("TT");
     rgSitPis.setVlrString("T");
     rgSitCofins.setVlrString("T");

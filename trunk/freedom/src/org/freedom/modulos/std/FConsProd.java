@@ -84,29 +84,29 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private JScrollPane spnVendas = new JScrollPane(tabVendas);
 	private JTabbedPane tpn = new JTabbedPane();
 	private Connection con = null; 
-	private JTextFieldPad txtCodProd = new JTextFieldPad();
-	private JTextFieldPad txtRefProd = new JTextFieldPad();
-	private JTextFieldFK txtSldProd = new JTextFieldFK();
-	private JTextFieldFK txtDescProd = new JTextFieldFK();
-    private JTextFieldFK txtPrecoBaseProd = new JTextFieldFK();
-    private JTextFieldPad txtLocalProd = new JTextFieldPad();
-    private JTextFieldPad txtCodUnid = new JTextFieldPad();
-    private JTextFieldFK txtDescUnid = new JTextFieldFK();
-    private JTextFieldPad txtCodMarca = new JTextFieldPad();
-    private JTextFieldFK txtDescMarca = new JTextFieldFK();    
-    private JTextFieldPad txtCodGrup = new JTextFieldPad();
-    private JTextFieldFK txtDescGrup = new JTextFieldFK();
-    private JTextFieldPad txtCodFisc = new JTextFieldPad();
-    private JTextFieldFK txtDescFisc = new JTextFieldFK();
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldFK txtPrecoBaseProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
+    private JTextFieldPad txtLocalProd = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+    private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+    private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);    
+    private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+    private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+    private JTextFieldFK txtDescFisc = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     //private JTextFieldPad txtCodFor = new JTextFieldPad();
    // private JTextFieldFK txtRazFor = new JTextFieldFK();
-    private JTextFieldFK txtDtUltCp = new JTextFieldFK();
-    private JTextFieldFK txtQtUltCp = new JTextFieldFK();
+    private JTextFieldFK txtDtUltCp = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+    private JTextFieldFK txtQtUltCp = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
    // private JTextFieldPad txtCodProdFor = new JTextFieldPad();
-    private JTextFieldPad txtDtCpIni = new JTextFieldPad();
-    private JTextFieldPad txtDtCpFim = new JTextFieldPad();
-    private JTextFieldPad txtDtVdIni = new JTextFieldPad();
-    private JTextFieldPad txtDtVdFim = new JTextFieldPad();        
+    private JTextFieldPad txtDtCpIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+    private JTextFieldPad txtDtCpFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+    private JTextFieldPad txtDtVdIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+    private JTextFieldPad txtDtVdFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);        
     private ListaCampos lcFisc = new ListaCampos(this,"FC");        
     private ListaCampos lcUnid = new ListaCampos(this,"UD");
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
@@ -126,16 +126,9 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		txtCodMarca.setAtivo(false);
 		txtCodGrup.setAtivo(false);
 		txtCodFisc.setAtivo(false);
-		txtSldProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-        txtPrecoBaseProd.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
+		
+               
         
-        txtDtCpIni.setTipo(JTextFieldPad.TP_DATE,10,0);
-        txtDtCpFim.setTipo(JTextFieldPad.TP_DATE,10,0);
-        txtDtVdIni.setTipo(JTextFieldPad.TP_DATE,10,0);
-        txtDtVdFim.setTipo(JTextFieldPad.TP_DATE,10,0);
-        txtDtUltCp.setTipo(JTextFieldPad.TP_DATE,10,0);
-        txtQtUltCp.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-
         setPanel(pnGeral);
 
         pnRod.setPreferredSize(new Dimension(0,230));
@@ -149,21 +142,17 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		tpn.setPreferredSize(new Dimension(600,30));
 							
 		txtCodProd.setRequerido(true);
-		txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescProd.setTipo(JTextFieldPad.TP_STRING,40,0);
-		txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
-		txtSldProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-		lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
-		lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
-		lcProd.add(new GuardaCampo( txtSldProd, 90, 100, 100, 20, "SldProd", "Saldo", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldProd");
-        lcProd.add(new GuardaCampo( txtPrecoBaseProd, 190, 140, 97, 20, "PrecoBaseProd", "Preço base",false,false,null,JTextFieldPad.TP_DECIMAL,false),txtPrecoBaseProd);
-        lcProd.add(new GuardaCampo( txtLocalProd,190,140,97,20,"LocalProd", "Local armz.", false, false,null,JTextFieldPad.TP_STRING,false),txtLocalProd);
-        lcProd.add(new GuardaCampo( txtCodUnid,190,140,97,20,"CodUnid","Cód.und.",false,true,null,JTextFieldPad.TP_STRING,false),txtCodUnid);
-        lcProd.add(new GuardaCampo( txtCodMarca,190,140,97,20, "CodMarca", "Cód.marca.",false,true,null,JTextFieldPad.TP_STRING,false),txtCodMarca);
-        lcProd.add(new GuardaCampo( txtCodGrup,190,140,97,20, "CodGrup", "Cód.grupo",false,true,null,JTextFieldPad.TP_STRING,false),txtCodGrup);
-        lcProd.add(new GuardaCampo( txtCodFisc,190,140,97,20, "CodFisc", "Cód.fisc.",false,true,null,JTextFieldPad.TP_STRING,false),txtCodFisc);
-        lcProd.add(new GuardaCampo( txtDtUltCp,190,140,97,20, "DtUltCpProd", "Dt.cp.",false,false,null,JTextFieldPad.TP_DATE,false ),txtDtUltCp);
-        lcProd.add(new GuardaCampo( txtQtUltCp,190,140,97,20, "QtdUltCpProd","Qt.cp.",false,false,null,JTextFieldPad.TP_DECIMAL,false),txtQtUltCp);
+		lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo( txtSldProd, "SldProd", "Saldo", ListaCampos.DB_SI, false));
+        lcProd.add(new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, false));
+        lcProd.add(new GuardaCampo( txtLocalProd, "LocalProd", "Local armz.", ListaCampos.DB_SI, false));
+        lcProd.add(new GuardaCampo( txtCodUnid, "CodUnid","Cód.und.", ListaCampos.DB_FK, false));
+        lcProd.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca.", ListaCampos.DB_FK, false));
+        lcProd.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, false));
+        lcProd.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false));
+        lcProd.add(new GuardaCampo( txtDtUltCp, "DtUltCpProd", "Dt.cp.", ListaCampos.DB_SI, false ));
+        lcProd.add(new GuardaCampo( txtQtUltCp, "QtdUltCpProd","Qt.cp.", ListaCampos.DB_SI, false));
         
 		txtCodProd.setTabelaExterna(lcProd); 
 		txtCodProd.setNomeCampo("CodProd");
@@ -171,52 +160,48 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		lcProd.setReadOnly(true);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 
-		lcProd2.add(new GuardaCampo( txtRefProd, 7, 100, 80, 20, "RefProd", "Ref.prod.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodProd");
-		lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
-		lcProd2.add(new GuardaCampo( txtSldProd, 90, 100, 100, 20, "SldProd", "Saldo", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldProd");
-		lcProd2.add(new GuardaCampo( txtPrecoBaseProd, 190, 140, 97, 20, "PrecoBaseProd", "Preço base",false,false,null,JTextFieldPad.TP_DECIMAL,false),txtPrecoBaseProd);
-		lcProd2.add(new GuardaCampo( txtLocalProd,190,140,97,20,"LocalProd", "Local armz.", false, false,null,JTextFieldPad.TP_STRING,false),txtLocalProd);
-		lcProd2.add(new GuardaCampo( txtCodUnid,190,140,97,20,"CodUnid","Cód.und.",false,true,null,JTextFieldPad.TP_STRING,false),txtCodUnid);
-		lcProd2.add(new GuardaCampo( txtCodMarca,190,140,97,20, "CodMarca", "Cód.marca.",false,true,null,JTextFieldPad.TP_STRING,false),txtCodMarca);
-		lcProd2.add(new GuardaCampo( txtCodGrup,190,140,97,20, "CodGrup", "Cód.grupo",false,true,null,JTextFieldPad.TP_STRING,false),txtCodGrup);
-		lcProd2.add(new GuardaCampo( txtCodFisc,190,140,97,20, "CodFisc", "Cód.fisc.",false,true,null,JTextFieldPad.TP_STRING,false),txtCodFisc);
-		lcProd2.add(new GuardaCampo( txtDtUltCp,190,140,97,20, "DtUltCpProd", "Dt.cp.",false,false,null,JTextFieldPad.TP_DATE,false ),txtDtUltCp);
-		lcProd2.add(new GuardaCampo( txtQtUltCp,190,140,97,20, "QtdUltCpProd","Qt.cp.",false,false,null,JTextFieldPad.TP_DECIMAL,false),txtQtUltCp);
-		lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
+		lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, true));
+		lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo( txtSldProd, "SldProd", "Saldo", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo( txtPrecoBaseProd, "PrecoBaseProd", "Preço base", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo( txtLocalProd, "LocalProd", "Local armz.", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo( txtCodUnid, "CodUnid","Cód.und.", ListaCampos.DB_FK, false));
+		lcProd2.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca.",ListaCampos.DB_FK, false));
+		lcProd2.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_FK,false));
+		lcProd2.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false));
+		lcProd2.add(new GuardaCampo( txtDtUltCp, "DtUltCpProd", "Dt.cp.", ListaCampos.DB_SI, false ));
+		lcProd2.add(new GuardaCampo( txtQtUltCp, "QtdUltCpProd","Qt.cp.", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_SI, false));
 		txtRefProd.setTabelaExterna(lcProd2); 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setFK(true);
 		lcProd2.setReadOnly(true);
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 				
-        txtCodUnid.setTipo(JTextFieldPad.TP_STRING,8,0);
-        lcUnid.add(new GuardaCampo( txtCodUnid, 7, 100, 80, 20, "CodUnid", "Cód.und.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodUnidx");
-        lcUnid.add(new GuardaCampo( txtDescUnid, 90, 100, 207, 20, "DescUnid", "Descrição da unidade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+        lcUnid.add(new GuardaCampo( txtCodUnid, "CodUnid", "Cód.und.", ListaCampos.DB_PK, false));
+        lcUnid.add(new GuardaCampo( txtDescUnid, "DescUnid", "Descrição da unidade", ListaCampos.DB_SI, false));
         lcUnid.montaSql(false, "UNIDADE", "EQ");    
         lcUnid.setReadOnly(true);
         lcUnid.setQueryCommit(false);
         txtCodUnid.setTabelaExterna(lcUnid);
 
-        txtCodMarca.setTipo(JTextFieldPad.TP_STRING,8,0);
-        lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marc.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-        lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txTDescMarca");
+        lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marc.", ListaCampos.DB_PK, false));
+        lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
         lcMarca.montaSql(false, "MARCA", "EQ");    
         lcMarca.setReadOnly(true);
         lcMarca.setQueryCommit(false);
         txtCodMarca.setTabelaExterna(lcMarca);
                 
         
-        txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-        lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-        lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+        lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+        lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
         lcGrup.montaSql(false, "GRUPO", "EQ");    
         lcGrup.setReadOnly(true);
         lcGrup.setQueryCommit(false);
         txtCodGrup.setTabelaExterna(lcGrup);     
         
-        txtCodFisc.setTipo(JTextFieldPad.TP_STRING,13,0);
-        lcFisc.add(new GuardaCampo( txtCodFisc, 7, 100, 80, 20, "CodFisc", "Cód.fisc", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodFiscx");
-        lcFisc.add(new GuardaCampo( txtDescFisc, 90, 100, 207, 20, "DescFisc", "Descrição fiscal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFiscx");
+        lcFisc.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc", ListaCampos.DB_PK, false));
+        lcFisc.add(new GuardaCampo( txtDescFisc, "DescFisc", "Descrição fiscal", ListaCampos.DB_SI, false));
         lcFisc.montaSql(false, "CLFISCAL", "LF");
         lcFisc.setReadOnly(true);
         lcFisc.setQueryCommit(false);

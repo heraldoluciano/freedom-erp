@@ -75,7 +75,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 	}
 	
 	private void montaTela() {
-		tbPreco.adicColuna("Código");
+		tbPreco.adicColuna("Cód.prod.");
 		tbPreco.adicColuna("Referência");
 		tbPreco.adicColuna("Descrição");
 		tbPreco.adicColuna("Preço");

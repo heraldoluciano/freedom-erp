@@ -49,13 +49,13 @@ public class FConsulta extends FFilho implements CarregaListener {
     private final int TAM_GRUPO = 14;
 	private Painel pinCabProd = new Painel(700,60);
 	private JPanel pnCliProd = new JPanel(new BorderLayout());
-	private JTextFieldPad txtCodProd = new JTextFieldPad();
-	private JTextFieldPad txtRefProd = new JTextFieldPad();
-	private JTextFieldFK txtSldProd = new JTextFieldFK();
-	private JTextFieldFK txtSldRProd = new JTextFieldFK();
-	private JTextFieldFK txtSldCProd = new JTextFieldFK();
-	private JTextFieldFK txtSldLProd = new JTextFieldFK();
-	private JTextFieldFK txtDescProd = new JTextFieldFK();
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextFieldFK txtSldRProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextFieldFK txtSldCProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextFieldFK txtSldLProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private Tabela tabProd = new Tabela();
 	private JScrollPane spnTabProd = new JScrollPane(tabProd);
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
@@ -122,19 +122,12 @@ public class FConsulta extends FFilho implements CarregaListener {
 	    // Aba de consulta de saldo por produto
 	    
 		txtCodProd.setRequerido(true);
-		txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescProd.setTipo(JTextFieldPad.TP_STRING,40,0);
-		txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
-		txtSldProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-		txtSldCProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-		txtSldRProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-		txtSldLProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-		lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
-		lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
-		lcProd.add(new GuardaCampo( txtSldProd, 90, 100, 100, 20, "SldProd", "Saldo", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldProd");
-		lcProd.add(new GuardaCampo( txtSldRProd, 90, 100, 100, 20, "SldResProd", "Saldo res.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldRProd");
-		lcProd.add(new GuardaCampo( txtSldCProd, 90, 100, 100, 20, "SldConsigProd", "Saldo cons.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldCProd");
-		lcProd.add(new GuardaCampo( txtSldLProd, 90, 100, 100, 20, "SldLiqProd", "Saldo liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldLProd");
+		lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo( txtSldProd, "SldProd", "Saldo", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo( txtSldRProd, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo( txtSldCProd, "SldConsigProd", "Saldo cons.", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo( txtSldLProd, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false));
 		txtCodProd.setTabelaExterna(lcProd);
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
@@ -181,9 +174,9 @@ public class FConsulta extends FFilho implements CarregaListener {
 	    // Aba de saldos por produto 
 		if (comRef()) {
 			txtRefProd.setRequerido(true);
-			lcProd2.add(new GuardaCampo( txtRefProd, 7, 100, 80, 20, "RefProd", "Ref.prod", true, false, null, JTextFieldPad.TP_STRING,false),"txtRefProd");
-			lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
-			lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
+			lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod", ListaCampos.DB_PK, false));
+			lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+			lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_FK, false));
 			txtRefProd.setTabelaExterna(lcProd2);
 			txtRefProd.setNomeCampo("Refprod");
 			txtRefProd.setFK(true);
