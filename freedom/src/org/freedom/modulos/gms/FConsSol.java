@@ -84,7 +84,6 @@ public class FConsSol extends FFilho implements ActionListener {
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-	private Connection con = null;
 	private FPrincipal fPrim;
 
 	public FConsSol() {
@@ -494,7 +493,7 @@ public class FConsSol extends FFilho implements ActionListener {
 	}
 
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 
 		lcAlmox.setConexao(cn);
 		lcUsuario.setConexao(cn);

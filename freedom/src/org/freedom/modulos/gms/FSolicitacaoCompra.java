@@ -114,7 +114,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
-	private Connection con = null;
 	String sOrdNota = "";
 	Integer anoCC = null;
 	String codCC = null;

@@ -81,7 +81,6 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcCont = new ListaCampos(this);
-  private Connection con = null;
   private Vector vCodHists = new Vector();
   private Vector vCodAtends = new Vector();
   public FHistorico() {
@@ -368,7 +367,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	}
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
   	lcCont.setConexao(cn);
   }
 }

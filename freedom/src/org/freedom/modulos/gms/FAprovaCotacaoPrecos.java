@@ -65,7 +65,6 @@ import org.freedom.telas.FDetalhe;
 public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
 
-	private int casasDec = Aplicativo.casasDec;
 	private Painel pinCab = new Painel();
 	private Painel pinDet = new Painel();
 	private ImageIcon imgOk = Icone.novo("btOk.gif");
@@ -127,7 +126,6 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcUsuario2 = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-	private Connection con = null;
 	String sOrdNota = "";
 	Integer anoCC = null;
 	String codCC = null;

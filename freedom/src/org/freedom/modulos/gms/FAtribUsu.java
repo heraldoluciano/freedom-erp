@@ -65,7 +65,6 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
   private JButton btDelAtrib = new JButton(Icone.novo("btFlechaEsq.gif"));
   private JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
   private ListaCampos lcUsu = new ListaCampos(this,"");
-  private Connection con = null;  
   public FAtribUsu () {
     setTitulo("Atribuições por Usuário");
     setAtribos( 50, 50, 395, 240);
@@ -239,7 +238,7 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
   public void beforeCarrega(CarregaEvent pevt) {
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
   	lcUsu.setConexao(cn);
   }
   	
