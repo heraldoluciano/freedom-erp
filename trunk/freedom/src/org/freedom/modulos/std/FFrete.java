@@ -48,23 +48,23 @@ import org.freedom.telas.FDados;
 
 public class FFrete extends FDados implements InsertListener, FocusListener {
   private int casasDec = Aplicativo.casasDec;
-  private JTextFieldPad  txtCodVenda = new JTextFieldPad();
-  private JTextFieldFK  txtDocVenda = new JTextFieldFK();
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldFK txtDocVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,9,0);
   private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
-  private JTextFieldPad  txtSeries = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtSeries = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtConhecFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0 );
   private JTextFieldPad txtPercVendaFreteVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,9,2);
-  private JTextFieldFK txtDescTran = new JTextFieldFK();
-  private JTextFieldPad txtCodTran = new JTextFieldPad(5);
-  private JTextFieldPad txtPlacaFreteVD = new JTextFieldPad();
-  private JTextFieldPad txtUFFreteVD = new JTextFieldPad();
-  private JTextFieldPad txtVlrFreteVD = new JTextFieldPad();
+  private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtPlacaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtUFFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtVlrFreteVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JRadioGroup rgFreteVD = null;
-  private JTextFieldPad txtQtdFreteVD = new JTextFieldPad();
-  private JTextFieldPad txtPesoBrutVD = new JTextFieldPad();
-  private JTextFieldPad txtPesoLiqVD = new JTextFieldPad();
-  private JTextFieldPad txtEspFreteVD = new JTextFieldPad();
-  private JTextFieldPad txtMarcaFreteVD = new JTextFieldPad();
+  private JTextFieldPad txtQtdFreteVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtPesoBrutVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
+  private JTextFieldPad txtPesoLiqVD = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
+  private JTextFieldPad txtEspFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtMarcaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
@@ -79,10 +79,9 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     lcCampos.addPostListener(this);
 	 	
     txtCodTran.setNomeCampo("CodTran");
-    txtCodTran.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescTran.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTran.add(new GuardaCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTranx");
-    lcTran.add(new GuardaCampo( txtDescTran, 90, 100, 207, 20, "NomeTran", "Descrição da transporatadora", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTran");
+
+    lcTran.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false));
+    lcTran.add(new GuardaCampo( txtDescTran, "NomeTran", "Descrição da transporatadora", ListaCampos.DB_SI, false));
     txtDescTran.setListaCampos(lcTran);
     txtCodTran.setTabelaExterna(lcTran);
 	txtCodTran.setFK(true);
@@ -92,13 +91,10 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     
     txtCodVenda.setNomeCampo("CodVenda");
-    txtCodVenda.setTipo(JTextFieldPad.TP_INTEGER,9,0);
-    txtDocVenda.setTipo(JTextFieldPad.TP_STRING,9,0);
-    txtSeries.setTipo(JTextFieldPad.TP_STRING,2,0);
     
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.vd.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
-    lcVenda.add(new GuardaCampo( txtDocVenda, 90, 100, 207, 20, "DocVenda", "Doc.vd.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDocVenda");
-    lcVenda.add(new GuardaCampo( txtSeries, 90, 100, 207, 20, "Serie", "Serie", false, false, null, JTextFieldPad.TP_STRING,false),"txtSeries");    
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.vd.", ListaCampos.DB_PK, false));
+    lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Doc.vd.", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtSeries, "Serie", "Serie", ListaCampos.DB_SI, false));    
     lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V.liq.", ListaCampos.DB_SI, false));    
         txtDocVenda.setListaCampos(lcVenda);
     txtCodVenda.setTabelaExterna(lcVenda);
@@ -106,16 +102,6 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setQueryCommit(false);
     lcVenda.setReadOnly(true);
-    
-    
-    txtPlacaFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
-    txtUFFreteVD.setTipo(JTextFieldPad.TP_STRING,2,0);
-    txtVlrFreteVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtQtdFreteVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtPesoBrutVD.setTipo(JTextFieldPad.TP_DECIMAL,15,casasDec);
-    txtPesoLiqVD.setTipo(JTextFieldPad.TP_DECIMAL,15,casasDec);
-    txtEspFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
-    txtMarcaFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
     
     
     vVals.addElement("C");
@@ -127,21 +113,21 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     txtPercVendaFreteVD.setAtivo(false);
     
-    adicCampo(txtCodVenda, 7, 20, 110, 20, "CodVenda", "Nº pedido", JTextFieldPad.TP_INTEGER, 8, 0, true, true, null, true);
-    adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "N.NF", JTextFieldPad.TP_INTEGER, 8, 0);
+    adicCampo(txtCodVenda, 7, 20, 110, 20, "CodVenda", "Nº pedido", ListaCampos.DB_PK, true);
+    adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "N.NF");
     adicDB(rgFreteVD,233,20,125,60, "TipoFreteVd", "Tipo ",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtMarcaFreteVD,7,60,110,20, "MarcaFreteVd","Marca", JTextFieldPad.TP_STRING, 10, 0, false, false, null, true);        
-    adicCampo(txtPercVendaFreteVD,120,60,110,20, "PercVendaFreteVd","Perc.vd.", JTextFieldPad.TP_NUMERIC, 9, 2, false, false, null, false);
-    adicCampo(txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, null, true);
-    adicDescFK(txtDescTran,91, 100, 265, 20, "NomeTran", "Descrição da Transportadora	", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtConhecFreteVD,7,140,90,20,"ConhecFreteVd","Conhec.frete", JTextFieldPad.TP_STRING,13,0,false,false,null,false);    
-    adicCampo(txtPlacaFreteVD,99,140,100,20, "PlacaFreteVd","Placa", JTextFieldPad.TP_STRING, 8, 0, false, false, null, true);
-    adicCampo(txtUFFreteVD,202,140,44,20,"UfFreteVd","UF.", JTextFieldPad.TP_STRING, 2, 0, false, false, null, true);
-    adicCampo(txtVlrFreteVD,248,140,107,20, "VlrFreteVd","Valor", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, true);
-    adicCampo(txtQtdFreteVD,7,180,90,20, "QtdFreteVd","Volumes", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtPesoBrutVD,100,180,77,20, "PesoBrutVd","P.bruto", JTextFieldPad.TP_DECIMAL, 9,casasDec, false, false, null, true);
-    adicCampo(txtPesoLiqVD,180,180,77,20, "PesoLiqVd","P.liq.", JTextFieldPad.TP_DECIMAL, 9, casasDec, false, false, null, true);    
-    adicCampo(txtEspFreteVD,260,180,95,20, "EspFreteVd","Especie", JTextFieldPad.TP_STRING, 10, 0, false, false, null, true);
+    adicCampo(txtMarcaFreteVD,7,60,110,20, "MarcaFreteVd","Marca", ListaCampos.DB_SI, true);        
+    adicCampo(txtPercVendaFreteVD,120,60,110,20, "PercVendaFreteVd","Perc.vd.", ListaCampos.DB_SI, false);
+    adicCampo(txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, true);
+    adicDescFK(txtDescTran,91, 100, 265, 20, "NomeTran", "Descrição da Transportador");
+    adicCampo(txtConhecFreteVD,7,140,90,20,"ConhecFreteVd","Conhec.frete", ListaCampos.DB_SI, false);    
+    adicCampo(txtPlacaFreteVD,99,140,100,20, "PlacaFreteVd","Placa", ListaCampos.DB_SI, true);
+    adicCampo(txtUFFreteVD,202,140,44,20,"UfFreteVd","UF.", ListaCampos.DB_SI, true);
+    adicCampo(txtVlrFreteVD,248,140,107,20, "VlrFreteVd","Valor", ListaCampos.DB_SI, true);
+    adicCampo(txtQtdFreteVD,7,180,90,20, "QtdFreteVd","Volumes", ListaCampos.DB_SI, true);
+    adicCampo(txtPesoBrutVD,100,180,77,20, "PesoBrutVd","P.bruto", ListaCampos.DB_SI, true);
+    adicCampo(txtPesoLiqVD,180,180,77,20, "PesoLiqVd","P.liq.", ListaCampos.DB_SI, true);    
+    adicCampo(txtEspFreteVD,260,180,95,20, "EspFreteVd","Especie", ListaCampos.DB_SI, true);
     txtPlacaFreteVD.setStrMascara("###-####");
     
     setListaCampos( true, "FRETEVD", "VD");

@@ -150,7 +150,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
         txtCodVenda1a.setNomeCampo("CodVenda");
         
         adic(new JLabel("Informações da venda"),20,10,250,20);
-        adic(new JLabel("Nº Pedido"),37,40,80,20);
+        adic(new JLabel("Nº pedido"),37,40,80,20);
         adic(txtCodVenda1a,37,60,80,20);
         adic(new JLabel("Doc."),120,40,77,20);
         adic(txtDocVenda1a,120,60,77,20);
@@ -215,7 +215,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
         
         rg1c.setAtivo(false);
         
-        lcCli1c.add(new GuardaCampo(txtCodCli1c, "CodCli", "Cód.Cli", ListaCampos.DB_PK, true));
+        lcCli1c.add(new GuardaCampo(txtCodCli1c, "CodCli", "Cód.cli", ListaCampos.DB_PK, true));
         lcCli1c.add(new GuardaCampo(txtRazCli1c, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
         lcCli1c.montaSql(false, "CLIENTE", "VD");
         lcCli1c.setReadOnly(true);

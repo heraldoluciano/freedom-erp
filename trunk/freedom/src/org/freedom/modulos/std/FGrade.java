@@ -71,12 +71,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JLabel lbRefINIModG = new JLabel("Ref.ini.");
   private JLabel lbCodFabINIModG = new JLabel("Cod.fab.ini.");
   private JLabel lbCodBarINIModG = new JLabel("Cod.bar.ini.");
-  private JTextFieldPad txtCodModG = new JTextFieldPad();
-  private JTextFieldFK txtDescModG = new JTextFieldFK();
-  private JTextFieldFK txtDescINIModG = new JTextFieldFK();
-  private JTextFieldFK txtRefINIModG = new JTextFieldFK();
-  private JTextFieldFK txtCodFabINIModG = new JTextFieldFK();
-  private JTextFieldFK txtCodBarINIModG = new JTextFieldFK();
+  private JTextFieldPad txtCodModG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescModG = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescINIModG = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtRefINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtCodFabINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtCodBarINIModG = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
@@ -197,19 +197,13 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 //Seta a FK do Modelo
 
-    txtCodModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescModG.setTipo(JTextFieldPad.TP_STRING,40,0);
-    txtDescINIModG.setTipo(JTextFieldPad.TP_STRING,40,0);
-    txtRefINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtCodFabINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtCodBarINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodModG.setPKFK(true,false);
     lcModG.add(new GuardaCampo( txtCodModG, "CodModG", "Cód.mod.gp.", ListaCampos.DB_PK, true));
-    lcModG.add(new GuardaCampo( txtDescModG, 60, 100, 147, 20, "DescModG", "Descrição do modelo de grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
-    lcModG.add(new GuardaCampo( txtDescINIModG, 210, 100, 147, 20, "DescProdModG", "Descrição ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
-    lcModG.add(new GuardaCampo( txtRefINIModG, 360, 100, 47, 20, "RefModG", "Ref. ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
-    lcModG.add(new GuardaCampo( txtCodFabINIModG, 440, 100, 47, 20, "CodFabModG", "Cód.fab.ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
-    lcModG.add(new GuardaCampo( txtCodBarINIModG, 490, 100, 47, 20, "CodBarModG", "Cód.bar.ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
+    lcModG.add(new GuardaCampo( txtDescModG, "DescModG", "Descrição do modelo de grupo", ListaCampos.DB_SI, false));
+    lcModG.add(new GuardaCampo( txtDescINIModG, "DescProdModG", "Descrição ini.", ListaCampos.DB_SI, false));
+    lcModG.add(new GuardaCampo( txtRefINIModG, "RefModG", "Ref. ini.", ListaCampos.DB_SI, false));
+    lcModG.add(new GuardaCampo( txtCodFabINIModG, "CodFabModG", "Cód.fab.ini.", ListaCampos.DB_SI, false));
+    lcModG.add(new GuardaCampo( txtCodBarINIModG, "CodBarModG", "Cód.bar.ini.", ListaCampos.DB_SI, false));
     lcModG.montaSql(false, "MODGRADE", "EQ");
     lcModG.setReadOnly(true);
     txtCodModG.setNomeCampo("CodModG");
