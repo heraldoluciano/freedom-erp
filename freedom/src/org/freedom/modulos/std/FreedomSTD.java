@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 
+import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
 
 public class FreedomSTD extends Aplicativo {
@@ -39,7 +40,7 @@ public class FreedomSTD extends Aplicativo {
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Setor", "Setor",'S',100102010,3, true, FSetor.class);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Comissionado", "Comissionado",'i',100102020,4, true, FVendedor.class);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Classif. de Comissões", "Classificação de Comissões",'P',100102030,5, true, FCLComis.class);
-	      
+	      addOpcao(100102000,TP_OPCAO_ITEM,"Funções", "Funções",'F',100102040,5, true, FFuncao.class);
 	      
         addSeparador(100100000);
         addOpcao(100100000,TP_OPCAO_ITEM,"Moeda","Moeda",'M',100112000,2, true, FMoeda.class);
