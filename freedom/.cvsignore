@@ -1,2 +1,4 @@
 .classpath
 *.class
+build
+nbproject
