@@ -1,1 +1,1 @@
-javaw -classpath ".;jars\jcommon-0.8.7.jar;jars\jfreechart-0.9.12.jar;jars\freedomfnc.jar;jars\firebirdsql-full.jar;jars\itext-1.02b.jar;" -DARQINI=c:\opt\freedom\freedom.ini projetos.freedomfnc.FreedomFNC
+javaw -classpath ".;lib\jcommon-0.8.7.jar;lib\jfreechart-0.9.12.jar;lib\freedomfnc.jar;lib\firebirdsql-full.jar;lib\itext-1.02b.jar;" -DARQINI=c:\opt\freedom\freedom.ini org.freedom.modulos.fnc.FreedomFNC

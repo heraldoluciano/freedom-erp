@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="C:/opt/eclipse/workspace/freedom/jars/freedompdv.jar"/>
-    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/jars/jardesc/freedompdv.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <jar path="C:/opt/eclipse/workspace/freedom/lib/freedompdv.jar"/>
+    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedompdv.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
     <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
         <sealing sealJar="false">
             <packagesToSeal/>
@@ -9,13 +9,13 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.drivers"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.pdv"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
     </selectedElements>
 </jardesc>
