@@ -44,14 +44,14 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
   private JTextFieldPad txtCodRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtDataRoma = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtDataRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtSaidaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtPrevRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtEntregaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtStatusRoma = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtCodItRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtDtPrevItRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDtPrevItRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldFK txtDescVenda = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
   private ListaCampos lcVenda = new ListaCampos(this,"VA");
   public FRomaneio() {
@@ -86,7 +86,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     setNavegador(navRod);
 
     adicCampo(txtCodItRoma, 7, 20, 50, 20,"CodItRoma","Item",ListaCampos.DB_PK,true);
-    adicCampo(txtCodVenda, 60, 20, 77, 20,"CodVenda","Cód.venda",ListaCampos.DB_PK,true);
+    adicCampo(txtCodVenda, 60, 20, 77, 20,"CodVenda","Cód.venda",ListaCampos.DB_FK,true);
     adicDescFK(txtDescVenda, 140, 20, 147, 20, "VlrLiqVenda", "Valor da venda");
     adicCampo(txtDtPrevItRoma, 290, 20, 100, 20,"DtPrevItRoma","Data de previsão",ListaCampos.DB_SI,true);
     setListaCampos( true, "ITROMANEIO", "VD");
