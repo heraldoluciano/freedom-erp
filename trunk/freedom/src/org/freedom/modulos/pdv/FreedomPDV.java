@@ -21,12 +21,11 @@
  */
 
 package org.freedom.modulos.pdv;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
 
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -34,6 +33,7 @@ import org.freedom.telas.Aplicativo;
 
 public class FreedomPDV extends Aplicativo implements ActionListener{
 	public static boolean bECFTerm = false;
+	public static boolean bTEFTerm = false;
 	public static boolean bModoDemo = true;
 	public FreedomPDV() {
 		super("iconConfiguracao32.gif","splashPDV.jpg","FreedomPDV - Ponto de Venda",1,3);
@@ -69,7 +69,9 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		
 		addBotao("btPdvLeituraXPq.gif","Ler memória fiscal",110700000);		   
 	    if (abrecaixa()) {
-		  execOpcao(100101000); // Opção de venda
+	    	FVenda tela = new FVenda();
+	    	tela.iniciaTela(con);
+	    	tela.setVisible(true);
 		}
 		else {
 			killProg(5,"Caixa não foi aberto. A aplicação será fechada!");			
@@ -123,8 +125,10 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
   	 catch (Exception err) {
         killProg(6,"Erro abrir o caixa!\n"+err.getMessage());
   	 }
-  	 String sSQL = "SELECT ECFCAIXA,MODODEMO FROM PVCAIXA WHERE CODCAIXA=?" +
-  	 		               " AND CODFILIAL=? AND CODEMP=?";
+  	 String sSQL = "SELECT CX.ECFCAIXA,CX.TEFCAIXA,(SELECT MODODEMOEST FROM SGESTACAO EST" +
+  	 			   " WHERE EST.CODEMP=CX.CODEMPET AND EST.CODFILIAL=CX.CODFILIALET AND" +
+  	 		       " EST.CODEST=CX.CODEST) FROM PVCAIXA CX WHERE CODCAIXA=?" +
+	               " AND CODFILIAL=? AND CODEMP=?";
 	 try {
 	 	PreparedStatement ps = con.prepareStatement(sSQL);
 	 	ps.setInt(1,Aplicativo.iNumEst);
@@ -136,7 +140,11 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 	 			bECFTerm = true;
 	 		else
 	 			bECFTerm = false;
-	 		if (rs.getString("ModoDemo").equals("S"))
+	 		if (rs.getString("TEFCaixa").equals("S"))
+	 			bTEFTerm = true;
+	 		else
+	 			bTEFTerm = false;
+	 		if (rs.getString(3).equals("S"))
 	 			bModoDemo = true;
 	 		else
 	 			bModoDemo = false;

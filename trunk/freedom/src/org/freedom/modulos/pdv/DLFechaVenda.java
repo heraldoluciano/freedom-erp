@@ -34,9 +34,9 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -45,9 +45,9 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
+import org.freedom.telas.FDialogo;
 
-public class DLFechaVenda extends FFDialogo implements FocusListener {
+public class DLFechaVenda extends FDialogo implements FocusListener {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldFK txtVlrCupom = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
@@ -61,8 +61,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private Tef tef = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
+	Connection con = null;
 	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
-		super(Aplicativo.telaPrincipal);
+		//super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de venda");
 		setAtribos(330,275);
 		
@@ -70,6 +71,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		this.iNumCupom = iNumCupom;
 		
 		txtVlrCupom.setVlrBigDecimal(valCupom);
+		txtVlrChequeElet.setAtivo(false);
+		
 		
 		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, true));
 		lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
@@ -110,8 +113,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		boolean bRet = false;
 		Properties retTef = tef.solicVenda(iNumCupom, txtVlrChequeElet.getVlrBigDecimal());
 		
-		if (retTef == null)
+		if (retTef == null || !tef.validaTef(retTef))
 			return false;
+		
+		
 /*		
 		bf.iniciaModoTef(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
 		bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,"Cartao",FreedomPDV.bModoDemo);
@@ -119,6 +124,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		bf.fechaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
         bf.finalizaModoTEF();
 */
+		bRet = true;
 		
 		return bRet;
 			
@@ -196,8 +202,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 			Funcoes.mensagemInforma(this,"Valor pago menor que o valor da venda!");
 			return false;
 		}
-		else if (txtVlrChequeElet.getVlrDouble().doubleValue() > 0 && processaTef())
+		else if (txtVlrChequeElet.getVlrDouble().doubleValue() > 0 && !processaTef()) {
+			Funcoes.mensagemInforma(this,"Não foi possível concluir a TEF");
 			return false;
+		}
 		else if (!gravaVenda()) 
 			return false;
 		try {
@@ -309,10 +317,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	}
 	public void focusGained(FocusEvent arg0) { }
 	public void setTef(Tef tef) {
-		this.tef = tef; 
+		this.tef = tef;
+		txtVlrChequeElet.setAtivo(true);
 	}
 	public void setConexao(Connection cn) {
-		super.setConexao(cn);
+		con = cn;
 		lcPlanoPag.setConexao(cn);
 		txtCodPlanoPag.setVlrInteger(new Integer(buscaPlanoPag()));
 		lcPlanoPag.carregaDados();
