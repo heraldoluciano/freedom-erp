@@ -129,6 +129,7 @@ public class FRDiario extends FRelatorio {
       
       while ( rs.next() ) {
         if (imp.pRow()==0) {
+           imp.impCab(136);
            String sTitulo = "RELATORIO DE DIÁRIO DE "+sTit+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");

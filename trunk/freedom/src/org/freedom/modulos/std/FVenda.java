@@ -1495,6 +1495,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
       rs = ps.executeQuery();
       while (rs.next()) {
          if (imp.pRow()==0) {
+           imp.impCab(136);
            imp.say(imp.pRow()+1,0,""+imp.normal());
 
            imp.say(imp.pRow()+0,4,"PEDIDO DE VENDA No.: ");

@@ -285,6 +285,7 @@ public class FRReceber extends FRelatorio {
   			while ( rs.next() ) {
   				if ((!Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")).equals(sDtVencItRec)) && 
   					(bFimDia) && (sImpTotDia.equals("S")) ) {
+  					imp.impCab(136);
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
