@@ -42,10 +42,10 @@ import org.freedom.telas.FDados;
 import org.freedom.telas.FPrincipal;
 
 public class FNatoPer extends FDados implements ActionListener, InsertListener {
-  private JTextFieldPad txtCodNat = new JTextFieldPad(4);
-  private JTextFieldPad txtDescNat = new JTextFieldPad(60);
-  private JTextFieldPad txtAliqeNat = new JTextFieldPad(8);
-  private JTextFieldPad txtAliqfNat = new JTextFieldPad(8);
+  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtDescNat = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+  private JTextFieldPad txtAliqeNat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
+  private JTextFieldPad txtAliqfNat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
   private JTextAreaPad txaTxtNat = new JTextAreaPad(500);
   private JCheckBoxPad cbImpDtSaidaNat = new JCheckBoxPad("Imprimir data de saída na NF?","S","N");
   private JButton btItNatoper = new JButton(Icone.novo("btBrasil.gif"));
@@ -54,12 +54,12 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   	//cbImpDtSaidaNat.set
     setTitulo("Cadastro de Naturezas de Opreção");
     setAtribos( 50, 50, 330, 265);
-    adicCampo(txtCodNat, 7, 20, 70, 20,"CodNat","Cód.nat.op.",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-    adicCampo(txtDescNat, 80, 20, 230, 20,"DescNat","Descrição da natureza da operação",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
-    adicCampo(txtAliqeNat, 7, 60, 90, 20,"AliqENat","Aliq.estadual",JTextFieldPad.TP_DECIMAL,6,2,false,false,null,false);
-    adicCampo(txtAliqfNat, 100, 60, 90, 20,"AliqFNat","Aliq.federal",JTextFieldPad.TP_DECIMAL,6,2,false,false,null,false);
-    adicDB(cbImpDtSaidaNat, 7, 90, 250,20,"ImpDtSaidaNat","",JTextFieldPad.TP_STRING,true);
-    adicDB(txaTxtNat,7,130,250,50,"txtNat","Texto completo",JTextFieldPad.TP_STRING,false);
+    adicCampo(txtCodNat, 7, 20, 70, 20,"CodNat","Cód.nat.op.",ListaCampos.DB_PK,true);
+    adicCampo(txtDescNat, 80, 20, 230, 20,"DescNat","Descrição da natureza da operação",ListaCampos.DB_SI,true);
+    adicCampo(txtAliqeNat, 7, 60, 90, 20,"AliqENat","Aliq.estadual",ListaCampos.DB_SI,false);
+    adicCampo(txtAliqfNat, 100, 60, 90, 20,"AliqFNat","Aliq.federal",ListaCampos.DB_SI,false);
+    adicDB(cbImpDtSaidaNat, 7, 90, 250,20,"ImpDtSaidaNat","",true);
+    adicDB(txaTxtNat,7,130,250,50,"txtNat","Texto completo",false);
     //adicCampo(txaTxtNat,7,130,250,50,"txtNat","Texto completo",JTextFieldPad.TP_STRING,false);
     
     
