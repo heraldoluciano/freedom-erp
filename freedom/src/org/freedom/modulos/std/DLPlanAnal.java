@@ -42,13 +42,18 @@ public class DLPlanAnal extends FFDialogo {
   private JLabelPad lbDescPai = new JLabelPad("Descrição da origem");
   private JLabelPad lbCodAnal = new JLabelPad("Código");
   private JLabelPad lbDescAnal = new JLabelPad("Descrição");
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
-  private JRadioGroup rgTipo = null; 
-  public DLPlanAnal(Component cOrig,String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo) {
+  private JLabelPad lbFinPlan = new JLabelPad("Finalidade");
+  
+  private Vector vValsTipoPlan = new Vector();
+  private Vector vLabsTipoPlan = new Vector();
+  private Vector vValsFinPlan = new Vector();
+  private Vector vLabsFinPlan = new Vector();
+  private JRadioGroup rgTipoPlan = null; 
+  private JRadioGroup rgFinPlan = null; 
+  public DLPlanAnal(Component cOrig,String sCodPai, String sDescPai, String sCod, String sDesc, String sTipo, String sFin) {
   	super(cOrig);
   	setTitulo("Planejamento financeiro (Conta Analítica)");
-    setAtribos(350,280);
+    setAtribos(430,410);
     cancText(txtCodPai);
     cancText(txtDescPai);
     cancText(txtCodAnal);
@@ -56,29 +61,57 @@ public class DLPlanAnal extends FFDialogo {
     txtCodPai.setVlrString(sCodPai);
     txtDescPai.setVlrString(sDescPai);
     txtCodAnal.setVlrString(sCod);
-    vVals.addElement("B");
-    vVals.addElement("C");
-    vVals.addElement("D");
-    vVals.addElement("R");
-    vLabs.addElement("Bancos");
-    vLabs.addElement("Caixa");
-    vLabs.addElement("Despesas");
-    vLabs.addElement("Receitas");
-    rgTipo = new JRadioGroup(2,2,vLabs,vVals);
-    rgTipo.setVlrString(sTipo);
-    rgTipo.setAtivo(0,false);
-    rgTipo.setAtivo(1,false);
-    rgTipo.setAtivo(2,false);
-    rgTipo.setAtivo(3,false);
+    vValsTipoPlan.addElement("B");
+    vValsTipoPlan.addElement("C");
+    vValsTipoPlan.addElement("D");
+    vValsTipoPlan.addElement("R");
+    vLabsTipoPlan.addElement("Bancos");
+    vLabsTipoPlan.addElement("Caixa");
+    vLabsTipoPlan.addElement("Despesas");
+    vLabsTipoPlan.addElement("Receitas");
+    rgTipoPlan = new JRadioGroup(2,2,vLabsTipoPlan,vValsTipoPlan);
+    rgTipoPlan.setVlrString(sTipo);
+    rgTipoPlan.setAtivo(0,false);
+    rgTipoPlan.setAtivo(1,false);
+    rgTipoPlan.setAtivo(2,false);
+    rgTipoPlan.setAtivo(3,false);
+
+    vValsFinPlan.addElement("RV");
+    vValsFinPlan.addElement("OR");
+    vValsFinPlan.addElement("ER");
+    vValsFinPlan.addElement("CF");
+    vValsFinPlan.addElement("CV");
+    vValsFinPlan.addElement("II");
+    vValsFinPlan.addElement("RF");
+    vValsFinPlan.addElement("DF");
+    vValsFinPlan.addElement("CS");
+    vValsFinPlan.addElement("IR");
+    vValsFinPlan.addElement("OO");
+    vLabsFinPlan.addElement("RV - Receitas sobre vendas");
+    vLabsFinPlan.addElement("OR - Outras receitas");
+    vLabsFinPlan.addElement("ER - Estorno de receitas");
+    vLabsFinPlan.addElement("CF - Custo fixo");
+    vLabsFinPlan.addElement("CV - Custo variável");
+    vLabsFinPlan.addElement("II - Investimentos");
+    vLabsFinPlan.addElement("RF - Receitas financeiras");
+    vLabsFinPlan.addElement("DF - Despesas financeiras");
+    vLabsFinPlan.addElement("CS - Contribuição financeira");
+    vLabsFinPlan.addElement("IR - Imposto de renda");
+    vLabsFinPlan.addElement("OO - Outros");
+    rgFinPlan = new JRadioGroup(6,2,vLabsFinPlan,vValsFinPlan);
+    if (sFin.trim().equals(""))
+      rgFinPlan.setVlrString(sFin);
     adic(lbCodPai,7,0,80,20);
     adic(txtCodPai,7,20,80,20);
-    adic(lbDescPai,90,0,200,20);
-    adic(txtDescPai,90,20,240,20);
-    adic(lbCodAnal,7,40,100,20);
+    adic(lbDescPai,90,0,300,20);
+    adic(txtDescPai,90,20,300,20);
+    adic(lbCodAnal,7,40,110,20);
     adic(txtCodAnal,7,60,110,20);
-    adic(lbDescAnal,120,40,110,20);
-    adic(txtDescAnal,120,60,210,20);
-    adic(rgTipo,7,90,323,60);
+    adic(lbDescAnal,120,40,270,20);
+    adic(txtDescAnal,120,60,270,20);
+    adic(rgTipoPlan,7,90,383,60);
+    adic(lbFinPlan,7,155,270,20);
+    adic(rgFinPlan,7,175,383,130);
     if (sDesc != null) {
       setTitulo("Edição de Conta Analítica");
       txtDescAnal.setVlrString(sDesc);
@@ -102,8 +135,10 @@ public class DLPlanAnal extends FFDialogo {
     }
     super.actionPerformed(evt);
   }
-  public String getValor() {
-  	String sRet = txtDescAnal.getText(); 
+  public String[] getValores() {
+  	String[] sRet = new String[2];  
+	sRet[0]	= txtDescAnal.getVlrString();
+	sRet[1] = rgFinPlan.getVlrString();
     return sRet;
   }
 }
