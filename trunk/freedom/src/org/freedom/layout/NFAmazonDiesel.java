@@ -96,19 +96,18 @@ public class NFAmazonDiesel extends Leiaute {
 	      }  
 //Cabeçario da nota  
          if (imp.pRow()==0) {           
-	       if (bEntrada){
-	       	   imp.say(imp.pRow()+1,0,"");
+	       if (bEntrada){	       	   
 	       	   imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	           imp.say(imp.pRow()+0,108,"X");
 	       }
-           else{
-           	   imp.say(imp.pRow()+1,0,"");
+           else{           	   
            	   imp.say(imp.pRow()+1,0,"");
            	   imp.say(imp.pRow()+1,0,""+imp.comprimido());
            	   imp.say(imp.pRow()+0,93,"X");
            }
-	      
+	       
+	       imp.say(imp.pRow()+1,0,"");
 	       imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");        
            imp.say(imp.pRow()+1,0,"");
@@ -183,16 +182,16 @@ public class NFAmazonDiesel extends Leiaute {
 		 }
 		 
 		 imp.say(imp.pRow()+1,0,"" + imp.comprimido());
-         imp.say(imp.pRow()+0,2,Funcoes.alinhaDir(rs.getInt("CodProd"),8));           
-         imp.say(imp.pRow()+0,13,rs.getString("DescProd").trim());
-         imp.say(imp.pRow()+0,76,sClasFisc);
-         imp.say(imp.pRow()+0,85,rs.getString("CodUnid").substring(0,4));
-         imp.say(imp.pRow()+0,92,""+rs.getDouble("QtdItVenda"));          
-         imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)).trim());
+         imp.say(imp.pRow()+0,0,Funcoes.alinhaDir(rs.getInt("CodProd"),8));           
+         imp.say(imp.pRow()+0,11,rs.getString("DescProd").trim());
+         imp.say(imp.pRow()+0,74,sClasFisc);
+         imp.say(imp.pRow()+0,83,rs.getString("CodUnid").substring(0,4));
+         imp.say(imp.pRow()+0,90,""+rs.getDouble("QtdItVenda"));          
+         imp.say(imp.pRow()+0,101,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)).trim());
 //         imp.say(imp.pRow()+0,97,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrProdItVenda")));
-         imp.say(imp.pRow()+0,115,Funcoes.strDecimalToStrCurrency(13,2,""+rs.getString("VlrLiqItVenda").trim()));
-         imp.say(imp.pRow()+0,134,""+rs.getDouble("PercICMSItVenda"));  // espaço para alicota ICMS
-         imp.say(imp.pRow()+0,138,""+rs.getDouble("PercIPIItVenda"));   // espaço para alicota IPI
+         imp.say(imp.pRow()+0,113,Funcoes.strDecimalToStrCurrency(13,2,""+rs.getString("VlrLiqItVenda").trim()));
+         imp.say(imp.pRow()+0,132,""+rs.getDouble("PercICMSItVenda"));  // espaço para alicota ICMS
+ //   imp.say(imp.pRow()+0,136,""+rs.getDouble("PercIPIItVenda"));   // espaço para alicota IPI
          //imp.say(imp.pRow()+0,134,Funcoes.strDecimalToStrCurrency(15,3,rs.getString("VlrIPIVenda")).trim());
          
          iItImp++;
@@ -288,9 +287,7 @@ public class NFAmazonDiesel extends Leiaute {
            imp.say(imp.pRow()+0,125,rs.getString("PesoLiqVD"));
            
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
-           
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
+                      
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");

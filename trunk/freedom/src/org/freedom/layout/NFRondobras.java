@@ -235,8 +235,8 @@ public class NFRondobras extends Leiaute {
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,4,"***************");
-             imp.say(imp.pRow()+0,27,"***************");
+             imp.say(imp.pRow()+0,6,"***************");
+             imp.say(imp.pRow()+0,33,"***************");
              imp.say(imp.pRow()+0,114,"***************");
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
