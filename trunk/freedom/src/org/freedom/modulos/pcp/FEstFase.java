@@ -121,28 +121,7 @@ public class FEstFase extends FDetalhe {
     tab.setTamColuna(120,3);
     tab.setTamColuna(170,5);
   }
-/*  private boolean comRefProd() {
-    boolean bResultado = false;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      ps = con.prepareStatement("SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?");
-      ps.setInt(1,Aplicativo.iCodEmp);
-      ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-      rs = ps.executeQuery();
-      if (rs.next()) {
-        bResultado = rs.getString("UsaRefProd").trim().equals("S");
-      }
-//      rs.close();
-//      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-    }
-    catch(SQLException err) {
-        Funcoes.mensagemErro(this,"Erro ao consultar a tabela PREFERE1!\n"+err.getMessage());
-    }
-    return bResultado;
-  }*/
+
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcProd.setConexao(cn);
