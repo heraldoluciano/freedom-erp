@@ -26,9 +26,7 @@ import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.JLabel;
-
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
@@ -39,8 +37,8 @@ import org.freedom.telas.FDados;
 public class FTipoCli extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-  private Painel pinInfoFicha = new Painel(350,100);
-  private JLabel lbInfoFicha = new JLabel(" Informações complementares");
+  private Painel pinInfoFicha = new Painel(300,150);
+  private JLabel lbInfoFicha = new JLabel(" Informações complementares na ficha cadastral");
   private JCheckBoxPad cbTipoCadFis = new JCheckBoxPad("Pessoa física","S","N");
   private JCheckBoxPad cbTipoCadJur = new JCheckBoxPad("Pessoa jurídica","S","N");
   private JCheckBoxPad cbTipoCadCheq = new JCheckBoxPad("Cheque","S","N");
@@ -56,12 +54,34 @@ public class FTipoCli extends FDados implements ActionListener {
   private JCheckBoxPad cbTipoCadRefPesAutCp = new JCheckBoxPad("Autorização de compra","S","N");
   private JCheckBoxPad cbTipoCadRefAval = new JCheckBoxPad("Avalista","S","N");
   private JCheckBoxPad cbTipoCadRefSocio = new JCheckBoxPad("Quadro de sócios","S","N");  
-  
+  private Painel pinLbInfoCaixa = new Painel(53,15);
   public FTipoCli () {
     setTitulo("Cadastro de tipos de clientes");
-    setAtribos(50, 50, 350, 400);
+    setAtribos(50, 50, 430, 320);
     adicCampo(txtCod, 7, 20, 70, 20,"CodTipoCli","Cód.tp.cli.", ListaCampos.DB_PK, true);
     adicCampo(txtDesc, 80, 20, 250, 20,"DescTipoCli","Descrição do tipo de cliente", ListaCampos.DB_SI, true);
+    adicDB(cbTipoCadFis, 10, 70, 200, 20, "FisTipoCli", "",true);
+    adicDB(cbTipoCadJur, 220, 70, 170, 20, "JurTipoCli", "",true);
+    adicDB(cbTipoCadCheq, 10, 90, 200, 20, "CheqTipoCli", "",true);
+    adicDB(cbTipoCadFil, 220, 90, 170, 20, "FilTipoCli", "",true);
+    adicDB(cbTipoCadLocTrab, 10, 110, 200, 20, "LocTrabTipoCli", "",true);
+    adicDB(cbTipoCadRefComl, 220, 110, 170, 20, "RefComlTipoCli", "",true);
+    adicDB(cbTipoCadRefBanc, 10, 130, 200, 20, "BancTipoCli", "",true);
+    adicDB(cbTipoCadRefPess, 220, 130, 170, 20, "RefPesTipoCli", "",true);
+    adicDB(cbTipoCadRefConj, 10, 150, 200, 20, "ConjTipoCli", "",true);
+    adicDB(cbTipoCadRefVeic, 220, 150, 170, 20, "VeicTipoCli", "",true);
+    adicDB(cbTipoCadRefImov, 10, 170, 200, 20, "ImovTipoCli", "",true);
+    adicDB(cbTipoCadRefTerra, 220, 170, 170, 20, "TerraTipoCli", "",true);
+    adicDB(cbTipoCadRefPesAutCp, 10, 190, 200, 20, "PesAutCpTipoCli", "",true);
+    adicDB(cbTipoCadRefAval, 220, 190, 170, 20, "AvalTipoCli", "",true);
+    adicDB(cbTipoCadRefSocio, 10, 210, 200, 20, "SocioTipoCli", "",true);
+    
+    pinLbInfoCaixa.adic(lbInfoFicha,0,0,350,15);
+    pinLbInfoCaixa.tiraBorda();
+    
+    adic(pinLbInfoCaixa,10,52,350,15);
+    adic(pinInfoFicha,7,60,400,180);
+        
     setListaCampos( true, "TIPOCLI", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
