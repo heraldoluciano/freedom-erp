@@ -141,6 +141,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
       imp.limpaPags();
       while ( rs.next() ) {
          if (imp.pRow()==0) {
+         	imp.impCab(136);
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,10,Funcoes.replicate("-",100));
             imp.say(imp.pRow()+1,0,""+imp.comprimido());

@@ -238,6 +238,7 @@ public class FRComissoes extends FRelatorio {
   				}
 
   				if (imp.pRow()==0) {
+  					imp.impCab(136);
   					String sTitulo = "RELATORIO DE COMISSOES("+sTitDataFiltro+") - PERIODO DE "+sDataini+" ATE "+sDatafim;
   					String sVendedor = "COMISSIONADO: "+iCodVend+" - "+txtDescVend.getVlrString();
   					imp.say(imp.pRow()+0,0,""+imp.comprimido());

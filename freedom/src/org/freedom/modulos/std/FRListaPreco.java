@@ -406,6 +406,7 @@ public class FRListaPreco extends FRelatorio {
 					sTextoImp = sPrecopag1+sPrecopag2+sPrecopag3+sPrecopag4+
 					sPrecopag5+sPrecopag6+sPrecopag7+" "+
 					Funcoes.copy(sCodunid,0,8)+"|";
+					imp.impCab(136);
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|"+Funcoes.copy(sCodProdPrint,0,12));
 					imp.say(imp.pRow()+0,14,"|"+Funcoes.copy(sDescProd,0,39));

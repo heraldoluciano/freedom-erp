@@ -220,7 +220,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 String sDataini = txtDataini.getVlrString();
                 String sDatafim = txtDatafim.getVlrString();
                 imp.setTitulo("Relatório de Extrato do Estoque");
-
+                imp.impCab(136);
                 String sTmp = "PRODUTO: "+txtDescProd.getText().trim();
                 sCab += "\n"+imp.comprimido();
                 sCab += "|"+Funcoes.replicate(" ",(134-sTmp.length())/2)+sTmp;

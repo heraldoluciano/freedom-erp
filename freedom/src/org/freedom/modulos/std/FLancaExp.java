@@ -124,6 +124,7 @@ public class FLancaExp extends FDados implements ActionListener {
 		        imp.limpaPags();
 	        	while ( rs.next() ) {
 				if (imp.pRow()==0) {
+					imp.impCab(136);
 					String sTitulo = "RELATORIO LANCAMENTOS DE EXPOSITORES   -   PERIODO DE :"+sRet[0]+" ATE: "+sRet[1];
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
