@@ -101,7 +101,7 @@ public class NFRondobras extends Leiaute {
 	           imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
 	       }
            else{
-           	   imp.say(imp.pRow()+1,0,""+imp.normal()+imp.expandido());
+           	   imp.say(imp.pRow()+0,0,""+imp.normal()+imp.expandido());
            	   imp.say(imp.pRow()+0,87,"X");
            	   imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
            }
