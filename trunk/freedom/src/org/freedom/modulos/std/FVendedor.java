@@ -28,6 +28,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
+import javax.swing.JOptionPane;
+
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
@@ -77,7 +80,7 @@ public class FVendedor extends FDados implements PostListener {
   private ListaCampos lcFuncao = new ListaCampos(this,"FU");
   private boolean[] bPref = null;
   public FVendedor () {
-    setTitulo("Cadastro de Vendedores");
+    setTitulo("Cadastro de comissionados");
     setAtribos( 50, 50, 400, 460);
 
     lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false));
@@ -109,8 +112,8 @@ public class FVendedor extends FDados implements PostListener {
     lcClComis.setReadOnly(true);
     txtCodClComis.setTabelaExterna(lcClComis);
     
-    adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.repr.", ListaCampos.DB_PK, true);
-    adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend", "Nome do representante", ListaCampos.DB_SI, true);
+    adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, true);
+    adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, true);
     adicCampo(txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF", ListaCampos.DB_SI, false);
     adicCampo(txtRgVend, 140, 60, 149, 20, "RgVend", "RG", ListaCampos.DB_SI, false);
     adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "SSP", ListaCampos.DB_SI, false);
@@ -132,7 +135,7 @@ public class FVendedor extends FDados implements PostListener {
     adicCampo(txtCelVend, 300, 220, 72, 20, "CelVend", "Cel", ListaCampos.DB_SI, false);
     adicCampo(txtEmailVend, 7, 260, 200, 20, "EmailVend", "E-Mail", ListaCampos.DB_SI, false);
     adicCampo(txtPercComVend, 210, 260, 77, 20, "PercComVend", "Comissão", ListaCampos.DB_SI, false);
-    adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.vend.for.", ListaCampos.DB_SI, false);
+    adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.comis.for.", ListaCampos.DB_SI, false);
     adicCampo(txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.", ListaCampos.DB_FK, txtDescPlan, false);
     adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan", "Descrição do planejamento");
     adicCampo(txtCodFunc, 7, 420, 100, 20, "CodFunc", "Cód.função", ListaCampos.DB_FK, txtDescFunc, false);
@@ -167,20 +170,17 @@ public class FVendedor extends FDados implements PostListener {
 
 	adicCampo(txtCodClComis, 7, 380, 100, 20, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_FK, txtDescClComis, false);
 	adicDescFK(txtDescClComis, 110, 380, 262, 20, "DescClComis", "Descrição da Classificacao da comissão");
-
-	
 	
 	lcSetor.setConexao(con);
 	lcClComis.setConexao(con);
   }
   public void beforePost(PostEvent pevt) {
           if (txtInscVend.getText().trim().length() < 1) {
-                if (Funcoes.mensagemConfirma(this, "Inscrição Estadual em branco! Inserir ISENTO?")==0 )
-                        txtInscVend.setVlrString("ISENTO");
-                else {
-                        pevt.cancela();
-                        txtInscVend.requestFocus();
-                }
+          	if (Funcoes.mensagemConfirma(this, "Inscrição Estadual em branco! Inserir ISENTO?")==JOptionPane.OK_OPTION)
+          		txtInscVend.setVlrString("ISENTO");
+
+          	pevt.cancela();
+          	txtInscVend.requestFocus();
           }
           else if (txtInscVend.getText().trim().toUpperCase().compareTo("ISENTO") == 0)
                 return;
