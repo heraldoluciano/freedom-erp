@@ -92,8 +92,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCidCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtUFCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   private JTextFieldPad txtCepCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtDDDCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFoneCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
-  private JTextFieldPad txtRamalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtRamalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 6, 0);
+  private JTextFieldPad txtDDDFaxCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtEmailCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtIncraCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
@@ -104,7 +106,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCidCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtCepCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtUFCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldPad txtDDDFoneCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFoneCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtDDDFaxCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtEndEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNumEnt = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -113,7 +117,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCidEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtCepEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtUFEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldPad txtDDDFoneEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFoneEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtDDDFaxEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxEnt = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK  txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
@@ -135,6 +141,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldFK  txtDescPesq = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtCodClas = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK  txtDescClas = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtDDDCelCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtCelCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtCodCliFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -196,7 +203,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private boolean bExecCargaObs = false;
   public FCliente () {
     setTitulo("Cadastro de Clientes"); 
-    setAtribos(50, 10, 530, 470);
+    setAtribos(50, 0, 550, 520);
     
     lcCliFor.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcCliFor);
@@ -325,15 +332,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtCidCli, 190, 260, 177, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false);
   	adicCampo(txtCepCli, 370, 260, 77, 20, "CepCli", "Cep", ListaCampos.DB_SI, false);
   	adicCampo(txtUFCli, 450, 260, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, false);
-  	adicCampo(txtFoneCli, 7, 300, 100, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
-  	adicCampo(txtRamalCli, 110, 300, 44, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
-  	
-  	adicCampo(txtFaxCli, 157, 300, 77, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
-  	adicCampo(txtEmailCli, 237, 300, 150, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false);
-  	adicCampo(txtIncraCli, 390, 300, 110, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false);
-  	adicCampo(txtCelCli, 7, 340, 100, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
-  	adicCampo(txtCodPais, 110, 340, 77, 20, "CodPais","Cod.País",ListaCampos.DB_FK,false);
-  	adicDescFK(txtDescPais, 190, 340, 310, 20,"DescPais","Nome");
+  	adicCampo(txtCodPais, 7, 300, 70, 20, "CodPais","Cod.país",ListaCampos.DB_FK,false);
+  	adicDescFK(txtDescPais, 80, 300, 217, 20,"DescPais","Nome do país");
+  	adicCampo(txtDDDCli, 300, 300, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneCli, 343, 300, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
+  	adicCampo(txtRamalCli, 443, 300, 57, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFaxCli, 7, 340, 40, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxCli, 50, 340, 97, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDCelCli, 160, 340, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtCelCli, 203, 340, 97, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
+  	adicCampo(txtIncraCli, 313, 340, 187, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false);
+  	adicCampo(txtEmailCli, 7, 380, 493, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false);
     txtCpfCli.setMascara(JTextFieldPad.MC_CPF);
   	txtCnpjCli.setMascara(JTextFieldPad.MC_CNPJ);
   	txtCepCli.setMascara(JTextFieldPad.MC_CEP);
