@@ -80,7 +80,6 @@ public class FRVendasIcms extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
     
-    imp.setTitulo("Icms sobre Vendas");
     
     String sSQL = "SELECT V.DTEMITVENDA,T.ESTIPOMOV,SUM(V.VLRLIQVENDA),"+
                   "SUM(V.VLRBASEICMSVENDA),SUM(V.VLRICMSVENDA) "+
@@ -109,31 +108,22 @@ public class FRVendasIcms extends FRelatorio {
       rs = ps.executeQuery();
       imp.limpaPags();
       
+      int cont = 0;
       while ( rs.next() ) {
-              
-
+        cont++;
         if (imp.pRow()>=(linPag-1)) {
-             imp.say(imp.pRow()+1,0,""+imp.normal());
+             imp.say(imp.pRow()+0,0,""+imp.normal());
              imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
              imp.incPags();
              imp.eject();
         }
 
-        if (imp.pRow()==0) {
-           imp.impCab(80, false);
-           imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,60,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,79,"|");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"| ICMS SOBRE COMPRAS E VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
-           imp.say(imp.pRow()+0,79,"|");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,79,"|");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
+        if (imp.pRow()==0) { 
+           imp.setTitulo("Icms sobre Vendas");
+           imp.setSubTitulo("ICMS SOBRE COMPRAS E VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
+           imp.impCab(80, true);
+            
+           imp.say(imp.pRow()+0,0,""+imp.normal());
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
            imp.say(imp.pRow()+1,0,""+imp.normal());
            imp.say(imp.pRow()+0,0,"| Dt. Emissao | Tipo | Valor Liq.   | Base Calc.   | Valor Icms");
@@ -163,37 +153,38 @@ public class FRVendasIcms extends FRelatorio {
          
       }
       
-      bVlrIcmsPagar = bVlrIcmsPagar.add(bVlrIcmsVenda);
-      bVlrIcmsPagar = bVlrIcmsPagar.add(bVlrIcmsCompra.negate());
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",77)+"|");
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"|");
-      imp.say(imp.pRow()+0,2,"TOTAL COMPRAS");
-      imp.say(imp.pRow()+0,22,"| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrLiqCompra)+
-              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrBaseIcmsCompra)+
-              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrIcmsCompra));
-      imp.say(imp.pRow(),79,"|");
-            
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"|");
-      imp.say(imp.pRow()+0,2,"TOTAL VENDAS");
-      imp.say(imp.pRow()+0,22,"| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrLiqVenda)+
-              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrBaseIcmsVenda)+
-              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrIcmsVenda));
-      imp.say(imp.pRow(),79,"|");
-      
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"|");
-      imp.say(imp.pRow()+0,2,"ICMS A PAGAR");
-      imp.say(imp.pRow()+0,22,"| "+Funcoes.replicate(" ",13)+
-              "| "+Funcoes.replicate(" ",13)+
-              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrIcmsPagar));
-      imp.say(imp.pRow(),79,"|");
-
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
-      
+      if (cont != 0){
+	      bVlrIcmsPagar = bVlrIcmsPagar.add(bVlrIcmsVenda);
+	      bVlrIcmsPagar = bVlrIcmsPagar.add(bVlrIcmsCompra.negate());
+	      imp.say(imp.pRow()+1,0,""+imp.normal());
+	      imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",77)+"|");
+	      imp.say(imp.pRow()+1,0,""+imp.normal());
+	      imp.say(imp.pRow()+0,0,"|");
+	      imp.say(imp.pRow()+0,2,"TOTAL COMPRAS");
+	      imp.say(imp.pRow()+0,22,"| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrLiqCompra)+
+	              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrBaseIcmsCompra)+
+	              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrIcmsCompra));
+	      imp.say(imp.pRow(),79,"|");
+	            
+	      imp.say(imp.pRow()+1,0,""+imp.normal());
+	      imp.say(imp.pRow()+0,0,"|");
+	      imp.say(imp.pRow()+0,2,"TOTAL VENDAS");
+	      imp.say(imp.pRow()+0,22,"| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrLiqVenda)+
+	              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrBaseIcmsVenda)+
+	              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrIcmsVenda));
+	      imp.say(imp.pRow(),79,"|");
+	      
+	      imp.say(imp.pRow()+1,0,""+imp.normal());
+	      imp.say(imp.pRow()+0,0,"|");
+	      imp.say(imp.pRow()+0,2,"ICMS A PAGAR");
+	      imp.say(imp.pRow()+0,22,"| "+Funcoes.replicate(" ",13)+
+	              "| "+Funcoes.replicate(" ",13)+
+	              "| "+Funcoes.strDecimalToStrCurrency(13,2,""+bVlrIcmsPagar));
+	      imp.say(imp.pRow(),79,"|");
+	
+	      imp.say(imp.pRow()+1,0,""+imp.normal());
+	      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
+      }
       imp.eject();
       
       imp.fechaGravacao();

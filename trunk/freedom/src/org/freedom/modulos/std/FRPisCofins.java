@@ -143,7 +143,7 @@ public class FRPisCofins extends FRelatorio {
   		
   		imp = new ImprimeOS("",con);
   		linPag = imp.verifLinPag()-1;
-  		imp.setTitulo("Relatório de entradas e saidas");
+  		
   		sFiltros1 = "";
   		
         if (!sPis.equals("N")) {
@@ -217,31 +217,25 @@ public class FRPisCofins extends FRelatorio {
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
   					imp.incPags();
   					imp.eject();
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136, false);
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-	  				imp.say(imp.pRow()+0,136,"|");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"|");
-	  				imp.say(imp.pRow()+0,55,"RELATORIO DE ENTRADAS E SAIDAS");
-	  				imp.say(imp.pRow()+0,136,"|");
+	  				imp.montaCab();
+	  		  		imp.setTitulo("Relatório de entradas e saidas");
+	  		  		imp.setSubTitulo("RELATORIO DE ENTRADAS E SAIDAS");
+	  		    	imp.impCab(136, true);
+	  		  		
 	  				if (!sFiltros1.equals("")) {
-	  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  					imp.say(imp.pRow()+0,0,""+imp.comprimido());
 	 					imp.say(imp.pRow()+0,1,"|");
   	 					imp.say(imp.pRow()+0,68-(sFiltros1.length()/2),sFiltros1);
   	 					imp.say(imp.pRow()+0,136,"|");
   	  				}
-  	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  	  				imp.say(imp.pRow()+(!sFiltros1.equals("") ? 1 : 0),0,""+imp.comprimido());
   	  				imp.say(imp.pRow()+0,1,"|");
-  	  				imp.say(imp.pRow()+0,50,"PERIODO DE: "+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());
+  	  				imp.say(imp.pRow()+0,49,"PERIODO DE: "+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());
   	  				imp.say(imp.pRow()+0,136,"|");
   	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
@@ -315,6 +309,5 @@ public class FRPisCofins extends FRelatorio {
   	}
   	
   }
-  
-  
+    
 }

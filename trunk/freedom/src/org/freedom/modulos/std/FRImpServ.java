@@ -104,8 +104,7 @@ public class FRImpServ extends FRelatorio {
   		}
   	    imp = new ImprimeOS("", con);
   		iLinPag = imp.verifLinPag()-1;
-  		imp.setTitulo("Relatorio de Impostos/Serviços");
-  		
+  		  		
   		if (rgFormato.getVlrString().equals("D")) {
   		  sSql = "SELECT V.DTEMITVENDA,V.CODVENDA,V.DOCVENDA,V.SERIE,V.CODCLI," +
   				"C.RAZCLI,V.VLRBASEISSVENDA,V.VLRISSVENDA,V.VLRPISVENDA," +
@@ -161,29 +160,23 @@ public class FRImpServ extends FRelatorio {
   					imp.eject();
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136, false);
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-	  				imp.say(imp.pRow()+0,136,"|");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,0,"|");
-	  				imp.say(imp.pRow()+0,55,"IMPOSTOS SOBRE SERVICOS");
-	  				imp.say(imp.pRow()+0,136,"|");
-  		  			if (!sFiltros.equals("")) {
-  		  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  				imp.montaCab();
+	  		  		imp.setTitulo("Relatorio de Impostos/Serviços");
+	  		  		imp.setSubTitulo("IMPOSTOS SOBRE SERVICOS");
+	  		  		imp.impCab(136, true);
+	  				
+	  				if (!sFiltros.equals("")) {
+  		  				imp.say(imp.pRow()+0,0,""+imp.comprimido());
   		  				imp.say(imp.pRow()+0,0,"|");
   		  				imp.say(imp.pRow()+0,68-(sFiltros.length()/2),sFiltros);
-  		  				imp.say(imp.pRow()+0,136,"|");
+  		  				imp.say(imp.pRow()+0,135,"|");
   		  			}
-  		  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  		  			imp.say(imp.pRow()+(!sFiltros.equals("") ? 1 : 0),0,""+imp.comprimido());
   		  			imp.say(imp.pRow()+0,0,"|");
   		  			imp.say(imp.pRow()+0,50,"PERIODO DE: "+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());
-  		  			imp.say(imp.pRow()+0,136,"|");
+  		  			imp.say(imp.pRow()+0,135,"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   	                imp.say(imp.pRow() + 0, 0, "|Pedido ");
 	                imp.say(imp.pRow() + 0, 10, "Doc ");
@@ -197,14 +190,14 @@ public class FRImpServ extends FRelatorio {
 	                imp.say(imp.pRow() + 0, 103, "IR");
 	                imp.say(imp.pRow() + 0, 114, "C.SOCIAL");
 	                imp.say(imp.pRow() + 0, 125, "V.LIQ");
-	                imp.say(imp.pRow() + 0, 136, "|");
+	                imp.say(imp.pRow() + 0, 135, "|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
   				}
 	  			if (iMesAnt != Funcoes.sqlDateToGregorianCalendar(rs.getDate("DtEmitVenda")).get(Calendar.MONTH) &&
 				    iMesAnt >= 0) {
 	  			  impTotMes(imp);
-				  imp.say(imp.pRow()+1,0,""+imp.comprimido());
+				  imp.say(imp.pRow() + 0,0,""+imp.comprimido());
 	              imp.say(imp.pRow() + 0, 0, "|Pedido ");
 	              imp.say(imp.pRow() + 0, 10, "Doc ");
 	              imp.say(imp.pRow() + 0, 19, "Ser.");
@@ -217,7 +210,7 @@ public class FRImpServ extends FRelatorio {
 	              imp.say(imp.pRow() + 0, 103, "IR");
 	              imp.say(imp.pRow() + 0, 114, "C.SOCIAL");
 	              imp.say(imp.pRow() + 0, 125, "V.LIQ");
-	              imp.say(imp.pRow() + 0, 136, "|");
+	              imp.say(imp.pRow() + 0, 135, "|");
 	              imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	              imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
 	  			}
@@ -241,7 +234,7 @@ public class FRImpServ extends FRelatorio {
 	            dTotMesCSocial += rs.getDouble("VlrCSocialVenda");
 	            imp.say(imp.pRow() + 0, 125, Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VlrLiqVenda")));
 	            dTotMesLiq += rs.getDouble("VlrLiqVenda");
-	            imp.say(imp.pRow() + 0, 136, "|");
+	            imp.say(imp.pRow() + 0, 135, "|");
 	            iMesAnt = Funcoes.sqlDateToGregorianCalendar(rs.getDate("DtEmitVenda")).get(Calendar.MONTH);
   			  }
   	  		}
@@ -255,28 +248,23 @@ public class FRImpServ extends FRelatorio {
   				}
   				
 	  			if (imp.pRow()==0) {
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-	  				imp.say(imp.pRow()+0,136,"|");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,0,"|");
-	  				imp.say(imp.pRow()+0,55,"IMPOSTOS SOBRE SERVICOS");
-	  				imp.say(imp.pRow()+0,136,"|");
-  		  			if (!sFiltros.equals("")) {
-  		  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  				imp.montaCab();
+	  		  		imp.setTitulo("Relatorio de Impostos/Serviços");
+	  		  		imp.setSubTitulo("IMPOSTOS SOBRE SERVICOS");
+	  		  		imp.impCab(136, true);
+	  				
+	  				if (!sFiltros.equals("")) {
+  		  				imp.say(imp.pRow()+0,0,""+imp.comprimido());
   		  				imp.say(imp.pRow()+0,0,"|");
   		  				imp.say(imp.pRow()+0,68-(sFiltros.length()/2),sFiltros);
-  		  				imp.say(imp.pRow()+0,136,"|");
+  		  				imp.say(imp.pRow()+0,135,"|");
   		  			}
-  		  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  		  			imp.say(imp.pRow()+(!sFiltros.equals("") ? 1 : 0),0,""+imp.comprimido());
   		  			imp.say(imp.pRow()+0,0,"|");
   		  			imp.say(imp.pRow()+0,50,"PERIODO DE: "+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());
-  		  			imp.say(imp.pRow()+0,136,"|");
+  		  			imp.say(imp.pRow()+0,135,"|");
 		  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 		            imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 		            imp.say(imp.pRow() + 0, 0, "| Mes/Ano");
 		            imp.say(imp.pRow() + 0, 10, "| Base");
@@ -286,11 +274,11 @@ public class FRImpServ extends FRelatorio {
 		            imp.say(imp.pRow() + 0, 82, "| IR");
 		            imp.say(imp.pRow() + 0, 100, "| C.SOCIAL");
 		            imp.say(imp.pRow() + 0, 118, "| Tot. Venda.");
-		            imp.say(imp.pRow() + 0, 136, "|");
+		            imp.say(imp.pRow() + 0, 135, "|");
 		  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
   				}
-	  			imp.say(imp.pRow()+1,0,imp.comprimido());
+	  			imp.say(imp.pRow()+0,0,imp.comprimido());
 	            imp.say(imp.pRow() + 0, 0, "| "+Funcoes.strZero(rs.getString(2),2)+"/"+Funcoes.strZero(rs.getString(1),4));
 	            imp.say(imp.pRow() + 0, 10, "| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString(3)));
 	            imp.say(imp.pRow() + 0, 28, "| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString(4)));
@@ -299,14 +287,14 @@ public class FRImpServ extends FRelatorio {
 	            imp.say(imp.pRow() + 0, 82, "| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString(7)));
 	            imp.say(imp.pRow() + 0, 100,"| "+ Funcoes.strDecimalToStrCurrency(15,2,rs.getString(8)));
 	            imp.say(imp.pRow() + 0, 118, "| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString(9)));
-	            imp.say(imp.pRow() + 0, 136, "|");
+	            imp.say(imp.pRow() + 0, 135, "|");
   			  }  	  		
   			}
-		    impTotMes(imp);
+		    
+  	  		impTotMes(imp);
 		    impTotGeral(imp);
-  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-  			imp.eject();
+  			
+		    imp.eject();
   			imp.fechaGravacao();
   			
   			rs.close();
@@ -338,7 +326,7 @@ public class FRImpServ extends FRelatorio {
   }
   	private void impTotMes(ImprimeOS imp) {
   	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
+  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
   	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
       imp.say(imp.pRow() + 0, 0, "|     TOTAIS DO MES -->");
       imp.say(imp.pRow() + 0, 59,"|"+ Funcoes.strDecimalToStrCurrency(10,2,""+dTotMesBase));
@@ -348,9 +336,9 @@ public class FRImpServ extends FRelatorio {
       imp.say(imp.pRow() + 0, 103, Funcoes.strDecimalToStrCurrency(10,2,""+dTotMesIR));
       imp.say(imp.pRow() + 0, 114, Funcoes.strDecimalToStrCurrency(10,2,""+dTotMesCSocial));
       imp.say(imp.pRow() + 0, 125, Funcoes.strDecimalToStrCurrency(10,2,""+dTotMesLiq));
-      imp.say(imp.pRow() + 0, 136, "|");
+      imp.say(imp.pRow() + 0, 135, "|");
   	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
+  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
   	  dTotBase += dTotMesBase;
   	  dTotISS += dTotMesISS;
   	  dTotPIS += dTotMesPIS;
@@ -368,7 +356,7 @@ public class FRImpServ extends FRelatorio {
   	}
   private void impTotGeral(ImprimeOS imp) throws SQLException {
 	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
+  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
   	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
       imp.say(imp.pRow() + 0, 0, "|     TOTAIS GERAIS -->");
       imp.say(imp.pRow() + 0, 59,"|"+ Funcoes.strDecimalToStrCurrency(10,2,""+dTotBase));
@@ -378,8 +366,8 @@ public class FRImpServ extends FRelatorio {
       imp.say(imp.pRow() + 0, 103, Funcoes.strDecimalToStrCurrency(10,2,""+dTotIR));
       imp.say(imp.pRow() + 0, 114, Funcoes.strDecimalToStrCurrency(10,2,""+dTotCSocial));
       imp.say(imp.pRow() + 0, 125, Funcoes.strDecimalToStrCurrency(10,2,""+dTotLiq));
-      imp.say(imp.pRow() + 0, 136, "|");
+      imp.say(imp.pRow() + 0, 135, "|");
   	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
+  	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
   }
 }

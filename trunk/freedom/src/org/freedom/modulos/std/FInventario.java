@@ -476,8 +476,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
        
        imp = new ImprimeOS("",con);
        int linPag = imp.verifLinPag()-1;
-       imp.setTitulo("Relatório de Inventário");
-
+       
        oVals = dl.getValores();
        dl.dispose();
 
@@ -552,44 +551,37 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
                 imp.eject();
              }
           }
-
+          
           if (imp.pRow()==0) {
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-             imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-             imp.say(imp.pRow()+0,136,"|");
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|");
-             imp.say(imp.pRow()+0,44,"POSIÇÃO DO ESTOQUE EM "+Funcoes.dateToStrDate(dtEstoq));
-             imp.say(imp.pRow()+0,136,"|");
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|");
-             imp.say(imp.pRow()+0,136,"|");
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|");
-             imp.say(imp.pRow()+0,55,"Ordenado por: "+sOrdenado);
-             imp.say(imp.pRow()+0,136,"|");
+             imp.montaCab();
+             imp.setTitulo("Relatório de Inventário");
+             imp.setSubTitulo("POSIÇÃO DO ESTOQUE EM "+Funcoes.dateToStrDate(dtEstoq));
+             imp.impCab(136, true);
+             
+             imp.say(imp.pRow()+0,0,""+imp.comprimido());
+             imp.say(imp.pRow()+0,0,"|");                     	
+             imp.say(imp.pRow()+0,10,"Ordenado por: "+sOrdenado);
+             imp.say(imp.pRow()+0,135,"|"); 
+             
              if (sDivGrupo.equals("S")) {
                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-               imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+               imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
                imp.say(imp.pRow()+1,0,""+imp.comprimido());
                imp.say(imp.pRow()+0,0,"|");
                imp.say(imp.pRow()+0,(136-rs.getString("Descgrup").length())/2,rs.getString("Descgrup"));
-               imp.say(imp.pRow()+0,136,"|");
+               imp.say(imp.pRow()+0,135,"|");
              }
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"| Grupo/"+sRefCod);
              imp.say(imp.pRow()+0,26,"| Descriçao");
              imp.say(imp.pRow()+0,69,"| Quant.");
              imp.say(imp.pRow()+0,80,"| "+(tipoCusto().equals("M") ? "Custo MPM" : "Custo PEPS"));
              imp.say(imp.pRow()+0,103,"| Total");
-             imp.say(imp.pRow()+0,136,"|");
+             imp.say(imp.pRow()+0,135,"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           }
           String sRef = "";
           if (sRefCod.equals("Ref"))
@@ -597,12 +589,12 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
           else 
              sRef = rs.getString("CodProd");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString("CODGRUP")+"/"+sRef,0,23)+
-          Funcoes.copy("| "+rs.getString("DESCPROD"),0,43)+
-          Funcoes.copy("| "+rs.getString("SALDO"),0,11)+
-             "| "+Funcoes.strDecimalToStrCurrency(21,2,rs.getString("CUSTO"))+
-             "| "+Funcoes.strDecimalToStrCurrency(31,2,rs.getString("VLRESTOQ"))+"|");
-          deTotal += rs.getDouble("VLRESTOQ");
+          imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString("CODGRUP")+"/"+sRef,0,23));
+	      imp.say(imp.pRow()+0,26,Funcoes.copy("| "+rs.getString("DESCPROD"),0,43));
+	      imp.say(imp.pRow()+0,69,Funcoes.copy("| "+rs.getString("SALDO"),0,11));
+	      imp.say(imp.pRow()+0,80,"| "+Funcoes.strDecimalToStrCurrency(20,2,rs.getString("CUSTO")));
+	      imp.say(imp.pRow()+0,103,"| "+Funcoes.strDecimalToStrCurrency(28,2,rs.getString("VLRESTOQ"))+"  |");
+	          deTotal += rs.getDouble("VLRESTOQ");
            
           sCodgrup = rs.getString("CODGRUP");      
        }
@@ -612,13 +604,14 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
         	con.commit();
        
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-       imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",134)+"+");
+       imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
        imp.say(imp.pRow()+0,0,"|   VALOR TOTAL DO ESTOQUE EM "+Funcoes.dateToStrDate(dtEstoq)+": "+Funcoes.strDecimalToStrCurrency(15,2,""+deTotal).trim());
-       imp.say(imp.pRow()+0,136,"|");
+       imp.say(imp.pRow()+0,135,"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-       imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",134)+"+");
+       imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
        imp.incPags();
+       
        imp.eject();
        imp.fechaGravacao();
        if (bVisualizar) {
