@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 
+import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
 
@@ -226,7 +227,12 @@ public class FreedomSTD extends Aplicativo {
 
 
   public static void main(String sParams[]) {
+  	try {
     FreedomSTD freedom = new FreedomSTD();
     freedom.show();
+	} catch (Throwable e) {
+		Funcoes.criaTelaErro("Erro de execução");
+		e.printStackTrace();
+	}
   }
 }

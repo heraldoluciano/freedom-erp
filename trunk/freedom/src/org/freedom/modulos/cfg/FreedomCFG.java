@@ -30,6 +30,7 @@ package org.freedom.modulos.cfg;
 
 import java.sql.Connection;
 
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class FreedomCFG extends Aplicativo {
@@ -94,20 +95,26 @@ public class FreedomCFG extends Aplicativo {
 		ajustaMenu();
 
 		conIB = conexaoIB(getParameter("driver"), getParameter("bancocfg")); // Inicia
-																			 // a
-																			 // variável
-																			 // de
-																			 // conexão
-																			 // com
-																			 // o
-																			 // banco
-																			 // interno
-																			 // do
-																			 // interbase
+		// a
+		// variável
+		// de
+		// conexão
+		// com
+		// o
+		// banco
+		// interno
+		// do
+		// interbase
 	}
 
 	public static void main(String sParams[]) {
-		FreedomCFG freedom = new FreedomCFG();
-		freedom.show();
+		try {
+			FreedomCFG freedom = new FreedomCFG();
+			freedom.show();
+
+		} catch (Throwable e) {
+			Funcoes.criaTelaErro("Erro de execução");
+			e.printStackTrace();
+		}
 	}
 }
