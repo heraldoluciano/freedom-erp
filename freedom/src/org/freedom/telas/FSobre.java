@@ -31,14 +31,14 @@ import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 
 
 public class FSobre extends FFDialogo {
-  private JTabbedPane tpnSobre = new JTabbedPane();
+  private JTabbedPanePad tpnSobre = new JTabbedPanePad();
   private JPanel pnSobre = new JPanel(new BorderLayout());
   private JPanel pnEquipe = new JPanel(new BorderLayout());
   ImageIcon img = Icone.novo(Aplicativo.strSplash);

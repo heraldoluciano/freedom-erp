@@ -43,7 +43,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
@@ -67,7 +67,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private JPanel pnRod = new JPanel(new BorderLayout());
   private Painel pinConsulta = new Painel(500,140);
   private JPanel pnConsulta = new JPanel(new BorderLayout());
-  private JTabbedPane tpn = new JTabbedPane();
+  private JTabbedPanePad tpn = new JTabbedPanePad();
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnConsulta = new JScrollPane(tabConsulta);
   private JPanel pnTabBaixa = new JPanel(new BorderLayout());

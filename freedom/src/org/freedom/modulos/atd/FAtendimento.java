@@ -39,7 +39,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -63,7 +63,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private JPanel pnCabConv = new JPanel(new BorderLayout());
   private JPanel pnConv = new JPanel(new BorderLayout());
   private JPanel pnRodConv = new JPanel(new BorderLayout());
-  private JTabbedPane tpnConv = new JTabbedPane();
+  private JTabbedPanePad tpnConv = new JTabbedPanePad();
   private Tabela tabConv = new Tabela();
   private JScrollPane spnConv = new JScrollPane(tabConv);
   private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.JTextField;
 
 import org.freedom.componentes.GuardaCampo;
@@ -57,7 +57,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JTextFieldPad txtDataCont = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
-  private JTabbedPane tbp = new JTabbedPane();
+  private JTabbedPanePad tbp = new JTabbedPanePad();
   private Painel pinGeral = new Painel(370,240);
   private Painel pinDet = new Painel(370,240);
   private JLabel lbCodPai = new JLabel("Código");

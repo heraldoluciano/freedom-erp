@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -69,7 +69,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JScrollPane spnTabGrup = new JScrollPane(tabGrup);
 	private ListaCampos lcGrup = new ListaCampos(this);
 	
-	private JTabbedPane tpnConsulta = new JTabbedPane();
+	private JTabbedPanePad tpnConsulta = new JTabbedPanePad();
 	
 	public FConsulta() {
 		setTitulo("Consulta");

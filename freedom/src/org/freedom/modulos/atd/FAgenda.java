@@ -43,7 +43,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import net.sf.nachocalendar.components.CalendarPanel;
 import net.sf.nachocalendar.tasks.TaskCalendarFactory;
@@ -64,7 +64,7 @@ public class FAgenda extends FFilho implements ActionListener {
   private Painel pinCabAgd = new Painel(0,70);
   private JPanel pnAgd = new JPanel(new BorderLayout());
   private JPanel pnRodAgd = new JPanel(new BorderLayout());
-  private JTabbedPane tpnAgd = new JTabbedPane();
+  private JTabbedPanePad tpnAgd = new JTabbedPanePad();
   private Tabela tabAgd = new Tabela();
   private CalendarPanel calendarpanel  = TaskCalendarFactory.createCalendarPanel(1);
  // private CalendarPanel calendarpanel = CalendarFactory.createCalendarPanel(1);

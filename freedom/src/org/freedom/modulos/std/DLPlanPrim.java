@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
@@ -43,7 +43,7 @@ public class DLPlanPrim extends FFDialogo {
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgTipo = null;
-  private JTabbedPane ptb = new JTabbedPane();
+  private JTabbedPanePad ptb = new JTabbedPanePad();
   private JLabel lbCod = new JLabel("Código");
   private JLabel lbDesc = new JLabel("Descrição");
   public DLPlanPrim(Component cOrig,String sCod, String sDesc, String sTipo) {

@@ -40,7 +40,7 @@ import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
@@ -58,7 +58,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener {
   private int casasDec = Aplicativo.casasDec;
-  private JTabbedPane tpn = new JTabbedPane();
+  private JTabbedPanePad tpn = new JTabbedPanePad();
   private Painel pinFecha = new Painel(400,300);
   private Painel pinFrete = new Painel(400,300);
   private JPanel pnReceber = new JPanel(new BorderLayout());
