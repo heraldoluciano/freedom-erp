@@ -70,8 +70,8 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
     setTitulo("Atribuições por Usuário");
     setAtribos( 50, 50, 395, 240);
   
-    lcUsu.add(new GuardaCampo( txtCodUsu, 7, 100, 80, 20, "IDUsu", "ID", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 100, 180, 20, "NomeUsu", "Nome nome do usuário", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcUsu.add(new GuardaCampo( txtCodUsu, "IDUsu", "ID", ListaCampos.DB_PK, txtNomeUsu, false));
+    lcUsu.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome nome do usuário", ListaCampos.DB_SI, false));
     lcUsu.montaSql(false, "USUARIO", "SG");    
     lcUsu.setQueryCommit(false);
     lcUsu.setReadOnly(true);

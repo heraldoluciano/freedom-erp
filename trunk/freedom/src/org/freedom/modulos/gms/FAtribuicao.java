@@ -34,12 +34,13 @@ import org.freedom.acao.PostListener;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {
-  private JTextFieldPad txtIdAtrib = new JTextFieldPad();
-  private JTextFieldPad txtDescAtrib = new JTextFieldPad();
-  private JTextFieldPad txtRmaAtrib = new JTextFieldPad();
+  private JTextFieldPad txtIdAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtDescAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtRmaAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextAreaPad txaObsAtrib = new JTextAreaPad(500);
   private JScrollPane spnObs = new JScrollPane(txaObsAtrib);
   private JCheckBoxPad cbReq = new JCheckBoxPad("Requisitante",new Integer(1),new Integer(0));
@@ -49,16 +50,16 @@ public class FAtribuicao extends FDados implements ActionListener, PostListener,
   public FAtribuicao () {
     setTitulo("Cadastro de atribuições");
     setAtribos(50, 50, 340, 280);
-    adicCampo(txtIdAtrib, 7, 20, 70, 20,"IdAtrib","Cód.atrib.",JTextFieldPad.TP_STRING,10,0,true,false,null,true);
-    adicCampo(txtDescAtrib, 80, 20, 230, 20,"DescAtrib","Descrição da atirbuição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtIdAtrib, 7, 20, 70, 20,"IdAtrib","Cód.atrib.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescAtrib, 80, 20, 230, 20,"DescAtrib","Descrição da atirbuição", ListaCampos.DB_SI, true);
     
-    adicCampoInvisivel(txtRmaAtrib, "RmaAtrib","Atrib.",JTextFieldPad.TP_STRING,2,0,false,false,null,true);
+    adicCampoInvisivel(txtRmaAtrib, "RmaAtrib","Atrib.", ListaCampos.DB_SI, true);
     adic(cbReq,7,40,150,20);
     adic(cbGer,160,40,150,20);
     adic(cbDir,7,60,150,20);
     adic(cbAlm,160,60,150,20);
     
-    adicDBLiv(txaObsAtrib, "ObsAtrib","Obs.",JTextFieldPad.TP_STRING,false);
+    adicDBLiv(txaObsAtrib, "ObsAtrib","Obs.", false);
     adic(new JLabel("Observação"),7,80,303,20);
     adic(spnObs,7,100,303,100);
     

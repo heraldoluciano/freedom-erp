@@ -71,16 +71,16 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JButton btStatusCompra = new JButton("Solicitação pendente", null);
 	private JButton btStatusItem = new JButton("Item pendente", null);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad();
-	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad();
-	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad();
-	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad();
-	private JTextFieldPad txtCodUsu = new JTextFieldPad();
+	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
-	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad();
+	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
@@ -159,16 +159,16 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setPainel(pinCab, pnCliCab);
 
 		adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "Nºsolicit.", ListaCampos.DB_PK, true);
-		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol", "Data solicitação", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
-		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo", JTextFieldPad.TP_STRING, false);
+		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol", "Data solicitação", ListaCampos.DB_SI, true);
+		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação", ListaCampos.DB_SI, false);
+		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo", false);
 		adic(new JLabel("Motivo"), 7, 40, 100, 20);
 		adic(spnMotivo, 7, 60, 727, 77);
 		adic(btLimpaCompra, 240, 15, 250, 30);
 		btLimpaCompra.setVisible(false);
 		adic(btStatusCompra, 500, 15, 230, 30);
 		btStatusCompra.setEnabled(false);
-		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem", ListaCampos.DB_SI, false);
 		setListaCampos(true, "SOLICITACAO", "CP");
 		lcCampos.setQueryInsert(false);
 
@@ -193,31 +193,30 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 
-		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
+		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item", ListaCampos.DB_PK, true);
 		if (comRef()) {
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, true, null, false);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false);
 			adic(new JLabel("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 		} else {
-			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
-					JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
+			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK	, txtDescProd, false);
 		}
 
-		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", JTextFieldPad.TP_STRING, 19, 0, false, true, null, false);
-		adicCampoInvisivel(txtAnoCC, "AnoCC", "ano c.c.", JTextFieldPad.TP_INTEGER, 10, 0, false, false, null, false);
-		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", JTextFieldPad.TP_STRING, 13, 0, false, false, null, false);
-		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Cód.almox.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescAlmoxarife, false);
-		adicDescFK(txtDescAlmoxarife, 550, 20, 187, 20, "DescAlmox", "Descrição do almoxarifado", JTextFieldPad.TP_STRING, 50, 0);
+		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
+		adicCampoInvisivel(txtAnoCC, "AnoCC", "ano c.c.", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_SI, false);
+		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, txtDescAlmoxarife, false);
+		adicDescFK(txtDescAlmoxarife, 550, 20, 187, 20, "DescAlmox", "Descrição do almoxarifado");
 
 		txtDescProd.setSoLeitura(true);
-		adicDescFK(txtDescProd, 130, 20, 197, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
-		adicCampo(txtQtdItSolicitado, 330, 20, 67, 20, "QtdItSol", "Qtd.solic.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, true);
+		adicDescFK(txtDescProd, 130, 20, 197, 20, "DescProd", "Descrição do produto");
+		adicCampo(txtQtdItSolicitado, 330, 20, 67, 20, "QtdItSol", "Qtd.solic.", ListaCampos.DB_SI, true);
 		txtQtdItAprovado.setSoLeitura(true);
-		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol", "Qtd.aprov.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.item", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.compra", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol", "Sit.aprovação", JTextFieldPad.TP_STRING, 2, 0, false, false, null,	false);
+		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol", "Qtd.aprov.", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.item", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.compra", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol", "Sit.aprovação", ListaCampos.DB_SI,	false);
 		adic(btLimpaItem, 240, 50, 250, 30);
 		btLimpaItem.setVisible(false);
 		adic(btStatusItem, 500, 50, 230, 30);
