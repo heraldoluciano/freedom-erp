@@ -87,6 +87,7 @@ public class FreedomSTD extends Aplicativo {
       addOpcao(100200000,TP_OPCAO_MENU,"Bloqueios e desbloqueios",'B',100260000,2,false);
          addOpcao(100260000,TP_OPCAO_ITEM,"Compras",'C',100260100,3,true);
          addOpcao(100260000,TP_OPCAO_ITEM,"Vendas",'V',100260200,3,true);
+      addOpcao(100200000,TP_OPCAO_ITEM,"Canc. de vínc. venda x orçamento",'v',100270000,2,true);
 	addOpcao(100000000,TP_OPCAO_MENU,"Preferências",'P',100300000,1,false);
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Preferências gerais",'g',100310000,2,true);
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Série de NFs",'N',100320000,2,true);
@@ -980,6 +981,13 @@ public class FreedomSTD extends Aplicativo {
             FBloqVenda tela = new FBloqVenda();     
             tela.setConexao(con);
             telaPrincipal.criatela("Bloqueio e desbloqueio de vendas",tela);
+        }
+    }
+    else if (iOpcao==100270000) {
+        if (telaPrincipal.temTela("Canc. de vínc. venda x orçamento")==false) {
+            FCancVendaOrc tela = new FCancVendaOrc();     
+            tela.setConexao(con);
+            telaPrincipal.criatela("Canc. de vínc. venda x orçamento",tela);
         }
     }
     else if (iOpcao==700705000) {
