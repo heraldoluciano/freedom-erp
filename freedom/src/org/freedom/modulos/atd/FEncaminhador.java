@@ -53,8 +53,8 @@ public class FEncaminhador extends FDados implements PostListener {
     lcPlan.setReadOnly(true);
     txtCodPlan.setTabelaExterna(lcPlan);
     */
-    adicCampo(txtCodEnc, 7, 20, 50, 20, "CodEnc", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtNomeEnc, 60, 20, 312, 20, "NomeEnc", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtCodEnc, 7, 20, 50, 20, "CodEnc", "Cód.enc.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtNomeEnc, 60, 20, 312, 20, "NomeEnc", "Descrição do encaminhador", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
     adicCampo(txtEndEnc, 7, 60, 260, 20, "EndEnc", "Endereço", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
     adicCampo(txtNumEnc, 270, 60, 50, 20, "NumEnc", "Num.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
     adicCampo(txtComplEnc, 323, 60, 49, 20, "ComplEnc", "Compl.", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);

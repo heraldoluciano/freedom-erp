@@ -93,24 +93,24 @@ public class FConsOrc extends FFilho implements ActionListener {
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
-		lcConv.add(new GuardaCampo( txtCodConv, 7, 100, 80, 20, "CodConv", "CodConv", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcConv.add(new GuardaCampo( txtNomeConv, 90, 100, 207, 20, "NomeConv", "Nome", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcConv.add(new GuardaCampo( txtCodConv, 7, 100, 80, 20, "CodConv", "Cód.conv.", true, false, null, JTextFieldPad.TP_INTEGER,false));
+		lcConv.add(new GuardaCampo( txtNomeConv, 90, 100, 207, 20, "NomeConv", "Nome do conveniado", false, false, null, JTextFieldPad.TP_STRING,false));
 		txtCodConv.setTabelaExterna(lcConv);
 		txtCodConv.setNomeCampo("CodConv");
 		txtCodConv.setFK(true);
 		lcConv.setReadOnly(true);
 		lcConv.montaSql(false, "CONVENIADO", "AT");
 
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false));
+		lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false));
 		txtCodCli.setTabelaExterna(lcCli);
 		txtCodCli.setNomeCampo("CodCli");
 		txtCodCli.setFK(true);
 		lcCli.setReadOnly(true);
 		lcCli.montaSql(false, "CLIENTE", "VD");
 
-		lcTipoConv.add(new GuardaCampo( txtCodTpConv, 7, 100, 80, 20, "CodTpConv", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcTipoConv.add(new GuardaCampo( txtDescTipoConv, 400, 80, 150, 20, "DescTpConv", "Nome", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcTipoConv.add(new GuardaCampo( txtCodTpConv, 7, 100, 80, 20, "CodTpConv", "Cód.tp.conv.", true, false, null, JTextFieldPad.TP_INTEGER,false));
+		lcTipoConv.add(new GuardaCampo( txtDescTipoConv, 400, 80, 150, 20, "DescTpConv", "Descrição do tipo de conveniado", false, false, null, JTextFieldPad.TP_STRING,false));
 		txtCodTpConv.setTabelaExterna(lcTipoConv);
 		txtCodTpConv.setNomeCampo("CodTpConv");
 		txtCodTpConv.setFK(true);
@@ -118,8 +118,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 		lcTipoConv.montaSql(false, "TIPOCONV", "AT");
 		
 		
-		lcEnc.add(new GuardaCampo( txtCodEnc, 7, 100, 80, 20, "CodEnc", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcEnc.add(new GuardaCampo( txtNomeEnc, 400, 80, 150, 20, "NomeEnc", "Nome", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcEnc.add(new GuardaCampo( txtCodEnc, 7, 100, 80, 20, "CodEnc", "Cód.enc.", true, false, null, JTextFieldPad.TP_INTEGER,false));
+		lcEnc.add(new GuardaCampo( txtNomeEnc, 400, 80, 150, 20, "NomeEnc", "Descrição do encaminhador", false, false, null, JTextFieldPad.TP_STRING,false));
 		txtCodEnc.setTabelaExterna(lcEnc);
 		txtCodEnc.setNomeCampo("CodEnc");
 		txtCodEnc.setFK(true);
@@ -142,8 +142,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 		vVals.addElement("D");
 		vVals.addElement("V");
 		Vector vLabs = new Vector();
-		vLabs.addElement("Data de Emissão");
-		vLabs.addElement("Data de Validade");
+		vLabs.addElement("Data de emissão");
+		vLabs.addElement("Data de validade");
 		gbVenc = new JRadioGroup(2,1,vLabs,vVals);
 		
 		pinCab.adic(new JLabel("Período:"),380,0,90,20);
@@ -151,25 +151,29 @@ public class FConsOrc extends FFilho implements ActionListener {
 		pinCab.adic(new JLabel("Até"),470,20,27,20);
 		pinCab.adic(txtDtFim,494,20,87,20);
 		
-		pinCab.adic(new JLabel("Código e nome do cliente"),7,0,280,20);
+		pinCab.adic(new JLabel("Cód.cli."),7,0,280,20);
 		pinCab.adic(txtCodCli,7,20,70,20);
+		pinCab.adic(new JLabel("Razão social do cliente"),80,0,280,20);
 		pinCab.adic(txtNomeCli,80,20,294,20);
 
-		pinCab.adic(new JLabel("Código e nome do conveniado"),7,40,280,20);
+		pinCab.adic(new JLabel("Cód.conv."),7,40,280,20);
 		pinCab.adic(txtCodConv,7,60,70,20);
+		pinCab.adic(new JLabel("Nome do conveniado"),80,40,280,20);
 		pinCab.adic(txtNomeConv,80,60,294,20);
 		
 		pinCab.adic(lbCid,380,40,60,20);
 		pinCab.adic(txtCid,380,60,200,20);
 		pinCab.adic(cbConveniado,390,99,180,20);
 		
-		pinCab.adic(new JLabel("Cód. e descrição do tipo de conv."),7,80,250,20);
+		pinCab.adic(new JLabel("Cód.tp.conv."),7,80,250,20);
 		pinCab.adic(txtCodTpConv,7,100,70,20);
+		pinCab.adic(new JLabel("Descrição do tipo de conveniado"),80,80,250,20);
 		pinCab.adic(txtDescTipoConv,80,100,294,20);
 		
-		pinCab.adic(new JLabel("Cód. e descrição do Encaminhador"),7,122,250,20);
+		pinCab.adic(new JLabel("Cód.enc."),7,122,250,20);
 		//pinCab.adic(lbEnc,7,135,60,20);
 		pinCab.adic(txtCodEnc,7,142,70,20);
+		pinCab.adic(new JLabel("Descrição do Encaminhador"),80,122,250,20);
 		pinCab.adic(txtNomeEnc,80,142,294,20);
 				
 		pinCab.adic(new JLabel("Status:"),7,170,90,20);
@@ -194,8 +198,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 
 		tab.adicColuna("Status");
 		tab.adicColuna("Orc.");
-		tab.adicColuna("Cód.");
-		tab.adicColuna("e nome do cliente/conveniado");
+		tab.adicColuna("Cód.cli.");
+		tab.adicColuna("Razão social do cliente/conveniado");
 		tab.adicColuna("Tipo de conveniado");
 		tab.adicColuna("Encaminhador");
 		tab.adicColuna("Data");
@@ -206,8 +210,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 
 		tab.setTamColuna(50,0);
 		tab.setTamColuna(50,1);
-		tab.setTamColuna(50,2);
-		tab.setTamColuna(180,3);
+		tab.setTamColuna(60,2);
+		tab.setTamColuna(220,3);
 		tab.setTamColuna(150,4);
 		tab.setTamColuna(150,5);
 		tab.setTamColuna(70,6);
@@ -406,7 +410,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 					imp.say(imp.pRow()+0,1,"| N.ORC.");
 					imp.say(imp.pRow()+0,14," | Emissão");
 					imp.say(imp.pRow()+0,27,"  | Validade.");
-					imp.say(imp.pRow()+0,40," | Tipo Conv.");
+					imp.say(imp.pRow()+0,40," | Tipo conv.");
 					imp.say(imp.pRow()+0,54,"  | Nome");
 				    imp.say(imp.pRow()+0,86," |Encaminhador");
 					imp.say(imp.pRow()+0,101,"  | Cidade");

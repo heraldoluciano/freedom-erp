@@ -87,14 +87,14 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   	setTitulo("Atendimento");
   	setAtribos(20,20,540,400);
   	
-	lcConv.add(new GuardaCampo( txtCodConv, 7, 20, 80, 20, "CodConv", "Cód.Conv", true, false, txtNomeConv, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtNomeConv, 7, 20, 200, 20, "NomeConv", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcConv.add(new GuardaCampo( txtCodConv, 7, 20, 80, 20, "CodConv", "Cód.conv", true, false, txtNomeConv, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcConv.add(new GuardaCampo( txtNomeConv, 7, 20, 200, 20, "NomeConv", "Nome do conveniado", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcConv.add(new GuardaCampo( txtRGConv, 7, 20, 200, 20, "RGConv", "RG", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcConv.add(new GuardaCampo( txtCPFConv, 7, 20, 200, 20, "CPFConv", "CPF", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcConv.add(new GuardaCampo( txtTelConv, 7, 20, 200, 20, "FoneConv", "Fone.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcConv.add(new GuardaCampo( txtPaiConv, 7, 20, 200, 20, "PaiConv", "Pai", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcConv.add(new GuardaCampo( txtMaeConv, 7, 20, 200, 20, "MaeConv", "Mae", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.Cli", false, true, txtNomeCli, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcConv.add(new GuardaCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli", false, true, txtNomeCli, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
 	lcConv.montaSql(false, "CONVENIADO", "AT");    
 	lcConv.setReadOnly(true);
 	txtCodConv.setTabelaExterna(lcConv);
@@ -103,8 +103,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	txtTelConv.setMascara(JTextFieldPad.MC_FONEDDD);
 	txtCPFConv.setMascara(JTextFieldPad.MC_CPF);
     
-	lcCli.add(new GuardaCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Código", true, false, txtNomeCli, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcCli.add(new GuardaCampo( txtNomeCli, 7, 20, 200, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcCli.add(new GuardaCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", true, false, txtNomeCli, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcCli.add(new GuardaCampo( txtNomeCli, 7, 20, 200, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcCli.montaSql(false, "CLIENTE", "VD");    
 	lcCli.setReadOnly(true);
 	txtCodCli.setTabelaExterna(lcCli);
@@ -126,8 +126,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	pinCabConv.adic(pnlbConv,20,5,100,20);
 	pinCabConv.adic(pinConv,10,15,500,110);
 	
-	pinConv.adic(new JLabel("Codigo e nome do conveniado"),7,10,250,20);
+	pinConv.adic(new JLabel("Cód.conv."),7,10,250,20);
 	pinConv.adic(txtCodConv,7,30,80,20);
+	pinConv.adic(new JLabel("Nome do conveniado"),90,10,250,20);
 	pinConv.adic(txtNomeConv,90,30,197,20);
 	pinConv.adic(new JLabel("RG"),290,10,97,20);
 	pinConv.adic(txtRGConv,290,30,97,20);
@@ -144,8 +145,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	pnlbCli.add(new JLabel(" Cliente"));
 	pinCabConv.adic(pnlbCli,20,125,60,20);
 	pinCabConv.adic(pinCli,10,135,500,65);
-	pinCli.adic(new JLabel("Codigo e nome do cliente"),7,10,250,20);
+	pinCli.adic(new JLabel("Cód.cli."),7,10,250,20);
 	pinCli.adic(txtCodCli,7,30,80,20);
+	pinCli.adic(new JLabel("Razão social do cliente"),90,10,250,20);
 	pinCli.adic(txtNomeCli,90,30,197,20);
 	
 	tabConv.adicColuna("Doc.");
@@ -155,8 +157,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	tabConv.adicColuna("Atendente");
 	tabConv.adicColuna("Horário");
 
-	tabConv.setTamColuna(70,0);
-	tabConv.setTamColuna(30,1);
+	tabConv.setTamColuna(50,0);
+	tabConv.setTamColuna(50,1);
 	tabConv.setTamColuna(70,2);
 	tabConv.setTamColuna(130,3);
 	tabConv.setTamColuna(150,4);

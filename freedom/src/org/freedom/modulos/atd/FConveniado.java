@@ -119,36 +119,36 @@ public class FConveniado extends FTabDados implements PostListener {
 	lcCampos.adicDetalhe(lcConvAtrib);
 	lcConvAtrib.setTabela(tabAtrib);
 
-    lcTipoConv.add(new GuardaCampo( txtCodTipoConv, 80, 20, 80, 20, "CodTpConv", "Código", true, false, txtDescTipoConv,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcTipoConv.add(new GuardaCampo( txtDescTipoConv, 100, 80, 200, 20, "DescTpConv", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcTipoConv.add(new GuardaCampo( txtCodTipoConv, 80, 20, 80, 20, "CodTpConv", "Cód.tp.conv.", true, false, txtDescTipoConv,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+    lcTipoConv.add(new GuardaCampo( txtDescTipoConv, 100, 80, 200, 20, "DescTpConv", "Descriçao do tipo de conveniado", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
     lcTipoConv.montaSql(false, "TIPOCONV", "AT");    
     lcTipoConv.setQueryCommit(false);
     lcTipoConv.setReadOnly(true);
     txtCodTipoConv.setTabelaExterna(lcTipoConv);
     
-	lcGrauInst.add(new GuardaCampo( txtCodGrauInst, 80, 20, 80, 20, "CodGri", "Código", true, false, txtDescGrauInst,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcGrauInst.add(new GuardaCampo( txtDescGrauInst, 100, 80, 200, 20, "DescGri", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcGrauInst.add(new GuardaCampo( txtCodGrauInst, 80, 20, 80, 20, "CodGri", "Cód.gri.", true, false, txtDescGrauInst,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcGrauInst.add(new GuardaCampo( txtDescGrauInst, 100, 80, 200, 20, "DescGri", "Descriçao do grau de instrução", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcGrauInst.montaSql(false, "GRAUINST", "SG");    
 	lcGrauInst.setQueryCommit(false);
 	lcGrauInst.setReadOnly(true);
 	txtCodGrauInst.setTabelaExterna(lcGrauInst);
 
-	lcCli.add(new GuardaCampo( txtCodCli, 80, 20, 80, 20, "CodCli", "Código", true, false, txtDescCli,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcCli.add(new GuardaCampo( txtDescCli, 100, 80, 200, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcCli.add(new GuardaCampo( txtCodCli, 80, 20, 80, 20, "CodCli", "Cód.cli.", true, false, txtDescCli,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcCli.add(new GuardaCampo( txtDescCli, 100, 80, 200, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcCli.montaSql(false, "CLIENTE", "VD");    
 	lcCli.setQueryCommit(false);
 	lcCli.setReadOnly(true);
 	txtCodCli.setTabelaExterna(lcCli);
 	
-	lcAtend.add(new GuardaCampo( txtCodAtend, 80, 20, 80, 20, "CodAtend", "Código", true, false, txtNomeAtend,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcAtend.add(new GuardaCampo( txtNomeAtend, 100, 80, 200, 20, "NomeAtend", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcAtend.add(new GuardaCampo( txtCodAtend, 80, 20, 80, 20, "CodAtend", "Cód.atend.", true, false, txtNomeAtend,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcAtend.add(new GuardaCampo( txtNomeAtend, 100, 80, 200, 20, "NomeAtend", "Nome do atendente", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcAtend.montaSql(false, "ATENDENTE", "AT");    
 	lcAtend.setQueryCommit(false);
 	lcAtend.setReadOnly(true);
 	txtCodAtend.setTabelaExterna(lcAtend);
 
-	lcEnc.add(new GuardaCampo( txtCodEnc, 100, 40, 100, 40, "CodEnc", "Código", true, false, txtNomeEnc,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcEnc.add(new GuardaCampo( txtNomeEnc, 120, 100, 220, 40, "NomeEnc", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcEnc.add(new GuardaCampo( txtCodEnc, 100, 40, 100, 40, "CodEnc", "Cód.enc.", true, false, txtNomeEnc,JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcEnc.add(new GuardaCampo( txtNomeEnc, 120, 100, 220, 40, "NomeEnc", "Descrição do encaminhador", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcEnc.montaSql(false, "ENCAMINHADOR", "AT");    
 	lcEnc.setQueryCommit(false);
 	lcEnc.setReadOnly(true);
@@ -163,13 +163,13 @@ public class FConveniado extends FTabDados implements PostListener {
 	setPainel(pinGeral);
 	adicTab("Geral",pinGeral);
 	
-    adicCampo(txtCodConv, 7, 20, 50, 20, "CodConv", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtNomeConv, 60, 20, 297, 20, "NomeConv", "Nome", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtCodConv, 7, 20, 70, 20, "CodConv", "Cód.conv.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtNomeConv, 80, 20, 277, 20, "NomeConv", "Nome do conveniado", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
     adicDB(cbSexo,360,18,140,24,"SexoConv","Sexo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtDtNascConv, 7, 60, 120, 20, "DtNascConv", "Data de Nascimento", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
+    adicCampo(txtDtNascConv, 7, 60, 120, 20, "DtNascConv", "Data de nascimento", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
     adicCampo(txtRgConv, 130, 60, 117, 20, "RgConv", "RG", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
 	adicCampo(txtCPFConv, 250, 60, 117, 20, "CPFConv", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
-	adicCampo(txtIdentificConv, 370, 60, 130, 20, "IdentificConv", "Nº. Identificação", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
+	adicCampo(txtIdentificConv, 370, 60, 130, 20, "IdentificConv", "Nº. identificação", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
     adicCampo(txtEndConv, 7, 100, 250, 20, "EndConv", "Endereço", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
     adicCampo(txtNumConv, 260, 100, 57, 20, "NumConv", "Num.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
 	adicCampo(txtComplConv, 320, 100, 47, 20, "ComplConv", "Compl.", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
@@ -180,12 +180,12 @@ public class FConveniado extends FTabDados implements PostListener {
     adicCampo(txtFoneConv, 290, 140, 117, 20, "FoneConv", "Telefone", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
     adicCampo(txtFaxConv, 410, 140, 90, 20, "Faxconv", "Fax", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
     adicCampo(txtCelConv, 7, 180, 90, 20, "CelConv", "Cel", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
-	adicCampo(txtCodGrauInst, 100, 180, 97, 20, "CodGri", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescGrauInst,false);
-	adicDescFK(txtDescGrauInst, 200, 180, 300, 20, "DescGri", "e descrição do grau de instrução", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodTipoConv, 7, 220, 100, 20, "CodTpConv", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoConv,true);
-	adicDescFK(txtDescTipoConv, 110, 220, 390, 20, "DescTpConv", "e descrição do tipo de conveniado", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodCli, 7, 260, 100, 20, "CodCli", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescCli,true);
-	adicDescFK(txtDescCli, 110, 260, 390, 20, "DescCli", "e nome do cliente", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodGrauInst, 100, 180, 97, 20, "CodGri", "Cód.gri.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescGrauInst,false);
+	adicDescFK(txtDescGrauInst, 200, 180, 300, 20, "DescGri", "Descrição do grau de instrução", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodTipoConv, 7, 220, 100, 20, "CodTpConv", "Códtp.conv.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoConv,true);
+	adicDescFK(txtDescTipoConv, 110, 220, 390, 20, "DescTpConv", "Descrição do tipo de conveniado", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodCli, 7, 260, 100, 20, "CodCli", "Cód.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescCli,true);
+	adicDescFK(txtDescCli, 110, 260, 390, 20, "DescCli", "razão social do cliente", JTextFieldPad.TP_STRING, 50, 0);
     adicCampo(txtEmailConv, 7, 300, 200, 20, "EmailConv", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
     adicCampo(txtCNSConv, 210, 300, 200, 20, "CnsConv","CNS-Sus", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
 	txtRgConv.setMascara(JTextFieldPad.MC_RG);
@@ -199,10 +199,10 @@ public class FConveniado extends FTabDados implements PostListener {
 
 	setPainel(pinInfo);
 	adicTab("Inf. complementares",pinInfo);
-	adicCampo(txtCodAtend, 7, 20, 100, 20, "CodAtend", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtNomeAtend,true);
-	adicDescFK(txtNomeAtend, 110, 20, 390, 20, "NomeAtend", "e descrição do atendente", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodEnc, 7, 60, 100, 20, "CodEnc", "Código", JTextFieldPad.TP_INTEGER, 50, 0, false, true, null, false);
-	adicDescFK(txtNomeEnc, 110, 60, 390, 20, "NomeEnc", "e nome do encaminhador", JTextFieldPad.TP_STRING, 50, 0); 
+	adicCampo(txtCodAtend, 7, 20, 100, 20, "CodAtend", "Cód.atend.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtNomeAtend,true);
+	adicDescFK(txtNomeAtend, 110, 20, 390, 20, "NomeAtend", "Descrição do atendente", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodEnc, 7, 60, 100, 20, "CodEnc", "Cód.enc.", JTextFieldPad.TP_INTEGER, 50, 0, false, true, null, false);
+	adicDescFK(txtNomeEnc, 110, 60, 390, 20, "NomeEnc", "Descrição do encaminhador", JTextFieldPad.TP_STRING, 50, 0); 
 	adicCampo(txtPaiConv, 7, 100, 240, 20, "PaiConv", "Pai", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
 	adicCampo(txtMaeConv, 250, 100, 250, 20, "MaeConv", "Mãe", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
 	adicCampo(txtRGPaiConv, 7, 140, 150, 20, "RGPaiConv", "RG Pai", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
@@ -222,17 +222,17 @@ public class FConveniado extends FTabDados implements PostListener {
 	pinRodAtrib.adic(navAtrib,0,222,270,25);
 
 	txtCodAtrib.setTipo(JTextFieldPad.TP_STRING,15,0);
-	lcAtrib.add(new GuardaCampo( txtCodAtrib, 7, 100, 80, 20, "CodAtrib", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarcax");
-	lcAtrib.add(new GuardaCampo( txtDescAtrib, 90, 100, 207, 20, "DescAtrib", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+	lcAtrib.add(new GuardaCampo( txtCodAtrib, 7, 100, 80, 20, "CodAtrib", "Cód.atrib.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarcax");
+	lcAtrib.add(new GuardaCampo( txtDescAtrib, 90, 100, 207, 20, "DescAtrib", "Descrição das atribuições", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
 	lcAtrib.montaSql(false, "ATRIBUICAO", "AT");
 	lcAtrib.setQueryCommit(false);
 	lcAtrib.setReadOnly(true);
 	txtDescAtrib.setListaCampos(lcAtrib);
 	txtCodAtrib.setTabelaExterna(lcAtrib);
 
-	adicCampo(txtCodConvAtrib, 7, 20, 80, 20, "SeqConvAtrib", "NºSeq.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-	adicCampo(txtCodAtrib, 90, 20, 77, 20, "CodAtrib", "Código", JTextFieldPad.TP_STRING, 15, 0, false, true, txtDescAtrib,false);
-	adicDescFK(txtDescAtrib, 170, 20, 197, 20, "DescAtrib", "e descrição da atribuição.", JTextFieldPad.TP_STRING, 40, 0);
+	adicCampo(txtCodConvAtrib, 7, 20, 80, 20, "SeqConvAtrib", "Nºseq.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+	adicCampo(txtCodAtrib, 90, 20, 77, 20, "CodAtrib", "Cód.atrib.", JTextFieldPad.TP_STRING, 15, 0, false, true, txtDescAtrib,false);
+	adicDescFK(txtDescAtrib, 170, 20, 197, 20, "DescAtrib", "Descrição da atribuição.", JTextFieldPad.TP_STRING, 40, 0);
 	adicDB(txaAtrib, 7, 60, 360, 60, "ObsConvAtrib", "Obs.",JTextFieldPad.TP_STRING,false);
 	adic(gfCamp,7,130,360,80);
 	setListaCampos( true, "CONVATRIB", "AT");
@@ -240,8 +240,8 @@ public class FConveniado extends FTabDados implements PostListener {
 	lcConvAtrib.setQueryCommit(false);
 	lcConvAtrib.montaTab();
 	tabAtrib.setTamColuna(65,0);
-	tabAtrib.setTamColuna(60,1);
-	tabAtrib.setTamColuna(110,2);
+	tabAtrib.setTamColuna(80,1);
+	tabAtrib.setTamColuna(150,2);
     
     lcCampos.setQueryInsert(false);    
   }
