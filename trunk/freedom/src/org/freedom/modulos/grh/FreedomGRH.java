@@ -52,8 +52,8 @@ public class FreedomGRH extends Aplicativo {
         }
         else if (iOpcao==100102000) {
             if (telaPrincipal.temTela("Turnos")==false) {
-//              FTurnos tela = new FTurnos();
-//              telaPrincipal.criatela("Turnos",tela,con);
+              FTurnos tela = new FTurnos();
+              telaPrincipal.criatela("Turnos",tela,con);
             } 
         }  
         else if (iOpcao==100103000) {
