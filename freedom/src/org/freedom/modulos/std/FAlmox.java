@@ -28,17 +28,18 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FAlmox extends FDados implements ActionListener{
-  private JTextFieldPad txtCodAlmox = new JTextFieldPad(5);
-  private JTextFieldPad txtDescAlmox= new JTextFieldPad(20);
+  private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescAlmox= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FAlmox () {
     setTitulo("Cadastro de Almoxarifado");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodAlmox, 7, 20, 70, 20,"CodAlmox","Cód.almox.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescAlmox, 80, 20, 250, 20,"DescAlmox","Descrição do almoxarifado",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodAlmox, 7, 20, 70, 20,"CodAlmox","Cód.almox.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescAlmox, 80, 20, 250, 20,"DescAlmox","Descrição do almoxarifado", ListaCampos.DB_SI, true);
     setListaCampos( true, "ALMOX", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
