@@ -393,12 +393,13 @@ public class FRResumoDiario extends FRelatorio {
       		}
       		     
        	 }
-      
+	  
       if ( (iCol<105) && (iLinha==0) ) {
         	imp.say(imp.pRow()+0,135,"|");
       }
       
      }
+     
       imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,"|");
       imp.say(imp.pRow()+0,88,"| Total Geral do Período   | "+

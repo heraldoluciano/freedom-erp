@@ -118,26 +118,16 @@ public class FRVendasDet extends FRelatorio {
           imp.incPags();
           imp.eject();
         }
-        if (imp.pRow() == 0) {
-        	imp.montaCab();
-        	imp.setTitulo("Relatório de Vendas Detalhado");
-        	imp.setSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
-            imp.impCab(136, true);
-          
-        }
+        
         if (iCodVendaAnt != rs.getInt("CodVenda")) {
-          if (iCodVendaAnt > 0) {
-            imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-            imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
-            imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-            imp.say(imp.pRow() + 0, 0, "|");
-            imp.say(imp.pRow() + 0, 64, " Totais da venda: ");
-            imp.say(imp.pRow() + 0, 94, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrDesc));
-            imp.say(imp.pRow() + 0, 109, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrLiq));
-            imp.say(imp.pRow() + 0, 124, "|");
-            imp.say(imp.pRow() + 0, 135, "|");
-          }
-          imp.say(imp.pRow() + (iCodVendaAnt > 0 ? 1 : 0), 0, "" + imp.comprimido());
+        	if (imp.pRow() == 0) {
+            	imp.montaCab();
+            	imp.setTitulo("Relatório de Vendas Detalhado");
+            	imp.setSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
+                imp.impCab(136, true);
+              
+            }
+          imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
           imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
           imp.say(imp.pRow() + 0, 0, "| Pedido: ");
@@ -170,6 +160,20 @@ public class FRVendasDet extends FRelatorio {
           imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
           bVlrDesc = rs.getBigDecimal("VlrDescVenda");
           bVlrLiq = rs.getBigDecimal("VlrLiqVenda");
+         
+          if (iCodVendaAnt > 0) {
+            imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+            imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
+            imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+            imp.say(imp.pRow() + 0, 0, "|");
+            imp.say(imp.pRow() + 0, 64, " Totais da venda: ");
+            imp.say(imp.pRow() + 0, 94, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrDesc));
+            imp.say(imp.pRow() + 0, 109, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrLiq));
+            imp.say(imp.pRow() + 0, 124, "|");
+            imp.say(imp.pRow() + 0, 135, "|");
+            imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+            imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
+          }
         }
         imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
         imp.say(imp.pRow() + 0, 0, "| "+(bComRef ? rs.getString("RefProd") : rs.getString("CodProd")));
@@ -193,8 +197,9 @@ public class FRVendasDet extends FRelatorio {
         imp.say(imp.pRow() + 0, 124, "|");
         imp.say(imp.pRow() + 0, 135, "|");
       }
+      
       imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-      imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
+      imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
 
       imp.eject();
 
