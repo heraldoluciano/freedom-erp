@@ -58,6 +58,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	private JTextFieldFK txtDescImp = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad("Impressora padrão?","S","N");
+	private JCheckBoxPad cbImpGrafica = new JCheckBoxPad("Impressão gráfica?","S","N");
 	private Vector vValTipoUsoImp = new Vector();
 	private Vector vLabTipoUsoImp = new Vector();
 	private JRadioGroup rgTipoUsoImp = null;
@@ -125,7 +126,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    adicDescFK(txtDescPapel,90,60,300,20,"DescPapel","Descrição do papel");
 	    adicCampo(txtPortaWin,7,100,100,20,"PortaWin","Porta Windows",ListaCampos.DB_SI,true);
 	    adicCampo(txtPortaLin,110,100,100,20,"PortaLin","Porta Linux",ListaCampos.DB_SI,true);
-	    adicDB(cbImpPad, 213,100,200,20, "ImpPad", "Padrão", true);
+	    adicDB(cbImpPad, 213,100,147,20, "ImpPad", "Padrão", true);
+	    adicDB(cbImpGrafica, 363,100,150,20, "ImpGrafica", "Gráfica", true);
 	    adicDB(rgTipoUsoImp,7,140,500,50,"TipoUsoImp","Tipo uso", true);
 	    
 	    lcDet.addPostListener(this);
