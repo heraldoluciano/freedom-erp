@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Valor liberado por criente...
+ * Tela ficha cadastral e crédito de cliente.
  * 
  */
 
@@ -33,8 +33,9 @@ import org.freedom.telas.FTabDados;
 
 public class FCredCli extends FTabDados implements ActionListener {
   private Painel pinGeral = new Painel(330, 200);
+  private Painel pinFicha = new Painel(330, 200);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-  private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+ // private JTextFieldPad txtDescCli = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDataCli = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -49,19 +50,23 @@ public class FCredCli extends FTabDados implements ActionListener {
   private JTextFieldPad txtInscCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
   private JTextFieldPad txtCpfCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 11, 0);
   private JTextFieldPad txtRgCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
-  private JTextFieldPad txtEndCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtEndCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0); 
   private JTextFieldPad txtNumCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtComplCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtBairCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtCidCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtUFCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   private JTextFieldPad txtCepCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtFoneCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtRamalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtFaxCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtCelCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   public FCredCli() {
-    setTitulo("Crédito por cliente");
-    setAtribos(50, 10, 480, 505);
+    setTitulo("Ficha cadastral/Crédito por cliente");
+    setAtribos(50, 10, 600, 520);
 
     lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true));
     lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
@@ -80,20 +85,46 @@ public class FCredCli extends FTabDados implements ActionListener {
 
 	setPainel(pinGeral);
 	adicTab("Crédito", pinGeral);
-    adicCampo(txtCodCli, 7, 20, 80, 20,"CodCli","Cód.cli.", ListaCampos.DB_PK, true);
-    adicCampo(txtDescCli, 90, 20, 247, 20,"RazCli","Razão social do cliente", ListaCampos.DB_SI, false);
-    adicCampo(txtDataCli, 340, 20, 100, 20,"DataCli","Cadastro", ListaCampos.DB_SI, false);
+    adicCampo(txtCodCli, 7, 60, 80, 20,"CodCli","Cód.cli.", ListaCampos.DB_PK, true);
+    adicCampo(txtRazCli, 90, 60, 387, 20,"RazCli","Razão social do cliente", ListaCampos.DB_SI, false);
+    adicCampo(txtDataCli, 480, 60, 95, 20,"DataCli","Cadastro", ListaCampos.DB_SI, false);
 	adicCampoInvisivel(txtCodTipoCli, "CodTipoCli","Cód.tp.cli", ListaCampos.DB_FK, txtDescTipoCli,false);
-    adicDescFK(txtDescTipoCli, 7, 60, 250, 20, "DescTipoCli", "Descrição do tipo de cliente");
-    adicCampo(txtDtIniTr, 260, 60, 100, 20,"DtIniTr","Dt.ab.créd.", ListaCampos.DB_SI, false);
-    adicCampo(txtCodTpCred, 7, 100, 80, 20,"CodTpCred","Cód.tp.cred", ListaCampos.DB_FK, txtDescTpCred, true);
-    adicDescFK(txtDescTpCred, 90, 100, 157, 20, "DescTpCred", "Descrição do crédito");
-    adicDescFK(txtVlrTpCred, 250, 100, 87, 20, "VlrTpCred", "Valor");
-	adicCampo(txtDtVencto, 340, 100, 100, 20,"DtVenctoTr","Vencimento", ListaCampos.DB_SI, txtDescTpCred, true);
-    setListaCampos( true, "CLIENTE", "VD");
+
+  	adicCampo(txtEndCli, 7, 100, 307, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false);
+  	adicCampo(txtNumCli, 400, 100, 77, 20, "NumCli", "Num.", ListaCampos.DB_SI, false);
+  	adicCampo(txtComplCli, 480, 100, 70, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false);
+  	adicCampo(txtBairCli, 7, 140, 180, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false);
+  	adicCampo(txtCidCli, 190, 140, 177, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false);
+  	adicCampo(txtCepCli, 370, 140, 77, 20, "CepCli", "Cep", ListaCampos.DB_SI, false);
+  	adicCampo(txtUFCli, 450, 140, 50, 20, "UFCli", "UF", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneCli, 7, 180, 100, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
+  	adicCampo(txtRamalCli, 110, 180, 44, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false); 	
+  	adicCampo(txtFaxCli, 157, 180, 77, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
+  	adicCampo(txtCelCli, 7, 220, 100, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
+	
+	
+	adicDescFK(txtDescTipoCli, 7, 300, 250, 20, "DescTipoCli", "Descrição do tipo de cliente");
+    adicCampo(txtDtIniTr, 450, 20, 90, 20,"DtIniTr","Dt.ab.créd.", ListaCampos.DB_SI, false);
+
+	
+    adicCampo(txtCodTpCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred", ListaCampos.DB_FK, txtDescTpCred, true);
+    adicDescFK(txtDescTpCred, 90, 20, 157, 20, "DescTpCred", "Descrição do crédito");
+    adicDescFK(txtVlrTpCred, 250, 20, 87, 20, "VlrTpCred", "Valor");
+	adicCampo(txtDtVencto, 340, 20, 100, 20,"DtVenctoTr","Vencimento", ListaCampos.DB_SI, txtDescTpCred, true);
+	
+	
+	
+	
+	setListaCampos( true, "CLIENTE", "VD");
 	lcCampos.setPodeIns(false);
 	lcCampos.setPodeExc(false);
     lcCampos.setQueryInsert(false);
+    
+    
+	setPainel(pinFicha);
+	adicTab("Ficha cadastral", pinFicha);
+    
+    
     
   }
   public void execShow(Connection cn) {

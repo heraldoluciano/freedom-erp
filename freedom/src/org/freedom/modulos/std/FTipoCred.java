@@ -49,8 +49,7 @@ public class FTipoCred extends FDados implements ActionListener {
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
-//      Funcoes.mensagemInforma(this, "Teste");
-//		Funcoes.mensagemInforma(this,"Teste do Dialago");
+
       	
         imprimir(true);
     }
