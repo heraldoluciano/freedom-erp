@@ -31,6 +31,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -51,6 +52,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private JTextFieldPad txtCodProd2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProd2 = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Rma automática","S","N");
   private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcProd2 = new ListaCampos(this,"PD");
@@ -68,8 +70,8 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     setPainel( pinCab, pnCliCab);
     lcCampos.addPostListener(this);
     lcProd.setUsaME(false);
-    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVendax");
-    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 307, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendax");
+    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVendax");
+    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 307, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendax");
     lcProd.setWhereAdic("TIPOPROD='F'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
@@ -77,16 +79,16 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtCodProd.setTabelaExterna(lcProd);
     txtDescProd.setListaCampos(lcProd);
     
-    lcProd2.add(new GuardaCampo( txtCodProd2, 7, 100, 80, 20, "CodProd", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVendax");
-    lcProd2.add(new GuardaCampo( txtDescProd2, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendax");
+    lcProd2.add(new GuardaCampo( txtCodProd2, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVendax");
+    lcProd2.add(new GuardaCampo( txtDescProd2, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendax");
     lcProd2.montaSql(false, "PRODUTO", "EQ");
     lcProd2.setQueryCommit(false);
     lcProd2.setReadOnly(true);
     txtCodProd2.setTabelaExterna(lcProd2);
     txtDescProd2.setListaCampos(lcProd2);
 
-    lcFase.add(new GuardaCampo( txtCodFase, 7, 100, 80, 20, "CodFase", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true));
-    lcFase.add(new GuardaCampo( txtDescFase, 90, 100, 207, 20, "DescFase", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcFase.add(new GuardaCampo( txtCodFase, 7, 100, 80, 20, "CodFase", "Cód.fase", true, false, null, JTextFieldPad.TP_INTEGER,true));
+    lcFase.add(new GuardaCampo( txtDescFase, 90, 100, 207, 20, "DescFase", "Descrição da fase", false, false, null, JTextFieldPad.TP_STRING,false));
     lcFase.setDinWhereAdic("CODFASE IN (SELECT CODFASE FROM PPESTRUFASE WHERE " +
             "CODEMP=PPFASE.CODEMP AND CODFILIAL=PPFASE.CODFILIAL AND CODPROD=#N)",txtCodProd);
     lcFase.montaSql(false, "FASE", "PP");
@@ -95,8 +97,8 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtCodFase.setTabelaExterna(lcFase);
     txtDescFase.setListaCampos(lcFase);
 
-    adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,true,true,txtDescProd,true);
-    adicDescFK(txtDescProd, 90, 20, 297, 20, "DescProd", "e descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,true,true,txtDescProd,true);
+    adicDescFK(txtDescProd, 90, 20, 297, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
     adicCampo(txtQtdEst, 390, 20, 100, 20,"QtdEst","Quantidade",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
     adicCampo(txtDescEst, 7, 60, 380, 20,"DescEst","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
     adic(btFase,390,55,100,25);
@@ -107,13 +109,16 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
+    
+    cbRmaAutoItEst.setVlrString("N");
 
     adicCampo(txtNumSeq, 7, 20, 40, 20,"SeqItEst","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd2,true);
-    adicDescFK(txtDescProd2, 130, 20, 227, 20, "DescProd", "e descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd2,true);
+    adicDescFK(txtDescProd2, 130, 20, 227, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
     adicCampo(txtQtdMat, 360, 20, 100, 20,"QtdItEst","Quantidade",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
-    adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFase,true);
-    adicDescFK(txtDescFase, 80, 60, 327, 20, "DescFase", "e descrição da fase", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Cód.fase",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFase,true);
+    adicDescFK(txtDescFase, 80, 60, 280, 20, "DescFase", "Descrição da fase", JTextFieldPad.TP_STRING, 50, 0);
+    adicDB(cbRmaAutoItEst,360,60,120,20,"RmaAutoItEst","",JTextFieldPad.TP_STRING,true);
     setListaCampos( true, "ITESTRUTURA", "PP");
     lcDet.setQueryInsert(false);
     montaTab();
