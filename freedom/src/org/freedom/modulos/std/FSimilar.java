@@ -48,7 +48,7 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   public FSimilar () {
     setTitulo("Agrupamento de produtos similares");
-    setAtribos( 50, 50, 700, 350);        
+    setAtribos( 100, 10, 360, 350);        
 
 //  ********************  Lista campos adicional *****************************************************************    
     
@@ -60,39 +60,41 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
 	lcProd.montaSql(false, "PRODUTO", "EQ");
 	lcProd.setQueryCommit(false);
 	lcProd.setReadOnly(true);
+	lcProd.setQueryInsert(false);
 	txtCodProd.setTabelaExterna(lcProd);
     
 //********************  Master ***********************************************************************************
     
-    setAltCab(160);
+    setAltCab(90);
     pinCab = new JPanelPad();
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
 
-    adicCampo(txtCodSim, 7, 20, 70, 20,"CodSim","Cód.Agrup.",ListaCampos.DB_PK,null,true);
-    adicCampo(txtDescSim, 80, 20, 217, 20,"DescSim","Descrição do agrupamento",ListaCampos.DB_SI,null,true);
+    adicCampo(txtCodSim, 7, 20, 60, 20,"CodSim","Cód.Agp.",ListaCampos.DB_PK,null,true);
+    adicCampo(txtDescSim, 70, 20, 250, 20,"DescSim","Descrição do agrupamento",ListaCampos.DB_SI,null,true);
     
     setListaCampos( true, "SIMILAR", "EQ");
     lcCampos.setQueryInsert(true);    
+
+//  ********************  Detalhe ********************************************************************************    
 
     setAltDet(60);
     pinDet = new JPanelPad(440,50);
     setPainel( pinDet, pnDet);
 
-//  ********************  Detalhe ********************************************************************************    
-    
     setListaCampos(lcDet);
     setNavegador(navRod);
      
     adicCampo(txtCodProd,7,20,60,20,"CodProd","Cód.prod",ListaCampos.DB_PF,txtDescProd,true);
-    adicDescFK(txtDescProd,70,20,217,20,"Descprod","Descrição do produto");
+    adicDescFK(txtDescProd,70,20,250,20,"Descprod","Descrição do produto");
 
-    setListaCampos( true, "ITSIMILAR", "EQ");
+    setListaCampos( false, "ITSIMILAR", "EQ");
 
-    lcDet.setQueryInsert(true);    
+    lcDet.setQueryInsert(false);    
     lcDet.setQueryCommit(false);
     
     montaTab();
+    tab.setTamColuna(260,1);
     lcCampos.addCarregaListener(this);
     lcCampos.addInsertListener(this);
     btImp.addActionListener(this);
