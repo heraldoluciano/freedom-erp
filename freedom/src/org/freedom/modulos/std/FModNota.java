@@ -37,9 +37,9 @@ public class FModNota extends FDados implements ActionListener{
   private JTextFieldPad txtDescModNota= new JTextFieldPad(20);
   public FModNota () {
     setTitulo("Cadastro de Modelo de NFs");
-    setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodModNota, 7, 20, 50, 20,"CodModNota","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescModNota, 60, 20, 250, 20,"DescModNota","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    setAtribos( 50, 50, 370, 125);
+    adicCampo(txtCodModNota, 7, 20, 90, 20,"CodModNota","Cód.mod.nts.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescModNota, 100, 20, 250, 20,"DescModNota","Descrição da nota fiscal",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
     setListaCampos( true, "MODNOTA", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -58,7 +58,7 @@ public class FModNota extends FDados implements ActionListener{
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
     imp.montaCab();
-    imp.setTitulo("Relatório de Modelos de NFs");
+    imp.setTitulo("Relatório de modelos de NFs");
     DLRModNota dl = new DLRModNota();
     dl.setVisible(true);
     if (dl.OK == false) {
@@ -77,8 +77,8 @@ public class FModNota extends FDados implements ActionListener{
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
-            imp.say(imp.pRow()+0,30,"Descrição");
+            imp.say(imp.pRow()+0,2,"Cód.mod.nfs.");
+            imp.say(imp.pRow()+0,30,"Descrição do modelo de nota");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
          }

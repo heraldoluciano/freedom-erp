@@ -60,23 +60,23 @@ public class FModGrade extends FDetalhe {
     
     txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProdx");
-    lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProdx");
+    lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
     lcProd.setWhereAdic("ATIVOPROD='S'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
     lcProd.setReadOnly(true);
     txtCodProd.setTabelaExterna(lcProd);
     
-    adicCampo(txtCodModG, 7, 20, 70, 20,"CodModG","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescModG, 80, 20, 197, 20,"DescModG","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodProd, 280, 20, 77, 20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
-    adicDescFK(txtDescProd, 360, 20, 200, 20, "DescProd", "e descrição do produto", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtDescProdModG, 7, 60, 200, 20,"DescProdModG","Descrição inic.",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
-    adicCampo(txtRefModG, 210, 60, 87, 20,"RefModG","Ref. inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
-    adicCampo(txtCodFabModG, 300, 60, 87, 20,"CodFabModG","C. Fabric. inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
-    adicCampo(txtCodBarModG, 390, 60, 100, 20,"CodBarModG","C. Fabric. inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
+    adicCampo(txtCodModG, 7, 20, 70, 20,"CodModG","Cód.mod.g.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescModG, 80, 20, 197, 20,"DescModG","Descrição do modelo de grade",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodProd, 280, 20, 77, 20,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
+    adicDescFK(txtDescProd, 360, 20, 200, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtDescProdModG, 7, 60, 270, 20,"DescProdModG","Descrição inicial",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
+    adicCampo(txtRefModG, 280, 60, 87, 20,"RefModG","Ref.inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
+    adicCampo(txtCodFabModG, 370, 60, 87, 20,"CodFabModG","Cód.fab.inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
+    adicCampo(txtCodBarModG, 460, 60, 100, 20,"CodBarModG","Cód.bar.inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
     setListaCampos( true, "MODGRADE", "EQ");
     setAltDet(120);
     pinDet = new Painel(590,110);
@@ -85,20 +85,20 @@ public class FModGrade extends FDetalhe {
     setNavegador(navRod);
 
     txtCodVarG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    lcVarG.add(new GuardaCampo( txtCodVarG, 7, 100, 80, 20, "CodVarG", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
-    lcVarG.add(new GuardaCampo( txtDescVarG, 90, 100, 207, 20, "DescVarG", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
+    lcVarG.add(new GuardaCampo( txtCodVarG, 7, 100, 80, 20, "CodVarG", "Cód.var.g.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
+    lcVarG.add(new GuardaCampo( txtDescVarG, 90, 100, 207, 20, "DescVarG", "Descrição da variante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
     lcVarG.montaSql(false, "VARGRADE", "EQ");
     lcVarG.setQueryCommit(false);
     lcVarG.setReadOnly(true);
     txtCodVarG.setTabelaExterna(lcVarG);
     
     adicCampo(txtCodItModG, 7, 20, 70, 20,"CodItModG","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtCodVarG, 80, 20, 77, 20,"CodVarG","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
-    adicDescFK(txtDescVarG, 160, 20, 197, 20, "DescVarG", "e descrição da variante", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodVarG, 80, 20, 77, 20,"CodVarG","Cód.var.g.",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
+    adicDescFK(txtDescVarG, 160, 20, 197, 20, "DescVarG", "Descrição da variante", JTextFieldPad.TP_STRING, 40, 0);
     adicCampo(txtDescItModG, 360, 20, 200, 20,"DescItModG","Descrição",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
-    adicCampo(txtRefItModG, 7, 60, 87, 20,"RefItModG","Ref. inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
-    adicCampo(txtCodFabItModG, 100, 60, 87, 20,"CodFabItModG","C. Fabric. inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
-    adicCampo(txtCodBarItModG, 190, 60, 100, 20,"CodBarItModG","C. Barras inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
+    adicCampo(txtRefItModG, 7, 60, 87, 20,"RefItModG","Ref.inicial",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
+    adicCampo(txtCodFabItModG, 100, 60, 87, 20,"CodFabItModG","Cód.fab.inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
+    adicCampo(txtCodBarItModG, 190, 60, 100, 20,"CodBarItModG","Cód.bar.inic.",JTextFieldPad.TP_STRING,10,0,false,false,null,true);
     setListaCampos( true, "ITMODGRADE", "EQ");
     montaTab();
   }

@@ -54,10 +54,10 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   	//cbImpDtSaidaNat.set
     setTitulo("Cadastro de Naturezas de Opreção");
     setAtribos( 50, 50, 330, 265);
-    adicCampo(txtCodNat, 7, 20, 50, 20,"CodNat","Código",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-    adicCampo(txtDescNat, 60, 20, 250, 20,"DescNat","Descrição",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
-    adicCampo(txtAliqeNat, 7, 60, 90, 20,"AliqENat","Aliq. Estadual",JTextFieldPad.TP_DECIMAL,6,2,false,false,null,false);
-    adicCampo(txtAliqfNat, 100, 60, 90, 20,"AliqFNat","Aliq. Federal",JTextFieldPad.TP_DECIMAL,6,2,false,false,null,false);
+    adicCampo(txtCodNat, 7, 20, 70, 20,"CodNat","Cód.nat.op.",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
+    adicCampo(txtDescNat, 80, 20, 230, 20,"DescNat","Descrição da natureza da operação",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
+    adicCampo(txtAliqeNat, 7, 60, 90, 20,"AliqENat","Aliq.estadual",JTextFieldPad.TP_DECIMAL,6,2,false,false,null,false);
+    adicCampo(txtAliqfNat, 100, 60, 90, 20,"AliqFNat","Aliq.federal",JTextFieldPad.TP_DECIMAL,6,2,false,false,null,false);
     adicDB(cbImpDtSaidaNat, 7, 90, 250,20,"ImpDtSaidaNat","",JTextFieldPad.TP_STRING,true);
     adicDB(txaTxtNat,7,130,250,50,"txtNat","Texto completo",JTextFieldPad.TP_STRING,false);
     //adicCampo(txaTxtNat,7,130,250,50,"txtNat","Texto completo",JTextFieldPad.TP_STRING,false);
@@ -98,7 +98,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
     imp.montaCab();
-    imp.setTitulo("Relatório de Naturezas de Operações");
+    imp.setTitulo("Relatório de naturezas de operações");
     DLRNatOper dl = new DLRNatOper();
     dl.setVisible(true);
     if (dl.OK == false) {
@@ -122,13 +122,13 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
             imp.say(imp.pRow()+0,0,"|");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.nat.op.");
             imp.say(imp.pRow()+0,12,"|");
-            imp.say(imp.pRow()+0,14,"Descrição");
+            imp.say(imp.pRow()+0,14,"Descrição da naturaza da operação");
             imp.say(imp.pRow()+0,76,"|");
-            imp.say(imp.pRow()+0,78,"Aliq. Estadual");
+            imp.say(imp.pRow()+0,78,"Aliq.estadual");
             imp.say(imp.pRow()+0,102,"|");
-            imp.say(imp.pRow()+0,108,"Aliq. Federal");
+            imp.say(imp.pRow()+0,108,"Aliq.federal");
             imp.say(imp.pRow()+0,136,"|");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
