@@ -57,10 +57,11 @@ public class FManutComis extends FFilho implements ActionListener {
   private JLabel lbPeriodo = new JLabel(" Periodo");
   private JLabel lbDe = new JLabel("De:");
   private JLabel lbA = new JLabel("A:");
-  private JLabel lbVend = new JLabel("Código e nome do representante");
-  private JLabel lbTotComi = new JLabel("Tot. Comis.");
-  private JLabel lbTotLib = new JLabel("Tot. Liber.");
-  private JLabel lbTotPg = new JLabel("Tot. Pago");
+  private JLabel lbCodVend = new JLabel("Cód.repr.");
+  private JLabel lbVend = new JLabel("Nome do representante");
+  private JLabel lbTotComi = new JLabel("Total comis.");
+  private JLabel lbTotLib = new JLabel("Total liber.");
+  private JLabel lbTotPg = new JLabel("Total pago");
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgEmitRel = null; 
@@ -123,8 +124,8 @@ public class FManutComis extends FFilho implements ActionListener {
     
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Código", true, false, txtDescVend, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcVend.add(new GuardaCampo( txtDescVend, 7, 100, 80, 20, "NomeVend", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, txtDescVend, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+    lcVend.add(new GuardaCampo( txtDescVend, 7, 100, 80, 20, "NomeVend", "Descrição do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
     lcVend.montaSql(false,"VENDEDOR", "VD");
     lcVend.setReadOnly(true);
 	txtCodVend.setPK(true);
@@ -150,7 +151,8 @@ public class FManutComis extends FFilho implements ActionListener {
     
     pinTop.adic(pinLabel,15,2,55,17);
     pinTop.adic(pinPeriodo,7,10,275,70);
-    pinTop.adic(lbVend,285,0,200,20);
+    pinTop.adic(lbCodVend,285,0,80,20);
+    pinTop.adic(lbVend,365,0,200,20);
     pinTop.adic(txtCodVend,285,20,77,20);
     pinTop.adic(txtDescVend,365,20,250,20);
     pinTop.adic(cbComPag,285,50,70,20);
@@ -174,25 +176,25 @@ public class FManutComis extends FFilho implements ActionListener {
     c.add(pinRod,BorderLayout.SOUTH);
     c.add(spnTab,BorderLayout.CENTER);
     
-    tab.adicColuna(""); //0
-    tab.adicColuna("Cliente"); //1
-    tab.adicColuna("Doc."); //2
-    tab.adicColuna("Parc."); //3
-    tab.adicColuna("TP."); //4
-    tab.adicColuna("Valor"); //5
-    tab.adicColuna("Emissão"); //6
-    tab.adicColuna("Vencimento"); //7
-    tab.adicColuna("Data Pgto."); //8
     
-    tab.setTamColuna(20,0);
-    tab.setTamColuna(170,1);
-    tab.setTamColuna(70,2);
+    tab.adicColuna("Cliente"); //0
+    tab.adicColuna("Doc."); //1
+    tab.adicColuna("Parcelamento"); //2
+    tab.adicColuna("TP."); //3
+    tab.adicColuna("Valor"); //4
+    tab.adicColuna("Emissão"); //5
+    tab.adicColuna("Vencimento"); //6
+    tab.adicColuna("Data pagamento"); //7
+    
+   
+    tab.setTamColuna(80,0);
+    tab.setTamColuna(50,1);
+    tab.setTamColuna(92,2);
     tab.setTamColuna(30,3);
-    tab.setTamColuna(20,4);
-    tab.setTamColuna(100,5);
-    tab.setTamColuna(95,6);
-    tab.setTamColuna(95,7);
-    tab.setTamColuna(95,8);
+    tab.setTamColuna(70,4);
+    tab.setTamColuna(80,5);
+    tab.setTamColuna(85,6);
+    tab.setTamColuna(160,7);
     tab.setColunaEditavel(0,true);
     
     btBusca.addActionListener(this);
