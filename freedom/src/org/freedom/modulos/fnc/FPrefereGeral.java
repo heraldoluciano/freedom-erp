@@ -41,8 +41,8 @@ public class FPrefereGeral extends FTabDados {
 		setTitulo("Preferências Gerais");
 		setAtribos(50, 50, 355, 200);
 		
-		lcMoeda.add(new GuardaCampo(txtCodMoeda,7,100,80,20,"CodMoeda","Código",true,false,null,JTextFieldPad.TP_STRING,true),"txtCodUnidx");
-		lcMoeda.add(new GuardaCampo(txtDescMoeda,90,100,207,20,"SingMoeda","Descrição",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+		lcMoeda.add(new GuardaCampo(txtCodMoeda,7,100,80,20,"CodMoeda","Cód.moeda",true,false,null,JTextFieldPad.TP_STRING,true),"txtCodUnidx");
+		lcMoeda.add(new GuardaCampo(txtDescMoeda,90,100,207,20,"SingMoeda","Descrição da moeda",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
 		lcMoeda.montaSql(false, "MOEDA", "FN");
 		lcMoeda.setQueryCommit(false);
 		lcMoeda.setReadOnly(true);
@@ -59,8 +59,8 @@ public class FPrefereGeral extends FTabDados {
 		setPainel(pinFin);
 		adicTab("Financeiro", pinFin);
 
-		adicCampo(txtCodMoeda,7,20,50,20,"CodMoeda","Codigo",JTextFieldPad.TP_STRING,4,0,false,true,txtDescMoeda,true);
-		adicDescFK(txtDescMoeda,60,20,250,20,"SingMoeda","e descrição da moeda corrente.",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodMoeda,7,20,70,20,"CodMoeda","Cód.moeda",JTextFieldPad.TP_STRING,4,0,false,true,txtDescMoeda,true);
+		adicDescFK(txtDescMoeda,80,20,230,20,"SingMoeda","Descrição da moeda corrente.",JTextFieldPad.TP_STRING,50,0);
 
 		nav.setAtivo(0,false);
 		lcCampos.setPodeExc(false);
