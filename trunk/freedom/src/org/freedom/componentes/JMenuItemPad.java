@@ -29,7 +29,11 @@ public class JMenuItemPad extends JMenuItem {
     private int iCodIt = 0;
     private int iCodNiv = 0;
     private Class tela = null;
+    private String titulo = "";
   
+	public String getTitulo() {
+		return titulo;
+	}
 	public int getICodIt() {
 		return iCodIt;
 	}
@@ -51,22 +55,24 @@ public class JMenuItemPad extends JMenuItem {
 	*/
   
 	public JMenuItemPad () {
-		this(0,0,0,0, null);
+		this(0,0,0,0, null, "");
 	}
 
 	/**
 	*  Construtor da classe JMenu(). <BR>
 	*  Construtor que ja ajusta os paramatros basicos do JMenuPad.
 	 * @param tela TODO
+	 * @param titulo TODO
 	*
 	*/
   
-	public JMenuItemPad (int iCodSistema, int iCodModulo, int iCodItem, int iCodNivel, Class tela) {
+	public JMenuItemPad (int iCodSistema, int iCodModulo, int iCodItem, int iCodNivel, Class tela, String titulo) {
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
 		iCodIt = iCodItem;
 		iCodNiv = iCodNivel;
 		this.tela = tela;
+		this.titulo = titulo;
 	}
 	
 
