@@ -41,7 +41,7 @@ public class FAbreCaixa extends FFDialogo {
 	private JTextFieldPad txtValor = new JTextFieldPad();
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	public FAbreCaixa() {
-		super(Aplicativo.framePrinc);
+		super(Aplicativo.telaPrincipal);
 		setTitulo("Abrir Caixa");
 		setAtribos(250,110);
 		

@@ -52,7 +52,7 @@ public class FSuprimento extends FFDialogo {
 	private JTextFieldFK txtUsuarioAtual = new JTextFieldFK();
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	public FSuprimento() {
-		super(Aplicativo.framePrinc);
+		super(Aplicativo.telaPrincipal);
 		setTitulo("Suprimento de caixa");
 		setAtribos(345,255);
 		

@@ -37,12 +37,13 @@ import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
 
 
-public class FSobre extends FDialogo {
+public class FSobre extends FFDialogo {
   private JTabbedPane tpnSobre = new JTabbedPane();
   private JPanel pnSobre = new JPanel(new BorderLayout());
   private JPanel pnEquipe = new JPanel(new BorderLayout());
   ImageIcon img = Icone.novo(Aplicativo.strSplash);
   public FSobre () {
+  	super(Aplicativo.telaPrincipal);
     setTitulo("Sobre...");
 	setAtribos(312,330);
 	

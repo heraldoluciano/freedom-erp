@@ -62,7 +62,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
 	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
-		super(Aplicativo.framePrinc);
+		super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de venda");
 		setAtribos(330,275);
 		

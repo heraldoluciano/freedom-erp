@@ -73,7 +73,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   boolean bEOF = false;
   int iConta = 0;
   public FAcesso() {
-  	super(Aplicativo.framePrinc);
+  	super(Aplicativo.telaPrincipal);
 
     setTitulo("Controle de acesso por menus.");
     setAtribos( 410, 400);

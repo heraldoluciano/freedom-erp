@@ -165,7 +165,7 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    private Vector vCacheItem = new Vector();
    private Connection con;
    public FVenda() {
-   	  super(Aplicativo.framePrinc);
+   	  super(Aplicativo.telaPrincipal);
    	  setTitulo("Venda");
    	  setAtribos(798,580);
    	  setToFrameLayout();

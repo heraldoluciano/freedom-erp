@@ -36,7 +36,7 @@ public class DLRGrauInst extends FFDialogo {
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   public DLRGrauInst() {
-  	super(Aplicativo.framePrinc);
+  	super(Aplicativo.telaPrincipal);
 	setTitulo("Ordem do Relatório");
 	setAtribos(300,120);
 	vLabs.addElement("Código");
