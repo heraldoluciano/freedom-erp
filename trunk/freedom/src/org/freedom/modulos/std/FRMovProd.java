@@ -57,16 +57,20 @@ public class FRMovProd extends FRelatorio {
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private JLabel lbFiltrar = new JLabel("Filtrar por:");
   private JCheckBoxPad cbAgrupar = null;  
-  private JLabel lbForn = new JLabel("Código e descrição do Fornecedor");
-  private JLabel lbGrupo = new JLabel("Código e descrição do Grupo");
-  private JLabel lbMarca = new JLabel("Código e descrição da Marca");
+  private JLabel lbForn = new JLabel("Cód.for.");
+  private JLabel lbDescForn = new JLabel("Descrição do fornecedor");
+  private JLabel lbGrupo = new JLabel("Cód.grupo");
+  private JLabel lbDescGrupo = new JLabel("Descrição do grupo");
+  private JLabel lbMarca = new JLabel("Cód.marca");
+  private JLabel lbDescMarca = new JLabel("Descrição da Marca");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private Vector vVals1 = new Vector();
   private Vector vLabs1 = new Vector();
   private Vector vLabs2 = new Vector();
   private Vector vVals2 = new Vector(); 
-  private JLabel lbAlmox = new JLabel("Código e descrição do Almoxarifado");
+  private JLabel lbAlmox = new JLabel("Cód.almox.");
+  private JLabel lbDescAlmox = new JLabel("Descrição do Almoxarifado");
   private JTextFieldPad txtCodForn = new JTextFieldPad();
   private JTextFieldFK txtDescForn = new JTextFieldFK(); 
   private JTextFieldPad txtCodGrupo = new JTextFieldPad();
@@ -123,8 +127,8 @@ public class FRMovProd extends FRelatorio {
     
     txtCodAlmox.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescAlmox.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 80, 110, 30, "CodAlmox", "Código do Almoxarifado", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodSetor");
-    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 220, 30, "DescAlmox", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetor");
+    lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 80, 110, 30, "CodAlmox", "Cód.almox.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodSetor");
+    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 220, 30, "DescAlmox", "Descrição do almoxarifado", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetor");
     lcAlmox.montaSql(false, "ALMOX", "EQ");
     lcAlmox.setReadOnly(true);
     txtCodAlmox.setTabelaExterna(lcAlmox);
@@ -133,8 +137,8 @@ public class FRMovProd extends FRelatorio {
 
     txtCodForn.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescForn.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcCodForn.add(new GuardaCampo( txtCodForn, 7, 80, 80, 20, "CodFor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodForn");
-    lcCodForn.add(new GuardaCampo( txtDescForn, 90, 100, 207, 20, "RazFor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescForn");
+    lcCodForn.add(new GuardaCampo( txtCodForn, 7, 80, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodForn");
+    lcCodForn.add(new GuardaCampo( txtDescForn, 90, 100, 207, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescForn");
     lcCodForn.montaSql(false, "FORNECED", "CP");
     lcCodForn.setReadOnly(true);
     txtCodForn.setTabelaExterna(lcCodForn);
@@ -146,8 +150,8 @@ public class FRMovProd extends FRelatorio {
 
 	txtCodGrupo.setTipo(JTextFieldPad.TP_STRING,14,0);
 	txtDescGrupo.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcGrupo.add(new GuardaCampo( txtCodGrupo, 7, 80, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupo");
-	lcGrupo.add(new GuardaCampo( txtDescGrupo, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupo");
+	lcGrupo.add(new GuardaCampo( txtCodGrupo, 7, 80, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupo");
+	lcGrupo.add(new GuardaCampo( txtDescGrupo, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupo");
 	lcGrupo.montaSql(false, "GRUPO", "EQ");
 	lcGrupo.setReadOnly(true);
 	txtCodGrupo.setTabelaExterna(lcGrupo);
@@ -157,8 +161,8 @@ public class FRMovProd extends FRelatorio {
 	txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
 	txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
 	txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-	lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-	lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
+	lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
+	lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
 	lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
 	txtCodMarca.setTabelaExterna(lcMarca);
 	txtCodMarca.setNomeCampo("CodMarca");
@@ -187,15 +191,19 @@ public class FRMovProd extends FRelatorio {
     
     adic(lbForn,7,215,300,20);
 	adic(txtCodForn,7,235,80,20);
+	adic(lbDescForn,90,215,300,20);
 	adic(txtDescForn,90,235,350,20);	
 	adic(lbAlmox,7,260,250,20);
 	adic(txtCodAlmox,7,280,80,20);
+	adic(lbDescAlmox,90,260,250,20);
 	adic(txtDescAlmox,90,280,350,20);
 	adic(lbGrupo,7,305,250,20);
 	adic(txtCodGrupo,7,325,80,20); 
+	adic(lbDescGrupo,90,305,250,20);
 	adic(txtDescGrupo,90,325,350,20);
 	adic(lbMarca,7,345,250,20);
 	adic(txtCodMarca,7,365,80,20); 
+	adic(lbDescMarca,90,345,250,20);
 	adic(txtDescMarca,90,365,350,20);
 		
 	

@@ -74,8 +74,8 @@ public class FRMediaItem extends FRelatorio {
     
     txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
     txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
+    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
     txtCodGrup.setTabelaExterna(lcGrup);
     txtCodGrup.setNomeCampo("CodGrup");
     txtCodGrup.setFK(true);
@@ -85,14 +85,14 @@ public class FRMediaItem extends FRelatorio {
     txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
     txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
     txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
+    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
+    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
     lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
 
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,10,0);
 	txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
+	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
+	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
 	txtCodVend.setTabelaExterna(lcVend);
 	txtCodVend.setNomeCampo("CodVend");
 	txtCodVend.setFK(true);
@@ -138,15 +138,18 @@ public class FRMediaItem extends FRelatorio {
     adic(lbLinha3,7,117,273,2);
     
    
-    adic(new JLabel("Código e descrição do grupo"),7,125,240,20);
+    adic(new JLabel("Cód.grupo"),7,125,240,20);
     adic(txtCodGrup,7,145,90,20);
+    adic(new JLabel("Descrição do grupo"),100,125,240,20);
     adic(txtDescGrup,100,145,180,20);
-    adic(new JLabel("Código e descrição da Marca"),7,165,240,20);
+    adic(new JLabel("Cód.marca"),7,165,240,20);
     adic(txtCodMarca,7,185,90,20);
+    adic(new JLabel("Descrição da Marca"),100,165,240,20);
     adic(txtDescMarca,100,185,180,20);
-    adic(new JLabel("Código e nome do representante"),7,205,200,20);
+    adic(new JLabel("Cód.repr."),7,205,200,20);
 	adic(txtCodVend,7,225,70,20);
-	adic(txtDescVend,81,225,200,20);
+	adic(new JLabel("Nome do representante"),80,205,200,20);
+	adic(txtDescVend,80,225,200,20);
     
     
     adic(lbLinha4,7,259,273,2);
