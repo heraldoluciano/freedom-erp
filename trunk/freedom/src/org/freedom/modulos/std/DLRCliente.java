@@ -64,12 +64,12 @@ public class DLRCliente extends FFDialogo {
   private JLabel lbSetor = new JLabel("Código e descrição do setor");
   private JLabel lbTipoCli = new JLabel("Código e descrição do tipo de cliente");
   private JLabel lbVendedor = new JLabel("Código e nome do vendedor/repres.");
-  private JTextFieldPad txtCodSetor = new JTextFieldPad();
-  private JTextFieldPad txtCodTipoCli = new JTextFieldPad();
-  private JTextFieldPad txtCodVend = new JTextFieldPad();
-  private JTextFieldFK txtDescSetor = new JTextFieldFK();
-  private JTextFieldFK txtDescTipoCli = new JTextFieldFK();
-  private JTextFieldFK txtNomeVend = new JTextFieldFK();
+  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcTipoCli = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
@@ -100,30 +100,24 @@ public class DLRCliente extends FFDialogo {
     cbFis.setVlrString("S");
     cbJur.setVlrString("S");
 
-    txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescSetor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodSetor");
-    lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetor");
+    lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK,false));
+    lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor",  ListaCampos.DB_SI,false));
     lcSetor.montaSql(false, "SETOR", "VD");
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
     txtCodSetor.setFK(true);
     txtCodSetor.setNomeCampo("CodSetor");
 
-    txtCodTipoCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescTipoCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTipoCli.add(new GuardaCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoCli");
-    lcTipoCli.add(new GuardaCampo( txtDescTipoCli, 90, 100, 207, 20, "DescTipoCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoCli");
+    lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.",  ListaCampos.DB_PK,false));
+    lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente",  ListaCampos.DB_SI, false));
     lcTipoCli.montaSql(false, "TIPOCLI", "VD");
     lcTipoCli.setReadOnly(true);
     txtCodTipoCli.setTabelaExterna(lcTipoCli);
     txtCodTipoCli.setFK(true);
     txtCodTipoCli.setNomeCampo("CodTipoCli");
 
-    txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtNomeVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVendedor.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-    lcVendedor.add(new GuardaCampo( txtNomeVend, 90, 100, 207, 20, "NomeVend", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
+    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_PK,false));
+    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do representante",  ListaCampos.DB_SI,false));
     lcVendedor.montaSql(false, "VENDEDOR", "VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);
