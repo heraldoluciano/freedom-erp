@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,6 +32,8 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
@@ -121,10 +124,10 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private boolean bPesAutTipoCli = false;
   private boolean bAvalTipoCli = false;
   private boolean bSocioTipoCli = false;
-
+  private JTabbedPane tpn2 = new JTabbedPane();
   public FCredCli() {
     setTitulo("Ficha cadastral/Crédito por cliente");
-    setAtribos(50, 10, 600, 520);
+    setAtribos(50, 10, 750, 550);
 
     lcFicha.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcFicha);
@@ -191,15 +194,32 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     
     // Adiciona a aba Info. Adicionais
 	setPainel(pinFicha);
-	tbp = adicTab("Info. Adicionais", pnFicha);
-    
+	tbp = adicTab("Ficha cadastral", pnFicha);
+	adicTab("Veícuos", new JPanel());
+	adicTab("Imóveis", new JPanel());
+	adicTab("Terras", new JPanel());
+	adicTab("Bancos", new JPanel());
+	adicTab("Ref. Comerciais", new JPanel());
+	adicTab("Sócios", new JPanel());
+    adicTab("Pessoas autorizadas",new JPanel());
+	
 	setListaCampos(lcFicha);
     setNavegador(navFicha);
 
     pnFicha.add(pinRodFicha, BorderLayout.SOUTH);
     pnFicha.add(pinFicha, BorderLayout.CENTER);
+
+    
     pinRodFicha.adic(navFicha,0,0,150,25);
-   
+    tpn2.setTabPlacement(SwingConstants.LEFT);
+    tpn.setPreferredSize(new Dimension(50,500));
+    pnFicha.add(tpn2,BorderLayout.WEST);
+    tpn2.addTab("Filiação",pinFicha);
+    tpn2.addTab("Trabalho",new JPanel());
+    tpn2.addTab("Cônjuge",new JPanel());
+    tpn2.addTab("Ref. Pess.",new JPanel());
+    tpn2.addTab("Avalista",new JPanel());
+    
     lbPaiCli = adicCampo(txtPaiCli, 7, 20, 315, 20, "PaiCli", "Nome do pai", ListaCampos.DB_SI, false);
     lbRgPaiCli = adicCampo(txtRgPaiCli, 325, 20, 130, 20, "RgPaiCli", "Rg", ListaCampos.DB_SI, false);
     lbSSPPaiCli = adicCampo(txtSSPPaiCli, 458, 20, 100, 20, "SSPPaiCli", "SSP", ListaCampos.DB_SI, false);    
