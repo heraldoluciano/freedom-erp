@@ -63,18 +63,18 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
   private int casasDec = Aplicativo.casasDec;
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
-  private JTextFieldPad txtCodSolicitacao = new JTextFieldPad();
+  private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad();
   private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad();
   private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad();
   private JTextFieldPad txtQtdItAprovado = new JTextFieldPad();
   private JTextFieldPad txtCodUsu = new JTextFieldPad();
-  private JTextFieldPad txtCodProd = new JTextFieldPad();
-  private JTextFieldPad txtRefProd = new JTextFieldPad();
+  private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);
   private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);
   private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad();
-  private JTextFieldFK txtDescProd = new JTextFieldFK();
+  private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad();
   private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK();
   private JTextAreaPad txaMotivoSolicitacao = new JTextAreaPad();
@@ -113,12 +113,9 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
 
     pnMaster.add(spTab, BorderLayout.CENTER);
 
-    txtCodProd.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    txtRefProd.setTipo(JTextFieldPad.TP_STRING, 13, 0);
-    txtDescProd.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-    lcProd.add(new GuardaCampo(txtCodProd, 7, 100, 80, 20, "CodProd", "Código", true, false, txtDescProd, JTextFieldPad.TP_INTEGER, false), "txtCodProdx");
-    lcProd.add(new GuardaCampo(txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd.add(new GuardaCampo(txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
+    lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+    lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
 
     lcProd.setWhereAdic("ATIVOPROD='S'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
@@ -129,7 +126,6 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
     txtRefProd.setNomeCampo("RefProd");
     txtRefProd.setListaCampos(lcDet);
     txtRefProd.setTabelaExterna(lcProd);
-    txtCodSolicitacao.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
 
     pinCab = new Painel(740, 180);
     setListaCampos(lcCampos);
@@ -145,7 +141,7 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
     rgStatusSolicitacao = new JRadioGroup(1, 3, vStatusSolicitacaoLab, vStatusSolicitacaoVal);
     rgStatusSolicitacao.setAtivo(false);
 
-    adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "N. Solicit.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
+    adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "N.solicit.", ListaCampos.DB_PK, true);
     adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol", "Data Solicit.", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
     adicDB(rgStatusSolicitacao, 230, 20, 297, 25, "SitSol", "Situação", JTextFieldPad.TP_STRING, false);
     adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo",JTextFieldPad.TP_STRING, false);
@@ -213,7 +209,7 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
     }
     else {
       adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód. Produto", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
-      adicCampoInvisivel(txtRefProd, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, true, null, false);
+      //adicCampoInvisivel(txtRefProd, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, true, null, false);
     }
    
     adicCampoInvisivel(txtCodCC, "codCC", "Cód. do Centro de Custos", JTextFieldPad.TP_STRING, 13, 0, false, false, null, false);
