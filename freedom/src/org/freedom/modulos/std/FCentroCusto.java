@@ -99,9 +99,9 @@ public class FCentroCusto
 		pnCli.add(spnTab);
 		c.add(pnCli, BorderLayout.CENTER);
 
-		tab.adicColuna("Código");
-		tab.adicColuna("Cód. Red.");
-		tab.adicColuna("Descrição");
+		tab.adicColuna("Cód.c.c.");
+		tab.adicColuna("Cód.red.");
+		tab.adicColuna("Descrição do centro de custo");
 		tab.adicColuna("Sigla");
 		tab.setTamColuna(140, 0);
 		tab.setTamColuna(70, 1);

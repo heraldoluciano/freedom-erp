@@ -52,10 +52,10 @@ public class FBanco extends FDados implements ActionListener {
     lcModBol.setReadOnly(true);
     txtCodModBol.setTabelaExterna(lcModBol);
     
-    adicCampo(txtCodBanco, 7, 20, 50, 20,"CodBanco","Código",JTextFieldPad.TP_STRING,3,0,true,false,null,true);
-    adicCampo(txtNomeBanco, 60, 20, 250, 20,"NomeBanco","Nome",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodModBol, 7, 60, 50, 20, "CodModBol", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescModBol,false);
-    adicDescFK(txtDescModBol, 60, 60, 250, 20, "DescModBol", "e descrição modelo de boleto", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodBanco, 7, 20, 70, 20,"CodBanco","Cód.banco",JTextFieldPad.TP_STRING,3,0,true,false,null,true);
+    adicCampo(txtNomeBanco, 80, 20, 250, 20,"NomeBanco","Nome do banco",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescModBol,false);
+    adicDescFK(txtDescModBol, 80, 60, 250, 20, "DescModBol", "Descrição do modelo de boleto", JTextFieldPad.TP_STRING, 50, 0);
     setListaCampos( false, "BANCO", "FN");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

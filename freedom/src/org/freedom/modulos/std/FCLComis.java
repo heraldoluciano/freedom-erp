@@ -50,7 +50,7 @@ public class FCLComis extends FDados implements PostListener {
   
   public FCLComis () {
     setTitulo("Cadastro de Classificação de Comissões");
-    setAtribos( 50, 50, 350, 205);
+    setAtribos( 50, 50, 400, 205);
 
     setListaCampos( true, "CLCOMIS", "VD");
     
@@ -67,8 +67,8 @@ public class FCLComis extends FDados implements PostListener {
     
     
 	
-    adicCampo(txtCodClComis, 7, 20, 50, 20, "CodClComis", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtDescClComis, 60, 20, 250, 20, "DescClComis", "Descrição", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtCodClComis, 7, 20, 80, 20, "CodClComis", "Cód.c.comis.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtDescClComis, 90, 20, 250, 20, "DescClComis", "Descrição", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
     
     adic(lbDistriCom,7,50,250,20);
     adic(lbLinha,7,72,250,2);
