@@ -36,6 +36,10 @@ public class FreedomGRH extends Aplicativo {
 	    		addOpcao(100100000,TP_OPCAO_ITEM,"Funçao", 'F',100103000,2,true);
 	    		addOpcao(100100000,TP_OPCAO_ITEM,"Departamento", 'D',100104000,2,true);
 		        	    				
+	    		
+	    		addBotao("barraConveniados.gif","Empregados",100101000);
+	    			    		
+	    		
 	    ajustaMenu();
     }
 

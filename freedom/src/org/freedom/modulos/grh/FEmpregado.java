@@ -21,9 +21,13 @@
  */
 
 package org.freedom.modulos.grh;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -45,15 +49,15 @@ public class FEmpregado extends FDados implements ActionListener {
   private ListaCampos lcDepto = new ListaCampos(this,"DP");
   public FEmpregado () {
     setTitulo("Cadastro de Empregados");
-    setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 50, 20,"MatEmpr","Matricula",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 60, 20, 250, 20,"NomeEmpr","Nome do empregado",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodFuncao, 7, 60, 50, 20,"CodFunc","Cód.Func.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
-  	adicDescFK(txtDescFuncao, 90, 60, 237, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodTurno, 7, 100, 50, 20,"CodTurno","Cód.Turnos",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
-  	adicDescFK(txtDescTurno, 90, 100, 237, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodDepto, 7, 140, 50, 20,"CodDepto","Cód.Depto.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
-  	adicDescFK(txtDescDepto, 90, 140, 237, 20, "DescDepto", "Descrição do departamento", JTextFieldPad.TP_STRING, 50, 0);
+    setAtribos(50, 50, 500, 400);
+    adicCampo(txtCod, 7, 20, 80, 20,"MatEmpr","Matricula",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDesc, 90, 20, 260, 20,"NomeEmpr","Nome do empregado",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodFuncao, 7, 60, 80, 20,"CodFunc","Cód.Func.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
+  	adicDescFK(txtDescFuncao, 90, 60, 260, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodTurno, 7, 100, 80, 20,"CodTurno","Cód. Turno",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
+  	adicDescFK(txtDescTurno, 90, 100, 260, 20, "DescTurno", "Descrição do turno", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodDepto, 7, 140, 80, 20,"CodDep","Cód.Depto.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
+  	adicDescFK(txtDescDepto, 90, 140, 260, 20, "DescDepto", "Descrição do departamento", JTextFieldPad.TP_STRING, 50, 0);
 
   	
   	
@@ -64,16 +68,16 @@ public class FEmpregado extends FDados implements ActionListener {
   	lcFuncao.setReadOnly(true);
   	txtCodFuncao.setTabelaExterna(lcFuncao);
 
-  	lcTurno.add(new GuardaCampo( txtCodTurno, 7, 100, 80, 20, "CodTurno", "Cód.turno.", true, false, null, JTextFieldPad.TP_INTEGER,true));
+  	lcTurno.add(new GuardaCampo( txtCodTurno, 7, 100, 80, 20, "CodTurno", "Cód. turno", true, false, null, JTextFieldPad.TP_INTEGER,true));
   	lcTurno.add(new GuardaCampo( txtDescTurno, 90, 100, 207, 20, "DescTurno", "Descrição do turno", false, false, null, JTextFieldPad.TP_STRING,false));
   	lcTurno.montaSql(false, "TURNO", "RH");    
   	lcTurno.setQueryCommit(false);
   	lcTurno.setReadOnly(true);
   	txtCodTurno.setTabelaExterna(lcTurno);
   	
-  	lcDepto.add(new GuardaCampo( txtCodDepto, 7, 100, 80, 20, "CodTurno", "Cód.turno.", true, false, null, JTextFieldPad.TP_INTEGER,true));
-  	lcDepto.add(new GuardaCampo( txtDescDepto, 90, 100, 207, 20, "DescTurno", "Descrição do turno", false, false, null, JTextFieldPad.TP_STRING,false));
-  	lcDepto.montaSql(false, "TURNO", "RH");    
+  	lcDepto.add(new GuardaCampo( txtCodDepto, 7, 100, 80, 20, "CodDep", "Cód.Depto.", true, false, null, JTextFieldPad.TP_INTEGER,true));
+  	lcDepto.add(new GuardaCampo( txtDescDepto, 90, 100, 207, 20, "DescDep", "Descrição do departamento", false, false, null, JTextFieldPad.TP_STRING,false));
+  	lcDepto.montaSql(false, "DEPTO", "RH");    
   	lcDepto.setQueryCommit(false);
   	lcDepto.setReadOnly(true);
   	txtCodDepto.setTabelaExterna(lcDepto);
@@ -83,11 +87,7 @@ public class FEmpregado extends FDados implements ActionListener {
     btPrevimp.addActionListener(this);
     lcCampos.setQueryInsert(false);
   
-  
-
-  
-  
-  
+    
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {      	
