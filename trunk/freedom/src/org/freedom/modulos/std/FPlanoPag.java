@@ -97,34 +97,17 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     pinCab = new Painel();
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
-//    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_PK,null,true);
-    
-//    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",ListaCampos.DB_SI,null,true);
-    
-//    adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","Nº Parcs.",JTextFieldPad.TP_INTEGER,8,0,false,false,null,true);
-    adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","N° Parcs.",ListaCampos.DB_SI,null,true);
-	
-    adicCampo(txtNumConta, 370, 20, 97, 20,"NumConta","N.Conta",ListaCampos.DB_FK,false);
-    
-//    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta",JTextFieldPad.TP_STRING,50,0);
-    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta");  
-    
-    adicCampo(txtCodPlan, 7, 60, 100, 20,"CodPlan","Cód.planj.",ListaCampos.DB_FK,false);
-//    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento",JTextFieldPad.TP_STRING,50,0);
-    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento");
-    
-    adicCampo(txtCodCC, 310, 60, 97, 20,"CodCC","Centro de custo",ListaCampos.DB_FK,false);
-//    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo",JTextFieldPad.TP_STRING,50,0);
-    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo");  
-    
-//    adicCampoInvisivel(txtAnoCC, "AnoCC","Ano.C.C.",JTextFieldPad.TP_STRING,4,0,false,false,null,false);
-    
-    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano.C.C.",ListaCampos.DB_PF,false);
-//    adicDB(cbAutoBaixa, 7, 80, 300, 20,"AutoBaixaPlanoPag","",JTextFieldPad.TP_STRING,false);
 
-    
+    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_PK,null,true);
+    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",ListaCampos.DB_SI,null,true);
+    adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","N° Parcs.",ListaCampos.DB_SI,null,true);	
+    adicCampo(txtNumConta, 370, 20, 97, 20,"NumConta","N.Conta",ListaCampos.DB_FK,false);
+    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta");      
+    adicCampo(txtCodPlan, 7, 60, 100, 20,"CodPlan","Cód.planj.",ListaCampos.DB_FK,false);
+    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento");
+    adicCampo(txtCodCC, 310, 60, 97, 20,"CodCC","Centro de custo",ListaCampos.DB_FK,false);
+    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo");  
+    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano.C.C.",ListaCampos.DB_PF,false);    
     adicDB(cbAutoBaixa,7,80,300,20,"AutoBaixaPlanoPag","",false);
     
     setListaCampos( true, "PLANOPAG", "FN");
@@ -135,9 +118,6 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-//    adicCampo(txtNumItemPag, 7, 20, 60, 20,"NroParcPag","Item",JTextFieldPad.TP_INTEGER,2,0,true,false,null,true);
-    
-    
     adicCampo(txtNumItemPag,7,20,60,20,"NroParcPag","Item",ListaCampos.DB_PK,true);
     
     
