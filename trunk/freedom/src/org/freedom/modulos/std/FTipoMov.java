@@ -30,7 +30,6 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -65,7 +64,6 @@ public class FTipoMov extends FDados implements RadioGroupListener {
   private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp. NF?","S","N");
   private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Reimp. NF?","S","N");
   private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp. NF?","S","N");
-  private JPanelPad pinLbPadImp = new JPanelPad(53,15);
   
   public FTipoMov() {
     setTitulo("Cadastro de Tipos de Movimento");

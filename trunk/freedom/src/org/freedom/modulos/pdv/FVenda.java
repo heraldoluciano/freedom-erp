@@ -748,7 +748,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
   		Funcoes.mensagemErro(this,"Não existe nenhuma venda ativa!");
   		return;
   	 }
-  	 DLCancCupom canc = new DLCancCupom(con);
+  	 DLCancCupom canc = new DLCancCupom();
+  	 canc.setConexao(con);
   	 canc.buscaExterna(txtCodVenda.getVlrInteger());
   	 canc.setVisible(true);
   	 if (canc.OK) {
