@@ -55,7 +55,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrincipal;
 
 public class FConsSol extends FFilho implements ActionListener {
 
@@ -82,8 +81,6 @@ public class FConsSol extends FFilho implements ActionListener {
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-	private FPrincipal fPrim;
-
 	public FConsSol() {
 		setTitulo("Pesquisa Solicitações de Compra");
 		setAtribos(10, 10, 513, 480);
@@ -469,10 +466,6 @@ public class FConsSol extends FFilho implements ActionListener {
 			imprimir(true);
 		}
 
-	}
-
-	public void setTelaPrim(FPrincipal fP) {
-		fPrim = fP;
 	}
 
 	public void setConexao(Connection cn) {

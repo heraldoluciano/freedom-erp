@@ -72,8 +72,6 @@ import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrincipal;
-
 
 /**
  * @author robson
@@ -99,7 +97,6 @@ public class FEnviaMail extends FFilho implements ActionListener {
 	private JLabelPad lbStatus = new JLabelPad("Pronto.");
 	private JRadioGroup rgTipo = null;
 	private ListaCampos lcAtiv = new ListaCampos(this,"");
-	private FPrincipal fPrim;
 	String sSMTP = null;
 	String sUser = null;
 	String sPass = null;
@@ -345,9 +342,6 @@ public class FEnviaMail extends FFilho implements ActionListener {
 			);
 			pSec.iniciar();
 		 }
-	}
-	public void setTelaPrim(FPrincipal fP) {
-		fPrim = fP;
 	}
 	public void state(String sStatus) {
 		lbStatus.setText(sStatus);

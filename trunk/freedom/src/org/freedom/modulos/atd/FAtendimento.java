@@ -52,7 +52,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrincipal;
 
 
 public class FAtendimento extends FFilho implements CarregaListener, ActionListener {
@@ -80,7 +79,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private ListaCampos lcConv = new ListaCampos(this);
   private ListaCampos lcCli = new ListaCampos(this);
   private Vector vCodAtends = new Vector();
-  private FPrincipal fPrim;
   public FAtendimento() {
   	setTitulo("Atendimento");
   	setAtribos(20,20,540,400);
@@ -332,9 +330,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	else if (evt.getSource() == btExcluir) {
 		excluiAtend();
 	}
-  }
-  public void setTelaPrim(FPrincipal fP) {
-	  fPrim = fP;
   }
   public void setConexao(Connection cn) {
   	super.setConexao(cn);

@@ -167,5 +167,9 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
   public void setInitFirstFocus(boolean initFirstFocus) {
   	this.initFirstFocus = initFirstFocus;
   }
+protected FPrincipal fPrim;
+public void setTelaPrim(FPrincipal fP) {
+	fPrim = fP;
+}
   
 }

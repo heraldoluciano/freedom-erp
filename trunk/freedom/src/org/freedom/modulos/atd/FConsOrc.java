@@ -50,7 +50,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrincipal;
 
 public class FConsOrc extends FFilho implements ActionListener {
 	private JPanelPad pinCab = new JPanelPad(0,250);
@@ -79,7 +78,6 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcConv = new ListaCampos(this,"PR");
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
-	private FPrincipal fPrim;
 	private ListaCampos lcTipoConv = new ListaCampos(this,"AT");
 	private ListaCampos lcEnc = new ListaCampos(this,"EC");
 	private JTextFieldPad txtCodTpConv = new JTextFieldPad();
@@ -479,9 +477,6 @@ public class FConsOrc extends FFilho implements ActionListener {
 		if (evt.getSource()==btPrevimp){
 			imprimir(true);
 		}
-	}
-	public void setTelaPrim(FPrincipal fP) {
-		fPrim = fP;
 	}
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
