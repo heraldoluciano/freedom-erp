@@ -51,20 +51,20 @@ import org.freedom.telas.FFDialogo;
 public class DLNovoPag extends FFDialogo implements PostListener {
   private JPanel pnPag = new JPanel(new BorderLayout());
   private Painel pinCab = new Painel(580,130);
-  private JTextFieldPad txtCodFor = new JTextFieldPad();
-  private JTextFieldFK txtDescFor = new JTextFieldFK();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
-  private JTextFieldPad txtCodBanco = new JTextFieldPad();
-  private JTextFieldFK txtDescBanco = new JTextFieldFK();
-  private JTextFieldPad txtCodPag = new JTextFieldPad();
-  private JTextFieldPad txtNParcPag = new JTextFieldPad();
-  private JTextFieldPad txtVlrParcItPag = new JTextFieldPad();
-  private JTextFieldPad txtDtVencItPag = new JTextFieldPad();
-  private JTextFieldPad txtVlrParcPag = new JTextFieldPad();
-  private JTextFieldPad txtDtEmisPag = new JTextFieldPad();
-  private JTextFieldPad txtDocPag = new JTextFieldPad();
-  private JTextFieldPad txtObs = new JTextFieldPad();
+  private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+  private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNParcPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtVlrParcItPag = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtDtVencItPag = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtVlrParcPag = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtDtEmisPag = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDocPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldPad txtObs = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private Tabela tabPag = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabPag);
   private ListaCampos lcPagar = new ListaCampos(this);
@@ -82,10 +82,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     lcPagar.adicDetalhe(lcItPagar);
     lcItPagar.setTabela(tabPag);
 
-    txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescFor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.For", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-    lcFor.add(new GuardaCampo( txtDescFor, 90, 100, 207, 20, "RazFor", "Razão", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
+    lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
+    lcFor.add(new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI,false));
     lcFor.montaSql(false, "FORNECED", "CP");
     lcFor.setQueryCommit(false);
     lcFor.setReadOnly(true);
@@ -93,10 +91,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     txtCodFor.setFK(true);
     txtCodFor.setNomeCampo("CodFor");
 
-    txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.PlanoPag", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Razão", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK,false));
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
     lcPlanoPag.setQueryCommit(false);
     lcPlanoPag.setReadOnly(true);
@@ -104,10 +100,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     txtCodPlanoPag.setFK(true);
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 
-    txtCodBanco.setTipo(JTextFieldPad.TP_STRING,3,0);
-    txtDescBanco.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Nº Banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBanco");
-    lcBanco.add(new GuardaCampo( txtDescBanco, 90, 100, 207, 20, "NomeBanco", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBanco");
+    lcBanco.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK,false));
+    lcBanco.add(new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI,false));
     lcBanco.montaSql(false, "BANCO", "FN");
     lcBanco.setQueryCommit(false);
     lcBanco.setReadOnly(true);
@@ -116,27 +110,20 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     txtCodBanco.setNomeCampo("CodBanco");
 
 
-    txtVlrParcPag.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtEmisPag.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtObs.setTipo(JTextFieldPad.TP_STRING,50,0);
-    txtDocPag.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-    lcPagar.add(new GuardaCampo( txtCodPag, 7, 100, 80, 20, "CodPag", "Cód.Pag", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.For", false, true, null, JTextFieldPad.TP_INTEGER,true),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.PlanoPag", false, true, null, JTextFieldPad.TP_INTEGER,true),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Cód.Banco", false, true, null, JTextFieldPad.TP_STRING,false),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtVlrParcPag, 7, 100, 80, 20, "VlrParcPag", "Valor", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtDtEmisPag, 7, 100, 80, 20, "DataPag", "Emissão", false, false, null, JTextFieldPad.TP_DATE,false),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtDocPag, 7, 100, 80, 20, "DocPag", "Doc.", false, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtObs, 7, 100, 80, 20, "ObsPag", "Obs.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlanoPagx");
+    lcPagar.add(new GuardaCampo( txtCodPag, "CodPag", "Cód.pag.", ListaCampos.DB_PK,true));
+    lcPagar.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_FK, true));
+    lcPagar.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK,true));
+    lcPagar.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false));
+    lcPagar.add(new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor da parc.", ListaCampos.DB_SI,false));
+    lcPagar.add(new GuardaCampo( txtDtEmisPag, "DataPag", "Dt.emissão", ListaCampos.DB_SI,false));
+    lcPagar.add(new GuardaCampo( txtDocPag, "DocPag", "N.documento", ListaCampos.DB_SI,true));
+    lcPagar.add(new GuardaCampo( txtObs, "ObsPag", "Obs.", ListaCampos.DB_SI,false));
     lcPagar.montaSql(true,"PAGAR", "FN");
 
     txtNParcPag.setNomeCampo("NParcPag");
-    txtNParcPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrParcItPag.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtVencItPag.setTipo(JTextFieldPad.TP_DATE,10,0);
-    lcItPagar.add(new GuardaCampo( txtNParcPag, 7, 100, 80, 20, "NParcPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcItPagar.add(new GuardaCampo( txtVlrParcItPag, 7, 100, 80, 20, "VlrParcItPag", "Valor Tot.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcItPagar.add(new GuardaCampo( txtDtVencItPag, 7, 100, 80, 20, "DtVencItPag", "Vencimento", false, false, null, JTextFieldPad.TP_DATE,false),"txtCodPlanoPagx");
+    lcItPagar.add(new GuardaCampo( txtNParcPag, "NParcPag", "N.parc.", ListaCampos.DB_PK, false));
+    lcItPagar.add(new GuardaCampo( txtVlrParcItPag, "VlrParcItPag", "Valor tot.", ListaCampos.DB_SI, false));
+    lcItPagar.add(new GuardaCampo( txtDtVencItPag, "DtVencItPag", "Dt.vencto.", ListaCampos.DB_SI,false));
     lcItPagar.montaSql(false, "ITPAGAR", "FN");
     lcItPagar.setQueryCommit(false);
     txtNParcPag.setListaCampos(lcItPagar);
