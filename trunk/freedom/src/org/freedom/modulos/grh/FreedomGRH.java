@@ -29,12 +29,12 @@ public class FreedomGRH extends Aplicativo {
 	public FreedomGRH() {
 		super("iconAtendimento32.gif","splashGRH.jpg","FreedomGMS - Módulo de gerenciamento de mateirais e serviços",1,8);      		
 		
-		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false, null);
-			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'T',100100000,1,false, null);		    	
-	    		addOpcao(100100000,TP_OPCAO_ITEM,"Empregados", 'E',100101000,2,true, null);		
-	    		addOpcao(100100000,TP_OPCAO_ITEM,"Turnos", 'R',100102000,2,true, null);
-	    		addOpcao(100100000,TP_OPCAO_ITEM,"Funçao", 'F',100103000,2,true, null);
-	    		addOpcao(100100000,TP_OPCAO_ITEM,"Departamento", 'D',100104000,2,true, null);
+		addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
+			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros","",'T',100100000,1, false, null);		    	
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Empregados", "",'E',100101000,2, true, null);		
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Turnos", "",'R',100102000,2, true, null);
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Funçao", "",'F',100103000,2, true, null);
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Departamento", "",'D',100104000,2, true, null);
 		        	    				
 	    		
 	    		addBotao("barraConveniados.gif","Empregados",100101000);

@@ -37,39 +37,39 @@ public class FreedomTMK extends Aplicativo {
 
 	public FreedomTMK() {
 		super("iconAtendimento32.gif","splashTMK.jpg","FreedomTMK - Módulo de telemarketing FREEDOM",1,7);
-		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", 'A' ,100000000, 0, false, null);
+		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "" ,'A', 100000000, 0, false, null);
 		
-		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas",'T',100100000,1,false, null);
+		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 		  
-		    addOpcao(100100000,TP_OPCAO_MENU,"Contato",'C',1001010000,2,false, null);		   
-		      addOpcao(1001010000,TP_OPCAO_ITEM,"Atividade",'A',100101010,3,true, null);
-		      addOpcao(1001010000,TP_OPCAO_ITEM,"Contato",'C',100101020,3,true, null);
+		    addOpcao(100100000,TP_OPCAO_MENU,"Contato","",'C',1001010000,2, false, null);		   
+		      addOpcao(1001010000,TP_OPCAO_ITEM,"Atividade","",'A',100101010,3, true, null);
+		      addOpcao(1001010000,TP_OPCAO_ITEM,"Contato","",'C',100101020,3, true, null);
 		       
-		    addOpcao(100100000,TP_OPCAO_MENU,"Atendente",'A',100102000,2,false, null);
-  			  addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente",'T',100102010,3,true, null);
-			  addOpcao(100102000,TP_OPCAO_ITEM,"Atendentes",'A',100110020,3,true, null);
+		    addOpcao(100100000,TP_OPCAO_MENU,"Atendente","",'A',100102000,2, false, null);
+  			  addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente","",'T',100102010,3, true, null);
+			  addOpcao(100102000,TP_OPCAO_ITEM,"Atendentes","",'A',100110020,3, true, null);
 		      
-		    addOpcao(100100000,TP_OPCAO_MENU,"Cliente",'C',100104000,2,false, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Setor", 'S', 100104010,3,true, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Vendedor", 'V', 100104020,3,true, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Tipos de cliente", 'T', 100104030,3,true, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Classificação de cliente", 'l', 100104040,3,true, null);
+		    addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100104000,2, false, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Setor", "", 'S',100104010,3, true, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Vendedor", "", 'V',100104020,3, true, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Tipos de cliente", "", 'T',100104030,3, true, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Classificação de cliente", "", 'l',100104040,3, true, null);
 		      addSeparador(100104000);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Cliente", 'C', 100104050,3,true, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Cliente", "", 'C',100104050,3, true, null);
 			  addSeparador(100104000);
 		
-		  addOpcao(100000000, TP_OPCAO_MENU, "Preferências", 'P',100200000, 1, false, null);
-		    addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais...", 'G', 100201000,2, true, null );
-		    addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas",'F',100300000, 1, false, null);
-			    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos",'I',100301000,2,true, null);
-			    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout",'C',100302000,2,true, null);
-			    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos",'E',100303000,2,true, null);
+		  addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "",'P', 100200000, 1, false, null);
+		    addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais...", "", 'G',100201000, 2, true, null );
+		    addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas","",'F', 100300000, 1, false, null);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos","",'I',100301000,2, true, null);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout","",'C',100302000,2, true, null);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos","",'E',100303000,2, true, FEnviaMail.class);
 			
-	    addOpcao(-1,TP_OPCAO_MENU,"Contatos",'C',200000000,0,false, null);
-	      addOpcao(200000000,TP_OPCAO_ITEM,"Histórico",'H',200100000,1,true, null);
-	      addOpcao(200000000,TP_OPCAO_ITEM,"Agenda",'A',200200000,1,true, null);
-	      addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200300000,1,false, null);
-	      addOpcao(200300000,TP_OPCAO_ITEM,"Relatório diário",'R',200301000,1,true, null);
+	    addOpcao(-1,TP_OPCAO_MENU,"Contatos","",'C',200000000,0, false, null);
+	      addOpcao(200000000,TP_OPCAO_ITEM,"Histórico","",'H',200100000,1, true, null);
+	      addOpcao(200000000,TP_OPCAO_ITEM,"Agenda","",'A',200200000,1, true, null);
+	      addOpcao(200000000,TP_OPCAO_MENU,"Listagens","",'L',200300000,1, false, null);
+	      addOpcao(200300000,TP_OPCAO_ITEM,"Relatório diário","",'R',200301000,1, true, null);
 	      
 		addBotao("btAtendimento.gif","Atendimento",100110020);
 	      

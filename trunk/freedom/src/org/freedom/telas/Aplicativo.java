@@ -214,7 +214,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public void addOpcao(int iSuperMenu, int iTipo, String sCaption,
-			char cAtalho, int iOpcao, int iNivel, boolean bExec, Class tela) {
+			String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class tela) {
 		JMenuItem mOpcao = null;
 		JMenuPad mpMaster = null;
 		try {
@@ -360,6 +360,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					FAtalhos tela = new FAtalhos();
 					tela.setVisible(true);
 					tela.dispose();
+				} else if (((JMenuItem) oTemp).getText().equals("Suporte")) {
+					FSuporte tela = new FSuporte();
+					tela.setVisible(true);
+					tela.dispose();
 				}
 			}
 			if (iCodMenu != -1) {
@@ -482,6 +486,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		JMenuItem miAtalhos = new JMenuItem("Atalhos");
 		miAtalhos.addActionListener(this);
 		mAjuda.add(miAtalhos);
+		mAjuda.addSeparator();
+		JMenuItem miSuporte = new JMenuItem("Suporte");
+		miSuporte.addActionListener(this);
+		mAjuda.add(miSuporte);
 		telaPrincipal.bar.add(mAjuda);
 	}
 

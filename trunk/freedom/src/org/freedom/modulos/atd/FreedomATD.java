@@ -32,47 +32,47 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		super("iconAtendimento32.gif","splashATD.jpg","FreedomATD - Módulo de atendimento",1,4);
 		
 //Arquivo:		
-		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false, null);
+		addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
 		
-		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas",'T',100100000,1,false, null);
+		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 		  
-		    addOpcao(100100000,TP_OPCAO_MENU,"Conveniado",'C',100101000,2,false, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de Conveniado",'T',100101010,3,true, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Atribuições",'A',100101020,3,true, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Encaminhador",'E',100101030,3,true, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Conveniados",'C',100101040,3,true, null);
+		    addOpcao(100100000,TP_OPCAO_MENU,"Conveniado","",'C',100101000,2, false, null);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de Conveniado","",'T',100101010,3, true, null);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Atribuições","",'A',100101020,3, true, null);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Encaminhador","",'E',100101030,3, true, null);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Conveniados","",'C',100101040,3, true, null);
 		      
-		    addOpcao(101000000,TP_OPCAO_MENU,"Atendente",'A',100102000,2,false, null);
-		      addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente",'T',100102010,3,true, null);
-		      addOpcao(100102000,TP_OPCAO_ITEM,"Atendentes",'A',100102020,3,true, null);
+		    addOpcao(101000000,TP_OPCAO_MENU,"Atendente","",'A',100102000,2, false, null);
+		      addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente","",'T',100102010,3, true, null);
+		      addOpcao(100102000,TP_OPCAO_ITEM,"Atendentes","",'A',100102020,3, true, null);
 		      
-		    addOpcao(100100000,TP_OPCAO_MENU,"Atendimento",'t',100103000,2,false, null);
-		      addOpcao(100103000,TP_OPCAO_ITEM,"Setor de Atendimento",'S',100103010,3,true, null);
+		    addOpcao(100100000,TP_OPCAO_MENU,"Atendimento","",'t',100103000,2, false, null);
+		      addOpcao(100103000,TP_OPCAO_ITEM,"Setor de Atendimento","",'S',100103010,3, true, null);
 		      addSeparador(100103000);
-		      addOpcao(100103000,TP_OPCAO_ITEM,"Atendente",'e',100103020,1,true, null);
-		      addOpcao(100103000,TP_OPCAO_ITEM,"Tipo de Atendente",'i',100103030,1,true, null);
+		      addOpcao(100103000,TP_OPCAO_ITEM,"Atendente","",'e',100103020,1, true, null);
+		      addOpcao(100103000,TP_OPCAO_ITEM,"Tipo de Atendente","",'i',100103030,1, true, null);
 		      
 		    addSeparador(100100000);
-		    addOpcao(100100000,TP_OPCAO_ITEM,"Clientes",'l',100104000,2,true, null);
+		    addOpcao(100100000,TP_OPCAO_ITEM,"Clientes","",'l',100104000,2, true, null);
 		    addSeparador(100100000);
 		    
-		  addOpcao(100000000,TP_OPCAO_MENU,"Preferências",'P',100200000,1,false, null);
+		  addOpcao(100000000,TP_OPCAO_MENU,"Preferências","",'P',100200000,1, false, null);
 		  
-		    addOpcao(100200000,TP_OPCAO_ITEM,"Preferências Gerais...",'P',100201000,2,true, null);
+		    addOpcao(100200000,TP_OPCAO_ITEM,"Preferências Gerais...","",'P',100201000,2, true, null);
 
 //Atendimento:
-		addOpcao(-1,TP_OPCAO_MENU,"Atendimento",'t',110000000,0,false, null);
-		  addOpcao(110000000,TP_OPCAO_ITEM,"Atendimento",'A',110100000,1,true, null);
+		addOpcao(-1,TP_OPCAO_MENU,"Atendimento","",'t',110000000,0, false, null);
+		  addOpcao(110000000,TP_OPCAO_ITEM,"Atendimento","",'A',110100000,1, true, null);
 		  addSeparador(110000000);
-		  addOpcao(110000000,TP_OPCAO_ITEM,"Tipos de Atendimento",'T',110200000,1,true, null);
+		  addOpcao(110000000,TP_OPCAO_ITEM,"Tipos de Atendimento","",'T',110200000,1, true, null);
 
 //Orçamento:
-	    addOpcao(-1,TP_OPCAO_MENU,"Orçamento",'O',1200000000,0,false, null);
-		  addOpcao(1200000000,TP_OPCAO_ITEM,"Orçamento",'O',120100000,1,true, null);
+	    addOpcao(-1,TP_OPCAO_MENU,"Orçamento","",'O',1200000000,0, false, null);
+		  addOpcao(1200000000,TP_OPCAO_ITEM,"Orçamento","",'O',120100000,1, true, null);
 		  addSeparador(1200000000);
-		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Orçamentos",'P',120200000,1,true, null);
-		  addOpcao(1200000000,TP_OPCAO_ITEM,"Aprova Orçamentos",'A',120300000,1,true, null);
-		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Autorizações",'e',120400000,1,true, null);
+		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Orçamentos","",'P',120200000,1, true, null);
+		  addOpcao(1200000000,TP_OPCAO_ITEM,"Aprova Orçamentos","",'A',120300000,1, true, null);
+		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Autorizações","",'e',120400000,1, true, null);
 		 
 		addBotao("btAtendimento.gif","Atendimento",110100000);
 		addBotao("btOrcamento.gif","Orçamento",120100000);

@@ -33,25 +33,25 @@ public class FreedomCFG extends Aplicativo {
   private Connection conIB = null;
   public FreedomCFG() {
 	 super("iconConfiguracao32.gif","splashConf.jpg","FreedomCFG - Configuração do sitema FREEDOM",1,2);
-      addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false, null);
-      addOpcao(100000000,TP_OPCAO_MENU,"Tabelas",'T',100100000,1,false, null);
-        addOpcao(100100000,TP_OPCAO_MENU,"Acesso ao sistema",'A',100101000,2,false, null);
-          addOpcao(100101000,TP_OPCAO_ITEM,"Grupos",'G',100101010,3,true, null);
-          addOpcao(100101000,TP_OPCAO_ITEM,"Usuarios",'U',100101020,3,true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Acesso",'A',100101030,3,true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Menu",'M',100101040,3,true, null);
-	    addOpcao(100100000,TP_OPCAO_MENU,"Clientes/Conveniados",'C',100102000,2,false, null);
- 	      addOpcao(100102000,TP_OPCAO_ITEM,"Grau de instrução",'G',100102010,3,true, null);
- 	      addOpcao(100102000,TP_OPCAO_ITEM,"Paises",'P',100102020,3,true, null);
-	    addOpcao(100100000,TP_OPCAO_MENU,"Objetos",'O',100103000,2,false, null);
-	      addOpcao(100103000,TP_OPCAO_ITEM,"Tabela",'T',100103010,3,true, null);
-	      addOpcao(100103000,TP_OPCAO_ITEM,"Objetos aux.",'O',100103020,3,true, null);
-	    addOpcao(100100000,TP_OPCAO_MENU,"Fluxos",'F',100104000,2,false, null);
-	      addOpcao(100104000,TP_OPCAO_ITEM,"Tarefas",'T',100104090,3,true, null);
-	      addOpcao(100104000,TP_OPCAO_ITEM,"Processos",'P',100104100,3,true, null);
-	      addOpcao(100104000,TP_OPCAO_ITEM,"Fluxos",'F',100104110,3,true, null);
-        addOpcao(100100000,TP_OPCAO_MENU,"Ferramentas",'e',100105000,2,false, null);
-	      addOpcao(100105000,TP_OPCAO_ITEM,"Ajuste de Sequencia",'A',100105090,3,true, null);
+      addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
+      addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
+        addOpcao(100100000,TP_OPCAO_MENU,"Acesso ao sistema","",'A',100101000,2, false, null);
+          addOpcao(100101000,TP_OPCAO_ITEM,"Grupos","",'G',100101010,3, true, null);
+          addOpcao(100101000,TP_OPCAO_ITEM,"Usuarios","",'U',100101020,3, true, null);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Acesso","",'A',100101030,3, true, null);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Menu","",'M',100101040,3, true, null);
+	    addOpcao(100100000,TP_OPCAO_MENU,"Clientes/Conveniados","",'C',100102000,2, false, null);
+ 	      addOpcao(100102000,TP_OPCAO_ITEM,"Grau de instrução","",'G',100102010,3, true, null);
+ 	      addOpcao(100102000,TP_OPCAO_ITEM,"Paises","",'P',100102020,3, true, null);
+	    addOpcao(100100000,TP_OPCAO_MENU,"Objetos","",'O',100103000,2, false, null);
+	      addOpcao(100103000,TP_OPCAO_ITEM,"Tabela","",'T',100103010,3, true, null);
+	      addOpcao(100103000,TP_OPCAO_ITEM,"Objetos aux.","",'O',100103020,3, true, null);
+	    addOpcao(100100000,TP_OPCAO_MENU,"Fluxos","",'F',100104000,2, false, null);
+	      addOpcao(100104000,TP_OPCAO_ITEM,"Tarefas","",'T',100104090,3, true, null);
+	      addOpcao(100104000,TP_OPCAO_ITEM,"Processos","",'P',100104100,3, true, null);
+	      addOpcao(100104000,TP_OPCAO_ITEM,"Fluxos","",'F',100104110,3, true, null);
+        addOpcao(100100000,TP_OPCAO_MENU,"Ferramentas","",'e',100105000,2, false, null);
+	      addOpcao(100105000,TP_OPCAO_ITEM,"Ajuste de Sequencia","",'A',100105090,3, true, null);
 	   
       
 	  addBotao("barraGrupo.gif", "Cadastro de Grupos",100101010); 
