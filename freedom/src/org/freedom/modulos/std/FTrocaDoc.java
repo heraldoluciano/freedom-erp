@@ -47,10 +47,10 @@ import org.freedom.telas.FFilho;
 public class FTrocaDoc extends FFilho implements ActionListener {
   private Painel pinCli = new Painel(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodVenda = new JTextFieldPad();
-  private JTextFieldFK txtSerie = new JTextFieldFK();
-  private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK();
-  private JTextFieldFK txtStatusVenda = new JTextFieldFK();
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldFK txtVlrLiqVenda = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldFK txtStatusVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtNovoDoc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JButton btTrocaDoc = new JButton(Icone.novo("btTrocaNumero.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
@@ -62,16 +62,11 @@ public class FTrocaDoc extends FFilho implements ActionListener {
     
     txtCodVenda.setRequerido(true);
     
-    txtCodVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtNovoDoc.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrLiqVenda.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtStatusVenda.setTipo(JTextFieldPad.TP_STRING,2,0);
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
-    lcVenda.add(new GuardaCampo( txtNovoDoc, 90, 100, 207, 20, "DocVenda", "Documento", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, 90, 100, 207, 20, "VlrLiqVenda", "V. liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtStatusVenda, 90, 100, 207, 20, "StatusVenda", "Status", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false));
+    lcVenda.add(new GuardaCampo( txtNovoDoc, "DocVenda", "Documento", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. liq.", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     txtCodVenda.setTabelaExterna(lcVenda);

@@ -27,19 +27,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FVariantes extends FDados implements ActionListener{
-  private JTextFieldPad txtCodVarG = new JTextFieldPad(5);
-  private JTextFieldPad txtDescVarG= new JTextFieldPad(20);
+  private JTextFieldPad txtCodVarG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescVarG= new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   public FVariantes () {
     setTitulo("Cadastro de Variantes da Grade");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodVarG, 7, 20, 70, 20,"CodVarG","Cód.var.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescVarG, 80, 20, 250, 20,"DescVarG","Descrição da variante",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    adicCampo(txtCodVarG, 7, 20, 70, 20,"CodVarG","Cód.var.",ListaCampos.DB_PK,true);
+    adicCampo(txtDescVarG, 80, 20, 250, 20,"DescVarG","Descrição da variante",ListaCampos.DB_SI,true);
     setListaCampos( true, "VARGRADE", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

@@ -27,19 +27,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTratTrib extends FDados implements ActionListener{
-  private JTextFieldPad txtCodTratTrib = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTratTrib= new JTextFieldPad(20);
+  private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtDescTratTrib= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTratTrib () {
     setTitulo("Tratamento Tributário");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTratTrib, 7, 20, 70, 20,"CodTratTrib","Cód.tr.trib.",JTextFieldPad.TP_STRING,2,0,true,false,null,true);
-    adicCampo(txtDescTratTrib, 80, 20, 250, 20,"DescTratTrib","Descrição do tratamento tributário",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
+    adicCampo(txtCodTratTrib, 7, 20, 70, 20,"CodTratTrib","Cód.tr.trib.",ListaCampos.DB_PK, true);
+    adicCampo(txtDescTratTrib, 80, 20, 250, 20,"DescTratTrib","Descrição do tratamento tributário",ListaCampos.DB_SI, true);
     setListaCampos( true, "TRATTRIB", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
