@@ -119,6 +119,7 @@ public class FRBordero extends FRelatorio {
   	String sCodBanco = null;
   	int iCodSetor = 0;
   	int iCodVend = 0;
+  	int iCodCli = 0;
   	int iParans = 0;
 	String sFiltro = "";
 	String sTitulo = "";
@@ -178,8 +179,12 @@ public class FRBordero extends FRelatorio {
         }
   		
   		sSQL = "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,"+
-                  "R.CODCLI,C.RAZCLI, C.CNPJCLI, IT.VLRPARCITREC," +
-                  "IT.DTPAGOITREC, R.DATAREC, "+
+                  "R.CODCLI,C.RAZCLI, C.CNPJCLI, " +
+                  "C.ENDCOB, C.NUMCOB, C.BAIRCOB, C.CIDCOB, " +
+                  "C.UFCOB, C.CEPCOB, " +
+                  "C.ENDCLI, C.NUMCLI, C.BAIRCLI, C.CIDCLI, " +
+                  "C.UFCLI, C.CEPCLI, " +
+                  "IT.VLRPARCITREC, IT.DTPAGOITREC, R.DATAREC, "+
                   "(SELECT V.STATUSVENDA FROM VDVENDA V "+
                   "WHERE V.FLAG IN "+
                   Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
@@ -251,30 +256,69 @@ public class FRBordero extends FRelatorio {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					
-  					imp.say(imp.pRow()+0,0,"| Razão social do cliente");
-  					imp.say(imp.pRow()+0,53,"| Cod.cli");
-  					imp.say(imp.pRow()+0,63,"| CNPJ");
-  					imp.say(imp.pRow()+0,83,"| N.dupl.");
-  					imp.say(imp.pRow()+0,96,"| Emissao");
-  					imp.say(imp.pRow()+0,108,"| Vencto.");
-  					imp.say(imp.pRow()+0,121,"| Valor");
+  					imp.say(imp.pRow()+0,0,"|Razão social do cliente");
+  					imp.say(imp.pRow()+0,43,"Cod.cli");
+  					imp.say(imp.pRow()+0,53,"CNPJ");
+  					imp.say(imp.pRow()+0,73,"Endereco");
+  					imp.say(imp.pRow()+0,136,"|");
+  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  					imp.say(imp.pRow()+0,0,"|");
+  					imp.say(imp.pRow()+0,10,"Cidade");
+  					imp.say(imp.pRow()+0,42,"UF");
+  					imp.say(imp.pRow()+0,45,"Bairro");
+  					imp.say(imp.pRow()+0,77,"C.E.P.");
+  					imp.say(imp.pRow()+0,89,"N.dupl.");
+  					imp.say(imp.pRow()+0,100,"Emissao");
+  					imp.say(imp.pRow()+0,111,"Vencto.");
+  					imp.say(imp.pRow()+0,122,"Valor");
+  					imp.say(imp.pRow()+0,136,"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
   				}
-  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString("RAZCLI"),50));
-  				imp.say(imp.pRow()+0,53,"| "+Funcoes.alinhaDir(""+rs.getInt("CODCLI"),8));
-  				imp.say(imp.pRow()+0,63,"| "+Funcoes.setMascara(rs.getString("CNPJCLI"),"########/####-##"));
-  				imp.say(imp.pRow()+0,83,"| "+Funcoes.alinhaDir(rs.getString("DOCREC")+"-"+rs.getInt("NPARCITREC"),10));
-  				imp.say(imp.pRow()+0,96,"| "+Funcoes.dateToStrDate(rs.getDate("DATAREC")));
-  				imp.say(imp.pRow()+0,108,"| "+Funcoes.dateToStrDate(rs.getDate("DTVENCITREC")));
-  				imp.say(imp.pRow()+0,121,"| "+Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VLRPARCITREC")));
+  				else if (iCodCli!=rs.getInt("CODCLI")) {
+  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+  				}
+  				if (rs.getInt("CODCLI")!=iCodCli) { 
+  				    imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  				    imp.say(imp.pRow()+0,0,"|"+Funcoes.copy(rs.getString("RAZCLI"),40));
+  				    imp.say(imp.pRow()+0,43,Funcoes.alinhaDir(""+rs.getInt("CODCLI"),8));
+  				    imp.say(imp.pRow()+0,53,Funcoes.setMascara(rs.getString("CNPJCLI"),"########/####-##"));
+  				    if ( (rs.getString("ENDCOB")==null) || (rs.getString("ENDCOB").trim().equals("")) ) {
+  				        imp.say(imp.pRow()+0,73,Funcoes.copy(rs.getString("ENDCLI"),50).trim()+", "+Funcoes.copy(rs.getString("NUMCLI"),8));
+  				        imp.say(imp.pRow()+0,136,"|");
+  				        imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  				        imp.say(imp.pRow()+0,0,"|");
+  				        imp.say(imp.pRow()+0,10,Funcoes.copy(rs.getString("CIDCLI"),30));
+  				        imp.say(imp.pRow()+0,42,Funcoes.copy(rs.getString("UFCLI"),2));
+  				        imp.say(imp.pRow()+0,45,Funcoes.copy(rs.getString("BAIRCLI"),30));
+  				        imp.say(imp.pRow()+0,77,Funcoes.setMascara(rs.getString("CEPCLI"),"#####-###"));
+  				    }
+  				    else {
+  				        imp.say(imp.pRow()+0,73,Funcoes.copy(rs.getString("ENDCOB"),50).trim()+", "+Funcoes.copy(rs.getString("NUMCOB"),8));
+  				        imp.say(imp.pRow()+0,136,"|");
+  				        imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  				        imp.say(imp.pRow()+0,0,"|");
+  				        imp.say(imp.pRow()+0,10,Funcoes.copy(rs.getString("CIDCOB"),30));
+  				        imp.say(imp.pRow()+0,42,Funcoes.copy(rs.getString("UFCOB"),2));
+  				        imp.say(imp.pRow()+0,45,Funcoes.copy(rs.getString("BAIRCOB"),30));
+  				        imp.say(imp.pRow()+0,77,Funcoes.setMascara(rs.getString("CEPCOB"),"#####-###"));
+  				    }
+  				}
+  				else { 
+  				   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  				   imp.say(imp.pRow()+0,0,"|");
+  				}
+  				imp.say(imp.pRow()+0,89,Funcoes.alinhaDir(rs.getString("DOCREC")+"-"+rs.getInt("NPARCITREC"),10));
+  				imp.say(imp.pRow()+0,100,Funcoes.dateToStrDate(rs.getDate("DATAREC")));
+  				imp.say(imp.pRow()+0,111,Funcoes.dateToStrDate(rs.getDate("DTVENCITREC")));
+  				imp.say(imp.pRow()+0,122,Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VLRPARCITREC")));
   				imp.say(imp.pRow()+0,136,"|");
 
   				if (rs.getString("VlrParcItRec") != null) {
   					deTotParc += rs.getDouble("VlrParcItRec");
   				}
+  				iCodCli = rs.getInt("CODCLI");
         
  			}
 
@@ -282,8 +326,8 @@ public class FRBordero extends FRelatorio {
   			imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"|");
-  			imp.say(imp.pRow()+0,55,"Totais Geral-> | ");
-  			imp.say(imp.pRow()+0,121,"| "+Funcoes.strDecimalToStrCurrency(12,2,""+deTotParc));
+  			imp.say(imp.pRow()+0,55,"Total geral-> ");
+  			imp.say(imp.pRow()+0,122,Funcoes.strDecimalToStrCurrency(12,2,""+deTotParc));
   			imp.say(imp.pRow(),136,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
@@ -317,6 +361,7 @@ public class FRBordero extends FRelatorio {
       	iParans = 0;
       	iCodSetor = 0;
       	iCodVend = 0;
+      	iCodCli = 0;
     	sFiltro = null;
     	sTitulo = null;
     	sDataini = null;
