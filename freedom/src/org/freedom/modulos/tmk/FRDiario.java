@@ -51,7 +51,7 @@ public class FRDiario extends FRelatorio {
   
   public FRDiario() {
     setTitulo("Ralatório diário");
-    setAtribos(80,80,300,270);
+    setAtribos(80,80,290,270);
 
 //    Funcoes.setBordReq(txtCodFor);
 
@@ -70,11 +70,11 @@ public class FRDiario extends FRelatorio {
     
     adic(new JLabel("Periodo:"),7,5,120,20);
     adic(new JLabel("De:"),7,25,30,20);
-    adic(txtDataini,40,25,97,20);
-    adic(new JLabel("Até:"),140,25,17,20);
-    adic(txtDatafim,160,25,100,20);
-    adic(new JLabel("Status:"),7,45,250,20);
-    adic(cbSit,7,65,253,20);
+    adic(txtDataini,40,25,100,20);
+    adic(new JLabel("Até:"),143,25,23,20);
+    adic(txtDatafim,169,25,100,20);
+    adic(new JLabel("Status:"),7,45,269,20);
+    adic(cbSit,7,65,262,20);
     adic(cbComp,7,100,253,20);
     
   }

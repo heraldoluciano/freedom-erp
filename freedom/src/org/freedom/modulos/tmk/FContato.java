@@ -127,8 +127,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescVend.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+    lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
     lcVend.montaSql(false, "VENDEDOR", "VD");    
     lcVend.setQueryCommit(false);
     lcVend.setReadOnly(true);
@@ -137,22 +137,22 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0); 
     txtDescSetor.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-    lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodSetorx");
-    lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetorx");
+    lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Cód.setor", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodSetorx");
+    lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetorx");
     lcSetor.montaSql(false, "SETOR", "VD");    
     lcSetor.setQueryCommit(false);
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
     
-	lcAtivFK.add(new GuardaCampo( txtCodAtiv, 7, 100, 80, 20, "CodAtiv", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
-	lcAtivFK.add(new GuardaCampo( txtDescAtiv, 90, 100, 207, 20, "DescAtiv", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+	lcAtivFK.add(new GuardaCampo( txtCodAtiv, 7, 100, 80, 20, "CodAtiv", "Cód.ativ.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
+	lcAtivFK.add(new GuardaCampo( txtDescAtiv, 90, 100, 207, 20, "DescAtiv", "Descrição da atividade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
 	lcAtivFK.montaSql(false, "ATIVIDADE", "TK");    
 	lcAtivFK.setReadOnly(true);
 	lcAtivFK.setQueryCommit(false);
 	txtCodAtiv.setTabelaExterna(lcAtivFK);
 
-    adicCampo(txtCodCont, 7, 20, 80, 20, "CodCto", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null,true);
-    adicCampo(txtRazCont, 90, 20, 307, 20, "RazCto", "Razão", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
+    adicCampo(txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.cto.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null,true);
+    adicCampo(txtRazCont, 90, 20, 307, 20, "RazCto", "Razão social do contato", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
     
     vPessoaLab.addElement("Jurídica");
     vPessoaLab.addElement("Física");
@@ -168,10 +168,10 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
     
     adicDB(cbAtivo, 19, 60, 70, 20, "AtivoCto", "Ativo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtNomeCont, 90, 60, 307, 20, "NomeCto", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null,true);
+    adicCampo(txtNomeCont, 90, 60, 307, 20, "NomeCto", "Nome do contato", JTextFieldPad.TP_STRING, 40, 0, false, false, null,true);
     adicCampo(txtCpfCont, 273, 110, 111, 20, "CpfCto", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
-	adicCampo(txtCodSetor, 7, 110, 60, 20, "CodSetor", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescSetor,true);
-	adicDescFK(txtDescSetor, 70, 110, 200, 20, "DescSetor", "e descrição do setor do contato", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodSetor, 7, 110, 60, 20, "CodSetor", "Cód.setor", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescSetor,true);
+	adicDescFK(txtDescSetor, 70, 110, 200, 20, "DescSetor", "Descrição do setor do contato", JTextFieldPad.TP_STRING, 50, 0);
     adicCampo(txtRgCont, 387, 110, 112, 20, "RgCto", "RG", JTextFieldPad.TP_STRING, 10, 0, false, false, null, false);
     adicCampo(txtCnpjCont, 7, 150, 150, 20, "CnpjCto", "CNPJ", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);
     adicCampo(txtInscCont, 160, 150, 147, 20, "InscCto", "Inscrição Estadual", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
@@ -186,21 +186,21 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     adicCampo(txtUFCont, 450, 230, 50, 20, "UFCto", "UF", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
     adicCampo(txtFoneCont, 7, 270, 100, 20, "FoneCto", "Telefone", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
     adicCampo(txtFaxCont, 110, 270, 97, 20, "FaxCto", "Fax", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
-    adicCampo(txtEmailCont, 210, 270, 177, 20, "EmailCto", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
-    adicCampo(txtNumEmp,390,270,77,20,"numempcto","N. Funcionarios", JTextFieldPad.TP_INTEGER, 50,0,false,false,null,false);
+    adicCampo(txtEmailCont, 210, 270, 157, 20, "EmailCto", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
+    adicCampo(txtNumEmp,370,270,97,20,"numempcto","Nº Funcionarios", JTextFieldPad.TP_INTEGER, 50,0,false,false,null,false);
     adic(btExportCli,470,260,30,30);
     txtCpfCont.setMascara(JTextFieldPad.MC_CPF);
     txtCnpjCont.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepCont.setMascara(JTextFieldPad.MC_CEP);
     txtFoneCont.setMascara(JTextFieldPad.MC_FONEDDD);
     txtFaxCont.setMascara(JTextFieldPad.MC_FONE);
-    adicTab("Informações Complementares", pnCompl);
+    adicTab("Informações complementares", pnCompl);
     adicDBLiv(txaObs, "ObsCto", "Observações",JTextFieldPad.TP_STRING, false);
 	pnCompl.add(pinVend,BorderLayout.NORTH);    
     pnCompl.add(spnObs,BorderLayout.CENTER);
     setPainel(pinVend);
-	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescVend,false);
-	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "e descrição do vendedor", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.repr.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescVend,false);
+	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "Descrição do vendedor", JTextFieldPad.TP_STRING, 50, 0);
 	adicCampo(txtDataCont, 330, 25, 80, 20, "DataCto", "Data", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
 	adic(new JLabel("Observações:"),7,55,150,20);
     setListaCampos( true, "CONTATO", "TK");
@@ -216,8 +216,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	pinRodAtiv.adic(navAtiv,0,50,270,25);
    
-	adicCampo(txtCodAtiv, 7, 20, 80, 20, "CodAtiv", "Código", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescAtiv,true);
-	adicDescFK(txtDescAtiv, 90, 20, 220, 20, "DescAtiv", "e descrição da atividade", JTextFieldPad.TP_STRING, 40, 0);
+	adicCampo(txtCodAtiv, 7, 20, 80, 20, "CodAtiv", "Cód.ativ.", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescAtiv,true);
+	adicDescFK(txtDescAtiv, 90, 20, 220, 20, "DescAtiv", "Descrição da atividade", JTextFieldPad.TP_STRING, 40, 0);
 	setListaCampos( false, "CTOATIV", "TK");
 	lcAtiv.montaTab();
 	lcAtiv.setQueryInsert(false);
@@ -366,7 +366,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
         ps = con.prepareStatement("SELECT COUNT(*) FROM TKCONTATO"+sWhere);
         rs = ps.executeQuery();
         rs.next();
-        And = new FAndamento("Montando Relatório, Aguarde!",0,rs.getInt(1)-1);
+        And = new FAndamento("Montando relatório, Aguarde!",0,rs.getInt(1)-1);
 //        rs.close();
 //        ps.close();
         if (!con.getAutoCommit())
@@ -389,7 +389,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,2,"Código:");
+          imp.say(imp.pRow()+0,2,"Cód.cto.:");
           imp.say(imp.pRow()+0,10,rs.getString("CodCto"));
           imp.say(imp.pRow()+0,20,"Razão:");
           imp.say(imp.pRow()+0,27,rs.getString("RazCto"));

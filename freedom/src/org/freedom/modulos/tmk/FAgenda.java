@@ -86,8 +86,8 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   	txtDataini.setVlrDate(new Date());
   	txtDatafim.setVlrDate(new Date());
   	
-	lcUsu.add(new GuardaCampo( txtIdUsu, 7, 20, 80, 20, "IdUsu", "ID Usuario", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 20, 200, 20, "NomeUsu", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcUsu.add(new GuardaCampo( txtIdUsu, 7, 20, 80, 20, "IdUsu", "ID usuario", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 20, 200, 20, "NomeUsu", "Nome do usuario", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcUsu.montaSql(false, "USUARIO", "SG");    
 	lcUsu.setReadOnly(true);
 	txtIdUsu.setTabelaExterna(lcUsu);
@@ -101,8 +101,9 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
 	
 	getTela().add(tpnAgd);
 	
-	pinCabAgd.adic(new JLabel("ID e nome do usuário"),7,10,250,20);
+	pinCabAgd.adic(new JLabel("ID"),7,10,250,20);
 	pinCabAgd.adic(txtIdUsu,7,30,80,20);
+	pinCabAgd.adic(new JLabel("Nome do usuário"),90,10,250,20);
 	pinCabAgd.adic(txtNomeUsu,90,30,197,20);
 	pinCabAgd.adic(new JLabel("Periodo rápido"),290,10,200,20);
 	pinCabAgd.adic(cbPeriodo,290,30,200,20);
@@ -136,12 +137,12 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
 	tabAgd.adicColuna("Assunto");
 	
 	tabAgd.setTamColuna(40,0);
-	tabAgd.setTamColuna(20,1);
+	tabAgd.setTamColuna(40,1);
 	tabAgd.setTamColuna(80,2);
-	tabAgd.setTamColuna(60,3);
+	tabAgd.setTamColuna(70,3);
 	tabAgd.setTamColuna(80,4);
-	tabAgd.setTamColuna(60,5);
-	tabAgd.setTamColuna(160,6);
+	tabAgd.setTamColuna(70,5);
+	tabAgd.setTamColuna(145,6);
 	
 	JPanel pnBot = new JPanel(new GridLayout(1,2));
 	pnBot.setPreferredSize(new Dimension(60,30));

@@ -115,8 +115,9 @@ public class DLNovoAgen extends FFDialogo {
 		pnCab.add(lbImg);
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
-		adic(new JLabel("Código e nome do leitor"),7,5,200,20);
+		adic(new JLabel("Cód.usu."),7,5,200,20);
 		adic(txtIdUsu,7,25,80,20);
+		adic(new JLabel("Nome do usuario"),90,5,200,20);
 		adic(txtNomeUsu,90,25,197,20);
 		adic(new JLabel("Tipo"),290,5,150,20);
 		adic(cbTipo,290,25,100,20);

@@ -61,10 +61,10 @@ public class FreedomTMK extends Aplicativo {
 		  addOpcao(100000000, TP_OPCAO_MENU, "Preferências", 'P',100200000, 1, false);
 		    addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais...", 'G', 100201000,2, true );
 		    addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas",'F',100300000, 1, false);
-		    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos",'I',100301000,2,true);
-		    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout",'C',100302000,2,true);
-		    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos",'E',100303000,2,true);
-		
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos",'I',100301000,2,true);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout",'C',100302000,2,true);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos",'E',100303000,2,true);
+			
 	    addOpcao(-1,TP_OPCAO_MENU,"Contatos",'C',200000000,0,false);
 	      addOpcao(200000000,TP_OPCAO_ITEM,"Histórico",'H',200100000,1,true);
 	      addOpcao(200000000,TP_OPCAO_ITEM,"Agenda",'A',200200000,1,true);

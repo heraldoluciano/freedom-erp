@@ -88,8 +88,8 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   	setTitulo("Histórico de contatos");
   	setAtribos(20,20,540,400);
   	
-	lcCont.add(new GuardaCampo( txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.Cont", true, false, txtNomeCont, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtNomeCont, 7, 20, 200, 20, "NomeCto", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcCont.add(new GuardaCampo( txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.cto.", true, false, txtNomeCont, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcCont.add(new GuardaCampo( txtNomeCont, 7, 20, 200, 20, "NomeCto", "Nome do contato", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcCont.add(new GuardaCampo( txtTelCont, 7, 20, 200, 20, "FoneCto", "Fone.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcCont.add(new GuardaCampo( txtFaxCont, 7, 20, 200, 20, "FaxCto", "Fax.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcCont.add(new GuardaCampo( txtEmpCont, 7, 20, 200, 20, "RazCto", "Empresa", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
@@ -117,8 +117,9 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	
 	getTela().add(tpnCont);
 	
-	pinCabCont.adic(new JLabel("Codigo e nome do contato"),7,10,250,20);
+	pinCabCont.adic(new JLabel("Cod.cto."),7,10,250,20);
 	pinCabCont.adic(txtCodCont,7,30,80,20);
+	pinCabCont.adic(new JLabel("Nome do contato"),90,10,250,20);
 	pinCabCont.adic(txtNomeCont,90,30,197,20);
 	pinCabCont.adic(new JLabel("Tel."),290,10,97,20);
 	pinCabCont.adic(txtTelCont,290,30,97,20);

@@ -38,8 +38,8 @@ public class FAtividade extends FDados implements ActionListener {
   public FAtividade () {
     setTitulo("Cadastro de atividades");
     setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 50, 20,"CodAtiv","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 60, 20, 250, 20,"DescAtiv","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCod, 7, 20, 70, 20,"CodAtiv","Cód.ativ.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDesc, 80, 20, 240, 20,"DescAtiv","Descrição da atividade",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "ATIVIDADE", "TK");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

@@ -66,18 +66,18 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   private JButton btDel = new JButton(Icone.novo("btFlechaEsq.gif"));
   public FTipoImp() {
     setTitulo("Cadastro de org.freedom.layout de importação");
-    setAtribos(50, 20, 510, 390);
+    setAtribos(50, 20, 497, 390);
 
     cbCsepTpImp.setVlrString("N");
 	cbTransBinTpImp.setVlrString("N");
 
-    adicCampo(txtCodTpImp, 7, 20, 70, 20, "CodTpImp", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtDescTpImp,80, 20, 390, 20, "DescTpImp", "Descrição", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtCodTpImp, 7, 20, 80, 20, "CodTpImp", "Cód.tp.imp.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtDescTpImp,90, 20, 380, 20, "DescTpImp", "Descrição do tipo de importação", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
 	adicDB(cbCsepTpImp,7, 45, 130, 20, "CsepTpImp", "",JTextFieldPad.TP_STRING,true);    
 	adicDB(cbEnterlnTpImp,140, 45, 147, 20, "EnterLnTpImp", "",JTextFieldPad.TP_STRING,true);
-	adicDB(cbTransBinTpImp, 290,   45, 180, 20, "TransBinTpImp", "",JTextFieldPad.TP_STRING,true);
-	adicCampo(txtSepTpImp,7,85,80, 20, "SepTpImp", "Separador", JTextFieldPad.TP_STRING, 10, 0, false, false,null, true);
-	adicCampo(txtDelCrtTpImp,90,85, 80, 20, "DelCrtTpImp", "Ignorar carac. até", JTextFieldPad.TP_INTEGER, 5, 0, false, false, null, true);	
+	adicDB(cbTransBinTpImp, 290, 45, 180, 20, "TransBinTpImp", "",JTextFieldPad.TP_STRING,true);
+	adicCampo(txtSepTpImp,7, 85, 80, 20, "SepTpImp", "Separador", JTextFieldPad.TP_STRING, 10, 0, false, false,null, true);
+	adicCampo(txtDelCrtTpImp,90, 85, 120, 20, "DelCrtTpImp", "Ignorar carac. até", JTextFieldPad.TP_INTEGER, 5, 0, false, false, null, true);	
     adicDBLiv(txtLayout,"LayoutTpImp", "Layout",JTextFieldPad.TP_STRING, false);
     adic(new JLabel("Compos disponiveis"),7,110,200,20);
 	adic(new JLabel("Compos selecionados"),260,110,200,20);
@@ -94,9 +94,9 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
 	tabDest.adicColuna("Tipo");    
 
 	tab.setTamColuna(115,0);
-	tab.setTamColuna(80,1);
+	tab.setTamColuna(95,1);
 	tabDest.setTamColuna(115,0);
-	tabDest.setTamColuna(80,1);
+	tabDest.setTamColuna(95,1);
 	
 	lcCampos.addPostListener(this);
 	lcCampos.addCarregaListener(this);
