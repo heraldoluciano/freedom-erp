@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.sql.Connection;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;

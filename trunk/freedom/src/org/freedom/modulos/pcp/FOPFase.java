@@ -51,7 +51,7 @@ public class FOPFase extends FDetalhe {
   private int iCodOP;
   public FOPFase(int iCodOP) {
     setTitulo("Fases da OP");
-    setAtribos( 70, 40, 445, 390);
+    setAtribos( 70, 40, 500, 390);
     setAltCab(130);
     
     this.iCodOP = iCodOP;
@@ -79,7 +79,7 @@ public class FOPFase extends FDetalhe {
     adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","OP No.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
     adicCampo(txtCodProd, 90, 20, 77, 20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,true);
     adicDescFK(txtDescProd, 170, 20, 197, 20, "DescProd", "e descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtQtdOP, 370, 20, 50, 20,"QtdProdOP","Quantidade",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
+    adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdProdOP","Quantidade",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.Prod.",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
     setListaCampos( false, "OP", "PP");
@@ -110,7 +110,7 @@ public class FOPFase extends FDetalhe {
     adicCampo(txtNumSeqOf, 7, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
     adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFase,true);
     adicDescFK(txtDescFase, 130, 20, 227, 20,                                 "DescFase", "e descrição da fase", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtTempoOf, 360, 20, 60, 20,"TempoOf","Tempo",ListaCampos.DB_SI,true);
+    adicCampo(txtTempoOf, 360, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI,true);
     adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescRec,true);
     adicDescFK(txtDescRec, 70, 60, 200, 20, "DescRecP", "e descrição do recurso", JTextFieldPad.TP_STRING, 50, 0);
     setListaCampos( true, "OPFASE", "PP");

@@ -49,7 +49,7 @@ public class FEstFase extends FDetalhe {
   private int iCodProd;
   public FEstFase(int iCodProd) {
     setTitulo("Fases da estrutura");
-    setAtribos( 70, 40, 445, 390);
+    setAtribos( 70, 40, 550, 390);
     setAltCab(130);
     
     this.iCodProd = iCodProd;
@@ -105,10 +105,10 @@ public class FEstFase extends FDetalhe {
     adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFase,true);
     //adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Código",ListaCampos.DB_FK,true);
     adicDescFK(txtDescFase, 130, 20, 227, 20, "DescFase", "e descrição da fase", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtTempoEf, 360, 20, 60, 20,"TempoEf","Tempo",ListaCampos.DB_SI,true);
+    adicCampo(txtTempoEf, 360, 20, 100, 20,"TempoEf","Tempo (Seg.)",ListaCampos.DB_SI,true);
     adicCampo(txtCodTpRec, 7, 60, 60, 20,"CodTpRec","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTpRec,true);
     //adicCampo(txtCodTpRec, 7, 60, 60, 20,"CodTpRec","Código",ListaCampos.DB_FK,true);
-    adicDescFK(txtDescTpRec, 70, 60, 200, 20, "DescTpRec", "e descrição do tipo de recurso", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtDescTpRec, 70, 60, 350, 20, "DescTpRec", "e descrição do tipo de recurso", JTextFieldPad.TP_STRING, 50, 0);
     setListaCampos( true, "ESTRUFASE", "PP");
     lcDet.setQueryInsert(false);
     montaTab();
