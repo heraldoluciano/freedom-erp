@@ -106,12 +106,12 @@ public class NFMaviGesso extends Leiaute {
            //imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,10,rs.getString("CidCli"));
-           String sFone = Funcoes.limpaString(rs.getString("FoneCli")!=null?rs.getString("FoneCli"):"");
-//           imp.say(imp.pRow()+0,56,Funcoes.setMascara(sFone,"(##)####-####"));
-           String sDDD = "("+(sFone.length()>2?sFone.substring(0,2):sFone)+") ";
-           String sMeio = (sFone.length()>9?sFone.substring(2,6):sFone.substring(2,5));
-           String sResto = sFone.substring(sMeio.length()+2);
-           imp.say(imp.pRow()+0,60,sDDD+sMeio+"-"+sResto);
+           String sFone = rs.getString("FoneCli")!=null?rs.getString("FoneCli"):"";
+           imp.say(imp.pRow()+0,60,Funcoes.setMascara(sFone,"(####)####-####"));
+           //String sDDD = "("+(sFone.length()>2?sFone.substring(0,2):sFone)+") ";
+           //String sMeio = (sFone.length()>9?sFone.substring(2,6):sFone.substring(2,5));
+           //String sResto = sFone.substring(sMeio.length()+2);
+           //imp.say(imp.pRow()+0,60,sDDD+sMeio+"-"+sResto);
            		           
            imp.say(imp.pRow()+0,81,rs.getString("UfCli"));
            imp.say(imp.pRow()+0,90,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
