@@ -96,7 +96,7 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
   private JCheckBoxPad cbMatriz = new JCheckBoxPad("Matriz","S","N");
   private JCheckBoxPad cbSimples = new JCheckBoxPad("Simples","S","N");
   private ListaCampos lcFilial = new ListaCampos(this);
-  private ListaCampos lcAlmox = new ListaCampos(this,"");
+  private ListaCampos lcAlmox = new ListaCampos(this,"AF");
   private ListaCampos lcAlmoxFilial = new ListaCampos(this,"");
   private Tabela tabFilial = new Tabela();
   private JScrollPane spnFilial = new JScrollPane(tabFilial);
