@@ -299,7 +299,7 @@ public class FVendedor extends FDados implements PostListener {
         imp.limpaPags();
         while ( rs.next() ) {
           if (imp.pRow()==0) {
-            imp.impCab(136);
+            imp.impCab(136, false);
 
             for (int i=0;i<vFiltros.size();i++) {            
                 	imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");

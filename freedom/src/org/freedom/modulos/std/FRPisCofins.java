@@ -222,7 +222,7 @@ public class FRPisCofins extends FRelatorio {
   					imp.eject();
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136);
+	  				imp.impCab(136, false);
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());

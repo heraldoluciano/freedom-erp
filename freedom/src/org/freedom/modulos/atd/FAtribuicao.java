@@ -79,7 +79,7 @@ public class FAtribuicao extends FDados implements ActionListener {
       imp.limpaPags();
       while ( rs.next() ) {
          if (imp.pRow()==0) {
-            imp.impCab(80);
+            imp.impCab(80, false);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
             imp.say(imp.pRow()+0,2,"Cód.atrib.");

@@ -204,7 +204,7 @@ public class FRVencLote extends FRelatorio {
       imp.limpaPags();
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136);
+           imp.impCab(136, false);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());

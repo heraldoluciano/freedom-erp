@@ -80,7 +80,7 @@ public class FRFluxoCaixa extends FRelatorio {
     imp.montaCab();
     
     imp.setTitulo("Fluxo de caixa");
-    imp.impCab(136);
+    imp.impCab(136, false);
     String sTitulo = "FLUXO DE CAIXA - DATA LIMITE: "+txtDatafim.getVlrString();
     imp.say(imp.pRow()+0,0,""+imp.normal());
     imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");

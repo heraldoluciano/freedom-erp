@@ -180,7 +180,7 @@ public class FSimilar extends FDados implements ActionListener{
 			imp.limpaPags();
 			while ( rs.next() ) {
 				if (imp.pRow()==0) {
-					imp.impCab(136);
+					imp.impCab(136, false);
 					imp.say(imp.pRow()+0,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,6,"Cód.prod.");
 					imp.say(imp.pRow()+0,26,"Referência");

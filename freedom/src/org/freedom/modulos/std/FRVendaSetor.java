@@ -462,7 +462,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   			sCodGrup = "";
   			vCols = new Vector();
   			
-  			imp.impCab(136);
+  			imp.impCab(136, false);
   			for (int i=0; i<vItens.size(); i++) {
   				vItem = (Vector) vItens.elementAt(i);
 
@@ -866,7 +866,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136);
+	  				imp.impCab(136, false);
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -1154,7 +1154,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   					imp.eject();
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136);
+	  				imp.impCab(136, false);
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
