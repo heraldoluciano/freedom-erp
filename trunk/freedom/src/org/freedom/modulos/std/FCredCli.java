@@ -23,6 +23,9 @@
 package org.freedom.modulos.std;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.freedom.acao.CarregaEvent;
@@ -32,6 +35,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FCredCli extends FTabDados	implements ActionListener, CarregaListener {
@@ -137,6 +142,11 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	setPainel(pinFicha);
 	adicTab("Ficha cadastral", pinFicha);
       
+ 
+  	txtNatCli.setVisible(false);
+  	txtUFNatCli.setVisible(false);
+  	txtTempoResCli.setVisible(false);
+	
   }
   
   public void afterCarrega(CarregaEvent cevt) {
@@ -144,8 +154,54 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	if (txtDtIniTr.getVlrString().equals("")){
   		txtDtIniTr.setVlrDate(new Date());
   	}
+  	
+  	if (ehPessoaFisica()) {
+  	  	txtNatCli.setVisible(true);
+  	  	txtUFNatCli.setVisible(true);
+  	  	txtTempoResCli.setVisible(true);
+  	}
+  	else {
+  	  	txtNatCli.setVisible(false);
+  	  	txtUFNatCli.setVisible(false);
+  	  	txtTempoResCli.setVisible(false);  	}
+  	
   
   }
+  
+  private boolean ehPessoaFisica(){
+	String sSQL = null;
+  	ResultSet rs = null;
+  	PreparedStatement ps = null;
+  	boolean bReturn = false;
+  	
+	try {
+		sSQL = "SELECT PESSOACLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+		ps = con.prepareStatement(sSQL);
+		ps.setInt(1,Aplicativo.iCodEmp);
+		ps.setInt(2,ListaCampos.getMasterFilial("VDCLIENTE"));
+		ps.setInt(3,txtCodCli.getVlrInteger().intValue());
+
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			if (rs.getString(1).equals("F"))
+			   bReturn = true;
+		}
+		rs.close();
+		ps.close();
+		if (!con.getAutoCommit())
+			con.commit();
+	}
+	catch (SQLException e) {
+		Funcoes.mensagemErro(this,"Não foi possível carregar pessoa cliente!\n"+e.getMessage());
+	}
+	finally {
+		rs = null;
+		ps = null;
+		sSQL = null;
+	}  	
+  	return bReturn;
+  }
+  
   public void beforeCarrega(CarregaEvent cevt) {}
   
   public void execShow(Connection cn) {
