@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/jcommon-0.8.7.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-0.9.12.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
+	<classpathentry kind="lib" path="lib/nachocalendar-0.21.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
