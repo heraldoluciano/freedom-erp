@@ -44,8 +44,8 @@ public class FPais extends FDados implements ActionListener {
     
     lcCampos.setUsaME(false);
     
-    adicCampo(txtCodPais, 7, 20, 50, 20,"CodPais","Código",ListaCampos.DB_PK,true);
-    adicCampo(txtNomePais, 60, 20, 197, 20,"NomePais","Nome",ListaCampos.DB_SI,true);
+    adicCampo(txtCodPais, 7, 20, 70, 20,"CodPais","Cód.pais",ListaCampos.DB_PK,true);
+    adicCampo(txtNomePais, 80, 20, 177, 20,"NomePais","Nome do pais",ListaCampos.DB_SI,true);
     adicCampo(txtSiglaPais, 260, 20, 77, 20,"SiglaPais","Sigla",ListaCampos.DB_SI,true);
     adicCampo(txtDDIPais, 340, 20, 40, 20,"DDIPais","DDI",ListaCampos.DB_SI,false);
     setListaCampos( true, "PAIS", "SG");
@@ -79,7 +79,7 @@ public class FPais extends FDados implements ActionListener {
             imp.impCab(136);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.pais");
             imp.say(imp.pRow()+0,15,"Nome");
             imp.say(imp.pRow()+0,80,"Sigla");
             imp.say(imp.pRow()+0,100,"DDI");

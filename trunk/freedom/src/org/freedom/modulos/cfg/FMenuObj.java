@@ -56,29 +56,29 @@ public class FMenuObj extends FDetalhe {
     lcSis.setUsaME(false);
     lcObj.setUsaFI(false);
         
-    lcMenu.add(new GuardaCampo( txtCodMenu, 7, 100, 80, 20, "CODMENU", "Código", true, false, txtDescMenu, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcMenu.add(new GuardaCampo( txtDescMenu, 7, 100, 180, 20, "DESCMENU", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcMenu.add(new GuardaCampo( txtCodMenu, 7, 100, 80, 20, "CODMENU", "Cód.menu", true, false, txtDescMenu, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+    lcMenu.add(new GuardaCampo( txtDescMenu, 7, 100, 180, 20, "DESCMENU", "Descriçao do menu", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
     lcMenu.montaSql(false, "MENU", "SG");    
     lcMenu.setQueryCommit(false);
     lcMenu.setReadOnly(true);
     txtCodMenu.setTabelaExterna(lcMenu);
     
-    lcModu.add(new GuardaCampo( txtCodModu, 7, 100, 80, 20, "CODMODU", "Código", true, false, txtDescModu, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcModu.add(new GuardaCampo( txtDescModu, 7, 100, 180, 20, "DESCMODU", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcModu.add(new GuardaCampo( txtCodModu, 7, 100, 80, 20, "CODMODU", "Cód.modu.", true, false, txtDescModu, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+    lcModu.add(new GuardaCampo( txtDescModu, 7, 100, 180, 20, "DESCMODU", "Descriçao do modulo", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
     lcModu.montaSql(false, "MODULO", "SG");    
     lcModu.setQueryCommit(false);
     lcModu.setReadOnly(true);
     txtCodModu.setTabelaExterna(lcModu);
     
-    lcSis.add(new GuardaCampo( txtCodSis, 7, 100, 80, 20, "CODSIS", "Código", true, false, txtDescSis, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcSis.add(new GuardaCampo( txtDescSis, 7, 100, 180, 20, "DESCSIS", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcSis.add(new GuardaCampo( txtCodSis, 7, 100, 80, 20, "CODSIS", "Cód.sis.", true, false, txtDescSis, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+    lcSis.add(new GuardaCampo( txtDescSis, 7, 100, 180, 20, "DESCSIS", "Descriçao do sistema", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
     lcSis.montaSql(false, "SISTEMA", "SG");    
     lcSis.setQueryCommit(false);
     lcSis.setReadOnly(true);
     txtCodSis.setTabelaExterna(lcSis);
     
     lcObj.add(new GuardaCampo( txtIDObj, "IDOBJ", "Id.obj.", ListaCampos.DB_PK,false));
-    lcObj.add(new GuardaCampo( txtDescObj,"DESCOBJ", "Descriçao", ListaCampos.DB_SI,false));
+    lcObj.add(new GuardaCampo( txtDescObj,"DESCOBJ", "Descriçao do objeto", ListaCampos.DB_SI,false));
     lcObj.montaSql(false, "OBJETO", "SG");    
     lcObj.setQueryCommit(false);
     lcObj.setReadOnly(true);
@@ -88,12 +88,12 @@ public class FMenuObj extends FDetalhe {
     setAltCab(165);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
-    adicCampo(txtCodSis, 7, 20, 100, 20,"CODSIS","Cód.Sis.",JTextFieldPad.TP_INTEGER,5,0,true,true,null,true);
-    adicDescFK(txtDescSis, 110, 20, 197, 20, "DESCSIS", "e descrição do sistema", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodModu, 7, 60, 100, 20,"CODMODU","Cód.Modu",JTextFieldPad.TP_INTEGER,5,0,true,true,null,true);
-	adicDescFK(txtDescModu, 110, 60, 197, 20, "DESCMODU", "e descrição do modulo", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodMenu, 7, 100, 100, 20,"CODMENU","Cód.Menu",JTextFieldPad.TP_INTEGER,9,0,true,true,null,true);
-	adicDescFK(txtDescMenu, 110, 100, 197, 20, "DESCMENU", "e descrição do menu", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodSis, 7, 20, 80, 20,"CODSIS","Cód.sis.",JTextFieldPad.TP_INTEGER,5,0,true,true,null,true);
+    adicDescFK(txtDescSis, 90, 20, 240, 20, "DESCSIS", "Descrição do sistema", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodModu, 7, 60, 80, 20,"CODMODU","Cód.modu",JTextFieldPad.TP_INTEGER,5,0,true,true,null,true);
+	adicDescFK(txtDescModu, 90, 60, 240, 20, "DESCMODU", "Descrição do modulo", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodMenu, 7, 100, 80, 20,"CODMENU","Cód.menu",JTextFieldPad.TP_INTEGER,9,0,true,true,null,true);
+	adicDescFK(txtDescMenu, 90, 100, 240, 20, "DESCMENU", "Descrição do menu", JTextFieldPad.TP_STRING, 50, 0);
 	lcCampos.setReadOnly(true);
     setListaCampos( false, "MENU", "SG");
 
@@ -102,8 +102,8 @@ public class FMenuObj extends FDetalhe {
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtIDObj, 7, 20, 60, 20,"IDOBJ","Id.obj",ListaCampos.DB_PK,true);
-    adicDescFK(txtDescObj, 70, 20, 200, 20, "DESCOBJ", "Descrição do objeto", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtIDObj, 7, 20, 80, 20,"IDOBJ","Id.obj",ListaCampos.DB_PK,true);
+    adicDescFK(txtDescObj, 90, 20, 240, 20, "DESCOBJ", "Descrição do objeto", JTextFieldPad.TP_STRING, 50, 0);
     setListaCampos( false, "MENUOBJ", "SG");
     montaTab();
     

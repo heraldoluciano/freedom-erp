@@ -47,8 +47,8 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
        
-    adicCampo(txtCodTb, 7, 20, 50, 20,"CodTb","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTb, 60, 20, 400, 20, "DescTb","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodTb, 7, 20, 70, 20,"CodTb","Cód.tab.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescTb, 80, 20, 380, 20, "DescTb","Descrição da tabela",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
 
     setListaCampos( true, "TABELA", "SG");
     lcCampos.setQueryInsert(false);
@@ -61,16 +61,16 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
 	cbPadrao = new JCheckBoxPad("Padrão","S","N");
 	cbPadrao.setVlrString("N");
 
-    adicCampo(txtCodItTb, 7, 20, 50, 20,"CodItTb","Item",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescItTb, 60, 20, 300, 20,"DescItTb","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodItTb, 7, 20, 70, 20,"CodItTb","Item",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescItTb, 80, 20, 280, 20,"DescItTb","Descrição do item",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
 	adicDB(cbPadrao, 365, 20, 90, 20, "PadraoIttb", "",JTextFieldPad.TP_STRING,true);    
     
     setListaCampos( true, "ITTABELA", "SG");
     lcCampos.setQueryInsert(false);
     montaTab();
     
-    tab.setTamColuna(50,0);
-    tab.setTamColuna(415,1);
+    tab.setTamColuna(70,0);
+    tab.setTamColuna(395,1);
     tab.setTamColuna(20,2);
     
     lcCampos.addInsertListener(this);
