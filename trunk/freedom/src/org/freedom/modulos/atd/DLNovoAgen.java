@@ -29,6 +29,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -65,21 +66,31 @@ public class DLNovoAgen extends FFDialogo {
 	private JLabel lbImg = new JLabel(Icone.novo("bannerTMKagendamento.jpg"));
 	private JComboBoxPad cbTipo = new JComboBoxPad();
 	public DLNovoAgen(Component cOrig) {
-		this("",cOrig);
+		this("",null,cOrig);
 	}
-	public DLNovoAgen(String sIdUsu, Component cOrig) {
+	public DLNovoAgen(String sIdUsu,Date Data, Component cOrig) {
 		super(cOrig);
 		setTitulo("Novo agendamento");
 		setAtribos(460,470);
 		
 //Acertando o spinner		
-		
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.add(Calendar.DATE,1);
 		GregorianCalendar cal1 = new GregorianCalendar();
-		cal1.add(Calendar.YEAR,-100);
 		GregorianCalendar cal2 = new GregorianCalendar();
+	
+		if(Data != null) {
+			Data.setHours(new Date().getHours());
+			Data.setMinutes(new Date().getMinutes());
+
+			cal.setTime(Data);
+			cal1.setTime(Data);
+			cal2.setTime(Data);
+		}
+		
+		cal.add(Calendar.DATE,0);		
+		cal1.add(Calendar.YEAR,-100);		
 		cal2.add(Calendar.YEAR,100);
+		
 		txtDataini.setVlrDate(cal.getTime());
 		txtHoraini.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
 		txtHoraini.setEditor(new JSpinner.DateEditor(txtHoraini,"kk:mm"));
@@ -115,9 +126,9 @@ public class DLNovoAgen extends FFDialogo {
 		pnCab.add(lbImg);
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
-		adic(new JLabel("Código e nome do leitor"),7,5,200,20);
+		adic(new JLabel("Usuário"),7,5,200,20);
 		adic(txtIdUsu,7,25,80,20);
-		adic(txtNomeUsu,90,25,197,20);
+	//	adic(txtNomeUsu,90,25,197,20);
 		adic(new JLabel("Tipo"),290,5,150,20);
 		adic(cbTipo,290,25,100,20);
 		adic(new JLabel("Data inicio:"),7,45,100,20);
