@@ -39,7 +39,6 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
-import org.freedom.telas.FPrincipal;
 
 public class FNatoPer extends FDados implements ActionListener, InsertListener {
   private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
@@ -49,7 +48,6 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   private JTextAreaPad txaTxtNat = new JTextAreaPad(500);
   private JCheckBoxPad cbImpDtSaidaNat = new JCheckBoxPad("Imprimir data de saída na NF?","S","N");
   private JButton btItNatoper = new JButton(Icone.novo("btBrasil.gif"));
-  private FPrincipal fPrim;
   public FNatoPer() {
   	//cbImpDtSaidaNat.set
     setTitulo("Cadastro de Naturezas de Opreção");
@@ -90,9 +88,6 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
 		fPrim.criatela("Item Natoper",tela,con);
 		tela.exec(txtCodNat.getVlrString());
 	  } 
-  }
-  public void setTelaPrim(FPrincipal fP) {
-	  fPrim = fP;
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);

@@ -37,7 +37,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FPrincipal;
+
 
 public class FEstrutura extends FDetalhe implements ActionListener, CarregaListener, PostListener{
   private JPanelPad pinCab = new JPanelPad();
@@ -57,7 +57,6 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcProd2 = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
-  FPrincipal fPrim = null;
   public FEstrutura() {
     setTitulo("Estrutura de produtos");
     setAtribos( 50, 20, 600, 390);
@@ -138,9 +137,6 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
       fPrim.criatela("Estrutura x Fase",tela,con);
       tela.setConexao(con);
     }
-  }
-  public void setTelaPrim(FPrincipal fP) {
-      fPrim = fP;
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btFase)

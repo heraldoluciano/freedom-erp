@@ -51,7 +51,6 @@ import org.freedom.layout.LeiauteGR;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrinterJob;
 
 public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
@@ -78,7 +77,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcProdDetRef = new ListaCampos(this,"PD");
   private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
   private boolean bPrefs[] = null;
-  private FPrincipal fPrim = null;
   private FPrinterJob dl = null;
   public FOP () { }
   private void montaTela() {
@@ -213,9 +211,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
       fPrim.criatela("OP x Fases",tela,con);
       tela.setConexao(con);
     }
-  }
-  public void setTelaPrim(FPrincipal fP) {
-    fPrim = fP;
   }
   public void actionPerformed(ActionEvent evt) {
     super.actionPerformed(evt);    

@@ -410,6 +410,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 								} catch (NoSuchMethodException e) { }
 
 								telaPrincipal.criatela(titulo, tela, con);
+								tela.setTelaPrim(telaPrincipal);
 
 								if (meth != null) {
 									Object arglist[] = new Object[2];

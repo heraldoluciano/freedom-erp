@@ -53,7 +53,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FRelatorio;
 
 public class FConsProd extends FRelatorio implements ActionListener,ChangeListener {
@@ -107,7 +106,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private ListaCampos lcProd2 = new ListaCampos(this,"PR");
 	private ListaCampos lcMarca = new ListaCampos(this,"MC");
 	private ListaCampos lcGrup = new ListaCampos(this,"GP");
-	private FPrincipal fPrim;
 	private DLBuscaProd dlBuscaProd = null;
 	private boolean bPrefs[] = null;
 	public FConsProd() {
@@ -1011,9 +1009,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 			bRetorno = true;
 		}
 		return bRetorno;
-	}
-	public void setTelaPrim(FPrincipal fP) {
-		fPrim = fP;
 	}
 	
 }

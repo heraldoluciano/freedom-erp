@@ -58,7 +58,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
-import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FTabDados;
 
 
@@ -108,7 +107,6 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
   private ListaCampos lcAtivFK = new ListaCampos(this,"AV");
   private Navegador navAtiv = new Navegador(true);
   private JButton btExportCli = new JButton(Icone.novo("btExportaCli.gif"));
-  private FPrincipal fPrim;
   public FContato () {
     setTitulo("Cadastro de Contatos"); 
     setAtribos(50, 10, 530, 400);
@@ -292,9 +290,6 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
   		fPrim.criatela("Cliente",tela,con);
   		tela.exec(iCodCli);
   	} 
-  }
-  public void setTelaPrim(FPrincipal fP) {
-  	fPrim = fP;
   }
   private void imprimir(boolean bVisualizar) {
     FAndamento And = null;

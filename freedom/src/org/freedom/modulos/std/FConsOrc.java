@@ -55,7 +55,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.telas.FPrincipal;
 
 public class FConsOrc extends FFilho implements ActionListener {
   private JPanelPad pinCab = new JPanelPad(0, 200);
@@ -84,7 +83,6 @@ public class FConsOrc extends FFilho implements ActionListener {
   private JScrollPane spnTab = new JScrollPane(tab);
 
   private ListaCampos lcCli = new ListaCampos(this, "CL");
-  private FPrincipal fPrim;
   public FConsOrc() {
     setTitulo("Pesquisa Orçamentos");
     setAtribos(10, 10, 514, 480);
@@ -545,9 +543,6 @@ public class FConsOrc extends FFilho implements ActionListener {
 
   }
 
-  public void setTelaPrim(FPrincipal fP) {
-    fPrim = fP;
-  }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcCli.setConexao(con);

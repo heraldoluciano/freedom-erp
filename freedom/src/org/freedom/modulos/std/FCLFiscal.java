@@ -41,7 +41,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
-import org.freedom.telas.FPrincipal;
 
 public class FCLFiscal extends FDados implements CarregaListener {
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
@@ -72,7 +71,6 @@ public class FCLFiscal extends FDados implements CarregaListener {
   private JComboBoxPad cbOrig = null;
   private Vector vValsOrig = new Vector();
   private Vector vLabsOrig = new Vector();
-  private FPrincipal fPrim;
   public FCLFiscal () {
     setTitulo("Cadastro de Classificações Fiscais");
     setAtribos( 0, 0, 420, 470);
@@ -447,9 +445,6 @@ public class FCLFiscal extends FDados implements CarregaListener {
 		fPrim.criatela("Item CLFISCAL",tela,con);
 		tela.exec(txtCodFisc.getVlrString());
 	  } 
-  }
-  public void setTelaPrim(FPrincipal fP) {
-	  fPrim = fP;
   }
   public void setConexao(Connection cn) {
 	super.setConexao(cn);

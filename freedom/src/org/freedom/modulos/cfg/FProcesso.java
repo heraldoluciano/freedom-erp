@@ -38,7 +38,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FPrincipal;
 
 public class FProcesso extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -50,7 +49,6 @@ public class FProcesso extends FDetalhe implements ActionListener {
   private JButton btTrat = new JButton(Icone.novo("btRetorno.gif"));
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
-  FPrincipal fPrim = null;
   public FProcesso() {
 
    btTrat.setToolTipText("Tratamento de Retorno");
@@ -177,8 +175,5 @@ public class FProcesso extends FDetalhe implements ActionListener {
     else {
       imp.print();
     }
-  }
-  public void setTelaPrim(FPrincipal fP) {
-	  fPrim = fP;
   }
 }
