@@ -38,8 +38,8 @@ public class FTratTrib extends FDados implements ActionListener{
   public FTratTrib () {
     setTitulo("Tratamento Tributário");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTratTrib, 7, 20, 50, 20,"CodTratTrib","Código",JTextFieldPad.TP_STRING,2,0,true,false,null,true);
-    adicCampo(txtDescTratTrib, 60, 20, 250, 20,"DescTratTrib","Descrição",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
+    adicCampo(txtCodTratTrib, 7, 20, 70, 20,"CodTratTrib","Cód.tr.trib.",JTextFieldPad.TP_STRING,2,0,true,false,null,true);
+    adicCampo(txtDescTratTrib, 80, 20, 250, 20,"DescTratTrib","Descrição do tratamento tributário",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
     setListaCampos( true, "TRATTRIB", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

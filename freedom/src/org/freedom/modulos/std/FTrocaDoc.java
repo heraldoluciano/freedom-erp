@@ -67,10 +67,10 @@ public class FTrocaDoc extends FFilho implements ActionListener {
     txtVlrLiqVenda.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
     txtStatusVenda.setTipo(JTextFieldPad.TP_STRING,2,0);
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.Venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
+    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
     lcVenda.add(new GuardaCampo( txtNovoDoc, 90, 100, 207, 20, "DocVenda", "Documento", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescVenda");
     lcVenda.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, 90, 100, 207, 20, "VlrLiqVenda", "V. Liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVenda");
+    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, 90, 100, 207, 20, "VlrLiqVenda", "V. liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVenda");
     lcVenda.add(new GuardaCampo( txtStatusVenda, 90, 100, 207, 20, "StatusVenda", "Status", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
@@ -91,7 +91,7 @@ public class FTrocaDoc extends FFilho implements ActionListener {
     
     btTrocaDoc.setToolTipText("Alterar");
 
-    pinCli.adic(new JLabel("Nº Pedido"),7,0,80,20);
+    pinCli.adic(new JLabel("Nº pedido"),7,0,80,20);
     pinCli.adic(txtCodVenda,7,20,80,20);
     pinCli.adic(new JLabel("Série"),90,0,67,20);
     pinCli.adic(txtSerie,90,20,67,20);

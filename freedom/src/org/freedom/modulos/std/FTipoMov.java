@@ -54,17 +54,17 @@ public class FTipoMov extends FDados {
   private Vector vLabsES = new Vector();
   private JComboBoxPad cbTipoMov = null;
   private JRadioGroup rgESTipoMov = null;
-  private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Lanc. Fiscal?","S","N");
-  private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont. Estoque?","S","N");
-  private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Soma rel. vendas?","S","N");
+  private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Lanc.fiscal?","S","N");
+  private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont.estoque?","S","N");
+  private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Soma rel.vendas?","S","N");
   public FTipoMov() {
     setTitulo("Cadastro de Tipos de Movimento");
     setAtribos( 50, 50, 410, 440);
 
     txtCodModNota.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescModNota.setTipo(JTextFieldPad.TP_STRING,30,0);    
-    lcModNota.add(new GuardaCampo( txtCodModNota, 7, 100, 80, 20, "CodModNota", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodModNotax");
-    lcModNota.add(new GuardaCampo( txtDescModNota, 90, 100, 207, 20, "DescModNota", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModNotax");
+    lcModNota.add(new GuardaCampo( txtCodModNota, 7, 100, 80, 20, "CodModNota", "Cód.mod.nota", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodModNotax");
+    lcModNota.add(new GuardaCampo( txtDescModNota, 90, 100, 207, 20, "DescModNota", "Descrição do modelo de nota", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModNotax");
     lcModNota.montaSql(false, "MODNOTA", "LF");    
     lcModNota.setQueryCommit(false);
     lcModNota.setReadOnly(true);
@@ -72,8 +72,8 @@ public class FTipoMov extends FDados {
 
     txtCodSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
     txtDescSerie.setTipo(JTextFieldPad.TP_INTEGER,8,0);    
-    lcSerie.add(new GuardaCampo( txtCodSerie, 7, 100, 80, 20, "Serie", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodSeriex");
-    lcSerie.add(new GuardaCampo( txtDescSerie, 90, 100, 207, 20, "DocSerie", "Nº. Doc", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescSeriex");
+    lcSerie.add(new GuardaCampo( txtCodSerie, 7, 100, 80, 20, "Serie", "Cód.serie", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodSeriex");
+    lcSerie.add(new GuardaCampo( txtDescSerie, 90, 100, 207, 20, "DocSerie", "Nº. doc", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescSeriex");
     lcSerie.montaSql(false, "SERIE", "LF");
     lcSerie.setQueryCommit(false);
     lcSerie.setReadOnly(true);
@@ -81,8 +81,8 @@ public class FTipoMov extends FDados {
 
     txtCodTab.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTab.setTipo(JTextFieldPad.TP_STRING,40,0);    
-    lcTab.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
-    lcTab.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
+    lcTab.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Cód.tb.pc.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
+    lcTab.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
     lcTab.montaSql(false, "TABPRECO", "VD");
     lcTab.setQueryCommit(false);
     lcTab.setReadOnly(true);
@@ -90,28 +90,28 @@ public class FTipoMov extends FDados {
 
     txtCodTipoMov2.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTipoMov2.setTipo(JTextFieldPad.TP_STRING,40,0);    
-    lcTipoMov.add(new GuardaCampo( txtCodTipoMov2, 7, 100, 80, 20, "CodTipoMov", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
-    lcTipoMov.add(new GuardaCampo( txtDescTipoMov2, 90, 100, 207, 20, "DescTipoMov", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
+    lcTipoMov.add(new GuardaCampo( txtCodTipoMov2, 7, 100, 80, 20, "CodTipoMov", "Cód.tp.mov.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
+    lcTipoMov.add(new GuardaCampo( txtDescTipoMov2, 90, 100, 207, 20, "DescTipoMov", "Descrição do tipo de movimento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
     lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
     lcTipoMov.setQueryCommit(false);
     lcTipoMov.setReadOnly(true);
     txtCodTipoMov2.setTabelaExterna(lcTipoMov);
     
-    vLabs.addElement("Orçamento (Compra)");
-    vLabs.addElement("Orçamento (Venda)");
-    vLabs.addElement("Pedido (Compra)");
-    vLabs.addElement("Pedido (Venda)");
+    vLabs.addElement("Orçamento (compra)");
+    vLabs.addElement("Orçamento (venda)");
+    vLabs.addElement("Pedido (compra)");
+    vLabs.addElement("Pedido (venda)");
     vLabs.addElement("Compra");
     vLabs.addElement("Venda");
 	vLabs.addElement("Venda - ECF");
-	vLabs.addElement("Venda - Televendas");
+	vLabs.addElement("Venda - televendas");
 	vLabs.addElement("Devolução");
 	vLabs.addElement("Cancelamento");
 	vLabs.addElement("Bonificação");
 	vLabs.addElement("Transferência");
 	vLabs.addElement("Perda");
-	vLabs.addElement("Consignação - Saída");
-	vLabs.addElement("Consignação - Devolução");
+	vLabs.addElement("Consignação - saída");
+	vLabs.addElement("Consignação - devolução");
 	vLabs.addElement("Serviço");
 	vLabs.addElement("Inventário");
 	vVals.addElement("OC");
@@ -144,23 +144,23 @@ public class FTipoMov extends FDados {
     
     rgESTipoMov = new JRadioGroup(1,2,vLabsES,vValsES);
  
-    adicCampo(txtCodTipoMov, 7, 20, 80, 20,"CodTipoMov","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescTipoMov, 90, 20, 300, 20,"DescTipoMov","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodModNota, 7, 60, 80, 20,"CodModNota","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
-    adicDescFK(txtDescModNota, 90, 60, 300, 20, "DescModNota", "e descrição do modelo de nota", JTextFieldPad.TP_STRING, 30, 0);
+    adicCampo(txtCodTipoMov, 7, 20, 80, 20,"CodTipoMov","Cód.tp.mov.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescTipoMov, 90, 20, 300, 20,"DescTipoMov","Descrição do tipo de movimento",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodModNota, 7, 60, 80, 20,"CodModNota","Cód.mod.nota",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
+    adicDescFK(txtDescModNota, 90, 60, 300, 20, "DescModNota", "Descrição do modelo de nota", JTextFieldPad.TP_STRING, 30, 0);
     adicCampo(txtCodSerie, 7, 100, 80, 20,"Serie","Série",JTextFieldPad.TP_STRING,4,0,false,true,txtDescSerie,true);
-    adicDescFK(txtDescSerie, 90, 100, 300, 20, "DocSerie", "documento atual", JTextFieldPad.TP_INTEGER, 8, 0);
-    adicCampo(txtCodTab, 7, 140, 80, 20,"CodTab","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTab,false);
-    adicDescFK(txtDescTab, 90, 140, 300, 20, "DescTab", "e descrição da tab. de preços", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtCodTipoMov2, 7, 180, 80, 20,"CodTipoMovTM","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoMov2,false);
-    adicDescFK(txtDescTipoMov2, 90, 180, 300, 20, "DescTipoMov", "e descrição do movimento para nota.", JTextFieldPad.TP_STRING, 40, 0);
+    adicDescFK(txtDescSerie, 90, 100, 300, 20, "DocSerie", "Documento atual", JTextFieldPad.TP_INTEGER, 8, 0);
+    adicCampo(txtCodTab, 7, 140, 80, 20,"CodTab","Cód.tp.pc.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTab,false);
+    adicDescFK(txtDescTab, 90, 140, 300, 20, "DescTab", "Descrição da tab. de preços", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodTipoMov2, 7, 180, 80, 20,"CodTipoMovTM","Cód.mov.nf.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoMov2,false);
+    adicDescFK(txtDescTipoMov2, 90, 180, 300, 20, "DescTipoMov", "Descrição do movimento para nota.", JTextFieldPad.TP_STRING, 40, 0);
     adicDB(rgESTipoMov, 7, 220, 300, 30, "ESTipoMov", "Fluxo",JTextFieldPad.TP_STRING,true);
     
     adicDB(chbFiscalTipoMov, 7, 270, 107, 20, "FiscalTipoMov", "Lançamento",JTextFieldPad.TP_STRING,true);
     adicDB(chbEstoqTipoMov, 140, 270, 110, 20, "EstoqTipoMov", "Estoque",JTextFieldPad.TP_STRING,true);
     adicDB(chbSomaTipoMov, 260, 270, 200, 20, "SomaVdTipoMov", "Soma venda",JTextFieldPad.TP_STRING,true);
     
-    adicDB(cbTipoMov, 7, 310, 250, 30, "TipoMov", "Tipo de Movimento",JTextFieldPad.TP_STRING,true);
+    adicDB(cbTipoMov, 7, 310, 250, 30, "TipoMov", "Tipo de movimento",JTextFieldPad.TP_STRING,true);
     adicCampo(txtEspecieTipomov, 280,320,80 ,20, "EspecieTipomov", "Espécie", JTextFieldPad.TP_STRING,4,9,false,false,null,true); 
     lcCampos.setQueryInsert(false);
     

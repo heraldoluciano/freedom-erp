@@ -72,10 +72,10 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener {
 	   
 	rgTipoTransp.setVlrString("C");
 	
-    adicCampo(txtCodTran, 7, 20, 48, 20, "CodTran", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtRazTran, 60, 20, 223,20, "RazTran", "Razão", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtCodTran, 7, 20, 70, 20, "CodTran", "Cód.tran.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtRazTran, 80, 20, 205,20, "RazTran", "Razão social da transportadora", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
 	adicDB(rgTipoTransp, 290, 20, 84,61, "TipoTran", "Tipo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtNomeTran, 7, 60, 275,20, "NomeTran", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtNomeTran, 7, 60, 278,20, "NomeTran", "Nome fantasia", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
     adicCampo(txtCnpjTran, 7, 100, 181, 20, "CnpjTran", "Cnpj", JTextFieldPad.TP_STRING, 14, 0, false, false, null, true);
     adicCampo(txtInscTran, 192, 100, 181, 20, "InscTran", "Inscrição Estadual", JTextFieldPad.TP_STRING, 15, 0, false, false, null, true);
     adicCampo(txtEndTran, 7, 140, 260, 20, "EndTran", "Endereço", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);

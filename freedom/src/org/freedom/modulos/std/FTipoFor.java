@@ -38,8 +38,8 @@ public class FTipoFor extends FDados implements ActionListener {
   public FTipoFor () {
     setTitulo("Cadastro de Tipo de Fornecedor");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTipoFor, 7, 20, 50, 20,"CodTipoFor","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoFor, 60, 20, 250, 20,"DescTipoFor","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodTipoFor, 7, 20, 70, 20,"CodTipoFor","Cód.tp.for.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescTipoFor, 80, 20, 250, 20,"DescTipoFor","Descrição do tipo de fornecedor",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "TIPOFOR", "CP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -77,7 +77,7 @@ public class FTipoFor extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.tp.for.");
             imp.say(imp.pRow()+0,30,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
