@@ -454,9 +454,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  	  err.printStackTrace();
    	  }
    }
-   private int retTipoMov() {
+   private int retPlanoPag() {
    	  int iRet = 0;
-   	  String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE " +
+   	  String sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE " +
    	                      "CODEMP=? AND CODFILIAL=?";
    	  try {
    	  	PreparedStatement ps = con.prepareStatement(sSQL);
@@ -464,19 +464,65 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  	ps.setInt(2,Aplicativo.iCodFilial);
    	  	ResultSet rs = ps.executeQuery();
    	  	if (rs.next()) {
-   	  		iRet = rs.getInt("CodTipoMov");
+   	  		iRet = rs.getInt("CodPlanoPag");
    	  	}
    	  	rs.close();
    	  	ps.close();
    	  }
    	  catch(SQLException err) {
-   	  	 Funcoes.mensagemErro(this,"Erro ao buscar o tipo de movimento.\n"+
+   	  	 Funcoes.mensagemErro(this,"Erro ao buscar o plano de pagamento.\n"+
    	  	 		       
    	  	 		"Provavelmente não foram gravadas corretamente as preferências!\n"+err.getMessage());
    	  	 err.printStackTrace();
    	  }
    	  return iRet;
    }
+   private String retCodCli() {
+   	String iRet = "";
+ 	  String sSQL = "SELECT CodCli FROM SGPREFERE4 WHERE " +
+ 	                      "CODEMP=? AND CODFILIAL=?";
+ 	  try {
+ 	  	PreparedStatement ps = con.prepareStatement(sSQL);
+ 	  	ps.setInt(1,Aplicativo.iCodEmp);
+ 	  	ps.setInt(2,Aplicativo.iCodFilial);
+ 	  	ResultSet rs = ps.executeQuery();
+ 	  	if (rs.next()) {
+ 	  		iRet = rs.getString("CodCli");
+ 	  	}
+ 	  	rs.close();
+ 	  	ps.close();
+ 	  }
+ 	  catch(SQLException err) {
+ 	  	 Funcoes.mensagemErro(this,"Erro ao buscar o código do cliente.\n"+
+ 	  	 		       
+ 	  	 		"Provavelmente não foram gravadas corretamente as preferências!\n"+err.getMessage());
+ 	  	 err.printStackTrace();
+ 	  }
+ 	  return iRet;
+ }
+   private int retTipoMov() {
+ 	  int iRet = 0;
+ 	  String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE " +
+ 	                      "CODEMP=? AND CODFILIAL=?";
+ 	  try {
+ 	  	PreparedStatement ps = con.prepareStatement(sSQL);
+ 	  	ps.setInt(1,Aplicativo.iCodEmp);
+ 	  	ps.setInt(2,Aplicativo.iCodFilial);
+ 	  	ResultSet rs = ps.executeQuery();
+ 	  	if (rs.next()) {
+ 	  		iRet = rs.getInt("CodTipoMov");
+ 	  	}
+ 	  	rs.close();
+ 	  	ps.close();
+ 	  }
+ 	  catch(SQLException err) {
+ 	  	 Funcoes.mensagemErro(this,"Erro ao buscar o tipo de movimento.\n"+
+ 	  	 		       
+ 	  	 		"Provavelmente não foram gravadas corretamente as preferências!\n"+err.getMessage());
+ 	  	 err.printStackTrace();
+ 	  }
+ 	  return iRet;
+ }    
    private int retVendedor() {
    	int iRet = 0;
    	String sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE " +
@@ -558,12 +604,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	 }
    }
    private void iniVenda() {
+   	
+   	
    	  lcVenda.insert(true);
    	  txtTipoVenda.setVlrString("E");
-   	  txtCodCli.setVlrString("1");
+   	  txtCodCli.setVlrString(retCodCli());
    	  lcCliente.carregaDados();
       lcProduto.limpaCampos(true);
-   	  txtCodPlanoPag.setVlrString("1");
+   	  txtCodPlanoPag.setVlrInteger(new Integer(retPlanoPag()));
 	  txtQtdadeItem.setVlrString("");
 	  txtValorTotalItem.setVlrString("");
 	  txtValorTotalCupom.setVlrString("");
