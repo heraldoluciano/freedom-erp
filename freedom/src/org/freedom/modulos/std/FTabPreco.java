@@ -27,19 +27,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTabPreco extends FDados implements ActionListener{
-  private JTextFieldPad txtCodTab = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTab= new JTextFieldPad(20);
+  private JTextFieldPad txtCodTab = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescTab= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTabPreco () {
     setTitulo("Cadastro de Tabelas de Preços");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTab, 7, 20, 70, 20,"CodTab","Cód.tb.pc.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescTab, 80, 20, 250, 20,"DescTab","Descrição da tabela de preço",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodTab, 7, 20, 70, 20,"CodTab","Cód.tb.pc.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTab, 80, 20, 250, 20,"DescTab","Descrição da tabela de preço", ListaCampos.DB_SI, true);
     setListaCampos( true, "TABPRECO", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -38,9 +39,9 @@ public class FTipoCred extends FDados implements ActionListener {
   public FTipoCred() {
     setTitulo("Cadastro de tipos de credito");
     setAtribos(50, 50, 350, 165);
-    adicCampo(txtCodTipoCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoCred, 90, 20, 240, 20,"DescTpCred","Descrição do tipo de credito",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-	adicCampo(txtVlrTipoCred, 7, 60, 120, 20,"VlrTpCred","Valor",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
+    adicCampo(txtCodTipoCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTipoCred, 90, 20, 240, 20,"DescTpCred","Descrição do tipo de credito", ListaCampos.DB_SI, true);
+	adicCampo(txtVlrTipoCred, 7, 60, 120, 20,"VlrTpCred","Valor", ListaCampos.DB_SI, true);
     setListaCampos( true, "TIPOCRED", "FN");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

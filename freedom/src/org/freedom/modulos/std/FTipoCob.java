@@ -27,21 +27,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTipoCob extends FDados implements ActionListener {
-  private JTextFieldPad txtCodTipoCob = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTipoCob = new JTextFieldPad(40);
-  private JTextFieldPad txtDuplCob = new JTextFieldPad(8);
+  private JTextFieldPad txtCodTipoCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescTipoCob = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtDuplCob = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   public FTipoCob () {
     setTitulo("Cadastro de Tipo de Cobrança");
     setAtribos( 50, 50, 390, 125);
-    adicCampo(txtCodTipoCob, 7, 20, 70, 20,"CodTipoCob","Cód.tp.cob.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoCob, 80, 20, 200, 20,"DescTipoCob","Descrição do tipo de cobrança",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtDuplCob, 283, 20, 80, 20,"DuplCob","Duplicata",JTextFieldPad.TP_STRING,8,0,false,false,null,false);
+    adicCampo(txtCodTipoCob, 7, 20, 70, 20,"CodTipoCob","Cód.tp.cob.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTipoCob, 80, 20, 200, 20,"DescTipoCob","Descrição do tipo de cobrança", ListaCampos.DB_SI, true);
+    adicCampo(txtDuplCob, 283, 20, 80, 20,"DuplCob","Duplicata", ListaCampos.DB_SI, false);
     setListaCampos( true, "TIPOCOB", "FN");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

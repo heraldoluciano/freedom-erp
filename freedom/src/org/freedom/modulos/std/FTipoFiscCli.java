@@ -27,18 +27,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FTipoFiscCli extends FDados implements ActionListener {
-  private JTextFieldPad txtCod= new JTextFieldPad(5);
-  private JTextFieldPad txtDesc= new JTextFieldPad(20);
+  private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTipoFiscCli () {
     setTitulo("Cadastro de tipos fiscal de clientes");
     setAtribos(50, 50, 360, 125);
-    adicCampo(txtCod, 7, 20, 80, 20,"CodFiscCli","Cód.fisc.cli.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 90, 20, 250, 20,"DescFiscCli","Descrição fiscal do cliente",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCod, 7, 20, 80, 20,"CodFiscCli","Cód.fisc.cli.", ListaCampos.DB_PK, true);
+    adicCampo(txtDesc, 90, 20, 250, 20,"DescFiscCli","Descrição fiscal do cliente",ListaCampos.DB_SI, true);
     setListaCampos( true, "TIPOFISCCLI", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
