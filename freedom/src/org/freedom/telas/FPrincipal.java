@@ -186,12 +186,12 @@ public class FPrincipal extends JFrame implements ActionListener {
        calc.show();
      }
      else if (evt.getSource() == btAgenda) {
-     	
-     }
         if (this.temTela("Agenda") == false) {
 			FAgenda tela = new FAgenda();
 			this.criatela("Agenda",tela,con);
-        }
+        }     	     	
+     }
+
      }
 
    
