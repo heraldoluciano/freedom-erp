@@ -22,7 +22,6 @@
 package org.freedom.modulos.std;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

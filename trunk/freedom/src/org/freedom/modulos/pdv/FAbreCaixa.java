@@ -23,7 +23,6 @@
 package org.freedom.modulos.pdv;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -35,7 +34,6 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
 public class FAbreCaixa extends FFDialogo {
