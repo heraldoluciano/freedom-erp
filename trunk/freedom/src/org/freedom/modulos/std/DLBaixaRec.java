@@ -82,7 +82,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
   public DLBaixaRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Baixa");
-    setAtribos(360,400);
+    setAtribos(380,450);
     
     txtDoc.setTipo(JTextFieldPad.TP_STRING,10,0);
     txtDtPagto.setTipo(JTextFieldPad.TP_DATE,10,0);

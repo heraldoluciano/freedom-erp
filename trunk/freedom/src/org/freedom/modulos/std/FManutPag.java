@@ -585,7 +585,9 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
                   " AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP)"+
                   ",P.DOCPAG,P.CODCOMPRA,"+
                   "P.DATAPAG,IT.VLRPARCITPAG,IT.DTPAGOITPAG,IT.VLRPAGOITPAG,"+
-                  "(CAST('today' AS DATE)-IT.DTVENCITPAG) AS ATRASO,"+
+                  "(CASE WHEN IT.DTPAGOITPAG IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITPAG " +
+				  "ELSE IT.DTPAGOITPAG - IT.DTVENCITPAG "+
+				  " END ) ATRASO,"+
                   "P.OBSPAG,(SELECT B.NOMEBANCO FROM FNBANCO B "+
                   "WHERE B.CODBANCO = P.CODBANCO AND B.CODEMP=P.CODEMPBO" +
                   " AND B.CODFILIAL=P.CODFILIALBO) AS NOMEBANCO,"+
@@ -611,7 +613,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItPag")),i,5);
         tabConsulta.setValor((rs.getDate("DtPagoItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItPag")) : ""),i,6);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItPag")),i,7);
-        tabConsulta.setValor(rs.getString(9),i,8);
+        tabConsulta.setValor(new Integer(rs.getInt(9)),i,8);
         tabConsulta.setValor(rs.getString("ObsPag") != null ? rs.getString("ObsPag") : "",i,9);
         tabConsulta.setValor(rs.getString(11) != null ? rs.getString(11) : "",i,10);
         vCodPag.addElement(rs.getString("CodPag"));        
