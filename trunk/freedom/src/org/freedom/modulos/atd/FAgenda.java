@@ -182,10 +182,9 @@ public class FAgenda extends FFilho implements ActionListener {
 //	cbPeriodo.addComboBoxListener(this);
 
 }
- 
   private void carregaTabAgd() {
   	String sSQL = "SELECT A.CODAGD,A.SITAGD,A.DTAINIAGD,A.HRINIAGD,A.DTAFIMAGD,A.HRFIMAGD,A.ASSUNTOAGD" +
- 		                  " FROM SGAGENDA A WHERE A.CODEMPUD=? AND A.CODFILIALUD=? AND A.IDUSUD=? " +
+ 		                  " FROM SGAGENDA A WHERE A.CODAGD=? AND A.CODFILIALUD=? AND A.IDUSUD=? " +
  		                  " AND DTAINIAGD BETWEEN ? AND ?" +
   		                  " ORDER BY A.DTAINIAGD DESC,A.HRINIAGD DESC,A.DTAFIMAGD DESC,A.HRFIMAGD DESC";
     try {
