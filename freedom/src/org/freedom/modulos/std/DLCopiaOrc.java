@@ -49,8 +49,9 @@ public class DLCopiaOrc extends FFDialogo {
     txtCodCli.setFK(true);
     txtCodCli.setNomeCampo("CodCli");
     
-    adic(new JLabel("Código e razão do cliente"),7,5,200,20);
+    adic(new JLabel("Cód.cli."),7,5,200,20);
     adic(txtCodCli,7,25,80,20);
+    adic(new JLabel("Razão social do cliente"),90,5,200,20);
     adic(txtRazCli,90,25,200,20);
     
   }

@@ -31,13 +31,11 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLDataTransf extends FFDialogo {
-	private JTextFieldPad txtDataTransf = new JTextFieldPad();
+	private JTextFieldPad txtDataTransf = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	public DLDataTransf(Component cOrig) {
 		super(cOrig);
 		setTitulo("Nova Data");
 		setAtribos(100,100,250,120);
-
-		txtDataTransf.setTipo(JTextFieldPad.TP_DATE,10,0);
 
 		adic(new JLabel("Nova Data:"),7,0,110,20);
 		adic(txtDataTransf,7,20,100,20);

@@ -45,7 +45,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private Painel pinConsulta = new Painel(500,100);
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtDocVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
-  private JTextFieldPad txtVlrVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,13,2);
+  private JTextFieldPad txtVlrVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtDtEmitVenda = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtSaida = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
@@ -76,24 +76,25 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 
     
     
-    pinConsulta.adic(new JLabel("Cod. Venda"),7,0,100,20);
+    pinConsulta.adic(new JLabel("Nº pedido"),7,0,100,20);
     pinConsulta.adic(txtCodVenda,7,20,100,20);
-    pinConsulta.adic(new JLabel("Doc.Venda"),110,0,200,20);
+    pinConsulta.adic(new JLabel("Doc.venda"),110,0,200,20);
     pinConsulta.adic(txtDocVenda,110,20,100,20);
     
-    pinConsulta.adic(new JLabel("Código e desc.do plano"),212,0,200,20);
+    pinConsulta.adic(new JLabel("Cód.p.pag."),212,0,200,20);
     pinConsulta.adic(txtCodPlanoPag,212,20,77,20);
+    pinConsulta.adic(new JLabel("Descrição do plano"),292,0,200,20);
     pinConsulta.adic(txtDescPlanoPag,292,20,187,20);
-    pinConsulta.adic(new JLabel("Data Emissão"),7,40,150,20);
+    pinConsulta.adic(new JLabel("Data emissão"),7,40,150,20);
     pinConsulta.adic(txtDtEmitVenda,7,60,110,20);
-    pinConsulta.adic(new JLabel("Data Saida"),120,40,150,20);
+    pinConsulta.adic(new JLabel("Data saida"),120,40,150,20);
     pinConsulta.adic(txtDtSaida,120,60,100,20);
-    pinConsulta.adic(new JLabel("Valor Total"),223,40,100,20);
+    pinConsulta.adic(new JLabel("Valor total"),223,40,100,20);
     pinConsulta.adic(txtVlrVenda,223,60,100,20);
     
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Código", ListaCampos.DB_PK, false));
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição", ListaCampos.DB_SI,false));
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
     txtDescPlanoPag.setListaCampos(lcPlanoPag);
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
     lcPlanoPag.setQueryCommit(false);
@@ -101,11 +102,11 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
     lcPlanoPag.setConexao(con);
 
     txtCodVenda.setNomeCampo("CodVenda");
-    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK,false));
-    lcVenda.add(new GuardaCampo(txtDocVenda,"DocVenda","N.documento", ListaCampos.DB_SI,false));
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Nº pedido", ListaCampos.DB_PK,false));
+    lcVenda.add(new GuardaCampo(txtDocVenda,"DocVenda","Nº documento", ListaCampos.DB_SI,false));
     lcVenda.add(new GuardaCampo(txtDtEmitVenda,"DtEmitVenda","Dt.emissão", ListaCampos.DB_SI,false));    
     lcVenda.add(new GuardaCampo(txtDtSaida,"DtSaidaVenda","Dt.saída", ListaCampos.DB_SI,false));        
-    lcVenda.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK,false));
+    lcVenda.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK,false));
     lcVenda.add(new GuardaCampo( txtVlrVenda, "VlrLiqVenda", "Valor", ListaCampos.DB_SI,false));
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
     txtCodPlanoPag.setListaCampos(lcVenda);
@@ -117,13 +118,13 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 
 
     tabConsulta.adicColuna("Item");
-    tabConsulta.adicColuna("Ref.Prod.");
+    tabConsulta.adicColuna("Ref.prod.");
     tabConsulta.adicColuna("Descrição");
-    tabConsulta.adicColuna("Cod.Lote");
+    tabConsulta.adicColuna("Cód.lote");
     tabConsulta.adicColuna("Quant.");
     tabConsulta.adicColuna("Preço");
     tabConsulta.adicColuna("Desc");
-    tabConsulta.adicColuna("Vl.Liq");
+    tabConsulta.adicColuna("Vl.liq");
     
     tabConsulta.setTamColuna(50,0);
     tabConsulta.setTamColuna(70,1);
