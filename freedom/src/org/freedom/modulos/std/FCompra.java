@@ -87,9 +87,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   private JTextFieldPad txtVlrICMSItCompra = new JTextFieldPad();
   private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad();
   private JTextFieldPad txtCodLote = new JTextFieldPad();
-  private JTextFieldPad txtCodFisc = new JTextFieldPad();
-  private JTextFieldPad txtTipoFisc = new JTextFieldPad();
-  private JTextFieldPad txtRedFisc = new JTextFieldPad();
+  private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
   private JTextFieldPad txtVlrIPICompra = new JTextFieldPad();
   private JTextFieldPad txtVlrDescCompra = new JTextFieldPad();
   private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad();
@@ -151,8 +151,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
     txtCodTipoMov.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
     txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-    lcTipoMov.add(new GuardaCampo(txtCodTipoMov, 7, 100, 80, 20, "CodTipoMov", "Cód.tp.mov.", true, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodTipoMovx");
-    lcTipoMov.add(new GuardaCampo(txtDescTipoMov, 90, 100, 207, 20, "DescTipoMov", "Descrição do tipo de movimento", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescTipoMovx");
+    lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
+    lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI,false));
     lcTipoMov.setWhereAdic("ESTIPOMOV = 'E'");
     lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
     lcTipoMov.setQueryCommit(false);
@@ -161,8 +161,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
     txtSerieCompra.setTipo(JTextFieldPad.TP_STRING, 4, 0);
     txtDocCompra.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    lcSerie.add(new GuardaCampo(txtSerieCompra, 7, 100, 80, 20, "Serie", "Série", true, false, null, JTextFieldPad.TP_STRING, false), "txtCodForx");
-    lcSerie.add(new GuardaCampo(txtDocCompra, 90, 100, 207, 20, "DocSerie", "Doc", false, false, null, JTextFieldPad.TP_INTEGER, false), "txtDescForx");
+    lcSerie.add(new GuardaCampo(txtSerieCompra, "Serie", "Série", ListaCampos.DB_PK, false));
+    lcSerie.add(new GuardaCampo(txtDocCompra, "DocSerie", "Doc", ListaCampos.DB_SI, false));
     lcSerie.montaSql(false, "SERIE", "LF");
     lcSerie.setQueryCommit(false);
     lcSerie.setReadOnly(true);
@@ -171,9 +171,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtCodFor.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
     txtDescFor.setTipo(JTextFieldPad.TP_STRING, 50, 0);
     txtEstFor.setTipo(JTextFieldPad.TP_STRING, 2, 0);
-    lcFor.add(new GuardaCampo(txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodForx");
-    lcFor.add(new GuardaCampo(txtDescFor, 90, 100, 207, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescForx");
-    lcFor.add(new GuardaCampo(txtEstFor, 90, 100, 207, 20, "UFFor", "UF", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescForx");
+    lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
+    lcFor.add(new GuardaCampo(txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
+    lcFor.add(new GuardaCampo(txtEstFor, "UFFor", "UF", ListaCampos.DB_SI, false));
     lcFor.montaSql(false, "FORNECED", "CP");
     lcFor.setQueryCommit(false);
     lcFor.setReadOnly(true);
@@ -181,22 +181,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
     txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
     txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-    lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
     lcPlanoPag.setQueryCommit(false);
     lcPlanoPag.setReadOnly(true);
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 
     txtDescFisc.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-    txtTipoFisc.setTipo(JTextFieldPad.TP_STRING, 2, 0);
-    txtRedFisc.setTipo(JTextFieldPad.TP_DECIMAL, 6, 2);
     txtAliqIPIFisc.setTipo(JTextFieldPad.TP_DECIMAL, 6, 2);
-    lcFisc.add(new GuardaCampo(txtCodFisc, 7, 100, 80, 20, "CodFisc", "Código", true, false, txtDescFisc, JTextFieldPad.TP_STRING, false), "txtCodFiscx");
-    lcFisc.add(new GuardaCampo(txtDescFisc, 90, 100, 207, 20, "DescFisc", "Descrição", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescFiscx");
-    lcFisc.add(new GuardaCampo(txtTipoFisc, 90, 100, 207, 20, "TipoFisc", "Tipo", false, false, null, JTextFieldPad.TP_STRING, false), "txtTipoFiscx");
-    lcFisc.add(new GuardaCampo(txtRedFisc, 90, 100, 207, 20, "RedFisc", "Redução", false, false, null, JTextFieldPad.TP_DECIMAL, false), "txtRedFiscx");
-    lcFisc.add(new GuardaCampo(txtAliqIPIFisc, 90, 100, 207, 20, "AliqIPIFisc", "% IPI", false, false, null, JTextFieldPad.TP_DECIMAL, false), "txtAliqIPIFiscx");
+    lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Código", ListaCampos.DB_PK, false));
+    lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição", ListaCampos.DB_SI, false));
+    lcFisc.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Tipo", ListaCampos.DB_SI, false));
+    lcFisc.add(new GuardaCampo(txtRedFisc, "RedFisc", "Redução", ListaCampos.DB_SI, false));
+    lcFisc.add(new GuardaCampo(txtAliqIPIFisc, "AliqIPIFisc", "% IPI", ListaCampos.DB_SI, false));
     lcFisc.montaSql(false, "CLFISCAL", "LF");
     lcFisc.setQueryCommit(false);
     lcFisc.setReadOnly(true);
@@ -211,13 +209,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtCodBarProd.setTipo(JTextFieldPad.TP_STRING, 13, 0);
     txtCodFabProd.setTipo(JTextFieldPad.TP_STRING, 13, 0);
     txtPercComItCompra.setTipo(JTextFieldPad.TP_DECIMAL, 6, 2);
-    lcProd.add(new GuardaCampo(txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, txtDescProd, JTextFieldPad.TP_INTEGER, false), "txtCodProdx");
-    lcProd.add(new GuardaCampo(txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd.add(new GuardaCampo(txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd.add(new GuardaCampo(txtCLoteProd, 90, 100, 207, 20, "CLoteProd", "C/Lote", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd.add(new GuardaCampo(txtCodFisc, 90, 100, 207, 20, "CodFisc", "Cod.Fiscal", false, true, null, JTextFieldPad.TP_STRING, false), "txtCodfiscx");
-    lcProd.add(new GuardaCampo(txtCodBarProd, 90, 100, 207, 20, "CodBarProd", "Cod.Barra", false, false, null, JTextFieldPad.TP_STRING, false), "txtCodBarProdx");
-    lcProd.add(new GuardaCampo(txtCodFabProd, 90, 100, 207, 20, "CodFabProd", "Cod.Fabricante", false, false, null, JTextFieldPad.TP_STRING, false), "txtCodFabProdx");
+    lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK,  false));
+    lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cod.Fiscal", ListaCampos.DB_FK, false));
+    lcProd.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false));
 
     lcProd.setWhereAdic("ATIVOPROD='S'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
@@ -225,13 +223,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcProd.setReadOnly(true);
     txtCodProd.setTabelaExterna(lcProd);
 
-    lcProd2.add(new GuardaCampo(txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", true, false, txtDescProd, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd2.add(new GuardaCampo(txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd2.add(new GuardaCampo(txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.rod.", false, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodProdx");
-    lcProd2.add(new GuardaCampo(txtCLoteProd, 90, 100, 207, 20, "CLoteProd", "C/Lote", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescProdx");
-    lcProd2.add(new GuardaCampo(txtCodFisc, 90, 100, 207, 20, "CodFisc", "CodFisc", false, true, null, JTextFieldPad.TP_STRING, false), "txtCodfiscx");
-    lcProd2.add(new GuardaCampo(txtCodBarProd, 90, 100, 207, 20, "CodBarProd", "Cod.Barra", false, false, null, JTextFieldPad.TP_STRING, false), "txtCodBarProdx");
-    lcProd2.add(new GuardaCampo(txtCodFabProd, 90, 100, 207, 20, "CodFabProd", "Cod.Fabricante", false, false, null, JTextFieldPad.TP_STRING, false), "txtCodFabProdx");
+    lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false));
+    lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo(txtCodFisc, "CodFisc", "CodFisc", ListaCampos.DB_FK, false));
+    lcProd2.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Cod.Fabricante", ListaCampos.DB_SI, false));
 
     txtRefProd.setNomeCampo("RefProd");
     txtRefProd.setListaCampos(lcDet);
@@ -243,9 +241,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
     txtCodLote.setTipo(JTextFieldPad.TP_STRING, 13, 0);
     txtDescLote.setTipo(JTextFieldPad.TP_DATE, 10, 0);
-    lcLote.add(new GuardaCampo(txtCodLote, 7, 100, 80, 20, "CodLote", "Código", true, false, txtDescLote, JTextFieldPad.TP_STRING, false), "txtCodLotex");
-    lcLote.add(new GuardaCampo(txtCodProd, 7, 100, 80, 20, "CodProd", "Código do Produto", true, false, txtDescLote, JTextFieldPad.TP_INTEGER, false), "txtCodLotex");
-    lcLote.add(new GuardaCampo(txtDescLote, 90, 100, 207, 20, "VenctoLote", "Vencimento", false, false, null, JTextFieldPad.TP_DATE, false), "txtDescLotex");
+    lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Código", ListaCampos.DB_PK, false));
+    lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Código do Produto", ListaCampos.DB_PK, false));
+    lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Vencimento", ListaCampos.DB_SI, false));
     //    lcLote.setDinWhereAdic("CODPROD=#N",txtCodProd);
     lcLote.setAutoLimpaPK(false);
     lcLote.montaSql(false, "LOTE", "EQ");
@@ -258,8 +256,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
     txtCodNat.setTipo(JTextFieldPad.TP_STRING, 4, 0);
     txtDescNat.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-    lcNat.add(new GuardaCampo(txtCodNat, 7, 100, 80, 20, "CodNat", "CFOP", true, false, txtDescNat, JTextFieldPad.TP_STRING, false), "txtCodNatx");
-    lcNat.add(new GuardaCampo(txtDescNat, 90, 100, 207, 20, "DescNat", "Descrição da CFOP", false, false, null, JTextFieldPad.TP_STRING, false), "txtDescNatx");
+    lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP", ListaCampos.DB_PK, false));
+    lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI, false));
     lcNat.montaSql(false, "NATOPER", "LF");
     lcNat.setQueryCommit(false);
     lcNat.setReadOnly(true);
@@ -271,11 +269,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtVlrDescCompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
     txtVlrLiqCompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
     txtVlrBrutCompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-    lcCompra2.add(new GuardaCampo(txtCodCompra, 7, 100, 80, 20, "CodCompra", "Código", true, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodComprax");
-    lcCompra2.add(new GuardaCampo(txtVlrIPICompra, 7, 100, 80, 20, "VlrIPICompra", "IPI", false, false, null, JTextFieldPad.TP_DECIMAL, false), "txtVlrIPIComprax");
-    lcCompra2.add(new GuardaCampo(txtVlrDescCompra, 7, 100, 80, 20, "VlrDescItCompra", "Desconto", false, false, null, JTextFieldPad.TP_DECIMAL, false), "txtVlrDescComprax");
-    lcCompra2.add(new GuardaCampo(txtVlrLiqCompra, 7, 100, 80, 20, "VlrLiqCompra", "Geral", false, false, null, JTextFieldPad.TP_DECIMAL, false), "txtVlrLiqComprax");
-    lcCompra2.add(new GuardaCampo(txtVlrBrutCompra, 7, 100, 80, 20, "VlrProdCompra", "Geral", false, false, null, JTextFieldPad.TP_DECIMAL, false), "txtVlrBrutComprax");
+    lcCompra2.add(new GuardaCampo(txtCodCompra, "CodCompra", "Código", ListaCampos.DB_PK, false));
+    lcCompra2.add(new GuardaCampo(txtVlrIPICompra, "VlrIPICompra", "IPI", ListaCampos.DB_SI, false));
+    lcCompra2.add(new GuardaCampo(txtVlrDescCompra, "VlrDescItCompra", "Desconto", ListaCampos.DB_SI, false));
+    lcCompra2.add(new GuardaCampo(txtVlrLiqCompra, "VlrLiqCompra", "Geral", ListaCampos.DB_SI, false));
+    lcCompra2.add(new GuardaCampo(txtVlrBrutCompra, "VlrProdCompra", "Geral", ListaCampos.DB_SI, false));
     lcCompra2.montaSql(false, "COMPRA", "CP");
     lcCompra2.setQueryCommit(false);
     lcCompra2.setReadOnly(true);
