@@ -37,9 +37,9 @@ import org.freedom.telas.FFDialogo;
 
 public class DLGrupo extends FFDialogo {
   private Connection con = null;
-  private JTextFieldPad txtCodGrupo = new JTextFieldPad(4);
-  private JTextFieldPad txtDescGrupo = new JTextFieldPad(50);
-  private JTextFieldPad txtSiglaGrupo = new JTextFieldPad(10);
+  private JTextFieldPad txtCodGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtDescGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtSiglaGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JLabel lbCodGrupo = new JLabel("Cód.grupo");
   private JLabel lbDescGrupo = new JLabel("Descrição do grupo");
   private JLabel lbSiglaGrupo = new JLabel("Sigla");
@@ -51,9 +51,7 @@ public class DLGrupo extends FFDialogo {
     setAtribos(400,140);
     Funcoes.setBordReq(txtCodGrupo);    
     Funcoes.setBordReq(txtDescGrupo);    
-    txtCodGrupo.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtDescGrupo.setTipo(JTextFieldPad.TP_STRING,50,0);
-    txtSiglaGrupo.setTipo(JTextFieldPad.TP_STRING,10,0);
+   
     adic(lbCodGrupo,7,0,80,20);
     adic(txtCodGrupo,7,20,80,20);
     adic(lbDescGrupo,90,0,200,20);

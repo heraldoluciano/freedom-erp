@@ -37,8 +37,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanPrim extends FFDialogo {
-  private JTextFieldPad txtCodCont = new JTextFieldPad(13);
-  private JTextFieldPad txtDescCont = new JTextFieldPad(13);
+  private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private Painel pinCont = new Painel(360,220);
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
@@ -51,8 +51,6 @@ public class DLPlanPrim extends FFDialogo {
     setTitulo("Planejamento financeiro (Nível 1)");
     setAtribos(360,220);
     Funcoes.setBordReq(txtDescCont);    
-    txtCodCont.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtDescCont.setTipo(JTextFieldPad.TP_STRING,50,0);
     txtCodCont.setBackground(Color.lightGray);
     txtCodCont.setFont(new Font("Dialog", Font.BOLD, 12));
     txtCodCont.setEditable(false);

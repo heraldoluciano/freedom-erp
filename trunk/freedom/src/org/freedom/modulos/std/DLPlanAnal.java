@@ -38,9 +38,9 @@ public class DLPlanAnal extends FFDialogo {
   private JTextFieldPad txtDescPai = new JTextFieldPad();
   private JTextFieldPad txtCodAnal = new JTextFieldPad();
   private JTextFieldPad txtDescAnal = new JTextFieldPad(50);
-  private JLabel lbCodPai = new JLabel("Código");
-  private JLabel lbDescPai = new JLabel("e descrição da origem");
-  private JLabel lbCodAnal = new JLabel("Códiogo");
+  private JLabel lbCodPai = new JLabel("Cód.origem");
+  private JLabel lbDescPai = new JLabel("Descrição da origem");
+  private JLabel lbCodAnal = new JLabel("Código");
   private JLabel lbDescAnal = new JLabel("Descrição");
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();

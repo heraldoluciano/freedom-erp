@@ -52,7 +52,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
   private JPanel pnPag = new JPanel(new BorderLayout());
   private Painel pinCab = new Painel(580,130);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
@@ -163,14 +163,17 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     pnPag.add(spnTab,BorderLayout.CENTER);
 
     setPainel(pinCab);
-    adic(new JLabel("Código e razão do fornecedor"),7,0,250,20);
+    adic(new JLabel("Cód.for."),7,0,250,20);
     adic(txtCodFor,7,20,80,20);
+    adic(new JLabel("Razão social do fornecedor"),90,0,250,20);
     adic(txtDescFor,90,20,197,20);
-    adic(new JLabel("Código e descrição do plano de pagto."),290,0,250,20);
+    adic(new JLabel("Cód.p.pag."),290,0,250,20);
     adic(txtCodPlanoPag,290,20,77,20);
+    adic(new JLabel("Descrição do plano de pagto."),370,0,250,20);
     adic(txtDescPlanoPag,370,20,200,20);
-	adic(new JLabel("Código e descriçao do banco"),7,40,250,20);
+	adic(new JLabel("Cód.banco"),7,40,250,20);
 	adic(txtCodBanco,7,60,80,20);
+	adic(new JLabel("Descriçao do banco"),90,40,250,20);
 	adic(txtDescBanco,90,60,197,20);
 	adic(new JLabel("Valor"),290,40,107,20);
 	adic(txtVlrParcPag,290,60,107,20);

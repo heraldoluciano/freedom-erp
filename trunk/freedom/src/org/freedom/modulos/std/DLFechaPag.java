@@ -30,15 +30,12 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaPag extends FFDialogo {
-  private JTextFieldPad txtParcItPag = new JTextFieldPad();
-  private JTextFieldPad txtDtVencItPag = new JTextFieldPad();
+  private JTextFieldPad txtParcItPag = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtDtVencItPag = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   public DLFechaPag(Component cOrig,BigDecimal bigParcItPag, Date dDtVencItPag) {
   	super(cOrig);
     setTitulo("Parcela");
     setAtribos(250,150);
-
-    txtParcItPag.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtVencItPag.setTipo(JTextFieldPad.TP_DATE,10,0);
 
     txtParcItPag.setVlrBigDecimal(bigParcItPag);
     txtDtVencItPag.setVlrDate(dDtVencItPag);

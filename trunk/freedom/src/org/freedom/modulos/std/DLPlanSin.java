@@ -38,9 +38,9 @@ public class DLPlanSin extends FFDialogo {
   private JTextFieldPad txtDescPai = new JTextFieldPad();
   private JTextFieldPad txtCodSin = new JTextFieldPad();
   private JTextFieldPad txtDescSin = new JTextFieldPad(50);
-  private JLabel lbCodPai = new JLabel("Código");
-  private JLabel lbDescPai = new JLabel("e descrição da origem");
-  private JLabel lbCodSin = new JLabel("Códiogo");
+  private JLabel lbCodPai = new JLabel("Cód.origem");
+  private JLabel lbDescPai = new JLabel("Descrição da origem");
+  private JLabel lbCodSin = new JLabel("Código");
   private JLabel lbDescSin = new JLabel("Descrição");
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
