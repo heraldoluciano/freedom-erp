@@ -26,6 +26,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+
 import org.freedom.componentes.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
@@ -82,13 +83,18 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
 //Esquematicos para acertar a linha selecionada...
 //Quando o form fechar a linha ira pular uma vez uma vez para baixo...
 //então eu volto uma linha aqui:
-      	
-      	if (tab.getLinhaSel() > 0)
-        	tab.setLinhaSel(tab.getLinhaSel()-1);
-        else
-        	tab.setLinhaSel(tab.getNumLinhas()-1);
-      	
-        btOK.doClick();
+
+        if (tab.getLinhaSel()==tab.getNumLinhas()-1){
+            tab.setLinhaSel(tab.getNumLinhas()-1);
+            btOK.doClick();            
+        }
+        else {
+            if (tab.getLinhaSel() > 0)
+                tab.setLinhaSel(tab.getLinhaSel()-1);
+            else
+                tab.setLinhaSel(tab.getNumLinhas()-1);      	
+            btOK.doClick();
+        }
       }
     }
     else
@@ -96,5 +102,6 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
   }
   public void keyReleased(KeyEvent kevt) { }
   public void keyTyped(KeyEvent kevt) { }
+
 }
 
