@@ -127,11 +127,13 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 	vLabs.addElement("Conveniado");
 	rgBusca = new JRadioGroup(2,1,vLabs,vVals);
 
-    pinCab.adic(new JLabel("Código e descrição do cliente"),7,5,250,20);
+    pinCab.adic(new JLabel("Cód.cli."),7,5,70,20);
     pinCab.adic(txtCodCli,7,25,70,20);
+    pinCab.adic(new JLabel("Razão social do cliente"),80,5,200,20);
     pinCab.adic(txtNomeCli,80,25,200,20);
-	pinCab.adic(new JLabel("Código e descrição do conveniado"),7,45,250,20);
+	pinCab.adic(new JLabel("Cód.conv."),7,45,70,20);
 	pinCab.adic(txtCodConv,7,65,70,20);
+	pinCab.adic(new JLabel("Nome do conveniado"),80,45,200,20);
 	pinCab.adic(txtNomeConv,80,65,200,20);
 	pinCab.adic(new JLabel("Buscar por:"),300,5,120,20);
 	pinCab.adic(rgBusca,300,25,120,60);
@@ -192,8 +194,8 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 //Monta as tabelas
 
     tabOrc.adicColuna("S/N");
-    tabOrc.adicColuna("Código");
-    tabOrc.adicColuna("Cód. Cli.");
+    tabOrc.adicColuna("Cód.orc.");
+    tabOrc.adicColuna("Cód.Cli.");
     tabOrc.adicColuna("Nome do Conveniado");
     tabOrc.adicColuna("Nº. itens.");
     tabOrc.adicColuna("Nº. lib.");

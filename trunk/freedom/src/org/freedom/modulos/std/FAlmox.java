@@ -37,8 +37,8 @@ public class FAlmox extends FDados implements ActionListener{
   public FAlmox () {
     setTitulo("Cadastro de Almoxarifado");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodAlmox, 7, 20, 50, 20,"CodAlmox","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescAlmox, 60, 20, 250, 20,"DescAlmox","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodAlmox, 7, 20, 70, 20,"CodAlmox","Cód.almox.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescAlmox, 80, 20, 250, 20,"DescAlmox","Descrição do almoxarifado",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "ALMOX", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

@@ -100,7 +100,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 
 		Painel pinRod = new Painel(685,50);
 			
-		lcOrc.add(new GuardaCampo( txtCodOrc,7,20,90,20,    "CodOrc", "Cód. Orç.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodOrc");		
+		lcOrc.add(new GuardaCampo( txtCodOrc,7,20,90,20,    "CodOrc", "N. orçamento",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodOrc");		
 		lcOrc.add(new GuardaCampo( txtCodCli,100,20,87,20, "CodCli","Cód. Cli.",false,true,null,JTextFieldPad.TP_INTEGER,false),"txtCodCli");
 		lcOrc.add(new GuardaCampo( txtDtOrc,10,10,80,20, "DtOrc","Data",       false,false,null,JTextFieldPad.TP_DATE,false),"txtDtOrc");
 		lcOrc.add(new GuardaCampo( txtDtVal,10,10,80,20, "DtVencOrc","Validade",       false,false,null,JTextFieldPad.TP_DATE,false),"txtDtVal");
@@ -125,15 +125,16 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
 
-		pinCab.adic(new JLabel("Cód. Orç."),7,0,100,20);
-		pinCab.adic(txtCodOrc,7,20,70,20);
-		pinCab.adic(new JLabel("Código e nome do cliente"),82,0,250,20);
-		pinCab.adic(txtCodCli,82,20,50,20);
-		pinCab.adic(txtNomeCli,137,20,203,20);
-		pinCab.adic(new JLabel("Data"),345,0,70,20);
-		pinCab.adic(txtDtOrc,345,20,70,20);
-		pinCab.adic(new JLabel("Validade"),420,0,70,20);
-		pinCab.adic(txtDtVal,420,20,70,20);
+		pinCab.adic(new JLabel("N. orçamento"),7,0,120,20);
+		pinCab.adic(txtCodOrc,7,20,85,20);
+		pinCab.adic(new JLabel("Cód.cli."),95,0,250,20);
+		pinCab.adic(txtCodCli,95,20,50,20);
+		pinCab.adic(new JLabel("Razão do cliente"),148,0,250,20);
+		pinCab.adic(txtNomeCli,148,20,203,20);
+		pinCab.adic(new JLabel("Data"),354,0,75,20);
+		pinCab.adic(txtDtOrc,354,20,83,20);
+		pinCab.adic(new JLabel("Validade"),440,0,75,20);
+		pinCab.adic(txtDtVal,440,20,83,20);
 		
 		cbTodos.setVlrString("N");
 		pinCab.adic(cbTodos,7,45,200,20);
@@ -159,7 +160,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		tab.adicColuna("Aceite");
 		tab.adicColuna("Aprov.");
 		tab.adicColuna("Ítem");
-		tab.adicColuna("Cód.");
+		tab.adicColuna("Cód.orc.");
         tab.adicColuna("e descrição do produto");
 		tab.adicColuna("Qtd.");
 		tab.adicColuna("V.Unit.");
