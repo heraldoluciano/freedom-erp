@@ -191,49 +191,16 @@ public class NFBemabra extends Leiaute {
                 iProd = iProd+vDesc.size();
                 
                 sMensAdic = rs.getString(5) != null ? rs.getString(5).trim() : "";
-            }
-            
-/*
-            String sSigla = "";
-            String sCodfisc= rs.getString("CodFisc");
-            
-            if (sCodfisc == null)
-       	      sSigla="";
-            sCodfisc = sCodfisc.trim();
-            if (sCodfisc.equals("84220202"))
-       	      sSigla = "1"; 	   
-	        else if (sCodfisc.equals("84220500"))
-		      sSigla = "2"; 	   	   
-	        else if (sCodfisc.equals("84631700"))
-		      sSigla = "3"; 	    	   
-	        else if (sCodfisc.equals("84631800"))
-		      sSigla = "4"; 	   
-            else if (sCodfisc.equals("84229000"))
-		      sSigla = "5"; 	   
-	        else if (sCodfisc.equals("84220399"))
-		      sSigla = "6";
-	        else {
-              if (!sFiscAdic.equals(""))
-           	    JOptionPane.showMessageDialog(null,"Mais de um produto sem classificacao definida,sigla assinalada em branco.");
-              else {
-                sSigla = " ";
-       	        sFiscAdic = sCodfisc ;
-       	        
-              }
-            
-            }  
-*/                        
-            //imp.say(imp.pRow()+0,56,sSigla);
+                sMensAdic += rs.getString(4) != null ? rs.getString(4).trim() : "";
+            }           
             imp.say(imp.pRow()+0,81,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
             imp.say(imp.pRow()+0,87,rs.getString("CodUnid").substring(0,4));
             imp.say(imp.pRow()+0,92,""+rs.getDouble("QtdItVenda"));
             imp.say(imp.pRow()+0,102,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
             imp.say(imp.pRow()+0,113,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
             imp.say(imp.pRow()+0,130,""+rs.getDouble("PercICMSItVenda"));
-            //imp.say(imp.pRow()+0,120,""+rs.getDouble("PercIPIItvenda"));
-		    //imp.say(imp.pRow()+0,126,Funcoes.strDecimalToStrCurrency(7,2,rs.getString("VlrIPIItvenda")));
          }
-        else {
+         else {
             Vector vDesc = new Vector();
             vDesc.addElement(Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),45)); 
             vDesc.addElement(Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda"))); 
