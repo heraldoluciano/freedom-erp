@@ -24,7 +24,6 @@ package org.freedom.modulos.cfg;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;

@@ -63,7 +63,6 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
 
