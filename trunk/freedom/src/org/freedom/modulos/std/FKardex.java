@@ -220,46 +220,34 @@ public class FKardex extends FRelatorio implements ActionListener {
                 String sDataini = txtDataini.getVlrString();
                 String sDatafim = txtDatafim.getVlrString();
                 imp.setTitulo("Relatório de Extrato do Estoque");
+                imp.setSubTitulo("EXTRATO DO ESTOQUE  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
                 imp.impCab(136, true);
                 String sTmp = "PRODUTO: "+txtDescProd.getText().trim();
-                sCab += "\n"+imp.comprimido();
-                sCab += "|"+Funcoes.replicate(" ",(134-sTmp.length())/2)+sTmp;
-                sCab += Funcoes.replicate(" ",(134-sTmp.length())/2)+"|";
+                sCab += ""+imp.comprimido();
+                sCab += "|"+Funcoes.replicate(" ",(133-sTmp.length())/2)+sTmp;
+                sCab += Funcoes.replicate(" ",(133-sTmp.length())/2)+"|";
                 if (txtCodLote.getText().trim().length() > 0) {
                         sTmp = "Lote: "+txtCodLote.getText().trim();
                         sCab += "\n"+imp.comprimido();
-                        sCab += "|"+Funcoes.replicate(" ",(134-sTmp.length())/2)+sTmp;
-                        sCab += Funcoes.replicate(" ",(134-sTmp.length())/2)+"|";
+                        sCab += "|"+Funcoes.replicate(" ",(133-sTmp.length())/2)+sTmp;
+                        sCab += Funcoes.replicate(" ",(133-sTmp.length())/2)+"|";
                 }
                 imp.limpaPags();
+                boolean hasData = false;
                 for (int i=0; i<tab.getNumLinhas(); i++) {
+                	hasData = true;
                         tab.setLinhaSel(i);
                 	if (imp.pRow() == linPag) {
                                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                                 imp.eject();
                         	imp.incPags();
                 	}
-                        if (imp.pRow()==0) {
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-                                imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-                                imp.say(imp.pRow()+0,136,"|");
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|");
-                                imp.say(imp.pRow()+0,42,"EXTRATO DO ESTOQUE  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
-                                imp.say(imp.pRow()+0,136,"|");
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|");
-                                imp.say(imp.pRow()+0,136,"|");
+                        if (i==0) {
+                                imp.say(imp.pRow()+0,0,""+imp.comprimido());
                                 if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
                                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|");
-                                imp.say(imp.pRow()+0,136,"|");
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+                                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
                                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                                 imp.say(imp.pRow()+0,0,"| Data "); //10
                                 imp.say(imp.pRow()+0,14,"| Tp."); //2
@@ -270,9 +258,9 @@ public class FKardex extends FRelatorio implements ActionListener {
                                 imp.say(imp.pRow()+0,74,"| Valor.unit. "); //15
                                 imp.say(imp.pRow()+0,93,"| Saldo ");//8
                                 imp.say(imp.pRow()+0,105,"| Custo MPM "); //15
-                                imp.say(imp.pRow()+0,136,"|");
+                                imp.say(imp.pRow()+0,135,"|");
                                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+                                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
                         }
                         imp.say(imp.pRow()+1,0,""+imp.comprimido());
                         imp.say(imp.pRow()+0,0,"| "+tab.getValor(i,0));
@@ -284,10 +272,10 @@ public class FKardex extends FRelatorio implements ActionListener {
                         imp.say(imp.pRow()+0,74,"| "+tab.getValor(i,6));
                         imp.say(imp.pRow()+0,93,"| "+tab.getValor(i,7));
                         imp.say(imp.pRow()+0,105,"| "+tab.getValor(i,8));
-                        imp.say(imp.pRow()+0,136,"|");
+                        imp.say(imp.pRow()+0,135,"|");
                 }
-                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
+                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       
                 imp.eject();
       
