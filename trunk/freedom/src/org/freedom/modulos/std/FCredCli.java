@@ -28,6 +28,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.swing.JLabel;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
@@ -72,6 +74,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtNatCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtUFNatCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   private JTextFieldPad txtTempoResCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JLabel lbNatCli = null;
   
   
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
@@ -130,7 +133,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	adicCampo(txtFaxCli, 157, 180, 77, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
   	adicCampo(txtCelCli, 237, 180, 100, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
 		
-  	adicCampo(txtNatCli, 7, 220, 200, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
+  	lbNatCli = adicCampo(txtNatCli, 7, 220, 200, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
   	adicCampo(txtUFNatCli, 210, 220, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
   	adicCampo(txtTempoResCli, 265, 220, 160, 20, "TempoResCli", "Tempo de residência.",ListaCampos.DB_SI, false);
 	
@@ -142,13 +145,16 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	setPainel(pinFicha);
 	adicTab("Ficha cadastral", pinFicha);
       
- 
-  	txtNatCli.setVisible(false);
-  	txtUFNatCli.setVisible(false);
-  	txtTempoResCli.setVisible(false);
+    habCampos(false);
 	
   }
   
+  private void habCampos(boolean hab) {
+  	txtNatCli.setVisible(hab);
+  	txtUFNatCli.setVisible(hab);
+  	txtTempoResCli.setVisible(hab);
+  	lbNatCli.setVisible(hab);
+  }
   public void afterCarrega(CarregaEvent cevt) {
   
   	if (txtDtIniTr.getVlrString().equals("")){
