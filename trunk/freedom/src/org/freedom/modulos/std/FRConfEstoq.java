@@ -113,9 +113,15 @@ public class FRConfEstoq extends FRelatorio {
 			" V.CODVENDA=IV.CODVENDA AND V.TIPOVENDA=IV.TIPOVENDA AND V.CODEMP=IV.CODEMP AND " +
 			"V.CODFILIAL=IV.CODFILIAL AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') AND " +
 			"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-			"TM.CODFILIAL=V.CODFILIALTM "+sWhere+") QTDITVENDA "+
+			"TM.CODFILIAL=V.CODFILIALTM "+sWhere+") QTDITVENDA," +
+			"(SELECT FIRST 1 M.SLDMOVPROD FROM EQMOVPROD M" +
+			" WHERE M.CODEMPPD=P.CODEMP AND M.CODFILIALPD=P.CODFILIAL AND " +
+			" M.CODPROD=P.CODPROD ORDER BY M.DTMOVPROD DESC, M.CODMOVPROD DESC ) SLDMOVPROD "+
 			"FROM EQPRODUTO P WHERE P.CODEMP=? AND P.CODFILIAL=? "+
-			"AND ( NOT P.SLDLIQPROD=( "+
+			"AND ( ( NOT P.SLDLIQPROD=( SELECT FIRST 1 M.SLDMOVPROD FROM EQMOVPROD M" +
+			" WHERE M.CODEMPPD=P.CODEMP AND M.CODFILIALPD=P.CODFILIAL AND " +
+			" M.CODPROD=P.CODPROD ORDER BY M.DTMOVPROD DESC, M.CODMOVPROD DESC ) ) OR" +
+			" ( NOT P.SLDLIQPROD=( "+
 			"( COALESCE((SELECT SUM(QTDINVP) FROM EQINVPROD IT WHERE IT.CODEMPPD=P.CODEMP AND " +
 			  "IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD),0 )) + " +
 			"( COALESCE((SELECT SUM(QTDITCOMPRA) FROM CPITCOMPRA IC, CPCOMPRA C, EQTIPOMOV TM " +
@@ -128,7 +134,7 @@ public class FRConfEstoq extends FRelatorio {
 			"V.CODFILIAL=IV.CODFILIAL AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') AND " +
 			"TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
 			"TM.CODFILIAL=V.CODFILIALTM "+sWhere+"),0))"+
-			")) ORDER BY P.DESCPROD" ;
+			")) ) ORDER BY P.DESCPROD" ;
   		System.out.println(sSql);
   		
   		try {
@@ -166,14 +172,15 @@ public class FRConfEstoq extends FRelatorio {
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"| DESCRICAO DO PRODUTO");
-					imp.say(imp.pRow()+0,43,"| CODIGO");
-					imp.say(imp.pRow()+0,54,"| REF.");
-					imp.say(imp.pRow()+0,69,"| SALDO ");
-					imp.say(imp.pRow()+0,80,"| QTD.INV.");
-					imp.say(imp.pRow()+0,91,"| QTD.CP.");
-					imp.say(imp.pRow()+0,102,"| QTD.VD.");
-					imp.say(imp.pRow()+0,113,"| SLD.CALC.");
-					imp.say(imp.pRow()+0,124,"| DIF.SLD.");
+					imp.say(imp.pRow()+0,32,"| CODIGO");
+					imp.say(imp.pRow()+0,44,"| REF.");
+					imp.say(imp.pRow()+0,59,"| SALDO ");
+					imp.say(imp.pRow()+0,70,"| QTD.INV.");
+					imp.say(imp.pRow()+0,81,"| QTD.CP.");
+					imp.say(imp.pRow()+0,92,"| QTD.VD.");
+					imp.say(imp.pRow()+0,103,"| SLD.CALC.");
+					imp.say(imp.pRow()+0,114,"| SLD.M.P.");
+					imp.say(imp.pRow()+0,125,"| DIF.SLD.");
 					imp.say(imp.pRow()+0,136,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
@@ -181,17 +188,21 @@ public class FRConfEstoq extends FRelatorio {
 				}
 				
 	  			deSldCalc = rs.getDouble(5) + rs.getDouble(6) - rs.getDouble(7); 
-	  			deQtdDif = deSldCalc - rs.getDouble(4) ; 
+	  			deQtdDif = deSldCalc - rs.getDouble(4) ;
+	  			if (deQtdDif==0) {
+	  				deQtdDif = rs.getDouble(8) - rs.getDouble(4);
+	  			}
   				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,1,"|"+Funcoes.adicionaEspacos(rs.getString(1),40));
-  				imp.say(imp.pRow()+0,42,"|"+Funcoes.adicEspacosEsquerda(rs.getString(2),10));
-  				imp.say(imp.pRow()+0,54,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
-  				imp.say(imp.pRow()+0,69,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
-  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10));
-  				imp.say(imp.pRow()+0,91,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(6)+"",10));
-  				imp.say(imp.pRow()+0,102,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
-  				imp.say(imp.pRow()+0,113,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
-  				imp.say(imp.pRow()+0,124,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
+  				imp.say(imp.pRow()+0,1,"|"+Funcoes.adicionaEspacos(rs.getString(1),30));
+  				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicEspacosEsquerda(rs.getString(2),10));
+  				imp.say(imp.pRow()+0,44,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
+  				imp.say(imp.pRow()+0,59,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
+  				imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10));
+  				imp.say(imp.pRow()+0,81,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(6)+"",10));
+  				imp.say(imp.pRow()+0,92,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
+  				imp.say(imp.pRow()+0,103,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
+  				imp.say(imp.pRow()+0,114,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(8)+"",10));
+  				imp.say(imp.pRow()+0,125,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
   				imp.say(imp.pRow()+0,136,"|");
   				
   			}
