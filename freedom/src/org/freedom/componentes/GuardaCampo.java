@@ -43,7 +43,7 @@ public class GuardaCampo extends Component {
    *  @deprecated GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, boolean fk, JTextFieldFK descFK, int tip, boolean req)
    */
   // COMENTADO AQUI
- public  GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, 
+ /*public  GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, 
   		boolean fk, JTextFieldFK descFK, int tip, boolean req)  {
       
     sNome = nome;          
@@ -59,7 +59,7 @@ public class GuardaCampo extends Component {
     bFK = fk;
     txtDescFK = descFK;
     setRequerido(req);
-  }
+  }*/
   public GuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req) {
  	 setGuardaCampo(c, nome, label, key, descFK, req );
   }
