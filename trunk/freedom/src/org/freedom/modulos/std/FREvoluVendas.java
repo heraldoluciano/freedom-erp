@@ -138,7 +138,6 @@ public class FREvoluVendas extends FRelatorio {
     rgGrafico.setBorder(BorderFactory.createEmptyBorder());
     adic(rgGrafico,42,193,200,82);
 
-
   }
 
   public void setConexao(Connection cn) {
@@ -148,7 +147,7 @@ public class FREvoluVendas extends FRelatorio {
   }
 
   private ResultSet buscaValores() {
-	String sSQL = "SELECT * FROM VDEVOLUVENDAS(?,?,?,?,?,?)";
+	String sSQL = "SELECT * FROM VDEVOLUVENDAS(?,?,?,?,?,?,?)";
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	java.sql.Date dataIni = Funcoes.dateToSQLDate(txtDataini.getVlrDate());
@@ -173,10 +172,10 @@ public class FREvoluVendas extends FRelatorio {
 	  	  Funcoes.mensagemInforma(this,"O filtro por tipo de cliente será desconsiderado...");
 	    }
 	    else
-          ps.setNull(6,Types.INTEGER);
-     } 
+          ps.setNull(6,Types.INTEGER);                   
+      }
+	  ps.setString(7,cbVendas.getVlrString());
 	  	
-
 	  rs = ps.executeQuery();
 	}
 	catch(SQLException err) {
