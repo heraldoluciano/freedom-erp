@@ -116,7 +116,7 @@ public class FVendedor extends FDados implements PostListener {
     adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, true);
     adicCampo(txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF", ListaCampos.DB_SI, false);
     adicCampo(txtRgVend, 140, 60, 149, 20, "RgVend", "RG", ListaCampos.DB_SI, false);
-    adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "SSP", ListaCampos.DB_SI, false);
+    adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "Orgão exp.", ListaCampos.DB_SI, false);
 
     adicCampo(txtCnpjVend, 7, 100, 180, 20, "CnpjVend", "CNPJ", ListaCampos.DB_SI, false);
     adicCampo(txtInscVend, 190, 100, 182, 20, "InscVend", "IE", ListaCampos.DB_SI, false);
