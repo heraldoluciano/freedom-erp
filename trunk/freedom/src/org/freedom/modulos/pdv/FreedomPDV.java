@@ -165,15 +165,15 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 			ps.setInt(3, Aplicativo.iCodEmp);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				if (rs.getString("ECFCaixa").equals("S"))
+				if (rs.getString("ECFCaixa") != null && rs.getString("ECFCaixa").equals("S"))
 					bECFTerm = true;
 				else
 					bECFTerm = false;
-				if (rs.getString("TEFCaixa").equals("S"))
+				if (rs.getString("TEFCaixa") != null && rs.getString("TEFCaixa").equals("S"))
 					bTEFTerm = true;
 				else
 					bTEFTerm = false;
-				if (rs.getString(3).equals("S"))
+				if (rs.getString(3) != null && rs.getString(3).equals("S"))
 					bModoDemo = true;
 				else
 					bModoDemo = false;
@@ -181,6 +181,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 			rs.close();
 			ps.close();
 		} catch (Exception err) {
+		    err.printStackTrace();
 			killProg(6, "Erro ao verificar o caixa!\n" + err.getMessage());
 		}
 		return bRetorno;
