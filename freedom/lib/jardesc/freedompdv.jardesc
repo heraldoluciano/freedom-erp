@@ -9,13 +9,13 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;bmps"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.funcoes"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.drivers"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedompdv"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.compo"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.drivers"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.pdv"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom/&lt;bibli"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.telas"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
     </selectedElements>
 </jardesc>

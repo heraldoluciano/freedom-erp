@@ -41,6 +41,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
@@ -49,7 +50,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FSintegra extends FFilho implements ActionListener {
   private FileWriter fwSintegra;
   private Frame fOrigem;

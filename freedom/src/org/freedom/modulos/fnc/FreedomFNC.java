@@ -58,6 +58,7 @@ import org.freedom.modulos.std.FTipoFor;
 import org.freedom.modulos.std.FVendedor;
 import org.freedom.telas.Aplicativo;
 
+
 public class FreedomFNC extends Aplicativo {
   public FreedomFNC() {
 	super("iconStandart32.gif","splashFNC.jpg","Freedom - Módulo financeiro",1,6);

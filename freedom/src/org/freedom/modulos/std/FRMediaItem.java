@@ -43,6 +43,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRMediaItem extends FRelatorio {
   private JTextFieldPad txtMesfim = new JTextFieldPad(); 
   private JTextFieldPad txtAnofim = new JTextFieldPad(); 

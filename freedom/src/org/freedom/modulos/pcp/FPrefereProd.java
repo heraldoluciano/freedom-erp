@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FTabDados;
+
 public class FPrefereProd extends FTabDados {
 	private JTextFieldPad txtClass = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
     private JTextFieldPad txtNomeResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);

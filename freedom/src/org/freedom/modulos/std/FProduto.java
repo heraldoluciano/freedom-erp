@@ -44,6 +44,7 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -60,7 +61,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
-import org.freedom.bmps.Icone;
+
 public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener {
   private Painel pinGeral = new Painel(650,340);
   private JPanel pnFatConv = new JPanel(new BorderLayout());

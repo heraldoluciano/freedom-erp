@@ -29,6 +29,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FTabDados;
+
 public class FPrefereGeral extends FTabDados {
 	private Painel pinGeral = new Painel(330, 350);
 	private Painel pinFin = new Painel();

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva/Robson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)ListaCampos.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -50,6 +50,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 
 public class ListaCampos extends Container implements PostListener,InsertListener,EditListener,
                                                       CancelListener,DeleteListener,CarregaListener,MouseListener {

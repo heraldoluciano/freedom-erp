@@ -39,6 +39,7 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+
 public class FSangria extends FDialogo {
 	private JTextFieldFK txtDataUOper = new JTextFieldFK();
 	private JTextFieldFK txtSaldoUOper = new JTextFieldFK();

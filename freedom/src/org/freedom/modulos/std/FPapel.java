@@ -21,8 +21,9 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDados;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.telas.FDados;
+
 public class FPapel extends FDados {
   private JTextFieldPad txtCodPapel = new JTextFieldPad(20);
   private JTextFieldPad txtDescPapel = new JTextFieldPad(40);

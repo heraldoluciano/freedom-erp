@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.DLRelatorio;
+
 public class DLChecaLFSaida extends DLRelatorio {
   public Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);

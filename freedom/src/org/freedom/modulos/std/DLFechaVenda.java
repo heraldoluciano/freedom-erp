@@ -53,6 +53,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener {
   private JTabbedPane tpn = new JTabbedPane();
   private Painel pinFecha = new Painel(400,300);
@@ -802,5 +803,5 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   public void mouseReleased(MouseEvent e) { }
 }
 /* (non-Javadoc)
- * @see org.acao.PostListener#beforePost(org.acao.PostEvent)
+ * @see org.freedom.acao.PostListener#beforePost(org.freedom.acao.PostEvent)
  */

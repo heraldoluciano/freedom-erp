@@ -30,17 +30,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.freedom.drivers.JBemaFI32;
 
+import javax.swing.JButton;
+
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
+import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
-import javax.swing.JButton;
-
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
-import org.freedom.bmps.Icone;
+
 
 public class FAliquota extends FDialogo implements ActionListener { 
 	private Painel pinCab = new Painel(400,60);

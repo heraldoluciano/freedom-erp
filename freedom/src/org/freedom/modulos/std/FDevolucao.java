@@ -46,6 +46,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FWizard;
+
 public class FDevolucao extends FWizard implements CarregaListener{
     private Painel pin1 = null;
     private Painel pin1a = null;

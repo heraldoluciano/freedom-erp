@@ -36,6 +36,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+
 public class FVendedor extends FDados implements PostListener { 
   private JTextFieldPad txtCodVend = new JTextFieldPad(5);
   private JTextFieldPad txtNomeVend = new JTextFieldPad(40);

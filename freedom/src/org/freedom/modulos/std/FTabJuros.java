@@ -27,6 +27,7 @@ import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FDetalhe;
+
 public class FTabJuros extends FDetalhe {
   private Painel pinCab = new Painel(0,90);
   private Painel pinDet = new Painel(0,60);

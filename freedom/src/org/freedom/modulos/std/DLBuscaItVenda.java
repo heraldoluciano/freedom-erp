@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -48,7 +49,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
-import org.freedom.bmps.Icone;
+
 
 public class DLBuscaItVenda extends FFDialogo implements ActionListener, CarregaListener {
   private Painel pinCab = new Painel(0,60);

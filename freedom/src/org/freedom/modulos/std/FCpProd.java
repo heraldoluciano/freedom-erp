@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
@@ -51,7 +52,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
   private JPanel pnCli = new JPanel(new BorderLayout());
   private JPanel pnRod = new JPanel(new BorderLayout());
@@ -457,7 +458,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     }
   }
 /* (non-Javadoc)
- * @see org.acao.CheckBoxListener#valorAlterado(org.acao.CheckBoxEvent)
+ * @see org.freedom.acao.CheckBoxListener#valorAlterado(org.freedom.acao.CheckBoxEvent)
  */
   public void valorAlterado(CheckBoxEvent evt) {
 	

@@ -38,13 +38,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import org.freedom.acao.Processo;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 
 /**
  * @author robson

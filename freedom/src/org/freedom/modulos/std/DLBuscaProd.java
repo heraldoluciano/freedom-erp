@@ -38,6 +38,7 @@ import org.freedom.componentes.StringDireita;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF3;
+
 public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    private Connection con = null;
    private String sCol = null;

@@ -40,7 +40,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.freedom.layout.LeiauteGR;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -49,17 +48,19 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.layout.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
-import org.freedom.bmps.Icone;
+
 public class FOrcamento extends FDetalhe implements PostListener,CarregaListener,FocusListener,ActionListener,InsertListener, DeleteListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

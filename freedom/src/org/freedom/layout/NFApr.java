@@ -28,6 +28,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 public class NFApr extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
     Calendar cHora = Calendar.getInstance();

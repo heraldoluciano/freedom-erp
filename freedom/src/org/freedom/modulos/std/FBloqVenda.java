@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -44,7 +45,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FBloqVenda extends FFilho implements ActionListener, CarregaListener {
   private Painel pinCli = new Painel(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());

@@ -45,6 +45,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.freedom.acao.ArvoreFace;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.Arvore;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
@@ -55,7 +56,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
-import org.freedom.bmps.Icone;
+
 public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
   private JPanel pnCliente = new JPanel(new BorderLayout());
   private Painel pinTop = new Painel(475,90);

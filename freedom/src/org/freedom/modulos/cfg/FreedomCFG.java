@@ -27,6 +27,7 @@ import java.sql.Connection;
 import org.freedom.telas.Aplicativo;
 
 
+
 public class FreedomCFG extends Aplicativo {
 
   private Connection conIB = null;

@@ -29,6 +29,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FTabDados;
+
 public class FPrefereAtend extends FTabDados {
 	private Painel pinGeral = null;
 	private Painel pinTipo = null;

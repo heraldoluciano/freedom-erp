@@ -9,15 +9,15 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FSetor.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;bmps"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FVendedor.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.funcoes{Funcoes.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.compo"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomtmk"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FSetor.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FVendedor.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes{Funcoes.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.tmk"/>
         <javaElement handleIdentifier="=freedom/&lt;bibli"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.telas"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
     </selectedElements>
 </jardesc>

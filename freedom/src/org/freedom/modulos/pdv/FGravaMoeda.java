@@ -34,6 +34,7 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+
 public class FGravaMoeda extends FDialogo {
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
 	private JTextFieldFK txtSingMoeda = new JTextFieldFK();

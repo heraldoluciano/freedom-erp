@@ -36,6 +36,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FLancaExp extends FDados implements ActionListener {
 	private JTextFieldPad txtCodLExp = new JTextFieldPad();
 	private JTextFieldPad txtCodTipoExp = new JTextFieldPad();

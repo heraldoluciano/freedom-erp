@@ -37,6 +37,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
+
 public class FRListaSus extends FTabDados implements PostListener, CheckBoxListener {
   private Painel pinGeral;
   private Painel pinPacientes;

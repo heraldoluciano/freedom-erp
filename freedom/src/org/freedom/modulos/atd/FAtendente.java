@@ -28,6 +28,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
+
 public class FAtendente extends FDados { 
   private JTextFieldPad txtCodAtend = new JTextFieldPad(5);
   private JTextFieldPad txtNomeAtend = new JTextFieldPad(40);

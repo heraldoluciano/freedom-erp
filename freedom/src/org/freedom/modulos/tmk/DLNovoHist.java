@@ -38,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -47,7 +48,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
-import org.freedom.bmps.Icone;
+
 
 public class DLNovoHist extends FFDialogo {
 	private JPanel pnCab = new JPanel(new GridLayout(1,1));

@@ -36,6 +36,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
+
 public class FMoeda extends FTabDados implements RadioGroupListener {
   private Painel pinGeral = new Painel(370,220);
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(4);

@@ -36,6 +36,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
+
 public class FFluxo extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodFluxo = new JTextFieldPad();
   private JTextFieldPad txtDescFluxo = new JTextFieldPad();

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)JTextFieldPad.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -38,6 +38,7 @@ import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
+
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;

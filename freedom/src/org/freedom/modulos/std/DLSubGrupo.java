@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDialogo;
+
 public class DLSubGrupo extends FDialogo {
   private JTextFieldPad txtCodPai = new JTextFieldPad();
   private JTextFieldPad txtDescPai = new JTextFieldPad();

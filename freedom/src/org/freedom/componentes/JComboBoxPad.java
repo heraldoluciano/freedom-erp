@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)JComboBoxPad.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -27,6 +27,7 @@ import javax.swing.JComboBox;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+
 public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener {
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;

@@ -34,6 +34,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FBanco extends FDados implements ActionListener {
   private JTextFieldPad txtCodBanco = new JTextFieldPad(3);
   private JTextFieldPad txtNomeBanco = new JTextFieldPad(40);

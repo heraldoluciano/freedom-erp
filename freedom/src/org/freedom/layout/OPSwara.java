@@ -29,6 +29,7 @@ import java.util.Vector;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 public class OPSwara extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,14);

@@ -39,6 +39,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+
 public class FRomaneio extends FDetalhe implements InsertListener,ActionListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

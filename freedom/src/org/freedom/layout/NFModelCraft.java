@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+
 public class NFModelCraft extends Leiaute {
   private Vector vClfiscal = null;
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {

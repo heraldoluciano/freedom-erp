@@ -42,6 +42,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrincipal;
+
 public class FCLFiscal extends FDados implements CarregaListener {
   private JTextFieldPad txtCodFisc = new JTextFieldPad(13);
   private JTextFieldPad txtDescFisc = new JTextFieldPad(50);

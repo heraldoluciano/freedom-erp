@@ -32,7 +32,6 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import org.freedom.layout.LeiauteGR;
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -41,17 +40,19 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.layout.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrinterJob;
-import org.freedom.bmps.Icone;
+
 public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
@@ -252,7 +253,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE5!\n"+err.getMessage());
 	}
 	if (sClassOP.trim().equals("")) {          
-		Funcoes.mensagemErro(this,"Não existe layout para ordem de produção. \n Cadastre o layout no documento de preferências do módulo de produção \n e tente novamente.");
+		Funcoes.mensagemErro(this,"Não existe org.freedom.layout para ordem de produção. \n Cadastre o org.freedom.layout no documento de preferências do módulo de produção \n e tente novamente.");
 	}
 	else {
 	  try {

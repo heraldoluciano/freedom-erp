@@ -41,6 +41,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRComissoes extends FRelatorio {
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();

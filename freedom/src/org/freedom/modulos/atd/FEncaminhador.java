@@ -28,6 +28,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FEncaminhador extends FDados implements PostListener { 
   private JTextFieldPad txtCodEnc = new JTextFieldPad(5);
   private JTextFieldPad txtNomeEnc = new JTextFieldPad(40);

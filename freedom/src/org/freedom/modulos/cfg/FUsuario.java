@@ -42,6 +42,7 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPasswordFieldPad;
@@ -52,7 +53,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
-import org.freedom.bmps.Icone;
+
 
 public class FUsuario extends FDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener {
   private JTextFieldPad txtCodUsu = new JTextFieldPad();
@@ -81,10 +82,11 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   private ListaCampos lcGrup = new ListaCampos(this,"IG");
   private ListaCampos lcCC = new ListaCampos(this,"CC");
   private JCheckBoxPad cbBaixoCusto = new JCheckBoxPad("Permite vendas abaixo do custo","S","N");
+  private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad("Permite abrir gaveta no PDV","S","N");
   private Connection conIB = null;
   public FUsuario () {
     setTitulo("Cadastro de Usuários");
-    setAtribos( 50, 50, 395, 470);
+    setAtribos( 50, 50, 395, 490);
 
     txpSenha.setListaCampos(lcCampos);
     txpConfirma.setListaCampos(lcCampos);
@@ -125,7 +127,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     adic(btDelEmp,175,315,30,30);
     adic(new JLabel("Acesso:"),212,240,158,20);
     adic(spnEmp,212,260,158,100);
-    adicDB(cbBaixoCusto, 7, 370, 300, 20, "BaixoCustoUsu", "", JTextFieldPad.TP_STRING, false);
+    adicDB(cbBaixoCusto, 7, 370, 350, 20, "BaixoCustoUsu", "", JTextFieldPad.TP_STRING, false);
+    adicDB(cbAbreGaveta, 7, 390, 350, 20, "AbreGavetaUsu", "", JTextFieldPad.TP_STRING, false);
     
     setListaCampos( false, "USUARIO", "SG");
     lcCampos.addCarregaListener(this);

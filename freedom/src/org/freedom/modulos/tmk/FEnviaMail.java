@@ -61,6 +61,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.Processo;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
@@ -73,7 +74,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 
 /**
  * @author robson

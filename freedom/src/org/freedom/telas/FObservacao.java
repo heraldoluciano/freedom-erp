@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FObservacao.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,11 +19,11 @@
  * ATENÇÂO!! ESTA CLASSE É DERIVADA DE FDialogo E NÂO FFDialogo. 
  */
 package org.freedom.telas;
-import org.freedom.componentes.JTextAreaPad;
-
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+import org.freedom.componentes.JTextAreaPad;
 public class FObservacao extends FDialogo {
   private JPanel pn = new JPanel(new GridLayout(1,1));
   private JTextAreaPad txa = new JTextAreaPad();

@@ -32,6 +32,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FAtribuicao extends FDados implements ActionListener {
   private JTextFieldPad txtCodAtrib = new JTextFieldPad(15);
   private JTextFieldPad txtDescAtrib = new JTextFieldPad(50);

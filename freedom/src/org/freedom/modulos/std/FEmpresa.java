@@ -38,6 +38,7 @@ import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
+
 public class FEmpresa extends FTabDados implements PostListener{
   private Painel pinGeral = new Painel(470,470);
   private Painel pinFilial = new Painel(470,270);

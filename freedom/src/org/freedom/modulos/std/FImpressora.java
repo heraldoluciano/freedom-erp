@@ -21,17 +21,18 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDados;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import javax.swing.JComboBox;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.telas.FDados;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Connection;
-import javax.swing.JComboBox;
 import java.util.Vector;
 public class FImpressora extends FDados {
   private JTextFieldPad txtCodImp = new JTextFieldPad(8);

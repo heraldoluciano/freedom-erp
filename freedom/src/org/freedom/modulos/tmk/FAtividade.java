@@ -22,15 +22,16 @@
 
 
 package org.freedom.modulos.tmk;
-import org.freedom.telas.FDados;
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.funcoes.Funcoes;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.FDados;
 public class FAtividade extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(5);
   private JTextFieldPad txtDesc= new JTextFieldPad(20);

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Marco Antonio Sanchez <BR>
  *iPos
  * Projeto: Freedom <BR>UmontaCab
- * Pacote: layout <BR>
+ * Pacote: org.freedom.layout <BR>
  * Classe: @(#)OrcMCraft.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -31,6 +31,7 @@ import java.util.Vector;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 public class OrcMCraft extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,15);

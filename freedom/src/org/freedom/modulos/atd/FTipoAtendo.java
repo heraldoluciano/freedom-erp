@@ -36,6 +36,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
+
 public class FTipoAtendo extends FDetalhe implements ActionListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

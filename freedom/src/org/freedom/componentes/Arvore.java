@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)Arvore.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,11 +19,12 @@
  */
  
 package org.freedom.componentes;
-import org.freedom.acao.ArvoreFace;
 import java.awt.Component;
 import javax.swing.JTree;
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.freedom.acao.ArvoreFace;
 public class Arvore extends JTree implements ArvoreFace {
   private ArvoreFace face = this;
   public Arvore() {

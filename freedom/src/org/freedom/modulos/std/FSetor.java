@@ -31,6 +31,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FSetor extends FDados implements ActionListener{
   private JTextFieldPad txtCodSetor = new JTextFieldPad(5);
   private JTextFieldPad txtDescSetor= new JTextFieldPad(20);

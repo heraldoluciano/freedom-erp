@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLDataTransf extends FFDialogo {
 	private JTextFieldPad txtDataTransf = new JTextFieldPad();
 	public DLDataTransf(Component cOrig) {

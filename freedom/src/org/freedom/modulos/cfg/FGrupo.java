@@ -36,6 +36,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FGrupo extends FDados implements PostListener,DeleteListener { 
   private JTextFieldPad txtCodGrup = new JTextFieldPad();
   private JTextFieldPad txtNomeGrup = new JTextFieldPad();

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva/Robson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.funcoes <BR>
+ * Pacote: org.freedom.funcoes <BR>
  * Classe: @(#)Funcoes.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -59,7 +59,8 @@ import org.freedom.componentes.StringDireita;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-//import org.telas.Aplicativo;
+
+//import org.freedom.telas.Aplicativo;
 
 public class Funcoes {
 	

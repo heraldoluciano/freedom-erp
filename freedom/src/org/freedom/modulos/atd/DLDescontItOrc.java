@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
+
 public class DLDescontItOrc extends FFDialogo {
 	private JTextFieldPad txtDesc1 = new JTextFieldPad();
 	private JTextFieldPad txtDesc2 = new JTextFieldPad();

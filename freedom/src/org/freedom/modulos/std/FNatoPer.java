@@ -31,6 +31,7 @@ import javax.swing.JButton;
 
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -39,7 +40,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 public class FNatoPer extends FDados implements ActionListener, InsertListener {
   private JTextFieldPad txtCodNat = new JTextFieldPad(4);
   private JTextFieldPad txtDescNat = new JTextFieldPad(60);
@@ -188,7 +189,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
     }
   }
 /* (non-Javadoc)
- * @see org.acao.InsertListener#beforeInsert(org.acao.InsertEvent)
+ * @see org.freedom.acao.InsertListener#beforeInsert(org.freedom.acao.InsertEvent)
  */
   public void afterInsert(InsertEvent ievt) {
 	cbImpDtSaidaNat.setVlrString("S");

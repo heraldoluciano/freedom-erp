@@ -42,6 +42,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
   private Painel pinCab = new Painel(0,60);
   public JTextFieldPad txtCodPesq = new JTextFieldPad();

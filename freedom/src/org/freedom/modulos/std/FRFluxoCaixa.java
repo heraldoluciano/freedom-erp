@@ -37,6 +37,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRFluxoCaixa extends FRelatorio {
   private JCheckBoxPad cbLanca = new JCheckBoxPad("Lançamentos","S","N");
   private JCheckBoxPad cbReceber = new JCheckBoxPad("Clientes","S","N");

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FLogin.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -34,11 +34,12 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.bmps.Icone;
+
 public class Login extends FDialogo implements ActionListener, FocusListener {
   private JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);

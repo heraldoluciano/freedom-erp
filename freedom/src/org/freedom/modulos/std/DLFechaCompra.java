@@ -50,6 +50,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLFechaCompra extends FFDialogo implements FocusListener {
   private JTabbedPane tpn = new JTabbedPane();
   private Painel pinFecha = new Painel(420,300);

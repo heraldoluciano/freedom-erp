@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
+
 public class DLFechaPag extends FFDialogo {
   private JTextFieldPad txtParcItPag = new JTextFieldPad();
   private JTextFieldPad txtDtVencItPag = new JTextFieldPad();

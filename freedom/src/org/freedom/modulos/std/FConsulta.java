@@ -44,6 +44,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
+
 public class FConsulta extends FFilho implements CarregaListener {
     private final int TAM_GRUPO = 14;
 	private Painel pinCabProd = new Painel(700,60);

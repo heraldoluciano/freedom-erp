@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JRadioGroup;
@@ -52,7 +53,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FManutPreco extends FFilho implements ActionListener, RadioGroupListener {
   private Painel pinCli = new Painel(400,400);
   private JPanel pnRod = new JPanel(new BorderLayout());

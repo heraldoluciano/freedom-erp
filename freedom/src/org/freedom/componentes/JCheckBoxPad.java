@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)JCheckBoxPad.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,13 +19,14 @@
  */
 
 package org.freedom.componentes;
-import org.freedom.acao.CheckBoxListener;
-import org.freedom.acao.CheckBoxEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JCheckBox;
+
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 public class JCheckBoxPad extends JCheckBox implements ActionListener, KeyListener, CheckBoxListener{
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;

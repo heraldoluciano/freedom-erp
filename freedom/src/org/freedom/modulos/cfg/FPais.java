@@ -32,6 +32,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FPais extends FDados implements ActionListener {
   private JTextFieldPad txtCodPais = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNomePais = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);

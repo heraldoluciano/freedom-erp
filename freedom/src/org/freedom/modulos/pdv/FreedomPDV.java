@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 public class FreedomPDV extends Aplicativo implements ActionListener{
 	public static boolean bECFTerm = false;
 	public static boolean bModoDemo = true;
@@ -92,7 +93,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 	  }
 	  else if (iOpcao==110200000){
 		if (telaPrincipal.temTela("Cancela Venda")==false) {
-		  FCancCupom tela = new FCancCupom(con);			  
+		  DLCancCupom tela = new DLCancCupom(con);			  
 		  tela.show();
 		  tela.dispose();
 		} 
@@ -129,9 +130,9 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		  } 
 	  }
 	  else if (iOpcao==110700000){
-		  if (telaPrincipal.temTela("Leitura X")==false) {
+		  if (telaPrincipal.temTela("Le Fiscal")==false) {
 			 FLeFiscal tela = new FLeFiscal();
-			 telaPrincipal.criatela("Leitura X",tela,con);			  
+			 telaPrincipal.criatela("Le Fiscal",tela,con);			  
 		  } 
 	  }
 	  else if (iOpcao==110800000){

@@ -30,6 +30,7 @@ import java.util.Vector;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 public class ContratoAluguelApr extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);

@@ -32,6 +32,7 @@ import org.freedom.modulos.std.FVendedor;
 import org.freedom.telas.Aplicativo;
 
 
+
 public class FreedomTMK extends Aplicativo {
 
 	public FreedomTMK() {
@@ -61,7 +62,7 @@ public class FreedomTMK extends Aplicativo {
 		    addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais...", 'G', 100201000,2, true );
 		    addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas",'F',100300000, 1, false);
 		    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos",'I',100301000,2,true);
-		    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de layout",'C',100302000,2,true);
+		    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout",'C',100302000,2,true);
 		    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos",'E',100303000,2,true);
 		
 	    addOpcao(-1,TP_OPCAO_MENU,"Contatos",'C',200000000,0,false);
@@ -139,9 +140,9 @@ public class FreedomTMK extends Aplicativo {
 			}
 		}
 		else if (iOpcao==100302000) {
-			if (telaPrincipal.temTela("Cadastro de layout")==false) {
+			if (telaPrincipal.temTela("Cadastro de org.freedom.layout")==false) {
 				FTipoImp tela = new FTipoImp();
-				telaPrincipal.criatela("Cadastro de layout",tela,con);
+				telaPrincipal.criatela("Cadastro de org.freedom.layout",tela,con);
 			 }
 		}
 		else if (iOpcao==100303000) {

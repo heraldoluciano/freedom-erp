@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JButton;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
@@ -38,7 +39,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 public class FProcesso extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodProc = new JTextFieldPad();
   private JTextFieldPad txtDescProc = new JTextFieldPad();

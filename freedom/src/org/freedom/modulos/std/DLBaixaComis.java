@@ -42,6 +42,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLBaixaComis extends FFDialogo {
   private JPanel pnCliente = new JPanel(new BorderLayout());
   private Painel pinCentro = new Painel(580,100);

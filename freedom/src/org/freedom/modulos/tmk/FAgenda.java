@@ -47,6 +47,7 @@ import javax.swing.JTabbedPane;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -57,7 +58,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 
 public class FAgenda extends FFilho implements JComboBoxListener, ActionListener {
   private Painel pinCabAgd = new Painel(0,120);

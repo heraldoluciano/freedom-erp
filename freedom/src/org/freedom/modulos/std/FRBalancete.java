@@ -38,6 +38,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRBalancete extends FRelatorio {
   private JTextFieldPad txtCodConta = new JTextFieldPad(); 
 

@@ -4,7 +4,7 @@
  *
  * Projeto: Freedom <BR>
  *  
- * Pacote: org.freedom.modulos. <BR>
+ * Pacote: projetos.freedom <BR>
  * Classe: @(#)DLRConsProd.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -24,10 +24,11 @@ import java.awt.Component;
 import java.util.Vector;
 import javax.swing.JLabel;
 
-
 import org.freedom.componentes.JRadioGroup;
-
 import org.freedom.telas.FFDialogo;
+
+
+
 
 public class DLRConsProd extends FFDialogo {
   private JRadioGroup rgOrdem = null;

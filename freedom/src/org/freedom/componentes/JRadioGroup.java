@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)JMenuItemPad.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -29,9 +29,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
-import org.freedom.acao.RadioGroupListener;
-import org.freedom.acao.RadioGroupEvent;
+
 import org.freedom.acao.DefaultRadioGroupListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 
 import java.util.Enumeration;
 import java.util.Vector;

@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
+
 public class DLRClasCli extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JLabel lbOrdem = new JLabel("Ordenar por:");

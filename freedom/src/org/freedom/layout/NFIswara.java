@@ -19,9 +19,6 @@
  */
 
 package org.freedom.layout;
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +26,10 @@ import java.util.Calendar;
 import java.math.BigDecimal;
 
 import javax.swing.JOptionPane;
+
+import org.freedom.componentes.ImprimeOS;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 public class NFIswara extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
     Calendar cHora = Calendar.getInstance();

@@ -44,6 +44,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 
+
 public class FFrete extends FDados implements InsertListener, FocusListener {
   
   private JTextFieldPad  txtCodVenda = new JTextFieldPad();

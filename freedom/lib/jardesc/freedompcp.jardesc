@@ -9,20 +9,20 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FMarca.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.funcoes"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedompcp"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.compo"/>
-        <javaElement handleIdentifier="=freedom/&lt;layout"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli.telas"/>
-        <javaElement handleIdentifier="=freedom/&lt;bmps"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FCLFiscal.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FAlmox.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FProduto.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FUnidade.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FGrupo.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FItCLFiscal.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd{FRegraFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FMarca.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.pcp"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.layout"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FCLFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FAlmox.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FProduto.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FUnidade.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FGrupo.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FItCLFiscal.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FRegraFiscal.java"/>
     </selectedElements>
 </jardesc>

@@ -31,6 +31,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FTipoRec extends FDados implements ActionListener {
   private JTextFieldPad txtCodTipoRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTipoRec = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);

@@ -1,3 +1,5 @@
+package org.freedom.modulos.pdv;
+
 /**
  * @version 30/06/2004 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
@@ -20,7 +22,6 @@
  * 
  */
 
-package org.freedom.modulos.pdv;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -43,6 +44,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+
 public class DLFechaVenda extends FDialogo implements FocusListener {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -288,3 +290,4 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		lcPlanoPag.carregaDados();
 	}
 }
+

@@ -35,6 +35,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLLote extends FFDialogo {
   private JTextFieldPad txtCodLote = new JTextFieldPad(8);
   private JTextFieldPad txtCodProd = new JTextFieldPad(8);

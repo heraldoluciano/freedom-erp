@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FAndamento.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import org.freedom.componentes.Painel;
+
 public class FAndamento extends JFrame {
   private Painel pin = new Painel(310,150);
   private JProgressBar pb = new JProgressBar();

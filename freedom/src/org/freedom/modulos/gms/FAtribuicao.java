@@ -4,7 +4,7 @@
  *
  * Projeto: Freedom <BR>
  *  
- * Pacote: org.freedom.modulos..gms <BR>
+ * Pacote: projetos.freedom.gms <BR>
  * Classe: @(#)FAtribuicao.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -35,6 +35,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FDados;
+
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {
   private JTextFieldPad txtIdAtrib = new JTextFieldPad();
   private JTextFieldPad txtDescAtrib = new JTextFieldPad();

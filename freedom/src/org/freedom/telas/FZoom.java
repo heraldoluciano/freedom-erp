@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FZoom.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,10 +19,6 @@
  */
 
 package org.freedom.telas;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
-import org.freedom.componentes.PainelImagem;
-import org.freedom.bmps.Icone;
 import java.awt.Container;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -37,6 +33,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+
+import org.freedom.bmps.Icone;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.Painel;
+import org.freedom.componentes.PainelImagem;
 public class FZoom extends JDialog implements KeyListener, ActionListener {
   private Image imZoom = null;
   private JPanel pnCab = new JPanel(new BorderLayout());  

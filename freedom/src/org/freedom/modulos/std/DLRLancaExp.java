@@ -34,6 +34,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDialogo;
+
 public class DLRLancaExp extends FDialogo implements FocusListener {
 	private JTextFieldPad txtDataini = new JTextFieldPad(); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(); 

@@ -31,6 +31,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FTratTrib extends FDados implements ActionListener{
   private JTextFieldPad txtCodTratTrib = new JTextFieldPad(5);
   private JTextFieldPad txtDescTratTrib= new JTextFieldPad(20);

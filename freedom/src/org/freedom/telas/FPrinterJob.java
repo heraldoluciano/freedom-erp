@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FPrinterJob.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -41,12 +41,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import org.freedom.bmps.Icone;
+import org.freedom.bmps.Imagem;
 import org.freedom.componentes.ImprimeLayout;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.bmps.Icone;
-import org.freedom.bmps.Imagem;
+
 public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
   private JPanel pnCli = new JPanel(new GridLayout(1,1));
   private JPanel pnCab = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));  

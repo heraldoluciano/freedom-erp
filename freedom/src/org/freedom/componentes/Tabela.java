@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)Tabela.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,6 +19,7 @@
  */
 
 package org.freedom.componentes;
+import java.awt.Color;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,6 +38,7 @@ import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
+
 
 public class Tabela extends JTable implements TabelaEditListener, TabelaSelListener {
   private Modelo modelo = new Modelo();
@@ -201,6 +203,13 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   }
   public void setAutoRol(boolean bVal) {
     bAutoRol = bVal;
+  }
+  public void setRowBackGround(int iLinha, Color cor) {
+  	if (iLinha < ContaLinhas) {
+  		 for (int i=0;i<ContaColunas;i++) {
+  		 	((DefaultTableCellRenderer)getCellRenderer(iLinha,i)).setBackground(cor);
+  		 }
+  	}
   }
   
   public void valueChanged(ListSelectionEvent levt) {

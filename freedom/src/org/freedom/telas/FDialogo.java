@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FDialogo.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -35,8 +35,9 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import org.freedom.componentes.Painel;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.Painel;
+
 public class FDialogo extends JDialog implements ActionListener, KeyListener {
    public  JButton btCancel = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
    public  JButton btOK = new JButton("OK",Icone.novo("btOk.gif"));

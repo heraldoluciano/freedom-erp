@@ -40,6 +40,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRInadimplentes extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(); 
