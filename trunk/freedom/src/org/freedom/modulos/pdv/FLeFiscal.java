@@ -126,8 +126,8 @@ public class FLeFiscal extends FTabDados {
 		txtPrimCupom.setAtivo(false);
 		txtRed.setAtivo(false);
 		
-		lcCaixa.add(new GuardaCampo( txtNumTermX, 7, 100, 80, 20, "CodCaixa", "Terminal", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoForx");
-		lcCaixa.add(new GuardaCampo( txtDescTermX, 90, 100, 207, 20, "DescCaixa", "Descrição d terminal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoForx");
+		lcCaixa.add(new GuardaCampo( txtNumTermX, 7, 100, 80, 20, "CodCaixa", "Cód.caixa", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoForx");
+		lcCaixa.add(new GuardaCampo( txtDescTermX, 90, 100, 207, 20, "DescCaixa", "Descrição do caixa", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoForx");
 		lcCaixa.montaSql(false, "CAIXA", "PV");    
 		lcCaixa.setQueryCommit(false);
 		lcCaixa.setReadOnly(true);

@@ -169,7 +169,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 				break;
        	 	}
        	 	case 3: { 
-       	 		killProg(3,"Já foi realizada leitura \"Z\" neste terminal hoje!");
+       	 		killProg(3,"Já foi realizada leitura \"Z\" neste caixa hoje!");
 				break;
        	 	}
        	 	case 4: {

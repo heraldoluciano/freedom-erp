@@ -95,7 +95,7 @@ public class FSuprimento extends FDialogo {
 		  
 		  PreparedStatement ps = con.prepareStatement("SELECT * FROM PVRETMOVCAIXASP(?,?,?,?)");
 		  ps.setInt(1,Aplicativo.iNumEst);
-		  System.out.println("terminal: "+Aplicativo.iNumEst);
+		  System.out.println("caixa: "+Aplicativo.iNumEst);
 		  
 		  ps.setInt(3,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 		  ps.setInt(2,Aplicativo.iCodEmp);
