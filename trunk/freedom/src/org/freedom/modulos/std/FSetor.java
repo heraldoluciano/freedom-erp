@@ -27,19 +27,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FSetor extends FDados implements ActionListener{
-  private JTextFieldPad txtCodSetor = new JTextFieldPad(5);
-  private JTextFieldPad txtDescSetor= new JTextFieldPad(20);
+  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescSetor= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FSetor () {
     setTitulo("Cadastro de Setor");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodSetor, 7, 20, 70, 20,"CodSetor","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescSetor, 80, 20, 250, 20,"DescSetor","Descrição do setor",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodSetor, 7, 20, 70, 20,"CodSetor","Cód.setor",ListaCampos.DB_PK, true);
+    adicCampo(txtDescSetor, 80, 20, 250, 20,"DescSetor","Descrição do setor",ListaCampos.DB_SI, true);
     setListaCampos( true, "SETOR", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
