@@ -113,7 +113,7 @@ public class FItCLFiscal extends FDetalhe {
     vValsOrig.addElement("0");
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");
-    cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig);
+    cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig, JComboBoxPad.TP_STRING,1,0);
 
     setAltDet(260);
     setPainel( pinDet, pnDet);

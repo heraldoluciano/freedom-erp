@@ -131,7 +131,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
     vValsOrig.addElement("0");
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");
-    cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig);
+    cbOrig = new JComboBoxPad(vLabsOrig,vValsOrig,JComboBoxPad.TP_STRING,1,0);
     
 
     adicCampo(txtCodFisc, 7, 20, 94, 20, "CodFisc", "Cód.c.fisc.", ListaCampos.DB_PK, null, true);
