@@ -71,7 +71,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 
 		addSeparador(100100000);
 		addOpcao(100100000, TP_OPCAO_ITEM, "Estrutura", "Estrutura de produto",
-				'E', 100102000, 2, true, FPrefereProd.class);
+				'E', 100102000, 2, true, FEstFase.class);
 		addOpcao(100100000, TP_OPCAO_ITEM, "Tipos de recursos",
 				"Tipos de recursos", 'T', 100103000, 2, true, FTipoRec.class);
 		addOpcao(100100000, TP_OPCAO_ITEM, "Recursos de produção",
