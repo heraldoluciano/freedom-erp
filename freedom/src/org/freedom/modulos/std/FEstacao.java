@@ -1,6 +1,6 @@
 /**
- * @version 14/07/2003 <BR>
- * @author Setpoint Informática Ltda./Leandro Oliveira Mesquita <BR>
+ * @version 07/03/2005 <BR>
+ * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
  *  
@@ -20,84 +20,83 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.BorderLayout;
-//import java.awt.Dimension;
-//import java.awt.GridLayout;
-//import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.util.Vector;
-//import javax.swing.JButton;
-//import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.freedom.acao.PostListener;
+import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
-import org.freedom.telas.FTabDados;
-//import javax.swing.JScrollPane;
-//import javax.swing.event.ChangeEvent;
-//import javax.swing.event.ChangeListener;
-//import bibli.acao.PostEvent;
-//import bibli.acao.RadioGroupEvent;
-//import bibli.acao.RadioGroupListener;
-//import bibli.compo.GuardaCampo;
-//import bibli.compo.ImprimeOS;
-//import bibli.compo.JCheckBoxPad;
-//import bibli.compo.JRadioGroup;
-//import bibli.compo.JTextAreaPad;
-//import bibli.compo.JTextFieldFK;
-//import bibli.compo.ListaCampos;
-//import bibli.compo.Navegador;
-//import bibli.funcoes.Funcoes;
-//import bibli.telas.Aplicativo;
-//import bibli.telas.FAndamento;
-//import bmps.Icone;
+import org.freedom.telas.FDetalhe;
 
-public class FEstacao extends FTabDados implements PostListener, ActionListener{
-private Painel pinEstc = new Painel();
-private JPanel pnEst = new JPanel(new BorderLayout());
-private Painel pinEst = new Painel(0,80);
-private JTextFieldPad txtCodEmp = new JTextFieldPad(8);
-private JTextFieldPad txtNomeCli = new JTextFieldPad(40);
-private JTextFieldPad txtRazCli = new JTextFieldPad(50);
-private JTextFieldPad txtCodEst = new JTextFieldPad(8);
-private JTextFieldPad txtDescEst = new JTextFieldPad(40);
-private Tabela tabEst = new Tabela();
+public class FEstacao extends FDetalhe implements PostListener, ActionListener{
+    private Painel pinCab = new Painel();
+    private Painel pinDet = new Painel();
+	private Painel pinEst = new Painel(0,80);
+	private ListaCampos lcImp = new ListaCampos(this,"IP");
+	private JTextFieldPad txtCodEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtNroImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtCodImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtPortaWin = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtPortaLin = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldFK txtDescImp = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JCheckBoxPad cbImpPad = new JCheckBoxPad("Impressora padrão?","S","N");
+	
+	private Tabela tabEst = new Tabela();
 
-public FEstacao() {
-	setTitulo("Cadastro de Estação"); 
-	setAtribos(50, 10, 530, 470);
-
-    pinEst = new Painel(500,330);
-    setPainel(pinEst);
+	public FEstacao() {
+		setTitulo("Cadastro de estações de trabalho"); 
+		setAtribos(50, 10, 530, 380);
+	    pinCab = new Painel(530, 50);
 	}
     private void montaTela() {
-  	adicTab("Estação", pinEst); 
+	  	//adicTab("Estação", pinEst); 
+	
+        lcImp.add(new GuardaCampo(txtCodImp, "CodImp", "Cód.imp.", ListaCampos.DB_PK,  false));
+        lcImp.add(new GuardaCampo(txtDescImp, "DescImp", "Descrição da impressora", ListaCampos.DB_SI, false));
+        lcImp.montaSql(false, "IMPRESSORA", "SG");
+        lcImp.setQueryCommit(false);
+        lcImp.setReadOnly(true);
+        txtCodImp.setTabelaExterna(lcImp);
+    	
+	  	lcCampos.addPostListener(this);
+	    pinCab = new Painel(740, 100);
+	    setListaCampos(lcCampos);
+	    setAltCab(100);
+	    setPainel(pinCab, pnCliCab);
+  	
+	  	adicCampo(txtCodEst, 7, 20, 80, 20, "Codest", "Nº estação", ListaCampos.DB_PK, true);
+	  	adicCampo(txtDescEst, 90, 20, 307, 20, "Descest", "Descrição da estação de trabalho",ListaCampos.DB_FK,true);
+	    setListaCampos(true,"ESTACAO", "SG");
+	    lcCampos.setQueryInsert(false);
+	    
+	    setAltDet(100);
+	    pinDet = new Painel(740, 100);
+	    setPainel(pinDet, pnDet);
+	    setListaCampos(lcDet);
+	    adicCampo(txtNroImp,7,20,80,20,"NroImp","Nº imp.",ListaCampos.DB_PK,true);
+	    adicCampo(txtCodImp,90,20,100,20,"CodImp","Cód.imp.",ListaCampos.DB_FK,true);
+	    adicDescFK(txtDescImp,193,20,200,20,"DescImp","Descrição da impressora");
+	    
+	    setListaCampos(true, "ESTACAOIMP", "SG");
+	    lcDet.setQueryInsert(false);
+	    montaTab();
 
-  	lcCampos.addPostListener(this);
-  	txtCodEst.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-  	txtDescEst.setTipo(JTextFieldPad.TP_STRING,50,0); 
-  	adicCampo(txtCodEst, 7, 20, 80, 20, "Codest", "Estação", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-  	adicCampo(txtRazCli, 90, 20, 307, 20, "Descest", "Descrição", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
-  
-    setListaCampos(true,"ESTACAO", "SG");
-    lcCampos.setQueryInsert(false); 
-  
+	    tab.setTamColuna(30, 0);
+	    tab.setTamColuna(70, 1);
+	    tab.setTamColuna(230, 2);
+	    
     }
     
-    public void setConexao(Connection cn) {
-    	super.setConexao(cn);
-        
-    }
-
     public void execShow(Connection cn) {
     	con = cn;
-      montaTela();	
-     super.execShow(cn);
+    	lcImp.setConexao(cn);
+    	montaTela();	
+    	super.execShow(cn);
     }
   }
