@@ -55,12 +55,12 @@ public class FRGerContas extends FRelatorio  {
   private Connection con;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtCodSetor = new JTextFieldPad();
-  private JTextFieldFK txtDescSetor = new JTextFieldFK();
-  private JTextFieldPad txtCodVend = new JTextFieldPad();
-  private JTextFieldFK txtNomeVend = new JTextFieldFK();
-  private JTextFieldPad txtCodCli=new JTextFieldPad();
-  private JTextFieldFK txtRazCli = new JTextFieldFK();  
+  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodCli=new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);  
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
@@ -108,30 +108,24 @@ public class FRGerContas extends FRelatorio  {
         
     rgOrdemRel = new JRadioGroup(5,1,vLabOrdemRel,vValOrdemRel);
             
-    txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescSetor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
-    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição do setor",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
+    lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor","Cód.setor", ListaCampos.DB_PK, false ));
+    lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor","Descrição do setor", ListaCampos.DB_SI, false ));
     lcSetor.montaSql(false,"SETOR","VD");
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
     txtCodSetor.setFK(true);
     txtCodSetor.setNomeCampo("CodSetor");
 
-    txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtNomeVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
-    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome do representante",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
+    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend","Cód.repr.", ListaCampos.DB_PK, false ));
+    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend","Nome do representante", ListaCampos.DB_SI, false ));
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
 
-	txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
-	lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+	lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+	lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 	txtCodCli.setTabelaExterna(lcCliente);
 	txtCodCli.setNomeCampo("CodCli");
 	txtCodCli.setFK(true);
