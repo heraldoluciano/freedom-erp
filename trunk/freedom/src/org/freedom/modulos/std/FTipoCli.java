@@ -81,7 +81,7 @@ public class FTipoCli extends FDados implements ActionListener {
     
     adic(pinLbInfoCaixa,10,52,350,15);
     adic(pinInfoFicha,7,60,400,180);
-        
+       
     setListaCampos( true, "TIPOCLI", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
