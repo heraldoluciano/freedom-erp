@@ -42,6 +42,8 @@ import javax.swing.event.ChangeListener;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -68,7 +70,7 @@ import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
-               TabelaSelListener, ChangeListener, CarregaListener {
+               TabelaSelListener, ChangeListener, CarregaListener, InsertListener {
   private Painel pinCli = new Painel();
   private JPanel pnFor = new JPanel(new BorderLayout());
   private Painel pinFor = new Painel(0,80);
@@ -137,6 +139,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtCodCliFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+  private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
   private Vector vPessoaLab = new Vector();
   private Vector vPessoaVal = new Vector();
   private JRadioGroup rgPessoa = null;
@@ -208,6 +211,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicTab("Cliente", pinCli); 
 
   	lcCampos.addPostListener(this);
+  	lcCampos.addInsertListener(this);
   	
   	lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true));
   	lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
@@ -298,11 +302,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	rgPessoa = new JRadioGroup( 2, 1, vPessoaLab, vPessoaVal);
   	rgPessoa.addRadioGroupListener(this);   
   	
-  	adicDB(rgPessoa, 400, 20, 100, 60, "PessoaCli", "Pessoa",JTextFieldPad.TP_STRING,true);
+  	adicDB(rgPessoa, 400, 20, 100, 60, "PessoaCli", "Pessoa",true);
   	rgPessoa.setVlrString("J");
-  	
-  	JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
-  	
+ 	
   	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo",true);
   	adicCampo(txtNomeCli, 90, 60, 307, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true);
   	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true);
@@ -413,7 +415,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     // 
     
   	adicTab("Observações", pnObs1);
-  	adicDBLiv(txaObs, "ObsCli", "Observações",JTextFieldPad.TP_STRING, false);
+  	adicDBLiv(txaObs, "ObsCli", "Observações", false);
 
   	txaTxtObsCli.setEditable(false);
   	tbObsData.adicColuna("Data");
@@ -473,7 +475,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
     adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.forn.", ListaCampos.DB_PF, txtDescFor,true);
     adicDescFK(txtDescFor, 90, 20, 297, 20, "RazFor", "Razão social do fornecedor");
-    adicCampo(txtCodCliFor, 390, 20, 105, 20, "CodCliFor", "Cód.cli.for.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,false);
+    adicCampo(txtCodCliFor, 390, 20, 105, 20, "CodCliFor", "Cód.cli.for.", ListaCampos.DB_SI, false);
     setListaCampos( false, "CLIENTEFOR", "VD");
     lcCliFor.montaTab();
     lcCliFor.setQueryInsert(false);
@@ -489,15 +491,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
   	if (bPref[0]) {
         lcSetor = new ListaCampos(this,"SR");
-  		lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Setor", true, false, txtDescSetor, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-  		lcSetor.add(new GuardaCampo( txtDescSetor, 7, 100, 80, 20, "DescSetor", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+  		lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, txtDescSetor, false));
+  		lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI,false));
   		lcSetor.montaSql(false, "SETOR", "VD");    
   		lcSetor.setQueryCommit(false);
   		lcSetor.setReadOnly(true);
   		txtCodSetor.setTabelaExterna(lcSetor);
   	
-  		adicCampo(txtCodSetor, 7, 300, 80, 20, "CodSetor", "Setor", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescSetor,true);
-  		adicDescFK(txtDescSetor, 90, 300, 237, 20, "DescSetor", "", JTextFieldPad.TP_STRING, 50, 0);
+  		adicCampo(txtCodSetor, 7, 300, 80, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor,true);
+  		adicDescFK(txtDescSetor, 90, 300, 237, 20, "DescSetor", "Descrição do setor");
   	}
   	
   	lcCampos.addCarregaListener(this);
@@ -1513,5 +1515,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
    	   }
     }
   }
+  public void beforeInsert(InsertEvent ievt) {
+  	
+  };
+  public void afterInsert(InsertEvent ievt) {
+  	if (ievt.getListaCampos()==lcCampos)
+  		cbAtivo.setVlrString("S");
+  };
 
 }
