@@ -37,7 +37,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -48,7 +48,6 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -60,9 +59,9 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private JPanelPad pinConv = new JPanelPad(510,110);
   private JPanelPad pinCli = new JPanelPad(510,65);
   private JPanelPad pinCabConv = new JPanelPad(530,200);
-  private JPanel pnCabConv = new JPanel(new BorderLayout());
-  private JPanel pnConv = new JPanel(new BorderLayout());
-  private JPanel pnRodConv = new JPanel(new BorderLayout());
+  private JPanelPad pnCabConv = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnConv = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnRodConv = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTabbedPanePad tpnConv = new JTabbedPanePad();
   private Tabela tabConv = new Tabela();
   private JScrollPane spnConv = new JScrollPane(tabConv);
@@ -120,7 +119,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	
 	getTela().add(tpnConv);
 	
-	JPanel pnlbConv = new JPanel(new GridLayout(1,1));
+	JPanelPad pnlbConv = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	pnlbConv.add(new JLabelPad(" Conveniado"));
 	pinCabConv.adic(pnlbConv,20,5,100,20);
 	pinCabConv.adic(pinConv,10,15,500,110);
@@ -140,7 +139,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	pinConv.adic(new JLabelPad("Mae"),300,50,187,20);
 	pinConv.adic(txtMaeConv,300,70,187,20);
 	
-	JPanel pnlbCli = new JPanel(new GridLayout(1,1));
+	JPanelPad pnlbCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	pnlbCli.add(new JLabelPad(" Cliente"));
 	pinCabConv.adic(pnlbCli,20,125,60,20);
 	pinCabConv.adic(pinCli,10,135,500,65);
@@ -163,7 +162,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	tabConv.setTamColuna(150,4);
 	tabConv.setTamColuna(70,5);
 	
-	JPanel pnBotConv = new JPanel(new GridLayout(1,2));
+	JPanelPad pnBotConv = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
 	pnBotConv.setPreferredSize(new Dimension(60,30));
 	pnBotConv.add(btNovo);
 	pnBotConv.add(btExcluir);

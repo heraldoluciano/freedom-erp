@@ -41,7 +41,7 @@ import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -55,7 +55,6 @@ import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
@@ -71,13 +70,13 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
 	
    private StatusBar sbVenda = new StatusBar(new BorderLayout());
    
-   private JPanel pnStatusBar = new JPanel(new BorderLayout());
+   private JPanelPad pnStatusBar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
    
-   private JPanel pnClienteGeral = new JPanel(new BorderLayout());
-   private JPanel pnCliente = new JPanel(new BorderLayout());
-   private JPanel pnTabela = new JPanel(new BorderLayout());
-   private JPanel pnNorte = new JPanel(new BorderLayout());
-   private JPanel pnEntrada = new JPanel(new BorderLayout());
+   private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+   private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+   private JPanelPad pnTabela = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+   private JPanelPad pnNorte = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+   private JPanelPad pnEntrada = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
    
    private JPanelPad pinBarra = new JPanelPad(798,45);
    private JPanelPad pinCab = new JPanelPad(798,45);

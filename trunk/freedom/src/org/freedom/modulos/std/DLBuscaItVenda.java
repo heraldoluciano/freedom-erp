@@ -34,7 +34,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -44,7 +44,6 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -53,13 +52,13 @@ import org.freedom.telas.FFDialogo;
 
 public class DLBuscaItVenda extends FFDialogo implements ActionListener, CarregaListener {
   private JPanelPad pinCab = new JPanelPad(0,60);
-  private JPanel pnCorpo = new JPanel(new BorderLayout());
+  private JPanelPad pnCorpo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinRod = new JPanelPad(350,55);
   private JPanelPad pinBtSel = new JPanelPad(40,110);
   private JPanelPad pinBtSelVenda = new JPanelPad(40,110);
-  private JPanel pnCli = new JPanel(new BorderLayout());
-  private JPanel pnTabVenda = new JPanel(new BorderLayout());
-  private JPanel pnCliTab = new JPanel(new BorderLayout());
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnTabVenda = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCliTab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDocVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);

@@ -56,7 +56,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
@@ -68,7 +68,6 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -95,7 +94,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 	private JPanelPad pinGeral = new JPanelPad(0,145);
 	private JPanelPad pinArq = new JPanelPad(0,90);
 	private JPanelPad pinRod = new JPanelPad(0,0);
-	private JPanel pnCenter = new JPanel(new BorderLayout());
+	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JProgressBar pbAnd = new JProgressBar();
 	private JLabelPad lbStatus = new JLabelPad("Pronto.");
 	private JRadioGroup rgTipo = null;

@@ -26,7 +26,7 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -34,15 +34,14 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLRCliente extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
-  private JPanel pnlbSelec = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pinSelec = new JPanelPad(400,90);
-  private JPanel pnlbPessoa = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnlbPessoa = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pinPessoa = new JPanelPad(450,40);
   private JTextFieldPad txtCid = new JTextFieldPad();
   private JLabelPad lbSelec = new JLabelPad(" Selecão:");

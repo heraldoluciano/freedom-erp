@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -45,7 +45,6 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -54,7 +53,7 @@ import org.freedom.telas.FFDialogo;
 public class DLFechaCompra extends FFDialogo implements FocusListener {
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private JPanelPad pinFecha = new JPanelPad(420,300);
-  private JPanel pnPagar = new JPanel(new BorderLayout());
+  private JPanelPad pnPagar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 
   private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);

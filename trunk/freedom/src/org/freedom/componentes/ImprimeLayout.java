@@ -56,7 +56,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -76,7 +76,7 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class ImprimeLayout extends JPanel implements Printable, VetoableChangeListener {
+public class ImprimeLayout extends JPanelPad implements Printable, VetoableChangeListener {
   public static final byte AL_CEN = 0; //Centro
   public static final byte AL_BCEN = 1; //Centro
   public static final byte AL_DIR = 2; //Direita
@@ -195,7 +195,7 @@ public class ImprimeLayout extends JPanel implements Printable, VetoableChangeLi
   
   
   /** 
-   *  Esta função sobrepos a classe JPanel para desenhar o relatório<BR>
+   *  Esta função sobrepos a classe JPanelPad para desenhar o relatório<BR>
    *  no modo de visualização.
    * 
    *     * Eu não sei por que o java não atualiza a tela algumas vezes<BR>

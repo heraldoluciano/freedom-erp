@@ -38,7 +38,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.event.InternalFrameEvent;
@@ -57,7 +57,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 
 public class FDados extends FFilho implements ActionListener, KeyListener, InternalFrameListener, PostListener{//, FocusListener {
@@ -71,13 +70,13 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    private BorderLayout blRodape = new BorderLayout();
    private GridLayout glImp = new GridLayout( 1, 2); 
    private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
-   public JPanel pnCliente = new JPanel();
-   public JPanel pnRodape = new JPanel();
-   public JPanel pnBordRod = new JPanel();
+   public JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
+   public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
+   public JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
    public Navegador nav = new Navegador(false); 
    public Navegador navSeq = new Navegador(false); 
-   public JPanel pnImp = new JPanel();
-   public JPanel pnGImp = new JPanel();
+   public JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
+   public JPanelPad pnGImp = new JPanelPad(JPanelPad.TP_JPANEL);
    public JPanelPad pinDados = new JPanelPad();
    public JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
    public JButton btImp = new JButton( Icone.novo("btImprime.gif"));

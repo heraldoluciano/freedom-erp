@@ -27,7 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 
@@ -35,7 +35,6 @@ import javax.swing.JButton;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -45,7 +44,7 @@ import org.freedom.telas.FFDialogo;
 
 public class FAliquota extends FFDialogo implements ActionListener { 
 	private JPanelPad pinCab = new JPanelPad(400,60);
-	private JPanel pnCli = new JPanel(new BorderLayout());
+	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtAliquota = new JTextFieldPad();
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);

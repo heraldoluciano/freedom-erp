@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -39,7 +39,6 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
@@ -47,8 +46,8 @@ import org.freedom.telas.FRelatorio;
 public class FRListaPreco extends FRelatorio {
 	private JPanelPad pinOpt = new JPanelPad(595,100);
 	private JPanelPad pinPlan = new JPanelPad(595,450);
-	private JPanel pnOpt = new JPanel(new GridLayout(1,1));
-	private JPanel pnPlan = new JPanel(new GridLayout(1,1));
+	private JPanelPad pnOpt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+	private JPanelPad pnPlan = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
 	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
 	private JTextFieldPad txtCodClasCli = new JTextFieldPad (JTextFieldPad.TP_INTEGER,6,0);

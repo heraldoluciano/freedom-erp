@@ -35,7 +35,7 @@ import java.sql.Time;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -60,7 +60,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FConveniado;
@@ -72,7 +71,7 @@ import org.freedom.telas.FTabDados;
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
                TabelaSelListener, ChangeListener, CarregaListener, InsertListener {
   private JPanelPad pinCli = new JPanelPad();
-  private JPanel pnFor = new JPanel(new BorderLayout());
+  private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinFor = new JPanelPad(0,80);
   private Tabela tbObsData = new Tabela();
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -153,23 +152,23 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinEnt = new JPanelPad();
   private JPanelPad pinVend = new JPanelPad();
   private JPanelPad pinCob = new JPanelPad();
-  private JPanel pnObs1 = new JPanel(new BorderLayout()); // JPanelPad de observações com 2 linha e 1 coluna
-  private JPanel pnObs1_1 = new JPanel(new BorderLayout()); // JPanelPad de observações gerais
-  private JPanel pnObs1_2 = new JPanel(new BorderLayout()); // JPanelPad principal de observações por data
+  private JPanelPad pnObs1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // JPanelPad de observações com 2 linha e 1 coluna
+  private JPanelPad pnObs1_1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // JPanelPad de observações gerais
+  private JPanelPad pnObs1_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // JPanelPad principal de observações por data
   //private JPanelPad pinObs1_2_1 = new JPanelPad(200,100); // JPanelPad para scrool da tabela de datas de observação
-  private JPanel pnObs1_2_1 = new JPanel(new BorderLayout());
-  private JPanel pnObs1_2_2 = new JPanel(new BorderLayout()); // Pinel para observações e outros
-  private JPanel pnObs1_2_2_1 = new JPanel(new BorderLayout());
-  private JPanel pnObs1_2_2_2 = new JPanel(new BorderLayout());
+  private JPanelPad pnObs1_2_1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnObs1_2_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // Pinel para observações e outros
+  private JPanelPad pnObs1_2_2_1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnObs1_2_2_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinObs1_2_1_1 = new JPanelPad(200,200); 
   private JPanelPad pinObs1_2_2_2_1 = new JPanelPad(0,30);
   
-  private JPanel pnObsData = new JPanel(new GridLayout(1,2)); // JPanelPad de Observações por data com 1 linha e duas colunas
-  private JPanel pnObsAcao = new JPanel(new GridLayout(2,1)); // JPanelPad principal de ações que fica dentro do pnObsData 2 linhas e 1 coluna
-  private JPanel pnObsBotoes = new JPanel(new FlowLayout(FlowLayout.LEADING)); // JPanelPad de botões de ação que fica dentro do pnObsAcao
-  private JPanel pnObsTb = new JPanel(new FlowLayout(FlowLayout.LEFT)); // JPanelPad para o grid de datas, o scroll vai ficar dentro
+  private JPanelPad pnObsData = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2)); // JPanelPad de Observações por data com 1 linha e duas colunas
+  private JPanelPad pnObsAcao = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(2,1)); // JPanelPad principal de ações que fica dentro do pnObsData 2 linhas e 1 coluna
+  private JPanelPad pnObsBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.LEADING)); // JPanelPad de botões de ação que fica dentro do pnObsAcao
+  private JPanelPad pnObsTb = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.LEFT)); // JPanelPad para o grid de datas, o scroll vai ficar dentro
   
-  private JPanel pnGrpCli = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); // JPanelPad para botão de clientes agrupados
+  private JPanelPad pnGrpCli = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0)); // JPanelPad para botão de clientes agrupados
   
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data

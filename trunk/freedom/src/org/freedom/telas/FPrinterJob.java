@@ -37,7 +37,7 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
@@ -45,12 +45,11 @@ import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.ImprimeLayout;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 
 public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
-  private JPanel pnCli = new JPanel(new GridLayout(1,1));
-  private JPanel pnCab = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));  
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+  private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0));  
   private ImprimeLayout impLay = new ImprimeLayout();
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private JButton btImp = new JButton("Imprimir",Icone.novo("btImprime.gif"));
@@ -113,15 +112,15 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
     
 //monta tela atual:
       
-    JPanel pnRod = new JPanel(new BorderLayout());
-    JPanel pnFCenter = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+    JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+    JPanelPad pnFCenter = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,0,0));
 
-    JPanel pnDir = new JPanel(new GridLayout(1,2));
+    JPanelPad pnDir = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
     pnDir.add(btImp);
     pnDir.add(btSair);
     pnRod.add(pnDir,BorderLayout.EAST);
 
-    JPanel pnCenter = new JPanel(new GridLayout(1,5));
+    JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,5));
     
     pnFCenter.add(pnCenter);
 

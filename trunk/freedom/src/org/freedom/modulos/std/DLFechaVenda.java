@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -50,7 +50,6 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -61,8 +60,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private JPanelPad pinFecha = new JPanelPad(400,300);
   private JPanelPad pinFrete = new JPanelPad(400,300);
-  private JPanel pnReceber = new JPanel(new BorderLayout());
-  private JPanel pnComis = new JPanel(new GridLayout(1,1));;
+  private JPanelPad pnReceber = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnComis = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));;
   private JPanelPad pinInfEspec = new JPanelPad(0,0);
   
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

@@ -30,7 +30,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.ImageIcon;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.bmps.Icone;
@@ -39,8 +39,8 @@ import org.freedom.funcoes.Funcoes;
 
 public class FSobre extends FFDialogo {
   private JTabbedPanePad tpnSobre = new JTabbedPanePad();
-  private JPanel pnSobre = new JPanel(new BorderLayout());
-  private JPanel pnEquipe = new JPanel(new BorderLayout());
+  private JPanelPad pnSobre = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnEquipe = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   ImageIcon img = Icone.novo(Aplicativo.strSplash);
   public FSobre () {
   	super(Aplicativo.telaPrincipal);

@@ -39,7 +39,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -50,7 +50,6 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -59,9 +58,9 @@ import org.freedom.telas.FFilho;
 
 public class FHistorico extends FFilho implements CarregaListener, ActionListener {
   private JPanelPad pinCabCont = new JPanelPad(530,200);
-  private JPanel pnCabCont = new JPanel(new BorderLayout());
-  private JPanel pnCont = new JPanel(new BorderLayout());
-  private JPanel pnRodCont = new JPanel(new BorderLayout());
+  private JPanelPad pnCabCont = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCont = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnRodCont = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTabbedPanePad tpnCont = new JTabbedPanePad();
   private Tabela tabCont = new Tabela();
   private JScrollPane spnCont = new JScrollPane(tabCont);
@@ -155,7 +154,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	tabCont.setTamColuna(130,4);
 	tabCont.setTamColuna(70,5);
 	
-	JPanel pnBotCont = new JPanel(new GridLayout(1,2));
+	JPanelPad pnBotCont = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
 	pnBotCont.setPreferredSize(new Dimension(60,30));
 	pnBotCont.add(btNovo);
 	pnBotCont.add(btExcluir);

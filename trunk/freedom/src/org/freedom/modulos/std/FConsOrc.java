@@ -40,7 +40,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -51,7 +51,6 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -60,8 +59,8 @@ import org.freedom.telas.FPrincipal;
 
 public class FConsOrc extends FFilho implements ActionListener {
   private JPanelPad pinCab = new JPanelPad(0, 200);
-  private JPanel pnCli = new JPanel(new BorderLayout());
-  private JPanel pnRod = new JPanel(new BorderLayout());
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
@@ -121,10 +120,10 @@ public class FConsOrc extends FFilho implements ActionListener {
     btSair.setPreferredSize(new Dimension(100,30));
     btConsVenda.setPreferredSize(new Dimension(30,30));
     
-    JPanel pnBordaSair = new JPanel(new FlowLayout(FlowLayout.CENTER,3,3));
+    JPanelPad pnBordaSair = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,3,3));
     pnBordaSair.add(btSair);
     pnRod.add(pnBordaSair,BorderLayout.EAST);
-    JPanel pnBordaConsVenda = new JPanel(new FlowLayout(FlowLayout.CENTER,3,3));
+    JPanelPad pnBordaConsVenda = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,3,3));
     pnBordaConsVenda.add(btConsVenda);
     pnRod.add(pnBordaConsVenda,BorderLayout.WEST);
   

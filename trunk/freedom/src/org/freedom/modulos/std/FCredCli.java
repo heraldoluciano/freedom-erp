@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.SwingConstants;
 
@@ -46,7 +46,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -54,7 +53,7 @@ import org.freedom.telas.FTabDados;
 
 public class FCredCli extends FTabDados	implements ActionListener, CarregaListener,PostListener {
   private JPanelPad pinGeral = new JPanelPad(680, 200);
-  private JPanel pnFicha = new JPanel(new BorderLayout());
+  private JPanelPad pnFicha = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 //  private JPanelPad pinFicha = new JPanelPad(700, 200);
   private JPanelPad pinFiliacao = new JPanelPad(680,200);
   private JPanelPad pinTrabalho = new JPanelPad(680,200);
@@ -62,7 +61,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JPanelPad pinRefPess = new JPanelPad(680,200);
   private JPanelPad pinAvalista = new JPanelPad(680,200);  
   private JPanelPad pinRodFicha = new JPanelPad(680,29);
-  private JPanel pnCheque = new JPanel(new BorderLayout());
+  private JPanelPad pnCheque = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
   private JPanelPad pinCheque = new JPanelPad(680, 200);
   private JPanelPad pinRodCheque = new JPanelPad(680,29);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -445,18 +444,18 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 		adicTab("Ficha cadastral", pnFicha);
 	}
 	if(bVeicTipoCli)
-		adicTab("Veícuos", new JPanel());
+		adicTab("Veícuos", new JPanelPad(JPanelPad.TP_JPANEL));
     if(bImovTipoCli)
-    	adicTab("Imóveis", new JPanel());
+    	adicTab("Imóveis", new JPanelPad(JPanelPad.TP_JPANEL));
     if(bTerraTipoCli)
-    	adicTab("Terras", new JPanel());
+    	adicTab("Terras", new JPanelPad(JPanelPad.TP_JPANEL));
 	if(bJurTipoCli){
-		adicTab("Bancos", new JPanel());
-		adicTab("Ref. Comerciais", new JPanel());
-		adicTab("Sócios", new JPanel());
+		adicTab("Bancos", new JPanelPad(JPanelPad.TP_JPANEL));
+		adicTab("Ref. Comerciais", new JPanelPad(JPanelPad.TP_JPANEL));
+		adicTab("Sócios", new JPanelPad(JPanelPad.TP_JPANEL));
 	}
 	if(bFisTipoCli || bJurTipoCli)
-		adicTab("Pessoas autorizadas",new JPanel());
+		adicTab("Pessoas autorizadas",new JPanelPad(JPanelPad.TP_JPANEL));
     if(bFilTipoCli)
   		tpn2.addTab("Filiação",pinFiliacao);
   	if(bLocTrabTipoCli)

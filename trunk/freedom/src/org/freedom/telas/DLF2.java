@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -46,14 +46,13 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 
 public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListener, ActionListener {
   private JLabelPad lbPesq = new JLabelPad("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad();
-  private JPanel pnBordCab = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnBordCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pinCab = new JPanelPad();
   private DefaultTableCellRenderer cabAnt = new DefaultTableCellRenderer();
   private DefaultTableCellRenderer cab = new DefaultTableCellRenderer();

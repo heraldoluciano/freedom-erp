@@ -28,7 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
@@ -43,7 +43,6 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
@@ -75,7 +74,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   private Vector vPessoaLab = new Vector();
   private Vector vPessoaVal = new Vector();
   private JRadioGroup rgPessoa = null;
-  private JPanel pnObs = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnObs = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JScrollPane spnObs = new JScrollPane(txaObs);
   private ListaCampos lcTipoFor = new ListaCampos(this,"TF");

@@ -28,7 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -37,7 +37,6 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
@@ -46,7 +45,7 @@ public class FRMovProd extends FRelatorio {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgAtivoProd=null;
   private JRadioGroup rgProduto=null;
-  private JPanel pnlbSelec = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pinSelec = new JPanelPad(350,90);
   private JLabelPad lbSelec = new JLabelPad(" Seleção:");
   private JLabelPad lbDe = new JLabelPad("de:");

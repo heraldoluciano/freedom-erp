@@ -22,13 +22,12 @@ package org.freedom.componentes;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 public class JPanelPad extends JPanel {
-//  private JPanel pnGeral = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-//  private JPanel pnFixo = new JPanel(new GridLayout(1,1));
-//  private JPanel pnMaster = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+  public static int TP_JPANEL = 0; // constante criada para manter a construção anterior de org.freedom.componentes.JPanelPad
   private JLayeredPane lpn = new JLayeredPane();
   public JPanelPad () { 
 	setLayout(new GridLayout(1,1));
@@ -38,14 +37,11 @@ public class JPanelPad extends JPanel {
   public JPanelPad (Dimension dm) {
     setLayout(new GridLayout(1,1));
     setPreferredSize(dm);
-//    add(pnGeral);
-//    pnGeral.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 	setBorder(javax.swing.BorderFactory.createEtchedBorder());
 	lpn.setPreferredSize(dm);
 	add(lpn);
   }
   public void tiraBorda() {
-//    pnGeral.setBorder(BorderFactory.createEmptyBorder());
 	setBorder(javax.swing.BorderFactory.createEmptyBorder());
   }
   public JPanelPad (int Larg, int Alt ) {
@@ -53,8 +49,25 @@ public class JPanelPad extends JPanel {
   } 
   public void adic(Component comp,int x , int y, int larg, int alt) {
     comp.setBounds(x,y,larg,alt);
-//    lpn.add(comp, JLayeredPane.DEFAULT_LAYER);
-//    pnGeral.add(lpn);
 	lpn.add(comp, JLayeredPane.DEFAULT_LAYER);
   }
+  
+  /** 
+   * Abaixo construções referentes ao org.freedom.componentes.JPanelPad
+   **/ 
+  
+  public JPanelPad(int tppanel) {
+	super();
+  }
+
+  public JPanelPad(int tppanel, boolean arg0) {
+	super(arg0);
+  }
+  public JPanelPad(int tppanel, LayoutManager arg0) {
+	super(arg0);
+  }
+  public JPanelPad(int tppanel, LayoutManager arg0, boolean arg1) {
+	super(arg0, arg1);
+  }
+  
 }

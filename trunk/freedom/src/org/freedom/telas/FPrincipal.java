@@ -40,12 +40,11 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JToolBar;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JMenuPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
@@ -67,7 +66,7 @@ public class FPrincipal extends JFrame implements ActionListener {
    public  FPrincipal() {
      c.setLayout(new BorderLayout());      
 
-     JPanel pn = new JPanel();
+     JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
      pn.setLayout(new GridLayout( 1, 1));
 
      setJMenuBar( bar );

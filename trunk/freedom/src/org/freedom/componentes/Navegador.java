@@ -22,8 +22,8 @@ package org.freedom.componentes;
 import java.awt.event.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
 public class Navegador extends JPanel implements ActionListener, KeyListener {

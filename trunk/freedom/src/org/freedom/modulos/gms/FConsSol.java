@@ -41,7 +41,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -51,7 +51,6 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -61,8 +60,8 @@ import org.freedom.telas.FPrincipal;
 public class FConsSol extends FFilho implements ActionListener {
 
 	private JPanelPad pinCab = new JPanelPad(0, 185);
-	private JPanel pnCli = new JPanel(new BorderLayout());
-	private JPanel pnRod = new JPanel(new BorderLayout());
+	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Solicitações pendentes", "S", "N");
@@ -128,10 +127,10 @@ public class FConsSol extends FFilho implements ActionListener {
 
 		btSair.setPreferredSize(new Dimension(100, 30));
 
-		JPanel pnBordaSair = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
+		JPanelPad pnBordaSair = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 3, 3));
 		pnBordaSair.add(btSair);
 		pnRod.add(pnBordaSair, BorderLayout.EAST);
-		JPanel pnBordaConsVenda = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
+		JPanelPad pnBordaConsVenda = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 3, 3));
 		pnRod.add(pnBordaConsVenda, BorderLayout.WEST);
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());

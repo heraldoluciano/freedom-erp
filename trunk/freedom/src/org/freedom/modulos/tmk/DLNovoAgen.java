@@ -34,7 +34,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -51,7 +51,7 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLNovoAgen extends FFDialogo {
-	private JPanel pnCab = new JPanel(new GridLayout(1,1));
+	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JSpinner txtHoraini = new JSpinner();

@@ -24,7 +24,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.sql.Connection;
 
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.ListaCampos;
@@ -38,14 +38,14 @@ public class FDetalhe extends FDados {
   private BorderLayout blMaster = new BorderLayout();
   private BorderLayout blCab = new BorderLayout();
   private BorderLayout blNavCab = new BorderLayout();
-  public  JPanel pnMaster = new JPanel(blMaster);
-  public  JPanel pnCab = new JPanel(blCab);
-  private JPanel pnBordCab = new JPanel(glCab);
-  public  JPanel pnDet = new JPanel(new GridLayout(1,1));
-  private JPanel pnBordDet = new JPanel(glRod);
-  public JPanel pnNavCab = new JPanel(blNavCab);
-  private JPanel pnBordNavCab = new JPanel(glNavCab);
-  public  JPanel pnCliCab = new JPanel(new GridLayout(1,1));
+  public  JPanelPad pnMaster = new JPanelPad(JPanelPad.TP_JPANEL,blMaster);
+  public  JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,blCab);
+  private JPanelPad pnBordCab = new JPanelPad(JPanelPad.TP_JPANEL,glCab);
+  public  JPanelPad pnDet = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+  private JPanelPad pnBordDet = new JPanelPad(JPanelPad.TP_JPANEL,glRod);
+  public JPanelPad pnNavCab = new JPanelPad(JPanelPad.TP_JPANEL,blNavCab);
+  private JPanelPad pnBordNavCab = new JPanelPad(JPanelPad.TP_JPANEL,glNavCab);
+  public  JPanelPad pnCliCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   public  Navegador navRod = new Navegador(true);
   public  ListaCampos lcDet = new ListaCampos(this);
   public  Tabela tab = new Tabela();

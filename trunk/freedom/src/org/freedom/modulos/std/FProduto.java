@@ -34,7 +34,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -57,7 +57,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -68,11 +67,11 @@ import org.freedom.telas.FTabDados;
 public class FProduto extends FTabDados	implements CheckBoxListener, EditListener, 
 		InsertListener, ChangeListener, ActionListener, CarregaListener {
   private JPanelPad pinGeral = new JPanelPad(650,340);
-  private JPanel pnFatConv = new JPanel(new BorderLayout());
-  private JPanel pnFor = new JPanel(new BorderLayout());
-  private JPanel pnLote = new JPanel(new BorderLayout());
-  private JPanel pnFoto = new JPanel(new BorderLayout());
-  private JPanel pnPreco = new JPanel(new BorderLayout());
+  private JPanelPad pnFatConv = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnLote = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnFoto = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnPreco = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
   private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
@@ -159,7 +158,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JPanelPad pinRodLote = new JPanelPad(650,120);
   private JPanelPad pinRodFoto = new JPanelPad(650,170);
   private JPanelPad pinRodPreco = new JPanelPad(650,120);
-  private JPanel pnDesc = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnDesc = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JTextAreaPad txaDescComp = new JTextAreaPad();
   private JScrollPane spnDesc = new JScrollPane(txaDescComp);
   private ListaCampos lcMoeda = new ListaCampos(this,"MA");

@@ -22,7 +22,7 @@
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.Tabela;
@@ -31,7 +31,7 @@ import org.freedom.telas.DLRelatorio;
 public class DLChecaLFSaida extends DLRelatorio {
   public Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
-  private JPanel pnCliente = new JPanel(new BorderLayout());
+  private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 
   public DLChecaLFSaida() {
          

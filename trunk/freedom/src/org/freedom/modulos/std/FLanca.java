@@ -38,7 +38,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.SwingConstants;
@@ -50,7 +50,6 @@ import javax.swing.event.InternalFrameEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -59,9 +58,9 @@ import org.freedom.telas.FPrincipal;
 
 public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JPanelPad pinCab = new JPanelPad(600,64);
-  private JPanel pnNav = new JPanel(new GridLayout(1,7));
-  private JPanel pnRod = new JPanel(new BorderLayout());
-  private JPanel pnCentro = new JPanel(new BorderLayout());;
+  private JPanelPad pnNav = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,7));
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCentro = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());;
   private JPanelPad pinPeriodo = new JPanelPad(260,50);
   private JLabelPad lbPeriodo = new JLabelPad(" Periodo");
   private JPanelPad pinSaldo = new JPanelPad(310,50);
@@ -267,7 +266,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
         }
         sContas[i] = rs.getString("NumConta");
         sPlanos[i] = rs.getString("CodPlan");
-        tpn.addTab(rs.getString("DescConta").trim(),new JPanel());
+        tpn.addTab(rs.getString("DescConta").trim(),new JPanelPad(JPanelPad.TP_JPANEL));
       }
       rs.close();
       ps.close();
