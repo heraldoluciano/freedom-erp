@@ -43,7 +43,7 @@ public class FGravaMoeda extends FFDialogo {
 	private ListaCampos lcMoeda = new ListaCampos(this,"");
 	public FGravaMoeda() {
 		setTitulo("Ajusta moeda na impressora.");
-		setAtribos(390,110);
+		setAtribos(390,150);
 		
 		txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
 		lcMoeda.add(new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true));

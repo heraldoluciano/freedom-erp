@@ -102,7 +102,7 @@ public class FRDiario extends FRelatorio {
         sTit = "";
     }
     
-    imp.montaCab();
+   
     String sDataini = "";
     String sDatafim = "";
     String sDatahist = "";
@@ -110,7 +110,7 @@ public class FRDiario extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
     
-    imp.setTitulo("Relatório diário de "+sTit);
+    
     String sSQL = "SELECT H.CODHISTTK,H.SITHISTTK,H.DATAHISTTK,H.DESCHISTTK,C.RAZCTO,H.HORAHISTTK,H.CODCTO" +
   		                  " FROM TKHISTORICO H, TKCONTATO C WHERE H.CODEMP=? AND H.CODFILIAL=? AND H.DATAHISTTK BETWEEN ? AND ? " +
   	                      " AND C.CODCTO=H.CODCTO AND C.CODEMP=H.CODEMPCO AND C.CODFILIAL=H.CODFILIALCO " +
@@ -129,29 +129,22 @@ public class FRDiario extends FRelatorio {
       
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           String sTitulo = "RELATORIO DE DIÁRIO DE "+sTit+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
+        	imp.montaCab();
+        	imp.setTitulo("Relatório diário de "+sTit);
+        	imp.setSubTitulo("RELATORIO DE DIÁRIO DE "+sTit+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+           imp.impCab(136, true);
+           
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Hora ");
            imp.say(imp.pRow()+0,10,"| Sit ");
            imp.say(imp.pRow()+0,17,"| Contato ");
            if (bComp) {
-           	 imp.say(imp.pRow()+0,136,"|");
+           	 imp.say(imp.pRow()+0,135,"|");
            	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
            	 imp.say(imp.pRow()+0,0,"|");
            	 imp.say(imp.pRow()+0,5,"Descrição");
@@ -159,18 +152,18 @@ public class FRDiario extends FRelatorio {
            else {
            	imp.say(imp.pRow()+0,80,"| Resumo");
            }
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
          if (!Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")).equals(sDatahist)) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|    Dia: "+Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")));
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          GregorianCalendar calHora = new GregorianCalendar();
@@ -183,7 +176,7 @@ public class FRDiario extends FRelatorio {
          if (bComp) {
          	String[] sVal = Funcoes.strToStrArray(rs.getString("DescHistTK"));
          	for (int i=0;i<sVal.length;i++) {
-         		imp.say(imp.pRow()+0,136,"|");
+         		imp.say(imp.pRow()+0,135,"|");
          		imp.say(imp.pRow()+1,0,""+imp.comprimido());
          		imp.say(imp.pRow()+0,0,"|");
          		imp.say(imp.pRow()+0,5,Funcoes.copy(sVal[i],0,127));
@@ -191,17 +184,17 @@ public class FRDiario extends FRelatorio {
          }
          else
          	imp.say(imp.pRow()+0,80,"| "+Funcoes.copy(rs.getString("DescHistTK"),0,45).replaceAll("\n","..."));
-         imp.say(imp.pRow()+0,136,"|");
+         imp.say(imp.pRow()+0,135,"|");
          sDatahist = Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK"));
       	 if (imp.pRow() == linPag) {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
            imp.eject();
            imp.incPags();
          }
       }
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       imp.eject();
       
       imp.fechaGravacao();
