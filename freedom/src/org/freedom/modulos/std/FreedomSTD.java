@@ -97,7 +97,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Terminal",'T',100410000,2,true);		  
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Impressora",'I',100420000,2,true);
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Papel",'P',100430000,2,true);
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Estação",'E',100440000,2,true);// lom
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Estação de trabalho",'E',100440000,2,true);// lom
 	  addSeparador(100400000);
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Empresa",'E',100450000,2,true);	  	  
 
@@ -355,9 +355,9 @@ public class FreedomSTD extends Aplicativo {
       }
     }
     else if (iOpcao==100440000) {// LOM
-        if (telaPrincipal.temTela("Estacao")==false) {// LOM
+        if (telaPrincipal.temTela("Estações de trabalho")==false) {// LOM
           FEstacao tela = new FEstacao();// LOM
-          telaPrincipal.criatela("Estacao",tela,con);// LOM
+          telaPrincipal.criatela("Estações de trabalho",tela,con);// LOM
         }
     }
     else if (iOpcao==100420000) {
