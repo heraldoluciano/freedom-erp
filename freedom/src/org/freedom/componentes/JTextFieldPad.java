@@ -503,6 +503,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		editDB();
 		return;
 	}
+	else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null)){
+		buscaAdic("estoque");
+	}
     else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
             (getText().trim().length() > 0) &&
             (bPK || bFK)) {
@@ -549,8 +552,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
     else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
              (getText().trim().length() > 0) &&
              (bPK) & (lcTxt != null)) {
-  	  if (Aplicativo.bBuscaProdSimilar)
-	  	buscaAdic("similar");
+  	  if (Aplicativo.bBuscaProdSimilar) {  	  	
+  	  		buscaAdic("similar");
+  	  }
+	  	
   	  
     	lcTxt.carregaDados();
       	transferFocus();

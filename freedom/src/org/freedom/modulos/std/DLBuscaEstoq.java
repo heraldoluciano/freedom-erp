@@ -67,7 +67,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	  		 "WHERE E.CODEMP=A.CODEMP AND A.CODEMP=? AND A.CODFILIAL=? AND F.CODEMP=A.CODEMP AND F.CODFILIAL=A.CODFILIAL " +
    	  		 "AND (E.MULTIALMOXEMP='N' OR " +
    	  		 " EXISTS(SELECT CODALMOX FROM EQALMOXFILIAL AF WHERE AF.CODEMP=A.CODEMP AND AF.CODFILIAL=A.CODFILIAL " +
-   	  		 " AND AF.CODALMOX=A.CODALMOX AND AF.CODEMPFL=? AND AF.CODFILIALAF=?))";
+   	  		 " AND AF.CODALMOX=A.CODALMOX AND AF.CODEMPAF=? AND AF.CODFILIALAF=?))";
       System.out.println(sSQL);
       try {
       	PreparedStatement ps = con.prepareStatement(sSQL);
@@ -89,7 +89,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       		  rs.getString(2) != null ? rs.getString(2) : "",
       		  rs.getString(3) != null ? rs.getString(3) : "",
 			  rs.getString(4) != null ? rs.getString(4) : "",
-		      rs.getString(5) != null ? rs.getString(4) : "",
+			  		"0"
       	   });
 /*
       	   if (sCol.toUpperCase().equals("REFPROD")) {
@@ -100,6 +100,8 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 	   }
 */ 
       	}
+
+      	
       	rs.close();
       	ps.close();
       	if (!con.getAutoCommit())
@@ -121,9 +123,14 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 		    Integer iCodEmpAx = new Integer(lcCampos.getCodEmp());   	 		    
    	 		    Integer iCodFilialAx = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),0).toString()));
    	 		    Integer iCodAlmoxAx = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
-   	 			lcCampos.getCampo("CODEMPAX").setVlrInteger(iCodEmpAx);
-   	 			lcCampos.getCampo("CODFILIALAX").setVlrInteger(iCodFilialAx);
-   	 		    lcCampos.getCampo("CODALMOX").setVlrInteger(iCodAlmoxAx);
+
+   	 		    if(lcCampos!=null) {   	 		 
+   	 		    	if (lcCampos.getCampo("txtcodalmox")!=null)
+   	 		    		lcCampos.getCampo("txtcodalmox").setVlrInteger(iCodAlmoxAx);
+   	 		    }
+   	 		    else {
+   	 		    	System.out.println("Lista Campos nulo no busca Estoq!!!!");
+   	 		    }
    	 		}
        }   	  
    	 }
