@@ -40,10 +40,10 @@ import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 
-public class FAliquota extends FDialogo implements ActionListener { 
+public class FAliquota extends FFDialogo implements ActionListener { 
 	private Painel pinCab = new Painel(400,60);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JTextFieldPad txtAliquota = new JTextFieldPad();

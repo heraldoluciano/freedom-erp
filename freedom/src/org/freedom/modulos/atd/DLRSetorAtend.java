@@ -27,9 +27,9 @@ import java.util.Vector;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JRadioGroup;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class DLRSetorAtend extends FDialogo {
+public class DLRSetorAtend extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private Vector vLabs = new Vector();

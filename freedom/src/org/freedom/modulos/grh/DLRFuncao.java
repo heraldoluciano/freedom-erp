@@ -24,10 +24,10 @@ package org.freedom.modulos.grh;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JRadioGroup;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 import java.util.Vector;
-public class DLRFuncao extends FDialogo {
+public class DLRFuncao extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private Vector vLabs = new Vector();

@@ -31,11 +31,11 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 import java.sql.Connection;
 import java.util.Vector;
-public class DLRProduto extends FDialogo {
+public class DLRProduto extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
   private JPanel pnlbSelec = new JPanel(new GridLayout(1,1));

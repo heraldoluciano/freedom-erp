@@ -33,9 +33,9 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class FGravaMoeda extends FDialogo {
+public class FGravaMoeda extends FFDialogo {
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
 	private JTextFieldFK txtSingMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldFK txtPlurMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
