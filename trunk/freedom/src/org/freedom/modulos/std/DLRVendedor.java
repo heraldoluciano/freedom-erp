@@ -149,6 +149,7 @@ public class DLRVendedor extends FFDialogo {
     sRetorno[2] = txtCodClComis.getVlrString();
     sRetorno[3] = txtCodSetor.getText();
     sRetorno[4] = txtCodFuncaoVend.getText();
+    sRetorno[5] = txtCodVend.getText();    
 
     return sRetorno;
   }
