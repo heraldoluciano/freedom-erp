@@ -21,7 +21,6 @@
  */
 
 package org.freedom.modulos.pdv;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
