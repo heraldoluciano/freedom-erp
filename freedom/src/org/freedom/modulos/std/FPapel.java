@@ -22,15 +22,16 @@
 
 package org.freedom.modulos.std;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FPapel extends FDados {
-  private JTextFieldPad txtCodPapel = new JTextFieldPad(20);
-  private JTextFieldPad txtDescPapel = new JTextFieldPad(40);
-  private JTextFieldPad txtLinPapel = new JTextFieldPad(8);
-  private JTextFieldPad txtAltPapel = new JTextFieldPad(8);
-  private JTextFieldPad txtLargPapel = new JTextFieldPad(8);
-  private JTextFieldPad txtColPapel = new JTextFieldPad(8);
+  private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtDescPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldPad txtLinPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtAltPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtLargPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtClassNotaPapel = new JTextFieldPad();
   public FPapel() {
 //Remove o painel de impressão da classe FDados:
@@ -39,13 +40,13 @@ public class FPapel extends FDados {
     setTitulo("Cadastro de tipos de papeis");
     setAtribos(60,60,400,195);    
     
-    adicCampo(txtCodPapel, 7, 20, 80, 20, "CodPapel", "Cód.papel", JTextFieldPad.TP_STRING, 20, 0, true, false, null, true);
-    adicCampo(txtDescPapel, 90, 20, 287, 20, "DescPapel", "Descrição do papel", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
-    adicCampo(txtLinPapel, 7, 60, 95, 20, "LinPapel", "Num. linhas", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtColPapel, 105, 60, 87, 20, "Colpapel", "Num. colunas", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true); // LOM
-    adicCampo(txtAltPapel, 194, 60, 92, 20, "AltPapel", "Altura", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtLargPapel, 289, 60, 87, 20, "LargPapel", "Largura", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtClassNotaPapel, 7, 100, 370, 20, "ClassNotaPapel", "Arquivo de layout de nota fiscal", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
+    adicCampo(txtCodPapel, 7, 20, 80, 20, "CodPapel", "Cód.papel", ListaCampos.DB_PK, true);
+    adicCampo(txtDescPapel, 90, 20, 287, 20, "DescPapel", "Descrição do papel",ListaCampos.DB_SI, true);
+    adicCampo(txtLinPapel, 7, 60, 95, 20, "LinPapel", "Num. linhas", ListaCampos.DB_SI, true);
+    adicCampo(txtColPapel, 105, 60, 87, 20, "Colpapel", "Num. colunas", ListaCampos.DB_SI, true); // LOM
+    adicCampo(txtAltPapel, 194, 60, 92, 20, "AltPapel", "Altura", ListaCampos.DB_SI, true);
+    adicCampo(txtLargPapel, 289, 60, 87, 20, "LargPapel", "Largura", ListaCampos.DB_SI, true);
+    adicCampo(txtClassNotaPapel, 7, 100, 370, 20, "ClassNotaPapel", "Classe de layout de NF", ListaCampos.DB_SI, false);
     
     setListaCampos(false,"PAPEL", "SG");
     lcCampos.setQueryInsert(false);    
