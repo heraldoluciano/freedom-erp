@@ -55,9 +55,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 
-public class DLCancCupom extends FDialogo implements ActionListener,MouseListener,KeyListener { 
+public class DLCancCupom extends FFDialogo implements ActionListener,MouseListener,KeyListener { 
 	private Painel pinCab = new Painel(400,90);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JPanel pnBt = new JPanel(new GridLayout(1,2));	
@@ -72,11 +73,11 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
 	JCheckBoxPad cbInteira = new JCheckBoxPad("Cancelar venda inteira","S","N");
 	private ListaCampos lcVenda = new ListaCampos(this,"VD");
-	private Connection con = null;
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	boolean bCancCupom = false;
 	int iCancItem = -1;
 	public DLCancCupom(Connection con) {
+		super(Aplicativo.framePrinc);
 		this.con = con;
 		setTitulo("Cancela Venda");
 		setAtribos(100,150,710,300);

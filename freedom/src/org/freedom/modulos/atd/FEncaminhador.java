@@ -102,8 +102,6 @@ public class FEncaminhador extends FDados implements PostListener {
   
   public void setConexao(Connection cn) {
   	super.setConexao(cn);
-  	con = cn;
-
 	setListaCampos( true, "ENCAMINHADOR", "AT");
   }
 }

@@ -42,14 +42,15 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class DLFechaDia extends FDialogo {
+public class DLFechaDia extends FFDialogo {
 	private JTextFieldFK txtDataHora = new JTextFieldFK(JTextFieldPad.TP_STRING,16,0);
 	private JTextFieldFK txtVlrCaixa = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad("Deseja executar a redução Z?","S","N");
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-	private Connection con = null;
 	public DLFechaDia() {
+		super(Aplicativo.framePrinc);
 		setTitulo("Fechamento de caixa");
 		setAtribos(310,150);
 		
@@ -177,7 +178,7 @@ public class DLFechaDia extends FDialogo {
 		super.actionPerformed(evt);
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		buscaSaldoDia();
 	}
 }

@@ -46,8 +46,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class DLFechaVenda extends FDialogo implements FocusListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldFK txtVlrCupom = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
@@ -58,11 +59,11 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	private JTextFieldFK txtVlrTroco = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-	private Connection con = null;
 	private Tef tef = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
 	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
+		super(Aplicativo.framePrinc);
 		setTitulo("Fechamento de venda");
 		setAtribos(330,275);
 		
@@ -312,7 +313,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		this.tef = tef; 
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
 		txtCodPlanoPag.setVlrInteger(new Integer(buscaPlanoPag()));
 		lcPlanoPag.carregaDados();

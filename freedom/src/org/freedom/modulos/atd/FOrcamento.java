@@ -123,7 +123,6 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   private ListaCampos lcTipoConv = new ListaCampos(this,"TC");
   private ListaCampos lcCliente = new ListaCampos(this, "CL");
   private ListaCampos lcEnc = new ListaCampos(this,"EC");
-  private Connection con = null;
   private FPrinterJob dl = null;
   Object[] oPrefs = null;
   boolean bCtrl = false;
@@ -845,7 +844,6 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   }
   public void setConexao(Connection cn) {
   	super.setConexao(cn);
-    con = cn;
     montaOrcamento();
     montaDetalhe();
     lcProd.setConexao(cn);

@@ -190,7 +190,6 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     cbObito = null;
     cbLimpaCheck = null;
     cbTicaTudo = null;
-    con = null;
     setTitulo("Relatorio Sus");
     setAtribos(50, 50, 525, 440);
     txtDataini.setTipo(1, 10, 0);
@@ -570,7 +569,6 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
 
   public void setConexao(Connection cn) {
     super.setConexao(cn);
-    con = cn;
     setListaCampos(true, "ENCAMINHADOR", "AT");
   }
 }

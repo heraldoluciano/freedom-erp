@@ -73,7 +73,6 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabel lbImg = new JLabel(Icone.novo("bannerATD.jpg"));
-	private Connection con = null;
 	private JButton btMedida = new JButton(Icone.novo("btMedida.gif"));
 	private String sPrefs[] = null;
 	private int iDoc = 0;
@@ -300,7 +299,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		return sVal;
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		montaComboTipo();
 		montaComboSetor();
 		lcAtend.setConexao(cn);
