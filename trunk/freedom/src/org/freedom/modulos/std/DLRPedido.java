@@ -33,7 +33,7 @@ public class DLRPedido extends FFDialogo {
   private Vector vVals = new Vector();
   public DLRPedido(String OrdNota) {
     setTitulo("Ordem do Relatório");
-    setAtribos(350,120);
+    setAtribos(350,160);
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vLabs.addElement("Marca");

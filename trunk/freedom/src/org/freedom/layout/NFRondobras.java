@@ -96,17 +96,16 @@ public class NFRondobras extends Leiaute {
 //Cabeçario da nota  
          if (imp.pRow()==0) {           
 	       if (bEntrada){
-	           imp.say(imp.pRow()+1,0,"");
-	           imp.say(imp.pRow()+0,102,"X");
+	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	           imp.say(imp.pRow()+0,103,"X");
 	           imp.say(imp.pRow()+0,0,"");
 	       }
            else{
-           	   imp.say(imp.pRow()+1,0,"");
-           	   imp.say(imp.pRow()+0,87,"X");
+           	   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           	   imp.say(imp.pRow()+0,88,"X");
            	   imp.say(imp.pRow()+0,0,"");
            }
 	       
-	       //imp.say(imp.pRow()+1,0,"");
 	       imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");        
@@ -139,7 +138,7 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,sValsCli[2] != null ? sValsCli[2] : "");
            imp.say(imp.pRow()+0,53,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"));
-           imp.say(imp.pRow()+0,82,sValsCli[3] != null ? sValsCli[3] : "");
+           imp.say(imp.pRow()+0,83,sValsCli[3] != null ? sValsCli[3] : "");
            imp.say(imp.pRow()+0,96,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
            imp.say(imp.pRow()+0,127,sHora);
            
@@ -148,11 +147,11 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,19,sVals[0]);
-           imp.say(imp.pRow()+0,38,sVencs[0]);
+           imp.say(imp.pRow()+0,37,sVencs[0]);
            imp.say(imp.pRow()+0,64,sVals[1]);
-           imp.say(imp.pRow()+0,81,sVencs[1]);
+           imp.say(imp.pRow()+0,80,sVencs[1]);
            imp.say(imp.pRow()+0,110,sVals[2]);
-           imp.say(imp.pRow()+0,127,sVencs[2]);
+           imp.say(imp.pRow()+0,126,sVencs[2]);
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
@@ -275,7 +274,7 @@ public class NFRondobras extends Leiaute {
            
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
            
-           imp.say(imp.pRow()+1,0,""); 
+           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
@@ -286,12 +285,11 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,rs.getString("CodVend"));
            imp.say(imp.pRow()+0,20,rs.getString("NomeVend") != null ? rs.getString("CodClComis") : "");
-               
-           imp.say(imp.pRow()+1,0,"");
+                      
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");           
            imp.say(imp.pRow()+1,0,""+imp.normal()+imp.expandido());
-           imp.say(imp.pRow()+0,110,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
+           imp.say(imp.pRow()+0,112,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
            imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
            
            
