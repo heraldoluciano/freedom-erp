@@ -24,7 +24,7 @@ package org.freedom.modulos.pcp;
 import java.sql.Connection;
 
 import javax.swing.JLabel;
-
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FTabDados;
@@ -49,13 +49,13 @@ public class FPrefereProd extends FTabDados {
         adic(lbRespon,12,10,130,20);
         adic(pinRespon,7,20,250,150);
         setPainel(pinRespon);
-        adicCampo(txtNomeResp,7,30,200,20,"NOMERESP","Nome do reponsável",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
-        adicCampo(txtIdentProfResp,7,70,200,20,"IDENTPROFRESP","Indent.prof.",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
-        adicCampo(txtCargoResp,7,110,200,20,"CARGORESP","Cargo",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
+        adicCampo(txtNomeResp,7,30,200,20,"NOMERESP","Nome do reponsável", ListaCampos.DB_SI, false);
+        adicCampo(txtIdentProfResp,7,70,200,20,"IDENTPROFRESP","Indent.prof.", ListaCampos.DB_SI, false);
+        adicCampo(txtCargoResp,7,110,200,20,"CARGORESP","Cargo", ListaCampos.DB_SI, false);
         
         setPainel(pinGeral);
 
-        adicCampo(txtClass,7,200,200,20,"CLASSOP","Classe padrão para O.P.",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
+        adicCampo(txtClass,7,200,200,20,"CLASSOP","Classe padrão para O.P.", ListaCampos.DB_SI,false);
 
 		setListaCampos(false, "PREFERE5", "SG");
 		

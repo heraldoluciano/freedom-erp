@@ -37,7 +37,7 @@ import org.freedom.telas.FDados;
 
 public class FRecursos extends FDados implements ActionListener {
   private JTextFieldPad txtCodRecp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtDescRecp = new JTextFieldPad(50);
+  private JTextFieldPad txtDescRecp = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodTpRecp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTpRecp = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcTpRecp = new ListaCampos(this,"TR");
@@ -45,17 +45,17 @@ public class FRecursos extends FDados implements ActionListener {
     setTitulo("Cadastro de recursos de producão.");
     setAtribos( 50, 50, 350, 165);
 
-    lcTpRecp.add(new GuardaCampo( txtCodTpRecp, 7, 100, 80, 20, "Codtprec", "Cód.rec.", true, false, txtDescTpRecp, JTextFieldPad.TP_INTEGER,true),"txtCodtpRec");
-    lcTpRecp.add(new GuardaCampo( txtDescTpRecp, 7, 100, 80, 20, "Desctprec", "Descriçao do recurso", false, false, null, JTextFieldPad.TP_STRING,false),"txtDesctpRec");
+    lcTpRecp.add(new GuardaCampo( txtCodTpRecp, "Codtprec", "Cód.rec.", ListaCampos.DB_PK, txtDescTpRecp, true));
+    lcTpRecp.add(new GuardaCampo( txtDescTpRecp, "Desctprec", "Descriçao do recurso", ListaCampos.DB_SI, false));
     lcTpRecp.montaSql(false, "TIPOREC", "PP");    
     lcTpRecp.setQueryCommit(false);
     lcTpRecp.setReadOnly(true);
     txtCodTpRecp.setTabelaExterna(lcTpRecp);
     
-    adicCampo(txtCodRecp, 7, 20, 70, 20,"Codrecp","Cód.rec.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescRecp, 80, 20, 240, 20,"descrecp","Descrição do recurso",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodTpRecp, 7, 60, 70, 20, "Codtprec", "Cód.tp.rec.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTpRecp,false);
-    adicDescFK(txtDescTpRecp, 80, 60, 240, 20, "desctprec", "Descrição do tipo de recurso", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodRecp, 7, 20, 70, 20,"Codrecp","Cód.rec.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescRecp, 80, 20, 240, 20,"descrecp","Descrição do recurso", ListaCampos.DB_SI, true);
+    adicCampo(txtCodTpRecp, 7, 60, 70, 20, "Codtprec", "Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRecp, false);
+    adicDescFK(txtDescTpRecp, 80, 60, 240, 20, "desctprec", "Descrição do tipo de recurso");
     setListaCampos( false, "RECURSO", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
