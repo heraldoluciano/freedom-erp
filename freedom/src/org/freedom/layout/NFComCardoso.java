@@ -4,7 +4,7 @@
  *
  * Projeto: Freedom <BR>
  * Pacote: leiautes <BR> 
- * Classe: @(#)NFAmazonDiesel.java <BR>
+ * Classe: @(#)NFComCardoso.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -15,7 +15,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Layout da nota fiscal para a empresa AmazonDiesel Peças e Serviços peças.
+ * Layout da nota fiscal para a empresa Comercial Cardoso.
  */
 
 package org.freedom.layout;
@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 
-public class NFAmazonDiesel extends Leiaute {
+public class NFComCardoso extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ResultSet rsInfoAdic,ImprimeOS imp) {
     GregorianCalendar cHora = new GregorianCalendar();
     boolean bRetorno;
@@ -43,8 +43,12 @@ public class NFAmazonDiesel extends Leiaute {
     String[] sNat = new String[2];
     String[] sVencs = new String[5];
     String[] sVals = new String[4];
+    String sObs = "";
+	String[] sMatObs = null;
 	String sImpDtSaidaNat = "";
 	float ftVlrDesc = 0;
+	int iContaMens = 1;	
+	String sIncra = "" ;
 	Vector vMens = new Vector();
 	vMens.clear();
 	
@@ -92,55 +96,53 @@ public class NFAmazonDiesel extends Leiaute {
 	      }  
 //Cabeçario da nota  
          if (imp.pRow()==0) {           
-	       if (bEntrada){	       	   
-	       	   imp.say(imp.pRow()+1,0,"");
+	       if (bEntrada){
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	           imp.say(imp.pRow()+0,108,"X");
+	           imp.say(imp.pRow()+0,103,"X");
+	           imp.say(imp.pRow()+0,0,"");
 	       }
-           else{              	   
-           	   imp.say(imp.pRow()+1,0,"");
+           else{
            	   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           	   imp.say(imp.pRow()+0,93,"X");
+           	   imp.say(imp.pRow()+0,91,"X");
+           	   imp.say(imp.pRow()+0,0,"");
            }
-	       imp.say(imp.pRow()+1,0,"");       
+	       
 	       imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");        
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());      
            
-           imp.say(imp.pRow()+0,4,sNat[0].substring(0,42));
-           imp.say(imp.pRow()+0,44,sNat[1]);  
+           imp.say(imp.pRow()+0,6,sNat[0].substring(0,42));
+           imp.say(imp.pRow()+0,36,sNat[1]);  
            
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+1,0,""+imp.comprimido());   
            
            imp.say(imp.pRow()+0,4,sValsCli[1]);
-           imp.say(imp.pRow()+0,92,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
-           imp.say(imp.pRow()+0,128,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda"))); 
+           imp.say(imp.pRow()+0,90,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
+           imp.say(imp.pRow()+0,124,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda"))); 
            
-           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,4,Funcoes.copy(rs.getString("EndCli"),0,30).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
-           imp.say(imp.pRow()+0,65,rs.getString("BairCli"));
-           imp.say(imp.pRow()+0,100,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
+           imp.say(imp.pRow()+0,66,rs.getString("BairCli"));
+           imp.say(imp.pRow()+0,102,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
            
            sImpDtSaidaNat = rs.getString("IMPDTSAIDANAT");           
 	           if (sImpDtSaidaNat==null) sImpDtSaidaNat = "S";           
 	           if (sImpDtSaidaNat.equals("S"))
-	              imp.say(imp.pRow()+0,128,Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
-	           
-           imp.say(imp.pRow()+1,0,"");
+	              imp.say(imp.pRow()+0,124,Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+
+           imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,4,sValsCli[2] != null ? sValsCli[2] : "");
-           imp.say(imp.pRow()+0,56,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"));
-           imp.say(imp.pRow()+0,85,sValsCli[3] != null ? sValsCli[3] : "");
-           imp.say(imp.pRow()+0,96,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
-           imp.say(imp.pRow()+0,130,sHora);
+           imp.say(imp.pRow()+0,53,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"));
+           imp.say(imp.pRow()+0,83,sValsCli[3] != null ? sValsCli[3] : "");
+           imp.say(imp.pRow()+0,90,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
+           imp.say(imp.pRow()+0,127,sHora);
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-      
+                                 
          }
 //Descrições adicionais colocadas junto a decrição do produto.
          
@@ -165,54 +167,44 @@ public class NFAmazonDiesel extends Leiaute {
 		 }
 		 
 		 imp.say(imp.pRow()+1,0,"" + imp.comprimido());
-         imp.say(imp.pRow()+0,0,Funcoes.alinhaDir(rs.getInt("CodProd"),8));           
-         imp.say(imp.pRow()+0,11,rs.getString("DescProd").trim());
-         imp.say(imp.pRow()+0,74,sClasFisc);
-         imp.say(imp.pRow()+0,83,rs.getString("CodUnid").substring(0,4));
+         imp.say(imp.pRow()+0,4,Funcoes.alinhaDir(rs.getInt("CodProd"),8));           
+         imp.say(imp.pRow()+0,15,rs.getString("DescProd").trim());
+//         imp.say(imp.pRow()+0,64,sClasFisc);
+         imp.say(imp.pRow()+0,79,rs.getString("CodUnid").substring(0,4));
          imp.say(imp.pRow()+0,90,""+rs.getDouble("QtdItVenda"));          
-         imp.say(imp.pRow()+0,101,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)).trim());
-//         imp.say(imp.pRow()+0,97,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrProdItVenda")));
-         imp.say(imp.pRow()+0,113,Funcoes.strDecimalToStrCurrency(13,2,""+rs.getString("VlrLiqItVenda").trim()));
+         imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)).trim());
+         imp.say(imp.pRow()+0,116,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrProdItVenda")));
+//         imp.say(imp.pRow()+0,116,Funcoes.strDecimalToStrCurrency(13,2,""+rs.getString("VlrLiqItVenda").trim()));
          imp.say(imp.pRow()+0,133,""+rs.getDouble("PercICMSItVenda"));  // espaço para alicota ICMS
- //   imp.say(imp.pRow()+0,136,""+rs.getDouble("PercIPIItVenda"));   // espaço para alicota IPI
-         //imp.say(imp.pRow()+0,134,Funcoes.strDecimalToStrCurrency(15,3,rs.getString("VlrIPIVenda")).trim());
+//         imp.say(imp.pRow()+0,127,""+rs.getDouble("PercIPIItVenda"));   // espaço para alicota IPI
+//         imp.say(imp.pRow()+0,134,Funcoes.strDecimalToStrCurrency(15,3,rs.getString("VlrIPIVenda")).trim());
          
          iItImp++;
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
          
-
-         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 35)) {         	
-           if (iItImp == rs.getInt(1)) {                  //IMPRIME CALCULO DO IMPOSTO
+//IMPRIME CALCULO DO IMPOSTO
+         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 24)) {
+           if (iItImp == rs.getInt(1)) {
              int iRow = imp.pRow();
-             for (int i=0; i<(35-iRow);i++) {
+             for (int i=0; i<(24-iRow);i++) {
                  imp.say(imp.pRow()+1,0,"");
              }
-             System.out.println(imp.pRow()+" = iItImp - 2 : "+iItImp);  
-             
-             imp.say(imp.pRow()+1,60,"*");
-             imp.say(imp.pRow()+1,60,"*");
-             imp.say(imp.pRow()+1,60,"*");
-             imp.say(imp.pRow()+1,60,"*");
-             imp.say(imp.pRow()+1,60,"*");
-             imp.say(imp.pRow()+1,60,"*");
-             
+             System.out.println(imp.pRow()+" = iItImp - 2 : "+iItImp);
              
              //imprime desconto
              ftVlrDesc = rs.getFloat("VlrDescItVenda");
-             if ( ftVlrDesc != 0 ){             	
-             	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+             if ( ftVlrDesc > 0 ){ 
 	            imp.say(imp.pRow()+0,98,"Total de descontos = "+Funcoes.strDecimalToStrCurrency(15,2,""+ftVlrDesc));
-	            }
-             else{
-             	imp.say(imp.pRow()+1,0,"");             	
-             }
-             imp.say(imp.pRow()+1,0,"");
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());             
-             imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrBaseICMSVenda")));
+	         }
+             else{             	
+             	imp.say(imp.pRow()+0,0,""+imp.comprimido());
+             }           	
+                         
+             imp.say(imp.pRow()+1,4,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrBaseICMSVenda")));
              imp.say(imp.pRow()+0,27,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrICMSVenda")));
 //             imp.say(imp.pRow()+0,116,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrProdVenda")));
              imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrProdVenda")));
-             imp.say(imp.pRow()+1,0,"");
+             imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrFreteVenda")));
              imp.say(imp.pRow()+0,57,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrAdicVenda")));
@@ -221,23 +213,12 @@ public class NFAmazonDiesel extends Leiaute {
              iItImp = 0;
 			 //sObs += rs.getString("ObsVenda") != null ? rs.getString("ObsVenda").trim()+'\n' : "";
            }
-           else if (imp.pRow() == 35) {
-           	imp.say(imp.pRow()+1,60,"*");
-            imp.say(imp.pRow()+1,60,"*");
-            imp.say(imp.pRow()+1,60,"*");
-            imp.say(imp.pRow()+1,60,"*");
-            imp.say(imp.pRow()+1,60,"*");
-            imp.say(imp.pRow()+1,60,"*");
-            
-            
-           	 
-             imp.say(imp.pRow()+1,0,"");
-             imp.say(imp.pRow()+1,0,"");
+           else if (imp.pRow() == 24) {  
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,4,"***************");
-             imp.say(imp.pRow()+0,27,"***************");
+             imp.say(imp.pRow()+0,6,"***************");
+             imp.say(imp.pRow()+0,33,"***************");
              imp.say(imp.pRow()+0,114,"***************");
-             imp.say(imp.pRow()+1,0,"");
+             imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,4,"***************");
              imp.say(imp.pRow()+0,57,"***************");
@@ -245,52 +226,59 @@ public class NFAmazonDiesel extends Leiaute {
              imp.say(imp.pRow()+0,114,"***************");
            }
            
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,82,rs.getString("TipoFreteVD").equals("C") ? "1" : "2");
-           imp.say(imp.pRow()+0,4,rs.getString("RazTran"));           
-           imp.say(imp.pRow()+0,90,rs.getString("PlacaFreteVD"));
-           imp.say(imp.pRow()+0,106,rs.getString("UfFreteVD"));
+           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,4,rs.getString("RazTran"));
+           imp.say(imp.pRow()+0,76,rs.getString("TipoFreteVD").equals("C") ? "1" : "2");
+           imp.say(imp.pRow()+0,83,rs.getString("PlacaFreteVD"));
+           imp.say(imp.pRow()+0,99,rs.getString("UfFreteVD"));
            
 		   sTipoTran = rs.getString("TipoTran");
 			
 			   if (sTipoTran==null) sTipoTran = "T";
 		         if ( sTipoTran.equals("C") ){
-			        imp.say(imp.pRow()+0,112,Funcoes.setMascara(rs.getString("CnpjCli") != null ? rs.getString("CnpjCli") : "","##.###.###/####-##"));
+			        imp.say(imp.pRow()+0,104,Funcoes.setMascara(rs.getString("CnpjCli") != null ? rs.getString("CnpjCli") : "","##.###.###/####-##"));
 				  }
 			  
 			  else {
-					 imp.say(imp.pRow()+0,112,Funcoes.setMascara(rs.getString("CnpjTran") != null ? rs.getString("CnpjTran") : "","##.###.###/####-##")); 
+					 imp.say(imp.pRow()+0,104,Funcoes.setMascara(rs.getString("CnpjTran") != null ? rs.getString("CnpjTran") : "","##.###.###/####-##")); 
 			   	  }            
 
-           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,4,Funcoes.copy(rs.getString("EndTran"),0,42)+", "+Funcoes.copy(rs.getString("NumTran"),0,6));
-           imp.say(imp.pRow()+0,75,rs.getString("CidTran"));
-           imp.say(imp.pRow()+0,106,rs.getString("UfTran"));
+           imp.say(imp.pRow()+0,63,rs.getString("CidTran"));
+           imp.say(imp.pRow()+0,100,rs.getString("UfTran"));
   
 		   if (rs.getString("TipoTran").compareTo("C") == 0){
-			   imp.say(imp.pRow()+0,112,rs.getString("InscCli"));
+			   imp.say(imp.pRow()+0,104,rs.getString("InscCli"));
 		   }
 		   else { 
-			imp.say(imp.pRow()+0,112,rs.getString("InscTran"));
+			imp.say(imp.pRow()+0,100,rs.getString("InscTran"));
 		   }
            
-           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,rs.getString("QtdFreteVD"));
+           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,4,rs.getString("QtdFreteVD"));
            imp.say(imp.pRow()+0,26,rs.getString("EspFreteVD"));
-           imp.say(imp.pRow()+0,47,rs.getString("MarcaFreteVD"));
+           imp.say(imp.pRow()+0,57,rs.getString("MarcaFreteVD"));
            imp.say(imp.pRow()+0,100,rs.getString("PesoBrutVD"));
            imp.say(imp.pRow()+0,125,rs.getString("PesoLiqVD"));
            
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
-            
-           imp.say(imp.pRow()+12,0,"");
+           
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           /*imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,6,rs.getString("CodVend"));
+           imp.say(imp.pRow()+0,20,rs.getString("NomeVend") != null ? rs.getString("CodClComis") : "");*/
                       
-           imp.say(imp.pRow()+1,0,""+imp.normal()+imp.expandido());
-           imp.say(imp.pRow()+0,112,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");           
+           imp.say(imp.pRow()+3,0,""+imp.normal()+imp.expandido());
+           imp.say(imp.pRow()+0,114,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
                     
            
            /*for(int i=0;i<vMens.size();i++)
