@@ -118,22 +118,10 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtNumItemPag,7,20,60,20,"NroParcPag","Item",ListaCampos.DB_PK,true);
-    
-    
-//    adicCampo(txtPercItemPag, 70, 20, 97, 20,"PercPag","Percento",JTextFieldPad.TP_DECIMAL,9,6,false,false,null,true);
-  
-    
-    adicCampo(txtPercItemPag,70,20,97,20,"PercPag","Percento",ListaCampos.DB_SI,true);
-    
-//    adicCampo(txtDiasItemPag, 170, 20, 57, 20,"DiasPag","Dias",JTextFieldPad.TP_INTEGER,3,0,false,false,null,true);
-  
-    
-    adicCampo(txtDiasItemPag,170,20,57,20,"DiasPag","Dias",ListaCampos.DB_SI,false);
-    
-//    adicCampo(txtDescItemPag, 230, 20, 143, 20,"DescParcPag","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,false);
 
-    
+    adicCampo(txtNumItemPag,7,20,60,20,"NroParcPag","Item",ListaCampos.DB_PK,true);
+    adicCampo(txtPercItemPag,70,20,97,20,"PercPag","Percento",ListaCampos.DB_SI,true);
+    adicCampo(txtDiasItemPag,170,20,57,20,"DiasPag","Dias",ListaCampos.DB_SI,false);
     adicCampo(txtDescItemPag,230,20,143,20,"DescParcPag","Descrição",ListaCampos.DB_SI,false);
     
     setListaCampos( true, "PARCPAG", "FN");

@@ -1,11 +1,11 @@
 /**
- * @version 24/02/2004 <BR>
- * @author Setpoint Informática Ltda./Robson Sanchez<BR>
+ * @version 11/02/2002 <BR>
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FSimilar.java <BR>
+ * Classe: @(#)FPlanoPag.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -16,297 +16,210 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Cadastro de planos de pagamento.
  * 
  */
 
 package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.freedom.componentes.JLabelPad;
-
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
+import org.freedom.telas.FDetalhe;
 
-public class FSimilar extends FDados implements ActionListener{
-	private JTextFieldPad txtRefProdSim = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-	private JTextFieldPad txtRefProdSimFK = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-	private ListaCampos lcProd = new ListaCampos(this,"PD");
-	private ListaCampos lcProd2 = new ListaCampos(this,"PD");	
-	private boolean[] bPrefs = null;
-	
-	public FSimilar() {
-		setTitulo("Cadastro de Similaridades");
-		setAtribos( 30, 30, 570, 170);
- 
-		lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
-		lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true));
-		lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, true));
-				
-		lcProd.montaSql(false, "PRODUTO", "EQ");
-		lcProd.setQueryCommit(false);
-		lcProd.setReadOnly(true);
-		txtCodProd.setTabelaExterna(lcProd);
-		txtCodProd.setNomeCampo("CodProd");
-	
-		//FK do produto (*Somente em caso de referências este listaCampos 
-		//Trabalha como gatilho para o listaCampos de produtos, assim
-		//carregando o código do produto que será armazenado no Banco)
+public class FSimilar extends FDetalhe implements CarregaListener, InsertListener, PostListener {
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
+  private JTextFieldPad txtCodSim = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescSim = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private ListaCampos lcProd = new ListaCampos(this,"PD");
+  public FSimilar () {
+    setTitulo("Agrupamento de produtos similares");
+    setAtribos( 50, 50, 700, 350);
+    
+    lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
+    lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProd.montaSql(false, "PRODUTO", "EQ");
+    lcProd.setQueryCommit(false);
+    lcProd.setReadOnly(true);
+    txtCodProd.setTabelaExterna(lcProd);
+    
+    setAltCab(160);
+    pinCab = new JPanelPad();
+    setListaCampos(lcCampos);
+    setPainel( pinCab, pnCliCab);
 
-		lcProd2.add(lcProd.add(new GuardaCampo( txtRefProd, "DescProd", "Referência do produto", ListaCampos.DB_PK, true)));
-		lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.Prod.", ListaCampos.DB_SI, true));
-		lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, true));
-		
-		txtRefProd.setNomeCampo("RefProd");
-		txtRefProd.setListaCampos(lcCampos);
-		lcProd2.setWhereAdic("ATIVOPROD='S'");
-		lcProd2.montaSql(false, "PRODUTO", "EQ");
-		lcProd2.setQueryCommit(false);
-		lcProd2.setReadOnly(true);
-		txtRefProd.setTabelaExterna(lcProd2);
-	}
+    adicCampo(txtCodSim, 7, 20, 70, 20,"CodSim","Cód.Agrup.",ListaCampos.DB_PK,null,true);
+    adicCampo(txtDescSim, 80, 20, 217, 20,"DescSim","Descrição do agrupamento",ListaCampos.DB_SI,null,true);
+    
+    setListaCampos( true, "SIMILAR", "EQ");
+    lcCampos.setQueryInsert(true);    
 
-	private void montaTela() {
+    setAltDet(60);
+    pinDet = new JPanelPad(440,50);
+    setPainel( pinDet, pnDet);
+    setListaCampos(lcDet);
+    setNavegador(navRod);
 
-		adicCampo(txtRefProdSim, 7, 20, 120, 20,"RefProdSim","Cód.sim.",ListaCampos.DB_PK,true);
-		adicCampo(txtRefProdSimFK, 7,60,120, 20,"RefProdSimFK","Cód.sim.",ListaCampos.DB_SI,false);
-	
-		
-		
-		if (bPrefs[0]) {
-			txtRefProdSim.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),true);
-			txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),false);
-			adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.",ListaCampos.DB_PK,false);
-			adicCampoInvisivel(txtRefProd,"RefProd","Ref.prod.",ListaCampos.DB_PK,false);	
-			adic(new JLabelPad("Ref.Prod."), 130, 0, 100, 20);
-			adic(txtRefProd, 130, 20, 100, 20);
-		}
-		else {
-			txtRefProdSim.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"),true);			
-			txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"),false);
-			adicCampo(txtCodProd, 130, 20, 100, 20,"CodProd","Cód.prod.",ListaCampos.DB_SI,false);
-		}
-		adicDescFK(txtDescProd, 233, 20, 300, 20, "DescProd", "Descrição do produto");
-		
-		setListaCampos( true, "SIMILAR", "EQ");
-		btImp.addActionListener(this);
-		btPrevimp.addActionListener(this);
-		lcCampos.setQueryInsert(false);
-		lcCampos.addPostListener(this);
-	}
-	public void keyPressed(KeyEvent kevt) {
-		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtRefProdSimFK) {//Como este é o ultimo campo da tela executa-se o post.
-				if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT)) {				
-				    lcCampos.post();
-				}
-			}
-		}
-		super.keyPressed(kevt);
-	}
-	
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btPrevimp) {
-			imprimir(true);
-		}
-		else if (evt.getSource() == btImp) 
-			imprimir(false);
-		super.actionPerformed(evt);
-	}
+    adicCampo(txtCodProd,7,20,60,20,"CodProd","Cód.prod",ListaCampos.DB_PK,true);
+    adicDescFK(txtDescProd,70,20,97,20,"Descprod","Descrição do produto");
+   
+    setListaCampos( true, "PARCPAG", "FN");
+    lcDet.setQueryInsert(false);    
 
-	private boolean[] prefs() {
-		boolean[] bRetorno = new boolean[1];
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			bRetorno[0] = false;
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				bRetorno[0]=rs.getString("UsaRefProd").trim().equals("S");
-			}
-//      rs.close();
-//      ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
-		}
-		return bRetorno;
+    navRod.setAtivo(4,false);
+    navRod.setAtivo(5,false);
+    montaTab();
+    lcCampos.addCarregaListener(this);
+    lcCampos.addInsertListener(this);
+    btImp.addActionListener(this);
+    btPrevimp.addActionListener(this);
+  }
+  public void actionPerformed(ActionEvent evt) {
+    if (evt.getSource() == btPrevimp) {
+        imprimir(true);
+    }
+    else if (evt.getSource() == btImp) 
+      imprimir(false);
+    super.actionPerformed(evt);
+  }
+  private int buscaAnoBaseCC() {
+	int iRet = 0;
+	String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+	try {
+		PreparedStatement ps = con.prepareStatement(sSQL);
+		ps.setInt(1,Aplicativo.iCodEmp);
+		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
+		ResultSet rs = ps.executeQuery();
+		if (rs.next())
+			iRet = rs.getInt("ANOCENTROCUSTO");
+		rs.close();
+		ps.close();
 	}
-	
-	private void imprimir(boolean bVisualizar) {
-		ImprimeOS imp = new ImprimeOS("",con);
-		int linPag = imp.verifLinPag()-1;
-		imp.montaCab();
-		imp.setTitulo("Relatório de Similaridades");
-		DLRSimilar dl = new DLRSimilar();
-		dl.setVisible(true);
-		if (dl.OK == false) {
-			dl.dispose();
-			return;
-		}
-		String sSQL = "SELECT S.CODPROD,P.REFPROD,S.REFPRODSIM,P.DESCPROD "+
-		     "FROM EQPRODUTO P, EQSIMILAR S WHERE P.CODEMP=S.CODEMPPD AND " +
-		     "P.CODFILIAL=S.CODFILIALPD AND P.CODPROD=S.CODPROD AND "+
-			 "S.CODEMP=? AND S.CODFILIAL=? ORDER BY "+dl.getValor();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("EQSIMILAR"));
-			rs = ps.executeQuery();
-			imp.limpaPags();
-			while ( rs.next() ) {
-				if (imp.pRow()==0) {
-					imp.impCab(136, false);
-					imp.say(imp.pRow()+0,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,6,"Cód.prod.");
-					imp.say(imp.pRow()+0,26,"Referência");
-					imp.say(imp.pRow()+0,40,"Descrição do produto");
-					imp.say(imp.pRow()+0,92,"Cód.similar");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
-				}
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,2,Funcoes.alinhaDir(rs.getString("Codprod"),13));
-				imp.say(imp.pRow()+0,26,rs.getString("Refprod"));
-				imp.say(imp.pRow()+0,40,rs.getString("Descprod"));
-				imp.say(imp.pRow()+0,92,rs.getString("refprodsim"));
-				if (imp.pRow()>=linPag) {
-					imp.incPags();
-					imp.eject();
-				}
-			}
-			
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
-			imp.eject();
-			
-			imp.fechaGravacao();
-			
-//      rs.close();
-//      ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-			dl.dispose();
-		}  
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela de similaridades!"+err.getMessage());      
-		}
-		
-		if (bVisualizar) {
-			imp.preview(this);
-		}
-		else {
-			imp.print();
-		}
+	catch (SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
 	}
-	public void setConexao(Connection cn) {
-		super.setConexao(cn);
-		bPrefs = prefs(); //Carrega as preferências
-		montaTela();
-		lcProd.setConexao(cn);
-		lcProd2.setConexao(cn);
-	}
-	public boolean achaSimilarFK(){
-	  boolean bRetorno = false;
-	  String sSQL = "SELECT REFPRODSIM FROM EQSIMILAR WHERE CODEMP=? AND CODFILIAL=? AND REFPRODSIM=? ";
-	  try {
-	  	PreparedStatement ps = con.prepareStatement(sSQL);
-	  	ps.setInt(1,Aplicativo.iCodEmp);
-	  	ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-	  	ps.setString(3,txtRefProdSimFK.getText().trim());
-	  	ResultSet rs = ps.executeQuery();
-	  	if (rs.next())
-	  	  bRetorno = true;
-	  	rs.close();
-	  	ps.close();
-	  }
-	  catch (SQLException err) {
-	  	Funcoes.mensagemErro(this,"Erro ao buscar similaridade.\n"+err.getMessage());
-	  }  
-	  return bRetorno;
-	}
-	public boolean achaSimilar(){
-		boolean bRetorno = false;
-		String sSQL = "SELECT REFPRODSIM FROM EQSIMILAR WHERE CODEMP=? AND CODFILIAL=? AND REFPRODSIM=? ";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-			ps.setString(3,txtRefProdSim.getText().trim());
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				bRetorno = true;
-			rs.close();
-			ps.close();
-		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao buscar similaridade.\n"+err.getMessage());
-		}  
-		return bRetorno;
-	}
-	
-	public boolean gravaSimilar() {
-      boolean bRetorno = true;
-	  String sSQL = "";      
-	  if (txtRefProdSimFK.getText().trim().equals("")){
-        if (!achaSimilar())
-	  	  txtRefProdSimFK.setText(txtRefProdSim.getText());
-        else { 
-          Funcoes.mensagemInforma(this,"Similaridade já existe!");
-          bRetorno = false;
-        }  
+	return iRet;
+  }
+  private void imprimir(boolean bVisualizar) {
+    ImprimeOS imp = new ImprimeOS("",con);
+    int linPag = imp.verifLinPag()-1;
+    imp.montaCab();
+    imp.setTitulo("Relatório de Planos de Pagamento");
+    DLRPlanoPag dl = new DLRPlanoPag();
+    dl.setVisible(true);
+    if (dl.OK == false) {
+      dl.dispose();
+      return;
+    }
+    String sSQL = "SELECT PLANO.CODPLANOPAG,PLANO.DESCPLANOPAG,PLANO.PARCPLANOPAG,"+
+                  "PARC.NROPARCPAG,PARC.PERCPAG,PARC.DIASPAG "+
+                  "FROM FNPLANOPAG PLANO,FNPARCPAG PARC "+
+                  "WHERE PARC.CODPLANOPAG=PLANO.CODPLANOPAG "+
+                  "ORDER BY "+dl.getValor();
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    String sCodMaster = "";
+    try {
+      ps = con.prepareStatement(sSQL);
+      rs = ps.executeQuery();
+      imp.limpaPags();
+      sCodMaster = "";
+      while (rs.next()) {
+         if (imp.pRow()==0) {
+            imp.impCab(80, false);
+            imp.say(imp.pRow()+0,0,""+imp.normal());
+            imp.say(imp.pRow()+0,0,"");
+            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,20,"Descrição");
+            imp.say(imp.pRow()+0,70,"N. Parcel.");
+            imp.say(imp.pRow()+1,0,""+imp.normal());
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("*",80));
+         }
+
+         if (!rs.getString("CodPlanoPag").equals(sCodMaster)) {
+           if (sCodMaster.trim().length()!=0) {
+             imp.say(imp.pRow()+1,0,""+imp.normal());
+             imp.say(imp.pRow()+0,0,Funcoes.replicate("*",80));
+           }
+           imp.say(imp.pRow()+1,0,""+imp.normal());
+           imp.say(imp.pRow()+0,2,rs.getString("CodPlanoPag"));
+           imp.say(imp.pRow()+0,20,rs.getString("DescPlanoPag"));
+           imp.say(imp.pRow()+0,70,rs.getString("ParcPlanoPag"));
+           imp.say(imp.pRow()+1,0,""+imp.normal());
+           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+           imp.say(imp.pRow()+1,0,""+imp.normal());
+           imp.say(imp.pRow()+0,10,"Item");
+           imp.say(imp.pRow()+0,35,"Perc.");
+           imp.say(imp.pRow()+0,60,"Dias");
+           imp.say(imp.pRow()+1,0,""+imp.normal());
+           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+         }
+         
+         imp.say(imp.pRow()+1,0,""+imp.normal());
+         imp.say(imp.pRow()+0,10,rs.getString("NroParcPag"));
+         imp.say(imp.pRow()+0,35,rs.getString("PercPag"));
+         imp.say(imp.pRow()+0,60,rs.getString("DiasPag"));
+         
+         if (imp.pRow()>=linPag) {
+            imp.incPags();
+            imp.eject();
+         }
+
+         sCodMaster = rs.getString("CodPlanoPag");
+         
       }
-	  else {
-	    sSQL = "INSERT INTO EQSIMILAR (CODEMP,CODFILIAL,REFPRODSIM,REFPRODSIMFK) VALUES(?,?,?,?)";		
-	  
-        try {
-      	  PreparedStatement ps = con.prepareStatement(sSQL);		
-      	  ps.setInt(1,Aplicativo.iCodEmp);
-      	  ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-      	  ps.setString(3,txtRefProdSimFK.getText().trim());
-      	  ps.setString(4,txtRefProdSimFK.getText().trim());
-      	  ps.executeUpdate();
-      	  ps.close();
-      	  if (!con.getAutoCommit())
-      		con.commit();      	
-        }
-        catch (SQLException err) {
-      	  Funcoes.mensagemErro(this,"Erro ao gravar  similaridade circular.\n"+err.getMessage());
-        }
-	  }  
-      return bRetorno;
-	}
+      
+      
+      imp.say(imp.pRow()+1,0,""+imp.normal());
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.eject();
+      
+      imp.fechaGravacao();
+      
+//      rs.close();
+//      ps.close();
+      if (!con.getAutoCommit())
+      	con.commit();
+      dl.dispose();
+    }  
+    catch ( SQLException err ) {
+		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!"+err.getMessage());      
+    }
+    
+    if (bVisualizar) {
+      imp.preview(this);
+    }
+    else {
+      imp.print();
+    }
+  }
+  public void beforeInsert(InsertEvent ievt) { }
+  public void beforePost(PostEvent pevt) {  }
+  public void beforeCarrega(CarregaEvent cevt) {  }
+  public void afterCarrega(CarregaEvent cevt) {  }
+  public void afterInsert(InsertEvent ievt) {  }
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
+    lcProd.setConexao(cn);      
+  }
 
-	public void beforePost(PostEvent pevt) { 
-		if (pevt.getListaCampos() == lcCampos) {
-          if (!achaSimilarFK()) {
-            if (!gravaSimilar())
-              pevt.cancela();	    
-          }
-		}
-	}
 }
