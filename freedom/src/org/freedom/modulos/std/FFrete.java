@@ -115,7 +115,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     adicCampo(txtCodVenda, 7, 20, 110, 20, "CodVenda", "Nº pedido", ListaCampos.DB_PK, true);
     adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "N.NF");
-    adicDB(rgFreteVD,233,20,125,60, "TipoFreteVd", "Tipo ",JTextFieldPad.TP_STRING,true);
+    adicDB(rgFreteVD,233,20,125,60, "TipoFreteVd", "Tipo ",true);
     adicCampo(txtMarcaFreteVD,7,60,110,20, "MarcaFreteVd","Marca", ListaCampos.DB_SI, true);        
     adicCampo(txtPercVendaFreteVD,120,60,110,20, "PercVendaFreteVd","Perc.vd.", ListaCampos.DB_SI, false);
     adicCampo(txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, true);

@@ -104,8 +104,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     adicTab("Fornecedor", pinFor); 
     adicCampo(txtCodFor, 7, 20, 70, 20, "CodFor", "Cód.for.", ListaCampos.DB_PK, true);
     adicCampo(txtRazFor, 80, 20, 267, 20, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, true);
-    adicDB(rgPessoa, 350, 20, 100, 60, "PessoaFor", "Pessoa",JTextFieldPad.TP_STRING,true);
-	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoFor", "Ativo",JTextFieldPad.TP_STRING,true);
+    adicDB(rgPessoa, 350, 20, 100, 60, "PessoaFor", "Pessoa",true);
+	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoFor", "Ativo",true);
     adicCampo(txtNomeFor, 80, 60, 267, 20, "NomeFor", "Nome fantasia", ListaCampos.DB_SI, true);
     adicCampo(txtCodTipoFor, 7, 100, 70, 20, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_FK, txtDescTipoFor, true);
     adicDescFK(txtDescTipoFor, 80, 100, 207, 20, "DescTipoFor", "Descrição do tipo de Fornecedor");
@@ -130,7 +130,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     txtFoneFor.setMascara(JTextFieldPad.MC_FONEDDD);
     txtFaxFor.setMascara(JTextFieldPad.MC_FONE);
     adicTab("Observações", pnObs);
-    adicDBLiv(txaObs, "ObsFor", "Observações",JTextFieldPad.TP_STRING, false);
+    adicDBLiv(txaObs, "ObsFor", "Observações",false);
     pnObs.add(spnObs);
     setListaCampos( true, "FORNECED", "CP");
     lcCampos.setQueryInsert(false);    
