@@ -28,11 +28,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
@@ -51,11 +49,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JPanel pnFicha = new JPanel(new BorderLayout());
   private Painel pinFicha = new Painel(600, 200);
   private Painel pinRodFicha = new Painel(600,29);
-
   private JPanel pnCheque = new JPanel(new BorderLayout());
   private Painel pinCheque = new Painel(600, 200);
   private Painel pinRodCheque = new Painel(600,29);
-
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDataCli = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -104,14 +100,12 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JLabel lbRgPaiCli = null;
   private JLabel lbSSPPaiCli = null;
   private JLabel lbSSPMaeCli = null;
-  private JLabel lbRgMaeCli = null;
-   
+  private JLabel lbRgMaeCli = null;   
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
   private Navegador navFicha = new Navegador(false);
   private JTabbedPane tbp = null;
-  
   private boolean bFisTipoCli = false;
   private boolean bJurTipoCli = false;
   private boolean bCheqTipoCli = false;
@@ -128,7 +122,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private boolean bAvalTipoCli = false;
   private boolean bSocioTipoCli = false;
 
-  
   public FCredCli() {
     setTitulo("Ficha cadastral/Crédito por cliente");
     setAtribos(50, 10, 600, 520);
@@ -158,6 +151,8 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	setPainel(pinGeral);
 	
 	lcCampos.addCarregaListener(this);
+
+	// Adiciona Aba Crédito
 	
 	adicTab("Crédito", pinGeral);
     adicCampo(txtCodCli, 7, 20, 70, 20,"CodCli","Cód.cli.", ListaCampos.DB_PK, true);
@@ -165,30 +160,23 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	adicCampoInvisivel(txtCodTipoCli, "CodTipoCli","Cód.tp.cli", ListaCampos.DB_FK, txtDescTipoCli,false);
     adicDescFK(txtDescTipoCli, 340, 20, 130, 20, "DescTipoCli", "Desc. tipo de cliente");
     adicCampo(txtDataCli, 473, 20, 95, 20,"DataCli","Cadastro", ListaCampos.DB_SI, false);
-
     adicCampo(txtCodTpCred, 7, 60, 70, 20,"CodTpCred","Cód.tp.cred", ListaCampos.DB_FK, txtDescTpCred, true);
     adicDescFK(txtDescTpCred, 80, 60, 212, 20, "DescTpCred", "Descrição do crédito");
-    adicDescFK(txtVlrTpCred, 295, 60, 107, 20, "VlrTpCred", "Valor");
-    
+    adicDescFK(txtVlrTpCred, 295, 60, 107, 20, "VlrTpCred", "Valor");    
     adicCampo(txtDtIniTr, 405 , 60, 80, 20,"DtIniTr","Dt.ab.créd.", ListaCampos.DB_SI, true);
     adicCampo(txtDtVencto, 488, 60, 80, 20,"DtVenctoTr","Vencimento", ListaCampos.DB_SI,true);
-	
   	adicCampo(txtEndCli, 7, 100, 330, 20, "EndCli", "Endereço", ListaCampos.DB_SI, false);
   	adicCampo(txtNumCli, 340, 100, 77, 20, "NumCli", "Num.", ListaCampos.DB_SI, false);
   	adicCampo(txtComplCli, 420, 100, 149, 20, "ComplCli", "Compl.", ListaCampos.DB_SI, false);
-
   	adicCampo(txtBairCli, 7, 140, 210, 20, "BairCli", "Bairro", ListaCampos.DB_SI, false);
   	adicCampo(txtCidCli, 220, 140, 210, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false);
   	adicCampo(txtCepCli, 433, 140, 80, 20, "CepCli", "Cep", ListaCampos.DB_SI, false);
   	adicCampo(txtUFCli, 516, 140, 52, 20, "UFCli", "UF", ListaCampos.DB_SI, false);
-  	
   	adicCampo(txtDDDCli, 7, 180, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtFoneCli, 50, 180, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
   	adicCampo(txtRamalCli, 150, 180, 47, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false); 	
-
   	adicCampo(txtDDDFaxCli, 200, 180, 37, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtFaxCli, 240, 180, 97, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
-
   	adicCampo(txtDDDCelCli, 340, 180,37, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtCelCli, 380, 180, 100, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
 		 	
@@ -201,44 +189,31 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	lcCampos.setPodeExc(false);
     lcCampos.setQueryInsert(false);
     
+    // Adiciona a aba Info. Adicionais
 	setPainel(pinFicha);
-	tbp = adicTab("Adicionais", pnFicha);
+	tbp = adicTab("Info. Adicionais", pnFicha);
     
 	setListaCampos(lcFicha);
     setNavegador(navFicha);
 
     pnFicha.add(pinRodFicha, BorderLayout.SOUTH);
     pnFicha.add(pinFicha, BorderLayout.CENTER);
- 
     pinRodFicha.adic(navFicha,0,0,150,25);
    
     lbPaiCli = adicCampo(txtPaiCli, 7, 20, 315, 20, "PaiCli", "Nome do pai", ListaCampos.DB_SI, false);
     lbRgPaiCli = adicCampo(txtRgPaiCli, 325, 20, 130, 20, "RgPaiCli", "Rg", ListaCampos.DB_SI, false);
-    lbSSPPaiCli = adicCampo(txtSSPPaiCli, 458, 20, 100, 20, "SSPPaiCli", "SSP", ListaCampos.DB_SI, false);
-    
+    lbSSPPaiCli = adicCampo(txtSSPPaiCli, 458, 20, 100, 20, "SSPPaiCli", "SSP", ListaCampos.DB_SI, false);    
     lbMaeCli = adicCampo(txtMaeCli, 7, 60, 315, 20, "MaeCli", "Nome da mãe", ListaCampos.DB_SI, false);
     lbRgMaeCli = adicCampo(txtRgMaeCli, 325, 60, 130, 20, "RgMaeCli", "Rg", ListaCampos.DB_SI, false);    
     lbSSPMaeCli = adicCampo(txtSSPMaeCli, 458, 60, 100, 20, "SSPMaeCli", "SSP", ListaCampos.DB_SI, false);    
-
-  
+    
     setListaCampos( false, "CLICOMPL", "VD");
 
     lcFicha.setQueryInsert(false);
 	lcFicha.setQueryCommit(false);
     lcFicha.montaTab();    
-/*
-    pnCheque.add(pinRodCheque, BorderLayout.SOUTH);
-    pnCheque.add(pinCheque, BorderLayout.CENTER);
- 
-    pinRodFicha.adic(navFicha,0,0,150,25);
-*/
     
-    
-    
-    
-    habCampos();
-	
-    
+    habCampos();    
   }
   
   private void habCampos() {
@@ -250,9 +225,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	lbNatCli.setVisible(bFisTipoCli);
   	lbUfNatCli.setVisible(bFisTipoCli);
   	lbTempoResCli.setVisible(bFisTipoCli);
-
     //Filiação
-  
     lbPaiCli.setVisible(bFilTipoCli);
     lbMaeCli.setVisible(bFilTipoCli);
     lbRgPaiCli.setVisible(bFilTipoCli);
@@ -265,15 +238,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     txtRgMaeCli.setVisible(bFilTipoCli);
     txtSSPPaiCli.setVisible(bFilTipoCli);
     txtSSPMaeCli.setVisible(bFilTipoCli);
-    
-    
-    
   }
   
-  
-  
   public void afterCarrega(CarregaEvent cevt) {
-  
   	if (txtDtIniTr.getVlrString().equals("")){
   		txtDtIniTr.setVlrDate(new Date());
   	}
