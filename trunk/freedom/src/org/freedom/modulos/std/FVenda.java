@@ -671,7 +671,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		//FK Produto
 
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
+		lcProd.add(new GuardaCampo(txtCodProd, "codprod", "Cód.prod.",
 				ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd",
 				"Descrição do produtos", ListaCampos.DB_SI, false));
@@ -871,8 +871,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		
 		adicCampoInvisivel(txtCodAlmoxItVenda, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
 		
-		
-		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcAlmox,this,con,"qtditvenda"));
+		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcAlmox,lcProd,this,con,"qtditvenda"));
 				
 		adicCampo(txtPrecoItVenda, 480, 20, 67, 20, "PrecoItVenda", "Preço",
 				ListaCampos.DB_SI, true);
