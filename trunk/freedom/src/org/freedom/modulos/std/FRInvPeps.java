@@ -67,10 +67,14 @@ public class FRInvPeps extends FRelatorio {
   private JRadioGroup rgOrdem = null;
   private Vector vDesc = new Vector();
   private Vector vOpc = new Vector();
+  
+  private JRadioGroup rgCusto = null;
+  private Vector vDescCusto = new Vector();
+  private Vector vOpcCusto = new Vector();
   private boolean[] bPrefs = null;
   
   public FRInvPeps() {
-    setTitulo("Inventário PEPS");
+    setTitulo("Inventário");
     setAtribos(80,30,400,300);
     
     GregorianCalendar cal = new GregorianCalendar();
@@ -83,6 +87,16 @@ public class FRInvPeps extends FRelatorio {
     vOpc.addElement("D");
     vOpc.addElement("C");
     rgOrdem = new JRadioGroup(2,1,vDesc,vOpc);
+    
+    vDescCusto.addElement("C.PEPS");
+    vDescCusto.addElement("C.MPM");
+    vDescCusto.addElement("P.BASE");
+    vOpcCusto.addElement("P");
+    vOpcCusto.addElement("M");
+    vOpcCusto.addElement("B");
+    
+    rgCusto = new JRadioGroup(1,3,vDescCusto,vOpcCusto);
+    
 
     cbSemEstoq.setVlrString("N");
     
@@ -121,6 +135,7 @@ public class FRInvPeps extends FRelatorio {
     adic(txtCodGrup,7,140,80,20);
     adic(txtDescGrup,90,140,250,20);
     adic(cbSemEstoq,7,160,250,20);
+    adic(rgCusto,7,180,250,30);
     
     
   }
@@ -146,14 +161,14 @@ public class FRInvPeps extends FRelatorio {
   		imp = new ImprimeOS("",con);
   		linPag = imp.verifLinPag()-1;
  		iPagina = txtPagina.getVlrInteger().intValue()-1;
-  		imp.setTitulo("Relatorio de inventário de estoque PEPS");
+  		imp.setTitulo("Relatorio de inventário de estoque");
   		
   		sCpCodigo = (bPrefs[0]?"REFPROD":"CODPROD");
   		sSemEstoq = cbSemEstoq.getVlrString();
   		sCodMarca = txtCodMarca.getVlrString().trim();
   		sCodGrup = txtCodGrup.getVlrString().trim();
   		
-  		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?) " +
+  		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?) " +
 		       (sSemEstoq.equals("N")?" WHERE SLDPROD!=0 ":"")+
   				"ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
   		try {
@@ -187,7 +202,7 @@ public class FRInvPeps extends FRelatorio {
   	  			ps.setString(9,sCodGrup);
   	  			sFiltros += " / GRUPO: "+sCodGrup+"-"+txtDescGrup.getVlrString().trim();
   			}
-  			
+  			ps.setString(10,rgCusto.getVlrString());
   			rs = ps.executeQuery();
   			
   			imp.limpaPags();
