@@ -363,11 +363,6 @@ public class JBemaFI32 {
    	 }
    	 return sRet;
    }
-   static {
-	   System.loadLibrary("JBemaFI32");
-   }
-
-   
    public static boolean[] iDecToBin(int iNumero) {
    	  boolean[] cRetorno = {false,false,false,false,false,false,false,false};
    	  int[] iByte = {1,2,4,8,16,32,64,128};
@@ -1343,6 +1338,7 @@ public class JBemaFI32 {
     }
     return dtRetorno;
   }
-  
-   
+  static {
+	   System.loadLibrary("JBemaFI32");
+  }
 }

@@ -1,0 +1,9 @@
+buildhistory.win32b_Preprocess[0]=Options
+buildhistory.win32b_bcc32[0]=Options
+buildhistory.win32b_ilink32[0]=Options
+buildhistory.win32b_implib[0]=Options
+buildtool_history.win32b[0]=bcc32
+buildtool_history_project.win32b[0]=bcc32
+debugger.gdbAssemblyFlavor[0]=ATT disassembly
+history.files.active[0]=JBemaFI32.c
+history.files.open.1[0]=JBemaFI32.c,F;112,3666
