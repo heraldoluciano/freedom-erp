@@ -32,12 +32,15 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.EditEvent;
@@ -62,7 +65,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
-public class FProduto extends FTabDados implements CheckBoxListener, EditListener, InsertListener, ChangeListener, ActionListener {
+public class FProduto extends FTabDados	implements CheckBoxListener, EditListener, 
+		InsertListener, ChangeListener, ActionListener, CarregaListener {
   private Painel pinGeral = new Painel(650,340);
   private JPanel pnFatConv = new JPanel(new BorderLayout());
   private JPanel pnFor = new JPanel(new BorderLayout());
@@ -89,7 +93,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
   private JTextFieldPad txtQtdMaxProd = new JTextFieldPad();
   private JTextFieldPad txtLocalProd = new JTextFieldPad();
   private JTextFieldPad txtCustoMPMProd = new JTextFieldPad();
-  private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad();
+  private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
   private JTextFieldPad txtSldProd = new JTextFieldPad();
   private JTextFieldPad txtDtUltCpProd = new JTextFieldPad();
   private JTextFieldPad txtSldConsigProd = new JTextFieldPad();
@@ -181,6 +185,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
   private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
   private PainelImagem imFotoProd = new PainelImagem(65000);
   private Connection con = null;
+  private String[] sPrefs = null;
+ 
   public FProduto() {
     setTitulo("Cadastro de Produtos");
     setAtribos(30,10,680,430);
@@ -202,6 +208,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     lcPreco.setTabela(tabPreco);
 
 	lcCampos.addInsertListener(this);
+	lcCampos.addCarregaListener(this);
     lcFoto.addEditListener(this);
     lcFoto.addInsertListener(this);
 
@@ -219,7 +226,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     txtCodMoeda.setTabelaExterna(lcMoeda);
     
     txtCodUnid.setTipo(JTextFieldPad.TP_STRING,8,0);
-    lcUnid.add(new GuardaCampo( txtCodUnid, 7, 100, 80, 20, "CodUnid", "Cód.und.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
+    lcUnid.add(new GuardaCampo( txtCodUnid, 7, 100, 80, 20, "CodUnid", "Cód.unid.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
     lcUnid.add(new GuardaCampo( txtDescUnid, 90, 100, 207, 20, "DescUnid", "Descrição da unidade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
     lcUnid.montaSql(false, "UNIDADE", "EQ");    
     lcUnid.setReadOnly(true);
@@ -235,8 +242,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     txtCodMarca.setTabelaExterna(lcMarca);
 
     txtCodFisc.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcFisc.add(new GuardaCampo( txtCodFisc, 7, 100, 80, 20, "CodFisc", "Cód.fisc.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodFiscx");
-    lcFisc.add(new GuardaCampo( txtDescFisc, 90, 100, 207, 20, "DescFisc", "Descrição fiscal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFiscx");
+    lcFisc.add(new GuardaCampo( txtCodFisc, 7, 100, 80, 20, "CodFisc", "Cód.c.fisc.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodFiscx");
+    lcFisc.add(new GuardaCampo( txtDescFisc, 90, 100, 207, 20, "DescFisc", "Descrição da classificação fiscal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFiscx");
     lcFisc.montaSql(false, "CLFISCAL", "LF");
     lcFisc.setReadOnly(true);
     lcFisc.setQueryCommit(false);
@@ -252,7 +259,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     
     txtCodAlmox.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 100, 80, 20, "CodAlmox", "Cód.almox.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodAlmoxx");
-    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 207, 20, "DescAlmox", "Descrição do almoxerifado", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxx");
+    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 207, 20, "DescAlmox", "Descrição do almoxarifado", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxx");
     lcAlmox.montaSql(false, "ALMOX", "EQ");
     lcAlmox.setReadOnly(true);
     lcAlmox.setQueryCommit(false);
@@ -317,6 +324,44 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
          
   }
+  public void afterCarrega(CarregaEvent cevt) {
+  	String sSQL = null;
+  	ResultSet rs = null;
+  	PreparedStatement ps = null;
+  	if (cevt.getListaCampos()==lcCampos) {
+  		if (sPrefs[1].equals("S")) {
+			if (txtCodProd.getVlrInteger().intValue()!=0) {
+	  			try {
+  					sSQL = "SELECT NCUSTOPEPS FROM EQCALCPEPSSP(?,?,?,?,CAST('now' AS date))";
+  					ps = con.prepareStatement(sSQL);
+  					ps.setInt(1,Aplicativo.iCodEmp);
+  					ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
+  					ps.setInt(3,txtCodProd.getVlrInteger().intValue());
+  					ps.setDouble(4,txtSldLiqProd.getVlrDouble().doubleValue());
+  					rs = ps.executeQuery();
+  					if (rs.next()) {
+  						txtCustoPEPSProd.setVlrDouble(new Double(rs.getDouble("NCUSTOPEPS")));
+  					}
+  					rs.close();
+  					ps.close();
+  					if (!con.getAutoCommit())
+  						con.commit();
+  				}
+	  			catch (SQLException e) {
+	  				Funcoes.mensagemErro(this,"Não foi possível carregar o valor de custo PEPS!\n"+e.getMessage());
+	  			}
+	  			finally {
+	  				rs = null;
+	  				ps = null;
+	  				sSQL = null;
+	  			}
+  			}
+  		}
+  	}
+  }
+  public void beforeCarrega(CarregaEvent cevt) {
+  	
+  }
   private void montaTela() {
     adicCampo(txtCodProd, 7, 20, 70, 20, "CodProd", "Cód.prod.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
     adicCampo(txtRefProd, 80, 20, 70, 20, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, false, null,true);
@@ -337,7 +382,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     adicCampo(txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
     adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local armz.", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
     adicCampo(txtCustoMPMProd, 110, 180, 87, 20, "CustoMPMProd", "Custo MPM", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtCustoPEPSProd, 200, 180, 87, 20, "CustoPEPSProd", "Custo PEPS", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adic(new JLabel("Custo PEPS"),200,160,87,20);
+    adic(txtCustoPEPSProd, 200, 180, 87, 20); // Sem inserir no lista campos
     adicCampo(txtSldProd, 290, 180, 87, 20, "SldProd", "Saldo", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo res.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     adicCampo(txtSldConsigProd, 470, 180, 87, 20, "SldConsigProd", "Saldo consig.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
@@ -387,7 +433,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	txtCodClasCliPreco.setTabelaExterna(lcClasCliPreco);
 
 	txtCodTabPreco.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	lcTabPreco.add(new GuardaCampo( txtCodTabPreco, 7, 100, 80, 20, "CodTab", "Cód.tab.pc.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodMarcax");
+	lcTabPreco.add(new GuardaCampo( txtCodTabPreco, 7, 100, 80, 20, "CodTab", "Cód.tab.pç.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodMarcax");
 	lcTabPreco.add(new GuardaCampo( txtDescTabPreco, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
 	lcTabPreco.montaSql(false, "TABPRECO", "VD");
 	lcTabPreco.setReadOnly(true);
@@ -404,7 +450,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	txtDescPlanoPagPreco.setListaCampos(lcPlanoPagPreco);
 	txtCodPlanoPagPreco.setTabelaExterna(lcPlanoPagPreco);
 
-	adicCampo(txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd", "Cód.pc.prod.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+	adicCampo(txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd", "Cód.pç.prod.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
 	adicCampo(txtCodClasCliPreco, 90, 20, 67, 20, "CodClasCli", "Cód.c.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClasCliPreco,false);
 	adicDescFK(txtDescClasCliPreco, 160, 20, 217, 20, "DescClasCli", "Descrição da classificação do cliente", JTextFieldPad.TP_STRING, 40, 0);
 	adicCampo(txtCodTabPreco, 380, 20, 77, 20, "CodTab", "Cód.tab.pc.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTabPreco,true);
@@ -441,7 +487,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     pinRodFatConv.adic(navFatConv,0,50,270,25);
    
     lcUnidFat.setUsaME(false);
-    lcUnidFat.add(new GuardaCampo( txtUnidFat, 7, 100, 80, 20, "CodUnid", "Cód.und.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
+    lcUnidFat.add(new GuardaCampo( txtUnidFat, 7, 100, 80, 20, "CodUnid", "Cód.unid.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
     lcUnidFat.add(new GuardaCampo( txtDescUnidFat, 90, 100, 207, 20, "DescUnid", "Descrição da unidade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
     lcUnidFat.montaSql(false, "UNIDADE", "EQ");
     lcUnidFat.setReadOnly(true);
@@ -449,7 +495,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     txtDescUnidFat.setListaCampos(lcUnidFat);
     txtUnidFat.setTabelaExterna(lcUnidFat);
     
-    adicCampo(txtUnidFat, 7, 20, 80, 20, "CodUnid", "Cód.und.", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescUnidFat,true);
+    adicCampo(txtUnidFat, 7, 20, 80, 20, "CodUnid", "Cód.unid.", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescUnidFat,true);
     adicDescFK(txtDescUnidFat, 90, 20, 150, 20, "DescUnid", "Descrição da unidade", JTextFieldPad.TP_STRING, 40, 0);
     adicCampo(txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de conv.", JTextFieldPad.TP_DECIMAL, 10, 3, false, false, null,true);
     setListaCampos( false, "FATCONV", "EQ");
@@ -589,25 +635,40 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
   	 	err.printStackTrace();
   	 }
   }
-  private void buscaMoeda() {
-    String sSQL = "SELECT CODMOEDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      ps = con.prepareStatement(sSQL);
-      ps.setInt(1,Aplicativo.iCodEmp);
-	  ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-      rs = ps.executeQuery();
-      if (rs.next()) {
-      	txtCodMoeda.setVlrString(rs.getString("CodMoeda"));
-      }
-      rs.close();
-      ps.close();
-    }
-    catch (SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
-	  err.printStackTrace();
-    }
+  private String[] getPrefs() {
+  	 String sRetorno[] = {"",""};
+     String sSQL = null;
+     PreparedStatement ps = null;
+     ResultSet rs = null;
+     try {
+     	sSQL = "SELECT CODMOEDA,PEPSPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+     	ps = con.prepareStatement(sSQL);
+     	ps.setInt(1,Aplicativo.iCodEmp);
+  	   	ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+  	   	rs = ps.executeQuery();
+  	   	if (rs.next()) {
+  	   		sRetorno[0] = rs.getString("CODMOEDA");
+  	   		sRetorno[1] = rs.getString("PEPSPROD");
+  	   	}
+  	   	rs.close();
+  	   	ps.close();
+  	   	if (!con.getAutoCommit())
+  	   		con.commit();
+     }
+     catch (SQLException err) {
+     	Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+     	err.printStackTrace();
+     }
+     finally {
+     	rs = null;
+     	ps = null;
+     	sSQL = null;
+     }
+  	 return sRetorno;
+  }
+  private void carregaMoeda() {
+  	 if (sPrefs!=null) 
+      	txtCodMoeda.setVlrString(sPrefs[0]);
   }
   private void imprimir(boolean bVisualizar) {
 	FAndamento And = null;
@@ -859,6 +920,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
   }
   public void execShow(Connection cn) {
     con = cn;
+    sPrefs = getPrefs();
     montaTela();
     lcMoeda.setConexao(cn);      
     lcUnid.setConexao(cn);
@@ -904,7 +966,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
       txtAltFotoProd.setVlrString(""+imFotoProd.getAltura());
     }
     else if (ievt.getListaCampos() == lcCampos) {
-    	buscaMoeda();
+    	carregaMoeda();
     	cbAtivo.setVlrString("S");
     }
   }
