@@ -798,7 +798,7 @@ public class ImprimeOS implements ActionListener {
   public void impCab(int iTamRel) {
     //Seta Data
 
-     String sData = Funcoes.dateToStrDate(hoje.getTime());
+     String sData = Funcoes.dateToStrDataHora(hoje.getTime());
 
      //Imprime linhas      
      if (strTipoCab.compareTo("1")==0) {
@@ -815,7 +815,8 @@ public class ImprimeOS implements ActionListener {
           say(pRow()+1,0,normal());
         else  
           say(pRow()+1,0,comprimido());
-        say(pRow()+0,0,"Data: "+sData);
+        say(pRow()+0,0,"Relatório emitido por " + Aplicativo.strUsuario.toUpperCase());
+        say(pRow()+0,50,"Data: "+sData);
         say(pRow()+0,iTamRel-13,"Pagina: "+Funcoes.strZero(""+getNumPags(),5));
         if (iTamRel==136)
            say(pRow()+1,0,comprimido());

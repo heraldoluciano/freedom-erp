@@ -390,7 +390,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							FFilho tela = (FFilho) telaClass.newInstance();
 							telaPrincipal.criatela(titulo, tela, con);
 						} catch (Exception e) {
-
+							Funcoes.mensagemErro(framePrinc, e.getMessage());
 						}
 					}
 				}
