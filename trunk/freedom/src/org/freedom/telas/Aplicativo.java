@@ -72,7 +72,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   public static int iCodFilial = 0;
   public static int iCodFilialMz = 0;
   public static int iCodFilialPad = 0;
-  public static int iNumTerm = 0;
+  public static int iNumEst = 0;
   public static String strBanco = "";
   public static String strDriver = "";
   public static TabObjeto tbObjetos = null;
@@ -115,8 +115,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	telaPrincipal.setIdent(sCaption,iCodSis,iCodMod);
 	telaPrincipal.setConexao(con); // Variavel de conexão da Classe Aplicativo
 	telaPrincipal.statusBar.setUsuario(strUsuario);//Variavel de usuario da Classe Aplicativo
-	telaPrincipal.statusBar.setNumTerm(iNumTerm);
-	telaPrincipal.statusBar.setDescTerm(getDescTerm());
+	telaPrincipal.statusBar.setNumEst(iNumEst);
+	telaPrincipal.statusBar.setDescEst(getDescEst());
 	if (strUsuario.toUpperCase().trim().equals("SYSDBA")){
 //		pinBotoes = new Painel();
 //		pinBotoes.setSize(500,34);
@@ -442,7 +442,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     	}
     
     	try {
-    		iNumTerm = Integer.parseInt(getParameter("numterm"));
+    		iNumEst = Integer.parseInt(getParameter("numterm"));
     	}
     	catch (Exception err) {
     		Funcoes.mensagemErro(null,"Não foi possível carregar o parâmetro 'numterm'\n"+err.getMessage());
@@ -488,7 +488,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     
     if (strUsuario.equals("") && strSenha.equals("")) { 
 
-      Login lgBanco = new Login(strBanco,strDriver,sSplashImg,iNumTerm);
+      Login lgBanco = new Login(strBanco,strDriver,sSplashImg,iNumEst);
       if (!lgBanco.OK)
         System.exit(0);
       sVals = lgBanco.getStrVals();
@@ -542,7 +542,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   	return iRet;
   }
   public boolean getModoDemo() {
-  	String sSQL = "SELECT MODODEMOEST FROM SGESTACAO WHERE CODEST="+iNumTerm+
+  	String sSQL = "SELECT MODODEMOEST FROM SGESTACAO WHERE CODEST="+iNumEst+
   	"AND CODEMP="+iCodEmp+" AND CODFILIAL="+iCodFilial;
   	PreparedStatement ps = null;
   	ResultSet rs = null;
@@ -551,7 +551,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   		ps = con.prepareStatement(sSQL);
   		rs = ps.executeQuery();
   		if (!rs.next())
-  		  Funcoes.mensagemErro(null,"Terminal não cadastrado!");
+  		  Funcoes.mensagemErro(null,"Estação de trabalho não cadastrado!");
   		else {  		
   		  if (rs.getString("ModoDemoEst").equals("S")) 
   		  	bModo = true;
@@ -567,8 +567,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     }
    return bModo;
   }
-  public String getDescTerm() {
-	String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST="+iNumTerm+
+  public String getDescEst() {
+	String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST="+iNumEst+
 	" AND CODEMP="+iCodEmp+" AND CODFILIAL="+iCodFilial;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
@@ -577,7 +577,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	  ps = con.prepareStatement(sSQL);
 	  rs = ps.executeQuery();
 	  if (!rs.next()) 
-		sDesc = "TERMINAL NÃO CADASTRADO";
+		sDesc = "ESTAÇÃO DE TRABALHO NÃO CADASTRADA";
 	  else 
 		sDesc = rs.getString("DescEst");
 	  if (!con.getAutoCommit())

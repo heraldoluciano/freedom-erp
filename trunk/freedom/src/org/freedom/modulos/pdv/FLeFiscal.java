@@ -318,7 +318,7 @@ public class FLeFiscal extends FTabDados {
 		  ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
           ps.setInt(3,Aplicativo.iCodEmp);
           ps.setInt(4,Aplicativo.iCodFilial);
-		  ps.setInt(5,Aplicativo.iNumTerm);
+		  ps.setInt(5,Aplicativo.iNumEst);
           ps.setDate(6,Funcoes.dateToSQLDate(txtDataX.getVlrDate()));
 		  rs = ps.executeQuery();
 

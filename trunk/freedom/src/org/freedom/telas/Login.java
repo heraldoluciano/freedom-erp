@@ -55,15 +55,15 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   private Properties props = new Properties();
   public boolean bAdmin = false;
   private int iFilialPadrao = 0;
-  private int iTerminal = 0;
+  private int iCodEst = 0;
   private int tries = 0;
 
-  public Login (String sBanco, String sDriver, String sImg, int iTerm) {
+  public Login (String sBanco, String sDriver, String sImg, int iCodEst) {
     
 	strBanco = sBanco;
 	strDriver = sDriver;
 	
-	iTerminal = iTerm;
+	this.iCodEst = iCodEst;
      	
 	setTitulo("Freedom - Login");
 	setAtribos(312,320);
@@ -257,7 +257,7 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   		ps.setInt(2,iFilialPadrao);
   		ps.setString(3,txtUsuario.getVlrString().trim().toLowerCase());
 		ps.setInt(4,cbEmp.getVlrInteger().intValue());
-		ps.setInt(5,iTerminal);
+		ps.setInt(5,iCodEst);
 		ps.execute();
 		ps.close();
 		if (!conLogin.getAutoCommit())

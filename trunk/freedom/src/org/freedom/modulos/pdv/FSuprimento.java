@@ -94,8 +94,8 @@ public class FSuprimento extends FDialogo {
 		try	 {
 		  
 		  PreparedStatement ps = con.prepareStatement("SELECT * FROM PVRETMOVCAIXASP(?,?,?,?)");
-		  ps.setInt(1,Aplicativo.iNumTerm);
-		  System.out.println("terminal: "+Aplicativo.iNumTerm);
+		  ps.setInt(1,Aplicativo.iNumEst);
+		  System.out.println("terminal: "+Aplicativo.iNumEst);
 		  
 		  ps.setInt(3,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 		  ps.setInt(2,Aplicativo.iCodEmp);
@@ -134,7 +134,7 @@ public class FSuprimento extends FDialogo {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtValor.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumTerm);
+			ps.setInt(4,Aplicativo.iNumEst);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
             ps.setString(6,Aplicativo.strUsuario);
       	
