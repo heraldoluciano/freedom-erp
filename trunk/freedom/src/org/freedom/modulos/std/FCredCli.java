@@ -312,25 +312,23 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	adicCampo(txtCepCob, 433, 260, 80, 20, "CepCob", "Cep cobrança", ListaCampos.DB_SI, false);
   	adicCampo(txtUFCob, 516, 260, 52, 20, "UFCob", "UF cob.", ListaCampos.DB_SI, false);
   	adicCampo(txtDDDFoneCob, 7, 300, 40, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtFoneCob, 50, 300, 138, 20, "FoneCob", "Telefone cob.", ListaCampos.DB_SI, false);
-  	adicCampo(txtDDDFaxCob, 192, 300, 40, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtFaxCob, 235, 300, 138, 20, "FaxCob", "Fax cob.", ListaCampos.DB_SI, false);
-
-  	
-  	adicCampo(txtCodTipoCob, 7, 340, 80, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob,false);
-  	adicDescFK(txtDescTipoCob, 90, 340, 237, 20, "DescTipoCob", "Descrição do tipo de cobrança");
+  	adicCampo(txtFoneCob, 50, 300, 97, 20, "FoneCob", "Telefone cob.", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFaxCob, 150, 300, 40, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxCob, 193, 300, 97, 20, "FaxCob", "Fax cob.", ListaCampos.DB_SI, false);
+  	adicCampo(txtCodTipoCob, 293, 300, 60, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob,false);
+  	adicDescFK(txtDescTipoCob, 356, 300, 211, 20, "DescTipoCob", "Descrição do tipo de cobrança");
    	  
-  	lbApelidoCli = adicCampo(txtApelidoCli, 7, 380, 170, 20, "ApelidoCli", "Apelido",ListaCampos.DB_SI, false);
-  	lbNatCli = adicCampo(txtNatCli, 180, 380, 165, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
-  	lbUfNatCli = adicCampo(txtUFNatCli, 348, 380, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
-  	lbTempoResCli = adicCampo(txtTempoResCli, 403, 380, 165, 20, "TempoResCli", "Tempo de residência.",ListaCampos.DB_SI, false);
+  	lbApelidoCli = adicCampo(txtApelidoCli, 7, 340, 170, 20, "ApelidoCli", "Apelido",ListaCampos.DB_SI, false);
+  	lbNatCli = adicCampo(txtNatCli, 180, 340, 165, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
+  	lbUfNatCli = adicCampo(txtUFNatCli, 348, 340, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
+  	lbTempoResCli = adicCampo(txtTempoResCli, 403, 340, 165, 20, "TempoResCli", "Tempo de residência.",ListaCampos.DB_SI, false);
 
   	adicCampoInvisivel(txtCodEmpTb,"codempec","cod. emp.",ListaCampos.DB_SI,false);
   	adicCampoInvisivel(txtCodFilialTb,"codfilialec","cod. filial",ListaCampos.DB_SI,false);
   	adicCampoInvisivel(txtCodTb,"codtbec","cod. emp.",ListaCampos.DB_SI,false);
 
  	cbEstCivCli = new JComboBoxPad(new Vector(),new Vector(),JComboBoxPad.TP_INTEGER, 5, 0);
- 	lbEstadoCivil = adicDB(cbEstCivCli, 7, 420, 200, 25, "codittbec", "Estado civil", false);
+ 	lbEstadoCivil = adicDB(cbEstCivCli, 7, 380, 200, 25, "codittbec", "Estado civil", false);
   	cbEstCivCli.setZeroNulo();
 	setListaCampos( true, "CLIENTE", "VD");
 	lcCampos.setAutoLimpaPK(true);
@@ -378,48 +376,30 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	
     setPainel(pinConjuge);
 
-    lbNomeConjCli = adicCampo(txtNomeConjCli, 7, 20, 310, 20, "NomeConjCli", "Nome do cônjuge", ListaCampos.DB_SI, false);
-    lbDtNascConjCli = adicCampo(txtDtNascConjCli, 320, 20, 90, 20, "DtNascConjCli", "Dt.nasc.conj.", ListaCampos.DB_SI, false);
-    lbRgConjCli = adicCampo(txtRgConjCli, 7, 60, 140, 20, "RgConjCli", "Rg", ListaCampos.DB_SI, false);
-    lbSSPConjCli = adicCampo(txtSSPConjCli, 150, 60, 140, 20, "SSPConjCli", "SSP", ListaCampos.DB_SI, false);
-    lbCPFConjCli = adicCampo(txtCPFConjCli, 293, 60, 140, 20, "CPFConjCli", "CPF", ListaCampos.DB_SI, false);
-    lbNatConjCli = adicCampo(txtNatConjCli, 436, 60, 140, 20, "NatConjCli", "Naturalidade", ListaCampos.DB_SI, false);
-    lbUfNatConjCli = adicCampo(txtUfNatConjCli, 579, 60, 50, 20, "UfNatConjCli", "UF", ListaCampos.DB_SI, false);
-    lbEmpTrabConjCli = adicCampo(txtEmpTrabConjCli, 7, 100, 300, 20, "EmpTrabConjCli", "Empresa onde trabalha", ListaCampos.DB_SI, false);
-    lbCargoConjCli = adicCampo(txtCargoConjCli, 310, 100, 150, 20, "CargoConjCli", "Cargo", ListaCampos.DB_SI, false);
-    lbDtAdmTrabConjCli = adicCampo(txtDtAdmTrabConjCli, 463, 100, 90, 20, "DtAdmTrabConjCli", "Dt.admissao", ListaCampos.DB_SI, false);
-    lbRendaConjCli = adicCampo(txtRendaConjCli, 556, 100, 90, 20, "RendaConjCli", "Renda", ListaCampos.DB_SI, false);
+    lbNomeConjCli =   adicCampo(txtNomeConjCli,7, 20, 300, 20, "NomeConjCli", "Nome do cônjuge", ListaCampos.DB_SI, false);
+    lbDtNascConjCli = adicCampo(txtDtNascConjCli, 310, 20, 85, 20, "DtNascConjCli", "Dt.nasc.conj.", ListaCampos.DB_SI, false);
+    lbRgConjCli =	  adicCampo(txtRgConjCli,398, 20, 120, 20, "RgConjCli", "Rg", ListaCampos.DB_SI, false);
+    lbSSPConjCli = adicCampo(txtSSPConjCli,521, 20, 120, 20, "SSPConjCli", "SSP", ListaCampos.DB_SI, false);
+    lbCPFConjCli = adicCampo(txtCPFConjCli,7, 60, 140, 20, "CPFConjCli", "CPF", ListaCampos.DB_SI, false);
+    lbNatConjCli = adicCampo(txtNatConjCli,150, 60, 140, 20, "NatConjCli", "Naturalidade", ListaCampos.DB_SI, false);
+    lbUfNatConjCli = adicCampo(txtUfNatConjCli, 293, 60, 30, 20, "UfNatConjCli", "UF", ListaCampos.DB_SI, false);
+    lbEmpTrabConjCli = adicCampo(txtEmpTrabConjCli, 326, 60, 315, 20, "EmpTrabConjCli", "Empresa onde trabalha", ListaCampos.DB_SI, false);
+    lbCargoConjCli = adicCampo(txtCargoConjCli, 7, 100, 150, 20, "CargoConjCli", "Cargo", ListaCampos.DB_SI, false);
+    lbDtAdmTrabConjCli = adicCampo(txtDtAdmTrabConjCli, 160, 100, 90, 20, "DtAdmTrabConjCli", "Dt.admissao", ListaCampos.DB_SI, false);
+    lbRendaConjCli = adicCampo(txtRendaConjCli, 253, 100, 90, 20, "RendaConjCli", "Renda", ListaCampos.DB_SI, false);
 
     setPainel(pinAvalista);
 
-    lbNomeAvalCli = adicCampo(txtNomeAvalCli, 7, 20, 310, 20, "NomeAvalCli", "Nome do avalista", ListaCampos.DB_SI, false);
-    lbDtNascAvalCli = adicCampo(txtDtNascAvalCli, 320, 20, 90, 20, "DtNascAvalCli", "Dt.nasc.Aval.", ListaCampos.DB_SI, false);
-    lbRgAvalCli = adicCampo(txtRgAvalCli, 7, 60, 140, 20, "RgAvalCli", "Rg", ListaCampos.DB_SI, false);
-    lbSSPAvalCli = adicCampo(txtSSPAvalCli, 150, 60, 140, 20, "SSPAvalCli", "SSP", ListaCampos.DB_SI, false);
-    lbCPFAvalCli = adicCampo(txtCPFAvalCli, 293, 60, 140, 20, "CPFAvalCli", "CPF", ListaCampos.DB_SI, false);
-    lbEmpTrabAvalCli = adicCampo(txtEmpTrabAvalCli, 7, 100, 300, 20, "EmpTrabAvalCli", "Empresa onde trabalha", ListaCampos.DB_SI, false);
-    lbCargoAvalCli = adicCampo(txtCargoAvalCli, 310, 100, 150, 20, "CargoAvalCli", "Cargo", ListaCampos.DB_SI, false);
-    lbDtAdmTrabAvalCli = adicCampo(txtDtAdmTrabAvalCli, 463, 100, 90, 20, "DtAdmTrabAvalCli", "Dt.admissao", ListaCampos.DB_SI, false);
-    lbRendaAvalCli = adicCampo(txtRendaAvalCli, 556, 100, 90, 20, "RendaAvalCli", "Renda", ListaCampos.DB_SI, false);
     
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-
-    
-    
-    
-    
+    lbNomeAvalCli =   adicCampo(txtNomeAvalCli,     7, 20, 300, 20, "NomeAvalCli", "Nome do avalista", ListaCampos.DB_SI, false);
+    lbDtNascAvalCli = adicCampo(txtDtNascAvalCli, 310, 20, 85, 20, "DtNascAvalCli", "Dt.nasc.Aval.", ListaCampos.DB_SI, false);
+    lbRgAvalCli =	  adicCampo(txtRgAvalCli,     398,   20, 120, 20, "RgAvalCli", "Rg", ListaCampos.DB_SI, false);
+    lbSSPAvalCli = adicCampo(txtSSPAvalCli, 521, 20, 120, 20, "SSPAvalCli", "SSP", ListaCampos.DB_SI, false);
+    lbCPFAvalCli = adicCampo(txtCPFAvalCli, 7, 60, 140, 20, "CPFAvalCli", "CPF", ListaCampos.DB_SI, false);
+    lbEmpTrabAvalCli = adicCampo(txtEmpTrabAvalCli, 150, 60, 315, 20, "EmpTrabAvalCli", "Empresa onde trabalha", ListaCampos.DB_SI, false);
+    lbCargoAvalCli = adicCampo(txtCargoAvalCli, 468, 60, 173, 20, "CargoAvalCli", "Cargo", ListaCampos.DB_SI, false);
+    lbDtAdmTrabAvalCli = adicCampo(txtDtAdmTrabAvalCli, 7, 100, 90, 20, "DtAdmTrabAvalCli", "Dt.admissao", ListaCampos.DB_SI, false);
+    lbRendaAvalCli = adicCampo(txtRendaAvalCli, 100, 100, 90, 20, "RendaAvalCli", "Renda", ListaCampos.DB_SI, false);
     
     setListaCampos( false, "CLICOMPL", "VD");
 
