@@ -70,7 +70,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   private JTextAreaPad txaComentUsu = new JTextAreaPad();
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(8);
   private JPasswordFieldPad txpConfirma = new JPasswordFieldPad(8);
-  private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER);
+  private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private static Vector vEmp = new Vector();
   private static Vector vDisp =  new Vector();
