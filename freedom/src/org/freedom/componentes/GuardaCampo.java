@@ -68,10 +68,20 @@ public class GuardaCampo extends Component {
     if (comp instanceof JTextFieldPad) {
       txtCampo = (JTextFieldPad) comp;
 //      txtCampo.setPKFK(bPK,bFK);
-      iTipo = txtCampo.getTipo();
+        iTipo = txtCampo.getTipo();
     }
-	else if (comp instanceof JPasswordFieldPad) {
-	  iTipo = JTextFieldPad.TP_STRING;
+	else if  ( (comp instanceof JPasswordFieldPad) ||
+			   (comp instanceof JTextAreaPad ) ) {
+	    iTipo = JTextFieldPad.TP_STRING;
+	}
+	else if (comp instanceof JCheckBoxPad) {
+		iTipo = ( (JCheckBoxPad) comp ).getTipo();
+	}
+	else if (comp instanceof JComboBoxPad) {
+		iTipo = ( (JComboBoxPad) comp ).getTipo();
+	}
+	else if (comp instanceof JRadioGroup) {
+		iTipo = ( (JRadioGroup) comp ).getTipo();
 	}
     txtDescFK = new JTextFieldFK();
     setRequerido(req);
