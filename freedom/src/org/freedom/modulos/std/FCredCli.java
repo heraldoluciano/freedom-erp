@@ -33,7 +33,7 @@ import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
@@ -234,7 +234,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private boolean bPesAutTipoCli = false;
   private boolean bAvalTipoCli = false;
   private boolean bSocioTipoCli = false;
-  private JTabbedPane tpn2 = new JTabbedPane();
+  private JTabbedPanePad tpn2 = new JTabbedPanePad();
   private JComboBoxPad cbEstCivCli = null;
 
                  
