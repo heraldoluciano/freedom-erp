@@ -33,6 +33,8 @@ import org.freedom.componentes.JPanelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -49,7 +51,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
-public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener {
+public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener {
   private JPanelPad pinFor = new JPanelPad();
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
@@ -87,6 +89,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     setTitulo("Cadastro de Fornecedores");
     setAtribos(50, 20, 480, 430);
     lcCampos.addPostListener(this);
+    lcCampos.addInsertListener(this);
     
     
     lcTipoFor.add(new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, true));
@@ -458,4 +461,10 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     lcTipoFor.setConexao(cn);      
   }
   public void afterPost(PostEvent pevt) { }
+  public void afterInsert(InsertEvent ievt) {
+  	cbAtivo.setVlrString("S");
+  }
+  public void beforeInsert(InsertEvent ievt) {
+  }
+  
 }
