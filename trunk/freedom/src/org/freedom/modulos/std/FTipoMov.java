@@ -30,6 +30,7 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -60,9 +61,15 @@ public class FTipoMov extends FDados implements RadioGroupListener {
   private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Lanc.fiscal?","S","N");
   private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont.estoque?","S","N");
   private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Soma rel.vendas?","S","N");
+  private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp. pedido?","S","N");
+  private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp. NF?","S","N");
+  private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Reimp. NF?","S","N");
+  private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp. NF?","S","N");
+  private JPanelPad pinLbPadImp = new JPanelPad(53,15);
+  
   public FTipoMov() {
     setTitulo("Cadastro de Tipos de Movimento");
-    setAtribos( 50, 50, 410, 440);
+    setAtribos( 50, 50, 430, 460);
   
     lcModNota.add(new GuardaCampo( txtCodModNota, "CodModNota", "Cód.mod.nota", ListaCampos.DB_PK, false));
     lcModNota.add(new GuardaCampo( txtDescModNota, "DescModNota", "Descrição do modelo de nota", ListaCampos.DB_SI, false));
@@ -124,7 +131,12 @@ public class FTipoMov extends FDados implements RadioGroupListener {
     adicDB(chbSomaTipoMov, 260, 270, 200, 20, "SomaVdTipoMov", "Soma venda", true);
     
     adicDB(cbTipoMov, 7, 310, 250, 30, "TipoMov", "Tipo de movimento", true);
-    adicCampo(txtEspecieTipomov, 280,320,80 ,20, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true); 
+    adicCampo(txtEspecieTipomov, 280,320,80 ,20, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true);
+    adicDB(chbImpPedTipoMov, 7, 360, 100, 20, "ImpPedTipoMov", "Pad.imp.ped.", true);
+    adicDB(chbImpNfTipoMov, 110, 360, 100, 20, "ImpNfTipoMov", "Pad.imp.NF", true);
+    adicDB(chbImpBolTipoMov, 213, 360, 100, 20, "ImpBolTipoMov", "Pad.imp.boleto", true);
+    adicDB(chbReImpNfTipoMov, 316, 360, 100, 20, "ReImpNfTipoMov", "Pad.reimp.NF", true);
+    
     lcCampos.setQueryInsert(false);
     
     txtCodTipoMov2.setNomeCampo("CodTipoMov");
