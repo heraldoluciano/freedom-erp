@@ -40,7 +40,7 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de Conveniado","Tipo de conveniados",'T',100101010,3, true, FTipoConv.class);
 		      addOpcao(100101000,TP_OPCAO_ITEM,"Atribuições","Abribuições",'A',100101020,3, true, FAtribuicao.class);
 		      addOpcao(100101000,TP_OPCAO_ITEM,"Encaminhador","Encaminhador",'E',100101030,3, true, FEncaminhador.class);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Conveniados","Conveniados",'C',100101040,3, true, FConveniado.class );
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Conveniados","Conveniados",'C',100101040,3, true, FConveniado.class);
 		      
 		    addOpcao(101000000,TP_OPCAO_MENU,"Atendente","",'A',100102000,2, false, null);
 		      addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente","Tipo de atendentes",'T',100102010,3, true, FTipoAtend.class);
@@ -74,11 +74,11 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		  addOpcao(1200000000,TP_OPCAO_ITEM,"Aprova Orçamentos","Aprova Orcamento",'A',120300000,1, true, FAprovaOrc.class);
 		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Autorizações","Pesquisa Autorização",'e',120400000,1, true, FConsAutoriz.class);
 		 
-		addBotao("btAtendimento.gif","Atendimento","", 110100000, null);
-		addBotao("btOrcamento.gif","Orçamento","", 120100000, null);
-		addBotao("btConsOrcamento.gif","Pesquisa Orçamento","", 120200000, null);
-		addBotao("barraConveniados.gif","Conveniados","", 100101040, null);
-		addBotao("btAprovaOrc.gif","Aprovações de Orçamantos","", 120300000, null);
+		addBotao("btAtendimento.gif","Atendimento","Atendimento", 110100000, FAtendimento.class);
+		addBotao("btOrcamento.gif","Orçamento","Orcamento", 120100000, FOrcamento.class);
+		addBotao("btConsOrcamento.gif","Pesquisa Orçamento","Pesquisa Orcamentos", 120200000, FConsOrc.class);
+		addBotao("barraConveniados.gif","Conveniados","Conveniados", 100101040, FConveniado.class);
+		addBotao("btAprovaOrc.gif","Aprovações de Orçamantos","Aprova Orcamento", 120300000, FAprovaOrc.class);
 		
 		ajustaMenu();
 		

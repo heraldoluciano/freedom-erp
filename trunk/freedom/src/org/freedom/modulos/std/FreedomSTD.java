@@ -103,7 +103,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Empresa","Empresa",'E',100450000,2, true, FEmpresa.class);	  	  
 
   addOpcao(-1,TP_OPCAO_MENU,"Entrada","",'E',200000000,0, false, null);
-    addOpcao(200000000,TP_OPCAO_ITEM,"Compra","",'C',200100000,1, true, FCompra.class);
+    addOpcao(200000000,TP_OPCAO_ITEM,"Compra","Compras",'C',200100000,1, true, FCompra.class);
 	addOpcao(200000000,TP_OPCAO_MENU,"Listagens","",'L',200200000,1, false, null);
 	  addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor","Compras por Fornecedor",'f',200210000,2, true, FRComprasFor.class);
 
@@ -208,15 +208,15 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(800600000,TP_OPCAO_ITEM,"Impostos sobre serviços","Impostos sobre serviços",'S',800602000,2, true, FRImpServ.class);
 	  addOpcao(800600000,TP_OPCAO_ITEM,"Pis e cofins","Pis e cofins",'P',800603000,2, true, FRPisCofins.class);
 
-  addBotao("btCliente.gif","Cliente","", 100101030, null);
-  addBotao("btSaida.gif","Venda","", 300100000, null);
-  addBotao("btEntrada.gif","Compra","", 200100000, null); 
-  addBotao("btContaPagar.gif","Contas a pagar","", 400200000, null);
-  addBotao("btContaReceber.gif","Contas a receber","", 500100000, null);  
-  addBotao("btLancamentoFin.gif","Lançamentos financeiros","", 600600000, null);
-  addBotao("btEstoque.gif","Consulta estoque","", 700300000, null);   
-  addBotao("btProduto.gif","Cadastro de produtos","", 100130070, null);
-  addBotao("btEstProduto.gif","Consulta produto","", 700400000, null);
+  addBotao("btCliente.gif","Cliente","Clientes", 100101030, FCliente.class);
+  addBotao("btSaida.gif","Venda","Venda", 300100000, FVenda.class);
+  addBotao("btEntrada.gif","Compra","Compras", 200100000, FCompra.class); 
+  addBotao("btContaPagar.gif","Contas a pagar","Manutenção de contas a pagar", 400200000, FManutPag.class);
+  addBotao("btContaReceber.gif","Contas a receber","Manutenção de contas a receber", 500100000, FManutRec.class);  
+  addBotao("btLancamentoFin.gif","Lançamentos financeiros","Lançamentos", 600600000, FLanca.class);
+  addBotao("btEstoque.gif","Consulta estoque","Consulta", 700300000, FConsulta.class);   
+  addBotao("btProduto.gif","Cadastro de produtos","Produtos", 100130070, FProduto.class);
+  addBotao("btEstProduto.gif","Consulta produto","Consulta produto", 700400000, FConsProd.class);
   //addBotao("btEmprestimo.gif","Cadastro de similaridades",100120080);
 
   ajustaMenu();
