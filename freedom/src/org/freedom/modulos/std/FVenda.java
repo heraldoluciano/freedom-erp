@@ -38,6 +38,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Properties;
 
@@ -854,7 +855,9 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private void calcVlrProd() {
     double dePreco = txtPrecoItVenda.doubleValue();
     double deQtd = txtQtdItVenda.doubleValue();
-    txtVlrProdItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredDouble(dePreco*deQtd,casasDec)));
+    double deVlrItVenda = dePreco*deQtd; 
+    //NumberFormat. 
+    txtVlrProdItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredDouble(deVlrItVenda,casasDec)));
 //    System.out.println("VlrProdTot: "+txtVlrProdItVenda.getVlrBigDecimal());
   }
   private boolean testaLucro() {

@@ -79,18 +79,15 @@ public class Funcoes {
   }
 
    public static double arredDouble(double deValor, int iDec) {
-	    long lgValor = 0;
-		double deOper = 1;
+		BigDecimal bdValor = null;
 		try {
-		  for (int i=1; i<=iDec; i++) deOper = deOper * 10;
-		  lgValor = (long) ( deValor * deOper);
-		  deValor = (double) lgValor ;
-		  deValor = lgValor / deOper;
+		    bdValor = new BigDecimal(deValor);
+			bdValor = bdValor.setScale(iDec,BigDecimal.ROUND_HALF_UP);
+			deValor = bdValor.doubleValue();
 		}
 	    finally {
-	      lgValor = 0;
+	        bdValor = null;
 	    }
-		
 		return deValor;
    }
  
