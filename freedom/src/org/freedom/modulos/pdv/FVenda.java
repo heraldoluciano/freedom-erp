@@ -767,11 +767,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	 } 
    }
    private void fechaVenda() {
-   	 if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
+  /* 	 if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
    		Funcoes.mensagemErro(this,"Não existe nenhuma venda ativa!");
    		return;
-   	 }
-   	 DLFechaVenda fecha = new DLFechaVenda(txtTotalCupom.getVlrBigDecimal(),txtCodVenda.getVlrInteger().intValue());
+   	 }*/
+   	 DLFechaVenda fecha = new DLFechaVenda(txtTotalCupom.getVlrBigDecimal(),txtCodVenda.getVlrInteger().intValue(), txtNumeroCupom.getVlrInteger().intValue());
    	 fecha.setConexao(con);
    	 fecha.setVisible(true);
    	 if (fecha.OK) {
@@ -812,9 +812,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  	 	   Funcoes.mensagemInforma(null,"Quantidade em branco.");
    	  	    else {
    	  	 	   if (lcVenda.getStatus() == ListaCampos.LCS_INSERT)
-   	  	 		 lcVenda.post();
-   	  	       insereItem();
-   	  	       iniItem();
+   	  	 		 if (lcVenda.post()) {
+   	  	 		 	insereItem();
+   	  	 		 	iniItem();
+   	  	 		 }
    	  	    }
    	  	 }
    	  }

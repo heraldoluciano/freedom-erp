@@ -31,6 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -39,6 +40,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
@@ -57,12 +59,15 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	private Connection con = null;
+	private Tef tef = null;
 	private int iCodVenda = 0;
-	public DLFechaVenda(BigDecimal valCupom, int iCodVenda) {
+	private int iNumCupom = 0;
+	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
 		setTitulo("Fechamento de venda");
 		setAtribos(330,275);
 		
 		this.iCodVenda = iCodVenda;
+		this.iNumCupom = iNumCupom;
 		
 		txtVlrCupom.setVlrBigDecimal(valCupom);
 		
@@ -89,7 +94,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		adic(txtVlrDinheiro,160,85,100,20);
 		adic(new JLabel("Valor em cheque: "),7,110,150,20);
 		adic(txtVlrCheque,160,110,100,20);
-		adic(new JLabel("Valor em cheque elet.: "),7,135,150,20);
+		adic(new JLabel("Valor em ch. elet./cartão: "),7,135,150,20);
 		adic(txtVlrChequeElet,160,135,100,20);
 		adic(new JLabel("Valor pago: "),7,160,150,20);
 		adic(txtVlrPago,160,160,100,20);
@@ -100,6 +105,23 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		txtVlrCheque.addFocusListener(this);
 		txtVlrChequeElet.addFocusListener(this);
 		
+	}
+	private boolean processaTef() {
+		boolean bRet = false;
+		Properties retTef = tef.solicVenda(iNumCupom, txtVlrChequeElet.getVlrBigDecimal());
+		
+		if (retTef == null)
+			return false;
+/*		
+		bf.iniciaModoTef(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
+		bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,"Cartao",FreedomPDV.bModoDemo);
+		bf.usaComprovanteNaoFiscalVinculadoTEF(Aplicativo.strUsuario,"Linha a ser Impressa...",FreedomPDV.bModoDemo);
+		bf.fechaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
+        bf.finalizaModoTEF();
+*/
+		
+		return bRet;
+			
 	}
 	private boolean verifCaixa() {
 		boolean bRetorno = false;
@@ -174,6 +196,8 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			Funcoes.mensagemInforma(this,"Valor pago menor que o valor da venda!");
 			return false;
 		}
+		else if (txtVlrChequeElet.getVlrDouble().doubleValue() > 0 && processaTef())
+			return false;
 		else if (!gravaVenda()) 
 			return false;
 		try {
@@ -284,6 +308,9 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		}
 	}
 	public void focusGained(FocusEvent arg0) { }
+	public void setTef(Tef tef) {
+		this.tef = tef; 
+	}
 	public void setConexao(Connection cn) {
 		con = cn;
 		lcPlanoPag.setConexao(cn);
