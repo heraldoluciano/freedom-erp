@@ -83,8 +83,8 @@ public class FRMediaItem extends FRelatorio {
     lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
     lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false));
 
-	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
-	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
+	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
 	txtCodVend.setTabelaExterna(lcVend);
 	txtCodVend.setNomeCampo("CodVend");
 	txtCodVend.setFK(true);
@@ -134,9 +134,9 @@ public class FRMediaItem extends FRelatorio {
     adic(txtCodMarca,7,185,90,20);
     adic(new JLabelPad("Descrição da Marca"),100,165,240,20);
     adic(txtDescMarca,100,185,180,20);
-    adic(new JLabelPad("Cód.repr."),7,205,200,20);
+    adic(new JLabelPad("Cód.comiss."),7,205,200,20);
 	adic(txtCodVend,7,225,70,20);
-	adic(new JLabelPad("Nome do representante"),80,205,200,20);
+	adic(new JLabelPad("Nome do comissionado"),80,205,200,20);
 	adic(txtDescVend,80,225,200,20);
     
     

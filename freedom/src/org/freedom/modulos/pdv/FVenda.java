@@ -488,8 +488,8 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    		ps.close();
    	}
    	catch(SQLException err) {
-   		Funcoes.mensagemErro(this,"Erro ao buscar o vendedor.\n"+
-   				"O usuário '"+Aplicativo.strUsuario+"' é um vendedor?\n"+err.getMessage());
+   		Funcoes.mensagemErro(this,"Erro ao buscar o comissionado.\n"+
+   				"O usuário '"+Aplicativo.strUsuario+"' é um comissionado?\n"+err.getMessage());
    		err.printStackTrace();
    	}
    	return iRet;

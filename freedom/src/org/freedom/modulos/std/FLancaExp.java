@@ -142,7 +142,7 @@ public class FLancaExp extends FDados implements ActionListener {
 					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|Vend");
-					imp.say(imp.pRow()+0,7,"|Nome Vendedor");
+					imp.say(imp.pRow()+0,7,"|Nome Comissionado");
 					imp.say(imp.pRow()+0,38,"|Cod.Cli ");
 					imp.say(imp.pRow()+0,49,"|Razão Cliente");
 					imp.say(imp.pRow()+0,81,"|Data Saida");

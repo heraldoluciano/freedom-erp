@@ -56,8 +56,8 @@ public class FRGerContas extends FRelatorio  {
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
   private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
-  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
-  private JLabelPad lbDescVend = new JLabelPad("Nome do representante");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
+  private JLabelPad lbDescVend = new JLabelPad("Nome do comissionado");
   private JLabelPad lbCliente = new JLabelPad("Cód.cli.");
   private JLabelPad lbRazCli = new JLabelPad("Razão social do cliete");
   private ListaCampos lcSetor = new ListaCampos(this);
@@ -107,8 +107,8 @@ public class FRGerContas extends FRelatorio  {
     txtCodSetor.setFK(true);
     txtCodSetor.setNomeCampo("CodSetor");
 
-    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend","Cód.repr.", ListaCampos.DB_PK, false ));
-    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend","Nome do representante", ListaCampos.DB_SI, false ));
+    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend","Cód.comiss.", ListaCampos.DB_PK, false ));
+    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false ));
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);

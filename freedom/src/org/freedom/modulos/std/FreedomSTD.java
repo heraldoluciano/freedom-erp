@@ -35,9 +35,9 @@ public class FreedomSTD extends Aplicativo {
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Cliente...", "Clientes",'C',100101030,3, true, FCliente.class);
 		  addOpcao(100101000,TP_OPCAO_ITEM,"Tipo fiscal de cliente...","Tipo Fiscal de Cliente",'p',100101040,3, true, FTipoFiscCli.class);
 		  addOpcao(100101000,TP_OPCAO_ITEM,"Crédito por cliente...","Crédito por cliente",'r',100101050,3, true, FCredCli.class);
-	    addOpcao(100100000,TP_OPCAO_MENU,"Vendedor","",'C',100102000,2, false, null);
+	    addOpcao(100100000,TP_OPCAO_MENU,"Comissionado","",'C',100102000,2, false, null);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Setor", "Setor",'S',100102010,3, true, FSetor.class);
-	      addOpcao(100102000,TP_OPCAO_ITEM,"Vendedor", "Vendedor",'V',100102020,4, true, FVendedor.class);
+	      addOpcao(100102000,TP_OPCAO_ITEM,"Comissionado", "Comissionado",'i',100102020,4, true, FVendedor.class);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Classif. de Comissões", "Classificação de Comissões",'P',100102030,5, true, FCLComis.class);
 	      
 	      

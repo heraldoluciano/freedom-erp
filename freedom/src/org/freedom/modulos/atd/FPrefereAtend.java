@@ -136,8 +136,8 @@ public class FPrefereAtend extends FTabDados {
 		lcTabITAV.setReadOnly(true);
 		txtCodITTBV.setTabelaExterna(lcTabITAV);
         
-		lcVend.add(new GuardaCampo(txtCodVend, "CodVend","Cód.repr.", ListaCampos.DB_PK, false));
-		lcVend.add(new GuardaCampo(txtNomeVend, "NomeVend","Nome do represetante", ListaCampos.DB_SI, false));
+		lcVend.add(new GuardaCampo(txtCodVend, "CodVend","Cód.comiss.", ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo(txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
 		lcVend.montaSql(false, "VENDEDOR", "VD");
 		lcVend.setQueryCommit(false);
 		lcVend.setReadOnly(true);

@@ -340,7 +340,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		Vector vLabs2 = new Vector();
 		Vector vVals2 = new Vector();
 		vLabs2.addElement("Cliente/Setor");
-		vLabs2.addElement("Vendedor/Setor");
+		vLabs2.addElement("Comissionado/Setor");
 		vLabs2.addElement("Ambos");
 		vVals2.addElement("C");
 		vVals2.addElement("V");

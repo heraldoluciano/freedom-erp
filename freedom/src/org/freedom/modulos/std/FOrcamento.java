@@ -178,8 +178,8 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
 	lcPlanoPag.setQueryCommit(false);
 	lcPlanoPag.setReadOnly(true);
 
-	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_PK, false));
-	lcVend.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do representante",  ListaCampos.DB_SI,false));
+	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.",  ListaCampos.DB_PK, false));
+	lcVend.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado",  ListaCampos.DB_SI,false));
 	txtCodVend.setTabelaExterna(lcVend);
 	txtNomeVend.setListaCampos(lcVend);
 	lcVend.montaSql(false, "VENDEDOR", "VD");

@@ -92,8 +92,8 @@ public class FRUltimaVenda extends FRelatorio {
     adic(txtNomeCli,80,90,186,20);
 	
 
-  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
-  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
+  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);
@@ -103,9 +103,9 @@ public class FRUltimaVenda extends FRelatorio {
  
     
     
-    adic(new JLabelPad("Cód.repr."),7,113,210,20);
+    adic(new JLabelPad("Cód.comiss."),7,113,210,20);
 	adic(txtCodVend,7,136,70,20);
-	adic(new JLabelPad("Nome do representante"),80,113,210,20);
+	adic(new JLabelPad("Nome do comissionado"),80,113,210,20);
 	adic(txtDescVend,80,136,186,20);
     
     adic(cbListaFilial,5,165,200,20);

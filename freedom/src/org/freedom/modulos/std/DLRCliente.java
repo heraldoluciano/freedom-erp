@@ -65,7 +65,7 @@ public class DLRCliente extends FFDialogo {
   private JLabelPad lbTipoCli = new JLabelPad("Cód.cli.");
   private JLabelPad lbDescTipoCli = new JLabelPad("Descrição do tipo de cliente");
   private JLabelPad lbVendedor = new JLabelPad("Cód.repr.");
-  private JLabelPad lbNomeVendedor = new JLabelPad("Nome do representante");
+  private JLabelPad lbNomeVendedor = new JLabelPad("Nome do comissionado");
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -118,8 +118,8 @@ public class DLRCliente extends FFDialogo {
     txtCodTipoCli.setFK(true);
     txtCodTipoCli.setNomeCampo("CodTipoCli");
 
-    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_PK,false));
-    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do representante",  ListaCampos.DB_SI,false));
+    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.",  ListaCampos.DB_PK,false));
+    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado",  ListaCampos.DB_SI,false));
     lcVendedor.montaSql(false, "VENDEDOR", "VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);

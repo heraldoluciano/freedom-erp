@@ -227,8 +227,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     txtCodCli.setTabelaExterna(lcCli);
     
     //FK Vendedor
-    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK,false));
-    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI,false));
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK,false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI,false));
     lcVend.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.c.comis.", ListaCampos.DB_SI,false));
     lcVend.add(new GuardaCampo( txtPercComisVenda, "PercComVend", "% Comis.", ListaCampos.DB_SI,false));
     lcVend.montaSql(false, "VENDEDOR", "VD");

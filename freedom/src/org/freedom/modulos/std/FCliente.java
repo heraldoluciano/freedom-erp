@@ -220,8 +220,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodTipoCli.setTabelaExterna(lcTipoCli);
 
   	
-  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",ListaCampos.DB_PK, false));
-  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
+  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
+  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);
