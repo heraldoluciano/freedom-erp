@@ -691,7 +691,7 @@ public class ImprimeOS implements ActionListener {
 	        ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
 	        rs = ps.executeQuery();
 	        if (rs.next()) {
-	          sPorta = rs.getString(sPortaOS);
+	          sPorta = rs.getString(sPortaOS).trim();
 	          if (rs.getString("IMPGRAFICA")!=null) 
 	          	 bImpGrafica = rs.getString("IMPGRAFICA").equals("S");
 	        }
