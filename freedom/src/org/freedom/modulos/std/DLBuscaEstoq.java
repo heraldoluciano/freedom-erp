@@ -38,6 +38,8 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private Vector vValsProd = new Vector();
    private String sSQL = "";   
    private ListaCampos lcCampos = null;
+   Integer iCodAlmox = new Integer(0);
+   boolean bRet = false;
    public DLBuscaEstoq(ListaCampos lc, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 lcCampos = lc;
@@ -59,10 +61,17 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
   	  
    }
    public Object getValor() {
-    return oRetVal;
+	if(lcCampos!=null) {   	 		 
+		if (lcCampos.getCampo("codalmox")!=null)
+			lcCampos.getCampo("codalmox").setVlrInteger(iCodAlmox);
+		}
+		else {
+		  	System.out.println("Lista Campos nulo no busca Estoq!!!!");
+		}
+   	return oRetVal;
   }
    public boolean setValor(Object oVal,String sTipo) { 
-     boolean bRet = false;
+     bRet = false;
    	  sSQL = "SELECT A.CODFILIAL,F.NOMEFILIAL,A.CODALMOX,A.DESCALMOX FROM EQALMOX A, SGEMPRESA E, SGFILIAL F " +
    	  		 "WHERE E.CODEMP=A.CODEMP AND A.CODEMP=? AND A.CODFILIAL=? AND F.CODEMP=A.CODEMP AND F.CODFILIAL=A.CODFILIAL " +
    	  		 "AND (E.MULTIALMOXEMP='N' OR " +
@@ -82,8 +91,13 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	vValsProd.clear();
 
       	ResultSet rs = ps.executeQuery();
+      	int iCont = 0;
       	while (rs.next()) {
-      	   bRet = true;
+      		if (iCont ==0)
+      			if(lcCampos!=null) {   	 		  
+   	 		    	if (lcCampos.getCampo("codalmox")!=null)
+   	 		    		lcCampos.getCampo("codalmox").setVlrInteger(new Integer(rs.getInt(3)));   	 		    	      	   
+      			}
       	   tab.adicLinha( new Object[] {
       	      rs.getString(1) != null ? rs.getString(1) : "",
       		  rs.getString(2) != null ? rs.getString(2) : "",
@@ -91,14 +105,11 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 			  rs.getString(4) != null ? rs.getString(4) : "",
 			  		"0"
       	   });
-/*
-      	   if (sCol.toUpperCase().equals("REFPROD")) {
-      	   	 oRetVal = rs.getString(1) != null ? rs.getString(1) : ""; 
-   	 	   }
-   	 	   else{
-   	 		 oRetVal = rs.getString(2) != null ? rs.getString(2) : "";
-   	 	   }
-*/ 
+      	   if (iCont>0)
+      	   		bRet = true;
+      	   else
+      	   		bRet = false;
+      	   iCont++;
       	}
 
       	
@@ -120,17 +131,8 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 try {   	
    	 	if (tsevt.getTabela() == tab) {
    	 		if (tab.getNumLinhas() > 0) {
-   	 		    Integer iCodEmpAx = new Integer(lcCampos.getCodEmp());   	 		    
-   	 		    Integer iCodFilialAx = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),0).toString()));
-   	 		    Integer iCodAlmoxAx = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
-
-   	 		    if(lcCampos!=null) {   	 		 
-   	 		    	if (lcCampos.getCampo("txtcodalmox")!=null)
-   	 		    		lcCampos.getCampo("txtcodalmox").setVlrInteger(iCodAlmoxAx);
-   	 		    }
-   	 		    else {
-   	 		    	System.out.println("Lista Campos nulo no busca Estoq!!!!");
-   	 		    }
+   	 		    if (bRet)
+   	 		    	iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));   	 		   
    	 		}
        }   	  
    	 }
