@@ -37,35 +37,35 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 	public static boolean bModoDemo = true;
 	public FreedomPDV() {
 		super("iconConfiguracao32.gif","splashPDV.jpg","FreedomPDV - Ponto de Venda",1,3);
-		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false);
-		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas",'T',100100000,1,false);
-		  addOpcao(100000000,TP_OPCAO_MENU,"Preferências",'P',100200000,1,false);
-		    addOpcao(100200000,TP_OPCAO_ITEM,"Preferências gerais",'g',100210000,2,true);
+		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false, null);
+		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas",'T',100100000,1,false, null);
+		  addOpcao(100000000,TP_OPCAO_MENU,"Preferências",'P',100200000,1,false, null);
+		    addOpcao(100200000,TP_OPCAO_ITEM,"Preferências gerais",'g',100210000,2,true, null);
 		
-		addOpcao(-1,TP_OPCAO_MENU,"PDV",'P',110000000,1,false);
-		addOpcao(110000000,TP_OPCAO_ITEM,"Venda",'V',100101000,2,true);
+		addOpcao(-1,TP_OPCAO_MENU,"PDV",'P',110000000,1,false, null);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Venda",'V',100101000,2,true, null);
 		addBotao("barraVenda.gif","Venda",100101000);
-		addOpcao(110000000,TP_OPCAO_ITEM,"Cancela venda",'C',110200000,2,true);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Cancela venda",'C',110200000,2,true, null);
 		addBotao("btExcluir.gif","Cancela venda",110200000);
 	
 		addSeparador(110000000);
 			
-		addOpcao(110000000,TP_OPCAO_ITEM,"Suprimento",'S',110300000,2,true);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Suprimento",'S',110300000,2,true, null);
 		addBotao("barraFornecedor.gif","Suprimento",110300000);
-		addOpcao(110000000,TP_OPCAO_ITEM,"Sangria",'G',110400000,2,true);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Sangria",'G',110400000,2,true, null);
 		addBotao("btPdvSangria.gif","Sangria",110400000);
 		
 		addSeparador(110000000);
 		
-		addOpcao(110000000,TP_OPCAO_ITEM,"Aliquota",'Q',110500000,2,true);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Aliquota",'Q',110500000,2,true, null);
 		addBotao("btPdvAliquota.gif","Aliquota",110500000);
-		addOpcao(110000000,TP_OPCAO_ITEM,"Ajusta moeda",'J',110600000,2,true);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Ajusta moeda",'J',110600000,2,true, null);
 		addBotao("btPdvGravaMoeda.gif","Ajusta moeda",110600000);
 		
 		addSeparador(110000000);
 		
-		addOpcao(110000000,TP_OPCAO_ITEM,"Ler memória fiscal",'L',110700000,2,true);
-		addOpcao(110000000,TP_OPCAO_ITEM,"Leitura X",'i',110800000,2,true);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Ler memória fiscal",'L',110700000,2,true, null);
+		addOpcao(110000000,TP_OPCAO_ITEM,"Leitura X",'i',110800000,2,true, null);
 		
 		addBotao("btPdvLeituraXPq.gif","Ler memória fiscal",110700000);		   
 	    if (abrecaixa()) {

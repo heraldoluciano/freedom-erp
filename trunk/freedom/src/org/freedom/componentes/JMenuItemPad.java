@@ -20,33 +20,53 @@
 
 package org.freedom.componentes;
 import javax.swing.JMenuItem;
+
+import org.freedom.telas.FFilho;
 public class JMenuItemPad extends JMenuItem {
 
 	private int iCodSys = 0;
 	private int iCodMod = 0;
     private int iCodIt = 0;
     private int iCodNiv = 0;
+    private Class tela = null;
   
+	public int getICodIt() {
+		return iCodIt;
+	}
+	public int getICodMod() {
+		return iCodMod;
+	}
+	public int getICodNiv() {
+		return iCodNiv;
+	}
+	public int getICodSys() {
+		return iCodSys;
+	}
+	public Class getTela() {
+		return tela;
+	}
 	/**
 	*  Construtor da classe JMenuItem(). <BR>
 	*
 	*/
   
 	public JMenuItemPad () {
-		this(0,0,0,0);
+		this(0,0,0,0, null);
 	}
 
 	/**
 	*  Construtor da classe JMenu(). <BR>
 	*  Construtor que ja ajusta os paramatros basicos do JMenuPad.
+	 * @param tela TODO
 	*
 	*/
   
-	public JMenuItemPad (int iCodSistema, int iCodModulo, int iCodItem, int iCodNivel) {
+	public JMenuItemPad (int iCodSistema, int iCodModulo, int iCodItem, int iCodNivel, Class tela) {
 		iCodSys = iCodSistema;
 		iCodMod = iCodModulo;
 		iCodIt = iCodItem;
 		iCodNiv = iCodNivel;
+		this.tela = tela;
 	}
 	
 
