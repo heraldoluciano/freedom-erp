@@ -330,8 +330,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		item.addActionListener(this);
 	}
 
-	public abstract void execOpcao(int iOpcao);
-
 	public void actionPerformed(ActionEvent evt) {
 		Object oTemp = evt.getSource();
 		int iCodMenu = -1;
