@@ -51,7 +51,7 @@ public class DLFechaDia extends FFDialogo {
 	public DLFechaDia() {
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de caixa");
-		setAtribos(310,150);
+		setAtribos(310,170);
 		
 		adic(new JLabelPad("Data e Hora: "),7,10,110,20);
 		adic(txtDataHora,7,30,110,20);
