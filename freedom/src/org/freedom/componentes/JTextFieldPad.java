@@ -158,7 +158,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   }
   public void setBuscaAdic(DLF3 dl) {
 	  dlBuscaAdic = dl;
-//	  bBuscaAdicGrid = bCodGrid;
   }
   
   private boolean caracValido(char caract) {
@@ -339,7 +338,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public void buscaAdic(String sTipo) {
   	 if (dlBuscaAdic != null) {
   	 	if (dlBuscaAdic.setValor(getVlrString(),sTipo)) {        
-  	 		dlBuscaAdic.setVisible(true);
   	 		if (dlBuscaAdic.OK) {
   	 			Object oVal = null;
   	 			oVal = dlBuscaAdic.getValor();

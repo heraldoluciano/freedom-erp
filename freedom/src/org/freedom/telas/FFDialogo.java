@@ -239,7 +239,7 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
 	}
   }
   public void keyPressed(KeyEvent kevt) {
-    if ((bUltimo) & (kevt.getKeyCode() == KeyEvent.VK_ENTER))
+    if ((bUltimo) & (kevt.getKeyCode() == KeyEvent.VK_ENTER) & (btOK.isEnabled()))
       btOK.doClick();
     else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
       btCancel.doClick();  

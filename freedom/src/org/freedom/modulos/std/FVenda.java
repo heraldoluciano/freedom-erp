@@ -78,7 +78,7 @@ import org.freedom.telas.FObservacao;
 public class FVenda extends FVD implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener, DeleteListener {
 	private int casasDec = Aplicativo.casasDec;
-
+	
 	private JPanelPad pinCabVenda = new JPanelPad();
 
 	private JPanelPad pinCabComis = new JPanelPad();
@@ -849,6 +849,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			txtCodNat.setAtivo(false);
 
 		if (bPrefs[0]) {
+			                        
 			txtRefProd.setBuscaAdic(new DLBuscaProd(this, con, "REFPROD"));
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);

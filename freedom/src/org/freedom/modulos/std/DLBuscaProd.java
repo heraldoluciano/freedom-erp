@@ -38,6 +38,8 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    private String sCol = null;
    private Vector vValsProd = new Vector();
    private String sSQL = "";
+   public int iPadrao = 0;
+   boolean bRet = false;
    public DLBuscaProd(Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 this.sCol = sCol;
@@ -53,12 +55,14 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	 tab.setTamColuna(80,5);   	 	 
    	 tab.addTabelaSelListener(this); 
 
+   	 tab.addKeyListener(this);
+   	 
    }
    public Object getValor() {
     return oRetVal;
   }
    public boolean setValor(Object oVal,String sTipo) { 
-     boolean bRet = false;
+     
   	 if (sTipo.equals("similar")) {
    	 	sSQL = "SELECT SIM.CODPROD,PROD.REFPROD,PROD.DESCPROD,PROD.SLDPROD "+
 		  	   "FROM EQPRODUTO PROD,EQITSIMILAR SIM "+
@@ -91,8 +95,15 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
       	vValsProd.clear();
 
       	ResultSet rs = ps.executeQuery();
+
+      	int iCont = 0;
       	while (rs.next()) {
-      	   bRet = true;
+      	   bRet = true;      	   
+      	   
+      	   if(rs.getString(1).equals(sVal)) {
+     	   	 iPadrao = iCont;
+     	   }
+
       	   tab.adicLinha( new Object[] {
       	      rs.getString(1) != null ? rs.getString(1) : "",
       		  rs.getString(2) != null ? rs.getString(2) : "",
@@ -106,13 +117,21 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	 	   else{
    	 		 oRetVal = rs.getString(2) != null ? rs.getString(2) : "";
    	 	   }
- 
+      	   iCont++;
       	}
       	rs.close();
       	ps.close();
       	if (!con.getAutoCommit())
       		con.commit();
+      	
+    	if(bRet) {
+      		tab.requestFocus();
+      		tab.setLinhaSel(iPadrao); 
+          	setVisible(true);      		
+      	}
+      	
       }
+            
       catch (SQLException err) {
       	 Funcoes.mensagemErro(this,"Erro ao buscar código auxiliar!\n"+err.getMessage());
       	 err.printStackTrace();
@@ -126,14 +145,16 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	 try {   	
    	 	if (tsevt.getTabela() == tab) {
    	 		if (tab.getNumLinhas() > 0) {
-   	 			if (sCol.toUpperCase().equals("REFPROD")) {
-   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
-   	 			}
-   	 			else {
-   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
-   	 			}
+   	 		    if (bRet) {
+   	   	 			if (sCol.toUpperCase().equals("REFPROD")) {
+   	   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
+   	   	 			}
+   	   	 			else {
+   	   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
+   	   	 			}
+   	 		    }
    	 		}
-       }   	  
+         }   	  
    	 }
    	 catch(Exception e) {
    	 	e.printStackTrace();

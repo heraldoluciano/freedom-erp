@@ -30,7 +30,6 @@ import org.freedom.componentes.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
   public Tabela tab = new Tabela();
-  public boolean bPrimeira = false;
   private JScrollPane spnCentro = new JScrollPane(tab); 
   public Object oRetVal = null;
   /**
@@ -50,16 +49,13 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
     setResizable(true);
     
     c.add( spnCentro, BorderLayout.CENTER);    
-
-    
-    tab.addKeyListener(this);
     
     addInternalFrameListener(
        new InternalFrameAdapter() {
 		 public void internalFrameActivated(InternalFrameEvent e) {
             if (tab.getNumLinhas() > 0) {
               tab.requestFocus();
-              tab.setLinhaSel(0); 
+//              tab.setLinhaSel(0); 
             }
             else
               btCancel.requestFocus();
