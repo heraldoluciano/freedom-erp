@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)Calc.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -39,6 +39,7 @@ import javax.swing.SwingConstants;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+
 public class Calc extends FFilho implements KeyListener, ActionListener 
 {
 	GridBagConstraints gbConst = new GridBagConstraints();        

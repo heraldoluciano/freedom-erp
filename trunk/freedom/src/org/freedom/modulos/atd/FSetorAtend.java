@@ -36,6 +36,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
+
 public class FSetorAtend extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodSetAt = new JTextFieldPad(5);
   private JTextFieldPad txtDescSetAt = new JTextFieldPad();

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)DLF3.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -30,11 +30,12 @@ import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
-import org.freedom.bmps.Icone;
+
 public abstract class DLF3 extends FFDialogo implements KeyListener {
   private Painel pinCab = new Painel(0,60);
   public JTextFieldPad txtCod = new JTextFieldPad();

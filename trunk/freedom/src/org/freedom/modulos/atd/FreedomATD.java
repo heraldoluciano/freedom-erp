@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 
+
 public class FreedomATD extends Aplicativo implements ActionListener {
 	public FreedomATD() {
 		super("iconAtendimento32.gif","splashATD.jpg","FreedomATD - Módulo de atendimento",1,4);

@@ -51,6 +51,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+
 public class FInventario extends FDados implements CarregaListener, InsertListener, PostListener, CheckBoxListener{
   private JTextFieldPad txtCodInv = new JTextFieldPad(8);
   private JTextFieldPad txtCodProd = new JTextFieldPad(8);

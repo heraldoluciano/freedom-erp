@@ -21,7 +21,9 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDados;
+import java.sql.Connection;
+import java.util.Vector;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
@@ -29,9 +31,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-
-import java.sql.Connection;
-import java.util.Vector;
+import org.freedom.telas.FDados;
 public class FTipoMov extends FDados {
   private JTextFieldPad txtCodTipoMov = new JTextFieldPad(8);
   private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad(8);

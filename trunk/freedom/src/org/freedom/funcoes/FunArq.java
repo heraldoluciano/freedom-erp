@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.funcoes <BR>
+ * Pacote: org.freedom.funcoes <BR>
  * Classe: @(#)FunArq.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>

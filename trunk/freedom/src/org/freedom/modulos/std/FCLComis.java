@@ -38,6 +38,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
+
 public class FCLComis extends FDados implements PostListener { 
   private JTextFieldPad txtCodClComis = new JTextFieldPad();
   private JTextFieldPad txtDescClComis = new JTextFieldPad();

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.drivers <BR>
+ * Pacote: org.freedom.drivers <BR>
  * Classe: @(#)JBemaFI32.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,11 +19,13 @@
  */
 
 package org.freedom.drivers;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.funcoes.Logger;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.Logger;
 public class JBemaFI32 {
 
 	/**
@@ -264,18 +266,6 @@ public class JBemaFI32 {
      else
        bRetorno = true;
      return bRetorno;
-   }
-   public boolean sangria(String sUserID, BigDecimal bdValor, boolean bModoDemo) {
-	 boolean bRetorno = false;
-	 if (!bModoDemo) {
-	   bRetorno = trataRetornoFuncao(  bSangria( Funcoes.transValor(bdValor,14,2,true)) );
-	   if (!bRetorno) {
-	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_FAZ_SANGRIA,"ERRO NA SANGRIA-VALOR: "+bdValor+"-"+sMensErroLog);
-	   }
-	 }
-	 else
-	   bRetorno = true;
-	 return bRetorno;
    }
    public boolean programaMoeda(String sUserID, String sSing, String sPlur, boolean bModoDemo) {
    	boolean bRetorno = false;
@@ -769,7 +759,18 @@ public class JBemaFI32 {
       }
       return bRetorno;
   }
-   
+  public boolean cancelaItemGenerico(String sUserID, int iItem, boolean bModoDemo) {
+ 	  boolean bRetorno = true;
+    if (!bModoDemo) {
+        String sItem = Funcoes.strZero(""+iItem,3);
+    	Logger.gravaLogTxt("",sUserID,Logger.LGEP_CANC_ITEM,"CANCELAMENTO DE ITEM ["+sItem+"] PELO "+sUserID);
+    	bRetorno = trataRetornoFuncao(bCancelaItemGenerico(sItem));
+    	if (!sMensErroLog.trim().equals("")) {
+        	Logger.gravaLogTxt("",sUserID,Logger.LGEP_CANC_ITEM,sMensErroLog);
+    	}
+    }
+    return bRetorno;
+  }
   public boolean cancelaCupom(String sUserID, boolean bModoDemo) {
 	 boolean bRetorno = true;
 	 if (!bModoDemo) {
@@ -850,6 +851,19 @@ public class JBemaFI32 {
   		i = 0;
   	}
   	return bRetorno;
+  }
+  
+  public boolean sangria(String sUserID, BigDecimal bdValor, boolean bModoDemo) {
+	 boolean bRetorno = false;
+	 if (!bModoDemo) {
+	   bRetorno = trataRetornoFuncao(  bSangria( Funcoes.transValor(bdValor,14,2,true)) );
+	   if (!bRetorno) {
+	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_FAZ_SANGRIA,"ERRO NA SANGRIA-VALOR: "+bdValor+"-"+sMensErroLog);
+	   }
+	 }
+	 else
+	   bRetorno = true;
+	 return bRetorno;
   }
 
   public boolean sangriax(String sUserID, double deValor , boolean bModoDemo) {
@@ -1059,8 +1073,9 @@ public class JBemaFI32 {
   public boolean reducaoZ(String sUserID, boolean bModoDemo) {
     boolean bRetorno = true;
     if (!bModoDemo ) {
-       bRetorno = trataRetornoFuncao(bReducaoZ( Funcoes.dateToStrDate(new Date()) , 
-       		Funcoes.timeStampToStrDate(Funcoes.dateToTimestamp(new Date())) ) );
+       Date agora = new Date();
+       bRetorno = trataRetornoFuncao(bReducaoZ((new SimpleDateFormat("dd/MM/yyyy")).format(agora), 
+       										   (new SimpleDateFormat("HH:mm:ss")).format(agora)));
        if (! bRetorno) {
        	Logger.gravaLogTxt("",sUserID,Logger.LGEP_REDUCAO_Z,sMensErroLog);
        }

@@ -39,9 +39,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.freedom.layout.LeiauteGR;
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -49,10 +49,11 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.layout.LeiauteGR;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.FFDialogo;
-import org.freedom.bmps.Icone;
+
 
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private JPanel pnCab = new JPanel(new GridLayout(1,1));
@@ -216,7 +217,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		}
 		else if (evt.getSource() == btMedida) {
 			if (sPrefs[1] == null) {
-				Funcoes.mensagemInforma(this,"Não foi possível encontrar um layout de levantamento.");
+				Funcoes.mensagemInforma(this,"Não foi possível encontrar um org.freedom.layout de levantamento.");
 				return;
 			}
 			try {
@@ -233,7 +234,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			  dl.dispose();
 			}
 			catch (Exception err) {
-			  Funcoes.mensagemInforma(this,"Não foi possível carregar layout de levantamento!\n"+err.getMessage());
+			  Funcoes.mensagemInforma(this,"Não foi possível carregar org.freedom.layout de levantamento!\n"+err.getMessage());
 			  err.printStackTrace();
 			}
 		}	

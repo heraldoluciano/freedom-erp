@@ -38,6 +38,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLEditaPag extends FFDialogo implements CarregaListener {
   private JTextFieldPad txtCodFor = new JTextFieldPad();
   private JTextFieldPad txtDescFor = new JTextFieldPad();

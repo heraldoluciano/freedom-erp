@@ -40,6 +40,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+
 public class FSimilar extends FDados implements ActionListener{
 	private JTextFieldPad txtRefProdSim = new JTextFieldPad(18);
 	private JTextFieldPad txtCodProd = new JTextFieldPad();

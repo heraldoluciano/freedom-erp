@@ -42,6 +42,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.Processo;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -52,7 +53,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FImpTabFor extends FFilho implements ActionListener {
   private Painel pinCab = new Painel(0,205);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

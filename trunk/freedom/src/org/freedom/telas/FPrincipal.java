@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FPrincipal.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -42,10 +42,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JMenuPad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.bmps.Icone;
+
 public class FPrincipal extends JFrame implements ActionListener {
    
    private Connection con = null;

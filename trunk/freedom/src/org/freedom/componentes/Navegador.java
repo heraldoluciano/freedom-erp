@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)Navegador.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+
 import org.freedom.bmps.Icone;
 public class Navegador extends JPanel implements ActionListener, KeyListener {
   public  JButton btNovo = new JButton(Icone.novo("btNovo.gif"));

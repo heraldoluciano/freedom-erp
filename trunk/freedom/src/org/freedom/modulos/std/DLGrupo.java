@@ -34,6 +34,7 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLGrupo extends FFDialogo {
   private Connection con = null;
   private JTextFieldPad txtCodGrupo = new JTextFieldPad(4);

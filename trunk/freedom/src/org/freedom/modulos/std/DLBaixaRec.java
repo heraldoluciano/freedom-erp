@@ -46,6 +46,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListener, EditListener {
   private JTextFieldPad txtCodCli = new JTextFieldPad();
   private JTextFieldPad txtDescCli = new JTextFieldPad();

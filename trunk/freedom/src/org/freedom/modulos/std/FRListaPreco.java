@@ -43,6 +43,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRListaPreco extends FRelatorio {
 	private Painel pinOpt = new Painel(595,100);
 	private Painel pinPlan = new Painel(595,450);

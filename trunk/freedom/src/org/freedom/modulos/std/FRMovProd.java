@@ -41,6 +41,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRMovProd extends FRelatorio {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgAtivoProd=null;

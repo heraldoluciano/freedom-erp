@@ -31,6 +31,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
+
 public class FichaMedida extends LeiauteGR {
 	private Connection con = null;
 	private int iCodConv = 0;

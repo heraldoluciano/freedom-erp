@@ -48,6 +48,7 @@ import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -58,7 +59,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FManutPag extends FFilho implements ActionListener,KeyListener,CarregaListener {
   private JPanel pnLegenda = new JPanel(new GridLayout(0,4));
   private JPanel pnTabConsulta = new JPanel(new BorderLayout());

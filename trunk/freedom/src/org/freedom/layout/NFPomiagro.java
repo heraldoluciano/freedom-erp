@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+
 public class NFPomiagro extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ResultSet rsInfoAdic,ImprimeOS imp) {
 //    GregorianCalendar cHora = new GregorianCalendar();

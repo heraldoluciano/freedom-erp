@@ -24,6 +24,7 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+
 public class NFSetpoint extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
     String[] sObs = new String[8];

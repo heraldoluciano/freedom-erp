@@ -41,6 +41,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
+
 public class FSuprimento extends FDialogo {
 	private JTextFieldFK txtData = new JTextFieldFK();
 	private JTextFieldPad txtValor = new JTextFieldPad();

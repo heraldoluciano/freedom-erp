@@ -29,6 +29,7 @@ import javax.swing.JButton;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -36,7 +37,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 public class FEstrutura extends FDetalhe implements ActionListener, CarregaListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

@@ -41,13 +41,14 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyListener {
   private Connection con = null;
   private Tabela tab = new Tabela();

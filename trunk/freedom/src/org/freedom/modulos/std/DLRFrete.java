@@ -20,12 +20,13 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDialogo;
+
+import javax.swing.JLabel;
+
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
-
-import javax.swing.JLabel;
+import org.freedom.telas.FDialogo;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

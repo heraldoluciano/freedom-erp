@@ -21,15 +21,16 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDados;
-import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.funcoes.Funcoes;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.FDados;
 public class FTipoCred extends FDados implements ActionListener {
   private JTextFieldPad txtCodTipoCred = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescTipoCred = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);

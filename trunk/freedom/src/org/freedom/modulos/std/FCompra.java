@@ -47,6 +47,7 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
@@ -56,7 +57,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
-import org.freedom.bmps.Icone;
+
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
   private int casasDec = Aplicativo.casasDec;
   private Painel pinCab = new Painel();
@@ -302,7 +303,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     adicDescFK(txtDescPlanoPag, 470, 60, 180, 20, "DescPlanoPag", "e desc. do plano pag.", JTextFieldPad.TP_STRING, 40, 0);
     adicCampoInvisivel(txtStatusCompra, "StatusCompra", "Status", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
     //    lcCampos.setWhereAdic("FLAG IN "+
-    //    org.freedom.modulos..Freedom.carregaFiltro(con,org.telas.Aplicativo.strCodEmp));
+    //    projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp));
     setListaCampos(true, "COMPRA", "CP");
     lcCampos.setQueryInsert(false);
 

@@ -35,6 +35,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLPlanPrim extends FFDialogo {
   private JTextFieldPad txtCodCont = new JTextFieldPad(13);
   private JTextFieldPad txtDescCont = new JTextFieldPad(13);

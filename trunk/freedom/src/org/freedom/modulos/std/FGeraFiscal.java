@@ -41,6 +41,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -49,7 +50,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FGeraFiscal extends FFilho implements ActionListener {
   private Painel pinCliente = new Painel(600,110);
   private JPanel pnGrid = new JPanel(new GridLayout(2,1));

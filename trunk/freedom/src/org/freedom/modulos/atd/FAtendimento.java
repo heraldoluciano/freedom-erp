@@ -43,6 +43,7 @@ import javax.swing.JTabbedPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -53,7 +54,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 
 public class FAtendimento extends FFilho implements CarregaListener, ActionListener {
   private Painel pinConv = new Painel(510,110);

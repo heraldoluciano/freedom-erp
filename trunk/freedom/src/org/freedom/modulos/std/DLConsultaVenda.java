@@ -40,6 +40,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private Painel pinConsulta = new Painel(500,100);
   private JTextFieldPad txtCodVenda = new JTextFieldPad();

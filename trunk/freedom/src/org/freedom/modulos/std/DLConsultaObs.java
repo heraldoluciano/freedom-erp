@@ -42,6 +42,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
+
 public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSelListener {
   private Painel pinConsulta = new Painel(500,180);
   private JTextFieldPad txtCodCli = new JTextFieldPad();

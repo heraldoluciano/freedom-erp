@@ -31,6 +31,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FTipoCob extends FDados implements ActionListener {
   private JTextFieldPad txtCodTipoCob = new JTextFieldPad(5);
   private JTextFieldPad txtDescTipoCob = new JTextFieldPad(40);

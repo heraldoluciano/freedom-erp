@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -47,7 +48,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
-import org.freedom.bmps.Icone;
+
 public class FTerminal extends FTabDados implements ActionListener {
   private Painel pnTerm = new Painel(280,130);
   private JTextFieldPad txtCodCaixa = new JTextFieldPad(8);

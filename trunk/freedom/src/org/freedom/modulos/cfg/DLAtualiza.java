@@ -33,6 +33,7 @@ import java.sql.Statement;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
+
 public class DLAtualiza extends FFDialogo {
    private Connection con = null;
    

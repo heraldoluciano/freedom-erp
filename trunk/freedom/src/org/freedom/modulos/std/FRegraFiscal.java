@@ -21,7 +21,9 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDetalhe;
+import java.sql.Connection;
+import java.util.Vector;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
@@ -29,9 +31,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
-
-import java.sql.Connection;
-import java.util.Vector;
+import org.freedom.telas.FDetalhe;
 public class FRegraFiscal extends FDetalhe {
 	private Painel pinCab = new Painel();
 	private Painel pinDet = new Painel();

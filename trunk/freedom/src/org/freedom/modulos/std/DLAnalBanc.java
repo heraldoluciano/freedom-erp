@@ -43,6 +43,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JTextFieldPad txtCodPai = new JTextFieldPad();
   private JTextFieldPad txtDescPai = new JTextFieldPad();

@@ -47,6 +47,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+
 public class DLNovoPag extends FFDialogo implements PostListener {
   private JPanel pnPag = new JPanel(new BorderLayout());
   private Painel pinCab = new Painel(580,130);

@@ -9,13 +9,13 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;images"/>
+        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.drivers"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.cfg"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
     </selectedElements>

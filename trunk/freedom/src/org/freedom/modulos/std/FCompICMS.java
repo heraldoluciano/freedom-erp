@@ -29,9 +29,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 public class FCompICMS extends FFilho implements ActionListener {
   private Painel pinCab = new Painel(400,100);
   private Painel pinRod = new Painel(400,120);

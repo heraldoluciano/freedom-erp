@@ -30,6 +30,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FDetalhe;
 
+
 public class FItNatoper extends FDetalhe {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

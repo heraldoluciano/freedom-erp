@@ -44,6 +44,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
+
 public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   private final int POS_CODSETOR = 0;
   private final int POS_MES = 1;

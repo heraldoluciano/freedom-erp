@@ -31,6 +31,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FMarca extends FDados implements ActionListener {
   private JTextFieldPad txtCodMarca = new JTextFieldPad(8);
   private JTextFieldPad txtDescMarca = new JTextFieldPad(8);

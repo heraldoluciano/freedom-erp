@@ -39,12 +39,11 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freedom.modulos.std.FCliente;
-
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -57,11 +56,13 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FTabDados;
-import org.freedom.bmps.Icone;
+
+
 public class FContato extends FTabDados implements RadioGroupListener, PostListener, ActionListener, ChangeListener {
   private Painel pinCont = new Painel();
   private Painel pinVend = new Painel(0,80);

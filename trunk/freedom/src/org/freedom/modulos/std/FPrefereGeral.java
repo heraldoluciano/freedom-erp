@@ -41,6 +41,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
+
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostListener {
 	private Painel pinVenda = new Painel(690, 220);
 	private Painel pinGeral = new Painel(330, 200);

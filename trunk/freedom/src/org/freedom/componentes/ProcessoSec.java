@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)ProcessoSec.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -20,10 +20,11 @@
  */
 
 package org.freedom.componentes;
-import org.freedom.acao.Processo;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.Timer;
+
+import org.freedom.acao.Processo;
 public class ProcessoSec implements Processo {
   private Thread th = null;
   private Timer tim = null;

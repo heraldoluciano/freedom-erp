@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)ImprimeLayout.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -63,6 +63,9 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.jfree.chart.JFreeChart;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -72,8 +75,6 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 public class ImprimeLayout extends JPanel implements Printable, VetoableChangeListener {
   public static final byte AL_CEN = 0; //Centro
@@ -905,7 +906,7 @@ public class ImprimeLayout extends JPanel implements Printable, VetoableChangeLi
     }
   }
   /**
-   *  Esta função retorna o PageFormat padrão para este layout.
+   *  Esta função retorna o PageFormat padrão para este org.freedom.layout.
    * 
    *  @return page - PaginaPad padrão.
    */

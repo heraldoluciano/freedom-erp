@@ -47,6 +47,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -58,7 +59,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-import org.freedom.bmps.Icone;
+
 /**
  * Formulário de consulta de orçamento.
  *

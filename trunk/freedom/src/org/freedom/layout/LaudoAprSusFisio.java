@@ -34,6 +34,7 @@ import java.util.Vector;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 public class LaudoAprSusFisio extends LeiauteGR {
 	private Connection con = null;
 

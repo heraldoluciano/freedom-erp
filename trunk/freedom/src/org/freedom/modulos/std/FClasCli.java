@@ -30,6 +30,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FClasCli extends FDados implements ActionListener{
   private JTextFieldPad txtCodClasCli = new JTextFieldPad(5);
   private JTextFieldPad txtDescClasCli= new JTextFieldPad(20);

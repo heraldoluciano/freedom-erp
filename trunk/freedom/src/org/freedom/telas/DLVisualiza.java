@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)DLVisualiza.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -39,9 +39,10 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.Painel;
-import org.freedom.bmps.Icone;
+
 public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {
   private JPanel pnCab = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));  
   private JPanel pnCli = new JPanel(new GridLayout(1,1));

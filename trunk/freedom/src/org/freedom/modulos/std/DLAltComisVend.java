@@ -30,12 +30,13 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
-import org.freedom.bmps.Icone;
+
 public class DLAltComisVend extends FFDialogo {
   private JTextFieldPad txtPercComis = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));

@@ -29,6 +29,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FDetalhe;
+
 public class FEstFase extends FDetalhe {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Monta o layout para etiquetas.
+ * Monta o org.freedom.layout para etiquetas.
  * 
  */
 
@@ -34,8 +34,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
-import org.freedom.acao.JComboBoxEvent;               
-import org.freedom.acao.JComboBoxListener;           
+import org.freedom.acao.JComboBoxEvent;
+import org.freedom.acao.JComboBoxListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
@@ -45,8 +46,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FDados;
-//import org.freedom.funcoes.Funcoes; // TESTE
-import org.freedom.bmps.Icone;
+
+//import bibli.funcoes.Funcoes; // TESTE
 
 
 public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener {       

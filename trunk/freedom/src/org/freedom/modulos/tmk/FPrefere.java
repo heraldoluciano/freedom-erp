@@ -31,6 +31,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FTabDados;
+
 public class FPrefere extends FTabDados {
 	private Painel pinMail = new Painel();
 	private Painel pinSmtp = new Painel();

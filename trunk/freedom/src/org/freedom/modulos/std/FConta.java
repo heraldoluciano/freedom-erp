@@ -20,15 +20,15 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FDados;
+import java.sql.Connection;
+import java.util.Vector;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-
-import java.sql.Connection;
-import java.util.Vector;
+import org.freedom.telas.FDados;
 public class FConta extends FDados {
   private JTextFieldPad txtAgConta = new JTextFieldPad();
   private JTextFieldPad txtNumConta = new JTextFieldPad();

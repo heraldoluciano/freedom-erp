@@ -36,6 +36,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLRInventario extends FFDialogo {
 
   private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo","S","N");

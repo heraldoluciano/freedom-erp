@@ -44,6 +44,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
@@ -55,7 +56,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FRelatorio;
-import org.freedom.bmps.Icone;
+
 public class FConsProd extends FRelatorio implements ActionListener,ChangeListener {
 	private Painel pinCab = new Painel(0,150);
 	private Painel pinPeriodoCompra = new Painel(0,60);

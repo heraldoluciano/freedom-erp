@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)Aplicativo.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -46,6 +46,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JMenuItemPad;
 import org.freedom.componentes.JMenuPad;
@@ -53,7 +54,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.bmps.Icone;
+
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
   public final static int TP_OPCAO_MENU = 0;

@@ -36,6 +36,7 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+
 public class FAbreCaixa extends FDialogo {
 	private JTextFieldPad txtData = new JTextFieldPad();
 	private JTextFieldPad txtValor = new JTextFieldPad();

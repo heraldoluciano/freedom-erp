@@ -47,6 +47,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
@@ -55,7 +56,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private Painel pinCab = new Painel(600,64);
   private JPanel pnNav = new JPanel(new GridLayout(1,7));

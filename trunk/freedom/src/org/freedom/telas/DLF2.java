@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)DLF2.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -42,13 +42,14 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.bmps.Icone;
+
 public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListener, ActionListener {
   private JLabel lbPesq = new JLabel("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad();

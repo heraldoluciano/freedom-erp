@@ -41,12 +41,13 @@ import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
-import org.freedom.bmps.Icone;
+
 
 public class FTipoImp extends FDados implements PostListener, CarregaListener, DeleteListener, ActionListener {
   private JTextFieldPad txtCodTpImp = new JTextFieldPad(5);
@@ -64,7 +65,7 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   private JButton btAdic = new JButton(Icone.novo("btFlechaDir.gif"));
   private JButton btDel = new JButton(Icone.novo("btFlechaEsq.gif"));
   public FTipoImp() {
-    setTitulo("Cadastro de layout de importação");
+    setTitulo("Cadastro de org.freedom.layout de importação");
     setAtribos(50, 20, 510, 390);
 
     cbCsepTpImp.setVlrString("N");

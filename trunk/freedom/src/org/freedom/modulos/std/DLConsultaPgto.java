@@ -42,6 +42,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLConsultaPgto extends FFDialogo {
   private JTextFieldPad txtCodCli = new JTextFieldPad();
   private JTextFieldFK txtDescCli = new JTextFieldFK();

@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Monta o layout para o boleto bancário.
+ * Monta o org.freedom.layout para o boleto bancário.
  * 
  */
 
@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -43,7 +44,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
-import org.freedom.bmps.Icone;
+
 
 public class FModBoleto extends FDados implements ActionListener, JComboBoxListener {
 	private Painel pinCab = new Painel(0,150);

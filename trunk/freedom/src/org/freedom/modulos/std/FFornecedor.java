@@ -30,6 +30,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -46,6 +47,7 @@ import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
+
 public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener {
   private Painel pinFor = new Painel();
   private JTextFieldPad txtCodFor = new JTextFieldPad(5);

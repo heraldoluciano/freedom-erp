@@ -32,8 +32,9 @@ import java.util.Vector;
 
 import javax.swing.Timer;
 
-import org.freedom.layout.LeiauteGR;
 
+import org.freedom.funcoes.Funcoes;
+import org.freedom.layout.LeiauteGR;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Pie3DPlot;
@@ -41,7 +42,6 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.DefaultPieDataset;
 import org.jfree.util.Rotation;
 
-import org.freedom.funcoes.Funcoes;
 public class BalancetePizza extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);

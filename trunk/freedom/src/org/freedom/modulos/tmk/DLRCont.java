@@ -38,6 +38,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FFDialogo;
+
 public class DLRCont extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;

@@ -41,6 +41,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
+
 /**
  * Tela para verificação de validade dos Lotes 
  *
@@ -281,7 +282,7 @@ public class FRVencLote extends FRelatorio {
    *  Adiciona a conexão vigente a este formulário.
    *  
    *  @param cn: Conexao valida e ativa que será repassada e esta tela.
-   *  @see org.telas.FFilho#setConexao
+   *  @see org.freedom.telas.FFilho#setConexao
    */
 
   public void setConexao(Connection cn) {

@@ -31,19 +31,20 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import org.freedom.relatorios.BalanceteBarras;
-import org.freedom.relatorios.BalancetePizza;
-import org.freedom.relatorios.DLExibePizza;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.relatorios.BalanceteBarras;
+import org.freedom.relatorios.BalancetePizza;
+import org.freedom.relatorios.DLExibePizza;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
-import org.freedom.bmps.Icone;
+
 public class FRBalanceteGrafico extends FRelatorio {
   private JTextFieldPad txtCodPlan = new JTextFieldPad();   
   private JTextFieldPad txtDataini = new JTextFieldPad(); 

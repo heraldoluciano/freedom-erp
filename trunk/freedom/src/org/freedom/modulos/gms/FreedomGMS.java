@@ -85,6 +85,7 @@ import org.freedom.modulos.std.FVenda;
 import org.freedom.telas.Aplicativo;
 
 
+
 public class FreedomGMS extends Aplicativo {
 
 	public FreedomGMS() {

@@ -30,12 +30,13 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FDialogo;
-import org.freedom.bmps.Icone;
+
 public class FSerie extends FDados implements ActionListener {
   private JTextFieldPad txtSerie = new JTextFieldPad(4);
   private JTextFieldPad txtDocSerie= new JTextFieldPad(8);

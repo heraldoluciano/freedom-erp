@@ -32,6 +32,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLPlanAnal extends FFDialogo {
   private JTextFieldPad txtCodPai = new JTextFieldPad();
   private JTextFieldPad txtDescPai = new JTextFieldPad();

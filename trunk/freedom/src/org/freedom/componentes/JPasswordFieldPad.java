@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.compo <BR>
+ * Pacote: org.freedom.componentes <BR>
  * Classe: @(#)JPasswordFieldPad.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -19,13 +19,13 @@
  */
 
 package org.freedom.componentes;
-import org.freedom.componentes.ListaCampos;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JPasswordField;
+
+import org.freedom.componentes.ListaCampos;
 public class JPasswordFieldPad extends JPasswordField {
 
 	private int iTam = 0;

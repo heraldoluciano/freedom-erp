@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FLogin.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -33,8 +33,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import org.freedom.funcoes.Funcoes;
 import org.freedom.bmps.Icone;
+import org.freedom.funcoes.Funcoes;
+
 
 public class FSobre extends FDialogo {
   private JTabbedPane tpnSobre = new JTabbedPane();

@@ -33,8 +33,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.freedom.modulos.std.FCliente;
-
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
@@ -48,8 +46,11 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
+
+
 
 public class FConveniado extends FTabDados implements PostListener { 
   private Painel pinGeral = new Painel(650,520);

@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+
 public class NFBuzzi extends Leiaute {
   private BigDecimal bigSomaServ = new BigDecimal(0);
   private String sMensAdic="";

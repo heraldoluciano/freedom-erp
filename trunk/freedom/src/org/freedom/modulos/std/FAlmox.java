@@ -30,6 +30,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FAlmox extends FDados implements ActionListener{
   private JTextFieldPad txtCodAlmox = new JTextFieldPad(5);
   private JTextFieldPad txtDescAlmox= new JTextFieldPad(20);

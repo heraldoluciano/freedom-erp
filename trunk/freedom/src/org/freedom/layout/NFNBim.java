@@ -27,6 +27,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Extenso;
 import org.freedom.funcoes.Funcoes;
+
 public class NFNBim extends Leiaute {
   private BigDecimal bigSomaServ = new BigDecimal(0);
   

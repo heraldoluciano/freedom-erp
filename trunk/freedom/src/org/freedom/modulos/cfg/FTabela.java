@@ -4,7 +4,7 @@
  *
  * Projeto: Freedom <BR>
  *  
- * Pacote: org.freedom.modulos.freeedomcfg <BR>
+ * Pacote: projetos.freeedomcfg <BR>
  * Classe: @(#)FTabela.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -30,6 +30,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
 import org.freedom.telas.FDetalhe;
+
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();

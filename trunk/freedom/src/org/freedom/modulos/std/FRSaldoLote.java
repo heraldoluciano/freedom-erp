@@ -41,6 +41,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
+
 public class FRSaldoLote extends FRelatorio {
   private Connection con;
   private JTextFieldPad txtCodGrup = new JTextFieldPad();
@@ -297,7 +298,7 @@ public class FRSaldoLote extends FRelatorio {
    *  Adiciona a conexão vigente a este formulário.
    *  
    *  @param cn: Conexao valida e ativa que será repassada e esta tela.
-   *  @see org.telas.FFilho#setConexao
+   *  @see org.freedom.telas.FFilho#setConexao
    */
 
   public void setConexao(Connection cn) {

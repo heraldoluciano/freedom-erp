@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
+
 public class DLCCAnal extends FFDialogo {
 	private JTextFieldPad txtCodPai = new JTextFieldPad();
 	private JTextFieldPad txtDescPai = new JTextFieldPad();

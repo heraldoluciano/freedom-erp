@@ -33,6 +33,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FRelatorio;
+
 public class FRVendasIcms extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(); 

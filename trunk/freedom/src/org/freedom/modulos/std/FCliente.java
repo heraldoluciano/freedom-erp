@@ -40,7 +40,6 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freedom.modulos.atd.FConveniado;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
@@ -49,6 +48,7 @@ import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -61,10 +61,11 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.atd.FConveniado;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
-import org.freedom.bmps.Icone;
+
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
                TabelaSelListener, ChangeListener, CarregaListener {
   private Painel pinCli = new Painel();
@@ -678,7 +679,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   }
 
   /* (non-Javadoc)
-   * @see org.acao.TabelaSelListener#valorAlterado(org.acao.TabelaSelEvent)
+   * @see org.freedom.acao.TabelaSelListener#valorAlterado(org.freedom.acao.TabelaSelEvent)
    */
   public void valorAlterado(TabelaSelEvent evt) {
       if (evt.getTabela()==tbObsData) 
@@ -687,7 +688,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   
   
   /* (non-Javadoc)
- * @see org.acao.CarregaListener#afterCarrega(org.acao.CarregaEvent)
+ * @see org.freedom.acao.CarregaListener#afterCarrega(org.freedom.acao.CarregaEvent)
  */
   public void afterCarrega(CarregaEvent cevt) {
     if (cevt.getListaCampos()==lcCampos) 

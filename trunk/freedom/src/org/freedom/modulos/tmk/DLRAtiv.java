@@ -21,10 +21,11 @@
  */
 
 package org.freedom.modulos.tmk;
-import org.freedom.telas.FDialogo;
-import org.freedom.componentes.JRadioGroup;
-
 import javax.swing.JLabel;
+
+import org.freedom.componentes.JRadioGroup;
+import org.freedom.telas.FDialogo;
+
 import java.util.Vector;
 public class DLRAtiv extends FDialogo {
   private JRadioGroup rgOrdem = null;

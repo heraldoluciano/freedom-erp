@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeLayout;
+
 public abstract class LeiauteGR extends ImprimeLayout {
   public LeiauteGR() {} 
   public abstract void setParam(Vector vParam);  

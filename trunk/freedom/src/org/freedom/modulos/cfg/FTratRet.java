@@ -38,6 +38,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
+
 public class FTratRet extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodProc = new JTextFieldPad();
   private JTextFieldPad txtCodTar = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

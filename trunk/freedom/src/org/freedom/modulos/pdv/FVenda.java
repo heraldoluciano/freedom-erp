@@ -21,20 +21,26 @@
  */
 
 package org.freedom.modulos.pdv;
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -42,8 +48,10 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -53,9 +61,13 @@ import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.funcoes.Logger;
+import org.freedom.modulos.std.DLFechaCompra;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
-import org.freedom.bmps.Icone;
+import org.freedom.telas.FFDialogo;
+
+
 
 public class FVenda extends FDialogo implements KeyListener, CarregaListener, PostListener {
 	
@@ -152,7 +164,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
    private Font fntTotalItem = null;
    private Font fntTotalCupom = null;
-  
+   private Vector vCacheItem = new Vector();
    private Connection con;
    public FVenda() {
    	  setTitulo("Venda");
@@ -283,8 +295,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  tbItem.setTamColuna(20,8);
             	  	     	  
       c.add(pnClienteGeral, BorderLayout.CENTER);
-      //btF3.setText("F3");
-      //btCtrlF3.setText("^F3");
      
   	  btF3.setToolTipText("Cancela último item.");
   	  btCtrlF3.setToolTipText("Cancela item por posição.");   
@@ -443,10 +453,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  	);
         if (FreedomPDV.bECFTerm)
     	    bf.vendaItem(Aplicativo.strUsuario,txtCodProd.getVlrInteger().intValue(),txtDescProd.getVlrString(),txtTipoFisc.getVlrString(),txtQtdade.getVlrDouble().doubleValue(),txtPreco.getVlrDouble().doubleValue(),0,FreedomPDV.bModoDemo);
-   	    else
-  	        return;
         
    	  	atualizaTot();
+   	  	vCacheItem.clear();
+   	    vCacheItem.add(txtCodProd.getVlrInteger());
+   	    vCacheItem.add(txtQtdade.getVlrBigDecimal());
    	  }
    	  catch  (SQLException err) {
    	  	  Funcoes.mensagemErro(null,"Erro ao inserir o ítem.\nInforme esta mensagem ao administrador: \n"+err.getMessage());
@@ -610,8 +621,165 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  //setAtribos(0,0,dTam.getWidth(),dTam.getHeight());
    	  iniVenda();
    }
-   private void leituraX() {
-       
+   private boolean mostraTelaPass() {
+ 	 boolean bRet = false;
+ 	 JTextFieldPad txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+ 	 txtUsu.setText(Aplicativo.strUsuario);
+ 	 JPasswordFieldPad txtPass = new JPasswordFieldPad(8);
+  	 FFDialogo diag = new FFDialogo(this);
+  	 diag.setTitulo("Permissão");
+ 	 diag.setAtribos(300,140);
+ 	 diag.adic(new JLabel("Usuário: "),7,10,100,20);
+ 	 diag.adic(new JLabel("Senha: "),7,30,100,20);
+ 	 diag.adic(txtUsu,110,10,150,20);
+ 	 diag.adic(txtPass,110,30,150,20);
+ 	 diag.adic(new JLabel("Senha: "),7,30,100,20);
+  	 do {
+ 		try {
+ 			diag.setVisible(true);
+ 			if (diag.OK) {
+ 				Properties props = new Properties();
+ 				props.put("user", txtUsu.getVlrString());
+ 				props.put("password", txtPass.getVlrString());
+ 				if (txtUsu.getVlrString().trim().equals("") || txtPass.getVlrString().trim().equals("")) {
+ 					Funcoes.mensagemErro(this,"Campo em branco!");
+ 					continue;
+ 				}
+ 				DriverManager.getConnection(Aplicativo.strBanco, props).close();
+ 				String sSQL = "SELECT ABREGAVETAUSU FROM SGUSUARIO WHERE "+
+ 					                  "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
+ 				PreparedStatement ps = con.prepareStatement(sSQL);
+ 				ps.setString(1,txtUsu.getVlrString());
+ 				ps.setInt(2,Aplicativo.iCodEmp);
+ 				ps.setInt(3,Aplicativo.iCodFilial);
+ 				ResultSet rs = ps.executeQuery();
+ 				if (rs.next()) {
+ 					if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
+						bRet = true;
+ 					}
+ 				}
+ 				if (!bRet)
+ 					Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
+ 				rs.close();
+ 				ps.close();
+ 			}
+ 		}
+ 		catch (java.sql.SQLException e) {
+ 			if (e.getErrorCode() == 335544472) {
+ 				Funcoes.mensagemErro( this, "Nome do usuário ou senha inválidos ! ! !");
+ 				continue;
+ 			}
+			Funcoes.mensagemErro( this,"Não foi possível estabelecer conexão com o banco de dados.\n"+e.getMessage());
+ 		}
+ 		break;
+ 	 } while (true);
+ 	 diag.dispose();
+ 	 return bRet;
+   }
+	private boolean cancItem(int iItem) {
+		boolean bRet = false;
+		String sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' WHERE CODEMP=?" +
+		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E' AND CODITVENDA=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(3,txtCodVenda.getVlrInteger().intValue());
+			ps.setInt(4,iItem);
+			ps.executeUpdate();
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
+			bRet = true;
+		}
+		catch (SQLException err) {
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro cancelar o item "+err.getMessage());
+		}
+		return bRet;
+	}
+	private void leituraX() {
+   	 if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
+   		Funcoes.mensagemInforma(this,"Ainda existe uma venda ativa!");
+   		return;
+   	 }
+   	 if (Funcoes.mensagemConfirma(null, "Confirma impressão de leitura X?") == JOptionPane.YES_OPTION) {
+   		JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+   		bf.leituraX(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
+   	 }
+   }
+   private void abreGaveta() {
+   	 if (mostraTelaPass()) {
+   		JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+   		bf.abreGaveta(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
+   	 }
+   }
+   private void repeteItem() {
+   	  if (vCacheItem.size() == 2) {
+   	  	try {
+   	  		Robot robo = new Robot();
+   	  		txtCodProd.requestFocus();
+   	  		txtCodProd.setVlrInteger((Integer)vCacheItem.elementAt(0));
+   	  		robo.keyPress(KeyEvent.VK_ENTER);
+   	  	    txtQtdade.requestFocus();
+   	  		txtQtdade.setVlrBigDecimal((BigDecimal)vCacheItem.elementAt(1));
+   	  		robo.keyPress(KeyEvent.VK_ENTER);
+   	    }
+   	    catch (AWTException err) { }
+   	  }
+   }
+   private void trocaCli() {
+   	 try {
+   		Robot robo = new Robot();
+   		txtCodCli.requestFocus();
+   		robo.keyPress(KeyEvent.VK_F2);
+   	 } 
+   	 catch (AWTException err) { }
+   }
+   private void cancItem() {
+ 	 if (tbItem.getNumLinhas() < 1) {
+  		Funcoes.mensagemErro(this,"Não existe nenhum item para ser cancelado!");
+  		return;
+  	 }
+	 int iItem = ((Integer)tbItem.getValor(tbItem.getNumLinhas()-1,0)).intValue();
+	 if (Funcoes.mensagemConfirma(null,"Deseja realmente cancelar o item anterior?") == JOptionPane.YES_OPTION) {
+		if (cancItem(iItem)) {
+			if (FreedomPDV.bECFTerm)
+				if (bf.cancelaItemAnterior(Aplicativo.strUsuario,FreedomPDV.bModoDemo))
+					btOK.doClick();
+		}
+		else {
+			Funcoes.mensagemErro(null,"Não foi possível cancelar o item.");
+		}
+	}
+   }
+   private void cancCupom() {
+  	 if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
+  		Funcoes.mensagemErro(this,"Não existe nenhuma venda ativa!");
+  		return;
+  	 }
+  	 DLCancCupom canc = new DLCancCupom(con);
+  	 canc.buscaExterna(txtCodVenda.getVlrInteger());
+  	 canc.setVisible(true);
+  	 if (canc.OK) {
+  	 	if (canc.isCancCupom())
+  	  	 	iniVenda();
+  	 	else {
+  	 		int iItemCanc = canc.getCancItem();
+  	 		marcaLinha(iItemCanc);
+  	 	}
+  	 		
+  	 		
+  	 }
+	 canc.dispose();
+   }
+   private void marcaLinha(int iItem) {
+   	 for (int i=0;i<tbItem.getNumLinhas();i++) {
+   		if (iItem == ((Integer)tbItem.getValor(i,0)).intValue()) {
+   			tbItem.setRowBackGround(i,new Color(254,213,192));
+   			tbItem.updateUI();
+   			break;
+   		}
+   	 } 
    }
    private void fechaVenda() {
    	 if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
@@ -626,6 +794,20 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	 }
  	 fecha.dispose();
    }
+   private void fechaCaixa() {
+  	 if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
+  		Funcoes.mensagemInforma(this,"Ainda existe uma venda ativa!");
+  		return;
+  	 }
+  	 DLFechaDia fecha = new DLFechaDia();
+  	 fecha.setConexao(con);
+  	 fecha.setVisible(true);
+  	 if (fecha.OK) {
+  	 	fecha.dispose();
+  	 	this.dispose();
+  	 }
+	 fecha.dispose();
+  }
    public void keyPressed(KeyEvent kevt) {
    	  switch(kevt.getKeyCode()) {
    	  	case KeyEvent.VK_F3: btF3.doClick(); break;
@@ -666,13 +848,25 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
      }
    }
   /* (non-Javadoc)
-   * @see org.acao.PostListener#beforePost(org.acao.PostEvent)
+   * @see org.freedom.acao.PostListener#beforePost(org.freedom.acao.PostEvent)
    */
   public void actionPerformed(ActionEvent evt) {
+  	if (evt.getSource() == btF3)
+  		cancItem();
+  	if (evt.getSource() == btCtrlF3)
+  		cancCupom();
   	if (evt.getSource() == btF4)
   		fechaVenda();
   	if (evt.getSource() == btF5)
   		leituraX();
+  	if (evt.getSource() == btF6)
+  		abreGaveta();
+  	if (evt.getSource() == btF8)
+  		repeteItem();
+  	if (evt.getSource() == btF9)
+  		trocaCli();
+  	if (evt.getSource() == btF10)
+  		fechaCaixa();
   }
   public void beforePost(PostEvent pevt) { }
 }

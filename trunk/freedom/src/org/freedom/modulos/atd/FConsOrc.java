@@ -38,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -51,7 +52,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
-import org.freedom.bmps.Icone;
+
 public class FConsOrc extends FFilho implements ActionListener {
 	private Painel pinCab = new Painel(0,250);
 	private JPanel pnCli = new JPanel(new BorderLayout());

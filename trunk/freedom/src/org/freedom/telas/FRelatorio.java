@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- * Pacote: org.telas <BR>
+ * Pacote: org.freedom.telas <BR>
  * Classe: @(#)FRelatorio.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
@@ -34,8 +34,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.freedom.componentes.Painel;
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.Painel;
+
 
 public abstract class FRelatorio extends FFilho implements ActionListener,KeyListener {
   private Painel pinCli = new Painel(350,170);

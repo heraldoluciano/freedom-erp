@@ -27,6 +27,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 
+
 public class NFMaviGesso extends Leiaute {
   private String sMensAdic="";
   private String sNumNota = ""; 

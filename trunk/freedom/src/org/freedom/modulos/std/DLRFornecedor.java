@@ -20,7 +20,12 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.telas.FFDialogo;
+
+import java.awt.Component;
+import java.awt.GridLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
@@ -28,11 +33,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
+import org.freedom.telas.FFDialogo;
 
-import java.awt.Component;
-import java.awt.GridLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.sql.Connection;
 import java.util.Vector;
 public class DLRFornecedor extends FFDialogo {
