@@ -166,9 +166,7 @@ public class FREstoqueMin extends FRelatorio {
     sOrdenado += Funcoes.replicate(" ",134-sOrdenado.length())+" |";
     
     ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;
-//    imp.montaCab();
-    imp.setTitulo("Relatorio de Estoque Abaixo do Minimo");
+    int linPag = imp.verifLinPag()-1;    
     
     if (txtCodGrup.getText().trim().length() > 0) {
             sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
@@ -218,7 +216,10 @@ public class FREstoqueMin extends FRelatorio {
         sCodgrup = rs.getString("codgrup");      
 
         if (imp.pRow()==0) {
+           imp.montaCab();
            imp.impCab(136, false);
+           imp.setTitulo("Relatorio de Estoque Abaixo do Minímo");
+           
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
