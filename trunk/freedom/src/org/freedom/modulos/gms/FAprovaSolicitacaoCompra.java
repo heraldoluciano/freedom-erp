@@ -57,6 +57,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLInputText;
@@ -243,8 +244,11 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			txtRefProd.setSoLeitura(true);
 			adic(txtRefProd, 40, 20, 67, 20);
+			txtRefProd.setFK(true);
+		  	txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
+		  	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
 		}
 
 		txtCodUsu.setSoLeitura(true);

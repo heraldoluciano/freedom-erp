@@ -310,12 +310,16 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     setNavegador(navRod);
     adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",ListaCampos.DB_PK, true);
     if (comRef()) {
+      txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
       adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
       adicCampoInvisivel(txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false);
+      
       adic(new JLabelPad("Referência"), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
+      txtRefProd.setFK(true);
     }
     else {
+      txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
       adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
     }
     txtCustoItCompra.setSoLeitura(true);
@@ -343,13 +347,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     pinTot.adic(new JLabelPad("Total Geral"), 7, 80, 120, 20);
     pinTot.adic(txtVlrLiqCompra, 7, 100, 120, 20);
     txtCodNat.setStrMascara("#.###");
-
-    txtRefProd.addKeyListener(new KeyAdapter() {
-      public void keyPressed(KeyEvent kevt) {
-        lcDet.edit();
-      }
+/*
+    txtRefProd.addKeyListener(new KeyAdapter() {  
+    	public void keyPressed(KeyEvent kevt) {       
+    		lcDet.edit();
+        }
     });
-
+*/
     setListaCampos(true, "ITCOMPRA", "CP");
     lcDet.setQueryInsert(false);
     montaTab();
@@ -664,6 +668,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     else if (kevt.getKeyCode() == KeyEvent.VK_F4) {
       btFechaCompra.doClick();
     }
+    if (kevt.getSource() == txtRefProd)
+        lcDet.edit();
+
     super.keyPressed(kevt);
   }
   public void actionPerformed(ActionEvent evt) {

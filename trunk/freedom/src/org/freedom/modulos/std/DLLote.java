@@ -127,5 +127,3 @@ public class DLLote extends FFDialogo {
     }
   }
 }
-
-

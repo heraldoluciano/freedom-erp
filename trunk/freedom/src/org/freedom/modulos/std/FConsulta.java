@@ -164,11 +164,14 @@ public class FConsulta extends FFilho implements CarregaListener {
 		// Fim da aba de consulta de saldo por produto		
 		adicBotaoSair();
 		
+		
+		
 	}
 	
 	private void montaTela() {
 	    // Aba de saldos por produto 
 		if (comRef()) {
+			txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
 			txtRefProd.setRequerido(true);
 			lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod", ListaCampos.DB_PK, false));
 			lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
@@ -184,6 +187,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 			lcProd2.setConexao(con);
 		}
 		else {
+			txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
 			pinCabProd.adic(new JLabelPad("Cód.prod."),7,0,90,20);
 			pinCabProd.adic(new JLabelPad("Descrição do produto"),100,0,200,20);
 			pinCabProd.adic(txtCodProd,7,20,90,20);

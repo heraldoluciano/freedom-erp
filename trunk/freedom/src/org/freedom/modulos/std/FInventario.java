@@ -162,14 +162,15 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     adicDescFK(txtDescTipoMov, 100, 60, 207, 20, "DescTipoMov", "Descrição do tipo de movimento");
     
     if (comRef()) {
+      txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
       adicCampoInvisivel(txtRefProd2,"RefProd","Referência do produto", ListaCampos.DB_SI, false);
-//      adicCampoInvisivel(txtRefProd,"RefProd","Referência",txtRefProd.TP_STRING,13,0,false,true,null,true);
       adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
       txtRefProd.setRequerido(true);
       adic(new JLabelPad("Referência"), 7, 80, 80, 20);
       adic(txtRefProd, 7, 100, 80, 20);
     }
     else {
+      txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
       adicCampo(txtCodProd, 7, 100, 90, 20,"CodProd","Cód.prod", ListaCampos.DB_FK, txtDescProd, true);
     }
     adicDescFK(txtDescProd, 100, 100, 207, 20, "DescProd", "Descrição do produto");

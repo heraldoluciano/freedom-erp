@@ -55,6 +55,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
+import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
@@ -337,14 +338,17 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
     setListaCampos(lcDet);
     setNavegador(navRod);
     adicCampo(txtCodItOrc, 7, 20, 30, 20,"CodItOrc","Item", ListaCampos.DB_PK ,true);
-    if (oPrefs[0]==Boolean.TRUE) {
+    if (((Boolean)oPrefs[0]).booleanValue()) {
       adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.", ListaCampos.DB_FK ,txtDescProd, false);
       adicCampoInvisivel(txtRefProd,"RefProd","Referência", ListaCampos.DB_FK, false);
       adic(new JLabelPad("Referência"), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
+      txtRefProd.setFK(true);
+      txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
     }
     else {
       adicCampo(txtCodProd, 40, 20, 67, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd,true);
+      txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
     }
     adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd", "Descrição do produto");
     adicCampo(txtQtdItOrc, 340, 20, 47, 20,"QtdItOrc","Qtd.", ListaCampos.DB_SI, true);

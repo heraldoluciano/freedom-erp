@@ -28,6 +28,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.FDetalhe;
 
 public class FEstFase extends FDetalhe {
@@ -148,5 +149,7 @@ public class FEstFase extends FDetalhe {
     lcFase.setConexao(cn);
     lcTipoRec.setConexao(cn);
     txtCodProd.setVlrInteger(new Integer(iCodProd));
-    lcCampos.carregaDados();  }        
+    lcCampos.carregaDados();
+    txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+   }        
 }
