@@ -30,19 +30,20 @@ import java.sql.SQLException;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener {
-  private JTextFieldPad txtCodAtrib = new JTextFieldPad(15);
-  private JTextFieldPad txtDescAtrib = new JTextFieldPad(50);
+  private JTextFieldPad txtCodAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,15,0);
+  private JTextFieldPad txtDescAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaObsAtrib = new JTextAreaPad();
   public FAtribuicao () {
     setTitulo("Cadastro de Atribuições");
     setAtribos( 20, 20, 370, 225);
-    adicCampo(txtCodAtrib, 7, 20, 80, 20,"CodAtrib","Cód.atrib.",JTextFieldPad.TP_STRING,15,0,true,false,null,true);
-    adicCampo(txtDescAtrib, 90, 20, 250, 20,"DescAtrib","Descrição da atribuição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-	adicDB(txaObsAtrib, 7, 60, 333, 80,"ObsAtrib","Observação",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtCodAtrib, 7, 20, 80, 20,"CodAtrib","Cód.atrib.",ListaCampos.DB_PK,true);
+    adicCampo(txtDescAtrib, 90, 20, 250, 20,"DescAtrib","Descrição da atribuição",ListaCampos.DB_SI, true);
+	adicDB(txaObsAtrib, 7, 60, 333, 80,"ObsAtrib","Observação",true);
     setListaCampos( true, "ATRIBUICAO", "AT");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

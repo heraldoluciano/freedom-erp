@@ -225,6 +225,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     catch (Exception e) { }
     pinDados.adic(comp,X,Y,Larg,Alt); 
   }
+  // COMENTADO AQUI
   public JLabel adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
       String label, int tipo, int tam, int dec, boolean pk, boolean fk, JTextFieldFK txtDescFK, boolean req) {
     comp.setTipo(tipo,tam,dec);
@@ -276,7 +277,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	adic(new JLabel(label), X, Y-20, Larg, 20);
 	adic(comp, X, Y, Larg, Alt);
   }
-  
+  // COMENTADO AQUI
   public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
        int tipo, int tam, int dec, boolean pk, boolean fk, JTextFieldFK txtDescFK, boolean req) {
     comp.setTipo(tipo,tam,dec);
@@ -290,8 +291,23 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     navSeq.setListaCampos(lcSeq);
     lcSeq.setNavegador(navSeq);
     lcSeq.setState(ListaCampos.LCS_NONE);
-  }
-  
+  } 
+  public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
+	byte key, JTextFieldFK txtDescFK, boolean req) {
+	comp.addKeyListener(this);
+	comp.addKeyListener(navSeq);
+	comp.setName("txt"+nome);
+	comp.setNomeCampo(nome);
+	comp.setListaCampos(lcSeq);
+	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
+	navSeq.setListaCampos(lcSeq);
+	lcSeq.setNavegador(navSeq);
+	lcSeq.setState(ListaCampos.LCS_NONE);
+  }   
+  public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
+   		byte key,  boolean req) {
+  	 adicCampoInvisivel(comp, nome, label, key, null, req);
+  }   
   public JLabel adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label) {
     comp.setNomeCampo(nome);
     comp.addKeyListener(this);
@@ -302,6 +318,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     adic(comp, X, Y, Larg, Alt);
     return lbTmp;
   }
+  //COMENTADO AQUI
   public JLabel adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label, int Tipo, int tam, int dec) {
     comp.setNomeCampo(nome);
     comp.addKeyListener(this);
@@ -313,6 +330,20 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     adic(comp, X, Y, Larg, Alt);
     return lbTmp;
   }
+  public void adicDBLiv( Component comp, String nome, String label, boolean req) { 
+    comp.setName(nome);
+    comp.addKeyListener(this);
+    comp.addKeyListener(navSeq);
+    if (comp instanceof JRadioGroup)
+      ((JRadioGroup) comp).setListaCampos(lcSeq);
+    else if (comp instanceof JCheckBoxPad)
+      ((JCheckBoxPad) comp).setListaCampos(lcSeq);
+    else if (comp instanceof JTextAreaPad)
+      ((JTextAreaPad) comp).setListaCampos(lcSeq);
+    lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+  }
+
+// COMENTADO AQUI  
   public void adicDBLiv( Component comp, String nome, String label, int tipo, boolean req) { 
     comp.setName(nome);
     comp.addKeyListener(this);
@@ -349,7 +380,8 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	  adic(comp, X, Y, Larg, Alt);
   }
   
-  // deprecated 
+  // deprecated
+  //COMENTADO AQUI
   public void adicDB( Component comp, int X, int Y, int Larg, int Alt, String nome, String label, int tipo, boolean req) {
   	boolean bScroll = false;
     comp.setName(nome);
@@ -371,7 +403,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
   	  adic(new JScrollPane(comp),X, Y, Larg, Alt);
     else 
 	  adic(comp, X, Y, Larg, Alt);
-  }
+  }  
   public void setNavegador(Navegador nv) {
     navSeq = nv;
   }

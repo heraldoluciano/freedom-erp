@@ -87,14 +87,14 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   	setTitulo("Atendimento");
   	setAtribos(20,20,540,400);
   	
-	lcConv.add(new GuardaCampo( txtCodConv, 7, 20, 80, 20, "CodConv", "Cód.conv", true, false, txtNomeConv, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtNomeConv, 7, 20, 200, 20, "NomeConv", "Nome do conveniado", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtRGConv, 7, 20, 200, 20, "RGConv", "RG", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtCPFConv, 7, 20, 200, 20, "CPFConv", "CPF", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtTelConv, 7, 20, 200, 20, "FoneConv", "Fone.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtPaiConv, 7, 20, 200, 20, "PaiConv", "Pai", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtMaeConv, 7, 20, 200, 20, "MaeConv", "Mae", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcConv.add(new GuardaCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli", false, true, txtNomeCli, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+	lcConv.add(new GuardaCampo( txtCodConv, "CodConv", "Cód.conv", ListaCampos.DB_PK ,false));
+	lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI,false));
+	lcConv.add(new GuardaCampo( txtRGConv, "RGConv", "RG", ListaCampos.DB_SI ,false));
+	lcConv.add(new GuardaCampo( txtCPFConv, "CPFConv", "CPF", ListaCampos.DB_SI,false));
+	lcConv.add(new GuardaCampo( txtTelConv, "FoneConv", "Fone.",ListaCampos.DB_SI,false));
+	lcConv.add(new GuardaCampo( txtPaiConv, "PaiConv", "Pai", ListaCampos.DB_SI, false));
+	lcConv.add(new GuardaCampo( txtMaeConv, "MaeConv", "Mae", ListaCampos.DB_SI, false));
+	lcConv.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_SI,false));
 	lcConv.montaSql(false, "CONVENIADO", "AT");    
 	lcConv.setReadOnly(true);
 	txtCodConv.setTabelaExterna(lcConv);
@@ -103,8 +103,8 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	txtTelConv.setMascara(JTextFieldPad.MC_FONEDDD);
 	txtCPFConv.setMascara(JTextFieldPad.MC_CPF);
     
-	lcCli.add(new GuardaCampo( txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", true, false, txtNomeCli, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcCli.add(new GuardaCampo( txtNomeCli, 7, 20, 200, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+	lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 	lcCli.montaSql(false, "CLIENTE", "VD");    
 	lcCli.setReadOnly(true);
 	txtCodCli.setTabelaExterna(lcCli);

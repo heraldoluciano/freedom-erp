@@ -59,12 +59,26 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
       }
     }); */
   }
-/*  private void setTipo() {
-    if (valores.elementAt(0) instanceof Integer)
-      Tipo = TP_INTEGER;
-    else if (valores.elementAt(0) instanceof String)
-      Tipo = TP_STRING;
-  } */
+  public JComboBoxPad(Vector label, Vector val, int Tipo) {
+    if (val != null && label != null) {
+      valores = val;
+      labels = label;
+      for (int i=0; i<label.size(); i++) {
+        addItem(label.elementAt(i));
+      }
+    }
+    addItem("");
+    addItemListener(this);
+    this.Tipo = Tipo;
+/*    addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent mevt) {
+        fireValorAlterado(getSelectedIndex());
+      	if (lcCombo != null) {
+      	  lcCombo.edit();
+      	}
+      }
+    }); */
+  }
   public void setItens(Vector label, Vector val) {
     removeAllItems();
     valores = val;

@@ -36,44 +36,45 @@ public class FPrefereAtend extends FTabDados {
 	private Painel pinSetor = null;
 	private Painel pinConv = null;
 	private Painel pinOrc = null;
-	private JTextFieldPad txtClassMedida = new JTextFieldPad();
-	private JTextFieldPad txtCodTpAtend = new JTextFieldPad();
-	private JTextFieldFK txtDescTpAtend = new JTextFieldFK();
+
+	private JTextFieldPad txtClassMedida = new JTextFieldPad(JTextFieldPad.TP_STRING, 20 , 0);
+	private JTextFieldPad txtCodTpAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTpAtend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcTpAtend = new ListaCampos(this,"TO");
-	private JTextFieldPad txtCodTpAtend2 = new JTextFieldPad();
-	private JTextFieldFK txtDescTpAtend2 = new JTextFieldFK();
+	private JTextFieldPad txtCodTpAtend2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTpAtend2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcTpAtend2 = new ListaCampos(this,"T2");
-	private JTextFieldPad txtCodTpAtend3 = new JTextFieldPad();
-	private JTextFieldFK txtDescTpAtend3 = new JTextFieldFK();
+	private JTextFieldPad txtCodTpAtend3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTpAtend3 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcTpAtend3 = new ListaCampos(this,"T3");
-	private JTextFieldPad txtCodSetor = new JTextFieldPad();
-	private JTextFieldFK txtDescSetor = new JTextFieldFK();
+	private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcSetor = new ListaCampos(this,"TO");
-	private JTextFieldPad txtCodSetor2 = new JTextFieldPad();
-	private JTextFieldFK txtDescSetor2 = new JTextFieldFK();
+	private JTextFieldPad txtCodSetor2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescSetor2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcSetor2 = new ListaCampos(this,"T2");
-	private JTextFieldPad txtCodAtend = new JTextFieldPad();
-	private JTextFieldFK txtNomeAtend = new JTextFieldFK();
+	private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
+	private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0 );
 	private ListaCampos lcAtend = new ListaCampos(this,"AE");
-	private JTextFieldPad txtCodTipoCli = new JTextFieldPad(8);
-	private JTextFieldFK  txtDescTipoCli = new JTextFieldFK();
+	private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK  txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
-	private JTextFieldPad txtCodClas = new JTextFieldPad(8);
-	private JTextFieldFK  txtDescClas = new JTextFieldFK();
+	private JTextFieldPad txtCodClas = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK  txtDescClas = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcClas = new ListaCampos(this,"CI");
-	private JTextFieldPad txtCodTBA = new JTextFieldPad(8);
-	private JTextFieldFK txtDescTBA = new JTextFieldFK();
+	private JTextFieldPad txtCodTBA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTBA = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private ListaCampos lcTabAC = new ListaCampos(this,"TA");
-	private JTextFieldPad txtCodITTBA = new JTextFieldPad(8);
-	private JTextFieldFK txtDescITTBA = new JTextFieldFK();
+	private JTextFieldPad txtCodITTBA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescITTBA = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private ListaCampos lcTabITAC = new ListaCampos(this,"TA");
-	private JTextFieldPad txtCodTBV = new JTextFieldPad(8);
-	private JTextFieldFK txtDescTBV = new JTextFieldFK();
+	private JTextFieldPad txtCodTBV = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTBV = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private ListaCampos lcTabAV = new ListaCampos(this,"TA");
-	private JTextFieldPad txtCodITTBV = new JTextFieldPad(8);
-	private JTextFieldFK txtDescITTBV = new JTextFieldFK();
-	private JTextFieldPad txtCodVend = new JTextFieldPad(8);
-	private JTextFieldFK txtNomeVend = new JTextFieldFK();
+	private JTextFieldPad txtCodITTBV = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescITTBV = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	
 	private ListaCampos lcTabITAV = new ListaCampos(this,"TA");
 	private ListaCampos lcVend = new ListaCampos(this,"VD");
@@ -83,104 +84,81 @@ public class FPrefereAtend extends FTabDados {
 		setAtribos(50, 50, 355, 375);
 		
 //Tipo:
-        txtClassMedida.setTipo(JTextFieldPad.TP_STRING, 20 , 0);
           
-        txtCodAtend.setTipo(JTextFieldPad.TP_INTEGER, 8 , 0);
-        txtNomeAtend.setTipo(JTextFieldPad.TP_STRING, 50, 0 );
-        lcAtend.add(new GuardaCampo(txtCodAtend,7,100,80,20,"CodAtend","Cód.atend.",true,false,null,JTextFieldPad.TP_INTEGER,true),"txtCodAtend");
-        lcAtend.add(new GuardaCampo(txtNomeAtend,90,100,207,20,"NomeAtend","Nome atendente",false,false,null,JTextFieldPad.TP_STRING,false),"txtNomeAtend");
+        lcAtend.add(new GuardaCampo(txtCodAtend, "CodAtend","Cód.atend.", ListaCampos.DB_PK ,true));
+        lcAtend.add(new GuardaCampo(txtNomeAtend, "NomeAtend","Nome atendente" ,ListaCampos.DB_SI, false));
         lcAtend.montaSql(false,"ATENDENTE", "AT");
         lcAtend.setQueryCommit(false);
         lcAtend.setReadOnly(true);
         txtCodAtend.setTabelaExterna(lcAtend);
         
-        txtCodTipoCli.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-        txtDescTipoCli.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-        lcTipoCli.add(new GuardaCampo(txtCodTipoCli,7,100,80,20,"CodTipoCli","Cód.tp.cli.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodTipoCli");
-        lcTipoCli.add(new GuardaCampo(txtDescTipoCli,90,100,207,20,"DescTipoCli","Descrição do tipo de cliente",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescTipoCli");
+        lcTipoCli.add(new GuardaCampo(txtCodTipoCli, "CodTipoCli","Cód.tp.cli.", ListaCampos.DB_PK, false));
+        lcTipoCli.add(new GuardaCampo(txtDescTipoCli, "DescTipoCli","Descrição do tipo de cliente", ListaCampos.DB_SI, false));
         lcTipoCli.montaSql(false, "TIPOCLI", "VD");
         lcTipoCli.setQueryCommit(false);
         lcTipoCli.setReadOnly(true);
         txtCodTipoCli.setTabelaExterna(lcTipoCli);
 
-		txtCodClas.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescClas.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-		lcClas.add(new GuardaCampo(txtCodClas,7,100,80,20,"CodClasCli","Cód.c.cli.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodClas");
-		lcClas.add(new GuardaCampo(txtDescClas,90,100,207,20,"DescClasCli","Descrição da calssificação do cliente",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescClas");
+		lcClas.add(new GuardaCampo(txtCodClas, "CodClasCli","Cód.c.cli.", ListaCampos.DB_PK, false));
+		lcClas.add(new GuardaCampo(txtDescClas, "DescClasCli","Descrição da calssificação do cliente", ListaCampos.DB_SI, false));
 		lcClas.montaSql(false, "CLASCLI", "VD");
 		lcClas.setQueryCommit(false);
 		lcClas.setReadOnly(true);
 		txtCodClas.setTabelaExterna(lcClas);
 		
-		txtCodTBA.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescTBA.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-		lcTabAC.add(new GuardaCampo(txtCodTBA,7,100,80,20,"CodTB","Cód.tab.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodTBA");
-		lcTabAC.add(new GuardaCampo(txtDescTBA,90,100,207,20,"DescTB","Descrição da tabela padrão para aceite",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescTBA");
+		lcTabAC.add(new GuardaCampo(txtCodTBA, "CodTB","Cód.tab.", ListaCampos.DB_PK, false));
+		lcTabAC.add(new GuardaCampo(txtDescTBA, "DescTB","Descrição da tabela padrão para aceite", ListaCampos.DB_SI, false));
 		lcTabAC.montaSql(false, "TABELA", "SG");
 		lcTabAC.setQueryCommit(false);
 		lcTabAC.setReadOnly(true);
 		txtCodTBA.setTabelaExterna(lcTabAC);
 
-		txtCodITTBA.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescITTBA.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-		lcTabITAC.add(new GuardaCampo(txtCodITTBA,7,100,80,20,"CodITTB","Cód.it.tab.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodITTBA");
-		lcTabITAC.add(new GuardaCampo(txtDescITTBA,90,100,207,20,"DescITTB","Descrição da situação para aceite",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescITTBA");
+		lcTabITAC.add(new GuardaCampo(txtCodITTBA, "CodITTB","Cód.it.tab.", ListaCampos.DB_PK, false));
+		lcTabITAC.add(new GuardaCampo(txtDescITTBA, "DescITTB","Descrição da situação para aceite", ListaCampos.DB_SI, false));
 		lcTabITAC.setDinWhereAdic("CODTB = #N",txtCodTBA);
 		lcTabITAC.montaSql(false, "ITTABELA", "SG");
 		lcTabITAC.setQueryCommit(false);
 		lcTabITAC.setReadOnly(true);
 		txtCodITTBA.setTabelaExterna(lcTabITAC);
 
-		txtCodTBV.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescTBV.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-		lcTabAV.add(new GuardaCampo(txtCodTBV,7,100,80,20,"CodTB","Cód.tab.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodTBV");
-		lcTabAV.add(new GuardaCampo(txtDescTBV,90,100,207,20,"DescTB","Descrição da tabela padrão para aceite",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescTBV");
+		lcTabAV.add(new GuardaCampo(txtCodTBV, "CodTB","Cód.tab.", ListaCampos.DB_PK , false));
+		lcTabAV.add(new GuardaCampo(txtDescTBV, "DescTB","Descrição da tabela padrão para aceite", ListaCampos.DB_SI, false));
 		lcTabAV.montaSql(false, "TABELA", "SG");
 		lcTabAV.setQueryCommit(false);
 		lcTabAV.setReadOnly(true);
 		txtCodTBV.setTabelaExterna(lcTabAV);
 
-		txtCodITTBV.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescITTBV.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-		lcTabITAV.add(new GuardaCampo(txtCodITTBV,7,100,80,20,"CodITTB","Cód.it.tab.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodITTBV");
-		lcTabITAV.add(new GuardaCampo(txtDescITTBV,90,100,207,20,"DescITTB","Descrição da situação para aceite",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescITTBV");
+		lcTabITAV.add(new GuardaCampo(txtCodITTBV, "CodITTB","Cód.it.tab.",ListaCampos.DB_PK, false));
+		lcTabITAV.add(new GuardaCampo(txtDescITTBV, "DescITTB","Descrição da situação para aceite", ListaCampos.DB_SI, false));
 		lcTabITAV.setDinWhereAdic("CODTB = #N",txtCodTBV);
 		lcTabITAV.montaSql(false, "ITTABELA", "SG");
 		lcTabITAV.setQueryCommit(false);
 		lcTabITAV.setReadOnly(true);
 		txtCodITTBV.setTabelaExterna(lcTabITAV);
         
-		txtCodVend.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtNomeVend.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-		lcVend.add(new GuardaCampo(txtCodVend,7,100,80,20,"CodVend","Cód.repr.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-		lcVend.add(new GuardaCampo(txtNomeVend,90,100,207,20,"NomeVend","Nome do represetante",false,false,null,JTextFieldPad.TP_STRING,false),"txtNomeVend");
+		lcVend.add(new GuardaCampo(txtCodVend, "CodVend","Cód.repr.", ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo(txtNomeVend, "NomeVend","Nome do represetante", ListaCampos.DB_SI, false));
 		lcVend.montaSql(false, "VENDEDOR", "VD");
 		lcVend.setQueryCommit(false);
 		lcVend.setReadOnly(true);
 		txtCodVend.setTabelaExterna(lcVend);
            
-		txtCodTpAtend.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescTpAtend.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-		lcTpAtend.add(new GuardaCampo(txtCodTpAtend,7,100,80,20,"CodTpAtendo","Cód.tp.atend.",true,false,null,JTextFieldPad.TP_INTEGER,true),"txtCodUnidx");
-		lcTpAtend.add(new GuardaCampo(txtDescTpAtend,90,100,207,20,"DescTpAtendo","Descrição do tipo de atendimento",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+		lcTpAtend.add(new GuardaCampo(txtCodTpAtend, "CodTpAtendo","Cód.tp.atend.", ListaCampos.DB_PK, true));
+		lcTpAtend.add(new GuardaCampo(txtDescTpAtend, "DescTpAtendo","Descrição do tipo de atendimento", ListaCampos.DB_SI ,false));
 		lcTpAtend.montaSql(false, "TIPOATENDO", "AT");
 		lcTpAtend.setQueryCommit(false);
 		lcTpAtend.setReadOnly(true);
 		txtCodTpAtend.setTabelaExterna(lcTpAtend);
 
-		txtCodTpAtend2.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescTpAtend2.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-		lcTpAtend2.add(new GuardaCampo(txtCodTpAtend2,7,100,80,20,"CodTpAtendo","Cód.tp.atend.",true,false,null,JTextFieldPad.TP_INTEGER,true),"txtCodUnidx");
-		lcTpAtend2.add(new GuardaCampo(txtDescTpAtend2,90,100,207,20,"DescTpAtendo","Descrição do tipo de atendimento",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+		lcTpAtend2.add(new GuardaCampo(txtCodTpAtend2, "CodTpAtendo","Cód.tp.atend.", ListaCampos.DB_PK, true));
+		lcTpAtend2.add(new GuardaCampo(txtDescTpAtend2, "DescTpAtendo","Descrição do tipo de atendimento", ListaCampos.DB_SI ,false));
 		lcTpAtend2.montaSql(false, "TIPOATENDO", "AT");
 		lcTpAtend2.setQueryCommit(false);
 		lcTpAtend2.setReadOnly(true);
 		txtCodTpAtend2.setTabelaExterna(lcTpAtend2);
 
-		txtCodTpAtend3.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescTpAtend3.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-		lcTpAtend3.add(new GuardaCampo(txtCodTpAtend3,7,100,80,20,"CodTpAtendo","Códtp.atend.",true,false,null,JTextFieldPad.TP_INTEGER,true),"txtCodUnidx");
-		lcTpAtend3.add(new GuardaCampo(txtDescTpAtend3,90,100,207,20,"DescTpAtendo","Descrição do tipo de atendimento",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+		lcTpAtend3.add(new GuardaCampo(txtCodTpAtend3, "CodTpAtendo","Códtp.atend.",ListaCampos.DB_PK, true));
+		lcTpAtend3.add(new GuardaCampo(txtDescTpAtend3, "DescTpAtendo","Descrição do tipo de atendimento", ListaCampos.DB_SI, false));
 		lcTpAtend3.montaSql(false, "TIPOATENDO", "AT");
 		lcTpAtend3.setQueryCommit(false);
 		lcTpAtend3.setReadOnly(true);
@@ -208,19 +186,15 @@ public class FPrefereAtend extends FTabDados {
 
 //Setor:
 		
-		txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescSetor.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-		lcSetor.add(new GuardaCampo(txtCodSetor,7,100,80,20,"CodSetAt","Cód.setor",true,false,null,JTextFieldPad.TP_INTEGER,true),"txtCodUnidx");
-		lcSetor.add(new GuardaCampo(txtDescSetor,90,100,207,20,"DescSetAt","Descrição do setor",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+		lcSetor.add(new GuardaCampo(txtCodSetor, "CodSetAt","Cód.setor", ListaCampos.DB_PK, true));
+		lcSetor.add(new GuardaCampo(txtDescSetor, "DescSetAt","Descrição do setor", ListaCampos.DB_SI, false));
 		lcSetor.montaSql(false, "SETOR", "AT");
 		lcSetor.setQueryCommit(false);
 		lcSetor.setReadOnly(true);
 		txtCodSetor.setTabelaExterna(lcSetor);
 
-		txtCodSetor2.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-		txtDescSetor2.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-		lcSetor2.add(new GuardaCampo(txtCodSetor2,7,100,80,20,"CodSetAt","Cód.setor",true,false,null,JTextFieldPad.TP_INTEGER,true),"txtCodSetAt2");
-		lcSetor2.add(new GuardaCampo(txtDescSetor2,90,100,207,20,"DescSetAt","Descrição do setor",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescSetor2");
+		lcSetor2.add(new GuardaCampo(txtCodSetor2, "CodSetAt","Cód.setor", ListaCampos.DB_PK, true));
+		lcSetor2.add(new GuardaCampo(txtDescSetor2, "DescSetAt","Descrição do setor", ListaCampos.DB_SI, false));
 		lcSetor2.montaSql(false, "SETOR", "AT");
 		lcSetor2.setQueryCommit(false);
 		lcSetor2.setReadOnly(true);
