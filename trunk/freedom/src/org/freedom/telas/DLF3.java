@@ -31,7 +31,7 @@ import org.freedom.componentes.Tabela;
 public abstract class DLF3 extends FFDialogo implements KeyListener {
   public Tabela tab = new Tabela();
   public boolean bPrimeira = false;
-  private JScrollPane spnCentro = new JScrollPane(tab);
+  private JScrollPane spnCentro = new JScrollPane(tab); 
   public Object oRetVal = null;
   /**
    * 
@@ -50,10 +50,7 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
     setResizable(true);
     
     c.add( spnCentro, BorderLayout.CENTER);    
-    tab.adicColuna("Cód.");
-    tab.adicColuna("Ref.");    
-    tab.setTamColuna(120,0);
-    tab.setTamColuna(100,1);
+
     
     tab.addKeyListener(this);
     
@@ -70,7 +67,9 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
        }
     );
   }
-  public abstract void setValor(Object oVal);
+  public boolean setValor(Object oVal,String sTipo) {
+  	return false;
+  }
   public Object getValor() {
     return oRetVal;
   }
