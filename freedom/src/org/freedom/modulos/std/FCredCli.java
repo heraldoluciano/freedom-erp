@@ -217,7 +217,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
   private ListaCampos lcTipoCob = new ListaCampos(this,"TC");
+  private ListaCampos lcRefPes = new ListaCampos(this,"RP");
   private Navegador navFicha = new Navegador(false);
+  private Navegador navRefPes = new Navegador(true);
   private boolean bFisTipoCli = false;
   private boolean bJurTipoCli = false;
   private boolean bCheqTipoCli = false;
@@ -233,6 +235,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private boolean bPesAutTipoCli = false;
   private boolean bAvalTipoCli = false;
   private boolean bSocioTipoCli = false;
+  private boolean bAchou = true;
   private JTabbedPanePad tpn2 = new JTabbedPanePad();
   private JComboBoxPad cbEstCivCli = null;
 
@@ -390,7 +393,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 
     setPainel(pinAvalista);
 
-    
     lbNomeAvalCli =   adicCampo(txtNomeAvalCli,     7, 20, 300, 20, "NomeAvalCli", "Nome do avalista", ListaCampos.DB_SI, false);
     lbDtNascAvalCli = adicCampo(txtDtNascAvalCli, 310, 20, 85, 20, "DtNascAvalCli", "Dt.nasc.Aval.", ListaCampos.DB_SI, false);
     lbRgAvalCli =	  adicCampo(txtRgAvalCli,     398,   20, 120, 20, "RgAvalCli", "Rg", ListaCampos.DB_SI, false);
@@ -400,6 +402,42 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     lbCargoAvalCli = adicCampo(txtCargoAvalCli, 468, 60, 173, 20, "CargoAvalCli", "Cargo", ListaCampos.DB_SI, false);
     lbDtAdmTrabAvalCli = adicCampo(txtDtAdmTrabAvalCli, 7, 100, 90, 20, "DtAdmTrabAvalCli", "Dt.admissao", ListaCampos.DB_SI, false);
     lbRendaAvalCli = adicCampo(txtRendaAvalCli, 100, 100, 90, 20, "RendaAvalCli", "Renda", ListaCampos.DB_SI, false);
+/*
+  
+    continuar implementação
+      
+          setPainel( pinRodRefPes, pnRefPes);
+//    adicTab("Fatores de conversão",pnFatConv);
+    setListaCampos(lcRefPes);
+    setNavegador(navRefPes);
+    pnRefPes.add(pinRodRefPes, BorderLayout.SOUTH);
+    pnRefPes.add(spnRefPes, BorderLayout.CENTER);
+
+    pinRodRefPes.adic(navRefPes,0,50,270,25);
+   
+    adicCampo(txtUnidFat, 7, 20, 80, 20, "CodUnid", "Cód.unid.", ListaCampos.DB_PF, txtDescUnidFat,true);
+    adicDescFK(txtDescUnidFat, 90, 20, 150, 20, "DescUnid", "Descrição da unidade" );
+    adicCampo(txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de conv.", ListaCampos.DB_SI, true);
+    setListaCampos( false, "FATCONV", "EQ");
+    lcFatConv.setOrdem("CodUnid");
+    lcFatConv.montaTab();
+    lcFatConv.setQueryInsert(false);
+    lcFatConv.setQueryCommit(false);
+    tabFatConv.setTamColuna(120,1);
+    
+*/    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     setListaCampos( false, "CLICOMPL", "VD");
 
@@ -424,7 +462,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 		adicTab("Ficha cadastral", pnFicha);
 	}
 	if(bVeicTipoCli)
-		adicTab("Veícuos", new JPanelPad(JPanelPad.TP_JPANEL));
+		adicTab("Veículos", new JPanelPad(JPanelPad.TP_JPANEL));
     if(bImovTipoCli)
     	adicTab("Imóveis", new JPanelPad(JPanelPad.TP_JPANEL));
     if(bTerraTipoCli)
@@ -434,6 +472,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 		adicTab("Ref. Comerciais", new JPanelPad(JPanelPad.TP_JPANEL));
 		adicTab("Sócios", new JPanelPad(JPanelPad.TP_JPANEL));
 	}
+  	if(bRefPesTipoCli)
+  		adicTab("Ref. Pess.",pinRefPess);
+  	
 	if(bFisTipoCli || bJurTipoCli)
 		adicTab("Pessoas autorizadas",new JPanelPad(JPanelPad.TP_JPANEL));
     if(bFilTipoCli)
@@ -442,12 +483,19 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   		tpn2.addTab("Trabalho",pinTrabalho);
   	if(bConjTipoCli)
   		tpn2.addTab("Cônjuge",pinConjuge);
-  	if(bRefPesTipoCli)
-  		tpn2.addTab("Ref. Pess.",pinRefPess);
   	if(bAvalTipoCli)
   		tpn2.addTab("Avalista",pinAvalista);
 
   }
+  private void setaFoco() {
+  	if(bAchou) {
+  		txtRazCli.requestFocus(true);
+  	}
+  	else {
+  		txtCodCli.requestFocus(false);
+  	}
+  }
+  
   private void habCampos() {
 
   	//Pessoa Física
@@ -519,6 +567,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   		txtDtIniTr.setVlrDate(new Date());
   	}
   	buscaAdicionais();	
+  	setaFoco();
   }
   private void buscaEstadoCivil(){
   	String sSQL = null;
@@ -604,6 +653,10 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 			bPesAutTipoCli = rs.getString(13).equals("S")?true:false;
 			bAvalTipoCli = rs.getString(14).equals("S")?true:false;
 			bSocioTipoCli = rs.getString(15).equals("S")?true:false;
+			bAchou = true;
+		}
+		else {
+			bAchou = false;
 		}
 		rs.close();
 		ps.close();
@@ -620,6 +673,8 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	}  	
     habCampos();
     habAbas();
+    setaFoco();
+
   }
   
   public void beforeCarrega(CarregaEvent cevt) {}
