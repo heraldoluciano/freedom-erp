@@ -416,9 +416,9 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
 	carregaAcesso();
   }
   public void afterDelete(DeleteEvent devt) { }
-  public void setConexao(Connection cn) {
+  public void setConexao(Connection cn, Connection cnIB) {
 	super.setConexao(cn);
-  	conIB = cn;
+  	conIB = cnIB;
     lcGrup.setConexao(cn);
 	lcCC.setConexao(cn);
     lcCC.setWhereAdic("NIVELCC=10 AND ANOCC="+buscaAnoBaseCC());
