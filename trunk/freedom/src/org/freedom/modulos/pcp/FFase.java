@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -54,9 +54,9 @@ public class FFase extends FDados implements ActionListener {
     vLabs.addElement("Embalagem");
     cbTipo.setItens(vLabs,vVals);
             
-    adicCampo(txtCodFase, 7, 20, 70, 20,"CodFase","Cód.fase",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescFase, 80, 20, 230, 20,"DescFase","Descrição da fase",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-    adicDB(cbTipo,7,60,140,24,"tipoFase","Tipo de fase",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtCodFase, 7, 20, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_PK, true);
+    adicCampo(txtDescFase, 80, 20, 230, 20,"DescFase","Descrição da fase", ListaCampos.DB_SI, true);
+    adicDB(cbTipo,7,60,140,24,"tipoFase","Tipo de fase", true);
     setListaCampos( true, "FASE", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

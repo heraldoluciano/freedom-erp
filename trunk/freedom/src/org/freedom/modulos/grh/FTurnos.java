@@ -30,17 +30,18 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTurnos extends FDados implements ActionListener {
-  private JTextFieldPad txtCodTurno = new JTextFieldPad();
-  private JTextFieldPad txtDescTurno = new JTextFieldPad();
-  private JTextFieldPad txtNhsTurno = new JTextFieldPad();
-  private JTextFieldPad txtHIniTurno = new JTextFieldPad();
-  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad();
-  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad();
-  private JTextFieldPad txtHFimTurno = new JTextFieldPad();
+  private JTextFieldPad txtCodTurno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldPad txtDescTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+  private JTextFieldPad txtNhsTurno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
+  private JTextFieldPad txtHIniTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtHFimTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private Vector vTipoTurnoLab = new Vector();
   private Vector vTipoTurnoVal = new Vector();  
   private JRadioGroup rgTipoTurno = null;
@@ -50,13 +51,13 @@ public class FTurnos extends FDados implements ActionListener {
     setAtribos(50, 50, 440, 250);
 	    
 	      	
-	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
-	    adicCampo(txtDescTurno, 90, 20, 223, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
-	    adicCampo(txtNhsTurno, 316, 20, 100, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,4,0,true,false,null,true);
-	    adicCampo(txtHIniTurno, 7, 60, 100, 20,"HIniTurno","Inicío do turno",JTextFieldPad.TP_STRING,5,0,true,false,null,true);
-	    adicCampo(txtHIniIntTurno, 110, 60, 100, 20,"HIniIntTurno","Inicío do intervalo",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-	    adicCampo(txtHFimIntTurno, 213, 60, 100, 20,"HFimIntTurno","Fim do intervalo",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-	    adicCampo(txtHFimTurno, 316, 60, 100, 20,"HFimTurno","fim do turno",JTextFieldPad.TP_STRING,4,0,true,false,null,true);	   
+	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno", ListaCampos.DB_PK, true);
+	    adicCampo(txtDescTurno, 90, 20, 223, 20,"DescTurno","Descrição do turno", ListaCampos.DB_SI, true);
+	    adicCampo(txtNhsTurno, 316, 20, 100, 20,"NhsTurno","Nº H.semanais", ListaCampos.DB_SI, true);
+	    adicCampo(txtHIniTurno, 7, 60, 100, 20,"HIniTurno","Inicío do turno", ListaCampos.DB_SI, true);
+	    adicCampo(txtHIniIntTurno, 110, 60, 100, 20,"HIniIntTurno","Inicío do intervalo", ListaCampos.DB_SI, true);
+	    adicCampo(txtHFimIntTurno, 213, 60, 100, 20,"HFimIntTurno","Fim do intervalo", ListaCampos.DB_SI, true);
+	    adicCampo(txtHFimTurno, 316, 60, 100, 20,"HFimTurno","fim do turno", ListaCampos.DB_SI,true);	   
 	    
 	    txtHIniTurno.setStrMascara("##:##");
 	    txtHIniIntTurno.setStrMascara("##:##");
@@ -74,7 +75,7 @@ public class FTurnos extends FDados implements ActionListener {
 	  	vTipoTurnoVal.addElement("O");
 	  	vTipoTurnoVal.addElement("E");
 	  	rgTipoTurno = new JRadioGroup( 3, 2, vTipoTurnoLab, vTipoTurnoVal);	  	  	
-	  	adicDB(rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:",JTextFieldPad.TP_STRING,true);
+	  	adicDB(rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:", true);
 	  	rgTipoTurno.setVlrString("N");	  	
 	  	setListaCampos( true, "TURNO", "RH");
 	    btImp.addActionListener(this);

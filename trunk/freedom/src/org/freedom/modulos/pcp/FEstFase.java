@@ -63,8 +63,8 @@ public class FEstFase extends FDetalhe {
     setPainel( pinCab, pnCliCab);
     
     lcProd.setUsaME(false);
-    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVendax");
-    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendax");
+    lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
+    lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
     lcProd.setWhereAdic("TIPOPROD='F'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
@@ -72,10 +72,10 @@ public class FEstFase extends FDetalhe {
     txtCodProd.setTabelaExterna(lcProd);
     txtDescProd.setListaCampos(lcProd);
     
-    adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,true,true,txtDescProd,true);
-    adicDescFK(txtDescProd, 90, 20, 247, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtQtdEst, 340, 20, 80, 20,"QtdEst","Quantidade",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
-    adicCampo(txtDescEst, 7, 60, 250, 20,"DescEst","Descrição da estrutura",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
+    adicDescFK(txtDescProd, 90, 20, 247, 20, "DescProd", "Descrição do produto");
+    adicCampo(txtQtdEst, 340, 20, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtDescEst, 7, 60, 250, 20,"DescEst","Descrição da estrutura", ListaCampos.DB_SI,true);
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
     
@@ -101,14 +101,14 @@ public class FEstFase extends FDetalhe {
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtNumSeqEf, 7, 20, 40, 20,"SeqEf","Item",ListaCampos.DB_PK,true);
-    adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFase,true);
+    adicCampo(txtNumSeqEf, 7, 20, 40, 20,"SeqEf","Item", ListaCampos.DB_PK, true);
+    adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
     //adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Código",ListaCampos.DB_FK,true);
-    adicDescFK(txtDescFase, 130, 20, 227, 20, "DescFase", "Descrição da fase", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtDescFase, 130, 20, 227, 20, "DescFase", "Descrição da fase");
     adicCampo(txtTempoEf, 360, 20, 100, 20,"TempoEf","Tempo (Seg.)",ListaCampos.DB_SI,true);
-    adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTpRec,true);
+    adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_SI, txtDescTpRec, true);
     //adicCampo(txtCodTpRec, 7, 60, 60, 20,"CodTpRec","Código",ListaCampos.DB_FK,true);
-    adicDescFK(txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Descrição do tipo de recurso", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Descrição do tipo de recurso");
     setListaCampos( true, "ESTRUFASE", "PP");
     lcDet.setQueryInsert(false);
     montaTab();

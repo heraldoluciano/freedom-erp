@@ -26,7 +26,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -38,8 +38,8 @@ public class FTipoRec extends FDados implements ActionListener {
   public FTipoRec () {
     setTitulo("Cadastro de tipos de recursos");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTipoRec, 7, 20, 70, 20,"CodTpRec","Cód.tp.rec.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoRec, 80, 20, 240, 20,"DescTpRec","Descrição do tipode recurso",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodTipoRec, 7, 20, 70, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTipoRec, 80, 20, 240, 20,"DescTpRec","Descrição do tipode recurso", ListaCampos.DB_SI, true);
     setListaCampos( true, "TIPOREC", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
