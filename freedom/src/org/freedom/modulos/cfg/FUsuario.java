@@ -59,19 +59,19 @@ import org.freedom.telas.FDados;
 
 
 public class FUsuario extends FDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener, CheckBoxListener {
-  private JTextFieldPad txtCodUsu = new JTextFieldPad();
-  private JTextFieldPad txtNomeUsu = new JTextFieldPad();
-  private JTextFieldPad txtPNomeUsu = new JTextFieldPad();
-  private JTextFieldPad txtUNomeUsu = new JTextFieldPad();
-  private JTextFieldPad txtCodGrup = new JTextFieldPad();
-  private JTextFieldFK txtDescGrup = new JTextFieldFK();
+  private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+  private JTextFieldPad txtPNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+  private JTextFieldPad txtUNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtIDGrpUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);
   private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaComentUsu = new JTextAreaPad();
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(8);
   private JPasswordFieldPad txpConfirma = new JPasswordFieldPad(8);
-  private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad();
-  private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK();
+  private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER);
+  private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private static Vector vEmp = new Vector();
   private static Vector vDisp =  new Vector();
   private static Vector vCodEmp = new Vector();
@@ -101,32 +101,32 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     txpSenha.setListaCampos(lcCampos);
     txpConfirma.setListaCampos(lcCampos);
 
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "IDGRPUSU", "ID Grupo", true, false, txtDescGrup, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 7, 100, 180, 20, "NOMEGRPUSU", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcGrup.add(new GuardaCampo( txtIDGrpUsu, "IDGRPUSU", "ID Grupo", ListaCampos.DB_PK,false));
+    lcGrup.add(new GuardaCampo( txtDescGrup, "NOMEGRPUSU", "Descriçao do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false, "GRPUSU", "SG");    
     lcGrup.setQueryCommit(false);
     lcGrup.setReadOnly(true);
-    txtCodGrup.setTabelaExterna(lcGrup);
+    txtIDGrpUsu.setTabelaExterna(lcGrup);
 
-    lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Código", true, false, txtDescCC, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcCC.add(new GuardaCampo( txtDescCC, 7, 100, 180, 20, "DescCC", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
+    lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descriçao do centro de custo", ListaCampos.DB_SI, false));
     lcCC.montaSql(false, "CC", "FN");    
     lcCC.setQueryCommit(false);
     lcCC.setReadOnly(true);
     txtCodCC.setTabelaExterna(lcCC);
     
-    adicCampo(txtCodUsu, 7, 20, 80, 20, "IDUsu", "ID", JTextFieldPad.TP_STRING, 8, 0, true, false, null, true);
-    adicCampo(txtNomeUsu, 90, 20, 280, 20, "NomeUsu", "Nome", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
-    adicCampo(txtPNomeUsu, 7, 60, 180, 20, "PNomeUsu", "Primeiro Nome", JTextFieldPad.TP_STRING, 20, 0, false, false, null, true);
-    adicCampo(txtUNomeUsu, 190, 60, 180, 20, "UNomeUsu", "Ultimo Nome", JTextFieldPad.TP_STRING, 20, 0, false, false, null, true);
-    adicCampo(txtCodGrup, 7, 100, 50, 20, "IDGRPUSU", "ID Grupo", JTextFieldPad.TP_STRING, 8, 0, false, true, txtDescGrup,false);
-    adicDescFK(txtDescGrup, 60, 100, 197, 20, "NOMEGRPUSU", "e descrição do grupo", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtIDUsu, 7, 20, 80, 20, "IDUsu", "ID.usu.", ListaCampos.DB_PK, true);
+    adicCampo(txtNomeUsu, 90, 20, 280, 20, "NomeUsu", "Nome do usuário", ListaCampos.DB_SI, true);
+    adicCampo(txtPNomeUsu, 7, 60, 180, 20, "PNomeUsu", "Primeiro nome", ListaCampos.DB_SI, true);
+    adicCampo(txtUNomeUsu, 190, 60, 180, 20, "UNomeUsu", "Último nome", ListaCampos.DB_SI, true);
+    adicCampo(txtIDGrpUsu, 7, 100, 50, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, false);
+    adicDescFK(txtDescGrup, 60, 100, 197, 20, "NOMEGRPUSU", "Descrição do grupo do usuário", JTextFieldPad.TP_STRING, 50, 0);
     adic(new JLabel("Senha"),260,80,57,20);
     adic(txpSenha,260,100,57,20);
     adic(new JLabel("Confirma"),320,80,50,20);
     adic(txpConfirma,320,100,50,20);
-    adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Código", JTextFieldPad.TP_STRING, 19, 0, false, true, txtDescCC,false);
-    adicDescFK(txtDescCC, 120, 140, 250, 20, "DescCC", "e descrição do centro de custo", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
+    adicDescFK(txtDescCC, 120, 140, 250, 20, "DescCC", "Descrição do centro de custo", JTextFieldPad.TP_STRING, 50, 0);
     
     adicDBLiv(txaComentUsu, "ComentUsu", "Comentário",JTextFieldPad.TP_STRING, false);
     adic(new JLabel("Comentário"),7,160,100,20);
@@ -141,18 +141,18 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     adicDB(cbAbreGaveta, 7, 380, 225, 20, "AbreGavetaUsu", "", JTextFieldPad.TP_STRING, false);
     adicDB(cbAlmoxarife, 7, 400, 225, 20, "AlmoxarifeUsu", "", JTextFieldPad.TP_STRING, false);
     
-    txtCodAlmoxarife.setRequerido(cbAlmoxarife.isSelected());
-  	txtCodAlmoxarife.setAtivo(cbAlmoxarife.isSelected());
+    txtCodAlmox.setRequerido(cbAlmoxarife.isSelected());
+  	txtCodAlmox.setAtivo(cbAlmoxarife.isSelected());
   	
-    adicCampo(txtCodAlmoxarife, 7, 440, 50, 20, "CodAlmox", "Código", JTextFieldPad.TP_STRING, 8, 0, false, true, txtDescAlmoxarife, false);
-    adicDescFK(txtDescAlmoxarife, 60, 440, 170, 20, "DescAlmox", "e descrição do Almox.", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodAlmox, 7, 440, 50, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false);
+    adicDescFK(txtDescAlmox, 60, 440, 170, 20, "DescAlmox", "Descrição do almoxarifado", JTextFieldPad.TP_STRING, 50, 0);
 
-    lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, 7, 100, 80, 20, "CodAlmox", "Cod. Almox.", true, false, txtDescAlmoxarife, JTextFieldPad.TP_STRING,false),"txtCodAlmoxarifex");
-    lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, 7, 100, 180, 20, "CodAlmox", "Desc. Almox;", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxarifex");
+    lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, false));
+    lcAlmox.add(new GuardaCampo(txtDescAlmox,"DescAlmox", "Descrição do almoxarifado",ListaCampos.DB_SI, false));
     lcAlmox.montaSql(false, "ALMOX", "EQ");    
     lcAlmox.setQueryCommit(false);
     lcAlmox.setReadOnly(true);
-    txtCodAlmoxarife.setTabelaExterna(lcAlmox);   
+    txtCodAlmox.setTabelaExterna(lcAlmox);   
     
     vAprovaSolicitacaoLab.add("Nenhuma");
     vAprovaSolicitacaoLab.add("Mesmo Centro de Custo");
@@ -179,8 +179,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   }
   public void valorAlterado(CheckBoxEvent evt) {
   		boolean checked = evt.getCheckBox().isSelected();
-  		txtCodAlmoxarife.setRequerido(checked);
-  		txtCodAlmoxarife.setAtivo(checked);
+  		txtCodAlmox.setRequerido(checked);
+  		txtCodAlmox.setAtivo(checked);
   }
   private void adicionaEmp() {
   	if (lsDisp.isSelectionEmpty()) 
@@ -240,7 +240,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
       String sSQL = "SELECT FL.CODFILIAL,FL.NOMEFILIAL FROM SGFILIAL FL, SGACESSOEU AC WHERE "+
                     "AC.IDUSU = ? AND FL.CODEMP = AC.CODEMPFL AND FL.CODFILIAL = AC.CODFILIALFL";
       PreparedStatement ps = con.prepareStatement(sSQL);
-      ps.setString(1,txtCodUsu.getVlrString());
+      ps.setString(1,txtIDUsu.getVlrString());
       ResultSet rs = ps.executeQuery();
       vEmp.clear();
       vCodEmp.clear();
@@ -276,7 +276,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     try {
       sSqlD = "DELETE FROM SGACESSOEU WHERE IDUSU=? AND CODEMP=?";
       PreparedStatement ps = con.prepareStatement(sSqlD);
-      ps.setString(1,txtCodUsu.getVlrString());
+      ps.setString(1,txtIDUsu.getVlrString());
       ps.setInt(2,Aplicativo.iCodEmp);
       ps.executeUpdate();
       ps.close();
@@ -284,7 +284,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
       	con.commit();
       if (vCodEmp.size() > 0) {
         sSqlI = "INSERT INTO SGACESSOEU (CODEMP,CODFILIAL,IDUSU,CODEMPFL,CODFILIALFL) "+	
-                "SELECT CODEMP,"+Aplicativo.iCodFilial+",'"+txtCodUsu.getVlrString()+"',CODEMP,CODFILIAL FROM SGFILIAL "+
+                "SELECT CODEMP,"+Aplicativo.iCodFilial+",'"+txtIDUsu.getVlrString()+"',CODEMP,CODFILIAL FROM SGFILIAL "+
                 "WHERE CODEMP=? AND CODFILIAL IN ("+sSqlI+")";
         ps = con.prepareStatement(sSqlI);
         ps.setInt(1,Aplicativo.iCodEmp);
@@ -338,7 +338,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
 			PreparedStatement ps;
 		  	if ((lcCampos.getStatus() == ListaCampos.LCS_INSERT) || (lcCampos.getStatus() == ListaCampos.LCS_EDIT)) {
 				ps = conIB.prepareStatement("SELECT SRET FROM CHECKUSER(?)");
-				ps.setString(1,txtCodUsu.getVlrString());
+				ps.setString(1,txtIDUsu.getVlrString());
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
 					if (rs.getString(1).trim().equals("S")) {
@@ -352,7 +352,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
 				rs.close();
 				ps.close();
 				if (bCheck) {
-				  if (!txpSenha.getVlrString().equals("88888888") && !txtCodUsu.getVlrString().toUpperCase().equals("SYSDBA"))
+				  if (!txpSenha.getVlrString().equals("88888888") && !txtIDUsu.getVlrString().toUpperCase().equals("SYSDBA"))
 				    ps = conIB.prepareStatement("EXECUTE PROCEDURE CHANGEPASSWORD(?,?)");
 				  else
 				    return;
@@ -362,7 +362,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
 		  	}
   			else
             	return;
-	  		ps.setString(1,txtCodUsu.getVlrString());
+	  		ps.setString(1,txtIDUsu.getVlrString());
   			ps.setString(2,txpSenha.getVlrString());
   			ps.execute();
 	  		ps.close();
@@ -376,11 +376,11 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   	}
   }
   public void beforeDelete(DeleteEvent devt) {
-  	if(txtCodUsu.getVlrString().toUpperCase().equals("SYSDBA"))
+  	if(txtIDUsu.getVlrString().toUpperCase().equals("SYSDBA"))
   	  return;
   	try {
   		PreparedStatement ps = conIB.prepareStatement("execute procedure deleteuser(?)");
-		ps.setString(1,txtCodUsu.getVlrString());
+		ps.setString(1,txtIDUsu.getVlrString());
 		ps.execute();
 		ps.close();
 		if (!con.getAutoCommit())
@@ -396,8 +396,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   	carregaAcesso();
   	txpSenha.setVlrString("88888888");
   	txpConfirma.setVlrString("88888888");
-    txtCodAlmoxarife.setRequerido(cbAlmoxarife.isSelected());
-  	txtCodAlmoxarife.setAtivo(cbAlmoxarife.isSelected());
+    txtCodAlmox.setRequerido(cbAlmoxarife.isSelected());
+  	txtCodAlmox.setAtivo(cbAlmoxarife.isSelected());
   }
   public void actionPerformed(ActionEvent evt) {
   	if (evt.getSource() == btAdicEmp)
