@@ -47,6 +47,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	private ListaCampos lcImp = new ListaCampos(this,"IP");
 	private JTextFieldPad txtCodEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+	private JCheckBoxPad cbModoDemoEst = new JCheckBoxPad("Modo demonstrativo?","S","N");
 	private JTextFieldPad txtNroImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtCodImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtPortaWin = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
@@ -79,9 +80,11 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    setListaCampos(lcCampos);
 	    setAltCab(100);
 	    setPainel(pinCab, pnCliCab);
+	    cbModoDemoEst.setVlrString("N");
   	
 	  	adicCampo(txtCodEst, 7, 20, 80, 20, "Codest", "Nº estação", ListaCampos.DB_PK, true);
-	  	adicCampo(txtDescEst, 90, 20, 307, 20, "Descest", "Descrição da estação de trabalho",ListaCampos.DB_SI,true);
+	  	adicCampo(txtDescEst, 90, 20, 257, 20, "Descest", "Descrição da estação de trabalho",ListaCampos.DB_SI,true);
+	  	adicDB(cbModoDemoEst, 350, 20, 170, 20, "ModoDemoEst", "Modo",true);
 	    setListaCampos(true,"ESTACAO", "SG");
 	    lcCampos.setQueryInsert(false);
 	    
