@@ -49,13 +49,13 @@ import org.freedom.telas.FFilho;
 public class FBloqVenda extends FFilho implements ActionListener, CarregaListener {
   private Painel pinCli = new Painel(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodVenda = new JTextFieldPad();
-  private JTextFieldPad txtDocVenda = new JTextFieldPad();
-  private JTextFieldPad txtSerie = new JTextFieldPad();
-  private JTextFieldPad txtTipoVenda = new JTextFieldPad();
-  private JTextFieldPad txtBloqVenda = new JTextFieldPad();
-  private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad();
-  private JTextFieldPad txtStatusVenda = new JTextFieldPad();
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDocVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+  private JTextFieldPad txtBloqVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+  private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtStatusVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JButton btBloquear = new JButton("Executar",Icone.novo("btExecuta.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
@@ -70,16 +70,8 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     txtVlrLiqVenda.setAtivo(false);
     txtStatusVenda.setAtivo(false);
     txtBloqVenda.setAtivo(false);
-    
-    txtCodVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDocVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrLiqVenda.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtStatusVenda.setTipo(JTextFieldPad.TP_STRING,2,0);
-    txtTipoVenda.setTipo(JTextFieldPad.TP_STRING,1,0); 
-    txtBloqVenda.setTipo(JTextFieldPad.TP_STRING,1,0);
-    
-    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false));
+   
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Nº pedido", ListaCampos.DB_PK, false));
     lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false));

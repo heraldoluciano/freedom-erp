@@ -49,12 +49,12 @@ import org.freedom.telas.FFilho;
 public class FBloqCompra extends FFilho implements ActionListener, CarregaListener {
   private Painel pinFor = new Painel(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodCompra = new JTextFieldPad();
-  private JTextFieldPad txtDocCompra = new JTextFieldPad();
-  private JTextFieldPad txtSerie = new JTextFieldPad();
-  private JTextFieldPad txtBloqCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad();
-  private JTextFieldPad txtStatusCompra = new JTextFieldPad();
+  private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDocCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtBloqCompra = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+  private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtStatusCompra = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JButton btBloquear = new JButton("Executar",Icone.novo("btExecuta.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcCompra = new ListaCampos(this);
@@ -69,15 +69,8 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
     txtVlrLiqCompra.setAtivo(false);
     txtStatusCompra.setAtivo(false);
     txtBloqCompra.setAtivo(false);
-    
-    txtCodCompra.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDocCompra.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrLiqCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtStatusCompra.setTipo(JTextFieldPad.TP_STRING,2,0);
-    txtBloqCompra.setTipo(JTextFieldPad.TP_STRING,1,0);
-    
-    lcCompra.add(new GuardaCampo( txtCodCompra, "CodCompra", "N.pedido", ListaCampos.DB_PK, false));
+   
+    lcCompra.add(new GuardaCampo( txtCodCompra, "CodCompra", "Nº pedido", ListaCampos.DB_PK, false));
     lcCompra.add(new GuardaCampo( txtDocCompra, "DocCompra", "Documento", ListaCampos.DB_SI, false));
     lcCompra.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
     lcCompra.add(new GuardaCampo( txtBloqCompra, "BloqCompra", "Bloqueio", ListaCampos.DB_SI, false));

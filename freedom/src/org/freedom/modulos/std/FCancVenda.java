@@ -45,11 +45,11 @@ import org.freedom.telas.FFilho;
 public class FCancVenda extends FFilho implements ActionListener {
   private Painel pinCli = new Painel(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodVenda = new JTextFieldPad();
-  private JTextFieldPad txtDocVenda = new JTextFieldPad();
-  private JTextFieldPad txtSerie = new JTextFieldPad();
-  private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad();
-  private JTextFieldPad txtStatusVenda = new JTextFieldPad();
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDocVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtStatusVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JButton btCancelar = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
@@ -62,12 +62,7 @@ public class FCancVenda extends FFilho implements ActionListener {
     txtDocVenda.setAtivo(false);
     txtSerie.setAtivo(false);
     txtVlrLiqVenda.setAtivo(false);
-    
-    txtCodVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDocVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrLiqVenda.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtStatusVenda.setTipo(JTextFieldPad.TP_STRING,2,0);
+   
     lcVenda.add(new GuardaCampo( txtCodVenda,  "CodVenda", "Cód.Venda", ListaCampos.DB_PK, null, false));
     lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, null, false));
     lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, null, false));

@@ -33,7 +33,7 @@ public class FConta extends FDados {
   private JTextFieldPad txtAgConta = new JTextFieldPad( JTextFieldPad.TP_STRING, 6, 0);
   private JTextFieldPad txtNumConta = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtDescConta = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
-  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   private JTextFieldPad txtDataConta = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
