@@ -413,7 +413,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     bPrefs = prefs(); //Carrega as preferências
 
     //FK Produto
-    
+
     lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK,false));
     lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produtos", ListaCampos.DB_SI,false));
     lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI,false));
@@ -544,7 +544,6 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     adicCampo(txtVlrDescItVenda, 610, 20, 67, 20,"VlrDescItVenda","V. desc.",ListaCampos.DB_SI,false);
     adicCampo(txtPercComItVenda, 680, 20, 57, 20,"PercComisItVenda","% com.",ListaCampos.DB_SI,false);
     adicCampo(txtVlrComisItVenda, 7, 60, 70, 20,"VlrComisItVenda","V. com.",ListaCampos.DB_SI,false);
-    
     
     adicCampo(txtCodNat, 80, 60, 47, 20,"CodNat","CFOP",ListaCampos.DB_FK,txtDescNat,true);
     

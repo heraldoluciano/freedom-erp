@@ -37,10 +37,12 @@ import org.freedom.telas.DLF3;
 public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private String sCol = null;
    private Vector vValsProd = new Vector();
-   private String sSQL = "";
-   public DLBuscaEstoq(Component cOrig,Connection con,String sCol) {
+   private String sSQL = "";   
+   private ListaCampos lcCampos = null;
+   public DLBuscaEstoq(ListaCampos lc, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 this.sCol = sCol;
+   	 lcCampos = lc;
    	 setConexao(con);
    	 
    	 tab.adicColuna("Cd.Filial");
@@ -118,12 +120,12 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 try {   	
    	 	if (tsevt.getTabela() == tab) {
    	 		if (tab.getNumLinhas() > 0) {
-   	 			if (sCol.toUpperCase().equals("REFPROD")) {
-   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
-   	 			}
-   	 			else if (tab.getLinhaSel()>0){
-   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
-   	 			}
+   	 		    Integer iCodEmpAx = new Integer(lcCampos.getCodEmp());   	 		    
+   	 		    Integer iCodFilialAx = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),0).toString()));
+   	 		    Integer iCodAlmoxAx = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
+   	 			lcCampos.getCampo("CODEMPAX").setVlrInteger(iCodEmpAx);
+   	 			lcCampos.getCampo("CODFILIALAX").setVlrInteger(iCodFilialAx);
+   	 		    lcCampos.getCampo("CODALMOX").setVlrInteger(iCodAlmoxAx);
    	 		}
        }   	  
    	 }
