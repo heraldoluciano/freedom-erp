@@ -40,23 +40,18 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRRazaoFin extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private JTextFieldFK txtDescPlan = new JTextFieldFK(); 
-  private JTextFieldPad txtCodPlan = new JTextFieldPad(); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
+  private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0); 
   private ListaCampos lcPlan = new ListaCampos(this);
   private Connection con = null;
   public FRRazaoFin() {
     setTitulo("Relatório razão financeiro");
     setAtribos(80,80,330,180);
 
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-
-	txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
-	txtDescPlan.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.plan", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
-	lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição do planejamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
+	lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan", ListaCampos.DB_PK, false));
+	lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false));
 	lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
 	lcPlan.setWhereAdic("NIVELPLAN=6");
 	lcPlan.setReadOnly(true);

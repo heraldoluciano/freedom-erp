@@ -44,13 +44,13 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRUltimaVenda extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   
-  private JTextFieldPad txtCodVend = new JTextFieldPad();
-  private JTextFieldFK txtDescVend = new JTextFieldFK(); 
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
  
   private JCheckBoxPad cbListaFilial= null ;
   
@@ -62,16 +62,13 @@ public class FRUltimaVenda extends FRelatorio {
     setTitulo("Ultima Venda por Cliente");
     setAtribos(80,80,290,270);
    
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-
 	GregorianCalendar cPeriodo = new GregorianCalendar();
     txtDatafim.setVlrDate(cPeriodo.getTime());
 	cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
 	txtDataini.setVlrDate(cPeriodo.getTime());
 	
-	lcCli.add(new GuardaCampo(txtCodCli, 7, 120, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-	lcCli.add(new GuardaCampo(txtNomeCli, 90, 120, 207, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
+	lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+	lcCli.add(new GuardaCampo(txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 	txtCodCli.setTabelaExterna(lcCli);
 	txtCodCli.setNomeCampo("CodCli");
 	txtCodCli.setFK(true);
@@ -96,11 +93,8 @@ public class FRUltimaVenda extends FRelatorio {
     adic(txtNomeCli,80,90,186,20);
 	
 
-    txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-  	txtDescVend.setTipo(JTextFieldPad.TP_STRING,50,0);    
-
-  	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-  	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
+  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);

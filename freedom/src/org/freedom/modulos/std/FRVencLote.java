@@ -51,11 +51,11 @@ import org.freedom.telas.FRelatorio;
 
 public class FRVencLote extends FRelatorio {
   private Connection con;
-  private JTextFieldPad txtCodGrup = new JTextFieldPad();
-  private JTextFieldPad txtDescGrup = new JTextFieldFK();
-  private JTextFieldPad txtCodMarca = new JTextFieldPad();
-  private JTextFieldPad txtDescMarca = new JTextFieldFK();
-  private JTextFieldPad txtSiglaMarca = new JTextFieldFK();
+  private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+  private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
+  private JTextFieldPad txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
   private JCheckBoxPad cbLoteZerado = null; 
   private JLabel lbCodGrup = new JLabel("Cód.grupo");
   private JLabel lbDescCodGrup = new JLabel("Descrição do grupo");
@@ -69,22 +69,17 @@ public class FRVencLote extends FRelatorio {
     setTitulo("Relatório de Vencimentos de Lotes");
     setAtribos(80,80,310,250);
     
-    txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-    txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do gurpo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+    lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+    lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do gurpo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false, "GRUPO", "EQ");
     lcGrup.setReadOnly(true);
     txtCodGrup.setTabelaExterna(lcGrup);
     txtCodGrup.setFK(true);
     txtCodGrup.setNomeCampo("CodGrup");
 
-    txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
-    txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
-    txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
-    lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
+    lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
+    lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
+    lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI,false),"txtSiglaMarca");
     lcMarca.montaSql(false, "MARCA", "EQ");
     lcMarca.setReadOnly(true);
     txtCodMarca.setTabelaExterna(lcMarca);

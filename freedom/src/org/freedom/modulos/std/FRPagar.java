@@ -53,14 +53,14 @@ import org.freedom.telas.FRelatorio;
 
 
 public class FRPagar extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private Connection con = null;
   private JRadioGroup cbFiltro = null;
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
-  private JTextFieldPad txtCodFor = new JTextFieldPad();
-  private JTextFieldFK txtRazFor = new JTextFieldFK();
+  private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações","S","N");
   private ListaCampos lcFor = new ListaCampos(this);
   private boolean comObs = false;
@@ -70,21 +70,15 @@ public class FRPagar extends FRelatorio {
     setTitulo("Contas a Pagar");
     setAtribos(80,80,285,280);
 
-//    Funcoes.setBordReq(txtCodFor);
-    
-    txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRazFor.setTipo(JTextFieldPad.TP_STRING,40,0);
 //    txtRazFor.setAtivo(false);
-    lcFor.add(new GuardaCampo( txtCodFor, 7,55, 67, 20, "CodFor", "Cód.forn.", true, false, null , JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-    lcFor.add(new GuardaCampo( txtRazFor, 78, 55, 150, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
+    lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.forn.", ListaCampos.DB_PK, false));
+    lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
     lcFor.montaSql(false, "FORNECED", "CP");
     lcFor.setReadOnly(true);
     txtCodFor.setTabelaExterna(lcFor);
     txtCodFor.setFK(true);
     txtCodFor.setNomeCampo("CodFor");
 
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
 
