@@ -243,19 +243,26 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     return lbTmp;
   }
   public JLabel adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
+      String label, byte key, JTextFieldFK txtDescFK, boolean req) {
+      comp.setName("txt"+nome);
+      comp.setNomeCampo(nome);
+      comp.setListaCampos(lcSeq);
+   	  comp.setChave(key);
+   	  if (txtDescFK == null)
+        lcSeq.add(new GuardaCampo( comp, nome, label, key, req));
+   	  else 	
+   	  	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
+      navSeq.setListaCampos(lcSeq);
+      lcSeq.setNavegador(navSeq);
+      lcSeq.setState(ListaCampos.LCS_NONE);
+      JLabel lbTmp = new JLabel(label);
+      adic(lbTmp, X, Y-20, Larg, 20);
+      adic(comp, X, Y, Larg, Alt);
+      return lbTmp;
+  }
+  public JLabel adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
       String label, byte key, boolean req) {
-    comp.setName("txt"+nome);
-    comp.setNomeCampo(nome);
-    comp.setListaCampos(lcSeq);
-	comp.setChave(key);
-    lcSeq.add(new GuardaCampo( comp, nome, label, key, req),"txt"+nome);
-    navSeq.setListaCampos(lcSeq);
-    lcSeq.setNavegador(navSeq);
-    lcSeq.setState(ListaCampos.LCS_NONE);
-    JLabel lbTmp = new JLabel(label);
-    adic(lbTmp, X, Y-20, Larg, 20);
-    adic(comp, X, Y, Larg, Alt);
-    return lbTmp;
+    return adicCampo(comp, X, Y, Larg, Alt, nome, label, key, null, req);
   }
   
   public void adicCampo(JPasswordFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
