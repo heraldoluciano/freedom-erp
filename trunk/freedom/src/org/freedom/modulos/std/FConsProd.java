@@ -606,8 +606,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	public void imprimir(boolean bVisualizar) {
 	    ImprimeOS imp = new ImprimeOS("",con);
 	    int linPag = imp.verifLinPag()-1;
-	    imp.montaCab();
-	    imp.setTitulo("Relatório de Consulta de Produtos");
+	    
 	    String sRets;
 	    DLRConsProd dl = new DLRConsProd(this); 
 		dl.setVisible(true);
@@ -625,9 +624,15 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	  			      
 	         for (int i=0;i<tabFor.getNumLinhas(); i++) {
 	            if (imp.pRow()==0) {
-	                imp.impCab(136, false);
-	           
+	            	imp.montaCab();
+	        	    imp.setTitulo("Relatório de Consulta de Produtos");
+	                imp.setSubTitulo("Fornecedores");
+	                imp.impCab(136, true);
+	                
 	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
+   	                imp.say(imp.pRow()+0,0,"|");
+   	                imp.say(imp.pRow()+0,135,"|");
+	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	                imp.say(imp.pRow()+0,0,"|");
 	                imp.say(imp.pRow()+0,2,"Cód.prod.:");
 	                imp.say(imp.pRow()+0,15,txtCodProd.getVlrString());    
@@ -637,10 +642,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	                imp.say(imp.pRow()+0,63,txtDescProd.getVlrString());
 	                imp.say(imp.pRow()+0,108,"Saldo :");
 	                imp.say(imp.pRow()+0,119,txtSldProd.getVlrString());   
-	                imp.say(imp.pRow()+0,136,"|");
+	                imp.say(imp.pRow()+0,135,"|");
 	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	                imp.say(imp.pRow()+0,0,"|");
-	                imp.say(imp.pRow()+0,136,"|");
+	                imp.say(imp.pRow()+0,135,"|");
 	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	                imp.say(imp.pRow()+0,0,"|");
 	                imp.say(imp.pRow()+0,2,"Preço Base");
@@ -655,28 +660,28 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
  	                imp.say(imp.pRow()+0,106,txtDescUnid.getVlrString());
  	                imp.say(imp.pRow()+0,115,"Marca :");
  	                imp.say(imp.pRow()+0,126,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
- 	                imp.say(imp.pRow()+0,136,"|");  
+ 	                imp.say(imp.pRow()+0,135,"|");  
  	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
  	                imp.say(imp.pRow()+0,0,"|");
- 	                imp.say(imp.pRow()+0,136,"|");
+ 	                imp.say(imp.pRow()+0,135,"|");
  		            imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
  		            imp.say(imp.pRow()+0,0,"|");   
  		            imp.say(imp.pRow()+0,2,"Cod.gp:");
- 		            imp.say(imp.pRow()+0,16,txtCodGrup.getVlrString());
- 		            imp.say(imp.pRow()+0,28,"Desc.gp :");
- 		            imp.say(imp.pRow()+0,42,txtDescGrup.getVlrString());
- 		            imp.say(imp.pRow()+0,72,"Cod.clas.:");
-    	            imp.say(imp.pRow()+0,83,txtCodFisc.getVlrString());
-    	            imp.say(imp.pRow()+0,96,"Desc.cl.fisc.:");
-       	            imp.say(imp.pRow()+0,112,Funcoes.copy(""+txtDescFisc.getVlrString(),21).trim());
-    	            imp.say(imp.pRow()+0,136,"|");
+ 		            imp.say(imp.pRow()+0,10,txtCodGrup.getVlrString());
+ 		            imp.say(imp.pRow()+0,25,"Desc.gp:");
+ 		            imp.say(imp.pRow()+0,35,txtDescGrup.getVlrString().trim());
+ 		            imp.say(imp.pRow()+0,76,"Cod.clas:");
+    	            imp.say(imp.pRow()+0,87,txtCodFisc.getVlrString());
+    	            imp.say(imp.pRow()+0,101,"Desc.cl.fisc:");
+    	            imp.say(imp.pRow()+0,116,Funcoes.copy(""+txtDescFisc.getVlrString(),18).trim());    	            
+    	            imp.say(imp.pRow()+0,135,"|");
    	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
-   	                imp.say(imp.pRow()+0,136,"|");
+   	                imp.say(imp.pRow()+0,135,"|");
    	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
    	                imp.say(imp.pRow()+0,2,"Cod.sim.:");
-   	             
+   	                    	            
    	                for (int j=0;j<tab.getNumLinhas(); j++){
    	                     if (j>0){
    	               	        imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -685,19 +690,19 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
    	                        for (int k=0;k<6; k++) {
    	               	             imp.say(imp.pRow()+0,15+(k*10),Funcoes.copy(""+tab.getValor(j,k),0,10).trim());
    	                        }	  
-   	                            imp.say(imp.pRow()+0,136,"|");
+   	                            imp.say(imp.pRow()+0,135,"|");
    	                }
    	            }           
 	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+	            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	            imp.say(imp.pRow()+0,0,"|");
 	            imp.say(imp.pRow()+0,2,"Cod.forn.:");
 	            imp.say(imp.pRow()+0,15,"|");
 	            imp.say(imp.pRow()+0,16,"Desc.forn.");
-	            imp.say(imp.pRow()+0,136,"|");
+	            imp.say(imp.pRow()+0,135,"|");
 	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+	            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"| "+tabFor.getValor(i,0));
                 imp.say(imp.pRow()+0,15,""+tabFor.getValor(i,1));
@@ -710,16 +715,22 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	            }
                   
                 imp.say(imp.pRow()+0,90,""+tabFor.getValor(i,2));
-                imp.say(imp.pRow()+0,136,"|");
+                imp.say(imp.pRow()+0,135,"|");
                 
 	         }
 	  	  }
           if (sRets.equals("C")){
              	for (int i=0;i<tabFor.getNumLinhas(); i++) {
        	            if (imp.pRow()==0) {
-       	                imp.impCab(136, false);
+       	            	imp.montaCab();
+    	        	    imp.setTitulo("Relatório de Consulta de Produtos");
+    	                imp.setSubTitulo("Compras");
+    	                imp.impCab(136, true);
        	           
-       	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
+    	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
+        	            imp.say(imp.pRow()+0,0,"|");
+        	            imp.say(imp.pRow()+0,135,"|");
+       	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
        	                imp.say(imp.pRow()+0,0,"|");
        	                imp.say(imp.pRow()+0,2,"Cód.prod.:");
        	                imp.say(imp.pRow()+0,15,txtCodProd.getVlrString());    
@@ -729,10 +740,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
        	                imp.say(imp.pRow()+0,63,txtDescProd.getVlrString());
        	                imp.say(imp.pRow()+0,108,"Saldo :");
        	                imp.say(imp.pRow()+0,119,txtSldProd.getVlrString());   
-       	                imp.say(imp.pRow()+0,136,"|");
+       	                imp.say(imp.pRow()+0,135,"|");
        	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
        	                imp.say(imp.pRow()+0,0,"|");
-       	                imp.say(imp.pRow()+0,136,"|");
+       	                imp.say(imp.pRow()+0,135,"|");
        	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
        	                imp.say(imp.pRow()+0,0,"|");
        	                imp.say(imp.pRow()+0,2,"Preço Base");
@@ -747,24 +758,24 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         	            imp.say(imp.pRow()+0,106,txtDescUnid.getVlrString());
         	            imp.say(imp.pRow()+0,115,"Marca :");
         	            imp.say(imp.pRow()+0,126,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
-        	            imp.say(imp.pRow()+0,136,"|");  
+        	            imp.say(imp.pRow()+0,135,"|");  
         	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
         	            imp.say(imp.pRow()+0,0,"|");
-        	            imp.say(imp.pRow()+0,136,"|");
+        	            imp.say(imp.pRow()+0,135,"|");
         		        imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
         		        imp.say(imp.pRow()+0,0,"|");   
-        		        imp.say(imp.pRow()+0,2,"Cod.grupo:");
-        		        imp.say(imp.pRow()+0,16,txtCodGrup.getVlrString());
-        		        imp.say(imp.pRow()+0,28,"Desc.grupo :");
-        		        imp.say(imp.pRow()+0,42,txtDescGrup.getVlrString());
-        		        imp.say(imp.pRow()+0,72,"Cod.clas.:");
-           	            imp.say(imp.pRow()+0,83,txtCodFisc.getVlrString());
-           	            imp.say(imp.pRow()+0,96,"Desc.cl.:");
-           	            imp.say(imp.pRow()+0,109,Funcoes.copy(""+txtDescFisc.getVlrString(),21).trim());
-           	            imp.say(imp.pRow()+0,136,"|");
+        		        imp.say(imp.pRow()+0,2,"Cod.gp:");
+        		        imp.say(imp.pRow()+0,10,txtCodGrup.getVlrString());
+        		        imp.say(imp.pRow()+0,25,"Desc.gp:");
+        		        imp.say(imp.pRow()+0,35,txtDescGrup.getVlrString());
+        		        imp.say(imp.pRow()+0,76,"Cod.clas:");
+           	            imp.say(imp.pRow()+0,87,txtCodFisc.getVlrString());
+           	            imp.say(imp.pRow()+0,101,"Desc.cl.fisc:");
+           	            imp.say(imp.pRow()+0,116,Funcoes.copy(""+txtDescFisc.getVlrString(),18).trim());
+           	            imp.say(imp.pRow()+0,135,"|");
           	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
           	            imp.say(imp.pRow()+0,0,"|");
-          	            imp.say(imp.pRow()+0,136,"|");
+          	            imp.say(imp.pRow()+0,135,"|");
           	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
           	            imp.say(imp.pRow()+0,0,"|");
           	        
@@ -778,19 +789,19 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
           	                    for (int k=0;k<6; k++) {
           	               	    imp.say(imp.pRow()+0,15+(k*10),Funcoes.copy(""+tab.getValor(j,k),0,10).trim());
           	                    }	  
-          	                    imp.say(imp.pRow()+0,136,"|");
+          	                    imp.say(imp.pRow()+0,135,"|");
           	            }
        	            }             
       	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"|");
                     imp.say(imp.pRow()+0,2,"Cod.forn.:");
                     imp.say(imp.pRow()+0,15,"|");
                     imp.say(imp.pRow()+0,16,"Desc.forn.");
-                    imp.say(imp.pRow()+0,136,"|");
+                    imp.say(imp.pRow()+0,135,"|");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"| "+tabFor.getValor(i,0));
                     imp.say(imp.pRow()+0,15,""+tabFor.getValor(i,1));
@@ -801,11 +812,11 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                         imp.say(imp.pRow()+0,70,"Ref.prod.:.");
                     }
                     imp.say(imp.pRow()+0,90,""+tabFor.getValor(i,2));
-                    imp.say(imp.pRow()+0,136,"|");
+                    imp.say(imp.pRow()+0,135,"|");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"|");
-                    imp.say(imp.pRow()+0,136,"|");
-                    //imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                    imp.say(imp.pRow()+0,135,"|");
+                    //imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"|");
                     imp.say(imp.pRow()+0,2,"Cod.cP.:");
@@ -820,10 +831,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                     imp.say(imp.pRow()+0,100,""+tabCompras.getValor(i,5));
                     imp.say(imp.pRow()+0,110,"Vlr.prod.: ");
                     imp.say(imp.pRow()+0,124,""+tabCompras.getValor(i,6));
-                    imp.say(imp.pRow()+0,136,"|");
+                    imp.say(imp.pRow()+0,135,"|");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"|");
-                    imp.say(imp.pRow()+0,136,"|");
+                    imp.say(imp.pRow()+0,135,"|");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"|");
                     imp.say(imp.pRow()+0,2,"Vlr.desc.: ");
@@ -836,7 +847,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                     imp.say(imp.pRow()+0,93,""+tabCompras.getValor(i,10));
                     imp.say(imp.pRow()+0,115,"Vlr.IPI.:");
                     imp.say(imp.pRow()+0,124,""+tabCompras.getValor(i,11));
-                    imp.say(imp.pRow()+0,136,"|");
+                    imp.say(imp.pRow()+0,135,"|");
                                    
                     
                     
@@ -846,9 +857,15 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
           if (sRets.equals("V")){
          	for (int i=0;i<tabVendas.getNumLinhas(); i++) {
    	            if (imp.pRow()==0) {
-   	                imp.impCab(136, false);
+   	            	imp.montaCab();
+	        	    imp.setTitulo("Relatório de Consulta de Produtos");
+	                imp.setSubTitulo("Vendas");
+	                imp.impCab(136, true);
    	           
-   	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
+	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
+    	            imp.say(imp.pRow()+0,0,"|");
+    	            imp.say(imp.pRow()+0,135,"|");
+   	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
    	                imp.say(imp.pRow()+0,2,"Cód.prod.:");
    	                imp.say(imp.pRow()+0,15,txtCodProd.getVlrString());    
@@ -858,10 +875,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
    	                imp.say(imp.pRow()+0,63,txtDescProd.getVlrString());
    	                imp.say(imp.pRow()+0,108,"Saldo :");
    	                imp.say(imp.pRow()+0,119,txtSldProd.getVlrString());   
-   	                imp.say(imp.pRow()+0,136,"|");
+   	                imp.say(imp.pRow()+0,135,"|");
    	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
-   	                imp.say(imp.pRow()+0,136,"|");
+   	                imp.say(imp.pRow()+0,135,"|");
    	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
    	                imp.say(imp.pRow()+0,2,"Preço Base");
@@ -876,24 +893,24 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
     	            imp.say(imp.pRow()+0,106,txtDescUnid.getVlrString());
     	            imp.say(imp.pRow()+0,115,"Marca :");
     	            imp.say(imp.pRow()+0,126,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
-    	            imp.say(imp.pRow()+0,136,"|");  
+    	            imp.say(imp.pRow()+0,135,"|");  
     	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
     	            imp.say(imp.pRow()+0,0,"|");
-    	            imp.say(imp.pRow()+0,136,"|");
+    	            imp.say(imp.pRow()+0,135,"|");
     		        imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
     		        imp.say(imp.pRow()+0,0,"|");   
-    		        imp.say(imp.pRow()+0,2,"Cod.grupo :");
-    		        imp.say(imp.pRow()+0,16,txtCodGrup.getVlrString());
-    		        imp.say(imp.pRow()+0,28,"Desc.grupo:");
-    		        imp.say(imp.pRow()+0,42,txtDescGrup.getVlrString());
-    		        imp.say(imp.pRow()+0,72,"Cod.clas.:");
-       	            imp.say(imp.pRow()+0,83,txtCodFisc.getVlrString());
-       	            imp.say(imp.pRow()+0,96,"Desc.clas.:");
-       	            imp.say(imp.pRow()+0,112,Funcoes.copy(""+txtDescFisc.getVlrString(),22).trim());
-       	            imp.say(imp.pRow()+0,136,"|");
+    		        imp.say(imp.pRow()+0,2,"Cod.gp:");
+    		        imp.say(imp.pRow()+0,10,txtCodGrup.getVlrString());
+    		        imp.say(imp.pRow()+0,25,"Desc.gp:");
+    		        imp.say(imp.pRow()+0,35,txtDescGrup.getVlrString());
+    		        imp.say(imp.pRow()+0,76,"Cod.clas:");
+       	            imp.say(imp.pRow()+0,87,txtCodFisc.getVlrString());
+       	            imp.say(imp.pRow()+0,101,"Desc.cl.fisc:");
+       	            imp.say(imp.pRow()+0,116,Funcoes.copy(""+txtDescFisc.getVlrString(),18).trim());
+       	            imp.say(imp.pRow()+0,135,"|");
       	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
       	            imp.say(imp.pRow()+0,0,"|");
-      	            imp.say(imp.pRow()+0,136,"|");
+      	            imp.say(imp.pRow()+0,135,"|");
       	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
       	            imp.say(imp.pRow()+0,0,"|");
       	        
@@ -907,11 +924,11 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
       	                    for (int k=0;k<6; k++) {
       	               	    imp.say(imp.pRow()+0,15+(k*10),Funcoes.copy(""+tab.getValor(j,k),0,10).trim());
       	                    }	  
-      	                    imp.say(imp.pRow()+0,136,"|");
+      	                    imp.say(imp.pRow()+0,135,"|");
       	            }
    	            }             
   	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
                 imp.say(imp.pRow()+0,2,"Cod.venda:");
@@ -920,11 +937,11 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                 imp.say(imp.pRow()+0,40,""+tabVendas.getValor(i,1));
                 imp.say(imp.pRow()+0,53,"Cliente:");
                 imp.say(imp.pRow()+0,66,""+tabVendas.getValor(i,2)); 
-                imp.say(imp.pRow()+0,136,"|");
+                imp.say(imp.pRow()+0,135,"|");
                 
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 				imp.say(imp.pRow()+0,0,"|");
-				imp.say(imp.pRow()+0,136,"|");
+				imp.say(imp.pRow()+0,135,"|");
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
                
                 imp.say(imp.pRow()+0,0,"|");
@@ -936,10 +953,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                 imp.say(imp.pRow()+0,80,""+tabVendas.getValor(i,5));
                 imp.say(imp.pRow()+0,95,"Vlr.prod.: ");
                 imp.say(imp.pRow()+0,115,""+tabVendas.getValor(i,6));
-                imp.say(imp.pRow()+0,136,"|");
+                imp.say(imp.pRow()+0,135,"|");
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
-                imp.say(imp.pRow()+0,136,"|");
+                imp.say(imp.pRow()+0,135,"|");
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
                 imp.say(imp.pRow()+0,2,"Vlr.desc.: ");
@@ -952,7 +969,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                 imp.say(imp.pRow()+0,95,""+tabVendas.getValor(i,10));
                 imp.say(imp.pRow()+0,115,"Vlr.IPI.:");
                 imp.say(imp.pRow()+0,124,""+tabVendas.getValor(i,11));
-                imp.say(imp.pRow()+0,136,"|");
+                imp.say(imp.pRow()+0,135,"|");
                 
                 
              
@@ -960,7 +977,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
          }
           
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,""+Funcoes.replicate("=",136));
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
           
           if (imp.pRow()>=linPag) {
          	     imp.incPags();
