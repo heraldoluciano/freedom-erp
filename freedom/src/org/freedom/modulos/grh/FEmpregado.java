@@ -21,14 +21,9 @@
  */
 
 package org.freedom.modulos.grh;
-import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
