@@ -539,14 +539,14 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
        while ( rs.next() ) {
           if (imp.pRow()>=(linPag-1)) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
             imp.incPags();
             imp.eject();
           }
           else if (sDivGrupo.equals("S")) {
              if (!sCodgrup.equals(rs.getString("Codgrup"))) {
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
                 imp.incPags();
                 imp.eject();
              }
@@ -568,7 +568,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
                imp.say(imp.pRow()+1,0,""+imp.comprimido());
                imp.say(imp.pRow()+0,0,"|");
-               imp.say(imp.pRow()+0,(136-rs.getString("Descgrup").length())/2,rs.getString("Descgrup"));
+               imp.say(imp.pRow()+0,(136-rs.getString("CodGrup").length())/2,rs.getString("CodGrup"));
                imp.say(imp.pRow()+0,135,"|");
              }
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
