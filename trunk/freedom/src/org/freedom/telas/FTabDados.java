@@ -23,8 +23,11 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JPanel;
+
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTabbedPanePad;;
+import org.freedom.componentes.JTabbedPanePad;
+;
 public class FTabDados extends FDados implements KeyListener{
   private boolean Ctrl = false;
   public JTabbedPanePad tpn = new JTabbedPanePad();
@@ -37,7 +40,7 @@ public class FTabDados extends FDados implements KeyListener{
     tpn.addKeyListener(this);
     addKeyListener(this);
   }
-  public JTabbedPanePad adicTab(String tit, JPanelPad pn) {
+  public JTabbedPanePad adicTab(String tit, JPanel pn) {
     tpn.add(tit,pn);
     pn.addKeyListener(this);
     pnCliente.add(tpn, BorderLayout.CENTER);
