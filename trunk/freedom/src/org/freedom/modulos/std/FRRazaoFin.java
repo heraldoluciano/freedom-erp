@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -129,7 +128,6 @@ public class FRRazaoFin extends FRelatorio {
 	BigDecimal bVlrSubLanca = new BigDecimal("0");    
     BigDecimal bTotal = new BigDecimal("0");
     
-    imp.montaCab();
     String sDataini = "";
     String sDatafim = "";
     
@@ -140,7 +138,7 @@ public class FRRazaoFin extends FRelatorio {
         Funcoes.mensagemInforma(this, "Informe um código de conta !");
         return; 
     }
-    imp.setTitulo("Razão financeiro");
+    
                 
 
   String sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA "+
@@ -167,36 +165,31 @@ public class FRRazaoFin extends FRelatorio {
       
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           String sTitulo = "RELATORIO RAZÃO FINANCEIRO - PERIODO DE "+sDataini+" A "+sDatafim;
-           imp.say(imp.pRow()+0,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-		   imp.say(imp.pRow()+0,136,"|");
+        	imp.montaCab();
+        	imp.setTitulo("Razão financeiro");
+        	imp.setSubTitulo("RELATORIO RAZÃO FINANCEIRO");
+            imp.impCab(136, true);
+                      
 		   if (!(sCodPlan.trim().equals(""))) {
-			  sConta = "CONTA: "+sCodPlan+" - "+txtDescPlan.getVlrString();                   
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			  sConta = "CONTA: "+sCodPlan+" - "+txtDescPlan.getVlrString();
 			  imp.say(imp.pRow()+0,0,"|");
-			  imp.say(imp.pRow()+0,(136-sConta.length())/2,sConta);
-			  imp.say(imp.pRow()+0,136,"|");
+			  imp.say(imp.pRow()+0,135,"|");
+			  imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			  imp.say(imp.pRow()+0,0,"|");
+			  imp.say(imp.pRow()+0,(135-sConta.length())/2,sConta);
+			  imp.say(imp.pRow()+0,135,"|");
 		   }
 
 		   String sSaldoAnt = Funcoes.strDecimalToStrCurrency(13,2,buscaSaldo()+"");
 		   
 
-		   imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
+		   imp.say(imp.pRow()+(sCodPlan.trim().equals("") ? 0 : 1),0,"|"+Funcoes.replicate("-",133)+"|");
 		   imp.say(imp.pRow()+1,0,"|");
            imp.say(imp.pRow()+0,104,"SALDO ANTERIOR:");
 		   imp.say(imp.pRow()+0,118,""+sSaldoAnt);
-		   imp.say(imp.pRow(),136,"|");
-		   imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
+		   imp.say(imp.pRow(),135,"|");
+		   imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",133)+"|");
+           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",133)+"|");
 		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow(),0,"| Data.");
 		   imp.say(imp.pRow(),23,"| Cód.Lanc.");
@@ -204,9 +197,9 @@ public class FRRazaoFin extends FRelatorio {
            imp.say(imp.pRow(),89, "| Receita ");
 		   imp.say(imp.pRow(),104, "| Despesa ");
 		   imp.say(imp.pRow(),119, "| Saldo ");
-           imp.say(imp.pRow(),136,"|");
+           imp.say(imp.pRow(),135,"|");
 		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",133)+"|");
         }
 
 		imp.say(imp.pRow()+1,1,"|");
@@ -233,26 +226,26 @@ public class FRRazaoFin extends FRelatorio {
 		}
 		          
 		imp.say(imp.pRow()+0,121,""+Funcoes.strDecimalToStrCurrency(12,2,""+bTotal));
-		imp.say(imp.pRow()+0,136,"|");}
+		imp.say(imp.pRow()+0,135,"|");}
         
         if (imp.pRow() == (linPag-1)) {
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
           imp.eject();
           imp.incPags();          
          
        }
 	  
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+	  imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
 	  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  imp.say(imp.pRow()+0,0,"|");
       imp.say(imp.pRow()+0,104,"|");
       imp.say(imp.pRow()+0,106,"SALDO");
       imp.say(imp.pRow()+0,119,"| "+Funcoes.strDecimalToStrCurrency(12,2,""+bTotal));
-	  imp.say(imp.pRow()+0,136,"|");
+	  imp.say(imp.pRow()+0,135,"|");
 	  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
 
       imp.eject();
       

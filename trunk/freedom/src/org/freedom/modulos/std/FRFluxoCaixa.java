@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
 
@@ -78,23 +77,13 @@ public class FRFluxoCaixa extends FRelatorio {
     int linPagi = imp.verifLinPag()-1;
     
     imp.montaCab();
-    
     imp.setTitulo("Fluxo de caixa");
-    imp.impCab(136, false);
-    String sTitulo = "FLUXO DE CAIXA - DATA LIMITE: "+txtDatafim.getVlrString();
+    imp.setSubTitulo("FLUXO DE CAIXA - DATA LIMITE: "+txtDatafim.getVlrString());
+    imp.impCab(80, true);
+   
     imp.say(imp.pRow()+0,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
-    imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-    imp.say(imp.pRow()+0,65,"Pagina : "+(imp.getNumPags()));
-    imp.say(imp.pRow()+0,80,"|");
-    imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow()+0,0,"|");
-    imp.say(imp.pRow()+0,(80-sTitulo.length())/2,sTitulo);
-    imp.say(imp.pRow()+0,80,"|");
-    imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"|");
-    imp.say(imp.pRow()+0,80,"|");
+    imp.say(imp.pRow()+0,79,"|");
     
     if (cbLanca.getVlrString().equals("S"))
       impLanca(imp,linPagi);
@@ -104,44 +93,44 @@ public class FRFluxoCaixa extends FRelatorio {
       impPagar(imp,linPagi);
     
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
-    imp.say(imp.pRow(),20,"| RECEITAS");
-    imp.say(imp.pRow(),40,"| DESPESAS");
-    imp.say(imp.pRow(),60,"| SALDO");
-    imp.say(imp.pRow(),80,"|");
-    imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",78)+"+");
+    imp.say(imp.pRow(),19,"| RECEITAS");
+    imp.say(imp.pRow(),39,"| DESPESAS");
+    imp.say(imp.pRow(),59,"| SALDO");
+    imp.say(imp.pRow(),79,"|");
+    imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",77)+"+");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),5,"LANÇAMENTOS: ");
-    imp.say(imp.pRow(),20,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bLRec));
-    imp.say(imp.pRow(),40,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bLPag));
-    imp.say(imp.pRow(),60,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bLRec.subtract(bLPag)));
-    imp.say(imp.pRow(),80,"|");
+    imp.say(imp.pRow(),19,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bLRec));
+    imp.say(imp.pRow(),39,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bLPag));
+    imp.say(imp.pRow(),59,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bLRec.subtract(bLPag)));
+    imp.say(imp.pRow(),79,"|");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),5,"CLIENTES: ");
-    imp.say(imp.pRow(),20,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bRec));
-    imp.say(imp.pRow(),40,"| "+Funcoes.strDecimalToStrCurrency(18,2,"0.00"));
-    imp.say(imp.pRow(),60,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bRec));
-    imp.say(imp.pRow(),80,"|");
+    imp.say(imp.pRow(),19,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bRec));
+    imp.say(imp.pRow(),39,"| "+Funcoes.strDecimalToStrCurrency(18,2,"0.00"));
+    imp.say(imp.pRow(),59,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bRec));
+    imp.say(imp.pRow(),79,"|");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),5,"FORNECEDORES: ");
-    imp.say(imp.pRow(),20,"| "+Funcoes.strDecimalToStrCurrency(18,2,"0.00"));
-    imp.say(imp.pRow(),40,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bPag));
-    imp.say(imp.pRow(),60,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bPag.negate()));
-    imp.say(imp.pRow(),80,"|");
+    imp.say(imp.pRow(),19,"| "+Funcoes.strDecimalToStrCurrency(18,2,"0.00"));
+    imp.say(imp.pRow(),39,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bPag));
+    imp.say(imp.pRow(),59,"| "+Funcoes.strDecimalToStrCurrency(18,2,""+bPag.negate()));
+    imp.say(imp.pRow(),79,"|");
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
     imp.say(imp.pRow()+1,0,""+imp.normal());
     imp.say(imp.pRow(),0,"|");
     imp.say(imp.pRow(),20,"| DIFERENCA FINAL -->");
-    imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(20,2,""+bLRec.subtract(bLPag).add(bRec).subtract(bPag)));
-    imp.say(imp.pRow(),80,"|");
+    imp.say(imp.pRow(),59,Funcoes.strDecimalToStrCurrency(20,2,""+bLRec.subtract(bLPag).add(bRec).subtract(bPag)));
+    imp.say(imp.pRow(),79,"|");
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
 
     imp.eject();
     
@@ -186,18 +175,18 @@ public class FRFluxoCaixa extends FRelatorio {
       imp.limpaPags();
       while ( rs.next() ) {
         if (bPrim) {
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
            imp.say(imp.pRow()+1,0,""+imp.normal());
            imp.say(imp.pRow(),0,"|");
            imp.say(imp.pRow(),35, "LANÇAMENTOS");
-           imp.say(imp.pRow(),80,"|");
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+           imp.say(imp.pRow(),79,"|");
+           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
            imp.say(imp.pRow()+1,0,"| Código Plan.");
            imp.say(imp.pRow(),15, "| Descrição");
-           imp.say(imp.pRow(),66, "| Saldo");
-           imp.say(imp.pRow(),80,"|");
+           imp.say(imp.pRow(),65, "| Saldo");
+           imp.say(imp.pRow(),79,"|");
            imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",78)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
            bPrim = false;
         }
         
@@ -211,7 +200,7 @@ public class FRFluxoCaixa extends FRelatorio {
             
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow(),0,"|"+Funcoes.copy(rs.getString("codplan"),0,13)+
-                "|"+Funcoes.copy(sDescplan,0,50)+
+                "|"+Funcoes.copy(sDescplan,0,49)+
                 "|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString(5))+
                 "|");
                 
@@ -226,7 +215,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
         if (imp.pRow() == (linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.normal());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
           imp.eject();
           imp.incPags();          
         }
@@ -263,18 +252,18 @@ public class FRFluxoCaixa extends FRelatorio {
   		rs = ps.executeQuery();
   		while ( rs.next() ) {
   			if (bPrim) {
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
   				imp.say(imp.pRow(),0,"|");
   				imp.say(imp.pRow(),36, "CLIENTES");
-  				imp.say(imp.pRow(),80,"|");
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+  				imp.say(imp.pRow(),79,"|");
+  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,"| Código Cli.");
   				imp.say(imp.pRow(),15, "| Razão");
-  				imp.say(imp.pRow(),66, "| Saldo");
-  				imp.say(imp.pRow(),80,"|");
+  				imp.say(imp.pRow(),65, "| Saldo");
+  				imp.say(imp.pRow(),79,"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",78)+"|");
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
   				bPrim = false;
   			}
   			
@@ -282,7 +271,7 @@ public class FRFluxoCaixa extends FRelatorio {
   				if (!rs.getString(3).equals("0")) {
   					imp.say(imp.pRow()+1,0,""+imp.normal());
   					imp.say(imp.pRow(),0,"|"+Funcoes.copy(rs.getString("codcli"),0,13)+
-  							"|"+Funcoes.copy(rs.getString("RazCli"),0,50)+
+  							"|"+Funcoes.copy(rs.getString("RazCli"),0,49)+
   							"|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString(3))+
   					"|");
   				}
@@ -291,7 +280,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
   			if (imp.pRow() == (linPag-1)) {
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
   				imp.eject();
   				imp.incPags();          
   			}
@@ -331,18 +320,18 @@ public class FRFluxoCaixa extends FRelatorio {
   		rs = ps.executeQuery();
   		while ( rs.next() ) {
   			if (bPrim) {
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
   				imp.say(imp.pRow(),0,"|");
   				imp.say(imp.pRow(),34, "FORNECEDORES");
-  				imp.say(imp.pRow(),80,"|");
-  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+  				imp.say(imp.pRow(),79,"|");
+  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
   				imp.say(imp.pRow()+1,0,"| Código For.");
   				imp.say(imp.pRow(),15, "| Razão");
-  				imp.say(imp.pRow(),66, "| Saldo");
-  				imp.say(imp.pRow(),80,"|");
+  				imp.say(imp.pRow(),65, "| Saldo");
+  				imp.say(imp.pRow(),79,"|");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",78)+"|");
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
   				bPrim = false;
   			}
   			
@@ -350,7 +339,7 @@ public class FRFluxoCaixa extends FRelatorio {
   				if (!rs.getString(3).equals("0")) {
   					imp.say(imp.pRow()+1,0,""+imp.normal());
   					imp.say(imp.pRow(),0,"|"+Funcoes.copy(rs.getString("codfor"),0,13)+
-  							"|"+Funcoes.copy(rs.getString("RazFor"),0,50)+
+  							"|"+Funcoes.copy(rs.getString("RazFor"),0,49)+
   							"|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString(3))+
   					"|");
   				}
@@ -359,7 +348,7 @@ public class FRFluxoCaixa extends FRelatorio {
 
   			if (imp.pRow() == (linPag-1)) {
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+  				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
   				imp.eject();
   				imp.incPags();          
   			}

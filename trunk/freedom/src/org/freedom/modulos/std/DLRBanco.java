@@ -36,7 +36,7 @@ public class DLRBanco extends FFDialogo {
   public DLRBanco(Component cOrig) {
   	super(cOrig);
     setTitulo("Ordem do Relatório");
-    setAtribos(300,120);
+    setAtribos(300,140);
     vLabs.addElement("Código");
     vLabs.addElement("Nome");
     vVals.addElement("C");

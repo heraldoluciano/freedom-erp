@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -180,8 +179,7 @@ public class FRPontoEqui extends FRelatorio {
 	String sCodCC = txtCodCC.getVlrString().trim();
 	String sCC = "";
     String sConta = "";
-    
-    imp.montaCab();
+        
     String sDataini = "";
     String sDatafim = "";
     sDataini = txtDataini.getVlrString();
@@ -232,117 +230,105 @@ public class FRPontoEqui extends FRelatorio {
       BigDecimal bigValMaster = null;
 
         if (imp.pRow()==0) {
-           String sTitulo = "APURAÇÃO DE RESULTADOS DE "+sDataini+" A "+sDatafim;
-           imp.say(imp.pRow()+0,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"| Emitido em : "+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,60,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,80,"|");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(80-sTitulo.length())/2,sTitulo);
-           imp.say(imp.pRow()+0,80,"|");
-
-
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",78)+"|");
+        	imp.montaCab();
+        	imp.setTitulo("Apuração de Resultados");
+        	imp.setSubTitulo("APURAÇÃO DE RESULTADOS DE "+sDataini+" A "+sDatafim);
+        	imp.impCab(80, true);
+                      
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
            imp.say(imp.pRow()+1,0,"|");
-           imp.say(imp.pRow(),50,"|    Valor");
-           imp.say(imp.pRow(),64,"|       %");
-           imp.say(imp.pRow(),80,"|");
+           imp.say(imp.pRow(),49,"|    Valor");
+           imp.say(imp.pRow(),63,"|       %");
+           imp.say(imp.pRow(),79,"|");
            imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",78)+"+");
+           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
         }
         
-        imp.say(imp.pRow()+1,0,"");
-        imp.say(imp.pRow()+1,0,"    Receitas:");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRec)+" |");		  	 
-        imp.say(imp.pRow(),66,"      100,00"+" %|");
+        imp.say(imp.pRow()+1,0,"|    Receitas:");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRec)+" |");		  	 
+        imp.say(imp.pRow(),65,"      100,00"+" %|");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|  | Receitas S/V (RV):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRV)+" |");
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdRV.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRV)+" |");
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdRV.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|  | Estorno de receitas (ER):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdER)+" |");
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdER.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdER)+" |");
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdER.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|01| Receita liquida (RV-ER):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bd01)+" |");
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bd01.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bd01)+" |");
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bd01.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|02| Custos variaveis (CV):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCV)+" |");
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdCV.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCV)+" |");
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdCV.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|03| Margem contribuicao (01-02):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bd03)+" |");
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bd03.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
-        
-        imp.say(imp.pRow()+1,0,"");
-        
-        imp.say(imp.pRow()+1,0,"");
-        imp.say(imp.pRow()+1,0,"    Despesas:");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdDesp)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdDesp.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bd03)+" |");
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bd03.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+               
+        imp.say(imp.pRow()+1,0,"|    Despesas:");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdDesp)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdDesp.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
        
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|04| Custos fixos (CF):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCF)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdCF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCF)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdCF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|05| Lucro operacional (03-04):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdLO)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdLO.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdLO)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdLO.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|06| Ponto de equilibrio ((03/04)*01):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdPE)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdPE.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdPE)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdPE.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|07| Investimentos (I):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdI)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdI.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdI)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdI.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|08| Receitas financeiras (RF):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRF)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdRF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRF)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdRF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|09| Lucro operacional (DF):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdDF)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdDF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdDF)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdDF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|10| Contribuição social (CS):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCS)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdCS.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCS)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdCS.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");
         imp.say(imp.pRow()+1,0,"|11| IRPJ (IR):");
-        imp.say(imp.pRow(),50,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdIR)+" |");		  	 
-        imp.say(imp.pRow(),66,Funcoes.strDecimalToStrCurrency(12,2,""+bdIR.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
-        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",45)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");          
+        imp.say(imp.pRow(),49,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdIR)+" |");		  	 
+        imp.say(imp.pRow(),65,Funcoes.strDecimalToStrCurrency(12,2,""+bdIR.multiply(new BigDecimal(100)).divide(bdRec,6))+" %|");
+        imp.say(imp.pRow()+1,0,"+--+"+Funcoes.replicate("-",44)+"+"+Funcoes.replicate("-",13)+"+"+Funcoes.replicate("-",15)+"+");          
         
         if (imp.pRow() == (linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.normal());

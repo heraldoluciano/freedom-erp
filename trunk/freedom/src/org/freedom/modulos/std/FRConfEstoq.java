@@ -24,7 +24,6 @@ package org.freedom.modulos.std;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
@@ -147,39 +146,31 @@ public class FRConfEstoq extends FRelatorio {
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
   					imp.incPags();
   					imp.eject();
 
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-	  				imp.say(imp.pRow()+0,136,"|");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"|");
-	  				imp.say(imp.pRow()+0,55,"CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR PRODUTO");
-	  				imp.say(imp.pRow()+0,136,"|");
-  	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  	  				imp.say(imp.pRow()+0,1,"|");
-  	  				imp.say(imp.pRow()+0,136,"|");
-  	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  				imp.montaCab();
+	  				imp.setTitulo("Relatorio de Comferencia de Estoque");
+	  				imp.setSubTitulo("CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR PRODUTO");
+	  				imp.impCab(136, true);
+	  					  				
+  	  				imp.say(imp.pRow()+0,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"| DESCRICAO DO PRODUTO");
+					imp.say(imp.pRow()+0,0,"| DESCRICAO DO PRODUTO");
 					imp.say(imp.pRow()+0,32,"| CODIGO");
-					imp.say(imp.pRow()+0,44,"| REF.");
-					imp.say(imp.pRow()+0,59,"| SALDO ");
-					imp.say(imp.pRow()+0,70,"| QTD.INV.");
-					imp.say(imp.pRow()+0,81,"| QTD.CP.");
-					imp.say(imp.pRow()+0,92,"| QTD.VD.");
-					imp.say(imp.pRow()+0,103,"| SLD.CALC.");
-					imp.say(imp.pRow()+0,114,"| SLD.M.P.");
-					imp.say(imp.pRow()+0,125,"| DIF.SLD.");
-					imp.say(imp.pRow()+0,136,"|");
+					imp.say(imp.pRow()+0,43,"| REF.");
+					imp.say(imp.pRow()+0,58,"| SALDO ");
+					imp.say(imp.pRow()+0,69,"| QTD.INV.");
+					imp.say(imp.pRow()+0,80,"| QTD.CP.");
+					imp.say(imp.pRow()+0,91,"| QTD.VD.");
+					imp.say(imp.pRow()+0,102,"| SLD.CALC.");
+					imp.say(imp.pRow()+0,113,"| SLD.M.P.");
+					imp.say(imp.pRow()+0,124,"| DIF.SLD.");
+					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					
@@ -191,17 +182,17 @@ public class FRConfEstoq extends FRelatorio {
 	  				deQtdDif = rs.getDouble(8) - rs.getDouble(4);
 	  			}
   				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,1,"|"+Funcoes.adicionaEspacos(rs.getString(1),30));
-  				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicEspacosEsquerda(rs.getString(2),10));
-  				imp.say(imp.pRow()+0,44,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
-  				imp.say(imp.pRow()+0,59,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
-  				imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10));
-  				imp.say(imp.pRow()+0,81,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(6)+"",10));
-  				imp.say(imp.pRow()+0,92,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
-  				imp.say(imp.pRow()+0,103,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
-  				imp.say(imp.pRow()+0,114,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(8)+"",10));
-  				imp.say(imp.pRow()+0,125,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
-  				imp.say(imp.pRow()+0,136,"|");
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString(1),30));
+  				imp.say(imp.pRow()+0,32,"|"+Funcoes.adicionaEspacos(rs.getString(2),10));
+  				imp.say(imp.pRow()+0,43,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
+  				imp.say(imp.pRow()+0,58,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
+  				imp.say(imp.pRow()+0,69,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10));
+  				imp.say(imp.pRow()+0,80,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(6)+"",10));
+  				imp.say(imp.pRow()+0,91,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
+  				imp.say(imp.pRow()+0,102,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
+  				imp.say(imp.pRow()+0,113,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(8)+"",10));
+  				imp.say(imp.pRow()+0,124,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
+  				imp.say(imp.pRow()+0,135,"|");
   				
   			}
   			
@@ -307,30 +298,24 @@ public class FRConfEstoq extends FRelatorio {
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
   					imp.incPags();
   					imp.eject();
 
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136, false);
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-	  				imp.say(imp.pRow()+0,136,"|");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"|");
-	  				imp.say(imp.pRow()+0,55,"CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR LOTE");
-	  				imp.say(imp.pRow()+0,136,"|");
-  	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  	  				imp.say(imp.pRow()+0,1,"|");
-  	  				imp.say(imp.pRow()+0,136,"|");
+	  				imp.montaCab();
+	  				imp.setTitulo("Relatorio de Comferencia de Estoque");
+	  				imp.setSubTitulo("CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR LOTE");
+	  				imp.impCab(136, true);
+	  					  				
+  	  				imp.say(imp.pRow()+0,0,""+imp.comprimido());
+  	  				imp.say(imp.pRow()+0,0,"|");
+  	  				imp.say(imp.pRow()+0,135,"|");
   	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"| DESCRICAO DO PRODUTO");
+					imp.say(imp.pRow()+0,0,"| DESCRICAO DO PRODUTO");
 					imp.say(imp.pRow()+0,43,"| CODIGO");
 					imp.say(imp.pRow()+0,54,"| LOTE");
 					imp.say(imp.pRow()+0,69,"| SALDO ");
@@ -339,7 +324,7 @@ public class FRConfEstoq extends FRelatorio {
 					imp.say(imp.pRow()+0,102,"| QTD.VD.");
 					imp.say(imp.pRow()+0,113,"| SLD.CALC.");
 					imp.say(imp.pRow()+0,124,"| DIF.SLD.");
-					imp.say(imp.pRow()+0,136,"|");
+					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					
@@ -348,7 +333,7 @@ public class FRConfEstoq extends FRelatorio {
 	  			deSldCalc = rs.getDouble(5) + rs.getDouble(6) - rs.getDouble(7); 
 	  			deQtdDif = deSldCalc - rs.getDouble(4) ; 
   				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,1,"|"+Funcoes.adicionaEspacos(rs.getString(1),40));
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicionaEspacos(rs.getString(1),40));
   				imp.say(imp.pRow()+0,42,"|"+Funcoes.adicEspacosEsquerda(rs.getString(2),10));
   				imp.say(imp.pRow()+0,54,"|"+Funcoes.adicionaEspacos(rs.getString(3),13));
   				imp.say(imp.pRow()+0,69,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(4)+"",10));
@@ -357,7 +342,7 @@ public class FRConfEstoq extends FRelatorio {
   				imp.say(imp.pRow()+0,102,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble(7)+"",10));
   				imp.say(imp.pRow()+0,113,"|"+Funcoes.adicEspacosEsquerda(deSldCalc+"",10));
   				imp.say(imp.pRow()+0,124,"|"+Funcoes.adicEspacosEsquerda(deQtdDif+"",10));
-  				imp.say(imp.pRow()+0,136,"|");
+  				imp.say(imp.pRow()+0,135,"|");
   				
   			}
   			

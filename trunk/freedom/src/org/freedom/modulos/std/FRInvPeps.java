@@ -160,8 +160,7 @@ public class FRInvPeps extends FRelatorio {
   		imp = new ImprimeOS("",con);
   		linPag = imp.verifLinPag()-1;
  		iPagina = txtPagina.getVlrInteger().intValue()-1;
-  		imp.setTitulo("Relatorio de inventário de estoque");
-  		
+  		  		
   		sCpCodigo = (bPrefs[0]?"REFPROD":"CODPROD");
   		sSemEstoq = cbSemEstoq.getVlrString();
   		sCodMarca = txtCodMarca.getVlrString().trim();
@@ -215,21 +214,24 @@ public class FRInvPeps extends FRelatorio {
 
   				}
 	  			if (imp.pRow()==0) {
-	  				imp.impCab(136, false);
+	  				imp.montaCab();
+	  				imp.setTitulo("Relatorio de inventário de estoque");
+	  				imp.impCab(136, true);
+	  				
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  				imp.say(imp.pRow()+0,1,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
 	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()+iPagina));
-	  				imp.say(imp.pRow()+0,136,"|");
+	  				imp.say(imp.pRow()+0,135,"|");
 	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	  				imp.say(imp.pRow()+0,1,"|");
 	  				imp.say(imp.pRow()+0,45,"RELATORIO DE INVENTARIO DE ESTOQUE - ESTOQUE DE: "+txtData.getVlrString());
-	  				imp.say(imp.pRow()+0,136,"|");
+	  				imp.say(imp.pRow()+0,135,"|");
   	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
   	  				imp.say(imp.pRow()+0,1,"|");
   	  				imp.say(imp.pRow()+0,65-(sFiltros.length()/2),sFiltros);
-  	  				imp.say(imp.pRow()+0,136,"|");
+  	  				imp.say(imp.pRow()+0,135,"|");
   	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -238,7 +240,7 @@ public class FRInvPeps extends FRelatorio {
 					imp.say(imp.pRow()+0,70,"| SALDO");
 					imp.say(imp.pRow()+0,83,"| CUSTO UNIT.");
 					imp.say(imp.pRow()+0,101,"| CUSTO TOTAL");
-					imp.say(imp.pRow()+0,136,"|");
+					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 					
@@ -250,7 +252,7 @@ public class FRInvPeps extends FRelatorio {
   				imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDPROD")+"",10));
   				imp.say(imp.pRow()+0,83,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOUNIT")+""));
   				imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOTOT")+""));
-  				imp.say(imp.pRow()+0,136,"|");
+  				imp.say(imp.pRow()+0,135,"|");
   				deSldProd += rs.getDouble("SLDPROD");
   				deCustoTot += rs.getDouble("CUSTOTOT");
   				
@@ -267,7 +269,7 @@ public class FRInvPeps extends FRelatorio {
   			imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",10));
 			imp.say(imp.pRow()+0,83,"|");
   			imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,deCustoTot+""));
-  			imp.say(imp.pRow()+0,136,"|");
+  			imp.say(imp.pRow()+0,135,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
 
