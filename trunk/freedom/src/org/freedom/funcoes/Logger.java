@@ -73,6 +73,11 @@ public class Logger {
 	public static final LoggerItem LGEP_RET_VDESC = new LoggerItem(idErroPDV,25,"Erro na função de retorno do valor de descontos");
 	public static final LoggerItem LGEP_RET_FLAG = new LoggerItem(idErroPDV,26,"Erro na função de retorno do flag fiscal");
 	public static final LoggerItem LGEP_RET_GTOTAL = new LoggerItem(idErroPDV,27,"Erro na função de retorno do grande total");
+	public static final LoggerItem LGEP_ABRE_N_FISCAL_VIN = new LoggerItem(idErroPDV,28,"Erro na função abrir comprovante não fiscal vinculado");
+	public static final LoggerItem LGEP_USA_N_FISCAL_VIN = new LoggerItem(idErroPDV,29,"Erro na função usar comprovante não fiscal vinculado");
+	public static final LoggerItem LGEP_FECHA_N_FISCAL_VIN = new LoggerItem(idErroPDV,30,"Erro na função fechar comprovante não fiscal vinculado");
+	public static final LoggerItem LGEP_INICIA_TEF = new LoggerItem(idErroPDV,31,"Erro na função de inicialização da TEF");
+	public static final LoggerItem LGEP_FINALIZA_TEF = new LoggerItem(idErroPDV,32,"Erro na função de finalização de TEF");
     
 // Logs de PDV:
 	public static boolean gravaLogTxt(String sEmp, String sUserID, LoggerItem lg, String sTextoAdic) {
