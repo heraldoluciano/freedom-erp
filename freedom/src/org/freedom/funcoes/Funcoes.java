@@ -1320,7 +1320,6 @@ public class Funcoes {
     if (sVal == null)
       return "";
     String texto = "";
-    sVal = sVal.trim();
     int i2 = 0;
     if ((sVal.length() > 0) & (sMasc.length() > 0) & 
         (sMasc.length() > sVal.length())){
