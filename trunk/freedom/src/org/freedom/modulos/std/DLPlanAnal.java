@@ -95,7 +95,7 @@ public class DLPlanAnal extends FFDialogo {
     vLabsFinPlan.addElement("II - Investimentos");
     vLabsFinPlan.addElement("RF - Receitas financeiras");
     vLabsFinPlan.addElement("DF - Despesas financeiras");
-    vLabsFinPlan.addElement("CS - Contribuição financeira");
+    vLabsFinPlan.addElement("CS - Contribuição social");
     vLabsFinPlan.addElement("IR - Imposto de renda");
     vLabsFinPlan.addElement("OO - Outros");
     rgFinPlan = new JRadioGroup(6,2,vLabsFinPlan,vValsFinPlan);
