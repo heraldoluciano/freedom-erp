@@ -393,7 +393,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 								telaPrincipal.criatela(titulo, tela, con);
 							} else if (obj instanceof FDialogo) {
 								FDialogo tela = (FDialogo) obj;
-								telaPrincipal.criatela(titulo, null, con);
+								telaPrincipal.criatela(titulo, tela, con);
 							} else {
 								Funcoes.mensagemInforma(framePrinc,
 										"Tela construída com "

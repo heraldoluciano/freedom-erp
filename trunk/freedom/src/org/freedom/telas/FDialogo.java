@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -49,6 +50,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
    boolean setArea = true;
    boolean bUltimo = false;
    public boolean OK = false;
+   public Connection con = null;
    public FDialogo () {
     setModal(true);
     setSize( 250, 100);
@@ -75,6 +77,11 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
   }
+
+  public void setConexao(Connection cn) {
+	con = cn;
+  }
+   
   public void setPainel(JPanelPad p) {
     pin = p;
     setArea = false;

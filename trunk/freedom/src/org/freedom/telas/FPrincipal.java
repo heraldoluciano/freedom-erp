@@ -279,7 +279,13 @@ public class FPrincipal extends JFrame implements ActionListener {
     try {
       comp.setSelected(true);
     }
-    catch(Exception e) { }
+    catch(Exception e) { } 
+  }
+  public void criatela(String nome, FDialogo comp, Connection cn) {
+    comp.setName(nome);
+    //dpArea.add(nome,comp); 
+    comp.setConexao(cn);
+    comp.setVisible(true);
   }
 
 	/**
