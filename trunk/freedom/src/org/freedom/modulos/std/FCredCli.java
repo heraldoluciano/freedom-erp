@@ -56,13 +56,21 @@ import org.freedom.telas.FTabDados;
 public class FCredCli extends FTabDados	implements ActionListener, CarregaListener,PostListener {
   private JPanelPad pinGeral = new JPanelPad(680, 200);
   private JPanelPad pnFicha = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-  private JPanelPad pnDetRefPess = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-  private Tabela tbRefPess = new Tabela();
-  private JScrollPane spnRefPess = new JScrollPane(tbRefPess); // Scrool pane para grid de ref. pess.
+  private JPanelPad pinDetRefP = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+  private JPanelPad pinDetAutP = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+  private Tabela tbRefP = new Tabela();
+  private Tabela tbAutP = new Tabela();
+  private JScrollPane spnRefP = new JScrollPane(tbRefP); // Scrool pane para grid de ref. pess.
+  private JScrollPane spnAutP = new JScrollPane(tbAutP); // Scrool pane para grid de aut. pess.
   private JPanelPad pinFiliacao = new JPanelPad(680,200);
   private JPanelPad pinTrabalho = new JPanelPad(680,200);
   private JPanelPad pinConjuge = new JPanelPad(680,200);
-  private JPanelPad pinRefPess = new JPanelPad(680,200);
+  private JPanelPad pinCamposRefP = new JPanelPad(680,200);
+  private JPanelPad pinCamposAutP = new JPanelPad(680,200);
+  private JPanelPad pinNavRefP = new JPanelPad(680,30);
+  private JPanelPad pinNavAutP = new JPanelPad(680,30);
+  private JPanelPad pnRefP = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnAutP = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinAvalista = new JPanelPad(680,200);  
   private JPanelPad pinRodFicha = new JPanelPad(680,29);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -160,8 +168,32 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   
   private JTextFieldPad txtCodRefP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtNomeRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  
-  private Tabela tabFicha = new Tabela();
+  private JTextFieldPad txtEndRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtNumRefP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtComplRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtBairRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtCidRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtCepRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldPad txtUfRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtDDDRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtFoneRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,12,0);
+
+  private JTextFieldPad txtCodAutP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtNomeAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtEndAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtNumAutP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtComplAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtBairAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtCidAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtCepAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldPad txtUfAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtDDDAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtFoneAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,12,0);
+  private JTextFieldPad txtRGAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtSSPAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtCPFAutP = new JTextFieldPad(JTextFieldPad.TP_STRING,11,0);
+
+  private Tabela tbFicha = new Tabela();
   private JLabelPad lbNatCli = null;
   private JLabelPad lbApelidoCli = null;
   private JLabelPad lbUfNatCli = null;
@@ -194,9 +226,11 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
   private ListaCampos lcTipoCob = new ListaCampos(this,"TC");
-  private ListaCampos lcRefPess = new ListaCampos(this,"RP");
+  private ListaCampos lcRefP = new ListaCampos(this,"RP");
+  private ListaCampos lcAutP = new ListaCampos(this,"AP");
   private Navegador navFicha = new Navegador(false);
-  private Navegador navRefPess = new Navegador(false);
+  private Navegador navRefP = new Navegador(true);
+  private Navegador navAutP = new Navegador(true);
   private boolean bFisTipoCli = false;
   private boolean bJurTipoCli = false;
   private boolean bFilTipoCli = false;
@@ -219,23 +253,43 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     txtFoneCli.setMascara(JTextFieldPad.MC_FONE);
     txtFoneCob.setMascara(JTextFieldPad.MC_FONE);
     txtFoneTrabCli.setMascara(JTextFieldPad.MC_FONE);
+    txtFoneRefP.setMascara(JTextFieldPad.MC_FONE);
+    txtFoneAutP.setMascara(JTextFieldPad.MC_FONE);
+
+    txtFaxCli.setMascara(JTextFieldPad.MC_FONE);
+    txtFaxCob.setMascara(JTextFieldPad.MC_FONE);
     
+    txtCepCli.setMascara(JTextFieldPad.MC_CEP);
+	txtCepCob.setMascara(JTextFieldPad.MC_CEP);
+	txtCepTrabCli.setMascara(JTextFieldPad.MC_CEP);
+	txtCepRefP.setMascara(JTextFieldPad.MC_CEP);
+	txtCepAutP.setMascara(JTextFieldPad.MC_CEP);
+	
+	txtCPFAvalCli.setMascara(JTextFieldPad.MC_CPF);
+	txtCPFConjCli.setMascara(JTextFieldPad.MC_CPF);
+	txtCPFAutP.setMascara(JTextFieldPad.MC_CPF);
+	
+	txtRgAvalCli.setMascara(JTextFieldPad.MC_RG);
+	txtRgConjCli.setMascara(JTextFieldPad.MC_RG);
+	txtRgMaeCli.setMascara(JTextFieldPad.MC_RG);
+	txtRgPaiCli.setMascara(JTextFieldPad.MC_RG);
+	txtRGAutP.setMascara(JTextFieldPad.MC_RG);
+        
     lcFicha.setMaster(lcCampos);
-    lcRefPess.setMaster(lcCampos);
+    lcRefP.setMaster(lcCampos);
+    lcAutP.setMaster(lcCampos);
 
     lcCampos.adicDetalhe(lcFicha);
-    lcCampos.adicDetalhe(lcRefPess);
+    lcCampos.adicDetalhe(lcRefP);
+    lcCampos.adicDetalhe(lcAutP);
 
-    lcFicha.setTabela(tabFicha);
-    lcRefPess.setTabela(tbRefPess);
+    lcFicha.setTabela(tbFicha);
+    lcRefP.setTabela(tbRefP);
+    lcAutP.setTabela(tbAutP);
     
     navFicha.btNovo.setVisible(false);
 	navFicha.btExcluir.setVisible(false);
 
-    navRefPess.btNovo.setVisible(false);
-	navRefPess.btExcluir.setVisible(false);
-
-	
     lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true));
     lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
     lcTipoCli.montaSql(false, "TIPOCLI", "VD");    
@@ -387,25 +441,110 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     setListaCampos( false, "CLICOMPL", "VD");
     lcFicha.setQueryInsert(false);
 	lcFicha.setQueryCommit(false);
-    lcFicha.montaTab();    
-//    continuar implementação
-        
-    setPainel(pinRefPess);
-
-    setListaCampos(lcRefPess);
-    setNavegador(navRefPess);
-    pinRefPess.add(pnDetRefPess, BorderLayout.SOUTH);
-    pinRefPess.add(spnRefPess, BorderLayout.CENTER);
-
-    pinRefPess.adic(navRefPess,0,50,270,25);
-   
-    adicCampo(txtCodRefP, 7, 20, 30, 20, "CodRefP", "Cód.Ref.P", ListaCampos.DB_PK, null,true);
-    adicCampo(txtNomeRefP, 40, 20, 200, 20, "NomeRefP", "Nome", ListaCampos.DB_SI, null,true);
+    lcFicha.montaTab();  
     
-    setListaCampos( false, "CLIREFP", "VD");
-    lcRefPess.setQueryInsert(false);
-    lcRefPess.setQueryCommit(false);
-    lcRefPess.montaTab();
+//  *************************Referencias Pessoais
+        
+    setPainel( pinDetRefP, pnRefP);
+
+    pinDetRefP.setPreferredSize(new Dimension(600,170));
+    pinDetRefP.add(pinNavRefP,BorderLayout.SOUTH);
+    pinDetRefP.add(pinCamposRefP,BorderLayout.CENTER);
+    setListaCampos(lcRefP);
+    setNavegador(navRefP);
+    
+    
+    pnRefP.add(pinDetRefP, BorderLayout.SOUTH);
+	pnRefP.add(spnRefP, BorderLayout.CENTER);
+
+	pinNavRefP.adic(navRefP,0,0,270,25);
+    
+    setPainel(pinCamposRefP);
+   
+    adicCampo(txtCodRefP, 7, 20, 50, 20, "CodRefP", "Seq.", ListaCampos.DB_PK, null,true);
+    adicCampo(txtNomeRefP, 60, 20, 370, 20, "NomeRefP", "Nome", ListaCampos.DB_SI, null,true);
+  	adicCampo(txtDDDRefP, 433, 20, 40, 20, "DDDRefP", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneRefP, 476, 20, 97, 20, "FoneRefP", "Telefone", ListaCampos.DB_SI, false);
+    adicCampo(txtEndRefP, 7, 60, 330, 20, "EndRefP", "Endereço", ListaCampos.DB_SI, false);
+  	adicCampo(txtNumRefP, 340, 60, 77, 20, "NumRefP", "Num.", ListaCampos.DB_SI, false);
+  	adicCampo(txtComplRefP, 420, 60, 149, 20, "ComplRefP", "Compl.", ListaCampos.DB_SI, false);
+  	adicCampo(txtBairRefP, 7, 100, 210, 20, "BairRefP", "Bairro", ListaCampos.DB_SI, false);
+  	adicCampo(txtCidRefP, 220, 100, 210, 20, "CidRefP", "Cidade", ListaCampos.DB_SI, false);
+  	adicCampo(txtUfRefP, 433, 100, 53, 20, "UFRefP", "UF", ListaCampos.DB_SI, false);
+  	adicCampo(txtCepRefP, 486, 100, 80, 20, "CepRefP", "Cep", ListaCampos.DB_SI, false); 	
+
+    setListaCampos( true, "CLIREFP", "VD");
+    lcRefP.setQueryInsert(false);
+    lcRefP.setQueryCommit(false);
+    lcRefP.montaTab();
+    tbRefP.setTamColuna(30,0); // Seq.
+    tbRefP.setTamColuna(200,1); // NomeRefP
+    tbRefP.setTamColuna(50,2); // DDD
+    tbRefP.setTamColuna(200,4); // Endereco
+    tbRefP.setTamColuna(50,5); // Numero
+    tbRefP.setTamColuna(100,6); // Complemento
+    tbRefP.setTamColuna(100,7); // Bairro
+    tbRefP.setTamColuna(100,8); // Cidade
+    tbRefP.setTamColuna(30,9); // UF
+
+// **************************    
+    
+//  *************************Pessoas autorizadas a comprar
+        
+    setPainel( pinDetAutP, pnAutP);
+
+    pinDetAutP.setPreferredSize(new Dimension(600,200));
+    pinDetAutP.add(pinNavAutP,BorderLayout.SOUTH);
+    pinDetAutP.add(pinCamposAutP,BorderLayout.CENTER);
+    setListaCampos(lcAutP);
+    setNavegador(navAutP);
+        
+    pnAutP.add(pinDetAutP, BorderLayout.SOUTH);
+	pnAutP.add(spnAutP, BorderLayout.CENTER);
+
+	pinNavAutP.adic(navAutP,0,0,270,25);
+    
+    setPainel(pinCamposAutP);
+   
+    adicCampo(txtCodAutP, 7, 20, 50, 20, "CodAutP", "Seq.", ListaCampos.DB_PK, null,true);
+    adicCampo(txtNomeAutP, 60, 20, 200, 20, "NomeAutP", "Nome", ListaCampos.DB_SI, null,true);
+    adicCampo(txtRGAutP, 263, 20, 100, 20, "RGAutP", "RG", ListaCampos.DB_SI, null,false);
+    adicCampo(txtSSPAutP, 366, 20, 100, 20, "SSPAutP", "Orgão Exp.", ListaCampos.DB_SI, null,false);
+    adicCampo(txtCPFAutP, 469, 20, 100, 20, "CPFAutP", "CPF", ListaCampos.DB_SI, null,false);    
+    adicCampo(txtEndAutP, 7, 60, 330, 20, "EndAutP", "Endereço", ListaCampos.DB_SI, false);
+  	adicCampo(txtNumAutP, 340, 60, 77, 20, "NumAutP", "Num.", ListaCampos.DB_SI, false);
+  	adicCampo(txtComplAutP, 420, 60, 149, 20, "ComplAutP", "Compl.", ListaCampos.DB_SI, false);
+  	adicCampo(txtBairAutP, 7, 100, 210, 20, "BairAutP", "Bairro", ListaCampos.DB_SI, false);
+  	adicCampo(txtCidAutP, 220, 100, 210, 20, "CidAutP", "Cidade", ListaCampos.DB_SI, false);
+  	adicCampo(txtUfAutP, 433, 100, 53, 20, "UFAutP", "UF", ListaCampos.DB_SI, false);
+  	adicCampo(txtCepAutP, 486, 100, 80, 20, "CepAutP", "Cep", ListaCampos.DB_SI, false); 	
+  	adicCampo(txtDDDAutP, 7, 140, 40, 20, "DDDAutP", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneAutP, 50, 140, 97, 20, "FoneAutP", "Telefone", ListaCampos.DB_SI, false);
+  	
+    setListaCampos( true, "CLIAUTP", "VD");
+    lcAutP.setQueryInsert(false);
+    lcAutP.setQueryCommit(false);
+    lcAutP.montaTab();
+    tbAutP.setTamColuna(30,0); // Seq.
+    tbAutP.setTamColuna(200,1); // NomeRefP
+    tbAutP.setTamColuna(100,2); // RG
+    tbAutP.setTamColuna(100,3); // SSP
+    tbAutP.setTamColuna(110,4); // CPF    
+    tbAutP.setTamColuna(200,5); // Endereco
+    tbAutP.setTamColuna(100,7); // Complemento
+    tbAutP.setTamColuna(100,8); // Bairro
+    tbAutP.setTamColuna(100,9); // Cidade
+    tbAutP.setTamColuna(30,10); // UF
+    tbAutP.setTamColuna(50,12); // DDD
+    tbAutP.setTamColuna(50,13); // FOne
+
+
+// **************************    
+
+    
+    
+    
+    
     
     completaTela();    
   }
@@ -435,10 +574,10 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 		adicTab("Sócios", new JPanelPad(JPanelPad.TP_JPANEL));
 	}
   	if(bRefPesTipoCli)
-  		adicTab("Ref.Pess.",pinRefPess);
+  		adicTab("Ref.Pess.",pnRefP);
   	
 	if(bFisTipoCli || bJurTipoCli)
-		adicTab("Pessoas autorizadas",new JPanelPad(JPanelPad.TP_JPANEL));
+		adicTab("Pess.Autoriz.",pnAutP);
     if(bFilTipoCli)
   		tpn2.addTab("Filiação",pinFiliacao);
   	if(bLocTrabTipoCli)
@@ -648,7 +787,8 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     lcTipoCli.setConexao(cn);
     lcTipoCred.setConexao(cn);
     lcTipoCob.setConexao(cn);
-    lcRefPess.setConexao(cn);
+    lcRefP.setConexao(cn);
+    lcAutP.setConexao(cn);
    	buscaEstadoCivil();
   }        
 }
