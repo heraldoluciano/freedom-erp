@@ -88,17 +88,17 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   	setTitulo("Histórico de contatos");
   	setAtribos(20,20,540,400);
   	
-	lcCont.add(new GuardaCampo( txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.cto.", true, false, txtNomeCont, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtNomeCont, 7, 20, 200, 20, "NomeCto", "Nome do contato", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtTelCont, 7, 20, 200, 20, "FoneCto", "Fone.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtFaxCont, 7, 20, 200, 20, "FaxCto", "Fax.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtEmpCont, 7, 20, 200, 20, "RazCto", "Empresa", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtEndCont, 7, 20, 200, 20, "EndCto", "Endereco", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtNumCont, 7, 20, 200, 20, "NumCto", "Numero", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtComplCont, 7, 20, 200, 20, "ComplCto", "Compl.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtBairCont, 7, 20, 200, 20, "BairCto", "Compl.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtCidCont, 7, 20, 200, 20, "CidCto", "Compl.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcCont.add(new GuardaCampo( txtUfCont, 7, 20, 200, 20, "UfCto", "Compl.", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcCont.add(new GuardaCampo( txtCodCont, "CodCto", "Cód.cto.", ListaCampos.DB_PK, txtNomeCont, false));
+	lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome do contato", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtTelCont, "FoneCto", "Fone.", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtFaxCont, "FaxCto", "Fax.", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtEmpCont, "RazCto", "Empresa", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtEndCont, "EndCto", "Endereco", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtNumCont, "NumCto", "Numero", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtComplCont, "ComplCto", "Compl.", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtBairCont, "BairCto", "Compl.", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtCidCont, "CidCto", "Compl.", ListaCampos.DB_SI, false));
+	lcCont.add(new GuardaCampo( txtUfCont, "UfCto", "Compl.", ListaCampos.DB_SI, false));
 	lcCont.montaSql(false, "CONTATO", "TK");    
 	lcCont.setReadOnly(true);
 	txtCodCont.setTabelaExterna(lcCont);

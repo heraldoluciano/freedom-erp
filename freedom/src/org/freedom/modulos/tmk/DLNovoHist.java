@@ -78,16 +78,16 @@ public class DLNovoHist extends FFDialogo {
 		cbSit.setItens(vLabs,vVals);
 		cbSit.setVlrString("AG");
 		
-		lcCont.add(new GuardaCampo( txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.Cont", true, false, txtNomeCont, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-		lcCont.add(new GuardaCampo( txtNomeCont, 7, 20, 200, 20, "NomeCto", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+		lcCont.add(new GuardaCampo( txtCodCont, "CodCto", "Cód.Cont", ListaCampos.DB_PK, txtNomeCont, false));
+		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome", ListaCampos.DB_SI, false));
 		lcCont.montaSql(false, "CONTATO", "TK");    
 		lcCont.setReadOnly(true);
 		txtCodCont.setTabelaExterna(lcCont);
 		txtCodCont.setFK(true);
 		txtCodCont.setNomeCampo("CodCto");
 		
-		lcAtend.add(new GuardaCampo( txtCodAtend, 7, 20, 80, 20, "CodAtend", "Cód.Atend", true, false, txtNomeAtend, JTextFieldPad.TP_INTEGER,true),"txtCodVendx");
-		lcAtend.add(new GuardaCampo( txtNomeAtend, 7, 20, 200, 20, "NomeAtend", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+		lcAtend.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.Atend", ListaCampos.DB_PK, txtNomeAtend, true));
+		lcAtend.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false));
 		lcAtend.montaSql(false, "ATENDENTE", "AT");    
 		lcAtend.setReadOnly(true);
 		txtCodAtend.setTabelaExterna(lcAtend);

@@ -44,16 +44,17 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 
 public class FTipoImp extends FDados implements PostListener, CarregaListener, DeleteListener, ActionListener {
-  private JTextFieldPad txtCodTpImp = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTpImp = new JTextFieldPad(50);
-  private JTextFieldPad txtSepTpImp = new JTextFieldPad(10);
-  private JTextFieldPad txtDelCrtTpImp = new JTextFieldPad(2);
+  private JTextFieldPad txtCodTpImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+  private JTextFieldPad txtDescTpImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtSepTpImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtDelCrtTpImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtLayout = new JTextFieldPad();
   private JCheckBoxPad cbTransBinTpImp = new JCheckBoxPad("Converter arquivo binário","S","N");
   private JCheckBoxPad cbCsepTpImp = new JCheckBoxPad("Utiliza separador","S","N");  
@@ -71,14 +72,14 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
     cbCsepTpImp.setVlrString("N");
 	cbTransBinTpImp.setVlrString("N");
 
-    adicCampo(txtCodTpImp, 7, 20, 80, 20, "CodTpImp", "Cód.tp.imp.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtDescTpImp,90, 20, 380, 20, "DescTpImp", "Descrição do tipo de importação", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
-	adicDB(cbCsepTpImp,7, 45, 130, 20, "CsepTpImp", "",JTextFieldPad.TP_STRING,true);    
-	adicDB(cbEnterlnTpImp,140, 45, 147, 20, "EnterLnTpImp", "",JTextFieldPad.TP_STRING,true);
-	adicDB(cbTransBinTpImp, 290, 45, 180, 20, "TransBinTpImp", "",JTextFieldPad.TP_STRING,true);
-	adicCampo(txtSepTpImp,7, 85, 80, 20, "SepTpImp", "Separador", JTextFieldPad.TP_STRING, 10, 0, false, false,null, true);
-	adicCampo(txtDelCrtTpImp,90, 85, 120, 20, "DelCrtTpImp", "Ignorar carac. até", JTextFieldPad.TP_INTEGER, 5, 0, false, false, null, true);	
-    adicDBLiv(txtLayout,"LayoutTpImp", "Layout",JTextFieldPad.TP_STRING, false);
+    adicCampo(txtCodTpImp, 7, 20, 80, 20, "CodTpImp", "Cód.tp.imp.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTpImp,90, 20, 380, 20, "DescTpImp", "Descrição do tipo de importação", ListaCampos.DB_SI, true);
+	adicDB(cbCsepTpImp,7, 45, 130, 20, "CsepTpImp", "", true);    
+	adicDB(cbEnterlnTpImp,140, 45, 147, 20, "EnterLnTpImp", "", true);
+	adicDB(cbTransBinTpImp, 290, 45, 180, 20, "TransBinTpImp", "", true);
+	adicCampo(txtSepTpImp,7, 85, 80, 20, "SepTpImp", "Separador", ListaCampos.DB_SI, true);
+	adicCampo(txtDelCrtTpImp,90, 85, 120, 20, "DelCrtTpImp", "Ignorar carac. até", ListaCampos.DB_SI, true);	
+    adicDBLiv(txtLayout,"LayoutTpImp", "Layout", false);
     adic(new JLabel("Compos disponiveis"),7,110,200,20);
 	adic(new JLabel("Compos selecionados"),260,110,200,20);
     adic(spnLayout,7,130,213,180);

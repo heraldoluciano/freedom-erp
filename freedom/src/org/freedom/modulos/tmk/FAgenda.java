@@ -86,8 +86,8 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   	txtDataini.setVlrDate(new Date());
   	txtDatafim.setVlrDate(new Date());
   	
-	lcUsu.add(new GuardaCampo( txtIdUsu, 7, 20, 80, 20, "IdUsu", "ID usuario", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 20, 200, 20, "NomeUsu", "Nome do usuario", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcUsu.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID usuario", ListaCampos.DB_PK, txtNomeUsu, false));
+	lcUsu.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome do usuario", ListaCampos.DB_SI, false));
 	lcUsu.montaSql(false, "USUARIO", "SG");    
 	lcUsu.setReadOnly(true);
 	txtIdUsu.setTabelaExterna(lcUsu);
