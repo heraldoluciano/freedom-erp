@@ -501,28 +501,28 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
  	  return iRet;
  }
    private int retTipoMov() {
- 	  int iRet = 0;
- 	  String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE " +
- 	                      "CODEMP=? AND CODFILIAL=?";
- 	  try {
- 	  	PreparedStatement ps = con.prepareStatement(sSQL);
- 	  	ps.setInt(1,Aplicativo.iCodEmp);
- 	  	ps.setInt(2,Aplicativo.iCodFilial);
- 	  	ResultSet rs = ps.executeQuery();
- 	  	if (rs.next()) {
- 	  		iRet = rs.getInt("CodTipoMov");
- 	  	}
- 	  	rs.close();
- 	  	ps.close();
- 	  }
- 	  catch(SQLException err) {
- 	  	 Funcoes.mensagemErro(this,"Erro ao buscar o tipo de movimento.\n"+
- 	  	 		       
- 	  	 		"Provavelmente não foram gravadas corretamente as preferências!\n"+err.getMessage());
- 	  	 err.printStackTrace();
- 	  }
- 	  return iRet;
- }    
+        int iRet = 0;
+        String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE "
+                + "CODEMP=? AND CODFILIAL=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sSQL);
+            ps.setInt(1, Aplicativo.iCodEmp);
+            ps.setInt(2, Aplicativo.iCodFilial);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                iRet = rs.getInt("CodTipoMov");
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException err) {
+            Funcoes.mensagemErro(this, "Erro ao buscar o tipo de movimento.\n" +
+
+            "Provavelmente não foram gravadas corretamente as preferências!\n"
+                    + err.getMessage());
+            err.printStackTrace();
+        }
+        return iRet;
+    }    
    private int retVendedor() {
    	int iRet = 0;
    	String sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE " +
@@ -604,8 +604,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	 }
    }
    private void iniVenda() {
-   	
-   	
    	  lcVenda.insert(true);
    	  txtTipoVenda.setVlrString("E");
    	  txtCodCli.setVlrString(retCodCli());
@@ -639,26 +637,15 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  lcSerie.setConexao(con);
 	  lcClFiscal.setConexao(con);
 	  txtCodTipoMov.setVlrInteger(new Integer(retTipoMov()));
+	  txtCodCli.setVlrInteger(new Integer(retTipoMov()));
+   	  pnStatusBar.add(sbVenda,BorderLayout.CENTER);
+   	  pnRodape.add(pnStatusBar,BorderLayout.CENTER);
+   	  iniVenda();
    }
    private void iniItem() {
    	 txtQtdade.setVlrBigDecimal(new BigDecimal(1));
    	 txtPreco.setVlrString("");
    	 txtCodProd.requestFocus();
-   }
-   public void iniciaTela(Connection con) {
-   	  setConexao(con);
-   	  //sbVenda.addSeparator();
-   	  //JPanelPad pnTeste = new JPanelPad(100,20);
-   	  //pnTeste.adic(sbVenda,5,5,500,20);
-   	  //pnRodape.add(sbVenda, BorderLayout.WEST);
-   	  pnStatusBar.add(sbVenda,BorderLayout.CENTER);
-   	  //pnRodape.setBorder(BorderFactory.createEmptyBorder());
-   	  pnRodape.add(pnStatusBar,BorderLayout.CENTER);
-   	  //Dimension dTam = this.getMaximumSize();
-   	  //Funcoes.mensagemInforma(this,"Altura: "+dTam.getHeight());
-   	  //Funcoes.mensagemInforma(this,"Largura: "+dTam.getWidth());
-   	  //setAtribos(0,0,dTam.getWidth(),dTam.getHeight());
-   	  iniVenda();
    }
    private boolean mostraTelaPass() {
  	 boolean bRet = false;
@@ -868,11 +855,17 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  	    else if (txtQtdade.getVlrDouble().doubleValue() == 0)
    	  	 	   Funcoes.mensagemInforma(null,"Quantidade em branco.");
    	  	    else {
-   	  	 	   if (lcVenda.getStatus() == ListaCampos.LCS_INSERT)
-   	  	 		 if (lcVenda.post()) {
-   	  	 		 	insereItem();
-   	  	 		 	iniItem();
-   	  	 		 }
+   	  	 	   if (lcVenda.getStatus() == ListaCampos.LCS_INSERT) {
+   	  	 	       if (lcVenda.post()) {
+   	  	 	           insereItem();
+   	  	 	           iniItem();
+   	  	 	       }
+   	  	       }
+   	  	 	   else if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
+   	  	 	       insereItem();
+   	  	 	   	   iniItem();
+   	  	 	   	   lcVenda.carregaDados();
+   	  	 	   }
    	  	    }
    	  	 }
    	  }
