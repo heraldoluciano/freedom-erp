@@ -50,7 +50,6 @@ import org.freedom.telas.FRelatorio;
 public class FREvoluVendas extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private Connection con = null;
   private FPrinterJob dl = null;
   private JRadioGroup rgGrafico = null;
   private Vector vLabs = new Vector(2);
@@ -130,7 +129,7 @@ public class FREvoluVendas extends FRelatorio {
   }
 
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
 	lcTipoCli.setConexao(con);
 	lcCli.setConexao(con);
   }

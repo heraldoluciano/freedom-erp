@@ -59,7 +59,6 @@ public class DLBaixaComis extends FFDialogo {
   private JScrollPane spnTab = new JScrollPane(tab);
   private ListaCampos lcConta = new ListaCampos(this);
   private ListaCampos lcPlan = new ListaCampos(this);
-  private Connection con = null;
   private Date dIni= null;
   private Date dFim = null;
   private Integer iCodVend = null;

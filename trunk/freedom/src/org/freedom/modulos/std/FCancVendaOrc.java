@@ -59,7 +59,6 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
   private JButton btCancelar = new JButton("Executar",Icone.novo("btExecuta.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
-  private Connection con = null;
   public FCancVendaOrc() {
     setTitulo("Canc. de vínc. venda x orçamento");
     setAtribos(50,50,350,250);
@@ -193,7 +192,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
   }
   
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVenda.setConexao(cn);
   }
 }

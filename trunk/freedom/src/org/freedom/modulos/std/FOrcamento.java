@@ -121,7 +121,6 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
   private ListaCampos lcVend = new ListaCampos(this,"VD");
   private ListaCampos lcTipoCli = new ListaCampos(this,"TC");
   private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
-  private Connection con = null;
   private FPrinterJob dl = null;
   Object[] oPrefs = null;
   boolean bCtrl = false;

@@ -91,7 +91,6 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JLabel lbAnd = new JLabel("Andamento:");
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcModG = new ListaCampos(this);
-  private Connection con = null;
   int iCodProd = 0;
   public FGrade() {
 // Monta a tela
@@ -462,7 +461,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   }
   public void beforeCarrega(CarregaEvent cevt) { }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcModG.setConexao(cn);
   }
 }

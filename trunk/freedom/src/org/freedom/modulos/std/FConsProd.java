@@ -83,7 +83,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private JScrollPane spnCompras = new JScrollPane(tabCompras);
 	private JScrollPane spnVendas = new JScrollPane(tabVendas);
 	private JTabbedPane tpn = new JTabbedPane();
-	private Connection con = null; 
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
@@ -995,7 +994,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 
 	public void stateChanged(ChangeEvent cevt) {}
 	public void setConexao(Connection cn) {
-		con = cn;		
+		super.setConexao(cn);		
         lcProd.setConexao(con);
         lcUnid.setConexao(con);
         lcMarca.setConexao(con);

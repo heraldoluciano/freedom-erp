@@ -79,7 +79,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
   private ListaCampos lcCC = new ListaCampos(this);
 //  private ListaCampos lcBanco = new ListaCampos(this);
   boolean bJurosPosCalc = false;
-  private Connection con = null;
   public DLBaixaRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Baixa");
@@ -429,7 +428,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
   public void afterCarrega(CarregaEvent cevt) {
   }
   public void setConexao(Connection cn) {
-	con = cn;
+	super.setConexao(cn);
     //lcBanco.setConexao(cn);
     lcConta.setConexao(cn);
     lcConta.carregaDados();

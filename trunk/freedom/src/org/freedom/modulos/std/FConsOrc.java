@@ -85,7 +85,6 @@ public class FConsOrc extends FFilho implements ActionListener {
   private JScrollPane spnTab = new JScrollPane(tab);
 
   private ListaCampos lcCli = new ListaCampos(this, "CL");
-  private Connection con = null;
   private FPrincipal fPrim;
   public FConsOrc() {
     setTitulo("Pesquisa Orçamentos");

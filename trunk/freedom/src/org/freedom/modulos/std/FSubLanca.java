@@ -93,7 +93,6 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
   private ListaCampos lcCC = new ListaCampos(this,"CC");
   private ListaCampos lcCli = new ListaCampos(this,"CL");
   private ListaCampos lcFor = new ListaCampos(this,"FR");  
-  private Connection con = null;
   private String sCodLanca = "";
   private String sCodPlan = "";
   private Date dIni = null;

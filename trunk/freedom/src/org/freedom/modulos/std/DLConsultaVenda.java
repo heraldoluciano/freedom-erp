@@ -52,7 +52,6 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
-  private Connection con = null;
   private ListaCampos lcPlanoPag = new ListaCampos(this);
   private ListaCampos lcVenda = new ListaCampos(this);
   public DLConsultaVenda(Component cOrig,Connection cn,int iCodVenda) {

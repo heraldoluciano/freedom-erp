@@ -56,7 +56,6 @@ public class FConsPreco extends FFilho implements KeyListener {
 	/**
 	 * 
 	 */
-	private Connection con = null;
     private JPanel pnClienteGeral = new JPanel(new BorderLayout());
     private Painel pinCab = new Painel(800,55);
     private Painel pinGrid = new Painel(800,300);
@@ -115,7 +114,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 		}
 	}
 	public void setConexao(Connection cn) {
-	    con = cn;
+	    super.setConexao(cn);
 		montaTela();
     }
 	

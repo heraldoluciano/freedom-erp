@@ -45,7 +45,6 @@ public class FRRazaoFin extends FRelatorio {
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0); 
   private ListaCampos lcPlan = new ListaCampos(this);
-  private Connection con = null;
   public FRRazaoFin() {
     setTitulo("Relatório razão financeiro");
     setAtribos(80,80,330,180);
@@ -76,8 +75,7 @@ public class FRRazaoFin extends FRelatorio {
 	txtCodPlan.setRequerido(true);
   }
   public void setConexao(Connection cn) {
-    con = cn;
-
+    super.setConexao(cn);
     lcPlan.setConexao(cn);
   }
 

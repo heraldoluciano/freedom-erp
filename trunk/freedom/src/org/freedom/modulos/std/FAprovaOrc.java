@@ -80,7 +80,6 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcOrc = new ListaCampos(this);
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
-	private Connection con = null;
 	private JCheckBoxPad cbTodos = new JCheckBoxPad("Aprovar todos os ítens.","S","N");
 	private JCheckBoxPad cbEmit = new JCheckBoxPad("Buscar ítens emitidos.","S","N");
 	BigDecimal bVlrAceito = new BigDecimal("0");
@@ -407,7 +406,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	}
 
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcCli.setConexao(con);
 		lcOrc.setConexao(con);
 	}

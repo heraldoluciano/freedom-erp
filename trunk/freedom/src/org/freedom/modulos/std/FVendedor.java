@@ -69,7 +69,6 @@ public class FVendedor extends FDados implements PostListener {
   private ListaCampos lcSetor = new ListaCampos(this,"SE");
   private ListaCampos lcClComis = new ListaCampos(this,"CM");
   
-  private Connection con = null;
   public FVendedor () {
     setTitulo("Cadastro de Vendedores");
     setAtribos( 50, 50, 400, 400);

@@ -45,7 +45,6 @@ public class FRComprasFor extends FRelatorio {
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private ListaCampos lcFor = new ListaCampos(this);
-	private Connection con = null;
 	private String sCodProd = "CODPROD";
 	public FRComprasFor() {
 		setTitulo("Compras por Fornecedor");
@@ -274,7 +273,7 @@ public class FRComprasFor extends FRelatorio {
 		return bRetorno;
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcFor.setConexao(cn);
 	}
 }

@@ -26,7 +26,6 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -66,7 +65,6 @@ public class FGeraFiscal extends FFilho implements ActionListener {
   private JButton btVisual = new JButton(Icone.novo("btPesquisa.gif"));
   private JButton btChecar = new JButton(Icone.novo("btExecuta.gif"));
   private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
-  private Connection con = null;
   private Timer tim = null;
   private int iAnd = 0;
   private int iTotCompras = 0;
@@ -760,8 +758,5 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     else if (evt.getSource() == btVisual) {
       visualizar();
     }
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 }

@@ -52,10 +52,6 @@ public class FRVendasFisico extends FRelatorio {
   private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
   
   private ListaCampos lcVend = new ListaCampos(this);
-  
-  
-  
-  private Connection con = null;
   private JRadioGroup rgOrdem = null;
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private Vector vLabs = new Vector();
@@ -130,7 +126,7 @@ public class FRVendasFisico extends FRelatorio {
   	return bRetorno;
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVend.setConexao(con);
   }
   public void imprimir(boolean bVisualizar) {

@@ -79,7 +79,6 @@ public class FManutComis extends FFilho implements ActionListener {
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private ListaCampos lcVend = new ListaCampos(this);
-  private Connection con = null;
   private JButton btBusca = new JButton(Icone.novo("btPesquisa.gif"));
   private JButton btBaixa = new JButton(Icone.novo("btGerar.gif"));
   private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
@@ -428,7 +427,7 @@ public class FManutComis extends FFilho implements ActionListener {
       estornar();
   }          
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVend.setConexao(cn);
   }
 }

@@ -111,7 +111,6 @@ public class FRListaPreco extends FRelatorio {
 	private ListaCampos lcPlanoPag7 = new ListaCampos(this);
         private JCheckBoxPad cbAgrupar = new JCheckBoxPad("Agrupar","S","N");
         
-	private Connection con = null;
 	public FRListaPreco() {
 		setTitulo("Lista de Preços");
 		setAtribos(50,50,620,385);
@@ -543,7 +542,7 @@ public class FRListaPreco extends FRelatorio {
 			imp.print();
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcGrup.setConexao(cn);
 		lcMarca.setConexao(cn);
 		lcTabPreco.setConexao(cn);

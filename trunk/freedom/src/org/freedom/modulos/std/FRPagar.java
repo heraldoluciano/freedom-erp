@@ -55,7 +55,6 @@ import org.freedom.telas.FRelatorio;
 public class FRPagar extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private Connection con = null;
   private JRadioGroup cbFiltro = null;
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
@@ -114,7 +113,7 @@ public class FRPagar extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcFor.setConexao(cn);
   }
 

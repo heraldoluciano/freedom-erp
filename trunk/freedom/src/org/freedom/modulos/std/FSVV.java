@@ -64,7 +64,6 @@ public class FSVV extends FFilho implements ActionListener {
   private JButton btVisual = new JButton(Icone.novo("btPesquisa.gif"));
   private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
   private JCheckBoxPad cbEstoque = new JCheckBoxPad("Estoque","S","N");
-  private Connection con = null;
   private int iAnd = 0;
   private JLabel lbAnd = new JLabel("Aguardando.");
   private final String CRLF = ""+((char)13)+((char)10);
@@ -670,8 +669,5 @@ public class FSVV extends FFilho implements ActionListener {
     else if (evt.getSource() == btVisual) {
       iniVisualiza();
     }
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 }
