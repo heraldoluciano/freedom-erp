@@ -89,73 +89,7 @@ import org.freedom.telas.Aplicativo;
 public class FreedomGMS extends Aplicativo {
 
 	public FreedomGMS() {
-		super("iconAtendimento32.gif","splashGMS.jpg","FreedomGMS - Módulo de gerenciamento de mateirais e serviços",1,8);
-/*
-		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", 'A' ,100000000, 0, false);
-		  addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'C',100100000,1,false);
-		      addOpcao(100100000,TP_OPCAO_MENU,"Produtos",'P',100110000,2,false);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Produtos",'o',100110010,3,true);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Tratamento tributário",'t',100110020,3,true);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Classificação fiscal",'l',100130030,3,true);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Almoxarifado",'x',100110040,3,true);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Grupo",'r',100110050,3,true);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Marca",'c',100110060,3,true);
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Unidade",'U',100110070,3,true);	          
-		      	addOpcao(100110000,TP_OPCAO_ITEM,"Kits de produtos",'K',100110080,3,true);		      		      		      		     		     
-		      addSeparador(100100000); 
-		      addOpcao(100100000,TP_OPCAO_MENU,"Atribuições",'t',100120000,2,false);
-		      	addOpcao(100120000,TP_OPCAO_ITEM,"Atribuições",'r',100120010,3,true);
-		      	addOpcao(100120000,TP_OPCAO_ITEM,"Atribuições por usuário",'u',100120020,3,true);
-
-		 addOpcao(-1,TP_OPCAO_MENU,"Entrada",'E',200000000,0,false);
-		     addOpcao(200000000,TP_OPCAO_ITEM,"Compra",'C',200100000,1,true);
-		     addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200200000,1,false);
-		     addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'f',200210000,2,true);
-		      	
-		 addOpcao(-1,TP_OPCAO_MENU,"Saída",'S',300000000,0,false);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Venda",'V',300100000,1,true);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Cancela venda",'C',300200000,1,true);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Devolução de vendas",'D',300300000,1,true);
-		     addSeparador(300000000);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Aprova orçamento",'A',300400000,1,true);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Orçamento",'O',300500000,1,true);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Pesquisa Orçamento",'P',300600000,1,true);
-		     addSeparador(300000000);
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Romaneio",'R',300700000,1,true);  		
-		     addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores",'x',300800000,1,true);
-		     addOpcao(300000000,TP_OPCAO_MENU,"Listagens",'s',301000000,1,false);				
-		          addOpcao(301000000,TP_OPCAO_ITEM,"Resumo diário",'R',301010000,2,true);
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas geral",'V',301020000,2,true);
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas físico",'d',301030000,2,true);
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas detalhado",'n',301040000,2,true);	        
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por ítem",'e',301050000,2,true);
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Média de vendas por ítem",'o',301060000,2,true);
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Ultimas Vendas por Cliente",'C',301070000,2,true);
-		    	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por Setor",'t',301080000,2,true);
-		     addOpcao(300000000,TP_OPCAO_MENU,"Gráficos",'G',301100000,1,false);	  
-		          addOpcao(301100000,TP_OPCAO_ITEM,"Evolução de vendas",'E',301110000,2,true);
-		     addSeparador(300000000);
-		     addOpcao(300000000,TP_OPCAO_MENU,"Consultas",'n',301200000,1,false);	  
-		          addOpcao(301200000,TP_OPCAO_ITEM,"Preços",'P',301210000,2,true);
-		      	
-		 addOpcao(-1,TP_OPCAO_MENU,"Estoque",'E',400000000,0,false);
-		          addOpcao(400000000,TP_OPCAO_ITEM,"Kardex",'K',400100000,1,true);
-		      	addOpcao(400000000,TP_OPCAO_ITEM,"Inventário",'I',400200000,1,true);
-		      	addOpcao(400000000,TP_OPCAO_ITEM,"Consulta estoque",'C',400300000,1,true);
-		      	addOpcao(400000000,TP_OPCAO_ITEM,"Consulta produto",'P',400400000,1,true);
-		      	addOpcao(400000000,TP_OPCAO_ITEM,"Tipos de movimentos",'T',400500000,1,true);		
-		      	addSeparador(400000000);
-		      	addOpcao(400000000,TP_OPCAO_ITEM,"Reprocessa estoque",'R',400600000,1,true);
-		      	addSeparador(400000000);
-		      	addOpcao(400000000,TP_OPCAO_MENU,"Listagens",'L',400700000,1,false);
-		        	  addOpcao(400700000,TP_OPCAO_ITEM,"Estoque mínimo",'s',400701000,2,true);
-		        	  addOpcao(400700000,TP_OPCAO_ITEM,"Produtos/Movimentos",'P',400702000,2,true);
-		      	  addOpcao(400700000,TP_OPCAO_ITEM,"Vencimentos de lote",'V',400703000,2,true);
-		      	  addOpcao(400700000,TP_OPCAO_ITEM,"Saldos de lote",'l',400704000,2,true);
-		      	  addOpcao(400700000,TP_OPCAO_ITEM,"Demanda",'D',400705000,2,true);
-		      	  addOpcao(400700000,TP_OPCAO_ITEM,"Conferência",'C',400706000,2,true);
-		      	  addOpcao(400700000,TP_OPCAO_ITEM,"Inventário PEPS",'I',400707000,2,true);
-	*/	      		
+		super("iconAtendimento32.gif","splashGMS.jpg","FreedomGMS - Módulo de gerenciamento de mateirais e serviços",1,8);      		
 		
 		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false);
 			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'T',100100000,1,false);
@@ -213,6 +147,8 @@ public class FreedomGMS extends Aplicativo {
 		    		addOpcao(100300000,TP_OPCAO_ITEM,"Modelo de NFs",'M',100340030,3,true);
   
 	    addOpcao(-1,TP_OPCAO_MENU,"Entrada",'E',200000000,0,false);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Solicitação de Compra",'S',200300000,1,true);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Aprovação da Solicitação de Compra",'S',200400000,1,true);
 	    	addOpcao(200000000,TP_OPCAO_ITEM,"Compra",'C',200100000,1,true);
 	    	addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200200000,1,false);
 	    	addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'f',200210000,2,true);
@@ -470,6 +406,19 @@ public class FreedomGMS extends Aplicativo {
 	          telaPrincipal.criatela("Compras por Fornecedor",tela);
 	        }
 	    }	    
+	    
+	    else if (iOpcao==200300000) {
+	        if (telaPrincipal.temTela("Solicitação de Compra")==false) {
+	          FSolicitacaoCompra tela = new FSolicitacaoCompra();
+	          telaPrincipal.criatela("Solicitação de Compra",tela,con);
+	        } 
+	      }
+	    else if (iOpcao==200400000) {
+	        if (telaPrincipal.temTela("Aprova Solicitação de Compra")==false) {
+	          FAprovaSolicitacaoCompra tela = new FAprovaSolicitacaoCompra();
+	          telaPrincipal.criatela("Aprova Solicitação de Compra",tela,con);
+	        } 
+	      }
 	    else if (iOpcao==300100000) {
 	        if (telaPrincipal.temTela("Venda")==false) {
 	          FVenda tela = new FVenda();
