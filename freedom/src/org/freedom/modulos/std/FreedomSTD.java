@@ -968,6 +968,13 @@ public class FreedomSTD extends Aplicativo {
             telaPrincipal.criatela("Ajuste do item do orçamento",tela);
         }
     }   
+    else if (iOpcao==100260100) {
+        if (telaPrincipal.temTela("Bloqueio e desbloqueio de compras")==false) {
+            FBloqCompra tela = new FBloqCompra();     
+            tela.setConexao(con);
+            telaPrincipal.criatela("Bloqueio e desbloqueio de compras",tela);
+        }
+    }
     else if (iOpcao==100260200) {
         if (telaPrincipal.temTela("Bloqueio e desbloqueio de vendas")==false) {
             FBloqVenda tela = new FBloqVenda();     
