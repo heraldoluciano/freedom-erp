@@ -181,9 +181,6 @@ public class DLCancCupom extends FFDialogo implements ActionListener,MouseListen
 		}
 		return bRet;
 	}
-	private boolean cancCupom() {
-		return true;
-	}
 	private boolean cancItem(int iItem) {
 		boolean bRet = false;
 		String sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' WHERE CODEMP=?" +

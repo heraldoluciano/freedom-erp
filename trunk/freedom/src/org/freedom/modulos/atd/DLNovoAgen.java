@@ -74,17 +74,19 @@ public class DLNovoAgen extends FFDialogo {
 		setAtribos(460,470);
 		
 //Acertando o spinner		
+		GregorianCalendar agora = new GregorianCalendar();
+		agora.setTime(Data);
 		GregorianCalendar cal = new GregorianCalendar();
 		GregorianCalendar cal1 = new GregorianCalendar();
 		GregorianCalendar cal2 = new GregorianCalendar();
 	
-		if(Data != null) {
-			Data.setHours(new Date().getHours());
-			Data.setMinutes(new Date().getMinutes());
+		if(Data != null) {		
+			agora.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+			agora.set(Calendar.MINUTE, cal.get(Calendar.MINUTE));
 
-			cal.setTime(Data);
-			cal1.setTime(Data);
-			cal2.setTime(Data);
+			cal.setTime(agora.getTime());
+			cal1.setTime(agora.getTime());
+			cal2.setTime(agora.getTime());
 		}
 		
 		cal.add(Calendar.DATE,0);		

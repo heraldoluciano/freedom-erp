@@ -57,7 +57,6 @@ public class FConsPreco extends FFilho implements KeyListener {
 	 */
     private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pinCab = new JPanelPad(800,55);
-    private JPanelPad pinGrid = new JPanelPad(800,300);
     private Container c = getContentPane();
     private Tabela tbPreco = new Tabela();
     private JScrollPane spPreco = new JScrollPane(tbPreco);

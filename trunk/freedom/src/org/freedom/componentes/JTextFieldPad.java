@@ -39,7 +39,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
 import org.freedom.telas.FAtalhos;
-import org.freedom.telas.FSobre;
 
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
   public static final int TP_NONE = -1;

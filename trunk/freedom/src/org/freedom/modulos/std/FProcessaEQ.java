@@ -67,7 +67,6 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
     private JCheckBoxPad cbTudo = new JCheckBoxPad("Processar todo estoque (Atenção!)","S","N");
 	private JLabelPad lbStatus = new JLabelPad();
 	private ListaCampos lcProd = new ListaCampos(this);
-	private ListaCampos lcProdFim = new ListaCampos(this);
 	boolean bRunProcesso = false;
 	int iFilialMov = 0; 
     int iUltProd = 0;

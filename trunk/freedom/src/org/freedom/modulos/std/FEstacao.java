@@ -35,7 +35,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -43,7 +42,6 @@ import org.freedom.telas.FDetalhe;
 public class FEstacao extends FDetalhe implements PostListener, ActionListener{
     private JPanelPad pinCab = new JPanelPad();
     private JPanelPad pinDet = new JPanelPad();
-	private JPanelPad pinEst = new JPanelPad(0,80);
 	private ListaCampos lcImp = new ListaCampos(this,"IP");
 	private ListaCampos lcPapel = new ListaCampos(this,"PP");
 	
@@ -63,8 +61,6 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	private Vector vLabTipoUsoImp = new Vector();
 	private JRadioGroup rgTipoUsoImp = null;
 	
-	private Tabela tabEst = new Tabela();
-
 	public FEstacao() {
 		setTitulo("Cadastro de estações de trabalho"); 
 		setAtribos(50, 10, 550, 520);

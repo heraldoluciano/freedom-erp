@@ -252,8 +252,8 @@ public class PainelImagem extends JPanelPad implements ActionListener, MouseList
   public void setZoom(int iZ) {
     bZoom = true;
     iPercAtual = iZ;
-    L = (int)((double)((double)imImagem.getWidth(this)/100)*(double)iZ);
-    A = (int)((double)((double)imImagem.getHeight(this)/100)*(double)iZ);
+    L = (imImagem.getWidth(this)/100)*iZ;
+    A = (imImagem.getHeight(this)/100)*iZ;
   }
   public void showZoom(Graphics Screen) {
     Screen.drawImage(imImagem,iDescBordA,iDescBordA,L-(iDescBordL+1),A-(iDescBordA+1),this);

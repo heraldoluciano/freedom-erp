@@ -96,8 +96,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-	private ListaCampos lcFornecedor = new ListaCampos(this, "FR");
-	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCotacao = new ListaCampos(this, "");
 
 	String sOrdNota = "";

@@ -21,23 +21,15 @@
  */
 
 package org.freedom.relatorios;
-import java.awt.Font;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
-import org.jfree.data.XYSeriesCollection;
-
 
 public class GerContas extends LeiauteGR {
 	private Connection con = null;
-	private Font fnLegenda = new Font("Arial",Font.BOLD,10);
-	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
-	private Font fnCabEmp = new Font("Arial",Font.PLAIN,8);
-	private Font fnCabEmpNeg = new Font("Arial",Font.BOLD,8);
-	private XYSeriesCollection datasetLinha = new XYSeriesCollection();
 	private ResultSet rs = null;
 	Vector vParamOrc = new Vector();
 	
