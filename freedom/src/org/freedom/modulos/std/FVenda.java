@@ -1336,7 +1336,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
         	fBol.txtCodVenda.setVlrInteger(txtCodVenda.getVlrInteger());
         	fBol.imprimir(true);
         }
-        if (sValores[4].equals("S")) {
+        if ( (sValores[4].equals("S")) || (sValores[7].equals("S"))) {
         	if (txtTipoMov.getVlrString().equals("VD") ||
         		txtTipoMov.getVlrString().equals("VT") ||
         		txtTipoMov.getVlrString().equals("TR") ||
@@ -1353,7 +1353,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
         	  		                                      txtTipoMov.getVlrString()+"'");
         	  return;
         	}
-        	txtStatusVenda.setVlrString("V4");
+        	if (sValores[7].equals("N"))
+        		txtStatusVenda.setVlrString("V4");
         	//txtDtEmitVenda.setVlrDate(new Date());
         }
         else if (sValores[3].equals("S")) {
@@ -1362,8 +1363,10 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
             txtStatusVenda.setVlrString("P4");
           } */ // Isto dava problemas de pulos
         }
-        lcCampos.edit();
-        lcCampos.post();
+    	if (sValores[7].equals("N")) {
+	        lcCampos.edit();
+	        lcCampos.post();
+    	}
         if ( (sValores[4].equals("S")) && (bPrefs[7]) ) {
             bloqvenda();
         }
