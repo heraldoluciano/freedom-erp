@@ -99,13 +99,14 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
     adicCampo(txtDDDFaxTran, 191, 220, 80, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false);
     adicCampo(txtFaxTran, 273, 220, 100, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false);
     adicCampo(txtContTran,7,260,223,20,"Conttran","Contato", ListaCampos.DB_SI, false);
-    adicCampo(txtContTran,233,260,40,20,"DDDCelTran","DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDCelTran,233,260,40,20,"DDDCelTran","DDD", ListaCampos.DB_SI, false);
     adicCampo(txtCelTran,276,260,96,20,"Celtran","Celular",ListaCampos.DB_SI, false);
 
     txtCnpjTran.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepTran.setMascara(JTextFieldPad.MC_CEP);
     txtFoneTran.setMascara(JTextFieldPad.MC_FONE);
-    txtFaxTran.setMascara(JTextFieldPad.MC_FONE); 
+    txtFaxTran.setMascara(JTextFieldPad.MC_FONE);
+    txtCelTran.setMascara(JTextFieldPad.MC_FONE); 
     setListaCampos( true, "TRANSP", "VD");
     lcCampos.setQueryInsert(false);
     
