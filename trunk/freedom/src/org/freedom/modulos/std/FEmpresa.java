@@ -180,8 +180,26 @@ public class FEmpresa extends FTabDados implements PostListener{
     lcFilial.setQueryCommit(false);
     tabFilial.setTamColuna(120,1);
     pinFilial.adic(navFilial,0,245,270,25);
-    tabFilial.setTamColuna(100,0);
-
+    tabFilial.setTamColuna(80,0);
+    tabFilial.setTamColuna(220,1);
+    tabFilial.setTamColuna(220,2);
+    tabFilial.setTamColuna(80,3);
+    tabFilial.setTamColuna(140,4);
+    tabFilial.setTamColuna(90,5);
+    tabFilial.setTamColuna(50,6);
+    tabFilial.setTamColuna(70,7);
+    tabFilial.setTamColuna(70,8);
+    tabFilial.setTamColuna(80,9);
+    tabFilial.setTamColuna(50,10);
+    tabFilial.setTamColuna(40,11);
+    tabFilial.setTamColuna(80,12);
+    tabFilial.setTamColuna(50,13);
+    tabFilial.setTamColuna(70,14);
+    tabFilial.setTamColuna(100,15);
+    tabFilial.setTamColuna(80,16);
+    tabFilial.setTamColuna(60,17);
+    tabFilial.setTamColuna(40,18);
+    tabFilial.setTamColuna(80,19);
   }  
   public void beforePost(PostEvent pevt) {
     if (pevt.getListaCampos() == lcCampos) {
