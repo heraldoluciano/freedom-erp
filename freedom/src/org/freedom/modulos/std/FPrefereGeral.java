@@ -114,6 +114,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbCustosSICMS = null;
 	private JCheckBoxPad cbBloqVenda = null;
 	private JCheckBoxPad cbPepsProd = null;
+	private JCheckBoxPad cbBuscaProdSimilar = null;
 	private ListaCampos lcMoeda = new ListaCampos(this,"MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this,"TJ");
 	private ListaCampos lcMarca = new ListaCampos(this,"MC");
@@ -469,7 +470,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
         adicTab("Produto", pinProd);
 		cbPepsProd = new JCheckBoxPad("Exibe custo PEPS no cadastro de produtos?","S","N");
 		cbPepsProd.setVlrString("N");
+		cbBuscaProdSimilar = new JCheckBoxPad("Busca automática de produtos similares?","S","N");
+		cbBuscaProdSimilar.setVlrString("N");
         adicDB(cbPepsProd, 7,7,310,20, "PepsProd", "",false);
+        
+		adicDB(cbBuscaProdSimilar, 7,27,310,20, "BuscaProdSimilar", "",false);
+
         
 // Estoque
         setPainel(pinEstoq);
