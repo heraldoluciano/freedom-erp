@@ -26,6 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 
+import org.freedom.componentes.JButtonPad;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -43,7 +44,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		
 		addOpcao(-1,TP_OPCAO_MENU,"PDV","",'P',110000000,1, false, null);
 		addOpcao(110000000,TP_OPCAO_ITEM,"Venda","Venda",'V',100101000,2, true, FVenda.class);
-		addBotao("barraVenda.gif","Venda",100101000);
+		JButtonPad btVenda = addBotao("barraVenda.gif","Venda",100101000);
 		addOpcao(110000000,TP_OPCAO_ITEM,"Cancela venda","Cancela Venda",'C',110200000,2, true, DLCancCupom.class);
 		addBotao("btExcluir.gif","Cancela venda",110200000);
 	
@@ -68,9 +69,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		
 		addBotao("btPdvLeituraXPq.gif","Ler memória fiscal",110700000);		   
 	    if (abrecaixa()) {
-	    	FVenda tela = new FVenda();
-	    	tela.iniciaTela(con);
-	    	tela.setVisible(true);
+	    	btVenda.doClick();
 		}
 		else {
 			killProg(5,"Caixa não foi aberto. A aplicação será fechada!");			
