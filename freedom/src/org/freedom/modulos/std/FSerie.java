@@ -38,10 +38,11 @@ import org.freedom.telas.FDados;
 import org.freedom.telas.FDialogo;
 
 public class FSerie extends FDados implements ActionListener {
-  private JTextFieldPad txtSerie = new JTextFieldPad(4);
-  private JTextFieldPad txtDocSerie= new JTextFieldPad(8);
+
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtDocSerie= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JButton btReset = new JButton(Icone.novo("btResetcont.gif"));
-  private JTextFieldPad txtReset = new JTextFieldPad();
+  private JTextFieldPad txtReset = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JLabel lbReset = new JLabel("Novo nº.");
   private Connection con = null;
   public FSerie () {
@@ -51,10 +52,10 @@ public class FSerie extends FDados implements ActionListener {
     btReset.setToolTipText("Reiniciar contagem");
     
     txtDocSerie.setSoLeitura(true);
-    txtReset.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    
-    adicCampo(txtSerie, 7, 20, 75, 20,"Serie","Cód.série",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-    adicCampo(txtDocSerie, 85, 20, 240, 20,"DocSerie","Doc. número",JTextFieldPad.TP_INTEGER,40,0,false,false,null,false);
+
+    adicCampo(txtSerie, 7, 20, 70, 20,"Serie","Cód.série",ListaCampos.DB_PK,null,true);
+    adicCampo(txtDocSerie, 80, 20, 250, 20,"DocSerie","Doc. número",ListaCampos.DB_SI,null,true);
+       
     adic(btReset,100,50,130,30);
     setListaCampos( true, "SERIE", "LF");
     btReset.addActionListener(this);
