@@ -57,7 +57,7 @@ public class FTurnos extends FDados implements ActionListener {
     setAtribos(50, 50, 457, 280);
 	    
     	Funcoes HIniTurno = new Funcoes();
-	    HIniTurno.dateToStrDataHora();
+//	    HIniTurno.dateToStrDataHora();
     	
 	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
 	    adicCampo(txtDescTurno, 90, 20, 220, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
