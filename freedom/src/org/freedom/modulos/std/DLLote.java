@@ -49,7 +49,7 @@ public class DLLote extends FFDialogo {
   private JLabel lbVenctoLote = new JLabel("Vencimento");
   public DLLote (Component cOrig,String sCodLote, String sCodProd, String sDescProd, Connection cn) {
   	super(cOrig);
-    con = cn;
+    setConexao(cn);
     setTitulo("Lote");
     setAtribos(400, 200);
     

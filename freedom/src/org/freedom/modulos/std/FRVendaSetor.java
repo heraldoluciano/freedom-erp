@@ -1445,7 +1445,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   }
   
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcMarca.setConexao(cn);
     lcGrup1.setConexao(cn);
     lcGrup2.setConexao(cn);

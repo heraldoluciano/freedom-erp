@@ -52,7 +52,7 @@ public class DLConsultaBaixa extends FFDialogo {
   private Painel pinConsulta = new Painel(0,60);
   public DLConsultaBaixa(Component cOrig,Connection cn,int iCodRec,int iNParc) {
   	super(cOrig);
-    con = cn;
+    setConexao(cn);
     setTitulo("Consulta de Baixas");
     setAtribos(100,100,520,300);
     

@@ -68,7 +68,7 @@ public class DLBaixaComis extends FFDialogo {
     sEmitRel = sM;
     setTitulo("Baixar");
     setAtribos(600,300);
-    con = cn;
+    setConexao(cn);
     dIni = dI;
     dFim = dF;
     iCodVend = iCodV;

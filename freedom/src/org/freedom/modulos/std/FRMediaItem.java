@@ -379,7 +379,7 @@ public class FRMediaItem extends FRelatorio {
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcGrup.setConexao(con);
     lcMarca.setConexao(con);
     lcVend.setConexao(con);

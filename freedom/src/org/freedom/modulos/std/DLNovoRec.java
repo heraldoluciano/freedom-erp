@@ -238,7 +238,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcCli.setConexao(cn);
     lcPlanoPag.setConexao(cn);
     lcReceber.setConexao(cn);

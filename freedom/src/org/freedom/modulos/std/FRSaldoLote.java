@@ -301,7 +301,7 @@ public class FRSaldoLote extends FRelatorio {
    */
 
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcGrup.setConexao(cn);
     lcMarca.setConexao(cn);
   }
