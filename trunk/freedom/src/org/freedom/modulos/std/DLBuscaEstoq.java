@@ -27,7 +27,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
 import javax.swing.ImageIcon;
+
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
@@ -45,8 +47,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    boolean bRet = false;
    private ImageIcon imgBaixa = Icone.novo("clPago.gif");
    private ImageIcon imgVisualiza = Icone.novo("clVencido.gif");
-   private ImageIcon imgPadrao = Icone.novo("clNaoVencido.gif");
+   private ImageIcon imgPadrao = Icone.novo("clPagoParcial.gif");
    private ImageIcon imgColuna = null;
+   public int iPadrao = 0;
    public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 
@@ -73,6 +76,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 
   	 setTitulo("Saldo do produto nos almoxarifados");
  	 tab.addKeyListener(this);
+   }
+   public int getLinhaPadrao(){
+   	return iPadrao;
    }
    public Object getValor() {
 	if(lcCampos!=null) {   	 		 
@@ -105,8 +111,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       		 "WHERE AF.CODEMP=A.CODEMP AND AF.CODFILIAL=A.CODFILIAL "+
       		"AND AF.CODALMOX=A.CODALMOX AND AF.CODEMPAF=? AND AF.CODFILIALAF=?))";
 ;
-
-   	  System.out.println(sSQL);
+  
       try {
       	PreparedStatement ps = con.prepareStatement(sSQL);
 
@@ -120,11 +125,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	ps.setInt(8,Aplicativo.iCodFilial);
 
         tab.limpa();
-        tab.removeAll();
 
       	ResultSet rs = ps.executeQuery();
       	int iCont = 0;
-      	int iPadrao = 0;
       	while (rs.next()) {
       		if (iCont ==0)
       			if(lcCampos!=null) {   	 		  
@@ -140,7 +143,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	   }
       	   else
       	   	  imgColuna = imgBaixa;
-      	   
+      	         	   
       	   if(rs.getString(3).equals(rs.getString(7))) {
       	   	 imgColuna = imgPadrao;
       	   	 iPadrao = iCont;
@@ -148,9 +151,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	   
       	   tab.adicLinha( new Object[] {
       	      rs.getString(1) != null ? rs.getString(1) : "",
-      		  rs.getString(2) != null ? rs.getString(2) : "",
+      		  rs.getString(2) != null ? rs.getString(2).trim() : "",
       		  rs.getString(3) != null ? rs.getString(3) : "",
-			  rs.getString(4) != null ? rs.getString(4) : "",
+			  rs.getString(4) != null ? rs.getString(4).trim() : "",
 			  rs.getString(5) != null ? Funcoes.strDecimalToStrCurrency(13,2,rs.getString(5)) : "",
 		      imgColuna,
       	   });
@@ -160,34 +163,41 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	   		bRet = false;
       	   iCont++;
       	}
-
-      	tab.changeSelection(iPadrao,0,true,true);
-      	tab.setLinhaSel(iPadrao);
-      	
-      	System.out.println("Almox. Padrao na linha:"+iPadrao);
-      	System.out.println("Almox. Padrao:"+tab.getValueAt(iPadrao,3));
-      	
+      	      	
       	rs.close();
       	ps.close();
       	if (!con.getAutoCommit())
       		con.commit();
+      	
+      	if(bRet) {
+      		tab.requestFocus();
+      		tab.setLinhaSel(iPadrao); 
+          	setVisible(true);      		
+      	}
+      	
       }
       catch (SQLException err) {
       	 Funcoes.mensagemErro(this,"Erro ao buscar filiais almoxarifados e saldos!\n"+err.getMessage());
       	 err.printStackTrace();
-      }
+      }      
       return bRet;
    }
    public void actionPerformed(ActionEvent evt) {
    	  super.actionPerformed(evt);
    }
    public void valorAlterado(TabelaSelEvent tsevt) {
-/*
+   
    	try {   	
    	 	if (tsevt.getTabela() == tab) {
    	 		if (tab.getNumLinhas() > 0) {
-   	 		    if (bRet)
-   	 		    	iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));   	 		   
+   	 		    if (bRet) {
+   	 		    	iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
+   	 		    	if (imgVisualiza==tab.getValueAt(tab.getLinhaSel(),5)) {
+   	 		    		btOK.setEnabled(false);   	 		    		
+   	 		    	}
+   	 		    	else
+   	 		    		btOK.setEnabled(true);
+   	 		    }
    	 		}
        }   	  
    	 }
@@ -195,7 +205,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 catch(Exception e) {
    	 	e.printStackTrace();
    	 }
-   	 */
+
     }
 
 public void setValor(Object oVal) {
