@@ -42,10 +42,10 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FSimilar extends FDados implements ActionListener{
-	private JTextFieldPad txtRefProdSim = new JTextFieldPad(18);
+	private JTextFieldPad txtRefProdSim = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-	private JTextFieldPad txtRefProdSimFK = new JTextFieldPad();
+	private JTextFieldPad txtRefProdSimFK = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private ListaCampos lcProd = new ListaCampos(this,"PD");
 	private ListaCampos lcProd2 = new ListaCampos(this,"PD");	
