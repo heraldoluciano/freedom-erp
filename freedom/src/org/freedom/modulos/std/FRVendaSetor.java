@@ -248,7 +248,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
           else
               rgOrdemRel.setAtivo(false);
       }
-      finally {
+      finally { 
           sTipoRel = null;
       }
   }
@@ -270,13 +270,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   	String sFiltros1 = "";
   	String sFiltros2 = "";
   	String sTipoMov = "";
-  	String sTemp = "";
+//  	String sTemp = "";
   	ImprimeOS imp = null;
   	int linPag = 0;
   	int iParam = 1;
   	int iCol = 0;
   	int iColAnt = 0;
   	int iPosCol = 0;
+  	int iPosColAnt = 0;
   	int iPos = 0;
   	int iLinsSetor = 0;
   	int iCodSetor = 0;
@@ -470,11 +471,13 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   					 || (!sMes.equals(vItem.elementAt(POS_MES).toString()))
   					 || (!sCodGrup.equals(vItem.elementAt(POS_CODGRUP).toString())) ) {
   					if (!sCodSetorAnt.equals("")) {
-  						for (int iConta=iCol; iConta<9; iConta++) {
+  						for (int iConta=iPosCol; iConta<NUM_COLUNAS; iConta++) {
   		  					imp.say(imp.pRow()+0,21+(iConta*11),"|"+Funcoes.replicate(" ",10));
   						}
   						imp.say(imp.pRow()+0,124, "|"+Funcoes.strDecimalToStrCurrency(11,2,((Vector) vItens.elementAt(i-1)).elementAt(POS_TOTSETOR).toString()));
   		  				imp.say(imp.pRow()+0,136,"|");
+  		  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
   		  				iLinsSetor ++;
   		  				if (imp.pRow()>=(linPag-1)) {
   		  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -513,6 +516,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   		  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 						imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
 						iCol=0;
+						iPosCol=0;
 	  				}
 
   					if (!sCodSetor.equals(vItem.elementAt(POS_CODSETOR).toString())) {
@@ -555,9 +559,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	  	  					}
 	  	  					imp.say(imp.pRow()+0,21,getColSetor(vCols,iTotPassadas, iPassada));
 	  	  					imp.say(imp.pRow()+0,136,"|");
-	  	  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  	  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
                         }
+  	  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+  	  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
   	  					iLinsSetor = 0;
   					}
 				    sCodSetor = vItem.elementAt(POS_CODSETOR).toString();
@@ -567,6 +571,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   					sCodGrupAnt = sCodGrup;
   					sMesAnt = sMes;
 					iCol=0;
+					iPosCol=0;
   				}
   				
   				if (iCol==0) {
@@ -576,32 +581,46 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   				}
 
   				iColAnt = iCol;
+  				iPosColAnt = iPosCol;
   				iCol = posVendedor(vItem.elementAt(POS_CODVEND).toString(),vCols);
-  				iPosCol = getPosCol(vCols.size(), iCol);
-  				if ( (iCol>=NUM_COLUNAS) && (iPosCol==0)) {
+  				iPosCol = getPosCol(iCol);
+  				if ( (iCol>=NUM_COLUNAS) && (iPosCol<iPosColAnt) ) {
+  					// Para fechar as colunas na linha atual
+  	  				for (int iAjusta=iPosColAnt; iAjusta<NUM_COLUNAS; iAjusta++) {
+  	  	  				imp.say(imp.pRow()+0,21+(iAjusta*11),"|"+Funcoes.replicate(" ",10));
+  	  				}
+  	  				iPosColAnt = 0;
+  	  				imp.say(imp.pRow()+0,124,"|");
+  	  				imp.say(imp.pRow()+0,136,"|");
   				    imp.say(imp.pRow()+1,0,""+imp.comprimido());
   				    imp.say(imp.pRow()+0,0,"|");
   				}
-  				for (int iAjusta=iColAnt; iAjusta<iCol; iAjusta++) {
-  	  				imp.say(imp.pRow()+0,21+(getPosCol(vCols.size(),iAjusta)*11),"|"+Funcoes.replicate(" ",10));
+  				for (int iAjusta=iPosColAnt; iAjusta<iPosCol; iAjusta++) {
+  	  				imp.say(imp.pRow()+0,21+(iAjusta*11),"|"+Funcoes.replicate(" ",10));
   				}
-  				sTemp = ""+vItem.elementAt(POS_VALOR);
+//  				sTemp = ""+vItem.elementAt(POS_VALOR);
   				imp.say(imp.pRow()+0,21+(iPosCol*11),"|"+Funcoes.strDecimalToStrCurrency(10,2,vItem.elementAt(POS_VALOR)+""));
   				vTotSetor = adicValorSetor(iCol,(Double) vItem.elementAt(POS_VALOR),vTotSetor);
 //  				imp.say(imp.pRow()+0,136,"|");
   				iCol++;
+  				iPosCol++;
   				iPos = i;
 //  				bVlrTotal += v
   			}
 			// Imprime o total do setor após a impressão do relatório, caso não tenha sido impresso
   			if (iPos<vItens.size()) {
   				for (int iConta=iCol; iConta<vCols.size(); iConta++) {
-  				    iPosCol = getPosCol(vCols.size(),iConta);
-  				    if ( ( iConta>=NUM_COLUNAS ) && (iPosCol==0) ) {
+  					iPosColAnt = iPosCol;
+  					iPosCol=getPosCol(iConta);
+  				    if ( ( iConta>=NUM_COLUNAS ) && (iPosCol<iPosColAnt) ) {
   	  				    imp.say(imp.pRow()+1,0,""+imp.comprimido());
   	  				    imp.say(imp.pRow()+0,0,"|");
   				    }
   					imp.say(imp.pRow()+0,21+(iPosCol*11),"|"+Funcoes.replicate(" ",10));
+  					iPosCol++;
+  				}
+  				for (int iConta=iPosCol; iConta<NUM_COLUNAS; iConta++) {
+  					imp.say(imp.pRow()+0,21+(iConta*11),"|"+Funcoes.replicate(" ",10));
   				}
   				imp.say(imp.pRow()+0,124,"|"+Funcoes.strDecimalToStrCurrency(11,2,((Vector) vItens.elementAt(iPos)).elementAt(POS_TOTSETOR).toString()));
   				imp.say(imp.pRow()+0,136,"|");
@@ -666,6 +685,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   		iCodCli = 0;
   		iTotPassadas = 0;
   		iPosCol = 0;
+  		iPosColAnt = 0;
 		sCodGrup = null;
 		sSiglaGroup = null;
 		sTipoMov = null;
@@ -1289,12 +1309,12 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   	
   }
   
-  private int getPosCol(int iTotCols, int iColSel ) {
+  private int getPosCol(int iColSel ) {
       int iRetorno = 0;
       if (iColSel<NUM_COLUNAS) // Verifica se a coluna selecionada é menor que o número de colunas total
           iRetorno = iColSel;
       else // caso contrário a retorna o resto
-          iRetorno = (iColSel+1) % NUM_COLUNAS;
+          iRetorno = iColSel % NUM_COLUNAS;
       return iRetorno;
   }
   private String getColSetor(Vector vCols, int iTotPassadas,  int iPassada) {
