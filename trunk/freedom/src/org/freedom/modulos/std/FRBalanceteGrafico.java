@@ -46,10 +46,10 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRBalanceteGrafico extends FRelatorio {
-  private JTextFieldPad txtCodPlan = new JTextFieldPad();   
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private JTextFieldFK txtDescPlan = new JTextFieldFK();  
+  private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);   
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);  
   private ListaCampos lcPlan = new ListaCampos(this);
   private Connection con = null;
   private FPrinterJob dl = null;
@@ -65,15 +65,11 @@ public class FRBalanceteGrafico extends FRelatorio {
     setTitulo("Balancete Gráfico");
     setAtribos(80,80,330,345);
 
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     
     txtCodPlan.setRequerido(true);
     
-    txtCodPlan.setTipo(JTextFieldPad.TP_STRING,10,0);
-    txtDescPlan.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.plan.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
-    lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição d planejamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
+    lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, false));
+    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI,false));
     lcPlan.setWhereAdic("NIVELPLAN<6 AND TIPOPLAN IN ('R','D')");
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
     lcPlan.setReadOnly(true);
@@ -84,9 +80,9 @@ public class FRBalanceteGrafico extends FRelatorio {
 	txtCodCC.setTipo(JTextFieldPad.TP_STRING,19,0);
 	txtDescCC.setTipo(JTextFieldPad.TP_STRING,50,0);
 	txtSiglaCC.setTipo(JTextFieldPad.TP_STRING,10,0);    
-	lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Cód.cc.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-	lcCC.add(new GuardaCampo( txtSiglaCC, 90, 100, 207, 20, "SiglaCC", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-	lcCC.add(new GuardaCampo( txtDescCC, 90, 100, 207, 20, "DescCC", "Descrição do centro de custo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+	lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.cc.",  ListaCampos.DB_PK, false));
+	lcCC.add(new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla",  ListaCampos.DB_SI, false));
+	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo",  ListaCampos.DB_SI, false));
 	lcCC.setReadOnly(true);
 	lcCC.montaSql(false, "CC", "FN");
 	txtCodCC.setTabelaExterna(lcCC);
