@@ -125,7 +125,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldFK  txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtCodTipoCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK  txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING, 3, 0);
   private JTextFieldFK  txtNomeBanco = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK  txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
