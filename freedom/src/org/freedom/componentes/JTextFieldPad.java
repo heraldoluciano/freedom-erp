@@ -15,7 +15,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários da classe.....
+ * Classe padrão para entrada de dados.
  */
 
 package org.freedom.componentes;
@@ -65,15 +65,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   private boolean bPK = false;
   private boolean bFK = false;
   public  int tipoCampo = TP_NONE; 
-/*  private JPopupMenu pm = new JPopupMenu(); 
-  private JMenuItem copiarMI = new JMenuItem();
-  private JMenuItem recortarMI = new JMenuItem();
-  private JMenuItem colarMI = new JMenuItem(); */
   private ListaCampos lcTxt = null;
   private ListaCampos lcTabExt = null;
   private boolean bEnterSai = true;
-//  private String sTextoAnt = "";
-//  public  Robot tecla = null; 
   private char pontoDecMask = Funcoes.getPontoDec();
   private DLF3 dlBuscaAdic = null; 
   public  int iTamanho = 0;
@@ -900,10 +894,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public void beforeEdit(EditEvent eevt) { }
   public void afterEdit(EditEvent eevt) { }
   
-//  public void mouseClicked(MouseEvent mevt) { } 
-//  public void mouseEntered(MouseEvent mevt) { } 
-//  public void mouseExited(MouseEvent mevt) { } 
-//  public void mouseReleased(MouseEvent mevt) { } 
 
 
 }

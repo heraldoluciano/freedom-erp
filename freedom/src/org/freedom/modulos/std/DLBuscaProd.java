@@ -67,11 +67,15 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
 		           "                   WHERE SIM2.CODEMP=PROD.CODEMP AND SIM2.CODFILIAL = PROD.CODFILIAL " +
 		           "                   AND SIM2."+sCol+"=?) "+
 		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? AND PROD.CODPROD=SIM.CODPROD";
+
+   	 	setTitulo("Produtos similares à "+oVal.toString());
    	 }
    	 else {
    	 	sSQL = "SELECT ALT.CODPROD,ALT.REFPROD,PROD.DESCPROD,PROD.SLDPROD FROM eqcodaltprod ALT, EQPRODUTO PROD "+
 		   " WHERE PROD.CODEMP = ALT.CODEMP AND PROD.CODFILIAL=ALT.codfilial AND PROD.CODPROD = ALT.CODPROD " +
-		   " AND ALT.CODALTPROD = ? AND ALT.CODEMP=? AND ALT.CODFILIAL = ? ";   	 	
+		   " AND ALT.CODALTPROD = ? AND ALT.CODEMP=? AND ALT.CODFILIAL = ? ";
+
+   	 	setTitulo("Produtos encontrados com o código alternativo:"+oVal.toString());
    	 }
   	
       System.out.println(sSQL);
@@ -135,11 +139,8 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	 	e.printStackTrace();
    	 }
     }
-/* (non-Javadoc)
- * @see org.freedom.telas.DLF3#setValor(java.lang.Object)
- */
+
 public void setValor(Object oVal) {
-	// TODO Auto-generated method stub
 	
 }
 };        

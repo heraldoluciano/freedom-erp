@@ -56,6 +56,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -240,8 +241,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false);
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
+			txtRefProd.setFK(true);
+		  	txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK	, txtDescProd, false);
+		  	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
 		}
 
 		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK,  false);

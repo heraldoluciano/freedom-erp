@@ -61,9 +61,6 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtRefProd = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-	//private JTextFieldPad txtCodProdFim = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	//private JTextFieldFK txtRefProdFim = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
-	//private JTextFieldFK txtDescProdFim = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
     private JCheckBoxPad cbTudo = new JCheckBoxPad("Processar todo estoque (Atenção!)","S","N");
 	private JLabelPad lbStatus = new JLabelPad();
 	private ListaCampos lcProd = new ListaCampos(this);
@@ -86,18 +83,6 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
         txtCodProd.setFK(true);
         lcProd.setReadOnly(true);
         lcProd.montaSql(false, "PRODUTO", "EQ");
-
-        /*txtCodProdFim.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-        txtDescProdFim.setTipo(JTextFieldPad.TP_STRING,40,0);
-        txtRefProdFim.setTipo(JTextFieldPad.TP_STRING,13,0);
-        lcProdFim.add(new GuardaCampo( txtCodProdFim, 7, 100, 80, 20, "CodProd", "CodProd", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProdFim");
-        lcProdFim.add(new GuardaCampo( txtRefProdFim, 90, 100, 100, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING,false),"txtRefProdFim");
-        lcProdFim.add(new GuardaCampo( txtDescProdFim, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdFim");
-        txtCodProdFim.setTabelaExterna(lcProdFim);
-        txtCodProdFim.setNomeCampo("CodProd");
-        txtCodProdFim.setFK(true);
-        lcProdFim.setReadOnly(true);
-        lcProdFim.montaSql(false, "PRODUTO", "EQ"); */
         
         JLabelPad lbAviso = new JLabelPad();
         lbAviso.setForeground(Color.RED);
@@ -114,10 +99,6 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
         pin.adic(txtCodProd,7,200,70,20);
         pin.adic(new JLabelPad("Descrição do produto"),80,180,250,20);
         pin.adic(txtDescProd,80,200,220,20);
-
-        /*pin.adic(new JLabelPad("Código e descrição do produto final"),7,200,250,20);
-        pin.adic(txtCodProdFim,7,220,70,20);
-        pin.adic(txtDescProdFim,80,220,220,20);*/
 
         if (Aplicativo.strUsuario.toUpperCase().equals("SYSDBA")) {
           pin.adic(cbTudo,7,240,250,30);
@@ -522,6 +503,7 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
     	super.setConexao(cn);
     	lcProd.setConexao(cn);
     	iFilialMov = ListaCampos.getMasterFilial("EQMOVPROD");
+      	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
     }
 	public void beforeCarrega(CarregaEvent cevt) {
 	}

@@ -46,11 +46,9 @@ import org.freedom.telas.FRelatorio;
 
 public class FRVendasFisico extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);   
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
-  
+  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);   
   private ListaCampos lcVend = new ListaCampos(this);
   private JRadioGroup rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
@@ -97,9 +95,7 @@ public class FRVendasFisico extends FRelatorio {
 		adic(txtCodVend,7,75,60,20);
 		adic(new JLabelPad("Nome do comissionado"),70,55,210,20);
 		adic(txtDescVend,70,75,200,20);
-	
-	
-	
+			
   }
   private boolean comRef() {
   	boolean bRetorno = false;
@@ -115,8 +111,6 @@ public class FRVendasFisico extends FRelatorio {
   			if (rs.getString("UsaRefProd").trim().equals("S"))
   				bRetorno = true;
   		}
-//      rs.close();
-//      ps.close();
   		if (!con.getAutoCommit())
   			con.commit();
   	}

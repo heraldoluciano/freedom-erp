@@ -78,7 +78,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 txtCodProd.setRequerido(true);                
                 txtDataini.setRequerido(true);
                 txtDatafim.setRequerido(true);
-              
+
                 lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
                 lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
@@ -292,6 +292,7 @@ public class FKardex extends FRelatorio implements ActionListener {
        		super.setConexao(cn);
             lcProd.setConexao(cn);
             lcLote.setConexao(cn);
+            txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
         }
         public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource() == btExec) {

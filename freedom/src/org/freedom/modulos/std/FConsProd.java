@@ -77,7 +77,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private Tabela tabFor = new Tabela();
 	private Tabela tabCompras = new Tabela();
 	private Tabela tabVendas = new Tabela();
-//	private JScrollPane spnSimilares = new JScrollPane(tab);
 	private JScrollPane spnFor = new JScrollPane(tabFor);
 	private JScrollPane spnCompras = new JScrollPane(tabCompras);
 	private JScrollPane spnVendas = new JScrollPane(tabVendas);
@@ -96,11 +95,8 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
     private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
     private JTextFieldFK txtDescFisc = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-    //private JTextFieldPad txtCodFor = new JTextFieldPad();
-   // private JTextFieldFK txtRazFor = new JTextFieldFK();
     private JTextFieldFK txtDtUltCp = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
     private JTextFieldFK txtQtUltCp = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
-   // private JTextFieldPad txtCodProdFor = new JTextFieldPad();
     private JTextFieldPad txtDtCpIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
     private JTextFieldPad txtDtCpFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
     private JTextFieldPad txtDtVdIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -125,15 +121,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		txtCodGrup.setAtivo(false);
 		txtCodFisc.setAtivo(false);
 		
-               
-        
         setPanel(pnGeral);
 
         pnRod.setPreferredSize(new Dimension(0,230));
 		pnRod.add(tpn,BorderLayout.CENTER);
 
 		pnGeral.add(pinCab,BorderLayout.NORTH);
-//		pnGeral.add(spnSimilares,BorderLayout.CENTER);
 		pnGeral.add(pnRod,BorderLayout.CENTER);
 				
 		tpn.setTabLayoutPolicy(JTabbedPanePad.SCROLL_TAB_LAYOUT);
@@ -234,9 +227,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         pinCab.adic(txtCodFisc,323,100,87,20);
         pinCab.adic(new JLabelPad("Declaração da classe fiscal"),413,80,180,20);
         pinCab.adic(txtDescFisc,413,100,215,20);
-        
-//        pinCab.adic(new JLabelPad("Códigos similares:"),7,127,200,20);
-        				
 						
 		btExecCompra.addActionListener(this);
 		btExecVenda.addActionListener(this);
@@ -302,9 +292,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		tabCompras.adicColuna("Vlr.liq.");
 		tabCompras.adicColuna("Vlr.Icms.");
 		tabCompras.adicColuna("Vlr.IPI.");
-		
-		
-		
 		
 		tabCompras.setTamColuna(50,0);
 		tabCompras.setTamColuna(50,1);
@@ -412,46 +399,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 			
 	}
 
-	
-	private void carregaSimilares() {
-		/*
-    String sSQL = "SELECT REFPRODSIM FROM EQSIMILAR WHERE CODEMP=? AND CODFILIAL=? AND CODEMPPD=CODEMP AND CODFILIALPD=CODFILIAL AND CODPROD=?";
-    System.out.println(sSQL);
-    try {
-      tab.limpa();
-      
-      PreparedStatement ps = con.prepareStatement(sSQL);
-	  ps.setInt(1,Aplicativo.iCodEmp);
-	  ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
-	  ps.setInt(3,txtCodProd.getVlrInteger().intValue());
-      ResultSet rs = ps.executeQuery();
-
-      int iRow = 0;
-      int iCol = 0;
-      tab.adicLinha();  
-      
-      for (int i=0;rs.next();i++) {
-     
-        tab.setValor(rs.getString("REFPRODSIM"),iRow,iCol++);
-        if (iCol>5) {
-          tab.adicLinha();                 
-          iCol=0;
-          iRow++;
-        }
-      }
-      rs.close();
-      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-
-      }
-      catch (SQLException err) {
-		System.out.println("Erro ao montar a tabela de similares!\n"+err.getMessage());
-		err.printStackTrace();      
-      }
-*/
-	}
-
 	private void carregaProdFor() {		  
 		String sSQL1 = "SELECT PF.CODFOR,PF.REFPRODFOR,F.RAZFOR FROM CPPRODFOR PF,CPFORNECED F "+
 		              "WHERE PF.CODEMP=? AND PF.CODFILIAL = ? AND PF.CODPROD=? "+
@@ -519,10 +466,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRICMSITVENDA")),i,10);				
 				tabVendas.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRIPIITVENDA")),i,11);
 				
-				
-				
-				
-
 			}
 			rs.close();
 			ps.close();
@@ -565,8 +508,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 					tabCompras.setValor(rs.getString("CODITCOMPRA"),i,3);
 					tabCompras.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTENTCOMPRA")),i,4);
 					
-			
-					
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("QTDITCOMPRA")),i,5);
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRPRODITCOMPRA")),i,6);
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRDESCITCOMPRA")),i,7);			
@@ -575,9 +516,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRICMSITCOMPRA")),i,10);				
 					tabCompras.setValor(Funcoes.strDecimalToStrCurrency(8,2,rs.getString("VLRIPIITCOMPRA")),i,11);
 					
-					
-					
-										
 				}
 				rs.close();
 				ps.close();
@@ -1086,7 +1024,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		}
 		return bRetorno;
 	}
-	
 	
 	private boolean validaPeriodoVenda() {
 		boolean bRetorno = false;

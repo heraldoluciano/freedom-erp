@@ -48,6 +48,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
+import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
@@ -64,6 +65,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtRefProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtDescProdDet = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtQtdProdOP = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtDtValidOP = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -140,16 +142,19 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	setPainel( pinCab, pnCliCab);
   	adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
 	
-  	if (!bPrefs[0])
+  	if (!bPrefs[0]) {
   	  	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, true);
+  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+  	}
   	else {
   		adic(new JLabelPad("Referência"),60,0,70,20);
-  		adic(txtRefProdDet,80,20,70,20);
+  		adic(txtRefProdEst,80,20,70,20);
   		adicCampo(txtRefProdEst, 80, 20, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
-  		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProdDet, true);
+  		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
+  	  	txtRefProdEst.setFK(true);
+  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));  	  	
   	}
   	
-// 	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
   	adicDescFK(txtDescEst, 153, 20, 250, 20, "descprod", "Descrição da estrutura");
   	adicCampo(txtQtdProdOP,406,20,100,20,"qtdprodop","Quantidade",ListaCampos.DB_SI, true);
   	adicCampo(txtDtFabProd,7,60,100,20,"dtfabrop","Dt. fabricação",ListaCampos.DB_SI, true);
@@ -166,12 +171,16 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	setNavegador(navRod);
 
   	adicCampo(txtSeqItOp,7,20,50,20,"seqitop","Seq.", ListaCampos.DB_PK, true);
-  	if (!bPrefs[0])
+  	if (!bPrefs[0]){
   		adicCampo(txtCodProdDet,60,20,70,20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true);
+  	  	txtCodProdDet.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+  	}
   	else {
   		adic(new JLabelPad("Referência"),60,0,70,20);
   		adic(txtRefProdDet,60,20,70,20);
   		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true);
+  		txtRefProdDet.setFK(true);
+  	  	txtRefProdDet.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
   	}
   	adicDescFK(txtDescProdDet,133,20,250,20,"descprod", "Descrição do produto");
   	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", ListaCampos.DB_SI, false);

@@ -619,6 +619,8 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     
 	txtCodProd.requestFocus();
 	btExp.addActionListener(this);
+	
+	
   }
   private void exportar() {
   	 if (txtCodProd.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT) {

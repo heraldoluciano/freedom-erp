@@ -309,14 +309,17 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
 	setListaCampos(lcDet);
 	setNavegador(navRod);
 	adicCampo(txtCodItOrc, 7, 20, 30, 20,"CodItOrc","Item", ListaCampos.DB_PK, true);
-	if (oPrefs[0]==Boolean.TRUE) {
+	if (((Boolean)oPrefs[0]).booleanValue()) {
 	  adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.", ListaCampos.DB_FK,txtDescProd,false);
 	  adicCampoInvisivel(txtRefProd,"RefProd","Ref.prod.", ListaCampos.DB_FK,false);
 	  adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 	  adic(txtRefProd, 40, 20, 67, 20);
+	  txtRefProd.setFK(true);
+	  txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
 	}
 	else {
 	  adicCampo(txtCodProd, 40, 20, 67, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK,txtDescProd,true);
+	  txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
 	}
 	adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd", "Descrição do produto");
 	adicCampo(txtQtdItOrc, 340, 20, 47, 20,"QtdItOrc","Qtd.", ListaCampos.DB_SI,true);
