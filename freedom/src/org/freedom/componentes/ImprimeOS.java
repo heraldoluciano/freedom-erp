@@ -609,8 +609,8 @@ public class ImprimeOS implements ActionListener {
           									  "Provávelmente não têm impressora cadastrada para esta estação de trabalho!!");
         rs.close();
         ps.close();
-        if (!con.getAutoCommit())
-        	con.commit();
+//        if (!con.getAutoCommit())
+  //      	con.commit();
 
       }
       catch(SQLException err) {
@@ -657,8 +657,8 @@ public class ImprimeOS implements ActionListener {
                                             "Tabela: IMPRESSORA");
         rs.close();
         ps.close();
-        if (!con.getAutoCommit())
-        	con.commit();
+        //if (!con.getAutoCommit())
+        //	con.commit();
 //        con.commit();
       }
       catch(SQLException err) {
@@ -877,8 +877,8 @@ public class ImprimeOS implements ActionListener {
       }
       rs.close();
       ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
+      //if (!con.getAutoCommit())
+      	//con.commit();
     }
     catch(SQLException err) { 
       Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela SGESTACAOIMP\n"+err.getMessage());
