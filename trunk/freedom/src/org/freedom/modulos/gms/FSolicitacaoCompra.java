@@ -355,6 +355,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("SC")) {
 				btStatusCompra.setText("Solicitação Concluída");
 				lcDet.setReadOnly(true);
+			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("TM")) {
+				btStatusCompra.setText("Cotação de Preços");
+				lcDet.setReadOnly(true);
 			}
 
 		} else if (cevt.getListaCampos() == lcDet) {
