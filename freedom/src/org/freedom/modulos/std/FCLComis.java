@@ -40,10 +40,10 @@ import org.freedom.telas.FDados;
 
 
 public class FCLComis extends FDados implements PostListener { 
-  private JTextFieldPad txtCodClComis = new JTextFieldPad();
-  private JTextFieldPad txtDescClComis = new JTextFieldPad();
-  private JTextFieldPad txtPercFatClComis = new JTextFieldPad();
-  private JTextFieldPad txtPercPgtoComis = new JTextFieldPad();
+  private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+  private JTextFieldPad txtDescClComis = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+  private JTextFieldPad txtPercFatClComis = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 7, 3);
+  private JTextFieldPad txtPercPgtoComis = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 7, 3);
   
   private ListaCampos lcClComis = new ListaCampos(this,"CL");
   
@@ -54,8 +54,8 @@ public class FCLComis extends FDados implements PostListener {
 
     setListaCampos( true, "CLCOMIS", "VD");
     
-    lcClComis.add(new GuardaCampo( txtCodClComis, 7, 100, 80, 20, "CodClComis", "Código", true, false, null,  JTextFieldPad.TP_STRING,false));
-    lcClComis.add(new GuardaCampo( txtDescClComis, 7, 100, 80, 20, "DescClComis", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcClComis.add(new GuardaCampo( txtCodClComis,"CodClComis", "Código", ListaCampos.DB_PK, null,false));
+    lcClComis.add(new GuardaCampo( txtDescClComis,"DescClComis", "Descriçao", ListaCampos.DB_SI, null,false));
     lcClComis.montaSql(false, "VDCLCOMIS", "CL");    
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
@@ -67,14 +67,14 @@ public class FCLComis extends FDados implements PostListener {
     
     
 	
-    adicCampo(txtCodClComis, 7, 20, 80, 20, "CodClComis", "Cód.c.comis.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtDescClComis, 90, 20, 250, 20, "DescClComis", "Descrição", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtCodClComis, 7, 20, 80, 20, "CodClComis", "Cód.c.comis.",  ListaCampos.DB_PK, null, true);
+    adicCampo(txtDescClComis, 90, 20, 250, 20, "DescClComis", "Descrição", ListaCampos.DB_SI, null, true);
     
     adic(lbDistriCom,7,50,250,20);
     adic(lbLinha,7,72,250,2);
     
-    adicCampo(txtPercFatClComis, 7, 100, 120, 20, "PercFatClComis", "% S/Faturamento", JTextFieldPad.TP_DECIMAL, 7, 3, false, false, null, true);
-    adicCampo(txtPercPgtoComis, 140, 100, 120, 20, "PercPgtoClComis", "% S/Recebimento.", JTextFieldPad.TP_DECIMAL, 7,3, false, false, null, true);
+    adicCampo(txtPercFatClComis, 7, 100, 120, 20, "PercFatClComis", "% S/Faturamento",  ListaCampos.DB_SI, null, true);
+    adicCampo(txtPercPgtoComis, 140, 100, 120, 20, "PercPgtoClComis", "% S/Recebimento.", ListaCampos.DB_SI, null, true);
         
     setListaCampos( true, "CLCOMIS", "VD");
     btImp.addActionListener(this);

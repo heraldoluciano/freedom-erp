@@ -103,16 +103,16 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
     c.add(pnCli,BorderLayout.CENTER);
     c.add(pinCab,BorderLayout.NORTH);
 
-	lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodGrup");
-	lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+	lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false));
+	lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_FK,false));
 	txtCodCli.setTabelaExterna(lcCli);
 	txtCodCli.setNomeCampo("CodCli");
 	txtCodCli.setFK(true);
 	lcCli.setReadOnly(true);
 	lcCli.montaSql(false, "CLIENTE", "VD");
 	    
-	lcConv.add(new GuardaCampo( txtCodConv, 7, 100, 80, 20, "CodConv", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodGrup");
-	lcConv.add(new GuardaCampo( txtNomeConv, 90, 100, 207, 20, "NomeConv", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+	lcConv.add(new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, null, false));
+	lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, null, false));
 	txtCodConv.setTabelaExterna(lcConv);
 	txtCodConv.setNomeCampo("CodConv");
 	txtCodConv.setFK(true);
@@ -152,11 +152,11 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
     pnSubRod.add(pinRod,BorderLayout.CENTER);
 
     pinRod.tiraBorda();
-    pinRod.adic(new JLabel("Vlr. Bruto"),7,0,100,20);
+    pinRod.adic(new JLabel("Vlr.bruto"),7,0,100,20);
 	pinRod.adic(txtVlrProd,7,20,100,20);
-	pinRod.adic(new JLabel("Vlr. Desc."),110,0,97,20);
+	pinRod.adic(new JLabel("Vlr.desc."),110,0,97,20);
 	pinRod.adic(txtVlrDesc,110,20,97,20);
-	pinRod.adic(new JLabel("Vlr. Liq."),210,0,97,20);
+	pinRod.adic(new JLabel("Vlr.liq."),210,0,97,20);
 	pinRod.adic(txtVlrLiq,210,20,97,20);
 
     pnTabOrc.setPreferredSize(new Dimension(600,130));
@@ -185,22 +185,22 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 	
 //Seta os comentários    
 
-    btExec.setToolTipText("Executar Montagem");
-    btTudoOrc.setToolTipText("Selecionar Tudo");
-    btNadaOrc.setToolTipText("Limpar Seleção");
-    btGerar.setToolTipText("Gerar no Banco");
+    btExec.setToolTipText("Executar montagem");
+    btTudoOrc.setToolTipText("Selecionar tudo");
+    btNadaOrc.setToolTipText("Limpar seleção");
+    btGerar.setToolTipText("Gerar no banco");
     
 
 //Monta as tabelas
 
     tabOrc.adicColuna("S/N");
     tabOrc.adicColuna("Cód.orc.");
-    tabOrc.adicColuna("Cód.Cli.");
-    tabOrc.adicColuna("Nome do Conveniado");
-    tabOrc.adicColuna("Nº. itens.");
-    tabOrc.adicColuna("Nº. lib.");
-	tabOrc.adicColuna("Valor Total");
-	tabOrc.adicColuna("Valor Liberado");
+    tabOrc.adicColuna("Cód.cli.");
+    tabOrc.adicColuna("Nome do conveniado");
+    tabOrc.adicColuna("Nº itens.");
+    tabOrc.adicColuna("Nº lib.");
+	tabOrc.adicColuna("Valor total");
+	tabOrc.adicColuna("Valor liberado");
 
     tabOrc.setTamColuna(30,0);
     tabOrc.setTamColuna(60,1);
@@ -215,12 +215,12 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 
     tab.adicColuna("S/N");
     tab.adicColuna("Ítem");
-	tab.adicColuna("Cód. Prod.");
+	tab.adicColuna("Cód.prod.");
 	tab.adicColuna("Descrição");
 	tab.adicColuna("Qtd.");
 	tab.adicColuna("Preco.");
-	tab.adicColuna("Valor. Desc.");
-	tab.adicColuna("Valor. Liq.");
+	tab.adicColuna("Valor desc.");
+	tab.adicColuna("Valor liq.");
 
 	tab.setTamColuna(35,0);
 	tab.setTamColuna(35,1);

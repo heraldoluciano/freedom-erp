@@ -68,11 +68,11 @@ public class FCancVenda extends FFilho implements ActionListener {
     txtVlrLiqVenda.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
     txtStatusVenda.setTipo(JTextFieldPad.TP_STRING,2,0);
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.Venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
-    lcVenda.add(new GuardaCampo( txtDocVenda, 90, 100, 207, 20, "DocVenda", "Documento", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, 90, 100, 207, 20, "VlrLiqVenda", "V. Liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtStatusVenda, 90, 100, 207, 20, "StatusVenda", "Status", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
+    lcVenda.add(new GuardaCampo( txtCodVenda,  "CodVenda", "Cód.Venda", ListaCampos.DB_PK, null, false));
+    lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, null, false));
+    lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, null, false));
+    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. Liq.", ListaCampos.DB_SI, null, false));
+    lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, null, false));
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     txtCodVenda.setTabelaExterna(lcVenda);

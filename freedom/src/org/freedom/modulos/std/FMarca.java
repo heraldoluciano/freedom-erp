@@ -33,7 +33,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FMarca extends FDados implements ActionListener {
-  private JTextFieldPad txtCodMarca = new JTextFieldPad(8);
+  private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
   private JTextFieldPad txtDescMarca = new JTextFieldPad(8);
   private JTextFieldPad txtSiglaMarca = new JTextFieldPad(8);
   public FMarca() {
