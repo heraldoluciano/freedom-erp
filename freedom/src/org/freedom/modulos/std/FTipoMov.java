@@ -30,6 +30,8 @@ import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -60,14 +62,17 @@ public class FTipoMov extends FDados implements RadioGroupListener {
   private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Lanc.fiscal?","S","N");
   private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont.estoque?","S","N");
   private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Soma rel.vendas?","S","N");
-  private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp. pedido?","S","N");
-  private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp. NF?","S","N");
-  private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Reimp. NF?","S","N");
-  private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp. NF?","S","N");
+  private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.pedido?","S","N");
+  private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp.NF?","S","N");
+  private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Imp.bol.?","S","N");
+  private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp.NF?","S","N");
+  private JPanelPad pinInfoPadImp = new JPanelPad(300,150);
+  private JLabelPad lbInfoPadImp = new JLabelPad("  Opções para fechamento de venda");
+  private JPanelPad pinLbPadImp = new JPanelPad(53,15);
   
   public FTipoMov() {
     setTitulo("Cadastro de Tipos de Movimento");
-    setAtribos( 50, 50, 430, 460);
+    setAtribos( 10, 10, 430, 520);
   
     lcModNota.add(new GuardaCampo( txtCodModNota, "CodModNota", "Cód.mod.nota", ListaCampos.DB_PK, false));
     lcModNota.add(new GuardaCampo( txtDescModNota, "DescModNota", "Descrição do modelo de nota", ListaCampos.DB_SI, false));
@@ -130,16 +135,23 @@ public class FTipoMov extends FDados implements RadioGroupListener {
     
     adicDB(cbTipoMov, 7, 310, 250, 30, "TipoMov", "Tipo de movimento", true);
     adicCampo(txtEspecieTipomov, 280,320,80 ,20, "EspecieTipomov", "Espécie", ListaCampos.DB_SI, true);
-    adicDB(chbImpPedTipoMov, 7, 360, 100, 20, "ImpPedTipoMov", "Pad.imp.ped.", true);
-    adicDB(chbImpNfTipoMov, 110, 360, 100, 20, "ImpNfTipoMov", "Pad.imp.NF", true);
-    adicDB(chbImpBolTipoMov, 213, 360, 100, 20, "ImpBolTipoMov", "Pad.imp.boleto", true);
-    adicDB(chbReImpNfTipoMov, 316, 360, 100, 20, "ReImpNfTipoMov", "Pad.reimp.NF", true);
+    adicDB(chbImpPedTipoMov, 13, 400, 97, 20, "ImpPedTipoMov", "Pad.imp.ped.", true);
+    adicDB(chbImpNfTipoMov, 113, 400, 94, 20, "ImpNfTipoMov", "Pad.imp.NF", true);
+    adicDB(chbImpBolTipoMov, 210, 400, 97, 20, "ImpBolTipoMov", "Pad.imp.boleto", true);
+    adicDB(chbReImpNfTipoMov, 310, 400, 90, 20, "ReImpNfTipoMov", "Pad.reimp.NF", true);
     
     lcCampos.setQueryInsert(false);
     
     txtCodTipoMov2.setNomeCampo("CodTipoMov");
     
     setListaCampos( true, "TIPOMOV", "EQ");
+    
+    pinLbPadImp.adic(lbInfoPadImp,0,0,230,15);
+    pinLbPadImp.tiraBorda();
+    
+    adic(pinLbPadImp,10,360,230,15);
+    adic(pinInfoPadImp,7,360,400,70);
+    
   }
   private void montaCbTipoMov(String ES) {
   	cbTipoMov.limpa();

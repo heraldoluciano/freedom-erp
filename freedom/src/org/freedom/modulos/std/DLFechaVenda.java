@@ -142,7 +142,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private int iCodVendaFecha = 0;
   private boolean bCarFrete = false;
   private boolean bPrefs[] = null;
-  public DLFechaVenda(Connection cn, Integer iCodVenda, Component cOrig) {
+  public DLFechaVenda(Connection cn, Integer iCodVenda, Component cOrig, String impPed, String impNf, String impBol, String reImpNf) {
   	super(cOrig);
     setConexao(cn);
     iCodVendaFecha = iCodVenda.intValue();
@@ -431,10 +431,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     txtPercAdicVenda.addFocusListener(this);
     txtVlrAdicVenda.addFocusListener(this);
 
-    cbImpPed.setVlrString("N");
-    cbImpNot.setVlrString("N");
-    cbImpBol.setVlrString("N");
-    cbReImpNot.setVlrString("N");
+    cbImpPed.setVlrString(impPed);
+    cbImpNot.setVlrString(impNf);
+    cbImpBol.setVlrString(impBol);
+    cbReImpNot.setVlrString(reImpNf);
     
     bPrefs = prefs();
     lcVenda.edit();

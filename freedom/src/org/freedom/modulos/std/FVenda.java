@@ -58,6 +58,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -159,6 +160,10 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private JTextFieldFK txtDescFisc = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextField txtFiscalTipoMov1 = new JTextField();
   private JTextField txtFiscalTipoMov2 = new JTextField();
+  private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.ped.","S","N");
+  private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp.NF","S","N");
+  private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Imp.bol.?","S","N");
+  private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp.NF?","S","N");
   private ListaCampos lcTratTrib = new ListaCampos(this,"TT");
   private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
   private ListaCampos lcCli = new ListaCampos(this,"CL");
@@ -449,6 +454,11 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     lcTipoMov.add(new GuardaCampo( txtCodSerie, "Serie", "Série", ListaCampos.DB_FK,false));
     lcTipoMov.add(new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI,false));
     lcTipoMov.add(new GuardaCampo( txtESTipoMov, "ESTipoMov", "E/S", ListaCampos.DB_SI,false));
+    lcTipoMov.add(new GuardaCampo( chbImpPedTipoMov, "ImpPedTipoMov", "Imp.ped.", ListaCampos.DB_SI,false));
+    lcTipoMov.add(new GuardaCampo( chbImpNfTipoMov, "ImpNfTipoMov", "Imp.NF", ListaCampos.DB_SI,false));
+    lcTipoMov.add(new GuardaCampo( chbImpBolTipoMov, "ImpBolTipoMov", "Imp.bol.", ListaCampos.DB_SI,false));
+    lcTipoMov.add(new GuardaCampo( chbReImpNfTipoMov, "ReImpNfTipoMov", "Reimp.NF", ListaCampos.DB_SI,false));
+    
     lcTipoMov.setWhereAdic("(ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV'))"); 
     if (bPrefs[5]) {
     	txtFiscalTipoMov1.setText("S");
@@ -1313,7 +1323,9 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   public void actionPerformed(ActionEvent evt) {
     String[] sValores = null;
     if (evt.getSource() == btFechaVenda) {
-      DLFechaVenda dl = new DLFechaVenda(con,txtCodVenda.getVlrInteger(),this);
+      DLFechaVenda dl = new DLFechaVenda(con,txtCodVenda.getVlrInteger(),this, 
+      		chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(),
+			chbImpBolTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString());
       dl.setVisible(true);
       if (dl.OK) {
         sValores = dl.getValores();
