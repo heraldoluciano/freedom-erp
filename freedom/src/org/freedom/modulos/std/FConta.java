@@ -51,24 +51,24 @@ public class FConta extends FDados {
     setAtribos(50,50,415,290);
 
     txtCodBanco.setTipo(JTextFieldPad.TP_STRING,4,0);
-    lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBancox");
-    lcBanco.add(new GuardaCampo( txtDescBanco, 90, 100, 207, 20, "NomeBanco", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBancox");
+    lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Cód.banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBancox");
+    lcBanco.add(new GuardaCampo( txtDescBanco, 90, 100, 207, 20, "NomeBanco", "Nome do banco", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBancox");
     lcBanco.montaSql(false, "BANCO", "FN");    
     lcBanco.setQueryCommit(false);
     lcBanco.setReadOnly(true);
     txtCodBanco.setTabelaExterna(lcBanco);
 
     txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
-    lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
-    lcMoeda.add(new GuardaCampo( txtDescMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+    lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Cód.mda.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
+    lcMoeda.add(new GuardaCampo( txtDescMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição da moeda", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
     lcMoeda.montaSql(false, "MOEDA", "FN");    
     lcMoeda.setQueryCommit(false);
     lcMoeda.setReadOnly(true);
     txtCodMoeda.setTabelaExterna(lcMoeda);
     
     txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodPlanx");
-    lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanx");
+    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.tp.lanç.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodPlanx");
+    lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição do tipo de lançamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanx");
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");    
     lcPlan.setQueryCommit(false);
     lcPlan.setReadOnly(true);
@@ -80,16 +80,16 @@ public class FConta extends FDados {
     vLabsTipo.addElement("Caixa");
     rgTipo = new JRadioGroup(1,2,vLabsTipo,vValsTipo);
 
-    adicCampo(txtNumConta, 7, 20, 110, 20, "NumConta", "Número da Conta", JTextFieldPad.TP_STRING, 10, 0, true, false, null, true);
-    adicCampo(txtDescConta, 120, 20, 270, 20, "DescConta", "Descrição", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtNumConta, 7, 20, 110, 20, "NumConta", "Nº da conta", JTextFieldPad.TP_STRING, 10, 0, true, false, null, true);
+    adicCampo(txtDescConta, 120, 20, 270, 20, "DescConta", "Descrição da conta", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
     adicCampo(txtAgConta, 7, 60, 60, 20, "AgenciaConta", "Agência", JTextFieldPad.TP_STRING, 6, 0, false, false, null, false);
-    adicCampo(txtCodBanco, 70, 60, 80, 20, "CodBanco", "Código", JTextFieldPad.TP_STRING, 3, 0, false, true, null, false);
-    adicDescFK(txtDescBanco, 153, 60, 237, 20, "NomeBanco", "e descrição do Banco", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodBanco, 70, 60, 80, 20, "CodBanco", "Cód.banco", JTextFieldPad.TP_STRING, 3, 0, false, true, null, false);
+    adicDescFK(txtDescBanco, 153, 60, 237, 20, "NomeBanco", "Descrição do banco", JTextFieldPad.TP_STRING, 50, 0);
     adicCampo(txtDataConta, 7, 100, 80, 20, "DataConta", "Data", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
-    adicCampo(txtCodMoeda, 90, 100, 60, 20, "CodMoeda", "Código", JTextFieldPad.TP_STRING, 4, 0, false, true, null, true);
-    adicDescFK(txtDescMoeda, 153, 100, 237, 20, "SingMoeda", "e descrição da Moeda", JTextFieldPad.TP_STRING, 20, 0);
-    adicCampo(txtCodPlan, 7, 140, 140, 20, "CodPlan", "Código", JTextFieldPad.TP_STRING, 13, 0, false, true, null, true);
-    adicDescFK(txtDescPlan, 150, 140, 240, 20, "DescPlan", "e descrição do tipo de lanç.", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodMoeda, 90, 100, 60, 20, "CodMoeda", "Cód.mda.", JTextFieldPad.TP_STRING, 4, 0, false, true, null, true);
+    adicDescFK(txtDescMoeda, 153, 100, 237, 20, "SingMoeda", "Descrição da moeda", JTextFieldPad.TP_STRING, 20, 0);
+    adicCampo(txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.tp.lanç.", JTextFieldPad.TP_STRING, 13, 0, false, true, null, true);
+    adicDescFK(txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do tipo de lançamento", JTextFieldPad.TP_STRING, 40, 0);
     adicDB(rgTipo, 7, 180, 383, 30, "TipoConta", "Tipo",JTextFieldPad.TP_STRING,true);
     setListaCampos(false,"CONTA", "FN");
     lcCampos.setQueryInsert(false);    

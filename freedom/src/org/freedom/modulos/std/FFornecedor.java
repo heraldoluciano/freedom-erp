@@ -87,8 +87,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     txtCodTipoFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTipoFor.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-    lcTipoFor.add(new GuardaCampo( txtCodTipoFor, 7, 100, 80, 20, "CodTipoFor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoForx");
-    lcTipoFor.add(new GuardaCampo( txtDescTipoFor, 90, 100, 207, 20, "DescTipoFor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoForx");
+    lcTipoFor.add(new GuardaCampo( txtCodTipoFor, 7, 100, 80, 20, "CodTipoFor", "Cód.tp.for.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoForx");
+    lcTipoFor.add(new GuardaCampo( txtDescTipoFor, 90, 100, 207, 20, "DescTipoFor", "Descrição do tipo de fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoForx");
     lcTipoFor.montaSql(false, "TIPOFOR", "CP");    
     lcTipoFor.setQueryCommit(false);
     lcTipoFor.setReadOnly(true);
@@ -104,13 +104,13 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     pinFor = new Painel(470,300);
     setPainel(pinFor);
     adicTab("Fornecedor", pinFor); 
-    adicCampo(txtCodFor, 7, 20, 70, 20, "CodFor", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtRazFor, 80, 20, 267, 20, "RazFor", "Razão", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtCodFor, 7, 20, 70, 20, "CodFor", "Cód.for.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtRazFor, 80, 20, 267, 20, "RazFor", "Razão social do fornecedor", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
     adicDB(rgPessoa, 350, 20, 100, 60, "PessoaFor", "Pessoa",JTextFieldPad.TP_STRING,true);
 	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoFor", "Ativo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtNomeFor, 80, 60, 267, 20, "NomeFor", "Nome Fantasia", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
-    adicCampo(txtCodTipoFor, 7, 100, 70, 20, "CodTipoFor", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoFor,true);
-    adicDescFK(txtDescTipoFor, 80, 100, 207, 20, "DescTipoFor", "e descrição do tipo de Fornecedor", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtNomeFor, 80, 60, 267, 20, "NomeFor", "Nome fantasia", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtCodTipoFor, 7, 100, 70, 20, "CodTipoFor", "Cód.tp.for.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoFor,true);
+    adicDescFK(txtDescTipoFor, 80, 100, 207, 20, "DescTipoFor", "Descrição do tipo de Fornecedor", JTextFieldPad.TP_STRING, 50, 0);
     adicCampo(txtCpfFor, 290, 100, 160, 20, "CpfFor", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null,false);
     adicCampo(txtRgFor, 7, 140, 150, 20, "RgFor", "RG", JTextFieldPad.TP_STRING, 10, 0, false, false, null,false);
     adicCampo(txtCnpjFor, 160, 140, 147, 20, "CnpjFor", "Cnpj", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);

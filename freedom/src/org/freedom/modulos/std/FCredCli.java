@@ -44,32 +44,32 @@ public class FCredCli extends FDados implements ActionListener {
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   public FCredCli() {
     setTitulo("Crédito por cliente");
-    setAtribos(50, 50, 440, 205);
+    setAtribos(50, 50, 460, 205);
 
-    lcTipoCli.add(new GuardaCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoClix");
-    lcTipoCli.add(new GuardaCampo( txtDescTipoCli, 90, 100, 207, 20, "DescTipoCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
+    lcTipoCli.add(new GuardaCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoClix");
+    lcTipoCli.add(new GuardaCampo( txtDescTipoCli, 90, 100, 207, 20, "DescTipoCli", "Descrição do tipo de cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
     lcTipoCli.montaSql(false, "TIPOCLI", "VD");    
     lcTipoCli.setQueryCommit(false);
     lcTipoCli.setReadOnly(true);
     txtCodTipoCli.setTabelaExterna(lcTipoCli);
 
-    lcTipoCred.add(new GuardaCampo( txtCodTpCred, 7, 100, 80, 20, "CodTpCred", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoClix");
-    lcTipoCred.add(new GuardaCampo( txtDescTpCred, 90, 100, 207, 20, "DescTpCred", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
-    lcTipoCred.add(new GuardaCampo( txtVlrTpCred, 90, 100, 207, 20, "VlrTpCred", "Valor", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescTipoClix");
+    lcTipoCred.add(new GuardaCampo( txtCodTpCred, 7, 100, 80, 20, "CodTpCred", "Cód.tp.cred.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoClix");
+    lcTipoCred.add(new GuardaCampo( txtDescTpCred, 90, 100, 287, 20, "DescTpCred", "Descrição do tipo de crédito", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
+    lcTipoCred.add(new GuardaCampo( txtVlrTpCred, 297, 100, 207, 20, "VlrTpCred", "Valor", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescTipoClix");
     lcTipoCred.montaSql(false, "TIPOCRED", "FN");    
     lcTipoCred.setQueryCommit(false);
     lcTipoCred.setReadOnly(true);
     txtCodTpCred.setTabelaExterna(lcTipoCred);
 
-    adicCampo(txtCodCli, 7, 20, 50, 20,"CodCli","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescCli, 60, 20, 247, 20,"RazCli","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
-    adicCampo(txtDataCli, 310, 20, 100, 20,"DataCli","Cadastro",JTextFieldPad.TP_DATE,10,0,false,false,null,false);
-	adicCampoInvisivel(txtCodTipoCli, "CodTipoCli","Cod.Cli",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoCli,false);
-    adicDescFK(txtDescTipoCli, 7, 60, 250, 20, "DescTipoCli", "Tipo de cliente", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodTpCred, 7, 100, 50, 20,"CodTpCred","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTpCred,true);
-    adicDescFK(txtDescTpCred, 60, 100, 147, 20, "DescTpCred", "e descrição do crédito", JTextFieldPad.TP_STRING, 50, 0);
-    adicDescFK(txtVlrTpCred, 210, 100, 97, 20, "VlrTpCred", "Valor", JTextFieldPad.TP_DECIMAL, 15, 3);
-	adicCampo(txtDtVencto, 310, 100, 100, 20,"DtVenctoTr","Vencimento",JTextFieldPad.TP_DATE,10,0,false,false,txtDescTpCred,true);
+    adicCampo(txtCodCli, 7, 20, 80, 20,"CodCli","Cód.cli.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescCli, 90, 20, 247, 20,"RazCli","Razão social do cliente",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
+    adicCampo(txtDataCli, 340, 20, 100, 20,"DataCli","Cadastro",JTextFieldPad.TP_DATE,10,0,false,false,null,false);
+	adicCampoInvisivel(txtCodTipoCli, "CodTipoCli","Cod.cli",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoCli,false);
+    adicDescFK(txtDescTipoCli, 7, 60, 250, 20, "DescTipoCli", "Descrição do tipo de cliente", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodTpCred, 7, 100, 80, 20,"CodTpCred","Cód.tp.cred",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTpCred,true);
+    adicDescFK(txtDescTpCred, 90, 100, 157, 20, "DescTpCred", "Descrição do crédito", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtVlrTpCred, 250, 100, 87, 20, "VlrTpCred", "Valor", JTextFieldPad.TP_DECIMAL, 15, 3);
+	adicCampo(txtDtVencto, 340, 100, 100, 20,"DtVenctoTr","Vencimento",JTextFieldPad.TP_DATE,10,0,false,false,txtDescTpCred,true);
     setListaCampos( true, "CLIENTE", "VD");
 	lcCampos.setPodeIns(false);
 	lcCampos.setPodeExc(false);

@@ -107,8 +107,8 @@ public class FConsulta extends FFilho implements CarregaListener {
 		tabGrup.setTamColuna(250,1);
 		tabGrup.setTamColuna(80,2);
 		tabGrup.setTamColuna(80,3);
-		tabGrup.setTamColuna(80,4);
-		tabGrup.setTamColuna(80,5);
+		tabGrup.setTamColuna(90,4);
+		tabGrup.setTamColuna(90,5);
 
 		pinCabGrup.adic(new JLabel("Cód.grupo"),7,0,100,20);
 		pinCabGrup.adic(new JLabel("Descrição do grupo"),110,0,300,20);
@@ -129,12 +129,12 @@ public class FConsulta extends FFilho implements CarregaListener {
 		txtSldCProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
 		txtSldRProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
 		txtSldLProd.setTipo(JTextFieldPad.TP_DECIMAL,15,3);
-		lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "CodProd", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
-		lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
+		lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
+		lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
 		lcProd.add(new GuardaCampo( txtSldProd, 90, 100, 100, 20, "SldProd", "Saldo", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldProd");
-		lcProd.add(new GuardaCampo( txtSldRProd, 90, 100, 100, 20, "SldResProd", "Saldo Res.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldRProd");
-		lcProd.add(new GuardaCampo( txtSldCProd, 90, 100, 100, 20, "SldConsigProd", "Saldo Cons.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldCProd");
-		lcProd.add(new GuardaCampo( txtSldLProd, 90, 100, 100, 20, "SldLiqProd", "Saldo Liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldLProd");
+		lcProd.add(new GuardaCampo( txtSldRProd, 90, 100, 100, 20, "SldResProd", "Saldo res.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldRProd");
+		lcProd.add(new GuardaCampo( txtSldCProd, 90, 100, 100, 20, "SldConsigProd", "Saldo cons.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldCProd");
+		lcProd.add(new GuardaCampo( txtSldLProd, 90, 100, 100, 20, "SldLiqProd", "Saldo liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtSldLProd");
 		txtCodProd.setTabelaExterna(lcProd);
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
@@ -147,27 +147,27 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pinCabProd.adic(txtDescProd,100,20,197,20);
 		pinCabProd.adic(new JLabel("Saldo"),300,0,87,20);
 		pinCabProd.adic(txtSldProd,300,20,87,20);
-		pinCabProd.adic(new JLabel("Saldo Cons."),390,0,87,20);
+		pinCabProd.adic(new JLabel("Saldo cons."),390,0,87,20);
 		pinCabProd.adic(txtSldCProd,390,20,87,20);
-		pinCabProd.adic(new JLabel("Saldo Rest."),480,0,87,20);
+		pinCabProd.adic(new JLabel("Saldo rest."),480,0,87,20);
 		pinCabProd.adic(txtSldRProd,480,20,87,20);
-		pinCabProd.adic(new JLabel("Saldo Liq."),570,0,87,20);
+		pinCabProd.adic(new JLabel("Saldo liq."),570,0,87,20);
 		pinCabProd.adic(txtSldLProd,570,20,87,20);
 
 		tabProd.adicColuna("Cód.c.cli.");
-		tabProd.adicColuna("Descrição da clas. do cliente");
+		tabProd.adicColuna("Descrição da classificação do cliente");
 		tabProd.adicColuna("Cód.t.pr.");
 		tabProd.adicColuna("Descrição da tab. de preços");
 		tabProd.adicColuna("Cód.p.pg.");
-		tabProd.adicColuna("Descrição do plano de pagto.");
+		tabProd.adicColuna("Descrição do plano de pagamento.");
 		tabProd.adicColuna("Preço");
 
-		tabProd.setTamColuna(60,0);
-		tabProd.setTamColuna(165,1);
-		tabProd.setTamColuna(60,2);
-		tabProd.setTamColuna(165,3);
-		tabProd.setTamColuna(60,4);
-		tabProd.setTamColuna(165,5);
+		tabProd.setTamColuna(70,0);
+		tabProd.setTamColuna(250,1);
+		tabProd.setTamColuna(70,2);
+		tabProd.setTamColuna(210,3);
+		tabProd.setTamColuna(70,4);
+		tabProd.setTamColuna(240,5);
 		tabProd.setTamColuna(90,6);
 
 		lcProd.addCarregaListener(this);
@@ -181,11 +181,11 @@ public class FConsulta extends FFilho implements CarregaListener {
 	    // Aba de saldos por produto 
 		if (comRef()) {
 			txtRefProd.setRequerido(true);
-			lcProd2.add(new GuardaCampo( txtRefProd, 7, 100, 80, 20, "RefProd", "RefProd", true, false, null, JTextFieldPad.TP_STRING,false),"txtRefProd");
-			lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
-			lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "CodProd", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
+			lcProd2.add(new GuardaCampo( txtRefProd, 7, 100, 80, 20, "RefProd", "Ref.prod", true, false, null, JTextFieldPad.TP_STRING,false),"txtRefProd");
+			lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
+			lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtCodProd");
 			txtRefProd.setTabelaExterna(lcProd2);
-			txtRefProd.setNomeCampo("RefProd");
+			txtRefProd.setNomeCampo("Refprod");
 			txtRefProd.setFK(true);
 			lcProd2.setReadOnly(true);
 			lcProd2.montaSql(false, "PRODUTO", "EQ");

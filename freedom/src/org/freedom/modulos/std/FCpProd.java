@@ -108,8 +108,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodGrup.setNomeCampo("CodGrup");
     txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
     txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupx");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Decrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
+    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupx");
+    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Decrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
     lcGrup.montaSql(false,"GRUPO", "EQ");
     lcGrup.setQueryCommit(false);
     lcGrup.setReadOnly(true);
@@ -120,8 +120,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
     txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
     lcPlanoPag.montaSql(false,"PLANOPAG", "FN");
     lcPlanoPag.setQueryCommit(false);
     lcPlanoPag.setReadOnly(true);
@@ -132,8 +132,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodClasCli.setNomeCampo("CodClasCli");
     txtCodClasCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescClasCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcClasCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasClix");
-    lcClasCli.add(new GuardaCampo( txtDescClasCli, 90, 100, 207, 20, "DescClasCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasClix");
+    lcClasCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasClix");
+    lcClasCli.add(new GuardaCampo( txtDescClasCli, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasClix");
     lcClasCli.montaSql(false,"CLASCLI", "VD");
     lcClasCli.setQueryCommit(false);
     lcClasCli.setReadOnly(true);
@@ -144,8 +144,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodTab.setNomeCampo("CodTab");
     txtCodTab.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTab.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTab.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
-    lcTab.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
+    lcTab.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Cód.tab,pç.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
+    lcTab.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
     lcTab.montaSql(false,"TABPRECO", "VD");
     lcTab.setQueryCommit(false);
     lcTab.setReadOnly(true);
@@ -156,8 +156,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodPlanoPag2.setNomeCampo("CodPlanoPag");
     txtCodPlanoPag2.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescPlanoPag2.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag2.add(new GuardaCampo( txtCodPlanoPag2, 7, 100, 80, 20, "CodPlanoPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag2x");
-    lcPlanoPag2.add(new GuardaCampo( txtDescPlanoPag2, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag2x");
+    lcPlanoPag2.add(new GuardaCampo( txtCodPlanoPag2, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag2x");
+    lcPlanoPag2.add(new GuardaCampo( txtDescPlanoPag2, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag2x");
     lcPlanoPag2.montaSql(false,"PLANOPAG", "FN");
     lcPlanoPag2.setQueryCommit(false);
     lcPlanoPag2.setReadOnly(true);
@@ -168,8 +168,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodClasCli2.setNomeCampo("CodClasCli");
     txtCodClasCli2.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescClasCli2.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcClasCli2.add(new GuardaCampo( txtCodClasCli2, 7, 100, 80, 20, "CodClasCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasCli2x");
-    lcClasCli2.add(new GuardaCampo( txtDescClasCli2, 90, 100, 207, 20, "DescClasCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasCli2x");
+    lcClasCli2.add(new GuardaCampo( txtCodClasCli2, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasCli2x");
+    lcClasCli2.add(new GuardaCampo( txtDescClasCli2, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasCli2x");
     lcClasCli2.montaSql(false,"CLASCLI", "VD");
     lcClasCli2.setQueryCommit(false);
     lcClasCli2.setReadOnly(true);
@@ -180,8 +180,8 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     txtCodTab2.setNomeCampo("CodTab");
     txtCodTab2.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTab2.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTab2.add(new GuardaCampo( txtCodTab2, 7, 100, 80, 20, "CodTab", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTab2x");
-    lcTab2.add(new GuardaCampo( txtDescTab2, 90, 100, 207, 20, "DescTab", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTab2x");
+    lcTab2.add(new GuardaCampo( txtCodTab2, 7, 100, 80, 20, "CodTab", "Cód.tab.pç.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTab2x");
+    lcTab2.add(new GuardaCampo( txtDescTab2, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTab2x");
     lcTab2.montaSql(false,"TABPRECO", "VD");
     lcTab2.setQueryCommit(false);
     lcTab2.setReadOnly(true);
@@ -192,11 +192,11 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     
     
     
-    cbPrecoBaseOrig = new JCheckBoxPad("Atualizar Preço Base","S","N");
+    cbPrecoBaseOrig = new JCheckBoxPad("Atualizar preço base","S","N");
     cbPrecoBaseOrig.setVlrString("N");
     cbPrecoBaseOrig.addCheckBoxListener(this);
     
-    cbPrecoBaseDest= new JCheckBoxPad("Atualizar Preço Base","S","N");
+    cbPrecoBaseDest= new JCheckBoxPad("Atualizar preço base","S","N");
     cbPrecoBaseDest.setVlrString("N");
     cbPrecoBaseDest.addCheckBoxListener(this);
     
@@ -228,37 +228,44 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     lbInc.setForeground(new Color(130,0,0));
 
     pinFiltro.adic(lbFaixa,7,0,270,20);
-    pinFiltro.adic(new JLabel("Código e descrição do grupo"),7,30,280,20);
+    pinFiltro.adic(new JLabel("Cód.grupo"),7,30,280,20);
     pinFiltro.adic(txtCodGrup,7,50,80,20);
+    pinFiltro.adic(new JLabel("Descrição do grupo"),90,30,280,20);
     pinFiltro.adic(txtDescGrup,90,50,200,20);
 
     pinOrig.adic(lbOrigem,7,0,270,20);
-    pinOrig.adic(new JLabel("Código e descrição do plano de pgto."),7,30,280,20);
+    pinOrig.adic(new JLabel("Cód.p.pag."),7,30,280,20);
     pinOrig.adic(txtCodPlanoPag,7,50,80,20);
+    pinOrig.adic(new JLabel("Descrição do plano de pgto."),90,30,280,20);
     pinOrig.adic(txtDescPlanoPag,90,50,200,20);
 
-    pinOrig.adic(new JLabel("Código e descrição da tab. de precos"),7,70,280,20);
+    pinOrig.adic(new JLabel("Cód.tab.pç."),7,70,280,20);
     pinOrig.adic(txtCodTab,7,90,80,20);
+    pinOrig.adic(new JLabel("Descrição da tabela de precos"),90,70,280,20);
     pinOrig.adic(txtDescTab,90,90,200,20);
 
-    pinOrig.adic(new JLabel("Código e descrição da clas. do cliente"),7,110,280,20);
+    pinOrig.adic(new JLabel("Cód.c.cli."),7,110,280,20);
     pinOrig.adic(txtCodClasCli,7,130,80,20);
+    pinOrig.adic(new JLabel("Descrição da classif. do cliente"),90,110,280,20);
     pinOrig.adic(txtDescClasCli,90,130,200,20);
 
     pinOrig.adic(cbPrecoBaseOrig,7,160,180,30);
     
     
     pinDest.adic(lbDestino,7,0,270,20);
-    pinDest.adic(new JLabel("Código e descrição do plano de pgto."),7,30,280,20);
+    pinDest.adic(new JLabel("Cód.p.pag."),7,30,280,20);
     pinDest.adic(txtCodPlanoPag2,7,50,80,20);
+    pinDest.adic(new JLabel("Descrição do plano de pgto."),90,30,280,20);
     pinDest.adic(txtDescPlanoPag2,90,50,200,20);
 
-    pinDest.adic(new JLabel("Código e descrição da tab. de precos"),7,70,280,20);
+    pinDest.adic(new JLabel("Cód.tab.pç."),7,70,280,20);
     pinDest.adic(txtCodTab2,7,90,80,20);
+    pinDest.adic(new JLabel("Descrição da tabela de precos"),90,70,280,20);
     pinDest.adic(txtDescTab2,90,90,200,20);
 
-    pinDest.adic(new JLabel("Código e descrição da clas. do cliente"),7,110,280,20);
+    pinDest.adic(new JLabel("Cód.c.cli"),7,110,280,20);
     pinDest.adic(txtCodClasCli2,7,130,80,20);
+    pinDest.adic(new JLabel("Descrição da classif. do cliente"),90,110,280,20);
     pinDest.adic(txtDescClasCli2,90,130,200,20);
 
     pinDest.adic(cbPrecoBaseDest,7,160,180,30);
