@@ -196,6 +196,7 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
     lcCli.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
     lcCli.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
     lcCli.add(new GuardaCampo( txtEstCli, 7, 100, 80, 20, "UfCli", "UF", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    //lcCli.setWhereAdic("ATIVOCLI='S'");
 	lcCli.montaSql(false, "CLIENTE","VD");    
 	lcCli.setQueryCommit(false);
 	lcCli.setReadOnly(true);
