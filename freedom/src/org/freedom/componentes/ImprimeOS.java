@@ -645,21 +645,21 @@ public class ImprimeOS implements ActionListener {
       ResultSet rs = null;
       
       if (Aplicativo.strOS.compareTo("windows") == 0)
-        sPortaOS = "EI.PORTAWIN";
+        sPortaOS = "PORTAWIN";
       else if (Aplicativo.strOS.compareTo("linux") == 0)
-        sPortaOS = "EI.PORTALIN";
+        sPortaOS = "PORTALIN";
       if (sPortaOS.trim().length() == 0) {
         Funcoes.mensagemInforma(cOwner,"Não foi possível obter informacões do Sistema Operacional! ! !");
         return sPorta;
       }
       if (sTipoUsoImp.equals("TO")) {
-	      sSQL = "SELECT "+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+	      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
 			"WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
 			"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
 			"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
       }
       else {
-	      sSQL = "SELECT "+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+	      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
 			"WHERE EI.CODEST=? AND EI.TIPOUSOIMP='"+sTipoUsoImp+"' AND "+
 			"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
 			"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
