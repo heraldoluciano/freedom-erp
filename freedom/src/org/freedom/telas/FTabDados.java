@@ -36,10 +36,11 @@ public class FTabDados extends FDados implements KeyListener{
     tpn.addKeyListener(this);
     addKeyListener(this);
   }
-  public void adicTab(String tit, JPanel pn) {
+  public JTabbedPane adicTab(String tit, JPanel pn) {
     tpn.add(tit,pn);
     pn.addKeyListener(this);
     pnCliente.add(tpn, BorderLayout.CENTER);
+    return tpn;
   }
   public void keyPressed(KeyEvent kevt) {
     if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
