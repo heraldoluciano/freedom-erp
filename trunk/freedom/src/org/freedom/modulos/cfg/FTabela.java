@@ -29,15 +29,16 @@ import org.freedom.acao.InsertListener;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
-  private JTextFieldPad txtCodTb = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTb = new JTextFieldPad(50);
-  private JTextFieldPad txtCodItTb = new JTextFieldPad(5);
-  private JTextFieldPad txtDescItTb = new JTextFieldPad(50);
+  private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescTb = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodItTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescItTb = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JCheckBoxPad cbPadrao = null;  
   public FTabela() {
     setTitulo("Cadastro de Tabelas auxiliares");
@@ -47,8 +48,8 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
        
-    adicCampo(txtCodTb, 7, 20, 70, 20,"CodTb","Cód.tab.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTb, 80, 20, 380, 20, "DescTb","Descrição da tabela",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodTb, 7, 20, 70, 20,"CodTb","Cód.tab.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTb, 80, 20, 380, 20, "DescTb","Descrição da tabela", ListaCampos.DB_SI, true);
 
     setListaCampos( true, "TABELA", "SG");
     lcCampos.setQueryInsert(false);
@@ -61,9 +62,9 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
 	cbPadrao = new JCheckBoxPad("Padrão","S","N");
 	cbPadrao.setVlrString("N");
 
-    adicCampo(txtCodItTb, 7, 20, 70, 20,"CodItTb","Item",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescItTb, 80, 20, 280, 20,"DescItTb","Descrição do item",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-	adicDB(cbPadrao, 365, 20, 90, 20, "PadraoIttb", "",JTextFieldPad.TP_STRING,true);    
+    adicCampo(txtCodItTb, 7, 20, 70, 20,"CodItTb","Item", ListaCampos.DB_PK, true);
+    adicCampo(txtDescItTb, 80, 20, 280, 20,"DescItTb","Descrição do item", ListaCampos.DB_SI, true);
+	adicDB(cbPadrao, 365, 20, 90, 20, "PadraoIttb", "", true);    
     
     setListaCampos( true, "ITTABELA", "SG");
     lcCampos.setQueryInsert(false);

@@ -78,8 +78,8 @@ public class FTarefa extends FDados implements ActionListener {
     adicCampo(txtCodTarefa, 7, 20, 50, 20,"CodTarefa","Cód.tar.",ListaCampos.DB_PK,true);
     adicCampo(txtDescTarefa, 60, 20, 250, 20,"DescTarefa","Descrição da tarefa",ListaCampos.DB_FK,true);
 	adicCampo(txtIDObj, 7, 65, 50, 20,"IDObj","Id.obj.",ListaCampos.DB_PK,true);
-	adicDescFK(txtDescObj, 60, 65, 250, 20,"DescObj","Descrição do objeto",JTextFieldPad.TP_STRING,50,0);
-	adicDB(cbTipo, 7, 105, 230, 25, "TipoTarefa", "Tipo",JTextFieldPad.TP_STRING,true);
+	adicDescFK(txtDescObj, 60, 65, 250, 20,"DescObj","Descrição do objeto");
+	adicDB(cbTipo, 7, 105, 230, 25, "TipoTarefa", "Tipo", true);
     setListaCampos( true, "TAREFA", "SG");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

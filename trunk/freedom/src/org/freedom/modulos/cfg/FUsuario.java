@@ -120,15 +120,15 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     adicCampo(txtPNomeUsu, 7, 60, 180, 20, "PNomeUsu", "Primeiro nome", ListaCampos.DB_SI, true);
     adicCampo(txtUNomeUsu, 190, 60, 250, 20, "UNomeUsu", "Último nome", ListaCampos.DB_SI, true);
     adicCampo(txtIDGrpUsu, 7, 100, 70, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, false);
-    adicDescFK(txtDescGrup, 80, 100, 216, 20, "NOMEGRPUSU", "Descrição do grupo do usuário", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtDescGrup, 80, 100, 216, 20, "NOMEGRPUSU", "Descrição do grupo do usuário");
     adic(new JLabel("Senha"),300,80,70,20);
     adic(txpSenha,300,100,70,20);
     adic(new JLabel("Confirma"),373,80,70,20);
     adic(txpConfirma,373,100,70,20);
     adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
-    adicDescFK(txtDescCC, 120, 140, 322, 20, "DescCC", "Descrição do centro de custo", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtDescCC, 120, 140, 322, 20, "DescCC", "Descrição do centro de custo");
     
-    adicDBLiv(txaComentUsu, "ComentUsu", "Comentário",JTextFieldPad.TP_STRING, false);
+    adicDBLiv(txaComentUsu, "ComentUsu", "Comentário", false);
     adic(new JLabel("Comentário"),7,160,100,20);
     adic(spnObs,7,180,435,60);
     adic(new JLabel("Filiais disponíveis:"),7,240,120,20);
@@ -137,15 +137,15 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     adic(btDelEmp,210,315,30,30);
     adic(new JLabel("Acesso:"),247,240,158,20);
     adic(spnEmp,247,260,195,100);
-    adicDB(cbBaixoCusto, 7, 360, 225, 20, "BaixoCustoUsu", "", JTextFieldPad.TP_STRING, false);
-    adicDB(cbAbreGaveta, 7, 380, 225, 20, "AbreGavetaUsu", "", JTextFieldPad.TP_STRING, false);
-    adicDB(cbAlmoxarife, 7, 400, 225, 20, "AlmoxarifeUsu", "", JTextFieldPad.TP_STRING, false);
+    adicDB(cbBaixoCusto, 7, 360, 225, 20, "BaixoCustoUsu", "", false);
+    adicDB(cbAbreGaveta, 7, 380, 225, 20, "AbreGavetaUsu", "", false);
+    adicDB(cbAlmoxarife, 7, 400, 225, 20, "AlmoxarifeUsu", "", false);
     
     txtCodAlmox.setRequerido(cbAlmoxarife.isSelected());
   	txtCodAlmox.setAtivo(cbAlmoxarife.isSelected());
   	
     adicCampo(txtCodAlmox, 7, 440, 80, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false);
-    adicDescFK(txtDescAlmox, 90, 440, 170, 20, "DescAlmox", "Descrição do almoxarifado", JTextFieldPad.TP_STRING, 50, 0);
+    adicDescFK(txtDescAlmox, 90, 440, 170, 20, "DescAlmox", "Descrição do almoxarifado");
 
     lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, false));
     lcAlmox.add(new GuardaCampo(txtDescAlmox,"DescAlmox", "Descrição do almoxarifado",ListaCampos.DB_SI, false));
@@ -163,7 +163,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     vAprovaSolicitacaoVal.add("TD");
 
     rgAprovaSolicitacao = new JRadioGroup(3, 1, vAprovaSolicitacaoLab, vAprovaSolicitacaoVal);
-    adicDB(rgAprovaSolicitacao, 263, 380, 180, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação" ,JTextFieldPad.TP_STRING, false);
+    adicDB(rgAprovaSolicitacao, 263, 380, 180, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false);
     
     setListaCampos( false, "USUARIO", "SG");
     lcCampos.addCarregaListener(this);
