@@ -37,6 +37,7 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
   private Painel pinDet = new Painel();
   private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescTb = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtSiglaTb = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtCodItTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescItTb = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JCheckBoxPad cbPadrao = null;  
@@ -49,8 +50,9 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
     setPainel( pinCab, pnCliCab);
        
     adicCampo(txtCodTb, 7, 20, 70, 20,"CodTb","Cód.tab.", ListaCampos.DB_PK, true);
-    adicCampo(txtDescTb, 80, 20, 380, 20, "DescTb","Descrição da tabela", ListaCampos.DB_SI, true);
-
+    adicCampo(txtDescTb, 80, 20, 297, 20, "DescTb","Descrição da tabela", ListaCampos.DB_SI, true);
+    adicCampo(txtSiglaTb, 380, 20, 80, 20, "SiglaTb","Sigla", ListaCampos.DB_SI, true);
+  
     setListaCampos( true, "TABELA", "SG");
     lcCampos.setQueryInsert(false);
     setAltDet(60);
