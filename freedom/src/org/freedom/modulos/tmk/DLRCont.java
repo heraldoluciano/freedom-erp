@@ -62,7 +62,8 @@ public class DLRCont extends FFDialogo {
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabelPad lbSetor = new JLabelPad("Código e descrição do setor");
+  private JLabelPad lbSetor = new JLabelPad("Cód.setor");
+  private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcSetor = new ListaCampos(this);
@@ -117,6 +118,7 @@ public class DLRCont extends FFDialogo {
     adic(rgModo,7,220,433,30);
     adic(lbSetor,7,255,250,20);
     adic(txtCodSetor,7,275,80,20);
+    adic(lbDescSetor,90,255,250,20);
     adic(txtDescSetor,90,275,350,20);
     
 	lcSetor.setConexao(cn);

@@ -54,7 +54,7 @@ public class FSuprimento extends FFDialogo {
 	public FSuprimento() {
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Suprimento de caixa");
-		setAtribos(345,255);
+		setAtribos(345,275);
 		
 		txtData.setTipo(JTextFieldPad.TP_DATE,10,0);		
 		txtValor.setTipo(JTextFieldPad.TP_DECIMAL,10,2);
