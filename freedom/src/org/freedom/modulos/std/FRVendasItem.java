@@ -99,8 +99,8 @@ public class FRVendasItem extends FRelatorio {
 		lcMarca.setReadOnly(true);
 		lcMarca.montaSql(false, "MARCA", "EQ");
  
-		lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
-		lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
+		lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
 		txtCodVend.setTabelaExterna(lcVend);
 		txtCodVend.setNomeCampo("CodVend");
 		txtCodVend.setFK(true);

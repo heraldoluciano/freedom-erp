@@ -113,7 +113,7 @@ public class FRComissoes extends FRelatorio {
   			return;
   		}
   		else if (txtCodVend.getVlrString().equals("")) {
-  			Funcoes.mensagemInforma(this,"Código do representante é requerido!");
+  			Funcoes.mensagemInforma(this,"Código do comissionado é requerido!");
   			return;
   		}
     

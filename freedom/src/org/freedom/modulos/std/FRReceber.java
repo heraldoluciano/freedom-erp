@@ -54,8 +54,8 @@ public class FRReceber extends FRelatorio {
   private JLabelPad lbDescCodCli = new JLabelPad("Razão social do cliente");
   private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescCodSetor = new JLabelPad("Descrição do setor");
-  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
-  private JLabelPad lbDescCodVend = new JLabelPad("Nome do representante");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
+  private JLabelPad lbDescCodVend = new JLabelPad("Nome do comissionado");
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
   private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");
   

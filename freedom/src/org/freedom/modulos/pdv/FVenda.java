@@ -226,7 +226,7 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
 	  lcVenda.add(new GuardaCampo(txtDtEmitVenda,"DtEmitVenda","Emissão",ListaCampos.DB_SI,true));
 	  lcVenda.add(new GuardaCampo(txtCodCli,"CodCli","Cód.cli.",ListaCampos.DB_FK,true));
 	  lcVenda.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_FK,true));
-	  lcVenda.add(new GuardaCampo(txtCodVend,"CodVend","Cód.repr.",ListaCampos.DB_SI,true));
+	  lcVenda.add(new GuardaCampo(txtCodVend,"CodVend","Cód.comiss.",ListaCampos.DB_SI,true));
 	  lcVenda.montaSql(true, "VENDA", "VD");
 	  txtCodVenda.setListaCampos(lcVenda);
 	  txtCodVenda.setPK(true);

@@ -101,9 +101,9 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
 		adic(txtCodCli,7,65,80,20);
 		adic(new JLabelPad("Descrição do cliente"),90,45,280,20);
 		adic(txtDescCli,90,65,200,20);
-		adic(new JLabelPad("Cód.repr."),7,85,280,20);
+		adic(new JLabelPad("Cód.comiss."),7,85,280,20);
 		adic(txtCodVend,7,105,80,20);
-		adic(new JLabelPad("Nome do representante"),90,85,280,20);
+		adic(new JLabelPad("Nome do comissionado"),90,85,280,20);
 		adic(txtDescVend,90,105,200,20);
 		adic(new JLabelPad("Cód.tp.exp."),7,125,280,20);
 		adic(txtCodTipoExp,7,145,80,20);

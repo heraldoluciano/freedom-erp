@@ -218,7 +218,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
     lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
     lcCli.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_SI,false));
-    lcCli.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_SI,false));
+    lcCli.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_SI,false));
     lcCli.add(new GuardaCampo( txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,false));
     //lcCli.setWhereAdic("ATIVOCLI='S'");
     lcCli.montaSql(false, "CLIENTE", "VD");    
@@ -477,8 +477,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     adicCampo(txtCodPlanoPag, 290, 60, 77, 20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_FK,txtDescPlanoPag,true);
     adicDescFK(txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pag.");
     setPainel(pinCabComis);
-    adicCampo(txtCodVend, 7, 20, 80, 20,"CodVend","Cód.repr.",ListaCampos.DB_FK,txtDescVend,true);
-    adicDescFK(txtDescVend, 90, 20, 197, 20, "NomeVend", "Nome do representante");
+    adicCampo(txtCodVend, 7, 20, 80, 20,"CodVend","Cód.comiss.",ListaCampos.DB_FK,txtDescVend,true);
+    adicDescFK(txtDescVend, 90, 20, 197, 20, "NomeVend", "Nome do comissionado");
     if (bPrefs[4]) {
       adicCampo(txtCodClComis, 290, 20, 80, 20,"CodClComis","Cód.c.comis.",ListaCampos.DB_FK,txtDescClComis,true);
       adicDescFK(txtDescClComis,373, 20, 260, 20, "DescClComis", "Descrição da class. de comis.");
