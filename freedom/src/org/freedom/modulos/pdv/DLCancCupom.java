@@ -61,11 +61,11 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private Painel pinCab = new Painel(400,90);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JPanel pnBt = new JPanel(new GridLayout(1,2));	
-	private JTextFieldPad txtVenda = new JTextFieldPad();
-	private JTextFieldFK txtNota = new JTextFieldFK();
-	private JTextFieldFK txtSerie = new JTextFieldFK();
-	private JTextFieldFK txtData = new JTextFieldFK();
-	private JTextFieldFK txtValor = new JTextFieldFK();
+	private JTextFieldPad txtVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtNota = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldFK txtValor = new JTextFieldFK(JTextFieldPad.TP_DOUBLE,10,2);
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private JButton btCanc = new JButton(Icone.novo("btExcluir.gif"));
@@ -81,14 +81,8 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 		setTitulo("Cancela Venda");
 		setAtribos(100,150,710,300);
 		
-		txtVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 		txtVenda.setPK(true);
 		
-		txtNota.setTipo(JTextFieldPad.TP_STRING,10,0);
-		txtSerie.setTipo(JTextFieldPad.TP_STRING,10,0);
-		txtData.setTipo(JTextFieldPad.TP_DATE,10,0);	
-		txtValor.setTipo(JTextFieldPad.TP_DOUBLE,10,2);
-				
 		btCanc.setPreferredSize(new Dimension(30,30));
 		btCanc.setToolTipText("Cancelar Agora.");
 		btCanc.addActionListener(this);
@@ -99,11 +93,11 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 		
 		cbInteira.setVlrString("N");		
 		
-		lcVenda.add(new GuardaCampo( txtVenda, 7, 25, 80, 20, "CodVenda", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtVenda");
-		lcVenda.add(new GuardaCampo( txtNota, 94, 25, 80, 20, "DocVenda", "Nota", false, false, null, JTextFieldPad.TP_STRING,false),"txtNota");
-        lcVenda.add(new GuardaCampo( txtSerie, 181,25,30,20, "Serie", "Série", false,false,null, JTextFieldPad.TP_STRING,false),"txtSerie");
-		lcVenda.add(new GuardaCampo( txtData, 208,25,80,20, "DtEmitVenda", "Data", false,false,null, JTextFieldPad.TP_DATE,false),"txtData");   
-		lcVenda.add(new GuardaCampo( txtValor, 295,25,120,20, "VlrLiqVenda", "Valor", false,false,null, JTextFieldPad.TP_DOUBLE,false),"txtValor");
+		lcVenda.add(new GuardaCampo( txtVenda, "CodVenda", "Código", ListaCampos.DB_PK, false));
+		lcVenda.add(new GuardaCampo( txtNota, "DocVenda", "Nota", ListaCampos.DB_SI, false));
+        lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
+		lcVenda.add(new GuardaCampo( txtData, "DtEmitVenda", "Data", ListaCampos.DB_SI, false));   
+		lcVenda.add(new GuardaCampo( txtValor, "VlrLiqVenda", "Valor", ListaCampos.DB_SI, false));
        	
        	txtVenda.setListaCampos(lcVenda);
        	txtVenda.setNomeCampo("CodVenda");

@@ -60,9 +60,9 @@ public class FPrefere extends FTabDados {
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
 		adicCampo(txtCodTipoMov,10,30,77,20,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_FK,true);
-		adicDescFK(txtDescTipoMov,90,30,230,20,"DescTipoMov","Descrição do tipo de movimento",JTextFieldPad.TP_STRING,50,0);
+		adicDescFK(txtDescTipoMov,90,30,230,20,"DescTipoMov","Descrição do tipo de movimento");
 		adicCampo(txtCodPlanoPag,10,70,77,20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_FK,true);
-		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","Descrição do plano de pagamento",JTextFieldPad.TP_STRING,50,0);
+		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","Descrição do plano de pagamento");
 		setListaCampos(false, "PREFERE4", "SG");
 		
 		nav.setAtivo(0,false);

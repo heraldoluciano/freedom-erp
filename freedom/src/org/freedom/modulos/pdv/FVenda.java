@@ -100,10 +100,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    private JButtonPad btF9 = new JButtonPad();
    private JButtonPad btF10 = new JButtonPad();
 
-   private JTextFieldPad txtCodCli = new JTextFieldPad();
-   private JTextFieldFK txtRazCli = new JTextFieldFK();  
-   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
+   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);  
+   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
    private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
    private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
    private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -115,18 +115,18 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
    private JTextFieldPad txtQtdade = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
    private JTextFieldPad txtPreco = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-   private JTextFieldPad txtBaseCalc = new JTextFieldPad();
-   private JTextFieldPad txtAliqIcms = new JTextFieldPad();
-   private JTextFieldPad txtTotalItem = new JTextFieldPad();
-   private JTextFieldPad txtValorIcms = new JTextFieldPad();
-   private JTextFieldPad txtBaseCalc1 = new JTextFieldPad();
-   private JTextFieldPad txtValorIcms1 = new JTextFieldPad();
-   private JTextFieldPad txtTotalCupom = new JTextFieldPad();
+   private JTextFieldPad txtBaseCalc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtAliqIcms = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,7,2);
+   private JTextFieldPad txtTotalItem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtValorIcms = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtBaseCalc1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtValorIcms1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtTotalCupom = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
    private JTextFieldPad txtNumeroCupom = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
    private JTextFieldPad txtSerieCupom = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
-   private JTextFieldPad txtQtdadeItem = new JTextFieldPad();
-   private JTextFieldPad txtValorTotalItem = new JTextFieldPad();
-   private JTextFieldPad txtValorTotalCupom = new JTextFieldPad();
+   private JTextFieldPad txtQtdadeItem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtValorTotalItem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
+   private JTextFieldPad txtValorTotalCupom = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
    private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
    private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 
@@ -179,10 +179,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
       fntTotalItem = new Font(lValorTotalItem.getFont().getFontName(),lValorTotalItem.getFont().getStyle(),26);
       fntTotalCupom = new Font(lValorTotalCupom.getFont().getFontName(),lValorTotalCupom.getFont().getStyle(),26);
      
-	  txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	  txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-  	  lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-	  lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão Social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+  	  lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+	  lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão Social do cliente", ListaCampos.DB_SI, false));
 	  lcCliente.montaSql(false, "CLIENTE", "VD");
 	  lcCliente.setReadOnly(true);
 	  txtCodCli.setTabelaExterna(lcCliente);
@@ -195,10 +193,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  lcClFiscal.setReadOnly(true);
 	  txtCodFisc.setTabelaExterna(lcClFiscal);
 
-	  txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	  txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-	  lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag");
-	  lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag");
+	  lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+	  lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 	  lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 	  lcPlanoPag.setReadOnly(true);
 	  txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
@@ -250,26 +246,16 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  txtCodProd1.setSoLeitura(true);
 	  txtDescProd.setSoLeitura(true);
 	  txtPreco.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
-	  txtBaseCalc.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtBaseCalc.setSoLeitura(true);
-	  txtAliqIcms.setTipo(JTextFieldPad.TP_DECIMAL,7,2);
 	  txtAliqIcms.setSoLeitura(true);
-  	  txtTotalItem.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtTotalItem.setSoLeitura(true);
-	  txtValorIcms.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtValorIcms.setSoLeitura(true);
 	  
-	  txtBaseCalc1.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
   	  txtBaseCalc1.setSoLeitura(true);
-	  txtValorIcms1.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtValorIcms1.setSoLeitura(true);
-	  txtTotalCupom.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtTotalCupom.setSoLeitura(true);
-	  txtQtdadeItem.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtQtdadeItem.setSoLeitura(true);
-	  txtValorTotalItem.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtValorTotalItem.setSoLeitura(true);
-	  txtValorTotalCupom.setTipo(JTextFieldPad.TP_DECIMAL,12,2);
 	  txtValorTotalCupom.setSoLeitura(true);
 	  
 	

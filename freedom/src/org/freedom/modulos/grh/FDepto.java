@@ -20,7 +20,7 @@
  * 
  */
 
-package org.freedom.modulos.grh;
+package org.freedom.modulos.grh; 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
