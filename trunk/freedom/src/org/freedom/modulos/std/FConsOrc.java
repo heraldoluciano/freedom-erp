@@ -39,6 +39,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -91,6 +92,9 @@ public class FConsOrc extends FFilho implements ActionListener {
     setTitulo("Pesquisa Orçamentos");
     setAtribos(10, 10, 514, 480);
 
+    System.out.println("É esse mesmo");
+
+    
     txtDtIni.setRequerido(true);
     txtDtFim.setRequerido(true);
     txtCodCli.setTabelaExterna(lcCli);
@@ -173,29 +177,35 @@ public class FConsOrc extends FFilho implements ActionListener {
     txtDtIni.setVlrDate(new Date());
     txtDtFim.setVlrDate(new Date());
 
-    tab.adicColuna("Status");
+    tab.adicColuna("St");
     tab.adicColuna("Orc.");
-    tab.adicColuna("Cód.");
-    tab.adicColuna("e nome do cliente");
+    tab.adicColuna("Ped.");
+    tab.adicColuna("NF");
+    tab.adicColuna("Cód.Cli.");
+    tab.adicColuna("Nome do cliente");
 
     tab.adicColuna("Data");
     tab.adicColuna("Validade");
-    tab.adicColuna("Autorização");
-    tab.adicColuna("Valor do Item");
+    tab.adicColuna("Autoriz.");
+    tab.adicColuna("Vlr.It.Orc.");
     tab.adicColuna("Cidade");
     tab.adicColuna("Fone");
 
-    tab.setTamColuna(50, 0);
-    tab.setTamColuna(50, 1);
-    tab.setTamColuna(50, 2);
-    tab.setTamColuna(180, 3);
+    tab.setTamColuna(30, 0);
+    tab.setTamColuna(40, 1);
+    tab.setTamColuna(40, 2);
+    tab.setTamColuna(40, 3);
+    
+    tab.setTamColuna(50, 4);
+    tab.setTamColuna(180, 5);
 
-    tab.setTamColuna(90, 5);
     tab.setTamColuna(90, 6);
     tab.setTamColuna(90, 7);
-    tab.setTamColuna(100, 8);
-    tab.setTamColuna(100, 9);
-    tab.setTamColuna(90, 10);
+    tab.setTamColuna(90, 8);
+    tab.setTamColuna(90, 9);
+    tab.setTamColuna(100, 10);
+    tab.setTamColuna(100, 11);
+    tab.setTamColuna(90, 12);
 
     btBusca.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -275,12 +285,17 @@ public class FConsOrc extends FFilho implements ActionListener {
         sWhere += " AND IT.VLRLIQITORC >= " + txtValorMenor.getVlrBigDecimal();
         sWhere += " AND IT.VLRLIQITORC<= " + txtValorMaior.getVlrBigDecimal();
       }
-    }
+    } 
+
+    String sSQLFatura = "(SELECT VO.CODVENDA FROM VDVENDAORC VO WHERE VO.CODEMPOR=IT.CODEMP " +
+						"AND VO.CODFILIALOR=IT.CODEMP AND VO.TIPOORC=IT.TIPOORC) ";
 
     String sSQL = "SELECT O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC,"
         + "O.CODCLI,CL.NOMECLI,CL.FONECLI , IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,"
-        + "CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC FROM  VDORCAMENTO O,VDCLIENTE CL,"
-        + "VDITORCAMENTO IT WHERE O.CODEMP=? "
+        + "CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC," +sSQLFatura 
+        + "FROM  VDORCAMENTO O,VDCLIENTE CL,"
+        + "VDITORCAMENTO IT " 
+		+ "WHERE O.CODEMP=? "
         + "AND O.CODFILIAL=? AND O.TIPOORC='O' "
         + "AND IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL "
         + "AND IT.TIPOORC=O.TIPOORC "
@@ -309,14 +324,18 @@ public class FConsOrc extends FFilho implements ActionListener {
         tab.adicLinha();
         tab.setValor(rs.getString(1) + "", iLin, 0);
         tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
-        tab.setValor(rs.getInt(5) + "", iLin, 2);
-        tab.setValor(rs.getString(6) != null ? rs.getString(6) : "", iLin, 3);
-        tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(3)), iLin, 4);
-        tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(4)), iLin, 5);
-        tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12) != null ? rs.getString(12) : ""), iLin, 7);
-        tab.setValor(rs.getString(9) != null ? rs.getString(9) : "", iLin, 6);
-        tab.setValor(rs.getString(10) != null ? rs.getString(10) : "", iLin, 8);
-        tab.setValor(rs.getString(7) != null ? rs.getString(7) : "", iLin, 9);
+
+        tab.setValor(rs.getString(13)==null?"-":rs.getString(13)+"",iLin,2);
+        tab.setValor("NF.",iLin,3);
+        
+        tab.setValor(rs.getInt(5) + "", iLin, 4);
+        tab.setValor(rs.getString(6) != null ? rs.getString(6) : "", iLin, 5);
+        tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(3)), iLin, 6);
+        tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(4)), iLin, 7);
+        tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12) != null ? rs.getString(12) : ""), iLin, 9);
+        tab.setValor(rs.getString(9) != null ? rs.getString(9) : "", iLin, 8);
+        tab.setValor(rs.getString(10) != null ? rs.getString(10) : "", iLin, 10);
+        tab.setValor(rs.getString(7) != null ? rs.getString(7) : "", iLin, 11);
 
         iLin++;
       }
@@ -336,6 +355,12 @@ public class FConsOrc extends FFilho implements ActionListener {
     ImprimeOS imp = new ImprimeOS("", con);
     int linPag = imp.verifLinPag() - 1;
     BigDecimal bTotalLiq = new BigDecimal("0");
+    boolean bImpFat = false;
+    
+    bImpFat = Funcoes.mensagemConfirma(this,"Deseja imprimir informações de faturamento do orçamento?")==0?true:false;
+    
+    
+    
     imp.montaCab();
     imp.setTitulo("Relatório de Orçamentos");
 
