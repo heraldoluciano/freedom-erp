@@ -331,8 +331,26 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     else if (comp instanceof JTextAreaPad)
       ((JTextAreaPad) comp).setListaCampos(lcSeq);
     lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+    
   }
-
+  public void adicDBLiv(Component comp,int X,int Y,int Larg,int Alt, String nome, String label, boolean req) { 
+    comp.setName(nome);
+    comp.addKeyListener(this);
+    comp.addKeyListener(navSeq);
+    if (comp instanceof JRadioGroup)
+      ((JRadioGroup) comp).setListaCampos(lcSeq);
+    else if (comp instanceof JCheckBoxPad)
+      ((JCheckBoxPad) comp).setListaCampos(lcSeq);
+    else if (comp instanceof JTextAreaPad) {
+      ((JTextAreaPad) comp).setListaCampos(lcSeq);
+      comp.setName("txp"+nome);
+      adic(new JLabelPad(label), X, Y-20, Larg, 20);
+      adic(new JScrollPane(comp), X, Y, Larg, Alt);
+    }
+    lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
+    
+        
+  }
 // COMENTADO AQUI  
   /*public void adicDBLiv( Component comp, String nome, String label, int tipo, boolean req) { 
     comp.setName(nome);
