@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
@@ -55,7 +55,7 @@ import org.freedom.telas.FTabDados;
 public class FConveniado extends FTabDados implements PostListener { 
   private Painel pinGeral = new Painel(650,520);
   private Painel pinInfo = new Painel(650,520);
-  private JPanel pnAtrib = new JPanel(new BorderLayout());
+  private JPanelPad pnAtrib = new JPanelPad(new BorderLayout());
   private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNomeConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtRgConv = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
