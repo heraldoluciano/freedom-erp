@@ -43,16 +43,16 @@ import org.freedom.telas.FDetalhe;
 public class FRomaneio extends FDetalhe implements InsertListener,ActionListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
-  private JTextFieldPad txtCodRoma = new JTextFieldPad(8);
-  private JTextFieldPad txtDataRoma = new JTextFieldPad(40);
-  private JTextFieldPad txtDtSaidaRoma = new JTextFieldPad(8);
-  private JTextFieldPad txtDtPrevRoma = new JTextFieldPad(20);
-  private JTextFieldPad txtDtEntregaRoma = new JTextFieldPad(10);
-  private JTextFieldPad txtStatusRoma = new JTextFieldPad(10);
-  private JTextFieldPad txtCodItRoma = new JTextFieldPad(8);
-  private JTextFieldPad txtCodVenda = new JTextFieldPad(8);
-  private JTextFieldPad txtDtPrevItRoma = new JTextFieldPad(8);
-  private JTextFieldFK txtDescVenda = new JTextFieldFK();
+  private JTextFieldPad txtCodRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDataRoma = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtDtSaidaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE);
+  private JTextFieldPad txtDtPrevRoma = new JTextFieldPad(JTextFieldPad.TP_DATE);
+  private JTextFieldPad txtDtEntregaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE);
+  private JTextFieldPad txtStatusRoma = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldPad txtCodItRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDtPrevItRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescVenda = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
   private ListaCampos lcVenda = new ListaCampos(this,"VA");
   public FRomaneio() {
     setTitulo("Cadastro de Romaneio");
@@ -62,22 +62,21 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     
-    txtCodVenda.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescVenda.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.venda", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVendax");
-    lcVenda.add(new GuardaCampo( txtDescVenda, 90, 100, 207, 20, "VlrLiqVenda", "Valor da venda", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVendax");
+
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda", ListaCampos.DB_PK,true));
+    lcVenda.add(new GuardaCampo( txtDescVenda, "VlrLiqVenda", "Valor da venda", ListaCampos.DB_SI,false));
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setQueryCommit(false);
     lcVenda.setReadOnly(true);
     txtCodVenda.setTabelaExterna(lcVenda);
     txtDescVenda.setListaCampos(lcVenda);
     
-    adicCampo(txtCodRoma, 7, 20, 80, 20,"CodRoma","Cód.roma.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDataRoma, 90, 20, 97, 20,"DataRoma","Data",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
-    adicCampo(txtDtSaidaRoma, 190, 20, 97, 20,"DtSaidaRoma","Data de sáida",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
-    adicCampo(txtDtPrevRoma, 290, 20, 97, 20,"DtPrevRoma","Data prevista",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
-    adicCampo(txtDtEntregaRoma, 390, 20, 97, 20,"DtEntregaRoma","Data de entrega",JTextFieldPad.TP_DATE,10,0,false,false,null,false);
-    adicCampoInvisivel(txtStatusRoma, "StatusRoma","Status",JTextFieldPad.TP_STRING,2,0,false,false,null,true);
+    adicCampo(txtCodRoma, 7, 20, 80, 20,"CodRoma","Cód.roma.",ListaCampos.DB_PK,true);
+    adicCampo(txtDataRoma, 90, 20, 97, 20,"DataRoma","Data",ListaCampos.DB_SI,true);
+    adicCampo(txtDtSaidaRoma, 190, 20, 97, 20,"DtSaidaRoma","Data de sáida",ListaCampos.DB_SI,true);
+    adicCampo(txtDtPrevRoma, 290, 20, 97, 20,"DtPrevRoma","Data prevista",ListaCampos.DB_SI,true);
+    adicCampo(txtDtEntregaRoma, 390, 20, 97, 20,"DtEntregaRoma","Data de entrega",ListaCampos.DB_SI,false);
+    adicCampoInvisivel(txtStatusRoma, "StatusRoma","Status",ListaCampos.DB_SI,false);
     setListaCampos( true, "ROMANEIO", "VD");
     lcCampos.setQueryInsert(false);
     setAltDet(60);
@@ -86,10 +85,10 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     setListaCampos(lcDet);
     setNavegador(navRod);
 
-    adicCampo(txtCodItRoma, 7, 20, 50, 20,"CodItRoma","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtCodVenda, 60, 20, 77, 20,"CodVenda","Cód.venda",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescVenda,true);
-    adicDescFK(txtDescVenda, 140, 20, 147, 20, "VlrLiqVenda", "Valor da venda", JTextFieldPad.TP_DECIMAL, 15, 3);
-    adicCampo(txtDtPrevItRoma, 290, 20, 100, 20,"DtPrevItRoma","Data de previsão",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
+    adicCampo(txtCodItRoma, 7, 20, 50, 20,"CodItRoma","Item",ListaCampos.DB_PK,true);
+    adicCampo(txtCodVenda, 60, 20, 77, 20,"CodVenda","Cód.venda",ListaCampos.DB_PK,true);
+    adicDescFK(txtDescVenda, 140, 20, 147, 20, "VlrLiqVenda", "Valor da venda");
+    adicCampo(txtDtPrevItRoma, 290, 20, 100, 20,"DtPrevItRoma","Data de previsão",ListaCampos.DB_SI,true);
     setListaCampos( true, "ITROMANEIO", "VD");
     lcCampos.setQueryInsert(false);
     montaTab();
