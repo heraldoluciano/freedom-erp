@@ -75,8 +75,8 @@ public class FRPagar extends FRelatorio {
     txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtRazFor.setTipo(JTextFieldPad.TP_STRING,40,0);
 //    txtRazFor.setAtivo(false);
-    lcFor.add(new GuardaCampo( txtCodFor, 7,55, 67, 20, "CodFor", "Cód.Forn.", true, false, null , JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-    lcFor.add(new GuardaCampo( txtRazFor, 78, 55, 150, 20, "RazFor", "Razão Social", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
+    lcFor.add(new GuardaCampo( txtCodFor, 7,55, 67, 20, "CodFor", "Cód.forn.", true, false, null , JTextFieldPad.TP_INTEGER,false),"txtCodFor");
+    lcFor.add(new GuardaCampo( txtRazFor, 78, 55, 150, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
     lcFor.montaSql(false, "FORNECED", "CP");
     lcFor.setReadOnly(true);
     txtCodFor.setTabelaExterna(lcFor);
@@ -88,9 +88,9 @@ public class FRPagar extends FRelatorio {
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
 
-    vLabs.addElement("Contas a Pagar");
-    vLabs.addElement("Contas Pagas");
-    vLabs.addElement("Ambas as Contas");
+    vLabs.addElement("Contas a pagar");
+    vLabs.addElement("Contas pagas");
+    vLabs.addElement("Ambas as contas");
     vVals.addElement("N");
     vVals.addElement("P");
     vVals.addElement("A");
@@ -105,8 +105,9 @@ public class FRPagar extends FRelatorio {
     adic(txtDataini,32,30,97,20);
     adic(new JLabel("Até:"),135,30,30,20);
     adic(txtDatafim,165,30,97,20);
-    adic(new JLabel("Código e descrição do fornecedor"),7,55,300,20);
+    adic(new JLabel("Cód.for."),7,55,300,20);
     adic(txtCodFor,7,75,60,20);
+    adic(new JLabel("Razão social do fornecedor"),70,55,300,20);
     adic(txtRazFor,70,75,190,20);
     adic(cbFiltro,7,107,253,70);
     adic(cbObs,7,180,253,20);

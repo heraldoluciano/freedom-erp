@@ -50,9 +50,12 @@ public class FRReceber extends FRelatorio {
   private JTextFieldFK txtDescSetor = new JTextFieldFK();
   private JTextFieldPad txtCodVend = new JTextFieldPad();
   private JTextFieldFK txtNomeVend = new JTextFieldFK();
-  private JLabel lbCodCli = new JLabel("Código e razão social do cliente");
-  private JLabel lbCodSetor = new JLabel("Código e descrição do setor");
-  private JLabel lbCodVend = new JLabel("Código e nome do vendedor/repr.");
+  private JLabel lbCodCli = new JLabel("Cód.cli.");
+  private JLabel lbDescCodCli = new JLabel("Razão social do cliente");
+  private JLabel lbCodSetor = new JLabel("Cód.setor");
+  private JLabel lbDescCodSetor = new JLabel("Descrição do setor");
+  private JLabel lbCodVend = new JLabel("Cód.repr.");
+  private JLabel lbDescCodVend = new JLabel("Nome do representante");
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
   private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");
   
@@ -72,8 +75,8 @@ public class FRReceber extends FRelatorio {
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
 
-	lcCli.add(new GuardaCampo( txtCodCli, 7,55, 67, 20, "CodCli", "Cód.Cli.", true, false, null , JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-	lcCli.add(new GuardaCampo( txtRazCli, 78, 55, 150, 20, "RazCli", "Razão social", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
+	lcCli.add(new GuardaCampo( txtCodCli, 7,55, 67, 20, "CodCli", "Cód.cli.", true, false, null , JTextFieldPad.TP_INTEGER,false),"txtCodFor");
+	lcCli.add(new GuardaCampo( txtRazCli, 78, 55, 150, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
 	lcCli.montaSql(false, "CLIENTE", "VD");
 	lcCli.setReadOnly(true);
 	txtCodCli.setTabelaExterna(lcCli);
@@ -82,8 +85,8 @@ public class FRReceber extends FRelatorio {
 
     txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescSetor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.Setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
-    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
+    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
+    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição do setor",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
     lcSetor.montaSql(false,"SETOR","VD");
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
@@ -92,17 +95,17 @@ public class FRReceber extends FRelatorio {
 
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtNomeVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.Repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
-    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
+    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
+    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome do representante",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
 
-    vLabs.addElement("Contas a Receber");
-    vLabs.addElement("Contas Recebidas");
-    vLabs.addElement("Ambas as Contas");
+    vLabs.addElement("Contas a receber");
+    vLabs.addElement("Contas recebidas");
+    vLabs.addElement("Ambas as contas");
     vVals.addElement("R");
     vVals.addElement("P");
     vVals.addElement("A");
@@ -119,12 +122,15 @@ public class FRReceber extends FRelatorio {
     adic(cbTipoRel,7,53,333,70);
     adic(lbCodCli,7,125,200,20);
 	adic(txtCodCli,7,145,80,20);
+	adic(lbDescCodCli,90,125,200,20);
 	adic(txtRazCli,90,145,250,20);
     adic(lbCodSetor,7,165,250,20);
     adic(txtCodSetor,7,185,80,20);
+    adic(lbDescCodSetor,90,165,250,20);
     adic(txtDescSetor,90,185,250,20);
     adic(lbCodVend,7,205,250,20);
     adic(txtCodVend,7,225,80,20);
+    adic(lbDescCodVend,90,205,250,20);
     adic(txtNomeVend,90,225,250,20);
     adic(cbObs,7,250,200,20);
     adic(cbImpTotDia,7,270,200,20);
