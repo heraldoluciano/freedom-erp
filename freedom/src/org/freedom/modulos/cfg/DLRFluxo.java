@@ -38,7 +38,7 @@ public class DLRFluxo extends FFDialogo {
   public DLRFluxo(Component cOrig) {
   	super(cOrig);
 	setTitulo("Ordem do Relatório");
-	setAtribos(300,120);
+	setAtribos(300,140);
 	vLabs.addElement("Código");
 	vLabs.addElement("Descrição");
 	vVals.addElement("C");

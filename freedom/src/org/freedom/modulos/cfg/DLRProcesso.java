@@ -38,7 +38,7 @@ public class DLRProcesso extends FFDialogo {
   public DLRProcesso() {
   	super(Aplicativo.telaPrincipal);
 	setTitulo("Ordem do Relatório");
-	setAtribos(300,120);
+	setAtribos(300,140);
 	vLabs.addElement("Código");
 	vLabs.addElement("Descrição");
 	vVals.addElement("C");

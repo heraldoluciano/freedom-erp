@@ -84,7 +84,7 @@ public class FPais extends FDados implements ActionListener {
             imp.say(imp.pRow()+0,80,"Sigla");
             imp.say(imp.pRow()+0,100,"DDI");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",135));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,0,"");
@@ -99,7 +99,7 @@ public class FPais extends FDados implements ActionListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",135));
       imp.eject();
       
       imp.fechaGravacao();
