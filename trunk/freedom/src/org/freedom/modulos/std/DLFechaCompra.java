@@ -55,27 +55,28 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
   private JTabbedPane tpn = new JTabbedPane();
   private Painel pinFecha = new Painel(420,300);
   private JPanel pnPagar = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad();
-  private JTextFieldPad txtPercDescCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrDescCompra = new JTextFieldPad();
-  private JTextFieldPad txtPercAdicCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrAdicCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrProdCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrFreteCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrICMSCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrIPICompra = new JTextFieldPad();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-  private JTextFieldPad txtCodPag = new JTextFieldPad();
-  private JTextFieldPad txtCodBanco = new JTextFieldPad();
-  private JTextFieldPad txtNParcPag = new JTextFieldPad();
-  private JTextFieldPad txtVlrParcItPag = new JTextFieldPad();
-  private JTextFieldPad txtVlrParcPag = new JTextFieldPad();
-  private JTextFieldPad txtDtVencItPag = new JTextFieldPad();  
-  private JTextFieldPad txtStatusCompra = new JTextFieldPad();
-  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
-  private JTextFieldFK txtDescBanco = new JTextFieldFK();
+
+  private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtPercDescCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
+  private JTextFieldPad txtVlrDescCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtPercAdicCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
+  private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtVlrAdicCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtVlrProdCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtVlrFreteCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtVlrICMSCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtVlrIPICompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+  private JTextFieldPad txtNParcPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtVlrParcItPag = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtVlrParcPag = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtDtVencItPag = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);  
+  private JTextFieldPad txtStatusCompra = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JLabel lbPercDescCompra = new JLabel("% Desc.");
   private JLabel lbVlrDescCompra = new JLabel("V Desc.");
   private JLabel lbVlrFreteCompra = new JLabel("V Frete.");
@@ -110,10 +111,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     tpn.add("Pagar",pnPagar);
 
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
-    txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);	txtCodPlanoPag.setFK(true);
     txtDescPlanoPag.setListaCampos(lcPlanoPag);
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
@@ -122,10 +121,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     lcPlanoPag.setConexao(cn);
 
     txtCodBanco.setNomeCampo("CodBanco");
-    txtCodBanco.setTipo(JTextFieldPad.TP_STRING,3,0);
-    txtDescBanco.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBancox");
-    lcBanco.add(new GuardaCampo( txtDescBanco, 90, 100, 207, 20, "NomeBanco", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBancox");
+    lcBanco.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false));
+    lcBanco.add(new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI,false));
     txtDescBanco.setListaCampos(lcBanco);
     lcBanco.montaSql(false, "BANCO", "FN");
     lcBanco.setQueryCommit(false);
@@ -134,30 +131,20 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     txtCodBanco.setTabelaExterna(lcBanco);
 	txtCodBanco.setFK(true);
 
-    txtCodCompra.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodCompra.setNomeCampo("CodCompra");
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
-    txtVlrDescItCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrProdCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrLiqCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrICMSCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrIPICompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrAdicCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrDescCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtVlrFreteCompra.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtStatusCompra.setTipo(JTextFieldPad.TP_STRING,2,0);
-    lcCompra.add(new GuardaCampo( txtCodCompra, 7, 100, 80, 20, "CodCompra", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "CodPlan", false, true, txtDescPlanoPag, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrLiqCompra, 7, 100, 80, 20, "VlrLiqCompra", "V. Compra", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrICMSCompra, 7, 100, 80, 20, "VlrICMSCompra", "V. ICMS", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrIPICompra, 7, 100, 80, 20, "VlrIPICompra", "V. IPI", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrDescItCompra, 7, 100, 80, 20, "VlrDescItCompra", "% Desc It.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrDescCompra, 7, 100, 80, 20, "VlrDescCompra", "% Desc It.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrAdicCompra, 7, 100, 80, 20, "VlrAdicCompra", "V. Adic.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrProdCompra, 7, 100, 80, 20, "VlrProdCompra", "V. Prod.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtVlrFreteCompra, 7, 100, 80, 20, "VlrFreteCompra", "V. Prod.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtStatusCompra, 7, 100, 80, 20, "StatusCompra", "Status", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlanoPagx");
-    lcCompra.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "CodBanco", false, true, txtDescBanco, JTextFieldPad.TP_STRING,false),"txtCodPlanoPagx");
+    lcCompra.add(new GuardaCampo( txtCodCompra, "CodCompra", "N.pedido", ListaCampos.DB_PK,false));
+    lcCompra.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag,false));
+    lcCompra.add(new GuardaCampo( txtVlrLiqCompra, "VlrLiqCompra", "V.compra", ListaCampos.DB_SI, false));
+    lcCompra.add(new GuardaCampo( txtVlrICMSCompra, "VlrICMSCompra", "V.ICMS", ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtVlrIPICompra, "VlrIPICompra", "V.IPI", ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtVlrDescItCompra, "VlrDescItCompra", "% Desc.it.",ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtVlrDescCompra, "VlrDescCompra", "% Desc.it.", ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtVlrAdicCompra, "VlrAdicCompra", "V.adic.", ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtVlrProdCompra, "VlrProdCompra", "V.prod.",ListaCampos.DB_SI, false));
+    lcCompra.add(new GuardaCampo( txtVlrFreteCompra, "VlrFreteCompra", "V.prod.", ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI,false));
+    lcCompra.add(new GuardaCampo( txtCodBanco, "CodBanco", "CodBanco", ListaCampos.DB_FK, txtDescBanco,false));
     lcCompra.montaSql(false, "COMPRA", "CP");
     lcCompra.setConexao(cn);
     txtVlrLiqCompra.setListaCampos(lcCompra);
@@ -183,10 +170,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     pinTopPag.adic(txtVlrParcPag,7,20,130,20);
 
     txtCodPag.setNomeCampo("CodPag");
-    txtCodPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrParcPag.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    lcPagar.add(new GuardaCampo( txtCodPag, 7, 100, 80, 20, "CodPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPagar.add(new GuardaCampo( txtVlrParcPag, 7, 100, 80, 20, "VlrParcPag", "Valor Tot.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
+    lcPagar.add(new GuardaCampo( txtCodPag, "CodPag", "Cód.pgto.", ListaCampos.DB_PK,false));
+    lcPagar.add(new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor tot.",ListaCampos.DB_SI,false));
     lcPagar.montaSql(false, "PAGAR", "FN");
     lcPagar.setConexao(cn);
     txtCodPag.setListaCampos(lcPagar);
@@ -194,12 +179,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     txtCodBanco.setListaCampos(lcPagar);
 
     txtNParcPag.setNomeCampo("NParcPag");
-    txtNParcPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlrParcItPag.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtVencItPag.setTipo(JTextFieldPad.TP_DATE,10,0);
-    lcItPagar.add(new GuardaCampo( txtNParcPag, 7, 100, 80, 20, "NParcPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcItPagar.add(new GuardaCampo( txtVlrParcItPag, 7, 100, 80, 20, "VlrParcItPag", "Valor Tot.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtCodPlanoPagx");
-    lcItPagar.add(new GuardaCampo( txtDtVencItPag, 7, 100, 80, 20, "DtVencItPag", "Valor Tot.", false, false, null, JTextFieldPad.TP_DATE,false),"txtCodPlanoPagx");
+    lcItPagar.add(new GuardaCampo( txtNParcPag, "NParcPag", "N.parc.", ListaCampos.DB_PK,false));
+    lcItPagar.add(new GuardaCampo( txtVlrParcItPag, "VlrParcItPag", "Valor tot.", ListaCampos.DB_SI,false));
+    lcItPagar.add(new GuardaCampo( txtDtVencItPag, "DtVencItPag", "Valor tot.", ListaCampos.DB_SI,false));
     lcItPagar.montaSql(false, "ITPAGAR", "FN");
     lcItPagar.setConexao(cn);
     txtNParcPag.setListaCampos(lcItPagar);
@@ -237,8 +219,6 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     txtCodCompra.setVlrInteger(iCodCompra);
     lcCompra.carregaDados();
 
-    txtPercDescCompra.setTipo(JTextFieldPad.TP_DECIMAL,6,2);
-    txtPercAdicCompra.setTipo(JTextFieldPad.TP_DECIMAL,6,2);
     
     setPainel(pinFecha);
     adic(lbCodPlanoPag,7,0,270,20);
