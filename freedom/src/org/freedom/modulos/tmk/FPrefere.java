@@ -24,7 +24,7 @@
 package org.freedom.modulos.tmk;
 import java.sql.Connection;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -44,7 +44,7 @@ public class FPrefere extends FTabDados {
 		
 		setPainel(pinMail);
 		adicTab("Mail", pinMail);
-		JLabel lbServer = new JLabel("  Servidor para envio de email");
+		JLabelPad lbServer = new JLabelPad("  Servidor para envio de email");
 		lbServer.setOpaque(true);
 		adic(lbServer,15,10,200,15);
 		adic(pinSmtp,10,15,220,160);

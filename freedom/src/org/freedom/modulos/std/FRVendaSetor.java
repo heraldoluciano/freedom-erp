@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
@@ -75,16 +75,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JLabel lbCodMarca = new JLabel("Cód.marca");
-  private JLabel lbDescCodMarca = new JLabel("Descrição da marca");
-  private JLabel lbCodGrup1 = new JLabel("Cód.grupo/somar");
-  private JLabel lbDescCodGrup1 = new JLabel("Descrição do grupo/somar");
-  private JLabel lbCodGrup2 = new JLabel("Cód.grupo/subtrair");
-  private JLabel lbDescCodGrup2 = new JLabel("Descrição do grupo/subtrair");
-  private JLabel lbCodSetor = new JLabel("Cód.setor");
-  private JLabel lbDescCodSetor = new JLabel("Descrição do setor");
-  private JLabel lbCodVend = new JLabel("Cód.repr.");
-  private JLabel lbDescCodVend = new JLabel("Nome do representante");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescCodMarca = new JLabelPad("Descrição da marca");
+  private JLabelPad lbCodGrup1 = new JLabelPad("Cód.grupo/somar");
+  private JLabelPad lbDescCodGrup1 = new JLabelPad("Descrição do grupo/somar");
+  private JLabelPad lbCodGrup2 = new JLabelPad("Cód.grupo/subtrair");
+  private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
+  private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
+  private JLabelPad lbDescCodSetor = new JLabelPad("Descrição do setor");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
+  private JLabelPad lbDescCodVend = new JLabelPad("Nome do representante");
   private ListaCampos lcGrup1 = new ListaCampos(this);
   private ListaCampos lcGrup2 = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
@@ -184,11 +184,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	lcCliente.setReadOnly(true);
 	lcCliente.montaSql(false, "CLIENTE", "VD");
     
-    adic(new JLabel("Formato de impressão"),7,0,200,20);
+    adic(new JLabelPad("Formato de impressão"),7,0,200,20);
     adic(rgTipoRel,7,20,270,30);
-    adic(new JLabel("Ordem"),280,0,80,20);
+    adic(new JLabelPad("Ordem"),280,0,80,20);
     adic(rgOrdemRel,280,20,167,80);
-    adic(new JLabel("Período"),7,50,250,20);
+    adic(new JLabelPad("Período"),7,50,250,20);
     adic(txtDataini,7,70,100,20);
     adic(txtDatafim,110,70,100,20);
     adic(lbCodMarca,7,90,250,20);
@@ -214,9 +214,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
     adic(cbVendas,7,295,110,25);
     adic(cbCliPrinc,120,295,200,25);
     adic(cbIncluiPed,7,315,295,25);
-	adic(new JLabel("Cód.cli."),7,340,200,20);
+	adic(new JLabelPad("Cód.cli."),7,340,200,20);
 	adic(txtCodCli,7,360,110,20);
-	adic(new JLabel("Razão social do cliente"),90,340,200,20);
+	adic(new JLabelPad("Razão social do cliente"),90,340,200,20);
 	adic(txtRazCli,120,360,317,20);
     
   }

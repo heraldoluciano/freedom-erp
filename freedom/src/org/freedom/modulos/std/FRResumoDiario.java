@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -61,14 +61,14 @@ public class FRResumoDiario extends FRelatorio {
    
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
     
-    adic(new JLabel("Periodo:"),7,5,100,20);
+    adic(new JLabelPad("Periodo:"),7,5,100,20);
     adic(lbLinha,60,15,210,2);
-    adic(new JLabel("De:"),7,30,30,20);
+    adic(new JLabelPad("De:"),7,30,30,20);
     adic(txtDataini,32,30,97,20);
-    adic(new JLabel("Até:"),140,30,30,20);
+    adic(new JLabelPad("Até:"),140,30,30,20);
     adic(txtDatafim,170,30,100,20);
         
 
@@ -81,9 +81,9 @@ public class FRResumoDiario extends FRelatorio {
 	txtCodVend.setFK(true);
   	txtCodVend.setTabelaExterna(lcVend);
  
-  	adic(new JLabel("Cód.repr."),7,60,210,20);
+  	adic(new JLabelPad("Cód.repr."),7,60,210,20);
 	adic(txtCodVend,7,80,60,20);
-	adic(new JLabel("Nome do representante"),70,60,210,20);
+	adic(new JLabelPad("Nome do representante"),70,60,210,20);
 	adic(txtDescVend,70,80,200,20);
     
     

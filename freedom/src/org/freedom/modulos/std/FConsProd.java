@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -71,7 +71,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	//private JPanel pnProduto = new JPanel(new BorderLayout());	
 	private JButton btExecCompra = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btExecVenda = new JButton(Icone.novo("btExecuta.gif"));
-	//private JLabel lbA = new JLabel("à");
+	//private JLabelPad lbA = new JLabelPad("à");
 	private JPanelPad pinLbPeriodoCompra = new JPanelPad(53,15);
 	private JPanelPad pinLbPeriodoVenda = new JPanelPad(53,15);
 	private Tabela tab = new Tabela();
@@ -207,36 +207,36 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
         txtCodFisc.setTabelaExterna(lcFisc);               
            
 		pinCab.adic(txtDescProd,80,20,197,20);
-		pinCab.adic(new JLabel("Saldo"),280,0,87,20);
+		pinCab.adic(new JLabelPad("Saldo"),280,0,87,20);
 		pinCab.adic(txtSldProd,280,20,87,20);
-        pinCab.adic(new JLabel("Preço base"),370,0,87,20);
+        pinCab.adic(new JLabelPad("Preço base"),370,0,87,20);
         pinCab.adic(txtPrecoBaseProd,370,20,87,20);
-        pinCab.adic(new JLabel("Dt.ult.comp."),460,0,80,20);
+        pinCab.adic(new JLabelPad("Dt.ult.comp."),460,0,80,20);
         pinCab.adic(txtDtUltCp,460,20,80,20);
-        pinCab.adic(new JLabel("Qt.ult.comp."),543,0,80,20);
+        pinCab.adic(new JLabelPad("Qt.ult.comp."),543,0,80,20);
         pinCab.adic(txtQtUltCp,543,20,87,20);
         
-        pinCab.adic(new JLabel("Local armz."),7,40,100,20);
+        pinCab.adic(new JLabelPad("Local armz."),7,40,100,20);
         pinCab.adic(txtLocalProd,7,60,100,20);
-        pinCab.adic(new JLabel("Códi.und."),110,40,200,20);
+        pinCab.adic(new JLabelPad("Códi.und."),110,40,200,20);
         pinCab.adic(txtCodUnid,110,60,67,20);
-        pinCab.adic(new JLabel("Descrição da unidade"),180,40,147,20);
+        pinCab.adic(new JLabelPad("Descrição da unidade"),180,40,147,20);
         pinCab.adic(txtDescUnid,180,60,147,20);
-        pinCab.adic(new JLabel("Cód.mac."),330,40,230,20);
+        pinCab.adic(new JLabelPad("Cód.mac."),330,40,230,20);
         pinCab.adic(txtCodMarca,330,60,67,20);
-        pinCab.adic(new JLabel("Descrição da marca"),400,40,230,20);
+        pinCab.adic(new JLabelPad("Descrição da marca"),400,40,230,20);
         pinCab.adic(txtDescMarca,400,60,230,20);
  
-        pinCab.adic(new JLabel("Cód.desc.grupo"),7,80,220,20);
+        pinCab.adic(new JLabelPad("Cód.desc.grupo"),7,80,220,20);
         pinCab.adic(txtCodGrup,7,100,100,20);
-        pinCab.adic(new JLabel("Descrição do grupo"),110,80,210,20);
+        pinCab.adic(new JLabelPad("Descrição do grupo"),110,80,210,20);
         pinCab.adic(txtDescGrup,110,100,210,20);
-        pinCab.adic(new JLabel("Cód.d.cl.fisc."),323,80,180,20);
+        pinCab.adic(new JLabelPad("Cód.d.cl.fisc."),323,80,180,20);
         pinCab.adic(txtCodFisc,323,100,87,20);
-        pinCab.adic(new JLabel("Declaração da classe fiscal"),413,80,180,20);
+        pinCab.adic(new JLabelPad("Declaração da classe fiscal"),413,80,180,20);
         pinCab.adic(txtDescFisc,413,100,215,20);
         
-        pinCab.adic(new JLabel("Códigos similares:"),7,127,200,20);
+        pinCab.adic(new JLabelPad("Códigos similares:"),7,127,200,20);
         				
 						
 		btExecCompra.addActionListener(this);
@@ -276,10 +276,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                
         tpn.addTab("Compras",pnCompras);
         pinPeriodoCompraCab.adic(txtDtCpIni,7,10,97,20);
-        pinPeriodoCompraCab.adic(new JLabel("à"),107,10,7,20);
+        pinPeriodoCompraCab.adic(new JLabelPad("à"),107,10,7,20);
         pinPeriodoCompraCab.adic(txtDtCpFim,117,10,97,20);
         pinPeriodoCompraCab.adic(btExecCompra,220,5,30,30);
-        pinLbPeriodoCompra.adic(new JLabel(" Periodo"),0,0,51,15);
+        pinLbPeriodoCompra.adic(new JLabelPad(" Periodo"),0,0,51,15);
         pinLbPeriodoCompra.tiraBorda();    
         pinPeriodoCompra.adic(pinLbPeriodoCompra,10,2,51,15);
         pinPeriodoCompra.adic(pinPeriodoCompraCab,7,10,260,44);
@@ -324,10 +324,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 				
         tpn.addTab("Vendas",pnVendas);
         pinPeriodoVendaCab.adic(txtDtVdIni,7,10,97,20);
-        pinPeriodoVendaCab.adic(new JLabel("à"),107,10,7,20);
+        pinPeriodoVendaCab.adic(new JLabelPad("à"),107,10,7,20);
         pinPeriodoVendaCab.adic(txtDtVdFim,117,10,97,20);
         pinPeriodoVendaCab.adic(btExecVenda,220,5,30,30);
-        pinLbPeriodoVenda.adic(new JLabel(" Periodo"),0,0,51,15);
+        pinLbPeriodoVenda.adic(new JLabelPad(" Periodo"),0,0,51,15);
         pinLbPeriodoVenda.tiraBorda();    
         pinPeriodoVenda.adic(pinLbPeriodoVenda,10,2,51,15);
         pinPeriodoVenda.adic(pinPeriodoVendaCab,7,10,260,44);
@@ -1047,8 +1047,8 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		dlBuscaProd = new DLBuscaProd(this,con,"CODPROD");
 		txtCodProd.setBuscaAdic(dlBuscaProd,false);
 		
-		pinCab.adic(new JLabel("Cód.prod."),7,0,60,20);
-		pinCab.adic(new JLabel("Descrição do produto"),80,0,200,20);
+		pinCab.adic(new JLabelPad("Cód.prod."),7,0,60,20);
+		pinCab.adic(new JLabelPad("Descrição do produto"),80,0,200,20);
 
 		if (bPrefs[0]) {
 			txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),false);

@@ -24,7 +24,7 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
@@ -51,19 +51,19 @@ public class DLDescontItVenda extends FFDialogo {
         txtVlrDescTot.setVlrBigDecimal(new BigDecimal(0));
         txtVlrTot.setVlrBigDecimal(new BigDecimal(dVlr));
         
-		adic(new JLabel("1 :"),7,10,20,20);
+		adic(new JLabelPad("1 :"),7,10,20,20);
 		adic(txtDesc1,30,10,77,20);
-		adic(new JLabel("Valor Desc.:"),110,20,100,20);
-		adic(new JLabel("2 :"),7,30,20,20);
+		adic(new JLabelPad("Valor Desc.:"),110,20,100,20);
+		adic(new JLabelPad("2 :"),7,30,20,20);
 		adic(txtDesc2,30,30,77,20);
 		adic(txtVlrDescTot,110,40,100,20);
-		adic(new JLabel("3 :"),7,50,20,20);
+		adic(new JLabelPad("3 :"),7,50,20,20);
 		adic(txtDesc3,30,50,77,20);
-		adic(new JLabel("Preço do Item:"),110,60,100,20);
-		adic(new JLabel("4 :"),7,70,20,20);
+		adic(new JLabelPad("Preço do Item:"),110,60,100,20);
+		adic(new JLabelPad("4 :"),7,70,20,20);
 		adic(txtDesc4,30,70,77,20);
 		adic(txtVlrTot,110,80,100,20);
-		adic(new JLabel("5 :"),7,90,20,20);
+		adic(new JLabelPad("5 :"),7,90,20,20);
 		adic(txtDesc5,30,90,77,20);
         txtDesc1.setVlrString(sVals[0]);
         txtDesc2.setVlrString(sVals[1]);

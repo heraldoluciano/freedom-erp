@@ -31,7 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
@@ -85,13 +85,13 @@ public class FTrocaDoc extends FFilho implements ActionListener {
     
     btTrocaDoc.setToolTipText("Alterar");
 
-    pinCli.adic(new JLabel("Nº pedido"),7,0,80,20);
+    pinCli.adic(new JLabelPad("Nº pedido"),7,0,80,20);
     pinCli.adic(txtCodVenda,7,20,80,20);
-    pinCli.adic(new JLabel("Série"),90,0,67,20);
+    pinCli.adic(new JLabelPad("Série"),90,0,67,20);
     pinCli.adic(txtSerie,90,20,67,20);
-    pinCli.adic(new JLabel("Valor"),160,0,100,20);
+    pinCli.adic(new JLabelPad("Valor"),160,0,100,20);
     pinCli.adic(txtVlrLiqVenda,160,20,100,20);
-    pinCli.adic(new JLabel("Doc."),7,40,73,20);
+    pinCli.adic(new JLabelPad("Doc."),7,40,73,20);
     pinCli.adic(txtNovoDoc,7,60,73,20);
     pinCli.adic(btTrocaDoc,90,50,30,30);
     

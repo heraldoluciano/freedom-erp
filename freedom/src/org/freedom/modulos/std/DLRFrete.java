@@ -21,7 +21,7 @@
 
 package org.freedom.modulos.std;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
@@ -33,7 +33,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 public class DLRFrete extends FFDialogo {
   private JRadioGroup rgOrdem = null;
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -54,10 +54,10 @@ public class DLRFrete extends FFDialogo {
     vVals.addElement("T");
     rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
     rgOrdem.setVlrString("C");
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,27,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,27,30,20);
     adic(txtDataini,37,27,90,20);
-    adic(new JLabel("Até:"),140,27,30,20);
+    adic(new JLabelPad("Até:"),140,27,30,20);
     adic(txtDatafim,175,27,90,20);
     
     

@@ -26,7 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
@@ -44,10 +44,10 @@ public class FRVendasIcms extends FRelatorio {
     txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,97,20);
-    adic(new JLabel("Até:"),140,25,17,20);
+    adic(new JLabelPad("Até:"),140,25,17,20);
     adic(txtDatafim,160,25,100,20);
     
     

@@ -27,7 +27,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaSelEvent;
@@ -63,11 +63,11 @@ public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSe
     txtCodCli.setAtivo(false);
     txaObs.setEditable(false);
     
-    pinConsulta.adic(new JLabel("Cód.cli."),7,0,200,20);
+    pinConsulta.adic(new JLabelPad("Cód.cli."),7,0,200,20);
     pinConsulta.adic(txtCodCli,7,20,80,20);
-    pinConsulta.adic(new JLabel("Razão social do cliente"),90,0,200,20);
+    pinConsulta.adic(new JLabelPad("Razão social do cliente"),90,0,200,20);
     pinConsulta.adic(txtRazCli,90,20,187,20);
-    pinConsulta.adic(new JLabel("Observação:"),7,40,100,20);
+    pinConsulta.adic(new JLabelPad("Observação:"),7,40,100,20);
     pinConsulta.adic(spnObs,7,60,270,80);
     
     txtCodCli.setNomeCampo("CodCli");

@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
@@ -93,23 +93,23 @@ public class FRGraficoCC extends FRelatorio {
 	txtCodCC.setNomeCampo("CodCC");
 	txtSiglaCC.setListaCampos(lcCC);
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,117,20);
-    adic(new JLabel("Até:"),160,25,22,20);
+    adic(new JLabelPad("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,120,20);
-    adic(new JLabel("Nº plan."),7,50,250,20);
+    adic(new JLabelPad("Nº plan."),7,50,250,20);
     adic(txtCodPlan,7,70,80,20);
-    adic(new JLabel("Descrição do planejamento"),90,50,250,20);
+    adic(new JLabelPad("Descrição do planejamento"),90,50,250,20);
     adic(txtDescPlan,90,70,200,20);
-	adic(new JLabel("Cód.cc."),7,90,250,20);
+	adic(new JLabelPad("Cód.cc."),7,90,250,20);
 	adic(txtCodCC,7,110,80,20);
-	adic(new JLabel("Descrição do centro de custo"),90,90,250,20);
+	adic(new JLabelPad("Descrição do centro de custo"),90,90,250,20);
 	adic(txtDescCC,90,110,200,20);	
-	adic(new JLabel("Tipo de gráfico:"),7,130,180,20);
-	adic(new JLabel(Icone.novo("graficoPizza.gif")),7,160,30,30);
-	adic(new JLabel(Icone.novo("graficoBarra.gif")),7,200,30,30);
-	adic(new JLabel(Icone.novo("graficoGiratorio.gif")),7,240,30,30);
+	adic(new JLabelPad("Tipo de gráfico:"),7,130,180,20);
+	adic(new JLabelPad(Icone.novo("graficoPizza.gif")),7,160,30,30);
+	adic(new JLabelPad(Icone.novo("graficoBarra.gif")),7,200,30,30);
+	adic(new JLabelPad(Icone.novo("graficoGiratorio.gif")),7,240,30,30);
     
 	vLabs.addElement("Pizza");
 	vLabs.addElement("Barras 3D");

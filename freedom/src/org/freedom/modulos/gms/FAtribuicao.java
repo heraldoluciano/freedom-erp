@@ -23,7 +23,7 @@
 package org.freedom.modulos.gms;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -60,7 +60,7 @@ public class FAtribuicao extends FDados implements ActionListener, PostListener,
     adic(cbAlm,160,60,150,20);
     
     adicDBLiv(txaObsAtrib, "ObsAtrib","Obs.", false);
-    adic(new JLabel("Observação"),7,80,303,20);
+    adic(new JLabelPad("Observação"),7,80,303,20);
     adic(spnObs,7,100,303,100);
     
     setListaCampos( true, "ATRIBUICAO", "SG");

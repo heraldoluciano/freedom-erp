@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -52,7 +52,7 @@ public class FRFluxoCaixa extends FRelatorio {
     
     txtDatafim.setRequerido(true);
 
-    adic(new JLabel("Data final"),7,5,120,20);
+    adic(new JLabelPad("Data final"),7,5,120,20);
     adic(txtDatafim,7,25,120,20);
     adic(cbLanca,130,25,120,20);
     adic(cbReceber,7,60,120,20);

@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -50,10 +50,10 @@ public class FRSaldoLote extends FRelatorio {
   private JTextFieldPad txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
   private JCheckBoxPad cbLoteZerado = null; 
-  private JLabel lbCodGrup = new JLabel("Cód.grupo");
-  private JLabel lbDescCodGrup = new JLabel("Descrição do grupo");
-  private JLabel lbCodMarca = new JLabel("Cód.marca");
-  private JLabel lbDescCodMarca = new JLabel("Ddescrição da marca");
+  private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescCodGrup = new JLabelPad("Descrição do grupo");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescCodMarca = new JLabelPad("Ddescrição da marca");
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
   private JRadioGroup rgOrdem = null;
@@ -98,7 +98,7 @@ public class FRSaldoLote extends FRelatorio {
     adic(txtCodMarca,7,60,80,20);
     adic(lbDescCodMarca,90,40,250,20);
     adic(txtDescMarca,90,60,200,20);
-    adic(new JLabel("Ordem:"),7,80,250,20);
+    adic(new JLabelPad("Ordem:"),7,80,250,20);
     adic(rgOrdem,7,100,283,30);
     adic(cbLoteZerado,7,140,250,20);
   }

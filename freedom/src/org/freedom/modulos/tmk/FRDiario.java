@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -66,12 +66,12 @@ public class FRDiario extends FRelatorio {
     vLabs.addElement("Agendar ligação/visita");
     cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2 , 0);
     
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,100,20);
-    adic(new JLabel("Até:"),143,25,23,20);
+    adic(new JLabelPad("Até:"),143,25,23,20);
     adic(txtDatafim,169,25,100,20);
-    adic(new JLabel("Status:"),7,45,269,20);
+    adic(new JLabelPad("Status:"),7,45,269,20);
     adic(cbSit,7,65,262,20);
     adic(cbComp,7,100,253,20);
     

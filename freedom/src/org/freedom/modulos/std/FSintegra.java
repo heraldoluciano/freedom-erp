@@ -38,7 +38,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
@@ -75,7 +75,7 @@ public class FSintegra extends FFilho implements ActionListener {
   private Vector vValFinalidade = new Vector();
   
   
-  private JLabel lbAnd = new JLabel("Aguardando");
+  private JLabelPad lbAnd = new JLabelPad("Aguardando");
   public FSintegra() {
     setTitulo("Gera Arquivo Sintegra");
     setAtribos(50,20,710,410);
@@ -123,9 +123,9 @@ public class FSintegra extends FFilho implements ActionListener {
     rgFinalidade = new JRadioGroup(5,5,vLabFinalidade,vValFinalidade);
     
     
-    pinCliente.adic(new JLabel("Inicio"),7,0,110,25);
+    pinCliente.adic(new JLabelPad("Inicio"),7,0,110,25);
     pinCliente.adic(txtDataini,7,20,110,20);
-    pinCliente.adic(new JLabel("Fim"),120,0,107,25);
+    pinCliente.adic(new JLabelPad("Fim"),120,0,107,25);
     pinCliente.adic(txtDatafim,120,20,107,20);
     pinCliente.adic(btGerar,296,15,30,30);
     pinCliente.adic(cbEntrada,7,50,150,20);

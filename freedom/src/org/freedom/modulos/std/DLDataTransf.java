@@ -24,7 +24,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -37,7 +37,7 @@ public class DLDataTransf extends FFDialogo {
 		setTitulo("Nova Data");
 		setAtribos(100,100,250,120);
 
-		adic(new JLabel("Nova Data:"),7,0,110,20);
+		adic(new JLabelPad("Nova Data:"),7,0,110,20);
 		adic(txtDataTransf,7,20,100,20);
 	}
 	public Date getValor() {

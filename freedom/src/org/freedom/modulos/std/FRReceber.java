@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -50,12 +50,12 @@ public class FRReceber extends FRelatorio {
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JLabel lbCodCli = new JLabel("Cód.cli.");
-  private JLabel lbDescCodCli = new JLabel("Razão social do cliente");
-  private JLabel lbCodSetor = new JLabel("Cód.setor");
-  private JLabel lbDescCodSetor = new JLabel("Descrição do setor");
-  private JLabel lbCodVend = new JLabel("Cód.repr.");
-  private JLabel lbDescCodVend = new JLabel("Nome do representante");
+  private JLabelPad lbCodCli = new JLabelPad("Cód.cli.");
+  private JLabelPad lbDescCodCli = new JLabelPad("Razão social do cliente");
+  private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
+  private JLabelPad lbDescCodSetor = new JLabelPad("Descrição do setor");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
+  private JLabelPad lbDescCodVend = new JLabelPad("Nome do representante");
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
   private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");
   
@@ -109,10 +109,10 @@ public class FRReceber extends FRelatorio {
     cbObs.setVlrString("S");
     cbImpTotDia.setVlrString("S");
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,97,20);
-    adic(new JLabel("Até:"),160,25,30,20);
+    adic(new JLabelPad("Até:"),160,25,30,20);
     adic(txtDatafim,190,25,100,20);
     adic(cbTipoRel,7,53,333,70);
     adic(lbCodCli,7,125,200,20);

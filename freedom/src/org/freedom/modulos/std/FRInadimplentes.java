@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -58,10 +58,10 @@ public class FRInadimplentes extends FRelatorio {
 	cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
 	txtDataini.setVlrDate(cPeriodo.getTime());
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,97,20);
-    adic(new JLabel("Até:"),140,25,17,20);
+    adic(new JLabelPad("Até:"),140,25,17,20);
     adic(txtDatafim,160,25,100,20);
     
   	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
@@ -73,9 +73,9 @@ public class FRInadimplentes extends FRelatorio {
 	txtCodVend.setFK(true);
   	txtCodVend.setTabelaExterna(lcVend);
  
-  	adic(new JLabel("Cód.repr."),7,68,200,20);
+  	adic(new JLabelPad("Cód.repr."),7,68,200,20);
 	adic(txtCodVend,7,88,60,20);
-	adic(new JLabel("Nome do representante"),70,68,200,20);
+	adic(new JLabelPad("Nome do representante"),70,68,200,20);
 	adic(txtDescVend,70,88,199,20);
     
     

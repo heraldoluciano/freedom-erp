@@ -22,7 +22,7 @@
 package org.freedom.modulos.std;
 import java.awt.Component;
 import java.util.Vector;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
@@ -36,7 +36,7 @@ public class DLRConsProd extends FFDialogo {
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   
-  private JLabel lbOrdem = new JLabel("Listar:");
+  private JLabelPad lbOrdem = new JLabelPad("Listar:");
   
   public DLRConsProd(Component cOrig) {
   	super(cOrig);

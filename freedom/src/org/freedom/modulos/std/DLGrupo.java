@@ -29,7 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -39,9 +39,9 @@ public class DLGrupo extends FFDialogo {
   private JTextFieldPad txtCodGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtDescGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtSiglaGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
-  private JLabel lbCodGrupo = new JLabel("Cód.grupo");
-  private JLabel lbDescGrupo = new JLabel("Descrição do grupo");
-  private JLabel lbSiglaGrupo = new JLabel("Sigla");
+  private JLabelPad lbCodGrupo = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescGrupo = new JLabelPad("Descrição do grupo");
+  private JLabelPad lbSiglaGrupo = new JLabelPad("Sigla");
   private boolean bEdit = false;
   public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc) {
   	super(cOrig);

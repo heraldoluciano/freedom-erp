@@ -37,7 +37,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
@@ -69,10 +69,10 @@ public class FImpTabFor extends FFilho implements ActionListener {
   private int iTotInseridos = 0;
   private int iTotAtualizados = 0;
   private int iTotRejeitados = 0;
-  private JLabel lbAnd = new JLabel("Aguardando...");
-  private JLabel lbInseridos = new JLabel("Inseridos: 0");
-  private JLabel lbAtualizados = new JLabel("Autualizados: 0");
-  private JLabel lbRejeitados = new JLabel("Rejeitados: 0");
+  private JLabelPad lbAnd = new JLabelPad("Aguardando...");
+  private JLabelPad lbInseridos = new JLabelPad("Inseridos: 0");
+  private JLabelPad lbAtualizados = new JLabelPad("Autualizados: 0");
+  private JLabelPad lbRejeitados = new JLabelPad("Rejeitados: 0");
   private ListaCampos lcFor = new ListaCampos(this);
   ProcessoSec pSec = null;
   boolean bRunProcesso = false;
@@ -98,11 +98,11 @@ public class FImpTabFor extends FFilho implements ActionListener {
     lcFor.setReadOnly(true);
     lcFor.montaSql(false, "FORNECED", "CP");
     
-    pinCab.adic(new JLabel("Cód.for."),7,0,300,25);
+    pinCab.adic(new JLabelPad("Cód.for."),7,0,300,25);
     pinCab.adic(txtCodFor,7,20,70,20);
-    pinCab.adic(new JLabel("Descrição do fornecedor"),80,0,300,25);
+    pinCab.adic(new JLabelPad("Descrição do fornecedor"),80,0,300,25);
     pinCab.adic(txtRazFor,80,20,250,20);
-    pinCab.adic(new JLabel("Arquivo de dados"),7,40,200,25);
+    pinCab.adic(new JLabelPad("Arquivo de dados"),7,40,200,25);
     pinCab.adic(txtNomeArq,7,60,323,20);
     pinCab.adic(btBuscaArq,330,60,20,20);
     pinCab.adic(lbAnd,7,100,300,20);
@@ -111,7 +111,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
     pinCab.adic(lbRejeitados,7,140,120,20);
     pinCab.adic(lbInseridos,130,140,117,20);
     pinCab.adic(lbAtualizados,250,140,120,20);
-    pinCab.adic(new JLabel("Ítens rejeitados:"),7,180,200,20);
+    pinCab.adic(new JLabelPad("Ítens rejeitados:"),7,180,200,20);
     
     tab.adicColuna("Motivo");
     tab.adicColuna("Referência");

@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -80,16 +80,16 @@ public class FRComissoes extends FRelatorio {
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
     
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,27,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,27,30,20);
     adic(txtDataini,40,27,97,20);
-    adic(new JLabel("Até:"),7,47,30,20);
+    adic(new JLabelPad("Até:"),7,47,30,20);
     adic(txtDatafim,40,47,97,20);
     adic(rgEmitRel,150,7,130,65);
     
-    adic(new JLabel("Cód.repr."),7,67,250,20);
+    adic(new JLabelPad("Cód.repr."),7,67,250,20);
     adic(txtCodVend,7,87,80,20);
-    adic(new JLabel("Nome do representante"),90,67,250,20);
+    adic(new JLabelPad("Nome do representante"),90,67,250,20);
     adic(txtDescVend,90,87,200,20);
     adic(cbNLiberada,7,107,100,20);
     adic(cbLiberada,110,107,97,20);

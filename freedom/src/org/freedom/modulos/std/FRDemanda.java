@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -51,10 +51,10 @@ public class FRDemanda extends FRelatorio {
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
-  private JLabel lbCodGrup = new JLabel("Cód.grupo");
-  private JLabel lbCodMarca = new JLabel("Cód.marca");
-  private JLabel lbDescGrup = new JLabel("Descrição do grupo");
-  private JLabel lbDescMarca = new JLabel("Descrição do marca");
+  private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
+  private JLabelPad lbDescMarca = new JLabelPad("Descrição do marca");
   private JRadioGroup rgOrdem = null;
   private Vector vLabs = new Vector(2);
   private Vector vVals = new Vector(2);
@@ -98,7 +98,7 @@ public class FRDemanda extends FRelatorio {
     txtCodGrup.setFK(true);
     txtCodGrup.setNomeCampo("CodGrup");
     
-    adic(new JLabel("Periodo"),7,0,250,20);
+    adic(new JLabelPad("Periodo"),7,0,250,20);
     adic(txtDataini,7,20,100,20);
     adic(txtDatafim,110,20,100,20);
 

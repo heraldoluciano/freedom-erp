@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -85,21 +85,21 @@ public class FRBordero extends FRelatorio {
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,97,20);
-    adic(new JLabel("Até:"),160,25,30,20);
+    adic(new JLabelPad("Até:"),160,25,30,20);
     adic(txtDatafim,190,25,100,20);
-    adic(new JLabel("Cód.banco"),7,45,80,20);
-    adic(new JLabel("Nome do banco"),90,45,250,20);
+    adic(new JLabelPad("Cód.banco"),7,45,80,20);
+    adic(new JLabelPad("Nome do banco"),90,45,250,20);
 	adic(txtCodBanco,7,65,80,20);
 	adic(txtNomeBanco,90,65,250,20);
-    adic(new JLabel("Cód.setor"),7,85,80,20);
-    adic(new JLabel("Descrição do setor"),90,85,250,20);
+    adic(new JLabelPad("Cód.setor"),7,85,80,20);
+    adic(new JLabelPad("Descrição do setor"),90,85,250,20);
     adic(txtCodSetor,7,105,80,20);
     adic(txtDescSetor,90,105,250,20);
-    adic(new JLabel("Cód.repr."),7,125,80,20);
-    adic(new JLabel("Nome do repres."),90,125,250,20);
+    adic(new JLabelPad("Cód.repr."),7,125,80,20);
+    adic(new JLabelPad("Nome do repres."),90,125,250,20);
     adic(txtCodVend,7,145,80,20);
     adic(txtNomeVend,90,145,250,20);
     

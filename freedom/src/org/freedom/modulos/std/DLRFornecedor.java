@@ -23,7 +23,7 @@ package org.freedom.modulos.std;
 
 import java.awt.Component;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.componentes.GuardaCampo;
@@ -45,15 +45,15 @@ public class DLRFornecedor extends FFDialogo {
   private JPanel pnlbPessoa = new JPanel(new GridLayout(1,1));
   private JPanelPad pinPessoa = new JPanelPad(450,40);
   private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-  private JLabel lbSelec = new JLabel(" Selecão:");
-  private JLabel lbDe = new JLabel("De:");
-  private JLabel lbA = new JLabel("À:");
+  private JLabelPad lbSelec = new JLabelPad(" Selecão:");
+  private JLabelPad lbDe = new JLabelPad("De:");
+  private JLabelPad lbA = new JLabelPad("À:");
   private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtA = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
-  private JLabel lbPessoa = new JLabel(" Selecionar pessoas:");
-  private JLabel lbCid = new JLabel("Cidade");
-  private JLabel lbModo = new JLabel("Modo do relatório:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+  private JLabelPad lbPessoa = new JLabelPad(" Selecionar pessoas:");
+  private JLabelPad lbCid = new JLabelPad("Cidade");
+  private JLabelPad lbModo = new JLabelPad("Modo do relatório:");
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir Observações ?","S","N");
   private JCheckBoxPad cbFis = new JCheckBoxPad("Física","S","N");
   private JCheckBoxPad cbJur = new JCheckBoxPad("Jurídica","S","N");
@@ -61,8 +61,8 @@ public class DLRFornecedor extends FFDialogo {
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabel lbTipoFor = new JLabel("Cód.t.for.");
-  private JLabel lbDescTipoFor = new JLabel("Descrição do tipo de fornecedor");
+  private JLabelPad lbTipoFor = new JLabelPad("Cód.t.for.");
+  private JLabelPad lbDescTipoFor = new JLabelPad("Descrição do tipo de fornecedor");
   private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTipoFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcTipoFor = new ListaCampos(this);

@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -57,10 +57,10 @@ public class FRVencLote extends FRelatorio {
   private JTextFieldPad txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
   private JCheckBoxPad cbLoteZerado = null; 
-  private JLabel lbCodGrup = new JLabel("Cód.grupo");
-  private JLabel lbDescCodGrup = new JLabel("Descrição do grupo");
-  private JLabel lbCodMarca = new JLabel("Cód.marca");
-  private JLabel lbDescCodMarca = new JLabel("Descrição da marca");
+  private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescCodGrup = new JLabelPad("Descrição do grupo");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescCodMarca = new JLabelPad("Descrição da marca");
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -91,10 +91,10 @@ public class FRVencLote extends FRelatorio {
     
     
     
-    adic(new JLabel("Período de vencimentos:"),7,0,250,20);
-    adic(new JLabel("De: "),7,20,40,20);
+    adic(new JLabelPad("Período de vencimentos:"),7,0,250,20);
+    adic(new JLabelPad("De: "),7,20,40,20);
     adic(txtDataini,50,20,97,20);
-    adic(new JLabel(" até: "),150,20,37,20);
+    adic(new JLabelPad(" até: "),150,20,37,20);
     adic(txtDatafim,190,20,100,20);
     adic(cbLoteZerado,7,45,250,30);
     adic(lbCodGrup,7,80,250,20);

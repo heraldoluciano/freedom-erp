@@ -23,7 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.JPanelPad;
@@ -35,8 +35,8 @@ public class DLCCPrim extends FFDialogo {
   private JTextFieldPad txtDescCont = new JTextFieldPad(13);
   private JTextFieldPad txtSigla = new JTextFieldPad(10);
   private JPanelPad pinCont = new JPanelPad(450,100);
-  private JLabel lbCod = new JLabel("Código");
-  private JLabel lbDesc = new JLabel("Descrição");
+  private JLabelPad lbCod = new JLabelPad("Código");
+  private JLabelPad lbDesc = new JLabelPad("Descrição");
   public DLCCPrim(Component cOrig, String sCod, String sDesc, String sSigla) {
   	super(cOrig);
     setTitulo("Novo Item \"Nivel 1\"");
@@ -50,7 +50,7 @@ public class DLCCPrim extends FFDialogo {
     pinCont.adic(txtCodCont,7,25,100,20);
     pinCont.adic(lbDesc,110,5,150,20);
     pinCont.adic(txtDescCont,110,25,217,20);
-	pinCont.adic(new JLabel("Sig."),330,5,100,20);
+	pinCont.adic(new JLabelPad("Sig."),330,5,100,20);
 	pinCont.adic(txtSigla,330,25,80,20);
     c.add(pinCont, BorderLayout.CENTER);
     if (sDesc != null) {                                                                 

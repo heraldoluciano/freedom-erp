@@ -24,7 +24,7 @@ package org.freedom.modulos.cfg;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.DeleteEvent;
@@ -49,7 +49,7 @@ public class FGrupo extends FDados implements PostListener,DeleteListener {
     adicCampo(txtCodGrup, 7, 20, 80, 20, "IDGrpUsu", "ID", ListaCampos.DB_PK, true);
     adicCampo(txtNomeGrup, 90, 20, 282, 20, "NomeGrpUsu", "Nome", ListaCampos.DB_SI, true);
     adicDBLiv(txaComentGrup, "ComentGrpUsu", "Comentário", false);
-    adic(new JLabel("Comentário"),7,40,100,20);
+    adic(new JLabelPad("Comentário"),7,40,100,20);
     adic(spnObs,7,60,365,60);
     setListaCampos( false, "GRPUSU", "SG");
     lcCampos.addPostListener(this);

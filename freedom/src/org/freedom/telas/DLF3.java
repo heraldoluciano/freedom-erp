@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -64,7 +64,7 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
     btSalvar.setEnabled(false);
 
     setPainel(pinCab);
-    adic(new JLabel("Código e descrição da chave"),7,0,250,20);
+    adic(new JLabelPad("Código e descrição da chave"),7,0,250,20);
     adic(txtCod,7,20,80,20);
     adic(txtDesc,90,20,300,20);
     adic(btSalvar,395,10,30,30);

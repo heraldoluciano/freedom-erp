@@ -22,7 +22,7 @@ package org.freedom.telas;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JProgressBar;
 
 import org.freedom.componentes.JPanelPad;
@@ -37,7 +37,7 @@ public class FAndamento extends JFrame {
     pb.setMinimum(iMin);
     setTitle("Andamento");
     getContentPane().setLayout(new GridLayout(1,1));
-    pin.adic(new JLabel(sLabel),7,20,200,20);
+    pin.adic(new JLabelPad(sLabel),7,20,200,20);
     pin.adic(pb,7,60,280,20);
     getContentPane().add(pin);
   }

@@ -24,7 +24,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -37,12 +37,12 @@ public class DLSubGrupo extends FFDialogo {
   private JTextFieldPad txtCodSubGrup = new JTextFieldPad();
   private JTextFieldPad txtDescSubGrup = new JTextFieldPad(50);
   private JTextFieldPad txtSiglaSubGrup = new JTextFieldPad(10);
-  private JLabel lbCodPai = new JLabel("Código");
-  private JLabel lbDescPai = new JLabel("Descrição do grupo superior");
-  private JLabel lbSiglaPai = new JLabel("Sigla");
-  private JLabel lbCodSubGrup = new JLabel("Código");
-  private JLabel lbDescSubGrup = new JLabel("Descrição");
-  private JLabel lbSiglaSubGrup = new JLabel("Sigla");
+  private JLabelPad lbCodPai = new JLabelPad("Código");
+  private JLabelPad lbDescPai = new JLabelPad("Descrição do grupo superior");
+  private JLabelPad lbSiglaPai = new JLabelPad("Sigla");
+  private JLabelPad lbCodSubGrup = new JLabelPad("Código");
+  private JLabelPad lbDescSubGrup = new JLabelPad("Descrição");
+  private JLabelPad lbSiglaSubGrup = new JLabelPad("Sigla");
   public DLSubGrupo(String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla) {
     setTitulo("Novo Sub-Grupo");
     setAtribos(400,170);

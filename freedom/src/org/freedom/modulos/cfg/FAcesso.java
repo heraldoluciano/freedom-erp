@@ -35,7 +35,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -99,11 +99,11 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
     setPanel(pnCliente);
     setPainel(pinTop);
     
-    adic(new JLabel("ID Usuário"),7,0,100,20);
+    adic(new JLabelPad("ID Usuário"),7,0,100,20);
     adic(txtCodUsu,7,20,100,20);
-    adic(new JLabel("Nome"),110,0,250,20);
+    adic(new JLabelPad("Nome"),110,0,250,20);
     adic(txtNomeUsu,110,20,250,20);
-	adic(new JLabel("Filial"),7,40,250,20);
+	adic(new JLabelPad("Filial"),7,40,250,20);
 	adic(cbFiliais,7,60,353,20);
     
     c.add(pinTop,BorderLayout.NORTH);

@@ -30,7 +30,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -54,8 +54,8 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
   private JButton btAnt = new JButton(Icone.novo("btAnt.gif"));
   private JButton btPrim = new JButton(Icone.novo("btPrim.gif"));
   private JButton btUlt = new JButton(Icone.novo("btUlt.gif"));
-  private JLabel lbPag = new JLabel();
-  private JLabel lbImp = new JLabel("Impressora: ");
+  private JLabelPad lbPag = new JLabelPad();
+  private JLabelPad lbImp = new JLabelPad("Impressora: ");
   
   private JPanelPad pinCab = new JPanelPad(81,45);
   private JButton btMais = new JButton(Icone.novo("btZoomMais.gif"));

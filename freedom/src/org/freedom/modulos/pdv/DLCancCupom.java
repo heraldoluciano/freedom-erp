@@ -37,7 +37,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -111,15 +111,15 @@ public class DLCancCupom extends FFDialogo implements ActionListener,MouseListen
     
 		pnRodape.add(pnBt, BorderLayout.WEST);			
 			
-		pinCab.adic(new JLabel("Cód da Venda"),7,5,80,20);
+		pinCab.adic(new JLabelPad("Cód da Venda"),7,5,80,20);
 		pinCab.adic(txtVenda,7,25,80,20);
-		pinCab.adic(new JLabel("Nota"),90,5,80,20);		
+		pinCab.adic(new JLabelPad("Nota"),90,5,80,20);		
 		pinCab.adic(txtNota,90,25,80,20);
-		pinCab.adic(new JLabel("Série"),173,5,30,20);
+		pinCab.adic(new JLabelPad("Série"),173,5,30,20);
 		pinCab.adic(txtSerie,173,25,30,20);
-		pinCab.adic(new JLabel("Data"),206,5,80,20);		
+		pinCab.adic(new JLabelPad("Data"),206,5,80,20);		
 		pinCab.adic(txtData,206,25,80,20);
-		pinCab.adic(new JLabel("Valor total"),289,5,120,20);
+		pinCab.adic(new JLabelPad("Valor total"),289,5,120,20);
 		pinCab.adic(txtValor,289,25,120,20);
 		pinCab.adic(btExec,425,15,30,30);
 		pinCab.adic(cbInteira,7,55,200,20);

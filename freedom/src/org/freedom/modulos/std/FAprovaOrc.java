@@ -41,7 +41,7 @@ import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -124,15 +124,15 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
 
-		pinCab.adic(new JLabel("N. orçamento"),7,0,120,20);
+		pinCab.adic(new JLabelPad("N. orçamento"),7,0,120,20);
 		pinCab.adic(txtCodOrc,7,20,85,20);
-		pinCab.adic(new JLabel("Cód.cli."),95,0,250,20);
+		pinCab.adic(new JLabelPad("Cód.cli."),95,0,250,20);
 		pinCab.adic(txtCodCli,95,20,50,20);
-		pinCab.adic(new JLabel("Razão do cliente"),148,0,250,20);
+		pinCab.adic(new JLabelPad("Razão do cliente"),148,0,250,20);
 		pinCab.adic(txtNomeCli,148,20,203,20);
-		pinCab.adic(new JLabel("Data"),354,0,75,20);
+		pinCab.adic(new JLabelPad("Data"),354,0,75,20);
 		pinCab.adic(txtDtOrc,354,20,83,20);
-		pinCab.adic(new JLabel("Validade"),440,0,75,20);
+		pinCab.adic(new JLabelPad("Validade"),440,0,75,20);
 		pinCab.adic(txtDtVal,440,20,83,20);
 		
 		cbTodos.setVlrString("N");
@@ -147,9 +147,9 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		pinRod.adic(txtVlrAprovado,240,20,97,20);
 		pinRod.adic(txtTotal,340,20,100,20);
 		
-		pinRod.adic(new JLabel("Vlr. aceito"),140,0,97,20);
-		pinRod.adic(new JLabel("Vlr. aprov."),240,0,97,20);
-		pinRod.adic(new JLabel("Vlr. total"),340,0,100,20);
+		pinRod.adic(new JLabelPad("Vlr. aceito"),140,0,97,20);
+		pinRod.adic(new JLabelPad("Vlr. aprov."),240,0,97,20);
+		pinRod.adic(new JLabelPad("Vlr. total"),340,0,100,20);
     
 		getTela().add(pnCli,BorderLayout.CENTER);
 		pnCli.add(pinCab,BorderLayout.NORTH);

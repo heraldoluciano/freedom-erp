@@ -30,7 +30,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextFieldPad;
@@ -69,15 +69,15 @@ public class DLConsultaBaixa extends FFDialogo {
     txtVlrPago.setAtivo(false);
     txtVlrAberto.setAtivo(false);
     
-    pinConsulta.adic(new JLabel("V.Parcela"),7,0,250,20);
+    pinConsulta.adic(new JLabelPad("V.Parcela"),7,0,250,20);
     pinConsulta.adic(txtVlrParc,7,20,100,20);
-    pinConsulta.adic(new JLabel("V.Juros"),110,0,110,20);
+    pinConsulta.adic(new JLabelPad("V.Juros"),110,0,110,20);
     pinConsulta.adic(txtVlrJuros,110,20,97,20);
-    pinConsulta.adic(new JLabel("V.Desconto"),210,0,110,20);
+    pinConsulta.adic(new JLabelPad("V.Desconto"),210,0,110,20);
     pinConsulta.adic(txtVlrDesc,210,20,97,20);
-    pinConsulta.adic(new JLabel("V.Pago"),310,0,110,20);
+    pinConsulta.adic(new JLabelPad("V.Pago"),310,0,110,20);
     pinConsulta.adic(txtVlrPago,310,20,97,20);
-    pinConsulta.adic(new JLabel("V.Aberto"),410,0,110,20);
+    pinConsulta.adic(new JLabelPad("V.Aberto"),410,0,110,20);
     pinConsulta.adic(txtVlrAberto,410,20,97,20);
     
     tabConsulta.adicColuna("Data do pagto.");

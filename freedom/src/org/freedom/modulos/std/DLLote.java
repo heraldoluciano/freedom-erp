@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -42,11 +42,11 @@ public class DLLote extends FFDialogo {
   private JTextFieldPad txtDataINILote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtVenctoLote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK();
-  private JLabel lbCodLote = new JLabel("Cód.lote");
-  private JLabel lbCodProd = new JLabel("Cód.prod.");
-  private JLabel lbDescProd = new JLabel("Descrição do produto");
-  private JLabel lbDataINILote = new JLabel("Data ini.");
-  private JLabel lbVenctoLote = new JLabel("Vencimento");
+  private JLabelPad lbCodLote = new JLabelPad("Cód.lote");
+  private JLabelPad lbCodProd = new JLabelPad("Cód.prod.");
+  private JLabelPad lbDescProd = new JLabelPad("Descrição do produto");
+  private JLabelPad lbDataINILote = new JLabelPad("Data ini.");
+  private JLabelPad lbVenctoLote = new JLabelPad("Vencimento");
   public DLLote (Component cOrig,String sCodLote, String sCodProd, String sDescProd, Connection cn) {
   	super(cOrig);
     setConexao(cn);

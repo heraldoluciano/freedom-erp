@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -61,10 +61,10 @@ public class FRInvPeps extends FRelatorio {
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
 
-  private JLabel lbCodMarca = new JLabel("Cód.marca");
-  private JLabel lbCodGrup = new JLabel("Cód.grupo");
-  private JLabel lbDescMarca = new JLabel("Descrição da marca");
-  private JLabel lbDescGrup = new JLabel("Descrição do grupo");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescMarca = new JLabelPad("Descrição da marca");
+  private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
   
   private JRadioGroup rgOrdem = null;
   private Vector vDesc = new Vector();
@@ -119,11 +119,11 @@ public class FRInvPeps extends FRelatorio {
     txtCodGrup.setFK(true);
     txtCodGrup.setNomeCampo("CodGrup");
     
-    adic(new JLabel("Ordem:"),7,0,100,20);
+    adic(new JLabelPad("Ordem:"),7,0,100,20);
     adic(rgOrdem,7,20,100,60);
-    adic(new JLabel("Estoque de:"),117,0,100,20);
+    adic(new JLabelPad("Estoque de:"),117,0,100,20);
     adic(txtData,117,20,100,20);
-    adic(new JLabel("Página inicial:"),117,40,100,20);
+    adic(new JLabelPad("Página inicial:"),117,40,100,20);
     adic(txtPagina,117,60,100,20);
     adic(lbCodMarca,7,80,250,20);
     adic(txtCodMarca,7,100,80,20);

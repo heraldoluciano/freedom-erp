@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -65,12 +65,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JPanel pnCli = new JPanel(new BorderLayout());
   private JPanel pnTabMod = new JPanel(new BorderLayout());
   private JPanel pnCliTab = new JPanel(new BorderLayout());
-  private JLabel lbCodModG = new JLabel("Cód.mod.gp");
-  private JLabel lbDescModG = new JLabel("Descrição do modelo de grupo");
-  private JLabel lbDescINIModG = new JLabel("Descrição ini.");
-  private JLabel lbRefINIModG = new JLabel("Ref.ini.");
-  private JLabel lbCodFabINIModG = new JLabel("Cod.fab.ini.");
-  private JLabel lbCodBarINIModG = new JLabel("Cod.bar.ini.");
+  private JLabelPad lbCodModG = new JLabelPad("Cód.mod.gp");
+  private JLabelPad lbDescModG = new JLabelPad("Descrição do modelo de grupo");
+  private JLabelPad lbDescINIModG = new JLabelPad("Descrição ini.");
+  private JLabelPad lbRefINIModG = new JLabelPad("Ref.ini.");
+  private JLabelPad lbCodFabINIModG = new JLabelPad("Cod.fab.ini.");
+  private JLabelPad lbCodBarINIModG = new JLabelPad("Cod.bar.ini.");
   private JTextFieldPad txtCodModG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescModG = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtDescINIModG = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
@@ -88,7 +88,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JButton btNadaMod = new JButton(Icone.novo("btNada.gif"));
   private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
   private JProgressBar pbGrade = new JProgressBar();
-  private JLabel lbAnd = new JLabel("Andamento:");
+  private JLabelPad lbAnd = new JLabelPad("Andamento:");
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcModG = new ListaCampos(this);
   int iCodProd = 0;

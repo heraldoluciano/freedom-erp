@@ -25,9 +25,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
-;
+
 public class FTabDados extends FDados implements KeyListener{
   private boolean Ctrl = false;
   public JTabbedPanePad tpn = new JTabbedPanePad();

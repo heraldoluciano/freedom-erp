@@ -32,7 +32,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -53,7 +53,7 @@ public class FRVendasFisico extends FRelatorio {
   
   private ListaCampos lcVend = new ListaCampos(this);
   private JRadioGroup rgOrdem = null;
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   public FRVendasFisico() {
@@ -64,7 +64,7 @@ public class FRVendasFisico extends FRelatorio {
     txtDatafim.setVlrDate(cPeriodo.getTime());
 	cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
 	txtDataini.setVlrDate(cPeriodo.getTime());
-	JLabel lbLinha = new JLabel();
+	JLabelPad lbLinha = new JLabelPad();
 	lbLinha.setBorder(BorderFactory.createEtchedBorder());
 	
 	vLabs.addElement("Código");
@@ -74,11 +74,11 @@ public class FRVendasFisico extends FRelatorio {
 	rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
 	rgOrdem.setVlrString("D");
 	
-	adic(new JLabel("Periodo:"),7,5,100,20);
+	adic(new JLabelPad("Periodo:"),7,5,100,20);
 	adic(lbLinha,60,15,210,2);
-	adic(new JLabel("De:"),7,30,30,20);
+	adic(new JLabelPad("De:"),7,30,30,20);
 	adic(txtDataini,32,30,97,20);
-	adic(new JLabel("Até:"),140,30,30,20);
+	adic(new JLabelPad("Até:"),140,30,30,20);
 	adic(txtDatafim,170,30,100,20);
 	adic(lbOrdem,7,105,80,15);
 	adic(rgOrdem,7,125,263,30);
@@ -93,9 +93,9 @@ public class FRVendasFisico extends FRelatorio {
 		txtCodVend.setFK(true);
 	  	txtCodVend.setTabelaExterna(lcVend);
 	 
-	  	adic(new JLabel("Cód.repr."),7,55,210,20);
+	  	adic(new JLabelPad("Cód.repr."),7,55,210,20);
 		adic(txtCodVend,7,75,60,20);
-		adic(new JLabel("Nome do representante"),70,55,210,20);
+		adic(new JLabelPad("Nome do representante"),70,55,210,20);
 		adic(txtDescVend,70,75,200,20);
 	
 	

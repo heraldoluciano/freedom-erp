@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -55,7 +55,7 @@ public class FRBoleto extends FRelatorio {
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtParc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
  
-  private JLabel lbParc = new JLabel("Imp.Parcela  :");
+  private JLabelPad lbParc = new JLabelPad("Imp.Parcela  :");
   
   private ListaCampos lcModBol = new ListaCampos(this);
   private ListaCampos lcVenda = new ListaCampos(this);
@@ -99,17 +99,17 @@ public class FRBoleto extends FRelatorio {
      lcCli.montaSql(false, "CLIENTE", "VD");
      txtCodCli.setTabelaExterna(lcCli);
 
-     adic(new JLabel("Venda"),7,5,80,20);
+     adic(new JLabelPad("Venda"),7,5,80,20);
      adic(txtCodVenda,7,25,80,20);
-     adic(new JLabel("Doc."),90,5,97,20);
+     adic(new JLabelPad("Doc."),90,5,97,20);
      adic(txtDocVenda,90,25,97,20);
-     adic(new JLabel("Data"),190,5,97,20);
+     adic(new JLabelPad("Data"),190,5,97,20);
      adic(txtDataVenda,190,25,97,20);
-     adic(new JLabel("Cliente"),290,5,200,20);
+     adic(new JLabelPad("Cliente"),290,5,200,20);
      adic(txtRazCli,290,25,200,20);
-     adic(new JLabel("Cód.mod."),7,45,300,20);
+     adic(new JLabelPad("Cód.mod."),7,45,300,20);
      adic(txtCodModBol,7,65,80,20);
-     adic(new JLabel("Descrição do modelo"),90,45,300,20);
+     adic(new JLabelPad("Descrição do modelo"),90,45,300,20);
      adic(txtDescModBol,90,65,300,20);
      adic(lbParc,7,95,90,20);
      adic(txtParc,100,95,35,20);

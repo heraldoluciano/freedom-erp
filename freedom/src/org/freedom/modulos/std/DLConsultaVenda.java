@@ -28,7 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.GuardaCampo;
@@ -75,20 +75,20 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 
     
     
-    pinConsulta.adic(new JLabel("Nº pedido"),7,0,100,20);
+    pinConsulta.adic(new JLabelPad("Nº pedido"),7,0,100,20);
     pinConsulta.adic(txtCodVenda,7,20,100,20);
-    pinConsulta.adic(new JLabel("Doc.venda"),110,0,200,20);
+    pinConsulta.adic(new JLabelPad("Doc.venda"),110,0,200,20);
     pinConsulta.adic(txtDocVenda,110,20,100,20);
     
-    pinConsulta.adic(new JLabel("Cód.p.pag."),212,0,200,20);
+    pinConsulta.adic(new JLabelPad("Cód.p.pag."),212,0,200,20);
     pinConsulta.adic(txtCodPlanoPag,212,20,77,20);
-    pinConsulta.adic(new JLabel("Descrição do plano"),292,0,200,20);
+    pinConsulta.adic(new JLabelPad("Descrição do plano"),292,0,200,20);
     pinConsulta.adic(txtDescPlanoPag,292,20,187,20);
-    pinConsulta.adic(new JLabel("Data emissão"),7,40,150,20);
+    pinConsulta.adic(new JLabelPad("Data emissão"),7,40,150,20);
     pinConsulta.adic(txtDtEmitVenda,7,60,110,20);
-    pinConsulta.adic(new JLabel("Data saida"),120,40,150,20);
+    pinConsulta.adic(new JLabelPad("Data saida"),120,40,150,20);
     pinConsulta.adic(txtDtSaida,120,60,100,20);
-    pinConsulta.adic(new JLabel("Valor total"),223,40,100,20);
+    pinConsulta.adic(new JLabelPad("Valor total"),223,40,100,20);
     pinConsulta.adic(txtVlrVenda,223,60,100,20);
     
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");

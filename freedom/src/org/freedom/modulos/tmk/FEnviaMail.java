@@ -54,7 +54,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -97,7 +97,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 	private JPanelPad pinRod = new JPanelPad(0,0);
 	private JPanel pnCenter = new JPanel(new BorderLayout());
 	private JProgressBar pbAnd = new JProgressBar();
-	private JLabel lbStatus = new JLabel("Pronto.");
+	private JLabelPad lbStatus = new JLabelPad("Pronto.");
 	private JRadioGroup rgTipo = null;
 	private ListaCampos lcAtiv = new ListaCampos(this,"");
 	private FPrincipal fPrim;
@@ -148,16 +148,16 @@ public class FEnviaMail extends FFilho implements ActionListener {
 		lcAtiv.setReadOnly(true);
 		lcAtiv.montaSql(false, "ATIVIDADE", "TK");
 		
-		pinGeral.adic(new JLabel("Cód.ativ."),7,0,290,20);
+		pinGeral.adic(new JLabelPad("Cód.ativ."),7,0,290,20);
 		pinGeral.adic(txtCodAtiv,7,20,80,20);
-		pinGeral.adic(new JLabel("Descrição da atividade"),90,0,290,20);
+		pinGeral.adic(new JLabelPad("Descrição da atividade"),90,0,290,20);
 		pinGeral.adic(txtDescAtiv,90,20,250,20);
-		pinGeral.adic(new JLabel("De:"),7,40,333,20);
+		pinGeral.adic(new JLabelPad("De:"),7,40,333,20);
 		pinGeral.adic(txtDe,7,60,333,20);
-		pinGeral.adic(new JLabel("Assunto:"),7,80,333,20);
+		pinGeral.adic(new JLabelPad("Assunto:"),7,80,333,20);
 		pinGeral.adic(txtAssunto,7,100,333,20);
 		
-		pinArq.adic(new JLabel("Arquivo"),7,0,200,20);
+		pinArq.adic(new JLabelPad("Arquivo"),7,0,200,20);
 		pinArq.adic(txtArqMen,7,20,313,20);
 		pinArq.adic(btBuscaArq,320,20,20,20);
 		pinArq.adic(rgTipo,7,45,333,30);

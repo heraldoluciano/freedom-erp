@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -60,14 +60,14 @@ public class FRExtrato extends FRelatorio {
     txtCodConta.setFK(true);
     txtCodConta.setNomeCampo("NumConta");
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,117,20);
-    adic(new JLabel("Até:"),160,25,22,20);
+    adic(new JLabelPad("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,120,20);
-    adic(new JLabel("Nº conta"),7,50,250,20);
+    adic(new JLabelPad("Nº conta"),7,50,250,20);
     adic(txtCodConta,7,70,80,20);
-    adic(new JLabel("Descrição da conta"),90,50,250,20);
+    adic(new JLabelPad("Descrição da conta"),90,50,250,20);
     adic(txtDescConta,90,70,200,20);
 
 	GregorianCalendar cPeriodo = new GregorianCalendar();

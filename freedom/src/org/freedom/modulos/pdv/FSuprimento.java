@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.SwingConstants;
 
 import org.freedom.componentes.JTextFieldFK;
@@ -71,22 +71,22 @@ public class FSuprimento extends FFDialogo {
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtSldAnt.setHorizontalAlignment(SwingConstants.RIGHT);
 					
-		adic(new JLabel("Última operação"),7,5,95,20);
+		adic(new JLabelPad("Última operação"),7,5,95,20);
 		adic(txtDataAnt,7,25,90,20);
-		adic(new JLabel("Saldo final"),104,5,80,20);
+		adic(new JLabelPad("Saldo final"),104,5,80,20);
 		adic(txtSldAnt,104,25,80,20);
-		adic(new JLabel("Status do caixa"),191,5,130,20);
+		adic(new JLabelPad("Status do caixa"),191,5,130,20);
 		adic(txtStatusAnt,191,25,130,20);
 		
-		adic(new JLabel("Último operador"),7,45,150,20);
+		adic(new JLabelPad("Último operador"),7,45,150,20);
 		adic(txtUsuarioAnt,7,65,150,20);
 		
-		adic(new JLabel("Operador atual"),7,100,150,20);
+		adic(new JLabelPad("Operador atual"),7,100,150,20);
 		adic(txtUsuarioAtual,7,120,150,20);		
-		adic(new JLabel("Data"),164,100,90,20);
+		adic(new JLabelPad("Data"),164,100,90,20);
 		adic(txtData,164,120,90,20);
 		
-		adic(new JLabel("Valor do suprimento"),7,140,120,20);
+		adic(new JLabelPad("Valor do suprimento"),7,140,120,20);
 		adic(txtValor,7,160,120,20);
 		
 	}	

@@ -33,7 +33,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -62,7 +62,7 @@ public class DLNovoAgen extends FFDialogo {
 	private JTextAreaPad txaDescAtend = new JTextAreaPad();
 	private ListaCampos lcUsuario = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
-	private JLabel lbImg = new JLabel(Icone.novo("bannerTMKagendamento.jpg"));
+	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKagendamento.jpg"));
 	Vector vVals = new Vector();
 	Vector vLabs = new Vector();
 	private JComboBoxPad cbTipo = null;
@@ -115,26 +115,26 @@ public class DLNovoAgen extends FFDialogo {
 		pnCab.add(lbImg);
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
-		adic(new JLabel("Cód.usu."),7,5,200,20);
+		adic(new JLabelPad("Cód.usu."),7,5,200,20);
 		adic(txtIdUsu,7,25,80,20);
-		adic(new JLabel("Nome do usuario"),90,5,200,20);
+		adic(new JLabelPad("Nome do usuario"),90,5,200,20);
 		adic(txtNomeUsu,90,25,197,20);
-		adic(new JLabel("Tipo"),290,5,150,20);
+		adic(new JLabelPad("Tipo"),290,5,150,20);
 		adic(cbTipo,290,25,100,20);
-		adic(new JLabel("Data inicio:"),7,45,100,20);
+		adic(new JLabelPad("Data inicio:"),7,45,100,20);
 		adic(txtDataini,7,65,100,20);
-		adic(new JLabel("hora"),110,45,87,20);
+		adic(new JLabelPad("hora"),110,45,87,20);
 		adic(txtHoraini,110,65,87,20);
-		adic(new JLabel("Data fim:"),200,45,97,20);
+		adic(new JLabelPad("Data fim:"),200,45,97,20);
 		adic(txtDatafim,200,65,100,20);
-		adic(new JLabel("hora"),300,45,87,20);
+		adic(new JLabelPad("hora"),300,45,87,20);
 		adic(txtHorafim,300,65,87,20);
-		adic(new JLabel("Assunto"),7,85,380,20);
+		adic(new JLabelPad("Assunto"),7,85,380,20);
 		adic(txtAssunto,7,105,380,20);
 		
-		JLabel lbChamada = new JLabel(" Ação: ");
+		JLabelPad lbChamada = new JLabelPad(" Ação: ");
 		lbChamada.setOpaque(true);
-		JLabel lbLinha = new JLabel();
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
 		adic(lbChamada,20,130,60,20);

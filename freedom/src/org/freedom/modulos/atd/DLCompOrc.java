@@ -28,7 +28,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -41,11 +41,11 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
   private JTextFieldPad txtVlrDescOrc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtPercAdicOrc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,6,2);
   private JTextFieldPad txtVlrAdicOrc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-  private JLabel lbPercDescOrc = new JLabel("% Desc.");
-  private JLabel lbVlrDescOrc = new JLabel("V Desc.");
-  private JLabel lbPercAdicOrc = new JLabel("% Adic.");
-  private JLabel lbVlrAdicOrc = new JLabel("V Adic.");
-  private JLabel lbCodPlanoPag = new JLabel("Código e Desc. do plano de pagto.");
+  private JLabelPad lbPercDescOrc = new JLabelPad("% Desc.");
+  private JLabelPad lbVlrDescOrc = new JLabelPad("V Desc.");
+  private JLabelPad lbPercAdicOrc = new JLabelPad("% Adic.");
+  private JLabelPad lbVlrAdicOrc = new JLabelPad("V Adic.");
+  private JLabelPad lbCodPlanoPag = new JLabelPad("Código e Desc. do plano de pagto.");
   private JCheckBoxPad cbImpOrc = new JCheckBoxPad("Imprime Orçamento?","S","N");
   BigDecimal bValProd;
   boolean bDescIt = false;
@@ -95,7 +95,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
   public void setFKAtend(JTextFieldPad txtCodAtend,JTextFieldFK txtDescAtend) {
   	txtCodAtend.setRequerido(true);
   	
-	adic(new JLabel("Código e descrição do atendente."),7,40,270,20);
+	adic(new JLabelPad("Código e descrição do atendente."),7,40,270,20);
 	adic(txtCodAtend,7,60,80,20);
 	adic(txtDescAtend,90,60,260,20);
 

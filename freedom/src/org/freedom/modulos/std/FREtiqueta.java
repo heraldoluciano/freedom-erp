@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -79,17 +79,17 @@ public class FREtiqueta extends FRelatorio {
      txtCodTipo.setFK(true);
      txtCodTipo.setNomeCampo("CodTipoCli");
               
-     adic(new JLabel("Cód.setor"),7,5,280,20);
+     adic(new JLabelPad("Cód.setor"),7,5,280,20);
      adic(txtCodSetor,7,25,80,20);
-     adic(new JLabel("Descrição do setor"),90,5,280,20);
+     adic(new JLabelPad("Descrição do setor"),90,5,280,20);
      adic(txtDescSetor,90,25,200,20);
-     adic(new JLabel("Cód.tp.cli."),7,45,280,20);
+     adic(new JLabelPad("Cód.tp.cli."),7,45,280,20);
      adic(txtCodTipo,7,65,80,20);
-     adic(new JLabel("Descrição do tipo de cliente"),90,45,280,20);
+     adic(new JLabelPad("Descrição do tipo de cliente"),90,45,280,20);
      adic(txtDescTipo,90,65,200,20);
-     adic(new JLabel("Cód.mod."),7,85,280,20);
+     adic(new JLabelPad("Cód.mod."),7,85,280,20);
      adic(txtCodModEtiq,7,105,80,20);
-     adic(new JLabel("Descrição do modelo"),90,85,280,20);
+     adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
      adic(txtDescModEtiq,90,105,200,20);
   }   
   

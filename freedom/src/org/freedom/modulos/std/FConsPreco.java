@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -87,7 +87,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 		montaTabela();
 		
 		txtDescProd.setTipo(JTextFieldPad.TP_STRING,50,10);
-		pinCab.adic(new JLabel("Pesquisa descrição - F2"),7,2,200,20);
+		pinCab.adic(new JLabelPad("Pesquisa descrição - F2"),7,2,200,20);
 		pinCab.adic(txtDescProd,7,25,300,20);
 		
 		//pinGrid.add(spPreco, BorderLayout.CENTER);

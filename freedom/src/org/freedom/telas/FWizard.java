@@ -30,7 +30,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
@@ -47,7 +47,7 @@ public class FWizard extends FFDialogo {
     private JButton btProximo = new JButton("Próximo >");
     private JButton btFinalizar = new JButton("Finalizar");
     private JButton btCancelar = new JButton("Cancelar");
-    private JLabel lbTit = new JLabel("Título");
+    private JLabelPad lbTit = new JLabelPad("Título");
     Dimension dimBotao = new Dimension(100,30);
     Object oInfoCache[] = null;
     protected boolean podeVoltar = false;

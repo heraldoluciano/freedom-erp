@@ -23,7 +23,7 @@
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.JPanelPad;
@@ -43,7 +43,7 @@ public class FPrefereProd extends FTabDados {
         adicTab("Geral", pinGeral);
 
         JPanelPad pinRespon = new JPanelPad();
-        JLabel lbRespon = new JLabel(" Reponsável técnico");
+        JLabelPad lbRespon = new JLabelPad(" Reponsável técnico");
         lbRespon.setOpaque(true);
         
         adic(lbRespon,12,10,130,20);

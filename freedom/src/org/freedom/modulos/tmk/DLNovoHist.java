@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -60,7 +60,7 @@ public class DLNovoHist extends FFDialogo {
 	private ListaCampos lcCont = new ListaCampos(this);
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
-	private JLabel lbImg = new JLabel(Icone.novo("bannerTMKhistorico.jpg"));
+	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKhistorico.jpg"));
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
 	private JComboBoxPad cbSit = null; 
@@ -97,18 +97,18 @@ public class DLNovoHist extends FFDialogo {
 		pnCab.add(lbImg);
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
-		adic(new JLabel("Código e nome do contato"),7,5,200,20);
+		adic(new JLabelPad("Código e nome do contato"),7,5,200,20);
 		adic(txtCodCont,7,25,80,20);
 		adic(txtNomeCont,90,25,197,20);
-		adic(new JLabel("Situação"),290,5,150,20);
+		adic(new JLabelPad("Situação"),290,5,150,20);
 		adic(cbSit,290,25,150,20);
-		adic(new JLabel("Código e nome do atendente"),7,45,200,20);
+		adic(new JLabelPad("Código e nome do atendente"),7,45,200,20);
 		adic(txtCodAtend,7,65,80,20);
 		adic(txtNomeAtend,90,65,197,20);
 		
-		JLabel lbChamada = new JLabel(" Chamada ");
+		JLabelPad lbChamada = new JLabelPad(" Chamada ");
 		lbChamada.setOpaque(true);
-		JLabel lbLinha = new JLabel();
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
 		adic(lbChamada,20,90,80,20);

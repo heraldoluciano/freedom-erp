@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -49,10 +49,10 @@ public class FREstoqueMin extends FRelatorio {
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
   private JTextFieldPad txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
-  private JLabel lbCodGrup = new JLabel("Cód.grupo");
-  private JLabel lbDescGrup = new JLabel("Descrição do grupo");
-  private JLabel lbCodMarca = new JLabel("Cód.marca");
-  private JLabel lbDescMarca = new JLabel("Descrição da marca");
+  private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescMarca = new JLabelPad("Descrição da marca");
   private JRadioGroup rgOrdem = null;
   private Vector vLabs = new Vector(2);
   private Vector vVals = new Vector(2);

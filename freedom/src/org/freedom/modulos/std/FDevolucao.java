@@ -31,7 +31,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -69,7 +69,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
     private ListaCampos lcVenda1a = null;
     private ListaCampos lcCli1c = null;
     private JButton btBuscaItVenda1b = new JButton("Buscar itens ->");
-    private JLabel lbBuscaItVenda1b = new JLabel("0 iten(s) a ser(em) adicionado(s)");
+    private JLabelPad lbBuscaItVenda1b = new JLabelPad("0 iten(s) a ser(em) adicionado(s)");
     private Vector vItVenda1b = null;
     private FPrincipal fPrim;
     public FDevolucao(Component cPai) {
@@ -99,7 +99,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
               );
         rg1.setBorder(BorderFactory.createEmptyBorder());
         
-        adic(new JLabel("Documento de entrada:"),20,10,250,20);
+        adic(new JLabelPad("Documento de entrada:"),20,10,250,20);
         adic(rg1,20,40,300,80);
         
     }
@@ -147,16 +147,16 @@ public class FDevolucao extends FWizard implements CarregaListener{
         txtCodVenda1a.setFK(true);
         txtCodVenda1a.setNomeCampo("CodVenda");
         
-        adic(new JLabel("Informações da venda"),20,10,250,20);
-        adic(new JLabel("Nº pedido"),37,40,80,20);
+        adic(new JLabelPad("Informações da venda"),20,10,250,20);
+        adic(new JLabelPad("Nº pedido"),37,40,80,20);
         adic(txtCodVenda1a,37,60,80,20);
-        adic(new JLabel("Doc."),120,40,77,20);
+        adic(new JLabelPad("Doc."),120,40,77,20);
         adic(txtDocVenda1a,120,60,77,20);
-        adic(new JLabel("Série"),200,40,67,20);
+        adic(new JLabelPad("Série"),200,40,67,20);
         adic(txtSerie,200,60,67,20);
-        adic(new JLabel("Valor"),270,40,97,20);
+        adic(new JLabelPad("Valor"),270,40,97,20);
         adic(txtVlrLiqVenda,270,60,97,20);
-        adic(new JLabel("Emissão"),370,40,100,20);
+        adic(new JLabelPad("Emissão"),370,40,100,20);
         adic(txtDataVenda1a,370,60,100,20);
         adic(rg1a,40,100,250,60);
         
@@ -222,9 +222,9 @@ public class FDevolucao extends FWizard implements CarregaListener{
         txtCodCli1c.setFK(true);
         txtCodCli1c.setNomeCampo("CodCli");
         
-        adic(new JLabel("Informações do cliente"),20,10,250,20);
-        adic(new JLabel("Cód.cli."),37,40,250,20);
-        adic(new JLabel("Razão social do cliente"),120,40,300,20);
+        adic(new JLabelPad("Informações do cliente"),20,10,250,20);
+        adic(new JLabelPad("Cód.cli."),37,40,250,20);
+        adic(new JLabelPad("Razão social do cliente"),120,40,300,20);
         adic(txtCodCli1c,37,60,80,20);
         adic(txtRazCli1c,120,60,300,20);
         adic(rg1c,40,100,250,60);
@@ -238,13 +238,13 @@ public class FDevolucao extends FWizard implements CarregaListener{
         setPainel(pin1a1);
 
         if (cancVenda()) {
-            adic(new JLabel("A venda foi cancelada com sucesso."),20,10,350,20);
+            adic(new JLabelPad("A venda foi cancelada com sucesso."),20,10,350,20);
             podeCancelar = false;
             podeFinalizar = true;
             podeVoltar = false;
         }
         else
-            adic(new JLabel("Não foi possível cancelar a venda."),20,10,350,20);
+            adic(new JLabelPad("Não foi possível cancelar a venda."),20,10,350,20);
     }
     private void mostraPainel1a2() {
 
@@ -253,14 +253,14 @@ public class FDevolucao extends FWizard implements CarregaListener{
         
         int iCodCompra = 0;
         if ((iCodCompra = entrada(txtCodVenda1a.getVlrInteger().intValue(),txtTipoVenda1a.getVlrString())) > 0) {
-            adic(new JLabel("Entrada '"+iCodCompra+"' gerada com sucesso!"),20,10,350,20);
+            adic(new JLabelPad("Entrada '"+iCodCompra+"' gerada com sucesso!"),20,10,350,20);
             abreCompra(iCodCompra);
             podeCancelar = false;
             podeFinalizar = true;
             podeVoltar = false;
         }
         else
-            adic(new JLabel("Não foi possível gerar entrada."),20,10,350,20);
+            adic(new JLabelPad("Não foi possível gerar entrada."),20,10,350,20);
     }
     private void mostraPainel1b1() {
 
@@ -269,14 +269,14 @@ public class FDevolucao extends FWizard implements CarregaListener{
         
         int iCodCompra = 0;
         if ((iCodCompra = entradaParc(vItVenda1b)) > 0) {
-            adic(new JLabel("Entrada '"+iCodCompra+"' gerada com sucesso!"),20,10,350,20);
+            adic(new JLabelPad("Entrada '"+iCodCompra+"' gerada com sucesso!"),20,10,350,20);
             abreCompra(iCodCompra);
             podeCancelar = false;
             podeFinalizar = true;
             podeVoltar = false;
         }
         else
-            adic(new JLabel("Não foi possível gerar entrada."),20,10,350,20);
+            adic(new JLabelPad("Não foi possível gerar entrada."),20,10,350,20);
     }
     private void mostraPainel1c1() {
 
@@ -285,14 +285,14 @@ public class FDevolucao extends FWizard implements CarregaListener{
         
         int iCodFor = 0;
         if ((iCodFor = geraFor(txtCodCli1c.getVlrInteger().intValue())) > 0) {
-            adic(new JLabel("Entrada iniciada com sucesso!"),20,10,350,20);
+            adic(new JLabelPad("Entrada iniciada com sucesso!"),20,10,350,20);
             abreFor(iCodFor);
             podeCancelar = false;
             podeFinalizar = true;
             podeVoltar = false;
         }
         else
-            adic(new JLabel("Não foi possível criar o fornecedor."),20,10,350,20);
+            adic(new JLabelPad("Não foi possível criar o fornecedor."),20,10,350,20);
     }
     private int entrada(int iCodVenda,String sTipoVenda) {
         int iRet = 0;

@@ -26,7 +26,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
@@ -38,10 +38,10 @@ public class DLPlanAnal extends FFDialogo {
   private JTextFieldPad txtDescPai = new JTextFieldPad();
   private JTextFieldPad txtCodAnal = new JTextFieldPad();
   private JTextFieldPad txtDescAnal = new JTextFieldPad(50);
-  private JLabel lbCodPai = new JLabel("Cód.origem");
-  private JLabel lbDescPai = new JLabel("Descrição da origem");
-  private JLabel lbCodAnal = new JLabel("Código");
-  private JLabel lbDescAnal = new JLabel("Descrição");
+  private JLabelPad lbCodPai = new JLabelPad("Cód.origem");
+  private JLabelPad lbDescPai = new JLabelPad("Descrição da origem");
+  private JLabelPad lbCodAnal = new JLabelPad("Código");
+  private JLabelPad lbDescAnal = new JLabelPad("Descrição");
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgTipo = null; 

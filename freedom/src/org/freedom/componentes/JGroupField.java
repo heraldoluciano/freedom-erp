@@ -31,7 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 
@@ -122,7 +122,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
 		if (rs.getString("OBRIGOBJTB").equals("S"))
 			txtCod.setRequerido(true);
 
-		JLabel lbRef = new JLabel("Código e descrição de "+rs.getString("DescTb").trim());
+		JLabelPad lbRef = new JLabelPad("Código e descrição de "+rs.getString("DescTb").trim());
 		lbRef.setBounds(0,iY,330,20);
 	  
 		txtCod.setBounds(0,iY+20,77,20); 

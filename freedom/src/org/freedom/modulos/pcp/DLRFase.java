@@ -24,14 +24,14 @@ package org.freedom.modulos.pcp;
 
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 
 public class DLRFase extends FFDialogo {
   private JRadioGroup rgOrdem = null;
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   public DLRFase() {

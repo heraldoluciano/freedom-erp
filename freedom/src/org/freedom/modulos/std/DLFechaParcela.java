@@ -24,7 +24,7 @@ import java.awt.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
@@ -44,9 +44,9 @@ public class DLFechaParcela extends FFDialogo {
     txtDtVencItRec.setVlrDate(dDtVencItRec);
     txtVlrDescItRec.setVlrBigDecimal(bigDescItRec);
 
-    adic(new JLabel("Valor"),7,0,100,20);
-    adic(new JLabel("Vencimento"),110,0,100,20);
-    adic(new JLabel("Desconto"),7,40,100,20);
+    adic(new JLabelPad("Valor"),7,0,100,20);
+    adic(new JLabelPad("Vencimento"),110,0,100,20);
+    adic(new JLabelPad("Desconto"),7,40,100,20);
     adic(txtParcItRec,7,20,100,20);
     adic(txtDtVencItRec,110,20,100,20);
     adic(txtVlrDescItRec,7,60,100,20);

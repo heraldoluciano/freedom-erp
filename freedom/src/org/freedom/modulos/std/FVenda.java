@@ -42,7 +42,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.JTextField;
@@ -211,7 +211,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     pnCenter.add(spTab,BorderLayout.CENTER);
 
     JPanel pnLab = new JPanel(new GridLayout(1,1));
-    pnLab.add(new JLabel(" Totais:"));    //Label do painel de totais
+    pnLab.add(new JLabelPad(" Totais:"));    //Label do painel de totais
 
     pnMaster.add(pnCenter,BorderLayout.CENTER);
     
@@ -485,9 +485,9 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
       adicDescFK(txtDescClComis,373, 20, 260, 20, "DescClComis", "Descrição da class. de comis.");
       
       adicCampo(txtPercComisVenda, 640, 20, 57, 20,"PercComisVenda","% comis.",ListaCampos.DB_SI,true);
-      adic(new JLabel("Vlr. comis."), 7, 40, 100, 20);
+      adic(new JLabelPad("Vlr. comis."), 7, 40, 100, 20);
       adic(txtVlrComisVenda, 7, 60, 100, 20);
-      adic(new JLabel("% M. comis."), 110, 40, 100, 20);
+      adic(new JLabelPad("% M. comis."), 110, 40, 100, 20);
       adic(txtMedComisVenda, 110, 60, 80, 20);
       adic(btAltComis, 200, 50, 30, 30);
     }
@@ -523,7 +523,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
       txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),false);
       adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.",ListaCampos.DB_FK,txtDescProd,false);
       adicCampoInvisivel(txtRefProd,"RefProd","Ref.prod.",ListaCampos.DB_SI,false);
-      adic(new JLabel("Ref. prod."), 40, 0, 67, 20);
+      adic(new JLabelPad("Ref. prod."), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
       txtRefProd.setFK(true);
     }
@@ -563,11 +563,11 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     adicCampoInvisivel(txtCodEmpLG,"CodEmpLG","Emp.log.",ListaCampos.DB_SI,false);
     adicCampoInvisivel(txtCodFilialLG,"CodFilialLG","Filial log.",ListaCampos.DB_SI,false);
     adicCampoInvisivel(txtCodLog,"CodLog","Cód.log.",ListaCampos.DB_SI,false);
-    pinTot.adic(new JLabel("Vlr.prod."),7,0,90,20);
+    pinTot.adic(new JLabelPad("Vlr.prod."),7,0,90,20);
     pinTot.adic(txtVlrProdVenda,7,20,90,20);
-    pinTot.adic(new JLabel("Vlr.desc."),7,40,90,20);
+    pinTot.adic(new JLabelPad("Vlr.desc."),7,40,90,20);
     pinTot.adic(txtVlrDescVenda,7,60,90,20);
-    pinTot.adic(new JLabel("Vlr.liq."),7,80,90,20);
+    pinTot.adic(new JLabelPad("Vlr.liq."),7,80,90,20);
     pinTot.adic(txtVlrLiqVenda,7,100,90,20);
     txtCodNat.setStrMascara("#.###");
     lcDet.setWhereAdic("TIPOVENDA='V'");
@@ -848,11 +848,11 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
    	 FFDialogo diag = new FFDialogo(this);
    	 diag.setTitulo("Permissão");
   	 diag.setAtribos(300,140);
-  	 diag.adic(new JLabel("Usuário: "),7,10,100,20);
-  	 diag.adic(new JLabel("Senha: "),7,30,100,20);
+  	 diag.adic(new JLabelPad("Usuário: "),7,10,100,20);
+  	 diag.adic(new JLabelPad("Senha: "),7,30,100,20);
   	 diag.adic(txtUsu,110,10,150,20);
   	 diag.adic(txtPass,110,30,150,20);
-  	 diag.adic(new JLabel("Senha: "),7,30,100,20);
+  	 diag.adic(new JLabelPad("Senha: "),7,30,100,20);
    	 do {
   		try {
   			diag.setVisible(true);

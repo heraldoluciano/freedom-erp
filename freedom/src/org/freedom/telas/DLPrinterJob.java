@@ -34,7 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -56,7 +56,7 @@ public class DLPrinterJob extends FFDialogo implements ActionListener,KeyListene
   private JButton btAnt = new JButton(Icone.novo("btAnt.gif"));
   private JButton btPrim = new JButton(Icone.novo("btPrim.gif"));
   private JButton btUlt = new JButton(Icone.novo("btUlt.gif"));
-  private JLabel lbPag = new JLabel("1 de 1");
+  private JLabelPad lbPag = new JLabelPad("1 de 1");
 
   private JPanelPad pinCab = new JPanelPad(232,45);
   private JScrollPane spn = new JScrollPane();

@@ -25,7 +25,7 @@ package org.freedom.modulos.std;
 import java.sql.Connection;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.border.EtchedBorder;
 
 import org.freedom.acao.CheckBoxEvent;
@@ -425,7 +425,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		adicDescFK(txtDescMoeda,90,20,220,20,"SingMoeda","Descrição da moeda corrente.");
 		adicDB(rgLibCred, 7,60,310,80, "PrefCred", "Verificação de crédito",true);
 		adicDB(cbLibGeral, 7,150,310,20, "LCredGlobal", "",true);
-        JLabel lbLinha = new JLabel();
+        JLabelPad lbLinha = new JLabelPad();
         lbLinha.setBorder(new EtchedBorder());
         adic(lbLinha,5,180,310,2);
         adicDB(cbJurosPosCalc, 5,185,310,20, "JurosPosCalc", "",true);

@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -166,7 +166,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 //      adicCampoInvisivel(txtRefProd,"RefProd","Referência",txtRefProd.TP_STRING,13,0,false,true,null,true);
       adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
       txtRefProd.setRequerido(true);
-      adic(new JLabel("Referência"), 7, 80, 80, 20);
+      adic(new JLabelPad("Referência"), 7, 80, 80, 20);
       adic(txtRefProd, 7, 100, 80, 20);
     }
     else {

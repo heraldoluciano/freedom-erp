@@ -24,7 +24,7 @@ package org.freedom.modulos.pdv;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -56,11 +56,11 @@ public class FGravaMoeda extends FFDialogo {
 		txtCodMoeda.setNomeCampo("CodMoeda");
 		txtCodMoeda.setTabelaExterna(lcMoeda);
 		
-		adic(new JLabel("Sigla"),7,5,50,15);
+		adic(new JLabelPad("Sigla"),7,5,50,15);
 		adic(txtCodMoeda,7,20,50,20);
-		adic(new JLabel("Nome sing."),60,5,147,15);
+		adic(new JLabelPad("Nome sing."),60,5,147,15);
 		adic(txtSingMoeda,60,20,147,20);
-		adic(new JLabel("Nome slur."),210,5,150,15);
+		adic(new JLabelPad("Nome slur."),210,5,150,15);
 		adic(txtPlurMoeda,210,20,150,20);
 	}
 	private void gravaMoeda() {

@@ -37,7 +37,7 @@ import java.sql.Types;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -116,29 +116,29 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	
 	getTela().add(tpnCont);
 	
-	pinCabCont.adic(new JLabel("Cod.cto."),7,10,250,20);
+	pinCabCont.adic(new JLabelPad("Cod.cto."),7,10,250,20);
 	pinCabCont.adic(txtCodCont,7,30,80,20);
-	pinCabCont.adic(new JLabel("Nome do contato"),90,10,250,20);
+	pinCabCont.adic(new JLabelPad("Nome do contato"),90,10,250,20);
 	pinCabCont.adic(txtNomeCont,90,30,197,20);
-	pinCabCont.adic(new JLabel("Tel."),290,10,97,20);
+	pinCabCont.adic(new JLabelPad("Tel."),290,10,97,20);
 	pinCabCont.adic(txtTelCont,290,30,97,20);
-	pinCabCont.adic(new JLabel("Fax"),390,10,97,20);
+	pinCabCont.adic(new JLabelPad("Fax"),390,10,97,20);
 	pinCabCont.adic(txtFaxCont,390,30,97,20);
-	pinCabCont.adic(new JLabel("Empresa"),7,50,270,20);
+	pinCabCont.adic(new JLabelPad("Empresa"),7,50,270,20);
 	pinCabCont.adic(txtEmpCont,7,70,270,20);
-	pinCabCont.adic(new JLabel("E-mail"),280,50,207,20);
+	pinCabCont.adic(new JLabelPad("E-mail"),280,50,207,20);
 	pinCabCont.adic(txtEmailCont,280,70,207,20);
-	pinCabCont.adic(new JLabel("Endereco"),7,90,200,20);
+	pinCabCont.adic(new JLabelPad("Endereco"),7,90,200,20);
 	pinCabCont.adic(txtEndCont,7,110,200,20);
-	pinCabCont.adic(new JLabel("Num."),210,90,67,20);
+	pinCabCont.adic(new JLabelPad("Num."),210,90,67,20);
 	pinCabCont.adic(txtNumCont,210,110,67,20);
-	pinCabCont.adic(new JLabel("Compl."),280,90,47,20);
+	pinCabCont.adic(new JLabelPad("Compl."),280,90,47,20);
 	pinCabCont.adic(txtComplCont,280,110,47,20);
-	pinCabCont.adic(new JLabel("Bairro."),330,90,157,20);
+	pinCabCont.adic(new JLabelPad("Bairro."),330,90,157,20);
 	pinCabCont.adic(txtBairCont,330,110,157,20);
-	pinCabCont.adic(new JLabel("Cidade."),7,130,180,20);
+	pinCabCont.adic(new JLabelPad("Cidade."),7,130,180,20);
 	pinCabCont.adic(txtCidCont,7,150,180,20);
-	pinCabCont.adic(new JLabel("UF"),190,130,30,20);
+	pinCabCont.adic(new JLabelPad("UF"),190,130,30,20);
 	pinCabCont.adic(txtUfCont,190,150,30,20);
 	
 	tabCont.adicColuna("Ind.");

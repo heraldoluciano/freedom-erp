@@ -37,7 +37,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
@@ -89,18 +89,18 @@ public class FRPagar extends FRelatorio {
     vVals.addElement("A");
     
     cbFiltro = new JRadioGroup(3,1,vLabs,vVals);
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
 
-    adic(new JLabel("Periodo:"),7,5,100,20);
+    adic(new JLabelPad("Periodo:"),7,5,100,20);
     adic(lbLinha,60,15,210,2);
-    adic(new JLabel("De:"),7,30,30,20);
+    adic(new JLabelPad("De:"),7,30,30,20);
     adic(txtDataini,32,30,97,20);
-    adic(new JLabel("Até:"),135,30,30,20);
+    adic(new JLabelPad("Até:"),135,30,30,20);
     adic(txtDatafim,165,30,97,20);
-    adic(new JLabel("Cód.for."),7,55,300,20);
+    adic(new JLabelPad("Cód.for."),7,55,300,20);
     adic(txtCodFor,7,75,60,20);
-    adic(new JLabel("Razão social do fornecedor"),70,55,300,20);
+    adic(new JLabelPad("Razão social do fornecedor"),70,55,300,20);
     adic(txtRazFor,70,75,190,20);
     adic(cbFiltro,7,107,253,70);
     adic(cbObs,7,180,253,20);

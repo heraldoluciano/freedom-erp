@@ -29,7 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -69,8 +69,8 @@ public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
     txtCodPesq.setAtivo(false);
     
     setPainel(pinCab);
-    adic(new JLabel("Razão social do cliente principal"),7,0,300,20);
-    adic(new JLabel("Cód.cli.p."),310,0,80,20);
+    adic(new JLabelPad("Razão social do cliente principal"),7,0,300,20);
+    adic(new JLabelPad("Cód.cli.p."),310,0,80,20);
 
     adic(txtRazPesq,7,20,300,20);
     adic(txtCodPesq,310,20,80,20);

@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -52,7 +52,7 @@ public class FSobre extends FFDialogo {
 	c.add(tpnSobre,BorderLayout.CENTER);
 	tpnSobre.addTab("Sobre",pnSobre);
 	
-	JLabel lbImg = new JLabel(img);
+	JLabelPad lbImg = new JLabelPad(img);
 	lbImg.setPreferredSize(new Dimension(img.getIconWidth(),img.getIconHeight()));
     String sVersao = "";
 	try {
@@ -63,7 +63,7 @@ public class FSobre extends FFDialogo {
 	catch(Exception err) { };
 	
 	pnSobre.add(lbImg,BorderLayout.NORTH);
-	pnSobre.add(new JLabel ("<HTML><BR>"+
+	pnSobre.add(new JLabelPad ("<HTML><BR>"+
 	        " Freedom<BR>"+
 	        " Versão do jar: "+sVersao+"<BR>"+
 			" Setpoint Informática Ltda.   1994 - "+
@@ -71,7 +71,7 @@ public class FSobre extends FFDialogo {
 
   
 	tpnSobre.addTab("Equipe freedom",pnEquipe);
-	pnEquipe.add(new JLabel ("<HTML><BR><CENTER>"+
+	pnEquipe.add(new JLabelPad ("<HTML><BR><CENTER>"+
         " Robson Sanchez - Supervisor/Analista<BR>"+
         " Anderson Sanchez - Supervisor/Programador<BR>"+
         " Fernando Oliveira - Programador<BR>"+

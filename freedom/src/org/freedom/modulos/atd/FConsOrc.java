@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -65,7 +65,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-	private JLabel lbCid = new JLabel("Cidade");
+	private JLabelPad lbCid = new JLabelPad("Cidade");
 	private JCheckBoxPad cbAberto = new JCheckBoxPad("Aberto","S","N");
 	private JCheckBoxPad cbCompleto = new JCheckBoxPad("Completo","S","N");
 	private JCheckBoxPad cbLiberado = new JCheckBoxPad("Liberado","S","N");
@@ -145,43 +145,43 @@ public class FConsOrc extends FFilho implements ActionListener {
 		vLabs.addElement("Data de validade");
 		gbVenc = new JRadioGroup(2,1,vLabs,vVals);
 		
-		pinCab.adic(new JLabel("Período:"),380,0,90,20);
+		pinCab.adic(new JLabelPad("Período:"),380,0,90,20);
 		pinCab.adic(txtDtIni,380,20,87,20);
-		pinCab.adic(new JLabel("Até"),470,20,27,20);
+		pinCab.adic(new JLabelPad("Até"),470,20,27,20);
 		pinCab.adic(txtDtFim,494,20,87,20);
 		
-		pinCab.adic(new JLabel("Cód.cli."),7,0,280,20);
+		pinCab.adic(new JLabelPad("Cód.cli."),7,0,280,20);
 		pinCab.adic(txtCodCli,7,20,70,20);
-		pinCab.adic(new JLabel("Razão social do cliente"),80,0,280,20);
+		pinCab.adic(new JLabelPad("Razão social do cliente"),80,0,280,20);
 		pinCab.adic(txtNomeCli,80,20,294,20);
 
-		pinCab.adic(new JLabel("Cód.conv."),7,40,280,20);
+		pinCab.adic(new JLabelPad("Cód.conv."),7,40,280,20);
 		pinCab.adic(txtCodConv,7,60,70,20);
-		pinCab.adic(new JLabel("Nome do conveniado"),80,40,280,20);
+		pinCab.adic(new JLabelPad("Nome do conveniado"),80,40,280,20);
 		pinCab.adic(txtNomeConv,80,60,294,20);
 		
 		pinCab.adic(lbCid,380,40,60,20);
 		pinCab.adic(txtCid,380,60,200,20);
 		pinCab.adic(cbConveniado,390,99,180,20);
 		
-		pinCab.adic(new JLabel("Cód.tp.conv."),7,80,250,20);
+		pinCab.adic(new JLabelPad("Cód.tp.conv."),7,80,250,20);
 		pinCab.adic(txtCodTpConv,7,100,70,20);
-		pinCab.adic(new JLabel("Descrição do tipo de conveniado"),80,80,250,20);
+		pinCab.adic(new JLabelPad("Descrição do tipo de conveniado"),80,80,250,20);
 		pinCab.adic(txtDescTipoConv,80,100,294,20);
 		
-		pinCab.adic(new JLabel("Cód.enc."),7,122,250,20);
+		pinCab.adic(new JLabelPad("Cód.enc."),7,122,250,20);
 		//pinCab.adic(lbEnc,7,135,60,20);
 		pinCab.adic(txtCodEnc,7,142,70,20);
-		pinCab.adic(new JLabel("Descrição do Encaminhador"),80,122,250,20);
+		pinCab.adic(new JLabelPad("Descrição do Encaminhador"),80,122,250,20);
 		pinCab.adic(txtNomeEnc,80,142,294,20);
 				
-		pinCab.adic(new JLabel("Status:"),7,170,90,20);
+		pinCab.adic(new JLabelPad("Status:"),7,170,90,20);
 		pinCab.adic(cbAberto,7,191,80,20);
 		pinCab.adic(cbCompleto,7,211,80,20);
 		pinCab.adic(cbLiberado,120,191,80,20);
 		pinCab.adic(cbFaturado,120,211,80,20);		
 		
-		pinCab.adic(new JLabel("Filtrar por:"),210,170,110,20);
+		pinCab.adic(new JLabelPad("Filtrar por:"),210,170,110,20);
 		pinCab.adic(gbVenc,210,189,200,49);
 			
 	//	pinCab.adic(btBusca,387,122,100,30);

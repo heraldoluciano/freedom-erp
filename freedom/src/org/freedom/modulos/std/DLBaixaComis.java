@@ -29,7 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -103,19 +103,19 @@ public class DLBaixaComis extends FFDialogo {
 
     setPainel(pinCentro);
     
-    adic(new JLabel("Código e descrição da conta"),7,0,250,20);
+    adic(new JLabelPad("Código e descrição da conta"),7,0,250,20);
     adic(txtCodConta,7,20,80,20);
     adic(txtDescConta,90,20,197,20);
-    adic(new JLabel("Código e descrição da categoria"),290,0,250,20);
+    adic(new JLabelPad("Código e descrição da categoria"),290,0,250,20);
     adic(txtCodPlan,290,20,77,20);
     adic(txtDescPlan,370,20,200,20);
-    adic(new JLabel("Data"),7,40,100,20);
+    adic(new JLabelPad("Data"),7,40,100,20);
     adic(txtData,7,60,100,20);
-    adic(new JLabel("Valor tot."),110,40,107,20);
+    adic(new JLabelPad("Valor tot."),110,40,107,20);
     adic(txtVlr,110,60,107,20);
-    adic(new JLabel("Doc"),220,40,77,20);
+    adic(new JLabelPad("Doc"),220,40,77,20);
     adic(txtDoc,220,60,77,20);
-    adic(new JLabel("Obs."),300,40,270,20);
+    adic(new JLabelPad("Obs."),300,40,270,20);
     adic(txtObs,300,60,270,20);
     
     tab.adicColuna("Cliente");

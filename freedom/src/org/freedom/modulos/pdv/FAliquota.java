@@ -26,7 +26,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -66,7 +66,7 @@ public class FAliquota extends FFDialogo implements ActionListener {
 		pnCli.add(spnTab,BorderLayout.CENTER);
 		pnCli.add(pinCab,BorderLayout.NORTH);
 			
-		pinCab.adic(new JLabel("Inserir aliquota"),7,5,87,20);
+		pinCab.adic(new JLabelPad("Inserir aliquota"),7,5,87,20);
 		pinCab.adic(txtAliquota,7,25,87,20);
 		pinCab.adic(btInsere,150,15,30,30);
 

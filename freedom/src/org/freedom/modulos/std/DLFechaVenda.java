@@ -37,7 +37,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -105,23 +105,23 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JLabel lbPercDescVenda = new JLabel("% Desc.");
-  private JLabel lbVlrDescVenda = new JLabel("V Desc.");
-  private JLabel lbPercAdicVenda = new JLabel("% Adic.");
-  private JLabel lbVlrAdicVenda = new JLabel("V Adic.");
-  private JLabel lbCodPlanoPag = new JLabel("Cód.p.pg.");
-  private JLabel lbCodTran = new JLabel("Cód.tran.");
-  private JLabel lbDescPlanoPag = new JLabel("Descrição do plano de pagamento");
-  private JLabel lbNomeTran = new JLabel("Nome do transportador");
-  private JLabel lbTipoFreteVD = new JLabel("Tipo");
-  private JLabel lbPlacaFreteVD = new JLabel("Placa");
-  private JLabel lbUFFreteVD = new JLabel("UF");
-  private JLabel lbVlrFreteVD = new JLabel("Valor");
-  private JLabel lbQtdFreteVD = new JLabel("Volumes");
-  private JLabel lbPesoBrutVD = new JLabel("Peso B.");
-  private JLabel lbPesoLiqVD = new JLabel("Peso L.");
-  private JLabel lbEspFreteVD = new JLabel("Espec.");
-  private JLabel lbMarcaFreteVD = new JLabel("Marca");
+  private JLabelPad lbPercDescVenda = new JLabelPad("% Desc.");
+  private JLabelPad lbVlrDescVenda = new JLabelPad("V Desc.");
+  private JLabelPad lbPercAdicVenda = new JLabelPad("% Adic.");
+  private JLabelPad lbVlrAdicVenda = new JLabelPad("V Adic.");
+  private JLabelPad lbCodPlanoPag = new JLabelPad("Cód.p.pg.");
+  private JLabelPad lbCodTran = new JLabelPad("Cód.tran.");
+  private JLabelPad lbDescPlanoPag = new JLabelPad("Descrição do plano de pagamento");
+  private JLabelPad lbNomeTran = new JLabelPad("Nome do transportador");
+  private JLabelPad lbTipoFreteVD = new JLabelPad("Tipo");
+  private JLabelPad lbPlacaFreteVD = new JLabelPad("Placa");
+  private JLabelPad lbUFFreteVD = new JLabelPad("UF");
+  private JLabelPad lbVlrFreteVD = new JLabelPad("Valor");
+  private JLabelPad lbQtdFreteVD = new JLabelPad("Volumes");
+  private JLabelPad lbPesoBrutVD = new JLabelPad("Peso B.");
+  private JLabelPad lbPesoLiqVD = new JLabelPad("Peso L.");
+  private JLabelPad lbEspFreteVD = new JLabelPad("Espec.");
+  private JLabelPad lbMarcaFreteVD = new JLabelPad("Marca");
   private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
   private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
   private JCheckBoxPad cbImpBol = new JCheckBoxPad("Imprime Boleto?","S","N");
@@ -280,7 +280,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
     txtVlrParcRec.setAtivo(false);
 
-    pinTopRec.adic(new JLabel("Valor Tot."),7,0,130,20);
+    pinTopRec.adic(new JLabelPad("Valor Tot."),7,0,130,20);
     pinTopRec.adic(txtVlrParcRec,7,20,130,20);
 
     txtCodRec.setNomeCampo("CodRec");
@@ -360,7 +360,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     adic(txtPercAdicVenda,190,60,77,20);
     adic(lbVlrAdicVenda,270,40,100,20);
     adic(txtVlrAdicVenda,270,60,100,20);
-    adic(new JLabel("Código e Descrição do Banco"),7,80,250,20);
+    adic(new JLabelPad("Código e Descrição do Banco"),7,80,250,20);
     adic(txtCodBanco,7,100,80,20);
     adic(txtDescBanco,90,100,167,20);
     adic(cbImpPed,7,130,150,20);
@@ -375,7 +375,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     adic(txtDescTran,90,20,270,20);
     adic(lbTipoFreteVD,7,40,170,20);
     adic(rgFreteVD,7,60,130,30);
-    adic(new JLabel("Conhec."),140,50,97,20);
+    adic(new JLabelPad("Conhec."),140,50,97,20);
     adic(txtConhecFreteVD,140,70,97,20);
     adic(lbPlacaFreteVD,240,50,77,20);
     adic(txtPlacaFreteVD,240,70,77,20);
@@ -406,13 +406,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
     setPainel(pinInfEspec);
     
-    adic(new JLabel("Nome"),7,0,240,20);
+    adic(new JLabelPad("Nome"),7,0,240,20);
     adic(txtNomeCliAuxV,7,20,240,20);
-    adic(new JLabel("CPF"),250,0,100,20);
+    adic(new JLabelPad("CPF"),250,0,100,20);
     adic(txtCPFCliAuxV,250,20,100,20);
-    adic(new JLabel("Cidade"),7,40,300,20);
+    adic(new JLabelPad("Cidade"),7,40,300,20);
     adic(txtCidCliAuxV,7,60,300,20);
-    adic(new JLabel("UF"),310,40,40,20);
+    adic(new JLabelPad("UF"),310,40,40,20);
     adic(txtUFCliAuxV,310,60,40,20);
 //    adic(txtCodAuxV,310,80,40,20);
     

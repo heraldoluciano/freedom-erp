@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -80,16 +80,16 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
     
     getTela().add(pinCli,BorderLayout.CENTER);
     
-    pinCli.adic(new JLabel("ID"), 7, 0, 200, 20);
+    pinCli.adic(new JLabelPad("ID"), 7, 0, 200, 20);
     pinCli.adic(txtCodUsu, 7, 20, 80, 20);
-    pinCli.adic(new JLabel("Nome do usuário"),90, 0, 200, 20);
+    pinCli.adic(new JLabelPad("Nome do usuário"),90, 0, 200, 20);
     pinCli.adic(txtNomeUsu, 90, 20, 280, 20);
     
-    pinCli.adic(new JLabel("Atribuições disponíveis:"),7,40,160,20);
+    pinCli.adic(new JLabelPad("Atribuições disponíveis:"),7,40,160,20);
     pinCli.adic(spnDisp,7,60,160,100);
     pinCli.adic(btAdicAtrib,175,75,30,30);
     pinCli.adic(btDelAtrib,175,115,30,30);
-    pinCli.adic(new JLabel("Acesso:"),212,40,158,20);
+    pinCli.adic(new JLabelPad("Acesso:"),212,40,158,20);
     pinCli.adic(spnAtrib,212,60,158,100);
     
     btSalvar.setEnabled(false);

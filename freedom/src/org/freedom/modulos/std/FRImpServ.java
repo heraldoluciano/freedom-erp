@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -78,10 +78,10 @@ public class FRImpServ extends FRelatorio {
         new Object[] {"D","R"});
     rgFormato.setVlrString("D");
 
-    adic(new JLabel("Período"),7,0,250,20);
+    adic(new JLabelPad("Período"),7,0,250,20);
     adic(txtDataini,7,20,100,20);
     adic(txtDatafim,110,20,100,20);
-    adic(new JLabel("Formato:"),7,40,250,20);
+    adic(new JLabelPad("Formato:"),7,40,250,20);
     adic(rgFormato,7,60,203,30);
     adic(cbVendas,7,100,100,25);
   }

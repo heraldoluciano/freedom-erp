@@ -31,7 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.GuardaCampo;
@@ -65,7 +65,7 @@ public class DLConsultaPgto extends FFDialogo {
     
     txtCodCli.setAtivo(false);
     
-    pinConsulta.adic(new JLabel("Código e descrição do cliente"),7,0,250,20);
+    pinConsulta.adic(new JLabelPad("Código e descrição do cliente"),7,0,250,20);
     pinConsulta.adic(txtCodCli,7,20,100,20);
     pinConsulta.adic(txtRazCli,110,20,250,20);
     

@@ -30,7 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
@@ -96,13 +96,13 @@ public class FStatusItOrc extends FFilho implements ActionListener {
     
     btAltEmit.setToolTipText("Alterar");
 
-    pinCli.adic(new JLabel("Nº orçamento"),7,0,80,20);
+    pinCli.adic(new JLabelPad("Nº orçamento"),7,0,80,20);
     pinCli.adic(txtCodOrc,7,20,80,20);
-    pinCli.adic(new JLabel("Item"),90,0,67,20);
+    pinCli.adic(new JLabelPad("Item"),90,0,67,20);
     pinCli.adic(txtItem,90,20,67,20);
-    pinCli.adic(new JLabel("Valor"),160,0,100,20);
+    pinCli.adic(new JLabelPad("Valor"),160,0,100,20);
     pinCli.adic(txtVlrLiqItOrc,160,20,100,20);
-    pinCli.adic(new JLabel("Status"),7,40,40,20);
+    pinCli.adic(new JLabelPad("Status"),7,40,40,20);
     pinCli.adic(txtStatusOrc,7,60,40,20);
     pinCli.adic(cbEmitItOrc,60,60,73,20);
     pinCli.adic(btAltEmit,7,90,120,30);

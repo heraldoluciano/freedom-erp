@@ -26,7 +26,7 @@ import java.sql.Connection;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -43,9 +43,9 @@ public class DLRInventario extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
-  private JLabel lbGrup = new JLabel("Cód.grupo");
-  private JLabel lbDescGrup = new JLabel("Descrição do grupo");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+  private JLabelPad lbGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -76,7 +76,7 @@ public class DLRInventario extends FFDialogo {
     GregorianCalendar cal = new GregorianCalendar();
     txtData.setVlrDate(cal.getTime());
     
-    adic(new JLabel("Data do estoque"),7,0,280,20);
+    adic(new JLabelPad("Data do estoque"),7,0,280,20);
     adic(txtData,7,20,110,20);
     adic(lbGrup,7,40,280,20);
     adic(txtCodGrup,7,60,80,20);

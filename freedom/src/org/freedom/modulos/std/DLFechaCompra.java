@@ -35,7 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -77,13 +77,13 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
   private JTextFieldPad txtStatusCompra = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JLabel lbPercDescCompra = new JLabel("% Desc.");
-  private JLabel lbVlrDescCompra = new JLabel("V Desc.");
-  private JLabel lbVlrFreteCompra = new JLabel("V Frete.");
-  private JLabel lbPercAdicCompra = new JLabel("% Adic.");
-  private JLabel lbVlrAdicCompra = new JLabel("V Adic.");
-  private JLabel lbCodPlanoPag = new JLabel("Cód.p.pag.");
-  private JLabel lbDescPlanoPag = new JLabel("Descrição do plano de pagto.");
+  private JLabelPad lbPercDescCompra = new JLabelPad("% Desc.");
+  private JLabelPad lbVlrDescCompra = new JLabelPad("V Desc.");
+  private JLabelPad lbVlrFreteCompra = new JLabelPad("V Frete.");
+  private JLabelPad lbPercAdicCompra = new JLabelPad("% Adic.");
+  private JLabelPad lbVlrAdicCompra = new JLabelPad("V Adic.");
+  private JLabelPad lbCodPlanoPag = new JLabelPad("Cód.p.pag.");
+  private JLabelPad lbDescPlanoPag = new JLabelPad("Descrição do plano de pagto.");
   private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
   private JCheckBoxPad cbImpNot = new JCheckBoxPad("Entrada de Nota?","S","N");
   private ListaCampos lcCompra = new ListaCampos(this);
@@ -166,7 +166,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
 
     txtVlrParcPag.setAtivo(false);
 
-    pinTopPag.adic(new JLabel("Valor Tot."),7,0,130,20);
+    pinTopPag.adic(new JLabelPad("Valor Tot."),7,0,130,20);
     pinTopPag.adic(txtVlrParcPag,7,20,130,20);
 
     txtCodPag.setNomeCampo("CodPag");
@@ -235,13 +235,13 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     adic(txtVlrAdicCompra,310,60,100,20);
     adic(lbVlrFreteCompra,7,80,100,20);
     adic(txtVlrFreteCompra,7,100,100,20);
-    adic(new JLabel("V. Compra"),110,80,100,20);
+    adic(new JLabelPad("V. Compra"),110,80,100,20);
     adic(txtVlrLiqCompra,110,100,97,20);
-    adic(new JLabel("V. ICMS"),210,80,100,20);
+    adic(new JLabelPad("V. ICMS"),210,80,100,20);
     adic(txtVlrICMSCompra,210,100,97,20);
-    adic(new JLabel("V. IPI"),310,80,100,20);
+    adic(new JLabelPad("V. IPI"),310,80,100,20);
     adic(txtVlrIPICompra,310,100,100,20);
-    adic(new JLabel("Código e Descrição do Banco"),7,120,250,20);
+    adic(new JLabelPad("Código e Descrição do Banco"),7,120,250,20);
     adic(txtCodBanco,7,140,80,20);
     adic(txtDescBanco,90,140,200,20);
     adic(cbImpPed,7,170,200,20);

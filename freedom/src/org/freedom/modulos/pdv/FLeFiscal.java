@@ -32,7 +32,7 @@ import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -144,7 +144,7 @@ public class FLeFiscal extends FTabDados {
 		adicTab("Geral", pinGeral); 
 		setPainel(pinGeral);
 		
-		JLabel lbAliq = new JLabel(" Aliquotas ICMS");
+		JLabelPad lbAliq = new JLabelPad(" Aliquotas ICMS");
 		lbAliq.setOpaque(true);
 		
 		adic(lbAliq,15,5,90,15);
@@ -170,9 +170,9 @@ public class FLeFiscal extends FTabDados {
 		
 		setPainel(pinGeral);
 		
-		JLabel lbLinha = new JLabel("");
+		JLabelPad lbLinha = new JLabelPad("");
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabel lbContadores = new JLabel("  Contadores:");
+		JLabelPad lbContadores = new JLabelPad("  Contadores:");
 		lbContadores.setOpaque(true);
 		adic(lbContadores,15,125,100,15);
 		adic(lbLinha,7,130,500,2);
@@ -183,9 +183,9 @@ public class FLeFiscal extends FTabDados {
 		adicCampo(txtRed,265,160,82,20, "NumRedLX", "Reduções", ListaCampos.DB_SI, false);
 		adicCampo(txtSequencia,350,160,80,20, "ContaLX", "Contador", ListaCampos.DB_SI, false);
 		
-		JLabel lbLinha2 = new JLabel("");
+		JLabelPad lbLinha2 = new JLabelPad("");
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabel lbContadores2 = new JLabel("  Totalizadores:");
+		JLabelPad lbContadores2 = new JLabelPad("  Totalizadores:");
 		lbContadores2.setOpaque(true);
 		adic(lbContadores2,15,195,100,15);
 		adic(lbLinha2,7,200,500,2);
@@ -199,7 +199,7 @@ public class FLeFiscal extends FTabDados {
 		adicTab("Tributado", pinTributado); 
 		setPainel(pinTributado);
 		
-		JLabel lbTrib = new JLabel("  Valor dos totalizadores de ICMS.");
+		JLabelPad lbTrib = new JLabelPad("  Valor dos totalizadores de ICMS.");
 		lbTrib.setOpaque(true);
 		
 		adic(lbTrib,15,5,200,15);
@@ -226,7 +226,7 @@ public class FLeFiscal extends FTabDados {
 		adicTab("Isento", pinIsento); 
 		setPainel(pinIsento);
 		
-		JLabel lbIsento = new JLabel("  Valor dos totalizadores não sujeitos ao ICMS.");
+		JLabelPad lbIsento = new JLabelPad("  Valor dos totalizadores não sujeitos ao ICMS.");
 		lbIsento.setOpaque(true);
 		
 		adic(lbIsento,15,5,280,15);

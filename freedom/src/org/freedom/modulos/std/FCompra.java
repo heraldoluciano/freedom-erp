@@ -38,7 +38,7 @@ import java.sql.Types;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.acao.CarregaEvent;
@@ -145,7 +145,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     pnCenter.add(spTab, BorderLayout.CENTER);
 
     JPanel pnLab = new JPanel(new GridLayout(1, 1));
-    pnLab.add(new JLabel(" Totais:"));
+    pnLab.add(new JLabelPad(" Totais:"));
 
     pnMaster.add(pnCenter, BorderLayout.CENTER);
 
@@ -313,7 +313,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     if (comRef()) {
       adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
       adicCampoInvisivel(txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false);
-      adic(new JLabel("Referência"), 40, 0, 67, 20);
+      adic(new JLabelPad("Referência"), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
     }
     else {
@@ -337,11 +337,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     adicCampo(txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra", "V. IPI", ListaCampos.DB_SI, false);
     adicCampoInvisivel(txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false);
     adicCampo(txtVlrLiqItCompra, 550, 60, 100, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false);
-    pinTot.adic(new JLabel("Tot. IPI"), 7, 0, 120, 20);
+    pinTot.adic(new JLabelPad("Tot. IPI"), 7, 0, 120, 20);
     pinTot.adic(txtVlrIPICompra, 7, 20, 120, 20);
-    pinTot.adic(new JLabel("Tot. Desc."), 7, 40, 120, 20);
+    pinTot.adic(new JLabelPad("Tot. Desc."), 7, 40, 120, 20);
     pinTot.adic(txtVlrDescCompra, 7, 60, 120, 20);
-    pinTot.adic(new JLabel("Total Geral"), 7, 80, 120, 20);
+    pinTot.adic(new JLabelPad("Total Geral"), 7, 80, 120, 20);
     pinTot.adic(txtVlrLiqCompra, 7, 100, 120, 20);
     txtCodNat.setStrMascara("#.###");
 
