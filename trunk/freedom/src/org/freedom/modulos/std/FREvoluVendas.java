@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -45,7 +46,6 @@ import org.freedom.relatorios.EvoluVendasLinha;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
-
 
 public class FREvoluVendas extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
@@ -61,11 +61,13 @@ public class FREvoluVendas extends FRelatorio {
   private JTextFieldPad txtCodCli = new JTextFieldPad(8);
   private JTextFieldFK  txtRazCli = new JTextFieldFK();
   private ListaCampos lcCli = new ListaCampos(this,"TI");
+  private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");  
 
   public FREvoluVendas() {
 
-    setTitulo("Evolução de vendas");
-    setAtribos(80,80,300,310);    
+    setTitulo("Evolução de vendas");   
+    setAtribos(80,80,300,350);    
+    
     txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
 
@@ -112,17 +114,20 @@ public class FREvoluVendas extends FRelatorio {
     adic(new JLabel("A:"),140,25,17,20);
     adic(txtDatafim,160,25,100,20);      
    
-    adic(new JLabel("Código e descrição do tipo de cliente"),7,85,300,20);
-    adic(txtCodTipoCli, 7,105,50,20);
-    adic(txtDescTipoCli,60,105,200,20);
-
 	adic(new JLabel("Código e Razão do cliente"),7,45,300,20);
 	adic(txtCodCli, 7,65,50,20);
 	adic(txtRazCli,60,65,200,20);
 
-	adic(new JLabel("Tipo de gráfico:"),7,130,220,20);
-	adic(new JLabel(Icone.novo("graficoBarra.gif")),7,160,30,30);
-	adic(new JLabel(Icone.novo("graficoLinha.gif")),7,200,30,30);
+    adic(new JLabel("Código e descrição do tipo de cliente"),7,85,300,20);
+    adic(txtCodTipoCli, 7,105,50,20);
+    adic(txtDescTipoCli,60,105,200,20);
+    
+    cbVendas.setVlrString("S");
+    adic(cbVendas,5,130,265,25);
+	
+	adic(new JLabel("Tipo de gráfico:"),7,160,220,20);
+	adic(new JLabel(Icone.novo("graficoBarra.gif")),7,190,30,30);
+	adic(new JLabel(Icone.novo("graficoLinha.gif")),7,230,30,30);
     
 	vLabs.addElement("Barras 3D");
 	vLabs.addElement("Linha horizontal");
@@ -131,7 +136,8 @@ public class FREvoluVendas extends FRelatorio {
 	rgGrafico = new JRadioGroup(2,1,vLabs,vVals);
 	rgGrafico.setVlrString("B");    
     rgGrafico.setBorder(BorderFactory.createEmptyBorder());
-    adic(rgGrafico,42,163,200,82);
+    adic(rgGrafico,42,193,200,82);
+
 
   }
 
