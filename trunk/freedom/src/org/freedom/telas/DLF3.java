@@ -23,27 +23,16 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
-import org.freedom.bmps.Icone;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
-  private JPanelPad pinCab = new JPanelPad(0,60);
-  public JTextFieldPad txtCod = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
-  public JTextFieldFK txtDesc = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   public Tabela tab = new Tabela();
-  public JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
   public boolean bPrimeira = false;
   private JScrollPane spnCentro = new JScrollPane(tab);
+  public Object oRetVal = null;
   /**
    * 
    *  Classe mãe para dialogos auxiliares.
@@ -60,25 +49,12 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
     setAtribos( 550, 260);
     setResizable(true);
     
-    txtCod.setAtivo(false);
-    btSalvar.setEnabled(false);
-
-    setPainel(pinCab);
-    adic(new JLabelPad("Código e descrição da chave"),7,0,250,20);
-    adic(txtCod,7,20,80,20);
-    adic(txtDesc,90,20,300,20);
-    adic(btSalvar,395,10,30,30);
-    
-    c.add( pinCab,BorderLayout.NORTH);
-    c.add( spnCentro, BorderLayout.CENTER);
-    
-    tab.adicColuna(" Orig. ");
-    tab.adicColuna("Código sim.");
-    
-    tab.setTamColuna(30,0);
+    c.add( spnCentro, BorderLayout.CENTER);    
+    tab.adicColuna("Cód.");
+    tab.adicColuna("Ref.");    
+    tab.setTamColuna(120,0);
     tab.setTamColuna(100,1);
     
-    btSalvar.addActionListener(this);
     tab.addKeyListener(this);
     
     addInternalFrameListener(
@@ -96,9 +72,7 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
   }
   public abstract void setValor(Object oVal);
   public Object getValor() {
-  	 if (txtCod.getVlrString().equals(""))
-  	 	return null;
-    return txtCod.getVlrString();  	 	
+    return oRetVal;
   }
   public Object getValorGrid() {
   	Object oRet = null;
