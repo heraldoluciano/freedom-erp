@@ -13,6 +13,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>

@@ -20,8 +20,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRBoleto.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoMov.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRExtrato.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.fnc"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRUltimaVenda.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRFluxoCaixa.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLNovoRec.java"/>
