@@ -91,19 +91,19 @@ public class OrcMCraft extends LeiauteGR {
 	    else
 	  	  drawTexto(rs.getString("PRAZOENTORC")+" dias.",230,iY);
 	  
-	    iY+=25;
+	    iY+=20;
 
 	    drawTexto("Pagamento.:",80,iY);
 	  
 	    iY = impLabelSilabas(sDescPlan,15,230,230,iY,rs);   	
 	              	  
-	    iY+=15;
+	    iY+=10;
 	    
 	    iY = impLabelSilabas("    A validade do orçamento é de 15 dias.Após esta data, os preços e " +
 	    		"demais condições, ficarão sujeitos a alterações, por ocasião da confirmação " +
 	    		"do pedido.",15,76,500,iY,rs);
 	    
-	    iY+=30;
+	    iY+=20;
 	  
 	    iY = impLabelSilabas("Atenciosamente,",15,260,200,iY,rs);
 	   
