@@ -49,7 +49,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FTerminal extends FTabDados implements ActionListener {
+public class FCaixa extends FTabDados implements ActionListener {
   private Painel pnTerm = new Painel(280,130);
   private JTextFieldPad txtCodCaixa = new JTextFieldPad(8);
   private JTextFieldPad txtDescCaixa = new JTextFieldPad(50);
@@ -65,7 +65,7 @@ public class FTerminal extends FTabDados implements ActionListener {
   private JLabel lbPad = new JLabel("Impressora Padrão");
   private int[] codImps = new int[20];
   private Vector vImp = new Vector();
-  public FTerminal() {
+  public FCaixa() {
 //Demonta o painel de impressão:
     pnRodape.remove(2);
 //Monta a tela de Terminal:

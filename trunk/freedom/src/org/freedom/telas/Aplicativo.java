@@ -568,7 +568,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
    return bModo;
   }
   public String getDescTerm() {
-	String sSQL = "SELECT DESCCAIXA FROM PVCAIXA WHERE CODCAIXA="+iNumTerm+
+	String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST="+iNumTerm+
 	" AND CODEMP="+iCodEmp+" AND CODFILIAL="+iCodFilial;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
@@ -579,13 +579,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	  if (!rs.next()) 
 		sDesc = "TERMINAL NÃO CADASTRADO";
 	  else 
-		sDesc = rs.getString("DescCaixa");
+		sDesc = rs.getString("DescEst");
 	  if (!con.getAutoCommit())
 	  	con.commit();
 	}
 	catch (SQLException err) {
 	  Funcoes.mensagemErro(null,err.getMessage());            
-	  return "NÃO FOI POSSÍVEL REGISTRAR O TERNINAL! ! !";
+	  return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
 	}
 	return sDesc;
   }
