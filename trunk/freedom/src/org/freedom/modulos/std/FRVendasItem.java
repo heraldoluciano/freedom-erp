@@ -174,7 +174,7 @@ public class FRVendasItem extends FRelatorio {
 		}
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
-		imp.montaCab();
+		
 		String sWhere = "";
 		String sCab = "";
 		String sOrdem = rgOrdem.getVlrString();
@@ -186,7 +186,7 @@ public class FRVendasItem extends FRelatorio {
 		double dQtd = 0;
 		double dVlr = 0;
 		
-		imp.setTitulo("Relatório de Vendas por ítem");
+		
 
                 if (comRef())
                   sCodRel = "REFPROD";
@@ -201,28 +201,28 @@ public class FRVendasItem extends FRelatorio {
                         sOrdem = "P.DESCPROD";
                         sOrdenado = "ORDENADO POR DESCRICAO";
                 }
-                sOrdenado = "|"+Funcoes.replicate(" ",68-(sOrdenado.length()/2))+sOrdenado;
-                sOrdenado += Funcoes.replicate(" ",134-sOrdenado.length())+" |";
+                sOrdenado = "|"+Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
+                sOrdenado += Funcoes.replicate(" ",133-sOrdenado.length())+" |";
 		if (txtCodVend.getText().trim().length() > 0) {
 			sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 			String sTmp = "REPR.: "+txtDescVend.getText().trim();
 			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		if (txtCodGrup.getText().trim().length() > 0) {
 			sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
 			String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
 			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		if (txtCodMarca.getText().trim().length() > 0) {
 			sWhere += " AND P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
 			String sTmp = "MARCA: "+txtDescMarca.getText().trim();
 			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		if (txtCodCli.getText().trim().length() > 0) {
 			if (cbListaFilial.getVlrString().equals("S"))
@@ -232,8 +232,8 @@ public class FRVendasItem extends FRelatorio {
 			  sWhere += " AND V.CODCLI = "+txtCodCli.getText().trim();
 		    String sTmp = "CLIENTE: "+txtRazCli.getText().trim();
 			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		
 		/**/
@@ -285,39 +285,37 @@ public class FRVendasItem extends FRelatorio {
 			while ( rs.next() ) {
 				if (imp.pRow() == linPag) {
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 					imp.eject();
 					imp.incPags();
 				}
 				if (imp.pRow()==0) {
-					imp.impCab(136, false);
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-					imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					//imp.actionPerformed();
+					imp.montaCab();
+					imp.setTitulo("Relatório de Vendas por ítem");
+					imp.setSubTitulo("RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
+					imp.impCab(136, true);
+					
+					imp.say(imp.pRow()+0,0,""+imp.comprimido());
+                    imp.say(imp.pRow()+0,0,sOrdenado);
+					
+                    if (sCab.length() > 0) 
+						imp.say(imp.pRow()+0,0,sCab);
+					
+                    imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,5,"RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
-					imp.say(imp.pRow()+0,136,"|");
+					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                        imp.say(imp.pRow()+0,0,sOrdenado);
-					if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"| Cod.prod. ");
 					imp.say(imp.pRow()+0,15,"| Desc.produto");
 					imp.say(imp.pRow()+0,69,"| Unid. ");
 					imp.say(imp.pRow()+0,77,"|   Quantidade ");
-					imp.say(imp.pRow()+0,100,"| Vlr.tot.item. ");
-					imp.say(imp.pRow()+0,137,"|");
+					imp.say(imp.pRow()+0,100,"|    Vlr.tot.item. ");
+					imp.say(imp.pRow()+0,135," |");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 				}
 				imp.say(imp.pRow()+1,0,"|");
 				imp.say(imp.pRow()+0,3,Funcoes.copy(rs.getString(1),0,10)+" | ");
@@ -327,21 +325,21 @@ public class FRVendasItem extends FRelatorio {
 				imp.say(imp.pRow()+0,86,Funcoes.strDecimalToStrCurrency(6,1,rs.getString(4)));
 				imp.say(imp.pRow()+0,99,"|");
 				imp.say(imp.pRow()+0,100,Funcoes.strDecimalToStrCurrency(15,2,rs.getString(5)));
-				imp.say(imp.pRow()+0,136,"|");
+				imp.say(imp.pRow()+0,135,"|");
 				dQtd += rs.getDouble(4);
 				dVlr += rs.getDouble(5);
 			}	
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
 			imp.say(imp.pRow()+0,30,"Quant. vendida -> ");
 			imp.say(imp.pRow()+0,50,Funcoes.copy(dQtd+"",0,6));
 			imp.say(imp.pRow()+0,60,"Valor vendido -> ");
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlr+""));
-			imp.say(imp.pRow()+0,136,"|");
+			imp.say(imp.pRow()+0,135,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
 			
 			imp.eject();
 			
