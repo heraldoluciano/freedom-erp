@@ -34,6 +34,8 @@ import java.util.Vector;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
+
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
@@ -54,7 +56,9 @@ import org.freedom.telas.FTabDados;
 public class FCredCli extends FTabDados	implements ActionListener, CarregaListener,PostListener {
   private JPanelPad pinGeral = new JPanelPad(680, 200);
   private JPanelPad pnFicha = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
-//  private JPanelPad pinFicha = new JPanelPad(700, 200);
+  private JPanelPad pnDetRefPess = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+  private Tabela tbRefPess = new Tabela();
+  private JScrollPane spnRefPess = new JScrollPane(tbRefPess); // Scrool pane para grid de ref. pess.
   private JPanelPad pinFiliacao = new JPanelPad(680,200);
   private JPanelPad pinTrabalho = new JPanelPad(680,200);
   private JPanelPad pinConjuge = new JPanelPad(680,200);
@@ -154,6 +158,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtDDDFaxCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   
+  private JTextFieldPad txtCodRefP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtNomeRefP = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  
   private Tabela tabFicha = new Tabela();
   private JLabelPad lbNatCli = null;
   private JLabelPad lbApelidoCli = null;
@@ -187,7 +194,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
   private ListaCampos lcTipoCob = new ListaCampos(this,"TC");
+  private ListaCampos lcRefPess = new ListaCampos(this,"RP");
   private Navegador navFicha = new Navegador(false);
+  private Navegador navRefPess = new Navegador(false);
   private boolean bFisTipoCli = false;
   private boolean bJurTipoCli = false;
   private boolean bFilTipoCli = false;
@@ -212,12 +221,21 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     txtFoneTrabCli.setMascara(JTextFieldPad.MC_FONE);
     
     lcFicha.setMaster(lcCampos);
+    lcRefPess.setMaster(lcCampos);
+
     lcCampos.adicDetalhe(lcFicha);
+    lcCampos.adicDetalhe(lcRefPess);
+
     lcFicha.setTabela(tabFicha);
-   
+    lcRefPess.setTabela(tbRefPess);
+    
     navFicha.btNovo.setVisible(false);
 	navFicha.btExcluir.setVisible(false);
-    
+
+    navRefPess.btNovo.setVisible(false);
+	navRefPess.btExcluir.setVisible(false);
+
+	
     lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true));
     lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
     lcTipoCli.montaSql(false, "TIPOCLI", "VD");    
@@ -232,7 +250,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     lcTipoCred.setQueryCommit(false);
     lcTipoCred.setReadOnly(true);
     txtCodTpCred.setTabelaExterna(lcTipoCred);
-
     
   	lcTipoCob.add(new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK,false));
   	lcTipoCob.add(new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false));
@@ -240,8 +257,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	lcTipoCob.setQueryCommit(false);
   	lcTipoCob.setReadOnly(true);
   	txtCodTipoCob.setTabelaExterna(lcTipoCob);
-
-    
     
 	setPainel(pinGeral);
 	
@@ -273,7 +288,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	adicCampo(txtDDDCelCli, 396, 180,60, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtCelCli, 459, 180, 110, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
 		 	  	
-
   	adicCampo(txtEndCob, 7, 220, 330, 20, "EndCob", "Endereço de cobrança", ListaCampos.DB_SI, false);
   	adicCampo(txtNumCob, 340, 220, 77, 20, "NumCob", "Num. cob.", ListaCampos.DB_SI, false);
   	adicCampo(txtComplCob, 420, 220, 149, 20, "ComplCob", "Compl. cobrança", ListaCampos.DB_SI, false);
@@ -369,48 +383,29 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     adicCampo(txtFuncaoAvalCli, 468, 60, 173, 20, "CargoAvalCli", "Funcao", ListaCampos.DB_SI, false);
     adicCampo(txtDtAdmTrabAvalCli, 7, 100, 90, 20, "DtAdmTrabAvalCli", "Dt.admissao", ListaCampos.DB_SI, false);
     adicCampo(txtRendaAvalCli, 100, 100, 90, 20, "RendaAvalCli", "Renda", ListaCampos.DB_SI, false);
-/*
   
-    continuar implementação
-      
-          setPainel( pinRodRefPes, pnRefPes);
-//    adicTab("Fatores de conversão",pnFatConv);
-    setListaCampos(lcRefPes);
-    setNavegador(navRefPes);
-    pnRefPes.add(pinRodRefPes, BorderLayout.SOUTH);
-    pnRefPes.add(spnRefPes, BorderLayout.CENTER);
-
-    pinRodRefPes.adic(navRefPes,0,50,270,25);
-   
-    adicCampo(txtUnidFat, 7, 20, 80, 20, "CodUnid", "Cód.unid.", ListaCampos.DB_PF, txtDescUnidFat,true);
-    adicDescFK(txtDescUnidFat, 90, 20, 150, 20, "DescUnid", "Descrição da unidade" );
-    adicCampo(txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de conv.", ListaCampos.DB_SI, true);
-    setListaCampos( false, "FATCONV", "EQ");
-    lcFatConv.setOrdem("CodUnid");
-    lcFatConv.montaTab();
-    lcFatConv.setQueryInsert(false);
-    lcFatConv.setQueryCommit(false);
-    tabFatConv.setTamColuna(120,1);
-    
-*/    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     setListaCampos( false, "CLICOMPL", "VD");
-
     lcFicha.setQueryInsert(false);
 	lcFicha.setQueryCommit(false);
     lcFicha.montaTab();    
+//    continuar implementação
+        
+    setPainel(pinRefPess);
+
+    setListaCampos(lcRefPess);
+    setNavegador(navRefPess);
+    pinRefPess.add(pnDetRefPess, BorderLayout.SOUTH);
+    pinRefPess.add(spnRefPess, BorderLayout.CENTER);
+
+    pinRefPess.adic(navRefPess,0,50,270,25);
+   
+    adicCampo(txtCodRefP, 7, 20, 30, 20, "CodRefP", "Cód.Ref.P", ListaCampos.DB_PK, null,true);
+    adicCampo(txtNomeRefP, 40, 20, 200, 20, "NomeRefP", "Nome", ListaCampos.DB_SI, null,true);
+    
+    setListaCampos( false, "CLIREFP", "VD");
+    lcRefPess.setQueryInsert(false);
+    lcRefPess.setQueryCommit(false);
+    lcRefPess.montaTab();
     
     completaTela();    
   }
@@ -436,11 +431,11 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     	adicTab("Terras", new JPanelPad(JPanelPad.TP_JPANEL));
 	if(bJurTipoCli){
 		adicTab("Bancos", new JPanelPad(JPanelPad.TP_JPANEL));
-		adicTab("Ref. Comerciais", new JPanelPad(JPanelPad.TP_JPANEL));
+		adicTab("Ref.Comerc.", new JPanelPad(JPanelPad.TP_JPANEL));
 		adicTab("Sócios", new JPanelPad(JPanelPad.TP_JPANEL));
 	}
   	if(bRefPesTipoCli)
-  		adicTab("Ref. Pess.",pinRefPess);
+  		adicTab("Ref.Pess.",pinRefPess);
   	
 	if(bFisTipoCli || bJurTipoCli)
 		adicTab("Pessoas autorizadas",new JPanelPad(JPanelPad.TP_JPANEL));
@@ -638,7 +633,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     setaFoco();
 
   }
-  
   public void beforeCarrega(CarregaEvent cevt) {}
   public void beforePost(PostEvent pevt) {
   	if (cbEstCivCli.getSelectedItem().equals("<--Selecione-->")) {
@@ -650,9 +644,11 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
+    lcFicha.setConexao(cn);
     lcTipoCli.setConexao(cn);
     lcTipoCred.setConexao(cn);
     lcTipoCob.setConexao(cn);
+    lcRefPess.setConexao(cn);
    	buscaEstadoCivil();
   }        
 }
