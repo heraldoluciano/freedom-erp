@@ -65,69 +65,69 @@ public class FreedomFNC extends Aplicativo {
 	addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
 	  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100101000,2, false, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Setor", "",'S',100101010,3, true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Vendedor", "",'V',100101020,3, true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de cliente...","",'T',100101030,3, true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Classificação de cliente...", "", 'f',100101040,3, true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Cliente...", "",'C',100101050,3, true, null);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Setor", "Setor",'S',100101010,3, true, FSetor.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Vendedor", "Vendedor",'V',100101020,3, true, FVendedor.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de cliente...","TipoCli",'T',100101030,3, true, FTipoCli.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Classificação de cliente...", "Classifição de Clientes", 'f',100101040,3, true, FClasCli.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Cliente...", "Clientes",'C',100101050,3, true, FCliente.class);
         addSeparador(100100000);
-        addOpcao(100100000,TP_OPCAO_ITEM,"Moeda","",'M',100102000,2, true, null);
-	    addOpcao(100100000,TP_OPCAO_ITEM,"Banco","",'B',100103000,2, true, null);
-	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de cobrança","",'o',100104000,2, true, null);
-	    addOpcao(100100000,TP_OPCAO_ITEM,"Plano de pagamento","",'s',100105000,2, true, null);
+        addOpcao(100100000,TP_OPCAO_ITEM,"Moeda","Moeda",'M',100102000,2, true, FMoeda.class);
+	    addOpcao(100100000,TP_OPCAO_ITEM,"Banco","Banco",'B',100103000,2, true, FBanco.class);
+	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de cobrança","TipoCob",'o',100104000,2, true, FTipoCob.class);
+	    addOpcao(100100000,TP_OPCAO_ITEM,"Plano de pagamento","PlanoPag",'s',100105000,2, true, FPlanoPag.class);
 	    addSeparador(100100000);	    
-	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de fornecedor","",'e',100107000,2, true, null);  
-	    addOpcao(100100000,TP_OPCAO_ITEM,"Fornecedor","",'r',100108000,2, true, null);    
+	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de fornecedor","TipoFor",'e',100107000,2, true, FTipoFor.class);  
+	    addOpcao(100100000,TP_OPCAO_ITEM,"Fornecedor","Fornecedor",'r',100108000,2, true, FFornecedor.class);    
         
 	addOpcao(100000000,TP_OPCAO_MENU,"Ferramentas","",'F',100200000,1, false, null);
 	addOpcao(100000000,TP_OPCAO_MENU,"Preferências","",'P',100300000,1, false, null);
-	  addOpcao(100300000,TP_OPCAO_ITEM,"Preferências gerais","",'g',100310000,2, true, null);
+	  addOpcao(100300000,TP_OPCAO_ITEM,"Preferências gerais","Pref. Gerais",'g',100310000,2, true, FPrefereGeral.class);
 	addSeparador(100100000);
 	addOpcao(100000000,TP_OPCAO_MENU,"Configurações","",'C',100400000,1, false, null);
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Estação de trabalho","",'T',100410000,2, true, null);		  
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Impressora","",'I',100420000,2, true, null);
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Papel","",'P',100430000,2, true, null);
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Estação de trabalho","Estações de trabalho",'T',100410000,2, true, FEstacao.class);		  
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Impressora","Impressoras",'I',100420000,2, true, FImpressora.class);
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Papel","Papeis",'P',100430000,2, true, FPapel.class);
 	  addSeparador(100400000);
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Empresa","",'E',100440000,2, true, null);	  	  
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Empresa","Empresa",'E',100440000,2, true, FEmpresa.class);	  	  
 
   addOpcao(-1,TP_OPCAO_MENU,"Pagar","",'P',400000000,0, false, null);
-    addOpcao(400000000,TP_OPCAO_ITEM,"Manutenção","",'M',400200000,1, true, null);
+    addOpcao(400000000,TP_OPCAO_ITEM,"Manutenção","Manutenção de contas a pagar",'M',400200000,1, true, FManutPag.class);
 	addOpcao(400000000,TP_OPCAO_MENU,"Listagens","",'s',400300000,1, false, null);				
-	  addOpcao(400300000,TP_OPCAO_ITEM,"Pagar/Pagas","",'P',400410000,2, true, null);
+	  addOpcao(400300000,TP_OPCAO_ITEM,"Pagar/Pagas","Pagar/Pagas",'P',400410000,2, true, FRPagar.class);
 
   addOpcao(-1,TP_OPCAO_MENU,"Receber","",'R',500000000,0, false, null);
-    addOpcao(500000000,TP_OPCAO_ITEM,"Manutenção","",'M',500100000,1, true, null);
+    addOpcao(500000000,TP_OPCAO_ITEM,"Manutenção","Manutenção de contas a receber",'M',500100000,1, true, FManutRec.class);
 	addOpcao(500000000,TP_OPCAO_ITEM,"CNAB","",'N',500200000,1, true, null);    
     addOpcao(500000000,TP_OPCAO_MENU,"Listagens","",'s',500300000,1, false, null);				
-  	  addOpcao(500300000,TP_OPCAO_ITEM,"Receber/Recebidas","",'R',500310000,2, true, null);
-	  addOpcao(500300000,TP_OPCAO_ITEM,"Inadimplentes","",'I',500320000,2, true, null);
+  	  addOpcao(500300000,TP_OPCAO_ITEM,"Receber/Recebidas","Receber/Recebidas",'R',500310000,2, true, FRReceber.class);
+	  addOpcao(500300000,TP_OPCAO_ITEM,"Inadimplentes","Inadimplentes",'I',500320000,2, true, FRInadimplentes.class);
 
   addOpcao(-1,TP_OPCAO_MENU,"Financeiro","",'F',600000000,0, false, null);
     addOpcao(600000000,TP_OPCAO_MENU,"Boleto","",'B',600100000,1, false, null);
-      addOpcao(600100000,TP_OPCAO_ITEM,"Modelo","",'M',600110000,2, true, null);
-      addOpcao(600100000,TP_OPCAO_ITEM,"Imprimir","",'I',600120000,2, true, null);
-    addOpcao(600000000,TP_OPCAO_ITEM,"Banco","",'a',600200000,1, true, null);
-    addOpcao(600000000,TP_OPCAO_ITEM,"Planejamento","",'P',600300000,1, true, null);
-    addOpcao(600000000,TP_OPCAO_ITEM,"Centro de custo","",'C',600400000,1, true, null);    
-	addOpcao(600000000,TP_OPCAO_ITEM,"Contas","",'o',600500000,1, true, null);
-	addOpcao(600000000,TP_OPCAO_ITEM,"Lançamentos","",'L',600600000,1, true, null);
+      addOpcao(600100000,TP_OPCAO_ITEM,"Modelo","Modelo de boleto",'M',600110000,2, true, FModBoleto.class);
+      addOpcao(600100000,TP_OPCAO_ITEM,"Imprimir","Boleto",'I',600120000,2, true, FRBoleto.class);
+    addOpcao(600000000,TP_OPCAO_ITEM,"Banco","Banco",'a',600200000,1, true, FBanco.class);
+    addOpcao(600000000,TP_OPCAO_ITEM,"Planejamento","Planejament",'P',600300000,1, true, FPlanejamento.class);
+    addOpcao(600000000,TP_OPCAO_ITEM,"Centro de custo","Centro de Custos",'C',600400000,1, true, FCentroCusto.class);    
+	addOpcao(600000000,TP_OPCAO_ITEM,"Contas","Contas",'o',600500000,1, true, FConta.class);
+	addOpcao(600000000,TP_OPCAO_ITEM,"Lançamentos","Lançamentos",'L',600600000,1, true, FLanca.class);
 	addSeparador(600000000);
 	addOpcao(600000000,TP_OPCAO_ITEM,"Tipo de crédito","",'L',600700000,1, true, null);
 	addOpcao(600000000,TP_OPCAO_ITEM,"Liberação de crédito","",'i',600800000,1, true, null);
 	addSeparador(600000000);
-	addOpcao(600000000,TP_OPCAO_ITEM,"Reprocessa saldo","",'R',600900000,1, true, null);
+	addOpcao(600000000,TP_OPCAO_ITEM,"Reprocessa saldo","Reprocessamento de saldos",'R',600900000,1, true, FProcessaSL.class);
 	addSeparador(600000000);
 	
     addOpcao(600000000,TP_OPCAO_MENU,"Listagens","",'s',601000000,1, false, null);				
-  	  addOpcao(601000000,TP_OPCAO_ITEM,"Extrato","",'E',601010000,2, true, null);
-	  addOpcao(601000000,TP_OPCAO_ITEM,"Balancete","",'B',601020000,2, true, null);
-	  addOpcao(601000000,TP_OPCAO_ITEM,"Relatório financeiro por C.C.","",'R',601030000,2, true, null);
-      addOpcao(601000000,TP_OPCAO_ITEM,"Razão financeiro","",'z',601040000,2, true, null);
-      addOpcao(601000000,TP_OPCAO_ITEM,"Fluxo de caixa","",'F',601050000,2, true, null);
+  	  addOpcao(601000000,TP_OPCAO_ITEM,"Extrato","Extrato",'E',601010000,2, true, FRExtrato.class);
+	  addOpcao(601000000,TP_OPCAO_ITEM,"Balancete","Balancete",'B',601020000,2, true, FRBalancete.class);
+	  addOpcao(601000000,TP_OPCAO_ITEM,"Relatório financeiro por C.C.","Relatorio Financeiro por C.C.",'R',601030000,2, true, FRCentroCusto.class);
+      addOpcao(601000000,TP_OPCAO_ITEM,"Razão financeiro","Razão financeiro",'z',601040000,2, true, FRRazaoFin.class);
+      addOpcao(601000000,TP_OPCAO_ITEM,"Fluxo de caixa","Fluxo de caixa",'F',601050000,2, true, FRFluxoCaixa.class);
       
 	addOpcao(600000000,TP_OPCAO_MENU,"Gráficos","",'G',601100000,1, false, null);
-	  addOpcao(601100000,TP_OPCAO_ITEM,"Balancete Gráfico","",'G',601110000,2, true, null);
-	  addOpcao(601100000,TP_OPCAO_ITEM,"Gráfico financeiro por C.C","",'f',601120000,2, true, null);
+	  addOpcao(601100000,TP_OPCAO_ITEM,"Balancete Gráfico","Balancete Gráfico",'G',601110000,2, true, FRBalanceteGrafico.class);
+	  addOpcao(601100000,TP_OPCAO_ITEM,"Gráfico financeiro por C.C","Gráfico Financeiro por C.C",'f',601120000,2, true, FRGraficoCC.class);
   
   addBotao("btProduto.gif","Cadastro de produtos",100120070);
   addBotao("barraUsuario.gif","Cliente",100101050);
@@ -140,245 +140,6 @@ public class FreedomFNC extends Aplicativo {
 
   ajustaMenu();
  	
-  }
-  
-  public void execOpcao( int iOpcao ) {
-    if (iOpcao==100101030) {
-      if (telaPrincipal.temTela("TipoCli")==false) {
-        FTipoCli tela = new FTipoCli();
-        telaPrincipal.criatela("TipoCli",tela,con);
-      } 
-    }
-    else if (iOpcao==100101050) {
-      if (telaPrincipal.temTela("Clientes")==false) {
-        FCliente tela = new FCliente();
-        telaPrincipal.criatela("Clientes",tela,con);
-      }
-    }
-    else if (iOpcao==100101010) {
-      if (telaPrincipal.temTela("Setor")==false) {
-        FSetor tela = new FSetor();
-        telaPrincipal.criatela("Setor",tela,con);
-      } 
-    }
-    else if (iOpcao==100102000) {
-      if (telaPrincipal.temTela("Moeda")==false) {
-        FMoeda tela = new FMoeda();
-        telaPrincipal.criatela("Moeda",tela,con);
-      } 
-    }
-    else if ( (iOpcao==100103000) || (iOpcao==1) ){
-      if (telaPrincipal.temTela("Banco")==false) {
-        FBanco tela = new FBanco();
-        telaPrincipal.criatela("Banco",tela,con);
-      } 
-    }
-    else if (iOpcao==100104000) {
-      if (telaPrincipal.temTela("TipoCob")==false) {
-        FTipoCob tela = new FTipoCob();
-        telaPrincipal.criatela("TipoCob",tela,con);
-      } 
-    }
-    else if (iOpcao==100105000) {
-      if (telaPrincipal.temTela("PlanoPag")==false) {
-        FPlanoPag tela = new FPlanoPag();
-        telaPrincipal.criatela("PlanoPag",tela,con);
-      } 
-    }
-    else if (iOpcao==100107000) {
-      if (telaPrincipal.temTela("TipoFor")==false) {
-        FTipoFor tela = new FTipoFor();
-        telaPrincipal.criatela("TipoFor",tela,con);
-      } 
-    }
-    else if (iOpcao==100108000) {
-      if (telaPrincipal.temTela("Fornecedor")==false) {
-        FFornecedor tela = new FFornecedor();
-        telaPrincipal.criatela("Fornecedor",tela,con);
-      } 
-    }
-    else if (iOpcao==100101020) {
-      if (telaPrincipal.temTela("Vendedor")==false) {
-        FVendedor tela = new FVendedor();
-        telaPrincipal.criatela("Vendedor",tela,con);
-      } 
-    }
-    else if (iOpcao==100430000) {
-      if (telaPrincipal.temTela("Papeis")==false) {
-        FPapel tela = new FPapel();
-        telaPrincipal.criatela("Papeis",tela,con);
-      }
-    }
-    else if (iOpcao==100420000) {
-      if (telaPrincipal.temTela("Impressoras")==false) {
-        FImpressora tela = new FImpressora();
-        telaPrincipal.criatela("Impressoras",tela,con);
-      }
-    }
-    else if (iOpcao==100410000) {
-      if (telaPrincipal.temTela("Estações de trabalho")==false) {
-        FEstacao tela = new FEstacao();
-        telaPrincipal.criatela("Estações de trabalho",tela,con);
-      }
-    }
-    else if (iOpcao==600500000) {
-      if (telaPrincipal.temTela("Contas")==false) {
-        FConta tela = new FConta();
-        telaPrincipal.criatela("Contas",tela,con);
-      }
-    }
-    else if (iOpcao==100101040) {
-      if (telaPrincipal.temTela("Classifição de Clientes")==false) {
-        FClasCli tela = new FClasCli();
-        telaPrincipal.criatela("Classificação de Clientes",tela,con);
-      }
-    }
-	else if (iOpcao==600200000){
-	  if (telaPrincipal.temTela("Banco")==false) {
-		FBanco tela = new FBanco();
-		telaPrincipal.criatela("Banco",tela,con);
-	  } 
-	}
-	else if (iOpcao==600110000) {
-		if (telaPrincipal.temTela("Modelo de boleto")==false) {
-			FModBoleto tela = new FModBoleto();
-			telaPrincipal.criatela("Modelo de boleto",tela,con);
-		} 
-	}
-	else if (iOpcao==600120000) {
-		if (telaPrincipal.temTela("Boleto")==false) {
-          FRBoleto tela = new FRBoleto();
-          //tela.setConexao();
-  	      telaPrincipal.criatela("Boleto",tela,con);
-		}
-    }
-	else if (iOpcao==600300000) {
-      if (telaPrincipal.temTela("Planejamento")==false) {
-        FPlanejamento tela = new FPlanejamento();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Planejamento",tela,con);
-      }
-    }
-	else if (iOpcao==600400000) {
-	  if (telaPrincipal.temTela("Centro de Custos")==false) {
-		FCentroCusto tela = new FCentroCusto();
-		//tela.setConexao(con);
-		telaPrincipal.criatela("Centro de Custos",tela,con);
-	  }
-	} 
-	else if (iOpcao==600900000) {
-		if (telaPrincipal.temTela("Reprocessamento de saldos")==false) {
-			FProcessaSL tela = new FProcessaSL();
-			//tela.setConexao(con);
-			telaPrincipal.criatela("Reprocessamento de saldos",tela,con);
-		}
-	}  
-	else if (iOpcao==100310000) {
-      if (telaPrincipal.temTela("Pref. Gerais")==false) {
-        FPrefereGeral tela = new FPrefereGeral();
-        telaPrincipal.criatela("Pref. Garais",tela,con);
-      }
-    }
-    else if (iOpcao==600600000){
-      if (telaPrincipal.temTela("Lançamentos")==false){
-        FLanca tela = new FLanca();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Lançamentos",tela,con);
-      }
-    }
-    else if (iOpcao==500310000) {
-      if (telaPrincipal.temTela("Receber/Recebidas")==false) {
-        FRReceber tela = new FRReceber();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Receber/Recebidas",tela,con);
-      }
-    }
-    else if (iOpcao==500320000) {
-      if (telaPrincipal.temTela("Inadimplentes")==false) {
-        FRInadimplentes tela = new FRInadimplentes();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Inadimplentes",tela,con);
-      }
-    }
-    else if (iOpcao==400410000) {
-      if (telaPrincipal.temTela("Pagar/Pagas")==false) {
-        FRPagar tela = new FRPagar();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Pagar/Pagas",tela,con);
-      }
-    }
-    else if (iOpcao==400200000) {
-      if (telaPrincipal.temTela("Manutenção de contas a pagar")==false) {
-        FManutPag tela = new FManutPag();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Manutenção de contas a pagar",tela,con);
-      }
-    }
-    else if (iOpcao==500100000) {
-    	if (telaPrincipal.temTela("Manutenção de contas a receber")==false) {
-    		FManutRec tela = new FManutRec();
-    		//tela.setConexao(con);
-    		telaPrincipal.criatela("Manutenção de contas a receber",tela,con);
-    	}
-    }
-    else if (iOpcao==601010000) {
-      if (telaPrincipal.temTela("Extrato")==false) {
-        FRExtrato tela = new FRExtrato();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Extrato",tela,con);
-      }
-    }
-    else if (iOpcao==601020000) {
-      if (telaPrincipal.temTela("Balancete")==false) {
-        FRBalancete tela = new FRBalancete();
-        //tela.setConexao(con);
-        telaPrincipal.criatela("Balancete",tela,con);
-      }
-    }
-	else if (iOpcao==601030000) {
-	  if (telaPrincipal.temTela("Relatorio Financeiro por C.C.")==false) {
-		FRCentroCusto tela = new FRCentroCusto();
-		//tela.setConexao(con);
-		telaPrincipal.criatela("Relatorio Financeiro por C.C.",tela,con);
-	  }
-	}
-	else if (iOpcao==601040000) {
-	  if (telaPrincipal.temTela("Razão financeiro")==false) {
-		FRRazaoFin tela = new FRRazaoFin();
-		//tela.setConexao(con);
-		telaPrincipal.criatela("Razão financeiro",tela,con);
-	  }
-	}
-	else if (iOpcao==601050000) {
-		if (telaPrincipal.temTela("Fluxo de caixa")==false) {
-			FRFluxoCaixa tela = new FRFluxoCaixa();
-			//tela.setConexao(con);
-			telaPrincipal.criatela("Fluxo de caixa",tela,con);
-		}
-	}
-	else if (iOpcao==601110000) {
-	  if (telaPrincipal.temTela("Balancete Gráfico")==false) {
-		FRBalanceteGrafico tela = new FRBalanceteGrafico();
-		//tela.setConexao(con);
-		telaPrincipal.criatela("Balancete Gráfico",tela,con);
-	  }
-	}
-	else if (iOpcao==601120000) {
-	  if (telaPrincipal.temTela("Gráfico Financeiro por C.C")==false) {
-		FRGraficoCC tela = new FRGraficoCC();		
-		//tela.setConexao(con);
-		telaPrincipal.criatela("Gráfico Financeiro por C.C",tela,con);
-	  }
-	}	
-    else if (iOpcao==100440000) {
-       if (telaPrincipal.temTela("Empresa")==false) {
-         FEmpresa tela = new FEmpresa();
-         telaPrincipal.criatela("FEmpresa",tela,con);
-       }
-    }
-    else if (iOpcao==1) {
-    	atualizaMenus();
-    }
   }
 
   public static void main(String sParams[]) {
