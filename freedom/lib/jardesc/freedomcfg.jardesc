@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="C:/opt/eclipse/workspace/freedom/jars/freedomcfg.jar"/>
-    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/jars/jardesc/freedomcfg.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <jar path="C:/opt/eclipse/workspace/freedom/lib/freedomcfg.jar"/>
+    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedomcfg.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
     <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
         <sealing sealJar="false">
             <packagesToSeal/>
@@ -9,14 +9,14 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.drivers"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.cfg"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.cfg"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
     </selectedElements>
 </jardesc>

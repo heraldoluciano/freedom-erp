@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="C:/opt/eclipse/workspace/freedom/jars/freedomstd.jar"/>
-    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/jars/jardesc/freedomstd.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
-    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
-        <sealing sealJar="false">
+    <jar path="C:/opt/eclipse/workspace/freedom/lib/freedomstd.jar"/>
+    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedomstd.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FreedomSTD.java[FreedomSTD">
+        <sealing sealJar="true">
             <packagesToSeal/>
             <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd{FOrcamento.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd{FConsOrc.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.relatorios"/>
-        <javaElement handleIdentifier="=freedom/&lt;bibli"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsAutoriz.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAprovaOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FOrcamento.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
     </selectedElements>
 </jardesc>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="C:/opt/eclipse/workspace/freedom/jars/freedomatd.jar"/>
-    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/jars/jardesc/freedomatd.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <jar path="C:/opt/eclipse/workspace/freedom/lib/freedomatd.jar"/>
+    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedomatd.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
     <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
         <sealing sealJar="false">
             <packagesToSeal/>
@@ -9,15 +9,16 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FTipoCli.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{FCliente.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.atd"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.layout"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.modulos.std{DLRCliente.java"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRCliente.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
     </selectedElements>
 </jardesc>
