@@ -127,6 +127,8 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Média de vendas por ítem",'o',301060000,2,true);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Ultimas Vendas por Cliente",'C',301070000,2,true);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por Setor",'t',301080000,2,true);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Gerenciamento de contas",'i',301090000,2,true);
+	  
    addOpcao(300000000,TP_OPCAO_MENU,"Gráficos",'G',301100000,1,false);	  
       addOpcao(301100000,TP_OPCAO_ITEM,"Evolução de vendas",'E',301110000,2,true);
    addSeparador(300000000);
@@ -755,6 +757,14 @@ public class FreedomSTD extends Aplicativo {
     		telaPrincipal.criatela("Vendas por Setor",tela);
     	}
     }
+    
+    else if (iOpcao==301090000) {
+    	if (telaPrincipal.temTela("Gerenciamento de contas")==false) {
+    		FRGerContas tela = new FRGerContas();
+    		tela.setConexao(con);
+    		telaPrincipal.criatela("Gerenciamento de contas",tela);
+    	}
+    }    
     
 	else if (iOpcao==301110000) {
 	  if (telaPrincipal.temTela("Evolução de vendas")==false) {
