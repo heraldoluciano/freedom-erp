@@ -66,4 +66,9 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <target name="-pre-jar">
+        <exec dir="bin" executable="/bin/echo" output="${build.dir}/version.txt">
+            <arg line="${version}"/>
+        </exec>
+    </target>
 </project>
