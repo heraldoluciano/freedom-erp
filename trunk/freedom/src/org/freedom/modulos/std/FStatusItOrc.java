@@ -61,18 +61,19 @@ public class FStatusItOrc extends FFilho implements ActionListener {
     setTitulo("Ajusta status do item de orçamento");
     setAtribos(50,50,340,210);
     
+    lcOrc.add(new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.",  ListaCampos.DB_PK,true));    
+    lcOrc.add(new GuardaCampo( txtStatusOrc, "StatusOrc", "Status",  ListaCampos.DB_SI,false));
     
-    lcOrc.add(new GuardaCampo( txtCodOrc, 7, 100, 80, 20, "CodOrc", "Cód.orcamento", true, false, null, JTextFieldPad.TP_INTEGER,true));
-    lcOrc.add(new GuardaCampo( txtStatusOrc, 90, 100, 207, 20, "StatusOrc", "Status", false, false, null, JTextFieldPad.TP_STRING,false));
     lcOrc.montaSql(false, "ORCAMENTO", "VD");
     lcOrc.setReadOnly(true);
     txtCodOrc.setTabelaExterna(lcOrc);
     txtCodOrc.setFK(true);
-
-    lcItOrc.add(new GuardaCampo( txtCodOrc, 7, 100, 80, 20, "CodOrc", "Cód.orcamento", true, true, null, JTextFieldPad.TP_INTEGER,true));
-    lcItOrc.add(new GuardaCampo( txtItem, 90, 100, 207, 20, "CodItOrc", "Item", true, false, null, JTextFieldPad.TP_INTEGER,true));
-    lcItOrc.add(new GuardaCampo( txtVlrLiqItOrc, 90, 100, 207, 20, "VlrLiqItOrc", "V. liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false));
-    lcItOrc.add(new GuardaCampo( cbEmitItOrc, 90, 100, 207, 20, "EmitItOrc", "Emit.", false, false, null, JTextFieldPad.TP_STRING,false));
+    
+    lcItOrc.add(new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.",  ListaCampos.DB_PK,true));
+    lcItOrc.add(new GuardaCampo( txtItem, "CodItOrc", "Item",  ListaCampos.DB_PK,true));    
+    lcItOrc.add(new GuardaCampo( txtVlrLiqItOrc, "VlrLiqItOrc", "Vlr.Liq.",  ListaCampos.DB_SI,false));    
+    lcItOrc.add(new GuardaCampo( cbEmitItOrc, "EmitItOrc", "Emit.",  ListaCampos.DB_SI,false));
+    
     lcItOrc.montaSql(false, "ITORCAMENTO", "VD");
     lcItOrc.setReadOnly(true);
     txtCodOrc.setListaCampos(lcItOrc);
@@ -81,7 +82,7 @@ public class FStatusItOrc extends FFilho implements ActionListener {
     txtItem.setListaCampos(lcItOrc);
     txtItem.setPK(true);
     txtItem.setNomeCampo("CodItOrc");
-    
+    System.out.println(lcItOrc.getWhereAdic());
 
     Container c = getContentPane();
     c.setLayout(new BorderLayout());
