@@ -44,8 +44,11 @@ import javax.swing.JToolBar;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JMenuPad;
+import org.freedom.componentes.Painel;
 import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.atd.FAgenda;
+import org.freedom.modulos.std.FMoeda;
 
 public class FPrincipal extends JFrame implements ActionListener {
    
@@ -56,6 +59,8 @@ public class FPrincipal extends JFrame implements ActionListener {
    private JMenuItem sairMI = new JMenuItem();
    private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
    private JButton btCalc = new JButton(Icone.novo("btCalc.gif"));
+   private JButton btAgenda = new JButton(Icone.novo("btAgenda.gif"));
+   public Painel pinBotoesDir = new Painel();
    public  Container c = getContentPane();
    public  JDesktopPane dpArea = new JDesktopPane();
    public  StatusBar statusBar = new StatusBar();
@@ -67,13 +72,8 @@ public class FPrincipal extends JFrame implements ActionListener {
 
      setJMenuBar( bar );
 
-//     arquivoMenu.setText("Arquivo");
-//     arquivoMenu.setMnemonic('A');
-
      sairMI.setText("Sair");
      sairMI.setMnemonic('r');
-
-//     bar.add(arquivoMenu);
      
      c.add(pn);
           
@@ -81,14 +81,22 @@ public class FPrincipal extends JFrame implements ActionListener {
      btCalc.setToolTipText("Calculadora");
      btCalc.addActionListener(this);
      
+     btAgenda.setPreferredSize(new Dimension(34,34));
+     btAgenda.setToolTipText("Agenda");
+     btAgenda.addActionListener(this);
+     pinBotoesDir.setBorder(null);
      c.add(tBar, BorderLayout.NORTH);
      tBar.setLayout(new BorderLayout());
-     tBar.add(btCalc,BorderLayout.EAST);
+     pinBotoesDir.setPreferredSize(new Dimension(102,34));
+     tBar.add(pinBotoesDir,BorderLayout.EAST);
+     
+     pinBotoesDir.add(btCalc);
+     pinBotoesDir.add(btAgenda); 	
       
      montaStatus();
      
      setSize((int)tela.getWidth() , (int)tela.getHeight()-50);
-     		// - (tela.height / 11) // );
+
      setExtendedState(MAXIMIZED_BOTH);
      c.add( dpArea, BorderLayout.CENTER);
      sairMI.addActionListener(
@@ -106,7 +114,6 @@ public class FPrincipal extends JFrame implements ActionListener {
        }
      );
     
-     //setMaximizedBounds()
    }
 
    public void addKeyListerExterno(KeyListener arg0) {
@@ -114,7 +121,7 @@ public class FPrincipal extends JFrame implements ActionListener {
    	 btCalc.addKeyListener(arg0);
    	 bar.addKeyListener(arg0);
    	 tBar.addKeyListener(arg0);
-   	 
+   	 btAgenda.addKeyListener(arg0);
    }
      
    public void montaStatus() {
@@ -179,7 +186,15 @@ public class FPrincipal extends JFrame implements ActionListener {
        dpArea.add("Calc",calc);
        calc.show();
      }
-   }
+     else if (evt.getSource() == btAgenda) {
+     	
+     }
+        if (this.temTela("Agenda") == false) {
+			FAgenda tela = new FAgenda();
+			tela.setConexao(con);
+			this.criatela("Agenda",tela);
+        }
+     }
 
    
    public boolean temTela(String nome) {
