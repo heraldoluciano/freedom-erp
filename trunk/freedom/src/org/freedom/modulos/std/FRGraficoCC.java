@@ -128,7 +128,7 @@ public class FRGraficoCC extends FRelatorio {
 	txtDataini.setVlrDate(cPeriodo.getTime());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcPlan.setConexao(cn);
 	lcCC.setConexao(cn);
 	lcCC.setWhereAdic("NIVELCC<>10 AND ANOCC="+buscaAnoBaseCC());

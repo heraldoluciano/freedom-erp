@@ -176,7 +176,6 @@ private void imprimir(boolean bVisualizar) {
   
   public void setConexao(Connection cn) {
 	super.setConexao(cn);
-  	con = cn;
     lcClComis.setConexao(cn);
   }
 }

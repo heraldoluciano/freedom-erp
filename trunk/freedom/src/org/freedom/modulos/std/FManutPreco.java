@@ -438,7 +438,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
   }
   
   public void setConexao(Connection cn) {
-    con = cn;
+    setConexao(cn);
     lcMarca.setConexao(cn);
     lcGrup.setConexao(cn);
     lcPlanoPag.setConexao(cn);

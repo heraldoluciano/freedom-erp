@@ -285,7 +285,7 @@ public class FRVencLote extends FRelatorio {
    */
 
   public void setConexao(Connection cn) {
-    con = cn;
+    setConexao(cn);
     lcGrup.setConexao(cn);
     lcMarca.setConexao(cn);
   }

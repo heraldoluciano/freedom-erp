@@ -323,7 +323,7 @@ public class FREstoqueMin extends FRelatorio {
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcGrup.setConexao(cn);
     lcMarca.setConexao(cn);
   }

@@ -199,7 +199,7 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
   }
   
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVenda.setConexao(cn);
   }
 }

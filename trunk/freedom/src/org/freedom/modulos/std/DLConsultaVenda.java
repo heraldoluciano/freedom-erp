@@ -56,7 +56,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private ListaCampos lcVenda = new ListaCampos(this);
   public DLConsultaVenda(Component cOrig,Connection cn,int iCodVenda) {
   	super(cOrig);
-    con = cn;
+    setConexao(cn);
     txtCodVenda.setVlrString(""+iCodVenda);
     setTitulo("Consulta de Venda");
     setAtribos(120,140,500,300);

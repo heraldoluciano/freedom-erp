@@ -43,11 +43,11 @@ public class DLAltComisVend extends FFDialogo {
   private int iCodVenda = 0;
   public DLAltComisVend(Component cOrig, int iCodVenda, BigDecimal bigComis, Connection con) {
     super(cOrig);
+    
     setTitulo("Alteração de comissão");
     setAtribos(250, 120);
-
+    setConexao(con);
     this.iCodVenda = iCodVenda;
-    this.con = con;
 
     setToFrameLayout();
 

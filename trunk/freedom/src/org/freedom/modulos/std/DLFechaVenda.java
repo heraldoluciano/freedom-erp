@@ -145,7 +145,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private boolean bPrefs[] = null;
   public DLFechaVenda(Connection cn, Integer iCodVenda, Component cOrig) {
   	super(cOrig);
-    con = cn;
+    setConexao(cn);
     iCodVendaFecha = iCodVenda.intValue();
     setTitulo("Fechar Venda");
     setAtribos(410,350);

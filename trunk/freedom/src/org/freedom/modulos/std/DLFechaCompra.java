@@ -96,7 +96,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
   private boolean bPodeSair = false;
   public DLFechaCompra(Connection cn, Integer iCodCompra,Component cOrig) {
   	super(cOrig);
-    con = cn;
+  	setConexao(cn);
     iCodCompraFecha = iCodCompra.intValue();
     setTitulo("Fechar Compra");
     setAtribos(440,350);

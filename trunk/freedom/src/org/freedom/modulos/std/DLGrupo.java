@@ -45,7 +45,7 @@ public class DLGrupo extends FFDialogo {
   private boolean bEdit = false;
   public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc) {
   	super(cOrig);
-    con = cn;
+    setConexao(cn);
     setTitulo("Novo Grupo");
     setAtribos(400,140);
     Funcoes.setBordReq(txtCodGrupo);    

@@ -550,7 +550,7 @@ public class FConsOrc extends FFilho implements ActionListener {
     fPrim = fP;
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcCli.setConexao(con);
   }
 }

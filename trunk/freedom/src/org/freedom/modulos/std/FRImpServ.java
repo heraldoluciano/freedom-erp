@@ -42,7 +42,6 @@ import org.freedom.telas.FRelatorio;
 
 public class FRImpServ extends FRelatorio {
   
-  private Connection con;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
@@ -382,8 +381,5 @@ public class FRImpServ extends FRelatorio {
       imp.say(imp.pRow() + 0, 136, "|");
   	  imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
   	  imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 }

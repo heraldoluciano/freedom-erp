@@ -48,7 +48,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    public DLBuscaProd(Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 this.sCol = sCol;
-   	 this.con = con;
+   	 setConexao(con);
    	 
    	 lcProd.add(new GuardaCampo( txtCod, sCol, "Código", ListaCampos.DB_PK, false));
    	 lcProd.add(new GuardaCampo( txtDesc, "DescProd", "Descrição do produto", ListaCampos.DB_SI,false));
