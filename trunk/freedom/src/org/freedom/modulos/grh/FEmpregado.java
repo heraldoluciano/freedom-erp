@@ -23,6 +23,7 @@
 package org.freedom.modulos.grh;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.Connection;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -34,21 +35,28 @@ public class FEmpregado extends FDados implements ActionListener {
   private JTextFieldPad txtCod = new JTextFieldPad(5);
   private JTextFieldPad txtCodFuncao = new JTextFieldPad(5);
   private JTextFieldPad txtCodTurno = new JTextFieldPad(5);
+  private JTextFieldPad txtCodDepto = new JTextFieldPad(5);
   private JTextFieldFK  txtDescFuncao = new JTextFieldFK();
   private JTextFieldFK  txtDescTurno = new JTextFieldFK();
+  private JTextFieldFK  txtDescDepto = new JTextFieldFK();
   private JTextFieldPad txtDesc= new JTextFieldPad(20);
   private ListaCampos lcFuncao = new ListaCampos(this,"FU");
   private ListaCampos lcTurno = new ListaCampos(this,"TU");
+  private ListaCampos lcDepto = new ListaCampos(this,"DP");
   public FEmpregado () {
     setTitulo("Cadastro de Empregados");
     setAtribos(50, 50, 350, 125);
     adicCampo(txtCod, 7, 20, 50, 20,"MatEmpr","Matricula",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
     adicCampo(txtDesc, 60, 20, 250, 20,"NomeEmpr","Nome do empregado",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodFuncao, 7, 40, 50, 20,"CodFunc","Cód.Func.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
-  	adicDescFK(txtDescFuncao, 90, 40, 237, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodTurno, 7, 60, 50, 20,"CodTurno","Cód.Turnos",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
-  	adicDescFK(txtDescTurno, 90, 60, 237, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodFuncao, 7, 60, 50, 20,"CodFunc","Cód.Func.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
+  	adicDescFK(txtDescFuncao, 90, 60, 237, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodTurno, 7, 100, 50, 20,"CodTurno","Cód.Turnos",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
+  	adicDescFK(txtDescTurno, 90, 100, 237, 20, "DescFunc", "Descrição da função", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodDepto, 7, 140, 50, 20,"CodDepto","Cód.Depto.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
+  	adicDescFK(txtDescDepto, 90, 140, 237, 20, "DescDepto", "Descrição do departamento", JTextFieldPad.TP_STRING, 50, 0);
 
+  	
+  	
   	lcFuncao.add(new GuardaCampo( txtCodFuncao, 7, 100, 80, 20, "CodFunc", "Cód.Func.", true, false, null, JTextFieldPad.TP_INTEGER,true));
   	lcFuncao.add(new GuardaCampo( txtDescFuncao, 90, 100, 207, 20, "DescFunc", "Descrição da função", false, false, null, JTextFieldPad.TP_STRING,false));
   	lcFuncao.montaSql(false, "FUNCAO", "RH");    
@@ -62,6 +70,13 @@ public class FEmpregado extends FDados implements ActionListener {
   	lcTurno.setQueryCommit(false);
   	lcTurno.setReadOnly(true);
   	txtCodTurno.setTabelaExterna(lcTurno);
+  	
+  	lcDepto.add(new GuardaCampo( txtCodDepto, 7, 100, 80, 20, "CodTurno", "Cód.turno.", true, false, null, JTextFieldPad.TP_INTEGER,true));
+  	lcDepto.add(new GuardaCampo( txtDescDepto, 90, 100, 207, 20, "DescTurno", "Descrição do turno", false, false, null, JTextFieldPad.TP_STRING,false));
+  	lcDepto.montaSql(false, "TURNO", "RH");    
+  	lcDepto.setQueryCommit(false);
+  	lcDepto.setReadOnly(true);
+  	txtCodDepto.setTabelaExterna(lcDepto);
   	
   	setListaCampos( true, "EMPREGADO", "RH");
     btImp.addActionListener(this);
@@ -81,6 +96,14 @@ public class FEmpregado extends FDados implements ActionListener {
     else if (evt.getSource() == btImp) 
       imprimir(false);
     super.actionPerformed(evt);
+  }
+  
+  public void execShow(Connection cn) {
+  	con = cn;	
+    lcFuncao.setConexao(cn);      
+	lcTurno.setConexao(cn);      
+	lcDepto.setConexao(cn);
+    super.execShow(cn);
   }
 
   private void imprimir(boolean bVisualizar) {
