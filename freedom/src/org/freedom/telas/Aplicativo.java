@@ -387,8 +387,20 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				if (telaClass != null) {
 					if (telaPrincipal.temTela(titulo) == false) {
 						try {
-							FFilho tela = (FFilho) telaClass.newInstance();
-							telaPrincipal.criatela(titulo, tela, con);
+							if (telaClass.isAssignableFrom(FFilho.class)) {
+								FFilho tela = (FFilho) telaClass.newInstance();
+								telaPrincipal.criatela(titulo, tela, con);
+							} else if (telaClass
+									.isAssignableFrom(FDialogo.class)) {
+								FDialogo tela = (FDialogo) telaClass
+										.newInstance();
+								telaPrincipal.criatela(titulo, null, con);
+							} else {
+								Funcoes.mensagemInforma(framePrinc,
+										"Tela construída com "
+												+ telaClass.getName()
+												+ "\n Não pode ser inciada.");
+							}
 						} catch (Exception e) {
 							Funcoes.mensagemErro(framePrinc, e.getMessage());
 							e.printStackTrace();
