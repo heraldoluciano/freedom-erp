@@ -496,7 +496,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		
 	}
 	public void beforePost(PostEvent pevt) {
-	    if (txtCasasDec.getVlrInteger().intValue()>3) {
+	    if (txtCasasDec.getVlrInteger().intValue()>5) {
 	        Funcoes.mensagemErro(this,"Número de casas decimais acima do permitido!");
 	        txtCasasDec.requestFocus();
 	        pevt.cancela();
