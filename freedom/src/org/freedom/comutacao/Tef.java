@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Properties;
+import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
 
@@ -41,8 +42,8 @@ public class Tef {
 	File fAtivo;
 	static final String ARQ_TMP = "IntPos.tmp";
 	static final String ARQ_ENVIO = "IntPos.001";
-	static final String ARQ_STATUS = "IntPos.Sts";
-	static final String ARQ_RETORNO = "IntPos.001";
+	static final String ARQ_STATUS = "intpos.sts";
+	static final String ARQ_RETORNO = "intpos.001";
 	static final String ARQ_ATIVO = "ativo.001";
 
 	static final String TEF_HEADER = "000-000";
@@ -66,7 +67,7 @@ public class Tef {
 	static final String TEF_ADMINISTRADORA = "040-000";
 	static final String TEF_EOT = "999-999"; //"E"nd "O"f "T"rasaction. (final do arquivo)
 	
-	private long lIdent = 1;
+	private long lIdentUniq = 1;
 	
 	public Tef(String sPathEnv, String sPathRet) {
 		fTmp = new File(sPathEnv+"/"+ARQ_TMP);
@@ -89,7 +90,7 @@ public class Tef {
 			PrintStream psEnvio = new PrintStream(new FileOutputStream(fTmp));
 			for (int i=0;i<sConteudo.length;i++)
 				psEnvio.println(sConteudo[i]);
-			psEnvio.println(TEF_EOT+"=0");
+			psEnvio.println(TEF_EOT+" = 0");
 			psEnvio.close();
 			fTmp.renameTo(fEnvio);
 			bRet = true;
@@ -119,13 +120,13 @@ public class Tef {
 		}
 		return bRet;
 	}
-	public boolean existeStatus(String sCab) {
-		return existeInfo(sCab,fStatus,7);//7 é padrao do GP.
+	public boolean existeStatus(String sCab, long lIdent) {
+		return existeInfo(sCab,fStatus,7,(lIdent > 0 ? lIdent : 0));//7 é padrao do GP.
 	}
-	public boolean existeRetorno(String sCab) {
-		return existeInfo(sCab,fRetorno,15);
+	public boolean existeRetorno(String sCab, long lIdent) {
+		return existeInfo(sCab,fRetorno,15,(lIdent > 0 ? lIdent : 0));
 	}
-	public boolean existeInfo(String sCab,File fArq, int iTentativas) {
+	public boolean existeInfo(String sCab,File fArq, int iTentativas,long lIdent) {
 		String sLinha;
 		boolean bRet = false;
 		int iConta = 0;
@@ -140,9 +141,15 @@ public class Tef {
 				continue;
 			try {
 				Properties prop = new Properties();
-				prop.load(new FileInputStream(fArq));
-				if (prop.getProperty(TEF_HEADER,"").equals(sCab) &&
+				FileInputStream fis = new FileInputStream(fArq);
+				prop.load(fis);
+				fis.close();
+				//Se for necessário identificação o lIdent será maior a 0;
+				if (prop.getProperty(TEF_HEADER,"").equals(sCab) && lIdent > 0 &&
 					prop.getProperty(TEF_IDENTIFICACAO,"").equals(""+lIdent))
+					bRet = true;
+				//Se não for necessário identificação o lIdent será igual a 0;
+				else if (prop.getProperty(TEF_HEADER,"").equals(sCab) && lIdent == 0)
 					bRet = true;
 				prop.clear();
 			}
@@ -165,8 +172,9 @@ public class Tef {
 			pRet.load(fis);
 			fis.close();
 			fRetorno.delete();
+			fStatus.delete();
 		}
-		catch(IOException err) {
+		catch(Exception err) {
 			Funcoes.mensagemErro(null,"Não foi possível carregar o retorno da TEF!");
 			err.printStackTrace();
 		}
@@ -178,6 +186,9 @@ public class Tef {
 		int iConta;
 		if (!verifTef())
 			return null;
+//Pega uma identificação e já deixa outra disponível;		
+		long lIdent = this.lIdentUniq++;
+		
 		bRet = enviaArquivo(new String[] {
 						(TEF_HEADER + " = "+ "CRT"),
 						(TEF_IDENTIFICACAO + " = "+ lIdent),
@@ -186,8 +197,46 @@ public class Tef {
 					}
 				);
 		if (!bRet || 
-		    !existeStatus("CRT") || 
-			!existeRetorno("CRT"))
+		    !existeStatus("CRT",lIdent) || 
+			!existeRetorno("CRT",lIdent))
+			return null;
+		
+		return leRetorno();
+	}
+	public boolean finalizaVenda(Properties prop) {
+		String pRet = null;
+		boolean bRet;
+		int iConta;
+		if (!verifTef())
+			return false;
+		bRet = enviaArquivo(new String[] {
+						(TEF_HEADER + " = "+ "CNF"),
+						(TEF_IDENTIFICACAO + " = "+ prop.getProperty(TEF_DOC_FISCAL)),
+						(TEF_DOC_FISCAL + " = "+ prop.getProperty(TEF_DOC_FISCAL)),
+						(TEF_NOME_REDE + " = "+ prop.getProperty(TEF_NOME_REDE)),
+						(TEF_NSU + " = "+ prop.getProperty(TEF_NSU)),
+						(TEF_FINALIZACAO + " = "+ prop.getProperty(TEF_FINALIZACAO)),
+					}
+				);
+		if (!bRet || !existeStatus("CNF", Long.parseLong(prop.getProperty(TEF_DOC_FISCAL)))) 
+			return false;
+		
+		return bRet;
+	}
+	public Properties solicAdm(String sTipoTrans) {
+		String pRet = null;
+		boolean bRet;
+		int iConta;
+		if (!verifTef())
+			return null;
+		bRet = enviaArquivo(new String[] {
+						(TEF_HEADER + " = "+ "ADM"),
+						(TEF_TIPO_TRANSACAO + " = "+ sTipoTrans)
+					}
+				);
+		if (!bRet || 
+		    !existeStatus("ADM",0) || 
+			!existeRetorno("ADM",0))
 			return null;
 		
 		return leRetorno();
@@ -201,6 +250,17 @@ public class Tef {
 		else
 			bRet = true;
 		return bRet;
+	}
+	public Object[] retImpTef(Properties prop) {
+		Vector vRet = new Vector();
+		String sLinha = null;
+		for (int i=1;i<999;i++) {
+		    if ((sLinha = prop.getProperty(IMP_BASE+Funcoes.strZero(""+i,3))) != null)
+		        vRet.addElement(sLinha.replaceAll("\"",""));
+		    else
+		        break;
+		}
+		return (Object[])vRet.toArray();
 	}
 
 }
