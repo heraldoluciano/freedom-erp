@@ -148,12 +148,15 @@ public class FreedomGMS extends Aplicativo {
   
 	    addOpcao(-1,TP_OPCAO_MENU,"Entrada",'E',200000000,0,false);
 	    	addOpcao(200000000,TP_OPCAO_ITEM,"Solicitação de Compra",'S',200300000,1,true);
-	    	addOpcao(200000000,TP_OPCAO_ITEM,"Aprova Solicitação de Compra",'S',200400000,1,true);
-	    	addOpcao(200000000,TP_OPCAO_ITEM,"Pesquisa Solicitações de Compra",'S',200500000,1,true);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Aprova Solicitação de Compra",'A',200400000,1,true);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Pesquisa Solicitações de Compra",'P',200500000,1,true);
+	    	addSeparador(200000000);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Cotação de Preços",'T',200600000,1,true);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Aprova Cotação de Preços",'P',200700000,1,true);
 	    	addSeparador(200000000);
 	    	addOpcao(200000000,TP_OPCAO_ITEM,"Compra",'C',200100000,1,true);
 	    	addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200200000,1,false);
-	    	addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'f',200210000,2,true);
+	    	addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'F',200210000,2,true);
 
 	    addOpcao(-1,TP_OPCAO_MENU,"Saída",'S',300000000,0,false);
 	    	addOpcao(300000000,TP_OPCAO_ITEM,"Venda",'V',300100000,1,true);
@@ -427,6 +430,18 @@ public class FreedomGMS extends Aplicativo {
 			  tela.setConexao(con);
 			  tela.setTelaPrim(telaPrincipal);
 	          telaPrincipal.criatela("Pesquisa Solicitações de Compra",tela);
+	        } 
+	      }
+	    else if (iOpcao==200600000) {
+	        if (telaPrincipal.temTela("Cotação de Preços")==false) {
+	          FCotacaoPrecos tela = new FCotacaoPrecos();
+	          telaPrincipal.criatela("Cotação de Preços",tela,con);
+	        } 
+	      }
+	    else if (iOpcao==200700000) {
+	        if (telaPrincipal.temTela("Aprova Cotação de Preços")==false) {
+		      FAprovaCotacaoPrecos tela = new FAprovaCotacaoPrecos();
+		      telaPrincipal.criatela("Aprova Cotação de Preços",tela,con);
 	        } 
 	      }
 	    else if (iOpcao==300100000) {
