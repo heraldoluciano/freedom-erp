@@ -15,7 +15,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários da classe.....
+ * Campo do tipo combobox.
  */
 
 package org.freedom.componentes;
@@ -40,6 +40,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   private int tipo = -1;
   private int tam = 8;
   private int dec = 0;
+  private boolean bZeroNull = false;
   /*public JComboBoxPad() {
     this(null,null);
     criando = false;
@@ -56,6 +57,9 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     addItemListener(this);
     criando = false;
   }*/
+  public void setZeroNulo() {
+  	bZeroNull = true;
+  }
   public JComboBoxPad(Vector label, Vector val, int tipo, int tam, int dec) {
     criando = true;
     if (val != null && label != null) {
@@ -102,7 +106,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   public String getVlrString() {
   	int iInd = getSelectedIndex();
   	if (valores != null && iInd >= 0 && iInd < valores.size())
-      return (String) valores.elementAt(getSelectedIndex());
+  		return (String) valores.elementAt(getSelectedIndex());
     return "";
   }
   public String getText() {
@@ -113,6 +117,8 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     return retorno;
   }
   public Integer getVlrInteger() {
+    if (((Integer) valores.elementAt(getSelectedIndex())==new Integer(0)) && (bZeroNull))
+    	return null;
   	try {
       return (Integer) valores.elementAt(getSelectedIndex());
   	}
