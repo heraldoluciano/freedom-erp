@@ -129,6 +129,16 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtDtAdmTrabConjCli = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
   private JTextFieldPad txtRendaConjCli = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
   
+  private JTextFieldPad txtNomeAvalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtDtNascAvalCli = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+  private JTextFieldPad txtRgAvalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtSSPAvalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtCPFAvalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 11, 0);
+  private JTextFieldPad txtEmpTrabAvalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtCargoAvalCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtDtAdmTrabAvalCli = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+  private JTextFieldPad txtRendaAvalCli = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+  
   private Tabela tabFicha = new Tabela();
   private JLabel lbNatCli = null;
   private JLabel lbUfNatCli = null;
@@ -167,6 +177,16 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JLabel lbCargoConjCli = null;
   private JLabel lbDtAdmTrabConjCli = null;
   private JLabel lbRendaConjCli = null;
+  
+  private JLabel lbNomeAvalCli = null;
+  private JLabel lbDtNascAvalCli = null;
+  private JLabel lbRgAvalCli = null;
+  private JLabel lbSSPAvalCli = null;
+  private JLabel lbCPFAvalCli = null;
+  private JLabel lbEmpTrabAvalCli = null;
+  private JLabel lbCargoAvalCli = null;
+  private JLabel lbDtAdmTrabAvalCli = null;
+  private JLabel lbRendaAvalCli = null;
   
   
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
@@ -304,6 +324,20 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     lbCargoConjCli = adicCampo(txtCargoConjCli, 310, 100, 150, 20, "CargoConjCli", "Cargo", ListaCampos.DB_SI, false);
     lbDtAdmTrabConjCli = adicCampo(txtDtAdmTrabConjCli, 463, 100, 90, 20, "DtAdmTrabConjCli", "Dt.admissao", ListaCampos.DB_SI, false);
     lbRendaConjCli = adicCampo(txtRendaConjCli, 556, 100, 90, 20, "RendaConjCli", "Renda", ListaCampos.DB_SI, false);
+
+    setPainel(pinAvalista);
+
+    lbNomeAvalCli = adicCampo(txtNomeAvalCli, 7, 20, 310, 20, "NomeAvalCli", "Nome do cônjuge", ListaCampos.DB_SI, false);
+    lbDtNascAvalCli = adicCampo(txtDtNascAvalCli, 320, 20, 90, 20, "DtNascAvalCli", "Dt.nasc.Aval.", ListaCampos.DB_SI, false);
+    lbRgAvalCli = adicCampo(txtRgAvalCli, 7, 60, 140, 20, "RgAvalCli", "Rg", ListaCampos.DB_SI, false);
+    lbSSPAvalCli = adicCampo(txtSSPAvalCli, 150, 60, 140, 20, "SSPAvalCli", "SSP", ListaCampos.DB_SI, false);
+    lbCPFAvalCli = adicCampo(txtCPFAvalCli, 293, 60, 140, 20, "CPFAvalCli", "CPF", ListaCampos.DB_SI, false);
+    lbEmpTrabAvalCli = adicCampo(txtEmpTrabAvalCli, 7, 100, 300, 20, "EmpTrabAvalCli", "Empresa onde trabalha", ListaCampos.DB_SI, false);
+    lbCargoAvalCli = adicCampo(txtCargoAvalCli, 310, 100, 150, 20, "CargoAvalCli", "Cargo", ListaCampos.DB_SI, false);
+    lbDtAdmTrabAvalCli = adicCampo(txtDtAdmTrabAvalCli, 463, 100, 90, 20, "DtAdmTrabAvalCli", "Dt.admissao", ListaCampos.DB_SI, false);
+    lbRendaAvalCli = adicCampo(txtRendaAvalCli, 556, 100, 90, 20, "RendaAvalCli", "Renda", ListaCampos.DB_SI, false);
+    
+    
     
     setListaCampos( false, "CLICOMPL", "VD");
 
