@@ -78,7 +78,7 @@ public class FVendedor extends FDados implements PostListener {
   private ListaCampos lcSetor = new ListaCampos(this,"SE");
   private ListaCampos lcClComis = new ListaCampos(this,"CM");
   private ListaCampos lcFuncao = new ListaCampos(this,"FU");
-  private boolean[] bPref = null;
+
   public FVendedor () {
     setTitulo("Cadastro de comissionados");
     setAtribos( 50, 50, 400, 460);

@@ -215,7 +215,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public void addOpcao(int iSuperMenu, int iTipo, String sCaption,
-			String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec, Class tela) {
+			String titulo, char cAtalho, int iOpcao, int iNivel, boolean bExec,
+			Class tela) {
 		JMenuItem mOpcao = null;
 		JMenuPad mpMaster = null;
 		try {
@@ -267,10 +268,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public JButtonPad addBotao(String sImagem, String sToolTip, int iCodMenu) {
+	public JButtonPad addBotao(String sImagem, String sToolTip, int iCodMenu,
+			Class tela, String titulo) {
 		JButtonPad btOpcao = null;
 		try {
-			btOpcao = new JButtonPad(iCodSis, iCodMod, iCodMenu);
+			btOpcao = new JButtonPad(iCodSis, iCodMod, iCodMenu, tela, titulo);
 			btOpcao.setIcon(Icone.novo(sImagem));
 			if (sToolTip != null)
 				btOpcao.setToolTipText(sToolTip);
@@ -369,20 +371,30 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				}
 			}
 			if (iCodMenu != -1) {
+				Class telaClass = null;
+				String titulo = "";
 				if (oTemp instanceof JMenuItemPad) {
-					Class telaClass = ((JMenuItemPad) oTemp).getTela();
+					telaClass = ((JMenuItemPad) oTemp).getTela();
 					if (telaClass != null) {
-						if (telaPrincipal.temTela(((JMenuItemPad) oTemp).getTitulo()) == false) {
-							try {
-								FFilho tela = (FFilho) telaClass.newInstance();
-								telaPrincipal.criatela(((JMenuItemPad) oTemp).getTitulo(), tela,
-										con);
-							} catch (Exception e) {
+						titulo = ((JMenuItemPad) oTemp).getTitulo();
+					}
+				} else if (oTemp instanceof JButtonPad) {
+					telaClass = ((JButtonPad) oTemp).getTela();
+					if (telaClass != null) {
+						titulo = ((JButtonPad) oTemp).getTitulo();
+					}
+				}
+				if (telaClass != null) {
+					if (telaPrincipal.temTela(titulo) == false) {
+						try {
+							FFilho tela = (FFilho) telaClass.newInstance();
+							telaPrincipal.criatela(titulo, tela, con);
+						} catch (Exception e) {
 
-							}
 						}
 					}
 				}
+
 			}
 		}
 

@@ -129,14 +129,14 @@ public class FreedomFNC extends Aplicativo {
 	  addOpcao(601100000,TP_OPCAO_ITEM,"Balancete Gráfico","Balancete Gráfico",'G',601110000,2, true, FRBalanceteGrafico.class);
 	  addOpcao(601100000,TP_OPCAO_ITEM,"Gráfico financeiro por C.C","Gráfico Financeiro por C.C",'f',601120000,2, true, FRGraficoCC.class);
   
-  addBotao("btProduto.gif","Cadastro de produtos",100120070);
-  addBotao("barraUsuario.gif","Cliente",100101050);
-  addBotao("barraVenda.gif","Venda",300100000);
-  addBotao("barraCompra.gif","Compra",200100000); 
-  addBotao("btContaPagar.gif","Contas a pagar",400200000);
-  addBotao("btContaReceber.gif","Contas a receber",500100000);  
-  addBotao("btLancamentoFin.gif","Lançamentos financeiros",600600000);
-  addBotao("barraEstoque.gif","Consulta estoque",700300000);   
+  addBotao("btProduto.gif","Cadastro de produtos",100120070, null, "");
+  addBotao("barraUsuario.gif","Cliente",100101050, null, "");
+  addBotao("barraVenda.gif","Venda",300100000, null, "");
+  addBotao("barraCompra.gif","Compra",200100000, null, ""); 
+  addBotao("btContaPagar.gif","Contas a pagar",400200000, null, "");
+  addBotao("btContaReceber.gif","Contas a receber",500100000, null, "");  
+  addBotao("btLancamentoFin.gif","Lançamentos financeiros",600600000, null, "");
+  addBotao("barraEstoque.gif","Consulta estoque",700300000, null, "");   
 
   ajustaMenu();
  	
