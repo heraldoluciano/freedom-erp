@@ -387,8 +387,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   private void imprimir(boolean bVisualizar) {
   	ImprimeOS imp = new ImprimeOS("",con);
   	int linPag = imp.verifLinPag()-1;
-  	imp.montaCab();
-  	imp.setTitulo("Relatório de Grupos");
+  	
   	String sSQL = "SELECT CODGRUP,DESCGRUP "
   		+"FROM EQGRUPO WHERE CODEMP=? AND CODFILIAL=? ORDER BY 1";
   	PreparedStatement ps = null;
@@ -401,26 +400,31 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   		imp.limpaPags();
   		while ( rs.next() ) {
   			if (imp.pRow()==0) {
+  				imp.montaCab();
+  			  	imp.setTitulo("Relatório de Grupos");
+  			  	imp.setSubTitulo("Relatório de Grupos");
   				imp.impCab(80, false);
   				imp.say(imp.pRow()+0,0,""+imp.normal());
   				imp.say(imp.pRow()+0,0,"");
   				imp.say(imp.pRow()+0,2,"Cód.grupo");
   				imp.say(imp.pRow()+0,29,"Descrição do grupo");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
-  				imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+  				imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
   			}
   			imp.say(imp.pRow()+1,0,""+imp.normal());
   			imp.say(imp.pRow()+0,0,"");
   			imp.say(imp.pRow()+0,2,rs.getString("CodGrup"));
   			imp.say(imp.pRow()+0,29,Funcoes.copy(rs.getString("DescGrup"),0,40));
   			if (imp.pRow()>=linPag) {
+  				imp.say(imp.pRow()+1,0,""+imp.normal());
+  				imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
   				imp.incPags();
   				imp.eject();
   			}
   		}
   		
   		imp.say(imp.pRow()+1,0,""+imp.normal());
-  		imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+  		imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
   		imp.eject();
   		
   		imp.fechaGravacao();

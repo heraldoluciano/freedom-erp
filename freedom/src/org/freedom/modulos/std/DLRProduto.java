@@ -135,7 +135,7 @@ public class DLRProduto extends FFDialogo {
     adic(txtDescAlmox,90,310,350,20);
     adic (lbMarca,7,330,350,20);
     adic(txtCodMarca,7,350,80,20);
-    adic (lbDescMarca,7,330,350,20);
+    adic (lbDescMarca,90,330,350,20);
     adic(txtDescMarca,90,350,350,20);
     
     
