@@ -335,11 +335,8 @@ public class ImprimeOS implements ActionListener {
      return true;
    }
    private boolean comecaImp() {
-     String sPort = "";
-     if (sPorta.trim().length()==0)
-        sPort = getPortaImp().trim();       
-     else
-        sPort = sPorta.trim();
+     if (sPorta.equals(""))
+        setPortaImp();       
      
      if (fImp == null) {
        sErrorMessage = "Erro ao abrir arquivo impressão";          
@@ -347,13 +344,13 @@ public class ImprimeOS implements ActionListener {
      }
 
      if (Aplicativo.strOS.equals("linux")) {
-       String[] sComando = {"lpr","-P"+sPort,sFile}; //Funcoes.substringByChar(sPort,'/',false)};
+       String[] sComando = {"lpr","-P"+sPorta,sFile}; //Funcoes.substringByChar(sPort,'/',false)};
 //       Funcoes.mensagemInforma(null,sFile);
        try {
          Runtime.getRuntime().exec(sComando);
        }
        catch(IOException ioerr) {
-         sErrorMessage = "Erro ao imprimir na porta:"+sPort+"\nArquivo"+sFile+"\n"+ioerr.getMessage();          
+         sErrorMessage = "Erro ao imprimir na porta:"+sPorta+"\nArquivo"+sFile+"\n"+ioerr.getMessage();          
          return false;
        }
        return true;
@@ -370,7 +367,7 @@ public class ImprimeOS implements ActionListener {
      String sBuf = "";
      try {
        rfPrint = new RandomAccessFile(fImp,"r");
-       fPrint = new File(sPort);
+       fPrint = new File(sPorta);
        fwPrint = new FileWriter(fPrint);       
        rfPrint.seek(0);
        while (true) {
@@ -389,7 +386,7 @@ public class ImprimeOS implements ActionListener {
        rfPrint.close();
      }
      catch(IOException err) {
-       sErrorMessage = "Erro ao imprimir na porta:"+sPort+"\n"+err.getMessage();  
+       sErrorMessage = "Erro ao imprimir na porta:"+sPorta+"\n"+err.getMessage();  
        Funcoes.mensagemErro(null,sErrorMessage);
        return false;
      }
@@ -635,59 +632,62 @@ public class ImprimeOS implements ActionListener {
       return iRetorno;
   }
   
-  public String getPortaImp() {
-          
+  public void setPortaImp() {
       sPorta = "";
       String sSQL = "";
       String sPortaOS = "";
-
       PreparedStatement ps = null;
       ResultSet rs = null;
       
-      if (Aplicativo.strOS.compareTo("windows") == 0)
-        sPortaOS = "PORTAWIN";
-      else if (Aplicativo.strOS.compareTo("linux") == 0)
-        sPortaOS = "PORTALIN";
-      if (sPortaOS.trim().length() == 0) {
-        Funcoes.mensagemInforma(cOwner,"Não foi possível obter informacões do Sistema Operacional! ! !");
-        return sPorta;
-      }
-      if (sTipoUsoImp.equals("TO")) {
-	      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
-			"WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
-			"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
-			"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
-      }
-      else {
-	      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
-			"WHERE EI.CODEST=? AND EI.TIPOUSOIMP='"+sTipoUsoImp+"' AND "+
-			"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
-			"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
-      }
       try {
-        ps = con.prepareStatement(sSQL);
-        ps.setInt(1,Aplicativo.iNumEst);
-        ps.setInt(2,Aplicativo.iCodEmp);
-        ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
-        rs = ps.executeQuery();
-        if (rs.next()) {
-          sPorta = rs.getString(sPortaOS);
-        }
-        else 
-          Funcoes.mensagemInforma(cOwner, "Não foi encontrada nome da porta da impressora!\n"+
-                                            "Tabela: IMPRESSORA");
-        rs.close();
-        ps.close();
-        //if (!con.getAutoCommit())
-        //	con.commit();
-//        con.commit();
+	      if (Aplicativo.strOS.compareTo("windows") == 0)
+	        sPortaOS = "PORTAWIN";
+	      else if (Aplicativo.strOS.compareTo("linux") == 0)
+	        sPortaOS = "PORTALIN";
+	      if (sPortaOS.trim().equals("")) {
+	        Funcoes.mensagemInforma(cOwner,"Não foi possível obter informacões do Sistema Operacional! ! !");
+	        return;
+	      }
+	      if (sTipoUsoImp.equals("TO")) {
+		      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+				"WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
+				"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
+				"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
+	      }
+	      else {
+		      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+				"WHERE EI.CODEST=? AND EI.TIPOUSOIMP='"+sTipoUsoImp+"' AND "+
+				"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
+				"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
+	      }
+	      try {
+	        ps = con.prepareStatement(sSQL);
+	        ps.setInt(1,Aplicativo.iNumEst);
+	        ps.setInt(2,Aplicativo.iCodEmp);
+	        ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
+	        rs = ps.executeQuery();
+	        if (rs.next()) {
+	          sPorta = rs.getString(sPortaOS);
+	        }
+	        else 
+	          Funcoes.mensagemInforma(cOwner, "Não foi encontrada nome da porta da impressora!\n"+
+	                                            "Tabela: IMPRESSORA");
+	        rs.close();
+	        ps.close();
+	        //if (!con.getAutoCommit())
+	        //	con.commit();
+	//        con.commit();
+	      }
+	      catch(SQLException err) {
+	        Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela ESTACAOIMP E IMPRESSORA\n"+err.getMessage());
+	      }
       }
-      catch(SQLException err) {
-        Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela ESTACAOIMP E IMPRESSORA");
-		Funcoes.mensagemErro(cOwner, err.getMessage());
+      finally {
+        sSQL = null;
+        sPortaOS = null;
+        rs = null;
+        ps = null;
       }
-
-      return sPorta;
   }
   
   private String replicate(String sTexto, int iNum) {
@@ -709,70 +709,64 @@ public class ImprimeOS implements ActionListener {
   }
   
   public void montaCab() {
-    PreparedStatement ps;
-    ResultSet rs;
-    
-    sHoje = Funcoes.dateToStrDate(hoje.getTime());
-    
-    strTipoCab = verifCab();
-    
-    if (strTipoCab.compareTo("1")==0) {
-       String sSQL = "SELECT RAZEMP,FONEEMP,FAXEMP,EMAILEMP FROM SGEMPRESA";
-       try {
-         ps = con.prepareStatement(sSQL);
-         rs = ps.executeQuery();
-       }
-       catch(SQLException err) { 
-         Funcoes.mensagemErro(cOwner, "Erro na consulta ao banco de dados! ! !");
-         Funcoes.mensagemErro(cOwner, err.getMessage());
-         return;
-       }
-      try {
-        while (rs.next()) {
-          for (int i=0; i<4; i++) {
-            if (rs.getString(i+1) != null)
-              sVals[i] = rs.getString(i+1);
-            else
-              sVals[i] = "";
-          }
-        }
-        rs.close();
-        ps.close();
-//        con.commit();
-      }
-      catch(SQLException err) {
-         Funcoes.mensagemErro(cOwner, "Erro a pesquisar a tabela\n"+err.getMessage());
-      }
-      
-    
-//Coloca as Mascaras    
-     
-      sVals[1] = Funcoes.setMascara(sVals[1],"(####)####-####");
-      sVals[2] = Funcoes.setMascara(sVals[2],"####-####");
-        
-    }
-    else if (strTipoCab.compareTo("2")==0) {
-      String sSQL2 = "SELECT CABEMP FROM SGPREFERE1 AND CODEMP=? AND CODFILIAL=?";
-      PreparedStatement ps2;
-      ResultSet rs2;
-      try {
-        ps2 = con.prepareStatement(sSQL2);
-		ps2.setInt(1,Aplicativo.iCodEmp);
-		ps2.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-        rs2 = ps2.executeQuery();
-//        con.commit();
-        rs2.next();
-        if (rs2.getString(1) != null)
-          sPrefCab = rs2.getString(1);
-        rs2.close();
-        ps2.close();
-//        con.commit();
-      }
-      catch(SQLException err) { 
-        Funcoes.mensagemErro(cOwner, "Erro na consulta ao banco de dados! ! !");
-        return;
-      }
-    }
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+	String sSQL = null;
+	sHoje = Funcoes.dateToStrDate(hoje.getTime());
+	strTipoCab = verifCab();
+	try {
+		if (strTipoCab.compareTo("1")==0) {
+			sSQL = "SELECT RAZEMP,FONEEMP,FAXEMP,EMAILEMP FROM SGEMPRESA WHERE CODEMP=?";
+			try {
+				ps = con.prepareStatement(sSQL);
+				ps.setInt(1,Aplicativo.iCodEmp);
+				rs = ps.executeQuery();
+				while (rs.next()) {
+				for (int i=0; i<4; i++) {
+				if (rs.getString(i+1) != null)
+				sVals[i] = rs.getString(i+1);
+				else
+				sVals[i] = "";
+				}
+				}
+				rs.close();
+				ps.close();
+				//        con.commit();
+			}
+			catch(SQLException err) {
+				Funcoes.mensagemErro(cOwner, "Erro a pesquisar a tabela\n"+err.getMessage());
+				return;
+			}
+			//Coloca as Mascaras    
+			sVals[1] = Funcoes.setMascara(sVals[1],"(####)####-####");
+			sVals[2] = Funcoes.setMascara(sVals[2],"####-####");
+		}
+		else if (strTipoCab.compareTo("2")==0) {
+			sSQL = "SELECT CABEMP FROM SGPREFERE1 AND CODEMP=? AND CODFILIAL=?";
+			try {
+				ps = con.prepareStatement(sSQL);
+				ps.setInt(1,Aplicativo.iCodEmp);
+				ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
+				rs = ps.executeQuery();
+				//        con.commit();
+				rs.next();
+				if (rs.getString(1) != null)
+				sPrefCab = rs.getString(1);
+				rs.close();
+				ps.close();
+				//        con.commit();
+			}
+			catch(SQLException err) { 
+				Funcoes.mensagemErro(cOwner, "Erro na consulta ao banco de dados! ! !");
+				return;
+			}
+		}
+	}
+	finally {
+		rs = null;
+		ps = null;
+		sSQL = null;
+	}
   }
 
   public void impCab(int iTamRel) {
