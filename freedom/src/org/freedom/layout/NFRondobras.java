@@ -96,17 +96,17 @@ public class NFRondobras extends Leiaute {
 //Cabeçario da nota  
          if (imp.pRow()==0) {           
 	       if (bEntrada){
-	           imp.say(imp.pRow()+0,0,""+imp.expandido());
+	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+0,102,"X");
-	           imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
+	           imp.say(imp.pRow()+0,0,"");
 	       }
            else{
-           	   imp.say(imp.pRow()+0,0,""+imp.expandido());
-           	   imp.say(imp.pRow()+0,67,"X");
-           	   imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
+           	   imp.say(imp.pRow()+1,0,"");
+           	   imp.say(imp.pRow()+0,87,"X");
+           	   imp.say(imp.pRow()+0,0,"");
            }
 	       
-	       
+	       //imp.say(imp.pRow()+1,0,"");
 	       imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");        
