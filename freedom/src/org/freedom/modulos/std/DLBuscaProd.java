@@ -129,7 +129,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	 			if (sCol.toUpperCase().equals("REFPROD")) {
    	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
    	 			}
-   	 			else if (tab.getLinhaSel()>0){
+   	 			else {
    	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
    	 			}
    	 		}

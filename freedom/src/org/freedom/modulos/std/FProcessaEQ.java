@@ -160,7 +160,9 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
           sSQL = null;
       }
     }
-    
+    private void completaTela(){
+      	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));    	    	
+    }
     private boolean processar(int iCodProd) {
        String sSQL = null;
        String sSQLCompra = null;
@@ -510,7 +512,8 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
     	super.setConexao(cn);
     	lcProd.setConexao(cn);
     	iFilialMov = ListaCampos.getMasterFilial("EQMOVPROD");
-      	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+    	completaTela();
+
     }
 	public void beforeCarrega(CarregaEvent cevt) {
 	}
