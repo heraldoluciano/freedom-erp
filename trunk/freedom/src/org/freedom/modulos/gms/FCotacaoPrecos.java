@@ -157,67 +157,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
 
-		lcCotacao.add(new GuardaCampo(txtCodSolicitacao, "CodSol", "Cód.Sol.",
-				ListaCampos.DB_PK, false));
-		lcCotacao.add(new GuardaCampo(txtCodItSolicitacao, "CodItSol",
-				"Cód.It.Sol.", ListaCampos.DB_PK, false));
-		lcCotacao.add(new GuardaCampo(txtCodCot, "CodCot", "Cód.Cot.",
-				ListaCampos.DB_PK, false));
-		lcCotacao.add(new GuardaCampo(txtDtCot, "DtCot", "Dt.Cot.",
-				ListaCampos.DB_SI, false));
-		lcCotacao.add(new GuardaCampo(txtIdUsuCot, "IdUsuCot", "Usu.Cot.",
-				ListaCampos.DB_SI, false));
-		lcCotacao.add(new GuardaCampo(txtCodFor, "CodFor", "Cod.For.",
-				ListaCampos.DB_SI, false));
-		lcCotacao.add(new GuardaCampo(txtQtdCot, "QtdCot", "Qtd.Cot.",
-				ListaCampos.DB_SI, false));
-		lcCotacao.add(new GuardaCampo(txtQtdAprovCot, "QtdAprovCot", "Qtd.Aprov.Cot.",
-				ListaCampos.DB_SI, false));
-		lcCotacao.add(new GuardaCampo(txtPrecoCot, "PrecoCot", "Preco.Cot.",
-				ListaCampos.DB_SI, false));
-	
-		lcCotacao.setMaster(lcDet);
-		lcDet.adicDetalhe(lcCotacao);
-		lcCotacao.setTabela(tabCot);
-		lcCotacao.montaSql(false, "COTACAO", "CP");	
-		lcCotacao.montaTab();
-		
-		navCot.setListaCampos(lcCotacao);
-		lcCotacao.setNavegador(navCot);
-		pinDet = new JPanelPad(740, 287);
-		setPainel(pinDet, pnDet);
-		
-		adic(navCot, 7, 250, 280, 27);
-		adic(spTabCot, 7, 47, 730, 140);
-		
-		setListaCampos(lcCotacao);
-		setNavegador(navCot);
-		
-		adicCampo(txtCodCot, 7, 210, 77, 20, "CodCot", "Cód.Cot.",
-				ListaCampos.DB_PK, false);
-		adicCampo(txtDtCot, 87, 210, 97, 20, "DtCot", "Dt.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtCodFor, 187, 210, 77, 20, "CodFor", "Cod.For.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtQtdCot, 467, 210, 87, 20, "QtdCot", "Qtd.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtQtdAprovCot, 557, 210, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtPrecoCot, 647, 210, 87, 20, "PrecoCot", "Preco.Cot.",
-				ListaCampos.DB_SI, false);
-		
-		/*tabCot.setTamColuna(30, 0);
-		tabCot.setTamColuna(80, 1);
-		tabCot.setTamColuna(230, 2);
-		tabCot.setTamColuna(70, 3);
-		tabCot.setTamColuna(70, 4);
-		tabCot.setTamColuna(70, 5);
-		tabCot.setTamColuna(70, 6);
-		tabCot.setTamColuna(70, 7);
-		tabCot.setTamColuna(70, 8);*/
-		
 		pinCab = new JPanelPad(740, 90);
 		setListaCampos(lcCampos);
 		setAltCab(90);
@@ -235,7 +174,40 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem", ListaCampos.DB_SI, false);
 		setListaCampos(true, "SOLICITACAO", "CP");
 		lcCampos.setQueryInsert(false);
+		
+		
+/*		lcCotacao.add(new GuardaCampo(txtCodSolicitacao, "CodSol", "Cód.Sol.",
+				ListaCampos.DB_PK, false));
+		lcCotacao.add(new GuardaCampo(txtCodItSolicitacao, "CodItSol",
+				"Cód.It.Sol.", ListaCampos.DB_PK, false));
+		lcCotacao.add(new GuardaCampo(txtCodCot, "CodCot", "Cód.Cot.",
+				ListaCampos.DB_PK, false));
+		lcCotacao.add(new GuardaCampo(txtDtCot, "DtCot", "Dt.Cot.",
+				ListaCampos.DB_SI, false));
+		lcCotacao.add(new GuardaCampo(txtIdUsuCot, "IdUsuCot", "Usu.Cot.",
+				ListaCampos.DB_SI, false));
+		lcCotacao.add(new GuardaCampo(txtCodFor, "CodFor", "Cod.For.",
+				ListaCampos.DB_SI, false));
+		lcCotacao.add(new GuardaCampo(txtQtdCot, "QtdCot", "Qtd.Cot.",
+				ListaCampos.DB_SI, false));
+		lcCotacao.add(new GuardaCampo(txtQtdAprovCot, "QtdAprovCot", "Qtd.Aprov.Cot.",
+				ListaCampos.DB_SI, false));
+		lcCotacao.add(new GuardaCampo(txtPrecoCot, "PrecoCot", "Preco.Cot.",
+				ListaCampos.DB_SI, false)); */
 
+		
+		lcCotacao.setMaster(lcDet);
+		lcDet.adicDetalhe(lcCotacao);
+		lcCotacao.setTabela(tabCot);
+		
+		navCot.setListaCampos(lcCotacao);
+		lcCotacao.setNavegador(navCot);
+		pinDet = new JPanelPad(740, 287);
+		setPainel(pinDet, pnDet);
+		
+		adic(navCot, 7, 250, 280, 27);
+		adic(spTabCot, 7, 47, 730, 140);
+		
 		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
 		lcProd.addCarregaListener(this);
@@ -272,7 +244,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK	, txtDescProd, false);
 		}
 
-		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
+		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK,  false);
 		adicCampoInvisivel(txtAnoCC, "AnoCC", "ano c.c.", ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_SI, false);
 	
@@ -307,6 +279,37 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 8);
 		tab.setTamColuna(70, 9);
 		tab.setTamColuna(70, 10);
+		
+		setListaCampos(lcCotacao);
+		setNavegador(navCot);
+		
+		adicCampo(txtCodCot, 7, 210, 77, 20, "CodCot", "Cód.Cot.",
+				ListaCampos.DB_PK, true);
+		adicCampo(txtDtCot, 87, 210, 97, 20, "DtCot", "Dt.Cot.",
+				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtCodFor, 187, 210, 77, 20, "CodFor", "Cod.For.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtQtdCot, 467, 210, 87, 20, "QtdCot", "Qtd.Cot.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtQtdAprovCot, 557, 210, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoCot, 647, 210, 87, 20, "PrecoCot", "Preco.Cot.",
+				ListaCampos.DB_SI, false);
+		lcCotacao.montaSql(false, "COTACAO", "CP");	
+		lcCotacao.montaTab();
+		
+		tabCot.setTamColuna(30, 0);
+		tabCot.setTamColuna(80, 1);
+		tabCot.setTamColuna(230, 2);
+		tabCot.setTamColuna(70, 3);
+		tabCot.setTamColuna(70, 4);
+		tabCot.setTamColuna(70, 5);
+		tabCot.setTamColuna(70, 6);
+		tabCot.setTamColuna(70, 7);
+		tabCot.setTamColuna(70, 8);
+		
 	}
 
 	private void testaCodSol() { //Traz o verdadeiro número do codCompra
