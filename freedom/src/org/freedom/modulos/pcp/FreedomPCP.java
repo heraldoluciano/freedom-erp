@@ -36,30 +36,30 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
   public FreedomPCP() {
 		
 	super("iconAtendimento32.gif","splashPCP.jpg","FreedomPCP - Modulo de planejamento e controle de produção FREEDOM",1,5);
-	addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false, null);
-	addOpcao(100000000,TP_OPCAO_MENU,"Tabelas",'T',100100000,1,false, null);
-	addOpcao(100000000,TP_OPCAO_MENU,"Preferências",'F',110100000,1,false, null);
+	addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
+	addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
+	addOpcao(100000000,TP_OPCAO_MENU,"Preferências","",'F',110100000,1, false, null);
 	 
-	addOpcao(100100000,TP_OPCAO_MENU,"Produtos",'P',100101000,2,false, null);
-	addOpcao(100101000,TP_OPCAO_ITEM,"Classificação fiscal",'l',100120020,3,true, null);
-    addOpcao(100101000,TP_OPCAO_ITEM,"Almoxarifado",'x',100120030,3,true, null);
-    addOpcao(100101000,TP_OPCAO_ITEM,"Grupo",'r',100120040,3,true, null);
-    addOpcao(100101000,TP_OPCAO_ITEM,"Marca",'c',100120050,3,true, null);
-    addOpcao(100101000,TP_OPCAO_ITEM,"Unidade",'U',100120060,3,true, null);
-    addOpcao(100101000,TP_OPCAO_ITEM,"Produto",'P',100120070,3,true, null);
+	addOpcao(100100000,TP_OPCAO_MENU,"Produtos","",'P',100101000,2, false, null);
+	addOpcao(100101000,TP_OPCAO_ITEM,"Classificação fiscal","",'l',100120020,3, true, null);
+    addOpcao(100101000,TP_OPCAO_ITEM,"Almoxarifado","",'x',100120030,3, true, null);
+    addOpcao(100101000,TP_OPCAO_ITEM,"Grupo","",'r',100120040,3, true, null);
+    addOpcao(100101000,TP_OPCAO_ITEM,"Marca","",'c',100120050,3, true, null);
+    addOpcao(100101000,TP_OPCAO_ITEM,"Unidade","",'U',100120060,3, true, null);
+    addOpcao(100101000,TP_OPCAO_ITEM,"Produto","",'P',100120070,3, true, null);
 	addBotao("btProduto.gif","Produtos",100101000);
 	addSeparador(100100000);
-	addOpcao(100100000,TP_OPCAO_ITEM,"Estrutura",'E',100102000,2,true, null);
-	addOpcao(100100000,TP_OPCAO_ITEM,"Tipos de recursos",'T',100103000,2,true, null);
-	addOpcao(100100000,TP_OPCAO_ITEM,"Recursos de produção",'R',100104000,2,true, null);
-	addOpcao(100100000,TP_OPCAO_ITEM,"Fases de produção",'F',100105000,2,true, null);
+	addOpcao(100100000,TP_OPCAO_ITEM,"Estrutura","",'E',100102000,2, true, null);
+	addOpcao(100100000,TP_OPCAO_ITEM,"Tipos de recursos","",'T',100103000,2, true, null);
+	addOpcao(100100000,TP_OPCAO_ITEM,"Recursos de produção","",'R',100104000,2, true, null);
+	addOpcao(100100000,TP_OPCAO_ITEM,"Fases de produção","",'F',100105000,2, true, null);
 
 	addBotao("btEstProduto.gif","Estrutura de produto",100102000);
 		
-	addOpcao(110100000,TP_OPCAO_ITEM,"Preferências gerais",'G',110101000,2,true, null);
+	addOpcao(110100000,TP_OPCAO_ITEM,"Preferências gerais","",'G',110101000,2, true, null);
 
-	addOpcao(-1,TP_OPCAO_MENU,"Produção",'P',200000000,0,false, null);
-	addOpcao(200000000,TP_OPCAO_ITEM,"Ordens de produção",'O',200100000,1,true, null);
+	addOpcao(-1,TP_OPCAO_MENU,"Produção","",'P',200000000,0, false, null);
+	addOpcao(200000000,TP_OPCAO_ITEM,"Ordens de produção","",'O',200100000,1, true, null);
 	
 	ajustaMenu();
   }
