@@ -167,19 +167,19 @@ public class FPrefereAtend extends FTabDados {
 		pinGeral = new Painel(330,350);
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
-		adicCampo(txtCodAtend,7,25,80,20,"CodAtend","Cód.atend.",JTextFieldPad.TP_INTEGER,5,0,false,true,txtNomeAtend,true);
-		adicDescFK(txtNomeAtend,90,25,230,20,"NameAtend","Nome do atendente responsável.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtClassMedida,7,65,200,20,"ClassMedida","Classe p/ ficha de medida",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
+		adicCampo(txtCodAtend,7,25,80,20,"CodAtend","Cód.atend.",ListaCampos.DB_FK,txtNomeAtend,true);
+		adicDescFK(txtNomeAtend,90,25,230,20,"NameAtend","Nome do atendente responsável.");
+		adicCampo(txtClassMedida,7,65,200,20,"ClassMedida","Classe p/ ficha de medida",ListaCampos.DB_SI,false);
 		
 		pinTipo = new Painel(330, 350);
 		setPainel(pinTipo);
 		adicTab("Tipos de atendimento", pinTipo);
-		adicCampo(txtCodTpAtend,7,25,80,20,"CodTpAtendo","Cód.tp.atend.",JTextFieldPad.TP_INTEGER,5,0,false,true,txtDescTpAtend,true);
-		adicDescFK(txtDescTpAtend,90,25,230,20,"DescTpAtendo","Descrição do tipo de levantamento.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodTpAtend2,7,65,80,20,"CodTpAtendo2","Cód.tp.atend.",JTextFieldPad.TP_INTEGER,5,0,false,true,txtDescTpAtend2,true);
-		adicDescFK(txtDescTpAtend2,90,65,230,20,"DescTpAtendo","Descrição do tipo de cadastro.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodTpAtend3,7,105,80,20,"CodTpAtendo3","Cód.tp.atend.",JTextFieldPad.TP_INTEGER,5,0,false,true,txtDescTpAtend3,true);
-		adicDescFK(txtDescTpAtend3,90,105,230,20,"DescTpAtendo","Descrição do tipo de orçamento.",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodTpAtend,7,25,80,20,"CodTpAtendo","Cód.tp.atend.",ListaCampos.DB_FK,txtDescTpAtend,true);
+		adicDescFK(txtDescTpAtend,90,25,230,20,"DescTpAtendo","Descrição do tipo de levantamento.");
+		adicCampo(txtCodTpAtend2,7,65,80,20,"CodTpAtendo2","Cód.tp.atend.",ListaCampos.DB_FK,txtDescTpAtend2,true);
+		adicDescFK(txtDescTpAtend2,90,65,230,20,"DescTpAtendo","Descrição do tipo de cadastro.");
+		adicCampo(txtCodTpAtend3,7,105,80,20,"CodTpAtendo3","Cód.tp.atend.",ListaCampos.DB_FK,txtDescTpAtend3,true);
+		adicDescFK(txtDescTpAtend3,90,105,230,20,"DescTpAtendo","Descrição do tipo de orçamento.");
 		
 		txtCodTpAtend2.setNomeCampo("CodTpAtendo");
 		txtCodTpAtend3.setNomeCampo("CodTpAtendo");
@@ -203,32 +203,32 @@ public class FPrefereAtend extends FTabDados {
 		pinSetor = new Painel(330, 350);
 		setPainel(pinSetor);
 		adicTab("Setor de atendimento", pinSetor);
-		adicCampo(txtCodSetor,7,25,80,20,"CodSetAt","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,false,true,txtDescSetor,true);
-		adicDescFK(txtDescSetor,90,25,230,20,"DescSetAt","Setor de cadastro.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodSetor2,7,65,80,20,"CodSetAt2","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,false,true,txtDescSetor2,true);
-		adicDescFK(txtDescSetor2,90,65,230,20,"DescSetAt","Setor de orçamento.",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodSetor,7,25,80,20,"CodSetAt","Cód.setor",ListaCampos.DB_FK,txtDescSetor,true);
+		adicDescFK(txtDescSetor,90,25,230,20,"DescSetAt","Setor de cadastro.");
+		adicCampo(txtCodSetor2,7,65,80,20,"CodSetAt2","Cód.setor",ListaCampos.DB_FK,txtDescSetor2,true);
+		adicDescFK(txtDescSetor2,90,65,230,20,"DescSetAt","Setor de orçamento.");
 		
 		pinConv = new Painel(330, 350);
 		setPainel(pinConv);
 		adicTab("Conveniado", pinConv);
-		adicCampo(txtCodTipoCli,7,25,80,20,"CodTipoCli","Cód.tp.cli.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoCli,false);
-		adicDescFK(txtDescTipoCli,90,25,230,20,"DescTipoCli","Descrição do tipo de cliente.",JTextFieldPad.TP_STRING,40,0);
-		adicCampo(txtCodClas,7,65,80,20,"CodClasCli","Cód.c.cli.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescClas,false);
-		adicDescFK(txtDescClas,90,65,230,20,"DescClasCli","Descrição da classificação do cliente.",JTextFieldPad.TP_STRING,40,0);
+		adicCampo(txtCodTipoCli,7,25,80,20,"CodTipoCli","Cód.tp.cli.",ListaCampos.DB_FK,txtDescTipoCli,false);
+		adicDescFK(txtDescTipoCli,90,25,230,20,"DescTipoCli","Descrição do tipo de cliente.");
+		adicCampo(txtCodClas,7,65,80,20,"CodClasCli","Cód.c.cli.",ListaCampos.DB_FK,txtDescClas,false);
+		adicDescFK(txtDescClas,90,65,230,20,"DescClasCli","Descrição da classificação do cliente.");
 		
 		pinOrc = new Painel(330, 350);
 		setPainel(pinOrc);
 		adicTab("Orçamento", pinOrc);
-		adicCampo(txtCodTBA,7,25,80,20,"CodTBA","Cód.tab.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTBA,false);
-		adicDescFK(txtDescTBA,90,25,230,20,"DescTB","Descrição da tabela padrão para aceite.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodITTBA,7,65,80,20,"CodITTBA","Cód.tab.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescITTBA,false);
-		adicDescFK(txtDescITTBA,90,65,230,20,"DescITTB","Descrição da situação para aceite.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodTBV,7,105,80,20,"CodTBV","Cód.tab.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTBV,false);
-		adicDescFK(txtDescTBV,90,105,230,20,"DescTB","Descrição da tabela padrão para aceite.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodITTBV,7,150,80,20,"CodITTBV","Cód.tab.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescITTBV,false);
-		adicDescFK(txtDescITTBV,90,150,230,20,"DescITTB","Descrição da situação para aceite.",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodVend,7,195,80,20,"CodVend","Cód.repr.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtNomeVend,true);
-		adicDescFK(txtNomeVend,90,195,230,20,"NomeVend","Nome do representante padrão.",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodTBA,7,25,80,20,"CodTBA","Cód.tab.",ListaCampos.DB_FK,txtDescTBA,false);
+		adicDescFK(txtDescTBA,90,25,230,20,"DescTB","Descrição da tabela padrão para aceite.");
+		adicCampo(txtCodITTBA,7,65,80,20,"CodITTBA","Cód.tab.",ListaCampos.DB_FK,txtDescITTBA,false);
+		adicDescFK(txtDescITTBA,90,65,230,20,"DescITTB","Descrição da situação para aceite.");
+		adicCampo(txtCodTBV,7,105,80,20,"CodTBV","Cód.tab.",ListaCampos.DB_FK,txtDescTBV,false);
+		adicDescFK(txtDescTBV,90,105,230,20,"DescTB","Descrição da tabela padrão para aceite.");
+		adicCampo(txtCodITTBV,7,150,80,20,"CodITTBV","Cód.tab.",ListaCampos.DB_FK,txtDescITTBV,false);
+		adicDescFK(txtDescITTBV,90,150,230,20,"DescITTB","Descrição da situação para aceite.");
+		adicCampo(txtCodVend,7,195,80,20,"CodVend","Cód.repr.",ListaCampos.DB_FK,txtNomeVend,true);
+		adicDescFK(txtNomeVend,90,195,230,20,"NomeVend","Nome do representante padrão.");
 
 		setListaCampos(false, "PREFERE2", "SG");
 		
