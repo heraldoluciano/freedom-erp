@@ -41,12 +41,13 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 
 
 public class FFrete extends FDados implements InsertListener, FocusListener {
-  
+  private int casasDec = Aplicativo.casasDec;
   private JTextFieldPad  txtCodVenda = new JTextFieldPad();
   private JTextFieldFK  txtDocVenda = new JTextFieldFK();
   private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
@@ -111,8 +112,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     txtUFFreteVD.setTipo(JTextFieldPad.TP_STRING,2,0);
     txtVlrFreteVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtQtdFreteVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtPesoBrutVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtPesoLiqVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
+    txtPesoBrutVD.setTipo(JTextFieldPad.TP_DECIMAL,15,casasDec);
+    txtPesoLiqVD.setTipo(JTextFieldPad.TP_DECIMAL,15,casasDec);
     txtEspFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
     txtMarcaFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
     
@@ -138,8 +139,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     adicCampo(txtUFFreteVD,202,140,44,20,"UfFreteVd","UF.", JTextFieldPad.TP_STRING, 2, 0, false, false, null, true);
     adicCampo(txtVlrFreteVD,248,140,107,20, "VlrFreteVd","Valor", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, true);
     adicCampo(txtQtdFreteVD,7,180,90,20, "QtdFreteVd","Volumes", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtPesoBrutVD,100,180,77,20, "PesoBrutVd","P.bruto", JTextFieldPad.TP_DECIMAL, 9,2, false, false, null, true);
-    adicCampo(txtPesoLiqVD,180,180,77,20, "PesoLiqVd","P.liq.", JTextFieldPad.TP_DECIMAL, 9, 2, false, false, null, true);    
+    adicCampo(txtPesoBrutVD,100,180,77,20, "PesoBrutVd","P.bruto", JTextFieldPad.TP_DECIMAL, 9,casasDec, false, false, null, true);
+    adicCampo(txtPesoLiqVD,180,180,77,20, "PesoLiqVd","P.liq.", JTextFieldPad.TP_DECIMAL, 9, casasDec, false, false, null, true);    
     adicCampo(txtEspFreteVD,260,180,95,20, "EspFreteVd","Especie", JTextFieldPad.TP_STRING, 10, 0, false, false, null, true);
     txtPlacaFreteVD.setStrMascara("###-####");
     
@@ -278,8 +279,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
         imp.say(imp.pRow()+0,38,""+rs.getDouble("PercVendaFreteVd"));
         imp.say(imp.pRow()+0,51,Funcoes.copy(rs.getString("EspFreteVd"),10));
         imp.say(imp.pRow()+0,64,Funcoes.copy(rs.getString("MarcaFreteVd"),10));
-        imp.say(imp.pRow()+0,79,Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PesoBrutVd")));
-        imp.say(imp.pRow()+0,95,Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PesoLiqVd")));
+        imp.say(imp.pRow()+0,79,Funcoes.strDecimalToStrCurrency(9,casasDec,rs.getString("PesoBrutVd")));
+        imp.say(imp.pRow()+0,95,Funcoes.strDecimalToStrCurrency(9,casasDec,rs.getString("PesoLiqVd")));
         imp.say(imp.pRow()+0,110,Funcoes.dateToStrDate(rs.getDate("DTEMITVENDA")));
         imp.say(imp.pRow()+0,136,"|");
         imp.say(imp.pRow()+1,0,""+imp.comprimido());

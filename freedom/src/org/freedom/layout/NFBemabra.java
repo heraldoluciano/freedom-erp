@@ -26,6 +26,7 @@ import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public class NFBemabra extends Leiaute {
   private BigDecimal bigSomaServ = new BigDecimal(0);
