@@ -1,26 +1,33 @@
 /**
  * @version 21/02/2005 <BR>
  * @author Setpoint Informática Ltda./Robson Sanchez <BR>
- *
- * Projeto: Freedom <BR>
- *  
- * Pacote: org.freedom.modulos.std <BR>
- * Classe: @(#)FRBordero.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
+ * Projeto: Freedom <BR>
+ * 
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe:
+ * @(#)FRBordero.java <BR>
+ * 
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
+ * Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
+ * Programa. <BR>
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
+ * pode contatar <BR>
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
  * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
- *
- * Comentários sobre a classe...
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
+ * preciso estar <BR>
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
  * 
+ * Comentários sobre a classe...
+ *  
  */
 
 package org.freedom.modulos.std;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,80 +46,105 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRBordero extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
-  private JTextFieldFK txtNomeBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  
-  private ListaCampos lcBanco = new ListaCampos(this);
-  private ListaCampos lcSetor = new ListaCampos(this);
-  private ListaCampos lcVendedor = new ListaCampos(this);
-  private boolean[] bPref = null;
-  
-  public FRBordero() {
-    setTitulo("Bordero de cobrança");
-    setAtribos(80,0,400,300);
-   
-    txtDataini.setVlrDate(new Date());
-    txtDatafim.setVlrDate(new Date());
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
+			10, 0);
 
-    txtCodBanco.setRequerido(true);
-	lcBanco.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false));
-	lcBanco.add(new GuardaCampo( txtNomeBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false));
-	lcBanco.montaSql(false, "BANCO", "FN");
-	lcBanco.setReadOnly(true);
-	txtCodBanco.setTabelaExterna(lcBanco);
-	txtCodBanco.setFK(true);
-	txtCodBanco.setNomeCampo("CodBanco");
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,
+			10, 0);
 
-    lcSetor.add(new GuardaCampo( txtCodSetor,"CodSetor","Cód.setor",ListaCampos.DB_PK,false ));
-    lcSetor.add(new GuardaCampo( txtDescSetor,"DescSetor","Descrição do setor",ListaCampos.DB_SI,false ));
-    lcSetor.montaSql(false,"SETOR","VD");
-    lcSetor.setReadOnly(true);
-    txtCodSetor.setTabelaExterna(lcSetor);
-    txtCodSetor.setFK(true);
-    txtCodSetor.setNomeCampo("CodSetor");
+	private JTextFieldPad txtCodBanco = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 3, 0);
 
-    lcVendedor.add(new GuardaCampo( txtCodVend,"CodVend","Cód.comiss.",ListaCampos.DB_PK, false ));
-    lcVendedor.add(new GuardaCampo( txtNomeVend,"NomeVend","Nome do comissionado",ListaCampos.DB_SI, false ));
-    lcVendedor.montaSql(false,"VENDEDOR","VD");
-    lcVendedor.setReadOnly(true);
-    txtCodVend.setTabelaExterna(lcVendedor);
-    txtCodVend.setFK(true);
-    txtCodVend.setNomeCampo("CodVend");
+	private JTextFieldFK txtNomeBanco = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 40, 0);
 
-    adic(new JLabelPad("Periodo:"),7,5,120,20);
-    adic(new JLabelPad("De:"),7,25,30,20);
-    adic(txtDataini,40,25,97,20);
-    adic(new JLabelPad("Até:"),160,25,30,20);
-    adic(txtDatafim,190,25,100,20);
-    adic(new JLabelPad("Cód.banco"),7,45,80,20);
-    adic(new JLabelPad("Nome do banco"),90,45,250,20);
-	adic(txtCodBanco,7,65,80,20);
-	adic(txtNomeBanco,90,65,250,20);
-    adic(new JLabelPad("Cód.setor"),7,85,80,20);
-    adic(new JLabelPad("Descrição do setor"),90,85,250,20);
-    adic(txtCodSetor,7,105,80,20);
-    adic(txtDescSetor,90,105,250,20);
-    adic(new JLabelPad("Cód.comiss."),7,125,80,20);
-    adic(new JLabelPad("Nome do comissionado"),90,125,250,20);
-    adic(txtCodVend,7,145,80,20);
-    adic(txtNomeVend,90,145,250,20);
-    
-  }
-  public void setConexao(Connection cn) {
-    super.setConexao(cn);
-    lcBanco.setConexao(cn);
-    lcSetor.setConexao(cn);
-    lcVendedor.setConexao(cn);
-    bPref = getPrefere();
-  }
+	private JTextFieldPad txtCodSetor = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0);
 
-  public void imprimir(boolean bVisualizar) {
+	private JTextFieldFK txtDescSetor = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 40, 0);
+
+	private JTextFieldPad txtCodVend = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0);
+
+	private JTextFieldFK txtNomeVend = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 40, 0);
+
+	private ListaCampos lcBanco = new ListaCampos(this);
+
+	private ListaCampos lcSetor = new ListaCampos(this);
+
+	private ListaCampos lcVendedor = new ListaCampos(this);
+
+	private boolean[] bPref = null;
+
+	public FRBordero() {
+		setTitulo("Bordero de cobrança");
+		setAtribos(80, 0, 400, 300);
+
+		txtDataini.setVlrDate(new Date());
+		txtDatafim.setVlrDate(new Date());
+
+		txtCodBanco.setRequerido(true);
+		lcBanco.add(new GuardaCampo(txtCodBanco, "CodBanco", "Cód.banco",
+				ListaCampos.DB_PK, false));
+		lcBanco.add(new GuardaCampo(txtNomeBanco, "NomeBanco", "Nome do banco",
+				ListaCampos.DB_SI, false));
+		lcBanco.montaSql(false, "BANCO", "FN");
+		lcBanco.setReadOnly(true);
+		txtCodBanco.setTabelaExterna(lcBanco);
+		txtCodBanco.setFK(true);
+		txtCodBanco.setNomeCampo("CodBanco");
+
+		lcSetor.add(new GuardaCampo(txtCodSetor, "CodSetor", "Cód.setor",
+				ListaCampos.DB_PK, false));
+		lcSetor.add(new GuardaCampo(txtDescSetor, "DescSetor",
+				"Descrição do setor", ListaCampos.DB_SI, false));
+		lcSetor.montaSql(false, "SETOR", "VD");
+		lcSetor.setReadOnly(true);
+		txtCodSetor.setTabelaExterna(lcSetor);
+		txtCodSetor.setFK(true);
+		txtCodSetor.setNomeCampo("CodSetor");
+
+		lcVendedor.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
+				ListaCampos.DB_PK, false));
+		lcVendedor.add(new GuardaCampo(txtNomeVend, "NomeVend",
+				"Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVendedor.montaSql(false, "VENDEDOR", "VD");
+		lcVendedor.setReadOnly(true);
+		txtCodVend.setTabelaExterna(lcVendedor);
+		txtCodVend.setFK(true);
+		txtCodVend.setNomeCampo("CodVend");
+
+		adic(new JLabelPad("Periodo:"), 7, 5, 120, 20);
+		adic(new JLabelPad("De:"), 7, 25, 30, 20);
+		adic(txtDataini, 40, 25, 97, 20);
+		adic(new JLabelPad("Até:"), 160, 25, 30, 20);
+		adic(txtDatafim, 190, 25, 100, 20);
+		adic(new JLabelPad("Cód.banco"), 7, 45, 80, 20);
+		adic(new JLabelPad("Nome do banco"), 90, 45, 250, 20);
+		adic(txtCodBanco, 7, 65, 80, 20);
+		adic(txtNomeBanco, 90, 65, 250, 20);
+		adic(new JLabelPad("Cód.setor"), 7, 85, 80, 20);
+		adic(new JLabelPad("Descrição do setor"), 90, 85, 250, 20);
+		adic(txtCodSetor, 7, 105, 80, 20);
+		adic(txtDescSetor, 90, 105, 250, 20);
+		adic(new JLabelPad("Cód.comiss."), 7, 125, 80, 20);
+		adic(new JLabelPad("Nome do comissionado"), 90, 125, 250, 20);
+		adic(txtCodVend, 7, 145, 80, 20);
+		adic(txtNomeVend, 90, 145, 250, 20);
+
+	}
+
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
+		lcBanco.setConexao(cn);
+		lcSetor.setConexao(cn);
+		lcVendedor.setConexao(cn);
+		bPref = getPrefere();
+	}
+
+public void imprimir(boolean bVisualizar) {
   	ImprimeOS imp = null;
   	int linPag = 0;
   	String sCodBanco = null;
@@ -150,14 +182,13 @@ public class FRBordero extends FRelatorio {
   		    txtCodBanco.requestFocus();
   		    return;
   		}
-    
+  		
+  		imp.setTitulo("Bordero de cobrança");   
   		imp.montaCab();
-    
+
   		sDataini = txtDataini.getVlrString();
   		sDatafim = txtDatafim.getVlrString();
-    
-  		imp.setTitulo("Bordero de cobrança");
-  		
+     		
        	sWhere += " AND IT.CODEMPBO=? AND IT.CODFILIALBO=? AND IT.CODBANCO=? ";
         sFiltro = "Banco: "+sCodBanco+" - "+Funcoes.copy(txtNomeBanco.getVlrString(),30).trim();
         	
@@ -226,9 +257,14 @@ public class FRBordero extends FRelatorio {
 
   			rs = ps.executeQuery();
   			imp.limpaPags();
-      
-  			while ( rs.next() ) {
 
+  			if (imp.pRow()==0) {
+  				imp.setSubTitulo("BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+  				imp.impCab(136, true);
+  			}
+  			boolean hasData = false;
+  			while ( rs.next() ) {
+  				hasData = true;
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
@@ -237,30 +273,13 @@ public class FRBordero extends FRelatorio {
   				}
 
   				if (imp.pRow()==0) {
-  					imp.impCab(136, false);
-  					sTitulo = "BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim;
-  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-  					imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-  					imp.say(imp.pRow()+0,136,"|");
-  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"|");
-  					imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-  					imp.say(imp.pRow()+0,136,"|");
-  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"|");
-  					imp.say(imp.pRow()+0,2+((130-sFiltro.length())/2),sFiltro);
-  					imp.say(imp.pRow()+0,136,"|");
-  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|Razão social do cliente");
   					imp.say(imp.pRow()+0,43,"Cod.cli");
   					imp.say(imp.pRow()+0,53,"CNPJ");
   					imp.say(imp.pRow()+0,73,"Endereco");
-  					imp.say(imp.pRow()+0,136,"|");
+  					imp.say(imp.pRow()+0,135,"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|");
   					imp.say(imp.pRow()+0,10,"Cidade");
@@ -271,7 +290,7 @@ public class FRBordero extends FRelatorio {
   					imp.say(imp.pRow()+0,100,"Emissao");
   					imp.say(imp.pRow()+0,111,"Vencto.");
   					imp.say(imp.pRow()+0,122,"Valor");
-  					imp.say(imp.pRow()+0,136,"|");
+  					imp.say(imp.pRow()+0,135,"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
   				}
@@ -286,7 +305,7 @@ public class FRBordero extends FRelatorio {
   				    imp.say(imp.pRow()+0,53,Funcoes.setMascara(rs.getString("CNPJCLI"),"########/####-##"));
   				    if ( (rs.getString("ENDCOB")==null) || (rs.getString("ENDCOB").trim().equals("")) ) {
   				        imp.say(imp.pRow()+0,73,Funcoes.copy(rs.getString("ENDCLI"),50).trim()+", "+Funcoes.copy(rs.getString("NUMCLI"),8));
-  				        imp.say(imp.pRow()+0,136,"|");
+  				        imp.say(imp.pRow()+0,135,"|");
   				        imp.say(imp.pRow()+1,0,""+imp.comprimido());
   				        imp.say(imp.pRow()+0,0,"|");
   				        imp.say(imp.pRow()+0,10,Funcoes.copy(rs.getString("CIDCLI"),30));
@@ -296,7 +315,7 @@ public class FRBordero extends FRelatorio {
   				    }
   				    else {
   				        imp.say(imp.pRow()+0,73,Funcoes.copy(rs.getString("ENDCOB"),50).trim()+", "+Funcoes.copy(rs.getString("NUMCOB"),8));
-  				        imp.say(imp.pRow()+0,136,"|");
+  				        imp.say(imp.pRow()+0,135,"|");
   				        imp.say(imp.pRow()+1,0,""+imp.comprimido());
   				        imp.say(imp.pRow()+0,0,"|");
   				        imp.say(imp.pRow()+0,10,Funcoes.copy(rs.getString("CIDCOB"),30));
@@ -313,7 +332,7 @@ public class FRBordero extends FRelatorio {
   				imp.say(imp.pRow()+0,100,Funcoes.dateToStrDate(rs.getDate("DATAREC")));
   				imp.say(imp.pRow()+0,111,Funcoes.dateToStrDate(rs.getDate("DTVENCITREC")));
   				imp.say(imp.pRow()+0,122,Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VLRPARCITREC")));
-  				imp.say(imp.pRow()+0,136,"|");
+  				imp.say(imp.pRow()+0,135,"|");
 
   				if (rs.getString("VlrParcItRec") != null) {
   					deTotParc += rs.getDouble("VlrParcItRec");
@@ -322,15 +341,15 @@ public class FRBordero extends FRelatorio {
         
  			}
 
-  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+  			imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
+  			imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",133)+"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"|");
   			imp.say(imp.pRow()+0,55,"Total geral-> ");
   			imp.say(imp.pRow()+0,122,Funcoes.strDecimalToStrCurrency(12,2,""+deTotParc));
-  			imp.say(imp.pRow(),136,"|");
+  			imp.say(imp.pRow(),135,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       
       
   			imp.eject();
@@ -376,48 +395,45 @@ public class FRBordero extends FRelatorio {
     	rs = null;
         deTotParc = 0;
     }
-  }
-
-  private boolean[] getPrefere() {
-  	boolean[] bRet = new boolean[1];
-  	String sSQL = null;
-  	String sVal = null;
-  	PreparedStatement ps = null;
-  	ResultSet rs = null;
-  	try {
-  		bRet[0] = false;
-  		sSQL = "SELECT SETORVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-  		try {
-  			ps = con.prepareStatement(sSQL);
-  			ps.setInt(1,Aplicativo.iCodEmp);
-  			ps.setInt(2,Aplicativo.iCodFilial);
-  			rs = ps.executeQuery();
-  			if (rs.next()) {
-  				sVal = rs.getString("SetorVenda");
-  				if (sVal!= null) {
-  					if ("CA".indexOf(sVal) >= 0) //Se tiver C ou A no sVal!
-  						bRet[0] = true;
-  				}
-  			}
-  			rs.close();
-  			ps.close();
-  			if (!con.getAutoCommit()) {
-  				con.commit();
-  			}
-  		}
-  		catch(SQLException err) {
-  			Funcoes.mensagemErro(null,"Erro ao verificar preferências!\n"+err.getMessage());
-  			err.printStackTrace();
-  		}
-  	}
-  	finally {
-  		sSQL = null;
-  		ps = null;
-  		rs = null;
-  		sVal = null;
-  	}
-  	//	System.out.println("Retornou setor:"+bRet);
-  	return bRet;
-  }  
+  }	private boolean[] getPrefere() {
+		boolean[] bRet = new boolean[1];
+		String sSQL = null;
+		String sVal = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			bRet[0] = false;
+			sSQL = "SELECT SETORVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			try {
+				ps = con.prepareStatement(sSQL);
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, Aplicativo.iCodFilial);
+				rs = ps.executeQuery();
+				if (rs.next()) {
+					sVal = rs.getString("SetorVenda");
+					if (sVal != null) {
+						if ("CA".indexOf(sVal) >= 0) //Se tiver C ou A no sVal!
+							bRet[0] = true;
+					}
+				}
+				rs.close();
+				ps.close();
+				if (!con.getAutoCommit()) {
+					con.commit();
+				}
+			} catch (SQLException err) {
+				Funcoes.mensagemErro(null, "Erro ao verificar preferências!\n"
+						+ err.getMessage());
+				err.printStackTrace();
+			}
+		} finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+			sVal = null;
+		}
+		//	System.out.println("Retornou setor:"+bRet);
+		return bRet;
+	}
 
 }

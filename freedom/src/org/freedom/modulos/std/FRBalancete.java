@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -185,17 +184,12 @@ public class FRBalancete extends FRelatorio {
       BigDecimal bigValMaster = null;
       while ( rs.next() ) {
         if (imp.pRow()==0) {
+           imp.setSubTitulo("BALANCETE - PERIODO DE "+sDataini+" A "+sDatafim);
            imp.impCab(80, true);
-           String sTitulo = "BALANCETE - PERIODO DE "+sDataini+" A "+sDatafim;
            imp.say(imp.pRow()+0,0,""+imp.normal());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
            imp.say(imp.pRow()+1,0,""+imp.normal());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,65,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,79,"|");
-           imp.say(imp.pRow()+1,0,""+imp.normal());
            imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(80-sTitulo.length())/2,sTitulo);
            imp.say(imp.pRow()+0,79,"|");
            if (!(sCodConta.trim().equals(""))) {
               sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();                   
