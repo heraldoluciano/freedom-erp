@@ -97,8 +97,7 @@ public class FCLComis extends FDados implements PostListener {
 private void imprimir(boolean bVisualizar) {
   ImprimeOS imp = new ImprimeOS("",con);
   int linPag = imp.verifLinPag()-1;
-  imp.montaCab();
-  imp.setTitulo("Relatório de Classificação de Comissões");
+  
   DLRClComis dl = new DLRClComis();
   dl.setVisible(true);
   if (dl.OK == false) {
@@ -115,7 +114,11 @@ private void imprimir(boolean bVisualizar) {
     imp.limpaPags();
     while ( rs.next() ) {
        if (imp.pRow()==0) {
-          imp.impCab(136, false);
+       	imp.montaCab();
+        imp.setTitulo("Relatório de Classificação de Comissões");
+        imp.setSubTitulo("Relatório de Classificação de Comissões");
+        imp.impCab(136, true);
+        
           imp.say(imp.pRow()+0,0,""+imp.normal());
           imp.say(imp.pRow()+0,0,"");
           imp.say(imp.pRow()+0,0,"|");
@@ -126,9 +129,9 @@ private void imprimir(boolean bVisualizar) {
           imp.say(imp.pRow()+0,80,"Perc.Fat.");
           imp.say(imp.pRow()+0,100,"|");
           imp.say(imp.pRow()+0,108,"Perc.Receb.");
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.normal());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
        }
                 
        
@@ -141,7 +144,7 @@ private void imprimir(boolean bVisualizar) {
        imp.say(imp.pRow()+0,80,rs.getString("percFatClComis"));
        imp.say(imp.pRow()+0,100,"|");
        imp.say(imp.pRow()+0,108,rs.getString("PercPgtoClComis"));
-       imp.say(imp.pRow()+0,136,"|");
+       imp.say(imp.pRow()+0,135,"|");
        
        if (imp.pRow()>=linPag) {
           imp.incPags();
@@ -150,7 +153,7 @@ private void imprimir(boolean bVisualizar) {
     }
     
     imp.say(imp.pRow()+1,0,""+imp.normal());
-    imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
     imp.eject();
     
     imp.fechaGravacao();

@@ -82,7 +82,7 @@ public class FFuncao extends FDados implements ActionListener {
             imp.say(imp.pRow()+0,2,"Cód.func.");
             imp.say(imp.pRow()+0,20,"Descrição");           
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodFunc"));
@@ -95,13 +95,13 @@ public class FFuncao extends FDados implements ActionListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
       imp.say(imp.pRow()+1,0,""+imp.normal());
       imp.say(imp.pRow()+0,0,"|");      
       imp.say(imp.pRow()+0,71,Funcoes.alinhaDir(iTot,8));
-      imp.say(imp.pRow()+0,80,"|");
+      imp.say(imp.pRow()+0,79,"|");
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
       imp.eject();
       
       imp.fechaGravacao();

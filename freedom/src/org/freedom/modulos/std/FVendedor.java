@@ -241,8 +241,7 @@ public class FVendedor extends FDados implements PostListener {
     String sCodpesqant = "";
     String sOrdem = "";
     String sValores[] = null;
-    imp.setTitulo("Relatório de Comissionados");
-    imp.montaCab();
+    
     DLRVendedor dl = new DLRVendedor(this,con);
 	dl.setVisible(true);
 	if (dl.OK == false) {
@@ -297,21 +296,26 @@ public class FVendedor extends FDados implements PostListener {
         ps.setInt(2,ListaCampos.getMasterFilial("VDVENDEDOR"));
         rs = ps.executeQuery();
         imp.limpaPags();
+        boolean hasData = false;
         while ( rs.next() ) {
           if (imp.pRow()==0) {
-            imp.impCab(136, false);
+          	imp.setTitulo("Relatório de Comissionados");
+          	imp.setSubTitulo("RELATÓRIO DE COMISSIONADOS");
+            imp.montaCab();
+            imp.impCab(136, true);
 
-            for (int i=0;i<vFiltros.size();i++) {            
-                	imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+            for (int i=0;i<vFiltros.size();i++) { 
+            	hasData = true;
+                	imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
                 	String sTmp = (String)vFiltros.elementAt(i);
-                    sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-                    sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+                    sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+                    sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,2,sTmp);
             }
           
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,4,"Código");
@@ -328,9 +332,9 @@ public class FVendedor extends FDados implements PostListener {
           imp.say(imp.pRow()+0,106,"|");
          // if(sValores[1].length()>0)
           	imp.say(imp.pRow()+0,108,"Cidade:");
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           }
 
 
@@ -349,8 +353,8 @@ public class FVendedor extends FDados implements PostListener {
           imp.say(imp.pRow()+0,86,rs.getString("DDDFoneVend") != null ? rs.getString("DDDFoneVend") : "");
           imp.say(imp.pRow()+0,92,rs.getString("FoneVend") != null ? Funcoes.setMascara(rs.getString("FoneVend"),"####-####") : "");
           imp.say(imp.pRow()+0,106,"|");
-          imp.say(imp.pRow()+0,108,rs.getString("CidVend") != null ? rs.getString("CidVend").substring(0,20) : "");                         
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,108,rs.getString("CidVend") != null ? rs.getString("CidVend").substring(0,19) : "");                         
+          imp.say(imp.pRow()+0,135,"|");
 
  
           
@@ -361,7 +365,7 @@ public class FVendedor extends FDados implements PostListener {
           iContaReg++;
         }
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
         imp.eject();
 
         imp.fechaGravacao();
