@@ -35,12 +35,12 @@ import org.freedom.telas.FDetalhe;
 public class FRegraFiscal extends FDetalhe {
 	private Painel pinCab = new Painel();
 	private Painel pinDet = new Painel();
-	private JTextFieldPad txtCodRegraFiscal = new JTextFieldPad();
-	private JTextFieldPad txtDescRegraFiscal = new JTextFieldPad();
-	private JTextFieldPad txtCodNat= new JTextFieldPad();
-	private JTextFieldFK txtDescNat = new JTextFieldFK();
-	private JTextFieldPad txtCodTipoMov= new JTextFieldPad();
-	private JTextFieldFK txtDescTipoMov = new JTextFieldFK();
+	private JTextFieldPad txtCodRegraFiscal = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+	private JTextFieldPad txtDescRegraFiscal = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodNat= new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+	private JTextFieldFK txtDescNat = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodTipoMov= new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbNoUF = new JCheckBoxPad("Sim","S","N");
 	private Vector vDescCV = new Vector();
 	private Vector vValCV = new Vector();
@@ -52,26 +52,22 @@ public class FRegraFiscal extends FDetalhe {
 		pinCab = new Painel(440,70);
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
-		adicCampo(txtCodRegraFiscal, 7, 20, 80, 20,"CodRegra","Cód.reg.fisc.",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-		adicCampo(txtDescRegraFiscal, 90, 20, 220, 20,"DescRegra","Descrição da regra fiscal",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+		adicCampo(txtCodRegraFiscal, 7, 20, 80, 20,"CodRegra","Cód.reg.fisc.", ListaCampos.DB_PK,true);
+		adicCampo(txtDescRegraFiscal, 90, 20, 220, 20,"DescRegra","Descrição da regra fiscal", ListaCampos.DB_SI, true);
 		setListaCampos( true, "REGRAFISCAL", "LF");
         lcCampos.setQueryInsert(false);
 
-		txtCodNat.setTipo(JTextFieldPad.TP_STRING,4,0);    
-		txtDescNat.setTipo(JTextFieldPad.TP_STRING,40,0);    
 		lcNat.setUsaME(false);
-		lcNat.add(new GuardaCampo( txtCodNat, 7, 100, 80, 20, "CodNat", "CFOP", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodSeriex");
-		lcNat.add(new GuardaCampo( txtDescNat, 90, 100, 207, 20, "DescNat", "Descrição da CFOP", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSeriex");
+		lcNat.add(new GuardaCampo( txtCodNat, "CodNat", "CFOP",  ListaCampos.DB_PK, false));
+		lcNat.add(new GuardaCampo( txtDescNat, "DescNat", "Descrição da CFOP",  ListaCampos.DB_SI, false));
 		lcNat.montaSql(false, "NATOPER", "LF");    
 		lcNat.setQueryCommit(false);
 		lcNat.setReadOnly(true);
 		txtCodNat.setTabelaExterna(lcNat);
 
-		txtCodTipoMov.setTipo(JTextFieldPad.TP_INTEGER,4,0);    
-		txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING,40,0);    
 		
-		lcMov.add(new GuardaCampo( txtCodTipoMov, 7, 120, 80, 20, "CodTipoMov", "Cód.tp.mov.", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcMov.add(new GuardaCampo( txtDescTipoMov, 90, 120, 207, 20, "DescTipoMov", "Descrição do tipo de movimento", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcMov.add(new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.",  ListaCampos.DB_PK, false));
+		lcMov.add(new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento",  ListaCampos.DB_SI, false));
 		lcMov.montaSql(false, "TIPOMOV", "EQ");    
 		lcMov.setQueryCommit(false);
 		lcMov.setReadOnly(true);
@@ -90,12 +86,12 @@ public class FRegraFiscal extends FDetalhe {
 		setPainel( pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-		adicCampo(txtCodNat, 7, 25, 70, 20,"CodNat","CFOP",JTextFieldPad.TP_STRING,4,0,true,true,null,true);
-		adicDescFK(txtDescNat, 80, 25, 197, 20, "DescNat", "Descrição da CFOP", JTextFieldPad.TP_STRING, 40, 0);
-		adicCampo(txtCodTipoMov,7,75,70,20,"CodTipoMov","Cód.tp.mov.",JTextFieldPad.TP_INTEGER,4,0,false,true,null,false);
-		adicDescFK(txtDescTipoMov, 80, 75, 197, 20, "DescTipoMov", "Descrição do tipo de movimento", JTextFieldPad.TP_STRING, 40, 0);
-		adicDB(cbNoUF, 280, 25, 87, 20, "NoUFItRF", "No Estado",JTextFieldPad.TP_STRING,true);
-		adicDB(rgCV, 370, 20, 200, 30, "CVItRf", "Compra/venda",JTextFieldPad.TP_STRING,true);
+		adicCampo(txtCodNat, 7, 25, 70, 20,"CodNat","CFOP", ListaCampos.DB_PF,true);
+		adicDescFK(txtDescNat, 80, 25, 197, 20, "DescNat", "Descrição da CFOP");
+		adicCampo(txtCodTipoMov,7,75,70,20,"CodTipoMov","Cód.tp.mov.", ListaCampos.DB_FK,false);
+		adicDescFK(txtDescTipoMov, 80, 75, 197, 20, "DescTipoMov", "Descrição do tipo de movimento");
+		adicDB(cbNoUF, 280, 25, 87, 20, "NoUFItRF", "No Estado",true);
+		adicDB(rgCV, 370, 20, 200, 30, "CVItRf", "Compra/venda",true);
 		
 		setListaCampos( false, "ITREGRAFISCAL", "LF");
 		txtCodNat.setStrMascara("#.###");
