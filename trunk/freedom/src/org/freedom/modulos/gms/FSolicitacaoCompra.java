@@ -245,7 +245,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		txtCodCC.setEditable(false);
 		adicCampo(txtAnoCC, 70, 60, 60, 20, "AnoCC", "ano c.c.", ListaCampos.DB_FK, false);
 		txtAnoCC.setEditable(false);
-		adicDescFK(txtDescCC, 140, 60, 60, 20, "DescCC", "desc c.c.");
+		adicDescFK(txtDescCC, 140, 60, 97, 20, "DescCC", "desc c.c.");
 		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_SI,
 				false);
 		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Cód.almox.",
