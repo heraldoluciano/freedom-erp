@@ -72,8 +72,8 @@ public class FRBalanceteGrafico extends FRelatorio {
     
     txtCodPlan.setTipo(JTextFieldPad.TP_STRING,10,0);
     txtDescPlan.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.Plan", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
-    lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
+    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.plan.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
+    lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição d planejamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
     lcPlan.setWhereAdic("NIVELPLAN<6 AND TIPOPLAN IN ('R','D')");
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
     lcPlan.setReadOnly(true);
@@ -84,9 +84,9 @@ public class FRBalanceteGrafico extends FRelatorio {
 	txtCodCC.setTipo(JTextFieldPad.TP_STRING,19,0);
 	txtDescCC.setTipo(JTextFieldPad.TP_STRING,50,0);
 	txtSiglaCC.setTipo(JTextFieldPad.TP_STRING,10,0);    
-	lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Cód.CC", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
+	lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Cód.cc.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
 	lcCC.add(new GuardaCampo( txtSiglaCC, 90, 100, 207, 20, "SiglaCC", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-	lcCC.add(new GuardaCampo( txtDescCC, 90, 100, 207, 20, "DescCC", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+	lcCC.add(new GuardaCampo( txtDescCC, 90, 100, 207, 20, "DescCC", "Descrição do centro de custo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
 	lcCC.setReadOnly(true);
 	lcCC.montaSql(false, "CC", "FN");
 	txtCodCC.setTabelaExterna(lcCC);
@@ -99,11 +99,13 @@ public class FRBalanceteGrafico extends FRelatorio {
 	adic(txtDataini,40,25,117,20);
 	adic(new JLabel("Até:"),160,25,22,20);
 	adic(txtDatafim,185,25,120,20);
-	adic(new JLabel("Número e descrição do planejamento"),7,50,250,20);
+	adic(new JLabel("Nº plan."),7,50,250,20);
 	adic(txtCodPlan,7,70,80,20);
+	adic(new JLabel("Descrição do planejamento"),90,50,250,20);
 	adic(txtDescPlan,90,70,200,20);
-	adic(new JLabel("Código e descrição do centro de custo"),7,90,250,20);
+	adic(new JLabel("Cód.cc."),7,90,250,20);
 	adic(txtCodCC,7,110,80,20);
+	adic(new JLabel("Descrição do centro de custo"),90,90,250,20);
 	adic(txtDescCC,90,110,200,20);	
 	adic(new JLabel("Tipo de gráfico:"),7,130,180,20);
 	adic(new JLabel(Icone.novo("graficoPizza.gif")),7,160,30,30);
