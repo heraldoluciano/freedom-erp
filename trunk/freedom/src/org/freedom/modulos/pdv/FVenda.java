@@ -68,7 +68,7 @@ import org.freedom.telas.FFDialogo;
 
 
 
-public class FVenda extends FDialogo implements KeyListener, CarregaListener, PostListener {
+public class FVenda extends FFDialogo implements KeyListener, CarregaListener, PostListener {
 	
    private StatusBar sbVenda = new StatusBar(new BorderLayout());
    
@@ -166,6 +166,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    private Vector vCacheItem = new Vector();
    private Connection con;
    public FVenda() {
+   	  super(Aplicativo.framePrinc);
    	  setTitulo("Venda");
    	  setAtribos(798,580);
    	  setToFrameLayout();
@@ -576,7 +577,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  iniItem();
    }
    public void setConexao(Connection con) {
-   	  this.con = con;
+   	  super.setConexao(con);
 	  lcCliente.setConexao(con);
 	  lcPlanoPag.setConexao(con);
 	  lcVenda.setConexao(con);

@@ -36,13 +36,14 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class FAbreCaixa extends FDialogo {
+public class FAbreCaixa extends FFDialogo {
 	private JTextFieldPad txtData = new JTextFieldPad();
 	private JTextFieldPad txtValor = new JTextFieldPad();
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-	private Connection con = null;
 	public FAbreCaixa() {
+		super(Aplicativo.framePrinc);
 		setTitulo("Abrir Caixa");
 		setAtribos(250,110);
 		
@@ -91,8 +92,5 @@ public class FAbreCaixa extends FDialogo {
 			dbAbrirCaixa();
 		}
 		super.actionPerformed(evt);
-	}
-	public void setConexao(Connection cn) {
-		con = cn;
 	}
 }

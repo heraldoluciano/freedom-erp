@@ -81,7 +81,6 @@ public class FAgenda extends FFilho implements ActionListener {
 //  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 //  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcUsu = new ListaCampos(this);
-  private Connection con = null;
   private Vector vCodAgds = new Vector();
   int iCodAge = 0;
   String sTipoAge = "";
@@ -431,7 +430,7 @@ public class FAgenda extends FFilho implements ActionListener {
 	}
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
   	lcUsu.setConexao(cn);
     lcUsu.carregaDados();
     carregaTabAgd();

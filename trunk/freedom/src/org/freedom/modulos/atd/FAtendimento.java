@@ -82,7 +82,6 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private ListaCampos lcCli = new ListaCampos(this);
   private Vector vCodAtends = new Vector();
   private FPrincipal fPrim;
-  private Connection con = null;
   public FAtendimento() {
   	setTitulo("Atendimento");
   	setAtribos(20,20,540,400);
@@ -339,7 +338,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	  fPrim = fP;
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
   	lcConv.setConexao(cn);
 	lcCli.setConexao(cn);
   }

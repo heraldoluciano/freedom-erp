@@ -39,8 +39,9 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class FSangria extends FDialogo {
+public class FSangria extends FFDialogo {
 	private JTextFieldFK txtDataUOper = new JTextFieldFK();
 	private JTextFieldFK txtSaldoUOper = new JTextFieldFK();
 	private JTextFieldFK txtStatusUOper = new JTextFieldFK();
@@ -49,8 +50,8 @@ public class FSangria extends FDialogo {
 	private JTextFieldFK txtData = new JTextFieldFK();
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-	private Connection con = null;
 	public FSangria() {
+		super(Aplicativo.framePrinc);
 		setTitulo("Sangria de Caixa");
 		setAtribos(390,240);
 		
@@ -165,7 +166,7 @@ public class FSangria extends FDialogo {
 		super.actionPerformed(evt);
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		setConexao(cn);
 		if (verifCaixa())
 		  carregaInfo();
 		else

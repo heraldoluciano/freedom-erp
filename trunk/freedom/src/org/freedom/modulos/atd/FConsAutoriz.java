@@ -82,7 +82,6 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private ListaCampos lcConv = new ListaCampos(this,"PR");
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcEnc = new ListaCampos(this,"EC");
-	private Connection con = null;
 	private FPrincipal fPrim;
 	public FConsAutoriz() {
 		setTitulo("Pesquisa Autorização");
@@ -429,7 +428,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		fPrim = fP;
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcConv.setConexao(con);
 		lcCli.setConexao(con);
 		lcEnc.setConexao(con);

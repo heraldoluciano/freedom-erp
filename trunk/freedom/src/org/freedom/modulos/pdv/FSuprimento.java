@@ -40,9 +40,10 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 
-public class FSuprimento extends FDialogo {
+public class FSuprimento extends FFDialogo {
 	private JTextFieldFK txtData = new JTextFieldFK();
 	private JTextFieldPad txtValor = new JTextFieldPad();
 	private JTextFieldFK txtDataAnt = new JTextFieldFK();
@@ -51,8 +52,8 @@ public class FSuprimento extends FDialogo {
 	private JTextFieldFK txtUsuarioAnt = new JTextFieldFK();
 	private JTextFieldFK txtUsuarioAtual = new JTextFieldFK();
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-	private Connection con = null;
 	public FSuprimento() {
+		super(Aplicativo.framePrinc);
 		setTitulo("Suprimento de caixa");
 		setAtribos(345,255);
 		
@@ -160,7 +161,7 @@ public class FSuprimento extends FDialogo {
 		super.actionPerformed(evt);
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		executaQuery();
 	}
 
