@@ -209,7 +209,7 @@ public class NFRondobras extends Leiaute {
              ftVlrDesc = rs.getFloat("VlrDescItVenda");
              if ( ftVlrDesc > 0 ){             	
              	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	            imp.say(imp.pRow()+0,100,"Total de descontos = "+Funcoes.strDecimalToStrCurrency(15,2,""+ftVlrDesc));
+	            imp.say(imp.pRow()+0,98,"Total de descontos = "+Funcoes.strDecimalToStrCurrency(15,2,""+ftVlrDesc));
 	            imp.say(imp.pRow()+1,0,"");
 	         }
              else{
