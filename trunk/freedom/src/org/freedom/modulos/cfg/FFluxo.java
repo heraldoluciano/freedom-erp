@@ -38,11 +38,11 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FFluxo extends FDetalhe implements ActionListener {
-  private JTextFieldPad txtCodFluxo = new JTextFieldPad();
-  private JTextFieldPad txtDescFluxo = new JTextFieldPad();
+  private JTextFieldPad txtCodFluxo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescFluxo = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProc = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtCodItem = new JTextFieldPad();
+  private JTextFieldPad txtCodItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private ListaCampos lcProc = new ListaCampos(this,"PC");
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
@@ -57,15 +57,15 @@ public class FFluxo extends FDetalhe implements ActionListener {
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 
-   lcProc.add(new GuardaCampo( txtCodProc, 7, 100, 80, 20, "CodProc", "Cód.proc.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
-   lcProc.add(new GuardaCampo( txtDescProc, 90, 100, 207, 20, "DescProc", "Descrição do processo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
+   lcProc.add(new GuardaCampo( txtCodProc, "CodProc", "Cód.proc.", ListaCampos.DB_PK, true));
+   lcProc.add(new GuardaCampo( txtDescProc, "DescProc", "Descrição do processo", ListaCampos.DB_SI, false));
    lcProc.montaSql(false, "PROCESSO", "SG");
    lcProc.setQueryCommit(false);
    lcProc.setReadOnly(true);
    txtCodProc.setTabelaExterna(lcProc);
     
-   adicCampo(txtCodFluxo, 7, 20, 70, 20,"CodFluxo","Cód.fluxo",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-   adicCampo(txtDescFluxo, 80, 20, 230, 20,"DescFluxo","Descrição do fluxo",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+   adicCampo(txtCodFluxo, 7, 20, 70, 20,"CodFluxo","Cód.fluxo", ListaCampos.DB_PK, true);
+   adicCampo(txtDescFluxo, 80, 20, 230, 20,"DescFluxo","Descrição do fluxo", ListaCampos.DB_SI, true);
    setListaCampos( true, "FLUXO", "SG");
 
    setAltDet(60);
@@ -73,9 +73,9 @@ public class FFluxo extends FDetalhe implements ActionListener {
    setListaCampos(lcDet);
    setNavegador(navRod);
 
-   adicCampo(txtCodItem, 7, 20, 40, 20,"SeqItFluxo","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodProc, 50, 20, 70, 20,"CodProc","Cód.proc.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProc,true);
-   adicDescFK(txtDescProc, 123, 20, 230, 20,"DescProc","Descrição do processo",JTextFieldPad.TP_STRING,50,0);
+   adicCampo(txtCodItem, 7, 20, 40, 20,"SeqItFluxo","Item", ListaCampos.DB_PK, true);
+   adicCampo(txtCodProc, 50, 20, 70, 20,"CodProc","Cód.proc.", ListaCampos.DB_FK, txtDescProc, true);
+   adicDescFK(txtDescProc, 123, 20, 230, 20,"DescProc","Descrição do processo");
    setListaCampos( true, "ITFLUXO", "SG");
    
    montaTab();    

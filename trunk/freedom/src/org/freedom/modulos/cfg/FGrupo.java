@@ -38,17 +38,17 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FGrupo extends FDados implements PostListener,DeleteListener { 
-  private JTextFieldPad txtCodGrup = new JTextFieldPad();
-  private JTextFieldPad txtNomeGrup = new JTextFieldPad();
-  private JTextAreaPad txaComentGrup = new JTextAreaPad();
+  private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtNomeGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextAreaPad txaComentGrup = new JTextAreaPad(JTextFieldPad.TP_STRING);
   private JScrollPane spnObs = new JScrollPane(txaComentGrup);
   public FGrupo () {
     setTitulo("Cadastro de Grupos");
     setAtribos( 50, 50, 400, 200);
 
-    adicCampo(txtCodGrup, 7, 20, 80, 20, "IDGrpUsu", "ID", JTextFieldPad.TP_STRING, 8, 0, true, false, null, true);
-    adicCampo(txtNomeGrup, 90, 20, 282, 20, "NomeGrpUsu", "Nome", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
-    adicDBLiv(txaComentGrup, "ComentGrpUsu", "Comentário",JTextFieldPad.TP_STRING, false);
+    adicCampo(txtCodGrup, 7, 20, 80, 20, "IDGrpUsu", "ID", ListaCampos.DB_PK, true);
+    adicCampo(txtNomeGrup, 90, 20, 282, 20, "NomeGrpUsu", "Nome", ListaCampos.DB_SI, true);
+    adicDBLiv(txaComentGrup, "ComentGrpUsu", "Comentário", false);
     adic(new JLabel("Comentário"),7,40,100,20);
     adic(spnObs,7,60,365,60);
     setListaCampos( false, "GRPUSU", "SG");

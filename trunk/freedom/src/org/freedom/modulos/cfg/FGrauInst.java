@@ -29,17 +29,18 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FGrauInst extends FDados implements ActionListener {
-  private JTextFieldPad txtCodGrauInstru = new JTextFieldPad(5);
-  private JTextFieldPad txtDescGrauInstru = new JTextFieldPad(50);
+  private JTextFieldPad txtCodGrauInstru = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescGrauInstru = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   public FGrauInst () {
     setTitulo("Cadastro de Grau de instrução");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodGrauInstru, 7, 20, 70, 20,"CodGri","Cód.gri.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescGrauInstru, 80, 20, 250, 20,"DescGri","Descrição do grau de instrução",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodGrauInstru, 7, 20, 70, 20,"CodGri","Cód.gri.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescGrauInstru, 80, 20, 250, 20,"DescGri","Descrição do grau de instrução", ListaCampos.DB_SI, true);
     setListaCampos( true, "GrauInst", "SG");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

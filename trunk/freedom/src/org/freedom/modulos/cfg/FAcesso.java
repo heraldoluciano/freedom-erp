@@ -61,7 +61,7 @@ public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
   private JPanel pnCliente = new JPanel(new BorderLayout());
   private Painel pinTop = new Painel(475,90);
   private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
-  private JTextFieldFK txtNomeUsu = new JTextFieldFK();
+  private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcUsuario = new ListaCampos(this);
   private Arvore arvore = new Arvore();
   private JScrollPane spnArv = new JScrollPane(arvore);
@@ -86,9 +86,8 @@ public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
 	btSalva.setToolTipText("Salvar permições");
 
     txtCodUsu.setNomeCampo("IdUsuario");
-    txtNomeUsu.setTipo(JTextFieldPad.TP_STRING,50,0);
-    lcUsuario.add(new GuardaCampo( txtCodUsu, 7, 100, 80, 20, "IDUSU", "ID Usuario", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcUsuario.add(new GuardaCampo( txtNomeUsu, 7, 100, 180, 20, "NOMEUSU", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcUsuario.add(new GuardaCampo( txtCodUsu, "IDUSU", "ID Usuario", ListaCampos.DB_PK, txtNomeUsu, false));
+    lcUsuario.add(new GuardaCampo( txtNomeUsu, "NOMEUSU", "Nome", ListaCampos.DB_SI, false));
     lcUsuario.montaSql(false, "USUARIO", "SG");    
     lcUsuario.setQueryCommit(false);
     lcUsuario.setReadOnly(true);
