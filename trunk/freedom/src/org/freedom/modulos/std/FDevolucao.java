@@ -135,13 +135,13 @@ public class FDevolucao extends FWizard implements CarregaListener{
         
         rg1a.setAtivo(false);
         
-        lcVenda1a.add(new GuardaCampo(txtCodVenda1a, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, true));
+        lcVenda1a.add(new GuardaCampo(txtCodVenda1a, "CodVenda", "Cód.vend.", ListaCampos.DB_PK, true));
         lcVenda1a.add(new GuardaCampo(txtDocVenda1a, "DocVenda", "Doc.", ListaCampos.DB_SI, false));
         lcVenda1a.add(new GuardaCampo(txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
-        lcVenda1a.add(new GuardaCampo(txtVlrLiqVenda, "VlrLiqVenda", "Valor.Liq.", ListaCampos.DB_SI, false));
+        lcVenda1a.add(new GuardaCampo(txtVlrLiqVenda, "VlrLiqVenda", "Valor.liq.", ListaCampos.DB_SI, false));
         lcVenda1a.add(new GuardaCampo(txtDataVenda1a, "DtEmitVenda", "Data", ListaCampos.DB_SI, false));
         lcVenda1a.add(new GuardaCampo(txtStatusVenda1a, "StatusVenda", "Status", ListaCampos.DB_SI, false));
-        lcVenda1a.add(new GuardaCampo(txtTipoVenda1a, "TipoVenda", "Tipo.Venda", ListaCampos.DB_SI, false));
+        lcVenda1a.add(new GuardaCampo(txtTipoVenda1a, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false));
         lcVenda1a.montaSql(false, "VENDA", "VD");
         lcVenda1a.setReadOnly(true);
         lcVenda1a.setConexao(con);
@@ -216,7 +216,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
         rg1c.setAtivo(false);
         
         lcCli1c.add(new GuardaCampo(txtCodCli1c, "CodCli", "Cód.Cli", ListaCampos.DB_PK, true));
-        lcCli1c.add(new GuardaCampo(txtRazCli1c, "RazCli", "Razão", ListaCampos.DB_SI, false));
+        lcCli1c.add(new GuardaCampo(txtRazCli1c, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
         lcCli1c.montaSql(false, "CLIENTE", "VD");
         lcCli1c.setReadOnly(true);
         lcCli1c.setConexao(con);
@@ -225,7 +225,8 @@ public class FDevolucao extends FWizard implements CarregaListener{
         txtCodCli1c.setNomeCampo("CodCli");
         
         adic(new JLabel("Informações do cliente"),20,10,250,20);
-        adic(new JLabel("Código e razão do cliente"),37,40,250,20);
+        adic(new JLabel("Cód.cli."),37,40,250,20);
+        adic(new JLabel("Razão social do cliente"),120,40,300,20);
         adic(txtCodCli1c,37,60,80,20);
         adic(txtRazCli1c,120,60,300,20);
         adic(rg1c,40,100,250,60);

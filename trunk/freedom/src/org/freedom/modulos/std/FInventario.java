@@ -83,7 +83,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
   boolean bLote = false;
   public FInventario () {
     setTitulo("Inventário");
-    setAtribos( 50, 50, 320, 370);
+    setAtribos( 50, 50, 330, 370);
 
     cbLote.addCheckBoxListener(this);
 
@@ -94,20 +94,20 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
     txtSldAtualInvP.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtPrecoInvP.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Código", true, false, txtDescProd, JTextFieldPad.TP_INTEGER,true),"txtCodProdx");
-    lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( cbLote, 90, 100, 207, 20, "CLoteProd", "Classifica por Lote?", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, txtDescProd, JTextFieldPad.TP_INTEGER,true),"txtCodProdx");
+    lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd.add(new GuardaCampo( cbLote, 90, 100, 207, 20, "CLoteProd", "Classifica por lote?", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
     lcProd.setWhereAdic("NOT TIPOPROD = 'S' AND ATIVOPROD='S'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
     lcProd.setReadOnly(true);
     txtCodProd.setTabelaExterna(lcProd);
 
-    lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Código", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
-    lcProd2.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", true, false, txtDescProd, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( cbLote, 90, 100, 207, 20, "CLoteProd", "Classifica por Lote?", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
+    lcProd2.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência do produto", true, false, txtDescProd, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd2.add(new GuardaCampo( cbLote, 90, 100, 207, 20, "CLoteProd", "Classifica por lote?", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
     txtRefProd.setChave(ListaCampos.DB_PK);
     txtRefProd.setNomeCampo("RefProd");
     txtRefProd.setListaCampos(lcProd2);
@@ -118,8 +118,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
 
     txtCodTipoMov.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING,40,0);    
-    lcTipoMov.add(new GuardaCampo( txtCodTipoMov, 7, 100, 80, 20, "CodTipoMov", "Cód.Tp.Mov.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoMovx");
-    lcTipoMov.add(new GuardaCampo( txtDescTipoMov, 90, 100, 207, 20, "DescTipoMov", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoMovx");
+    lcTipoMov.add(new GuardaCampo( txtCodTipoMov, 7, 100, 80, 20, "CodTipoMov", "Cód.tp.mov.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoMovx");
+    lcTipoMov.add(new GuardaCampo( txtDescTipoMov, 90, 100, 207, 20, "DescTipoMov", "Descrição do tipo de movimento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoMovx");
     lcTipoMov.setWhereAdic(" ESTIPOMOV = 'I' "); 
     lcTipoMov.montaSql(false, "TIPOMOV", "EQ");    
     lcTipoMov.setQueryCommit(false); 
@@ -129,8 +129,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     txtCodLote.setTipo(JTextFieldPad.TP_STRING,13,0);
     txtSldAtualInvP.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtCodLote.setAtivo(false);
-    lcLote.add(new GuardaCampo( txtCodLote, 7, 100, 80, 20, "CodLote", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodLotex");
-    lcLote.add(new GuardaCampo( txtDescLote, 90, 100, 207, 20, "VenctoLote", "Vencimento", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescLotex");
+    lcLote.add(new GuardaCampo( txtCodLote, 7, 100, 80, 20, "CodLote", "Cód.lote", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodLotex");
+    lcLote.add(new GuardaCampo( txtDescLote, 90, 100, 207, 20, "VenctoLote", "Vencimento do lote", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescLotex");
     //lcLote.add(new GuardaCampo( txtSldAtualInvP, 90, 100, 207, 20, "SldLiqLote", "Saldo", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescLotex");
     lcLote.setDinWhereAdic("CODPROD=#N",txtCodProd);
     lcLote.montaSql(false, "LOTE", "EQ");    
@@ -140,8 +140,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     txtCodLote.setTabelaExterna(lcLote);
 
     txtCodAlmox.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 100, 80, 20, "CodAlmox", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodAlmoxx");
-    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 207, 20, "DescAlmox", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxx");
+    lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 100, 80, 20, "CodAlmox", "Cód.almox.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodAlmoxx");
+    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 207, 20, "DescAlmox", "Descrição do almoxarifado", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxx");
     lcAlmox.montaSql(false, "ALMOX", "EQ");    
     lcAlmox.setQueryCommit(false);
     lcAlmox.setReadOnly(true);
@@ -166,32 +166,32 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     
   }
   private void montaTela() {
-    adicCampo(txtCodInv, 7, 20, 80, 20,"CodInvProd","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDataInvP, 90, 20, 100, 20,"DataInvP","Data",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
+    adicCampo(txtCodInv, 7, 20, 90, 20,"CodInvProd","Cód.inv.prod.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDataInvP, 100, 20, 100, 20,"DataInvP","Data",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
     
-    adicCampo(txtCodTipoMov, 7, 60, 80, 20,"CodTipoMov","Cód.tp.mov.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoMov,true);
-    adicDescFK(txtDescTipoMov, 90, 60, 197, 20, "DescTipoMov", "Descrição do tipo de movimento", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodTipoMov, 7, 60, 90, 20,"CodTipoMov","Cód.tp.mov.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTipoMov,true);
+    adicDescFK(txtDescTipoMov, 100, 60, 207, 20, "DescTipoMov", "Descrição do tipo de movimento", JTextFieldPad.TP_STRING, 40, 0);
     
     if (comRef()) {
-      adicCampoInvisivel(txtRefProd2,"RefProd","Referência",JTextFieldPad.TP_STRING,13,0,false,false,null,false);
+      adicCampoInvisivel(txtRefProd2,"RefProd","Referência do produto",JTextFieldPad.TP_STRING,13,0,false,false,null,false);
 //      adicCampoInvisivel(txtRefProd,"RefProd","Referência",txtRefProd.TP_STRING,13,0,false,true,null,true);
-      adicCampoInvisivel(txtCodProd,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,false);
+      adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,false);
       txtRefProd.setRequerido(true);
       adic(new JLabel("Referência"), 7, 80, 80, 20);
       adic(txtRefProd, 7, 100, 80, 20);
     }
     else {
-      adicCampo(txtCodProd, 7, 100, 80, 20,"CodProd","Cód.Prod",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,true);
+      adicCampo(txtCodProd, 7, 100, 90, 20,"CodProd","Cód.prod",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,true);
     }
-    adicDescFK(txtDescProd, 90, 100, 197, 20, "DescProd", "e descrição do produto", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtCodLote, 7, 140, 80, 20,"CodLote","Cód.Lote",JTextFieldPad.TP_STRING,13,0,false,true,txtDescLote,false);
-    adicDescFK(txtDescLote, 90, 140, 197, 20, "VenctoLote", "e vencimento do lote", JTextFieldPad.TP_DATE, 10, 0);
-    adicCampo(txtCodAlmox, 7, 180, 77, 20,"CodAlmox","Cód.Amox.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescAlmox,true);
-    adicDescFK(txtDescAlmox, 90, 180, 197, 20, "DescAlmox", "e descrição do almox.", JTextFieldPad.TP_STRING, 10, 0);
-    adicCampo(txtSldAtualInvP, 7, 220, 140, 20,"SldAtualInvP","Estoque Atual",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,false);
-    adicCampo(txtSldNovoInvP, 150, 220, 137, 20,"SldDigInvP","Estoque Novo",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,false);
-    adicCampo(txtPrecoInvP, 90, 260, 97, 20,"PrecoInvP","Custo Unit.",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,true);
-    adicCampo(txtQtdInvP, 7, 260, 80, 20,"QtdInvP","Qtd.",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,true);
+    adicDescFK(txtDescProd, 100, 100, 207, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodLote, 7, 140, 90, 20,"CodLote","Cód.lote",JTextFieldPad.TP_STRING,13,0,false,true,txtDescLote,false);
+    adicDescFK(txtDescLote, 100, 140, 207, 20, "VenctoLote", "Vencimento do lote", JTextFieldPad.TP_DATE, 10, 0);
+    adicCampo(txtCodAlmox, 7, 180, 90, 20,"CodAlmox","Cód.amox.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescAlmox,true);
+    adicDescFK(txtDescAlmox, 100, 180, 207, 20, "DescAlmox", "Descrição do almoxarifado", JTextFieldPad.TP_STRING, 10, 0);
+    adicCampo(txtSldAtualInvP, 7, 220, 140, 20,"SldAtualInvP","Estoque atual",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,false);
+    adicCampo(txtSldNovoInvP, 150, 220, 137, 20,"SldDigInvP","Estoque novo",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,false);
+    adicCampo(txtPrecoInvP, 90, 260, 97, 20,"PrecoInvP","Custo unitário",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,true);
+    adicCampo(txtQtdInvP, 7, 260, 80, 20,"QtdInvP","Quantidade",JTextFieldPad.TP_DECIMAL,15,2,false,false,null,true);
     lcCampos.setQueryInsert(false);
     setListaCampos( true, "INVPROD", "EQ");
   }
