@@ -94,11 +94,11 @@ public class FreedomGMS extends Aplicativo {
 		addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
 			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros","",'T',100100000,1, false, null);
 		    	addOpcao(100100000,TP_OPCAO_MENU,"Clientes","",'C',100101000,2, false, null);
-		    		addOpcao(100101000,TP_OPCAO_ITEM,"Clientes", "",'C',100101010,3, true, null);
+		    		addOpcao(100101000,TP_OPCAO_ITEM,"Clientes", "Clientes",'C',100101010,3, true, FCliente.class);
 		        addSeparador(100100000);	    
 		    	addOpcao(100100000,TP_OPCAO_MENU,"Fornecedores","",'C',100201000,2, false, null);
-		    		addOpcao(100201000,TP_OPCAO_ITEM,"Tipos de fornecedores","",'e',100201010,3, true, null);  
-		    		addOpcao(100201000,TP_OPCAO_ITEM,"Fornecedores","",'r',100201020,3, true, null);    
+		    		addOpcao(100201000,TP_OPCAO_ITEM,"Tipos de fornecedores","TipoFor",'e',100201010,3, true, FTipoFor.class);  
+		    		addOpcao(100201000,TP_OPCAO_ITEM,"Fornecedores","Fornecedor",'r',100201020,3, true, FFornecedor.class);    
 		        addSeparador(100100000);
 		        addOpcao(100100000,TP_OPCAO_MENU,"Produtos","",'u',100301000,2, false, null);
 		        	addOpcao(100301000,TP_OPCAO_ITEM,"Tratamentos tributários","",'t',100301010,3, true, null);
