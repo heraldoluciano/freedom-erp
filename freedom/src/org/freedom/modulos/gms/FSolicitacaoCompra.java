@@ -37,8 +37,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
@@ -50,7 +50,6 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -67,6 +66,11 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private int casasDec = Aplicativo.casasDec;
 	private Painel pinCab = new Painel();
 	private Painel pinDet = new Painel();
+	private JButton btLimpaCompra = new JButton(
+			"Limpa Autorização da Solicitação", null);
+	private JButton btLimpaItem = new JButton("Limpa Autorização do Item", null);
+	private JButton btStatusCompra = new JButton("Solicitação Pendente", null);
+	private JButton btStatusItem = new JButton("Item Pendente", null);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad();
@@ -91,18 +95,14 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 50, 0);
 	private JTextAreaPad txaMotivoSolicitacao = new JTextAreaPad();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSolicitacao);
-	private JRadioGroup rgStatusSolicitacao = null;
-	private Vector vStatusSolicitacaoLab = new Vector();
-	private Vector vStatusSolicitacaoVal = new Vector();
-	private JRadioGroup rgSituaçãoItAprov = null;
-	private Vector vSituaçãoItAprovLab = new Vector();
-	private Vector vSituaçãoItAprovVal = new Vector();
-	private JRadioGroup rgSituaçãoItComp = null;
-	private Vector vSituaçãoItCompLab = new Vector();
-	private Vector vSituaçãoItCompVal = new Vector();
-	private JRadioGroup rgSituaçãoIt = null;
-	private Vector vSituaçãoItLab = new Vector();
-	private Vector vSituaçãoItVal = new Vector();
+	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
 
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
@@ -185,26 +185,20 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setAltCab(180);
 		setPainel(pinCab, pnCliCab);
 
-		vStatusSolicitacaoLab.add("Pendente");
-		vStatusSolicitacaoLab.add("Concluída");
-		vStatusSolicitacaoLab.add("Cancelada");
-		vStatusSolicitacaoVal.add("PE");
-		vStatusSolicitacaoVal.add("SC");
-		vStatusSolicitacaoVal.add("CA");
-		rgStatusSolicitacao = new JRadioGroup(1, 3, vStatusSolicitacaoLab,
-				vStatusSolicitacaoVal);
-		rgStatusSolicitacao.setAtivo(false);
-
 		adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "N.solicit.",
 				ListaCampos.DB_PK, true);
 		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol",
 				"Data Solicit.", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
-		adicDB(rgStatusSolicitacao, 230, 20, 297, 25, "SitSol", "Situação",
-				JTextFieldPad.TP_STRING, false);
+		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação",
+				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
 		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo",
 				JTextFieldPad.TP_STRING, false);
 		adic(new JLabel("Motivo"), 7, 40, 100, 20);
 		adic(spnMotivo, 7, 60, 727, 77);
+		adic(btLimpaCompra, 240, 15, 250, 30);
+		btLimpaCompra.setVisible(false);
+		adic(btStatusCompra, 500, 15, 230, 30);
+		btStatusCompra.setEnabled(false);
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem",
 				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
 		setListaCampos(true, "SOLICITACAO", "CP");
@@ -225,42 +219,11 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	private void montaDetalhe() {
-		setAltDet(140);
-		pinDet = new Painel(740, 140);
+		setAltDet(97);
+		pinDet = new Painel(740, 97);
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-
-		vSituaçãoItLab.add("Pendente");
-		vSituaçãoItLab.add("Concluída");
-		vSituaçãoItLab.add("Cancelada");
-		vSituaçãoItVal.add("PE");
-		vSituaçãoItVal.add("SC");
-		vSituaçãoItVal.add("CA");
-		rgSituaçãoIt = new JRadioGroup(1, 3, vSituaçãoItLab, vSituaçãoItVal);
-		rgSituaçãoIt.setAtivo(false);
-
-		vSituaçãoItCompLab.add("Pendente");
-		vSituaçãoItCompLab.add("Compra Parcial");
-		vSituaçãoItCompLab.add("Compra Total");
-		vSituaçãoItCompVal.add("PE");
-		vSituaçãoItCompVal.add("CP");
-		vSituaçãoItCompVal.add("CT");
-		rgSituaçãoItComp = new JRadioGroup(1, 3, vSituaçãoItCompLab,
-				vSituaçãoItCompVal);
-		rgSituaçãoItComp.setAtivo(false);
-
-		vSituaçãoItAprovLab.add("Pendente");
-		vSituaçãoItAprovLab.add("Aprovação Parcial");
-		vSituaçãoItAprovLab.add("Aprovação Total");
-		vSituaçãoItAprovLab.add("Não Aprovada");
-		vSituaçãoItAprovVal.add("PE");
-		vSituaçãoItAprovVal.add("AP");
-		vSituaçãoItAprovVal.add("AT");
-		vSituaçãoItAprovVal.add("NA");
-		rgSituaçãoItAprov = new JRadioGroup(1, 4, vSituaçãoItAprovLab,
-				vSituaçãoItAprovVal);
-		rgSituaçãoItAprov.setAtivo(false);
 
 		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item",
 				JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
@@ -297,12 +260,17 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol",
 				"Qtd. Aprov.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false,
 				null, false);
-		adicDB(rgSituaçãoIt, 7, 60, 297, 25, "SitItSol", "Sit. do Item",
-				JTextFieldPad.TP_STRING, false);
-		adicDB(rgSituaçãoItComp, 310, 60, 387, 25, "SitCompItSol",
-				"Sit. da Compra", JTextFieldPad.TP_STRING, false);
-		adicDB(rgSituaçãoItAprov, 7, 103, 567, 25, "SitAprovItSol",
-				"Sit. da Aprovação", JTextFieldPad.TP_STRING, false);
+		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit. do Item",
+				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit. da Compra",
+				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol",
+				"Sit. da Aprovação", JTextFieldPad.TP_STRING, 2, 0, false, false, null,
+				false);
+		adic(btLimpaItem, 240, 50, 250, 30);
+		btLimpaItem.setVisible(false);
+		adic(btStatusItem, 500, 50, 230, 30);
+		btStatusItem.setEnabled(false);
 
 		txtRefProd.addKeyListener(new KeyAdapter() {
 
@@ -358,13 +326,15 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 	public void afterCarrega(CarregaEvent cevt) {
 		boolean allow = aprovSolicitacaoCompra.equalsIgnoreCase("TD");
-		boolean allowItems = (aprovSolicitacaoCompra.equalsIgnoreCase("CC")
-				&& txtCodCC.getVlrString().equals(codCC)) || allow;
-		boolean block = rgStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")
+		boolean allowItems = (aprovSolicitacaoCompra.equalsIgnoreCase("CC") && txtCodCC
+				.getVlrString().equals(codCC))
 				|| allow;
-		boolean blockItems = (block && rgSituaçãoIt.getVlrString()
-				.equalsIgnoreCase("PE"))
-				|| allowItems || allow;
+		boolean block = txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")
+				|| allow;
+		boolean blockItems = (block
+				&& txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE") && txtCodUsu
+				.getVlrString().equals(Aplicativo.strUsuario))
+				|| allowItems;
 
 		if (cevt.getListaCampos() == lcCampos) {
 			lcCampos.setPodeExc(block);
@@ -373,7 +343,20 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			txtDtEmitSolicitacao.setSoLeitura(!block);
 			txaMotivoSolicitacao.setEditable(block);
 			txaMotivoSolicitacao.setEnabled(block);
-			rgStatusSolicitacao.setAtivo(allow);
+			btLimpaCompra.setVisible(allow
+					&& !txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE"));
+
+			if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")) {
+				btStatusCompra.setText("Solicitação Pendente");
+				lcDet.setReadOnly(false);
+			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("CA")) {
+				btStatusCompra.setText("Solicitação Cancelada");
+				lcDet.setReadOnly(true);
+			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("SC")) {
+				btStatusCompra.setText("Solicitação Concluída");
+				lcDet.setReadOnly(true);
+			}
+
 		} else if (cevt.getListaCampos() == lcDet) {
 			lcDet.setPodeExc(blockItems);
 			lcDet.setReadOnly(!blockItems);
@@ -384,9 +367,27 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			txtCodUsu.setSoLeitura(!blockItems);
 			txtCodAlmoxarife.setSoLeitura(!blockItems);
 			txtQtdItSolicitado.setSoLeitura(!blockItems);
-			rgSituaçãoIt.setAtivo(allowItems);
-			rgSituaçãoItAprov.setAtivo(allowItems);
-			rgSituaçãoItComp.setAtivo(allowItems);
+			btLimpaItem.setVisible(!txtSituaçãoIt.getVlrString().equalsIgnoreCase(
+					"PE")
+					&& (allowItems || txtCodUsu.getVlrString().equals(
+							Aplicativo.strUsuario)));
+
+			if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE")) {
+				if (allow || allowItems) {
+					btStatusItem.setText("Item Pendente");
+				}
+			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("CA")) {
+				btStatusItem.setText("Item Cancelado");
+			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("SC")) {
+				if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")
+						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CT"))
+					btStatusItem.setText("Aprovado Totalmente");
+				else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")
+						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP"))
+					btStatusItem.setText("Aprovado Parcialmente");
+				else
+					btStatusItem.setText("Item Concluído");
+			}
 		}
 	}
 
@@ -597,13 +598,13 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 	public void beforePost(PostEvent pevt) {
 		if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-			rgSituaçãoItAprov.setVlrString("PE");
-			rgSituaçãoItComp.setVlrString("PE");
-			rgSituaçãoIt.setVlrString("PE");
+			txtSituaçãoItAprov.setVlrString("PE");
+			txtSituaçãoItComp.setVlrString("PE");
+			txtSituaçãoIt.setVlrString("PE");
 		}
 		if (lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
 			testaCodSol();
-			rgStatusSolicitacao.setVlrString("PE");
+			txtStatusSolicitacao.setVlrString("PE");
 			txtOrigSolicitacao.setVlrString("AX");
 		}
 	}

@@ -90,8 +90,8 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldPad txtUsuCanc = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			8, 0);
-	private JTextFieldPad txtUsuCancIt = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			8, 0);
+	private JTextFieldPad txtUsuCancIt = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,
@@ -246,9 +246,8 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicCampoInvisivel(txaMotivoCanc, "MotivoCancSol",
 				"Motivo de Cancelamento", JTextFieldPad.TP_STRING, 10000, 0, false,
 				false, null, false);
-		adicCampoInvisivel(txtUsuCanc, "IDUsuCancSol",
-				"Usuário que Cancelou", JTextFieldPad.TP_STRING, 8, 0, false,
-				false, null, false);
+		adicCampoInvisivel(txtUsuCanc, "IDUsuCancSol", "Usuário que Cancelou",
+				JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
 		adic(new JLabel("Motivo"), 7, 40, 100, 20);
 		adic(spnMotivo, 7, 60, 727, 77);
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem",
@@ -341,11 +340,11 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicCampoInvisivel(txtDtAptovItSol, "DtAprovItSol", "Data Aprovação",
 				JTextFieldPad.TP_DATE, 10, 0, false, false, null, false);
 		adicCampoInvisivel(txaMotivoAprovIt, "MotivoItSol",
-				"Motivo da Aprovação Parcial do Item", JTextFieldPad.TP_STRING, 10000, 0, false,
-				false, null, false);
+				"Motivo da Aprovação Parcial do Item", JTextFieldPad.TP_STRING, 10000,
+				0, false, false, null, false);
 		adicCampoInvisivel(txaMotivoCancIt, "MotivoItSol",
-				"Motivo de Cancelamento do Item", JTextFieldPad.TP_STRING, 10000, 0, false,
-				false, null, false);
+				"Motivo de Cancelamento do Item", JTextFieldPad.TP_STRING, 10000, 0,
+				false, false, null, false);
 		adicCampoInvisivel(txtUsuCancIt, "IDUsuCancItSol",
 				"Usuário que Cancelou o Item", JTextFieldPad.TP_STRING, 8, 0, false,
 				false, null, false);
@@ -402,12 +401,19 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
+		boolean allow = aprovSolicitacaoCompra.equalsIgnoreCase("TD");
+		boolean allowItems = (aprovSolicitacaoCompra.equalsIgnoreCase("CC") && txtCodCC
+				.getVlrString().equals(codCC))
+				|| allow;
+		boolean block = txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")
+				|| allow;
+		boolean blockItems = (block && txtSituaçãoIt.getVlrString()
+				.equalsIgnoreCase("PE"))
+				|| allowItems;
+
 		if (cevt.getListaCampos() == lcDet) {
 			if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE")) {
-				if (aprovSolicitacaoCompra.equalsIgnoreCase("TD")
-						|| (aprovSolicitacaoCompra.equalsIgnoreCase("CC")
-								&& txtCodCC.getVlrString().equals(codCC) && txtAnoCC
-								.getVlrString().equals(anoCC))) {
+				if (allow || allowItems) {
 					btAprovaItem.setEnabled(true);
 					btAprovaItem.setIcon(imgOk);
 					btAprovaItem.setText("Aprovar Item");
@@ -448,7 +454,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 					btAprovaItem.setText("Item Concluído");
 			}
 		} else if (cevt.getListaCampos() == lcCampos) {
-			if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")) {
+			if (aprovSolicitacaoCompra.equalsIgnoreCase("PE")) {
 				if (aprovSolicitacaoCompra.equalsIgnoreCase("TD")) {
 					btCancelaCompra.setEnabled(true);
 					btCancelaCompra.setIcon(imgCancel);
@@ -475,7 +481,8 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtQtdItAprovado) {//Talvez este possa ser
+			if (kevt.getSource() == txtQtdItAprovado) {
+				//Talvez este possa ser
 				// o ultimo campo do
 				// itvenda.
 				btAprovaItem.doClick();
@@ -573,7 +580,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 			txtQtdItAprovado.setVlrDouble(new Double(0));
 			txtCodCancUsu.setVlrString(Aplicativo.strUsuario);
 			txtDtAptovItSol.setVlrDate(new Date());
-			
+
 			DLInputText dl = null;
 			dl = new DLInputText(this, "Motivo do cancelamento", true);
 			dl.setTexto("");
@@ -581,7 +588,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 			if ((dl.OK ) && (!dl.getTexto().trim().equals(""))) {
 				txaMotivoCancIt.setVlrString(dl.getTexto().trim());
 				txtUsuCancIt.setVlrString(Aplicativo.strUsuario);
-			}			
+			}
 		}
 		super.actionPerformed(evt);
 	}
