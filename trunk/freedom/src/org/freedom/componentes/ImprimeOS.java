@@ -45,6 +45,7 @@ import javax.swing.Timer;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.DLVisualiza;
 import org.freedom.telas.FAndamento;
 
@@ -64,10 +65,13 @@ public class ImprimeOS implements ActionListener {
    private String sClassNota = "";
    private String sPrefCab = "";
    private DLVisualiza dlPrev = null;
+   private DLPrinterJob dlPrevGraf = null;
+   private ImprimeLayout impLay = null;
    private String[] sVals = new String[4];
    private Component cOwner = null;
    boolean bSemAcento = true;
    boolean bImpGrafica = false;
+   boolean bImpComprimido = false; // Flag para indicar se a impressão vai ser comprimida
    byte bBuf;
    File fImp = null;
    FileWriter fwImp = null;
@@ -93,14 +97,14 @@ public class ImprimeOS implements ActionListener {
    FAndamento and = null;
   
    public ImprimeOS(String sF, Connection cn) {
-   	 iniImprimeOS(sF, cn, null);
+   	 iniImprimeOS(sF, cn, null, false);
    }
    
-   public ImprimeOS(String sF, Connection cn, String sTipoUsoImp) {
-  	 iniImprimeOS(sF, cn, sTipoUsoImp);
+   public ImprimeOS(String sF, Connection cn, String sTipoUsoImp, boolean bImpComprimido) {
+  	 iniImprimeOS(sF, cn, sTipoUsoImp, bImpComprimido);
    }
    
-   private void iniImprimeOS(String sF, Connection cn, String sTipoUsoImp) {
+   private void iniImprimeOS(String sF, Connection cn, String sTipoUsoImp, boolean bImpComprimido) {
     if (sTipoUsoImp==null) {
      	sTipoUsoImp = "TO";
      }
@@ -128,18 +132,40 @@ public class ImprimeOS implements ActionListener {
    }
 
    public void preview(JInternalFrame pai) {
-      dlPrev = new DLVisualiza(this,pai);
-      try {
-      	dlPrev.setMaximum(true);
-      	dlPrev.toFront();
-        dlPrev.setNomeImp(sImpressora);
-      }
-      catch (PropertyVetoException err) {
-      	JOptionPane.showMessageDialog(null,"Erro ao mostrar tela de visualização!\n"+err.getMessage());
-      	err.printStackTrace();
-      }
-      dlPrev.setVisible(true);
+   	  if (bImpGrafica)
+   	  	previewGrafico(pai);
+   	  else
+   	  	previewTexto(pai);
    }
+   
+   public void previewGrafico(JInternalFrame pai) {
+    dlPrevGraf = new DLPrinterJob(impLay, pai);
+    try {
+    	dlPrevGraf.setMaximum(true);
+    	dlPrevGraf.toFront();
+        //dlPrevGraf.setNomeImp(sImpressora);
+    }
+    catch (PropertyVetoException err) {
+    	JOptionPane.showMessageDialog(null,"Erro ao mostrar tela de visualização!\n"+err.getMessage());
+    	err.printStackTrace();
+    }
+    dlPrevGraf.setVisible(true);
+  }
+   
+  public void previewTexto(JInternalFrame pai) {
+    dlPrev = new DLVisualiza(this,pai);
+    try {
+    	dlPrev.setMaximum(true);
+    	dlPrev.toFront();
+      dlPrev.setNomeImp(sImpressora);
+    }
+    catch (PropertyVetoException err) {
+    	JOptionPane.showMessageDialog(null,"Erro ao mostrar tela de visualização!\n"+err.getMessage());
+    	err.printStackTrace();
+    }
+    dlPrev.setVisible(true);
+  }
+   
    
    public String getTitulo() {
       return sTitulo;
