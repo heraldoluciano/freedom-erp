@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
@@ -131,7 +130,6 @@ public class FRUltimaVenda extends FRelatorio {
     
     BigDecimal bTotalVd = new BigDecimal("0");
     
-    imp.montaCab();
     String sDataini = "";
     String sDatafim = "";
     
@@ -147,20 +145,17 @@ public class FRUltimaVenda extends FRelatorio {
 		  sWhere += " AND C.CODCLI = "+txtCodCli.getText().trim();
 	    String sTmp = "CLIENTE: "+txtNomeCli.getText().trim();
 		sCab += "\n"+imp.comprimido();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}
                
     if (txtCodVend.getText().trim().length() > 0) {
 		sWhere += " AND VD.CODVEND = "+txtCodVend.getText().trim();
 		String sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND VD.CODEMPVD="+Aplicativo.iCodEmp+" AND VD.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}  
-    
-    	
-    imp.setTitulo("Relatório de Ultimas Vendas");
     
             sSQL ="SELECT C.CODCLI,C.RAZCLI,C.FONECLI,VD.CODVENDA, VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA)" +
 		          "FROM VDCLIENTE C, VDVENDA VD WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL " +
@@ -184,37 +179,23 @@ public class FRUltimaVenda extends FRelatorio {
       while ( rs.next() ) {
 	    if (imp.pRow() == linPag) {
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                 imp.eject();
         	imp.incPags();
          }
          if (imp.pRow()==0) {
-          imp.impCab(136, false);
-          String sTitulo = "ULTIMAS VENDAS  -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-          imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,136,"|");
-         // imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          
+         	imp.montaCab();
+         	imp.setTitulo("Relatório de Ultimas Vendas");
+         	imp.setSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+            imp.impCab(136, true);
+                    
           if (sCab.length() > 0) {
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,""+imp.comprimido());
       	  	imp.say(imp.pRow()+0,0,sCab);
       	  }
           
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          
-          
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+(sCab.length() > 0 ? 1 : 0),0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|  Cod.CLi.");
           imp.say(imp.pRow()+0,14," | Cliente.");
@@ -223,9 +204,9 @@ public class FRUltimaVenda extends FRelatorio {
           imp.say(imp.pRow()+0,74,"  | Data Emis.");
           imp.say(imp.pRow()+0,90,"|      Valor");
           imp.say(imp.pRow()+0,110,"| Telefone");
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
         }
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         imp.say(imp.pRow()+0,0,"|"+Funcoes.alinhaDir(rs.getInt("CODCLI"),10));
@@ -241,19 +222,19 @@ public class FRUltimaVenda extends FRelatorio {
         imp.say(imp.pRow()+0,110,"|");
         imp.say(imp.pRow()+0,112,Funcoes.setMascara(Funcoes.copy(rs.getString("FoneCli"),0,12),"(####)####-####"));
         
-        imp.say(imp.pRow()+0,136,"|");
+        imp.say(imp.pRow()+0,135,"|");
         bTotalVd = bTotalVd.add(new BigDecimal(rs.getString("VlrLiqVenda")));
       } 
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow()+0,0,"|");
      
       imp.say(imp.pRow()+0,68,"Total de Vendas no Periodo: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalVd));
-      imp.say(imp.pRow(),136,"|");
+      imp.say(imp.pRow(),135,"|");
 
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       
       
       imp.eject();

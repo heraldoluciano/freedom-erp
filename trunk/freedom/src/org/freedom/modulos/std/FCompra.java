@@ -712,7 +712,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
       return;
     }
     imp.verifLinPag();
-    imp.setTitulo("Relatório de Pedidos de Compras");
+    
     String sSQL = "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA" +
     		" AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL),"
         + "C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR,F.CPFFOR,C.DTEMITCOMPRA,F.ENDFOR,"
@@ -742,7 +742,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
       iMaxItem = imp.verifLinPag() - 23;
       while (rs.next()) {
         if (imp.pRow() == 0) {
-          imp.impCab(136, false);
+        	imp.montaCab();
+        	imp.setTitulo("Relatório de Pedidos de Compras");        	
+            imp.impCab(136, false);
+            
           imp.say(imp.pRow() + 1, 0, "" + imp.normal());
           imp.say(imp.pRow() + 0, 4, "PEDIDO DE COMPRA No.: ");
           imp.say(imp.pRow() + 0, 25, rs.getString("CodCompra"));

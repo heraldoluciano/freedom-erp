@@ -120,11 +120,15 @@ public class FRResumoDiario extends FRelatorio {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-	}
-	sTmp += (cbVendas.getVlrString().equals("S")?" - SO VENDAS":"");
-	sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
-
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;	
+		sTmp += (cbVendas.getVlrString().equals("S")?" - SO VENDAS":"");
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+	    }
+    else {
+    	sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2));
+    	sTmp += (cbVendas.getVlrString().equals("S")?"SO VENDAS":"");
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+    }
     
     /*if (txtCodCli.getText().trim().length() > 0) {
 		if (cbListaFilial.getVlrString().equals("S"))
@@ -345,8 +349,10 @@ public class FRResumoDiario extends FRelatorio {
                 imp.setSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
                 imp.impCab(136, true);
       			      			
-      			if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-      			      			      			
+      			if (sCab.length() > 0) {
+      				imp.say(imp.pRow()+0,0,imp.comprimido());
+      			 	imp.say(imp.pRow()+0,0,sCab);
+      			}     			      			
       			imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,"|"+Funcoes.replicate("-",133)+"|");
       		    imp.say(imp.pRow()+1,0,""+imp.comprimido());
       			imp.say(imp.pRow()+0,0,"|  Data");

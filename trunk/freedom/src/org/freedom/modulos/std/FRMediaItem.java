@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -173,7 +172,7 @@ public class FRMediaItem extends FRelatorio {
   public void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
+    
     String sWhere = " WHERE ";
     String sFiltroVend = "";
     String sCab = "";
@@ -204,7 +203,7 @@ public class FRMediaItem extends FRelatorio {
     int iMesIni = cFim.get(Calendar.MONTH)-iNumMes;
     int iAnoIni = cFim.get(Calendar.YEAR);
     GregorianCalendar cIni = new GregorianCalendar(iAnoIni,iMesIni,1);
-    imp.setTitulo("Relatório de media de vendas por item");
+    
     if (comRef()) {
       sCodProd = "REFPROD";
     }
@@ -225,9 +224,9 @@ public class FRMediaItem extends FRelatorio {
 		sFiltroVend = " V"+(i+2)+".CODVEND = "+txtCodVend.getText().trim();
 		String sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sFiltroVend += " AND V"+(i+2)+".CODEMPVD="+Aplicativo.iCodEmp+" AND V"+(i+2)+".CODFILIALVD="+lcVend.getCodFilial()+" AND ";
-        sCab = "\n"+imp.comprimido();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+        sCab = imp.comprimido();
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	  }  
       sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n"+
                  " EQTIPOMOV TM WHERE V.FLAG IN "+
@@ -257,15 +256,15 @@ public class FRMediaItem extends FRelatorio {
             sWhere += "P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%' AND ";
             String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
             sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",(135-sTmp.length()))+"|";
+            sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+Funcoes.replicate(" ",(133-sTmp.length()))+" |";
     }
     if (txtCodMarca.getText().trim().length() > 0) {
             sWhere += "P.CODMARCA = '"+txtCodMarca.getText().trim()+"' AND ";
             String sTmp = "MARCA: "+txtDescMarca.getText().trim();
             sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",(135-sTmp.length()))+"|";
+            sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+Funcoes.replicate(" ",(133-sTmp.length()))+" |";
     }
     
     String sSQL = "SELECT P."+sCodProd+",P.DESCPROD,P.SLDPROD,P.DTULTCPPROD,P.QTDULTCPPROD\n"+sSubSel+
@@ -279,40 +278,33 @@ public class FRMediaItem extends FRelatorio {
       imp.limpaPags();
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,49,"RELATORIO DE MEDIAS DE VENDAS POR ITEM");
-           imp.say(imp.pRow()+0,136,"|");
-           if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+        	imp.montaCab();
+        	imp.setTitulo("Relatório de media de vendas por item");
+        	imp.setSubTitulo("RELATORIO DE MEDIAS DE VENDAS POR ITEM");
+            imp.impCab(136, true);
+           
+           if (sCab.length() > 0) 
+           	imp.say(imp.pRow()+0,0,sCab);
+           
+           imp.say(imp.pRow()+(sCab.length() > 0 ? 1 : 0),0,""+imp.comprimido());           
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Cod. Prod     ");
-           imp.say(imp.pRow()+0,16,"| Desc. Produto                            ");
+           imp.say(imp.pRow()+0,16,"  Desc. Produto                            ");
            imp.say(imp.pRow()+0,59,"| Estoque  ");
            imp.say(imp.pRow()+0,70,"| Dt.Ult.Cp. ");
            imp.say(imp.pRow()+0,83,"| Q.Ult.Cp ");
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|  ");
            imp.say(imp.pRow()+0,4,sSubCab);
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString(1),0,13)+" ");
-         imp.say(imp.pRow()+0,16,"| "+Funcoes.copy(rs.getString("DescProd"),0,40)+" ");
+         imp.say(imp.pRow()+0,16,"  "+Funcoes.copy(rs.getString("DescProd"),0,40)+" ");
          imp.say(imp.pRow()+0,59,"| "+Funcoes.strDecimalToStrCurrency(8,0,rs.getString("SldProd"))+" ");
          if (rs.getDate("DTULTCPPROD") != null) {
               imp.say(imp.pRow()+0,70,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DTULTCPPROD"))+" ");
@@ -321,7 +313,7 @@ public class FRMediaItem extends FRelatorio {
               imp.say(imp.pRow()+0,70,"|            ");
          }
          imp.say(imp.pRow()+0,83,"| "+Funcoes.strDecimalToStrCurrency(8,0,""+rs.getDouble("QTDULTCPPROD"))+" ");
-         imp.say(imp.pRow()+0,136,"|");
+         imp.say(imp.pRow()+0,135,"|");
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow()+0,0,"|  ");
          double dSomaItem = 0;
@@ -335,9 +327,9 @@ public class FRMediaItem extends FRelatorio {
          }
 	     dMediaItem = dSomaItem / iNumMes;
          imp.say(imp.pRow()+0,iPos," | "+Funcoes.strDecimalToStrCurrency(7,0,""+dMediaItem));
-         imp.say(imp.pRow()+0,136,"|");
+         imp.say(imp.pRow()+0,135,"|");
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-         imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+         imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          if (imp.pRow()>=(linPag-1)) {
              imp.incPags();
              imp.eject();
@@ -345,19 +337,19 @@ public class FRMediaItem extends FRelatorio {
          iNumItens++;
       }
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|T:");
+      imp.say(imp.pRow()+0,0,"| T:");
       iPos = 4;
       for (int i=0; i<iSoma; i++) {
         BigDecimal bVal = new BigDecimal(dQtd[i]);
         bVal = bVal.setScale(1);
-        imp.say(imp.pRow()+0,iPos," | "+Funcoes.strDecimalToStrCurrency(7,0,""+bVal));
+        imp.say(imp.pRow()+0,iPos,"| "+Funcoes.strDecimalToStrCurrency(7,0,""+bVal));
         iPos += 10;
       }
-      imp.say(imp.pRow()+0,136,"|");
+      imp.say(imp.pRow()+0,135,"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       
       imp.eject();
       
