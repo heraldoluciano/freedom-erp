@@ -50,6 +50,9 @@ public class FreedomCFG extends Aplicativo {
 	      addOpcao(100104000,TP_OPCAO_ITEM,"Tarefas",'T',100104090,3,true);
 	      addOpcao(100104000,TP_OPCAO_ITEM,"Processos",'P',100104100,3,true);
 	      addOpcao(100104000,TP_OPCAO_ITEM,"Fluxos",'F',100104110,3,true);
+        addOpcao(100100000,TP_OPCAO_MENU,"Ferramentas",'e',100105000,2,false);
+	      addOpcao(100105000,TP_OPCAO_ITEM,"Ajuste de Sequencia",'A',100105090,3,true);
+	   
       
 	  addBotao("barraGrupo.gif", "Cadastro de Grupos",100101010); 
 	  addBotao("barraUsuario.gif", "Cadastro de Usuarios",100101020); 
@@ -140,6 +143,12 @@ public class FreedomCFG extends Aplicativo {
 		if (telaPrincipal.temTela("Tarefas")==false) {
 			FTarefa tela = new FTarefa();
 			telaPrincipal.criatela("Tarefas",tela,con);
+		}
+	}    
+	else if (iOpcao==100105090){
+		if (telaPrincipal.temTela("Ajusta sequencia")==false) {
+			FAjustaSeq tela = new FAjustaSeq();
+			telaPrincipal.criatela("Ajusta sequencia",tela,con);
 		}
 	}    
 			    
