@@ -26,7 +26,6 @@ import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 public class NFBemabra extends Leiaute {
   private BigDecimal bigSomaServ = new BigDecimal(0);
@@ -177,8 +176,9 @@ public class NFBemabra extends Leiaute {
          
          if (!rs.getString("TipoProd").equals("S")) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());            
-            imp.say(imp.pRow()+0,6,rs.getString("CodProd"));             
-            Vector vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (rs.getString("DescProd").trim()):rs.getString("ObsItVenda"),46);
+            imp.say(imp.pRow()+0,6,rs.getString("CodProd"));  
+            String sDescProdConcatenada = rs.getString("DescProd").trim() + " - " +((rs.getString("DescAuxProd"))!=null?(rs.getString("DescAuxProd")):"");
+            Vector vDesc = Funcoes.strToVectorSilabas(rs.getString("ObsItVenda")==null || rs.getString("ObsItVenda").equals("") ? (sDescProdConcatenada):rs.getString("ObsItVenda"),46);
             String sDesc = "";
             for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
             	if (!vDesc.elementAt(iConta).toString().equals(""))
