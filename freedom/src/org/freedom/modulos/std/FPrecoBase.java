@@ -56,7 +56,6 @@ public class FPrecoBase extends FFilho implements ActionListener {
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcGrup = new ListaCampos(this,"GP");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
-  private Connection con = null;
   public FPrecoBase() {
     setTitulo("Ajusta Preço Base");
     setAtribos(50,50,310,190);
@@ -135,7 +134,7 @@ public class FPrecoBase extends FFilho implements ActionListener {
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcGrup.setConexao(cn);
     lcPlanoPag.setConexao(cn);
   }

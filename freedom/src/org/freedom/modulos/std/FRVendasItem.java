@@ -65,7 +65,6 @@ public class FRVendasItem extends FRelatorio {
 	private JRadioGroup rgOrdem = null;
 	private Vector vLabs = new Vector(2);
 	private Vector vVals = new Vector(2);
-	private Connection con = null;
 	public FRVendasItem() {
 		setTitulo("Vendas por Item");
 		setAtribos(80,80,305,430);
@@ -389,10 +388,10 @@ public class FRVendasItem extends FRelatorio {
                 return bRetorno;
         }
 	public void setConexao(Connection cn) {
-		con = cn;
-		lcVend.setConexao(con);
-		lcGrup.setConexao(con);
-		lcMarca.setConexao(con);
-		lcCliente.setConexao(con);
+		super.setConexao(cn);
+		lcVend.setConexao(cn);
+		lcGrup.setConexao(cn);
+		lcMarca.setConexao(cn);
+		lcCliente.setConexao(cn);
 	}
 }

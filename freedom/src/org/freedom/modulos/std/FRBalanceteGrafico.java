@@ -51,7 +51,6 @@ public class FRBalanceteGrafico extends FRelatorio {
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);  
   private ListaCampos lcPlan = new ListaCampos(this);
-  private Connection con = null;
   private FPrinterJob dl = null;
   private JRadioGroup rgGrafico = null;
   private Vector vLabs = new Vector(2);
@@ -125,7 +124,7 @@ public class FRBalanceteGrafico extends FRelatorio {
 	txtDataini.setVlrDate(cPeriodo.getTime());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcPlan.setConexao(cn);
 	lcCC.setConexao(cn);
 	lcCC.setWhereAdic("NIVELCC=10 AND ANOCC="+buscaAnoBaseCC());

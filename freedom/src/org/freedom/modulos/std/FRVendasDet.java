@@ -43,7 +43,6 @@ import org.freedom.telas.FRelatorio;
 public class FRVendasDet extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private Connection con = null;
   public FRVendasDet() {
     setTitulo("Vendas Detalhadas");
     setAtribos(80,80,295,150);
@@ -255,8 +254,5 @@ public class FRVendasDet extends FRelatorio {
 		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
     }
     return bRetorno;
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 }

@@ -78,7 +78,6 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
   private ListaCampos lcPlanoPag = new ListaCampos(this);
   private ListaCampos lcTabPreco = new ListaCampos(this);
   private ListaCampos lcClasCli = new ListaCampos(this);
-  private Connection con = null;
   private Vector vDescTipoOper = new Vector();
   private Vector vSelTipoOper = new Vector();
   private Vector vDescOrigem = new Vector();

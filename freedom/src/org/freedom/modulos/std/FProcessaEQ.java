@@ -68,7 +68,6 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
 	private JLabel lbStatus = new JLabel();
 	private ListaCampos lcProd = new ListaCampos(this);
 	private ListaCampos lcProdFim = new ListaCampos(this);
-	private Connection con = null;
 	boolean bRunProcesso = false;
 	int iFilialMov = 0; 
     int iUltProd = 0;
@@ -521,7 +520,7 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
 //        System.out.println(sStatus);
 	}
     public void setConexao(Connection cn) {
-    	con = cn;
+    	super.setConexao(cn);
     	lcProd.setConexao(cn);
     	iFilialMov = ListaCampos.getMasterFilial("EQMOVPROD");
     }

@@ -138,7 +138,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
   private ListaCampos lcItReceber = new ListaCampos(this);
   private ListaCampos lcComis = new ListaCampos(this);
-  private Connection con = null;
   private Tabela tabRec = new Tabela();
   private Tabela tabComis = new Tabela();
   private int iCodVendaFecha = 0;

@@ -49,7 +49,6 @@ public class FRBalancete extends FRelatorio {
   private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
   private ListaCampos lcCC = new ListaCampos(this);
   private ListaCampos lcConta = new ListaCampos(this);
-  private Connection con = null;
   public FRBalancete() {
     setTitulo("Balancete");
     setAtribos(80,80,330,210);
@@ -92,7 +91,7 @@ public class FRBalancete extends FRelatorio {
 	txtDataini.setVlrDate(cPeriodo.getTime());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcConta.setConexao(cn);
 	lcCC.setConexao(cn);
     lcCC.setWhereAdic("NIVELCC=10 AND ANOCC="+buscaAnoBaseCC());

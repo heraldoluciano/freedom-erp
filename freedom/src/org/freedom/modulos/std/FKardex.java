@@ -72,7 +72,6 @@ public class FKardex extends FRelatorio implements ActionListener {
         private JScrollPane spnTab = new JScrollPane(tab);
         private ListaCampos lcProd = new ListaCampos(this);
         private ListaCampos lcLote = new ListaCampos(this);
-        private Connection con = null;
         private Container cTela = null;
         public FKardex() {
                 setTitulo("Kardex");
@@ -304,9 +303,9 @@ public class FKardex extends FRelatorio implements ActionListener {
         }
 
         public void setConexao(Connection cn) {
-                lcProd.setConexao(cn);
-                lcLote.setConexao(cn);
-                con = cn;
+       		super.setConexao(cn);
+            lcProd.setConexao(cn);
+            lcLote.setConexao(cn);
         }
         public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource() == btExec) {

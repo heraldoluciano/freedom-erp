@@ -47,7 +47,6 @@ public class FRExtrato extends FRelatorio {
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
   private ListaCampos lcConta = new ListaCampos(this);
-  private Connection con = null;
   public FRExtrato() {
     setTitulo("Extrato");
     setAtribos(80,80,330,170);
@@ -77,7 +76,7 @@ public class FRExtrato extends FRelatorio {
 	txtDataini.setVlrDate(cPeriodo.getTime());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcConta.setConexao(cn);
   }
   public void imprimir(boolean bVisualizar) {

@@ -56,7 +56,6 @@ public class FDevolucao extends FWizard implements CarregaListener{
     private Painel pin1b1 = null;
     private Painel pin1c = null;
     private Painel pin1c1 = null;
-    private Connection con = null;
     private JRadioGroup rg1 = null;
     private JRadioGroup rg1a = null;
     private JRadioGroup rg1b = null;
@@ -554,8 +553,5 @@ public class FDevolucao extends FWizard implements CarregaListener{
     }
     public void setTelaPrim(FPrincipal fP) {
         fPrim = fP;
-    }
-    public void setConexao(Connection con) {
-        this.con = con;
     }
 }

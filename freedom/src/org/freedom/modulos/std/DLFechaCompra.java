@@ -91,7 +91,6 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
   private ListaCampos lcPagar = new ListaCampos(this);
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
   private ListaCampos lcItPagar = new ListaCampos(this);
-  private Connection con = null;
   private Tabela tabPag = new Tabela();
   private int iCodCompraFecha = 0;
   private boolean bPodeSair = false;

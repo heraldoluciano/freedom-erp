@@ -91,7 +91,6 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private JTabbedPane tpn = new JTabbedPane();
-  private Connection con = null;
   private String[] sPlanos = null;
   private String sCodPlan = "";
   private String[] sContas = null;
@@ -567,7 +566,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     montaTabs();
   }
 }

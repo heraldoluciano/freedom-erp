@@ -40,7 +40,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF3;
 
 public class DLBuscaProd extends DLF3 implements TabelaSelListener {
-   private Connection con = null;
    private String sCol = null;
    private Vector vValsProd = new Vector();
    private ListaCampos lcProd = new ListaCampos(this,"PD");

@@ -53,7 +53,6 @@ public class FRCentroCusto extends FRelatorio {
   private JCheckBoxPad cbUsaAnal = new JCheckBoxPad("Somente analíticas","S","N"); 
   private ListaCampos lcCC = new ListaCampos(this);
   private ListaCampos lcConta = new ListaCampos(this);
-  private Connection con = null;
   int iAnoBase = 0;
   public FRCentroCusto() {
     setTitulo("Relatório financeiro por Centro de Custo");
@@ -99,7 +98,7 @@ public class FRCentroCusto extends FRelatorio {
 	txtDataini.setVlrDate(cPeriodo.getTime());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     iAnoBase = buscaAnoBaseCC();
     lcConta.setConexao(cn);
 	lcCC.setConexao(cn);

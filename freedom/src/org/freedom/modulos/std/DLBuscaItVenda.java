@@ -78,7 +78,6 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
   private JButton btNadaVenda = new JButton(Icone.novo("btNada.gif"));
   private JButton btLimpa = new JButton(Icone.novo("btRetorno.gif"));
   private ListaCampos lcVenda = new ListaCampos(this,"");
-  private Connection con = null;
   private Vector vTipoVenda = new Vector();
   private Vector vTipo = new Vector();
   public DLBuscaItVenda(Component cOrig) {
@@ -333,7 +332,7 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
     super.actionPerformed(evt);
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVenda.setConexao(cn);
   }
   public void afterCarrega(CarregaEvent cevt) {

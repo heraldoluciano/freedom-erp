@@ -40,7 +40,6 @@ import org.freedom.telas.FFDialogo;
 public class DLAltComisVend extends FFDialogo {
   private JTextFieldPad txtPercComis = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
-  private Connection con = null;
   private int iCodVenda = 0;
   public DLAltComisVend(Component cOrig, int iCodVenda, BigDecimal bigComis, Connection con) {
     super(cOrig);

@@ -55,7 +55,6 @@ public class FRComissoes extends FRelatorio {
   private JCheckBoxPad cbLiberada = new JCheckBoxPad("Liberadas","S","N");
   private JCheckBoxPad cbPaga = new JCheckBoxPad("Pagas","S","N");
   private ListaCampos lcVend = new ListaCampos(this);
-  private Connection con = null;
   public FRComissoes() {
     setTitulo("Comissões");
     setAtribos(80,80,330,210);
@@ -102,7 +101,7 @@ public class FRComissoes extends FRelatorio {
 	txtDataini.setVlrDate(cPeriodo.getTime());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVend.setConexao(cn);
   }
   public void imprimir(boolean bVisualizar) {

@@ -1358,7 +1358,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	return iRet;
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcCli.setConexao(cn);
     lcCliBaixa.setConexao(cn);
     lcCliFiltro.setConexao(cn);

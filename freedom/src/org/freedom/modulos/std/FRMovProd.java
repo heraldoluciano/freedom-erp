@@ -86,7 +86,6 @@ public class FRMovProd extends FRelatorio {
   private ListaCampos lcGrupo = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
   
-  private Connection con = null;
   public FRMovProd() {
 	
     setTitulo("Relatório de Produtos");
@@ -221,11 +220,11 @@ public class FRMovProd extends FRelatorio {
 
   }
   public void setConexao(Connection cn) {
+  	super.setConexao(cn);
   	lcAlmox.setConexao(cn);
   	lcCodForn.setConexao(cn);
   	lcGrupo.setConexao(cn);
   	lcMarca.setConexao(cn);
-  	con = cn;
   }
   public void imprimir(boolean bVisualizar) {
 	 ImprimeOS imp = new ImprimeOS("",con);

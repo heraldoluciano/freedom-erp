@@ -43,7 +43,6 @@ public class FRFluxoCaixa extends FRelatorio {
   private JCheckBoxPad cbReceber = new JCheckBoxPad("Clientes","S","N");
   private JCheckBoxPad cbPagar = new JCheckBoxPad("Fornecedores","S","N");
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private Connection con = null;
   private BigDecimal bLRec = new BigDecimal("0");
   private BigDecimal bLPag = new BigDecimal("0");
   private BigDecimal bRec = new BigDecimal("0");
@@ -64,9 +63,6 @@ public class FRFluxoCaixa extends FRelatorio {
     cbReceber.setVlrString("S");
     cbPagar.setVlrString("S");
 
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
   public void imprimir(boolean bVisualizar) {
 

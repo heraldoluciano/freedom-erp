@@ -48,7 +48,6 @@ public class FRBordero extends FRelatorio {
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   
-  private Connection con = null;
   private ListaCampos lcBanco = new ListaCampos(this);
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
@@ -106,7 +105,7 @@ public class FRBordero extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcBanco.setConexao(cn);
     lcSetor.setConexao(cn);
     lcVendedor.setConexao(cn);

@@ -47,7 +47,6 @@ public class DLLote extends FFDialogo {
   private JLabel lbDescProd = new JLabel("Descrição do produto");
   private JLabel lbDataINILote = new JLabel("Data ini.");
   private JLabel lbVenctoLote = new JLabel("Vencimento");
-  private Connection con = null;
   public DLLote (Component cOrig,String sCodLote, String sCodProd, String sDescProd, Connection cn) {
   	super(cOrig);
     con = cn;

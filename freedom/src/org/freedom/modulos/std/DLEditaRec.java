@@ -63,7 +63,6 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
   private ListaCampos lcConta = new ListaCampos(this);
   private ListaCampos lcPlan = new ListaCampos(this);
   private ListaCampos lcCC = new ListaCampos(this);
-  private Connection con = null;
   public DLEditaRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Editar");
@@ -232,7 +231,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
   public void afterCarrega(CarregaEvent cevt) {
   }
   public void setConexao(Connection cn) {
-	con = cn;
+	super.setConexao(cn);
     lcConta.setConexao(cn);
     lcConta.carregaDados();
     lcPlan.setConexao(cn);

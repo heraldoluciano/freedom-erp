@@ -54,7 +54,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FPlanejamento extends FFilho implements ActionListener,MouseListener,KeyListener {
-  private Connection con = null;
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private FlowLayout flCliRod = new FlowLayout(FlowLayout.CENTER,0,0);
@@ -118,7 +117,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
     tab.addKeyListener(this);
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     montaTab();
   }
   private void montaTab() {

@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +36,6 @@ import org.freedom.telas.FRelatorio;
 public class FRVendasIcms extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private Connection con = null;
   public FRVendasIcms() {
     setTitulo("Icms sobre Vendas e Compras");
     setAtribos(80,80,300,130);
@@ -53,9 +51,6 @@ public class FRVendasIcms extends FRelatorio {
     adic(txtDatafim,160,25,100,20);
     
     
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 
   public void imprimir(boolean bVisualizar) {

@@ -51,7 +51,6 @@ public class FRGraficoCC extends FRelatorio {
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);  
   private ListaCampos lcPlan = new ListaCampos(this);
-  private Connection con = null;
   private FPrinterJob dl = null;
   private JRadioGroup rgGrafico = null;
   private Vector vLabs = new Vector(2);

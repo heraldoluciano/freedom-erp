@@ -48,7 +48,6 @@ public class FLancaExp extends FDados implements ActionListener {
 	private JTextFieldPad txtQtdExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private ListaCampos lcTipoExp = new ListaCampos(this,"TE");
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
-	private Connection con = null;
 	public FLancaExp() {
 		setTitulo("Lançamentos de Expositores");
 		setAtribos(50,50,400,200);

@@ -53,7 +53,6 @@ import org.freedom.telas.FFilho;
 public class FCentroCusto
 	extends FFilho
 	implements ActionListener, MouseListener, KeyListener {
-	private Connection con = null;
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private FlowLayout flCliRod = new FlowLayout(FlowLayout.CENTER, 0, 0);
@@ -119,7 +118,7 @@ public class FCentroCusto
 
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		if (buscaAnoCC())
 			montaTab();
 		else {

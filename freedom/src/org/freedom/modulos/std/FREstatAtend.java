@@ -46,7 +46,6 @@ public class FREstatAtend extends FRelatorio {
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JRadioGroup rgFormato=null;
-  private Connection con = null;
   private int iLinha = 1;
   private int iCol = 1;
   public FREstatAtend() {
@@ -75,9 +74,6 @@ public class FREstatAtend extends FRelatorio {
     rgFormato.setVlrString("D");
     
     adic(rgFormato,7,80,265,25);
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 
   public void imprimir(boolean bVisualizar) {

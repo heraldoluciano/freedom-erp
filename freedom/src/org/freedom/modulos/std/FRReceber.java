@@ -59,7 +59,6 @@ public class FRReceber extends FRelatorio {
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir observações?","S","N");
   private JCheckBoxPad cbImpTotDia = new JCheckBoxPad("Imprimir totalizador diário?","S","N");
   
-  private Connection con = null;
   private JRadioGroup cbTipoRel = null;
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
@@ -133,7 +132,7 @@ public class FRReceber extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcCli.setConexao(cn);
     lcSetor.setConexao(cn);
     lcVendedor.setConexao(cn);

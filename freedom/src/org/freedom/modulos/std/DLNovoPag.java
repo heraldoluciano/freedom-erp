@@ -72,7 +72,6 @@ public class DLNovoPag extends FFDialogo implements PostListener {
   private ListaCampos lcFor = new ListaCampos(this,"FR");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
-  private Connection con = null;
   public DLNovoPag(Component cOrig) {
   	super(cOrig);
     setTitulo("Novo");
@@ -230,7 +229,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     }
   }
   public void setConexao(Connection cn) {
-	con = cn;
+  	super.setConexao(cn);
     lcFor.setConexao(cn);
     lcPlanoPag.setConexao(cn);
     lcPagar.setConexao(cn);
