@@ -435,6 +435,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			return;
 		}
 		imp.verifLinPag();
+		imp.montaCab();
 		imp.setTitulo("Relatório de Solicitação de Compras");
 		String sSQL = "SELECT (SELECT COUNT(IC.CODITSOL) FROM CPITSOLICITACAO IC WHERE IC.CODSOL=S.CODSOL),"
 				+ "S.CODSOL,S.DTEMITSOL,S.SITSOL,S.MOTIVOSOL,"

@@ -34,7 +34,7 @@ public class DLRDepto extends FFDialogo {
   private Vector vVals = new Vector();
   public DLRDepto() {
     setTitulo("Ordem do Relatório");
-    setAtribos(300,120);
+    setAtribos(300,140);
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");
