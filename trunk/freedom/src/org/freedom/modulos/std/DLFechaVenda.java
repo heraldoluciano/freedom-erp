@@ -55,6 +55,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener {
+  private int casasDec = Aplicativo.casasDec;
   private JTabbedPane tpn = new JTabbedPane();
   private Painel pinFecha = new Painel(400,300);
   private Painel pinFrete = new Painel(400,300);
@@ -241,8 +242,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     txtVlrFreteVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtConhecFreteVD.setTipo(JTextFieldPad.TP_STRING,13,0);
     txtQtdFreteVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtPesoBrutVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtPesoLiqVD.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
+    txtPesoBrutVD.setTipo(JTextFieldPad.TP_DECIMAL,15,casasDec);
+    txtPesoLiqVD.setTipo(JTextFieldPad.TP_DECIMAL,15,casasDec);
     txtEspFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
     txtMarcaFreteVD.setTipo(JTextFieldPad.TP_STRING,10,0);
 	lcFreteVD.add(new GuardaCampo( txtTipoVenda, 7, 100, 80, 20, "TipoVenda", "Tipo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlanoPagx");
