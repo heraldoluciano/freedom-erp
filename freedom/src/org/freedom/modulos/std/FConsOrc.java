@@ -58,8 +58,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
 
-import com.sun.rsasign.bi;
-
 public class FConsOrc extends FFilho implements ActionListener {
   private Painel pinCab = new Painel(0, 200);
   private JPanel pnCli = new JPanel(new BorderLayout());
