@@ -82,76 +82,18 @@ public class JPanelPad extends JPanel  {
 	return this.initFirstFocus;
   }
   
-  public void firstFocus() {
-  	//Component c = null;
-	System.out.println("Entrou no first focus do Panel");
+  public boolean firstFocus() {
+  	boolean ret = false;
   	if (firstFocus!=null) {
   		if (firstFocus.isFocusable()) {
   			firstFocus.requestFocus();
-  			System.out.println("Pegou foco");
+  			ret = true;
+  			//System.out.println("Pegou foco");
   		}
   	}
-/*  	else {
-  		System.out.println("Vai entrar no loop do first focus Panel");
-  		
-  		for (int i=0; i< getComponentCount(); i++) {
-  	  		System.out.println("entrou no loop do first focus Panel");
-  			c = getComponent(i);
-  			if (c!=null) {
-	  			System.out.println("c não é nulo");
-	  			System.out.println(c.getClass().getName());
-	  			if ( (c instanceof JComponent) && (!(c instanceof JTextComponent)) ) {
-		  			System.out.println("é panel dentro de panel");
-	  	  			c = searchComponent((JComponent) getComponent(i));
-	  			}
-	  			if ( (c!=null) && (c.hasFocus()) ) {
-		  			System.out.println("Encontrou o componente para foco etapa 2");
-		  			System.out.println(c.getClass().getName());
-		  			System.out.println("Executou o foco etapa 2");
-	  				break;
-	  			}
-	  			else {
-	  				c = null;
-	  			}
-  			}
-  		}
-		if ( (c!=null) && (c.hasFocus()) ) {
-  			System.out.println("Encontrou o componente para foco etapa 2");
-  			System.out.println(c.getClass().getName());
-			firstFocus = c;
-			firstFocus.requestFocus();
-  			System.out.println("Executou o foco etapa 2");
-		}
- 		
-  	} */
+  	return ret;
   }
   
-  /*private Component searchComponent(JComponent c) {
-  	Component cr = null;
-	System.out.println("Entrou no searchcomponent");
-  	
-  	if (c!=null) {
-  		System.out.println("c não é nulo no searchcomponent");
-  		for (int i=0; i<c.getComponentCount(); i++) {
-  			System.out.println("Entrou no loop do searchcomponent");
-  			cr = c.getComponent(i);
-  			if (cr!=null) {
-  	  			System.out.println("cr não é nulo");
-  	  			System.out.println(cr.getClass().getName());
-  	  			
-  				if ( (cr instanceof JComponent) && (!(cr instanceof JTextComponent)) ) 
-  					cr = searchComponent((JComponent) cr);
-  				else {
-  					if (cr.hasFocus())
-  						break;
-  					else
-  						cr = null;
-  				}
-  			}
-  		}
-  	}
-  	return cr;
-  }*/
   public void setFirstFocus(Component firstFocus) {
   	this.firstFocus = firstFocus;
   }
