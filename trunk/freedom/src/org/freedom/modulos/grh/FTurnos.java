@@ -26,7 +26,13 @@ import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Vector;
+
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JRadioGroup;
@@ -37,46 +43,70 @@ public class FTurnos extends FDados implements ActionListener {
   private JTextFieldPad txtCodTurno = new JTextFieldPad(5);
   private JTextFieldPad txtDescTurno = new JTextFieldPad(60);
   private JTextFieldPad txtNhs = new JTextFieldPad(20);
-  private JTextFieldPad txtHIniTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHFimTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHFimIntTurno= new JTextFieldPad(10);
+  private JSpinner txtHIniTurno = new JSpinner();
+  private JSpinner txtHFimTurno = new JSpinner();
+  private JSpinner txtHIniIntTurno = new JSpinner();
+  private JSpinner txtHFimIntTurno= new JSpinner();
   private Vector vTipoTurnoLab = new Vector();
   private Vector vTipoTurnoVal = new Vector();  
   private JRadioGroup rgTipoTurno = null;
   
   public FTurnos () {
     setTitulo("Cadastro de Turnos");
-    setAtribos(50, 50, 400, 280);
-    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTurno, 90, 20, 280, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtHIniTurno, 7, 60, 170, 20,"HIniTurno","Hora de incido turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtHFimTurno, 7, 100, 170, 20,"HFimTurno","Hora do final do turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtHIniIntTurno, 7, 140, 170, 20,"HIniIntTurno","Hora do inicio do intervalo",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtHFimIntTurno, 7, 180, 170, 20,"HIniIntTurno","Hora do fim do in tervalo",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-         
-    setListaCampos( true,"TURNO","RH");
-    btImp.addActionListener(this);
-    btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);
+    setAtribos(50, 50, 457, 280);
+	    
+	    GregorianCalendar cal = new GregorianCalendar();
+		cal.add(Calendar.DATE,1);
+		GregorianCalendar cal1 = new GregorianCalendar();
+		cal1.add(Calendar.YEAR,-100);
+		GregorianCalendar cal2 = new GregorianCalendar();
+		cal2.add(Calendar.YEAR,100);
+		
+		txtHIniTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+		txtHIniTurno.setEditor(new JSpinner.DateEditor(txtHIniTurno,"kk:mm"));
+		txtHIniIntTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+    	txtHIniIntTurno.setEditor(new JSpinner.DateEditor(txtHIniIntTurno,"kk:mm"));
+    	txtHFimIntTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+    	txtHFimIntTurno.setEditor(new JSpinner.DateEditor(txtHFimIntTurno,"kk:mm"));
+    	txtHFimTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+    	txtHFimTurno.setEditor(new JSpinner.DateEditor(txtHFimTurno,"kk:mm"));
     
-    
-    vTipoTurnoLab.addElement("Normal ( manhã e tarde )");
-  	vTipoTurnoLab.addElement("Manhã");
-  	vTipoTurnoLab.addElement("Tarde");
-  	vTipoTurnoLab.addElement("Noite");
-  	vTipoTurnoLab.addElement("Especial");
-  	vTipoTurnoVal.addElement("N");
-  	vTipoTurnoVal.addElement("M");
-  	vTipoTurnoVal.addElement("T");
-  	vTipoTurnoVal.addElement("O");
-  	vTipoTurnoVal.addElement("E");
-  	rgTipoTurno = new JRadioGroup( 5, 1, vTipoTurnoLab, vTipoTurnoVal);
-  	  
-  	
-  	adicDB(rgTipoTurno, 180, 60, 200, 140, "TipoTurno", "Tipo de Turno:",JTextFieldPad.TP_STRING,true);
-  	rgTipoTurno.setVlrString("N");
-  	
+	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+	    adicCampo(txtDescTurno, 90, 20, 220, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+	    adicCampo(txtNhs, 313, 20, 120, 20,"Nhs","Nº H/semanais",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);	    
+	    setListaCampos( true,"TURNO","RH");
+	    btImp.addActionListener(this);
+	    btPrevimp.addActionListener(this);
+	    lcCampos.setQueryInsert(false);
+	    
+	    adic(new JLabel("Hora do inicío do turno:"),7,40,160,20);
+		adic(txtHIniTurno,7,60,160,20);
+		adic(new JLabel("Hora do inicío do intervalo"),7,80,160,20);
+		adic(txtHIniIntTurno,7,100,160,20);
+		adic(new JLabel("Hora do fim do intervalo"),7,120,160,20);
+		adic(txtHFimIntTurno,7,140,160,20);
+		adic(new JLabel("Hora do fim do turno"),7,160,160,20);
+		adic(txtHFimTurno,7,180,160,20);
+	    
+	    
+	    
+	    
+	    vTipoTurnoLab.addElement("Normal ( manhã e tarde )");
+	  	vTipoTurnoLab.addElement("Manhã");
+	  	vTipoTurnoLab.addElement("Tarde");
+	  	vTipoTurnoLab.addElement("Noite");
+	  	vTipoTurnoLab.addElement("Especial");
+	  	vTipoTurnoVal.addElement("N");
+	  	vTipoTurnoVal.addElement("M");
+	  	vTipoTurnoVal.addElement("T");
+	  	vTipoTurnoVal.addElement("O");
+	  	vTipoTurnoVal.addElement("E");
+	  	rgTipoTurno = new JRadioGroup( 5, 1, vTipoTurnoLab, vTipoTurnoVal);
+	  	  
+	  	
+	  	adicDB(rgTipoTurno, 170, 60, 262, 140, "TipoTurno", "Tipo de Turno:",JTextFieldPad.TP_STRING,true);
+	  	rgTipoTurno.setVlrString("N");
+	  	
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
