@@ -63,6 +63,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FConveniado;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.DLInputText;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
@@ -527,15 +528,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       String sSql = null;
       int iCodCli = 0;
       PreparedStatement ps = null;
-      DLObsCli dl = null;
+      DLInputText dl = null;
       iCodCli = txtCodCli.getVlrInteger().intValue();
       java.util.Date dtHoje = null;
       if ( iCodCli!=0 ) {
            try {
-               dl = new DLObsCli(this);
+               dl = new DLInputText(this, "Observação", false);
                dl.setTexto("");
                dl.setVisible(true);
-               //dl.show(true);
                if (( dl.OK ) && (!dl.getTexto().trim().equals(""))) {
                    try {
                        dtHoje = new java.util.Date();
@@ -613,12 +613,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       String sSql = null;
       int iCodCli = 0;
       PreparedStatement ps = null;
-      DLObsCli dl = null;
+      DLInputText dl = null;
       iCodCli = txtCodCli.getVlrInteger().intValue();
       java.util.Date dtHoje = null;
       if ( (tbObsData.getSelectedRow()>-1) && (iCodCli!=0) ) {
            try {
-               dl = new DLObsCli(this);
+               dl = new DLInputText(this, "Observação", false);
                dl.setTexto(txaTxtObsCli.getText());
                dl.setVisible(true);
                //dl.show(true);
