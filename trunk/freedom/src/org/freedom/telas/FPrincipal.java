@@ -33,6 +33,7 @@ import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -48,7 +49,6 @@ import org.freedom.componentes.Painel;
 import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
-import org.freedom.modulos.std.FMoeda;
 
 public class FPrincipal extends JFrame implements ActionListener {
    
