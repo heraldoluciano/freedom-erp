@@ -45,16 +45,11 @@ import org.freedom.telas.FRelatorio;
 
 public class FRResumoDiario extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
-  
+  private JTextFieldPad txtDatafim = new JTextFieldPad();  
   private JTextFieldPad txtCodVend = new JTextFieldPad();
   private JTextFieldFK txtDescVend = new JTextFieldFK(); 
-
-  private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
-  
-  private ListaCampos lcVend = new ListaCampos(this);
-  
-  
+  private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");  
+  private ListaCampos lcVend = new ListaCampos(this);    
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JRadioGroup rgFormato=null;
@@ -78,8 +73,7 @@ public class FRResumoDiario extends FRelatorio {
     adic(txtDataini,32,30,97,20);
     adic(new JLabel("Até:"),140,30,30,20);
     adic(txtDatafim,170,30,100,20);
-    
-    
+        
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescVend.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
@@ -260,8 +254,7 @@ public class FRResumoDiario extends FRelatorio {
             imp.say(imp.pRow()+0,0,"|");
             imp.say(imp.pRow()+0,5,"RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
             imp.say(imp.pRow()+0,136,"|");
-          
-           
+                     
             if (sCab.length() > 0) {
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
           	  	imp.say(imp.pRow()+0,0,sCab);
@@ -371,9 +364,7 @@ public class FRResumoDiario extends FRelatorio {
       			imp.say(imp.pRow()+0,136,"|");
       			imp.say(imp.pRow()+1,0,""+imp.comprimido());
       			    if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-      			
-      			
-      			
+      			      			      			
       			imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
       		    imp.say(imp.pRow()+1,0,""+imp.comprimido());
       			imp.say(imp.pRow()+0,0,"|  Data");
