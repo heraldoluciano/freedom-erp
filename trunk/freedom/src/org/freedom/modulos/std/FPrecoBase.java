@@ -47,10 +47,11 @@ import org.freedom.telas.FFilho;
 public class FPrecoBase extends FFilho implements ActionListener {
   private Painel pinCli = new Painel(300,150);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodGrup = new JTextFieldPad();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-  private JTextFieldFK txtDescGrup = new JTextFieldFK();
-  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
+
+  private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcGrup = new ListaCampos(this,"GP");
@@ -66,10 +67,8 @@ public class FPrecoBase extends FFilho implements ActionListener {
     Funcoes.setBordReq(txtCodPlanoPag);
     
     txtCodGrup.setNomeCampo("CodGrup");
-    txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-    txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.Grup", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupx");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Decrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
+    lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+    lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Decrição do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false,"GRUPO", "EQ");
     lcGrup.setReadOnly(true);
     txtCodGrup.setTabelaExterna(lcGrup);
@@ -77,10 +76,8 @@ public class FPrecoBase extends FFilho implements ActionListener {
     txtDescGrup.setListaCampos(lcGrup);
 
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
-    txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.PlanoPag", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagto.", ListaCampos.DB_SI, false));
     lcPlanoPag.montaSql(false,"PLANOPAG", "FN");
     lcPlanoPag.setReadOnly(true);
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
