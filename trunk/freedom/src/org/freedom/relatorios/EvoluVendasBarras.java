@@ -38,7 +38,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.CategoryDataset;
 import org.jfree.data.DefaultCategoryDataset;
 
-
 public class EvoluVendasBarras extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
