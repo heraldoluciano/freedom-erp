@@ -58,10 +58,9 @@ public class FCaixa extends FDados implements ActionListener {
     setListaCampos( true, "CAIXA", "PV");
   }
   
-  public void execShow(Connection cn) {
-  	con = cn;
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn); 
   	lcEst.setConexao(cn);
-  	super.execShow(cn); 
   }
 
 }

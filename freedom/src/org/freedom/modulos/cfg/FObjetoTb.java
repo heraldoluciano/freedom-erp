@@ -96,9 +96,9 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
 	lcTabela.setConexao(cn);
-	super.execShow(cn);
+	super.setConexao(cn);
   }
   
   public void actionPerformed(ActionEvent evt) {

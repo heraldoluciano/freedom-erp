@@ -103,9 +103,9 @@ public class FRegraFiscal extends FDetalhe {
 		
 		
 	}
-	public void execShow(Connection con) {
+	public void setConexao(Connection con) {
+		super.setConexao(con);
 		lcNat.setConexao(con);
 		lcMov.setConexao(con);
-		super.execShow(con);
 	}
 }

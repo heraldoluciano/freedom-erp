@@ -97,9 +97,9 @@ public class FFluxo extends FDetalhe implements ActionListener {
     super.actionPerformed(evt);
   }
 
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	lcProc.setConexao(cn);
-	super.execShow(cn);
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);

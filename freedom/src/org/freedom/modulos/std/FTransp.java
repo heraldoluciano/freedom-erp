@@ -132,8 +132,8 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener {
     txtInscTran.setVlrString(Funcoes.sIEValida);
   }
   public void afterPost(PostEvent pevt) { }
-  public void execShow(Connection cn) {
-	 super.execShow(cn);
+  public void setConexao(Connection cn) {
+  	  super.setConexao(cn);
    }
   
   

@@ -93,12 +93,11 @@ public class FEmpregado extends FDados implements ActionListener {
     super.actionPerformed(evt);
   }
   
-  public void execShow(Connection cn) {
-  	con = cn;	
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcFuncao.setConexao(cn);      
 	lcTurno.setConexao(cn);      
 	lcDepto.setConexao(cn);
-    super.execShow(cn);
   }
 
   private void imprimir(boolean bVisualizar) {

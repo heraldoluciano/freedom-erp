@@ -176,7 +176,6 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private JTabbedPane tpnCab = new JTabbedPane();
   private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
   private FPrincipal fPrim;
-  private Connection con = null;
   
   JTextFieldPad txtUltCamp = new JTextFieldPad();
   boolean[] bPrefs = null;
@@ -2022,8 +2021,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private void abreAdicOrc() {
 	  if (!fPrim.temTela("Orcamento")) {
 		FAdicOrc tela = new FAdicOrc(this);
-		tela.setConexao(con);
-		fPrim.criatela("Orcamento",tela);
+		//tela.setConexao(con);
+		fPrim.criatela("Orcamento",tela,con);
 	  } 
   }
   private void altComisVend() {
@@ -2042,8 +2041,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
 	txtCodVenda.setVlrString(iCodVenda+"");
 	lcCampos.carregaDados();
   }
-  public void execShow(Connection cn) {
-    con = cn;
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     montaTela();
 	lcTratTrib.setConexao(cn);
     lcTipoMov.setConexao(cn);
@@ -2058,6 +2057,5 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     lcFisc.setConexao(cn);
     lcVenda2.setConexao(cn);
     lcClComis.setConexao(cn);
-    super.execShow(cn);
   }
 }

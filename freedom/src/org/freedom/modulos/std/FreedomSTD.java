@@ -393,8 +393,8 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==100130040) {
       if (telaPrincipal.temTela("Grupos")==false) {
         FGrupo tela = new FGrupo();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Grupos",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Grupos",tela,con);
       }
     }
     else if (iOpcao==100101020) {
@@ -424,22 +424,22 @@ public class FreedomSTD extends Aplicativo {
 	else if (iOpcao==600120000) {
 		if (telaPrincipal.temTela("Boleto")==false) {
           FRBoleto tela = new FRBoleto();
-          tela.setConexao(con);
-  	      telaPrincipal.criatela("Boleto",tela);
+          //tela.setConexao(con);
+  	      telaPrincipal.criatela("Boleto",tela,con);
 		}
     }
 	else if (iOpcao==600300000) {
       if (telaPrincipal.temTela("Planejamento")==false) {
         FPlanejamento tela = new FPlanejamento();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Planejamento",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Planejamento",tela,con);
       }
     }
 	else if (iOpcao==600400000) {
 	  if (telaPrincipal.temTela("Centro de Custos")==false) {
 		FCentroCusto tela = new FCentroCusto();
-		tela.setConexao(con);
-		telaPrincipal.criatela("Centro de Custos",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Centro de Custos",tela,con);
 	  }
 	} 
 	else if (iOpcao==600800000) {
@@ -457,8 +457,8 @@ public class FreedomSTD extends Aplicativo {
 	else if (iOpcao==601000000) {
 		if (telaPrincipal.temTela("Reprocessamento de saldos")==false) {
 			FProcessaSL tela = new FProcessaSL();
-			tela.setConexao(con);
-			telaPrincipal.criatela("Reprocessamento de saldos",tela);
+			//tela.setConexao(con);
+			telaPrincipal.criatela("Reprocessamento de saldos",tela,con);
 		}
 	}  
 	else if (iOpcao==100310000) {
@@ -476,15 +476,15 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==700703000) {
       if (telaPrincipal.temTela("Vencimento Lote")==false) {
         FRVencLote tela = new FRVencLote();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Vencimento Lote",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Vencimento Lote",tela,con);
       } 
     }
 	else if (iOpcao==700704000) {
 	  if (telaPrincipal.temTela("Saldos de Lote")==false) {
 		FRSaldoLote tela = new FRSaldoLote();
-		tela.setConexao(con);
-		telaPrincipal.criatela("Saldos de Lote",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Saldos de Lote",tela,con);
 	  } 
 	}
     else if (iOpcao==100130091) {
@@ -502,8 +502,8 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==100130093) {
       if (telaPrincipal.temTela("Grade")==false) {
         FGrade tela = new FGrade();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Grade",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Grade",tela,con);
       }
     }
     else if (iOpcao==100320000) {
@@ -534,8 +534,8 @@ public class FreedomSTD extends Aplicativo {
 	else if (iOpcao==300500000) {
 	  if (telaPrincipal.temTela("Aprova Orcamento")==false) {
 	    FAprovaOrc tela = new FAprovaOrc();
-	    tela.setConexao(con);
-	    telaPrincipal.criatela("Aprova Orcamento",tela);
+	    //tela.setConexao(con);
+	    telaPrincipal.criatela("Aprova Orcamento",tela,con);
 	  } 
 	}
 	else if (iOpcao==300600000) {
@@ -549,9 +549,9 @@ public class FreedomSTD extends Aplicativo {
 	else if (iOpcao==300700000) {
 		if (telaPrincipal.temTela("Pesquisa Orçamento")==false) {
 			FConsOrc tela = new FConsOrc();
-			tela.setConexao(con);
+			//tela.setConexao(con);
 			tela.setTelaPrim(telaPrincipal);
-			telaPrincipal.criatela("Pesquisa Orçamento",tela);
+			telaPrincipal.criatela("Pesquisa Orçamento",tela,con);
 		} 
 	}
 		
@@ -576,22 +576,22 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==400100000) {
       if (telaPrincipal.temTela("Comissao")==false) {
         FManutComis tela = new FManutComis();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Comissao",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Comissao",tela,con);
       }
     }
     else if (iOpcao==700100000) {
       if (telaPrincipal.temTela("Kardex")==false) {
         FKardex tela = new FKardex();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Kardex",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Kardex",tela,con);
       }
     }
     else if (iOpcao==600600000){
       if (telaPrincipal.temTela("Lançamentos")==false){
         FLanca tela = new FLanca();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Lançamentos",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Lançamentos",tela,con);
       }
     }
     else if (iOpcao==100116000) {
@@ -603,87 +603,87 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==100140020) {
       if (telaPrincipal.temTela("Copia Precos")==false) {
         FCpProd tela = new FCpProd();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Copia Precos",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Copia Precos",tela,con);
       }
     }
     else if (iOpcao==100140010) {
       if (telaPrincipal.temTela("Manutenção de Preços")==false) {
         FManutPreco tela = new FManutPreco();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Manutenção de Preços",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Manutenção de Preços",tela,con);
       }
     }
     else if (iOpcao==100140040) {
       if (telaPrincipal.temTela("Lista de Preços")==false) {
         FRListaPreco tela = new FRListaPreco();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Lista de Preços",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Lista de Preços",tela,con);
       }
     }
     else if (iOpcao==301010000) {
       if (telaPrincipal.temTela("Resumo Diário")==false) {
         FRResumoDiario tela = new FRResumoDiario();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Resumo Diário",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Resumo Diário",tela,con);
       }
     }
     else if (iOpcao==301020000) {
       if (telaPrincipal.temTela("Vendas em Geral")==false) {
         FRVendasGeral tela = new FRVendasGeral();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Vendas em Geral",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Vendas em Geral",tela,con);
       }
     }
     else if (iOpcao==200210000) {
       if (telaPrincipal.temTela("Compras por Fornecedor")==false) {
         FRComprasFor tela = new FRComprasFor();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Compras por Fornecedor",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Compras por Fornecedor",tela,con);
       }
     }
     else if (iOpcao==301030000) {
       if (telaPrincipal.temTela("Físico de Vendas")==false) {
         FRVendasFisico tela = new FRVendasFisico();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Físico de Vendas",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Físico de Vendas",tela,con);
       }
     }
     else if (iOpcao==700300000) {
     	if (telaPrincipal.temTela("Consulta")==false) {
     		FConsulta tela = new FConsulta();
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Consulta",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Consulta",tela,con);
     	}
     }
     else if (iOpcao==700400000) { 
     	if (telaPrincipal.temTela("Consulta produto")==false) {
     		FConsProd tela = new FConsProd();
     		tela.setTelaPrim(telaPrincipal);
-    		telaPrincipal.criatela("Consulta produto",tela);    	
-    		tela.setConexao(con);
+    		telaPrincipal.criatela("Consulta produto",tela,con);    	
+    		//tela.setConexao(con);
     	}
     }    
     else if (iOpcao==800601000) {
       if (telaPrincipal.temTela("Icms Vendas e Compras")==false) {
         FRVendasIcms tela = new FRVendasIcms();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Icms Vendas e Compras",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Icms Vendas e Compras",tela,con);
       }
     }
     else if (iOpcao==800602000) {
         if (telaPrincipal.temTela("Impostos sobre serviços")==false) {
           FRImpServ tela = new FRImpServ();
-          tela.setConexao(con);
-          telaPrincipal.criatela("Impostos sobre Serviços",tela);
+          //tela.setConexao(con);
+          telaPrincipal.criatela("Impostos sobre Serviços",tela,con);
         }
       
     }
     else if (iOpcao==800603000) {
         if (telaPrincipal.temTela("Pis e cofins")==false) {
           FRPisCofins tela = new FRPisCofins();
-          tela.setConexao(con);
-          telaPrincipal.criatela("Pis e cofins",tela);
+          //tela.setConexao(con);
+          telaPrincipal.criatela("Pis e cofins",tela,con);
         }
 	      
     }
@@ -696,16 +696,16 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==800100000) {
       if (telaPrincipal.temTela("Gera Fiscal")==false) {
         FGeraFiscal tela = new FGeraFiscal();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Gera Fiscal",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Gera Fiscal",tela,con);
       }
     }
     else if (iOpcao==800300000) {
       if (telaPrincipal.temTela("Gera Arquivo Sintegra")==false) {
         FSintegra tela = new FSintegra();
-        tela.setConexao(con);
+        //tela.setConexao(con);
         tela.setOrigem(telaPrincipal);
-        telaPrincipal.criatela("Gera Arquivo Sintegra",tela);
+        telaPrincipal.criatela("Gera Arquivo Sintegra",tela,con);
       }
     }
 	else if (iOpcao==800400000) {
@@ -723,98 +723,98 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==301040000) {
       if (telaPrincipal.temTela("Vendas Detalhadas")==false) {
         FRVendasDet tela = new FRVendasDet();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Vendas Detalhadas",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Vendas Detalhadas",tela,con);
       }
     }
     else if (iOpcao==301050000) {
       if (telaPrincipal.temTela("Vendas por Item")==false) {
         FRVendasItem tela = new FRVendasItem();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Vendas por Item",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Vendas por Item",tela,con);
       }
     }
     else if (iOpcao==301060000) {
       if (telaPrincipal.temTela("Media de vendas por item")==false) {
         FRMediaItem tela = new FRMediaItem();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Media de vendas por item",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Media de vendas por item",tela,con);
       }
     }
     
     else if (iOpcao==301070000) {
     	if (telaPrincipal.temTela("Ultimas Vendas por Cliente")==false) {
     		FRUltimaVenda tela = new FRUltimaVenda();
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Ultimas Vendas por Cliente",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Ultimas Vendas por Cliente",tela,con);
     	}
     }
 
     else if (iOpcao==301080000) {
     	if (telaPrincipal.temTela("Vendas por Setor")==false) {
     		FRVendaSetor tela = new FRVendaSetor();
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Vendas por Setor",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Vendas por Setor",tela,con);
     	}
     }
     
     else if (iOpcao==301090000) {
     	if (telaPrincipal.temTela("Gerenciamento de contas")==false) {
     		FRGerContas tela = new FRGerContas();
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Gerenciamento de contas",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Gerenciamento de contas",tela,con);
     	}
     }    
     
 	else if (iOpcao==301110000) {
 	  if (telaPrincipal.temTela("Evolução de vendas")==false) {
 		FREvoluVendas tela = new FREvoluVendas();
-		tela.setConexao(con);
-		telaPrincipal.criatela("Evolução de vendas",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Evolução de vendas",tela,con);
 	  }
 	}
 
 	else if (iOpcao==301210000) {
 		  if (telaPrincipal.temTela("Consulta de preços")==false) {
 			FConsPreco tela = new FConsPreco();
-			tela.setConexao(con);
-			telaPrincipal.criatela("Consulta de preços",tela);
+			//tela.setConexao(con);
+			telaPrincipal.criatela("Consulta de preços",tela,con);
 		  }
 		}
 	
     else if (iOpcao==500100000) {
       if (telaPrincipal.temTela("Manutenção de contas a receber")==false) {
         FManutRec tela = new FManutRec();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Manutenção de contas a receber",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Manutenção de contas a receber",tela,con);
       }
     }
     else if (iOpcao==700701000) {
       if (telaPrincipal.temTela("Estoque Mínimo")==false) {
         FREstoqueMin tela = new FREstoqueMin();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Estoque Mínimo",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Estoque Mínimo",tela,con);
       }
     }
 	else if (iOpcao==700702000) {
 	  if (telaPrincipal.temTela("Listagem de Produtos")==false) {
 	    FRMovProd tela = new FRMovProd();
-	    tela.setConexao(con);
-		telaPrincipal.criatela("Listagem de Produtos",tela);
+	    //tela.setConexao(con);
+		telaPrincipal.criatela("Listagem de Produtos",tela,con);
 	  }     
     }
 	else if (iOpcao==700600000) {
 		if (telaPrincipal.temTela("Reprocessa estoque")==false) {
 			FProcessaEQ tela = new FProcessaEQ();
-			tela.setConexao(con);
-			telaPrincipal.criatela("Reprocessa estoque",tela);
+			//tela.setConexao(con);
+			telaPrincipal.criatela("Reprocessa estoque",tela,con);
 		}     
 	}
 	else if (iOpcao==300200000) {
       if (telaPrincipal.temTela("Cancelamento")==false) {
         FCancVenda tela = new FCancVenda();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Cancelamento",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Cancelamento",tela,con);
       }
     }
     else if (iOpcao==300300000) {
@@ -838,43 +838,43 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==500310000) {
       if (telaPrincipal.temTela("Receber/Recebidas")==false) {
         FRReceber tela = new FRReceber();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Receber/Recebidas",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Receber/Recebidas",tela,con);
       }
     }
     else if (iOpcao==500320000) {
       if (telaPrincipal.temTela("Inadimplentes")==false) {
         FRInadimplentes tela = new FRInadimplentes();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Inadimplentes",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Inadimplentes",tela,con);
       }
     }
     else if (iOpcao==500330000) {
         if (telaPrincipal.temTela("Bordero de cobrança")==false) {
           FRBordero tela = new FRBordero();
-          tela.setConexao(con);
-          telaPrincipal.criatela("Bordero de cobrança",tela);
+          //tela.setConexao(con);
+          telaPrincipal.criatela("Bordero de cobrança",tela,con);
         }
       }
     else if (iOpcao==400410000) {
       if (telaPrincipal.temTela("Pagar/Pagas")==false) {
         FRPagar tela = new FRPagar();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Pagar/Pagas",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Pagar/Pagas",tela,con);
       }
     }
     else if (iOpcao==400420000) {
       if (telaPrincipal.temTela("Comissão")==false) {
         FRComissoes tela = new FRComissoes();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Comissão",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Comissão",tela,con);
       }
     }
     else if (iOpcao==400200000) {
       if (telaPrincipal.temTela("Manutenção de contas a pagar")==false) {
         FManutPag tela = new FManutPag();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Manutenção de contas a pagar",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Manutenção de contas a pagar",tela,con);
       }
     }
 	else if (iOpcao==600700000) {
@@ -886,50 +886,50 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==601110000) {
       if (telaPrincipal.temTela("Extrato")==false) {
         FRExtrato tela = new FRExtrato();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Extrato",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Extrato",tela,con);
       }
     }
     else if (iOpcao==601120000) {
       if (telaPrincipal.temTela("Balancete")==false) {
         FRBalancete tela = new FRBalancete();
-        tela.setConexao(con);
-        telaPrincipal.criatela("Balancete",tela);
+        //tela.setConexao(con);
+        telaPrincipal.criatela("Balancete",tela,con);
       }
     }
 	else if (iOpcao==601130000) {
 	  if (telaPrincipal.temTela("Relatorio Financeiro por C.C.")==false) {
 		FRCentroCusto tela = new FRCentroCusto();
-		tela.setConexao(con);
-		telaPrincipal.criatela("Relatorio Financeiro por C.C.",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Relatorio Financeiro por C.C.",tela,con);
 	  }
 	}
 	else if (iOpcao==601140000) {
 	  if (telaPrincipal.temTela("Razão financeiro")==false) {
 		FRRazaoFin tela = new FRRazaoFin();
-		tela.setConexao(con);
-		telaPrincipal.criatela("Razão financeiro",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Razão financeiro",tela,con);
 	  }
 	}
 	else if (iOpcao==601150000) {
 		if (telaPrincipal.temTela("Fluxo de caixa")==false) {
 			FRFluxoCaixa tela = new FRFluxoCaixa();
-			tela.setConexao(con);
-			telaPrincipal.criatela("Fluxo de caixa",tela);
+			//tela.setConexao(con);
+			telaPrincipal.criatela("Fluxo de caixa",tela,con);
 		}
 	}
 	else if (iOpcao==601210000) {
 	  if (telaPrincipal.temTela("Balancete Gráfico")==false) {
 		FRBalanceteGrafico tela = new FRBalanceteGrafico();
-		tela.setConexao(con);
-		telaPrincipal.criatela("Balancete Gráfico",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Balancete Gráfico",tela,con);
 	  }
 	}
 	else if (iOpcao==601220000) {
 	  if (telaPrincipal.temTela("Gráfico Financeiro por C.C")==false) {
 		FRGraficoCC tela = new FRGraficoCC();		
-		tela.setConexao(con);
-		telaPrincipal.criatela("Gráfico Financeiro por C.C",tela);
+		//tela.setConexao(con);
+		telaPrincipal.criatela("Gráfico Financeiro por C.C",tela,con);
 	  }
 	}	
     else if (iOpcao==100450000) {
@@ -941,15 +941,15 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==100210000) {
     	if (telaPrincipal.temTela("Alteração de doc")==false) {
     		FTrocaDoc tela = new FTrocaDoc();		
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Alteração de doc",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Alteração de doc",tela,con);
     	}
     }	
     else if (iOpcao==100220000) {
     	if (telaPrincipal.temTela("Exportação SVV")==false) {
     		FSVV tela = new FSVV();		
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Exportação SVV",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Exportação SVV",tela,con);
     	}
     }	
     else if (iOpcao==100230100) {
@@ -961,64 +961,64 @@ public class FreedomSTD extends Aplicativo {
     else if (iOpcao==100230200) {                                      // LOM
     	if (telaPrincipal.temTela("Etiquetas")==false) {              // LOM
     		FREtiqueta tela = new FREtiqueta ();                       // LOM	
-    		tela.setConexao(con);                                    // LOM
-    		telaPrincipal.criatela("Etiquetas",tela);                // LOM
+    		//tela.setConexao(con);                                    // LOM
+    		telaPrincipal.criatela("Etiquetas",tela,con);                // LOM
     	}
     }
      else if (iOpcao==100240000) {
     	if (telaPrincipal.temTela("Imp. tabelas de fornecedores")==false) {
     		FImpTabFor tela = new FImpTabFor();		
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Imp. tabelas de fornecedores",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Imp. tabelas de fornecedores",tela,con);
     	}
     }	
     else if (iOpcao==100250000) {
         if (telaPrincipal.temTela("Ajuste do item do orçamento")==false) {
             FStatusItOrc tela = new FStatusItOrc();     
-            tela.setConexao(con);
-            telaPrincipal.criatela("Ajuste do item do orçamento",tela);
+            //tela.setConexao(con);
+            telaPrincipal.criatela("Ajuste do item do orçamento",tela,con);
         }
     }   
     else if (iOpcao==100260100) {
         if (telaPrincipal.temTela("Bloqueio e desbloqueio de compras")==false) {
             FBloqCompra tela = new FBloqCompra();     
-            tela.setConexao(con);
-            telaPrincipal.criatela("Bloqueio e desbloqueio de compras",tela);
+            //tela.setConexao(con);
+            telaPrincipal.criatela("Bloqueio e desbloqueio de compras",tela,con);
         }
     }
     else if (iOpcao==100260200) {
         if (telaPrincipal.temTela("Bloqueio e desbloqueio de vendas")==false) {
             FBloqVenda tela = new FBloqVenda();     
-            tela.setConexao(con);
-            telaPrincipal.criatela("Bloqueio e desbloqueio de vendas",tela);
+            //tela.setConexao(con);
+            telaPrincipal.criatela("Bloqueio e desbloqueio de vendas",tela,con);
         }
     }
     else if (iOpcao==100270000) {
         if (telaPrincipal.temTela("Canc. de vínc. venda x orçamento")==false) {
             FCancVendaOrc tela = new FCancVendaOrc();     
-            tela.setConexao(con);
-            telaPrincipal.criatela("Canc. de vínc. venda x orçamento",tela);
+            //tela.setConexao(con);
+            telaPrincipal.criatela("Canc. de vínc. venda x orçamento",tela,con);
         }
     }
     else if (iOpcao==700705000) {
     	if (telaPrincipal.temTela("Demanda")==false) {
     		FRDemanda tela = new FRDemanda();		
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Demanda",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Demanda",tela,con);
     	}
     }
     else if (iOpcao==700706000) {
     	if (telaPrincipal.temTela("Conferência de Estoque")==false) {
     		FRConfEstoq tela = new FRConfEstoq();		
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Conferência de Estoque",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Conferência de Estoque",tela,con);
     	}
     }
     else if (iOpcao==700707000) {
     	if (telaPrincipal.temTela("Inventário")==false) {
     		FRInvPeps tela = new FRInvPeps();		
-    		tela.setConexao(con);
-    		telaPrincipal.criatela("Inventário",tela);
+    		//tela.setConexao(con);
+    		telaPrincipal.criatela("Inventário",tela,con);
     	}
     }
     else if (iOpcao==1) {

@@ -135,8 +135,8 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	    	
     }
 	
-    public void execShow(Connection cn) {
-	  	super.execShow(cn);
+    public void setConexao(Connection cn) {
+	  	super.setConexao(cn);
 	  	lcPapel.setConexao(cn);
     }
 	

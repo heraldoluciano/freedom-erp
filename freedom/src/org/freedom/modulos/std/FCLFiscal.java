@@ -442,10 +442,10 @@ public class FCLFiscal extends FDados implements CarregaListener {
   public void setTelaPrim(FPrincipal fP) {
 	  fPrim = fP;
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
     lcRegraFiscal.setConexao(cn);      
 	lcTratTrib.setConexao(cn);      
 	lcMens.setConexao(cn);      
-    super.execShow(cn);
   }
 }

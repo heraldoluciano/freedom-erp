@@ -135,8 +135,8 @@ public class FreedomTMK extends Aplicativo {
 		else if (iOpcao==100301000) {
 			if (telaPrincipal.temTela("Importação de contatos")==false) {
 			  FImportaCto tela = new FImportaCto();
-			  tela.setConexao(con);
-			  telaPrincipal.criatela("Importação de contatos",tela);
+			  //tela.setConexao(con);
+			  telaPrincipal.criatela("Importação de contatos",tela,con);
 			}
 		}
 		else if (iOpcao==100302000) {
@@ -148,9 +148,9 @@ public class FreedomTMK extends Aplicativo {
 		else if (iOpcao==100303000) {
 			if (telaPrincipal.temTela("Envia e-mail")==false) {
 			  FEnviaMail tela = new FEnviaMail();
-			  tela.setConexao(con);
+			  //tela.setConexao(con);
 			  tela.setTelaPrim(telaPrincipal);
-			  telaPrincipal.criatela("Envia e-mail",tela);
+			  telaPrincipal.criatela("Envia e-mail",tela,con);
 			}
 		}
 		else if (iOpcao == 100201000) {
@@ -162,22 +162,22 @@ public class FreedomTMK extends Aplicativo {
 		else if (iOpcao==200100000) {
 			if (telaPrincipal.temTela("Historico")==false) {
 				FHistorico tela = new FHistorico();
-				tela.setConexao(con);
-				telaPrincipal.criatela("Historico",tela);
+				//tela.setConexao(con);
+				telaPrincipal.criatela("Historico",tela,con);
 			} 
 		}
 		else if (iOpcao==200200000) {
 			if (telaPrincipal.temTela("Agenda")==false) {
 				FAgenda tela = new FAgenda();
-				tela.setConexao(con);
-				telaPrincipal.criatela("Agenda",tela);
+				//tela.setConexao(con);
+				telaPrincipal.criatela("Agenda",tela,con);
 			} 
 		}
 		else if (iOpcao==200301000) {
 			if (telaPrincipal.temTela("Relatório diário")==false) {
 				FRDiario tela = new FRDiario();
-				tela.setConexao(con);
-				telaPrincipal.criatela("Relatório diário",tela);
+				//tela.setConexao(con);
+				telaPrincipal.criatela("Relatório diário",tela,con);
 			} 
 		}
         } 

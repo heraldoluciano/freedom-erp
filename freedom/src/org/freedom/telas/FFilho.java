@@ -20,10 +20,12 @@
 
 package org.freedom.telas;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -36,14 +38,17 @@ import org.freedom.bmps.Icone;
 
 
 public class FFilho extends JInternalFrame implements InternalFrameListener {
+  private Component firstFocus = null;
+  private Container contentFirstFocus = null;
   public String strTemp = "";
-
-  public FFilho () { 
+  public Connection con = null;
+  public FFilho () {
      /* Construtor da classe. */
-     
-     super("Filho01",true,true,true,true);
-     setVisible(true);
+     this("Filho01",true,true,true,true);
      addInternalFrameListener(this);
+  }
+  public FFilho(String arg01, boolean arg02, boolean arg03, boolean arg04, boolean arg05) {
+  	super(arg01, arg02, arg03, arg04, arg05);
   }
   public void setTitulo(String tit) {
   	if (getName() == null)
@@ -55,22 +60,9 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
   }
   public void setTela(Container c) { setContentPane(c); }
   public Container getTela() { 
-          Container tela = getContentPane();
-          tela.setLayout(new BorderLayout());
-          return tela; 
-  }
-  public void internalFrameActivated(InternalFrameEvent wevt) {
-//    Funcoes.mensageInforma(null,"ON ACTIVATED");
-  }
-  public void internalFrameClosed(InternalFrameEvent wevt) {
-//    Funcoes.mensagemInforma(null,"ON CLOSED");
-  }
-  public void internalFrameClosing(InternalFrameEvent wevt) {
-//    Funcoes.mensagemInforma(null,"ON CLOSING");
-/*    try {
-      setClosed(false);
-    }
-    catch (Exception err) { }*/
+	Container tela = getContentPane();
+	tela.setLayout(new BorderLayout());
+	return tela; 
   }
   public JPanel adicBotaoSair() {
     Container c = getContentPane();
@@ -103,16 +95,44 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
    *
    *  @param cn: Conexao valida e ativa que será repassada e esta tela.
    */
-
-  public void internalFrameDeactivated(InternalFrameEvent wevt) { }
-  public void internalFrameDeiconified(InternalFrameEvent wevt) { }
-  public void internalFrameIconified(InternalFrameEvent wevt) { }
-  public void internalFrameOpened(InternalFrameEvent wevt) {
- /*   Container cpOpened = getContentPane();
+  public void internalFrameActivated(InternalFrameEvent e) {
+  	//System.out.println("Teste 1");
+  }
+  public void internalFrameClosed(InternalFrameEvent e) {
+  	//System.out.println("Teste 2");
+  }
+  public void internalFrameClosing(InternalFrameEvent e) {
+  	//System.out.println("Teste 3");
+  }
+  public void internalFrameDeactivated(InternalFrameEvent e) {
+  	//System.out.println("Teste 4");
+  }
+  public void internalFrameDeiconified(InternalFrameEvent e) {
+  	//System.out.println("Teste 5");
+  }
+  public void internalFrameIconified(InternalFrameEvent e) {
+  //	System.out.println("Teste 6");
+  }
+  
+  public synchronized void setFirstFocus(Component firstFocus) {
+  	this.firstFocus = firstFocus;
+  }
+  public synchronized void firstFocus() {
+  	if (firstFocus!=null) { 
+  		if (firstFocus.hasFocus())
+  			firstFocus.requestFocus();
+  		else
+  			loadFirstFocus();
+  	}
+  }
+  public synchronized void loadFirstFocus() {
     Component cOpened = null;
-    if (cpOpened != null) {
-       for (int i=0 ; i<cpOpened.getComponentCount() ; i++) {
-         cOpened = cpOpened.getComponent(i);
+  	if (contentFirstFocus == null)
+       contentFirstFocus = getContentPane();
+    //String nome = cpOpened.getName();
+    if (contentFirstFocus != null) {
+       for (int i=0 ; i<contentFirstFocus.getComponentCount() ; i++) {
+         cOpened = contentFirstFocus.getComponent(i);
          if (cOpened!=null) {
             if (cOpened.hasFocus()) {
                cOpened.nextFocus();
@@ -121,6 +141,19 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
             }
          }
        }
-    }*/
+    }
   }
+  public synchronized void setContentFirstFocus(Container contentFirstFocus) {
+  	this.contentFirstFocus = contentFirstFocus;
+  }
+  public void internalFrameOpened(InternalFrameEvent e) {
+  	firstFocus();
+  }
+  public void setConexao(Connection cn) {
+  	con = cn;
+  }
+  public synchronized void execShow() {
+    show();
+  }
+  
 }

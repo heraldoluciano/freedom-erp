@@ -142,11 +142,11 @@ public class FEstFase extends FDetalhe {
     }
     return bResultado;
   }*/
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcProd.setConexao(cn);
     lcFase.setConexao(cn);
     lcTipoRec.setConexao(cn);
-    super.execShow(cn);
     txtCodProd.setVlrInteger(new Integer(iCodProd));
     lcCampos.carregaDados();  }        
 }

@@ -244,14 +244,14 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   }
   public void beforeInsert(InsertEvent ievt) { }
   public void afterCancel(CancelEvent cevt) { }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn);
   	bPrefs=prefs(cn);
   	montaTela();
   	lcProdEstCod.setConexao(cn);
   	lcProdEstRef.setConexao(cn);
   	lcProdDetCod.setConexao(cn);
   	lcProdDetRef.setConexao(cn);
-  	super.execShow(cn);
   }
   private void imprimir(boolean bVisualizar) {
 	Vector vParamOP = new Vector();

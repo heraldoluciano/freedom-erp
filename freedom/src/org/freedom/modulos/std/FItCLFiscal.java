@@ -143,10 +143,10 @@ public class FItCLFiscal extends FDetalhe {
 	txtCodFisc.setVlrString(sCodFisc);
 	lcCampos.carregaDados();
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	lcMens.setConexao(cn);      
 	lcTratTrib.setConexao(cn);      
 	lcTipoFiscCli.setConexao(cn);      
-	super.execShow(cn);
   }
 }

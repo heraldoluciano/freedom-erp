@@ -223,13 +223,12 @@ public class FSimilar extends FDados implements ActionListener{
 			imp.print();
 		}
 	}
-	public void execShow(Connection cn) {
-		con = cn;
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		bPrefs = prefs(); //Carrega as preferências
 		montaTela();
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
-		super.execShow(cn);
 	}
 	public boolean achaSimilarFK(){
 	  boolean bRetorno = false;

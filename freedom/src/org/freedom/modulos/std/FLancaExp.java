@@ -195,8 +195,8 @@ public class FLancaExp extends FDados implements ActionListener {
 			imprimir(false);
 		super.actionPerformed(evt);
 	}
-	public void execShow(Connection cn) {
-		con = cn;
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		lcCampos.setConexao(cn);
 		lcTipoExp.setConexao(cn);
 		lcCli.setConexao(cn);

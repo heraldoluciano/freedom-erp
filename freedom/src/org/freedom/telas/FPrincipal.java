@@ -191,8 +191,7 @@ public class FPrincipal extends JFrame implements ActionListener {
      }
         if (this.temTela("Agenda") == false) {
 			FAgenda tela = new FAgenda();
-			tela.setConexao(con);
-			this.criatela("Agenda",tela);
+			this.criatela("Agenda",tela,con);
         }
      }
 
@@ -273,19 +272,11 @@ public class FPrincipal extends JFrame implements ActionListener {
      
  }
   
-  public void criatela(String nome, FDados comp, Connection cn) {
+  public void criatela(String nome, FFilho comp, Connection cn) {
     comp.setName(nome);
     dpArea.add(nome,comp);
-    comp.execShow(cn);
-    try {
-      comp.setSelected(true);
-    }
-    catch(Exception e) { }
-  }
-  public void criatela(String nome, FFilho comp) {
-    comp.setName(nome);
-    dpArea.add(nome,comp);
-    comp.show();
+    comp.setConexao(cn);
+    comp.execShow();
     try {
       comp.setSelected(true);
     }

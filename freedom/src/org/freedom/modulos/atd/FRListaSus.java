@@ -568,9 +568,9 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     }
   }
 
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     con = cn;
     setListaCampos(true, "ENCAMINHADOR", "AT");
-    super.execShow(cn);
   }
 }

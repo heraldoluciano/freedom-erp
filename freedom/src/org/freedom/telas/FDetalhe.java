@@ -22,6 +22,7 @@ package org.freedom.telas;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.sql.Connection;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -95,5 +96,9 @@ public class FDetalhe extends FDados {
   }
   public void setAltCab(int Alt) {
     pnBordCab.setPreferredSize(new Dimension(500,Alt));
+  }
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn);
+  	lcDet.setConexao(cn);
   }
 }

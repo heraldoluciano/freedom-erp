@@ -419,8 +419,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   public void afterDelete(DeleteEvent devt) { }
   public void setConexao(Connection cn) {
   	conIB = cn;
-  }
-  public void execShow(Connection cn) {
+	super.setConexao(cn);
   	con = cn;
     lcGrup.setConexao(cn);
 	lcCC.setConexao(cn);
@@ -433,6 +432,5 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
 										  "Por favor, contate o administrador do sistema.");
 		dispose();
 	}
-	super.execShow(cn);
   }
 }

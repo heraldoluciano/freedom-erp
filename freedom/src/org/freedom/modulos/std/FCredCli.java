@@ -477,9 +477,9 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   
   public void beforeCarrega(CarregaEvent cevt) {}
   
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcTipoCli.setConexao(cn);
     lcTipoCred.setConexao(cn);
-    super.execShow(cn);
   }        
 }

@@ -259,9 +259,9 @@ public class FEmpresa extends FTabDados implements PostListener{
     }
   }
   public void afterPost(PostEvent pevt) { }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
   	lcFilial.setConexao(cn);
-    super.execShow(cn);
   }
 
 }

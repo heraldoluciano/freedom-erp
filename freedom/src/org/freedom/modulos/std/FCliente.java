@@ -204,6 +204,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   public FCliente () {
     setTitulo("Cadastro de Clientes"); 
     setAtribos(50, 0, 550, 520);
+    //setFirstFocus(txtCodCli);
     
     lcCliFor.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcCliFor);
@@ -1491,8 +1492,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     	   
   	
   }
-  public void execShow(Connection cn) {
-  	con = cn;
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn);
   	bPref = getPrefere();
     montaTela();	
     lcTipoCli.setConexao(cn);      
@@ -1509,7 +1510,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     lcFor.setConexao(con);
     lcCliFor.setConexao(con);
     lcPais.setConexao(con);
-    super.execShow(cn);
   }
   public void stateChanged(ChangeEvent cevt){
 	  if (cevt.getSource()==tpn) {

@@ -153,9 +153,8 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		else if (iOpcao == 110100000){
 		  if (telaPrincipal.temTela("Atendimento")==false) {
 			FAtendimento tela = new FAtendimento();
-			tela.setConexao(con);
 			tela.setTelaPrim(telaPrincipal);
-			telaPrincipal.criatela("Atendimento",tela);
+			telaPrincipal.criatela("Atendimento",tela,con);
 		  } 
 		}
 		else if (iOpcao == 110200000) {
@@ -173,16 +172,15 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		else if (iOpcao == 120200000){
 		  if (telaPrincipal.temTela("Pesquisa Orcamentos")==false) {
 			FConsOrc tela = new FConsOrc();
-			tela.setConexao(con);
 			tela.setTelaPrim(telaPrincipal);
-			telaPrincipal.criatela("Pesquisa Orcamentos",tela);
+			telaPrincipal.criatela("Pesquisa Orcamentos",tela,con);
 		  } 
 		}
 		else if (iOpcao == 120300000){
 		  if (telaPrincipal.temTela("Aprova Orcamento")==false) {
 			FAprovaOrc tela = new FAprovaOrc();
-			tela.setConexao(con);
-			telaPrincipal.criatela("Aprova Orcamento",tela);
+			//tela.setConexao(con);
+			telaPrincipal.criatela("Aprova Orcamento",tela, con);
 		  } 
 		}
 		else if (iOpcao == 120400000){
@@ -190,7 +188,7 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 				FConsAutoriz tela = new FConsAutoriz();
 				tela.setConexao(con);
 				tela.setTelaPrim(telaPrincipal);
-				telaPrincipal.criatela("Pesquisa Autorização",tela);
+				telaPrincipal.criatela("Pesquisa Autorização",tela, con);
 		   } 
 		}
     }

@@ -175,11 +175,10 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
     	}
     }
     
-    public void execShow(Connection cn) {
-    	con = cn;
+    public void setConexao(Connection cn) {
+    	super.setConexao(cn);
     	lcImp.setConexao(cn);
     	lcPapel.setConexao(cn);
     	montaTela();	
-    	super.execShow(cn);
     }
   }

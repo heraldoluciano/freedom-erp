@@ -134,10 +134,10 @@ public class FTratRet extends FDetalhe implements ActionListener {
     super.actionPerformed(evt);
   }
 
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	lcTarefa.setConexao(cn);
 	lcItProc.setConexao(cn);
-	super.execShow(cn);
 	txtCodProc.setVlrInteger(new Integer(iCodProc));
 	txtCodItem.setVlrInteger(new Integer(iCodItem));
 	lcCampos.carregaDados();

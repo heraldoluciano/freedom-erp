@@ -444,9 +444,9 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     }
     txtInscFor.setVlrString(Funcoes.sIEValida);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcTipoFor.setConexao(cn);      
-    super.execShow(cn);
   }
   public void afterPost(PostEvent pevt) { }
 }

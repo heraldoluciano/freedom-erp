@@ -244,7 +244,8 @@ public class FConveniado extends FTabDados implements PostListener {
     
     lcCampos.setQueryInsert(false);    
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcTipoConv.setConexao(cn); 
 	lcAtrib.setConexao(cn);
 	lcCli.setConexao(cn);
@@ -255,7 +256,6 @@ public class FConveniado extends FTabDados implements PostListener {
 	
 	gfCamp.setCampos("ATCONVATRIBTB","CodConv","SeqConvAtrib",lcConvAtrib,cn);
 	
-    super.execShow(cn);
     oPrefs = prefs(); 
   }
   public void setCodcli(String sCodcli, String sRazCli) {

@@ -307,12 +307,10 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
             txtVlrLiqVenda.getVlrBigDecimal(),2,BigDecimal.ROUND_HALF_UP
         ).multiply(new BigDecimal(100)));
   }
-  public void execShow(Connection cn) {
-	
+  public void setConexao(Connection cn) {
+	 super.setConexao(cn);
 	 lcTran.setConexao(cn);
 	 lcVenda.setConexao(cn);
-	 
-	 super.execShow(cn);
    }
 
   public void afterInsert(InsertEvent ievt) {

@@ -81,8 +81,8 @@ public class FItNatoper extends FDetalhe {
 	txtCodNat.setVlrString(sCodFisc);
 	lcCampos.carregaDados();
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
 	lcTabICMS.setConexao(cn);      
-	super.execShow(cn);
+	super.setConexao(cn);
   }
 }

@@ -160,11 +160,11 @@ public class FTipoMov extends FDados {
     
     setListaCampos( true, "TIPOMOV", "EQ");
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
   	lcTipoMov.setConexao(cn);
   	lcModNota.setConexao(cn);
     lcSerie.setConexao(cn);
     lcTab.setConexao(cn);
-    super.execShow(cn);
   }
 }

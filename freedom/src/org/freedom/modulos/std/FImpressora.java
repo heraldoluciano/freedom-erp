@@ -115,8 +115,8 @@ public class FImpressora extends FDados {
 
     setListaCampos(true, "IMPRESSORA", "SG");
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcPapel.setConexao(cn);      
-    super.execShow(cn);
   }
 }

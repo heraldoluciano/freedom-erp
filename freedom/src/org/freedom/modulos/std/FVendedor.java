@@ -195,12 +195,11 @@ public class FVendedor extends FDados implements PostListener {
     return bRet;
   	
   }  
-  public void execShow(Connection cn) {
-  	con = cn;
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     if (ehSetorVend())
   	  montaSetor();
     lcPlan.setConexao(cn);
 	setListaCampos( true, "VENDEDOR", "VD");
-    super.execShow(cn);
   }
 }

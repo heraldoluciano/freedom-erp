@@ -264,7 +264,7 @@ public class FRGraficoCC extends FRelatorio {
 		int alt = getDesktopPane().getSize().width;
 		int larg = getDesktopPane().getSize().height;
 		DLExibePizza ex = new DLExibePizza(evBalanc.getGrafico(),alt,larg,"C.C: "+txtDescCC.getVlrString().trim().toUpperCase()+" - PLANEJAMENTO: "+txtDescPlan.getVlrString().toUpperCase(),evBalanc.getVlrLabel());
-		Aplicativo.telaPrincipal.criatela("Exibe Gráfico",ex);		  
+		Aplicativo.telaPrincipal.criatela("Exibe Gráfico",ex,con);		  
 	  }	  	 
 	} 
 	catch (Exception err) {

@@ -101,10 +101,10 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
         imprimir(false);
     super.actionPerformed(evt);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	lcSetAt.setConexao(cn);
 	lcFluxo.setConexao(cn);
-	super.execShow(cn);
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
