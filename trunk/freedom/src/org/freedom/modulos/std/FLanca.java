@@ -63,8 +63,9 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JPanel pnCentro = new JPanel(new BorderLayout());;
   private Painel pinPeriodo = new Painel(260,50);
-  private Painel pinSaldo = new Painel(310,50);
   private JLabel lbPeriodo = new JLabel(" Periodo");
+  private Painel pinSaldo = new Painel(310,50);
+
   private JTextFieldPad txtDataini = new JTextFieldPad();
   private JTextFieldPad txtDatafim = new JTextFieldPad();
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
