@@ -309,7 +309,7 @@ public class FVendedor extends FDados implements PostListener {
           imp.say(imp.pRow()+0,4,"Código");
           imp.say(imp.pRow()+0,12,"|");
           imp.say(imp.pRow()+0,14,"Nome:");
-          imp.say(imp.pRow()+0,46,"|");
+          imp.say(imp.pRow()+0,46,"|"); 
           imp.say(imp.pRow()+0,59,"Fone:");
           imp.say(imp.pRow()+0,93,"|");
           if(sValores[1].length()>0)
