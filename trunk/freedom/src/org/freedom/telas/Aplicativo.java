@@ -391,6 +391,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							telaPrincipal.criatela(titulo, tela, con);
 						} catch (Exception e) {
 							Funcoes.mensagemErro(framePrinc, e.getMessage());
+							e.printStackTrace();
 						}
 					}
 				}
