@@ -261,43 +261,6 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     lcSerie.setReadOnly(true);
     txtCodSerie.setTabelaExterna(lcSerie);
     
-    //FK Produto
-    txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);    
-    txtDescProd.setTipo(JTextFieldPad.TP_STRING,50,0);    
-    txtCLoteProd.setTipo(JTextFieldPad.TP_STRING,1,0);    
-    txtPercComItVenda.setTipo(JTextFieldPad.TP_DECIMAL,6,2);    
-    lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód. prod.", true, false, txtDescProd, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
-    lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Ref. prod.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtCLoteProd, 90, 100, 207, 20, "CLoteProd", "C/Lote", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtCodFisc, 90, 100, 207, 20, "CodFisc", "Cód. fisc.", false, true, null, JTextFieldPad.TP_STRING,false),"txtCodfiscx");
-    lcProd.add(new GuardaCampo( txtPercComItVenda, 90, 100, 207, 20, "ComisProd", "% Comis.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtSldLiqProd, 90, 100 , 207, 20, "SldLiqProd","Saldo",false,false,null, JTextFieldPad.TP_DECIMAL,false),"txtDescProdx");
-    lcProd.add(new GuardaCampo( txtVerifProd, 90, 100 , 207, 20, "VerifProd","Verif. custo",false,false,null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S')");
-    lcProd.montaSql(false, "PRODUTO", "EQ");
-    lcProd.setQueryCommit(false);
-    lcProd.setReadOnly(true);
-    txtCodProd.setTabelaExterna(lcProd);
-    //FK do produto (*Somente em caso de referências este listaCampos 
-      //Trabalha como gatilho para o listaCampos de produtos, assim
-      //carregando o código do produto que será armazenado no Banco)
-    lcProd2.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Ref. prod.", true, false, txtDescProd, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód. prod.", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
-    lcProd2.add(new GuardaCampo( txtCLoteProd, 90, 100, 207, 20, "CLoteProd", "C/Lote", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( txtCodFisc, 90, 100, 207, 20, "CodFisc", "Cód. Fisc.", false, true, null, JTextFieldPad.TP_STRING,false),"txtCodfiscx");
-    lcProd2.add(new GuardaCampo( txtPercComItVenda, 90, 100, 207, 20, "ComisProd", "% Comis.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( txtSldLiqProd, 90, 100 , 207, 20, "SldLiqProd","Saldo",false,false,null, JTextFieldPad.TP_DECIMAL,false),"txtDescProdx");
-    lcProd2.add(new GuardaCampo( txtVerifProd, 90, 100 , 207, 20, "VerifProd","Verif. custo",false,false,null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-    txtRefProd.setNomeCampo("RefProd");
-    txtRefProd.setListaCampos(lcDet);
-    lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S')");
-    lcProd2.montaSql(false, "PRODUTO", "EQ");
-    lcProd2.setQueryCommit(false);
-    lcProd2.setReadOnly(true);
-    txtRefProd.setTabelaExterna(lcProd2);
     
     //FK de Lotes
     txtCodLote.setTipo(JTextFieldPad.TP_STRING,13,0);
@@ -479,6 +442,48 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private void montaTela() {
     bPrefs = prefs(); //Carrega as preferências
 
+    //FK Produto
+    txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
+    txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);    
+    txtDescProd.setTipo(JTextFieldPad.TP_STRING,50,0);    
+    txtCLoteProd.setTipo(JTextFieldPad.TP_STRING,1,0);    
+    txtPercComItVenda.setTipo(JTextFieldPad.TP_DECIMAL,6,2);
+    txtCodFisc.setTipo(JTextFieldPad.TP_STRING,13,0);
+    txtSldLiqProd.setTipo(JTextFieldPad.TP_NUMERIC,15,3);
+    txtVerifProd.setTipo(JTextFieldPad.TP_STRING,1,0);
+    
+    lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK,false));
+    lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produtos", ListaCampos.DB_SI,false));
+    lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI,false));
+    lcProd.add(new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo( txtPercComItVenda, "ComisProd", "% Comis.", ListaCampos.DB_SI,false));
+    lcProd.add(new GuardaCampo( txtSldLiqProd, "SldLiqProd","Saldo", ListaCampos.DB_SI,false));
+    lcProd.add(new GuardaCampo( txtVerifProd, "VerifProd","Verif. custo",ListaCampos.DB_SI,false));
+    lcProd.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'"+(bPrefs[8]?",'M'":"")+")");
+    lcProd.montaSql(false, "PRODUTO", "EQ");
+    lcProd.setQueryCommit(false);
+    lcProd.setReadOnly(true);
+    txtCodProd.setTabelaExterna(lcProd);
+    //FK do produto (*Somente em caso de referências este listaCampos 
+      //Trabalha como gatilho para o listaCampos de produtos, assim
+      //carregando o código do produto que será armazenado no Banco)
+    lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, false));
+    lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI,false));
+    lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo( txtPercComItVenda, "ComisProd", "% comis.", ListaCampos.DB_SI, false ));
+    lcProd2.add(new GuardaCampo( txtSldLiqProd, "SldLiqProd","Saldo", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo( txtVerifProd, "VerifProd","Verif. custo", ListaCampos.DB_SI, false));
+    txtRefProd.setNomeCampo("RefProd");
+    txtRefProd.setListaCampos(lcDet);
+    lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'"+(bPrefs[8]?",'M'":"")+")");
+    lcProd2.montaSql(false, "PRODUTO", "EQ");
+    lcProd2.setQueryCommit(false);
+    lcProd2.setReadOnly(true);
+    txtRefProd.setTabelaExterna(lcProd2);
+    
     //FK Tipo de movimentos
     txtCodTipoMov.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING,40,0);    
@@ -1894,9 +1899,9 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     return bRetorno;
   }
   private boolean[] prefs() {
-    boolean[] bRetorno = new boolean[8];
+    boolean[] bRetorno = new boolean[9];
     String sSQL = "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," +
-    		"USACLASCOMIS,TRAVATMNFVD,NATVENDA,BLOQVENDA" +
+    		"USACLASCOMIS,TRAVATMNFVD,NATVENDA,BLOQVENDA, VENDAMATPRIM" +
     		" FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -1938,6 +1943,11 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
         if (rs.getString("BloqVenda")!=null) {
             if (rs.getString("BloqVenda").trim().equals("S"))
                 bRetorno[7]=true;
+        }
+        bRetorno[8]=false;
+        if (rs.getString("VendaMatPrim")!=null) {
+            if (rs.getString("VendaMatPrim").trim().equals("S"))
+                bRetorno[8]=true;
         }
         
       }
