@@ -112,7 +112,7 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Atendimentos");
     DLRTipoAtendo dl = new DLRTipoAtendo();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -60,7 +60,7 @@ public class FTipoExp extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Expositores");
     DLRTipoExp dl = new DLRTipoExp();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

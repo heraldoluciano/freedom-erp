@@ -111,7 +111,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Setores da Atendimento");
     DLRSetorAtend dl = new DLRSetorAtend();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

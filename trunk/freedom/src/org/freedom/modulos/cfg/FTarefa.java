@@ -103,7 +103,7 @@ public class FTarefa extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de tarefas");
     DLRTarefa dl = new DLRTarefa();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

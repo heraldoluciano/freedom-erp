@@ -1016,7 +1016,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   		 
 	FObservacao obs = new FObservacao("Descrição completa",sDesc,500);
 	obs.setSize(400,200);
-	obs.show();
+	obs.setVisible(true);
 	if (obs.OK) {
 		txaObsItVenda.setVlrString(obs.getTexto());
 		lcDet.edit();
@@ -1438,7 +1438,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
 		Funcoes.mensagemErro(this,"Erro ao carregar a observação!\n"+err.getMessage());
       }
       if (obs != null) {
-        obs.show();
+        obs.setVisible(true);
         if (obs.OK) {
           try {
             PreparedStatement ps = con.prepareStatement("UPDATE VDVENDA SET OBSVENDA=? WHERE CODVENDA=?");
@@ -1501,7 +1501,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
 
     imp.setTitulo("Relatório de Pedidos");
     DLRPedido dl = new DLRPedido(sOrdNota);
-	dl.show();
+	dl.setVisible(true);
 	if (dl.OK == false) {
 	  dl.dispose();
 	  return;
@@ -1787,7 +1787,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     imp.verifLinPag(sTipo);
     imp.setTitulo("Nota Fiscal");
     DLRPedido dl = new DLRPedido(sOrdNota);
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

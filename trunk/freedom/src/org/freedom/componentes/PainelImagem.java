@@ -326,7 +326,7 @@ public class PainelImagem extends JPanel implements ActionListener, MouseListene
     if (jfPai != null) {
       try {
         fdImagem = new FileDialog(jfPai,"Abrir Imagem");
-        fdImagem.show();
+        fdImagem.setVisible(true);
         if (fdImagem.getFile() == null) {
           bCancel = true;
         }
@@ -361,7 +361,7 @@ public class PainelImagem extends JPanel implements ActionListener, MouseListene
     FZoom zoom = null;
     if (imImagem != null) {
       zoom = new FZoom(imImagem,iTam);    
-      zoom.show();
+      zoom.setVisible(true);
     }
   }
   public void actionPerformed(ActionEvent evt) {  

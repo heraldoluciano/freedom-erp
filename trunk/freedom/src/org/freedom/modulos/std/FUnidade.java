@@ -60,7 +60,7 @@ public class FUnidade extends FDados implements ActionListener{
     imp.montaCab();
     imp.setTitulo("Relatório de Unidades");
     DLRUnidade dl = new DLRUnidade();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

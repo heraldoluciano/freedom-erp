@@ -64,7 +64,7 @@ public class FMensagem extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de mensagens");
     DLRMensagem dl = new DLRMensagem();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

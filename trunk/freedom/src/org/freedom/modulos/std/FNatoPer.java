@@ -100,7 +100,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Naturezas de Operações");
     DLRNatOper dl = new DLRNatOper();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -173,7 +173,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Lancamentos de Fretes");
     DLRFrete dl = new DLRFrete();
-    dl.show();
+    dl.setVisible(true);
     
     
     if (dl.OK == false) {

@@ -60,7 +60,7 @@ public class FTipoFor extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Fornecedor");
     DLRTipoFor dl = new DLRTipoFor();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

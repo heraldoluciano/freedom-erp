@@ -440,7 +440,7 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
   		 
 	FObservacao obs = new FObservacao("Descrição completa",sDesc,500);
 	obs.setSize(400,200);
-	obs.show();
+	obs.setVisible(true);
 	if (obs.OK) {
 		txaObsItOrc.setVlrString(obs.getTexto());
 		lcDet.edit();
@@ -628,7 +628,7 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
 	  }
 	  if (obs != null) {
 		obs.setSize(400,200);
-		obs.show();
+		obs.setVisible(true);
 		if (obs.OK) {
 		  try {
 			PreparedStatement ps = con.prepareStatement("UPDATE VDORCAMENTO SET OBSORC=? WHERE CODORC=?");

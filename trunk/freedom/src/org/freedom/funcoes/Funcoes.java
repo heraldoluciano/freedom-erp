@@ -1420,7 +1420,7 @@ public class Funcoes {
       }
     );
     dlErro.setModal(true);
-    dlErro.show();
+    dlErro.setVisible(true);
   }
   public static void criaTelaErro(String sErro, Component cOrig) {
   	FFDialogo dlErro = new FFDialogo(cOrig);

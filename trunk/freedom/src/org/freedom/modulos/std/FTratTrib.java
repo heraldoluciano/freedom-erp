@@ -62,7 +62,7 @@ public class FTratTrib extends FDados implements ActionListener{
     imp.montaCab();
     imp.setTitulo("Relatório de Tratamentos Tributários");
     DLRTratTrib dl = new DLRTratTrib();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -63,7 +63,7 @@ public class FTipoCli extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Cliente");
     DLRTipoCli dl = new DLRTipoCli();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

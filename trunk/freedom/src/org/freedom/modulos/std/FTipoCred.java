@@ -65,7 +65,7 @@ public class FTipoCred extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Crédito");
     DLRTipoCred dl = new DLRTipoCred();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -60,7 +60,7 @@ public class FGrauInst extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de graus de Instrução");
     DLRGrauInst dl = new DLRGrauInst();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -56,6 +56,8 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   public boolean bAdmin = false;
   private int iFilialPadrao = 0;
   private int iTerminal = 0;
+  private int tries = 0;
+
   public Login (String sBanco, String sDriver, String sImg, int iTerm) {
     
 	strBanco = sBanco;
@@ -84,9 +86,8 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 	txpSenha.addFocusListener(this);
 	cbEmp.addFocusListener(this);
 	btOK.addFocusListener(this);
-/*    System.out.println(Funcoes.doubleToStrCurExtenso(1333,new String[] {"centavo","centavos","real","reais"}));
-    System.exit(0); */  
-	show();
+
+	setVisible(true);
     
   }
   public String[] getStrVals() {
@@ -97,7 +98,6 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   }
   
   public int getFilial() {
-//  	System.out.println(""+cbEmp.getVlrInteger());
   	if (cbEmp.getVlrInteger().intValue() == 0)
   	  return 1;
   	return cbEmp.getVlrInteger().intValue();
@@ -112,6 +112,12 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   }
   
   public void focusLost(FocusEvent fevt) {
+  	if ( fevt.getSource()==txpSenha && 
+  			!sUsuAnt.equals(txtUsuario.getVlrString().trim().toLowerCase()) &&
+			tries == 0)  {
+  		btOK.doClick();
+  		tries++;
+  	}
   }
   
   public void focusGained(FocusEvent fevt) {
@@ -131,7 +137,8 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   	 }
   	 else if ( fevt.getSource()==btOK) {
   	    if ( !sUsuAnt.equals(txtUsuario.getVlrString().trim().toLowerCase() ) ) {	
-           lbInstrucoes.setText("Pressione espaço p/ conectar ao banco de dados!");  		
+           lbInstrucoes.setText("Pressione espaço p/ conectar ao banco de dados!");
+           
   	    }
   	    else {
            lbInstrucoes.setText("Pressione espaço p/ entrar no sistema!");  		
@@ -289,6 +296,9 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
         if ( !sUsuAnt.equals(sUsu) ) {
             montaCombo(sUsu , txpSenha.getVlrString().trim());
             cbEmp.requestFocus();
+            if (cbEmp.getItemCount() == 2) {
+            	btOK.doClick();
+            }
             return;
         }
         else if ((cbEmp.getVlrInteger().intValue()==0 ) && (!bAdmin)) {

@@ -715,7 +715,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     
       if (iTotErros>0) {
          btGerar.setEnabled(false);
-         dl.show();
+         dl.setVisible(true);
       }
       else {
          bRetorno = true;

@@ -77,7 +77,7 @@ public class FFase extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de fases de produção");
     DLRFase dl = new DLRFase();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

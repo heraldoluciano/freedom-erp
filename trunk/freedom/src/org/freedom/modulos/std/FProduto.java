@@ -622,7 +622,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	imp.setTitulo("Relatório de Produtos");
 	imp.montaCab();
     DLRProduto dl = new DLRProduto(con);
-	dl.show();
+	dl.setVisible(true);
 	if (dl.OK == false) {
 	  dl.dispose();
 	  return;
