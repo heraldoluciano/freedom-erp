@@ -47,26 +47,26 @@ import org.freedom.bmps.Icone;
  */
 public class StatusBar extends JPanel {
 
-	private JPanel pnTerm = new JPanel(new BorderLayout());
+	private JPanel pnEst = new JPanel(new BorderLayout());
 	private JPanel pnCentro = new JPanel(new BorderLayout());
 	private JPanel pnUsuario = new JPanel(new BorderLayout());
 	private JPanel pnInfo = new JPanel(new BorderLayout());
 	private JPanel pnRelogio = new JPanel(new BorderLayout());
-	private JPanel pnDescTerm = new JPanel(new BorderLayout());
-	private JPanel pnIconTerm = new JPanel(new BorderLayout());
+	private JPanel pnDescEst = new JPanel(new BorderLayout());
+	private JPanel pnIconEst = new JPanel(new BorderLayout());
 	private JPanel pnIconInfo = new JPanel(new BorderLayout());
 	private JPanel pnIDUSU = new JPanel(new BorderLayout());
 	private JPanel pnDescInfo = new JPanel(new BorderLayout());
 	private JPanel pnIconUsuario = new JPanel(new BorderLayout());
-	private JLabel lTerm = new JLabel();  
+	private JLabel lEst = new JLabel();  
 	private JLabel lUsuario = new JLabel();
 	private JLabel lInfo = new JLabel();
 	private JLabel lRelogio = new JLabel();  
-	private int iNumTerm = 0;
-	private String sDescTerm = "";
+	private int iNumEst = 0;
+	private String sDescEst = "";
 	private String sIDUsu = "";
 	private ImageIcon iconUsuario = Icone.novo("statusbarUsu.gif");
-	private ImageIcon iconTerm = Icone.novo("statusbarPc.gif");
+	private ImageIcon iconEst = Icone.novo("statusbarPc.gif");
 	private ImageIcon iconRelogio = Icone.novo("statusbarTime.gif");
 	private ImageIcon iconInfo = Icone.novo("statusbarInfo.gif");
 	
@@ -123,17 +123,17 @@ public class StatusBar extends JPanel {
 	  this.setPreferredSize(new Dimension(300, 25));
 	  this.setBorder(BorderFactory.createRaisedBevelBorder());
 
-      pnDescTerm.add(lTerm);
+      pnDescEst.add(lEst);
       pnIDUSU.add(lUsuario);
       pnDescInfo.add(lInfo);
       
-      pnIconTerm.add(new JLabel(iconTerm),BorderLayout.WEST);
+      pnIconEst.add(new JLabel(iconEst),BorderLayout.WEST);
       pnIconUsuario.add(new JLabel(iconUsuario),BorderLayout.WEST);
       pnIconInfo.add(new JLabel(iconInfo), BorderLayout.WEST);
                  
-	  lTerm.setPreferredSize(new Dimension(180, 20));
-	  lTerm.setFont(new Font("Arial", Font.PLAIN, 12));
-	  lTerm.setForeground( new Color(118, 89, 170));
+	  lEst.setPreferredSize(new Dimension(180, 20));
+	  lEst.setFont(new Font("Arial", Font.PLAIN, 12));
+	  lEst.setForeground( new Color(118, 89, 170));
      
 	  lUsuario.setPreferredSize(new Dimension(180, 20));
 	  lUsuario.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -143,14 +143,14 @@ public class StatusBar extends JPanel {
       lInfo.setFont(new Font("Arial", Font.PLAIN,12));
       lInfo.setForeground(new Color(118, 89, 170));
       
-	  pnTerm.setPreferredSize(new Dimension(180,23));
-	  pnTerm.setBorder(BorderFactory.createLoweredBevelBorder());
-	  //pnTerm.add(lTerm, BorderLayout.WEST);
+	  pnEst.setPreferredSize(new Dimension(180,23));
+	  pnEst.setBorder(BorderFactory.createLoweredBevelBorder());
+	  //pnEst.add(lEst, BorderLayout.WEST);
 	  
 	  pnInfo.setBorder(BorderFactory.createLoweredBevelBorder());
 	  
-      pnTerm.add(pnIconTerm,BorderLayout.WEST);
-      pnTerm.add(pnDescTerm,BorderLayout.CENTER);
+      pnEst.add(pnIconEst,BorderLayout.WEST);
+      pnEst.add(pnDescEst,BorderLayout.CENTER);
       
       pnUsuario.add(pnIconUsuario,BorderLayout.WEST);
       pnUsuario.add(pnIDUSU,BorderLayout.CENTER);
@@ -165,7 +165,7 @@ public class StatusBar extends JPanel {
       pnCentro.add(pnUsuario, BorderLayout.WEST);
       pnCentro.add(pnInfo, BorderLayout.CENTER);
       
-	  this.add(pnTerm, BorderLayout.WEST);
+	  this.add(pnEst, BorderLayout.WEST);
 	  this.add(pnCentro, BorderLayout.CENTER);
      
 	  lRelogio.setPreferredSize(new Dimension(80, 20));
@@ -198,30 +198,30 @@ public class StatusBar extends JPanel {
 	   
 	}
 	
-	public void setNumTerm(int iNumTerm) {
-	   this.iNumTerm = iNumTerm;
-	   ajustaTerm(); 		
+	public void setNumEst(int iNumEst) {
+	   this.iNumEst = iNumEst;
+	   ajustaEst(); 		
 	}
 	
-	public void setDescTerm(String sDescTerm) {
-	   this.sDescTerm = sDescTerm;
-	   ajustaTerm();	
+	public void setDescEst(String sDescEst) {
+	   this.sDescEst = sDescEst;
+	   ajustaEst();	
 	}
 	
-	public int getNumTerm() {
-	   return iNumTerm;	
+	public int getNumEst() {
+	   return iNumEst;	
 	}
 	
-	public String getDescTerm() {
-	   return sDescTerm;
+	public String getDescEst() {
+	   return sDescEst;
 	}
 	
 	public String getUsuario() {
 	   return sIDUsu;	
 	}
 	
-	private void ajustaTerm() {
-	   lTerm.setText((" "+iNumTerm+"-"+sDescTerm).trim());	
+	private void ajustaEst() {
+	   lEst.setText((" "+iNumEst+"-"+sDescEst).trim());	
 	}
 	
 	public void setInfo(String sTexto) {

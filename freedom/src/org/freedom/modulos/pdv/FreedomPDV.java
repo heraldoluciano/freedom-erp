@@ -148,7 +148,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
     int iRet = 0;
   	 try {
        PreparedStatement ps = con.prepareStatement("SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)"); // caixa, emp, filial
-       ps.setInt(1,iNumTerm);
+       ps.setInt(1,iNumEst);
        ps.setInt(2,iCodEmp);
        ps.setInt(3,iCodFilial);
        ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
@@ -194,7 +194,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
   	 		               " AND CODFILIAL=? AND CODEMP=?";
 	 try {
 	 	PreparedStatement ps = con.prepareStatement(sSQL);
-	 	ps.setInt(1,Aplicativo.iNumTerm);
+	 	ps.setInt(1,Aplicativo.iNumEst);
 	 	ps.setInt(2,Aplicativo.iCodFilial);
 	 	ps.setInt(3,Aplicativo.iCodEmp);
 	 	ResultSet rs = ps.executeQuery();

@@ -106,7 +106,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		try {
 			String sSQL = "SELECT * FROM PVVERIFCAIXASP (?,?,?,?,?,?)";
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iNumTerm);
+			ps.setInt(1,Aplicativo.iNumEst);
 			ps.setInt(2,Aplicativo.iCodEmp);
 			ps.setInt(3,ListaCampos.getMasterFilial("PVCAIXA"));
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
@@ -184,7 +184,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrPago.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumTerm);
+			ps.setInt(4,Aplicativo.iNumEst);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();
@@ -210,7 +210,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrTroco.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumTerm);
+			ps.setInt(4,Aplicativo.iNumEst);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();

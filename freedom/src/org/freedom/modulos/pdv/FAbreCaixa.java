@@ -66,7 +66,7 @@ public class FAbreCaixa extends FDialogo {
        if (!FreedomPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",FreedomPDV.bModoDemo)) {
 	      try {
 			PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)");
-			ps.setInt(1,Aplicativo.iNumTerm);
+			ps.setInt(1,Aplicativo.iNumEst);
 			ps.setInt(2,Aplicativo.iCodFilial);
 			ps.setInt(3,Aplicativo.iCodEmp);
 			ps.setBigDecimal(4,txtValor.getVlrBigDecimal());

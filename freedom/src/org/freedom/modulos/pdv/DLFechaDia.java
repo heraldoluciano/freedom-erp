@@ -69,7 +69,7 @@ public class DLFechaDia extends FDialogo {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,Aplicativo.iCodFilial);
-			ps.setInt(3,Aplicativo.iNumTerm);
+			ps.setInt(3,Aplicativo.iNumEst);
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 			ResultSet rs = ps.executeQuery();
 			if (rs.next())
@@ -95,7 +95,7 @@ public class DLFechaDia extends FDialogo {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
-			ps.setInt(3,Aplicativo.iNumTerm);
+			ps.setInt(3,Aplicativo.iNumEst);
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(5,bReduz ? "S" : "N");
 			ps.setInt(6,Aplicativo.iCodFilial);
@@ -123,7 +123,7 @@ public class DLFechaDia extends FDialogo {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrCaixa.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumTerm);
+			ps.setInt(4,Aplicativo.iNumEst);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();

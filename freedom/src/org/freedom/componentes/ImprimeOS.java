@@ -591,7 +591,7 @@ public class ImprimeOS implements ActionListener {
       ResultSet rs = null;
       
       String sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
-                    "WHERE EI.CODEST="+Aplicativo.iNumTerm+" AND EI.IMPPAD='S'"+
+                    "WHERE EI.CODEST="+Aplicativo.iNumEst+" AND EI.IMPPAD='S'"+
                     " AND I.CODIMP=EI.CODIMP AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP"+
                     " AND EI.CODEMP=? AND EI.CODFILIAL=?";
       try {
@@ -606,14 +606,15 @@ public class ImprimeOS implements ActionListener {
         }
         else 
           Funcoes.mensagemErro(null, "Não foi encontrado nenhum tipo de impressora!\n"+
-          									  "Provávelmente não têm impressora cadastrada para este terminal!!");
+          									  "Provávelmente não têm impressora cadastrada para esta estação de trabalho!!");
         rs.close();
         ps.close();
-//        con.commit();
+        if (!con.getAutoCommit())
+        	con.commit();
 
       }
       catch(SQLException err) {
-        Funcoes.mensagemErro(null, "Erro ao consultar a tabela SGCAIXAIMP E SGIMPRESSORA\n"+err.getMessage());
+        Funcoes.mensagemErro(null, "Erro ao consultar a tabela SGESTACAOIMP E SGIMPRESSORA\n"+err.getMessage());
       }
       
       if (!sRetorno.trim().equals("")) {
@@ -644,7 +645,7 @@ public class ImprimeOS implements ActionListener {
                     "I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
       try {
         ps = con.prepareStatement(sSQL);
-        ps.setInt(1,Aplicativo.iNumTerm);
+        ps.setInt(1,Aplicativo.iNumEst);
         ps.setInt(2,Aplicativo.iCodEmp);
         ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
         rs = ps.executeQuery();
@@ -661,7 +662,7 @@ public class ImprimeOS implements ActionListener {
 //        con.commit();
       }
       catch(SQLException err) {
-        Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela CAIXAIMP E IMPRESSORA");
+        Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela ESTACAOIMP E IMPRESSORA");
 		Funcoes.mensagemErro(cOwner, err.getMessage());
       }
 
@@ -863,7 +864,7 @@ public class ImprimeOS implements ActionListener {
     ResultSet rs = null;
     try {
       ps = con.prepareStatement(sSQL);
-      ps.setInt(1,Aplicativo.iNumTerm);
+      ps.setInt(1,Aplicativo.iNumEst);
       ps.setInt(2,Aplicativo.iCodEmp);
       ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
       rs = ps.executeQuery();
