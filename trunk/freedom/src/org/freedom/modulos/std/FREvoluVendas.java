@@ -76,8 +76,8 @@ public class FREvoluVendas extends FRelatorio {
 
 	txtCodTipoCli.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
 	txtDescTipoCli.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-	lcTipoCli.add(new GuardaCampo(txtCodTipoCli,7,100,80,20,"CodTipoCli","Código",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodTipoCli");
-	lcTipoCli.add(new GuardaCampo(txtDescTipoCli,90,100,207,20,"DescTipoCli","Descrição",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescTipoCli");
+	lcTipoCli.add(new GuardaCampo(txtCodTipoCli,7,100,80,20,"CodTipoCli","Cód.tp.cli.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodTipoCli");
+	lcTipoCli.add(new GuardaCampo(txtDescTipoCli,90,100,207,20,"DescTipoCli","Descrição do tipo do cliente",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescTipoCli");
 	lcTipoCli.montaSql(false, "TIPOCLI", "VD");
 	lcTipoCli.setQueryCommit(false);
 	lcTipoCli.setReadOnly(true);
@@ -90,8 +90,8 @@ public class FREvoluVendas extends FRelatorio {
 	
 	txtCodCli.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
 	txtRazCli.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-	lcCli.add(new GuardaCampo(txtCodCli,7,100,80,20,"CodCli","Código",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-	lcCli.add(new GuardaCampo(txtRazCli,90,100,207,20,"RazCli","Descrição",false,false,null,JTextFieldPad.TP_STRING,false),"txtRazCli");
+	lcCli.add(new GuardaCampo(txtCodCli,7,100,80,20,"CodCli","Cód.cli.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodCli");
+	lcCli.add(new GuardaCampo(txtRazCli,90,100,207,20,"RazCli","Razão social do cliente",false,false,null,JTextFieldPad.TP_STRING,false),"txtRazCli");
 	lcCli.montaSql(false, "CLIENTE", "VD");
 	lcCli.setQueryCommit(false);
 	lcCli.setReadOnly(true);
@@ -114,13 +114,15 @@ public class FREvoluVendas extends FRelatorio {
     adic(new JLabel("A:"),140,25,17,20);
     adic(txtDatafim,160,25,100,20);      
    
-	adic(new JLabel("Código e Razão do cliente"),7,45,300,20);
-	adic(txtCodCli, 7,65,50,20);
-	adic(txtRazCli,60,65,200,20);
+	adic(new JLabel("Cód.cli."),7,45,300,20);
+	adic(txtCodCli, 7,65,60,20);
+	adic(new JLabel("Razão social do cliente"),70,45,300,20);
+	adic(txtRazCli,70,65,200,20);
 
-    adic(new JLabel("Código e descrição do tipo de cliente"),7,85,300,20);
-    adic(txtCodTipoCli, 7,105,50,20);
-    adic(txtDescTipoCli,60,105,200,20);
+    adic(new JLabel("Cód.tp.cli."),7,85,300,20);
+    adic(txtCodTipoCli, 7,105,60,20);
+    adic(new JLabel("Descrição do tipo de cliente"),70,85,300,20);
+    adic(txtDescTipoCli,70,105,200,20);
     
     cbVendas.setVlrString("S");
     adic(cbVendas,5,130,265,25);
