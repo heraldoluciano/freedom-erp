@@ -97,8 +97,8 @@ public class FAgenda extends FFilho implements ActionListener {
  // 	txtDataini.setVlrDate(new Date());
  // 	txtDatafim.setVlrDate(new Date());
   	
-	lcUsu.add(new GuardaCampo( txtIdUsu, 7, 20, 80, 20, "IdUsu", "ID Usuario", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 20, 200, 20, "NomeUsu", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcUsu.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID Usuario", ListaCampos.DB_PK, false));
+	lcUsu.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome", ListaCampos.DB_SI,false));
 	lcUsu.montaSql(false, "USUARIO", "SG");    
 	lcUsu.setReadOnly(true);
 	txtIdUsu.setTabelaExterna(lcUsu);
