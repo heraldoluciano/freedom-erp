@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -114,7 +115,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public JPanelPad pinBotoes = new JPanelPad(30, 30);
 
 	public int iXPanel = 0;
-	
+
 	public static boolean bBuscaProdSimilar = false;
 
 	private static String sFiltro = "";
@@ -134,8 +135,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private int iCodSis = 0;
 
 	private int iCodMod = 0;
-	
-	
+
+	private Connection conIB;
 
 	public Aplicativo() {
 		Locale.setDefault(new Locale("pt", "BR"));
@@ -394,10 +395,36 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							Object obj = telaClass.newInstance();
 							if (obj instanceof FFilho) {
 								FFilho tela = (FFilho) obj;
+								
+								Class partypes[] = new Class[2];
+					            partypes[0] = Connection.class;
+					            partypes[1] = Connection.class;
+								Method meth = telaClass.getMethod("setConexao", partypes);
+								
 								telaPrincipal.criatela(titulo, tela, con);
+								
+								if (meth != null) {
+									Object arglist[] = new Object[2];
+						            arglist[0] = con;
+						            arglist[1] = conIB;
+									meth.invoke(obj, arglist);
+								}
 							} else if (obj instanceof FDialogo) {
 								FDialogo tela = (FDialogo) obj;
+
+								Class partypes[] = new Class[2];
+					            partypes[0] = Connection.class;
+					            partypes[1] = Connection.class;
+								Method meth = telaClass.getMethod("setConexao", partypes);
+								
 								telaPrincipal.criatela(titulo, tela, con);
+								
+								if (meth != null) {
+									Object arglist[] = new Object[2];
+						            arglist[0] = con;
+						            arglist[1] = conIB;
+									meth.invoke(obj, arglist);
+								}
 							} else {
 								Funcoes.mensagemInforma(framePrinc,
 										"Tela construída com "
@@ -707,7 +734,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public Connection conexaoIB(String strDriver, String strBanco) {
-		Connection conRetorno;
 		try {
 			Class.forName(strDriver);
 		} catch (java.lang.ClassNotFoundException e) {
@@ -717,7 +743,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		}
 
 		try {
-			conRetorno = DriverManager.getConnection(strBanco, strUsuario,
+			conIB = DriverManager.getConnection(strBanco, strUsuario,
 					strSenha);
 		} catch (java.sql.SQLException e) {
 			if (e.getErrorCode() == 335544472)
@@ -727,7 +753,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							+ e.getMessage());
 			return null;
 		}
-		return conRetorno;
+		return conIB;
 
 	}
 
@@ -921,8 +947,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
-			    String sBusca = (rs.getString("BUSCAPRODSIMILAR")==null?"N":"S");
-				bBuscaProdSimilar = sBusca.equals("S")?true:false;
+				String sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N"
+						: "S");
+				bBuscaProdSimilar = sBusca.equals("S") ? true : false;
 			}
 			rs.close();
 			ps.close();
