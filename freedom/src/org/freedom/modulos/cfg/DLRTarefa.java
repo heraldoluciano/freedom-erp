@@ -27,14 +27,16 @@ import java.util.Vector;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JRadioGroup;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FFDialogo;
 
-public class DLRTarefa extends FDialogo {
+public class DLRTarefa extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   public DLRTarefa() {
+  	super(Aplicativo.framePrinc);
 	setTitulo("Ordem do Relatório");
 	setAtribos(300,120);
 	vLabs.addElement("Código");
