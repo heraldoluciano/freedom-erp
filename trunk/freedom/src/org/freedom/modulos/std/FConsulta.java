@@ -51,11 +51,13 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JPanel pnCliProd = new JPanel(new BorderLayout());
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
-	private JTextFieldFK txtSldRProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
-	private JTextFieldFK txtSldCProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
-	private JTextFieldFK txtSldLProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldFK txtSldRProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldFK txtSldCProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldFK txtSldLProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
+	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private Tabela tabProd = new Tabela();
 	private JScrollPane spnTabProd = new JScrollPane(tabProd);
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
@@ -63,8 +65,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 
 	private Painel pinCabGrup = new Painel(700,60);
 	private JPanel pnCliGrup = new JPanel(new BorderLayout());
-	private JTextFieldPad txtCodGrup = new JTextFieldPad();
-	private JTextFieldFK txtDescGrup = new JTextFieldFK();
 	private Tabela tabGrup = new Tabela();
 	private JScrollPane spnTabGrup = new JScrollPane(tabGrup);
 	private ListaCampos lcGrup = new ListaCampos(this);
@@ -83,10 +83,8 @@ public class FConsulta extends FFilho implements CarregaListener {
 		// Início da aba de consulta de saldo por grupo
 		
 		txtCodGrup.setRequerido(true);
-		txtCodGrup.setTipo(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
-		txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-		lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI,false));
 		txtCodGrup.setTabelaExterna(lcGrup);
 		txtCodGrup.setNomeCampo("CodGrup");
 		txtCodGrup.setFK(true);

@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- *  
+ *   
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FCliente.java <BR>
  * 

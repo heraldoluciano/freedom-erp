@@ -66,53 +66,54 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   private JPanel pnTot = new JPanel(new GridLayout(1, 1));
   private JPanel pnCenter = new JPanel(new BorderLayout());
   private JButton btFechaCompra = new JButton(Icone.novo("btOk.gif"));
-  private JTextFieldPad txtCodCompra = new JTextFieldPad();
-  private JTextFieldPad txtCodTipoMov = new JTextFieldPad();
-  private JTextFieldPad txtDtEmitCompra = new JTextFieldPad();
-  private JTextFieldPad txtDtEntCompra = new JTextFieldPad();
-  private JTextFieldPad txtCodFor = new JTextFieldPad();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-  private JTextFieldPad txtCodItCompra = new JTextFieldPad();
-  private JTextFieldPad txtQtdItCompra = new JTextFieldPad();
-  private JTextFieldPad txtCodProd = new JTextFieldPad();
-  private JTextFieldPad txtRefProd = new JTextFieldPad();
-  private JTextFieldPad txtCLoteProd = new JTextFieldPad();
-  private JTextFieldPad txtPrecoItCompra = new JTextFieldPad();
-  private JTextFieldPad txtPercDescItCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad();
-  private JTextFieldPad txtPercComItCompra = new JTextFieldPad();
-  private JTextFieldPad txtCodNat = new JTextFieldPad();
-  private JTextFieldPad txtBaseICMSItCompra = new JTextFieldPad();
-  private JTextFieldPad txtPercICMSItCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrICMSItCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad();
-  private JTextFieldPad txtCodLote = new JTextFieldPad();
+  
+  private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtDtEmitCompra = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+  private JTextFieldPad txtDtEntCompra = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+  private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtCodItCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtQtdItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+  private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+  private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
+  private JTextFieldPad txtPrecoItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtPercDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+  private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtPercComItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtBaseICMSItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtPercICMSItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtVlrICMSItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtVlrLiqItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
-  private JTextFieldPad txtVlrIPICompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrDescCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrProdItCompra = new JTextFieldPad();
-  private JTextFieldPad txtBaseIPIItCompra = new JTextFieldPad();
-  private JTextFieldPad txtAliqIPIItCompra = new JTextFieldPad();
-  private JTextFieldPad txtVlrIPIItCompra = new JTextFieldPad();
-  private JTextFieldPad txtCustoItCompra = new JTextFieldPad();
-  private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad();
-  private JTextFieldPad txtVlrBrutCompra = new JTextFieldPad();
-  private JTextFieldPad txtSerieCompra = new JTextFieldPad();
-  private JTextFieldPad txtDocCompra = new JTextFieldPad();
-  private JTextFieldPad txtStatusCompra = new JTextFieldPad();
-  private JTextFieldFK txtDescTipoMov = new JTextFieldFK();
-  private JTextFieldFK txtDescFor = new JTextFieldFK();
-  private JTextFieldFK txtEstFor = new JTextFieldFK();
-  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
-  private JTextFieldFK txtDescProd = new JTextFieldFK();
-  private JTextFieldFK txtDescNat = new JTextFieldFK();
-  private JTextFieldFK txtDescLote = new JTextFieldFK();
-  private JTextFieldPad txtCodBarProd = new JTextFieldPad();
-  private JTextFieldPad txtCodFabProd = new JTextFieldPad();
-  private JTextFieldFK txtDescFisc = new JTextFieldFK();
+  private JTextFieldPad txtVlrIPICompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtVlrDescCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtVlrLiqCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtVlrProdItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtBaseIPIItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtAliqIPIItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+  private JTextFieldPad txtVlrIPIItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtCustoItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+  private JTextFieldPad txtVlrBrutCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+  private JTextFieldPad txtSerieCompra = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtDocCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtStatusCompra = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldFK txtEstFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldFK txtDescNat = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE, 10, 0);
+  private JTextFieldPad txtCodBarProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+  private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+  private JTextFieldFK txtDescFisc = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 
   private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
   private ListaCampos lcSerie = new ListaCampos(this, "SE");
@@ -149,8 +150,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
 
     pnMaster.add(pnCenter, BorderLayout.CENTER);
 
-    txtCodTipoMov.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING, 40, 0);
     lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
     lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI,false));
     lcTipoMov.setWhereAdic("ESTIPOMOV = 'E'");
@@ -159,8 +158,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcTipoMov.setReadOnly(true);
     txtCodTipoMov.setTabelaExterna(lcTipoMov);
 
-    txtSerieCompra.setTipo(JTextFieldPad.TP_STRING, 4, 0);
-    txtDocCompra.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
     lcSerie.add(new GuardaCampo(txtSerieCompra, "Serie", "Série", ListaCampos.DB_PK, false));
     lcSerie.add(new GuardaCampo(txtDocCompra, "DocSerie", "Doc", ListaCampos.DB_SI, false));
     lcSerie.montaSql(false, "SERIE", "LF");
@@ -168,9 +165,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcSerie.setReadOnly(true);
     txtSerieCompra.setTabelaExterna(lcSerie);
 
-    txtCodFor.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    txtDescFor.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-    txtEstFor.setTipo(JTextFieldPad.TP_STRING, 2, 0);
     lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
     lcFor.add(new GuardaCampo(txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
     lcFor.add(new GuardaCampo(txtEstFor, "UFFor", "UF", ListaCampos.DB_SI, false));
@@ -179,8 +173,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcFor.setReadOnly(true);
     txtCodFor.setTabelaExterna(lcFor);
 
-    txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING, 40, 0);
     lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
     lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
@@ -188,8 +180,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcPlanoPag.setReadOnly(true);
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 
-    txtDescFisc.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-    txtAliqIPIFisc.setTipo(JTextFieldPad.TP_DECIMAL, 6, 2);
     lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Código", ListaCampos.DB_PK, false));
     lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição", ListaCampos.DB_SI, false));
     lcFisc.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Tipo", ListaCampos.DB_SI, false));
@@ -201,14 +191,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtCodFisc.setTabelaExterna(lcFisc);
     txtDescFisc.setListaCampos(lcFisc);
 
-    txtCodProd.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    txtRefProd.setTipo(JTextFieldPad.TP_STRING, 13, 0);
-    txtDescProd.setTipo(JTextFieldPad.TP_STRING, 50, 0);
-    txtCLoteProd.setTipo(JTextFieldPad.TP_STRING, 1, 0);
-    txtCodFisc.setTipo(JTextFieldPad.TP_STRING, 13, 0);
-    txtCodBarProd.setTipo(JTextFieldPad.TP_STRING, 13, 0);
-    txtCodFabProd.setTipo(JTextFieldPad.TP_STRING, 13, 0);
-    txtPercComItCompra.setTipo(JTextFieldPad.TP_DECIMAL, 6, 2);
     lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK,  false));
     lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
     lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
@@ -239,8 +221,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcProd2.setReadOnly(true);
     txtRefProd.setTabelaExterna(lcProd2);
 
-    txtCodLote.setTipo(JTextFieldPad.TP_STRING, 13, 0);
-    txtDescLote.setTipo(JTextFieldPad.TP_DATE, 10, 0);
     lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Código", ListaCampos.DB_PK, false));
     lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Código do Produto", ListaCampos.DB_PK, false));
     lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Vencimento", ListaCampos.DB_SI, false));
@@ -254,8 +234,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtDescLote.setNomeCampo("VenctoLote");
     txtDescLote.setLabel("Vencimento");
 
-    txtCodNat.setTipo(JTextFieldPad.TP_STRING, 4, 0);
-    txtDescNat.setTipo(JTextFieldPad.TP_STRING, 40, 0);
     lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP", ListaCampos.DB_PK, false));
     lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI, false));
     lcNat.montaSql(false, "NATOPER", "LF");
@@ -264,11 +242,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtCodNat.setTabelaExterna(lcNat);
     txtDescNat.setListaCampos(lcNat);
 
-    txtCodCompra.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-    txtVlrIPICompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-    txtVlrDescCompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-    txtVlrLiqCompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-    txtVlrBrutCompra.setTipo(JTextFieldPad.TP_DECIMAL, 15, casasDec);
     lcCompra2.add(new GuardaCampo(txtCodCompra, "CodCompra", "Código", ListaCampos.DB_PK, false));
     lcCompra2.add(new GuardaCampo(txtVlrIPICompra, "VlrIPICompra", "IPI", ListaCampos.DB_SI, false));
     lcCompra2.add(new GuardaCampo(txtVlrDescCompra, "VlrDescItCompra", "Desconto", ListaCampos.DB_SI, false));
@@ -288,18 +261,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     setListaCampos(lcCampos);
     setAltCab(130);
     setPainel(pinCab, pnCliCab);
-    adicCampo(txtCodCompra, 7, 20, 100, 20, "CodCompra", "Nº Compra", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
-    adicCampo(txtCodTipoMov, 110, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoMov, true);
-    adicDescFK(txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov", "Descrição do tipo de movimento", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtSerieCompra, 400, 20, 77, 20, "Serie", "Série", JTextFieldPad.TP_STRING, 4, 0, false, true, null, true);
-    adicCampo(txtDocCompra, 480, 20, 77, 20, "DocCompra", "Doc", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtDtEmitCompra, 560, 20, 100, 20, "DtEmitCompra", "Data emissão", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
-    adicCampo(txtDtEntCompra, 7, 60, 100, 20, "DtEntCompra", "Data entrada", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
-    adicCampo(txtCodFor, 110, 60, 77, 20, "CodFor", "Cód.for.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescFor, true);
-    adicDescFK(txtDescFor, 190, 60, 207, 20, "RazFor", "Razão social do fornecedor", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodPlanoPag, 400, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescPlanoPag, true);
-    adicDescFK(txtDescPlanoPag, 480, 60, 180, 20, "DescPlanoPag", "Descrição do plano de pag.", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampoInvisivel(txtStatusCompra, "StatusCompra", "Status", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+    adicCampo(txtCodCompra, 7, 20, 100, 20, "CodCompra", "Nº Compra", ListaCampos.DB_PK, true);
+    adicCampo(txtCodTipoMov, 110, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_FK, txtDescTipoMov, true);
+    adicDescFK(txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov", "Descrição do tipo de movimento");
+    adicCampo(txtSerieCompra, 400, 20, 77, 20, "Serie", "Série", ListaCampos.DB_FK, true);
+    adicCampo(txtDocCompra, 480, 20, 77, 20, "DocCompra", "Doc", ListaCampos.DB_SI, true);
+    adicCampo(txtDtEmitCompra, 560, 20, 100, 20, "DtEmitCompra", "Dt.emissão", ListaCampos.DB_SI, true);
+    adicCampo(txtDtEntCompra, 7, 60, 100, 20, "DtEntCompra", "Dt.entrada", ListaCampos.DB_SI, true);
+    adicCampo(txtCodFor, 110, 60, 77, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, txtDescFor, true);
+    adicDescFK(txtDescFor, 190, 60, 207, 20, "RazFor", "Razão social do fornecedor");
+    adicCampo(txtCodPlanoPag, 400, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, true);
+    adicDescFK(txtDescPlanoPag, 480, 60, 180, 20, "DescPlanoPag", "Descrição do plano de pagto.");
+    adicCampoInvisivel(txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI, false);
     //    lcCampos.setWhereAdic("FLAG IN "+
     //    projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp));
     setListaCampos(true, "COMPRA", "CP");
@@ -337,34 +310,34 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     setPainel(pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "Item", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
+    adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",ListaCampos.DB_PK, true);
     if (comRef()) {
-      adicCampoInvisivel(txtCodProd, "CodProd", "Cód. Produto", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
-      adicCampoInvisivel(txtRefProd, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, true, null, false);
+      adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
+      adicCampoInvisivel(txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false);
       adic(new JLabel("Referência"), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
     }
     else {
-      adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
+      adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
     }
     txtCustoItCompra.setSoLeitura(true);
-    adicDescFK(txtDescProd, 110, 20, 197, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodLote, 310, 20, 67, 20, "CodLote", "Lote", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescLote, false);
-    adicCampo(txtQtdItCompra, 380, 20, 67, 20, "QtdItCompra", "Qtd.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, true);
-    adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, true);
-    adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra", "% Desc.", JTextFieldPad.TP_DECIMAL, 6, casasDec, false, false, null, false);
-    adicCampo(txtVlrDescItCompra, 580, 20, 67, 20, "VlrDescItCompra", "V. Desc.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-    adicCampo(txtCustoItCompra, 650, 20, 85, 20, "CustoItCompra", "Custo Estoq.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-    adicCampo(txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP", JTextFieldPad.TP_STRING, 4, 0, false, true, txtDescNat, true);
-    adicDescFK(txtDescNat, 80, 60, 197, 20, "DescNat", "Descrição da CFOP", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtBaseICMSItCompra, 280, 60, 67, 20, "VlrBaseICMSItCompra", "B. ICMS", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-    adicCampo(txtPercICMSItCompra, 350, 60, 57, 20, "PercICMSItCompra", "% ICMS", JTextFieldPad.TP_DECIMAL, 6, 2, false, false, null, true);
-    adicCampo(txtVlrICMSItCompra, 410, 60, 67, 20, "VlrICMSItCompra", "V. ICMS", JTextFieldPad.TP_DECIMAL, 6, casasDec, false, false, null, false);
-    adicCampoInvisivel(txtBaseIPIItCompra, "VlrBaseIPIItCompra", "B. IPI", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-    adicCampoInvisivel(txtAliqIPIItCompra, "PercIPIItCompra", "% IPI", JTextFieldPad.TP_DECIMAL, 6, casasDec, false, false, null, false);
-    adicCampo(txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra", "V. IPI", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-    adicCampoInvisivel(txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
-    adicCampo(txtVlrLiqItCompra, 550, 60, 100, 20, "VlrLiqItCompra", "Valor Item", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
+    adicDescFK(txtDescProd, 110, 20, 197, 20, "DescProd", "Descrição do produto");
+    adicCampo(txtCodLote, 310, 20, 67, 20, "CodLote", "Lote", ListaCampos.DB_FK, txtDescLote, false);
+    adicCampo(txtQtdItCompra, 380, 20, 67, 20, "QtdItCompra", "Qtd.", ListaCampos.DB_SI, true);
+    adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço", ListaCampos.DB_SI, true);
+    adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra", "% Desc.", ListaCampos.DB_SI, false);
+    adicCampo(txtVlrDescItCompra, 580, 20, 67, 20, "VlrDescItCompra", "V. Desc.", ListaCampos.DB_SI, false);
+    adicCampo(txtCustoItCompra, 650, 20, 85, 20, "CustoItCompra", "Custo Estoq.", ListaCampos.DB_SI, false);
+    adicCampo(txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP", ListaCampos.DB_FK, txtDescNat, true);
+    adicDescFK(txtDescNat, 80, 60, 197, 20, "DescNat", "Descrição da CFOP");
+    adicCampo(txtBaseICMSItCompra, 280, 60, 67, 20, "VlrBaseICMSItCompra", "B. ICMS", ListaCampos.DB_SI, false);
+    adicCampo(txtPercICMSItCompra, 350, 60, 57, 20, "PercICMSItCompra", "% ICMS", ListaCampos.DB_SI, true);
+    adicCampo(txtVlrICMSItCompra, 410, 60, 67, 20, "VlrICMSItCompra", "V. ICMS", ListaCampos.DB_SI, false);
+    adicCampoInvisivel(txtBaseIPIItCompra, "VlrBaseIPIItCompra", "B. IPI", ListaCampos.DB_SI ,false);
+    adicCampoInvisivel(txtAliqIPIItCompra, "PercIPIItCompra", "% IPI", ListaCampos.DB_SI, false);
+    adicCampo(txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra", "V. IPI", ListaCampos.DB_SI, false);
+    adicCampoInvisivel(txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto", ListaCampos.DB_SI, false);
+    adicCampo(txtVlrLiqItCompra, 550, 60, 100, 20, "VlrLiqItCompra", "Valor Item", ListaCampos.DB_SI, false);
     pinTot.adic(new JLabel("Tot. IPI"), 7, 0, 120, 20);
     pinTot.adic(txtVlrIPICompra, 7, 20, 120, 20);
     pinTot.adic(new JLabel("Tot. Desc."), 7, 40, 120, 20);
