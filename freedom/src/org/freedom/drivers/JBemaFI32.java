@@ -179,6 +179,10 @@ public class JBemaFI32 {
    public native int  bImprimeCopiaCheque();
 
 // Funções para o TEF
+
+   public native int  bIniciaModoTEF();
+   public native int  bFinalizaModoTEF();
+   
 /*
    public native int  bTEFStatus(String Identificacao);
    public native int  bTEFVendaCartao(String Identificacao, String ValorCompra);
@@ -847,7 +851,81 @@ public class JBemaFI32 {
   	}
   	return bRetorno;
   }
+/*  
+  public native int  bRecebimentoNaoFiscal(String IndiceTotalizador, String Valor, String FormaPagamento);
+  public native int  bAbreComprovanteNaoFiscalVinculado(String FormaPagamento, String Valor, String NumeroCupom);
+  public native int  bUsaComprovanteNaoFiscalVinculado(String Texto);
+  public native int  bFechaComprovanteNaoFiscalVinculado();
+*/
   
+  
+
+  
+  
+  public boolean abreComprovanteNaoFiscalVinculado(String sUserID, String sFormaPagto, BigDecimal bdValor, int iNumCupom, boolean bModoDemo) {
+ 	 boolean bRetorno = false;
+ 	 if (!bModoDemo) {
+       if (sFormaPagto.trim().equals(""))
+         sFormaPagto = " ";
+ 	   bRetorno = trataRetornoFuncao(  bAbreComprovanteNaoFiscalVinculado( sFormaPagto, Funcoes.transValor(bdValor,14,2,true), ""+iNumCupom) );
+ 	   if (!bRetorno) {
+ 	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_ABRE_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sFormaPagto+"-"+bdValor+"-"+iNumCupom+"-"+sMensErroLog);
+ 	   }
+ 	 }
+ 	 else
+ 	   bRetorno = true;
+ 	 return bRetorno;
+  }
+  public boolean usaComprovanteNaoFiscalVinculado(String sUserID, String sTexto, boolean bModoDemo) {
+  	 boolean bRetorno = false;
+  	 if (!bModoDemo) {
+       if (sTexto.trim().equals(""))
+           sTexto = " ";
+  	   bRetorno = trataRetornoFuncao(  bUsaComprovanteNaoFiscalVinculado( sTexto ) );
+  	   if (!bRetorno) {
+  	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_USA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sTexto+"-"+sMensErroLog);
+  	   }
+  	 }
+  	 else
+  	   bRetorno = true;
+  	 return bRetorno;
+  }
+  public boolean fechaComprovanteNaoFiscalVinculado(String sUserID, boolean bModoDemo) {
+   	 boolean bRetorno = false;
+   	 if (!bModoDemo) {
+   	   bRetorno = trataRetornoFuncao(  bFechaComprovanteNaoFiscalVinculado() );
+   	   if (!bRetorno) {
+   	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_FECHA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sMensErroLog);
+   	   }
+   	 }
+   	 else
+   	   bRetorno = true;
+   	 return bRetorno;
+   }
+  public boolean iniciaModoTEF(String sUserID, boolean bModoDemo) {
+    	 boolean bRetorno = false;
+    	 if (!bModoDemo) {
+    	   bRetorno = trataRetornoFuncao(  bIniciaModoTEF() );
+    	   if (!bRetorno) {
+    	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_INICIA_TEF,"ERRO NO INICIA MODO TEF: "+sMensErroLog);
+    	   }
+    	 }
+    	 else
+    	   bRetorno = true;
+    	 return bRetorno;
+  }
+  public boolean finalizaModoTEF(String sUserID, boolean bModoDemo) {
+ 	 boolean bRetorno = false;
+ 	 if (!bModoDemo) {
+ 	   bRetorno = trataRetornoFuncao(  bFinalizaModoTEF() );
+ 	   if (!bRetorno) {
+ 	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_FINALIZA_TEF,"ERRO NO FINALIZA MODO TEF: "+sMensErroLog);
+ 	   }
+ 	 }
+ 	 else
+ 	   bRetorno = true;
+ 	 return bRetorno;
+  }
   public boolean sangria(String sUserID, BigDecimal bdValor, boolean bModoDemo) {
 	 boolean bRetorno = false;
 	 if (!bModoDemo) {
