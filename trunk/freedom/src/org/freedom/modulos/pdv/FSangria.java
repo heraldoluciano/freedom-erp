@@ -50,7 +50,7 @@ public class FSangria extends FFDialogo {
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	public FSangria() {
-		super(Aplicativo.framePrinc);
+		super(Aplicativo.telaPrincipal);
 		setTitulo("Sangria de Caixa");
 		setAtribos(390,240);
 		

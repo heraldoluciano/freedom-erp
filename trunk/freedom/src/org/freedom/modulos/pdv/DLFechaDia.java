@@ -49,7 +49,7 @@ public class DLFechaDia extends FFDialogo {
 	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad("Deseja executar a redução Z?","S","N");
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	public DLFechaDia() {
-		super(Aplicativo.framePrinc);
+		super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de caixa");
 		setAtribos(310,150);
 		
