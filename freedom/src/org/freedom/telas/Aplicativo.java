@@ -399,34 +399,42 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							Object obj = telaClass.newInstance();
 							if (obj instanceof FFilho) {
 								FFilho tela = (FFilho) obj;
-								
+
 								Class partypes[] = new Class[2];
-					            partypes[0] = Connection.class;
-					            partypes[1] = Connection.class;
-								Method meth = telaClass.getMethod("setConexao", partypes);
-								
+								partypes[0] = Connection.class;
+								partypes[1] = Connection.class;
+								Method meth = null;
+								try {
+									meth = telaClass.getMethod(
+											"setConexao", partypes);
+								} catch (NoSuchMethodException e) { }
+
 								telaPrincipal.criatela(titulo, tela, con);
-								
+
 								if (meth != null) {
 									Object arglist[] = new Object[2];
-						            arglist[0] = con;
-						            arglist[1] = conIB;
+									arglist[0] = con;
+									arglist[1] = conIB;
 									meth.invoke(obj, arglist);
 								}
 							} else if (obj instanceof FDialogo) {
 								FDialogo tela = (FDialogo) obj;
 
 								Class partypes[] = new Class[2];
-					            partypes[0] = Connection.class;
-					            partypes[1] = Connection.class;
-								Method meth = telaClass.getMethod("setConexao", partypes);
-								
+								partypes[0] = Connection.class;
+								partypes[1] = Connection.class;
+								Method meth = null;
+								try {
+									meth = telaClass.getMethod(
+											"setConexao", partypes);
+								} catch (NoSuchMethodException e) { }
+
 								telaPrincipal.criatela(titulo, tela, con);
-								
+
 								if (meth != null) {
 									Object arglist[] = new Object[2];
-						            arglist[0] = con;
-						            arglist[1] = conIB;
+									arglist[0] = con;
+									arglist[1] = conIB;
 									meth.invoke(obj, arglist);
 								}
 							} else {
@@ -747,8 +755,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		}
 
 		try {
-			conIB = DriverManager.getConnection(strBanco, strUsuario,
-					strSenha);
+			conIB = DriverManager.getConnection(strBanco, strUsuario, strSenha);
 		} catch (java.sql.SQLException e) {
 			if (e.getErrorCode() == 335544472)
 				return null;

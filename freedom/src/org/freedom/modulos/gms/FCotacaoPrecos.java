@@ -190,22 +190,25 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adic(navCot, 7, 250, 280, 27);
 		adic(spTabCot, 7, 47, 730, 140);
 		
-		adicCampo(lcCotacao, navCot, txtCodCot, 7, 210, 77, 20, "CodCot", "Cód.Cot.",
+		setListaCampos(lcCotacao);
+		setNavegador(navCot);
+		
+		adicCampo(txtCodCot, 7, 210, 77, 20, "CodCot", "Cód.Cot.",
 				ListaCampos.DB_PK, false);
-		adicCampo(lcCotacao, navCot, txtDtCot, 87, 210, 97, 20, "DtCot", "Dt.Cot.",
+		adicCampo(txtDtCot, 87, 210, 97, 20, "DtCot", "Dt.Cot.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(lcCotacao, navCot, txtIdUsuCot, "IdUsuCot", "Usu.Cot.",
+		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.",
 				ListaCampos.DB_SI, false);
-		adicCampo(lcCotacao, navCot, txtCodFor, 187, 210, 77, 20, "CodFor", "Cod.For.",
+		adicCampo(txtCodFor, 187, 210, 77, 20, "CodFor", "Cod.For.",
 				ListaCampos.DB_SI, false);
-		adicCampo(lcCotacao, navCot, txtQtdCot, 467, 210, 87, 20, "QtdCot", "Qtd.Cot.",
+		adicCampo(txtQtdCot, 467, 210, 87, 20, "QtdCot", "Qtd.Cot.",
 				ListaCampos.DB_SI, false);
-		adicCampo(lcCotacao, navCot, txtQtdAprovCot, 557, 210, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
+		adicCampo(txtQtdAprovCot, 557, 210, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
 				ListaCampos.DB_SI, false);
-		adicCampo(lcCotacao, navCot, txtPrecoCot, 647, 210, 87, 20, "PrecoCot", "Preco.Cot.",
+		adicCampo(txtPrecoCot, 647, 210, 87, 20, "PrecoCot", "Preco.Cot.",
 				ListaCampos.DB_SI, false);
 		
-		tabCot.setTamColuna(30, 0);
+		/*tabCot.setTamColuna(30, 0);
 		tabCot.setTamColuna(80, 1);
 		tabCot.setTamColuna(230, 2);
 		tabCot.setTamColuna(70, 3);
@@ -213,7 +216,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tabCot.setTamColuna(70, 5);
 		tabCot.setTamColuna(70, 6);
 		tabCot.setTamColuna(70, 7);
-		tabCot.setTamColuna(70, 8);
+		tabCot.setTamColuna(70, 8);*/
 		
 		pinCab = new JPanelPad(740, 90);
 		setListaCampos(lcCampos);
