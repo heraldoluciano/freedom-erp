@@ -91,16 +91,16 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
-		lcConv.add(new GuardaCampo( txtCodConv, 7, 100, 80, 20, "CodConv", "CodConv", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConv");
-		lcConv.add(new GuardaCampo( txtNomeConv, 90, 100, 207, 20, "NomeConv", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeConv");
+		lcConv.add(new GuardaCampo( txtCodConv, 7, 100, 80, 20, "CodConv", "Cód.conv", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConv");
+		lcConv.add(new GuardaCampo( txtNomeConv, 90, 100, 207, 20, "NomeConv", "Nome do conveniado", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeConv");
 		txtCodConv.setTabelaExterna(lcConv);
 		txtCodConv.setNomeCampo("CodConv");
 		txtCodConv.setFK(true);
 		lcConv.setReadOnly(true);
 		lcConv.montaSql(false, "CONVENIADO", "AT");
 
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-		lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
+		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
+		lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
 		txtCodCli.setTabelaExterna(lcCli);
 		txtCodCli.setNomeCampo("CodCli");
 		txtCodCli.setFK(true);
@@ -108,8 +108,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		
 		
-		lcEnc.add(new GuardaCampo( txtCodEnc, 7, 100, 80, 20, "CodEnc", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcEnc.add(new GuardaCampo( txtNomeEnc, 400, 80, 150, 20, "NomeEnc", "Nome", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcEnc.add(new GuardaCampo( txtCodEnc, 7, 100, 80, 20, "CodEnc", "Cód.enc.", true, false, null, JTextFieldPad.TP_INTEGER,false));
+		lcEnc.add(new GuardaCampo( txtNomeEnc, 400, 80, 150, 20, "NomeEnc", "Nome do encaminhador", false, false, null, JTextFieldPad.TP_STRING,false));
 		txtCodEnc.setTabelaExterna(lcEnc);
 		txtCodEnc.setNomeCampo("CodEnc");
 		txtCodEnc.setFK(true);
@@ -125,20 +125,23 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		vVals.addElement("D");
 		vVals.addElement("V");
 		Vector vLabs = new Vector();
-		vLabs.addElement("Data de Emissão");
+		vLabs.addElement("Data de emissão");
 		vLabs.addElement("Data de venc. da autorização");
 		gbVenc = new JRadioGroup(2,1,vLabs,vVals);
 		
-		pinCab.adic(new JLabel("Código e nome do cliente"),7,0,280,20);
+		pinCab.adic(new JLabel("Cód.cli."),7,0,280,20);
 		pinCab.adic(txtCodCli,7,20,70,20);
+		pinCab.adic(new JLabel("Razão social do cliente"),80,0,280,20);
 		pinCab.adic(txtNomeCli,80,20,294,20);
 
-		pinCab.adic(new JLabel("Código e nome do conveniado"),7,40,280,20);
+		pinCab.adic(new JLabel("Cód.conv."),7,40,280,20);
 		pinCab.adic(txtCodConv,7,60,70,20);
+		pinCab.adic(new JLabel("Nome do conveniado"),80,40,280,20);
 		pinCab.adic(txtNomeConv,80,60,294,20);
 		
-		pinCab.adic(new JLabel("Cód. e descrição do Encaminhador"),7,80,250,20);
+		pinCab.adic(new JLabel("Cód.enc."),7,80,250,20);
 		pinCab.adic(txtCodEnc,7,100,70,20);
+		pinCab.adic(new JLabel("Descrição do Encaminhador"),80,80,250,20);
 		pinCab.adic(txtNomeEnc,80,100,294,20);
 						
 //		pinCab.adic(cbConveniado,300,60,150,20);
@@ -172,27 +175,27 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
 
-		tab.adicColuna("Cod.Orc");
+		tab.adicColuna("Cód.orc");
 		tab.adicColuna("Emissão.");
-		tab.adicColuna("Vcto.Orc.");
-		tab.adicColuna("Cod.Conv.");
-		tab.adicColuna("Nome do Conveniado");
-		tab.adicColuna("Fone do Conv.");
-		tab.adicColuna("Valid.Autoriz.");
-		tab.adicColuna("Num.Autoriz");
-		tab.adicColuna("Cod.Prod.");
-		tab.adicColuna("Cod.Barra");
-		tab.adicColuna("Desc.Prod.");
+		tab.adicColuna("Vcto.orc.");
+		tab.adicColuna("Cód.conv.");
+		tab.adicColuna("Nome do conveniado");
+		tab.adicColuna("Fone do conveniado");
+		tab.adicColuna("Valid.autoriz.");
+		tab.adicColuna("Num.autoriz");
+		tab.adicColuna("Cód.prod.");
+		tab.adicColuna("Cód.barra");
+		tab.adicColuna("Desc.prod.");
 		tab.adicColuna("Cidade");
         tab.adicColuna("Encaminhador");
         
-		tab.setTamColuna(50,0);
+		tab.setTamColuna(70,0);
 		tab.setTamColuna(70,1);
 		tab.setTamColuna(70,2);
 		tab.setTamColuna(70,3);
 		tab.setTamColuna(150,4);
-		tab.setTamColuna(80,5);
-		tab.setTamColuna(90,6);
+		tab.setTamColuna(120,5);
+		tab.setTamColuna(110,6);
 		tab.setTamColuna(90,7);
 		tab.setTamColuna(90,8);
 		tab.setTamColuna(90,9);

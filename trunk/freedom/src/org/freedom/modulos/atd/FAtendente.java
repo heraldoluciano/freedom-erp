@@ -58,8 +58,8 @@ public class FAtendente extends FDados {
     setTitulo("Cadastro de Atendentes");
     setAtribos( 50, 20, 500, 440);
 
-    lcTipoAtend.add(new GuardaCampo( txtCodTipoAtend, "CodTpAtend", "Código", ListaCampos.DB_PK, false),"txtCodVendx");
-    lcTipoAtend.add(new GuardaCampo( txtDescTipoAtend, "DescTpAtend", "Descriçao", ListaCampos.DB_SI,false),"txtCodVendx");
+    lcTipoAtend.add(new GuardaCampo( txtCodTipoAtend, "CodTpAtend", "Cód.tp.atend.", ListaCampos.DB_PK, false),"txtCodVendx");
+    lcTipoAtend.add(new GuardaCampo( txtDescTipoAtend, "DescTpAtend", "Descriçao do tipo de atendente", ListaCampos.DB_SI,false),"txtCodVendx");
     lcTipoAtend.montaSql(false, "TIPOATEND", "AT");    
     lcTipoAtend.setQueryCommit(false);
     lcTipoAtend.setReadOnly(true);
@@ -79,8 +79,8 @@ public class FAtendente extends FDados {
 	lcUsu.setReadOnly(true);
 	txtCodUsu.setTabelaExterna(lcUsu);
 
-    adicCampo(txtCodAtend, 7, 20, 80, 20, "CodAtend", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtNomeAtend, 90, 20, 370, 20, "NomeAtend", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtCodAtend, 7, 20, 80, 20, "CodAtend", "Cód.atend.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtNomeAtend, 90, 20, 370, 20, "NomeAtend", "Nome do atendente", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
 	adicCampo(txtCpfAtend, 7, 60, 150, 20, "CpfAtend", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
     adicCampo(txtIdentificAtend, 160, 60, 150, 20, "IdentificAtend", "Identificação", JTextFieldPad.TP_STRING, 18, 0, false, false, null, false);
     adicCampo(txtRgAtend, 313, 60, 149, 20, "RgAtend", "RG", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
@@ -93,11 +93,11 @@ public class FAtendente extends FDados {
     adicCampo(txtFoneAtend, 7, 180, 150, 20, "FoneAtend", "Telefone", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
     adicCampo(txtFaxAtend, 160, 180, 150, 20, "FaxAtend", "Fax", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
     adicCampo(txtCelAtend, 313, 180, 149, 20, "CelAtend", "Cel", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
-	adicCampo(txtCodTipoAtend, 7, 220, 100, 20, "CodTpAtend", "Código", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescTipoAtend,true);
-	adicDescFK(txtDescTipoAtend, 110, 220, 352, 20, "DescTpAtend", "e descrição do tipo de atendente", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodTipoAtend, 7, 220, 100, 20, "CodTpAtend", "Cód.tp.atend.", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescTipoAtend,true);
+	adicDescFK(txtDescTipoAtend, 110, 220, 352, 20, "DescTpAtend", "Descrição do tipo de atendente", JTextFieldPad.TP_STRING, 50, 0);
 	adicCampo(txtCodUsu, 7, 260, 100, 20, "IdUsu", "ID", JTextFieldPad.TP_STRING, 8, 0, false, true, txtDescUsu,false);
-	adicDescFK(txtDescUsu, 110, 260, 352, 20, "NomeUsu", "e nome do usuário", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtCodVend, 7, 300, 100, 20, "CodVend", "Cód.Comis.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescVend,false);
+	adicDescFK(txtDescUsu, 110, 260, 352, 20, "NomeUsu", "Nome do usuário", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodVend, 7, 300, 100, 20, "CodVend", "Cód.comis.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescVend,false);
 	adicDescFK(txtDescVend, 110, 300, 352, 20, "NomeVend", "Nome do comissionado", JTextFieldPad.TP_STRING, 50, 0);
 	adicCampo(txtEmailAtend, 7, 340, 340, 20, "EmailAtend", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
     txtRgAtend.setMascara(JTextFieldPad.MC_RG);

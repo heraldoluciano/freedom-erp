@@ -125,22 +125,23 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	    txtTotal.setAtivo(false);	
 		
 		//FK Conveniado
-		lcConv.add(new GuardaCampo( txtCodConv, "CodConv", "Código", ListaCampos.DB_PK,false),"txtCodConv");
-		lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome", ListaCampos.DB_SI,false),"txtNomeConv");
+		lcConv.add(new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK,false),"txtCodConv");
+		lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI,false),"txtNomeConv");
 		lcConv.montaSql(false, "CONVENIADO","AT");    
 		lcConv.setQueryCommit(false);
 		lcConv.setReadOnly(true);
 		txtCodConv.setTabelaExterna(lcConv);
 
-		pinCab.adic(new JLabel("Cód. Orç."),7,0,100,20);
+		pinCab.adic(new JLabel("Cód.orç."),7,0,100,20);
 		pinCab.adic(txtCodOrc,7,20,70,20);
-		pinCab.adic(new JLabel("Código e nome do conveniado"),82,0,250,20);
-		pinCab.adic(txtCodConv,82,20,50,20);
-		pinCab.adic(txtNomeConv,137,20,203,20);
-		pinCab.adic(new JLabel("Data"),345,0,70,20);
-		pinCab.adic(txtDtOrc,345,20,70,20);
-		pinCab.adic(new JLabel("Validade"),420,0,70,20);
-		pinCab.adic(txtDtVal,420,20,70,20);
+		pinCab.adic(new JLabel("Cód.conv."),82,0,250,20);
+		pinCab.adic(txtCodConv,82,20,70,20);
+		pinCab.adic(new JLabel("Nome do conveniado"),157,0,250,20);
+		pinCab.adic(txtNomeConv,157,20,203,20);
+		pinCab.adic(new JLabel("Data"),365,0,70,20);
+		pinCab.adic(txtDtOrc,365,20,70,20);
+		pinCab.adic(new JLabel("Validade"),440,0,70,20);
+		pinCab.adic(txtDtVal,440,20,70,20);
 		
 		cbTodos.setVlrString("N");
 		pinCab.adic(cbTodos,7,45,160,20);
@@ -166,19 +167,19 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		tab.adicColuna("Aceite");
 		tab.adicColuna("Aprov.");
 		tab.adicColuna("Ítem");
-		tab.adicColuna("Cód.");
-        tab.adicColuna("e descrição do produto");
+		tab.adicColuna("Cód.prod.");
+        tab.adicColuna("Descrição do produto");
 		tab.adicColuna("Qtd.");
-		tab.adicColuna("V.Unit.");
-		tab.adicColuna("V.Tot.");
+		tab.adicColuna("Vlr.unit.");
+		tab.adicColuna("Vlr.tot.");
 		tab.adicColuna("");
 		tab.adicColuna("Autoriz.");
 		tab.adicColuna("Validade");
 			
-		tab.setTamColuna(35,0);
-		tab.setTamColuna(35,1);
-		tab.setTamColuna(35,2);
-		tab.setTamColuna(50,3);
+		tab.setTamColuna(50,0);
+		tab.setTamColuna(50,1);
+		tab.setTamColuna(50,2);
+		tab.setTamColuna(70,3);
 		tab.setTamColuna(220,4);
 		tab.setTamColuna(60,5);
 		tab.setTamColuna(70,6);

@@ -40,8 +40,8 @@ public class FAtribuicao extends FDados implements ActionListener {
   public FAtribuicao () {
     setTitulo("Cadastro de Atribuições");
     setAtribos( 20, 20, 370, 225);
-    adicCampo(txtCodAtrib, 7, 20, 80, 20,"CodAtrib","Código",JTextFieldPad.TP_STRING,15,0,true,false,null,true);
-    adicCampo(txtDescAtrib, 90, 20, 250, 20,"DescAtrib","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodAtrib, 7, 20, 80, 20,"CodAtrib","Cód.atrib.",JTextFieldPad.TP_STRING,15,0,true,false,null,true);
+    adicCampo(txtDescAtrib, 90, 20, 250, 20,"DescAtrib","Descrição da atribuição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
 	adicDB(txaObsAtrib, 7, 60, 333, 80,"ObsAtrib","Observação",JTextFieldPad.TP_STRING,true);
     setListaCampos( true, "ATRIBUICAO", "AT");
     btImp.addActionListener(this);
@@ -81,7 +81,7 @@ public class FAtribuicao extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.atrib.");
             imp.say(imp.pRow()+0,25,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
