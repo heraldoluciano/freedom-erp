@@ -22,14 +22,19 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.sql.Connection;
-
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
-
+import javax.swing.SwingConstants;
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JTabbedPanePad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
@@ -38,10 +43,11 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
-public class FEmpresa extends FTabDados implements PostListener{
+public class FEmpresa extends FTabDados implements PostListener, CarregaListener{
   private JPanelPad pinGeral = new JPanelPad(470,470);
   private JPanelPad pinFilial = new JPanelPad(470,270);
   private JPanelPad pnFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnFilialGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodEmp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazEmp = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeEmp = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
@@ -83,13 +89,31 @@ public class FEmpresa extends FTabDados implements PostListener{
   private JTextFieldPad txtPercCofins = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,5,2);
   private JTextFieldPad txtPercIR = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,5,2);
   private JTextFieldPad txtPercCSocial = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,5,2);
+  
+  private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  
   private JCheckBoxPad cbMatriz = new JCheckBoxPad("Matriz","S","N");
   private JCheckBoxPad cbSimples = new JCheckBoxPad("Simples","S","N");
   private ListaCampos lcFilial = new ListaCampos(this);
+  private ListaCampos lcAlmox = new ListaCampos(this,"");
+  private ListaCampos lcAlmoxFilial = new ListaCampos(this,"");
   private Tabela tabFilial = new Tabela();
   private JScrollPane spnFilial = new JScrollPane(tabFilial);
   private Navegador navFilial = new Navegador(true);
   private PainelImagem imFotoEmp = new PainelImagem(65000);
+  private JTabbedPanePad tpn2 = new JTabbedPanePad();
+  private JCheckBoxPad cbMultiAlmox = new JCheckBoxPad("Sim","S","N");
+  
+  private JPanelPad pinDetAlmoxFilial = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+  private Tabela tbAlmoxFilial = new Tabela();
+  private JScrollPane spnAlmoxFilial = new JScrollPane(tbAlmoxFilial); // Scrool pane para grid de Bancos.
+  private JPanelPad pinCamposAlmoxFilial = new JPanelPad(680,200);
+  private JPanelPad pinNavAlmoxFilial = new JPanelPad(680,30);
+  private JPanelPad pnAlmoxFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private Navegador navAlmoxFilial = new Navegador(false);
+  private JCheckBoxPad cbPermiteBaixa = new JCheckBoxPad("Sim","S","N");
+  
   public FEmpresa () {
     setTitulo("Cadastro da Empresa");
     setAtribos( 50, 20, 500, 470);
@@ -104,6 +128,19 @@ public class FEmpresa extends FTabDados implements PostListener{
     lcCampos.adicDetalhe(lcFilial);
     lcFilial.setTabela(tabFilial);
 
+    lcAlmoxFilial.setMaster(lcFilial);
+    lcFilial.adicDetalhe(lcAlmoxFilial);
+    
+    lcAlmoxFilial.setTabela(tbAlmoxFilial);
+    
+    lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.Almox.", ListaCampos.DB_PK, true));
+    lcAlmox.add(new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false));
+
+    lcAlmox.montaSql(false, "ALMOX", "EQ");    
+    lcAlmox.setQueryCommit(false);
+    lcAlmox.setReadOnly(true);
+    txtCodAlmox.setTabelaExterna(lcAlmox);
+    
     txtCodEmp.cancelaDLF2();
     
     setPainel(pinGeral);
@@ -130,6 +167,7 @@ public class FEmpresa extends FTabDados implements PostListener{
     adicCampo(txtPercIssEmp, 300, 180, 47, 20, "PercIssEmp" , "%Iss" , ListaCampos.DB_SI, false);
     adicCampo(txtNomeContEmp, 350, 180, 120, 20,"NomeContEmp" , "Contato" , ListaCampos.DB_SI,false);
 	adicDB(imFotoEmp, 7, 230, 150, 140, "FotoEmp", "Foto: (máx. 64K)",true);
+  	adicDB(cbMultiAlmox, 160, 230, 300, 20, "MultiAlmoxEmp", "Intercambio de almox. entre filiais?",true);
     
     txtCnpjEmp.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepEmp.setMascara(JTextFieldPad.MC_CEP);
@@ -139,7 +177,11 @@ public class FEmpresa extends FTabDados implements PostListener{
 
 
     setPainel( pinFilial, pnFilial);
-    adicTab("Filiais",pnFilial);
+    adicTab("Filiais",pnFilialGeral);
+    
+    tpn2.setTabPlacement(SwingConstants.BOTTOM);
+    pnFilialGeral.add(tpn2,BorderLayout.CENTER);
+
     setListaCampos(lcFilial);
     setNavegador(navFilial);
     pnFilial.add(pinFilial, BorderLayout.SOUTH);
@@ -199,7 +241,54 @@ public class FEmpresa extends FTabDados implements PostListener{
     tabFilial.setTamColuna(60,17);
     tabFilial.setTamColuna(40,18);
     tabFilial.setTamColuna(80,19);
+
+
+    
+//    *************************AlmoxFilial
+          
+      setPainel( pinDetAlmoxFilial, pnAlmoxFilial);
+
+      pinDetAlmoxFilial.setPreferredSize(new Dimension(600,80));
+      pinDetAlmoxFilial.add(pinNavAlmoxFilial,BorderLayout.SOUTH);
+      pinDetAlmoxFilial.add(pinCamposAlmoxFilial,BorderLayout.CENTER);
+      setListaCampos(lcAlmoxFilial);
+      setNavegador(navAlmoxFilial);
+          
+      pnAlmoxFilial.add(pinDetAlmoxFilial, BorderLayout.SOUTH);
+  	  pnAlmoxFilial.add(spnAlmoxFilial, BorderLayout.CENTER);
+
+  	  pinNavAlmoxFilial.adic(navAlmoxFilial,0,0,270,25);
+      
+      setPainel(pinCamposAlmoxFilial);
+      
+      adicCampo(txtCodAlmox, 7, 20, 60, 20, "codalmox", "Cod.Almox.", ListaCampos.DB_PF, txtDescAlmox,false);
+      adicDescFK(txtDescAlmox, 70, 20, 150, 20, "DescAlmox", "Descrição do almoxarifado");
+      adicDB(cbPermiteBaixa, 223, 20, 200, 20, "BaixaEstoqAf", "Permite baixa de estoque?",false);
+      
+      setListaCampos( false, "ALMOXFILIAL", "EQ");
+      lcAlmoxFilial.setQueryInsert(false);
+      lcAlmoxFilial.setQueryCommit(false);
+      lcAlmoxFilial.montaTab();
+      tbAlmoxFilial.setTamColuna(90,0); 
+      tbAlmoxFilial.setTamColuna(200,1);
+
+//   **************************    
+    
+    lcCampos.addCarregaListener(this);
+        
+    habAbas();
   }  
+  public void afterCarrega(CarregaEvent cevt) {
+  	habAbas();
+  }
+  private void habAbas() {
+  	tpn2.removeAll();
+    tpn2.addTab("Filial",pnFilial);
+    
+    if(cbMultiAlmox.getVlrString().equals("S"))
+    	tpn2.addTab("Almox.",pnAlmoxFilial);
+  }
+
   public void beforePost(PostEvent pevt) {
     if (pevt.getListaCampos() == lcCampos) {
       if (txtCnpjEmp.getText().trim().length() < 1) {
@@ -258,9 +347,12 @@ public class FEmpresa extends FTabDados implements PostListener{
     }
   }
   public void afterPost(PostEvent pevt) { }
+  public void beforeCarrega(CarregaEvent cevt) {}
   public void setConexao(Connection cn) {
     super.setConexao(cn);
   	lcFilial.setConexao(cn);
+  	lcAlmox.setConexao(cn);
+  	lcAlmoxFilial.setConexao(cn);
   }
 
 }

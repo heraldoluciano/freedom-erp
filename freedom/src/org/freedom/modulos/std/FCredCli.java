@@ -885,7 +885,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	pnSocios.add(spnSocios, BorderLayout.CENTER);
 
 	pinNavSocios.adic(navSocios,0,0,270,25);
-    
+     
     setPainel(pinCamposSocios);
     
     adicCampo(txtNomeSocio, 7, 20, 250, 20, "NomeSocio", "Nome", ListaCampos.DB_PK, null,true);
@@ -905,12 +905,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     tbSocios.setTamColuna(120,3);
 
 // **************************    
-
-     
-        
-    
-    
-    
     
     completaTela();    
   }
@@ -962,7 +956,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   		txtCodCli.requestFocus(false);
   	}
   }
-  
   private void habCampos() {
 
   	//Pessoa Física
@@ -1028,7 +1021,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     pinTrabalho.setEnabled(false);
 
   }
-
   public void afterCarrega(CarregaEvent cevt) {
   	if (txtDtIniTr.getVlrString().equals("")){
   		txtDtIniTr.setVlrDate(new Date());
