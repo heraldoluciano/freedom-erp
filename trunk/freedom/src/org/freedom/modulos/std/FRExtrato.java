@@ -42,10 +42,10 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRExtrato extends FRelatorio {
-  private JTextFieldPad txtCodConta = new JTextFieldPad(); 
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private JTextFieldFK txtDescConta = new JTextFieldFK(); 
+  private JTextFieldPad txtCodConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
   private ListaCampos lcConta = new ListaCampos(this);
   private Connection con = null;
   public FRExtrato() {
@@ -53,13 +53,8 @@ public class FRExtrato extends FRelatorio {
     setAtribos(80,80,330,170);
 
     txtCodConta.setRequerido(true);
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-
-    txtCodConta.setTipo(JTextFieldPad.TP_STRING,10,0);
-    txtDescConta.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Cód.conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição da conta", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+    lcConta.add(new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false));
+    lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false));
     lcConta.montaSql(false, "CONTA", "FN");
     lcConta.setReadOnly(true);
     txtCodConta.setTabelaExterna(lcConta);
