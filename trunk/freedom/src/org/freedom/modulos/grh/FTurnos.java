@@ -26,10 +26,14 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.text.SimpleDateFormat;
+/*import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import org.freedom.acao.InsertEvent;*/
+import java.util.Date;
 import java.util.Vector;
+
 import org.freedom.acao.InsertEvent;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JRadioGroup;
@@ -37,13 +41,13 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FTurnos extends FDados implements ActionListener {
-  private JTextFieldPad txtCodTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtDescTurno = new JTextFieldPad(20);
-  private JTextFieldPad txtNhsTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHIniTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad(10);
-  private JTextFieldPad txtHFimTurno = new JTextFieldPad(10);
+  private JTextFieldPad txtCodTurno = new JTextFieldPad();
+  private JTextFieldPad txtDescTurno = new JTextFieldPad();
+  private JTextFieldPad txtNhsTurno = new JTextFieldPad();
+  private JTextFieldPad txtHIniTurno = new JTextFieldPad();
+  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad();
+  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad();
+  private JTextFieldPad txtHFimTurno = new JTextFieldPad();
   private Vector vTipoTurnoLab = new Vector();
   private Vector vTipoTurnoVal = new Vector();  
   private JRadioGroup rgTipoTurno = null;
@@ -52,14 +56,16 @@ public class FTurnos extends FDados implements ActionListener {
     setTitulo("Cadastro de Turnos");
     setAtribos(50, 50, 457, 280);
 	    
-	    	    	   	
+    	Funcoes HIniTurno = new Funcoes();
+	    HIniTurno.dateToStrDataHora();
+    	
 	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
 	    adicCampo(txtDescTurno, 90, 20, 220, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
-	    adicCampo(txtNhsTurno, 313, 20, 120, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-	    adicCampo(txtHIniTurno, 7, 60, 160, 20,"HIniTurno","Hora do inicío do turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-	    adicCampo(txtHIniIntTurno, 7, 100, 160, 20,"HIniIntTurno","Hora do inicío do intervalo",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-	    adicCampo(txtHFimIntTurno, 7, 140, 160, 20,"HFimIntTurno","Hora do fim do intervalo",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-	    adicCampo(txtHFimTurno, 7, 180, 160, 20,"HFimTurno","Hora do fim do turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);	   
+	    adicCampo(txtNhsTurno, 313, 20, 120, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,4,0,true,false,null,true);
+	    adicCampo(txtHIniTurno, 7, 60, 160, 20,"HIniTurno","Hora do inicío do turno",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);
+	    adicCampo(txtHIniIntTurno, 7, 100, 160, 20,"HIniIntTurno","Hora do inicío do intervalo",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);
+	    adicCampo(txtHFimIntTurno, 7, 140, 160, 20,"HFimIntTurno","Hora do fim do intervalo",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);
+	    adicCampo(txtHFimTurno, 7, 180, 160, 20,"HFimTurno","Hora do fim do turno",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);	   
 	    
 	    vTipoTurnoLab.addElement("Normal ( manhã e tarde )");
 	  	vTipoTurnoLab.addElement("Manhã");
@@ -79,16 +85,14 @@ public class FTurnos extends FDados implements ActionListener {
 	    btPrevimp.addActionListener(this);
 	    lcCampos.setQueryInsert(false);
 	    
-	   
+	    
+	       
 	     	  	
   }
   public void afterInsert(InsertEvent ievt) {
     txtHIniTurno.setVlrDate(new Date());
     txtHIniIntTurno.setVlrDate(new Date());
-    txtHFimIntTurno.setVlrDate(new Date());
-    txtHFimTurno.setVlrDate(new Date());
   }
-  
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
       	

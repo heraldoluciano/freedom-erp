@@ -56,8 +56,8 @@ public class FRComprasFor extends FRelatorio {
 
 		txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,10,0);
 		txtDescFor.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-		lcFor.add(new GuardaCampo( txtDescFor, 90, 100, 207, 20, "RazFor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
+		lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodFor");
+		lcFor.add(new GuardaCampo( txtDescFor, 90, 100, 207, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
 		txtCodFor.setTabelaExterna(lcFor);
 		txtCodFor.setNomeCampo("CodFor");
 		txtCodFor.setFK(true);
@@ -69,8 +69,9 @@ public class FRComprasFor extends FRelatorio {
 		adic(txtDataini,40,25,97,20);
 		adic(new JLabel("Até:"),140,25,37,20);
 		adic(txtDatafim,180,25,100,20);
-		adic(new JLabel("Código e descrição do fornecedor"),7,50,280,20);
+		adic(new JLabel("Cód.for."),7,50,280,20);
 		adic(txtCodFor,7,70,70,20);
+		adic(new JLabel("Descrição do fornecedor"),80,50,280,20);
 		adic(txtDescFor,80,70,200,20);
 		
 		Calendar cPeriodo = Calendar.getInstance();
@@ -170,10 +171,10 @@ public class FRComprasFor extends FRelatorio {
 						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
 						imp.say(imp.pRow()+1,0,""+imp.comprimido());
 						imp.say(imp.pRow()+0,0,"|");
-						imp.say(imp.pRow()+0,1,"Sub-Total Fornecedor:");
-						imp.say(imp.pRow()+0,30,"Quant. Comprada -> ");
+						imp.say(imp.pRow()+0,1,"Sub-total fornecedor:");
+						imp.say(imp.pRow()+0,30,"Quant. comprada -> ");
 						imp.say(imp.pRow()+0,50,Funcoes.copy(dQtdFor+"",0,6));
-						imp.say(imp.pRow()+0,60,"Valor Comprado -> ");
+						imp.say(imp.pRow()+0,60,"Valor comprado -> ");
 						imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlrFor+""));
 						imp.say(imp.pRow()+0,136,"|");
 					}
@@ -212,20 +213,20 @@ public class FRComprasFor extends FRelatorio {
 			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
-			imp.say(imp.pRow()+0,1,"Sub-Total Fornecedor:");
-			imp.say(imp.pRow()+0,30,"Quant. Comprada -> ");
+			imp.say(imp.pRow()+0,1,"Sub-total fornecedor:");
+			imp.say(imp.pRow()+0,30,"Quant. comprada -> ");
 			imp.say(imp.pRow()+0,50,Funcoes.copy(dQtdFor+"",0,6));
-			imp.say(imp.pRow()+0,60,"Valor Comprado -> ");
+			imp.say(imp.pRow()+0,60,"Valor comprado -> ");
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlrFor+""));
 			imp.say(imp.pRow()+0,136,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
-			imp.say(imp.pRow()+0,1,"Total Compras:");
-			imp.say(imp.pRow()+0,30,"Quant. Comprada -> ");
+			imp.say(imp.pRow()+0,1,"Total compras:");
+			imp.say(imp.pRow()+0,30,"Quant. comprada -> ");
 			imp.say(imp.pRow()+0,50,Funcoes.copy(dQtd+"",0,6));
-			imp.say(imp.pRow()+0,60,"Valor Comprado -> ");
+			imp.say(imp.pRow()+0,60,"Valor comprado -> ");
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlr+""));
 			imp.say(imp.pRow()+0,136,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());

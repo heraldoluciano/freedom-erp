@@ -52,8 +52,10 @@ public class FRDemanda extends FRelatorio {
   private JTextFieldPad txtCodGrup = new JTextFieldPad();
   private JTextFieldPad txtDescGrup = new JTextFieldFK();
   private JTextFieldPad txtSiglaMarca = new JTextFieldFK();
-  private JLabel lbCodGrup = new JLabel("Código e descrição do Grupo");
-  private JLabel lbCodMarca = new JLabel("Código e descrição da Marca");
+  private JLabel lbCodGrup = new JLabel("Cód.grupo");
+  private JLabel lbCodMarca = new JLabel("Cód.marca");
+  private JLabel lbDescGrup = new JLabel("Descrição do grupo");
+  private JLabel lbDescMarca = new JLabel("Descrição do marca");
   private JRadioGroup rgOrdem = null;
   private Vector vLabs = new Vector(2);
   private Vector vVals = new Vector(2);
@@ -83,8 +85,8 @@ public class FRDemanda extends FRelatorio {
     txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
     txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
     txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
+    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
+    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
     lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
     lcMarca.montaSql(false, "MARCA", "EQ");
     lcMarca.setReadOnly(true);
@@ -94,8 +96,8 @@ public class FRDemanda extends FRelatorio {
 
     txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
     txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
+    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
     lcGrup.montaSql(false, "GRUPO", "EQ");
     lcGrup.setReadOnly(true);
     txtCodGrup.setTabelaExterna(lcGrup);
@@ -108,9 +110,11 @@ public class FRDemanda extends FRelatorio {
 
     adic(lbCodMarca,7,40,250,20);
     adic(txtCodMarca,7,60,80,20);
+    adic(lbDescMarca,90,40,250,20);
     adic(txtDescMarca,90,60,197,20);
     adic(lbCodGrup,7,80,250,20);
     adic(txtCodGrup,7,100,80,20);
+    adic(lbDescGrup,90,80,250,20);
     adic(txtDescGrup,90,100,197,20);
     adic(rgOrdem,7,130,250,30);
     adic(cbGrupo,7,170,250,20);
