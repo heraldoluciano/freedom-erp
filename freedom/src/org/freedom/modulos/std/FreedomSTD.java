@@ -118,7 +118,7 @@ public class FreedomSTD extends Aplicativo {
 	addOpcao(300000000,TP_OPCAO_ITEM,"Pesquisa Orçamento","Pesquisa Orçamento",'P',300700000,1, true, FConsOrc.class);
 	addSeparador(300000000);
 	addOpcao(300000000,TP_OPCAO_ITEM,"Romaneio","Romaneio",'R',300800000,1, true, FRomaneio.class);  		
-	addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores","LancaExp",'x',300900000,1, true, FLancaExp.class);
+	//addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores","LancaExp",'x',300900000,1, true, FLancaExp.class);
 	addOpcao(300000000,TP_OPCAO_MENU,"Listagens","",'s',301000000,1, false, null);				
       addOpcao(301000000,TP_OPCAO_ITEM,"Resumo diário","Resumo Diário",'R',301010000,2, true, FRResumoDiario.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas geral","Vendas em Geral",'V',301020000,2, true, FRVendasGeral.class);
