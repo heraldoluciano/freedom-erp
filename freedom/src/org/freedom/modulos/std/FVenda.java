@@ -1742,7 +1742,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private void emitNota(String sTipo,boolean bEnt) {
     boolean bImpOK = false;
     int iCodVenda = txtCodVenda.getVlrInteger().intValue();
-    ImprimeOS imp = new ImprimeOS("",con);
+    ImprimeOS imp = new ImprimeOS("",con,sTipo);
     imp.verifLinPag(sTipo);
     imp.setTitulo("Nota Fiscal");
     DLRPedido dl = new DLRPedido(sOrdNota);
