@@ -124,7 +124,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Processos");
     DLRProcesso dl = new DLRProcesso();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

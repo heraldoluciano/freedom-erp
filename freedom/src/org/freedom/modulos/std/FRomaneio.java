@@ -121,7 +121,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     imp.montaCab();
     imp.setTitulo("Relatório de Setores");
     DLRRomaneio dl = new DLRRomaneio();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

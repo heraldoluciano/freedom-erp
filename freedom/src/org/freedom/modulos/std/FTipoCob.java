@@ -62,7 +62,7 @@ public class FTipoCob extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Cobrança");
     DLRTipoCob dl = new DLRTipoCob();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

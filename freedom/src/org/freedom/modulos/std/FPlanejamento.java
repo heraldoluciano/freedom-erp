@@ -752,7 +752,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
     imp.montaCab();
     imp.setTitulo("Relatório de Planejamento");
     DLRPlanejamento dl = new DLRPlanejamento();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

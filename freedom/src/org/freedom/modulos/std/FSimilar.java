@@ -157,7 +157,7 @@ public class FSimilar extends FDados implements ActionListener{
 		imp.montaCab();
 		imp.setTitulo("Relatório de Similaridades");
 		DLRSimilar dl = new DLRSimilar();
-		dl.show();
+		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();
 			return;

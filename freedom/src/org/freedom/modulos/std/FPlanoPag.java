@@ -164,7 +164,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     imp.montaCab();
     imp.setTitulo("Relatório de Planos de Pagamento");
     DLRPlanoPag dl = new DLRPlanoPag();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -65,7 +65,7 @@ public class FSerie extends FDados implements ActionListener {
     dlReset.setAtribos(280,120);
     dlReset.adic(lbReset,7,5,100,20);
     dlReset.adic(txtReset,7,25,100,20);
-    dlReset.show();
+    dlReset.setVisible(true);
     if (dlReset.OK) 
       gravaReset();
     dlReset.dispose();

@@ -731,7 +731,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   private void imprimir(boolean bVisualizar, int iCodCompra) {
     ImprimeOS imp = new ImprimeOS("", con);
     DLRPedido dl = new DLRPedido(sOrdNota);
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -81,7 +81,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		   FVenda tela = new FVenda();
 		   //tela.setConexao(con);
 		   tela.iniciaTela(con);
-		   tela.show();
+		   tela.setVisible(true);
 		   tela.dispose();
 	    } 
 	  }
@@ -94,7 +94,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 	  else if (iOpcao==110200000){
 		if (telaPrincipal.temTela("Cancela Venda")==false) {
 		  DLCancCupom tela = new DLCancCupom(con);			  
-		  tela.show();
+		  tela.setVisible(true);
 		  tela.dispose();
 		} 
 	  }
@@ -102,7 +102,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		if (telaPrincipal.temTela("Suprimento de caixa")==false){
 		  FSuprimento tela = new FSuprimento();
 		  tela.setConexao(con);
-		  tela.show();
+		  tela.setVisible(true);
 		  tela.dispose();
 		}
 	  }
@@ -110,14 +110,14 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		if (telaPrincipal.temTela("Sangria")==false){
 		  FSangria tela = new FSangria();
 		  tela.setConexao(con);
-		  tela.show();
+		  tela.setVisible(true);
 		  tela.dispose();
 		}
 	  }
 	  else if (iOpcao==110500000){
 		  if (telaPrincipal.temTela("Inserir Aliquota")==false) {
 			 FAliquota tela = new FAliquota();			  
-			 tela.show();
+			 tela.setVisible(true);
 			 tela.dispose();
 		  } 
 	  }
@@ -125,7 +125,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		  if (telaPrincipal.temTela("Grava Moeda")==false) {
 			FGravaMoeda tela = new FGravaMoeda();
 			tela.setConexao(con);
-			tela.show();
+			tela.setVisible(true);
 			tela.dispose();
 		  } 
 	  }
@@ -220,7 +220,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
   	boolean bRetorno = false;
   	FAbreCaixa tela = new FAbreCaixa();
   	tela.setConexao(con);
-  	tela.show();
+  	tela.setVisible(true);
     bRetorno = tela.OK;
     return bRetorno;
   }

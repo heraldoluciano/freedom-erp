@@ -60,7 +60,7 @@ public class FSetor extends FDados implements ActionListener{
     imp.montaCab();
     imp.setTitulo("Relatório de Setores");
     DLRSetor dl = new DLRSetor();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -60,7 +60,7 @@ public class FTabPreco extends FDados implements ActionListener{
     imp.montaCab();
     imp.setTitulo("Relatório de Tabelas de Preços");
     DLRTabPreco dl = new DLRTabPreco();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

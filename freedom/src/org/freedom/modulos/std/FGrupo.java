@@ -217,7 +217,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       return;
     }
     DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,null,sSiglaPai);
-    dl.show();
+    dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
       return;
@@ -296,7 +296,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO! ! !\n"+err.getMessage());
     }
     DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim());
-    dl.show();
+    dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
       return;

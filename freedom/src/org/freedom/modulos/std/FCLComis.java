@@ -100,7 +100,7 @@ private void imprimir(boolean bVisualizar) {
   imp.montaCab();
   imp.setTitulo("Relatório de Classificação de Comissões");
   DLRClComis dl = new DLRClComis();
-  dl.show();
+  dl.setVisible(true);
   if (dl.OK == false) {
     dl.dispose();
     return;

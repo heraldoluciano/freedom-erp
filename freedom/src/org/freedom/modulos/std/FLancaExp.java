@@ -93,7 +93,7 @@ public class FLancaExp extends FDados implements ActionListener {
 		imp.setTitulo("Relatório de Lancamentos de Expositores");
  		DLRLancaExp dlle = new DLRLancaExp();
 		dlle.setConexao(con);
-		dlle.show();
+		dlle.setVisible(true);
 		if (!dlle.OK) {
 			dlle.dispose();
 			return;

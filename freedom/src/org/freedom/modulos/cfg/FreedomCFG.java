@@ -84,7 +84,7 @@ public class FreedomCFG extends Aplicativo {
 	  if (telaPrincipal.temTela("Acesso Menu")==false) {
 		FAcesso tela = new FAcesso();
 		tela.setConexao(con);
-		tela.show();
+		tela.setVisible(true);
 		tela.dispose();
 	  } 
 	}
@@ -100,7 +100,7 @@ public class FreedomCFG extends Aplicativo {
 /*	else if (iOpcao==100105000) {
 		DLAtualiza tela = new DLAtualiza();
 		tela.setConexao(con);
-		tela.show();
+		tela.setVisible(true);
 	}*/
 	else if (iOpcao==100102010) {
 	  if (telaPrincipal.temTela("Grau de Instrução")==false) {

@@ -792,7 +792,7 @@ public class FSintegra extends FFilho implements ActionListener {
     FileDialog fdSintegra = null;
     fdSintegra = new FileDialog(fOrigem,"Salvar sintegra",FileDialog.SAVE);
     fdSintegra.setFile("Receita.txt");
-    fdSintegra.show();
+    fdSintegra.setVisible(true);
     if (fdSintegra.getFile() == null) {
       return false;
     }

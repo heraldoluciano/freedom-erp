@@ -62,7 +62,7 @@ public class FTipoConv extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos de Conveniados");
     DLRTipoConv dl = new DLRTipoConv();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

@@ -87,11 +87,11 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btOK) {
       OK = true;       
-      hide();
+      setVisible(false);
     }
     else if (evt.getSource() == btCancel) {
       OK = false;
-      hide();
+      setVisible(false);
     }
   }
   public void setTitulo(String tit) {
@@ -115,7 +115,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
     btSair.addActionListener(
       new ActionListener() {
         public void actionPerformed(ActionEvent evt) {
-          hide();
+        	setVisible(false);
         }
       }
     );

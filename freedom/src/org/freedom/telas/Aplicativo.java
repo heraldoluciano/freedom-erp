@@ -238,7 +238,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   	 }
   }
   public void show() {
-	telaPrincipal.show();
+	telaPrincipal.setVisible(true);
   }
   
   public void adicTelaBotao(JButtonPad bt) {

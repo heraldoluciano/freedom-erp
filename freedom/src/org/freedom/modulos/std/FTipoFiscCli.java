@@ -63,7 +63,7 @@ public class FTipoFiscCli extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Tipos Fiscal de Cliente");
     DLRTipoFiscCli dl = new DLRTipoFiscCli();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

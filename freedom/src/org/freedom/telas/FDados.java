@@ -375,7 +375,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     }
     catch(Exception err) { }
 /*    if (bMostrar) {
-      show();
+      setVisible(true);
       setVisible(true);
       System.out.println("Executou o show()");
     }

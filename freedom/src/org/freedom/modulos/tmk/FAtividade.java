@@ -60,7 +60,7 @@ public class FAtividade extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de Atividades");
     DLRAtiv dl = new DLRAtiv();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

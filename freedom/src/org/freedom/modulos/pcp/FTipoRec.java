@@ -60,7 +60,7 @@ public class FTipoRec extends FDados implements ActionListener {
     imp.montaCab();
     imp.setTitulo("Relatório de tipos de recursos de produção");
     DLRTipoRec dl = new DLRTipoRec();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

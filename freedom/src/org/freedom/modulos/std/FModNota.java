@@ -60,7 +60,7 @@ public class FModNota extends FDados implements ActionListener{
     imp.montaCab();
     imp.setTitulo("Relatório de Modelos de NFs");
     DLRModNota dl = new DLRModNota();
-    dl.show();
+    dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;

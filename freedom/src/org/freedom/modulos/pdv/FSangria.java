@@ -169,6 +169,6 @@ public class FSangria extends FDialogo {
 		if (verifCaixa())
 		  carregaInfo();
 		else
-		  hide();
+		  setVisible(false);
 	}
 }

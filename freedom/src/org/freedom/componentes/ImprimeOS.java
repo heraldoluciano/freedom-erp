@@ -347,7 +347,7 @@ public class ImprimeOS implements ActionListener {
        return true;
      }
      and = new FAndamento("Imprimindo...",0,(int)fImp.length());
-     and.show();
+     and.setVisible(true);
      tim = new Timer(200,this);
      tim.start();
      
