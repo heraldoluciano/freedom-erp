@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -44,8 +45,8 @@ public class FTabICMS extends FDados implements ActionListener {
   public FTabICMS() {
     setTitulo("Cadastro de alíquotas de ICMS");
     setAtribos( 50, 50, 330, 125);
-    adicCampo(txtUFTabICMS, 7, 20, 50, 20,"UFTI","UF",JTextFieldPad.TP_STRING,2,0,true,false,null,true);
-    adicCampo(txtAliqTabICMS, 60, 20, 100, 20,"ALIQTI","Alíquota",JTextFieldPad.TP_DECIMAL,9,2,false,false,null,true);
+    adicCampo(txtUFTabICMS, 7, 20, 50, 20,"UFTI","UF", ListaCampos.DB_PK, true);
+    adicCampo(txtAliqTabICMS, 60, 20, 100, 20,"ALIQTI","Alíquota", ListaCampos.DB_SI, true);
     setListaCampos( false, "TABICMS", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
