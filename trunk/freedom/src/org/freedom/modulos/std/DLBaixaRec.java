@@ -286,7 +286,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
   	 );
   }
   private void aplicaJuros() {
-     String sSQL = "SELECT P.CODTBJ,T.TIPOTBJ,SUM(IT.PERCITTBJ) FROM " +
+     String sSQL = "SELECT FIRST 1 P.CODTBJ,T.TIPOTBJ,IT.PERCITTBJ FROM " +
      		               "SGPREFERE1 P, FNTBJUROS T, FNITTBJUROS IT WHERE " +
      		               "T.CODEMP=P.CODEMPTJ AND " +
      		               "T.CODFILIAL=P.CODFILIALTJ AND " +
@@ -294,23 +294,18 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
      		               "IT.CODEMP=T.CODEMP AND " +
      		               "IT.CODFILIAL=T.CODFILIAL AND " +
      		               "IT.CODTBJ=T.CODTBJ AND " +
-     		               "(IT.ANOITTBJ > ? OR (IT.ANOITTBJ = ? AND IT.MESITTBJ >= ?)) AND " +
-     		               "(IT.ANOITTBJ < ? OR (IT.ANOITTBJ = ? AND IT.MESITTBJ <= ?)) AND " +
+     		               "IT.ANOITTBJ <= ? AND IT.MESITTBJ <= ? AND " +
 						   "P.CODEMP=? AND P.CODFILIAL=? " +
-						   "GROUP BY P.CODTBJ,T.TIPOTBJ ";
+						   "ORDER BY IT.ANOITTBJ DESC, IT.MESITTBJ DESC ";
      try {
      	PreparedStatement ps = con.prepareStatement(sSQL);
      	GregorianCalendar cal = new GregorianCalendar();
      	GregorianCalendar calVenc = new GregorianCalendar();
      	calVenc.setTime(txtDtVenc.getVlrDate());
-     	ps.setInt(1,calVenc.get(Calendar.YEAR));
-     	ps.setInt(2,calVenc.get(Calendar.YEAR));
-     	ps.setInt(3,calVenc.get(Calendar.MONTH)+1);
-     	ps.setInt(4,cal.get(Calendar.YEAR));
-     	ps.setInt(5,cal.get(Calendar.YEAR));
-     	ps.setInt(6,cal.get(Calendar.MONTH)+1);
-     	ps.setInt(7,Aplicativo.iCodEmp);
-     	ps.setInt(8,Aplicativo.iCodFilial);
+     	ps.setInt(1,cal.get(Calendar.YEAR));
+     	ps.setInt(2,cal.get(Calendar.MONTH)+1);
+     	ps.setInt(3,Aplicativo.iCodEmp);
+     	ps.setInt(4,Aplicativo.iCodFilial);
      	ResultSet rs = ps.executeQuery();
      	if (rs.next()) {
      	  switch(rs.getString("TipoTBJ").toCharArray()[0]) {
