@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Tela para cadastro de tipos de clientes.
  * 
  */
 
@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
@@ -35,6 +36,10 @@ import org.freedom.telas.FDados;
 public class FTipoCli extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JCheckBoxPad cbTipoCad2 = new JCheckBoxPad("Ficha pessoa física","S","N");
+  private JCheckBoxPad cbTipoCad3 = new JCheckBoxPad("Ficha pessoa jurídica","S","N");
+  private JCheckBoxPad cbTipoCad4 = new JCheckBoxPad("Ficha Cadastro","S","N");
+  
   public FTipoCli () {
     setTitulo("Cadastro de tipos de clientes");
     setAtribos(50, 50, 350, 125);
@@ -46,10 +51,7 @@ public class FTipoCli extends FDados implements ActionListener {
     lcCampos.setQueryInsert(false);
   }
   public void actionPerformed(ActionEvent evt) {
-    if (evt.getSource() == btPrevimp) {
-//      Funcoes.mensagemInforma(this, "Teste");
-//		Funcoes.mensagemInforma(this,"Teste do Dialago");
-      	
+    if (evt.getSource() == btPrevimp) {   	
         imprimir(true);
     }
     else if (evt.getSource() == btImp) 
@@ -113,8 +115,6 @@ public class FTipoCli extends FDados implements ActionListener {
       
       imp.fechaGravacao();
       
-//      rs.close();
-//      ps.close();
       if (!con.getAutoCommit())
       	con.commit();
       dl.dispose();
