@@ -49,29 +49,29 @@ public class FRListaPreco extends FRelatorio {
 	private Painel pinPlan = new Painel(595,450);
 	private JPanel pnOpt = new JPanel(new GridLayout(1,1));
 	private JPanel pnPlan = new JPanel(new GridLayout(1,1));
-	private JTextFieldPad txtCodGrup = new JTextFieldPad();
-	private JTextFieldPad txtCodMarca = new JTextFieldPad();
-	private JTextFieldPad txtCodClasCli = new JTextFieldPad ();
-	private JTextFieldPad txtCodTabPreco = new JTextFieldPad ();
-	private JTextFieldPad txtCodPlanoPag1 = new JTextFieldPad();
-	private JTextFieldPad txtCodPlanoPag2 = new JTextFieldPad();
-	private JTextFieldPad txtCodPlanoPag3 = new JTextFieldPad();
-	private JTextFieldPad txtCodPlanoPag4 = new JTextFieldPad();
-	private JTextFieldPad txtCodPlanoPag5 = new JTextFieldPad();
-	private JTextFieldPad txtCodPlanoPag6 = new JTextFieldPad();
-	private JTextFieldPad txtCodPlanoPag7 = new JTextFieldPad();
-	private JTextFieldPad txtDescGrup = new JTextFieldFK();
-	private JTextFieldPad txtDescClasCli = new JTextFieldFK ();
-	private JTextFieldPad txtDescTabPreco = new JTextFieldFK ();
-	private JTextFieldPad txtDescMarca = new JTextFieldFK();
-	private JTextFieldPad txtSiglaMarca = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag1 = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag2 = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag3 = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag4 = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag5 = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag6 = new JTextFieldFK();
-	private JTextFieldPad txtDescPlanoPag7 = new JTextFieldFK();
+	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
+	private JTextFieldPad txtCodClasCli = new JTextFieldPad (JTextFieldPad.TP_INTEGER,6,0);
+	private JTextFieldPad txtCodTabPreco = new JTextFieldPad (JTextFieldPad.TP_INTEGER,6,0);
+	private JTextFieldPad txtCodPlanoPag1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPlanoPag2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPlanoPag3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPlanoPag4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPlanoPag5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPlanoPag6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPlanoPag7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescClasCli = new JTextFieldFK (JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescTabPreco = new JTextFieldFK (JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
+	private JTextFieldPad txtDescPlanoPag1 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescPlanoPag2 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescPlanoPag3 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescPlanoPag4 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescPlanoPag5 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescPlanoPag6 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtDescPlanoPag7 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JLabel lbCodGrup = new JLabel("Cód.gurpo");
 	private JLabel lbDescCodGrup = new JLabel("Descrição do grupo");
 	private JLabel lbCodMarca = new JLabel("Cód.marca");
@@ -122,22 +122,17 @@ public class FRListaPreco extends FRelatorio {
 		rgOrdem = new JRadioGroup(2,1,vLabs,vVals);
 		rgOrdem.setVlrString("D");
 
-		txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-		txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 20, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-		lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 20, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		lcGrup.setReadOnly(true);
 		txtCodGrup.setTabelaExterna(lcGrup);
 		txtCodGrup.setFK(true);
 		txtCodGrup.setNomeCampo("CodGrup");
 
-		txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
-		txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
-		txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-		lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-		lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
-		lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
+		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
+		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
+		lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false));
 		txtCodMarca.setTabelaExterna(lcMarca);
 		txtCodMarca.setNomeCampo("CodMarca");
 		txtCodMarca.setFK(true);
@@ -145,22 +140,17 @@ public class FRListaPreco extends FRelatorio {
 		lcMarca.montaSql(false, "MARCA", "EQ");
 		
   
-		txtCodClasCli.setTipo(JTextFieldPad.TP_INTEGER,6,0);
-		txtDescClasCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcClassCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasCli");
-		lcClassCli.add(new GuardaCampo( txtDescClasCli, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasCli");
+		lcClassCli.add(new GuardaCampo( txtCodClasCli, "CodClasCli", "Cód.c.cli.", ListaCampos.DB_PK, false));
+		lcClassCli.add(new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false));
 		txtCodClasCli.setTabelaExterna(lcClassCli);
 		txtCodClasCli.setNomeCampo("CodClasCli");
 		txtCodClasCli.setFK(true);
 		lcClassCli.setReadOnly(true);
 		lcClassCli.montaSql(false, "CLASCLI", "VD");
 		
-		
-		
-		txtCodTabPreco.setTipo(JTextFieldPad.TP_INTEGER,6,0);
-		txtDescTabPreco.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcTabPreco.add(new GuardaCampo( txtCodTabPreco, 7, 100, 80, 20, "CodTab", "Cód.tab.pc.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txCodTabPreco");
-		lcTabPreco.add(new GuardaCampo( txtDescTabPreco, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabPreco");
+				
+		lcTabPreco.add(new GuardaCampo( txtCodTabPreco, "CodTab", "Cód.tab.pc.", ListaCampos.DB_PK, false));
+		lcTabPreco.add(new GuardaCampo( txtDescTabPreco, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
 		txtCodTabPreco.setTabelaExterna(lcTabPreco);
 		txtCodTabPreco.setNomeCampo("CodTab");
 		txtCodTabPreco.setFK(true);
@@ -168,70 +158,56 @@ public class FRListaPreco extends FRelatorio {
 		lcTabPreco.montaSql(false, "TABPRECO", "VD");
 		
 
-		txtCodPlanoPag1.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag1.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag1.add(new GuardaCampo( txtCodPlanoPag1, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag1");
-		lcPlanoPag1.add(new GuardaCampo( txtDescPlanoPag1, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag1");
+		lcPlanoPag1.add(new GuardaCampo( txtCodPlanoPag1, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag1.add(new GuardaCampo( txtDescPlanoPag1, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag1.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag1.setReadOnly(true);
 		txtCodPlanoPag1.setTabelaExterna(lcPlanoPag1);
 		txtCodPlanoPag1.setFK(true);
 		txtCodPlanoPag1.setNomeCampo("CodPlanoPag");
 
-		txtCodPlanoPag2.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag2.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag2.add(new GuardaCampo( txtCodPlanoPag2, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag2");
-		lcPlanoPag2.add(new GuardaCampo( txtDescPlanoPag2, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag2");
+		lcPlanoPag2.add(new GuardaCampo( txtCodPlanoPag2, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag2.add(new GuardaCampo( txtDescPlanoPag2, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag2.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag2.setReadOnly(true);
 		txtCodPlanoPag2.setTabelaExterna(lcPlanoPag2);
 		txtCodPlanoPag2.setFK(true);
 		txtCodPlanoPag2.setNomeCampo("CodPlanoPag");
 
-		txtCodPlanoPag3.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag3.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag3.add(new GuardaCampo( txtCodPlanoPag3, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag3");
-		lcPlanoPag3.add(new GuardaCampo( txtDescPlanoPag3, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag3");
+		lcPlanoPag3.add(new GuardaCampo( txtCodPlanoPag3, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag3.add(new GuardaCampo( txtDescPlanoPag3, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag3.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag3.setReadOnly(true);
 		txtCodPlanoPag3.setTabelaExterna(lcPlanoPag3);
 		txtCodPlanoPag3.setFK(true);
 		txtCodPlanoPag3.setNomeCampo("CodPlanoPag");
 
-		txtCodPlanoPag4.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag4.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag4.add(new GuardaCampo( txtCodPlanoPag4, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag4");
-		lcPlanoPag4.add(new GuardaCampo( txtDescPlanoPag4, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag4");
+		lcPlanoPag4.add(new GuardaCampo( txtCodPlanoPag4, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag4.add(new GuardaCampo( txtDescPlanoPag4, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag4.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag4.setReadOnly(true);
 		txtCodPlanoPag4.setTabelaExterna(lcPlanoPag4);
 		txtCodPlanoPag4.setFK(true);
 		txtCodPlanoPag4.setNomeCampo("CodPlanoPag");
 
-		txtCodPlanoPag5.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag5.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag5.add(new GuardaCampo( txtCodPlanoPag5, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag5");
-		lcPlanoPag5.add(new GuardaCampo( txtDescPlanoPag5, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag5");
+		lcPlanoPag5.add(new GuardaCampo( txtCodPlanoPag5, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag5.add(new GuardaCampo( txtDescPlanoPag5, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag5.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag5.setReadOnly(true);
 		txtCodPlanoPag5.setTabelaExterna(lcPlanoPag5);
 		txtCodPlanoPag5.setFK(true);
 		txtCodPlanoPag5.setNomeCampo("CodPlanoPag");
 
-		txtCodPlanoPag6.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag6.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag6.add(new GuardaCampo( txtCodPlanoPag6, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag6");
-		lcPlanoPag6.add(new GuardaCampo( txtDescPlanoPag6, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag6");
+		lcPlanoPag6.add(new GuardaCampo( txtCodPlanoPag6, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag6.add(new GuardaCampo( txtDescPlanoPag6, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag6.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag6.setReadOnly(true);
 		txtCodPlanoPag6.setTabelaExterna(lcPlanoPag6);
 		txtCodPlanoPag6.setFK(true);
 		txtCodPlanoPag6.setNomeCampo("CodPlanoPag");
 
-		txtCodPlanoPag7.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescPlanoPag7.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcPlanoPag7.add(new GuardaCampo( txtCodPlanoPag7, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag7");
-		lcPlanoPag7.add(new GuardaCampo( txtDescPlanoPag7, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag7");
+		lcPlanoPag7.add(new GuardaCampo( txtCodPlanoPag7, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag7.add(new GuardaCampo( txtDescPlanoPag7, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag7.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag7.setReadOnly(true);
 		txtCodPlanoPag7.setTabelaExterna(lcPlanoPag7);
