@@ -36,9 +36,9 @@ public class FTipoFiscCli extends FDados implements ActionListener {
   private JTextFieldPad txtDesc= new JTextFieldPad(20);
   public FTipoFiscCli () {
     setTitulo("Cadastro de tipos fiscal de clientes");
-    setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 50, 20,"CodFiscCli","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 60, 20, 250, 20,"DescFiscCli","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    setAtribos(50, 50, 360, 125);
+    adicCampo(txtCod, 7, 20, 80, 20,"CodFiscCli","Cód.fisc.cli.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDesc, 90, 20, 250, 20,"DescFiscCli","Descrição fiscal do cliente",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "TIPOFISCCLI", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -82,9 +82,9 @@ public class FTipoFiscCli extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.fisc.cli.");
             imp.say(imp.pRow()+0,20,"Descrição");
-            imp.say(imp.pRow()+0,70,"Qtd. Cli.");
+            imp.say(imp.pRow()+0,70,"Qtd.cli.");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
          }
