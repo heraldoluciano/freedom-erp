@@ -661,7 +661,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private void carregaGridConsulta() {
     String sSQL = "SELECT IT.DTVENCITREC,V.SERIE,R.DOCREC,V.CODVENDA,"+
                   "R.DATAREC,IT.VLRPARCITREC,IT.DTPAGOITREC,IT.VLRPAGOITREC,"+
-                  "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO,"+
+                  "(CASE WHEN IT.DTPAGOITREC IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITREC " +
+				  "ELSE IT.DTPAGOITREC - IT.DTVENCITREC "+
+				  " END ) ATRASO,"+
                   "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODBANCO = IT.CODBANCO" +
                   " AND B.CODEMP=IT.CODEMPBO AND B.CODFILIAL=IT.CODFILIALBO) AS NOMEBANCO,"+
                   "R.CODREC,IT.NPARCITREC,IT.VLRDESCITREC,IT.VLRJUROSITREC FROM FNRECEBER R, VDVENDA V,FNITRECEBER IT "+
@@ -686,7 +688,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItRec")),i,4);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItRec")),i,5);
         tabConsulta.setValor((rs.getDate("DtPagoItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,6);
-        tabConsulta.setValor(rs.getString(9),i,7);
+        tabConsulta.setValor(new Integer(rs.getInt(9)),i,7);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrJurosItRec")),i,8);
         tabConsulta.setValor((rs.getString("Serie") != null ? rs.getString("Serie") : ""),i,9);
         tabConsulta.setValor(""+rs.getInt("CodVenda"),i,10);
