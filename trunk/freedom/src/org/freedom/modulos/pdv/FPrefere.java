@@ -43,26 +43,26 @@ public class FPrefere extends FTabDados {
 		setTitulo("Preferências do PDV");
 		setAtribos(50, 50, 355, 375);
 		
-		lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","C.TipoMov.",ListaCampos.DB_PK,true));
-		lcTipoMov.add(new GuardaCampo(txtDescTipoMov,"DescTipoMov","Descrição",ListaCampos.DB_SI,false));
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_PK,true));
+		lcTipoMov.add(new GuardaCampo(txtDescTipoMov,"DescTipoMov","Descrição do tipo de movimento",ListaCampos.DB_SI,false));
 		lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
 		lcTipoMov.setReadOnly(true);
 		txtCodTipoMov.setTabelaExterna(lcTipoMov);
 		txtCodTipoMov.setFK(true);
 		txtCodTipoMov.setNomeCampo("CodTipoMov");
 		
-		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","C.Plano Pag.",ListaCampos.DB_PK,true));
-		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag,"DescPlanoPag","Descrição",ListaCampos.DB_SI,false));
+		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_PK,true));
+		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag,"DescPlanoPag","Descrição do plano de pagamento",ListaCampos.DB_SI,false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
-		adicCampo(txtCodTipoMov,10,30,77,20,"CodTipoMov","C.Tipo Mov.",ListaCampos.DB_FK,true);
-		adicDescFK(txtDescTipoMov,90,30,230,20,"DescTipoMov","descrição do tipo de movimento",JTextFieldPad.TP_STRING,50,0);
-		adicCampo(txtCodPlanoPag,10,70,77,20,"CodPlanoPag","C. Plano Pag.",ListaCampos.DB_FK,true);
-		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","descrição do plano de pagamento",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodTipoMov,10,30,77,20,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_FK,true);
+		adicDescFK(txtDescTipoMov,90,30,230,20,"DescTipoMov","Descrição do tipo de movimento",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodPlanoPag,10,70,77,20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_FK,true);
+		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","Descrição do plano de pagamento",JTextFieldPad.TP_STRING,50,0);
 		setListaCampos(false, "PREFERE4", "SG");
 		
 		nav.setAtivo(0,false);

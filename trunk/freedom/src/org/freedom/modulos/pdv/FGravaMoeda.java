@@ -46,9 +46,9 @@ public class FGravaMoeda extends FDialogo {
 		setAtribos(390,110);
 		
 		txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
-		lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
-		lcMoeda.add(new GuardaCampo( txtSingMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
-		lcMoeda.add(new GuardaCampo( txtPlurMoeda, 90, 100, 207, 20, "PlurMoeda", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+		lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Cód.moeda", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
+		lcMoeda.add(new GuardaCampo( txtSingMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição da moeda", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+		lcMoeda.add(new GuardaCampo( txtPlurMoeda, 90, 100, 207, 20, "PlurMoeda", "Descrição do plural da moeda", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
 		lcMoeda.montaSql(false, "MOEDA", "FN");
 		lcMoeda.setQueryCommit(false);
 		lcMoeda.setReadOnly(true);
@@ -58,9 +58,9 @@ public class FGravaMoeda extends FDialogo {
 		
 		adic(new JLabel("Sigla"),7,5,50,15);
 		adic(txtCodMoeda,7,20,50,20);
-		adic(new JLabel("Nome Sing."),60,5,147,15);
+		adic(new JLabel("Nome sing."),60,5,147,15);
 		adic(txtSingMoeda,60,20,147,20);
-		adic(new JLabel("Nome Plur."),210,5,150,15);
+		adic(new JLabel("Nome slur."),210,5,150,15);
 		adic(txtPlurMoeda,210,20,150,20);
 	}
 	private void gravaMoeda() {

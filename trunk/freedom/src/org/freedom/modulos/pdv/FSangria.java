@@ -56,9 +56,9 @@ public class FSangria extends FDialogo {
 		
 		adic(new JLabel("Data da última operação"),7,5,150,15);
 		adic(txtDataUOper,7,20,150,20);
-		adic(new JLabel("Saldo Atual"),160,5,97,15);
+		adic(new JLabel("Saldo atual"),160,5,97,15);
 		adic(txtSaldoUOper,160,20,97,20);
-		adic(new JLabel("Status Atual"),260,5,100,15);
+		adic(new JLabel("Status atual"),260,5,100,15);
 		adic(txtStatusUOper,260,20,100,20);
 		adic(new JLabel("Último operador"),7,40,250,20);
 		adic(txtUsuUOper,7,60,250,20);
@@ -68,7 +68,7 @@ public class FSangria extends FDialogo {
 				
 		adic(lbLinha,7,85,365,2);
 
-		adic(new JLabel("Operador Atual"),7,90,150,20);
+		adic(new JLabel("Operador atual"),7,90,150,20);
 		adic(txtUsu,7,110,200,20);
 		adic(new JLabel("Data"),7,130,100,20);
 		adic(txtData,7,150,100,20);

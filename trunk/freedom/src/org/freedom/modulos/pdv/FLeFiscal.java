@@ -127,7 +127,7 @@ public class FLeFiscal extends FTabDados {
 		txtRed.setAtivo(false);
 		
 		lcCaixa.add(new GuardaCampo( txtNumTermX, 7, 100, 80, 20, "CodCaixa", "Terminal", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodTipoForx");
-		lcCaixa.add(new GuardaCampo( txtDescTermX, 90, 100, 207, 20, "DescCaixa", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoForx");
+		lcCaixa.add(new GuardaCampo( txtDescTermX, 90, 100, 207, 20, "DescCaixa", "Descrição d terminal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoForx");
 		lcCaixa.montaSql(false, "CAIXA", "PV");    
 		lcCaixa.setQueryCommit(false);
 		lcCaixa.setReadOnly(true);
@@ -137,8 +137,8 @@ public class FLeFiscal extends FTabDados {
 		
 		setPainel(pinCab);
 		adicCampo(txtDataX, 7, 20, 100, 20, "Dtlx", "Data da leitura", JTextFieldPad.TP_DATE, 10, 0, true, false, null, true);
-		adicCampo(txtNumTermX, 110,20,77,20, "CodCaixa", "Código", JTextFieldPad.TP_INTEGER, 8, 0, true, true, null, true);
-		adicDescFK(txtDescTermX, 190,20,240,20, "DescCaixa", "e descrição do caixa/máquina", JTextFieldPad.TP_STRING, 50, 0);
+		adicCampo(txtNumTermX, 110,20,77,20, "CodCaixa", "Cód.caixa", JTextFieldPad.TP_INTEGER, 8, 0, true, true, null, true);
+		adicDescFK(txtDescTermX, 190,20,240,20, "DescCaixa", "Descrição do caixa/máquina", JTextFieldPad.TP_STRING, 50, 0);
 		adic(btExec,470,10,30,30);
 
 		adicTab("Geral", pinGeral); 
@@ -177,8 +177,8 @@ public class FLeFiscal extends FTabDados {
 		adic(lbContadores,15,125,100,15);
 		adic(lbLinha,7,130,500,2);
 		
-		adicCampo(txtPrimCupom, 7,160,85,20, "PrimCupomLX", "Prim. Cupom", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
-		adicCampo(txtUltCupom, 95,160,82,20, "UltCupomLX", "Ult. Cupom", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
+		adicCampo(txtPrimCupom, 7,160,85,20, "PrimCupomLX", "Prim.cupom", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
+		adicCampo(txtUltCupom, 95,160,82,20, "UltCupomLX", "Ult.cupom", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
 		adicCampo(txtCanc,180,160,82,20, "NumCancLX", "Cancelados", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
 		adicCampo(txtRed,265,160,82,20, "NumRedLX", "Reduções", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
 		adicCampo(txtSequencia,350,160,80,20, "ContaLX", "Contador", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
@@ -194,7 +194,7 @@ public class FLeFiscal extends FTabDados {
 		adicCampo(txtTSuprimento, 115,230,102,20, "TSuprimento", "Suprimento", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
 		adicCampo(txtVlrCanc, 220,230,102,20, "VlrCancLX", "Cancelamento", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
 		adicCampo(txtVlrDesc, 325,230,105,20, "VlrDescLX", "Desconto", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
-		adicCampo(txtTotal, 7,270,100,20, "TGTotal", "Grande Total", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
+		adicCampo(txtTotal, 7,270,100,20, "TGTotal", "Grande total", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
 		
 		adicTab("Tributado", pinTributado); 
 		setPainel(pinTributado);
@@ -244,7 +244,7 @@ public class FLeFiscal extends FTabDados {
 		adicCampo(txtTN9, 210,105,97,20,"TN9", "T9", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
         
 		setPainel(pinIsento);
-		adicCampo(txtVlrIsento, 350,45,130,20, "TIsencao", "Tot. Isencao", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
+		adicCampo(txtVlrIsento, 350,45,130,20, "TIsencao", "Tot. isenção", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
 		adicCampo(txtVlrNI, 350,85,130,20, "TNIncidencia", "Tot. de não incidência", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
 		adicCampo(txtVlrSubst, 350,125,130,20, "TSubstituicao", "Tot. de substituição", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null, false);
 
@@ -260,21 +260,21 @@ public class FLeFiscal extends FTabDados {
     }
     private void montaTabela() {
     	tab.adicColuna("%Aliq");
-		tab.adicColuna("Total Isenção");
-		tab.adicColuna("Total não Incidência");
-		tab.adicColuna("Total Substituição");
-		tab.adicColuna("Total Sangria");
-		tab.adicColuna("Total Suprimento");
-		tab.adicColuna("Grande Total");
-		tab.adicColuna("Valor Contábil");
-		tab.adicColuna("Base de Cálculo");
-		tab.adicColuna("Valor do Imposto");
-		tab.adicColuna("Total Cancelamentos");
-		tab.adicColuna("Total Descontos");
-		tab.adicColuna("Nº. Cancelamentos");
-		tab.adicColuna("Nº. Reduções");
+		tab.adicColuna("Total isenção");
+		tab.adicColuna("Total não incidência");
+		tab.adicColuna("Total substituição");
+		tab.adicColuna("Total sangria");
+		tab.adicColuna("Total suprimento");
+		tab.adicColuna("Grande total");
+		tab.adicColuna("Valor contábil");
+		tab.adicColuna("Base de cálculo");
+		tab.adicColuna("Valor do imposto");
+		tab.adicColuna("Total cancelamentos");
+		tab.adicColuna("Total descontos");
+		tab.adicColuna("Nº cancelamentos");
+		tab.adicColuna("Nº reduções");
 		tab.adicColuna("Contador");
-		tab.adicColuna("Ultimo Cupom");
+		tab.adicColuna("Ultimo cupom");
 		
 		tab.setTamColuna(70,0);  
 		tab.setTamColuna(100,1);  
