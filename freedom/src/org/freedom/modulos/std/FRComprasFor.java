@@ -26,7 +26,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
 
@@ -83,7 +82,7 @@ public class FRComprasFor extends FRelatorio {
 		boolean termFor = false;
 		int iCodFor = 0;
 		int iCodForAnt = -1;
-		imp.montaCab();
+		
 		String sWhere = "";
 		String sDataini = txtDataini.getVlrString();
 		String sDatafim = txtDatafim.getVlrString();
@@ -92,7 +91,7 @@ public class FRComprasFor extends FRelatorio {
 		double dVlrFor = 0;
 		double dQtdFor = 0;
 
-		imp.setTitulo("Relatório de Compras por Fornecedor");
+		
 		if (txtCodFor.getText().trim().length() > 0) {
 			sWhere += " AND C.CODFOR = "+txtCodFor.getText().trim();
 		}
@@ -122,29 +121,18 @@ public class FRComprasFor extends FRelatorio {
 				iCodFor = rs.getInt("CodFor");
                         	if (imp.pRow() == linPag) {
                                         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+                                        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                                         imp.eject();
                                 	imp.incPags();
                         	}
 				if (imp.pRow()==0) {
-					imp.impCab(136, false);
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-					imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,5,"RELATORIO DE COMPRAS POR FORNECEDOR  -  PERIODO DE: "+sDataini+" Até: "+sDatafim);imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.montaCab();
+					imp.setTitulo("Relatório de Compras por Fornecedor");
+					imp.setSubTitulo("RELATORIO DE COMPRAS POR FORNECEDOR  -  PERIODO DE: "+sDataini+" Até: "+sDatafim);
+					imp.impCab(136, true);
+					
+					imp.say(imp.pRow()+0,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"| Data       ");
 					imp.say(imp.pRow()+0,14,"| Pedido   ");
@@ -154,16 +142,16 @@ public class FRComprasFor extends FRelatorio {
 					imp.say(imp.pRow()+0,89,"| Qtd.    ");
 					imp.say(imp.pRow()+0,100,"| Preco     ");
 					imp.say(imp.pRow()+0,113,"| Total     ");
-					imp.say(imp.pRow()+0,136,"|");
+					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 				}
 				if (iCodFor != iCodForAnt) {
 					if (termFor) {
 						dQtd += dQtdFor;
 						dVlr += dVlrFor;
 						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 						imp.say(imp.pRow()+1,0,""+imp.comprimido());
 						imp.say(imp.pRow()+0,0,"|");
 						imp.say(imp.pRow()+0,1,"Sub-total fornecedor:");
@@ -171,19 +159,19 @@ public class FRComprasFor extends FRelatorio {
 						imp.say(imp.pRow()+0,50,Funcoes.copy(dQtdFor+"",0,6));
 						imp.say(imp.pRow()+0,60,"Valor comprado -> ");
 						imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlrFor+""));
-						imp.say(imp.pRow()+0,136,"|");
+						imp.say(imp.pRow()+0,135,"|");
 					}
 					dQtdFor = 0;
 					dVlrFor = 0;
 					String sTmp = "FORNECEDOR: "+rs.getInt("CodFor")+" - "+rs.getString("RazFor").trim();
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,(134-sTmp.length())/2,sTmp);
-					imp.say(imp.pRow()+0,136,"|");
+					imp.say(imp.pRow()+0,(133-sTmp.length())/2,sTmp);
+					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 					termFor =true;
 				}
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -195,7 +183,7 @@ public class FRComprasFor extends FRelatorio {
 				imp.say(imp.pRow()+0,89,"| "+Funcoes.strDecimalToStrCurrency(7,1,rs.getString("QtdItCompra")));
 				imp.say(imp.pRow()+0,100,"| "+Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoItCompra")));
 				imp.say(imp.pRow()+0,113,"| "+Funcoes.strDecimalToStrCurrency(9,2,rs.getString("VlrLiqItCompra")));
-				imp.say(imp.pRow()+0,136,"|");
+				imp.say(imp.pRow()+0,135,"|");
 				dQtdFor += rs.getDouble("QtdItCompra");
 				dVlrFor += rs.getDouble("VlrLiqItCompra");
 				
@@ -205,7 +193,7 @@ public class FRComprasFor extends FRelatorio {
 			dQtd += dQtdFor;
 			dVlr += dVlrFor;
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
 			imp.say(imp.pRow()+0,1,"Sub-total fornecedor:");
@@ -213,9 +201,9 @@ public class FRComprasFor extends FRelatorio {
 			imp.say(imp.pRow()+0,50,Funcoes.copy(dQtdFor+"",0,6));
 			imp.say(imp.pRow()+0,60,"Valor comprado -> ");
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlrFor+""));
-			imp.say(imp.pRow()+0,136,"|");
+			imp.say(imp.pRow()+0,135,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
 			imp.say(imp.pRow()+0,1,"Total compras:");
@@ -223,9 +211,9 @@ public class FRComprasFor extends FRelatorio {
 			imp.say(imp.pRow()+0,50,Funcoes.copy(dQtd+"",0,6));
 			imp.say(imp.pRow()+0,60,"Valor comprado -> ");
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlr+""));
-			imp.say(imp.pRow()+0,136,"|");
+			imp.say(imp.pRow()+0,135,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 		 
 			imp.eject();
 		 

@@ -26,7 +26,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
@@ -75,7 +74,7 @@ public class FRVendasDet extends FRelatorio {
 
     ImprimeOS imp = new ImprimeOS("", con);
     int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
+    
     String sDataini = "";
     String sDatafim = "";
 
@@ -85,7 +84,7 @@ public class FRVendasDet extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
 
-    imp.setTitulo("Relatório de Vendas Detalhado");
+    
     String sSQL = "SELECT (SELECT VO.CODORC FROM VDVENDAORC VO WHERE" +
     		      " VO.CODVENDA=V.CODVENDA AND VO.CODEMP=V.CODEMP" +
     		      " AND VO.CODFILIAL=V.CODFILIAL),V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA," +
@@ -115,43 +114,31 @@ public class FRVendasDet extends FRelatorio {
       while (rs.next()) {
         if (imp.pRow()>=(linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.incPags();
           imp.eject();
         }
         if (imp.pRow() == 0) {
-          imp.impCab(136, false);
-          imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
-          imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "| Emitido em :"
-              + Funcoes.dateToStrDate(new Date()));
-          imp.say(imp.pRow() + 0, 120, "Pagina : " + (imp.getNumPags()));
-          imp.say(imp.pRow() + 0, 136, "|");
-          imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "|");
-          imp.say(imp.pRow() + 0, 5, "RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"
-              + sDataini + " Até: " + sDatafim);
-          imp.say(imp.pRow() + 0, 136, "|");
-          imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "|");
-          imp.say(imp.pRow() + 0, 136, "|");
-          imp.say(imp.pRow() + 1, 0, "+" + Funcoes.replicate("-", 134) + "+");
+        	imp.montaCab();
+        	imp.setTitulo("Relatório de Vendas Detalhado");
+        	imp.setSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
+            imp.impCab(136, true);
+          
         }
         if (iCodVendaAnt != rs.getInt("CodVenda")) {
           if (iCodVendaAnt > 0) {
             imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-            imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 134) + "|");
+            imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
             imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
             imp.say(imp.pRow() + 0, 0, "|");
             imp.say(imp.pRow() + 0, 64, " Totais da venda: ");
             imp.say(imp.pRow() + 0, 94, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrDesc));
             imp.say(imp.pRow() + 0, 109, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrLiq));
             imp.say(imp.pRow() + 0, 124, "|");
-            imp.say(imp.pRow() + 0, 136, "|");
+            imp.say(imp.pRow() + 0, 135, "|");
           }
-          imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
+          imp.say(imp.pRow() + (iCodVendaAnt > 0 ? 1 : 0), 0, "" + imp.comprimido());
+          imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
           imp.say(imp.pRow() + 0, 0, "| Pedido: ");
           imp.say(imp.pRow() + 0, 10, Funcoes.strZero(rs.getString("CodVenda"), 8));
@@ -163,13 +150,13 @@ public class FRVendasDet extends FRelatorio {
           imp.say(imp.pRow() + 0, 75, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
           imp.say(imp.pRow() + 0, 90, "Plano Pagto.: ");
           imp.say(imp.pRow() + 0, 104, Funcoes.copy(rs.getString("DescPlanoPag"), 30));
-          imp.say(imp.pRow() + 0, 136, "|");
+          imp.say(imp.pRow() + 0, 135, "|");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
           imp.say(imp.pRow() + 0, 0, "| Cliente: ");
           imp.say(imp.pRow() + 0, 11, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
-          imp.say(imp.pRow() + 0, 136, "|");
+          imp.say(imp.pRow() + 0, 135, "|");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 134) + "|");
+          imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
           imp.say(imp.pRow() + 0, 0, "| Cod/Ref");
           imp.say(imp.pRow() + 0, 16, "| Descrição");
@@ -178,9 +165,9 @@ public class FRVendasDet extends FRelatorio {
           imp.say(imp.pRow() + 0, 94, "| Vlr.Desc.");
           imp.say(imp.pRow() + 0, 109, "| Vlr.Liq.");
           imp.say(imp.pRow() + 0, 124, "| Orcam.");
-          imp.say(imp.pRow() + 0, 136, "|");
+          imp.say(imp.pRow() + 0, 135, "|");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 134) + "|");
+          imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
           bVlrDesc = rs.getBigDecimal("VlrDescVenda");
           bVlrLiq = rs.getBigDecimal("VlrLiqVenda");
         }
@@ -192,22 +179,22 @@ public class FRVendasDet extends FRelatorio {
         imp.say(imp.pRow() + 0, 94, "| "+Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VlrDescItVenda")));
         imp.say(imp.pRow() + 0, 109, "| "+Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VlrLiqItVenda")));
         imp.say(imp.pRow() + 0, 124, "| "+(rs.getString(1) != null ? rs.getString(1) : ""));
-        imp.say(imp.pRow() + 0, 136, "|");
+        imp.say(imp.pRow() + 0, 135, "|");
         iCodVendaAnt = rs.getInt("CodVenda");
       }
       if (iCodVendaAnt > 0) {
         imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-        imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 134) + "|");
+        imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
         imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
         imp.say(imp.pRow() + 0, 0, "|");
         imp.say(imp.pRow() + 0, 64, " Totais da venda: ");
         imp.say(imp.pRow() + 0, 94, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrDesc));
         imp.say(imp.pRow() + 0, 109, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrLiq));
         imp.say(imp.pRow() + 0, 124, "|");
-        imp.say(imp.pRow() + 0, 136, "|");
+        imp.say(imp.pRow() + 0, 135, "|");
       }
       imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-      imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 134) + "+");
+      imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
 
       imp.eject();
 
