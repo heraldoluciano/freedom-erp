@@ -26,20 +26,13 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-/*import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import org.freedom.acao.InsertEvent;*/
-import java.util.Date;
 import java.util.Vector;
-
-import org.freedom.acao.InsertEvent;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+
 public class FTurnos extends FDados implements ActionListener {
   private JTextFieldPad txtCodTurno = new JTextFieldPad();
   private JTextFieldPad txtDescTurno = new JTextFieldPad();
@@ -54,18 +47,21 @@ public class FTurnos extends FDados implements ActionListener {
   
   public FTurnos () {
     setTitulo("Cadastro de Turnos");
-    setAtribos(50, 50, 457, 280);
+    setAtribos(50, 50, 440, 250);
 	    
-    	Funcoes HIniTurno = new Funcoes();
-//	    HIniTurno.dateToStrDataHora();
-    	
+	      	
 	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
-	    adicCampo(txtDescTurno, 90, 20, 220, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
-	    adicCampo(txtNhsTurno, 313, 20, 120, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,4,0,true,false,null,true);
-	    adicCampo(txtHIniTurno, 7, 60, 160, 20,"HIniTurno","Hora do inicío do turno",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);
-	    adicCampo(txtHIniIntTurno, 7, 100, 160, 20,"HIniIntTurno","Hora do inicío do intervalo",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);
-	    adicCampo(txtHFimIntTurno, 7, 140, 160, 20,"HFimIntTurno","Hora do fim do intervalo",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);
-	    adicCampo(txtHFimTurno, 7, 180, 160, 20,"HFimTurno","Hora do fim do turno",JTextFieldPad.TP_TIMESTAMP,4,0,true,false,null,true);	   
+	    adicCampo(txtDescTurno, 90, 20, 223, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,60,0,false,false,null,true);
+	    adicCampo(txtNhsTurno, 316, 20, 100, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,4,0,true,false,null,true);
+	    adicCampo(txtHIniTurno, 7, 60, 100, 20,"HIniTurno","Inicío do turno",JTextFieldPad.TP_STRING,5,0,true,false,null,true);
+	    adicCampo(txtHIniIntTurno, 110, 60, 100, 20,"HIniIntTurno","Inicío do intervalo",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
+	    adicCampo(txtHFimIntTurno, 213, 60, 100, 20,"HFimIntTurno","Fim do intervalo",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
+	    adicCampo(txtHFimTurno, 316, 60, 100, 20,"HFimTurno","fim do turno",JTextFieldPad.TP_STRING,4,0,true,false,null,true);	   
+	    
+	    txtHIniTurno.setStrMascara("##:##");
+	    txtHIniIntTurno.setStrMascara("##:##");
+	    txtHFimIntTurno.setStrMascara("##:##");
+	    txtHFimTurno.setStrMascara("##:##");	    
 	    
 	    vTipoTurnoLab.addElement("Normal ( manhã e tarde )");
 	  	vTipoTurnoLab.addElement("Manhã");
@@ -77,8 +73,8 @@ public class FTurnos extends FDados implements ActionListener {
 	  	vTipoTurnoVal.addElement("T");
 	  	vTipoTurnoVal.addElement("O");
 	  	vTipoTurnoVal.addElement("E");
-	  	rgTipoTurno = new JRadioGroup( 5, 1, vTipoTurnoLab, vTipoTurnoVal);	  	  	
-	  	adicDB(rgTipoTurno, 170, 60, 262, 140, "TipoTurno", "Tipo de Turno:",JTextFieldPad.TP_STRING,true);
+	  	rgTipoTurno = new JRadioGroup( 3, 2, vTipoTurnoLab, vTipoTurnoVal);	  	  	
+	  	adicDB(rgTipoTurno, 7, 100, 409, 70, "TipoTurno", "Tipo de Turno:",JTextFieldPad.TP_STRING,true);
 	  	rgTipoTurno.setVlrString("N");	  	
 	  	setListaCampos( true, "TURNO", "RH");
 	    btImp.addActionListener(this);
@@ -89,10 +85,7 @@ public class FTurnos extends FDados implements ActionListener {
 	       
 	     	  	
   }
-  public void afterInsert(InsertEvent ievt) {
-    txtHIniTurno.setVlrDate(new Date());
-    txtHIniIntTurno.setVlrDate(new Date());
-  }
+  
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
       	
@@ -116,8 +109,8 @@ public class FTurnos extends FDados implements ActionListener {
       return;
     }
     String sSQL = "SELECT CODTURNO, DESCTURNO, NHSTURNO, " +
-    		"HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO, " +
-    		"TIPOTURNO FROM RHTURNO ORDER BY "+dl.getValor();
+    		"HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO, TIPOTURNO " +
+    		"FROM RHTURNOPK ORDER BY "+dl.getValor();
     		
     PreparedStatement ps = null;
     ResultSet rs = null;
