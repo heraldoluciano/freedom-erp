@@ -34,6 +34,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 import org.freedom.telas.FDialogo;
 
@@ -76,9 +77,11 @@ public class FSerie extends FDados implements ActionListener {
   private void gravaReset() {
     PreparedStatement ps = null;
     try {
-      ps = con.prepareStatement("UPDATE LFSERIE SET DOCSERIE=? WHERE SERIE=?");
+      ps = con.prepareStatement("UPDATE LFSERIE SET DOCSERIE=? WHERE SERIE=? AND CODEMP=? AND CODFILIAL=?");
       ps.setInt(1,txtReset.getVlrInteger().intValue());
       ps.setString(2,txtSerie.getVlrString());
+      ps.setInt(3,Aplicativo.iCodEmp);
+      ps.setInt(4,lcCampos.getCodFilial());
       ps.executeUpdate();
 //      ps.close();
       if (!con.getAutoCommit())
