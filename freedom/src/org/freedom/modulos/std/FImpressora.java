@@ -35,15 +35,15 @@ import org.freedom.telas.FDados;
 
 import java.util.Vector;
 public class FImpressora extends FDados {
-  private JTextFieldPad txtCodImp = new JTextFieldPad(8);
-  private JTextFieldPad txtDescImp = new JTextFieldPad(40);
-  private JTextFieldPad txtTipoImp = new JTextFieldPad(2);
-  private JTextFieldPad txtLinPagImp = new JTextFieldPad(8);
-  private JTextFieldPad txtNSerieImp = new JTextFieldPad(15);
-  private JTextFieldPad txtPortaWinImp = new JTextFieldPad(4);
-  private JTextFieldPad txtPortaLinImp = new JTextFieldPad(20);
-  private JTextFieldPad txtCodPapel = new JTextFieldPad(20);
-  private JTextFieldFK txtDescPapel = new JTextFieldFK();
+  private JTextFieldPad txtCodImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtDescImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldPad txtTipoImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldPad txtLinPagImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtNSerieImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
+  private JTextFieldPad txtPortaWinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtPortaLinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
+  private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+  private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JComboBox cbTipoImp = new JComboBox();
   private JComboBoxPad cbDestImp = null;
   private Vector vVals = new Vector();
@@ -113,26 +113,24 @@ public class FImpressora extends FDados {
       }
     );
 //Prepara FKs
-    txtCodPapel.setTipo(JTextFieldPad.TP_STRING,20,0);
-    txtDescPapel.setTipo(JTextFieldPad.TP_STRING,40,0);    
 
-    lcPapel.add(new GuardaCampo( txtCodPapel, 7, 100, 80, 20, "CodPapel", "Cód.tp.papel", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodPapelx");
-    lcPapel.add(new GuardaCampo( txtDescPapel, 90, 100, 207, 20, "DescPapel", "Descrição do tipo de papel", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPapelx");
+    lcPapel.add(new GuardaCampo( txtCodPapel, "CodPapel", "Cód.tp.papel", ListaCampos.DB_PK, true));
+    lcPapel.add(new GuardaCampo( txtDescPapel, "DescPapel", "Descrição do tipo de papel", ListaCampos.DB_SI, false));
     lcPapel.montaSql(false, "PAPEL", "SG");    
     lcPapel.setQueryCommit(false);
     lcPapel.setReadOnly(true);
     txtCodPapel.setTabelaExterna(lcPapel);
 //Adiciona componentes   
-    adicCampo(txtCodImp, 7, 20, 90, 20, "CodImp", "Cód.imp.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
-    adicCampo(txtDescImp, 100, 20, 276, 20, "DescImp", "Descrição da impressora", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
-    adicCampo(txtTipoImp, 7, 60, 90, 20, "TipoImp", "Tp.impressora", JTextFieldPad.TP_STRING, 2, 0, false, false, null, true);
+    adicCampo(txtCodImp, 7, 20, 90, 20, "CodImp", "Cód.imp.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescImp, 100, 20, 276, 20, "DescImp", "Descrição da impressora", ListaCampos.DB_SI, true);
+    adicCampo(txtTipoImp, 7, 60, 90, 20, "TipoImp", "Tp.impressora", ListaCampos.DB_SI, true);
     pinDados.adic(cbTipoImp,100,60,276,20);
-    adicCampo(txtLinPagImp, 7, 100, 90, 20, "LinPagImp", "Lin.pag.imp.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtNSerieImp, 100, 100, 90, 20, "NSerieImp", "Num. serie", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
-    adicCampo(txtPortaWinImp, 193, 100, 90, 20, "PortaWinImp", "Porta WIN", JTextFieldPad.TP_STRING, 4, 0, false, false, null, true);
-    adicCampo(txtPortaLinImp, 286, 100, 90, 20, "PortaLinImp", "Nome LIN", JTextFieldPad.TP_STRING, 60, 0, false, false, null, true);
-    adicCampo(txtCodPapel, 7, 140, 90, 20, "CodPapel", "Cód.tp.papel", JTextFieldPad.TP_STRING, 20, 0, false, true, null, true);
-    adicDescFK(txtDescPapel, 100, 140, 276, 20, "DescPapel", "Descrição do tipo de papel", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtLinPagImp, 7, 100, 90, 20, "LinPagImp", "Lin.pag.imp.", ListaCampos.DB_SI, true);
+    adicCampo(txtNSerieImp, 100, 100, 90, 20, "NSerieImp", "Num. serie", ListaCampos.DB_SI, false);
+    adicCampo(txtPortaWinImp, 193, 100, 90, 20, "PortaWinImp", "Porta WIN", ListaCampos.DB_SI, true);
+    adicCampo(txtPortaLinImp, 286, 100, 90, 20, "PortaLinImp", "Nome LIN", ListaCampos.DB_SI, true);
+    adicCampo(txtCodPapel, 7, 140, 90, 20, "CodPapel", "Cód.tp.papel", ListaCampos.DB_FK, true);
+    adicDescFK(txtDescPapel, 100, 140, 276, 20, "DescPapel", "Descrição do tipo de papel");
     adicDB(cbDestImp, 7, 180, 200, 25, "DestImp", "Padrão para",JTextFieldPad.TP_STRING,true);
 
     setListaCampos(true, "IMPRESSORA", "SG");

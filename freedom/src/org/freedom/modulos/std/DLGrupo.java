@@ -40,8 +40,8 @@ public class DLGrupo extends FFDialogo {
   private JTextFieldPad txtCodGrupo = new JTextFieldPad(4);
   private JTextFieldPad txtDescGrupo = new JTextFieldPad(50);
   private JTextFieldPad txtSiglaGrupo = new JTextFieldPad(10);
-  private JLabel lbCodGrupo = new JLabel("Código");
-  private JLabel lbDescGrupo = new JLabel("Descrição");
+  private JLabel lbCodGrupo = new JLabel("Cód.grupo");
+  private JLabel lbDescGrupo = new JLabel("Descrição do grupo");
   private JLabel lbSiglaGrupo = new JLabel("Sigla");
   private boolean bEdit = false;
   public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc) {
@@ -56,7 +56,7 @@ public class DLGrupo extends FFDialogo {
     txtSiglaGrupo.setTipo(JTextFieldPad.TP_STRING,10,0);
     adic(lbCodGrupo,7,0,80,20);
     adic(txtCodGrupo,7,20,80,20);
-    adic(lbDescGrupo,90,0,100,20);
+    adic(lbDescGrupo,90,0,200,20);
     adic(txtDescGrupo,90,20,200,20);
     adic(lbSiglaGrupo,293,0,80,20);
     adic(txtSiglaGrupo,293,20,80,20);
