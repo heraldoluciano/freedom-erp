@@ -77,6 +77,7 @@ public class FRGerContas extends FRelatorio  {
   private Vector vValOrdemRel = new Vector();
   private JRadioGroup rgOrdemRel = null;
   private FPrinterJob dl = null;
+  private Vector vParams = new Vector();
 
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
@@ -151,7 +152,7 @@ public class FRGerContas extends FRelatorio  {
 	adic(txtRazCli,80,155,320,20);
     
     adic(cbVendas,7,180,100,25);
-    adic(cbCliPrinc,110,180,200,25);
+    adic(cbCliPrinc,110,180,250,25);
     adic(cbIncluiPed,7,205,295,25);
     
   }
@@ -163,10 +164,13 @@ public class FRGerContas extends FRelatorio  {
 		return;
 	}
 	
-       
+    
+	vParams.addElement(txtCodSetor.getVlrString());
 	GerContas gerContas = new GerContas();
+	gerContas.setParam(vParams);
 	gerContas.setConexao(con);
-	gerContas.setConsulta(buscaValores());	  	
+	gerContas.setConsulta(buscaValores());	  
+
 	dl = new FPrinterJob(gerContas,this);
 	dl.setVisible(true);
 
@@ -179,7 +183,9 @@ public class FRGerContas extends FRelatorio  {
   	String sFrom = "";
     ResultSet rs = null;
   	try {
-  		   sSql = "";
+  		   sSql = "SELECT CLI.NOMECLI,CLI.CODCLI,CLI.CIDCLI,CC.DESCCLASCLI " +
+  		   	      "FROM VDCLIENTE CLI,VDCLASCLI CC "+
+                  "WHERE CC.CODEMP=CLI.CODEMPCC AND CC.CODFILIAL=CLI.CODFILIALCC AND CC.CODCLASCLI=CLI.CODCLASCLI ";
 
   		    PreparedStatement ps = null;
  			ps = con.prepareStatement(sSql);  		   
@@ -200,5 +206,7 @@ public class FRGerContas extends FRelatorio  {
     lcVendedor.setConexao(cn);
     lcCliente.setConexao(cn);
   }
+  
+  
   
 }
