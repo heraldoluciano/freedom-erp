@@ -169,7 +169,7 @@ public class FreedomGMS extends Aplicativo {
 	    	addOpcao(300000000,TP_OPCAO_ITEM,"Pesquisa Orçamento",'P',300700000,1,true);
 	    	addSeparador(300000000);
 	    	addOpcao(300000000,TP_OPCAO_ITEM,"Romaneio",'R',300800000,1,true);  		
-	    	addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores",'x',300900000,1,true);
+	    	//addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores",'x',300900000,1,true);
 	    	addOpcao(300000000,TP_OPCAO_MENU,"Listagens",'s',301000000,1,false);				
 	    	addOpcao(301000000,TP_OPCAO_ITEM,"Resumo diário",'R',301010000,2,true);
 	    	addOpcao(301000000,TP_OPCAO_ITEM,"Vendas geral",'V',301020000,2,true);
@@ -462,7 +462,6 @@ public class FreedomGMS extends Aplicativo {
 	        if (telaPrincipal.temTela("Devolução de vendas")==false) {
 	           FDevolucao tela = new FDevolucao(telaPrincipal.dpArea);
 	           tela.setConexao(con);
-	           tela.setTelaPrim(telaPrincipal);
 	           tela.setVisible(true);
 	           tela.dispose();
 	        }

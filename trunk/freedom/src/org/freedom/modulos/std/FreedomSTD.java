@@ -46,7 +46,7 @@ public class FreedomSTD extends Aplicativo {
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Banco",'B',100113000,2,true);
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de cobrança",'o',100114000,2,true);
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Plano de pagamento",'s',100115000,2,true);
-	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de expositor",'x',100116000,2,true);	    
+	    //addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de expositor",'x',100116000,2,true);	    
 	    addSeparador(100100000);	    
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Transportadora",'p',100117000,2,true);  	    
 	    addSeparador(100100000);	    
@@ -821,7 +821,6 @@ public class FreedomSTD extends Aplicativo {
       if (telaPrincipal.temTela("Devolução de vendas")==false) {
          FDevolucao tela = new FDevolucao(telaPrincipal.dpArea);
          tela.setConexao(con);
-         tela.setTelaPrim(telaPrincipal);
          tela.setVisible(true);
          tela.dispose();
       }
