@@ -29,6 +29,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.acao.RadioGroupEvent;
@@ -41,7 +43,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 
-public class FTransp extends FDados implements PostListener,RadioGroupListener {
+public class FTransp extends FDados implements PostListener,RadioGroupListener,InsertListener {
   private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
@@ -67,15 +69,16 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener {
     setTitulo("Cadastro de Tranportadoras");
     setAtribos( 50, 50, 396, 360);
     
+    lcCampos.addInsertListener(this);
     lcCampos.addPostListener(this);
 	 
-	vTipoTransp.addElement("Cliente");
 	vTipoTransp.addElement("Transp.");
-	vTipoTranspVal.addElement("C");
+	vTipoTransp.addElement("Cliente");
 	vTipoTranspVal.addElement("T");
+	vTipoTranspVal.addElement("C");
 	rgTipoTransp = new JRadioGroup( 2, 1, vTipoTransp, vTipoTranspVal);
-	   
-	rgTipoTransp.setVlrString("C");
+	rgTipoTransp.setVlrString("T");
+	
 	
     adicCampo(txtCodTran, 7, 20, 70, 20, "CodTran", "Cód.tran.", ListaCampos.DB_PK, true);
     adicCampo(txtRazTran, 80, 20, 205,20, "RazTran", "Razão social da transportadora", ListaCampos.DB_SI, true);
@@ -145,9 +148,8 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener {
   
   
    public void valorAlterado(RadioGroupEvent rgevt) {
-      if (rgTipoTransp.getVlrString().compareTo("C") == 0){
+   	  if (rgTipoTransp.getVlrString().equals("C"))
 	      carregaCnpj(); 
-      }
     }
    public void carregaCnpj() {
 	  String sSQL = "SELECT CNPJFILIAL, INSCFILIAL, UFFILIAL FROM SGFILIAL WHERE CODEMP=? AND CODFILIAL=?";
@@ -180,6 +182,12 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener {
 			    return;
 	    }
 	  }
+	public void afterInsert(InsertEvent ievt) {
+		rgTipoTransp.setVlrString("T");
+	}
+	public void beforeInsert(InsertEvent ievt) {
+
+	}
 }	  
    	  
 	   
