@@ -857,7 +857,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
     sPK = retPK();
     if ( bAutoInc ) {
       /* Bom esse negocio que vem ai é para colar o codemp e o codfilial caso seja necessário
-       * e se não for necessário, colocar o 'WHERE' se este listacampos não for detalhe....por que se
+       * e se não for necessário, colocar o 'WHERE' se este listacampos não for detalhe....porque se
        * for detalhe é preciso colocar as pks do listacampos master.
        */
 	   if (bTiraFI)
@@ -1319,6 +1319,8 @@ public class ListaCampos extends Container implements PostListener,InsertListene
        	  err.printStackTrace();
        }
      }
+     else retorno = "";
+     	
      return retorno;
   }
 
