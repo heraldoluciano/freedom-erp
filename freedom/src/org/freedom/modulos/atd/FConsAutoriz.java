@@ -64,7 +64,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private JTextFieldPad txtNomeEnc = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldPad txtCid = new JTextFieldPad();
+	private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JLabel lbCid = new JLabel("Cidade");
 	private JCheckBoxPad cbVencidas = new JCheckBoxPad("Vencidas","S","N");
 	private JCheckBoxPad cbCompleto = new JCheckBoxPad("Completo","S","N");
@@ -91,16 +91,16 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
-		lcConv.add(new GuardaCampo( txtCodConv, 7, 100, 80, 20, "CodConv", "Cód.conv", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConv");
-		lcConv.add(new GuardaCampo( txtNomeConv, 90, 100, 207, 20, "NomeConv", "Nome do conveniado", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeConv");
+		lcConv.add(new GuardaCampo( txtCodConv, "CodConv", "Cód.conv", ListaCampos.DB_PK ,false));
+		lcConv.add(new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, false));
 		txtCodConv.setTabelaExterna(lcConv);
 		txtCodConv.setNomeCampo("CodConv");
 		txtCodConv.setFK(true);
 		lcConv.setReadOnly(true);
 		lcConv.montaSql(false, "CONVENIADO", "AT");
 
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-		lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
+		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK ,false));
+		lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 		txtCodCli.setTabelaExterna(lcCli);
 		txtCodCli.setNomeCampo("CodCli");
 		txtCodCli.setFK(true);
@@ -108,8 +108,8 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		
 		
-		lcEnc.add(new GuardaCampo( txtCodEnc, 7, 100, 80, 20, "CodEnc", "Cód.enc.", true, false, null, JTextFieldPad.TP_INTEGER,false));
-		lcEnc.add(new GuardaCampo( txtNomeEnc, 400, 80, 150, 20, "NomeEnc", "Nome do encaminhador", false, false, null, JTextFieldPad.TP_STRING,false));
+		lcEnc.add(new GuardaCampo( txtCodEnc, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, false));
+		lcEnc.add(new GuardaCampo( txtNomeEnc, "NomeEnc", "Nome do encaminhador", ListaCampos.DB_SI, false));
 		txtCodEnc.setTabelaExterna(lcEnc);
 		txtCodEnc.setNomeCampo("CodEnc");
 		txtCodEnc.setFK(true);

@@ -42,6 +42,7 @@ public class GuardaCampo extends Component {
   /*
    *  @deprecated GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, boolean fk, JTextFieldFK descFK, int tip, boolean req)
    */
+  // COMENTADO AQUI
  public  GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, 
   		boolean fk, JTextFieldFK descFK, int tip, boolean req)  {
       
