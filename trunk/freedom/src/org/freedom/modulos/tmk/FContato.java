@@ -70,31 +70,31 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
   private Tabela tabAtiv = new Tabela();
   private JScrollPane spnAtiv = new JScrollPane(tabAtiv);
   private JPanel pnAtiv = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodCont = new JTextFieldPad(8);
-  private JTextFieldPad txtRazCont = new JTextFieldPad(50);
-  private JTextFieldPad txtNomeCont = new JTextFieldPad(40);
-  private JTextFieldPad txtCargoCont = new JTextFieldPad(40);
-  private JTextFieldPad txtContCont = new JTextFieldPad(40);
-  private JTextFieldPad txtCnpjCont = new JTextFieldPad(14);
-  private JTextFieldPad txtInscCont = new JTextFieldPad(15);
-  private JTextFieldPad txtCpfCont = new JTextFieldPad(11);
-  private JTextFieldPad txtRgCont = new JTextFieldPad(10);
-  private JTextFieldPad txtEndCont = new JTextFieldPad(50);
-  private JTextFieldPad txtNumCont = new JTextFieldPad(8);
-  private JTextFieldPad txtComplCont = new JTextFieldPad(20);
-  private JTextFieldPad txtBairCont = new JTextFieldPad(30);
-  private JTextFieldPad txtCidCont = new JTextFieldPad(30);
-  private JTextFieldPad txtUFCont = new JTextFieldPad(2);
-  private JTextFieldPad txtCepCont = new JTextFieldPad(8);
-  private JTextFieldPad txtFoneCont = new JTextFieldPad(12);
-  private JTextFieldPad txtFaxCont = new JTextFieldPad(8);
-  private JTextFieldPad txtEmailCont = new JTextFieldPad(50);
-  private JTextFieldPad txtNumEmp = new JTextFieldPad(8);
-  private JTextFieldPad txtCodVend = new JTextFieldPad(8);
-  private JTextFieldFK  txtDescVend = new JTextFieldFK();
+  private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+  private JTextFieldPad txtRazCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtNomeCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldPad txtCargoCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtContCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldPad txtCnpjCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 14, 0);
+  private JTextFieldPad txtInscCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
+  private JTextFieldPad txtCpfCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 11, 0);
+  private JTextFieldPad txtRgCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtEndCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtNumCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtComplCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtBairCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtCidCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtUFCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldPad txtCepCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtFoneCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtFaxCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtEmailCont = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtNumEmp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 50,0);
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK  txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDataCont = new JTextFieldPad(8);
-  private JTextFieldPad txtCodSetor = new JTextFieldPad(8);
-  private JTextFieldFK  txtDescSetor = new JTextFieldFK();
+  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK  txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodAtiv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK  txtDescAtiv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Vector vPessoaLab = new Vector();
@@ -124,35 +124,29 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     
     lcCampos.addPostListener(this);
 
-    txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescVend.setTipo(JTextFieldPad.TP_STRING,50,0);    
-
-    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
     lcVend.montaSql(false, "VENDEDOR", "VD");    
     lcVend.setQueryCommit(false);
     lcVend.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVend);
 
-    txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0); 
-    txtDescSetor.setTipo(JTextFieldPad.TP_STRING,50,0);    
-
-    lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Cód.setor", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodSetorx");
-    lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetorx");
+    lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK, true));
+    lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI, false));
     lcSetor.montaSql(false, "SETOR", "VD");    
     lcSetor.setQueryCommit(false);
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
     
-	lcAtivFK.add(new GuardaCampo( txtCodAtiv, 7, 100, 80, 20, "CodAtiv", "Cód.ativ.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
-	lcAtivFK.add(new GuardaCampo( txtDescAtiv, 90, 100, 207, 20, "DescAtiv", "Descrição da atividade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+	lcAtivFK.add(new GuardaCampo( txtCodAtiv, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PK, true));
+	lcAtivFK.add(new GuardaCampo( txtDescAtiv, "DescAtiv", "Descrição da atividade", ListaCampos.DB_SI, false));
 	lcAtivFK.montaSql(false, "ATIVIDADE", "TK");    
 	lcAtivFK.setReadOnly(true);
 	lcAtivFK.setQueryCommit(false);
 	txtCodAtiv.setTabelaExterna(lcAtivFK);
 
-    adicCampo(txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.cto.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null,true);
-    adicCampo(txtRazCont, 90, 20, 307, 20, "RazCto", "Razão social do contato", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
+    adicCampo(txtCodCont, 7, 20, 80, 20, "CodCto", "Cód.cto.", ListaCampos.DB_PK, true);
+    adicCampo(txtRazCont, 90, 20, 307, 20, "RazCto", "Razão social do contato", ListaCampos.DB_SI, true);
     
     vPessoaLab.addElement("Jurídica");
     vPessoaLab.addElement("Física");
@@ -162,32 +156,32 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     rgPessoa = new JRadioGroup( 2, 1, vPessoaLab, vPessoaVal);
 	rgPessoa.addRadioGroupListener(this);   
 
-    adicDB(rgPessoa, 400, 20, 100, 60, "PessoaCto", "Pessoa",JTextFieldPad.TP_STRING,true);
+    adicDB(rgPessoa, 400, 20, 100, 60, "PessoaCto", "Pessoa", true);
     rgPessoa.setVlrString("F");
     
     JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
     
-    adicDB(cbAtivo, 19, 60, 70, 20, "AtivoCto", "Ativo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtNomeCont, 90, 60, 307, 20, "NomeCto", "Nome do contato", JTextFieldPad.TP_STRING, 40, 0, false, false, null,true);
-    adicCampo(txtCpfCont, 273, 110, 111, 20, "CpfCto", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
-	adicCampo(txtCodSetor, 7, 110, 60, 20, "CodSetor", "Cód.setor", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescSetor,true);
-	adicDescFK(txtDescSetor, 70, 110, 200, 20, "DescSetor", "Descrição do setor do contato", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtRgCont, 387, 110, 112, 20, "RgCto", "RG", JTextFieldPad.TP_STRING, 10, 0, false, false, null, false);
-    adicCampo(txtCnpjCont, 7, 150, 150, 20, "CnpjCto", "CNPJ", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);
-    adicCampo(txtInscCont, 160, 150, 147, 20, "InscCto", "Inscrição Estadual", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
-	adicCampo(txtContCont, 310, 150, 107, 20, "ContCto", "Falar com:", JTextFieldPad.TP_STRING, 40, 0, false, false, null,false);
-	adicCampo(txtCargoCont, 420, 150, 80, 20, "CargoContCto", "Cargo", JTextFieldPad.TP_STRING, 30, 0, false, false, null,false);
-    adicCampo(txtEndCont, 7, 190, 340, 20, "EndCto", "Endereço", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
-    adicCampo(txtNumCont, 350, 190, 77, 20, "NumCto", "Num.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
-    adicCampo(txtComplCont, 430, 190, 70, 20, "ComplCto", "Compl.", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
-    adicCampo(txtBairCont, 7, 230, 180, 20, "BairCto", "Bairro", JTextFieldPad.TP_STRING, 30, 0, false, false, null, false);
-    adicCampo(txtCidCont, 190, 230, 177, 20, "CidCto", "Cidade", JTextFieldPad.TP_STRING, 30, 0, false, false, null, false);
-    adicCampo(txtCepCont, 370, 230, 77, 20, "CepCto", "Cep", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
-    adicCampo(txtUFCont, 450, 230, 50, 20, "UFCto", "UF", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-    adicCampo(txtFoneCont, 7, 270, 100, 20, "FoneCto", "Telefone", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
-    adicCampo(txtFaxCont, 110, 270, 97, 20, "FaxCto", "Fax", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
-    adicCampo(txtEmailCont, 210, 270, 157, 20, "EmailCto", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
-    adicCampo(txtNumEmp,370,270,97,20,"numempcto","Nº Funcionarios", JTextFieldPad.TP_INTEGER, 50,0,false,false,null,false);
+    adicDB(cbAtivo, 19, 60, 70, 20, "AtivoCto", "Ativo", true);
+    adicCampo(txtNomeCont, 90, 60, 307, 20, "NomeCto", "Nome do contato", ListaCampos.DB_SI,true);
+    adicCampo(txtCpfCont, 273, 110, 111, 20, "CpfCto", "CPF", ListaCampos.DB_SI, false);
+	adicCampo(txtCodSetor, 7, 110, 60, 20, "CodSetor", "Cód.setor", ListaCampos.DB_FK, txtDescSetor, true);
+	adicDescFK(txtDescSetor, 70, 110, 200, 20, "DescSetor", "Descrição do setor do contato");
+    adicCampo(txtRgCont, 387, 110, 112, 20, "RgCto", "RG", ListaCampos.DB_SI, false);
+    adicCampo(txtCnpjCont, 7, 150, 150, 20, "CnpjCto", "CNPJ", ListaCampos.DB_SI, false);
+    adicCampo(txtInscCont, 160, 150, 147, 20, "InscCto", "Inscrição Estadual", ListaCampos.DB_SI, false);
+	adicCampo(txtContCont, 310, 150, 107, 20, "ContCto", "Falar com:", ListaCampos.DB_SI, false);
+	adicCampo(txtCargoCont, 420, 150, 80, 20, "CargoContCto", "Cargo", ListaCampos.DB_SI, false);
+    adicCampo(txtEndCont, 7, 190, 340, 20, "EndCto", "Endereço", ListaCampos.DB_SI, false);
+    adicCampo(txtNumCont, 350, 190, 77, 20, "NumCto", "Num.", ListaCampos.DB_SI, false);
+    adicCampo(txtComplCont, 430, 190, 70, 20, "ComplCto", "Compl.", ListaCampos.DB_SI, false);
+    adicCampo(txtBairCont, 7, 230, 180, 20, "BairCto", "Bairro", ListaCampos.DB_SI, false);
+    adicCampo(txtCidCont, 190, 230, 177, 20, "CidCto", "Cidade", ListaCampos.DB_SI, false);
+    adicCampo(txtCepCont, 370, 230, 77, 20, "CepCto", "Cep", ListaCampos.DB_SI, false);
+    adicCampo(txtUFCont, 450, 230, 50, 20, "UFCto", "UF", ListaCampos.DB_SI, false);
+    adicCampo(txtFoneCont, 7, 270, 100, 20, "FoneCto", "Telefone", ListaCampos.DB_SI, false);
+    adicCampo(txtFaxCont, 110, 270, 97, 20, "FaxCto", "Fax", ListaCampos.DB_SI, false);
+    adicCampo(txtEmailCont, 210, 270, 157, 20, "EmailCto", "E-Mail", ListaCampos.DB_SI, false);
+    adicCampo(txtNumEmp,370,270,97,20,"numempcto","Nº Funcionarios", ListaCampos.DB_SI, false);
     adic(btExportCli,470,260,30,30);
     txtCpfCont.setMascara(JTextFieldPad.MC_CPF);
     txtCnpjCont.setMascara(JTextFieldPad.MC_CNPJ);
@@ -195,13 +189,13 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     txtFoneCont.setMascara(JTextFieldPad.MC_FONEDDD);
     txtFaxCont.setMascara(JTextFieldPad.MC_FONE);
     adicTab("Informações complementares", pnCompl);
-    adicDBLiv(txaObs, "ObsCto", "Observações",JTextFieldPad.TP_STRING, false);
+    adicDBLiv(txaObs, "ObsCto", "Observações", false);
 	pnCompl.add(pinVend,BorderLayout.NORTH);    
     pnCompl.add(spnObs,BorderLayout.CENTER);
     setPainel(pinVend);
-	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.repr.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescVend,false);
-	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "Descrição do vendedor", JTextFieldPad.TP_STRING, 50, 0);
-	adicCampo(txtDataCont, 330, 25, 80, 20, "DataCto", "Data", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
+	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.repr.", ListaCampos.DB_PK, txtDescVend, false);
+	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "Descrição do vendedor");
+	adicCampo(txtDataCont, 330, 25, 80, 20, "DataCto", "Data", ListaCampos.DB_SI, false);
 	adic(new JLabel("Observações:"),7,55,150,20);
     setListaCampos( true, "CONTATO", "TK");
     
@@ -216,8 +210,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 
 	pinRodAtiv.adic(navAtiv,0,50,270,25);
    
-	adicCampo(txtCodAtiv, 7, 20, 80, 20, "CodAtiv", "Cód.ativ.", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescAtiv,true);
-	adicDescFK(txtDescAtiv, 90, 20, 220, 20, "DescAtiv", "Descrição da atividade", JTextFieldPad.TP_STRING, 40, 0);
+	adicCampo(txtCodAtiv, 7, 20, 80, 20, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PF, txtDescAtiv, true);
+	adicDescFK(txtDescAtiv, 90, 20, 220, 20, "DescAtiv", "Descrição da atividade");
 	setListaCampos( false, "CTOATIV", "TK");
 	lcAtiv.montaTab();
 	lcAtiv.setQueryInsert(false);

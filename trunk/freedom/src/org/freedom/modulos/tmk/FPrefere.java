@@ -49,8 +49,8 @@ public class FPrefere extends FTabDados {
 		adic(lbServer,15,10,200,15);
 		adic(pinSmtp,10,15,220,160);
 		setPainel(pinSmtp);
-		adicCampo(txtSmtpMail,10,30,150,20,"SmtpMail","SMTP",JTextFieldPad.TP_STRING,40,0,false,false,null,false);
-		adicCampo(txtUserMail,10,70,150,20,"UserMail","Usuario",JTextFieldPad.TP_STRING,40,0,false,false,null,false);
+		adicCampo(txtSmtpMail,10,30,150,20,"SmtpMail","SMTP", ListaCampos.DB_SI, false);
+		adicCampo(txtUserMail,10,70,150,20,"UserMail","Usuario", ListaCampos.DB_SI,false);
 		adicCampo(txpPassMail,10,110,150,20,"PassMail","Senha",ListaCampos.DB_SI,false);
 		setListaCampos(false, "PREFERE3", "SG");
 		

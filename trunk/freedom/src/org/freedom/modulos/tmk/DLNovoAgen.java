@@ -103,8 +103,8 @@ public class DLNovoAgen extends FFDialogo {
 		vLabs.addElement("Compromisso");
 		cbTipo.setItens(vLabs,vVals);
 		
-		lcUsuario.add(new GuardaCampo( txtIdUsu, 7, 20, 80, 20, "IdUsu", "ID", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,true),"txtCodVendx");
-		lcUsuario.add(new GuardaCampo( txtNomeUsu, 7, 20, 200, 20, "NomeUsu", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+		lcUsuario.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID", ListaCampos.DB_PK, txtNomeUsu, true));
+		lcUsuario.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome", ListaCampos.DB_SI, false));
 		lcUsuario.montaSql(false, "USUARIO", "SG");    
 		lcUsuario.setReadOnly(true);
 		txtIdUsu.setTabelaExterna(lcUsuario);

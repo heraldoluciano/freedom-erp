@@ -47,24 +47,24 @@ public class DLContToCli extends FFDialogo {
     setTitulo("Cópia de orçamento");
     setAtribos(320,210);
     
-    lcTipoCli.add(new GuardaCampo( txtCodTipoCli, 7,55, 67, 20, "CodTipoCli", "Cód.Cli.", true, false, null , JTextFieldPad.TP_INTEGER,true),"txtCodFor");
-    lcTipoCli.add(new GuardaCampo( txtDescTipoCli, 78, 55, 150, 20, "DescTipoCli", "Razão Social", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
+    lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.Cli.", ListaCampos.DB_PK, true));
+    lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Razão Social", ListaCampos.DB_SI, false));
     lcTipoCli.montaSql(false, "TIPOCLI", "VD");
     lcTipoCli.setReadOnly(true);
     txtCodTipoCli.setTabelaExterna(lcTipoCli);
     txtCodTipoCli.setFK(true);
     txtCodTipoCli.setNomeCampo("CodTipoCli");
     
-    lcClasCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Código", true, false, txtDescClasCli, JTextFieldPad.TP_STRING,true),"txtCodVendx");
-    lcClasCli.add(new GuardaCampo( txtDescClasCli, 7, 100, 80, 20, "DescClasCli", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcClasCli.add(new GuardaCampo( txtCodClasCli, "CodClasCli", "Código", ListaCampos.DB_PK, txtDescClasCli, true));
+    lcClasCli.add(new GuardaCampo( txtDescClasCli, "DescClasCli", "Descriçao", ListaCampos.DB_SI, false));
     lcClasCli.montaSql(false, "CLASCLI", "VD");    
     lcClasCli.setReadOnly(true);
     txtCodClasCli.setTabelaExterna(lcClasCli);
     txtCodClasCli.setFK(true);
     txtCodClasCli.setNomeCampo("CodClasCli");
     
-    lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Código", true, false, txtDescSetor, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcSetor.add(new GuardaCampo( txtDescSetor, 7, 100, 80, 20, "DescSetor", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Código", ListaCampos.DB_PK, txtDescSetor, false));
+    lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descriçao", ListaCampos.DB_SI, false));
     lcSetor.montaSql(false, "SETOR", "VD");    
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);

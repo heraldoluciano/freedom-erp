@@ -27,19 +27,19 @@ import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FAtividade extends FDados implements ActionListener {
-  private JTextFieldPad txtCod= new JTextFieldPad(5);
-  private JTextFieldPad txtDesc= new JTextFieldPad(20);
+  private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FAtividade () {
     setTitulo("Cadastro de atividades");
     setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 70, 20,"CodAtiv","Cód.ativ.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 80, 20, 240, 20,"DescAtiv","Descrição da atividade",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCod, 7, 20, 70, 20,"CodAtiv","Cód.ativ.", ListaCampos.DB_PK, true);
+    adicCampo(txtDesc, 80, 20, 240, 20,"DescAtiv","Descrição da atividade", ListaCampos.DB_SI, true);
     setListaCampos( true, "ATIVIDADE", "TK");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

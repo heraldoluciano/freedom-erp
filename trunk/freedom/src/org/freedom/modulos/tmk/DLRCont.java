@@ -64,8 +64,8 @@ public class DLRCont extends FFDialogo {
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
   private JLabel lbSetor = new JLabel("Código e descrição do setor");
-  private JTextFieldPad txtCodSetor = new JTextFieldPad();
-  private JTextFieldFK txtDescSetor = new JTextFieldFK();
+  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcSetor = new ListaCampos(this);
   public DLRCont(Component cOrig, Connection cn) {
   	super(cOrig);
@@ -89,10 +89,8 @@ public class DLRCont extends FFDialogo {
     cbFis.setVlrString("N");
     cbJur.setVlrString("S");
 
-    txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescSetor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodSetor");
-    lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescSetor");
+    lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Código", ListaCampos.DB_PK, false));
+    lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição", ListaCampos.DB_SI, false));
     lcSetor.montaSql(false, "SETOR", "VD");
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
