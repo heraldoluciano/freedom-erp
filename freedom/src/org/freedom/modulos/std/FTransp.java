@@ -59,6 +59,7 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
   private JTextFieldPad txtDDDFoneTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtDDDFaxTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtDDDCelTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtCelTran = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtContTran = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtUFTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
@@ -98,7 +99,8 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
     adicCampo(txtDDDFaxTran, 191, 220, 80, 20, "DDDFaxTran", "DDD", ListaCampos.DB_SI, false);
     adicCampo(txtFaxTran, 273, 220, 100, 20, "FaxTran", "Fax", ListaCampos.DB_SI, false);
     adicCampo(txtContTran,7,260,223,20,"Conttran","Contato", ListaCampos.DB_SI, false);
-    adicCampo(txtCelTran,233,260,139,20,"Celtran","Celular",ListaCampos.DB_SI, false);
+    adicCampo(txtContTran,233,260,40,20,"DDDCelTran","DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtCelTran,276,260,96,20,"Celtran","Celular",ListaCampos.DB_SI, false);
 
     txtCnpjTran.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepTran.setMascara(JTextFieldPad.MC_CEP);
