@@ -248,7 +248,7 @@ public class FVendedor extends FDados implements PostListener {
     
     if (sValores[1].length() > 0) {
       System.out.println("CIDADE NO FILTRO:"+sValores[1]);
-      sWhere += " AND VD.CIDCLI = '"+sValores[1]+"'";
+      sWhere += " AND VD.CIDVEND = '"+sValores[1]+"'";
       vFiltros.add("CIDADE = "+sValores[1].trim());
     }
     else {
@@ -292,59 +292,47 @@ public class FVendedor extends FDados implements PostListener {
         while ( rs.next() ) {
           if (imp.pRow()==0) {
             imp.impCab(136);
-            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+
             for (int i=0;i<vFiltros.size();i++) {            
-                    String sTmp = (String)vFiltros.elementAt(i);
+                	imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+                	String sTmp = (String)vFiltros.elementAt(i);
                     sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
                     sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,2,sTmp);
             }
+          
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"|");
+          imp.say(imp.pRow()+0,4,"Código");
+          imp.say(imp.pRow()+0,12,"|");
+          imp.say(imp.pRow()+0,14,"Nome:");
+          imp.say(imp.pRow()+0,46,"|");
+          imp.say(imp.pRow()+0,59,"Fone:");
+          imp.say(imp.pRow()+0,93,"|");
+          if(sValores[1].length()>0)
+          	imp.say(imp.pRow()+0,96,"Cidade:");
+          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
           }
+
+
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,2,"Código:");
-          imp.say(imp.pRow()+0,10,rs.getString(1));
-          imp.say(imp.pRow()+0,20,"Nome:");
-          imp.say(imp.pRow()+0,27,rs.getString(2) != null ? rs.getString(2).substring(0,30) : "");
- /*                   
-          imp.say(imp.pRow()+0,129,"Tipo:");
-          imp.say(imp.pRow()+0,135,rs.getString("PessoaCli"));
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Nome:");
-          imp.say(imp.pRow()+0,7,rs.getString("NomeCli"));
-          imp.say(imp.pRow()+0,60,"Contato:");
-          imp.say(imp.pRow()+0,70,rs.getString("ContCli"));
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Endereço:");
-          imp.say(imp.pRow()+0,11,rs.getString("EndCli"));
-          imp.say(imp.pRow()+0,62,"N.:");
-          imp.say(imp.pRow()+0,67,""+rs.getInt("NumCli"));
-          imp.say(imp.pRow()+0,76,"Compl.:");
-          imp.say(imp.pRow()+0,85,rs.getString("ComplCli") != null ? rs.getString("ComplCli").trim() : "");
-          imp.say(imp.pRow()+0,94,"Bairro:");
-          imp.say(imp.pRow()+0,103,rs.getString("BairCli") != null ? rs.getString("BairCli").trim() : "");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Cidade:");
-          imp.say(imp.pRow()+0,8,rs.getString("CidCli"));
-          imp.say(imp.pRow()+0,88,"UF:");
-          imp.say(imp.pRow()+0,93,rs.getString("UfCli"));
-          imp.say(imp.pRow()+0,121,"CEP:");
-          imp.say(imp.pRow()+0,127,rs.getString("CepCli") != null ? Funcoes.setMascara(rs.getString("CepCli"),"#####-###") : "");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,80,"Tel:");
-          imp.say(imp.pRow()+0,86,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
-          imp.say(imp.pRow()+0,121,"Fax:");
-          imp.say(imp.pRow()+0,127,rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : "");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Contato:");
-          imp.say(imp.pRow()+0,9,rs.getString("ContCli"));
-          imp.say(imp.pRow()+0,70,"E-mail:");
-          imp.say(imp.pRow()+0,79,rs.getString("EmailCli"));
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
-          */
+          imp.say(imp.pRow()+0,0,"|");
+          imp.say(imp.pRow()+0,4,rs.getString("CodVend"));
+          imp.say(imp.pRow()+0,12,"|");
+          imp.say(imp.pRow()+0,14,rs.getString("NomeVend") != null ? rs.getString("NomeVend").substring(0,30) : "");
+          imp.say(imp.pRow()+0,46,"|");
+          imp.say(imp.pRow()+0,96,rs.getString("FoneVend") != null ? Funcoes.setMascara(rs.getString("FoneVend"),"####-####") : "");
+          imp.say(imp.pRow()+0,117,"|");
+          imp.say(imp.pRow()+0,120,rs.getString("CidVend") != null ? rs.getString("CidVend").substring(0,20) : "");
+          imp.say(imp.pRow()+0,136,"|");
+
+ 
+          
           if (imp.pRow()>=linPag) {
             imp.incPags();
             imp.eject();

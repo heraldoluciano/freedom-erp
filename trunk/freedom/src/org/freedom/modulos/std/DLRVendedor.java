@@ -21,12 +21,11 @@
 
 package org.freedom.modulos.std;
 import java.awt.Component;
-import java.awt.GridLayout;
 import java.sql.Connection;
 import java.util.Vector;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
+
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -52,7 +51,7 @@ public class DLRVendedor extends FFDialogo {
   private JLabelPad lbDescClasComi = new JLabelPad("Descrição da classificação de comissão");
 
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtCodFuncaoVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+//  private JTextFieldPad txtCodFuncaoVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
@@ -152,11 +151,12 @@ public class DLRVendedor extends FFDialogo {
       sRetorno[0] = "VD.CODVEND, VD.NOMEVEND";
     else if (rgOrdem.getVlrString().equals("N"))
       sRetorno[0] = "VD.NOMEVEND,VD.CODVEND";
+    
     sRetorno[1] = txtCid.getText();        
     sRetorno[2] = txtCodClComis.getVlrString();
-    sRetorno[3] = txtCodSetor.getText();
-    sRetorno[4] = txtCodFuncaoVend.getText();
-    sRetorno[5] = txtCodVend.getText();    
+    sRetorno[3] = txtCodSetor.getVlrString();
+    sRetorno[4] = txtCodFunc.getVlrString();
+    sRetorno[5] = txtCodVend.getVlrString();    
 
     return sRetorno;
   }
