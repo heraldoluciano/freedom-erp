@@ -45,14 +45,18 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
     private Painel pinDet = new Painel();
 	private Painel pinEst = new Painel(0,80);
 	private ListaCampos lcImp = new ListaCampos(this,"IP");
+	private ListaCampos lcPapel = new ListaCampos(this,"PP");
+	
 	private JTextFieldPad txtCodEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
 	private JCheckBoxPad cbModoDemoEst = new JCheckBoxPad("Modo demonstrativo?","S","N");
 	private JTextFieldPad txtNroImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtCodImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
 	private JTextFieldPad txtPortaWin = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtPortaLin = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldFK txtDescImp = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbImpPad = new JCheckBoxPad("Impressora padrão?","S","N");
 	private Vector vValTipoUsoImp = new Vector();
 	private Vector vLabTipoUsoImp = new Vector();
@@ -62,7 +66,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 
 	public FEstacao() {
 		setTitulo("Cadastro de estações de trabalho"); 
-		setAtribos(50, 10, 550, 460);
+		setAtribos(50, 10, 550, 520);
 	    pinCab = new Painel(530, 50);
 	}
     private void montaTela() {
@@ -70,11 +74,19 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	
         lcImp.add(new GuardaCampo(txtCodImp, "CodImp", "Cód.imp.", ListaCampos.DB_PK,  false));
         lcImp.add(new GuardaCampo(txtDescImp, "DescImp", "Descrição da impressora", ListaCampos.DB_SI, false));
+        lcImp.add(new GuardaCampo(txtCodPapel, "CodPapel", "Cód.papel", ListaCampos.DB_SI, false));
         lcImp.montaSql(false, "IMPRESSORA", "SG");
         lcImp.setQueryCommit(false);
         lcImp.setReadOnly(true);
         txtCodImp.setTabelaExterna(lcImp);
-    	
+
+        lcPapel.add(new GuardaCampo(txtCodPapel, "CodPapel", "Cód.papel.", ListaCampos.DB_PK,  false));
+        lcPapel.add(new GuardaCampo(txtDescPapel, "DescPapel", "Descrição do papel", ListaCampos.DB_SI, false));
+        lcPapel.montaSql(false, "PAPEL", "SG");
+        lcPapel.setQueryCommit(false);
+        lcPapel.setReadOnly(true);
+        txtCodPapel.setTabelaExterna(lcPapel);
+        
 	  	lcCampos.addPostListener(this);
 	    pinCab = new Painel(740, 100);
 	    setListaCampos(lcCampos);
@@ -88,8 +100,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    setListaCampos(true,"ESTACAO", "SG");
 	    lcCampos.setQueryInsert(false);
 	    
-	    setAltDet(190);
-	    pinDet = new Painel(740, 190);
+	    setAltDet(230);
+	    pinDet = new Painel(740, 230);
 	    setPainel(pinDet, pnDet);
 	    setListaCampos(lcDet);
 	    setNavegador(navRod);
@@ -104,24 +116,28 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    vLabTipoUsoImp.addElement("Pedido");
 	    vLabTipoUsoImp.addElement("Relatório simples");
 	    vLabTipoUsoImp.addElement("Relatório gráfico");
-	    vLabTipoUsoImp.addElement("Todos menos NF");
+	    vLabTipoUsoImp.addElement("Todos");
 	    rgTipoUsoImp = new JRadioGroup(2,3,vLabTipoUsoImp,vValTipoUsoImp);
 	    adicCampo(txtNroImp,7,20,80,20,"NroImp","Nº imp.",ListaCampos.DB_PK,true);
-	    adicCampo(txtCodImp,90,20,80,20,"CodImp","Cód.imp.",ListaCampos.DB_FK,true);
+	    adicCampo(txtCodImp,90,20,80,20,"CodImp","Cód.imp.",ListaCampos.DB_FK,txtDescImp,true);
 	    adicDescFK(txtDescImp,173,20,300,20,"DescImp","Descrição da impressora");
-	    adicCampo(txtPortaWin,7,60,100,20,"PortaWin","Porta Windows",ListaCampos.DB_SI,true);
-	    adicCampo(txtPortaLin,110,60,100,20,"PortaLin","Porta Linux",ListaCampos.DB_SI,true);
-	    adicDB(cbImpPad, 213,60,200,20, "ImpPad", "Padrão", true);
-	    adicDB(rgTipoUsoImp,7,100,500,50,"TipoUsoImp","Tipo uso", true);
+	    adicCampo(txtCodPapel,7,60,80,20,"CodPapel","Cód.papel",ListaCampos.DB_FK,txtDescPapel,true);
+	    adicDescFK(txtDescPapel,90,60,300,20,"DescPapel","Descrição do papel");
+	    adicCampo(txtPortaWin,7,100,100,20,"PortaWin","Porta Windows",ListaCampos.DB_SI,true);
+	    adicCampo(txtPortaLin,110,100,100,20,"PortaLin","Porta Linux",ListaCampos.DB_SI,true);
+	    adicDB(cbImpPad, 213,100,200,20, "ImpPad", "Padrão", true);
+	    adicDB(rgTipoUsoImp,7,140,500,50,"TipoUsoImp","Tipo uso", true);
 	    
 	    lcDet.addPostListener(this);
 	    setListaCampos(true, "ESTACAOIMP", "SG");
 	    lcDet.setQueryInsert(false);
 	    montaTab();
 
-	    tab.setTamColuna(30, 0);
+	    tab.setTamColuna(50, 0);
 	    tab.setTamColuna(70, 1);
 	    tab.setTamColuna(230, 2);
+	    tab.setTamColuna(70, 3);
+	    tab.setTamColuna(230, 4);
 	    
     }
     public void afterPost(PostEvent pevt) {
@@ -160,6 +176,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
     public void execShow(Connection cn) {
     	con = cn;
     	lcImp.setConexao(cn);
+    	lcPapel.setConexao(cn);
     	montaTela();	
     	super.execShow(cn);
     }

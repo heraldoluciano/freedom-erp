@@ -631,27 +631,33 @@ public class ImprimeOS implements ActionListener {
       ResultSet rs = null;
       
       if (Aplicativo.strOS.compareTo("windows") == 0)
-        sPortaOS = "PORTAWINIMP";
+        sPortaOS = "PORTAWIN";
       else if (Aplicativo.strOS.compareTo("linux") == 0)
-        sPortaOS = "PORTALINIMP";
+        sPortaOS = "PORTALIN";
       if (sPortaOS.trim().length() == 0) {
         Funcoes.mensagemInforma(cOwner,"Não foi possível obter informacões do Sistema Operacional! ! !");
         return sPorta;
       }
-      String sSQL = "SELECT "+sPortaOS+" FROM PVCAIXAIMP CI,SGIMPRESSORA I "+
-                    "WHERE CI.CODCAIXA="+Aplicativo.iNumTerm+" AND CI.IMPPAD='S' AND "+
-                    "I.CODIMP=CI.CODIMP";
+      String sSQL = "SELECT "+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+                    "WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
+                    "I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
+                    "I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
       try {
         ps = con.prepareStatement(sSQL);
+        ps.setInt(1,Aplicativo.iNumTerm);
+        ps.setInt(2,Aplicativo.iCodEmp);
+        ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
         rs = ps.executeQuery();
         if (rs.next()) {
-          sPorta = rs.getString(1);
+          sPorta = rs.getString(sPortaOS);
         }
         else 
           Funcoes.mensagemInforma(cOwner, "Não foi encontrada nome da porta da impressora!\n"+
                                             "Tabela: IMPRESSORA");
         rs.close();
         ps.close();
+        if (!con.getAutoCommit())
+        	con.commit();
 //        con.commit();
       }
       catch(SQLException err) {
@@ -843,19 +849,23 @@ public class ImprimeOS implements ActionListener {
     int iRetorno = 0;
     String sSQL = "";
     if (sTipo.equals("TO")) {
-      sSQL = "SELECT PP.LINPAPEL,PP.CLASSNOTAPAPEL FROM SGPAPEL PP,SGIMPRESSORA I,PVCAIXAIMP CI WHERE " +
-      "CI.CODCAIXA="+Aplicativo.iNumTerm+" AND CI.IMPPAD='S' AND "+
-      "I.CODIMP=CI.CODIMP AND PP.CODPAPEL=I.CODPAPEL";
+      sSQL = "SELECT PP.LINPAPEL,PP.CLASSNOTAPAPEL FROM SGPAPEL PP, SGESTACAOIMP EI WHERE " +
+      "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND EI.IMPPAD='S' AND "+
+	  "EI.CODEMPPP=PP.CODEMP AND EI.CODFILIALPP=PP.CODFILIALPP AND EI.CODPAPEL=PP.CODPAPEL";
     }
     else {
-      sSQL = "SELECT PP.LINPAPEL,PP.CLASSNOTAPAPEL FROM SGPAPEL PP,SGIMPRESSORA I,PVCAIXAIMP CI WHERE " +
-      "CI.CODCAIXA="+Aplicativo.iNumTerm+" AND I.CODIMP=CI.CODIMP AND "+
-      "I.DESTIMP = '"+sTipo+"' AND PP.CODPAPEL=I.CODPAPEL";
+      sSQL = "SELECT PP.LINPAPEL,PP.CLASSNOTAPAPEL FROM SGPAPEL PP, SGESTACAOIMP EI WHERE " +
+      "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND EI.IMPPAD='S' AND " +
+      "EI.TIPOUSOIMP='"+sTipo+"' AND "+
+	  "EI.CODEMPPP=PP.CODEMP AND EI.CODFILIALPP=PP.CODFILIALPP AND EI.CODPAPEL=PP.CODPAPEL";
     }
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
       ps = con.prepareStatement(sSQL);
+      ps.setInt(1,Aplicativo.iNumTerm);
+      ps.setInt(2,Aplicativo.iCodEmp);
+      ps.setInt(3,ListaCampos.getMasterFilial("SGESTACAOIMP"));
       rs = ps.executeQuery();
       if (rs.next()) {
         iRetorno = rs.getInt("LINPAPEL");
@@ -866,10 +876,11 @@ public class ImprimeOS implements ActionListener {
       }
       rs.close();
       ps.close();
-//      con.commit();
+      if (!con.getAutoCommit())
+      	con.commit();
     }
     catch(SQLException err) { 
-      Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela CAIXAIMP\n"+err.getMessage());
+      Funcoes.mensagemErro(cOwner, "Erro ao consultar a tabela SGESTACAOIMP\n"+err.getMessage());
       return 0;
     }
     return iRetorno;

@@ -42,7 +42,8 @@ public class GuardaCampo extends Component {
   /*
    *  @deprecated GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, boolean fk, JTextFieldFK descFK, int tip, boolean req)
    */
-  public  GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, boolean fk, JTextFieldFK descFK, int tip, boolean req)  {
+  public  GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, 
+  		boolean fk, JTextFieldFK descFK, int tip, boolean req)  {
       
     sNome = nome;          
     sLabel = Label;
@@ -58,9 +59,18 @@ public class GuardaCampo extends Component {
     txtDescFK = descFK;
     setRequerido(req);
   }
-  public GuardaCampo(Component c, String nome, String Label, byte key, boolean req) {
+  public GuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req) {
+ 	 setGuardaCampo(c, nome, label, key, descFK, req );
+  }
+
+  
+  public GuardaCampo(Component c, String nome, String label, byte key, boolean req) {
+  	 setGuardaCampo(c, nome, label, key, null, req );
+  }
+
+  public void setGuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req) {
     sNome = nome;          
-    sLabel = Label;
+    sLabel = label;
     comp = c;
     bRequerido = req;
     bPK = (key == ListaCampos.DB_PK) || (key == ListaCampos.DB_PF);
@@ -83,9 +93,13 @@ public class GuardaCampo extends Component {
 	else if (comp instanceof JRadioGroup) {
 		iTipo = ( (JRadioGroup) comp ).getTipo();
 	}
-    txtDescFK = new JTextFieldFK();
+	if (descFK==null)
+       txtDescFK = new JTextFieldFK();
+    else
+       txtDescFK = descFK;
     setRequerido(req);
   }
+  
   public String getLabel() {
     return sLabel;
   }
