@@ -51,6 +51,12 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private Painel pinGeral = new Painel(600, 200);
   private JPanel pnFicha = new JPanel(new BorderLayout());
   private Painel pinFicha = new Painel(600, 200);
+  private Painel pinFiliacao = new Painel(600,200);
+  private Painel pinTrabalho = new Painel(600,200);
+  private Painel pinConjuge = new Painel(600,200);
+  private Painel pinRefPess = new Painel(600,200);
+  private Painel pinAvalista = new Painel(600,200);  
+  
   private Painel pinRodFicha = new Painel(600,29);
   private JPanel pnCheque = new JPanel(new BorderLayout());
   private Painel pinCheque = new Painel(600, 200);
@@ -157,7 +163,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 
 	// Adiciona Aba Crédito
 	
-	adicTab("Crédito", pinGeral);
+	adicTab("Geral", pinGeral);
     adicCampo(txtCodCli, 7, 20, 70, 20,"CodCli","Cód.cli.", ListaCampos.DB_PK, true);
     adicCampo(txtRazCli, 80, 20, 257, 20,"RazCli","Razão social do cliente", ListaCampos.DB_SI, false);
 	adicCampoInvisivel(txtCodTipoCli, "CodTipoCli","Cód.tp.cli", ListaCampos.DB_FK, txtDescTipoCli,false);
@@ -214,11 +220,13 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     tpn2.setTabPlacement(SwingConstants.LEFT);
     tpn.setPreferredSize(new Dimension(50,500));
     pnFicha.add(tpn2,BorderLayout.WEST);
-    tpn2.addTab("Filiação",pinFicha);
-    tpn2.addTab("Trabalho",new JPanel());
-    tpn2.addTab("Cônjuge",new JPanel());
-    tpn2.addTab("Ref. Pess.",new JPanel());
-    tpn2.addTab("Avalista",new JPanel());
+    tpn2.addTab("Filiação",pinFiliacao);
+    tpn2.addTab("Trabalho",pinTrabalho);
+    tpn2.addTab("Cônjuge",pinConjuge);
+    tpn2.addTab("Ref. Pess.",pinRefPess);
+    tpn2.addTab("Avalista",pinAvalista);
+    
+    setPainel(pinFiliacao);
     
     lbPaiCli = adicCampo(txtPaiCli, 7, 20, 315, 20, "PaiCli", "Nome do pai", ListaCampos.DB_SI, false);
     lbRgPaiCli = adicCampo(txtRgPaiCli, 325, 20, 130, 20, "RgPaiCli", "Rg", ListaCampos.DB_SI, false);
@@ -258,6 +266,12 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     txtRgMaeCli.setVisible(bFilTipoCli);
     txtSSPPaiCli.setVisible(bFilTipoCli);
     txtSSPMaeCli.setVisible(bFilTipoCli);
+    //Trabalho
+    
+    
+    
+    
+    
   }
   
   public void afterCarrega(CarregaEvent cevt) {
