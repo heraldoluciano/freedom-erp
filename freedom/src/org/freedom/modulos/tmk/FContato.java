@@ -123,8 +123,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
     
     lcCampos.addPostListener(this);
 
-    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
-    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
     lcVend.montaSql(false, "VENDEDOR", "VD");    
     lcVend.setQueryCommit(false);
     lcVend.setReadOnly(true);
@@ -192,8 +192,8 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	pnCompl.add(pinVend,BorderLayout.NORTH);    
     pnCompl.add(spnObs,BorderLayout.CENTER);
     setPainel(pinVend);
-	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.repr.", ListaCampos.DB_PK, txtDescVend, false);
-	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "Descrição do vendedor");
+	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, txtDescVend, false);
+	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "Nome do comissionado");
 	adicCampo(txtDataCont, 330, 25, 80, 20, "DataCto", "Data", ListaCampos.DB_SI, false);
 	adic(new JLabelPad("Observações:"),7,55,150,20);
     setListaCampos( true, "CONTATO", "TK");
