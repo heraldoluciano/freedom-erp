@@ -76,26 +76,26 @@ public class FRBoleto extends FRelatorio {
      
      txtCodVenda.setRequerido(true);
      
-     lcModBol.add(new GuardaCampo( txtCodModBol, 7, 100, 80, 20, "CodModBol", "Cód.mod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConta");
-     lcModBol.add(new GuardaCampo( txtDescModBol, 90, 100, 207, 20, "DescModBol", "Descrição do modelo de boleto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcModBol.add(new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.", ListaCampos.DB_PK, true));
+     lcModBol.add(new GuardaCampo( txtDescModBol, "DescModBol", "Descrição do modelo de boleto", ListaCampos.DB_SI, false));
      lcModBol.setReadOnly(true);
      lcModBol.montaSql(false, "MODBOLETO", "FN");
      txtCodModBol.setTabelaExterna(lcModBol);
      txtCodModBol.setFK(true);
      txtCodModBol.setNomeCampo("CodModBol");
     
-     lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Cód.venda", true, false, null, JTextFieldPad.TP_INTEGER,true));
-     lcVenda.add(new GuardaCampo( txtDocVenda, 90, 100, 207, 20, "DocVenda", "Doc.", false, false, null, JTextFieldPad.TP_INTEGER,false));
-     lcVenda.add(new GuardaCampo( txtDataVenda, 90, 100, 207, 20, "DtEmitVenda", "Data", false, false, null, JTextFieldPad.TP_DATE,false));
-     lcVenda.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", false, true, null, JTextFieldPad.TP_INTEGER,true));
+     lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.venda",  ListaCampos.DB_PK, true));
+     lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Doc.",  ListaCampos.DB_SI,false));
+     lcVenda.add(new GuardaCampo( txtDataVenda, "DtEmitVenda", "Data",  ListaCampos.DB_SI,false));
+     lcVenda.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_FK, true));
      lcVenda.setReadOnly(true);
      lcVenda.montaSql(false, "VENDA", "VD");
      txtCodVenda.setTabelaExterna(lcVenda);
      txtCodVenda.setFK(true);
      txtCodVenda.setNomeCampo("CodVenda");
 
-     lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
-     lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+     lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
      lcCli.setReadOnly(true);
      lcCli.montaSql(false, "CLIENTE", "VD");
      txtCodCli.setTabelaExterna(lcCli);

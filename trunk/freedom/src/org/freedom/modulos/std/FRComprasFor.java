@@ -40,10 +40,10 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRComprasFor extends FRelatorio {
-	private JTextFieldPad txtDataini = new JTextFieldPad();
-	private JTextFieldPad txtDatafim = new JTextFieldPad();
-	private JTextFieldPad txtCodFor = new JTextFieldPad();
-	private JTextFieldFK txtDescFor = new JTextFieldFK();
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private ListaCampos lcFor = new ListaCampos(this);
 	private Connection con = null;
 	private String sCodProd = "CODPROD";
@@ -51,13 +51,8 @@ public class FRComprasFor extends FRelatorio {
 		setTitulo("Compras por Fornecedor");
 		setAtribos(50,50,310,180);
 
-		txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-		txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-
-		txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-		txtDescFor.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-		lcFor.add(new GuardaCampo( txtDescFor, 90, 100, 207, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
+		lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
+		lcFor.add(new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI,false));
 		txtCodFor.setTabelaExterna(lcFor);
 		txtCodFor.setNomeCampo("CodFor");
 		txtCodFor.setFK(true);

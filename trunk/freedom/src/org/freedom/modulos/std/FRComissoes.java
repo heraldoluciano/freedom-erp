@@ -46,10 +46,11 @@ public class FRComissoes extends FRelatorio {
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgEmitRel = null; 
-  private JTextFieldPad txtCodVend = new JTextFieldPad(); 
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private JTextFieldFK txtDescVend = new JTextFieldFK(); 
+
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
   private JCheckBoxPad cbNLiberada = new JCheckBoxPad("Não Liber.","S","N");
   private JCheckBoxPad cbLiberada = new JCheckBoxPad("Liberadas","S","N");
   private JCheckBoxPad cbPaga = new JCheckBoxPad("Pagas","S","N");
@@ -72,13 +73,8 @@ public class FRComissoes extends FRelatorio {
     rgEmitRel.setAtivo(0,true);
     rgEmitRel.setAtivo(1,true);
     
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-
-    txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-    lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
     lcVend.montaSql(false, "VENDEDOR", "VD");
     lcVend.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVend);
