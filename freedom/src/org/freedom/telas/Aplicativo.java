@@ -39,6 +39,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -61,6 +63,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.FModBoleto;
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
 	public final static int TP_OPCAO_MENU = 0;
@@ -154,9 +157,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		//telaPrincipal.tiraEmp();
 		telaPrincipal.setIdent(sCaption, iCodSis, iCodMod);
 		telaPrincipal.setConexao(con); // Variavel de conexão da Classe
-									   // Aplicativo
+		// Aplicativo
 		telaPrincipal.statusBar.setUsuario(strUsuario);//Variavel de usuario da
-													   // Classe Aplicativo
+		// Classe Aplicativo
 		telaPrincipal.statusBar.setNumEst(iNumEst);
 		telaPrincipal.statusBar.setDescEst(getDescEst());
 		if (strUsuario.toUpperCase().trim().equals("SYSDBA")) {
@@ -211,14 +214,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public void addOpcao(int iSuperMenu, int iTipo, String sCaption,
-			char cAtalho, int iOpcao, int iNivel, boolean bExec) {
+			char cAtalho, int iOpcao, int iNivel, boolean bExec, Class tela) {
 		JMenuItem mOpcao = null;
 		JMenuPad mpMaster = null;
 		try {
 			if (iTipo == TP_OPCAO_MENU) {
 				mOpcao = (new JMenuPad(iCodSis, iCodMod, iOpcao, iNivel));
 			} else if (iTipo == TP_OPCAO_ITEM) {
-				mOpcao = (new JMenuItemPad(iCodSis, iCodMod, iOpcao, iNivel));
+				mOpcao = (new JMenuItemPad(iCodSis, iCodMod, iOpcao, iNivel,
+						tela));
 			}
 			mOpcao.setText(sCaption);
 			mOpcao.setMnemonic(cAtalho);
@@ -359,7 +363,20 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				}
 			}
 			if (iCodMenu != -1) {
-				execOpcao(iCodMenu);
+				if (oTemp instanceof JMenuItemPad) {
+					Class telaClass = ((JMenuItemPad) oTemp).getTela();
+					if (telaClass != null) {
+						if (telaPrincipal.temTela(((JMenuItemPad) oTemp).getText()) == false) {
+							try {
+								FFilho tela = (FFilho) telaClass.newInstance();
+								telaPrincipal.criatela(((JMenuItemPad) oTemp).getText(), tela,
+										con);
+							} catch (Exception e) {
+
+							}
+						}
+					}
+				}
 			}
 		}
 
