@@ -60,8 +60,8 @@ public class FRBalancete extends FRelatorio {
 
     txtCodConta.setTipo(JTextFieldPad.TP_STRING,10,0);
     txtDescConta.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Cód.Conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Cód.conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
+    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição da conta", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
     lcConta.montaSql(false, "CONTA", "FN");
     lcConta.setReadOnly(true);
     txtCodConta.setTabelaExterna(lcConta);
@@ -71,9 +71,9 @@ public class FRBalancete extends FRelatorio {
 	txtCodCC.setTipo(JTextFieldPad.TP_STRING,19,0);
 	txtDescCC.setTipo(JTextFieldPad.TP_STRING,50,0);
 	txtSiglaCC.setTipo(JTextFieldPad.TP_STRING,10,0);    
-	lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Cód.CC", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
+	lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Cód.cc.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
 	lcCC.add(new GuardaCampo( txtSiglaCC, 90, 100, 207, 20, "SiglaCC", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-	lcCC.add(new GuardaCampo( txtDescCC, 90, 100, 207, 20, "DescCC", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+	lcCC.add(new GuardaCampo( txtDescCC, 90, 100, 207, 20, "DescCC", "Descrição do centro de custo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
 	lcCC.setReadOnly(true);
 	lcCC.montaSql(false, "CC", "FN");
 	txtCodCC.setTabelaExterna(lcCC);
@@ -86,11 +86,13 @@ public class FRBalancete extends FRelatorio {
     adic(txtDataini,40,25,117,20);
     adic(new JLabel("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,120,20);
-    adic(new JLabel("Número e descrição da conta"),7,50,250,20);
+    adic(new JLabel("Nº conta"),7,50,250,20);
     adic(txtCodConta,7,70,80,20);
+    adic(new JLabel("Descrição da conta"),90,50,250,20);
     adic(txtDescConta,90,70,200,20);
-	adic(new JLabel("Código e descrição do centro de custo"),7,90,250,20);
+	adic(new JLabel("Cód.cc."),7,90,250,20);
 	adic(txtCodCC,7,110,80,20);
+	adic(new JLabel("Descrição do centro de custo"),90,90,250,20);
 	adic(txtDescCC,90,110,200,20);
 
 	Calendar cPeriodo = Calendar.getInstance();
