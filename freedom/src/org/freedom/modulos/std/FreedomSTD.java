@@ -94,7 +94,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Modelo de NFs",'M',100330000,2,true);
 	addSeparador(100100000);
 	addOpcao(100000000,TP_OPCAO_MENU,"Configurações",'C',100400000,1,false);
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Terminal",'T',100410000,2,true);		  
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Caixa PDV",'C',100410000,2,true);		  
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Impressora",'I',100420000,2,true);
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Papel",'P',100430000,2,true);
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Estação de trabalho",'E',100440000,2,true);// lom
