@@ -190,7 +190,7 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_PK,false));
     lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente",  ListaCampos.DB_SI,false));
     lcCli.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",  ListaCampos.DB_SI,false));
-    lcCli.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_SI,false));
+    lcCli.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.",  ListaCampos.DB_SI,false));
     lcCli.add(new GuardaCampo( txtEstCli, "UfCli", "UF",  ListaCampos.DB_SI,false));
     //lcCli.setWhereAdic("ATIVOCLI='S'");
 	lcCli.montaSql(false, "CLIENTE","VD");    
@@ -257,7 +257,7 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
 	adicDescFK(txtRazCli, 270, 20, 277, 20, "RazCli", "Razão social do cliente");
 	adicCampo(txtDtVencOrc, 550, 20, 87, 20,"DtVencOrc","Dt.valid.", ListaCampos.DB_SI,true);
 	adicCampo(txtPrazoEntOrc, 640, 20, 100, 20,"PrazoEntOrc","Dias p/ entrega", ListaCampos.DB_SI,false);
-	adicCampo(txtCodVend, 7, 60, 80, 20,"CodVend","Cód.repr.", ListaCampos.DB_FK,txtNomeVend,true);
+	adicCampo(txtCodVend, 7, 60, 80, 20,"CodVend","Cód.comiss.", ListaCampos.DB_FK,txtNomeVend,true);
 	adicDescFK(txtNomeVend,90, 60, 207,20,"NomeVend","Nome do comissionado");
 	adicDescFK(txtDescTipoCli,300, 60, 117,20,"DescTipoCli","Descrição do tipo de cliente");
 	adicCampo(txtCodPlanoPag,420, 60, 77, 20,"CodPlanoPag","Cód.p.pg.", ListaCampos.DB_FK,txtDescPlanoPag,true);

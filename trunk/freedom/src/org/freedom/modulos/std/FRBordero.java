@@ -98,8 +98,8 @@ public class FRBordero extends FRelatorio {
     adic(new JLabelPad("Descrição do setor"),90,85,250,20);
     adic(txtCodSetor,7,105,80,20);
     adic(txtDescSetor,90,105,250,20);
-    adic(new JLabelPad("Cód.repr."),7,125,80,20);
-    adic(new JLabelPad("Nome do repres."),90,125,250,20);
+    adic(new JLabelPad("Cód.comiss."),7,125,80,20);
+    adic(new JLabelPad("Nome do comissionado"),90,125,250,20);
     adic(txtCodVend,7,145,80,20);
     adic(txtNomeVend,90,145,250,20);
     

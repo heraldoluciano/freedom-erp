@@ -282,8 +282,8 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	adicDescFK(txtDescConv, 190, 20, 247, 20, "NomeConv", "Nome do conveniado");
 	adicCampo(txtDtOrc, 440, 20, 107, 20,"DtOrc","Data", ListaCampos.DB_SI ,true);
 	adicCampo(txtDtVencOrc, 550, 20, 110, 20,"DtVencOrc","Data de validade", ListaCampos.DB_SI, true);
-	adicCampo(txtCodVend, 7, 60, 90, 20,"CodVend","Cód.repr.", ListaCampos.DB_FK ,txtNomeVend, true);
-	adicDescFK(txtNomeVend,100, 60, 250,20,"NomeVend","Nome do representante");
+	adicCampo(txtCodVend, 7, 60, 90, 20,"CodVend","Cód.comiss.", ListaCampos.DB_FK ,txtNomeVend, true);
+	adicDescFK(txtNomeVend,100, 60, 250,20,"NomeVend","Nome do comissionado");
 	adicDescFK(txtDescTipoConv,456, 60, 205,20,"DescTpConv","Tipo de conveniado");
 	adicDescFK(txtRazCli,7,100,345,20,"RazCli","Razão social do cliente");
     adicDescFK(txtNomeEnc,355,100,305,20,"NomeEnc","Org.Encaminhador");

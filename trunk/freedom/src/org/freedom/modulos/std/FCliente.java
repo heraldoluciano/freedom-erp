@@ -395,8 +395,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	pinVend = new JPanelPad(500,290);
   	setPainel(pinVend);
   	adicTab("Venda", pinVend);
-  	adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.repr.", ListaCampos.DB_FK, txtDescVend, false);
-  	adicDescFK(txtDescVend, 90, 20, 237, 20, "NomeVend", "Nome do representante");
+  	adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.", ListaCampos.DB_FK, txtDescVend, false);
+  	adicDescFK(txtDescVend, 90, 20, 237, 20, "NomeVend", "Nome do comissionado");
   	adicCampo(txtCodPlanoPag, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag, false);
   	adicDescFK(txtDescPlanoPag, 90, 60, 237, 20, "DescPlanoPag", "Descrição do plano de pagamento");
   	adicCampo(txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran,false);

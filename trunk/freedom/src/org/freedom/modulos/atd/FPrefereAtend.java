@@ -227,8 +227,8 @@ public class FPrefereAtend extends FTabDados {
 		adicDescFK(txtDescTBV,90,105,230,20,"DescTB","Descrição da tabela padrão para aceite.");
 		adicCampo(txtCodITTBV,7,150,80,20,"CodITTBV","Cód.tab.",ListaCampos.DB_FK,txtDescITTBV,false);
 		adicDescFK(txtDescITTBV,90,150,230,20,"DescITTB","Descrição da situação para aceite.");
-		adicCampo(txtCodVend,7,195,80,20,"CodVend","Cód.repr.",ListaCampos.DB_FK,txtNomeVend,true);
-		adicDescFK(txtNomeVend,90,195,230,20,"NomeVend","Nome do representante padrão.");
+		adicCampo(txtCodVend,7,195,80,20,"CodVend","Cód.comiss.",ListaCampos.DB_FK,txtNomeVend,true);
+		adicDescFK(txtNomeVend,90,195,230,20,"NomeVend","Nome do comissionado padrão");
 
 		setListaCampos(false, "PREFERE2", "SG");
 		

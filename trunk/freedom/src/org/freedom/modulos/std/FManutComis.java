@@ -57,8 +57,8 @@ public class FManutComis extends FFilho implements ActionListener {
   private JLabelPad lbPeriodo = new JLabelPad(" Periodo");
   private JLabelPad lbDe = new JLabelPad("De:");
   private JLabelPad lbA = new JLabelPad("A:");
-  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
-  private JLabelPad lbVend = new JLabelPad("Nome do representante");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
+  private JLabelPad lbVend = new JLabelPad("Nome do comissionado");
   private JLabelPad lbTotComi = new JLabelPad("Total comis.");
   private JLabelPad lbTotLib = new JLabelPad("Total liber.");
   private JLabelPad lbTotPg = new JLabelPad("Total pago");

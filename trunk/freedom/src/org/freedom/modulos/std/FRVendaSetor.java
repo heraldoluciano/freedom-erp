@@ -83,8 +83,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
   private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescCodSetor = new JLabelPad("Descrição do setor");
-  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
-  private JLabelPad lbDescCodVend = new JLabelPad("Nome do representante");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
+  private JLabelPad lbDescCodVend = new JLabelPad("Nome do comissionado");
   private ListaCampos lcGrup1 = new ListaCampos(this);
   private ListaCampos lcGrup2 = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
