@@ -99,6 +99,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public static String strDriver = "";
 
+	public static String strTefEnv = "";
+
+	public static String strTefRet = "";
+
 	public static TabObjeto tbObjetos = null;
 
 	public static ImageIcon imgIcone = null;
@@ -503,6 +507,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 			strTemp = getParameter("temp");
 			strOS = getParameter("os").toLowerCase();
+			strTefEnv = getParameter("tef_path_envio");
+			strTefRet = getParameter("tef_path_retorno");
 
 			try {
 				iCodEmp = Integer.parseInt(getParameter("codemp"));
