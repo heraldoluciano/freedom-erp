@@ -53,7 +53,7 @@ public class DLBaixaComis extends FFDialogo {
   private JTextFieldPad txtDoc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlr = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtObs = new JTextFieldPad();
-  private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);

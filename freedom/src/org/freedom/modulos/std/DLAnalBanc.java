@@ -49,12 +49,12 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JTextFieldPad txtDescPai = new JTextFieldPad();
   private JTextFieldPad txtCodAnal = new JTextFieldPad();
   private JTextFieldPad txtDescAnal = new JTextFieldPad(50);
-  private JTextFieldPad txtAgCont = new JTextFieldPad();
-  private JTextFieldPad txtNumCont = new JTextFieldPad();
-  private JTextFieldPad txtDescCont = new JTextFieldPad();
+  private JTextFieldPad txtAgCont = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
+  private JTextFieldPad txtNumCont = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JTextFieldPad txtDataCont = new JTextFieldPad();
+  private JTextFieldPad txtDataCont = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
   private JTabbedPane tbp = new JTabbedPane();
@@ -149,8 +149,8 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     pinDet.adic(lbDescMoeda,90,160,240,20);
     pinDet.adic(txtDescMoeda,90,180,240,20);
 // Monta a tab Detalhe:   
-	lcBanc.add(new GuardaCampo( txtCodBanco, "CodBanco", "Código", ListaCampos.DB_PK,false));
-	lcBanc.add(new GuardaCampo( txtDescBanco, "NomeBanco", "Descrição", ListaCampos.DB_SI, false));
+	lcBanc.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK,false));
+	lcBanc.add(new GuardaCampo( txtDescBanco, "NomeBanco", "Descrição do banco", ListaCampos.DB_SI, false));
 	lcBanc.montaSql(false, "BANCO", "FN");    
 	lcBanc.setReadOnly(true);
 	txtCodBanco.setTabelaExterna(lcBanc);
@@ -158,12 +158,7 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
 	txtCodBanco.setNomeCampo("CodBanco");
 	//Se for Novo:
     if (sTipo.compareTo("B") == 0) {//Para cada entrada muda-se os Valores e Campos abilitados:
-      txtAgCont.setTipo(JTextFieldPad.TP_STRING,6,0);
-      txtNumCont.setTipo(JTextFieldPad.TP_STRING,10,0);
-      txtDescCont.setTipo(JTextFieldPad.TP_STRING,50,0);
-      txtDataCont.setTipo(JTextFieldPad.TP_DATE,10,0);
-      txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
-      txtDescMoeda.setTipo(JTextFieldPad.TP_STRING,40,0);
+      
       rgTipoCont.setVlrString(sTipo);
       rgTipoCont.setAtivo(0,false);
       rgTipoCont.setAtivo(1,false);
@@ -171,10 +166,6 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
     }
     if (sTipo.compareTo("C") == 0) {
       cancText(txtAgCont);
-      txtNumCont.setTipo(JTextFieldPad.TP_STRING,10,0);
-      txtDescCont.setTipo(JTextFieldPad.TP_STRING,40,0);
-      txtDataCont.setTipo(JTextFieldPad.TP_DATE,10,0);
-      txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
       txtCodBanco.setEnabled(false);
       rgTipoCont.setVlrString(sTipo);
       rgTipoCont.setAtivo(0,false);
