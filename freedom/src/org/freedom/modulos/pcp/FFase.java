@@ -54,8 +54,8 @@ public class FFase extends FDados implements ActionListener {
     vLabs.addElement("Embalagem");
     cbTipo.setItens(vLabs,vVals);
             
-    adicCampo(txtCodFase, 7, 20, 50, 20,"CodFase","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescFase, 60, 20, 250, 20,"DescFase","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodFase, 7, 20, 70, 20,"CodFase","Cód.fase",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescFase, 80, 20, 230, 20,"DescFase","Descrição da fase",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
     adicDB(cbTipo,7,60,140,24,"tipoFase","Tipo de fase",JTextFieldPad.TP_STRING,true);
     setListaCampos( true, "FASE", "PP");
     btImp.addActionListener(this);
@@ -94,7 +94,7 @@ public class FFase extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.fase");
             imp.say(imp.pRow()+0,25,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));

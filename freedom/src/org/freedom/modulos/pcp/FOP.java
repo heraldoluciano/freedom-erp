@@ -98,9 +98,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtCodProdEst.setAtivo(false);
     btFase.setEnabled(false);
   	
-  	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, 7, 100, 80, 20, "Codprod", "Código", true, false, txtDescEst, JTextFieldPad.TP_INTEGER,true));
-  	lcProdEstCod.add(new GuardaCampo( txtDescEst, 7, 100, 80, 20, "DescEst", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));
-    lcProdEstCod.add(new GuardaCampo( txtRefProdEst, 7, 100, 80, 20, "refprod", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));  	
+  	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, 7, 100, 80, 20, "Codprod", "Cód.prod.", true, false, txtDescEst, JTextFieldPad.TP_INTEGER,true));
+  	lcProdEstCod.add(new GuardaCampo( txtDescEst, 7, 100, 80, 20, "DescEst", "Descriçao da estrutura", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcProdEstCod.add(new GuardaCampo( txtRefProdEst, 7, 100, 80, 20, "refprod", "Referencia", false, false, null, JTextFieldPad.TP_STRING,false));  	
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, 7, 100, 100, 20, "QtdEst", "Quantidade", false, false, null, JTextFieldPad.TP_NUMERIC,false));
   	lcProdEstCod.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstCod.setQueryCommit(false);
@@ -108,9 +108,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtCodProdEst.setTabelaExterna(lcProdEstCod);
   	txtCodProdEst.setNomeCampo("codprod");
 
-  	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, 7, 100, 80, 20, "Codprod", "Código", true, false, txtDescEst, JTextFieldPad.TP_INTEGER,true));
-  	lcProdEstRef.add(new GuardaCampo( txtDescEst, 7, 100, 80, 20, "DescEst", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));
-    lcProdEstRef.add(new GuardaCampo( txtRefProdEst, 7, 100, 80, 20, "refprod", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));  	
+  	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, 7, 100, 80, 20, "Codprod", "Cód.prod.", true, false, txtDescEst, JTextFieldPad.TP_INTEGER,true));
+  	lcProdEstRef.add(new GuardaCampo( txtDescEst, 7, 100, 80, 20, "DescEst", "Descriçao da estrutura", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcProdEstRef.add(new GuardaCampo( txtRefProdEst, 7, 100, 80, 20, "refprod", "Referencia", false, false, null, JTextFieldPad.TP_STRING,false));  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, 7, 100, 100, 20, "QtdEst", "Quantidade", false, false, null, JTextFieldPad.TP_NUMERIC,false));
   	lcProdEstRef.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstRef.setQueryCommit(false);
@@ -118,17 +118,17 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtRefProdEst.setTabelaExterna(lcProdEstRef);
   	txtRefProdEst.setNomeCampo("refprod");
   	  	
-  	lcProdDetCod.add(new GuardaCampo( txtCodProdDet, 7, 100, 80, 20, "Codprod", "Código", true, false, txtDescProdDet, JTextFieldPad.TP_INTEGER,true));
-  	lcProdDetCod.add(new GuardaCampo( txtDescProdDet, 7, 100, 80, 20, "Descprod", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));
-    lcProdDetCod.add(new GuardaCampo( txtRefProdDet, 7, 100, 80, 20, "refprod", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false));
+  	lcProdDetCod.add(new GuardaCampo( txtCodProdDet, 7, 100, 80, 20, "Codprod", "Cód.prod.", true, false, txtDescProdDet, JTextFieldPad.TP_INTEGER,true));
+  	lcProdDetCod.add(new GuardaCampo( txtDescProdDet, 7, 100, 80, 20, "Descprod", "Descriçao do produto", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcProdDetCod.add(new GuardaCampo( txtRefProdDet, 7, 100, 80, 20, "refprod", "referencia", false, false, null, JTextFieldPad.TP_STRING,false));
   	lcProdDetCod.montaSql(false, "PRODUTO", "EQ");    
   	lcProdDetCod.setQueryCommit(false);
   	lcProdDetCod.setReadOnly(true);
   	txtCodProdDet.setTabelaExterna(lcProdDetCod);
   	txtCodProdDet.setNomeCampo("codprod");
 
-  	lcProdDetRef.add(new GuardaCampo( txtRefProdDet, 7, 100, 80, 20, "refprod", "Código", true, false, txtDescProdDet, JTextFieldPad.TP_STRING,true),"txtCodProdDet");
-  	lcProdDetRef.add(new GuardaCampo( txtDescProdDet, 7, 100, 80, 20, "Descprod", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdDet");
+  	lcProdDetRef.add(new GuardaCampo( txtRefProdDet, 7, 100, 80, 20, "refprod", "Cód.prod.", true, false, txtDescProdDet, JTextFieldPad.TP_STRING,true),"txtCodProdDet");
+  	lcProdDetRef.add(new GuardaCampo( txtDescProdDet, 7, 100, 80, 20, "Descprod", "Descriçao do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdDet");
   	lcProdDetRef.montaSql(false, "PRODUTO", "EQ");    
   	lcProdDetRef.setQueryCommit(false);
   	lcProdDetRef.setReadOnly(true);
@@ -138,22 +138,22 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	
   	setListaCampos(lcCampos);
   	setPainel( pinCab, pnCliCab);
-  	adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","No. OP.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+  	adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
 	
   	if (!bPrefs[0])
-  	  	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
+  	  	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
   	else {
   		adic(new JLabel("Referência"),60,0,70,20);
   		adic(txtRefProdDet,80,20,70,20);
   		adicCampo(txtRefProdEst, 80, 20, 70, 20,"refprod","Referência",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
-  		adicCampoInvisivel(txtCodProdDet,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProdDet,true);
+  		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProdDet,true);
   	}
   	
 // 	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,null,true);
-  	adicDescFK(txtDescEst, 153, 20, 250, 20, "descprod", "e descrição da estrutura", JTextFieldPad.TP_STRING, 50, 0);
+  	adicDescFK(txtDescEst, 153, 20, 250, 20, "descprod", "Descrição da estrutura", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtQtdProdOP,406,20,100,20,"qtdprodop","Quantidade",JTextFieldPad.TP_NUMERIC,15,2,false,false,null,true);
-  	adicCampo(txtDtFabProd,7,60,100,20,"dtfabrop","Dt. Fabricação",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
-  	adicCampo(txtDtValidOP,110,60,100,20,"dtvalidpdop","Dt. Validade",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
+  	adicCampo(txtDtFabProd,7,60,100,20,"dtfabrop","Dt. fabricação",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
+  	adicCampo(txtDtValidOP,110,60,100,20,"dtvalidpdop","Dt. validade",JTextFieldPad.TP_DATE,10,0,false,false,null,true);
     adic(btFase,220,50,100,30);
 
   	setListaCampos( true, "OP", "PP");
@@ -167,13 +167,13 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 
   	adicCampo(txtSeqItOp,7,20,50,20,"seqitop","Seq.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
   	if (!bPrefs[0])
-  		adicCampo(txtCodProdDet,60,20,70,20,"CodProd","Código",JTextFieldPad.TP_INTEGER,8,0,true,true,txtDescProdDet,true);
+  		adicCampo(txtCodProdDet,60,20,70,20,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,true,true,txtDescProdDet,true);
   	else {
   		adic(new JLabel("Referência"),60,0,70,20);
   		adic(txtRefProdDet,60,20,70,20);
-  		adicCampoInvisivel(txtCodProdDet,"CodProd","Código",JTextFieldPad.TP_STRING,13,0,true,true,txtDescProdDet,true);
+  		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.",JTextFieldPad.TP_STRING,13,0,true,true,txtDescProdDet,true);
   	}
-  	adicDescFK(txtDescProdDet,133,20,250,20,"descprod", "e descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
+  	adicDescFK(txtDescProdDet,133,20,250,20,"descprod", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", JTextFieldPad.TP_STRING,13,0,false,false,null,false);
   	adicCampo(txtQtdItOp,479,20,90,20,"qtditop","Quantidade", JTextFieldPad.TP_DECIMAL,15,3,false,false,null,false);
   	setListaCampos( true, "ITOP", "PP");

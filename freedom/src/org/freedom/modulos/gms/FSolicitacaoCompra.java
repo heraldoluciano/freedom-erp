@@ -66,50 +66,35 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private int casasDec = Aplicativo.casasDec;
 	private Painel pinCab = new Painel();
 	private Painel pinDet = new Painel();
-	private JButton btLimpaCompra = new JButton(
-			"Limpa Autorização da Solicitação", null);
-	private JButton btLimpaItem = new JButton("Limpa Autorização do Item", null);
-	private JButton btStatusCompra = new JButton("Solicitação Pendente", null);
-	private JButton btStatusItem = new JButton("Item Pendente", null);
-	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
+	private JButton btLimpaCompra = new JButton("Limpa Autorização da Solicitação", null);
+	private JButton btLimpaItem = new JButton("Limpa autorização do item", null);
+	private JButton btStatusCompra = new JButton("Solicitação pendente", null);
+	private JButton btStatusItem = new JButton("Item pendente", null);
+	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad();
 	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad();
 	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad();
 	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad();
 	private JTextFieldPad txtCodUsu = new JTextFieldPad();
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
-	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			13, 0);
-	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			19, 0);
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			10, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad();
-	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextAreaPad txaMotivoSolicitacao = new JTextAreaPad();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSolicitacao);
-	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-
+	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
-
 	private Connection con = null;
 	String sOrdNota = "";
 	Integer anoCC = null;
@@ -130,13 +115,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
-
+		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
 		lcProd.setWhereAdic("ATIVOPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
@@ -144,13 +125,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		txtCodProd.setTabelaExterna(lcProd);
 
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
-
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
 		lcProd2.setWhereAdic("ATIVOPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
@@ -160,20 +137,16 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		txtRefProd.setListaCampos(lcDet);
 		txtRefProd.setTabelaExterna(lcProd2);
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cod. Almox.",
-				ListaCampos.DB_PK, false));
-		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Desc. Almox;",
-				ListaCampos.DB_SI, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, false));
+		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
 		txtDescAlmoxarife.setSoLeitura(true);
 		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
 
-		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Código", ListaCampos.DB_PK,
-				false));
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano do Centro de Custos",
-				ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_SI, false));
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
@@ -185,22 +158,17 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setAltCab(180);
 		setPainel(pinCab, pnCliCab);
 
-		adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "N.solicit.",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol",
-				"Data Solicit.", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
-		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação",
-				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo",
-				JTextFieldPad.TP_STRING, false);
+		adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "Nºsolicit.", ListaCampos.DB_PK, true);
+		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol", "Data solicitação", JTextFieldPad.TP_DATE, 10, 0, false, false, null, true);
+		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo", JTextFieldPad.TP_STRING, false);
 		adic(new JLabel("Motivo"), 7, 40, 100, 20);
 		adic(spnMotivo, 7, 60, 727, 77);
 		adic(btLimpaCompra, 240, 15, 250, 30);
 		btLimpaCompra.setVisible(false);
 		adic(btStatusCompra, 500, 15, 230, 30);
 		btStatusCompra.setEnabled(false);
-		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem",
-				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
 		setListaCampos(true, "SOLICITACAO", "CP");
 		lcCampos.setQueryInsert(false);
 
@@ -225,48 +193,31 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 
-		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item",
-				JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
+		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
 		if (comRef()) {
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód. Produto",
-					JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
-					JTextFieldPad.TP_STRING, 13, 0, false, true, null, false);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, true, null, false);
 			adic(new JLabel("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 		} else {
-			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód. Produto",
+			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
 					JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescProd, false);
 		}
 
-		adicCampoInvisivel(txtCodCC, "CodCC", "Cód. do Centro de Custos",
-				JTextFieldPad.TP_STRING, 19, 0, false, true, null, false);
-		adicCampoInvisivel(txtAnoCC, "AnoCC", "Ano do Centro de Custos",
-				JTextFieldPad.TP_INTEGER, 10, 0, false, false, null, false);
-		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód. do Usuário",
-				JTextFieldPad.TP_STRING, 13, 0, false, false, null, false);
-
-		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Código",
-				JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescAlmoxarife, false);
-		adicDescFK(txtDescAlmoxarife, 550, 20, 187, 20, "DescAlmox",
-				"e desc. do Almox.", JTextFieldPad.TP_STRING, 50, 0);
+		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", JTextFieldPad.TP_STRING, 19, 0, false, true, null, false);
+		adicCampoInvisivel(txtAnoCC, "AnoCC", "ano c.c.", JTextFieldPad.TP_INTEGER, 10, 0, false, false, null, false);
+		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", JTextFieldPad.TP_STRING, 13, 0, false, false, null, false);
+		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Cód.almox.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescAlmoxarife, false);
+		adicDescFK(txtDescAlmoxarife, 550, 20, 187, 20, "DescAlmox", "Descrição do almoxarifado", JTextFieldPad.TP_STRING, 50, 0);
 
 		txtDescProd.setSoLeitura(true);
-		adicDescFK(txtDescProd, 130, 20, 197, 20, "DescProd",
-				"Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
-		adicCampo(txtQtdItSolicitado, 330, 20, 67, 20, "QtdItSol", "Qtd. Solic.",
-				JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, true);
+		adicDescFK(txtDescProd, 130, 20, 197, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
+		adicCampo(txtQtdItSolicitado, 330, 20, 67, 20, "QtdItSol", "Qtd.solic.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, true);
 		txtQtdItAprovado.setSoLeitura(true);
-		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol",
-				"Qtd. Aprov.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false,
-				null, false);
-		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit. do Item",
-				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit. da Compra",
-				JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol",
-				"Sit. da Aprovação", JTextFieldPad.TP_STRING, 2, 0, false, false, null,
-				false);
+		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol", "Qtd.aprov.", JTextFieldPad.TP_DECIMAL, 15, casasDec, false, false, null, false);
+		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.item", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.compra", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol", "Sit.aprovação", JTextFieldPad.TP_STRING, 2, 0, false, false, null,	false);
 		adic(btLimpaItem, 240, 50, 250, 30);
 		btLimpaItem.setVisible(false);
 		adic(btStatusItem, 500, 50, 230, 30);
@@ -291,7 +242,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 5);
 		tab.setTamColuna(70, 6);
 		tab.setTamColuna(70, 7);
-		tab.setTamColuna(70, 8);
+		tab.setTamColuna(230, 8);
 		tab.setTamColuna(70, 9);
 		tab.setTamColuna(70, 10);
 	}
@@ -347,16 +298,16 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					&& !txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE"));
 
 			if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")) {
-				btStatusCompra.setText("Solicitação Pendente");
+				btStatusCompra.setText("Solicitação pendente");
 				lcDet.setReadOnly(false);
 			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("CA")) {
-				btStatusCompra.setText("Solicitação Cancelada");
+				btStatusCompra.setText("Solicitação cancelada");
 				lcDet.setReadOnly(true);
 			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("SC")) {
-				btStatusCompra.setText("Solicitação Concluída");
+				btStatusCompra.setText("Solicitação concluída");
 				lcDet.setReadOnly(true);
 			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("TM")) {
-				btStatusCompra.setText("Cotação de Preços");
+				btStatusCompra.setText("Cotação de preços");
 				lcDet.setReadOnly(true);
 			}
 
@@ -377,19 +328,19 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 			if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE")) {
 				if (allow || allowItems) {
-					btStatusItem.setText("Item Pendente");
+					btStatusItem.setText("Item pendente");
 				}
 			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("CA")) {
-				btStatusItem.setText("Item Cancelado");
+				btStatusItem.setText("Item cancelado");
 			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("SC")) {
 				if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")
 						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CT"))
-					btStatusItem.setText("Aprovado Totalmente");
+					btStatusItem.setText("Aprovado totalmente");
 				else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")
 						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP"))
-					btStatusItem.setText("Aprovado Parcialmente");
+					btStatusItem.setText("Aprovado parcialmente");
 				else
-					btStatusItem.setText("Item Concluído");
+					btStatusItem.setText("Item concluído");
 			}
 		}
 	}
@@ -469,7 +420,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
 					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 96, "[ Data de Emissão ]");
+					imp.say(imp.pRow() + 0, 96, "[ Data de emissão ]");
 					imp.say(imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate(rs
 							.getDate("DTEMITSOL")));
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -480,12 +431,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 4, "Referencia");
-					imp.say(imp.pRow() + 0, 18, "Descrição dos Produtos");
-					imp.say(imp.pRow() + 0, 60, "Qtd. Sol.");
-					imp.say(imp.pRow() + 0, 75, "Qtd. Aprov.");
-					imp.say(imp.pRow() + 0, 90, "Sit. Item");
-					imp.say(imp.pRow() + 0, 110, "Sit. Compra");
-					imp.say(imp.pRow() + 0, 130, "Sit. Aprov.");
+					imp.say(imp.pRow() + 0, 18, "Descrição dos produtos");
+					imp.say(imp.pRow() + 0, 60, "Qtd.sol.");
+					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
+					imp.say(imp.pRow() + 0, 90, "Sit.item");
+					imp.say(imp.pRow() + 0, 110, "Sit.compra");
+					imp.say(imp.pRow() + 0, 130, "Sit.aprov.");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 				}

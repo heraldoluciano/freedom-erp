@@ -71,7 +71,7 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
     setAtribos( 50, 50, 395, 240);
   
     lcUsu.add(new GuardaCampo( txtCodUsu, 7, 100, 80, 20, "IDUsu", "ID", true, false, txtNomeUsu, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 100, 180, 20, "NomeUsu", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcUsu.add(new GuardaCampo( txtNomeUsu, 7, 100, 180, 20, "NomeUsu", "Nome nome do usuário", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
     lcUsu.montaSql(false, "USUARIO", "SG");    
     lcUsu.setQueryCommit(false);
     lcUsu.setReadOnly(true);
@@ -81,8 +81,9 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
     
     getTela().add(pinCli,BorderLayout.CENTER);
     
-    pinCli.adic(new JLabel("ID e nome do usuário"), 7, 0, 200, 20);
+    pinCli.adic(new JLabel("ID"), 7, 0, 200, 20);
     pinCli.adic(txtCodUsu, 7, 20, 80, 20);
+    pinCli.adic(new JLabel("Nome do usuário"),90, 0, 200, 20);
     pinCli.adic(txtNomeUsu, 90, 20, 280, 20);
     
     pinCli.adic(new JLabel("Atribuições disponíveis:"),7,40,160,20);
