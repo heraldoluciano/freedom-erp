@@ -365,9 +365,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtCepEnt, 253, 60, 80, 20, "CepEnt", "Cep", ListaCampos.DB_SI, false);
   	txtCepEnt.setMascara(JTextFieldPad.MC_CEP);
   	adicCampo(txtUFEnt, 336, 60, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false);
-  	adicCampo(txtFoneEnt, 7, 100, 181, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFoneEnt, 7, 100, 40, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneEnt, 50, 100, 138, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false);
   	txtFoneEnt.setMascara(JTextFieldPad.MC_FONEDDD);
-  	adicCampo(txtFaxEnt, 192, 100, 181, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFaxEnt, 192, 100, 40, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxEnt, 235, 100, 138, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false);
   	txtFaxEnt.setMascara(JTextFieldPad.MC_FONE);
   	adic(btAtEntrega,400,15,30,30); 
   	
@@ -387,9 +389,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtCepCob, 253, 60, 80, 20, "CepCob", "Cep", ListaCampos.DB_SI, false);
   	txtCepCob.setMascara(JTextFieldPad.MC_CEP);
   	adicCampo(txtUFCob, 336, 60, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false);
-  	adicCampo(txtFoneCob, 7, 100, 181, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFoneCob, 7, 100, 40, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneCob, 50, 100, 138, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false);
   	txtFoneCob.setMascara(JTextFieldPad.MC_FONEDDD);
-  	adicCampo(txtFaxCob, 192, 100, 181, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFaxCob, 192, 100, 40, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxCob, 235, 100, 138, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false);
   	txtFaxCob.setMascara(JTextFieldPad.MC_FONE);
   	adic(btAtCobranca,400,15,30,30);
   	
@@ -1307,7 +1311,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     }
     else if (evt.getSource() == btImp) 
       imprimir(false);
-    else if (evt.getSource() == btAtEntrega){    	
+    else if (evt.getSource() == btAtEntrega){    
+    	if (lcCampos.getStatus()!=ListaCampos.LCS_EDIT)
+    		lcCampos.edit();
     	txtEndEnt.setVlrString(txtEndCli.getVlrString());
         txtNumEnt.setVlrString(txtNumCli.getVlrString());
         txtComplEnt.setVlrString(txtComplCli.getVlrString());
@@ -1315,10 +1321,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         txtCidEnt.setVlrString(txtCidCli.getVlrString());
         txtCepEnt.setVlrString(txtCepCli.getVlrString());
 		txtUFEnt.setVlrString(txtUFCli.getVlrString());
+		txtDDDFoneEnt.setVlrString(txtDDDCli.getVlrString());
 		txtFoneEnt.setVlrString(txtFoneCli.getVlrString());
+		txtDDDFaxEnt.setVlrString(txtDDDFaxCli.getVlrString());
 		txtFaxEnt.setVlrString(txtFaxCli.getVlrString());    	    	
     }
 	else if (evt.getSource() == btAtCobranca){    	
+    	if (lcCampos.getStatus()!=ListaCampos.LCS_EDIT)
+    		lcCampos.edit();
 		txtEndCob.setVlrString(txtEndCli.getVlrString());
 		txtNumCob.setVlrString(txtNumCli.getVlrString());
 		txtComplCob.setVlrString(txtComplCli.getVlrString());
@@ -1326,7 +1336,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtCidCob.setVlrString(txtCidCli.getVlrString());
 		txtCepCob.setVlrString(txtCepCli.getVlrString());
 		txtUFCob.setVlrString(txtUFCli.getVlrString());
+		txtDDDFoneCob.setVlrString(txtDDDCli.getVlrString());
 		txtFoneCob.setVlrString(txtFoneCli.getVlrString());
+		txtDDDFaxCob.setVlrString(txtDDDFaxCli.getVlrString());
 		txtFaxCob.setVlrString(txtFaxCli.getVlrString());    	    	
 	}
 	else if (evt.getSource()==btExclObs)
