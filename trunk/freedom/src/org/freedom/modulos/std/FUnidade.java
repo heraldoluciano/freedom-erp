@@ -38,8 +38,8 @@ public class FUnidade extends FDados implements ActionListener{
   public FUnidade () {
     setTitulo("Cadastro de Unidades");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodUnidade, 7, 20, 50, 20,"CodUnid","Código",JTextFieldPad.TP_STRING,8,0,true,false,null,true);
-    adicCampo(txtDescUnidade, 60, 20, 250, 20,"DescUnid","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodUnidade, 7, 20, 70, 20,"CodUnid","Cód.unid.",JTextFieldPad.TP_STRING,8,0,true,false,null,true);
+    adicCampo(txtDescUnidade, 80, 20, 250, 20,"DescUnid","Descrição da unidade",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "UNIDADE", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -77,7 +77,7 @@ public class FUnidade extends FDados implements ActionListener{
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.inid.");
             imp.say(imp.pRow()+0,30,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
