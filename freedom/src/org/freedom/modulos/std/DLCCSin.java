@@ -39,7 +39,7 @@ public class DLCCSin extends FFDialogo {
   private JTextFieldPad txtSigla = new JTextFieldPad(10);
   private JLabel lbCodPai = new JLabel("Código");
   private JLabel lbDescPai = new JLabel("e descrição da origem");
-  private JLabel lbCodSin = new JLabel("Códiogo");
+  private JLabel lbCodSin = new JLabel("Código");
   private JLabel lbDescSin = new JLabel("Descrição");
   private String sCodPai = "";
   private String sDesc = "";

@@ -36,6 +36,8 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.acao.DeleteEvent;
 import org.freedom.acao.DeleteListener;
 import org.freedom.acao.InsertEvent;
@@ -46,6 +48,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPasswordFieldPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -55,7 +58,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 
-public class FUsuario extends FDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener {
+public class FUsuario extends FDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener, CheckBoxListener {
   private JTextFieldPad txtCodUsu = new JTextFieldPad();
   private JTextFieldPad txtNomeUsu = new JTextFieldPad();
   private JTextFieldPad txtPNomeUsu = new JTextFieldPad();
@@ -67,6 +70,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   private JTextAreaPad txaComentUsu = new JTextAreaPad();
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(8);
   private JPasswordFieldPad txpConfirma = new JPasswordFieldPad(8);
+  private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad();
+  private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK();
   private static Vector vEmp = new Vector();
   private static Vector vDisp =  new Vector();
   private static Vector vCodEmp = new Vector();
@@ -81,12 +86,17 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   private Connection con = null;  
   private ListaCampos lcGrup = new ListaCampos(this,"IG");
   private ListaCampos lcCC = new ListaCampos(this,"CC");
+  private ListaCampos lcAlmox = new ListaCampos(this,"AM");
   private JCheckBoxPad cbBaixoCusto = new JCheckBoxPad("Permite vendas abaixo do custo","S","N");
   private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad("Permite abrir gaveta no PDV","S","N");
+  private JCheckBoxPad cbAlmoxarife = new JCheckBoxPad("Permite atuar como Almoxarife","S","N");
+  private JRadioGroup rgAprovaSolicitacao = null;
+  private Vector vAprovaSolicitacaoLab = new Vector();
+  private Vector vAprovaSolicitacaoVal = new Vector();
   private Connection conIB = null;
   public FUsuario () {
     setTitulo("Cadastro de Usuários");
-    setAtribos( 50, 50, 395, 490);
+    setAtribos( 50, 50, 390, 530);
 
     txpSenha.setListaCampos(lcCampos);
     txpConfirma.setListaCampos(lcCampos);
@@ -127,18 +137,50 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     adic(btDelEmp,175,315,30,30);
     adic(new JLabel("Acesso:"),212,240,158,20);
     adic(spnEmp,212,260,158,100);
-    adicDB(cbBaixoCusto, 7, 370, 350, 20, "BaixoCustoUsu", "", JTextFieldPad.TP_STRING, false);
-    adicDB(cbAbreGaveta, 7, 390, 350, 20, "AbreGavetaUsu", "", JTextFieldPad.TP_STRING, false);
+    adicDB(cbBaixoCusto, 7, 360, 225, 20, "BaixoCustoUsu", "", JTextFieldPad.TP_STRING, false);
+    adicDB(cbAbreGaveta, 7, 380, 225, 20, "AbreGavetaUsu", "", JTextFieldPad.TP_STRING, false);
+    adicDB(cbAlmoxarife, 7, 400, 225, 20, "AlmoxarifeUsu", "", JTextFieldPad.TP_STRING, false);
+    
+    txtCodAlmoxarife.setRequerido(cbAlmoxarife.isSelected());
+  	txtCodAlmoxarife.setAtivo(cbAlmoxarife.isSelected());
+  	
+    adicCampo(txtCodAlmoxarife, 7, 440, 50, 20, "CodAlmox", "Código", JTextFieldPad.TP_STRING, 8, 0, false, true, txtDescAlmoxarife, false);
+    adicDescFK(txtDescAlmoxarife, 60, 440, 170, 20, "DescAlmox", "e descrição do Almox.", JTextFieldPad.TP_STRING, 50, 0);
+
+    lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, 7, 100, 80, 20, "CodAlmox", "Cod. Almox.", true, false, txtDescAlmoxarife, JTextFieldPad.TP_STRING,false),"txtCodAlmoxarifex");
+    lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, 7, 100, 180, 20, "CodAlmox", "Desc. Almox;", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxarifex");
+    lcAlmox.montaSql(false, "ALMOX", "EQ");    
+    lcAlmox.setQueryCommit(false);
+    lcAlmox.setReadOnly(true);
+    txtCodAlmoxarife.setTabelaExterna(lcAlmox);   
+    
+    vAprovaSolicitacaoLab.add("Nenhuma");
+    vAprovaSolicitacaoLab.add("Mesmo Centro de Custo");
+    vAprovaSolicitacaoLab.add("Todas");
+
+    vAprovaSolicitacaoVal.add("ND");
+    vAprovaSolicitacaoVal.add("CC");
+    vAprovaSolicitacaoVal.add("TD");
+
+    rgAprovaSolicitacao = new JRadioGroup(3, 1, vAprovaSolicitacaoLab, vAprovaSolicitacaoVal);
+    adicDB(rgAprovaSolicitacao, 235, 380, 130, 80, "AprovCPSolicitacaoUsu", "Aprova Solicitação" ,JTextFieldPad.TP_STRING, false);
     
     setListaCampos( false, "USUARIO", "SG");
     lcCampos.addCarregaListener(this);
     lcCampos.addPostListener(this);
 	lcCampos.addInsertListener(this);
     lcCampos.addDeleteListener(this);
+    cbAlmoxarife.addCheckBoxListener(this);
+       
     lcCampos.setQueryInsert(false);    
     
     btAdicEmp.addActionListener(this);
     btDelEmp.addActionListener(this);
+  }
+  public void valorAlterado(CheckBoxEvent evt) {
+  		boolean checked = evt.getCheckBox().isSelected();
+  		txtCodAlmoxarife.setRequerido(checked);
+  		txtCodAlmoxarife.setAtivo(checked);
   }
   private void adicionaEmp() {
   	if (lsDisp.isSelectionEmpty()) 
@@ -354,6 +396,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   	carregaAcesso();
   	txpSenha.setVlrString("88888888");
   	txpConfirma.setVlrString("88888888");
+    txtCodAlmoxarife.setRequerido(cbAlmoxarife.isSelected());
+  	txtCodAlmoxarife.setAtivo(cbAlmoxarife.isSelected());
   }
   public void actionPerformed(ActionEvent evt) {
   	if (evt.getSource() == btAdicEmp)
@@ -363,8 +407,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   	super.actionPerformed(evt);
 
   }
-  public void beforeCarrega(CarregaEvent pevt) {
-  }
+  public void beforeCarrega(CarregaEvent pevt) { }
   public void beforeInsert(InsertEvent ievt) { }
   public void afterPost(PostEvent pevt) {
     gravaAcesso();
@@ -382,6 +425,7 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     lcGrup.setConexao(cn);
 	lcCC.setConexao(cn);
     lcCC.setWhereAdic("NIVELCC=10 AND ANOCC="+buscaAnoBaseCC());
+	lcAlmox.setConexao(cn);
 	if (conIB == null) {
 		Funcoes.mensagemInforma(this,"A conexão com o banco de dados de usuário está nula,\n"+
 										  "provavelmente o usuário qual você conectou não possui\n"+

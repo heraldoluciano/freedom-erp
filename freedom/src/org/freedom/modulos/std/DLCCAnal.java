@@ -39,7 +39,7 @@ public class DLCCAnal extends FFDialogo {
 	private JTextFieldPad txtSiglaAnal = new JTextFieldPad(10);
 	private JLabel lbCodPai = new JLabel("Código");
 	private JLabel lbDescPai = new JLabel("e descrição da origem");
-	private JLabel lbCodAnal = new JLabel("Códiogo");
+	private JLabel lbCodAnal = new JLabel("Código");
 	private JLabel lbDescAnal = new JLabel("Descrição");
 	private JLabel lbSiglaAnal = new JLabel("Sig.");
 	public DLCCAnal(

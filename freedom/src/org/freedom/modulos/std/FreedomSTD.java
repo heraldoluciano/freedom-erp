@@ -101,6 +101,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Empresa",'E',100450000,2,true);	  	  
 
   addOpcao(-1,TP_OPCAO_MENU,"Entrada",'E',200000000,0,false);
+	addOpcao(200000000,TP_OPCAO_ITEM,"Solicitação de Compra",'S',200300000,1,true);
     addOpcao(200000000,TP_OPCAO_ITEM,"Compra",'C',200100000,1,true);
 	addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200200000,1,false);
 	  addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'f',200210000,2,true);
@@ -557,6 +558,14 @@ public class FreedomSTD extends Aplicativo {
         telaPrincipal.criatela("Compra",tela,con);
       } 
     }
+    
+    else if (iOpcao==200300000) {
+        if (telaPrincipal.temTela("Solicitação de Compra")==false) {
+          FSolicitacaoCompra tela = new FSolicitacaoCompra();
+          telaPrincipal.criatela("Compra",tela,con);
+        } 
+      }
+    
     else if (iOpcao==300800000) {
       if (telaPrincipal.temTela("Romaneio")==false) {
         FRomaneio tela = new FRomaneio();
