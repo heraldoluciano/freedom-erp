@@ -84,7 +84,7 @@ public class FRGraficoCC extends FRelatorio {
 	
 	lcCC.add(new GuardaCampo(txtCodCC,"CodCC","Cód.cc.",ListaCampos.DB_PK,true));
 	lcCC.add(new GuardaCampo(txtSiglaCC,"SiglaCC","Sigla",ListaCampos.DB_SI,true));
-	lcCC.add(new GuardaCampo(txtDescCC,"DescCC","Descrição do centro de custo",ListaCampos.DB_PK,true));
+	lcCC.add(new GuardaCampo(txtDescCC,"DescCC","Descrição do centro de custo",ListaCampos.DB_SI,true));
 	
 	
 	lcCC.setReadOnly(true);
