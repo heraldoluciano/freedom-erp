@@ -204,7 +204,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
     txtCodFabINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodBarINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodModG.setPKFK(true,false);
-    lcModG.add(new GuardaCampo( txtCodModG, 7, 100, 50, 20, "CodModG", "Cód.mod.gp.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodModGx");
+    lcModG.add(new GuardaCampo( txtCodModG, "CodModG", "Cód.mod.gp.", ListaCampos.DB_PK, true));
     lcModG.add(new GuardaCampo( txtDescModG, 60, 100, 147, 20, "DescModG", "Descrição do modelo de grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
     lcModG.add(new GuardaCampo( txtDescINIModG, 210, 100, 147, 20, "DescProdModG", "Descrição ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
     lcModG.add(new GuardaCampo( txtRefINIModG, 360, 100, 47, 20, "RefModG", "Ref. ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");

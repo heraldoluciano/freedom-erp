@@ -36,8 +36,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FBanco extends FDados implements ActionListener {
-  private JTextFieldPad txtCodBanco = new JTextFieldPad(3);
-  private JTextFieldPad txtNomeBanco = new JTextFieldPad(40);
+  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+  private JTextFieldPad txtNomeBanco = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodModBol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescModBol = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcModBol = new ListaCampos(this,"MB");
@@ -45,17 +45,17 @@ public class FBanco extends FDados implements ActionListener {
     setTitulo("Cadastro de Banco");
     setAtribos( 50, 50, 350, 165);
 
-    lcModBol.add(new GuardaCampo( txtCodModBol, 7, 100, 80, 20, "CodModBol", "Código", true, false, txtDescModBol, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcModBol.add(new GuardaCampo( txtDescModBol, 7, 100, 80, 20, "DescModBol", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcModBol.add(new GuardaCampo( txtCodModBol, "CodModBol", "Cód.mod.bol.", ListaCampos.DB_PK, txtDescModBol,false));
+    lcModBol.add(new GuardaCampo( txtDescModBol, "DescModBol", "Descriçao do modelo de boleto", ListaCampos.DB_SI, null,false));
     lcModBol.montaSql(false, "MODBOLETO", "FN");    
     lcModBol.setQueryCommit(false);
     lcModBol.setReadOnly(true);
     txtCodModBol.setTabelaExterna(lcModBol);
     
-    adicCampo(txtCodBanco, 7, 20, 70, 20,"CodBanco","Cód.banco",JTextFieldPad.TP_STRING,3,0,true,false,null,true);
-    adicCampo(txtNomeBanco, 80, 20, 250, 20,"NomeBanco","Nome do banco",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescModBol,false);
-    adicDescFK(txtDescModBol, 80, 60, 250, 20, "DescModBol", "Descrição do modelo de boleto", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodBanco, 7, 20, 70, 20,"CodBanco","Cód.banco",ListaCampos.DB_PK,null,true);
+    adicCampo(txtNomeBanco, 80, 20, 250, 20,"NomeBanco","Nome do banco",ListaCampos.DB_SI,null,true);
+    adicCampo(txtCodModBol, 7, 60, 70, 20, "CodModBol", "Cód.mod.", ListaCampos.DB_FK, txtDescModBol,false);
+    adicDescFK(txtDescModBol, 80, 60, 250, 20, "DescModBol", "Descrição do modelo de boleto");
     setListaCampos( false, "BANCO", "FN");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

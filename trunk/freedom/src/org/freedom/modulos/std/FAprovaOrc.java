@@ -100,10 +100,10 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 
 		Painel pinRod = new Painel(685,50);
 			
-		lcOrc.add(new GuardaCampo( txtCodOrc,7,20,90,20,    "CodOrc", "N. orçamento",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodOrc");		
-		lcOrc.add(new GuardaCampo( txtCodCli,100,20,87,20, "CodCli","Cód. Cli.",false,true,null,JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-		lcOrc.add(new GuardaCampo( txtDtOrc,10,10,80,20, "DtOrc","Data",       false,false,null,JTextFieldPad.TP_DATE,false),"txtDtOrc");
-		lcOrc.add(new GuardaCampo( txtDtVal,10,10,80,20, "DtVencOrc","Validade",       false,false,null,JTextFieldPad.TP_DATE,false),"txtDtVal");
+		lcOrc.add(new GuardaCampo( txtCodOrc, "CodOrc", "N. orçamento",ListaCampos.DB_PK , null, false));		
+		lcOrc.add(new GuardaCampo( txtCodCli, "CodCli","Cód.cli.",ListaCampos.DB_FK, null, false));
+		lcOrc.add(new GuardaCampo( txtDtOrc, "DtOrc","Data",ListaCampos.DB_SI, null, false));
+		lcOrc.add(new GuardaCampo( txtDtVal, "DtVencOrc","Validade", ListaCampos.DB_SI , null, false));
 
 		lcOrc.montaSql(false,"ORCAMENTO","VD");
 		lcOrc.setQueryCommit(false);
@@ -118,8 +118,8 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	    txtTotal.setAtivo(false);	
 		
 		//FK Cliente
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-		lcCli.add(new GuardaCampo( txtNomeCli, 90, 100, 207, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
+		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Código", ListaCampos.DB_PK, null, false));
+		lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Nome", ListaCampos.DB_SI, null, false));
 		lcCli.montaSql(false, "CLIENTE","VD");    
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);

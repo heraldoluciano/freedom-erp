@@ -28,17 +28,18 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FClasCli extends FDados implements ActionListener{
-  private JTextFieldPad txtCodClasCli = new JTextFieldPad(5);
-  private JTextFieldPad txtDescClasCli= new JTextFieldPad(20);
+  private JTextFieldPad txtCodClasCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescClasCli= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FClasCli () {
     setTitulo("Cadastro de Classificação de Cliente");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodClasCli, 7, 20, 70, 20,"CodClasCli","Cód.c.cli.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescClasCli, 80, 20, 250, 20,"DescClasCli","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodClasCli, 7, 20, 70, 20,"CodClasCli","Cód.c.cli.",ListaCampos.DB_PK,null,true);
+    adicCampo(txtDescClasCli, 80, 20, 250, 20,"DescClasCli","Descrição",ListaCampos.DB_SI,null,true);
     setListaCampos( true, "CLASCLI", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
