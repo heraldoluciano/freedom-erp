@@ -27,7 +27,6 @@ import java.util.Vector;
 
 public class TabObjeto {
   public static final int IDOBJ = 0;
-  public static final int NOMEOBJ = 1;
   public static final int DESCOBJ = 2;
   public static final int TIPOOBJ = 3;
   public static final int COMENTOBJ = 4;
@@ -46,7 +45,7 @@ public class TabObjeto {
   	String sSql = "";
   	try {
   	   if ( !con.isClosed() ) {
-  	   	  sSql = "SELECT IDOBJ,NOMEOBJ,DESCOBJ,TIPOOBJ,COMENTOBJ,USOMEOBJ FROM "+sTabela+
+  	   	  sSql = "SELECT IDOBJ,DESCOBJ,TIPOOBJ,COMENTOBJ,USOMEOBJ FROM "+sTabela+
   	   	    " WHERE CODEMP=? AND TIPOOBJ=?";
   	   	  ps = con.prepareStatement(sSql);
   	   	  ps.setInt(1,iCodEmp);
@@ -54,7 +53,7 @@ public class TabObjeto {
   	   	  rs = ps.executeQuery();
   	   	  while ( rs.next() ) {
   	   	  	 vObjetos.add(new ObjetoBD(rs.getString("IDOBJ"), 
- 	 				rs.getString("NOMEOBJ"), rs.getString("DESCOBJ"), 
+ 	 				rs.getString("DESCOBJ"), 
   	 				rs.getString("TIPOOBJ"), rs.getString("COMENTOBJ"), 
   	 				rs.getString("USOMEOBJ") ) );
   	   	  }
@@ -73,7 +72,7 @@ public class TabObjeto {
      boolean bRetorno = false;
      if (vObjetos!=null) {
      	for (int i=0; i<vObjetos.size(); i++) {
-     		if ( ((ObjetoBD) vObjetos.elementAt(i)).getNomeObj().
+     		if ( ((ObjetoBD) vObjetos.elementAt(i)).getIDObj().
      		        toUpperCase().trim().equals(sTabela.toUpperCase().trim())) {
      		   if ( ((ObjetoBD) vObjetos.elementAt(i)).getUsomeObj().equals("S")) {
      		   	  bRetorno = true;

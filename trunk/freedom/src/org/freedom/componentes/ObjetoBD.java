@@ -22,17 +22,15 @@ package org.freedom.componentes;
 
 public class ObjetoBD {
   private String sIDObj = "";
-  private String sNomeObj = "";
   private String sDescObj = "";
   private String sTipoObj = "";
   private String sComentObj = "";
   private String sUsomeObj = "";
   
-  public ObjetoBD(String sIDObj, String sNomeObj, 
+  public ObjetoBD(String sIDObj,  
          String sDescObj, String sTipoObj,String sComentObj,
          String sUsomeObj ) {
   	this.sIDObj = sIDObj;
-  	this.sNomeObj = sNomeObj;
   	this.sDescObj = sDescObj;
   	this.sComentObj = sComentObj;
   	this.sUsomeObj = sUsomeObj;
@@ -44,9 +42,6 @@ public class ObjetoBD {
     return this.sIDObj;
   }  
   
-  public String getNomeObj() {
-    return this.sNomeObj;
-  }
   
   public String getDescObj() {
     return this.sDescObj;
@@ -68,10 +63,6 @@ public class ObjetoBD {
     this.sIDObj = sIDObj;
   }  
   
-  public void setNomeObj(String sNomeObj) {
-    this.sNomeObj = sNomeObj;
-  }
-
   public void setDescObj(String sDescObj ) {
     this.sDescObj = sDescObj;
   }
