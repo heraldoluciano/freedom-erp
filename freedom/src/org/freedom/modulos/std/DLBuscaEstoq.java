@@ -35,13 +35,11 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF3;
 
 public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
-   private String sCol = null;
    private Vector vValsProd = new Vector();
    private String sSQL = "";   
    private ListaCampos lcCampos = null;
    public DLBuscaEstoq(ListaCampos lc, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
-   	 this.sCol = sCol;
    	 lcCampos = lc;
    	 setConexao(con);
    	 

@@ -26,21 +26,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
-import org.jfree.data.XYSeriesCollection;
 
 
 public class GerContas extends LeiauteGR {
 	private Connection con = null;
-	private Font fnLegenda = new Font("Arial",Font.BOLD,10);
-	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
-	private Font fnCabEmp = new Font("Arial",Font.PLAIN,8);
 	private Font fnTituloNeg1 = new Font("Arial",Font.BOLD,10);
 	private Font fnTituloNeg2 = new Font("Arial",Font.BOLD,8);
 	private Font fnTituloNeg3 = new Font("Arial",Font.BOLD,6);
 	private Font fnExtraNeg = new Font("Arial",Font.BOLD,16);
-	private XYSeriesCollection datasetLinha = new XYSeriesCollection();
 	private ResultSet rs = null;
 	private Vector vParam = new Vector();
 	
@@ -136,5 +132,7 @@ public class GerContas extends LeiauteGR {
 	public void setConexao(Connection cn) {
 	  con = cn;
 	}
-
+	public Connection getConexao() {
+		  return con;
+		}
 }
