@@ -298,8 +298,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     
     txtCodNat.setTipo(JTextFieldPad.TP_STRING,4,0);
     txtDescNat.setTipo(JTextFieldPad.TP_STRING,40,0);    
-    lcNat.add(new GuardaCampo( txtCodNat, 7, 100, 50, 20, "CodNat", "CFOP", true, false, txtDescNat, JTextFieldPad.TP_STRING,false),"txtCodNatx");
-    lcNat.add(new GuardaCampo( txtDescNat, 60, 100, 177, 20, "DescNat", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescNatx");
+    lcNat.add(new GuardaCampo( txtCodNat, "CodNat", "CFOP", ListaCampos.DB_PK,false));
+    lcNat.add(new GuardaCampo( txtDescNat, "DescNat", "Descrição da CFOP", ListaCampos.DB_SI,false));
     lcNat.montaSql(false, "NATOPER", "LF");
     lcNat.setQueryCommit(false);
     lcNat.setReadOnly(true);
@@ -309,7 +309,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
 	//FK de Tratamento Tributário (É acionada também quando o listaCampos de Tratamento tributário é acionado)
     
 	txtCodTratTrib.setTipo(JTextFieldPad.TP_STRING,2,0);
-	lcTratTrib.add(new GuardaCampo( txtCodTratTrib, 7, 100, 50, 20, "CodTratTrib", "Cód.T.T.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodNatx");
+	lcTratTrib.add(new GuardaCampo( txtCodTratTrib, "CodTratTrib", "Cód.T.T.", ListaCampos.DB_PK,false));
 	lcTratTrib.montaSql(false, "TRATTRIB", "LF");
 	lcTratTrib.setQueryCommit(false);
 	lcTratTrib.setReadOnly(true);
@@ -352,9 +352,11 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     
     //lc para trazer classificacao da comissao
     
-    txtDescClComis.setTipo(JTextFieldPad.TP_STRING,40,0);    
-    lcClComis.add(new GuardaCampo( txtCodClComis, 7, 100, 80, 20, "CodClComis", "Cód.C.Com.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClComis");
-    lcClComis.add(new GuardaCampo( txtDescClComis, 90, 100, 207, 20, "DescClComis", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClComis");
+    txtCodClComis.setTipo(JTextFieldPad.TP_INTEGER,8,0);
+    txtDescClComis.setTipo(JTextFieldPad.TP_STRING,40,0);
+    
+    lcClComis.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.C.Com.", ListaCampos.DB_PK, false));
+    lcClComis.add(new GuardaCampo( txtDescClComis, "DescClComis", "Descrição", ListaCampos.DB_SI, false));
     lcClComis.montaSql(false, "CLCOMIS", "VD");
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
@@ -489,11 +491,11 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING,40,0);    
     txtCodSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
     txtTipoMov.setTipo(JTextFieldPad.TP_STRING,2,0);
-    lcTipoMov.add(new GuardaCampo( txtCodTipoMov, 7, 100, 80, 20, "CodTipoMov", "Cód.Tp.Mov.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoMovx");
-    lcTipoMov.add(new GuardaCampo( txtDescTipoMov, 90, 100, 207, 20, "DescTipoMov", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoMovx");
-    lcTipoMov.add(new GuardaCampo( txtCodSerie, 90, 100, 207, 20, "Serie", "Série", false, true, null, JTextFieldPad.TP_STRING,false),"txtDescTipoMovx");
-    lcTipoMov.add(new GuardaCampo( txtTipoMov, 90, 100, 207, 20, "TipoMov", "Tipo mov.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoMovx");
-    lcTipoMov.add(new GuardaCampo( txtESTipoMov, 90, 100, 207, 20, "ESTipoMov", "E/S", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcTipoMov.add(new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.Tp.Mov.", ListaCampos.DB_PK,false));
+    lcTipoMov.add(new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição", ListaCampos.DB_SI,false));
+    lcTipoMov.add(new GuardaCampo( txtCodSerie, "Serie", "Série", ListaCampos.DB_FK,false));
+    lcTipoMov.add(new GuardaCampo( txtTipoMov, "TipoMov", "Tipo mov.", ListaCampos.DB_SI,false));
+    lcTipoMov.add(new GuardaCampo( txtESTipoMov, "ESTipoMov", "E/S", ListaCampos.DB_SI,false));
     lcTipoMov.setWhereAdic("(ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV'))"); 
     if (bPrefs[5]) {
     	txtFiscalTipoMov1.setText("S");
