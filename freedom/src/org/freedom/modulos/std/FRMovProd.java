@@ -389,19 +389,19 @@ public class FRMovProd extends FRelatorio {
 		 		 	 		
 		 while ( rs.next() ) {		   
 		   if (imp.pRow()==0) {
-			 imp.impCab(136, false);
+			 imp.impCab(136, true);
 			 imp.say(imp.pRow()+0,0,""+imp.comprimido());
-			 imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+			 imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
 			 for (int i=0;i<vFiltros.size();i++) {            
 					 String sTmp = (String)vFiltros.elementAt(i);
-					 sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
-					 sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+					 sTmp = "|"+Funcoes.replicate(" ",(((134-sTmp.length())/2)-1))+sTmp;
+					 sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
 					 imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					 imp.say(imp.pRow()+0,2,sTmp);
 			 }
 			
 			 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			 imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",134)+"|");
+			 imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",133)+"|");
 			 imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			 imp.say(imp.pRow()+0,0,"|");
 			 imp.say(imp.pRow()+0,3,"Código:");
@@ -417,28 +417,28 @@ public class FRMovProd extends FRelatorio {
 			 imp.say(imp.pRow()+0,86," Mov.");
 			 imp.say(imp.pRow()+0,92,"|     Cod.Grupo");
 			 imp.say(imp.pRow()+0,114,"|      Tipo");
-			 imp.say(imp.pRow()+0,136,"|");
+			 imp.say(imp.pRow()+0,135,"|");
 			 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			 imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+			 imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			
 		   }		   
 		   if ((cbAgrupar.getVlrString().equals("S")) && (!sCodFor.equals(rs.getString(9))) && bImpNulo || ((bPulouPagina) && (cbAgrupar.getVlrString().equals("S")))) {
 		      if (iContaReg>0 && !bPulouPagina) {
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			    imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+			    imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 		      }							 
 			  if (!(rs.getString(10)==null)) {
 				imp.say(imp.pRow()+1,0,"|");
 			    imp.say(imp.pRow()+0,3,rs.getString(10));
-				imp.say(imp.pRow()+0,136,"|");
+				imp.say(imp.pRow()+0,135,"|");
 				imp.say(imp.pRow()+1,0,"");
-				imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",134)+"|");					    
+				imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",133)+"|");					    
 			  } 
 			  else {
 			     imp.say(imp.pRow()+1,0,"|  FORNECEDOR NÃO INFORMADO");
-				 imp.say(imp.pRow()+0,136,"|");
+				 imp.say(imp.pRow()+0,135,"|");
 				 imp.say(imp.pRow()+1,0,"|");
-				 imp.say(imp.pRow()+0,0, Funcoes.replicate("-",134)+"|");				 				
+				 imp.say(imp.pRow()+0,0, Funcoes.replicate("-",133)+"|");				 				
 				 bImpNulo = false;
 			  }
 		      bPulouPagina = false;
@@ -468,35 +468,35 @@ public class FRMovProd extends FRelatorio {
 		   imp.say(imp.pRow()+0,99,rs.getString("codgrup"));
 		   imp.say(imp.pRow()+0,114,"|");
 		   		   		  		   
-	  if (sValores[8].equals("T")){
-		    	
-		   if (rs.getString("TIPOPROD").equals("P")){
-		   	   sTipo="Comercio";
-		   	   imp.say(imp.pRow()+0,119,sTipo);
-		   }
-		   else if (rs.getString("TIPOPROD").equals("S")){
-		   	  sTipo="Serviço";
-		   	  imp.say(imp.pRow()+0,119,sTipo);
-		   }
-		   else if (rs.getString("TIPOPROD").equals("F")){
-		   	  sTipo="Fabricação";
-      	      imp.say(imp.pRow()+0,119,sTipo);
-		   }
-		   else if (rs.getString("TIPOPROD").equals("M")){
-		   	  sTipo="Mat.Prima";
-		   	  imp.say(imp.pRow()+0,119,sTipo);
-		   }
-		   else if (rs.getString("TIPOPROD").equals("O")){
-		   	sTipo="Patrimônio";
-		   	imp.say(imp.pRow()+0,119,sTipo);
-		   }
-		   else if (rs.getString("TIPOPROD").equals("C")){
-		   	sTipo="Consumo";
-		   		imp.say(imp.pRow()+0,119,sTipo);
-		   }
-	  }	   		   
+		  if (sValores[8].equals("T")){
+			    	
+			   if (rs.getString("TIPOPROD").equals("P")){
+			   	   sTipo="Comercio";
+			   	   imp.say(imp.pRow()+0,119,sTipo);
+			   }
+			   else if (rs.getString("TIPOPROD").equals("S")){
+			   	  sTipo="Serviço";
+			   	  imp.say(imp.pRow()+0,119,sTipo);
+			   }
+			   else if (rs.getString("TIPOPROD").equals("F")){
+			   	  sTipo="Fabricação";
+	      	      imp.say(imp.pRow()+0,119,sTipo);
+			   }
+			   else if (rs.getString("TIPOPROD").equals("M")){
+			   	  sTipo="Mat.Prima";
+			   	  imp.say(imp.pRow()+0,119,sTipo);
+			   }
+			   else if (rs.getString("TIPOPROD").equals("O")){
+			   	sTipo="Patrimônio";
+			   	imp.say(imp.pRow()+0,119,sTipo);
+			   }
+			   else if (rs.getString("TIPOPROD").equals("C")){
+			   	sTipo="Consumo";
+			   		imp.say(imp.pRow()+0,119,sTipo);
+			   }
+		  }	   		   
 		
-	       imp.say(imp.pRow()+0,136,"|");
+	       imp.say(imp.pRow()+0,135,"|");
 
 		   sCodFor = rs.getString(9)==null?"":rs.getString(9);
 		   
@@ -508,7 +508,7 @@ public class FRMovProd extends FRelatorio {
 		     iContaReg++;
 		 }
 		 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	     imp.say(imp.pRow()+0,0,"+"+ Funcoes.replicate("=",134)+"+");
+	     imp.say(imp.pRow()+0,0,"+"+ Funcoes.replicate("=",133)+"+");
 		 imp.eject();
 
 		 imp.fechaGravacao();
