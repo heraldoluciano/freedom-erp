@@ -189,7 +189,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(700700000,TP_OPCAO_ITEM,"Saldos de lote",'l',700704000,2,true);
 	  addOpcao(700700000,TP_OPCAO_ITEM,"Demanda",'D',700705000,2,true);
 	  addOpcao(700700000,TP_OPCAO_ITEM,"Conferência",'C',700706000,2,true);
-	  addOpcao(700700000,TP_OPCAO_ITEM,"Inventário PEPS",'I',700707000,2,true);
+	  addOpcao(700700000,TP_OPCAO_ITEM,"Inventário",'I',700707000,2,true);
 	  
   addOpcao(-1,TP_OPCAO_MENU,"Fiscal",'F',800000000,0,false);
     addOpcao(800000000,TP_OPCAO_ITEM,"Gerar",'G',800100000,1,true);
@@ -982,10 +982,10 @@ public class FreedomSTD extends Aplicativo {
     	}
     }
     else if (iOpcao==700707000) {
-    	if (telaPrincipal.temTela("Inventário PEPS")==false) {
+    	if (telaPrincipal.temTela("Inventário")==false) {
     		FRInvPeps tela = new FRInvPeps();		
     		tela.setConexao(con);
-    		telaPrincipal.criatela("Inventário PEPS",tela);
+    		telaPrincipal.criatela("Inventário",tela);
     	}
     }
     else if (iOpcao==1) {
