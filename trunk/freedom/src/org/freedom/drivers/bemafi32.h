@@ -161,6 +161,9 @@ extern __stdcall Bematech_FI_IncluiCidadeFavorecido( char * Cidade, char * Favor
 extern __stdcall Bematech_FI_ImprimeCopiaCheque();
 
 // Funções para o TEF
+extern __stdcall Bematech_FI_IniciaModoTEF();
+extern __stdcall Bematech_FI_FinalizaModoTEF();
+
 /* extern __stdcall Bematech_FITEF_Status(char* Identificacao); extern __stdcall Bematech_FITEF_VendaCartao(char* Identificacao, char*
 ValorCompra); extern __stdcall Bematech_FITEF_ConfirmaVenda(char* Identificacao, char* ValorCompra, char* Header);
 extern __stdcall Bematech_FITEF_NaoConfirmaVendaImpressao(char* Identificacao, char* ValorCompra);

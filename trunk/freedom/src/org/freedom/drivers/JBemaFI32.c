@@ -2035,6 +2035,20 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bIncluiCidadeFavorecid
 }
 
 
+/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bIniciaModoTEF * Signature: ()I */
+JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bIniciaModoTEF( JNIEnv * env, jobject obj )
+{
+  return Bematech_FI_IniciaModoTEF();
+}
+
+
+/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bFinalizaModoTEF * Signature: ()I */
+JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bFinalizaModoTEF( JNIEnv * env, jobject obj )
+{
+  return Bematech_FI_FinalizaModoTEF();
+}
+
+
 /* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bImprimeCopiaCheque * Signature: ()I */
 JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bImprimeCopiaCheque( JNIEnv * env, jobject obj )
 {
