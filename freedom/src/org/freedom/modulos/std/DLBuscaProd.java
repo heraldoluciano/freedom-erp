@@ -1,6 +1,6 @@
 /**
  * @version 23/02/2004 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva/Anderson Sanchez <BR>
  *
  * Projeto: Freedom <BR>
  *  
@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Tela para busca de produtos por similaridade ou códigos alternativos.
  */
 
 package org.freedom.modulos.std;

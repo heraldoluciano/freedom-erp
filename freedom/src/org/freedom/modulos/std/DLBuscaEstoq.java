@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Tela para busca de saldos de estoque em vários almoxarifados.
  */
 
 package org.freedom.modulos.std;
@@ -43,48 +43,39 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 this.sCol = sCol;
    	 setConexao(con);
    	 
-   	 tab.adicColuna("Cód.");
-     tab.adicColuna("Ref.");    
-     tab.adicColuna("Descrição");
-   	 tab.adicColuna("Saldo");   	  
-   	 tab.setTamColuna(120,0);//código.
-   	 tab.setTamColuna(100,1);//Referencia. 
-   	 tab.setTamColuna(200,2);
+   	 tab.adicColuna("Cd.Filial");
+     tab.adicColuna("Nome da filial");    
+     tab.adicColuna("Cd.Almox.");
+   	 tab.adicColuna("Nome Almoxarifado");   	  
+   	 tab.adicColuna("Saldo");
+   	 tab.setTamColuna(60,0);
+   	 tab.setTamColuna(150,1); 
+   	 tab.setTamColuna(60,1);
+   	 tab.setTamColuna(150,2);
    	 tab.setTamColuna(80,5);   	 	 
    	 tab.addTabelaSelListener(this); 
 
+  	 setTitulo("Saldo do produto nos almoxarifados");
+  	  
    }
    public Object getValor() {
     return oRetVal;
   }
    public boolean setValor(Object oVal,String sTipo) { 
      boolean bRet = false;
-  	 if (sTipo.equals("similar")) {
-   	 	sSQL = "SELECT SIM.CODPROD,PROD.REFPROD,PROD.DESCPROD,PROD.SLDPROD "+
-		  	   "FROM EQPRODUTO PROD,EQITSIMILAR SIM "+
-		          "WHERE  SIM.CODEMP = PROD.CODEMP AND SIM.CODFILIAL=PROD.CODFILIAL "+
-		           "AND SIM.CODSIM = (SELECT SIM2.CODSIM FROM EQITSIMILAR SIM2 " +
-		           "                   WHERE SIM2.CODEMP=PROD.CODEMP AND SIM2.CODFILIAL = PROD.CODFILIAL " +
-		           "                   AND SIM2."+sCol+"=?) "+
-		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? AND PROD.CODPROD=SIM.CODPROD";
-
-   	 	setTitulo("Produtos similares à "+oVal.toString());
-   	 }
-   	 else {
-   	 	sSQL = "SELECT ALT.CODPROD,ALT.REFPROD,PROD.DESCPROD,PROD.SLDPROD FROM eqcodaltprod ALT, EQPRODUTO PROD "+
-		   " WHERE PROD.CODEMP = ALT.CODEMP AND PROD.CODFILIAL=ALT.codfilial AND PROD.CODPROD = ALT.CODPROD " +
-		   " AND ALT.CODALTPROD = ? AND ALT.CODEMP=? AND ALT.CODFILIAL = ? ";
-
-   	 	setTitulo("Produtos encontrados com o código alternativo:"+oVal.toString());
-   	 }
-  	
+   	  sSQL = "SELECT A.CODFILIAL,F.NOMEFILIAL,A.CODALMOX,A.DESCALMOX FROM EQALMOX A, SGEMPRESA E, SGFILIAL F " +
+   	  		 "WHERE E.CODEMP=A.CODEMP AND A.CODEMP=? AND A.CODFILIAL=? AND F.CODEMP=A.CODEMP AND F.CODFILIAL=A.CODFILIAL " +
+   	  		 "AND (E.MULTIALMOXEMP='N' OR " +
+   	  		 " EXISTS(SELECT CODALMOX FROM EQALMOXFILIAL AF WHERE AF.CODEMP=A.CODEMP AND AF.CODFILIAL=A.CODFILIAL " +
+   	  		 " AND AF.CODALMOX=A.CODALMOX AND AF.CODEMPFL=? AND AF.CODFILIALAF=?))";
       System.out.println(sSQL);
       try {
       	PreparedStatement ps = con.prepareStatement(sSQL);
       	String sVal = oVal.toString();
-     	ps.setInt(2,Aplicativo.iCodEmp);
-      	ps.setInt(3,ListaCampos.getMasterFilial("EQPRODUTO"));
-      	ps.setString(1,sVal);
+      	ps.setInt(1,Aplicativo.iCodEmp);
+      	ps.setInt(2,Aplicativo.iCodFilial);
+      	ps.setInt(3,Aplicativo.iCodEmp);
+      	ps.setInt(4,Aplicativo.iCodFilial);
 
         tab.limpa();
         tab.removeAll();
@@ -98,15 +89,16 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       		  rs.getString(2) != null ? rs.getString(2) : "",
       		  rs.getString(3) != null ? rs.getString(3) : "",
 			  rs.getString(4) != null ? rs.getString(4) : "",
+		      rs.getString(5) != null ? rs.getString(4) : "",
       	   });
-
+/*
       	   if (sCol.toUpperCase().equals("REFPROD")) {
       	   	 oRetVal = rs.getString(1) != null ? rs.getString(1) : ""; 
    	 	   }
    	 	   else{
    	 		 oRetVal = rs.getString(2) != null ? rs.getString(2) : "";
    	 	   }
- 
+*/ 
       	}
       	rs.close();
       	ps.close();
@@ -114,7 +106,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       		con.commit();
       }
       catch (SQLException err) {
-      	 Funcoes.mensagemErro(this,"Erro ao buscar código auxiliar!\n"+err.getMessage());
+      	 Funcoes.mensagemErro(this,"Erro ao buscar filiais almoxarifados e saldos!\n"+err.getMessage());
       	 err.printStackTrace();
       }
       return bRet;
