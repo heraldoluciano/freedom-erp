@@ -42,6 +42,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import org.freedom.acao.CheckBoxEvent;
+import org.freedom.acao.CheckBoxListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
@@ -54,7 +56,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener {
   private int casasDec = Aplicativo.casasDec;
   private JTabbedPane tpn = new JTabbedPane();
   private Painel pinFecha = new Painel(400,300);
@@ -123,6 +125,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
   private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
   private JCheckBoxPad cbImpBol = new JCheckBoxPad("Imprime Boleto?","S","N");
+  private JCheckBoxPad cbReImpNot = new JCheckBoxPad("Reimprime Nota?","S","N");
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgFreteVD = null;
@@ -340,6 +343,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     else
         txtCodAuxV.setVlrInteger(new Integer(1));
     
+    cbImpNot.addCheckBoxListener(this);
+    cbImpPed.addCheckBoxListener(this);
+    cbImpBol.addCheckBoxListener(this);
+    cbReImpNot.addCheckBoxListener(this);
+    
     setPainel(pinFecha);
     adic(lbCodPlanoPag,7,0,80,20);
     adic(lbDescPlanoPag,90,0,270,20);
@@ -359,6 +367,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     adic(cbImpPed,7,130,150,20);
     adic(cbImpNot,7,150,150,20);
     adic(cbImpBol,7,170,150,20);
+    adic(cbReImpNot,7,190,150,20);
     
     setPainel(pinFrete);
     adic(lbCodTran,7,0,80,20);
@@ -546,14 +555,19 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
      boolean bRet = false;
   	 if (lcReceber.getStatus() == ListaCampos.LCS_EDIT) {
   		lcReceber.post();
-  	 }  	
-  	 lcVenda.edit();
-  	 if (txtStatusVenda.getVlrString().equals("V2"))
-  	 	txtStatusVenda.setVlrString("V3");
-  	 else if (txtStatusVenda.getVlrString().equals("P2"))
-  		txtStatusVenda.setVlrString("P3");
-  	bRet = lcVenda.post();
-  	return bRet;
+  	 }
+  	 if (cbReImpNot.equals("N")) {
+	  	lcVenda.edit();
+	  	if (txtStatusVenda.getVlrString().equals("V2"))
+	  	 	txtStatusVenda.setVlrString("V3");
+	  	else if (txtStatusVenda.getVlrString().equals("P2"))
+	  		txtStatusVenda.setVlrString("P3");
+	  	bRet = lcVenda.post();
+  	 }
+  	 else {
+		bRet = true;
+  	 }
+  	 return bRet;
   }
   private int buscaCodAux() {
   	int iRet = 0;
@@ -578,30 +592,33 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   	return iRet;
   }
   private void gravaVenda() {
-  	 lcVenda.edit();
-  	 if (cbImpNot.getVlrString().equals("S"))
-   		txtStatusVenda.setVlrString("V2");
-  	 else if (txtStatusVenda.getVlrString().substring(0,1).equals("P")) 
-  		txtStatusVenda.setVlrString("P2");
-   	 else if (txtStatusVenda.getVlrString().substring(0,1).equals("V")) 
-  		txtStatusVenda.setVlrString("V2");
-   	 txtPlacaFreteVD.getVlrString();
-   	 if (lcFreteVD.getStatus() == ListaCampos.LCS_EDIT ||
-   	 	 lcFreteVD.getStatus() == ListaCampos.LCS_INSERT)
-  	   lcFreteVD.post();
-   	 if (lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT ||
-   	 	 lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT)
-   	 	lcAuxVenda.post();
-   	 lcVenda.post();
-  	 int iCodRec = trazCodRec();
-  	 if (iCodRec > 0) {
-  	 	txtCodRec.setVlrInteger(new Integer(iCodRec));
-  	 	lcReceber.carregaDados();
+   	 if (cbReImpNot.equals("N")) {
+		 lcVenda.edit();
+		 if (cbImpNot.getVlrString().equals("S"))
+			txtStatusVenda.setVlrString("V2");
+		 else if (txtStatusVenda.getVlrString().substring(0,1).equals("P")) 
+			txtStatusVenda.setVlrString("P2");
+		 else if (txtStatusVenda.getVlrString().substring(0,1).equals("V")) 
+			txtStatusVenda.setVlrString("V2");
+		 txtPlacaFreteVD.getVlrString();
+		 if (lcFreteVD.getStatus() == ListaCampos.LCS_EDIT ||
+		 	 lcFreteVD.getStatus() == ListaCampos.LCS_INSERT)
+		   lcFreteVD.post();
+		 if (lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT ||
+		 	 lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT)
+		 	lcAuxVenda.post();
+		 lcVenda.post();
   	 }
+	 int iCodRec = trazCodRec();
+	 if (iCodRec > 0) {
+	 	txtCodRec.setVlrInteger(new Integer(iCodRec));
+	 	lcReceber.carregaDados();
+	 }
   	 tpn.setEnabledAt(0,false);
   	 tpn.setEnabledAt(1,false);
   	 tpn.setEnabledAt(2,false);
   	 tpn.setSelectedIndex(3);
+  	 
   }
   private void alteraRec() {
     lcItReceber.edit();
@@ -724,7 +741,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   	return bRetorno;
   }
   public String[] getValores() {
-    String[] sRetorno = new String[7];
+    String[] sRetorno = new String[8];
     sRetorno[0] = txtCodPlanoPag.getVlrString();
     sRetorno[1] = txtVlrDescVenda.getVlrString();
     sRetorno[2] = txtVlrAdicVenda.getVlrString();
@@ -732,6 +749,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     sRetorno[4] = cbImpNot.getVlrString();
     sRetorno[5] = cbImpBol.getVlrString();
     sRetorno[6] = txtCodModBol.getVlrString();
+    sRetorno[7] = cbReImpNot.getVlrString();
     return sRetorno;
   }
   public void focusLost(FocusEvent fevt) {
@@ -770,11 +788,26 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
       	  alteraComis();
     }
   }
+  public void valorAlterado(CheckBoxEvent evt) {
+  	 if (evt.getCheckBox()==cbReImpNot) {
+  	 	if (cbReImpNot.getVlrString().equals("S")) {
+  	 		cbImpBol.setVlrString("N");
+  	 		cbImpNot.setVlrString("N");
+  	 		cbImpPed.setVlrString("N");
+  	 	}
+  	 }
+  	 else if ( (evt.getCheckBox()==cbImpNot) || (evt.getCheckBox()==cbImpBol) || (evt.getCheckBox()==cbImpPed) ) {
+  	 	if ( ((JCheckBoxPad)evt.getCheckBox()).getVlrString().equals("S")) {
+  	 		cbReImpNot.setVlrString("N");
+  	 	}
+  	 }
+  }
   public void focusGained(FocusEvent fevt) { }
   public void mouseEntered(MouseEvent e) { }
   public void mouseExited(MouseEvent e) { }
   public void mousePressed(MouseEvent e) { }
   public void mouseReleased(MouseEvent e) { }
+  
 }
 /* (non-Javadoc)
  * @see org.freedom.acao.PostListener#beforePost(org.freedom.acao.PostEvent)
