@@ -261,7 +261,7 @@ public class FRCentroCusto extends FRelatorio {
       
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136);
+           imp.impCab(136, false);
            String sTitulo = "RELATORIO FINANCEIRO POR CENTRO DE CUSTO - PERIODO DE "+sDataini+" A "+sDatafim;
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");

@@ -403,7 +403,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 			imp.limpaPags();
 			for (int iLin=0;iLin<tab.getNumLinhas();iLin++) {
 				if (imp.pRow()==0) {
-					imp.impCab(136);
+					imp.impCab(136, false);
 					imp.say(imp.pRow()+0,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"| N.ORC.");
 					imp.say(imp.pRow()+0,14," | Emissão");

@@ -185,7 +185,7 @@ public class FRBalancete extends FRelatorio {
       BigDecimal bigValMaster = null;
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(80);
+           imp.impCab(80, true);
            String sTitulo = "BALANCETE - PERIODO DE "+sDataini+" A "+sDatafim;
            imp.say(imp.pRow()+0,0,""+imp.normal());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");

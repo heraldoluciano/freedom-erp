@@ -167,7 +167,7 @@ public class FRRazaoFin extends FRelatorio {
       
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136);
+           imp.impCab(136, false);
            String sTitulo = "RELATORIO RAZÃO FINANCEIRO - PERIODO DE "+sDataini+" A "+sDatafim;
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");

@@ -254,7 +254,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
         if (!sRets[0].equals("S") ){
       
           if (imp.pRow()==0) {
-            imp.impCab(136);
+            imp.impCab(136, false);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"");
             imp.say(imp.pRow()+0,0,"|");
@@ -309,7 +309,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
         else {
          
           if (imp.pRow()==0) {
-            imp.impCab(136);
+            imp.impCab(136, false);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"");
             imp.say(imp.pRow()+0,0,"|");

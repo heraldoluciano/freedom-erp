@@ -120,7 +120,7 @@ public class FRVendasIcms extends FRelatorio {
         }
 
         if (imp.pRow()==0) {
-           imp.impCab(80);
+           imp.impCab(80, false);
            imp.say(imp.pRow()+1,0,""+imp.normal());
            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
            imp.say(imp.pRow()+1,0,""+imp.normal());

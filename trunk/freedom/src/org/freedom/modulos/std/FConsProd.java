@@ -625,7 +625,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	  			      
 	         for (int i=0;i<tabFor.getNumLinhas(); i++) {
 	            if (imp.pRow()==0) {
-	                imp.impCab(136);
+	                imp.impCab(136, false);
 	           
 	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
 	                imp.say(imp.pRow()+0,0,"|");
@@ -717,7 +717,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
           if (sRets.equals("C")){
              	for (int i=0;i<tabFor.getNumLinhas(); i++) {
        	            if (imp.pRow()==0) {
-       	                imp.impCab(136);
+       	                imp.impCab(136, false);
        	           
        	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
        	                imp.say(imp.pRow()+0,0,"|");
@@ -846,7 +846,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
           if (sRets.equals("V")){
          	for (int i=0;i<tabVendas.getNumLinhas(); i++) {
    	            if (imp.pRow()==0) {
-   	                imp.impCab(136);
+   	                imp.impCab(136, false);
    	           
    	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");

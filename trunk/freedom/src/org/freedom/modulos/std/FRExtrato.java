@@ -158,7 +158,7 @@ public class FRExtrato extends FRelatorio {
           imp.incPags();          
         }
         if (imp.pRow()==0) {
-           imp.impCab(136);
+           imp.impCab(136, false);
            String sTitulo = "EXTRATO BANCÁRIO   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
            String sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();
            imp.say(imp.pRow()+0,0,""+imp.comprimido());

@@ -369,7 +369,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
         imp.limpaPags();
         while ( rs.next() ) {
           if (imp.pRow()==0) {
-            imp.impCab(136);
+            imp.impCab(136, false);
             imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
             for (int i=0;i<vFiltros.size();i++) {            
                     String sTmp = (String)vFiltros.elementAt(i);
@@ -483,7 +483,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
         imp.limpaPags();
         while ( rs.next() ) {
           if (imp.pRow()==0) {
-            imp.impCab(136);
+            imp.impCab(136, false);
             imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
             for (int i=0;i<vFiltros.size();i++) {            
                     String sTmp = (String)vFiltros.elementAt(i);

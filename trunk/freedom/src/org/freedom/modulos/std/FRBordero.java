@@ -237,7 +237,7 @@ public class FRBordero extends FRelatorio {
   				}
 
   				if (imp.pRow()==0) {
-  					imp.impCab(136);
+  					imp.impCab(136, false);
   					sTitulo = "BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim;
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");

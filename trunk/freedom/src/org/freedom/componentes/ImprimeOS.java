@@ -795,7 +795,7 @@ public class ImprimeOS implements ActionListener {
 	}
   }
 
-  public void impCab(int iTamRel) {
+  public void impCab(int iTamRel, boolean borda) {
     //Seta Data
 
      String sData = Funcoes.dateToStrDataHora(hoje.getTime());
