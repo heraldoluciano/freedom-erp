@@ -26,12 +26,12 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-public class DLRFrete extends FDialogo {
+public class DLRFrete extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private Vector vLabs = new Vector();

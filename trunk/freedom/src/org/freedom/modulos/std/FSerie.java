@@ -36,7 +36,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
 public class FSerie extends FDados implements ActionListener {
 
@@ -61,7 +61,7 @@ public class FSerie extends FDados implements ActionListener {
     btReset.addActionListener(this);
   }
   private void resetar() {
-    FDialogo dlReset = new FDialogo();
+    FFDialogo dlReset = new FFDialogo(this);
     dlReset.setTitulo("Reset");
     dlReset.setAtribos(280,120);
     dlReset.adic(lbReset,7,5,100,20);

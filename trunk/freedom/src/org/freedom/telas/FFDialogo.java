@@ -72,6 +72,9 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   private JLayeredPane pnVidro = new JLayeredPane();
   public JComponent pnPai = null;
   private Modal modal = null;
+  public FFDialogo() {
+  	this(Aplicativo.telaPrincipal);
+  }
   public FFDialogo(Component cOrig) {
     cPai = cOrig;
 	setTitle("Dialogo");
