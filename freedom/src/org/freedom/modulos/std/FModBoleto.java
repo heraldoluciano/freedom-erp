@@ -42,14 +42,15 @@ import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 
 public class FModBoleto extends FDados implements ActionListener, JComboBoxListener {
 	private Painel pinCab = new Painel(0,150);
-	private JTextFieldPad txtCodModBol = new JTextFieldPad();
-	private JTextFieldPad txtDescModBol = new JTextFieldPad();
+	private JTextFieldPad txtCodModBol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtDescModBol = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextAreaPad txaBoleto = new JTextAreaPad(10000);
 	private JScrollPane spnCli = new JScrollPane(txaBoleto); 
 	private JTextFieldPad txtAdic = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,8,2);
@@ -68,8 +69,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	
     	txaBoleto.setFont(new Font("Courier",Font.PLAIN,11));
     	
-    	adicCampo(txtCodModBol, 7, 20, 90, 20,"CodModBol","Cód.mod.bol.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    	adicCampo(txtDescModBol, 100, 20, 250, 20,"DescModBol","Descrição do modelo de boleto",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    	adicCampo(txtCodModBol, 7, 20, 90, 20,"CodModBol","Cód.mod.bol.", ListaCampos.DB_PK, true);
+    	adicCampo(txtDescModBol, 100, 20, 250, 20,"DescModBol","Descrição do modelo de boleto", ListaCampos.DB_SI, true);
     	adicDBLiv(txaBoleto,"TxaModBol", "Corpo",JTextFieldPad.TP_STRING, true);
     	setListaCampos( false, "MODBOLETO", "FN");
     	

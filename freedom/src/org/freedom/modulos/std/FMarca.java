@@ -29,19 +29,20 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FMarca extends FDados implements ActionListener {
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
-  private JTextFieldPad txtDescMarca = new JTextFieldPad(8);
-  private JTextFieldPad txtSiglaMarca = new JTextFieldPad(8);
+  private JTextFieldPad txtDescMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   public FMarca() {
     setTitulo("Cadastro de marcas de produtos");
     setAtribos( 50, 50, 370, 125);
-    adicCampo(txtCodMarca, 7, 20, 70, 20,"CodMarca","Cód.marca",JTextFieldPad.TP_STRING,6,0,true,false,null,true);
-    adicCampo(txtDescMarca, 80, 20, 190, 20,"DescMarca","Descrição da marca",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtSiglaMarca, 273, 20, 70, 20,"SiglaMarca","Sigla",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
+    adicCampo(txtCodMarca, 7, 20, 70, 20,"CodMarca","Cód.marca", ListaCampos.DB_PK, true);
+    adicCampo(txtDescMarca, 80, 20, 190, 20,"DescMarca","Descrição da marca", ListaCampos.DB_SI, true);
+    adicCampo(txtSiglaMarca, 273, 20, 70, 20,"SiglaMarca","Sigla", ListaCampos.DB_SI, false);
     setListaCampos( false, "MARCA", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
