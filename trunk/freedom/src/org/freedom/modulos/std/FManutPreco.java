@@ -57,17 +57,17 @@ import org.freedom.telas.FFilho;
 public class FManutPreco extends FFilho implements ActionListener, RadioGroupListener {
   private Painel pinCli = new Painel(400,400);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodMarca = new JTextFieldPad();
-  private JTextFieldPad txtCodGrup = new JTextFieldPad();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-  private JTextFieldPad txtCodTab = new JTextFieldPad();
-  private JTextFieldPad txtCodClasCli = new JTextFieldPad();
-  private JTextFieldFK txtDescMarca = new JTextFieldFK();
-  private JTextFieldFK txtDescGrup = new JTextFieldFK();
-  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
-  private JTextFieldFK txtDescTab = new JTextFieldFK();
-  private JTextFieldFK txtDescClasCli = new JTextFieldFK();
-  private JTextFieldPad txtMultiplic = new JTextFieldPad();
+  private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+  private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodTab = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodClasCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescTab = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescClasCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtMultiplic = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,7,2);
   private JRadioGroup rgTipoOper = null;
   private JRadioGroup rgOrigem = null;
   private JComboBoxPad cbOperador = null;
@@ -91,9 +91,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     setAtribos(10,10,450,450);
     
     Container c = getContentPane();
-    
-    txtMultiplic.setTipo(JTextFieldPad.TP_DECIMAL,7,2);
-    
+        
     vDescTipoOper.addElement("Atualiza preço base");
     vDescTipoOper.addElement("Atualiza preço da tabela");
     vSelTipoOper.addElement("B");
@@ -122,10 +120,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     rgOrigem = new JRadioGroup(2,2,vDescOrigem,vSelOrigem);
 
     txtCodMarca.setNomeCampo("CodMarca");
-    txtCodMarca.setTipo(JTextFieldPad.TP_STRING,14,0);
-    txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarcax");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Decrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+    lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
+    lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Decrição da marca", ListaCampos.DB_SI, false));
     lcMarca.montaSql(false,"MARCA", "EQ");
     lcMarca.setReadOnly(true);
     txtCodMarca.setTabelaExterna(lcMarca);
@@ -133,10 +129,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtDescMarca.setListaCampos(lcMarca);
     
     txtCodGrup.setNomeCampo("CodGrup");
-    txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-    txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupx");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Decrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
+    lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+    lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Decrição do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false,"GRUPO", "EQ");
     lcGrup.setReadOnly(true);
     txtCodGrup.setTabelaExterna(lcGrup);
@@ -144,10 +138,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtDescGrup.setListaCampos(lcGrup);
 
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
-    txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
     lcPlanoPag.montaSql(false,"PLANOPAG", "FN");
     lcPlanoPag.setReadOnly(true);
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
@@ -155,10 +147,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtDescPlanoPag.setListaCampos(lcPlanoPag);
     
     txtCodTab.setNomeCampo("CodTab");
-    txtCodTab.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescTab.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTabPreco.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Cód.tab.preço", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
-    lcTabPreco.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
+    lcTabPreco.add(new GuardaCampo( txtCodTab, "CodTab", "Cód.tab.preço", ListaCampos.DB_PK, false));
+    lcTabPreco.add(new GuardaCampo( txtDescTab, "DescTab", "Descrição da tabela de preço", ListaCampos.DB_SI, false));
     lcTabPreco.montaSql(false,"TABPRECO", "VD");
     lcTabPreco.setReadOnly(true);
     txtCodTab.setTabelaExterna(lcTabPreco);
@@ -166,10 +156,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtDescTab.setListaCampos(lcTabPreco);
 
     txtCodClasCli.setNomeCampo("CodClasCli");
-    txtCodClasCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescClasCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcClasCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasClix");
-    lcClasCli.add(new GuardaCampo( txtDescClasCli, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasClix");
+    lcClasCli.add(new GuardaCampo( txtCodClasCli, "CodClasCli", "Cód.c.cli", ListaCampos.DB_PK, false));
+    lcClasCli.add(new GuardaCampo( txtDescClasCli, "DescClasCli", "Descrição da classificação do cliente", ListaCampos.DB_SI, false));
     lcClasCli.montaSql(false,"CLASCLI", "VD");
     lcClasCli.setReadOnly(true);
     txtCodClasCli.setTabelaExterna(lcClasCli);

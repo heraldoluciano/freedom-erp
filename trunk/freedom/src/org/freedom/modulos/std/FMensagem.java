@@ -32,16 +32,17 @@ import javax.swing.JScrollPane;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FMensagem extends FDados implements ActionListener {
-  private JTextFieldPad txtCod= new JTextFieldPad(5);
+  private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextAreaPad txaMens= new JTextAreaPad();
   private JScrollPane spnMen = new JScrollPane(txaMens);
   public FMensagem () {
     setTitulo("Cadastro de mensagens");
     setAtribos(50, 50, 350, 225);
-    adicCampo(txtCod, 7, 20, 80, 20,"CodMens","Cód.mens.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtCod, 7, 20, 80, 20,"CodMens","Cód.mens.", ListaCampos.DB_PK, true);
     adicDBLiv(txaMens,"Mens","Mensagem",JTextFieldPad.TP_STRING,true);
     adic(spnMen,7,50,315,100);
     setListaCampos( true, "MENSAGEM", "LF");

@@ -85,8 +85,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
  
   private Tabela tabManut = new Tabela();
   private JScrollPane spnManut = new JScrollPane(tabManut);
-  private JTextFieldPad txtCodCli = new JTextFieldPad();
-  private JTextFieldPad txtCodCliFiltro = new JTextFieldPad();
+  private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodCliFiltro = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtPrimCompr = new JTextFieldPad();
   private JTextFieldPad txtUltCompr = new JTextFieldPad();
   private JTextFieldPad txtDataMaxFat = new JTextFieldPad();
@@ -96,29 +96,29 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private JTextFieldPad txtVlrTotAberto = new JTextFieldPad();
   private JTextFieldPad txtDataMaxAcum = new JTextFieldPad();
   private JTextFieldPad txtVlrMaxAcum = new JTextFieldPad();
-  private JTextFieldPad txtCodRecBaixa = new JTextFieldPad();
+  private JTextFieldPad txtCodRecBaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodRecManut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDocManut = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtPedidoManut = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodCliManut = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCliManut = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDtEmitManut= new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtDoc = new JTextFieldPad();
-  private JTextFieldPad txtSerie = new JTextFieldPad();
-  private JTextFieldPad txtCodVendaBaixa = new JTextFieldPad();
-  private JTextFieldPad txtCodCliBaixa = new JTextFieldPad();
-  private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad();
-  private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad();
-  private JTextFieldPad txtTotRecBaixa = new JTextFieldPad();
-  private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad();
-  private JTextFieldPad txtTotPagoBaixa = new JTextFieldPad();
-  private JTextFieldPad txtJurosBaixa = new JTextFieldPad();
-  private JTextFieldPad txtDatainiManut = new JTextFieldPad();
-  private JTextFieldPad txtDatafimManut = new JTextFieldPad();
-  private JTextFieldFK txtRazCli = new JTextFieldFK();
-  private JTextFieldFK txtRazCliFiltro = new JTextFieldFK();
-  private JTextFieldFK txtRazCliBaixa = new JTextFieldFK();
-  private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK();
+  private JTextFieldPad txtDoc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtCodVendaBaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodCliBaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+  private JTextFieldPad txtTotRecBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtTotPagoBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtJurosBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtDatainiManut = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDatafimManut = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtRazCliFiltro = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtRazCliBaixa = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JButton btBaixaConsulta = new JButton(Icone.novo("btOk.gif"));
   private JButton btBaixaManut = new JButton(Icone.novo("btOk.gif"));
   private JButton btEditManut = new JButton(Icone.novo("btEditar.gif"));
@@ -191,10 +191,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     btSair.addActionListener(this);
     //Consulta:    
     
-    txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-    lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do clliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCli");
+    lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+    lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do clliente", ListaCampos.DB_SI, false));
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setQueryCommit(false);
     lcCli.setReadOnly(true);
@@ -288,10 +286,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     //Baixa:    
 
-    txtCodVendaBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
-    lcVendaBaixa.add(new GuardaCampo( txtCodVendaBaixa, 7, 100, 80, 20, "CodVenda", "Cód.venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
-    lcVendaBaixa.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
+    lcVendaBaixa.add(new GuardaCampo( txtCodVendaBaixa, "CodVenda", "Cód.venda", ListaCampos.DB_PK, false));
+    lcVendaBaixa.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
     lcVendaBaixa.montaSql(false, "VENDA", "VD");
     lcVendaBaixa.setQueryCommit(false);
     lcVendaBaixa.setReadOnly(true);
@@ -299,10 +295,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodVendaBaixa.setFK(true);
     txtCodVendaBaixa.setNomeCampo("CodVenda");
 
-    txtCodCliBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRazCliBaixa.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcCliBaixa.add(new GuardaCampo( txtCodCliBaixa, 7, 100, 80, 20, "CodCli", "Cód.cli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-    lcCliBaixa.add(new GuardaCampo( txtRazCliBaixa, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCli");
+    lcCliBaixa.add(new GuardaCampo( txtCodCliBaixa, "CodCli", "Cód.cli", ListaCampos.DB_PK, false));
+    lcCliBaixa.add(new GuardaCampo( txtRazCliBaixa, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
     lcCliBaixa.montaSql(false, "CLIENTE", "VD");
     lcCliBaixa.setQueryCommit(false);
     lcCliBaixa.setReadOnly(true);
@@ -310,34 +304,25 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodCliBaixa.setFK(true);
     txtCodCliBaixa.setNomeCampo("CodCli");
 
-    txtCodBancoBaixa.setTipo(JTextFieldPad.TP_STRING,3,0);
-    txtDescBancoBaixa.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, 7, 100, 80, 20, "CodBanco", "Cód.banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBanco");
-    lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, 90, 100, 207, 20, "NomeBanco", "Nome do banco", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBanco");
+    lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false));
+    lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false));
     lcBancoBaixa.montaSql(false, "BANCO", "FN");
     lcBancoBaixa.setQueryCommit(false);
     lcBancoBaixa.setReadOnly(true);
     txtCodBancoBaixa.setTabelaExterna(lcBancoBaixa);
     txtCodBancoBaixa.setFK(true);
     txtCodBancoBaixa.setNomeCampo("CodBanco");
-
-    txtCodRecBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDoc.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtTotRecBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtEmisBaixa.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtTotAbertoBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtTotPagoBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtJurosBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    lcRecBaixa.add(new GuardaCampo( txtCodRecBaixa, 7, 100, 80, 20, "CodRec", "Cód.rec.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodRec");
-    lcRecBaixa.add(new GuardaCampo( txtCodVendaBaixa, 90, 100, 207, 20, "CodVenda", "Cód.venda", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtDoc, 90, 100, 207, 20, "DocRec", "Doc", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtTotRecBaixa, 90, 100, 207, 20, "VlrRec", "Tot.rec.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtCodCliBaixa, 90, 100, 207, 20, "CodCli", "Cód.cli.", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtDtEmisBaixa, 90, 100, 207, 20, "DataRec", "Data emissão", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtCodBancoBaixa, 90, 100, 207, 20, "CodBanco", "Cód.banco", false, true, null, JTextFieldPad.TP_STRING,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtTotAbertoBaixa, 90, 100, 207, 20, "VlrApagRec", "Total aberto", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtTotPagoBaixa, 90, 100, 207, 20, "VlrPagoRec", "Total pago", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtJurosBaixa, 90, 100, 207, 20, "VlrJurosRec", "Total juros", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
+    
+    lcRecBaixa.add(new GuardaCampo( txtCodRecBaixa, "CodRec", "Cód.rec.", ListaCampos.DB_PK, false));
+    lcRecBaixa.add(new GuardaCampo( txtCodVendaBaixa,"CodVenda", "Cód.venda", ListaCampos.DB_FK, false));
+    lcRecBaixa.add(new GuardaCampo( txtDoc, "DocRec", "Doc", ListaCampos.DB_SI, false));
+    lcRecBaixa.add(new GuardaCampo( txtTotRecBaixa, "VlrRec", "Tot.rec.", ListaCampos.DB_SI, false));
+    lcRecBaixa.add(new GuardaCampo( txtCodCliBaixa, "CodCli", "Cód.cli.", ListaCampos.DB_FK, false));
+    lcRecBaixa.add(new GuardaCampo( txtDtEmisBaixa, "DataRec", "Data emissão", ListaCampos.DB_SI, false));
+    lcRecBaixa.add(new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false));
+    lcRecBaixa.add(new GuardaCampo( txtTotAbertoBaixa, "VlrApagRec", "Total aberto", ListaCampos.DB_SI, false));
+    lcRecBaixa.add(new GuardaCampo( txtTotPagoBaixa, "VlrPagoRec", "Total pago", ListaCampos.DB_SI, false));
+    lcRecBaixa.add(new GuardaCampo( txtJurosBaixa, "VlrJurosRec", "Total juros", ListaCampos.DB_SI, false));
     lcRecBaixa.montaSql(false,"RECEBER", "FN");
     lcRecBaixa.setQueryCommit(false);
     lcRecBaixa.setReadOnly(true);
@@ -462,8 +447,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodRecManut.setFK(true);
     txtCodRecManut.setNomeCampo("CodRec");
 
-    txtDatainiManut.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafimManut.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDatainiManut.setVlrDate(new Date());
     txtDatafimManut.setVlrDate(new Date());
     
@@ -473,8 +456,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	pinManut.adic(txtDatafimManut,140,20,100,20);
 	pinManut.adic(btExecManut,690,55,30,30);
 
-	txtCodCliFiltro.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtRazCliFiltro.setTipo(JTextFieldPad.TP_STRING,40,0);
 	
 	pinManut.adic(new JLabel("Cód.cli."),7,45,250,20);
 	pinManut.adic(txtCodCliFiltro,7,65,50,20);
@@ -517,10 +498,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	pinManut.adic(new JLabel("Filtrar por:"),488,0,190,20);
 	pinManut.adic(rgPg,488,20,192,65);
 
-	txtCodCliFiltro.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtRazCliFiltro.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCliManut");
-	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCliManut");
+	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 	lcCliFiltro.montaSql(false, "CLIENTE", "VD");
 	lcCliFiltro.setQueryCommit(false);
 	lcCliFiltro.setReadOnly(true);
