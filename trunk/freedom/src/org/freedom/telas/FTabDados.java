@@ -24,19 +24,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;;
 public class FTabDados extends FDados implements KeyListener{
   private boolean Ctrl = false;
-  public JTabbedPane tpn = new JTabbedPane();
+  public JTabbedPanePad tpn = new JTabbedPanePad();
   boolean ind = true;
   public FTabDados () {
+  	setInitFirstFocus(false);
     setTitulo("Formulário de tabulação");
     setAtribos(50, 50, 350, 300);
     pnCliente.remove(pinDados);
     tpn.addKeyListener(this);
     addKeyListener(this);
   }
-  public JTabbedPane adicTab(String tit, JPanel pn) {
+  public JTabbedPanePad adicTab(String tit, JPanel pn) {
     tpn.add(tit,pn);
     pn.addKeyListener(this);
     pnCliente.add(tpn, BorderLayout.CENTER);

@@ -41,7 +41,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -62,7 +62,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   private JPanel pnCabCont = new JPanel(new BorderLayout());
   private JPanel pnCont = new JPanel(new BorderLayout());
   private JPanel pnRodCont = new JPanel(new BorderLayout());
-  private JTabbedPane tpnCont = new JTabbedPane();
+  private JTabbedPanePad tpnCont = new JTabbedPanePad();
   private Tabela tabCont = new Tabela();
   private JScrollPane spnCont = new JScrollPane(tabCont);
   private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

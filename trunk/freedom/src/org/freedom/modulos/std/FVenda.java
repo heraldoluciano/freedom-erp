@@ -44,7 +44,7 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.JTextField;
 
 import org.freedom.acao.CarregaEvent;
@@ -173,7 +173,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private ListaCampos lcClComis = new ListaCampos(this,"CM");
   private ListaCampos lcFisc = new ListaCampos(this);
   private ListaCampos lcVenda2 = new ListaCampos(this);
-  private JTabbedPane tpnCab = new JTabbedPane();
+  private JTabbedPanePad tpnCab = new JTabbedPanePad();
   private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
   private FPrincipal fPrim;
   

@@ -35,11 +35,10 @@ import javax.swing.event.InternalFrameListener;
 
 import org.freedom.bmps.Icone;
 
-
-
 public class FFilho extends JInternalFrame implements InternalFrameListener {
   private Component firstFocus = null;
   private Container contentFirstFocus = null;
+  private boolean initFirstFocus = true; 
   public String strTemp = "";
   public Connection con = null;
   public FFilho () {
@@ -118,14 +117,21 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
   	this.firstFocus = firstFocus;
   }
   public synchronized void firstFocus() {
-  	if (firstFocus!=null) { 
+  	if ( (firstFocus!=null) && (firstFocus.hasFocus()) && (initFirstFocus) )
+  		firstFocus.requestFocus();
+  		
+  		
+  		
+/*  	if (firstFocus!=null) { 
   		if (firstFocus.hasFocus())
   			firstFocus.requestFocus();
-  		else
+  		else 
   			loadFirstFocus();
   	}
+  	else
+  		loadFirstFocus();*/
   }
-  public synchronized void loadFirstFocus() {
+  /*public synchronized void loadFirstFocus() {
     Component cOpened = null;
   	if (contentFirstFocus == null)
        contentFirstFocus = getContentPane();
@@ -142,18 +148,25 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
          }
        }
     }
-  }
-  public synchronized void setContentFirstFocus(Container contentFirstFocus) {
+  } */
+  
+  /*public synchronized void setContentFirstFocus(Container contentFirstFocus) {
   	this.contentFirstFocus = contentFirstFocus;
-  }
+  }*/
   public void internalFrameOpened(InternalFrameEvent e) {
-  	firstFocus();
+ 	firstFocus();
   }
   public void setConexao(Connection cn) {
   	con = cn;
   }
   public synchronized void execShow() {
     show();
+  }
+  public boolean getInitFirstFocus() {
+  	return initFirstFocus;
+  }
+  public void setInitFirstFocus(boolean initFirstFocus) {
+  	this.initFirstFocus = initFirstFocus;
   }
   
 }

@@ -39,7 +39,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -82,7 +82,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private JScrollPane spnFor = new JScrollPane(tabFor);
 	private JScrollPane spnCompras = new JScrollPane(tabCompras);
 	private JScrollPane spnVendas = new JScrollPane(tabVendas);
-	private JTabbedPane tpn = new JTabbedPane();
+	private JTabbedPanePad tpn = new JTabbedPanePad();
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
@@ -137,7 +137,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		pnGeral.add(spnSimilares,BorderLayout.CENTER);
 		pnGeral.add(pnRod,BorderLayout.SOUTH);
 				
-		tpn.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tpn.setTabLayoutPolicy(JTabbedPanePad.SCROLL_TAB_LAYOUT);
 		tpn.setPreferredSize(new Dimension(600,30));
 							
 		txtCodProd.setRequerido(true);

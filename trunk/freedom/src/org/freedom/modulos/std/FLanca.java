@@ -40,7 +40,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -90,7 +90,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JLabel lbAtualSaldoVal = new JLabel("NÃO");
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
-  private JTabbedPane tpn = new JTabbedPane();
+  private JTabbedPanePad tpn = new JTabbedPanePad();
   private String[] sPlanos = null;
   private String sCodPlan = "";
   private String[] sContas = null;
@@ -111,7 +111,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
     c.add(pnCentro,BorderLayout.CENTER);
     c.add(pinCab,BorderLayout.NORTH);
     
-    tpn.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    tpn.setTabLayoutPolicy(JTabbedPanePad.SCROLL_TAB_LAYOUT);
     tpn.setPreferredSize(new Dimension(600,30));
     pnCentro.add(tpn,BorderLayout.SOUTH);
     pnCentro.add(spnTab,BorderLayout.CENTER);

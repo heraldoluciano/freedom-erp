@@ -43,7 +43,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
@@ -64,7 +64,7 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   private Painel pinCabAgd = new Painel(0,120);
   private JPanel pnAgd = new JPanel(new BorderLayout());
   private JPanel pnRodAgd = new JPanel(new BorderLayout());
-  private JTabbedPane tpnAgd = new JTabbedPane();
+  private JTabbedPanePad tpnAgd = new JTabbedPanePad();
   private Tabela tabAgd = new Tabela();
   private JScrollPane spnAgd = new JScrollPane(tabAgd);
   private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);

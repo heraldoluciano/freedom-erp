@@ -38,7 +38,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -52,7 +52,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener {
-  private JTabbedPane tpn = new JTabbedPane();
+  private JTabbedPanePad tpn = new JTabbedPanePad();
   private Painel pinFecha = new Painel(420,300);
   private JPanel pnPagar = new JPanel(new BorderLayout());
 
