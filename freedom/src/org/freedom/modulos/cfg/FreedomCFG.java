@@ -36,10 +36,10 @@ public class FreedomCFG extends Aplicativo {
       addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
       addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
         addOpcao(100100000,TP_OPCAO_MENU,"Acesso ao sistema","",'A',100101000,2, false, null);
-          addOpcao(100101000,TP_OPCAO_ITEM,"Grupos","",'G',100101010,3, true, null);
-          addOpcao(100101000,TP_OPCAO_ITEM,"Usuarios","",'U',100101020,3, true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Acesso","",'A',100101030,3, true, null);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Menu","",'M',100101040,3, true, null);
+          addOpcao(100101000,TP_OPCAO_ITEM,"Grupos","Grupos",'G',100101010,3, true, FGrupo.class);
+          addOpcao(100101000,TP_OPCAO_ITEM,"Usuarios","Usuarios",'U',100101020,3, true, FUsuario.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Acesso","Acesso Menu",'A',100101030,3, true, FAcesso.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Menu","Menu X Objeto",'M',100101040,3, true, FMenuObj.class);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Clientes/Conveniados","",'C',100102000,2, false, null);
  	      addOpcao(100102000,TP_OPCAO_ITEM,"Grau de instrução","",'G',100102010,3, true, null);
  	      addOpcao(100102000,TP_OPCAO_ITEM,"Paises","",'P',100102020,3, true, null);
