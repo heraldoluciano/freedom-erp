@@ -96,16 +96,18 @@ public class NFRondobras extends Leiaute {
 //Cabeçario da nota  
          if (imp.pRow()==0) {           
 	       if (bEntrada){
-	           imp.say(imp.pRow()+0,0,""+imp.normal()+imp.expandido());
+	           imp.say(imp.pRow()+0,0,""+imp.expandido());
 	           imp.say(imp.pRow()+0,102,"X");
 	           imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
 	       }
            else{
-           	   imp.say(imp.pRow()+0,0,""+imp.normal()+imp.expandido());
-           	   imp.say(imp.pRow()+0,87,"X");
+           	   imp.say(imp.pRow()+0,0,""+imp.expandido());
+           	   imp.say(imp.pRow()+0,67,"X");
            	   imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
            }
-          
+	       
+	       
+	       imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");        
            imp.say(imp.pRow()+1,0,"");
@@ -145,7 +147,7 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,20,sVals[0]);
+           imp.say(imp.pRow()+0,19,sVals[0]);
            imp.say(imp.pRow()+0,38,sVencs[0]);
            imp.say(imp.pRow()+0,64,sVals[1]);
            imp.say(imp.pRow()+0,81,sVencs[1]);
@@ -183,13 +185,13 @@ public class NFRondobras extends Leiaute {
          imp.say(imp.pRow()+0,18,rs.getString("DescProd").trim());
          imp.say(imp.pRow()+0,64,sClasFisc);
          imp.say(imp.pRow()+0,79,rs.getString("CodUnid").substring(0,4));
-         imp.say(imp.pRow()+0,85,""+rs.getDouble("QtdItVenda"));          
+         imp.say(imp.pRow()+0,87,""+rs.getDouble("QtdItVenda"));          
          imp.say(imp.pRow()+0,99,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)).trim());
 //         imp.say(imp.pRow()+0,97,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrProdItVenda")));
          imp.say(imp.pRow()+0,105,Funcoes.strDecimalToStrCurrency(13,2,""+rs.getString("VlrLiqItVenda").trim()));
          imp.say(imp.pRow()+0,122,""+rs.getDouble("PercICMSItVenda"));  // espaço para alicota ICMS
          imp.say(imp.pRow()+0,127,""+rs.getDouble("PercIPIItVenda"));   // espaço para alicota IPI
-         imp.say(imp.pRow()+0,133,Funcoes.strDecimalToStrCurrency(15,3,rs.getString("VlrIPIVenda")).trim());
+         imp.say(imp.pRow()+0,134,Funcoes.strDecimalToStrCurrency(15,3,rs.getString("VlrIPIVenda")).trim());
          
          iItImp++;
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
@@ -289,7 +291,7 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");           
            imp.say(imp.pRow()+1,0,""+imp.normal()+imp.expandido());
-           imp.say(imp.pRow()+0,123,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
+           imp.say(imp.pRow()+0,110,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
            imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
            
            
