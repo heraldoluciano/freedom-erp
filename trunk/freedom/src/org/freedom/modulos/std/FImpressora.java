@@ -21,11 +21,7 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
-import javax.swing.JComboBox;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -37,81 +33,66 @@ import java.util.Vector;
 public class FImpressora extends FDados {
   private JTextFieldPad txtCodImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtDescImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
-  private JTextFieldPad txtTipoImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
-  private JTextFieldPad txtLinPagImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  //private JTextFieldPad txtLinPagImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtNSerieImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
-  private JTextFieldPad txtPortaWinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
-  private JTextFieldPad txtPortaLinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
+  //private JTextFieldPad txtPortaWinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  //private JTextFieldPad txtPortaLinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
   private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JComboBox cbTipoImp = new JComboBox();
+  private JComboBoxPad cbTipoImp = null;
   private JComboBoxPad cbDestImp = null;
-  private Vector vVals = new Vector();
-  private Vector vLabs = new Vector();
+  private Vector vValsDest = new Vector();
+  private Vector vLabsDest = new Vector();
+  private Vector vValsTipo = new Vector();
+  private Vector vLabsTipo = new Vector();
   private ListaCampos lcPapel = new ListaCampos(this,"PL");
   public FImpressora() {
 //Remove o painel de impressão:
     pnRodape.remove(2);
 //Constroi a tela FImpressoras:
     setTitulo("Cadastro de impressoras");
-    setAtribos( 50, 50, 400, 280);
+    setAtribos( 50, 50, 420, 250);
 
 //Prepara o Combo para alterar o campo txtTipoImp    
-    cbTipoImp.addItem("");
-    cbTipoImp.addItem("Epson Matricial");
-    cbTipoImp.addItem("HP Desk Jet");
-    cbTipoImp.addItem("HP Laser Jet");
-    cbTipoImp.addItem("Epson Stylus");
-    cbTipoImp.addItem("Epson Laser");
-    cbTipoImp.addItem("Fiscal MP20");
-    cbTipoImp.addItem("Fiscal MP40");
-    cbTipoImp.setEditable(false);
-    cbTipoImp.addActionListener(
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt) {
-          if (evt.getSource() == cbTipoImp) {
-            if (((JComboBox) evt.getSource()).getSelectedIndex() == 0) {
-              txtTipoImp.setVlrString("");
-            }  
-            else {
-              txtTipoImp.setVlrString(""+((JComboBox) evt.getSource()).getSelectedIndex());
-            }
-          }
-        }
-      }
-    );
-    
-    vLabs.addElement("Nota fiscal");           
-    vLabs.addElement("Nota fiscal - serviço");           
-    vLabs.addElement("Pedido");           
-    vLabs.addElement("Relatório simples");           
-    vLabs.addElement("Relatório gráfico");           
-    vLabs.addElement("Todos (não NF)");           
+    vLabsTipo.addElement("<--Selecione-->");           
+    vLabsTipo.addElement("Epson Matricial");           
+    vLabsTipo.addElement("HP Desk Jet");           
+    vLabsTipo.addElement("HP Laser Jet");           
+    vLabsTipo.addElement("Epson Stylus");           
+    vLabsTipo.addElement("Epson Laser");           
+    vLabsTipo.addElement("Fiscal MP20");           
+    vLabsTipo.addElement("Fiscal MP40");           
                
-    vVals.addElement("NF");           
-    vVals.addElement("NS");           
-    vVals.addElement("PD");           
-    vVals.addElement("RS");           
-    vVals.addElement("RG");           
-    vVals.addElement("TO");           
+    vValsTipo.addElement(new Integer(0));           
+    vValsTipo.addElement(new Integer(1));           
+    vValsTipo.addElement(new Integer(2));           
+    vValsTipo.addElement(new Integer(3));           
+    vValsTipo.addElement(new Integer(4));           
+    vValsTipo.addElement(new Integer(5));
+    vValsTipo.addElement(new Integer(6));
+    vValsTipo.addElement(new Integer(7));
     
-    cbDestImp = new JComboBoxPad(vLabs,vVals);
-    cbDestImp.setVlrString("TO");
+    cbTipoImp = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0); 
+    
+    vLabsDest.addElement("<--Selecione-->");           
+    vLabsDest.addElement("Nota fiscal");           
+    vLabsDest.addElement("Nota fiscal - serviço");           
+    vLabsDest.addElement("Pedido");           
+    vLabsDest.addElement("Relatório simples");           
+    vLabsDest.addElement("Relatório gráfico");           
+    vLabsDest.addElement("Todos (não NF)");           
+               
+    vValsDest.addElement("");           
+    vValsDest.addElement("NF");           
+    vValsDest.addElement("NS");           
+    vValsDest.addElement("PD");           
+    vValsDest.addElement("RS");           
+    vValsDest.addElement("RG");           
+    vValsDest.addElement("TO");           
+    
+    cbDestImp = new JComboBoxPad(vLabsDest,vValsDest, JComboBoxPad.TP_STRING, 2, 0);
+    //cbDestImp.setVlrString("");
 
-    txtTipoImp.setEditable(false);
-    txtTipoImp.addActionListener( 
-      new ActionListener() {
-        public void actionPerformed(ActionEvent evt) {
-          if (evt.getSource() == txtTipoImp) {
-            if (txtTipoImp.getText().trim().length() == 1) {
-              cbTipoImp.setSelectedIndex(Integer.parseInt(txtTipoImp.getText().trim()));
-            }
-            else 
-              cbTipoImp.setSelectedIndex(0);
-          }
-        }
-      }
-    );
 //Prepara FKs
 
     lcPapel.add(new GuardaCampo( txtCodPapel, "CodPapel", "Cód.tp.papel", ListaCampos.DB_PK, true));
@@ -123,15 +104,14 @@ public class FImpressora extends FDados {
 //Adiciona componentes   
     adicCampo(txtCodImp, 7, 20, 90, 20, "CodImp", "Cód.imp.", ListaCampos.DB_PK, true);
     adicCampo(txtDescImp, 100, 20, 276, 20, "DescImp", "Descrição da impressora", ListaCampos.DB_SI, true);
-    adicCampo(txtTipoImp, 7, 60, 90, 20, "TipoImp", "Tp.impressora", ListaCampos.DB_SI, true);
-    pinDados.adic(cbTipoImp,100,60,276,20);
-    adicCampo(txtLinPagImp, 7, 100, 90, 20, "LinPagImp", "Lin.pag.imp.", ListaCampos.DB_SI, true);
-    adicCampo(txtNSerieImp, 100, 100, 90, 20, "NSerieImp", "Num. serie", ListaCampos.DB_SI, false);
-    adicCampo(txtPortaWinImp, 193, 100, 90, 20, "PortaWinImp", "Porta WIN", ListaCampos.DB_SI, true);
-    adicCampo(txtPortaLinImp, 286, 100, 90, 20, "PortaLinImp", "Nome LIN", ListaCampos.DB_SI, true);
-    adicCampo(txtCodPapel, 7, 140, 90, 20, "CodPapel", "Cód.tp.papel", ListaCampos.DB_FK, true);
-    adicDescFK(txtDescPapel, 100, 140, 276, 20, "DescPapel", "Descrição do tipo de papel");
-    adicDB(cbDestImp, 7, 180, 200, 25, "DestImp", "Padrão para",true);
+    adicDB(cbTipoImp,7,60,140,25,"TipoImp", "Tipo de impressora", true);
+    adicDB(cbDestImp, 150, 60, 140, 25, "DestImp", "Padrão para",true);
+    //adicCampo(txtLinPagImp, 7, 105, 90, 20, "LinPagImp", "Lin.pag.imp.", ListaCampos.DB_SI, true);
+    adicCampo(txtNSerieImp, 293, 60, 90, 25, "NSerieImp", "Num. serie", ListaCampos.DB_SI, false);
+    //adicCampo(txtPortaWinImp, 193, 105, 90, 20, "PortaWinImp", "Porta WIN", ListaCampos.DB_SI, true);
+    //adicCampo(txtPortaLinImp, 286, 105, 90, 20, "PortaLinImp", "Nome LIN", ListaCampos.DB_SI, true);
+    adicCampo(txtCodPapel, 7, 105, 90, 20, "CodPapel", "Cód.tp.papel", ListaCampos.DB_FK, true);
+    adicDescFK(txtDescPapel, 100, 105, 276, 20, "DescPapel", "Descrição do tipo de papel");
 
     setListaCampos(true, "IMPRESSORA", "SG");
   }

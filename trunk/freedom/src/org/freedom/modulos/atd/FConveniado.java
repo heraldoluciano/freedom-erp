@@ -157,7 +157,7 @@ public class FConveniado extends FTabDados implements PostListener {
 	vVals.add("F");
 	vLabs.add("Masculino");
 	vLabs.add("Feminino");
-	cbSexo = new JComboBoxPad(vLabs, vVals, JTextFieldPad.TP_STRING);
+	cbSexo = new JComboBoxPad(vLabs, vVals, JTextFieldPad.TP_STRING, 1, 0);
 
 	setPainel(pinGeral);
 	adicTab("Geral",pinGeral);

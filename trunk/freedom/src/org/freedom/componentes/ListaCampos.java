@@ -1536,7 +1536,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
             if ( bParam ) {
               comp = getComponent(i);
               //                JOptionPane.showMessageDialog(null,"Num: "+iParam+"\nVal: "+((GuardaCampo) comp).getVlrString());
-              System.out.println("Num: "+iParam+"\nNome: "+((GuardaCampo)comp).getNomeCampo()+"\nVal: "+((GuardaCampo) comp).getVlrString());
+              //System.out.println("Num: "+iParam+"\nNome: "+((GuardaCampo)comp).getNomeCampo()+"\nVal: "+((GuardaCampo) comp).getVlrString());
               if (!((GuardaCampo) comp).getSoLeitura() ) {
                 if (((GuardaCampo) comp).ehNulo())  {
                   if ( ((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {

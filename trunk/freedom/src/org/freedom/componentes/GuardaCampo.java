@@ -128,6 +128,11 @@ public class GuardaCampo extends Component {
 		txtTmp.setText(((JTextAreaPad)comp).getText());
 		return txtTmp;
 	}
+	if (comp instanceof JComboBoxPad) {
+		JTextFieldPad txtTmp = new JTextFieldPad(((JComboBoxPad)comp).getTipo(),((JComboBoxPad)comp).getTam(), ((JComboBoxPad)comp).getDec());
+		txtTmp.setText(((JComboBoxPad)comp).getText());
+		return txtTmp;
+	}
     return txtCampo;
   }
   

@@ -36,9 +36,13 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   private Vector labels = new Vector();
   private JComboBoxListener cbLis = this;
   private ListaCampos lcCombo = null;
-  public int Tipo = -1;
+  private boolean criando = true;
+  private int tipo = -1;
+  private int tam = 8;
+  private int dec = 0;
   public JComboBoxPad() {
     this(null,null);
+    criando = false;
   }
   public JComboBoxPad(Vector label, Vector val) {
     if (val != null && label != null) {
@@ -50,16 +54,9 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     }
     addItem("");
     addItemListener(this);
-/*    addMouseListener(new MouseAdapter() {
-      public void mouseClicked(MouseEvent mevt) {
-        fireValorAlterado(getSelectedIndex());
-      	if (lcCombo != null) {
-      	  lcCombo.edit();
-      	}
-      }
-    }); */
+    criando = false;
   }
-  public JComboBoxPad(Vector label, Vector val, int Tipo) {
+  public JComboBoxPad(Vector label, Vector val, int tipo, int tam, int dec) {
     if (val != null && label != null) {
       valores = val;
       labels = label;
@@ -69,17 +66,13 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     }
     addItem("");
     addItemListener(this);
-    this.Tipo = Tipo;
-/*    addMouseListener(new MouseAdapter() {
-      public void mouseClicked(MouseEvent mevt) {
-        fireValorAlterado(getSelectedIndex());
-      	if (lcCombo != null) {
-      	  lcCombo.edit();
-      	}
-      }
-    }); */
+    this.tipo = tipo;
+    this.tam = tam;
+    this.dec = dec;
+    criando = false;
   }
   public void setItens(Vector label, Vector val) {
+  	criando = true;
     removeAllItems();
     valores = val;
     labels = label;
@@ -88,21 +81,35 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
       addItem(label.elementAt(i));
     }
     addItem("");
+    criando = false;
   }
   public void setAtivo(boolean bVal) {
   	setEnabled(bVal);
   }
   public void limpa() {
-    setSelectedIndex(labels.size());
+    setSelectedIndex(0);
   }
   public int getTipo() {
-    return Tipo;
+    return tipo;
+  }
+  public int getTam() {
+  	return tam;
+  }
+  public int getDec() {
+  	return dec;
   }
   public String getVlrString() {
   	int iInd = getSelectedIndex();
   	if (valores != null && iInd >= 0 && iInd < valores.size())
       return (String) valores.elementAt(getSelectedIndex());
     return "";
+  }
+  public String getText() {
+  	String retorno = "";
+  	int iInd = getSelectedIndex();
+  	if (valores != null && iInd >= 0 && iInd < valores.size())
+      retorno = valores.elementAt(getSelectedIndex()).toString();
+    return retorno;
   }
   public Integer getVlrInteger() {
   	try {
@@ -140,6 +147,10 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     cbLis.valorAlterado(new JComboBoxEvent(this, ind));    
   }
   public void valorAlterado(JComboBoxEvent cbevt) {
+  	 if ( (!criando) && (lcCombo!=null) ) {
+  	 	if (lcCombo.getStatus()==ListaCampos.LCS_SELECT)
+  	 		lcCombo.edit();
+  	 }
   }
   public void itemStateChanged(ItemEvent itevt) {
   	if (itevt.getStateChange() == ItemEvent.SELECTED)
