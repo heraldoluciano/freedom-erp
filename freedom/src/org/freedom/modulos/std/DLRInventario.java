@@ -44,7 +44,8 @@ public class DLRInventario extends FFDialogo {
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JLabel lbOrdem = new JLabel("Ordenar por:");
-  private JLabel lbGrup = new JLabel("Código e descrição do grupo");
+  private JLabel lbGrup = new JLabel("Cód.grupo");
+  private JLabel lbDescGrup = new JLabel("Descrição do grupo");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -79,6 +80,7 @@ public class DLRInventario extends FFDialogo {
     adic(txtData,7,20,110,20);
     adic(lbGrup,7,40,280,20);
     adic(txtCodGrup,7,60,80,20);
+    adic(lbDescGrup,90,40,280,20);
     adic(txtDescGrup,90,60,200,20);
     adic(lbOrdem,7,80,80,20);
     adic(rgOrdem,7,100,280,30);

@@ -49,13 +49,15 @@ public class DLRProduto extends FDialogo {
   private JCheckBoxPad cbAtivoProd = new JCheckBoxPad("Ativo","S","N");
   private JLabel lbAtivoProd = new JLabel(" Produtos Ativos:");
   private JLabel lbForn = new JLabel("Fornecedor");
-  private JLabel lbMarca = new JLabel("Codigo e descrição da Marca");
+  private JLabel lbMarca = new JLabel("Cód.marca");
+  private JLabel lbDescMarca = new JLabel("Descrição da Marca");
   private JLabel lbModo = new JLabel("Modo do relatório:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabel lbAlmox = new JLabel("Código e descrição do Almoxarifado");
+  private JLabel lbAlmox = new JLabel("Cód.almox.");
+  private JLabel lbDescAlmox = new JLabel("Descrição do almoxarifado");
   private JTextFieldPad txtCodForn = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescForn = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -130,9 +132,11 @@ public class DLRProduto extends FDialogo {
     adic(rgModo,7,250, 400,30);
     adic(lbAlmox,7,290,250,20);
     adic(txtCodAlmox,7,310,80,20);
+    adic(lbDescAlmox,90,290,250,20);
     adic(txtDescAlmox,90,310,350,20);
     adic (lbMarca,7,330,350,20);
     adic(txtCodMarca,7,350,80,20);
+    adic (lbDescMarca,7,330,350,20);
     adic(txtDescMarca,90,350,350,20);
     
     
