@@ -22,14 +22,13 @@
 package org.freedom.modulos.std;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.ImageIcon;
-
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.bmps.Icone;
@@ -50,8 +49,14 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private ImageIcon imgPadrao = Icone.novo("clPagoParcial.gif");
    private ImageIcon imgColuna = null;
    public int iPadrao = 0;
+   boolean bEnter = true;
+   Vector vLinhasProibidas = new Vector();
    public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
+
+   	 imgBaixa.setDescription("S");
+   	 imgVisualiza.setDescription("N");
+   	 imgPadrao.setDescription("P");
    	 
      setAtribos( 560, 260);
    	 
@@ -138,8 +143,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	   if (sImgColuna!=null){
       	   	if (sImgColuna.equals("S"))
       	   		imgColuna = imgBaixa;
-      	   	else
-      	   		imgColuna = imgVisualiza;      	   	
+      	   	else {
+      	   		imgColuna = imgVisualiza;
+      	   	}
       	   }
       	   else
       	   	  imgColuna = imgBaixa;
@@ -182,33 +188,68 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       }      
       return bRet;
    }
+   
+   
    public void actionPerformed(ActionEvent evt) {
+      buscaValores();
    	  super.actionPerformed(evt);
    }
-   public void valorAlterado(TabelaSelEvent tsevt) {
-   
+   public synchronized void valorAlterado(TabelaSelEvent tsevt) {       
    	try {   	
    	 	if (tsevt.getTabela() == tab) {
-   	 		if (tab.getNumLinhas() > 0) {
-   	 		    if (bRet) {
-   	 		    	iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
-   	 		    	if (imgVisualiza==tab.getValueAt(tab.getLinhaSel(),5)) {
-   	 		    		btOK.setEnabled(false);   	 		    		
-   	 		    	}
-   	 		    	else
-   	 		    		btOK.setEnabled(true);
-   	 		    }
-   	 		}
-       }   	  
-   	 }
-   	 
+//   	 	    buscaValores();
+   	 	}   	  
+   	 }   	 
    	 catch(Exception e) {
    	 	e.printStackTrace();
    	 }
 
     }
 
-public void setValor(Object oVal) {
-	
+public void setValor(Object oVal) {}
+
+public void keyPressed(KeyEvent kevt) {
+    if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
+      if (tab.getNumLinhas() > 0) {
+      	
+//Esquematicos para acertar a linha selecionada...
+//Quando o form fechar a linha ira pular uma vez uma vez para baixo...
+//então eu volto uma linha aqui:
+
+          if (tab.getLinhaSel()==tab.getNumLinhas()-1){
+               tab.setLinhaSel(tab.getNumLinhas()-1);
+               if (bEnter) btOK.doClick();            
+          }
+          else {
+              if (tab.getLinhaSel() > 0)
+                  tab.setLinhaSel(tab.getLinhaSel()-1);
+              else
+                  tab.setLinhaSel(tab.getNumLinhas()-1);      	
+              if (bEnter) btOK.doClick();
+          }
+               
+      }      
+    }
+    
+     
+  }
+
+public void buscaValores(){
+	if (tab.getNumLinhas() > 0) {
+		if (bRet) {
+		    iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
+		   	if (((ImageIcon)tab.getValueAt(tab.getLinhaSel(),5)).getDescription().equals("N")) 
+		        bEnter = false;
+		    else
+		        bEnter = true;   	 		    	
+		    if (bEnter)
+		        btOK.setEnabled(true);
+		    else
+		        btOK.setEnabled(false);
+		 }
+	 }    
 }
-};        
+
+
+
+}        
