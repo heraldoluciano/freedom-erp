@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -55,20 +56,33 @@ public class FTurnos extends FDados implements ActionListener {
     setTitulo("Cadastro de Turnos");
     setAtribos(50, 50, 457, 280);
 	    
-	    GregorianCalendar cal = new GregorianCalendar();
-		cal.add(Calendar.DATE,1);
-		GregorianCalendar cal1 = new GregorianCalendar();
-		cal1.add(Calendar.YEAR,-100);
-		GregorianCalendar cal2 = new GregorianCalendar();
-		cal2.add(Calendar.YEAR,100);
-		
-		txtHIniTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+	    
+	    Date dt1 = new Date();
+	    dt1.setHours(8);
+	    dt1.setMinutes(0);
+	   
+	    Date dt2 = new Date();
+	    dt2.setHours(18);
+	    dt2.setMinutes(0);
+	   
+	    Date dt3 = new Date();
+	    dt3.setHours(12);
+	    dt3.setMinutes(0);
+	   
+	    Date dt4 = new Date();
+	    dt4.setHours(13);
+	    dt4.setMinutes(30);
+	   		
+		txtHIniTurno.setModel(new SpinnerDateModel(dt1,null,null,Calendar.HOUR_OF_DAY));
 		txtHIniTurno.setEditor(new JSpinner.DateEditor(txtHIniTurno,"kk:mm"));
-		txtHIniIntTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+		
+		txtHIniIntTurno.setModel(new SpinnerDateModel(dt3,null,null,Calendar.HOUR_OF_DAY));
     	txtHIniIntTurno.setEditor(new JSpinner.DateEditor(txtHIniIntTurno,"kk:mm"));
-    	txtHFimIntTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+    	
+    	txtHFimIntTurno.setModel(new SpinnerDateModel(dt4,null,null,Calendar.HOUR_OF_DAY));
     	txtHFimIntTurno.setEditor(new JSpinner.DateEditor(txtHFimIntTurno,"kk:mm"));
-    	txtHFimTurno.setModel(new SpinnerDateModel(cal.getTime(),cal1.getTime(),cal2.getTime(),Calendar.HOUR_OF_DAY));
+    	
+    	txtHFimTurno.setModel(new SpinnerDateModel(dt2,null,null,Calendar.HOUR_OF_DAY));
     	txtHFimTurno.setEditor(new JSpinner.DateEditor(txtHFimTurno,"kk:mm"));
     
 	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
