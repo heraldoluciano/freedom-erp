@@ -334,6 +334,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
  	lbEstadoCivil = adicDB(cbEstCivCli, 7, 420, 200, 25, "codittbec", "Estado civil", false);
   	cbEstCivCli.setZeroNulo();
 	setListaCampos( true, "CLIENTE", "VD");
+	lcCampos.setAutoLimpaPK(true);
 	lcCampos.setPodeIns(false);
 	lcCampos.setPodeExc(false);
     lcCampos.setQueryInsert(false);  
