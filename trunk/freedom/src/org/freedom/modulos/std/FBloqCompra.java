@@ -167,7 +167,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
             sTexto = "bloquear";
         }
         if (Funcoes.mensagemConfirma(this, "Deseja realmente "+sTexto+" esta compra?")==JOptionPane.YES_OPTION ) {
-            sSQL = "EXECUTE PROCEDURE CPBLOQCOMPRASP(?,?,?,?,?)";
+            sSQL = "EXECUTE PROCEDURE CPBLOQCOMPRASP(?,?,?,?)";
             ps = con.prepareStatement(sSQL);
             ps.setInt(1,Aplicativo.iCodEmp);
             ps.setInt(2,ListaCampos.getMasterFilial("VDCOMPRA"));
