@@ -16,17 +16,13 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Cadastro de planos de pagamento.
+ * Agrupamento de produtos similares.
  * 
  */
 
 package org.freedom.modulos.std;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -34,13 +30,10 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FSimilar extends FDetalhe implements CarregaListener, InsertListener, PostListener {
@@ -53,14 +46,20 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   public FSimilar () {
     setTitulo("Agrupamento de produtos similares");
-    setAtribos( 50, 50, 700, 350);
+    setAtribos( 50, 50, 700, 350);        
+
+//  ********************  Lista campos adicional *****************************************************************    
     
+    lcProd.setUsaME(false);
     lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
     lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
     lcProd.setReadOnly(true);
-    txtCodProd.setTabelaExterna(lcProd);
+    txtCodProd.setListaCampos(lcProd);
+    txtCodProd.setTabelaExterna(lcProd);   
+    
+//********************  Master ***********************************************************************************
     
     setAltCab(160);
     pinCab = new JPanelPad();
@@ -76,15 +75,20 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     setAltDet(60);
     pinDet = new JPanelPad(440,50);
     setPainel( pinDet, pnDet);
+
+//  ********************  Detalhe ********************************************************************************    
+    
     setListaCampos(lcDet);
     setNavegador(navRod);
-
+     
     adicCampo(txtCodProd,7,20,60,20,"CodProd","Cód.prod",ListaCampos.DB_PK,true);
-    adicDescFK(txtDescProd,70,20,97,20,"Descprod","Descrição do produto");
-   
-    setListaCampos( true, "PARCPAG", "FN");
-    lcDet.setQueryInsert(false);    
+    adicDescFK(txtDescProd,70,20,217,20,"Descprod","Descrição do produto");
 
+    setListaCampos( true, "ITSIMILAR", "EQ");
+
+    lcDet.setQueryInsert(true);    
+    lcDet.setQueryCommit(false);
+    
     navRod.setAtivo(4,false);
     navRod.setAtivo(5,false);
     montaTab();
@@ -99,28 +103,13 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     }
     else if (evt.getSource() == btImp) 
       imprimir(false);
+
     super.actionPerformed(evt);
   }
-  private int buscaAnoBaseCC() {
-	int iRet = 0;
-	String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-	try {
-		PreparedStatement ps = con.prepareStatement(sSQL);
-		ps.setInt(1,Aplicativo.iCodEmp);
-		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
-		ResultSet rs = ps.executeQuery();
-		if (rs.next())
-			iRet = rs.getInt("ANOCENTROCUSTO");
-		rs.close();
-		ps.close();
-	}
-	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
-	}
-	return iRet;
-  }
   private void imprimir(boolean bVisualizar) {
-    ImprimeOS imp = new ImprimeOS("",con);
+ /*
+
+  	ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
     imp.montaCab();
     imp.setTitulo("Relatório de Planos de Pagamento");
@@ -210,7 +199,8 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     }
     else {
       imp.print();
-    }
+    } 
+    */
   }
   public void beforeInsert(InsertEvent ievt) { }
   public void beforePost(PostEvent pevt) {  }
