@@ -60,8 +60,8 @@ public class FTabJuros extends FDetalhe {
     vVals.addElement("A");
     cbTipo.setItens(vLabs,vVals);
     
-    adicCampo(txtCodTbJ, 7, 20, 80, 20,"CodTbJ","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescTbJ, 90, 20, 250, 20, "DescTbJ", "e descrição da tabela", JTextFieldPad.TP_STRING, 50, 0,false,false,null,true);
+    adicCampo(txtCodTbJ, 7, 20, 80, 20,"CodTbJ","Cód.tb.juros",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescTbJ, 90, 20, 250, 20, "DescTbJ", "Descrição da tabela", JTextFieldPad.TP_STRING, 50, 0,false,false,null,true);
     adicDB(cbTipo, 7, 60, 150, 30, "TipoTbJ", "Tipo", JTextFieldPad.TP_STRING,true);
     setListaCampos( false, "TBJUROS", "FN");
     lcCampos.setQueryInsert(false);

@@ -62,16 +62,16 @@ public class FStatusItOrc extends FFilho implements ActionListener {
     setAtribos(50,50,340,210);
     
     
-    lcOrc.add(new GuardaCampo( txtCodOrc, 7, 100, 80, 20, "CodOrc", "Cód.Orcamento", true, false, null, JTextFieldPad.TP_INTEGER,true));
+    lcOrc.add(new GuardaCampo( txtCodOrc, 7, 100, 80, 20, "CodOrc", "Cód.orcamento", true, false, null, JTextFieldPad.TP_INTEGER,true));
     lcOrc.add(new GuardaCampo( txtStatusOrc, 90, 100, 207, 20, "StatusOrc", "Status", false, false, null, JTextFieldPad.TP_STRING,false));
     lcOrc.montaSql(false, "ORCAMENTO", "VD");
     lcOrc.setReadOnly(true);
     txtCodOrc.setTabelaExterna(lcOrc);
     txtCodOrc.setFK(true);
 
-    lcItOrc.add(new GuardaCampo( txtCodOrc, 7, 100, 80, 20, "CodOrc", "Cód.Orcamento", true, true, null, JTextFieldPad.TP_INTEGER,true));
+    lcItOrc.add(new GuardaCampo( txtCodOrc, 7, 100, 80, 20, "CodOrc", "Cód.orcamento", true, true, null, JTextFieldPad.TP_INTEGER,true));
     lcItOrc.add(new GuardaCampo( txtItem, 90, 100, 207, 20, "CodItOrc", "Item", true, false, null, JTextFieldPad.TP_INTEGER,true));
-    lcItOrc.add(new GuardaCampo( txtVlrLiqItOrc, 90, 100, 207, 20, "VlrLiqItOrc", "V. Liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false));
+    lcItOrc.add(new GuardaCampo( txtVlrLiqItOrc, 90, 100, 207, 20, "VlrLiqItOrc", "V. liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false));
     lcItOrc.add(new GuardaCampo( cbEmitItOrc, 90, 100, 207, 20, "EmitItOrc", "Emit.", false, false, null, JTextFieldPad.TP_STRING,false));
     lcItOrc.montaSql(false, "ITORCAMENTO", "VD");
     lcItOrc.setReadOnly(true);
@@ -96,7 +96,7 @@ public class FStatusItOrc extends FFilho implements ActionListener {
     
     btAltEmit.setToolTipText("Alterar");
 
-    pinCli.adic(new JLabel("Nº Orçamento"),7,0,80,20);
+    pinCli.adic(new JLabel("Nº orçamento"),7,0,80,20);
     pinCli.adic(txtCodOrc,7,20,80,20);
     pinCli.adic(new JLabel("Item"),90,0,67,20);
     pinCli.adic(txtItem,90,20,67,20);
