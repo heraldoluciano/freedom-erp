@@ -208,15 +208,15 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(800600000,TP_OPCAO_ITEM,"Impostos sobre serviços","Impostos sobre serviços",'S',800602000,2, true, FRImpServ.class);
 	  addOpcao(800600000,TP_OPCAO_ITEM,"Pis e cofins","Pis e cofins",'P',800603000,2, true, FRPisCofins.class);
 
-  addBotao("btCliente.gif","Cliente",100101030, null, "");
-  addBotao("btSaida.gif","Venda",300100000, null, "");
-  addBotao("btEntrada.gif","Compra",200100000, null, ""); 
-  addBotao("btContaPagar.gif","Contas a pagar",400200000, null, "");
-  addBotao("btContaReceber.gif","Contas a receber",500100000, null, "");  
-  addBotao("btLancamentoFin.gif","Lançamentos financeiros",600600000, null, "");
-  addBotao("btEstoque.gif","Consulta estoque",700300000, null, "");   
-  addBotao("btProduto.gif","Cadastro de produtos",100130070, null, "");
-  addBotao("btEstProduto.gif","Consulta produto",700400000, null, "");
+  addBotao("btCliente.gif","Cliente","", 100101030, null);
+  addBotao("btSaida.gif","Venda","", 300100000, null);
+  addBotao("btEntrada.gif","Compra","", 200100000, null); 
+  addBotao("btContaPagar.gif","Contas a pagar","", 400200000, null);
+  addBotao("btContaReceber.gif","Contas a receber","", 500100000, null);  
+  addBotao("btLancamentoFin.gif","Lançamentos financeiros","", 600600000, null);
+  addBotao("btEstoque.gif","Consulta estoque","", 700300000, null);   
+  addBotao("btProduto.gif","Cadastro de produtos","", 100130070, null);
+  addBotao("btEstProduto.gif","Consulta produto","", 700400000, null);
   //addBotao("btEmprestimo.gif","Cadastro de similaridades",100120080);
 
   ajustaMenu();

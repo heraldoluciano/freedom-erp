@@ -574,6 +574,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 			iMaxItem = imp.verifLinPag() - 23;
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
+					imp.impCab(136);
 					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
 					imp.say(imp.pRow() + 0, 4, "SOLICITAÇÂO DE COMPRA No.: ");
 					imp.say(imp.pRow() + 0, 25, rs.getString("CODSOL"));

@@ -268,8 +268,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public JButtonPad addBotao(String sImagem, String sToolTip, int iCodMenu,
-			Class tela, String titulo) {
+	public JButtonPad addBotao(String sImagem, String sToolTip, String titulo,
+			int iCodMenu, Class tela) {
 		JButtonPad btOpcao = null;
 		try {
 			btOpcao = new JButtonPad(iCodSis, iCodMod, iCodMenu, tela, titulo);

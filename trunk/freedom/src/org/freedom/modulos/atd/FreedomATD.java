@@ -74,11 +74,11 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		  addOpcao(1200000000,TP_OPCAO_ITEM,"Aprova Orçamentos","Aprova Orcamento",'A',120300000,1, true, FAprovaOrc.class);
 		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Autorizações","Pesquisa Autorização",'e',120400000,1, true, FConsAutoriz.class);
 		 
-		addBotao("btAtendimento.gif","Atendimento",110100000, null, "");
-		addBotao("btOrcamento.gif","Orçamento",120100000, null, "");
-		addBotao("btConsOrcamento.gif","Pesquisa Orçamento",120200000, null, "");
-		addBotao("barraConveniados.gif","Conveniados",100101040, null, "");
-		addBotao("btAprovaOrc.gif","Aprovações de Orçamantos",120300000, null, "");
+		addBotao("btAtendimento.gif","Atendimento","", 110100000, null);
+		addBotao("btOrcamento.gif","Orçamento","", 120100000, null);
+		addBotao("btConsOrcamento.gif","Pesquisa Orçamento","", 120200000, null);
+		addBotao("barraConveniados.gif","Conveniados","", 100101040, null);
+		addBotao("btAprovaOrc.gif","Aprovações de Orçamantos","", 120300000, null);
 		
 		ajustaMenu();
 		

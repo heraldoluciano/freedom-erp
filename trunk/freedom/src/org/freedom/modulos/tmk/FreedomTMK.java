@@ -71,7 +71,7 @@ public class FreedomTMK extends Aplicativo {
 	      addOpcao(200000000,TP_OPCAO_MENU,"Listagens","",'L',200300000,1, false, null);
 	      addOpcao(200300000,TP_OPCAO_ITEM,"Relatório diário","Relatório diário",'R',200301000,1, true, FRDiario.class);
 	      
-		addBotao("btAtendimento.gif","Atendimento",100110020, null, "");
+		addBotao("btAtendimento.gif","Atendimento","", 100110020, null);
 	      
 	    ajustaMenu();
     }
