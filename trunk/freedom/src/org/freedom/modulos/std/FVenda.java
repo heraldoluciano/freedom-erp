@@ -526,10 +526,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     else 
     	txtCodNat.setAtivo(false);
     	
-    
-    
     if (bPrefs[0]) {
-      txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),false);
+      txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
       adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.",ListaCampos.DB_FK,txtDescProd,false);
       adicCampoInvisivel(txtRefProd,"RefProd","Ref.prod.",ListaCampos.DB_SI,false);
       adic(new JLabelPad("Ref. prod."), 40, 0, 67, 20);
@@ -537,7 +535,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
       txtRefProd.setFK(true);
     }
     else {
-      txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"),false);
+      txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
       adicCampo(txtCodProd, 40, 20, 67, 20,"CodProd","Cód.prod.",ListaCampos.DB_FK,txtDescProd,true);
     }
     adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd", "Descrição do produto");

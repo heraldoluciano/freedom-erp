@@ -30,12 +30,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.swing.JTextField;
-
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
 import org.freedom.telas.FAtalhos;
@@ -66,7 +65,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   private boolean bPK = false;
   private boolean bFK = false;
   public  int tipoCampo = TP_NONE; 
-/*  private JPopupMenu pm = new JPopupMenu();
+/*  private JPopupMenu pm = new JPopupMenu(); 
   private JMenuItem copiarMI = new JMenuItem();
   private JMenuItem recortarMI = new JMenuItem();
   private JMenuItem colarMI = new JMenuItem(); */
@@ -88,7 +87,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   boolean bRequerido = false;
   boolean bSoLeitura = false;
   boolean bAtivo = true;
-  boolean bBuscaAdicGrid = false;
+//  boolean bBuscaAdicGrid = false;
   String sMasc = "";
   String trans = "";
   String sNomeCampo = "";   
@@ -162,9 +161,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public void setEnterSai(boolean bSai) {
     bEnterSai = bSai;
   }
-  public void setBuscaAdic(DLF3 dl,boolean bCodGrid) {
+  public void setBuscaAdic(DLF3 dl) {
 	  dlBuscaAdic = dl;
-	  bBuscaAdicGrid = bCodGrid;
+//	  bBuscaAdicGrid = bCodGrid;
   }
   
   private boolean caracValido(char caract) {
@@ -342,18 +341,16 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
          atualizaFK();
     }
   }
-  public void buscaAdic() {
+  public void buscaAdic(String sTipo) {
   	 if (dlBuscaAdic != null) {
-  	 	dlBuscaAdic.setValor(getVlrString());
-  	 	dlBuscaAdic.setVisible(true);
-  	 	if (dlBuscaAdic.OK) {
-  	 		Object oVal = null;
-  	 		if (bBuscaAdicGrid)
-  	 		  oVal = dlBuscaAdic.getValorGrid();
-  	 		else
-  	 		  oVal = dlBuscaAdic.getValor();
-  	 		if (oVal != null)
-  	 		  setVlrString(oVal+"");
+  	 	if (dlBuscaAdic.setValor(getVlrString(),sTipo)) {        
+  	 		dlBuscaAdic.setVisible(true);
+  	 		if (dlBuscaAdic.OK) {
+  	 			Object oVal = null;
+  	 			oVal = dlBuscaAdic.getValor();
+  	 			if (oVal != null)
+  	 				setVlrString(oVal+"");
+  	 		}
   	 	}
   	 }
   }
@@ -512,11 +509,20 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		editDB();
 		return;
 	}
-    
+    else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
+            (getText().trim().length() > 0) &&
+            (bPK || bFK)) {
+ 	  if (Aplicativo.bBuscaProdSimilar)
+	  	buscaAdic("similar");
+ 	  
+//   	lcTxt.carregaDados();
+  //   	transferFocus();
+
+   }
+
     if (((kevt.getKeyCode() == KeyEvent.VK_F2) || 
-         ((kevt.getKeyCode() == KeyEvent.VK_ENTER) &&
-          (getText().trim().length() == 0))
-        ) && ((bPK) || (bFK))) {
+    	((kevt.getKeyCode() == KeyEvent.VK_ENTER) &&  
+    	 (getText().trim().length() == 0))) && ((bPK) || (bFK))) {    	
       if ((bFK) && (lcTabExt != null)) {
         if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
           if (bRequerido) {
@@ -549,28 +555,28 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
     else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
              (getText().trim().length() > 0) &&
              (bPK) & (lcTxt != null)) {
-      /*if (*/lcTxt.carregaDados();/*)*/
+  	  if (Aplicativo.bBuscaProdSimilar)
+	  	buscaAdic("similar");
+  	  
+    	lcTxt.carregaDados();
       	transferFocus();
 
     }
+    
     else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) &&
              (getText().trim().length() > 0) &&
              (bFK) && (lcTabExt != null)) {
-//	    sValAnt = getText();
+
         if (lcTabExt.carregaDados())
 	      transferFocus();
     }
-    else if (kevt.getKeyCode() == KeyEvent.VK_F3 && 
-    		   (bPK || bFK)){
-    	buscaAdic();
+    else if (kevt.getKeyCode() == KeyEvent.VK_F3 && (bPK || bFK)){
+    	buscaAdic("alternativo");
     }
-    		
-    		
-	if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (bEnterSai))
-	  transferFocus(); 
-
-
-  //  sTextoAnt = getText();
+    		    		
+	if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (bEnterSai)) {
+		transferFocus(); 
+	}
   }
   public void keyReleased(KeyEvent kevt) { }
   public int getMascara() {
