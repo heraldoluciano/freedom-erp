@@ -456,8 +456,25 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     lcTipoMov.add(new GuardaCampo( chbImpNfTipoMov, "ImpNfTipoMov", "Imp.NF", ListaCampos.DB_SI,false));
     lcTipoMov.add(new GuardaCampo( chbImpBolTipoMov, "ImpBolTipoMov", "Imp.bol.", ListaCampos.DB_SI,false));
     lcTipoMov.add(new GuardaCampo( chbReImpNfTipoMov, "ReImpNfTipoMov", "Reimp.NF", ListaCampos.DB_SI,false));
-    
-    lcTipoMov.setWhereAdic("(ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV'))"); 
+/*
+ * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV
+WHERE ( TUSUTIPOMOV='S' OR
+EXISTS (SELECT * FROM EQTIPOMOVUSU TU
+WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND
+TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND
+TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND
+TU.CODEMPUS=4 AND
+TU.CODFILIALUS=1 AND
+TU.IDUSU='sysdba') )
+ORDER BY 1
+ */    
+    lcTipoMov.setWhereAdic("( " +
+    		"(ESTIPOMOV = 'S' OR TIPOMOV IN ('PV','DV')) AND " +
+    		" ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU "+
+    		"WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "+
+			"TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="+Aplicativo.iCodEmp+" AND "+
+    		"TU.CODFILIALUS="+ListaCampos.getMasterFilial("SGUSUARIO")+" AND TU.IDUSU='sysdba') ) "+
+    		")"); 
     if (bPrefs[5]) {
     	txtFiscalTipoMov1.setText("S");
     	txtFiscalTipoMov2.setText("N");
