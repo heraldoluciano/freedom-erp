@@ -28,9 +28,11 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.telas.FDados;
+import org.freedom.componentes.Painel;
+import org.freedom.telas.FTabDados;
 
-public class FCredCli extends FDados implements ActionListener {
+public class FCredCli extends FTabDados implements ActionListener {
+  private Painel pinGeral = new Painel(330, 200);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDataCli = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
@@ -39,12 +41,27 @@ public class FCredCli extends FDados implements ActionListener {
   private JTextFieldPad txtCodTpCred = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDescTpCred = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtVlrTpCred = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,3);
+  private JTextFieldPad txtDtIniTr = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtVencto = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtRazCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtNomeCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldPad txtCnpjCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 14, 0);
+  private JTextFieldPad txtInscCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
+  private JTextFieldPad txtCpfCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 11, 0);
+  private JTextFieldPad txtRgCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtEndCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtNumCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtComplCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtBairCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtCidCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtUFCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldPad txtCepCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   public FCredCli() {
     setTitulo("Crédito por cliente");
-    setAtribos(50, 50, 460, 205);
+    setAtribos(50, 10, 480, 505);
 
     lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true));
     lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
@@ -61,12 +78,15 @@ public class FCredCli extends FDados implements ActionListener {
     lcTipoCred.setReadOnly(true);
     txtCodTpCred.setTabelaExterna(lcTipoCred);
 
+	setPainel(pinGeral);
+	adicTab("Crédito", pinGeral);
     adicCampo(txtCodCli, 7, 20, 80, 20,"CodCli","Cód.cli.", ListaCampos.DB_PK, true);
     adicCampo(txtDescCli, 90, 20, 247, 20,"RazCli","Razão social do cliente", ListaCampos.DB_SI, false);
     adicCampo(txtDataCli, 340, 20, 100, 20,"DataCli","Cadastro", ListaCampos.DB_SI, false);
 	adicCampoInvisivel(txtCodTipoCli, "CodTipoCli","Cód.tp.cli", ListaCampos.DB_FK, txtDescTipoCli,false);
     adicDescFK(txtDescTipoCli, 7, 60, 250, 20, "DescTipoCli", "Descrição do tipo de cliente");
-	adicCampo(txtCodTpCred, 7, 100, 80, 20,"CodTpCred","Cód.tp.cred", ListaCampos.DB_FK, txtDescTpCred, true);
+    adicCampo(txtDtIniTr, 260, 60, 100, 20,"DtIniTr","Dt.ab.créd.", ListaCampos.DB_SI, false);
+    adicCampo(txtCodTpCred, 7, 100, 80, 20,"CodTpCred","Cód.tp.cred", ListaCampos.DB_FK, txtDescTpCred, true);
     adicDescFK(txtDescTpCred, 90, 100, 157, 20, "DescTpCred", "Descrição do crédito");
     adicDescFK(txtVlrTpCred, 250, 100, 87, 20, "VlrTpCred", "Valor");
 	adicCampo(txtDtVencto, 340, 100, 100, 20,"DtVenctoTr","Vencimento", ListaCampos.DB_SI, txtDescTpCred, true);
