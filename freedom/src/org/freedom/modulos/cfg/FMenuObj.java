@@ -39,7 +39,7 @@ public class FMenuObj extends FDetalhe {
   private JTextFieldFK txtDescModu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodSis = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);
   private JTextFieldFK txtDescSis = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtCodObj = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);
+  private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldFK txtDescObj = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcMenu = new ListaCampos(this);
   private ListaCampos lcModu = new ListaCampos(this);
@@ -77,12 +77,12 @@ public class FMenuObj extends FDetalhe {
     lcSis.setReadOnly(true);
     txtCodSis.setTabelaExterna(lcSis);
     
-    lcObj.add(new GuardaCampo( txtCodObj, 7, 100, 80, 20, "CODOBJ", "Código", true, false, txtDescObj, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcObj.add(new GuardaCampo( txtDescObj, 7, 100, 180, 20, "DESCOBJ", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcObj.add(new GuardaCampo( txtIDObj, "IDOBJ", "Id.obj.", ListaCampos.DB_PK,false));
+    lcObj.add(new GuardaCampo( txtDescObj,"DESCOBJ", "Descriçao", ListaCampos.DB_SI,false));
     lcObj.montaSql(false, "OBJETO", "SG");    
     lcObj.setQueryCommit(false);
     lcObj.setReadOnly(true);
-    txtCodObj.setTabelaExterna(lcObj);
+    txtIDObj.setTabelaExterna(lcObj);
     
     pinCab = new Painel(350,165);
     setAltCab(165);
@@ -102,8 +102,8 @@ public class FMenuObj extends FDetalhe {
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtCodObj, 7, 20, 60, 20,"CODOBJ","Cod.Obj",JTextFieldPad.TP_INTEGER,5,0,true,true,txtDescObj,true);
-    adicDescFK(txtDescObj, 70, 20, 200, 20, "DESCOBJ", "e descrição do objeto", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtIDObj, 7, 20, 60, 20,"IDOBJ","Id.obj",ListaCampos.DB_PK,true);
+    adicDescFK(txtDescObj, 70, 20, 200, 20, "DESCOBJ", "Descrição do objeto", JTextFieldPad.TP_STRING, 50, 0);
     setListaCampos( false, "MENUOBJ", "SG");
     montaTab();
     
