@@ -77,7 +77,6 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
   private ListaCampos lcAlmox = new ListaCampos(this,"AX");
   private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
   private JCheckBoxPad cbLote = new JCheckBoxPad("Lote","S","N");
-  private Connection con = null;
   private int iPrefs[] = {0,0,0};
   boolean bLote = false;
   public FInventario () {

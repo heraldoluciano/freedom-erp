@@ -83,7 +83,6 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   private JScrollPane spnDisp = new JScrollPane(lsDisp);
   private JButton btAdicEmp = new JButton(Icone.novo("btFlechaDir.gif"));
   private JButton btDelEmp = new JButton(Icone.novo("btFlechaEsq.gif"));
-  private Connection con = null;  
   private ListaCampos lcGrup = new ListaCampos(this,"IG");
   private ListaCampos lcCC = new ListaCampos(this,"CC");
   private ListaCampos lcAlmox = new ListaCampos(this,"AM");
@@ -418,9 +417,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   }
   public void afterDelete(DeleteEvent devt) { }
   public void setConexao(Connection cn) {
-  	conIB = cn;
 	super.setConexao(cn);
-  	con = cn;
+  	conIB = cn;
     lcGrup.setConexao(cn);
 	lcCC.setConexao(cn);
     lcCC.setWhereAdic("NIVELCC=10 AND ANOCC="+buscaAnoBaseCC());

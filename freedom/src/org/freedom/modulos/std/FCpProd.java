@@ -92,7 +92,6 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
   private ListaCampos lcPlanoPag2 = new ListaCampos(this);
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));
-  private Connection con = null;
   public FCpProd() {
     setTitulo("Cópia de preços");
     setAtribos(50,20,680,440);
@@ -431,7 +430,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcGrup.setConexao(cn);
     lcClasCli.setConexao(cn);
     lcTab.setConexao(cn);

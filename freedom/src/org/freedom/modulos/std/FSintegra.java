@@ -64,7 +64,6 @@ public class FSintegra extends FFilho implements ActionListener {
   private JCheckBoxPad cbSaida = new JCheckBoxPad("Saida","S","N");
   private JCheckBoxPad cbConsumidor = new JCheckBoxPad("NF Consumidor","S","N");
   private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
-  private Connection con = null;
   private String CR = ""+((char) 13)+""+((char) 10);
   private JRadioGroup rgConvenio;
   private JRadioGroup rgNatoper;
@@ -805,8 +804,5 @@ public class FSintegra extends FFilho implements ActionListener {
     if (evt.getSource() == btGerar) {
       iniGerar();
     }
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 }

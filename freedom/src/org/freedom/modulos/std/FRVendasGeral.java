@@ -49,7 +49,6 @@ public class FRVendasGeral extends FRelatorio {
   
   private ListaCampos lcVend = new ListaCampos(this);
   
-  private Connection con = null;
   public FRVendasGeral() {
     setTitulo("Vendas em Geral");
     setAtribos(80,80,295,195);
@@ -84,7 +83,7 @@ public class FRVendasGeral extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVend.setConexao(con);
   }
 

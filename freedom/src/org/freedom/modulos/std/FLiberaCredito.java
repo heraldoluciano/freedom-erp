@@ -76,7 +76,6 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 //	private JTextFieldPad txtDtVencto = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
     private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
-	private Connection con = null;
 	private Painel pinCab = new Painel(0,140);
     private Painel pinCli = new Painel(0,200);	
     private JButton btBusca = new JButton(Icone.novo("btExecuta.gif"));

@@ -139,7 +139,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private ListaCampos lcRecManut = new ListaCampos(this);
   private ListaCampos lcRecBaixa = new ListaCampos(this);
   private ListaCampos lcBancoBaixa = new ListaCampos(this);
-  private Connection con = null;
   private Vector vCodRec = new Vector();
   private Vector vNParcItRec = new Vector();
   private Vector vNParcBaixa = new Vector();

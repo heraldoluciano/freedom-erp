@@ -53,7 +53,6 @@ public class FCancVenda extends FFilho implements ActionListener {
   private JButton btCancelar = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
-  private Connection con = null;
   public FCancVenda() {
     setTitulo("Cancelamento");
     setAtribos(50,50,350,170);
@@ -138,7 +137,7 @@ public class FCancVenda extends FFilho implements ActionListener {
       cancelar(txtCodVenda.getVlrInteger().intValue(),txtStatusVenda.getVlrString());
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVenda.setConexao(cn);
   }
 }

@@ -74,7 +74,6 @@ public class DLNovoRec extends FFDialogo implements PostListener{
   private ListaCampos lcCli = new ListaCampos(this,"CL");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
-  private Connection con = null;
   public DLNovoRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Novo");

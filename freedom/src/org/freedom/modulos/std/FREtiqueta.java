@@ -51,7 +51,6 @@ public class FREtiqueta extends FRelatorio {
   private ListaCampos lcModEtiq = new ListaCampos(this);
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcTipo = new ListaCampos(this);
-  private Connection con = null;
   public FREtiqueta() {
      setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
@@ -95,7 +94,7 @@ public class FREtiqueta extends FRelatorio {
   }   
   
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcModEtiq.setConexao(cn);
     lcSetor.setConexao(cn);
     lcTipo.setConexao(cn);

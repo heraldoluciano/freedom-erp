@@ -49,7 +49,6 @@ public class DLConsultaBaixa extends FFDialogo {
   private JTextFieldPad txtVlrAberto = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,9,2);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
-  private Connection con = null;
   private Painel pinConsulta = new Painel(0,60);
   public DLConsultaBaixa(Component cOrig,Connection cn,int iCodRec,int iNParc) {
   	super(cOrig);

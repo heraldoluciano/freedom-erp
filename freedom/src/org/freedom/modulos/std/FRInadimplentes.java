@@ -49,7 +49,6 @@ public class FRInadimplentes extends FRelatorio {
   
   private ListaCampos lcVend = new ListaCampos(this);
   
-  private Connection con = null;
   public FRInadimplentes() {
     setTitulo("Inadimplentes");
     setAtribos(80,80,298,200);
@@ -84,7 +83,7 @@ public class FRInadimplentes extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVend.setConexao(con);
     
   }

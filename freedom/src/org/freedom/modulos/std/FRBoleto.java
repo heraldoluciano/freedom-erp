@@ -62,7 +62,6 @@ public class FRBoleto extends FRelatorio {
   private ListaCampos lcCli = new ListaCampos(this);
     
   
-  private Connection con = null;
   private JInternalFrame fExt = null;
   private String sInfoMoeda[] = new String[4];
   public FRBoleto() {
@@ -117,7 +116,7 @@ public class FRBoleto extends FRelatorio {
      
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcModBol.setConexao(cn);
     lcVenda.setConexao(cn);
     lcCli.setConexao(cn);

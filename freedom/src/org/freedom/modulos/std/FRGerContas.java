@@ -52,7 +52,6 @@ public class FRGerContas extends FRelatorio  {
   private final int POS_TOTSETOR = 6;
   private final int TAM_GRUPO = 14;
   private final int NUM_COLUNAS = 9;
-  private Connection con;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -201,7 +200,7 @@ public class FRGerContas extends FRelatorio  {
   	  	
   
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcSetor.setConexao(cn);
     lcVendedor.setConexao(cn);
     lcCliente.setConexao(cn);
