@@ -180,7 +180,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     pnLegenda.add(new JLabel("Vencido",imgVencido,SwingConstants.CENTER));
 	pnLegenda.add(new JLabel("Parcial",imgPagoParcial,SwingConstants.CENTER));
 	pnLegenda.add(new JLabel("Pago",imgPago,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("À Vencer",imgNaoVencido,SwingConstants.CENTER));
+	pnLegenda.add(new JLabel("À vencer",imgNaoVencido,SwingConstants.CENTER));
 
     pnRod.setBorder(BorderFactory.createEtchedBorder());
     pnRod.setPreferredSize(new Dimension(500,32));
@@ -193,8 +193,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-    lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCli");
+    lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
+    lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do clliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCli");
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setQueryCommit(false);
     lcCli.setReadOnly(true);
@@ -202,17 +202,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodCli.setFK(true);
     txtCodCli.setNomeCampo("CodCli");
 
-	txtCodCliFiltro.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtRazCliFiltro.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCliManut");
-	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCliManut");
-	lcCliFiltro.montaSql(false, "CLIENTE", "VD");
-	lcCliFiltro.setQueryCommit(false);
-	lcCliFiltro.setReadOnly(true);
-	txtCodCliFiltro.setTabelaExterna(lcCliFiltro);
-	txtCodCliFiltro.setFK(true);
-	txtCodCliFiltro.setNomeCampo("CodCli");
-
+	
     txtPrimCompr.setAtivo(false);
     txtUltCompr.setAtivo(false);
     txtDataMaxFat.setAtivo(false);
@@ -238,25 +228,28 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       
     pnConsulta.add(pnTabConsulta,BorderLayout.CENTER);
     
-    pinConsulta.adic(new JLabel("Código e descrição do cliente"),7,0,250,20);
+    pinConsulta.adic(new JLabel("Cód.cli."),7,0,250,20);
     pinConsulta.adic(txtCodCli,7,20,80,20);
-    pinConsulta.adic(txtRazCli,90,20,197,20);
-    pinConsulta.adic(new JLabel("P. Compra"),290,0,97,20);
-    pinConsulta.adic(txtPrimCompr,290,20,97,20);
-    pinConsulta.adic(new JLabel("U. Compra"),390,0,100,20);
-    pinConsulta.adic(txtUltCompr,390,20,100,20);
-    pinConsulta.adic(new JLabel("Data e valor da maior fatura"),7,40,200,20);
+    pinConsulta.adic(new JLabel("Razão social do cliente"),90,0,250,20);
+    pinConsulta.adic(txtRazCli,90,20,217,20);
+    pinConsulta.adic(new JLabel("P. compra"),310,0,97,20);
+    pinConsulta.adic(txtPrimCompr,310,20,97,20);
+    pinConsulta.adic(new JLabel("U. compra"),410,0,100,20);
+    pinConsulta.adic(txtUltCompr,410,20,100,20);
+    pinConsulta.adic(new JLabel("Data"),7,40,200,20);
     pinConsulta.adic(txtDataMaxFat,7,60,100,20);
-    pinConsulta.adic(txtVlrMaxFat,110,60,137,20);
-    pinConsulta.adic(new JLabel("Data e valor do maior acumulo"),250,40,200,20);
-    pinConsulta.adic(txtDataMaxAcum,250,60,97,20);
-    pinConsulta.adic(txtVlrMaxAcum,350,60,140,20);
-    pinConsulta.adic(new JLabel("Total de Compras"),7,80,150,20);
+    pinConsulta.adic(new JLabel("Valor da maior fatura"),110,40,210,20);
+    pinConsulta.adic(txtVlrMaxFat,110,60,147,20);
+    pinConsulta.adic(new JLabel("Data"),260,40,200,20);
+    pinConsulta.adic(txtDataMaxAcum,260,60,97,20);
+    pinConsulta.adic(new JLabel("Valor do maior acumulo"),360,40,200,20);
+    pinConsulta.adic(txtVlrMaxAcum,360,60,150,20);
+    pinConsulta.adic(new JLabel("Total de compras"),7,80,150,20);
     pinConsulta.adic(txtVlrTotCompr,7,100,150,20);
-    pinConsulta.adic(new JLabel("Total Pago"),160,80,97,20);
+    pinConsulta.adic(new JLabel("Total pago"),160,80,97,20);
     pinConsulta.adic(txtVlrTotPago,160,100,97,20);
-    pinConsulta.adic(new JLabel("Total em Aberto"),260,80,97,20);
-    pinConsulta.adic(txtVlrTotAberto,260,100,97,20);
+    pinConsulta.adic(new JLabel("Total em aberto"),260,80,117,20);
+    pinConsulta.adic(txtVlrTotAberto,260,100,117,20);
     pinConsulta.adic(btConsVenda,380,90,30,30);
     
     btConsVenda.addActionListener(this);
@@ -264,17 +257,17 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     pinBotoesConsulta.adic(btBaixaConsulta,3,10,30,30);
     
-    tabConsulta.adicColuna("Vencto.");//0
-    tabConsulta.adicColuna("Doc");//1
-    tabConsulta.adicColuna("Dt. Venda.");//2
+    tabConsulta.adicColuna("Vencimento");//0
+    tabConsulta.adicColuna("Doc.");//1
+    tabConsulta.adicColuna("Dt. venda.");//2
     tabConsulta.adicColuna("Valor");//3
-    tabConsulta.adicColuna("Desc.Fin");//4
-    tabConsulta.adicColuna("Vlr. Pago.");//5
-    tabConsulta.adicColuna("Dt. Pagto.");//6
+    tabConsulta.adicColuna("Desc.fin");//4
+    tabConsulta.adicColuna("Valor pago.");//5
+    tabConsulta.adicColuna("Data pagamento");//6
     tabConsulta.adicColuna("Atraso");//7
     tabConsulta.adicColuna("Juros");//8
     tabConsulta.adicColuna("Série");//9
-    tabConsulta.adicColuna("Cód. Venda");//10
+    tabConsulta.adicColuna("Cód.venda");//10
     tabConsulta.adicColuna("Banco");//11
     tabConsulta.adicColuna("Observações");//12
     
@@ -284,7 +277,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     tabConsulta.setTamColuna(100,3);//valor
     tabConsulta.setTamColuna(100,4);//Desc.Fin
     tabConsulta.setTamColuna(100,5);//valor pago
-    tabConsulta.setTamColuna(90,6);//data pagamento
+    tabConsulta.setTamColuna(120,6);//data pagamento
     tabConsulta.setTamColuna(60,7);//atraso
     tabConsulta.setTamColuna(100,8);//juros
     tabConsulta.setTamColuna(50,9);//serie
@@ -297,7 +290,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
     txtCodVendaBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
-    lcVendaBaixa.add(new GuardaCampo( txtCodVendaBaixa, 7, 100, 80, 20, "CodVenda", "Cód.Venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
+    lcVendaBaixa.add(new GuardaCampo( txtCodVendaBaixa, 7, 100, 80, 20, "CodVenda", "Cód.venda", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
     lcVendaBaixa.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
     lcVendaBaixa.montaSql(false, "VENDA", "VD");
     lcVendaBaixa.setQueryCommit(false);
@@ -308,8 +301,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
     txtCodCliBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtRazCliBaixa.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcCliBaixa.add(new GuardaCampo( txtCodCliBaixa, 7, 100, 80, 20, "CodCli", "Cód.Cli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-    lcCliBaixa.add(new GuardaCampo( txtRazCliBaixa, 90, 100, 207, 20, "RazCli", "Razão", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCli");
+    lcCliBaixa.add(new GuardaCampo( txtCodCliBaixa, 7, 100, 80, 20, "CodCli", "Cód.cli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
+    lcCliBaixa.add(new GuardaCampo( txtRazCliBaixa, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCli");
     lcCliBaixa.montaSql(false, "CLIENTE", "VD");
     lcCliBaixa.setQueryCommit(false);
     lcCliBaixa.setReadOnly(true);
@@ -319,8 +312,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
     txtCodBancoBaixa.setTipo(JTextFieldPad.TP_STRING,3,0);
     txtDescBancoBaixa.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, 7, 100, 80, 20, "CodBanco", "Cód.Banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBanco");
-    lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, 90, 100, 207, 20, "NomeBanco", "Nome Banco", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBanco");
+    lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, 7, 100, 80, 20, "CodBanco", "Cód.banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBanco");
+    lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, 90, 100, 207, 20, "NomeBanco", "Nome do banco", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBanco");
     lcBancoBaixa.montaSql(false, "BANCO", "FN");
     lcBancoBaixa.setQueryCommit(false);
     lcBancoBaixa.setReadOnly(true);
@@ -335,16 +328,16 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtTotAbertoBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtTotPagoBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     txtJurosBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    lcRecBaixa.add(new GuardaCampo( txtCodRecBaixa, 7, 100, 80, 20, "CodRec", "Cód.Rec", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodRec");
-    lcRecBaixa.add(new GuardaCampo( txtCodVendaBaixa, 90, 100, 207, 20, "CodVenda", "Cód.Venda", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtCodRecBaixa, 7, 100, 80, 20, "CodRec", "Cód.rec.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodRec");
+    lcRecBaixa.add(new GuardaCampo( txtCodVendaBaixa, 90, 100, 207, 20, "CodVenda", "Cód.venda", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
     lcRecBaixa.add(new GuardaCampo( txtDoc, 90, 100, 207, 20, "DocRec", "Doc", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtTotRecBaixa, 90, 100, 207, 20, "VlrRec", "Tot. Rec.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtCodCliBaixa, 90, 100, 207, 20, "CodCli", "Cód.Cli", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtDtEmisBaixa, 90, 100, 207, 20, "DataRec", "Data Emis.", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtCodBancoBaixa, 90, 100, 207, 20, "CodBanco", "Cód.Banco", false, true, null, JTextFieldPad.TP_STRING,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtTotAbertoBaixa, 90, 100, 207, 20, "VlrApagRec", "Tot. Aberto", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtTotPagoBaixa, 90, 100, 207, 20, "VlrPagoRec", "Tot. Pago", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
-    lcRecBaixa.add(new GuardaCampo( txtJurosBaixa, 90, 100, 207, 20, "VlrJurosRec", "Tot. Juros", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtTotRecBaixa, 90, 100, 207, 20, "VlrRec", "Tot.rec.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtCodCliBaixa, 90, 100, 207, 20, "CodCli", "Cód.cli.", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtDtEmisBaixa, 90, 100, 207, 20, "DataRec", "Data emissão", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtCodBancoBaixa, 90, 100, 207, 20, "CodBanco", "Cód.banco", false, true, null, JTextFieldPad.TP_STRING,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtTotAbertoBaixa, 90, 100, 207, 20, "VlrApagRec", "Total aberto", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtTotPagoBaixa, 90, 100, 207, 20, "VlrPagoRec", "Total pago", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
+    lcRecBaixa.add(new GuardaCampo( txtJurosBaixa, 90, 100, 207, 20, "VlrJurosRec", "Total juros", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRec");
     lcRecBaixa.montaSql(false,"RECEBER", "FN");
     lcRecBaixa.setQueryCommit(false);
     lcRecBaixa.setReadOnly(true);
@@ -376,7 +369,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     pnBaixa.add(pnTabBaixa,BorderLayout.CENTER);
     
-    pinBaixa.adic(new JLabel("Cód.Rec"),7,0,80,20);
+    pinBaixa.adic(new JLabel("Cód.rec"),7,0,80,20);
     pinBaixa.adic(txtCodRecBaixa,7,20,80,20);
     pinBaixa.adic(new JLabel("Doc."),90,0,77,20);
     pinBaixa.adic(txtDoc,90,20,77,20);
@@ -385,49 +378,51 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     pinBaixa.adic(txtSerie,180,20,50,20);
     pinBaixa.adic(new JLabel("Pedido"),240,0,77,20);
     pinBaixa.adic(txtCodVendaBaixa,240,20,77,20);
-    pinBaixa.adic(new JLabel("Código e descrição do cliente"),7,40,250,20);
+    pinBaixa.adic(new JLabel("Cód.cli."),7,40,250,20);
     pinBaixa.adic(txtCodCliBaixa,7,60,80,20);
-    pinBaixa.adic(txtRazCliBaixa,90,60,197,20);
-    pinBaixa.adic(new JLabel("Código e descrição do banco"),290,40,250,20);
-    pinBaixa.adic(txtCodBancoBaixa,290,60,57,20);
-    pinBaixa.adic(txtDescBancoBaixa,350,60,150,20);
-    pinBaixa.adic(new JLabel("Data de Emis."),7,80,100,20);
-    pinBaixa.adic(txtDtEmisBaixa,7,100,100,20);
-    pinBaixa.adic(new JLabel("Total a Pagar"),110,80,97,20);
-    pinBaixa.adic(txtTotRecBaixa,110,100,97,20);
-    pinBaixa.adic(new JLabel("Total Pago"),210,80,97,20);
-    pinBaixa.adic(txtTotPagoBaixa,210,100,97,20);
-    pinBaixa.adic(new JLabel("Total em Aberto"),310,80,97,20);
-    pinBaixa.adic(txtTotAbertoBaixa,310,100,97,20);
-    pinBaixa.adic(new JLabel("Juros"),410,80,80,20);
-    pinBaixa.adic(txtJurosBaixa,410,100,90,20);
+    pinBaixa.adic(new JLabel("Descrição do cliente"),90,40,250,20);
+    pinBaixa.adic(txtRazCliBaixa,90,60,207,20);
+    pinBaixa.adic(new JLabel("Cód.banco"),300,40,250,20);
+    pinBaixa.adic(txtCodBancoBaixa,300,60,77,20);
+    pinBaixa.adic(new JLabel("Descrição do banco"),380,40,250,20);
+    pinBaixa.adic(txtDescBancoBaixa,380,60,150,20);
+    pinBaixa.adic(new JLabel("Data de emissão"),7,80,100,20);
+    pinBaixa.adic(txtDtEmisBaixa,7,100,120,20);
+    pinBaixa.adic(new JLabel("Total a pagar"),130,80,97,20);
+    pinBaixa.adic(txtTotRecBaixa,130,100,97,20);
+    pinBaixa.adic(new JLabel("Total pago"),230,80,97,20);
+    pinBaixa.adic(txtTotPagoBaixa,230,100,97,20);
+    pinBaixa.adic(new JLabel("Total em aberto"),330,80,107,20);
+    pinBaixa.adic(txtTotAbertoBaixa,330,100,107,20);
+    pinBaixa.adic(new JLabel("Juros"),440,80,80,20);
+    pinBaixa.adic(txtJurosBaixa,440,100,90,20);
     pinBaixa.adic(btConsBaixa,540,90,30,30);
 
     pinBotoesBaixa.adic(btBaixa,3,10,30,30);
     
-    tabBaixa.adicColuna("Vecto."); //0
+    tabBaixa.adicColuna("Vencimento"); //0
     tabBaixa.adicColuna("Status"); //1
-    tabBaixa.adicColuna("N. Parc."); //2
-    tabBaixa.adicColuna("Doc"); //3
+    tabBaixa.adicColuna("Nº Parcelas"); //2
+    tabBaixa.adicColuna("Doc."); //3
     tabBaixa.adicColuna("Pedido"); //4
-    tabBaixa.adicColuna("Vlr. Parc."); //5
-    tabBaixa.adicColuna("Dt. Pagto."); //6
-    tabBaixa.adicColuna("Vlr. Pago"); //7
-    tabBaixa.adicColuna("Vlr. Desc."); //8
-    tabBaixa.adicColuna("Vlr. Juros"); //9
-    tabBaixa.adicColuna("Vlr. Aberto"); //10
+    tabBaixa.adicColuna("Valor parcela"); //5
+    tabBaixa.adicColuna("Data Pagamento"); //6
+    tabBaixa.adicColuna("Valor pago"); //7
+    tabBaixa.adicColuna("Valor desc."); //8
+    tabBaixa.adicColuna("Valor juros"); //9
+    tabBaixa.adicColuna("Valor aberto"); //10
     tabBaixa.adicColuna("Conta"); //11
     tabBaixa.adicColuna("Categoria"); //12
-	tabBaixa.adicColuna("Centro de Custo"); //13
+	tabBaixa.adicColuna("Centro de custo"); //13
     tabBaixa.adicColuna("Observação"); //14
     
     tabBaixa.setTamColuna(100,0);
     tabBaixa.setTamColuna(50,1);
-    tabBaixa.setTamColuna(50,2);
+    tabBaixa.setTamColuna(120,2);
     tabBaixa.setTamColuna(70,3);
     tabBaixa.setTamColuna(70,4);
     tabBaixa.setTamColuna(100,5);
-    tabBaixa.setTamColuna(80,6);
+    tabBaixa.setTamColuna(120,6);
     tabBaixa.setTamColuna(100,7);
     tabBaixa.setTamColuna(100,8);
     tabBaixa.setTamColuna(100,9);
@@ -455,11 +450,11 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     pnManut.add(pnTabManut,BorderLayout.CENTER);
     
 
-    lcRecManut.add(new GuardaCampo( txtCodRecManut, "CodRec", "Cód.Rec", ListaCampos.DB_PK, false));
-    lcRecManut.add(new GuardaCampo( txtDocManut, "DocRec", "Doc.Rec", ListaCampos.DB_SI, false));
+    lcRecManut.add(new GuardaCampo( txtCodRecManut, "CodRec", "Cód.rec", ListaCampos.DB_PK, false));
+    lcRecManut.add(new GuardaCampo( txtDocManut, "DocRec", "Doc.rec", ListaCampos.DB_SI, false));
     lcRecManut.add(new GuardaCampo( txtPedidoManut, "CodVenda", "Pedido", ListaCampos.DB_SI, false));
-    lcRecManut.add(new GuardaCampo( txtCodCliManut, "CodCli", "Cod.Cli", ListaCampos.DB_FK, false));
-    lcRecManut.add(new GuardaCampo( txtDtEmitManut, "DataRec", "Dt.Emis.", ListaCampos.DB_SI, false));
+    lcRecManut.add(new GuardaCampo( txtCodCliManut, "CodCli", "Cod.cli", ListaCampos.DB_FK, false));
+    lcRecManut.add(new GuardaCampo( txtDtEmitManut, "DataRec", "Data emissão", ListaCampos.DB_SI, false));
     lcRecManut.montaSql(false,"RECEBER", "FN");
     lcRecManut.setQueryCommit(false);
     lcRecManut.setReadOnly(true);
@@ -481,8 +476,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	txtCodCliFiltro.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 	txtRazCliFiltro.setTipo(JTextFieldPad.TP_STRING,40,0);
 	
-	pinManut.adic(new JLabel("Código e descrição do Cliente"),7,45,250,20);
+	pinManut.adic(new JLabel("Cód.cli."),7,45,250,20);
 	pinManut.adic(txtCodCliFiltro,7,65,50,20);
+	pinManut.adic(new JLabel("Razão social do cliente"),90,45,250,20);
 	pinManut.adic(txtRazCliFiltro,60,65,180,20);
 
 	vValsData.addElement("V");
@@ -523,8 +519,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
 	txtCodCliFiltro.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 	txtRazCliFiltro.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCliManut");
-	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCliManut");
+	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCliManut");
+	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCliManut");
 	lcCliFiltro.montaSql(false, "CLIENTE", "VD");
 	lcCliFiltro.setQueryCommit(false);
 	lcCliFiltro.setReadOnly(true);
@@ -532,8 +528,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	txtCodCliFiltro.setFK(true);
 	txtCodCliFiltro.setNomeCampo("CodCli");
 
-    lcCliManut.add(new GuardaCampo( txtCodCliManut, "CodCli", "Cód.Cli", ListaCampos.DB_PK, false));
-    lcCliManut.add(new GuardaCampo( txtRazCliManut, "RazCli", "Raz.Cli", ListaCampos.DB_SI, false));
+    lcCliManut.add(new GuardaCampo( txtCodCliManut, "CodCli", "Cód.cli", ListaCampos.DB_PK, false));
+    lcCliManut.add(new GuardaCampo( txtRazCliManut, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
     lcCliManut.montaSql(false,"CLIENTE", "VD");
     lcCliManut.setQueryCommit(false);
     lcCliManut.setReadOnly(true);
@@ -545,16 +541,17 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
     pinManut.adic(lbLinha,5,95,720,2);
 
-	pinManut.adic(new JLabel("Cod.Rec."),7,100,80,20);
+	pinManut.adic(new JLabel("Cod.rec."),7,100,80,20);
 	pinManut.adic(txtCodRecManut,7,120,80,20);
 	pinManut.adic(new JLabel("Doc."),90,100,77,20);
 	pinManut.adic(txtDocManut,90,120,77,20);
 	pinManut.adic(new JLabel("Pedido"),170,100,77,20);
 	pinManut.adic(txtPedidoManut,170,120,77,20);
-	pinManut.adic(new JLabel("Código e razão do cliente"),250,100,300,20);
+	pinManut.adic(new JLabel("Cód.cli."),250,100,300,20);
 	pinManut.adic(txtCodCliManut,250,120,77,20);
+	pinManut.adic(new JLabel("Razão social do cliente"),350,100,300,20);
 	pinManut.adic(txtRazCliManut,330,120,247,20);
-	pinManut.adic(new JLabel("Data Emit."),580,100,100,20);
+	pinManut.adic(new JLabel("Data emissão "),580,100,100,20);
 	pinManut.adic(txtDtEmitManut,580,120,100,20);
 
 	pinBotoesManut.adic(btBaixaManut,3,10,30,30);
@@ -564,37 +561,37 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	pinBotoesManut.adic(btExcluirManut,3,130,30,30);
     
     tabManut.adicColuna(""); //0
-    tabManut.adicColuna("Dt.Filtro"); //1
+    tabManut.adicColuna("Data filtro"); //1
     tabManut.adicColuna("Status"); //2
-    tabManut.adicColuna("Cód. Cli."); //3
-    tabManut.adicColuna("Razão"); //4
-    tabManut.adicColuna("Cód. Rec."); //5
-    tabManut.adicColuna("N. Parc."); //6
-    tabManut.adicColuna("Doc. Lanca"); //7
-    tabManut.adicColuna("Doc. Venda"); //8
-    tabManut.adicColuna("Vlr. Parc."); //9
-    tabManut.adicColuna("Dt. Pagto."); //10
-    tabManut.adicColuna("Vlr. Pago"); //11
-    tabManut.adicColuna("Vlr. Desc."); //12
-    tabManut.adicColuna("Vlr. Juros"); //13
-    tabManut.adicColuna("Vlr. Aberto"); //14
+    tabManut.adicColuna("Cód.cli."); //3
+    tabManut.adicColuna("Razão social do cliente"); //4
+    tabManut.adicColuna("Cód.rec."); //5
+    tabManut.adicColuna("Nº parcela"); //6
+    tabManut.adicColuna("Doc. lanca"); //7
+    tabManut.adicColuna("Doc. venda"); //8
+    tabManut.adicColuna("Valor parc."); //9
+    tabManut.adicColuna("Data pagamento"); //10
+    tabManut.adicColuna("Valor.pago"); //11
+    tabManut.adicColuna("Valor desconto"); //12
+    tabManut.adicColuna("Valor juros"); //13
+    tabManut.adicColuna("Valor aberto"); //14
     tabManut.adicColuna("Conta"); //15
     tabManut.adicColuna("Categoria"); //16
-	tabManut.adicColuna("Centro de Custo"); //17
+	tabManut.adicColuna("Centro de custo"); //17
     tabManut.adicColuna("Banco"); //18
     tabManut.adicColuna("Observação"); //19
 
-	tabManut.setTamColuna(20,0);
-	tabManut.setTamColuna(95,1);
-	tabManut.setTamColuna(50,2);
-	tabManut.setTamColuna(65,3);
+	tabManut.setTamColuna(0,0);
+	tabManut.setTamColuna(100,1);
+	tabManut.setTamColuna(60,2);
+	tabManut.setTamColuna(80,3);
 	tabManut.setTamColuna(200,4);
-	tabManut.setTamColuna(70,5);
-	tabManut.setTamColuna(50,6);
-	tabManut.setTamColuna(70,7);
-	tabManut.setTamColuna(70,8);
-	tabManut.setTamColuna(100,9);
-	tabManut.setTamColuna(75,10);
+	tabManut.setTamColuna(80,5);
+	tabManut.setTamColuna(80,6);
+	tabManut.setTamColuna(80,7);
+	tabManut.setTamColuna(80,8);
+	tabManut.setTamColuna(90,9);
+	tabManut.setTamColuna(100,10);
 	tabManut.setTamColuna(100,11);
 	tabManut.setTamColuna(100,12);
 	tabManut.setTamColuna(100,13);
