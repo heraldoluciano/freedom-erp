@@ -92,6 +92,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtFaxCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtCelCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtNatCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtApelidoCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtUFNatCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   private JTextFieldPad txtTempoResCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtDDDCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
@@ -147,10 +148,27 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtCodFilialTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   
+  private JTextFieldPad txtCodTipoCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldFK  txtDescTipoCob = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+  
+  private JTextFieldPad txtEndCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtNumCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtComplCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtBairCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtCidCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+  private JTextFieldPad txtCepCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtUFCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+  private JTextFieldPad txtDDDFoneCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtFoneCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtDDDFaxCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtFaxCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  
   private Tabela tabFicha = new Tabela();
   private JLabel lbNatCli = null;
+  private JLabel lbApelidoCli = null;
   private JLabel lbUfNatCli = null;
   private JLabel lbTempoResCli = null;
+  private JLabel lbEstadoCivil = null;
   private JLabel lbPaiCli = null;
   private JLabel lbMaeCli = null;
   private JLabel lbRgPaiCli = null;
@@ -199,6 +217,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
+  private ListaCampos lcTipoCob = new ListaCampos(this,"TC");
   private Navegador navFicha = new Navegador(false);
   private boolean bFisTipoCli = false;
   private boolean bJurTipoCli = false;
@@ -245,6 +264,16 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     lcTipoCred.setReadOnly(true);
     txtCodTpCred.setTabelaExterna(lcTipoCred);
 
+    
+  	lcTipoCob.add(new GuardaCampo( txtCodTipoCob, "CodTipoCob", "Cód.tp.cob.", ListaCampos.DB_PK,false));
+  	lcTipoCob.add(new GuardaCampo( txtDescTipoCob, "DescTipoCob", "Descrição do tipo de cobrança", ListaCampos.DB_SI, false));
+  	lcTipoCob.montaSql(false, "TIPOCOB", "FN");    
+  	lcTipoCob.setQueryCommit(false);
+  	lcTipoCob.setReadOnly(true);
+  	txtCodTipoCob.setTabelaExterna(lcTipoCob);
+
+    
+    
 	setPainel(pinGeral);
 	
 	lcCampos.addCarregaListener(this);
@@ -267,24 +296,42 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	adicCampo(txtCidCli, 220, 140, 210, 20, "CidCli", "Cidade", ListaCampos.DB_SI, false);
   	adicCampo(txtCepCli, 433, 140, 80, 20, "CepCli", "Cep", ListaCampos.DB_SI, false);
   	adicCampo(txtUFCli, 516, 140, 52, 20, "UFCli", "UF", ListaCampos.DB_SI, false);
-  	adicCampo(txtDDDCli, 7, 180, 40, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtFoneCli, 50, 180, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
-  	adicCampo(txtRamalCli, 150, 180, 47, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false); 	
-  	adicCampo(txtDDDFaxCli, 200, 180, 37, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtFaxCli, 240, 180, 97, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
-  	adicCampo(txtDDDCelCli, 340, 180,37, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtCelCli, 380, 180, 100, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
-		 	
-  	lbNatCli = adicCampo(txtNatCli, 7, 220, 200, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
-  	lbUfNatCli = adicCampo(txtUFNatCli, 210, 220, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
-  	lbTempoResCli = adicCampo(txtTempoResCli, 265, 220, 160, 20, "TempoResCli", "Tempo de residência.",ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDCli, 7, 180, 60, 20, "DDDCli", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneCli, 70, 180, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
+  	adicCampo(txtRamalCli, 170, 180, 60, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false); 	
+  	adicCampo(txtDDDFaxCli, 233, 180, 60, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxCli, 296, 180, 97, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDCelCli, 396, 180,60, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtCelCli, 459, 180, 110, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
+		 	  	
+
+  	adicCampo(txtEndCob, 7, 220, 330, 20, "EndCob", "Endereço de cobrança", ListaCampos.DB_SI, false);
+  	adicCampo(txtNumCob, 340, 220, 77, 20, "NumCob", "Num. cob.", ListaCampos.DB_SI, false);
+  	adicCampo(txtComplCob, 420, 220, 149, 20, "ComplCob", "Compl. cobrança", ListaCampos.DB_SI, false);
+  	adicCampo(txtBairCob, 7, 260, 210, 20, "BairCob", "Bairro cobrança", ListaCampos.DB_SI, false);
+  	adicCampo(txtCidCob, 220, 260, 210, 20, "CidCob", "Cidade cobrança", ListaCampos.DB_SI, false);
+  	adicCampo(txtCepCob, 433, 260, 80, 20, "CepCob", "Cep cobrança", ListaCampos.DB_SI, false);
+  	adicCampo(txtUFCob, 516, 260, 52, 20, "UFCob", "UF cob.", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFoneCob, 7, 300, 40, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFoneCob, 50, 300, 138, 20, "FoneCob", "Telefone cob.", ListaCampos.DB_SI, false);
+  	adicCampo(txtDDDFaxCob, 192, 300, 40, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxCob, 235, 300, 138, 20, "FaxCob", "Fax cob.", ListaCampos.DB_SI, false);
+
+  	
+  	adicCampo(txtCodTipoCob, 7, 340, 80, 20, "CodTipoCob", "Cód.t.cob.", ListaCampos.DB_FK, txtDescTipoCob,false);
+  	adicDescFK(txtDescTipoCob, 90, 340, 237, 20, "DescTipoCob", "Descrição do tipo de cobrança");
+   	  
+  	lbApelidoCli = adicCampo(txtApelidoCli, 7, 380, 170, 20, "ApelidoCli", "Apelido",ListaCampos.DB_SI, false);
+  	lbNatCli = adicCampo(txtNatCli, 180, 380, 165, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
+  	lbUfNatCli = adicCampo(txtUFNatCli, 348, 380, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
+  	lbTempoResCli = adicCampo(txtTempoResCli, 403, 380, 165, 20, "TempoResCli", "Tempo de residência.",ListaCampos.DB_SI, false);
 
   	adicCampoInvisivel(txtCodEmpTb,"codempec","cod. emp.",ListaCampos.DB_SI,false);
   	adicCampoInvisivel(txtCodFilialTb,"codfilialec","cod. filial",ListaCampos.DB_SI,false);
   	adicCampoInvisivel(txtCodTb,"codtbec","cod. emp.",ListaCampos.DB_SI,false);
 
  	cbEstCivCli = new JComboBoxPad(new Vector(),new Vector(),JComboBoxPad.TP_INTEGER, 5, 0);
- 	adicDB(cbEstCivCli, 7, 260, 200, 25, "codittbec", "Estado civil", false);
+ 	lbEstadoCivil = adicDB(cbEstCivCli, 7, 420, 200, 25, "codittbec", "Estado civil", false);
   	cbEstCivCli.setZeroNulo();
 	setListaCampos( true, "CLIENTE", "VD");
 	lcCampos.setPodeIns(false);
@@ -427,9 +474,14 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	txtNatCli.setVisible(bFisTipoCli);
   	txtUFNatCli.setVisible(bFisTipoCli);
   	txtTempoResCli.setVisible(bFisTipoCli);
+  	cbEstCivCli.setVisible(bFisTipoCli);
+  	txtApelidoCli.setVisible(bFisTipoCli);
   	lbNatCli.setVisible(bFisTipoCli);
   	lbUfNatCli.setVisible(bFisTipoCli);
   	lbTempoResCli.setVisible(bFisTipoCli);
+  	lbEstadoCivil.setVisible(bFisTipoCli);
+  	lbApelidoCli.setVisible(bFisTipoCli);
+  	
     //Filiação
     lbPaiCli.setVisible(bFilTipoCli);
     lbMaeCli.setVisible(bFilTipoCli);
@@ -603,6 +655,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     super.setConexao(cn);
     lcTipoCli.setConexao(cn);
     lcTipoCred.setConexao(cn);
+    lcTipoCob.setConexao(cn);
    	buscaEstadoCivil();
   }        
 }
