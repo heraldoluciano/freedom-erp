@@ -138,14 +138,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    private ListaCampos lcProduto = new ListaCampos(this,"PD");
    private ListaCampos lcClFiscal = new ListaCampos(this,"FC");
    
-   private JLabel lCodCli = new JLabel("Cód.Cli.");
+   private JLabel lCodCli = new JLabel("Cód.cli.");
    private JLabel lRazCli = new JLabel("Razão social do cliente"); 
-   private JLabel lCodPlanoPag = new JLabel("Cód.F.Pgto.");
-   private JLabel lDescPlanoPag = new JLabel("Descrição da forma de pgto.");
-   private JLabel lCodVenda = new JLabel("Nº Seq.Venda");
-   private JLabel lCodProd1 = new JLabel("Cod.Prod.");
+   private JLabel lCodPlanoPag = new JLabel("Cód.p.pag.");
+   private JLabel lDescPlanoPag = new JLabel("Descrição do plano de pagamento");
+   private JLabel lCodVenda = new JLabel("Nº seq.venda");
+   private JLabel lCodProd1 = new JLabel("Cód.prod.");
    private JLabel lDescProd1 = new JLabel("Descrição do produto"); 
-   private JLabel lCodProd2 = new JLabel("Código");
+   private JLabel lCodProd2 = new JLabel("Cód.prod.");
    private JLabel lQtd = new JLabel("Quantidade");
    private JLabel lPreco = new JLabel("Preço"); 
    private JLabel lBaseCalc1 = new JLabel("Base cálculo");
@@ -181,24 +181,24 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
      
 	  txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 	  txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-  	  lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-	  lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão Social", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+  	  lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
+	  lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão Social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
 	  lcCliente.montaSql(false, "CLIENTE", "VD");
 	  lcCliente.setReadOnly(true);
 	  txtCodCli.setTabelaExterna(lcCliente);
 	  txtCodCli.setFK(true);
 	  txtCodCli.setNomeCampo("CodCli");
 
-  	  lcClFiscal.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.Fisc", ListaCampos.DB_PK, false));
-  	  lcClFiscal.add(new GuardaCampo( txtTipoFisc, "TipoFisc", "Tipo.Fisc", ListaCampos.DB_SI, false));
+  	  lcClFiscal.add(new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc", ListaCampos.DB_PK, false));
+  	  lcClFiscal.add(new GuardaCampo( txtTipoFisc, "TipoFisc", "Cód.tp.fisc.", ListaCampos.DB_SI, false));
 	  lcClFiscal.montaSql(false, "CLFISCAL", "LF");
 	  lcClFiscal.setReadOnly(true);
 	  txtCodFisc.setTabelaExterna(lcClFiscal);
 
 	  txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 	  txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-	  lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag");
-	  lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag");
+	  lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPag");
+	  lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPag");
 	  lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 	  lcPlanoPag.setReadOnly(true);
 	  txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
@@ -214,7 +214,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  txtSerieCupom.setFK(true);
 	  txtSerieCupom.setNomeCampo("Serie");
 	  
-	  lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","C.TipoMov.",ListaCampos.DB_PK,true));
+	  lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_PK,true));
 	  lcTipoMov.add(new GuardaCampo(txtSerieCupom,"Serie","Serie",ListaCampos.DB_FK,false));
 	  lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
 	  lcTipoMov.setReadOnly(true);
@@ -222,25 +222,25 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  txtCodTipoMov.setFK(true);
 	  txtCodTipoMov.setNomeCampo("CodTipoMov");
 	  
-	  lcVenda.add(new GuardaCampo(txtCodVenda,"CodVenda","N. Pedido",ListaCampos.DB_PK,true));
+	  lcVenda.add(new GuardaCampo(txtCodVenda,"CodVenda","Nº pedido",ListaCampos.DB_PK,true));
 	  lcVenda.add(new GuardaCampo(txtTipoVenda,"TipoVenda","Tipo venda.",ListaCampos.DB_PK,true));
-	  lcVenda.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Tipo.Mov.",ListaCampos.DB_FK,true));
+	  lcVenda.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_FK,true));
 	  lcVenda.add(new GuardaCampo(txtSerieCupom,"Serie","Serie",ListaCampos.DB_FK,false));
 	  lcVenda.add(new GuardaCampo(txtNumeroCupom,"DocVenda","Doc",ListaCampos.DB_SI,false));
 	  lcVenda.add(new GuardaCampo(txtDtSaidaVenda,"DtSaidaVenda","Saída",ListaCampos.DB_SI,true));
 	  lcVenda.add(new GuardaCampo(txtDtEmitVenda,"DtEmitVenda","Emissão",ListaCampos.DB_SI,true));
-	  lcVenda.add(new GuardaCampo(txtCodCli,"CodCli","C.Cliente",ListaCampos.DB_FK,true));
-	  lcVenda.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","Plano Pag.",ListaCampos.DB_FK,true));
-	  lcVenda.add(new GuardaCampo(txtCodVend,"CodVend","C.Vendedor",ListaCampos.DB_SI,true));
+	  lcVenda.add(new GuardaCampo(txtCodCli,"CodCli","Cód.cli.",ListaCampos.DB_FK,true));
+	  lcVenda.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_FK,true));
+	  lcVenda.add(new GuardaCampo(txtCodVend,"CodVend","Cód.repr.",ListaCampos.DB_SI,true));
 	  lcVenda.montaSql(true, "VENDA", "VD");
 	  txtCodVenda.setListaCampos(lcVenda);
 	  txtCodVenda.setPK(true);
 	  txtCodVenda.setNomeCampo("CodVenda");
 	  
-	  lcProduto.add(new GuardaCampo(txtCodProd,"CodProd","C.Prod.",ListaCampos.DB_PK,true));
-	  lcProduto.add(new GuardaCampo(txtDescProd,"DescProd","Descrição",ListaCampos.DB_SI,false));
-	  lcProduto.add(new GuardaCampo(txtCodProd1,"CodProd","C.Prod.",ListaCampos.DB_SI,false));
-	  lcProduto.add(new GuardaCampo(txtCodFisc,"CodFisc","Cod.Fisc.",ListaCampos.DB_FK,false));
+	  lcProduto.add(new GuardaCampo(txtCodProd,"CodProd","Cód.prod.",ListaCampos.DB_PK,true));
+	  lcProduto.add(new GuardaCampo(txtDescProd,"DescProd","Descrição do produto",ListaCampos.DB_SI,false));
+	  lcProduto.add(new GuardaCampo(txtCodProd1,"CodProd","Cód.prod.",ListaCampos.DB_SI,false));
+	  lcProduto.add(new GuardaCampo(txtCodFisc,"CodFisc","Cód.fisc.",ListaCampos.DB_FK,false));
 	  lcProduto.montaSql(false, "PRODUTO", "EQ");
 	  lcProduto.setReadOnly(true);
 	  txtCodProd.setTabelaExterna(lcProduto);
@@ -274,7 +274,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	  
 	
 	  tbItem.adicColuna("Item");
-      tbItem.adicColuna("Cód.Prod.");
+      tbItem.adicColuna("Cód.prod.");
 	  tbItem.adicColuna("Descrição do produto");
 	  tbItem.adicColuna("Qtd.");
 	  tbItem.adicColuna("Preço");

@@ -86,8 +86,8 @@ public class FSuprimento extends FDialogo {
 		adic(new JLabel("Data"),164,100,90,20);
 		adic(txtData,164,120,90,20);
 		
-		adic(new JLabel("Valor do suprimento"),7,140,90,20);
-		adic(txtValor,7,160,90,20);
+		adic(new JLabel("Valor do suprimento"),7,140,120,20);
+		adic(txtValor,7,160,120,20);
 		
 	}	
 	private void executaQuery() {

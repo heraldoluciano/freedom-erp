@@ -66,7 +66,7 @@ public class FAliquota extends FDialogo implements ActionListener {
 		pnCli.add(spnTab,BorderLayout.CENTER);
 		pnCli.add(pinCab,BorderLayout.NORTH);
 			
-		pinCab.adic(new JLabel("Inserir Aliquota"),7,5,87,20);
+		pinCab.adic(new JLabel("Inserir aliquota"),7,5,87,20);
 		pinCab.adic(txtAliquota,7,25,87,20);
 		pinCab.adic(btInsere,150,15,30,30);
 
