@@ -43,11 +43,11 @@ public class DLRVendedor extends FFDialogo {
   private Vector vVals = new Vector();
   private JLabelPad lbSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
-  private JLabelPad lbCodFuncaoVend = new JLabelPad("Cód.Funcao");
-  private JLabelPad lbDescFuncaoVend = new JLabelPad("Descrição do Funcao do comissionado");
+  private JLabelPad lbCodFuncaoVend = new JLabelPad("Cód.funcao");
+  private JLabelPad lbDescFuncaoVend = new JLabelPad("Descrição do funcao do comissionado");
   private JLabelPad lbVendedor = new JLabelPad("Cód.comiss.");
   private JLabelPad lbNomeVendedor = new JLabelPad("Nome do comissionado");
-  private JLabelPad lbCodClasComi = new JLabelPad("Cód.Clas.Comi.");
+  private JLabelPad lbCodClasComi = new JLabelPad("Cód.cl.comis.");
   private JLabelPad lbDescClasComi = new JLabelPad("Descrição da classificação de comissão");
 
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -68,7 +68,7 @@ public class DLRVendedor extends FFDialogo {
   public DLRVendedor(Component cOrig, Connection cn) {
   	super(cOrig);
     setTitulo("Relatório de Comissionados");
-    setAtribos(460,475);
+    setAtribos(460,445);
     vLabs.addElement("Código");
     vLabs.addElement("Nome");
     vVals.addElement("C");

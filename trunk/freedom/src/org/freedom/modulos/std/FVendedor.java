@@ -276,7 +276,7 @@ public class FVendedor extends FDados implements PostListener {
       }    
     
         	
-     sSQL = "select VD.CODVEND,VD.NOMEVEND,VD.CIDVEND,VD.FONEVEND,VD.FAXVEND,VD.EMAILVEND,VD.PERCCOMVEND,VD.COMIPIVEND,"+
+     sSQL = "select VD.CODVEND,VD.NOMEVEND,VD.DDDFONEVEND,VD.CIDVEND,VD.FONEVEND,VD.FAXVEND,VD.EMAILVEND,VD.PERCCOMVEND,VD.COMIPIVEND,"+
        		 "VD.CELVEND,VD.CODSETOR,"+
        		 "(SELECT SE.DESCSETOR FROM VDSETOR SE WHERE SE.CODEMP=VD.CODEMPSE AND SE.CODFILIAL=VD.CODFILIALSE AND SE.CODSETOR=VD.CODSETOR),"+
 			 "VD.CODCLCOMIS,"+
@@ -318,10 +318,16 @@ public class FVendedor extends FDados implements PostListener {
           imp.say(imp.pRow()+0,12,"|");
           imp.say(imp.pRow()+0,14,"Nome:");
           imp.say(imp.pRow()+0,46,"|"); 
-          imp.say(imp.pRow()+0,59,"Fone:");
-          imp.say(imp.pRow()+0,93,"|");
-          if(sValores[1].length()>0)
-          	imp.say(imp.pRow()+0,96,"Cidade:");
+          imp.say(imp.pRow()+0,48,"Setor:");
+          imp.say(imp.pRow()+0,58,"|");
+          imp.say(imp.pRow()+0,60,"Fução:");
+          imp.say(imp.pRow()+0,70,"|");
+          imp.say(imp.pRow()+0,72,"Cl.comis.:");
+          imp.say(imp.pRow()+0,84,"|");
+          imp.say(imp.pRow()+0,92,"Fone:");
+          imp.say(imp.pRow()+0,106,"|");
+         // if(sValores[1].length()>0)
+          	imp.say(imp.pRow()+0,108,"Cidade:");
           imp.say(imp.pRow()+0,136,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
@@ -334,9 +340,16 @@ public class FVendedor extends FDados implements PostListener {
           imp.say(imp.pRow()+0,12,"|");
           imp.say(imp.pRow()+0,14,rs.getString("NomeVend") != null ? rs.getString("NomeVend").substring(0,30) : "");
           imp.say(imp.pRow()+0,46,"|");
-          imp.say(imp.pRow()+0,96,rs.getString("FoneVend") != null ? Funcoes.setMascara(rs.getString("FoneVend"),"####-####") : "");
-          imp.say(imp.pRow()+0,117,"|");
-          imp.say(imp.pRow()+0,120,rs.getString("CidVend") != null ? rs.getString("CidVend").substring(0,20) : "");
+          imp.say(imp.pRow()+0,48,rs.getString("CodSetor") != null ? rs.getString("CodSetor") : "");
+          imp.say(imp.pRow()+0,58,"|");
+          imp.say(imp.pRow()+0,60,rs.getString("CodFunc") != null ? rs.getString("CodFunc") : "");
+          imp.say(imp.pRow()+0,70,"|");   
+          imp.say(imp.pRow()+0,72,rs.getString("CodClComis") != null ? rs.getString("CodClComis") : "");
+          imp.say(imp.pRow()+0,84,"|");
+          imp.say(imp.pRow()+0,86,rs.getString("DDDFoneVend") != null ? rs.getString("DDDFoneVend") : "");
+          imp.say(imp.pRow()+0,92,rs.getString("FoneVend") != null ? Funcoes.setMascara(rs.getString("FoneVend"),"####-####") : "");
+          imp.say(imp.pRow()+0,106,"|");
+          imp.say(imp.pRow()+0,108,rs.getString("CidVend") != null ? rs.getString("CidVend").substring(0,20) : "");                         
           imp.say(imp.pRow()+0,136,"|");
 
  
