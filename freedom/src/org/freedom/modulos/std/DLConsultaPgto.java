@@ -44,8 +44,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLConsultaPgto extends FFDialogo {
-  private JTextFieldPad txtCodCli = new JTextFieldPad();
-  private JTextFieldFK txtDescCli = new JTextFieldFK();
+  private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private Connection con = null;
@@ -69,14 +69,12 @@ public class DLConsultaPgto extends FFDialogo {
     
     pinConsulta.adic(new JLabel("Código e descrição do cliente"),7,0,250,20);
     pinConsulta.adic(txtCodCli,7,20,100,20);
-    pinConsulta.adic(txtDescCli,110,20,250,20);
+    pinConsulta.adic(txtRazCli,110,20,250,20);
     
     txtCodCli.setNomeCampo("CodCli");
-    txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-    txtDescCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClix");
-    lcCli.add(new GuardaCampo( txtDescCli, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClix");
-    txtDescCli.setListaCampos(lcCli);
+    lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK,false));
+    lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
+    txtRazCli.setListaCampos(lcCli);
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setReadOnly(true);
     lcCli.setConexao(con);

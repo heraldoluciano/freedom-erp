@@ -45,8 +45,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSelListener {
   private Painel pinConsulta = new Painel(500,180);
-  private JTextFieldPad txtCodCli = new JTextFieldPad();
-  private JTextFieldFK txtRazCli = new JTextFieldFK();
+  private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaObs = new JTextAreaPad();
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
@@ -70,11 +70,9 @@ public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSe
     pinConsulta.adic(spnObs,7,60,270,80);
     
     txtCodCli.setNomeCampo("CodCli");
-    txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRazCli.setTipo(JTextFieldPad.TP_STRING,50,0);
-    lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
-	lcCliente.add(new GuardaCampo( txaObs, 90, 100, 207, 20, "ObsCli", "Observação", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK,false));
+    lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
+	lcCliente.add(new GuardaCampo( txaObs, "ObsCli", "Observação", ListaCampos.DB_SI,false));
     txtRazCli.setListaCampos(lcCliente);
     lcCliente.montaSql(false, "CLIENTE", "VD");
     lcCliente.setQueryCommit(false);

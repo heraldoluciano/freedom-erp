@@ -43,13 +43,13 @@ import org.freedom.telas.FFDialogo;
 
 public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private Painel pinConsulta = new Painel(500,100);
-  private JTextFieldPad txtCodVenda = new JTextFieldPad();
-  private JTextFieldPad txtDocVenda = new JTextFieldPad();
-  private JTextFieldPad txtVlrVenda = new JTextFieldPad();
-  private JTextFieldPad txtDtEmitVenda = new JTextFieldPad();
-  private JTextFieldPad txtDtSaida = new JTextFieldPad();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad();
-  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK();
+  private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldPad txtDocVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldPad txtVlrVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,13,2);
+  private JTextFieldPad txtDtEmitVenda = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDtSaida = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private Connection con = null;
@@ -92,10 +92,8 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
     pinConsulta.adic(txtVlrVenda,223,60,100,20);
     
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
-    txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-    txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Código", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição", ListaCampos.DB_SI,false));
     txtDescPlanoPag.setListaCampos(lcPlanoPag);
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
     lcPlanoPag.setQueryCommit(false);
@@ -103,15 +101,12 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
     lcPlanoPag.setConexao(con);
 
     txtCodVenda.setNomeCampo("CodVenda");
-    txtCodVenda.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-    txtDocVenda.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-    txtVlrVenda.setTipo(JTextFieldPad.TP_DECIMAL,13,2);
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendax");
-    lcVenda.add(new GuardaCampo(txtDocVenda,7,150,80,20, "DocVenda","Documento", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDocVenda");
-    lcVenda.add(new GuardaCampo(txtDtEmitVenda,7,150,80,20, "DtEmitVenda","Data Emissão", false, false, null, JTextFieldPad.TP_DATE,false),"txtDtEmitVenda");    
-    lcVenda.add(new GuardaCampo(txtDtSaida,7,150,80,20, "DtSaidaVenda","Data Saida", false, false, null, JTextFieldPad.TP_DATE,false),"txtDtSaida");        
-    lcVenda.add(new GuardaCampo( txtCodPlanoPag, 90, 100, 207, 20, "CodPlanoPag", "Cód.Plano", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescVendax");
-    lcVenda.add(new GuardaCampo( txtVlrVenda, 90, 100, 207, 20, "VlrLiqVenda", "Valor", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVendax");
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK,false));
+    lcVenda.add(new GuardaCampo(txtDocVenda,"DocVenda","N.documento", ListaCampos.DB_SI,false));
+    lcVenda.add(new GuardaCampo(txtDtEmitVenda,"DtEmitVenda","Dt.emissão", ListaCampos.DB_SI,false));    
+    lcVenda.add(new GuardaCampo(txtDtSaida,"DtSaidaVenda","Dt.saída", ListaCampos.DB_SI,false));        
+    lcVenda.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK,false));
+    lcVenda.add(new GuardaCampo( txtVlrVenda, "VlrLiqVenda", "Valor", ListaCampos.DB_SI,false));
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
     txtCodPlanoPag.setListaCampos(lcVenda);
     txtVlrVenda.setListaCampos(lcVenda);

@@ -46,14 +46,15 @@ import org.freedom.telas.FFDialogo;
 public class DLBaixaComis extends FFDialogo {
   private JPanel pnCliente = new JPanel(new BorderLayout());
   private Painel pinCentro = new Painel(580,100);
-  private JTextFieldPad txtData = new JTextFieldPad();
-  private JTextFieldPad txtCodPlan = new JTextFieldPad();
-  private JTextFieldPad txtCodConta = new JTextFieldPad();
-  private JTextFieldPad txtDoc = new JTextFieldPad();
-  private JTextFieldPad txtVlr = new JTextFieldPad();
+
+  private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtCodConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtDoc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtVlr = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtObs = new JTextFieldPad();
-  private JTextFieldFK txtDescConta = new JTextFieldFK();
-  private JTextFieldFK txtDescPlan = new JTextFieldFK();
+  private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private ListaCampos lcConta = new ListaCampos(this);
@@ -84,24 +85,16 @@ public class DLBaixaComis extends FFDialogo {
     Funcoes.setBordReq(txtDoc);
     Funcoes.setBordReq(txtVlr);
     
-    txtData.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDoc.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtVlr.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    
-    txtCodConta.setTipo(JTextFieldPad.TP_STRING,10,0);
-    txtDescConta.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Nº Conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+    lcConta.add(new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false));
+    lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição", ListaCampos.DB_SI,false));
     lcConta.montaSql(false, "CONTA", "FN");
     lcConta.setReadOnly(true);
     txtCodConta.setTabelaExterna(lcConta);
     txtCodConta.setFK(true);
     txtCodConta.setNomeCampo("NumConta");
 
-    txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
-    txtDescPlan.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód. Plan.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
-    lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
+    lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK,false));
+    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição", ListaCampos.DB_SI,false));
     lcPlan.setWhereAdic("TIPOPLAN = 'D' AND NIVELPLAN = 6");
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
     lcPlan.setReadOnly(true);
