@@ -516,7 +516,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     adicCampo(txtSldConsigLote, 173, 60, 80, 20, "SldConsigLote", "Saldo Consig.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     adicCampo(txtSldLiqLote, 256, 60, 80, 20, "SldLiqLote", "Saldo Liq.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     setListaCampos( false, "LOTE", "EQ");
-    lcLote.setOrdem("CodLote");
+    lcLote.setOrdem("VenctoLote desc");
     lcLote.setQueryInsert(false);
     lcLote.setQueryCommit(false);
     lcLote.montaTab();
