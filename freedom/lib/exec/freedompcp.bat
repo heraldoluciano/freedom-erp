@@ -1,1 +1,3 @@
-javaw -classpath ".;lib\jcommon-0.8.7.jar;lib\jfreechart-0.9.12.jar;lib\freedompcp.jar;lib\firebirdsql-full.jar;lib\itext-1.02b.jar;" -DARQINI=c:\opt\freedom\freedom.ini org.freedom.modulos.pcp.FreedomPCP
+cd \opt\freedom
+javaw -classpath jars\freedompcp.jar;jars\jcommon-0.8.7.jar;jars\jfreechart-0.9.12.jar;jars\itext-1.02b.jar;jars\firebirdsql-full.jar;lib\nachocalendar-0.21.jar -DARQINI=freedom.ini  projetos.freedompcp.FreedomPCP
+
