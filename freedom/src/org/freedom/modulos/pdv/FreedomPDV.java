@@ -46,28 +46,28 @@ public class FreedomPDV extends Aplicativo implements ActionListener{
 		addOpcao(110000000,TP_OPCAO_ITEM,"Venda","Venda",'V',100101000,2, true, FVenda.class);
 		JButtonPad btVenda = addBotao("barraVenda.gif","Venda","", 100101000, null);
 		addOpcao(110000000,TP_OPCAO_ITEM,"Cancela venda","Cancela Venda",'C',110200000,2, true, DLCancCupom.class);
-		addBotao("btExcluir.gif","Cancela venda","", 110200000, null);
+		addBotao("btExcluir.gif","Cancela venda","Cancela Venda", 110200000, DLCancCupom.class);
 	
 		addSeparador(110000000);
 			
 		addOpcao(110000000,TP_OPCAO_ITEM,"Suprimento","Suprimento de caixa",'S',110300000,2, true, FSuprimento.class);
-		addBotao("barraFornecedor.gif","Suprimento","", 110300000, null);
+		addBotao("barraFornecedor.gif","Suprimento","Suprimento de caixa", 110300000, FSuprimento.class);
 		addOpcao(110000000,TP_OPCAO_ITEM,"Sangria","Sangria",'G',110400000,2, true, FSangria.class);
-		addBotao("btPdvSangria.gif","Sangria","", 110400000, null);
+		addBotao("btPdvSangria.gif","Sangria","Sangria", 110400000, FSangria.class);
 		
 		addSeparador(110000000);
 		
 		addOpcao(110000000,TP_OPCAO_ITEM,"Aliquota","Inserir Aliquota",'Q',110500000,2, true, FAliquota.class);
-		addBotao("btPdvAliquota.gif","Aliquota","", 110500000, null);
+		addBotao("btPdvAliquota.gif","Aliquota","Inserir Aliquota", 110500000, FAliquota.class);
 		addOpcao(110000000,TP_OPCAO_ITEM,"Ajusta moeda","Grava Moeda",'J',110600000,2, true, FGravaMoeda.class);
-		addBotao("btPdvGravaMoeda.gif","Ajusta moeda","", 110600000, null);
+		addBotao("btPdvGravaMoeda.gif","Ajusta moeda","Grava Moeda", 110600000, FGravaMoeda.class);
 		
 		addSeparador(110000000);
 		
 		addOpcao(110000000,TP_OPCAO_ITEM,"Ler memória fiscal","Le Fiscal",'L',110700000,2, true, FLeFiscal.class);
 		addOpcao(110000000,TP_OPCAO_ITEM,"Leitura X","Confirma impressão de leitura X ?",'i',110800000,2, true, JBemaFI32.class);
 		
-		addBotao("btPdvLeituraXPq.gif","Ler memória fiscal","", 110700000, null);		   
+		addBotao("btPdvLeituraXPq.gif","Ler memória fiscal","Le Fiscal", 110700000, FLeFiscal.class);		   
 	    if (abrecaixa()) {
 	    	btVenda.doClick();
 		}

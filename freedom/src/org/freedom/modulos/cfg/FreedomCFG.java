@@ -53,11 +53,11 @@ public class FreedomCFG extends Aplicativo {
 	      addOpcao(100105000,TP_OPCAO_ITEM,"Ajuste de Sequencia","Ajusta sequencia",'A',100105090,3, true, FAjustaSeq.class);
 	   
       
-	  addBotao("barraGrupo.gif", "Cadastro de Grupos","", 100101010, null); 
-	  addBotao("barraUsuario.gif", "Cadastro de Usuarios","", 100101020, null); 
-	  addBotao("barraAcesso.gif", "Controle de Acessos","", 100101030, null);
-	  addBotao("btProcessos.gif", "Controle de processos","", 100110000, null);
-	  addBotao("btFluxo.gif", "Controle de Fluxos","", 100111000, null);
+	  addBotao("barraGrupo.gif", "Cadastro de Grupos","Grupos", 100101010, FGrupo.class); 
+	  addBotao("barraUsuario.gif", "Cadastro de Usuarios","Usuarios", 100101020, FUsuario.class); 
+	  addBotao("barraAcesso.gif", "Controle de Acessos","Acesso Menu", 100101030, FAcesso.class);
+//	  addBotao("btProcessos.gif", "Controle de processos","", 100110000, null);
+//	  addBotao("btFluxo.gif", "Controle de Fluxos","", 100111000, null);
 	  
 	  ajustaMenu();
 	  
