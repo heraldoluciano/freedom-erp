@@ -69,7 +69,6 @@ import org.freedom.layout.Leiaute;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FObservacao;
-import org.freedom.telas.FPrincipal;
 
 public class FVenda extends FVD implements PostListener,CarregaListener,FocusListener,ActionListener,InsertListener,DeleteListener {
   private int casasDec = Aplicativo.casasDec;
@@ -179,7 +178,6 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private ListaCampos lcVenda2 = new ListaCampos(this);
   private JTabbedPanePad tpnCab = new JTabbedPanePad();
   private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
-  private FPrincipal fPrim;
   
   JTextFieldPad txtUltCamp = new JTextFieldPad();
   boolean[] bPrefs = null;
@@ -2029,10 +2027,10 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   	  lcVenda2.carregaDados();
   }
   private void abreAdicOrc() {
-	  if (!fPrim.temTela("Orcamento")) {
+	  if (!Aplicativo.telaPrincipal.temTela("Busca orçamento")) {
 		FAdicOrc tela = new FAdicOrc(this);
 		//tela.setConexao(con);
-		fPrim.criatela("Orcamento",tela,con);
+		Aplicativo.telaPrincipal.criatela("Orcamento",tela,con);
 	  } 
   }
   private void altComisVend() {
@@ -2043,9 +2041,6 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
       dl.setVisible(true);
       dl.dispose();
       lcCampos.carregaDados();
-  }
-  public void setTelaPrim(FPrincipal fP) {
-	  fPrim = fP;
   }
   public void exec(int iCodVenda) {
 	txtCodVenda.setVlrString(iCodVenda+"");
