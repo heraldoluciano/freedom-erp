@@ -37,7 +37,6 @@ import org.freedom.bmps.Icone;
 
 public class FFilho extends JInternalFrame implements InternalFrameListener {
   private Component firstFocus = null;
-  private Container contentFirstFocus = null;
   private boolean initFirstFocus = true; 
   public String strTemp = "";
   public Connection con = null;

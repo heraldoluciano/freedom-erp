@@ -33,7 +33,6 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   public static final int TP_STRING = 0;
   public static final int TP_INTEGER = 4;
   private Vector valores = new Vector();
-  private Vector labels = new Vector();
   private JComboBoxListener cbLis = this;
   private ListaCampos lcCombo = null;
   private boolean criando = true;
@@ -64,7 +63,6 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     criando = true;
     if (val != null && label != null) {
       valores = val;
-      labels = label;
       for (int i=0; i<label.size(); i++) {
         addItem(label.elementAt(i));
       }
@@ -80,7 +78,6 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   	criando = true;
     removeAllItems();
     valores = val;
-    labels = label;
     
     for (int i=0; i<label.size(); i++) {
       addItem(label.elementAt(i));

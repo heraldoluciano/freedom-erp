@@ -21,21 +21,8 @@
 package org.freedom.telas;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.swing.ImageIcon;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTabbedPanePad;
-
-import org.freedom.bmps.Icone;
-import org.freedom.funcoes.Funcoes;
-
 
 public class FAtalhos extends FFDialogo {
   private JPanelPad pnEquipe = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

@@ -43,15 +43,6 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRGerContas extends FRelatorio  {
-  private final int POS_CODSETOR = 0;
-  private final int POS_MES = 1;
-  private final int POS_CODGRUP = 2;
-  private final int POS_SIGLAGRUP = 3;
-  private final int POS_CODVEND = 4;
-  private final int POS_VALOR = 5;
-  private final int POS_TOTSETOR = 6;
-  private final int TAM_GRUPO = 14;
-  private final int NUM_COLUNAS = 9;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

@@ -76,7 +76,7 @@ public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	  		if (c instanceof JPanelPad) {
 	  		//	System.out.println("Entrou no first focus do tabbed");
 	  			if (!( (JPanelPad) c).firstFocus()) 
-	  				nextFocus() ;
+	  				transferFocus() ;
 	  		}
 		}
 	}

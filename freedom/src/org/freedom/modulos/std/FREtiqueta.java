@@ -46,8 +46,6 @@ public class FREtiqueta extends FRelatorio {
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodTipo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
   private JTextFieldFK txtDescTipo = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtCodpapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);  
-  private JTextFieldFK txtDescpapel = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
   private ListaCampos lcModEtiq = new ListaCampos(this);
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcTipo = new ListaCampos(this);
@@ -240,7 +238,7 @@ public class FREtiqueta extends FRelatorio {
 					     vVal.setElementAt(Aux1,i2); // TESTE 
 					     Tam = 0; // TESTE
 		  			     }// TESTE
-					  vLinha.addElement((String) vVal.elementAt(i2));
+					  vLinha.addElement(vVal.elementAt(i2));
 			    }// teste
   				else 
   					vLinha.setElementAt( vLinha.elementAt(i2)+""+vVal.elementAt(i2),i2);   

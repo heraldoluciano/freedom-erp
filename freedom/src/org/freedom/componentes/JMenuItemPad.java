@@ -21,7 +21,6 @@
 package org.freedom.componentes;
 import javax.swing.JMenuItem;
 
-import org.freedom.telas.FFilho;
 public class JMenuItemPad extends JMenuItem {
 
 	private int iCodSys = 0;

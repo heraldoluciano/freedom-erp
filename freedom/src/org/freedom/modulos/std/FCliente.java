@@ -22,8 +22,6 @@
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -163,14 +161,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pnObs1_2_2_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinObs1_2_1_1 = new JPanelPad(200,200); 
   private JPanelPad pinObs1_2_2_2_1 = new JPanelPad(0,30);
-  
-  private JPanelPad pnObsData = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2)); // JPanelPad de Observações por data com 1 linha e duas colunas
-  private JPanelPad pnObsAcao = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(2,1)); // JPanelPad principal de ações que fica dentro do pnObsData 2 linhas e 1 coluna
-  private JPanelPad pnObsBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.LEADING)); // JPanelPad de botões de ação que fica dentro do pnObsAcao
-  private JPanelPad pnObsTb = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.LEFT)); // JPanelPad para o grid de datas, o scroll vai ficar dentro
-  
-  private JPanelPad pnGrpCli = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0)); // JPanelPad para botão de clientes agrupados
-  
+   
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
   private JScrollPane spnObs = new JScrollPane(txaObs); // Scrool pane para observações gerais 

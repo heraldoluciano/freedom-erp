@@ -325,26 +325,6 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 10);
 	}
 
-	private void testaCodSol() { //Traz o verdadeiro número do codCompra
-		// através do generator do banco
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setString(3, "CP");
-			rs = ps.executeQuery();
-			rs.next();
-			txtCodSolicitacao.setVlrString(rs.getString(1));
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
-					+ err.getMessage());
-		}
-	}
-
 	public void focusGained(FocusEvent fevt) {}
 
 	public void focusLost(FocusEvent fevt) {}

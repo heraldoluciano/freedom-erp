@@ -89,8 +89,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			19, 0);
-	private JTextFieldPad txtCodFilialCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			10, 0);
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
@@ -117,7 +115,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	String sOrdNota = "";
 	Integer anoCC = null;
 	String codCC = null;
