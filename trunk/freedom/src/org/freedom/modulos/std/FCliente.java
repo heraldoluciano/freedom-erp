@@ -868,8 +868,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     String sFrom = "";
     String[] sValores;
     Vector vObs = null;
-    imp.setTitulo("Relatório de Clientes");
-    imp.montaCab();
+    
     DLRCliente dl = new DLRCliente(this,con);
 	dl.setVisible(true);
 	if (dl.OK == false) {
@@ -962,20 +961,24 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         rs = ps.executeQuery();
         imp.limpaPags();
         while ( rs.next() ) {
-          if (imp.pRow()==0) {
-            imp.impCab(136, false);
-            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+          if (imp.pRow()==0) {          	
+            imp.montaCab();
+            imp.setTitulo("Relatório de Clientes");
+            imp.impCab(136, true);
+            
+            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
             for (int i=0;i<vFiltros.size();i++) {            
                     String sTmp = (String)vFiltros.elementAt(i);
-                    sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-                    sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+                    sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+                    sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,2,sTmp);
             }
           }
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,2,"Código:");
           imp.say(imp.pRow()+0,10,rs.getString("CodCli"));
           imp.say(imp.pRow()+0,20,"Razão:");
@@ -984,32 +987,39 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           if (rs.getString("CodPesq")!=null && !rs.getString("CodPesq").equals(rs.getString("CodCLi"))){
              imp.say(imp.pRow()+0,57,"Cod.Matriz : "+rs.getString("CodPesq"));	
           }
-          
-          
-          imp.say(imp.pRow()+0,129,"Tipo:");
-          imp.say(imp.pRow()+0,135,rs.getString("PessoaCli"));
+                    
+          imp.say(imp.pRow()+0,127,"Tipo:");
+          imp.say(imp.pRow()+0,133,rs.getString("PessoaCli"));
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Nome:");
-          imp.say(imp.pRow()+0,7,rs.getString("NomeCli"));
+          imp.say(imp.pRow()+0,0,"|");
+          imp.say(imp.pRow()+0,1,"Nome:");
+          imp.say(imp.pRow()+0,8,rs.getString("NomeCli"));
           imp.say(imp.pRow()+0,60,"Contato:");
           imp.say(imp.pRow()+0,70,rs.getString("ContCli"));
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Endereço:");
-          imp.say(imp.pRow()+0,11,rs.getString("EndCli"));
+          imp.say(imp.pRow()+0,0,"|");
+          imp.say(imp.pRow()+0,1,"Endereço:");
+          imp.say(imp.pRow()+0,12,rs.getString("EndCli"));
           imp.say(imp.pRow()+0,62,"N.:");
           imp.say(imp.pRow()+0,67,""+rs.getInt("NumCli"));
           imp.say(imp.pRow()+0,76,"Compl.:");
           imp.say(imp.pRow()+0,85,rs.getString("ComplCli") != null ? rs.getString("ComplCli").trim() : "");
           imp.say(imp.pRow()+0,94,"Bairro:");
           imp.say(imp.pRow()+0,103,rs.getString("BairCli") != null ? rs.getString("BairCli").trim() : "");
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Cidade:");
-          imp.say(imp.pRow()+0,8,rs.getString("CidCli"));
+          imp.say(imp.pRow()+0,0,"|");
+          imp.say(imp.pRow()+0,1,"Cidade:");
+          imp.say(imp.pRow()+0,9,rs.getString("CidCli"));
           imp.say(imp.pRow()+0,88,"UF:");
           imp.say(imp.pRow()+0,93,rs.getString("UfCli"));
-          imp.say(imp.pRow()+0,121,"CEP:");
-          imp.say(imp.pRow()+0,127,rs.getString("CepCli") != null ? Funcoes.setMascara(rs.getString("CepCli"),"#####-###") : "");
+          imp.say(imp.pRow()+0,120,"CEP:");
+          imp.say(imp.pRow()+0,125,rs.getString("CepCli") != null ? Funcoes.setMascara(rs.getString("CepCli"),"#####-###") : "");
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"|");
           if ((rs.getString("CnpjCli")) != null && (rs.getString("InscCli") != null)) {
             imp.say(imp.pRow()+0,0,"CNPJ:");
             imp.say(imp.pRow()+0,7,Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
@@ -1027,21 +1037,27 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           }
           imp.say(imp.pRow()+0,80,"Tel:");
           imp.say(imp.pRow()+0,86,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
-          imp.say(imp.pRow()+0,121,"Fax:");
-          imp.say(imp.pRow()+0,127,rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : "");
+          imp.say(imp.pRow()+0,115,"Fax:");
+          imp.say(imp.pRow()+0,122,rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : "");
+          imp.say(imp.pRow()+0,134,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"Contato:");
-          imp.say(imp.pRow()+0,9,rs.getString("ContCli"));
+          imp.say(imp.pRow()+0,0,"|");
+          imp.say(imp.pRow()+0,1,"Contato:");
+          imp.say(imp.pRow()+0,10,rs.getString("ContCli"));
           imp.say(imp.pRow()+0,70,"E-mail:");
           imp.say(imp.pRow()+0,79,rs.getString("EmailCli"));
+          imp.say(imp.pRow()+0,135,"|");
           if (sObs.length() > 0) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"Obs:");
+            imp.say(imp.pRow()+0,0,"|");
+            imp.say(imp.pRow()+0,1,"Obs:");
             imp.say(imp.pRow()+0,6,rs.getString("ObsCli"));
+            imp.say(imp.pRow()+0,135,"|");
           }
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          
           if (imp.pRow()>=linPag) {
+          	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
             imp.incPags();
             imp.eject();
           }
@@ -1049,7 +1065,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           iContaReg++;
         }
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
         imp.eject();
 
         imp.fechaGravacao();
@@ -1091,17 +1107,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         imp.limpaPags();
         while ( rs.next() ) {
           if (imp.pRow()==0) {
-            imp.impCab(136, false);
-            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+          	imp.montaCab();
+            imp.setTitulo("Relatório de Clientes");
+            imp.impCab(136, true);
+            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
             for (int i=0;i<vFiltros.size();i++) {            
                     String sTmp = (String)vFiltros.elementAt(i);
-                    sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-                    sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+                    sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+                    sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,2,sTmp);
             }
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|");
             imp.say(imp.pRow()+0,4,"Código");
@@ -1115,9 +1133,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
             imp.say(imp.pRow()+0,96,"Cidade:");
             imp.say(imp.pRow()+0,117,"|");
             imp.say(imp.pRow()+0,120,"Tel:");
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           }
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
@@ -1134,14 +1152,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           imp.say(imp.pRow()+0,96,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,20) : "");
           imp.say(imp.pRow()+0,117,"|");
           imp.say(imp.pRow()+0,120,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,135,"|");
           if (!sObs.equals("")) {
           	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsCli")),118);
           	 for (int i=0; i<vObs.size(); i++) {
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
                 imp.say(imp.pRow()+0,14,vObs.elementAt(i).toString());
-                imp.say(imp.pRow()+0,136,"|");
+                imp.say(imp.pRow()+0,135,"|");
                 if (imp.pRow()>=linPag) {
                     imp.incPags();
                     imp.eject();
@@ -1149,6 +1167,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           	 }
           }
           if (imp.pRow()>=linPag) {
+          	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
             imp.incPags();
             imp.eject();
           }
@@ -1156,7 +1176,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           iContaReg++;
         }
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
         imp.eject();
 
         imp.fechaGravacao();
@@ -1198,19 +1218,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         		}
 				
         		if (imp.pRow()==0) {
-        			imp.impCab(136, false);
-        			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+        			imp.montaCab();
+                    imp.setTitulo("Relatório de Clientes");
+        			imp.impCab(136, true);
+        			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
         			for (int i=0;i<vFiltros.size();i++) {            
                        String sTmp = (String)vFiltros.elementAt(i);
-                       sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-                       sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+                       sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+                       sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
                        imp.say(imp.pRow()+1,0,""+imp.comprimido());
                        imp.say(imp.pRow()+0,2,sTmp);
         	       			
-        			}                 
-        	     
-        			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                    imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+        			}              
+        	     	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                    imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
                     imp.say(imp.pRow()+0,0,"|"); 
         		    imp.say(imp.pRow()+0,2,"Codigo");
@@ -1222,14 +1243,14 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         	        imp.say(imp.pRow()+0,103,"Cidade");
         	        imp.say(imp.pRow()+0,115,"|");
         	        imp.say(imp.pRow()+0,120,"Telefone");
-        	        imp.say(imp.pRow()+0,136,"|");
+        	        imp.say(imp.pRow()+0,135,"|");
         	       	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        	        imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+        	        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
         		}
         		else {
         			if (!sCodpesq.equals(sCodpesqant)) {
         				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        				imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+        				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
         				
         			}
         		}
@@ -1246,7 +1267,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         		   imp.say(imp.pRow()+0,103,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,12) : "");
         		   imp.say(imp.pRow()+0,115,"|");
         		   imp.say(imp.pRow()+0,120,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
-        		   imp.say(imp.pRow()+0,136,"|");
+        		   imp.say(imp.pRow()+0,135,"|");
         		} 
         		else if (!rs.getString(1).equals(rs.getString(4))) {
         		   imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
@@ -1261,10 +1282,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         		   imp.say(imp.pRow()+0,103,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,12) : "");
         		   imp.say(imp.pRow()+0,115,"|");
         		   imp.say(imp.pRow()+0,120,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
-        		   imp.say(imp.pRow()+0,136,"|");
+        		   imp.say(imp.pRow()+0,135,"|");
         		     
         		}
         		if (imp.pRow()>=linPag) {
+        			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+    				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
         		   imp.incPags();
         		   imp.eject();
         		}
@@ -1272,7 +1295,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
            } 
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
            imp.eject();
            imp.fechaGravacao();
            if (!con.getAutoCommit())

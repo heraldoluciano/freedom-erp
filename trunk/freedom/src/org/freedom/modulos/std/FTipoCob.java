@@ -84,7 +84,7 @@ public class FTipoCob extends FDados implements ActionListener {
             imp.say(imp.pRow()+0,20,"Descrição");
             imp.say(imp.pRow()+0,60,"Duplicata");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodTipoCob"));
@@ -97,7 +97,7 @@ public class FTipoCob extends FDados implements ActionListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
       imp.eject();
       
       imp.fechaGravacao();
