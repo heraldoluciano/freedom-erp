@@ -63,7 +63,7 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   private JPanelPad pin = new JPanelPad();
   public  Container c = getContentPane();
   private Border br = BorderFactory.createEtchedBorder();
-  private Component cPai = null;
+  protected Component cPai = null;
   boolean setArea = true;
   boolean bUltimo = false;
   public boolean OK = false;
