@@ -44,12 +44,12 @@ public class DLRFornecedor extends FFDialogo {
   private Painel pinSelec = new Painel(350,70);
   private JPanel pnlbPessoa = new JPanel(new GridLayout(1,1));
   private Painel pinPessoa = new Painel(450,40);
-  private JTextFieldPad txtCid = new JTextFieldPad();
+  private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabel lbSelec = new JLabel(" Selecão:");
   private JLabel lbDe = new JLabel("De:");
   private JLabel lbA = new JLabel("À:");
-  private JTextFieldPad txtDe = new JTextFieldPad();
-  private JTextFieldPad txtA = new JTextFieldPad();
+  private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtA = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private JLabel lbPessoa = new JLabel(" Selecionar pessoas:");
   private JLabel lbCid = new JLabel("Cidade");
@@ -62,8 +62,8 @@ public class DLRFornecedor extends FFDialogo {
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
   private JLabel lbTipoFor = new JLabel("Código e descrição do tipo de fornecedor");
-  private JTextFieldPad txtCodTipoFor = new JTextFieldPad();
-  private JTextFieldFK txtDescTipoFor = new JTextFieldFK();
+  private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescTipoFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcTipoFor = new ListaCampos(this);
   public DLRFornecedor(Component cOrig, Connection cn) {
   	super(cOrig);
@@ -87,10 +87,8 @@ public class DLRFornecedor extends FFDialogo {
 	cbFis.setVlrString("N");
 	cbJur.setVlrString("S");
 
-    txtCodTipoFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescTipoFor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTipoFor.add(new GuardaCampo( txtCodTipoFor, 7, 100, 80, 20, "CodTipoFor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoFor");
-    lcTipoFor.add(new GuardaCampo( txtDescTipoFor, 90, 100, 207, 20, "DescTipoFor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoFor");
+    lcTipoFor.add(new GuardaCampo( txtCodTipoFor, "CodTipoFor", "Cód.tp.for.", ListaCampos.DB_PK, false));
+    lcTipoFor.add(new GuardaCampo( txtDescTipoFor, "DescTipoFor", "Descrição do tipo de fornecedor",ListaCampos.DB_SI, false));
     lcTipoFor.montaSql(false, "TIPOFOR", "CP");
     lcTipoFor.setReadOnly(true);
     txtCodTipoFor.setTabelaExterna(lcTipoFor);

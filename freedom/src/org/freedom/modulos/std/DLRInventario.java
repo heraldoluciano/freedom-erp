@@ -41,8 +41,8 @@ public class DLRInventario extends FFDialogo {
 
   private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo","S","N");
   private JRadioGroup rgOrdem = null;
-  private JTextFieldPad txtCodGrup = new JTextFieldPad();
-  private JTextFieldFK txtDescGrup = new JTextFieldFK();
+  private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+  private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private JLabel lbGrup = new JLabel("Código e descrição do grupo");
   private Vector vLabs = new Vector();
@@ -60,11 +60,9 @@ public class DLRInventario extends FFDialogo {
     rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     
-    txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-    txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
 
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+    lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK,false));
+    lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
     lcGrup.montaSql(false, "GRUPO", "EQ");
     lcGrup.setReadOnly(true);
     txtCodGrup.setTabelaExterna(lcGrup);

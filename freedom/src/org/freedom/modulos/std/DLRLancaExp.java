@@ -36,14 +36,14 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDialogo;
 
 public class DLRLancaExp extends FDialogo implements FocusListener {
-	private JTextFieldPad txtDataini = new JTextFieldPad(); 
-	private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-	private JTextFieldPad txtCodCli = new JTextFieldPad(); 
-	private JTextFieldFK txtDescCli = new JTextFieldFK(); 
-	private JTextFieldPad txtCodVend = new JTextFieldPad(); 
-	private JTextFieldFK txtDescVend = new JTextFieldFK(); 
-	private JTextFieldPad txtCodTipoExp = new JTextFieldPad(); 
-	private JTextFieldFK txtDescTipoExp = new JTextFieldFK(); 
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
+	private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
+	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
+	private JTextFieldPad txtCodTipoExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
+	private JTextFieldFK txtDescTipoExp = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
 	private ListaCampos lcCli = new ListaCampos(this);
 	private ListaCampos lcVend = new ListaCampos(this);
 	private ListaCampos lcTipoExp = new ListaCampos(this);
@@ -53,33 +53,25 @@ public class DLRLancaExp extends FDialogo implements FocusListener {
 	public DLRLancaExp() {
 		setTitulo("Lançamentos de Expositores");
 		setAtribos(80,80,310,270);
-   		txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-		txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
 		
-		txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "CódCli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClix");
-		lcCli.add(new GuardaCampo( txtDescCli, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK,false));
+		lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
 		txtCodCli.setFK(true);
 		txtCodCli.setNomeCampo("CodCli");
 
-		txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "CódVend", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-		lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeVend");
+		lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_PK,false));
+		lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante",  ListaCampos.DB_SI, false));
 		lcVend.montaSql(false, "VENDEDOR", "VD");
 		lcVend.setReadOnly(true);
 		txtCodVend.setTabelaExterna(lcVend);
 		txtCodVend.setFK(true);
 		txtCodVend.setNomeCampo("CodVend");
  
-		txtCodTipoExp.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescTipoExp.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcTipoExp.add(new GuardaCampo( txtCodTipoExp, 7, 100, 80, 20, "CodTipoExp", "CódExp", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoExpx");
-		lcTipoExp.add(new GuardaCampo( txtDescTipoExp, 90, 100, 207, 20, "DescTipoExp", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoExp");
+		lcTipoExp.add(new GuardaCampo( txtCodTipoExp, "CodTipoExp", "Cód.tp.exp",  ListaCampos.DB_PK,false));
+		lcTipoExp.add(new GuardaCampo( txtDescTipoExp, "DescTipoExp", "Descrição do tipo de expositor", ListaCampos.DB_SI,false));
 		lcTipoExp.montaSql(false, "TIPOEXP", "EQ");
 		lcTipoExp.setReadOnly(true);
 		txtCodTipoExp.setTabelaExterna(lcTipoExp);
