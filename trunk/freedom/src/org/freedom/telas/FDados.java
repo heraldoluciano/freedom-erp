@@ -232,36 +232,29 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     adic(comp, X, Y, Larg, Alt);
     return lbTmp;
   }*/
-  public JLabelPad adicCampo(ListaCampos lc, Navegador naveg, JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
-        String label, byte key, JTextFieldFK txtDescFK, boolean req) {
-        comp.setName("txt"+nome);
-        comp.setNomeCampo(nome);
-        comp.setListaCampos(lc);
-     	  comp.setChave(key);
-     	  if (txtDescFK == null)
-     	  	lc.add(new GuardaCampo( comp, nome, label, key, req));
-     	  else 	
-     	  	lc.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
-        naveg.setListaCampos(lc);
-        lc.setNavegador(naveg);
-        lc.setState(ListaCampos.LCS_NONE);
-        JLabelPad lbTmp = new JLabelPad(label);
-        adic(lbTmp, X, Y-20, Larg, 20);
-        adic(comp, X, Y, Larg, Alt);
-        return lbTmp;
-    }
   public JLabelPad adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
-      String label, byte key, JTextFieldFK txtDescFK, boolean req) {   
-      return adicCampo(lcSeq, navSeq, comp, X, Y, Larg, Alt, nome, label, key, txtDescFK, req);
+      String label, byte key, JTextFieldFK txtDescFK, boolean req) {
+      comp.setName("txt"+nome);
+      comp.setNomeCampo(nome);
+      comp.setListaCampos(lcSeq);
+   	  comp.setChave(key);
+   	  if (txtDescFK == null)
+        lcSeq.add(new GuardaCampo( comp, nome, label, key, req));
+   	  else 	
+   	  	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
+      navSeq.setListaCampos(lcSeq);
+      lcSeq.setNavegador(navSeq);
+      lcSeq.setState(ListaCampos.LCS_NONE);
+      JLabelPad lbTmp = new JLabelPad(label);
+      adic(lbTmp, X, Y-20, Larg, 20);
+      adic(comp, X, Y, Larg, Alt);
+      return lbTmp;
   }
   public JLabelPad adicCampo(JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
       String label, byte key, boolean req) {
     return adicCampo(comp, X, Y, Larg, Alt, nome, label, key, null, req);
   }
-  public JLabelPad adicCampo(ListaCampos lc, Navegador naveg, JTextFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
-        String label, byte key, boolean req) {
-      return adicCampo(lc, naveg, comp, X, Y, Larg, Alt, nome, label, key, null, req);
-    }  
+  
   public void adicCampo(JPasswordFieldPad comp, int X, int Y, int Larg, int Alt, String nome, 
       String label, byte key, boolean req) {
 	comp.setName("txp"+nome);
@@ -288,30 +281,24 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     lcSeq.setNavegador(navSeq);
     lcSeq.setState(ListaCampos.LCS_NONE);
   } */
-  public void adicCampoInvisivel(ListaCampos lc, Navegador naveg, JTextFieldPad comp, String nome, String label, 
-  		byte key, JTextFieldFK txtDescFK, boolean req) {
-	comp.addKeyListener(this);
-	comp.addKeyListener(naveg);
-	comp.setName("txt"+nome);
-	comp.setNomeCampo(nome);
-	comp.setListaCampos(lc);
-	lc.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
-	naveg.setListaCampos(lc);
-	lc.setNavegador(naveg);
-	lc.setState(ListaCampos.LCS_NONE);
-  }   
   public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
 	byte key, JTextFieldFK txtDescFK, boolean req) {
-  	adicCampoInvisivel(lcSeq, navSeq, comp, nome, label, key, txtDescFK, req);
+	comp.addKeyListener(this);
+	comp.addKeyListener(navSeq);
+	comp.setName("txt"+nome);
+	comp.setNomeCampo(nome);
+	comp.setListaCampos(lcSeq);
+	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
+	navSeq.setListaCampos(lcSeq);
+	lcSeq.setNavegador(navSeq);
+	lcSeq.setState(ListaCampos.LCS_NONE);
   }   
+ 
   public void adicCampoInvisivel(JTextFieldPad comp, String nome, String label, 
    		byte key,  boolean req) {
   	 adicCampoInvisivel(comp, nome, label, key, null, req);
   }
-  public void adicCampoInvisivel(ListaCampos lc, Navegador naveg, JTextFieldPad comp, String nome, String label, 
-   		byte key,  boolean req) {
-  	 adicCampoInvisivel(lc, naveg, comp, nome, label, key, null, req);
-  }  public JLabelPad adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label) {
+  public JLabelPad adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label) {
     comp.setNomeCampo(nome);
     comp.addKeyListener(this);
     comp.addKeyListener(navSeq);
