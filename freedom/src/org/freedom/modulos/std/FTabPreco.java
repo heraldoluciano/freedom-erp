@@ -38,8 +38,8 @@ public class FTabPreco extends FDados implements ActionListener{
   public FTabPreco () {
     setTitulo("Cadastro de Tabelas de Preços");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTab, 7, 20, 50, 20,"CodTab","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescTab, 60, 20, 250, 20,"DescTab","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodTab, 7, 20, 70, 20,"CodTab","Cód.tb.pc.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescTab, 80, 20, 250, 20,"DescTab","Descrição da tabela de preço",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "TABPRECO", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

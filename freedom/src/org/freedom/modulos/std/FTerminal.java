@@ -74,13 +74,13 @@ public class FTerminal extends FTabDados implements ActionListener {
     setPainel(pnTerm);
     adicTab("Terminal",pnTerm);
     
-    JCheckBoxPad cbECF = new JCheckBoxPad("Terminal Fiscal","S","N");
+    JCheckBoxPad cbECF = new JCheckBoxPad("Terminal fiscal","S","N");
     JCheckBoxPad cbModo = new JCheckBoxPad("Modo demonstração","S","N");
     cbECF.setVlrString("N");
     cbModo.setVlrString("S");
 
-    adicCampo(txtCodCaixa, 7, 20, 50, 20, "CodCaixa", "Código", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
-    adicCampo(txtDescCaixa, 60, 20, 210, 20, "DescCaixa", "Descrição", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtCodCaixa, 7, 20, 70, 20, "CodCaixa", "Cód.caixa", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
+    adicCampo(txtDescCaixa, 80, 20, 210, 20, "DescCaixa", "Descrição do caixa", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
     adicDB(cbECF, 7, 60, 150, 20, "ECFCaixa", "ECF",JTextFieldPad.TP_STRING,true);
     adicDB(cbModo,7,100,150,20,"ModoDemo","",JTextFieldPad.TP_STRING,true);
     setListaCampos( true, "CAIXA", "PV");
@@ -119,9 +119,9 @@ public class FTerminal extends FTabDados implements ActionListener {
     );
 
     tab.adicColuna("Pad.");
-    tab.adicColuna("Impressoras do Terminal");
-    tab.setTamColuna(30,0);
-    tab.setTamColuna(270,1);
+    tab.adicColuna("Impressoras do terminal");
+    tab.setTamColuna(50,0);
+    tab.setTamColuna(250,1);
     txtCodCaixa.setFocusAccelerator((char) 10);
     
   }

@@ -104,27 +104,27 @@ public class FSVV extends FFilho implements ActionListener {
     pinCliente.adic(lbAnd,7,60,150,20);
     pinCliente.adic(pbAnd,160,60,200,20);
 
-    tab.adicColuna("T. Mov."); //0
+    tab.adicColuna("Tipo mov."); //0
     tab.adicColuna("Série"); //1
     tab.adicColuna("Doc"); //2
     tab.adicColuna("Emissao"); //3
-    tab.adicColuna("C. Vend."); //4
-    tab.adicColuna("C. Ítem."); //5
+    tab.adicColuna("Cód.vend."); //4
+    tab.adicColuna("Cód.ítem."); //5
     tab.adicColuna("Unid."); //6
     tab.adicColuna("Lote."); //7
     tab.adicColuna("Quant."); //8
-    tab.adicColuna("V. ítem."); //9
+    tab.adicColuna("V.ítem."); //9
     tab.adicColuna("Prazo médio."); //10
-    tab.adicColuna("Cat. Cliente"); //11
+    tab.adicColuna("Cat.cliente"); //11
 	tab.adicColuna("Cidade"); //12
     tab.adicColuna("UF"); //13
     tab.adicColuna("CEP"); //14
     tab.adicColuna("Campanha"); //15
     tab.adicColuna("Partic."); //16
     tab.adicColuna("CNPJ/CPF"); //17
-    tab.adicColuna("Cod.Cli."); //18
+    tab.adicColuna("Cod.cli."); //18
     tab.adicColuna("Pessoa"); //19
-    tab.adicColuna("Razão/Nome"); //20
+    tab.adicColuna("Razão social"); //20
     tab.adicColuna("Endereço de entrega"); //21
     tab.adicColuna("Bairro de entrega"); //22
     tab.adicColuna("Endereço de cobrança"); //23
@@ -136,9 +136,9 @@ public class FSVV extends FFilho implements ActionListener {
     tab.adicColuna("Contato"); //29
     tab.adicColuna("Telefone"); //30
     
-    tab.setTamColuna(50,0);
+    tab.setTamColuna(70,0);
     tab.setTamColuna(50,1);
-    tab.setTamColuna(80,2);
+    tab.setTamColuna(50,2);
     tab.setTamColuna(100,3);
     tab.setTamColuna(80,4);
     tab.setTamColuna(80,5);
@@ -146,24 +146,24 @@ public class FSVV extends FFilho implements ActionListener {
     tab.setTamColuna(80,7);
     tab.setTamColuna(60,8);
     tab.setTamColuna(100,9);
-    tab.setTamColuna(50,10);
-    tab.setTamColuna(50,11);
+    tab.setTamColuna(100,10);
+    tab.setTamColuna(100,11);
     tab.setTamColuna(200,12);
     tab.setTamColuna(50,13);
     tab.setTamColuna(90,14);
-    tab.setTamColuna(50,15);
+    tab.setTamColuna(120,15);
     tab.setTamColuna(70,16);
     tab.setTamColuna(110,17);
     tab.setTamColuna(80,18);
-    tab.setTamColuna(50,19);
+    tab.setTamColuna(100,19);
     tab.setTamColuna(200,20);
     tab.setTamColuna(200,21);
     tab.setTamColuna(150,22);
     tab.setTamColuna(200,23);
     tab.setTamColuna(150,24);
     tab.setTamColuna(200,25);
-    tab.setTamColuna(50,26);
-    tab.setTamColuna(90,27);
+    tab.setTamColuna(200,26);
+    tab.setTamColuna(120,27);
     tab.setTamColuna(130,28);
     tab.setTamColuna(150,29);
     tab.setTamColuna(100,30);
