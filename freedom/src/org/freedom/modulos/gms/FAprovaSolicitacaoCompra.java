@@ -73,7 +73,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
 	private JButton btCancelaCompra = new JButton("Solicitação pendente", null);
 	private JButton btAprovaItem = new JButton("Item pendente", null);
-	private JButton btCancelaItem = new JButton("Cancelar item", imgCancel);
+	private JButton btCancelaItem = new JButton("Cancelar", imgCancel);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
@@ -101,8 +101,8 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextAreaPad txaMotivoSolicitacao = new JTextAreaPad();
 	private JTextFieldPad txaMotivoCanc = new JTextFieldPad(JTextFieldPad.TP_STRING, 10000, 0);
-	private JTextFieldPad txaMotivoAprovIt = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10000, 0);
-	private JTextFieldPad txaMotivoCancIt = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10000, 0);
+	private JTextFieldPad txaMotivoAprovIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 10000, 0);
+	private JTextFieldPad txaMotivoCancIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 10000, 0);
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSolicitacao);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
@@ -257,8 +257,8 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicDescFK(txtDescCC, 80, 60, 180, 20, "DescCC","Descrição do centro de custo");
 		adicCampoInvisivel(txtAnoCC, "anoCC", "Ano c.c.", ListaCampos.DB_SI, false);
 		adicCampo(txtCodUsu, 263, 60, 70, 20, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_FK, txtNomeUsu, false);
-		adicDescFK(txtNomeUsu, 336, 60, 180, 20, "NomeUsu","Nome do usuário solicitante");
-		adic(btAprovaItem, 519, 53, 217, 30);
+		adicDescFK(txtNomeUsu, 336, 60, 144, 20, "NomeUsu","Nome do solicitante");
+		adic(btAprovaItem, 485, 55, 217, 30);
 		btAprovaItem.setEnabled(false);
 		adic(btCancelaItem, 615, 55, 125, 30);
 		btCancelaItem.setVisible(false);
@@ -325,7 +325,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 				if (allow || allowItems) {
 					btAprovaItem.setEnabled(true);
 					btAprovaItem.setIcon(imgOk);
-					btAprovaItem.setText("Aprovar Item");
+					btAprovaItem.setText("Aprovar");
 					btAprovaItem.setSize(125, 30);
 					btCancelaItem.setEnabled(true);
 					btCancelaItem.setVisible(true);

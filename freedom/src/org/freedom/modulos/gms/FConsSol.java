@@ -72,8 +72,7 @@ public class FConsSol extends FFilho implements ActionListener {
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
 	private JTextFieldFK txtDescCC = new JTextFieldFK();
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
-	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private Tabela tab = new Tabela();
 	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
@@ -92,33 +91,39 @@ public class FConsSol extends FFilho implements ActionListener {
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
-		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Desc.almox;", ListaCampos.DB_SI, false));
-		lcAlmox.montaSql(false, "ALMOX", "EQ");
+		txtCodAlmoxarife.setNomeCampo("CodAlmox");
+		txtCodAlmoxarife.setFK(true);
+		
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, null, false));
+		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Desc.almox;", ListaCampos.DB_SI, null, false));
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
 
 		txtDescAlmoxarife.setSoLeitura(true);
 		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
+		lcAlmox.montaSql(false, "ALMOX", "EQ");
 
-		txtCodUsu.setNomeCampo("IdUsuItSol");
+		txtCodUsu.setNomeCampo("IDUSU");
+		txtCodUsu.setFK(true);
 
-		lcUsuario.add(new GuardaCampo(txtCodUsu, "IDUSU", "ID usuario", ListaCampos.DB_PK, false));
-		lcUsuario.add(new GuardaCampo(txtNomeUsu, "NOMEUSU", "Nome do usuario", ListaCampos.DB_SI, false));
-		lcUsuario.montaSql(false, "USUARIO", "SG");
+		lcUsuario.add(new GuardaCampo(txtCodUsu, "IDUSU", "ID usuario", ListaCampos.DB_PK, null, false));
+		lcUsuario.add(new GuardaCampo(txtNomeUsu, "NOMEUSU", "Nome do usuario", ListaCampos.DB_SI, null, false));
 		lcUsuario.setQueryCommit(false);
 		lcUsuario.setReadOnly(true);
 
+		txtNomeUsu.setSoLeitura(true);
 		txtCodUsu.setTabelaExterna(lcUsuario);
+		lcUsuario.montaSql(false, "USUARIO", "SG");
 
-		lcCC.add(new GuardaCampo(txtCodCC, "codCC", "Cód.c.c.", ListaCampos.DB_PK, false));
-		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descriçao", ListaCampos.DB_SI, false));
-		lcCC.montaSql(false, "CC", "FN");
-		lcCC.setQueryCommit(false);
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
 		lcCC.setReadOnly(true);
-
+		lcCC.setQueryCommit(false);
+		lcCC.montaSql(false, "CC", "FN");
 		txtCodCC.setTabelaExterna(lcCC);
-
+		txtCodCC.setFK(true);
+		txtCodCC.setNomeCampo("CodCC");
+		
 		Container c = getTela();
 		c.add(pnRod, BorderLayout.SOUTH);
 		c.add(pnCli, BorderLayout.CENTER);
@@ -205,7 +210,7 @@ public class FConsSol extends FFilho implements ActionListener {
 		boolean usaWhere = false;
 		boolean usuario = (!txtCodUsu.getVlrString().trim().equals(""));
 		boolean almoxarifado = (txtCodAlmoxarife.getVlrInteger().intValue() > 0);
-		boolean CC = (!txtCodUsu.getVlrString().trim().equals(""));
+		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
 
 		if (cbPendentes.getVlrString().equals("S")) {
 			usaWhere = true;
@@ -250,7 +255,7 @@ public class FConsSol extends FFilho implements ActionListener {
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
 
 		if (CC)
-			where += " AND IT.CODCC=? AND IT.ANOCC=? AND IT.CODEMPCC=? AND IT.CODFILIALCC=? ";
+			where += " AND IT.CODCC=? AND IT.CODEMPCC=? AND IT.CODFILIALCC=? ";
 
 		if (usuario)
 			where += " AND (IT.IDUSUITSOL=? OR IT.IDUSUAPROVITSOL=? OR IT.IDUSUCANCITSOL=?) ";
@@ -283,15 +288,14 @@ public class FConsSol extends FFilho implements ActionListener {
 
 			if (CC) {
 				ps.setString(param++, txtCodCC.getVlrString());
-				ps.setInt(param++, txtAnoCC.getVlrInteger().intValue());
 				ps.setInt(param++, Aplicativo.iCodEmp);
 				ps.setInt(param++, Aplicativo.iCodFilial);
 			}
 
 			if (usuario) {
-				ps.setInt(param++, txtCodUsu.getVlrInteger().intValue());
-				ps.setInt(param++, txtCodUsu.getVlrInteger().intValue());
-				ps.setInt(param++, txtCodUsu.getVlrInteger().intValue());
+				ps.setString(param++, txtCodUsu.getVlrString());
+				ps.setString(param++, txtCodUsu.getVlrString());
+				ps.setString(param++, txtCodUsu.getVlrString());
 			}
 
 			ResultSet rs = ps.executeQuery();
@@ -471,33 +475,11 @@ public class FConsSol extends FFilho implements ActionListener {
 		fPrim = fP;
 	}
 
-	private int buscaAnoBaseCC() {
-		int iRet = 0;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				iRet = rs.getInt("ANOCENTROCUSTO");
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,
-					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage());
-		}
-		return iRet;
-	}
-
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 
 		lcAlmox.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
-		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaAnoBaseCC());
-
 	}
 }
