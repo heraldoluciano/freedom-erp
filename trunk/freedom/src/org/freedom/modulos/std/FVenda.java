@@ -47,13 +47,11 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.Properties;
-
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.JTextField;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.DeleteEvent;
@@ -327,6 +325,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextField txtFiscalTipoMov1 = new JTextField();
 
 	private JTextField txtFiscalTipoMov2 = new JTextField();
+	
+	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
+			5, 0);
+	
+	private JTextFieldPad txtCodEmpAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
+			5, 0);
+
+	private JTextFieldPad txtCodFilialAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
+			5, 0);
+
 
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.ped.", "S",
 			"N");
@@ -364,6 +372,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private ListaCampos lcFisc = new ListaCampos(this);
 
 	private ListaCampos lcVenda2 = new ListaCampos(this);
+	
+	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
 
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 
@@ -514,6 +524,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		txtCodNat.setTabelaExterna(lcNat);
 		txtDescNat.setListaCampos(lcNat);
 
+		//FK de Almoxarifado
+
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxItVenda, "CodAlmox", "Cod.Almox.",
+				ListaCampos.DB_PK, false));
+		lcAlmox.montaSql(false, "ALMOX", "EQ");
+		lcAlmox.setQueryCommit(false);
+		lcAlmox.setReadOnly(true);
+		txtCodAlmoxItVenda.setTabelaExterna(lcAlmox);
+
+		
 		//FK de Tratamento Tributário (É acionada também quando o listaCampos
 		// de Tratamento tributário é acionado)
 
@@ -848,6 +868,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				ListaCampos.DB_FK, txtDescLote, false);
 		adicCampo(txtQtdItVenda, 410, 20, 67, 20, "QtdItVenda", "Qtd.",
 				ListaCampos.DB_SI, true);
+		
+		adicCampoInvisivel(txtCodAlmoxItVenda, "codalmox", "Cod.Almox",
+				ListaCampos.DB_SI,null, false);
+		
+		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcCampos,this,con,"qtditvenda"));
+				
 		adicCampo(txtPrecoItVenda, 480, 20, 67, 20, "PrecoItVenda", "Preço",
 				ListaCampos.DB_SI, true);
 		adicCampo(txtPercDescItVenda, 550, 20, 57, 20, "PercDescItVenda",
@@ -2560,6 +2586,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
 		lcNat.setConexao(cn);
+		lcAlmox.setConexao(cn);
 		lcLote.setConexao(cn);
 		lcFisc.setConexao(cn);
 		lcVenda2.setConexao(cn);
