@@ -148,7 +148,9 @@ public class FreedomGMS extends Aplicativo {
   
 	    addOpcao(-1,TP_OPCAO_MENU,"Entrada",'E',200000000,0,false);
 	    	addOpcao(200000000,TP_OPCAO_ITEM,"Solicitação de Compra",'S',200300000,1,true);
-	    	addOpcao(200000000,TP_OPCAO_ITEM,"Aprovação da Solicitação de Compra",'S',200400000,1,true);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Aprova Solicitação de Compra",'S',200400000,1,true);
+	    	addOpcao(200000000,TP_OPCAO_ITEM,"Pesquisa Solicitações de Compra",'S',200500000,1,true);
+	    	addSeparador(200000000);
 	    	addOpcao(200000000,TP_OPCAO_ITEM,"Compra",'C',200100000,1,true);
 	    	addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200200000,1,false);
 	    	addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'f',200210000,2,true);
@@ -417,6 +419,14 @@ public class FreedomGMS extends Aplicativo {
 	        if (telaPrincipal.temTela("Aprova Solicitação de Compra")==false) {
 	          FAprovaSolicitacaoCompra tela = new FAprovaSolicitacaoCompra();
 	          telaPrincipal.criatela("Aprova Solicitação de Compra",tela,con);
+	        } 
+	      }
+	    else if (iOpcao==200500000) {
+	        if (telaPrincipal.temTela("Pesquisa Solicitações de Compra")==false) {
+	          FConsSol tela = new FConsSol();
+			  tela.setConexao(con);
+			  tela.setTelaPrim(telaPrincipal);
+	          telaPrincipal.criatela("Pesquisa Solicitações de Compra",tela);
 	        } 
 	      }
 	    else if (iOpcao==300100000) {

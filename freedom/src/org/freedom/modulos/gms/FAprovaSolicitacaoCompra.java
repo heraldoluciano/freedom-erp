@@ -135,7 +135,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 	String aprovSolicitacaoCompra = "";
 
 	public FAprovaSolicitacaoCompra() {
-		setTitulo("Solicitação de Compra");
+		setTitulo("Aprova Solicitação de Compra");
 		setAtribos(15, 10, 760, 580);
 
 		pnMaster.remove(2);
@@ -475,6 +475,11 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 				btCancelaCompra.setIcon(null);
 				btCancelaCompra.setText("Solicitação Concluída");
 				lcDet.setReadOnly(true);
+			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("TM")) {
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setIcon(null);
+				btCancelaCompra.setText("Cotação de Preços");
+				lcDet.setReadOnly(true);
 			}
 		}
 	}
@@ -810,6 +815,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcProd2.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		lcUsuario.setConexao(cn);
+		lcUsuario2.setConexao(cn);
 		lcCC.setConexao(cn);
 		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaAnoBaseCC());
 
