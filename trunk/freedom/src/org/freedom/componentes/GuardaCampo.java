@@ -94,6 +94,9 @@ public class GuardaCampo extends Component {
 	else if (comp instanceof JRadioGroup) {
 		iTipo = ( (JRadioGroup) comp ).getTipo();
 	}
+	else if (comp instanceof PainelImagem) {
+		iTipo = PainelImagem.TP_BYTES;
+	}
 	if (descFK==null)
        txtDescFK = new JTextFieldFK();
     else

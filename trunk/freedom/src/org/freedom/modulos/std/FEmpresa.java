@@ -130,7 +130,7 @@ public class FEmpresa extends FTabDados implements PostListener{
     adicCampo(txtCodPaisEmp, 250, 180, 47, 20, "CodPaisEmp", "C.pais", ListaCampos.DB_SI, false);
     adicCampo(txtPercIssEmp, 300, 180, 47, 20, "PercIssEmp" , "%Iss" , ListaCampos.DB_SI, false);
     adicCampo(txtNomeContEmp, 350, 180, 120, 20,"NomeContEmp" , "Contato" , ListaCampos.DB_SI,false);
-	adicDB(imFotoEmp, 7, 230, 150, 140, "FotoEmp", "Foto: (máx. 64K)",JTextFieldPad.TP_BYTES,true);
+	adicDB(imFotoEmp, 7, 230, 150, 140, "FotoEmp", "Foto: (máx. 64K)",true);
     
     txtCnpjEmp.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepEmp.setMascara(JTextFieldPad.MC_CEP);
@@ -163,12 +163,12 @@ public class FEmpresa extends FTabDados implements PostListener{
     adicCampo(txtEmailFilial, 7, 180, 140, 20, "EmailFilial", "E-Mail", ListaCampos.DB_SI, false);
     adicCampo(txtWWWFilial, 150, 180, 137, 20, "WWWFilial", "Página da WEB", ListaCampos.DB_SI, false);
     adicCampo(txtCodDistFilial, 290, 180, 77, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false);
-    adicDB(cbMatriz, 370, 180, 80, 20, "MzFilial", "Sede",JTextFieldPad.TP_STRING,false);
+    adicDB(cbMatriz, 370, 180, 80, 20, "MzFilial", "Sede",false);
     adicCampo(txtPercPIS, 7, 220, 90, 20, "PercPISFilial", "PIS", ListaCampos.DB_SI, false);
     adicCampo(txtPercCofins, 100, 220, 87, 20, "PercCofinsFilial", "COFINS", ListaCampos.DB_SI, false);
     adicCampo(txtPercIR, 190, 220, 87, 20, "PercIRFilial", "IR", ListaCampos.DB_SI, false);
     adicCampo(txtPercCSocial, 280, 220, 87, 20, "PercCSocialFilial", "Cont.social", ListaCampos.DB_SI, false);
-    adicDB(cbSimples, 370, 220, 80, 20, "SimplesFilial", "Fiscal",JTextFieldPad.TP_STRING,false);
+    adicDB(cbSimples, 370, 220, 80, 20, "SimplesFilial", "Fiscal",false);
     txtCnpjFilial.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepFilial.setMascara(JTextFieldPad.MC_CEP);
     txtFoneFilial.setMascara(JTextFieldPad.MC_FONEDDD);
