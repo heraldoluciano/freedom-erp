@@ -181,6 +181,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodPlanoPag2 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
+	private JTextFieldPad txtPrazo = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0);
+
 	private JTextFieldPad txtCodTab = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
@@ -802,6 +805,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 				"Cód.cli.", ListaCampos.DB_FK, txtDescCli, true);
 		adicDescFK(txtDescCli, 400, 105, 230, 20, "NomeCli",
 				"Nome do cliente");
+		adicCampo(txtPrazo, 320, 145, 230, 20, "Prazo",
+				"Prazo de Entrega do Orçamento", ListaCampos.DB_SI, true);
 		setListaCampos(false, "PREFERE4", "SG");
 
 		lcCampos.addCarregaListener(this);
