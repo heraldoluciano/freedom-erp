@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="C:/opt/eclipse/workspace/freedom/jars/freedompdv.jar"/>
+    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/jars/jardesc/freedompdv.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=freedom/&lt;bmps"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.funcoes"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.drivers"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedompdv"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.compo"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.acao"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.telas"/>
+    </selectedElements>
+</jardesc>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+    <jar path="C:/opt/eclipse/workspace/freedom/jars/freedomstd.jar"/>
+    <options overwrite="false" compress="true" exportErrors="true" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/jars/jardesc/freedomstd.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
+    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd{FAprovaOrc.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.funcoes"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd{DLDescontItOrc.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd{FOrcamento.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd{FConsAutoriz.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.compo"/>
+        <javaElement handleIdentifier="=freedom/&lt;layout"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd{FConsOrc.java"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.acao"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli.telas"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomstd"/>
+        <javaElement handleIdentifier="=freedom/&lt;bmps"/>
+        <javaElement handleIdentifier="=freedom/&lt;relato"/>
+        <javaElement handleIdentifier="=freedom/&lt;bibli"/>
+        <javaElement handleIdentifier="=freedom/&lt;projetos.freedomatd{DLCompOrc.java"/>
+    </selectedElements>
+</jardesc>
