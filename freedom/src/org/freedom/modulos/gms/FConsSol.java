@@ -346,24 +346,26 @@ public class FConsSol extends FFilho implements ActionListener {
 		 * cotações de preço?") == 0 ? true : false;
 		 */
 
-		imp.montaCab();
-		imp.setTitulo("Relatório de Solicitações de Compra");
+		
 
 		try {
 			imp.limpaPags();
 			for (int iLin = 0; iLin < tab.getNumLinhas(); iLin++) {
 				if (imp.pRow() == 0) {
-					imp.impCab(136, false);
+					imp.montaCab();
+					imp.setTitulo("Relatório de Solicitações de Compra");
+					imp.setSubTitulo("Relatório de Solicitações de Compra");
+					imp.impCab(136, true);
 					//	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "| N.Sol.");
+					imp.say(imp.pRow() + 0, 0, "| N.Sol.");
 					imp.say(imp.pRow() + 0, 15, "| Emissão");
 					imp.say(imp.pRow() + 0, 29, "| Situação");
 					imp.say(imp.pRow() + 0, 45, "| Motivo.");
-					imp.say(imp.pRow() + 0, 137, "|");
+					imp.say(imp.pRow() + 0, 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 
 					if (bImpCot) {
-						imp.say(imp.pRow() + 0, 1, "| Nro. Pedido");
+						imp.say(imp.pRow() + 0, 0, "| Nro. Pedido");
 						imp.say(imp.pRow() + 0, 15, "| Nro. Nota");
 						imp.say(imp.pRow() + 0, 29, "| Data Fat.");
 						imp.say(imp.pRow() + 0, 41, "| ");
@@ -371,17 +373,17 @@ public class FConsSol extends FFilho implements ActionListener {
 						imp.say(imp.pRow() + 0, 87, "| Vlr. Item Fat.");
 						imp.say(imp.pRow() + 0, 105, "| ");
 						imp.say(imp.pRow() + 0, 124, "| ");
-						imp.say(imp.pRow() + 0, 137, "|");
+						imp.say(imp.pRow() + 0, 135, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 
 					}
 
-					imp.say(imp.pRow() + 0, 0, Funcoes.replicate("-", 136));
+					imp.say(imp.pRow() + 0, 0,"|"+Funcoes.replicate("-", 133)+"|");
 
 				}
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 2, "|"
+				imp.say(imp.pRow() + 0, 0, "|"
 						+ Funcoes.alinhaDir(tab.getValor(iLin, 1) + "", 8));
 				imp.say(imp.pRow() + 0, 15, "| "
 						+ Funcoes.alinhaDir(tab.getValor(iLin, 2) + "", 8));
@@ -389,7 +391,7 @@ public class FConsSol extends FFilho implements ActionListener {
 						+ Funcoes.alinhaDir(tab.getValor(iLin, 0) + "", 8));
 				imp.say(imp.pRow() + 0, 45, "| "
 						+ Funcoes.alinhaDir(tab.getValor(iLin, 3) + "", 87));
-				imp.say(imp.pRow() + 0, 137, "| ");
+				imp.say(imp.pRow() + 0, 135, "| ");
 
 				if (bImpCot) {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -404,12 +406,10 @@ public class FConsSol extends FFilho implements ActionListener {
 							+ Funcoes.alinhaDir(tab.getValor(iLin, 12) + "", 15));
 					imp.say(imp.pRow() + 0, 105, "|");
 					imp.say(imp.pRow() + 0, 124, "|");
-					imp.say(imp.pRow() + 0, 137, "|");
+					imp.say(imp.pRow() + 0, 135, "|");
 				}
 
-				imp.say(imp.pRow() + 1, 0, "+ " + Funcoes.replicate("-", 133));
-				imp.say(imp.pRow() + 0, 136, "+");
-
+				
 				if (tab.getValor(iLin, 9) != null) {
 					bTotalLiq = bTotalLiq.add(new BigDecimal(Funcoes
 							.strCurrencyToDouble("" + tab.getValor(iLin, 9))));
@@ -421,7 +421,7 @@ public class FConsSol extends FFilho implements ActionListener {
 				}
 			}
 
-			imp.say(imp.pRow() + 1, 0, Funcoes.replicate("=", 136));
+			imp.say(imp.pRow() + 1, 0,"+"+Funcoes.replicate("-", 133)+"+");
 			imp.eject();
 
 			imp.fechaGravacao();
