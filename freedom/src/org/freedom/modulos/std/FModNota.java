@@ -29,17 +29,18 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FModNota extends FDados implements ActionListener{
-  private JTextFieldPad txtCodModNota = new JTextFieldPad(5);
-  private JTextFieldPad txtDescModNota= new JTextFieldPad(20);
+  private JTextFieldPad txtCodModNota = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescModNota= new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   public FModNota () {
     setTitulo("Cadastro de Modelo de NFs");
     setAtribos( 50, 50, 370, 125);
-    adicCampo(txtCodModNota, 7, 20, 90, 20,"CodModNota","Cód.mod.nts.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescModNota, 100, 20, 250, 20,"DescModNota","Descrição da nota fiscal",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    adicCampo(txtCodModNota, 7, 20, 90, 20,"CodModNota","Cód.mod.nts.", ListaCampos.DB_PK, true);
+    adicCampo(txtDescModNota, 100, 20, 250, 20,"DescModNota","Descrição da nota fiscal", ListaCampos.DB_SI, true);
     setListaCampos( true, "MODNOTA", "LF");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
