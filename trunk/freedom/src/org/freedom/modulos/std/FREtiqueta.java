@@ -56,24 +56,24 @@ public class FREtiqueta extends FRelatorio {
      setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
                
-     lcModEtiq.add(new GuardaCampo( txtCodModEtiq, 7, 100, 80, 20, "CodModEtiq", "Cód.mod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConta");
-     lcModEtiq.add(new GuardaCampo( txtDescModEtiq, 90, 100, 207, 20, "DescModEtiq", "Descrição do modelo de etiqueta", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
+     lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
      lcModEtiq.setReadOnly(true);
      lcModEtiq.montaSql(false, "MODETIQUETA", "SG");
      txtCodModEtiq.setTabelaExterna(lcModEtiq);
      txtCodModEtiq.setFK(true);
      txtCodModEtiq.setNomeCampo("CodModEtiq");
     
-     lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Cód.setor", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
-     lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK,false));
+     lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor", ListaCampos.DB_SI,false));
      lcSetor.setReadOnly(true);
      lcSetor.montaSql(false, "SETOR", "VD");
      txtCodSetor.setTabelaExterna(lcSetor);
      txtCodSetor.setFK(true);
      txtCodSetor.setNomeCampo("CodSetor");
      
-     lcTipo.add(new GuardaCampo( txtCodTipo, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
-     lcTipo.add(new GuardaCampo( txtDescTipo, 90, 100, 207, 20, "DescTipoCli", "Descrição do tipo de cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcTipo.add(new GuardaCampo( txtCodTipo, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK,false));
+     lcTipo.add(new GuardaCampo( txtDescTipo,"DescTipoCli", "Descrição do tipo de cliente",ListaCampos.DB_SI,false));
      lcTipo.setReadOnly(true);
      lcTipo.montaSql(false, "TIPOCLI", "VD");
      txtCodTipo.setTabelaExterna(lcTipo);
