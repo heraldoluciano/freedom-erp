@@ -593,12 +593,12 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	  txtRgCont.setEnabled(true);
 	}
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
   	lcAtiv.setConexao(cn);
 	lcAtivFK.setConexao(cn);
     lcVend.setConexao(cn);      
     lcSetor.setConexao(cn);
-    super.execShow(cn);
   }
   public void stateChanged(ChangeEvent cevt){
 	  if (cevt.getSource()==tpn) {

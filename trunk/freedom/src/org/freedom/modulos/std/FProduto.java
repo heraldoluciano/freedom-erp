@@ -906,8 +906,8 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 	  imp.print();
 	}
   }
-  public void execShow(Connection cn) {
-    con = cn;
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     sPrefs = getPrefs();
     montaTela();
     lcLote.setConexao(cn);
@@ -926,7 +926,6 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     lcClasCliPreco.setConexao(cn);
     lcTabPreco.setConexao(cn);
     lcPlanoPagPreco.setConexao(cn);
-    super.execShow(cn);
   }
   public void valorAlterado(CheckBoxEvent cbevt) {
     if (cbLote.getStatus()) {

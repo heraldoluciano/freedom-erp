@@ -266,11 +266,10 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		  err.printStackTrace();
         }                       
 	}
-	public void execShow(Connection cn) {
-		con = cn;
+	public void setConexao(Connection cn) {
+        super.setConexao(cn);
 	    lcCli.setConexao(cn);
         lcTipoCred.setConexao(cn);
-        super.execShow(cn);
 	}
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btBusca) {

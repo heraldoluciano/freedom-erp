@@ -643,7 +643,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		return iRet;
 	}
 
-	public void execShow(Connection cn) {
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		con = cn;
 		montaDetalhe();
 		lcProd.setConexao(cn);
@@ -677,6 +678,5 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					+ err.getMessage());
 		}
 
-		super.execShow(cn);
 	}
 }

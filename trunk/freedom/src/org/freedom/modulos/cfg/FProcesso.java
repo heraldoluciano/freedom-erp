@@ -114,9 +114,9 @@ public class FProcesso extends FDetalhe implements ActionListener {
     super.actionPerformed(evt);
   }
 
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
 	lcTarefa.setConexao(cn);
-	super.execShow(cn);
+	super.setConexao(cn);
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);

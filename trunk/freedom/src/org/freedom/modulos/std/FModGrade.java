@@ -99,9 +99,9 @@ public class FModGrade extends FDetalhe {
     setListaCampos( true, "ITMODGRADE", "EQ");
     montaTab();
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcProd.setConexao(cn);
     lcVarG.setConexao(cn);
-    super.execShow(cn);
   }        
 }

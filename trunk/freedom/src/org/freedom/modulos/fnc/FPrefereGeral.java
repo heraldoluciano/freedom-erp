@@ -68,9 +68,9 @@ public class FPrefereGeral extends FTabDados {
 		setListaCampos(false, "PREFERE1", "SG");
 		
 	}
-	public void execShow(Connection cn) {
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		lcMoeda.setConexao(cn);
-		super.execShow(cn);
 		lcCampos.carregaDados();
 	}
 }

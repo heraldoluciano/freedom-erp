@@ -498,7 +498,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
         else
             txtCodTabJuros.setAtivo(true);
     }
-	public void execShow(Connection cn) {
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		lcMoeda.setConexao(cn);
 		lcTabJuros.setConexao(cn);
 		lcMarca.setConexao(cn);
@@ -515,7 +516,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		lcPlanoPag.setConexao(cn);
 		lcClasCli.setConexao(cn);
 		lcTabPreco.setConexao(cn);
-		super.execShow(cn);
 		lcCampos.carregaDados();
 	}
 	

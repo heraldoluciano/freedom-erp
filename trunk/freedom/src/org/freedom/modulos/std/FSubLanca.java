@@ -467,14 +467,13 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
   public void beforeDelete(DeleteEvent devt) { }
   public void beforeEdit(EditEvent eevt) { }
   public void focusLost(FocusEvent fevt) { }
-  public void execShow(Connection cn) {
-    con = cn;
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcPlan.setConexao(cn);
 	lcCC.setConexao(cn);
 	lcFor.setConexao(cn);
 	lcCli.setConexao(cn);
 
-    super.execShow(cn);
     carregar();
   }
   private int buscaAnoBaseCC() {

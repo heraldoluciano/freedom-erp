@@ -187,8 +187,8 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   }
   public void beforeDelete(DeleteEvent devt) { }
   public void afterDelete(DeleteEvent devt) { }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
 	con = cn;
-	super.execShow(cn);
+	super.setConexao(cn);
   }
 }

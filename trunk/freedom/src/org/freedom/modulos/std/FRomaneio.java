@@ -255,8 +255,8 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     txtStatusRoma.setVlrString("R1");
   }
   public void beforeInsert(InsertEvent ievt) { }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcVenda.setConexao(cn);
-    super.execShow(cn);
   }        
 }

@@ -91,11 +91,11 @@ public class FConta extends FDados {
     setListaCampos(false,"CONTA", "FN");
     lcCampos.setQueryInsert(false);    
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcBanco.setConexao(cn);
     lcMoeda.setConexao(cn);
     lcPlan.setConexao(cn);
-    super.execShow(cn);
   }
 }
 

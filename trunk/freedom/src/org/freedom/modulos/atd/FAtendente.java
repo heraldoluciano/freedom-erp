@@ -108,10 +108,11 @@ public class FAtendente extends FDados {
     setListaCampos( true, "ATENDENTE", "AT");
     lcCampos.setQueryInsert(false);    
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn);
     lcTipoAtend.setConexao(cn);
     lcUsu.setConexao(cn);
     lcVend.setConexao(cn);
-    super.execShow(cn);
+  	
   }
 }

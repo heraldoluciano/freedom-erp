@@ -983,8 +983,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtSerieCompra.setVlrString(sSerie);
     txtDocCompra.setVlrString(iDoc + "");
   }
-  public void execShow(Connection cn) {
-    con = cn;
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
     montaDetalhe();
     lcTipoMov.setConexao(cn);
     lcSerie.setConexao(cn);
@@ -996,6 +996,5 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcLote.setConexao(cn);
     lcFisc.setConexao(cn);
     lcCompra2.setConexao(cn);
-    super.execShow(cn);
   }
 }

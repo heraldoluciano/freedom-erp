@@ -98,8 +98,8 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 	else if (iOpcao==100120040){
 		  if (telaPrincipal.temTela("Grupo")==false) {
 		    FGrupo tela = new FGrupo();
-		    tela.setConexao(con);
-		    telaPrincipal.criatela("Grupo",tela);
+		    //tela.setConexao(con);
+		    telaPrincipal.criatela("Grupo",tela,con);
 	  }
     }
 	else if (iOpcao==100120030){

@@ -769,8 +769,8 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		return iRet;
 	}
 
-	public void execShow(Connection cn) {
-		con = cn;
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		montaDetalhe();
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
@@ -810,6 +810,5 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 					+ err.getMessage());
 		}
 
-		super.execShow(cn);
 	}
 }

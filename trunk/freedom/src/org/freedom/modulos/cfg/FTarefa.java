@@ -93,9 +93,9 @@ public class FTarefa extends FDados implements ActionListener {
       imprimir(false);
     super.actionPerformed(evt);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	lcObjeto.setConexao(cn);
-	super.execShow(cn);
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);

@@ -99,9 +99,8 @@ public class FSerie extends FDados implements ActionListener {
     }
     super.actionPerformed(evt);
   }
-  public void execShow(Connection cn) {
-    con = cn;
-    super.execShow(cn);
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
   }
 }
 

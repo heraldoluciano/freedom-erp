@@ -399,12 +399,11 @@ public class FLeFiscal extends FTabDados {
 		}
 		super.actionPerformed(evt);
 	} 
-	public void execShow(Connection cn) {
-		con = cn;
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		lcCampos.setConexao(cn);
 		lcCaixa.setConexao(cn);
 /*		if (verifCaixa())
 		  carregaInfo();*/
-		super.execShow(cn);
 	}
 }

@@ -242,7 +242,8 @@ public class FPrefereAtend extends FTabDados {
 		nav.setAtivo(0,false);
 		nav.setAtivo(1,false);
 	}
-	public void execShow(Connection cn) {
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		lcTpAtend.setConexao(cn);
 		lcTpAtend2.setConexao(cn);
 		lcTpAtend3.setConexao(cn);
@@ -256,7 +257,6 @@ public class FPrefereAtend extends FTabDados {
 		lcTabAV.setConexao(cn);
 		lcTabITAV.setConexao(cn);
 		lcVend.setConexao(cn);
-		super.execShow(cn);
 		lcCampos.carregaDados();
 	}
 }

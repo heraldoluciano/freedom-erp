@@ -292,11 +292,11 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
   public void afterInsert(InsertEvent ievt) { 
     txtNumParc.setEditable(true);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcConta.setConexao(cn);      
 	lcPlan.setConexao(cn);      
 	lcCC.setConexao(cn);      
-    super.execShow(cn);
   }
 
 }

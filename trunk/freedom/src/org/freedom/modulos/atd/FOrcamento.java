@@ -843,7 +843,8 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   	txtCodOrc.setVlrString(iCodOrc+"");
   	lcCampos.carregaDados();
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn);
     con = cn;
     montaOrcamento();
     montaDetalhe();
@@ -857,6 +858,5 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	lcTipoConv.setConexao(cn);
 	lcCliente.setConexao(cn);
 	lcEnc.setConexao(cn);
-    super.execShow(cn);
   }
 }

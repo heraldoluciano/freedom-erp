@@ -124,11 +124,11 @@ public class FOPFase extends FDetalhe {
     tab.setTamColuna(170,3);
     tab.setTamColuna(120,5);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcProd.setConexao(cn);
     lcFase.setConexao(cn);
     lcRec.setConexao(cn);
-    super.execShow(cn);
     txtCodOP.setVlrInteger(new Integer(iCodOP));
     lcCampos.carregaDados();  }        
 }

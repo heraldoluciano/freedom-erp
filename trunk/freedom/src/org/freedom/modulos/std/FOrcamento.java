@@ -817,8 +817,8 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
 	txtCodOrc.setVlrString(iCodOrc+"");
 	lcCampos.carregaDados();
   }
-  public void execShow(Connection cn) {
-	con = cn;
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	montaOrcamento();
 	montaDetalhe();
 	lcProd.setConexao(cn);
@@ -828,7 +828,6 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
 	lcPlanoPag.setConexao(cn);
 	lcVend.setConexao(cn);
 	lcTipoCli.setConexao(cn);
-	super.execShow(cn);
   }
   
   public int[] getParansPreco() {

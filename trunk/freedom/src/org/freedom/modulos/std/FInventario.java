@@ -293,8 +293,8 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
   private boolean comRef() {
     return ( iPrefs[0] == 1 );
   }
-  public void execShow(Connection cn) {
-    con = cn;
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcProd.setConexao(cn);
     lcProd2.setConexao(cn);
     lcLote.setConexao(cn);
@@ -303,7 +303,6 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     iPrefs = prefs();
     montaTela();
     tipoCusto();
-    super.execShow(cn);
   }
   public void keyPressed(KeyEvent kevt) {
     if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {

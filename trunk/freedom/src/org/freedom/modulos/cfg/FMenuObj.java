@@ -109,11 +109,11 @@ public class FMenuObj extends FDetalhe {
     
     tab.setTamColuna(200,1);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcMenu.setConexao(cn);
     lcModu.setConexao(cn);
     lcSis.setConexao(cn);
     lcObj.setConexao(cn);
-    super.execShow(cn);
   }
 }

@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+//import java.sql.Connection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
@@ -60,7 +61,6 @@ import org.freedom.componentes.Painel;
 import org.freedom.componentes.PainelImagem;
 
 public class FDados extends FFilho implements ActionListener, KeyListener, InternalFrameListener, PostListener{//, FocusListener {
-   public Connection con = null;
    public PreparedStatement atualiza = null;
    public PreparedStatement insere = null;
    public PreparedStatement deleta = null;
@@ -139,13 +139,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
      setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
   }  
 
-  public void execShow(Connection cn) {
-    con = cn;
-    lcCampos.setConexao(cn);
-    lcSeq.setConexao(cn);
-    setPKFoco();
-    show();
-  }
 
   public void setPKFoco() {
     for (int i=0; i<lcCampos.getComponentCount(); i++) {
@@ -153,9 +146,9 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
         ((GuardaCampo)lcCampos.getComponent(i)).getComponente().requestFocus();
     }
   }
-  public void setConexao(Connection cn) {
+/*  public void setConexao(Connection cn) {
      con = cn;
-  }
+  }*/
 
   public void execConsultaPrep() {
 /*     try {
@@ -455,6 +448,13 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     }*/
     super.internalFrameClosing(ifevt);
   }
+  public synchronized void setConexao(Connection cn) {
+  	super.setConexao(cn);
+    lcCampos.setConexao(con);
+    lcSeq.setConexao(con);
+    setPKFoco();
+  }
+
   public void internalFrameActivated(InternalFrameEvent ifevt) { }
   public void internalFrameClosed(InternalFrameEvent ifevt) { 
     try {

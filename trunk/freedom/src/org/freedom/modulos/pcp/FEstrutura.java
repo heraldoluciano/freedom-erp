@@ -147,11 +147,11 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
         abreFase();
     super.actionPerformed(evt);
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+    super.setConexao(cn);
     lcProd.setConexao(cn);
     lcProd2.setConexao(cn);
     lcFase.setConexao(cn);
-    super.execShow(cn);
   }
   public void afterCarrega(CarregaEvent cevt) {
     if (cevt.getListaCampos() == lcCampos) {

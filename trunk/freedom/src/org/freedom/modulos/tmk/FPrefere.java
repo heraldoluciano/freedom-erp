@@ -57,8 +57,8 @@ public class FPrefere extends FTabDados {
 		nav.setAtivo(0,false);
 		nav.setAtivo(1,false);
 	}
-	public void execShow(Connection cn) {
-		super.execShow(cn);
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 }

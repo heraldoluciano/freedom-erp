@@ -127,8 +127,8 @@ public class FRecursos extends FDados implements ActionListener {
       imp.print();
     }
   }
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+  	super.setConexao(cn);
   	lcTpRecp.setConexao(cn);
-  	super.execShow(cn);
   }
 }

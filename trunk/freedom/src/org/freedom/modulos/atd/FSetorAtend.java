@@ -101,9 +101,9 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
     super.actionPerformed(evt);
   }
 
-  public void execShow(Connection cn) {
+  public void setConexao(Connection cn) {
+	super.setConexao(cn);
 	lcAtend.setConexao(cn);
-	super.execShow(cn);
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
