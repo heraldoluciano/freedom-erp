@@ -150,6 +150,9 @@ public class ListaCampos extends Container implements PostListener,InsertListene
   public static final byte DB_FK = 2; // Foreign Key
   public static final byte DB_PK = 1; // Primary Key
   public static final byte DB_SI = -3; // Single
+public int getCodEmp() {
+	return iCodEmp;
+}
   /**
    *  Construtor da classe (nada em especial). <BR>
    *  Simplesmente carrega as heranças.
