@@ -41,8 +41,8 @@ public class DLCopiaOrc extends FFDialogo {
     setTitulo("Cópia de orçamento");
     setAtribos(320,130);
     
-    lcCli.add(new GuardaCampo( txtCodCli, 7,55, 67, 20, "CodCli", "Cód.Forn.", true, false, null , JTextFieldPad.TP_INTEGER,true),"txtCodFor");
-    lcCli.add(new GuardaCampo( txtRazCli, 78, 55, 150, 20, "RazCli", "Razão Social", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazFor");
+    lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK,true));
+    lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI,false));
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setReadOnly(true);
     txtCodCli.setTabelaExterna(lcCli);

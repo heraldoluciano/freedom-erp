@@ -44,17 +44,16 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    private String sCol = null;
    private Vector vValsProd = new Vector();
    private ListaCampos lcProd = new ListaCampos(this,"PD");
-   private JTextFieldPad txtTmp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+   private JTextFieldPad txtTmp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+
    public DLBuscaProd(Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 this.sCol = sCol;
    	 this.con = con;
    	 
-   	 txtCod.setTipo(JTextFieldPad.TP_STRING,8,0);
-   	 txtDesc.setTipo(JTextFieldPad.TP_STRING,50,0);
-   	 lcProd.add(new GuardaCampo( txtCod, 7, 100, 80, 20,sCol, "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodFor");
-   	 lcProd.add(new GuardaCampo( txtDesc, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
-   	 lcProd.add(new GuardaCampo( txtTmp, 90, 100, 207, 20, "CodProd", "Descrição", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescFor");
+   	 lcProd.add(new GuardaCampo( txtCod, sCol, "Código", ListaCampos.DB_PK, false));
+   	 lcProd.add(new GuardaCampo( txtDesc, "DescProd", "Descrição do produto", ListaCampos.DB_SI,false));
+   	 lcProd.add(new GuardaCampo( txtTmp, "CodProd", "Cód.prod.", ListaCampos.DB_SI,false));
    	 txtCod.setTabelaExterna(lcProd);
    	 txtCod.setNomeCampo(sCol);
    	 txtCod.setFK(true);

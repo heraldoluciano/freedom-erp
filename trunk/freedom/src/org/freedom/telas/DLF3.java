@@ -38,8 +38,8 @@ import org.freedom.componentes.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
   private Painel pinCab = new Painel(0,60);
-  public JTextFieldPad txtCod = new JTextFieldPad();
-  public JTextFieldFK txtDesc = new JTextFieldFK();
+  public JTextFieldPad txtCod = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  public JTextFieldFK txtDesc = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   public Tabela tab = new Tabela();
   public JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
   public boolean bPrimeira = false;
