@@ -79,9 +79,12 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    pinDet = new Painel(740, 100);
 	    setPainel(pinDet, pnDet);
 	    setListaCampos(lcDet);
+	    setNavegador(navRod);
 	    adicCampo(txtNroImp,7,20,80,20,"NroImp","Nº imp.",ListaCampos.DB_PK,true);
 	    adicCampo(txtCodImp,90,20,100,20,"CodImp","Cód.imp.",ListaCampos.DB_FK,true);
 	    adicDescFK(txtDescImp,193,20,200,20,"DescImp","Descrição da impressora");
+	    adicCampo(txtPortaWin,7,60,100,20,"PortaWin","Porta Windows",ListaCampos.DB_SI,true);
+	    adicCampo(txtPortaLin,110,60,100,20,"PortaLin","Porta Linux",ListaCampos.DB_SI,true);
 	    
 	    setListaCampos(true, "ESTACAOIMP", "SG");
 	    lcDet.setQueryInsert(false);
