@@ -1089,6 +1089,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
     int iParam = 1; 
     boolean bResultado = true;
     Component comp = null;
+    Component compFocus = null;
     fireBeforeCarrega();
     if (bCancelCarrega) {
       bCancelCarrega = false;
@@ -1219,10 +1220,12 @@ public class ListaCampos extends Container implements PostListener,InsertListene
         }
         else {
            if(!this.bPodeIns) {
+        	   limpaCampos(false);
+           	   limpaDetalhes();
            	   Funcoes.mensagemInforma(cOwner,"Registro não foi encontrado!");
-           	   lcMaster.limpaCampos(false);
+           	   //lcMaster.limpaCampos(false);
            }
-           	   bResultado = false;     
+           bResultado = false;     
 
         }
 /*        if (rsLC != null)  
@@ -1266,6 +1269,13 @@ public class ListaCampos extends Container implements PostListener,InsertListene
     return bResultado;
   }
   
+  public void limpaDetalhes() {
+	   if (vLcDetalhe!=null)
+	   	  for (int i=0; i<vLcDetalhe.size();i++) {
+	   	  	if (vLcDetalhe.elementAt(i) instanceof ListaCampos)
+	   	  		((ListaCampos) vLcDetalhe.elementAt(i)).limpaCampos(true);
+	   	  }
+  }
   public String getNovoCodigo() {
      String retorno = "1";
      int iParam = 1;
