@@ -86,7 +86,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	adicCampo(txtDescModEtiq, 100, 20, 237, 20,"DescModEtiq","Descrição do modelo de etiqueta", ListaCampos.DB_SI, true);
     	adicCampo(txtNColModEtiq, 340, 20, 60, 20,"NColModEtiq","Colunas", ListaCampos.DB_SI, true);
     	
-    	adicDBLiv(txaEtiqueta,"TxaModEtiq", "Corpo",JTextFieldPad.TP_STRING, true);
+    	adicDBLiv(txaEtiqueta,"TxaModEtiq", "Corpo", true);
     	
      	adicCampo(txtCodpapel, 7, 60, 90, 20,"Codpapel","Cód.papel", ListaCampos.DB_FK, txtDescpapel, true); 
    	    adicDescFK(txtDescpapel, 100, 60, 297, 20,"Descpapel","Descrição do papel"); 

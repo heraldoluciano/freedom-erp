@@ -71,7 +71,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	
     	adicCampo(txtCodModBol, 7, 20, 90, 20,"CodModBol","Cód.mod.bol.", ListaCampos.DB_PK, true);
     	adicCampo(txtDescModBol, 100, 20, 250, 20,"DescModBol","Descrição do modelo de boleto", ListaCampos.DB_SI, true);
-    	adicDBLiv(txaBoleto,"TxaModBol", "Corpo",JTextFieldPad.TP_STRING, true);
+    	adicDBLiv(txaBoleto,"TxaModBol", "Corpo", true);
     	setListaCampos( false, "MODBOLETO", "FN");
     	
     	Vector vLabs = new Vector();

@@ -43,7 +43,7 @@ public class FMensagem extends FDados implements ActionListener {
     setTitulo("Cadastro de mensagens");
     setAtribos(50, 50, 350, 225);
     adicCampo(txtCod, 7, 20, 80, 20,"CodMens","Cód.mens.", ListaCampos.DB_PK, true);
-    adicDBLiv(txaMens,"Mens","Mensagem",JTextFieldPad.TP_STRING,true);
+    adicDBLiv(txaMens,"Mens","Mensagem",true);
     adic(spnMen,7,50,315,100);
     setListaCampos( true, "MENSAGEM", "LF");
     btImp.addActionListener(this);
