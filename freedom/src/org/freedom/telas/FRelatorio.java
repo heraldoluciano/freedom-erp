@@ -32,17 +32,16 @@ import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JPanelPad;
 
 
 public abstract class FRelatorio extends FFilho implements ActionListener,KeyListener {
   private JPanelPad pinCli = new JPanelPad(350,170);
-  private JPanel pnRod = new JPanel(new BorderLayout());
-  private JPanel pnCentRod = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-  public JPanel pnBotoes = new JPanel(new GridLayout(1,2));
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCentRod = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,0,0));
+  public JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
   private JButton btImp = new JButton(Icone.novo("btImprime.gif"));
   private JButton btPrevimp = new JButton(Icone.novo("btPrevimp.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
@@ -75,7 +74,7 @@ public abstract class FRelatorio extends FFilho implements ActionListener,KeyLis
     btPrevimp.addKeyListener(this);
     btSair.addKeyListener(this);
   }
-  public void setPanel(JPanel pn) {
+  public void setPanel(JPanelPad pn) {
   	c.remove(pinCli);
   	c.add(pn,BorderLayout.CENTER);
     bSetArea = false;

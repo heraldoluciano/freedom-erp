@@ -37,7 +37,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
@@ -48,14 +48,13 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
-  private JPanel pnCli = new JPanel(new BorderLayout());
-  private JPanel pnRod = new JPanel(new BorderLayout());
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinFiltro = new JPanelPad(350,80);
   private JPanelPad pinOrig = new JPanelPad(330,150);
   private JPanelPad pinDest = new JPanelPad(330,150);

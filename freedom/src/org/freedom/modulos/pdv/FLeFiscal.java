@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -41,7 +41,6 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -56,7 +55,7 @@ public class FLeFiscal extends FTabDados {
 	private JPanelPad pinTributado = new JPanelPad();
 	private JPanelPad pinIsen = new JPanelPad();
 	private JPanelPad pinIsento = new JPanelPad();
-	private JPanel pnMapa = new JPanel(new GridLayout(1,1));
+	private JPanelPad pnMapa = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtDataX = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtNumTermX = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTermX = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

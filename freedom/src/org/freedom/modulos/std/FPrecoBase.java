@@ -33,20 +33,19 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFilho;
 
 public class FPrecoBase extends FFilho implements ActionListener {
   private JPanelPad pinCli = new JPanelPad(300,150);
-  private JPanel pnRod = new JPanel(new BorderLayout());
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

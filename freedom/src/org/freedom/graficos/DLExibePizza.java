@@ -30,15 +30,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.telas.FFilho;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 public class DLExibePizza extends FFilho implements ActionListener {
-  private JPanel pnCli = new JPanel(new GridLayout(1,1));  
-  private JPanel pnCab = new JPanel(new FlowLayout(FlowLayout.CENTER));
-  private JPanel pnRod = new JPanel(new FlowLayout(FlowLayout.CENTER));
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));  
+  private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER));
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER));
   public DLExibePizza(JFreeChart ch,int larg,int alt,String sTitulo,String sVlr) {    
     setAtribos(0,0,larg,alt);
     setTitulo("Visualização de gráfico");

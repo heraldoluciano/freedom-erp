@@ -33,7 +33,7 @@ import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
@@ -45,19 +45,19 @@ import org.freedom.bmps.Icone;
  * To change the template for this generated type comment go to
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class StatusBar extends JPanel {
+public class StatusBar extends JPanelPad {
 
-	private JPanel pnEst = new JPanel(new BorderLayout());
-	private JPanel pnCentro = new JPanel(new BorderLayout());
-	private JPanel pnUsuario = new JPanel(new BorderLayout());
-	private JPanel pnInfo = new JPanel(new BorderLayout());
-	private JPanel pnRelogio = new JPanel(new BorderLayout());
-	private JPanel pnDescEst = new JPanel(new BorderLayout());
-	private JPanel pnIconEst = new JPanel(new BorderLayout());
-	private JPanel pnIconInfo = new JPanel(new BorderLayout());
-	private JPanel pnIDUSU = new JPanel(new BorderLayout());
-	private JPanel pnDescInfo = new JPanel(new BorderLayout());
-	private JPanel pnIconUsuario = new JPanel(new BorderLayout());
+	private JPanelPad pnEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnCentro = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnUsuario = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnRelogio = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnDescEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnIconEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnIconInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnIDUSU = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnDescInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnIconUsuario = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JLabelPad lEst = new JLabelPad();  
 	private JLabelPad lUsuario = new JLabelPad();
 	private JLabelPad lInfo = new JLabelPad();
@@ -78,7 +78,7 @@ public class StatusBar extends JPanel {
 	 * @param arg1
 	 */
 	public StatusBar(LayoutManager arg0, boolean arg1) {
-		super(arg0, arg1);
+		super(JPanelPad.TP_JPANEL, arg0, arg1);
 		MontaStatusBar();
 	}
 
@@ -86,7 +86,7 @@ public class StatusBar extends JPanel {
 	 * @param arg0
 	 */
 	public StatusBar(LayoutManager arg0) {
-		super(arg0);
+		super(JPanelPad.TP_JPANEL, arg0);
 		MontaStatusBar();
 	}
 
@@ -94,7 +94,7 @@ public class StatusBar extends JPanel {
 	 * @param arg0
 	 */
 	public StatusBar(boolean arg0) {
-		super(arg0);
+		super(JPanelPad.TP_JPANEL, arg0);
 		MontaStatusBar();
 	}
 

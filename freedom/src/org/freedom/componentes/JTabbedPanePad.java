@@ -66,8 +66,9 @@ public class JTabbedPanePad extends JTabbedPane implements ChangeListener {
 	}
 	
 	public void stateChanged(ChangeEvent e) {
+		//super.stateChanged(e);
 		//if (e.)
-		firstFocus();
+		//firstFocus();
 		//System.out.println("Teste do change listener do TTabbedPanePad");
 	}
 	

@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.Vector;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
 
@@ -55,7 +55,6 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -181,7 +180,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     adic(txtVlrAtualLanca,95,60,97,20);
     adicDB(rgTipoLanca,210,60,379,28,"tipolanca","Tipo de lançamento", true);
     
-    JPanel pnTxa = new JPanel(new GridLayout(1,1));
+    JPanelPad pnTxa = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
     pnTxa.add(spnTxa);
     adic(pnTxa,7,95,583,50);
     adicDBLiv(txaHistLanca, "HistLanca", "Histórico descriminado", false);

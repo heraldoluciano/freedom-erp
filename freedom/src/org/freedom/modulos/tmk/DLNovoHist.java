@@ -35,7 +35,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -51,7 +51,7 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLNovoHist extends FFDialogo {
-	private JPanel pnCab = new JPanel(new GridLayout(1,1));
+	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

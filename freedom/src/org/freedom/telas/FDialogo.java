@@ -32,7 +32,6 @@ import java.awt.event.KeyListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
@@ -41,9 +40,9 @@ import org.freedom.componentes.JPanelPad;
 public class FDialogo extends JDialog implements ActionListener, KeyListener {
    public  JButton btCancel = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
    public  JButton btOK = new JButton("OK",Icone.novo("btOk.gif"));
-   public  JPanel pnRodape = new JPanel(new BorderLayout());
-   private JPanel pnGrid = new JPanel(new GridLayout(1,2));
-   private JPanel pnBordRodape = new JPanel(new GridLayout(1,1));
+   public  JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+   private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
+   private JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
    private JPanelPad pin = new JPanelPad();
    public  Container c = getContentPane();
    private Border br = BorderFactory.createEtchedBorder();
@@ -80,7 +79,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
     pin = p;
     setArea = false;
   }
-  public void setPanel(JPanel p) {
+  public void setPanel(JPanelPad p) {
   	c.add(p,BorderLayout.CENTER);
     setArea = false;
   }
@@ -109,7 +108,7 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
   }
   public void setToFrameLayout() {
     pnRodape.remove(0);
-    pnGrid = new JPanel(new GridLayout(1,1));
+    pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
     pnGrid.setPreferredSize(new Dimension(100,30));
     JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
     btSair.addActionListener(

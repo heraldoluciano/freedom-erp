@@ -31,7 +31,7 @@ import java.sql.SQLException;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
@@ -39,14 +39,13 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FStatusItOrc extends FFilho implements ActionListener {
   private JPanelPad pinCli = new JPanelPad(350,100);
-  private JPanel pnRod = new JPanel(new BorderLayout());
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtVlrLiqItOrc = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);

@@ -26,12 +26,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import javax.swing.ButtonGroup;
-import javax.swing.JRadioButton;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.BorderFactory;
 
 import org.freedom.acao.DefaultRadioGroupListener;
-import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupEvent; 
 import org.freedom.acao.RadioGroupListener;
 
 import java.util.Enumeration;

@@ -31,7 +31,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
@@ -41,11 +41,10 @@ import javax.swing.text.BadLocationException;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JPanelPad;
 
 public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {
-  private JPanel pnCab = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));  
-  private JPanel pnCli = new JPanel(new GridLayout(1,1));
+  private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0));  
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JTextArea txa = new JTextArea();
   private JScrollPane spn = new JScrollPane(txa);
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
@@ -98,16 +97,16 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
     
     c.add(pnCli, BorderLayout.CENTER);
 
-    JPanel pnRod = new JPanel(new BorderLayout());
-    JPanel pnFCenter = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+    JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+    JPanelPad pnFCenter = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,0,0));
 
-    JPanel pnDir = new JPanel(new GridLayout(1,2));
+    JPanelPad pnDir = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
     pnDir.add(btImp);
     pnDir.add(btSair);
     pnRod.add(pnDir,BorderLayout.EAST);
     pnRod.add(lbImp,BorderLayout.WEST);
 
-    JPanel pnCenter = new JPanel(new GridLayout(1,5));
+    JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,5));
     pnFCenter.add(pnCenter);
 
     pnCenter.add(btPrim);

@@ -39,7 +39,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -48,7 +48,6 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -59,8 +58,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLCancCupom extends FFDialogo implements ActionListener,MouseListener,KeyListener { 
 	private JPanelPad pinCab = new JPanelPad(400,90);
-	private JPanel pnCli = new JPanel(new BorderLayout());
-	private JPanel pnBt = new JPanel(new GridLayout(1,2));	
+	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnBt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));	
 	private JTextFieldPad txtVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNota = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
 	private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);

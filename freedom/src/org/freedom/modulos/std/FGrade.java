@@ -34,7 +34,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
@@ -46,7 +46,6 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -56,15 +55,15 @@ import org.freedom.telas.FFilho;
 
 public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JPanelPad pinCab = new JPanelPad(700,55);
-  private JPanel pnRod = new JPanel(new BorderLayout());
-  private JPanel pnSubRod = new JPanel(new BorderLayout());
+  private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnSubRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinRod = new JPanelPad(480,55);
   private JPanelPad pinSair = new JPanelPad(120,45);
   private JPanelPad pinBtSel = new JPanelPad(40,110);
   private JPanelPad pinBtSelMod = new JPanelPad(40,110);
-  private JPanel pnCli = new JPanel(new BorderLayout());
-  private JPanel pnTabMod = new JPanel(new BorderLayout());
-  private JPanel pnCliTab = new JPanel(new BorderLayout());
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnTabMod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCliTab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JLabelPad lbCodModG = new JLabelPad("Cód.mod.gp");
   private JLabelPad lbDescModG = new JLabelPad("Descrição do modelo de grupo");
   private JLabelPad lbDescINIModG = new JLabelPad("Descrição ini.");

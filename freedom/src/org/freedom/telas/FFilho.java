@@ -29,7 +29,7 @@ import java.sql.Connection;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -63,10 +63,10 @@ public class FFilho extends JInternalFrame implements InternalFrameListener {
 	tela.setLayout(new BorderLayout());
 	return tela; 
   }
-  public JPanel adicBotaoSair() {
+  public JPanelPad adicBotaoSair() {
     Container c = getContentPane();
     JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-    JPanel pnRod = new JPanel(new BorderLayout());
+    JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     pnRod.setPreferredSize(new Dimension(200,30));        
     btSair.setPreferredSize(new Dimension(110,30));        
     pnRod.add(btSair,BorderLayout.EAST);

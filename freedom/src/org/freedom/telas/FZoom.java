@@ -29,19 +29,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 public class FZoom extends JDialog implements KeyListener, ActionListener {
   private Image imZoom = null;
-  private JPanel pnCab = new JPanel(new BorderLayout());  
-  private JPanel pnCli = new JPanel(new GridLayout(1,1));  
+  private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());  
+  private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));  
   private JPanelPad pinCab = new JPanelPad(385,40);
   private JButton btZoom100 = new JButton(Icone.novo("btZoom100.gif"));
   private JButton btZoomIn = new JButton(Icone.novo("btZoomIn.gif"));

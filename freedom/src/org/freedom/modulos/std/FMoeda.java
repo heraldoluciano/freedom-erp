@@ -24,7 +24,7 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.util.Vector;
 
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
@@ -33,7 +33,6 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
@@ -53,7 +52,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
   private JTextFieldPad txtDecpMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
-  private JPanel pnCot = new JPanel(new BorderLayout());
+  private JPanelPad pnCot = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinRod = new JPanelPad(370,80);
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);

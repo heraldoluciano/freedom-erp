@@ -42,7 +42,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.TabelaEditEvent;
@@ -53,7 +53,6 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -69,7 +68,7 @@ import org.freedom.telas.FFilho;
  */
 public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditListener {
 	private JPanelPad pinCab = new JPanelPad(0,80);
-	private JPanel pnCli = new JPanel(new BorderLayout());
+	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtCodConv = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeConv = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

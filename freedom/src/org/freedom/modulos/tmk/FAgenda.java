@@ -41,7 +41,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -53,7 +53,6 @@ import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -62,8 +61,8 @@ import org.freedom.telas.FFilho;
 
 public class FAgenda extends FFilho implements JComboBoxListener, ActionListener {
   private JPanelPad pinCabAgd = new JPanelPad(0,120);
-  private JPanel pnAgd = new JPanel(new BorderLayout());
-  private JPanel pnRodAgd = new JPanel(new BorderLayout());
+  private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnRodAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTabbedPanePad tpnAgd = new JTabbedPanePad();
   private Tabela tabAgd = new Tabela();
   private JScrollPane spnAgd = new JScrollPane(tabAgd);
@@ -141,7 +140,7 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
 	tabAgd.setTamColuna(70,5);
 	tabAgd.setTamColuna(145,6);
 	
-	JPanel pnBot = new JPanel(new GridLayout(1,2));
+	JPanelPad pnBot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
 	pnBot.setPreferredSize(new Dimension(60,30));
 	pnBot.add(btNovo);
 	pnBot.add(btExcluir);

@@ -44,23 +44,22 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputAdapter;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.JPanelPad;
 
 public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   public  JButton btCancel = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
   public  JButton btOK = new JButton("OK",Icone.novo("btOk.gif"));
-  private JPanel pnBox = new JPanel();
-  public  JPanel pnRodape = new JPanel(new BorderLayout());
-  private JPanel pnBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER,3,3));
-  private JPanel pnGrid = new JPanel(new GridLayout(1,2));
-  private JPanel pnBordRodape = new JPanel(new BorderLayout());
+  private JPanelPad pnBox = new JPanelPad(JPanelPad.TP_JPANEL);
+  public  JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,3,3));
+  private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
+  private JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pin = new JPanelPad();
   public  Container c = getContentPane();
   private Border br = BorderFactory.createEtchedBorder();
@@ -179,7 +178,7 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   }
   public void setToFrameLayout() {
     pnRodape.remove(0);
-    pnGrid = new JPanel(new GridLayout(1,1));
+    pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
     pnGrid.setPreferredSize(new Dimension(100,30));
     JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
     btSair.addActionListener(

@@ -20,12 +20,12 @@
  */
 package org.freedom.telas;
 import java.awt.GridLayout;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextAreaPad;
 public class FObservacao extends FDialogo {
-  private JPanel pn = new JPanel(new GridLayout(1,1));
+  private JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JTextAreaPad txa = new JTextAreaPad();
   private JScrollPane spn = new JScrollPane(txa);
   /**

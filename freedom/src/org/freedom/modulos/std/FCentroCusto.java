@@ -39,7 +39,7 @@ import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
@@ -56,11 +56,11 @@ public class FCentroCusto
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private FlowLayout flCliRod = new FlowLayout(FlowLayout.CENTER, 0, 0);
-	private JPanel pnCli = new JPanel(new GridLayout(1, 1));
-	private JPanel pnRodape = new JPanel(new BorderLayout());
-	private JPanel pnCliRod = new JPanel(flCliRod);
-	private JPanel pnBotoes = new JPanel(new GridLayout(1, 4, 2, 0));
-	private JPanel pnImp = new JPanel(new GridLayout(1, 2, 0, 0));
+	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));
+	private JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnCliRod = new JPanelPad(JPanelPad.TP_JPANEL,flCliRod);
+	private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 4, 2, 0));
+	private JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 2, 0, 0));
 	private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
 	private JButton btPrim = new JButton("Nivel 1", Icone.novo("btNovo.gif"));
 	private JButton btSint = new JButton("Sintética", Icone.novo("btNovo.gif"));

@@ -31,18 +31,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
-import javax.swing.border.EtchedBorder;
-
 import org.freedom.componentes.JPanelPad;
-
+import javax.swing.border.EtchedBorder;
 
 public class FWizard extends FFDialogo {
     private JPanelPad pinCorpo = new JPanelPad();
-    private JPanel pnTit = new JPanel(new FlowLayout(FlowLayout.LEFT,15,10));
-    private JPanel pnCorpo = new JPanel(new BorderLayout());
-    private JPanel pnRod = new JPanel(new BorderLayout());
-    private JPanel pnBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT,5,3));
+    private JPanelPad pnTit = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.LEFT,15,10));
+    private JPanelPad pnCorpo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+    private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+    private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.RIGHT,5,3));
     private JButton btVoltar = new JButton("< Voltar");
     private JButton btProximo = new JButton("Próximo >");
     private JButton btFinalizar = new JButton("Finalizar");
@@ -77,7 +74,7 @@ public class FWizard extends FFDialogo {
         btFinalizar.setPreferredSize(dimBotao);
         btCancelar.setPreferredSize(dimBotao);
         
-        JPanel pnNav = new JPanel(new GridLayout(1,2));
+        JPanelPad pnNav = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
         pnNav.add(btVoltar);
         pnNav.add(btProximo);
         pnBotoes.add(pnNav);
@@ -117,7 +114,7 @@ public class FWizard extends FFDialogo {
     public void setCabecalho(String sCab) {
     	lbTit.setText(sCab);
     }
-    public void setPanel(JPanel pn) {
+    public void setPanel(JPanelPad pn) {
 		pnCorpo.add(pn, BorderLayout.CENTER);
 	}
 	public void setPainel(JPanelPad pin) {

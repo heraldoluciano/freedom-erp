@@ -40,14 +40,14 @@ import java.io.InputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JPopupMenu;
 import javax.swing.border.Border;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FZoom;
 
-public class PainelImagem extends JPanel implements ActionListener, MouseListener {
+public class PainelImagem extends JPanelPad implements ActionListener, MouseListener {
   public static final int TP_NONE = -1;
   public static final int TP_BYTES = 11;
   private Image imImagem = null;

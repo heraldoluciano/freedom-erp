@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
@@ -42,14 +42,13 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLNovoPag extends FFDialogo implements PostListener {
-  private JPanel pnPag = new JPanel(new BorderLayout());
+  private JPanelPad pnPag = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinCab = new JPanelPad(580,130);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

@@ -36,7 +36,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
@@ -56,8 +56,8 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
-	private JPanel pnCab = new JPanel(new GridLayout(1,1));
-	private JPanel pnBotoes = new JPanel(new BorderLayout());
+	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+	private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeConv = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -119,7 +119,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		adic(new JLabelPad("Setor"),290,45,150,20);
 		adic(cbSetor,290,65,150,20);
 		
-		JPanel pnLbAtend = new JPanel(new GridLayout(1,1));
+		JPanelPad pnLbAtend = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 		pnLbAtend.add(new JLabelPad(" Atendimento"));
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());

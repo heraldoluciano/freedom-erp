@@ -43,7 +43,7 @@ import java.util.Properties;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 import javax.swing.JTextField;
 
@@ -63,7 +63,6 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.Leiaute;
 import org.freedom.telas.Aplicativo;
@@ -78,8 +77,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private JPanelPad pinCabFiscal = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JPanelPad pinTot = new JPanelPad(200,200);
-  private JPanel pnTot = new JPanel(new GridLayout(1,1));
-  private JPanel pnCenter = new JPanel(new BorderLayout());
+  private JPanelPad pnTot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+  private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JButton btObs = new JButton(Icone.novo("btObs.gif"));
   private JButton btFechaVenda = new JButton(Icone.novo("btOk.gif"));
   private JButton btConsPgto = new JButton(Icone.novo("btConsPgto.gif"));
@@ -210,7 +209,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     pnCenter.add(pnTot,BorderLayout.EAST);
     pnCenter.add(spTab,BorderLayout.CENTER);
 
-    JPanel pnLab = new JPanel(new GridLayout(1,1));
+    JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
     pnLab.add(new JLabelPad(" Totais:"));    //Label do painel de totais
 
     pnMaster.add(pnCenter,BorderLayout.CENTER);

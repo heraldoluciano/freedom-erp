@@ -33,11 +33,10 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -56,7 +55,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 	/**
 	 * 
 	 */
-    private JPanel pnClienteGeral = new JPanel(new BorderLayout());
+    private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pinCab = new JPanelPad(800,55);
     private JPanelPad pinGrid = new JPanelPad(800,300);
     private Container c = getContentPane();

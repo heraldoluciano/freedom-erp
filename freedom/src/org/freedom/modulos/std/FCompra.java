@@ -39,7 +39,7 @@ import java.util.Date;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -53,7 +53,6 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -63,8 +62,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JPanelPad pinTot = new JPanelPad(200, 200);
-  private JPanel pnTot = new JPanel(new GridLayout(1, 1));
-  private JPanel pnCenter = new JPanel(new BorderLayout());
+  private JPanelPad pnTot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));
+  private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JButton btFechaCompra = new JButton(Icone.novo("btOk.gif"));
   
   private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -144,7 +143,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     pnCenter.add(pnTot, BorderLayout.EAST);
     pnCenter.add(spTab, BorderLayout.CENTER);
 
-    JPanel pnLab = new JPanel(new GridLayout(1, 1));
+    JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));
     pnLab.add(new JLabelPad(" Totais:"));
 
     pnMaster.add(pnCenter, BorderLayout.CENTER);

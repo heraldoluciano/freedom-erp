@@ -24,7 +24,7 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.sql.Connection;
 
-import javax.swing.JPanel;
+import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
@@ -33,7 +33,6 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -42,7 +41,7 @@ import org.freedom.telas.FTabDados;
 public class FEmpresa extends FTabDados implements PostListener{
   private JPanelPad pinGeral = new JPanelPad(470,470);
   private JPanelPad pinFilial = new JPanelPad(470,270);
-  private JPanel pnFilial = new JPanel(new BorderLayout());
+  private JPanelPad pnFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodEmp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazEmp = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeEmp = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
