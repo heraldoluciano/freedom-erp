@@ -433,6 +433,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
     cbImpPed.setVlrString("N");
     cbImpNot.setVlrString("N");
+    cbImpBol.setVlrString("N");
+    cbReImpNot.setVlrString("N");
     
     bPrefs = prefs();
     lcVenda.edit();
@@ -554,7 +556,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   	 if (lcReceber.getStatus() == ListaCampos.LCS_EDIT) {
   		lcReceber.post();
   	 }
-  	 if (cbReImpNot.equals("N")) {
+  	 if (cbReImpNot.getVlrString().equals("N")) {
 	  	lcVenda.edit();
 	  	if (txtStatusVenda.getVlrString().equals("V2"))
 	  	 	txtStatusVenda.setVlrString("V3");
@@ -590,7 +592,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   	return iRet;
   }
   private void gravaVenda() {
-   	 if (cbReImpNot.equals("N")) {
+   	 if (cbReImpNot.getVlrString().equals("N")) {
 		 lcVenda.edit();
 		 if (cbImpNot.getVlrString().equals("S"))
 			txtStatusVenda.setVlrString("V2");
