@@ -590,14 +590,14 @@ public class ImprimeOS implements ActionListener {
       PreparedStatement ps = null;
       ResultSet rs = null;
       
-      String sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM PVCAIXAIMP CI,SGIMPRESSORA I "+
-                    "WHERE CI.CODCAIXA="+Aplicativo.iNumTerm+" AND CI.IMPPAD='S'"+
-                    " AND I.CODIMP=CI.CODIMP AND I.CODEMP=CI.CODEMP AND I.CODFILIAL=CI.CODFILIAL"+
-                    " AND I.CODEMP=? AND I.CODFILIAL=?";
+      String sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+                    "WHERE EI.CODEST="+Aplicativo.iNumTerm+" AND EI.IMPPAD='S'"+
+                    " AND I.CODIMP=EI.CODIMP AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP"+
+                    " AND EI.CODEMP=? AND EI.CODFILIAL=?";
       try {
         ps = con.prepareStatement(sSQL);
         ps.setInt(1,Aplicativo.iCodEmp);
-        ps.setInt(2,ListaCampos.getMasterFilial("SGIMPRESSORA"));
+        ps.setInt(2,ListaCampos.getMasterFilial("SGESTACAOIMP"));
         rs = ps.executeQuery();
         if (rs.next()) {
           sImpressora = rs.getString(1);

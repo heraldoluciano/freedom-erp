@@ -542,7 +542,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   	return iRet;
   }
   public boolean getModoDemo() {
-  	String sSQL = "SELECT MODODEMO FROM PVCAIXA WHERE CODCAIXA="+iNumTerm+
+  	String sSQL = "SELECT MODODEMOEST FROM SGESTACAO WHERE CODEST="+iNumTerm+
   	"AND CODEMP="+iCodEmp+" AND CODFILIAL="+iCodFilial;
   	PreparedStatement ps = null;
   	ResultSet rs = null;
@@ -553,7 +553,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   		if (!rs.next())
   		  Funcoes.mensagemErro(null,"Terminal não cadastrado!");
   		else {  		
-  		  if (rs.getString("ModoDemo").equals("S")) 
+  		  if (rs.getString("ModoDemoEst").equals("S")) 
   		  	bModo = true;
   		  else 
   		    bModo = false;	
