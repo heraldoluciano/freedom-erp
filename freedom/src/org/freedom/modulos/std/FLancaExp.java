@@ -38,14 +38,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FLancaExp extends FDados implements ActionListener {
-	private JTextFieldPad txtCodLExp = new JTextFieldPad();
-	private JTextFieldPad txtCodTipoExp = new JTextFieldPad();
-	private JTextFieldFK txtDescTipoExp = new JTextFieldFK();
-	private JTextFieldPad txtCodCli = new JTextFieldPad();
-	private JTextFieldFK txtDescCli = new JTextFieldFK();
-	private JTextFieldPad txtDtRExp = new JTextFieldPad();
-	private JTextFieldPad txtDtSExp = new JTextFieldPad();
-	private JTextFieldPad txtQtdExp = new JTextFieldPad();
+	private JTextFieldPad txtCodLExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodTipoExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTipoExp = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtDtRExp = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtDtSExp = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtQtdExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private ListaCampos lcTipoExp = new ListaCampos(this,"TE");
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private Connection con = null;
@@ -56,33 +56,29 @@ public class FLancaExp extends FDados implements ActionListener {
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		
-		txtCodTipoExp.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescTipoExp.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcTipoExp.add(new GuardaCampo( txtCodTipoExp, 7, 100, 80, 20, "CodTipoExp", "Cód.tp.exp.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoExpx");
-    		lcTipoExp.add(new GuardaCampo( txtDescTipoExp, 90, 100, 207, 20, "DescTipoExp", "descrição do tipo de expositor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoExpx");
+		lcTipoExp.add(new GuardaCampo( txtCodTipoExp, "CodTipoExp", "Cód.tp.exp.", ListaCampos.DB_PK, false));
+    		lcTipoExp.add(new GuardaCampo( txtDescTipoExp, "DescTipoExp", "descrição do tipo de expositor", ListaCampos.DB_SI, false));
 		lcTipoExp.montaSql(false, "TIPOEXP", "EQ");   
                 lcTipoExp.setQueryCommit(false);
 		lcTipoExp.setReadOnly(true);
 		txtCodTipoExp.setTabelaExterna(lcTipoExp);
 		
-		txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-		txtDescCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClix");
-    		lcCli.add(new GuardaCampo( txtDescCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClix");
+		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+    		lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
                 lcCli.setQueryCommit(false);
 		lcCli.montaSql(false, "CLIENTE", "VD");    
                 lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
 		
-		adicCampo(txtCodLExp, 7, 20, 80, 20, "CodLExp", "Cód.exp.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-		adicCampo(txtQtdExp, 90, 20, 77, 20, "QtdLExp", "Quantidade", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,true);
-		adicCampo(txtDtSExp, 170, 20, 97, 20, "DtLExp", "Data saida", JTextFieldPad.TP_DATE, 10, 0, false, false, null,true);
-		adicCampo(txtDtRExp, 270, 20, 100, 20, "DtRetLExp", "Data retorno", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
-		adicCampo(txtCodTipoExp, 7, 60, 80, 20, "CodTipoExp", "Cód.tp.exp.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoExp,true);
-		adicDescFK(txtDescTipoExp, 90, 60, 250, 20, "DescTipoExp", "Descrição do tipo de expositor",JTextFieldPad.TP_STRING, 40, 0);
-		adicCampo(txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescCli,true);
-		adicDescFK(txtDescCli, 90, 100, 250, 20, "RazCli", "Descrição do cliente", JTextFieldPad.TP_STRING, 40, 0);
+		adicCampo(txtCodLExp, 7, 20, 80, 20, "CodLExp", "Cód.exp.", ListaCampos.DB_PK, true);
+		adicCampo(txtQtdExp, 90, 20, 77, 20, "QtdLExp", "Quantidade", ListaCampos.DB_SI, true);
+		adicCampo(txtDtSExp, 170, 20, 97, 20, "DtLExp", "Data saida", ListaCampos.DB_SI, true);
+		adicCampo(txtDtRExp, 270, 20, 100, 20, "DtRetLExp", "Data retorno", ListaCampos.DB_SI, false);
+		adicCampo(txtCodTipoExp, 7, 60, 80, 20, "CodTipoExp", "Cód.tp.exp.", ListaCampos.DB_FK, txtDescTipoExp, true);
+		adicDescFK(txtDescTipoExp, 90, 60, 250, 20, "DescTipoExp", "Descrição do tipo de expositor");
+		adicCampo(txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtDescCli, true);
+		adicDescFK(txtDescCli, 90, 100, 250, 20, "RazCli", "Descrição do cliente");
 		setListaCampos( true, "LANCTOEXP", "EQ");
         lcCampos.setQueryInsert(false);    
 	}

@@ -59,14 +59,14 @@ import org.freedom.telas.FRelatorio;
 public class FKardex extends FRelatorio implements ActionListener {
         private JPanel pnCli = new JPanel(new BorderLayout());
         private Painel pinCab = new Painel(560,130);
-        private JTextFieldPad txtDataini = new JTextFieldPad();
-        private JTextFieldPad txtDatafim = new JTextFieldPad();
-        private JTextFieldPad txtCodProd = new JTextFieldPad();
-        private JTextFieldFK txtRefProd = new JTextFieldFK();
-        private JTextFieldFK txtDescProd = new JTextFieldFK();
-        private JTextFieldPad txtCodLote = new JTextFieldPad();
-        private JTextFieldFK txtDescLote = new JTextFieldFK();
-        private JTextFieldPad txtCodFabProd = new JTextFieldPad();
+        private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+        private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+        private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+        private JTextFieldFK txtRefProd = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
+        private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+        private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+        private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+        private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
         private JButton btExec = new JButton("Trazer informações",Icone.novo("btExecuta.gif"));
         private Tabela tab = new Tabela();
         private JScrollPane spnTab = new JScrollPane(tab);
@@ -78,16 +78,10 @@ public class FKardex extends FRelatorio implements ActionListener {
                 setTitulo("Kardex");
                 setAtribos(10,10,688,400);
                 
-                txtCodProd.setRequerido(true);
-                txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
+                txtCodProd.setRequerido(true);                
                 txtDataini.setRequerido(true);
-                txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
                 txtDatafim.setRequerido(true);
-
-                txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-                txtDescProd.setTipo(JTextFieldPad.TP_STRING,40,0);
-                txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
-                txtCodFabProd.setTipo(JTextFieldPad.TP_STRING,13,0);
+              
                 lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
                 lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
@@ -98,10 +92,8 @@ public class FKardex extends FRelatorio implements ActionListener {
                 lcProd.setReadOnly(true);
                 lcProd.montaSql(false, "PRODUTO", "EQ");
 
-                txtCodLote.setTipo(JTextFieldPad.TP_STRING,13,0);
-                txtDescLote.setTipo(JTextFieldPad.TP_DATE,10,0);
-                lcLote.add(new GuardaCampo( txtCodLote, 7, 100, 80, 20, "CodLote", "Cód.lote", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodLote");
-                lcLote.add(new GuardaCampo( txtDescLote, 90, 100, 207, 20, "VenctoLote", "Vencimento do lote", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescLote");
+                lcLote.add(new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false));
+                lcLote.add(new GuardaCampo( txtDescLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false));
                 txtCodLote.setTabelaExterna(lcLote);
                 txtCodLote.setNomeCampo("CodLote");
                 txtCodLote.setFK(true);

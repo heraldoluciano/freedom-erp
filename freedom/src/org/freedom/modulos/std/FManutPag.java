@@ -82,8 +82,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private JPanel pnManut = new JPanel(new BorderLayout());
   private Tabela tabManut = new Tabela();
   private JScrollPane spnManut = new JScrollPane(tabManut);
-  private JTextFieldPad txtCodFor = new JTextFieldPad();
-  private JTextFieldPad txtCodForManut = new JTextFieldPad();
+  private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodForManut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtPrimCompr = new JTextFieldPad();
   private JTextFieldPad txtUltCompr = new JTextFieldPad();
   private JTextFieldPad txtDataMaxFat = new JTextFieldPad();
@@ -93,23 +93,23 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private JTextFieldPad txtVlrTotAberto = new JTextFieldPad();
   private JTextFieldPad txtDataMaxAcum = new JTextFieldPad();
   private JTextFieldPad txtVlrMaxAcum = new JTextFieldPad();
-  private JTextFieldPad txtCodPagBaixa = new JTextFieldPad();
-  private JTextFieldPad txtDoc = new JTextFieldPad();
-  private JTextFieldPad txtSerie = new JTextFieldPad();
-  private JTextFieldPad txtCodCompraBaixa = new JTextFieldPad();
-  private JTextFieldPad txtCodForBaixa = new JTextFieldPad();
-  private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad();
-  private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad();
-  private JTextFieldPad txtTotPagBaixa = new JTextFieldPad();
-  private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad();
-  private JTextFieldPad txtTotPagoBaixa = new JTextFieldPad();
-  private JTextFieldPad txtJurosBaixa = new JTextFieldPad();
-  private JTextFieldPad txtDatainiManut = new JTextFieldPad();
-  private JTextFieldPad txtDatafimManut = new JTextFieldPad();
-  private JTextFieldFK txtRazFor = new JTextFieldFK();
-  private JTextFieldFK txtRazForManut = new JTextFieldFK();
-  private JTextFieldFK txtRazForBaixa = new JTextFieldFK();
-  private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK();
+  private JTextFieldPad txtCodPagBaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDoc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtCodCompraBaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodForBaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDtEmisBaixa = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtCodBancoBaixa = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
+  private JTextFieldPad txtTotPagBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtTotAbertoBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtTotPagoBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtJurosBaixa = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtDatainiManut = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDatafimManut = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtRazForManut = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtRazForBaixa = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescBancoBaixa = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JButton btBaixaConsulta = new JButton(Icone.novo("btOk.gif"));
   private JButton btBaixaManut = new JButton(Icone.novo("btOk.gif"));
   private JButton btEditManut = new JButton(Icone.novo("btEditar.gif"));
@@ -177,10 +177,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     btSair.addActionListener(this);
     //Consulta:    
 
-    txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRazFor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-    lcFor.add(new GuardaCampo( txtRazFor, 90, 100, 207, 20, "RazFor", "Descrição do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
+    lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
+    lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false));
     lcFor.montaSql(false, "FORNECED", "CP");
     lcFor.setQueryCommit(false);
     lcFor.setReadOnly(true);
@@ -259,11 +257,9 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     
     //Baixa:    
 
-    txtCodCompraBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtSerie.setTipo(JTextFieldPad.TP_STRING,4,0);
 
-    lcCompraBaixa.add(new GuardaCampo( txtCodCompraBaixa, 7, 100, 80, 20, "CodCompra", "Cód.compra", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCompra");
-    lcCompraBaixa.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescCompra");
+    lcCompraBaixa.add(new GuardaCampo( txtCodCompraBaixa, "CodCompra", "Cód.compra", ListaCampos.DB_PK, false));
+    lcCompraBaixa.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
     lcCompraBaixa.montaSql(false, "COMPRA", "CP");
     lcCompraBaixa.setQueryCommit(false);
     lcCompraBaixa.setReadOnly(true);
@@ -271,11 +267,9 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     txtCodCompraBaixa.setTabelaExterna(lcCompraBaixa);
     txtCodCompraBaixa.setFK(true);
     txtCodCompraBaixa.setNomeCampo("CodCompra");
-    txtCodForBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtRazForBaixa.setTipo(JTextFieldPad.TP_STRING,40,0);
 
-    lcForBaixa.add(new GuardaCampo( txtCodForBaixa, 7, 100, 80, 20, "CodFor", "Cód.for", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodFor");
-    lcForBaixa.add(new GuardaCampo( txtRazForBaixa, 90, 100, 207, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
+    lcForBaixa.add(new GuardaCampo( txtCodForBaixa, "CodFor", "Cód.for", ListaCampos.DB_PK, false));
+    lcForBaixa.add(new GuardaCampo( txtRazForBaixa, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
     lcForBaixa.montaSql(false, "FORNECED", "CP");
     lcForBaixa.setQueryCommit(false);
     lcForBaixa.setReadOnly(true);
@@ -284,11 +278,9 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     txtCodForBaixa.setFK(true);
     txtCodForBaixa.setNomeCampo("CodFor");
 
-    txtCodBancoBaixa.setTipo(JTextFieldPad.TP_STRING,3,0);
-    txtDescBancoBaixa.setTipo(JTextFieldPad.TP_STRING,40,0);
 
-    lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, 7, 100, 80, 20, "CodBanco", "Cód.banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBanco");
-    lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, 90, 100, 207, 20, "NomeBanco", "Nome banco", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBanco");
+    lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false));
+    lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, "NomeBanco", "Nome banco", ListaCampos.DB_SI, false));
     lcBancoBaixa.montaSql(false, "BANCO", "FN");
     lcBancoBaixa.setQueryCommit(false);
     lcBancoBaixa.setReadOnly(true);
@@ -296,24 +288,17 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     txtCodBancoBaixa.setTabelaExterna(lcBancoBaixa);
     txtCodBancoBaixa.setFK(true);
     txtCodBancoBaixa.setNomeCampo("CodBanco");
-    txtCodPagBaixa.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDoc.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtTotPagBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtEmisBaixa.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtTotAbertoBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtTotPagoBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtJurosBaixa.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
 
-    lcPagBaixa.add(new GuardaCampo( txtCodPagBaixa, 7, 100, 80, 20, "CodPag", "Cód.pag", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPag");
-    lcPagBaixa.add(new GuardaCampo( txtCodCompraBaixa, 90, 100, 207, 20, "CodCompra", "Cód.compra", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtDoc, 90, 100, 207, 20, "DocPag", "Doc.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtTotPagBaixa, 90, 100, 207, 20, "VlrPag", "Total pag.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtCodForBaixa, 90, 100, 207, 20, "CodFor", "Cód.for", false, true, null, JTextFieldPad.TP_INTEGER,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtDtEmisBaixa, 90, 100, 207, 20, "DataPag", "Data emis.", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtCodBancoBaixa, 90, 100, 207, 20, "CodBanco", "Cód.banco", false, true, null, JTextFieldPad.TP_STRING,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtTotAbertoBaixa, 90, 100, 207, 20, "VlrApagPag", "Total aberto", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtTotPagoBaixa, 90, 100, 207, 20, "VlrPagoPag", "Total pago", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescPag");
-    lcPagBaixa.add(new GuardaCampo( txtJurosBaixa, 90, 100, 207, 20, "VlrJurosPag", "Total juros", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescPag");
+    lcPagBaixa.add(new GuardaCampo( txtCodPagBaixa, "CodPag", "Cód.pag", ListaCampos.DB_PK, false));
+    lcPagBaixa.add(new GuardaCampo( txtCodCompraBaixa, "CodCompra", "Cód.compra", ListaCampos.DB_FK, false));
+    lcPagBaixa.add(new GuardaCampo( txtDoc, "DocPag", "Doc.", ListaCampos.DB_SI, false));
+    lcPagBaixa.add(new GuardaCampo( txtTotPagBaixa, "VlrPag", "Total pag.", ListaCampos.DB_SI, false));
+    lcPagBaixa.add(new GuardaCampo( txtCodForBaixa, "CodFor", "Cód.for", ListaCampos.DB_FK, false));
+    lcPagBaixa.add(new GuardaCampo( txtDtEmisBaixa, "DataPag", "Data emis.", ListaCampos.DB_SI, false));
+    lcPagBaixa.add(new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false));
+    lcPagBaixa.add(new GuardaCampo( txtTotAbertoBaixa, "VlrApagPag", "Total aberto", ListaCampos.DB_SI, false));
+    lcPagBaixa.add(new GuardaCampo( txtTotPagoBaixa, "VlrPagoPag", "Total pago", ListaCampos.DB_SI, false));
+    lcPagBaixa.add(new GuardaCampo( txtJurosBaixa, "VlrJurosPag", "Total juros", ListaCampos.DB_SI, false));
     lcPagBaixa.montaSql(false,"PAGAR", "FN");
     lcPagBaixa.setQueryCommit(false);
     lcPagBaixa.setReadOnly(true);
@@ -419,8 +404,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     pnTabManut.add(spnManut,BorderLayout.CENTER);    
     pnManut.add(pnTabManut,BorderLayout.CENTER);
     
-    txtDatainiManut.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafimManut.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDatainiManut.setVlrDate(new Date());
     txtDatafimManut.setVlrDate(new Date());
     
@@ -430,9 +413,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     pinManut.adic(txtDatafimManut,140,20,100,20);
     pinManut.adic(btExecManut,690,55,30,30);
 
-	txtCodFor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtRazFor.setTipo(JTextFieldPad.TP_STRING,40,0);
-	
 	pinManut.adic(new JLabel("Cód.for."),7,45,250,20);
 	pinManut.adic(txtCodForManut,7,65,50,20);
 	pinManut.adic(new JLabel("Descrição do fornecedor"),60,45,250,20);
@@ -474,8 +454,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	pinManut.adic(new JLabel("Filtrar por:"),488,0,190,20);
 	pinManut.adic(rgPg,488,20,190,65);
 
-	lcForManut.add(new GuardaCampo( txtCodForManut, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodForManut");
-	lcForManut.add(new GuardaCampo( txtRazForManut, 90, 100, 207, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescForManut");
+	lcForManut.add(new GuardaCampo( txtCodForManut, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
+	lcForManut.add(new GuardaCampo( txtRazForManut, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
 	lcForManut.montaSql(false, "FORNECED", "CP");
 	lcForManut.setQueryCommit(false);
 	lcForManut.setReadOnly(true);

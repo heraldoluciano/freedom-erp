@@ -87,18 +87,18 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		setAtribos(10,10,650,400);
 		
   	 // Mecanismo de busca e validação de clientes
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConv");
-		lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeConv");
-		lcCli.add(new GuardaCampo( txtCodTpCred,7, 100, 80, 20,"CodTpCred", "Cód.tp.créd.",false,true,txtDescTpCred,JTextFieldPad.TP_INTEGER,false),"txtCodTpCred"); 
+		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true));
+		lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo( txtCodTpCred, "CodTpCred", "Cód.tp.créd.", ListaCampos.DB_FK, txtDescTpCred, false)); 
 		lcCli.montaSql(false, "CLIENTE","VD");    
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
     
 	 // Mecanismo de busca de informações de tipo de crédito 
-		lcTipoCred.add(new GuardaCampo( txtCodTpCred, 7, 100, 80, 20, "CodTpCred", "Cód.tp.créd", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoClix");
-    	lcTipoCred.add(new GuardaCampo( txtDescTpCred, 90, 100, 207, 20, "DescTpCred", "Descrição do tipo de credito", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
-    	lcTipoCred.add(new GuardaCampo( txtVlrTpCred, 90, 100, 207, 20, "VlrTpCred", "Valor", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescTipoClix");
+		lcTipoCred.add(new GuardaCampo( txtCodTpCred, "CodTpCred", "Cód.tp.créd", ListaCampos.DB_PK, false));
+    	lcTipoCred.add(new GuardaCampo( txtDescTpCred, "DescTpCred", "Descrição do tipo de credito", ListaCampos.DB_SI, false));
+    	lcTipoCred.add(new GuardaCampo( txtVlrTpCred, "VlrTpCred", "Valor", ListaCampos.DB_SI, false));
     	lcTipoCred.montaSql(false, "TIPOCRED", "FN");    
     	lcTipoCred.setQueryCommit(false);
     	lcTipoCred.setReadOnly(true);
@@ -107,16 +107,16 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
     	
  	 // Adicionando elementos no painel superior da tela (Cabeçalho)
  	    setPainel(pinCab,pnCliente);
-	    adicCampo(txtCodLib, 7, 20, 80, 20, "CodLCred", "Nº liberação", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,true);
-		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, null,true);
-	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "Razão social do cliente", JTextFieldPad.TP_STRING, 50, 0);
+	    adicCampo(txtCodLib, 7, 20, 80, 20, "CodLCred", "Nº liberação", ListaCampos.DB_PK, true);
+		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", ListaCampos.DB_SI, true);
+		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true);
+	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "Razão social do cliente");
 		adic(new JLabel("Cód.tp.créd."), 7, 40, 80, 20);
 		adic(txtCodTpCred, 7, 60, 80, 20);
-		adicDescFK(txtDescTpCred, 90, 60, 197, 20, "DescTpCred", "Descrição do tipo de crédito", JTextFieldPad.TP_STRING, 50, 0);
-		adicDescFK(txtVlrTpCred, 290, 60, 160, 20, "VlrTpCred", "Valor pré-aprovado", JTextFieldPad.TP_DECIMAL, 15, 2);
-		adicCampo(txtVlrLibCred, 7, 100, 120, 20, "VlrAutorizLCred", "Valor a liberar", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null,true);
-		adicCampo(txtDtVencLCred, 130, 100, 120, 20, "DtaVctoLCred", "Vencimento", JTextFieldPad.TP_DATE, 10, 0, false, false, null,true);
+		adicDescFK(txtDescTpCred, 90, 60, 197, 20, "DescTpCred", "Descrição do tipo de crédito");
+		adicDescFK(txtVlrTpCred, 290, 60, 160, 20, "VlrTpCred", "Valor pré-aprovado");
+		adicCampo(txtVlrLibCred, 7, 100, 120, 20, "VlrAutorizLCred", "Valor a liberar", ListaCampos.DB_SI, true);
+		adicCampo(txtDtVencLCred, 130, 100, 120, 20, "DtaVctoLCred", "Vencimento", ListaCampos.DB_SI, true);
 		setListaCampos( true, "LIBCRED", "FN");
 
 		pinCab.adic(btBusca,260,95,30,30);
