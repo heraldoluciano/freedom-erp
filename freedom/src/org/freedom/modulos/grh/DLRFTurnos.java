@@ -5,7 +5,7 @@
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.modulos.grh <BR>
- * Classe: @(#)DLRDepartamento.java <BR>
+ * Classe: @(#)DLRFTurnos.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Dialog para listagem de departamentos
+ * Dialog para listagem de turnos
  * 
  */
 

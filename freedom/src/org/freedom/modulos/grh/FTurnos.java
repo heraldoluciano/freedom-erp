@@ -26,10 +26,11 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-//import java.util.Calendar;
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
+import org.freedom.acao.InsertEvent;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
@@ -38,11 +39,11 @@ import org.freedom.telas.FDados;
 public class FTurnos extends FDados implements ActionListener {
   private JTextFieldPad txtCodTurno = new JTextFieldPad(10);
   private JTextFieldPad txtDescTurno = new JTextFieldPad(20);
-  private JTextFieldPad txtNhsTurno = new JTextFieldPad(5);
-  private JTextFieldPad txtHIniTurno = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtHFimTurno = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtNhsTurno = new JTextFieldPad(10);
+  private JTextFieldPad txtHIniTurno = new JTextFieldPad(10);
+  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(10);
+  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad(10);
+  private JTextFieldPad txtHFimTurno = new JTextFieldPad(10);
   private Vector vTipoTurnoLab = new Vector();
   private Vector vTipoTurnoVal = new Vector();  
   private JRadioGroup rgTipoTurno = null;
@@ -51,44 +52,15 @@ public class FTurnos extends FDados implements ActionListener {
     setTitulo("Cadastro de Turnos");
     setAtribos(50, 50, 457, 280);
 	    
-	    
-	    Date dt1 = new Date();
-	    dt1.setHours(8);
-	    dt1.setMinutes(0);
-	   
-	    Date dt2 = new Date();
-	    dt2.setHours(18);
-	    dt2.setMinutes(0);
-	   
-	    Date dt3 = new Date();
-	    dt3.setHours(12);
-	    dt3.setMinutes(0);
-	   
-	    Date dt4 = new Date();
-	    dt4.setHours(13);
-	    dt4.setMinutes(30);
-	   	/*
-	    txtHIniTurno.setModel(new SpinnerDateModel(dt3,null,null,Calendar.MINUTE));
-    	txtHIniTurno.setEditor(new JSpinner.DateEditor(txtHIniTurno,"kk:mm"));
-    	
-		txtHIniIntTurno.setModel(new SpinnerDateModel(dt3,null,null,Calendar.MINUTE));
-    	txtHIniIntTurno.setEditor(new JSpinner.DateEditor(txtHIniIntTurno,"kk:mm"));
-    	
-    	txtHFimIntTurno.setModel(new SpinnerDateModel(dt4,null,null,Calendar.MINUTE));
-    	txtHFimIntTurno.setEditor(new JSpinner.DateEditor(txtHFimIntTurno,"kk:mm"));
-    	
-    	txtHFimTurno.setModel(new SpinnerDateModel(dt2,null,null,Calendar.MINUTE));
-    	txtHFimTurno.setEditor(new JSpinner.DateEditor(txtHFimTurno,"kk:mm"));
-    	*/
-    
-	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+	    	    	   	
+	    adicCampo(txtCodTurno, 7, 20, 80, 20,"CodTurno","Cód.turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
 	    adicCampo(txtDescTurno, 90, 20, 220, 20,"DescTurno","Descrição do turno",JTextFieldPad.TP_STRING,20,0,false,false,null,true);
-	    adicCampo(txtNhsTurno, 313, 20, 120, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-	    adicCampo(txtHIniTurno, 7, 60, 160, 20,"HIniTurno","Hora do inicío do turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
-	    adicCampo(txtHIniIntTurno, 7, 100, 160, 20,"HIniIntTurno","Hora do inicío do intervalo",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
-	    adicCampo(txtHFimIntTurno, 7, 140, 160, 20,"HFimIntTurno","Hora do fim do intervalo",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
-	    adicCampo(txtHFimTurno, 7, 180, 160, 20,"HFimTurno","Hora do fim do turno",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);    	    
-	    	   	   	        
+	    adicCampo(txtNhsTurno, 313, 20, 120, 20,"NhsTurno","Nº H.semanais",JTextFieldPad.TP_INTEGER,10,0,true,false,null,true);
+	    adicCampo(txtHIniTurno, 7, 60, 160, 20,"HIniTurno","Hora do inicío do turno",JTextFieldPad.TP_TIME,10,0,true,false,null,true);
+	    adicCampo(txtHIniIntTurno, 7, 100, 160, 20,"HIniIntTurno","Hora do inicío do intervalo",JTextFieldPad.TP_TIME,10,0,true,false,null,true);
+	    adicCampo(txtHFimIntTurno, 7, 140, 160, 20,"HFimIntTurno","Hora do fim do intervalo",JTextFieldPad.TP_TIME,10,0,true,false,null,true);
+	    adicCampo(txtHFimTurno, 7, 180, 160, 20,"HFimTurno","Hora do fim do turno",JTextFieldPad.TP_TIME,10,0,true,false,null,true);	   
+	    
 	    vTipoTurnoLab.addElement("Normal ( manhã e tarde )");
 	  	vTipoTurnoLab.addElement("Manhã");
 	  	vTipoTurnoLab.addElement("Tarde");
@@ -101,28 +73,21 @@ public class FTurnos extends FDados implements ActionListener {
 	  	vTipoTurnoVal.addElement("E");
 	  	rgTipoTurno = new JRadioGroup( 5, 1, vTipoTurnoLab, vTipoTurnoVal);	  	  	
 	  	adicDB(rgTipoTurno, 170, 60, 262, 140, "TipoTurno", "Tipo de Turno:",JTextFieldPad.TP_STRING,true);
-	  	rgTipoTurno.setVlrString("N");
-	  	
-	  	setListaCampos( true,"TURNO","RH");
+	  	rgTipoTurno.setVlrString("N");	  	
+	  	setListaCampos( true, "TURNO", "RH");
 	    btImp.addActionListener(this);
 	    btPrevimp.addActionListener(this);
 	    lcCampos.setQueryInsert(false);
-	    	   	  	
-  } /*
-  public String[] getValores() {
-	String[] sVal = new String[9];
-	sVal[0] = txtHIniTurno.getVlrString();
-	sVal[1] = txtHIniIntTurno.getVlrString();
-	sVal[2] = txtHFimIntTurno.getVlrString();
-	sVal[3] = txtHFimTurno.getVlrString();
-	return sVal;
+	    
+	     	  	
   }
-  public void setValores(String[] sVal) {
-	txtHIniTurno.setVlrString(sVal[0]);
-	txtHIniIntTurno.setVlrString(sVal[1]);
-	txtHFimIntTurno.setVlrString(sVal[2]);
-	txtHFimTurno.setVlrString(sVal[3]);	
-  }*/
+  public void afterInsert(InsertEvent ievt) {
+    txtHIniTurno.setVlrDate(new Date());
+    txtHIniIntTurno.setVlrDate(new Date());
+    txtHFimIntTurno.setVlrDate(new Date());
+    txtHFimTurno.setVlrDate(new Date());
+  }
+  
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
       	
@@ -138,7 +103,7 @@ public class FTurnos extends FDados implements ActionListener {
     int linPag = imp.verifLinPag()-1;
     int iTot = 0;
     imp.montaCab();
-    imp.setTitulo("Relatório de turnos de funcionários");
+    imp.setTitulo("Relatório de turnos");
     DLRFTurnos dl = new DLRFTurnos();
     dl.setVisible(true);
     if (dl.OK == false) {
@@ -146,7 +111,7 @@ public class FTurnos extends FDados implements ActionListener {
       return;
     }
     String sSQL = "SELECT CODTURNO, DESCTURNO, NHSTURNO, " +
-    		"HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO ," +
+    		"HINITURNO, HINIINTTURNO, HFIMINTTURNO, HFIMTURNO, " +
     		"TIPOTURNO FROM RHTURNO ORDER BY "+dl.getValor();
     		
     PreparedStatement ps = null;
@@ -159,27 +124,27 @@ public class FTurnos extends FDados implements ActionListener {
          if (imp.pRow()==0) {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Cód.turno");
-            imp.say(imp.pRow()+0,10,"Descrição do turno");   
-            imp.say(imp.pRow()+0,2,"H/S");
-            imp.say(imp.pRow()+0,2,"Ent.tur.");
-            imp.say(imp.pRow()+0,2,"Ent.int.");
-            imp.say(imp.pRow()+0,2,"Fim.int.");
-            imp.say(imp.pRow()+0,2,"Fim.tur.");
+            imp.say(imp.pRow()+1,0,"");
+            imp.say(imp.pRow()+0,2,"Cód.turno");            
+            imp.say(imp.pRow()+0,14,"Descrição do turno");            
+            imp.say(imp.pRow()+0,5,"H/S");            
+            imp.say(imp.pRow()+0,4,"Ent.");
+            imp.say(imp.pRow()+0,2,"Ent.int.");           
+            imp.say(imp.pRow()+0,2,"Fim.int.");            
+            imp.say(imp.pRow()+0,2,"Fim.");            
             imp.say(imp.pRow()+0,2,"Tipo turno");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
-         imp.say(imp.pRow()+0,2,rs.getString("CodTurno"));
-         imp.say(imp.pRow()+0,10,rs.getString("DescTurno"));       
-         imp.say(imp.pRow()+0,2,rs.getString("NhsTurno")); 
-         imp.say(imp.pRow()+0,2,rs.getString("HIniTurno")); 
-         imp.say(imp.pRow()+0,2,rs.getString("HIniIntTurno")); 
-         imp.say(imp.pRow()+0,2,rs.getString("HFimIntTurno")); 
-         imp.say(imp.pRow()+0,2,rs.getString("HFimTurno")); 
-         imp.say(imp.pRow()+0,2,rs.getString("TipoTurno")); 
+         imp.say(imp.pRow()+0,2,rs.getString("CodTurno"));        
+         imp.say(imp.pRow()+0,14,rs.getString("DescTurno").substring(0,18));       
+         imp.say(imp.pRow()+0,5,rs.getString("NhsTurno")); 
+         imp.say(imp.pRow()+0,12,rs.getString("HIniTurno")); 
+         imp.say(imp.pRow()+0,5,rs.getString("HIniIntTurno")); 
+         imp.say(imp.pRow()+0,6,rs.getString("HFimIntTurno")); 
+         imp.say(imp.pRow()+0,3,rs.getString("HFimTurno")); 
+         imp.say(imp.pRow()+0,13,rs.getString("TipoTurno")); 
         
          if (imp.pRow()>=linPag) {
             imp.incPags();
