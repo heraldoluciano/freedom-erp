@@ -32,8 +32,9 @@ public class FEmpregado extends FDados implements ActionListener {
   public FEmpregado () {
     setTitulo("Cadastro de Empregados");
     setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 50, 20,"CodEmpr","Cód.Empr.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtCod, 7, 20, 50, 20,"MatEmpr","Matricula",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
     adicCampo(txtDesc, 60, 20, 250, 20,"NomeEmpr","Nome do empregado",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtDesc, 7, 40, 50, 20,"CodFunc","Cód.Func.",JTextFieldPad.TP_INTEGER,5,0,false,true,null,true);    
     setListaCampos( true, "EMPREGADO", "RH");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);

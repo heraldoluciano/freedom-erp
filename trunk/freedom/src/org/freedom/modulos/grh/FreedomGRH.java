@@ -32,7 +32,7 @@ public class FreedomGRH extends Aplicativo {
 		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false);
 			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'T',100100000,1,false);
 		    	addOpcao(100100000,TP_OPCAO_MENU,"Empregados",'m',100101000,2,false);
-		    		addOpcao(100101000,TP_OPCAO_ITEM,"Empregados", 'E',100101010,3,true);
+		    		addOpcao(100101000,TP_OPCAO_ITEM,"Empregados", 'E',100101010,3,true);		    														   
 		    		addSeparador(100101000);
 		    		addOpcao(100101000,TP_OPCAO_ITEM,"Turnos", 'C',100101020,3,true);
 		        	    				
@@ -51,7 +51,7 @@ public class FreedomGRH extends Aplicativo {
 //              FTurnos tela = new FTurnos();
 //              telaPrincipal.criatela("Turnos",tela,con);
             } 
-        }    
+        }  
     } 
     public static void main(String sParams[]) {
 		FreedomGRH freedom = new FreedomGRH();
