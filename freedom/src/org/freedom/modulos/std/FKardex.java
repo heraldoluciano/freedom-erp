@@ -207,7 +207,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                                 tab.setValor(new StringDireita(rs.getDouble("QTDMOVPROD")+""),iLinha,5);
                                 tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("PRECOMOVPROD"))),iLinha,6);
                                 tab.setValor(rs.getString("ESTOQMOVPROD") ,iLinha,7);
-                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(9,1,rs.getString("SLDMOVPROD"))),iLinha,8);
+                                tab.setValor(new StringDireita(rs.getDouble("SLDMOVPROD")+""),iLinha,8);
                                 tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("CUSTOMPMMOVPROD"))),iLinha,9);
                                 tab.setValor(new StringDireita(""+rs.getInt("CODMOVPROD")),iLinha,10);
                                 iLinha++;
