@@ -34,10 +34,10 @@ public class DLRSimilar extends FDialogo {
   public DLRSimilar() {
     setTitulo("Ordem do Relatório");
     setAtribos(300,150);
-    vLabs.addElement("Cód.Prod.");
-    vLabs.addElement("Ref.Prod.");
-    vLabs.addElement("Cód.Sim.");
-    vLabs.addElement("Desc.Prod.");
+    vLabs.addElement("Cód.prod.");
+    vLabs.addElement("Ref.prod.");
+    vLabs.addElement("Cód.sim.");
+    vLabs.addElement("Desc.prod.");
     vVals.addElement("C");
     vVals.addElement("R");
     vVals.addElement("S");

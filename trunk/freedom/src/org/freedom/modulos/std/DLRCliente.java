@@ -61,9 +61,12 @@ public class DLRCliente extends FFDialogo {
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabel lbSetor = new JLabel("Código e descrição do setor");
-  private JLabel lbTipoCli = new JLabel("Código e descrição do tipo de cliente");
-  private JLabel lbVendedor = new JLabel("Código e nome do vendedor/repres.");
+  private JLabel lbSetor = new JLabel("Cód.setor");
+  private JLabel lbDescSetor = new JLabel("Descrição do setor");
+  private JLabel lbTipoCli = new JLabel("Cód.cli.");
+  private JLabel lbDescTipoCli = new JLabel("Descrição do tipo de cliente");
+  private JLabel lbVendedor = new JLabel("Cód.repr.");
+  private JLabel lbNomeVendedor = new JLabel("Nome do representante");
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -145,12 +148,15 @@ public class DLRCliente extends FFDialogo {
     adic(rgModo,7,220,433,30);
     adic(lbSetor,7,255,250,20);
     adic(txtCodSetor,7,275,80,20);
+    adic(lbDescSetor,90,255,250,20);
     adic(txtDescSetor,90,275,350,20);
     adic(lbVendedor,7,300,300,20);
     adic(txtCodVend,7,320,80,20);
+    adic(lbNomeVendedor,90,300,300,20);
     adic(txtNomeVend,90,320,350,20);
     adic(lbTipoCli,7,345,300,20);
     adic(txtCodTipoCli,7,365,80,20);
+    adic(lbDescTipoCli,90,345,300,20);
     adic(txtDescTipoCli,90,365,350,20);
     
 	lcSetor.setConexao(cn);

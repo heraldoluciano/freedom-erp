@@ -61,7 +61,8 @@ public class DLRFornecedor extends FFDialogo {
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabel lbTipoFor = new JLabel("Código e descrição do tipo de fornecedor");
+  private JLabel lbTipoFor = new JLabel("Cód.t.for.");
+  private JLabel lbDescTipoFor = new JLabel("Descrição do tipo de fornecedor");
   private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTipoFor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcTipoFor = new ListaCampos(this);
@@ -116,6 +117,7 @@ public class DLRFornecedor extends FFDialogo {
     adic(rgModo,7,220,393,30);
     adic(lbTipoFor,7,250,300,20);
     adic(txtCodTipoFor,7,280,80,20);
+    adic(lbDescTipoFor,90,250,300,20);
     adic(txtDescTipoFor,90,280,310,20);
     
 	lcTipoFor.setConexao(cn);

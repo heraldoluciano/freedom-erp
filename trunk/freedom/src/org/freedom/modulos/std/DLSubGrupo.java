@@ -38,9 +38,9 @@ public class DLSubGrupo extends FDialogo {
   private JTextFieldPad txtDescSubGrup = new JTextFieldPad(50);
   private JTextFieldPad txtSiglaSubGrup = new JTextFieldPad(10);
   private JLabel lbCodPai = new JLabel("Código");
-  private JLabel lbDescPai = new JLabel("e descrição do grupo superior");
+  private JLabel lbDescPai = new JLabel("Descrição do grupo superior");
   private JLabel lbSiglaPai = new JLabel("Sigla");
-  private JLabel lbCodSubGrup = new JLabel("Códiogo");
+  private JLabel lbCodSubGrup = new JLabel("Código");
   private JLabel lbDescSubGrup = new JLabel("Descrição");
   private JLabel lbSiglaSubGrup = new JLabel("Sigla");
   public DLSubGrupo(String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla) {

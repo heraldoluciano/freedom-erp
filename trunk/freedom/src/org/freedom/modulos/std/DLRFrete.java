@@ -36,15 +36,12 @@ public class DLRFrete extends FDialogo {
   private JLabel lbOrdem = new JLabel("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   public DLRFrete() {
     setTitulo("Ordem do Relatório");
     setAtribos(280,200);
     
-    
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     
     GregorianCalendar cPeriodo = new GregorianCalendar();
     txtDatafim.setVlrDate(cPeriodo.getTime());
