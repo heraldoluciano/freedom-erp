@@ -54,7 +54,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
@@ -64,8 +64,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
 
 	private int casasDec = Aplicativo.casasDec;
-	private Painel pinCab = new Painel();
-	private Painel pinDet = new Painel();
+	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinDet = new JPanelPad();
 	private JButton btLimpaCompra = new JButton(
 			"Limpa Autorização da Solicitação", null);
 	private JButton btLimpaItem = new JButton("Limpa autorização do item", null);
@@ -182,7 +182,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
 
-		pinCab = new Painel(740, 180);
+		pinCab = new JPanelPad(740, 180);
 		setListaCampos(lcCampos);
 		setAltCab(180);
 		setPainel(pinCab, pnCliCab);
@@ -221,7 +221,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 	private void montaDetalhe() {
 		setAltDet(97);
-		pinDet = new Painel(740, 97);
+		pinDet = new JPanelPad(740, 97);
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);

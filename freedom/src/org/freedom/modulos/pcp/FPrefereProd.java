@@ -26,7 +26,7 @@ import java.sql.Connection;
 import javax.swing.JLabel;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereProd extends FTabDados {
@@ -34,7 +34,7 @@ public class FPrefereProd extends FTabDados {
     private JTextFieldPad txtNomeResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
     private JTextFieldPad txtIdentProfResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
     private JTextFieldPad txtCargoResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-	private Painel pinGeral = new Painel();
+	private JPanelPad pinGeral = new JPanelPad();
 	public FPrefereProd() {
 		setTitulo("Preferências de Produção");
 		setAtribos(50, 50, 330, 375);
@@ -42,7 +42,7 @@ public class FPrefereProd extends FTabDados {
         setPainel(pinGeral);
         adicTab("Geral", pinGeral);
 
-        Painel pinRespon = new Painel();
+        JPanelPad pinRespon = new JPanelPad();
         JLabel lbRespon = new JLabel(" Reponsável técnico");
         lbRespon.setOpaque(true);
         

@@ -35,14 +35,14 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FRomaneio extends FDetalhe implements InsertListener,ActionListener {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtSaidaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -58,7 +58,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     setTitulo("Cadastro de Romaneio");
     setAtribos( 50, 20, 510, 350);
     setAltCab(90);
-    pinCab = new Painel(500,90);
+    pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     
@@ -80,7 +80,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     setListaCampos( true, "ROMANEIO", "VD");
     lcCampos.setQueryInsert(false);
     setAltDet(60);
-    pinDet = new Painel(590,110);
+    pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

@@ -32,14 +32,14 @@ import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanPrim extends FFDialogo {
   private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  private Painel pinCont = new Painel(360,220);
+  private JPanelPad pinCont = new JPanelPad(360,220);
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgTipo = null;

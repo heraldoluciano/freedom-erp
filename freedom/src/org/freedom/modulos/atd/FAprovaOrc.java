@@ -53,7 +53,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -68,7 +68,7 @@ import org.freedom.telas.FFilho;
  *
  */
 public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditListener {
-	private Painel pinCab = new Painel(0,80);
+	private JPanelPad pinCab = new JPanelPad(0,80);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtCodConv = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
@@ -104,7 +104,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		btCanc.addActionListener(this);
 		btOk.addActionListener(this);
 
-		Painel pinRod = new Painel(685,50);
+		JPanelPad pinRod = new JPanelPad(685,50);
 			
 		lcOrc.add(new GuardaCampo( txtCodOrc,"CodOrc", "Cód.orç.",ListaCampos.DB_PK,false),"txtCodOrc");		
 		lcOrc.add(new GuardaCampo( txtCodConv,"CodConv","Cód.conv.",ListaCampos.DB_SI,false),"txtCodConv");

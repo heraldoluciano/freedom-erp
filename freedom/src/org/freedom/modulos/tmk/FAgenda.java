@@ -53,7 +53,7 @@ import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -61,7 +61,7 @@ import org.freedom.telas.FFilho;
 
 
 public class FAgenda extends FFilho implements JComboBoxListener, ActionListener {
-  private Painel pinCabAgd = new Painel(0,120);
+  private JPanelPad pinCabAgd = new JPanelPad(0,120);
   private JPanel pnAgd = new JPanel(new BorderLayout());
   private JPanel pnRodAgd = new JPanel(new BorderLayout());
   private JTabbedPanePad tpnAgd = new JTabbedPanePad();

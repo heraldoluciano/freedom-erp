@@ -33,16 +33,16 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
 
 public class FRListaSus extends FTabDados implements PostListener, CheckBoxListener {
-  private Painel pinGeral;
-  private Painel pinPacientes;
-  private Painel pinPacientes2;
-  private Painel pinPacientes3;
+  private JPanelPad pinGeral;
+  private JPanelPad pinPacientes;
+  private JPanelPad pinPacientes2;
+  private JPanelPad pinPacientes3;
   private JTextFieldPad txtDataini;
   private JTextFieldPad txtDatafim;
   private JTextFieldPad txtFoneEnc;
@@ -115,10 +115,10 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
   private JCheckBoxPad cbLimpaCheck;
   private JCheckBoxPad cbTicaTudo;
   public FRListaSus() {
-    pinGeral = new Painel();
-    pinPacientes = new Painel();
-    pinPacientes2 = new Painel();
-    pinPacientes3 = new Painel();
+    pinGeral = new JPanelPad();
+    pinPacientes = new JPanelPad();
+    pinPacientes2 = new JPanelPad();
+    pinPacientes3 = new JPanelPad();
     txtDataini = new JTextFieldPad();
     txtDatafim = new JTextFieldPad();
     txtFoneEnc = new JTextFieldPad(12);

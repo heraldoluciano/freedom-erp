@@ -41,13 +41,13 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FBloqCompra extends FFilho implements ActionListener, CarregaListener {
-  private Painel pinFor = new Painel(350,100);
+  private JPanelPad pinFor = new JPanelPad(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDocCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

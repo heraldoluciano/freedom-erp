@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
@@ -43,7 +45,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FCliente;
@@ -53,9 +54,9 @@ import org.freedom.telas.FTabDados;
 
 
 public class FConveniado extends FTabDados implements PostListener { 
-  private Painel pinGeral = new Painel(650,520);
-  private Painel pinInfo = new Painel(650,520);
-  private JPanelPad pnAtrib = new JPanelPad(new BorderLayout());
+  private JPanelPad pinGeral = new JPanelPad(650,520);
+  private JPanelPad pinInfo = new JPanelPad(650,520);
+  private JPanel pnAtrib = new JPanel(new BorderLayout());
   private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNomeConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtRgConv = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
@@ -94,7 +95,7 @@ public class FConveniado extends FTabDados implements PostListener {
   private Tabela tabAtrib = new Tabela();
   private JScrollPane spnAtrib = new JScrollPane(tabAtrib);
   private JTextAreaPad txaAtrib = new JTextAreaPad();
-  private Painel pinRodAtrib = new Painel(650,250);
+  private JPanelPad pinRodAtrib = new JPanelPad(650,250);
   private Navegador navAtrib = new Navegador(true);
   private ListaCampos lcTipoConv = new ListaCampos(this,"TC");
   private ListaCampos lcCli = new ListaCampos(this,"CL");

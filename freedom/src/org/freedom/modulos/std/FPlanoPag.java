@@ -39,14 +39,14 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListener, PostListener {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescPlanoPag = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtNumParc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -94,7 +94,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     
     
     setAltCab(160);
-    pinCab = new Painel();
+    pinCab = new JPanelPad();
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
 
@@ -114,7 +114,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     lcCampos.setQueryInsert(true);    
 
     setAltDet(60);
-    pinDet = new Painel(440,50);
+    pinDet = new JPanelPad(440,50);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

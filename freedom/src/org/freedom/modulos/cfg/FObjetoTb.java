@@ -32,12 +32,12 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldPad txtDescObj = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -48,7 +48,7 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     setTitulo("Vinculo entre tabelas físicas e auxiliares");
     setAtribos( 50, 20, 500, 350);
     setAltCab(90);
-    pinCab = new Painel(500,90);
+    pinCab = new JPanelPad(500,90);
     
     txtDescObj.setAtivo(false);
     
@@ -72,7 +72,7 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     lcCampos.setQueryInsert(false);
         
     setAltDet(60);
-    pinDet = new Painel(590,110);
+    pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

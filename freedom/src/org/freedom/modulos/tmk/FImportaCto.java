@@ -49,7 +49,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -70,7 +70,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 	private JButton btBuscaOrig = new JButton(Icone.novo("btAbrirPeq.gif"));
 	private JButton btBuscaDest = new JButton(Icone.novo("btAbrirPeq.gif"));
 	private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));
-	private Painel pinGeral = new Painel(400,200);
+	private JPanelPad pinGeral = new JPanelPad(400,200);
 	private JProgressBar pbAnd = new JProgressBar();
 	private ListaCampos lcTipoImp = new ListaCampos(this,"TK");
 	private JLabel lAndamento = new JLabel("Andamento");

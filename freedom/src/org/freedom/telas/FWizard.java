@@ -34,11 +34,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 
 
 public class FWizard extends FFDialogo {
-    private Painel pinCorpo = new Painel();
+    private JPanelPad pinCorpo = new JPanelPad();
     private JPanel pnTit = new JPanel(new FlowLayout(FlowLayout.LEFT,15,10));
     private JPanel pnCorpo = new JPanel(new BorderLayout());
     private JPanel pnRod = new JPanel(new BorderLayout());
@@ -120,7 +120,7 @@ public class FWizard extends FFDialogo {
     public void setPanel(JPanel pn) {
 		pnCorpo.add(pn, BorderLayout.CENTER);
 	}
-	public void setPainel(Painel pin) {
+	public void setPainel(JPanelPad pin) {
         pnCorpo.remove(pinCorpo);
         pin.tiraBorda();
 		pnCorpo.add(pin, BorderLayout.CENTER);

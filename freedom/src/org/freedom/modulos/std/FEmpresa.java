@@ -33,15 +33,15 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
 public class FEmpresa extends FTabDados implements PostListener{
-  private Painel pinGeral = new Painel(470,470);
-  private Painel pinFilial = new Painel(470,270);
+  private JPanelPad pinGeral = new JPanelPad(470,470);
+  private JPanelPad pinFilial = new JPanelPad(470,270);
   private JPanel pnFilial = new JPanel(new BorderLayout());
   private JTextFieldPad txtCodEmp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazEmp = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);

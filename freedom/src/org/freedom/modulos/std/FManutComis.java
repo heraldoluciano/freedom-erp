@@ -45,15 +45,15 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FManutComis extends FFilho implements ActionListener {
-  private Painel pinPeriodo = new Painel(275,65);
-  private Painel pinLabel = new Painel(50,20);
+  private JPanelPad pinPeriodo = new JPanelPad(275,65);
+  private JPanelPad pinLabel = new JPanelPad(50,20);
   private JLabel lbPeriodo = new JLabel(" Periodo");
   private JLabel lbDe = new JLabel("De:");
   private JLabel lbA = new JLabel("A:");
@@ -129,8 +129,8 @@ public class FManutComis extends FFilho implements ActionListener {
     
     c.setLayout(new BorderLayout());
     
-    Painel pinTop = new Painel(600,92);
-    Painel pinRod = new Painel(600,50);
+    JPanelPad pinTop = new JPanelPad(600,92);
+    JPanelPad pinRod = new JPanelPad(600,50);
 
     pinPeriodo.adic(lbDe,7,10,30,20);
     pinPeriodo.adic(txtDataini,40,10,97,20);

@@ -38,7 +38,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
@@ -49,7 +49,7 @@ public class DLConsultaPgto extends FFDialogo {
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private ListaCampos lcCli = new ListaCampos(this);
-  private Painel pinConsulta = new Painel(0,60);
+  private JPanelPad pinConsulta = new JPanelPad(0,60);
   public DLConsultaPgto(Component cOrig,Connection cn,int iCodCli) {
   	super(cOrig);
     txtCodCli.setVlrString(""+iCodCli);

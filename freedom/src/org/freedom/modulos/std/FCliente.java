@@ -60,7 +60,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FConveniado;
@@ -71,9 +71,9 @@ import org.freedom.telas.FTabDados;
 
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
                TabelaSelListener, ChangeListener, CarregaListener, InsertListener {
-  private Painel pinCli = new Painel();
+  private JPanelPad pinCli = new JPanelPad();
   private JPanel pnFor = new JPanel(new BorderLayout());
-  private Painel pinFor = new Painel(0,80);
+  private JPanelPad pinFor = new JPanelPad(0,80);
   private Tabela tbObsData = new Tabela();
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtRazCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
@@ -150,26 +150,26 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private Vector vPessoaLab = new Vector();
   private Vector vPessoaVal = new Vector();
   private JRadioGroup rgPessoa = null;
-  private Painel pinEnt = new Painel();
-  private Painel pinVend = new Painel();
-  private Painel pinCob = new Painel();
-  private JPanel pnObs1 = new JPanel(new BorderLayout()); // Painel de observações com 2 linha e 1 coluna
-  private JPanel pnObs1_1 = new JPanel(new BorderLayout()); // Painel de observações gerais
-  private JPanel pnObs1_2 = new JPanel(new BorderLayout()); // Painel principal de observações por data
-  //private Painel pinObs1_2_1 = new Painel(200,100); // Painel para scrool da tabela de datas de observação
+  private JPanelPad pinEnt = new JPanelPad();
+  private JPanelPad pinVend = new JPanelPad();
+  private JPanelPad pinCob = new JPanelPad();
+  private JPanel pnObs1 = new JPanel(new BorderLayout()); // JPanelPad de observações com 2 linha e 1 coluna
+  private JPanel pnObs1_1 = new JPanel(new BorderLayout()); // JPanelPad de observações gerais
+  private JPanel pnObs1_2 = new JPanel(new BorderLayout()); // JPanelPad principal de observações por data
+  //private JPanelPad pinObs1_2_1 = new JPanelPad(200,100); // JPanelPad para scrool da tabela de datas de observação
   private JPanel pnObs1_2_1 = new JPanel(new BorderLayout());
   private JPanel pnObs1_2_2 = new JPanel(new BorderLayout()); // Pinel para observações e outros
   private JPanel pnObs1_2_2_1 = new JPanel(new BorderLayout());
   private JPanel pnObs1_2_2_2 = new JPanel(new BorderLayout());
-  private Painel pinObs1_2_1_1 = new Painel(200,200); 
-  private Painel pinObs1_2_2_2_1 = new Painel(0,30);
+  private JPanelPad pinObs1_2_1_1 = new JPanelPad(200,200); 
+  private JPanelPad pinObs1_2_2_2_1 = new JPanelPad(0,30);
   
-  private JPanel pnObsData = new JPanel(new GridLayout(1,2)); // Painel de Observações por data com 1 linha e duas colunas
-  private JPanel pnObsAcao = new JPanel(new GridLayout(2,1)); // Painel principal de ações que fica dentro do pnObsData 2 linhas e 1 coluna
-  private JPanel pnObsBotoes = new JPanel(new FlowLayout(FlowLayout.LEADING)); // Painel de botões de ação que fica dentro do pnObsAcao
-  private JPanel pnObsTb = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Painel para o grid de datas, o scroll vai ficar dentro
+  private JPanel pnObsData = new JPanel(new GridLayout(1,2)); // JPanelPad de Observações por data com 1 linha e duas colunas
+  private JPanel pnObsAcao = new JPanel(new GridLayout(2,1)); // JPanelPad principal de ações que fica dentro do pnObsData 2 linhas e 1 coluna
+  private JPanel pnObsBotoes = new JPanel(new FlowLayout(FlowLayout.LEADING)); // JPanelPad de botões de ação que fica dentro do pnObsAcao
+  private JPanel pnObsTb = new JPanel(new FlowLayout(FlowLayout.LEFT)); // JPanelPad para o grid de datas, o scroll vai ficar dentro
   
-  private JPanel pnGrpCli = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); // Painel para botão de clientes agrupados
+  private JPanel pnGrpCli = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0)); // JPanelPad para botão de clientes agrupados
   
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
@@ -210,7 +210,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     lcCampos.adicDetalhe(lcCliFor);
     lcCliFor.setTabela(tabFor);
     
-    pinCli = new Painel(500,330);
+    pinCli = new JPanelPad(500,330);
     setPainel(pinCli);
 	   
   }
@@ -349,7 +349,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCepCli.setMascara(JTextFieldPad.MC_CEP);
   	txtFoneCli.setMascara(JTextFieldPad.MC_FONEDDD);
   	txtFaxCli.setMascara(JTextFieldPad.MC_FONE);
-  	pinEnt = new Painel(500,290);
+  	pinEnt = new JPanelPad(500,290);
   	setPainel(pinEnt);
   	
   	adicTab("Entrega", pinEnt);
@@ -374,7 +374,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtFaxEnt.setMascara(JTextFieldPad.MC_FONE);
   	adic(btAtEntrega,400,15,30,30); 
   	
-  	pinCob = new Painel(500,290);
+  	pinCob = new JPanelPad(500,290);
   	setPainel(pinCob);
   	adicTab("Cobrança", pinCob);
 
@@ -400,7 +400,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
 //Venda:    
     
-  	pinVend = new Painel(500,290);
+  	pinVend = new JPanelPad(500,290);
   	setPainel(pinVend);
   	adicTab("Venda", pinVend);
   	adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.repr.", ListaCampos.DB_FK, txtDescVend, false);

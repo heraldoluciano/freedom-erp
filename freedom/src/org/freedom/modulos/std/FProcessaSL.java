@@ -39,7 +39,7 @@ import javax.swing.JLabel;
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -53,7 +53,7 @@ import org.freedom.telas.FFilho;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FProcessaSL extends FFilho implements ActionListener {
-    private Painel pin = new Painel();
+    private JPanelPad pin = new JPanelPad();
 	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JLabel lbStatus = new JLabel();
 	boolean bRunProcesso = false;

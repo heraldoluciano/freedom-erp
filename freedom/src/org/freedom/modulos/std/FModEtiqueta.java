@@ -44,7 +44,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDados;
 
 //import bibli.funcoes.Funcoes; // TESTE
@@ -52,7 +52,7 @@ import org.freedom.telas.FDados;
 
 public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener {       
 	
-    private Painel pinCab = new Painel(0,150);
+    private JPanelPad pinCab = new JPanelPad(0,150);
 	private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescModEtiq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

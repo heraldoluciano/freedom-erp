@@ -53,16 +53,16 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FCompra extends FDetalhe implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener {
   private int casasDec = Aplicativo.casasDec;
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
-  private Painel pinTot = new Painel(200, 200);
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
+  private JPanelPad pinTot = new JPanelPad(200, 200);
   private JPanel pnTot = new JPanel(new GridLayout(1, 1));
   private JPanel pnCenter = new JPanel(new BorderLayout());
   private JButton btFechaCompra = new JButton(Icone.novo("btOk.gif"));
@@ -256,7 +256,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     txtVlrDescCompra.setAtivo(false);
     txtVlrLiqCompra.setAtivo(false);
 
-    pinCab = new Painel(740, 130);
+    pinCab = new JPanelPad(740, 130);
     setListaCampos(lcCampos);
     setAltCab(130);
     setPainel(pinCab, pnCliCab);
@@ -305,7 +305,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   }
   private void montaDetalhe() {
     setAltDet(100);
-    pinDet = new Painel(740, 100);
+    pinDet = new JPanelPad(740, 100);
     setPainel(pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

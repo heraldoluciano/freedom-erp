@@ -44,14 +44,14 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FGeraFiscal extends FFilho implements ActionListener {
-  private Painel pinCliente = new Painel(600,110);
+  private JPanelPad pinCliente = new JPanelPad(600,110);
   private JPanel pnGrid = new JPanel(new GridLayout(2,1));
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,0,10);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,0,10);

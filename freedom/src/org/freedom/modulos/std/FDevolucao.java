@@ -40,21 +40,21 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FWizard;
 
 public class FDevolucao extends FWizard implements CarregaListener{
-    private Painel pin1 = null;
-    private Painel pin1a = null;
-    private Painel pin1a1 = null;
-    private Painel pin1a2 = null;
-    private Painel pin1b = null;
-    private Painel pin1b1 = null;
-    private Painel pin1c = null;
-    private Painel pin1c1 = null;
+    private JPanelPad pin1 = null;
+    private JPanelPad pin1a = null;
+    private JPanelPad pin1a1 = null;
+    private JPanelPad pin1a2 = null;
+    private JPanelPad pin1b = null;
+    private JPanelPad pin1b1 = null;
+    private JPanelPad pin1c = null;
+    private JPanelPad pin1c1 = null;
     private JRadioGroup rg1 = null;
     private JRadioGroup rg1a = null;
     private JRadioGroup rg1b = null;
@@ -86,7 +86,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
             return;
         }
         
-        pin1 = new Painel();
+        pin1 = new JPanelPad();
         setPainel(pin1);
         
         rg1 = new JRadioGroup(3,1,
@@ -109,7 +109,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
             return;
         }
         
-        pin1a = new Painel();
+        pin1a = new JPanelPad();
         setPainel(pin1a);
         
         txtCodVenda1a = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -169,7 +169,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
             return;
         }
         
-        pin1b = new Painel();
+        pin1b = new JPanelPad();
         setPainel(pin1b);
         
         rg1b = new JRadioGroup(1,1,
@@ -195,7 +195,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
             return;
         }
         
-        pin1c = new Painel();
+        pin1c = new JPanelPad();
         setPainel(pin1c);
         
         txtCodCli1c = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -234,7 +234,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
     }
     private void mostraPainel1a1() {
 
-        pin1a1 = new Painel();
+        pin1a1 = new JPanelPad();
         setPainel(pin1a1);
 
         if (cancVenda()) {
@@ -248,7 +248,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
     }
     private void mostraPainel1a2() {
 
-        pin1a2 = new Painel();
+        pin1a2 = new JPanelPad();
         setPainel(pin1a2);
         
         int iCodCompra = 0;
@@ -264,7 +264,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
     }
     private void mostraPainel1b1() {
 
-        pin1b1 = new Painel();
+        pin1b1 = new JPanelPad();
         setPainel(pin1b1);
         
         int iCodCompra = 0;
@@ -280,7 +280,7 @@ public class FDevolucao extends FWizard implements CarregaListener{
     }
     private void mostraPainel1c1() {
 
-        pin1c1 = new Painel();
+        pin1c1 = new JPanelPad();
         setPainel(pin1c1);
         
         int iCodFor = 0;

@@ -38,20 +38,20 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostListener {
-	private Painel pinVenda = new Painel(690, 220);
-	private Painel pinGeral = new Painel(330, 200);
-	private Painel pinPreco = new Painel(330, 200);
-	private Painel pinOrc = new Painel(330, 200);
-	private Painel pinFin = new Painel();
-	private Painel pinSVV = new Painel();
-    private Painel pinDev = new Painel();
-    private Painel pinEstoq = new Painel();
-    private Painel pinProd = new Painel();
+	private JPanelPad pinVenda = new JPanelPad(690, 220);
+	private JPanelPad pinGeral = new JPanelPad(330, 200);
+	private JPanelPad pinPreco = new JPanelPad(330, 200);
+	private JPanelPad pinOrc = new JPanelPad(330, 200);
+	private JPanelPad pinFin = new JPanelPad();
+	private JPanelPad pinSVV = new JPanelPad();
+    private JPanelPad pinDev = new JPanelPad();
+    private JPanelPad pinEstoq = new JPanelPad();
+    private JPanelPad pinProd = new JPanelPad();
 
     private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);	

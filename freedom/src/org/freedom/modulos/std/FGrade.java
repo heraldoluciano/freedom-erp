@@ -46,7 +46,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -55,13 +55,13 @@ import org.freedom.telas.FFilho;
 
 
 public class FGrade extends FFilho implements ActionListener, CarregaListener {
-  private Painel pinCab = new Painel(700,55);
+  private JPanelPad pinCab = new JPanelPad(700,55);
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JPanel pnSubRod = new JPanel(new BorderLayout());
-  private Painel pinRod = new Painel(480,55);
-  private Painel pinSair = new Painel(120,45);
-  private Painel pinBtSel = new Painel(40,110);
-  private Painel pinBtSelMod = new Painel(40,110);
+  private JPanelPad pinRod = new JPanelPad(480,55);
+  private JPanelPad pinSair = new JPanelPad(120,45);
+  private JPanelPad pinBtSel = new JPanelPad(40,110);
+  private JPanelPad pinBtSelMod = new JPanelPad(40,110);
   private JPanel pnCli = new JPanel(new BorderLayout());
   private JPanel pnTabMod = new JPanel(new BorderLayout());
   private JPanel pnCliTab = new JPanel(new BorderLayout());

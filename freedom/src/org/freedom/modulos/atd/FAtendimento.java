@@ -48,7 +48,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -57,9 +57,9 @@ import org.freedom.telas.FPrincipal;
 
 
 public class FAtendimento extends FFilho implements CarregaListener, ActionListener {
-  private Painel pinConv = new Painel(510,110);
-  private Painel pinCli = new Painel(510,65);
-  private Painel pinCabConv = new Painel(530,200);
+  private JPanelPad pinConv = new JPanelPad(510,110);
+  private JPanelPad pinCli = new JPanelPad(510,65);
+  private JPanelPad pinCabConv = new JPanelPad(530,200);
   private JPanel pnCabConv = new JPanel(new BorderLayout());
   private JPanel pnConv = new JPanel(new BorderLayout());
   private JPanel pnRodConv = new JPanel(new BorderLayout());

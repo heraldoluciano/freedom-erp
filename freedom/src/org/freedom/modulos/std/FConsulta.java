@@ -38,7 +38,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -47,7 +47,7 @@ import org.freedom.telas.FFilho;
 
 public class FConsulta extends FFilho implements CarregaListener {
     private final int TAM_GRUPO = 14;
-	private Painel pinCabProd = new Painel(700,60);
+	private JPanelPad pinCabProd = new JPanelPad(700,60);
 	private JPanel pnCliProd = new JPanel(new BorderLayout());
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -63,7 +63,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
 	private ListaCampos lcProd2 = new ListaCampos(this);
 
-	private Painel pinCabGrup = new Painel(700,60);
+	private JPanelPad pinCabGrup = new JPanelPad(700,60);
 	private JPanel pnCliGrup = new JPanel(new BorderLayout());
 	private Tabela tabGrup = new Tabela();
 	private JScrollPane spnTabGrup = new JScrollPane(tabGrup);

@@ -41,7 +41,7 @@ import javax.swing.text.BadLocationException;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 
 public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {
   private JPanel pnCab = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));  
@@ -57,11 +57,11 @@ public class DLVisualiza extends FFDialogo implements ActionListener, CaretListe
   private JLabel lbPag = new JLabel();
   private JLabel lbImp = new JLabel("Impressora: ");
   
-  private Painel pinCab = new Painel(81,45);
+  private JPanelPad pinCab = new JPanelPad(81,45);
   private JButton btMais = new JButton(Icone.novo("btZoomMais.gif"));
   private JButton btMenos = new JButton(Icone.novo("btZoomMenos.gif"));
   
-  private Painel pinTools = new Painel(81,45);
+  private JPanelPad pinTools = new JPanelPad(81,45);
   private JButton btTxt = new JButton(Icone.novo("btTXT.gif"));
   private JButton btPdf = new JButton(Icone.novo("btPdf.gif"));
   

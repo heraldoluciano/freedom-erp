@@ -37,14 +37,14 @@ import javax.swing.event.InternalFrameEvent;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
-  private Painel pinCab = new Painel(0,60);
+  private JPanelPad pinCab = new JPanelPad(0,60);
   public JTextFieldPad txtCodPesq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public JTextFieldFK txtRazPesq = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   public Tabela tab = new Tabela();

@@ -41,14 +41,14 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 
 public class FModBoleto extends FDados implements ActionListener, JComboBoxListener {
-	private Painel pinCab = new Painel(0,150);
+	private JPanelPad pinCab = new JPanelPad(0,150);
 	private JTextFieldPad txtCodModBol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescModBol = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextAreaPad txaBoleto = new JTextAreaPad(10000);

@@ -28,13 +28,13 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescTb = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtSiglaTb = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
@@ -45,7 +45,7 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
     setTitulo("Cadastro de Tabelas auxiliares");
     setAtribos( 50, 20, 500, 350);
     setAltCab(90);
-    pinCab = new Painel(500,90);
+    pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
        
@@ -56,7 +56,7 @@ public class FTabela extends FDetalhe implements InsertListener,ActionListener {
     setListaCampos( true, "TABELA", "SG");
     lcCampos.setQueryInsert(false);
     setAltDet(60);
-    pinDet = new Painel(590,110);
+    pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

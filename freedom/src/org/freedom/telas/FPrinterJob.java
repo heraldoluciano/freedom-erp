@@ -45,7 +45,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.ImprimeLayout;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 
 public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
@@ -60,7 +60,7 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
   private JButton btUlt = new JButton(Icone.novo("btUlt.gif"));
   private JLabel lbPag = new JLabel("1 de 1");
 
-  private Painel pinCab = new Painel(232,45);
+  private JPanelPad pinCab = new JPanelPad(232,45);
   private JScrollPane spn = new JScrollPane();
   private JButton btZoom100 = new JButton(Icone.novo("btZoom100.gif"));
   private JButton btZoomIn = new JButton(Icone.novo("btZoomIn.gif"));
@@ -70,7 +70,7 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
   private JButton btMenos = new JButton(Icone.novo("btZoomMenos.gif"));
   private PageFormat pag = null;
   
-  private Painel pinTools = new Painel(47,45);
+  private JPanelPad pinTools = new JPanelPad(47,45);
   private JButton btPdf = new JButton(Icone.novo("btPdf.gif"));
   
   

@@ -36,16 +36,16 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLRCont extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
   private JPanel pnlbSelec = new JPanel(new GridLayout(1,1));
-  private Painel pinSelec = new Painel(350,70);
+  private JPanelPad pinSelec = new JPanelPad(350,70);
   private JPanel pnlbPessoa = new JPanel(new GridLayout(1,1));
-  private Painel pinPessoa = new Painel(450,40);
+  private JPanelPad pinPessoa = new JPanelPad(450,40);
   private JTextFieldPad txtCid = new JTextFieldPad();
   private JLabel lbSelec = new JLabel(" Selecão:");
   private JLabel lbDe = new JLabel("De:");

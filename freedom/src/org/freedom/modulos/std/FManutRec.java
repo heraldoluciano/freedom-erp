@@ -55,7 +55,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -64,23 +64,23 @@ import org.freedom.telas.FFilho;
 public class FManutRec extends FFilho implements ActionListener,KeyListener,CarregaListener {
   private JPanel pnLegenda = new JPanel(new GridLayout(0,4));
   private JPanel pnTabConsulta = new JPanel(new BorderLayout());
-  private Painel pinBotoesConsulta = new Painel(40,100);
+  private JPanelPad pinBotoesConsulta = new JPanelPad(40,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private Painel pinConsulta = new Painel(500,140);
+  private JPanelPad pinConsulta = new JPanelPad(500,140);
   private JPanel pnConsulta = new JPanel(new BorderLayout());
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnConsulta = new JScrollPane(tabConsulta);
   private JPanel pnTabBaixa = new JPanel(new BorderLayout());
-  private Painel pinBotoesBaixa = new Painel(40,100);
-  private Painel pinBaixa = new Painel(500,140);
+  private JPanelPad pinBotoesBaixa = new JPanelPad(40,100);
+  private JPanelPad pinBaixa = new JPanelPad(500,140);
   private JPanel pnBaixa = new JPanel(new BorderLayout());
  
   private Tabela tabBaixa = new Tabela();
   private JScrollPane spnBaixa = new JScrollPane(tabBaixa);
   private JPanel pnTabManut = new JPanel(new BorderLayout());
-  private Painel pinBotoesManut = new Painel(40,130);
-  private Painel pinManut = new Painel(500,155);
+  private JPanelPad pinBotoesManut = new JPanelPad(40,130);
+  private JPanelPad pinManut = new JPanelPad(500,155);
   private JPanel pnManut = new JPanel(new BorderLayout());
  
   private Tabela tabManut = new Tabela();

@@ -46,7 +46,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 
@@ -54,7 +54,7 @@ public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListene
   private JLabel lbPesq = new JLabel("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad();
   private JPanel pnBordCab = new JPanel(new GridLayout(1,1));
-  private Painel pinCab = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
   private DefaultTableCellRenderer cabAnt = new DefaultTableCellRenderer();
   private DefaultTableCellRenderer cab = new DefaultTableCellRenderer();
   public  Tabela tab = new Tabela();
@@ -89,7 +89,7 @@ public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListene
     
     pnBordCab.setPreferredSize(new Dimension(300, 55));
     
-    pinCab = new Painel(390, 45);
+    pinCab = new JPanelPad(390, 45);
     pinCab.adic(lbPesq, 7, 3, 270, 20);
     pinCab.adic(txtPesq, 7, 23, 270, 20);
     pinCab.adic(btExecuta, 290,13,30,30);

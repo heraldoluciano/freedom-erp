@@ -50,7 +50,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -58,11 +58,11 @@ import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FRelatorio;
 
 public class FConsProd extends FRelatorio implements ActionListener,ChangeListener {
-	private Painel pinCab = new Painel(0,150);
-	private Painel pinPeriodoCompra = new Painel(0,60);
-	private Painel pinPeriodoVenda = new Painel(0,60);
-    private Painel pinPeriodoCompraCab = new Painel(0,50);
-    private Painel pinPeriodoVendaCab = new Painel(0,50);
+	private JPanelPad pinCab = new JPanelPad(0,150);
+	private JPanelPad pinPeriodoCompra = new JPanelPad(0,60);
+	private JPanelPad pinPeriodoVenda = new JPanelPad(0,60);
+    private JPanelPad pinPeriodoCompraCab = new JPanelPad(0,50);
+    private JPanelPad pinPeriodoVendaCab = new JPanelPad(0,50);
     private JPanel pnGeral = new JPanel(new BorderLayout());
 	private JPanel pnForneced = new JPanel(new BorderLayout());
 	private JPanel pnCompras = new JPanel(new BorderLayout());
@@ -72,8 +72,8 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private JButton btExecCompra = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btExecVenda = new JButton(Icone.novo("btExecuta.gif"));
 	//private JLabel lbA = new JLabel("à");
-	private Painel pinLbPeriodoCompra = new Painel(53,15);
-	private Painel pinLbPeriodoVenda = new Painel(53,15);
+	private JPanelPad pinLbPeriodoCompra = new JPanelPad(53,15);
+	private JPanelPad pinLbPeriodoVenda = new JPanelPad(53,15);
 	private Tabela tab = new Tabela();
 	private Tabela tabFor = new Tabela();
 	private Tabela tabCompras = new Tabela();

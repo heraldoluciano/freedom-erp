@@ -51,7 +51,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -60,7 +60,7 @@ import org.freedom.telas.FPrincipal;
 
 public class FConsSol extends FFilho implements ActionListener {
 
-	private Painel pinCab = new Painel(0, 185);
+	private JPanelPad pinCab = new JPanelPad(0, 185);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JPanel pnRod = new JPanel(new BorderLayout());
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);

@@ -35,7 +35,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -49,7 +49,7 @@ public class DLConsultaBaixa extends FFDialogo {
   private JTextFieldPad txtVlrAberto = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,9,2);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
-  private Painel pinConsulta = new Painel(0,60);
+  private JPanelPad pinConsulta = new JPanelPad(0,60);
   public DLConsultaBaixa(Component cOrig,Connection cn,int iCodRec,int iNParc) {
   	super(cOrig);
     setConexao(cn);

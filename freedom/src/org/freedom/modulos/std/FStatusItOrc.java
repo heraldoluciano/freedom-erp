@@ -39,13 +39,13 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FStatusItOrc extends FFilho implements ActionListener {
-  private Painel pinCli = new Painel(350,100);
+  private JPanelPad pinCli = new JPanelPad(350,100);
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

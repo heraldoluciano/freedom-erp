@@ -43,13 +43,13 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
 public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener {
-  private Painel pinFor = new Painel();
+  private JPanelPad pinFor = new JPanelPad();
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
@@ -99,7 +99,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     rgPessoa = new JRadioGroup( 2, 1, vPessoaLab, vPessoaVal);
     rgPessoa.addRadioGroupListener(this);   
     
-    pinFor = new Painel(470,300);
+    pinFor = new JPanelPad(470,300);
     setPainel(pinFor);
     adicTab("Fornecedor", pinFor); 
     adicCampo(txtCodFor, 7, 20, 70, 20, "CodFor", "Cód.for.", ListaCampos.DB_PK, true);

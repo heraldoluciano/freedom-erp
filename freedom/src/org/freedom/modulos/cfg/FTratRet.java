@@ -35,7 +35,7 @@ import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
@@ -47,8 +47,8 @@ public class FTratRet extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodRet = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodItProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private Vector vValsTipo = new Vector();
   private Vector vLabsTipo = new Vector();
   private JComboBoxPad cbTipo = null; 
@@ -64,7 +64,7 @@ public class FTratRet extends FDetalhe implements ActionListener {
    setAtribos(100, 100, 450, 350);
 
    setAltCab(90);
-   pinCab = new Painel(420,90);
+   pinCab = new JPanelPad(420,90);
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
    

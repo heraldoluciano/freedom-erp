@@ -39,14 +39,14 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRListaPreco extends FRelatorio {
-	private Painel pinOpt = new Painel(595,100);
-	private Painel pinPlan = new Painel(595,450);
+	private JPanelPad pinOpt = new JPanelPad(595,100);
+	private JPanelPad pinPlan = new JPanelPad(595,450);
 	private JPanel pnOpt = new JPanel(new GridLayout(1,1));
 	private JPanel pnPlan = new JPanel(new GridLayout(1,1));
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);

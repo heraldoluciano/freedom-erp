@@ -51,7 +51,7 @@ import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JMenuItemPad;
 import org.freedom.componentes.JMenuPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.Funcoes;
 
@@ -79,7 +79,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
   public static ImageIcon imgIcone = null;
   public Vector vArqINI = null;
   public String[][][] sConfig = new String[0][0][0];
-  public Painel pinBotoes = new Painel(30,30);
+  public JPanelPad pinBotoes = new JPanelPad(30,30);
   public int iXPanel = 0; 
   private static String sFiltro = "";
   private boolean bCtrl = true;
@@ -118,7 +118,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	telaPrincipal.statusBar.setNumEst(iNumEst);
 	telaPrincipal.statusBar.setDescEst(getDescEst());
 	if (strUsuario.toUpperCase().trim().equals("SYSDBA")){
-//		pinBotoes = new Painel();
+//		pinBotoes = new JPanelPad();
 //		pinBotoes.setSize(500,34);
 		iXPanel = 30;
 		pinBotoes.adic(btAtualMenu,0,0,30,30);

@@ -30,11 +30,11 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 public class FRegraFiscal extends FDetalhe {
-	private Painel pinCab = new Painel();
-	private Painel pinDet = new Painel();
+	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinDet = new JPanelPad();
 	private JTextFieldPad txtCodRegraFiscal = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
 	private JTextFieldPad txtDescRegraFiscal = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodNat= new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
@@ -49,7 +49,7 @@ public class FRegraFiscal extends FDetalhe {
 	public FRegraFiscal () {
 		setTitulo("Regras Fiscais");
 		setAtribos( 50, 50, 600, 450);
-		pinCab = new Painel(440,70);
+		pinCab = new JPanelPad(440,70);
 		setListaCampos(lcCampos);
 		setPainel( pinCab, pnCliCab);
 		adicCampo(txtCodRegraFiscal, 7, 20, 80, 20,"CodRegra","Cód.reg.fisc.", ListaCampos.DB_PK,true);
@@ -82,7 +82,7 @@ public class FRegraFiscal extends FDetalhe {
 		rgCV.setVlrString("V");
 
 		setAltDet(120);
-		pinDet = new Painel(600,120);
+		pinDet = new JPanelPad(600,120);
 		setPainel( pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);

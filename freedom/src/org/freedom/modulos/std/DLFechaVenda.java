@@ -50,7 +50,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -59,11 +59,11 @@ import org.freedom.telas.FFDialogo;
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener {
   private int casasDec = Aplicativo.casasDec;
   private JTabbedPanePad tpn = new JTabbedPanePad();
-  private Painel pinFecha = new Painel(400,300);
-  private Painel pinFrete = new Painel(400,300);
+  private JPanelPad pinFecha = new JPanelPad(400,300);
+  private JPanelPad pinFrete = new JPanelPad(400,300);
   private JPanel pnReceber = new JPanel(new BorderLayout());
   private JPanel pnComis = new JPanel(new GridLayout(1,1));;
-  private Painel pinInfEspec = new Painel(0,0);
+  private JPanelPad pinInfEspec = new JPanelPad(0,0);
   
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrDescItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
@@ -272,7 +272,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     txtUFCliAuxV.setListaCampos(lcAuxVenda);
     txtCPFCliAuxV.setMascara(JTextFieldPad.MC_CPF);
     
-    Painel pinTopRec = new Painel(400,60);
+    JPanelPad pinTopRec = new JPanelPad(400,60);
     pinTopRec.setPreferredSize(new Dimension(400,60));
     pnReceber.add(pinTopRec,BorderLayout.NORTH);
     JScrollPane spnTabRec = new JScrollPane(tabRec);
