@@ -97,8 +97,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
-    imp.setTitulo("Relatório de naturezas de operações");
+    
     DLRNatOper dl = new DLRNatOper();
     dl.setVisible(true);
     if (dl.OK == false) {
@@ -118,7 +117,11 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
       imp.limpaPags();
       while ( rs.next() ) {
          if (imp.pRow()==0) {
-            imp.impCab(136, false);
+         	imp.montaCab();
+            imp.setTitulo("Relatório de naturezas de operações");
+            imp.setSubTitulo("Relatório de naturezas de operações");
+            imp.impCab(136, true);
+            
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
             imp.say(imp.pRow()+0,0,"|");
@@ -129,9 +132,9 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
             imp.say(imp.pRow()+0,78,"Aliq.estadual");
             imp.say(imp.pRow()+0,102,"|");
             imp.say(imp.pRow()+0,108,"Aliq.federal");
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
                   
          sAliqe = rs.getString("AliqeNat") != null ? rs.getString("AliqeNat") : "";
@@ -157,7 +160,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
          imp.say(imp.pRow()+0,78,sAliqe);
          imp.say(imp.pRow()+0,102,"|");
          imp.say(imp.pRow()+0,108,sAliqf);
-         imp.say(imp.pRow()+0,136,"|");
+         imp.say(imp.pRow()+0,135,"|");
          
          if (imp.pRow()>=linPag) {
             imp.incPags();
@@ -166,7 +169,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       imp.eject();
       
       imp.fechaGravacao();

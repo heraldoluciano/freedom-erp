@@ -48,7 +48,7 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   public FSimilar () {
     setTitulo("Agrupamento de produtos similares");
-    setAtribos( 100, 10, 360, 350);        
+    setAtribos( 100, 10, 450, 350);        
 
 //  ********************  Lista campos adicional *****************************************************************    
     
@@ -70,8 +70,8 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
 
-    adicCampo(txtCodSim, 7, 20, 60, 20,"CodSim","Cód.Agp.",ListaCampos.DB_PK,null,true);
-    adicCampo(txtDescSim, 70, 20, 250, 20,"DescSim","Descrição do agrupamento",ListaCampos.DB_SI,null,true);
+    adicCampo(txtCodSim, 7, 20, 80, 20,"CodSim","Cód.Agp.",ListaCampos.DB_PK,null,true);
+    adicCampo(txtDescSim, 90, 20, 320, 20,"DescSim","Descrição do agrupamento",ListaCampos.DB_SI,null,true);
     
     setListaCampos( true, "SIMILAR", "EQ");
     lcCampos.setQueryInsert(true);    
@@ -85,8 +85,8 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     setListaCampos(lcDet);
     setNavegador(navRod);
      
-    adicCampo(txtCodProd,7,20,60,20,"CodProd","Cód.prod",ListaCampos.DB_PF,txtDescProd,true);
-    adicDescFK(txtDescProd,70,20,250,20,"Descprod","Descrição do produto");
+    adicCampo(txtCodProd,7,20,80,20,"CodProd","Cód.prod",ListaCampos.DB_PF,txtDescProd,true);
+    adicDescFK(txtDescProd,90,20,320,20,"Descprod","Descrição do produto");
 
     setListaCampos( false, "ITSIMILAR", "EQ");
 
@@ -94,7 +94,8 @@ public class FSimilar extends FDetalhe implements CarregaListener, InsertListene
     lcDet.setQueryCommit(false);
     
     montaTab();
-    tab.setTamColuna(260,1);
+    tab.setTamColuna(80,0);
+    tab.setTamColuna(320,1);
     lcCampos.addCarregaListener(this);
     lcCampos.addInsertListener(this);
     btImp.addActionListener(this);

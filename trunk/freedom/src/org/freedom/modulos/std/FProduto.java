@@ -694,8 +694,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 	String sWhere = "";
 	String sAnd = " WHERE ";
 	String[] sValores; 
-	imp.setTitulo("Relatório de Produtos");
-	imp.montaCab();
+	
     DLRProduto dl = new DLRProduto(con);
 	dl.setVisible(true);
 	if (dl.OK == false) {
@@ -756,20 +755,24 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		imp.limpaPags();
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
-			imp.impCab(136, false);
+		  	imp.setTitulo("Relatório de Produtos");
+		  	imp.setSubTitulo("Relatório de Produtos");
+			imp.montaCab();
+			imp.impCab(136, true);
 			imp.say(imp.pRow()+0,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+			
 			for (int i=0;i<vFiltros.size();i++) {            
 					String sTmp = (String)vFiltros.elementAt(i);
-					sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-					sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+					sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+					sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,sTmp);
 			}
 		  }
 		  
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+		  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  imp.say(imp.pRow()+0,0,"|");
 		  imp.say(imp.pRow()+0,2,"Código:");
@@ -780,10 +783,10 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		  imp.say(imp.pRow()+0,53,rs.getString("DescProd"));
 		  imp.say(imp.pRow()+0,104,"Cod.Bar.:");
 		  imp.say(imp.pRow()+0,115,rs.getString("codBarProd"));
-		  imp.say(imp.pRow()+0,136,"|");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  imp.say(imp.pRow()+0,0,"|");
-		  imp.say(imp.pRow()+0,136,"|");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  imp.say(imp.pRow()+0,0,"|");
  // 	  imp.say(imp.pRow()+0,76,"Codido do Almoxarifado:");
@@ -809,14 +812,12 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
  //		  imp.say(imp.pRow()+0,65,rs.getString("sldligprod"));
           imp.say(imp.pRow()+0,121,"Un.:");
           imp.say(imp.pRow()+0,126,rs.getString("codunid"));
-		  imp.say(imp.pRow()+0,136,"|");		  
-
-		  
-		
-		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+		  imp.say(imp.pRow()+0,135,"|");		  
+  	
 		  
 		  if (imp.pRow()>=linPag) {
+		  	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 			imp.incPags();
 			imp.eject();
 		  }
@@ -824,7 +825,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		  iContaReg++;
 		}
 		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",134)+"|");
+		imp.say(imp.pRow()+0,0,"+"+ Funcoes.replicate("-",133)+"+");
 		imp.eject();
 
 		imp.fechaGravacao();
@@ -858,19 +859,22 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		imp.limpaPags();
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
-			imp.impCab(136, false);
+		  	imp.setTitulo("Relatório de Produtos");
+		  	imp.setSubTitulo("Relatório de Produtos");
+			imp.montaCab();
+			imp.impCab(136, true);
 			imp.say(imp.pRow()+0,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
 			for (int i=0;i<vFiltros.size();i++) {            
 					String sTmp = (String)vFiltros.elementAt(i);
-					sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-					sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+					sTmp = "|"+Funcoes.replicate(" ",(((133-sTmp.length())/2)-1))+sTmp;
+					sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,2,sTmp);
 			}
 			
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",134)+"|");
+			imp.say(imp.pRow()+0,0,"|"+ Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
 			imp.say(imp.pRow()+0,3,"Código:");
@@ -882,9 +886,9 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 			imp.say(imp.pRow()+0,97,"Saldo:");
 			imp.say(imp.pRow()+0,117,"|");
 			imp.say(imp.pRow()+0,120,"Preço Base:");
-			imp.say(imp.pRow()+0,136,"|");
+			imp.say(imp.pRow()+0,135,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			
 		  }
@@ -898,17 +902,19 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		  imp.say(imp.pRow()+0,97,rs.getString("sldliqprod"));
 		  imp.say(imp.pRow()+0,117,"|");
  		  imp.say(imp.pRow()+0,120,rs.getString("Precobaseprod"));
-		  imp.say(imp.pRow()+0,136,"|");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  if (imp.pRow()>=linPag) {
+		  	imp.say(imp.pRow()+0,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.incPags();
 			imp.eject();
 		  }
 		  And.atualiza(iContaReg);
 		  iContaReg++;
 		}
-		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+		imp.say(imp.pRow()+0,0,""+imp.comprimido());
+		imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 		imp.eject();
 
 		imp.fechaGravacao();

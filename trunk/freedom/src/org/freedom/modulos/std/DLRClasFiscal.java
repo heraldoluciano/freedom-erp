@@ -38,7 +38,7 @@ public class DLRClasFiscal extends FFDialogo {
   public DLRClasFiscal(Component cOrig) {
   	super(cOrig);
     setTitulo("Ordem do Relatório");
-    setAtribos(300,160);
+    setAtribos(300,180);
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");

@@ -84,20 +84,22 @@ public class FMarca extends FDados implements ActionListener {
             imp.say(imp.pRow()+0,20,"Descrição da marca");
             imp.say(imp.pRow()+0,60,"Sigla");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodMarca"));
          imp.say(imp.pRow()+0,20,rs.getString("DescMarca"));
          imp.say(imp.pRow()+0,60,rs.getString("SiglaMarca") != null ? rs.getString("SiglaMarca") : "");
          if (imp.pRow()>=linPag) {
+         	imp.say(imp.pRow()+1,0,""+imp.normal());
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
             imp.incPags();
             imp.eject();
          }
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
       imp.eject();
       
       imp.fechaGravacao();

@@ -167,8 +167,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	String sWhere = "";
 	String sAnd = " WHERE ";
 	String[] sValores; 
-	imp.setTitulo("Relatório de Fornecedores");
-	imp.montaCab();
+	
 	DLRFornecedor dl = new DLRFornecedor(this,con);
 
 	dl.setVisible(true);
@@ -230,79 +229,97 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		imp.limpaPags();
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
-			imp.impCab(136, false);
-			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+		  	imp.setTitulo("Relatório de Fornecedores");
+		  	imp.setSubTitulo("Relatório de Fornecedores");
+			imp.montaCab();
+			imp.impCab(136, true);
+			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
 			for (int i=0;i<vFiltros.size();i++) {            
 					String sTmp = (String)vFiltros.elementAt(i);
-					sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-					sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+					sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+					sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,2,sTmp);
 			}
 		  }
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+		  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		  imp.say(imp.pRow()+0,0,"|");
 		  imp.say(imp.pRow()+0,2,"Código:");
 		  imp.say(imp.pRow()+0,10,rs.getString("CodFor"));
 		  imp.say(imp.pRow()+0,20,"Razão:");
 		  imp.say(imp.pRow()+0,27,rs.getString("RazFor"));
-		  imp.say(imp.pRow()+0,129,"Tipo:");
-		  imp.say(imp.pRow()+0,135,rs.getString("PessoaFor"));
+		  imp.say(imp.pRow()+0,128,"Tipo:");
+		  imp.say(imp.pRow()+0,134,rs.getString("PessoaFor"));
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,"Nome:");
+		  imp.say(imp.pRow()+0,0,"|");
+		  imp.say(imp.pRow()+0,1,"Nome:");
 		  imp.say(imp.pRow()+0,7,rs.getString("NomeFor"));
 		  imp.say(imp.pRow()+0,60,"Contato:");
 		  imp.say(imp.pRow()+0,70,rs.getString("ContFor"));
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,"Endereço:");
+		  imp.say(imp.pRow()+0,0,"|");
+		  imp.say(imp.pRow()+0,1,"Endereço:");
 		  imp.say(imp.pRow()+0,11,rs.getString("EndFor"));
 		  imp.say(imp.pRow()+0,62,"N.:");
 		  imp.say(imp.pRow()+0,67,""+rs.getInt("NumFor"));
 		  imp.say(imp.pRow()+0,76,"Compl.:");
 		  imp.say(imp.pRow()+0,85,rs.getString("ComplFor") != null ? rs.getString("ComplFor").trim() : "");
 		  imp.say(imp.pRow()+0,94,"Bairro:");
-		  imp.say(imp.pRow()+0,103,rs.getString("BairFor") != null ? rs.getString("BairFor").trim() : "");
+		  imp.say(imp.pRow()+0,102,rs.getString("BairFor") != null ? rs.getString("BairFor").trim() : "");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,"Cidade:");
+		  imp.say(imp.pRow()+0,0,"|");
+		  imp.say(imp.pRow()+0,1,"Cidade:");
 		  imp.say(imp.pRow()+0,8,rs.getString("CidFor"));
 		  imp.say(imp.pRow()+0,88,"UF:");
 		  imp.say(imp.pRow()+0,93,rs.getString("UfFor"));
 		  imp.say(imp.pRow()+0,121,"CEP:");
-		  imp.say(imp.pRow()+0,127,rs.getString("CepFor") != null ? Funcoes.setMascara(rs.getString("CepFor"),"#####-###") : "");
+		  imp.say(imp.pRow()+0,126,rs.getString("CepFor") != null ? Funcoes.setMascara(rs.getString("CepFor"),"#####-###") : "");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		  imp.say(imp.pRow()+0,0,"|");
 		  if ((rs.getString("CnpjFor")) != null && (rs.getString("InscFor") != null)) {
-			imp.say(imp.pRow()+0,0,"CNPJ:");
+			imp.say(imp.pRow()+0,1,"CNPJ:");
 			imp.say(imp.pRow()+0,7,Funcoes.setMascara(rs.getString("CnpjFor"),"##.###.###/####-##"));
-			imp.say(imp.pRow()+0,50,"IE:");
+			imp.say(imp.pRow()+0,49,"IE:");
 			if (!rs.getString("InscFor").trim().toUpperCase().equals("ISENTO") && rs.getString("UFFor") != null) {
 			  Funcoes.vIE(rs.getString("InscFor"),rs.getString("UFFor"));
-			  imp.say(imp.pRow()+0,55,Funcoes.sIEValida);
+			  imp.say(imp.pRow()+0,54,Funcoes.sIEValida);
 			}
 		  }
 		  else {
-			imp.say(imp.pRow()+0,0,"CPF:");
+			imp.say(imp.pRow()+0,1,"CPF:");
 			imp.say(imp.pRow()+0,6,Funcoes.setMascara(rs.getString("CPFFor"),"###.###.###-##"));
-			imp.say(imp.pRow()+0,50,"RG:");
-			imp.say(imp.pRow()+0,55,rs.getString("RgFor"));
+			imp.say(imp.pRow()+0,49,"RG:");
+			imp.say(imp.pRow()+0,54,rs.getString("RgFor"));
 		  }
 		  imp.say(imp.pRow()+0,80,"Tel:");
 		  imp.say(imp.pRow()+0,86,rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"(####)####-####") : "");
 		  imp.say(imp.pRow()+0,121,"Fax:");
-		  imp.say(imp.pRow()+0,127,rs.getString("FaxFor") != null ? Funcoes.setMascara(rs.getString("FaxFor"),"####-####") : "");
+		  imp.say(imp.pRow()+0,126,rs.getString("FaxFor") != null ? Funcoes.setMascara(rs.getString("FaxFor"),"####-####") : "");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,"Contato:");
+		  imp.say(imp.pRow()+0,0,"|");
+		  imp.say(imp.pRow()+0,1,"Contato:");
 		  imp.say(imp.pRow()+0,9,rs.getString("ContFor"));
 		  imp.say(imp.pRow()+0,70,"E-mail:");
 		  imp.say(imp.pRow()+0,79,rs.getString("EmailFor"));
+		  imp.say(imp.pRow()+0,135,"|");
 		  if (sObs.length() > 0) {
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"Obs:");
+			imp.say(imp.pRow()+0,0,"|");
+			imp.say(imp.pRow()+0,1,"Obs:");
 			imp.say(imp.pRow()+0,6,rs.getString("ObsFor"));
+			imp.say(imp.pRow()+0,135,"|");
 		  }
-		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+		  
 		  if (imp.pRow()>=linPag) {
+		  	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 			imp.incPags();
 			imp.eject();
 		  }
@@ -310,7 +327,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		  iContaReg++;
 		}
 		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+		imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 		imp.eject();
 
 		imp.fechaGravacao();
@@ -341,42 +358,52 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		imp.limpaPags();
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
-			imp.impCab(136, false);
-			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+		  	imp.setTitulo("Relatório de Fornecedores");
+		  	imp.setSubTitulo("Relatório de Fornecedores");
+			imp.montaCab();
+			imp.impCab(136, true);
+			
+			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
 			for (int i=0;i<vFiltros.size();i++) {            
 					String sTmp = (String)vFiltros.elementAt(i);
-					sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
-					sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+					sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+					sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,2,sTmp);
 			}
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"|");
 			imp.say(imp.pRow()+0,2,"Código");
 			imp.say(imp.pRow()+0,10,"Razão:");
 			imp.say(imp.pRow()+0,50,"Endereço:");
 			imp.say(imp.pRow()+0,90,"Cidade:");
 			imp.say(imp.pRow()+0,120,"Tel:");
+			imp.say(imp.pRow()+0,135,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  }
+		  imp.say(imp.pRow()+0,0,"|");
 		  imp.say(imp.pRow()+0,2,rs.getString("CodFor"));
 		  imp.say(imp.pRow()+0,10,rs.getString("RazFor") != null ? rs.getString("RazFor").substring(0,39) : "");
 		  imp.say(imp.pRow()+0,50,rs.getString("EndFor") != null ? rs.getString("EndFor").substring(0,39) : "");
 		  imp.say(imp.pRow()+0,90,rs.getString("CidFor") != null ? rs.getString("CidFor").substring(0,29) : "");
 		  imp.say(imp.pRow()+0,120,rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"(####)####-####") : "");
+		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  if (imp.pRow()>=linPag) {
+		  	imp.say(imp.pRow()+0,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 			imp.incPags();
 			imp.eject();
 		  }
 		  And.atualiza(iContaReg);
 		  iContaReg++;
 		}
-		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+		imp.say(imp.pRow()+0,0,""+imp.comprimido());
+		imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 		imp.eject();
 
 		imp.fechaGravacao();

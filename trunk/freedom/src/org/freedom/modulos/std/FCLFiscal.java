@@ -215,8 +215,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
-    imp.setTitulo("Relatório de Classificação fiscal dos produtos");
+    
     DLRClasFiscal dl = new DLRClasFiscal(this);
     String sRets[];
   //  String sOrdem;
@@ -254,9 +253,13 @@ public class FCLFiscal extends FDados implements CarregaListener {
         if (!sRets[0].equals("S") ){
       
           if (imp.pRow()==0) {
-            imp.impCab(136, false);
+          	imp.montaCab();
+            imp.setTitulo("Relatório de Classificação fiscal dos produtos");
+            imp.setSubTitulo("Relatório de Classificação fiscal dos produtos");
+            imp.impCab(136, true);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|");
             imp.say(imp.pRow()+0,3,"Código");
             imp.say(imp.pRow()+0,18,"|");
@@ -277,10 +280,10 @@ public class FCLFiscal extends FDados implements CarregaListener {
             imp.say(imp.pRow()+0,116,"T.F.CLIENTE");
             imp.say(imp.pRow()+0,128,"|");
             imp.say(imp.pRow()+0,130,"EST");    
-            imp.say(imp.pRow()+0,136,"|");         
+            imp.say(imp.pRow()+0,135,"|");         
             
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           }
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");    
@@ -304,13 +307,19 @@ public class FCLFiscal extends FDados implements CarregaListener {
           //imp.say(imp.pRow()+0,116,rs.getString(22));
           imp.say(imp.pRow()+0,128,"|");
           imp.say(imp.pRow()+0,131,rs.getString("NOUFITFISC"));
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,135,"|");
         }
         else {
          
           if (imp.pRow()==0) {
-            imp.impCab(136, false);
+          	imp.montaCab();
+            imp.setTitulo("Relatório de Classificação fiscal dos produtos");
+            imp.setSubTitulo("Relatório de Classificação fiscal dos produtos");
+            imp.impCab(136, true);
+            
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"");
             imp.say(imp.pRow()+0,0,"|");
             imp.say(imp.pRow()+0,3,"Código");
@@ -332,14 +341,14 @@ public class FCLFiscal extends FDados implements CarregaListener {
             imp.say(imp.pRow()+0,116,"T.F.CLIENTE");
             imp.say(imp.pRow()+0,128,"|");
             imp.say(imp.pRow()+0,130,"EST.");
-            imp.say(imp.pRow()+0,136,"|");         
+            imp.say(imp.pRow()+0,135,"|");         
             
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           }
           if ( (!sCodFiscAnt.equals("")) && (!sCodFiscAnt.equals(rs.getString("CodFisc")))) {
          	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-         	 imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+         	 imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           }
           
           if ( !sCodFiscAnt.equals(rs.getString("CodFisc"))) {
@@ -365,7 +374,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
             //imp.say(imp.pRow()+0,116,Funcoes.copy(rs.getString(22),10));
           	imp.say(imp.pRow()+0,128,"|");
           	imp.say(imp.pRow()+0,131,rs.getString("NOUFITFISC"));
-          	imp.say(imp.pRow()+0,136,"|");
+          	imp.say(imp.pRow()+0,135,"|");
           }
        
           
@@ -390,14 +399,14 @@ public class FCLFiscal extends FDados implements CarregaListener {
               imp.say(imp.pRow()+0,115,Funcoes.copy(rs.getString(22),10));
               imp.say(imp.pRow()+0,128,"|");
               imp.say(imp.pRow()+0,131,rs.getString(17));
-              imp.say(imp.pRow()+0,136,"|");
+              imp.say(imp.pRow()+0,135,"|");
           }
           
           sCodFiscAnt = rs.getString("CodFisc");
         }
         if (imp.pRow()>=linPag) {
         	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        	imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+        	imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
         	imp.incPags();
             imp.eject();
         }
@@ -406,7 +415,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
      
       
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       imp.eject();
       
       imp.fechaGravacao();
