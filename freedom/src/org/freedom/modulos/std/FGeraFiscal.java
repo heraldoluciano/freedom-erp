@@ -1,4 +1,4 @@
-/**
+ /**
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
@@ -111,23 +111,23 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     pnGrid.add(spnTab1);
     pnGrid.add(spnTab2);
     
-    tab1.adicColuna("Dt.Emissão");
-    tab1.adicColuna("Dt.Entrada");
-    tab1.adicColuna("Nat.Oper.");
-    tab1.adicColuna("Cód.For.");
+    tab1.adicColuna("Dt.emissão");
+    tab1.adicColuna("Dt.entrada");
+    tab1.adicColuna("Nat.oper.");
+    tab1.adicColuna("Cód.for.");
     tab1.adicColuna("UF.");
     tab1.adicColuna("Espécie");
-    tab1.adicColuna("Mod.Nota");
+    tab1.adicColuna("Mod.nota");
     tab1.adicColuna("Série");
     tab1.adicColuna("Doc.");
     tab1.adicColuna("%Icms");
     tab1.adicColuna("%Ipi");
-    tab1.adicColuna("V.Contabil");
-    tab1.adicColuna("V.Base Icms");
+    tab1.adicColuna("V.contabil");
+    tab1.adicColuna("V.base Icms");
     tab1.adicColuna("V.Icms");
-    tab1.adicColuna("V.Isentas");
-    tab1.adicColuna("V.Outras");
-    tab1.adicColuna("V.Base Ipi");
+    tab1.adicColuna("V.isentas");
+    tab1.adicColuna("V.outras");
+    tab1.adicColuna("V.base Ipi");
     tab1.adicColuna("V.Ipi");
     tab1.adicColuna("E1");
     tab1.adicColuna("F1");
@@ -138,11 +138,11 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     
     tab1.setTamColuna(100,0);
     tab1.setTamColuna(100,1);
-    tab1.setTamColuna(50,2);
-    tab1.setTamColuna(50,3);
-    tab1.setTamColuna(30,4);
-    tab1.setTamColuna(50,5);
-    tab1.setTamColuna(50,6);
+    tab1.setTamColuna(70,2);
+    tab1.setTamColuna(70,3);
+    tab1.setTamColuna(40,4);
+    tab1.setTamColuna(70,5);
+    tab1.setTamColuna(80,6);
     tab1.setTamColuna(50,7);
     tab1.setTamColuna(70,8);
     tab1.setTamColuna(70,9);
@@ -154,30 +154,30 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     tab1.setTamColuna(100,15);
     tab1.setTamColuna(100,16);
     tab1.setTamColuna(100,17);
-    tab1.setTamColuna(5,18);
-	tab1.setTamColuna(5,19);
-	tab1.setTamColuna(5,20);
-	tab1.setTamColuna(5,21);
-	tab1.setTamColuna(5,22);
-	tab1.setTamColuna(5,23);
+    tab1.setTamColuna(20,18);
+	tab1.setTamColuna(20,19);
+	tab1.setTamColuna(20,20);
+	tab1.setTamColuna(20,21);
+	tab1.setTamColuna(20,22);
+	tab1.setTamColuna(20,23);
     
-    tab2.adicColuna("Dt.Emissão");
-    tab2.adicColuna("Dt.Saída");
-    tab2.adicColuna("Nat.Oper.");
+    tab2.adicColuna("Dt.emissão");
+    tab2.adicColuna("Dt.saída");
+    tab2.adicColuna("Nat.oper.");
     tab2.adicColuna("Cód.For.");
     tab2.adicColuna("UF.");
     tab2.adicColuna("Espécie");
-    tab2.adicColuna("Mod.Nota");
+    tab2.adicColuna("Mod.nota");
     tab2.adicColuna("Série");
     tab2.adicColuna("Doc.");
     tab2.adicColuna("%Icms");
     tab2.adicColuna("%Ipi");
-    tab2.adicColuna("V.Contabil");
-    tab2.adicColuna("V.Base Icms");
+    tab2.adicColuna("V.contabil");
+    tab2.adicColuna("V.base Icms");
     tab2.adicColuna("V.Icms");
-    tab2.adicColuna("V.Isentas");
-    tab2.adicColuna("V.Outras");
-    tab2.adicColuna("V.Base Ipi");
+    tab2.adicColuna("V.isentas");
+    tab2.adicColuna("V.outras");
+    tab2.adicColuna("V.base Ipi");
     tab2.adicColuna("V.Ipi");
 	tab2.adicColuna("E1");
 	tab2.adicColuna("F1");
@@ -188,11 +188,11 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     
     tab2.setTamColuna(100,0);
     tab2.setTamColuna(100,1);
-    tab2.setTamColuna(50,2);
-    tab2.setTamColuna(50,3);
-    tab2.setTamColuna(30,4);
-    tab2.setTamColuna(50,5);
-    tab2.setTamColuna(50,6);
+    tab2.setTamColuna(70,2);
+    tab2.setTamColuna(70,3);
+    tab2.setTamColuna(40,4);
+    tab2.setTamColuna(70,5);
+    tab2.setTamColuna(80,6);
     tab2.setTamColuna(50,7);
     tab2.setTamColuna(70,8);
     tab2.setTamColuna(70,9);
@@ -204,12 +204,12 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     tab2.setTamColuna(100,15);
     tab2.setTamColuna(100,16);
     tab2.setTamColuna(100,17);
-	tab2.setTamColuna(5,18);
-	tab2.setTamColuna(5,19);
-	tab2.setTamColuna(5,20);
-	tab2.setTamColuna(5,21);
-	tab2.setTamColuna(5,22);
-	tab2.setTamColuna(5,23);
+	tab2.setTamColuna(20,18);
+	tab2.setTamColuna(20,19);
+	tab2.setTamColuna(20,20);
+	tab2.setTamColuna(20,21);
+	tab2.setTamColuna(20,22);
+	tab2.setTamColuna(20,23);
 
     colocaMes();   
     btVisual.addActionListener(this);

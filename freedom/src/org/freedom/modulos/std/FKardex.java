@@ -88,10 +88,10 @@ public class FKardex extends FRelatorio implements ActionListener {
                 txtDescProd.setTipo(JTextFieldPad.TP_STRING,40,0);
                 txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
                 txtCodFabProd.setTipo(JTextFieldPad.TP_STRING,13,0);
-                lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "CodProd", ListaCampos.DB_PK, false));
-                lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
-                lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição", ListaCampos.DB_SI, false));
-                lcProd.add(new GuardaCampo( txtCodFabProd, "codfabprod", "Cód.fabr.",ListaCampos.DB_SI,false));
+                lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
+                lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
+                lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+                lcProd.add(new GuardaCampo( txtCodFabProd, "codfabprod", "Cód.fab.prod.",ListaCampos.DB_SI,false));
                 txtCodProd.setTabelaExterna(lcProd);
                 txtCodProd.setNomeCampo("CodProd");
                 txtCodProd.setFK(true);
@@ -100,8 +100,8 @@ public class FKardex extends FRelatorio implements ActionListener {
 
                 txtCodLote.setTipo(JTextFieldPad.TP_STRING,13,0);
                 txtDescLote.setTipo(JTextFieldPad.TP_DATE,10,0);
-                lcLote.add(new GuardaCampo( txtCodLote, 7, 100, 80, 20, "CodLote", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodLote");
-                lcLote.add(new GuardaCampo( txtDescLote, 90, 100, 207, 20, "VenctoLote", "Vencimento", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescLote");
+                lcLote.add(new GuardaCampo( txtCodLote, 7, 100, 80, 20, "CodLote", "Cód.lote", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodLote");
+                lcLote.add(new GuardaCampo( txtDescLote, 90, 100, 207, 20, "VenctoLote", "Vencimento do lote", false, false, null, JTextFieldPad.TP_DATE,false),"txtDescLote");
                 txtCodLote.setTabelaExterna(lcLote);
                 txtCodLote.setNomeCampo("CodLote");
                 txtCodLote.setFK(true);
@@ -131,32 +131,34 @@ public class FKardex extends FRelatorio implements ActionListener {
                 adic(txtDatafim,20,83,100,20);
                 adic(lbProduto,156,5,62,20);
                 adic(lbLinha2,145,15,300,100);
-                adic(new JLabel("Código e descrição do produto"),158,23,200,20);
+                adic(new JLabel("Cód.prod."),158,23,200,20);
                 adic(txtCodProd,158,43,70,20);
+                adic(new JLabel("Descrição do produto"),232,23,200,20);
                 adic(txtDescProd,232,43,200,20);
-                adic(new JLabel("Código e vencimento do lote"),158,63,200,20);
+                adic(new JLabel("Cód.lote"),158,63,200,20);
                 adic(txtCodLote,158,83,70,20);
+                adic(new JLabel("Vencimento do lote"),232,63,200,20);
                 adic(txtDescLote,232,83,200,20);
-                adic(btExec,449,85,170,30);
+                adic(btExec,449,85,200,30);
                 
                 tab.adicColuna("Data");
                 tab.adicColuna("Tipo");
                 tab.adicColuna("Operação");
                 tab.adicColuna("Doc.");
-                tab.adicColuna("C. Lote");
-                tab.adicColuna("Quant.");
-                tab.adicColuna("Vlr. Unit.");
+                tab.adicColuna("Cód.lote");
+                tab.adicColuna("Quantidade.");
+                tab.adicColuna("Valor unit.");
                 tab.adicColuna("EQ");
                 tab.adicColuna("Saldo");
                 tab.adicColuna("Custo MPM");
                 tab.setTamColuna(90,0);
                 tab.setTamColuna(40,1);
-                tab.setTamColuna(60,2);
+                tab.setTamColuna(70,2);
                 tab.setTamColuna(70,3);
                 tab.setTamColuna(70,4);
-                tab.setTamColuna(70,5);
+                tab.setTamColuna(90,5);
                 tab.setTamColuna(100,6);
-                tab.setTamColuna(5,7);
+                tab.setTamColuna(30,7);
                 tab.setTamColuna(85,8);
                 tab.setTamColuna(90,9);
                 
@@ -270,9 +272,9 @@ public class FKardex extends FRelatorio implements ActionListener {
                                 imp.say(imp.pRow()+0,14,"| Tp."); //2
                                 imp.say(imp.pRow()+0,20,"| Op. "); //4
                                 imp.say(imp.pRow()+0,28,"| Doc. "); //13
-                                imp.say(imp.pRow()+0,45,"| C. Lote "); //13
-                                imp.say(imp.pRow()+0,62,"| Quant. "); //8
-                                imp.say(imp.pRow()+0,74,"| Vlr. Unit. "); //15
+                                imp.say(imp.pRow()+0,45,"| Cód.lote "); //13
+                                imp.say(imp.pRow()+0,62,"| Quantidade "); //8
+                                imp.say(imp.pRow()+0,74,"| Valor.unit. "); //15
                                 imp.say(imp.pRow()+0,93,"| Saldo ");//8
                                 imp.say(imp.pRow()+0,105,"| Custo MPM "); //15
                                 imp.say(imp.pRow()+0,136,"|");

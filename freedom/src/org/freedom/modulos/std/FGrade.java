@@ -65,12 +65,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   private JPanel pnCli = new JPanel(new BorderLayout());
   private JPanel pnTabMod = new JPanel(new BorderLayout());
   private JPanel pnCliTab = new JPanel(new BorderLayout());
-  private JLabel lbCodModG = new JLabel("Código");
-  private JLabel lbDescModG = new JLabel("Descrição");
+  private JLabel lbCodModG = new JLabel("Cód.mod.gp");
+  private JLabel lbDescModG = new JLabel("Descrição do modelo de grupo");
   private JLabel lbDescINIModG = new JLabel("Descrição ini.");
-  private JLabel lbRefINIModG = new JLabel("Ref. ini.");
-  private JLabel lbCodFabINIModG = new JLabel("Cod. Fab. ini.");
-  private JLabel lbCodBarINIModG = new JLabel("Cod. Bar. ini.");
+  private JLabel lbRefINIModG = new JLabel("Ref.ini.");
+  private JLabel lbCodFabINIModG = new JLabel("Cod.fab.ini.");
+  private JLabel lbCodBarINIModG = new JLabel("Cod.bar.ini.");
   private JTextFieldPad txtCodModG = new JTextFieldPad();
   private JTextFieldFK txtDescModG = new JTextFieldFK();
   private JTextFieldFK txtDescINIModG = new JTextFieldFK();
@@ -104,14 +104,14 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
     c.add(pnCli,BorderLayout.CENTER);
     c.add(pinCab,BorderLayout.NORTH);
 
-    pinCab.adic(lbCodModG,7,5,70,20);
-    pinCab.adic(txtCodModG,7,25,70,20);
-    pinCab.adic(lbDescModG,80,5,177,20);
-    pinCab.adic(txtDescModG,80,25,177,20);
-    pinCab.adic(lbDescINIModG,260,5,177,20);
-    pinCab.adic(txtDescINIModG,260,25,177,20);
-    pinCab.adic(lbRefINIModG,440,5,77,20);
-    pinCab.adic(txtRefINIModG,440,25,77,20);
+    pinCab.adic(lbCodModG,7,5,75,20);
+    pinCab.adic(txtCodModG,7,25,75,20);
+    pinCab.adic(lbDescModG,85,5,192,20);
+    pinCab.adic(txtDescModG,85,25,192,20);
+    pinCab.adic(lbDescINIModG,280,5,167,20);
+    pinCab.adic(txtDescINIModG,280,25,167,20);
+    pinCab.adic(lbRefINIModG,450,5,67,20);
+    pinCab.adic(txtRefINIModG,450,25,67,20);
     pinCab.adic(lbCodFabINIModG,520,5,77,20);
     pinCab.adic(txtCodFabINIModG,520,25,77,20);
     pinCab.adic(lbCodBarINIModG,600,5,77,20);
@@ -154,37 +154,37 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
 
 //Seta os comentários    
 
-    btExec.setToolTipText("Executar Montagem");
-    btTudo.setToolTipText("Selecionar Tudo");
-    btNada.setToolTipText("Limpar Seleção");
-    btTudoMod.setToolTipText("Selecionar Tudo");
-    btNadaMod.setToolTipText("Limpar Seleção");
-    btGerar.setToolTipText("Gerar no Banco");
+    btExec.setToolTipText("Executar montagem");
+    btTudo.setToolTipText("Selecionar tudo");
+    btNada.setToolTipText("Limpar seleção");
+    btTudoMod.setToolTipText("Selecionar tudo");
+    btNadaMod.setToolTipText("Limpar seleção");
+    btGerar.setToolTipText("Gerar no banco");
     
 
 //Monta as tabelas
 
-    tab.adicColuna("Adic.");    
-    tab.adicColuna("Descrição do Produto");
+    tab.adicColuna("Adic.prod.");    
+    tab.adicColuna("Descrição do produto");
     tab.adicColuna("Referência");    
-    tab.adicColuna("Cód. Fab.");    
-    tab.adicColuna("Cód. Bar.");    
+    tab.adicColuna("Cód.fab.");    
+    tab.adicColuna("Cód.bar.");    
     
-    tab.setTamColuna(40,0);
+    tab.setTamColuna(80,0);
     tab.setTamColuna(280,1);
     tab.setTamColuna(100,2);
-    tab.setTamColuna(100,3);
-    tab.setTamColuna(100,4);
+    tab.setTamColuna(80,3);
+    tab.setTamColuna(80,4);
     
     tab.setColunaEditavel(0,true);
     
 
     tabMod.adicColuna("S/N");
-    tabMod.adicColuna("Tipo de Variante");
-    tabMod.adicColuna("Descrição da Variante");
+    tabMod.adicColuna("Tipo de variante");
+    tabMod.adicColuna("Descrição da variante");
     tabMod.adicColuna("Referência");
-    tabMod.adicColuna("Cód. Fab.");
-    tabMod.adicColuna("Cód. Bar.");
+    tabMod.adicColuna("Cód.fab.");
+    tabMod.adicColuna("Cód.bar.");
 
     tabMod.setTamColuna(40,0);
     tabMod.setTamColuna(160,1);
@@ -204,12 +204,12 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
     txtCodFabINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodBarINIModG.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodModG.setPKFK(true,false);
-    lcModG.add(new GuardaCampo( txtCodModG, 7, 100, 50, 20, "CodModG", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodModGx");
-    lcModG.add(new GuardaCampo( txtDescModG, 60, 100, 147, 20, "DescModG", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
+    lcModG.add(new GuardaCampo( txtCodModG, 7, 100, 50, 20, "CodModG", "Cód.mod.gp.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodModGx");
+    lcModG.add(new GuardaCampo( txtDescModG, 60, 100, 147, 20, "DescModG", "Descrição do modelo de grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
     lcModG.add(new GuardaCampo( txtDescINIModG, 210, 100, 147, 20, "DescProdModG", "Descrição ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
     lcModG.add(new GuardaCampo( txtRefINIModG, 360, 100, 47, 20, "RefModG", "Ref. ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
-    lcModG.add(new GuardaCampo( txtCodFabINIModG, 440, 100, 47, 20, "CodFabModG", "Cod. Fab. ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
-    lcModG.add(new GuardaCampo( txtCodBarINIModG, 490, 100, 47, 20, "CodBarModG", "Cod. Bar. ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
+    lcModG.add(new GuardaCampo( txtCodFabINIModG, 440, 100, 47, 20, "CodFabModG", "Cód.fab.ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
+    lcModG.add(new GuardaCampo( txtCodBarINIModG, 490, 100, 47, 20, "CodBarModG", "Cód.bar.ini.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescModGx");
     lcModG.montaSql(false, "MODGRADE", "EQ");
     lcModG.setReadOnly(true);
     txtCodModG.setNomeCampo("CodModG");

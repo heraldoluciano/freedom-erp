@@ -93,7 +93,7 @@ public class FEmpresa extends FTabDados implements PostListener{
   private PainelImagem imFotoEmp = new PainelImagem(65000);
   public FEmpresa () {
     setTitulo("Cadastro da Empresa");
-    setAtribos( 50, 20, 475, 470);
+    setAtribos( 50, 20, 500, 470);
     
     lcCampos.addPostListener(this);
     lcFilial.addPostListener(this);
@@ -110,26 +110,26 @@ public class FEmpresa extends FTabDados implements PostListener{
     setPainel(pinGeral);
     adicTab("Geral",pinGeral);
 
-    adicCampo(txtCodEmp, 7, 20, 50, 20, "CodEmp", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtRazEmp, 60, 20, 197, 20, "RazEmp", "Razão", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
-    adicCampo(txtNomeEmp, 260, 20, 190, 20, "NomeEmp", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null, false);
-    adicCampo(txtCnpjEmp, 7, 60, 120, 20, "CnpjEmp", "Cnpj", JTextFieldPad.TP_STRING, 14, 0, false, false, null, true);
-    adicCampo(txtInscEmp, 130, 60, 97, 20, "InscEmp", "Inscrição Estadual", JTextFieldPad.TP_STRING, 15, 0, false, false, null, true);
-    adicCampo(txtEndEmp, 230, 60, 127, 20, "EndEmp", "Endereço", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
-    adicCampo(txtNumEmp, 360, 60, 47, 20, "NumEmp", "Num.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
-    adicCampo(txtComplEmp, 410, 60, 40, 20, "ComplEmp", "Compl.", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
-    adicCampo(txtBairEmp, 7, 100, 140, 20, "BairEmp", "Bairro", JTextFieldPad.TP_STRING, 30, 0, false, false, null, false);
-    adicCampo(txtCidEmp, 150, 100, 157, 20, "CidEmp", "Cidade", JTextFieldPad.TP_STRING, 30, 0, false, false, null, false);
-    adicCampo(txtCepEmp, 310, 100, 87, 20, "CepEmp", "Cep", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
-    adicCampo(txtUFEmp, 400, 100, 50, 20, "UFEmp", "UF", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
-    adicCampo(txtFoneEmp, 7, 140, 140, 20, "FoneEmp", "Telefone", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
-    adicCampo(txtFaxEmp, 150, 140, 137, 20, "FaxEmp", "Fax", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
-    adicCampo(txtEmailEmp, 290, 140, 160, 20, "EmailEmp", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
-    adicCampo(txtWWWEmp, 7, 180, 160, 20, "WWWEmp", "Página da WEB", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
-    adicCampo(txtCodEANEmp, 170, 180, 57, 20, "CodEANEmp", "Cod. EAN", JTextFieldPad.TP_STRING, 6, 0, false, false, null, false);
-    adicCampo(txtCodPaisEmp, 230, 180, 47, 20, "CodPaisEmp", "C.Pais", JTextFieldPad.TP_STRING, 3, 0, false, false, null, false);
-    adicCampo(txtPercIssEmp, 280, 180, 47, 20, "PercIssEmp" , "%Iss" , JTextFieldPad.TP_DECIMAL, 6, 2 ,false, false, null, false);
-    adicCampo(txtNomeContEmp, 330, 180, 120, 20,"NomeContEmp" , "Contato" , JTextFieldPad.TP_STRING, 40 , 0,false, false, null,false);
+    adicCampo(txtCodEmp, 7, 20, 60, 20, "CodEmp", "Cód.emp.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtRazEmp, 70, 20, 207, 20, "RazEmp", "Razão social da empresa", JTextFieldPad.TP_STRING, 50, 0, false, false, null, true);
+    adicCampo(txtNomeEmp, 280, 20, 190, 20, "NomeEmp", "Nome fantasia", JTextFieldPad.TP_STRING, 40, 0, false, false, null, false);
+    adicCampo(txtCnpjEmp, 7, 60, 125, 20, "CnpjEmp", "Cnpj", JTextFieldPad.TP_STRING, 14, 0, false, false, null, true);
+    adicCampo(txtInscEmp, 135, 60, 112, 20, "InscEmp", "Inscrição Estadual", JTextFieldPad.TP_STRING, 15, 0, false, false, null, true);
+    adicCampo(txtEndEmp, 250, 60, 127, 20, "EndEmp", "Endereço", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
+    adicCampo(txtNumEmp, 380, 60, 37, 20, "NumEmp", "Num.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, false);
+    adicCampo(txtComplEmp, 420, 60, 50, 20, "ComplEmp", "Compl.", JTextFieldPad.TP_STRING, 20, 0, false, false, null, false);
+    adicCampo(txtBairEmp, 7, 100, 150, 20, "BairEmp", "Bairro", JTextFieldPad.TP_STRING, 30, 0, false, false, null, false);
+    adicCampo(txtCidEmp, 160, 100, 157, 20, "CidEmp", "Cidade", JTextFieldPad.TP_STRING, 30, 0, false, false, null, false);
+    adicCampo(txtCepEmp, 320, 100, 92, 20, "CepEmp", "Cep", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
+    adicCampo(txtUFEmp, 415, 100, 55, 20, "UFEmp", "UF", JTextFieldPad.TP_STRING, 2, 0, false, false, null, false);
+    adicCampo(txtFoneEmp, 7, 140, 150, 20, "FoneEmp", "Telefone", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
+    adicCampo(txtFaxEmp, 160, 140, 137, 20, "FaxEmp", "Fax", JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
+    adicCampo(txtEmailEmp, 300, 140, 170, 20, "EmailEmp", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
+    adicCampo(txtWWWEmp, 7, 180, 180, 20, "WWWEmp", "Página da WEB", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
+    adicCampo(txtCodEANEmp, 190, 180, 57, 20, "CodEANEmp", "Cod. EAN", JTextFieldPad.TP_STRING, 6, 0, false, false, null, false);
+    adicCampo(txtCodPaisEmp, 250, 180, 47, 20, "CodPaisEmp", "C.pais", JTextFieldPad.TP_STRING, 3, 0, false, false, null, false);
+    adicCampo(txtPercIssEmp, 300, 180, 47, 20, "PercIssEmp" , "%Iss" , JTextFieldPad.TP_DECIMAL, 6, 2 ,false, false, null, false);
+    adicCampo(txtNomeContEmp, 350, 180, 120, 20,"NomeContEmp" , "Contato" , JTextFieldPad.TP_STRING, 40 , 0,false, false, null,false);
 	adicDB(imFotoEmp, 7, 230, 150, 140, "FotoEmp", "Foto: (máx. 64K)",JTextFieldPad.TP_BYTES,true);
     
     txtCnpjEmp.setMascara(JTextFieldPad.MC_CNPJ);
@@ -146,28 +146,28 @@ public class FEmpresa extends FTabDados implements PostListener{
     pnFilial.add(pinFilial, BorderLayout.SOUTH);
     pnFilial.add(spnFilial, BorderLayout.CENTER);
 
-    adicCampo(txtCodFilial, 7, 20, 50, 20, "CodFilial", "Código", ListaCampos.DB_PK, true);
-    adicCampo(txtRazFilial, 60, 20, 197, 20, "RazFilial", "Razão", ListaCampos.DB_SI, true);
-    adicCampo(txtNomeFilial, 260, 20, 190, 20, "NomeFilial", "Nome", ListaCampos.DB_SI, false);
-    adicCampo(txtCnpjFilial, 7, 60, 120, 20, "CnpjFilial", "Cnpj", ListaCampos.DB_SI, true);
-    adicCampo(txtInscFilial, 130, 60, 97, 20, "InscFilial", "Inscrição Estadual", ListaCampos.DB_SI, true);
-    adicCampo(txtEndFilial, 230, 60, 127, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false);
-    adicCampo(txtNumFilial, 360, 60, 47, 20, "NumFilial", "Num.", ListaCampos.DB_SI, false);
-    adicCampo(txtComplFilial, 410, 60, 40, 20, "ComplFilial", "Compl.", ListaCampos.DB_SI, false);
-    adicCampo(txtBairFilial, 7, 100, 140, 20, "BairFilial", "Bairro", ListaCampos.DB_SI, false);
-    adicCampo(txtCidFilial, 150, 100, 157, 20, "CidFilial", "Cidade", ListaCampos.DB_SI, false);
-    adicCampo(txtCepFilial, 310, 100, 87, 20, "CepFilial", "Cep", ListaCampos.DB_SI, false);
-    adicCampo(txtUFFilial, 400, 100, 50, 20, "UFFilial", "UF", ListaCampos.DB_SI, false);
-    adicCampo(txtFoneFilial, 7, 140, 220, 20, "FoneFilial", "Telefone", ListaCampos.DB_SI, false);
-    adicCampo(txtFaxFilial, 230, 140, 220, 20, "FaxFilial", "Fax", ListaCampos.DB_SI, false);
+    adicCampo(txtCodFilial, 7, 20, 60, 20, "CodFilial", "Cód.fil.", ListaCampos.DB_PK, true);
+    adicCampo(txtRazFilial, 70, 20, 207, 20, "RazFilial", "Razão social da filial", ListaCampos.DB_SI, true);
+    adicCampo(txtNomeFilial, 280, 20, 190, 20, "NomeFilial", "Nome fanatasia da filial", ListaCampos.DB_SI, false);
+    adicCampo(txtCnpjFilial, 7, 60, 125, 20, "CnpjFilial", "Cnpj", ListaCampos.DB_SI, true);
+    adicCampo(txtInscFilial, 135, 60, 112, 20, "InscFilial", "Inscrição Estadual", ListaCampos.DB_SI, true);
+    adicCampo(txtEndFilial, 250, 60, 127, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false);
+    adicCampo(txtNumFilial, 380, 60, 37, 20, "NumFilial", "Num.", ListaCampos.DB_SI, false);
+    adicCampo(txtComplFilial, 420, 60, 50, 20, "ComplFilial", "Compl.", ListaCampos.DB_SI, false);
+    adicCampo(txtBairFilial, 7, 100, 150, 20, "BairFilial", "Bairro", ListaCampos.DB_SI, false);
+    adicCampo(txtCidFilial, 160, 100, 157, 20, "CidFilial", "Cidade", ListaCampos.DB_SI, false);
+    adicCampo(txtCepFilial, 320, 100, 92, 20, "CepFilial", "Cep", ListaCampos.DB_SI, false);
+    adicCampo(txtUFFilial, 415, 100, 55, 20, "UFFilial", "UF", ListaCampos.DB_SI, false);
+    adicCampo(txtFoneFilial, 7, 140, 230, 20, "FoneFilial", "Telefone", ListaCampos.DB_SI, false);
+    adicCampo(txtFaxFilial, 240, 140, 230, 20, "FaxFilial", "Fax", ListaCampos.DB_SI, false);
     adicCampo(txtEmailFilial, 7, 180, 140, 20, "EmailFilial", "E-Mail", ListaCampos.DB_SI, false);
     adicCampo(txtWWWFilial, 150, 180, 137, 20, "WWWFilial", "Página da WEB", ListaCampos.DB_SI, false);
-    adicCampo(txtCodDistFilial, 290, 180, 77, 20, "CodDistFilial", "C. Distrib.", ListaCampos.DB_SI, false);
+    adicCampo(txtCodDistFilial, 290, 180, 77, 20, "CodDistFilial", "C.dist.fil", ListaCampos.DB_SI, false);
     adicDB(cbMatriz, 370, 180, 80, 20, "MzFilial", "Sede",JTextFieldPad.TP_STRING,false);
     adicCampo(txtPercPIS, 7, 220, 90, 20, "PercPISFilial", "PIS", ListaCampos.DB_SI, false);
     adicCampo(txtPercCofins, 100, 220, 87, 20, "PercCofinsFilial", "COFINS", ListaCampos.DB_SI, false);
     adicCampo(txtPercIR, 190, 220, 87, 20, "PercIRFilial", "IR", ListaCampos.DB_SI, false);
-    adicCampo(txtPercCSocial, 280, 220, 87, 20, "PercCSocialFilial", "Cont.Social", ListaCampos.DB_SI, false);
+    adicCampo(txtPercCSocial, 280, 220, 87, 20, "PercCSocialFilial", "Cont.social", ListaCampos.DB_SI, false);
     adicDB(cbSimples, 370, 220, 80, 20, "SimplesFilial", "Fiscal",JTextFieldPad.TP_STRING,false);
     txtCnpjFilial.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepFilial.setMascara(JTextFieldPad.MC_CEP);
@@ -180,6 +180,7 @@ public class FEmpresa extends FTabDados implements PostListener{
     lcFilial.setQueryCommit(false);
     tabFilial.setTamColuna(120,1);
     pinFilial.adic(navFilial,0,245,270,25);
+    tabFilial.setTamColuna(100,0);
 
   }  
   public void beforePost(PostEvent pevt) {

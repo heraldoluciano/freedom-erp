@@ -94,8 +94,8 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     pnCli.add(spnTab);
     c.add(pnCli, BorderLayout.CENTER);
     
-    tab.adicColuna("Código");
-    tab.adicColuna("Descrição");
+    tab.adicColuna("Cód.grupo");
+    tab.adicColuna("Descrição do grupo");
     tab.adicColuna("Sigla");
     tab.setTamColuna(100,0);
     tab.setTamColuna(385,1);
@@ -405,8 +405,8 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   				imp.impCab(80);
   				imp.say(imp.pRow()+0,0,""+imp.normal());
   				imp.say(imp.pRow()+0,0,"");
-  				imp.say(imp.pRow()+0,2,"Código");
-  				imp.say(imp.pRow()+0,29,"Descrição");
+  				imp.say(imp.pRow()+0,2,"Cód.grupo");
+  				imp.say(imp.pRow()+0,29,"Descrição do grupo");
   				imp.say(imp.pRow()+1,0,""+imp.normal());
   				imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
   			}

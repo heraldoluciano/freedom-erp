@@ -81,11 +81,11 @@ public class FImpressora extends FDados {
       }
     );
     
-    vLabs.addElement("Nota Fiscal");           
-    vLabs.addElement("Nota Fiscal - Serviço");           
+    vLabs.addElement("Nota fiscal");           
+    vLabs.addElement("Nota fiscal - serviço");           
     vLabs.addElement("Pedido");           
-    vLabs.addElement("Relatório Simples");           
-    vLabs.addElement("Relatório Gráfico");           
+    vLabs.addElement("Relatório simples");           
+    vLabs.addElement("Relatório gráfico");           
     vLabs.addElement("Todos (não NF)");           
                
     vVals.addElement("NF");           
@@ -116,23 +116,23 @@ public class FImpressora extends FDados {
     txtCodPapel.setTipo(JTextFieldPad.TP_STRING,20,0);
     txtDescPapel.setTipo(JTextFieldPad.TP_STRING,40,0);    
 
-    lcPapel.add(new GuardaCampo( txtCodPapel, 7, 100, 80, 20, "CodPapel", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodPapelx");
-    lcPapel.add(new GuardaCampo( txtDescPapel, 90, 100, 207, 20, "DescPapel", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPapelx");
+    lcPapel.add(new GuardaCampo( txtCodPapel, 7, 100, 80, 20, "CodPapel", "Cód.tp.papel", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodPapelx");
+    lcPapel.add(new GuardaCampo( txtDescPapel, 90, 100, 207, 20, "DescPapel", "Descrição do tipo de papel", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPapelx");
     lcPapel.montaSql(false, "PAPEL", "SG");    
     lcPapel.setQueryCommit(false);
     lcPapel.setReadOnly(true);
     txtCodPapel.setTabelaExterna(lcPapel);
 //Adiciona componentes   
-    adicCampo(txtCodImp, 7, 20, 80, 20, "CodImp", "Código", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
-    adicCampo(txtDescImp, 90, 20, 286, 20, "DescImp", "Descrição", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
-    adicCampo(txtTipoImp, 7, 60, 80, 20, "TipoImp", "Tipo", JTextFieldPad.TP_STRING, 2, 0, false, false, null, true);
-    pinDados.adic(cbTipoImp,90,60,286,20);
-    adicCampo(txtLinPagImp, 7, 100, 90, 20, "LinPagImp", "Linhas Pag.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
-    adicCampo(txtNSerieImp, 100, 100, 90, 20, "NSerieImp", "Num. Serie", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
+    adicCampo(txtCodImp, 7, 20, 90, 20, "CodImp", "Cód.imp.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null, true);
+    adicCampo(txtDescImp, 100, 20, 276, 20, "DescImp", "Descrição da impressora", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtTipoImp, 7, 60, 90, 20, "TipoImp", "Tp.impressora", JTextFieldPad.TP_STRING, 2, 0, false, false, null, true);
+    pinDados.adic(cbTipoImp,100,60,276,20);
+    adicCampo(txtLinPagImp, 7, 100, 90, 20, "LinPagImp", "Lin.pag.imp.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null, true);
+    adicCampo(txtNSerieImp, 100, 100, 90, 20, "NSerieImp", "Num. serie", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
     adicCampo(txtPortaWinImp, 193, 100, 90, 20, "PortaWinImp", "Porta WIN", JTextFieldPad.TP_STRING, 4, 0, false, false, null, true);
     adicCampo(txtPortaLinImp, 286, 100, 90, 20, "PortaLinImp", "Nome LIN", JTextFieldPad.TP_STRING, 60, 0, false, false, null, true);
-    adicCampo(txtCodPapel, 7, 140, 80, 20, "CodPapel", "Código", JTextFieldPad.TP_STRING, 20, 0, false, true, null, true);
-    adicDescFK(txtDescPapel, 90, 140, 286, 20, "DescPapel", "e descrição do tipo de papel", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodPapel, 7, 140, 90, 20, "CodPapel", "Cód.tp.papel", JTextFieldPad.TP_STRING, 20, 0, false, true, null, true);
+    adicDescFK(txtDescPapel, 100, 140, 276, 20, "DescPapel", "Descrição do tipo de papel", JTextFieldPad.TP_STRING, 40, 0);
     adicDB(cbDestImp, 7, 180, 200, 25, "DestImp", "Padrão para",JTextFieldPad.TP_STRING,true);
 
     setListaCampos(true, "IMPRESSORA", "SG");
