@@ -67,9 +67,6 @@ public class ImprimeOS implements ActionListener {
    private String[] sVals = new String[4];
    private Component cOwner = null;
    boolean bSemAcento = true;
-   String sFile = "";
-   String sPagina = "";
-   String sImpressora = "";
    byte bBuf;
    File fImp = null;
    FileWriter fwImp = null;
@@ -82,6 +79,10 @@ public class ImprimeOS implements ActionListener {
    int iPagAtual = 0;
    int iAndamento = 0;
    GregorianCalendar hoje = new GregorianCalendar();
+   String sFile = "";
+   String sPagina = "";
+   String sImpressora = "";
+   String sTipoUsoImp = "TO";
    String sHoje = "";
    String sPath = "";
    Connection con = null;
@@ -89,8 +90,20 @@ public class ImprimeOS implements ActionListener {
    String sTitulo = "";
    Timer tim = null;
    FAndamento and = null;
+  
    public ImprimeOS(String sF, Connection cn) {
-     
+   	 iniImprimeOS(sF, cn, null);
+   }
+   
+   public ImprimeOS(String sF, Connection cn, String sTipoUsoImp) {
+  	 iniImprimeOS(sF, cn, sTipoUsoImp);
+   }
+   
+   private void iniImprimeOS(String sF, Connection cn, String sTipoUsoImp) {
+    if (sTipoUsoImp==null) {
+     	sTipoUsoImp = "TO";
+     }
+     this.sTipoUsoImp = sTipoUsoImp;
      if (sF.trim().length()==0) {
        sF = Funcoes.arquivoTemp();
        sPath = sF;
@@ -107,9 +120,8 @@ public class ImprimeOS implements ActionListener {
         Funcoes.mensagemInforma(null,"Erro de gravação [ InputStream in device: "+sFile+" ]! ! !");
      }
      iTipoImp = getTipoImp();
-     
+   	
    }
-
    public void setTitulo(String sT) {
      sTitulo = sT;
    }
@@ -626,23 +638,32 @@ public class ImprimeOS implements ActionListener {
   public String getPortaImp() {
           
       sPorta = "";
+      String sSQL = "";
       String sPortaOS = "";
 
       PreparedStatement ps = null;
       ResultSet rs = null;
       
       if (Aplicativo.strOS.compareTo("windows") == 0)
-        sPortaOS = "PORTAWIN";
+        sPortaOS = "EI.PORTAWIN";
       else if (Aplicativo.strOS.compareTo("linux") == 0)
-        sPortaOS = "PORTALIN";
+        sPortaOS = "EI.PORTALIN";
       if (sPortaOS.trim().length() == 0) {
         Funcoes.mensagemInforma(cOwner,"Não foi possível obter informacões do Sistema Operacional! ! !");
         return sPorta;
       }
-      String sSQL = "SELECT "+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
-                    "WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
-                    "I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
-                    "I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
+      if (sTipoUsoImp.equals("TO")) {
+	      sSQL = "SELECT "+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+			"WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
+			"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
+			"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
+      }
+      else {
+	      sSQL = "SELECT "+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+			"WHERE EI.CODEST=? AND EI.TIPOUSOIMP='"+sTipoUsoImp+"' AND "+
+			"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
+			"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
+      }
       try {
         ps = con.prepareStatement(sSQL);
         ps.setInt(1,Aplicativo.iNumEst);
@@ -849,6 +870,8 @@ public class ImprimeOS implements ActionListener {
   public int verifLinPag(String sTipo) {
     int iRetorno = 0;
     String sSQL = "";
+    if (sTipo==null) 
+    	sTipo = sTipoUsoImp;
     if (sTipo.equals("TO")) {
       sSQL = "SELECT PP.LINPAPEL,PP.CLASSNOTAPAPEL FROM SGPAPEL PP, SGESTACAOIMP EI WHERE " +
       "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND EI.IMPPAD='S' AND "+
