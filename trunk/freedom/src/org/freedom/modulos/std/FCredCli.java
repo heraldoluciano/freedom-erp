@@ -336,7 +336,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	setListaCampos( true, "CLIENTE", "VD");
 	lcCampos.setPodeIns(false);
 	lcCampos.setPodeExc(false);
-    lcCampos.setQueryInsert(false);
+    lcCampos.setQueryInsert(false);  
     
 	setListaCampos(lcFicha);
     setNavegador(navFicha);
