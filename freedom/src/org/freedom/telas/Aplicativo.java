@@ -267,7 +267,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	}
 
-	public void addBotao(String sImagem, String sToolTip, int iCodMenu) {
+	public JButtonPad addBotao(String sImagem, String sToolTip, int iCodMenu) {
 		JButtonPad btOpcao = null;
 		try {
 			btOpcao = new JButtonPad(iCodSis, iCodMod, iCodMenu);
@@ -276,8 +276,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				btOpcao.setToolTipText(sToolTip);
 			vBotoes.add(btOpcao);
 			adicTelaBotao(btOpcao);
+			return btOpcao;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
