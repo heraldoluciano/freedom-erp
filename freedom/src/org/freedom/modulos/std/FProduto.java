@@ -69,6 +69,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JPanelPad pinGeral = new JPanelPad(650,340);
   private JPanelPad pnFatConv = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCodAltProd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnLote = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnFoto = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnPreco = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -78,6 +79,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtCodAltProd = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
@@ -146,7 +148,9 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private Tabela tabFatConv = new Tabela();
   private JScrollPane spnFatConv = new JScrollPane(tabFatConv);
   private Tabela tabFor = new Tabela();
+  private Tabela tabCodAltProd = new Tabela();
   private JScrollPane spnFor = new JScrollPane(tabFor);
+  private JScrollPane spnCodAltProd = new JScrollPane(tabCodAltProd);
   private Tabela tabLote = new Tabela();
   private JScrollPane spnLote = new JScrollPane(tabLote);
   private Tabela tabFoto = new Tabela();
@@ -155,6 +159,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JScrollPane spnPreco = new JScrollPane(tabPreco);
   private JPanelPad pinRodFatConv = new JPanelPad(650,80);
   private JPanelPad pinRodFor = new JPanelPad(650,80);
+  private JPanelPad pinRodCodAltProd = new JPanelPad(650,80);
   private JPanelPad pinRodLote = new JPanelPad(650,120);
   private JPanelPad pinRodFoto = new JPanelPad(650,170);
   private JPanelPad pinRodPreco = new JPanelPad(650,120);
@@ -169,6 +174,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private ListaCampos lcAlmox = new ListaCampos(this,"AX");
   private ListaCampos lcFatConv = new ListaCampos(this);
   private ListaCampos lcFor = new ListaCampos(this);
+  private ListaCampos lcCodAltProd = new ListaCampos(this,"");
   private ListaCampos lcUnidFat = new ListaCampos(this);
   private ListaCampos lcForFK = new ListaCampos(this);
   private ListaCampos lcLote = new ListaCampos(this);
@@ -182,20 +188,24 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private Navegador navLote = new Navegador(true);
   private Navegador navFoto = new Navegador(true);
   private Navegador navPreco = new Navegador(true);
+  private Navegador navCodAltProd = new Navegador(true);
   private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
   private PainelImagem imFotoProd = new PainelImagem(65000);
   private String[] sPrefs = null;
  
   public FProduto() {
     setTitulo("Cadastro de Produtos");
-    setAtribos(30,10,680,430);
+    setAtribos(30,10,700,430);
 
     lcFatConv.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcFatConv);
 	lcFatConv.setTabela(tabFatConv);
 	lcFor.setMaster(lcCampos);
+	lcCodAltProd.setMaster(lcCampos);
 	lcCampos.adicDetalhe(lcFor);
+	lcCampos.adicDetalhe(lcCodAltProd);
     lcFor.setTabela(tabFor);
+    lcCodAltProd.setTabela(tabCodAltProd);
     lcLote.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcLote);
     lcLote.setTabela(tabLote);
@@ -557,6 +567,25 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     tabLote.setTamColuna(100,1);
     tabLote.setTamColuna(100,2);
     
+//	Codigo alternativo
+
+    setPainel( pinRodCodAltProd, pnCodAltProd);
+	adicTab("Cód.altern.",pnCodAltProd);
+	setListaCampos(lcCodAltProd);
+	setNavegador(navCodAltProd);
+	pnCodAltProd.add(pinRodCodAltProd, BorderLayout.SOUTH);
+	pnCodAltProd.add(spnCodAltProd, BorderLayout.CENTER);	
+	pinRodCodAltProd.adic(navCodAltProd,0,50,270,25);
+	navCodAltProd.setAtivo(6,false);
+	
+	adicCampo(txtCodAltProd, 7, 20, 150, 20, "CodAltProd", "Código alternativo", ListaCampos.DB_PK, null, true);
+	setListaCampos( false, "CODALTPROD", "EQ");
+	lcCodAltProd.setQueryInsert(true);
+	lcCodAltProd.setQueryCommit(false);
+	txtCodAltProd.setTabelaExterna(lcCodAltProd);
+	lcCodAltProd.montaTab();
+	tabCodAltProd.setTamColuna(150,0);        
+        
 //Fotos 
     setPainel( pinRodFoto, pnFoto);
     adicTab("Fotos",pnFoto);
@@ -576,10 +605,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     adicCampo(txtLargFotoProd, 7, 110, 80, 20, "LargFotoProd", "Largura", ListaCampos.DB_SI, true);
     adicCampo(txtAltFotoProd, 90, 110, 77, 20, "AltFotoProd", "Altura", ListaCampos.DB_SI, true);
     adicDB(imFotoProd, 350, 20, 150, 140, "FotoProd", "Foto: (máx. 63K)",true);
-/*    adicCampo(txt, 90, 60, 80, 20, "SldResLote", "Saldo Res.", txtSldResLote.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldConsigLote, 173, 60, 80, 20, "SldConsigLote", "Saldo Consig.", txtSldConsigLote.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldLiqLote, 256, 60, 80, 20, "SldLiqLote", "Saldo Liq.", txtSldLiqLote.TP_DECIMAL, 15, 3, false, false, null,false);
-*/   
+  
     setListaCampos( true, "FOTOPROD", "VD");
     lcFoto.setOrdem("CodFotoProd");
     lcFoto.setQueryInsert(false);
@@ -720,8 +746,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		rs = ps.executeQuery();
 		rs.next();
 		And = new FAndamento("Montando Relatório, Aguarde!",0,rs.getInt(1)-1);
-//		  rs.close();
-//		  ps.close();
+
 		if (!con.getAutoCommit())
 			con.commit();
 		ps = con.prepareStatement(sSQL);
@@ -924,6 +949,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     lcClasCliPreco.setConexao(cn);
     lcTabPreco.setConexao(cn);
     lcPlanoPagPreco.setConexao(cn);
+    lcCodAltProd.setConexao(cn);
   }
   public void valorAlterado(CheckBoxEvent cbevt) {
     if (cbLote.getStatus()) {
