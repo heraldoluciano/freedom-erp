@@ -47,13 +47,13 @@ import org.freedom.telas.FDetalhe;
 public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListener, PostListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
-  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(5);
-  private JTextFieldPad txtDescPlanoPag = new JTextFieldPad(40);
-  private JTextFieldPad txtNumParc = new JTextFieldPad(5);
-  private JTextFieldPad txtNumItemPag = new JTextFieldPad(2);
-  private JTextFieldPad txtPercItemPag = new JTextFieldPad(7);
-  private JTextFieldPad txtDiasItemPag = new JTextFieldPad(3);
-  private JTextFieldPad txtDescItemPag = new JTextFieldPad(3);
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescPlanoPag = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtNumParc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtNumItemPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
+  private JTextFieldPad txtPercItemPag = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
+  private JTextFieldPad txtDiasItemPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescItemPag = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldPad txtNumConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -97,17 +97,36 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     pinCab = new Painel();
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
-    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","Nº Parcs.",JTextFieldPad.TP_INTEGER,8,0,false,false,null,true);
+//    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_PK,null,true);
+    
+//    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",ListaCampos.DB_SI,null,true);
+    
+//    adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","Nº Parcs.",JTextFieldPad.TP_INTEGER,8,0,false,false,null,true);
+    adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","N° Parcs.",ListaCampos.DB_SI,null,true);
+	
     adicCampo(txtNumConta, 370, 20, 97, 20,"NumConta","N.Conta",ListaCampos.DB_FK,false);
-    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta",JTextFieldPad.TP_STRING,50,0);
+    
+//    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta",JTextFieldPad.TP_STRING,50,0);
+    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta");  
+    
     adicCampo(txtCodPlan, 7, 60, 100, 20,"CodPlan","Cód.planj.",ListaCampos.DB_FK,false);
-    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento",JTextFieldPad.TP_STRING,50,0);
+//    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento",JTextFieldPad.TP_STRING,50,0);
+    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento");
+    
     adicCampo(txtCodCC, 310, 60, 97, 20,"CodCC","Centro de custo",ListaCampos.DB_FK,false);
-    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo",JTextFieldPad.TP_STRING,50,0);
-    adicCampoInvisivel(txtAnoCC, "AnoCC","Ano.C.C.",JTextFieldPad.TP_STRING,4,0,false,false,null,false);
-    adicDB(cbAutoBaixa, 7, 80, 300, 20,"AutoBaixaPlanoPag","",JTextFieldPad.TP_STRING,false);
+//    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo",JTextFieldPad.TP_STRING,50,0);
+    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo");  
+    
+//    adicCampoInvisivel(txtAnoCC, "AnoCC","Ano.C.C.",JTextFieldPad.TP_STRING,4,0,false,false,null,false);
+    
+    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano.C.C.",ListaCampos.DB_PF,false);
+//    adicDB(cbAutoBaixa, 7, 80, 300, 20,"AutoBaixaPlanoPag","",JTextFieldPad.TP_STRING,false);
+
+    
+    adicDB(cbAutoBaixa,7,80,300,20,"AutoBaixaPlanoPag","",false);
+    
     setListaCampos( true, "PLANOPAG", "FN");
     lcCampos.setQueryInsert(true);    
 
@@ -116,10 +135,27 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtNumItemPag, 7, 20, 60, 20,"NroParcPag","Item",JTextFieldPad.TP_INTEGER,2,0,true,false,null,true);
-    adicCampo(txtPercItemPag, 70, 20, 97, 20,"PercPag","Percento",JTextFieldPad.TP_DECIMAL,9,6,false,false,null,true);
-    adicCampo(txtDiasItemPag, 170, 20, 57, 20,"DiasPag","Dias",JTextFieldPad.TP_INTEGER,3,0,false,false,null,true);
-    adicCampo(txtDescItemPag, 230, 20, 143, 20,"DescParcPag","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,false);
+//    adicCampo(txtNumItemPag, 7, 20, 60, 20,"NroParcPag","Item",JTextFieldPad.TP_INTEGER,2,0,true,false,null,true);
+    
+    
+    adicCampo(txtNumItemPag,7,20,60,20,"NroParcPag","Item",ListaCampos.DB_PK,true);
+    
+    
+//    adicCampo(txtPercItemPag, 70, 20, 97, 20,"PercPag","Percento",JTextFieldPad.TP_DECIMAL,9,6,false,false,null,true);
+  
+    
+    adicCampo(txtPercItemPag,70,20,97,20,"PercPag","Percento",ListaCampos.DB_SI,true);
+    
+//    adicCampo(txtDiasItemPag, 170, 20, 57, 20,"DiasPag","Dias",JTextFieldPad.TP_INTEGER,3,0,false,false,null,true);
+  
+    
+    adicCampo(txtDiasItemPag,170,20,57,20,"DiasPag","Dias",ListaCampos.DB_SI,false);
+    
+//    adicCampo(txtDescItemPag, 230, 20, 143, 20,"DescParcPag","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,false);
+
+    
+    adicCampo(txtDescItemPag,230,20,143,20,"DescParcPag","Descrição",ListaCampos.DB_SI,false);
+    
     setListaCampos( true, "PARCPAG", "FN");
     lcDet.setQueryInsert(false);    
 
