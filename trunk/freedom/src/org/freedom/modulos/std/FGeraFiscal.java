@@ -34,7 +34,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
@@ -69,7 +69,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
   private int iAnd = 0;
   private int iTotCompras = 0;
   private int iTotVendas = 0;
-  private JLabel lbAnd = new JLabel("Aguardando:");
+  private JLabelPad lbAnd = new JLabelPad("Aguardando:");
   public FGeraFiscal() {
     setTitulo("Gerar Livros Fiscais");      
     setAtribos(50,50,610,400);
@@ -92,9 +92,9 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     txtDataini.setRequerido(true);
     txtDatafim.setRequerido(true);
     
-    pinCliente.adic(new JLabel("Inicio"),7,0,110,25);
+    pinCliente.adic(new JLabelPad("Inicio"),7,0,110,25);
     pinCliente.adic(txtDataini,7,20,110,20);
-    pinCliente.adic(new JLabel("Fim"),120,0,107,25);
+    pinCliente.adic(new JLabelPad("Fim"),120,0,107,25);
     pinCliente.adic(txtDatafim,120,20,107,20);
     pinCliente.adic(btVisual,230,15,30,30);
     pinCliente.adic(btChecar,263,15,30,30);

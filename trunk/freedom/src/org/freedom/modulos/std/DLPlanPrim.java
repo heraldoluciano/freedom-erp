@@ -27,7 +27,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.componentes.JRadioGroup;
@@ -44,8 +44,8 @@ public class DLPlanPrim extends FFDialogo {
   private Vector vLabs = new Vector();
   private JRadioGroup rgTipo = null;
   private JTabbedPanePad ptb = new JTabbedPanePad();
-  private JLabel lbCod = new JLabel("Código");
-  private JLabel lbDesc = new JLabel("Descrição");
+  private JLabelPad lbCod = new JLabelPad("Código");
+  private JLabelPad lbDesc = new JLabelPad("Descrição");
   public DLPlanPrim(Component cOrig,String sCod, String sDesc, String sTipo) {
   	super(cOrig);
     setTitulo("Planejamento financeiro (Nível 1)");

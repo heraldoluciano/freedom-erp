@@ -28,7 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
@@ -44,7 +44,7 @@ public class FSerie extends FDados implements ActionListener {
   private JTextFieldPad txtDocSerie= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JButton btReset = new JButton(Icone.novo("btResetcont.gif"));
   private JTextFieldPad txtReset = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-  private JLabel lbReset = new JLabel("Novo nº.");
+  private JLabelPad lbReset = new JLabelPad("Novo nº.");
   public FSerie () {
     setTitulo("Cadastro de Série de Notas");
     setAtribos( 50, 50, 350, 165);

@@ -28,7 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -58,14 +58,14 @@ public class FRRazaoFin extends FRelatorio {
 	txtCodPlan.setFK(true);
 	txtCodPlan.setNomeCampo("CodPlan");
 
-	adic(new JLabel("Periodo:"),7,5,125,20);
-    adic(new JLabel("De:"),7,25,30,20);
+	adic(new JLabelPad("Periodo:"),7,5,125,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,32,25,125,20);
-    adic(new JLabel("Até:"),160,25,22,20);
+    adic(new JLabelPad("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,125,20);
-    adic(new JLabel("Nº planejamento"),7,50,250,20);
+    adic(new JLabelPad("Nº planejamento"),7,50,250,20);
     adic(txtCodPlan,7,70,100,20);
-    adic(new JLabel("Descrição do planejamento"),110,50,240,20);
+    adic(new JLabelPad("Descrição do planejamento"),110,50,240,20);
     adic(txtDescPlan,110,70,200,20);
 
 	Calendar cPeriodo = Calendar.getInstance();

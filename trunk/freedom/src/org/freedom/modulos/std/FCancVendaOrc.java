@@ -31,7 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -96,17 +96,17 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
     
     btCancelar.setToolTipText("Executar exclusão de vínculo.");
 
-    pinCli.adic(new JLabel("Nº pedido"),7,0,80,20);
+    pinCli.adic(new JLabelPad("Nº pedido"),7,0,80,20);
     pinCli.adic(txtCodVenda,7,20,80,20);
-    pinCli.adic(new JLabel("Doc."),90,0,67,20);
+    pinCli.adic(new JLabelPad("Doc."),90,0,67,20);
     pinCli.adic(txtDocVenda,90,20,67,20);
-    pinCli.adic(new JLabel("Série"),160,0,67,20);
+    pinCli.adic(new JLabelPad("Série"),160,0,67,20);
     pinCli.adic(txtSerie,160,20,67,20);
-    pinCli.adic(new JLabel("Valor"),230,0,100,20);
+    pinCli.adic(new JLabelPad("Valor"),230,0,100,20);
     pinCli.adic(txtVlrLiqVenda,230,20,100,20);
-    pinCli.adic(new JLabel("Situação"),7,40,70,20);
+    pinCli.adic(new JLabelPad("Situação"),7,40,70,20);
     pinCli.adic(txtStatusVenda,7,60,70,20);
-    pinCli.adic(new JLabel("Bloqueada"),80,40,70,20);
+    pinCli.adic(new JLabelPad("Bloqueada"),80,40,70,20);
     pinCli.adic(txtBloqVenda,80,60,70,20);
     pinCli.adic(btCancelar,7,90,120,30);
 

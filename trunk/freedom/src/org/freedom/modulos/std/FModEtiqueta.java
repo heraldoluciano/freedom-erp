@@ -31,7 +31,7 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
@@ -121,7 +121,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	
     	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
   
-    	adic(new JLabel("Campos dinâmicos"), 7, 80, 220, 20); 
+    	adic(new JLabelPad("Campos dinâmicos"), 7, 80, 220, 20); 
        	adic(cbCampos, 7, 100, 220, 20); 
        	adic(btAdic, 230, 100, 30, 30); 
         

@@ -33,7 +33,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -112,23 +112,23 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
 	vLabs.addElement("Conveniado");
 
     setPainel(pinCab);
-    adic(new JLabel("Nº Pedido"),7,0,80,20);
+    adic(new JLabelPad("Nº Pedido"),7,0,80,20);
     adic(txtCodVenda,7,20,80,20);
-    adic(new JLabel("Doc."),90,0,77,20);
+    adic(new JLabelPad("Doc."),90,0,77,20);
     adic(txtDocVenda,90,20,77,20);
-    adic(new JLabel("Valor"),170,0,97,20);
+    adic(new JLabelPad("Valor"),170,0,97,20);
     adic(txtVlrLiqVenda,170,20,97,20);
-    adic(new JLabel("Emissão"),270,0,100,20);
+    adic(new JLabelPad("Emissão"),270,0,100,20);
     adic(txtDataVenda,270,20,100,20);
 
     pnRodape.add(pinRod,BorderLayout.WEST);
 
     pinRod.tiraBorda();
-    pinRod.adic(new JLabel("Vlr. Bruto"),7,0,100,20);
+    pinRod.adic(new JLabelPad("Vlr. Bruto"),7,0,100,20);
 	pinRod.adic(txtVlrProd,7,20,100,20);
-	pinRod.adic(new JLabel("Vlr. Desc."),110,0,97,20);
+	pinRod.adic(new JLabelPad("Vlr. Desc."),110,0,97,20);
 	pinRod.adic(txtVlrDesc,110,20,97,20);
-	pinRod.adic(new JLabel("Vlr. Liq."),210,0,97,20);
+	pinRod.adic(new JLabelPad("Vlr. Liq."),210,0,97,20);
 	pinRod.adic(txtVlrLiq,210,20,97,20);
 
     pnTabVenda.setPreferredSize(new Dimension(600,130));

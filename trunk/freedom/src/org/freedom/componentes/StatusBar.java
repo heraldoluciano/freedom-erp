@@ -32,7 +32,7 @@ import javax.swing.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -58,10 +58,10 @@ public class StatusBar extends JPanel {
 	private JPanel pnIDUSU = new JPanel(new BorderLayout());
 	private JPanel pnDescInfo = new JPanel(new BorderLayout());
 	private JPanel pnIconUsuario = new JPanel(new BorderLayout());
-	private JLabel lEst = new JLabel();  
-	private JLabel lUsuario = new JLabel();
-	private JLabel lInfo = new JLabel();
-	private JLabel lRelogio = new JLabel();  
+	private JLabelPad lEst = new JLabelPad();  
+	private JLabelPad lUsuario = new JLabelPad();
+	private JLabelPad lInfo = new JLabelPad();
+	private JLabelPad lRelogio = new JLabelPad();  
 	private int iNumEst = 0;
 	private String sDescEst = "";
 	private String sIDUsu = "";
@@ -127,9 +127,9 @@ public class StatusBar extends JPanel {
       pnIDUSU.add(lUsuario);
       pnDescInfo.add(lInfo);
       
-      pnIconEst.add(new JLabel(iconEst),BorderLayout.WEST);
-      pnIconUsuario.add(new JLabel(iconUsuario),BorderLayout.WEST);
-      pnIconInfo.add(new JLabel(iconInfo), BorderLayout.WEST);
+      pnIconEst.add(new JLabelPad(iconEst),BorderLayout.WEST);
+      pnIconUsuario.add(new JLabelPad(iconUsuario),BorderLayout.WEST);
+      pnIconInfo.add(new JLabelPad(iconInfo), BorderLayout.WEST);
                  
 	  lEst.setPreferredSize(new Dimension(180, 20));
 	  lEst.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -174,7 +174,7 @@ public class StatusBar extends JPanel {
 	  lRelogio.setHorizontalAlignment(SwingConstants.CENTER);
      
 	  pnRelogio.setBorder(BorderFactory.createLoweredBevelBorder());
-	  pnRelogio.add(new JLabel(iconRelogio),BorderLayout.WEST);
+	  pnRelogio.add(new JLabelPad(iconRelogio),BorderLayout.WEST);
 	  pnRelogio.add(lRelogio, BorderLayout.CENTER);
 	  this.add(pnRelogio, BorderLayout.EAST);
      

@@ -28,7 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
@@ -60,9 +60,9 @@ public class FCLComis extends FDados implements PostListener {
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
     
-    JLabel lbDistriCom = new JLabel(" Distribuição de Comissões ");
+    JLabelPad lbDistriCom = new JLabelPad(" Distribuição de Comissões ");
 	lbDistriCom.setOpaque(true);
-	JLabel lbLinha = new JLabel();
+	JLabelPad lbLinha = new JLabelPad();
 	lbLinha.setBorder(BorderFactory.createEtchedBorder());
     
     

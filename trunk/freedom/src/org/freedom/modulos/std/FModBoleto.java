@@ -31,7 +31,7 @@ import java.math.BigDecimal;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
@@ -148,13 +148,13 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
 
     	cbAcao = new JComboBoxPad(vLabs3,vVals3, JComboBoxPad.TP_STRING, 10, 0);
     	
-    	adic(new JLabel("Campos de dados"), 7, 40, 223, 20);
+    	adic(new JLabelPad("Campos de dados"), 7, 40, 223, 20);
     	adic(cbCamposDin, 7, 60, 223, 20);
-    	adic(new JLabel("Campos especiais de dados"), 240, 40, 217, 20);
+    	adic(new JLabelPad("Campos especiais de dados"), 240, 40, 217, 20);
     	adic(cbCamposEspec, 240, 60, 117, 20);
         adic(txtAdic,360,60,97,20);
     	adic(btAdic, 460, 50, 30, 30);
-    	adic(new JLabel("Açoes"), 7, 80, 223, 20);
+    	adic(new JLabelPad("Açoes"), 7, 80, 223, 20);
     	adic(cbAcao, 7, 100, 223, 20);
     	
     	txaBoleto.setTabSize(0);

@@ -25,7 +25,7 @@ package org.freedom.modulos.atd;
 import java.sql.Connection;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
@@ -194,15 +194,15 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     setAtribos(50, 50, 525, 440);
     txtDataini.setTipo(1, 10, 0);
     txtDatafim.setTipo(1, 10, 0);
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
     setPainel(pinGeral);
     adicTab("Geral", pinGeral);
-    adic(new JLabel("Relat\363rio:"), 7, 5, 100, 20);
+    adic(new JLabelPad("Relat\363rio:"), 7, 5, 100, 20);
     adic(lbLinha, 60, 15, 210, 2);
-    adic(new JLabel("De:"), 7, 30, 30, 20);
+    adic(new JLabelPad("De:"), 7, 30, 30, 20);
     adic(txtDataini, 32, 30, 97, 20);
-    adic(new JLabel("At\351:"), 140, 30, 30, 20);
+    adic(new JLabelPad("At\351:"), 140, 30, 30, 20);
     adic(txtDatafim, 170, 30, 100, 20);
     cbPacTurnoUm = new JCheckBoxPad("n\260 pacientes 01 turno", "S", "N");
     cbPacTurnoDois = new JCheckBoxPad("n\260 pacientes 02 turno", "S", "N");
@@ -238,10 +238,10 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     cbOutroEst.setVlrString("N");
     cbLimpaCheck = new JCheckBoxPad("Limpa tudo", "S", "N");
     cbTicaTudo = new JCheckBoxPad("Seleciona tudo", "S", "N");
-    adic(new JLabel("Total de pacientes atendidos em regime ambulatorial por turno de atendimento:"), 7, 55, 600, 20);
+    adic(new JLabelPad("Total de pacientes atendidos em regime ambulatorial por turno de atendimento:"), 7, 55, 600, 20);
     adic(cbPacTurnoUm, 7, 75, 150, 20);
     adic(cbPacTurnoDois, 160, 75, 200, 20);
-    adic(new JLabel( "N\260 de pacientes atendidos de acordo com a faixa et\341ria:"), 7, 105, 600, 20);
+    adic(new JLabelPad( "N\260 de pacientes atendidos de acordo com a faixa et\341ria:"), 7, 105, 600, 20);
     adic(cb0a1ano, 7, 125, 100, 20);
     adic(cb1a5anos, 7, 145, 100, 20);
     adic(cb5a10anos, 7, 165, 100, 20);
@@ -251,10 +251,10 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     adic(cb40a50anos, 223, 125, 100, 20);
     adic(cb50a60anos, 223, 145, 100, 20);
     adic(cbmaisde60, 223, 165, 120, 20);
-    adic(new JLabel("N\260 de pacientes atendidos de acordo com o sexo:"), 7, 195, 600, 20);
+    adic(new JLabelPad("N\260 de pacientes atendidos de acordo com o sexo:"), 7, 195, 600, 20);
     adic(cbSexoM, 7, 215, 100, 20);
     adic(cbSexoF, 110, 215, 100, 20);
-    adic(new JLabel("N\260 de pacientes atendidos com a proced\352ncia/resid\352ncia do paciente:"), 7, 245, 600, 20);
+    adic(new JLabelPad("N\260 de pacientes atendidos com a proced\352ncia/resid\352ncia do paciente:"), 7, 245, 600, 20);
     adic(cbProMuni, 7, 265, 215, 20);
     adic(cbEstMuni, 7, 285, 255, 20);
     adic(cbOutroEst, 260, 265, 255, 20);
@@ -300,7 +300,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     cbAfogam.setVlrString("N");
     cbCausaExter = new JCheckBoxPad("Outras causas externas", "S", "N");
     cbCausaExter.setVlrString("N");
-    adic(new JLabel("N\260 de pacientes atendidos de acordo com o grau de instru\347\343o:"), 7, 5, 370, 20);
+    adic(new JLabelPad("N\260 de pacientes atendidos de acordo com o grau de instru\347\343o:"), 7, 5, 370, 20);
     adic(cbSemInst, 7, 25, 200, 20);
     adic(cbEducInf, 7, 45, 200, 20);
     adic(cbFundCompl, 7, 65, 200, 20);
@@ -309,7 +309,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     adic(cbMedioIncom, 235, 45, 210, 20);
     adic(cbTecSupComp, 235, 65, 210, 20);
     adic(cbTecSupInc, 235, 85, 210, 20);
-    adic(new JLabel("N\260 de pacientes atendidos de acordo com a causa da doen\347a ou causas externas:"), 7, 115, 600, 20);
+    adic(new JLabelPad("N\260 de pacientes atendidos de acordo com a causa da doen\347a ou causas externas:"), 7, 115, 600, 20);
     adic(cbDoNeonatal, 7, 135, 210, 20);
     adic(cbDoInfec, 7, 155, 210, 20);
     adic(cbDoCronDege, 7, 175, 210, 20);
@@ -351,7 +351,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     cb1a2anos.setVlrString("N");
     cbmais2anos = new JCheckBoxPad("Acima de 2 anos", "S", "N");
     cbmais2anos.setVlrString("N");
-    adic(new JLabel("N\260 de pacientes atendidos no hospital ou servi\347o, de acordo com o encaminhamento:"), 7, 5, 600, 20);
+    adic(new JLabelPad("N\260 de pacientes atendidos no hospital ou servi\347o, de acordo com o encaminhamento:"), 7, 5, 600, 20);
     adic(cbEncEmerg, 7, 25, 250, 20);
     adic(cbEncHosp, 7, 45, 250, 20);
     adic(cbEncHospReab, 7, 65, 264, 20);
@@ -360,7 +360,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     adic(cbEncAmbAteBas, 267, 45, 250, 20);
     adic(cbDemExp, 267, 65, 250, 20);
     adic(cbOutros, 267, 85, 250, 20);
-    adic(new JLabel("<html>N\260 de pacientes em rela\347\343o ao tempo de doen\347a/causa externa que determinou a <br>incapacidade/defici\352ncia:"), 7, 115, 600, 30);
+    adic(new JLabelPad("<html>N\260 de pacientes em rela\347\343o ao tempo de doen\347a/causa externa que determinou a <br>incapacidade/defici\352ncia:"), 7, 115, 600, 30);
     adic(cb1mes, 7, 150, 125, 20);
     adic(cb1a3meses, 7, 170, 125, 20);
     adic(cb3a6meses, 7, 190, 125, 20);
@@ -399,7 +399,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     cbEncOutrServ.setVlrString("N");
     cbObito = new JCheckBoxPad("\323bito", "S", "N");
     cbObito.setVlrString("N");
-    adic(new JLabel("<html>N\260 de pacientes em rela\347\343o as atividades que desempenhavam antes da <br>doen\347a/agravo por causa externa, por ocasi\343o da alta:"), 7, 5, 600, 40);
+    adic(new JLabelPad("<html>N\260 de pacientes em rela\347\343o as atividades que desempenhavam antes da <br>doen\347a/agravo por causa externa, por ocasi\343o da alta:"), 7, 5, 600, 40);
     adic(cbRetEsc, 7, 45, 250, 20);
     adic(cbRetTrabMesm, 7, 65, 275, 20);
     adic(cbRetTrabAdap, 7, 85, 277, 20);
@@ -407,7 +407,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     adic(cbAtivDomic, 285, 45, 250, 20);
     adic(cbNaoTrab, 285, 65, 250, 20);
     adic(cbSemCondInf, 285, 85, 250, 20);
-    adic(new JLabel("N\260 de pacientes de acordo com o tipo de alta:"), 7, 130, 600, 20);
+    adic(new JLabelPad("N\260 de pacientes de acordo com o tipo de alta:"), 7, 130, 600, 20);
     adic(cbTipoAlta, 7, 150, 125, 20);
     adic(cbSemCondAlta, 7, 170, 160, 20);
     adic(cbIndepen, 7, 190, 125, 20);

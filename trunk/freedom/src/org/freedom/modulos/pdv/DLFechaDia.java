@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 
 import org.freedom.componentes.JCheckBoxPad;
@@ -53,9 +53,9 @@ public class DLFechaDia extends FFDialogo {
 		setTitulo("Fechamento de caixa");
 		setAtribos(310,150);
 		
-		adic(new JLabel("Data e Hora: "),7,10,110,20);
+		adic(new JLabelPad("Data e Hora: "),7,10,110,20);
 		adic(txtDataHora,7,30,110,20);
-		adic(new JLabel("Saldo do caixa: "),120,10,120,20);
+		adic(new JLabelPad("Saldo do caixa: "),120,10,120,20);
 		adic(txtVlrCaixa,120,30,120,20);
 		adic(cbReducaoZ,7,60,280,20);
 

@@ -35,7 +35,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
@@ -51,7 +51,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 
 public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListener, ActionListener {
-  private JLabel lbPesq = new JLabel("Código");
+  private JLabelPad lbPesq = new JLabelPad("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad();
   private JPanel pnBordCab = new JPanel(new GridLayout(1,1));
   private JPanelPad pinCab = new JPanelPad();

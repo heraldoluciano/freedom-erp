@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -113,31 +113,31 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
     txtDtVenc.setAtivo(false);
     txtVlrParc.setAtivo(false);
     
-    adic(new JLabel("Código e razão do fornecedor"),7,0,250,20);
+    adic(new JLabelPad("Código e razão do fornecedor"),7,0,250,20);
     adic(txtCodFor,7,20,80,20);
     adic(txtRazFor,90,20,200,20);
-    adic(new JLabel("Número e descrição da conta"),7,40,250,20);
+    adic(new JLabelPad("Número e descrição da conta"),7,40,250,20);
     adic(txtCodConta,7,60,80,20);
     adic(txtDescConta,90,60,200,20);
-    adic(new JLabel("Código e descrição da categoria"),7,80,250,20);
+    adic(new JLabelPad("Código e descrição da categoria"),7,80,250,20);
     adic(txtCodPlan,7,100,100,20);
     adic(txtDescPlan,110,100,200,20);
-	adic(new JLabel("Código e descrição do centro de custo"),7,120,250,20);
+	adic(new JLabelPad("Código e descrição do centro de custo"),7,120,250,20);
 	adic(txtCodCC,7,140,100,20);
 	adic(txtDescCC,110,140,200,20);
-    adic(new JLabel("Doc."),7,160,110,20);
+    adic(new JLabelPad("Doc."),7,160,110,20);
     adic(txtDoc,7,180,110,20);
-    adic(new JLabel("Emissão"),120,160,107,20);
+    adic(new JLabelPad("Emissão"),120,160,107,20);
     adic(txtDtEmis,120,180,107,20);
-    adic(new JLabel("Vencimento"),230,160,110,20);
+    adic(new JLabelPad("Vencimento"),230,160,110,20);
     adic(txtDtVenc,230,180,110,20);
-    adic(new JLabel("Vlr. Parc."),7,200,110,20);
+    adic(new JLabelPad("Vlr. Parc."),7,200,110,20);
     adic(txtVlrParc,7,220,110,20);
-    adic(new JLabel("Dt. Pagto."),120,200,107,20);
+    adic(new JLabelPad("Dt. Pagto."),120,200,107,20);
     adic(txtDtPagto,120,220,107,20);
-    adic(new JLabel("Vlr. Pago"),230,200,110,20);
+    adic(new JLabelPad("Vlr. Pago"),230,200,110,20);
     adic(txtVlrPago,230,220,110,20);
-    adic(new JLabel("Observações"),7,240,200,20);
+    adic(new JLabelPad("Observações"),7,240,200,20);
     adic(txtObs,7,260,333,20);
     
     lcCC.addCarregaListener(this);

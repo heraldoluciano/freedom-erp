@@ -29,7 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.componentes.GuardaCampo;
@@ -94,7 +94,7 @@ public class FSimilar extends FDados implements ActionListener{
 			txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),false);
 			adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.",ListaCampos.DB_PK,false);
 			adicCampoInvisivel(txtRefProd,"RefProd","Ref.prod.",ListaCampos.DB_PK,false);	
-			adic(new JLabel("Ref.Prod."), 130, 0, 100, 20);
+			adic(new JLabelPad("Ref.Prod."), 130, 0, 100, 20);
 			adic(txtRefProd, 130, 20, 100, 20);
 		}
 		else {

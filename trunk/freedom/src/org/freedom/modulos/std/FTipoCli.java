@@ -26,7 +26,7 @@ import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
@@ -38,7 +38,7 @@ public class FTipoCli extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JPanelPad pinInfoFicha = new JPanelPad(300,150);
-  private JLabel lbInfoFicha = new JLabel(" Informações complementares na ficha cadastral");
+  private JLabelPad lbInfoFicha = new JLabelPad(" Informações complementares na ficha cadastral");
   private JCheckBoxPad cbTipoCadFis = new JCheckBoxPad("Pessoa física","S","N");
   private JCheckBoxPad cbTipoCadJur = new JCheckBoxPad("Pessoa jurídica","S","N");
   private JCheckBoxPad cbTipoCadCheq = new JCheckBoxPad("Cheque","S","N");

@@ -37,7 +37,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.acao.CarregaEvent;
@@ -157,7 +157,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	pnCenter.add(spTab,BorderLayout.CENTER);
 
 	JPanel pnLab = new JPanel(new GridLayout(1,1));
-	pnLab.add(new JLabel(" Totais:"));    //Label do painel de totais
+	pnLab.add(new JLabelPad(" Totais:"));    //Label do painel de totais
 
 	pnMaster.add(pnCenter,BorderLayout.CENTER);
     
@@ -341,7 +341,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
     if (oPrefs[0]==Boolean.TRUE) {
       adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.", ListaCampos.DB_FK ,txtDescProd, false);
       adicCampoInvisivel(txtRefProd,"RefProd","Referência", ListaCampos.DB_FK, false);
-      adic(new JLabel("Referência"), 40, 0, 67, 20);
+      adic(new JLabelPad("Referência"), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
     }
     else {
@@ -355,11 +355,11 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
     adicCampoInvisivel(txtVlrProdItOrc,"VlrProdItOrc","Vlr. bruto", ListaCampos.DB_SI, false);
 	adicCampoInvisivel(txtObsItOrc,"ObsItOrc","Observação", ListaCampos.DB_SI, false);
     adicCampo(txtVlrLiqItOrc, 580, 20, 80, 20,"VlrLiqItOrc","Valor item", ListaCampos.DB_SI, false);
-    pinTot.adic(new JLabel("Tot. Desc."),7,0,90,20);
+    pinTot.adic(new JLabelPad("Tot. Desc."),7,0,90,20);
     pinTot.adic(txtVlrDescOrc,7,20,100,20);
-	pinTot.adic(new JLabel("Tot. adic."),7,40,90,20);
+	pinTot.adic(new JLabelPad("Tot. adic."),7,40,90,20);
 	pinTot.adic(txtVlrAdicOrc,7,60,100,20);
-    pinTot.adic(new JLabel("Total geral"),7,80,90,20);
+    pinTot.adic(new JLabelPad("Total geral"),7,80,90,20);
     pinTot.adic(txtVlrLiqOrc,7,100,100,20);
 
     setListaCampos( true, "ITORCAMENTO", "VD");

@@ -39,7 +39,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -194,7 +194,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação",
 				ListaCampos.DB_SI, false);
 		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo", false);
-		adic(new JLabel("Motivo"), 7, 40, 100, 20);
+		adic(new JLabelPad("Motivo"), 7, 40, 100, 20);
 		adic(spnMotivo, 7, 60, 727, 77);
 		adic(btLimpaCompra, 240, 15, 250, 30);
 		btLimpaCompra.setVisible(false);
@@ -233,7 +233,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					txtDescProd, false);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
 					ListaCampos.DB_FK, false);
-			adic(new JLabel("Referência"), 40, 0, 67, 20);
+			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 87, 20);
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",

@@ -30,7 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
@@ -86,13 +86,13 @@ public class FCancVenda extends FFilho implements ActionListener {
     
     btCancelar.setToolTipText("Cancela Venda");
 
-    pinCli.adic(new JLabel("Nº Pedido"),7,0,80,20);
+    pinCli.adic(new JLabelPad("Nº Pedido"),7,0,80,20);
     pinCli.adic(txtCodVenda,7,20,80,20);
-    pinCli.adic(new JLabel("Doc."),90,0,67,20);
+    pinCli.adic(new JLabelPad("Doc."),90,0,67,20);
     pinCli.adic(txtDocVenda,90,20,67,20);
-    pinCli.adic(new JLabel("Série"),160,0,67,20);
+    pinCli.adic(new JLabelPad("Série"),160,0,67,20);
     pinCli.adic(txtSerie,160,20,67,20);
-    pinCli.adic(new JLabel("Valor"),230,0,100,20);
+    pinCli.adic(new JLabelPad("Valor"),230,0,100,20);
     pinCli.adic(txtVlrLiqVenda,230,20,100,20);
     pinCli.adic(btCancelar,7,50,130,30);
 

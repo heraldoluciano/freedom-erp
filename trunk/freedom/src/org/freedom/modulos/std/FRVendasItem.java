@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -107,11 +107,11 @@ public class FRVendasItem extends FRelatorio {
 		lcVend.setReadOnly(true);
 		lcVend.montaSql(false, "VENDEDOR", "VD");
 		
-		JLabel lbLinha = new JLabel();
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabel lbLinha2 = new JLabel();
+		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabel lbLinha3 = new JLabel();
+		JLabelPad lbLinha3 = new JLabelPad();
 		lbLinha3.setBorder(BorderFactory.createEtchedBorder());
 		txtDataini.setVlrDate(new Date());
 	    txtDatafim.setVlrDate(new Date());
@@ -129,29 +129,29 @@ public class FRVendasItem extends FRelatorio {
 		 cbListaFilial.setVlrString("N");
 		 
 		 
-		adic(new JLabel("Periodo:"),7,5,100,20);
+		adic(new JLabelPad("Periodo:"),7,5,100,20);
 		adic(lbLinha,60,15,218,2);
-		adic(new JLabel("De:"),7,30,30,20);
+		adic(new JLabelPad("De:"),7,30,30,20);
 		adic(txtDataini,32,30,97,20);
-		adic(new JLabel("Até:"),140,30,30,20);
+		adic(new JLabelPad("Até:"),140,30,30,20);
 		adic(txtDatafim,170,30,100,20);
 		adic(lbLinha2,7,60,272,2);
-		adic(new JLabel("Cód.repr."),7,68,200,20);
+		adic(new JLabelPad("Cód.repr."),7,68,200,20);
 		adic(txtCodVend,7,88,70,20);
-		adic(new JLabel("Nome do representante"),80,68,200,20);
+		adic(new JLabelPad("Nome do representante"),80,68,200,20);
 		adic(txtDescVend,80,88,200,20);
-		adic(new JLabel("Cód.grupo"),7,108,200,20);
+		adic(new JLabelPad("Cód.grupo"),7,108,200,20);
 		adic(txtCodGrup,7,128,70,20);
-		adic(new JLabel("Descrição do grupo"),80,108,200,20);
+		adic(new JLabelPad("Descrição do grupo"),80,108,200,20);
 		adic(txtDescGrup,80,128,200,20);
-		adic(new JLabel("Cód.marca"),7,148,200,20);
+		adic(new JLabelPad("Cód.marca"),7,148,200,20);
 		adic(txtCodMarca,7,168,70,20);
-		adic(new JLabel("Descrição da marca"),80,148,200,20);
+		adic(new JLabelPad("Descrição da marca"),80,148,200,20);
 		adic(txtDescMarca,80,168,200,20);
 		
-		adic(new JLabel("Cód.cli."),7,188,200,20);
+		adic(new JLabelPad("Cód.cli."),7,188,200,20);
 		adic(txtCodCli,7,208,70,20);
-		adic(new JLabel("Razão social do cliente"),80,188,200,20);
+		adic(new JLabelPad("Razão social do cliente"),80,188,200,20);
 		adic(txtRazCli,80,208,200,20);
 		
 		 adic(cbListaFilial, 5, 240, 250, 20 );
@@ -159,7 +159,7 @@ public class FRVendasItem extends FRelatorio {
 		
 		
 		adic(lbLinha3,7,274,272,2);
-        adic(new JLabel("Ordenado por:"),7,290,180,20);
+        adic(new JLabelPad("Ordenado por:"),7,290,180,20);
         adic(rgOrdem,7,315,273,30);
        
         

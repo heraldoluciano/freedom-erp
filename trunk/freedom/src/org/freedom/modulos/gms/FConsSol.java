@@ -40,7 +40,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -133,31 +133,31 @@ public class FConsSol extends FFilho implements ActionListener {
 		pnRod.add(pnBordaSair, BorderLayout.EAST);
 		JPanel pnBordaConsVenda = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
 		pnRod.add(pnBordaConsVenda, BorderLayout.WEST);
-		JLabel lbLinha = new JLabel();
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabel lbLinha2 = new JLabel();
+		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabel lbStatus = new JLabel(" Filtrar:");
+		JLabelPad lbStatus = new JLabelPad(" Filtrar:");
 		lbStatus.setOpaque(true);
 
-		pinCab.adic(new JLabel("Período:"), 7, 5, 50, 20);
+		pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
 		pinCab.adic(txtDtIni, 7, 25, 95, 20);
-		pinCab.adic(new JLabel("Até"), 111, 25, 27, 20);
+		pinCab.adic(new JLabelPad("Até"), 111, 25, 27, 20);
 		pinCab.adic(txtDtFim, 139, 25, 95, 20);
 
-		pinCab.adic(new JLabel("Cód.c.c."), 237, 5, 70, 20);
+		pinCab.adic(new JLabelPad("Cód.c.c."), 237, 5, 70, 20);
 		pinCab.adic(txtCodCC, 237, 25, 70, 20);
-		pinCab.adic(new JLabel("Centro de custo"), 310, 5, 410, 20);
+		pinCab.adic(new JLabelPad("Centro de custo"), 310, 5, 410, 20);
 		pinCab.adic(txtDescCC, 310, 25, 180, 20);
 
-		pinCab.adic(new JLabel("Cód.usu."), 7, 48, 70, 20);
+		pinCab.adic(new JLabelPad("Cód.usu."), 7, 48, 70, 20);
 		pinCab.adic(txtCodUsu, 7, 70, 70, 20);
-		pinCab.adic(new JLabel("Nome do usuário"), 80, 48, 410, 20);
+		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 48, 410, 20);
 		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
 
-		pinCab.adic(new JLabel("Cód.almox."), 237, 48, 75, 20);
+		pinCab.adic(new JLabelPad("Cód.almox."), 237, 48, 75, 20);
 		pinCab.adic(txtCodAlmoxarife, 237, 70, 70, 20);
-		pinCab.adic(new JLabel("Nome do almoxarifado"), 310, 48, 410, 20);
+		pinCab.adic(new JLabelPad("Nome do almoxarifado"), 310, 48, 410, 20);
 		pinCab.adic(txtDescAlmoxarife, 310, 70, 180, 20);
 
 		pinCab.adic(lbStatus, 15, 100, 50, 18);

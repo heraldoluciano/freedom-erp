@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -78,27 +78,27 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 		txtCodPlanoPag.setFK(true);
 		
-		adic(new JLabel("Cód.p.pag."),7,5,250,15);
+		adic(new JLabelPad("Cód.p.pag."),7,5,250,15);
 		adic(txtCodPlanoPag,7,20,80,20);
-		adic(new JLabel("Descrição da forma de pagamento"),90,5,250,15);
+		adic(new JLabelPad("Descrição da forma de pagamento"),90,5,250,15);
 		adic(txtDescPlanoPag,90,20,200,20);
 		
-		JLabel lbLinha = new JLabel();
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
 		adic(lbLinha,7,50,300,2);
 		
-		adic(new JLabel("Valor total do cupom: "),7,60,150,20);
+		adic(new JLabelPad("Valor total do cupom: "),7,60,150,20);
 		adic(txtVlrCupom,160,60,100,20);
-		adic(new JLabel("Valor em dinheiro: "),7,85,150,20);
+		adic(new JLabelPad("Valor em dinheiro: "),7,85,150,20);
 		adic(txtVlrDinheiro,160,85,100,20);
-		adic(new JLabel("Valor em cheque: "),7,110,150,20);
+		adic(new JLabelPad("Valor em cheque: "),7,110,150,20);
 		adic(txtVlrCheque,160,110,100,20);
-		adic(new JLabel("Valor em ch. elet./cartão: "),7,135,150,20);
+		adic(new JLabelPad("Valor em ch. elet./cartão: "),7,135,150,20);
 		adic(txtVlrChequeElet,160,135,100,20);
-		adic(new JLabel("Valor pago: "),7,160,150,20);
+		adic(new JLabelPad("Valor pago: "),7,160,150,20);
 		adic(txtVlrPago,160,160,100,20);
-		adic(new JLabel("Valor troco: "),7,185,150,20);
+		adic(new JLabelPad("Valor troco: "),7,185,150,20);
 		adic(txtVlrTroco,160,185,100,20);
 		
 		txtVlrDinheiro.addFocusListener(this);

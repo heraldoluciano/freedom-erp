@@ -35,7 +35,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.DeleteEvent;
@@ -110,7 +110,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", ListaCampos.DB_SI, true);
 		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, true);
 	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "Razão social do cliente");
-		adic(new JLabel("Cód.tp.créd."), 7, 40, 80, 20);
+		adic(new JLabelPad("Cód.tp.créd."), 7, 40, 80, 20);
 		adic(txtCodTpCred, 7, 60, 80, 20);
 		adicDescFK(txtDescTpCred, 90, 60, 197, 20, "DescTpCred", "Descrição do tipo de crédito");
 		adicDescFK(txtVlrTpCred, 290, 60, 160, 20, "VlrTpCred", "Valor pré-aprovado");
@@ -122,21 +122,21 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 
  	 // Adicionando elementos no painel central da tela (Cliente)
 
-		pinCli.adic(new JLabel("Informações para análise"),7,0,200,20);
+		pinCli.adic(new JLabelPad("Informações para análise"),7,0,200,20);
 		
-		pinCli.adic(new JLabel("Valor em aberto:"),7,30,120,20);
+		pinCli.adic(new JLabelPad("Valor em aberto:"),7,30,120,20);
 		pinCli.adic(txtVlrAberto,130,30,100,20);		
-		pinCli.adic(new JLabel("Valor em liberação:"),7,60,120,20);
+		pinCli.adic(new JLabelPad("Valor em liberação:"),7,60,120,20);
 		pinCli.adic(txtVlrLiberacao,130,60,100,20);
-		pinCli.adic(new JLabel("Valor do crédito:"),7,90,120,20);
+		pinCli.adic(new JLabelPad("Valor do crédito:"),7,90,120,20);
 		pinCli.adic(txtVlrCredito,130,90,100,20);
-		pinCli.adic(new JLabel("Valor a liberar:"),7,120,120,20);
+		pinCli.adic(new JLabelPad("Valor a liberar:"),7,120,120,20);
 		pinCli.adic(txtVlrALiberar,130,120,100,20);
-		pinCli.adic(new JLabel("Valor do saldo:"),7,150,120,20);
+		pinCli.adic(new JLabelPad("Valor do saldo:"),7,150,120,20);
 		pinCli.adic(txtVlrSaldo,130,150,100,20);
 
 
-		pinCli.adic(new JLabel("Duplicatas em aberto"),260,0,200,20);
+		pinCli.adic(new JLabelPad("Duplicatas em aberto"),260,0,200,20);
         pinCli.adic(spnTab,260,30,360,140);
         
 

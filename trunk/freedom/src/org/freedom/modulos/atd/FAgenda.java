@@ -39,7 +39,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -115,7 +115,7 @@ public class FAgenda extends FFilho implements ActionListener {
   	
 	getTela().add(tpnAgd);
 	
-	pinCabAgd.adic(new JLabel("Usuário"),7,10,250,20);
+	pinCabAgd.adic(new JLabelPad("Usuário"),7,10,250,20);
 	pinCabAgd.adic(txtIdUsu,7,30,80,20);
 	pinCabAgd.adic(txtNomeUsu,7,30,250,20);
 	pinCabAgd.adic(btExec,360,23,30,30);

@@ -29,7 +29,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.telas.FFilho;
@@ -47,11 +47,11 @@ public class DLExibePizza extends FFilho implements ActionListener {
     pnCli.add(chartPanel);      
 	
 	pnCab.setPreferredSize(new Dimension(100,20));
-	pnCab.add(new JLabel(sTitulo));
+	pnCab.add(new JLabelPad(sTitulo));
 	pnCab.setBackground(new Color(255,255,255));
 	
 	pnRod.setPreferredSize(new Dimension(100,20));
-	pnRod.add(new JLabel(sVlr));
+	pnRod.add(new JLabelPad(sVlr));
 	pnRod.setBackground(new Color(255,255,255));
 	
 	c.add(pnCab, BorderLayout.NORTH);

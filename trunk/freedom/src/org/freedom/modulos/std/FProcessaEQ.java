@@ -36,7 +36,7 @@ import java.sql.Types;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -65,7 +65,7 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
 	//private JTextFieldFK txtRefProdFim = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
 	//private JTextFieldFK txtDescProdFim = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
     private JCheckBoxPad cbTudo = new JCheckBoxPad("Processar todo estoque (Atenção!)","S","N");
-	private JLabel lbStatus = new JLabel();
+	private JLabelPad lbStatus = new JLabelPad();
 	private ListaCampos lcProd = new ListaCampos(this);
 	private ListaCampos lcProdFim = new ListaCampos(this);
 	boolean bRunProcesso = false;
@@ -100,7 +100,7 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
         lcProdFim.setReadOnly(true);
         lcProdFim.montaSql(false, "PRODUTO", "EQ"); */
         
-        JLabel lbAviso = new JLabel();
+        JLabelPad lbAviso = new JLabelPad();
         lbAviso.setForeground(Color.RED);
         lbAviso.setText("<HTML> ATENÇÃO! <BR><BR>"+
         		"Assegure-se que apenas esta estação de trabalho<BR>" +
@@ -109,14 +109,14 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
         
         pin.adic(lbAviso,10,0,460,150);
         
-        pin.adic(new JLabel("Apartir de:"),7,160,70,20);
+        pin.adic(new JLabelPad("Apartir de:"),7,160,70,20);
         pin.adic(txtDataini,80,160,107,20);
-        pin.adic(new JLabel("Cód.prod."),7,180,250,20);
+        pin.adic(new JLabelPad("Cód.prod."),7,180,250,20);
         pin.adic(txtCodProd,7,200,70,20);
-        pin.adic(new JLabel("Descrição do produto"),80,180,250,20);
+        pin.adic(new JLabelPad("Descrição do produto"),80,180,250,20);
         pin.adic(txtDescProd,80,200,220,20);
 
-        /*pin.adic(new JLabel("Código e descrição do produto final"),7,200,250,20);
+        /*pin.adic(new JLabelPad("Código e descrição do produto final"),7,200,250,20);
         pin.adic(txtCodProdFim,7,220,70,20);
         pin.adic(txtDescProdFim,80,220,220,20);*/
 

@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -196,7 +196,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	adicCampo(txtCodVend, 7, 25, 80, 20, "CodVend", "Cód.repr.", ListaCampos.DB_PK, txtDescVend, false);
 	adicDescFK(txtDescVend, 90, 25, 237, 20, "NomeVend", "Descrição do vendedor");
 	adicCampo(txtDataCont, 330, 25, 80, 20, "DataCto", "Data", ListaCampos.DB_SI, false);
-	adic(new JLabel("Observações:"),7,55,150,20);
+	adic(new JLabelPad("Observações:"),7,55,150,20);
     setListaCampos( true, "CONTATO", "TK");
     
 //Atividade    

@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -73,22 +73,22 @@ public class FRUltimaVenda extends FRelatorio {
 	txtCodCli.setFK(true);
 	lcCli.setReadOnly(true);
 	lcCli.montaSql(false, "CLIENTE", "VD");
-	JLabel lbLinha = new JLabel();
+	JLabelPad lbLinha = new JLabelPad();
 	lbLinha.setBorder(BorderFactory.createEtchedBorder());
 
 	cbListaFilial = new JCheckBoxPad ("Listar vendas das filiais ?","S","N");
 	cbListaFilial.setVlrString("N");
 	
 	
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,27,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,27,30,20);
     adic(txtDataini,37,27,90,20);
-    adic(new JLabel("Até:"),140,27,30,20);
+    adic(new JLabelPad("Até:"),140,27,30,20);
     adic(txtDatafim,175,27,90,20);
     adic(lbLinha,7,62,260,2);
-    adic(new JLabel("Cód.cli."),7,70,250,20);
+    adic(new JLabelPad("Cód.cli."),7,70,250,20);
     adic(txtCodCli,07,90,70,20);
-    adic(new JLabel("Razão social do cliente:"),80,70,250,20);
+    adic(new JLabelPad("Razão social do cliente:"),80,70,250,20);
     adic(txtNomeCli,80,90,186,20);
 	
 
@@ -103,9 +103,9 @@ public class FRUltimaVenda extends FRelatorio {
  
     
     
-    adic(new JLabel("Cód.repr."),7,113,210,20);
+    adic(new JLabelPad("Cód.repr."),7,113,210,20);
 	adic(txtCodVend,7,136,70,20);
-	adic(new JLabel("Nome do representante"),80,113,210,20);
+	adic(new JLabelPad("Nome do representante"),80,113,210,20);
 	adic(txtDescVend,80,136,186,20);
     
     adic(cbListaFilial,5,165,200,20);

@@ -39,7 +39,7 @@ import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -205,7 +205,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo", false);
 		adicCampoInvisivel(txaMotivoCanc, "MotivoCancSol", "Motivo de cancelamento", ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtUsuCanc, "IDUsuCancSol", "Usuário que cancelou", ListaCampos.DB_SI, false);
-		adic(new JLabel("Motivo"), 7, 40, 100, 20);
+		adic(new JLabelPad("Motivo"), 7, 40, 100, 20);
 		adic(spnMotivo, 7, 60, 727, 77);
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem", ListaCampos.DB_SI, false);
 		setListaCampos(true, "SOLICITACAO", "CP");
@@ -240,7 +240,7 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 		if (comRef()) {
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência", ListaCampos.DB_FK, false);
-			adic(new JLabel("Referência"), 40, 0, 67, 20);
+			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			txtRefProd.setSoLeitura(true);
 			adic(txtRefProd, 40, 20, 67, 20);
 		} else {

@@ -34,7 +34,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.Processo;
 import org.freedom.bmps.Icone;
@@ -55,7 +55,7 @@ import org.freedom.telas.FFilho;
 public class FProcessaSL extends FFilho implements ActionListener {
     private JPanelPad pin = new JPanelPad();
 	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
-	private JLabel lbStatus = new JLabel();
+	private JLabelPad lbStatus = new JLabelPad();
 	boolean bRunProcesso = false;
     public FProcessaSL() {
     	setTitulo("Processamento de saldo");
@@ -65,9 +65,9 @@ public class FProcessaSL extends FFilho implements ActionListener {
     	c.setLayout(new BorderLayout());
         c.add(pin,BorderLayout.CENTER);
 
-        pin.adic(new JLabel("--> PROCESSAMENTO DE SALDO <--"),10,15,250,20);
+        pin.adic(new JLabelPad("--> PROCESSAMENTO DE SALDO <--"),10,15,250,20);
 
-        JLabel lbAviso = new JLabel();
+        JLabelPad lbAviso = new JLabelPad();
         lbAviso.setForeground(Color.RED);
         lbAviso.setText("<HTML> ATENÇÃO! <BR><BR>"+
                                " O processamento de saldo é uma rotina que exige muito processamento "+

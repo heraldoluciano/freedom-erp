@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JRadioGroup;
@@ -55,14 +55,14 @@ public class FREstatAtend extends FRelatorio {
     txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
     
-    adic(new JLabel("Periodo:"),7,5,100,20);
+    adic(new JLabelPad("Periodo:"),7,5,100,20);
     adic(lbLinha,60,15,210,2);
-    adic(new JLabel("De:"),7,30,30,20);
+    adic(new JLabelPad("De:"),7,30,30,20);
     adic(txtDataini,32,30,97,20);
-    adic(new JLabel("Até:"),140,30,30,20);
+    adic(new JLabelPad("Até:"),140,30,30,20);
     adic(txtDatafim,170,30,100,20);
     
     vLabs.addElement("Detalhado");

@@ -36,7 +36,7 @@ import java.sql.Types;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.acao.CheckBoxEvent;
@@ -198,57 +198,57 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     pnCli.add(pinDest, BorderLayout.EAST);
     pnCli.add(pinInc, BorderLayout.SOUTH);
 
-    JLabel lbFaixa = new JLabel("FAIXA DE DADOS");
+    JLabelPad lbFaixa = new JLabelPad("FAIXA DE DADOS");
     lbFaixa.setForeground(new Color(0,130,0));
 
-    JLabel lbOrigem = new JLabel("ORIGEM");
+    JLabelPad lbOrigem = new JLabelPad("ORIGEM");
     lbOrigem.setForeground(new Color(150,150,12));
 
-    JLabel lbDestino = new JLabel("DESTINO");
+    JLabelPad lbDestino = new JLabelPad("DESTINO");
     lbDestino.setForeground(new Color(150,80,10));
 
-    JLabel lbInc = new JLabel("INCREMENTO");
+    JLabelPad lbInc = new JLabelPad("INCREMENTO");
     lbInc.setForeground(new Color(130,0,0));
 
     pinFiltro.adic(lbFaixa,7,0,270,20);
-    pinFiltro.adic(new JLabel("Cód.grupo"),7,30,280,20);
+    pinFiltro.adic(new JLabelPad("Cód.grupo"),7,30,280,20);
     pinFiltro.adic(txtCodGrup,7,50,80,20);
-    pinFiltro.adic(new JLabel("Descrição do grupo"),90,30,280,20);
+    pinFiltro.adic(new JLabelPad("Descrição do grupo"),90,30,280,20);
     pinFiltro.adic(txtDescGrup,90,50,200,20);
 
     pinOrig.adic(lbOrigem,7,0,270,20);
-    pinOrig.adic(new JLabel("Cód.p.pag."),7,30,280,20);
+    pinOrig.adic(new JLabelPad("Cód.p.pag."),7,30,280,20);
     pinOrig.adic(txtCodPlanoPag,7,50,80,20);
-    pinOrig.adic(new JLabel("Descrição do plano de pgto."),90,30,280,20);
+    pinOrig.adic(new JLabelPad("Descrição do plano de pgto."),90,30,280,20);
     pinOrig.adic(txtDescPlanoPag,90,50,200,20);
 
-    pinOrig.adic(new JLabel("Cód.tab.pç."),7,70,280,20);
+    pinOrig.adic(new JLabelPad("Cód.tab.pç."),7,70,280,20);
     pinOrig.adic(txtCodTab,7,90,80,20);
-    pinOrig.adic(new JLabel("Descrição da tabela de precos"),90,70,280,20);
+    pinOrig.adic(new JLabelPad("Descrição da tabela de precos"),90,70,280,20);
     pinOrig.adic(txtDescTab,90,90,200,20);
 
-    pinOrig.adic(new JLabel("Cód.c.cli."),7,110,280,20);
+    pinOrig.adic(new JLabelPad("Cód.c.cli."),7,110,280,20);
     pinOrig.adic(txtCodClasCli,7,130,80,20);
-    pinOrig.adic(new JLabel("Descrição da classif. do cliente"),90,110,280,20);
+    pinOrig.adic(new JLabelPad("Descrição da classif. do cliente"),90,110,280,20);
     pinOrig.adic(txtDescClasCli,90,130,200,20);
 
     pinOrig.adic(cbPrecoBaseOrig,7,160,180,30);
     
     
     pinDest.adic(lbDestino,7,0,270,20);
-    pinDest.adic(new JLabel("Cód.p.pag."),7,30,280,20);
+    pinDest.adic(new JLabelPad("Cód.p.pag."),7,30,280,20);
     pinDest.adic(txtCodPlanoPag2,7,50,80,20);
-    pinDest.adic(new JLabel("Descrição do plano de pgto."),90,30,280,20);
+    pinDest.adic(new JLabelPad("Descrição do plano de pgto."),90,30,280,20);
     pinDest.adic(txtDescPlanoPag2,90,50,200,20);
 
-    pinDest.adic(new JLabel("Cód.tab.pç."),7,70,280,20);
+    pinDest.adic(new JLabelPad("Cód.tab.pç."),7,70,280,20);
     pinDest.adic(txtCodTab2,7,90,80,20);
-    pinDest.adic(new JLabel("Descrição da tabela de precos"),90,70,280,20);
+    pinDest.adic(new JLabelPad("Descrição da tabela de precos"),90,70,280,20);
     pinDest.adic(txtDescTab2,90,90,200,20);
 
-    pinDest.adic(new JLabel("Cód.c.cli"),7,110,280,20);
+    pinDest.adic(new JLabelPad("Cód.c.cli"),7,110,280,20);
     pinDest.adic(txtCodClasCli2,7,130,80,20);
-    pinDest.adic(new JLabel("Descrição da classif. do cliente"),90,110,280,20);
+    pinDest.adic(new JLabelPad("Descrição da classif. do cliente"),90,110,280,20);
     pinDest.adic(txtDescClasCli2,90,130,200,20);
 
     pinDest.adic(cbPrecoBaseDest,7,160,180,30);
@@ -261,9 +261,9 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
     rgInc = new JRadioGroup(1,2,vLabs,vVals);
 
     pinInc.adic(lbInc,7,0,270,20);
-    pinInc.adic(new JLabel("Perc."),7,30,77,20);
+    pinInc.adic(new JLabelPad("Perc."),7,30,77,20);
     pinInc.adic(txtPerc,7,50,77,20);
-    pinInc.adic(new JLabel("Valor"),90,30,77,20);
+    pinInc.adic(new JLabelPad("Valor"),90,30,77,20);
     pinInc.adic(txtVlr,90,50,77,20);
     pinInc.adic(rgInc,170,40,177,30);
     pinInc.adic(btGerar,350,40,100,30); 

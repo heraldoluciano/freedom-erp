@@ -25,7 +25,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -37,11 +37,11 @@ public class DLCCAnal extends FFDialogo {
 	private JTextFieldPad txtCodAnal = new JTextFieldPad();
 	private JTextFieldPad txtDescAnal = new JTextFieldPad(50);
 	private JTextFieldPad txtSiglaAnal = new JTextFieldPad(10);
-	private JLabel lbCodPai = new JLabel("Código");
-	private JLabel lbDescPai = new JLabel("e descrição da origem");
-	private JLabel lbCodAnal = new JLabel("Código");
-	private JLabel lbDescAnal = new JLabel("Descrição");
-	private JLabel lbSiglaAnal = new JLabel("Sig.");
+	private JLabelPad lbCodPai = new JLabelPad("Código");
+	private JLabelPad lbDescPai = new JLabelPad("e descrição da origem");
+	private JLabelPad lbCodAnal = new JLabelPad("Código");
+	private JLabelPad lbDescAnal = new JLabelPad("Descrição");
+	private JLabelPad lbSiglaAnal = new JLabelPad("Sig.");
 	public DLCCAnal(
 	    Component cOrig,
 		String sCodPai,

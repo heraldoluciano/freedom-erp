@@ -39,7 +39,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
@@ -73,7 +73,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 	private JPanelPad pinGeral = new JPanelPad(400,200);
 	private JProgressBar pbAnd = new JProgressBar();
 	private ListaCampos lcTipoImp = new ListaCampos(this,"TK");
-	private JLabel lAndamento = new JLabel("Andamento");
+	private JLabelPad lAndamento = new JLabelPad("Andamento");
 	private Timer tim = null;
 
     public FImportaCto() {
@@ -95,14 +95,14 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 		lcTipoImp.setReadOnly(true);
 		lcTipoImp.montaSql(false, "TIPOIMP", "TK");
 		
-		pinGeral.adic(new JLabel("Cód.tp.imp."),7,0,290,20);
+		pinGeral.adic(new JLabelPad("Cód.tp.imp."),7,0,290,20);
 		pinGeral.adic(txtCodTipo,7,20,80,20);
-		pinGeral.adic(new JLabel("Descrição do tipo de importação"),90,0,290,20);
+		pinGeral.adic(new JLabelPad("Descrição do tipo de importação"),90,0,290,20);
 		pinGeral.adic(txtDescTipo,90,20,250,20);
-		pinGeral.adic(new JLabel("Arquivo de origem"),7,40,200,20);
+		pinGeral.adic(new JLabelPad("Arquivo de origem"),7,40,200,20);
 		pinGeral.adic(txtArqOrig,7,60,313,20);
 		pinGeral.adic(btBuscaOrig,320,60,20,20);
-		pinGeral.adic(new JLabel("Arquivo de destino"),7,80,200,20);
+		pinGeral.adic(new JLabelPad("Arquivo de destino"),7,80,200,20);
 		pinGeral.adic(txtArqDest,7,100,313,20);
 		pinGeral.adic(btBuscaDest,320,100,20,20);
 		pinGeral.adic(btGerar,7,128,100,30);

@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.drivers.JBemaFI32;
@@ -52,9 +52,9 @@ public class FAbreCaixa extends FFDialogo {
 		txtData.setAtivo(false);
 		txtValor.setVlrBigDecimal(new BigDecimal(0));
 		
-		adic(new JLabel("Data"),7,5,80,15);
+		adic(new JLabelPad("Data"),7,5,80,15);
 		adic(txtData,7,20,80,20);
-		adic(new JLabel("Valor"),90,5,100,15);
+		adic(new JLabelPad("Valor"),90,5,100,15);
 		adic(txtValor,90,20,100,20);
 		
 		

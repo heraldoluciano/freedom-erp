@@ -23,7 +23,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -49,9 +49,9 @@ public class DLCopiaOrc extends FFDialogo {
     txtCodCli.setFK(true);
     txtCodCli.setNomeCampo("CodCli");
     
-    adic(new JLabel("Cód.cli."),7,5,200,20);
+    adic(new JLabelPad("Cód.cli."),7,5,200,20);
     adic(txtCodCli,7,25,80,20);
-    adic(new JLabel("Razão social do cliente"),90,5,200,20);
+    adic(new JLabelPad("Razão social do cliente"),90,5,200,20);
     adic(txtRazCli,90,25,200,20);
     
   }

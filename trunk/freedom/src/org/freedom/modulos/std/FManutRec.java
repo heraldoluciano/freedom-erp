@@ -41,7 +41,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -176,10 +176,10 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     c.add(tpn,BorderLayout.CENTER);
     btSair.setPreferredSize(new Dimension(100,30));
     
-    pnLegenda.add(new JLabel("Vencido",imgVencido,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("Parcial",imgPagoParcial,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("Pago",imgPago,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("À vencer",imgNaoVencido,SwingConstants.CENTER));
+    pnLegenda.add(new JLabelPad("Vencido",imgVencido,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("Parcial",imgPagoParcial,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("Pago",imgPago,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("À vencer",imgNaoVencido,SwingConstants.CENTER));
 
     pnRod.setBorder(BorderFactory.createEtchedBorder());
     pnRod.setPreferredSize(new Dimension(500,32));
@@ -225,27 +225,27 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       
     pnConsulta.add(pnTabConsulta,BorderLayout.CENTER);
     
-    pinConsulta.adic(new JLabel("Cód.cli."),7,0,250,20);
+    pinConsulta.adic(new JLabelPad("Cód.cli."),7,0,250,20);
     pinConsulta.adic(txtCodCli,7,20,80,20);
-    pinConsulta.adic(new JLabel("Razão social do cliente"),90,0,250,20);
+    pinConsulta.adic(new JLabelPad("Razão social do cliente"),90,0,250,20);
     pinConsulta.adic(txtRazCli,90,20,217,20);
-    pinConsulta.adic(new JLabel("P. compra"),310,0,97,20);
+    pinConsulta.adic(new JLabelPad("P. compra"),310,0,97,20);
     pinConsulta.adic(txtPrimCompr,310,20,97,20);
-    pinConsulta.adic(new JLabel("U. compra"),410,0,100,20);
+    pinConsulta.adic(new JLabelPad("U. compra"),410,0,100,20);
     pinConsulta.adic(txtUltCompr,410,20,100,20);
-    pinConsulta.adic(new JLabel("Data"),7,40,200,20);
+    pinConsulta.adic(new JLabelPad("Data"),7,40,200,20);
     pinConsulta.adic(txtDataMaxFat,7,60,100,20);
-    pinConsulta.adic(new JLabel("Valor da maior fatura"),110,40,210,20);
+    pinConsulta.adic(new JLabelPad("Valor da maior fatura"),110,40,210,20);
     pinConsulta.adic(txtVlrMaxFat,110,60,147,20);
-    pinConsulta.adic(new JLabel("Data"),260,40,200,20);
+    pinConsulta.adic(new JLabelPad("Data"),260,40,200,20);
     pinConsulta.adic(txtDataMaxAcum,260,60,97,20);
-    pinConsulta.adic(new JLabel("Valor do maior acumulo"),360,40,200,20);
+    pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),360,40,200,20);
     pinConsulta.adic(txtVlrMaxAcum,360,60,150,20);
-    pinConsulta.adic(new JLabel("Total de compras"),7,80,150,20);
+    pinConsulta.adic(new JLabelPad("Total de compras"),7,80,150,20);
     pinConsulta.adic(txtVlrTotCompr,7,100,150,20);
-    pinConsulta.adic(new JLabel("Total pago"),160,80,97,20);
+    pinConsulta.adic(new JLabelPad("Total pago"),160,80,97,20);
     pinConsulta.adic(txtVlrTotPago,160,100,97,20);
-    pinConsulta.adic(new JLabel("Total em aberto"),260,80,117,20);
+    pinConsulta.adic(new JLabelPad("Total em aberto"),260,80,117,20);
     pinConsulta.adic(txtVlrTotAberto,260,100,117,20);
     pinConsulta.adic(btConsVenda,380,90,30,30);
     
@@ -353,32 +353,32 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     pnBaixa.add(pnTabBaixa,BorderLayout.CENTER);
     
-    pinBaixa.adic(new JLabel("Cód.rec"),7,0,80,20);
+    pinBaixa.adic(new JLabelPad("Cód.rec"),7,0,80,20);
     pinBaixa.adic(txtCodRecBaixa,7,20,80,20);
-    pinBaixa.adic(new JLabel("Doc."),90,0,77,20);
+    pinBaixa.adic(new JLabelPad("Doc."),90,0,77,20);
     pinBaixa.adic(txtDoc,90,20,77,20);
-    pinBaixa.adic(new JLabel(" -"),170,20,7,20);
-    pinBaixa.adic(new JLabel("Série"),180,0,50,20);
+    pinBaixa.adic(new JLabelPad(" -"),170,20,7,20);
+    pinBaixa.adic(new JLabelPad("Série"),180,0,50,20);
     pinBaixa.adic(txtSerie,180,20,50,20);
-    pinBaixa.adic(new JLabel("Pedido"),240,0,77,20);
+    pinBaixa.adic(new JLabelPad("Pedido"),240,0,77,20);
     pinBaixa.adic(txtCodVendaBaixa,240,20,77,20);
-    pinBaixa.adic(new JLabel("Cód.cli."),7,40,250,20);
+    pinBaixa.adic(new JLabelPad("Cód.cli."),7,40,250,20);
     pinBaixa.adic(txtCodCliBaixa,7,60,80,20);
-    pinBaixa.adic(new JLabel("Descrição do cliente"),90,40,250,20);
+    pinBaixa.adic(new JLabelPad("Descrição do cliente"),90,40,250,20);
     pinBaixa.adic(txtRazCliBaixa,90,60,207,20);
-    pinBaixa.adic(new JLabel("Cód.banco"),300,40,250,20);
+    pinBaixa.adic(new JLabelPad("Cód.banco"),300,40,250,20);
     pinBaixa.adic(txtCodBancoBaixa,300,60,77,20);
-    pinBaixa.adic(new JLabel("Descrição do banco"),380,40,250,20);
+    pinBaixa.adic(new JLabelPad("Descrição do banco"),380,40,250,20);
     pinBaixa.adic(txtDescBancoBaixa,380,60,150,20);
-    pinBaixa.adic(new JLabel("Data de emissão"),7,80,100,20);
+    pinBaixa.adic(new JLabelPad("Data de emissão"),7,80,100,20);
     pinBaixa.adic(txtDtEmisBaixa,7,100,120,20);
-    pinBaixa.adic(new JLabel("Total a pagar"),130,80,97,20);
+    pinBaixa.adic(new JLabelPad("Total a pagar"),130,80,97,20);
     pinBaixa.adic(txtTotRecBaixa,130,100,97,20);
-    pinBaixa.adic(new JLabel("Total pago"),230,80,97,20);
+    pinBaixa.adic(new JLabelPad("Total pago"),230,80,97,20);
     pinBaixa.adic(txtTotPagoBaixa,230,100,97,20);
-    pinBaixa.adic(new JLabel("Total em aberto"),330,80,107,20);
+    pinBaixa.adic(new JLabelPad("Total em aberto"),330,80,107,20);
     pinBaixa.adic(txtTotAbertoBaixa,330,100,107,20);
-    pinBaixa.adic(new JLabel("Juros"),440,80,80,20);
+    pinBaixa.adic(new JLabelPad("Juros"),440,80,80,20);
     pinBaixa.adic(txtJurosBaixa,440,100,90,20);
     pinBaixa.adic(btConsBaixa,540,90,30,30);
 
@@ -449,16 +449,16 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtDatainiManut.setVlrDate(new Date());
     txtDatafimManut.setVlrDate(new Date());
     
-	pinManut.adic(new JLabel("Periodo"),7,0,200,20);
+	pinManut.adic(new JLabelPad("Periodo"),7,0,200,20);
 	pinManut.adic(txtDatainiManut,7,20,100,20);
-	pinManut.adic(new JLabel("até"),113,20,27,20);
+	pinManut.adic(new JLabelPad("até"),113,20,27,20);
 	pinManut.adic(txtDatafimManut,140,20,100,20);
 	pinManut.adic(btExecManut,690,55,30,30);
 
 	
-	pinManut.adic(new JLabel("Cód.cli."),7,45,250,20);
+	pinManut.adic(new JLabelPad("Cód.cli."),7,45,250,20);
 	pinManut.adic(txtCodCliFiltro,7,65,50,20);
-	pinManut.adic(new JLabel("Razão social do cliente"),90,45,250,20);
+	pinManut.adic(new JLabelPad("Razão social do cliente"),90,45,250,20);
 	pinManut.adic(txtRazCliFiltro,60,65,180,20);
 
 	vValsData.addElement("V");
@@ -468,7 +468,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
 	rgData = new JRadioGroup(2,1,vLabsData,vValsData);
 	rgData.setVlrString("V");
-	pinManut.adic(new JLabel("Filtrar por:"),247,0,115,20);
+	pinManut.adic(new JLabelPad("Filtrar por:"),247,0,115,20);
 	pinManut.adic(rgData,247,20,115,65);
 
 	vValsVenc.addElement("VE");
@@ -480,7 +480,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	
 	rgVenc = new JRadioGroup(3,2,vLabsVenc,vValsVenc);
 	rgVenc.setVlrString("TT");
-	pinManut.adic(new JLabel("Filtrar por:"),365,0,150,20);
+	pinManut.adic(new JLabelPad("Filtrar por:"),365,0,150,20);
 	pinManut.adic(rgVenc,365,20,115,65);
         
 	vValsPg.addElement("RP"); // Pago
@@ -494,7 +494,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	
 	rgPg = new JRadioGroup(3,2,vLabsPg,vValsPg);
 	rgPg.setVlrString("TT");
-	pinManut.adic(new JLabel("Filtrar por:"),488,0,190,20);
+	pinManut.adic(new JLabelPad("Filtrar por:"),488,0,190,20);
 	pinManut.adic(rgPg,488,20,192,65);
 
 	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
@@ -515,21 +515,21 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodCliManut.setFK(true);
     txtCodCliManut.setNomeCampo("CodCli");
     
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
     pinManut.adic(lbLinha,5,95,720,2);
 
-	pinManut.adic(new JLabel("Cod.rec."),7,100,80,20);
+	pinManut.adic(new JLabelPad("Cod.rec."),7,100,80,20);
 	pinManut.adic(txtCodRecManut,7,120,80,20);
-	pinManut.adic(new JLabel("Doc."),90,100,77,20);
+	pinManut.adic(new JLabelPad("Doc."),90,100,77,20);
 	pinManut.adic(txtDocManut,90,120,77,20);
-	pinManut.adic(new JLabel("Pedido"),170,100,77,20);
+	pinManut.adic(new JLabelPad("Pedido"),170,100,77,20);
 	pinManut.adic(txtPedidoManut,170,120,77,20);
-	pinManut.adic(new JLabel("Cód.cli."),250,100,300,20);
+	pinManut.adic(new JLabelPad("Cód.cli."),250,100,300,20);
 	pinManut.adic(txtCodCliManut,250,120,77,20);
-	pinManut.adic(new JLabel("Razão social do cliente"),350,100,300,20);
+	pinManut.adic(new JLabelPad("Razão social do cliente"),350,100,300,20);
 	pinManut.adic(txtRazCliManut,330,120,247,20);
-	pinManut.adic(new JLabel("Data emissão "),580,100,100,20);
+	pinManut.adic(new JLabelPad("Data emissão "),580,100,100,20);
 	pinManut.adic(txtDtEmitManut,580,120,100,20);
 
 	pinBotoesManut.adic(btBaixaManut,3,10,30,30);

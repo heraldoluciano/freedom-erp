@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -175,30 +175,30 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     pnRod.add(btSair,BorderLayout.EAST);
     
     pinCli.adic(rgTipoOper,7,3,380,30);
-    pinCli.adic(new JLabel(" Preço origem: "),7,35,300,20);
+    pinCli.adic(new JLabelPad(" Preço origem: "),7,35,300,20);
     pinCli.adic(rgOrigem,7,55,300,60);
-    pinCli.adic(new JLabel("Preço"),310,35,80,20);
+    pinCli.adic(new JLabelPad("Preço"),310,35,80,20);
     pinCli.adic(cbOperador,310,55,80,20);
     pinCli.adic(txtMultiplic,310,75,80,20);
-    pinCli.adic(new JLabel("Cód.marca"),7,115,300,20);
+    pinCli.adic(new JLabelPad("Cód.marca"),7,115,300,20);
     pinCli.adic(txtCodMarca,7,135,90,20);
-    pinCli.adic(new JLabel("Descrição da marca"),100,115,300,20);
+    pinCli.adic(new JLabelPad("Descrição da marca"),100,115,300,20);
     pinCli.adic(txtDescMarca,100,135,300,20);
-    pinCli.adic(new JLabel("Cód.grupo"),7,155,300,20);
+    pinCli.adic(new JLabelPad("Cód.grupo"),7,155,300,20);
     pinCli.adic(txtCodGrup,7,175,90,20);
-    pinCli.adic(new JLabel("Descrição do grupo"),100,155,300,20);
+    pinCli.adic(new JLabelPad("Descrição do grupo"),100,155,300,20);
     pinCli.adic(txtDescGrup,100,175,300,20);
-    pinCli.adic(new JLabel("Cód.tab.preço"),7,195,300,20);
+    pinCli.adic(new JLabelPad("Cód.tab.preço"),7,195,300,20);
     pinCli.adic(txtCodTab,7,215,90,20);
-    pinCli.adic(new JLabel("Descrição da tabela de preços"),100,195,300,20);
+    pinCli.adic(new JLabelPad("Descrição da tabela de preços"),100,195,300,20);
     pinCli.adic(txtDescTab,100,215,300,20);
-    pinCli.adic(new JLabel("Cód.p.pag."),7,235,300,20);
+    pinCli.adic(new JLabelPad("Cód.p.pag."),7,235,300,20);
     pinCli.adic(txtCodPlanoPag,7,255,90,20);
-    pinCli.adic(new JLabel("Descrição do plano de pagamento"),100,235,300,20);
+    pinCli.adic(new JLabelPad("Descrição do plano de pagamento"),100,235,300,20);
     pinCli.adic(txtDescPlanoPag,100,255,300,20);
-    pinCli.adic(new JLabel("Cód.c.cli."),7,275,300,20);
+    pinCli.adic(new JLabelPad("Cód.c.cli."),7,275,300,20);
     pinCli.adic(txtCodClasCli,7,295,90,20);
-    pinCli.adic(new JLabel("Descrição da classificação do cliente"),100,275,300,20);
+    pinCli.adic(new JLabelPad("Descrição da classificação do cliente"),100,275,300,20);
     pinCli.adic(txtDescClasCli,100,295,300,20);
     
     pinCli.adic(btGerar,7,320,100,30);

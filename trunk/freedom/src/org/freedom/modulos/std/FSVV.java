@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
@@ -64,7 +64,7 @@ public class FSVV extends FFilho implements ActionListener {
   private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
   private JCheckBoxPad cbEstoque = new JCheckBoxPad("Estoque","S","N");
   private int iAnd = 0;
-  private JLabel lbAnd = new JLabel("Aguardando.");
+  private JLabelPad lbAnd = new JLabelPad("Aguardando.");
   private final String CRLF = ""+((char)13)+((char)10);
   ProcessoSec pSec = null; 
   String sRelErros = "";
@@ -90,11 +90,11 @@ public class FSVV extends FFilho implements ActionListener {
     txtDataini.setRequerido(true);
     txtDatafim.setRequerido(true);
     
-    pinCliente.adic(new JLabel("Início"),7,0,100,25);
+    pinCliente.adic(new JLabelPad("Início"),7,0,100,25);
     pinCliente.adic(txtDataini,7,20,100,20);
-    pinCliente.adic(new JLabel("Fim"),110,0,97,25);
+    pinCliente.adic(new JLabelPad("Fim"),110,0,97,25);
     pinCliente.adic(txtDatafim,110,20,100,20);
-    pinCliente.adic(new JLabel("Início sufixo"),223,0,97,25);
+    pinCliente.adic(new JLabelPad("Início sufixo"),223,0,97,25);
     pinCliente.adic(txtDatainiLote,223,20,100,20);
     pinCliente.adic(btVisual,333,15,30,30);
     pinCliente.adic(btGerar,373,15,30,30);

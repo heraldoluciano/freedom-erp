@@ -25,7 +25,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -37,10 +37,10 @@ public class DLCCSin extends FFDialogo {
   private JTextFieldPad txtCodSin = new JTextFieldPad();
   private JTextFieldPad txtDescSin = new JTextFieldPad(50);
   private JTextFieldPad txtSigla = new JTextFieldPad(10);
-  private JLabel lbCodPai = new JLabel("Cód.origem");
-  private JLabel lbDescPai = new JLabel("Descrição da origem");
-  private JLabel lbCodSin = new JLabel("Código");
-  private JLabel lbDescSin = new JLabel("Descrição");
+  private JLabelPad lbCodPai = new JLabelPad("Cód.origem");
+  private JLabelPad lbDescPai = new JLabelPad("Descrição da origem");
+  private JLabelPad lbCodSin = new JLabelPad("Código");
+  private JLabelPad lbDescSin = new JLabelPad("Descrição");
   private String sCodPai = "";
   private String sDesc = "";
   public DLCCSin(Component cOrig, String sCodP, String sDescPai, String sCod, String sD, String sSigla) {
@@ -64,7 +64,7 @@ public class DLCCSin extends FFDialogo {
     adic(txtCodSin,7,60,80,20);
     adic(lbDescSin,90,40,100,20);
     adic(txtDescSin,90,60,197,20);
-	adic(new JLabel("Sigla"),290,40,100,20);
+	adic(new JLabelPad("Sigla"),290,40,100,20);
 	adic(txtSigla,290,60,80,20);
     if (sDesc != null) {
       setTitulo("Edição de Conta Sintética");

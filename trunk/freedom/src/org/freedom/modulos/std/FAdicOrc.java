@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -126,15 +126,15 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 	vLabs.addElement("Conveniado");
 	rgBusca = new JRadioGroup(2,1,vLabs,vVals);
 
-    pinCab.adic(new JLabel("Cód.cli."),7,5,70,20);
+    pinCab.adic(new JLabelPad("Cód.cli."),7,5,70,20);
     pinCab.adic(txtCodCli,7,25,70,20);
-    pinCab.adic(new JLabel("Razão social do cliente"),80,5,200,20);
+    pinCab.adic(new JLabelPad("Razão social do cliente"),80,5,200,20);
     pinCab.adic(txtNomeCli,80,25,200,20);
-	pinCab.adic(new JLabel("Cód.conv."),7,45,70,20);
+	pinCab.adic(new JLabelPad("Cód.conv."),7,45,70,20);
 	pinCab.adic(txtCodConv,7,65,70,20);
-	pinCab.adic(new JLabel("Nome do conveniado"),80,45,200,20);
+	pinCab.adic(new JLabelPad("Nome do conveniado"),80,45,200,20);
 	pinCab.adic(txtNomeConv,80,65,200,20);
-	pinCab.adic(new JLabel("Buscar por:"),300,5,120,20);
+	pinCab.adic(new JLabelPad("Buscar por:"),300,5,120,20);
 	pinCab.adic(rgBusca,300,25,120,60);
 	pinCab.adic(btBusca,450,35,100,30);
 
@@ -151,11 +151,11 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
     pnSubRod.add(pinRod,BorderLayout.CENTER);
 
     pinRod.tiraBorda();
-    pinRod.adic(new JLabel("Vlr.bruto"),7,0,100,20);
+    pinRod.adic(new JLabelPad("Vlr.bruto"),7,0,100,20);
 	pinRod.adic(txtVlrProd,7,20,100,20);
-	pinRod.adic(new JLabel("Vlr.desc."),110,0,97,20);
+	pinRod.adic(new JLabelPad("Vlr.desc."),110,0,97,20);
 	pinRod.adic(txtVlrDesc,110,20,97,20);
-	pinRod.adic(new JLabel("Vlr.liq."),210,0,97,20);
+	pinRod.adic(new JLabelPad("Vlr.liq."),210,0,97,20);
 	pinRod.adic(txtVlrLiq,210,20,97,20);
 
     pnTabOrc.setPreferredSize(new Dimension(600,130));

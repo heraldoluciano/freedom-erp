@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -88,13 +88,13 @@ public class FRPisCofins extends FRelatorio {
     
     rgCofins = new JRadioGroup(1,4,vCofinsLab,vCofinsVal);
 
-    adic(new JLabel("Período:"),7,0,250,20);
+    adic(new JLabelPad("Período:"),7,0,250,20);
     adic(txtDataini,7,20,100,20);
     adic(txtDatafim,110,20,100,20);
     
-    adic(new JLabel("Pis:"),7,40,250,20);
+    adic(new JLabelPad("Pis:"),7,40,250,20);
     adic(rgPis,7,60,420,30);
-    adic(new JLabel("Cofins:"),7,90,250,20);
+    adic(new JLabelPad("Cofins:"),7,90,250,20);
     adic(rgCofins,7,110,420,30);
     adic(cbSemMov,7,150,420,30);
     cbSemMov.setVlrString("S");

@@ -21,7 +21,7 @@
  */
 
 package org.freedom.modulos.grh;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
@@ -29,7 +29,7 @@ import org.freedom.telas.FFDialogo;
 import java.util.Vector;
 public class DLRFTurnos extends FFDialogo {
   private JRadioGroup rgOrdem = null;
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   public DLRFTurnos() {

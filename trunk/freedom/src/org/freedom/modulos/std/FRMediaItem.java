@@ -32,7 +32,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -58,7 +58,7 @@ public class FRMediaItem extends FRelatorio {
   
   
   private JRadioGroup rgOrdem = null;
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private ListaCampos lcGrup = new ListaCampos(this);
@@ -104,39 +104,39 @@ public class FRMediaItem extends FRelatorio {
     vVals.addElement("D");
     rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
-    JLabel lbLinha2 = new JLabel();
+    JLabelPad lbLinha2 = new JLabelPad();
     lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-    JLabel lbLinha3 = new JLabel();
+    JLabelPad lbLinha3 = new JLabelPad();
     lbLinha3.setBorder(BorderFactory.createEtchedBorder());
-    JLabel lbLinha4 = new JLabel();
+    JLabelPad lbLinha4 = new JLabelPad();
     lbLinha4.setBorder(BorderFactory.createEtchedBorder());
 
-    adic(new JLabel("Média de vendas anteriores a:"),7,5,240,20);
+    adic(new JLabelPad("Média de vendas anteriores a:"),7,5,240,20);
     adic(lbLinha,180,15,100,2);
-    adic(new JLabel("Mes:"),7,30,40,20);
+    adic(new JLabelPad("Mes:"),7,30,40,20);
     adic(txtMesfim,40,30,47,20);
-    adic(new JLabel("Ano:"),100,30,37,20);
+    adic(new JLabelPad("Ano:"),100,30,37,20);
     adic(txtAnofim,130,30,70,20);
-    adic(new JLabel("Calcular a média dos últmos meses:"),7,60,240,20);
+    adic(new JLabelPad("Calcular a média dos últmos meses:"),7,60,240,20);
     adic(lbLinha2,218,70,62,2);
-    adic(new JLabel("Nº de meses (máx. 12):"),7,85,200,20);
+    adic(new JLabelPad("Nº de meses (máx. 12):"),7,85,200,20);
     adic(txtNumMes,150,85,40,20);
     adic(lbLinha3,7,117,273,2);
     
    
-    adic(new JLabel("Cód.grupo"),7,125,240,20);
+    adic(new JLabelPad("Cód.grupo"),7,125,240,20);
     adic(txtCodGrup,7,145,90,20);
-    adic(new JLabel("Descrição do grupo"),100,125,240,20);
+    adic(new JLabelPad("Descrição do grupo"),100,125,240,20);
     adic(txtDescGrup,100,145,180,20);
-    adic(new JLabel("Cód.marca"),7,165,240,20);
+    adic(new JLabelPad("Cód.marca"),7,165,240,20);
     adic(txtCodMarca,7,185,90,20);
-    adic(new JLabel("Descrição da Marca"),100,165,240,20);
+    adic(new JLabelPad("Descrição da Marca"),100,165,240,20);
     adic(txtDescMarca,100,185,180,20);
-    adic(new JLabel("Cód.repr."),7,205,200,20);
+    adic(new JLabelPad("Cód.repr."),7,205,200,20);
 	adic(txtCodVend,7,225,70,20);
-	adic(new JLabel("Nome do representante"),80,205,200,20);
+	adic(new JLabelPad("Nome do representante"),80,205,200,20);
 	adic(txtDescVend,80,225,200,20);
     
     

@@ -27,7 +27,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -58,7 +58,7 @@ public class FRConfEstoq extends FRelatorio {
     cbTipoMovEstoq = new JCheckBoxPad("Apenas tipos de movimento c/ contr. de estoq.","S","N");
     cbTipoMovEstoq.setVlrString("S");
 	
-    adic(new JLabel("Conferência"),7,0,250,20);
+    adic(new JLabelPad("Conferência"),7,0,250,20);
     adic(rgTipoRel,7,20,300,30);
     adic(cbTipoMovEstoq,7,50,300,30);
     

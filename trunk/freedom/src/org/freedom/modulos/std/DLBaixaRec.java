@@ -33,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -142,39 +142,39 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
     txtDtVenc.setAtivo(false);
     txtVlrAberto.setAtivo(false);
     
-    adic(new JLabel("Código e razão do cliente"),7,0,250,20);
+    adic(new JLabelPad("Código e razão do cliente"),7,0,250,20);
     adic(txtCodCli,7,20,80,20);
     adic(txtRazCli,90,20,200,20);
-    adic(new JLabel("Número e descrição da conta"),7,40,250,20);
+    adic(new JLabelPad("Número e descrição da conta"),7,40,250,20);
     adic(txtCodConta,7,60,80,20);
     adic(txtDescConta,90,60,200,20);
-    adic(new JLabel("Código e descrição da categoria"),7,80,250,20);
+    adic(new JLabelPad("Código e descrição da categoria"),7,80,250,20);
     adic(txtCodPlan,7,100,100,20);
     adic(txtDescPlan,110,100,200,20);
-	adic(new JLabel("Código e descrição do centro de custo"),7,120,250,20);
+	adic(new JLabelPad("Código e descrição do centro de custo"),7,120,250,20);
 	adic(txtCodCC,7,140,100,20);
 	adic(txtDescCC,110,140,200,20);
-    adic(new JLabel("Doc."),7,160,110,20);
+    adic(new JLabelPad("Doc."),7,160,110,20);
     adic(txtDoc,7,180,110,20);
-    adic(new JLabel("Emissão"),120,160,107,20);
+    adic(new JLabelPad("Emissão"),120,160,107,20);
     adic(txtDtEmis,120,180,107,20);
-    adic(new JLabel("Vencimento"),230,160,110,20);
+    adic(new JLabelPad("Vencimento"),230,160,110,20);
     adic(txtDtVenc,230,180,110,20);
-    adic(new JLabel("% Desc."),7,200,60,20);
+    adic(new JLabelPad("% Desc."),7,200,60,20);
     adic(txtPercDesc,7,220,60,20);
-    adic(new JLabel("Vlr. Desc."),70,200,107,20);
+    adic(new JLabelPad("Vlr. Desc."),70,200,107,20);
     adic(txtVlrDesc,70,220,107,20);
 //A label vai no set conexao...    
     adic(txtPercJuros,180,220,57,20);
-    adic(new JLabel("Vlr. Juros."),240,200,100,20);
+    adic(new JLabelPad("Vlr. Juros."),240,200,100,20);
     adic(txtVlrJuros,240,220,100,20);
-    adic(new JLabel("Vlr. Aberto."),7,240,110,20);
+    adic(new JLabelPad("Vlr. Aberto."),7,240,110,20);
     adic(txtVlrAberto,7,260,110,20);
-    adic(new JLabel("Dt. Pagto."),120,240,107,20);
+    adic(new JLabelPad("Dt. Pagto."),120,240,107,20);
     adic(txtDtPagto,120,260,107,20);
-    adic(new JLabel("Vlr. Pago"),230,240,110,20);
+    adic(new JLabelPad("Vlr. Pago"),230,240,110,20);
     adic(txtVlr,230,260,110,20);
-    adic(new JLabel("Observações"),7,280,200,20);
+    adic(new JLabelPad("Observações"),7,280,200,20);
     adic(txtObs,7,300,333,20);
     
 	lcCC.addCarregaListener(this);
@@ -438,11 +438,11 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	lcCC.carregaDados();
     if (!(bJurosPosCalc = jurosPosCalc()) &&
         txtVlrJuros.getVlrBigDecimal().doubleValue() == 0) {
-        adic(new JLabel("% Juros."),180,200,57,20);
+        adic(new JLabelPad("% Juros."),180,200,57,20);
         aplicaJuros();
     }
     else
-        adic(new JLabel("% Dia."),180,200,57,20);
+        adic(new JLabelPad("% Dia."),180,200,57,20);
 
   }
   public void focusGained(FocusEvent fevt) { }

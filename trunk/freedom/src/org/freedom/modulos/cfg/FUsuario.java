@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -120,21 +120,21 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
     adicCampo(txtUNomeUsu, 190, 60, 250, 20, "UNomeUsu", "Último nome", ListaCampos.DB_SI, true);
     adicCampo(txtIDGrpUsu, 7, 100, 70, 20, "IDGRPUSU", "ID.grupo", ListaCampos.DB_FK, false);
     adicDescFK(txtDescGrup, 80, 100, 216, 20, "NOMEGRPUSU", "Descrição do grupo do usuário");
-    adic(new JLabel("Senha"),300,80,70,20);
+    adic(new JLabelPad("Senha"),300,80,70,20);
     adic(txpSenha,300,100,70,20);
-    adic(new JLabel("Confirma"),373,80,70,20);
+    adic(new JLabelPad("Confirma"),373,80,70,20);
     adic(txpConfirma,373,100,70,20);
     adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
     adicDescFK(txtDescCC, 120, 140, 322, 20, "DescCC", "Descrição do centro de custo");
     
     adicDBLiv(txaComentUsu, "ComentUsu", "Comentário", false);
-    adic(new JLabel("Comentário"),7,160,100,20);
+    adic(new JLabelPad("Comentário"),7,160,100,20);
     adic(spnObs,7,180,435,60);
-    adic(new JLabel("Filiais disponíveis:"),7,240,120,20);
+    adic(new JLabelPad("Filiais disponíveis:"),7,240,120,20);
     adic(spnDisp,7,260,195,100);
     adic(btAdicEmp,210,275,30,30);
     adic(btDelEmp,210,315,30,30);
-    adic(new JLabel("Acesso:"),247,240,158,20);
+    adic(new JLabelPad("Acesso:"),247,240,158,20);
     adic(spnEmp,247,260,195,100);
     adicDB(cbBaixoCusto, 7, 360, 225, 20, "BaixoCustoUsu", "", false);
     adicDB(cbAbreGaveta, 7, 380, 225, 20, "AbreGavetaUsu", "", false);

@@ -33,7 +33,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -104,31 +104,31 @@ public class FKardex extends FRelatorio implements ActionListener {
                 cTela.add(pnCli,BorderLayout.CENTER);
                 pnCli.add(pinCab,BorderLayout.NORTH);
                 pnCli.add(spnTab,BorderLayout.CENTER);
-                JLabel lbLinha = new JLabel();
+                JLabelPad lbLinha = new JLabelPad();
                 lbLinha.setBorder(BorderFactory.createEtchedBorder());
-                JLabel lbLinha2 = new JLabel();
+                JLabelPad lbLinha2 = new JLabelPad();
                 lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-                JLabel lbPeriodo = new JLabel(" Periodo:");
+                JLabelPad lbPeriodo = new JLabelPad(" Periodo:");
                 lbPeriodo.setOpaque(true);
-                JLabel lbProduto = new JLabel(" Produto:");
+                JLabelPad lbProduto = new JLabelPad(" Produto:");
                 lbProduto.setOpaque(true);
                 
                 setPainel(pinCab);
                 adic(lbPeriodo,17,5,58,20);
                 adic(lbLinha,7,15,135,100);
-                adic(new JLabel("De:"),20,23,30,20);
+                adic(new JLabelPad("De:"),20,23,30,20);
                 adic(txtDataini,20,43,100,20);
-                adic(new JLabel("Até:"),20,63,37,20);
+                adic(new JLabelPad("Até:"),20,63,37,20);
                 adic(txtDatafim,20,83,100,20);
                 adic(lbProduto,156,5,62,20);
                 adic(lbLinha2,145,15,300,100);
-                adic(new JLabel("Cód.prod."),158,23,200,20);
+                adic(new JLabelPad("Cód.prod."),158,23,200,20);
                 adic(txtCodProd,158,43,70,20);
-                adic(new JLabel("Descrição do produto"),232,23,200,20);
+                adic(new JLabelPad("Descrição do produto"),232,23,200,20);
                 adic(txtDescProd,232,43,200,20);
-                adic(new JLabel("Cód.lote"),158,63,200,20);
+                adic(new JLabelPad("Cód.lote"),158,63,200,20);
                 adic(txtCodLote,158,83,70,20);
-                adic(new JLabel("Vencimento do lote"),232,63,200,20);
+                adic(new JLabelPad("Vencimento do lote"),232,63,200,20);
                 adic(txtDescLote,232,83,200,20);
                 adic(btExec,449,85,200,30);
                 

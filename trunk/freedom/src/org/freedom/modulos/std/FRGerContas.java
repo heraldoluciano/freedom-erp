@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
@@ -63,12 +63,12 @@ public class FRGerContas extends FRelatorio  {
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JLabel lbCodSetor = new JLabel("Cód.setor");
-  private JLabel lbDescSetor = new JLabel("Descrição do setor");
-  private JLabel lbCodVend = new JLabel("Cód.repr.");
-  private JLabel lbDescVend = new JLabel("Nome do representante");
-  private JLabel lbCliente = new JLabel("Cód.cli.");
-  private JLabel lbRazCli = new JLabel("Razão social do cliete");
+  private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
+  private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
+  private JLabelPad lbDescVend = new JLabelPad("Nome do representante");
+  private JLabelPad lbCliente = new JLabelPad("Cód.cli.");
+  private JLabelPad lbRazCli = new JLabelPad("Razão social do cliete");
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
   private ListaCampos lcCliente = new ListaCampos(this);
@@ -132,9 +132,9 @@ public class FRGerContas extends FRelatorio  {
 	lcCliente.setReadOnly(true);
 	lcCliente.montaSql(false, "CLIENTE", "VD");
     
-    adic(new JLabel("Ordem"),280,0,80,20);
+    adic(new JLabelPad("Ordem"),280,0,80,20);
     adic(rgOrdemRel,280,20,120,120);
-    adic(new JLabel("Período"),7,0,250,20);
+    adic(new JLabelPad("Período"),7,0,250,20);
     adic(txtDataini,7,20,100,20);
     adic(txtDatafim,110,20,100,20);    
     adic(lbCodSetor,7,45,250,20);

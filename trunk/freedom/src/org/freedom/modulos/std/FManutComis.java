@@ -34,7 +34,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -54,14 +54,14 @@ import org.freedom.telas.FFilho;
 public class FManutComis extends FFilho implements ActionListener {
   private JPanelPad pinPeriodo = new JPanelPad(275,65);
   private JPanelPad pinLabel = new JPanelPad(50,20);
-  private JLabel lbPeriodo = new JLabel(" Periodo");
-  private JLabel lbDe = new JLabel("De:");
-  private JLabel lbA = new JLabel("A:");
-  private JLabel lbCodVend = new JLabel("Cód.repr.");
-  private JLabel lbVend = new JLabel("Nome do representante");
-  private JLabel lbTotComi = new JLabel("Total comis.");
-  private JLabel lbTotLib = new JLabel("Total liber.");
-  private JLabel lbTotPg = new JLabel("Total pago");
+  private JLabelPad lbPeriodo = new JLabelPad(" Periodo");
+  private JLabelPad lbDe = new JLabelPad("De:");
+  private JLabelPad lbA = new JLabelPad("A:");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.repr.");
+  private JLabelPad lbVend = new JLabelPad("Nome do representante");
+  private JLabelPad lbTotComi = new JLabelPad("Total comis.");
+  private JLabelPad lbTotLib = new JLabelPad("Total liber.");
+  private JLabelPad lbTotPg = new JLabelPad("Total pago");
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgEmitRel = null; 

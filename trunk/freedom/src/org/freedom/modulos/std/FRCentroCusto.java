@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -77,18 +77,18 @@ public class FRCentroCusto extends FRelatorio {
 	txtCodCC.setNomeCampo("CodCC");
 	txtSiglaCC.setListaCampos(lcCC);
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,117,20);
-    adic(new JLabel("Até:"),160,25,22,20);
+    adic(new JLabelPad("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,120,20);
-    adic(new JLabel("Nº da conta"),7,50,250,20);
+    adic(new JLabelPad("Nº da conta"),7,50,250,20);
     adic(txtCodConta,7,70,80,20);
-    adic(new JLabel("Descrição da conta"),90,50,250,20);
+    adic(new JLabelPad("Descrição da conta"),90,50,250,20);
     adic(txtDescConta,90,70,200,20);
-	adic(new JLabel("Cód.cc."),7,90,250,20);
+	adic(new JLabelPad("Cód.cc."),7,90,250,20);
 	adic(txtCodCC,7,110,80,20);
-	adic(new JLabel("Descrição do centro de custo"),90,90,250,20);
+	adic(new JLabelPad("Descrição do centro de custo"),90,90,250,20);
 	adic(txtDescCC,90,110,200,20);
 	adic(cbUsaAnal,7,140,150,20);
 

@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -107,8 +107,8 @@ public class FConsulta extends FFilho implements CarregaListener {
 		tabGrup.setTamColuna(90,4);
 		tabGrup.setTamColuna(90,5);
 
-		pinCabGrup.adic(new JLabel("Cód.grupo"),7,0,100,20);
-		pinCabGrup.adic(new JLabel("Descrição do grupo"),110,0,300,20);
+		pinCabGrup.adic(new JLabelPad("Cód.grupo"),7,0,100,20);
+		pinCabGrup.adic(new JLabelPad("Descrição do grupo"),110,0,300,20);
 		pinCabGrup.adic(txtCodGrup,7,20,100,20);
 		pinCabGrup.adic(txtDescGrup,110,20,300,20);
 		
@@ -135,13 +135,13 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pnCliProd.add(spnTabProd,BorderLayout.CENTER);
 
 		pinCabProd.adic(txtDescProd,100,20,197,20);
-		pinCabProd.adic(new JLabel("Saldo"),300,0,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo"),300,0,87,20);
 		pinCabProd.adic(txtSldProd,300,20,87,20);
-		pinCabProd.adic(new JLabel("Saldo cons."),390,0,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo cons."),390,0,87,20);
 		pinCabProd.adic(txtSldCProd,390,20,87,20);
-		pinCabProd.adic(new JLabel("Saldo rest."),480,0,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo rest."),480,0,87,20);
 		pinCabProd.adic(txtSldRProd,480,20,87,20);
-		pinCabProd.adic(new JLabel("Saldo liq."),570,0,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo liq."),570,0,87,20);
 		pinCabProd.adic(txtSldLProd,570,20,87,20);
 
 		tabProd.adicColuna("Cód.c.cli.");
@@ -179,14 +179,14 @@ public class FConsulta extends FFilho implements CarregaListener {
 			txtRefProd.setFK(true);
 			lcProd2.setReadOnly(true);
 			lcProd2.montaSql(false, "PRODUTO", "EQ");
-			pinCabProd.adic(new JLabel("Ref.prod."),7,0,90,20);
-			pinCabProd.adic(new JLabel("Descrição do produto"),100,0,200,20);
+			pinCabProd.adic(new JLabelPad("Ref.prod."),7,0,90,20);
+			pinCabProd.adic(new JLabelPad("Descrição do produto"),100,0,200,20);
 			pinCabProd.adic(txtRefProd,7,20,90,20);
 			lcProd2.setConexao(con);
 		}
 		else {
-			pinCabProd.adic(new JLabel("Cód.prod."),7,0,90,20);
-			pinCabProd.adic(new JLabel("Descrição do produto"),100,0,200,20);
+			pinCabProd.adic(new JLabelPad("Cód.prod."),7,0,90,20);
+			pinCabProd.adic(new JLabelPad("Descrição do produto"),100,0,200,20);
 			pinCabProd.adic(txtCodProd,7,20,90,20);
 		}
 		

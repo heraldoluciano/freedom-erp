@@ -27,7 +27,7 @@ import java.awt.GridLayout;
 import java.sql.Connection;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.componentes.GuardaCampo;
@@ -47,15 +47,15 @@ public class DLRCont extends FFDialogo {
   private JPanel pnlbPessoa = new JPanel(new GridLayout(1,1));
   private JPanelPad pinPessoa = new JPanelPad(450,40);
   private JTextFieldPad txtCid = new JTextFieldPad();
-  private JLabel lbSelec = new JLabel(" Selecão:");
-  private JLabel lbDe = new JLabel("De:");
-  private JLabel lbA = new JLabel("À:");
+  private JLabelPad lbSelec = new JLabelPad(" Selecão:");
+  private JLabelPad lbDe = new JLabelPad("De:");
+  private JLabelPad lbA = new JLabelPad("À:");
   private JTextFieldPad txtDe = new JTextFieldPad();
   private JTextFieldPad txtA = new JTextFieldPad();
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
-  private JLabel lbPessoa = new JLabel(" Selecionar pessoas:");
-  private JLabel lbCid = new JLabel("Cidade");
-  private JLabel lbModo = new JLabel("Modo do relatório:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+  private JLabelPad lbPessoa = new JLabelPad(" Selecionar pessoas:");
+  private JLabelPad lbCid = new JLabelPad("Cidade");
+  private JLabelPad lbModo = new JLabelPad("Modo do relatório:");
   private JCheckBoxPad cbObs = new JCheckBoxPad("Imprimir Observações ?","S","N");
   private JCheckBoxPad cbFis = new JCheckBoxPad("Física","S","N");
   private JCheckBoxPad cbJur = new JCheckBoxPad("Jurídica","S","N");
@@ -63,7 +63,7 @@ public class DLRCont extends FFDialogo {
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabel lbSetor = new JLabel("Código e descrição do setor");
+  private JLabelPad lbSetor = new JLabelPad("Código e descrição do setor");
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private ListaCampos lcSetor = new ListaCampos(this);

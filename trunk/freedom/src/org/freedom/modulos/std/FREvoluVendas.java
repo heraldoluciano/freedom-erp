@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
@@ -94,28 +94,28 @@ public class FREvoluVendas extends FRelatorio {
 	cPeriodo.set(Calendar.MONTH,11);
 	txtDatafim.setVlrDate(cPeriodo.getTime());		
 
-    adic(new JLabel("Periodo:"),7,5,120,20);
-    adic(new JLabel("De:"),7,25,30,20);
+    adic(new JLabelPad("Periodo:"),7,5,120,20);
+    adic(new JLabelPad("De:"),7,25,30,20);
     adic(txtDataini,40,25,97,20);
-    adic(new JLabel("A:"),140,25,17,20);
+    adic(new JLabelPad("A:"),140,25,17,20);
     adic(txtDatafim,160,25,100,20);      
    
-	adic(new JLabel("Cód.cli."),7,45,300,20);
+	adic(new JLabelPad("Cód.cli."),7,45,300,20);
 	adic(txtCodCli, 7,65,60,20);
-	adic(new JLabel("Razão social do cliente"),70,45,300,20);
+	adic(new JLabelPad("Razão social do cliente"),70,45,300,20);
 	adic(txtRazCli,70,65,200,20);
 
-    adic(new JLabel("Cód.tp.cli."),7,85,300,20);
+    adic(new JLabelPad("Cód.tp.cli."),7,85,300,20);
     adic(txtCodTipoCli, 7,105,60,20);
-    adic(new JLabel("Descrição do tipo de cliente"),70,85,300,20);
+    adic(new JLabelPad("Descrição do tipo de cliente"),70,85,300,20);
     adic(txtDescTipoCli,70,105,200,20);
     
     cbVendas.setVlrString("S");
     adic(cbVendas,5,130,265,25);
 	
-	adic(new JLabel("Tipo de gráfico:"),7,160,220,20);
-	adic(new JLabel(Icone.novo("graficoBarra.gif")),7,190,30,30);
-	adic(new JLabel(Icone.novo("graficoLinha.gif")),7,230,30,30);
+	adic(new JLabelPad("Tipo de gráfico:"),7,160,220,20);
+	adic(new JLabelPad(Icone.novo("graficoBarra.gif")),7,190,30,30);
+	adic(new JLabelPad(Icone.novo("graficoLinha.gif")),7,230,30,30);
     
 	vLabs.addElement("Barras 3D");
 	vLabs.addElement("Linha horizontal");

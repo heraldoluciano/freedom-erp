@@ -21,7 +21,7 @@
 
 package org.freedom.modulos.std;
 import java.awt.GridLayout;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.componentes.GuardaCampo;
@@ -40,24 +40,24 @@ public class DLRProduto extends FFDialogo {
   private JRadioGroup rgModo = null;
   private JPanel pnlbSelec = new JPanel(new GridLayout(1,1));
   private JPanelPad pinSelec = new JPanelPad(350,90);
-  private JLabel lbSelec = new JLabel(" Selecão:");
-  private JLabel lbDe = new JLabel("De:");
-  private JLabel lbA = new JLabel("À:");
+  private JLabelPad lbSelec = new JLabelPad(" Selecão:");
+  private JLabelPad lbDe = new JLabelPad("De:");
+  private JLabelPad lbA = new JLabelPad("À:");
   private JTextFieldPad txtDe = new JTextFieldPad();
   private JTextFieldPad txtA = new JTextFieldPad();
-  private JLabel lbOrdem = new JLabel("Ordenar por:");
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JCheckBoxPad cbAtivoProd = new JCheckBoxPad("Ativo","S","N");
-  private JLabel lbAtivoProd = new JLabel(" Produtos Ativos:");
-  private JLabel lbForn = new JLabel("Fornecedor");
-  private JLabel lbMarca = new JLabel("Cód.marca");
-  private JLabel lbDescMarca = new JLabel("Descrição da Marca");
-  private JLabel lbModo = new JLabel("Modo do relatório:");
+  private JLabelPad lbAtivoProd = new JLabelPad(" Produtos Ativos:");
+  private JLabelPad lbForn = new JLabelPad("Fornecedor");
+  private JLabelPad lbMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescMarca = new JLabelPad("Descrição da Marca");
+  private JLabelPad lbModo = new JLabelPad("Modo do relatório:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private Vector vLabsModo = new Vector();
   private Vector vValsModo = new Vector();
-  private JLabel lbAlmox = new JLabel("Cód.almox.");
-  private JLabel lbDescAlmox = new JLabel("Descrição do almoxarifado");
+  private JLabelPad lbAlmox = new JLabelPad("Cód.almox.");
+  private JLabelPad lbDescAlmox = new JLabelPad("Descrição do almoxarifado");
   private JTextFieldPad txtCodForn = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescForn = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

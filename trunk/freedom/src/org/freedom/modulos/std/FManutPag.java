@@ -40,7 +40,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -162,10 +162,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     c.add(tpn,BorderLayout.CENTER);
     btSair.setPreferredSize(new Dimension(100,30));
     
-	pnLegenda.add(new JLabel("Vencido",imgVencido,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("Parcial",imgPagoParcial,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("Pago",imgPago,SwingConstants.CENTER));
-	pnLegenda.add(new JLabel("À vencer",imgNaoVencido,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("Vencido",imgVencido,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("Parcial",imgPagoParcial,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("Pago",imgPago,SwingConstants.CENTER));
+	pnLegenda.add(new JLabelPad("À vencer",imgNaoVencido,SwingConstants.CENTER));
 
 	pnRod.setBorder(BorderFactory.createEtchedBorder());
 	pnRod.setPreferredSize(new Dimension(500,32));
@@ -206,27 +206,27 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     pnTabConsulta.add(spnConsulta,BorderLayout.CENTER);    
     pnConsulta.add(pnTabConsulta,BorderLayout.CENTER);
     
-    pinConsulta.adic(new JLabel("Cód.for."),7,0,250,20);
+    pinConsulta.adic(new JLabelPad("Cód.for."),7,0,250,20);
     pinConsulta.adic(txtCodFor,7,20,80,20);
-    pinConsulta.adic(new JLabel("Descrição do fornecedor"),90,0,250,20);
+    pinConsulta.adic(new JLabelPad("Descrição do fornecedor"),90,0,250,20);
     pinConsulta.adic(txtRazFor,90,20,197,20);
-    pinConsulta.adic(new JLabel("C. compra"),290,0,97,20);
+    pinConsulta.adic(new JLabelPad("C. compra"),290,0,97,20);
     pinConsulta.adic(txtPrimCompr,290,20,97,20);
-    pinConsulta.adic(new JLabel("U. compra"),390,0,100,20);
+    pinConsulta.adic(new JLabelPad("U. compra"),390,0,100,20);
     pinConsulta.adic(txtUltCompr,390,20,120,20);
-    pinConsulta.adic(new JLabel("Data"),7,40,200,20);
+    pinConsulta.adic(new JLabelPad("Data"),7,40,200,20);
     pinConsulta.adic(txtDataMaxFat,7,60,100,20);
-    pinConsulta.adic(new JLabel("Valor da maior fatura"),110,40,200,20);
+    pinConsulta.adic(new JLabelPad("Valor da maior fatura"),110,40,200,20);
     pinConsulta.adic(txtVlrMaxFat,110,60,137,20);
-    pinConsulta.adic(new JLabel("Data"),250,40,200,20);
+    pinConsulta.adic(new JLabelPad("Data"),250,40,200,20);
     pinConsulta.adic(txtDataMaxAcum,250,60,97,20);
-    pinConsulta.adic(new JLabel("Valor do maior acumulo"),350,40,200,20);
+    pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),350,40,200,20);
     pinConsulta.adic(txtVlrMaxAcum,350,60,160,20);
-    pinConsulta.adic(new JLabel("Total de compras"),7,80,150,20);
+    pinConsulta.adic(new JLabelPad("Total de compras"),7,80,150,20);
     pinConsulta.adic(txtVlrTotCompr,7,100,150,20);
-    pinConsulta.adic(new JLabel("Total pago"),160,80,97,20);
+    pinConsulta.adic(new JLabelPad("Total pago"),160,80,97,20);
     pinConsulta.adic(txtVlrTotPago,160,100,97,20);
-    pinConsulta.adic(new JLabel("Total em aberto"),260,80,117,20);
+    pinConsulta.adic(new JLabelPad("Total em aberto"),260,80,117,20);
     pinConsulta.adic(txtVlrTotAberto,260,100,117,20);    
     pinBotoesConsulta.adic(btBaixaConsulta,5,10,30,30);
     
@@ -327,32 +327,32 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     pnTabBaixa.add(spnBaixa,BorderLayout.CENTER);    
     pnBaixa.add(pnTabBaixa,BorderLayout.CENTER);
     
-    pinBaixa.adic(new JLabel("Cód.pag"),7,0,80,20);
+    pinBaixa.adic(new JLabelPad("Cód.pag"),7,0,80,20);
     pinBaixa.adic(txtCodPagBaixa,7,20,80,20);
-    pinBaixa.adic(new JLabel("Doc."),90,0,77,20);
+    pinBaixa.adic(new JLabelPad("Doc."),90,0,77,20);
     pinBaixa.adic(txtDoc,90,20,77,20);
-    pinBaixa.adic(new JLabel(" -"),170,20,7,20);
-    pinBaixa.adic(new JLabel("Série"),180,0,50,20);
+    pinBaixa.adic(new JLabelPad(" -"),170,20,7,20);
+    pinBaixa.adic(new JLabelPad("Série"),180,0,50,20);
     pinBaixa.adic(txtSerie,180,20,50,20);
-    pinBaixa.adic(new JLabel("Pedido"),240,0,77,20);
+    pinBaixa.adic(new JLabelPad("Pedido"),240,0,77,20);
     pinBaixa.adic(txtCodCompraBaixa,240,20,77,20);
-    pinBaixa.adic(new JLabel("Cód.for."),7,40,250,20);
+    pinBaixa.adic(new JLabelPad("Cód.for."),7,40,250,20);
     pinBaixa.adic(txtCodForBaixa,7,60,80,20);
-    pinBaixa.adic(new JLabel("Descrição do fornecedor"),90,40,250,20);
+    pinBaixa.adic(new JLabelPad("Descrição do fornecedor"),90,40,250,20);
     pinBaixa.adic(txtRazForBaixa,90,60,197,20);
-    pinBaixa.adic(new JLabel("Cód.banco"),290,40,250,20);
+    pinBaixa.adic(new JLabelPad("Cód.banco"),290,40,250,20);
     pinBaixa.adic(txtCodBancoBaixa,290,60,67,20);
-    pinBaixa.adic(new JLabel("Descrição do banco"),360,40,250,20);
+    pinBaixa.adic(new JLabelPad("Descrição do banco"),360,40,250,20);
     pinBaixa.adic(txtDescBancoBaixa,360,60,150,20);
-    pinBaixa.adic(new JLabel("Data de emis."),7,80,100,20);
+    pinBaixa.adic(new JLabelPad("Data de emis."),7,80,100,20);
     pinBaixa.adic(txtDtEmisBaixa,7,100,100,20);
-    pinBaixa.adic(new JLabel("Total a pagar"),110,80,97,20);
+    pinBaixa.adic(new JLabelPad("Total a pagar"),110,80,97,20);
     pinBaixa.adic(txtTotPagBaixa,110,100,97,20);
-    pinBaixa.adic(new JLabel("Total pago"),210,80,97,20);
+    pinBaixa.adic(new JLabelPad("Total pago"),210,80,97,20);
     pinBaixa.adic(txtTotPagoBaixa,210,100,97,20);
-    pinBaixa.adic(new JLabel("Total em aberto"),310,80,107,20);
+    pinBaixa.adic(new JLabelPad("Total em aberto"),310,80,107,20);
     pinBaixa.adic(txtTotAbertoBaixa,310,100,107,20);
-    pinBaixa.adic(new JLabel("Juros"),420,80,80,20);
+    pinBaixa.adic(new JLabelPad("Juros"),420,80,80,20);
     pinBaixa.adic(txtJurosBaixa,420,100,90,20);
 
     pinBotoesBaixa.adic(btBaixa,5,10,30,30);
@@ -406,15 +406,15 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     txtDatainiManut.setVlrDate(new Date());
     txtDatafimManut.setVlrDate(new Date());
     
-    pinManut.adic(new JLabel("Periodo"),7,0,200,20);
+    pinManut.adic(new JLabelPad("Periodo"),7,0,200,20);
     pinManut.adic(txtDatainiManut,7,20,100,20);
-    pinManut.adic(new JLabel("até"),113,20,27,20);
+    pinManut.adic(new JLabelPad("até"),113,20,27,20);
     pinManut.adic(txtDatafimManut,140,20,100,20);
     pinManut.adic(btExecManut,690,55,30,30);
 
-	pinManut.adic(new JLabel("Cód.for."),7,45,250,20);
+	pinManut.adic(new JLabelPad("Cód.for."),7,45,250,20);
 	pinManut.adic(txtCodForManut,7,65,50,20);
-	pinManut.adic(new JLabel("Descrição do fornecedor"),60,45,250,20);
+	pinManut.adic(new JLabelPad("Descrição do fornecedor"),60,45,250,20);
 	pinManut.adic(txtRazForManut,60,65,180,20);
 
 	vValsData.addElement("V");
@@ -424,7 +424,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 
 	rgData = new JRadioGroup(2,1,vLabsData,vValsData);
 	rgData.setVlrString("V");
-	pinManut.adic(new JLabel("Filtrar por:"),247,0,115,20);
+	pinManut.adic(new JLabelPad("Filtrar por:"),247,0,115,20);
 	pinManut.adic(rgData,247,20,115,65);
 
 	vValsVenc.addElement("VE");
@@ -436,7 +436,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	
 	rgVenc = new JRadioGroup(3,2,vLabsVenc,vValsVenc);
 	rgVenc.setVlrString("TT");
-	pinManut.adic(new JLabel("Filtrar por:"),365,0,150,20);
+	pinManut.adic(new JLabelPad("Filtrar por:"),365,0,150,20);
 	pinManut.adic(rgVenc,365,20,115,65);
         
 	vValsPg.addElement("PP"); // Pago
@@ -450,7 +450,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	
 	rgPg = new JRadioGroup(3,2,vLabsPg,vValsPg);
 	rgPg.setVlrString("TT");
-	pinManut.adic(new JLabel("Filtrar por:"),488,0,190,20);
+	pinManut.adic(new JLabelPad("Filtrar por:"),488,0,190,20);
 	pinManut.adic(rgPg,488,20,190,65);
 
 	lcForManut.add(new GuardaCampo( txtCodForManut, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));

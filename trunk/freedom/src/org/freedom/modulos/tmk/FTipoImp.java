@@ -31,7 +31,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -79,8 +79,8 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
 	adicCampo(txtSepTpImp,7, 85, 80, 20, "SepTpImp", "Separador", ListaCampos.DB_SI, true);
 	adicCampo(txtDelCrtTpImp,90, 85, 120, 20, "DelCrtTpImp", "Ignorar carac. até", ListaCampos.DB_SI, true);	
     adicDBLiv(txtLayout,"LayoutTpImp", "Layout", false);
-    adic(new JLabel("Compos disponiveis"),7,110,200,20);
-	adic(new JLabel("Compos selecionados"),260,110,200,20);
+    adic(new JLabelPad("Compos disponiveis"),7,110,200,20);
+	adic(new JLabelPad("Compos selecionados"),260,110,200,20);
     adic(spnLayout,7,130,213,180);
 	adic(spnLayoutDest,260,130,213,180);
 	adic(btAdic,225,180,30,30);

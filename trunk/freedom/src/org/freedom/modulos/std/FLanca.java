@@ -37,7 +37,7 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -63,7 +63,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JPanel pnCentro = new JPanel(new BorderLayout());;
   private JPanelPad pinPeriodo = new JPanelPad(260,50);
-  private JLabel lbPeriodo = new JLabel(" Periodo");
+  private JLabelPad lbPeriodo = new JLabelPad(" Periodo");
   private JPanelPad pinSaldo = new JPanelPad(310,50);
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -78,16 +78,16 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btEditar = new JButton(Icone.novo("btEditar.gif"));
-  private JLabel lbA = new JLabel("à");
-  private JLabel lbPinSaldo = new JLabel(" Saldo");
+  private JLabelPad lbA = new JLabelPad("à");
+  private JLabelPad lbPinSaldo = new JLabelPad(" Saldo");
   private JPanelPad pinLbPeriodo = new JPanelPad(53,15);
   private JPanelPad pinLbSaldo = new JPanelPad(45,15);
-  private JLabel lbDataSaldo = new JLabel("Data");
-  private JLabel lbVlrSaldo = new JLabel("Saldo");
-  private JLabel lbAtualSaldo = new JLabel("Atualiza");
-  private JLabel lbDataSaldoVal = new JLabel("");
-  private JLabel lbVlrSaldoVal = new JLabel("");
-  private JLabel lbAtualSaldoVal = new JLabel("NÃO");
+  private JLabelPad lbDataSaldo = new JLabelPad("Data");
+  private JLabelPad lbVlrSaldo = new JLabelPad("Saldo");
+  private JLabelPad lbAtualSaldo = new JLabelPad("Atualiza");
+  private JLabelPad lbDataSaldoVal = new JLabelPad("");
+  private JLabelPad lbVlrSaldoVal = new JLabelPad("");
+  private JLabelPad lbAtualSaldoVal = new JLabelPad("NÃO");
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private JTabbedPanePad tpn = new JTabbedPanePad();

@@ -39,7 +39,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -114,13 +114,13 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
 	
 	getTela().add(tpnAgd);
 	
-	pinCabAgd.adic(new JLabel("ID"),7,10,250,20);
+	pinCabAgd.adic(new JLabelPad("ID"),7,10,250,20);
 	pinCabAgd.adic(txtIdUsu,7,30,80,20);
-	pinCabAgd.adic(new JLabel("Nome do usuário"),90,10,250,20);
+	pinCabAgd.adic(new JLabelPad("Nome do usuário"),90,10,250,20);
 	pinCabAgd.adic(txtNomeUsu,90,30,197,20);
-	pinCabAgd.adic(new JLabel("Periodo rápido"),290,10,200,20);
+	pinCabAgd.adic(new JLabelPad("Periodo rápido"),290,10,200,20);
 	pinCabAgd.adic(cbPeriodo,290,30,200,20);
-	pinCabAgd.adic(new JLabel("Período:"),7,50,200,20);
+	pinCabAgd.adic(new JLabelPad("Período:"),7,50,200,20);
 	pinCabAgd.adic(txtDataini,7,70,100,20);
 	pinCabAgd.adic(txtDatafim,110,70,100,20);
 	pinCabAgd.adic(btExec,220,60,30,30);

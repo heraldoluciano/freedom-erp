@@ -28,7 +28,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
@@ -53,7 +53,7 @@ public class DLAltComisVend extends FFDialogo {
 
     txtPercComis.setVlrBigDecimal(bigComis);
 
-    adic(new JLabel("% Comissão"), 7, 0, 133, 20);
+    adic(new JLabelPad("% Comissão"), 7, 0, 133, 20);
     adic(txtPercComis, 7, 20, 140, 20);
     adic(btExec, 160, 10, 30, 30);
 

@@ -23,7 +23,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -72,13 +72,13 @@ public class DLContToCli extends FFDialogo {
     txtCodSetor.setNomeCampo("CodSetor");
     txtCodSetor.setText(""+iCodSetor);
     
-    adic(new JLabel("Código e tipo de cliente"),7,5,250,20);
+    adic(new JLabelPad("Código e tipo de cliente"),7,5,250,20);
     adic(txtCodTipoCli,7,25,80,20);
     adic(txtDescTipoCli,90,25,200,20);
-    adic(new JLabel("Código e classificação do cliente"),7,45,250,20);
+    adic(new JLabelPad("Código e classificação do cliente"),7,45,250,20);
     adic(txtCodClasCli,7,65,80,20);
     adic(txtDescClasCli,90,65,200,20);
-    adic(new JLabel("Código e setor do cliente"),7,85,250,20);
+    adic(new JLabelPad("Código e setor do cliente"),7,85,250,20);
     adic(txtCodSetor,7,105,80,20);
     adic(txtDescSetor,90,105,200,20);
     

@@ -35,7 +35,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -72,7 +72,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private ListaCampos lcConv = new ListaCampos(this);
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
-	private JLabel lbImg = new JLabel(Icone.novo("bannerATD.jpg"));
+	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerATD.jpg"));
 	private JButton btMedida = new JButton(Icone.novo("btMedida.gif"));
 	private String sPrefs[] = null;
 	private int iDoc = 0;
@@ -108,20 +108,20 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	    pnBotoes.setToolTipText("Ficha de medidas");
 	    c.add(pnBotoes,BorderLayout.EAST);
 	    
-		adic(new JLabel("Código e nome do conveniado"),7,5,200,20);
+		adic(new JLabelPad("Código e nome do conveniado"),7,5,200,20);
 		adic(txtCodConv,7,25,80,20);
 		adic(txtNomeConv,90,25,197,20);
-		adic(new JLabel("Tipo de atendimento"),290,5,150,20);
+		adic(new JLabelPad("Tipo de atendimento"),290,5,150,20);
 		adic(cbTipo,290,25,150,20);
-		adic(new JLabel("Código e nome do atendente"),7,45,200,20);
+		adic(new JLabelPad("Código e nome do atendente"),7,45,200,20);
 		adic(txtCodAtend,7,65,80,20);
 		adic(txtNomeAtend,90,65,197,20);
-		adic(new JLabel("Setor"),290,45,150,20);
+		adic(new JLabelPad("Setor"),290,45,150,20);
 		adic(cbSetor,290,65,150,20);
 		
 		JPanel pnLbAtend = new JPanel(new GridLayout(1,1));
-		pnLbAtend.add(new JLabel(" Atendimento"));
-		JLabel lbLinha = new JLabel();
+		pnLbAtend.add(new JLabelPad(" Atendimento"));
+		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
 		btMedida.addActionListener(this);

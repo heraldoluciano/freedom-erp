@@ -39,7 +39,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -135,29 +135,29 @@ public class FConsOrc extends FFilho implements ActionListener {
     vLabs.addElement("Data de Emissão");
     vLabs.addElement("Data de Validade");
     gbVenc = new JRadioGroup(2, 1, vLabs, vVals);
-    JLabel lbLinha = new JLabel();
+    JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
-    JLabel lbLinha2 = new JLabel();
+    JLabelPad lbLinha2 = new JLabelPad();
     lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-    JLabel lbStatus = new JLabel(" Status:");
+    JLabelPad lbStatus = new JLabelPad(" Status:");
     lbStatus.setOpaque(true);
-    JLabel lbFiltrar = new JLabel(" Filtrar:");
+    JLabelPad lbFiltrar = new JLabelPad(" Filtrar:");
     lbFiltrar.setOpaque(true);
 
-    pinCab.adic(new JLabel("Período:"), 7, 5, 50, 20);
+    pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
     pinCab.adic(txtDtIni, 7, 25, 100, 20);
-    pinCab.adic(new JLabel("Até"), 110, 25, 27, 20);
+    pinCab.adic(new JLabelPad("Até"), 110, 25, 27, 20);
     pinCab.adic(txtDtFim, 137, 25, 100, 20);
 
    // pinCab.adic(lbLinha, 60, 15, 315, 2);
-    pinCab.adic(new JLabel("Cód.cli."), 7, 48, 70, 20);
+    pinCab.adic(new JLabelPad("Cód.cli."), 7, 48, 70, 20);
     pinCab.adic(txtCodCli, 7, 70, 70, 20);
-    pinCab.adic(new JLabel("Razão social do cliente"), 80, 48, 410, 20);
+    pinCab.adic(new JLabelPad("Razão social do cliente"), 80, 48, 410, 20);
     pinCab.adic(txtNomeCli, 80, 70, 410, 20);
 
-    pinCab.adic(new JLabel("Valores :  "), 240, 5, 250, 20);
+    pinCab.adic(new JLabelPad("Valores :  "), 240, 5, 250, 20);
     pinCab.adic(txtValorMenor, 240, 25, 110, 20);
-    pinCab.adic(new JLabel("Até"), 354, 25, 27, 20);
+    pinCab.adic(new JLabelPad("Até"), 354, 25, 27, 20);
     pinCab.adic(txtValorMaior, 380, 25, 110, 20);
 
     pinCab.adic(lbStatus, 15, 95, 50, 18);

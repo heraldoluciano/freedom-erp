@@ -28,7 +28,7 @@ package org.freedom.telas;
 import java.awt.BorderLayout;
 import java.awt.Component;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextAreaPad;
@@ -47,7 +47,7 @@ public class DLInputText extends FFDialogo {
 		super(cOrig);
 		setAtribos(350, 250);
 		c.add(spnMemo, BorderLayout.CENTER);
-		c.add(new JLabel(title), BorderLayout.NORTH);
+		c.add(new JLabelPad(title), BorderLayout.NORTH);
 
 		this.required = required;
 	}

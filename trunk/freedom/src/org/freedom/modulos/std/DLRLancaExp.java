@@ -26,7 +26,7 @@ import java.sql.Connection;
 import java.util.Calendar;
 import java.util.Vector;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JRadioGroup;
@@ -92,22 +92,22 @@ public class DLRLancaExp extends FFDialogo implements FocusListener {
         rgRet = new JRadioGroup(1,3,vLabsRet,vValsRet);
         rgRet.setVlrString("T");
 		
-        adic(new JLabel("Periodo:"),7,5,120,20);
-		adic(new JLabel("De:"),7,25,30,20);
+        adic(new JLabelPad("Periodo:"),7,5,120,20);
+		adic(new JLabelPad("De:"),7,25,30,20);
 		adic(txtDataini,40,25,97,20);
-		adic(new JLabel("Até:"),140,25,17,20);
+		adic(new JLabelPad("Até:"),140,25,17,20);
 		adic(txtDatafim,160,25,100,20);
-		adic(new JLabel("Cód.cli."),7,45,280,20);
+		adic(new JLabelPad("Cód.cli."),7,45,280,20);
 		adic(txtCodCli,7,65,80,20);
-		adic(new JLabel("Descrição do cliente"),90,45,280,20);
+		adic(new JLabelPad("Descrição do cliente"),90,45,280,20);
 		adic(txtDescCli,90,65,200,20);
-		adic(new JLabel("Cód.repr."),7,85,280,20);
+		adic(new JLabelPad("Cód.repr."),7,85,280,20);
 		adic(txtCodVend,7,105,80,20);
-		adic(new JLabel("Nome do representante"),90,85,280,20);
+		adic(new JLabelPad("Nome do representante"),90,85,280,20);
 		adic(txtDescVend,90,105,200,20);
-		adic(new JLabel("Cód.tp.exp."),7,125,280,20);
+		adic(new JLabelPad("Cód.tp.exp."),7,125,280,20);
 		adic(txtCodTipoExp,7,145,80,20);
-		adic(new JLabel("Descrição do tipo de expositor"),90,125,280,20);
+		adic(new JLabelPad("Descrição do tipo de expositor"),90,125,280,20);
 		adic(txtDescTipoExp,90,145,200,20);
 		adic(rgRet,7,170,290,30);
 		txtCodCli.addFocusListener(this);

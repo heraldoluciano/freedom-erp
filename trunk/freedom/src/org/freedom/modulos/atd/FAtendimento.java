@@ -36,7 +36,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
@@ -121,32 +121,32 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	getTela().add(tpnConv);
 	
 	JPanel pnlbConv = new JPanel(new GridLayout(1,1));
-	pnlbConv.add(new JLabel(" Conveniado"));
+	pnlbConv.add(new JLabelPad(" Conveniado"));
 	pinCabConv.adic(pnlbConv,20,5,100,20);
 	pinCabConv.adic(pinConv,10,15,500,110);
 	
-	pinConv.adic(new JLabel("Cód.conv."),7,10,250,20);
+	pinConv.adic(new JLabelPad("Cód.conv."),7,10,250,20);
 	pinConv.adic(txtCodConv,7,30,80,20);
-	pinConv.adic(new JLabel("Nome do conveniado"),90,10,250,20);
+	pinConv.adic(new JLabelPad("Nome do conveniado"),90,10,250,20);
 	pinConv.adic(txtNomeConv,90,30,197,20);
-	pinConv.adic(new JLabel("RG"),290,10,97,20);
+	pinConv.adic(new JLabelPad("RG"),290,10,97,20);
 	pinConv.adic(txtRGConv,290,30,97,20);
-	pinConv.adic(new JLabel("CPF"),390,10,97,20);
+	pinConv.adic(new JLabelPad("CPF"),390,10,97,20);
 	pinConv.adic(txtCPFConv,390,30,97,20);
-	pinConv.adic(new JLabel("Telefone"),7,50,100,20);
+	pinConv.adic(new JLabelPad("Telefone"),7,50,100,20);
 	pinConv.adic(txtTelConv,7,70,100,20);
-	pinConv.adic(new JLabel("Pai"),110,50,187,20);
+	pinConv.adic(new JLabelPad("Pai"),110,50,187,20);
 	pinConv.adic(txtPaiConv,110,70,187,20);
-	pinConv.adic(new JLabel("Mae"),300,50,187,20);
+	pinConv.adic(new JLabelPad("Mae"),300,50,187,20);
 	pinConv.adic(txtMaeConv,300,70,187,20);
 	
 	JPanel pnlbCli = new JPanel(new GridLayout(1,1));
-	pnlbCli.add(new JLabel(" Cliente"));
+	pnlbCli.add(new JLabelPad(" Cliente"));
 	pinCabConv.adic(pnlbCli,20,125,60,20);
 	pinCabConv.adic(pinCli,10,135,500,65);
-	pinCli.adic(new JLabel("Cód.cli."),7,10,250,20);
+	pinCli.adic(new JLabelPad("Cód.cli."),7,10,250,20);
 	pinCli.adic(txtCodCli,7,30,80,20);
-	pinCli.adic(new JLabel("Razão social do cliente"),90,10,250,20);
+	pinCli.adic(new JLabelPad("Razão social do cliente"),90,10,250,20);
 	pinCli.adic(txtNomeCli,90,30,197,20);
 	
 	tabConv.adicColuna("Doc.");

@@ -32,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -162,25 +162,25 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     pnPag.add(spnTab,BorderLayout.CENTER);
 
     setPainel(pinCab);
-    adic(new JLabel("Cód.for."),7,0,250,20);
+    adic(new JLabelPad("Cód.for."),7,0,250,20);
     adic(txtCodFor,7,20,80,20);
-    adic(new JLabel("Razão social do fornecedor"),90,0,250,20);
+    adic(new JLabelPad("Razão social do fornecedor"),90,0,250,20);
     adic(txtDescFor,90,20,197,20);
-    adic(new JLabel("Cód.p.pag."),290,0,250,20);
+    adic(new JLabelPad("Cód.p.pag."),290,0,250,20);
     adic(txtCodPlanoPag,290,20,77,20);
-    adic(new JLabel("Descrição do plano de pagto."),370,0,250,20);
+    adic(new JLabelPad("Descrição do plano de pagto."),370,0,250,20);
     adic(txtDescPlanoPag,370,20,200,20);
-	adic(new JLabel("Cód.banco"),7,40,250,20);
+	adic(new JLabelPad("Cód.banco"),7,40,250,20);
 	adic(txtCodBanco,7,60,80,20);
-	adic(new JLabel("Descriçao do banco"),90,40,250,20);
+	adic(new JLabelPad("Descriçao do banco"),90,40,250,20);
 	adic(txtDescBanco,90,60,197,20);
-	adic(new JLabel("Valor"),290,40,107,20);
+	adic(new JLabelPad("Valor"),290,40,107,20);
 	adic(txtVlrParcPag,290,60,107,20);
-	adic(new JLabel("Emissão"),400,40,100,20);
+	adic(new JLabelPad("Emissão"),400,40,100,20);
 	adic(txtDtEmisPag,400,60,100,20);
-	adic(new JLabel("Doc."),7,80,80,20);
+	adic(new JLabelPad("Doc."),7,80,80,20);
 	adic(txtDocPag,7,100,80,20);
-	adic(new JLabel("Observações"),90,80,300,20);
+	adic(new JLabelPad("Observações"),90,80,300,20);
 	adic(txtObs,90,100,300,20);
     
     lcPagar.addPostListener(this);

@@ -32,7 +32,7 @@ import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
@@ -94,10 +94,10 @@ public class FPrecoBase extends FFilho implements ActionListener {
     pnRod.setLayout(new BorderLayout());
     pnRod.add(btSair,BorderLayout.EAST);
     
-    pinCli.adic(new JLabel("Código e descrição do grupo"),7,0,250,20);
+    pinCli.adic(new JLabelPad("Código e descrição do grupo"),7,0,250,20);
     pinCli.adic(txtCodGrup,7,20,80,20);
     pinCli.adic(txtDescGrup,90,20,200,20);
-    pinCli.adic(new JLabel("Código e descrição do plano de pagamento"),7,40,250,20);
+    pinCli.adic(new JLabelPad("Código e descrição do plano de pagamento"),7,40,250,20);
     pinCli.adic(txtCodPlanoPag,7,60,80,20);
     pinCli.adic(txtDescPlanoPag,90,60,200,20);
     pinCli.adic(btGerar,7,90,120,30);

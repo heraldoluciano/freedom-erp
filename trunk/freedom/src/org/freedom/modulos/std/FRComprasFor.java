@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -58,14 +58,14 @@ public class FRComprasFor extends FRelatorio {
 		lcFor.setReadOnly(true);
 		lcFor.montaSql(false, "FORNECED", "CP");
 
-		adic(new JLabel("Periodo:"),7,5,120,20);
-		adic(new JLabel("De:"),7,25,30,20);
+		adic(new JLabelPad("Periodo:"),7,5,120,20);
+		adic(new JLabelPad("De:"),7,25,30,20);
 		adic(txtDataini,40,25,97,20);
-		adic(new JLabel("Até:"),140,25,37,20);
+		adic(new JLabelPad("Até:"),140,25,37,20);
 		adic(txtDatafim,180,25,100,20);
-		adic(new JLabel("Cód.for."),7,50,280,20);
+		adic(new JLabelPad("Cód.for."),7,50,280,20);
 		adic(txtCodFor,7,70,70,20);
-		adic(new JLabel("Descrição do fornecedor"),80,50,280,20);
+		adic(new JLabelPad("Descrição do fornecedor"),80,50,280,20);
 		adic(txtDescFor,80,70,200,20);
 		
 		Calendar cPeriodo = Calendar.getInstance();

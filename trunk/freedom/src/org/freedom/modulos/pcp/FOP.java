@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
@@ -143,7 +143,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	if (!bPrefs[0])
   	  	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, true);
   	else {
-  		adic(new JLabel("Referência"),60,0,70,20);
+  		adic(new JLabelPad("Referência"),60,0,70,20);
   		adic(txtRefProdDet,80,20,70,20);
   		adicCampo(txtRefProdEst, 80, 20, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
   		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProdDet, true);
@@ -169,7 +169,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	if (!bPrefs[0])
   		adicCampo(txtCodProdDet,60,20,70,20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true);
   	else {
-  		adic(new JLabel("Referência"),60,0,70,20);
+  		adic(new JLabelPad("Referência"),60,0,70,20);
   		adic(txtRefProdDet,60,20,70,20);
   		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true);
   	}

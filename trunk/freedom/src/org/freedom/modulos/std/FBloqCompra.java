@@ -31,7 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -95,17 +95,17 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
     
     btBloquear.setToolTipText("Bloqueia compra");
 
-    pinFor.adic(new JLabel("Nº Pedido"),7,0,80,20);
+    pinFor.adic(new JLabelPad("Nº Pedido"),7,0,80,20);
     pinFor.adic(txtCodCompra,7,20,80,20);
-    pinFor.adic(new JLabel("Doc."),90,0,67,20);
+    pinFor.adic(new JLabelPad("Doc."),90,0,67,20);
     pinFor.adic(txtDocCompra,90,20,67,20);
-    pinFor.adic(new JLabel("Série"),160,0,67,20);
+    pinFor.adic(new JLabelPad("Série"),160,0,67,20);
     pinFor.adic(txtSerie,160,20,67,20);
-    pinFor.adic(new JLabel("Valor"),230,0,100,20);
+    pinFor.adic(new JLabelPad("Valor"),230,0,100,20);
     pinFor.adic(txtVlrLiqCompra,230,20,100,20);
-    pinFor.adic(new JLabel("Situação"),7,40,70,20);
+    pinFor.adic(new JLabelPad("Situação"),7,40,70,20);
     pinFor.adic(txtStatusCompra,7,60,70,20);
-    pinFor.adic(new JLabel("Bloqueada"),80,40,70,20);
+    pinFor.adic(new JLabelPad("Bloqueada"),80,40,70,20);
     pinFor.adic(txtBloqCompra,80,60,70,20);
     pinFor.adic(btBloquear,7,90,120,30);
 

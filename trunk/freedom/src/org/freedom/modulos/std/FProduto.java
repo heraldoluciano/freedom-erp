@@ -32,7 +32,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -376,7 +376,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     adicCampo(txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true);
     adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false);
     adicCampo(txtCustoMPMProd, 110, 180, 87, 20, "CustoMPMProd", "Custo MPM", ListaCampos.DB_SI, false);
-    adic(new JLabel("Custo PEPS"),200,160,87,20);
+    adic(new JLabelPad("Custo PEPS"),200,160,87,20);
     adic(txtCustoPEPSProd, 200, 180, 87, 20); // Sem inserir no lista campos
     adicCampo(txtSldProd, 290, 180, 87, 20, "SldProd", "Saldo", ListaCampos.DB_SI, false);
     adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false);

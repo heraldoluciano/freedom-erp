@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import org.freedom.componentes.JLabelPad;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameEvent;
@@ -98,10 +98,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
   private Date dIni = null;
   private Date dFim = null;
   private JRadioGroup rgTipoLanca;
-  private JLabel lbRazCli = null;
-  private JLabel lbRazFor = null;
-  private JLabel lbCodCli = null;
-  private JLabel lbCodFor = null;
+  private JLabelPad lbRazCli = null;
+  private JLabelPad lbRazFor = null;
+  private JLabelPad lbCodCli = null;
+  private JLabelPad lbCodFor = null;
   public FSubLanca(String sCodL,String sCodP,Date dini, Date dfim) {
      dIni = dini;
      dFim = dfim;     
@@ -177,7 +177,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     adicCampo(txtDocLanca, 190, 20, 77, 20,"DocLanca","Doc.",ListaCampos.DB_SI, false);
     adicCampo(txtHistLanca, 270, 20, 320, 20,"HistBLanca","Histório Bancário",ListaCampos.DB_SI, true);
     adicDB(cbTransf, 7, 60, 80, 20,"TransfLanca","Transferência", true);
-    adic(new JLabel("Vlr. Lançamento"),95,40,100,20);
+    adic(new JLabelPad("Vlr. Lançamento"),95,40,100,20);
     adic(txtVlrAtualLanca,95,60,97,20);
     adicDB(rgTipoLanca,210,60,379,28,"tipolanca","Tipo de lançamento", true);
     
