@@ -42,14 +42,14 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRCentroCusto extends FRelatorio {
-  private JTextFieldPad txtCodConta = new JTextFieldPad(); 
-  private JTextFieldPad txtCodCC = new JTextFieldPad(); 
-  private JTextFieldFK  txtSiglaCC = new JTextFieldFK();
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private JTextFieldFK txtDescConta = new JTextFieldFK(); 
-  private JTextFieldFK txtDescCC = new JTextFieldFK();
-  private JTextFieldPad txtCodPlan = new JTextFieldPad(); 
+  private JTextFieldPad txtCodConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0); 
+  private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0); 
+  private JTextFieldFK  txtSiglaCC = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
+  private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0); 
   private JCheckBoxPad cbUsaAnal = new JCheckBoxPad("Somente analíticas","S","N"); 
   private ListaCampos lcCC = new ListaCampos(this);
   private ListaCampos lcConta = new ListaCampos(this);
@@ -59,27 +59,18 @@ public class FRCentroCusto extends FRelatorio {
     setTitulo("Relatório financeiro por Centro de Custo");
     setAtribos(80,80,330,240);
 
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-
-    txtCodConta.setTipo(JTextFieldPad.TP_STRING,10,0);
-    txtDescConta.setTipo(JTextFieldPad.TP_STRING,40,0);
-	txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Cód.conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição da conta", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
-	lcConta.add(new GuardaCampo( txtCodPlan, 90, 100, 207, 20, "CodPlan", "Cod.plan.", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+    lcConta.add(new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false));
+    lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false));
+	lcConta.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cod.plan.", ListaCampos.DB_SI, false));
     lcConta.montaSql(false, "CONTA", "FN");
     lcConta.setReadOnly(true);
     txtCodConta.setTabelaExterna(lcConta);
     txtCodConta.setFK(true);
     txtCodConta.setNomeCampo("NumConta");
 
-	txtCodCC.setTipo(JTextFieldPad.TP_STRING,19,0);
-	txtDescCC.setTipo(JTextFieldPad.TP_STRING,50,0);
-	txtSiglaCC.setTipo(JTextFieldPad.TP_STRING,10,0);    
-	lcCC.add(new GuardaCampo( txtCodCC, 7, 100, 80, 20, "CodCC", "Cód.cc.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-	lcCC.add(new GuardaCampo( txtSiglaCC, 90, 100, 207, 20, "SiglaCC", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-	lcCC.add(new GuardaCampo( txtDescCC, 90, 100, 207, 20, "DescCC", "Descrição do centro de custo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+	lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, false));
+	lcCC.add(new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false));
+	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
 	lcCC.setReadOnly(true);
 	lcCC.montaSql(false, "CC", "FN");
 	txtCodCC.setTabelaExterna(lcCC);
