@@ -52,8 +52,11 @@ public class FVendedor extends FDados implements PostListener {
   private JTextFieldPad txtComplVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtCidVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
   private JTextFieldPad txtCepVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtDDDFoneVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFoneVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtDDDCelVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtCelVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+  private JTextFieldPad txtDDDFaxVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtUFVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   private JTextFieldPad txtEmailVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
@@ -65,7 +68,7 @@ public class FVendedor extends FDados implements PostListener {
   private JTextFieldFK txtDescFunc = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK txtDescClComis = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-  
+  private JTextFieldPad txtSSPVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcPlan = new ListaCampos(this,"PN");
@@ -108,8 +111,10 @@ public class FVendedor extends FDados implements PostListener {
     
     adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.repr.", ListaCampos.DB_PK, true);
     adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend", "Nome do representante", ListaCampos.DB_SI, true);
-    adicCampo(txtCpfVend, 7, 60, 180, 20, "CpfVend", "CPF", ListaCampos.DB_SI, false);
-    adicCampo(txtRgVend, 190, 60, 182, 20, "RgVend", "RG", ListaCampos.DB_SI, false);
+    adicCampo(txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF", ListaCampos.DB_SI, false);
+    adicCampo(txtRgVend, 140, 60, 149, 20, "RgVend", "RG", ListaCampos.DB_SI, false);
+    adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "SSP", ListaCampos.DB_SI, false);
+
     adicCampo(txtCnpjVend, 7, 100, 180, 20, "CnpjVend", "CNPJ", ListaCampos.DB_SI, false);
     adicCampo(txtInscVend, 190, 100, 182, 20, "InscVend", "IE", ListaCampos.DB_SI, false);
     adicCampo(txtEndVend, 7, 140, 260, 20, "EndVend", "Endereço", ListaCampos.DB_SI, false);
@@ -119,9 +124,12 @@ public class FVendedor extends FDados implements PostListener {
     adicCampo(txtCidVend, 130, 180, 120, 20, "CidVend", "Cidade", ListaCampos.DB_SI, false);
     adicCampo(txtCepVend, 253, 180, 80, 20, "CepVend", "Cep", ListaCampos.DB_SI, false);
     adicCampo(txtUFVend, 336, 180, 36, 20, "UFVend", "UF", ListaCampos.DB_SI, false);
-    adicCampo(txtFoneVend, 7, 220, 120, 20, "FoneVend", "Telefone", ListaCampos.DB_SI, false);
-    adicCampo(txtFaxVend, 130, 220, 120, 20, "FaxVend", "Fax", ListaCampos.DB_SI, false);
-    adicCampo(txtCelVend, 253, 220, 119, 20, "CelVend", "Cel", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDFoneVend, 7, 220, 40, 20, "DDDFoneVend", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtFoneVend, 50, 220, 77, 20, "FoneVend", "Telefone", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDFaxVend, 130, 220, 40, 20, "DDDFaxVend", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtFaxVend, 177, 220, 77, 20, "FaxVend", "Fax", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDCelVend, 257, 220, 40, 20, "DDDCelVend", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtCelVend, 300, 220, 72, 20, "CelVend", "Cel", ListaCampos.DB_SI, false);
     adicCampo(txtEmailVend, 7, 260, 200, 20, "EmailVend", "E-Mail", ListaCampos.DB_SI, false);
     adicCampo(txtPercComVend, 210, 260, 77, 20, "PercComVend", "Comissão", ListaCampos.DB_SI, false);
     adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.vend.for.", ListaCampos.DB_SI, false);
@@ -133,8 +141,8 @@ public class FVendedor extends FDados implements PostListener {
     txtCpfVend.setMascara(JTextFieldPad.MC_CPF);
     txtCnpjVend.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepVend.setMascara(JTextFieldPad.MC_CEP);
-    txtFoneVend.setMascara(JTextFieldPad.MC_FONEDDD);
-    txtCelVend.setMascara(JTextFieldPad.MC_FONEDDD);
+    txtFoneVend.setMascara(JTextFieldPad.MC_FONE);
+    txtCelVend.setMascara(JTextFieldPad.MC_FONE);
     txtFaxVend.setMascara(JTextFieldPad.MC_FONE);
     lcCampos.addPostListener(this);
     lcCampos.setQueryInsert(false);    
