@@ -22,11 +22,9 @@
 
 package org.freedom.comutacao;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
@@ -40,10 +38,12 @@ public class Tef {
 	File fEnvio;
 	File fStatus;
 	File fRetorno;
+	File fAtivo;
 	static final String ARQ_TMP = "IntPos.tmp";
 	static final String ARQ_ENVIO = "IntPos.001";
 	static final String ARQ_STATUS = "IntPos.Sts";
 	static final String ARQ_RETORNO = "IntPos.001";
+	static final String ARQ_ATIVO = "ativo.001";
 
 	static final String TEF_HEADER = "000-000";
 	static final String TEF_IDENTIFICACAO = "001-000";
@@ -62,8 +62,9 @@ public class Tef {
 	static final String TEF_FINALIZACAO = "027-000";
 	static final String TEF_QTD_LINHAS = "028-000";
 	static final String IMP_BASE = "029-"; //Base para impressao do comprovante (somar esta mais 3 digitos): 029-001,029-002...
+	static final String TEF_MSG_OPERADOR = "030-000";
 	static final String TEF_ADMINISTRADORA = "040-000";
-	static final String TEF_EOT = "040-000"; //"E"nd "O"f "T"rasaction. (final do arquivo)
+	static final String TEF_EOT = "999-999"; //"E"nd "O"f "T"rasaction. (final do arquivo)
 	
 	private long lIdent = 1;
 	
@@ -72,6 +73,12 @@ public class Tef {
 		fEnvio = new File(sPathEnv+"/"+ARQ_ENVIO);
 		fStatus = new File(sPathRet+"/"+ARQ_STATUS);
 		fRetorno = new File(sPathRet+"/"+ARQ_RETORNO);
+		fAtivo = new File(sPathRet+"/"+ARQ_ATIVO);
+
+		if (!verifTef()) {
+			Funcoes.mensagemInforma(null,"Gerenciador Padrão de TEF não está ativo!");
+		}
+			
 	}
 	public boolean enviaArquivo(String sConteudo[]) {
 		boolean bRet = false;
@@ -82,6 +89,7 @@ public class Tef {
 			PrintStream psEnvio = new PrintStream(new FileOutputStream(fTmp));
 			for (int i=0;i<sConteudo.length;i++)
 				psEnvio.println(sConteudo[i]);
+			psEnvio.println(TEF_EOT+"=0");
 			psEnvio.close();
 			fTmp.renameTo(fEnvio);
 			bRet = true;
@@ -93,7 +101,23 @@ public class Tef {
 		return bRet;
 	}
 	public boolean verifTef() {
-		return true;
+		boolean bRet = false;
+		
+		if (!fAtivo.exists() || !fAtivo.canRead())
+			return false;
+
+		try {
+			Properties prop = new Properties();
+			prop.load(new FileInputStream(fAtivo));
+			if (prop.getProperty(TEF_HEADER,"").equals("TEF"))
+				bRet = true;
+			prop.clear();
+		}
+		catch(IOException err) {
+			Funcoes.mensagemErro(null,"Não foi possível verificar se o módulo TEF está ativo!");
+			err.printStackTrace();
+		}
+		return bRet;
 	}
 	public boolean existeStatus(String sCab) {
 		return existeInfo(sCab,fStatus,7);//7 é padrao do GP.
@@ -104,7 +128,6 @@ public class Tef {
 	public boolean existeInfo(String sCab,File fArq, int iTentativas) {
 		String sLinha;
 		boolean bRet = false;
-		boolean bCabOK = false;
 		int iConta = 0;
 		while(true) {
 			try {
@@ -115,16 +138,13 @@ public class Tef {
 			}
 			if (!fArq.exists() || !fArq.canRead())
 				continue;
-			bCabOK = false;
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(fArq));
-				while ((sLinha = br.readLine()) != null) {
-					if (sLinha.equals(TEF_HEADER+" = "+sCab))
-						bCabOK = true; //Armazenado em uma variavel a leitura da outra linha só acontecerá no próximo loop.
-					if (bCabOK && sLinha.equals(TEF_IDENTIFICACAO+" = "+lIdent))
-						bRet = true;
-				}
-				br.close();
+				Properties prop = new Properties();
+				prop.load(new FileInputStream(fArq));
+				if (prop.getProperty(TEF_HEADER,"").equals(sCab) &&
+					prop.getProperty(TEF_IDENTIFICACAO,"").equals(""+lIdent))
+					bRet = true;
+				prop.clear();
 			}
 			catch(IOException err) {
 				Funcoes.mensagemErro(null,"Não foi possível ler o retorno da TEF!");
@@ -144,6 +164,7 @@ public class Tef {
 			pRet = new Properties();
 			pRet.load(fis);
 			fis.close();
+			fRetorno.delete();
 		}
 		catch(IOException err) {
 			Funcoes.mensagemErro(null,"Não foi possível carregar o retorno da TEF!");
@@ -171,4 +192,15 @@ public class Tef {
 		
 		return leRetorno();
 	}
+	public boolean validaTef(Properties prop) {
+		boolean bRet = false; 
+		if (!prop.getProperty(TEF_ST_TRANSACAO,"").equals("0")) {
+			Funcoes.mensagemErro(null,prop.getProperty(TEF_MSG_OPERADOR));
+			bRet = false;
+		}
+		else
+			bRet = true;
+		return bRet;
+	}
+
 }
