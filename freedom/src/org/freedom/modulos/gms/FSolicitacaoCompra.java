@@ -289,7 +289,29 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
   	
   }
   public void afterPost(PostEvent pevt) {}
-  public void afterCarrega(CarregaEvent cevt) {}
+  public void afterCarrega(CarregaEvent cevt) {
+  	if (cevt.getListaCampos() == lcCampos) {
+  		boolean isPE = rgStatusSolicitacao.getVlrString().equalsIgnoreCase("PE");
+    	lcCampos.setPodeExc(isPE);
+    	lcCampos.setReadOnly(!isPE);
+    	lcDet.setPodeIns(isPE);
+        txtCodSolicitacao.setSoLeitura(!isPE);
+        txtDtEmitSolicitacao.setSoLeitura(!isPE);
+        txaMotivoSolicitacao.setEditable(isPE);
+        txaMotivoSolicitacao.setEnabled(isPE);    	
+  	} else if (cevt.getListaCampos() == lcDet) {
+  		boolean isPE = rgSituaçãoIt.getVlrString().equalsIgnoreCase("PE");
+    	lcDet.setPodeExc(isPE);
+    	lcDet.setReadOnly(!isPE);
+        txtCodProd.setSoLeitura(!isPE);
+        txtRefProd.setSoLeitura(!isPE);
+        txtCodCC.setSoLeitura(!isPE);
+        txtAnoCC.setSoLeitura(!isPE);
+        txtCodUsu.setSoLeitura(!isPE);
+        txtCodAlmoxarife.setSoLeitura(!isPE);
+        txtQtdItSolicitado.setSoLeitura(!isPE);
+  	}
+  }
   public void keyPressed(KeyEvent kevt) {
     if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
       if (kevt.getSource() == txtCodAlmoxarife) {//Talvez este possa ser

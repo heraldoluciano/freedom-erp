@@ -374,12 +374,12 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
     else if (evt.getSource() == btImp)
       imprimir(false, txtCodSolicitacao.getVlrInteger().intValue());
     else if (evt.getSource() == btAprovaCompra) {
-    	if (lcDet.getStatus() != ListaCampos.LCS_EDIT)
-    		lcDet.edit();
+    	if (lcCampos.getStatus() != ListaCampos.LCS_EDIT)
+    		lcCampos.edit();
     	txtStatusSolicitacao.setVlrString("CA");
 		btAprovaCompra.setEnabled(false);
 		btAprovaCompra.setIcon(null);
-		btAprovaCompra.setText("Solicitação Cancelada");    	
+		btAprovaCompra.setText("Solicitação Cancelada");		
     } else if (evt.getSource() == btAprovaItem) {
     	if (lcDet.getStatus() != ListaCampos.LCS_EDIT)
     		lcDet.edit();
@@ -633,6 +633,11 @@ implements PostListener, CarregaListener, FocusListener, ActionListener, InsertL
 	lcAlmox.setConexao(cn);  
 	lcUsuario.setConexao(cn);  
 	lcCC.setConexao(cn);  
+	
+	lcCampos.setPodeExc(false);
+	lcCampos.setPodeIns(false);
+	lcDet.setPodeExc(false);
+	lcDet.setPodeIns(false);
 	
 	String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 	PreparedStatement ps = null;
