@@ -109,7 +109,6 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcUsuario2 = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-	private Connection con = null;
 	String sOrdNota = "";
 	Integer anoCC = null;
 	String codCC = null;
@@ -736,7 +735,6 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
-		con = cn;
 		montaDetalhe();
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);

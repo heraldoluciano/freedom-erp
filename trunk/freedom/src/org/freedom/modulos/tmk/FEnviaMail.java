@@ -83,7 +83,6 @@ import org.freedom.telas.FPrincipal;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FEnviaMail extends FFilho implements ActionListener {
-	private Connection con = null;
 	private JTextFieldPad txtCodAtiv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescAtiv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtArqMen = new JTextFieldPad();
@@ -355,7 +354,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 		lbStatus.setText(sStatus);
 	}
     public void setConexao(Connection cn) {
-    	con = cn;
+    	super.setConexao(cn);
     	lcAtiv.setConexao(cn);
     }
 }

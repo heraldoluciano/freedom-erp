@@ -63,7 +63,6 @@ import org.freedom.telas.FFilho;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FImportaCto extends FFilho implements ActionListener,FocusListener {
-	private Connection con = null;
 	private JTextFieldPad txtCodTipo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipo = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtArqOrig = new JTextFieldPad();
@@ -119,7 +118,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 
     }
     public void setConexao(Connection cn) {
-    	con = cn;
+    	super.setConexao(cn);
     	lcTipoImp.setConexao(cn);
     }
     private void habDest(boolean bHab) {

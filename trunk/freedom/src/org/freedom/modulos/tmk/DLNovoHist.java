@@ -64,7 +64,6 @@ public class DLNovoHist extends FFDialogo {
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
 	private JComboBoxPad cbSit = null; 
-	private Connection con = null;
 	private String[] sValsAgen = null;
 	public DLNovoHist(int iCodCont,Component cOrig) {
 		super(cOrig);
@@ -189,7 +188,7 @@ public class DLNovoHist extends FFDialogo {
 		return sVal;
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcAtend.setConexao(cn);
 		lcCont.setConexao(cn);
 		lcCont.carregaDados();

@@ -44,7 +44,6 @@ import org.freedom.telas.FRelatorio;
 public class FRDiario extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-  private Connection con = null;
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JComboBoxPad cbSit = null;
@@ -77,9 +76,6 @@ public class FRDiario extends FRelatorio {
     adic(cbSit,7,65,262,20);
     adic(cbComp,7,100,253,20);
     
-  }
-  public void setConexao(Connection cn) {
-    con = cn;
   }
 
   public void imprimir(boolean bVisualizar) {

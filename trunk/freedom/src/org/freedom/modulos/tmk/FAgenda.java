@@ -79,7 +79,6 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcUsu = new ListaCampos(this);
-  private Connection con = null;
   private Vector vCodAgds = new Vector();
   public FAgenda() {
   	setTitulo("Agenda");
@@ -383,7 +382,7 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
 	}
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
   	lcUsu.setConexao(cn);
   }
 }
