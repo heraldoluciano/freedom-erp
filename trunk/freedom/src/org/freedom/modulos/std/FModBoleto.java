@@ -68,8 +68,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	
     	txaBoleto.setFont(new Font("Courier",Font.PLAIN,11));
     	
-    	adicCampo(txtCodModBol, 7, 20, 50, 20,"CodModBol","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    	adicCampo(txtDescModBol, 60, 20, 250, 20,"DescModBol","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    	adicCampo(txtCodModBol, 7, 20, 90, 20,"CodModBol","Cód.mod.bol.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    	adicCampo(txtDescModBol, 100, 20, 250, 20,"DescModBol","Descrição do modelo de boleto",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
     	adicDBLiv(txaBoleto,"TxaModBol", "Corpo",JTextFieldPad.TP_STRING, true);
     	setListaCampos( false, "MODBOLETO", "FN");
     	
@@ -85,7 +85,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vLabs.addElement("Valor extenso");
     	vLabs.addElement("Desconto na parcela");
     	vLabs.addElement("Código do cliente");
-    	vLabs.addElement("Razão do cliente");
+    	vLabs.addElement("Razão social do cliente");
     	vLabs.addElement("Nome do cliente");
     	vLabs.addElement("CPF ou CNPJ do cliente");
     	vLabs.addElement("IE ou RG do cliente");

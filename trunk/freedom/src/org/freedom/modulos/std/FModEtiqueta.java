@@ -73,8 +73,8 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	
     	setPainel(pinCab);
 
-    	lcPapel.add(new GuardaCampo( txtCodpapel, 7, 60, 80, 20,  "Codpapel", "Cod.Papel", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodpapel");
-    	lcPapel.add(new GuardaCampo( txtDescpapel, 80, 60, 297, 20, "Descpapel", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescpapel"); 
+    	lcPapel.add(new GuardaCampo( txtCodpapel, 7, 60, 80, 20,  "Codpapel", "Cod.papel", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodpapel");
+    	lcPapel.add(new GuardaCampo( txtDescpapel, 80, 60, 297, 20, "Descpapel", "Descrição do papel", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescpapel"); 
     	lcPapel.montaSql(false, "PAPEL", "SG");
      	lcPapel.setQueryCommit(false);
      	lcPapel.setReadOnly(true);
@@ -82,20 +82,20 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
     	txaEtiqueta.setFont(new Font("Courier",Font.PLAIN,11));
 
-    	adicCampo(txtCodModEtiq, 7, 20, 50, 20,"CodModEtiq","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    	adicCampo(txtDescModEtiq, 60, 20, 197, 20,"DescModEtiq","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
-    	adicCampo(txtNColModEtiq, 260, 20, 60, 20,"NColModEtiq","Colunas",JTextFieldPad.TP_INTEGER,5,0,false,false,null,true);
+    	adicCampo(txtCodModEtiq, 7, 20, 90, 20,"CodModEtiq","Cód.mod.etiq.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    	adicCampo(txtDescModEtiq, 100, 20, 237, 20,"DescModEtiq","Descrição do modelo de etiqueta",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    	adicCampo(txtNColModEtiq, 340, 20, 60, 20,"NColModEtiq","Colunas",JTextFieldPad.TP_INTEGER,5,0,false,false,null,true);
     	
     	adicDBLiv(txaEtiqueta,"TxaModEtiq", "Corpo",JTextFieldPad.TP_STRING, true);
     	
-     	adicCampo(txtCodpapel, 7, 60, 70, 20,"Codpapel","Cód.Papel",JTextFieldPad.TP_STRING,10,0,false,true,txtDescpapel,true); 
-   	    adicDescFK(txtDescpapel, 80, 60, 297, 20,"Descpapel","Descrição",JTextFieldPad.TP_STRING,40,0); 
+     	adicCampo(txtCodpapel, 7, 60, 90, 20,"Codpapel","Cód.papel",JTextFieldPad.TP_STRING,10,0,false,true,txtDescpapel,true); 
+   	    adicDescFK(txtDescpapel, 100, 60, 297, 20,"Descpapel","Descrição do papel",JTextFieldPad.TP_STRING,40,0); 
 
     	setListaCampos( false, "MODETIQUETA", "SG");
    	    
     	Vector vLabs = new Vector();
     	vLabs.addElement("Código do cliente");
-    	vLabs.addElement("Razão do cliente");
+    	vLabs.addElement("Razão social do cliente");
     	vLabs.addElement("Nome do cliente");
     	vLabs.addElement("CPF ou CNPJ do cliente");
     	vLabs.addElement("Endereço do cliente");

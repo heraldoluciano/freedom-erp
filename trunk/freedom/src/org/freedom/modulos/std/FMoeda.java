@@ -70,8 +70,8 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
     adicTab("Geral",pinGeral);
     vValsTipo.addElement("I");
     vValsTipo.addElement("C");
-    vLabsTipo.addElement("Indice de Valores");
-    vLabsTipo.addElement("Moeda Corrente");
+    vLabsTipo.addElement("Indice de valores");
+    vLabsTipo.addElement("Moeda corrente");
     rgTipo = new JRadioGroup(1,2,vLabsTipo,vValsTipo);
     rgTipo.addRadioGroupListener(this);
     vValsAtua.addElement("D");
@@ -83,19 +83,19 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
     vLabsAtua.addElement("Semanal");
     vLabsAtua.addElement("Mensal");
     vLabsAtua.addElement("Anual");
-    vLabsAtua.addElement("Moeda Corrente");
+    vLabsAtua.addElement("Moeda corrente");
     rgAtua = new JRadioGroup(3,2,vLabsAtua,vValsAtua);
     rgAtua.setVlrString("M");
     rgAtua.setAtivo(4,false);
     
     setListaCampos(lcCampos);
-    adicCampo(txtCodMoeda, 7, 20, 50, 20, "CodMoeda", "Código", JTextFieldPad.TP_STRING, 4, 0, true, false, null,true);
-    adicCampo(txtSingMoeda, 60, 20, 310, 20, "SingMoeda", "Nome no singular", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicDB(rgTipo, 7, 60, 363, 30, "TipoMoeda", "Tipo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtPlurMoeda, 7, 110, 115, 20, "PlurMoeda", "Nome no plural", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicCampo(txtDecsMoeda, 125, 110, 115, 20, "DecsMoeda", "Decimal no singular", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicCampo(txtDecpMoeda, 243, 110, 127, 20, "DecpMoeda", "Decimal no plural", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicDB(rgAtua, 7, 150, 363, 70, "AtualizaMoeda", "Tempo de Atualização",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtCodMoeda, 7, 20, 70, 20, "CodMoeda", "Cód.mda.", JTextFieldPad.TP_STRING, 4, 0, true, false, null,true);
+    adicCampo(txtSingMoeda, 80, 20, 315, 20, "SingMoeda", "Nome no singular", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
+    adicDB(rgTipo, 7, 60, 388, 30, "TipoMoeda", "Tipo",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtPlurMoeda, 7, 110, 120, 20, "PlurMoeda", "Nome no plural", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
+    adicCampo(txtDecsMoeda, 130, 110, 125, 20, "DecsMoeda", "Decimal no singular", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
+    adicCampo(txtDecpMoeda, 258, 110, 137, 20, "DecpMoeda", "Decimal no plural", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
+    adicDB(rgAtua, 7, 150, 388, 70, "AtualizaMoeda", "Tempo de atualização",JTextFieldPad.TP_STRING,true);
     setListaCampos( false, "MOEDA", "FN");
     lcCampos.setQueryInsert(false);    
 

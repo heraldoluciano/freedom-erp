@@ -41,7 +41,7 @@ public class FMensagem extends FDados implements ActionListener {
   public FMensagem () {
     setTitulo("Cadastro de mensagens");
     setAtribos(50, 50, 350, 225);
-    adicCampo(txtCod, 7, 20, 80, 20,"CodMens","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtCod, 7, 20, 80, 20,"CodMens","Cód.mens.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
     adicDBLiv(txaMens,"Mens","Mensagem",JTextFieldPad.TP_STRING,true);
     adic(spnMen,7,50,315,100);
     setListaCampos( true, "MENSAGEM", "LF");
@@ -82,7 +82,7 @@ public class FMensagem extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.mens.");
             imp.say(imp.pRow()+0,20,"Mensagem");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));

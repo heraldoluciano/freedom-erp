@@ -39,9 +39,9 @@ public class FMarca extends FDados implements ActionListener {
   public FMarca() {
     setTitulo("Cadastro de marcas de produtos");
     setAtribos( 50, 50, 370, 125);
-    adicCampo(txtCodMarca, 7, 20, 50, 20,"CodMarca","Código",JTextFieldPad.TP_STRING,6,0,true,false,null,true);
-    adicCampo(txtDescMarca, 60, 20, 200, 20,"DescMarca","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtSiglaMarca, 263, 20, 80, 20,"SiglaMarca","Sigla",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
+    adicCampo(txtCodMarca, 7, 20, 70, 20,"CodMarca","Cód.marca",JTextFieldPad.TP_STRING,6,0,true,false,null,true);
+    adicCampo(txtDescMarca, 80, 20, 190, 20,"DescMarca","Descrição da marca",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtSiglaMarca, 273, 20, 70, 20,"SiglaMarca","Sigla",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
     setListaCampos( false, "MARCA", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -60,7 +60,7 @@ public class FMarca extends FDados implements ActionListener {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
     imp.montaCab();
-    imp.setTitulo("Relatório de Marcas");
+    imp.setTitulo("Relatório de marcas");
     DLRMarca dl = new DLRMarca();
     dl.setVisible(true);
     if (dl.OK == false) {
@@ -79,8 +79,8 @@ public class FMarca extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
-            imp.say(imp.pRow()+0,20,"Descrição");
+            imp.say(imp.pRow()+0,2,"Cód.marca");
+            imp.say(imp.pRow()+0,20,"Descrição da marca");
             imp.say(imp.pRow()+0,60,"Sigla");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
