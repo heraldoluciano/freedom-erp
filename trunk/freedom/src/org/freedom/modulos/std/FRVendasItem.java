@@ -136,9 +136,9 @@ public class FRVendasItem extends FRelatorio {
 		adic(new JLabelPad("Até:"),140,30,30,20);
 		adic(txtDatafim,170,30,100,20);
 		adic(lbLinha2,7,60,272,2);
-		adic(new JLabelPad("Cód.repr."),7,68,200,20);
+		adic(new JLabelPad("Cód.comiss."),7,68,200,20);
 		adic(txtCodVend,7,88,70,20);
-		adic(new JLabelPad("Nome do representante"),80,68,200,20);
+		adic(new JLabelPad("Nome do comissionado"),80,68,200,20);
 		adic(txtDescVend,80,88,200,20);
 		adic(new JLabelPad("Cód.grupo"),7,108,200,20);
 		adic(txtCodGrup,7,128,70,20);

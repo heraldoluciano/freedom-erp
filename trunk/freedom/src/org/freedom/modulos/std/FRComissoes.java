@@ -72,8 +72,8 @@ public class FRComissoes extends FRelatorio {
     rgEmitRel.setAtivo(0,true);
     rgEmitRel.setAtivo(1,true);
     
-    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
-    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
     lcVend.montaSql(false, "VENDEDOR", "VD");
     lcVend.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVend);
@@ -87,9 +87,9 @@ public class FRComissoes extends FRelatorio {
     adic(txtDatafim,40,47,97,20);
     adic(rgEmitRel,150,7,130,65);
     
-    adic(new JLabelPad("Cód.repr."),7,67,250,20);
+    adic(new JLabelPad("Cód.comiss."),7,67,250,20);
     adic(txtCodVend,7,87,80,20);
-    adic(new JLabelPad("Nome do representante"),90,67,250,20);
+    adic(new JLabelPad("Nome do comissionado"),90,67,250,20);
     adic(txtDescVend,90,87,200,20);
     adic(cbNLiberada,7,107,100,20);
     adic(cbLiberada,110,107,97,20);
@@ -239,7 +239,7 @@ public class FRComissoes extends FRelatorio {
 
   				if (imp.pRow()==0) {
   					String sTitulo = "RELATORIO DE COMISSOES("+sTitDataFiltro+") - PERIODO DE "+sDataini+" ATE "+sDatafim;
-  					String sVendedor = "REPRESENTANTE: "+iCodVend+" - "+txtDescVend.getVlrString();
+  					String sVendedor = "COMISSIONADO: "+iCodVend+" - "+txtDescVend.getVlrString();
   					imp.say(imp.pRow()+0,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());

@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Tela de opções para o relatório de vendedores.
+ * Tela de opções para o relatório de comissionados.
  */
 
 package org.freedom.modulos.std;
@@ -44,9 +44,9 @@ public class DLRVendedor extends FFDialogo {
   private JLabelPad lbSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
   private JLabelPad lbCodFuncaoVend = new JLabelPad("Cód.Funcao");
-  private JLabelPad lbDescFuncaoVend = new JLabelPad("Descrição do Funcao do vendedor");
-  private JLabelPad lbVendedor = new JLabelPad("Cód.repr.");
-  private JLabelPad lbNomeVendedor = new JLabelPad("Nome do representante");
+  private JLabelPad lbDescFuncaoVend = new JLabelPad("Descrição do Funcao do comissionado");
+  private JLabelPad lbVendedor = new JLabelPad("Cód.comiss.");
+  private JLabelPad lbNomeVendedor = new JLabelPad("Nome do comissionado");
   private JLabelPad lbCodClasComi = new JLabelPad("Cód.Clas.Comi.");
   private JLabelPad lbDescClasComi = new JLabelPad("Descrição da classificação de comissão");
 
@@ -106,8 +106,8 @@ public class DLRVendedor extends FFDialogo {
 
     
 
-    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_PK,false));
-    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do representante",  ListaCampos.DB_SI,false));
+    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.",  ListaCampos.DB_PK,false));
+    lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado",  ListaCampos.DB_SI,false));
     lcVendedor.montaSql(false, "VENDEDOR", "VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);

@@ -116,8 +116,8 @@ public class FManutComis extends FFilho implements ActionListener {
     txtTotLib.setAtivo(false);
     txtTotPg.setAtivo(false);
     
-    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, txtDescVend, false));
-    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Descrição do representante", ListaCampos.DB_SI, false));
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, txtDescVend, false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Descrição do comissionado", ListaCampos.DB_SI, false));
     lcVend.montaSql(false,"VENDEDOR", "VD");
     lcVend.setReadOnly(true);
 	txtCodVend.setPK(true);
@@ -213,7 +213,7 @@ public class FManutComis extends FFilho implements ActionListener {
       return;
     }
     else if (txtCodVend.getText().trim().equals("")) {
-		Funcoes.mensagemInforma(this,"Código do representante é requerido!");          
+		Funcoes.mensagemInforma(this,"Código do comissionado é requerido!");          
       return;
     }
     else if (txtDataini.getVlrDate().after(txtDatafim.getVlrDate())) {

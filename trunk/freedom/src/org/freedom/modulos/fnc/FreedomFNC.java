@@ -66,7 +66,7 @@ public class FreedomFNC extends Aplicativo {
 	  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100101000,2, false, null);
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Setor", "Setor",'S',100101010,3, true, FSetor.class);
-	      addOpcao(100101000,TP_OPCAO_ITEM,"Vendedor", "Vendedor",'V',100101020,3, true, FVendedor.class);
+	      addOpcao(100101000,TP_OPCAO_ITEM,"Comissionado", "Comissionado",'i',100101020,3, true, FVendedor.class);
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de cliente...","TipoCli",'T',100101030,3, true, FTipoCli.class);
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Classificação de cliente...", "Classifição de Clientes", 'f',100101040,3, true, FClasCli.class);
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Cliente...", "Clientes",'C',100101050,3, true, FCliente.class);

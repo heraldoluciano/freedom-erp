@@ -135,7 +135,7 @@ public class DLBaixaComis extends FFDialogo {
     montaTabela();
     
     txtData.setVlrDate(new Date());
-    txtObs.setVlrString("PAGAMENTO DE COMISSÕES AO VENDEDOR: "+iCodV);
+    txtObs.setVlrString("PAGAMENTO DE COMISSÕES AO COMISSIONADO: "+iCodV);
     
   }
   private void montaTabela() {

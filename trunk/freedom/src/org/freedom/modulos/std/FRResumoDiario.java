@@ -72,8 +72,8 @@ public class FRResumoDiario extends FRelatorio {
     adic(txtDatafim,170,30,100,20);
         
 
-  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
-  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representate", ListaCampos.DB_SI, false));
+  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);
@@ -81,9 +81,9 @@ public class FRResumoDiario extends FRelatorio {
 	txtCodVend.setFK(true);
   	txtCodVend.setTabelaExterna(lcVend);
  
-  	adic(new JLabelPad("Cód.repr."),7,60,210,20);
+  	adic(new JLabelPad("Cód.comiss."),7,60,210,20);
 	adic(txtCodVend,7,80,60,20);
-	adic(new JLabelPad("Nome do representante"),70,60,210,20);
+	adic(new JLabelPad("Nome do comissionado"),70,60,210,20);
 	adic(txtDescVend,70,80,200,20);
     
     
