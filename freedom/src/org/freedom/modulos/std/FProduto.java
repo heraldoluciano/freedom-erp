@@ -542,7 +542,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     txtSldConsigLote.setSoLeitura(true);
     txtSldLiqLote.setSoLeitura(true);
 
-    adicCampo(txtCodLote, 7, 20, 110, 20, "CodLote", "Cód.lote", ListaCampos.DB_FK, true);
+    adicCampo(txtCodLote, 7, 20, 110, 20, "CodLote", "Cód.lote", ListaCampos.DB_PK, true);
     adicCampo(txtDiniLote, 120, 20, 100, 20, "DIniLote", "Data inicial", ListaCampos.DB_SI, false);
     adicCampo(txtVenctoLote, 223, 20, 100, 20, "VenctoLote", "Vencimento", ListaCampos.DB_SI, true);
     adicCampo(txtSldLote, 7, 60, 80, 20, "SldLote", "Saldo", ListaCampos.DB_SI, false);
@@ -910,6 +910,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     con = cn;
     sPrefs = getPrefs();
     montaTela();
+    lcLote.setConexao(cn);
     lcMoeda.setConexao(cn);      
     lcUnid.setConexao(cn);
     lcFisc.setConexao(cn);      
@@ -920,7 +921,6 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 	lcForFK.setConexao(cn);
     lcFatConv.setConexao(cn);
 	lcFor.setConexao(cn);
-    lcLote.setConexao(cn);
     lcFoto.setConexao(cn);
     lcPreco.setConexao(cn);
     lcClasCliPreco.setConexao(cn);
