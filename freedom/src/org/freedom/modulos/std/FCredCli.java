@@ -40,6 +40,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Painel;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
@@ -88,6 +89,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtRgMaeCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtSSPMaeCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtEmpTrabCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private Tabela tabFicha = new Tabela();
 
 
   private JLabel lbNatCli = null;
@@ -97,14 +99,16 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
   
-  private Navegador navFicha = new Navegador(true);
+  private Navegador navFicha = new Navegador(false);
   
   public FCredCli() {
     setTitulo("Ficha cadastral/Crédito por cliente");
     setAtribos(50, 10, 600, 520);
 
     lcFicha.setMaster(lcCampos);
-   
+    lcCampos.adicDetalhe(lcFicha);
+    lcFicha.setTabela(tabFicha);
+
     lcTipoCli.add(new GuardaCampo( txtCodTipoCli, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true));
     lcTipoCli.add(new GuardaCampo( txtDescTipoCli, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false));
     lcTipoCli.montaSql(false, "TIPOCLI", "VD");    
@@ -158,9 +162,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	adicCampo(txtDDDCelCli, 340, 180,37, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtCelCli, 380, 180, 100, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
 		
-
-
-  	
   	
   	lbNatCli = adicCampo(txtNatCli, 7, 220, 200, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
   	lbUfNatCli = adicCampo(txtUFNatCli, 210, 220, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
@@ -170,14 +171,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	lcCampos.setPodeIns(false);
 	lcCampos.setPodeExc(false);
     lcCampos.setQueryInsert(false);
-        
-      
-    
-    
-    
-    
-    
-    
     
 
 	setPainel(pinFicha);
@@ -185,6 +178,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 
 	setListaCampos(lcFicha);
     setNavegador(navFicha);
+    //navFicha.
     pnFicha.add(pinRodFicha, BorderLayout.SOUTH);
     pnFicha.add(pinFicha, BorderLayout.CENTER);
 
@@ -192,27 +186,17 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     pinRodFicha.adic(navFicha,0,50,270,25);
    
 
-
-    adicCampoInvisivel(txtCodCli,"codcli","CodCli",ListaCampos.DB_PF,true);
+    //adicCampoInvisivel(txtCodCli,"codcli","Cód.cli.",ListaCampos.DB_PF,true);
     adicCampo(txtPaiCli, 7, 20, 80, 20, "PaiCli", "Nome do pai", ListaCampos.DB_SI, false);
     
-    
-    
-    
     setListaCampos( false, "CLICOMPL", "VD");
-	lcFicha.setPodeIns(false);
-	lcFicha.setPodeExc(false);
+	//lcFicha.setPodeIns(false);
+	//lcFicha.setPodeExc(false);
     lcFicha.setQueryInsert(false);
-
-     
-    
-    
-    
-    
+	lcFicha.setQueryCommit(false);
+    lcFicha.montaTab();    
     habCampos(false);
 	
-    
-    
     
   }
   

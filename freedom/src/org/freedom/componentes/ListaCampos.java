@@ -1987,7 +1987,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
   private void carregaGridInsert(boolean b) {
     Vector vVals = new Vector();
     int iContaDesc = 0;
-    if (b) {
+    if ((b) && (tab!=null)) {
       for (int i=0; i<(getComponentCount()+iNumDescs); i++) {
 /*        JOptionPane.showMessageDialog(null,"I :"+i+"\niContaDesc"+iContaDesc+
                                            "\nNome: "+((GuardaCampo) getComponent(i-iContaDesc)).getNomeCampo()+
@@ -2011,7 +2011,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
   }
   private void carregaGridEdit(boolean b) {
     int iContaDesc = 0;
-    if (b) {
+    if ((b) && (tab!=null)) {
       int iLin = getNumLinha();
       if (iLin >= 0) {
         for (int i=0; i<(getComponentCount()+iNumDescs); i++) {
@@ -2035,7 +2035,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
     }
   }
   private void carregaGridDelete(boolean b) {
-    if (b) {
+    if ((b) && (tab!=null)) {
       int iLin = getNumLinha();
       tab.tiraLinha(iLin);
     }
