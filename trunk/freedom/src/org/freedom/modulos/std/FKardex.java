@@ -151,6 +151,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 tab.adicColuna("EQ");
                 tab.adicColuna("Saldo");
                 tab.adicColuna("Custo MPM");
+                tab.adicColuna("Cód.mv.pr.");
                 tab.setTamColuna(90,0);
                 tab.setTamColuna(40,1);
                 tab.setTamColuna(70,2);
@@ -161,6 +162,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 tab.setTamColuna(30,7);
                 tab.setTamColuna(85,8);
                 tab.setTamColuna(90,9);
+                tab.setTamColuna(70,9);
                 
                 btExec.addActionListener(this);
                 
@@ -181,7 +183,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 }
                 String sSQL = "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,"+
                               "MP.CODLOTE,MP.QTDMOVPROD,MP.PRECOMOVPROD,MP.ESTOQMOVPROD, " +
-                              "MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD"+
+                              "MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD, MP.CODMOVPROD"+
                               " FROM EQMOVPROD MP, EQTIPOMOV TM WHERE MP.CODPROD=? " +
                               "AND MP.DTMOVPROD BETWEEN ? AND ? AND "+
                               "MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND " +
@@ -207,6 +209,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                                 tab.setValor(rs.getString("ESTOQMOVPROD") ,iLinha,7);
                                 tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(9,1,rs.getString("SLDMOVPROD"))),iLinha,8);
                                 tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("CUSTOMPMMOVPROD"))),iLinha,9);
+                                tab.setValor(new StringDireita(""+rs.getInt("CODMOVPROD")),iLinha,10);
                                 iLinha++;
                         }
                         rs.close();
