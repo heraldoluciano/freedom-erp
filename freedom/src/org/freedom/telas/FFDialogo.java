@@ -57,9 +57,9 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   public  JButton btOK = new JButton("OK",Icone.novo("btOk.gif"));
   private JPanelPad pnBox = new JPanelPad(JPanelPad.TP_JPANEL);
   public  JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,3,3));
+  protected JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER,3,3));
   private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
-  private JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  protected JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pin = new JPanelPad();
   public  Container c = getContentPane();
   private Border br = BorderFactory.createEtchedBorder();

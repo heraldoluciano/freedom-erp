@@ -222,7 +222,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				mOpcao = (new JMenuPad(iCodSis, iCodMod, iOpcao, iNivel));
 			} else if (iTipo == TP_OPCAO_ITEM) {
 				mOpcao = (new JMenuItemPad(iCodSis, iCodMod, iOpcao, iNivel,
-						tela));
+						tela, titulo));
 			}
 			mOpcao.setText(sCaption);
 			mOpcao.setMnemonic(cAtalho);
@@ -362,6 +362,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					tela.dispose();
 				} else if (((JMenuItem) oTemp).getText().equals("Suporte")) {
 					FSuporte tela = new FSuporte();
+					tela.setConexao(con);
 					tela.setVisible(true);
 					tela.dispose();
 				}
@@ -370,10 +371,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				if (oTemp instanceof JMenuItemPad) {
 					Class telaClass = ((JMenuItemPad) oTemp).getTela();
 					if (telaClass != null) {
-						if (telaPrincipal.temTela(((JMenuItemPad) oTemp).getText()) == false) {
+						if (telaPrincipal.temTela(((JMenuItemPad) oTemp).getTitulo()) == false) {
 							try {
 								FFilho tela = (FFilho) telaClass.newInstance();
-								telaPrincipal.criatela(((JMenuItemPad) oTemp).getText(), tela,
+								telaPrincipal.criatela(((JMenuItemPad) oTemp).getTitulo(), tela,
 										con);
 							} catch (Exception e) {
 
