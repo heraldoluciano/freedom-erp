@@ -56,6 +56,7 @@ public class FTipoMov extends FDados {
   private JRadioGroup rgESTipoMov = null;
   private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Lanc. Fiscal?","S","N");
   private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont. Estoque?","S","N");
+  private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Soma rel. vendas?","S","N");
   public FTipoMov() {
     setTitulo("Cadastro de Tipos de Movimento");
     setAtribos( 50, 50, 410, 440);
@@ -157,6 +158,7 @@ public class FTipoMov extends FDados {
     
     adicDB(chbFiscalTipoMov, 7, 270, 107, 20, "FiscalTipoMov", "Lançamento",JTextFieldPad.TP_STRING,true);
     adicDB(chbEstoqTipoMov, 140, 270, 110, 20, "EstoqTipoMov", "Estoque",JTextFieldPad.TP_STRING,true);
+    adicDB(chbSomaTipoMov, 260, 270, 200, 20, "SomaVdTipoMov", "Soma venda",JTextFieldPad.TP_STRING,true);
     
     adicDB(cbTipoMov, 7, 310, 250, 30, "TipoMov", "Tipo de Movimento",JTextFieldPad.TP_STRING,true);
     adicCampo(txtEspecieTipomov, 280,320,80 ,20, "EspecieTipomov", "Espécie", JTextFieldPad.TP_STRING,4,9,false,false,null,true); 
