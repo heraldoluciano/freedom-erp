@@ -37,9 +37,9 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 		  
 		    addOpcao(100100000,TP_OPCAO_MENU,"Conveniado","",'C',100101000,2, false, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de Conveniado","",'T',100101010,3, true, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Atribuições","",'A',100101020,3, true, null);
-		      addOpcao(100101000,TP_OPCAO_ITEM,"Encaminhador","",'E',100101030,3, true, null);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de Conveniado","Tipo de conveniados",'T',100101010,3, true, FTipoConv.class);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Atribuições","Abribuições",'A',100101020,3, true, FAtribuicao.class);
+		      addOpcao(100101000,TP_OPCAO_ITEM,"Encaminhador","Encaminhador",'E',100101030,3, true, FEncaminhador.class);
 		      addOpcao(100101000,TP_OPCAO_ITEM,"Conveniados","",'C',100101040,3, true, null);
 		      
 		    addOpcao(101000000,TP_OPCAO_MENU,"Atendente","",'A',100102000,2, false, null);
@@ -72,7 +72,7 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 		  addSeparador(1200000000);
 		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Orçamentos","",'P',120200000,1, true, null);
 		  addOpcao(1200000000,TP_OPCAO_ITEM,"Aprova Orçamentos","",'A',120300000,1, true, null);
-		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Autorizações","",'e',120400000,1, true, null);
+		  addOpcao(1200000000,TP_OPCAO_ITEM,"Pesquisa Autorizações","Pesquisa Autorização",'e',120400000,1, true, FConsAutoriz.class);
 		 
 		addBotao("btAtendimento.gif","Atendimento",110100000);
 		addBotao("btOrcamento.gif","Orçamento",120100000);
