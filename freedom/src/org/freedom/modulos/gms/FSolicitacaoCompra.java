@@ -89,6 +89,10 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			19, 0);
+	private JTextFieldPad txtCodFilialCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
+			10, 0);
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,
+			50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			10, 0);
 	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(
@@ -170,7 +174,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
 
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
@@ -235,8 +240,11 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					ListaCampos.DB_FK, txtDescProd, false);
 		}
 
-		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
-		adicCampoInvisivel(txtAnoCC, "AnoCC", "ano c.c.", ListaCampos.DB_SI, false);
+		adicCampo(txtCodCC, 7, 60, 60, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
+		txtCodCC.setEditable(false);
+		adicCampo(txtAnoCC, 70, 60, 60, 20, "AnoCC", "ano c.c.", ListaCampos.DB_FK, false);
+		txtAnoCC.setEditable(false);
+		adicDescFK(txtDescCC, 140, 60, 60, 20, "DescCC", "desc c.c.");
 		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_SI,
 				false);
 		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Cód.almox.",
@@ -608,6 +616,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	public void afterInsert(InsertEvent ievt) {
 		txtAnoCC.setVlrInteger(anoCC);
 		txtCodCC.setVlrString(codCC);
+		lcCC.carregaDados();
+		//txtCodCC.atualizaFK();
 		txtCodAlmoxarife.setVlrInteger(codAlmox);
 		txtCodAlmoxarife.atualizaFK();
 		txtCodUsu.setVlrString(Aplicativo.strUsuario);
