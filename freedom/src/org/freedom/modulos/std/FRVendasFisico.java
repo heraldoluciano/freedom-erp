@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -92,9 +91,9 @@ public class FRVendasFisico extends FRelatorio {
 	  	txtCodVend.setTabelaExterna(lcVend);
 	 
 	  	adic(new JLabelPad("Cód.comiss."),7,55,210,20);
-		adic(txtCodVend,7,75,60,20);
-		adic(new JLabelPad("Nome do comissionado"),70,55,210,20);
-		adic(txtDescVend,70,75,200,20);
+		adic(txtCodVend,7,75,70,20);
+		adic(new JLabelPad("Nome do comissionado"),80,55,210,20);
+		adic(txtDescVend,80,75,190,20);
 			
   }
   private boolean comRef() {
@@ -139,8 +138,8 @@ public class FRVendasFisico extends FRelatorio {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		String sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}  
      
      
@@ -160,13 +159,13 @@ public class FRVendasFisico extends FRelatorio {
     String sCodGrup = "";
     String sOrder = "";
     String sCodProd = "";
-    imp.montaCab();
+   
     String sDataini = "";
     String sDatafim = "";
     
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
-    imp.setTitulo("Relatório Fisco de Vendas");
+    
     if (comRef()) {
     	sCodProd = "REFPROD";
     }
@@ -207,47 +206,32 @@ public class FRVendasFisico extends FRelatorio {
       	System.out.println("GRUPO:"+rs.getString(1)+" DESC: "+rs.getString("DescProd"));
         if (imp.pRow()>=(linPag-1)) {
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
              imp.incPags();
              imp.eject();
         }
         if (imp.pRow()==0) {
-          imp.impCab(136, false);
-          String sTitulo = "RELATORIO FISICO DE VENDAS   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+        	imp.montaCab();
+        	imp.setTitulo("Relatório Fisco de Vendas");
+        	imp.setSubTitulo("RELATORIO FISICO DE VENDAS   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+            imp.impCab(136, true);
           
       	  if (sCab.length() > 0) {
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,""+imp.comprimido());
       	  	imp.say(imp.pRow()+0,0,sCab);
-      	  }
-          
-      
-          
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-    	  
-          
-          imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
+      	  }              
          
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-          imp.say(imp.pRow()+0,136,"|");
-         
-          
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|            |");
           imp.say(imp.pRow()+0,14,"                              |");
           imp.say(imp.pRow()+0,45,"             V E N D A           |");
           imp.say(imp.pRow()+0,79,"        C U S T O        |");
-          imp.say(imp.pRow()+0,105,"         LUCRO ESTIMADO       |");
+          imp.say(imp.pRow()+0,105,"         LUCRO ESTIMADO      |");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"| Referência |");
           imp.say(imp.pRow()+0,14," Descrição                    |");
@@ -258,13 +242,13 @@ public class FRVendasFisico extends FRelatorio {
           imp.say(imp.pRow()+0,91," Vlr. Total  |");
           imp.say(imp.pRow()+0,105," P\\ Unid. ");
           imp.say(imp.pRow()+0,115," Vlr. Total ");
-          imp.say(imp.pRow()+0,127," Margem |");
+          imp.say(imp.pRow()+0,127," Margem|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
         }
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         if (!sCodGrup.equals(rs.getString(1).substring(0,4))) {
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           if (!bPrim) {
             imp.say(imp.pRow()+0,0,"|            |");
@@ -277,9 +261,9 @@ public class FRVendasFisico extends FRelatorio {
             bTotalMargemGrupo = bTotalMargemGrupo.multiply(new BigDecimal("100"));
             bTotalMargemGrupo = (new BigDecimal("100")).subtract(bTotalMargemGrupo);
             bTotalMargemGrupo = bTotalMargemGrupo.setScale(2);
-            imp.say(imp.pRow()+0,105," LUCRO: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalLucroGrupo)+"  "+Funcoes.copy(""+bTotalMargemGrupo,0,6)+" |");
+            imp.say(imp.pRow()+0,105," LUCRO: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalLucroGrupo)+"  "+Funcoes.copy(""+bTotalMargemGrupo,0,6)+"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             bTotalVenda = bTotalVenda.add(bTotalVendaGrupo);
             bTotalCusto = bTotalCusto.add(bTotalCustoGrupo);
@@ -292,10 +276,10 @@ public class FRVendasFisico extends FRelatorio {
           }
           String sGrup = "GRUPO: "+rs.getString(1).substring(0,4)+" - "+rs.getString("DescGrup");
           imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,(136-sGrup.length())/2,sGrup);
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,(135-sGrup.length())/2,sGrup);
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           bPrim = false;
         }
@@ -326,14 +310,14 @@ public class FRVendasFisico extends FRelatorio {
            bMargem = new BigDecimal(0);
         bMargem = bMargem.multiply(new BigDecimal("100"));
         bMargem = bMargem.setScale(2);
-        imp.say(imp.pRow()+0,129,Funcoes.copy(""+bMargem,0,6)+" |");
+        imp.say(imp.pRow()+0,129,Funcoes.copy(""+bMargem,0,6)+"|");
         bTotalVendaGrupo = bTotalVendaGrupo.add(new BigDecimal(rs.getString(8) == null ? "0.0" : rs.getString(8)));
         bTotalCustoGrupo = bTotalCustoGrupo.add(bTotCusto);
         bTotalDescGrupo = bTotalDescGrupo.add(new BigDecimal(rs.getString(7) == null ? "0.0" : rs.getString(7)));
         bTotalLucroGrupo = bTotalLucroGrupo.add(bTotLucro);
       }
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow()+0,0,"|            |");
       imp.say(imp.pRow()+0,14,"             Totais do Grupo: |");
@@ -345,24 +329,24 @@ public class FRVendasFisico extends FRelatorio {
       bTotalMargemGrupo = bTotalMargemGrupo.multiply(new BigDecimal("100"));
       bTotalMargemGrupo = (new BigDecimal("100")).subtract(bTotalMargemGrupo);
       bTotalMargemGrupo = bTotalMargemGrupo.setScale(2);
-      imp.say(imp.pRow()+0,105," LUCRO: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalLucroGrupo)+"  "+Funcoes.copy(""+bTotalMargemGrupo,0,6)+" |");
+      imp.say(imp.pRow()+0,105," LUCRO: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalLucroGrupo)+"  "+Funcoes.copy(""+bTotalMargemGrupo,0,6)+"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
       bTotalVenda = bTotalVenda.add(bTotalVendaGrupo);
       bTotalCusto = bTotalCusto.add(bTotalCustoGrupo);
       bTotalDesc = bTotalDesc.add(bTotalDescGrupo);
       bTotalLucro = bTotalLucro.add(bTotalLucroGrupo);
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow()+0,0,"|");
       imp.say(imp.pRow()+0,51,"R E S U M O  G E R A L");
-      imp.say(imp.pRow(),136,"|");
+      imp.say(imp.pRow(),135,"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow()+0,0,"|");
       imp.say(imp.pRow()+0,30,"VENDA TOTAL: "+Funcoes.strDecimalToStrCurrency(20,2,""+bTotalVenda)+"   "+
                               "LUCRO ESTIMADO: "+Funcoes.strDecimalToStrCurrency(20,2,""+bTotalLucro));
-      imp.say(imp.pRow(),136,"|");
+      imp.say(imp.pRow(),135,"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow()+0,0,"|");
       if (bTotalVenda.doubleValue() != 0)
@@ -371,13 +355,13 @@ public class FRVendasFisico extends FRelatorio {
       bTotalMargem = bTotalMargem.setScale(2);
       imp.say(imp.pRow()+0,30,"CUSTO TOTAL: "+Funcoes.strDecimalToStrCurrency(20,2,""+bTotalCusto)+"   "+
                               "MARGEM MEDIA: "+Funcoes.copy(bTotalMargem+"%",0,6));
-      imp.say(imp.pRow(),136,"|");
+      imp.say(imp.pRow(),135,"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow()+0,0,"|");
       imp.say(imp.pRow()+0,30,"DESCONTOS:   "+Funcoes.strDecimalToStrCurrency(20,2,""+bTotalDesc));
-      imp.say(imp.pRow(),136,"|");
+      imp.say(imp.pRow(),135,"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       
       
       imp.eject();

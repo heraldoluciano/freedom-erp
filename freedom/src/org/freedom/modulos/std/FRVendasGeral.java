@@ -76,9 +76,9 @@ public class FRVendasGeral extends FRelatorio {
   	txtCodVend.setTabelaExterna(lcVend);
  
   	adic(new JLabelPad("Cód.comiss."),7,60,210,20);
-	adic(txtCodVend,7,80,60,20);
-	adic(new JLabelPad("Nome do comissionado"),70,60,210,20);
-	adic(txtDescVend,70,80,200,20);
+	adic(txtCodVend,7,80,70,20);
+	adic(new JLabelPad("Nome do comissionado"),80,60,210,20);
+	adic(txtDescVend,80,80,190,20);
     
     
   }
@@ -101,15 +101,15 @@ public class FRVendasGeral extends FRelatorio {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		String sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}  
   	
   	
   	
     ImprimeOS imp = new ImprimeOS("",con);
     imp.verifLinPag();
-    imp.montaCab();
+    
     String sDataini = "";
     String sDatafim = "";
     String sDatasaidavenda = "";
@@ -122,7 +122,7 @@ public class FRVendasGeral extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
     
-    imp.setTitulo("Relatório de Vendas Geral");
+    
     String sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,"+
                   "V.STATUSVENDA,V.DOCVENDA,"+
                   "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,"+
@@ -150,31 +150,19 @@ public class FRVendasGeral extends FRelatorio {
       imp.limpaPags();
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,5,"RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
-           imp.say(imp.pRow()+0,136,"|");
-         
+        	imp.montaCab();
+        	imp.setTitulo("Relatório de Vendas Geral");
+        	imp.setSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+            imp.impCab(136, true);
+          
            if (sCab.length() > 0) {
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,""+imp.comprimido());
       	  	imp.say(imp.pRow()+0,0,sCab);
       	  }
            
-           
-           
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
-           
+           imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");           
                     
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|Dt.Saida");
@@ -185,9 +173,9 @@ public class FRVendasGeral extends FRelatorio {
            imp.say(imp.pRow()+0,93,"| Desconto");
            imp.say(imp.pRow()+0,105,"|  Liquido");
            imp.say(imp.pRow()+0,119,"| F.Pagto.");
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
          
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -209,7 +197,7 @@ public class FRVendasGeral extends FRelatorio {
             imp.say(imp.pRow()+0,93,"|"+(rs.getDouble("VlrDescVenda") > 0 ? Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescvenda")) : Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescitvenda"))));
             imp.say(imp.pRow()+0,105,"| "+Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrliqvenda")));
             imp.say(imp.pRow()+0,119,"| "+Funcoes.copy(rs.getString("descplanopag"),0,13));
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
            
          }
              
@@ -228,16 +216,16 @@ public class FRVendasGeral extends FRelatorio {
         
       }
      
-      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,"|");
       imp.say(imp.pRow()+0,64," Total Geral    |"+" "+
       		Funcoes.strDecimalToStrCurrency(10,2,"" +bTotalVal)+" |"+""+
 			Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDesc)+" |"+
 			Funcoes.strDecimalToStrCurrency(11,2,"" +bTotalLiq)+"  |");
-      imp.say(imp.pRow()+0,135," |");
+      imp.say(imp.pRow()+0,135,"|");
       
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       
       imp.eject();
       
