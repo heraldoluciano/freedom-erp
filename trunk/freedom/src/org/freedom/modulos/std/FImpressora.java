@@ -37,7 +37,7 @@ public class FImpressora extends FDados {
   private JTextFieldPad txtNSerieImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
   //private JTextFieldPad txtPortaWinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   //private JTextFieldPad txtPortaLinImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 60, 0);
-  private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+  private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldFK txtDescPapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JComboBoxPad cbTipoImp = null;
   private JComboBoxPad cbDestImp = null;

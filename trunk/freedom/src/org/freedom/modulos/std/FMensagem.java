@@ -37,7 +37,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FMensagem extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-  private JTextAreaPad txaMens= new JTextAreaPad();
+  private JTextAreaPad txaMens= new JTextAreaPad(10000);
   private JScrollPane spnMen = new JScrollPane(txaMens);
   public FMensagem () {
     setTitulo("Cadastro de mensagens");

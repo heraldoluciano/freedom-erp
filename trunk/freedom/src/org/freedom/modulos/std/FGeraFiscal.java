@@ -54,8 +54,8 @@ import org.freedom.telas.FFilho;
 public class FGeraFiscal extends FFilho implements ActionListener {
   private Painel pinCliente = new Painel(600,110);
   private JPanel pnGrid = new JPanel(new GridLayout(2,1));
-  private JTextFieldPad txtDataini = new JTextFieldPad();
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,0,10);
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,0,10);
   private JCheckBoxPad cbEntrada = new JCheckBoxPad("Entrada","S","N");
   private JCheckBoxPad cbSaida = new JCheckBoxPad("Saida","S","N");
   private Tabela tab1 = new Tabela();
@@ -91,8 +91,6 @@ public class FGeraFiscal extends FFilho implements ActionListener {
     c.add(pinCliente,BorderLayout.NORTH);
     c.add(pnGrid,BorderLayout.CENTER);
     
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,0,10);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,0,10);
     txtDataini.setRequerido(true);
     txtDatafim.setRequerido(true);
     
