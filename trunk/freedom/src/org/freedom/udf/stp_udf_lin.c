@@ -10,11 +10,16 @@ char *ib_password(char *val) {
 
 char *printLog(char *val) {
 	FILE *myfile;
-	char* fname = "fb_freedom.log";
-	myfile = fopen (fname, "w");
-	if (!myfile) 
-	  printf("File %s not open\n", fname);
-    fprintf(myfile, val);
-	fclose(myfile);
-	return (char *)val;
+	char* fname = "/fb_freedom.log";
+	myfile = fopen (fname, "a");
+	if (!myfile) {
+	   printf("File %s not open\n", fname);
+	   val = "Erro";
+	}
+    else {
+       fprintf(myfile, "\n");
+       fprintf(myfile, val);
+	   fclose(myfile);
+	}
+    return (char *)val;
 }
