@@ -104,7 +104,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
     private JCheckBoxPad cbJurosPosCalc = null;
 	private JCheckBoxPad cbRgCliObrig = null;
 	private JCheckBoxPad cbCliMesmoCnpj = null;
-	private JCheckBoxPad cbCnpjObrigCli = null;
+	private JCheckBoxPad cbCnpjCliObrig = null;
+	private JCheckBoxPad cbCnpjForObrig = null;
+	private JCheckBoxPad cbInscEstForObrig = null;
 	private JCheckBoxPad cbEstLotNeg = null;
 	private JCheckBoxPad cbEstNeg = null;
 	private JCheckBoxPad cbNatVenda = null;
@@ -304,16 +306,24 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbCliMesmoCnpj = new JCheckBoxPad("Permitir clientes com mesmo CNPJ ?", "S", "N");
 		cbCliMesmoCnpj.setVlrString("N");
 
-		cbCnpjObrigCli = new JCheckBoxPad("CNPJ Obrigatório para o cadastro de clientes ?", "S", "N");
-		cbCnpjObrigCli.setVlrString("S");
+		cbCnpjCliObrig = new JCheckBoxPad("CNPJ obrigatório para o cadastro de clientes ?", "S", "N");
+		cbCnpjCliObrig.setVlrString("S");
+
+		cbCnpjForObrig = new JCheckBoxPad("CNPJ obrigatório para o cadastro de fornecedores ?", "S", "N");
+		cbCnpjForObrig.setVlrString("S");
+
+		cbInscEstForObrig = new JCheckBoxPad("Inscrição estadual obrigatória para o cadastro de fornecedores ?", "S", "N");
+		cbInscEstForObrig.setVlrString("S");
 		
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
 		adicCampo(txtAnoCC,7,25,100,20,"AnoCentroCusto","Ano Base C.C.",ListaCampos.DB_SI,true);
 		adicDB(cbRgCliObrig, 110,25,180,20, "RgCliObrig", "",true);
 		adicDB(cbCliMesmoCnpj, 7,50,250,20, "CliMesmoCnpj", "",true);
-		adicDB(cbCnpjObrigCli, 7,70,300,20, "CnpjObrigCli", "",true);
-		adicCampo(txtCasasDec, 7,110,100,20, "CasasDec", "Casas Decimais",ListaCampos.DB_SI,true);
+		adicDB(cbCnpjCliObrig, 7,70,300,20, "CnpjObrigCli", "",true);
+		adicDB(cbCnpjForObrig, 7,90,400,20, "CnpjForObrig", "",true);
+		adicDB(cbInscEstForObrig, 7,110,400,20, "InscEstForObrig", "",true);
+		adicCampo(txtCasasDec, 7,150,100,20, "CasasDec", "Casas Decimais",ListaCampos.DB_SI,true);
 		
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
