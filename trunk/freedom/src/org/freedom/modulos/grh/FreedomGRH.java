@@ -30,26 +30,38 @@ public class FreedomGRH extends Aplicativo {
 		super("iconAtendimento32.gif","splashGMS.jpg","FreedomGMS - Módulo de gerenciamento de mateirais e serviços",1,8);      		
 		
 		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false);
-			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'T',100100000,1,false);
-		    	addOpcao(100100000,TP_OPCAO_MENU,"Empregados",'m',100101000,2,false);
-		    		addOpcao(100101000,TP_OPCAO_ITEM,"Empregados", 'E',100101010,3,true);		    														   
-		    		addSeparador(100101000);
-		    		addOpcao(100101000,TP_OPCAO_ITEM,"Turnos", 'C',100101020,3,true);
+			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'T',100100000,1,false);		    	
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Empregados", 'E',100101000,2,true);		
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Turnos", 'R',100102000,2,true);
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Funçao", 'F',100103000,2,true);
+	    		addOpcao(100100000,TP_OPCAO_ITEM,"Departamento", 'D',100104000,2,true);
 		        	    				
 	    ajustaMenu();
     }
 
     public void execOpcao(int iOpcao) {
-        if (iOpcao==100101010) {
+        if (iOpcao==100101000) {
             if (telaPrincipal.temTela("Empregados")==false) {
               FEmpregado tela = new FEmpregado();
               telaPrincipal.criatela("Empregados",tela,con);
             }
         }
-        else if (iOpcao==100101020) {
+        else if (iOpcao==100102000) {
             if (telaPrincipal.temTela("Turnos")==false) {
 //              FTurnos tela = new FTurnos();
 //              telaPrincipal.criatela("Turnos",tela,con);
+            } 
+        }  
+        else if (iOpcao==100103000) {
+            if (telaPrincipal.temTela("Função")==false) {
+              FFuncao tela = new FFuncao();
+              telaPrincipal.criatela("Função",tela,con);
+            } 
+        }  
+        else if (iOpcao==100104000) {
+            if (telaPrincipal.temTela("Departamento")==false) {
+              FDepto tela = new FDepto();
+              telaPrincipal.criatela("Departamento",tela,con);
             } 
         }  
     } 
