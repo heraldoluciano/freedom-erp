@@ -29,6 +29,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 import org.freedom.componentes.JPanelPad;
+
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
@@ -67,6 +69,9 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   private JTextFieldPad txtCepFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtFoneFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
   private JTextFieldPad txtFaxFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtDDDFoneFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtDDDFaxFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtDDDCelFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtEmailFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtContFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtCelFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
@@ -119,14 +124,20 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     adicCampo(txtCidFor, 170, 220, 157, 20, "CidFor", "Cidade", ListaCampos.DB_SI, false);
     adicCampo(txtCepFor, 330, 220, 87, 20, "CepFor", "Cep", ListaCampos.DB_SI, false);
     adicCampo(txtUFFor, 420, 220, 30, 20, "UFFor", "UF", ListaCampos.DB_SI, false);
-    adicCampo(txtFoneFor, 7, 260, 100, 20, "FoneFor", "Telefone", ListaCampos.DB_SI, false);
-    adicCampo(txtFaxFor, 110, 260, 97, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false);
-    adicCampo(txtEmailFor, 210, 260, 240, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false);
-    adicCampo(txtCelFor , 7,    300, 100, 20, "CelFor",   "Celular", ListaCampos.DB_SI, false);
-    adicCampo(txtContFor,110,   300, 340, 20, "ContFor",  "Contato", ListaCampos.DB_SI, false);
+    
+    adicCampo(txtDDDFoneFor, 7, 260, 47, 20, "DDDFoneFor", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtFoneFor, 57, 260, 90, 20, "FoneFor", "Telefone", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDFaxFor, 150, 260, 47, 20, "DDDFaxFor", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtFaxFor, 200, 260, 90, 20, "FaxFor", "Fax", ListaCampos.DB_SI, false);
+    adicCampo(txtDDDCelFor, 293, 260, 47, 20, "DDDCelFor", "DDD", ListaCampos.DB_SI, false);
+    adicCampo(txtCelFor , 343,    260, 107, 20, "CelFor",   "Celular", ListaCampos.DB_SI, false);
+
+    
+    adicCampo(txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false);
+    adicCampo(txtContFor,230,   300, 220, 20, "ContFor",  "Contato", ListaCampos.DB_SI, false);
     txtCnpjFor.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepFor.setMascara(JTextFieldPad.MC_CEP);
-    txtFoneFor.setMascara(JTextFieldPad.MC_FONEDDD);
+    txtFoneFor.setMascara(JTextFieldPad.MC_FONE);
     txtFaxFor.setMascara(JTextFieldPad.MC_FONE);
     adicTab("Observações", pnObs);
     adicDBLiv(txaObs, "ObsFor", "Observações",false);
@@ -422,12 +433,11 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
       txtCnpjFor.requestFocus();
     }
     else if (txtInscFor.getText().trim().length() < 1) {
-      if (Funcoes.mensagemConfirma(this, "Inscrição Estadual em branco! Inserir ISENTO?")==0 )
+      if (Funcoes.mensagemConfirma(this, "Inscrição Estadual em branco! Inserir ISENTO?")==JOptionPane.OK_OPTION ) 
         txtInscFor.setVlrString("ISENTO");
-      else {
         pevt.cancela();
         txtInscFor.requestFocus();
-      }
+        return;
     }
     else if (txtInscFor.getText().trim().toUpperCase().compareTo("ISENTO") == 0)
       return;
