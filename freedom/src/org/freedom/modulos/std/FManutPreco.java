@@ -113,7 +113,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
 
     vDescOrigem.addElement("Custo MPM");
     vDescOrigem.addElement("Custo PEPS");
-    vDescOrigem.addElement("Preço Base");
+    vDescOrigem.addElement("Preço base");
     vDescOrigem.addElement("Filtros(Tab.Preços)");
     vSelOrigem.addElement("M");
     vSelOrigem.addElement("P");
@@ -124,8 +124,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtCodMarca.setNomeCampo("CodMarca");
     txtCodMarca.setTipo(JTextFieldPad.TP_STRING,14,0);
     txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.Marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarcax");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Decrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarcax");
+    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Decrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
     lcMarca.montaSql(false,"MARCA", "EQ");
     lcMarca.setReadOnly(true);
     txtCodMarca.setTabelaExterna(lcMarca);
@@ -135,8 +135,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtCodGrup.setNomeCampo("CodGrup");
     txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
     txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.Grup", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupx");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Decrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
+    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrupx");
+    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Decrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
     lcGrup.montaSql(false,"GRUPO", "EQ");
     lcGrup.setReadOnly(true);
     txtCodGrup.setTabelaExterna(lcGrup);
@@ -146,8 +146,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
     txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.PlanoPag", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
+    lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
     lcPlanoPag.montaSql(false,"PLANOPAG", "FN");
     lcPlanoPag.setReadOnly(true);
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
@@ -157,8 +157,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtCodTab.setNomeCampo("CodTab");
     txtCodTab.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescTab.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcTabPreco.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Cód.Tab.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
-    lcTabPreco.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
+    lcTabPreco.add(new GuardaCampo( txtCodTab, 7, 100, 80, 20, "CodTab", "Cód.tab.preço", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTabx");
+    lcTabPreco.add(new GuardaCampo( txtDescTab, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTabx");
     lcTabPreco.montaSql(false,"TABPRECO", "VD");
     lcTabPreco.setReadOnly(true);
     txtCodTab.setTabelaExterna(lcTabPreco);
@@ -168,8 +168,8 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     txtCodClasCli.setNomeCampo("CodClasCli");
     txtCodClasCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescClasCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcClasCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Cód.Clas.Cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasClix");
-    lcClasCli.add(new GuardaCampo( txtDescClasCli, 90, 100, 207, 20, "DescClasCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasClix");
+    lcClasCli.add(new GuardaCampo( txtCodClasCli, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodClasClix");
+    lcClasCli.add(new GuardaCampo( txtDescClasCli, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasClix");
     lcClasCli.montaSql(false,"CLASCLI", "VD");
     lcClasCli.setReadOnly(true);
     txtCodClasCli.setTabelaExterna(lcClasCli);
@@ -193,21 +193,26 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     pinCli.adic(new JLabel("Preço"),310,35,80,20);
     pinCli.adic(cbOperador,310,55,80,20);
     pinCli.adic(txtMultiplic,310,75,80,20);
-    pinCli.adic(new JLabel("Código e descrição da marca"),7,115,300,20);
-    pinCli.adic(txtCodMarca,7,135,80,20);
-    pinCli.adic(txtDescMarca,90,135,300,20);
-    pinCli.adic(new JLabel("Código e descrição do grupo"),7,155,300,20);
-    pinCli.adic(txtCodGrup,7,175,80,20);
-    pinCli.adic(txtDescGrup,90,175,300,20);
-    pinCli.adic(new JLabel("Código e descrição da tabela de preços"),7,195,300,20);
-    pinCli.adic(txtCodTab,7,215,80,20);
-    pinCli.adic(txtDescTab,90,215,300,20);
-    pinCli.adic(new JLabel("Código e descrição do plano de pagamento"),7,235,300,20);
-    pinCli.adic(txtCodPlanoPag,7,255,80,20);
-    pinCli.adic(txtDescPlanoPag,90,255,300,20);
-    pinCli.adic(new JLabel("Código e descrição da classificação dos clientes"),7,275,300,20);
-    pinCli.adic(txtCodClasCli,7,295,80,20);
-    pinCli.adic(txtDescClasCli,90,295,300,20);
+    pinCli.adic(new JLabel("Cód.marca"),7,115,300,20);
+    pinCli.adic(txtCodMarca,7,135,90,20);
+    pinCli.adic(new JLabel("Descrição da marca"),100,115,300,20);
+    pinCli.adic(txtDescMarca,100,135,300,20);
+    pinCli.adic(new JLabel("Cód.grupo"),7,155,300,20);
+    pinCli.adic(txtCodGrup,7,175,90,20);
+    pinCli.adic(new JLabel("Descrição do grupo"),100,155,300,20);
+    pinCli.adic(txtDescGrup,100,175,300,20);
+    pinCli.adic(new JLabel("Cód.tab.preço"),7,195,300,20);
+    pinCli.adic(txtCodTab,7,215,90,20);
+    pinCli.adic(new JLabel("Descrição da tabela de preços"),100,195,300,20);
+    pinCli.adic(txtDescTab,100,215,300,20);
+    pinCli.adic(new JLabel("Cód.p.pag."),7,235,300,20);
+    pinCli.adic(txtCodPlanoPag,7,255,90,20);
+    pinCli.adic(new JLabel("Descrição do plano de pagamento"),100,235,300,20);
+    pinCli.adic(txtDescPlanoPag,100,255,300,20);
+    pinCli.adic(new JLabel("Cód.c.cli."),7,275,300,20);
+    pinCli.adic(txtCodClasCli,7,295,90,20);
+    pinCli.adic(new JLabel("Descrição da classificação do cliente"),100,275,300,20);
+    pinCli.adic(txtDescClasCli,100,295,300,20);
     
     pinCli.adic(btGerar,7,320,100,30);
     

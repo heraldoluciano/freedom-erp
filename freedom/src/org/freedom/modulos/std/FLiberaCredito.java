@@ -87,17 +87,17 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		setAtribos(10,10,650,400);
 		
   	 // Mecanismo de busca e validação de clientes
-		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód. Cli.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConv");
-		lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeConv");
-		lcCli.add(new GuardaCampo( txtCodTpCred,7, 100, 80, 20,"CodTpCred", "Cód. Tipo Créd.",false,true,txtDescTpCred,JTextFieldPad.TP_INTEGER,false),"txtCodTpCred"); 
+		lcCli.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConv");
+		lcCli.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeConv");
+		lcCli.add(new GuardaCampo( txtCodTpCred,7, 100, 80, 20,"CodTpCred", "Cód.tp.créd.",false,true,txtDescTpCred,JTextFieldPad.TP_INTEGER,false),"txtCodTpCred"); 
 		lcCli.montaSql(false, "CLIENTE","VD");    
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
     
 	 // Mecanismo de busca de informações de tipo de crédito 
-		lcTipoCred.add(new GuardaCampo( txtCodTpCred, 7, 100, 80, 20, "CodTpCred", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoClix");
-    	lcTipoCred.add(new GuardaCampo( txtDescTpCred, 90, 100, 207, 20, "DescTpCred", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
+		lcTipoCred.add(new GuardaCampo( txtCodTpCred, 7, 100, 80, 20, "CodTpCred", "Cód.tp.créd", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoClix");
+    	lcTipoCred.add(new GuardaCampo( txtDescTpCred, 90, 100, 207, 20, "DescTpCred", "Descrição do tipo de credito", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
     	lcTipoCred.add(new GuardaCampo( txtVlrTpCred, 90, 100, 207, 20, "VlrTpCred", "Valor", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescTipoClix");
     	lcTipoCred.montaSql(false, "TIPOCRED", "FN");    
     	lcTipoCred.setQueryCommit(false);
@@ -107,15 +107,15 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
     	
  	 // Adicionando elementos no painel superior da tela (Cabeçalho)
  	    setPainel(pinCab,pnCliente);
-	    adicCampo(txtCodLib, 7, 20, 80, 20, "CodLCred", "No. Lib.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+	    adicCampo(txtCodLib, 7, 20, 80, 20, "CodLCred", "Nº liberação", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
 		adicCampo(txtCodVenda, 90, 20, 77, 20, "CodVenda", "Pedido", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,true);
-		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.Cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, null,true);
-	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "e razão do cliente", JTextFieldPad.TP_STRING, 50, 0);
-		adic(new JLabel("Código"), 7, 40, 80, 20);
+		adicCampo(txtCodCli, 170, 20, 77, 20, "CodCli", "Cód.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, null,true);
+	    adicDescFK(txtRazCli, 250, 20, 200, 20, "RazCli", "Razão social do cliente", JTextFieldPad.TP_STRING, 50, 0);
+		adic(new JLabel("Cód.tp.créd."), 7, 40, 80, 20);
 		adic(txtCodTpCred, 7, 60, 80, 20);
-		adicDescFK(txtDescTpCred, 90, 60, 197, 20, "DescTpCred", "e tipo de crédito", JTextFieldPad.TP_STRING, 50, 0);
-		adicDescFK(txtVlrTpCred, 290, 60, 110, 20, "VlrTpCred", "Vlr. pré-aprovado", JTextFieldPad.TP_DECIMAL, 15, 2);
-		adicCampo(txtVlrLibCred, 7, 100, 120, 20, "VlrAutorizLCred", "Vlr. a Liberar", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null,true);
+		adicDescFK(txtDescTpCred, 90, 60, 197, 20, "DescTpCred", "Descrição do tipo de crédito", JTextFieldPad.TP_STRING, 50, 0);
+		adicDescFK(txtVlrTpCred, 290, 60, 160, 20, "VlrTpCred", "Valor pré-aprovado", JTextFieldPad.TP_DECIMAL, 15, 2);
+		adicCampo(txtVlrLibCred, 7, 100, 120, 20, "VlrAutorizLCred", "Valor a liberar", JTextFieldPad.TP_DECIMAL, 15, 2, false, false, null,true);
 		adicCampo(txtDtVencLCred, 130, 100, 120, 20, "DtaVctoLCred", "Vencimento", JTextFieldPad.TP_DATE, 10, 0, false, false, null,true);
 		setListaCampos( true, "LIBCRED", "FN");
 
@@ -150,10 +150,10 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		tab.adicColuna("Valor");
         tab.adicColuna("Série");
         tab.adicColuna("Doc");
-        tab.adicColuna("Cód. Venda");
-        tab.adicColuna("Dt. Venda.");
-        tab.adicColuna("Dt. Pagto.");
-        tab.adicColuna("Vlr. Pago.");
+        tab.adicColuna("Cód.venda");
+        tab.adicColuna("Dt.venda.");
+        tab.adicColuna("Dt.pagto.");
+        tab.adicColuna("Valor pago.");
         tab.adicColuna("Atraso");
         tab.adicColuna("Observações");
         tab.adicColuna("Banco");
@@ -162,7 +162,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 		tab.setTamColuna(100,1);
         tab.setTamColuna(50,2);
         tab.setTamColuna(80,3);
-        tab.setTamColuna(80,4);
+        tab.setTamColuna(90,4);
         tab.setTamColuna(90,5);
         tab.setTamColuna(90,6);
         tab.setTamColuna(100,7);

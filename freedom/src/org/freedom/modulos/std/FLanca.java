@@ -162,23 +162,23 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
     pnNav.add(btExcluir);
     pnNav.add(btEditar);
     
-    tab.adicColuna("Nº Lçto.");
+    tab.adicColuna("Nº Lançamento");
     tab.adicColuna("Data");
     tab.adicColuna("Tsf.");
     tab.adicColuna("Orig.");
     tab.adicColuna("Conta tsf.");
-    tab.adicColuna("Nº Doc.");
+    tab.adicColuna("Nº doc.");
     tab.adicColuna("Valor");
     tab.adicColuna("Histórico");
     
-    tab.setTamColuna( 55,0);
+    tab.setTamColuna(100,0);
     tab.setTamColuna( 70,1);
-    tab.setTamColuna( 20,2);
-    tab.setTamColuna( 25,3);
-    tab.setTamColuna( 70,4);
+    tab.setTamColuna( 40,2);
+    tab.setTamColuna( 55,3);
+    tab.setTamColuna( 72,4);
     tab.setTamColuna( 65,5);
     tab.setTamColuna(100,6);
-    tab.setTamColuna(200,7);
+    tab.setTamColuna(100,7);
     
     btSair.addActionListener(this);
     btPrim.addActionListener(this);
