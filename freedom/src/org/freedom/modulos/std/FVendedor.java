@@ -22,14 +22,16 @@
 
 package org.freedom.modulos.std;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.Vector;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -59,7 +61,8 @@ public class FVendedor extends FDados implements PostListener {
   private JTextFieldPad txtCodFornVend = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-  
+  private JTextFieldPad txtCodFunc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldFK txtDescFunc = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK txtDescClComis = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   
@@ -68,10 +71,11 @@ public class FVendedor extends FDados implements PostListener {
   private ListaCampos lcPlan = new ListaCampos(this,"PN");
   private ListaCampos lcSetor = new ListaCampos(this,"SE");
   private ListaCampos lcClComis = new ListaCampos(this,"CM");
-  
+  private ListaCampos lcFuncao = new ListaCampos(this,"FU");
+  private boolean[] bPref = null;
   public FVendedor () {
     setTitulo("Cadastro de Vendedores");
-    setAtribos( 50, 50, 400, 400);
+    setAtribos( 50, 50, 400, 460);
 
     lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.plan.", ListaCampos.DB_PK, txtDescPlan, false));
     lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descriçao do planejamento", ListaCampos.DB_SI, false));
@@ -81,6 +85,19 @@ public class FVendedor extends FDados implements PostListener {
     lcPlan.setReadOnly(true);
     txtCodPlan.setTabelaExterna(lcPlan);
     
+    lcFuncao.add(new GuardaCampo( txtCodFunc, "CodFunc", "Cód.função", ListaCampos.DB_PK, txtDescFunc, false));
+    lcFuncao.add(new GuardaCampo( txtDescFunc, "DescFunc", "Descriçao da função", ListaCampos.DB_SI, false));
+    
+//    lcFuncao.setQueryCommit(false);
+
+    txtCodFunc.setTabelaExterna(lcFuncao);
+    txtCodFunc.setNomeCampo("codfunc");
+    txtCodFunc.setFK(true);
+    lcFuncao.setReadOnly(true);
+    lcFuncao.montaSql(false, "FUNCAO", "RH");    
+
+    
+    
     
     lcClComis.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, false));
     lcClComis.add(new GuardaCampo( txtDescClComis, "DescClComis", "Descriçao da classificação da comissão", ListaCampos.DB_SI, false));
@@ -88,9 +105,6 @@ public class FVendedor extends FDados implements PostListener {
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
     txtCodClComis.setTabelaExterna(lcClComis);
-    
-    
-    
     
     adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.repr.", ListaCampos.DB_PK, true);
     adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend", "Nome do representante", ListaCampos.DB_SI, true);
@@ -113,7 +127,9 @@ public class FVendedor extends FDados implements PostListener {
     adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.vend.for.", ListaCampos.DB_SI, false);
     adicCampo(txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.", ListaCampos.DB_FK, txtDescPlan, false);
     adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan", "Descrição do planejamento");
-
+    adicCampo(txtCodFunc, 7, 420, 100, 20, "CodFunc", "Cód.função", ListaCampos.DB_FK, txtDescFunc, false);
+    adicDescFK(txtDescFunc, 110, 420, 262, 20, "DescFunc", "Descrição da função");
+    
     txtCpfVend.setMascara(JTextFieldPad.MC_CPF);
     txtCnpjVend.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepVend.setMascara(JTextFieldPad.MC_CEP);
@@ -122,6 +138,8 @@ public class FVendedor extends FDados implements PostListener {
     txtFaxVend.setMascara(JTextFieldPad.MC_FONE);
     lcCampos.addPostListener(this);
     lcCampos.setQueryInsert(false);    
+  	btImp.addActionListener(this);
+  	btPrevimp.addActionListener(this);
   }
   private void montaSetor() {
 
@@ -199,6 +217,172 @@ public class FVendedor extends FDados implements PostListener {
     if (ehSetorVend())
   	  montaSetor();
     lcPlan.setConexao(cn);
+    lcFuncao.setConexao(cn);
 	setListaCampos( true, "VENDEDOR", "VD");
   }
+  
+  private void imprimir(boolean bVisualizar) {
+    ImprimeOS imp = new ImprimeOS("",con);
+    Vector vFiltros = new Vector();
+    String sSQL = "";
+    int linPag = imp.verifLinPag()-1;
+    int iContaReg = 0;
+    String sWhere = "";
+    String sWhere2 = "";
+    String sCodpesq = "";
+    String sCodpesqant = "";
+    String sOrdem = "";
+    String sValores[] = null;
+    imp.setTitulo("Relatório de Comissionados");
+    imp.montaCab();
+    DLRVendedor dl = new DLRVendedor(this,con);
+	dl.setVisible(true);
+	if (dl.OK == false) {
+	  dl.dispose();
+	  return;
+	}
+	sValores = dl.getValores();
+    dl.dispose();
+ 
+    sOrdem = sValores[0];
+    
+    if (sValores[1].length() > 0) {
+      System.out.println("CIDADE NO FILTRO:"+sValores[1]);
+      sWhere += " AND VD.CIDCLI = '"+sValores[1]+"'";
+      vFiltros.add("CIDADE = "+sValores[1].trim());
+    }
+    else {
+    	System.out.println("Cidade nula no filtro");
+    }
+    if (sValores[2].length() > 0) {
+          sWhere += " AND VD.CODEMPCM="+sValores[2];
+          vFiltros.add("CLAS.COMISSÃO = "+sValores[2]);
+    }
+    if (sValores[3].length() > 0) {
+      sWhere += " AND VD.CODSETOR = "+sValores[3];
+      vFiltros.add("SETOR = "+sValores[3]);
+    }
+    if (sValores[4].length() > 0) {
+        sWhere += " AND VD.CODFUNC = "+sValores[4];
+        vFiltros.add("FUNÇÃO = "+sValores[4]);
+      }    
+    
+        	
+     sSQL = "select VD.CODVEND,VD.NOMEVEND,VD.CIDVEND,VD.FONEVEND,VD.FAXVEND,VD.EMAILVEND,VD.PERCCOMVEND,VD.COMIPIVEND,"+
+       		 "VD.CELVEND,VD.CODSETOR,"+
+       		 "(SELECT SE.DESCSETOR FROM VDSETOR SE WHERE SE.CODEMP=VD.CODEMPSE AND SE.CODFILIAL=VD.CODFILIALSE AND SE.CODSETOR=VD.CODSETOR),"+
+			 "VD.CODCLCOMIS,"+
+			 "(SELECT CM.DESCCLCOMIS FROM VDCLCOMIS CM WHERE CM.CODEMP=VD.codempcm AND CM.CODFILIAL=VD.codfilialcm AND CM.codclcomis=VD.codclcomis),"+
+			 "VD.CODFUNC,"+
+			 "(SELECT FU.DESCFUNC FROM RHFUNCAO FU WHERE FU.CODEMP=VD.codempfuncvend AND FU.CODFILIAL=VD.codfilialfuncvend AND FU.codfunc=VD.codfunc)"+
+			 "FROM vdvendedor VD "+
+			 "WHERE VD.CODEMP=? AND VD.CODFILIAL=? "+sWhere+
+			 " order by"+sValores[0];
+
+      PreparedStatement ps = null;
+      ResultSet rs = null;
+      System.out.println("sql é "+sSQL);
+      try {
+
+        ps = con.prepareStatement(sSQL);
+        ps.setInt(1,Aplicativo.iCodEmp);
+        ps.setInt(2,ListaCampos.getMasterFilial("VDVENDEDOR"));
+        rs = ps.executeQuery();
+        imp.limpaPags();
+        while ( rs.next() ) {
+          if (imp.pRow()==0) {
+            imp.impCab(136);
+            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",61)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+            for (int i=0;i<vFiltros.size();i++) {            
+                    String sTmp = (String)vFiltros.elementAt(i);
+                    sTmp = "|"+Funcoes.replicate(" ",(((136-sTmp.length())/2)-1))+sTmp;
+                    sTmp += Funcoes.replicate(" ",135-sTmp.length())+"|";
+                    imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                    imp.say(imp.pRow()+0,2,sTmp);
+            }
+          }
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,2,"Código:");
+          imp.say(imp.pRow()+0,10,rs.getString(1));
+          imp.say(imp.pRow()+0,20,"Nome:");
+          imp.say(imp.pRow()+0,27,rs.getString(2) != null ? rs.getString(2).substring(0,30) : "");
+ /*                   
+          imp.say(imp.pRow()+0,129,"Tipo:");
+          imp.say(imp.pRow()+0,135,rs.getString("PessoaCli"));
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"Nome:");
+          imp.say(imp.pRow()+0,7,rs.getString("NomeCli"));
+          imp.say(imp.pRow()+0,60,"Contato:");
+          imp.say(imp.pRow()+0,70,rs.getString("ContCli"));
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"Endereço:");
+          imp.say(imp.pRow()+0,11,rs.getString("EndCli"));
+          imp.say(imp.pRow()+0,62,"N.:");
+          imp.say(imp.pRow()+0,67,""+rs.getInt("NumCli"));
+          imp.say(imp.pRow()+0,76,"Compl.:");
+          imp.say(imp.pRow()+0,85,rs.getString("ComplCli") != null ? rs.getString("ComplCli").trim() : "");
+          imp.say(imp.pRow()+0,94,"Bairro:");
+          imp.say(imp.pRow()+0,103,rs.getString("BairCli") != null ? rs.getString("BairCli").trim() : "");
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"Cidade:");
+          imp.say(imp.pRow()+0,8,rs.getString("CidCli"));
+          imp.say(imp.pRow()+0,88,"UF:");
+          imp.say(imp.pRow()+0,93,rs.getString("UfCli"));
+          imp.say(imp.pRow()+0,121,"CEP:");
+          imp.say(imp.pRow()+0,127,rs.getString("CepCli") != null ? Funcoes.setMascara(rs.getString("CepCli"),"#####-###") : "");
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,80,"Tel:");
+          imp.say(imp.pRow()+0,86,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
+          imp.say(imp.pRow()+0,121,"Fax:");
+          imp.say(imp.pRow()+0,127,rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : "");
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"Contato:");
+          imp.say(imp.pRow()+0,9,rs.getString("ContCli"));
+          imp.say(imp.pRow()+0,70,"E-mail:");
+          imp.say(imp.pRow()+0,79,rs.getString("EmailCli"));
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
+          */
+          if (imp.pRow()>=linPag) {
+            imp.incPags();
+            imp.eject();
+          }
+          iContaReg++;
+        }
+        imp.say(imp.pRow()+1,0,""+imp.comprimido());
+        imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+        imp.eject();
+
+        imp.fechaGravacao();
+
+//        rs.close();
+//        ps.close();
+        if (!con.getAutoCommit())
+        	con.commit();
+        dl.dispose();
+      }
+      catch ( SQLException err ) {
+		Funcoes.mensagemErro(this,"Erro consulta tabela de clientes!"+err.getMessage());
+	    err.printStackTrace();
+      }
+    
+    if (bVisualizar) {
+      imp.preview(this);
+    }
+    else {
+      imp.print();
+    }
+  
+   }
+  public void actionPerformed(ActionEvent evt) {
+    if (evt.getSource() == btPrevimp) {
+        imprimir(true);        
+    }
+    else if (evt.getSource() == btImp) 
+      imprimir(false);
+    super.actionPerformed(evt);
+  }  
+    
 }
