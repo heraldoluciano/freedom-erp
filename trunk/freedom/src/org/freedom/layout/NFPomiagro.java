@@ -75,7 +75,7 @@ public class NFPomiagro extends Leiaute {
       while (rs.next()) {
            if (bNat) {
              sNat[0] = rs.getString("DescNat");
-             sNat[1] = Funcoes.setMascara(rs.getString("CodNat"),"#.##");
+             sNat[1] = Funcoes.setMascara(rs.getString("CodNat"),"#.###");
              iNumNota = rs.getInt("DocVenda");
              bNat = false;
              
