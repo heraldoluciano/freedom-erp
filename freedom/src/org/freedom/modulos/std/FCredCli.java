@@ -110,31 +110,39 @@ public class FCredCli extends FTabDados implements ActionListener,
 	private Tabela tbRefC = new Tabela();
 
 	private JScrollPane spnRefP = new JScrollPane(tbRefP); // Scrool pane para
-														   // grid de ref. pess.
+
+	// grid de ref. pess.
 
 	private JScrollPane spnAutP = new JScrollPane(tbAutP); // Scrool pane para
-														   // grid de aut. pess.
+
+	// grid de aut. pess.
 
 	private JScrollPane spnVeic = new JScrollPane(tbVeic); // Scrool pane para
-														   // grid de Veiculos.
+
+	// grid de Veiculos.
 
 	private JScrollPane spnImov = new JScrollPane(tbImov); // Scrool pane para
-														   // grid de Imoveis.
+
+	// grid de Imoveis.
 
 	private JScrollPane spnTerras = new JScrollPane(tbTerras); // Scrool pane
-															   // para grid de
-															   // Terras.
+
+	// para grid de
+	// Terras.
 
 	private JScrollPane spnBancos = new JScrollPane(tbBancos); // Scrool pane
-															   // para grid de
-															   // Bancos.
+
+	// para grid de
+	// Bancos.
 
 	private JScrollPane spnSocios = new JScrollPane(tbSocios); // Scrool pane
-															   // para grid de
-															   // Socios.
+
+	// para grid de
+	// Socios.
 
 	private JScrollPane spnRefC = new JScrollPane(tbRefC); // Scrool pane para
-														   // grid de ref com.
+
+	// grid de ref com.
 
 	private JPanelPad pinFiliacao = new JPanelPad(680, 200);
 
@@ -535,7 +543,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 	private JTextFieldPad txtCPFAutP = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 11, 0);
 
-	private JTextFieldPad txtFuncapAutP = new JTextFieldPad(
+	private JTextFieldPad txtFuncaoAutP = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 30, 0);
 
 	private JTextFieldPad txtPlacaVeic = new JTextFieldPad(
@@ -724,6 +732,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 	private JLabelPad lbOutRendaCli = null;
 
 	private JLabelPad lbFontRendaCli = null;
+
+	private JLabelPad lbFuncaoAutP = null;
 
 	private ListaCampos lcTipoCred = new ListaCampos(this, "TR");
 
@@ -1220,9 +1230,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 				ListaCampos.DB_SI, false);
 		adicCampo(txtFoneAutP, 50, 140, 97, 20, "FoneAutP", "Telefone",
 				ListaCampos.DB_SI, false);
-		if (bJurTipoCli)
-			adicCampo(txtFuncapAutP, 157, 140, 220, 20, "FuncAutP", "Função",
-					ListaCampos.DB_SI, false);
+		lbFuncaoAutP = adicCampo(txtFuncaoAutP, 157, 140, 220, 20, "FuncAutP",
+				"Função", ListaCampos.DB_SI, false);
 		setListaCampos(true, "CLIAUTP", "VD");
 		lcAutP.setQueryInsert(false);
 		lcAutP.setQueryCommit(false);
@@ -1239,8 +1248,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		tbAutP.setTamColuna(30, 10); // UF
 		tbAutP.setTamColuna(50, 12); // DDD
 		tbAutP.setTamColuna(50, 13); // Fone
-		if (bJurTipoCli)
-			tbAutP.setTamColuna(220, 14); // Função
+		tbAutP.setTamColuna(220, 14); // Função
 
 		// **************************
 
@@ -1560,6 +1568,15 @@ public class FCredCli extends FTabDados implements ActionListener,
 	}
 
 	private void habCampos() {
+
+		//Pessoa Jurídica
+		if (bJurTipoCli) {
+			txtFuncaoAutP.setVisible(false);
+			lbFuncaoAutP.setVisible(false);
+		} else {
+			txtFuncaoAutP.setVisible(true);
+			lbFuncaoAutP.setVisible(true);
+		}
 
 		//Pessoa Física
 		txtNatCli.setVisible(bFisTipoCli);
