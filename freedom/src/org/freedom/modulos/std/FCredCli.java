@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,7 +38,10 @@ import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -48,7 +52,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FCredCli extends FTabDados	implements ActionListener, CarregaListener {
+public class FCredCli extends FTabDados	implements ActionListener, CarregaListener,PostListener {
   private Painel pinGeral = new Painel(680, 200);
   private JPanel pnFicha = new JPanel(new BorderLayout());
 //  private Painel pinFicha = new Painel(700, 200);
@@ -139,6 +143,10 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JTextFieldPad txtDtAdmTrabAvalCli = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
   private JTextFieldPad txtRendaAvalCli = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
   
+  private JTextFieldPad txtCodEmpTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+  private JTextFieldPad txtCodFilialTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+  private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+  
   private Tabela tabFicha = new Tabela();
   private JLabel lbNatCli = null;
   private JLabel lbUfNatCli = null;
@@ -187,8 +195,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private JLabel lbCargoAvalCli = null;
   private JLabel lbDtAdmTrabAvalCli = null;
   private JLabel lbRendaAvalCli = null;
-  
-  
+   
   private ListaCampos lcTipoCred = new ListaCampos(this,"TR");
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
   private ListaCampos lcFicha = new ListaCampos(this,"CC");
@@ -209,10 +216,13 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   private boolean bAvalTipoCli = false;
   private boolean bSocioTipoCli = false;
   private JTabbedPane tpn2 = new JTabbedPane();
+  private JComboBoxPad cbEstCivCli = null;
+
+                 
   public FCredCli() {
     setTitulo("Ficha cadastral/Crédito por cliente");
     setAtribos(50, 10, 780, 550);
-
+    
     lcFicha.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcFicha);
     lcFicha.setTabela(tabFicha);
@@ -238,6 +248,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 	setPainel(pinGeral);
 	
 	lcCampos.addCarregaListener(this);
+	lcCampos.addPostListener(this);
 
     adicCampo(txtCodCli, 7, 20, 70, 20,"CodCli","Cód.cli.", ListaCampos.DB_PK, true);
     adicCampo(txtRazCli, 80, 20, 257, 20,"RazCli","Razão social do cliente", ListaCampos.DB_SI, false);
@@ -267,7 +278,14 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   	lbNatCli = adicCampo(txtNatCli, 7, 220, 200, 20, "NatCli", "Naturalidade",ListaCampos.DB_SI, false);
   	lbUfNatCli = adicCampo(txtUFNatCli, 210, 220, 52, 20, "UfNatCli", "Uf Natur.",ListaCampos.DB_SI, false);
   	lbTempoResCli = adicCampo(txtTempoResCli, 265, 220, 160, 20, "TempoResCli", "Tempo de residência.",ListaCampos.DB_SI, false);
-	
+
+  	adicCampoInvisivel(txtCodEmpTb,"codempec","cod. emp.",ListaCampos.DB_SI,false);
+  	adicCampoInvisivel(txtCodFilialTb,"codfilialec","cod. filial",ListaCampos.DB_SI,false);
+  	adicCampoInvisivel(txtCodTb,"codtbec","cod. emp.",ListaCampos.DB_SI,false);
+
+ 	cbEstCivCli = new JComboBoxPad(new Vector(),new Vector(),JComboBoxPad.TP_INTEGER, 5, 0);
+ 	adicDB(cbEstCivCli, 7, 260, 200, 25, "codittbec", "Estado civil", false);
+  	cbEstCivCli.setZeroNulo();
 	setListaCampos( true, "CLIENTE", "VD");
 	lcCampos.setPodeIns(false);
 	lcCampos.setPodeExc(false);
@@ -327,7 +345,7 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 
     setPainel(pinAvalista);
 
-    lbNomeAvalCli = adicCampo(txtNomeAvalCli, 7, 20, 310, 20, "NomeAvalCli", "Nome do cônjuge", ListaCampos.DB_SI, false);
+    lbNomeAvalCli = adicCampo(txtNomeAvalCli, 7, 20, 310, 20, "NomeAvalCli", "Nome do avalista", ListaCampos.DB_SI, false);
     lbDtNascAvalCli = adicCampo(txtDtNascAvalCli, 320, 20, 90, 20, "DtNascAvalCli", "Dt.nasc.Aval.", ListaCampos.DB_SI, false);
     lbRgAvalCli = adicCampo(txtRgAvalCli, 7, 60, 140, 20, "RgAvalCli", "Rg", ListaCampos.DB_SI, false);
     lbSSPAvalCli = adicCampo(txtSSPAvalCli, 150, 60, 140, 20, "SSPAvalCli", "SSP", ListaCampos.DB_SI, false);
@@ -336,6 +354,23 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     lbCargoAvalCli = adicCampo(txtCargoAvalCli, 310, 100, 150, 20, "CargoAvalCli", "Cargo", ListaCampos.DB_SI, false);
     lbDtAdmTrabAvalCli = adicCampo(txtDtAdmTrabAvalCli, 463, 100, 90, 20, "DtAdmTrabAvalCli", "Dt.admissao", ListaCampos.DB_SI, false);
     lbRendaAvalCli = adicCampo(txtRendaAvalCli, 556, 100, 90, 20, "RendaAvalCli", "Renda", ListaCampos.DB_SI, false);
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+
+    
+    
     
     
     
@@ -446,19 +481,67 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
     pinTrabalho.setEnabled(false);
 
   }
-  
+
   public void afterCarrega(CarregaEvent cevt) {
   	if (txtDtIniTr.getVlrString().equals("")){
   		txtDtIniTr.setVlrDate(new Date());
   	}
-  	buscaAdicionais();
+  	buscaAdicionais();	
   }
-  
+  private void buscaEstadoCivil(){
+  	String sSQL = null;
+  	ResultSet rs = null;
+  	PreparedStatement ps = null;
+  	Vector vDesc = new Vector();
+  	Vector vCod = new Vector();
+  	
+	try {
+		
+		sSQL = "SELECT IT.CODTB,IT.CODITTB,IT.DESCITTB FROM SGITTABELA IT, SGTABELA TB " +
+				"WHERE TB.SIGLATB = 'EST_CIVIL' AND TB.CODEMP=? AND TB.CODFILIAL=? AND " +
+				"IT.CODEMP=TB.CODEMP AND IT.CODFILIAL=TB.CODFILIAL AND IT.CODTB=TB.CODTB ORDER BY IT.DESCITTB";
+
+		ps = con.prepareStatement(sSQL);
+		ps.setInt(1,Aplicativo.iCodEmp);
+		ps.setInt(2,ListaCampos.getMasterFilial("SGTABELA"));
+
+		rs = ps.executeQuery();
+		int i = 0;
+	 	vCod.addElement(new Integer(0));
+		vDesc.addElement("<--Selecione-->");
+		while(rs.next()) {
+			vCod.addElement(new Integer(rs.getInt(2)));
+			vDesc.addElement(rs.getString(3));
+			if(i==0)
+				txtCodTb.setVlrInteger(new Integer(rs.getInt(1)));
+			i++;
+		}
+		
+		if (rs!=null) {
+			txtCodEmpTb.setVlrInteger(new Integer(Aplicativo.iCodEmp));
+			txtCodFilialTb.setVlrInteger(new Integer(ListaCampos.getMasterFilial("SGTABELA")));
+		}
+		
+		rs.close();
+		ps.close();
+		if (!con.getAutoCommit())
+			con.commit();
+	}
+	catch (SQLException e) {
+		Funcoes.mensagemErro(this,"Não foi possível carregar estado civil!\n"+e.getMessage());
+	}
+	finally {
+		cbEstCivCli.setItens(vDesc,vCod);
+		rs = null;
+		ps = null;
+		sSQL = null;
+	}  	
+  	
+  }
   private void buscaAdicionais(){
 	String sSQL = null;
   	ResultSet rs = null;
   	PreparedStatement ps = null;
-  	boolean bReturn = false;
   	
 	try {
 		
@@ -466,8 +549,6 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
 				"TC.REFPESTIPOCLI,TC.CONJTIPOCLI,TC.VEICTIPOCLI,TC.IMOVTIPOCLI,TC.TERRATIPOCLI,TC.PESAUTCPTIPOCLI,TC.AVALTIPOCLI," +
 				"TC.SOCIOTIPOCLI FROM VDTIPOCLI TC,VDCLIENTE CLI WHERE TC.CODEMP=? AND TC.CODFILIAL=? AND CLI.CODCLI=? AND " +
 				"CLI.CODEMPTC=TC.CODEMP AND CLI.CODFILIALTC=TC.CODFILIAL AND TC.CODTIPOCLI=CLI.CODTIPOCLI";
-
-		System.out.println(sSQL);
 		
 		ps = con.prepareStatement(sSQL);
 		ps.setInt(1,Aplicativo.iCodEmp);
@@ -510,10 +591,18 @@ public class FCredCli extends FTabDados	implements ActionListener, CarregaListen
   }
   
   public void beforeCarrega(CarregaEvent cevt) {}
-  
+  public void beforePost(PostEvent pevt) {
+  	if (cbEstCivCli.getSelectedItem().equals("<--Selecione-->")) {
+  		txtCodEmpTb.setVlrString("");
+  		txtCodFilialTb.setVlrString("");
+  		    cbEstCivCli.setVlrInteger(null);
+  		txtCodTb.setVlrString("");
+  	}
+  }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcTipoCli.setConexao(cn);
     lcTipoCred.setConexao(cn);
+   	buscaEstadoCivil();
   }        
 }
