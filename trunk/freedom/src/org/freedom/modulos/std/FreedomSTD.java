@@ -173,6 +173,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(601100000,TP_OPCAO_ITEM,"Relatório financeiro por C.C.","Relatorio Financeiro por C.C.",'R',601130000,2, true, FRCentroCusto.class);
       addOpcao(601100000,TP_OPCAO_ITEM,"Razão financeiro","Razão financeiro",'z',601140000,2, true, FRRazaoFin.class);
       addOpcao(601100000,TP_OPCAO_ITEM,"Fluxo de caixa","",'F',601150000,2, true, FRFluxoCaixa.class);
+      addOpcao(601100000,TP_OPCAO_ITEM,"Ponto de equilibrio","",'q',601160000,2, true, FRPontoEqui.class);      
 	addOpcao(600000000,TP_OPCAO_MENU,"Gráficos","Fluxo de caixa",'G',601200000,1, false, null);
 	  addOpcao(601200000,TP_OPCAO_ITEM,"Balancete Gráfico","Balancete Gráfico",'G',601210000,2, true, FRBalanceteGrafico.class);
 	  addOpcao(601200000,TP_OPCAO_ITEM,"Gráfico financeiro por C.C","Gráfico Financeiro por C.C",'f',601220000,2, true, FRGraficoCC.class);
