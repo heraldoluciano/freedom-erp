@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.componentes.JLabelPad;
@@ -51,7 +50,7 @@ public class FRInadimplentes extends FRelatorio {
   
   public FRInadimplentes() {
     setTitulo("Inadimplentes");
-    setAtribos(80,80,298,200);
+    setAtribos(80,80,308,200);
    
 	GregorianCalendar cPeriodo = new GregorianCalendar();
     txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -74,9 +73,9 @@ public class FRInadimplentes extends FRelatorio {
   	txtCodVend.setTabelaExterna(lcVend);
  
   	adic(new JLabelPad("Cód.comiss."),7,68,200,20);
-	adic(txtCodVend,7,88,60,20);
-	adic(new JLabelPad("Nome do comissionado"),70,68,200,20);
-	adic(txtDescVend,70,88,199,20);
+	adic(txtCodVend,7,88,70,20);
+	adic(new JLabelPad("Nome do comissionado"),80,68,200,20);
+	adic(txtDescVend,80,88,199,20);
     
     
     
@@ -97,10 +96,10 @@ public class FRInadimplentes extends FRelatorio {
 	 
 	 if (txtCodVend.getText().trim().length() > 0) {
 		sWhere += " AND R.CODVEND = "+txtCodVend.getText().trim();
-		String sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
+		String sTmp = "COMISS.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND R.CODEMPVD="+Aplicativo.iCodEmp+" AND R.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}
 	
 
@@ -114,14 +113,13 @@ public class FRInadimplentes extends FRelatorio {
     
     BigDecimal bTotalDev = new BigDecimal("0");
     int iNumLanca = 0;
-    
-    imp.montaCab();
+        
     String sDataini = "";
     String sDatafim = "";
     
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
-    imp.setTitulo("Relatório de Inadimplentes");
+    
     String sSQL = "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,"+
                   "R.CODCLI,C.RAZCLI,IT.VLRPARCITREC,C.FONECLI,"+
                   "IT.DTITREC,(SELECT V.STATUSVENDA FROM VDVENDA V"+
@@ -143,81 +141,70 @@ public class FRInadimplentes extends FRelatorio {
       imp.limpaPags();
       
       while ( rs.next() ) {
-	 if (imp.pRow() == linPag) {
-                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-                imp.eject();
-        	imp.incPags();
-         }
-         if (imp.pRow()==0) {
-          imp.impCab(136, false);
-          String sTitulo = "RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-                        	   
-          if (sCab.length() > 0) {
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      	  	imp.say(imp.pRow()+0,0,sCab);
-      	  }
-           
-                   
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-          imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"| Vencto.");
-          imp.say(imp.pRow()+0,13,"|Vlr. da Parc.");
-          imp.say(imp.pRow()+0,27,"|Doc.    ");
-          imp.say(imp.pRow()+0,39,"|N.Lancto");
-          imp.say(imp.pRow()+0,48,"|N.Pedido");
-          imp.say(imp.pRow()+0,57,"|Data Emis.");
-          imp.say(imp.pRow()+0,68,"|Devedor");
-          imp.say(imp.pRow()+0,119,"|Telefone");
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
-        }
-        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,"|");
-        imp.say(imp.pRow()+0,2,Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec"))+"");
-        imp.say(imp.pRow()+0,13,"|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrparcItRec")));
-        imp.say(imp.pRow()+0,27,"|"+(Funcoes.copy(rs.getString(9),0,1).equals("P") ? Funcoes.copy(rs.getString("CodVenda"),0,8) : Funcoes.copy(rs.getString("DocRec"),0,8))+
-             "/"+Funcoes.copy(rs.getString("NParcItRec"),0,2));
-        imp.say(imp.pRow()+0,39,"|"+Funcoes.copy(rs.getString("Codrec"),0,8));
-        imp.say(imp.pRow()+0,48,"|"+Funcoes.copy(rs.getString("Codvenda"),0,8));
-        imp.say(imp.pRow()+0,57,"|"+Funcoes.sqlDateToStrDate(rs.getDate("DtItRec")));
-        imp.say(imp.pRow()+0,68,"|"+Funcoes.copy(rs.getString("CodCli"),0,8)
-            +"-"+Funcoes.copy(rs.getString("RazCli"),0,40));
-        imp.say(imp.pRow()+0,119,"|"+Funcoes.setMascara(Funcoes.copy(rs.getString("FoneCli"),0,12),"(####)####-####"));
-        imp.say(imp.pRow()+0,136,"|");
-        bTotalDev = bTotalDev.add(new BigDecimal(rs.getString("VlrParcItRec")));
-        iNumLanca++;
-      }
-      imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
-      imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|");
-      imp.say(imp.pRow()+0,40,"Totais Gerais->    Lançamentos: "+Funcoes.strZero(""+iNumLanca,5)+
-        "     Total a Receber: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalDev));
-      imp.say(imp.pRow(),136,"|");
-
-      imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
-      
-      
-      imp.eject();
-      
-      imp.fechaGravacao();
+      	
+		 if (imp.pRow() == linPag) {
+	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+	                imp.eject();
+	        	imp.incPags();
+	         }
+	         if (imp.pRow()==0) {
+	         	imp.montaCab();
+	          	imp.setTitulo("Relatório de Inadimplentes");
+	          	imp.setSubTitulo("RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+	          	imp.impCab(136, true);
+	          
+	          if (sCab.length() > 0) {
+	            imp.say(imp.pRow()+0,0,""+imp.comprimido());
+	      	  	imp.say(imp.pRow()+0,0,sCab);
+	      	  }
+	          
+	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          imp.say(imp.pRow()+0,0,"| Vencto.");
+	          imp.say(imp.pRow()+0,13,"|Vlr. da Parc.");
+	          imp.say(imp.pRow()+0,27,"|Doc.    ");
+	          imp.say(imp.pRow()+0,39,"|N.Lancto");
+	          imp.say(imp.pRow()+0,48,"|N.Pedido");
+	          imp.say(imp.pRow()+0,57,"|Data Emis.");
+	          imp.say(imp.pRow()+0,68,"|Devedor");
+	          imp.say(imp.pRow()+0,119,"|Telefone");
+	          imp.say(imp.pRow()+0,135,"|");
+	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+	        }
+	        imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	        imp.say(imp.pRow()+0,0,"|");
+	        imp.say(imp.pRow()+0,2,Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec"))+"");
+	        imp.say(imp.pRow()+0,13,"|"+Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrparcItRec")));
+	        imp.say(imp.pRow()+0,27,"|"+(Funcoes.copy(rs.getString(9),0,1).equals("P") ? Funcoes.copy(rs.getString("CodVenda"),0,8) : Funcoes.copy(rs.getString("DocRec"),0,8))+
+	             "/"+Funcoes.copy(rs.getString("NParcItRec"),0,2));
+	        imp.say(imp.pRow()+0,39,"|"+Funcoes.copy(rs.getString("Codrec"),0,8));
+	        imp.say(imp.pRow()+0,48,"|"+Funcoes.copy(rs.getString("Codvenda"),0,8));
+	        imp.say(imp.pRow()+0,57,"|"+Funcoes.sqlDateToStrDate(rs.getDate("DtItRec")));
+	        imp.say(imp.pRow()+0,68,"|"+Funcoes.copy(rs.getString("CodCli"),0,8)
+	            +"-"+Funcoes.copy(rs.getString("RazCli"),0,40));
+	        imp.say(imp.pRow()+0,119,"|"+Funcoes.setMascara(Funcoes.copy(rs.getString("FoneCli"),0,12),"(####)####-####"));
+	        imp.say(imp.pRow()+0,135,"|");
+	        bTotalDev = bTotalDev.add(new BigDecimal(rs.getString("VlrParcItRec")));
+	        iNumLanca++;
+	      }
+	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	      imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
+	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	      imp.say(imp.pRow()+0,0,"|");
+	      imp.say(imp.pRow()+0,40,"Totais Gerais->    Lançamentos: "+Funcoes.strZero(""+iNumLanca,5)+
+	        "     Total a Receber: "+Funcoes.strDecimalToStrCurrency(13,2,""+bTotalDev));
+	      imp.say(imp.pRow(),135,"|");
+	
+	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+	      
+	      
+	      imp.eject();
+	      
+	      imp.fechaGravacao();
       
 //      rs.close();
 //      ps.close();

@@ -26,7 +26,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -182,28 +181,27 @@ public class FRDemanda extends FRelatorio {
       sOrdem = sOrdemGrupo+"P.DESCPROD";
       sOrdenado = "ORDENADO POR DESCRICAO"; 
     }
-    sOrdenado = "|"+Funcoes.replicate(" ",68-(sOrdenado.length()/2))+sOrdenado;
-    sOrdenado += Funcoes.replicate(" ",134-sOrdenado.length())+" |";
+    sOrdenado = "|"+Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
+    sOrdenado += Funcoes.replicate(" ",133-sOrdenado.length())+" |";
     
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-//    imp.montaCab();
-    imp.setTitulo("Relatorio de Demanda");
+    
 
     if (txtCodMarca.getText().trim().length() > 0) {
         sWhere += " P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
         String sTmp = "MARCA: "+txtDescMarca.getText().trim();
         sCab += "\n"+imp.comprimido();
-        sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-        sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+        sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+        sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
     }
     
     if (txtCodGrup.getText().trim().length() > 0) {
             sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
             String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
             sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+            sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
     }
     
  /*    (ENTRADA: ICODEMP INTEGER, SCODFILIAL SMALLINT, SCODFILIALPD SMALLINT, 
@@ -236,14 +234,14 @@ public class FRDemanda extends FRelatorio {
       while ( rs.next() ) {
         if (imp.pRow()>=(linPag-1)) {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
            imp.incPags();
            imp.eject();
         }
         else if (sDivGrupo.equals("S")) {
            if ((sCodgrup.length() > 0) && (!sCodgrup.equals(rs.getString("Codgrup")))) {
               imp.say(imp.pRow()+1,0,""+imp.comprimido());
-              imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+              imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
               imp.incPags();
               imp.eject();
            }
@@ -252,36 +250,27 @@ public class FRDemanda extends FRelatorio {
         sCodgrup = rs.getString("codgrup");      
 
         if (imp.pRow()==0) {
-        	imp.impCab(136, false);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,60,"RELATORIO DE DEMANDA");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+        	imp.montaCab();
+            imp.setTitulo("Relatorio de Demanda");
+        	imp.impCab(136, true);
+        	imp.setSubTitulo("RELATORIO DE DEMANDA");
+        	
+           imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,sOrdenado);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,53,"PERIODO: "+txtDataini.getVlrString()+" ATE "+txtDatafim.getVlrString());
-           imp.say(imp.pRow()+0,136,"|");
+           
            if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            
            if (sDivGrupo.equals("S")) {
              String sDescGrup = rs.getString("DescGrup");
              sDescGrup = sDescGrup != null ? sDescGrup.trim() : "";
-             sDescGrup = "|"+Funcoes.replicate(" ",68-(sDescGrup.length()/2))+sDescGrup;
-             sDescGrup += Funcoes.replicate(" ",134-sDescGrup.length())+" |";
+             sDescGrup = "|"+Funcoes.replicate(" ",67-(sDescGrup.length()/2))+sDescGrup;
+             sDescGrup += Funcoes.replicate(" ",133-sDescGrup.length())+" |";
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,sDescGrup);
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            }
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|Cód.");
@@ -294,26 +283,26 @@ public class FRDemanda extends FRelatorio {
            imp.say(imp.pRow()+0,109,"| Dev.f.");
            imp.say(imp.pRow()+0,118,"| O.sai.");
            imp.say(imp.pRow()+0,127,"| Saldo");
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
 
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString(sCampo),0,13));
-         imp.say(imp.pRow()+0,17,"| "+Funcoes.copy(rs.getString("DescProd"),0,45));
-         imp.say(imp.pRow()+0,64,"| "+Funcoes.alinhaDir(rs.getInt("SLDINI"),7));
-         imp.say(imp.pRow()+0,73,"| "+Funcoes.alinhaDir(rs.getInt("VLRCOMPRAS"),7));
-         imp.say(imp.pRow()+0,82,"| "+Funcoes.alinhaDir(rs.getInt("VLRDEVENT"),7));
-         imp.say(imp.pRow()+0,91,"| "+Funcoes.alinhaDir(rs.getInt("VLROUTENT"),7));
-         imp.say(imp.pRow()+0,100,"| "+Funcoes.alinhaDir(rs.getInt("VLRVENDAS"),7));
-         imp.say(imp.pRow()+0,109,"| "+Funcoes.alinhaDir(rs.getInt("VLRDEVSAI"),7));
-         imp.say(imp.pRow()+0,118,"| "+Funcoes.alinhaDir(rs.getInt("VLROUTSAI"),7));
-         imp.say(imp.pRow()+0,127,"| "+Funcoes.alinhaDir(rs.getInt("SLDFIM"),7));
-         imp.say(imp.pRow()+0,136,"|");
+         imp.say(imp.pRow()+0,17,"| "+Funcoes.copy(rs.getString("DescProd"),0,40));
+         imp.say(imp.pRow()+0,62,"| "+Funcoes.alinhaDir(rs.getInt("SLDINI"),7));
+         imp.say(imp.pRow()+0,71,"| "+Funcoes.alinhaDir(rs.getInt("VLRCOMPRAS"),7));
+         imp.say(imp.pRow()+0,80,"| "+Funcoes.alinhaDir(rs.getInt("VLRDEVENT"),7));
+         imp.say(imp.pRow()+0,89,"| "+Funcoes.alinhaDir(rs.getInt("VLROUTENT"),7));
+         imp.say(imp.pRow()+0,98,"| "+Funcoes.alinhaDir(rs.getInt("VLRVENDAS"),7));
+         imp.say(imp.pRow()+0,107,"| "+Funcoes.alinhaDir(rs.getInt("VLRDEVSAI"),7));
+         imp.say(imp.pRow()+0,116,"| "+Funcoes.alinhaDir(rs.getInt("VLROUTSAI"),7));
+         imp.say(imp.pRow()+0,125,"| "+Funcoes.alinhaDir(rs.getInt("SLDFIM"),7));
+         imp.say(imp.pRow()+0,135,"|");
       }
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       imp.eject();
       imp.fechaGravacao();
       

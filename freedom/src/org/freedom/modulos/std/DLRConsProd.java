@@ -41,7 +41,7 @@ public class DLRConsProd extends FFDialogo {
   public DLRConsProd(Component cOrig) {
   	super(cOrig);
     setTitulo("Relatório de Produtos  ");
-    setAtribos(250,220);
+    setAtribos(250,240);
 
 
     vLabs.addElement("Fornecedores");

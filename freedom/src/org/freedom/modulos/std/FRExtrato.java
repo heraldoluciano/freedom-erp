@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.componentes.JLabelPad;
@@ -96,8 +95,7 @@ public class FRExtrato extends FRelatorio {
     BigDecimal bTotal = new BigDecimal("0");
     BigDecimal bSaldo = new BigDecimal("0");
     BigDecimal bAnt = buscaSaldoAnt();
-    
-    imp.montaCab();
+        
     String sDataini = "";
     String sDatafim = "";
     String sDataLanca = "";
@@ -143,12 +141,12 @@ public class FRExtrato extends FRelatorio {
         if (!bPrim) {
           if (!(sDataLanca.equals(rs.getString("DataSL")))) {
             imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" | ");
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
             bTotal = new BigDecimal(rs.getString("SaldoSL"));
           }
           else {
             imp.say(imp.pRow()+0,119,"|");
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
           }
         }
         else
@@ -158,48 +156,42 @@ public class FRExtrato extends FRelatorio {
           imp.incPags();          
         }
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           String sTitulo = "EXTRATO BANCÁRIO   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim;
+        	imp.montaCab();
+        	imp.setTitulo("Extrato Bancário");
+        	imp.setSubTitulo("EXTRATO BANCÁRIO");
+            imp.impCab(136, true);
+           
            String sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();
+
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+           imp.say(imp.pRow()+0,0,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,(135-sConta.length())/2,sConta);
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",134)+"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(136-sConta.length())/2,sConta);
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",134)+"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Data       |");
-           imp.say(imp.pRow()+0,15," Historico                                          |");
-           imp.say(imp.pRow()+0,69," Doc        |");
+           imp.say(imp.pRow()+0,14," Historico                                          |");
+           imp.say(imp.pRow()+0,68," Doc           |");
            imp.say(imp.pRow()+0,83," Valor           |");
            imp.say(imp.pRow()+0,102," Saldo           |");
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            if (bPrim) {
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|");
              imp.say(imp.pRow()+0,50," Saldo Anterior: "+Funcoes.strDecimalToStrCurrency(15,2,""+bAnt));
-             imp.say(imp.pRow()+0,136,"|");
+             imp.say(imp.pRow()+0,135,"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            }
          }
          bPrim = false;
@@ -207,21 +199,21 @@ public class FRExtrato extends FRelatorio {
          bAnt = bSaldo;
          sDataLanca = rs.getString("DataSL");
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-         imp.say(imp.pRow()+0,0,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DataSL"))+" | "+
-               Funcoes.copy(rs.getString("HistBLanca"),0,50)+" | "+
-               Funcoes.copy((rs.getString("DocLanca")!=null?rs.getString("DocLanca"):""),0,11)+" | "+
-               Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrSubLanca"))+" | ");
+         imp.say(imp.pRow()+0,0,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DataSL")));
+         imp.say(imp.pRow()+0,14,"| "+Funcoes.copy(rs.getString("HistBLanca"),0,50));
+         imp.say(imp.pRow()+0,67,"| "+Funcoes.copy((rs.getString("DocLanca")!=null?rs.getString("DocLanca"):""),0,11));
+         imp.say(imp.pRow()+0,83,"| "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrSubLanca"))+" | ");
        }
-       imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" | ");
-       imp.say(imp.pRow()+0,136,"|");
+       imp.say(imp.pRow()+0,102,""+Funcoes.strDecimalToStrCurrency(15,2,""+bSaldo)+" |");
+       imp.say(imp.pRow()+0,135,"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-       imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",134)+"|");
+       imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
        imp.say(imp.pRow()+0,0,"|");
        imp.say(imp.pRow()+0,50," Saldo Atual: "+Funcoes.strDecimalToStrCurrency(15,2,""+bTotal));
-       imp.say(imp.pRow()+0,136,"|");
+       imp.say(imp.pRow()+0,135,"|");
        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-       imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+       imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       
       imp.eject();
       

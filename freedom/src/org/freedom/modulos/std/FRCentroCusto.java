@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
 
@@ -136,8 +135,7 @@ public class FRCentroCusto extends FRelatorio {
     String sConta = "";
     
     BigDecimal bTotal = new BigDecimal("0");
-    
-    imp.montaCab();
+        
     String sDataini = "";
     String sDatafim = "";
     String sDesccc = "";
@@ -145,7 +143,6 @@ public class FRCentroCusto extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
     
-    imp.setTitulo("Balancete");
         
     String sSQL = "SELECT CM.CODCC,CM.SIGLACC,CM.DESCCC,CM.NIVELCC,"+
 //  Primeira sub-select >>
@@ -258,39 +255,32 @@ public class FRCentroCusto extends FRelatorio {
 */  
       rs = ps.executeQuery();
       imp.limpaPags();
-      
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           String sTitulo = "RELATORIO FINANCEIRO POR CENTRO DE CUSTO - PERIODO DE "+sDataini+" A "+sDatafim;
-           imp.say(imp.pRow()+0,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(136-sTitulo.length())/2,sTitulo);
-		   imp.say(imp.pRow()+0,136,"|");
+        	imp.montaCab();
+            imp.setTitulo("Balancete");
+            imp.setSubTitulo("RELATORIO FINANCEIRO POR CENTRO DE CUSTO");
+            imp.impCab(136, true);
+            
 		   if (!(sCodPlan.trim().equals(""))) {
 			  sConta = "CONTA: "+sCodPlan+" - "+txtDescConta.getVlrString();                   
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,""+imp.comprimido());
 			  imp.say(imp.pRow()+0,0,"|");
-			  imp.say(imp.pRow()+0,(136-sConta.length())/2,sConta);
-			  imp.say(imp.pRow()+0,136,"|");
+			  imp.say(imp.pRow()+0,(135-sConta.length())/2,sConta);
+			  imp.say(imp.pRow()+0,135,"|");
 		   }
 		   if (!(sCodCC.equals(""))) {
 			  sCC = "CENTRO DE CUSTO: "+txtSiglaCC.getVlrString()+" - "+txtDescCC.getVlrString();                   
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			  imp.say(imp.pRow()+((sCodPlan.trim().equals("")) ? 0 : 1),0,""+imp.comprimido());
 			  imp.say(imp.pRow()+0,0,"|");
-			  imp.say(imp.pRow()+0,(136-sCC.length())/2,sCC);
-			  imp.say(imp.pRow()+0,136,"|");
+			  imp.say(imp.pRow()+0,(135-sCC.length())/2,sCC);
+			  imp.say(imp.pRow()+0,135,"|");
 		   }
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		   
+		   imp.say(imp.pRow()+((sCodPlan.trim().equals(""))&&(sCodCC.equals("")) ? 0 : 1),0,""+imp.comprimido());
 		   imp.say(imp.pRow()+0,0,"|");
-		   imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
+		   imp.say(imp.pRow()+0,135,"|");
+           imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",133)+"|");
 		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow(),0,"| Cód.cc.");
 		   imp.say(imp.pRow(),23,"| Sigla ");
@@ -298,9 +288,9 @@ public class FRCentroCusto extends FRelatorio {
            imp.say(imp.pRow(),89, "| Receita ");
 		   imp.say(imp.pRow(),104, "| Despesa ");
 		   imp.say(imp.pRow(),119, "| Saldo ");
-           imp.say(imp.pRow(),136,"|");
+           imp.say(imp.pRow(),135,"|");
 		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",133)+"|");
         }
         
         if (rs.getString(7)!=null) {
@@ -323,7 +313,7 @@ public class FRCentroCusto extends FRelatorio {
 
         if (imp.pRow() == (linPag-1)) {
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
           imp.eject();
           imp.incPags();          
         }
@@ -331,14 +321,14 @@ public class FRCentroCusto extends FRelatorio {
        }
 
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 	  imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow(),0,"|");
       imp.say(imp.pRow(),70,"TOTAL RECEITAS/DESPESAS");
       imp.say(imp.pRow(),119,"| "+Funcoes.strDecimalToStrCurrency(12,2,""+bTotal));
-	  imp.say(imp.pRow(),136,"|");
+	  imp.say(imp.pRow(),135,"|");
 	  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 
       imp.eject();
       
