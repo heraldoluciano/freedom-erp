@@ -38,9 +38,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FSetorAtend extends FDetalhe implements ActionListener {
-  private JTextFieldPad txtCodSetAt = new JTextFieldPad(5);
-  private JTextFieldPad txtDescSetAt = new JTextFieldPad();
-  private JTextFieldPad txtCodAtend = new JTextFieldPad();
+  private JTextFieldPad txtCodSetAt = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescSetAt = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcAtend = new ListaCampos(this,"AE");
   private Painel pinCab = new Painel();
@@ -63,15 +63,15 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 
-   lcAtend.add(new GuardaCampo( txtCodAtend, 7, 100, 80, 20, "CodAtend", "Cód.atend.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodAtend");
-   lcAtend.add(new GuardaCampo( txtNomeAtend, 90, 100, 207, 20, "NomeAtend", "Nome do atendente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeAtend");
+   lcAtend.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true));
+   lcAtend.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI,false));
    lcAtend.montaSql(false, "ATENDENTE", "AT");
    lcAtend.setQueryCommit(false);
    lcAtend.setReadOnly(true);
    txtCodAtend.setTabelaExterna(lcAtend);
     
-   adicCampo(txtCodSetAt, 7, 20, 70, 20,"CodSetAt","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-   adicCampo(txtDescSetAt, 80, 20, 250, 20,"DescSetAt","Descrição do setor",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+   adicCampo(txtCodSetAt, 7, 20, 70, 20,"CodSetAt","Cód.setor",ListaCampos.DB_PK,true);
+   adicCampo(txtDescSetAt, 80, 20, 250, 20,"DescSetAt","Descrição do setor",ListaCampos.DB_SI,true);
    setListaCampos( true, "SETOR", "AT");
 
    setAltDet(60);
@@ -79,8 +79,8 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
    setListaCampos(lcDet);
    setNavegador(navRod);
 
-   adicCampo(txtCodAtend, 7, 20, 70, 20,"CodAtend","Cód.atend.",JTextFieldPad.TP_INTEGER,10,0,true,true,txtNomeAtend,true);
-   adicDescFK(txtNomeAtend, 80, 20, 250, 20,"NomeAtend","Nome do atendente",JTextFieldPad.TP_STRING,100,0);
+   adicCampo(txtCodAtend, 7, 20, 70, 20,"CodAtend","Cód.atend.",ListaCampos.DB_PF,txtNomeAtend,true);
+   adicDescFK(txtNomeAtend, 80, 20, 250, 20,"NomeAtend","Nome do atendente");
    setListaCampos( false, "SETORATENDENTE", "AT");
    
    montaTab();    
