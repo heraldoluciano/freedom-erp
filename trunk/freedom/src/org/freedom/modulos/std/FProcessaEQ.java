@@ -240,7 +240,8 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
              	 				"I.CODEMP,I.CODFILIAL,CAST(NULL AS CHAR(1)),I.CODINVPROD,I.CODINVPROD,"+
              	 				"CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4)),"+
              	 				"I.DATAINVP,I.CODINVPROD,'N'," +
-             	 				"I.QTDINVP,I.PRECOINVP "+
+             	 				"I.QTDINVP,I.PRECOINVP," +
+             	 				"I.CODEMPAX, I.CODFILIALAX, I.CODALMOX "+
              	 				"FROM EQINVPROD I " +
              	 				"WHERE I.CODEMP=? AND I.CODFILIAL=? AND " +
              	 				"I.CODPROD = ?"+sWhereInventario;
@@ -250,7 +251,8 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
              	 				"C.CODEMP,C.CODFILIAL,CAST(NULL AS CHAR(1)),C.CODCOMPRA,IC.CODITCOMPRA,"+
                                 "IC.CODEMPNT,IC.CODFILIALNT,IC.CODNAT,"+
                                 "C.DTENTCOMPRA,C.DOCCOMPRA,C.FLAG," +
-                                "IC.QTDITCOMPRA,IC.CUSTOITCOMPRA "+
+                                "IC.QTDITCOMPRA,IC.CUSTOITCOMPRA," +
+                                "IC.CODEMPAX, IC.CODFILIALAX, IC.CODALMOX "+
                                 "FROM CPCOMPRA C,CPITCOMPRA IC " +
                                 "WHERE IC.CODCOMPRA=C.CODCOMPRA AND "+
                                 "IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "+
@@ -262,7 +264,8 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
                  				"V.CODEMP,V.CODFILIAL,V.TIPOVENDA,V.CODVENDA,IV.CODITVENDA,"+
                                 "IV.CODEMPNT,IV.CODFILIALNT,IV.CODNAT," +
                                 "V.DTEMITVENDA,V.DOCVENDA,V.FLAG," +
-                                "IV.QTDITVENDA,IV.VLRLIQITVENDA " +
+                                "IV.QTDITVENDA,IV.VLRLIQITVENDA," +
+                                "IV.CODEMPAX, IV.CODFILIALAX, IV.CODALMOX " +
                                 "FROM VDVENDA V ,VDITVENDA IV " +
                                 "WHERE IV.CODVENDA=V.CODVENDA AND "+
                                 "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "+
@@ -355,7 +358,7 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
     	double dePrecoMovprod = 0;
     	try {
     	    sSQL =  "EXECUTE PROCEDURE EQMOVPRODIUDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
-    	    										 "?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    	    										 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     		state(sProd+"Processando dia: "+Funcoes.sqlDateToStrDate(rs.getDate(19))+" Doc: ["+rs.getInt(20)+"]");
     		ps = con.prepareStatement(sSQL);
     		sCIV = rs.getString(1); // tipo COMPRA, INVENTARIO, VENDA
@@ -442,6 +445,10 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
   				dePrecoMovprod = rs.getDouble(23);
   			}
 			ps.setDouble(34,dePrecoMovprod); // PrecoMovProd
+			ps.setDouble(35,rs.getInt(24)); // Codempax
+			ps.setDouble(36,rs.getInt(25)); // Codfilialax
+			ps.setDouble(37,rs.getInt(26)); // Codalmox
+			
     		ps.executeUpdate();
    		    ps.close();
     		bRet = true;
