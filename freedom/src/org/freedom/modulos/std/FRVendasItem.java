@@ -43,18 +43,18 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasItem extends FRelatorio {
-	private JTextFieldPad txtDataini = new JTextFieldPad(); 
-	private JTextFieldPad txtDatafim = new JTextFieldPad(); 
-	private JTextFieldPad txtCodVend = new JTextFieldPad();
-	private JTextFieldFK txtDescVend = new JTextFieldFK();
-	private JTextFieldPad txtCodCli=new JTextFieldPad();
-	private JTextFieldFK txtRazCli = new JTextFieldFK();
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodCli=new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 
-	private JTextFieldPad txtCodGrup = new JTextFieldPad();
-	private JTextFieldFK txtDescGrup = new JTextFieldFK();
-	private JTextFieldPad txtCodMarca = new JTextFieldPad();
-	private JTextFieldFK txtDescMarca = new JTextFieldFK();
-	private JTextFieldPad txtSiglaMarca = new JTextFieldPad();
+	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
+	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
 	
 	private JCheckBoxPad cbListaFilial = null; 
 	
@@ -82,35 +82,26 @@ public class FRVendasItem extends FRelatorio {
                 rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
                 rgOrdem.setVlrString("D");
 
-		txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-		txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-		lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
+		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
 		txtCodGrup.setTabelaExterna(lcGrup);
 		txtCodGrup.setNomeCampo("CodGrup");
 		txtCodGrup.setFK(true);
 		lcGrup.setReadOnly(true);
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 		
-       	
 		
-		
-		txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
-		txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
-		txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-		lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-		lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
-		lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
+		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
+		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
+		lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_PK, false));
 		txtCodMarca.setTabelaExterna(lcMarca);
 		txtCodMarca.setNomeCampo("CodMarca");
 		txtCodMarca.setFK(true);
 		lcMarca.setReadOnly(true);
 		lcMarca.montaSql(false, "MARCA", "EQ");
  
-		txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,10,0);
-		txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-		lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
+		lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do representante", ListaCampos.DB_SI, false));
 		txtCodVend.setTabelaExterna(lcVend);
 		txtCodVend.setNomeCampo("CodVend");
 		txtCodVend.setFK(true);
@@ -123,15 +114,11 @@ public class FRVendasItem extends FRelatorio {
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
 		JLabel lbLinha3 = new JLabel();
 		lbLinha3.setBorder(BorderFactory.createEtchedBorder());
-		txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-		txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
 		txtDataini.setVlrDate(new Date());
 	    txtDatafim.setVlrDate(new Date());
 		
-		 txtCodCli.setTipo(JTextFieldPad.TP_STRING,14,0);
-		 txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-		 lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
-		 lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+		 lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+		 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 		 txtCodCli.setTabelaExterna(lcCliente);
 		 txtCodCli.setNomeCampo("CodCli");
 		 txtCodCli.setFK(true);
