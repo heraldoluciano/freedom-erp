@@ -27,19 +27,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FUnidade extends FDados implements ActionListener{
-  private JTextFieldPad txtCodUnidade = new JTextFieldPad(5);
-  private JTextFieldPad txtDescUnidade= new JTextFieldPad(20);
+  private JTextFieldPad txtCodUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldPad txtDescUnidade= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FUnidade () {
     setTitulo("Cadastro de Unidades");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodUnidade, 7, 20, 70, 20,"CodUnid","Cód.unid.",JTextFieldPad.TP_STRING,8,0,true,false,null,true);
-    adicCampo(txtDescUnidade, 80, 20, 250, 20,"DescUnid","Descrição da unidade",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodUnidade, 7, 20, 70, 20,"CodUnid","Cód.unid.",ListaCampos.DB_PK, true);
+    adicCampo(txtDescUnidade, 80, 20, 250, 20,"DescUnid","Descrição da unidade",ListaCampos.DB_SI, true);
     setListaCampos( true, "UNIDADE", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
