@@ -38,6 +38,7 @@ public class FCaixa extends FDados implements ActionListener {
   private JTextFieldPad txtCodEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JCheckBoxPad cbECF = new JCheckBoxPad("Cupom fiscal?","S","N");
+  private JCheckBoxPad cbTEF = new JCheckBoxPad("Possui Gerenciador Padrão?","S","N");
   public FCaixa() {
     setTitulo("Cadastro de caixa PDV");
     setAtribos( 50, 50, 420, 200);
@@ -50,11 +51,13 @@ public class FCaixa extends FDados implements ActionListener {
   	txtCodEst.setTabelaExterna(lcEst);
     
     cbECF.setVlrString("N");
+    cbTEF.setVlrString("N");
     adicCampo(txtCodCaixa, 7, 20, 70, 20, "CodCaixa", "Cód.caixa", ListaCampos.DB_PK, true);
     adicCampo(txtDescCaixa, 80, 20, 310, 20, "DescCaixa", "Descrição do caixa", ListaCampos.DB_SI, true);
     adicCampo(txtCodEst, 7, 60, 70, 20, "CodEst", "Cód.est.", ListaCampos.DB_FK, txtDescEst, true);
     adicDescFK(txtDescEst, 80, 60, 310, 20, "DescEst", "Descrição da estação de trabalho");
     adicDB(cbECF, 7, 100, 150, 20, "ECFCaixa", "ECF",true);
+    adicDB(cbTEF, 160, 100, 230, 20, "TEFCaixa", "TEF",true);
     setListaCampos( true, "CAIXA", "PV");
   }
   
