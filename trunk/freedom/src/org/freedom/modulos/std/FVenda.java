@@ -120,8 +120,8 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
   private JTextFieldPad txtCodMens = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodLote = new JTextFieldPad();
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-  private JTextFieldPad txtTipoFisc = new JTextFieldPad();
-  private JTextFieldPad txtRedFisc = new JTextFieldPad();
+  private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
   private JTextFieldPad txtVlrFreteVenda = new JTextFieldPad();
   private JTextFieldPad txtVlrComisVenda = new JTextFieldPad();
   private JTextFieldPad txtMedComisVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
