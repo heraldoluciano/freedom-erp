@@ -131,7 +131,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
             imp.say(imp.pRow()+0,2,"Código");
             imp.say(imp.pRow()+0,25,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
+            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
          }
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodSetAt"));
@@ -143,7 +143,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
+      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
       imp.eject();
       
       imp.fechaGravacao();
