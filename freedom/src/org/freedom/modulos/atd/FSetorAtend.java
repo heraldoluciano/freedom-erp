@@ -49,7 +49,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
   public FSetorAtend () {
 
    setTitulo("Cadastro de Setores de atendimento");
-   setAtribos( 50, 50, 420, 350);
+   setAtribos( 50, 50, 450, 350);
 /*
    pnMaster.remove(2);  //Remove o Painel prédefinido da class FDados
    pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo
@@ -63,15 +63,15 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 
-   lcAtend.add(new GuardaCampo( txtCodAtend, 7, 100, 80, 20, "CodAtend", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodAtend");
-   lcAtend.add(new GuardaCampo( txtNomeAtend, 90, 100, 207, 20, "NomeAtend", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeAtend");
+   lcAtend.add(new GuardaCampo( txtCodAtend, 7, 100, 80, 20, "CodAtend", "Cód.atend.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodAtend");
+   lcAtend.add(new GuardaCampo( txtNomeAtend, 90, 100, 207, 20, "NomeAtend", "Nome do atendente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeAtend");
    lcAtend.montaSql(false, "ATENDENTE", "AT");
    lcAtend.setQueryCommit(false);
    lcAtend.setReadOnly(true);
    txtCodAtend.setTabelaExterna(lcAtend);
     
-   adicCampo(txtCodSetAt, 7, 20, 50, 20,"CodSetAt","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-   adicCampo(txtDescSetAt, 60, 20, 250, 20,"DescSetAt","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+   adicCampo(txtCodSetAt, 7, 20, 70, 20,"CodSetAt","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+   adicCampo(txtDescSetAt, 80, 20, 250, 20,"DescSetAt","Descrição do setor",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
    setListaCampos( true, "SETOR", "AT");
 
    setAltDet(60);
@@ -79,12 +79,12 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
    setListaCampos(lcDet);
    setNavegador(navRod);
 
-   adicCampo(txtCodAtend, 7, 20, 50, 20,"CodAtend","Código",JTextFieldPad.TP_INTEGER,10,0,true,true,txtNomeAtend,true);
-   adicDescFK(txtNomeAtend, 60, 20, 250, 20,"NomeAtend","Nome do atendente",JTextFieldPad.TP_STRING,100,0);
+   adicCampo(txtCodAtend, 7, 20, 70, 20,"CodAtend","Cód.atend.",JTextFieldPad.TP_INTEGER,10,0,true,true,txtNomeAtend,true);
+   adicDescFK(txtNomeAtend, 80, 20, 250, 20,"NomeAtend","Nome do atendente",JTextFieldPad.TP_STRING,100,0);
    setListaCampos( false, "SETORATENDENTE", "AT");
    
    montaTab();    
-   tab.setTamColuna(40,0); 
+   tab.setTamColuna(70,0); 
    tab.setTamColuna(300,1);
 
    btImp.addActionListener(this);

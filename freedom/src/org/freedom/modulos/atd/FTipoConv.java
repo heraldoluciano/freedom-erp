@@ -38,9 +38,9 @@ public class FTipoConv extends FDados implements ActionListener {
   private JTextFieldPad txtClassOrc = new JTextFieldPad(20);
   public FTipoConv () {
     setTitulo("Cadastro de Tipo de Conveniados");
-    setAtribos( 50, 50, 350, 150);
-    adicCampo(txtCodTipoConv, 7, 20, 50, 20,"CodTpConv","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoConv, 60, 20, 250, 20,"DescTpConv","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    setAtribos( 50, 50, 370, 150);
+    adicCampo(txtCodTipoConv, 7, 20, 80, 20,"CodTpConv","Cód.tp.conv.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescTipoConv, 90, 20, 250, 20,"DescTpConv","Descrição do tipo de conveniado",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
     adicCampo(txtClassOrc,7,60,150,20,"ClassTpConv","Layout de orçamentos",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
     setListaCampos( true, "TIPOCONV", "AT");
     btImp.addActionListener(this);

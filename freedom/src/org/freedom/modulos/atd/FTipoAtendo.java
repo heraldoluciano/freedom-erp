@@ -55,15 +55,15 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 	setListaCampos(lcCampos);
 	setPainel( pinCab, pnCliCab);
     
-	lcSetAt.add(new GuardaCampo( txtCodSetAt, 7, 100, 80, 20, "CodSetAt", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
-	lcSetAt.add(new GuardaCampo( txtDescSetAt, 90, 100, 207, 20, "DescSetAt", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
+	lcSetAt.add(new GuardaCampo( txtCodSetAt, 7, 100, 80, 20, "CodSetAt", "Cód.setor", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
+	lcSetAt.add(new GuardaCampo( txtDescSetAt, 90, 100, 207, 20, "DescSetAt", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
 	lcSetAt.montaSql(false, "SETOR", "AT");
 	lcSetAt.setQueryCommit(false);
 	lcSetAt.setReadOnly(true);
 	txtCodSetAt.setTabelaExterna(lcSetAt);
     
-	lcFluxo.add(new GuardaCampo( txtCodFluxo, 7, 100, 80, 20, "CodFluxo", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
-	lcFluxo.add(new GuardaCampo( txtDescFluxo, 90, 100, 207, 20, "DescFluxo", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
+	lcFluxo.add(new GuardaCampo( txtCodFluxo, 7, 100, 80, 20, "CodFluxo", "Cód.fluxo", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
+	lcFluxo.add(new GuardaCampo( txtDescFluxo, 90, 100, 207, 20, "DescFluxo", "Descrição do fluxo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
 	lcFluxo.montaSql(false, "FLUXO", "SG");
 	lcFluxo.setQueryCommit(false);
 	lcFluxo.setReadOnly(true);
@@ -71,10 +71,10 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 
 	setAltCab(130);
 
-    adicCampo(txtCodTipoAtendo, 7, 20, 50, 20,"CodTpAtendo","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoAtendo, 60, 20, 250, 20,"DescTpAtendo","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-	adicCampo(txtCodFluxo, 7, 60, 50, 20,"CodFluxo","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFluxo,true);
-	adicDescFK(txtDescFluxo, 60, 60, 250, 20,"DescFluxo","e descrição do fluxo",JTextFieldPad.TP_STRING,50,0);
+    adicCampo(txtCodTipoAtendo, 7, 20, 80, 20,"CodTpAtendo","Cód.tp.atend.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescTipoAtendo, 90, 20, 250, 20,"DescTpAtendo","Descrição do tipo de atendimento",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+	adicCampo(txtCodFluxo, 7, 60, 80, 20,"CodFluxo","Cód.fluxo",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescFluxo,true);
+	adicDescFK(txtDescFluxo, 90, 60, 250, 20,"DescFluxo","Descrição do fluxo",JTextFieldPad.TP_STRING,50,0);
     setListaCampos( true, "TIPOATENDO", "AT");
 
 	setAltDet(60);
@@ -82,8 +82,8 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 	setListaCampos(lcDet);
 	setNavegador(navRod);
 
-	adicCampo(txtCodSetAt, 7, 20, 50, 20,"CodSetAt","Código",JTextFieldPad.TP_INTEGER,5,0,true,true,txtDescSetAt,true);
-	adicDescFK(txtDescSetAt, 60, 20, 250, 20,"DescSetAt","e descrição do setor",JTextFieldPad.TP_STRING,50,0);
+	adicCampo(txtCodSetAt, 7, 20, 80, 20,"CodSetAt","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,true,true,txtDescSetAt,true);
+	adicDescFK(txtDescSetAt, 90, 20, 250, 20,"DescSetAt","Descrição do setor",JTextFieldPad.TP_STRING,50,0);
 	setListaCampos( false, "TIPOATENDOSETOR", "AT");
 	montaTab();
 	
