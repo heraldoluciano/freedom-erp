@@ -45,7 +45,7 @@ public class FRBalancete extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldFK txtDescConta = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0); 
-  private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);   
+  private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);   
   private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
   private ListaCampos lcCC = new ListaCampos(this);
   private ListaCampos lcConta = new ListaCampos(this);
