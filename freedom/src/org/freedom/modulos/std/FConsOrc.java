@@ -102,8 +102,8 @@ public class FConsOrc extends FFilho implements ActionListener {
     lcCli.setReadOnly(true);
     lcCli.montaSql(false, "CLIENTE", "VD");
 
-    lcCli.add(new GuardaCampo(txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.", true, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodCli");
-    lcCli.add(new GuardaCampo(txtNomeCli, 90, 100, 207, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING, false), "txtNomeCli");
+    lcCli.add(new GuardaCampo(txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER, false), "txtCodCli");
+    lcCli.add(new GuardaCampo(txtNomeCli, 90, 100, 207, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING, false), "txtNomeCli");
     txtCodCli.setTabelaExterna(lcCli);
     txtCodCli.setNomeCampo("CodCli");
     txtCodCli.setFK(true);
@@ -151,14 +151,15 @@ public class FConsOrc extends FFilho implements ActionListener {
     pinCab.adic(txtDtFim, 137, 25, 100, 20);
 
    // pinCab.adic(lbLinha, 60, 15, 315, 2);
-    pinCab.adic(new JLabel("Código e nome do cliente"), 7, 48, 250, 20);
+    pinCab.adic(new JLabel("Cód.cli."), 7, 48, 70, 20);
     pinCab.adic(txtCodCli, 7, 70, 70, 20);
+    pinCab.adic(new JLabel("Razão social do cliente"), 80, 48, 410, 20);
     pinCab.adic(txtNomeCli, 80, 70, 410, 20);
 
-    pinCab.adic(new JLabel("Valores :  "), 250, 5, 250, 20);
-    pinCab.adic(txtValorMenor, 250, 25, 100, 20);
-    pinCab.adic(new JLabel("até  "), 360, 25, 27, 20);
-    pinCab.adic(txtValorMaior, 390, 25, 100, 20);
+    pinCab.adic(new JLabel("Valores :  "), 240, 5, 250, 20);
+    pinCab.adic(txtValorMenor, 240, 25, 110, 20);
+    pinCab.adic(new JLabel("Até"), 354, 25, 27, 20);
+    pinCab.adic(txtValorMaior, 380, 25, 110, 20);
 
     pinCab.adic(lbStatus, 15, 95, 50, 18);
     pinCab.adic(lbLinha2, 7, 105, 201, 70);
@@ -180,8 +181,8 @@ public class FConsOrc extends FFilho implements ActionListener {
     tab.adicColuna("Orc.");
     tab.adicColuna("Ped.");
     tab.adicColuna("NF");
-    tab.adicColuna("Cód.Cli.");
-    tab.adicColuna("Nome do cliente");
+    tab.adicColuna("Cód.cli.");
+    tab.adicColuna("Razão social do cliente");
 
     tab.adicColuna("Data");
     tab.adicColuna("Validade");
