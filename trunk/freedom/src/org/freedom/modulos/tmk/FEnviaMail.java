@@ -141,16 +141,17 @@ public class FEnviaMail extends FFilho implements ActionListener {
 				
 		txtCodAtiv.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 		txtDescAtiv.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcAtiv.add(new GuardaCampo( txtCodAtiv, "CodAtiv", "CodAtiv.", ListaCampos.DB_PK, false));
-		lcAtiv.add(new GuardaCampo( txtDescAtiv, "DescAtiv", "Descrição", ListaCampos.DB_SI, false));
+		lcAtiv.add(new GuardaCampo( txtCodAtiv, "CodAtiv", "Cód.ativ.", ListaCampos.DB_PK, false));
+		lcAtiv.add(new GuardaCampo( txtDescAtiv, "DescAtiv", "Descrição da atividade", ListaCampos.DB_SI, false));
 		txtCodAtiv.setTabelaExterna(lcAtiv);
 		txtCodAtiv.setNomeCampo("CodAtiv");
 		txtCodAtiv.setFK(true);
 		lcAtiv.setReadOnly(true);
 		lcAtiv.montaSql(false, "ATIVIDADE", "TK");
 		
-		pinGeral.adic(new JLabel("Código e descrição da atividade"),7,0,290,20);
+		pinGeral.adic(new JLabel("Cód.ativ."),7,0,290,20);
 		pinGeral.adic(txtCodAtiv,7,20,80,20);
+		pinGeral.adic(new JLabel("Descrição da atividade"),90,0,290,20);
 		pinGeral.adic(txtDescAtiv,90,20,250,20);
 		pinGeral.adic(new JLabel("De:"),7,40,333,20);
 		pinGeral.adic(txtDe,7,60,333,20);

@@ -88,16 +88,17 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 		txtCodTipo.setRequerido(true);
 		txtCodTipo.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 		txtDescTipo.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcTipoImp.add(new GuardaCampo( txtCodTipo, "CodTpImp", "CodImp", ListaCampos.DB_PK, false),"txtCodProd");
-		lcTipoImp.add(new GuardaCampo( txtDescTipo, "DescTpImp", "Descrição", ListaCampos.DB_SI, false),"txtCodProd");
+		lcTipoImp.add(new GuardaCampo( txtCodTipo, "CodTpImp", "Cód.tp.imp.", ListaCampos.DB_PK, false),"txtCodProd");
+		lcTipoImp.add(new GuardaCampo( txtDescTipo, "DescTpImp", "Descrição do tipo de importação", ListaCampos.DB_SI, false),"txtCodProd");
 		txtCodTipo.setTabelaExterna(lcTipoImp);
 		txtCodTipo.setNomeCampo("CodProd");
 		txtCodTipo.setFK(true);
 		lcTipoImp.setReadOnly(true);
 		lcTipoImp.montaSql(false, "TIPOIMP", "TK");
 		
-		pinGeral.adic(new JLabel("Código e descrição do tipo de importação"),7,0,290,20);
+		pinGeral.adic(new JLabel("Cód.tp.imp."),7,0,290,20);
 		pinGeral.adic(txtCodTipo,7,20,80,20);
+		pinGeral.adic(new JLabel("Descrição do tipo de importação"),90,0,290,20);
 		pinGeral.adic(txtDescTipo,90,20,250,20);
 		pinGeral.adic(new JLabel("Arquivo de origem"),7,40,200,20);
 		pinGeral.adic(txtArqOrig,7,60,313,20);
