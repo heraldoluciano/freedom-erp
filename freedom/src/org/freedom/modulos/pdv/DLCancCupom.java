@@ -37,14 +37,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -53,10 +53,10 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
+import org.freedom.telas.FDialogo;
 
 
-public class DLCancCupom extends FFDialogo implements ActionListener,MouseListener,KeyListener { 
+public class DLCancCupom extends FDialogo implements ActionListener,MouseListener,KeyListener { 
 	private JPanelPad pinCab = new JPanelPad(400,90);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnBt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));	
@@ -74,9 +74,10 @@ public class DLCancCupom extends FFDialogo implements ActionListener,MouseListen
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	boolean bCancCupom = false;
 	int iCancItem = -1;
+	Connection con = null;
 	public DLCancCupom(Connection con) {
-		super(Aplicativo.telaPrincipal);
-		setConexao(con);
+//		super(Aplicativo.telaPrincipal);
+		this.con = con;
 		setTitulo("Cancela Venda");
 		setAtribos(100,150,710,300);
 		

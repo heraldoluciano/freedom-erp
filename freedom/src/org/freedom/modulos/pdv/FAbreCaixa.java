@@ -23,25 +23,26 @@
 package org.freedom.modulos.pdv;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.freedom.componentes.JLabelPad;
+import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
+import org.freedom.telas.FDialogo;
 
-public class FAbreCaixa extends FFDialogo {
+public class FAbreCaixa extends FDialogo {
 	private JTextFieldPad txtData = new JTextFieldPad();
 	private JTextFieldPad txtValor = new JTextFieldPad();
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private Connection con = null;
 	public FAbreCaixa() {
-		super(Aplicativo.telaPrincipal);
 		setTitulo("Abrir Caixa");
 		setAtribos(250,110);
 		
@@ -52,9 +53,9 @@ public class FAbreCaixa extends FFDialogo {
 		txtData.setAtivo(false);
 		txtValor.setVlrBigDecimal(new BigDecimal(0));
 		
-		adic(new JLabelPad("Data"),7,5,80,15);
+		adic(new JLabel("Data"),7,5,80,15);
 		adic(txtData,7,20,80,20);
-		adic(new JLabelPad("Valor"),90,5,100,15);
+		adic(new JLabel("Valor"),90,5,100,15);
 		adic(txtValor,90,20,100,20);
 		
 		
@@ -90,5 +91,8 @@ public class FAbreCaixa extends FFDialogo {
 			dbAbrirCaixa();
 		}
 		super.actionPerformed(evt);
+	}
+	public void setConexao(Connection cn) {
+		con = cn;
 	}
 }
