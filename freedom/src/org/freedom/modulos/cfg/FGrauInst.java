@@ -38,8 +38,8 @@ public class FGrauInst extends FDados implements ActionListener {
   public FGrauInst () {
     setTitulo("Cadastro de Grau de instrução");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodGrauInstru, 7, 20, 50, 20,"CodGri","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescGrauInstru, 60, 20, 250, 20,"DescGri","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodGrauInstru, 7, 20, 70, 20,"CodGri","Cód.gri.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescGrauInstru, 80, 20, 250, 20,"DescGri","Descrição do grau de instrução",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
     setListaCampos( true, "GrauInst", "SG");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -77,7 +77,7 @@ public class FGrauInst extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.gri.");
             imp.say(imp.pRow()+0,25,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));

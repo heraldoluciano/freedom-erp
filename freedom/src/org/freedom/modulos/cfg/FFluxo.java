@@ -57,15 +57,15 @@ public class FFluxo extends FDetalhe implements ActionListener {
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 
-   lcProc.add(new GuardaCampo( txtCodProc, 7, 100, 80, 20, "CodProc", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
-   lcProc.add(new GuardaCampo( txtDescProc, 90, 100, 207, 20, "DescProc", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
+   lcProc.add(new GuardaCampo( txtCodProc, 7, 100, 80, 20, "CodProc", "Cód.proc.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
+   lcProc.add(new GuardaCampo( txtDescProc, 90, 100, 207, 20, "DescProc", "Descrição do processo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
    lcProc.montaSql(false, "PROCESSO", "SG");
    lcProc.setQueryCommit(false);
    lcProc.setReadOnly(true);
    txtCodProc.setTabelaExterna(lcProc);
     
-   adicCampo(txtCodFluxo, 7, 20, 50, 20,"CodFluxo","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-   adicCampo(txtDescFluxo, 60, 20, 250, 20,"DescFluxo","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+   adicCampo(txtCodFluxo, 7, 20, 70, 20,"CodFluxo","Cód.fluxo",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+   adicCampo(txtDescFluxo, 80, 20, 230, 20,"DescFluxo","Descrição do fluxo",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
    setListaCampos( true, "FLUXO", "SG");
 
    setAltDet(60);
@@ -74,8 +74,8 @@ public class FFluxo extends FDetalhe implements ActionListener {
    setNavegador(navRod);
 
    adicCampo(txtCodItem, 7, 20, 40, 20,"SeqItFluxo","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodProc, 50, 20, 77, 20,"CodProc","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProc,true);
-   adicDescFK(txtDescProc, 130, 20, 200, 20,"DescProc","e descrição do processo",JTextFieldPad.TP_STRING,50,0);
+   adicCampo(txtCodProc, 50, 20, 70, 20,"CodProc","Cód.proc.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProc,true);
+   adicDescFK(txtDescProc, 123, 20, 230, 20,"DescProc","Descrição do processo",JTextFieldPad.TP_STRING,50,0);
    setListaCampos( true, "ITFLUXO", "SG");
    
    montaTab();    

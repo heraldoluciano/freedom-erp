@@ -83,25 +83,25 @@ public class FTratRet extends FDetalhe implements ActionListener {
 	 vLabsTipo.add("AGUARDE");
 	 cbTipo.setItens(vLabsTipo,vValsTipo);
     
-   lcTarefa.add(new GuardaCampo( txtCodTar, 7, 100, 80, 20, "CodTarefa", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
-   lcTarefa.add(new GuardaCampo( txtDescTar, 90, 100, 207, 20, "DescTarefa", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
+   lcTarefa.add(new GuardaCampo( txtCodTar, 7, 100, 80, 20, "CodTarefa", "Cód.tarefa", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
+   lcTarefa.add(new GuardaCampo( txtDescTar, 90, 100, 207, 20, "DescTarefa", "Descrição da tarefa", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
    lcTarefa.montaSql(false, "TAREFA", "SG");
    lcTarefa.setQueryCommit(false);
    lcTarefa.setReadOnly(true);
    txtCodTar.setTabelaExterna(lcTarefa);
     
    lcItProc.add(new GuardaCampo( txtCodItProc, 7, 100, 80, 20, "SeqItProc", "Item.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProc");
-   lcItProc.add(new GuardaCampo( txtCodTar2, 90, 100, 207, 20, "CodTarefa", "Cod.Tarefa.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescProc");
+   lcItProc.add(new GuardaCampo( txtCodTar2, 90, 100, 207, 20, "CodTarefa", "Cód.tarefa.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescProc");
    lcItProc.setWhereAdic("CodProc="+iCodProc);
    lcItProc.montaSql(false, "ITPROCESSO", "SG");
    lcItProc.setQueryCommit(false);
    lcItProc.setReadOnly(true);
    txtCodItProc.setTabelaExterna(lcItProc);
 
-   adicCampo(txtCodProc, 7, 20, 60, 20,"CodProc","Processo",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodItem, 70, 20, 37, 20,"SeqItProc","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodTar, 110, 20, 77, 20,"CodTarefa","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTar,true);
-   adicDescFK(txtDescTar, 190, 20, 200, 20,"DescTar","e descrição da tarefa",JTextFieldPad.TP_STRING,50,0);
+   adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+   adicCampo(txtCodItem, 80, 20, 37, 20,"SeqItProc","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+   adicCampo(txtCodTar, 120, 20, 70, 20,"CodTarefa","Cód.tarefa",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTar,true);
+   adicDescFK(txtDescTar, 193, 20, 197, 20,"DescTar","Descrição da tarefa",JTextFieldPad.TP_STRING,50,0);
    setListaCampos( false, "ITPROCESSO", "SG");
 
    setAltDet(60);
