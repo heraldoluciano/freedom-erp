@@ -53,8 +53,8 @@ public class FSerie extends FDados implements ActionListener {
     txtDocSerie.setSoLeitura(true);
     txtReset.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     
-    adicCampo(txtSerie, 7, 20, 50, 20,"Serie","Código",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-    adicCampo(txtDocSerie, 60, 20, 250, 20,"DocSerie","Doc. nº.",JTextFieldPad.TP_INTEGER,40,0,false,false,null,false);
+    adicCampo(txtSerie, 7, 20, 75, 20,"Serie","Cód.série",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
+    adicCampo(txtDocSerie, 85, 20, 240, 20,"DocSerie","Doc. número",JTextFieldPad.TP_INTEGER,40,0,false,false,null,false);
     adic(btReset,100,50,130,30);
     setListaCampos( true, "SERIE", "LF");
     btReset.addActionListener(this);

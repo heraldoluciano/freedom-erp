@@ -57,9 +57,9 @@ public class FSimilar extends FDados implements ActionListener{
 		txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 		txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);    
 		txtDescProd.setTipo(JTextFieldPad.TP_STRING,50,0); 		
-		lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Código", true, false, txtDescProd, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
-		lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-		lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");		
+		lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", true, false, txtDescProd, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
+		lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+		lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");		
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
@@ -69,9 +69,9 @@ public class FSimilar extends FDados implements ActionListener{
 		//FK do produto (*Somente em caso de referências este listaCampos 
 		//Trabalha como gatilho para o listaCampos de produtos, assim
 		//carregando o código do produto que será armazenado no Banco)
-		lcProd2.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência", true, false, txtDescProd, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-		lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
-		lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Código", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
+		lcProd2.add(new GuardaCampo( txtRefProd, 90, 100, 207, 20, "RefProd", "Referência do produto", true, false, txtDescProd, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+		lcProd2.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+		lcProd2.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProdx");
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcCampos);
 		lcProd2.setWhereAdic("ATIVOPROD='S'");
@@ -83,20 +83,20 @@ public class FSimilar extends FDados implements ActionListener{
 
 	private void montaTela() {
 
-		adicCampo(txtRefProdSim, 7, 20, 120, 20,"RefProdSim","Cód.Sim.",JTextFieldPad.TP_STRING,18,0,true,false,null,true);
-		adicCampo(txtRefProdSimFK, 7,60,120, 20,"RefProdSimFK","Cód.Sim.",JTextFieldPad.TP_STRING,18,0,false,false,null,false);
+		adicCampo(txtRefProdSim, 7, 20, 120, 20,"RefProdSim","Cód.sim.",JTextFieldPad.TP_STRING,18,0,true,false,null,true);
+		adicCampo(txtRefProdSimFK, 7,60,120, 20,"RefProdSimFK","Cód.sim.",JTextFieldPad.TP_STRING,18,0,false,false,null,false);
 	
 		if (bPrefs[0]) {
 			txtRefProdSim.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),true);
 			txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"),false);
-			adicCampoInvisivel(txtCodProd,"CodProd","Cód.Prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,false);
-			adicCampoInvisivel(txtRefProd,"RefProd","Ref.Prod.",JTextFieldPad.TP_STRING,13,0,false,true,null,false);			adic(new JLabel("Ref.Prod."), 130, 0, 100, 20);
+			adicCampoInvisivel(txtCodProd,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,false);
+			adicCampoInvisivel(txtRefProd,"RefProd","Ref.prod.",JTextFieldPad.TP_STRING,13,0,false,true,null,false);			adic(new JLabel("Ref.Prod."), 130, 0, 100, 20);
 			adic(txtRefProd, 130, 20, 100, 20);
 		}
 		else {
 			txtRefProdSim.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"),true);			
 			txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"),false);
-			adicCampo(txtCodProd, 130, 20, 100, 20,"CodProd","Cód.Prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,false);
+			adicCampo(txtCodProd, 130, 20, 100, 20,"CodProd","Cód.prod.",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescProd,false);
 		}
 		adicDescFK(txtDescProd, 233, 20, 300, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0);
 		
@@ -178,10 +178,10 @@ public class FSimilar extends FDados implements ActionListener{
 				if (imp.pRow()==0) {
 					imp.impCab(136);
 					imp.say(imp.pRow()+0,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,6,"Cód.Prod.");
+					imp.say(imp.pRow()+0,6,"Cód.prod.");
 					imp.say(imp.pRow()+0,26,"Referência");
 					imp.say(imp.pRow()+0,40,"Descrição do produto");
-					imp.say(imp.pRow()+0,92,"Cód.Similar");
+					imp.say(imp.pRow()+0,92,"Cód.similar");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,Funcoes.replicate("-",136));
 				}
