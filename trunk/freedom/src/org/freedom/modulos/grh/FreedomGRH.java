@@ -27,7 +27,7 @@ import org.freedom.telas.Aplicativo;
 public class FreedomGRH extends Aplicativo {
 
 	public FreedomGRH() {
-		super("iconAtendimento32.gif","splashGMS.jpg","FreedomGMS - Módulo de gerenciamento de mateirais e serviços",1,8);      		
+		super("iconAtendimento32.gif","splashGRH.jpg","FreedomGMS - Módulo de gerenciamento de mateirais e serviços",1,8);      		
 		
 		addOpcao(-1,TP_OPCAO_MENU,"Arquivo",'A',100000000,0,false);
 			addOpcao(100000000,TP_OPCAO_MENU,"Cadastros",'T',100100000,1,false);		    	
