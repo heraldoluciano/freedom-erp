@@ -208,6 +208,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 	private JPanelPad pinAvalista = new JPanelPad(680, 200);
 
+	private JPanelPad pinJuridica = new JPanelPad(680, 200);	
+	
 	private JPanelPad pinRodFicha = new JPanelPad(680, 29);
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad(
@@ -417,8 +419,25 @@ public class FCredCli extends FTabDados implements ActionListener,
 	private JTextFieldPad txtDtAdmTrabAvalCli = new JTextFieldPad(
 			JTextFieldPad.TP_DATE, 10, 0);
 
+	private JTextFieldPad txtRamoAtivCli = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 50, 0);
+
 	private JTextFieldPad txtRendaAvalCli = new JTextFieldPad(
 			JTextFieldPad.TP_DECIMAL, 15, 2);
+
+	private JTextFieldPad txtDtFundacCli = new JTextFieldPad(
+			JTextFieldPad.TP_DATE, 10, 0);
+
+	private JTextFieldPad txtFaturCli = new JTextFieldPad(
+			JTextFieldPad.TP_DECIMAL, 15, 2);
+
+	private JTextFieldPad txtNumFiliaisCli = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 5, 0);
+
+	private JTextFieldPad txtNumFuncCli = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 10, 0);
+
+	private JCheckBoxPad cbCompraReqCli = new JCheckBoxPad("Compra com Requisição", "S", "N");
 
 	private JTextFieldPad txtCodEmpTb = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 5, 0);
@@ -1077,7 +1096,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		lbFontRendaCli = adicCampo(txtFontRendaCli, 386, 140, 184, 20,
 				"FontRendaCli", "Fonte de outras rendas", ListaCampos.DB_SI,
 				false);
-
+		
 		setPainel(pinConjuge);
 
 		adicCampo(txtNomeConjCli, 7, 20, 300, 20, "NomeConjCli",
@@ -1124,6 +1143,20 @@ public class FCredCli extends FTabDados implements ActionListener,
 		adicCampo(txtRendaAvalCli, 100, 100, 90, 20, "RendaAvalCli", "Renda",
 				ListaCampos.DB_SI, false);
 
+		setPainel(pinJuridica);
+		
+		adicCampo(txtDtFundacCli, 7, 20, 90, 20, "DtFundacCli", "Dat. Fundação",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtRamoAtivCli, 100, 20, 330, 20, "RamoAtivCli", "Ramo de Atividade",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtFaturCli, 7, 60, 80, 20, "FaturCli", "Faturamento",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtNumFiliaisCli, 90, 60, 90, 20, "NumFiliaisCli", "Núm. Filiais",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtNumFuncCli, 187, 60, 90, 20, "NumFuncCli", "Núm. Func.",
+				ListaCampos.DB_SI, false);
+		adicDB(cbCompraReqCli, 7, 85, 180, 25, "CompraReqCli", "", false);
+		
 		setListaCampos(false, "CLICOMPL", "VD");
 		lcFicha.setQueryInsert(false);
 		lcFicha.setQueryCommit(false);
@@ -1556,7 +1589,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 			tpn2.addTab("Cônjuge", pinConjuge);
 		if (bAvalTipoCli)
 			tpn2.addTab("Avalista", pinAvalista);
-
+		if (bJurTipoCli)
+			adicTab("Pess.Jur.", pinJuridica);
 	}
 
 	private void setaFoco() {
@@ -1571,11 +1605,11 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		//Pessoa Jurídica
 		if (bJurTipoCli) {
-			txtFuncaoAutP.setVisible(false);
-			lbFuncaoAutP.setVisible(false);
-		} else {
 			txtFuncaoAutP.setVisible(true);
 			lbFuncaoAutP.setVisible(true);
+		} else {
+			txtFuncaoAutP.setVisible(false);
+			lbFuncaoAutP.setVisible(false);
 		}
 
 		//Pessoa Física
