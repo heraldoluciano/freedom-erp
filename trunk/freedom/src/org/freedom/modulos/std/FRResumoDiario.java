@@ -53,7 +53,6 @@ public class FRResumoDiario extends FRelatorio {
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JRadioGroup rgFormato=null;
-  private Connection con = null;
   private int iLinha = 1;
   private int iCol = 1;
   public FRResumoDiario() {
@@ -102,7 +101,7 @@ public class FRResumoDiario extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcVend.setConexao(con);
   }
 

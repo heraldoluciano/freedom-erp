@@ -146,9 +146,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
         ((GuardaCampo)lcCampos.getComponent(i)).getComponente().requestFocus();
     }
   }
-/*  public void setConexao(Connection cn) {
-     con = cn;
-  }*/
 
   public void execConsultaPrep() {
 /*     try {

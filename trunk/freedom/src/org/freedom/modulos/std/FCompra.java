@@ -125,7 +125,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   private ListaCampos lcLote = new ListaCampos(this, "LE");
   private ListaCampos lcFisc = new ListaCampos(this);
   private ListaCampos lcCompra2 = new ListaCampos(this);
-  private Connection con = null;
   String sOrdNota = "";
 
   public FCompra() {
@@ -985,7 +984,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
   }
   public void setConexao(Connection cn) {
 	super.setConexao(cn);
-    montaDetalhe();
     lcTipoMov.setConexao(cn);
     lcSerie.setConexao(cn);
     lcFor.setConexao(cn);
@@ -996,5 +994,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcLote.setConexao(cn);
     lcFisc.setConexao(cn);
     lcCompra2.setConexao(cn);
+    montaDetalhe();
   }
 }

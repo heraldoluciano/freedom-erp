@@ -64,7 +64,6 @@ public class FRMediaItem extends FRelatorio {
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
   private ListaCampos lcVend = new ListaCampos(this);
-  private Connection con = null;
   public FRMediaItem() {
     setTitulo("Media de vendas por item");
     setAtribos(80,80,305,400);

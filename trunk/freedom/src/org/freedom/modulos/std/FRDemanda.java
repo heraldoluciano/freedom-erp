@@ -44,7 +44,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRDemanda extends FRelatorio {
-  private Connection con;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
@@ -335,7 +334,7 @@ public class FRDemanda extends FRelatorio {
     }
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcGrup.setConexao(cn);
     lcMarca.setConexao(cn);
   }

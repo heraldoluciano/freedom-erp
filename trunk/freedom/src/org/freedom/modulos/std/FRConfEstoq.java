@@ -40,7 +40,6 @@ import org.freedom.telas.FRelatorio;
 
 public class FRConfEstoq extends FRelatorio {
   
-  private Connection con;
   private Vector vLabTipoRel = new Vector();
   private Vector vValTipoRel = new Vector();
   private JRadioGroup rgTipoRel = null;
@@ -398,8 +397,5 @@ public class FRConfEstoq extends FRelatorio {
   	
   }
   
-  public void setConexao(Connection cn) {
-    con = cn;
-  }
   
 }

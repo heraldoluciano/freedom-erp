@@ -21,8 +21,6 @@
  */
 
 package org.freedom.modulos.cfg;
-import java.sql.Connection;
-
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
@@ -30,7 +28,6 @@ import org.freedom.telas.FDados;
 public class FAjustaSeq extends FDados {
   private JTextFieldPad txtSgTab = new JTextFieldPad();
   private JTextFieldPad txtNroSeq = new JTextFieldPad();
-  private Connection con = null;
   public FAjustaSeq() {
     setTitulo("Ajusta sequencia");
     setAtribos(50,50,350,150);

@@ -48,12 +48,10 @@ public class DLConsultaPgto extends FFDialogo {
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
-  private Connection con = null;
   private ListaCampos lcCli = new ListaCampos(this);
   private Painel pinConsulta = new Painel(0,60);
   public DLConsultaPgto(Component cOrig,Connection cn,int iCodCli) {
   	super(cOrig);
-    con = cn;
     txtCodCli.setVlrString(""+iCodCli);
     setTitulo("Consulta de Pagamentos");
     setAtribos(100,100,500,300);

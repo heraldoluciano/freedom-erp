@@ -57,7 +57,6 @@ public class FRUltimaVenda extends FRelatorio {
   private ListaCampos lcVend = new ListaCampos(this);
   
   private ListaCampos lcCli = new ListaCampos(this,"CL");
-  private Connection con = null;
   public FRUltimaVenda() {
     setTitulo("Ultima Venda por Cliente");
     setAtribos(80,80,290,270);
@@ -113,7 +112,7 @@ public class FRUltimaVenda extends FRelatorio {
     
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcCli.setConexao(con);
     lcVend.setConexao(con);
   }

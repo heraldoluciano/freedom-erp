@@ -185,7 +185,6 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private Navegador navPreco = new Navegador(true);
   private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
   private PainelImagem imFotoProd = new PainelImagem(65000);
-  private Connection con = null;
   private String[] sPrefs = null;
  
   public FProduto() {

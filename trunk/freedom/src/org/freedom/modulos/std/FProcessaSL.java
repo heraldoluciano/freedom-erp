@@ -55,7 +55,6 @@ import org.freedom.telas.FFilho;
  */
 public class FProcessaSL extends FFilho implements ActionListener {
     private Painel pin = new Painel();
-	private Connection con = null;
 	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JLabel lbStatus = new JLabel();
 	boolean bRunProcesso = false;
@@ -204,7 +203,4 @@ public class FProcessaSL extends FFilho implements ActionListener {
 	public void state(String sStatus) {
 		lbStatus.setText(sStatus);
 	}
-    public void setConexao(Connection cn) {
-    	con = cn;
-    }
 }

@@ -35,7 +35,6 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLAtualiza extends FFDialogo {
-   private Connection con = null;
    
    public DLAtualiza(Component cOrig) {
    	 super(cOrig);
@@ -43,9 +42,6 @@ public class DLAtualiza extends FFDialogo {
 	 setAtribos(450, 300);
    
    }
-   public void setConexao(Connection cn) {
-	 con = cn;
-   }   
 
    public void actionPerformed(ActionEvent evt) {
 	   if (evt.getSource() == btOK) {

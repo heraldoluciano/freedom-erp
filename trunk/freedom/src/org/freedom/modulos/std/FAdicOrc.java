@@ -85,7 +85,6 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
   private ListaCampos lcCli = new ListaCampos(this,"CL");
   private ListaCampos lcConv = new ListaCampos(this,"CV");
   private JRadioGroup rgBusca = null;
-  private Connection con = null;
   private Vector vValidos = new Vector();
   int iCodProd = 0;
   private FVenda venda = null;
@@ -492,7 +491,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 	}
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcCli.setConexao(cn);
 	lcConv.setConexao(cn);
   }

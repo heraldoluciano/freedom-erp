@@ -69,7 +69,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JScrollPane spnTabGrup = new JScrollPane(tabGrup);
 	private ListaCampos lcGrup = new ListaCampos(this);
 	
-	private Connection con = null;
 	private JTabbedPane tpnConsulta = new JTabbedPane();
 	
 	public FConsulta() {
@@ -296,7 +295,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 		}
 	}
 	public void setConexao(Connection cn) {
-		con = cn;
+		super.setConexao(cn);
 		lcProd.setConexao(con);
 		lcGrup.setConexao(con);
 		montaTela();

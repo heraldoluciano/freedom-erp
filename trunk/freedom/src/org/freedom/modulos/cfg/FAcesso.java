@@ -55,9 +55,9 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
+public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   private JPanel pnCliente = new JPanel(new BorderLayout());
   private Painel pinTop = new Painel(475,90);
   private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
@@ -70,10 +70,10 @@ public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
   private Vector vLabs = new Vector();
   private JComboBoxPad cbFiliais= new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
   private JButton btSalva = new JButton(Icone.novo("btGerar.gif"));
-  private Connection con = null;
   boolean bEOF = false;
   int iConta = 0;
   public FAcesso() {
+  	super(Aplicativo.framePrinc);
 
     setTitulo("Controle de acesso por menus.");
     setAtribos( 410, 400);
@@ -412,7 +412,7 @@ public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
   	}
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
   	lcUsuario.setConexao(con);
   }
   public void actionPerformed(ActionEvent evt) {

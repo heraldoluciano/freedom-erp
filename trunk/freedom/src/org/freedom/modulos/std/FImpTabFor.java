@@ -64,7 +64,6 @@ public class FImpTabFor extends FFilho implements ActionListener {
   private JScrollPane spnTab = new JScrollPane(tab);
   private JProgressBar pbAnd = new JProgressBar();
   private JButton btGerar = new JButton(Icone.novo("btGerar.gif"));
-  private Connection con = null;
   private int iAnd = 0;
   private int iLinha = 0;
   private int iTotInseridos = 0;
@@ -391,7 +390,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   	}
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcFor.setConexao(cn);
   }
 }

@@ -56,7 +56,6 @@ public class FStatusItOrc extends FFilho implements ActionListener {
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcItOrc = new ListaCampos(this,"");
   private ListaCampos lcOrc = new ListaCampos(this,"");
-  private Connection con = null;
   public FStatusItOrc() {
     setTitulo("Ajusta status do item de orçamento");
     setAtribos(50,50,340,210);
@@ -143,7 +142,7 @@ public class FStatusItOrc extends FFilho implements ActionListener {
       trocar();
   }
   public void setConexao(Connection cn) {
-    con = cn;
+    super.setConexao(cn);
     lcItOrc.setConexao(cn);
     lcOrc.setConexao(cn);
   }

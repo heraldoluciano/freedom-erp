@@ -53,7 +53,7 @@ import javax.swing.event.MouseInputAdapter;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.Painel;
 
-public class FFDialogo extends JInternalFrame implements ActionListener, KeyListener {
+public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   public  JButton btCancel = new JButton("Cancelar",Icone.novo("btCancelar.gif"));
   public  JButton btOK = new JButton("OK",Icone.novo("btOk.gif"));
   private JPanel pnBox = new JPanel();

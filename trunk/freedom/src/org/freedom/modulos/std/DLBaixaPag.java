@@ -60,7 +60,6 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
   private ListaCampos lcConta = new ListaCampos(this);
   private ListaCampos lcPlan = new ListaCampos(this);
   private ListaCampos lcCC = new ListaCampos(this);
-  private Connection con = null;
   public DLBaixaPag(Component cOrig) {
   	super(cOrig);
     setTitulo("Baixa");
@@ -216,7 +215,7 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
   public void afterCarrega(CarregaEvent cevt) {
   }
   public void setConexao(Connection cn) {
-  	con = cn;
+  	super.setConexao(cn);
     lcConta.setConexao(cn);
     lcConta.carregaDados();
     lcPlan.setConexao(cn);

@@ -36,7 +36,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLGrupo extends FFDialogo {
-  private Connection con = null;
   private JTextFieldPad txtCodGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtDescGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtSiglaGrupo = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);

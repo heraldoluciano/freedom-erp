@@ -125,7 +125,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private ListaCampos lcCompraBaixa = new ListaCampos(this);
   private ListaCampos lcPagBaixa = new ListaCampos(this);
   private ListaCampos lcBancoBaixa = new ListaCampos(this);
-  private Connection con = null;
   private Vector vCodPag = new Vector();
   private Vector vNParcPag = new Vector();
   private Vector vNParcBaixa = new Vector();  
@@ -1205,7 +1204,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	return iRet;
   }
   public void setConexao(Connection cn) {
-    con = cn;
+  	super.setConexao(cn);
     lcFor.setConexao(cn);
     lcForBaixa.setConexao(cn);
     lcForManut.setConexao(cn);
