@@ -33,6 +33,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
@@ -198,6 +199,14 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
     modelo.limpa();
     ContaLinhas = 0;
   }
+  public void limpaTudo() {
+  	limpa();
+  	
+  	while(columnModel.getColumnCount() > 0) {
+  		TableColumn col = columnModel.getColumn(0);
+  		columnModel.removeColumn(col);
+  	}
+  }  
   public void setColunaEditavel(int iCol, boolean bVal) {
     modelo.ColunaEditavel(iCol,bVal);
   }
@@ -402,7 +411,6 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
       dataVector.removeAllElements();
       fireTableRowsDeleted( 0, dataVector.size());
     }
-
     public int getRowCount() {
       return dataVector.size();
     }
