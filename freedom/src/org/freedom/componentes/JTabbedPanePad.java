@@ -7,10 +7,10 @@
 package org.freedom.componentes;
 
 import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * @author robson 
@@ -18,9 +18,10 @@ import javax.swing.event.ChangeListener;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-public class JTabbedPanePad extends JTabbedPane implements ChangeListener  {
-	// Flag que indica para o component procurar o primeiro campo para foco.
+public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
 	private boolean initFirstFocus = true;
+	private boolean controlFocus = true;
+	// Flag que indica para o component procurar o primeiro campo para foco.
 	/**
 	 * 
 	 */
@@ -47,7 +48,18 @@ public class JTabbedPanePad extends JTabbedPane implements ChangeListener  {
 	}
 	
 	private void setChangedListener() {
-		addChangeListener(this);
+		addFocusListener(this);
+	}
+
+	public void focusGained(FocusEvent arg0) {
+		//System.out.println("Ganhou foco no Tabbed");
+		firstFocus(getSelectedComponent());
+		controlFocus = false;
+	}
+	public void focusLost(FocusEvent arg0) {
+		//System.out.println("Perdeu foco no Tabbed");
+		//initFirstFocus = true;
+
 	}
 	
 	public void setInitFirstFocus(boolean initFirstFocus) {
@@ -58,15 +70,13 @@ public class JTabbedPanePad extends JTabbedPane implements ChangeListener  {
 		return this.initFirstFocus;
 	}
 	
-	public void stateChanged(ChangeEvent e) {
-		firstFocus(getSelectedComponent());
-	}
 	
 	public void firstFocus(Component c) {
-	  	if ( (initFirstFocus) && (c!=null) ) {
+	  	if ( (initFirstFocus) && (c!=null) && (controlFocus) ) {
 	  		if (c instanceof JPanelPad) {
 	  		//	System.out.println("Entrou no first focus do tabbed");
-	  			( (JPanelPad) c).firstFocus();
+	  			if (!( (JPanelPad) c).firstFocus()) 
+	  				nextFocus() ;
 	  		}
 		}
 	}
