@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Tela de opções para o gráfico de evolução de vendas.
  * 
  */
 
@@ -41,8 +41,8 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.relatorios.EvoluVendasBarras;
-import org.freedom.relatorios.EvoluVendasLinha;
+import org.freedom.graficos.EvoluVendasBarras;
+import org.freedom.graficos.EvoluVendasLinha;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;

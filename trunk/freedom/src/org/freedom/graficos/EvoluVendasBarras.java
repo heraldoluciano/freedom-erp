@@ -5,7 +5,7 @@
  * Projeto: Freedom <BR>
  *  
  * Pacote: org.freedom.relatorios <BR>
- * Classe: @(#)BalanceteBarras.java <BR>
+ * Classe: @(#)EvoluVendasBarras.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -16,12 +16,11 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Gráfico de balancete financeiro no formato de barras verticais 3D.
+ * Gráfico de evolução de vendas no formato de barras verticais 3D.
  * 
  */
 
-
-package org.freedom.relatorios;
+package org.freedom.graficos;
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.Connection;
@@ -39,16 +38,13 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.CategoryDataset;
 import org.jfree.data.DefaultCategoryDataset;
 
-
-public class BalanceteBarras extends LeiauteGR {
+public class EvoluVendasBarras extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
 	private Font fnCabEmp = new Font("Arial",Font.PLAIN,8);
 	private Font fnCabEmpNeg = new Font("Arial",Font.BOLD,8);
 	private DefaultCategoryDataset datasetBar = new DefaultCategoryDataset();
 	private ResultSet rs = null;
-	private String sTitulo1 = "";
-	private String sTitulo2 = "";
 	Vector vParamOrc = new Vector();
 	
 	public void montaG() {
@@ -60,7 +56,7 @@ public class BalanceteBarras extends LeiauteGR {
 	private JFreeChart createChart(CategoryDataset dataset) {    
 	  JFreeChart chart = ChartFactory.createBarChart3D(	  
 			"",          //Título
-			"Planejamento",                       // Label X
+			"Meses",                       // Label X
 			"Valores",                     // Label Y
 			dataset,                       // Dados
 			PlotOrientation.VERTICAL,      // Orientação
@@ -73,48 +69,27 @@ public class BalanceteBarras extends LeiauteGR {
 		CategoryPlot plot = chart.getCategoryPlot();		
 		plot.setForegroundAlpha(0.6f);       
 		
-	  return chart;
+      return chart;
 	}
-	
+		
+
 	private void montaRel() {
 	  imprimeRodape(false);
-	  Vector vData = new Vector();
-	  double dVlrOutros = 0.0;      
-	  double dVlrTotal = 0.0;
-	  double dValor = 0.0;
-	  double dValorPerc = 0.0;
-	  String sLabel = "";
-	  try {	    
-		while (rs.next()) {
-			Vector vLinha = new Vector();
-			vLinha.addElement(rs.getString(2).trim());
-			vLinha.addElement(new Double (rs.getDouble(4))); 
-			vData.addElement(vLinha);
-			dVlrTotal += rs.getDouble(4);		    
+      try {	    
+	    while (rs.next()) {
+    	  datasetBar.addValue(rs.getDouble(1),Funcoes.adicionaEspacos(Funcoes.strMes(rs.getInt(2)),3)+
+                           "/"+rs.getString(3)+
+                          " >"+Funcoes.strDecimalToStrCurrency(14,2,rs.getString(1)+" ) ")
+                           ,"");        
+
 		}
-	  } 
+
+	  }
 	  catch (SQLException e) {
 		Funcoes.mensagemInforma(this,"Erro na consulta de valores!\n"+e.getMessage());
 	  }
-    
-	  for (int i2=0;vData.size()>i2;i2++){
-		dValor = ((Double) ((Vector) vData.elementAt(i2)).elementAt(1)).doubleValue();	
-		dValorPerc = (dValor*100)/dVlrTotal;	
-		if (dValorPerc<3.0) {
-		  dVlrOutros += dValor;		  	
-		}
-		else {
-		  sLabel = ((String) ((Vector) vData.elementAt(i2)).elementAt(0));
-		  sLabel = sLabel + " ("+		
-				   Funcoes.strDecimalToStrCurrency(14,2,dValor+"")+" ) ";
-		  datasetBar.addValue(dValor,sLabel,"");
-	  	
-		} 			
-	  }
-	  if (dVlrOutros>0.0) 
-		datasetBar.addValue(dVlrOutros,"Outros valores","");
-
-	  JFreeChart chart = createChart(datasetBar);	  		    			  
+  
+	  JFreeChart chart = createChart(datasetBar);			  		    			  
 	  
 	  setBordaRel();
 	  
@@ -122,38 +97,22 @@ public class BalanceteBarras extends LeiauteGR {
 	  
 	  drawLinha(0,iY,0,0,AL_LL);	          
       
-	  iY += 14;
+      iY += 14;
        
 	  setFonte(fnTopEmp);
-	  drawTexto(sTitulo1,0,iY,getFontMetrics(fnCabEmp).stringWidth("  "+sTitulo1+"  "),AL_CEN);
+	  drawTexto("EVOLUÇÃO DE VENDAS",0,iY,getFontMetrics(fnCabEmp).stringWidth("  EVOLUÇÃO DE VENDAS  "),AL_CEN);
 	  setFonte(fnCabEmpNeg);
 
 	  iY += 6;
 	  
 	  drawLinha(0,iY,0,0,AL_LL);
 
-	  iY +=14;
+      iY += 50;
 	  
-	  setFonte(fnTopEmp);
-	  drawTexto(sTitulo2,0,iY,getFontMetrics(fnCabEmp).stringWidth("  "+sTitulo2+"  "),AL_CEN);
-	  setFonte(fnCabEmpNeg);
-
-	  iY += 6;
-
-	  drawLinha(0,iY,0,0,AL_LL);
-
-	  iY += 50;
-	  
-	  drawGrafico(chart,15,iY,500,550);
-
-	  iY += 12;
-       
-	  setFonte(fnTopEmp);
-	  drawTexto("Valor total:"+Funcoes.strDecimalToStrCurrency(14,2,dVlrTotal+""),0,iY,getFontMetrics(fnCabEmp).stringWidth("  Valor total:"+Funcoes.strDecimalToStrCurrency(14,2,dVlrTotal+"")+"  "),AL_CEN);
+	  drawGrafico(chart,15,iY,500,500);
 	  
 	  termPagina();
 	  finaliza();
-
 	}
 
 	public void setParam(Vector vParam) {
@@ -163,11 +122,6 @@ public class BalanceteBarras extends LeiauteGR {
 	public void setConsulta(ResultSet rs2) {
 		rs = rs2;
 	}
-	public void setTitulo(String sTit1,String sTit2) {
-		sTitulo1 = sTit1;
-		sTitulo2 = sTit2;
-	}
-
 	public void setConexao(Connection cn) {
 	  con = cn;
 	}
