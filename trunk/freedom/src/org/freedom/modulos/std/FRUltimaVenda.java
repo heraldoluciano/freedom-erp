@@ -70,8 +70,8 @@ public class FRUltimaVenda extends FRelatorio {
 	cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH)-30);
 	txtDataini.setVlrDate(cPeriodo.getTime());
 	
-	lcCli.add(new GuardaCampo(txtCodCli, 7, 120, 80, 20, "CodCli", "Cód.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-	lcCli.add(new GuardaCampo(txtNomeCli, 90, 120, 207, 20, "NomeCli", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
+	lcCli.add(new GuardaCampo(txtCodCli, 7, 120, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodCli");
+	lcCli.add(new GuardaCampo(txtNomeCli, 90, 120, 207, 20, "NomeCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeCli");
 	txtCodCli.setTabelaExterna(lcCli);
 	txtCodCli.setNomeCampo("CodCli");
 	txtCodCli.setFK(true);
@@ -90,16 +90,17 @@ public class FRUltimaVenda extends FRelatorio {
     adic(new JLabel("Até:"),140,27,30,20);
     adic(txtDatafim,175,27,90,20);
     adic(lbLinha,7,62,260,2);
-    adic(new JLabel("Código e nome do cliente:"),7,70,250,20);
+    adic(new JLabel("Cód.cli."),7,70,250,20);
     adic(txtCodCli,07,90,70,20);
+    adic(new JLabel("Razão social do cliente:"),80,70,250,20);
     adic(txtNomeCli,80,90,186,20);
 	
 
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescVend.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.Vend.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-  	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+  	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+  	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);
@@ -109,8 +110,9 @@ public class FRUltimaVenda extends FRelatorio {
  
     
     
-    adic(new JLabel("Código e nome do representante"),7,113,210,20);
+    adic(new JLabel("Cód.repr."),7,113,210,20);
 	adic(txtCodVend,7,136,70,20);
+	adic(new JLabel("Nome do representante"),80,113,210,20);
 	adic(txtDescVend,80,136,186,20);
     
     adic(cbListaFilial,5,165,200,20);

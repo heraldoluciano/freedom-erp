@@ -75,11 +75,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JLabel lbCodMarca = new JLabel("Código e descrição da marca");
-  private JLabel lbCodGrup1 = new JLabel("Código e descrição do grupo/somar");
-  private JLabel lbCodGrup2 = new JLabel("Código e descrição do grupo/subtrair");
-  private JLabel lbCodSetor = new JLabel("Código e descrição do setor");
-  private JLabel lbCodVend = new JLabel("Código e nome do vendedor/repr.");
+  private JLabel lbCodMarca = new JLabel("Cód.marca");
+  private JLabel lbDescCodMarca = new JLabel("Descrição da marca");
+  private JLabel lbCodGrup1 = new JLabel("Cód.grupo/somar");
+  private JLabel lbDescCodGrup1 = new JLabel("Descrição do grupo/somar");
+  private JLabel lbCodGrup2 = new JLabel("Cód.grupo/subtrair");
+  private JLabel lbDescCodGrup2 = new JLabel("Descrição do grupo/subtrair");
+  private JLabel lbCodSetor = new JLabel("Cód.setor");
+  private JLabel lbDescCodSetor = new JLabel("Descrição do setor");
+  private JLabel lbCodVend = new JLabel("Cód.repr.");
+  private JLabel lbDescCodVend = new JLabel("Nome do representante");
   private ListaCampos lcGrup1 = new ListaCampos(this);
   private ListaCampos lcGrup2 = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
@@ -95,7 +100,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
   public FRVendaSetor() {
     setTitulo("Relatório de Vendas por Setor");
-    setAtribos(80,0,450,470);
+    setAtribos(80,0,470,470);
 
     GregorianCalendar cal = new GregorianCalendar();
     cal.add(Calendar.DATE,-30);
@@ -120,7 +125,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
     rgTipoRel.addRadioGroupListener(this);
     
     vLabOrdemRel.addElement("Valor");
-    vLabOrdemRel.addElement("Razão social");
+    vLabOrdemRel.addElement("Razão social do cliente");
     vLabOrdemRel.addElement("Cód.cli.");
     
     vValOrdemRel.addElement("V");
@@ -133,8 +138,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
     txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
     txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
     txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
+    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
+    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
     lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
     lcMarca.montaSql(false, "MARCA", "EQ");
     lcMarca.setReadOnly(true);
@@ -144,8 +149,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
     
     txtCodGrup1.setTipo(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
     txtDescGrup1.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup1.add(new GuardaCampo( txtCodGrup1, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup1");
-    lcGrup1.add(new GuardaCampo( txtDescGrup1, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup1");
+    lcGrup1.add(new GuardaCampo( txtCodGrup1, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup1");
+    lcGrup1.add(new GuardaCampo( txtDescGrup1, 90, 100, 207, 20, "DescGrup", "Descrição do gurpo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup1");
     lcGrup1.montaSql(false, "GRUPO", "EQ");
     lcGrup1.setReadOnly(true);
     txtCodGrup1.setTabelaExterna(lcGrup1);
@@ -154,8 +159,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
     txtCodGrup2.setTipo(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
     txtDescGrup2.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcGrup2.add(new GuardaCampo( txtCodGrup2, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup2");
-    lcGrup2.add(new GuardaCampo( txtDescGrup2, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup2");
+    lcGrup2.add(new GuardaCampo( txtCodGrup2, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup2");
+    lcGrup2.add(new GuardaCampo( txtDescGrup2, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup2");
     lcGrup2.montaSql(false, "GRUPO", "EQ");
     lcGrup2.setReadOnly(true);
     txtCodGrup2.setTabelaExterna(lcGrup2);
@@ -164,8 +169,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
     
     txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescSetor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.Setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
-    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
+    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
+    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição do setor",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
     lcSetor.montaSql(false,"SETOR","VD");
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
@@ -174,8 +179,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtNomeVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.Repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
-    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
+    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
+    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome do representante",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);
@@ -184,8 +189,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 	txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
-	lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+	lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
+	lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
 	txtCodCli.setTabelaExterna(lcCliente);
 	txtCodCli.setNomeCampo("CodCli");
 	txtCodCli.setFK(true);
@@ -195,31 +200,37 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
     adic(new JLabel("Formato de impressão"),7,0,200,20);
     adic(rgTipoRel,7,20,270,30);
     adic(new JLabel("Ordem"),280,0,80,20);
-    adic(rgOrdemRel,280,20,120,80);
+    adic(rgOrdemRel,280,20,167,80);
     adic(new JLabel("Período"),7,50,250,20);
     adic(txtDataini,7,70,100,20);
     adic(txtDatafim,110,70,100,20);
     adic(lbCodMarca,7,90,250,20);
-    adic(txtCodMarca,7,110,80,20);
-    adic(txtDescMarca,90,110,307,20);
+    adic(txtCodMarca,7,110,110,20);
+    adic(lbDescCodMarca,120,90,250,20);
+    adic(txtDescMarca,120,110,317,20);
     adic(lbCodGrup1,7,130,250,20);
-    adic(txtCodGrup1,7,150,80,20);
-    adic(txtDescGrup1,90,150,307,20);
+    adic(txtCodGrup1,7,150,110,20);
+    adic(lbDescCodGrup1,120,130,250,20);
+    adic(txtDescGrup1,120,150,317,20);
     adic(lbCodGrup2,7,170,250,20);
-    adic(txtCodGrup2,7,190,80,20);
-    adic(txtDescGrup2,90,190,307,20);
+    adic(txtCodGrup2,7,190,110,20);
+    adic(lbDescCodGrup2,120,170,250,20);
+    adic(txtDescGrup2,120,190,317,20);
     adic(lbCodSetor,7,210,250,20);
-    adic(txtCodSetor,7,230,80,20);
-    adic(txtDescSetor,90,230,307,20);
-    adic(lbCodVend,7,250,250,20);
-    adic(txtCodVend,7,270,80,20);
-    adic(txtNomeVend,90,270,307,20);
-    adic(cbVendas,7,295,100,25);
-    adic(cbCliPrinc,110,295,200,25);
+    adic(txtCodSetor,7,230,110,20);
+    adic(lbDescCodSetor,120,210,250,20);
+    adic(txtDescSetor,120,230,317,20);
+    adic(lbCodVend,7,250,250,20);  
+    adic(txtCodVend,7,270,110,20);
+    adic(lbDescCodVend,120,250,250,20);
+    adic(txtNomeVend,120,270,317,20);
+    adic(cbVendas,7,295,110,25);
+    adic(cbCliPrinc,120,295,200,25);
     adic(cbIncluiPed,7,315,295,25);
-	adic(new JLabel("Código e razão social do cliente"),7,340,200,20);
-	adic(txtCodCli,7,360,80,20);
-	adic(txtRazCli,90,360,307,20);
+	adic(new JLabel("Cód.cli."),7,340,200,20);
+	adic(txtCodCli,7,360,110,20);
+	adic(new JLabel("Razão social do cliente"),90,340,200,20);
+	adic(txtRazCli,120,360,317,20);
     
   }
 
