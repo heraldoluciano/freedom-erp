@@ -168,7 +168,7 @@ public class StatusBar extends JPanelPad {
 	  this.add(pnEst, BorderLayout.WEST);
 	  this.add(pnCentro, BorderLayout.CENTER);
      
-	  lRelogio.setPreferredSize(new Dimension(80, 20));
+	  lRelogio.setPreferredSize(new Dimension(125, 20));
 	  lRelogio.setFont(new Font("Arial", Font.PLAIN, 12));
 	  lRelogio.setForeground( new Color(118, 89, 170));
 	  lRelogio.setHorizontalAlignment(SwingConstants.CENTER);
@@ -182,13 +182,18 @@ public class StatusBar extends JPanelPad {
 	}
 	
 	public void upRelogio() {
-	  String hora = "";
-	  String minuto = "";
+	  String hora = "", minuto = "";
+	  String dia = "", mes = "", ano = "";
 	  Calendar cal = Calendar.getInstance();
 	  hora = ""+(cal.get(Calendar.HOUR_OF_DAY));
 	  minuto = ""+(cal.get(Calendar.MINUTE));
 	  minuto = minuto.length() > 1 ? minuto : "0"+minuto;
-	  lRelogio.setText(hora+":"+minuto);
+	  dia = "" + (cal.get(Calendar.DAY_OF_MONTH));
+	  dia = dia.length() > 1 ? dia : "0"+dia;  
+	  mes = "" + (cal.get(Calendar.MONTH) + 1);
+	  mes = mes.length() > 1 ? mes : "0"+mes;  
+	  ano = "" + (cal.get(Calendar.YEAR));
+	  lRelogio.setText(dia + "/" + mes + "/" + ano + " " + hora + ":" + minuto);
 	  lRelogio.repaint();
 	}
 	
