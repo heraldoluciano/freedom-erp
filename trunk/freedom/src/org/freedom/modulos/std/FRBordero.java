@@ -79,7 +79,7 @@ public class FRBordero extends FRelatorio {
     txtCodSetor.setNomeCampo("CodSetor");
 
     lcVendedor.add(new GuardaCampo( txtCodVend,"CodVend","Cód.repr.",ListaCampos.DB_PK, false ));
-    lcVendedor.add(new GuardaCampo( txtNomeVend,"NomeVend","Nome do repres.",ListaCampos.DB_SI, false ));
+    lcVendedor.add(new GuardaCampo( txtNomeVend,"NomeVend","Nome do representante",ListaCampos.DB_SI, false ));
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);

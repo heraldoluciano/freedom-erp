@@ -77,8 +77,8 @@ public class FRComissoes extends FRelatorio {
 
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.Vend", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-    lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
+    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
+    lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
     lcVend.montaSql(false, "VENDEDOR", "VD");
     lcVend.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVend);
@@ -92,8 +92,9 @@ public class FRComissoes extends FRelatorio {
     adic(txtDatafim,40,47,97,20);
     adic(rgEmitRel,150,7,130,65);
     
-    adic(new JLabel("Código de nome do representante"),7,67,250,20);
+    adic(new JLabel("Cód.repr."),7,67,250,20);
     adic(txtCodVend,7,87,80,20);
+    adic(new JLabel("Nome do representante"),90,67,250,20);
     adic(txtDescVend,90,87,200,20);
     adic(cbNLiberada,7,107,100,20);
     adic(cbLiberada,110,107,97,20);
