@@ -84,6 +84,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtInscCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
   private JTextFieldPad txtCpfCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 11, 0);
   private JTextFieldPad txtRgCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtSSPCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtEndCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNumCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtComplCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
@@ -202,7 +203,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private boolean bExecCargaObs = false;
   public FCliente () {
     setTitulo("Cadastro de Clientes"); 
-    setAtribos(50, 0, 550, 520);
+    setAtribos(50, 0, 530, 520);
     //setFirstFocus(txtCodCli);
     
     lcCliFor.setMaster(lcCampos);
@@ -320,7 +321,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtCpfCli, 330, 100, 170, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false);
   	adicCampo(txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli",ListaCampos.DB_FK, txtDescClas, true);
   	adicDescFK(txtDescClas, 90, 140, 237, 20, "DescClasCli", "Descrição da classificação do cliente");
-  	adicCampo(txtRgCli, 330, 140, 170, 20, "RgCli", "RG", ListaCampos.DB_SI, false);
+  	adicCampo(txtRgCli, 330, 140, 90, 20, "RgCli", "RG", ListaCampos.DB_SI, false);
+  	adicCampo(txtSSPCli, 423, 140, 77, 20, "SSPCli", "SSP", ListaCampos.DB_SI, false);
   	adicCampo(txtCnpjCli, 7, 180, 150, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false);
   	adicCampo(txtInscCli, 160, 180, 147, 20, "InscCli", "Inscrição Estadual", ListaCampos.DB_SI, false);
   	adicCampo(txtContCli, 310, 180, 190, 20, "ContCli", "Contato", ListaCampos.DB_SI, false);
@@ -347,7 +349,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     txtCpfCli.setMascara(JTextFieldPad.MC_CPF);
   	txtCnpjCli.setMascara(JTextFieldPad.MC_CNPJ);
   	txtCepCli.setMascara(JTextFieldPad.MC_CEP);
-  	txtFoneCli.setMascara(JTextFieldPad.MC_FONEDDD);
+  	txtFoneCli.setMascara(JTextFieldPad.MC_FONE);
   	txtFaxCli.setMascara(JTextFieldPad.MC_FONE);
   	pinEnt = new JPanelPad(500,290);
   	setPainel(pinEnt);
@@ -1395,6 +1397,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       setBordaPad(txtCpfCli);
       txtRgCli.setEnabled(false);
       setBordaPad(txtRgCli);
+      txtSSPCli.setEnabled(false);
+      setBordaPad(txtSSPCli);
     }
     else if (rgPessoa.getVlrString().compareTo("F") == 0) {
       txtCnpjCli.setEnabled(false);
@@ -1405,6 +1409,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       setBordaReq(txtCpfCli);
       txtRgCli.setEnabled(true);
       setBordaReq(txtRgCli);
+      txtSSPCli.setEnabled(true);
+      setBordaReq(txtSSPCli);
+      
+      
     }
   }
   public void beforePost(PostEvent pevt) {
