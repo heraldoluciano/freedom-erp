@@ -27,22 +27,39 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JLabel;
+
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.Painel;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FTipoCli extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-  private JCheckBoxPad cbTipoCad2 = new JCheckBoxPad("Ficha pessoa física","S","N");
-  private JCheckBoxPad cbTipoCad3 = new JCheckBoxPad("Ficha pessoa jurídica","S","N");
-  private JCheckBoxPad cbTipoCad4 = new JCheckBoxPad("Ficha Cadastro","S","N");
+  private Painel pinInfoFicha = new Painel(350,100);
+  private JLabel lbInfoFicha = new JLabel(" Informações complementares");
+  private JCheckBoxPad cbTipoCadFis = new JCheckBoxPad("Pessoa física","S","N");
+  private JCheckBoxPad cbTipoCadJur = new JCheckBoxPad("Pessoa jurídica","S","N");
+  private JCheckBoxPad cbTipoCadCheq = new JCheckBoxPad("Cheque","S","N");
+  private JCheckBoxPad cbTipoCadFil = new JCheckBoxPad("Filiação","S","N");
+  private JCheckBoxPad cbTipoCadLocTrab = new JCheckBoxPad("Local de trabalho","S","N");
+  private JCheckBoxPad cbTipoCadRefComl = new JCheckBoxPad("Referências comerciais","S","N");
+  private JCheckBoxPad cbTipoCadRefBanc = new JCheckBoxPad("Referências bancárias","S","N");
+  private JCheckBoxPad cbTipoCadRefPess = new JCheckBoxPad("Referências pessoais","S","N");
+  private JCheckBoxPad cbTipoCadRefConj = new JCheckBoxPad("Informações do cônjuge","S","N");
+  private JCheckBoxPad cbTipoCadRefVeic = new JCheckBoxPad("Informações de veículos","S","N");
+  private JCheckBoxPad cbTipoCadRefImov = new JCheckBoxPad("Informações de imóveis","S","N");
+  private JCheckBoxPad cbTipoCadRefTerra = new JCheckBoxPad("Informações de terras","S","N");
+  private JCheckBoxPad cbTipoCadRefPesAutCp = new JCheckBoxPad("Autorização de compra","S","N");
+  private JCheckBoxPad cbTipoCadRefAval = new JCheckBoxPad("Avalista","S","N");
+  private JCheckBoxPad cbTipoCadRefSocio = new JCheckBoxPad("Quadro de sócios","S","N");  
   
   public FTipoCli () {
     setTitulo("Cadastro de tipos de clientes");
-    setAtribos(50, 50, 350, 125);
+    setAtribos(50, 50, 350, 400);
     adicCampo(txtCod, 7, 20, 70, 20,"CodTipoCli","Cód.tp.cli.", ListaCampos.DB_PK, true);
     adicCampo(txtDesc, 80, 20, 250, 20,"DescTipoCli","Descrição do tipo de cliente", ListaCampos.DB_SI, true);
     setListaCampos( true, "TIPOCLI", "VD");
