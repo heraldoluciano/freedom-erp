@@ -41,11 +41,11 @@ import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
 
 public class FProcesso extends FDetalhe implements ActionListener {
-  private JTextFieldPad txtCodProc = new JTextFieldPad();
-  private JTextFieldPad txtDescProc = new JTextFieldPad();
+  private JTextFieldPad txtCodProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescProc = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodTar = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTar = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtCodItem = new JTextFieldPad();
+  private JTextFieldPad txtCodItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private ListaCampos lcTarefa = new ListaCampos(this,"TA");
   private JButton btTrat = new JButton(Icone.novo("btRetorno.gif"));
   private Painel pinCab = new Painel();
@@ -63,15 +63,15 @@ public class FProcesso extends FDetalhe implements ActionListener {
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 
-   lcTarefa.add(new GuardaCampo( txtCodTar, 7, 100, 80, 20, "CodTarefa", "Cód.tarfa", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
-   lcTarefa.add(new GuardaCampo( txtDescTar, 90, 100, 207, 20, "DescTarefa", "Descrição da tarefa", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
+   lcTarefa.add(new GuardaCampo( txtCodTar, "CodTarefa", "Cód.tarfa", ListaCampos.DB_PK, true));
+   lcTarefa.add(new GuardaCampo( txtDescTar, "DescTarefa", "Descrição da tarefa", ListaCampos.DB_SI, false));
    lcTarefa.montaSql(false, "TAREFA", "SG");
    lcTarefa.setQueryCommit(false);
    lcTarefa.setReadOnly(true);
    txtCodTar.setTabelaExterna(lcTarefa);
     
-   adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-   adicCampo(txtDescProc, 80, 20, 230, 20,"DescProc","Descrição do precesso",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+   adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.", ListaCampos.DB_PK, true);
+   adicCampo(txtDescProc, 80, 20, 230, 20,"DescProc","Descrição do precesso", ListaCampos.DB_SI, true);
    setListaCampos( true, "PROCESSO", "SG");
 
    setAltDet(60);
@@ -79,9 +79,9 @@ public class FProcesso extends FDetalhe implements ActionListener {
    setListaCampos(lcDet);
    setNavegador(navRod);
 
-   adicCampo(txtCodItem, 7, 20, 40, 20,"SeqItProc","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodTar, 50, 20, 77, 20,"CodTarefa","Cód.tarefa",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTar,true);
-   adicDescFK(txtDescTar, 130, 20, 200, 20,"DescTar","Descrição da tarefa",JTextFieldPad.TP_STRING,50,0);
+   adicCampo(txtCodItem, 7, 20, 40, 20,"SeqItProc","Item", ListaCampos.DB_PK, true);
+   adicCampo(txtCodTar, 50, 20, 77, 20,"CodTarefa","Cód.tarefa", ListaCampos.DB_FK, txtDescTar, true);
+   adicDescFK(txtDescTar, 130, 20, 200, 20,"DescTar","Descrição da tarefa");
    setListaCampos( true, "ITPROCESSO", "SG");
    
    adic(btTrat,340,15,60,30);

@@ -52,8 +52,8 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     
     txtDescObj.setAtivo(false);
     
-	lcTabela.add(new GuardaCampo( txtCodTb,  7, 100, 80,  20, "CODTB",  "Cód.tab.",    true,  false, txtDescTb, JTextFieldPad.TP_INTEGER,false),"txtCodTb");
-	lcTabela.add(new GuardaCampo( txtDescTb, 7, 100, 180, 20, "DESCTB", "Descriçao da tabela", false, false, null,      JTextFieldPad.TP_STRING, false),"txtDescTb");
+	lcTabela.add(new GuardaCampo( txtCodTb, "CODTB",  "Cód.tab.",  ListaCampos.DB_PK, txtDescTb, false));
+	lcTabela.add(new GuardaCampo( txtDescTb, "DESCTB", "Descriçao da tabela", ListaCampos.DB_SI, false));
 	lcTabela.montaSql(false, "TABELA", "SG");    
 	lcTabela.setQueryCommit(false);
 	lcTabela.setReadOnly(true);
@@ -80,9 +80,9 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
 	cbRequerido = new JCheckBoxPad("Requerido","S","N");
 	cbRequerido.setVlrString("N");
 
-    adicCampo(txtCodTb, 7, 20, 70, 20,"CODTB","Item",JTextFieldPad.TP_INTEGER,5,0,true,true,txtDescTb,true);
-	adicDescFK(txtDescTb, 80, 20, 280, 20, "DESCTB", "Descrição da tabela",JTextFieldPad.TP_STRING, 50, 0);
-	adicDB(cbRequerido, 365, 20, 90, 20, "ObrigObjTb", "",JTextFieldPad.TP_STRING,true);    
+    adicCampo(txtCodTb, 7, 20, 70, 20,"CODTB","Item", ListaCampos.DB_PF, txtDescTb, true);
+	adicDescFK(txtDescTb, 80, 20, 280, 20, "DESCTB", "Descrição da tabela");
+	adicDB(cbRequerido, 365, 20, 90, 20, "ObrigObjTb", "", true);    
 	lcDet.setUsaFI(false);
     setListaCampos( false, "OBJETOTB", "SG");
     lcCampos.setQueryInsert(false);

@@ -40,12 +40,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FTratRet extends FDetalhe implements ActionListener {
-  private JTextFieldPad txtCodProc = new JTextFieldPad();
+  private JTextFieldPad txtCodProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTar = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTar2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTar = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtCodItem = new JTextFieldPad();
-  private JTextFieldPad txtCodRet = new JTextFieldPad();
+  private JTextFieldPad txtCodItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodRet = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodItProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
@@ -83,25 +83,25 @@ public class FTratRet extends FDetalhe implements ActionListener {
 	 vLabsTipo.add("AGUARDE");
 	 cbTipo.setItens(vLabsTipo,vValsTipo);
     
-   lcTarefa.add(new GuardaCampo( txtCodTar, 7, 100, 80, 20, "CodTarefa", "Cód.tarefa", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProc");
-   lcTarefa.add(new GuardaCampo( txtDescTar, 90, 100, 207, 20, "DescTarefa", "Descrição da tarefa", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProc");
+   lcTarefa.add(new GuardaCampo( txtCodTar, "CodTarefa", "Cód.tarefa", ListaCampos.DB_PK, true));
+   lcTarefa.add(new GuardaCampo( txtDescTar, "DescTarefa", "Descrição da tarefa", ListaCampos.DB_SI, false));
    lcTarefa.montaSql(false, "TAREFA", "SG");
    lcTarefa.setQueryCommit(false);
    lcTarefa.setReadOnly(true);
    txtCodTar.setTabelaExterna(lcTarefa);
     
-   lcItProc.add(new GuardaCampo( txtCodItProc, 7, 100, 80, 20, "SeqItProc", "Item.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodProc");
-   lcItProc.add(new GuardaCampo( txtCodTar2, 90, 100, 207, 20, "CodTarefa", "Cód.tarefa.", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescProc");
+   lcItProc.add(new GuardaCampo( txtCodItProc, "SeqItProc", "Item.", ListaCampos.DB_PK, false));
+   lcItProc.add(new GuardaCampo( txtCodTar2, "CodTarefa", "Cód.tarefa.", ListaCampos.DB_SI, false));
    lcItProc.setWhereAdic("CodProc="+iCodProc);
    lcItProc.montaSql(false, "ITPROCESSO", "SG");
    lcItProc.setQueryCommit(false);
    lcItProc.setReadOnly(true);
    txtCodItProc.setTabelaExterna(lcItProc);
 
-   adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodItem, 80, 20, 37, 20,"SeqItProc","Item",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicCampo(txtCodTar, 120, 20, 70, 20,"CodTarefa","Cód.tarefa",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescTar,true);
-   adicDescFK(txtDescTar, 193, 20, 197, 20,"DescTar","Descrição da tarefa",JTextFieldPad.TP_STRING,50,0);
+   adicCampo(txtCodProc, 7, 20, 70, 20,"CodProc","Cód.proc.", ListaCampos.DB_PK, true);
+   adicCampo(txtCodItem, 80, 20, 37, 20,"SeqItProc","Item", ListaCampos.DB_PK, true);
+   adicCampo(txtCodTar, 120, 20, 70, 20,"CodTarefa","Cód.tarefa", ListaCampos.DB_FK, txtDescTar, true);
+   adicDescFK(txtDescTar, 193, 20, 197, 20,"DescTar","Descrição da tarefa");
    setListaCampos( false, "ITPROCESSO", "SG");
 
    setAltDet(60);
@@ -109,9 +109,9 @@ public class FTratRet extends FDetalhe implements ActionListener {
    setListaCampos(lcDet);
    setNavegador(navRod);
 
-   adicCampo(txtCodRet, 7, 20, 40, 20,"CodTratRet","Ret.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-   adicDB(cbTipo, 50, 18, 227, 25, "TipoTratRet", "Tipo",JTextFieldPad.TP_STRING,true);
-   adicCampo(txtCodItProc, 280, 20, 77, 20,"SeqItProcGT","Passo",JTextFieldPad.TP_INTEGER,8,0,false,true,null,false);
+   adicCampo(txtCodRet, 7, 20, 40, 20,"CodTratRet","Ret.", ListaCampos.DB_PK, true);
+   adicDB(cbTipo, 50, 18, 227, 25, "TipoTratRet", "Tipo", true);
+   adicCampo(txtCodItProc, 280, 20, 77, 20,"SeqItProcGT","Passo", ListaCampos.DB_FK, false);
    setListaCampos( true, "TRATARET", "SG");
    
    montaTab();    
