@@ -260,7 +260,7 @@ public class Tef {
 		    else
 		        break;
 		}
-		return (Object[])vRet.toArray();
+		return vRet.toArray();
 	}
 
 }

@@ -29,15 +29,12 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.comutacao.Tef;
-import org.freedom.funcoes.FunArq;
-import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLAdmTef extends FFDialogo implements ActionListener {
