@@ -83,8 +83,8 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     lcPlan.setReadOnly(true);
     txtCodPlan.setTabelaExterna(lcPlan);
     
-    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.planj.", ListaCampos.DB_PK, false));
-    lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do planejamento", ListaCampos.DB_SI, false));
+    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.CC.", ListaCampos.DB_PK, false));
+    lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do Centro de custo", ListaCampos.DB_SI, false));
     lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano", ListaCampos.DB_PK, false));
 	lcCC.setWhereAdic("NIVELCC=10");
     lcCC.montaSql(false, "CC", "FN");
@@ -107,7 +107,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento");
     adicCampo(txtCodCC, 310, 60, 97, 20,"CodCC","Centro de custo",ListaCampos.DB_FK,false);
     adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo");  
-    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano.C.C.",ListaCampos.DB_PF,false);    
+    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano.C.C.",ListaCampos.DB_SI,false);    
     adicDB(cbAutoBaixa,7,80,300,20,"AutoBaixaPlanoPag","",false);
     
     setListaCampos( true, "PLANOPAG", "FN");
