@@ -58,8 +58,8 @@ public class FRExtrato extends FRelatorio {
 
     txtCodConta.setTipo(JTextFieldPad.TP_STRING,10,0);
     txtDescConta.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Cód.Conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
-    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+    lcConta.add(new GuardaCampo( txtCodConta, 7, 100, 80, 20, "NumConta", "Cód.conta", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodConta");
+    lcConta.add(new GuardaCampo( txtDescConta, 90, 100, 207, 20, "DescConta", "Descrição da conta", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
     lcConta.montaSql(false, "CONTA", "FN");
     lcConta.setReadOnly(true);
     txtCodConta.setTabelaExterna(lcConta);
@@ -71,8 +71,9 @@ public class FRExtrato extends FRelatorio {
     adic(txtDataini,40,25,117,20);
     adic(new JLabel("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,120,20);
-    adic(new JLabel("Número de descrição da conta"),7,50,250,20);
+    adic(new JLabel("Nº conta"),7,50,250,20);
     adic(txtCodConta,7,70,80,20);
+    adic(new JLabel("Descrição da conta"),90,50,250,20);
     adic(txtDescConta,90,70,200,20);
 
 	GregorianCalendar cPeriodo = new GregorianCalendar();

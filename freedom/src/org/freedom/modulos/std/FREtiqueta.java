@@ -56,38 +56,41 @@ public class FREtiqueta extends FRelatorio {
      setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
                
-     lcModEtiq.add(new GuardaCampo( txtCodModEtiq, 7, 100, 80, 20, "CodModEtiq", "C.ModEtiq", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConta");
-     lcModEtiq.add(new GuardaCampo( txtDescModEtiq, 90, 100, 207, 20, "DescModEtiq", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcModEtiq.add(new GuardaCampo( txtCodModEtiq, 7, 100, 80, 20, "CodModEtiq", "Cód.mod.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodConta");
+     lcModEtiq.add(new GuardaCampo( txtDescModEtiq, 90, 100, 207, 20, "DescModEtiq", "Descrição do modelo de etiqueta", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
      lcModEtiq.setReadOnly(true);
      lcModEtiq.montaSql(false, "MODETIQUETA", "SG");
      txtCodModEtiq.setTabelaExterna(lcModEtiq);
      txtCodModEtiq.setFK(true);
      txtCodModEtiq.setNomeCampo("CodModEtiq");
     
-     lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "C.Setor", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
-     lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Cód.setor", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
+     lcSetor.add(new GuardaCampo( txtDescSetor, 90, 100, 207, 20, "DescSetor", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
      lcSetor.setReadOnly(true);
      lcSetor.montaSql(false, "SETOR", "VD");
      txtCodSetor.setTabelaExterna(lcSetor);
      txtCodSetor.setFK(true);
      txtCodSetor.setNomeCampo("CodSetor");
      
-     lcTipo.add(new GuardaCampo( txtCodTipo, 7, 100, 80, 20, "CodTipoCli", "C.Tipo", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
-     lcTipo.add(new GuardaCampo( txtDescTipo, 90, 100, 207, 20, "DescTipoCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
+     lcTipo.add(new GuardaCampo( txtCodTipo, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodConta");
+     lcTipo.add(new GuardaCampo( txtDescTipo, 90, 100, 207, 20, "DescTipoCli", "Descrição do tipo de cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescConta");
      lcTipo.setReadOnly(true);
      lcTipo.montaSql(false, "TIPOCLI", "VD");
      txtCodTipo.setTabelaExterna(lcTipo);
      txtCodTipo.setFK(true);
      txtCodTipo.setNomeCampo("CodTipoCli");
               
-     adic(new JLabel("Código e descrição do setor"),7,5,280,20);
+     adic(new JLabel("Cód.setor"),7,5,280,20);
      adic(txtCodSetor,7,25,80,20);
+     adic(new JLabel("Descrição do setor"),90,5,280,20);
      adic(txtDescSetor,90,25,200,20);
-     adic(new JLabel("Código e descrição do tipo de cliente"),7,45,280,20);
+     adic(new JLabel("Cód.tp.cli."),7,45,280,20);
      adic(txtCodTipo,7,65,80,20);
+     adic(new JLabel("Descrição do tipo de cliente"),90,45,280,20);
      adic(txtDescTipo,90,65,200,20);
-     adic(new JLabel("Código e descrição do modelo"),7,85,280,20);
+     adic(new JLabel("Cód.mod."),7,85,280,20);
      adic(txtCodModEtiq,7,105,80,20);
+     adic(new JLabel("Descrição do modelo"),90,85,280,20);
      adic(txtDescModEtiq,90,105,200,20);
   }   
   

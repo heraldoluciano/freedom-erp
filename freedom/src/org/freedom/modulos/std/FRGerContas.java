@@ -64,9 +64,12 @@ public class FRGerContas extends FRelatorio  {
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JLabel lbCodSetor = new JLabel("Código e descrição do setor");
-  private JLabel lbCodVend = new JLabel("Código e nome do vendedor/repr.");
-  private JLabel lbCliente = new JLabel("Código e razão do cliete");
+  private JLabel lbCodSetor = new JLabel("Cód.setor");
+  private JLabel lbDescSetor = new JLabel("Descrição do setor");
+  private JLabel lbCodVend = new JLabel("Cód.repr.");
+  private JLabel lbDescVend = new JLabel("Nome do representante");
+  private JLabel lbCliente = new JLabel("Cód.cli.");
+  private JLabel lbRazCli = new JLabel("Razão social do cliete");
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
   private ListaCampos lcCliente = new ListaCampos(this);
@@ -107,8 +110,8 @@ public class FRGerContas extends FRelatorio  {
             
     txtCodSetor.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtDescSetor.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.Setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
-    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
+    lcSetor.add(new GuardaCampo( txtCodSetor,0,0,0,0,"CodSetor","Cód.setor",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodSetor");
+    lcSetor.add(new GuardaCampo( txtDescSetor,0,0,0,0,"DescSetor","Descrição do setor",false,false, null, JTextFieldPad.TP_STRING, false ),"txtDescSetor");
     lcSetor.montaSql(false,"SETOR","VD");
     lcSetor.setReadOnly(true);
     txtCodSetor.setTabelaExterna(lcSetor);
@@ -117,8 +120,8 @@ public class FRGerContas extends FRelatorio  {
 
     txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtNomeVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.Repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
-    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
+    lcVendedor.add(new GuardaCampo( txtCodVend,0,0,0,0,"CodVend","Cód.repr.",true,false, null, JTextFieldPad.TP_INTEGER, false ),"txtCodVend");
+    lcVendedor.add(new GuardaCampo( txtNomeVend,0,0,0,0,"NomeVend","Nome do representante",false,false, null, JTextFieldPad.TP_STRING, false ),"txtNomeVend");
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
     txtCodVend.setTabelaExterna(lcVendedor);
@@ -127,8 +130,8 @@ public class FRGerContas extends FRelatorio  {
 
 	txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
 	txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
-	lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+	lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
+	lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
 	txtCodCli.setTabelaExterna(lcCliente);
 	txtCodCli.setNomeCampo("CodCli");
 	txtCodCli.setFK(true);
@@ -142,12 +145,15 @@ public class FRGerContas extends FRelatorio  {
     adic(txtDatafim,110,20,100,20);    
     adic(lbCodSetor,7,45,250,20);
     adic(txtCodSetor,7,65,70,20);
+    adic(lbDescSetor,80,45,250,20);
     adic(txtDescSetor,80,65,190,20);
     adic(lbCodVend,7,90,250,20);
     adic(txtCodVend,7,110,70,20);
+    adic(lbDescVend,80,90,250,20);
     adic(txtNomeVend,80,110,190,20);
 	adic(lbCliente,7,135,250,20);
 	adic(txtCodCli,7,155,70,20);
+	adic(lbRazCli,80,135,250,20);
 	adic(txtRazCli,80,155,320,20);
     
     adic(cbVendas,7,180,100,25);
