@@ -47,14 +47,14 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
     addOpcao(100101000,TP_OPCAO_ITEM,"Marca","Marca",'c',100120050,3, true, FMarca.class);
     addOpcao(100101000,TP_OPCAO_ITEM,"Unidade","Unidade",'U',100120060,3, true, FUnidade.class);
     addOpcao(100101000,TP_OPCAO_ITEM,"Produto","Produto",'P',100120070,3, true, FProduto.class);
-	addBotao("btProduto.gif","Produtos",100101000);
+	addBotao("btProduto.gif","Produtos",100101000, null, "");
 	addSeparador(100100000);
 	addOpcao(100100000,TP_OPCAO_ITEM,"Estrutura","Estrutura de produto",'E',100102000,2, true, FPrefereProd.class);
 	addOpcao(100100000,TP_OPCAO_ITEM,"Tipos de recursos","Tipos de recursos",'T',100103000,2, true, FTipoRec.class);
 	addOpcao(100100000,TP_OPCAO_ITEM,"Recursos de produção","Recursos de produção",'R',100104000,2, true, FRecursos.class);
 	addOpcao(100100000,TP_OPCAO_ITEM,"Fases de produção","Fases de produção",'F',100105000,2, true, FFase.class);
 	
-	addBotao("btEstProduto.gif","Estrutura de produto",100102000);
+	addBotao("btEstProduto.gif","Estrutura de produto",100102000, null, "");
 	
 	addOpcao(110100000,TP_OPCAO_ITEM,"Preferências gerais","Preferências gerais",'G',110101000,2, true, FPrefereProd.class);
 
