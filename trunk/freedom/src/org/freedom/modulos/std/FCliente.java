@@ -322,11 +322,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
   	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo",JTextFieldPad.TP_STRING,true);
   	adicCampo(txtNomeCli, 90, 60, 307, 20, "NomeCli", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null,true);
-  	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Tipo", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoCli,true);
-  	adicDescFK(txtDescTipoCli, 90, 100, 237, 20, "DescTipoCli", "", JTextFieldPad.TP_STRING, 50, 0);
+  	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Tipo cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoCli,true);
+  	adicDescFK(txtDescTipoCli, 90, 100, 237, 20, "DescTipoCli", "Descrição do tipo de cliente", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtCpfCli, 330, 100, 170, 20, "CpfCli", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
   	adicCampo(txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.clas.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClas,true);
-  	adicDescFK(txtDescClas, 90, 140, 237, 20, "DescClasCli", "", JTextFieldPad.TP_STRING, 50, 0);
+  	adicDescFK(txtDescClas, 90, 140, 237, 20, "DescClasCli", "Descrição da classificação do cliente", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtRgCli, 330, 140, 170, 20, "RgCli", "RG", JTextFieldPad.TP_STRING, 10, 0, false, false, null, false);
   	adicCampo(txtCnpjCli, 7, 180, 150, 20, "CnpjCli", "CNPJ", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);
   	adicCampo(txtInscCli, 160, 180, 147, 20, "InscCli", "Inscrição Estadual", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
