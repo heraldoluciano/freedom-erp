@@ -30,8 +30,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaParcela extends FFDialogo {
-  private JTextFieldPad txtParcItRec = new JTextFieldPad();
-  private JTextFieldPad txtDtVencItRec = new JTextFieldPad();
+  private JTextFieldPad txtParcItRec = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtDtVencItRec = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtVlrDescItRec = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   public DLFechaParcela(Component cOrig,BigDecimal bigParcItRec, Date dDtVencItRec, BigDecimal bigDescItRec) {
   	super(cOrig);
@@ -39,9 +39,6 @@ public class DLFechaParcela extends FFDialogo {
     setAtribos(250,220);
     if (bigDescItRec == null)
     	txtVlrDescItRec.setAtivo(false);
-
-    txtParcItRec.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-    txtDtVencItRec.setTipo(JTextFieldPad.TP_DATE,10,0);
 
     txtParcItRec.setVlrBigDecimal(bigParcItRec);
     txtDtVencItRec.setVlrDate(dDtVencItRec);

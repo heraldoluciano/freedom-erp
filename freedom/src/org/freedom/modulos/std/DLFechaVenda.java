@@ -103,7 +103,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtAltUsuRec = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JLabel lbPercDescVenda = new JLabel("% Desc.");
   private JLabel lbVlrDescVenda = new JLabel("V Desc.");
@@ -165,7 +165,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     
     tpn.add("Fechamento",pinFecha);
     tpn.add("Frete",pinFrete);
-    tpn.add("Inf. Específicas",pinInfEspec);
+    tpn.add("Inf. específicas",pinInfEspec);
     tpn.add("Receber",pnReceber);
     tpn.add("Comissão",pnComis);
     
@@ -177,7 +177,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     rgFreteVD = new JRadioGroup(1,2,vLabs, vVals);
     
     txtCodPlanoPag.setNomeCampo("CodPlanoPag");
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK,false));
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK,false));
     lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI, false));
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 	txtCodPlanoPag.setFK(true);
@@ -213,7 +213,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
     lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false));
 	lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false));
-    lcVenda.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pg.", ListaCampos.DB_FK, txtDescPlanoPag,false));
+    lcVenda.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cod.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag,false));
     lcVenda.add(new GuardaCampo( txtVlrDescItVenda, "VlrDescItVenda", "% Desc it.", ListaCampos.DB_SI,false));
     lcVenda.add(new GuardaCampo( txtVlrDescVenda, "VlrDescVenda", "% Desc it.", ListaCampos.DB_SI,false));
     lcVenda.add(new GuardaCampo( txtVlrAdicVenda, "VlrAdicVenda", "% Adic.",ListaCampos.DB_SI,false));
@@ -309,7 +309,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     lcItReceber.montaTab();
     tabRec.addMouseListener(this);
     
-    lcComis.add(new GuardaCampo( txtCodComi, "CodComi", "Cód.comi.", ListaCampos.DB_PK, false));
+    lcComis.add(new GuardaCampo( txtCodComi, "CodComi", "Cód.comis.", ListaCampos.DB_PK, false));
     lcComis.add(new GuardaCampo( txtVlrComi, "VlrComi", "Valor da comissão", ListaCampos.DB_SI,false));
     lcComis.add(new GuardaCampo( txtDtVencComi, "DtVencComi", "Dt.vencto.", ListaCampos.DB_SI,false));
     lcComis.montaSql(false, "COMISSAO", "VD");

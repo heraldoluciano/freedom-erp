@@ -45,8 +45,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
   private Painel pinCab = new Painel(0,60);
-  public JTextFieldPad txtCodPesq = new JTextFieldPad();
-  public JTextFieldFK txtRazPesq = new JTextFieldFK();
+  public JTextFieldPad txtCodPesq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  public JTextFieldFK txtRazPesq = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   public Tabela tab = new Tabela();
   public boolean bPrimeira = false;
   private JScrollPane spnCentro = new JScrollPane(tab);
@@ -66,7 +66,6 @@ public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
     setAtribos( 60, 20, 450, 350);
     setResizable(true);
     
-    txtCodPesq.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     txtCodPesq.setAtivo(false);
     
     setPainel(pinCab);

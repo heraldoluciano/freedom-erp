@@ -85,7 +85,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcItReceber.setTabela(tabRec);
 
     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_PK, false));
-    lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Nome",  ListaCampos.DB_SI, false));
+    lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente",  ListaCampos.DB_SI, false));
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setQueryCommit(false);
     lcCli.setReadOnly(true);
@@ -93,7 +93,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     txtCodCli.setFK(true);
     txtCodCli.setNomeCampo("CodCli");
 
-    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false));
+    lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false));
     lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento",  ListaCampos.DB_SI, false));
     lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
     lcPlanoPag.setQueryCommit(false);
@@ -113,7 +113,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
 
     lcReceber.add(new GuardaCampo( txtCodRec, "CodRec", "Cód.rec.", ListaCampos.DB_PK, true));
     lcReceber.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_FK,true));
-    lcReceber.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",  ListaCampos.DB_FK,true));
+    lcReceber.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.",  ListaCampos.DB_FK,true));
     lcReceber.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco",  ListaCampos.DB_FK, false));
     lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrParcRec", "Valor parc.",  ListaCampos.DB_SI,false));
     lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrAPagRec", "Valor a rec.",  ListaCampos.DB_SI,false));
@@ -170,14 +170,17 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     pnRec.add(spnTab,BorderLayout.CENTER);
 
     setPainel(pinCab);
-    adic(new JLabel("Código e nome do cliente"),7,0,250,20);
+    adic(new JLabel("Cód.cli."),7,0,250,20);
     adic(txtCodCli,7,20,80,20);
+    adic(new JLabel("Razão social do cliente"),90,0,250,20);
     adic(txtDescCli,90,20,197,20);
-    adic(new JLabel("Código e descrição do plano de pagto."),290,0,250,20);
+    adic(new JLabel("Cód.p.pag."),290,0,250,20);
     adic(txtCodPlanoPag,290,20,77,20);
+    adic(new JLabel("Descrição do plano de pagto."),370,0,250,20);
     adic(txtDescPlanoPag,370,20,200,20);
-    adic(new JLabel("Código e descriçao do banco"),7,40,250,20);
+    adic(new JLabel("Cód.banco"),7,40,250,20);
     adic(txtCodBanco,7,60,80,20);
+    adic(new JLabel("Descriçao do banco"),90,40,250,20);
     adic(txtDescBanco,90,60,197,20);
     adic(new JLabel("Valor"),290,40,107,20);
     adic(txtVlrParcRec,290,60,107,20);

@@ -37,13 +37,14 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLLote extends FFDialogo {
-  private JTextFieldPad txtCodLote = new JTextFieldPad(8);
-  private JTextFieldPad txtCodProd = new JTextFieldPad(8);
-  private JTextFieldPad txtDataINILote = new JTextFieldPad(10);
-  private JTextFieldPad txtVenctoLote = new JTextFieldPad(15);
+  private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDataINILote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtVenctoLote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK();
-  private JLabel lbCodLote = new JLabel("Código");
-  private JLabel lbCodProd = new JLabel("Código e descrição do produto");
+  private JLabel lbCodLote = new JLabel("Cód.lote");
+  private JLabel lbCodProd = new JLabel("Cód.prod.");
+  private JLabel lbDescProd = new JLabel("Descrição do produto");
   private JLabel lbDataINILote = new JLabel("Data ini.");
   private JLabel lbVenctoLote = new JLabel("Vencimento");
   private Connection con = null;
@@ -52,10 +53,6 @@ public class DLLote extends FFDialogo {
     con = cn;
     setTitulo("Lote");
     setAtribos(400, 200);
-    
-    txtCodLote.setTipo(JTextFieldPad.TP_STRING,13,0);
-    txtDataINILote.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtVenctoLote.setTipo(JTextFieldPad.TP_DATE,10,0);
     
     txtCodProd.setEditable(false);
 
@@ -70,6 +67,7 @@ public class DLLote extends FFDialogo {
     adic(txtVenctoLote,190,20,100,20);
     adic(lbCodProd,7,40,300,20);
     adic(txtCodProd,7,60,80,20);
+    adic(lbDescProd,90,40,300,20);
     adic(txtDescProd,90,60,200,20);
     
     txtCodLote.setVlrString(sCodLote);
