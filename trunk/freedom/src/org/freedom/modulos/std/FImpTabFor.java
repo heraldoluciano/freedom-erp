@@ -91,8 +91,8 @@ public class FImpTabFor extends FFilho implements ActionListener {
     c.add(pinCab,BorderLayout.NORTH);
     c.add(spnTab,BorderLayout.CENTER);
     
-    lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodFor");
-    lcFor.add(new GuardaCampo( txtRazFor, 90, 100, 207, 20, "RazFor", "Descrição do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFor");
+    lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, true));
+    lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Descrição do fornecedor", ListaCampos.DB_SI, false));
     txtCodFor.setTabelaExterna(lcFor);
     txtCodFor.setNomeCampo("CodFor");
     txtCodFor.setFK(true);
