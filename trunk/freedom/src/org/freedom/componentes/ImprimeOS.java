@@ -67,6 +67,7 @@ public class ImprimeOS implements ActionListener {
    private String[] sVals = new String[4];
    private Component cOwner = null;
    boolean bSemAcento = true;
+   boolean bImpGrafica = false;
    byte bBuf;
    File fImp = null;
    FileWriter fwImp = null;
@@ -649,13 +650,13 @@ public class ImprimeOS implements ActionListener {
 	        return;
 	      }
 	      if (sTipoUsoImp.equals("TO")) {
-		      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+		      sSQL = "SELECT EI."+sPortaOS+",EI.IMPGRAFICA FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
 				"WHERE EI.CODEST=? AND EI.IMPPAD='S' AND "+
 				"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
 				"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
 	      }
 	      else {
-		      sSQL = "SELECT EI."+sPortaOS+" FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
+		      sSQL = "SELECT EI."+sPortaOS+",EI.IMPGRAFICA FROM SGESTACAOIMP EI,SGIMPRESSORA I "+
 				"WHERE EI.CODEST=? AND EI.TIPOUSOIMP='"+sTipoUsoImp+"' AND "+
 				"I.CODIMP=EI.CODIMP AND I.CODFILIAL=EI.CODFILIALIP AND " +
 				"I.CODEMP=EI.CODEMPIP AND EI.CODEMP=? AND EI.CODFILIAL=?";
@@ -668,6 +669,8 @@ public class ImprimeOS implements ActionListener {
 	        rs = ps.executeQuery();
 	        if (rs.next()) {
 	          sPorta = rs.getString(sPortaOS);
+	          if (rs.getString("IMPGRAFICA")!=null) 
+	          	 bImpGrafica = rs.getString("IMPGRAFICA").equals("S");
 	        }
 	        else 
 	          Funcoes.mensagemInforma(cOwner, "Não foi encontrada nome da porta da impressora!\n"+
