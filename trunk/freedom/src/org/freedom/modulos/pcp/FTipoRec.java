@@ -38,8 +38,8 @@ public class FTipoRec extends FDados implements ActionListener {
   public FTipoRec () {
     setTitulo("Cadastro de tipos de recursos");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTipoRec, 7, 20, 50, 20,"CodTpRec","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoRec, 60, 20, 250, 20,"DescTpRec","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodTipoRec, 7, 20, 70, 20,"CodTpRec","Cód.tp.rec.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescTipoRec, 80, 20, 240, 20,"DescTpRec","Descrição do tipode recurso",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
     setListaCampos( true, "TIPOREC", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -77,7 +77,7 @@ public class FTipoRec extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Códtp.rec.");
             imp.say(imp.pRow()+0,25,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));

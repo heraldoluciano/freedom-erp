@@ -48,9 +48,9 @@ public class FAtribuicao extends FDados implements ActionListener, PostListener,
   private JCheckBoxPad cbAlm = new JCheckBoxPad("Almoxarife",new Integer(8),new Integer(0));
   public FAtribuicao () {
     setTitulo("Cadastro de atribuições");
-    setAtribos(50, 50, 350, 280);
-    adicCampo(txtIdAtrib, 7, 20, 50, 20,"IdAtrib","Código",JTextFieldPad.TP_STRING,10,0,true,false,null,true);
-    adicCampo(txtDescAtrib, 60, 20, 250, 20,"DescAtrib","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    setAtribos(50, 50, 340, 280);
+    adicCampo(txtIdAtrib, 7, 20, 70, 20,"IdAtrib","Cód.atrib.",JTextFieldPad.TP_STRING,10,0,true,false,null,true);
+    adicCampo(txtDescAtrib, 80, 20, 230, 20,"DescAtrib","Descrição da atirbuição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
     
     adicCampoInvisivel(txtRmaAtrib, "RmaAtrib","Atrib.",JTextFieldPad.TP_STRING,2,0,false,false,null,true);
     adic(cbReq,7,40,150,20);

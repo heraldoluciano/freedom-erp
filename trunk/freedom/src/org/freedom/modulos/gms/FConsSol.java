@@ -63,58 +63,39 @@ public class FConsSol extends FFilho implements ActionListener {
 	private Painel pinCab = new Painel(0, 185);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JPanel pnRod = new JPanel(new BorderLayout());
-
-	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,
-			0);
-	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,
-			0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Solicitações Pendentes",
-			"S", "N");
-	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Solicitações Completas",
-			"S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad(
-			"Solicitações Canceladas", "S", "N");
-	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de Preço",
-			"S", "N");
-	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			8, 0);
-	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			19, 0);
+	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
+	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Solicitações pendentes", "S", "N");
+	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Solicitações completas", "S", "N");
+	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Solicitações canceladas", "S", "N");
+	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
+	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
 	private JTextFieldFK txtDescCC = new JTextFieldFK();
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			10, 0);
-	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private Tabela tab = new Tabela();
 	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
-	private JButton btPrevimp = new JButton("Imprimir", Icone
-			.novo("btPrevimp.gif"));
-	JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+	private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
+			JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
 	private JScrollPane spnTab = new JScrollPane(tab);
-
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
-
 	private Connection con = null;
 	private FPrincipal fPrim;
 
 	public FConsSol() {
 		setTitulo("Pesquisa Solicitações de Compra");
-		setAtribos(10, 10, 514, 480);
+		setAtribos(10, 10, 513, 480);
 
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cod. Almox.",
-				ListaCampos.DB_PK, false));
-		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Desc. Almox;",
-				ListaCampos.DB_SI, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
+		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Desc.almox;", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
@@ -124,20 +105,16 @@ public class FConsSol extends FFilho implements ActionListener {
 
 		txtCodUsu.setNomeCampo("IdUsuItSol");
 
-		lcUsuario.add(new GuardaCampo(txtCodUsu, "IDUSU", "ID Usuario",
-				ListaCampos.DB_PK, false));
-		lcUsuario.add(new GuardaCampo(txtNomeUsu, "NOMEUSU", "Nome",
-				ListaCampos.DB_SI, false));
+		lcUsuario.add(new GuardaCampo(txtCodUsu, "IDUSU", "ID usuario", ListaCampos.DB_PK, false));
+		lcUsuario.add(new GuardaCampo(txtNomeUsu, "NOMEUSU", "Nome do usuario", ListaCampos.DB_SI, false));
 		lcUsuario.montaSql(false, "USUARIO", "SG");
 		lcUsuario.setQueryCommit(false);
 		lcUsuario.setReadOnly(true);
 
 		txtCodUsu.setTabelaExterna(lcUsuario);
 
-		lcCC.add(new GuardaCampo(txtCodCC, "codCC", "Código", ListaCampos.DB_PK,
-				false));
-		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descriçao",
-				ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtCodCC, "codCC", "Cód.c.c.", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descriçao", ListaCampos.DB_SI, false));
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
@@ -155,10 +132,8 @@ public class FConsSol extends FFilho implements ActionListener {
 		JPanel pnBordaSair = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
 		pnBordaSair.add(btSair);
 		pnRod.add(pnBordaSair, BorderLayout.EAST);
-		JPanel pnBordaConsVenda = new JPanel(
-				new FlowLayout(FlowLayout.CENTER, 3, 3));
+		JPanel pnBordaConsVenda = new JPanel(new FlowLayout(FlowLayout.CENTER, 3, 3));
 		pnRod.add(pnBordaConsVenda, BorderLayout.WEST);
-
 		JLabel lbLinha = new JLabel();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabel lbLinha2 = new JLabel();
@@ -168,22 +143,22 @@ public class FConsSol extends FFilho implements ActionListener {
 
 		pinCab.adic(new JLabel("Período:"), 7, 5, 50, 20);
 		pinCab.adic(txtDtIni, 7, 25, 95, 20);
-		pinCab.adic(new JLabel("Até"), 110, 25, 27, 20);
-		pinCab.adic(txtDtFim, 137, 25, 95, 20);
+		pinCab.adic(new JLabel("Até"), 111, 25, 27, 20);
+		pinCab.adic(txtDtFim, 139, 25, 95, 20);
 
-		pinCab.adic(new JLabel("CC."), 239, 5, 70, 20);
-		pinCab.adic(txtCodCC, 239, 25, 69, 20);
-		pinCab.adic(new JLabel("Centro de Custo"), 313, 5, 410, 20);
-		pinCab.adic(txtDescCC, 313, 25, 175, 20);
+		pinCab.adic(new JLabel("Cód.c.c."), 237, 5, 70, 20);
+		pinCab.adic(txtCodCC, 237, 25, 70, 20);
+		pinCab.adic(new JLabel("Centro de custo"), 310, 5, 410, 20);
+		pinCab.adic(txtDescCC, 310, 25, 180, 20);
 
 		pinCab.adic(new JLabel("Cód.usu."), 7, 48, 70, 20);
-		pinCab.adic(txtCodUsu, 7, 70, 50, 20);
-		pinCab.adic(new JLabel("Nome do Usuário"), 80, 48, 410, 20);
-		pinCab.adic(txtNomeUsu, 60, 70, 175, 20);
+		pinCab.adic(txtCodUsu, 7, 70, 70, 20);
+		pinCab.adic(new JLabel("Nome do usuário"), 80, 48, 410, 20);
+		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
 
-		pinCab.adic(new JLabel("Cód.almox."), 239, 48, 75, 20);
-		pinCab.adic(txtCodAlmoxarife, 239, 70, 69, 20);
-		pinCab.adic(new JLabel("Nome do Almoxarifado"), 310, 48, 410, 20);
+		pinCab.adic(new JLabel("Cód.almox."), 237, 48, 75, 20);
+		pinCab.adic(txtCodAlmoxarife, 237, 70, 70, 20);
+		pinCab.adic(new JLabel("Nome do almoxarifado"), 310, 48, 410, 20);
 		pinCab.adic(txtDescAlmoxarife, 310, 70, 180, 20);
 
 		pinCab.adic(lbStatus, 15, 100, 50, 18);
@@ -205,8 +180,8 @@ public class FConsSol extends FFilho implements ActionListener {
 		tab.adicColuna("Motivo");
 
 		tab.setTamColuna(80, 0);
-		tab.setTamColuna(40, 1);
-		tab.setTamColuna(85, 2);
+		tab.setTamColuna(80, 1);
+		tab.setTamColuna(90, 2);
 		tab.setTamColuna(250, 3);
 
 		btBusca.addActionListener(this);

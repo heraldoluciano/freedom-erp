@@ -50,7 +50,7 @@ public class FPrefereProd extends FTabDados {
         adic(pinRespon,7,20,250,150);
         setPainel(pinRespon);
         adicCampo(txtNomeResp,7,30,200,20,"NOMERESP","Nome do reponsável",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
-        adicCampo(txtIdentProfResp,7,70,200,20,"IDENTPROFRESP","Indent. Prof.",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
+        adicCampo(txtIdentProfResp,7,70,200,20,"IDENTPROFRESP","Indent.prof.",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
         adicCampo(txtCargoResp,7,110,200,20,"CARGORESP","Cargo",JTextFieldPad.TP_STRING,50,0,false,false,null,false);
         
         setPainel(pinGeral);

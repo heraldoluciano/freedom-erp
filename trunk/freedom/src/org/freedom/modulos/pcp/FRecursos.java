@@ -45,17 +45,17 @@ public class FRecursos extends FDados implements ActionListener {
     setTitulo("Cadastro de recursos de producão.");
     setAtribos( 50, 50, 350, 165);
 
-    lcTpRecp.add(new GuardaCampo( txtCodTpRecp, 7, 100, 80, 20, "Codtprec", "Código", true, false, txtDescTpRecp, JTextFieldPad.TP_INTEGER,true),"txtCodtpRec");
-    lcTpRecp.add(new GuardaCampo( txtDescTpRecp, 7, 100, 80, 20, "Desctprec", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtDesctpRec");
+    lcTpRecp.add(new GuardaCampo( txtCodTpRecp, 7, 100, 80, 20, "Codtprec", "Cód.rec.", true, false, txtDescTpRecp, JTextFieldPad.TP_INTEGER,true),"txtCodtpRec");
+    lcTpRecp.add(new GuardaCampo( txtDescTpRecp, 7, 100, 80, 20, "Desctprec", "Descriçao do recurso", false, false, null, JTextFieldPad.TP_STRING,false),"txtDesctpRec");
     lcTpRecp.montaSql(false, "TIPOREC", "PP");    
     lcTpRecp.setQueryCommit(false);
     lcTpRecp.setReadOnly(true);
     txtCodTpRecp.setTabelaExterna(lcTpRecp);
     
-    adicCampo(txtCodRecp, 7, 20, 50, 20,"Codrecp","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescRecp, 60, 20, 250, 20,"descrecp","Nome",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
-    adicCampo(txtCodTpRecp, 7, 60, 50, 20, "Codtprec", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTpRecp,false);
-    adicDescFK(txtDescTpRecp, 60, 60, 250, 20, "desctprec", "e descrição do tipo de recurso", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodRecp, 7, 20, 70, 20,"Codrecp","Cód.rec.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescRecp, 80, 20, 240, 20,"descrecp","Descrição do recurso",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodTpRecp, 7, 60, 70, 20, "Codtprec", "Cód.tp.rec.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTpRecp,false);
+    adicDescFK(txtDescTpRecp, 80, 60, 240, 20, "desctprec", "Descrição do tipo de recurso", JTextFieldPad.TP_STRING, 50, 0);
     setListaCampos( false, "RECURSO", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
