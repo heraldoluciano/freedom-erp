@@ -42,145 +42,40 @@ public class FreedomTMK extends Aplicativo {
 		  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 		  
 		    addOpcao(100100000,TP_OPCAO_MENU,"Contato","",'C',1001010000,2, false, null);		   
-		      addOpcao(1001010000,TP_OPCAO_ITEM,"Atividade","",'A',100101010,3, true, null);
-		      addOpcao(1001010000,TP_OPCAO_ITEM,"Contato","",'C',100101020,3, true, null);
+		      addOpcao(1001010000,TP_OPCAO_ITEM,"Atividade","Atividade",'A',100101010,3, true, FAtividade.class);
+		      addOpcao(1001010000,TP_OPCAO_ITEM,"Contato","Contatos",'C',100101020,3, true, FContato.class);
 		       
 		    addOpcao(100100000,TP_OPCAO_MENU,"Atendente","",'A',100102000,2, false, null);
-  			  addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente","",'T',100102010,3, true, null);
-			  addOpcao(100102000,TP_OPCAO_ITEM,"Atendentes","",'A',100110020,3, true, null);
+  			  addOpcao(100102000,TP_OPCAO_ITEM,"Tipo de Atendente","Tipo de atendente",'T',100102010,3, true, FTipoAtend.class);
+			  addOpcao(100102000,TP_OPCAO_ITEM,"Atendentes","Atendente",'A',100110020,3, true, FAtendente.class);
 		      
 		    addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100104000,2, false, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Setor", "", 'S',100104010,3, true, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Vendedor", "", 'V',100104020,3, true, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Tipos de cliente", "", 'T',100104030,3, true, null);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Classificação de cliente", "", 'l',100104040,3, true, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Setor", "Setor", 'S',100104010,3, true, FSetor.class);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Vendedor", "Vendedor", 'V',100104020,3, true, FVendedor.class);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Tipos de cliente", "Tipo de cliente", 'T',100104030,3, true, FTipoCli.class);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Classificação de cliente", "Classificação do cliente", 'l',100104040,3, true, FClasCli.class);
 		      addSeparador(100104000);
-			  addOpcao(100104000,TP_OPCAO_ITEM,"Cliente", "", 'C',100104050,3, true, null);
+			  addOpcao(100104000,TP_OPCAO_ITEM,"Cliente", "Clientes", 'C',100104050,3, true, FCliente.class);
 			  addSeparador(100104000);
 		
 		  addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "",'P', 100200000, 1, false, null);
-		    addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais...", "", 'G',100201000, 2, true, null );
+		    addOpcao(100200000, TP_OPCAO_ITEM, "Preferências Gerais...", "Pref. Gerais", 'G',100201000, 2, true, FPrefere.class );
 		    addOpcao(100000000, TP_OPCAO_MENU, "Ferramentas","",'F', 100300000, 1, false, null);
-			    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos","",'I',100301000,2, true, null);
-			    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout","",'C',100302000,2, true, null);
-			    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos","",'E',100303000,2, true, FEnviaMail.class);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Importação de Contatos","Importação de contatos",'I',100301000,2, true, FImportaCto.class);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Cadastro de org.freedom.layout","Cadastro de org.freedom.layout",'C',100302000,2, true, FTipoImp.class);
+			    addOpcao(100300000, TP_OPCAO_ITEM, "Envio de e-mail aos contatos","Envia e-mail",'E',100303000,2, true, FEnviaMail.class);
 			
 	    addOpcao(-1,TP_OPCAO_MENU,"Contatos","",'C',200000000,0, false, null);
-	      addOpcao(200000000,TP_OPCAO_ITEM,"Histórico","",'H',200100000,1, true, null);
-	      addOpcao(200000000,TP_OPCAO_ITEM,"Agenda","",'A',200200000,1, true, null);
+	      addOpcao(200000000,TP_OPCAO_ITEM,"Histórico","Historico",'H',200100000,1, true, FHistorico.class);
+	      addOpcao(200000000,TP_OPCAO_ITEM,"Agenda","Agenda",'A',200200000,1, true, FAgenda.class);
 	      addOpcao(200000000,TP_OPCAO_MENU,"Listagens","",'L',200300000,1, false, null);
-	      addOpcao(200300000,TP_OPCAO_ITEM,"Relatório diário","",'R',200301000,1, true, null);
+	      addOpcao(200300000,TP_OPCAO_ITEM,"Relatório diário","Relatório diário",'R',200301000,1, true, FRDiario.class);
 	      
 		addBotao("btAtendimento.gif","Atendimento",100110020);
 	      
 	    ajustaMenu();
     }
 
-    public void execOpcao(int iOpcao) {
-        if (iOpcao==100102010) {
-			if (telaPrincipal.temTela("Tipo de atendente")==false) {
-			  FTipoAtend tela = new FTipoAtend();
-			  telaPrincipal.criatela("Tipo de atendente",tela,con);
-			}
-		}
-		else if (iOpcao==100110020) {
-			if (telaPrincipal.temTela("Atendente")==false) {
-			  FAtendente tela = new FAtendente();
-			  telaPrincipal.criatela("Atendente",tela,con);
-			}
-		}
-		else if (iOpcao==100104010) {
-			if (telaPrincipal.temTela("Setor")==false) {
-			  FSetor tela = new FSetor();
-			  telaPrincipal.criatela("Setor",tela,con);
-			}
-		}
-		else if (iOpcao==100104020) {
-			if (telaPrincipal.temTela("Vendedor")==false) {
-			  FVendedor tela = new FVendedor();
-			  telaPrincipal.criatela("Vendedor",tela,con);
-			}
-		}
-		else if (iOpcao==100104030) {
-			if (telaPrincipal.temTela("Tipo de cliente")==false) {
-			  FTipoCli tela = new FTipoCli();
-			  telaPrincipal.criatela("Tipo de cliente",tela,con);
-			}
-		}
-		else if (iOpcao==100104040) {
-			if (telaPrincipal.temTela("Classificação do cliente")==false) {
-			  FClasCli tela = new FClasCli();
-			  telaPrincipal.criatela("Classificação do cliente",tela,con);
-			}
-		}
-		else if (iOpcao==100104050) {
-			if (telaPrincipal.temTela("Clientes")==false) {
-			  FCliente tela = new FCliente();
-			  telaPrincipal.criatela("Clientes",tela,con);
-			}
-		}
-		else if (iOpcao==100101010) {
-			if (telaPrincipal.temTela("Atividade")==false) {
-		  	    FAtividade tela = new FAtividade();
-				telaPrincipal.criatela("Atividade",tela,con);
-			 }
-   		}
-		else if (iOpcao==100101020) {
-			if (telaPrincipal.temTela("Contatos")==false) {
-				FContato tela = new FContato();
-				tela.setTelaPrim(telaPrincipal);
-				telaPrincipal.criatela("Contatos",tela,con);
-			 }
-		}
-		else if (iOpcao==100301000) {
-			if (telaPrincipal.temTela("Importação de contatos")==false) {
-			  FImportaCto tela = new FImportaCto();
-			  //tela.setConexao(con);
-			  telaPrincipal.criatela("Importação de contatos",tela,con);
-			}
-		}
-		else if (iOpcao==100302000) {
-			if (telaPrincipal.temTela("Cadastro de org.freedom.layout")==false) {
-				FTipoImp tela = new FTipoImp();
-				telaPrincipal.criatela("Cadastro de org.freedom.layout",tela,con);
-			 }
-		}
-		else if (iOpcao==100303000) {
-			if (telaPrincipal.temTela("Envia e-mail")==false) {
-			  FEnviaMail tela = new FEnviaMail();
-			  //tela.setConexao(con);
-			  tela.setTelaPrim(telaPrincipal);
-			  telaPrincipal.criatela("Envia e-mail",tela,con);
-			}
-		}
-		else if (iOpcao == 100201000) {
-		  if (telaPrincipal.temTela("Pref. Gerais")==false) {
-			FPrefere tela = new FPrefere();
-			telaPrincipal.criatela("Pref. Garais",tela,con);
-		  }
-		}
-		else if (iOpcao==200100000) {
-			if (telaPrincipal.temTela("Historico")==false) {
-				FHistorico tela = new FHistorico();
-				//tela.setConexao(con);
-				telaPrincipal.criatela("Historico",tela,con);
-			} 
-		}
-		else if (iOpcao==200200000) {
-			if (telaPrincipal.temTela("Agenda")==false) {
-				FAgenda tela = new FAgenda();
-				//tela.setConexao(con);
-				telaPrincipal.criatela("Agenda",tela,con);
-			} 
-		}
-		else if (iOpcao==200301000) {
-			if (telaPrincipal.temTela("Relatório diário")==false) {
-				FRDiario tela = new FRDiario();
-				//tela.setConexao(con);
-				telaPrincipal.criatela("Relatório diário",tela,con);
-			} 
-		}
-        } 
     public static void main(String sParams[]) {
 		FreedomTMK fFreedomtmk = new FreedomTMK();
 		fFreedomtmk.show();
