@@ -37,18 +37,18 @@ import org.freedom.telas.FDados;
 public class FFase extends FDados implements ActionListener {
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescFase = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  private JComboBoxPad cbTipo = new JComboBoxPad();
+  Vector vVals = new Vector();
+  Vector vLabs = new Vector();
+  private JComboBoxPad cbTipo = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 3, 0);
   public FFase () {
     setTitulo("Cadastro de fases de produção");
     setAtribos( 50, 50, 350, 165);
 
 //  Construindo o combobox de tipo.     
 
-    Vector vVals = new Vector();
     vVals.addElement("EX"); 
     vVals.addElement("CQ");
     vVals.addElement("EB");
-    Vector vLabs = new Vector();
     vLabs.addElement("Execução");
     vLabs.addElement("Controle da qualidade");
     vLabs.addElement("Embalagem");

@@ -124,7 +124,7 @@ public class FTipoMov extends FDados {
 	vVals.addElement("SE");
 	vVals.addElement("IV");
 	
-    cbTipoMov = new JComboBoxPad(vLabs,vVals);
+    cbTipoMov = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 2, 0);
     cbTipoMov.setSelectedIndex(6);
     
     vLabsES.addElement("Entrada");

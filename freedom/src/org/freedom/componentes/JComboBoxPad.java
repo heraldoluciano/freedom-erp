@@ -40,11 +40,11 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
   private int tipo = -1;
   private int tam = 8;
   private int dec = 0;
-  public JComboBoxPad() {
+  /*public JComboBoxPad() {
     this(null,null);
     criando = false;
-  }
-  public JComboBoxPad(Vector label, Vector val) {
+  }*/
+  /*public JComboBoxPad(Vector label, Vector val) {
     if (val != null && label != null) {
       valores = val;
       labels = label;
@@ -55,8 +55,9 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     addItem("");
     addItemListener(this);
     criando = false;
-  }
+  }*/
   public JComboBoxPad(Vector label, Vector val, int tipo, int tam, int dec) {
+    criando = true;
     if (val != null && label != null) {
       valores = val;
       labels = label;

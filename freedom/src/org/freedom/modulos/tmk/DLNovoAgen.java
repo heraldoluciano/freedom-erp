@@ -63,7 +63,9 @@ public class DLNovoAgen extends FFDialogo {
 	private ListaCampos lcUsuario = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabel lbImg = new JLabel(Icone.novo("bannerTMKagendamento.jpg"));
-	private JComboBoxPad cbTipo = new JComboBoxPad();
+	Vector vVals = new Vector();
+	Vector vLabs = new Vector();
+	private JComboBoxPad cbTipo = null;
 	public DLNovoAgen(Component cOrig) {
 		this("",cOrig);
 	}
@@ -89,19 +91,17 @@ public class DLNovoAgen extends FFDialogo {
 		
 //Construindo o combobox de tipo.		
 
-		Vector vVals = new Vector();
 		vVals.addElement("RE");
 		vVals.addElement("VI");
 		vVals.addElement("LI");
 		vVals.addElement("TA");
 		vVals.addElement("CO");
-		Vector vLabs = new Vector();
 		vLabs.addElement("Reunião");
 		vLabs.addElement("Visita");
 		vLabs.addElement("Ligação");
 		vLabs.addElement("Tarefa");
 		vLabs.addElement("Compromisso");
-		cbTipo.setItens(vLabs,vVals);
+		cbTipo = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
 		
 		lcUsuario.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID", ListaCampos.DB_PK, txtNomeUsu, true));
 		lcUsuario.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome", ListaCampos.DB_SI, false));

@@ -64,7 +64,7 @@ public class DLNovoAgen extends FFDialogo {
 	private ListaCampos lcUsuario = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabel lbImg = new JLabel(Icone.novo("bannerTMKagendamento.jpg"));
-	private JComboBoxPad cbTipo = new JComboBoxPad();
+	private JComboBoxPad cbTipo = null;
 	public DLNovoAgen(Component cOrig) {
 		this("",null,cOrig);
 	}
@@ -112,6 +112,7 @@ public class DLNovoAgen extends FFDialogo {
 		vLabs.addElement("Ligação");
 		vLabs.addElement("Tarefa");
 		vLabs.addElement("Compromisso");
+		cbTipo = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0); 
 		cbTipo.setItens(vLabs,vVals);
 		
 		lcUsuario.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID", ListaCampos.DB_PK, true));
@@ -178,7 +179,7 @@ public class DLNovoAgen extends FFDialogo {
 		sVal[3] = ((JSpinner.DateEditor)txtHorafim.getEditor()).getTextField().getText();
 		sVal[4] = txtAssunto.getVlrString();
 		sVal[5] = txaDescAtend.getVlrString();
-		sVal[6] = cbTipo.getVlrString();
+		sVal[6] = ""+cbTipo.getVlrInteger();
 		sVal[7] = ""+lcUsuario.getCodFilial();
 		sVal[8] = txtIdUsu.getVlrString();
 		return sVal;

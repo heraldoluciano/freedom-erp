@@ -124,7 +124,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vVals.addElement("[UF]"); //larg: 2
     	vVals.addElement("[__TELEFONE___]"); //larg: 15
     	
-    	cbCamposDin = new JComboBoxPad(vLabs,vVals);
+    	cbCamposDin = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
     	
     	Vector vLabs2 = new Vector();
     	vLabs2.addElement("'%' Valor");
@@ -138,7 +138,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vVals2.addElement("[#####.##-_VAL]");
     	vVals2.addElement("[###+_VEN]");
 
-    	cbCamposEspec = new JComboBoxPad(vLabs2,vVals2);
+    	cbCamposEspec = new JComboBoxPad(vLabs2,vVals2, JComboBoxPad.TP_STRING, 20, 0);
     	
     	Vector vLabs3 = new Vector();
     	vLabs3.addElement("Limpa se campo vazio");
@@ -146,7 +146,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	Vector vVals3 = new Vector();
     	vVals3.addElement("<LP><_LP>");
 
-    	cbAcao = new JComboBoxPad(vLabs3,vVals3);
+    	cbAcao = new JComboBoxPad(vLabs3,vVals3, JComboBoxPad.TP_STRING, 10, 0);
     	
     	adic(new JLabel("Campos de dados"), 7, 40, 223, 20);
     	adic(cbCamposDin, 7, 60, 223, 20);

@@ -51,7 +51,7 @@ public class FTratRet extends FDetalhe implements ActionListener {
   private Painel pinDet = new Painel();
   private Vector vValsTipo = new Vector();
   private Vector vLabsTipo = new Vector();
-  private JComboBoxPad cbTipo = new JComboBoxPad(vLabsTipo,vValsTipo); 
+  private JComboBoxPad cbTipo = null; 
   private ListaCampos lcTarefa = new ListaCampos(this,"TA");
   private ListaCampos lcItProc = new ListaCampos(this,"GT");
   int iCodProc = 0;
@@ -75,13 +75,13 @@ public class FTratRet extends FDetalhe implements ActionListener {
     
 // Montando tipos:
 
-	 vValsTipo.add("01");
-	 vValsTipo.add("02");
-	 vValsTipo.add("03");
-	 vLabsTipo.add("IR PARA");
-	 vLabsTipo.add("ABORTA");
-	 vLabsTipo.add("AGUARDE");
-	 cbTipo.setItens(vLabsTipo,vValsTipo);
+	vValsTipo.add("01");
+	vValsTipo.add("02");
+	vValsTipo.add("03");
+	vLabsTipo.add("IR PARA");
+	vLabsTipo.add("ABORTA");
+	vLabsTipo.add("AGUARDE");
+	cbTipo = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING,2,0);
     
    lcTarefa.add(new GuardaCampo( txtCodTar, "CodTarefa", "Cód.tarefa", ListaCampos.DB_PK, true));
    lcTarefa.add(new GuardaCampo( txtDescTar, "DescTarefa", "Descrição da tarefa", ListaCampos.DB_SI, false));
