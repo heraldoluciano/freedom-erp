@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
@@ -503,10 +504,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		editDB();
 		return;
 	}
-	else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null)){
-		buscaAdic("estoque");
-	}
-    else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
+	else if((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (dlBuscaAdic!=null) && (dlBuscaAdic instanceof DLBuscaEstoq)){
+		 buscaAdic("estoque");
+	}    
+	else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
             (getText().trim().length() > 0) &&
             (bPK || bFK)) {
  	  if (Aplicativo.bBuscaProdSimilar)
