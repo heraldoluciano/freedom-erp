@@ -23,6 +23,7 @@
 package org.freedom.modulos.std;
 import java.util.Vector;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Painel;
@@ -60,18 +61,18 @@ public class FTabJuros extends FDetalhe {
     vVals.addElement("A");
     cbTipo.setItens(vLabs,vVals);
     
-    adicCampo(txtCodTbJ, 7, 20, 80, 20,"CodTbJ","Cód.tb.juros",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescTbJ, 90, 20, 250, 20, "DescTbJ", "Descrição da tabela", JTextFieldPad.TP_STRING, 50, 0,false,false,null,true);
-    adicDB(cbTipo, 7, 60, 150, 30, "TipoTbJ", "Tipo", JTextFieldPad.TP_STRING,true);
+    adicCampo(txtCodTbJ, 7, 20, 80, 20,"CodTbJ","Cód.tb.juros", ListaCampos.DB_PK, true);
+    adicCampo(txtDescTbJ, 90, 20, 250, 20, "DescTbJ", "Descrição da tabela", ListaCampos.DB_SI,true);
+    adicDB(cbTipo, 7, 60, 150, 30, "TipoTbJ", "Tipo", true);
     setListaCampos( false, "TBJUROS", "FN");
     lcCampos.setQueryInsert(false);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
 
-    adicCampo(txtAno, 7, 20, 80, 20,"AnoItTbJ","Ano",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtMes, 90, 20, 57, 20,"MesItTbJ","Mes",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtPerc, 150, 20, 90, 20,"PercItTbJ","Perc.",JTextFieldPad.TP_DECIMAL,9,2,false,false,null,true);
+    adicCampo(txtAno, 7, 20, 80, 20,"AnoItTbJ","Ano", ListaCampos.DB_PK, true);
+    adicCampo(txtMes, 90, 20, 57, 20,"MesItTbJ","Mes",ListaCampos.DB_PK,true);
+    adicCampo(txtPerc, 150, 20, 90, 20,"PercItTbJ","Perc.", ListaCampos.DB_SI, true);
     setListaCampos( false, "ITTBJUROS", "FN");
     lcDet.setQueryInsert(false);
     montaTab();
