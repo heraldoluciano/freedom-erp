@@ -162,7 +162,7 @@ public class Funcoes {
      }
   	 return dtRetorno;
   }
-  public static int mensagemConfirma(Component frame, String sMensagem) {
+  public synchronized static int mensagemConfirma(Component frame, String sMensagem) {
   	if (frame == null)
   	  return JOptionPane.showConfirmDialog(frame,sMensagem,"Confirmação",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
     return JOptionPane.showInternalConfirmDialog(frame,sMensagem,"Confirmação",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
