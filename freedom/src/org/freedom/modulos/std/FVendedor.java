@@ -74,8 +74,8 @@ public class FVendedor extends FDados implements PostListener {
     setTitulo("Cadastro de Vendedores");
     setAtribos( 50, 50, 400, 400);
 
-    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Código", true, false, txtDescPlan, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcPlan.add(new GuardaCampo( txtDescPlan, 7, 100, 80, 20, "DescPlan", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.plan.", true, false, txtDescPlan, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+    lcPlan.add(new GuardaCampo( txtDescPlan, 7, 100, 80, 20, "DescPlan", "Descriçao do planejamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
     lcPlan.setWhereAdic("TIPOPLAN = 'D'");
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");    
     lcPlan.setQueryCommit(false);
@@ -83,8 +83,8 @@ public class FVendedor extends FDados implements PostListener {
     txtCodPlan.setTabelaExterna(lcPlan);
     
     
-    lcClComis.add(new GuardaCampo( txtCodClComis, 7, 100, 80, 20, "CodClComis", "Código", true, false, txtDescClComis, JTextFieldPad.TP_STRING,false),"txtCodClComis");
-    lcClComis.add(new GuardaCampo( txtDescClComis, 7, 100, 80, 20, "DescClComis", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodClComis");
+    lcClComis.add(new GuardaCampo( txtCodClComis, 7, 100, 80, 20, "CodClComis", "Cód.cl.comis.", true, false, txtDescClComis, JTextFieldPad.TP_STRING,false),"txtCodClComis");
+    lcClComis.add(new GuardaCampo( txtDescClComis, 7, 100, 80, 20, "DescClComis", "Descriçao da classificação da comissão", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodClComis");
     lcClComis.montaSql(false, "CLCOMIS", "VD");    
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
@@ -93,8 +93,8 @@ public class FVendedor extends FDados implements PostListener {
     
     
     
-    adicCampo(txtCodVend, 7, 20, 50, 20, "CodVend", "Código", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
-    adicCampo(txtNomeVend, 60, 20, 312, 20, "NomeVend", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
+    adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.repr.", JTextFieldPad.TP_INTEGER, 5, 0, true, false, null, true);
+    adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend", "Nome do representante", JTextFieldPad.TP_STRING, 40, 0, false, false, null, true);
     adicCampo(txtCpfVend, 7, 60, 180, 20, "CpfVend", "CPF", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);
     adicCampo(txtRgVend, 190, 60, 182, 20, "RgVend", "RG", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
     adicCampo(txtCnpjVend, 7, 100, 180, 20, "CnpjVend", "CNPJ", JTextFieldPad.TP_STRING, 18, 0, false, false, null, false);
@@ -111,9 +111,9 @@ public class FVendedor extends FDados implements PostListener {
     adicCampo(txtCelVend, 253, 220, 119, 20, "CelVend", "Cel", JTextFieldPad.TP_STRING, 12, 0, false, false, null, false);
     adicCampo(txtEmailVend, 7, 260, 200, 20, "EmailVend", "E-Mail", JTextFieldPad.TP_STRING, 50, 0, false, false, null, false);
     adicCampo(txtPercComVend, 210, 260, 77, 20, "PercComVend", "Comissão", JTextFieldPad.TP_DECIMAL, 7, 3, false, false, null, false);
-    adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "C.Vend.Forn.", JTextFieldPad.TP_STRING, 13, 0, false, false, null, false);
-    adicCampo(txtCodPlan, 7, 300, 100, 20, "CodPlan", "Código", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescPlan,false);
-    adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan", "e descrição do lançamento", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend", "Cód.vend.for.", JTextFieldPad.TP_STRING, 13, 0, false, false, null, false);
+    adicCampo(txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescPlan,false);
+    adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan", "Descrição do planejamento", JTextFieldPad.TP_STRING, 50, 0);
 
     txtCpfVend.setMascara(JTextFieldPad.MC_CPF);
     txtCnpjVend.setMascara(JTextFieldPad.MC_CNPJ);
@@ -130,18 +130,18 @@ public class FVendedor extends FDados implements PostListener {
     rec.height += 80;
 	setBounds(rec);
 
-	lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Código", true, false, txtDescSetor, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-	lcSetor.add(new GuardaCampo( txtDescSetor, 7, 100, 80, 20, "DescSetor", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Cód.setor", true, false, txtDescSetor, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+	lcSetor.add(new GuardaCampo( txtDescSetor, 7, 100, 80, 20, "DescSetor", "Descriçao do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
 	lcSetor.montaSql(false, "SETOR", "VD");    
 	lcSetor.setQueryCommit(false);
 	lcSetor.setReadOnly(true);
 	txtCodSetor.setTabelaExterna(lcSetor);
     
-	adicCampo(txtCodSetor, 7, 340, 100, 20, "CodSetor", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescSetor,false);
-	adicDescFK(txtDescSetor, 110, 340, 262, 20, "DescSetor", "e descrição do setor", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodSetor, 7, 340, 100, 20, "CodSetor", "Cód.setor", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescSetor,false);
+	adicDescFK(txtDescSetor, 110, 340, 262, 20, "DescSetor", "Descrição do setor", JTextFieldPad.TP_STRING, 50, 0);
 
-	adicCampo(txtCodClComis, 7, 380, 100, 20, "CodClComis", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClComis,false);
-	adicDescFK(txtDescClComis, 110, 380, 262, 20, "DescClComis", "e descrição da Classificacao da comissão", JTextFieldPad.TP_STRING, 50, 0);
+	adicCampo(txtCodClComis, 7, 380, 100, 20, "CodClComis", "Cód.cl.comis.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClComis,false);
+	adicDescFK(txtDescClComis, 110, 380, 262, 20, "DescClComis", "Descrição da Classificacao da comissão", JTextFieldPad.TP_STRING, 50, 0);
 
 	
 	

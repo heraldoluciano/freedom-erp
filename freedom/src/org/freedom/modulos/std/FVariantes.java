@@ -38,8 +38,8 @@ public class FVariantes extends FDados implements ActionListener{
   public FVariantes () {
     setTitulo("Cadastro de Variantes da Grade");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodVarG, 7, 20, 50, 20,"CodVarG","Código",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
-    adicCampo(txtDescVarG, 60, 20, 250, 20,"DescVarG","Descrição",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
+    adicCampo(txtCodVarG, 7, 20, 70, 20,"CodVarG","Cód.var.",JTextFieldPad.TP_INTEGER,8,0,true,false,null,true);
+    adicCampo(txtDescVarG, 80, 20, 250, 20,"DescVarG","Descrição da variante",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
     setListaCampos( true, "VARGRADE", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -77,7 +77,7 @@ public class FVariantes extends FDados implements ActionListener{
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.var.");
             imp.say(imp.pRow()+0,30,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
