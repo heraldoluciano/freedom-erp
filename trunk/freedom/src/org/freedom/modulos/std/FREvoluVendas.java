@@ -48,18 +48,18 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FREvoluVendas extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private Connection con = null;
   private FPrinterJob dl = null;
   private JRadioGroup rgGrafico = null;
   private Vector vLabs = new Vector(2);
   private Vector vVals = new Vector(2);
-  private JTextFieldPad txtCodTipoCli = new JTextFieldPad(8);
-  private JTextFieldFK  txtDescTipoCli = new JTextFieldFK();
+  private JTextFieldPad txtCodTipoCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldFK  txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
-  private JTextFieldPad txtCodCli = new JTextFieldPad(8);
-  private JTextFieldFK  txtRazCli = new JTextFieldFK();
+  private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldFK  txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private ListaCampos lcCli = new ListaCampos(this,"TI");
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");  
 
@@ -67,17 +67,9 @@ public class FREvoluVendas extends FRelatorio {
 
     setTitulo("Evolução de vendas");   
     setAtribos(80,80,300,350);    
-    
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
 
-	txtCodTipoCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtDescTipoCli.setTipo(JTextFieldPad.TP_STRING,50,0);
-
-	txtCodTipoCli.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-	txtDescTipoCli.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-	lcTipoCli.add(new GuardaCampo(txtCodTipoCli,7,100,80,20,"CodTipoCli","Cód.tp.cli.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodTipoCli");
-	lcTipoCli.add(new GuardaCampo(txtDescTipoCli,90,100,207,20,"DescTipoCli","Descrição do tipo do cliente",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescTipoCli");
+	lcTipoCli.add(new GuardaCampo(txtCodTipoCli,"CodTipoCli","Cód.tp.cli.",ListaCampos.DB_PK,false));
+	lcTipoCli.add(new GuardaCampo(txtDescTipoCli,"DescTipoCli","Descrição do tipo do cliente",ListaCampos.DB_SI,false));
 	lcTipoCli.montaSql(false, "TIPOCLI", "VD");
 	lcTipoCli.setQueryCommit(false);
 	lcTipoCli.setReadOnly(true);
@@ -85,13 +77,8 @@ public class FREvoluVendas extends FRelatorio {
 	txtCodTipoCli.setFK(true);
 	txtCodTipoCli.setNomeCampo("CodTipoCli");
 
-	txtCodCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	txtRazCli.setTipo(JTextFieldPad.TP_STRING,50,0);
-	
-	txtCodCli.setTipo(JTextFieldPad.TP_INTEGER, 8, 0);
-	txtRazCli.setTipo(JTextFieldPad.TP_STRING, 40, 0);
-	lcCli.add(new GuardaCampo(txtCodCli,7,100,80,20,"CodCli","Cód.cli.",true,false,null,JTextFieldPad.TP_INTEGER,false),"txtCodCli");
-	lcCli.add(new GuardaCampo(txtRazCli,90,100,207,20,"RazCli","Razão social do cliente",false,false,null,JTextFieldPad.TP_STRING,false),"txtRazCli");
+	lcCli.add(new GuardaCampo(txtCodCli,"CodCli","Cód.cli.",ListaCampos.DB_PK,false));
+	lcCli.add(new GuardaCampo(txtRazCli,"RazCli","Razão social do cliente",ListaCampos.DB_SI,false));
 	lcCli.montaSql(false, "CLIENTE", "VD");
 	lcCli.setQueryCommit(false);
 	lcCli.setReadOnly(true);
