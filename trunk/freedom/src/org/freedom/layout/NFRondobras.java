@@ -46,12 +46,13 @@ public class NFRondobras extends Leiaute {
     String sObs = "";
 	String[] sMatObs = null;
 	String sImpDtSaidaNat = "";
-	int iContaMens = 1;
+	float ftVlrDesc = 0;
+	int iContaMens = 1;	
 	String sIncra = "" ;
 	Vector vMens = new Vector();
 	vMens.clear();
 	
-    String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2);
+	String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2);
     try {
       for (int i=0; i<3; i++) {
         if (bFat) {
@@ -196,13 +197,26 @@ public class NFRondobras extends Leiaute {
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
          
 //IMPRIME CALCULO DO IMPOSTO
-         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 43)) {
+         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 41)) {
            if (iItImp == rs.getInt(1)) {
              int iRow = imp.pRow();
-             for (int i=0; i<(43-iRow);i++) {
+             for (int i=0; i<(41-iRow);i++) {
                  imp.say(imp.pRow()+1,0,"");
              }
              System.out.println(imp.pRow()+" = iItImp - 2 : "+iItImp);
+             
+             //imprime desconto
+             ftVlrDesc = rs.getFloat("VlrDescItVenda");
+             if ( ftVlrDesc > 0 ){             	
+             	imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	            imp.say(imp.pRow()+0,100,"Total de descontos = "+Funcoes.strDecimalToStrCurrency(15,2,""+ftVlrDesc));
+	            imp.say(imp.pRow()+1,0,"");
+	         }
+             else{
+             	imp.say(imp.pRow()+1,0,"");
+             	imp.say(imp.pRow()+1,0,"");
+             }
+             	
              imp.say(imp.pRow()+1,0,""+imp.comprimido());             
              imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrBaseICMSVenda")));
              imp.say(imp.pRow()+0,27,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrICMSVenda")));
@@ -217,7 +231,7 @@ public class NFRondobras extends Leiaute {
              iItImp = 0;
 			 //sObs += rs.getString("ObsVenda") != null ? rs.getString("ObsVenda").trim()+'\n' : "";
            }
-           else if (imp.pRow() == 43) {
+           else if (imp.pRow() == 41) {
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -290,13 +304,7 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,"");           
            imp.say(imp.pRow()+1,0,""+imp.normal()+imp.expandido());
            imp.say(imp.pRow()+0,112,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-           
+                    
            
            /*for(int i=0;i<vMens.size();i++)
             	sObs += ((String[])vMens.elementAt(i))[0] + " - " +((String[])vMens.elementAt(i))[1]+ '\n';
@@ -316,9 +324,9 @@ public class NFRondobras extends Leiaute {
            
            System.out.println(imp.pRow()+" =T Lins: "+iLinPag);
            
-           /*for (int i=imp.pRow(); i<=iLinPag; i++) { 
+           for (int i=imp.pRow(); i<=iLinPag; i++) { 
              imp.say(imp.pRow()+1,0,"");
-           }*/
+           }
            imp.setPrc(0,0);
            imp.incPags();
          }
