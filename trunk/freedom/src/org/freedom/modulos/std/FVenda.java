@@ -1468,7 +1468,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     int linPag = imp.verifLinPag()-1;
     int iPares = 0;
     String sStrLote = "";
-
+    imp.montaCab();
     imp.setTitulo("Relatório de Pedidos");
     DLRPedido dl = new DLRPedido(sOrdNota);
 	dl.setVisible(true);

@@ -82,9 +82,9 @@ public class FRResumoDiario extends FRelatorio {
   	txtCodVend.setTabelaExterna(lcVend);
  
   	adic(new JLabelPad("Cód.comiss."),7,60,210,20);
-	adic(txtCodVend,7,80,60,20);
-	adic(new JLabelPad("Nome do comissionado"),70,60,210,20);
-	adic(txtDescVend,70,80,200,20);
+	adic(txtCodVend,7,80,70,20);
+	adic(new JLabelPad("Nome do comissionado"),80,60,210,20);
+	adic(txtDescVend,80,80,190,20);
     
     
     vLabs.addElement("Detalhado");
@@ -120,10 +120,10 @@ public class FRResumoDiario extends FRelatorio {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
+		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
 	}
 	sTmp += (cbVendas.getVlrString().equals("S")?" - SO VENDAS":"");
-	sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+	sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 
     
     /*if (txtCodCli.getText().trim().length() > 0) {
@@ -154,8 +154,7 @@ public class FRResumoDiario extends FRelatorio {
     BigDecimal bTotalVal = new BigDecimal("0");
     BigDecimal bTotalDesc = new BigDecimal("0");
     BigDecimal bTotalLiq = new BigDecimal("0");
-    
-    imp.montaCab();
+        
     String sDataini = "";
     String sDatafim = "";
     String sDtemitvenda = "";
@@ -164,7 +163,6 @@ public class FRResumoDiario extends FRelatorio {
     sDatafim = txtDatafim.getVlrString();
     
     
-    imp.setTitulo("Resumo Diário de Vendas");
     if (rgFormato.getVlrString().equals("D")) {
         sSQL = "SELECT V.DTEMITVENDA,V.CODTIPOMOV,V.CODVENDA,V.DOCVENDA,V.SERIE,"+
                   "V.STATUSVENDA,V.DOCVENDA,"+
@@ -213,64 +211,57 @@ public class FRResumoDiario extends FRelatorio {
       if (rgFormato.getVlrString().equals("D")) {
       
          while ( rs.next() ) {
-              
+         	if (imp.pRow()>=(linPag-1)) {
+                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+                imp.incPags();
+                imp.eject();
+              }
+         	
            if ((!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) & (bFimDia)) {
-           	 imp.impCab(136, false);
+           	 
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,"|");
              imp.say(imp.pRow()+0,61,"Totais do Dia-> "+sDtemitvenda+" |"+
                Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDiaVal)+
                Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDiaDesc)+
                Funcoes.strDecimalToStrCurrency(11,2,""+bTotalDiaLiq));
-             imp.say(imp.pRow(),136,"|");
+             imp.say(imp.pRow(),135,"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
              bTotalDiaVal = new BigDecimal("0");
              bTotalDiaDesc = new BigDecimal("0");
              bTotalDiaLiq = new BigDecimal("0");
              bFimDia = false;
            }
-
-           if (imp.pRow()>=(linPag-1)) {
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
-             imp.incPags();
-             imp.eject();
-           }
-
            if (imp.pRow()==0) {
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-            imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-            imp.say(imp.pRow()+0,136,"|");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|");
-            imp.say(imp.pRow()+0,5,"RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
-            imp.say(imp.pRow()+0,136,"|");
+           	imp.montaCab();
+            imp.setTitulo("Resumo Diário de Vendas");
+            imp.setSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+            imp.impCab(136, true);
+           	
                      
             if (sCab.length() > 0) {
-                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                imp.say(imp.pRow()+0,0,""+imp.comprimido());
           	  	imp.say(imp.pRow()+0,0,sCab);
           	  }
             
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|");
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,135,"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"| Dt. Emissao");
             imp.say(imp.pRow()+0,17,"NF./Ped.");
             imp.say(imp.pRow()+0,31,"Cliente");
-            imp.say(imp.pRow()+0,88,"|    Valor   Desconto "+
-                 "   Liquido F.Pagto.");
-            imp.say(imp.pRow()+0,136,"|");
+            imp.say(imp.pRow()+0,85,"|    Valor   Desconto "+
+                 "  Liquido    F.Pagto.");
+            imp.say(imp.pRow()+0,135,"|");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            }
          
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -285,12 +276,12 @@ public class FRResumoDiario extends FRelatorio {
 		        "V-"+Funcoes.copy(rs.getString("docvenda"),0,6)
 		  );
          
-          imp.say(imp.pRow()+0,31,Funcoes.copy(rs.getString("codcli"),0,7)+
-               "-"+Funcoes.copy(rs.getString("razcli"),0,49)+"|"+
+          imp.say(imp.pRow()+0,31,Funcoes.copy(rs.getString("codcli"),0,8)+
+               "-"+Funcoes.copy(rs.getString("razcli"),0,45)+"|"+
                Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrprodvenda"))+
                Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescitvenda"))+
                Funcoes.strDecimalToStrCurrency(11,2,rs.getString("vlrliqvenda"))+
-               " "+Funcoes.copy(rs.getString("descplanopag"),0,15)+"|");
+               "  "+Funcoes.copy(rs.getString("descplanopag"),0,16)+"|");
          
           if (rs.getString("VlrProdVenda") != null) {
              bTotalDiaVal = bTotalDiaVal.add(new BigDecimal(rs.getString("VlrProdVenda")));
@@ -314,28 +305,28 @@ public class FRResumoDiario extends FRelatorio {
 
        if (bFimDia) {
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,61,"Totais do Dia-> "+sDtemitvenda+" |"+
             Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDiaVal)+
             Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDiaDesc)+
             Funcoes.strDecimalToStrCurrency(11,2,""+bTotalDiaLiq));
-          imp.say(imp.pRow(),136,"|");
+          imp.say(imp.pRow(),135,"|");
        }
       
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",134)+"|");
+        imp.say(imp.pRow(),0,"|"+Funcoes.replicate("=",133)+"|");
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         imp.say(imp.pRow()+0,0,"|");
         imp.say(imp.pRow()+0,72,"Totais Geral    |"+
              Funcoes.strDecimalToStrCurrency(10,2,""+bTotalVal)+
              Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDesc)+
              Funcoes.strDecimalToStrCurrency(11,2,""+bTotalLiq));
-        imp.say(imp.pRow(),136,"|");
+        imp.say(imp.pRow(),135,"|");
 
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
       
      }
      else if (rgFormato.getVlrString().equals("R")){
@@ -344,25 +335,19 @@ public class FRResumoDiario extends FRelatorio {
       	while (rs.next()) {
       		if (imp.pRow()>=(linPag-1)) {
       			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
       			imp.incPags();
       			imp.eject();
       		}
       		if (imp.pRow()==0) {
-      			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-      			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-      			imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-      			imp.say(imp.pRow()+0,136,"|");
-      			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			imp.say(imp.pRow()+0,0,"|");
-      			imp.say(imp.pRow()+0,5,"RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
-      			imp.say(imp.pRow()+0,136,"|");
-      			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      			    if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
+      			imp.montaCab();
+                imp.setTitulo("Resumo Diário de Vendas");
+                imp.setSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
+                imp.impCab(136, true);
+      			      			
+      			if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
       			      			      			
-      			imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
+      			imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,"|"+Funcoes.replicate("-",133)+"|");
       		    imp.say(imp.pRow()+1,0,""+imp.comprimido());
       			imp.say(imp.pRow()+0,0,"|  Data");
       			imp.say(imp.pRow()+0,14,"        Valor");
@@ -372,8 +357,8 @@ public class FRResumoDiario extends FRelatorio {
       			imp.say(imp.pRow()+0,84,"        Valor");
       			imp.say(imp.pRow()+0,105,"|  Data");
       			imp.say(imp.pRow()+0,119,"       Valor");
-      			imp.say(imp.pRow()+0,136,"|");
-      			imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",134)+"|");
+      			imp.say(imp.pRow()+0,135,"|");
+      			imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",133)+"|");
       			
       			      			
       			
@@ -381,6 +366,7 @@ public class FRResumoDiario extends FRelatorio {
       	
       		imp.say(imp.pRow()+iLinha,iCol,"|  "+ Funcoes.sqlDateToStrDate(rs.getDate(1)));
       		imp.say(imp.pRow()+0,iCol+14," "+ Funcoes.strDecimalToStrCurrency(15,2,""+rs.getString(2)));
+      		
       		if (iCol==0) {
       			iLinha = 0;
       			iCol = 35;
@@ -390,7 +376,7 @@ public class FRResumoDiario extends FRelatorio {
       		else if (iCol==70)
       			iCol = 105;
       		else {
-      			imp.say(imp.pRow()+0,136,"|");
+      			imp.say(imp.pRow()+0,135,"|");
       			iCol=0;
       			iLinha = 1;
       		}
@@ -399,19 +385,20 @@ public class FRResumoDiario extends FRelatorio {
       			bTotalDiaLiq = bTotalDiaLiq.add(new BigDecimal(rs.getString(2)));
       			bTotalLiq = bTotalLiq.add(new BigDecimal(rs.getString(2)));
       		}
-      		     		
-      		
+      		     
        	 }
-      }
+      
       if ( (iCol<105) && (iLinha==0) ) {
-        	imp.say(imp.pRow()+0,136,"|");
+        	imp.say(imp.pRow()+0,135,"|");
       }
-      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
+      
+     }
+      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,"|");
       imp.say(imp.pRow()+0,88,"| Total Geral do Período   | "+
       			Funcoes.strDecimalToStrCurrency(11,2,""+bTotalLiq));
-      imp.say(imp.pRow(),136,"|");
-      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow(),135,"|");
+      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("=",133)+"+");
     
       imp.eject();
       

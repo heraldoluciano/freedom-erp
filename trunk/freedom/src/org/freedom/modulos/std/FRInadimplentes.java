@@ -159,7 +159,7 @@ public class FRInadimplentes extends FRelatorio {
 	      	  	imp.say(imp.pRow()+0,0,sCab);
 	      	  }
 	          
-	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	          imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,""+imp.comprimido());
 	          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	          imp.say(imp.pRow()+0,0,"| Vencto.");

@@ -29,7 +29,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Vector;
 
 import org.freedom.acao.InsertEvent;
@@ -157,8 +156,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     String sAnd = " AND ";
     int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
-    imp.setTitulo("Relatório de Lancamentos de Fretes");
+    
+        
     DLRFrete dl = new DLRFrete();
     dl.setVisible(true);
     
@@ -180,8 +179,6 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
       sAnd = " AND ";
     }
     
-    
-    imp.montaCab();
     String sDataini = "";
     String sDatafim = "";
     
@@ -208,19 +205,13 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
       imp.limpaPags();
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-          imp.impCab(136, false);
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",134)+"+");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|   Emitido em :"+Funcoes.dateToStrDate(new Date()));
-          imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|");
-          imp.say(imp.pRow()+0,5,"RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
-          imp.say(imp.pRow()+0,136,"|");
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",134)+"+");
+        	imp.montaCab();
+            imp.setTitulo("Relatório de Lancamentos de Fretes");
+            imp.setSubTitulo("RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+            imp.impCab(136, true);
+                    
+          imp.say(imp.pRow()+0,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,2,"Tipo frete  ");
@@ -230,7 +221,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
           imp.say(imp.pRow()+0,54,"Nome transportadora");
           imp.say(imp.pRow()+0,92,"Placa"); 
           imp.say(imp.pRow()+0,102,"UF");
-          imp.say(imp.pRow()+0,136,"|");
+          imp.say(imp.pRow()+0,135,"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,2,"Conhec.");
@@ -242,12 +233,11 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
           imp.say(imp.pRow()+0,79,"P.bruto :");            	          
           imp.say(imp.pRow()+0,95,"P.liq.:");
           imp.say(imp.pRow()+0,110,"Dt.emit.vd");
-          imp.say(imp.pRow()+0,136,"|");       
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,135,"|");
+          imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",133)+"+");
           
-        }
-        
-        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+        }        
+       
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         imp.say(imp.pRow()+0,0,"|");
         imp.say(imp.pRow()+0,2,rs.getString("TipoFreteVd").equals("C") ? "CIF" : "FOB" );
@@ -257,7 +247,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
         imp.say(imp.pRow()+0,54,Funcoes.copy(rs.getString("NomeTran"),20));
         imp.say(imp.pRow()+0,92,Funcoes.setMascara(rs.getString("PlacaFreteVd"),"###-####")); 
         imp.say(imp.pRow()+0,102,rs.getString("UFFRETEVD"));
-        imp.say(imp.pRow()+0,136,"|");
+        imp.say(imp.pRow()+0,135,"|");
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         imp.say(imp.pRow()+0,0,"|");
         imp.say(imp.pRow()+0,2,Funcoes.copy(rs.getString("ConhecFreteVd"),8));
@@ -269,16 +259,17 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
         imp.say(imp.pRow()+0,79,Funcoes.strDecimalToStrCurrency(9,casasDec,rs.getString("PesoBrutVd")));
         imp.say(imp.pRow()+0,95,Funcoes.strDecimalToStrCurrency(9,casasDec,rs.getString("PesoLiqVd")));
         imp.say(imp.pRow()+0,110,Funcoes.dateToStrDate(rs.getDate("DTEMITVENDA")));
-        imp.say(imp.pRow()+0,136,"|");
+        imp.say(imp.pRow()+0,135,"|");
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
+        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+        
         if (imp.pRow()>=linPag) {
           imp.incPags();
           imp.eject();
         }
       }
       
-      // imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",136));
+      
       imp.eject();
       
       imp.fechaGravacao();

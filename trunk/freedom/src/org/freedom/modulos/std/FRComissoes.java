@@ -250,12 +250,6 @@ public class FRComissoes extends FRelatorio {
 				rs = ps.executeQuery();
 				imp.limpaPags();
 
-				if (imp.pRow() == 0) {
-					imp.setSubTitulo("RELATORIO DE COMISSOES(" + sTitDataFiltro
-							+ ") - PERIODO DE " + sDataini + " ATE " + sDatafim);
-					imp.impCab(136, true);
-				}
-
 				boolean hasData = false;
 				
 				while (rs.next()) {
@@ -263,45 +257,49 @@ public class FRComissoes extends FRelatorio {
 					if (imp.pRow() >= (linPag - 1)) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 134) + "|");
+								+ Funcoes.replicate("-", 133) + "|");
 						imp.incPags();
 						imp.eject();
 					}
 
 					if (imp.pRow() == 0) {
+						imp.setSubTitulo("RELATORIO DE COMISSOES(" + sTitDataFiltro
+								+ ") - PERIODO DE " + sDataini + " ATE " + sDatafim);
+						imp.impCab(136, true);
+						
 						String sVendedor = "COMISSIONADO: " + iCodVend + " - "
 								+ txtDescVend.getVlrString();
 						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("=", 134) + "|");
+								+ Funcoes.replicate("=", 133) + "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, (136 - sVendedor.length()) / 2,
+						imp.say(imp.pRow() + 0, (135 - sVendedor.length()) / 2,
 								sVendedor);
 						imp.say(imp.pRow() + 0, 135, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("=", 134) + "|");
+								+ Funcoes.replicate("=", 133) + "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 134) + "|");
+								+ Funcoes.replicate("-", 133) + "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "| CLIENTE");
-						imp.say(imp.pRow() + 0, 27, "|DUPLIC.");
-						imp.say(imp.pRow() + 0, 38, "|PEDIDO");
-						imp.say(imp.pRow() + 0, 47, "|L");
-						imp.say(imp.pRow() + 0, 49, "|ST");
-						imp.say(imp.pRow() + 0, 52, "| EMISSAO");
-						imp.say(imp.pRow() + 0, 63, "| VENCTO.");
-						imp.say(imp.pRow() + 0, 74, "| VLR.PARC.A");
-						imp.say(imp.pRow() + 0, 87, "|VLR.COMI.");
-						imp.say(imp.pRow() + 0, 98, "| %");
+						imp.say(imp.pRow() + 0, 26, "|DUPLIC.");
+						imp.say(imp.pRow() + 0, 37, "|PEDIDO");
+						imp.say(imp.pRow() + 0, 46, "|L");
+						imp.say(imp.pRow() + 0, 48, "|ST");
+						imp.say(imp.pRow() + 0, 51, "| EMISSAO");
+						imp.say(imp.pRow() + 0, 62, "| VENCTO.");
+						imp.say(imp.pRow() + 0, 73, "| VLR.PARC.A");
+						imp.say(imp.pRow() + 0, 86, "|VLR.COMI.");
+						imp.say(imp.pRow() + 0, 97, "|  %");
 						imp.say(imp.pRow() + 0, 104, "| VLR.PAGO");
 						imp.say(imp.pRow() + 0, 114, "|VLR.A PG.");
 						imp.say(imp.pRow() + 0, 124, "| DT.PGTO.");
 						imp.say(imp.pRow() + 0, 135, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 134) + "|");
+								+ Funcoes.replicate("-", 133) + "|");
 
 					}
 					if (rs.getDouble("VLRVENDACOMI") != 0)
@@ -312,28 +310,28 @@ public class FRComissoes extends FRelatorio {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|"
 							+ Funcoes.adicionaEspacos(rs.getString("RAZCLI"),
-									25));
-					imp.say(imp.pRow() + 0, 27, "|"
+									24));
+					imp.say(imp.pRow() + 0, 26, "|"
 							+ Funcoes.adicEspacosEsquerda(rs
 									.getString("DOCREC")
 									+ "-" + rs.getString("NPARCITREC"), 10));
-					imp.say(imp.pRow() + 0, 38, "|"
+					imp.say(imp.pRow() + 0, 37, "|"
 							+ Funcoes.adicEspacosEsquerda(rs.getInt("CODVENDA")
 									+ "", 8));
-					imp.say(imp.pRow() + 0, 47, "|" + rs.getString("TIPOCOMI"));
-					imp.say(imp.pRow() + 0, 49, "|"
+					imp.say(imp.pRow() + 0, 46, "|" + rs.getString("TIPOCOMI"));
+					imp.say(imp.pRow() + 0, 48, "|"
 							+ rs.getString("STATUSCOMI"));
-					imp.say(imp.pRow() + 0, 52, "|"
+					imp.say(imp.pRow() + 0, 51, "|"
 							+ Funcoes.dateToStrDate(rs.getDate("DATACOMI")));
-					imp.say(imp.pRow() + 0, 63, "|"
+					imp.say(imp.pRow() + 0, 62, "|"
 							+ Funcoes.dateToStrDate(rs.getDate("DTVENCCOMI")));
-					imp.say(imp.pRow() + 0, 74, "|"
+					imp.say(imp.pRow() + 0, 73, "|"
 							+ Funcoes.strDecimalToStrCurrency(12, 2, rs
 									.getString("VLRPARCITREC")));
-					imp.say(imp.pRow() + 0, 87, "|"
+					imp.say(imp.pRow() + 0, 86, "|"
 							+ Funcoes.strDecimalToStrCurrency(9, 2, rs
 									.getString("VLRCOMI")));
-					imp.say(imp.pRow() + 0, 98, "|"
+					imp.say(imp.pRow() + 0, 97, "|"
 							+ Funcoes.strDecimalToStrCurrency(5, 2, dePercComi
 									+ ""));
 					imp.say(imp.pRow() + 0, 104, "|"
@@ -354,19 +352,19 @@ public class FRComissoes extends FRelatorio {
 				}
 
 				imp.say(imp.pRow() + ((hasData) ? 1 : 0), 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133)
+				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133)
 						+ "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "| TOTAL ->");
-				imp.say(imp.pRow() + 0, 27, "|");
-				imp.say(imp.pRow() + 0, 74, "|"
+				imp.say(imp.pRow() + 0, 26, "|");
+				imp.say(imp.pRow() + 0, 73, "|"
 						+ Funcoes.strDecimalToStrCurrency(12, 2, ""
 								+ deVlrVenda));
 				imp
-						.say(imp.pRow() + 0, 87, "|"
+						.say(imp.pRow() + 0, 86, "|"
 								+ Funcoes.strDecimalToStrCurrency(9, 2, ""
 										+ deVlrComi));
-				imp.say(imp.pRow() + 0, 98, "|");
+				imp.say(imp.pRow() + 0, 97, "|");
 				imp
 						.say(imp.pRow() + 0, 104, "|"
 								+ Funcoes.strDecimalToStrCurrency(9, 2, ""
@@ -378,7 +376,7 @@ public class FRComissoes extends FRelatorio {
 				imp.say(imp.pRow(), 124, "|");
 				imp.say(imp.pRow(), 135, "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133)
+				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133)
 						+ "+");
 
 				imp.eject();
