@@ -141,6 +141,7 @@ public class ListaCampos extends Container implements PostListener,InsertListene
   private boolean bAutoLimpaPK = true;
   private boolean bPodeIns = true;
   private boolean bPodeExc = true;
+  private boolean bPodeCommit = true;
   public Vector vTxtValor = null;
   private JTextComponent txtValor = null;
   private int iCodEmp = Aplicativo.iCodEmp;
@@ -451,7 +452,7 @@ public int getCodEmp() {
   }
   
   /**
-   *  Ajusta o ListaCampos para restrições de Commit. <BR>
+   *  Ajusta o ListaCampos para restrições de Commit no SELECT. <BR>
    *  Ajusta o ListaCampos para realizar ou não commit<BR>
    *  após a query.
    *  @param Realizar Se true realiza commit se false não realiza.
@@ -463,6 +464,20 @@ public int getCodEmp() {
 	  bQueryCommit = bVal;
   }
   
+  
+  /**
+   *  Ajusta o ListaCampos para restrições de Commit. <BR>
+   *  Ajusta o ListaCampos para realizar ou não commit<BR>
+   *  após qualque SQL.
+   *  @param Realizar Se true realiza commit se false não realiza.
+   *  @see #getPodeCommit
+   *
+   */
+  
+  public void setPodeCommit(boolean bVal) {
+	  bPodeCommit = bVal;
+  }
+
   /**
    *  Retorna se o listaCampos vai limpar a PK. <BR>
    *  Retorna se o lisaCampos vai limpar a PK caso<BR>
@@ -487,6 +502,18 @@ public int getCodEmp() {
   public boolean getQueryCommit() {
 	  return bQueryCommit;
   }
+
+  
+  /**
+   *  Retorna true se o ListaCampos esta ajustado para executar Commit. <BR>
+   *  @return PodeCommit.
+   *  @see #setPodeCommit
+   *
+   */
+  public boolean getPodeCommit() {
+	  return bPodeCommit;
+  }
+  
 
   /**
    *  Ajusta o ListaCampos para restrições de Multi Empresa. <BR>
@@ -693,7 +720,7 @@ public int getCodEmp() {
         }
 //        rsItens.close();
 //        sqlItens.close();
-	    if ( (bQueryCommit) &&  (!con.getAutoCommit()))   
+	    if ( (bQueryCommit) && (!con.getAutoCommit()) && bPodeCommit)   
 	        con.commit();//MOD
 	    
       }
@@ -1236,7 +1263,7 @@ public int getCodEmp() {
         if (sqlLC != null) 
           rsLC.close();*/
 //        if (rsLC != null)  
-	    if ( (bQueryCommit) && (!con.getAutoCommit()) )  
+	    if ( (bQueryCommit) && (!con.getAutoCommit()) && bPodeCommit)  
 	        con.commit(); //MOD
       }
       catch ( SQLException err ) {
@@ -1328,7 +1355,7 @@ public int getCodEmp() {
           }
 //          rsMax.close();
 //          sqlMax.close();
-	  if ( (bQueryCommit) && (!con.getAutoCommit()) ) 
+	  if ( (bQueryCommit) && (!con.getAutoCommit()) && bPodeCommit ) 
                 con.commit(); //MOD
        }
        catch (SQLException err) {
@@ -1764,7 +1791,7 @@ public int getCodEmp() {
           }
         }
         sqlLC.executeUpdate();
-        if (!con.getAutoCommit())
+        if (!con.getAutoCommit() && bPodeCommit)
           con.commit();
         if (bDetalhe) {
           if (lcState == LCS_EDIT) {
@@ -1935,7 +1962,7 @@ public int getCodEmp() {
                 }
             }
             sqlLC.execute();
-            if (!con.getAutoCommit())
+            if (!con.getAutoCommit() && bPodeCommit)
             	con.commit();
             if (bDetalhe)
               carregaGridDelete(bRetorno);
