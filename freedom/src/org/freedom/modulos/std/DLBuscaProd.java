@@ -37,44 +37,72 @@ import org.freedom.telas.DLF3;
 public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    private String sCol = null;
    private Vector vValsProd = new Vector();
-
+   private String sSQL = "";
    public DLBuscaProd(Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
    	 this.sCol = sCol;
    	 setConexao(con);
    	 
-   	 tab.adicColuna("Descrição");
+   	 tab.adicColuna("Cód.");
+     tab.adicColuna("Ref.");    
+     tab.adicColuna("Descrição");
    	 tab.adicColuna("Saldo");   	  
    	 tab.setTamColuna(120,0);//código.
-   	 tab.setTamColuna(100,1);//Referencia.
+   	 tab.setTamColuna(100,1);//Referencia. 
    	 tab.setTamColuna(200,2);
-   	 tab.setTamColuna(80,5);
-   	 
-   	 tab.addTabelaSelListener(this);
-   }
-   public void setValor(Object oVal) {
+   	 tab.setTamColuna(80,5);   	 	 
+   	 tab.addTabelaSelListener(this); 
 
-      String sSQL = "SELECT ALT.CODPROD,ALT.REFPROD,PROD.DESCPROD,PROD.SLDPROD FROM eqcodaltprod ALT, EQPRODUTO PROD "+
-		" WHERE PROD.CODEMP = ALT.CODEMP AND PROD.CODFILIAL=ALT.codfilial AND PROD.CODPROD = ALT.CODPROD " +
-		" AND ALT.CODEMP=? AND ALT.CODFILIAL = ? AND ALT.CODALTPROD = ?";
+   }
+   public Object getValor() {
+    return oRetVal;
+  }
+   public boolean setValor(Object oVal,String sTipo) { 
+     boolean bRet = false;
+  	 if (sTipo.equals("similar")) {
+   	 	sSQL = "SELECT SIM.CODPROD,PROD.REFPROD,PROD.DESCPROD,PROD.SLDPROD "+
+		  	   "FROM EQPRODUTO PROD,EQITSIMILAR SIM "+
+		          "WHERE  SIM.CODEMP = PROD.CODEMP AND SIM.CODFILIAL=PROD.CODFILIAL "+
+		           "AND SIM.CODSIM = (SELECT SIM2.CODSIM FROM EQITSIMILAR SIM2 " +
+		           "                   WHERE SIM2.CODEMP=PROD.CODEMP AND SIM2.CODFILIAL = PROD.CODFILIAL " +
+		           "                   AND SIM2."+sCol+"=?) "+
+		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? AND PROD.CODPROD=SIM.CODPROD";
+   	 }
+   	 else {
+   	 	sSQL = "SELECT ALT.CODPROD,ALT.REFPROD,PROD.DESCPROD,PROD.SLDPROD FROM eqcodaltprod ALT, EQPRODUTO PROD "+
+		   " WHERE PROD.CODEMP = ALT.CODEMP AND PROD.CODFILIAL=ALT.codfilial AND PROD.CODPROD = ALT.CODPROD " +
+		   " AND ALT.CODALTPROD = ? AND ALT.CODEMP=? AND ALT.CODFILIAL = ? ";   	 	
+   	 }
+  	
       System.out.println(sSQL);
       try {
       	PreparedStatement ps = con.prepareStatement(sSQL);
       	String sVal = oVal.toString();
-     	ps.setInt(1,Aplicativo.iCodEmp);
-      	ps.setInt(2,ListaCampos.getMasterFilial("EQCODALTPROD"));
-      	ps.setString(3,sVal);
-      	tab.limpa();
+     	ps.setInt(2,Aplicativo.iCodEmp);
+      	ps.setInt(3,ListaCampos.getMasterFilial("EQPRODUTO"));
+      	ps.setString(1,sVal);
+
+        tab.limpa();
+        tab.removeAll();
       	vValsProd.clear();
 
       	ResultSet rs = ps.executeQuery();
       	while (rs.next()) {
+      	   bRet = true;
       	   tab.adicLinha( new Object[] {
       	      rs.getString(1) != null ? rs.getString(1) : "",
       		  rs.getString(2) != null ? rs.getString(2) : "",
       		  rs.getString(3) != null ? rs.getString(3) : "",
 			  rs.getString(4) != null ? rs.getString(4) : "",
       	   });
+
+      	   if (sCol.toUpperCase().equals("REFPROD")) {
+      	   	 oRetVal = rs.getString(1) != null ? rs.getString(1) : ""; 
+   	 	   }
+   	 	   else{
+   	 		 oRetVal = rs.getString(2) != null ? rs.getString(2) : "";
+   	 	   }
+ 
       	}
       	rs.close();
       	ps.close();
@@ -85,31 +113,33 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
       	 Funcoes.mensagemErro(this,"Erro ao buscar código auxiliar!\n"+err.getMessage());
       	 err.printStackTrace();
       }
+      return bRet;
    }
    public void actionPerformed(ActionEvent evt) {
    	  super.actionPerformed(evt);
    }
    public void valorAlterado(TabelaSelEvent tsevt) {
-   	  if (tsevt.getTabela() == tab) {
-      	if (sCol.toUpperCase().equals("REFPROD")) {
-      	   	oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
-      	}
-       	else {
-      	   	oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
-       	}
-   	  	if (tab.getNumLinhas() > 0 && vValsProd.size() > tab.getLinhaSel()) {
-   	  	  if (vValsProd.elementAt(tab.getLinhaSel()) == null) {
-//   	  	  	 txtCod.setAtivo(true);
-//   	  	  	 btSalvar.setEnabled(true);
-//   	  	  	 lcProd.limpaCampos(true);
-   	  	  }
-   	  	  else {
-//   	  	  	btSalvar.setEnabled(false);
-//   	  	  	txtCod.setAtivo(false);
-   	  	  	//txtCod.setVlrString(vValsProd.elementAt(tab.getLinhaSel())+"");
-   	  	  }
-//   		  lcProd.carregaDados();
-   	  	}
-   	  }
-   }
+   	 try {   	
+   	 	if (tsevt.getTabela() == tab) {
+   	 		if (tab.getNumLinhas() > 0) {
+   	 			if (sCol.toUpperCase().equals("REFPROD")) {
+   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
+   	 			}
+   	 			else if (tab.getLinhaSel()>0){
+   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
+   	 			}
+   	 		}
+       }   	  
+   	 }
+   	 catch(Exception e) {
+   	 	e.printStackTrace();
+   	 }
+    }
+/* (non-Javadoc)
+ * @see org.freedom.telas.DLF3#setValor(java.lang.Object)
+ */
+public void setValor(Object oVal) {
+	// TODO Auto-generated method stub
+	
+}
 };        
