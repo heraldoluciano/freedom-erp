@@ -22,26 +22,39 @@
 
 
 package org.freedom.modulos.pdv;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
+
+import javax.swing.JButton;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.comutacao.Tef;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FPrefere extends FTabDados {
+public class FPrefere extends FTabDados implements ActionListener {
 	private JPanelPad pinVenda = new JPanelPad();
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtDescTipoMov= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtDescPlanoPag= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
+	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
+	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
 	private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
+	private ListaCampos lcCliente = new ListaCampos(this,"CL");
+	private JButton btTef = new JButton("Funções ADM do Tef...");
+  	Tef tef = null;
 	public FPrefere() {
 		setTitulo("Preferências do PDV");
 		setAtribos(50, 50, 355, 375);
+		
+		btTef.setEnabled(false);
 		
 		lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_PK,true));
 		lcTipoMov.add(new GuardaCampo(txtDescTipoMov,"DescTipoMov","Descrição do tipo de movimento",ListaCampos.DB_SI,false));
@@ -51,7 +64,15 @@ public class FPrefere extends FTabDados {
 		txtCodTipoMov.setFK(true);
 		txtCodTipoMov.setNomeCampo("CodTipoMov");
 		
-		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_PK,true));
+		lcCliente.add(new GuardaCampo(txtCodCli,"CodCli","Cód.tp.mov.",ListaCampos.DB_PK,true));
+		lcCliente.add(new GuardaCampo(txtRazCli,"RazCli","Razão do cliente padrão",ListaCampos.DB_SI,false));
+		lcCliente.montaSql(false, "CLIENTE", "VD");
+		lcCliente.setReadOnly(true);
+		txtCodCli.setTabelaExterna(lcCliente);
+		txtCodCli.setFK(true);
+		txtCodCli.setNomeCampo("CodCli");
+
+		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag,"CodPlanoPag","Cód.cli.",ListaCampos.DB_PK,true));
 		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag,"DescPlanoPag","Descrição do plano de pagamento",ListaCampos.DB_SI,false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
@@ -63,15 +84,35 @@ public class FPrefere extends FTabDados {
 		adicDescFK(txtDescTipoMov,90,30,230,20,"DescTipoMov","Descrição do tipo de movimento");
 		adicCampo(txtCodPlanoPag,10,70,77,20,"CodPlanoPag","Cód.p.pag.",ListaCampos.DB_FK,true);
 		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","Descrição do plano de pagamento");
+		adicCampo(txtCodCli,10,110,77,20,"CodCli","Cód.cli.",ListaCampos.DB_FK,true);
+		adicDescFK(txtRazCli,90,110,230,20,"RazCli","Razão do cliente padrão");
 		setListaCampos(false, "PREFERE4", "SG");
+
+		adic(btTef,10,150,200,30);
+
+		if (FreedomPDV.bTEFTerm) {
+		    tef = new Tef(Aplicativo.strTefEnv,Aplicativo.strTefRet);
+		    btTef.setEnabled(true);
+		}
 		
+		btTef.addActionListener(this);
+
 		nav.setAtivo(0,false);
 		nav.setAtivo(1,false);
+	}
+	public void actionPerformed(ActionEvent evt) {
+	    if (evt.getSource() == btTef) {
+	        DLAdmTef dl = new DLAdmTef(tef,this);
+	        dl.setVisible(true);
+	        dl.dispose();
+	    }
+	    super.actionPerformed(evt);
 	}
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcTipoMov.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
+		lcCliente.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 }
