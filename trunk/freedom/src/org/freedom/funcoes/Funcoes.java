@@ -177,6 +177,37 @@ public class Funcoes {
   	 }
   	 return sTexto;
   }
+  
+  public static Vector quebraLinha(Vector vValor, int iTam) {
+  	 Vector vRetorno = new Vector();
+  	 String sLinha = null;
+  	 String sValor = null;
+  	 int iParte = 0;
+  	 try {
+  	 	if (vValor!=null) {
+  	 	   for (int i=0; i<vValor.size(); i++) {
+  	 	   	  sLinha = vValor.elementAt(i).toString();
+  	 	   	  while (!sLinha.equals("")) {
+  	 	   	  	if (sLinha.length()>iTam)
+  	 	   	  		iParte = iTam;
+  	 	   	  	else
+  	 	   	  		iParte = sLinha.length();
+  	 	   	    sValor = sLinha.substring(0,iParte);
+  	 	   	    vRetorno.addElement(sValor);
+  	 	   	    if (sLinha.length()>iTam)
+  	 	   	        sLinha = sLinha.substring(iParte);
+  	 	   	    else
+  	 	   	    	sLinha = "";
+  	 	   	  }
+  	 	   }
+  	 	}
+  	 }
+  	 finally {
+  	 	sValor = null;
+  	 	sLinha = null;
+  	 }
+  	 return vRetorno;
+  }
   public static Vector ordenaVector(Vector v, int iEspacos) {
   	String s1 = "";
   	String s2 = "";
