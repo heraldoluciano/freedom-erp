@@ -361,8 +361,9 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     lcSeq.add(new GuardaCampo( comp, 1, 1, 1, 1, nome, label, false, false, null, tipo, req),nome);
   }*/
 
-  public void adicDB( Component comp, int X, int Y, int Larg, int Alt, String nome, String label, boolean req) {
+  public JLabel adicDB( Component comp, int X, int Y, int Larg, int Alt, String nome, String label, boolean req) {
   	boolean bScroll = false;
+  	JLabel lbTmp = null;
     comp.setName(nome);
     if (comp instanceof JRadioGroup)
       ((JRadioGroup) comp).setListaCampos(lcSeq);
@@ -377,11 +378,14 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	  bScroll = true;
 	}
     lcSeq.add(new GuardaCampo( comp, nome, label, ListaCampos.DB_SI, req));
-    adic(new JLabel(label), X, Y-20, Larg, 20);
+    lbTmp = new JLabel(label);
+    adic(lbTmp, X, Y-20, Larg, 20);
     if (bScroll)
   	  adic(new JScrollPane(comp),X, Y, Larg, Alt);
     else 
 	  adic(comp, X, Y, Larg, Alt);
+    
+    return lbTmp;
   }
   
   // deprecated
