@@ -55,8 +55,8 @@ public class FRRazaoFin extends FRelatorio {
 
 	txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
 	txtDescPlan.setTipo(JTextFieldPad.TP_STRING,40,0);
-	lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.Plan", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
-	lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
+	lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Cód.plan", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodPlan");
+	lcPlan.add(new GuardaCampo( txtDescPlan, 90, 100, 207, 20, "DescPlan", "Descrição do planejamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlan");
 	lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
 	lcPlan.setWhereAdic("NIVELPLAN=6");
 	lcPlan.setReadOnly(true);
@@ -64,14 +64,15 @@ public class FRRazaoFin extends FRelatorio {
 	txtCodPlan.setFK(true);
 	txtCodPlan.setNomeCampo("CodPlan");
 
-	adic(new JLabel("Periodo:"),7,5,120,20);
+	adic(new JLabel("Periodo:"),7,5,125,20);
     adic(new JLabel("De:"),7,25,30,20);
-    adic(txtDataini,32,25,117,20);
+    adic(txtDataini,32,25,125,20);
     adic(new JLabel("Até:"),160,25,22,20);
-    adic(txtDatafim,185,25,120,20);
-    adic(new JLabel("Número e descrição do planejamento"),7,50,250,20);
-    adic(txtCodPlan,7,70,80,20);
-    adic(txtDescPlan,90,70,200,20);
+    adic(txtDatafim,185,25,125,20);
+    adic(new JLabel("Nº planejamento"),7,50,250,20);
+    adic(txtCodPlan,7,70,100,20);
+    adic(new JLabel("Descrição do planejamento"),110,50,240,20);
+    adic(txtDescPlan,110,70,200,20);
 
 	Calendar cPeriodo = Calendar.getInstance();
     txtDatafim.setVlrDate(cPeriodo.getTime());
