@@ -51,7 +51,7 @@ public class FRPontoEqui extends FRelatorio {
   private ListaCampos lcConta = new ListaCampos(this);
   public FRPontoEqui() {
     setTitulo("Apuração de resultados");
-    setAtribos(80,80,330,210);
+    setAtribos(80,80,330,100);
 
     lcConta.add(new GuardaCampo( txtCodConta, "NumConta", "Cód.conta", ListaCampos.DB_PK, false));
     lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI,false));
@@ -76,14 +76,6 @@ public class FRPontoEqui extends FRelatorio {
     adic(txtDataini,40,25,117,20);
     adic(new JLabelPad("Até:"),160,25,22,20);
     adic(txtDatafim,185,25,120,20);
-//    adic(new JLabelPad("Nº conta"),7,50,250,20);
-//    adic(txtCodConta,7,70,80,20);
-//  adic(new JLabelPad("Descrição da conta"),90,50,250,20);
-//    adic(txtDescConta,90,70,200,20);
-//	adic(new JLabelPad("Cód.cc."),7,90,250,20);
-//	adic(txtCodCC,7,110,80,20);
-//	adic(new JLabelPad("Descrição do centro de custo"),90,90,250,20);
-//	adic(txtDescCC,90,110,200,20);
 
 	Calendar cPeriodo = Calendar.getInstance();
     txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -114,6 +106,69 @@ public class FRPontoEqui extends FRelatorio {
 	}
 	return iRet;
   }
+
+  public BigDecimal getRecDesp(String sGet) {
+  	BigDecimal bRet = new BigDecimal("0");  	
+    String sSQL = "SELECT SUM(SL.vlrsublanca * -1)" +
+	  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
+	  "WHERE P.CODEMP=? AND P.CODFILIAL=? "+
+	  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
+	  "AND L.codemp = P.codemp AND L.codfilial = P.codfilial AND L.codlanca = SL.codLANca "+
+	  "AND sl.datasublanca between ? and ? AND TIPOPLAN=?"+
+	  "AND L.FLAG IN "+
+    Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp);
+
+	try {
+		PreparedStatement ps = con.prepareStatement(sSQL);
+		ps.setInt(1,Aplicativo.iCodEmp);
+		ps.setInt(2,ListaCampos.getMasterFilial("FNSUBLANCA"));
+	    ps.setDate(3,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+	    ps.setDate(4,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));		
+		ps.setString(5,sGet);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next())
+			bRet =  ( (rs.getBigDecimal(1)==null) ? (new BigDecimal(0)) : (rs.getBigDecimal(1).abs()) );
+		rs.close();
+		ps.close();
+	}
+	catch (SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao buscar os valores de:"+sGet+".\n"+err.getMessage());
+	}	
+  	return bRet;
+  }
+
+  public BigDecimal getFIN(String sFin) {
+  	BigDecimal bFin = new BigDecimal("0");
+  	
+    String sSQL = "SELECT SUM(SL.vlrsublanca * -1)" +
+	  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
+	  "WHERE P.TIPOPLAN IN ('R','D') "+
+	  "AND P.CODEMP=? AND P.CODFILIAL=? "+
+	  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
+	  "AND L.codemp = P.codemp AND L.codfilial = P.codfilial AND L.codlanca = SL.codLANca "+
+	  "AND sl.datasublanca between ? and ? AND P.FINPLAN=? "+
+	  "AND L.FLAG IN "+
+    Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp);
+
+	try {
+		PreparedStatement ps = con.prepareStatement(sSQL);
+		ps.setInt(1,Aplicativo.iCodEmp);
+		ps.setInt(2,ListaCampos.getMasterFilial("FNSUBLANCA"));
+	    ps.setDate(3,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+	    ps.setDate(4,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+		ps.setString(5,sFin);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next())
+			bFin = ( (rs.getBigDecimal(1)==null) ? (new BigDecimal(0)) : (rs.getBigDecimal(1).abs()) );
+		rs.close();
+		ps.close();
+	}
+	catch (SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao buscar os valores de:"+sFin+".\n"+err.getMessage());
+	}	
+  	return bFin;
+  }
+
   public void imprimir(boolean bVisualizar) {
     if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 		Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
@@ -126,53 +181,56 @@ public class FRPontoEqui extends FRelatorio {
 	String sCC = "";
     String sConta = "";
     
-    BigDecimal bTotal = new BigDecimal("0");
-    
     imp.montaCab();
     String sDataini = "";
     String sDatafim = "";
-//    String sDescplan = "";
-    
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
+
+    BigDecimal bdRec = getRecDesp("R");
+    
+    if (bdRec.equals(new BigDecimal("0"))) {
+    	Funcoes.mensagemErro(this,"Não existem valores para o período especificado!");
+    	return;
+    }
+    		
+    
+    BigDecimal bdRV = getFIN("RV");
+    BigDecimal bdER = getFIN("ER");
+    BigDecimal bd01 = bdRV.subtract(bdER);
+    BigDecimal bdCV = getFIN("CV");
+    BigDecimal bd03 = bd01.subtract(bdCV);
+    BigDecimal bdDesp = getRecDesp("D");
+    BigDecimal bdCF = getFIN("CF");
+    BigDecimal bdLO = bd03.subtract(bdCF);
+    BigDecimal bdPE = new BigDecimal("0");
+    if (!bdCF.equals(new BigDecimal("0")))	   
+    	bdPE = (bd03.divide(bdCF,6)).multiply(bd01);
+    BigDecimal bdI = getFIN("I");
+    BigDecimal bdRF = getFIN("RF");
+    BigDecimal bdDF = getFIN("DF");
+    BigDecimal bdCS = getFIN("CS");
+    BigDecimal bdIR = getFIN("IR");
     
     imp.setTitulo("Apuração de resultados");
     
-
-    String sSQL = "SELECT p.FINPLAN,SUM(SL.vlrsublanca * -1)" +
-				  "FROM FNPLANEJAMENTO P, fnsublanca SL "+
+    String sSQLX = "SELECT p.tipoplan,p.FINPLAN,SUM(SL.vlrsublanca * -1)" +
+				  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
 				  "WHERE P.TIPOPLAN IN ('R','D') "+
 				  "AND P.CODEMP=? AND P.CODFILIAL=? "+
 				  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
+				  "AND L.codemp = P.codemp AND L.codfilial = P.codfilial AND L.codlanca = SL.codLANca "+
 				  "AND sl.datasublanca between ? and ? "+		
 				  "AND L.FLAG IN "+
                   Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-				  " group BY 1";
-    
-    
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+				  " group BY 1,2 order by 1,2 desc";
+        
     try {
       int iParam = 1;
-      ps = con.prepareStatement(sSQL);
-	  ps.setInt(1,Aplicativo.iCodEmp);
-	  ps.setInt(2,ListaCampos.getMasterFilial("FNSUBLANCA"));
-      ps.setDate(3,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-      ps.setDate(4,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-/*
-      if (!sCodConta.trim().equals("")) {
-		 ps.setInt(iParam++,ListaCampos.getMasterFilial("FNCONTA"));
-		 ps.setString(iParam++,sCodConta);
-	  }
-	  if (!sCodCC.trim().equals("")) {
-		 ps.setInt(iParam++,ListaCampos.getMasterFilial("FNCC"));
-		 ps.setString(iParam++,sCodCC);
-	  }
-*/	  
-	  rs = ps.executeQuery();
+
       imp.limpaPags();
       BigDecimal bigValMaster = null;
-      while ( rs.next() ) {
+
         if (imp.pRow()==0) {
            String sTitulo = "APURAÇÃO DE RESULTADOS DE "+sDataini+" A "+sDatafim;
            imp.say(imp.pRow()+0,0,""+imp.normal());
@@ -188,8 +246,8 @@ public class FRPontoEqui extends FRelatorio {
 
 
            imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",77)+"|");
-           imp.say(imp.pRow()+1,0,"| Código Plan.");
-           imp.say(imp.pRow(),15, "| Descrição");
+           imp.say(imp.pRow()+1,0,"| ");
+           imp.say(imp.pRow(),15, "| ");
 		   imp.say(imp.pRow(),59, "|  %   ");
            imp.say(imp.pRow(),66, "| Valor");
            imp.say(imp.pRow(),79,"|");
@@ -197,52 +255,80 @@ public class FRPontoEqui extends FRelatorio {
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");
         }
         
-
-          	BigDecimal bigBasePerc = null;
-
-				bigBasePerc = new BigDecimal(rs.getString(2));
-
-
-            imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow(),0,"|"+Funcoes.copy(rs.getString(1),0,13)+
-			    "|"+(bigBasePerc == null ? "  --  " : Funcoes.strDecimalToStrCurrency(6,2,""+bigBasePerc.multiply(new BigDecimal(100)).divide(bigValMaster,2,BigDecimal.ROUND_HALF_UP)))+ //Não imprime nada se o nivel superior tiver -1.
-                "|"+Funcoes.strDecimalToStrCurrency(12,2,rs.getString(4))+
-                "|");
+        imp.say(imp.pRow()+1,0,"Receitas:    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRec)+"|");		  	 
+        imp.say(imp.pRow(),60,"100,00"+" %");
                 
-          }
+        imp.say(imp.pRow()+1,0,"Receitas S/V (RV):    ");
+        imp.say(imp.pRow(),0,""+Funcoes.strDecimalToStrCurrency(12,2,""+bdRV)+"|");
+        
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdRV.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
 
-		  	 bigValMaster = new BigDecimal(rs.getString(4));
-			 bTotal = bTotal.add(new BigDecimal(rs.getString(4)));
+        imp.say(imp.pRow()+1,0,"Estorno de receitas (ER):    ");
+        imp.say(imp.pRow(),0,""+Funcoes.strDecimalToStrCurrency(12,2,""+bdER)+"|");
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdER.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+        
+        imp.say(imp.pRow()+1,0,"01 - Receita liquida (RV-ER):    ");
+        imp.say(imp.pRow(),0,""+Funcoes.strDecimalToStrCurrency(12,2,""+bd01)+"|");
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bd01.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+        
+        imp.say(imp.pRow()+1,0,"02 - Custos variaveis (CV):    ");
+        imp.say(imp.pRow(),0,""+Funcoes.strDecimalToStrCurrency(12,2,""+bdCV)+"|");
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdCV.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+        
+        imp.say(imp.pRow()+1,0,"03 - Margem contribuicao (01-02):    ");
+        imp.say(imp.pRow(),0,""+Funcoes.strDecimalToStrCurrency(12,2,""+bd03)+"|");
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bd03.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+        
+        imp.say(imp.pRow()+1,0,"Despesas:    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdDesp)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdDesp.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
 
+        imp.say(imp.pRow()+1,0,"04 - Custos fixos (CF):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCF)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdCF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
 
+        imp.say(imp.pRow()+1,0,"05 - Lucro operacional (03-04):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdLO)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdLO.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
 
+        imp.say(imp.pRow()+1,0,"06 - Ponto de equilibrio ((03/04)*01):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdPE)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdPE.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+
+        imp.say(imp.pRow()+1,0,"07 - Investimentos (I):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdI)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdI.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+
+        imp.say(imp.pRow()+1,0,"08 - Receitas financeiras (RF):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdRF)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdRF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+
+        imp.say(imp.pRow()+1,0,"09 - Lucro operacional (DF):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdDF)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdDF.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+
+        imp.say(imp.pRow()+1,0,"10 - Contribuição social (CS):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdCS)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdCS.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+
+        imp.say(imp.pRow()+1,0,"11 - IRPJ (IR):    ");
+        imp.say(imp.pRow(),0,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bdIR)+"|");		  	 
+        imp.say(imp.pRow(),60,Funcoes.strDecimalToStrCurrency(12,2,""+bdIR.multiply(new BigDecimal(100)).divide(bdRec,6))+" %");
+                        
         if (imp.pRow() == (linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.normal());
           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
           imp.eject();
           imp.incPags();          
         }
-         
-       
-
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow(),0,"|");
-      imp.say(imp.pRow(),40,"TOTAL RECEITAS/DESPESAS");
-      imp.say(imp.pRow(),66,"|"+Funcoes.strDecimalToStrCurrency(12,2,""+bTotal)+"|");
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",77)+"+");
 
       imp.eject();
       
       imp.fechaGravacao();
       
-//      rs.close();
-//      ps.close();
       if (!con.getAutoCommit())
       	con.commit();
-//      dl.dispose();
     }  
     catch ( SQLException err ) {
 		Funcoes.mensagemErro(this,"Erro consultar as bases financeiras!"+err.getMessage());      
