@@ -186,7 +186,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     setAtribos(15,10,765,460);
     
     pnCliCab.add(tpnCab);
-    
+    pinCabVenda.setFirstFocus(txtCodVenda);
     tpnCab.addTab("Venda",pinCabVenda);
     tpnCab.addTab("Comissão",pinCabComis);
     tpnCab.addTab("Fiscal",pinCabFiscal);

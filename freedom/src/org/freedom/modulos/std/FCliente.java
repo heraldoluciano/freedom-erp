@@ -210,6 +210,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     lcCliFor.setTabela(tabFor);
     
     pinCli = new JPanelPad(500,330);
+    pinCli.setFirstFocus(txtCodCli);
     setPainel(pinCli);
 	   
   }
