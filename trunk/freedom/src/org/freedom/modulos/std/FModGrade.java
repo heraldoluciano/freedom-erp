@@ -42,7 +42,7 @@ public class FModGrade extends FDetalhe {
   private JTextFieldPad txtCodItModG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescItModG = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   private JTextFieldPad txtCodVarG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtRefItModG = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtRefItModG = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
   private JTextFieldPad txtCodFabItModG = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtCodBarItModG = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
