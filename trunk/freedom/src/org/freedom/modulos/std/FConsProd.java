@@ -951,10 +951,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	}
 	
 	private void montaTela() {
-
-
-		dlBuscaProd = new DLBuscaProd(this,con,"CODPROD");
-		txtCodProd.setBuscaAdic(dlBuscaProd);
 		
 		pinCab.adic(new JLabelPad("Cód.prod."),7,0,60,20);
 		pinCab.adic(new JLabelPad("Descrição do produto"),80,0,200,20);
