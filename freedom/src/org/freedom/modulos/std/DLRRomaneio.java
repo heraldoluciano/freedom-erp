@@ -33,7 +33,7 @@ public class DLRRomaneio extends FFDialogo {
   private Vector vVals = new Vector();
   public DLRRomaneio() {
     setTitulo("Ordem do Relatório");
-    setAtribos(300,120);
+    setAtribos(300,140);
     vLabs.addElement("Referência");
     vLabs.addElement("Descrição");
     vVals.addElement("C");

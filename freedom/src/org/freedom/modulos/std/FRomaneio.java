@@ -117,8 +117,11 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
     double dTotal = 0;
+    
     imp.montaCab();
     imp.setTitulo("Relatório de Setores");
+    imp.setSubTitulo("ROMANEIO No.: "+Funcoes.strZero(""+txtCodRoma.getVlrInteger().intValue(),8));
+   
     DLRRomaneio dl = new DLRRomaneio();
     dl.setVisible(true);
     if (dl.OK == false) {
@@ -140,75 +143,58 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
       rs = ps.executeQuery();
       imp.limpaPags();
       while ( rs.next() ) {
-         if (imp.pRow()==0) {
+         if (imp.pRow()==0) {         	
          	imp.impCab(136, false);
+                        
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,Funcoes.replicate("-",100));
+            imp.say(imp.pRow()+0,18,"Código");
+            imp.say(imp.pRow()+0,33,"Descrição");
+            imp.say(imp.pRow()+0,83,"Unid");
+            imp.say(imp.pRow()+0,88,"Qtd");
+            imp.say(imp.pRow()+0,96,"  Unitário");
+            imp.say(imp.pRow()+0,107,"     Total");
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,"| Emitido em :"+rs.getString("DataRoma"));
-            imp.say(imp.pRow()+0,80,"Página :"+Funcoes.strZero(""+imp.getNumPags(),3));
-            imp.say(imp.pRow()+0,110,"|");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,"|");
-            imp.say(imp.pRow()+0,110,"|");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,"|");
-            imp.say(imp.pRow()+0,110,"|");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,"|");
-            imp.say(imp.pRow()+0,45,"ROMANEIO No.: "+Funcoes.strZero(""+txtCodRoma.getVlrInteger().intValue(),8));
-            imp.say(imp.pRow()+0,110,"|");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,Funcoes.replicate("-",100));
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,"Código");
-            imp.say(imp.pRow()+0,25,"Descrição");
-            imp.say(imp.pRow()+0,75,"Unid");
-            imp.say(imp.pRow()+0,80,"Qtd");
-            imp.say(imp.pRow()+0,88,"  Unitário");
-            imp.say(imp.pRow()+0,99,"     Total");
-            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,"======");
-            imp.say(imp.pRow()+0,25,"=================================================");
-            imp.say(imp.pRow()+0,75,"====");
-            imp.say(imp.pRow()+0,80,"===");
-            imp.say(imp.pRow()+0,88,"==========");
-            imp.say(imp.pRow()+0,99,"==========");
+            imp.say(imp.pRow()+0,18,"======");
+            imp.say(imp.pRow()+0,33,"=================================================");
+            imp.say(imp.pRow()+0,83,"====");
+            imp.say(imp.pRow()+0,88,"=====");
+            imp.say(imp.pRow()+0,96,"==========");
+            imp.say(imp.pRow()+0,107,"==========");
          }
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-         imp.say(imp.pRow()+0,10,rs.getString(sProd));
-         imp.say(imp.pRow()+0,25,rs.getString("DescProd"));
-         imp.say(imp.pRow()+0,75,rs.getString("CodUnid").trim());
-         imp.say(imp.pRow()+0,80,Funcoes.strDecimalToStrCurrency(5,1,rs.getString(5)));
-         imp.say(imp.pRow()+0,88,Funcoes.strDecimalToStrCurrency(10,2,rs.getString(6)));
-         imp.say(imp.pRow()+0,99,Funcoes.strDecimalToStrCurrency(10,2,rs.getString(7)));
+         imp.say(imp.pRow()+0,18,rs.getString(sProd));
+         imp.say(imp.pRow()+0,33,rs.getString("DescProd"));
+         imp.say(imp.pRow()+0,83,rs.getString("CodUnid").trim());
+         imp.say(imp.pRow()+0,88,Funcoes.strDecimalToStrCurrency(5,1,rs.getString(5)));
+         imp.say(imp.pRow()+0,96,Funcoes.strDecimalToStrCurrency(10,2,rs.getString(6)));
+         imp.say(imp.pRow()+0,107,Funcoes.strDecimalToStrCurrency(10,2,rs.getString(7)));
          dTotal += rs.getDouble(7);
          if (imp.pRow()>=linPag-1) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,10,Funcoes.replicate("=",100));
+            imp.say(imp.pRow()+0,18,Funcoes.replicate("=",100));
             imp.incPags();
             imp.eject();
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,10,"======");
-           imp.say(imp.pRow()+0,25,"=================================================");
-           imp.say(imp.pRow()+0,75,"====");
-           imp.say(imp.pRow()+0,80,"===");
-           imp.say(imp.pRow()+0,88,"==========");
-           imp.say(imp.pRow()+0,99,"==========");
+           imp.say(imp.pRow()+0,18,"======");
+           imp.say(imp.pRow()+0,33,"=================================================");
+           imp.say(imp.pRow()+0,83,"====");
+           imp.say(imp.pRow()+0,88,"=====");
+           imp.say(imp.pRow()+0,96,"==========");
+           imp.say(imp.pRow()+0,107,"==========");
          }
       }
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,10,"======");
-      imp.say(imp.pRow()+0,25,"=================================================");
-      imp.say(imp.pRow()+0,75,"====");
-      imp.say(imp.pRow()+0,80,"===");
-      imp.say(imp.pRow()+0,88,"==========");
-      imp.say(imp.pRow()+0,99,"==========");
+      imp.say(imp.pRow()+0,18,"======");
+      imp.say(imp.pRow()+0,33,"=================================================");
+      imp.say(imp.pRow()+0,83,"====");
+      imp.say(imp.pRow()+0,88,"=====");
+      imp.say(imp.pRow()+0,96,"==========");
+      imp.say(imp.pRow()+0,107,"==========");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,80,"TOTAL ==>");
-      imp.say(imp.pRow()+0,99,Funcoes.strDecimalToStrCurrency(10,2,""+dTotal));
+      imp.say(imp.pRow()+0,88,"TOTAL ==>");
+      imp.say(imp.pRow()+0,107,Funcoes.strDecimalToStrCurrency(10,2,""+dTotal));
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,10,Funcoes.replicate("-",100));
+      imp.say(imp.pRow()+0,18,Funcoes.replicate("=",100));
       imp.eject();
       
       imp.fechaGravacao();
