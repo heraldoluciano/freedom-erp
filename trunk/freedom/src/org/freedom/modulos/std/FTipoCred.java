@@ -38,8 +38,8 @@ public class FTipoCred extends FDados implements ActionListener {
   public FTipoCred() {
     setTitulo("Cadastro de tipos de credito");
     setAtribos(50, 50, 350, 165);
-    adicCampo(txtCodTipoCred, 7, 20, 50, 20,"CodTpCred","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoCred, 60, 20, 250, 20,"DescTpCred","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodTipoCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescTipoCred, 90, 20, 240, 20,"DescTpCred","Descrição do tipo de credito",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
 	adicCampo(txtVlrTipoCred, 7, 60, 120, 20,"VlrTpCred","Valor",JTextFieldPad.TP_DECIMAL,15,3,false,false,null,true);
     setListaCampos( true, "TIPOCRED", "FN");
     btImp.addActionListener(this);
@@ -84,9 +84,9 @@ public class FTipoCred extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.tp.cred.");
             imp.say(imp.pRow()+0,20,"Descrição");
-            imp.say(imp.pRow()+0,70,"Qtd. Cli.");
+            imp.say(imp.pRow()+0,70,"Qtd.cli.");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
          }

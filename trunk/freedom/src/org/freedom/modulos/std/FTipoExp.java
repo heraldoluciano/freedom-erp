@@ -38,8 +38,8 @@ public class FTipoExp extends FDados implements ActionListener {
   public FTipoExp () {
     setTitulo("Cadastro de tipos de expositores");
     setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 50, 20,"CodTipoExp","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 60, 20, 250, 20,"DescTipoExp","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCod, 7, 20, 70, 20,"CodTipoExp","Cód.tp.exp.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDesc, 80, 20, 250, 20,"DescTipoExp","Descrição do tipo de expositor",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "TIPOEXP", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -77,7 +77,7 @@ public class FTipoExp extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.tp.exp.");
             imp.say(imp.pRow()+0,30,"Descrição");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));

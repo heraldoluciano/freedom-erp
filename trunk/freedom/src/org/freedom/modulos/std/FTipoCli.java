@@ -37,8 +37,8 @@ public class FTipoCli extends FDados implements ActionListener {
   public FTipoCli () {
     setTitulo("Cadastro de tipos de clientes");
     setAtribos(50, 50, 350, 125);
-    adicCampo(txtCod, 7, 20, 50, 20,"CodTipoCli","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDesc, 60, 20, 250, 20,"DescTipoCli","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCod, 7, 20, 70, 20,"CodTipoCli","Cód.tp.cli.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDesc, 80, 20, 250, 20,"DescTipoCli","Descrição do tipo de cliente",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "TIPOCLI", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
@@ -82,9 +82,9 @@ public class FTipoCli extends FDados implements ActionListener {
             imp.impCab(80);
             imp.say(imp.pRow()+0,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
+            imp.say(imp.pRow()+0,2,"Cód.tp.cli.");
             imp.say(imp.pRow()+0,20,"Descrição");
-            imp.say(imp.pRow()+0,70,"Qtd. Cli.");
+            imp.say(imp.pRow()+0,70,"Qtd.cli.");
             imp.say(imp.pRow()+1,0,""+imp.normal());
             imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
          }
