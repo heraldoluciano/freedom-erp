@@ -123,12 +123,12 @@ public class FItCLFiscal extends FDetalhe {
     adicCampo(txtCodTratTrib, 70, 20, 77, 20, "CodTratTrib", "Cód.tr.tab.", ListaCampos.DB_FK, txtDescTratTrib, true);
     adicDescFK(txtDescTratTrib, 150, 20, 220, 20, "DescTratTrib", "Descrição da tratamento tributário");
 	adicCampo(txtRedFisc, 7, 60, 85, 20, "RedFisc", "Redução", ListaCampos.DB_SI, false);
-    adicDB(cbOrig, 95, 60, 187, 25, "OrigFisc", "Origem",JTextFieldPad.TP_STRING,true);
-	adicDB(cbNoUF, 285, 60, 77, 20, "NOUFITFISC", "No Estado",JTextFieldPad.TP_STRING,true);
+    adicDB(cbOrig, 95, 60, 187, 25, "OrigFisc", "Origem",true);
+	adicDB(cbNoUF, 285, 60, 77, 20, "NOUFITFISC", "No Estado",true);
 	adicCampo(txtAliqFisc, 7, 105, 85, 20, "AliqFisc", "Alíquota", ListaCampos.DB_SI, false);
 	adicCampo(txtCodTipoFisc, 95, 105, 77, 20, "CodFiscCli", "Cód.fisc.cli.", ListaCampos.DB_FK, txtDescFiscCli, false);
 	adicDescFK(txtDescFiscCli, 175, 105, 195, 20, "DescTratTrib", "Descrição do tipo fiscal de cliente");
-	adicDB(rgTipoFisc, 7, 150, 363, 50, "TipoFisc", "Situação do ICMS:",JTextFieldPad.TP_STRING,true);
+	adicDB(rgTipoFisc, 7, 150, 363, 50, "TipoFisc", "Situação do ICMS:",true);
 	adicCampo(txtCodMens, 7, 220, 80, 20, "CodMens", "Cód.mens.", ListaCampos.DB_FK, txtMens, false);
 	adicDescFK(txtMens, 90, 220, 280, 20, "Mens", "Mensagem");
     setListaCampos( true, "ITCLFISCAL", "LF");

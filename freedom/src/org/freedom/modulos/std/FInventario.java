@@ -53,6 +53,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FInventario extends FDados implements CarregaListener, InsertListener, PostListener, CheckBoxListener{
+  
   private JTextFieldPad txtCodInv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -65,8 +66,6 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
   private JTextFieldPad txtSldAtualInvP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtSldNovoInvP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtCodDoc = new JTextFieldPad();
-  private JTextFieldPad txtCodTratTrib = new JTextFieldPad();
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE, 10, 0);
   private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 10, 0);
@@ -93,7 +92,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, txtDescProd, true));
     lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
     lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-    lcProd.add(new GuardaCampo( cbLote, 90, 100, 207, 20, "CLoteProd", "Classifica por lote?", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd.add(new GuardaCampo( cbLote, "CLoteProd", "Classifica por lote?", ListaCampos.DB_SI,false));
     lcProd.setWhereAdic("NOT TIPOPROD = 'S' AND ATIVOPROD='S'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
@@ -103,7 +102,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false));
     lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_PK, txtDescProd, false));
     lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-    lcProd2.add(new GuardaCampo( cbLote, 90, 100, 207, 20, "CLoteProd", "Classifica por lote?", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProdx");
+    lcProd2.add(new GuardaCampo( cbLote, "CLoteProd", "Classifica por lote?", ListaCampos.DB_SI, false));
     txtRefProd.setChave(ListaCampos.DB_PK);
     txtRefProd.setNomeCampo("RefProd");
     txtRefProd.setListaCampos(lcProd2);
@@ -112,7 +111,6 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
     lcProd2.setQueryCommit(false);
     lcProd2.setReadOnly(true);
 
-    txtDescTipoMov.setTipo(JTextFieldPad.TP_STRING,40,0);    
     lcTipoMov.add(new GuardaCampo( txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.", ListaCampos.DB_PK, false));
     lcTipoMov.add(new GuardaCampo( txtDescTipoMov, "DescTipoMov", "Descrição do tipo de movimento", ListaCampos.DB_SI, false));
     lcTipoMov.setWhereAdic(" ESTIPOMOV = 'I' "); 

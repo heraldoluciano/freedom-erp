@@ -39,23 +39,24 @@ import org.freedom.telas.FTabDados;
 
 public class FMoeda extends FTabDados implements RadioGroupListener {
   private Painel pinGeral = new Painel(370,220);
-  private JTextFieldPad txtCodMoeda = new JTextFieldPad(4);
+
   private Vector vValsTipo = new Vector();
   private Vector vLabsTipo = new Vector();
   private Vector vValsAtua = new Vector();
   private Vector vLabsAtua = new Vector();
   private JRadioGroup rgTipo = null;
   private JRadioGroup rgAtua = null;
+  private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtSingMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtPlurMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtDecsMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldPad txtDecpMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
   private JPanel pnCot = new JPanel(new BorderLayout());
   private Painel pinRod = new Painel(370,80);
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
-  private JTextFieldPad txtData = new JTextFieldPad(10);
-  private JTextFieldPad txtValor = new JTextFieldPad(18);
   private ListaCampos lcCot = new ListaCampos(this);
   private Navegador navCot = new Navegador(true);
   public FMoeda() {
@@ -89,9 +90,9 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
     rgAtua.setAtivo(4,false);
     
     setListaCampos(lcCampos);
-    adicCampo(txtCodMoeda, 7, 20, 70, 20, "CodMoeda", "Cód.mda.", JTextFieldPad.TP_STRING, 4, 0, true, false, null,true);
+    adicCampo(txtCodMoeda, 7, 20, 70, 20, "CodMoeda", "Cód.mda.", ListaCampos.DB_PK, true);
     adicCampo(txtSingMoeda, 80, 20, 315, 20, "SingMoeda", "Nome no singular", ListaCampos.DB_SI, true);
-    adicDB(rgTipo, 7, 60, 388, 30, "TipoMoeda", "Tipo",JTextFieldPad.TP_STRING,true);
+    adicDB(rgTipo, 7, 60, 388, 30, "TipoMoeda", "Tipo",true);
     adicCampo(txtPlurMoeda, 7, 110, 120, 20, "PlurMoeda", "Nome no plural", ListaCampos.DB_SI, true);
     adicCampo(txtDecsMoeda, 130, 110, 125, 20, "DecsMoeda", "Decimal no singular", ListaCampos.DB_SI, true);
     adicCampo(txtDecpMoeda, 258, 110, 137, 20, "DecpMoeda", "Decimal no plural", ListaCampos.DB_SI, true);
@@ -106,13 +107,10 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
     pnCot.add(pinRod, BorderLayout.SOUTH);
     pnCot.add(spnTab, BorderLayout.CENTER);
 
-    txtData.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtValor.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-
-      pinRod.adic(navCot,0,45,270,25);
+    pinRod.adic(navCot,0,45,270,25);
         
-    adicCampo(txtData, 7, 20, 80, 20, "DataCot", "Data", JTextFieldPad.TP_DATE, 10, 0, true, false, null,true);
-    adicCampo(txtValor, 90, 20, 80, 20, "ValorCot", "Valor", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
+    adicCampo(txtData, 7, 20, 80, 20, "DataCot", "Data", ListaCampos.DB_PK,true);
+    adicCampo(txtValor, 90, 20, 80, 20, "ValorCot", "Valor", ListaCampos.DB_SI,true);
     setListaCampos( false, "COTMOEDA", "FN");
     lcCot.setQueryInsert(false);
     lcCot.montaTab();
