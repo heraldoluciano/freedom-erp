@@ -290,7 +290,12 @@ public class NFRondobras extends Leiaute {
            imp.say(imp.pRow()+1,0,"");           
            imp.say(imp.pRow()+1,0,""+imp.normal()+imp.expandido());
            imp.say(imp.pRow()+0,112,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
-           imp.say(imp.pRow()+0,0,""+imp.retiraExpandido());
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
+           imp.say(imp.pRow()+1,0,"");
            
            
            /*for(int i=0;i<vMens.size();i++)
@@ -311,9 +316,9 @@ public class NFRondobras extends Leiaute {
            
            System.out.println(imp.pRow()+" =T Lins: "+iLinPag);
            
-           for (int i=imp.pRow(); i<=iLinPag; i++) { 
+           /*for (int i=imp.pRow(); i<=iLinPag; i++) { 
              imp.say(imp.pRow()+1,0,"");
-           }
+           }*/
            imp.setPrc(0,0);
            imp.incPags();
          }
