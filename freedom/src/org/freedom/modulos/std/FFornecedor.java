@@ -48,6 +48,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
@@ -85,9 +86,13 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JScrollPane spnObs = new JScrollPane(txaObs);
   private ListaCampos lcTipoFor = new ListaCampos(this,"TF");
+  private boolean[] prefs = null;
   public FFornecedor() {
     setTitulo("Cadastro de Fornecedores");
     setAtribos(50, 20, 480, 430);
+    
+  }
+  private void montaTela() {
     lcCampos.addPostListener(this);
     lcCampos.addInsertListener(this);
     
@@ -150,7 +155,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
     
     btImp.addActionListener(this);
 	btPrevimp.addActionListener(this);
-    
+  	
   }
   private void imprimir(boolean bVisualizar) {
 	FAndamento And = null;
@@ -393,17 +398,23 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	}
   }
   public void valorAlterado(RadioGroupEvent rgevt) {
-    if (rgPessoa.getVlrString().compareTo("J") == 0) {
+    if (rgPessoa.getVlrString().equals("J")) {
       txtCnpjFor.setEnabled(true);
-      setBordaReq(txtCnpjFor);
+      if (prefs[0])
+         setBordaReq(txtCnpjFor);
+      else
+         setBordaPad(txtCnpjFor);
       txtInscFor.setEnabled(true);
-      setBordaReq(txtInscFor);
+      if (prefs[1])
+      	 setBordaReq(txtInscFor);
+      else
+     	 setBordaPad(txtInscFor);
       txtCpfFor.setEnabled(false);
       setBordaPad(txtCpfFor);
       txtRgFor.setEnabled(false);
       setBordaPad(txtRgFor);
     }
-    else if (rgPessoa.getVlrString().compareTo("F") == 0) {
+    else if (rgPessoa.getVlrString().equals("F") ) {
       txtCnpjFor.setEnabled(false);
       setBordaPad(txtCnpjFor);
       txtInscFor.setEnabled(false);
@@ -428,37 +439,42 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	super.actionPerformed(evt);
   }
   public void beforePost(PostEvent pevt) {
-    if (rgPessoa.getVlrString().compareTo("F") == 0)
+    if (rgPessoa.getVlrString().equals("F"))
       return;
-    else if (txtCnpjFor.getText().trim().length() < 1) {
+    else if ( (txtCnpjFor.getVlrString().trim().equals("") ) && (prefs[0]) ) {
       pevt.cancela();
       Funcoes.mensagemInforma( this,"Campo CNPJ é requerido! ! !");
       txtCnpjFor.requestFocus();
+      return;
     }
-    else if (txtInscFor.getText().trim().length() < 1) {
+    else if ( (txtInscFor.getVlrString().trim().equals("")) && (prefs[1]) ){
       if (Funcoes.mensagemConfirma(this, "Inscrição Estadual em branco! Inserir ISENTO?")==JOptionPane.OK_OPTION ) 
-        txtInscFor.setVlrString("ISENTO");
         pevt.cancela();
+        txtInscFor.setVlrString("ISENTO");
         txtInscFor.requestFocus();
         return;
     }
-    else if (txtInscFor.getText().trim().toUpperCase().compareTo("ISENTO") == 0)
+    else if (txtInscFor.getVlrString().trim().equalsIgnoreCase("ISENTO"))
       return;
     else if (txtUFFor.getText().trim().length() < 2) {
       pevt.cancela();
       Funcoes.mensagemInforma( this,"Campo UF é requerido! ! !");
       txtUFFor.requestFocus();
+      return;
     }
     else if (!Funcoes.vIE(txtInscFor.getText(),txtUFFor.getText())) {
       pevt.cancela();
       Funcoes.mensagemInforma( this ,"Inscrição Estadual Inválida ! ! !");
       txtInscFor.requestFocus();
+      return;
     }
     txtInscFor.setVlrString(Funcoes.sIEValida);
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
-    lcTipoFor.setConexao(cn);      
+    lcTipoFor.setConexao(cn);
+    prefs = getPrefs();
+    montaTela();
   }
   public void afterPost(PostEvent pevt) { }
   public void afterInsert(InsertEvent ievt) {
@@ -466,5 +482,49 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   }
   public void beforeInsert(InsertEvent ievt) {
   }
+  
+  private boolean[] getPrefs() {
+  	boolean[] bRet = new boolean[2];
+  	String sSQL = null;
+  	PreparedStatement ps = null;
+  	ResultSet rs = null;
+  	String sVal = null;
+  	try {
+  		bRet[0] = true;
+  		bRet[1] = true;
+  		sSQL = "SELECT CNPJFOROBRIG, INSCESTFOROBRIG FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+  		try {
+  			ps = con.prepareStatement(sSQL);
+  			ps.setInt(1,Aplicativo.iCodEmp);
+  			ps.setInt(2,Aplicativo.iCodFilial);
+  			rs = ps.executeQuery();
+  			if (rs.next()) {
+  				sVal = rs.getString("CNPJFOROBRIG");
+  				if (sVal!= null) 
+  					bRet[0] = sVal.equals("S");
+  				sVal = rs.getString("INSCESTFOROBRIG");
+  				if (sVal!=null) {
+  					bRet[1] = sVal.equals("S");
+  				}
+  			}
+  			rs.close();
+  			ps.close();
+  			if (!con.getAutoCommit()) {
+  				con.commit();
+  			}
+  		}
+  		catch(SQLException err) {
+  			Funcoes.mensagemErro(this,"Erro ao verificar preferências!\n"+err.getMessage());
+  			err.printStackTrace();
+  		}
+  	}
+  	finally {
+  		sSQL = null;
+  		ps = null;
+  		rs = null;
+  		sVal = null;
+  	}
+  	return bRet;
+  }  
   
 }
