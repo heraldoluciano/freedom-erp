@@ -45,9 +45,9 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
   private Painel pinDet = new Painel();
   private JTextFieldPad txtCodRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataRoma = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-  private JTextFieldPad txtDtSaidaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE);
-  private JTextFieldPad txtDtPrevRoma = new JTextFieldPad(JTextFieldPad.TP_DATE);
-  private JTextFieldPad txtDtEntregaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE);
+  private JTextFieldPad txtDtSaidaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDtPrevRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDtEntregaRoma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtStatusRoma = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtCodItRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
