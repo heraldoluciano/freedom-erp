@@ -29,19 +29,20 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTipoConv extends FDados implements ActionListener {
-  private JTextFieldPad txtCodTipoConv = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTipoConv = new JTextFieldPad(50);
-  private JTextFieldPad txtClassOrc = new JTextFieldPad(20);
+  private JTextFieldPad txtCodTipoConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescTipoConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   public FTipoConv () {
     setTitulo("Cadastro de Tipo de Conveniados");
     setAtribos( 50, 50, 370, 150);
-    adicCampo(txtCodTipoConv, 7, 20, 80, 20,"CodTpConv","Cód.tp.conv.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTipoConv, 90, 20, 250, 20,"DescTpConv","Descrição do tipo de conveniado",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-    adicCampo(txtClassOrc,7,60,150,20,"ClassTpConv","Layout de orçamentos",JTextFieldPad.TP_STRING,20,0,false,false,null,false);
+    adicCampo(txtCodTipoConv, 7, 20, 80, 20,"CodTpConv","Cód.tp.conv.",ListaCampos.DB_PK,true);
+    adicCampo(txtDescTipoConv, 90, 20, 250, 20,"DescTpConv","Descrição do tipo de conveniado",ListaCampos.DB_SI,true);
+    adicCampo(txtClassOrc,7,60,150,20,"ClassTpConv","Layout de orçamentos",ListaCampos.DB_SI,false);
     setListaCampos( true, "TIPOCONV", "AT");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
