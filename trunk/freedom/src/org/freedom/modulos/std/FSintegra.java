@@ -45,7 +45,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
@@ -56,7 +56,7 @@ public class FSintegra extends FFilho implements ActionListener {
   private String sFileName = "";
   private String sCnpjEmp = "";
   private String sInscEmp = "";
-  private Painel pinCliente = new Painel(700,490);
+  private JPanelPad pinCliente = new JPanelPad(700,490);
   private JTextFieldPad txtDataini = new JTextFieldPad();
   private JTextFieldPad txtDatafim = new JTextFieldPad();
   private JCheckBoxPad cbEntrada = new JCheckBoxPad("Entrada","S","N");

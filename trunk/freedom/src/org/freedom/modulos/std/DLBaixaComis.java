@@ -37,7 +37,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -45,7 +45,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLBaixaComis extends FFDialogo {
   private JPanel pnCliente = new JPanel(new BorderLayout());
-  private Painel pinCentro = new Painel(580,100);
+  private JPanelPad pinCentro = new JPanelPad(580,100);
 
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);

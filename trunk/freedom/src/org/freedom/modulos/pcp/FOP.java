@@ -45,7 +45,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
 import org.freedom.telas.Aplicativo;
@@ -54,8 +54,8 @@ import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrinterJob;
 
 public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
@@ -160,7 +160,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcCampos.setQueryInsert(true);  
 
   	setAltDet(60);
-  	pinDet = new Painel(440,50);
+  	pinDet = new JPanelPad(440,50);
   	setPainel( pinDet, pnDet);
   	setListaCampos(lcDet);
   	setNavegador(navRod);

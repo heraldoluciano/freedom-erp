@@ -53,7 +53,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLRPedido;
@@ -64,8 +64,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
 
 	private int casasDec = Aplicativo.casasDec;
-	private Painel pinCab = new Painel();
-	private Painel pinDet = new Painel();
+	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinDet = new JPanelPad();
 	private JButton btStatusCompra = new JButton("Solicitação Pendente", null);
 	private JButton btStatusItem = new JButton("Item Pendente", null);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -186,7 +186,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		
 		navCot.setListaCampos(lcCotacao);
 		lcCotacao.setNavegador(navCot);
-		pinDet = new Painel(740, 287);
+		pinDet = new JPanelPad(740, 287);
 		setPainel(pinDet, pnDet);
 		
 		adic(navCot, 7, 250, 280, 27);
@@ -217,7 +217,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tabCot.setTamColuna(70, 7);
 		tabCot.setTamColuna(70, 8);
 		
-		pinCab = new Painel(740, 90);
+		pinCab = new JPanelPad(740, 90);
 		setListaCampos(lcCampos);
 		setAltCab(90);
 		setPainel(pinCab, pnCliCab);

@@ -45,7 +45,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -53,7 +53,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener {
   private JTabbedPanePad tpn = new JTabbedPanePad();
-  private Painel pinFecha = new Painel(420,300);
+  private JPanelPad pinFecha = new JPanelPad(420,300);
   private JPanel pnPagar = new JPanel(new BorderLayout());
 
   private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -158,7 +158,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     txtStatusCompra.setListaCampos(lcCompra);
     txtCodPlanoPag.setListaCampos(lcCompra);
 
-    Painel pinTopPag = new Painel(400,60);
+    JPanelPad pinTopPag = new JPanelPad(400,60);
     pinTopPag.setPreferredSize(new Dimension(400,60));
     pnPagar.add(pinTopPag,BorderLayout.NORTH);
     JScrollPane spnTabPag = new JScrollPane(tabPag);

@@ -45,7 +45,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -53,7 +53,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FSVV extends FFilho implements ActionListener {
-  private Painel pinCliente = new Painel(0,90);
+  private JPanelPad pinCliente = new JPanelPad(0,90);
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatainiLote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);

@@ -40,7 +40,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
@@ -58,8 +58,8 @@ public class DLAnalBanc extends FFDialogo implements FocusListener{
   private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
   private JTabbedPanePad tbp = new JTabbedPanePad();
-  private Painel pinGeral = new Painel(370,240);
-  private Painel pinDet = new Painel(370,240);
+  private JPanelPad pinGeral = new JPanelPad(370,240);
+  private JPanelPad pinDet = new JPanelPad(370,240);
   private JLabel lbCodPai = new JLabel("Código");
   private JLabel lbDescPai = new JLabel("e descrição da origem");
   private JLabel lbCodAnal = new JLabel("Códiogo");

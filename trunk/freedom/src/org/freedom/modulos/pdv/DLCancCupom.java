@@ -48,7 +48,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -58,7 +58,7 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLCancCupom extends FFDialogo implements ActionListener,MouseListener,KeyListener { 
-	private Painel pinCab = new Painel(400,90);
+	private JPanelPad pinCab = new JPanelPad(400,90);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JPanel pnBt = new JPanel(new GridLayout(1,2));	
 	private JTextFieldPad txtVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

@@ -26,12 +26,12 @@ import java.util.Vector;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FTabJuros extends FDetalhe {
-  private Painel pinCab = new Painel(0,90);
-  private Painel pinDet = new Painel(0,60);
+  private JPanelPad pinCab = new JPanelPad(0,90);
+  private JPanelPad pinDet = new JPanelPad(0,60);
   private JTextFieldPad txtCodTbJ = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTbJ = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JComboBoxPad cbTipo = null;

@@ -52,14 +52,14 @@ import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   private JPanel pnCliente = new JPanel(new BorderLayout());
-  private Painel pinTop = new Painel(475,90);
+  private JPanelPad pinTop = new JPanelPad(475,90);
   private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcUsuario = new ListaCampos(this);

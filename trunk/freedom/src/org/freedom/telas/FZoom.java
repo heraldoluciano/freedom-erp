@@ -36,13 +36,13 @@ import javax.swing.JDialog;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 public class FZoom extends JDialog implements KeyListener, ActionListener {
   private Image imZoom = null;
   private JPanel pnCab = new JPanel(new BorderLayout());  
   private JPanel pnCli = new JPanel(new GridLayout(1,1));  
-  private Painel pinCab = new Painel(385,40);
+  private JPanelPad pinCab = new JPanelPad(385,40);
   private JButton btZoom100 = new JButton(Icone.novo("btZoom100.gif"));
   private JButton btZoomIn = new JButton(Icone.novo("btZoomIn.gif"));
   private JButton btZoomPag = new JButton(Icone.novo("btZoomPag.gif"));

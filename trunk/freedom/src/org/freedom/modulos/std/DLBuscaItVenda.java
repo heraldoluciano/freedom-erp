@@ -44,7 +44,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -52,11 +52,11 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLBuscaItVenda extends FFDialogo implements ActionListener, CarregaListener {
-  private Painel pinCab = new Painel(0,60);
+  private JPanelPad pinCab = new JPanelPad(0,60);
   private JPanel pnCorpo = new JPanel(new BorderLayout());
-  private Painel pinRod = new Painel(350,55);
-  private Painel pinBtSel = new Painel(40,110);
-  private Painel pinBtSelVenda = new Painel(40,110);
+  private JPanelPad pinRod = new JPanelPad(350,55);
+  private JPanelPad pinBtSel = new JPanelPad(40,110);
+  private JPanelPad pinBtSelVenda = new JPanelPad(40,110);
   private JPanel pnCli = new JPanel(new BorderLayout());
   private JPanel pnTabVenda = new JPanel(new BorderLayout());
   private JPanel pnCliTab = new JPanel(new BorderLayout());

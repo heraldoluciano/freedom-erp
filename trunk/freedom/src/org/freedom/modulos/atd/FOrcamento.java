@@ -53,7 +53,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
 import org.freedom.telas.Aplicativo;
@@ -63,9 +63,9 @@ import org.freedom.telas.FPrinterJob;
 
 public class FOrcamento extends FDetalhe implements PostListener,CarregaListener,FocusListener,ActionListener,InsertListener, DeleteListener {
   private int casasDec = Aplicativo.casasDec;
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
-  private Painel pinTot = new Painel(200,200);
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
+  private JPanelPad pinTot = new JPanelPad(200,200);
   private JPanel pnTot = new JPanel(new GridLayout(1,1));
   private JPanel pnCenter = new JPanel(new BorderLayout());
   
@@ -139,7 +139,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	   txtTxt01.setTipo(JTextFieldPad.TP_STRING,20,0);
 	}
 
-	pnMaster.remove(2);  //Remove o Painel prédefinido da class FDados
+	pnMaster.remove(2);  //Remove o JPanelPad prédefinido da class FDados
 	pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo
 	pnGImp.setLayout(new GridLayout(1,3)); //redimensiona o painel de impressão
 	pnGImp.setPreferredSize(new Dimension( 210, 26));
@@ -151,7 +151,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	pnGImp.add(btOrcTst);//Botão para teste de laudo fisioterapia
 	pnGImp.add(btOrcTst2);//Outro botão de teste para contrato
 
-	pnTot.setPreferredSize(new Dimension(120,200)); //Painel de Totais
+	pnTot.setPreferredSize(new Dimension(120,200)); //JPanelPad de Totais
 	pnTot.add(pinTot);
 	pnCenter.add(pnTot,BorderLayout.EAST);
 	pnCenter.add(spTab,BorderLayout.CENTER);
@@ -274,7 +274,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	txtVlrLiqOrc.setAtivo(false);
     
 	//Adiciona os componentes na tela e no ListaCompos da orcamento
-    pinCab = new Painel(740,180);
+    pinCab = new JPanelPad(740,180);
 	setListaCampos(lcCampos);
     setAltCab(170);
 	setPainel( pinCab, pnCliCab);
@@ -333,7 +333,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   //com ou sem Referência sendo PK;
   private void montaDetalhe() {
     setAltDet(60);
-    pinDet = new Painel(740,100);
+    pinDet = new JPanelPad(740,100);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

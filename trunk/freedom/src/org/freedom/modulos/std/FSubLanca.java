@@ -55,14 +55,14 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListener,EditListener,PostListener,DeleteListener,ActionListener {
-  private Painel pinCab = new Painel(500,200);
-  private Painel pinDet = new Painel(500,100);
+  private JPanelPad pinCab = new JPanelPad(500,200);
+  private JPanelPad pinDet = new JPanelPad(500,100);
   private JTextFieldPad txtCodLanca = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataLanca = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDocLanca = new JTextFieldPad(JTextFieldPad.TP_STRING,15,0);

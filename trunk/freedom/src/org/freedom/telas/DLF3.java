@@ -33,11 +33,11 @@ import javax.swing.event.InternalFrameEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 
 public abstract class DLF3 extends FFDialogo implements KeyListener {
-  private Painel pinCab = new Painel(0,60);
+  private JPanelPad pinCab = new JPanelPad(0,60);
   public JTextFieldPad txtCod = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   public JTextFieldFK txtDesc = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   public Tabela tab = new Tabela();

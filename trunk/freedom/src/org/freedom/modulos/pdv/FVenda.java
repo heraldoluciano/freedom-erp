@@ -55,7 +55,7 @@ import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
@@ -79,11 +79,11 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    private JPanel pnNorte = new JPanel(new BorderLayout());
    private JPanel pnEntrada = new JPanel(new BorderLayout());
    
-   private Painel pinBarra = new Painel(798,45);
-   private Painel pinCab = new Painel(798,45);
-   private Painel pinProduto = new Painel(798,130);
-   private Painel pinEntrada = new Painel(190,180);
-   private Painel pinTb = new Painel(500,45);
+   private JPanelPad pinBarra = new JPanelPad(798,45);
+   private JPanelPad pinCab = new JPanelPad(798,45);
+   private JPanelPad pinProduto = new JPanelPad(798,130);
+   private JPanelPad pinEntrada = new JPanelPad(190,180);
+   private JPanelPad pinTb = new JPanelPad(500,45);
    
    private Tabela tbItem = new Tabela();
    
@@ -594,7 +594,7 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    public void iniciaTela(Connection con) {
    	  setConexao(con);
    	  //sbVenda.addSeparator();
-   	  //Painel pnTeste = new Painel(100,20);
+   	  //JPanelPad pnTeste = new JPanelPad(100,20);
    	  //pnTeste.adic(sbVenda,5,5,500,20);
    	  //pnRodape.add(sbVenda, BorderLayout.WEST);
    	  pnStatusBar.add(sbVenda,BorderLayout.CENTER);

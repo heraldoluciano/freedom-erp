@@ -34,16 +34,16 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FEstacao extends FDetalhe implements PostListener, ActionListener{
-    private Painel pinCab = new Painel();
-    private Painel pinDet = new Painel();
-	private Painel pinEst = new Painel(0,80);
+    private JPanelPad pinCab = new JPanelPad();
+    private JPanelPad pinDet = new JPanelPad();
+	private JPanelPad pinEst = new JPanelPad(0,80);
 	private ListaCampos lcImp = new ListaCampos(this,"IP");
 	private ListaCampos lcPapel = new ListaCampos(this,"PP");
 	
@@ -68,7 +68,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	public FEstacao() {
 		setTitulo("Cadastro de estações de trabalho"); 
 		setAtribos(50, 10, 550, 520);
-	    pinCab = new Painel(530, 50);
+	    pinCab = new JPanelPad(530, 50);
 	}
     private void montaTela() {
 	  	//adicTab("Estação", pinEst); 
@@ -89,7 +89,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
         txtCodPapel.setTabelaExterna(lcPapel);
         
 	  	lcCampos.addPostListener(this);
-	    pinCab = new Painel(740, 100);
+	    pinCab = new JPanelPad(740, 100);
 	    setListaCampos(lcCampos);
 	    setAltCab(100);
 	    setPainel(pinCab, pnCliCab);
@@ -102,7 +102,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    lcCampos.setQueryInsert(false);
 	    
 	    setAltDet(230);
-	    pinDet = new Painel(740, 230);
+	    pinDet = new JPanelPad(740, 230);
 	    setPainel(pinDet, pnDet);
 	    setListaCampos(lcDet);
 	    setNavegador(navRod);

@@ -27,11 +27,11 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 public class FModGrade extends FDetalhe {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodModG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescModG = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -54,7 +54,7 @@ public class FModGrade extends FDetalhe {
     setTitulo("Cadastro de Modelos da Grade");
     setAtribos( 50, 20, 600, 380);
     setAltCab(120);
-    pinCab = new Painel(590,110);
+    pinCab = new JPanelPad(590,110);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     
@@ -77,7 +77,7 @@ public class FModGrade extends FDetalhe {
     adicCampo(txtCodBarModG, 460, 60, 100, 20,"CodBarModG","Cód.bar.inic.", ListaCampos.DB_SI, true);
     setListaCampos( true, "MODGRADE", "EQ");
     setAltDet(120);
-    pinDet = new Painel(590,110);
+    pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

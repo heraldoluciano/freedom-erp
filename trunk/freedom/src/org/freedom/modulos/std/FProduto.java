@@ -57,7 +57,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -67,7 +67,7 @@ import org.freedom.telas.FTabDados;
 
 public class FProduto extends FTabDados	implements CheckBoxListener, EditListener, 
 		InsertListener, ChangeListener, ActionListener, CarregaListener {
-  private Painel pinGeral = new Painel(650,340);
+  private JPanelPad pinGeral = new JPanelPad(650,340);
   private JPanel pnFatConv = new JPanel(new BorderLayout());
   private JPanel pnFor = new JPanel(new BorderLayout());
   private JPanel pnLote = new JPanel(new BorderLayout());
@@ -154,11 +154,11 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JScrollPane spnFoto = new JScrollPane(tabFoto);
   private Tabela tabPreco = new Tabela();
   private JScrollPane spnPreco = new JScrollPane(tabPreco);
-  private Painel pinRodFatConv = new Painel(650,80);
-  private Painel pinRodFor = new Painel(650,80);
-  private Painel pinRodLote = new Painel(650,120);
-  private Painel pinRodFoto = new Painel(650,170);
-  private Painel pinRodPreco = new Painel(650,120);
+  private JPanelPad pinRodFatConv = new JPanelPad(650,80);
+  private JPanelPad pinRodFor = new JPanelPad(650,80);
+  private JPanelPad pinRodLote = new JPanelPad(650,120);
+  private JPanelPad pinRodFoto = new JPanelPad(650,170);
+  private JPanelPad pinRodPreco = new JPanelPad(650,120);
   private JPanel pnDesc = new JPanel(new GridLayout(1,1));
   private JTextAreaPad txaDescComp = new JTextAreaPad();
   private JScrollPane spnDesc = new JScrollPane(txaDescComp);

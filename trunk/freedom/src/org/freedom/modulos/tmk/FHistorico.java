@@ -50,7 +50,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -58,7 +58,7 @@ import org.freedom.telas.FFilho;
 
 
 public class FHistorico extends FFilho implements CarregaListener, ActionListener {
-  private Painel pinCabCont = new Painel(530,200);
+  private JPanelPad pinCabCont = new JPanelPad(530,200);
   private JPanel pnCabCont = new JPanel(new BorderLayout());
   private JPanel pnCont = new JPanel(new BorderLayout());
   private JPanel pnRodCont = new JPanel(new BorderLayout());

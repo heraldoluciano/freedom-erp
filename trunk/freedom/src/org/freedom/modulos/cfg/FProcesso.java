@@ -35,7 +35,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
@@ -48,8 +48,8 @@ public class FProcesso extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private ListaCampos lcTarefa = new ListaCampos(this,"TA");
   private JButton btTrat = new JButton(Icone.novo("btRetorno.gif"));
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   FPrincipal fPrim = null;
   public FProcesso() {
 
@@ -59,7 +59,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
    setAtribos( 50, 50, 450, 350);
 
    setAltCab(90);
-   pinCab = new Painel(420,90);
+   pinCab = new JPanelPad(420,90);
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 

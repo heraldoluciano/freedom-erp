@@ -27,12 +27,12 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FOPFase extends FDetalhe {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -62,7 +62,7 @@ public class FOPFase extends FDetalhe {
     txtDtValid.setAtivo(false);
     txtQtdOP.setAtivo(false);
     
-    pinCab = new Painel(500,90);
+    pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     
@@ -103,7 +103,7 @@ public class FOPFase extends FDetalhe {
     txtDescRec.setListaCampos(lcRec);
 
     setAltDet(100);
-    pinDet = new Painel(590,110);
+    pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

@@ -27,12 +27,12 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FMenuObj extends FDetalhe {
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodMenu = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);
   private JTextFieldFK txtDescMenu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodModu = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);
@@ -84,7 +84,7 @@ public class FMenuObj extends FDetalhe {
     lcObj.setReadOnly(true);
     txtIDObj.setTabelaExterna(lcObj);
     
-    pinCab = new Painel(350,165);
+    pinCab = new JPanelPad(350,165);
     setAltCab(165);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
@@ -98,7 +98,7 @@ public class FMenuObj extends FDetalhe {
     setListaCampos( false, "MENU", "SG");
 
     setAltDet(60);
-    pinDet = new Painel(350,90);
+    pinDet = new JPanelPad(350,90);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

@@ -43,7 +43,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
@@ -58,7 +58,7 @@ import org.freedom.telas.FRelatorio;
  */
 public class FKardex extends FRelatorio implements ActionListener {
         private JPanel pnCli = new JPanel(new BorderLayout());
-        private Painel pinCab = new Painel(560,130);
+        private JPanelPad pinCab = new JPanelPad(560,130);
         private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

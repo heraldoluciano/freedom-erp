@@ -37,7 +37,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
@@ -47,7 +47,7 @@ public class FRMovProd extends FRelatorio {
   private JRadioGroup rgAtivoProd=null;
   private JRadioGroup rgProduto=null;
   private JPanel pnlbSelec = new JPanel(new GridLayout(1,1));
-  private Painel pinSelec = new Painel(350,90);
+  private JPanelPad pinSelec = new JPanelPad(350,90);
   private JLabel lbSelec = new JLabel(" Seleção:");
   private JLabel lbDe = new JLabel("de:");
   private JLabel lbA = new JLabel("à:");

@@ -25,10 +25,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 
 public class FAndamento extends JFrame {
-  private Painel pin = new Painel(310,150);
+  private JPanelPad pin = new JPanelPad(310,150);
   private JProgressBar pb = new JProgressBar();
   public FAndamento(String sLabel,int iMin, int iMax) {
     setBounds(100,100,310,150);

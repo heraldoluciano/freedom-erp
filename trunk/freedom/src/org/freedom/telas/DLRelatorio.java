@@ -35,9 +35,9 @@ import javax.swing.JPanel;
 import javax.swing.BorderFactory;
 
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 public abstract class DLRelatorio extends JDialog implements ActionListener,KeyListener {
-  private Painel pinCli = new Painel(350,170);
+  private JPanelPad pinCli = new JPanelPad(350,170);
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JPanel pnCentRod = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
   private JPanel pnBotoes = new JPanel(new GridLayout(1,2));
@@ -75,12 +75,12 @@ public abstract class DLRelatorio extends JDialog implements ActionListener,KeyL
     btPrevimp.addKeyListener(this);
     btSair.addKeyListener(this);
   }
-  public void setPainel(Painel pin) {
+  public void setPainel(JPanelPad pin) {
     pinCli = pin;
     bSetArea = false;
   }
   public void setAreaComp() {
-    pinCli = new Painel((int)getSize().getWidth()-10,
+    pinCli = new JPanelPad((int)getSize().getWidth()-10,
       (int)getSize().getHeight()-45);  
     c.add(pinCli,BorderLayout.CENTER);
     bSetArea = false;

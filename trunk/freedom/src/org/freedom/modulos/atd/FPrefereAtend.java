@@ -27,15 +27,15 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereAtend extends FTabDados {
-	private Painel pinGeral = null;
-	private Painel pinTipo = null;
-	private Painel pinSetor = null;
-	private Painel pinConv = null;
-	private Painel pinOrc = null;
+	private JPanelPad pinGeral = null;
+	private JPanelPad pinTipo = null;
+	private JPanelPad pinSetor = null;
+	private JPanelPad pinConv = null;
+	private JPanelPad pinOrc = null;
 
 	private JTextFieldPad txtClassMedida = new JTextFieldPad(JTextFieldPad.TP_STRING, 20 , 0);
 	private JTextFieldPad txtCodTpAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -164,14 +164,14 @@ public class FPrefereAtend extends FTabDados {
 		lcTpAtend3.setReadOnly(true);
 		txtCodTpAtend3.setTabelaExterna(lcTpAtend3);
 		
-		pinGeral = new Painel(330,350);
+		pinGeral = new JPanelPad(330,350);
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
 		adicCampo(txtCodAtend,7,25,80,20,"CodAtend","Cód.atend.",ListaCampos.DB_FK,txtNomeAtend,true);
 		adicDescFK(txtNomeAtend,90,25,230,20,"NameAtend","Nome do atendente responsável.");
 		adicCampo(txtClassMedida,7,65,200,20,"ClassMedida","Classe p/ ficha de medida",ListaCampos.DB_SI,false);
 		
-		pinTipo = new Painel(330, 350);
+		pinTipo = new JPanelPad(330, 350);
 		setPainel(pinTipo);
 		adicTab("Tipos de atendimento", pinTipo);
 		adicCampo(txtCodTpAtend,7,25,80,20,"CodTpAtendo","Cód.tp.atend.",ListaCampos.DB_FK,txtDescTpAtend,true);
@@ -200,7 +200,7 @@ public class FPrefereAtend extends FTabDados {
 		lcSetor2.setReadOnly(true);
 		txtCodSetor2.setTabelaExterna(lcSetor2);
 
-		pinSetor = new Painel(330, 350);
+		pinSetor = new JPanelPad(330, 350);
 		setPainel(pinSetor);
 		adicTab("Setor de atendimento", pinSetor);
 		adicCampo(txtCodSetor,7,25,80,20,"CodSetAt","Cód.setor",ListaCampos.DB_FK,txtDescSetor,true);
@@ -208,7 +208,7 @@ public class FPrefereAtend extends FTabDados {
 		adicCampo(txtCodSetor2,7,65,80,20,"CodSetAt2","Cód.setor",ListaCampos.DB_FK,txtDescSetor2,true);
 		adicDescFK(txtDescSetor2,90,65,230,20,"DescSetAt","Setor de orçamento.");
 		
-		pinConv = new Painel(330, 350);
+		pinConv = new JPanelPad(330, 350);
 		setPainel(pinConv);
 		adicTab("Conveniado", pinConv);
 		adicCampo(txtCodTipoCli,7,25,80,20,"CodTipoCli","Cód.tp.cli.",ListaCampos.DB_FK,txtDescTipoCli,false);
@@ -216,7 +216,7 @@ public class FPrefereAtend extends FTabDados {
 		adicCampo(txtCodClas,7,65,80,20,"CodClasCli","Cód.c.cli.",ListaCampos.DB_FK,txtDescClas,false);
 		adicDescFK(txtDescClas,90,65,230,20,"DescClasCli","Descrição da classificação do cliente.");
 		
-		pinOrc = new Painel(330, 350);
+		pinOrc = new JPanelPad(330, 350);
 		setPainel(pinOrc);
 		adicTab("Orçamento", pinOrc);
 		adicCampo(txtCodTBA,7,25,80,20,"CodTBA","Cód.tab.",ListaCampos.DB_FK,txtDescTBA,false);

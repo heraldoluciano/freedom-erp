@@ -33,7 +33,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
@@ -43,15 +43,15 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
   private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcAtend = new ListaCampos(this,"AE");
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   
   public FSetorAtend () {
 
    setTitulo("Cadastro de Setores de atendimento");
    setAtribos( 50, 50, 450, 350);
 /*
-   pnMaster.remove(2);  //Remove o Painel prédefinido da class FDados
+   pnMaster.remove(2);  //Remove o JPanelPad prédefinido da class FDados
    pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo
    pnGImp.setLayout(new GridLayout(1,3)); //redimensiona o painel de impressão
    pnGImp.setPreferredSize(new Dimension( 210, 26));
@@ -59,7 +59,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
    pnGImp.add(btImp);
 */      
    setAltCab(90);
-   pinCab = new Painel(420,90);
+   pinCab = new JPanelPad(420,90);
    setListaCampos(lcCampos);
    setPainel( pinCab, pnCliCab);
 

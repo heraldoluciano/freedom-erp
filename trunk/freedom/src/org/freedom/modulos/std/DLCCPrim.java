@@ -26,7 +26,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
@@ -34,7 +34,7 @@ public class DLCCPrim extends FFDialogo {
   private JTextFieldPad txtCodCont = new JTextFieldPad(13);
   private JTextFieldPad txtDescCont = new JTextFieldPad(13);
   private JTextFieldPad txtSigla = new JTextFieldPad(10);
-  private Painel pinCont = new Painel(450,100);
+  private JPanelPad pinCont = new JPanelPad(450,100);
   private JLabel lbCod = new JLabel("Código");
   private JLabel lbDesc = new JLabel("Descrição");
   public DLCCPrim(Component cOrig, String sCod, String sDesc, String sSigla) {

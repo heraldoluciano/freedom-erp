@@ -45,7 +45,7 @@ import javax.swing.JToolBar;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JMenuPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
@@ -60,7 +60,7 @@ public class FPrincipal extends JFrame implements ActionListener {
    private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
    private JButton btCalc = new JButton(Icone.novo("btCalc.gif"));
    private JButton btAgenda = new JButton(Icone.novo("btAgenda.gif"));
-   public Painel pinBotoesDir = new Painel();
+   public JPanelPad pinBotoesDir = new JPanelPad();
    public  Container c = getContentPane();
    public  JDesktopPane dpArea = new JDesktopPane();
    public  StatusBar statusBar = new StatusBar();

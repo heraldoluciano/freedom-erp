@@ -57,7 +57,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.PainelImagem;
 
 public class FDados extends FFilho implements ActionListener, KeyListener, InternalFrameListener, PostListener{//, FocusListener {
@@ -78,7 +78,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    public Navegador navSeq = new Navegador(false); 
    public JPanel pnImp = new JPanel();
    public JPanel pnGImp = new JPanel();
-   public Painel pinDados = new Painel();
+   public JPanelPad pinDados = new JPanelPad();
    public JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
    public JButton btImp = new JButton( Icone.novo("btImprime.gif"));
    public JButton btPrevimp = new JButton( Icone.novo("btPrevimp.gif"));
@@ -179,12 +179,12 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
   public void keyTyped(KeyEvent kevt) {  }
 //  public void focusGained(FocusEvent e) { }
 //  public void focusLost(FocusEvent e) { }
-  public void setPainel(Painel pin, Container pn) {
+  public void setPainel(JPanelPad pin, Container pn) {
     pinDados = pin;
     pn.add(pinDados);
     setArea = false;
   }
-  public void setPainel(Painel pin) {
+  public void setPainel(JPanelPad pin) {
     pinDados = pin;
     setArea = false;
   }
@@ -197,7 +197,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     return dm;
   }
   public void setAreaComp() {
-    pinDados = new Painel((int)getSize().getWidth()-10,
+    pinDados = new JPanelPad((int)getSize().getWidth()-10,
       (int)getSize().getHeight()-65);  
     pnCliente.add(pinDados, BorderLayout.CENTER);
     setArea = false;

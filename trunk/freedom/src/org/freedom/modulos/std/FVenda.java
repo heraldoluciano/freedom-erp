@@ -63,7 +63,7 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.Leiaute;
 import org.freedom.telas.Aplicativo;
@@ -73,11 +73,11 @@ import org.freedom.telas.FPrincipal;
 
 public class FVenda extends FVD implements PostListener,CarregaListener,FocusListener,ActionListener,InsertListener,DeleteListener {
   private int casasDec = Aplicativo.casasDec;
-  private Painel pinCabVenda = new Painel();
-  private Painel pinCabComis = new Painel();
-  private Painel pinCabFiscal = new Painel();
-  private Painel pinDet = new Painel();
-  private Painel pinTot = new Painel(200,200);
+  private JPanelPad pinCabVenda = new JPanelPad();
+  private JPanelPad pinCabComis = new JPanelPad();
+  private JPanelPad pinCabFiscal = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
+  private JPanelPad pinTot = new JPanelPad(200,200);
   private JPanel pnTot = new JPanel(new GridLayout(1,1));
   private JPanel pnCenter = new JPanel(new BorderLayout());
   private JButton btObs = new JButton(Icone.novo("btObs.gif"));
@@ -195,7 +195,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     btAdicOrc.setPreferredSize(new Dimension(180,0));
 	pnNavCab.add(btAdicOrc,BorderLayout.EAST);
 
-    pnMaster.remove(2);  //Remove o Painel predefinido da class FDados
+    pnMaster.remove(2);  //Remove o JPanelPad predefinido da class FDados
     pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo
     pnGImp.setLayout(new GridLayout(1,4)); //redimensiona o painel de impressão
     pnGImp.setPreferredSize(new Dimension( 280, 26));
@@ -205,7 +205,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     pnGImp.add(btConsPgto);
     pnGImp.add(btObs);//Agora o painel está maior
 
-    pnTot.setPreferredSize(new Dimension(110,200)); //Painel de Totais
+    pnTot.setPreferredSize(new Dimension(110,200)); //JPanelPad de Totais
     pnTot.add(pinTot);
     pnCenter.add(pnTot,BorderLayout.EAST);
     pnCenter.add(spTab,BorderLayout.CENTER);
@@ -506,7 +506,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
     setListaCampos( true, "VENDA", "VD");
     
     setAltDet(100);
-    pinDet = new Painel(740,100);
+    pinDet = new JPanelPad(740,100);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

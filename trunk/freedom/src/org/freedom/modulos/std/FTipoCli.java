@@ -31,13 +31,13 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FTipoCli extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-  private Painel pinInfoFicha = new Painel(300,150);
+  private JPanelPad pinInfoFicha = new JPanelPad(300,150);
   private JLabel lbInfoFicha = new JLabel(" Informações complementares na ficha cadastral");
   private JCheckBoxPad cbTipoCadFis = new JCheckBoxPad("Pessoa física","S","N");
   private JCheckBoxPad cbTipoCadJur = new JCheckBoxPad("Pessoa jurídica","S","N");
@@ -54,7 +54,7 @@ public class FTipoCli extends FDados implements ActionListener {
   private JCheckBoxPad cbTipoCadRefPesAutCp = new JCheckBoxPad("Autorização de compra","S","N");
   private JCheckBoxPad cbTipoCadRefAval = new JCheckBoxPad("Avalista","S","N");
   private JCheckBoxPad cbTipoCadRefSocio = new JCheckBoxPad("Quadro de sócios","S","N");  
-  private Painel pinLbInfoCaixa = new Painel(53,15);
+  private JPanelPad pinLbInfoCaixa = new JPanelPad(53,15);
   public FTipoCli () {
     setTitulo("Cadastro de tipos de clientes");
     setAtribos(50, 50, 430, 320);

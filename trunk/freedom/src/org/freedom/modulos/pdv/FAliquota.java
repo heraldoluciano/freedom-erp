@@ -35,7 +35,7 @@ import javax.swing.JButton;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -44,7 +44,7 @@ import org.freedom.telas.FFDialogo;
 
 
 public class FAliquota extends FFDialogo implements ActionListener { 
-	private Painel pinCab = new Painel(400,60);
+	private JPanelPad pinCab = new JPanelPad(400,60);
 	private JPanel pnCli = new JPanel(new BorderLayout());
 	private JTextFieldPad txtAliquota = new JTextFieldPad();
 	private Tabela tab = new Tabela();

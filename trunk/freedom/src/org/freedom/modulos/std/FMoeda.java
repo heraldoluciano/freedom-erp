@@ -33,12 +33,12 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
 public class FMoeda extends FTabDados implements RadioGroupListener {
-  private Painel pinGeral = new Painel(370,220);
+  private JPanelPad pinGeral = new JPanelPad(370,220);
 
   private Vector vValsTipo = new Vector();
   private Vector vLabsTipo = new Vector();
@@ -54,7 +54,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
   private JPanel pnCot = new JPanel(new BorderLayout());
-  private Painel pinRod = new Painel(370,80);
+  private JPanelPad pinRod = new JPanelPad(370,80);
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private ListaCampos lcCot = new ListaCampos(this);

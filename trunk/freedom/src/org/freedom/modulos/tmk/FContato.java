@@ -53,7 +53,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FCliente;
@@ -64,9 +64,9 @@ import org.freedom.telas.FTabDados;
 
 
 public class FContato extends FTabDados implements RadioGroupListener, PostListener, ActionListener, ChangeListener {
-  private Painel pinCont = new Painel();
-  private Painel pinVend = new Painel(0,80);
-  private Painel pinRodAtiv = new Painel(0,80);
+  private JPanelPad pinCont = new JPanelPad();
+  private JPanelPad pinVend = new JPanelPad(0,80);
+  private JPanelPad pinRodAtiv = new JPanelPad(0,80);
   private Tabela tabAtiv = new Tabela();
   private JScrollPane spnAtiv = new JScrollPane(tabAtiv);
   private JPanel pnAtiv = new JPanel(new BorderLayout());
@@ -118,7 +118,7 @@ public class FContato extends FTabDados implements RadioGroupListener, PostListe
 	lcCampos.adicDetalhe(lcAtiv);
 	lcAtiv.setTabela(tabAtiv);
     
-    pinCont = new Painel(500,330);
+    pinCont = new JPanelPad(500,330);
     setPainel(pinCont);
     adicTab("Contato", pinCont); 
     

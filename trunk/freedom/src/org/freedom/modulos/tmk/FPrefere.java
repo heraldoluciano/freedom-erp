@@ -29,12 +29,12 @@ import javax.swing.JLabel;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefere extends FTabDados {
-	private Painel pinMail = new Painel();
-	private Painel pinSmtp = new Painel();
+	private JPanelPad pinMail = new JPanelPad();
+	private JPanelPad pinSmtp = new JPanelPad();
 	private JTextFieldPad txtSmtpMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JTextFieldPad txtUserMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);

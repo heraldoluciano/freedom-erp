@@ -35,13 +35,13 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrincipal;
 
 public class FEstrutura extends FDetalhe implements ActionListener, CarregaListener, PostListener{
-  private Painel pinCab = new Painel();
-  private Painel pinDet = new Painel();
+  private JPanelPad pinCab = new JPanelPad();
+  private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -65,7 +65,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     
     btFase.setEnabled(false);
     
-    pinCab = new Painel(500,90);
+    pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     lcCampos.addPostListener(this);
@@ -105,7 +105,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
     setAltDet(100);
-    pinDet = new Painel(590,110);
+    pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);

@@ -50,7 +50,7 @@ import javax.swing.event.InternalFrameEvent;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -58,13 +58,13 @@ import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
 
 public class FLanca extends FFilho implements ActionListener,ChangeListener {
-  private Painel pinCab = new Painel(600,64);
+  private JPanelPad pinCab = new JPanelPad(600,64);
   private JPanel pnNav = new JPanel(new GridLayout(1,7));
   private JPanel pnRod = new JPanel(new BorderLayout());
   private JPanel pnCentro = new JPanel(new BorderLayout());;
-  private Painel pinPeriodo = new Painel(260,50);
+  private JPanelPad pinPeriodo = new JPanelPad(260,50);
   private JLabel lbPeriodo = new JLabel(" Periodo");
-  private Painel pinSaldo = new Painel(310,50);
+  private JPanelPad pinSaldo = new JPanelPad(310,50);
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -80,8 +80,8 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JButton btEditar = new JButton(Icone.novo("btEditar.gif"));
   private JLabel lbA = new JLabel("à");
   private JLabel lbPinSaldo = new JLabel(" Saldo");
-  private Painel pinLbPeriodo = new Painel(53,15);
-  private Painel pinLbSaldo = new Painel(45,15);
+  private JPanelPad pinLbPeriodo = new JPanelPad(53,15);
+  private JPanelPad pinLbSaldo = new JPanelPad(45,15);
   private JLabel lbDataSaldo = new JLabel("Data");
   private JLabel lbVlrSaldo = new JLabel("Saldo");
   private JLabel lbAtualSaldo = new JLabel("Atualiza");

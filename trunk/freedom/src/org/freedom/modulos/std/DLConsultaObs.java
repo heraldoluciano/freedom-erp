@@ -37,14 +37,14 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Painel;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 
 public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSelListener {
-  private Painel pinConsulta = new Painel(500,180);
+  private JPanelPad pinConsulta = new JPanelPad(500,180);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaObs = new JTextAreaPad();
