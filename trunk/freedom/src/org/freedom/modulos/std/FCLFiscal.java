@@ -46,7 +46,7 @@ import org.freedom.telas.FPrincipal;
 public class FCLFiscal extends FDados implements CarregaListener {
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
   private JTextFieldPad txtDescFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
-  private JTextFieldPad txtCodRegra = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
+  private JTextFieldPad txtCodRegra = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldFK txtDescRegra = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldFK txtDescTratTrib = new JTextFieldFK(JTextFieldPad.TP_STRING,60,0);

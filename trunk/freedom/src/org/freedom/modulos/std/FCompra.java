@@ -221,8 +221,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener, 
     lcProd2.setReadOnly(true);
     txtRefProd.setTabelaExterna(lcProd2);
 
-    lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Código", ListaCampos.DB_PK, false));
-    lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Código do Produto", ListaCampos.DB_PK, false));
+    lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false));
+    lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
     lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Vencimento", ListaCampos.DB_SI, false));
     //    lcLote.setDinWhereAdic("CODPROD=#N",txtCodProd);
     lcLote.setAutoLimpaPK(false);
