@@ -136,7 +136,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	private int iCodMod = 0;
 
-	private Connection conIB;
+	protected Connection conIB;
+
+	public Connection getConIB() {
+		return conIB;
+	}
 
 	public Aplicativo() {
 		Locale.setDefault(new Locale("pt", "BR"));

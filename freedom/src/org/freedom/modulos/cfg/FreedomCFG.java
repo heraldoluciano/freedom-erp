@@ -28,18 +28,10 @@
 
 package org.freedom.modulos.cfg;
 
-import java.sql.Connection;
-
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class FreedomCFG extends Aplicativo {
-
-	private Connection conIB = null;
-
-	public Connection getConIB() {
-		return conIB;
-	}
 
 	public FreedomCFG() {
 		super("iconConfiguracao32.gif", "splashConf.jpg",
