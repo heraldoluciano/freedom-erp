@@ -1522,7 +1522,7 @@ public class FVenda extends FVD implements PostListener,CarregaListener,FocusLis
                   "VDFRETEVD F, VDTRANSP T WHERE V.CODVENDA="+iCodVenda+" AND C.CODCLI=V.CODCLI"+
                   " AND I.CODVENDA=V.CODVENDA AND P.CODPROD=I.CODPROD AND VEND.CODVEND=V.CODVEND"+
                   " AND PG.CODPLANOPAG=V.CODPLANOPAG AND F.CODVENDA=V.CODVENDA AND T.CODTRAN=F.CODTRAN"+ 
-                  " ORDER BY P."+dl.getValor()+",P.DESCPROD";
+                  " ORDER BY P."+dl.getValor()+",P.DESCPROD"; 
 
     PreparedStatement ps = null;
     ResultSet rs = null;
