@@ -131,7 +131,7 @@ public class FImpressora extends FDados {
     adicCampo(txtPortaLinImp, 286, 100, 90, 20, "PortaLinImp", "Nome LIN", ListaCampos.DB_SI, true);
     adicCampo(txtCodPapel, 7, 140, 90, 20, "CodPapel", "Cód.tp.papel", ListaCampos.DB_FK, true);
     adicDescFK(txtDescPapel, 100, 140, 276, 20, "DescPapel", "Descrição do tipo de papel");
-    adicDB(cbDestImp, 7, 180, 200, 25, "DestImp", "Padrão para",JTextFieldPad.TP_STRING,true);
+    adicDB(cbDestImp, 7, 180, 200, 25, "DestImp", "Padrão para",true);
 
     setListaCampos(true, "IMPRESSORA", "SG");
   }
