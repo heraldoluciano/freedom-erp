@@ -35,14 +35,14 @@ public class FPrefereGeral extends FTabDados {
 	private Painel pinFin = new Painel();
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtAnoCC = new JTextFieldPad();
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private ListaCampos lcMoeda = new ListaCampos(this,"MO");
 	public FPrefereGeral() {
 		setTitulo("Preferências Gerais");
 		setAtribos(50, 50, 355, 200);
 		
-		lcMoeda.add(new GuardaCampo(txtCodMoeda,7,100,80,20,"CodMoeda","Cód.moeda",true,false,null,JTextFieldPad.TP_STRING,true),"txtCodUnidx");
-		lcMoeda.add(new GuardaCampo(txtDescMoeda,90,100,207,20,"SingMoeda","Descrição da moeda",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+		lcMoeda.add(new GuardaCampo(txtCodMoeda, "CodMoeda","Cód.moeda", ListaCampos.DB_PK, true));
+		lcMoeda.add(new GuardaCampo(txtDescMoeda, "SingMoeda","Descrição da moeda", ListaCampos.DB_SI, false));
 		lcMoeda.montaSql(false, "MOEDA", "FN");
 		lcMoeda.setQueryCommit(false);
 		lcMoeda.setReadOnly(true);
@@ -52,15 +52,15 @@ public class FPrefereGeral extends FTabDados {
 		
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
-		adicCampo(txtAnoCC,7,25,100,20,"AnoCentroCusto","Ano Base C.C.",JTextFieldPad.TP_INTEGER,5,0,false,false,null,true);
+		adicCampo(txtAnoCC, 7,25,100,20, "AnoCentroCusto","Ano Base C.C.", ListaCampos.DB_SI, true);
 
 //Financeiro
 	
 		setPainel(pinFin);
 		adicTab("Financeiro", pinFin);
 
-		adicCampo(txtCodMoeda,7,20,70,20,"CodMoeda","Cód.moeda",JTextFieldPad.TP_STRING,4,0,false,true,txtDescMoeda,true);
-		adicDescFK(txtDescMoeda,80,20,230,20,"SingMoeda","Descrição da moeda corrente.",JTextFieldPad.TP_STRING,50,0);
+		adicCampo(txtCodMoeda,7,20,70,20,"CodMoeda","Cód.moeda", ListaCampos.DB_FK, txtDescMoeda, true);
+		adicDescFK(txtDescMoeda,80,20,230,20,"SingMoeda","Descrição da moeda corrente.");
 
 		nav.setAtivo(0,false);
 		lcCampos.setPodeExc(false);
