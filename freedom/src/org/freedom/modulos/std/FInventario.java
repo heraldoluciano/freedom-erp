@@ -68,7 +68,7 @@ public class FInventario extends FDados implements CarregaListener, InsertListen
   private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE, 10, 0);
-  private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   
   private ListaCampos lcProd = new ListaCampos(this,"PD");

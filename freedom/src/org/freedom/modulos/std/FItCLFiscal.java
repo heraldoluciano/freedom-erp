@@ -47,8 +47,8 @@ public class FItCLFiscal extends FDetalhe {
   private JTextFieldPad txtCodItClFiscal = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   private JTextFieldFK txtDescTratTrib = new JTextFieldFK(JTextFieldPad.TP_STRING, 60, 0);
-  private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-  private JTextFieldPad txtAliqFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
+  private JTextFieldPad txtAliqFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
   private JCheckBoxPad cbNoUF = new JCheckBoxPad("Sim","S","N");
   private JComboBoxPad cbOrig = null;
   private Vector vValsOrig = new Vector();

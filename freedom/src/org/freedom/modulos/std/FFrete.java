@@ -51,7 +51,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK txtDocVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,9,0);
   private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
-  private JTextFieldPad txtSeries = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtSeries = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtConhecFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0 );
   private JTextFieldPad txtPercVendaFreteVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,9,2);
   private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
@@ -114,12 +114,12 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     txtPercVendaFreteVD.setAtivo(false);
     
     adicCampo(txtCodVenda, 7, 20, 110, 20, "CodVenda", "Nº pedido", ListaCampos.DB_PK, true);
-    adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "N.NF");
-    adicDB(rgFreteVD,233,20,125,60, "TipoFreteVd", "Tipo ",true);
+    adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "Nº NF");
+    adicDB(rgFreteVD,233,20,125,60, "TipoFreteVd", "Tipo",true);
     adicCampo(txtMarcaFreteVD,7,60,110,20, "MarcaFreteVd","Marca", ListaCampos.DB_SI, true);        
     adicCampo(txtPercVendaFreteVD,120,60,110,20, "PercVendaFreteVd","Perc.vd.", ListaCampos.DB_SI, false);
     adicCampo(txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", ListaCampos.DB_FK, true);
-    adicDescFK(txtDescTran,91, 100, 265, 20, "NomeTran", "Descrição da Transportador");
+    adicDescFK(txtDescTran,91, 100, 265, 20, "NomeTran", "Descrição da tansportador");
     adicCampo(txtConhecFreteVD,7,140,90,20,"ConhecFreteVd","Conhec.frete", ListaCampos.DB_SI, false);    
     adicCampo(txtPlacaFreteVD,99,140,100,20, "PlacaFreteVd","Placa", ListaCampos.DB_SI, true);
     adicCampo(txtUFFreteVD,202,140,44,20,"UfFreteVd","UF.", ListaCampos.DB_SI, true);

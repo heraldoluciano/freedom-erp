@@ -66,8 +66,8 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private JLabel lbPeriodo = new JLabel(" Periodo");
   private Painel pinSaldo = new Painel(310,50);
 
-  private JTextFieldPad txtDataini = new JTextFieldPad();
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
   private JButton btCalcSaldo = new JButton(Icone.novo("btExecuta.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
@@ -101,9 +101,6 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   public FLanca() {
     setTitulo("Lançamentos Financeiros");
     setAtribos(50,25,617,400);
-    
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     
     Container c = getContentPane();
     

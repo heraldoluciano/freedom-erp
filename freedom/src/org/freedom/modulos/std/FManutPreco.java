@@ -57,7 +57,7 @@ import org.freedom.telas.FFilho;
 public class FManutPreco extends FFilho implements ActionListener, RadioGroupListener {
   private Painel pinCli = new Painel(400,400);
   private JPanel pnRod = new JPanel(new BorderLayout());
-  private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
+  private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTab = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
