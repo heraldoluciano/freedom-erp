@@ -220,8 +220,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescVend.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.Vend.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-  	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+  	lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
+  	lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);
@@ -230,8 +230,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodPlanoPag.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescPlanoPag.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.Plano.Pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
-  	lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
+  	lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPlanoPagx");
+  	lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPlanoPagx");
   	lcPlanoPag.montaSql(false, "PLANOPAG", "FN");    
   	lcPlanoPag.setQueryCommit(false);
   	lcPlanoPag.setReadOnly(true);
@@ -240,8 +240,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodTran.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescTran.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcTran.add(new GuardaCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.Transp.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTranx");
-  	lcTran.add(new GuardaCampo( txtDescTran, 90, 100, 207, 20, "NomeTran", "Nome", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTranx");
+  	lcTran.add(new GuardaCampo( txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTranx");
+  	lcTran.add(new GuardaCampo( txtDescTran, 90, 100, 207, 20, "NomeTran", "Razão social da transportadora", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTranx");
   	lcTran.montaSql(false, "TRANSP", "VD");
   	lcTran.setQueryCommit(false);
   	lcTran.setReadOnly(true);
@@ -258,8 +258,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodTipoCob.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescTipoCob.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcTipoCob.add(new GuardaCampo( txtCodTipoCob, 7, 100, 80, 20, "CodTipoCob", "Cód.Tipo.Cob.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoCobx");
-  	lcTipoCob.add(new GuardaCampo( txtDescTipoCob, 90, 100, 207, 20, "DescTipoCob", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoCobx");
+  	lcTipoCob.add(new GuardaCampo( txtCodTipoCob, 7, 100, 80, 20, "CodTipoCob", "Cód.t.cob.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoCobx");
+  	lcTipoCob.add(new GuardaCampo( txtDescTipoCob, 90, 100, 207, 20, "DescTipoCob", "Descrição do tipo de cobrança", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoCobx");
   	lcTipoCob.montaSql(false, "TIPOCOB", "FN");    
   	lcTipoCob.setQueryCommit(false);
   	lcTipoCob.setReadOnly(true);
@@ -268,8 +268,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     txtCodFiscCli.setTipo(JTextFieldPad.TP_STRING,8,0);
     txtDescFiscCli.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcTipoFiscCli.add(new GuardaCampo( txtCodFiscCli, 7, 100, 80, 20, "CodFiscCli", "Cód.Fisc.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoClix");
-  	lcTipoFiscCli.add(new GuardaCampo( txtDescFiscCli, 90, 100, 207, 20, "DescFiscCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
+  	lcTipoFiscCli.add(new GuardaCampo( txtCodFiscCli, 7, 100, 80, 20, "CodFiscCli", "Cód.tp.fisc.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoClix");
+  	lcTipoFiscCli.add(new GuardaCampo( txtDescFiscCli, 90, 100, 207, 20, "DescFiscCli", "Descrição do tipo fiscal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoClix");
   	lcTipoFiscCli.montaSql(false, "TIPOFISCCLI", "LF");    
   	lcTipoFiscCli.setQueryCommit(false);
   	lcTipoFiscCli.setReadOnly(true);
@@ -278,8 +278,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     txtCodBanco.setTipo(JTextFieldPad.TP_STRING,8,0);
     txtNomeBanco.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Cód.Banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBancox");
-  	lcBanco.add(new GuardaCampo( txtNomeBanco, 90, 100, 207, 20, "NomeBanco", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeBancox");
+  	lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Cód.banco", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBancox");
+  	lcBanco.add(new GuardaCampo( txtNomeBanco, 90, 100, 207, 20, "NomeBanco", "Nome do banco", false, false, null, JTextFieldPad.TP_STRING,false),"txtNomeBancox");
   	lcBanco.montaSql(false, "BANCO", "FN");    
   	lcBanco.setQueryCommit(false);
   	lcBanco.setReadOnly(true);
@@ -288,8 +288,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodPesq.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescPesq.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcPesq.add(new GuardaCampo( txtCodPesq, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPesqx");
-  	lcPesq.add(new GuardaCampo( txtDescPesq, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPesqx");
+  	lcPesq.add(new GuardaCampo( txtCodPesq, 7, 100, 80, 20, "CodCli", "Cód.cli.p.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodPesqx");
+  	lcPesq.add(new GuardaCampo( txtDescPesq, 90, 100, 207, 20, "RazCli", "Razão social do cliente pricipal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescPesqx");
   	lcPesq.montaSql(false, "CLIENTE", "VD");    
   	lcPesq.setQueryCommit(false);
   	lcPesq.setReadOnly(true);
@@ -305,8 +305,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	lcClas.setReadOnly(true);
   	txtCodClas.setTabelaExterna(lcClas);
 
-  	adicCampo(txtCodCli, 7, 20, 80, 20, "CodCli", "Código", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-  	adicCampo(txtRazCli, 90, 20, 307, 20, "RazCli", "Razão", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
+  	adicCampo(txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+  	adicCampo(txtRazCli, 90, 20, 307, 20, "RazCli", "Razão social", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
   	
   	vPessoaLab.addElement("Jurídica");
   	vPessoaLab.addElement("Física");
@@ -325,7 +325,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Tipo", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoCli,true);
   	adicDescFK(txtDescTipoCli, 90, 100, 237, 20, "DescTipoCli", "", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtCpfCli, 330, 100, 170, 20, "CpfCli", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
-  	adicCampo(txtCodClas, 7, 140, 80, 20, "CodClasCli", "Classificação", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClas,true);
+  	adicCampo(txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.clas.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClas,true);
   	adicDescFK(txtDescClas, 90, 140, 237, 20, "DescClasCli", "", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtRgCli, 330, 140, 170, 20, "RgCli", "RG", JTextFieldPad.TP_STRING, 10, 0, false, false, null, false);
   	adicCampo(txtCnpjCli, 7, 180, 150, 20, "CnpjCli", "CNPJ", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);
@@ -348,7 +348,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtIncraCli, 390, 300, 110, 20, "IncraCli", "Incra", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
   	adicCampo(txtCelCli,7,340,100,20,         "CelCli",   "Celular",JTextFieldPad.TP_STRING, 8, 0, false, false, null, false);
   	adicCampo(txtCodPais,110,340,77,20,"CodPais","Cod.País",ListaCampos.DB_FK,false);
-  	adicDescFK(txtDescPais,190,340,200,20,"DescPais","Nome",JTextFieldPad.TP_STRING,50,0);
+  	adicDescFK(txtDescPais,190,340,310,20,"DescPais","Nome",JTextFieldPad.TP_STRING,50,0);
     txtCpfCli.setMascara(JTextFieldPad.MC_CPF);
   	txtCnpjCli.setMascara(JTextFieldPad.MC_CNPJ);
   	txtCepCli.setMascara(JTextFieldPad.MC_CEP);
@@ -406,7 +406,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicTab("Venda", pinVend);
   	adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.repr.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescVend, false);
   	adicDescFK(txtDescVend, 90, 20, 237, 20, "NomeVend", "Nome do representante", JTextFieldPad.TP_STRING, 50, 0);
-  	adicCampo(txtCodPlanoPag, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pg.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescPlanoPag,false);
+  	adicCampo(txtCodPlanoPag, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescPlanoPag,false);
   	adicDescFK(txtDescPlanoPag, 90, 60, 237, 20, "DescPlanoPag", "Descrição do plano de pagamento", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtCodTran, 7, 100, 80, 20, "CodTran", "Cód.tran.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTran,false);
   	adicDescFK(txtDescTran, 90, 100, 237, 20, "NomeTran", "Nome ou razão social do transportador", JTextFieldPad.TP_STRING, 50, 0);
