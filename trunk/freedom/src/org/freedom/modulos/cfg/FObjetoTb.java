@@ -38,10 +38,10 @@ import org.freedom.telas.FDetalhe;
 public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
-  private JTextFieldPad txtCodObj = new JTextFieldPad(5);
-  private JTextFieldPad txtDescObj = new JTextFieldPad(50);
-  private JTextFieldPad txtCodTb = new JTextFieldPad(5);
-  private JTextFieldFK txtDescTb = new JTextFieldFK();
+  private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtDescObj = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldFK txtDescTb = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JCheckBoxPad cbRequerido = null;  
   private ListaCampos lcTabela = new ListaCampos(this,"TB");
   public FObjetoTb() {
@@ -64,8 +64,8 @@ public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);  
        
-    adicCampo(txtCodObj, 7, 20, 50, 20,"CodObj","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescObj, 60, 20, 400, 20, "NomeObj","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtIDObj, 7, 20, 50, 20,"IDObj","Id.obj.",ListaCampos.DB_PK,true);
+    adicCampo(txtDescObj, 60, 20, 400, 20, "DescObj","Descrição do objeto",ListaCampos.DB_SI,true);
 	lcCampos.setUsaFI(false);
     setListaCampos( false, "OBJETO", "SG");
     lcCampos.setReadOnly(true);

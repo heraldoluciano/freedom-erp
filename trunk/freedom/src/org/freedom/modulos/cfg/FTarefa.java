@@ -41,7 +41,7 @@ import org.freedom.telas.FDados;
 public class FTarefa extends FDados implements ActionListener {
   private JTextFieldPad txtCodTarefa = new JTextFieldPad(5);
   private JTextFieldPad txtDescTarefa = new JTextFieldPad(50);
-  private JTextFieldPad txtCodObj = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldFK txtDescObj = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private Vector vValsTipo = new Vector();
   private Vector vLabsTipo = new Vector();
@@ -68,17 +68,17 @@ public class FTarefa extends FDados implements ActionListener {
     
     
     lcObjeto.setUsaFI(false);
-	lcObjeto.add(new GuardaCampo( txtCodObj, 7, 100, 80, 20, "CodObj", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodVarGx");
-	lcObjeto.add(new GuardaCampo( txtDescObj, 90, 100, 207, 20, "NomeObj", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVarGx");
+	lcObjeto.add(new GuardaCampo( txtIDObj, "IDObj", "Id.obj.", ListaCampos.DB_PK,true));
+	lcObjeto.add(new GuardaCampo( txtDescObj, "NomeObj", "Descrição", ListaCampos.DB_SI,false));
 	lcObjeto.montaSql(false, "OBJETO", "SG");
 	lcObjeto.setQueryCommit(false);
 	lcObjeto.setReadOnly(true);
-	txtCodObj.setTabelaExterna(lcObjeto);
+	txtIDObj.setTabelaExterna(lcObjeto);
     
-    adicCampo(txtCodTarefa, 7, 20, 50, 20,"CodTarefa","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescTarefa, 60, 20, 250, 20,"DescTarefa","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
-	adicCampo(txtCodObj, 7, 65, 50, 20,"CodObj","Código",JTextFieldPad.TP_INTEGER,8,0,false,true,txtDescObj,true);
-	adicDescFK(txtDescObj, 60, 65, 250, 20,"NomeObj","e nome do objeto",JTextFieldPad.TP_STRING,50,0);
+    adicCampo(txtCodTarefa, 7, 20, 50, 20,"CodTarefa","Código",ListaCampos.DB_PK,true);
+    adicCampo(txtDescTarefa, 60, 20, 250, 20,"DescTarefa","Descrição",ListaCampos.DB_FK,true);
+	adicCampo(txtIDObj, 7, 65, 50, 20,"IDObj","Id.obj.",ListaCampos.DB_PK,true);
+	adicDescFK(txtDescObj, 60, 65, 250, 20,"NomeObj","Nome do objeto",JTextFieldPad.TP_STRING,50,0);
 	adicDB(cbTipo, 7, 105, 230, 25, "TipoTarefa", "Tipo",JTextFieldPad.TP_STRING,true);
     setListaCampos( true, "TAREFA", "SG");
     btImp.addActionListener(this);

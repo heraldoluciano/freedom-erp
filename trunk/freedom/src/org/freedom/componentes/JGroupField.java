@@ -91,7 +91,7 @@ public class JGroupField extends JScrollPane implements CarregaListener, InsertL
 	try {
 	  PreparedStatement ps = cn.prepareStatement("SELECT TB.CODTB,TB.DESCTB,OT.OBRIGOBJTB FROM SGOBJETO OB, SGOBJETOTB OT, SGTABELA TB " +
 	  						 					  "WHERE OB.CODEMP=? AND OB.NOMEOBJ=? AND OB.TIPOOBJ='TB' "+
-	  						                      "AND OT.CODEMP=OB.CODEMP AND OT.CODOBJ=OB.CODOBJ " +
+	  						                      "AND OT.CODEMP=OB.CODEMP AND OT.IDOBJ=OB.IDOBJ " +
 	  						                      "AND OT.CODEMPTB=? AND OT.CODFILIALTB=? AND TB.CODEMP=OT.CODEMPTB " +
 	  						                      "AND TB.CODFILIAL=OT.CODFILIALTB AND TB.CODTB=OT.CODTB");
       ps.setInt(1,Aplicativo.iCodEmp);

@@ -26,7 +26,7 @@ import java.sql.PreparedStatement;
 import java.util.Vector;
 
 public class TabObjeto {
-  public static final int CODOBJ = 0;
+  public static final int IDOBJ = 0;
   public static final int NOMEOBJ = 1;
   public static final int DESCOBJ = 2;
   public static final int TIPOOBJ = 3;
@@ -46,14 +46,14 @@ public class TabObjeto {
   	String sSql = "";
   	try {
   	   if ( !con.isClosed() ) {
-  	   	  sSql = "SELECT CODOBJ,NOMEOBJ,DESCOBJ,TIPOOBJ,COMENTOBJ,USOMEOBJ FROM "+sTabela+
+  	   	  sSql = "SELECT IDOBJ,NOMEOBJ,DESCOBJ,TIPOOBJ,COMENTOBJ,USOMEOBJ FROM "+sTabela+
   	   	    " WHERE CODEMP=? AND TIPOOBJ=?";
   	   	  ps = con.prepareStatement(sSql);
   	   	  ps.setInt(1,iCodEmp);
   	   	  ps.setString(2,sTipoObj);
   	   	  rs = ps.executeQuery();
   	   	  while ( rs.next() ) {
-  	   	  	 vObjetos.add(new ObjetoBD(rs.getInt("CODOBJ"), 
+  	   	  	 vObjetos.add(new ObjetoBD(rs.getString("IDOBJ"), 
  	 				rs.getString("NOMEOBJ"), rs.getString("DESCOBJ"), 
   	 				rs.getString("TIPOOBJ"), rs.getString("COMENTOBJ"), 
   	 				rs.getString("USOMEOBJ") ) );
