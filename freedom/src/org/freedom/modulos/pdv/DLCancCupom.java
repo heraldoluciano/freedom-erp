@@ -75,9 +75,8 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	boolean bCancCupom = false;
 	int iCancItem = -1;
 	Connection con = null;
-	public DLCancCupom(Connection con) {
+	public DLCancCupom() {
 //		super(Aplicativo.telaPrincipal);
-		this.con = con;
 		setTitulo("Cancela Venda");
 		setAtribos(100,150,710,300);
 		
