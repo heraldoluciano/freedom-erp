@@ -35,8 +35,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLRVendedor extends FFDialogo {
   private JRadioGroup rgOrdem = null;
-  private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-  private JPanelPad pinSelec = new JPanelPad(400,90);
+//  private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+//  private JPanelPad pinSelec = new JPanelPad(400,90);
   private JTextFieldPad txtCid = new JTextFieldPad();
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbCid = new JLabelPad("Cidade");
@@ -84,6 +84,9 @@ public class DLRVendedor extends FFDialogo {
     lcClComis.setQueryCommit(false);
     lcClComis.setReadOnly(true);
     txtCodClComis.setTabelaExterna(lcClComis);
+    txtCodClComis.setFK(true);
+    txtCodClComis.setNomeCampo("CodClComis");
+
     
     lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor", "Cód.setor", ListaCampos.DB_PK,false));
     lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor", "Descrição do setor",  ListaCampos.DB_SI,false));
@@ -99,6 +102,10 @@ public class DLRVendedor extends FFDialogo {
     lcFuncao.setQueryCommit(false);
     lcFuncao.setReadOnly(true);
     txtCodFunc.setTabelaExterna(lcFuncao);
+    txtCodFunc.setFK(true);
+    txtCodFunc.setNomeCampo("CodFunc");
+
+    
 
     lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.",  ListaCampos.DB_PK,false));
     lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do representante",  ListaCampos.DB_SI,false));
@@ -110,34 +117,34 @@ public class DLRVendedor extends FFDialogo {
     
 
     adic(lbOrdem,7,5,180,20);
-    adic(rgOrdem,7,25,240,30);
-    adic(pnlbSelec,10,63,80,15);
-    adic(pinSelec,7,70,433,70);
-    adic(lbCid,300,155,140,20);
-    adic(txtCid,300,175,140,20);
-    adic(lbSetor,7,255,250,20);
-    adic(txtCodSetor,7,275,80,20);
-    adic(lbDescSetor,90,255,250,20);
-    adic(txtDescSetor,90,275,350,20);
-    adic(lbVendedor,7,300,300,20);
-    adic(txtCodVend,7,320,80,20);
-    adic(lbNomeVendedor,90,300,300,20);
-    adic(txtNomeVend,90,320,350,20);
-    adic(lbCodFuncaoVend,7,345,300,20);
-    adic(txtCodFunc,7,365,80,20);
-    adic(lbDescFuncaoVend,90,345,300,20);
-    adic(txtDescFunc,90,365,350,20);
+    adic(rgOrdem,7,25,350,30);
+//    adic(pnlbSelec,10,63,80,15);
+//    adic(pinSelec,7,70,433,70);
+    adic(lbCid,7,65,140,20);
+    adic(txtCid,7,85,250,20);
+    adic(lbSetor,7,105,250,20);
+    adic(txtCodSetor,7,125,80,20);
+    adic(lbDescSetor,90,105,250,20);
+    adic(txtDescSetor,90,125,350,20);
+    adic(lbVendedor,7,145,300,20);
+    adic(txtCodVend,7,165,80,20);
+    adic(lbNomeVendedor,90,145,300,20);
+    adic(txtNomeVend,90,165,350,20);
+    adic(lbCodFuncaoVend,7,185,300,20);
+    adic(txtCodFunc,7,205,80,20);
+    adic(lbDescFuncaoVend,90,185,300,20);
+    adic(txtDescFunc,90,205,350,20);
 
-    adic(lbCodClasComi,7,385,300,20);
-    adic(txtCodClComis,7,405,80,20);
-
-    adic(lbDescClasComi,90,385,300,20);
-    adic(txtDescClComis,90,405,350,20);
+    adic(lbCodClasComi,7,225,300,20);
+    adic(txtCodClComis,7,245,80,20);
+    adic(lbDescClasComi,90,225,300,20);
+    adic(txtDescClComis,90,245,350,20);
 
     
 	lcSetor.setConexao(cn);
 	lcFuncao.setConexao(cn);
 	lcVendedor.setConexao(cn);
+	lcClComis.setConexao(cn);
   }
   public String[] getValores() {
     String[] sRetorno = new String[15];

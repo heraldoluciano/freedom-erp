@@ -255,7 +255,7 @@ public class FVendedor extends FDados implements PostListener {
     	System.out.println("Cidade nula no filtro");
     }
     if (sValores[2].length() > 0) {
-          sWhere += " AND VD.CODEMPCM="+sValores[2];
+          sWhere += " AND VD.CODCLCOMIS="+sValores[2];
           vFiltros.add("CLAS.COMISSÃO = "+sValores[2]);
     }
     if (sValores[3].length() > 0) {
@@ -274,10 +274,10 @@ public class FVendedor extends FDados implements PostListener {
 			 "VD.CODCLCOMIS,"+
 			 "(SELECT CM.DESCCLCOMIS FROM VDCLCOMIS CM WHERE CM.CODEMP=VD.codempcm AND CM.CODFILIAL=VD.codfilialcm AND CM.codclcomis=VD.codclcomis),"+
 			 "VD.CODFUNC,"+
-			 "(SELECT FU.DESCFUNC FROM RHFUNCAO FU WHERE FU.CODEMP=VD.codempfuncvend AND FU.CODFILIAL=VD.codfilialfuncvend AND FU.codfunc=VD.codfunc)"+
+			 "(SELECT FU.DESCFUNC FROM RHFUNCAO FU WHERE FU.CODEMP=VD.codempfu AND FU.CODFILIAL=VD.codfilialfu AND FU.codfunc=VD.codfunc)"+
 			 "FROM vdvendedor VD "+
 			 "WHERE VD.CODEMP=? AND VD.CODFILIAL=? "+sWhere+
-			 " order by"+sValores[0];
+			 " order by "+sValores[0];
 
       PreparedStatement ps = null;
       ResultSet rs = null;
