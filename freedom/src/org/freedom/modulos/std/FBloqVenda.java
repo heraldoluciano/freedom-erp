@@ -79,13 +79,13 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     txtTipoVenda.setTipo(JTextFieldPad.TP_STRING,1,0); 
     txtBloqVenda.setTipo(JTextFieldPad.TP_STRING,1,0);
     
-    lcVenda.add(new GuardaCampo( txtCodVenda, 7, 100, 80, 20, "CodVenda", "N.pedido", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVenda");
-    lcVenda.add(new GuardaCampo( txtDocVenda, 90, 100, 207, 20, "DocVenda", "Documento", false, false, null, JTextFieldPad.TP_INTEGER,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtSerie, 90, 100, 207, 20, "Serie", "Série", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtTipoVenda, 90, 100 ,207 ,20, "TipoVenda", "Tp.venda", false, false, null, JTextFieldPad.TP_STRING,false),"txtTipoVenda");
-    lcVenda.add(new GuardaCampo( txtBloqVenda, 90, 100 ,207 ,20, "BloqVenda", "Bloqueio", false, false, null, JTextFieldPad.TP_STRING,false),"txtBloqVenda");
-    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, 90, 100, 207, 20, "VlrLiqVenda", "V. Liq.", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescVenda");
-    lcVenda.add(new GuardaCampo( txtStatusVenda, 90, 100, 207, 20, "StatusVenda", "Status", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVenda");
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false));
+    lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtBloqVenda, "BloqVenda", "Bloqueio", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. Liq.", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     lcVenda.addCarregaListener(this);
