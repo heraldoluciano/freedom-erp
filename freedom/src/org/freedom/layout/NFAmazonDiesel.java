@@ -193,12 +193,13 @@ public class NFAmazonDiesel extends Leiaute {
              }
              System.out.println(imp.pRow()+" = iItImp - 2 : "+iItImp);  
              
-             imp.say(imp.pRow()+1,60,"TESTANDO");
-             imp.say(imp.pRow()+1,60,"TESTANDO");
-             imp.say(imp.pRow()+1,60,"TESTANDO");
-             imp.say(imp.pRow()+1,60,"TESTANDO");
-             imp.say(imp.pRow()+1,60,"TESTANDO");
-             imp.say(imp.pRow()+1,60,"TESTANDO");
+             imp.say(imp.pRow()+1,60,"*");
+             imp.say(imp.pRow()+1,60,"*");
+             imp.say(imp.pRow()+1,60,"*");
+             imp.say(imp.pRow()+1,60,"*");
+             imp.say(imp.pRow()+1,60,"*");
+             imp.say(imp.pRow()+1,60,"*");
+             
              
              //imprime desconto
              ftVlrDesc = rs.getFloat("VlrDescItVenda");
@@ -225,12 +226,13 @@ public class NFAmazonDiesel extends Leiaute {
 			 //sObs += rs.getString("ObsVenda") != null ? rs.getString("ObsVenda").trim()+'\n' : "";
            }
            else if (imp.pRow() == 35) {
-           	imp.say(imp.pRow()+1,60,"TESTANDO");
-            imp.say(imp.pRow()+1,60,"TESTANDO");
-            imp.say(imp.pRow()+1,60,"TESTANDO");
-            imp.say(imp.pRow()+1,60,"TESTANDO");
-            imp.say(imp.pRow()+1,60,"TESTANDO");
-            imp.say(imp.pRow()+1,60,"TESTANDO");
+           	imp.say(imp.pRow()+1,60,"*");
+            imp.say(imp.pRow()+1,60,"*");
+            imp.say(imp.pRow()+1,60,"*");
+            imp.say(imp.pRow()+1,60,"*");
+            imp.say(imp.pRow()+1,60,"*");
+            imp.say(imp.pRow()+1,60,"*");
+            
             
            	 
              imp.say(imp.pRow()+1,0,"");
