@@ -263,11 +263,8 @@ public class ImprimeOS implements ActionListener {
            Funcoes.mensagemErro(null,"Erro fechando acesso ao arquivo de impressão!\n"+errv.getMessage());
         }
      }
-     
      return tiraCaracEsp(sPagina);
-     
    }
-
    
    private void leProximaPag() {
      while (true) {
@@ -309,7 +306,7 @@ public class ImprimeOS implements ActionListener {
      sCarac[2] = ""+expandido();
      sCarac[3] = ""+retiraExpandido();
      for (int i=0;i<4;i++) {
-        sRetorno = tiraCarac(sCarac[i],sRetorno);
+        sRetorno =  sRetorno.replaceAll(sCarac[i],"");// tiraCarac(sCarac[i],sRetorno);
      }
      sRetorno = tiraCR(sRetorno);
      return sRetorno;      
@@ -319,7 +316,7 @@ public class ImprimeOS implements ActionListener {
       sTexto = sTexto.replaceAll("\\n","\r\n"); //Colocando CR so do lado dos LF
       return sTexto;
    }
-   public String tiraCarac(String sParc, String sTexto) {
+   /*public String tiraCarac(String sParc, String sTexto) {
       String sRetorno = sTexto;
       int iPos = 0;
       while (iPos>-1) {
@@ -329,7 +326,7 @@ public class ImprimeOS implements ActionListener {
         }
       }
       return sRetorno;
-   }
+   }*/
    public int getPagAtual() {
      return iPagAtual;
    }
