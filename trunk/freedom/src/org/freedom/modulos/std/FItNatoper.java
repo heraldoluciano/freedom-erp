@@ -33,15 +33,15 @@ import org.freedom.telas.FDetalhe;
 public class FItNatoper extends FDetalhe {
   private Painel pinCab = new Painel();
   private Painel pinDet = new Painel();
-  private JTextFieldPad txtCodNat = new JTextFieldPad(10);
-  private JTextFieldPad txtDescNat = new JTextFieldPad(40);
-  private JTextFieldPad txtCodItNatoper = new JTextFieldPad(5);
+  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtDescNat = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodItNatoper = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtUFTabICMS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldFK txtAliqTabICMS = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,9,2);
   private ListaCampos lcTabICMS = new ListaCampos(this,"TI");
   public FItNatoper () {
     setTitulo("Cadastro de alíquotas por estado");
-    setAtribos( 50, 50, 365, 300);
+    setAtribos( 50, 50, 430, 300);
 
     txtCodNat.setAtivo(false);
     txtDescNat.setAtivo(false);
@@ -49,15 +49,15 @@ public class FItNatoper extends FDetalhe {
     setListaCampos(lcCampos);
     setAltCab(85);
     setPainel( pinCab, pnCliCab);
-    adicCampo(txtCodNat, 7, 20, 50, 20,"CodNat","Código",JTextFieldPad.TP_STRING,4,0,true,false,null,true);
-    adicCampo(txtDescNat, 60, 20, 220, 20,"DescNat","Descrição",JTextFieldPad.TP_STRING,50,0,false,false,null,true);
+    adicCampo(txtCodNat, 7, 20, 80, 20,"CodNat","Cód.nat.op.",ListaCampos.DB_PK, true);
+    adicCampo(txtDescNat, 90, 20, 220, 20,"DescNat","Descrição da natureza da operação",ListaCampos.DB_SI, true);
     setListaCampos( true, "NATOPER", "LF");
     lcCampos.setReadOnly(true);    
     txtCodNat.setStrMascara("#.###");
 
 
-    lcTabICMS.add(new GuardaCampo( txtUFTabICMS, 7, 100, 80, 20, "UFTI", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodRegrax");
-    lcTabICMS.add(new GuardaCampo( txtAliqTabICMS, 90, 100, 207, 20, "ALIQTI", "Alíquota", false, false, null, JTextFieldPad.TP_DECIMAL,false),"txtDescRegrax");
+    lcTabICMS.add(new GuardaCampo( txtUFTabICMS, "UFTI", "Cód.alq.", ListaCampos.DB_PK, true));
+    lcTabICMS.add(new GuardaCampo( txtAliqTabICMS, "ALIQTI", "Alíquota", ListaCampos.DB_SI, false));
     lcTabICMS.montaSql(false, "TABICMS", "LF");
     lcTabICMS.setQueryCommit(false);
     lcTabICMS.setReadOnly(true);
@@ -68,9 +68,9 @@ public class FItNatoper extends FDetalhe {
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
-    adicCampo(txtCodItNatoper, 7, 20, 60, 20,"CodItNatoper","Item",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtUFTabICMS, 70, 20, 77, 20, "UFTI", "UF", JTextFieldPad.TP_STRING, 2, 0, false, true, txtAliqTabICMS, true);
-    adicDescFK(txtAliqTabICMS, 150, 20, 150, 20, "ALIQTI", "e alíquota", JTextFieldPad.TP_DECIMAL, 9, 2);
+    adicCampo(txtCodItNatoper, 7, 20, 60, 20,"CodItNatoper","Item", ListaCampos.DB_PK, true);
+    adicCampo(txtUFTabICMS, 70, 20, 77, 20, "UFTI", "UF", ListaCampos.DB_FK, txtAliqTabICMS, true);
+    adicDescFK(txtAliqTabICMS, 150, 20, 150, 20, "ALIQTI", "Alíquota");
     setListaCampos( true, "ITNATOPER", "LF");
     lcDet.setQueryInsert(false);
 

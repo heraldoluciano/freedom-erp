@@ -65,13 +65,13 @@ public class FManutComis extends FFilho implements ActionListener {
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JRadioGroup rgEmitRel = null; 
-  private JTextFieldPad txtDataini = new JTextFieldPad();
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
-  private JTextFieldPad txtCodVend = new JTextFieldPad();
-  private JTextFieldFK txtDescVend = new JTextFieldFK();
-  private JTextFieldPad txtTotComi = new JTextFieldPad();
-  private JTextFieldPad txtTotLib = new JTextFieldPad();
-  private JTextFieldPad txtTotPg = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtTotComi = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,3);
+  private JTextFieldPad txtTotLib = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,3);
+  private JTextFieldPad txtTotPg = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,3);
   private JCheckBoxPad cbComPag = new JCheckBoxPad("Pagas","S","N");
   private JCheckBoxPad cbLiberadas = new JCheckBoxPad("Liberadas","S","N");
   private JCheckBoxPad cbNLiberadas = new JCheckBoxPad("Não liberadas","S","N");
@@ -112,20 +112,13 @@ public class FManutComis extends FFilho implements ActionListener {
     Funcoes.setBordReq(txtDataini);
     Funcoes.setBordReq(txtDatafim);
     Funcoes.setBordReq(txtCodVend);
-    
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtTotComi.setTipo(JTextFieldPad.TP_DECIMAL,10,3);
-    txtTotLib.setTipo(JTextFieldPad.TP_DECIMAL,10,3);
-    txtTotPg.setTipo(JTextFieldPad.TP_DECIMAL,10,3);
+   
     txtTotComi.setAtivo(false);
     txtTotLib.setAtivo(false);
     txtTotPg.setAtivo(false);
     
-    txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-    lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, txtDescVend, JTextFieldPad.TP_INTEGER,false),"txtCodVendx");
-    lcVend.add(new GuardaCampo( txtDescVend, 7, 100, 80, 20, "NomeVend", "Descrição do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVendx");
+    lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.repr.", ListaCampos.DB_PK, txtDescVend, false));
+    lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Descrição do representante", ListaCampos.DB_SI, false));
     lcVend.montaSql(false,"VENDEDOR", "VD");
     lcVend.setReadOnly(true);
 	txtCodVend.setPK(true);
