@@ -37,15 +37,15 @@ public class OrcMCraft extends LeiauteGR {
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,15);
 	private Font fnCabCliIta = new Font("Times New Roman",Font.ITALIC,14);
 	Vector vParamOrc = new Vector();
-	final int iPosIniItens = 400;
-	final int iPosMaxItens = 740;
+	final int iPosIniItens = 360;
+	final int iPosMaxItens = 740; 
 	final int iSaltoProd = 13;
-	int iYPosProd=0;
+	int iYPosProd=0; 
 	int iYObsVal=0;
 	BigDecimal bigTot = new BigDecimal(0);
 	String sDescPlan;
 	public void montaG() {
-		montaRel();
+		montaRel(); 
 	}
 
 	private int impLabelSilabas(String sTexto, int iSalto,int iMargem, int iLargura, int iY, ResultSet rs) {	
@@ -97,17 +97,17 @@ public class OrcMCraft extends LeiauteGR {
 	  
 	    iY = impLabelSilabas(sDescPlan,15,230,230,iY,rs);   	
 	              	  
-	    iY+=20;
+	    iY+=15;
 	    
 	    iY = impLabelSilabas("    A validade do orçamento é de 15 dias.Após esta data, os preços e " +
 	    		"demais condições, ficarão sujeitos a alterações, por ocasião da confirmação " +
 	    		"do pedido.",15,76,500,iY,rs);
 	    
-	    iY+=40;
+	    iY+=30;
 	  
 	    iY = impLabelSilabas("Atenciosamente,",15,260,200,iY,rs);
 	   
-	    iY+=40;
+	    iY+=30;
 	  
 	    setFonte(fnCabCliIta);
 	    drawLinha(230,iY,405,iY);
@@ -229,41 +229,40 @@ public class OrcMCraft extends LeiauteGR {
 	private void montaCab(ResultSet rs) {
 	  try {		  
 
-//		Informações do paciente
 		setFonte(fnTitulo);
 		drawTexto("ORÇAMENTO",200,120);
 				
 		setFonte(fnCabCliIta); 
-		drawTexto(rs.getString("CidFilial").trim()+", "+Funcoes.dateToStrExtenso(new Date()),60,180);
+		drawTexto(rs.getString("CidFilial").trim()+", "+Funcoes.dateToStrExtenso(new Date()),60,160);
 //      Linha 1
 
         setFonte(fnTitulo);
-		drawTexto(""+rs.getInt("CodOrc"),440,200);
+		drawTexto(""+rs.getInt("CodOrc"),440,160);
 
 		setFonte(fnCabCliIta);
-		drawTexto("À",60,220);
+		drawTexto("À",60,180);
 		setFonte(fnCabCliIta);
-		drawTexto(rs.getString("RazCli") !=null ? rs.getString("RazCli").trim() : "",60,235);
+		drawTexto(rs.getString("RazCli") !=null ? rs.getString("RazCli").trim() : "",60,195);
 
 //		Linha 2		
 		setFonte(fnCabCliIta);
-		drawTexto("A/C:",60,250);
+		drawTexto("A/C:",60,210);
 		setFonte(fnCabCliIta);
-		drawTexto("Sr(a) : "+rs.getString("ContCli"),101,250);
+		drawTexto("Sr(a) : "+rs.getString("ContCli"),101,210);
 		
 		setFonte(fnCabCliIta);
-		drawTexto("Fone : ",60,265);	
+		drawTexto("Fone : ",60,225);	
 		drawTexto(Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####")+
-				"    Fax.:  "+Funcoes.setMascara(rs.getString("FaxCli"),"####-####") ,101,265);
+				"    Fax.:  "+Funcoes.setMascara(rs.getString("FaxCli"),"####-####") ,101,225);
 						
         setFonte(fnCabCliIta);
-        drawTexto("Prezado(a) Senhor(a);",60,315);
+        drawTexto("Prezado(a) Senhor(a);",60,260);
         
         setFonte(fnCabCliIta);
         
         impLabelSilabas("Conforme a solitação de V.Sa., temos o máximo prazer de passar " +
         		"às suas mãos a nossa oferta, valendo as condições gerais de venda e " +
-				"fornecimento conforme abaixo descriminados",15,60,500,345,rs);
+				"fornecimento conforme abaixo descriminados",15,60,500,290,rs);
         		
 	  }			
 	  catch(SQLException err) {
