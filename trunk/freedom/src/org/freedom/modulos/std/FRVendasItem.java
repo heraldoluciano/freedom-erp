@@ -84,8 +84,8 @@ public class FRVendasItem extends FRelatorio {
 
 		txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
 		txtDescGrup.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
-		lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
+		lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodGrup");
+		lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrup");
 		txtCodGrup.setTabelaExterna(lcGrup);
 		txtCodGrup.setNomeCampo("CodGrup");
 		txtCodGrup.setFK(true);
@@ -98,8 +98,8 @@ public class FRVendasItem extends FRelatorio {
 		txtCodMarca.setTipo(JTextFieldPad.TP_STRING,6,0);
 		txtDescMarca.setTipo(JTextFieldPad.TP_STRING,40,0);
 		txtSiglaMarca.setTipo(JTextFieldPad.TP_STRING,20,0);
-		lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
-		lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
+		lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodMarca");
+		lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarca");
 		lcMarca.add(new GuardaCampo( txtSiglaMarca, 90, 100, 207, 20, "SiglaMarca", "Sigla", false, false, null, JTextFieldPad.TP_STRING,false),"txtSiglaMarca");
 		txtCodMarca.setTabelaExterna(lcMarca);
 		txtCodMarca.setNomeCampo("CodMarca");
@@ -109,8 +109,8 @@ public class FRVendasItem extends FRelatorio {
  
 		txtCodVend.setTipo(JTextFieldPad.TP_INTEGER,10,0);
 		txtDescVend.setTipo(JTextFieldPad.TP_STRING,40,0);
-		lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
-		lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
+		lcVend.add(new GuardaCampo( txtCodVend, 7, 100, 80, 20, "CodVend", "Cód.repr.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodVend");
+		lcVend.add(new GuardaCampo( txtDescVend, 90, 100, 207, 20, "NomeVend", "Nome do representante", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescVend");
 		txtCodVend.setTabelaExterna(lcVend);
 		txtCodVend.setNomeCampo("CodVend");
 		txtCodVend.setFK(true);
@@ -130,8 +130,8 @@ public class FRVendasItem extends FRelatorio {
 		
 		 txtCodCli.setTipo(JTextFieldPad.TP_STRING,14,0);
 		 txtRazCli.setTipo(JTextFieldPad.TP_STRING,40,0);
-		 lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
-		 lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
+		 lcCliente.add(new GuardaCampo( txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodCli");
+		 lcCliente.add(new GuardaCampo( txtRazCli, 90, 100, 207, 20, "RazCli", "Razão social do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtRazCli");
 		 txtCodCli.setTabelaExterna(lcCliente);
 		 txtCodCli.setNomeCampo("CodCli");
 		 txtCodCli.setFK(true);
@@ -150,19 +150,23 @@ public class FRVendasItem extends FRelatorio {
 		adic(new JLabel("Até:"),140,30,30,20);
 		adic(txtDatafim,170,30,100,20);
 		adic(lbLinha2,7,60,272,2);
-		adic(new JLabel("Código e nome do representante"),7,68,200,20);
+		adic(new JLabel("Cód.repr."),7,68,200,20);
 		adic(txtCodVend,7,88,70,20);
+		adic(new JLabel("Nome do representante"),80,68,200,20);
 		adic(txtDescVend,80,88,200,20);
-		adic(new JLabel("Código e descrição do grupo"),7,108,200,20);
-		adic(txtCodGrup,7,128,90,20);
-		adic(txtDescGrup,100,128,180,20);
-		adic(new JLabel("Código e descrição da marca"),7,148,200,20);
-		adic(txtCodMarca,7,168,90,20);
-		adic(txtDescMarca,100,168,180,20);
+		adic(new JLabel("Cód.grupo"),7,108,200,20);
+		adic(txtCodGrup,7,128,70,20);
+		adic(new JLabel("Descrição do grupo"),80,108,200,20);
+		adic(txtDescGrup,80,128,200,20);
+		adic(new JLabel("Cód.marca"),7,148,200,20);
+		adic(txtCodMarca,7,168,70,20);
+		adic(new JLabel("Descrição da marca"),80,148,200,20);
+		adic(txtDescMarca,80,168,200,20);
 		
-		adic(new JLabel("Código e descrição do Cliente"),7,188,200,20);
-		adic(txtCodCli,7,208,90,20);
-		adic(txtRazCli,100,208,180,20);
+		adic(new JLabel("Cód.cli."),7,188,200,20);
+		adic(txtCodCli,7,208,70,20);
+		adic(new JLabel("Razão social do cliente"),80,188,200,20);
+		adic(txtRazCli,80,208,200,20);
 		
 		 adic(cbListaFilial, 5, 240, 250, 20 );
 		
@@ -319,11 +323,11 @@ public class FRVendasItem extends FRelatorio {
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"| Codigo ");
-					imp.say(imp.pRow()+0,15,"| Desc. Produto");
+					imp.say(imp.pRow()+0,1,"| Cod.prod. ");
+					imp.say(imp.pRow()+0,15,"| Desc.produto");
 					imp.say(imp.pRow()+0,69,"| Unid. ");
 					imp.say(imp.pRow()+0,77,"|   Quantidade ");
-					imp.say(imp.pRow()+0,100,"| Vlr. Tot. Item. ");
+					imp.say(imp.pRow()+0,100,"| Vlr.tot.item. ");
 					imp.say(imp.pRow()+0,137,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
@@ -344,9 +348,9 @@ public class FRVendasItem extends FRelatorio {
 			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|");
-			imp.say(imp.pRow()+0,30,"Quant. Vendida -> ");
+			imp.say(imp.pRow()+0,30,"Quant. vendida -> ");
 			imp.say(imp.pRow()+0,50,Funcoes.copy(dQtd+"",0,6));
-			imp.say(imp.pRow()+0,60,"Valor Vendido -> ");
+			imp.say(imp.pRow()+0,60,"Valor vendido -> ");
 			imp.say(imp.pRow()+0,78,Funcoes.strDecimalToStrCurrency(15,2,dVlr+""));
 			imp.say(imp.pRow()+0,136,"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());

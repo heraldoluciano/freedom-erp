@@ -38,8 +38,8 @@ public class FSetor extends FDados implements ActionListener{
   public FSetor () {
     setTitulo("Cadastro de Setor");
     setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodSetor, 7, 20, 50, 20,"CodSetor","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescSetor, 60, 20, 250, 20,"DescSetor","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodSetor, 7, 20, 70, 20,"CodSetor","Cód.setor",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescSetor, 80, 20, 250, 20,"DescSetor","Descrição do setor",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     setListaCampos( true, "SETOR", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
