@@ -4,7 +4,7 @@
  *
  * Projeto: Freedom <BR>
  * Pacote: leiautes <BR> 
- * Classe: @(#)NFComCardoso.java <BR>
+ * Classe: @(#)NFDecar.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -15,7 +15,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Layout da nota fiscal para a empresa Comercial Cardoso.
+ * Layout da nota fiscal para a empresa Decar Auto Peças.
  */
 
 package org.freedom.layout;
@@ -30,7 +30,7 @@ import javax.swing.JOptionPane;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.funcoes.Funcoes;
 
-public class NFComCardoso extends Leiaute {
+public class NFDecar extends Leiaute {
   public boolean imprimir(ResultSet rs,ResultSet rsRec,ResultSet rsInfoAdic,ImprimeOS imp) {
     GregorianCalendar cHora = new GregorianCalendar();
     boolean bRetorno;
@@ -97,26 +97,26 @@ public class NFComCardoso extends Leiaute {
 //Cabeçario da nota  
          if (imp.pRow()==0) {           
 	       if (bEntrada){
+		       imp.say(imp.pRow()+1,0,"");
+	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	           imp.say(imp.pRow()+0,103,"X");
 	       }
            else{
+           	   imp.say(imp.pRow()+1,0,"");
+               imp.say(imp.pRow()+1,0,"");
            	   imp.say(imp.pRow()+1,0,""+imp.comprimido());
            	   imp.say(imp.pRow()+0,91,"X");
            }
 	       
 	       imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,124,rs.getString("DocVenda") != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
-           
-	       
-	       imp.say(imp.pRow()+1,0,"");
+           	
            imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");        
            imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());      
-           
+           imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
            imp.say(imp.pRow()+0,6,sNat[0].substring(0,42));
-           imp.say(imp.pRow()+0,36,sNat[1]);  
+           imp.say(imp.pRow()+0,43,sNat[1]);  
            
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+1,0,""+imp.comprimido());   
@@ -124,10 +124,10 @@ public class NFComCardoso extends Leiaute {
            imp.say(imp.pRow()+0,4,sValsCli[1]);
            imp.say(imp.pRow()+0,90,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
            imp.say(imp.pRow()+0,124,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda"))); 
-           
+           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,4,Funcoes.copy(rs.getString("EndCli"),0,30).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
-           imp.say(imp.pRow()+0,66,rs.getString("BairCli"));
+           imp.say(imp.pRow()+0,68,rs.getString("BairCli"));
            imp.say(imp.pRow()+0,102,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
            
            sImpDtSaidaNat = rs.getString("IMPDTSAIDANAT");           
@@ -185,10 +185,10 @@ public class NFComCardoso extends Leiaute {
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
          
 //IMPRIME CALCULO DO IMPOSTO
-         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 23)) {
+         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 24)) {
            if (iItImp == rs.getInt(1)) {
              int iRow = imp.pRow();
-             for (int i=0; i<(23-iRow);i++) {
+             for (int i=0; i<(24-iRow);i++) {
                  imp.say(imp.pRow()+1,0,"");
              }
              System.out.println(imp.pRow()+" = iItImp - 2 : "+iItImp);
@@ -215,7 +215,7 @@ public class NFComCardoso extends Leiaute {
              iItImp = 0;
 			 //sObs += rs.getString("ObsVenda") != null ? rs.getString("ObsVenda").trim()+'\n' : "";
            }
-           else if (imp.pRow() == 23) { 
+           else if (imp.pRow() == 24) { 
            	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,6,"***************");
