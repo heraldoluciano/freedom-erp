@@ -876,7 +876,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     String sCodpesqant = "";
     String sOrdem = "";
     String sFrom = "";
-    String[] sValores; 
+    String[] sValores;
+    Vector vObs = null;
     imp.setTitulo("Relatório de Clientes");
     imp.montaCab();
     DLRCliente dl = new DLRCliente(this,con);
@@ -892,7 +893,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     else
     	sOrdem = "2,3,5";
     if (sValores[1].equals("S")) {
-      sObs = ",OBSCLI";
+      sObs = ",C1.OBSCLI";
     }
     if (sValores[2].trim().length() > 0) {
       sWhere += " AND C1.RAZCLI >= '"+sValores[2]+"'";
@@ -1076,7 +1077,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       }
     }
     else if (dl.getValores()[7].equals("R")) {
-      sSQL = "SELECT C1.CODCLI,C1.RAZCLI,C1.ENDCLI,C1.CIDCLI,C1.FONECLI,C1.CODPESQ FROM VDCLIENTE C1" +sFrom+
+      sSQL = "SELECT C1.CODCLI,C1.RAZCLI,C1.ENDCLI,C1.CIDCLI,C1.FONECLI,C1.CODPESQ"+sObs+
+	        " FROM VDCLIENTE C1" +sFrom+
       		" WHERE C1.CODEMP=? AND C1.CODFILIAL=? "+sWhere+" ORDER BY "+dl.getValores()[0];
       System.out.println("sql é "+sSQL);
       PreparedStatement ps = null;
@@ -1143,6 +1145,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           imp.say(imp.pRow()+0,117,"|");
           imp.say(imp.pRow()+0,120,rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####") : "");
           imp.say(imp.pRow()+0,136,"|");
+          if (!sObs.equals("")) {
+          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsCli")),118);
+          	 for (int i=0; i<vObs.size(); i++) {
+                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                imp.say(imp.pRow()+0,0,"|");
+                imp.say(imp.pRow()+0,14,vObs.elementAt(i).toString());
+                imp.say(imp.pRow()+0,136,"|");
+                if (imp.pRow()>=linPag) {
+                    imp.incPags();
+                    imp.eject();
+                }
+          	 }
+          }
           if (imp.pRow()>=linPag) {
             imp.incPags();
             imp.eject();

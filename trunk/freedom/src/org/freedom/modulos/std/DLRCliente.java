@@ -79,10 +79,12 @@ public class DLRCliente extends FFDialogo {
     setAtribos(460,475);
     vLabs.addElement("Código");
     vLabs.addElement("Razão");
+    vLabs.addElement("Cidade");
     vVals.addElement("C");
-    vVals.addElement("D");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
-    rgOrdem.setVlrString("D");
+    vVals.addElement("R");
+    vVals.addElement("I");
+    rgOrdem = new JRadioGroup(1,3,vLabs,vVals);
+    rgOrdem.setVlrString("R");
 
     vLabsModo.addElement("Resumido");
     vLabsModo.addElement("Completo");
@@ -163,10 +165,12 @@ public class DLRCliente extends FFDialogo {
   }
   public String[] getValores() {
     String[] sRetorno = new String[15];
-    if (rgOrdem.getVlrString().compareTo("C") == 0 )
+    if (rgOrdem.getVlrString().equals("C"))
       sRetorno[0] = "C1.CODCLI";
-    else if (rgOrdem.getVlrString().compareTo("D") == 0 )
+    else if (rgOrdem.getVlrString().equals("R"))
       sRetorno[0] = "C1.RAZCLI";
+    else if (rgOrdem.getVlrString().equals("I"))
+      sRetorno[0] = "C1.CIDCLI, C1.RAZCLI";
     sRetorno[1] = cbObs.getVlrString();
     sRetorno[2] = txtDe.getText();
     sRetorno[3] = txtA.getText();
