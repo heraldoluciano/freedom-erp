@@ -69,22 +69,22 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     setTitulo("Cadastro de Planos de Pagamento");
     setAtribos( 50, 50, 700, 350);
     
-    lcConta.add(new GuardaCampo( txtNumConta, "NumConta", "N.Conta", ListaCampos.DB_PK, false));
-    lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição", ListaCampos.DB_SI, false));
+    lcConta.add(new GuardaCampo( txtNumConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false));
+    lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI, false));
     lcConta.montaSql(false, "CONTA", "FN");
     lcConta.setQueryCommit(false);
     lcConta.setReadOnly(true);
     txtNumConta.setTabelaExterna(lcConta);
     
-    lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "C.Plan.", ListaCampos.DB_PK, false));
-    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição", ListaCampos.DB_SI, false));
+    lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.planj.", ListaCampos.DB_PK, false));
+    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false));
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
     lcPlan.setQueryCommit(false);
     lcPlan.setReadOnly(true);
     txtCodPlan.setTabelaExterna(lcPlan);
     
-    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "C.Plan.", ListaCampos.DB_PK, false));
-    lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição", ListaCampos.DB_SI, false));
+    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.planj.", ListaCampos.DB_PK, false));
+    lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do planejamento", ListaCampos.DB_SI, false));
     lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano", ListaCampos.DB_PK, false));
 	lcCC.setWhereAdic("NIVELCC=10");
     lcCC.montaSql(false, "CC", "FN");
@@ -97,15 +97,15 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     pinCab = new Painel();
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
-    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Código",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
+    adicCampo(txtCodPlanoPag, 7, 20, 70, 20,"CodPlanoPag","Cód.p.pag.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
+    adicCampo(txtDescPlanoPag, 80, 20, 217, 20,"DescPlanoPag","Descrição do plano de pagamento",JTextFieldPad.TP_STRING,40,0,false,false,null,true);
     adicCampo(txtNumParc, 300, 20, 67, 20,"ParcPlanoPag","Nº Parcs.",JTextFieldPad.TP_INTEGER,8,0,false,false,null,true);
     adicCampo(txtNumConta, 370, 20, 97, 20,"NumConta","N.Conta",ListaCampos.DB_FK,false);
-    adicDescFK(txtDescConta,470,20,200,20,"DescConta","descrição da conta",JTextFieldPad.TP_STRING,50,0);
-    adicCampo(txtCodPlan, 7, 60, 100, 20,"CodPlan","Cód. Planejamento",ListaCampos.DB_FK,false);
-    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","descrição do planejamento",JTextFieldPad.TP_STRING,50,0);
-    adicCampo(txtCodCC, 310, 60, 97, 20,"CodCC","Centro de Custo",ListaCampos.DB_FK,false);
-    adicDescFK(txtDescCC,410,60,200,20,"DescCC","descrição do centro de custo",JTextFieldPad.TP_STRING,50,0);
+    adicDescFK(txtDescConta,470,20,200,20,"DescConta","Descrição da conta",JTextFieldPad.TP_STRING,50,0);
+    adicCampo(txtCodPlan, 7, 60, 100, 20,"CodPlan","Cód.planj.",ListaCampos.DB_FK,false);
+    adicDescFK(txtDescPlan,110,60,197,20,"DescPlan","Descrição do planejamento",JTextFieldPad.TP_STRING,50,0);
+    adicCampo(txtCodCC, 310, 60, 97, 20,"CodCC","Centro de custo",ListaCampos.DB_FK,false);
+    adicDescFK(txtDescCC,410,60,200,20,"DescCC","Descrição do centro de custo",JTextFieldPad.TP_STRING,50,0);
     adicCampoInvisivel(txtAnoCC, "AnoCC","Ano.C.C.",JTextFieldPad.TP_STRING,4,0,false,false,null,false);
     adicDB(cbAutoBaixa, 7, 80, 300, 20,"AutoBaixaPlanoPag","",JTextFieldPad.TP_STRING,false);
     setListaCampos( true, "PLANOPAG", "FN");

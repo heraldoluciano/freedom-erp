@@ -83,9 +83,9 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
         txtCodProd.setTipo(JTextFieldPad.TP_INTEGER,8,0);
         txtDescProd.setTipo(JTextFieldPad.TP_STRING,40,0);
         txtRefProd.setTipo(JTextFieldPad.TP_STRING,13,0);
-        lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "CodProd", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProd");
+        lcProd.add(new GuardaCampo( txtCodProd, 7, 100, 80, 20, "CodProd", "Cód.prod", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodProd");
         lcProd.add(new GuardaCampo( txtRefProd, 90, 100, 100, 20, "RefProd", "Referência", false, false, null, JTextFieldPad.TP_STRING,false),"txtRefProd");
-        lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
+        lcProd.add(new GuardaCampo( txtDescProd, 90, 100, 207, 20, "DescProd", "Descrição do produto", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescProd");
         txtCodProd.setTabelaExterna(lcProd);
         txtCodProd.setNomeCampo("CodProd");
         txtCodProd.setFK(true);
@@ -115,8 +115,9 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
         
         pin.adic(new JLabel("Apartir de:"),7,160,70,20);
         pin.adic(txtDataini,80,160,107,20);
-        pin.adic(new JLabel("Código e descrição do produto"),7,180,250,20);
+        pin.adic(new JLabel("Cód.prod."),7,180,250,20);
         pin.adic(txtCodProd,7,200,70,20);
+        pin.adic(new JLabel("Descrição do produto"),80,180,250,20);
         pin.adic(txtDescProd,80,200,220,20);
 
         /*pin.adic(new JLabel("Código e descrição do produto final"),7,200,250,20);

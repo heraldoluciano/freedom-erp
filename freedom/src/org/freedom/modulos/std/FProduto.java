@@ -211,48 +211,48 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     btExp.setToolTipText("Exportar produto");
     
     txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
-    lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
-    lcMoeda.add(new GuardaCampo( txtDescMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+    lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Cód.moeda", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
+    lcMoeda.add(new GuardaCampo( txtDescMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição da moeda", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
     lcMoeda.montaSql(false, "MOEDA", "FN");    
     lcMoeda.setReadOnly(true);
     lcMoeda.setQueryCommit(false);
     txtCodMoeda.setTabelaExterna(lcMoeda);
     
     txtCodUnid.setTipo(JTextFieldPad.TP_STRING,8,0);
-    lcUnid.add(new GuardaCampo( txtCodUnid, 7, 100, 80, 20, "CodUnid", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
-    lcUnid.add(new GuardaCampo( txtDescUnid, 90, 100, 207, 20, "DescUnid", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+    lcUnid.add(new GuardaCampo( txtCodUnid, 7, 100, 80, 20, "CodUnid", "Cód.und.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
+    lcUnid.add(new GuardaCampo( txtDescUnid, 90, 100, 207, 20, "DescUnid", "Descrição da unidade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
     lcUnid.montaSql(false, "UNIDADE", "EQ");    
     lcUnid.setReadOnly(true);
     lcUnid.setQueryCommit(false);
     txtCodUnid.setTabelaExterna(lcUnid);
     
     txtCodMarca.setTipo(JTextFieldPad.TP_STRING,8,0);
-    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMarcax");
-    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+    lcMarca.add(new GuardaCampo( txtCodMarca, 7, 100, 80, 20, "CodMarca", "Cód.marca", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMarcax");
+    lcMarca.add(new GuardaCampo( txtDescMarca, 90, 100, 207, 20, "DescMarca", "Descrição da marca", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
     lcMarca.montaSql(false, "MARCA", "EQ");    
     lcMarca.setReadOnly(true);
     lcMarca.setQueryCommit(false);
     txtCodMarca.setTabelaExterna(lcMarca);
 
     txtCodFisc.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcFisc.add(new GuardaCampo( txtCodFisc, 7, 100, 80, 20, "CodFisc", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodFiscx");
-    lcFisc.add(new GuardaCampo( txtDescFisc, 90, 100, 207, 20, "DescFisc", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFiscx");
+    lcFisc.add(new GuardaCampo( txtCodFisc, 7, 100, 80, 20, "CodFisc", "Cód.fisc.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodFiscx");
+    lcFisc.add(new GuardaCampo( txtDescFisc, 90, 100, 207, 20, "DescFisc", "Descrição fiscal", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescFiscx");
     lcFisc.montaSql(false, "CLFISCAL", "LF");
     lcFisc.setReadOnly(true);
     lcFisc.setQueryCommit(false);
     txtCodFisc.setTabelaExterna(lcFisc);
     
     txtCodGrup.setTipo(JTextFieldPad.TP_STRING,14,0);
-    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodGrupx");
-    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
+    lcGrup.add(new GuardaCampo( txtCodGrup, 7, 100, 80, 20, "CodGrup", "Cód.grupo", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodGrupx");
+    lcGrup.add(new GuardaCampo( txtDescGrup, 90, 100, 207, 20, "DescGrup", "Descrição do grupo", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescGrupx");
     lcGrup.montaSql(false, "GRUPO", "EQ");    
     lcGrup.setReadOnly(true);
     lcGrup.setQueryCommit(false);
     txtCodGrup.setTabelaExterna(lcGrup);
     
     txtCodAlmox.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-    lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 100, 80, 20, "CodAlmox", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodAlmoxx");
-    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 207, 20, "DescAlmox", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxx");
+    lcAlmox.add(new GuardaCampo( txtCodAlmox, 7, 100, 80, 20, "CodAlmox", "Cód.almox.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodAlmoxx");
+    lcAlmox.add(new GuardaCampo( txtDescAlmox, 90, 100, 207, 20, "DescAlmox", "Descrição do almoxerifado", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescAlmoxx");
     lcAlmox.montaSql(false, "ALMOX", "EQ");
     lcAlmox.setReadOnly(true);
     lcAlmox.setQueryCommit(false);
@@ -267,7 +267,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     vLabsTipo.addElement("Comércio");
     vLabsTipo.addElement("Serviço");
 	vLabsTipo.addElement("Fabricação");
-	vLabsTipo.addElement("Mat. Prima");
+	vLabsTipo.addElement("Mat.prima");
 	vLabsTipo.addElement("Patrimonio");
 	vLabsTipo.addElement("Consumo");
 	rgTipo = new JRadioGroup(6,1,vLabsTipo,vValsTipo);
@@ -318,42 +318,42 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
          
   }
   private void montaTela() {
-    adicCampo(txtCodProd, 7, 20, 70, 20, "CodProd", "Código", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+    adicCampo(txtCodProd, 7, 20, 70, 20, "CodProd", "Cód.prod.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
     adicCampo(txtRefProd, 80, 20, 70, 20, "RefProd", "Referência", JTextFieldPad.TP_STRING, 13, 0, false, false, null,true);
-    adicCampo(txtDescProd, 153, 20, 360, 20, "DescProd", "Descrição", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
+    adicCampo(txtDescProd, 153, 20, 360, 20, "DescProd", "Descrição do produto", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
     adicDB(rgTipo, 520, 20, 130, 140, "TipoProd", "Fluxo:",JTextFieldPad.TP_STRING,true);
     adicCampo(txtDescAuxProd, 7, 60, 250, 20, "DescAuxProd", "Descrição auxiliar", JTextFieldPad.TP_STRING, 40, 0, false, false, null,false);
-    adicCampo(txtCodMoeda, 259, 60, 70, 20, "CodMoeda", "Cód.Moeda", JTextFieldPad.TP_STRING, 4, 0, false, true, null,true);
-    adicDescFK(txtDescMoeda, 332, 60, 181, 20, "SingMoeda", "e descrição da moeda", JTextFieldPad.TP_STRING, 20, 0);
-    adicCampo(txtCodBarProd, 7, 100, 125, 20, "CodBarProd", "Codigo de barras", JTextFieldPad.TP_STRING, 13, 0, false, false, null,true);
-    adicCampo(txtCodFabProd, 135, 100, 125, 20, "CodFabProd", "Codigo do fabricante", JTextFieldPad.TP_STRING, 13, 0, false, false, null,true);
-    adicCampo(txtCodAlmox, 263, 100, 70, 20, "CodAlmox", "Cód.Almox.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, null,true);
-    adicDescFK(txtDescAlmox, 336, 100, 176, 20, "DescAlmox", "e descrição do almoxarifado", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodMoeda, 259, 60, 70, 20, "CodMoeda", "Cód.moeda", JTextFieldPad.TP_STRING, 4, 0, false, true, null,true);
+    adicDescFK(txtDescMoeda, 332, 60, 181, 20, "SingMoeda", "Descrição da moeda", JTextFieldPad.TP_STRING, 20, 0);
+    adicCampo(txtCodBarProd, 7, 100, 125, 20, "CodBarProd", "Código de barras", JTextFieldPad.TP_STRING, 13, 0, false, false, null,true);
+    adicCampo(txtCodFabProd, 135, 100, 125, 20, "CodFabProd", "Código do fabricante", JTextFieldPad.TP_STRING, 13, 0, false, false, null,true);
+    adicCampo(txtCodAlmox, 263, 100, 70, 20, "CodAlmox", "Cód.almox.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, null,true);
+    adicDescFK(txtDescAlmox, 336, 100, 176, 20, "DescAlmox", "Descrição do almoxarifado", JTextFieldPad.TP_STRING, 40, 0);
     adicCampo(txtPesoBrutProd, 7, 140, 90, 20, "PesoBrutProd", "Peso bruto", JTextFieldPad.TP_DECIMAL, 10, 3, false, false, null,true);
     adicCampo(txtPesoLiqProd, 100, 140, 87, 20, "PesoLiqProd", "Peso líquido", JTextFieldPad.TP_DECIMAL, 10, 3, false, false, null,true);
     adicCampo(txtPrecoBaseProd, 190, 140, 97, 20, "PrecoBaseProd", "Preço base", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
     adicCampo(txtComisProd, 290, 140, 77, 20, "ComisProd", "% Comissão", JTextFieldPad.TP_DECIMAL, 6, 2, false, false, null,true);
-    adicCampo(txtQtdMinProd, 370, 140, 67, 20, "QtdMinProd", "Qtd.Min.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
-    adicCampo(txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.Máx.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
-    adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local Armz.", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
+    adicCampo(txtQtdMinProd, 370, 140, 67, 20, "QtdMinProd", "Qtd.min.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
+    adicCampo(txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
+    adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local armz.", JTextFieldPad.TP_STRING, 15, 0, false, false, null, false);
     adicCampo(txtCustoMPMProd, 110, 180, 87, 20, "CustoMPMProd", "Custo MPM", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     adicCampo(txtCustoPEPSProd, 200, 180, 87, 20, "CustoPEPSProd", "Custo PEPS", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     adicCampo(txtSldProd, 290, 180, 87, 20, "SldProd", "Saldo", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo Res.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldConsigProd, 470, 180, 87, 20, "SldConsigProd", "Saldo Consig.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldLiqProd, 560, 180, 90, 20, "SldLiqProd", "Saldo Liq.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo res.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adicCampo(txtSldConsigProd, 470, 180, 87, 20, "SldConsigProd", "Saldo consig.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adicCampo(txtSldLiqProd, 560, 180, 90, 20, "SldLiqProd", "Saldo liq.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     adicDB(cbLote, 7, 220, 70, 20, "CLoteProd", "Estoque",JTextFieldPad.TP_STRING,true);
     adicDB(cbAtivo, 80, 220, 67, 20, "AtivoProd", "Atividade",JTextFieldPad.TP_STRING,true);
-    adicDB(cbVerif, 150, 220, 67, 20, "VerifProd", "Abaixo Custo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtDtUltCpProd, 220, 220, 97, 20, "DtUltCpProd", "Ultima Compra", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
-    adicCampo(txtCodUnid, 320, 220, 77, 20, "CodUnid", "Cód.Unid.", JTextFieldPad.TP_STRING, 8, 0, false, true, txtDescUnid,true);
-    adicDescFK(txtDescUnid, 400, 220, 250, 20, "DescUnid", "e descrição da unidade", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtCodFisc, 7, 260, 80, 20, "CodFisc", "Cód.Fisc.", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescFisc,true);
-    adicDescFK(txtDescFisc, 90, 260, 237, 20, "DescFisc", "e descrição da classificação fiscal", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodMarca, 330, 260, 77, 20, "CodMarca", "Cód.Marca", JTextFieldPad.TP_STRING, 6, 0, false, true, txtDescMarca,true);
-    adicDescFK(txtDescMarca, 410, 260, 240, 20, "DescMarca", "e descrição da marca", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtCodGrup, 7, 300, 100, 20, "CodGrup", "Código Grup.", JTextFieldPad.TP_STRING, 14, 0, false, true, txtDescGrup,true);
-    adicDescFK(txtDescGrup, 110, 300, 237, 20, "DescGrup", "e descrição do grupo", JTextFieldPad.TP_STRING, 50, 0);
+    adicDB(cbVerif, 150, 220, 77, 20, "VerifProd", "Abaixo custo",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtDtUltCpProd, 230, 220, 97, 20, "DtUltCpProd", "Ultima compra", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
+    adicCampo(txtCodUnid, 330, 220, 77, 20, "CodUnid", "Cód.und.", JTextFieldPad.TP_STRING, 8, 0, false, true, txtDescUnid,true);
+    adicDescFK(txtDescUnid, 410, 220, 240, 20, "DescUnid", "Descrição da unidade", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodFisc, 7, 260, 80, 20, "CodFisc", "Cód.fisc.", JTextFieldPad.TP_STRING, 13, 0, false, true, txtDescFisc,true);
+    adicDescFK(txtDescFisc, 90, 260, 237, 20, "DescFisc", "Descrição da classificação fiscal", JTextFieldPad.TP_STRING, 50, 0);
+    adicCampo(txtCodMarca, 330, 260, 77, 20, "CodMarca", "Cód.marca", JTextFieldPad.TP_STRING, 6, 0, false, true, txtDescMarca,true);
+    adicDescFK(txtDescMarca, 410, 260, 240, 20, "DescMarca", "Descrição da marca", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtCodGrup, 7, 300, 100, 20, "CodGrup", "Cód.grupo", JTextFieldPad.TP_STRING, 14, 0, false, true, txtDescGrup,true);
+    adicDescFK(txtDescGrup, 110, 300, 237, 20, "DescGrup", "Descrição do grupo", JTextFieldPad.TP_STRING, 50, 0);
     adicDB(rgCV, 350, 300, 260, 30, "CVProd", "Cadastro para:",JTextFieldPad.TP_STRING,true);
     adic(btExp, 620, 300, 30, 30);
     
@@ -378,8 +378,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	pinRodPreco.adic(navPreco,0,90,270,25);
 
 	txtCodClasCliPreco.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	lcClasCliPreco.add(new GuardaCampo( txtCodClasCliPreco, 7, 100, 80, 20, "CodClasCli", "Código", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodMarcax");
-	lcClasCliPreco.add(new GuardaCampo( txtDescClasCliPreco, 90, 100, 207, 20, "DescClasCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+	lcClasCliPreco.add(new GuardaCampo( txtCodClasCliPreco, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodMarcax");
+	lcClasCliPreco.add(new GuardaCampo( txtDescClasCliPreco, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
 	lcClasCliPreco.montaSql(false, "CLASCLI", "VD");    
 	lcClasCliPreco.setQueryCommit(false);
 	lcClasCliPreco.setReadOnly(true);
@@ -387,8 +387,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	txtCodClasCliPreco.setTabelaExterna(lcClasCliPreco);
 
 	txtCodTabPreco.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	lcTabPreco.add(new GuardaCampo( txtCodTabPreco, 7, 100, 80, 20, "CodTab", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodMarcax");
-	lcTabPreco.add(new GuardaCampo( txtDescTabPreco, 90, 100, 207, 20, "DescTab", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+	lcTabPreco.add(new GuardaCampo( txtCodTabPreco, 7, 100, 80, 20, "CodTab", "Cód.tab.pc.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodMarcax");
+	lcTabPreco.add(new GuardaCampo( txtDescTabPreco, 90, 100, 207, 20, "DescTab", "Descrição da tabela de preço", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
 	lcTabPreco.montaSql(false, "TABPRECO", "VD");
 	lcTabPreco.setReadOnly(true);
 	lcTabPreco.setQueryCommit(false);
@@ -396,21 +396,21 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	txtCodTabPreco.setTabelaExterna(lcTabPreco);
 
 	txtCodPlanoPagPreco.setTipo(JTextFieldPad.TP_INTEGER,8,0);
-	lcPlanoPagPreco.add(new GuardaCampo( txtCodPlanoPagPreco, 7, 100, 80, 20, "CodPlanoPag", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodMarcax");
-	lcPlanoPagPreco.add(new GuardaCampo( txtDescPlanoPagPreco, 90, 100, 207, 20, "DescPlanoPag", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
+	lcPlanoPagPreco.add(new GuardaCampo( txtCodPlanoPagPreco, 7, 100, 80, 20, "CodPlanoPag", "Cód.p.pag.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodMarcax");
+	lcPlanoPagPreco.add(new GuardaCampo( txtDescPlanoPagPreco, 90, 100, 207, 20, "DescPlanoPag", "Descrição do plano de pagamento", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMarcax");
 	lcPlanoPagPreco.montaSql(false, "PLANOPAG", "FN");
 	lcPlanoPagPreco.setReadOnly(true);
 	lcPlanoPagPreco.setQueryCommit(false);
 	txtDescPlanoPagPreco.setListaCampos(lcPlanoPagPreco);
 	txtCodPlanoPagPreco.setTabelaExterna(lcPlanoPagPreco);
 
-	adicCampo(txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd", "Código", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-	adicCampo(txtCodClasCliPreco, 90, 20, 77, 20, "CodClasCli", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClasCliPreco,false);
-	adicDescFK(txtDescClasCliPreco, 170, 20, 197, 20, "DescClasCli", "e descrição da clas. do cliente", JTextFieldPad.TP_STRING, 40, 0);
-	adicCampo(txtCodTabPreco, 370, 20, 77, 20, "CodTab", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTabPreco,true);
-	adicDescFK(txtDescTabPreco, 450, 20, 200, 20, "DescTab", "e descrição da tab. de preços", JTextFieldPad.TP_STRING, 40, 0);
-	adicCampo(txtCodPlanoPagPreco, 7, 60, 77, 20, "CodPlanoPag", "Código", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescPlanoPagPreco,true);
-	adicDescFK(txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag", "e descrição do plano de pgto.", JTextFieldPad.TP_STRING, 40, 0);
+	adicCampo(txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd", "Cód.pc.prod.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+	adicCampo(txtCodClasCliPreco, 90, 20, 67, 20, "CodClasCli", "Cód.c.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClasCliPreco,false);
+	adicDescFK(txtDescClasCliPreco, 160, 20, 217, 20, "DescClasCli", "Descrição da classificação do cliente", JTextFieldPad.TP_STRING, 40, 0);
+	adicCampo(txtCodTabPreco, 380, 20, 77, 20, "CodTab", "Cód.tab.pc.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTabPreco,true);
+	adicDescFK(txtDescTabPreco, 460, 20, 190, 20, "DescTab", "Descrição da tab. de preços", JTextFieldPad.TP_STRING, 40, 0);
+	adicCampo(txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescPlanoPagPreco,true);
+	adicDescFK(txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pagamento", JTextFieldPad.TP_STRING, 40, 0);
 	adicCampo(txtPrecoProd, 290, 60, 110, 20, "PrecoProd", "Preço", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,true);
 	setListaCampos( true, "PRECOPROD", "VD");
 	lcPreco.setOrdem("CodPrecoProd");
@@ -441,17 +441,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     pinRodFatConv.adic(navFatConv,0,50,270,25);
    
     lcUnidFat.setUsaME(false);
-    lcUnidFat.add(new GuardaCampo( txtUnidFat, 7, 100, 80, 20, "CodUnid", "Código", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
-    lcUnidFat.add(new GuardaCampo( txtDescUnidFat, 90, 100, 207, 20, "DescUnid", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+    lcUnidFat.add(new GuardaCampo( txtUnidFat, 7, 100, 80, 20, "CodUnid", "Cód.und.", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodUnidx");
+    lcUnidFat.add(new GuardaCampo( txtDescUnidFat, 90, 100, 207, 20, "DescUnid", "Descrição da unidade", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
     lcUnidFat.montaSql(false, "UNIDADE", "EQ");
     lcUnidFat.setReadOnly(true);
     lcUnidFat.setQueryCommit(false);
     txtDescUnidFat.setListaCampos(lcUnidFat);
     txtUnidFat.setTabelaExterna(lcUnidFat);
     
-    adicCampo(txtUnidFat, 7, 20, 80, 20, "CodUnid", "Código", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescUnidFat,true);
-    adicDescFK(txtDescUnidFat, 90, 20, 150, 20, "DescUnid", "e descrição da unidade", JTextFieldPad.TP_STRING, 40, 0);
-    adicCampo(txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de Conv.", JTextFieldPad.TP_DECIMAL, 10, 3, false, false, null,true);
+    adicCampo(txtUnidFat, 7, 20, 80, 20, "CodUnid", "Cód.und.", JTextFieldPad.TP_STRING, 4, 0, true, true, txtDescUnidFat,true);
+    adicDescFK(txtDescUnidFat, 90, 20, 150, 20, "DescUnid", "Descrição da unidade", JTextFieldPad.TP_STRING, 40, 0);
+    adicCampo(txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de conv.", JTextFieldPad.TP_DECIMAL, 10, 3, false, false, null,true);
     setListaCampos( false, "FATCONV", "EQ");
     lcFatConv.setOrdem("CodUnid");
     lcFatConv.montaTab();
@@ -476,17 +476,17 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 	  pinRodFor.adic(navFor,0,50,270,25);
    
 	  lcForFK.setUsaME(false);
-	  lcForFK.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodUnidx");
-	  lcForFK.add(new GuardaCampo( txtDescFor, 90, 300, 300, 20, "RazFor", "Razão", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
+	  lcForFK.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodUnidx");
+	  lcForFK.add(new GuardaCampo( txtDescFor, 90, 300, 300, 20, "RazFor", "Razão social do fornecedor", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescUnidx");
 	  lcForFK.montaSql(false, "FORNECED", "CP");
 	  lcForFK.setReadOnly(true);
 	  lcForFK.setQueryCommit(false);
 	  txtCodFor.setListaCampos(lcForFK);
 	  txtCodFor.setTabelaExterna(lcForFK);
 
-	  adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.Forn.", JTextFieldPad.TP_INTEGER, 5, 0, true, true, txtDescFor,true);
+	  adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.for.", JTextFieldPad.TP_INTEGER, 5, 0, true, true, txtDescFor,true);
 	  adicDescFK(txtDescFor, 90, 20, 300, 20, "RazFor", "Razão social do fornecedor", JTextFieldPad.TP_STRING, 50, 0);
-	  adicCampo(txtCodProdFor, 400, 20, 105, 20, "RefProdFor", "Cód.Prod.Forn.", JTextFieldPad.TP_STRING, 18, 0, false, false, null,false);
+	  adicCampo(txtCodProdFor, 400, 20, 105, 20, "RefProdFor", "Cód.prod.for.", JTextFieldPad.TP_STRING, 18, 0, false, false, null,false);
 	  setListaCampos( false, "PRODFOR", "CP");
 	  lcFor.montaTab();
 	  lcFor.setQueryInsert(false);
@@ -508,13 +508,13 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     txtSldConsigLote.setSoLeitura(true);
     txtSldLiqLote.setSoLeitura(true);
 
-    adicCampo(txtCodLote, 7, 20, 110, 20, "CodLote", "Código", JTextFieldPad.TP_STRING, 13, 0, true, false, null,true);
-    adicCampo(txtDiniLote, 120, 20, 100, 20, "DIniLote", "Data Inicial", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
+    adicCampo(txtCodLote, 7, 20, 110, 20, "CodLote", "Cód.lote", JTextFieldPad.TP_STRING, 13, 0, true, false, null,true);
+    adicCampo(txtDiniLote, 120, 20, 100, 20, "DIniLote", "Data inicial", JTextFieldPad.TP_DATE, 10, 0, false, false, null,false);
     adicCampo(txtVenctoLote, 223, 20, 100, 20, "VenctoLote", "Vencimento", JTextFieldPad.TP_DATE, 10, 0, false, false, null,true);
     adicCampo(txtSldLote, 7, 60, 80, 20, "SldLote", "Saldo", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldResLote, 90, 60, 80, 20, "SldResLote", "Saldo Res.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldConsigLote, 173, 60, 80, 20, "SldConsigLote", "Saldo Consig.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
-    adicCampo(txtSldLiqLote, 256, 60, 80, 20, "SldLiqLote", "Saldo Liq.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adicCampo(txtSldResLote, 90, 60, 80, 20, "SldResLote", "Saldo res.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adicCampo(txtSldConsigLote, 173, 60, 80, 20, "SldConsigLote", "Saldo consig.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
+    adicCampo(txtSldLiqLote, 256, 60, 80, 20, "SldLiqLote", "Saldo liq.", JTextFieldPad.TP_DECIMAL, 15, 3, false, false, null,false);
     setListaCampos( false, "LOTE", "EQ");
     lcLote.setOrdem("VenctoLote desc");
     lcLote.setQueryInsert(false);
@@ -538,8 +538,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
     txtAltFotoProd.setEnabled(false);
     txtLargFotoProd.setEnabled(false);
 
-    adicCampo(txtCodFotoProd, 7, 20, 70, 20, "CodFotoProd", "Nº Foto", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-    adicCampo(txtDescFotoProd,80, 20 , 250 , 20, "DescFotoProd","Descrição", JTextFieldPad.TP_STRING,40,0, false,false,null,true);
+    adicCampo(txtCodFotoProd, 7, 20, 70, 20, "CodFotoProd", "Nº foto", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
+    adicCampo(txtDescFotoProd,80, 20 , 250 , 20, "DescFotoProd","Descrição da foto", JTextFieldPad.TP_STRING,40,0, false,false,null,true);
     adicDB(rgTF, 7, 60, 323, 30, "TipoFotoProd", "Tamanho:",JTextFieldPad.TP_STRING,true);
     adicCampo(txtLargFotoProd, 7, 110, 80, 20, "LargFotoProd", "Largura", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,true);
     adicCampo(txtAltFotoProd, 90, 110, 77, 20, "AltFotoProd", "Altura", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,true);
