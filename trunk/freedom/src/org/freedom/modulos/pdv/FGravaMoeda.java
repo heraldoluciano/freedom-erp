@@ -37,8 +37,8 @@ import org.freedom.telas.FDialogo;
 
 public class FGravaMoeda extends FDialogo {
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
-	private JTextFieldFK txtSingMoeda = new JTextFieldFK();
-	private JTextFieldFK txtPlurMoeda = new JTextFieldFK();
+	private JTextFieldFK txtSingMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldFK txtPlurMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	private ListaCampos lcMoeda = new ListaCampos(this,"");
 	public FGravaMoeda() {
@@ -46,9 +46,9 @@ public class FGravaMoeda extends FDialogo {
 		setAtribos(390,110);
 		
 		txtCodMoeda.setTipo(JTextFieldPad.TP_STRING,4,0);
-		lcMoeda.add(new GuardaCampo( txtCodMoeda, 7, 100, 80, 20, "CodMoeda", "Cód.moeda", true, false, null, JTextFieldPad.TP_STRING,true),"txtCodMoedax");
-		lcMoeda.add(new GuardaCampo( txtSingMoeda, 90, 100, 207, 20, "SingMoeda", "Descrição da moeda", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
-		lcMoeda.add(new GuardaCampo( txtPlurMoeda, 90, 100, 207, 20, "PlurMoeda", "Descrição do plural da moeda", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescMoedax");
+		lcMoeda.add(new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true));
+		lcMoeda.add(new GuardaCampo( txtSingMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false));
+		lcMoeda.add(new GuardaCampo( txtPlurMoeda, "PlurMoeda", "Descrição do plural da moeda", ListaCampos.DB_SI,false));
 		lcMoeda.montaSql(false, "MOEDA", "FN");
 		lcMoeda.setQueryCommit(false);
 		lcMoeda.setReadOnly(true);

@@ -66,15 +66,16 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		
 		txtVlrCupom.setVlrBigDecimal(valCupom);
 		
-		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Código", ListaCampos.DB_PK,true));
-		lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição", ListaCampos.DB_SI,false));
+		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, true));
+		lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 		txtCodPlanoPag.setFK(true);
 		
-		adic(new JLabel("Código e descrição da forma de pagamento"),7,5,250,15);
+		adic(new JLabel("Cód.p.pag."),7,5,250,15);
 		adic(txtCodPlanoPag,7,20,80,20);
+		adic(new JLabel("Descrição da forma de pagamento"),90,5,250,15);
 		adic(txtDescPlanoPag,90,20,200,20);
 		
 		JLabel lbLinha = new JLabel();
