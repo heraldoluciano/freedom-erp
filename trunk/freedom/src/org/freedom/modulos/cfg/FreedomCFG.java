@@ -41,17 +41,16 @@ public class FreedomCFG extends Aplicativo {
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Acesso","Acesso Menu",'A',100101030,3, true, FAcesso.class);
 	      addOpcao(100101000,TP_OPCAO_ITEM,"Menu","Menu X Objeto",'M',100101040,3, true, FMenuObj.class);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Clientes/Conveniados","",'C',100102000,2, false, null);
- 	      addOpcao(100102000,TP_OPCAO_ITEM,"Grau de instrução","",'G',100102010,3, true, null);
- 	      addOpcao(100102000,TP_OPCAO_ITEM,"Paises","",'P',100102020,3, true, null);
+ 	      addOpcao(100102000,TP_OPCAO_ITEM,"Grau de instrução","Grau de Instrução",'G',100102010,3, true, FGrauInst.class);
+ 	      addOpcao(100102000,TP_OPCAO_ITEM,"Paises","Paises",'P',100102020,3, true, FPais.class);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Objetos","",'O',100103000,2, false, null);
-	      addOpcao(100103000,TP_OPCAO_ITEM,"Tabela","",'T',100103010,3, true, null);
-	      addOpcao(100103000,TP_OPCAO_ITEM,"Objetos aux.","",'O',100103020,3, true, null);
+	      addOpcao(100103000,TP_OPCAO_ITEM,"Tabela","Tabelas auxiliares",'T',100103010,3, true, FTabela.class);
+	      addOpcao(100103000,TP_OPCAO_ITEM,"Objetos aux.","Vinculo entre tabelas físicas e auxiliares",'O',100103020,3, true, FObjetoTb.class);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Fluxos","",'F',100104000,2, false, null);
-	      addOpcao(100104000,TP_OPCAO_ITEM,"Tarefas","",'T',100104090,3, true, null);
-	      addOpcao(100104000,TP_OPCAO_ITEM,"Processos","",'P',100104100,3, true, null);
-	      addOpcao(100104000,TP_OPCAO_ITEM,"Fluxos","",'F',100104110,3, true, null);
+	      addOpcao(100104000,TP_OPCAO_ITEM,"Processos","Processos",'P',100104100,3, true, FProcesso.class);
+	      addOpcao(100104000,TP_OPCAO_ITEM,"Fluxos","Cadastro de fluxos",'F',100104110,3, true, FFluxo.class);
         addOpcao(100100000,TP_OPCAO_MENU,"Ferramentas","",'e',100105000,2, false, null);
-	      addOpcao(100105000,TP_OPCAO_ITEM,"Ajuste de Sequencia","",'A',100105090,3, true, null);
+	      addOpcao(100105000,TP_OPCAO_ITEM,"Ajuste de Sequencia","Ajusta sequencia",'A',100105090,3, true, FAjustaSeq.class);
 	   
       
 	  addBotao("barraGrupo.gif", "Cadastro de Grupos",100101010); 
@@ -63,96 +62,6 @@ public class FreedomCFG extends Aplicativo {
 	  ajustaMenu();
 	  
  	  conIB = conexaoIB(getParameter("driver"),getParameter("bancocfg")); // Inicia a variável de conexão com o banco interno do interbase
-  }
-
-
-  public void execOpcao(int iOpcao)  {
-	if (iOpcao==100101010) {
-	  if (telaPrincipal.temTela("Grupos")==false) {
-		FGrupo tela = new FGrupo();
-		telaPrincipal.criatela("Grupos",tela,con);
-	  } 
-	}
-	else if (iOpcao==100101020){
-	  if (telaPrincipal.temTela("Usuarios")==false) {
-		FUsuario tela = new FUsuario();
-		tela.setConexao(conIB);
-		telaPrincipal.criatela("Usuarios",tela,con);
-	  } 
-	}
-	else if (iOpcao==100101030){
-	  if (telaPrincipal.temTela("Acesso Menu")==false) {
-		FAcesso tela = new FAcesso();
-		tela.setConexao(con);
-		tela.setVisible(true);
-		tela.dispose();
-	  } 
-	}
-	else if (iOpcao==100105000) {
-			atualizaMenus();
-	}
-	else if (iOpcao==100101040) {
-	  if (telaPrincipal.temTela("Menu X Objeto")==false) {
-		FMenuObj tela = new FMenuObj();
-		telaPrincipal.criatela("Menu X Objeto",tela,con);
-	  } 
-	}
-/*	else if (iOpcao==100105000) {
-		DLAtualiza tela = new DLAtualiza();
-		tela.setConexao(con);
-		tela.setVisible(true);
-	}*/
-	else if (iOpcao==100102010) {
-	  if (telaPrincipal.temTela("Grau de Instrução")==false) {
-		FGrauInst tela = new FGrauInst();
-		telaPrincipal.criatela("Grau de Instrução",tela,con);
-	  }
-	}
-	else if (iOpcao==100102020) {
-	  if (telaPrincipal.temTela("Paises")==false) {
-		FPais tela = new FPais();
-		telaPrincipal.criatela("Paises",tela,con);
-	  }
-	}
-	else if (iOpcao==100103010) {
-	  if (telaPrincipal.temTela("Tabelas auxiliares")==false) {
-		FTabela tela = new FTabela();
-		telaPrincipal.criatela("Tabelas auxiliares",tela,con);
-	  }
-	}    
-	else if (iOpcao==100104110){
-	  if (telaPrincipal.temTela("Cadastro de fluxos")==false) {
-		FFluxo tela = new FFluxo();
-		telaPrincipal.criatela("Cadastro de fluxos",tela,con);
-	  }
-	}    
-	else if (iOpcao==100103020) {
-	  if (telaPrincipal.temTela("Vinculo entre tabelas físicas e auxiliares")==false) {
-		FObjetoTb tela = new FObjetoTb();
-		telaPrincipal.criatela("Vinculo entre tabelas físicas e auxiliares",tela,con);
-	  }
-	}    
-	else if (iOpcao==100104100){
-		if (telaPrincipal.temTela("Processos")==false) {
-		  FProcesso tela = new FProcesso();
-		  tela.setTelaPrim(telaPrincipal);
-		  telaPrincipal.criatela("Processos",tela,con);
-		}
-	}    
-	else if (iOpcao==100104090){
-		if (telaPrincipal.temTela("Tarefas")==false) {
-			FTarefa tela = new FTarefa();
-			telaPrincipal.criatela("Tarefas",tela,con);
-		}
-	}    
-	else if (iOpcao==100105090){
-		if (telaPrincipal.temTela("Ajusta sequencia")==false) {
-			FAjustaSeq tela = new FAjustaSeq();
-			telaPrincipal.criatela("Ajusta sequencia",tela,con);
-		}
-	}    
-			    
-		    
   }
 
   
