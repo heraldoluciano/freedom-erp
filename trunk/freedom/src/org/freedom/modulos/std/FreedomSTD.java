@@ -101,7 +101,6 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Empresa",'E',100450000,2,true);	  	  
 
   addOpcao(-1,TP_OPCAO_MENU,"Entrada",'E',200000000,0,false);
-	addOpcao(200000000,TP_OPCAO_ITEM,"Solicitação de Compra",'S',200300000,1,true);
     addOpcao(200000000,TP_OPCAO_ITEM,"Compra",'C',200100000,1,true);
 	addOpcao(200000000,TP_OPCAO_MENU,"Listagens",'L',200200000,1,false);
 	  addOpcao(200200000,TP_OPCAO_ITEM,"Compras por fornecedor",'f',200210000,2,true);
@@ -146,6 +145,7 @@ public class FreedomSTD extends Aplicativo {
     addOpcao(500000000,TP_OPCAO_MENU,"Listagens",'s',500300000,1,false);				
   	  addOpcao(500300000,TP_OPCAO_ITEM,"Receber/Recebidas",'R',500310000,2,true);
 	  addOpcao(500300000,TP_OPCAO_ITEM,"Inadimplentes",'I',500320000,2,true);
+	  addOpcao(500300000,TP_OPCAO_ITEM,"Bordero de cobrança",'B',500330000,2,true);
 
   addOpcao(-1,TP_OPCAO_MENU,"Financeiro",'F',600000000,0,false);
     addOpcao(600000000,TP_OPCAO_MENU,"Boleto",'B',600100000,1,false);
@@ -558,14 +558,6 @@ public class FreedomSTD extends Aplicativo {
         telaPrincipal.criatela("Compra",tela,con);
       } 
     }
-    
-    else if (iOpcao==200300000) {
-        if (telaPrincipal.temTela("Solicitação de Compra")==false) {
-          FSolicitacaoCompra tela = new FSolicitacaoCompra();
-          telaPrincipal.criatela("Compra",tela,con);
-        } 
-      }
-    
     else if (iOpcao==300800000) {
       if (telaPrincipal.temTela("Romaneio")==false) {
         FRomaneio tela = new FRomaneio();
@@ -846,6 +838,13 @@ public class FreedomSTD extends Aplicativo {
         telaPrincipal.criatela("Inadimplentes",tela);
       }
     }
+    else if (iOpcao==500330000) {
+        if (telaPrincipal.temTela("Bordero de cobrança")==false) {
+          FRBordero tela = new FRBordero();
+          tela.setConexao(con);
+          telaPrincipal.criatela("Bordero de cobrança",tela);
+        }
+      }
     else if (iOpcao==400410000) {
       if (telaPrincipal.temTela("Pagar/Pagas")==false) {
         FRPagar tela = new FRPagar();
