@@ -24,6 +24,9 @@ package org.freedom.modulos.std;
 import java.sql.Connection;
 import java.util.Vector;
 
+
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
@@ -32,7 +35,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
-public class FTipoMov extends FDados {
+public class FTipoMov extends FDados implements RadioGroupListener {
   private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTipoMov = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
@@ -89,43 +92,8 @@ public class FTipoMov extends FDados {
     lcTipoMov.setReadOnly(true);
     txtCodTipoMov2.setTabelaExterna(lcTipoMov);
     
-    vLabs.addElement("Orçamento (compra)");
-    vLabs.addElement("Orçamento (venda)");
-    vLabs.addElement("Pedido (compra)");
-    vLabs.addElement("Pedido (venda)");
-    vLabs.addElement("Compra");
-    vLabs.addElement("Venda");
-	vLabs.addElement("Venda - ECF");
-	vLabs.addElement("Venda - televendas");
-	vLabs.addElement("Devolução");
-	vLabs.addElement("Cancelamento");
-	vLabs.addElement("Bonificação");
-	vLabs.addElement("Transferência");
-	vLabs.addElement("Perda");
-	vLabs.addElement("Consignação - saída");
-	vLabs.addElement("Consignação - devolução");
-	vLabs.addElement("Serviço");
-	vLabs.addElement("Inventário");
-	vVals.addElement("OC");
-    vVals.addElement("OV");
-    vVals.addElement("PC");
-    vVals.addElement("PV");
-    vVals.addElement("CP");
-    vVals.addElement("VD");
-	vVals.addElement("VE");
-	vVals.addElement("VT");
-	vVals.addElement("DV");
-	vVals.addElement("CC");
-	vVals.addElement("BN");
-	vVals.addElement("TR");
-	vVals.addElement("PE");
-	vVals.addElement("CS");
-	vVals.addElement("CE");
-	vVals.addElement("SE");
-	vVals.addElement("IV");
 	
     cbTipoMov = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 2, 0);
-    cbTipoMov.setSelectedIndex(6);
     
     vLabsES.addElement("Entrada");
     vLabsES.addElement("Saída");
@@ -135,7 +103,10 @@ public class FTipoMov extends FDados {
     vValsES.addElement("I");
     
     rgESTipoMov = new JRadioGroup(1,2,vLabsES,vValsES);
- 
+    rgESTipoMov.addRadioGroupListener(this);
+
+    montaCbTipoMov("E");
+    
     adicCampo(txtCodTipoMov, 7, 20, 80, 20,"CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, true);
     adicCampo(txtDescTipoMov, 90, 20, 300, 20,"DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, true);
     adicCampo(txtCodModNota, 7, 60, 80, 20,"CodModNota","Cód.mod.nota", ListaCampos.DB_FK, true);
@@ -160,11 +131,45 @@ public class FTipoMov extends FDados {
     
     setListaCampos( true, "TIPOMOV", "EQ");
   }
+  private void montaCbTipoMov(String ES) {
+  	cbTipoMov.limpa();
+  	vLabs.clear();
+  	vVals.clear();
+  	if (ES.equals("E")) {
+	    vLabs.addElement("Orçamento (compra)"); vVals.addElement("OC");
+	    vLabs.addElement("Pedido (compra)"); vVals.addElement("PC");
+	    vLabs.addElement("Compra"); vVals.addElement("CP");
+		vLabs.addElement("Cancelamento"); vVals.addElement("CC");
+  	}
+    else if (ES.equals("S")) {
+        vLabs.addElement("Orçamento (venda)"); vVals.addElement("OV");
+        vLabs.addElement("Pedido (venda)"); vVals.addElement("PV");
+        vLabs.addElement("Venda"); vVals.addElement("VD");
+    	vLabs.addElement("Serviço"); vVals.addElement("SE");
+    	vLabs.addElement("Venda - ECF"); vVals.addElement("VE");
+    	vLabs.addElement("Venda - televendas"); vVals.addElement("VT");
+    	vLabs.addElement("Bonificação"); vVals.addElement("BN");
+    	vLabs.addElement("Devolução"); vVals.addElement("DV");
+    	vLabs.addElement("Transferência"); vVals.addElement("TR");
+    	vLabs.addElement("Perda"); vVals.addElement("PE");
+    	vLabs.addElement("Consignação - saída"); vVals.addElement("CS");
+		vLabs.addElement("Consignação - devolução"); vVals.addElement("CE");
+    	vLabs.addElement("Cancelamento"); vVals.addElement("CC");
+    }
+    else if (ES.equals("I")) {
+    	vLabs.addElement("Inventário"); vVals.addElement("IV");
+    }
+    cbTipoMov.setItens(vLabs, vVals);
+  	
+  }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
   	lcTipoMov.setConexao(cn);
   	lcModNota.setConexao(cn);
     lcSerie.setConexao(cn);
     lcTab.setConexao(cn);
+  }
+  public void valorAlterado(RadioGroupEvent evt) {
+     montaCbTipoMov(rgESTipoMov.getVlrString());
   }
 }
