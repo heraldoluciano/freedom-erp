@@ -46,10 +46,10 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
   private Vector vLabsAtua = new Vector();
   private JRadioGroup rgTipo = null;
   private JRadioGroup rgAtua = null;
-  private JTextFieldPad txtSingMoeda = new JTextFieldPad(20);
-  private JTextFieldPad txtPlurMoeda = new JTextFieldPad(20);
-  private JTextFieldPad txtDecsMoeda = new JTextFieldPad(20);
-  private JTextFieldPad txtDecpMoeda = new JTextFieldPad(20);
+  private JTextFieldPad txtSingMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtPlurMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtDecsMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+  private JTextFieldPad txtDecpMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   private JPanel pnCot = new JPanel(new BorderLayout());
   private Painel pinRod = new Painel(370,80);
   private Tabela tab = new Tabela();
@@ -90,12 +90,12 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
     
     setListaCampos(lcCampos);
     adicCampo(txtCodMoeda, 7, 20, 70, 20, "CodMoeda", "Cód.mda.", JTextFieldPad.TP_STRING, 4, 0, true, false, null,true);
-    adicCampo(txtSingMoeda, 80, 20, 315, 20, "SingMoeda", "Nome no singular", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
+    adicCampo(txtSingMoeda, 80, 20, 315, 20, "SingMoeda", "Nome no singular", ListaCampos.DB_SI, true);
     adicDB(rgTipo, 7, 60, 388, 30, "TipoMoeda", "Tipo",JTextFieldPad.TP_STRING,true);
-    adicCampo(txtPlurMoeda, 7, 110, 120, 20, "PlurMoeda", "Nome no plural", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicCampo(txtDecsMoeda, 130, 110, 125, 20, "DecsMoeda", "Decimal no singular", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicCampo(txtDecpMoeda, 258, 110, 137, 20, "DecpMoeda", "Decimal no plural", JTextFieldPad.TP_STRING, 20, 0, false, false, null,true);
-    adicDB(rgAtua, 7, 150, 388, 70, "AtualizaMoeda", "Tempo de atualização",JTextFieldPad.TP_STRING,true);
+    adicCampo(txtPlurMoeda, 7, 110, 120, 20, "PlurMoeda", "Nome no plural", ListaCampos.DB_SI, true);
+    adicCampo(txtDecsMoeda, 130, 110, 125, 20, "DecsMoeda", "Decimal no singular", ListaCampos.DB_SI, true);
+    adicCampo(txtDecpMoeda, 258, 110, 137, 20, "DecpMoeda", "Decimal no plural", ListaCampos.DB_SI, true);
+    adicDB(rgAtua, 7, 150, 388, 70, "AtualizaMoeda", "Tempo de atualização", true);
     setListaCampos( false, "MOEDA", "FN");
     lcCampos.setQueryInsert(false);    
 

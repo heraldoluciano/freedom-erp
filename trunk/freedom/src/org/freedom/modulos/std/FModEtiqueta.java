@@ -53,11 +53,11 @@ import org.freedom.telas.FDados;
 public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener {       
 	
     private Painel pinCab = new Painel(0,150);
-	private JTextFieldPad txtCodModEtiq = new JTextFieldPad();
-	private JTextFieldPad txtDescModEtiq = new JTextFieldPad();
+	private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtDescModEtiq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtCodpapel = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0); 
-	private JTextFieldFK txtDescpapel = new JTextFieldFK();
+	private JTextFieldFK txtDescpapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextAreaPad txaEtiqueta = new JTextAreaPad(500); 
 	private JScrollPane spnCli = new JScrollPane(txaEtiqueta); 
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
@@ -73,8 +73,8 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	
     	setPainel(pinCab);
 
-    	lcPapel.add(new GuardaCampo( txtCodpapel, 7, 60, 80, 20,  "Codpapel", "Cod.papel", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodpapel");
-    	lcPapel.add(new GuardaCampo( txtDescpapel, 80, 60, 297, 20, "Descpapel", "Descrição do papel", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescpapel"); 
+    	lcPapel.add(new GuardaCampo( txtCodpapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
+    	lcPapel.add(new GuardaCampo( txtDescpapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false)); 
     	lcPapel.montaSql(false, "PAPEL", "SG");
      	lcPapel.setQueryCommit(false);
      	lcPapel.setReadOnly(true);
@@ -82,14 +82,14 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
     	txaEtiqueta.setFont(new Font("Courier",Font.PLAIN,11));
 
-    	adicCampo(txtCodModEtiq, 7, 20, 90, 20,"CodModEtiq","Cód.mod.etiq.",JTextFieldPad.TP_INTEGER,5,0,true,false,null,true);
-    	adicCampo(txtDescModEtiq, 100, 20, 237, 20,"DescModEtiq","Descrição do modelo de etiqueta",JTextFieldPad.TP_STRING,30,0,false,false,null,true);
-    	adicCampo(txtNColModEtiq, 340, 20, 60, 20,"NColModEtiq","Colunas",JTextFieldPad.TP_INTEGER,5,0,false,false,null,true);
+    	adicCampo(txtCodModEtiq, 7, 20, 90, 20,"CodModEtiq","Cód.mod.etiq.", ListaCampos.DB_PK, true);
+    	adicCampo(txtDescModEtiq, 100, 20, 237, 20,"DescModEtiq","Descrição do modelo de etiqueta", ListaCampos.DB_SI, true);
+    	adicCampo(txtNColModEtiq, 340, 20, 60, 20,"NColModEtiq","Colunas", ListaCampos.DB_SI, true);
     	
     	adicDBLiv(txaEtiqueta,"TxaModEtiq", "Corpo",JTextFieldPad.TP_STRING, true);
     	
-     	adicCampo(txtCodpapel, 7, 60, 90, 20,"Codpapel","Cód.papel",JTextFieldPad.TP_STRING,10,0,false,true,txtDescpapel,true); 
-   	    adicDescFK(txtDescpapel, 100, 60, 297, 20,"Descpapel","Descrição do papel",JTextFieldPad.TP_STRING,40,0); 
+     	adicCampo(txtCodpapel, 7, 60, 90, 20,"Codpapel","Cód.papel", ListaCampos.DB_FK, txtDescpapel, true); 
+   	    adicDescFK(txtDescpapel, 100, 60, 297, 20,"Descpapel","Descrição do papel"); 
 
     	setListaCampos( false, "MODETIQUETA", "SG");
    	    
