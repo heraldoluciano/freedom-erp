@@ -114,6 +114,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public JPanelPad pinBotoes = new JPanelPad(30, 30);
 
 	public int iXPanel = 0;
+	
+	public static boolean bBuscaProdSimilar = false;
 
 	private static String sFiltro = "";
 
@@ -132,6 +134,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	private int iCodSis = 0;
 
 	private int iCodMod = 0;
+	
+	
 
 	public Aplicativo() {
 		Locale.setDefault(new Locale("pt", "BR"));
@@ -910,13 +914,14 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CASASDEC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CASASDEC,BUSCAPRODSIMILAR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
+				bBuscaProdSimilar = rs.getString("BUSCAPRODSIMILAR").equals("S")?true:false;
 			}
 			rs.close();
 			ps.close();
