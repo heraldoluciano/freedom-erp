@@ -28,6 +28,7 @@ import org.freedom.modulos.std.FClasCli;
 import org.freedom.modulos.std.FCliente;
 import org.freedom.modulos.std.FConta;
 import org.freedom.modulos.std.FEmpresa;
+import org.freedom.modulos.std.FEstacao;
 import org.freedom.modulos.std.FFornecedor;
 import org.freedom.modulos.std.FImpressora;
 import org.freedom.modulos.std.FLanca;
@@ -51,7 +52,6 @@ import org.freedom.modulos.std.FRPagar;
 import org.freedom.modulos.std.FRRazaoFin;
 import org.freedom.modulos.std.FRReceber;
 import org.freedom.modulos.std.FSetor;
-import org.freedom.modulos.std.FTerminal;
 import org.freedom.modulos.std.FTipoCli;
 import org.freedom.modulos.std.FTipoCob;
 import org.freedom.modulos.std.FTipoFor;
@@ -84,7 +84,7 @@ public class FreedomFNC extends Aplicativo {
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Preferências gerais",'g',100310000,2,true);
 	addSeparador(100100000);
 	addOpcao(100000000,TP_OPCAO_MENU,"Configurações",'C',100400000,1,false);
-	  addOpcao(100400000,TP_OPCAO_ITEM,"Terminal",'T',100410000,2,true);		  
+	  addOpcao(100400000,TP_OPCAO_ITEM,"Estação de trabalho",'T',100410000,2,true);		  
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Impressora",'I',100420000,2,true);
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Papel",'P',100430000,2,true);
 	  addSeparador(100400000);
@@ -216,9 +216,9 @@ public class FreedomFNC extends Aplicativo {
       }
     }
     else if (iOpcao==100410000) {
-      if (telaPrincipal.temTela("Configurações")==false) {
-        FTerminal tela = new FTerminal();
-        telaPrincipal.criatela("Configurações",tela,con);
+      if (telaPrincipal.temTela("Estações de trabalho")==false) {
+        FEstacao tela = new FEstacao();
+        telaPrincipal.criatela("Estações de trabalho",tela,con);
       }
     }
     else if (iOpcao==600500000) {

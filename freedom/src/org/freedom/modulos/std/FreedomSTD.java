@@ -368,7 +368,7 @@ public class FreedomSTD extends Aplicativo {
     }
     else if (iOpcao==100410000) {
       if (telaPrincipal.temTela("Configurações")==false) {
-        FTerminal tela = new FTerminal();
+        FCaixa tela = new FCaixa();
         telaPrincipal.criatela("Configurações",tela,con);
       }
     }
