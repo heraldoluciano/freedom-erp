@@ -440,8 +440,8 @@ public class FreedomGMS extends Aplicativo {
 	      }
 	    else if (iOpcao==200700000) {
 	        if (telaPrincipal.temTela("Aprova Cotação de Preços")==false) {
-		      FAprovaCotacaoPrecos tela = new FAprovaCotacaoPrecos();
-		      telaPrincipal.criatela("Aprova Cotação de Preços",tela,con);
+		      //FAprovaCotacaoPrecos tela = new FAprovaCotacaoPrecos();
+		      //telaPrincipal.criatela("Aprova Cotação de Preços",tela,con);
 	        } 
 	      }
 	    else if (iOpcao==300100000) {
