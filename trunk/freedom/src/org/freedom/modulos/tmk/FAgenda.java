@@ -73,7 +73,9 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-  private JComboBoxPad cbPeriodo = new JComboBoxPad();
+  private Vector vVals = new Vector();
+  private Vector vLabs = new Vector();
+  private JComboBoxPad cbPeriodo = null;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcUsu = new ListaCampos(this);
@@ -82,6 +84,18 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   public FAgenda() {
   	setTitulo("Agenda");
   	setAtribos(20,20,540,400);
+
+	vVals.addElement("HO");
+	vVals.addElement("PD");
+	vVals.addElement("PT");
+	vVals.addElement("PS");
+	vVals.addElement("PM");
+	vLabs.addElement("Hoje");
+	vLabs.addElement("Próximo dia");
+	vLabs.addElement("Próximo três dias");
+	vLabs.addElement("Próxima semana");
+	vLabs.addElement("Próximo mes");
+	cbPeriodo = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
   	
   	txtDataini.setVlrDate(new Date());
   	txtDatafim.setVlrDate(new Date());
@@ -111,22 +125,6 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
 	pinCabAgd.adic(txtDataini,7,70,100,20);
 	pinCabAgd.adic(txtDatafim,110,70,100,20);
 	pinCabAgd.adic(btExec,220,60,30,30);
-	
-	
-	
-	Vector vVals = new Vector();
-	vVals.addElement("HO");
-	vVals.addElement("PD");
-	vVals.addElement("PT");
-	vVals.addElement("PS");
-	vVals.addElement("PM");
-	Vector vLabs = new Vector();
-	vLabs.addElement("Hoje");
-	vLabs.addElement("Próximo dia");
-	vLabs.addElement("Próximo três dias");
-	vLabs.addElement("Próxima semana");
-	vLabs.addElement("Próximo mes");
-	cbPeriodo.setItens(vLabs,vVals);
 	
 	tabAgd.adicColuna("Ind.");
 	tabAgd.adicColuna("Sit.");

@@ -65,10 +65,10 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private JTextAreaPad txaDescAtend = new JTextAreaPad();
 	private Vector vValsTipo = new Vector();
 	private Vector vLabsTipo = new Vector();
-	private JComboBoxPad cbTipo = new JComboBoxPad(vLabsTipo,vValsTipo); 
+	private JComboBoxPad cbTipo = new JComboBoxPad(vLabsTipo,vValsTipo, JComboBoxPad.TP_INTEGER, 8, 0); 
 	private Vector vValsSetor = new Vector();
 	private Vector vLabsSetor = new Vector();
-	private JComboBoxPad cbSetor = new JComboBoxPad(vLabsSetor,vValsSetor); 
+	private JComboBoxPad cbSetor = new JComboBoxPad(vLabsSetor,vValsSetor, JComboBoxPad.TP_INTEGER, 8, 0); 
 	private ListaCampos lcConv = new ListaCampos(this);
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
@@ -146,8 +146,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			vValsTipo.clear();
 			vLabsTipo.clear();
 			while(rs.next()) {
-				vValsTipo.add(rs.getString("CodTpAtendo"));
-				vLabsTipo.add(rs.getString("DescTpAtendo"));
+				vValsTipo.addElement(new Integer(rs.getInt("CodTpAtendo")));
+				vLabsTipo.addElement(rs.getString("DescTpAtendo"));
 			}
 			cbTipo.setItens(vLabsTipo,vValsTipo);
 			rs.close();
@@ -158,8 +158,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		}
 	}
 	private void montaComboSetor() {
-		String sTipo = cbTipo.getVlrString();
-		if (sTipo == null || sTipo.equals(""))
+		Integer iTipo = cbTipo.getVlrInteger();
+		if (iTipo == null)
 			return; 
 		String sSQL = "SELECT S.CODSETAT,S.DESCSETAT FROM ATSETOR S, ATTIPOATENDOSETOR TS" +
 			           " WHERE S.CODEMP=TS.CODEMPST AND S.CODFILIAL=TS.CODFILIAL AND S.CODSETAT=TS.CODSETAT"+
@@ -169,13 +169,13 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("ATTIPOATENDO"));
-			ps.setInt(3,Integer.parseInt(sTipo));
+			ps.setInt(3,iTipo.intValue());
 			ResultSet rs = ps.executeQuery();
 			vValsSetor.clear();
 			vLabsSetor.clear();
 			while(rs.next()) {
-				vValsSetor.add(rs.getString("CodSetAt"));
-				vLabsSetor.add(rs.getString("DescSetAt"));
+				vValsSetor.addElement(new Integer(rs.getInt("CodSetAt")));
+				vLabsSetor.addElement(rs.getString("DescSetAt"));
 			}
 			cbSetor.setItens(vLabsSetor,vValsSetor);
 			rs.close();
@@ -194,7 +194,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	}
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btOK) {
-			if (cbTipo.getVlrString().equals("")) {
+			if (cbTipo.getVlrInteger().equals("")) {
 				Funcoes.mensagemInforma(this,"O tipo de atendimento não foi selecionado!");
 				return;
 			}
@@ -202,7 +202,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 				Funcoes.mensagemInforma(this,"Código do atendente inválido!");
 				return;
 			}
-			else if (cbSetor.getVlrString().equals("")) {
+			else if (cbSetor.getVlrInteger().equals("")) {
 				Funcoes.mensagemInforma(this,"O setor não foi selecionado!");
 				return;
 			}
@@ -292,9 +292,9 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
     }
 	public String[] getValores() {
 		String[] sVal = new String[5];
-		sVal[0] = cbTipo.getVlrString();
+		sVal[0] = ""+cbTipo.getVlrInteger();
 		sVal[1] = txtCodAtend.getVlrString();
-		sVal[2] = cbSetor.getVlrString();
+		sVal[2] = ""+cbSetor.getVlrInteger();
 		sVal[3] = txaDescAtend.getVlrString();
 		sVal[4] = ""+iDoc;
 		return sVal;

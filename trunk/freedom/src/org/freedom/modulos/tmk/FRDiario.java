@@ -45,7 +45,9 @@ public class FRDiario extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(); 
   private Connection con = null;
-  private JComboBoxPad cbSit = new JComboBoxPad();
+  private Vector vVals = new Vector();
+  private Vector vLabs = new Vector();
+  private JComboBoxPad cbSit = null;
   private JCheckBoxPad cbComp = new JCheckBoxPad("Imprimir completo?","S","N");
   private boolean bComp = false;
   
@@ -60,13 +62,11 @@ public class FRDiario extends FRelatorio {
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
 
-    Vector vVals = new Vector();
     vVals.addElement("RJ");
     vVals.addElement("AG");
-    Vector vLabs = new Vector();
     vLabs.addElement("Rejeitado");		
     vLabs.addElement("Agendar ligação/visita");
-    cbSit.setItens(vLabs,vVals);
+    cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2 , 0);
     
     adic(new JLabel("Periodo:"),7,5,120,20);
     adic(new JLabel("De:"),7,25,30,20);

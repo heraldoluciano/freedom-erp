@@ -68,7 +68,7 @@ public class FAcesso extends FDialogo implements ArvoreFace, CarregaListener {
   private Vector vAcessos = new Vector();
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
-  private JComboBoxPad cbFiliais= new JComboBoxPad(vLabs,vVals);
+  private JComboBoxPad cbFiliais= new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
   private JButton btSalva = new JButton(Icone.novo("btGerar.gif"));
   private Connection con = null;
   boolean bEOF = false;

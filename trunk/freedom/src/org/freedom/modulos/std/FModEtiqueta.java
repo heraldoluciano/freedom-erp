@@ -119,7 +119,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	vVals.addElement("[___________CIDADE___________]"); //larg: 30
     	vVals.addElement("[UF]"); //larg: 2
     	
-    	cbCampos = new JComboBoxPad(vLabs,vVals);
+    	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
   
     	adic(new JLabel("Campos dinâmicos"), 7, 80, 220, 20); 
        	adic(cbCampos, 7, 100, 220, 20); 

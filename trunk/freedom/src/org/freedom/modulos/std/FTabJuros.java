@@ -34,7 +34,7 @@ public class FTabJuros extends FDetalhe {
   private Painel pinDet = new Painel(0,60);
   private JTextFieldPad txtCodTbJ = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTbJ = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  private JComboBoxPad cbTipo = new JComboBoxPad();
+  private JComboBoxPad cbTipo = null;
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
   private JTextFieldPad txtMes = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
   private JTextFieldPad txtPerc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
@@ -59,7 +59,7 @@ public class FTabJuros extends FDetalhe {
     vVals.addElement("T");
     vVals.addElement("S");
     vVals.addElement("A");
-    cbTipo.setItens(vLabs,vVals);
+    cbTipo = new JComboBoxPad(vLabs,vVals,JComboBoxPad.TP_STRING, 1, 0);
     
     adicCampo(txtCodTbJ, 7, 20, 80, 20,"CodTbJ","Cód.tb.juros", ListaCampos.DB_PK, true);
     adicCampo(txtDescTbJ, 90, 20, 250, 20, "DescTbJ", "Descrição da tabela", ListaCampos.DB_SI,true);

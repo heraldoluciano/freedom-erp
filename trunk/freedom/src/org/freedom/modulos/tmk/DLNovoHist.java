@@ -61,7 +61,9 @@ public class DLNovoHist extends FFDialogo {
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabel lbImg = new JLabel(Icone.novo("bannerTMKhistorico.jpg"));
-	private JComboBoxPad cbSit = new JComboBoxPad(); 
+	private Vector vVals = new Vector();
+	private Vector vLabs = new Vector();
+	private JComboBoxPad cbSit = null; 
 	private Connection con = null;
 	private String[] sValsAgen = null;
 	public DLNovoHist(int iCodCont,Component cOrig) {
@@ -69,13 +71,11 @@ public class DLNovoHist extends FFDialogo {
 		setTitulo("Nova chamada");
 		setAtribos(460,470);		
 		
-		Vector vVals = new Vector();
 		vVals.addElement("RJ");
 		vVals.addElement("AG");
-		Vector vLabs = new Vector();
 		vLabs.addElement("Rejeitado");		
 		vLabs.addElement("Agendar ligação/visita");
-		cbSit.setItens(vLabs,vVals);
+		cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
 		cbSit.setVlrString("AG");
 		
 		lcCont.add(new GuardaCampo( txtCodCont, "CodCto", "Cód.Cont", ListaCampos.DB_PK, txtNomeCont, false));

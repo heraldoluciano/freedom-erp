@@ -45,7 +45,7 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
-  private JComboBoxPad cbEmp = new JComboBoxPad();
+  private JComboBoxPad cbEmp = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8 , 0);
   private String strBanco = "";
   private String strDriver = "";
   private String sUsuAnt = "";

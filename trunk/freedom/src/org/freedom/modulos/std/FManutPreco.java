@@ -103,7 +103,7 @@ public class FManutPreco extends FFilho implements ActionListener, RadioGroupLis
     vSelOperador.addElement("/");
     vSelOperador.addElement("*");
     
-    cbOperador = new JComboBoxPad(vDescOperador, vSelOperador);
+    cbOperador = new JComboBoxPad(vDescOperador, vSelOperador, JComboBoxPad.TP_STRING, 1, 0);
     cbOperador.setVlrString("/");
     
     Funcoes.setBordReq(txtMultiplic,true);
