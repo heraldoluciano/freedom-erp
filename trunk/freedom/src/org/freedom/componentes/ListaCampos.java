@@ -1569,7 +1569,10 @@ public class ListaCampos extends Container implements PostListener,InsertListene
                 }
                 else {
                   if ( ((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-                    sqlLC.setInt(iParam,((GuardaCampo) comp).getVlrInteger().intValue());
+                  	if (((GuardaCampo) comp).ehNulo())
+                  		sqlLC.setNull(iParam,Types.INTEGER);
+                  	else
+                  		sqlLC.setInt(iParam,((GuardaCampo) comp).getVlrInteger().intValue());
                   }
                   else if ( ( (GuardaCampo) comp).getTipo()== JTextFieldPad.TP_STRING ) {
                     sqlLC.setString(iParam,((GuardaCampo) comp).getVlrString());
