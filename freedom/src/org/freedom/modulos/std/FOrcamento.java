@@ -227,7 +227,7 @@ public class FOrcamento extends FVD implements PostListener,CarregaListener,Focu
     
 	//ListaCampos de Totais (É acionada pelo listaCampos de Orcamento)
     
-	lcOrc2.add(new GuardaCampo( txtCodOrc, "CodOrc", "Cód.orc.",  ListaCampos.DB_PK,false));
+	lcOrc2.add(new GuardaCampo( txtCodOrc, "CodOrc", "Cód.Orç.",  ListaCampos.DB_PK,false));
 	lcOrc2.add(new GuardaCampo( txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.",  ListaCampos.DB_SI, false));
 	lcOrc2.add(new GuardaCampo( txtVlrAdicOrc, "VlrAdicOrc", "Vlr.adic.", ListaCampos.DB_SI,false));
 	lcOrc2.add(new GuardaCampo( txtVlrLiqOrc, "VlrLiqOrc", "Vlr.total",  ListaCampos.DB_SI,false));
