@@ -94,6 +94,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	private JCheckBoxPad cbUsaDescEspelho = null;
 	private JCheckBoxPad cbUsaClasComis = null;
 	private JCheckBoxPad cbTabFreteVd = null;
+	private JCheckBoxPad cbVendaMatPrim = null;
 	
 	private JCheckBoxPad cbTabAdicVd = null;
 	private JCheckBoxPad cbTravaTMNFVD = null;
@@ -127,7 +128,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 	
 	public FPrefereGeral() {
 		setTitulo("Preferências Gerais");
-		setAtribos(40, 40, 690, 340);
+		setAtribos(40, 40, 690, 420);
 		
 		lcMoeda.add(new GuardaCampo(txtCodMoeda,7,100,80,20,"CodMoeda","Código",true,false,null,JTextFieldPad.TP_STRING,true),"txtCodUnidx");
 		lcMoeda.add(new GuardaCampo(txtDescMoeda,90,100,207,20,"SingMoeda","Descrição",false,false,null,JTextFieldPad.TP_STRING,false),"txtDescUnidx");
@@ -299,6 +300,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		cbTravaTMNFVD.setVlrString("S");
 		cbCustosSICMS = new JCheckBoxPad("Preço de custo sem ICMS?","S","N");
 		cbCustosSICMS.setVlrString("S");
+		cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima","S","N");
+		cbVendaMatPrim.setVlrString("N");
 		
 		
 		Vector vLabs = new Vector();
@@ -378,6 +381,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener, PostLi
 		
 		adicDB(cbNatVenda,7,220,160,20,"NatVenda","",JTextFieldPad.TP_STRING,true);
 		adicDB(cbComisPDupl,177,220,300,20,"ComisPDupl","",JTextFieldPad.TP_STRING,true);
+		adicDB(cbVendaMatPrim,7,240,300,20,"VendaMatPrim","",JTextFieldPad.TP_STRING,true);
+
 		
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
