@@ -131,6 +131,11 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   	 else if ( fevt.getSource()==btOK) {
   	    if ( !sUsuAnt.equals(txtUsuario.getVlrString().trim().toLowerCase() ) ) {	
            lbInstrucoes.setText("Pressione espaço p/ conectar ao banco de dados!");
+         	if (tries == 0)  {
+          		btOK.doClick();
+          		tries++;
+          	}
+           
   	    }
   	    else {
            lbInstrucoes.setText("Pressione espaço p/ entrar no sistema!");  		
@@ -288,10 +293,8 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
         if ( !sUsuAnt.equals(sUsu) ) {
             montaCombo(sUsu , txpSenha.getVlrString().trim());
             cbEmp.requestFocus();
-            if (cbEmp.getItemCount() == 2 &&
-        			tries == 0) {
+            if (cbEmp.getItemCount() == 2) {
             	btOK.doClick();
-            	tries++;
             }
             return;
         }
