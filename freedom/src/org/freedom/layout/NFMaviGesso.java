@@ -95,7 +95,7 @@ public class NFMaviGesso extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+"        -        "+rs.getString("RazCli"));
-           imp.say(imp.pRow()+0,92,rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
+           imp.say(imp.pRow()+0,88,rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
            imp.say(imp.pRow()+0,125,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 //           imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+2,0,""+imp.comprimido());
