@@ -210,8 +210,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodTipoCli.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescTipoCli.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcTipoCli.add(new GuardaCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.Tipo", true, false, null, JTextFieldPad.TP_INTEGER,true));
-  	lcTipoCli.add(new GuardaCampo( txtDescTipoCli, 90, 100, 207, 20, "DescTipoCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false));
+  	lcTipoCli.add(new GuardaCampo( txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", true, false, null, JTextFieldPad.TP_INTEGER,true));
+  	lcTipoCli.add(new GuardaCampo( txtDescTipoCli, 90, 100, 207, 20, "DescTipoCli", "Descrição do tipo de cliente", false, false, null, JTextFieldPad.TP_STRING,false));
   	lcTipoCli.montaSql(false, "TIPOCLI", "VD");    
   	lcTipoCli.setQueryCommit(false);
   	lcTipoCli.setReadOnly(true);
@@ -248,7 +248,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodTran.setTabelaExterna(lcTran);
 
   	lcPais.setUsaME(false);
-  	lcPais.add(new GuardaCampo( txtCodPais, "CodPais", "Cod.País.", ListaCampos.DB_PK,false));
+  	lcPais.add(new GuardaCampo( txtCodPais, "CodPais", "Cod.país.", ListaCampos.DB_PK,false));
   	lcPais.add(new GuardaCampo( txtDescPais, "NomePais", "Nome", ListaCampos.DB_SI,false));
   	lcPais.montaSql(false, "PAIS", "SG");
   	lcPais.setQueryCommit(false);
@@ -258,7 +258,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodTipoCob.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescTipoCob.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcTipoCob.add(new GuardaCampo( txtCodTipoCob, 7, 100, 80, 20, "CodTipoCob", "Cód.t.cob.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoCobx");
+  	lcTipoCob.add(new GuardaCampo( txtCodTipoCob, 7, 100, 80, 20, "CodTipoCob", "Cód.tp.cob.", true, false, null, JTextFieldPad.TP_INTEGER,false),"txtCodTipoCobx");
   	lcTipoCob.add(new GuardaCampo( txtDescTipoCob, 90, 100, 207, 20, "DescTipoCob", "Descrição do tipo de cobrança", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescTipoCobx");
   	lcTipoCob.montaSql(false, "TIPOCOB", "FN");    
   	lcTipoCob.setQueryCommit(false);
@@ -298,15 +298,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCodClas.setTipo(JTextFieldPad.TP_INTEGER,8,0);
   	txtDescClas.setTipo(JTextFieldPad.TP_STRING,50,0);    
 
-  	lcClas.add(new GuardaCampo( txtCodClas, 7, 100, 80, 20, "CodClasCli", "Cód.Clas.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodClasx");
-  	lcClas.add(new GuardaCampo( txtDescClas, 90, 100, 207, 20, "DescClasCli", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasx");
+  	lcClas.add(new GuardaCampo( txtCodClas, 7, 100, 80, 20, "CodClasCli", "Cód.c.cli.", true, false, null, JTextFieldPad.TP_INTEGER,true),"txtCodClasx");
+  	lcClas.add(new GuardaCampo( txtDescClas, 90, 100, 207, 20, "DescClasCli", "Descrição da classificação do cliente", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescClasx");
   	lcClas.montaSql(false, "CLASCLI", "VD");    
   	lcClas.setQueryCommit(false);
   	lcClas.setReadOnly(true);
   	txtCodClas.setTabelaExterna(lcClas);
 
   	adicCampo(txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", JTextFieldPad.TP_INTEGER, 8, 0, true, false, null,true);
-  	adicCampo(txtRazCli, 90, 20, 307, 20, "RazCli", "Razão social", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
+  	adicCampo(txtRazCli, 90, 20, 307, 20, "RazCli", "Razão social do cliente", JTextFieldPad.TP_STRING, 50, 0, false, false, null,true);
   	
   	vPessoaLab.addElement("Jurídica");
   	vPessoaLab.addElement("Física");
@@ -322,10 +322,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
   	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo",JTextFieldPad.TP_STRING,true);
   	adicCampo(txtNomeCli, 90, 60, 307, 20, "NomeCli", "Nome", JTextFieldPad.TP_STRING, 40, 0, false, false, null,true);
-  	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Tipo cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoCli,true);
+  	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescTipoCli,true);
   	adicDescFK(txtDescTipoCli, 90, 100, 237, 20, "DescTipoCli", "Descrição do tipo de cliente", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtCpfCli, 330, 100, 170, 20, "CpfCli", "CPF", JTextFieldPad.TP_STRING, 11, 0, false, false, null, false);
-  	adicCampo(txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.clas.", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClas,true);
+  	adicCampo(txtCodClas, 7, 140, 80, 20, "CodClasCli", "Cód.c.cli", JTextFieldPad.TP_INTEGER, 8, 0, false, true, txtDescClas,true);
   	adicDescFK(txtDescClas, 90, 140, 237, 20, "DescClasCli", "Descrição da classificação do cliente", JTextFieldPad.TP_STRING, 50, 0);
   	adicCampo(txtRgCli, 330, 140, 170, 20, "RgCli", "RG", JTextFieldPad.TP_STRING, 10, 0, false, false, null, false);
   	adicCampo(txtCnpjCli, 7, 180, 150, 20, "CnpjCli", "CNPJ", JTextFieldPad.TP_STRING, 14, 0, false, false, null, false);
@@ -480,17 +480,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
     pinFor.adic(navFor,0,50,270,25);
  
-    lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Código", true, false, null, JTextFieldPad.TP_INTEGER,true));
-    lcFor.add(new GuardaCampo( txtDescFor, 90, 300, 300, 20, "RazFor", "Razão", false, false, null, JTextFieldPad.TP_STRING,false));
+    lcFor.add(new GuardaCampo( txtCodFor, 7, 100, 80, 20, "CodFor", "Cód.for.", true, false, null, JTextFieldPad.TP_INTEGER,true));
+    lcFor.add(new GuardaCampo( txtDescFor, 90, 300, 300, 20, "RazFor", "Razão social do fronecedor", false, false, null, JTextFieldPad.TP_STRING,false));
     lcFor.montaSql(false, "FORNECED", "CP");
     lcFor.setReadOnly(true);
     lcFor.setQueryCommit(false);
     txtCodFor.setListaCampos(lcFor);
     txtCodFor.setTabelaExterna(lcFor);
 
-    adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.Forn.", JTextFieldPad.TP_INTEGER, 5, 0, true, true, txtDescFor,true);
+    adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.forn.", JTextFieldPad.TP_INTEGER, 5, 0, true, true, txtDescFor,true);
     adicDescFK(txtDescFor, 90, 20, 297, 20, "RazFor", "Razão social do fornecedor", JTextFieldPad.TP_STRING, 50, 0);
-    adicCampo(txtCodCliFor, 390, 20, 105, 20, "CodCliFor", "Cód.Cli.Forn.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,false);
+    adicCampo(txtCodCliFor, 390, 20, 105, 20, "CodCliFor", "Cód.cli.for.", JTextFieldPad.TP_INTEGER, 8, 0, false, false, null,false);
     setListaCampos( false, "CLIENTEFOR", "VD");
     lcCliFor.montaTab();
     lcCliFor.setQueryInsert(false);
@@ -507,7 +507,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	if (bPref[0]) {
         lcSetor = new ListaCampos(this,"SR");
   		lcSetor.add(new GuardaCampo( txtCodSetor, 7, 100, 80, 20, "CodSetor", "Setor", true, false, txtDescSetor, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-  		lcSetor.add(new GuardaCampo( txtDescSetor, 7, 100, 80, 20, "DescSetor", "", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
+  		lcSetor.add(new GuardaCampo( txtDescSetor, 7, 100, 80, 20, "DescSetor", "Descrição do setor", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
   		lcSetor.montaSql(false, "SETOR", "VD");    
   		lcSetor.setQueryCommit(false);
   		lcSetor.setReadOnly(true);
