@@ -71,7 +71,7 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    setPainel(pinCab, pnCliCab);
   	
 	  	adicCampo(txtCodEst, 7, 20, 80, 20, "Codest", "Nº estação", ListaCampos.DB_PK, true);
-	  	adicCampo(txtDescEst, 90, 20, 307, 20, "Descest", "Descrição da estação de trabalho",ListaCampos.DB_FK,true);
+	  	adicCampo(txtDescEst, 90, 20, 307, 20, "Descest", "Descrição da estação de trabalho",ListaCampos.DB_SI,true);
 	    setListaCampos(true,"ESTACAO", "SG");
 	    lcCampos.setQueryInsert(false);
 	    
