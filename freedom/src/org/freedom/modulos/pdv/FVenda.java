@@ -39,9 +39,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -51,6 +49,8 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -58,15 +58,17 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StatusBar;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
+import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
 
 
-public class FVenda extends FFDialogo implements KeyListener, CarregaListener, PostListener {
+public class FVenda extends FDialogo implements KeyListener, CarregaListener, PostListener {
 	
    private StatusBar sbVenda = new StatusBar(new BorderLayout());
    
@@ -163,8 +165,9 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    private Font fntTotalCupom = null;
    private Vector vCacheItem = new Vector();
    private Connection con;
+   private Tef tef = null;
    public FVenda() {
-   	  super(Aplicativo.telaPrincipal);
+//   	  super(Aplicativo.telaPrincipal);
    	  setTitulo("Venda");
    	  setAtribos(798,580);
    	  setToFrameLayout();
@@ -397,7 +400,10 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
 	  btF10.addActionListener(this);
 
 	  lcVenda.addPostListener(this);
-      
+	  
+	  if (FreedomPDV.bTEFTerm) {
+	  	tef = new Tef(Aplicativo.strTefEnv,Aplicativo.strTefRet);
+	  }
    }
    private void insereItem() {
    	  int iCodItVenda = 0;
@@ -575,7 +581,8 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    	  iniItem();
    }
    public void setConexao(Connection con) {
-   	  super.setConexao(con);
+//   	  super.setConexao(con);
+ 	  this.con = con;
 	  lcCliente.setConexao(con);
 	  lcPlanoPag.setConexao(con);
 	  lcVenda.setConexao(con);
@@ -772,6 +779,8 @@ public class FVenda extends FFDialogo implements KeyListener, CarregaListener, P
    	 }*/
    	 DLFechaVenda fecha = new DLFechaVenda(txtTotalCupom.getVlrBigDecimal(),txtCodVenda.getVlrInteger().intValue(), txtNumeroCupom.getVlrInteger().intValue());
    	 fecha.setConexao(con);
+   	 if (tef != null)
+   	 	fecha.setTef(tef);
    	 fecha.setVisible(true);
    	 if (fecha.OK) {
    	 	iniVenda();
