@@ -1218,7 +1218,11 @@ public class ListaCampos extends Container implements PostListener,InsertListene
           bResultado = true;       
         }
         else {
-           bResultado = false;     
+           if(!this.bPodeIns) {
+           	   Funcoes.mensagemInforma(cOwner,"Registro não foi encontrado!");
+           	   lcMaster.limpaCampos(false);
+           }
+           	   bResultado = false;     
 
         }
 /*        if (rsLC != null)  
