@@ -22,11 +22,13 @@
 package org.freedom.modulos.std;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.componentes.ListaCampos;
@@ -45,14 +47,16 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	 this.sCol = sCol;
    	 setConexao(con);
    	 
+     setAtribos( 575, 260);
+     
    	 tab.adicColuna("Cód.");
      tab.adicColuna("Ref.");    
      tab.adicColuna("Descrição");
    	 tab.adicColuna("Saldo");   	  
-   	 tab.setTamColuna(120,0);//código.
-   	 tab.setTamColuna(100,1);//Referencia. 
-   	 tab.setTamColuna(200,2);
-   	 tab.setTamColuna(80,5);   	 	 
+   	 tab.setTamColuna(70,0);//código.
+   	 tab.setTamColuna(70,1);//Referencia. 
+   	 tab.setTamColuna(300,2);
+   	 tab.setTamColuna(90,5);   	 	 
    	 tab.addTabelaSelListener(this); 
 
    	 tab.addKeyListener(this);
@@ -107,7 +111,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
       	   tab.adicLinha( new Object[] {
       	      rs.getString(1) != null ? rs.getString(1) : "",
       		  rs.getString(2) != null ? rs.getString(2) : "",
-      		  rs.getString(3) != null ? rs.getString(3) : "",
+      		  rs.getString(3) != null ? rs.getString(3).trim() : "",
 			  rs.getString(4) != null ? rs.getString(4) : "",
       	   });
 
@@ -142,26 +146,32 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    	  super.actionPerformed(evt);
    }
    public void valorAlterado(TabelaSelEvent tsevt) {
-   	 try {   	
-   	 	if (tsevt.getTabela() == tab) {
-   	 		if (tab.getNumLinhas() > 0) {
-   	 		    if (bRet) {
-   	   	 			if (sCol.toUpperCase().equals("REFPROD")) {
-   	   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
-   	   	 			}
-   	   	 			else {
-   	   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
-   	   	 			}
-   	 		    }
-   	 		}
-         }   	  
-   	 }
-   	 catch(Exception e) {
-   	 	e.printStackTrace();
-   	 }
     }
 
-public void setValor(Object oVal) {
-	
+public void setValor(Object oVal) { }
+
+public void keyPressed(KeyEvent kevt) {
+    if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {        
+      if (tab.getNumLinhas() > 0 ) { 
+      	buscaValores();
+        btOK.doClick();
+      }    
+    }
+    else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
+    	btCancel.doClick();
+
+}   
+public void buscaValores(){
+	if (tab.getNumLinhas() > 0) {
+		if (bRet) {	
+  	 			if (sCol.toUpperCase().equals("REFPROD")) {
+   	 				oRetVal = tab.getValueAt(tab.getLinhaSel(),1); 
+	   	 		}
+	   	 		else {
+	   	 			oRetVal = tab.getValueAt(tab.getLinhaSel(),0);
+	   	 		}   	 		    	
+		 }
+	 }    
 }
+
 };        
