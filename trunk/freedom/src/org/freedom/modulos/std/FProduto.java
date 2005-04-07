@@ -97,10 +97,16 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
   private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
   private JTextFieldPad txtSldProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+  private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+  private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
+  private JTextFieldPad txtSldAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
   private JTextFieldPad txtDtUltCpProd = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
   private JTextFieldPad txtSldConsigProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+  private JTextFieldPad txtSldConsigAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
   private JTextFieldPad txtSldResProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+  private JTextFieldPad txtSldResAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
   private JTextFieldPad txtSldLiqProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+  private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
   private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
   private JTextFieldPad txtUnidFat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtFatConv = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,10,3);
@@ -195,7 +201,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
  
   public FProduto() {
     setTitulo("Cadastro de Produtos");
-    setAtribos(30,10,700,430);
+    setAtribos(30,10,700,497);
 
     lcFatConv.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcFatConv);
@@ -384,6 +390,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     adicCampo(txtQtdMinProd, 370, 140, 67, 20, "QtdMinProd", "Qtd.min.", ListaCampos.DB_SI, true);
     adicCampo(txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.", ListaCampos.DB_SI, true);
     adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local armz.", ListaCampos.DB_SI, false);
+    
     adicCampo(txtCustoMPMProd, 110, 180, 87, 20, "CustoMPMProd", "Custo MPM", ListaCampos.DB_SI, false);
     adic(new JLabelPad("Custo PEPS"),200,160,87,20);
     adic(txtCustoPEPSProd, 200, 180, 87, 20); // Sem inserir no lista campos
@@ -391,20 +398,29 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false);
     adicCampo(txtSldConsigProd, 470, 180, 87, 20, "SldConsigProd", "Saldo consig.", ListaCampos.DB_SI, false);
     adicCampo(txtSldLiqProd, 560, 180, 90, 20, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false);
-    adicDB(cbLote, 7, 220, 70, 20, "CLoteProd", "Estoque",true);
-    adicDB(cbAtivo, 80, 220, 67, 20, "AtivoProd", "Atividade",true);
-    adicDB(cbVerif, 150, 220, 77, 20, "VerifProd", "Abaixo custo",true);
-    adicCampo(txtDtUltCpProd, 230, 220, 97, 20, "DtUltCpProd", "Ultima compra", ListaCampos.DB_SI, false);
-    adicCampo(txtCodUnid, 330, 220, 77, 20, "CodUnid", "Cód.und.", ListaCampos.DB_FK, txtDescUnid,true);
-    adicDescFK(txtDescUnid, 410, 220, 240, 20, "DescUnid", "Descrição da unidade");
-    adicCampo(txtCodFisc, 7, 260, 80, 20, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, txtDescFisc,true);
-    adicDescFK(txtDescFisc, 90, 260, 237, 20, "DescFisc", "Descrição da classificação fiscal");
-    adicCampo(txtCodMarca, 330, 260, 77, 20, "CodMarca", "Cód.marca", ListaCampos.DB_FK, txtDescMarca,true);
-    adicDescFK(txtDescMarca, 410, 260, 240, 20, "DescMarca", "Descrição da marca");
-    adicCampo(txtCodGrup, 7, 300, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrup,true);
-    adicDescFK(txtDescGrup, 110, 300, 237, 20, "DescGrup", "Descrição do grupo");
-    adicDB(rgCV, 350, 300, 260, 30, "CVProd", "Cadastro para:",true);
-    adic(btExp, 620, 300, 30, 30);
+
+    adicCampo(txtCustoMPMAlmox, 110, 220, 87, 20, "CustoMPMProd", "Custo MPM", ListaCampos.DB_SI, false);
+    adic(new JLabelPad("Custo PEPS"),200,200,87,20);
+    adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista campos
+    adicCampo(txtSldAlmox, 290, 220, 87, 20, "SldProd", "Saldo", ListaCampos.DB_SI, false);
+    adicCampo(txtSldResAlmox, 380, 220, 87, 20, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false);
+    adicCampo(txtSldConsigAlmox, 470, 220, 87, 20, "SldConsigProd", "Saldo consig.", ListaCampos.DB_SI, false);
+    adicCampo(txtSldLiqAlmox, 560, 220, 90, 20, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false);
+    
+    adicDB(cbLote, 7, 260, 70, 20, "CLoteProd", "Estoque",true);
+    adicDB(cbAtivo, 80, 260, 67, 20, "AtivoProd", "Atividade",true);
+    adicDB(cbVerif, 150, 260, 77, 20, "VerifProd", "Abaixo custo",true);
+    adicCampo(txtDtUltCpProd, 230, 260, 97, 20, "DtUltCpProd", "Ultima compra", ListaCampos.DB_SI, false);
+    adicCampo(txtCodUnid, 330, 260, 77, 20, "CodUnid", "Cód.und.", ListaCampos.DB_FK, txtDescUnid,true);
+    adicDescFK(txtDescUnid, 410, 260, 240, 20, "DescUnid", "Descrição da unidade");
+    adicCampo(txtCodFisc, 7, 300, 80, 20, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, txtDescFisc,true);
+    adicDescFK(txtDescFisc, 90, 300, 237, 20, "DescFisc", "Descrição da classificação fiscal");
+    adicCampo(txtCodMarca, 330, 300, 77, 20, "CodMarca", "Cód.marca", ListaCampos.DB_FK, txtDescMarca,true);
+    adicDescFK(txtDescMarca, 410, 300, 240, 20, "DescMarca", "Descrição da marca");
+    adicCampo(txtCodGrup, 7, 340, 100, 20, "CodGrup", "Cód.grupo", ListaCampos.DB_FK, txtDescGrup,true);
+    adicDescFK(txtDescGrup, 110, 340, 237, 20, "DescGrup", "Descrição do grupo");
+    adicDB(rgCV, 350, 340, 260, 30, "CVProd", "Cadastro para:",true);
+    adic(btExp, 620, 340, 30, 30);
     
 
 //Decrição completa
