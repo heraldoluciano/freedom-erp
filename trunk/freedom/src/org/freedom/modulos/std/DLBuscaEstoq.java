@@ -49,7 +49,6 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private ImageIcon imgPadrao = Icone.novo("clPagoParcial.gif");
    private ImageIcon imgColuna = null;
    public int iPadrao = 0;
-   boolean bEnter = true;
    Vector vLinhasProibidas = new Vector();
    public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
@@ -58,7 +57,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 imgVisualiza.setDescription("N");
    	 imgPadrao.setDescription("P");
    	 
-     setAtribos( 560, 260);
+     setAtribos( 575, 260);
    	 
    	 lcCampos = lc1;
    	 lcProd = lc2;
@@ -87,7 +86,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    }
    public Object getValor() {
 	if(lcCampos!=null) {   	 		 
-		if (lcCampos.getCampo("codalmox")!=null)
+		if (lcCampos.getCampo("codalmox")!=null && this.OK)
 			lcCampos.getCampo("codalmox").setVlrInteger(iCodAlmox);
 		}
 		else {
@@ -163,8 +162,10 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 			  rs.getString(5) != null ? Funcoes.strDecimalToStrCurrency(13,2,rs.getString(5)) : "",
 		      imgColuna,
       	   });
-      	   if (iCont>0)
+      	         	   	
+      	   if (iCont>0) {
       	   		bRet = true;
+      	   }
       	   else
       	   		bRet = false;
       	   iCont++;
@@ -197,7 +198,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    public synchronized void valorAlterado(TabelaSelEvent tsevt) {       
    	try {   	
    	 	if (tsevt.getTabela() == tab) {
-//   	 	    buscaValores();
+   	 	    buscaValores();
    	 	}   	  
    	 }   	 
    	 catch(Exception e) {
@@ -209,43 +210,30 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
 public void setValor(Object oVal) {}
 
 public void keyPressed(KeyEvent kevt) {
-    if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
-      if (tab.getNumLinhas() > 0) {
-      	
-//Esquematicos para acertar a linha selecionada...
-//Quando o form fechar a linha ira pular uma vez uma vez para baixo...
-//então eu volto uma linha aqui:
-
-          if (tab.getLinhaSel()==tab.getNumLinhas()-1){
-               tab.setLinhaSel(tab.getNumLinhas()-1);
-               if (bEnter) btOK.doClick();            
-          }
-          else {
-              if (tab.getLinhaSel() > 0)
-                  tab.setLinhaSel(tab.getLinhaSel()-1);
-              else
-                  tab.setLinhaSel(tab.getNumLinhas()-1);      	
-              if (bEnter) btOK.doClick();
-          }
-               
-      }      
+    if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {        
+      if (tab.getNumLinhas() > 0 && btOK.isEnabled()) { 
+	    iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
+      	btOK.doClick();
+      }
+      else if (!btOK.isEnabled()) {
+        if (tab.getLinhaSel()==tab.getNumLinhas()-1)
+            tab.setLinhaSel(tab.getNumLinhas()-2);
+        else
+        	tab.setLinhaSel(tab.getLinhaSel()-1);
+      }
     }
-    
-     
-  }
+    else if (kevt.getKeyCode() == KeyEvent.VK_ESCAPE)
+    	btCancel.doClick();
 
+}    
+    
 public void buscaValores(){
 	if (tab.getNumLinhas() > 0) {
-		if (bRet) {
-		    iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
+		if (bRet) {	
 		   	if (((ImageIcon)tab.getValueAt(tab.getLinhaSel(),5)).getDescription().equals("N")) 
-		        bEnter = false;
+		   		btOK.setEnabled(false);
 		    else
-		        bEnter = true;   	 		    	
-		    if (bEnter)
-		        btOK.setEnabled(true);
-		    else
-		        btOK.setEnabled(false);
+		        btOK.setEnabled(true);   	 		    	
 		 }
 	 }    
 }
