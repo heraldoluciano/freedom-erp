@@ -872,7 +872,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		
 		adicCampoInvisivel(txtCodAlmoxItVenda, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
 		
-		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcAlmox,lcProd,this,con,"qtditvenda"));
+		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,this,con,"qtditvenda"));
 				
 		adicCampo(txtPrecoItVenda, 480, 20, 67, 20, "PrecoItVenda", "Preço",
 				ListaCampos.DB_SI, true);
