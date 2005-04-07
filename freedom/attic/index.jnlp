@@ -1,0 +1,18 @@
+<?xmlversion="1.0" encoding="utf-8"?>
+      <jnlp spec="1.0+"codebase="http://localhost:8080/elog1"href="index.jnlp">
+          <information>
+                  <title>E-Log 1.0</title>
+                  <vendor>Ícone Desenvolvimento</vendor>
+                  <homepage href="index.html"/>
+                  <description>E-Log 1.0</description>
+                  <description kind="short">E-Log</description>
+          </information>
+          <security>
+                   <all-permissions/>
+           </security>
+           <resources>
+                   <j2se version="1.4"/>
+                   <jar href="Freedom-1.1.0.1.jar"/>
+         </resources>
+           <application-descmain-class="org.freedom.modulos.std.FreedomSTD"/>
+ </jnlp>

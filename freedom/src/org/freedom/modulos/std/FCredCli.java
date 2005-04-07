@@ -210,8 +210,6 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 	private JPanelPad pinJuridica = new JPanelPad(680, 200);	
 	
-	private JPanelPad pinRodFicha = new JPanelPad(680, 29);
-
 	private JTextFieldPad txtCodCli = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -781,7 +779,9 @@ public class FCredCli extends FTabDados implements ActionListener,
 	private ListaCampos lcBanco = new ListaCampos(this, "BC");
 
 	private Navegador navFicha = new Navegador(false);
-
+	
+	private Navegador navPJur = new Navegador(false);
+	
 	private Navegador navRefP = new Navegador(true);
 
 	private Navegador navAutP = new Navegador(true);
@@ -1037,11 +1037,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		lcCampos.setQueryInsert(false);
 
 		setListaCampos(lcFicha);
-		setNavegador(navFicha);
 
-		pnFicha.add(pinRodFicha, BorderLayout.SOUTH);
-
-		pinRodFicha.adic(navFicha, 0, 0, 150, 25);
 		tpn2.setTabPlacement(SwingConstants.LEFT);
 		tpn.setPreferredSize(new Dimension(50, 500));
 		pnFicha.add(tpn2, BorderLayout.WEST);
@@ -1564,6 +1560,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		if (bFisTipoCli) {
 			adicTab("Ficha cadastral", pnFicha);
+			setNavegador(navFicha);
 		}
 		if (bVeicTipoCli)
 			adicTab("Veículos", pnVeic);
@@ -1589,8 +1586,10 @@ public class FCredCli extends FTabDados implements ActionListener,
 			tpn2.addTab("Cônjuge", pinConjuge);
 		if (bAvalTipoCli)
 			tpn2.addTab("Avalista", pinAvalista);
-		if (bJurTipoCli)
+		if (bJurTipoCli) {
 			adicTab("Pess.Jur.", pinJuridica);
+			setNavegador(navPJur);
+		}
 	}
 
 	private void setaFoco() {
