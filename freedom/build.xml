@@ -71,4 +71,11 @@
             <arg line="${freedom.version}"/>
         </exec>
     </target>
+	
+    <target name="-post-jar">
+    	<signjar jar="${dist.jar}"
+    		keystore="keystore" storepass="setpoint"
+    		alias="myself"  keypass="sana8523"
+    		signedjar="${dist.signed.jar}"/> 
+    </target>	
 </project>
