@@ -341,6 +341,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   	 		if (dlBuscaAdic.OK) {
   	 			Object oVal = null;
   	 			oVal = dlBuscaAdic.getValor();
+  	 			dlBuscaAdic.oRetVal = null;
   	 			if (oVal != null)
   	 				setVlrString(oVal+"");
   	 		}

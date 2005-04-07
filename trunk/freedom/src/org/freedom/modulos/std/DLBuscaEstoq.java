@@ -40,7 +40,8 @@ import org.freedom.telas.DLF3;
 public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private Vector vValsProd = new Vector();
    private String sSQL = "";   
-   private ListaCampos lcCampos = null;
+   private ListaCampos lcItens = null;
+   private ListaCampos lcAlmox = null;
    private ListaCampos lcProd = null;
    Integer iCodAlmox = new Integer(0);
    boolean bRet = false;
@@ -50,7 +51,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private ImageIcon imgColuna = null;
    public int iPadrao = 0;
    Vector vLinhasProibidas = new Vector();
-   public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, Component cOrig,Connection con,String sCol) {
+   public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, ListaCampos lc3, Component cOrig,Connection con,String sCol) {
    	 super(cOrig);
 
    	 imgBaixa.setDescription("S");
@@ -59,8 +60,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	 
      setAtribos( 575, 260);
    	 
-   	 lcCampos = lc1;
-   	 lcProd = lc2;
+     lcItens = lc1;
+   	 lcAlmox = lc2;
+   	 lcProd = lc3;
    	 
    	 setConexao(con);
    	 
@@ -85,13 +87,16 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    	return iPadrao;
    }
    public Object getValor() {
-	if(lcCampos!=null) {   	 		 
-		if (lcCampos.getCampo("codalmox")!=null && this.OK)
-			lcCampos.getCampo("codalmox").setVlrInteger(iCodAlmox);
+	if(lcAlmox!=null) {   	 		 
+		if (lcAlmox.getCampo("codalmox")!=null && this.OK)
+			if (iCodAlmox!=null) 			
+				lcAlmox.getCampo("codalmox").setVlrInteger(iCodAlmox);
 		}
 		else {
 		  	System.out.println("Lista Campos nulo no busca Estoq!!!!");
 		}
+	bRet = false;
+	iCodAlmox = null;
    	return oRetVal;
   }
    public boolean setValor(Object oVal,String sTipo) { 
@@ -134,9 +139,9 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	int iCont = 0;
       	while (rs.next()) {
       		if (iCont ==0)
-      			if(lcCampos!=null) {   	 		  
-   	 		    	if (lcCampos.getCampo("codalmox")!=null)
-   	 		    		lcCampos.getCampo("codalmox").setVlrInteger(new Integer(rs.getInt(3)));   	 		    	      	   
+      			if(lcAlmox!=null) {   	 		  
+   	 		    	if (lcAlmox.getCampo("codalmox")!=null)
+   	 		    		lcAlmox.getCampo("codalmox").setVlrInteger(new Integer(rs.getInt(3)));   	 		    	      	   
       			}
       	   String sImgColuna = rs.getString(6);
       	   if (sImgColuna!=null){
@@ -176,7 +181,7 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	if (!con.getAutoCommit())
       		con.commit();
       	
-      	if(bRet) {
+      	if((bRet) && (lcItens.getStatus() == 2)) {
       		tab.requestFocus();
       		tab.setLinhaSel(iPadrao); 
           	setVisible(true);      		
@@ -212,7 +217,6 @@ public void setValor(Object oVal) {}
 public void keyPressed(KeyEvent kevt) {
     if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {        
       if (tab.getNumLinhas() > 0 && btOK.isEnabled()) { 
-	    iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
       	btOK.doClick();
       }
       else if (!btOK.isEnabled()) {
@@ -226,14 +230,20 @@ public void keyPressed(KeyEvent kevt) {
     	btCancel.doClick();
 
 }    
-    
+public void ok(){
+    iCodAlmox = new Integer(Integer.parseInt(tab.getValueAt(tab.getLinhaSel(),2).toString()));
+    super.ok();
+}
+
 public void buscaValores(){
 	if (tab.getNumLinhas() > 0) {
-		if (bRet) {	
-		   	if (((ImageIcon)tab.getValueAt(tab.getLinhaSel(),5)).getDescription().equals("N")) 
-		   		btOK.setEnabled(false);
-		    else
-		        btOK.setEnabled(true);   	 		    	
+		if (bRet) {			
+			if(this.isVisible()){
+				if (((ImageIcon)tab.getValueAt(tab.getLinhaSel(),5)).getDescription().equals("N")) 
+					btOK.setEnabled(false);
+				else	
+					btOK.setEnabled(true);
+			}
 		 }
 	 }    
 }
