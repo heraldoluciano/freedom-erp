@@ -12,7 +12,7 @@
  * Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
- * Programa. <BR>
+ * Programa. <BR> 
  * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
  * pode contatar <BR>
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
