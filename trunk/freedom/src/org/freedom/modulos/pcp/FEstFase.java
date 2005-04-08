@@ -43,7 +43,7 @@ public class FEstFase extends FDetalhe {
   private JTextFieldPad txtNumSeqEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTpRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
