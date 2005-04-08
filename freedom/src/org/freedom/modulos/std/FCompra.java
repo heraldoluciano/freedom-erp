@@ -221,6 +221,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 	private JTextFieldFK txtDescFisc = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
+	
+	private JTextFieldPad txtCodAlmoxItCompra = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER,5, 0);
+
 
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 
@@ -241,6 +245,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private ListaCampos lcFisc = new ListaCampos(this);
 
 	private ListaCampos lcCompra2 = new ListaCampos(this);
+
+	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
 
 	String sOrdNota = "";
 
@@ -330,7 +336,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		txtCodFisc.setTabelaExterna(lcFisc);
 		txtDescFisc.setListaCampos(lcFisc);
 
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
+		lcProd.add(new GuardaCampo(txtCodProd, "codprod", "Cód.prod.",
 				ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd",
 				"Descrição do produto", ListaCampos.DB_SI, false));
@@ -355,7 +361,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 				ListaCampos.DB_PK, false));
 		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",
 				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
+		lcProd2.add(new GuardaCampo(txtCodProd, "codprod", "Cód.rod.",
 				ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
 				ListaCampos.DB_SI, false));
@@ -390,6 +396,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		txtDescLote.setNomeCampo("VenctoLote");
 		txtDescLote.setLabel("Vencimento");
 
+		//FK de Almoxarifado
+
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxItCompra, "codalmox", "Cod.Almox.",
+				ListaCampos.DB_PK, false));
+		lcAlmox.montaSql(false, "ALMOX", "EQ");
+		lcAlmox.setQueryCommit(false);
+		lcAlmox.setReadOnly(true);
+		txtCodAlmoxItCompra.setTabelaExterna(lcAlmox);
+		
 		lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP",
 				ListaCampos.DB_PK, false));
 		lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP",
@@ -508,8 +523,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 				"Descrição do produto");
 		adicCampo(txtCodLote, 310, 20, 67, 20, "CodLote", "Lote",
 				ListaCampos.DB_FK, txtDescLote, false);
-		adicCampo(txtQtdItCompra, 380, 20, 67, 20, "QtdItCompra", "Qtd.",
+		adicCampo(txtQtdItCompra, 380, 20, 67, 20, "qtditcompra", "Qtd.",
 				ListaCampos.DB_SI, true);
+
+		adicCampoInvisivel(txtCodAlmoxItCompra, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
+		
+		txtQtdItCompra.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,this,con,"qtditcompra"));		
+		
+		
 		adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço",
 				ListaCampos.DB_SI, true);
 		adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra",
@@ -1259,6 +1280,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcLote.setConexao(cn);
 		lcFisc.setConexao(cn);
 		lcCompra2.setConexao(cn);
+		lcAlmox.setConexao(cn);
 		montaDetalhe();
 	}
 }
