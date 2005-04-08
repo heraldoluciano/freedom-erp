@@ -329,13 +329,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			5, 0);
 	
-	private JTextFieldPad txtCodEmpAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			5, 0);
-
-	private JTextFieldPad txtCodFilialAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			5, 0);
-
-
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.ped.", "S",
 			"N");
 
