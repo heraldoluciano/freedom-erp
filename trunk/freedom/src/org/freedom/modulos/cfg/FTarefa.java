@@ -39,8 +39,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTarefa extends FDados implements ActionListener {
-  private JTextFieldPad txtCodTarefa = new JTextFieldPad(5);
-  private JTextFieldPad txtDescTarefa = new JTextFieldPad(50);
+  private JTextFieldPad txtCodTarefa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtDescTarefa = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldFK txtDescObj = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private Vector vValsTipo = new Vector();

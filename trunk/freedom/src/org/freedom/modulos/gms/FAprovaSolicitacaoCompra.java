@@ -76,9 +76,9 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JButton btCancelaItem = new JButton("Cancelar", imgCancel);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
-	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
-	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtDtAptovItSol = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
