@@ -26,14 +26,11 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FAjustaSeq extends FDados {
-  private JTextFieldPad txtSgTab = new JTextFieldPad();
-  private JTextFieldPad txtNroSeq = new JTextFieldPad();
+  private JTextFieldPad txtSgTab = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtNroSeq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public FAjustaSeq() {
     setTitulo("Ajusta sequencia");
     setAtribos(50,50,350,150);
-    
-    txtSgTab.setTipo(JTextFieldPad.TP_STRING,2,0);
-    txtNroSeq.setTipo(JTextFieldPad.TP_INTEGER,8,0);
     
     adicCampo(txtSgTab, 7, 20, 50, 20, "SgTab", "Sigla", ListaCampos.DB_PK, true);
     adicCampo(txtNroSeq, 60, 20, 80, 20, "NroSeq", "Sequencia", ListaCampos.DB_SI, true);

@@ -60,7 +60,7 @@ import org.freedom.telas.FDados;
 
 public class FUsuario extends FDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener, CheckBoxListener {
   private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
-  private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+  private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtPNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   private JTextFieldPad txtUNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtIDGrpUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
