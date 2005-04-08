@@ -74,6 +74,7 @@
     <target name="-post-jar">
 		<signjar keystore="keystore" storepass="setpoint" alias="myself"  keypass="sana8523"> 
 	   		<fileset id="jarfiles" dir=".">
+	   			<exclude name="lib/mail.jar"/>
 	   			<include name="${dist.jar}"/>
 	    		<include name="lib/*.jar"/>
 			</fileset>
