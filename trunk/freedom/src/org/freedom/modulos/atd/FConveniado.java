@@ -87,8 +87,8 @@ public class FConveniado extends FTabDados implements PostListener {
   private JTextFieldFK txtDescGrauInst = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtPaiConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtMaeConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtRGPaiConv = new JTextFieldPad(JTextFieldPad.TP_STRING,12,0);
-  private JTextFieldPad txtRGMaeConv = new JTextFieldPad(JTextFieldPad.TP_STRING,12,0);
+  private JTextFieldPad txtRGPaiConv = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtRGMaeConv = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private Tabela tabAtrib = new Tabela();

@@ -66,7 +66,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private JScrollPane spnConv = new JScrollPane(tabConv);
   private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeConv = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldFK txtTelConv = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldFK txtTelConv = new JTextFieldFK(JTextFieldPad.TP_STRING,12,0);
   private JTextFieldFK txtRGConv = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldFK txtCPFConv = new JTextFieldFK(JTextFieldPad.TP_STRING,11,0);
   private JTextFieldFK txtPaiConv = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

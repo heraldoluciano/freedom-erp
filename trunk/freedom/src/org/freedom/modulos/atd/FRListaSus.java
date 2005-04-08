@@ -43,11 +43,11 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
   private JPanelPad pinPacientes;
   private JPanelPad pinPacientes2;
   private JPanelPad pinPacientes3;
-  private JTextFieldPad txtDataini;
-  private JTextFieldPad txtDatafim;
-  private JTextFieldPad txtFoneEnc;
-  private JTextFieldPad txtFaxEnc;
-  private JTextFieldPad txtUFEnc;
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtFoneEnc = new JTextFieldPad(JTextFieldPad.TP_STRING,12,0);
+  private JTextFieldPad txtFaxEnc = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+  private JTextFieldPad txtUFEnc = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JCheckBoxPad cbPacTurnoUm;
   private JCheckBoxPad cbPacTurnoDois;
   private JCheckBoxPad cb0a1ano;
@@ -119,11 +119,6 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     pinPacientes = new JPanelPad();
     pinPacientes2 = new JPanelPad();
     pinPacientes3 = new JPanelPad();
-    txtDataini = new JTextFieldPad();
-    txtDatafim = new JTextFieldPad();
-    txtFoneEnc = new JTextFieldPad(12);
-    txtFaxEnc = new JTextFieldPad(8);
-    txtUFEnc = new JTextFieldPad(2);
     cbPacTurnoUm = null;
     cbPacTurnoDois = null;
     cb0a1ano = null;
