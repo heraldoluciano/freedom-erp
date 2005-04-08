@@ -328,7 +328,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	
 	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			5, 0);
-	
+
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.ped.", "S",
 			"N");
 
@@ -863,7 +863,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		adicCampo(txtQtdItVenda, 410, 20, 67, 20, "QtdItVenda", "Qtd.",
 				ListaCampos.DB_SI, true);
 		
-		adicCampoInvisivel(txtCodAlmoxItVenda, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
+		txtCodAlmoxItVenda.setSoLeitura(true);
+		adicCampo(txtCodAlmoxItVenda, 280, 60, 47,20, "codalmox", "Cod.ax",	ListaCampos.DB_FK, false);
 		
 		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,this,con,"qtditvenda"));
 				
@@ -875,13 +876,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				"V. desc.", ListaCampos.DB_SI, false);
 		adicCampo(txtPercComItVenda, 680, 20, 57, 20, "PercComisItVenda",
 				"% com.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrComisItVenda, 7, 60, 70, 20, "VlrComisItVenda",
+		adicCampo(txtVlrComisItVenda, 7, 60, 50, 20, "VlrComisItVenda",
 				"V. com.", ListaCampos.DB_SI, false);
 
-		adicCampo(txtCodNat, 80, 60, 47, 20, "CodNat", "CFOP",
+		adicCampo(txtCodNat, 60, 60, 47, 20, "CodNat", "CFOP",
 				ListaCampos.DB_FK, txtDescNat, true);
 
-		adicDescFK(txtDescNat, 130, 60, 197, 20, "DescNat", "Descrição da CFOP");
+		adicDescFK(txtDescNat, 110, 60, 167, 20, "DescNat", "Descrição da CFOP");
 		// colocar aqui o campo de saldo
 		adicDescFK(txtSldLiqProd, 330, 60, 67, 20, "SldLiqProd", "Saldo");
 		adicCampo(txtBaseICMSItVenda, 400, 60, 67, 20, "VlrBaseICMSItVenda",
