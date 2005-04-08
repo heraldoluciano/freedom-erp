@@ -27,13 +27,14 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-public class Icone { 
-
+public class Icone {
+    
+    public static String dirImages = "/org/freedom/images/";
 	public Icone() {}
 
 	public static ImageIcon novo(String nome) {
 		ImageIcon retorno = null;
-		URL url = Icone.class.getResource("/org/freedom/images/" + nome);
+		URL url = Icone.class.getResource(dirImages + nome);
 
 		if (url == null)
 			System.out.println("Não foi possível carregar a imagem: '" + nome + "'");

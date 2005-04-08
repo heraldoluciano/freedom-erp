@@ -35,7 +35,7 @@ public class FreedomCFG extends Aplicativo {
 
 	public FreedomCFG() {
 		super("iconConfiguracao32.gif", "splashConf.jpg",
-				"FreedomCFG - Configuração do sitema FREEDOM", 1, 2);
+				"FreedomCFG - Configuração do sitema FREEDOM", 1, 2, "freedom.ini", null);
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 		addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,

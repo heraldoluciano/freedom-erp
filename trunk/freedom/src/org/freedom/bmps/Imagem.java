@@ -26,12 +26,15 @@ package org.freedom.bmps;
 import java.awt.Image;
 import java.net.URL;
 
+
 public class Imagem { //extends java.applet.Applet {
+
+    public static String dirImages =  "/org/freedom/images/";
 
 	public Imagem() {}
 
 	public static Image novo(String nome) {
-		URL url = Imagem.class.getResource("/org/freedom/images/" + nome);
+		URL url = Imagem.class.getResource(dirImages + nome);
 
 		Image img = null;
 		if (url != null)
