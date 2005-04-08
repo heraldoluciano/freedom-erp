@@ -1691,7 +1691,7 @@ public class ListaCampos extends Container implements PostListener,
 		Component comp = null;
 		for (int i = 0; i < getComponentCount(); i++) {
 			comp = getComponent(i);
-			if ((((GuardaCampo) comp).getNomeCampo().equals(sNome))
+			if ((((GuardaCampo) comp).getNomeCampo().toLowerCase().equals(sNome.toLowerCase()))
 					&& (((GuardaCampo) comp).getCampo() != null)) {
 				retorno = ((GuardaCampo) comp).getCampo();
 				break;
