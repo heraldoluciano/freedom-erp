@@ -126,6 +126,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private JTextFieldPad txtCodTabPreco = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodPlanoPagPreco = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtPrecoProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+  private JTextFieldFK txtAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 20, 0);
   private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
@@ -157,6 +158,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private Tabela tabCodAltProd = new Tabela();
   private JScrollPane spnFor = new JScrollPane(tabFor);
   private JScrollPane spnCodAltProd = new JScrollPane(tabCodAltProd);
+  private Tabela tabSaldoProd = new Tabela();
   private Tabela tabLote = new Tabela();
   private JScrollPane spnLote = new JScrollPane(tabLote);
   private Tabela tabFoto = new Tabela();
@@ -189,6 +191,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   private ListaCampos lcClasCliPreco = new ListaCampos(this,"CC");
   private ListaCampos lcTabPreco = new ListaCampos(this,"TB");
   private ListaCampos lcPlanoPagPreco = new ListaCampos(this,"PG");
+  private ListaCampos lcSaldoProd = new ListaCampos(this,"");
   private Navegador navFatConv = new Navegador(true);
   private Navegador navFor = new Navegador(true);
   private Navegador navLote = new Navegador(true);
@@ -221,6 +224,9 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     lcPreco.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcPreco); 
     lcPreco.setTabela(tabPreco);
+    lcSaldoProd.setMaster(lcCampos);
+    lcCampos.adicDetalhe(lcSaldoProd);
+    lcSaldoProd.setTabela(tabSaldoProd);
 
 	lcCampos.addInsertListener(this);
 	lcCampos.addCarregaListener(this);
@@ -327,6 +333,14 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     txtSldConsigProd.setSoLeitura(true);
     txtSldLiqProd.setSoLeitura(true);
     
+    txtAlmox.setSoLeitura(true);
+    txtCustoMPMAlmox.setSoLeitura(true);    
+    txtCustoPEPSAlmox.setSoLeitura(true);    
+    txtSldAlmox.setSoLeitura(true);
+    txtSldResAlmox.setSoLeitura(true);
+    txtSldConsigAlmox.setSoLeitura(true);
+    txtSldLiqAlmox.setSoLeitura(true);
+    
     btImp.addActionListener(this);
 	btPrevimp.addActionListener(this);
 	tpn.addChangeListener(this);
@@ -338,6 +352,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
   	ResultSet rs = null;
   	PreparedStatement ps = null;
   	if (cevt.getListaCampos()==lcCampos) {
+  		txtAlmox.setVlrString(txtDescAlmox.getVlrString());
   		if (sPrefs[1].equals("S")) {
 			if (txtCodProd.getVlrInteger().intValue()!=0) {
 	  			try {
@@ -398,14 +413,6 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false);
     adicCampo(txtSldConsigProd, 470, 180, 87, 20, "SldConsigProd", "Saldo consig.", ListaCampos.DB_SI, false);
     adicCampo(txtSldLiqProd, 560, 180, 90, 20, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false);
-
-    adicCampo(txtCustoMPMAlmox, 110, 220, 87, 20, "CustoMPMProd", "Custo MPM", ListaCampos.DB_SI, false);
-    adic(new JLabelPad("Custo PEPS"),200,200,87,20);
-    adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista campos
-    adicCampo(txtSldAlmox, 290, 220, 87, 20, "SldProd", "Saldo", ListaCampos.DB_SI, false);
-    adicCampo(txtSldResAlmox, 380, 220, 87, 20, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false);
-    adicCampo(txtSldConsigAlmox, 470, 220, 87, 20, "SldConsigProd", "Saldo consig.", ListaCampos.DB_SI, false);
-    adicCampo(txtSldLiqAlmox, 560, 220, 90, 20, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false);
     
     adicDB(cbLote, 7, 260, 70, 20, "CLoteProd", "Estoque",true);
     adicDB(cbAtivo, 80, 260, 67, 20, "AtivoProd", "Atividade",true);
@@ -632,7 +639,32 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
     tabFoto.setTamColuna(80,2);
     tabFoto.setTamColuna(80,3);
     tabFoto.setTamColuna(80,4);
+
+//  SaldoProd
     
+    setListaCampos(lcSaldoProd);
+    
+    adic(new JLabelPad("Almoxarifado"),7,200,87,20);
+    adic(txtAlmox, 7, 220,97,20);
+    adicCampo(txtCustoMPMAlmox, 110, 220, 87, 20, "CustoMPMProd", "Custo MPM", ListaCampos.DB_SI, false);
+    adic(new JLabelPad("Custo PEPS"),200,200,87,20);
+    adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista campos
+    adicCampo(txtSldAlmox, 290, 220, 87, 20, "SldProd", "Saldo", ListaCampos.DB_SI, false);
+    adicCampo(txtSldResAlmox, 380, 220, 87, 20, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false);
+    adicCampo(txtSldConsigAlmox, 470, 220, 87, 20, "SldConsigProd", "Saldo consig.", ListaCampos.DB_SI, false);
+    adicCampo(txtSldLiqAlmox, 560, 220, 90, 20, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false);
+    
+    setListaCampos( true, "FOTOPROD", "VD");
+    lcFoto.setOrdem("CodFotoProd");
+    lcFoto.setQueryInsert(false);
+    lcFoto.setQueryCommit(false);
+    lcFoto.montaTab();
+    tabFoto.setTamColuna(80,0);
+    tabFoto.setTamColuna(250,1);
+    tabFoto.setTamColuna(80,2);
+    tabFoto.setTamColuna(80,3);
+    tabFoto.setTamColuna(80,4);
+            
 	txtCodProd.requestFocus();
 	btExp.addActionListener(this);
 	
