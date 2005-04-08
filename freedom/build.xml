@@ -66,16 +66,17 @@
     nbproject/build-impl.xml file. 
 
     -->
+
     <target name="-pre-jar">
-        <exec dir="bin" executable="/bin/echo" output="${build.dir}/version.txt">
-            <arg line="${freedom.version}"/>
-        </exec>
+        <echo message="${freedom.version}" file="${build.dir}/version.txt" append="false" />
     </target>
-	
+
     <target name="-post-jar">
-    	<signjar jar="${dist.jar}"
-    		keystore="keystore" storepass="setpoint"
-    		alias="myself"  keypass="sana8523"
-    		signedjar="${dist.signed.jar}"/> 
+		<signjar keystore="keystore" storepass="setpoint" alias="myself"  keypass="sana8523"> 
+	   		<fileset id="jarfiles" dir=".">
+	   			<include name="${dist.jar}"/>
+	    		<include name="lib/*.jar"/>
+			</fileset>
+		</signjar>
     </target>	
 </project>
