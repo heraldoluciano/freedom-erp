@@ -192,6 +192,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private JTextFieldFK txtDescTipoCli = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
 
+	private JTextFieldPad txtCodAlmoxItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
+			5, 0);
+	
+//	private JTextFieldFK txtDescAlmox = new JTextFieldFK(
+	//		JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JTextAreaPad txaObsItOrc = new JTextAreaPad(500);
 
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
@@ -207,6 +213,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private ListaCampos lcVend = new ListaCampos(this, "VD");
 
 	private ListaCampos lcTipoCli = new ListaCampos(this, "TC");
+	
+	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
 
 	private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
 
@@ -304,6 +312,18 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
+		
+		//FK de Almoxarifado
+
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxItOrc, "codalmox", "Cod.Almox.",
+				ListaCampos.DB_PK, false));
+
+		lcAlmox.montaSql(false, "ALMOX", "EQ");
+		lcAlmox.setQueryCommit(false);
+		lcAlmox.setReadOnly(true);
+		txtCodAlmoxItOrc.setTabelaExterna(lcAlmox);
+		
+		
 		//FK Produto
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
 				ListaCampos.DB_PK, txtDescProd, false));
@@ -461,6 +481,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				"Descrição do produto");
 		adicCampo(txtQtdItOrc, 340, 20, 47, 20, "QtdItOrc", "Qtd.",
 				ListaCampos.DB_SI, true);
+
+		adicCampoInvisivel(txtCodAlmoxItOrc, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
+		
+		txtQtdItOrc.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,this,con,"qtditvenda"));
+				
 		adicCampo(txtPrecoItOrc, 390, 20, 67, 20, "PrecoItOrc", "Preço",
 				ListaCampos.DB_SI, true);
 		adicCampo(txtPercDescItOrc, 460, 20, 57, 20, "PercDescItOrc",
@@ -1000,6 +1025,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcPlanoPag.setConexao(cn);
 		lcVend.setConexao(cn);
 		lcTipoCli.setConexao(cn);
+		lcAlmox.setConexao(cn);
 		iniVenda();
 	}
 

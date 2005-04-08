@@ -19,7 +19,6 @@
         <jar href="lib/itext-1.02b.jar" main="false"/>
         <jar href="lib/jcommon-0.8.7.jar" main="false"/>        
         <jar href="lib/jfreechart-0.9.12.jar" main="false"/>        
-        <jar href="lib/mail.jar" main="false"/>
         <jar href="lib/nachocalendar-0.21.jar" main="false"/>
     </resources> 
     <application-desc main-class="org.freedom.modulos.std.FreedomSTD"/>
