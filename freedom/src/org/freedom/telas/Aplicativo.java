@@ -55,6 +55,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import org.freedom.bmps.Icone;
+import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JMenuItemPad;
 import org.freedom.componentes.JMenuPad;
@@ -147,7 +148,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public Aplicativo(String sIcone, String sSplash, String sCaption,
-			int iCodSis, int iCodMod) {
+			int iCodSis, int iCodMod, String sNomeArqIni, String sDirImagem) {
+	    if (sDirImagem!=null) {
+	        Imagem.dirImages = sDirImagem;
+	        Icone.dirImages = sDirImagem;
+	    }
 		if (System.getProperty("ARQLOG") != null)
 			ligaLog(System.getProperty("ARQLOG"));
 		strSplash = sSplash;
@@ -161,7 +166,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
 		String sArqINI = System.getProperty("ARQINI") != null ? System
-				.getProperty("ARQINI") : "freedom.ini";
+				.getProperty("ARQINI") : sNomeArqIni;
 		vArqINI = getArqINI(sArqINI);
 		iniConexao(); // Inicia a variável de conexão
 		//telaPrincipal.tiraEmp();

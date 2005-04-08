@@ -95,7 +95,7 @@ public class FreedomGMS extends Aplicativo {
 	public FreedomGMS() {
 		super("iconAtendimento32.gif", "splashGMS.jpg",
 				"FreedomGMS - Módulo de gerenciamento de mateirais e serviços",
-				1, 8);
+				1, 8, "freedom.ini", null);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
