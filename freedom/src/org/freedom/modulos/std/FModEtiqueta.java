@@ -45,6 +45,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 //import bibli.funcoes.Funcoes; // TESTE
@@ -63,7 +64,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
     private ListaCampos lcPapel = new ListaCampos(this,"PL");
-    
+    private Vector vTamanhos = new Vector();
 	public FModEtiqueta() {
     	setTitulo("Modelo de etiqueta");
     	setAtribos(20,100,750,400);
@@ -92,33 +93,12 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
    	    adicDescFK(txtDescpapel, 100, 60, 297, 20,"Descpapel","Descrição do papel"); 
 
     	setListaCampos( false, "MODETIQUETA", "SG");
-   	    
-    	Vector vLabs = new Vector();
-    	vLabs.addElement("Código do cliente");
-    	vLabs.addElement("Razão social do cliente");
-    	vLabs.addElement("Nome do cliente");
-    	vLabs.addElement("CPF ou CNPJ do cliente");
-    	vLabs.addElement("Endereço do cliente");
-    	vLabs.addElement("Número");
-    	vLabs.addElement("Complemento");
-    	vLabs.addElement("CEP");
-    	vLabs.addElement("Bairro do cliente");
-    	vLabs.addElement("Cidade do cliente");
-    	vLabs.addElement("UF do cliente");
-    	
-    	Vector vVals = new Vector();
-    	vVals.addElement("[CODCLI]"); //larg: 8
-    	vVals.addElement("[_____________RAZAO____DO____CLIENTE_____________]"); //larg: 50
-    	vVals.addElement("[_____________NOME_____DO____CLIENTE_____________]"); //larg: 50
-    	vVals.addElement("[CPF/CNPJ_ CLIENT]"); //larg: 18
-    	vVals.addElement("[____________ENDERECO____DO____CLIENTE___________]"); //larg: 50
-    	vVals.addElement("[NUMERO]"); //larg: 8
-    	vVals.addElement("[____COMPLEMENTO___]"); //larg: 20
-    	vVals.addElement("[__CEP__]"); //larg: 9
-    	vVals.addElement("[___________BAIRRO___________]"); //larg: 30
-    	vVals.addElement("[___________CIDADE___________]"); //larg: 30
-    	vVals.addElement("[UF]"); //larg: 2
-    	
+   	        	
+    	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+    	Vector vLabs = objEtiqCli.getLabel();    	
+    	Vector vVals = objEtiqCli.getValor();
+    	vTamanhos = objEtiqCli.getTam();
+    	    	
     	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
   
     	adic(new JLabelPad("Campos dinâmicos"), 7, 80, 220, 20); 
@@ -142,22 +122,19 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	
 	public void valorAlterado(JComboBoxEvent evt) { 
 		if (evt.getComboBoxPad() == cbCampos) { 
-			txaEtiqueta.insert(cbCampos.getVlrString(),txaEtiqueta.getCaretPosition()); 
+			adicionaCampo(); 
 		} 
 	} 
-	
+
+	private void adicionaCampo(){
+	    int iTam = Integer.parseInt(vTamanhos.elementAt(cbCampos.getSelectedIndex()).toString());		   
+	    txaEtiqueta.insert(cbCampos.getVlrString().substring(0,cbCampos.getVlrString().length()-1)+Funcoes.replicate("?",iTam)+"]",txaEtiqueta.getCaretPosition());
+	}
 	public void actionPerformed(ActionEvent evt) {
 		 String Aux, Aux1;// teste
 		 int Tam = 0;
 		 if (evt.getSource() == btAdic) {
-		 	 // Aux = String.valueOf(cbCampos.getVlrString());// TESTE
-		 	 // if (Aux.length()> 33){// TESTE
-		 	 //	Tam = (Aux.length()- 33); // TESTE
-		 	 //	Tam =(Aux.length()- Tam);
-		 	 //	 Tiracp(Aux,Tam);// TESTE
-		 	 //cbCampos.addItem(Aux);// TESTE
-		 	 // }
-	       txaEtiqueta.insert(cbCampos.getVlrString(),txaEtiqueta.getCaretPosition());
+		     adicionaCampo();
 	    }
 		 else if (evt.getSource() == btImp)
 		 	 imprimir(false);
@@ -168,7 +145,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	private void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = new ImprimeOS("",con);
 		imp.verifLinPag();
-		imp.setTitulo("Teste de etiqueta");
+		imp.setTitulo("Teste de etiqueta"); 
 	    imp.limpaPags();
 	    String[] sLinhas = txaEtiqueta.getText().split("\n");
 	    for(int i=0;i<sLinhas.length;i++) {
