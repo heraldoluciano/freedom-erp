@@ -32,6 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
@@ -61,7 +62,8 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	private Tef tef = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
-	private Properties ppCompTef = null;
+	private Vector vTefsOK = new Vector();
+	private BigDecimal bigPago = new BigDecimal("0.00");
 	Connection con = null;
 	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
 		//super(Aplicativo.telaPrincipal);
@@ -121,27 +123,32 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		if (retTef == null || !tef.validaTef(retTef))
 			return null;
 		
-//		finalizaTEF(retTef);
-		
 		return retTef;
 			
 	}
 	private boolean finalizaTEF(Properties retTef) {
 	    boolean bRet = false;
-	    //Voltar a utizar esta quando a rotina estiver funcionando!!
-		if (/*bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo)*/true) {
+//		if (/*bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo)*/true) {
+		if (bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo)) {
 		    try {
-		        if (!bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,"Cartao",txtVlrChequeElet.getVlrBigDecimal(),iNumCupom, FreedomPDV.bModoDemo))
+		        if (!bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,txtDescPlanoPag.getVlrString(),txtVlrChequeElet.getVlrBigDecimal(),iNumCupom, FreedomPDV.bModoDemo))
                     throw new Exception("");
 	            Object sLinhas[] = tef.retImpTef(retTef);
 	            for (int i=0;i<sLinhas.length;i++) {
 	                if (!bf.usaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,(String)sLinhas[i],FreedomPDV.bModoDemo))
 	                    throw new Exception("");
 	            }
+	            
+	            //Coloca uns espacos para retirar o comprovante.
 		    
+	            for (int i=0;i<8;i++) {
+	                if (!bf.usaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,"",FreedomPDV.bModoDemo))
+	                    throw new Exception("");
+	            }
+
 	            //Aguarda 5 segundo para imprimir o segundo comprovante:
-		    
-	            Thread.sleep(5000);
+
+                Thread.sleep(5000);
 		    
 	            for (int i=0;i<sLinhas.length;i++) {
 	                if (!bf.usaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,(String)sLinhas[i],FreedomPDV.bModoDemo))
@@ -241,17 +248,27 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			Funcoes.mensagemInforma(this,"Digite o código da forma de pagamento!");
 			return false;
 		}
-		else if (txtVlrPago.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
-			Funcoes.mensagemInforma(this,"Valor pago menor que o valor da venda!");
-			return false;
-		}
 		else if (txtVlrChequeElet.getVlrDouble().doubleValue() > 0) {
+		    Properties ppCompTef;
 		    if ((ppCompTef = processaTef()) == null) {
 		        Funcoes.mensagemInforma(this,"Não foi possível concluir a TEF");
 		        return false;
 		    }
-		    else if (txtVlrChequeElet.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue())
+		    else if (txtVlrChequeElet.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
+		        bigPago.add(txtVlrChequeElet.getVlrBigDecimal());
+		        txtVlrChequeElet.setVlrString("");
+		        vTefsOK.add(ppCompTef);
+		        //Consertar isto aki depois:
+		        txtVlrChequeElet.setEnabled(false);
+		        
+		        recalcPago();
 		        return false;
+		    }
+		    vTefsOK.add(ppCompTef);
+		}
+		else if (txtVlrPago.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
+			Funcoes.mensagemInforma(this,"Valor pago menor que o valor da venda!");
+			return false;
 		}
 		else if (!gravaVenda()) 
 			return false;
@@ -307,7 +324,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 						txtVlrCheque.getVlrBigDecimal().add(
 								txtVlrChequeElet.getVlrBigDecimal()
 						)
-				)
+				).add(bigPago)
 		);
 		txtVlrTroco.setVlrBigDecimal(
 				txtVlrPago.getVlrBigDecimal().subtract(
@@ -347,8 +364,16 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 						    btCancel.setEnabled(false);
 						    
 						    //Verifica se existe um comprovante de TEF para imprimir.
-						    if (ppCompTef != null)
-						        bRet = finalizaTEF(ppCompTef);
+						    if (vTefsOK.size() > 0) {
+						        for (int i=0;i<vTefsOK.size();i++) {
+						            if (finalizaTEF((Properties)vTefsOK.elementAt(i)))
+						                bRet = true;
+						            else {
+						                bRet = false;
+						                break;
+						            }
+						        }
+						    }
 						    else
 							    bRet = true;
 						        

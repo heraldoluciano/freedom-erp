@@ -620,7 +620,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  txtDtEmitVenda.setVlrDate(new Date());
    	  txtDtSaidaVenda.setVlrDate(new Date());
       if (FreedomPDV.bECFTerm)
-	    txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario,FreedomPDV.bModoDemo)));
+	    txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario,FreedomPDV.bModoDemo)+1));
 	  else
 	    return;
       tbItem.limpa();
