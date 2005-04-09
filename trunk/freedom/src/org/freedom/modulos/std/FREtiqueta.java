@@ -32,6 +32,7 @@ import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -49,12 +50,17 @@ public class FREtiqueta extends FRelatorio {
   private ListaCampos lcModEtiq = new ListaCampos(this);
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcTipo = new ListaCampos(this);
+  private JTextAreaPad txaEtiqueta = new JTextAreaPad(500);
+  private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+
   public FREtiqueta() {
      setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
                
      lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
      lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
+     lcModEtiq.add(new GuardaCampo( txaEtiqueta,"TxaModEtiq","Corpo",ListaCampos.DB_SI,false));
+     lcModEtiq.add(new GuardaCampo( txtNColModEtiq,"NColModEtiq","Colunas",ListaCampos.DB_SI,false));
      lcModEtiq.setReadOnly(true);
      lcModEtiq.montaSql(false, "MODETIQUETA", "SG");
      txtCodModEtiq.setTabelaExterna(lcModEtiq);
@@ -107,8 +113,16 @@ public class FREtiqueta extends FRelatorio {
 	String sWhere = "";
 	String sSep = "";
 	String sLinha = "";
-	Vector vVal = null;
-	Vector vCol = null;
+	
+	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+	Vector vVals = objEtiqCli.getValor();    	
+	Vector vCampos = objEtiqCli.getNomeCampo();
+	Vector vTam = objEtiqCli.getTam();	
+	
+	
+	
+	
+	
 	ImprimeOS imp = null;
     try {
   	    if (txtCodModEtiq.getVlrString().equals("")) {
@@ -118,29 +132,9 @@ public class FREtiqueta extends FRelatorio {
   	    imp = new ImprimeOS("",con);
   	    imp.verifLinPag();
   	    imp.setTitulo("Etiquetas");
-  	  	     	  
-  	    sSQL = "SELECT TXAMODETIQ,NCOLMODETIQ FROM SGMODETIQUETA" +
-  	      " WHERE CODEMP=? AND CODFILIAL=? AND CODMODETIQ=?";
+
+  	    sTxa = txtDescModEtiq.getVlrString();
   	    
-  	    try {
-  	    	ps = con.prepareStatement(sSQL);
-  	    	ps.setInt(1,Aplicativo.iCodEmp);
-  	    	ps.setInt(2,lcModEtiq.getCodFilial());
-  	    	ps.setInt(3,txtCodModEtiq.getVlrInteger().intValue());
-  	    	rs = ps.executeQuery();
-  	    	if (rs.next()) { 
-  	    		sTxa = rs.getString("TXAMODETIQ");
-  	    		iNColModEtiq = rs.getInt("NCOLMODETIQ");
-  	    	}
-  	    	rs.close();
-  	    	ps.close();
-  	    	if (!con.getAutoCommit()) 
-  	    		con.commit();
-  	    }
-  	    catch (SQLException e) {
-  	    	Funcoes.mensagemErro(this,"Erro carregando modelo de etiqueta!\n"+e.getMessage());
-  	    	return;
-  	    }
   	    if (sTxa!=null) {
   	    	sWhere = "";
   	    	sSep = " WHERE ";
@@ -164,9 +158,9 @@ public class FREtiqueta extends FRelatorio {
   	    	try {
   	    		ps = con.prepareStatement(sSQL);
   	    		rs = ps.executeQuery();
-  	    		vCol = new Vector();
+//  	    		vCol = new Vector();
   	    		while ( rs.next() ) {
-  	    			vVal = aplicCampos(rs,sTxa); 
+  /*	    			vVal = aplicCampos(rs,sTxa); 
   	    			if (vVal != null){ 
                 		vCol.addElement(vVal);
                 	}
@@ -174,13 +168,15 @@ public class FREtiqueta extends FRelatorio {
   	    				impCol(imp,vVal,vCol);
   	    				vCol = new Vector();
   	    			}
-  	    			
+  	*/    			
 /*	    				String[] sLinhas = sVal.split("\n"); */
 
   	    		}
+/*
   	    		if (vCol.size()<iNColModEtiq) {
     				impCol(imp,vVal,vCol);
   	    		}
+  	    		*/
   	    		rs.close();
   	    		ps.close();
   	    		if (!con.getAutoCommit()) 
@@ -207,7 +203,7 @@ public class FREtiqueta extends FRelatorio {
   		sSQL = null;
   		sWhere = null;
   		sSep = null;
-  		vVal = null;
+//  		vVal = null;
   		sLinha = null;
   	}
 	
