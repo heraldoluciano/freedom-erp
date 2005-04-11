@@ -3,7 +3,7 @@
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
  *
  * Projeto: Freedom <BR>
- *  
+ *   
  * Pacote: org.freedom.modulos.std <BR>
  * Classe: @(#)FRBoleto.java <BR>
  * 
@@ -26,10 +26,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
-
 import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextAreaPad;
@@ -52,7 +49,8 @@ public class FREtiqueta extends FRelatorio {
   private ListaCampos lcTipo = new ListaCampos(this);
   private JTextAreaPad txaEtiqueta = new JTextAreaPad(500);
   private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-
+  private ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+    
   public FREtiqueta() {
      setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
@@ -105,23 +103,16 @@ public class FREtiqueta extends FRelatorio {
   }
 
   public void imprimir(boolean bVisualizar) {
-	PreparedStatement ps = null;
+    String sTxa = txaEtiqueta.getVlrString();
+      
+    PreparedStatement ps = null;
 	ResultSet rs = null;
 	int iNColModEtiq = 0;
-	String sTxa = "";
+		
 	String sSQL = "";
 	String sWhere = "";
 	String sSep = "";
 	String sLinha = "";
-	
-	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
-	Vector vVals = objEtiqCli.getValor();    	
-	Vector vCampos = objEtiqCli.getNomeCampo();
-	Vector vTam = objEtiqCli.getTam();	
-	
-	
-	
-	
 	
 	ImprimeOS imp = null;
     try {
@@ -133,50 +124,27 @@ public class FREtiqueta extends FRelatorio {
   	    imp.verifLinPag();
   	    imp.setTitulo("Etiquetas");
 
-  	    sTxa = txtDescModEtiq.getVlrString();
-  	    
   	    if (sTxa!=null) {
-  	    	sWhere = "";
-  	    	sSep = " WHERE ";
-  	    	if (!txtCodSetor.getVlrString().equals("")) {
-  	    		sWhere = sSep+" C.CODSETOR="+txtCodSetor.getVlrInteger().intValue();
-  	    		sWhere += " AND C.CODEMPSR="+Aplicativo.iCodEmp;
-  	    		sWhere += " AND C.CODFILIALSR="+lcSetor.getCodFilial();
-  	    		sSep = " AND ";
-  	    	}
-  	    	if (!txtCodTipo.getVlrString().equals("")) {
-  	    		sWhere += sSep+" CODTIPOCLI="+txtCodTipo.getVlrInteger().intValue();
-  	    		sWhere += " AND C.CODEMPTC="+Aplicativo.iCodEmp;
-  	    		sWhere += " AND C.CODFILIALTC="+lcTipo.getCodFilial();
-  	    	}
-  	    
-  	     //   sWhere = " WHERE C.CODCLI IN (1741,1172,780)"; // tirar depois este clientes
-  	          sWhere = " WHERE C.CODCLI IN (1741,1172)"; // tirar depois este clientes
-    	    
-  	    	sSQL = "SELECT C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI,C.ENDCLI,C.NUMCLI," +
-  	                "C.COMPLCLI,C.CEPCLI,C.BAIRCLI,C.CIDCLI,C.UFCLI FROM VDCLIENTE C" +sWhere;
+
+  	  	   objEtiqCli.setTexto(sTxa);
+  	       sSQL = montaQuery("VDCLIENTE");
+  	          
   	    	try {
   	    		ps = con.prepareStatement(sSQL);
   	    		rs = ps.executeQuery();
-//  	    		vCol = new Vector();
-  	    		while ( rs.next() ) {
-  /*	    			vVal = aplicCampos(rs,sTxa); 
+  	    		Vector vCol = new Vector();
+  	    		Vector vVal = new Vector();
+
+  	    		while ( rs.next() ) { 
+  	    			vVal = aplicCampos(rs); 
   	    			if (vVal != null){ 
                 		vCol.addElement(vVal);
                 	}
-  	    			if (vCol.size()==iNColModEtiq) {
-  	    				impCol(imp,vVal,vCol);
-  	    				vCol = new Vector();
-  	    			}
-  	*/    			
-/*	    				String[] sLinhas = sVal.split("\n"); */
 
   	    		}
-/*
-  	    		if (vCol.size()<iNColModEtiq) {
-    				impCol(imp,vVal,vCol);
-  	    		}
-  	    		*/
+
+  	    		impCol(imp,vCol);
+  				
   	    		rs.close();
   	    		ps.close();
   	    		if (!con.getAutoCommit()) 
@@ -184,7 +152,7 @@ public class FREtiqueta extends FRelatorio {
   	    		
   	    	}
   	    	catch ( SQLException err ) {
-  	    		Funcoes.mensagemErro(this,"Erro ao consultar informãoes!"+err.getMessage());
+  	    		Funcoes.mensagemErro(this,"Erro ao consultar informações!"+err.getMessage());
   	    		err.printStackTrace();      
   	    	}
   	    	imp.eject();
@@ -203,111 +171,99 @@ public class FREtiqueta extends FRelatorio {
   		sSQL = null;
   		sWhere = null;
   		sSep = null;
-//  		vVal = null;
   		sLinha = null;
   	}
 	
   }
-  private void impCol(ImprimeOS imp, Vector vVal, Vector vCol) {
-  	Vector vLinha = new Vector();
-  	String Aux, Aux1;// TESTE
-  	int Tam = 0; //teste	
-  	  	try {
-  		for (int i=0; i<vCol.size(); i++) {
-  			vVal = (Vector) vCol.elementAt(i);
-  			for (int i2=0; i2<vVal.size();i2++) {
-  			   if (vLinha.size()<=i2){ 
-			     	Aux = String.valueOf(vVal.elementAt(i2));// TESTE
-		  			if (Aux.length()> 33){// TESTE
-		  			    Tam = (Aux.length()- 33); // TESTE
-		  				Tam =(Aux.length()- (Tam + 1));
-		  			    Aux = Tiracp(Aux,Tam);// TESTE
-                        vVal.setElementAt(Aux,i2); // TESTE 
-				  		//vVal.setElementAt(Aux,i2); // TESTE 
-			  		    //Aux1 = Funcoes.trimFinal(Aux);// TESTE
-		  			   // vVal.setElementAt(Aux1,i2); 
-		  			    }// teste
-		  			else{// teste
-		  			  	 Tam = (33  - Aux.length()); // TESTE
-		  			  	 Tam = Tam + Aux.length(); // teste
-					     Aux1 = Funcoes.adicionaEspacos(Aux,Tam);// TESTE
-					     vVal.setElementAt(Aux1,i2); // TESTE 
-					     Tam = 0; // TESTE
-		  			     }// TESTE
-					  vLinha.addElement(vVal.elementAt(i2));
-			    }// teste
-  				else 
-  					vLinha.setElementAt( vLinha.elementAt(i2)+""+vVal.elementAt(i2),i2);   
-  			   }
-  		}
-			
-  		for(int i=0;i<vLinha.size();i++) {
-  			imp.say(imp.pRow()+1,0,vLinha.elementAt(i).toString());
-  		}
-  	}
-  	finally {
-  		vLinha = null;
-  	}
-  	
+  private String montaQuery(String sTabela){
+      String sCampos = "";
+      String sSQL = "";
+      Vector vCamposAdic = objEtiqCli.getCamposAdic();
+      String sWhere = "WHERE CODEMP="+Aplicativo.iCodEmp+" AND CODFILIAL="+ListaCampos.getMasterFilial(sTabela);
+      
+      try {
+          if (!txtCodSetor.getVlrString().equals("")) {
+  	   		sWhere += " AND CODSETOR="+txtCodSetor.getVlrInteger().intValue();
+  	   		sWhere += " AND CODEMPSR="+Aplicativo.iCodEmp;
+  	   		sWhere += " AND CODFILIALSR="+lcSetor.getCodFilial();
+        }
+  	  if (!txtCodTipo.getVlrString().equals("")) {
+  	    	sWhere += " AND CODTIPOCLI="+txtCodTipo.getVlrInteger().intValue();
+  	    	sWhere += " AND CODEMPTC="+Aplicativo.iCodEmp;
+  	    	sWhere += " AND CODFILIALTC="+lcTipo.getCodFilial();
+  	  }
+         
+      for(int i=0;vCamposAdic.size()>i;i++){
+          sCampos = sCampos + vCamposAdic.elementAt(i).toString()+",";    
+      }
+       
+      sSQL = "SELECT "+sCampos.substring(0,sCampos.length()-1)+" FROM "+sTabela+" "+sWhere;
+      }
+      catch(Exception e){
+          e.printStackTrace();
+      }
+      return sSQL;      
   }
-private Vector aplicCampos(ResultSet rs, String sTxa ) {
+  private void impCol(ImprimeOS imp, Vector vVals) {
+ 	int iCols = txtNColModEtiq.getVlrInteger().intValue();
+    try {
+        for(int i=0;vVals.size()>i;i++){  
+            for(int i2=0;((Vector)vVals.elementAt(i)).size()>i2;i2++) {
+                imp.say(imp.pRow()+1,0,((Vector)vVals.elementAt(i)).elementAt(i2).toString());
+                System.out.println(((Vector)vVals.elementAt(i)).elementAt(i2).toString());
+            }
+        }
+  	}
+    catch(Exception e){
+        e.printStackTrace();
+    }
+  	finally {
+  	    vVals = null;
+  	}  	
+  }
+  
+private Vector aplicCampos(ResultSet rs) {
   	String sCampo = "";
+  	String sRetorno = txaEtiqueta.getVlrString();
+  	sRetorno = sRetorno.replaceAll("\\"+"\n","[Q]");
   	Vector vRet = null;
   	try {
 // Estes '\\' que  aparecem por ai..são para anular caracteres especiais de "expressão regular".
-		if (sTxa != null) {
-			try {
-						
-		    	try {	
-			   	     sCampo = Funcoes.copy(rs.getString("CodCli"),0,8);
-				     sTxa = sTxa.replaceAll("\\[CODCLI]",sCampo); 
-				
-				     sCampo = Funcoes.copy(rs.getString("RazCli"),0,50);
-				     sTxa = sTxa.replaceAll("\\[_____________RAZAO____DO____CLIENTE_____________]",Funcoes.copy(sCampo,0,50)); // LOM
-				
-				     sCampo = Funcoes.copy(rs.getString("NomeCli"),0,50 ); 
-				     sTxa = sTxa.replaceAll("\\[_____________NOME_____DO____CLIENTE_____________]",Funcoes.copy(sCampo,0,50)); // LOM
-				
-				     sCampo = Funcoes.copy(rs.getString("CpfCli"),11); 
-				     sCampo = Funcoes.setMascara(sCampo,"###.###.###-##");
-				     sTxa = sTxa.replaceAll("\\[CPF/CNPJ_ CLIENT]",sCampo); 
-				
-				     sCampo = Funcoes.copy(rs.getString("CnpjCli"),14); 
-				     sCampo = Funcoes.setMascara(sCampo,"###.###.###-##");
-				     sTxa = sTxa.replaceAll("\\[CPF/CNPJ_ CLIENT]",sCampo); 
-				
-				     sCampo= Funcoes.copy(rs.getString("EndCli"),0,50);
-				     sTxa = sTxa.replaceAll("\\[____________ENDERECO____DO____CLIENTE___________]",sCampo); 
-			         }
-				
-			catch(Exception e) {
-			    	System.out.println("End: "+sCampo);
-				}
-					
-			sCampo = Funcoes.copy(rs.getString("NumCli"),0,8); 
-			sTxa = sTxa.replaceAll("\\[NUMERO]",sCampo); 
-			
-			sCampo = Funcoes.copy(rs.getString("ComplCli"),0,30); 
-			sTxa = sTxa.replaceAll("\\[____COMPLEMENTO___]",sCampo); 
-			
-			sCampo = Funcoes.copy(rs.getString("CepCli"),8); 
-			sCampo = Funcoes.setMascara(sCampo,"#####-###");
-			sTxa = sTxa.replaceAll("\\[__CEP__]",sCampo); 
-			
-			sCampo = Funcoes.copy(rs.getString("BairCli"),0,30); 
-			sTxa = sTxa.replaceAll("\\[___________BAIRRO___________]",sCampo); 
-			
-			sCampo = Funcoes.copy(rs.getString("CidCli"),0,30); 
-			sTxa = sTxa.replaceAll("\\[___________CIDADE___________]",sCampo); 
-		
-			sCampo = Funcoes.copy(rs.getString("UfCli"),0,2); 
-			sTxa = sTxa.replaceAll("\\[UF]",Funcoes.copy(sCampo,0,2)); 
-			}
+
+  	    Vector vTamsAdic = objEtiqCli.getTamsAdic();
+  	    Vector vMascAdic = objEtiqCli.getMascarasAdic();
+  	    Vector vValAdic = objEtiqCli.getValoresAdic();
+  	    Vector vCamposAdic = objEtiqCli.getCamposAdic();
+  	    if (sRetorno != null) { 
+		   	try {			    	    
+		   	    for(int i=0;vCamposAdic.size()>i;i++) {
+		   	        String sTmp = vCamposAdic.elementAt(i).toString();
+		   	        String sValAdic = vValAdic.elementAt(i).toString();
+//		   	        String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic),sRetorno.indexOf("]")+1);
+		   	        String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
+		   	        sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
+		   	        sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
+
+		   	        if(vMascAdic.elementAt(i)!=null)
+		    	        sCampo = Funcoes.setMascara(sCampo, vMascAdic.elementAt(i).toString());
+		    	    
+		   	        int iTmp = Funcoes.contaChar(sFragmento,'-'); 
+		    	    
+		   	        if (sCampo.length()>=iTmp)
+		    	        sCampo = sCampo.substring(0,iTmp);
+		    	    else 
+		    	        sCampo = sCampo+Funcoes.replicate(" ",iTmp-sCampo.length());
+
+		    	    sRetorno = sRetorno.replaceAll("\\"+sFragmento,sCampo);	
+		    	   
+		    	}
+//		   	    sRetorno = sRetorno.replaceAll("[Q]","\n");
+		   	}						
 			catch (SQLException e) {
 				Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+e.getMessage());
 			}
   		}
-		vRet = Funcoes.stringToVector(sTxa);
+		vRet = Funcoes.stringToVector(sRetorno,"[Q]");
        	}
   	finally {
   		sCampo = null;

@@ -81,8 +81,19 @@ public class Funcoes {
 	private static JDialog dlErro = null;
 
 	public Funcoes() {
-	}
-
+	} 
+    public static int contaChar(String sTexto,char cChar) {
+        int iRet = 0;
+        
+        char[] cChars = sTexto.toCharArray();
+        
+        for(int i=0;cChars.length>i;i++){
+            if (cChars[i] == cChar)
+                iRet++;
+        }
+        
+        return iRet;
+    }
 	public static String replicate(String texto, int Quant) {
 		String sRetorno = "";
 		for (int i = 1; i <= Quant; i++) {
@@ -825,6 +836,30 @@ public class Funcoes {
 		return cRetorno;
 	}
 
+	public static Vector stringToVector(String sTexto,String sSep) {
+		Vector vRetorno = new Vector();
+		String sLinha = "";
+		if (sTexto != null) {
+			int iPos = sTexto.indexOf(sSep);
+			int iPosIni = 0;
+			int iTam = sTexto.length();
+			if ((iPos == -1) & (sTexto != null))
+				vRetorno.addElement(sTexto);
+			while (iPos >= 0) {
+				sLinha = sTexto.substring(iPosIni, iPos);
+				vRetorno.addElement(sLinha);
+				iPosIni = iPos + sSep.length();
+
+				iPos = sTexto.indexOf(sSep, iPosIni);
+				if ((iPos == -1) & (iTam > iPosIni)) {
+					sLinha = sTexto.substring(iPosIni);
+					vRetorno.addElement(sLinha);
+					break;
+				}
+			}
+		}
+		return vRetorno;
+	}
 	public static Vector stringToVector(String sTexto) {
 		Vector vRetorno = new Vector();
 		String sLinha = "";
@@ -1172,6 +1207,43 @@ public class Funcoes {
 		return sRetorno;
 	}
 
+	public static String[] strToStrArray(String sVals,String sSep) {
+		int iConta = 0;
+		int iPos = 0;
+		if (sVals != null) {
+			while (iPos >= 0) {
+				iPos = sVals.indexOf(sSep, iPos + 1);
+				iConta++;
+			}
+		}
+		return strToStrArray(sVals, iConta,sSep);
+	}
+
+	public static String[] strToStrArray(String sVals, int iNumLinhas,String sSep) {
+		String[] sRetorno = new String[iNumLinhas];
+		String sTemp = sVals != null ? sVals : "";
+		int iPos;
+		int iTamSep = sSep.length();
+		for (int i = 0; i < iNumLinhas; i++) {
+			iPos = sTemp.indexOf(sSep);
+			if (iPos >= 0) {
+				sRetorno[i] = sTemp.substring(0, iPos);
+				if (iPos + 1 < sTemp.length())
+					sTemp = sTemp.substring(iPos + iTamSep, sTemp.length());
+				else
+					sTemp = "";
+			} else if ((iPos == -1) && (sTemp.length() == 0)) {
+				sRetorno[i] = "";
+			} else {
+				sRetorno[i] = sTemp;
+				sTemp = "";
+			}
+		}
+		return sRetorno;
+	}
+
+
+	
 	public static String strTostrQuebra(String sVals, int iNumChar) {
 		String sRetorno = "";
 		int iPos = 0;

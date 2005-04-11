@@ -36,6 +36,8 @@ import javax.swing.JScrollPane;
 
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -51,14 +53,16 @@ import org.freedom.telas.FDados;
 //import bibli.funcoes.Funcoes; // TESTE
 
 
-public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener {       
+public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener,PostListener {       
 	
     private JPanelPad pinCab = new JPanelPad(0,150);
 	private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescModEtiq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-	private JTextFieldPad txtCodpapel = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0); 
+	private JTextFieldPad txtCodpapel = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
 	private JTextFieldFK txtDescpapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextAreaPad txaEtiqueta = new JTextAreaPad(500); 
 	private JScrollPane spnCli = new JScrollPane(txaEtiqueta); 
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
@@ -75,7 +79,8 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	setPainel(pinCab);
 
     	lcPapel.add(new GuardaCampo( txtCodpapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
-    	lcPapel.add(new GuardaCampo( txtDescpapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false)); 
+    	lcPapel.add(new GuardaCampo( txtDescpapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
+        lcPapel.add(new GuardaCampo( txtColPapel,"Colpapel", "Num. colunas", ListaCampos.DB_SI, false));
     	lcPapel.montaSql(false, "PAPEL", "SG");
      	lcPapel.setQueryCommit(false);
      	lcPapel.setReadOnly(true);
@@ -86,6 +91,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	adicCampo(txtCodModEtiq, 7, 20, 90, 20,"CodModEtiq","Cód.mod.etiq.", ListaCampos.DB_PK, true);
     	adicCampo(txtDescModEtiq, 100, 20, 237, 20,"DescModEtiq","Descrição do modelo de etiqueta", ListaCampos.DB_SI, true);
     	adicCampo(txtNColModEtiq, 340, 20, 60, 20,"NColModEtiq","Colunas", ListaCampos.DB_SI, true);
+    	adicCampo(txtEECModEtiq, 403, 20, 60, 20,"EECModEtiq","Entre col.", ListaCampos.DB_SI, true);
     	
     	adicDBLiv(txaEtiqueta,"TxaModEtiq", "Corpo", true);
     	
@@ -95,9 +101,9 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	setListaCampos( false, "MODETIQUETA", "SG");
    	        	
     	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
-    	Vector vLabs = objEtiqCli.getLabel();    	
-    	Vector vVals = objEtiqCli.getValor();
-    	vTamanhos = objEtiqCli.getTam();
+    	Vector vLabs = objEtiqCli.getLabels();    	
+    	Vector vVals = objEtiqCli.getValores();
+    	vTamanhos = objEtiqCli.getTams();
     	    	
     	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
   
@@ -119,6 +125,30 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	  	super.setConexao(cn);
 	  	lcPapel.setConexao(cn);
     }
+    
+	public void beforePost(PostEvent pevt) {	    
+	    Vector vLinhas = null;
+	    vLinhas = Funcoes.stringToVector(txaEtiqueta.getVlrString());
+	    int iColsPapel = txtColPapel.getVlrInteger().intValue();
+	    int iColsModel = txtNColModEtiq.getVlrInteger().intValue();
+	    int iEspacoCol = txtEECModEtiq.getVlrInteger().intValue();
+	    int iMax = 0;
+	    if(vLinhas.size()>0) {
+	        for(int i=0;vLinhas.size()>i;i++) {
+	            String sTmp = vLinhas.elementAt(i).toString();
+	            if(sTmp.length()>iMax) {
+	                iMax = sTmp.length();
+	            }	                
+	        }
+	    }
+	    int iTamMax = ( ((iColsPapel)-(iEspacoCol*(iColsModel-1))) /iColsModel);
+	    if (iMax>iTamMax) {	        
+	        pevt.cancela();
+	        Funcoes.mensagemErro(this,"Texto muito grande ("+iMax+" caracteres.) por coluna.\n Diminua o número de colunas" +
+	        		" ou reduza o tamanho do texto ("+iTamMax+" caracteres).");
+	    }
+	}
+
 	
 	public void valorAlterado(JComboBoxEvent evt) { 
 		if (evt.getComboBoxPad() == cbCampos) { 
@@ -128,8 +158,9 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
 	private void adicionaCampo(){
 	    int iTam = Integer.parseInt(vTamanhos.elementAt(cbCampos.getSelectedIndex()).toString());		   
-	    txaEtiqueta.insert(cbCampos.getVlrString().substring(0,cbCampos.getVlrString().length()-1)+Funcoes.replicate("?",iTam)+"]",txaEtiqueta.getCaretPosition());
+	    txaEtiqueta.insert("["+cbCampos.getVlrString()+Funcoes.replicate("-",iTam)+"]",txaEtiqueta.getCaretPosition());
 	}
+	
 	public void actionPerformed(ActionEvent evt) {
 		 String Aux, Aux1;// teste
 		 int Tam = 0;
