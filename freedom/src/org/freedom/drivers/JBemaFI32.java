@@ -867,9 +867,12 @@ public class JBemaFI32 {
  	 if (!bModoDemo) {
        if (sFormaPagto.trim().equals(""))
          sFormaPagto = " ";
+       else
+         sFormaPagto = Funcoes.tiraAcentos(Funcoes.adicionaEspacos(sFormaPagto,16));
+       
  	   bRetorno = trataRetornoFuncao(  bAbreComprovanteNaoFiscalVinculado( sFormaPagto, Funcoes.transValor(bdValor,14,2,true), ""+iNumCupom) );
  	   if (!bRetorno) {
- 	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_ABRE_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sFormaPagto+"-"+bdValor+"-"+iNumCupom+"-"+sMensErroLog);
+ 	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_ABRE_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sFormaPagto+"|"+bdValor+"|"+iNumCupom+"|"+sMensErroLog);
  	   }
  	 }
  	 else
@@ -883,7 +886,7 @@ public class JBemaFI32 {
            sTexto = " ";
   	   bRetorno = trataRetornoFuncao(  bUsaComprovanteNaoFiscalVinculado( sTexto ) );
   	   if (!bRetorno) {
-  	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_USA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sTexto+"-"+sMensErroLog);
+  	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_USA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sTexto+"|"+sMensErroLog);
   	   }
   	 }
   	 else
@@ -944,7 +947,7 @@ public class JBemaFI32 {
     if (!bModoDemo) {	
        bRetorno = trataRetornoFuncao( bSangria( Funcoes.transValor(deValor+"",14,2,true)  ) );
        if (!bRetorno) {
-			Logger.gravaLogTxt("",sUserID,Logger.LGEP_FAZ_SANGRIA,"ERRO NA SANGRIA-VALOR: "+deValor+"-"+sMensErroLog);
+			Logger.gravaLogTxt("",sUserID,Logger.LGEP_FAZ_SANGRIA,"ERRO NA SANGRIA-VALOR: "+deValor+"|"+sMensErroLog);
        }
     }
     return bRetorno;
@@ -958,7 +961,7 @@ public class JBemaFI32 {
       bRetorno = trataRetornoFuncao(  bSuprimento( Funcoes.transValor(deValor+"",14,2,true) , sFormaPagto ) );
       if (!bRetorno) {
 		Logger.gravaLogTxt("",sUserID,Logger.LGEP_FAZ_SUPRIMENTO,
-				"ERRO NO SUPRIMENTO-VALOR: "+deValor+"-FORMA DE PAGTO. "+sFormaPagto+"-"+sMensErroLog);
+				"ERRO NO SUPRIMENTO-VALOR: "+deValor+"|FORMA DE PAGTO. "+sFormaPagto+"|"+sMensErroLog);
       }
     }
     return bRetorno;
