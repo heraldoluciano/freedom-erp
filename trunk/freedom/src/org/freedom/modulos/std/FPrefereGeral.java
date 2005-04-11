@@ -60,239 +60,148 @@ import org.freedom.telas.FTabDados;
 public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		PostListener, EditListener, InsertListener, CarregaListener {
 	private JPanelPad pinVenda = new JPanelPad(690, 220);
-
 	private JPanelPad pinGeral = new JPanelPad(330, 200);
-
 	private JPanelPad pinPreco = new JPanelPad(330, 200);
-
 	private JPanelPad pinOrc = new JPanelPad(330, 200);
-
 	private JPanelPad pinFin = new JPanelPad();
-
 	private JPanelPad pinSVV = new JPanelPad();
-
 	private JPanelPad pinDev = new JPanelPad();
-
 	private JPanelPad pinEstoq = new JPanelPad();
-
 	private JPanelPad pinProd = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 4, 0);
-
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldPad txtCodTabJuros = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldFK txtDescTabJuros = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldPad txtCodMarca = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 6, 0);
-
 	private JTextFieldFK txtDescMarca = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 14, 0);
-
 	private JTextFieldFK txtDescGrup = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldPad txtCodFor = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
-
 	private JTextFieldPad txtCodTipoFor = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldFK txtDescTipoFor = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTipoMov2 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTipoMov3 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTipoMov4 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTipoMov5 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTipoMov6 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTipoMov7 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTransp = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCasasDec = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 1, 0);
-
 	private JTextFieldPad txtPercPrecoCusto = new JTextFieldPad(
 			JTextFieldPad.TP_NUMERIC, 6, 2);
-
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 4, 0);
-
 	private JTextFieldPad txtDescClassOrc = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 20, 0);
-
 	private JTextFieldPad txtTitOrcTxt01 = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 20, 0);
-
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescTipoMov2 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescTipoMov3 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescTipoMov4 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescTipoMov5 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldFK txtDescTipoMov6 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldFK txtDescTipoMov7 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-
 	private JTextFieldFK txtDescTransp = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodPlanoPag2 = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtPrazo = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodTab = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodClasCli = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldPad txtCodCli = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescPlanoPag2 = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescTab = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			40, 0);
-
 	private JTextFieldFK txtDescClasCli = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
-
 	private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
 
 	private JCheckBoxPad cbUsaRefProd = null;
-
 	private JCheckBoxPad cbUsaPedSeq = null;
-
 	private JCheckBoxPad cbUsaDescEspelho = null;
-
 	private JCheckBoxPad cbUsaClasComis = null;
-
 	private JCheckBoxPad cbTabFreteVd = null;
-
 	private JCheckBoxPad cbVendaMatPrim = null;
-
 	private JCheckBoxPad cbTabAdicVd = null;
-
 	private JCheckBoxPad cbTravaTMNFVD = null;
-
 	private JCheckBoxPad cbLibGeral = null;
-
 	private JCheckBoxPad cbJurosPosCalc = null;
-
 	private JCheckBoxPad cbRgCliObrig = null;
-
 	private JCheckBoxPad cbCliMesmoCnpj = null;
-
 	private JCheckBoxPad cbCnpjCliObrig = null;
-
 	private JCheckBoxPad cbCnpjForObrig = null;
-
 	private JCheckBoxPad cbInscEstForObrig = null;
-
 	private JCheckBoxPad cbEstLotNeg = null;
-
 	private JCheckBoxPad cbEstNeg = null;
-
 	private JCheckBoxPad cbNatVenda = null;
-
 	private JCheckBoxPad cbComisPDupl = null;
-
 	private JCheckBoxPad cbCustosSICMS = null;
-
 	private JCheckBoxPad cbBloqVenda = null;
-
 	private JCheckBoxPad cbPepsProd = null;
-
 	private JCheckBoxPad cbBuscaProdSimilar = null;
-
+	private JCheckBoxPad cbMultiAlmox = null;
+	
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
-
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
-
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
-
 	private ListaCampos lcGrupo = new ListaCampos(this, "GP");
-
 	private ListaCampos lcTipoFor = new ListaCampos(this, "TF");
-
 	private ListaCampos lcFor = new ListaCampos(this, "FR");
-
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
-
 	private ListaCampos lcTipoMov2 = new ListaCampos(this, "T2");
-
 	private ListaCampos lcTipoMov3 = new ListaCampos(this, "T3");
-
 	private ListaCampos lcTipoMov4 = new ListaCampos(this, "T4");
-
 	private ListaCampos lcTipoMov5 = new ListaCampos(this, "T5");
-
 	private ListaCampos lcTipoMov6 = new ListaCampos(this, "T6");
-
 	private ListaCampos lcTipoMov7 = new ListaCampos(this, "TM");
-
 	private ListaCampos lcTransp = new ListaCampos(this, "TN");
-
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
-
 	private ListaCampos lcPlanoPag2 = new ListaCampos(this, "PP");
-
 	private ListaCampos lcTabPreco = new ListaCampos(this, "TB");
-
 	private ListaCampos lcClasCli = new ListaCampos(this, "CE");
-
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
-
 	private ListaCampos lcPDV = new ListaCampos(this, "");
 
 	public FPrefereGeral() {
@@ -757,10 +666,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		setPainel(pinEstoq);
 		adicTab("Estoque", pinEstoq);
 
+		cbMultiAlmox = new JCheckBoxPad("Multi almoxarifados?","S","N");
 		adicCampo(txtCodTipoMov6, 7, 25, 80, 20, "CodTipoMov6", "Cód.tp.mov.",
 				ListaCampos.DB_FK, txtDescTipoMov, false);
 		adicDescFK(txtDescTipoMov6, 90, 25, 250, 20, "DescTipoMov",
 				"Descrição do tp. mov. para inventário");
+		adicDB(cbMultiAlmox,7,50,250,20,"MultiAlmox","",true);
 
 		// fim da adicão de abas
 
