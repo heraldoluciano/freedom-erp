@@ -46,8 +46,8 @@ public class FAtalhos extends FFDialogo {
         "<LI><STRONG>CTRL + O</STRONG> - <EM>Observações</EM>" +
         "<LI><STRONG>CTRL + I</STRONG> - <EM>Imprimir</EM>" +
         "<LI><STRONG>CTRL + P</STRONG> - <EM>Previsão de Impressão</EM>" +
-        "<LI><STRONG>TAB</STRONG> - <EM>Volta para o compo anterior</EM>"+
-        "<LI><STRONG>SHIFT + TAB</STRONG> - <EM>Vai para o próximo campo</EM>"+
+        "<LI><STRONG>TAB</STRONG> - <EM>Vai pata o próximo campo</EM>"+
+        "<LI><STRONG>SHIFT + TAB</STRONG> - <EM>Volta para o campo anterior</EM>"+
         "<LI><STRONG>SHIFT + F4</STRONG> - <EM>Fecha a Tela</EM>"+
         "<LI><STRONG>BARRA DE ESPAÇOS</STRONG> - <EM>Aperta um botão</EM>"+
         "<LI><STRONG>CTRL + PAGE UP</STRONG> - <EM>Vai para o Primeiro Registro</EM>" +
