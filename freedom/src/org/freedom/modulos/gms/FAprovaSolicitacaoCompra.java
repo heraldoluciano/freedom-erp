@@ -353,12 +353,10 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 				btAprovaItem.setSize(253, 30);
 				btAprovaItem.setEnabled(false);
 				btAprovaItem.setIcon(null);
-				if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")
-						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CT"))
-					btAprovaItem.setText("Aprovado totalmente");
-				else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")
-						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP"))
-					btAprovaItem.setText("Aprovado parcialmente");
+				if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT"))
+					btAprovaItem.setText("Aprovado Totalmente");
+				else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP"))
+					btAprovaItem.setText("Aprovado Parcialmente");
 				else
 					btAprovaItem.setText("Item concluído");
 			}
@@ -443,13 +441,13 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 			if (txtQtdItAprovado.getVlrDouble().doubleValue() == txtQtdItSolicitado
 					.getVlrDouble().doubleValue()) {
 				txtSituaçãoItAprov.setVlrString("AT");
-				txtSituaçãoItComp.setVlrString("CT");
+				txtSituaçãoItComp.setVlrString("PE");
 				txtSituaçãoIt.setVlrString("SC");
 				btAprovaItem.setText("Aprovação total");
 				txtCodAprovUsu.setVlrString(Aplicativo.strUsuario);
 			} else if (txtQtdItAprovado.getVlrDouble().doubleValue() > 0) {
 				txtSituaçãoItAprov.setVlrString("AP");
-				txtSituaçãoItComp.setVlrString("CP");
+				txtSituaçãoItComp.setVlrString("PE");
 				txtSituaçãoIt.setVlrString("SC");
 				btAprovaItem.setText("Aprovação parcial");
 				txtCodAprovUsu.setVlrString(Aplicativo.strUsuario);
