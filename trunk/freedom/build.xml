@@ -66,7 +66,9 @@
     nbproject/build-impl.xml file. 
 
     -->
-
+    <target name="-javadoc-build">
+    </target>
+	
     <target name="-pre-jar">
         <echo message="${freedom.version}" file="${build.dir}/version.txt" append="false" />
     </target>
@@ -74,7 +76,6 @@
     <target name="-post-jar">
 		<signjar keystore="keystore" storepass="setpoint" alias="myself"  keypass="sana8523"> 
 	   		<fileset id="jarfiles" dir=".">
-	   			<exclude name="lib/mail.jar"/>
 	   			<include name="${dist.jar}"/>
 	    		<include name="lib/*.jar"/>
 			</fileset>
