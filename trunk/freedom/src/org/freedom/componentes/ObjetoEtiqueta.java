@@ -23,52 +23,106 @@ package org.freedom.componentes;
 import java.util.Vector;
 
 public abstract class ObjetoEtiqueta {
-  private Vector vLabel = new Vector();
-  private Vector vValor = new Vector();
-  private Vector vNomeCampo = new Vector();
-  private Vector vTam = new Vector();
-  private Vector vMascara = new Vector();
+  private Vector vLabels = new Vector();
+  private Vector vLabelsAdic = new Vector();
+  private Vector vValores = new Vector();
+  private Vector vValoresAdic = new Vector();
+  private Vector vCampos = new Vector();
+  private Vector vCamposAdic = new Vector();
+  private Vector vTams = new Vector();
+  private Vector vTamsAdic = new Vector();
+  private Vector vMascaras = new Vector();
+  private Vector vMascarasAdic = new Vector();
+  private String sTexto = "";
 
   public ObjetoEtiqueta() { 
 
   }
   
-  public void adicOpcao(String sLabel,String sValor,String sNomeCampo,Integer iTam,String sMascara){
-      vLabel.addElement(sLabel);
-      vValor.addElement(sValor);
-      vNomeCampo.addElement(sNomeCampo);
-      vTam.addElement(iTam);
-      vMascara.addElement(sMascara);
+  public void adicOpcao(String sLabel,String sValor,String sCampo,Integer iTam,String sMascara){
+      vLabels.addElement(sLabel);
+      vValores.addElement(sValor);
+      vCampos.addElement(sCampo);
+      vTams.addElement(iTam);
+      vMascaras.addElement(sMascara);
   }
 
 /**
- * @return Returns the vLabel.
+ * @return Returns the vLabels.
  */
-public Vector getLabel() {
-    return vLabel;
+public Vector getLabels() {
+    return vLabels;
 }
 /**
- * @return Returns the vNomeCampo.
+ * @return Returns the vLabels.
  */
-public Vector getNomeCampo() {
-    return vNomeCampo;
+public Vector getLabelsAdic() {
+    return vLabelsAdic;
 }
 /**
- * @return Returns the vTam.
+ * @return Returns the vCampos.
  */
-public Vector getTam() {
-    return vTam;
+public Vector getCampos() {
+    return vCampos;
 }
 /**
- * @return Returns the vValor.
+ * @return Returns the vCamposAdic.
  */
-public Vector getValor() {
-    return vValor;
+public Vector getCamposAdic() {
+    return vCamposAdic;
 }
 /**
- * @return Returns the vMascara.
+ * @return Returns the vTams.
  */
-public Vector getMascara() {
-    return vMascara;
+public Vector getTams() {
+    return vTams;
+}
+/**
+ * @return Returns the vTamsAdic.
+ */
+public Vector getTamsAdic() {
+    return vTamsAdic;
+}
+
+/**
+ * @return Returns the vValores.
+ */
+public Vector getValores() {
+    return vValores;
+}
+/**
+ * @return Returns the vValoresAdic.
+ */
+public Vector getValoresAdic() {
+    return vValoresAdic;
+}
+/**
+ * @return Returns the vMascaras.
+ */
+public Vector getMascaras() {
+    return vMascaras;
+}
+/**
+ * @return Returns the vMascarasAdic.
+ */
+public Vector getMascarasAdic() {
+    return vMascarasAdic;
+}
+public void setTexto(String sTexto){
+    this.sTexto = sTexto;
+    getAdic();    
+}
+public Vector getAdic(){
+        for(int i2=0;vValores.size()>i2;i2++) {
+            if((sTexto.indexOf(vValores.elementAt(i2).toString()))>(-1)){
+                vCamposAdic.addElement(vCampos.elementAt(i2).toString());
+                vTamsAdic.addElement(vTams.elementAt(i2).toString());
+                vLabelsAdic.addElement(vLabels.elementAt(i2).toString());
+                vMascarasAdic.addElement(vMascaras.elementAt(i2)==null?null:vMascaras.elementAt(i2).toString());
+                vValoresAdic.addElement(vValores.elementAt(i2).toString());                
+            }                                 
+    }   
+    
+    return vCamposAdic;
 }
 }
