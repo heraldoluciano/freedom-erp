@@ -226,21 +226,29 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			con.commit();
 		ps = con.prepareStatement(sSQL);
 		rs = ps.executeQuery();
+		
 		imp.limpaPags();
+		imp.setTitulo("Relatório de Fornecedores");
+	  	imp.addSubTitulo("Relatório de Fornecedores");
+		imp.addSubTitulo("Filtrado por:");
+		for (int i=0;i<vFiltros.size();i++) {            
+			String sTmp = (String)vFiltros.elementAt(i);
+			imp.addSubTitulo(sTmp);
+	    }
+		
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
-		  	imp.setTitulo("Relatório de Fornecedores");
-		  	imp.addSubTitulo("Relatório de Fornecedores");
-			imp.addSubTitulo("Filtrado por:");
-			for (int i=0;i<vFiltros.size();i++) {            
-				String sTmp = (String)vFiltros.elementAt(i);
-				imp.addSubTitulo(sTmp);
-		}
+		  	
 			imp.montaCab();
 			imp.impCab(136, true);
+			imp.say(imp.pRow()+0,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"|");
+			imp.say(imp.pRow()+0,135,"|");
 		  }
-		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+		  if (imp.pRow()!=0) {
+		    imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+		  }
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  imp.say(imp.pRow()+0,0,"|");
 		  imp.say(imp.pRow()+0,2,"Código:");
@@ -353,10 +361,12 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		ps = con.prepareStatement(sSQL);
 		rs = ps.executeQuery();
 		imp.limpaPags();
+		
+		imp.setTitulo("Relatório de Fornecedores");
+	  	imp.addSubTitulo("Relatório de Fornecedores");
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
-		  	imp.setTitulo("Relatório de Fornecedores");
-		  	imp.addSubTitulo("Relatório de Fornecedores");
+		  	
 			imp.montaCab();
 			imp.impCab(136, true);
 			
@@ -368,6 +378,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,2,sTmp);
 			}
+			
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
