@@ -56,20 +56,23 @@ import org.freedom.telas.FRelatorio;
  */
 public class FKardex extends FRelatorio implements ActionListener {
         private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-        private JPanelPad pinCab = new JPanelPad(560,130);
+        private JPanelPad pinCab = new JPanelPad(560,100);
         private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
         private JTextFieldFK txtRefProd = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
         private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+        private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+        private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
         private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
         private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
         private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-        private JButton btExec = new JButton("Trazer informações",Icone.novo("btExecuta.gif"));
+        private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
         private Tabela tab = new Tabela();
         private JScrollPane spnTab = new JScrollPane(tab);
         private ListaCampos lcProd = new ListaCampos(this);
         private ListaCampos lcLote = new ListaCampos(this);
+        private ListaCampos lcAlmox = new ListaCampos(this);
         private Container cTela = null;
         public FKardex() {
                 setTitulo("Kardex");
@@ -83,11 +86,20 @@ public class FKardex extends FRelatorio implements ActionListener {
                 lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtCodFabProd, "codfabprod", "Cód.fab.prod.",ListaCampos.DB_SI,false));
+                lcProd.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, txtDescAlmox, true));
                 txtCodProd.setTabelaExterna(lcProd);
                 txtCodProd.setNomeCampo("CodProd");
                 txtCodProd.setFK(true);
                 lcProd.setReadOnly(true);
                 lcProd.montaSql(false, "PRODUTO", "EQ");
+
+                lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
+                lcAlmox.add(new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almox.", ListaCampos.DB_SI, false));
+                txtCodAlmox.setTabelaExterna(lcAlmox);
+                txtCodAlmox.setNomeCampo("CodAlmox");
+                txtCodAlmox.setFK(true);
+                lcAlmox.setReadOnly(true);
+                lcAlmox.montaSql(false, "ALMOX", "EQ");
 
                 lcLote.add(new GuardaCampo( txtCodLote, "CodLote", "Cód.lote", ListaCampos.DB_PK, false));
                 lcLote.add(new GuardaCampo( txtDescLote, "VenctoLote", "Vencimento do lote", ListaCampos.DB_SI, false));
@@ -106,29 +118,26 @@ public class FKardex extends FRelatorio implements ActionListener {
                 lbLinha.setBorder(BorderFactory.createEtchedBorder());
                 JLabelPad lbLinha2 = new JLabelPad();
                 lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-                JLabelPad lbPeriodo = new JLabelPad(" Periodo:");
-                lbPeriodo.setOpaque(true);
-                JLabelPad lbProduto = new JLabelPad(" Produto:");
-                lbProduto.setOpaque(true);
                 
                 setPainel(pinCab);
-                adic(lbPeriodo,17,5,58,20);
-                adic(lbLinha,7,15,135,100);
-                adic(new JLabelPad("De:"),20,23,30,20);
-                adic(txtDataini,20,43,100,20);
-                adic(new JLabelPad("Até:"),20,63,37,20);
-                adic(txtDatafim,20,83,100,20);
-                adic(lbProduto,156,5,62,20);
-                adic(lbLinha2,145,15,300,100);
-                adic(new JLabelPad("Cód.prod."),158,23,200,20);
-                adic(txtCodProd,158,43,70,20);
-                adic(new JLabelPad("Descrição do produto"),232,23,200,20);
-                adic(txtDescProd,232,43,200,20);
-                adic(new JLabelPad("Cód.lote"),158,63,200,20);
-                adic(txtCodLote,158,83,70,20);
-                adic(new JLabelPad("Vencimento do lote"),232,63,200,20);
-                adic(txtDescLote,232,83,200,20);
-                adic(btExec,449,85,200,30);
+                adic(new JLabelPad("Período"),7,5,100,20);
+                adic(txtDataini,7,25,100,20);
+                adic(new JLabelPad("até"),110,5,100,20);
+                adic(txtDatafim,110,25,100,20);
+                adic(new JLabelPad("Cód.prod."),223,5,70,20);
+                adic(new JLabelPad("Descrição do produto"),296,5,260,20);
+                adic(txtCodProd,223,25,70,20);
+                adic(txtDescProd,296,25,260,20);
+                adic(new JLabelPad("Cód.almox."),7,50,90,20);
+                adic(new JLabelPad("Descrição do almoxarifado"),100,50,200,20);
+                adic(txtCodAlmox,7,70,90,20);
+                adic(txtDescAlmox,100,70,200,20);
+                adic(new JLabelPad("Cód.lote"),303,50,90,20);
+                adic(new JLabelPad("Descrição do lote"),396,50,200,20);
+                adic(txtCodLote,303,70,90,20);
+                adic(txtDescLote,396,70,200,20);
+                adic(btExec,566,15,30,30);
+                btExec.setToolTipText("Executa consulta.");
                 
                 tab.adicColuna("Data");
                 tab.adicColuna("Tipo");
@@ -291,6 +300,7 @@ public class FKardex extends FRelatorio implements ActionListener {
         public void setConexao(Connection cn) {
        		super.setConexao(cn);
             lcProd.setConexao(cn);
+            lcAlmox.setConexao(cn);
             lcLote.setConexao(cn);
             txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
         }
