@@ -661,12 +661,8 @@ public class FInventario extends FDados implements CarregaListener,
 					imp.setTitulo("Relatório de Inventário");
 					imp.addSubTitulo("POSIÇÃO DO ESTOQUE EM "
 							+ Funcoes.dateToStrDate(dtEstoq));
+					imp.addSubTitulo(sOrdenado);
 					imp.impCab(136, true);
-
-					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 10, "Ordenado por: " + sOrdenado);
-					imp.say(imp.pRow() + 0, 135, "|");
 
 					if (sDivGrupo.equals("S")) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());

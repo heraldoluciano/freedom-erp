@@ -96,10 +96,8 @@ public class FRInadimplentes extends FRelatorio {
 	 
 	 if (txtCodVend.getText().trim().length() > 0) {
 		sWhere += " AND R.CODVEND = "+txtCodVend.getText().trim();
-		String sTmp = "COMISS.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
+		sCab = "COMISS.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND R.CODEMPVD="+Aplicativo.iCodEmp+" AND R.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}
 	
 
@@ -152,14 +150,12 @@ public class FRInadimplentes extends FRelatorio {
 	         	imp.montaCab();
 	          	imp.setTitulo("Relatório de Inadimplentes");
 	          	imp.addSubTitulo("RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+		          if (sCab.length() > 0) {
+		      	  	imp.addSubTitulo(sCab);
+		      	  }
 	          	imp.impCab(136, true);
-	          
-	          if (sCab.length() > 0) {
-	            imp.say(imp.pRow()+0,0,""+imp.comprimido());
-	      	  	imp.say(imp.pRow()+0,0,sCab);
-	      	  }
-	          
-	          imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,""+imp.comprimido());
+	          	          
+	          imp.say(imp.pRow()+0,0,""+imp.comprimido());
 	          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	          imp.say(imp.pRow()+0,0,"| Vencto.");

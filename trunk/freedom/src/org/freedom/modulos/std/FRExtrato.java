@@ -159,21 +159,10 @@ public class FRExtrato extends FRelatorio {
         	imp.montaCab();
         	imp.setTitulo("Extrato Bancário");
         	imp.addSubTitulo("EXTRATO BANCÁRIO");
+            String sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();
+            imp.addSubTitulo(sConta);
             imp.impCab(136, true);
            
-           String sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();
-
-           imp.say(imp.pRow()+0,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,135,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,(135-sConta.length())/2,sConta);
-           imp.say(imp.pRow()+0,135,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
