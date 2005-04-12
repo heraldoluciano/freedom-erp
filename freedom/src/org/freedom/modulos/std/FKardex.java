@@ -45,6 +45,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 /**
@@ -86,7 +87,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
                 lcProd.add(new GuardaCampo( txtCodFabProd, "codfabprod", "Cód.fab.prod.",ListaCampos.DB_SI,false));
-                lcProd.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, txtDescAlmox, true));
+                lcProd.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, txtDescAlmox, false));
                 txtCodProd.setTabelaExterna(lcProd);
                 txtCodProd.setNomeCampo("CodProd");
                 txtCodProd.setFK(true);
@@ -173,55 +174,95 @@ public class FKardex extends FRelatorio implements ActionListener {
                 
         }
         private void executar() {
-                if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
-					Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
-                        return;
-                }
-                String sWhere = "";
-                if (!txtCodLote.getText().trim().equals("")) {
-                        sWhere = " AND CODLOTE = '"+txtCodLote.getText().trim()+"'";
-                }
-                String sSQL = "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,MP.CODALMOX,"+
+        	    String sSQL = null;
+        	    String sWhere = null;
+        	    String sCodLote = null;
+        	    String sCols = null;
+        	    int iCodAlmox = 0;
+        	    int iCodProd = 0;
+        	    int iParam = 0;
+        	    try {
+	                sWhere = "AND MP.DTMOVPROD BETWEEN ? AND ? " +
+	                		"AND MP.CODEMPPD=? AND MP.CODFILIALPD=? AND MP.CODPROD=? ";
+	                iCodProd = txtCodProd.getVlrInteger().intValue();
+	                iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
+	                sCodLote = txtCodLote.getVlrString();
+	                
+	                if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
+						Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
+	                    return;
+	                }
+	                if (iCodAlmox!=0) {
+	                	sCols = "MP.SLDMOVPRODAX,MP.CUSTOMPMMOVPRODAX,";
+	                	sWhere += " AND MP.CODEMPAX=? AND MP.CODFILIALAX=? AND MP.CODALMOX=?";
+	                }
+	                else {
+	                	sCols = "MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD,";
+	                }
+	                if (!sCodLote.trim().equals("")) 
+	                    sWhere += " AND MP.CODEMPLE=? AND MP.CODFILIALLE=? AND MP.CODLOTE=?";
+	                
+	                
+	                sSQL = "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,MP.CODALMOX,"+
                               "MP.CODLOTE,MP.QTDMOVPROD,MP.PRECOMOVPROD,MP.ESTOQMOVPROD, " +
-                              "MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD, MP.CODMOVPROD"+
-                              " FROM EQMOVPROD MP, EQTIPOMOV TM WHERE MP.CODPROD=? " +
-                              "AND MP.DTMOVPROD BETWEEN ? AND ? AND "+
-                              "MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND " +
+                              sCols+"MP.CODMOVPROD"+
+                              " FROM EQMOVPROD MP, EQTIPOMOV TM " +
+                              "WHERE MP.CODEMPTM=TM.CODEMP AND MP.CODFILIALTM=TM.CODFILIAL AND " +
                               "MP.CODTIPOMOV=TM.CODTIPOMOV "+
                               sWhere+" ORDER BY DTMOVPROD,CODMOVPROD";
-                try {
-                        PreparedStatement ps = con.prepareStatement(sSQL);
-                        ps.setInt(1,txtCodProd.getVlrInteger().intValue());
-                        ps.setDate(2,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-                        ps.setDate(3,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-                        ResultSet rs = ps.executeQuery();
-                        tab.limpa();
-                        int iLinha = 0;
-                        while (rs.next()) {
-                                tab.adicLinha();
-                                tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTMOVPROD")),iLinha,0);
-                                tab.setValor(rs.getString("TIPOMOV") ,iLinha,1);
-                                tab.setValor(Funcoes.setMascara(rs.getString("CODNAT"),"#.###"),iLinha,2);
-                                tab.setValor(new StringDireita(rs.getInt("DOCMOVPROD")+""),iLinha,3);
-                                tab.setValor(new Integer(rs.getInt("CODALMOX")),iLinha,4);
-                                tab.setValor(rs.getString("CODLOTE") != null ? rs.getString("CODLOTE")+"" : "",iLinha,5);
-                                tab.setValor(new StringDireita(rs.getFloat("QTDMOVPROD")+""),iLinha,6);
-                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("PRECOMOVPROD"))),iLinha,7);
-                                tab.setValor(rs.getString("ESTOQMOVPROD") ,iLinha,8);
-                                tab.setValor(new StringDireita(rs.getFloat("SLDMOVPROD")+""),iLinha,9);
-                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("CUSTOMPMMOVPROD"))),iLinha,10);
-                                tab.setValor(new StringDireita(""+rs.getInt("CODMOVPROD")),iLinha,11);
-                                iLinha++;
-                        }
-                        rs.close();
-                        ps.close();
-                        if (!con.getAutoCommit())
-                        	con.commit();
-                }
-                catch (SQLException err) {
-					Funcoes.mensagemErro(this,"Erro ao carrregar a tabela MOVPROD !\n"+err.getMessage());
-                }
-                              
+	                try {
+	                        PreparedStatement ps = con.prepareStatement(sSQL);
+	                        ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+	                        ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+	                        ps.setInt(3,Aplicativo.iCodEmp);
+	                        ps.setInt(4,ListaCampos.getMasterFilial("EQPRODUTO"));
+	                        ps.setInt(5,iCodProd);
+	                        iParam = 6;
+	                        if (iCodAlmox!=0) {
+		                        ps.setInt(iParam++,Aplicativo.iCodEmp);
+		                        ps.setInt(iParam++,ListaCampos.getMasterFilial("EQALMOX"));
+		                        ps.setInt(iParam++,iCodAlmox);
+	                        }
+	                        if (!sCodLote.trim().equals("")) {
+		                        ps.setInt(iParam++,Aplicativo.iCodEmp);
+		                        ps.setInt(iParam++,ListaCampos.getMasterFilial("EQLOTE"));
+		                        ps.setString(iParam++,sCodLote);
+	                        }
+	                        ResultSet rs = ps.executeQuery();
+	                        tab.limpa();
+	                        int iLinha = 0;
+	                        while (rs.next()) {
+	                                tab.adicLinha();
+	                                tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DTMOVPROD")),iLinha,0);
+	                                tab.setValor(rs.getString("TIPOMOV") ,iLinha,1);
+	                                tab.setValor(Funcoes.setMascara(rs.getString("CODNAT"),"#.###"),iLinha,2);
+	                                tab.setValor(new StringDireita(rs.getInt("DOCMOVPROD")+""),iLinha,3);
+	                                tab.setValor(new Integer(rs.getInt("CODALMOX")),iLinha,4);
+	                                tab.setValor(rs.getString("CODLOTE") != null ? rs.getString("CODLOTE")+"" : "",iLinha,5);
+	                                tab.setValor(new StringDireita(rs.getFloat("QTDMOVPROD")+""),iLinha,6);
+	                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("PRECOMOVPROD"))),iLinha,7);
+	                                tab.setValor(rs.getString("ESTOQMOVPROD") ,iLinha,8);
+	                                tab.setValor(new StringDireita(rs.getFloat((iCodAlmox==0?"SLDMOVPROD":"SLDMOVPRODAX"))+""),iLinha,9);
+	                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString((iCodAlmox==0?"CUSTOMPMMOVPROD":"CUSTOMPMMOVPRODAX")))),iLinha,10);
+	                                tab.setValor(new StringDireita(""+rs.getInt("CODMOVPROD")),iLinha,11);
+	                                iLinha++;
+	                        }
+	                        rs.close();
+	                        ps.close();
+	                        if (!con.getAutoCommit())
+	                        	con.commit();
+	                }
+	                catch (SQLException err) {
+						Funcoes.mensagemErro(this,"Erro ao carrregar a tabela MOVPROD !\n"+err.getMessage());
+	                }
+        	    }
+        	    finally {
+        	    	sSQL = null;
+        	    	sWhere = null;
+        	    	iCodProd = 0;
+        	    	iCodAlmox = 0;
+        	    	iParam = 0;
+        	    }
         }
         public void imprimir(boolean bVisualizar) {
                 ImprimeOS imp = new ImprimeOS("",con);
