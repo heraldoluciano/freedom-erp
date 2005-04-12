@@ -22,6 +22,8 @@ package org.freedom.componentes;
 
 import java.util.Vector;
 
+import org.freedom.funcoes.Funcoes;
+
 public abstract class ObjetoEtiqueta {
   private Vector vLabels = new Vector();
   private Vector vLabelsAdic = new Vector();
@@ -111,6 +113,16 @@ public Vector getMascarasAdic() {
 public void setTexto(String sTexto){
     this.sTexto = sTexto;
     getAdic();    
+}
+public int getNumLinEtiq(){
+    int iRet = 0;
+    try {
+       iRet = Funcoes.stringToVector(sTexto).size();   
+    }
+    catch(Exception e) {
+        e.printStackTrace();
+    }    
+    return iRet;
 }
 public Vector getAdic(){
         for(int i2=0;vValores.size()>i2;i2++) {
