@@ -196,6 +196,7 @@ public class FREtiqueta extends FRelatorio {
   	}
 	
   }
+  
   private String montaQuery(String sTabela){
       String sCampos = "";
       String sSQL = "";
@@ -225,6 +226,7 @@ public class FREtiqueta extends FRelatorio {
       }
       return sSQL;      
   }
+  
   private void impCol(ImprimeOS imp, Vector vVals) {
  	int iCols = txtNColModEtiq.getVlrInteger().intValue();
  	int iLins = txtLinPapel.getVlrInteger().intValue();
@@ -252,7 +254,6 @@ private Vector aplicCampos(ResultSet rs) {
   	sRetorno = sRetorno.replaceAll("\\\n","[Q]");
   	Vector vRet = null;
   	try {
-
   	    Vector vTamsAdic = objEtiqCli.getTamsAdic();
   	    Vector vMascAdic = objEtiqCli.getMascarasAdic();
   	    Vector vValAdic = objEtiqCli.getValoresAdic();
@@ -285,9 +286,10 @@ private Vector aplicCampos(ResultSet rs) {
 			}
   		}
 		vRet = Funcoes.stringToVector(sRetorno,"[Q]");
-       	}
+    }
   	finally {
   		sCampo = null;
+  		sRetorno = null;  	  	
   	}
   	return vRet;
   }
