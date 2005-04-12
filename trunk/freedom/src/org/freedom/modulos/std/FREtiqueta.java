@@ -56,8 +56,9 @@ public class FREtiqueta extends FRelatorio {
   private JTextFieldPad txtAltPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtLargPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  
   private ListaCampos lcPapel = new ListaCampos(this,"PL");
-
     
   public FREtiqueta() {
      setTitulo("Impressão de etiquetas");
@@ -71,13 +72,13 @@ public class FREtiqueta extends FRelatorio {
  	 lcPapel.setQueryCommit(false);
  	 lcPapel.setReadOnly(true);
  	 txtCodPapel.setTabelaExterna(lcPapel);
-
      
      lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
      lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
      lcModEtiq.add(new GuardaCampo( txaEtiqueta,"TxaModEtiq","Corpo",ListaCampos.DB_SI,false));
      lcModEtiq.add(new GuardaCampo( txtNColModEtiq,"NColModEtiq","Colunas",ListaCampos.DB_SI,false));
-  	 lcModEtiq.add(new GuardaCampo( txtCodPapel,"Codpapel","Cód.papel", ListaCampos.DB_FK, false));      
+  	 lcModEtiq.add(new GuardaCampo( txtCodPapel,"Codpapel","Cód.papel", ListaCampos.DB_FK, false));    
+  	 lcModEtiq.add(new GuardaCampo( txtEECModEtiq,"EECModEtiq","entre col.", ListaCampos.DB_SI, false));
      
      lcModEtiq.setReadOnly(true);
      lcModEtiq.montaSql(false, "MODETIQUETA", "SG");
@@ -128,13 +129,8 @@ public class FREtiqueta extends FRelatorio {
       
     PreparedStatement ps = null;
 	ResultSet rs = null;
-	int iNColModEtiq = 0;
-		
-	String sSQL = "";
-	String sWhere = "";
-	String sSep = "";
-	String sLinha = "";
-	
+	int iNColModEtiq = txtNColModEtiq.getVlrInteger().intValue();
+			
 	ImprimeOS imp = null;
     try {
   	    if (txtCodModEtiq.getVlrString().equals("")) {
@@ -148,23 +144,28 @@ public class FREtiqueta extends FRelatorio {
   	    if (sTxa!=null) {
 
   	  	   objEtiqCli.setTexto(sTxa);
-  	       sSQL = montaQuery("VDCLIENTE");
   	          
   	    	try {
-  	    		ps = con.prepareStatement(sSQL);
+  	    		ps = con.prepareStatement(montaQuery("VDCLIENTE"));
   	    		rs = ps.executeQuery();
   	    		Vector vCol = new Vector();
+  	    		Vector vCols = new Vector();
   	    		Vector vVal = new Vector();
 
+  	    		int iAdic = 0;
   	    		while ( rs.next() ) { 
-  	    			vVal = aplicCampos(rs); 
-  	    			if (vVal != null){ 
-                		vCol.addElement(vVal);
-                	}
-
+  	    			vVal = aplicCampos(rs);   	
+  	    			vCol.addElement(vVal);
+  	    			iAdic++;
+  	    				    			
+  	    			if (iNColModEtiq==iAdic){
+ 	    			    vCols.addElement(vCol.clone());
+ 	    			    vCol = new Vector();
+ 	    			    iAdic = 0;
+  	    			}
   	    		}
 
-  	    		impCol(imp,vCol);
+  	    		impCol(imp,vCols);
   				
   	    		rs.close();
   	    		ps.close();
@@ -176,120 +177,157 @@ public class FREtiqueta extends FRelatorio {
   	    		Funcoes.mensagemErro(this,"Erro ao consultar informações!"+err.getMessage());
   	    		err.printStackTrace();      
   	    	}
+  	    	
   	    	imp.eject();
   	    	imp.fechaGravacao();
+
   	    	if (bVisualizar) {
   	    		imp.preview(this);
   	    	}
   	    	else {
   	    		imp.print();
   	    	}
+  	    	
   	    }
   	}
   	finally {
   		ps = null;
   		rs = null;
-  		sSQL = null;
-  		sWhere = null;
-  		sSep = null;
-  		sLinha = null;
+  		imp = null;
   	}
 	
   }
   
   private String montaQuery(String sTabela){
-      String sCampos = "";
       String sSQL = "";
-      Vector vCamposAdic = objEtiqCli.getCamposAdic();
-      String sWhere = "WHERE CODEMP="+Aplicativo.iCodEmp+" AND CODFILIAL="+ListaCampos.getMasterFilial(sTabela);
-      
       try {
-          if (!txtCodSetor.getVlrString().equals("")) {
-  	   		sWhere += " AND CODSETOR="+txtCodSetor.getVlrInteger().intValue();
-  	   		sWhere += " AND CODEMPSR="+Aplicativo.iCodEmp;
-  	   		sWhere += " AND CODFILIALSR="+lcSetor.getCodFilial();
-        }
-  	  if (!txtCodTipo.getVlrString().equals("")) {
-  	    	sWhere += " AND CODTIPOCLI="+txtCodTipo.getVlrInteger().intValue();
-  	    	sWhere += " AND CODEMPTC="+Aplicativo.iCodEmp;
-  	    	sWhere += " AND CODFILIALTC="+lcTipo.getCodFilial();
-  	  }
+          String sCampos = "";          
+          Vector vCamposAdic = objEtiqCli.getCamposAdic();
+          String sWhere = "WHERE CODEMP="+Aplicativo.iCodEmp+" AND CODFILIAL="+ListaCampos.getMasterFilial(sTabela);
+      
+          try {
+              if (!txtCodSetor.getVlrString().equals("")) {
+                  sWhere += " AND CODSETOR="+txtCodSetor.getVlrInteger().intValue();
+                  sWhere += " AND CODEMPSR="+Aplicativo.iCodEmp;
+                  sWhere += " AND CODFILIALSR="+lcSetor.getCodFilial();
+              }
+              if (!txtCodTipo.getVlrString().equals("")) {
+                  sWhere += " AND CODTIPOCLI="+txtCodTipo.getVlrInteger().intValue();
+                  sWhere += " AND CODEMPTC="+Aplicativo.iCodEmp;
+                  sWhere += " AND CODFILIALTC="+lcTipo.getCodFilial();
+              }
          
-      for(int i=0;vCamposAdic.size()>i;i++){
-          sCampos = sCampos + vCamposAdic.elementAt(i).toString()+",";    
-      }
+              for(int i=0;vCamposAdic.size()>i;i++){
+                  sCampos = sCampos + vCamposAdic.elementAt(i).toString()+",";    
+              }
        
-      sSQL = "SELECT "+sCampos.substring(0,sCampos.length()-1)+" FROM "+sTabela+" "+sWhere+" ORDER BY 1";
+              sSQL = "SELECT "+sCampos.substring(0,sCampos.length()-1)+" FROM "+sTabela+" "+sWhere+" ORDER BY 1";
+          }
+          catch(Exception e){
+              e.printStackTrace();
+          }
       }
-      catch(Exception e){
+      catch(Exception e) {
           e.printStackTrace();
       }
       return sSQL;      
   }
-  
-  private void impCol(ImprimeOS imp, Vector vVals) {
- 	int iCols = txtNColModEtiq.getVlrInteger().intValue();
- 	int iLins = txtLinPapel.getVlrInteger().intValue();
-    try {
-        for(int i=0;vVals.size()>i;i++){  
-            for(int i2=0;((Vector)vVals.elementAt(i)).size()>i2;i2++) {
-                imp.say(imp.pRow()+1,0,((Vector)vVals.elementAt(i)).elementAt(i2).toString());
-                System.out.println(((Vector)vVals.elementAt(i)).elementAt(i2).toString());
-                if (iLins==imp.pRow())
-                	imp.incPags(); 
-            }
-        }
-  	}
-    catch(Exception e){
-        e.printStackTrace();
-    }
-  	finally {
-  	    vVals = null;
-  	}  	
+    
+  private void impCol(ImprimeOS imp, Vector vCols) {
+      try {
+  	      int linPag = imp.verifLinPag()-1;
+          int iColsEtiq = txtNColModEtiq.getVlrInteger().intValue();
+          int iLins = txtLinPapel.getVlrInteger().intValue();
+          int iColPapel = txtColPapel.getVlrInteger().intValue();
+          int iEECEtiq = txtEECModEtiq.getVlrInteger().intValue();
+          int iCol = 0;
+          int iSalto = 0;
+          int iNumLinEtiq = objEtiqCli.getNumLinEtiq();
+          try {
+              for(int i1=0;vCols.size()>i1;i1++){                  
+                  Vector vCol = ((Vector)(vCols.elementAt(i1)));                  
+                  for(int iNumLinhaEtiqAtual = 0;iNumLinEtiq>iNumLinhaEtiqAtual;iNumLinhaEtiqAtual++){                   
+                      for(int i2 = 0;iColsEtiq>i2;i2++){
+                          if (imp.pRow() == (linPag-1)) {
+                              imp.eject();
+                              imp.incPags();
+                              iCol = 0;
+                              iSalto = 0;
+                          }
+                          Vector vEtiqueta = (Vector) vCol.elementAt(i2);
+                          String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
+                          System.out.println(sImp);
+                          imp.say(imp.pRow()+iSalto,iCol,sImp);
+                          
+                          iSalto = 0;
+                          iCol += ((iColPapel/iColsEtiq) + (iEECEtiq) );
+
+                          if (iCol>=iColPapel) {
+                              iCol = 0;                          
+                           }                            
+                          
+                          
+                      }
+                      iSalto = 1;
+                  }    
+              }
+          }
+          catch(Exception e){
+              e.printStackTrace();
+          }
+      }
+      catch(Exception e) {
+          e.printStackTrace();
+      }      
+  	  finally {
+  	    vCols = null;
+  	  }  	
   }
   
-private Vector aplicCampos(ResultSet rs) {
+  private Vector aplicCampos(ResultSet rs) {
   	String sCampo = "";
   	String sRetorno = txaEtiqueta.getVlrString();
   	sRetorno = sRetorno.replaceAll("\\\n","[Q]");
   	Vector vRet = null;
-  	try {
-  	    Vector vTamsAdic = objEtiqCli.getTamsAdic();
-  	    Vector vMascAdic = objEtiqCli.getMascarasAdic();
-  	    Vector vValAdic = objEtiqCli.getValoresAdic();
-  	    Vector vCamposAdic = objEtiqCli.getCamposAdic();
-  	    if (sRetorno != null) { 
-		   	try {			    	    
-		   	    for(int i=0;vCamposAdic.size()>i;i++) {
-		   	        String sTmp = vCamposAdic.elementAt(i).toString();
-		   	        String sValAdic = vValAdic.elementAt(i).toString();
-		   	        String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
-		   	        sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
-		   	        sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
+  	if (rs!=null){
+  	    try {
+  	        Vector vTamsAdic = objEtiqCli.getTamsAdic();
+  	        Vector vMascAdic = objEtiqCli.getMascarasAdic();
+  	        Vector vValAdic = objEtiqCli.getValoresAdic();
+  	        Vector vCamposAdic = objEtiqCli.getCamposAdic();
+  	        if (sRetorno != null) { 
+  	            try {			    	    
+  	                for(int i=0;vCamposAdic.size()>i;i++) {
+  	                    String sTmp = vCamposAdic.elementAt(i).toString();
+  	                    String sValAdic = vValAdic.elementAt(i).toString();
+  	                    String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
+  	                    sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
+  	                    sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
 
-		   	        if(vMascAdic.elementAt(i)!=null)
-		    	        sCampo = Funcoes.setMascara(sCampo, vMascAdic.elementAt(i).toString());
+  	                    if(vMascAdic.elementAt(i)!=null)
+  	                        sCampo = Funcoes.setMascara(sCampo, vMascAdic.elementAt(i).toString());
 		    	    
-		   	        int iTmp = Funcoes.contaChar(sFragmento,'-'); 
+  	                    int iTmp = Funcoes.contaChar(sFragmento,'-'); 
 		    	    
-		   	        if (sCampo.length()>=iTmp)
-		    	        sCampo = sCampo.substring(0,iTmp);
-		    	    else 
-		    	        sCampo = sCampo+Funcoes.replicate(" ",iTmp-sCampo.length());
+  	                    if (sCampo.length()>=iTmp)
+  	                        sCampo = sCampo.substring(0,iTmp);
+  	                    else 
+  	                        sCampo = sCampo+Funcoes.replicate(" ",iTmp-sCampo.length());
 
-		    	    sRetorno = sRetorno.replaceAll("\\"+sFragmento,sCampo);	
+  	                    sRetorno = sRetorno.replaceAll("\\"+sFragmento,sCampo);	
 		    	   
-		    	}
-		   	}						
-			catch (SQLException e) {
-				Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+e.getMessage());
-			}
-  		}
-		vRet = Funcoes.stringToVector(sRetorno,"[Q]");
-    }
-  	finally {
-  		sCampo = null;
-  		sRetorno = null;  	  	
+  	                }
+  	            }						
+  	            catch (SQLException e) {
+  	                Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+e.getMessage());
+  	            }
+  	        }
+  	        vRet = Funcoes.stringToVector(sRetorno,"[Q]");
+  	    }
+  	    finally {
+  	        sCampo = null;
+  	        sRetorno = null;  	  	
+  	    }
   	}
   	return vRet;
   }
