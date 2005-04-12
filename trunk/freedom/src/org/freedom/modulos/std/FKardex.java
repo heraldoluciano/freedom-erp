@@ -241,7 +241,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 	}
                     if (i==0) {
                     		if (!sCab.trim().equals("")) {
-	                            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	                            imp.say(imp.pRow()+0,0,""+imp.comprimido());
 	                            imp.say(imp.pRow()+0,0,"|"+sCab);
 	                            imp.say(imp.pRow()+0,135,"|");
                     		}
