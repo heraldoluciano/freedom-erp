@@ -80,5 +80,6 @@
 	    		<include name="lib/*.jar"/>
 			</fileset>
 		</signjar>
+    	<copy file="${dist.jar}" tofile="${dist.jar.elog}"/>
     </target>	
 </project>
