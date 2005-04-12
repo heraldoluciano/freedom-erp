@@ -99,10 +99,8 @@ public class FRVendasGeral extends FRelatorio {
 	 
 	 if (txtCodVend.getText().trim().length() > 0) {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
-		String sTmp = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
+		sCab = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
-		sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 	}  
   	
   	
@@ -153,14 +151,13 @@ public class FRVendasGeral extends FRelatorio {
         	imp.montaCab();
         	imp.setTitulo("Relatório de Vendas Geral");
         	imp.addSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
-            imp.impCab(136, true);
-          
-           if (sCab.length() > 0) {
-            imp.say(imp.pRow()+0,0,""+imp.comprimido());
-      	  	imp.say(imp.pRow()+0,0,sCab);
-      	  }
-           
-           imp.say(imp.pRow()+((sCab.length() > 0) ? 1 : 0),0,""+imp.comprimido());
+            if (sCab.length() > 0) {
+          	  	imp.addSubTitulo(sCab);
+          	  }
+
+        	imp.impCab(136, true);
+                     
+           imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");           
                     
