@@ -207,7 +207,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
         if (imp.pRow()==0) {
         	imp.montaCab();
             imp.setTitulo("Relatório de Lancamentos de Fretes");
-            imp.setSubTitulo("RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+            imp.addSubTitulo("RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
             imp.impCab(136, true);
                     
           imp.say(imp.pRow()+0,0,""+imp.comprimido());

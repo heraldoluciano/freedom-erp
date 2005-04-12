@@ -114,7 +114,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
          if (imp.pRow()==0) {
          	imp.montaCab();
             imp.setTitulo("Relatório de naturezas de operações");
-            imp.setSubTitulo("Relatório de naturezas de operações");
+            imp.addSubTitulo("Relatório de naturezas de operações");
             imp.impCab(136, true);
             
             imp.say(imp.pRow()+0,0,""+imp.normal());

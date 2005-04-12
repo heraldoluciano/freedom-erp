@@ -280,7 +280,7 @@ public class FRMediaItem extends FRelatorio {
         if (imp.pRow()==0) {
         	imp.montaCab();
         	imp.setTitulo("Relatório de media de vendas por item");
-        	imp.setSubTitulo("RELATORIO DE MEDIAS DE VENDAS POR ITEM");
+        	imp.addSubTitulo("RELATORIO DE MEDIAS DE VENDAS POR ITEM");
             imp.impCab(136, true);
            
            if (sCab.length() > 0) 

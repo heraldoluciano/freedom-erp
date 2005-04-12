@@ -304,7 +304,7 @@ public class FRPagar extends FRelatorio {
       	if (imp.pRow()==0) {
         	imp.montaCab();
         	imp.setTitulo("Relatório de contas "+sPag);
-        	imp.setSubTitulo("RELATORIO DE CONTAS "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+        	imp.addSubTitulo("RELATORIO DE CONTAS "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
         	imp.impCab(136, true);
            
            imp.say(imp.pRow()+0,0,""+imp.comprimido());

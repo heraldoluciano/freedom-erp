@@ -131,7 +131,7 @@ public class FRDiario extends FRelatorio {
         if (imp.pRow()==0) {
         	imp.montaCab();
         	imp.setTitulo("Relatório diário de "+sTit);
-        	imp.setSubTitulo("RELATORIO DE DIÁRIO DE "+sTit+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+        	imp.addSubTitulo("RELATORIO DE DIÁRIO DE "+sTit+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
            imp.impCab(136, true);
            
            imp.say(imp.pRow()+1,0,""+imp.comprimido());

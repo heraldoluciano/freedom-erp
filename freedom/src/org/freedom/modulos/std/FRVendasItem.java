@@ -293,7 +293,7 @@ public class FRVendasItem extends FRelatorio {
 					//imp.actionPerformed();
 					imp.montaCab();
 					imp.setTitulo("Relatório de Vendas por ítem");
-					imp.setSubTitulo("RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
+					imp.addSubTitulo("RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
 					imp.impCab(136, true);
 					
 					imp.say(imp.pRow()+0,0,""+imp.comprimido());

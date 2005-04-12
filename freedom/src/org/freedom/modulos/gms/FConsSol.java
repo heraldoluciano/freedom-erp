@@ -351,7 +351,7 @@ public class FConsSol extends FFilho implements ActionListener {
 				if (imp.pRow() == 0) {
 					imp.montaCab();
 					imp.setTitulo("Relatório de Solicitações de Compra");
-					imp.setSubTitulo("Relatório de Solicitações de Compra");
+					imp.addSubTitulo("Relatório de Solicitações de Compra");
 					imp.impCab(136, true);
 					//	imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "| N.Sol.");

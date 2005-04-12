@@ -161,7 +161,7 @@ public class FRImpServ extends FRelatorio {
 	  			if (imp.pRow()==0) {
 	  				imp.montaCab();
 	  		  		imp.setTitulo("Relatorio de Impostos/Serviços");
-	  		  		imp.setSubTitulo("IMPOSTOS SOBRE SERVICOS");
+	  		  		imp.addSubTitulo("IMPOSTOS SOBRE SERVICOS");
 	  		  		imp.impCab(136, true);
 	  				
 	  				if (!sFiltros.equals("")) {
@@ -249,7 +249,7 @@ public class FRImpServ extends FRelatorio {
 	  			if (imp.pRow()==0) {
 	  				imp.montaCab();
 	  		  		imp.setTitulo("Relatorio de Impostos/Serviços");
-	  		  		imp.setSubTitulo("IMPOSTOS SOBRE SERVICOS");
+	  		  		imp.addSubTitulo("IMPOSTOS SOBRE SERVICOS");
 	  		  		imp.impCab(136, true);
 	  				
 	  				if (!sFiltros.equals("")) {

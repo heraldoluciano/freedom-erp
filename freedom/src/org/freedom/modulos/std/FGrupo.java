@@ -402,7 +402,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   			if (imp.pRow()==0) {
   				imp.montaCab();
   			  	imp.setTitulo("Relatório de Grupos");
-  			  	imp.setSubTitulo("Relatório de Grupos");
+  			  	imp.addSubTitulo("Relatório de Grupos");
   				imp.impCab(80, false);
   				imp.say(imp.pRow()+0,0,""+imp.normal());
   				imp.say(imp.pRow()+0,0,"");

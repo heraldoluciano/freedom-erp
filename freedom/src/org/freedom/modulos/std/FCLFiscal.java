@@ -253,7 +253,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
           if (imp.pRow()==0) {
           	imp.montaCab();
             imp.setTitulo("Relatório de Classificação fiscal dos produtos");
-            imp.setSubTitulo("Relatório de Classificação fiscal dos produtos");
+            imp.addSubTitulo("Relatório de Classificação fiscal dos produtos");
             imp.impCab(136, true);
             imp.say(imp.pRow()+0,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
@@ -312,7 +312,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
           if (imp.pRow()==0) {
           	imp.montaCab();
             imp.setTitulo("Relatório de Classificação fiscal dos produtos");
-            imp.setSubTitulo("Relatório de Classificação fiscal dos produtos");
+            imp.addSubTitulo("Relatório de Classificação fiscal dos produtos");
             imp.impCab(136, true);
             
             imp.say(imp.pRow()+0,0,""+imp.comprimido());

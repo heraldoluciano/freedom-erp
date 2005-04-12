@@ -154,7 +154,7 @@ public class FRConfEstoq extends FRelatorio {
 	  			if (imp.pRow()==0) {
 	  				imp.montaCab();
 	  				imp.setTitulo("Relatorio de Comferencia de Estoque");
-	  				imp.setSubTitulo("CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR PRODUTO");
+	  				imp.addSubTitulo("CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR PRODUTO");
 	  				imp.impCab(136, true);
 	  					  				
   	  				imp.say(imp.pRow()+0,0,""+imp.comprimido());
@@ -306,7 +306,7 @@ public class FRConfEstoq extends FRelatorio {
 	  			if (imp.pRow()==0) {
 	  				imp.montaCab();
 	  				imp.setTitulo("Relatorio de Comferencia de Estoque");
-	  				imp.setSubTitulo("CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR LOTE");
+	  				imp.addSubTitulo("CONFERENCIA DE ESTOQUE CONSIDERANDO SALDOS POR LOTE");
 	  				imp.impCab(136, true);
 	  					  				
   	  				imp.say(imp.pRow()+0,0,""+imp.comprimido());

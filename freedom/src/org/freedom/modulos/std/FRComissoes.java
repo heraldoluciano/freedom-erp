@@ -263,7 +263,7 @@ public class FRComissoes extends FRelatorio {
 					}
 
 					if (imp.pRow() == 0) {
-						imp.setSubTitulo("RELATORIO DE COMISSOES(" + sTitDataFiltro
+						imp.addSubTitulo("RELATORIO DE COMISSOES(" + sTitDataFiltro
 								+ ") - PERIODO DE " + sDataini + " ATE " + sDatafim);
 						imp.impCab(136, true);
 						
