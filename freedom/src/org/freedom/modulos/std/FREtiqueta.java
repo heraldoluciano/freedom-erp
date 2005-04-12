@@ -50,15 +50,35 @@ public class FREtiqueta extends FRelatorio {
   private JTextAreaPad txaEtiqueta = new JTextAreaPad(500);
   private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
+  private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+  private JTextFieldPad txtDescPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+  private JTextFieldPad txtLinPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtAltPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtLargPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private ListaCampos lcPapel = new ListaCampos(this,"PL");
+
     
   public FREtiqueta() {
      setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
                
+     lcPapel.add(new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
+	 lcPapel.add(new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
+     lcPapel.add(new GuardaCampo( txtColPapel,"Colpapel", "Num. colunas", ListaCampos.DB_SI, false));
+     lcPapel.add(new GuardaCampo( txtLinPapel,"Linpapel", "Lin. colunas", ListaCampos.DB_SI, false));
+	 lcPapel.montaSql(false, "PAPEL", "SG");
+ 	 lcPapel.setQueryCommit(false);
+ 	 lcPapel.setReadOnly(true);
+ 	 txtCodPapel.setTabelaExterna(lcPapel);
+
+     
      lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
      lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
      lcModEtiq.add(new GuardaCampo( txaEtiqueta,"TxaModEtiq","Corpo",ListaCampos.DB_SI,false));
      lcModEtiq.add(new GuardaCampo( txtNColModEtiq,"NColModEtiq","Colunas",ListaCampos.DB_SI,false));
+  	 lcModEtiq.add(new GuardaCampo( txtCodPapel,"Codpapel","Cód.papel", ListaCampos.DB_FK, false));      
+     
      lcModEtiq.setReadOnly(true);
      lcModEtiq.montaSql(false, "MODETIQUETA", "SG");
      txtCodModEtiq.setTabelaExterna(lcModEtiq);
@@ -100,6 +120,7 @@ public class FREtiqueta extends FRelatorio {
     lcModEtiq.setConexao(cn);
     lcSetor.setConexao(cn);
     lcTipo.setConexao(cn);
+    lcPapel.setConexao(cn);
   }
 
   public void imprimir(boolean bVisualizar) {
@@ -197,7 +218,7 @@ public class FREtiqueta extends FRelatorio {
           sCampos = sCampos + vCamposAdic.elementAt(i).toString()+",";    
       }
        
-      sSQL = "SELECT "+sCampos.substring(0,sCampos.length()-1)+" FROM "+sTabela+" "+sWhere;
+      sSQL = "SELECT "+sCampos.substring(0,sCampos.length()-1)+" FROM "+sTabela+" "+sWhere+" ORDER BY 1";
       }
       catch(Exception e){
           e.printStackTrace();
@@ -206,11 +227,14 @@ public class FREtiqueta extends FRelatorio {
   }
   private void impCol(ImprimeOS imp, Vector vVals) {
  	int iCols = txtNColModEtiq.getVlrInteger().intValue();
+ 	int iLins = txtLinPapel.getVlrInteger().intValue();
     try {
         for(int i=0;vVals.size()>i;i++){  
             for(int i2=0;((Vector)vVals.elementAt(i)).size()>i2;i2++) {
                 imp.say(imp.pRow()+1,0,((Vector)vVals.elementAt(i)).elementAt(i2).toString());
                 System.out.println(((Vector)vVals.elementAt(i)).elementAt(i2).toString());
+                if (iLins==imp.pRow())
+                	imp.incPags(); 
             }
         }
   	}
@@ -225,10 +249,9 @@ public class FREtiqueta extends FRelatorio {
 private Vector aplicCampos(ResultSet rs) {
   	String sCampo = "";
   	String sRetorno = txaEtiqueta.getVlrString();
-  	sRetorno = sRetorno.replaceAll("\\"+"\n","[Q]");
+  	sRetorno = sRetorno.replaceAll("\\\n","[Q]");
   	Vector vRet = null;
   	try {
-// Estes '\\' que  aparecem por ai..são para anular caracteres especiais de "expressão regular".
 
   	    Vector vTamsAdic = objEtiqCli.getTamsAdic();
   	    Vector vMascAdic = objEtiqCli.getMascarasAdic();
@@ -239,7 +262,6 @@ private Vector aplicCampos(ResultSet rs) {
 		   	    for(int i=0;vCamposAdic.size()>i;i++) {
 		   	        String sTmp = vCamposAdic.elementAt(i).toString();
 		   	        String sValAdic = vValAdic.elementAt(i).toString();
-//		   	        String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic),sRetorno.indexOf("]")+1);
 		   	        String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
 		   	        sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
 		   	        sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
@@ -257,7 +279,6 @@ private Vector aplicCampos(ResultSet rs) {
 		    	    sRetorno = sRetorno.replaceAll("\\"+sFragmento,sCampo);	
 		    	   
 		    	}
-//		   	    sRetorno = sRetorno.replaceAll("[Q]","\n");
 		   	}						
 			catch (SQLException e) {
 				Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+e.getMessage());
@@ -270,15 +291,4 @@ private Vector aplicCampos(ResultSet rs) {
   	}
   	return vRet;
   }
-public static String Tiracp(String sVal, int Tam) {// teste
-	 char[] cVal = sVal.toCharArray();// teste
-	    String sRetorno = sVal;// teste
-	    for (int i=sVal.length()-1;i>=0;i--) {// teste
-	      if (i <= Tam) {// teste
-	      	sRetorno = sVal.substring(0,i+1); // teste
-	        break;// teste
-	      }// teste
-	    }// teste
-	    return  sRetorno;// teste
-	  }
 }

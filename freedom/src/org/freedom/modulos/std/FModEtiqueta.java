@@ -50,9 +50,6 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
-//import bibli.funcoes.Funcoes; // TESTE
-
-
 public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener,PostListener {       
 	
     private JPanelPad pinCab = new JPanelPad(0,150);
@@ -64,11 +61,13 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	private JTextFieldFK txtDescpapel = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextAreaPad txaEtiqueta = new JTextAreaPad(500); 
+	private JTextFieldPad txtLinPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JScrollPane spnCli = new JScrollPane(txaEtiqueta); 
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
     private ListaCampos lcPapel = new ListaCampos(this,"PL");
     private Vector vTamanhos = new Vector();
+	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
 	public FModEtiqueta() {
     	setTitulo("Modelo de etiqueta");
     	setAtribos(20,100,750,400);
@@ -81,6 +80,8 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	lcPapel.add(new GuardaCampo( txtCodpapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
     	lcPapel.add(new GuardaCampo( txtDescpapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
         lcPapel.add(new GuardaCampo( txtColPapel,"Colpapel", "Num. colunas", ListaCampos.DB_SI, false));
+        lcPapel.add(new GuardaCampo( txtLinPapel,"LinPapel", "Num. Linhas", ListaCampos.DB_SI, false));
+        
     	lcPapel.montaSql(false, "PAPEL", "SG");
      	lcPapel.setQueryCommit(false);
      	lcPapel.setReadOnly(true);
@@ -100,7 +101,6 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 
     	setListaCampos( false, "MODETIQUETA", "SG");
    	        	
-    	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
     	Vector vLabs = objEtiqCli.getLabels();    	
     	Vector vVals = objEtiqCli.getValores();
     	vTamanhos = objEtiqCli.getTams();
@@ -133,9 +133,18 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	    int iColsModel = txtNColModEtiq.getVlrInteger().intValue();
 	    int iEspacoCol = txtEECModEtiq.getVlrInteger().intValue();
 	    int iMax = 0;
+	    	    	    
 	    if(vLinhas.size()>0) {
-	        for(int i=0;vLinhas.size()>i;i++) {
-	            String sTmp = vLinhas.elementAt(i).toString();
+		    objEtiqCli.setTexto(txaEtiqueta.getVlrString());//carrega o texto criado para o objeto
+		    Vector vValoresAdic = objEtiqCli.getValoresAdic(); //busca quais as palavras chaves adicionadas.
+	        for(int i=0;vLinhas.size()>i;i++) { //Loop para percorrer todas as linhas do modelo de etiquetas.
+	            String sTmp = vLinhas.elementAt(i).toString(); // Carrega string com a linha atual.	            	            	            
+	            for(int i2 = 0;vValoresAdic.size()>i2;i2++){ //Loop para percorrer todos os elementos adicionados para elimina-los da string medida	            	
+	            	sTmp = sTmp.replaceAll("\\"+vValoresAdic.elementAt(i2).toString(),""); //Limpando string retirando as palavras chave para medi-lo corretamente
+	            	sTmp = sTmp.replaceAll("\\[","");
+	            	sTmp = sTmp.replaceAll("\\]","");	            	
+	            }
+	            	        	            	
 	            if(sTmp.length()>iMax) {
 	                iMax = sTmp.length();
 	            }	                
