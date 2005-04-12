@@ -134,6 +134,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 tab.adicColuna("Tipo");
                 tab.adicColuna("Operação");
                 tab.adicColuna("Doc.");
+                tab.adicColuna("Almox.");
                 tab.adicColuna("Cód.lote");
                 tab.adicColuna("Quantidade.");
                 tab.adicColuna("Valor unit.");
@@ -146,12 +147,13 @@ public class FKardex extends FRelatorio implements ActionListener {
                 tab.setTamColuna(70,2);
                 tab.setTamColuna(70,3);
                 tab.setTamColuna(70,4);
-                tab.setTamColuna(90,5);
-                tab.setTamColuna(100,6);
-                tab.setTamColuna(30,7);
-                tab.setTamColuna(85,8);
-                tab.setTamColuna(90,9);
-                tab.setTamColuna(70,9);
+                tab.setTamColuna(70,5);
+                tab.setTamColuna(90,6);
+                tab.setTamColuna(100,7);
+                tab.setTamColuna(30,8);
+                tab.setTamColuna(85,9);
+                tab.setTamColuna(90,10);
+                tab.setTamColuna(70,11);
                 
                 btExec.addActionListener(this);
                 
@@ -170,7 +172,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                 if (!txtCodLote.getText().trim().equals("")) {
                         sWhere = " AND CODLOTE = '"+txtCodLote.getText().trim()+"'";
                 }
-                String sSQL = "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,"+
+                String sSQL = "SELECT MP.DTMOVPROD,TM.TIPOMOV,MP.CODNAT,MP.DOCMOVPROD,MP.CODALMOX,"+
                               "MP.CODLOTE,MP.QTDMOVPROD,MP.PRECOMOVPROD,MP.ESTOQMOVPROD, " +
                               "MP.SLDMOVPROD,MP.CUSTOMPMMOVPROD, MP.CODMOVPROD"+
                               " FROM EQMOVPROD MP, EQTIPOMOV TM WHERE MP.CODPROD=? " +
@@ -192,13 +194,14 @@ public class FKardex extends FRelatorio implements ActionListener {
                                 tab.setValor(rs.getString("TIPOMOV") ,iLinha,1);
                                 tab.setValor(Funcoes.setMascara(rs.getString("CODNAT"),"#.###"),iLinha,2);
                                 tab.setValor(new StringDireita(rs.getInt("DOCMOVPROD")+""),iLinha,3);
-                                tab.setValor(rs.getString("CODLOTE") != null ? rs.getString("CODLOTE")+"" : "",iLinha,4);
-                                tab.setValor(new StringDireita(rs.getDouble("QTDMOVPROD")+""),iLinha,5);
-                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("PRECOMOVPROD"))),iLinha,6);
-                                tab.setValor(rs.getString("ESTOQMOVPROD") ,iLinha,7);
-                                tab.setValor(new StringDireita(rs.getDouble("SLDMOVPROD")+""),iLinha,8);
-                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("CUSTOMPMMOVPROD"))),iLinha,9);
-                                tab.setValor(new StringDireita(""+rs.getInt("CODMOVPROD")),iLinha,10);
+                                tab.setValor(new Integer(rs.getInt("CODALMOX")),iLinha,4);
+                                tab.setValor(rs.getString("CODLOTE") != null ? rs.getString("CODLOTE")+"" : "",iLinha,5);
+                                tab.setValor(new StringDireita(rs.getFloat("QTDMOVPROD")+""),iLinha,6);
+                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("PRECOMOVPROD"))),iLinha,7);
+                                tab.setValor(rs.getString("ESTOQMOVPROD") ,iLinha,8);
+                                tab.setValor(new StringDireita(rs.getFloat("SLDMOVPROD")+""),iLinha,9);
+                                tab.setValor(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("CUSTOMPMMOVPROD"))),iLinha,10);
+                                tab.setValor(new StringDireita(""+rs.getInt("CODMOVPROD")),iLinha,11);
                                 iLinha++;
                         }
                         rs.close();
@@ -218,18 +221,12 @@ public class FKardex extends FRelatorio implements ActionListener {
                 String sCab = "";
                 String sDataini = txtDataini.getVlrString();
                 String sDatafim = txtDatafim.getVlrString();
-                imp.setTitulo("Relatório de Extrato do Estoque");
-                imp.setSubTitulo("EXTRATO DO ESTOQUE  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
+                imp.setTitulo("EXTRATO DO ESTOQUE");
+                imp.setSubTitulo("PERIODO DE :"+sDataini+" ATÉ: "+sDatafim);
                 imp.impCab(136, true);
-                String sTmp = "PRODUTO: "+txtDescProd.getText().trim();
-                sCab += ""+imp.comprimido();
-                sCab += "|"+Funcoes.replicate(" ",(133-sTmp.length())/2)+sTmp;
-                sCab += Funcoes.replicate(" ",(133-sTmp.length())/2)+"|";
+                sCab += "PRODUTO: "+txtDescProd.getText().trim();
                 if (txtCodLote.getText().trim().length() > 0) {
-                        sTmp = "Lote: "+txtCodLote.getText().trim();
-                        sCab += "\n"+imp.comprimido();
-                        sCab += "|"+Funcoes.replicate(" ",(133-sTmp.length())/2)+sTmp;
-                        sCab += Funcoes.replicate(" ",(133-sTmp.length())/2)+"|";
+                        sCab += "  /  Lote: "+txtCodLote.getText().trim();
                 }
                 imp.limpaPags();
                 boolean hasData = false;
@@ -242,36 +239,39 @@ public class FKardex extends FRelatorio implements ActionListener {
                                 imp.eject();
                         	imp.incPags();
                 	}
-                        if (i==0) {
-                                imp.say(imp.pRow()+0,0,""+imp.comprimido());
-                                if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"| Data "); //10
-                                imp.say(imp.pRow()+0,14,"| Tp."); //2
-                                imp.say(imp.pRow()+0,20,"| Op. "); //4
-                                imp.say(imp.pRow()+0,28,"| Doc. "); //13
-                                imp.say(imp.pRow()+0,45,"| Cód.lote "); //13
-                                imp.say(imp.pRow()+0,62,"| Quantidade "); //8
-                                imp.say(imp.pRow()+0,74,"| Valor.unit. "); //15
-                                imp.say(imp.pRow()+0,93,"| Saldo ");//8
-                                imp.say(imp.pRow()+0,105,"| Custo MPM "); //15
-                                imp.say(imp.pRow()+0,135,"|");
-                                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-                        }
-                        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                        imp.say(imp.pRow()+0,0,"| "+tab.getValor(i,0));
-                        imp.say(imp.pRow()+0,14,"| "+tab.getValor(i,1));
-                        imp.say(imp.pRow()+0,20,"| "+tab.getValor(i,2));
-                        imp.say(imp.pRow()+0,28,"| "+tab.getValor(i,3));
-                        imp.say(imp.pRow()+0,45,"| "+tab.getValor(i,4));
-                        imp.say(imp.pRow()+0,62,"| "+tab.getValor(i,5));
-                        imp.say(imp.pRow()+0,74,"| "+tab.getValor(i,6));
-                        imp.say(imp.pRow()+0,93,"| "+tab.getValor(i,7));
-                        imp.say(imp.pRow()+0,105,"| "+tab.getValor(i,8));
-                        imp.say(imp.pRow()+0,135,"|");
+                    if (i==0) {
+                    		if (!sCab.trim().equals("")) {
+	                            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	                            imp.say(imp.pRow()+0,0,"|"+sCab);
+	                            imp.say(imp.pRow()+0,135,"|");
+                    		}
+                            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                            imp.say(imp.pRow()+0,0,"| Data "); //10
+                            imp.say(imp.pRow()+0,14,"| Tp."); //2
+                            imp.say(imp.pRow()+0,20,"| Op. "); //4
+                            imp.say(imp.pRow()+0,28,"| Doc. "); //13
+                            imp.say(imp.pRow()+0,45,"| Cód.almox. "); //13
+                            imp.say(imp.pRow()+0,58,"| Cód.lote "); //13
+                            imp.say(imp.pRow()+0,75,"| Quantidade "); //8
+                            imp.say(imp.pRow()+0,87,"| Valor.unit. "); //15
+                            imp.say(imp.pRow()+0,106,"| Saldo ");//8
+                            imp.say(imp.pRow()+0,118,"| Custo MPM "); //15
+                            imp.say(imp.pRow()+0,135,"|");
+                            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+                    }
+                    imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                    imp.say(imp.pRow()+0,0,"| "+tab.getValor(i,0));
+                    imp.say(imp.pRow()+0,14,"| "+tab.getValor(i,1));
+                    imp.say(imp.pRow()+0,20,"| "+tab.getValor(i,2));
+                    imp.say(imp.pRow()+0,28,"| "+tab.getValor(i,3));
+                    imp.say(imp.pRow()+0,45,"| "+tab.getValor(i,4));
+                    imp.say(imp.pRow()+0,58,"| "+tab.getValor(i,5));
+                    imp.say(imp.pRow()+0,75,"| "+tab.getValor(i,6));
+                    imp.say(imp.pRow()+0,87,"| "+tab.getValor(i,7));
+                    imp.say(imp.pRow()+0,106,"| "+tab.getValor(i,8));
+                    imp.say(imp.pRow()+0,118,"| "+tab.getValor(i,9));
+                    imp.say(imp.pRow()+0,135,"|");
                 }
                 imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
