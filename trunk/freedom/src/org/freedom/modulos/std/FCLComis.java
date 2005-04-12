@@ -116,7 +116,7 @@ private void imprimir(boolean bVisualizar) {
        if (imp.pRow()==0) {
        	imp.montaCab();
         imp.setTitulo("Relatório de Classificação de Comissões");
-        imp.setSubTitulo("Relatório de Classificação de Comissões");
+        imp.addSubTitulo("Relatório de Classificação de Comissões");
         imp.impCab(136, true);
         
           imp.say(imp.pRow()+0,0,""+imp.normal());

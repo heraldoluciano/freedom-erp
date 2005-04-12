@@ -812,7 +812,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
 		  	imp.setTitulo("Relatório de Produtos");
-		  	imp.setSubTitulo("Relatório de Produtos");
+		  	imp.addSubTitulo("Relatório de Produtos");
 			imp.montaCab();
 			imp.impCab(136, true);
 			imp.say(imp.pRow()+0,0,""+imp.comprimido());
@@ -916,7 +916,7 @@ public class FProduto extends FTabDados	implements CheckBoxListener, EditListene
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
 		  	imp.setTitulo("Relatório de Produtos");
-		  	imp.setSubTitulo("Relatório de Produtos");
+		  	imp.addSubTitulo("Relatório de Produtos");
 			imp.montaCab();
 			imp.impCab(136, true);
 			imp.say(imp.pRow()+0,0,""+imp.comprimido());

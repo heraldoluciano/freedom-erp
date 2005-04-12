@@ -78,7 +78,7 @@ public class FRFluxoCaixa extends FRelatorio {
     
     imp.montaCab();
     imp.setTitulo("Fluxo de caixa");
-    imp.setSubTitulo("FLUXO DE CAIXA - DATA LIMITE: "+txtDatafim.getVlrString());
+    imp.addSubTitulo("FLUXO DE CAIXA - DATA LIMITE: "+txtDatafim.getVlrString());
     imp.impCab(80, true);
    
     imp.say(imp.pRow()+0,0,""+imp.normal());

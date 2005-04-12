@@ -253,7 +253,7 @@ public class FRDemanda extends FRelatorio {
         	imp.montaCab();
             imp.setTitulo("Relatorio de Demanda");
         	imp.impCab(136, true);
-        	imp.setSubTitulo("RELATORIO DE DEMANDA");
+        	imp.addSubTitulo("RELATORIO DE DEMANDA");
         	
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,sOrdenado);

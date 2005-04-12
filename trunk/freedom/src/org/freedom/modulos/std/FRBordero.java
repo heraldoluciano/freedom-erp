@@ -259,7 +259,7 @@ public void imprimir(boolean bVisualizar) {
   			imp.limpaPags();
 
   			if (imp.pRow()==0) {
-  				imp.setSubTitulo("BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+  				imp.addSubTitulo("BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim);
   				imp.impCab(136, true);
   			}
   			boolean hasData = false;

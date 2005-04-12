@@ -231,12 +231,15 @@ public class FKardex extends FRelatorio implements ActionListener {
                 String sDataini = txtDataini.getVlrString();
                 String sDatafim = txtDatafim.getVlrString();
                 imp.setTitulo("EXTRATO DO ESTOQUE");
-                imp.setSubTitulo("PERIODO DE :"+sDataini+" ATÉ: "+sDatafim);
-                imp.impCab(136, true);
+                imp.addSubTitulo("PERIODO DE :"+sDataini+" ATÉ: "+sDatafim);
                 sCab += "PRODUTO: "+txtDescProd.getText().trim();
                 if (txtCodLote.getText().trim().length() > 0) {
                         sCab += "  /  Lote: "+txtCodLote.getText().trim();
                 }
+                if (!sCab.trim().equals("")) {
+                    imp.addSubTitulo(sCab);
+        		}
+                imp.impCab(136, true);
                 imp.limpaPags();
                 boolean hasData = false;
                 for (int i=0; i<tab.getNumLinhas(); i++) {
@@ -249,12 +252,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                         	imp.incPags();
                 	}
                     if (i==0) {
-                    		if (!sCab.trim().equals("")) {
-	                            imp.say(imp.pRow()+0,0,""+imp.comprimido());
-	                            imp.say(imp.pRow()+0,0,"|"+sCab);
-	                            imp.say(imp.pRow()+0,135,"|");
-                    		}
-                            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                            imp.say(imp.pRow()+0,0,""+imp.comprimido());
                             imp.say(imp.pRow()+0,0,"| Data "); //10
                             imp.say(imp.pRow()+0,14,"| Tp."); //2
                             imp.say(imp.pRow()+0,20,"| Op. "); //4

@@ -300,7 +300,7 @@ public class FVendedor extends FDados implements PostListener {
         while ( rs.next() ) {
           if (imp.pRow()==0) {
           	imp.setTitulo("Relatório de Comissionados");
-          	imp.setSubTitulo("RELATÓRIO DE COMISSIONADOS");
+          	imp.addSubTitulo("RELATÓRIO DE COMISSIONADOS");
             imp.montaCab();
             imp.impCab(136, true);
 

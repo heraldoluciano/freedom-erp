@@ -259,7 +259,7 @@ public class FRCentroCusto extends FRelatorio {
         if (imp.pRow()==0) {
         	imp.montaCab();
             imp.setTitulo("Balancete");
-            imp.setSubTitulo("RELATORIO FINANCEIRO POR CENTRO DE CUSTO");
+            imp.addSubTitulo("RELATORIO FINANCEIRO POR CENTRO DE CUSTO");
             imp.impCab(136, true);
             
 		   if (!(sCodPlan.trim().equals(""))) {

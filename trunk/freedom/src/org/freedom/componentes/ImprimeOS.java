@@ -45,6 +45,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -140,18 +141,26 @@ public class ImprimeOS implements ActionListener {
 
 	String sTitulo = "";
 
-	String subTitulo = "";
+	Vector subTitulos = new Vector();
 
 	Timer tim = null;
 
 	FAndamento and = null;
 
-	public String getSubTitulo() {
-		return subTitulo;
+	public String getSubTitulo(int index) {
+		return (String) subTitulos.elementAt(index);
 	}
 
-	public void setSubTitulo(String subTitulo) {
-		this.subTitulo = subTitulo;
+	public void addSubTitulo(String subTitulo) {
+		subTitulos.add(subTitulo);
+	}
+
+	public int getSubTituloIndex(String subTitulo) {
+		return subTitulos.indexOf(subTitulo);
+	}
+
+	public int getSubTituloCount() {
+		return subTitulos.size();
 	}
 
 	public ImprimeOS(String sF, Connection cn) {
@@ -865,50 +874,58 @@ public class ImprimeOS implements ActionListener {
 			// \n"+normal().length());
 			if (borda) {
 				say(pRow() + 0, 0, "" + normal());
-				say(pRow() + 0, 0, "+" + Funcoes.replicate("-", iTamRel - 3) + "+");
+				say(pRow() + 0, 0, "+" + Funcoes.replicate("-", iTamRel - 3)
+						+ "+");
 				say(pRow() + 1, 0, normal());
 				say(pRow() + 0, 0, "|" + sVals[0].trim()); //Razão
 				//        say(pRow()+1,0,"");
+				say(pRow() + 0, iTamRel - 15, "Pagina: "
+						+ Funcoes.strZero("" + getNumPags(), 5));
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, "|" + sTitulo.trim().toUpperCase());
+				say(pRow() + 0, iTamRel - 16, "ID.USU: "
+						+ Aplicativo.strUsuario.toUpperCase());
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, comprimido());
 				say(pRow() + 0, 0, "|" + " Fone: " + sVals[1]); //Fone
 				say(pRow() + 0, 25, " - Fax: " + sVals[2]); //Fax
 				say(pRow() + 0, 50, " - E-mail: " + sVals[3]); //E-mail
+				say(pRow() + 0, iTamRel - 29, "Data: " + sData);
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, "|");
 				say(pRow() + 0, iTamRel - 1, "|");
-				say(pRow() + 1, 0, "|");
-				say(pRow() + 0, (iTamRel - subTitulo.length() - 2) / 2,
-						subTitulo);
-				say(pRow() + 0, iTamRel - 1, "|");
-
+				
+				for (int i = 0; i < subTitulos.size(); i++) {
+					say(pRow() + 1, 0, "|");
+					say(pRow() + 0,
+							(iTamRel
+									- ((String) subTitulos.elementAt(i))
+											.length() - 2) / 2,
+							(String) subTitulos.elementAt(i));
+					say(pRow() + 0, iTamRel - 1, "|");
+				}
 				if (iTamRel == 80)
 					say(pRow() + 1, 0, normal());
 				else
 					say(pRow() + 1, 0, comprimido());
 
-				say(pRow() + 0, 0, "|");				
+				say(pRow() + 0, 0, "|");
 				say(pRow() + 0, iTamRel - 1, "|");
-				say(pRow() + 1, 0, "|");
-				say(pRow() + 0, 2, "Relatório emitido por "
-						+ Aplicativo.strUsuario.toUpperCase());
-				say(pRow() + 0, 30, "Data: " + sData);
-				say(pRow() + 0, iTamRel - 15, "Pagina: "
-						+ Funcoes.strZero("" + getNumPags(), 5));
-				say(pRow() + 0, iTamRel - 1, "|");
-				
+
 				if (iTamRel == 136)
 					say(pRow() + 0, 0, comprimido());
 				else
 					say(pRow() + 0, 0, normal());
 				say(pRow() + 1, 0, normal());
 			} else {
-				say(pRow() + 0, 0, normal());
+				say(pRow() + 1, 0, normal());
 				say(pRow() + 0, 0, sVals[0].trim()); //Razão
 				//        say(pRow()+1,0,"");
+				say(pRow() + 0, iTamRel - 15, "Pagina: "
+						+ Funcoes.strZero("" + getNumPags(), 5));
 				say(pRow() + 1, 0, sTitulo.trim().toUpperCase());
+				say(pRow() + 0, iTamRel - 16, "ID.USU: "
+						+ Aplicativo.strUsuario.toUpperCase());
 				say(pRow() + 1, 0, comprimido());
 				say(pRow() + 0, 0, "Fone: " + sVals[1]); //Fone
 				say(pRow() + 0, 25, " - Fax: " + sVals[2]); //Fax
@@ -919,9 +936,8 @@ public class ImprimeOS implements ActionListener {
 					say(pRow() + 1, 0, comprimido());
 				say(pRow() + 0, 0, "Relatório emitido por "
 						+ Aplicativo.strUsuario.toUpperCase());
-				say(pRow() + 0, 30, "Data: " + sData);
-				say(pRow() + 0, iTamRel - 15, "Pagina: "
-						+ Funcoes.strZero("" + getNumPags(), 5));
+				say(pRow() + 0, iTamRel - 29, "Data: " + sData);
+				
 				if (iTamRel == 136)
 					say(pRow() + 1, 0, comprimido());
 				else

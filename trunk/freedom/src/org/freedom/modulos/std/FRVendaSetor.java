@@ -487,7 +487,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		  			if (imp.pRow()==0) {
 		  				imp.montaCab();
 		  				imp.setTitulo("Relatorio de Vendas por Setor");
-		  				imp.setSubTitulo("VENDAS POR SETOR");
+		  				imp.addSubTitulo("VENDAS POR SETOR");
 		  				imp.impCab(136, true);
 		  				  		  				
   		  				if (!sFiltros1.equals("")) {

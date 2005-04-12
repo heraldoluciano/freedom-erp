@@ -128,7 +128,7 @@ public class FRComprasFor extends FRelatorio {
 				if (imp.pRow()==0) {
 					imp.montaCab();
 					imp.setTitulo("Relatório de Compras por Fornecedor");
-					imp.setSubTitulo("RELATORIO DE COMPRAS POR FORNECEDOR  -  PERIODO DE: "+sDataini+" Até: "+sDatafim);
+					imp.addSubTitulo("RELATORIO DE COMPRAS POR FORNECEDOR  -  PERIODO DE: "+sDataini+" Até: "+sDatafim);
 					imp.impCab(136, true);
 					
 					imp.say(imp.pRow()+0,0,""+imp.comprimido());

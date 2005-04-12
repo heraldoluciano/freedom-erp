@@ -230,7 +230,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
 		  	imp.setTitulo("Relatório de Fornecedores");
-		  	imp.setSubTitulo("Relatório de Fornecedores");
+		  	imp.addSubTitulo("Relatório de Fornecedores");
 			imp.montaCab();
 			imp.impCab(136, true);
 			imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
@@ -359,7 +359,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		while ( rs.next() ) {
 		  if (imp.pRow()==0) {
 		  	imp.setTitulo("Relatório de Fornecedores");
-		  	imp.setSubTitulo("Relatório de Fornecedores");
+		  	imp.addSubTitulo("Relatório de Fornecedores");
 			imp.montaCab();
 			imp.impCab(136, true);
 			

@@ -167,7 +167,7 @@ public class FRRazaoFin extends FRelatorio {
         if (imp.pRow()==0) {
         	imp.montaCab();
         	imp.setTitulo("Razão financeiro");
-        	imp.setSubTitulo("RELATORIO RAZÃO FINANCEIRO");
+        	imp.addSubTitulo("RELATORIO RAZÃO FINANCEIRO");
             imp.impCab(136, true);
                       
 		   if (!(sCodPlan.trim().equals(""))) {

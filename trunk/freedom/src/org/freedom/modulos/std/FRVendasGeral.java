@@ -152,7 +152,7 @@ public class FRVendasGeral extends FRelatorio {
         if (imp.pRow()==0) {
         	imp.montaCab();
         	imp.setTitulo("Relatório de Vendas Geral");
-        	imp.setSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+        	imp.addSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
             imp.impCab(136, true);
           
            if (sCab.length() > 0) {

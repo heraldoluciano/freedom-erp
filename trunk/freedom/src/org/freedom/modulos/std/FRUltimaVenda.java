@@ -186,7 +186,7 @@ public class FRUltimaVenda extends FRelatorio {
          if (imp.pRow()==0) {
          	imp.montaCab();
          	imp.setTitulo("Relatório de Ultimas Vendas");
-         	imp.setSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+         	imp.addSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
             imp.impCab(136, true);
                     
           if (sCab.length() > 0) {

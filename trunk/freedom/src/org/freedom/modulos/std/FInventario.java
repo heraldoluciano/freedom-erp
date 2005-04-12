@@ -659,7 +659,7 @@ public class FInventario extends FDados implements CarregaListener,
 				if (imp.pRow() == 0) {
 					imp.montaCab();
 					imp.setTitulo("Relatório de Inventário");
-					imp.setSubTitulo("POSIÇÃO DO ESTOQUE EM "
+					imp.addSubTitulo("POSIÇÃO DO ESTOQUE EM "
 							+ Funcoes.dateToStrDate(dtEstoq));
 					imp.impCab(136, true);
 

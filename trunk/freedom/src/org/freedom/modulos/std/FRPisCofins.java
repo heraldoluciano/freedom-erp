@@ -223,7 +223,7 @@ public class FRPisCofins extends FRelatorio {
 	  			if (imp.pRow()==0) {
 	  				imp.montaCab();
 	  		  		imp.setTitulo("Relatório de entradas e saidas");
-	  		  		imp.setSubTitulo("RELATORIO DE ENTRADAS E SAIDAS");
+	  		  		imp.addSubTitulo("RELATORIO DE ENTRADAS E SAIDAS");
 	  		    	imp.impCab(136, true);
 	  		  		
 	  				if (!sFiltros1.equals("")) {

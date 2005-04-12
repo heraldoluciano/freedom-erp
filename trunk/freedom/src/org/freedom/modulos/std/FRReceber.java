@@ -292,7 +292,7 @@ public class FRReceber extends FRelatorio {
   				if (imp.pRow()==0) {
   					imp.montaCab();
   			  		imp.setTitulo("Relatório de contas "+sTitRel);
-  			  		imp.setSubTitulo("RELATORIO DE CONTAS "+sTitRel+" - PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+  			  		imp.addSubTitulo("RELATORIO DE CONTAS "+sTitRel+" - PERIODO DE :"+sDataini+" ATE: "+sDatafim);
   					imp.impCab(136, true);
   					
   					imp.say(imp.pRow()+0,0,""+imp.comprimido());

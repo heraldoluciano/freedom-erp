@@ -123,7 +123,7 @@ public class FRVendasDet extends FRelatorio {
         	if (imp.pRow() == 0) {
             	imp.montaCab();
             	imp.setTitulo("Relatório de Vendas Detalhado");
-            	imp.setSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
+            	imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
                 imp.impCab(136, true);
               
             }

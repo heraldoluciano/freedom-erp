@@ -243,7 +243,7 @@ public class FRResumoDiario extends FRelatorio {
            if (imp.pRow()==0) {
            	imp.montaCab();
             imp.setTitulo("Resumo Diário de Vendas");
-            imp.setSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+            imp.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
             imp.impCab(136, true);
            	
                      
@@ -346,7 +346,7 @@ public class FRResumoDiario extends FRelatorio {
       		if (imp.pRow()==0) {
       			imp.montaCab();
                 imp.setTitulo("Resumo Diário de Vendas");
-                imp.setSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
+                imp.addSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
                 imp.impCab(136, true);
       			      			
       			if (sCab.length() > 0) {

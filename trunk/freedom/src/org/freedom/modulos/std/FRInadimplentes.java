@@ -151,7 +151,7 @@ public class FRInadimplentes extends FRelatorio {
 	         if (imp.pRow()==0) {
 	         	imp.montaCab();
 	          	imp.setTitulo("Relatório de Inadimplentes");
-	          	imp.setSubTitulo("RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+	          	imp.addSubTitulo("RELATORIO DE INADIMPLENTES   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
 	          	imp.impCab(136, true);
 	          
 	          if (sCab.length() > 0) {

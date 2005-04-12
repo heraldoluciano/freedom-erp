@@ -232,7 +232,7 @@ public class FRPontoEqui extends FRelatorio {
         if (imp.pRow()==0) {
         	imp.montaCab();
         	imp.setTitulo("Apuração de Resultados");
-        	imp.setSubTitulo("APURAÇÃO DE RESULTADOS DE "+sDataini+" A "+sDatafim);
+        	imp.addSubTitulo("APURAÇÃO DE RESULTADOS DE "+sDataini+" A "+sDatafim);
         	imp.impCab(80, true);
                       
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",77)+"|");

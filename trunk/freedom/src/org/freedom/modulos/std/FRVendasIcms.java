@@ -120,7 +120,7 @@ public class FRVendasIcms extends FRelatorio {
 
         if (imp.pRow()==0) { 
            imp.setTitulo("Icms sobre Vendas");
-           imp.setSubTitulo("ICMS SOBRE COMPRAS E VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
+           imp.addSubTitulo("ICMS SOBRE COMPRAS E VENDAS - PERIODO DE :"+sDataini+" Até: "+sDatafim);
            imp.impCab(80, true);
             
            imp.say(imp.pRow()+0,0,""+imp.normal());
