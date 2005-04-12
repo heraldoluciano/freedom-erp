@@ -52,7 +52,6 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -63,7 +62,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLInputText;
 import org.freedom.telas.FDetalhe;
 
 public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
