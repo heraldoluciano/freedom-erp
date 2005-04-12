@@ -106,7 +106,6 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	private ListaCampos lcProd2 = new ListaCampos(this,"PR");
 	private ListaCampos lcMarca = new ListaCampos(this,"MC");
 	private ListaCampos lcGrup = new ListaCampos(this,"GP");
-	private DLBuscaProd dlBuscaProd = null;
 	private boolean bPrefs[] = null;
 	public FConsProd() {
 
