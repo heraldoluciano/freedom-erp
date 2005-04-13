@@ -883,14 +883,16 @@ public class ImprimeOS implements ActionListener {
 						+ Funcoes.strZero("" + getNumPags(), 5));
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, "|" + sTitulo.trim().toUpperCase());
-				say(pRow() + 0, iTamRel - 16, "ID.USU: "
+				say(pRow() + 0, iTamRel - 17, "ID.USU: "
 						+ Aplicativo.strUsuario.toUpperCase());
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, comprimido());
 				say(pRow() + 0, 0, "|" + " Fone: " + sVals[1]); //Fone
 				say(pRow() + 0, 25, " - Fax: " + sVals[2]); //Fax
-				say(pRow() + 0, 50, " - E-mail: " + sVals[3]); //E-mail
 				say(pRow() + 0, iTamRel - 29, "Data: " + sData);
+				say(pRow() + 0, iTamRel - 1, "|");
+				say(pRow() + 1, 0, comprimido());
+				say(pRow() + 0, 0, "|" + " E-mail: " + sVals[3]); //E-mail				
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, "|");
 				say(pRow() + 0, iTamRel - 1, "|");
