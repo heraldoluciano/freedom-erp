@@ -313,12 +313,14 @@ public class FRCentroCusto extends FRelatorio {
 			 */
 			rs = ps.executeQuery();
 			imp.limpaPags();
+			
+			imp.setTitulo("Balancete");
+			imp.addSubTitulo("RELATORIO FINANCEIRO POR CENTRO DE CUSTO");
+			
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
 					imp.montaCab();
-					imp.setTitulo("Balancete");
-					imp
-							.addSubTitulo("RELATORIO FINANCEIRO POR CENTRO DE CUSTO");
+					
 					if (!(sCodPlan.trim().equals(""))) {
 						sConta = "CONTA: " + sCodPlan + " - "
 								+ txtDescConta.getVlrString();

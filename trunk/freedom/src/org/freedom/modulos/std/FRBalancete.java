@@ -220,10 +220,12 @@ public class FRBalancete extends FRelatorio {
 			rs = ps.executeQuery();
 			imp.limpaPags();
 			BigDecimal bigValMaster = null;
+			
+			imp.addSubTitulo("BALANCETE - PERIODO DE " + sDataini + " A " + sDatafim);
+			
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
-					imp.addSubTitulo("BALANCETE - PERIODO DE " + sDataini
-							+ " A " + sDatafim);
+					
 					if (!(sCodConta.trim().equals(""))) {
 						sConta = "CONTA: " + sCodConta + " - "
 								+ txtDescConta.getVlrString();
@@ -236,7 +238,7 @@ public class FRBalancete extends FRelatorio {
 					}
 
 					imp.impCab(80, true);
-					imp.say(imp.pRow() + 1, 0, "|" + Funcoes.replicate("-", 77)
+					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 77)
 							+ "|");
 					imp.say(imp.pRow() + 1, 0, "| Código Plan.");
 					imp.say(imp.pRow(), 15, "| Descrição");
