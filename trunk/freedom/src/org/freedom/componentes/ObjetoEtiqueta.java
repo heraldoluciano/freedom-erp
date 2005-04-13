@@ -125,6 +125,12 @@ public int getNumLinEtiq(){
     return iRet;
 }
 public Vector getAdic(){
+        vCamposAdic = new Vector();
+        vTamsAdic = new Vector();
+        vLabelsAdic = new Vector ();
+        vMascarasAdic = new Vector ();	
+        vValoresAdic = new Vector();                
+
         for(int i2=0;vValores.size()>i2;i2++) {
             if((sTexto.indexOf(vValores.elementAt(i2).toString()))>(-1)){
                 vCamposAdic.addElement(vCampos.elementAt(i2).toString());
