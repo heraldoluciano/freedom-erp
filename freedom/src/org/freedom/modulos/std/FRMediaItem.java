@@ -345,13 +345,15 @@ public class FRMediaItem extends FRelatorio {
 			ps = con.prepareStatement(sSQL);
 			rs = ps.executeQuery();
 			imp.limpaPags();
+			
+			imp.setTitulo("Relatório de media de vendas por item");
+			imp.addSubTitulo("RELATORIO DE MEDIAS DE VENDAS POR ITEM");
+			if (sCab.length() > 0)
+				imp.addSubTitulo(sCab);
+			
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
-					imp.montaCab();
-					imp.setTitulo("Relatório de media de vendas por item");
-					imp.addSubTitulo("RELATORIO DE MEDIAS DE VENDAS POR ITEM");
-					if (sCab.length() > 0)
-						imp.addSubTitulo(sCab);
+					imp.montaCab();					
 					imp.impCab(136, true);
 
 					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());

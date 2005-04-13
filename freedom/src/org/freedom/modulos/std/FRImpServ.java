@@ -173,6 +173,12 @@ public class FRImpServ extends FRelatorio {
 				rs = ps.executeQuery();
 
 				imp.limpaPags();
+				
+				imp.setTitulo("Relatorio de Impostos/Serviços");
+				imp.addSubTitulo("IMPOSTOS SOBRE SERVICOS");
+				if (!sFiltros.equals("")) {
+					imp.addSubTitulo(sFiltros);
+				}
 
 				if (rgFormato.getVlrString().equals("D")) {
 					while (rs.next()) {
@@ -184,12 +190,7 @@ public class FRImpServ extends FRelatorio {
 							imp.eject();
 						}
 						if (imp.pRow() == 0) {
-							imp.montaCab();
-							imp.setTitulo("Relatorio de Impostos/Serviços");
-							imp.addSubTitulo("IMPOSTOS SOBRE SERVICOS");
-							if (!sFiltros.equals("")) {
-								imp.addSubTitulo(sFiltros);
-							}
+							imp.montaCab();														
 							imp.impCab(136, true);
 
 							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
@@ -224,7 +225,7 @@ public class FRImpServ extends FRelatorio {
 								rs.getDate("DtEmitVenda")).get(Calendar.MONTH)
 								&& iMesAnt >= 0) {
 							impTotMes(imp);
-							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 0, "|Pedido ");
 							imp.say(imp.pRow() + 0, 10, "Doc ");
 							imp.say(imp.pRow() + 0, 19, "Ser.");
@@ -288,6 +289,7 @@ public class FRImpServ extends FRelatorio {
 								rs.getDate("DtEmitVenda")).get(Calendar.MONTH);
 					}
 				} else {
+					
 					while (rs.next()) {
 						if (imp.pRow() >= (iLinPag - 1)) {
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -298,12 +300,7 @@ public class FRImpServ extends FRelatorio {
 						}
 
 						if (imp.pRow() == 0) {
-							imp.montaCab();
-							imp.setTitulo("Relatorio de Impostos/Serviços");
-							imp.addSubTitulo("IMPOSTOS SOBRE SERVICOS");
-							if (!sFiltros.equals("")) {
-								imp.addSubTitulo(sFiltros);
-							}
+							imp.montaCab();							
 							imp.impCab(136, true);
 
 							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
@@ -313,8 +310,8 @@ public class FRImpServ extends FRelatorio {
 									+ txtDatafim.getVlrString());
 							imp.say(imp.pRow() + 0, 135, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 0, "+"
-									+ Funcoes.replicate("-", 133) + "+");
+							imp.say(imp.pRow() + 0, 0, "|"
+									+ Funcoes.replicate("-", 133) + "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 0, "| Mes/Ano");
 							imp.say(imp.pRow() + 0, 10, "| Base");
@@ -326,10 +323,10 @@ public class FRImpServ extends FRelatorio {
 							imp.say(imp.pRow() + 0, 118, "| Tot. Venda.");
 							imp.say(imp.pRow() + 0, 135, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 0, "+"
-									+ Funcoes.replicate("-", 133) + "+");
+							imp.say(imp.pRow() + 0, 0, "|"
+									+ Funcoes.replicate("-", 133) + "|");
 						}
-						imp.say(imp.pRow() + 0, 0, imp.comprimido());
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "| "
 								+ Funcoes.strZero(rs.getString(2), 2) + "/"
 								+ Funcoes.strZero(rs.getString(1), 4));
@@ -394,19 +391,19 @@ public class FRImpServ extends FRelatorio {
 		imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
 		imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 		imp.say(imp.pRow() + 0, 0, "|     TOTAIS DO MES -->");
-		imp.say(imp.pRow() + 0, 59, "|"
+		imp.say(imp.pRow() + 0, 57, "|"
 				+ Funcoes.strDecimalToStrCurrency(10, 2, "" + dTotMesBase));
-		imp.say(imp.pRow() + 0, 71, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 69, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotMesISS));
-		imp.say(imp.pRow() + 0, 82, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 80, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotMesPIS));
-		imp.say(imp.pRow() + 0, 92, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 90, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotMesCOFINS));
-		imp.say(imp.pRow() + 0, 103, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 101, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotMesIR));
-		imp.say(imp.pRow() + 0, 114, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 112, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotMesCSocial));
-		imp.say(imp.pRow() + 0, 125, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 123, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotMesLiq));
 		imp.say(imp.pRow() + 0, 135, "|");
 		imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -432,19 +429,19 @@ public class FRImpServ extends FRelatorio {
 		imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
 		imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 		imp.say(imp.pRow() + 0, 0, "|     TOTAIS GERAIS -->");
-		imp.say(imp.pRow() + 0, 59, "|"
+		imp.say(imp.pRow() + 0, 57, "|"
 				+ Funcoes.strDecimalToStrCurrency(10, 2, "" + dTotBase));
-		imp.say(imp.pRow() + 0, 71, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 69, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotISS));
-		imp.say(imp.pRow() + 0, 82, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 80, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotPIS));
-		imp.say(imp.pRow() + 0, 92, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 90, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotCOFINS));
-		imp.say(imp.pRow() + 0, 103, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 101, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotIR));
-		imp.say(imp.pRow() + 0, 114, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 112, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotCSocial));
-		imp.say(imp.pRow() + 0, 125, Funcoes.strDecimalToStrCurrency(10, 2, ""
+		imp.say(imp.pRow() + 0, 123, Funcoes.strDecimalToStrCurrency(10, 2, ""
 				+ dTotLiq));
 		imp.say(imp.pRow() + 0, 135, "|");
 		imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
