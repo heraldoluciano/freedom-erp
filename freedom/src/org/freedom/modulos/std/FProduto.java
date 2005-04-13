@@ -1127,24 +1127,28 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				ps = con.prepareStatement(sSQL);
 				rs = ps.executeQuery();
 				imp.limpaPags();
+				
+				imp.setTitulo("Relatório de Produtos");
+				imp.addSubTitulo("Relatório de Produtos");
+				imp.addSubTitulo("Filtrado por:");
+				for (int i = 0; i < vFiltros.size(); i++) {
+					String sTmp = (String) vFiltros.elementAt(i);
+					imp.addSubTitulo(sTmp);
+				}
+				
 				while (rs.next()) {
 					if (imp.pRow() == 0) {
-						imp.setTitulo("Relatório de Produtos");
-						imp.addSubTitulo("Relatório de Produtos");
-						imp.addSubTitulo("Filtrado por:");
-						for (int i = 0; i < vFiltros.size(); i++) {
-							String sTmp = (String) vFiltros.elementAt(i);
-							imp.addSubTitulo(sTmp);
-						}
-
 						imp.montaCab();
 						imp.impCab(136, true);
+						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 0, "|");
+						imp.say(imp.pRow() + 0, 135, "|");
 
 					}
-
+					if (imp.pRow() != 0) {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|");
 					imp.say(imp.pRow() + 0, 2, "Código:");
@@ -1232,16 +1236,25 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				ps = con.prepareStatement(sSQL);
 				rs = ps.executeQuery();
 				imp.limpaPags();
+				
+				imp.setTitulo("Relatório de Produtos");				
+				imp.addSubTitulo("Relatório de Produtos");
+				
 				while (rs.next()) {
-					if (imp.pRow() == 0) {
-						imp.setTitulo("Relatório de Produtos");
-						imp.addSubTitulo("Relatório de Produtos");
+					if (imp.pRow() == 0) {						
 						imp.montaCab();
 						imp.impCab(136, true);
+						if ( vFiltros.size()>0 ){
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 2, "|"
 								+ Funcoes.replicate(" ", 60) + "Filtrado por:"
 								+ Funcoes.replicate(" ", 60) + "|");
+						}
+						else {
+							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());						
+							imp.say(imp.pRow() + 0, 2, "|");
+							imp.say(imp.pRow() + 0, 136, "|");
+						}
 						for (int i = 0; i < vFiltros.size(); i++) {
 							String sTmp = (String) vFiltros.elementAt(i);
 							sTmp = "|"
