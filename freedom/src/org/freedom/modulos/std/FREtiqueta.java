@@ -241,32 +241,39 @@ public class FREtiqueta extends FRelatorio {
           int iColPapel = txtColPapel.getVlrInteger().intValue();
           int iEECEtiq = txtEECModEtiq.getVlrInteger().intValue();
           int iCol = 0;
-          int iSalto = 0;
+          int iSalto = 1;
           int iNumLinEtiq = objEtiqCli.getNumLinEtiq();
           try {
               for(int i1=0;vCols.size()>i1;i1++){                  
                   Vector vCol = ((Vector)(vCols.elementAt(i1)));                  
                   for(int iNumLinhaEtiqAtual = 0;iNumLinEtiq>iNumLinhaEtiqAtual;iNumLinhaEtiqAtual++){                   
                       for(int i2 = 0;iColsEtiq>i2;i2++){
-                          if (imp.pRow() == (linPag-1)) {
-                              imp.eject();
-                              imp.incPags();
-                              iCol = 0;
-                              iSalto = 0;
-                          }
+          
                           Vector vEtiqueta = (Vector) vCol.elementAt(i2);
-                          String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
-                          System.out.println(sImp);
+                          String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString().trim();
                           imp.say(imp.pRow()+iSalto,iCol,sImp);
                           
                           iSalto = 0;
                           iCol += ((iColPapel/iColsEtiq) + (iEECEtiq) );
 
                           if (iCol>=iColPapel) {
-                              iCol = 0;                          
-                           }                            
-                          
-                          
+                              iCol = 0; 
+                              iSalto = 1;
+
+                           }
+                                                    
+                          if ((imp.pRow() == (iLins)) && ((iColsEtiq-1)==(i2))) {
+                              imp.eject();
+                              imp.incPags();
+                              iCol = 0;
+                              iSalto = 1;
+                              
+                              if ((iNumLinhaEtiqAtual<(iNumLinEtiq-1))) {
+                                  iNumLinhaEtiqAtual = 0;    
+                                  i2 = -1;
+                              }
+                              
+                          }
                       }
                       iSalto = 1;
                   }    

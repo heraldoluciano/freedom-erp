@@ -222,6 +222,17 @@ public class FreedomSTD extends Aplicativo {
 
   ajustaMenu();
  	
+  sNomeModulo = "Standard";
+  sNomeSis = "Freedom";
+  sEmpSis = "Setpoint Informática Ltda.";
+  vEquipeSis.add("Robson Sanchez - Supervisor/Analista");
+  vEquipeSis.add("Anderson Sanchez - Supervisor/Programador");
+  vEquipeSis.add("Fernando Oliveira - Programador");
+  vEquipeSis.add("Alex Rodrigues - Programador");
+  vEquipeSis.add("Alexandre Marcondes - Programador");
+  vEquipeSis.add("Moyzes Braz - Arte gráfica");
+  vEquipeSis.add("Leandro Oliveira - Testes/Suporte");
+  
   }
   
 
