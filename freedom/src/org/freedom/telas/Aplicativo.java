@@ -47,13 +47,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
@@ -139,9 +137,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	protected Connection conIB;
 
+	public static Vector vEquipeSis = new Vector();
+	public static String sNomeSis = "";
+	public static String sNomeModulo = "";
+	public static String sEmpSis = "";
+	
 	public Connection getConIB() {
 		return conIB;
 	}
+
 
 	public Aplicativo() {
 		Locale.setDefault(new Locale("pt", "BR"));

@@ -64,18 +64,16 @@ public class FSobre extends FFDialogo {
 	
 	pnSobre.add(lbImg,BorderLayout.NORTH);
 	pnSobre.add(new JLabelPad ("<HTML><BR>"+
-	        " Freedom<BR>"+
 	        " Versão do jar: "+sVersao+"<BR>"+
-			" Setpoint Informática Ltda.   1994 - "+
+	        " "+Aplicativo.sEmpSis+"<BR>"+
 			(new GregorianCalendar().get(Calendar.YEAR))+"<BR></HTML>"),BorderLayout.CENTER);
 
-  
-	tpnSobre.addTab("Equipe freedom",pnEquipe);
-	pnEquipe.add(new JLabelPad ("<HTML><BR><CENTER>"+
-        " Robson Sanchez - Supervisor/Analista<BR>"+
-        " Anderson Sanchez - Supervisor/Programador<BR>"+
-        " Fernando Oliveira - Programador<BR>"+
-        " Moyzes Braz - Arte gráfica<BR>"+
-        " Marco Antonio - Testes/Implantação</CENTER><BR>"));
+	tpnSobre.addTab("Equipe "+Aplicativo.sNomeSis ,pnEquipe);
+    String sHtmlEquipe = "<HTML><BR><CENTER>";
+    for (int i = 0;Aplicativo.vEquipeSis.size()>i;i++){
+        sHtmlEquipe += Aplicativo.vEquipeSis.elementAt(i).toString()+"<BR>";
+    }
+    
+	pnEquipe.add(new JLabelPad (sHtmlEquipe+"</CENTER><BR>"));
   }
 }    
