@@ -137,6 +137,11 @@ public class FRExtrato extends FRelatorio {
       rs = ps.executeQuery();
       imp.limpaPags();
       
+      imp.setTitulo("Extrato Bancário");
+  	  imp.addSubTitulo("EXTRATO BANCÁRIO");
+  	  String sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();
+      imp.addSubTitulo(sConta);
+      
       while ( rs.next() ) {
         if (!bPrim) {
           if (!(sDataLanca.equals(rs.getString("DataSL")))) {
@@ -156,14 +161,10 @@ public class FRExtrato extends FRelatorio {
           imp.incPags();          
         }
         if (imp.pRow()==0) {
-        	imp.montaCab();
-        	imp.setTitulo("Extrato Bancário");
-        	imp.addSubTitulo("EXTRATO BANCÁRIO");
-            String sConta = "CONTA: "+sCodConta+" - "+txtDescConta.getVlrString();
-            imp.addSubTitulo(sConta);
+        	imp.montaCab(); 
             imp.impCab(136, true);
            
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Data       |");
