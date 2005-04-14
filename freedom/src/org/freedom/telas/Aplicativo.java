@@ -141,6 +141,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sNomeSis = "";
 	public static String sNomeModulo = "";
 	public static String sEmpSis = "";
+	public static String sArqIni = "";
 	
 	public Connection getConIB() {
 		return conIB;
@@ -169,6 +170,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
+		if (sNomeArqIni==null)
+		    sNomeArqIni="freedom.ini";
+		sArqIni = sNomeArqIni;
 		String sArqINI = System.getProperty("ARQINI") != null ? System
 				.getProperty("ARQINI") : sNomeArqIni;
 		vArqINI = getArqINI(sArqINI);
@@ -793,7 +797,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		File fArq = null;
 		FileReader frArq = null;
 		try {
-			fArq = new File("freedom.ini");
+			fArq = new File(sArqIni);
 			frArq = new FileReader(fArq);
 			iTam = (int) fArq.length();
 			try {
