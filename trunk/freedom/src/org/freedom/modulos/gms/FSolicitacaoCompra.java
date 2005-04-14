@@ -121,6 +121,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	String codCC = null;
 	Integer codAlmox = null;
 	String aprovSolicitacaoCompra = "";
+	boolean[] bPrefs = null;
 
 	public FSolicitacaoCompra() {
 		setTitulo("Solicitação de Compra");
@@ -417,6 +418,35 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		super.keyPressed(kevt);
 	}
 
+	public boolean[] prefs() {
+		boolean[] bRet = {false};
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("UsaRefProd").trim().equals("S"))
+					bRet[0] = true;
+				sOrdNota = rs.getString("OrdNota");
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage());
+		}
+		finally {
+			rs = null;
+			ps = null;
+			sSQL = null;
+		}
+		return bRet;
+	}
 	public void actionPerformed(ActionEvent evt) {
 		String[] sValores = null;
 		if (evt.getSource() == btPrevimp)
@@ -569,28 +599,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	private boolean comRef() {
-		boolean bRetorno = false;
-		String sSQL = "SELECT USAREFPROD, ORDNOTA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getString("UsaRefProd").trim().equals("S"))
-					bRetorno = true;
-				sOrdNota = rs.getString("OrdNota");
-			}
-			if (!con.getAutoCommit())
-				con.commit();
-
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
-		}
-		return bRetorno;
+		return bPrefs[0];
 	}
 
 	public void keyTyped(KeyEvent kevt) {
@@ -657,9 +666,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public void setConexao(Connection cn) {
+		super.setConexao(cn); // tem que setar a conexão principal para verificar preferências
+		bPrefs = prefs();
 		montaDetalhe();		
-		super.setConexao(cn);
-		
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
 		lcCC.setConexao(cn);
