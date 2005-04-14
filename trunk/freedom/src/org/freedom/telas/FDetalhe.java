@@ -83,7 +83,6 @@ public class FDetalhe extends FDados {
     pnMaster.add(pnBordCab, BorderLayout.NORTH);
     pnMaster.add(pnBordDet, BorderLayout.SOUTH);
     pnMaster.add(spTab, BorderLayout.CENTER);
-    
     lcDet.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcDet);
     lcDet.setTabela(tab);

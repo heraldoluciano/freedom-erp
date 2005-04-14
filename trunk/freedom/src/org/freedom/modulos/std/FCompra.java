@@ -571,6 +571,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		 */
 		setListaCampos(true, "ITCOMPRA", "CP");
 		lcDet.setQueryInsert(false);
+		
 		montaTab();
 
 		tab.setTamColuna(30, 0);
