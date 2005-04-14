@@ -657,8 +657,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public void setConexao(Connection cn) {
+		montaDetalhe();		
 		super.setConexao(cn);
-		montaDetalhe();
+		
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
 		lcCC.setConexao(cn);
@@ -689,6 +690,5 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage());
 		}
-
 	}
 }
