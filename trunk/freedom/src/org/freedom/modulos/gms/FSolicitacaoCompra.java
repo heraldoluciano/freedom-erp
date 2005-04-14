@@ -431,7 +431,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			if (rs.next()) {
 				if (rs.getString("UsaRefProd").trim().equals("S"))
 					bRet[0] = true;
-				sOrdNota = rs.getString("OrdNota");
+				//sOrdNota = rs.getString("OrdNota");
 			}
 			if (!con.getAutoCommit())
 				con.commit();
