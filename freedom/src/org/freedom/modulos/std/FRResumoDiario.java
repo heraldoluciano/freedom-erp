@@ -231,6 +231,14 @@ public class FRResumoDiario extends FRelatorio {
 			imp.limpaPags();
 
 			if (rgFormato.getVlrString().equals("D")) {
+				
+				imp.setTitulo("Resumo Diário de Vendas");
+				imp
+						.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"
+								+ sDataini + " Até: " + sDatafim);
+				if (sCab.length() > 0) {
+					imp.addSubTitulo(sCab);
+				}
 
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
@@ -269,14 +277,7 @@ public class FRResumoDiario extends FRelatorio {
 						bFimDia = false;
 					}
 					if (imp.pRow() == 0) {
-						imp.montaCab();
-						imp.setTitulo("Resumo Diário de Vendas");
-						imp
-								.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"
-										+ sDataini + " Até: " + sDatafim);
-						if (sCab.length() > 0) {
-							imp.addSubTitulo(sCab);
-						}
+						imp.montaCab();						
 						imp.impCab(136, true);
 
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
@@ -393,6 +394,15 @@ public class FRResumoDiario extends FRelatorio {
 			} else if (rgFormato.getVlrString().equals("R")) {
 				iLinha = 1;
 				iCol = 0;
+				
+				imp.setTitulo("Resumo Diário de Vendas");
+				imp
+						.addSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"
+								+ sDataini + " Até: " + sDatafim);
+				if (sCab.length() > 0) {
+					imp.addSubTitulo(sCab);
+				}
+				
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -403,13 +413,7 @@ public class FRResumoDiario extends FRelatorio {
 					}
 					if (imp.pRow() == 0) {
 						imp.montaCab();
-						imp.setTitulo("Resumo Diário de Vendas");
-						imp
-								.addSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"
-										+ sDataini + " Até: " + sDatafim);
-						if (sCab.length() > 0) {
-							imp.addSubTitulo(sCab);
-						}
+						
 						imp.impCab(136, true);
 
 						imp.say(imp.pRow() + 0, 0,

@@ -262,11 +262,7 @@ public class FRMediaItem extends FRelatorio {
 				sFiltroVend += " AND V" + (i + 2) + ".CODEMPVD="
 						+ Aplicativo.iCodEmp + " AND V" + (i + 2)
 						+ ".CODFILIALVD=" + lcVend.getCodFilial() + " AND ";
-				sCab = imp.comprimido();
-				sTmp = "|" + Funcoes.replicate(" ", 67 - (sTmp.length() / 2))
-						+ sTmp;
-				sCab += sTmp + Funcoes.replicate(" ", 133 - sTmp.length())
-						+ " |";
+				sCab = sTmp ;
 			}
 			sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n"
 					+ " EQTIPOMOV TM WHERE V.FLAG IN "

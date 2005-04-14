@@ -173,7 +173,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	public FRVendaSetor() {
 		setTitulo("Relatório de Vendas por Setor");
-		setAtribos(80, 0, 470, 470);
+		setAtribos(80, 0, 490, 470);
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.add(Calendar.DATE, -30);
@@ -198,7 +198,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		rgTipoRel.addRadioGroupListener(this);
 
 		vLabOrdemRel.addElement("Valor");
-		vLabOrdemRel.addElement("Razão social do cliente");
+		vLabOrdemRel.addElement("Razão social");
 		vLabOrdemRel.addElement("Cód.cli.");
 
 		vValOrdemRel.addElement("V");
@@ -270,39 +270,39 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		lcCliente.montaSql(false, "CLIENTE", "VD");
 
 		adic(new JLabelPad("Formato de impressão"), 7, 0, 200, 20);
-		adic(rgTipoRel, 7, 20, 270, 30);
-		adic(new JLabelPad("Ordem"), 280, 0, 80, 20);
-		adic(rgOrdemRel, 280, 20, 167, 80);
+		adic(rgTipoRel, 7, 20, 290, 30);
+		adic(new JLabelPad("Ordem"), 300, 0, 80, 20);
+		adic(rgOrdemRel, 300, 20, 167, 80);
 		adic(new JLabelPad("Período"), 7, 50, 250, 20);
 		adic(txtDataini, 7, 70, 100, 20);
 		adic(txtDatafim, 110, 70, 100, 20);
 		adic(lbCodMarca, 7, 90, 250, 20);
-		adic(txtCodMarca, 7, 110, 110, 20);
-		adic(lbDescCodMarca, 120, 90, 250, 20);
-		adic(txtDescMarca, 120, 110, 317, 20);
+		adic(txtCodMarca, 7, 110, 120, 20);
+		adic(lbDescCodMarca, 130, 90, 250, 20);
+		adic(txtDescMarca, 130, 110, 327, 20);
 		adic(lbCodGrup1, 7, 130, 250, 20);
-		adic(txtCodGrup1, 7, 150, 110, 20);
-		adic(lbDescCodGrup1, 120, 130, 250, 20);
-		adic(txtDescGrup1, 120, 150, 317, 20);
+		adic(txtCodGrup1, 7, 150, 120, 20);
+		adic(lbDescCodGrup1, 130, 130, 250, 20);
+		adic(txtDescGrup1, 130, 150, 327, 20);
 		adic(lbCodGrup2, 7, 170, 250, 20);
-		adic(txtCodGrup2, 7, 190, 110, 20);
-		adic(lbDescCodGrup2, 120, 170, 250, 20);
-		adic(txtDescGrup2, 120, 190, 317, 20);
+		adic(txtCodGrup2, 7, 190, 120, 20);
+		adic(lbDescCodGrup2, 130, 170, 250, 20);
+		adic(txtDescGrup2, 130, 190, 327, 20);
 		adic(lbCodSetor, 7, 210, 250, 20);
-		adic(txtCodSetor, 7, 230, 110, 20);
-		adic(lbDescCodSetor, 120, 210, 250, 20);
-		adic(txtDescSetor, 120, 230, 317, 20);
+		adic(txtCodSetor, 7, 230, 120, 20);
+		adic(lbDescCodSetor, 130, 210, 250, 20);
+		adic(txtDescSetor, 130, 230, 327, 20);
 		adic(lbCodVend, 7, 250, 250, 20);
-		adic(txtCodVend, 7, 270, 110, 20);
-		adic(lbDescCodVend, 120, 250, 250, 20);
-		adic(txtNomeVend, 120, 270, 317, 20);
+		adic(txtCodVend, 7, 270, 120, 20);
+		adic(lbDescCodVend, 130, 250, 250, 20);
+		adic(txtNomeVend, 130, 270, 327, 20);
 		adic(cbVendas, 7, 295, 110, 25);
-		adic(cbCliPrinc, 120, 295, 200, 25);
+		adic(cbCliPrinc, 120, 295, 300, 25);
 		adic(cbIncluiPed, 7, 315, 295, 25);
 		adic(new JLabelPad("Cód.cli."), 7, 340, 200, 20);
-		adic(txtCodCli, 7, 360, 110, 20);
-		adic(new JLabelPad("Razão social do cliente"), 90, 340, 200, 20);
-		adic(txtRazCli, 120, 360, 317, 20);
+		adic(txtCodCli, 7, 360, 120, 20);
+		adic(new JLabelPad("Razão social do cliente"), 130, 340, 200, 20);
+		adic(txtRazCli, 130, 360, 327, 20);
 
 	}
 
@@ -516,6 +516,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sCodGrup = "";
 				sMes = "";
 				sMesAnt = "";
+				
+				imp.setTitulo("Relatorio de Vendas por Setor");
+				imp.addSubTitulo("VENDAS POR SETOR");
+
+				if (!sFiltros1.equals("")) {
+					imp.addSubTitulo(sFiltros1);
+				}
+				if (!sFiltros2.equals("")) {
+					imp.addSubTitulo(sFiltros2);
+				}
+				imp.addSubTitulo("PERIODO DE: "
+						+ txtDataini.getVlrString() + " ATE: "
+						+ txtDatafim.getVlrString());
 
 				while (rs.next()) {
 					vItem = new Vector();
@@ -598,18 +611,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						}
 						if (imp.pRow() == 0) {
 							imp.montaCab();
-							imp.setTitulo("Relatorio de Vendas por Setor");
-							imp.addSubTitulo("VENDAS POR SETOR");
-
-							if (!sFiltros1.equals("")) {
-								imp.addSubTitulo(sFiltros1);
-							}
-							if (!sFiltros2.equals("")) {
-								imp.addSubTitulo(sFiltros2);
-							}
-							imp.addSubTitulo("PERIODO DE: "
-									+ txtDataini.getVlrString() + " ATE: "
-									+ txtDatafim.getVlrString());
+							
 							iCol = 0;
 							iPosCol = 0;
 						}

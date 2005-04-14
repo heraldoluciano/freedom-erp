@@ -173,9 +173,8 @@ public class FRUltimaVenda extends FRelatorio {
 					+ txtDescVend.getText().trim();
 			sWhere += " AND VD.CODEMPVD=" + Aplicativo.iCodEmp
 					+ " AND VD.CODFILIALVD=" + lcVend.getCodFilial();
-			sTmp = "|" + Funcoes.replicate(" ", 67 - (sTmp.length() / 2))
-					+ sTmp;
-			sCab += sTmp + Funcoes.replicate(" ", 133 - sTmp.length()) + " |";
+			
+			sCab = sTmp ;
 		}
 
 		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,VD.CODVENDA, VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA)"
@@ -197,6 +196,13 @@ public class FRUltimaVenda extends FRelatorio {
 			ps.setInt(4, Aplicativo.iCodEmp);
 			rs = ps.executeQuery();
 			imp.limpaPags();
+			
+			imp.setTitulo("Relatório de Ultimas Vendas");
+			imp.addSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"
+					+ sDataini + " ATE: " + sDatafim);
+			if (sCab.length() > 0) {
+				imp.addSubTitulo(sCab);
+			}
 
 			while (rs.next()) {
 				if (imp.pRow() == linPag) {
@@ -207,16 +213,10 @@ public class FRUltimaVenda extends FRelatorio {
 					imp.incPags();
 				}
 				if (imp.pRow() == 0) {
-					imp.montaCab();
-					imp.setTitulo("Relatório de Ultimas Vendas");
-					imp.addSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"
-							+ sDataini + " ATE: " + sDatafim);
-					if (sCab.length() > 0) {
-						imp.addSubTitulo(sCab);
-					}
+					imp.montaCab();					
 					imp.impCab(136, true);
 
-					imp.say(imp.pRow() + (sCab.length() > 0 ? 1 : 0), 0, ""
+					imp.say(imp.pRow() + 0, 0, ""
 							+ imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|"
 							+ Funcoes.replicate("-", 133) + "|");
