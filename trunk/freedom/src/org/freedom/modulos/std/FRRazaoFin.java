@@ -190,23 +190,23 @@ public class FRRazaoFin extends FRelatorio {
 			rs = ps.executeQuery();
 			imp.limpaPags();
 
+			imp.setTitulo("Razão financeiro");
+			imp.addSubTitulo("RELATORIO RAZÃO FINANCEIRO");
+			if (!(sCodPlan.trim().equals(""))) {
+				sConta = "CONTA: " + sCodPlan + " - "
+						+ txtDescPlan.getVlrString();
+				imp.addSubTitulo(sConta);
+			}
+			
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
-					imp.montaCab();
-					imp.setTitulo("Razão financeiro");
-					imp.addSubTitulo("RELATORIO RAZÃO FINANCEIRO");
-					if (!(sCodPlan.trim().equals(""))) {
-						sConta = "CONTA: " + sCodPlan + " - "
-								+ txtDescPlan.getVlrString();
-						imp.addSubTitulo(sConta);
-					}
+					imp.montaCab();					
 					imp.impCab(136, true);
 
 					String sSaldoAnt = Funcoes.strDecimalToStrCurrency(13, 2,
 							buscaSaldo() + "");
 
-					imp.say(imp.pRow() + (sCodPlan.trim().equals("") ? 0 : 1),
-							0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "|");
 					imp.say(imp.pRow() + 0, 104, "SALDO ANTERIOR:");
 					imp.say(imp.pRow() + 0, 118, "" + sSaldoAnt);
@@ -256,17 +256,19 @@ public class FRRazaoFin extends FRelatorio {
 				imp.say(imp.pRow() + 0, 121, ""
 						+ Funcoes.strDecimalToStrCurrency(12, 2, "" + bTotal));
 				imp.say(imp.pRow() + 0, 135, "|");
+			
+
+				if (imp.pRow() == (linPag - 1)) {
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133)
+							+ "+");
+					imp.eject();
+					imp.incPags();
+	
+				}
+
 			}
-
-			if (imp.pRow() == (linPag - 1)) {
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133)
-						+ "+");
-				imp.eject();
-				imp.incPags();
-
-			}
-
+			
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());

@@ -213,6 +213,12 @@ public class FRPisCofins extends FRelatorio {
   			
   			imp.limpaPags();
   			
+  			imp.setTitulo("Relatório de entradas e saidas");
+		  		imp.addSubTitulo("RELATORIO DE ENTRADAS E SAIDAS");
+				if (!sFiltros1.equals("")) {
+					imp.addSubTitulo(sFiltros1);
+				}
+  			
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -222,11 +228,7 @@ public class FRPisCofins extends FRelatorio {
   				}
 	  			if (imp.pRow()==0) {
 	  				imp.montaCab();
-	  		  		imp.setTitulo("Relatório de entradas e saidas");
-	  		  		imp.addSubTitulo("RELATORIO DE ENTRADAS E SAIDAS");
-	  				if (!sFiltros1.equals("")) {
-  	 					imp.addSubTitulo(sFiltros1);
-  	  				}
+	  		  		
 	  		    	imp.impCab(136, true);
 	  		  		
   	  				imp.say(imp.pRow()+0,0,""+imp.comprimido());
@@ -234,7 +236,7 @@ public class FRPisCofins extends FRelatorio {
   	  				imp.say(imp.pRow()+0,49,"PERIODO DE: "+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());
   	  				imp.say(imp.pRow()+0,136,"|");
   	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+					imp.say(imp.pRow()+0,1,"|"+Funcoes.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,1,"| DESCRICAO DO PRODUTO");
 					imp.say(imp.pRow()+0,60,"| CODIGO NBM");
@@ -242,7 +244,7 @@ public class FRPisCofins extends FRelatorio {
 					imp.say(imp.pRow()+0,100,"| SAIDAS");
 					imp.say(imp.pRow()+0,136,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+					imp.say(imp.pRow()+0,1,"|"+Funcoes.replicate("-",133)+"|");
 					
 				}
 				if ( (sSemMov.equals("N")) || ( rs.getDouble(3)!=0 ) || ( rs.getDouble(4)!=0 ) )  {
@@ -266,7 +268,7 @@ public class FRPisCofins extends FRelatorio {
   			// Fim da impressão do total por setor
   			
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+  			imp.say(imp.pRow()+0,1,"|"+Funcoes.replicate("=",133)+"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,1,"| TOTAL");
  			imp.say(imp.pRow()+0,80,"| "+Funcoes.strDecimalToStrCurrency(10,2,deVlrEntradas+""));
@@ -274,7 +276,7 @@ public class FRPisCofins extends FRelatorio {
   			imp.say(imp.pRow()+0,136,"|");
             			
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+  			imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("=",133)+"+");
 
   			imp.eject();
   			imp.fechaGravacao();
