@@ -200,21 +200,22 @@ public class FRVendasFisico extends FRelatorio {
       rs = ps.executeQuery();
       imp.limpaPags();
       
+      imp.setTitulo("Relatório Fisco de Vendas");
+  	  imp.addSubTitulo("RELATORIO FISICO DE VENDAS   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+  	  if (sCab.length() > 0) {
+    	  	imp.addSubTitulo(sCab);
+    	  }
+      
       while ( rs.next() ) {
       	System.out.println("GRUPO:"+rs.getString(1)+" DESC: "+rs.getString("DescProd"));
         if (imp.pRow()>=(linPag-1)) {
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+             imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
              imp.incPags();
              imp.eject();
         }
         if (imp.pRow()==0) {
-        	imp.montaCab();
-        	imp.setTitulo("Relatório Fisco de Vendas");
-        	imp.addSubTitulo("RELATORIO FISICO DE VENDAS   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
-        	  if (sCab.length() > 0) {
-          	  	imp.addSubTitulo(sCab);
-          	  }              
+        	imp.montaCab();        	              
             imp.impCab(136, true);
           
          

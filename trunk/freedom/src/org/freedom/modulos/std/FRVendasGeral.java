@@ -106,6 +106,7 @@ public class FRVendasGeral extends FRelatorio {
   	
   	
     ImprimeOS imp = new ImprimeOS("",con);
+    int linPag = imp.verifLinPag()-1;
     imp.verifLinPag();
     
     String sDataini = "";
@@ -146,15 +147,22 @@ public class FRVendasGeral extends FRelatorio {
       ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
       rs = ps.executeQuery();
       imp.limpaPags();
+      
+      imp.setTitulo("Relatório de Vendas Geral");
+  	  imp.addSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+      if (sCab.length() > 0) {
+    	  	imp.addSubTitulo(sCab);
+    	  }
+      
       while ( rs.next() ) {
+      	if (imp.pRow()>=(linPag-1)) {
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+            imp.incPags();
+            imp.eject();
+       }
         if (imp.pRow()==0) {
-        	imp.montaCab();
-        	imp.setTitulo("Relatório de Vendas Geral");
-        	imp.addSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
-            if (sCab.length() > 0) {
-          	  	imp.addSubTitulo(sCab);
-          	  }
-
+        	imp.montaCab(); 
         	imp.impCab(136, true);
                      
            imp.say(imp.pRow()+0,0,""+imp.comprimido());

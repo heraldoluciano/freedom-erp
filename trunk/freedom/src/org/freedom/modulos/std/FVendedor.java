@@ -408,16 +408,19 @@ public class FVendedor extends FDados implements PostListener {
 			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDEDOR"));
 			rs = ps.executeQuery();
 			imp.limpaPags();
+			
+			imp.setTitulo("Relatório de Comissionados");
+			imp.addSubTitulo("RELATÓRIO DE COMISSIONADOS");
+			imp.addSubTitulo("Filtrado por:");
+			for (int i = 0; i < vFiltros.size(); i++) {
+				String sTmp = (String) vFiltros.elementAt(i);
+				imp.addSubTitulo(sTmp);
+			}
+			
 			boolean hasData = false;
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
-					imp.setTitulo("Relatório de Comissionados");
-					imp.addSubTitulo("RELATÓRIO DE COMISSIONADOS");
-					imp.addSubTitulo("Filtrado por:");
-					for (int i = 0; i < vFiltros.size(); i++) {
-						String sTmp = (String) vFiltros.elementAt(i);
-						imp.addSubTitulo(sTmp);
-					}
+					
 					imp.montaCab();
 					imp.impCab(136, true);
 
