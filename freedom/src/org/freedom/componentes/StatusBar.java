@@ -49,15 +49,19 @@ public class StatusBar extends JPanelPad {
 
 	private JPanelPad pnEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnCentro = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnDescEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnRazFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnUsuario = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRelogio = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JPanelPad pnDescEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnIconFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnIconEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnIconInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnIDUSU = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnDescInfo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnIconUsuario = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JLabelPad lFilial = new JLabelPad();
 	private JLabelPad lEst = new JLabelPad();  
 	private JLabelPad lUsuario = new JLabelPad();
 	private JLabelPad lInfo = new JLabelPad();
@@ -65,6 +69,7 @@ public class StatusBar extends JPanelPad {
 	private int iNumEst = 0;
 	private String sDescEst = "";
 	private String sIDUsu = "";
+	private ImageIcon iconFilial = Icone.novo("statusbarFilial.gif");
 	private ImageIcon iconUsuario = Icone.novo("statusbarUsu.gif");
 	private ImageIcon iconEst = Icone.novo("statusbarPc.gif");
 	private ImageIcon iconRelogio = Icone.novo("statusbarTime.gif");
@@ -123,14 +128,20 @@ public class StatusBar extends JPanelPad {
 	  this.setPreferredSize(new Dimension(300, 25));
 	  this.setBorder(BorderFactory.createRaisedBevelBorder());
 
+	  pnRazFilial.add(lFilial);
       pnDescEst.add(lEst);
       pnIDUSU.add(lUsuario);
       pnDescInfo.add(lInfo);
       
+      pnIconFilial.add(new JLabelPad(iconFilial),BorderLayout.WEST);
       pnIconEst.add(new JLabelPad(iconEst),BorderLayout.WEST);
       pnIconUsuario.add(new JLabelPad(iconUsuario),BorderLayout.WEST);
       pnIconInfo.add(new JLabelPad(iconInfo), BorderLayout.WEST);
-                 
+
+	  lFilial.setPreferredSize(new Dimension(180, 20));
+	  lFilial.setFont(new Font("Arial", Font.PLAIN, 12));
+	  lFilial.setForeground( new Color(118, 89, 170));
+      
 	  lEst.setPreferredSize(new Dimension(180, 20));
 	  lEst.setFont(new Font("Arial", Font.PLAIN, 12));
 	  lEst.setForeground( new Color(118, 89, 170));
@@ -143,11 +154,17 @@ public class StatusBar extends JPanelPad {
       lInfo.setFont(new Font("Arial", Font.PLAIN,12));
       lInfo.setForeground(new Color(118, 89, 170));
       
-	  pnEst.setPreferredSize(new Dimension(180,23));
+	  pnFilial.setPreferredSize(new Dimension(180,23));
+	  pnFilial.setBorder(BorderFactory.createLoweredBevelBorder());
+
+      pnEst.setPreferredSize(new Dimension(180,23));
 	  pnEst.setBorder(BorderFactory.createLoweredBevelBorder());
 	  //pnEst.add(lEst, BorderLayout.WEST);
 	  
 	  pnInfo.setBorder(BorderFactory.createLoweredBevelBorder());
+
+      pnFilial.add(pnIconFilial,BorderLayout.WEST);
+      pnFilial.add(pnRazFilial,BorderLayout.CENTER);
 	  
       pnEst.add(pnIconEst,BorderLayout.WEST);
       pnEst.add(pnDescEst,BorderLayout.CENTER);
@@ -165,6 +182,7 @@ public class StatusBar extends JPanelPad {
       pnCentro.add(pnUsuario, BorderLayout.WEST);
       pnCentro.add(pnInfo, BorderLayout.CENTER);
       
+      this.add(pnFilial, BorderLayout.WEST);
 	  this.add(pnEst, BorderLayout.WEST);
 	  this.add(pnCentro, BorderLayout.CENTER);
      
