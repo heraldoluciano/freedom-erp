@@ -36,7 +36,7 @@ public class FreedomGRH extends Aplicativo {
 	public FreedomGRH() {
 		super("iconAtendimento32.gif", "splashGRH.jpg",
 				"FreedomGMS - Módulo de gerenciamento de mateirais e serviços",
-				1, 8, "freedom.ini", null);
+				1, 9, "freedom.ini", null);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
