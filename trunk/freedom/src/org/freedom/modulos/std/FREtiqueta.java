@@ -22,14 +22,17 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
@@ -66,25 +69,24 @@ public class FREtiqueta extends FRelatorio {
   private ListaCampos lcPapel = new ListaCampos(this,"PL");    
   private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnDet = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JPanelPad pinCab = new JPanelPad(480,100);
+  private JPanelPad pinCab = new JPanelPad(480,150);
   private Tabela tab = new Tabela();
   private JScrollPane spnDet = new JScrollPane(tab);
+  private JButton btAdiciona = new JButton(Icone.novo("btExecuta.gif"));
 
   public FREtiqueta() {
 
-      tab.adicColuna("teste1");
-      tab.adicColuna("teste2");
-      tab.adicColuna("teste3");
-      tab.adicColuna("teste4");
+     tab.adicColuna("Cód.Cli.");
+     tab.adicColuna("Razão");
       
-      tab.setTamColuna(100,0);
-      tab.setTamColuna( 70,1);
-      tab.setTamColuna( 40,2);
-      tab.setTamColuna( 55,3);
+     tab.setTamColuna(80,0);
+     tab.setTamColuna(300,1);
       
  	 setPanel(pnTotal);      
-  	 setTitulo("Impressão de etiquetas");
-     setAtribos(80,80,480,240);
+  	 
+ 	 setTitulo("Impressão de etiquetas");
+
+  	 setAtribos(20,20,600,450);
      
      pnDet.add(spnDet, BorderLayout.CENTER);   
 	 pnTotal.add(pinCab, BorderLayout.NORTH);
@@ -140,9 +142,36 @@ public class FREtiqueta extends FRelatorio {
      pinCab.adic(txtCodModEtiq,7,105,80,20);
      pinCab.adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
      pinCab.adic(txtDescModEtiq,90,105,200,20);
+     pinCab.adic(btAdiciona,300,7,30,30);
      
+     btAdiciona.addActionListener(this);
 
   }   
+  
+  public void adicItens() {
+	ResultSet rs = null;
+	PreparedStatement ps = null;
+    try{	
+        ps = con.prepareStatement(montaQuery("VDCLIENTE"));
+        rs = ps.executeQuery();
+        while(rs.next()) {
+            
+            
+            
+            
+        }
+    }
+    catch(SQLException e){
+        e.printStackTrace();
+    }
+  }
+  
+  public void actionPerformed(ActionEvent evt) {
+      if (evt.getSource() == btAdiciona) 
+        adicItens();
+  
+      super.actionPerformed(evt);
+  }
   
   public void setConexao(Connection cn) {
     super.setConexao(cn);
