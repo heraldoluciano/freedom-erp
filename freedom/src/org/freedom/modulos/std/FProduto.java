@@ -32,6 +32,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -74,6 +75,7 @@ import org.freedom.telas.FTabDados;
 public class FProduto extends FTabDados implements CheckBoxListener,
 		EditListener, InsertListener, ChangeListener, ActionListener,
 		CarregaListener {
+	int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinGeral = new JPanelPad(650, 340);
 
 	private JPanelPad pnFatConv = new JPanelPad(JPanelPad.TP_JPANEL,
@@ -146,67 +148,67 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			JTextFieldPad.TP_NUMERIC, 6, 2);
 
 	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 10, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtPesoBrutProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 10, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtQtdMinProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtQtdMaxProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtLocalProd = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 15, 0);
 
 	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtDtUltCpProd = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
+			JTextFieldPad.TP_DATE, 10, casasDec);
 
 	private JTextFieldPad txtSldConsigProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldConsigAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldResProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldResAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtUnidFat = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 4, 0);
 
 	private JTextFieldPad txtFatConv = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 10, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtCodLote = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);
@@ -218,16 +220,16 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			JTextFieldPad.TP_DATE, 10, 0);
 
 	private JTextFieldPad txtSldLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldResLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtSldConsigLote = new JTextFieldPad(
 			JTextFieldPad.TP_NUMERIC, 15, 3);
 
 	private JTextFieldPad txtSldLiqLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldPad txtCodFotoProd = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
@@ -254,7 +256,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtPrecoProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
+			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 
 	private JTextFieldFK txtAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			40, 0);
@@ -580,41 +582,39 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			txtCodProdSaldo.setVlrInteger(txtCodProd.getVlrInteger());
 			lcSaldoProd.carregaDados();
 
-			if (sPrefs[1].equals("S")) {
-				if (txtCodProd.getVlrInteger().intValue() != 0) {
-					try {
-						sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";
-						ps = con.prepareStatement(sSQL);
-						ps.setInt(1, Aplicativo.iCodEmp);
-						ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-						ps.setInt(3, txtCodProd.getVlrInteger().intValue());
-						ps.setInt(4, Aplicativo.iCodEmp);
-						ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
-						ps.setInt(6, txtCodAlmox.getVlrInteger().intValue());
-						rs = ps.executeQuery();
-						if (rs.next()) {
-							txtCustoPEPSProd.setVlrDouble(new Double(rs
-									.getDouble("NCUSTOPEPS")));
-							txtCustoMPMProd.setVlrDouble(new Double(rs
-									.getDouble("NCUSTOMPM")));
-							txtCustoPEPSAlmox.setVlrDouble(new Double(rs
-									.getDouble("NCUSTOPEPSAX")));
-							txtCustoMPMAlmox.setVlrDouble(new Double(rs
-									.getDouble("NCUSTOMPMAX")));
-						}
-						rs.close();
-						ps.close();
-						if (!con.getAutoCommit())
-							con.commit();
-					} catch (SQLException e) {
-						Funcoes.mensagemErro(this,
-								"Não foi possível carregar o valor de custo PEPS!\n"
-										+ e.getMessage());
-					} finally {
-						rs = null;
-						ps = null;
-						sSQL = null;
+			if (txtCodProd.getVlrInteger().intValue() != 0) {
+				try {
+					sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";
+					ps = con.prepareStatement(sSQL);
+					ps.setInt(1, Aplicativo.iCodEmp);
+					ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
+					ps.setInt(3, txtCodProd.getVlrInteger().intValue());
+					ps.setInt(4, Aplicativo.iCodEmp);
+					ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
+					ps.setInt(6, txtCodAlmox.getVlrInteger().intValue());
+					rs = ps.executeQuery();
+					if (rs.next()) {
+						txtCustoPEPSProd.setVlrBigDecimal(new BigDecimal(rs
+								.getFloat("NCUSTOPEPS")));
+						txtCustoMPMProd.setVlrBigDecimal(new BigDecimal(rs
+								.getFloat("NCUSTOMPM")));
+						txtCustoPEPSAlmox.setVlrBigDecimal(new BigDecimal(rs
+								.getFloat("NCUSTOPEPSAX")));
+						txtCustoMPMAlmox.setVlrBigDecimal(new BigDecimal(rs
+								.getFloat("NCUSTOMPMAX")));
 					}
+					rs.close();
+					ps.close();
+					if (!con.getAutoCommit())
+						con.commit();
+				} catch (SQLException e) {
+					Funcoes.mensagemErro(this,
+							"Não foi possível carregar o valor de custo PEPS!\n"
+									+ e.getMessage());
+				} finally {
+					rs = null;
+					ps = null;
+					sSQL = null;
 				}
 			}
 		}
@@ -661,6 +661,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local armz.",
 				ListaCampos.DB_SI, false);
 
+		adic(new JLabelPad("Custo MPM"), 110, 160, 87, 20);
 		adic(txtCustoMPMProd, 110, 180, 87, 20);
 		adic(new JLabelPad("Custo PEPS"), 200, 160, 87, 20);
 		adic(txtCustoPEPSProd, 200, 180, 87, 20); // Sem inserir no lista campos
@@ -951,6 +952,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 		adic(new JLabelPad("Almoxarifado"), 7, 200, 87, 20);
 		adic(txtAlmox, 7, 220, 97, 20);
+		adic(new JLabelPad("Custo MPM"), 110, 200, 87, 20);
 		adic(txtCustoMPMAlmox, 110, 220, 87, 20);
 		adic(new JLabelPad("Custo PEPS"), 200, 200, 87, 20);
 		adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista
