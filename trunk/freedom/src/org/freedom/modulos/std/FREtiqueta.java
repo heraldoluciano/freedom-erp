@@ -65,7 +65,8 @@ public class FREtiqueta extends FRelatorio {
   private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);  
   private ListaCampos lcPapel = new ListaCampos(this,"PL");    
   private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  public  JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnDet = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pinCab = new JPanelPad(480,100);
   private Tabela tab = new Tabela();
   private JScrollPane spnDet = new JScrollPane(tab);
 
@@ -84,11 +85,10 @@ public class FREtiqueta extends FRelatorio {
  	 setPanel(pnTotal);      
   	 setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
-        
-     pnCab.setSize(500,500);
      
-	 pnTotal.add(pnCab, BorderLayout.NORTH);
-     pnTotal.add(spnDet, BorderLayout.CENTER);
+     pnDet.add(spnDet, BorderLayout.CENTER);   
+	 pnTotal.add(pinCab, BorderLayout.NORTH);
+     pnTotal.add(pnDet, BorderLayout.CENTER);
      
      lcPapel.add(new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
 	 lcPapel.add(new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
@@ -128,18 +128,18 @@ public class FREtiqueta extends FRelatorio {
      txtCodTipo.setFK(true);
      txtCodTipo.setNomeCampo("CodTipoCli");
               
-     pnCab.adic(new JLabelPad("Cód.setor"),7,5,280,20);
-     pnCab.adic(txtCodSetor,7,25,80,20);
-     pnCab.adic(new JLabelPad("Descrição do setor"),90,5,280,20);
-     pnCab.adic(txtDescSetor,90,25,200,20);
-     pnCab.adic(new JLabelPad("Cód.tp.cli."),7,45,280,20);
-     pnCab.adic(txtCodTipo,7,65,80,20);
-     pnCab.adic(new JLabelPad("Descrição do tipo de cliente"),90,45,280,20);
-     pnCab.adic(txtDescTipo,90,65,200,20);
-     pnCab.adic(new JLabelPad("Cód.mod."),7,85,280,20);
-     pnCab.adic(txtCodModEtiq,7,105,80,20);
-     pnCab.adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
-     pnCab.adic(txtDescModEtiq,90,105,200,20);
+     pinCab.adic(new JLabelPad("Cód.setor"),7,5,280,20);
+     pinCab.adic(txtCodSetor,7,25,80,20);
+     pinCab.adic(new JLabelPad("Descrição do setor"),90,5,280,20);
+     pinCab.adic(txtDescSetor,90,25,200,20);
+     pinCab.adic(new JLabelPad("Cód.tp.cli."),7,45,280,20);
+     pinCab.adic(txtCodTipo,7,65,80,20);
+     pinCab.adic(new JLabelPad("Descrição do tipo de cliente"),90,45,280,20);
+     pinCab.adic(txtDescTipo,90,65,200,20);
+     pinCab.adic(new JLabelPad("Cód.mod."),7,85,280,20);
+     pinCab.adic(txtCodModEtiq,7,105,80,20);
+     pinCab.adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
+     pinCab.adic(txtDescModEtiq,90,105,200,20);
      
 
   }   
