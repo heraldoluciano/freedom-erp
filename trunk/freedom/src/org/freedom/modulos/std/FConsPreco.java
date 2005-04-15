@@ -60,7 +60,7 @@ public class FConsPreco extends FFilho implements KeyListener {
     private Container c = getContentPane();
     private Tabela tbPreco = new Tabela();
     private JScrollPane spPreco = new JScrollPane(tbPreco);
-    private JTextFieldPad txtDescProd = new JTextFieldPad();
+    private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,10);
 	
 	public FConsPreco() {
 		//super();
@@ -84,7 +84,6 @@ public class FConsPreco extends FFilho implements KeyListener {
 		tbPreco.setTamColuna(100,4);
 		montaTabela();
 		
-		txtDescProd.setTipo(JTextFieldPad.TP_STRING,50,10);
 		pinCab.adic(new JLabelPad("Pesquisa descrição - F2"),7,2,200,20);
 		pinCab.adic(txtDescProd,7,25,300,20);
 		

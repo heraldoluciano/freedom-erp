@@ -148,7 +148,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 	private JTextFieldFK txtDescVend = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
 
-	private JTextFieldPad txtDataCont = new JTextFieldPad(8);
+	private JTextFieldPad txtDataCont = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 
 	private JTextFieldPad txtCodSetor = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);

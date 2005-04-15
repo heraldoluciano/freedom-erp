@@ -58,7 +58,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   private JPanelPad pinCab = new JPanelPad(0,205);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtNomeArq = new JTextFieldPad();
+  private JTextFieldPad txtNomeArq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JButton btBuscaArq = new JButton(Icone.novo("btAbrirPeq.gif"));
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);

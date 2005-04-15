@@ -135,8 +135,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   private void montaOrcamento() {
 	oPrefs = prefs(); //Carrega as preferências
     if (!oPrefs[3].equals("")) { 
-	   txtTxt01 = new JTextFieldPad();
-	   txtTxt01.setTipo(JTextFieldPad.TP_STRING,20,0);
+	   txtTxt01 = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
 	}
 
 	pnMaster.remove(2);  //Remove o JPanelPad prédefinido da class FDados

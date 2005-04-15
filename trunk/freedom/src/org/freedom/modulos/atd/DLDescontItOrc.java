@@ -31,13 +31,13 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLDescontItOrc extends FFDialogo {
-	private JTextFieldPad txtDesc1 = new JTextFieldPad();
-	private JTextFieldPad txtDesc2 = new JTextFieldPad();
-	private JTextFieldPad txtDesc3 = new JTextFieldPad();
-	private JTextFieldPad txtDesc4 = new JTextFieldPad();
-	private JTextFieldPad txtDesc5 = new JTextFieldPad();
-	private JTextFieldPad txtVlrDescTot = new JTextFieldPad();
-	private JTextFieldPad txtVlrTot = new JTextFieldPad();
+	private JTextFieldPad txtDesc1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
+	private JTextFieldPad txtDesc2 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
+	private JTextFieldPad txtDesc3 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
+	private JTextFieldPad txtDesc4 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
+	private JTextFieldPad txtDesc5 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
+	private JTextFieldPad txtVlrDescTot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,8,2);
+	private JTextFieldPad txtVlrTot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
     private double dVlr;
     private String sObs;
 	public DLDescontItOrc(Component cOrig, double dVal,String[] sVals) {
@@ -45,14 +45,6 @@ public class DLDescontItOrc extends FFDialogo {
         dVlr = dVal;
 		setTitulo("Descontos:");
 		setAtribos(235,175);
-
-		txtDesc1.setTipo(JTextFieldPad.TP_DECIMAL,4,1);
-		txtDesc2.setTipo(JTextFieldPad.TP_DECIMAL,4,1);
-		txtDesc3.setTipo(JTextFieldPad.TP_DECIMAL,4,1);
-		txtDesc4.setTipo(JTextFieldPad.TP_DECIMAL,4,1);
-		txtDesc5.setTipo(JTextFieldPad.TP_DECIMAL,4,1);
-		txtVlrDescTot.setTipo(JTextFieldPad.TP_DECIMAL,8,2);
-		txtVlrTot.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
                 
                 txtVlrDescTot.setAtivo(false);
                 txtVlrTot.setAtivo(false);

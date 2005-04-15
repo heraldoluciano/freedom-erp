@@ -40,8 +40,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FREstatAtend extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
   private JRadioGroup rgFormato=null;
@@ -51,8 +51,6 @@ public class FREstatAtend extends FRelatorio {
     setTitulo("Resumo Diario");
     setAtribos(80,80,295,200);
    
-    txtDataini.setTipo(JTextFieldPad.TP_DATE,10,0);
-    txtDatafim.setTipo(JTextFieldPad.TP_DATE,10,0);
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
     JLabelPad lbLinha = new JLabelPad();

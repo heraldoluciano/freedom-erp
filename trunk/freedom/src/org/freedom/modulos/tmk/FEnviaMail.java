@@ -82,9 +82,9 @@ import org.freedom.telas.FFilho;
 public class FEnviaMail extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodAtiv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescAtiv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-	private JTextFieldPad txtArqMen = new JTextFieldPad();
-	private JTextFieldPad txtAssunto = new JTextFieldPad();
-	private JTextFieldPad txtDe = new JTextFieldPad();
+	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtAssunto = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
+	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	private JButton btBuscaArq = new JButton(Icone.novo("btAbrirPeq.gif"));
 	private JButton btEnviar = new JButton(Icone.novo("btEnviarMail.gif"));
 	private JTextAreaPad txaMen = new JTextAreaPad();

@@ -54,7 +54,7 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   private JTextFieldPad txtDescTpImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtSepTpImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtDelCrtTpImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
-  private JTextFieldPad txtLayout = new JTextFieldPad();
+  private JTextFieldPad txtLayout = new JTextFieldPad(JTextFieldPad.TP_STRING,256,0);
   private JCheckBoxPad cbTransBinTpImp = new JCheckBoxPad("Converter arquivo binário","S","N");
   private JCheckBoxPad cbCsepTpImp = new JCheckBoxPad("Utiliza separador","S","N");  
   private JCheckBoxPad cbEnterlnTpImp = new JCheckBoxPad("Enter quebra linha","S","N");

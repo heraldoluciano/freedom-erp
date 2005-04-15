@@ -55,9 +55,9 @@ public class FRGraficoCC extends FRelatorio {
   private JRadioGroup rgGrafico = null;
   private Vector vLabs = new Vector(2);
   private Vector vVals = new Vector(2);
-  private JTextFieldPad txtCodCC = new JTextFieldPad();   
-  private JTextFieldFK  txtSiglaCC = new JTextFieldFK();
-  private JTextFieldFK txtDescCC = new JTextFieldFK(); 
+  private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);   
+  private JTextFieldFK  txtSiglaCC = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
   private ListaCampos lcCC = new ListaCampos(this);
   private int iAnoCC = 0;
   public FRGraficoCC() {
@@ -77,10 +77,6 @@ public class FRGraficoCC extends FRelatorio {
     txtCodPlan.setFK(true);
     txtCodPlan.setNomeCampo("CodPlan");
 
-	txtCodCC.setTipo(JTextFieldPad.TP_STRING,19,0);
-	txtDescCC.setTipo(JTextFieldPad.TP_STRING,50,0);
-	txtSiglaCC.setTipo(JTextFieldPad.TP_STRING,10,0);    
-	
 	lcCC.add(new GuardaCampo(txtCodCC,"CodCC","Cód.cc.",ListaCampos.DB_PK,true));
 	lcCC.add(new GuardaCampo(txtSiglaCC,"SiglaCC","Sigla",ListaCampos.DB_SI,true));
 	lcCC.add(new GuardaCampo(txtDescCC,"DescCC","Descrição do centro de custo",ListaCampos.DB_SI,true));

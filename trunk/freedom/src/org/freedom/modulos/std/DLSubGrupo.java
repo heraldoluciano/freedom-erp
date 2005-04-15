@@ -31,12 +31,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLSubGrupo extends FFDialogo {
-  private JTextFieldPad txtCodPai = new JTextFieldPad();
-  private JTextFieldPad txtDescPai = new JTextFieldPad();
-  private JTextFieldPad txtSiglaPai = new JTextFieldPad();
-  private JTextFieldPad txtCodSubGrup = new JTextFieldPad();
-  private JTextFieldPad txtDescSubGrup = new JTextFieldPad(50);
-  private JTextFieldPad txtSiglaSubGrup = new JTextFieldPad(10);
+  private JTextFieldPad txtCodPai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescPai = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtSiglaPai = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  private JTextFieldPad txtCodSubGrup = new JTextFieldPad(JTextFieldPad.TP_INTEGER,20,0);
+  private JTextFieldPad txtDescSubGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtSiglaSubGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JLabelPad lbCodPai = new JLabelPad("Código");
   private JLabelPad lbDescPai = new JLabelPad("Descrição do grupo superior");
   private JLabelPad lbSiglaPai = new JLabelPad("Sigla");

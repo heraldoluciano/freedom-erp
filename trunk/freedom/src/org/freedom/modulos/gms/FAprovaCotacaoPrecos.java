@@ -78,15 +78,15 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 	private JButton btAprovaCompra = new JButton("Cotação Pendente", null);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad();
-	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad();
-	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad();
-	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad();
-	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad();
-	private JTextFieldPad txtDtAptovItSol = new JTextFieldPad();
-	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad();
-	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad();
-	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad();
+	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtDtAptovItSol = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,
@@ -100,7 +100,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			10, 0);
-	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad();
+	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(

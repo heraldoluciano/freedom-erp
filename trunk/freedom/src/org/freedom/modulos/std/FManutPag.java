@@ -83,8 +83,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private JScrollPane spnManut = new JScrollPane(tabManut);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodForManut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtPrimCompr = new JTextFieldPad();
-  private JTextFieldPad txtUltCompr = new JTextFieldPad();
+  private JTextFieldPad txtPrimCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtUltCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataMaxFat = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtVlrMaxFat = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtVlrTotCompr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);

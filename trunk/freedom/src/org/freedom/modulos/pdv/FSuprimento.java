@@ -43,26 +43,18 @@ import org.freedom.telas.FFDialogo;
 
 
 public class FSuprimento extends FFDialogo {
-	private JTextFieldFK txtData = new JTextFieldFK();
-	private JTextFieldPad txtValor = new JTextFieldPad();
-	private JTextFieldFK txtDataAnt = new JTextFieldFK();
-	private JTextFieldFK txtSldAnt = new JTextFieldFK();
-	private JTextFieldFK txtStatusAnt = new JTextFieldFK();
-	private JTextFieldFK txtUsuarioAnt = new JTextFieldFK();
-	private JTextFieldFK txtUsuarioAtual = new JTextFieldFK();
+	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
+	private JTextFieldFK txtDataAnt = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldFK txtSldAnt = new JTextFieldFK(JTextFieldPad.TP_STRING,10,2);
+	private JTextFieldFK txtStatusAnt = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldFK txtUsuarioAnt = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldFK txtUsuarioAtual = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	public FSuprimento() {
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Suprimento de caixa");
 		setAtribos(345,275);
-		
-		txtData.setTipo(JTextFieldPad.TP_DATE,10,0);		
-		txtValor.setTipo(JTextFieldPad.TP_DECIMAL,10,2);
-		txtDataAnt.setTipo(JTextFieldPad.TP_DATE,10,0);
-		txtSldAnt.setTipo(JTextFieldPad.TP_STRING,10,2);
-		txtStatusAnt.setTipo(JTextFieldPad.TP_STRING,10,0);
-		txtUsuarioAnt.setTipo(JTextFieldPad.TP_STRING,40,0);
-		txtUsuarioAtual.setTipo(JTextFieldPad.TP_STRING,40,0);
 		
 		txtData.setVlrDate(Calendar.getInstance().getTime());
 		txtValor.setVlrBigDecimal(new BigDecimal(0));

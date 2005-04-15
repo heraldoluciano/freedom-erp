@@ -45,10 +45,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLAnalBanc extends FFDialogo implements FocusListener{
-  private JTextFieldPad txtCodPai = new JTextFieldPad();
-  private JTextFieldPad txtDescPai = new JTextFieldPad();
-  private JTextFieldPad txtCodAnal = new JTextFieldPad();
-  private JTextFieldPad txtDescAnal = new JTextFieldPad(50);
+  private JTextFieldPad txtCodPai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescPai = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodAnal = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescAnal = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtAgCont = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
   private JTextFieldPad txtNumCont = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);

@@ -34,10 +34,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanAnal extends FFDialogo {
-  private JTextFieldPad txtCodPai = new JTextFieldPad();
-  private JTextFieldPad txtDescPai = new JTextFieldPad();
-  private JTextFieldPad txtCodAnal = new JTextFieldPad();
-  private JTextFieldPad txtDescAnal = new JTextFieldPad(50);
+  private JTextFieldPad txtCodPai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescPai = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodAnal = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescAnal = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JLabelPad lbCodPai = new JLabelPad("Cód.origem");
   private JLabelPad lbDescPai = new JLabelPad("Descrição da origem");
   private JLabelPad lbCodAnal = new JLabelPad("Código");

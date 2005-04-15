@@ -42,8 +42,8 @@ public class DLRProduto extends FFDialogo {
   private JLabelPad lbSelec = new JLabelPad(" Selecão:");
   private JLabelPad lbDe = new JLabelPad("De:");
   private JLabelPad lbA = new JLabelPad("À:");
-  private JTextFieldPad txtDe = new JTextFieldPad();
-  private JTextFieldPad txtA = new JTextFieldPad();
+  private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtA = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JCheckBoxPad cbAtivoProd = new JCheckBoxPad("Ativo","S","N");
   private JLabelPad lbAtivoProd = new JLabelPad(" Produtos Ativos:");
