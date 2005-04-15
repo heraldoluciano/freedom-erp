@@ -49,6 +49,7 @@ public class StatusBar extends JPanelPad {
 
 	private JPanelPad pnEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnCentro = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnEsquerda = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnDescEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRazFilial = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -67,6 +68,8 @@ public class StatusBar extends JPanelPad {
 	private JLabelPad lInfo = new JLabelPad();
 	private JLabelPad lRelogio = new JLabelPad();  
 	private int iNumEst = 0;
+	private int iCodFilial = 0;
+	private String sRazFilial = "";
 	private String sDescEst = "";
 	private String sIDUsu = "";
 	private ImageIcon iconFilial = Icone.novo("statusbarFilial.gif");
@@ -138,15 +141,15 @@ public class StatusBar extends JPanelPad {
       pnIconUsuario.add(new JLabelPad(iconUsuario),BorderLayout.WEST);
       pnIconInfo.add(new JLabelPad(iconInfo), BorderLayout.WEST);
 
-	  lFilial.setPreferredSize(new Dimension(180, 20));
+	  lFilial.setPreferredSize(new Dimension(260, 20));
 	  lFilial.setFont(new Font("Arial", Font.PLAIN, 12));
 	  lFilial.setForeground( new Color(118, 89, 170));
       
-	  lEst.setPreferredSize(new Dimension(180, 20));
+	  lEst.setPreferredSize(new Dimension(100, 20));
 	  lEst.setFont(new Font("Arial", Font.PLAIN, 12));
 	  lEst.setForeground( new Color(118, 89, 170));
      
-	  lUsuario.setPreferredSize(new Dimension(180, 20));
+	  lUsuario.setPreferredSize(new Dimension(100, 20));
 	  lUsuario.setFont(new Font("Arial", Font.PLAIN, 12));
 	  lUsuario.setForeground( new Color(118, 89, 170));
 
@@ -179,11 +182,12 @@ public class StatusBar extends JPanelPad {
 	  pnUsuario.setBorder(BorderFactory.createLoweredBevelBorder());
 	  //pnUsuario.add(lUsuario, BorderLayout.WEST);
 
+	  pnEsquerda.add(pnFilial, BorderLayout.WEST);
+	  pnEsquerda.add(pnEst, BorderLayout.CENTER);
       pnCentro.add(pnUsuario, BorderLayout.WEST);
       pnCentro.add(pnInfo, BorderLayout.CENTER);
       
-      this.add(pnFilial, BorderLayout.WEST);
-	  this.add(pnEst, BorderLayout.WEST);
+      this.add(pnEsquerda, BorderLayout.WEST);
 	  this.add(pnCentro, BorderLayout.CENTER);
      
 	  lRelogio.setPreferredSize(new Dimension(125, 20));
@@ -215,6 +219,10 @@ public class StatusBar extends JPanelPad {
 	  lRelogio.repaint();
 	}
 	
+	public void setCodFilial(int iCodFilial) {
+		this.iCodFilial = iCodFilial;
+		ajustaFilial();
+	}
 	public void setUsuario(String sIDUsu) {
 	   this.sIDUsu = sIDUsu.trim();
 	   lUsuario.setText(sIDUsu);
@@ -225,10 +233,18 @@ public class StatusBar extends JPanelPad {
 	   this.iNumEst = iNumEst;
 	   ajustaEst(); 		
 	}
-	
+
+	public void setRazFilial(String sRazFilial) {
+		this.sRazFilial = sRazFilial;
+		ajustaFilial();
+	}
 	public void setDescEst(String sDescEst) {
 	   this.sDescEst = sDescEst;
 	   ajustaEst();	
+	}
+	
+	public int getCodFilial() {
+	   return iCodFilial;
 	}
 	
 	public int getNumEst() {
@@ -243,10 +259,17 @@ public class StatusBar extends JPanelPad {
 	   return sIDUsu;	
 	}
 	
-	private void ajustaEst() {
-	   lEst.setText((" "+iNumEst+"-"+sDescEst).trim());	
+	public String getRazFilial() {
+		return sRazFilial;
 	}
 	
+	private void ajustaEst() {
+	   lEst.setText((" "+iNumEst+"-"+sDescEst.trim()));	
+	}
+	
+	private void ajustaFilial() {
+	   lFilial.setText((" "+iCodFilial+"-"+sRazFilial.trim()));
+	}
 	public void setInfo(String sTexto) {
 	   if (sTexto==null) 
 	      sTexto="";
