@@ -28,10 +28,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
-
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -46,10 +46,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
-public class FREtiqueta extends FRelatorio {
+public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescModEtiq = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
+  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodTipo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 
   private JTextFieldFK txtDescTipo = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -67,21 +69,19 @@ public class FREtiqueta extends FRelatorio {
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);  
   private ListaCampos lcPapel = new ListaCampos(this,"PL");    
+  private ListaCampos lcCliente = new ListaCampos(this,"CL");
   private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnDet = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JPanelPad pinCab = new JPanelPad(480,150);
+  private JPanelPad pinCab = new JPanelPad(480,190);
   private Tabela tab = new Tabela();
   private JScrollPane spnDet = new JScrollPane(tab);
-  private JButton btAdiciona = new JButton(Icone.novo("btExecuta.gif"));
+  private JButton btAdiciona = new JButton(Icone.novo("btGerar.gif"));
+  private JButton btLimpa = new JButton(Icone.novo("btRetorno.gif"));
+  private boolean bMontaTab = true;
+  private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
+  
 
   public FREtiqueta() {
-
-     tab.adicColuna("Cód.Cli.");
-     tab.adicColuna("Razão");
-      
-     tab.setTamColuna(80,0);
-     tab.setTamColuna(300,1);
-      
  	 setPanel(pnTotal);      
   	 
  	 setTitulo("Impressão de etiquetas");
@@ -101,6 +101,13 @@ public class FREtiqueta extends FRelatorio {
  	 lcPapel.setReadOnly(true);
  	 txtCodPapel.setTabelaExterna(lcPapel);
      
+     lcCliente.add(new GuardaCampo( txtCodCli, "Codcli", "Cod.Cli.", ListaCampos.DB_PK, false));
+	 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false));
+	 lcCliente.montaSql(false, "CLIENTE", "VD");
+ 	 lcCliente.setQueryCommit(false);
+ 	 lcCliente.setReadOnly(true);
+ 	 txtCodCli.setTabelaExterna(lcCliente);
+
      lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
      lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
      lcModEtiq.add(new GuardaCampo( txaEtiqueta,"TxaModEtiq","Corpo",ListaCampos.DB_SI,false));
@@ -122,7 +129,7 @@ public class FREtiqueta extends FRelatorio {
      txtCodSetor.setFK(true);
      txtCodSetor.setNomeCampo("CodSetor");
      
-     lcTipo.add(new GuardaCampo( txtCodTipo, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK,false));
+     lcTipo.add(new GuardaCampo( txtCodTipo, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK,txtRazCli,false));
      lcTipo.add(new GuardaCampo( txtDescTipo,"DescTipoCli", "Descrição do tipo de cliente",ListaCampos.DB_SI,false));
      lcTipo.setReadOnly(true);
      lcTipo.montaSql(false, "TIPOCLI", "VD");
@@ -142,23 +149,60 @@ public class FREtiqueta extends FRelatorio {
      pinCab.adic(txtCodModEtiq,7,105,80,20);
      pinCab.adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
      pinCab.adic(txtDescModEtiq,90,105,200,20);
-     pinCab.adic(btAdiciona,300,7,30,30);
+
+     pinCab.adic(new JLabelPad("Cód.Cli."),7,125,280,20);
+     pinCab.adic(txtCodCli,7,145,80,20);
+
+     pinCab.adic(new JLabelPad("Razão do cliente"),90,125,280,20);
+     pinCab.adic(txtRazCli,90,145,200,20);
+
      
+     pinCab.adic(btAdiciona,300,7,30,30);
+     pinCab.adic(btLimpa,333,7,30,30);
+     pinCab.adic(btExcluir,366,7,30,30);
+     
+	 lcModEtiq.addCarregaListener(this);
+	
      btAdiciona.addActionListener(this);
+     btLimpa.addActionListener(this);
+     btExcluir.addActionListener(this);
 
   }   
+  private void excluir() { 
+    if (tab.getLinhaSel() > -1) {
+        tab.delLinha(tab.getLinhaSel());
+    }
+  }
+  public void montaTabela(Tabela tb){
+      tb.limpa();      
+      objEtiqCli.setTexto(txaEtiqueta.getVlrString());
+      Vector vLabelsColunas = (Vector)objEtiqCli.getLabelsColunasAdic();
+      Vector vTamanhos = (Vector)objEtiqCli.getTamsAdic(); 
+      for(int i = 0;vLabelsColunas.size()>i;i++){
+          tb.adicColuna(vLabelsColunas.elementAt(i).toString());
+          String sTmp = vTamanhos.elementAt(i).toString();
+          int iiTam = Integer.parseInt(sTmp)*5;          
+          tb.setTamColuna(i,iiTam);
+      }
+      bMontaTab = false;
+  }
   
-  public void adicItens() {
+  public void adicItens() {    
 	ResultSet rs = null;
 	PreparedStatement ps = null;
     try{	
         ps = con.prepareStatement(montaQuery("VDCLIENTE"));
         rs = ps.executeQuery();
+
+        Vector vLinha = new Vector();
+        
         while(rs.next()) {
-            
-            
-            
-            
+            vLinha = new Vector();
+            for(int i = 1;objEtiqCli.getCamposAdic().size()>=i;i++){ 
+                String sTmp = rs.getString(i)!=null?rs.getString(i):"";
+                vLinha.addElement(sTmp);                
+            }
+            tab.adicLinha((Vector)vLinha.clone());
         }
     }
     catch(SQLException e){
@@ -167,10 +211,19 @@ public class FREtiqueta extends FRelatorio {
   }
   
   public void actionPerformed(ActionEvent evt) {
-      if (evt.getSource() == btAdiciona) 
-        adicItens();
-  
-      super.actionPerformed(evt);
+      if (evt.getSource() == btAdiciona){ 
+        if(bMontaTab)
+            montaTabela(tab);
+          adicItens();
+      }  
+      else if (evt.getSource() == btLimpa) {
+          tab.limpa();
+      }
+      else if (evt.getSource() == btExcluir) 
+          excluir();
+          
+          
+          super.actionPerformed(evt);
   }
   
   public void setConexao(Connection cn) {
@@ -179,6 +232,7 @@ public class FREtiqueta extends FRelatorio {
     lcSetor.setConexao(cn);
     lcTipo.setConexao(cn);
     lcPapel.setConexao(cn);
+    lcCliente.setConexao(cn);
   }
 
   public void imprimir(boolean bVisualizar) {
@@ -199,9 +253,6 @@ public class FREtiqueta extends FRelatorio {
   	    imp.setTitulo("Etiquetas");
 
   	    if (sTxa!=null) {
-
-  	  	   objEtiqCli.setTexto(sTxa);
-  	          
   	    	try {
   	    		ps = con.prepareStatement(montaQuery("VDCLIENTE"));
   	    		rs = ps.executeQuery();
@@ -210,17 +261,17 @@ public class FREtiqueta extends FRelatorio {
   	    		Vector vVal = new Vector();
 
   	    		int iAdic = 0;
-  	    		while ( rs.next() ) { 
-  	    			vVal = aplicCampos(rs);   	
+  	    		for(int i=0;tab.getNumLinhas()>i;i++) { 
+  	    		    vVal = aplicCampos(i);   	
   	    			vCol.addElement(vVal);
   	    			iAdic++;
-  	    				    			
+  	                    				    			
   	    			if (iNColModEtiq==iAdic){
  	    			    vCols.addElement(vCol.clone());
  	    			    vCol = new Vector();
  	    			    iAdic = 0;
   	    			}
-  	    		}
+ 	    		}
 
   	    		impCol(imp,vCols);
   				
@@ -272,6 +323,9 @@ public class FREtiqueta extends FRelatorio {
                   sWhere += " AND CODTIPOCLI="+txtCodTipo.getVlrInteger().intValue();
                   sWhere += " AND CODEMPTC="+Aplicativo.iCodEmp;
                   sWhere += " AND CODFILIALTC="+lcTipo.getCodFilial();
+              }
+              if (!txtCodCli.getVlrString().equals("")) {
+                  sWhere += " AND CODCLI="+txtCodCli.getVlrInteger().intValue();
               }
          
               for(int i=0;vCamposAdic.size()>i;i++){
@@ -348,12 +402,21 @@ public class FREtiqueta extends FRelatorio {
   	  }  	
   }
   
-  private Vector aplicCampos(ResultSet rs) {
+  public void afterCarrega(CarregaEvent cevt) {
+//      if (cevt.getListaCampos() == lcModEtiq)
+          //montaTabela(tab);
+  }
+
+  public void beforeCarrega(CarregaEvent cevt) {
+  }
+
+  
+  private Vector aplicCampos(int iLinha) {
   	String sCampo = "";
   	String sRetorno = txaEtiqueta.getVlrString();
   	sRetorno = sRetorno.replaceAll("\\\n","[Q]");
   	Vector vRet = null;
-  	if (rs!=null){
+  	if (iLinha>-1){
   	    try {
   	        Vector vTamsAdic = objEtiqCli.getTamsAdic();
   	        Vector vMascAdic = objEtiqCli.getMascarasAdic();
@@ -366,7 +429,8 @@ public class FREtiqueta extends FRelatorio {
   	                    String sValAdic = vValAdic.elementAt(i).toString();
   	                    String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
   	                    sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
-  	                    sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
+//  	                    sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
+  	                    sCampo = tab.getValor(iLinha,i).toString();
 
   	                    if(vMascAdic.elementAt(i)!=null)
   	                        sCampo = Funcoes.setMascara(sCampo, vMascAdic.elementAt(i).toString());
@@ -382,7 +446,7 @@ public class FREtiqueta extends FRelatorio {
 		    	   
   	                }
   	            }						
-  	            catch (SQLException e) {
+  	            catch (Exception e) {
   	                Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+e.getMessage());
   	            }
   	        }

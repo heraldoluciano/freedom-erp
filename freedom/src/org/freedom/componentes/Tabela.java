@@ -33,7 +33,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import org.freedom.acao.TabelaEditEvent;
 import org.freedom.acao.TabelaEditListener;
@@ -213,6 +215,11 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   public void setAutoRol(boolean bVal) {
     bAutoRol = bVal;
   }
+  public void delLinha(int iLinha){       
+      modelo.removeRow(iLinha);
+      ContaLinhas--;
+  }
+  
   public void setRowBackGround(int iLinha, Color cor) {
   	if (iLinha < ContaLinhas) {
   		 for (int i=0;i<ContaColunas;i++) {
