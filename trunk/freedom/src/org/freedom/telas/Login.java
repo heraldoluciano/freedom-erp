@@ -103,6 +103,11 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   	return cbEmp.getVlrInteger().intValue();
   }
 
+  public String getRazFilial() {
+ 	 return (cbEmp.getText());
+  } 
+
+ 
   public int getFilialMz() {
   	 return iFilialMz;
   }
