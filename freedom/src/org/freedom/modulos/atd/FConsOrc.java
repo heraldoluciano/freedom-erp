@@ -80,7 +80,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcTipoConv = new ListaCampos(this,"AT");
 	private ListaCampos lcEnc = new ListaCampos(this,"EC");
-	private JTextFieldPad txtCodTpConv = new JTextFieldPad();
+	private JTextFieldPad txtCodTpConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipoConv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	public FConsOrc() {
 		setTitulo("Pesquisa Orçamentos");

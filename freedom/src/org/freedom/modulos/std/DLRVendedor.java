@@ -36,7 +36,7 @@ public class DLRVendedor extends FFDialogo {
   private JRadioGroup rgOrdem = null;
 //  private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 //  private JPanelPad pinSelec = new JPanelPad(400,90);
-  private JTextFieldPad txtCid = new JTextFieldPad();
+  private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbCid = new JLabelPad("Cidade");
   private Vector vLabs = new Vector();

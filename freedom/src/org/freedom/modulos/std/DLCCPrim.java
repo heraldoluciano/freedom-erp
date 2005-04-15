@@ -31,9 +31,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLCCPrim extends FFDialogo {
-  private JTextFieldPad txtCodCont = new JTextFieldPad(13);
-  private JTextFieldPad txtDescCont = new JTextFieldPad(13);
-  private JTextFieldPad txtSigla = new JTextFieldPad(10);
+  private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtSigla = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JPanelPad pinCont = new JPanelPad(450,100);
   private JLabelPad lbCod = new JLabelPad("Código");
   private JLabelPad lbDesc = new JLabelPad("Descrição");
@@ -41,9 +41,7 @@ public class DLCCPrim extends FFDialogo {
   	super(cOrig);
     setTitulo("Novo Item \"Nivel 1\"");
     setAtribos(450,130);
-    Funcoes.setBordReq(txtDescCont);    
-    txtCodCont.setTipo(JTextFieldPad.TP_STRING,4,0);
-    txtDescCont.setTipo(JTextFieldPad.TP_STRING,50,0);
+    Funcoes.setBordReq(txtDescCont); 
     txtCodCont.setAtivo(false);
     txtCodCont.setVlrString(sCod);
     pinCont.adic(lbCod,7,5,80,20);

@@ -43,12 +43,12 @@ public class DLRCliente extends FFDialogo {
   private JPanelPad pinSelec = new JPanelPad(400,90);
   private JPanelPad pnlbPessoa = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pinPessoa = new JPanelPad(450,40);
-  private JTextFieldPad txtCid = new JTextFieldPad();
+  private JTextFieldPad txtCid = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabelPad lbSelec = new JLabelPad(" Selecão:");
   private JLabelPad lbDe = new JLabelPad("De:");
   private JLabelPad lbA = new JLabelPad("À:");
-  private JTextFieldPad txtDe = new JTextFieldPad();
-  private JTextFieldPad txtA = new JTextFieldPad();
+  private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtA = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbPessoa = new JLabelPad(" Selecionar pessoas:");
   private JLabelPad lbCid = new JLabelPad("Cidade");

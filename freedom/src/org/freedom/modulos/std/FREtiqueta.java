@@ -22,7 +22,6 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,9 +30,9 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
-import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;

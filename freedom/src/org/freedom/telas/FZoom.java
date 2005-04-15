@@ -45,7 +45,7 @@ public class FZoom extends JDialog implements KeyListener, ActionListener {
   private JButton btZoom100 = new JButton(Icone.novo("btZoom100.gif"));
   private JButton btZoomIn = new JButton(Icone.novo("btZoomIn.gif"));
   private JButton btZoomPag = new JButton(Icone.novo("btZoomPag.gif"));
-  private JTextFieldPad txtZoom = new JTextFieldPad();
+  private JTextFieldPad txtZoom = new JTextFieldPad(JTextFieldPad.TP_INTEGER,3,0);
   private JButton btMais = new JButton(Icone.novo("btZoomMais.gif"));
   private JButton btMenos = new JButton(Icone.novo("btZoomMenos.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
@@ -78,7 +78,6 @@ public class FZoom extends JDialog implements KeyListener, ActionListener {
     spnCli = new JScrollPane(pimImagem);
     pnCli.add(spnCli);
 
-    txtZoom.setTipo(JTextFieldPad.TP_INTEGER,3,0);
     txtZoom.setEnterSai(false);
     txtZoom.setVlrString(""+pimImagem.getZoom());
 

@@ -38,17 +38,14 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
 public class FAbreCaixa extends FDialogo {
-	private JTextFieldPad txtData = new JTextFieldPad();
-	private JTextFieldPad txtValor = new JTextFieldPad();
+	private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	private Connection con = null;
 	public FAbreCaixa() {
 		setTitulo("Abrir Caixa");
 		setAtribos(250,110);
-		
-		txtData.setTipo(JTextFieldPad.TP_DATE,10,0);
-		txtValor.setTipo(JTextFieldPad.TP_DECIMAL,10,2);
-		
+				
 		txtData.setVlrDate(Calendar.getInstance().getTime());
 		txtData.setAtivo(false);
 		txtValor.setVlrBigDecimal(new BigDecimal(0));

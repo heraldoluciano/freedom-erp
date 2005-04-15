@@ -65,8 +65,8 @@ import org.freedom.telas.FFilho;
 public class FImportaCto extends FFilho implements ActionListener,FocusListener {
 	private JTextFieldPad txtCodTipo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipo = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtArqOrig = new JTextFieldPad();
-	private JTextFieldPad txtArqDest = new JTextFieldPad();
+	private JTextFieldPad txtArqOrig = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	private JTextFieldPad txtArqDest = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	private JButton btBuscaOrig = new JButton(Icone.novo("btAbrirPeq.gif"));
 	private JButton btBuscaDest = new JButton(Icone.novo("btAbrirPeq.gif"));
 	private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));

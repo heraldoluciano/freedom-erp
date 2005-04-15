@@ -34,10 +34,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanSin extends FFDialogo {
-  private JTextFieldPad txtCodPai = new JTextFieldPad();
-  private JTextFieldPad txtDescPai = new JTextFieldPad();
-  private JTextFieldPad txtCodSin = new JTextFieldPad();
-  private JTextFieldPad txtDescSin = new JTextFieldPad(50);
+  private JTextFieldPad txtCodPai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescPai = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodSin = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescSin = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JLabelPad lbCodPai = new JLabelPad("Cód.origem");
   private JLabelPad lbDescPai = new JLabelPad("Descrição da origem");
   private JLabelPad lbCodSin = new JLabelPad("Código");

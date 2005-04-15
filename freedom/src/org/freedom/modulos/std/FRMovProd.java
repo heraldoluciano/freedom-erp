@@ -50,8 +50,8 @@ public class FRMovProd extends FRelatorio {
   private JLabelPad lbSelec = new JLabelPad(" Seleção:");
   private JLabelPad lbDe = new JLabelPad("de:");
   private JLabelPad lbA = new JLabelPad("à:");
-  private JTextFieldPad txtDe = new JTextFieldPad();
-  private JTextFieldPad txtA = new JTextFieldPad();
+  private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtA = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JLabelPad lbTipoProd = new JLabelPad("Tipo de Produto:");
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JLabelPad lbFiltrar = new JLabelPad("Filtrar por:");

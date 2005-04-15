@@ -45,7 +45,7 @@ import org.freedom.telas.FFDialogo;
 public class FAliquota extends FFDialogo implements ActionListener { 
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JTextFieldPad txtAliquota = new JTextFieldPad();
+	private JTextFieldPad txtAliquota = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
@@ -59,8 +59,6 @@ public class FAliquota extends FFDialogo implements ActionListener {
 		btInsere.setToolTipText("Insere alíquota");
 		btInsere.addActionListener(this);
 		
-		txtAliquota.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
-       	
 	    setPanel(pnCli); 
 		pnCli.add(spnTab,BorderLayout.CENTER);
 		pnCli.add(pinCab,BorderLayout.NORTH);

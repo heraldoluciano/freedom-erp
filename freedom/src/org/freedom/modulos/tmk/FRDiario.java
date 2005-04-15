@@ -41,8 +41,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRDiario extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
   private JComboBoxPad cbSit = null;
