@@ -98,7 +98,7 @@ public class GuardaCampo extends Component {
 		iTipo = PainelImagem.TP_BYTES;
 	}
 	if (descFK==null)
-       txtDescFK = new JTextFieldFK();
+       txtDescFK = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
     else
        txtDescFK = descFK;
     setRequerido(req);
@@ -109,7 +109,7 @@ public class GuardaCampo extends Component {
   }
   
   public JTextFieldPad getDescFK() {
-  	JTextFieldPad txtRet = new JTextFieldPad();
+  	JTextFieldPad txtRet = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   	if (txtDescFK==null) {
   		for(int i=0;i<txtCampo.getTabelaExterna().getComponentCount();i++)
   			if (!((GuardaCampo)txtCampo.getTabelaExterna().getComponent(i)).bPK &&
