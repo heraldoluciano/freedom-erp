@@ -27,6 +27,8 @@ import org.freedom.funcoes.Funcoes;
 public abstract class ObjetoEtiqueta {
   private Vector vLabels = new Vector();
   private Vector vLabelsAdic = new Vector();
+  private Vector vLabelsColunas = new Vector();
+  private Vector vLabelsColunasAdic = new Vector();
   private Vector vValores = new Vector();
   private Vector vValoresAdic = new Vector();
   private Vector vCampos = new Vector();
@@ -41,12 +43,13 @@ public abstract class ObjetoEtiqueta {
 
   }
   
-  public void adicOpcao(String sLabel,String sValor,String sCampo,Integer iTam,String sMascara){
+  public void adicOpcao(String sLabel,String sValor,String sCampo,Integer iTam,String sMascara,String sLabelColuna){
       vLabels.addElement(sLabel);
       vValores.addElement(sValor);
       vCampos.addElement(sCampo);
       vTams.addElement(iTam);
       vMascaras.addElement(sMascara);
+      vLabelsColunas.addElement(sLabelColuna);
   }
 
 /**
@@ -110,6 +113,12 @@ public Vector getMascaras() {
 public Vector getMascarasAdic() {
     return vMascarasAdic;
 }
+public Vector getLabelsColunas() {
+    return vLabelsColunas;
+}
+public Vector getLabelsColunasAdic() {
+    return vLabelsColunasAdic;
+}
 public void setTexto(String sTexto){
     this.sTexto = sTexto;
     getAdic();    
@@ -124,12 +133,13 @@ public int getNumLinEtiq(){
     }    
     return iRet;
 }
-public Vector getAdic(){
+public void getAdic(){
         vCamposAdic = new Vector();
         vTamsAdic = new Vector();
         vLabelsAdic = new Vector ();
         vMascarasAdic = new Vector ();	
-        vValoresAdic = new Vector();                
+        vValoresAdic = new Vector();   
+        vLabelsColunasAdic = new Vector();
 
         for(int i2=0;vValores.size()>i2;i2++) {
             if((sTexto.indexOf(vValores.elementAt(i2).toString()))>(-1)){
@@ -137,10 +147,10 @@ public Vector getAdic(){
                 vTamsAdic.addElement(vTams.elementAt(i2).toString());
                 vLabelsAdic.addElement(vLabels.elementAt(i2).toString());
                 vMascarasAdic.addElement(vMascaras.elementAt(i2)==null?null:vMascaras.elementAt(i2).toString());
-                vValoresAdic.addElement(vValores.elementAt(i2).toString());                
+                vValoresAdic.addElement(vValores.elementAt(i2).toString());
+                vLabelsColunasAdic.addElement(vLabelsColunas.elementAt(i2).toString());
             }                                 
     }   
     
-    return vCamposAdic;
 }
 }
