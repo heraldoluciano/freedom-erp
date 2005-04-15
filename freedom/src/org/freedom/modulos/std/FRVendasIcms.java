@@ -34,8 +34,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasIcms extends FRelatorio {
-  private JTextFieldPad txtDataini = new JTextFieldPad(); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(); 
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   public FRVendasIcms() {
     setTitulo("Icms sobre Vendas e Compras");
     setAtribos(80,80,300,130);
