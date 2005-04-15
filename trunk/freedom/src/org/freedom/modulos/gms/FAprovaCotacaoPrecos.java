@@ -97,7 +97,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 			13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			19, 0);
-	private JTextFieldFK txtDescCC = new JTextFieldFK();
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			10, 0);
 	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad();
