@@ -41,12 +41,12 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class FSangria extends FFDialogo {
-	private JTextFieldFK txtDataUOper = new JTextFieldFK();
-	private JTextFieldFK txtSaldoUOper = new JTextFieldFK();
-	private JTextFieldFK txtStatusUOper = new JTextFieldFK();
-	private JTextFieldFK txtUsuUOper = new JTextFieldFK();
-	private JTextFieldFK txtUsu = new JTextFieldFK();
-	private JTextFieldFK txtData = new JTextFieldFK();
+	private JTextFieldFK txtDataUOper = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldFK txtSaldoUOper = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
+	private JTextFieldFK txtStatusUOper = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);
+	private JTextFieldFK txtUsuUOper = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
+	private JTextFieldFK txtUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
+	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	public FSangria() {

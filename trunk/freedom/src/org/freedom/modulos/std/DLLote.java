@@ -41,7 +41,7 @@ public class DLLote extends FFDialogo {
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataINILote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtVenctoLote = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldFK txtDescProd = new JTextFieldFK();
+  private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JLabelPad lbCodLote = new JLabelPad("Cód.lote");
   private JLabelPad lbCodProd = new JLabelPad("Cód.prod.");
   private JLabelPad lbDescProd = new JLabelPad("Descrição do produto");

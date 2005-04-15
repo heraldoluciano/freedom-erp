@@ -62,7 +62,7 @@ public class DLPrinterJob extends FFDialogo implements ActionListener,KeyListene
   private JButton btZoom100 = new JButton(Icone.novo("btZoom100.gif"));
   private JButton btZoomIn = new JButton(Icone.novo("btZoomIn.gif"));
   private JButton btZoomPag = new JButton(Icone.novo("btZoomPag.gif"));
-  private JTextFieldPad txtZoom = new JTextFieldPad();
+  private JTextFieldPad txtZoom = new JTextFieldPad(JTextFieldPad.TP_INTEGER,3,0);
   private JButton btMais = new JButton(Icone.novo("btZoomMais.gif"));
   private JButton btMenos = new JButton(Icone.novo("btZoomMenos.gif"));
   private PageFormat pag = null;
@@ -77,7 +77,6 @@ public class DLPrinterJob extends FFDialogo implements ActionListener,KeyListene
     setTitulo("Visualizar Impressão Gráfica");
 	setAtribos(pnPai.getSize().width,pnPai.getSize().height);
 
-	txtZoom.setTipo(JTextFieldPad.TP_INTEGER,3,0);
 	txtZoom.setEnterSai(false);
 
 	c.add(pnCab,BorderLayout.NORTH);

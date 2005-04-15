@@ -75,13 +75,13 @@ import org.freedom.telas.FPrincipal;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FSuporte extends FFDialogo implements ActionListener {
-	private JTextFieldPad txtArqMen = new JTextFieldPad();
+	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 
-	private JTextFieldPad txtAssunto = new JTextFieldPad();
+	private JTextFieldPad txtAssunto = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 
-	private JTextFieldPad txtEmail = new JTextFieldPad();
+	private JTextFieldPad txtEmail = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
 
-	private JTextFieldPad txtDe = new JTextFieldPad();
+	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 
 	private JButton btBuscaArq = new JButton(Icone.novo("btAbrirPeq.gif"));
 

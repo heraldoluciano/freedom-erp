@@ -78,7 +78,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
   private JTextFieldFK  txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtVlrLanca = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtCodSubLanca = new JTextFieldPad(JTextFieldPad.TP_INTEGER,2,0);
-  private JTextFieldPad txtVlrAtualLanca = new JTextFieldPad();
+  private JTextFieldPad txtVlrAtualLanca = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -125,7 +125,6 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 	rgTipoLanca.addRadioGroupListener(this);   
 		
     txtVlrAtualLanca.setAtivo(false);
-    txtVlrAtualLanca.setTipo(JTextFieldPad.TP_DECIMAL,15,2);
     
 	txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
     lcPlan.add(new GuardaCampo( txtCodPlanSub, "CodPlan", "Código", ListaCampos.DB_PK, txtDescPlan, false));

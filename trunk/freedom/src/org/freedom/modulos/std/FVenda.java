@@ -372,7 +372,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 	private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
 
-	JTextFieldPad txtUltCamp = new JTextFieldPad();
+	JTextFieldPad txtUltCamp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 
 	boolean[] bPrefs = null;
 

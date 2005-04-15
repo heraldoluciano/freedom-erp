@@ -57,8 +57,8 @@ public class FSintegra extends FFilho implements ActionListener {
   private String sCnpjEmp = "";
   private String sInscEmp = "";
   private JPanelPad pinCliente = new JPanelPad(700,490);
-  private JTextFieldPad txtDataini = new JTextFieldPad();
-  private JTextFieldPad txtDatafim = new JTextFieldPad();
+  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JCheckBoxPad cbEntrada = new JCheckBoxPad("Entrada","S","N");
   private JCheckBoxPad cbSaida = new JCheckBoxPad("Saida","S","N");
   private JCheckBoxPad cbConsumidor = new JCheckBoxPad("NF Consumidor","S","N");
