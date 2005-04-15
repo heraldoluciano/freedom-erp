@@ -88,12 +88,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   String sNomeCampo = "";   
   String sLabel = "";
   String sValAnt = "";
-  public JTextFieldPad () {
-    this(TP_NONE,0,0);
-  }
-  public JTextFieldPad (int i) {
-    this(TP_NONE,i,0);
-  }
   public JTextFieldPad (int tipo, int tam, int dec) {
     addFocusListener(this);
     addKeyListener(this);
