@@ -21,18 +21,25 @@
  */
 
 package org.freedom.modulos.std;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
+import javax.swing.JScrollPane;
+
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
@@ -56,14 +63,23 @@ public class FREtiqueta extends FRelatorio {
   private JTextFieldPad txtAltPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtLargPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  
-  private ListaCampos lcPapel = new ListaCampos(this,"PL");
-    
+  private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);  
+  private ListaCampos lcPapel = new ListaCampos(this,"PL");    
+  private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private Tabela tbDet = new Tabela();
+  private JScrollPane spnDet = new JScrollPane(tbDet); // Scrool pane para
+
   public FREtiqueta() {
-     setTitulo("Impressão de etiquetas");
+      	  	
+  	 setTitulo("Impressão de etiquetas");
      setAtribos(80,80,480,240);
-               
+        
+	 pnTotal.add(spnDet, BorderLayout.SOUTH);
+	 pnTotal.add(pnCab, BorderLayout.CENTER);
+     
+	 setPanel(pnTotal);
+	 
      lcPapel.add(new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
 	 lcPapel.add(new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
      lcPapel.add(new GuardaCampo( txtColPapel,"Colpapel", "Num. colunas", ListaCampos.DB_SI, false));
