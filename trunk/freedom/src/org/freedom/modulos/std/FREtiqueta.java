@@ -35,6 +35,7 @@ import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -79,7 +80,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JButton btLimpa = new JButton(Icone.novo("btRetorno.gif"));
   private boolean bMontaTab = true;
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
-  
+  private JComboBoxPad cbAtivoCli = null;
 
   public FREtiqueta() {
  	 setPanel(pnTotal);      
@@ -91,6 +92,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      pnDet.add(spnDet, BorderLayout.CENTER);   
 	 pnTotal.add(pinCab, BorderLayout.NORTH);
      pnTotal.add(pnDet, BorderLayout.CENTER);
+
+     Vector vAtivo = new Vector();
+     vAtivo.addElement("Ativos");
+     vAtivo.addElement("Inativos");
+
+     cbAtivoCli = new JComboBoxPad(vAtivo, vAtivo,JComboBoxPad.TP_INTEGER, 5, 0);
      
      lcPapel.add(new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
 	 lcPapel.add(new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
@@ -137,29 +144,32 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      txtCodTipo.setFK(true);
      txtCodTipo.setNomeCampo("CodTipoCli");
               
-     pinCab.adic(new JLabelPad("Cód.setor"),7,5,280,20);
+     pinCab.adic(new JLabelPad("Cód.setor"),7,5,80,20);
      pinCab.adic(txtCodSetor,7,25,80,20);
-     pinCab.adic(new JLabelPad("Descrição do setor"),90,5,280,20);
-     pinCab.adic(txtDescSetor,90,25,200,20);
+     pinCab.adic(new JLabelPad("Descrição do setor"),90,5,260,20);
+     pinCab.adic(txtDescSetor,90,25,260,20);
+     
+     pinCab.adic(new JLabelPad("Status"),370,5,100,20);
+     pinCab.adic(cbAtivoCli,370,25,100,25);     
+     
      pinCab.adic(new JLabelPad("Cód.tp.cli."),7,45,280,20);
      pinCab.adic(txtCodTipo,7,65,80,20);
      pinCab.adic(new JLabelPad("Descrição do tipo de cliente"),90,45,280,20);
-     pinCab.adic(txtDescTipo,90,65,200,20);
+     pinCab.adic(txtDescTipo,90,65,260,20);
      pinCab.adic(new JLabelPad("Cód.mod."),7,85,280,20);
      pinCab.adic(txtCodModEtiq,7,105,80,20);
      pinCab.adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
-     pinCab.adic(txtDescModEtiq,90,105,200,20);
+     pinCab.adic(txtDescModEtiq,90,105,260,20);
 
      pinCab.adic(new JLabelPad("Cód.Cli."),7,125,280,20);
      pinCab.adic(txtCodCli,7,145,80,20);
 
      pinCab.adic(new JLabelPad("Razão do cliente"),90,125,280,20);
-     pinCab.adic(txtRazCli,90,145,200,20);
-
+     pinCab.adic(txtRazCli,90,145,260,20);
      
-     pinCab.adic(btAdiciona,300,7,30,30);
-     pinCab.adic(btLimpa,333,7,30,30);
-     pinCab.adic(btExcluir,366,7,30,30);
+     pinCab.adic(btAdiciona,555,15,30,30);
+     pinCab.adic(btLimpa,555,48,30,30);
+     pinCab.adic(btExcluir,555,81,30,30);
      
 	 lcModEtiq.addCarregaListener(this);
 	
@@ -327,6 +337,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
               if (!txtCodCli.getVlrString().equals("")) {
                   sWhere += " AND CODCLI="+txtCodCli.getVlrInteger().intValue();
               }
+              if (cbAtivoCli.getVlrString()!=null){
+                  if (cbAtivoCli.getVlrString().equals("Ativos"))
+                      sWhere += " AND ATIVOCLI='S'";
+                  else if (cbAtivoCli.getVlrString().equals("Inativos"))
+                      sWhere += " AND ATIVOCLI='N'";
+              }
          
               for(int i=0;vCamposAdic.size()>i;i++){
                   sCampos = sCampos + vCamposAdic.elementAt(i).toString()+",";    
@@ -337,6 +353,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
           catch(Exception e){
               e.printStackTrace();
           }
+          System.out.println(sSQL);
       }
       catch(Exception e) {
           e.printStackTrace();
