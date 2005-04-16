@@ -9,6 +9,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{FFuncao.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLCompOrc.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
@@ -18,11 +19,13 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FConsOrc.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{DLDescontItOrc.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FOrcamento.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.grh{DLRFuncao.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
     </selectedElements>
