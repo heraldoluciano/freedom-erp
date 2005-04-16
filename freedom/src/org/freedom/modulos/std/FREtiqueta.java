@@ -301,6 +301,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	       return;
   	    }
   	    imp = new ImprimeOS("",con);
+  	    imp.setImpEject(false);
   	    imp.verifLinPag();
   	    imp.setTitulo("Etiquetas");
 

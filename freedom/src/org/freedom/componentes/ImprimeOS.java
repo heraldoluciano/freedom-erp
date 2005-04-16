@@ -91,6 +91,8 @@ public class ImprimeOS implements ActionListener {
 
 	private Component cOwner = null;
 
+	boolean bImpEject = true;
+	
 	boolean bSemAcento = true;
 
 	boolean bImpGrafica = false;
@@ -147,6 +149,12 @@ public class ImprimeOS implements ActionListener {
 
 	FAndamento and = null;
 
+	public void setImpEject(boolean bImpEject) {
+		this.bImpEject = bImpEject; 
+	}
+	public boolean getImpEject() {
+		return this.bImpEject;
+	}
 	public String getSubTitulo(int index) {
 		return (String) subTitulos.elementAt(index);
 	}
@@ -461,13 +469,23 @@ public class ImprimeOS implements ActionListener {
 			while (true) {
 				try {
 					bBuf = rfPrint.readByte();
-					sBuf = "" + ((char) bBuf);
+					if ((bBuf==12) &&(!bImpEject)) {
+						sBuf = "";
+						bBuf = rfPrint.readByte();
+						if (bBuf!=13) 
+							sBuf = "" + ((char) bBuf);
+						iAndamento ++;
+					}
+					else 
+						sBuf = "" + ((char) bBuf);
 					iAndamento++;
 				} catch (EOFException er2) {
 					break;
 				}
-				fwPrint.write(sBuf);
-				fwPrint.flush();
+				if (!sBuf.equals("")) {
+					fwPrint.write(sBuf);
+					fwPrint.flush();
+				}
 			}
 			fwPrint.close();
 			rfPrint.close();
