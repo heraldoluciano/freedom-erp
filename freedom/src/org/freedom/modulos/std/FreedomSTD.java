@@ -242,15 +242,6 @@ public class FreedomSTD extends Aplicativo {
   	try {
     FreedomSTD freedom = new FreedomSTD();
     freedom.show();
-    String[] choices = {"A", "long", "array", "of", "strings"};
-    String selectedName = TesteDialogo.showDialog(
-            						telaPrincipal.dpArea,
-                                null,
-                                "A description of the list:",
-                                "Dialog Title",
-                                choices,
-                                choices[0],
-                                "Cosmo"); 
 	} catch (Throwable e) {
 		Funcoes.criaTelaErro("Erro de execução");
 		e.printStackTrace();

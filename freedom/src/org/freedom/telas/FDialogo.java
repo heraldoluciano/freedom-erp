@@ -52,10 +52,11 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
    public boolean OK = false;
    public Connection con = null;
    public FDialogo () {
+   	super(Aplicativo.telaPrincipal, "Dialogo", true);
+    setTitle("Dialogo");
     setModal(true);
     setSize( 250, 100);
     setLocationRelativeTo(this);
-    setTitle("Dialogo");
     
     c.setLayout(new BorderLayout());
     
