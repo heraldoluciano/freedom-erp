@@ -224,6 +224,7 @@ public class FreedomSTD extends Aplicativo {
   ajustaMenu();
  	
   sNomeModulo = "Administrativo";
+  sMailSuporte = "suporte@stpinf.com";
   sNomeSis = "Freedom";
   sEmpSis = "Setpoint Informática Ltda.";
   vEquipeSis.add("Robson Sanchez - Supervisão / Analise");

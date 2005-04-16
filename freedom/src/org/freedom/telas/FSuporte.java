@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.JarURLConnection;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,42 +78,23 @@ import org.freedom.telas.FPrincipal;
  */
 public class FSuporte extends FFDialogo implements ActionListener {
 	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
-
 	private JTextFieldPad txtAssunto = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-
-	private JTextFieldPad txtEmail = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
-
+//	private JTextFieldPad txtEmail = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
 	private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-
 	private JButton btBuscaArq = new JButton(Icone.novo("btAbrirPeq.gif"));
-
 	private JButton btEnviar = new JButton(Icone.novo("btEnviarMail.gif"));
-
 	private JTextAreaPad txaMen = new JTextAreaPad();
-
 	private JScrollPane spnMen = new JScrollPane(txaMen);
-
-	private JPanelPad pinGeral = new JPanelPad(0, 135);
-
+//	private JPanelPad pinGeral = new JPanelPad(0, 135);
 	private JPanelPad pinArq = new JPanelPad(0, 50);
-
 	private JPanelPad pinRod = new JPanelPad(0, 0);
-
-	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
+	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,	new BorderLayout());
 	private JProgressBar pbAnd = new JProgressBar();
-
 	private JLabelPad lbStatus = new JLabelPad("Pronto.");
-
 	String sSMTP = null;
-
 	String sUser = null;
-
 	String sPass = null;
-
 	File fArq = null;
-
 	boolean bEnvia = false;
 
 	public FSuporte() {
@@ -122,6 +105,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		lbStatus.setForeground(Color.BLUE);
 		pinRod.tiraBorda();
 
+		txaMen.setVlrString("Descreva aqui seu problema, dúvida ou sugestão...");
 		Vector vVals = new Vector();
 		vVals.add("A");
 		vVals.add("C");
@@ -133,7 +117,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
-		c.add(pinGeral, BorderLayout.NORTH);
+//		c.add(pinGeral, BorderLayout.NORTH);
 		c.add(pnCenter, BorderLayout.CENTER);
 		c.add(pinRod, BorderLayout.SOUTH);
 
@@ -143,14 +127,8 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		pnCenter.add(spnMen, BorderLayout.CENTER);
 		pnCenter.add(lbStatus, BorderLayout.SOUTH);
 
-		pinGeral.adic(new JLabelPad("E-Mail:"), 7, 0, 333, 20);
-		pinGeral.adic(txtEmail, 7, 20, 333, 20);
-		pinGeral.adic(new JLabelPad("Nome:"), 7, 40, 333, 20);
-		pinGeral.adic(txtDe, 7, 60, 333, 20);
-		pinGeral.adic(new JLabelPad("Assunto:"), 7, 80, 333, 20);
-		pinGeral.adic(txtAssunto, 7, 100, 333, 20);
-
-		pinArq.adic(new JLabelPad("Arquivo"), 7, 0, 200, 20);
+		txtAssunto.setVlrString("Pedido de suporte - "+Aplicativo.sRazFilial.trim()+" - "+Aplicativo.strUsuario);
+		pinArq.adic(new JLabelPad("Anexe um arquivo, caso necessário."), 7, 0, 250, 20);
 		pinArq.adic(txtArqMen, 7, 20, 313, 20);
 		pinArq.adic(btBuscaArq, 320, 20, 20, 20);
 
@@ -163,7 +141,26 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		btBuscaArq.addActionListener(this);
 		btEnviar.addActionListener(this);
 	}
-
+	private String buscaEmailFilial(){
+	    String sRet = "";
+	    ResultSet rs = null;
+	    PreparedStatement ps = null;
+	    String sSQL = "SELECT EMAILFILIAL FROM SGFILIAL FL WHERE CODEMP=? AND CODFILIAL=?";
+	    try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();			
+		    while(rs.next()){
+		        sRet = rs.getString(1);
+		    }
+	    }
+	    catch(SQLException e){
+	        e.printStackTrace();
+	    }
+	    
+	    return sRet;
+	}
 	private String buscaArq() {
 		String sRetorno = "";
 		JFileChooser fcImagem = new JFileChooser();
@@ -215,11 +212,11 @@ public class FSuporte extends FFDialogo implements ActionListener {
 
 	private boolean verifCab() {
 		boolean bRet = false;
-		if (txtEmail == null) {
+/*		if (txtEmail == null) {
 			Funcoes.mensagemInforma(this,
-					"Não foi preenchido o campo 'E-Maile:'!");
+					"Não foi preenchido o campo 'E-Mail:'!");
 		}
-
+*/
 		if (txtDe == null) {
 			Funcoes.mensagemInforma(this, "Não foi preenchido o campo 'De:'!");
 		} else if (txtAssunto == null) {
@@ -266,7 +263,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		}
 
 		bEnvia = true;
-		String sEmail = "suporte@sistema-e-log.com.br";
+		String sEmail = Aplicativo.sMailSuporte;
 		if (!bEnvia)
 			return;
 		if (sEmail != null)
@@ -281,20 +278,37 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		state("Preparando envio para: '" + sTo + "'");
 		try {
 			MimeMessage mes = new MimeMessage(se);
+			txtDe.setVlrString(buscaEmailFilial());
+			if(txtDe.getVlrString()==null) {
+			    new Exception("Não foi possível enviar mensagem!\nCadestre um email válido para a filial.");
+			}
 			mes.setFrom(new InternetAddress(txtDe.getVlrString()));
 			mes.setSubject(txtAssunto.getVlrString());
 			mes.setSentDate(new Date());
 			mes.addRecipient(RecipientType.TO, new InternetAddress(sTo));
 
 			BodyPart parte = new MimeBodyPart();
-
-			parte.setText(txaMen.getVlrString());
+			
+			String sTextoAdic = "Novo pedido de suporte da empresa:"+Aplicativo.sRazFilial+"\n"; 
+			sTextoAdic += "Usuário:"+Aplicativo.strUsuario+"\n";
+			sTextoAdic += "Sistema:"+Aplicativo.sNomeSis+"\n";
+			sTextoAdic += "Módulo:"+Aplicativo.sNomeModulo+"\n";
+		    try {
+			    URL uPath = getClass().getResource("FSuporte.class");
+		        JarURLConnection juc = (JarURLConnection)uPath.openConnection();
+		        sTextoAdic += "Versão:"+Funcoes.dateToStrDataHora(new Date(juc.getJarEntry().getTime()))+"\n";
+		    }
+		    catch(Exception e){
+		        e.printStackTrace();
+		    }
+		    sTextoAdic += "\nMensagem:\n"+txaMen.getVlrString();
+			parte.setText(sTextoAdic);
 
 			Multipart multipart = new MimeMultipart();
 			multipart.addBodyPart(parte);
 
 			if (fArq != null) {
-				parte = new MimeBodyPart();
+				parte = new MimeBodyPart(); 
 				FileDataSource orig = new FileDataSource(fArq);
 				parte.setDataHandler(new DataHandler(orig));
 				parte.setFileName(fArq.getName());
