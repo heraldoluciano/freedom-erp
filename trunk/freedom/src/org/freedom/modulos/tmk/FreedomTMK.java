@@ -110,7 +110,8 @@ public class FreedomTMK extends Aplicativo {
 
 		ajustaMenu();
 		
-		sNomeModulo = "Telemarkting";
+		  sNomeModulo = "Telemarkting";
+		  sMailSuporte = "suporte@stpinf.com";
 		  sNomeSis = "Freedom";
 		  sEmpSis = "Setpoint Informática Ltda.";
 		  vEquipeSis.add("Robson Sanchez - Supervisão / Analise");

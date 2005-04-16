@@ -144,6 +144,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sNomeModulo = "";
 	public static String sEmpSis = "";
 	public static String sArqIni = "";
+	public static String sMailSuporte = "";
 	
 	public Connection getConIB() {
 		return conIB;

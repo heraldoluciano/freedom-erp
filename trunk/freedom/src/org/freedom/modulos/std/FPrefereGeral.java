@@ -48,6 +48,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -67,6 +68,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JPanelPad pinSVV = new JPanelPad();
 	private JPanelPad pinDev = new JPanelPad();
 	private JPanelPad pinEstoq = new JPanelPad();
+	private JPanelPad pinEmail = new JPanelPad();
+	private JPanelPad pinSmtp = new JPanelPad();
 	private JPanelPad pinProd = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(
@@ -157,7 +160,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 			JTextFieldPad.TP_STRING, 40, 0);
 	private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
-
+	private JTextFieldPad txtSmtpMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
+	private JTextFieldPad txtUserMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
+	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);	
 	private JCheckBoxPad cbUsaRefProd = null;
 	private JCheckBoxPad cbUsaPedSeq = null;
 	private JCheckBoxPad cbUsaDescEspelho = null;
@@ -203,6 +208,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcClasCli = new ListaCampos(this, "CE");
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
 	private ListaCampos lcPDV = new ListaCampos(this, "");
+	private ListaCampos lcPrefere3 = new ListaCampos(this, "");
 
 	public FPrefereGeral() {
 		setTitulo("Preferências Gerais");
@@ -673,6 +679,21 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 				"Descrição do tp. mov. para inventário");
 		adicDB(cbMultiAlmox,7,50,250,20,"MultiAlmox","",true);
 
+		//Email
+
+		setListaCampos(lcPrefere3);
+		setPainel(pinEmail);
+		adicTab("Mail", pinEmail);
+		JLabelPad lbServer = new JLabelPad("  Servidor para envio de email");
+		lbServer.setOpaque(true);
+		adic(lbServer,15,10,200,15);
+		adic(pinSmtp,10,15,220,160);
+		setPainel(pinSmtp);
+		adicCampo(txtSmtpMail,10,30,150,20,"SmtpMail","SMTP", ListaCampos.DB_SI, false);
+		adicCampo(txtUserMail,10,70,150,20,"UserMail","Usuario", ListaCampos.DB_SI,false);
+		adicCampo(txpPassMail,10,110,150,20,"PassMail","Senha",ListaCampos.DB_SI,false);
+		setListaCampos(false, "PREFERE3", "SG");
+		
 		// fim da adicão de abas
 
 		nav.setAtivo(0, false);
@@ -724,7 +745,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		lcCampos.addCarregaListener(this);
 		lcPDV.addInsertListener(this);
 		lcPDV.addEditListener(this);
-
+		lcPrefere3.addInsertListener(this);
+		lcPrefere3.addEditListener(this);
+		
 	}
 
 	public void beforePost(PostEvent pevt) {
@@ -737,11 +760,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	}
 
 	public void afterPost(PostEvent pevt) {
-		if (pevt.getListaCampos() == lcCampos)
-			if (lcPDV.getStatus() == ListaCampos.LCS_INSERT
-					|| lcPDV.getStatus() == ListaCampos.LCS_EDIT) {
+		if (pevt.getListaCampos() == lcCampos) {
+			if (lcPDV.getStatus() == ListaCampos.LCS_INSERT || lcPDV.getStatus() == ListaCampos.LCS_EDIT) {
 				lcPDV.post();
 			}
+			if (lcPrefere3.getStatus() == ListaCampos.LCS_INSERT || lcPrefere3.getStatus() == ListaCampos.LCS_EDIT) {
+			    lcPrefere3.post();
+			}
+		}
 	}
 
 	public void afterEdit(EditEvent eevt) {
@@ -763,6 +789,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 				lcCampos.edit();
 			}
 		}
+		if (ievt.getListaCampos() == lcPrefere3) {
+			if (ievt.getListaCampos().getStatus() == ListaCampos.LCS_INSERT) {
+				lcCampos.edit();
+			}
+		}		
 	}
 
 	public void beforeInsert(InsertEvent ievt) {
@@ -798,7 +829,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		lcTabPreco.setConexao(cn);
 		lcCli.setConexao(cn);
 		lcPDV.setConexao(cn);
+		lcPrefere3.setConexao(cn);
 		lcCampos.carregaDados();
+		
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
@@ -806,6 +839,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 			if (!(lcPDV.getStatus() == ListaCampos.LCS_EDIT ||
 					lcPDV.getStatus() == ListaCampos.LCS_INSERT))
 			lcPDV.carregaDados();
+			
+			if (!(lcPrefere3.getStatus() == ListaCampos.LCS_EDIT ||
+					lcPrefere3.getStatus() == ListaCampos.LCS_INSERT))
+			lcPrefere3.carregaDados();			
 		}
 
 	}
