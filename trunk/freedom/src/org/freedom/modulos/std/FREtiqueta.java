@@ -194,8 +194,16 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
           tb.adicColuna(vLabelsColunas.elementAt(i).toString());
           String sTmp = vTamanhos.elementAt(i).toString();
           int iiTam = Integer.parseInt(sTmp)*5;          
-          tb.setTamColuna(i,iiTam);
+          tb.setTamColuna(iiTam,i);
       }
+      
+      for(int i = 0;vLabelsColunas.size()>i;i++){
+          String sTmp = vTamanhos.elementAt(i).toString();
+          int iiTam = Integer.parseInt(sTmp)*7;          
+          tb.setTamColuna(iiTam,i);
+      }
+
+      
       bMontaTab = false;
   }
   
@@ -317,7 +325,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	}
 	
   }
-  
+   
   private String montaQuery(String sTabela){
       String sSQL = "";
       try {
@@ -383,7 +391,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
                       for(int i2 = 0;iColsEtiq>i2;i2++){
           
                           Vector vEtiqueta = (Vector) vCol.elementAt(i2);
-                          String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString().trim();
+                          String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
                           imp.say(imp.pRow()+iSalto,iCol,sImp);
                           
                           iSalto = 0;
@@ -431,7 +439,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 
   public void beforeCarrega(CarregaEvent cevt) {
   }
-
   
   private Vector aplicCampos(int iLinha) {
   	String sCampo = "";
