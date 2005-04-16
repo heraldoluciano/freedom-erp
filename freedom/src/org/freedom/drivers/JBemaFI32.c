@@ -489,6 +489,22 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bReducaoZ( JNIEnv * en
 }
 
 
+/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bRelatorioGerencialTef * Signature: (Ljava/lang/char*;)I */
+JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bRelatorioGerencialTef( JNIEnv * env, jobject obj, jstring str1 )
+{
+  char * pStr1;
+  int iRetorno;
+
+  pStr1 = ( char * ) ( * env )->GetStringUTFChars( env, str1, 0 );
+
+  iRetorno = Bematech_FI_RelatorioGerencialTEF( pStr1 );
+
+  ( * env )->ReleaseStringChars( env, str1, ( jchar * ) pStr1 );
+
+  return iRetorno;
+}
+
+
 /* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bRelatorioGerencial * Signature: (Ljava/lang/char*;)I */
 JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bRelatorioGerencial( JNIEnv * env, jobject obj, jstring str1 )
 {
