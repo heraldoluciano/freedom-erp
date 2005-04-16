@@ -25,6 +25,7 @@ package org.freedom.modulos.std;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.TesteDialogo;
 
 public class FreedomSTD extends Aplicativo {
   public FreedomSTD() {
@@ -241,6 +242,15 @@ public class FreedomSTD extends Aplicativo {
   	try {
     FreedomSTD freedom = new FreedomSTD();
     freedom.show();
+    String[] choices = {"A", "long", "array", "of", "strings"};
+    String selectedName = TesteDialogo.showDialog(
+            						telaPrincipal.dpArea,
+                                null,
+                                "A description of the list:",
+                                "Dialog Title",
+                                choices,
+                                choices[0],
+                                "Cosmo"); 
 	} catch (Throwable e) {
 		Funcoes.criaTelaErro("Erro de execução");
 		e.printStackTrace();
