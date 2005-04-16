@@ -104,7 +104,7 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   }
 
   public String getRazFilial() {
- 	 return (cbEmp.getText());
+ 	 return (cbEmp.getItemAt(cbEmp.getSelectedIndex()).toString());
   } 
 
  
