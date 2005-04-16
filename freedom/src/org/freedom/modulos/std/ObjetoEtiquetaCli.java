@@ -29,7 +29,7 @@ public class ObjetoEtiquetaCli extends ObjetoEtiqueta {
       adicOpcao("Número","#NUMERO#","NUMCLI",new Integer(20),null,"Nro.");
       adicOpcao("Número end. cob.","#NUMCOB#","CASE WHEN ENDCOB IS NULL THEN NUMCLI ELSE NUMCOB END AS NUMEROC",new Integer(20),null,"Nro.");
       adicOpcao("Número end. ent.","#NUMENT#","CASE WHEN ENDENT IS NULL THEN NUMCLI ELSE NUMENT END AS NUMEROE",new Integer(20),null,"Nro.");
-      adicOpcao("CEP","#CEP#","CEPCLI",new Integer(9),null,"Cep");
+      adicOpcao("CEP","#CEP#","CEPCLI",new Integer(9),"#####-###","Cep");
       adicOpcao("CEP cob.","#CEPCOB#","CASE WHEN ENDCOB IS NULL THEN CEPCLI ELSE CEPCOB END AS CEPC",new Integer(20),null,"CEP cob.");
       adicOpcao("CEP ent.","#CEPENT#","CASE WHEN ENDENT IS NULL THEN CEPCLI ELSE CEPENT END AS CEPE",new Integer(20),null,"CEP ent.");
       adicOpcao("Bairro do cliente","#BAIRRO#","BAIRCLI",new Integer(30),null,"Bairro");
