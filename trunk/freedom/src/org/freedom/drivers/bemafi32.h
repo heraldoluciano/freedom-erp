@@ -40,8 +40,6 @@ extern __stdcall Bematech_FI_AumentaDescricaoItem( char * Descricao );
 
 extern __stdcall Bematech_FI_LeituraX();
 extern __stdcall Bematech_FI_ReducaoZ( char * Data, char * Hora );
-extern __stdcall Bematech_FI_RelatorioGerencial( char * Texto );
-extern __stdcall Bematech_FI_FechaRelatorioGerencial();
 extern __stdcall Bematech_FI_LeituraMemoriaFiscalData( char * DataInicial, char * DataFinal );
 extern __stdcall Bematech_FI_LeituraMemoriaFiscalReducao( char * ReducaoInicial, char * ReducaoFinal );
 extern __stdcall Bematech_FI_LeituraMemoriaFiscalSerialData( char * DataInicial, char * DataFinal );
@@ -55,6 +53,9 @@ extern __stdcall Bematech_FI_UsaComprovanteNaoFiscalVinculado( char * Texto );
 extern __stdcall Bematech_FI_FechaComprovanteNaoFiscalVinculado();
 extern __stdcall Bematech_FI_Sangria( char * Valor );
 extern __stdcall Bematech_FI_Suprimento( char * Valor, char * FormaPagamento );
+extern __stdcall Bematech_FI_RelatorioGerencial( char * Texto );
+extern __stdcall Bematech_FI_RelatorioGerencialTEF( char * Texto );
+extern __stdcall Bematech_FI_FechaRelatorioGerencial();
 
 
 // Funções de Informações da Impressora
