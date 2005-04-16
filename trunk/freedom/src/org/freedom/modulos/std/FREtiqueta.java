@@ -505,7 +505,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	                    int iTmp = Funcoes.contaChar(sFragmento,'-'); 
 		    	    
   	                    if (sCampo.length()>=iTmp)
-  	                        sCampo = sCampo.substring(0,iTmp);
+  	                        sCampo = sCampo.substring(0,iTmp); 
   	                    else 
   	                        sCampo = sCampo+Funcoes.replicate(" ",iTmp-sCampo.length());
 
