@@ -68,7 +68,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldPad txtAltPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtLargPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);  
+  private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtComprimido = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
   private ListaCampos lcPapel = new ListaCampos(this,"PL");    
   private ListaCampos lcCliente = new ListaCampos(this,"CL");
   private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -121,6 +122,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      lcModEtiq.add(new GuardaCampo( txtNColModEtiq,"NColModEtiq","Colunas",ListaCampos.DB_SI,false));
   	 lcModEtiq.add(new GuardaCampo( txtCodPapel,"Codpapel","Cód.papel", ListaCampos.DB_FK, false));    
   	 lcModEtiq.add(new GuardaCampo( txtEECModEtiq,"EECModEtiq","entre col.", ListaCampos.DB_SI, false));
+  	 lcModEtiq.add(new GuardaCampo( txtComprimido,"Comprimido","Imp. Comp.", ListaCampos.DB_SI, false));
      
      lcModEtiq.setReadOnly(true);
      lcModEtiq.montaSql(false, "MODETIQUETA", "SG");
@@ -372,6 +374,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
           int iSalto = 1;
           int iNumLinEtiq = objEtiqCli.getNumLinEtiq();
           try {
+              if (txtComprimido.getVlrString()!=null)
+                  if(txtComprimido.getVlrString().equals("S"))
+  	                  imp.say(imp.pRow(),0,""+imp.comprimido());
               for(int i1=0;vCols.size()>i1;i1++){                  
                   Vector vCol = ((Vector)(vCols.elementAt(i1)));                  
                   for(int iNumLinhaEtiqAtual = 0;iNumLinEtiq>iNumLinhaEtiqAtual;iNumLinhaEtiqAtual++){                   
@@ -446,7 +451,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	                    String sValAdic = vValAdic.elementAt(i).toString();
   	                    String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
   	                    sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
-//  	                    sCampo = (rs.getString(sTmp)!=null?rs.getString(sTmp).trim():"");
+
   	                    sCampo = tab.getValor(iLinha,i).toString();
 
   	                    if(vMascAdic.elementAt(i)!=null)
