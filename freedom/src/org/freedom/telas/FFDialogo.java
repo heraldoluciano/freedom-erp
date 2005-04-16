@@ -128,8 +128,6 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
 	  new MouseInputAdapter(){};
 	pnPai.addMouseListener(adapter);
 	pnPai.addMouseMotionListener(adapter);
-	
-	
 
 	putClientProperty("JInternalFrame.frameType", 
 	  "optionDialog");
@@ -205,9 +203,11 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
   public void adicInvisivel(Component comp) {
     comp.addKeyListener(this);
   }
+
   public void setVisible(boolean bVal) {
 //	Component fo = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
-	super.setVisible(bVal);
+	
+      super.setVisible(bVal);
 	
   	if (bVal) {
 
@@ -236,8 +236,9 @@ public class FFDialogo extends FFilho implements ActionListener, KeyListener {
 		if (modal != null) {
 			modal.paraModal();
 		}
-	}
+	}	
   }
+  
   public void keyPressed(KeyEvent kevt) {
     if ((bUltimo) & (kevt.getKeyCode() == KeyEvent.VK_ENTER) & (btOK.isEnabled()))
       btOK.doClick();
