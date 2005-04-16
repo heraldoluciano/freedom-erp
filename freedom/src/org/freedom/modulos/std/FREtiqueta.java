@@ -50,6 +50,9 @@ import org.freedom.telas.FRelatorio;
 public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescModEtiq = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -72,9 +75,10 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldPad txtComprimido = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
   private ListaCampos lcPapel = new ListaCampos(this,"PL");    
   private ListaCampos lcCliente = new ListaCampos(this,"CL");
+  private ListaCampos lcVendedor = new ListaCampos(this,"VD");
   private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnDet = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JPanelPad pinCab = new JPanelPad(480,190);
+  private JPanelPad pinCab = new JPanelPad(480,230);
   private Tabela tab = new Tabela();
   private JScrollPane spnDet = new JScrollPane(tab);
   private JButton btAdiciona = new JButton(Icone.novo("btGerar.gif"));
@@ -109,7 +113,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
  	 lcPapel.setReadOnly(true);
  	 txtCodPapel.setTabelaExterna(lcPapel);
      
-     lcCliente.add(new GuardaCampo( txtCodCli, "Codcli", "Cod.Cli.", ListaCampos.DB_PK, false));
+     lcCliente.add(new GuardaCampo( txtCodCli, "Codcli", "Cod.Cli.", ListaCampos.DB_PK,txtRazCli, false));
 	 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false));
 	 lcCliente.montaSql(false, "CLIENTE", "VD");
  	 lcCliente.setQueryCommit(false);
@@ -138,14 +142,34 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      txtCodSetor.setFK(true);
      txtCodSetor.setNomeCampo("CodSetor");
      
-     lcTipo.add(new GuardaCampo( txtCodTipo, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK,txtRazCli,false));
+     lcTipo.add(new GuardaCampo( txtCodTipo, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK,txtDescTipo,false));
      lcTipo.add(new GuardaCampo( txtDescTipo,"DescTipoCli", "Descrição do tipo de cliente",ListaCampos.DB_SI,false));
      lcTipo.setReadOnly(true);
      lcTipo.montaSql(false, "TIPOCLI", "VD");
      txtCodTipo.setTabelaExterna(lcTipo);
      txtCodTipo.setFK(true);
      txtCodTipo.setNomeCampo("CodTipoCli");
-              
+
+     lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.Comiss.", ListaCampos.DB_PK,txtNomeVend,false));
+     lcVendedor.add(new GuardaCampo( txtNomeVend,"NomeVend", "Nome do Comissionado",ListaCampos.DB_SI,false));
+     lcVendedor.setReadOnly(true);
+     lcVendedor.montaSql(false, "VENDEDOR", "VD");
+     txtCodVend.setTabelaExterna(lcVendedor);
+     txtCodVend.setFK(true);
+     txtCodVend.setNomeCampo("CodVend");
+
+     lcCliente.add(new GuardaCampo( txtCodCli, "Codcli", "Cod.Cli.", ListaCampos.DB_PK,txtRazCli, false));
+	 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false));
+ 	 lcCliente.setReadOnly(true);
+	 lcCliente.montaSql(false, "CLIENTE", "VD");
+ 	 lcCliente.setQueryCommit(false); 	 
+ 	 txtCodCli.setTabelaExterna(lcCliente);
+ 	 txtCodCli.setFK(true);
+ 	 txtCodCli.setNomeCampo("CodCli");
+     
+     
+     
+     
      pinCab.adic(new JLabelPad("Cód.setor"),7,5,80,20);
      pinCab.adic(txtCodSetor,7,25,80,20);
      pinCab.adic(new JLabelPad("Descrição do setor"),90,5,260,20);
@@ -168,6 +192,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 
      pinCab.adic(new JLabelPad("Razão do cliente"),90,125,280,20);
      pinCab.adic(txtRazCli,90,145,260,20);
+
+     pinCab.adic(new JLabelPad("Cód.Comiss."),7,165,280,20);
+     pinCab.adic(txtCodVend,7,185,80,20);
+
+     pinCab.adic(new JLabelPad("Nome do comissionado"),90,165,280,20);
+     pinCab.adic(txtNomeVend,90,185,260,20);
      
      pinCab.adic(btAdiciona,555,15,30,30);
      pinCab.adic(btLimpa,555,48,30,30);
@@ -253,6 +283,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
     lcTipo.setConexao(cn);
     lcPapel.setConexao(cn);
     lcCliente.setConexao(cn);
+    lcVendedor.setConexao(cn);
   }
 
   public void imprimir(boolean bVisualizar) {
@@ -353,6 +384,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
                   else if (cbAtivoCli.getVlrString().equals("Inativos"))
                       sWhere += " AND ATIVOCLI='N'";
               }
+              if (!txtCodVend.getVlrString().equals("")) {
+                  sWhere += " AND CODVEND="+txtCodVend.getVlrInteger().intValue();
+                  sWhere += " AND CODEMPVD="+Aplicativo.iCodEmp;
+                  sWhere += " AND CODFILIALVD="+lcVendedor.getCodFilial();
+              }
+
          
               for(int i=0;vCamposAdic.size()>i;i++){
                   sCampos = sCampos + vCamposAdic.elementAt(i).toString()+",";    
