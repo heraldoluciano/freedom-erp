@@ -40,6 +40,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -66,6 +67,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     private JComboBoxPad cbCampos = null;
     private ListaCampos lcPapel = new ListaCampos(this,"PL");
     private Vector vTamanhos = new Vector();
+    private JCheckBoxPad cbComprimido = new JCheckBoxPad("Imprime Comprimido","S","N");
 	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
 	public FModEtiqueta() {
     	setTitulo("Modelo de etiqueta");
@@ -91,7 +93,8 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     	adicCampo(txtCodModEtiq, 7, 20, 90, 20,"CodModEtiq","Cód.mod.etiq.", ListaCampos.DB_PK, true);
     	adicCampo(txtDescModEtiq, 100, 20, 237, 20,"DescModEtiq","Descrição do modelo de etiqueta", ListaCampos.DB_SI, true);
     	adicCampo(txtNColModEtiq, 340, 20, 60, 20,"NColModEtiq","Colunas", ListaCampos.DB_SI, true);
-    	adicCampo(txtEECModEtiq, 403, 20, 60, 20,"EECModEtiq","Entre col.", ListaCampos.DB_SI, true);
+    	adicCampo(txtEECModEtiq, 403, 20, 60, 20,"EECModEtiq","Entre col.", ListaCampos.DB_SI, true);      	
+    	adicDB(cbComprimido, 466, 20, 100, 20,"EECModEtiq","Entre col.", true);
     	
     	adicDBLiv(txaEtiqueta,"TxaModEtiq", "Corpo", true);
     	
