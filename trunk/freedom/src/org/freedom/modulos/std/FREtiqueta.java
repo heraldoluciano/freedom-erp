@@ -167,9 +167,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
  	 txtCodCli.setFK(true);
  	 txtCodCli.setNomeCampo("CodCli");
      
-     
-     
-     
      pinCab.adic(new JLabelPad("Cód.setor"),7,5,80,20);
      pinCab.adic(txtCodSetor,7,25,80,20);
      pinCab.adic(new JLabelPad("Descrição do setor"),90,5,260,20);
@@ -198,7 +195,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 
      pinCab.adic(new JLabelPad("Nome do comissionado"),90,165,280,20);
      pinCab.adic(txtNomeVend,90,185,260,20);
-     
+          
+	 btAdiciona.setToolTipText("Adiciona");
+	 btLimpa.setToolTipText("Limpa o grid");
+	 btExcluir.setToolTipText("Exclui o ítem selecionado");
+
      pinCab.adic(btAdiciona,555,15,30,30);
      pinCab.adic(btLimpa,555,48,30,30);
      pinCab.adic(btExcluir,555,81,30,30);
