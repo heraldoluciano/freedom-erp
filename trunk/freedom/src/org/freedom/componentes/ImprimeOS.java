@@ -1014,7 +1014,8 @@ public class ImprimeOS implements ActionListener {
 			PrintStream ps = new PrintStream(new FileOutputStream(fArq));
 			for (int i = 1; i <= getNumPags(); ++i) {
 				ps.print(lePagina(i));
-				ps.print(EJECT);
+				if (bImpEject)
+					ps.print(EJECT);
 			}
 			ps.flush();
 			ps.close();
