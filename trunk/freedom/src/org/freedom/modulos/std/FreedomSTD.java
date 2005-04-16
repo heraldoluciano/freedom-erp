@@ -25,7 +25,6 @@ package org.freedom.modulos.std;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.TesteDialogo;
 
 public class FreedomSTD extends Aplicativo {
   public FreedomSTD() {
