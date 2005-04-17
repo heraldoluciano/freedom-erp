@@ -78,6 +78,8 @@ public class Logger {
 	public static final LoggerItem LGEP_FECHA_N_FISCAL_VIN = new LoggerItem(idErroPDV,30,"Erro na função fechar comprovante não fiscal vinculado");
 	public static final LoggerItem LGEP_INICIA_TEF = new LoggerItem(idErroPDV,31,"Erro na função de inicialização da TEF");
 	public static final LoggerItem LGEP_FINALIZA_TEF = new LoggerItem(idErroPDV,32,"Erro na função de finalização de TEF");
+	public static final LoggerItem LGEP_REL_GERENCIAL_TEF = new LoggerItem(idErroPDV,33,"Erro na função usar relatorio gerencial TEF");
+	public static final LoggerItem LGEP_FECHA_REL_REGENCIAL = new LoggerItem(idErroPDV,34,"Erro na função fechar relatorio gerencial");
     
 // Logs de PDV:
 	public static boolean gravaLogTxt(String sEmp, String sUserID, LoggerItem lg, String sTextoAdic) {
