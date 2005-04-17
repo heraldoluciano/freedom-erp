@@ -785,7 +785,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
   	 }
   	 DLCancCupom canc = new DLCancCupom();
   	 canc.setConexao(con);
-  	 canc.buscaExterna(txtCodVenda.getVlrInteger());
   	 canc.setVisible(true);
   	 if (canc.OK) {
   	 	if (canc.isCancCupom())

@@ -103,6 +103,7 @@ public class FPrefere extends FTabDados implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 	    if (evt.getSource() == btTef) {
 	        DLAdmTef dl = new DLAdmTef(tef,this);
+	        dl.setConexao(con);
 	        dl.setVisible(true);
 	        dl.dispose();
 	    }

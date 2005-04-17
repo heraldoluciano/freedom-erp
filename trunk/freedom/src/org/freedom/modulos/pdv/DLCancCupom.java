@@ -74,9 +74,9 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 	boolean bCancCupom = false;
 	int iCancItem = -1;
-	Connection con = null;
 	public DLCancCupom() {
 //		super(Aplicativo.telaPrincipal);
+	    Funcoes.strDecimalToStrCurrency(2,Funcoes.transValorInv("15")+"");
 		setTitulo("Cancela Venda");
 		setAtribos(100,150,710,300);
 		
@@ -146,21 +146,14 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 		tab.addMouseListener(this);
 		tab.addKeyListener(this);
 		
+		txtVenda.setAtivo(false);
+
 		setToFrameLayout();	
 		
 		lcVenda.montaSql(false, "VENDA", "VD");  
 		lcVenda.setWhereAdic("TIPOVENDA='E'");
-		lcVenda.setConexao(con);
 		lcVenda.setReadOnly(true);		
 	}
-
-	public void buscaExterna(Integer iCodVenda) {
-		txtVenda.setAtivo(false);
-		txtVenda.setVlrInteger(iCodVenda);
-		lcVenda.carregaDados();
-		carregaTabela();		
-	}
-	
 	private boolean cancVenda() {
 		boolean bRet = false;
 		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='CV' WHERE CODEMP=?" +
@@ -241,7 +234,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	    tab.limpa();
 		try {
 			String sSQL = "SELECT IT.CODITVENDA,P.DESCPROD,IT.QTDITVENDA,IT.VLRBASEICMSITVENDA,IT.VLRICMSITVENDA,IT.VLRPRODITVENDA FROM VDITVENDA IT, EQPRODUTO P WHERE"+
-						  " P.CODPROD=IT.CODPROD AND IT.CODEMP=? AND IT.CODFILIAL=? AND CODVENDA=? AND IT.TIPOVENDA='E' AND NOT CANCITVENDA = 'S' ORDER BY CODITVENDA";
+						  " P.CODPROD=IT.CODPROD AND IT.CODEMP=? AND IT.CODFILIAL=? AND CODVENDA=? AND IT.TIPOVENDA='E' AND (NOT IT.CANCITVENDA = 'S' OR IT.CANCITVENDA IS NULL) ORDER BY CODITVENDA";
 			PreparedStatement ps = con.prepareStatement(sSQL);
 
 			ps = con.prepareStatement(sSQL);
@@ -261,7 +254,6 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 			  tab.setValor(Funcoes.strDecimalToStrCurrency(13,2,rs.getDouble("VLRPRODITVENDA")+""),iRow,6);
 			  tab.setValor(Funcoes.strDecimalToStrCurrency(13,2,(rs.getDouble("VLRPRODITVENDA"))*(rs.getDouble("QTDITVENDA"))+""),iRow,7);
 			  iRow++;
-				 				
 			}						
 			
 		} catch (SQLException err) {
@@ -296,7 +288,27 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	public int getCancItem() {
 		return iCancItem;
 	}
-	
+	private int buscaUltimaVenda() {
+			int iRet = 0;
+			String sSQL = "SELECT MAX(CODVENDA) FROM VDVENDA WHERE " +
+			"TIPOVENDA = 'E' AND CODEMP=? AND CODFILIAL=?";
+			try {
+				PreparedStatement ps = con.prepareStatement(sSQL);
+				ps.setInt(1,Aplicativo.iCodEmp);
+				ps.setInt(2,Aplicativo.iCodFilial);
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					iRet = rs.getInt(1);
+				}
+				rs.close();
+				ps.close();
+			}
+			catch(SQLException err) {
+				Funcoes.mensagemErro(this,"Erro ao buscar a ultima venda.\n+"+err.getMessage());
+				err.printStackTrace();
+			}
+			return iRet;
+	}
 	public void mouseClicked(MouseEvent mevt) {
 	  if ((mevt.getSource() == tab) && (mevt.getClickCount() == 2) && (tab.getLinhaSel() >= 0)) {
 	  	marcaItem(tab.getLinhaSel());
@@ -311,6 +323,14 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 				marcaItem(tab.getLinhaSel());
 			}
 		}
+	}
+	public void setConexao(Connection cn) {
+		lcVenda.setConexao(cn);
+		super.setConexao(cn);
+		
+		txtVenda.setVlrInteger(new Integer(buscaUltimaVenda()));
+		lcVenda.carregaDados();
+		carregaTabela();		
 	}
 	public void keyTyped(KeyEvent kevt) { }
 	public void keyReleased(KeyEvent kevt) { }
