@@ -30,11 +30,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
@@ -63,7 +67,8 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
 	private Vector vTefsOK = new Vector();
-	private BigDecimal bigPago = new BigDecimal("0.00");
+	private BigDecimal bigPagoTef = new BigDecimal("0.00");
+	private JLabelPad lbChequeElet;
 	Connection con = null;
 	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
 		//super(Aplicativo.telaPrincipal);
@@ -100,7 +105,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		adic(txtVlrDinheiro,160,85,100,20);
 		adic(new JLabelPad("Valor em cheque: "),7,110,150,20);
 		adic(txtVlrCheque,160,110,100,20);
-		adic(new JLabelPad("Valor em ch. elet./cartão: "),7,135,150,20);
+		adic((lbChequeElet = new JLabelPad("Valor em ch. elet./cartão: ")),7,135,150,20);
 		adic(txtVlrChequeElet,160,135,100,20);
 		adic(new JLabelPad("Valor pago: "),7,160,150,20);
 		adic(txtVlrPago,160,160,100,20);
@@ -128,49 +133,116 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	}
 	private boolean finalizaTEF(Properties retTef) {
 	    boolean bRet = false;
-//		if (/*bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo)*/true) {
-		if (bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo)) {
-		    try {
-		        if (!bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,txtDescPlanoPag.getVlrString(),txtVlrChequeElet.getVlrBigDecimal(),iNumCupom, FreedomPDV.bModoDemo))
-                    throw new Exception("");
-	            Object sLinhas[] = tef.retImpTef(retTef);
-	            for (int i=0;i<sLinhas.length;i++) {
-	                if (!bf.usaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,(String)sLinhas[i],FreedomPDV.bModoDemo))
-	                    throw new Exception("");
-	            }
-	            
-	            //Coloca uns espacos para retirar o comprovante.
-		    
-	            for (int i=0;i<8;i++) {
-	                if (!bf.usaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,"",FreedomPDV.bModoDemo))
-	                    throw new Exception("");
-	            }
+	    boolean bLeituraX = false;
+        Object sLinhas[] = tef.retImpTef(retTef);
+        String sComprovante = "";
+        for (int i=0;i<sLinhas.length;i++)
+            sComprovante += sLinhas[i]+"\n";
+        
+        //Tirar isto aki!
+        sComprovante = sComprovante.substring(0,450);
 
-	            //Aguarda 5 segundo para imprimir o segundo comprovante:
+        
+        
+        //verifica se ha linhas a serem impressas, caso contrário sai sem imprimir nada.
+        if (sLinhas.length == 0)
+            return true;
+        
+        if (/* bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo) */true) {
+            do {
+                try {
+                    //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
+                    if (!bLeituraX) {
+                        if (!bf.abreComprovanteNaoFiscalVinculado(
+                            Aplicativo.strUsuario, txtDescPlanoPag
+                                    .getVlrString(), FreedomPDV.bModoDemo))
+                            throw new Exception("");
+                        if (!bf.usaComprovanteNaoFiscalVinculado(
+                                Aplicativo.strUsuario, sComprovante,
+                                FreedomPDV.bModoDemo))
+                             throw new Exception("");
+                    }
+                    else {
+                        //Esta reimprimindo entao vamos usar o relatorioGerencial: 
+                        if (!bf.relatorioGerencialTef(
+                                Aplicativo.strUsuario, sComprovante, FreedomPDV.bModoDemo))
+                                throw new Exception("");
+                    }
+                    
 
-                Thread.sleep(5000);
-		    
-	            for (int i=0;i<sLinhas.length;i++) {
-	                if (!bf.usaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,(String)sLinhas[i],FreedomPDV.bModoDemo))
-	                    throw new Exception("");
-	            }
-		        if (!bf.fechaComprovanteNaoFiscalVinculado(Aplicativo.strUsuario,FreedomPDV.bModoDemo))
-                    throw new Exception("");
-		    
-		        bRet = true;
-		    }
-		    catch (Exception err) { }        
-		    finally {
-		        bf.finalizaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
-		    }
-		}
-		else {
-		    Funcoes.mensagemInforma(null,"Não foi possível travar o teclado!!");
-		    return false;
-		}
+                    //Coloca uns espacos para retirar o comprovante.
 
+                    if (!bLeituraX) {
+                        if (!bf.usaComprovanteNaoFiscalVinculado(
+                            Aplicativo.strUsuario, "\n\n\n\n\n\n\n\n\n\n",
+                            FreedomPDV.bModoDemo))
+                         throw new Exception("");
+                    }
+                    else {
+                        if (!bf.relatorioGerencialTef(
+                                Aplicativo.strUsuario, "\n\n\n\n\n\n\n\n\n\n",
+                                FreedomPDV.bModoDemo))
+                             throw new Exception("");
+                    }
+
+                    //Aguarda 5 segundo para imprimir o segundo comprovante:
+
+                    Thread.sleep(5000);
+
+                    if (!bLeituraX) {
+                        if (!bf.usaComprovanteNaoFiscalVinculado(
+                            Aplicativo.strUsuario, sComprovante,
+                            FreedomPDV.bModoDemo))
+                         throw new Exception("");
+                    }
+                    else {
+                        if (!bf.relatorioGerencialTef(
+                                Aplicativo.strUsuario, sComprovante,
+                                FreedomPDV.bModoDemo))
+                             throw new Exception("");
+                    }
+
+                    if (!bLeituraX) {
+                        if (!bf.fechaComprovanteNaoFiscalVinculado(
+                            Aplicativo.strUsuario, 
+                            FreedomPDV.bModoDemo))
+                         throw new Exception("");
+                    }
+                    else {
+                        if (!bf.fechaRelatorioGerencial(
+                                Aplicativo.strUsuario, 
+                                FreedomPDV.bModoDemo))
+                             throw new Exception("");
+                    }
+
+                    bRet = true;
+                } catch (Exception err) {
+                    bRet = false;
+                    if (Funcoes.mensagemConfirma(null,
+                            "Impressora não responde, tente novamente?") == JOptionPane.YES_OPTION) {
+                        bLeituraX = true;
+                        continue;
+                    } 
+                } 
+                bf.finalizaModoTEF(Aplicativo.strUsuario,
+                            FreedomPDV.bModoDemo);
+                break;
+            } while (true);
+        } else {
+            Funcoes.mensagemInforma(null,
+                            "Não foi possível travar o teclado!!");
+            bRet = false;
+        }
 		if (bRet)
-		    bRet = tef.finalizaVenda(retTef);
+		    bRet = tef.confirmaVenda(retTef);
+		else {
+		    //Estornando a TEF:
+		    bRet = tef.naoConfirmaVenda(retTef);
+		    if (bigPagoTef.doubleValue() > 0.0)
+		        bigPagoTef = bigPagoTef.subtract(tef.retValor(retTef));
+		    recalcPago();
+		    vTefsOK.remove(retTef);
+		}
 		
 		return bRet;
 
@@ -205,13 +277,32 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	}
 	private boolean gravaVenda() {
 		boolean bRet = false;
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2' WHERE CODEMP=?" +
+		String sCVTEF = null;
+		String sPlanoTEF = null;
+		
+		//Ajusta variaveis de TEF se existir.
+		if (vTefsOK.size() > 0) {
+		    sCVTEF = tef.retNsu((Properties)vTefsOK.elementAt(0));
+		    sPlanoTEF = Funcoes.copy(txtDescPlanoPag.getVlrString(),16);
+		}
+		    
+		
+		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2', CVTEFVENDA=?, DESCPLANOTEFVENDA=? WHERE CODEMP=?" +
 		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+		
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setInt(3,iCodVenda);
+			if (sCVTEF != null)
+			    ps.setString(1,sCVTEF);
+			else
+			    ps.setNull(1,Types.CHAR);
+			if (sPlanoTEF != null)
+			    ps.setString(2,sPlanoTEF);
+			else
+			    ps.setNull(2,Types.CHAR);
+			ps.setInt(3,Aplicativo.iCodEmp);
+			ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(5,iCodVenda);
 			ps.executeUpdate();
 			bRet = true;
 		}
@@ -254,12 +345,16 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		        Funcoes.mensagemInforma(this,"Não foi possível concluir a TEF");
 		        return false;
 		    }
-		    else if (txtVlrChequeElet.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
-		        bigPago.add(txtVlrChequeElet.getVlrBigDecimal());
+		    if (txtVlrChequeElet.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
+		        bigPagoTef = bigPagoTef.add(txtVlrChequeElet.getVlrBigDecimal());
 		        txtVlrChequeElet.setVlrString("");
 		        vTefsOK.add(ppCompTef);
-		        //Consertar isto aki depois:
-		        txtVlrChequeElet.setEnabled(false);
+		        
+		        //bloqueio para imprimir somente um comprovante por cupom:
+		        
+		        lbChequeElet.setEnabled(false);
+		        txtVlrChequeElet.setAtivo(false);
+		        txtVlrDinheiro.requestFocus();
 		        
 		        recalcPago();
 		        return false;
@@ -270,7 +365,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			Funcoes.mensagemInforma(this,"Valor pago menor que o valor da venda!");
 			return false;
 		}
-		else if (!gravaVenda()) 
+		if (!gravaVenda()) 
 			return false;
 		try {
 			
@@ -324,7 +419,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 						txtVlrCheque.getVlrBigDecimal().add(
 								txtVlrChequeElet.getVlrBigDecimal()
 						)
-				).add(bigPago)
+				).add(bigPagoTef)
 		);
 		txtVlrTroco.setVlrBigDecimal(
 				txtVlrPago.getVlrBigDecimal().subtract(
@@ -410,4 +505,3 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		lcPlanoPag.carregaDados();
 	}
 }
-
