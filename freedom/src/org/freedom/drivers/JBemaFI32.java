@@ -70,8 +70,6 @@ public class JBemaFI32 {
 
    public native int  bleiturax();
    public native int  bReducaoZ( String Data, String Hora);
-   public native int  bRelatorioGerencial( String Texto);
-   public native int  bFechaRelatorioGerencial();
    public native int  bLeituraMemoriaFiscalData( String DataInicial, String DataFinal );
    public native int  bLeituraMemoriaFiscalReducao( String ReducaoInicial, String ReducaoFinal);
    public native int  bLeituraMemoriaFiscalSerialData(String DataInicial, String DataFinal);
@@ -85,6 +83,9 @@ public class JBemaFI32 {
    public native int  bFechaComprovanteNaoFiscalVinculado();
    public native int  bSangria(String Valor);
    public native int  bSuprimento(String Valor, String FormaPagamento);
+   public native int  bRelatorioGerencial(String Texto);
+   public native int  bRelatorioGerencialTef(String Texto);
+   public native int  bFechaRelatorioGerencial();
    
 
 // Funções de Informações da Impressora
@@ -862,15 +863,24 @@ public class JBemaFI32 {
 
   
   
+  public boolean abreComprovanteNaoFiscalVinculado(String sUserID, String sFormaPagto, boolean bModoDemo) {
+  	 return abreComprovanteNaoFiscalVinculado(sUserID,sFormaPagto,null,0,bModoDemo);
+   }
+
   public boolean abreComprovanteNaoFiscalVinculado(String sUserID, String sFormaPagto, BigDecimal bdValor, int iNumCupom, boolean bModoDemo) {
  	 boolean bRetorno = false;
+ 	 String sValor;
+ 	 String sNumCupom;
  	 if (!bModoDemo) {
        if (sFormaPagto.trim().equals(""))
          sFormaPagto = " ";
        else
          sFormaPagto = Funcoes.tiraAcentos(Funcoes.adicionaEspacos(sFormaPagto,16));
        
- 	   bRetorno = trataRetornoFuncao(  bAbreComprovanteNaoFiscalVinculado( sFormaPagto, Funcoes.transValor(bdValor,14,2,true), ""+iNumCupom) );
+       sValor = bdValor != null ? Funcoes.transValor(bdValor,14,2,true) : ""; 
+       sNumCupom = iNumCupom > 0 ? iNumCupom+"" : ""; 
+       
+ 	   bRetorno = trataRetornoFuncao(  bAbreComprovanteNaoFiscalVinculado( sFormaPagto, sValor , sNumCupom) );
  	   if (!bRetorno) {
  	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_ABRE_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sFormaPagto+"|"+bdValor+"|"+iNumCupom+"|"+sMensErroLog);
  	   }
@@ -893,6 +903,20 @@ public class JBemaFI32 {
   	   bRetorno = true;
   	 return bRetorno;
   }
+  public boolean relatorioGerencialTef(String sUserID, String sTexto, boolean bModoDemo) {
+   	 boolean bRetorno = false;
+   	 if (!bModoDemo) {
+        if (sTexto.trim().equals(""))
+            sTexto = " ";
+   	   bRetorno = trataRetornoFuncao(  bRelatorioGerencialTef( sTexto ) );
+   	   if (!bRetorno) {
+   	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_REL_GERENCIAL_TEF,"ERRO NO COMPROVANTE: "+sTexto+"|"+sMensErroLog);
+   	   }
+   	 }
+   	 else
+   	   bRetorno = true;
+   	 return bRetorno;
+   }
   public boolean fechaComprovanteNaoFiscalVinculado(String sUserID, boolean bModoDemo) {
    	 boolean bRetorno = false;
    	 if (!bModoDemo) {
@@ -904,7 +928,19 @@ public class JBemaFI32 {
    	 else
    	   bRetorno = true;
    	 return bRetorno;
-   }
+  }
+  public boolean fechaRelatorioGerencial(String sUserID, boolean bModoDemo) {
+    	 boolean bRetorno = false;
+    	 if (!bModoDemo) {
+    	   bRetorno = trataRetornoFuncao(  bFechaRelatorioGerencial() );
+    	   if (!bRetorno) {
+    	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_FECHA_REL_REGENCIAL,"ERRO NO COMPROVANTE: "+sMensErroLog);
+    	   }
+    	 }
+    	 else
+    	   bRetorno = true;
+    	 return bRetorno;
+  }
   public boolean iniciaModoTEF(String sUserID, boolean bModoDemo) {
     	 boolean bRetorno = false;
     	 if (!bModoDemo) {
