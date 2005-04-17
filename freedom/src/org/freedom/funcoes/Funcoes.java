@@ -744,6 +744,18 @@ public class Funcoes {
 		return sVal;
 	}
 
+	public static BigDecimal transValorInv(String sVal) {
+	    BigDecimal bigRet = new BigDecimal("0.00");
+	    if (sVal == null)
+	        return bigRet;
+	    if (sVal.length() < 3)
+	        sVal = "0"+replicate("0",2 - sVal.length()) + sVal;
+	    
+	    sVal = sVal.substring(0,sVal.length()-2)+"."+sVal.substring(sVal.length()-2);
+	    bigRet = new BigDecimal(sVal);
+	    return bigRet;
+	}
+	
 	public static String transValor(String sValor, int iTam, int iDec,
 			boolean bZeroEsq) {
 		if (sValor == null) {
