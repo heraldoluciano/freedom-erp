@@ -1040,7 +1040,10 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		tpn2.setTabPlacement(SwingConstants.LEFT);
 		tpn.setPreferredSize(new Dimension(50, 500));
+
 		pnFicha.add(tpn2, BorderLayout.WEST);
+		
+		pnFicha.add(navFicha, BorderLayout.SOUTH);
 
 		setPainel(pinFiliacao);
 
@@ -1166,7 +1169,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetRefP.add(pinNavRefP, BorderLayout.SOUTH);
 		pinDetRefP.add(pinCamposRefP, BorderLayout.CENTER);
 		setListaCampos(lcRefP);
-		setNavegador(navRefP);
+//		setNavegador(navRefP);
 
 		pnRefP.add(pinDetRefP, BorderLayout.SOUTH);
 		pnRefP.add(spnRefP, BorderLayout.CENTER);
@@ -1222,7 +1225,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetAutP.add(pinNavAutP, BorderLayout.SOUTH);
 		pinDetAutP.add(pinCamposAutP, BorderLayout.CENTER);
 		setListaCampos(lcAutP);
-		setNavegador(navAutP);
+//		setNavegador(navAutP);
 
 		pnAutP.add(pinDetAutP, BorderLayout.SOUTH);
 		pnAutP.add(spnAutP, BorderLayout.CENTER);
@@ -1289,7 +1292,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetVeic.add(pinNavVeic, BorderLayout.SOUTH);
 		pinDetVeic.add(pinCamposVeic, BorderLayout.CENTER);
 		setListaCampos(lcVeic);
-		setNavegador(navVeic);
+//		setNavegador(navVeic);
 
 		pnVeic.add(pinDetVeic, BorderLayout.SOUTH);
 		pnVeic.add(spnVeic, BorderLayout.CENTER);
@@ -1329,7 +1332,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetImov.add(pinNavImov, BorderLayout.SOUTH);
 		pinDetImov.add(pinCamposImov, BorderLayout.CENTER);
 		setListaCampos(lcImov);
-		setNavegador(navImov);
+//		setNavegador(navImov);
 
 		pnImov.add(pinDetImov, BorderLayout.SOUTH);
 		pnImov.add(spnImov, BorderLayout.CENTER);
@@ -1369,7 +1372,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetTerras.add(pinNavTerras, BorderLayout.SOUTH);
 		pinDetTerras.add(pinCamposTerras, BorderLayout.CENTER);
 		setListaCampos(lcTerras);
-		setNavegador(navTerras);
+//		setNavegador(navTerras);
 
 		pnTerras.add(pinDetTerras, BorderLayout.SOUTH);
 		pnTerras.add(spnTerras, BorderLayout.CENTER);
@@ -1417,7 +1420,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetBancos.add(pinNavBancos, BorderLayout.SOUTH);
 		pinDetBancos.add(pinCamposBancos, BorderLayout.CENTER);
 		setListaCampos(lcBancos);
-		setNavegador(navBancos);
+//		setNavegador(navBancos);
 
 		pnBancos.add(pinDetBancos, BorderLayout.SOUTH);
 		pnBancos.add(spnBancos, BorderLayout.CENTER);
@@ -1455,7 +1458,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetRefC.add(pinNavRefC, BorderLayout.SOUTH);
 		pinDetRefC.add(pinCamposRefC, BorderLayout.CENTER);
 		setListaCampos(lcRefC);
-		setNavegador(navRefC);
+//		setNavegador(navRefC);
 
 		pnRefC.add(pinDetRefC, BorderLayout.SOUTH);
 		pnRefC.add(spnRefC, BorderLayout.CENTER);
@@ -1511,7 +1514,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetSocios.add(pinNavSocios, BorderLayout.SOUTH);
 		pinDetSocios.add(pinCamposSocios, BorderLayout.CENTER);
 		setListaCampos(lcSocios);
-		setNavegador(navSocios);
+//		setNavegador(navSocios);
 
 		pnSocios.add(pinDetSocios, BorderLayout.SOUTH);
 		pnSocios.add(spnSocios, BorderLayout.CENTER);
@@ -1544,6 +1547,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		// **************************
 
+		nav.setListaCampos(lcCampos);
 		completaTela();
 	}
 
@@ -1560,7 +1564,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		if (bFisTipoCli) {
 			adicTab("Ficha cadastral", pnFicha);
-			setNavegador(navFicha);
+//			setNavegador(navFicha);
+			navFicha.setListaCampos(lcFicha);
 		}
 		if (bVeicTipoCli)
 			adicTab("Veículos", pnVeic);
@@ -1588,7 +1593,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 			tpn2.addTab("Avalista", pinAvalista);
 		if (bJurTipoCli) {
 			adicTab("Pess.Jur.", pinJuridica);
-			setNavegador(navPJur);
+//			setNavegador(navPJur);
 		}
 	}
 
@@ -1792,7 +1797,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 	public void beforeCarrega(CarregaEvent cevt) {
 	}
 
-	public void beforePost(PostEvent pevt) {
+	public void beforePost(PostEvent pevt) {	    
 		if (cbEstCivCli.getSelectedItem().equals("<--Selecione-->")) {
 			txtCodEmpTb.setVlrString("");
 			txtCodFilialTb.setVlrString("");
