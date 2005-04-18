@@ -33,6 +33,7 @@ import java.sql.Connection;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
@@ -53,6 +54,8 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener {
    public Connection con = null;
    public FDialogo () {
    	super(Aplicativo.telaPrincipal, "Dialogo", true);
+    JFrame.setDefaultLookAndFeelDecorated(true);
+    JDialog.setDefaultLookAndFeelDecorated(true);
     setTitle("Dialogo");
     setModal(true);
     setSize( 250, 100);
