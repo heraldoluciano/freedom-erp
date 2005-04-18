@@ -912,8 +912,8 @@ public class ImprimeOS implements ActionListener {
 				say(pRow() + 1, 0, comprimido());
 				say(pRow() + 0, 0, "|" + " E-mail: " + sVals[3]); //E-mail				
 				say(pRow() + 0, iTamRel - 1, "|");
-				say(pRow() + 1, 0, "|");
-				say(pRow() + 0, iTamRel - 1, "|");
+				//say(pRow() + 1, 0, "|");
+				//say(pRow() + 0, iTamRel - 1, "|");
 				
 				for (int i = 0; i < subTitulos.size(); i++) {
 					say(pRow() + 1, 0, "|");
@@ -924,13 +924,13 @@ public class ImprimeOS implements ActionListener {
 							(String) subTitulos.elementAt(i));
 					say(pRow() + 0, iTamRel - 1, "|");
 				}
-				if (iTamRel == 80)
+				/*if (iTamRel == 80)
 					say(pRow() + 1, 0, normal());
 				else
 					say(pRow() + 1, 0, comprimido());
 
 				say(pRow() + 0, 0, "|");
-				say(pRow() + 0, iTamRel - 1, "|");
+				say(pRow() + 0, iTamRel - 1, "|"); */
 
 				if (iTamRel == 136)
 					say(pRow() + 0, 0, comprimido());
