@@ -28,6 +28,7 @@
 
 package org.freedom.modulos.std;
 
+import java.awt.GridLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
@@ -37,19 +38,21 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FDados;
-
-public class FVendedor extends FDados implements PostListener {
+import org.freedom.telas.FTabDados;
+public class FVendedor extends FTabDados implements PostListener {
 	private JTextFieldPad txtCodVend = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -150,11 +153,17 @@ public class FVendedor extends FDados implements PostListener {
 	private ListaCampos lcClComis = new ListaCampos(this, "CM");
 
 	private ListaCampos lcFuncao = new ListaCampos(this, "FU");
+	
+	private JPanelPad pinFor = new JPanelPad(470,300);
+	private JPanelPad pnObs = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+	private JTextAreaPad txaObs = new JTextAreaPad();
+	private JScrollPane spnObs = new JScrollPane(txaObs);
 
 	public FVendedor() {
 		setTitulo("Cadastro de comissionados");
 		setAtribos(50, 50, 400, 460);
 
+		
 		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan.",
 				ListaCampos.DB_PK, txtDescPlan, false));
 		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan",
@@ -187,6 +196,9 @@ public class FVendedor extends FDados implements PostListener {
 		lcClComis.setQueryCommit(false);
 		lcClComis.setReadOnly(true);
 		txtCodClComis.setTabelaExterna(lcClComis);
+		
+		setPainel(pinFor);
+	    adicTab("Comissionado", pinFor);
 
 		adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.",
 				ListaCampos.DB_PK, true);
@@ -254,6 +266,12 @@ public class FVendedor extends FDados implements PostListener {
 		lcCampos.setQueryInsert(false);
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
+		
+		adicTab("Observações", pnObs);
+	    adicDBLiv(txaObs, "ObsVend", "Observações",false);
+	    pnObs.add(spnObs);
+	    setListaCampos( true, "VENDEDOR", "VD");
+	    lcCampos.setQueryInsert(false);
 	}
 
 	private void montaSetor() {
