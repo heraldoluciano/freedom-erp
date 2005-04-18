@@ -824,7 +824,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 	private boolean bAvalTipoCli = false;
 
-	private boolean bAchou = true;
+	private boolean bAchou = true; 
 
 	private JTabbedPanePad tpn2 = new JTabbedPanePad();
 
@@ -832,7 +832,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 	public FCredCli() {
 		setTitulo("Ficha cadastral/Crédito por cliente");
-		setAtribos(50, 10, 780, 550);
+		setAtribos(10, 10, 790, 550);
 
 		txtFoneCli.setMascara(JTextFieldPad.MC_FONE);
 		txtFoneCob.setMascara(JTextFieldPad.MC_FONE);
@@ -1567,7 +1567,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		adicTab("Geral", pinGeral);
 
 		if (bFisTipoCli) {
-			adicTab("Ficha cadastral", pnFicha);
+			adicTab("Complemento", pnFicha);
 			navFicha.setListaCampos(lcFicha);
 			lcFicha.setNavegador(navFicha);
 		}
@@ -1579,11 +1579,11 @@ public class FCredCli extends FTabDados implements ActionListener,
 			adicTab("Terras", pnTerras);
 		if (bJurTipoCli) {
 			adicTab("Bancos", pnBancos);
-			adicTab("Ref.Comerc.", pnRefC);
+			adicTab("Ref.Com.", pnRefC);
 			adicTab("Sócios", pnSocios);
 		}
 		if (bRefPesTipoCli)
-			adicTab("Ref.Pess.", pnRefP);
+			adicTab("Ref.Pes.", pnRefP);
 
 		if (bPessAutTipoCli)
 			adicTab("Pess.Autoriz.", pnAutP);
@@ -1596,9 +1596,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		if (bAvalTipoCli)
 			tpn2.addTab("Avalista", pinAvalista);
 		if (bJurTipoCli) {
-			adicTab("Pess.Jur.", pinJuridica);
-			//setListaCampos(l)
-			//setNavegador(navPJur);
+			adicTab("Jurídica", pinJuridica);
 		}
 	}
 
