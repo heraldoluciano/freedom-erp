@@ -145,6 +145,8 @@ public class FInventario extends FDados implements CarregaListener,
 				"Descrição do produto", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(cbLote, "CLoteProd", "Classifica por lote?",
 				ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.Almox.",
+				ListaCampos.DB_FK,txtDescAlmox, false));
 		lcProd.setWhereAdic("NOT TIPOPROD = 'S' AND ATIVOPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
@@ -447,7 +449,7 @@ public class FInventario extends FDados implements CarregaListener,
 			if (!bLote)
 				setSaldo();
 		} else if ((cevt.getListaCampos() == lcProd)
-				|| (cevt.getListaCampos() == lcProd)) {
+				|| (cevt.getListaCampos() == lcAlmox)) {
 			setSaldo();
 		}
 	}
@@ -499,7 +501,7 @@ public class FInventario extends FDados implements CarregaListener,
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT NSALDO,NCUSTOMPM FROM EQMOVPRODSLDSP(?,?,?,?,?,?,?,?)";
+			sSQL = "SELECT NSALDOAX,NCUSTOMPMAX FROM EQMOVPRODSLDSP(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			/*
 			 * Parâmetros ICODEMP, SCODFILIAL, ICODMOVPROD, ICODEMPPD,
 			 * SCODFILIALPD, ICODPROD, DDTMOVPROD, NCUSTOMPMMOVPROD
@@ -513,10 +515,15 @@ public class FInventario extends FDados implements CarregaListener,
 			ps.setInt(6, iCodprod);
 			ps.setDate(7, Funcoes.dateToSQLDate(deFim));
 			ps.setDouble(8, 0);
+			ps.setDouble(9, 0);
+			ps.setInt(10,Aplicativo.iCodEmp);
+			ps.setInt(11,ListaCampos.getMasterFilial("EQALMOX"));
+			ps.setInt(12,txtCodAlmox.getVlrInteger().intValue());
+			ps.setString(13,Aplicativo.sMultiAlmoxEmp);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				deRetorno[0] = rs.getDouble("NSALDO");
-				deRetorno[1] = rs.getDouble("NCUSTOMPM");
+				deRetorno[0] = rs.getDouble("NSALDOAX");
+				deRetorno[1] = rs.getDouble("NCUSTOMPMAX");
 			}
 			rs.close();
 			ps.close();

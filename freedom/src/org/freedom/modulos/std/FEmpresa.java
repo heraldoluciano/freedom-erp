@@ -41,6 +41,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FEmpresa extends FTabDados implements PostListener, CarregaListener{
@@ -141,7 +142,7 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
     lcAlmox.setReadOnly(true);
     txtCodAlmox.setTabelaExterna(lcAlmox);
     
-    txtCodEmp.cancelaDLF2();
+   txtCodEmp.cancelaDLF2();
     
     setPainel(pinGeral);
     adicTab("Geral",pinGeral);
@@ -174,7 +175,6 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
     txtFoneEmp.setMascara(JTextFieldPad.MC_FONEDDD);
     txtFaxEmp.setMascara(JTextFieldPad.MC_FONE);
     setListaCampos( true, "EMPRESA", "SG");
-
 
     setPainel( pinFilial, pnFilial);
     adicTab("Filiais",pnFilialGeral);
@@ -346,6 +346,10 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
       }
     }
   }
+  private void carregaEmpresa(){
+      txtCodEmp.setVlrInteger(new Integer(Aplicativo.iCodEmp));
+      lcCampos.carregaDados();
+  }
   public void afterPost(PostEvent pevt) { }
   public void beforeCarrega(CarregaEvent cevt) {}
   public void setConexao(Connection cn) {
@@ -353,6 +357,7 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
   	lcFilial.setConexao(cn);
   	lcAlmox.setConexao(cn);
   	lcAlmoxFilial.setConexao(cn);
+  	carregaEmpresa();
   }
 
 }

@@ -118,6 +118,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public int iXPanel = 0;
 
 	public static boolean bBuscaProdSimilar = false;
+	
+	public static String sMultiAlmoxEmp = "N";
 
 	private static String sFiltro = "";
 
@@ -639,6 +641,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			tbObjetos = new TabObjeto();
 			tbObjetos.montaLista(con, iCodEmp, "SGOBJETO", "TB");
 			carregaCasasDec();
+			getMultiAlmox();
 		} finally {
 			sAutoCommit = null;
 		}
@@ -766,6 +769,27 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return sDesc;
 	}
 
+	public void getMultiAlmox() {
+		String sSQL = "SELECT MULTIALMOXEMP FROM SGEMPRESA WHERE CODEMP=?" ;				
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,iCodEmp);
+			rs = ps.executeQuery();
+			
+			if (!rs.next())
+				sMultiAlmoxEmp = rs.getString(1)==null?"N":rs.getString(1);
+			else
+				
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(null, err.getMessage());			
+		}		
+	}	
+	
 	public Connection conexaoIB(String strDriver, String strBanco) {
 		try {
 			Class.forName(strDriver);
