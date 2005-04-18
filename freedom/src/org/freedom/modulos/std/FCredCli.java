@@ -47,6 +47,10 @@ import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
+import org.freedom.acao.EditEvent;
+import org.freedom.acao.EditListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
@@ -63,7 +67,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FCredCli extends FTabDados implements ActionListener,
-		CarregaListener, PostListener {
+		CarregaListener, PostListener, EditListener, InsertListener {
 	private JPanelPad pinGeral = new JPanelPad(680, 200);
 
 	private JPanelPad pnFicha = new JPanelPad(JPanelPad.TP_JPANEL,
@@ -933,6 +937,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		lcCampos.addCarregaListener(this);
 		lcCampos.addPostListener(this);
+		lcFicha.addInsertListener(this);
+		lcFicha.addEditListener(this);
 
 		adicCampo(txtCodCli, 7, 20, 70, 20, "CodCli", "Cód.cli.",
 				ListaCampos.DB_PK, true);
@@ -1043,8 +1049,6 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		pnFicha.add(tpn2, BorderLayout.WEST);
 		
-		pnFicha.add(navFicha, BorderLayout.SOUTH);
-
 		setPainel(pinFiliacao);
 
 		lbPaiCli = adicCampo(txtPaiCli, 7, 20, 315, 20, "PaiCli",
@@ -1169,7 +1173,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetRefP.add(pinNavRefP, BorderLayout.SOUTH);
 		pinDetRefP.add(pinCamposRefP, BorderLayout.CENTER);
 		setListaCampos(lcRefP);
-//		setNavegador(navRefP);
+		lcRefP.setNavegador(navRefP);
 
 		pnRefP.add(pinDetRefP, BorderLayout.SOUTH);
 		pnRefP.add(spnRefP, BorderLayout.CENTER);
@@ -1225,7 +1229,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetAutP.add(pinNavAutP, BorderLayout.SOUTH);
 		pinDetAutP.add(pinCamposAutP, BorderLayout.CENTER);
 		setListaCampos(lcAutP);
-//		setNavegador(navAutP);
+		lcAutP.setNavegador(navAutP);
 
 		pnAutP.add(pinDetAutP, BorderLayout.SOUTH);
 		pnAutP.add(spnAutP, BorderLayout.CENTER);
@@ -1292,7 +1296,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetVeic.add(pinNavVeic, BorderLayout.SOUTH);
 		pinDetVeic.add(pinCamposVeic, BorderLayout.CENTER);
 		setListaCampos(lcVeic);
-//		setNavegador(navVeic);
+		lcVeic.setNavegador(navVeic);
 
 		pnVeic.add(pinDetVeic, BorderLayout.SOUTH);
 		pnVeic.add(spnVeic, BorderLayout.CENTER);
@@ -1332,7 +1336,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetImov.add(pinNavImov, BorderLayout.SOUTH);
 		pinDetImov.add(pinCamposImov, BorderLayout.CENTER);
 		setListaCampos(lcImov);
-//		setNavegador(navImov);
+		lcImov.setNavegador(navImov);
 
 		pnImov.add(pinDetImov, BorderLayout.SOUTH);
 		pnImov.add(spnImov, BorderLayout.CENTER);
@@ -1372,7 +1376,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetTerras.add(pinNavTerras, BorderLayout.SOUTH);
 		pinDetTerras.add(pinCamposTerras, BorderLayout.CENTER);
 		setListaCampos(lcTerras);
-//		setNavegador(navTerras);
+		lcTerras.setNavegador(navTerras);
 
 		pnTerras.add(pinDetTerras, BorderLayout.SOUTH);
 		pnTerras.add(spnTerras, BorderLayout.CENTER);
@@ -1420,7 +1424,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetBancos.add(pinNavBancos, BorderLayout.SOUTH);
 		pinDetBancos.add(pinCamposBancos, BorderLayout.CENTER);
 		setListaCampos(lcBancos);
-//		setNavegador(navBancos);
+		lcBancos.setNavegador(navBancos);
 
 		pnBancos.add(pinDetBancos, BorderLayout.SOUTH);
 		pnBancos.add(spnBancos, BorderLayout.CENTER);
@@ -1458,7 +1462,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetRefC.add(pinNavRefC, BorderLayout.SOUTH);
 		pinDetRefC.add(pinCamposRefC, BorderLayout.CENTER);
 		setListaCampos(lcRefC);
-//		setNavegador(navRefC);
+		lcRefC.setNavegador(navRefC);
 
 		pnRefC.add(pinDetRefC, BorderLayout.SOUTH);
 		pnRefC.add(spnRefC, BorderLayout.CENTER);
@@ -1514,7 +1518,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetSocios.add(pinNavSocios, BorderLayout.SOUTH);
 		pinDetSocios.add(pinCamposSocios, BorderLayout.CENTER);
 		setListaCampos(lcSocios);
-//		setNavegador(navSocios);
+		lcSocios.setNavegador(navSocios);
 
 		pnSocios.add(pinDetSocios, BorderLayout.SOUTH);
 		pnSocios.add(spnSocios, BorderLayout.CENTER);
@@ -1564,8 +1568,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 		if (bFisTipoCli) {
 			adicTab("Ficha cadastral", pnFicha);
-//			setNavegador(navFicha);
 			navFicha.setListaCampos(lcFicha);
+			lcFicha.setNavegador(navFicha);
 		}
 		if (bVeicTipoCli)
 			adicTab("Veículos", pnVeic);
@@ -1593,7 +1597,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 			tpn2.addTab("Avalista", pinAvalista);
 		if (bJurTipoCli) {
 			adicTab("Pess.Jur.", pinJuridica);
-//			setNavegador(navPJur);
+			//setListaCampos(l)
+			//setNavegador(navPJur);
 		}
 	}
 
@@ -1797,15 +1802,53 @@ public class FCredCli extends FTabDados implements ActionListener,
 	public void beforeCarrega(CarregaEvent cevt) {
 	}
 
-	public void beforePost(PostEvent pevt) {	    
-		if (cbEstCivCli.getSelectedItem().equals("<--Selecione-->")) {
-			txtCodEmpTb.setVlrString("");
-			txtCodFilialTb.setVlrString("");
-			cbEstCivCli.setVlrInteger(null);
-			txtCodTb.setVlrString("");
+	private boolean postDet(ListaCampos lc) {
+		boolean bRet = true;
+		if (lc==lcCampos) {
+			if ( (lcFicha.getStatus()==ListaCampos.LCS_EDIT) || (lcFicha.getStatus()==ListaCampos.LCS_INSERT) )
+				bRet = lcFicha.post();
+		}
+		return bRet;
+	}
+	public void afterPost(PostEvent pevt) {
+	}
+	public void beforePost(PostEvent pevt) {
+		boolean bRet = true;
+		bRet = postDet(pevt.getListaCampos());
+		if (!bRet) {
+			pevt.cancela();
+		}
+		else {
+			if (cbEstCivCli.getSelectedItem().equals("<--Selecione-->")) {
+				txtCodEmpTb.setVlrString("");
+				txtCodFilialTb.setVlrString("");
+				cbEstCivCli.setVlrInteger(null);
+				txtCodTb.setVlrString("");
+			}
 		}
 	}
+	
+	private void setEditInsert(ListaCampos lc) {
+		if (lc==lcFicha) {
+			if  ( ! ((lcCampos.getStatus()==ListaCampos.LCS_EDIT) || ((lcCampos.getStatus()==ListaCampos.LCS_INSERT)) ) )
+				lcCampos.edit();
+		}
+		
+	}
 
+	public void afterEdit(EditEvent eevt) {
+		setEditInsert(eevt.getListaCampos());
+
+	}
+	public void beforeEdit(EditEvent eevt) {
+	}
+	public void edit(EditEvent eevt) {
+	}
+	public void afterInsert(InsertEvent ievt) {
+		setEditInsert(ievt.getListaCampos());
+	}
+	public void beforeInsert(InsertEvent ievt) {
+	}
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcFicha.setConexao(cn);
