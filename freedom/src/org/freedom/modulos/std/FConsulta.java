@@ -46,7 +46,7 @@ import org.freedom.telas.FFilho;
 
 public class FConsulta extends FFilho implements CarregaListener {
     private final int TAM_GRUPO = 14;
-	private JPanelPad pinCabProd = new JPanelPad(700,60);
+	private JPanelPad pinCabProd = new JPanelPad(700,100);
 	private JPanelPad pnCliProd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -57,10 +57,18 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
 	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldPad txtCodAlmoxGrup = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtDescAlmoxGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+    private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtDescAlmoxProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+
+	
 	private Tabela tabProd = new Tabela();
 	private JScrollPane spnTabProd = new JScrollPane(tabProd);
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
 	private ListaCampos lcProd2 = new ListaCampos(this);
+	private ListaCampos lcAlmoxGrup = new ListaCampos(this, "AX");
+	private ListaCampos lcAlmoxProd = new ListaCampos(this, "AX");
 
 	private JPanelPad pinCabGrup = new JPanelPad(700,60);
 	private JPanelPad pnCliGrup = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -108,11 +116,35 @@ public class FConsulta extends FFilho implements CarregaListener {
 
 		pinCabGrup.adic(new JLabelPad("Cód.grupo"),7,0,100,20);
 		pinCabGrup.adic(new JLabelPad("Descrição do grupo"),110,0,300,20);
+		pinCabGrup.adic(new JLabelPad("Cód.Almox."),413,0,70,20);
+		pinCabGrup.adic(new JLabelPad("Descrição do almoxarifado"),486,20,70,20);
 		pinCabGrup.adic(txtCodGrup,7,20,100,20);
 		pinCabGrup.adic(txtDescGrup,110,20,300,20);
-		
+		pinCabGrup.adic(txtCodAlmoxGrup,413,20,70,20);
+		pinCabGrup.adic(txtDescAlmoxGrup,486,20,200,20);
+				
 		lcGrup.addCarregaListener(this);
 		
+		lcAlmoxGrup.add(new GuardaCampo(txtCodAlmoxGrup, "CodAlmox", "Cód.almox.",
+				ListaCampos.DB_PK, false));
+		lcAlmoxGrup.add(new GuardaCampo(txtDescAlmoxGrup, "DescAlmox",
+				"Descrição do almoxarifado", ListaCampos.DB_SI, false));
+		lcAlmoxGrup.montaSql(false, "ALMOX", "EQ");
+		lcAlmoxGrup.setQueryCommit(false);
+		lcAlmoxGrup.setReadOnly(true);
+		txtCodAlmoxGrup.setTabelaExterna(lcAlmoxGrup);
+		txtCodAlmoxGrup.setNomeCampo("CodAlmox");
+		
+		lcAlmoxProd.add(new GuardaCampo(txtCodAlmoxProd, "CodAlmox", "Cód.almox.",
+				ListaCampos.DB_PK, false));
+		lcAlmoxProd.add(new GuardaCampo(txtDescAlmoxProd, "DescAlmox",
+				"Descrição do almoxarifado", ListaCampos.DB_SI, false));
+		lcAlmoxProd.montaSql(false, "ALMOX", "EQ");
+		lcAlmoxProd.setQueryCommit(false);
+		lcAlmoxProd.setReadOnly(true);
+		txtCodAlmoxProd.setTabelaExterna(lcAlmoxProd);
+		txtCodAlmoxProd.setNomeCampo("CodAlmox");
+
         // Fim da aba de consulta de saldo por grupo
 
 	    // Aba de consulta de saldo por produto
@@ -124,6 +156,8 @@ public class FConsulta extends FFilho implements CarregaListener {
 		lcProd.add(new GuardaCampo( txtSldRProd, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo( txtSldCProd, "SldConsigProd", "Saldo cons.", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo( txtSldLProd, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo( txtCodAlmoxProd, "CodAlmox","Cód.Almox.", ListaCampos.DB_FK,txtDescAlmoxProd,false));
+
 		txtCodProd.setTabelaExterna(lcProd);
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
@@ -134,14 +168,21 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pnCliProd.add(spnTabProd,BorderLayout.CENTER);
 
 		pinCabProd.adic(txtDescProd,100,20,197,20);
-		pinCabProd.adic(new JLabelPad("Saldo"),300,0,87,20);
-		pinCabProd.adic(txtSldProd,300,20,87,20);
-		pinCabProd.adic(new JLabelPad("Saldo cons."),390,0,87,20);
-		pinCabProd.adic(txtSldCProd,390,20,87,20);
-		pinCabProd.adic(new JLabelPad("Saldo rest."),480,0,87,20);
-		pinCabProd.adic(txtSldRProd,480,20,87,20);
-		pinCabProd.adic(new JLabelPad("Saldo liq."),570,0,87,20);
-		pinCabProd.adic(txtSldLProd,570,20,87,20);
+		
+		pinCabProd.adic(txtCodAlmoxProd,300,20,70,20);
+		pinCabProd.adic(new JLabelPad("Cód.Almox."),300,0,70,20);
+
+		pinCabProd.adic(txtDescAlmoxProd,373,20,197,20);
+		pinCabProd.adic(new JLabelPad("Descrição do Almoxarifado"),373,20,197,20);
+		
+		pinCabProd.adic(new JLabelPad("Saldo"),7,40,87,20);
+		pinCabProd.adic(txtSldProd,7,60,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo cons."),97,40,87,20);
+		pinCabProd.adic(txtSldCProd,97,60,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo rest."),187,40,87,20);
+		pinCabProd.adic(txtSldRProd,187,60,87,20);
+		pinCabProd.adic(new JLabelPad("Saldo liq."),277,40,87,20);
+		pinCabProd.adic(txtSldLProd,277,60,87,20);
 
 		tabProd.adicColuna("Cód.c.cli.");
 		tabProd.adicColuna("Descrição da classificação do cliente");
@@ -160,12 +201,13 @@ public class FConsulta extends FFilho implements CarregaListener {
 		tabProd.setTamColuna(90,6);
 
 		lcProd.addCarregaListener(this);
+		lcAlmoxGrup.addCarregaListener(this);
+		lcAlmoxProd.addCarregaListener(this);
+		lcGrup.addCarregaListener(this);
 		
 		// Fim da aba de consulta de saldo por produto		
 		adicBotaoSair();
-		
-		
-		
+				
 	}
 	
 	private void montaTela() {
@@ -185,15 +227,15 @@ public class FConsulta extends FFilho implements CarregaListener {
 			pinCabProd.adic(new JLabelPad("Descrição do produto"),100,0,200,20);
 			pinCabProd.adic(txtRefProd,7,20,90,20);
 			lcProd2.setConexao(con);
+			lcAlmoxGrup.setConexao(con);
+			lcAlmoxProd.setConexao(con);
 		}
 		else {
 			txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
 			pinCabProd.adic(new JLabelPad("Cód.prod."),7,0,90,20);
 			pinCabProd.adic(new JLabelPad("Descrição do produto"),100,0,200,20);
 			pinCabProd.adic(txtCodProd,7,20,90,20);
-		}
-		
-
+		}		
 	}
 
 	/**
@@ -206,8 +248,18 @@ public class FConsulta extends FFilho implements CarregaListener {
 	    String sWhere = "";
 		String sSQL = "";
 		int iCodAlmox = 0;
+		int iParam = 0;
 		String sCodGrup = null;
 		try {
+		    iCodAlmox = txtCodAlmoxGrup.getVlrInteger().intValue();
+		    if (iCodAlmox==0) {
+		        sWhere = "SP.CODEMPAX = P.CODEMPAX AND SP.CODFILIALAX=P.CODFILIALAX AND " +
+		        	"SP.CODALMOX = P.CODALMOX";
+		    }
+		    else {
+		        sWhere = "SP.CODEMPAX = ? AND SP.CODFILIALAX=? AND " +
+		        	"SP.CODALMOX = ?";
+		    }
 			sCodGrup = txtCodGrup.getVlrString().trim();
 			if (sCodGrup.equals("")) {
 				Funcoes.mensagemInforma(this,"Selecione um grupo!");
@@ -215,20 +267,28 @@ public class FConsulta extends FFilho implements CarregaListener {
 				return;
 			}
 			if (sCodGrup.length()<TAM_GRUPO)
-				sCodGrup += "%";
-			
+				sCodGrup = " LIKE '"+sCodGrup+"%'";
+			else
+			    sCodGrup = "='"+sCodGrup+"'";
 			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " +
 			 "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " +
-			 "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX" +
+			 "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " +
 			 "FROM EQPRODUTO P, EQSALDOPROD SP "+
 			 "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " +
 			 "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " +
-			 "P.CODGRUP AND " +
-			 "LIKE ? ORDER BY P.DESCPROD ";			
+			 "P.CODGRUP"+sCodGrup+" AND " +sWhere+
+			 " ORDER BY P.DESCPROD ";	
+			
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));
-			ps.setString(3,sCodGrup);
+			iParam = 3;
+			if (iCodAlmox!=0) {
+			    ps.setInt(iParam++,Aplicativo.iCodEmp);
+			    ps.setInt(iParam++,ListaCampos.getMasterFilial("EQALMOX"));
+			    ps.setInt(iParam++,iCodAlmox);
+			}
+			//ps.setString(iParam,sCodGrup);
 			ResultSet rs = ps.executeQuery();
 			int iLin = 0;
             tabGrup.limpa();
@@ -287,8 +347,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 				tabProd.setValor(rs.getString("PrecoProd") != null ? Funcoes.strDecimalToStrCurrency(15,2,rs.getString("PrecoProd")) : "",iLin,6); 
 				iLin++;
 			}
-//			rs.close();
-//			ps.close();
 			if (!con.getAutoCommit())
                 con.commit();
 		}
@@ -298,10 +356,10 @@ public class FConsulta extends FFilho implements CarregaListener {
 	}
 	public void beforeCarrega(CarregaEvent pevt) { }
 	public void afterCarrega(CarregaEvent pevt) {
-		if (pevt.getListaCampos() == lcProd) {
+		if ((pevt.getListaCampos() == lcProd) || (pevt.getListaCampos() == lcAlmoxProd)){
 			carregaTabProd();
 		}
-		if (pevt.getListaCampos() == lcGrup) {
+		if ((pevt.getListaCampos() == lcGrup) || (pevt.getListaCampos() == lcAlmoxGrup)) {
 			carregaTabGrup();
 		}
 	}
@@ -309,6 +367,8 @@ public class FConsulta extends FFilho implements CarregaListener {
 		super.setConexao(cn);
 		lcProd.setConexao(con);
 		lcGrup.setConexao(con);
+		lcAlmoxGrup.setConexao(con);
+		lcAlmoxProd.setConexao(con);
 		montaTela();
 	}
 	private boolean comRef() {
