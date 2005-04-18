@@ -48,9 +48,10 @@ public class FRInvPeps extends FRelatorio {
 
   private final int TAM_GRUPO = 14;
   
-  private Connection con;
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtPagina = new JTextFieldPad(JTextFieldPad.TP_INTEGER,6,0);
+  private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
   private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtSiglaMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
@@ -58,11 +59,14 @@ public class FRInvPeps extends FRelatorio {
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JCheckBoxPad cbSemEstoq = new JCheckBoxPad("Imprimir produtos sem estoque?","S","N");
 
+  private ListaCampos lcAlmox = new ListaCampos(this);
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
 
+  private JLabelPad lbCodAlmox = new JLabelPad("Cód.almox.");
   private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
   private JLabelPad lbCodGrup = new JLabelPad("Cód.grupo");
+  private JLabelPad lbDescAlmox = new JLabelPad("Descrição do almoxarifado");
   private JLabelPad lbDescMarca = new JLabelPad("Descrição da marca");
   private JLabelPad lbDescGrup = new JLabelPad("Descrição do grupo");
   
@@ -77,7 +81,7 @@ public class FRInvPeps extends FRelatorio {
   
   public FRInvPeps() {
     setTitulo("Inventário");
-    setAtribos(80,30,400,300);
+    setAtribos(80,30,400,350);
     
     GregorianCalendar cal = new GregorianCalendar();
     cal.add(Calendar.DATE,0);
@@ -102,6 +106,14 @@ public class FRInvPeps extends FRelatorio {
 
     cbSemEstoq.setVlrString("N");
     
+    lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
+    lcAlmox.add(new GuardaCampo( txtDescAlmox, "DescAlmox", "Descrição do almox.", ListaCampos.DB_SI, false));
+    txtCodAlmox.setTabelaExterna(lcAlmox);
+    txtCodAlmox.setNomeCampo("CodAlmox");
+    txtCodAlmox.setFK(true);
+    lcAlmox.setReadOnly(true);
+    lcAlmox.montaSql(false, "ALMOX", "EQ");
+    
     lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
     lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
     lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false));
@@ -125,16 +137,20 @@ public class FRInvPeps extends FRelatorio {
     adic(txtData,117,20,100,20);
     adic(new JLabelPad("Página inicial:"),117,40,100,20);
     adic(txtPagina,117,60,100,20);
-    adic(lbCodMarca,7,80,250,20);
-    adic(txtCodMarca,7,100,80,20);
-    adic(lbDescMarca,90,80,250,20);
-    adic(txtDescMarca,90,100,250,20);
-    adic(lbCodGrup,7,120,250,20);
-    adic(txtCodGrup,7,140,80,20);
-    adic(lbDescGrup,90,120,250,20);
-    adic(txtDescGrup,90,140,250,20);
-    adic(cbSemEstoq,7,160,250,20);
-    adic(rgCusto,7,180,250,30);
+    adic(lbCodAlmox,7,80,250,20);
+    adic(txtCodAlmox,7,100,80,20);
+    adic(lbDescAlmox,90,80,250,20);
+    adic(txtDescAlmox,90,100,250,20);
+    adic(lbCodMarca,7,120,250,20);
+    adic(txtCodMarca,7,140,80,20);
+    adic(lbDescMarca,90,120,250,20);
+    adic(txtDescMarca,90,140,250,20);
+    adic(lbCodGrup,7,160,250,20);
+    adic(txtCodGrup,7,180,80,20);
+    adic(lbDescGrup,90,160,250,20);
+    adic(txtDescGrup,90,180,250,20);
+    adic(cbSemEstoq,7,200,250,20);
+    adic(rgCusto,7,220,250,30);
     
     
   }
@@ -163,6 +179,7 @@ public class FRInvPeps extends FRelatorio {
  		iPagina = txtPagina.getVlrInteger().intValue()-1;
   		  		
   		sCpCodigo = (bPrefs[0]?"REFPROD":"CODPROD");
+  		iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
   		sSemEstoq = cbSemEstoq.getVlrString();
   		sCodMarca = txtCodMarca.getVlrString().trim();
   		sCodGrup = txtCodGrup.getVlrString().trim();
@@ -320,6 +337,7 @@ public class FRInvPeps extends FRelatorio {
   
   public void setConexao(Connection cn) {
     super.setConexao(cn);
+    lcAlmox.setConexao(cn);
     lcGrup.setConexao(cn);
     lcMarca.setConexao(cn);
     bPrefs = getPrefere();
