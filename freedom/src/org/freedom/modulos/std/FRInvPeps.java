@@ -160,7 +160,8 @@ public class FRInvPeps extends FRelatorio {
   	String sSemEstoq = "";
   	String sCodMarca = "";
   	String sCodGrup = "";
-  	String sFiltros = "";
+  	String sFiltros1= "";
+  	String sFiltros2= "";
   	int iCodAlmox = 0;
   	ImprimeOS imp = null;
   	int linPag = 0;
@@ -188,13 +189,16 @@ public class FRInvPeps extends FRelatorio {
   				"ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
   		try {
   			if (sSemEstoq.equals("S")) 
-  				sFiltros = "INCLUI PRODUTOS SEM ESTOQUE";
+  				sFiltros1 = "PROD.S/ESTOQUE";
   			else 
-  				sFiltros = "SOMENTE PRODUTOS COM ESTOQUE";
+  				sFiltros1 = "PROD.C/ESTOQUE";
   			ps = con.prepareStatement(sSql);
   			ps.setInt(1,Aplicativo.iCodEmp);
   			ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
   			ps.setDate(3,Funcoes.dateToSQLDate(txtData.getVlrDate()));
+  			if (iCodAlmox!=0) {
+  	  			sFiltros1 += " / ALMOX.: "+iCodAlmox+"-"+txtDescAlmox.getVlrString().trim();
+  			}
   			if (sCodMarca.equals("")) {
   	  			ps.setNull(4,Types.INTEGER);
   	  			ps.setNull(5,Types.SMALLINT);
@@ -204,7 +208,7 @@ public class FRInvPeps extends FRelatorio {
   	  			ps.setInt(4,Aplicativo.iCodEmp);
   	  			ps.setInt(5,ListaCampos.getMasterFilial("EQMARCA"));
   	  			ps.setString(6,sCodMarca);
-  	  			sFiltros += " / MARCA: "+sCodMarca+"-"+txtDescMarca.getVlrString().trim();
+  	  			sFiltros2 += " / MARCA: "+sCodMarca+"-"+txtDescMarca.getVlrString().trim();
   			}
   			if (sCodGrup.equals("")) {
   	  			ps.setNull(7,Types.INTEGER);
@@ -215,7 +219,7 @@ public class FRInvPeps extends FRelatorio {
   	  			ps.setInt(7,Aplicativo.iCodEmp);
   	  			ps.setInt(8,ListaCampos.getMasterFilial("EQGRUPO"));
   	  			ps.setString(9,sCodGrup);
-  	  			sFiltros += " / GRUPO: "+sCodGrup+"-"+txtDescGrup.getVlrString().trim();
+  	  			sFiltros2 += " / GRUPO: "+sCodGrup+"-"+txtDescGrup.getVlrString().trim();
   			}
   			ps.setString(10,rgCusto.getVlrString());
   			if (iCodAlmox==0) {
@@ -234,7 +238,8 @@ public class FRInvPeps extends FRelatorio {
   			
   			imp.montaCab();
 			imp.setTitulo("Relatorio de inventário de estoque");
-  			imp.addSubTitulo(sFiltros);
+  			imp.addSubTitulo(sFiltros1);
+  			imp.addSubTitulo(sFiltros2);
   			
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
@@ -308,7 +313,8 @@ public class FRInvPeps extends FRelatorio {
   		sSemEstoq = null;
   	  	sCodMarca = null;
   	  	sCodGrup = null;
-  	  	sFiltros = null;
+  	  	sFiltros1 = null;
+  	    sFiltros2 = null;
   		imp = null;
   		ps = null;
   		rs = null;

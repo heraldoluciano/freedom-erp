@@ -885,6 +885,7 @@ public class ImprimeOS implements ActionListener {
 		//Seta Data
 
 		String sData = Funcoes.dateToStrDataHora(hoje.getTime());
+		String sTmp = "";
 
 		//Imprime linhas
 		if (strTipoCab.compareTo("1") == 0) {
@@ -916,13 +917,14 @@ public class ImprimeOS implements ActionListener {
 				//say(pRow() + 0, iTamRel - 1, "|");
 				
 				for (int i = 0; i < subTitulos.size(); i++) {
-					say(pRow() + 1, 0, "|");
-					say(pRow() + 0,
-							(iTamRel
-									- ((String) subTitulos.elementAt(i))
-											.length() - 2) / 2,
-							(String) subTitulos.elementAt(i));
-					say(pRow() + 0, iTamRel - 1, "|");
+					sTmp = subTitulos.elementAt(i).toString();
+					if ((sTmp.length()+2) >iTamRel)
+						sTmp = sTmp.substring(0,iTamRel-4);
+					if ( !sTmp.trim().equals("")) {
+						say(pRow() + 1, 0, "|");
+						say(pRow() + 0,( (iTamRel - sTmp.length() - 2) / 2) ,sTmp);
+						say(pRow() + 0, iTamRel - 1, "|");
+					}
 				}
 				/*if (iTamRel == 80)
 					say(pRow() + 1, 0, normal());
