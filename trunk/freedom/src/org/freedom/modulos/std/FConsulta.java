@@ -203,10 +203,9 @@ public class FConsulta extends FFilho implements CarregaListener {
 	 *
 	 */ 
 	private void carregaTabGrup() {
-		String sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " +
-				 "P.SLDCONSIGPROD,P.SLDLIQPROD FROM EQPRODUTO P "+
-				 "WHERE P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " +
-				 "P.CODGRUP LIKE ? ORDER BY P.DESCPROD ";
+	    String sWhere = "";
+		String sSQL = "";
+		int iCodAlmox = 0;
 		String sCodGrup = null;
 		try {
 			sCodGrup = txtCodGrup.getVlrString().trim();
@@ -217,6 +216,15 @@ public class FConsulta extends FFilho implements CarregaListener {
 			}
 			if (sCodGrup.length()<TAM_GRUPO)
 				sCodGrup += "%";
+			
+			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " +
+			 "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " +
+			 "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX" +
+			 "FROM EQPRODUTO P, EQSALDOPROD SP "+
+			 "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " +
+			 "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " +
+			 "P.CODGRUP AND " +
+			 "LIKE ? ORDER BY P.DESCPROD ";			
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));
