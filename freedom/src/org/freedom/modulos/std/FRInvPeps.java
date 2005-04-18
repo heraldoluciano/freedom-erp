@@ -27,15 +27,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -234,6 +232,10 @@ public class FRInvPeps extends FRelatorio {
   			
   			imp.limpaPags();
   			
+  			imp.montaCab();
+			imp.setTitulo("Relatorio de inventário de estoque");
+  			imp.addSubTitulo(sFiltros);
+  			
   			while ( rs.next() ) {
   				if (imp.pRow()>=(linPag-1)) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -242,41 +244,24 @@ public class FRInvPeps extends FRelatorio {
   					imp.eject();
 
   				}
-	  			if (imp.pRow()==0) {
-	  				imp.montaCab();
-	  				imp.setTitulo("Relatorio de inventário de estoque");
+	  			if (imp.pRow()==0) {	  				
 	  				imp.impCab(136, true);
-	  				
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-	  				imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()+iPagina));
-	  				imp.say(imp.pRow()+0,135,"|");
-	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  				imp.say(imp.pRow()+0,1,"|");
-	  				imp.say(imp.pRow()+0,45,"RELATORIO DE INVENTARIO DE ESTOQUE - ESTOQUE DE: "+txtData.getVlrString());
-	  				imp.say(imp.pRow()+0,135,"|");
-  	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  	  				imp.say(imp.pRow()+0,1,"|");
-  	  				imp.say(imp.pRow()+0,65-(sFiltros.length()/2),sFiltros);
-  	  				imp.say(imp.pRow()+0,135,"|");
-  	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+	  					  				
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"| CODIGO");
+					imp.say(imp.pRow()+0,0,"| CODIGO");
 					imp.say(imp.pRow()+0,16,"| DESCRICAO ");
 					imp.say(imp.pRow()+0,70,"| SALDO");
 					imp.say(imp.pRow()+0,83,"| CUSTO UNIT.");
 					imp.say(imp.pRow()+0,101,"| CUSTO TOTAL");
 					imp.say(imp.pRow()+0,135,"|");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 					
 				}
 				
   				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  				imp.say(imp.pRow()+0,1,"|"+Funcoes.adicEspacosEsquerda(rs.getString(sCpCodigo).trim(),13));
+  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicEspacosEsquerda(rs.getString(sCpCodigo).trim(),13));
   				imp.say(imp.pRow()+0,16,"| "+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),50));
   				imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDPROD")+"",10));
   				imp.say(imp.pRow()+0,83,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOUNIT")+""));
@@ -292,15 +277,15 @@ public class FRInvPeps extends FRelatorio {
   			if (!con.getAutoCommit())
   				con.commit();
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+  			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,1,"| TOTAL");
+  			imp.say(imp.pRow()+0,0,"| TOTAL");
   			imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",10));
 			imp.say(imp.pRow()+0,83,"|");
   			imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,deCustoTot+""));
   			imp.say(imp.pRow()+0,135,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,1,"+"+Funcoes.replicate("-",133)+"+");
+  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 
   			imp.eject();
   			imp.fechaGravacao();
