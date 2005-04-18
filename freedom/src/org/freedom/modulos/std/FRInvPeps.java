@@ -147,6 +147,7 @@ public class FRInvPeps extends FRelatorio {
   	String sCodMarca = "";
   	String sCodGrup = "";
   	String sFiltros = "";
+  	int iCodAlmox = 0;
   	ImprimeOS imp = null;
   	int linPag = 0;
   	int iPagina = 0;
@@ -165,8 +166,9 @@ public class FRInvPeps extends FRelatorio {
   		sSemEstoq = cbSemEstoq.getVlrString();
   		sCodMarca = txtCodMarca.getVlrString().trim();
   		sCodGrup = txtCodGrup.getVlrString().trim();
+  		//iCodAlmox = txt
   		
-  		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?) " +
+  		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?,?,?,?) " +
 		       (sSemEstoq.equals("N")?" WHERE SLDPROD!=0 ":"")+
   				"ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
   		try {
@@ -201,6 +203,16 @@ public class FRInvPeps extends FRelatorio {
   	  			sFiltros += " / GRUPO: "+sCodGrup+"-"+txtDescGrup.getVlrString().trim();
   			}
   			ps.setString(10,rgCusto.getVlrString());
+  			if (iCodAlmox==0) {
+  				ps.setNull(11,Types.INTEGER);
+  				ps.setNull(12,Types.INTEGER);
+  				ps.setNull(13,Types.INTEGER);
+  			}
+  			else {
+  				ps.setInt(11,Aplicativo.iCodEmp);
+  				ps.setInt(12,ListaCampos.getMasterFilial("EQALMOX"));
+  				ps.setInt(13,iCodAlmox);
+  			}
   			rs = ps.executeQuery();
   			
   			imp.limpaPags();
