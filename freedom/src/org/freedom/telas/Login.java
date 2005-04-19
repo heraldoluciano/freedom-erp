@@ -32,6 +32,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.bmps.Icone;
@@ -65,21 +67,27 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 	
 	this.iCodEst = iCodEst;
      	
-	setTitulo("Freedom - Login");
-	setAtribos(312,320);
-  	
+	setTitulo("Login");
+	
+  	ImageIcon ic = Icone.novo(sImg); 
 	JLabelPad lbImg = new JLabelPad(Icone.novo(sImg));
+	int iWidth = ic.getIconWidth();
+	int iHeight = ic.getIconHeight();
+	
+	setAtribos(iWidth+12,iHeight+170);
+	
 	lbImg.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 	lbInstrucoes.setForeground(Color.BLUE );
   	
-	adic(lbImg,0,0,348,150); 	
-	adic(new JLabelPad ("Usuario: "),7,150,180,20);
-	adic(txtUsuario,7,170,180,20);
-	adic(new JLabelPad ("Senha: "),190,150,100,20);
-	adic(txpSenha,190,170,100,20);
-	adic(new JLabelPad("Filial:"),7,190,200,20);
-	adic(cbEmp,7,210,283,20);
-	adic(lbInstrucoes,7,233,300,20);
+	adic(lbImg,0,0,iWidth,iHeight);
+	
+	adic(new JLabelPad ("Usuario: "),7,iHeight,180,20);
+	adic(txtUsuario,7,iHeight+20,180,20);
+	adic(new JLabelPad ("Senha: "),190,iHeight,100,20);
+	adic(txpSenha,190,iHeight+20,100,20);
+	adic(new JLabelPad("Filial:"),7,iHeight+40,200,20);
+	adic(cbEmp,7,iHeight+60,283,20);
+	adic(lbInstrucoes,7,iHeight+83,300,20);
     
     
 	txtUsuario.addFocusListener(this);
