@@ -23,9 +23,10 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JScrollPane;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import org.freedom.componentes.Tabela;
 
@@ -51,9 +52,9 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
     
     c.add( spnCentro, BorderLayout.CENTER);    
     
-    addInternalFrameListener(
-       new InternalFrameAdapter() {
-		 public void internalFrameActivated(InternalFrameEvent e) {
+    addWindowFocusListener(
+       new WindowAdapter() {
+		 public void windowGainedFocus(WindowEvent e) {
             if (tab.getNumLinhas() > 0) {
               tab.requestFocus();
 //              tab.setLinhaSel(0); 

@@ -68,8 +68,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldPad txtCodPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldPad txtDescPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtLinPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  private JTextFieldPad txtAltPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  private JTextFieldPad txtLargPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtComprimido = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
@@ -219,8 +217,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   public void montaTabela(Tabela tb){
       tb.limpa();      
       objEtiqCli.setTexto(txaEtiqueta.getVlrString());
-      Vector vLabelsColunas = (Vector)objEtiqCli.getLabelsColunasAdic();
-      Vector vTamanhos = (Vector)objEtiqCli.getTamsAdic(); 
+      Vector vLabelsColunas = objEtiqCli.getLabelsColunasAdic();
+      Vector vTamanhos = objEtiqCli.getTamsAdic(); 
       for(int i = 0;vLabelsColunas.size()>i;i++){
           tb.adicColuna(vLabelsColunas.elementAt(i).toString());
           String sTmp = vTamanhos.elementAt(i).toString();

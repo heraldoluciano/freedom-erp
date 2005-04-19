@@ -38,7 +38,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import javax.swing.ImageIcon;
+//import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
@@ -49,7 +49,7 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.bmps.Icone;
+//import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
@@ -70,8 +70,8 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 	private int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();
-	private ImageIcon imgOk = Icone.novo("btOk.gif");
-	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
+//	private ImageIcon imgOk = Icone.novo("btOk.gif");
+//	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
 	private JButton btStatusSol = new JButton("Solicitação Pendente", null);
 	private JButton btCancelaCompra = new JButton("Solicitação Pendente", null);
 	private JButton btStatusItem = new JButton("Item Pendente", null);

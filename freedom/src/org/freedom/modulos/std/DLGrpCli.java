@@ -24,6 +24,8 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,8 +33,6 @@ import java.sql.SQLException;
 
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -86,9 +86,9 @@ public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
     
     tab.addKeyListener(this);
     
-    addInternalFrameListener(
-       new InternalFrameAdapter() {
-		 public void internalFrameActivated(InternalFrameEvent e) {
+    addWindowFocusListener(
+       new WindowAdapter() {
+		 public void windowGainedFocus(WindowEvent e)  {
             if (tab.getNumLinhas() > 0) {
               tab.requestFocus();
               tab.setLinhaSel(0); 
