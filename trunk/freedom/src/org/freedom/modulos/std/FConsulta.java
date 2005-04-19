@@ -126,7 +126,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 		lcGrup.addCarregaListener(this);
 		
 		lcAlmoxGrup.add(new GuardaCampo(txtCodAlmoxGrup, "CodAlmox", "Cód.almox.",
-				ListaCampos.DB_PK, false));
+				ListaCampos.DB_PK,txtDescAlmoxGrup, false));
 		lcAlmoxGrup.add(new GuardaCampo(txtDescAlmoxGrup, "DescAlmox",
 				"Descrição do almoxarifado", ListaCampos.DB_SI, false));
 		lcAlmoxGrup.montaSql(false, "ALMOX", "EQ");
@@ -136,7 +136,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 		txtCodAlmoxGrup.setNomeCampo("CodAlmox");
 		
 		lcAlmoxProd.add(new GuardaCampo(txtCodAlmoxProd, "CodAlmox", "Cód.almox.",
-				ListaCampos.DB_PK, false));
+				ListaCampos.DB_PK,txtDescAlmoxProd, false));
 		lcAlmoxProd.add(new GuardaCampo(txtDescAlmoxProd, "DescAlmox",
 				"Descrição do almoxarifado", ListaCampos.DB_SI, false));
 		lcAlmoxProd.montaSql(false, "ALMOX", "EQ");
