@@ -69,13 +69,13 @@ public class TabObjeto {
   }
   
   public boolean getUsoMe(String sTabela) {
-     boolean bRetorno = false;
-     if (vObjetos!=null) {
+     boolean bRetorno = true;
+     if ( (vObjetos!=null) && (sTabela!=null) ){
      	for (int i=0; i<vObjetos.size(); i++) {
      		if ( ((ObjetoBD) vObjetos.elementAt(i)).getIDObj().
      		        toUpperCase().trim().equals(sTabela.toUpperCase().trim())) {
-     		   if ( ((ObjetoBD) vObjetos.elementAt(i)).getUsomeObj().equals("S")) {
-     		   	  bRetorno = true;
+     		   if ( !((ObjetoBD) vObjetos.elementAt(i)).getUsomeObj().equals("S")) {
+     		   	  bRetorno = false;
      		   	  break;
      		   }
      		}
