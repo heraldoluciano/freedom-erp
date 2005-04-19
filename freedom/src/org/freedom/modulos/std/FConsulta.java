@@ -54,6 +54,12 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JTextFieldFK txtSldRProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldCProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldLProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+
+	private JTextFieldFK txtSld = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldFK txtSldR = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldFK txtSldC = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldFK txtSldL = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
+		
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
 	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
@@ -61,7 +67,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JTextFieldFK txtDescAlmoxGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescAlmoxProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-
 	
 	private Tabela tabProd = new Tabela();
 	private JScrollPane spnTabProd = new JScrollPane(tabProd);
@@ -117,14 +122,12 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pinCabGrup.adic(new JLabelPad("Cód.grupo"),7,0,100,20);
 		pinCabGrup.adic(new JLabelPad("Descrição do grupo"),110,0,300,20);
 		pinCabGrup.adic(new JLabelPad("Cód.Almox."),413,0,70,20);
-		pinCabGrup.adic(new JLabelPad("Descrição do almoxarifado"),486,20,70,20);
+		pinCabGrup.adic(new JLabelPad("Descrição do almoxarifado"),486,0,200,20);
 		pinCabGrup.adic(txtCodGrup,7,20,100,20);
 		pinCabGrup.adic(txtDescGrup,110,20,300,20);
 		pinCabGrup.adic(txtCodAlmoxGrup,413,20,70,20);
 		pinCabGrup.adic(txtDescAlmoxGrup,486,20,200,20);
 				
-		lcGrup.addCarregaListener(this);
-		
 		lcAlmoxGrup.add(new GuardaCampo(txtCodAlmoxGrup, "CodAlmox", "Cód.almox.",
 				ListaCampos.DB_PK,txtDescAlmoxGrup, false));
 		lcAlmoxGrup.add(new GuardaCampo(txtDescAlmoxGrup, "DescAlmox",
@@ -150,7 +153,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	    // Aba de consulta de saldo por produto
 	    
 		txtCodProd.setRequerido(true);
-		lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo( txtSldProd, "SldProd", "Saldo", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo( txtSldRProd, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false));
@@ -173,16 +176,20 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pinCabProd.adic(new JLabelPad("Cód.Almox."),300,0,70,20);
 
 		pinCabProd.adic(txtDescAlmoxProd,373,20,197,20);
-		pinCabProd.adic(new JLabelPad("Descrição do Almoxarifado"),373,20,197,20);
+		pinCabProd.adic(new JLabelPad("Descrição do Almoxarifado"),373,0,200,20);
 		
 		pinCabProd.adic(new JLabelPad("Saldo"),7,40,87,20);
-		pinCabProd.adic(txtSldProd,7,60,87,20);
+//		pinCabProd.adic(txtSldProd,7,60,87,20);
+		pinCabProd.adic(txtSld,7,60,87,20);
 		pinCabProd.adic(new JLabelPad("Saldo cons."),97,40,87,20);
-		pinCabProd.adic(txtSldCProd,97,60,87,20);
+//		pinCabProd.adic(txtSldCProd,97,60,87,20);
+		pinCabProd.adic(txtSldC,97,60,87,20);
 		pinCabProd.adic(new JLabelPad("Saldo rest."),187,40,87,20);
-		pinCabProd.adic(txtSldRProd,187,60,87,20);
+//		pinCabProd.adic(txtSldRProd,187,60,87,20);
+		pinCabProd.adic(txtSldR,187,60,87,20);
 		pinCabProd.adic(new JLabelPad("Saldo liq."),277,40,87,20);
-		pinCabProd.adic(txtSldLProd,277,60,87,20);
+//		pinCabProd.adic(txtSldLProd,277,60,87,20);
+		pinCabProd.adic(txtSldL,277,60,87,20);
 
 		tabProd.adicColuna("Cód.c.cli.");
 		tabProd.adicColuna("Descrição da classificação do cliente");
@@ -270,6 +277,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 				sCodGrup = " LIKE '"+sCodGrup+"%'";
 			else
 			    sCodGrup = "='"+sCodGrup+"'";
+			
 			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " +
 			 "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " +
 			 "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " +
@@ -288,7 +296,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 			    ps.setInt(iParam++,ListaCampos.getMasterFilial("EQALMOX"));
 			    ps.setInt(iParam++,iCodAlmox);
 			}
-			//ps.setString(iParam,sCodGrup);
 			ResultSet rs = ps.executeQuery();
 			int iLin = 0;
             tabGrup.limpa();
@@ -296,10 +303,10 @@ public class FConsulta extends FFilho implements CarregaListener {
 				tabGrup.adicLinha();
 				tabGrup.setValor(new StringDireita(rs.getString("CODPROD")),iLin,0);
 				tabGrup.setValor(rs.getString("DESCPROD"),iLin,1);
-				tabGrup.setValor(new StringDireita(rs.getDouble("SLDPROD")+""),iLin,2);
-				tabGrup.setValor(new StringDireita(rs.getDouble("SLDRESPROD")+""),iLin,3);
-				tabGrup.setValor(new StringDireita(rs.getDouble("SLDCONSIGPROD")+""),iLin,4);
-				tabGrup.setValor(new StringDireita(rs.getDouble("SLDLIQPROD")+""),iLin,5); 
+				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDPRODX":"SLDPROD")+""),iLin,2);
+				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDRESPRODX":"SLDRESPROD")+""),iLin,3);
+				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDCONSIGPRODX":"SLDCONSIGPROD")+""),iLin,4);
+				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDLIQPRODX":"SLDLIQPROD")+""),iLin,5); 
 				iLin++;
 			}
 			rs.close();
@@ -323,19 +330,25 @@ public class FConsulta extends FFilho implements CarregaListener {
 	 *
 	 */ 
 	private void carregaTabProd() {
+		int iCodAlmox = 0;
+		int iParam = 0;
+		int iLin = 0;
+		tabProd.limpa();
 		String sSQL = "SELECT P.CODCLASCLI,(SELECT CL.DESCCLASCLI"+
 		              " FROM VDCLASCLI CL WHERE "+
-			      "CL.CODCLASCLI=P.CODCLASCLI),P.CODTAB,T.DESCTAB,"+
-			      "P.CODPLANOPAG,PP.DESCPLANOPAG,P.PRECOPROD FROM VDPRECOPROD P,"+
-			      "VDTABPRECO T, FNPLANOPAG PP WHERE "+
-			      "T.CODTAB=P.CODTAB AND PP.CODPLANOPAG=P.CODPLANOPAG AND "+
-			      "P.CODPROD = ? ORDER BY P.CODPRECOPROD";
+		              "CL.CODCLASCLI=P.CODCLASCLI),P.CODTAB,T.DESCTAB,"+
+		              "P.CODPLANOPAG,PP.DESCPLANOPAG,P.PRECOPROD FROM VDPRECOPROD P,"+
+		              "VDTABPRECO T, FNPLANOPAG PP WHERE "+
+		              "T.CODTAB=P.CODTAB AND PP.CODPLANOPAG=P.CODPLANOPAG AND "+
+		              "P.CODPROD = ? ORDER BY P.CODPRECOPROD";
+	    
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodProd.getVlrInteger().intValue());
 			ResultSet rs = ps.executeQuery();
-			int iLin = 0;
-            tabProd.limpa();
+            
+    		iCodAlmox = txtCodAlmoxProd.getVlrInteger().intValue();
+    		
 			while (rs.next()) {
 				tabProd.adicLinha();
 				tabProd.setValor(rs.getString(1) != null ? rs.getString(1) : "",iLin,0);
@@ -349,17 +362,35 @@ public class FConsulta extends FFilho implements CarregaListener {
 			}
 			if (!con.getAutoCommit())
                 con.commit();
+			
+			if(iCodAlmox!=0){
+			    
+			}
+			else {
+			    txtSld = txtSldProd;
+			    txtSldC = txtSldCProd;
+			    txtSldL = txtSldLProd;
+			    txtSldR = txtSldRProd;
+			}
+			
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PRECOPROD!\n"+err.getMessage());
 		}
 	}
-	public void beforeCarrega(CarregaEvent pevt) { }
-	public void afterCarrega(CarregaEvent pevt) {
-		if ((pevt.getListaCampos() == lcProd) || (pevt.getListaCampos() == lcAlmoxProd)){
+	public void beforeCarrega(CarregaEvent pevt) { 
+		if (pevt.getListaCampos() == lcAlmoxProd){
 			carregaTabProd();
 		}
-		if ((pevt.getListaCampos() == lcGrup) || (pevt.getListaCampos() == lcAlmoxGrup)) {
+		if (pevt.getListaCampos() == lcAlmoxGrup) {
+			carregaTabGrup();
+		}
+	}
+	public void afterCarrega(CarregaEvent pevt) {
+		if (pevt.getListaCampos() == lcProd){
+			carregaTabProd();
+		}
+		if (pevt.getListaCampos() == lcGrup) {
 			carregaTabGrup();
 		}
 	}
