@@ -88,15 +88,13 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 	adic(new JLabelPad("Filial:"),7,iHeight+40,200,20);
 	adic(cbEmp,7,iHeight+60,283,20);
 	adic(lbInstrucoes,7,iHeight+83,300,20);
-    
-    
+        
 	txtUsuario.addFocusListener(this);
 	txpSenha.addFocusListener(this);
 	cbEmp.addFocusListener(this);
 	btOK.addFocusListener(this);
 
-	setVisible(true);
-    
+	setVisible(true);    
   }
   public String[] getStrVals() {
   	 String[] ret = new String[3];
