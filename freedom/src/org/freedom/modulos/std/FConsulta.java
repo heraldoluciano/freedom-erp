@@ -54,33 +54,28 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JTextFieldFK txtSldRProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldCProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldLProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
-
 	private JTextFieldFK txtSld = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldR = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldC = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
-	private JTextFieldFK txtSldL = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
-		
+	private JTextFieldFK txtSldL = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);		
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,TAM_GRUPO,0);
 	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JTextFieldPad txtCodAlmoxGrup = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescAlmoxGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
     private JTextFieldPad txtCodAlmoxProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldFK txtDescAlmoxProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-	
+	private JTextFieldFK txtDescAlmoxProd = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);	
 	private Tabela tabProd = new Tabela();
 	private JScrollPane spnTabProd = new JScrollPane(tabProd);
 	private ListaCampos lcProd = new ListaCampos(this,"PR");
 	private ListaCampos lcProd2 = new ListaCampos(this);
 	private ListaCampos lcAlmoxGrup = new ListaCampos(this, "AX");
 	private ListaCampos lcAlmoxProd = new ListaCampos(this, "AX");
-
 	private JPanelPad pinCabGrup = new JPanelPad(700,60);
 	private JPanelPad pnCliGrup = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private Tabela tabGrup = new Tabela();
 	private JScrollPane spnTabGrup = new JScrollPane(tabGrup);
-	private ListaCampos lcGrup = new ListaCampos(this);
-	
+	private ListaCampos lcGrup = new ListaCampos(this);	
 	private JTabbedPanePad tpnConsulta = new JTabbedPanePad();
 	
 	public FConsulta() {
@@ -170,13 +165,13 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pnCliProd.add(pinCabProd,BorderLayout.NORTH);
 		pnCliProd.add(spnTabProd,BorderLayout.CENTER);
 
-		pinCabProd.adic(txtDescProd,100,20,197,20);
+		pinCabProd.adic(txtDescProd,100,20,257,20);
 		
-		pinCabProd.adic(txtCodAlmoxProd,300,20,70,20);
-		pinCabProd.adic(new JLabelPad("Cód.Almox."),300,0,70,20);
+		pinCabProd.adic(txtCodAlmoxProd,360,20,70,20);
+		pinCabProd.adic(new JLabelPad("Cód.Almox."),360,0,70,20);
 
-		pinCabProd.adic(txtDescAlmoxProd,373,20,197,20);
-		pinCabProd.adic(new JLabelPad("Descrição do Almoxarifado"),373,0,200,20);
+		pinCabProd.adic(txtDescAlmoxProd,433,20,197,20);
+		pinCabProd.adic(new JLabelPad("Descrição do Almoxarifado"),433,0,200,20);
 		
 		pinCabProd.adic(new JLabelPad("Saldo"),7,40,87,20);
 //		pinCabProd.adic(txtSldProd,7,60,87,20);
