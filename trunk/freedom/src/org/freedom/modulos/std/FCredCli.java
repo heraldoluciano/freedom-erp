@@ -784,8 +784,6 @@ public class FCredCli extends FTabDados implements ActionListener,
 
 	private Navegador navFicha = new Navegador(false);
 	
-	private Navegador navPJur = new Navegador(false);
-	
 	private Navegador navRefP = new Navegador(true);
 
 	private Navegador navAutP = new Navegador(true);

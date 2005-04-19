@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,8 +40,6 @@ import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freedom.bmps.Icone;
@@ -49,7 +49,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 
-public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListener, ActionListener {
+public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener, ActionListener {
   private JLabelPad lbPesq = new JLabelPad("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JPanelPad pnBordCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
@@ -105,7 +105,7 @@ public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListene
     trocaColuna();
     trocaColuna(); 
 
-    addInternalFrameListener(this);
+    addWindowFocusListener(this);
   }
   public void montaColunas() {
     String tit = "";
@@ -373,17 +373,10 @@ public class DLF2 extends FFDialogo implements KeyListener, InternalFrameListene
       txtPesq.requestFocus();
     }
   }
-  public void internalFrameActivated(InternalFrameEvent e) {
+  public void windowGainedFocus(WindowEvent e) {
     txtPesq.requestFocus();
   }
-  public void internalFrameClosed(InternalFrameEvent e) { }
-  public void internalFrameClosing(InternalFrameEvent e) { }
-  public void internalFrameDeactivated(InternalFrameEvent e) { }
-  public void internalFrameDeiconified(InternalFrameEvent e) { }
-  public void internalFrameIconified(InternalFrameEvent e) { }
-  public void internalFrameOpened(InternalFrameEvent e) {
-    txtPesq.requestFocus();
-  }
+  public void windowLostFocus(WindowEvent e)  { }
   public void keyTyped(KeyEvent kevt) { }
   /* (non-Javadoc)
  * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
