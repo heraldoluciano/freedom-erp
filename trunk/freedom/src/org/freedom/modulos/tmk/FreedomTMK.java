@@ -41,8 +41,7 @@ import org.freedom.telas.Aplicativo;
 public class FreedomTMK extends Aplicativo {
 
 	public FreedomTMK() {
-		super("iconAtendimento32.gif", "splashTMK.jpg",
-				"FreedomTMK - Módulo de telemarketing FREEDOM", 1, 7, "freedom.ini", null);
+		super("iconAtendimento32.gif", "splashTMK.jpg", 1, "Freedom", 7, "Telemarketing", "freedom.ini", null);
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 

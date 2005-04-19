@@ -43,10 +43,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 	public FreedomPCP() {
 
 		super(
-				"iconAtendimento32.gif",
-				"splashPCP.jpg",
-				"FreedomPCP - Modulo de planejamento e controle de produção FREEDOM",
-				1, 5, "freedom.ini", null);
+				"iconAtendimento32.gif", "splashPCP.jpg", 1, "Freedom", 5, "Planejamento e Controle da Produção", "freedom.ini", null);
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 		addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,

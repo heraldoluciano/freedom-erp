@@ -93,9 +93,7 @@ import org.freedom.telas.Aplicativo;
 public class FreedomGMS extends Aplicativo {
 
 	public FreedomGMS() {
-		super("iconAtendimento32.gif", "splashGMS.jpg",
-				"FreedomGMS - Módulo de gerenciamento de mateirais e serviços",
-				1, 8, "freedom.ini", null);
+		super("iconAtendimento32.gif", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", "freedom.ini", null);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);

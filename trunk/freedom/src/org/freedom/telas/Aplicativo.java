@@ -137,8 +137,12 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	private int iCodSis = 0;
 
-	private int iCodMod = 0;
+	private int iCodModu = 0;
 
+	private String sDescSis = "";
+	
+	private String sDescModu = "";
+	
 	protected Connection conIB;
 
 	public static Vector vEquipeSis = new Vector();
@@ -157,8 +161,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		Locale.setDefault(new Locale("pt", "BR"));
 	}
 
-	public Aplicativo(String sIcone, String sSplash, String sCaption,
-			int iCodSis, int iCodMod, String sNomeArqIni, String sDirImagem) {
+	public Aplicativo(String sIcone, String sSplash, int iCodSis, String sDescSis, 
+			int iCodModu, String sDescModu, String sNomeArqIni, String sDirImagem) {
 	    if (sDirImagem!=null) {
 	        Imagem.dirImages = sDirImagem;
 	        Icone.dirImages = sDirImagem;
@@ -171,7 +175,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		vBotoes = new Vector();
 		telaPrincipal = new FPrincipal();
 		this.iCodSis = iCodSis;
-		this.iCodMod = iCodMod;
+		this.iCodModu = iCodModu;
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
@@ -183,7 +187,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		vArqINI = getArqINI(sArqINI);
 		iniConexao(); // Inicia a variável de conexão
 		//telaPrincipal.tiraEmp();
-		telaPrincipal.setIdent(sCaption, iCodSis, iCodMod);
+		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim(), iCodSis, iCodModu);
 		telaPrincipal.setConexao(con); // Variavel de conexão da Classe
 		// Aplicativo
 		telaPrincipal.statusBar.setUsuario(strUsuario);//Variavel de usuario da
@@ -251,9 +255,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		JMenuPad mpMaster = null;
 		try {
 			if (iTipo == TP_OPCAO_MENU) {
-				mOpcao = (new JMenuPad(iCodSis, iCodMod, iOpcao, iNivel));
+				mOpcao = (new JMenuPad(iCodSis, iCodModu, iOpcao, iNivel));
 			} else if (iTipo == TP_OPCAO_ITEM) {
-				mOpcao = (new JMenuItemPad(iCodSis, iCodMod, iOpcao, iNivel,
+				mOpcao = (new JMenuItemPad(iCodSis, iCodModu, iOpcao, iNivel,
 						tela, titulo));
 			}
 			mOpcao.setText(sCaption);
@@ -268,7 +272,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				if (mpMaster != null) {
 					if (bExec)
 						((JMenuItemPad) mOpcao).setEnabled(verifAcesso(iCodSis,
-								iCodMod, iOpcao));
+								iCodModu, iOpcao));
 					mpMaster.add(mOpcao);
 				}
 			}
@@ -302,7 +306,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			int iCodMenu, Class tela) {
 		JButtonPad btOpcao = null;
 		try {
-			btOpcao = new JButtonPad(iCodSis, iCodMod, iCodMenu, tela, titulo);
+			btOpcao = new JButtonPad(iCodSis, iCodModu, iCodMenu, tela, titulo);
 			btOpcao.setIcon(Icone.novo(sImagem));
 			if (sToolTip != null)
 				btOpcao.setToolTipText(sToolTip);
@@ -503,41 +507,41 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	private boolean upMenuDB(JMenuItem men, JMenuPad menPai) {
 		boolean bRet = false;
+		int iCodMenu = 0;
 		try {
-			int iCodSis = 0;
-			int iCodModu = 0;
-			int iCodMenu = 0;
 			if (men instanceof JMenuItemPad) {
-				iCodSis = ((JMenuItemPad) men).getCodSistema();
-				iCodModu = ((JMenuItemPad) men).getCodModulo();
+//				iCodSis = ((JMenuItemPad) men).getCodSistema();
+//				iCodModu = ((JMenuItemPad) men).getCodModulo();
 				iCodMenu = ((JMenuItemPad) men).getCodItem();
 			} else if (men instanceof JMenuPad) {
-				iCodSis = ((JMenuPad) men).getCodSistema();
-				iCodModu = ((JMenuPad) men).getCodModulo();
+//				iCodSis = ((JMenuPad) men).getCodSistema();
+//				iCodModu = ((JMenuPad) men).getCodModulo();
 				iCodMenu = ((JMenuPad) men).getCodMenu();
 			}
 			//			System.out.println(iCodSis+","+iCodModu+","+iCodMenu+","+men.getText()+","+menPai.getCodSistema()+","+menPai.getCodModulo()+","+menPai.getCodMenu());
 			PreparedStatement ps = con
-					.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?)");
-			ps.setInt(1, iCodSis);
-			ps.setInt(2, iCodModu);
-			ps.setInt(3, iCodMenu);
-			ps.setString(4, men.getText());
+					.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?)");
+			ps.setInt(1, this.iCodSis);
+			ps.setString(2,this.sDescSis);
+			ps.setInt(3, this.iCodModu);
+			ps.setString(4,this.sDescModu);
+			ps.setInt(5, iCodMenu);
+			ps.setString(6, men.getText());
 
 			if (menPai.getCodSistema() == 0)
-				ps.setNull(5, java.sql.Types.INTEGER);
-			else
-				ps.setInt(5, menPai.getCodModulo());
-
-			if (menPai.getCodModulo() == 0)
-				ps.setNull(6, java.sql.Types.INTEGER);
-			else
-				ps.setInt(6, menPai.getCodModulo());
-
-			if (menPai.getCodMenu() == 0)
 				ps.setNull(7, java.sql.Types.INTEGER);
 			else
-				ps.setInt(7, menPai.getCodMenu());
+				ps.setInt(7, menPai.getCodModulo());
+
+			if (menPai.getCodModulo() == 0)
+				ps.setNull(8, java.sql.Types.INTEGER);
+			else
+				ps.setInt(8, menPai.getCodModulo());
+
+			if (menPai.getCodMenu() == 0)
+				ps.setNull(9, java.sql.Types.INTEGER);
+			else
+				ps.setInt(9, menPai.getCodMenu());
 
 			ps.execute();
 			ps.close();
