@@ -48,11 +48,12 @@ import org.freedom.telas.FDados;
 public class FFrete extends FDados implements InsertListener, FocusListener {
   private int casasDec = Aplicativo.casasDec;
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  private JTextFieldFK txtDocVenda = new JTextFieldFK(JTextFieldPad.TP_STRING,9,0);
+  private JTextFieldFK txtDocVenda = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtSeries = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtConhecFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0 );
   private JTextFieldPad txtPercVendaFreteVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,9,2);
+  
   private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtPlacaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
@@ -91,8 +92,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     txtCodVenda.setNomeCampo("CodVenda");
     
-    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Cód.vd.", ListaCampos.DB_PK, false));
-    lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Doc.vd.", ListaCampos.DB_SI, false));
+    lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false));
+    lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "N.doc.", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtSeries, "Serie", "Serie", ListaCampos.DB_SI, false));    
     lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V.liq.", ListaCampos.DB_SI, false));    
         txtDocVenda.setListaCampos(lcVenda);
@@ -112,8 +113,8 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     txtPercVendaFreteVD.setAtivo(false);
     
-    adicCampo(txtCodVenda, 7, 20, 110, 20, "CodVenda", "Nº pedido", ListaCampos.DB_PK, true);
-    adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "Nº NF");
+    adicCampo(txtCodVenda, 7, 20, 110, 20, "CodVenda", "Nº pedido", ListaCampos.DB_PF, txtDocVenda, true);
+    adicDescFK(txtDocVenda,120, 20, 110, 20, "DocVenda", "Nº Doc");
     adicDB(rgFreteVD,233,20,125,60, "TipoFreteVd", "Tipo",true);
     adicCampo(txtMarcaFreteVD,7,60,110,20, "MarcaFreteVd","Marca", ListaCampos.DB_SI, true);        
     adicCampo(txtPercVendaFreteVD,120,60,110,20, "PercVendaFreteVd","Perc.vd.", ListaCampos.DB_SI, false);
