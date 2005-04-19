@@ -113,7 +113,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodSerie = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 4, 0);
 
-	private JTextFieldPad txtCodDoc = new JTextFieldPad(
+	private JTextFieldPad txtDocVenda = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad(
@@ -460,7 +460,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//FK Série
 		lcSerie.add(new GuardaCampo(txtCodSerie, "Serie", "Série",
 				ListaCampos.DB_PK, false));
-		lcSerie.add(new GuardaCampo(txtCodDoc, "DocSerie", "Doc. atual",
+		lcSerie.add(new GuardaCampo(txtDocVenda, "DocSerie", "Doc. atual",
 				ListaCampos.DB_SI, false));
 		lcSerie.montaSql(false, "SERIE", "LF");
 		lcSerie.setQueryCommit(false);
@@ -593,7 +593,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//Desativa as os TextFields para que os usuários não possam mexer
 
 		txtCodSerie.setAtivo(false);
-		txtCodDoc.setAtivo(false);
+		txtDocVenda.setAtivo(false);
 		txtVlrFreteVenda.setAtivo(false);
 		txtVlrComisVenda.setAtivo(false);
 		txtMedComisVenda.setAtivo(false);
@@ -774,7 +774,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				"Descrição do tipo de movimento");
 		adicCampo(txtCodSerie, 380, 20, 77, 20, "Serie", "Série",
 				ListaCampos.DB_FK, false);
-		adicCampo(txtCodDoc, 460, 20, 77, 20, "DocVenda", "N doc.",
+		adicCampo(txtDocVenda, 460, 20, 77, 20, "DocVenda", "N doc.",
 				ListaCampos.DB_SI, false);
 		adicCampo(txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data emis.",
 				ListaCampos.DB_SI, true);
