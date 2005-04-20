@@ -524,7 +524,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			ps.setInt(1, this.iCodSis);
 			ps.setString(2,this.sDescSis);
 			ps.setInt(3, this.iCodModu);
-			ps.setString(4,this.sDescModu);
+			ps.setString(4,Funcoes.copy(this.sDescModu, 50));
 			ps.setInt(5, iCodMenu);
 			ps.setString(6, men.getText());
 

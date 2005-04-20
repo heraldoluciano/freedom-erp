@@ -219,7 +219,8 @@ public class ImprimeOS implements ActionListener {
 
     public void previewGrafico(JInternalFrame pai) {
         dlPrevGraf = new DLPrinterJob(impLay, pai);
-        dlPrevGraf.setSize(dlPrevGraf.getMaximumSize());
+        dlPrevGraf.setSize(Aplicativo.telaPrincipal.dpArea.getSize());
+        dlPrevGraf.setLocation(Aplicativo.telaPrincipal.dpArea.getLocationOnScreen());
         dlPrevGraf.toFront();
         //dlPrevGraf.setNomeImp(sImpressora);
         dlPrevGraf.setVisible(true);
@@ -227,7 +228,8 @@ public class ImprimeOS implements ActionListener {
 
     public void previewTexto(JInternalFrame pai) {
         dlPrev = new DLVisualiza(this, pai);
-        dlPrev.setSize(dlPrev.getMaximumSize());
+        dlPrev.setSize(Aplicativo.telaPrincipal.dpArea.getSize());
+        dlPrev.setLocation(Aplicativo.telaPrincipal.dpArea.getLocationOnScreen());
         dlPrev.toFront();
         dlPrev.setNomeImp(sImpressora);
         dlPrev.setVisible(true);
