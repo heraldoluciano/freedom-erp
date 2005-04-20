@@ -324,37 +324,18 @@ public class Funcoes {
 		return lResult;
 	}
 
-	public static void mensagem(Component frame, String sMensagem,
-			String sTitulo, int iOpcao) {
+	public static void mensagem(String sMensagem, String sTitulo,
+			int iOpcao) {
 		//	imgIcone = Aplicativo.imgIcone;
-		if (frame == null) {
-			//if (imgIcone==null)
-			JOptionPane.showMessageDialog(frame, sMensagem, sTitulo, iOpcao);
-			//else
-			// JOptionPane.showMessageDialog(frame,sMensagem,sTitulo,iOpcao,imgIcone);
-		} else if (frame instanceof JInternalFrame) {
-			//if (imgIcone==null)
-			JOptionPane.showInternalMessageDialog(frame, sMensagem, sTitulo,
-					iOpcao);
-			//else
-			// JOptionPane.showInternalMessageDialog(frame, sMensagem, sTitulo ,
-			// iOpcao, imgIcone);
-		} else {
-			//if (imgIcone==null)
-			JOptionPane.showMessageDialog(frame, sMensagem, sTitulo, iOpcao);
-			//else
-			// JOptionPane.showMessageDialog(frame,sMensagem, sTitulo,
-			// iOpcao,imgIcone);
-		}
+			JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
 	}
 
 	public static void mensagemInforma(Component frame, String sMensagem) {
-		mensagem(frame, sMensagem, "Informação",
-				JOptionPane.INFORMATION_MESSAGE);
+		mensagem(sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public static void mensagemErro(Component frame, String sMensagem) {
-		mensagem(frame, sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 
 	}
 
