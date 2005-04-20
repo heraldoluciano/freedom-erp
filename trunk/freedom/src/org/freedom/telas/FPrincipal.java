@@ -274,7 +274,12 @@ public class FPrincipal extends JFrame implements ActionListener {
 		return retorno;
 
 	}
-
+	public void criatela(String nome, FFDialogo comp, Connection cn) {
+		comp.setName(nome);
+		comp.setTitulo(nome);
+		comp.setConexao(cn);
+		comp.execShow();
+	}
 	public void criatela(String nome, FFilho comp, Connection cn) {
 		comp.setName(nome);
 		comp.setTitulo(nome);
@@ -290,7 +295,6 @@ public class FPrincipal extends JFrame implements ActionListener {
 	public void criatela(String nome, FDialogo comp, Connection cn) {
 		comp.setName(nome);
 		comp.setTitulo(nome);
-		//dpArea.add(nome,comp);
 		comp.setConexao(cn);
 		comp.setVisible(true);
 	}

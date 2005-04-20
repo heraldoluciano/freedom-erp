@@ -422,7 +422,28 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					if (telaPrincipal.temTela(titulo) == false) {
 						try {
 							Object obj = telaClass.newInstance();
-							if (obj instanceof FFilho) {
+							if (obj instanceof FFDialogo) {
+								FFDialogo tela = (FFDialogo) obj;
+
+								Class partypes[] = new Class[2];
+								partypes[0] = Connection.class;
+								partypes[1] = Connection.class;
+								Method meth = null;
+								try {
+									meth = telaClass.getMethod(
+											"setConexao", partypes);
+								} catch (NoSuchMethodException e) { }
+
+								telaPrincipal.criatela(titulo, tela, con);
+								tela.setTelaPrim(telaPrincipal);
+
+								if (meth != null) {
+									Object arglist[] = new Object[2];
+									arglist[0] = con;
+									arglist[1] = conIB;
+									meth.invoke(obj, arglist);
+								}
+							} else if (obj instanceof FFilho) {
 								FFilho tela = (FFilho) obj;
 
 								Class partypes[] = new Class[2];
