@@ -121,7 +121,8 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 		addSeparador(200000000);
 		addOpcao(200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal",'L', 200700000, 2, true, FLeFiscal.class);
 		addOpcao(200000000, TP_OPCAO_ITEM, "Leitura X","Confirma impressão de leitura X ?", 'i', 110800000, 2, true, JBemaFI32.class);
-
+		addSeparador(200000000);
+		addOpcao(200000000, TP_OPCAO_ITEM, "Fechamento de Caixa","Efetua um fechamento de caixa", 'f', 110800001, 2, true, DLFechaDia.class);
 		
 		JButtonPad btVenda = addBotao("barraVenda.gif", "Venda", "", 200100000,	null);
 		addBotao("btExcluir.gif", "Cancela venda", "Cancela Venda", 200200000,DLCancCupom.class);
@@ -131,7 +132,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 		addBotao("btPdvGravaMoeda.gif", "Ajusta moeda", "Grava Moeda",200600000, FGravaMoeda.class);		
 		addBotao("btPdvLeituraXPq.gif", "Ler memória fiscal", "Le Fiscal",200700000, FLeFiscal.class);
 		
-		
+		ajustaMenu();		
 		sNomeModulo = "Ponto de Venda";
 		sMailSuporte = "suporte@stpinf.com";
 		sNomeSis = "Freedom";
