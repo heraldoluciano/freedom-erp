@@ -133,6 +133,9 @@ public class FFDialogo extends JDialog implements ActionListener,
 
     public FFDialogo(Frame fOrig) {
         super(fOrig, "Dialogo", true);
+        if (pnPai == null) {
+            pnPai = Aplicativo.telaPrincipal.dpArea;
+        }
         setTitle("Dialogo");
         setAtribos(50, 50, 500, 300);
         c.setLayout(new BorderLayout());
