@@ -24,6 +24,7 @@ package org.freedom.modulos.pdv;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
@@ -172,6 +173,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
    	  setAtribos(798,580);
    	  setToFrameLayout();
    	  setResizable(false);
+   	  setLocation(0,0);
+   	  Dimension size = Aplicativo.telaPrincipal.getSize();
+   	  size.height -= 9;
+   	  size.width -= 9;
+   	  setSize(size);
    	  
    	  txtPreco.setAtivo(false);
    	  txtCodVenda.setAtivo(false);
