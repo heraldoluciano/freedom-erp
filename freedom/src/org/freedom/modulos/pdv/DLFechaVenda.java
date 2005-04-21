@@ -86,6 +86,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		txtCodPlanoPag.setFK(true);
 		
 		adic(new JLabelPad("Cód.p.pag."),7,5,250,15);
