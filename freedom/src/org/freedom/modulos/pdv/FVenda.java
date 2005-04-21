@@ -72,6 +72,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
+import org.freedom.telas.Calc;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
@@ -276,15 +277,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
 
-	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 
 	private Font fntTotalItem = null;
 
 	private Font fntTotalCupom = null;
 
 	private Vector vCacheItem = new Vector();
-
-	private Connection con;
 
 	private Tef tef = null;
 
@@ -556,6 +555,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		if (AplicativoPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
 		}		
+		
+		setFirstFocus(txtCodProd);
+		setInitFirstFocus(true);
 	}
 
 	private void insereItem() {
@@ -594,13 +596,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 					txtAliqIcms.getVlrBigDecimal(),
 					txtBaseCalc.getVlrBigDecimal(),
 					txtValorIcms.getVlrBigDecimal(), "" });
-			if (AplicativoPDV.bECFTerm)
+			if (FreedomPDV.bECFTerm)
 				bf.vendaItem(Aplicativo.strUsuario, txtCodProd.getVlrInteger()
 						.intValue(), txtDescProd.getVlrString(), txtTipoFisc
 						.getVlrString(),
 						txtQtdade.getVlrDouble().doubleValue(), txtPreco
 								.getVlrDouble().doubleValue(), 0,
-						AplicativoPDV.bModoDemo);
+						FreedomPDV.bModoDemo);
 
 			atualizaTot();
 			vCacheItem.clear();
@@ -801,8 +803,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 	}
 
 	public void setConexao(Connection con) {
-		//   	  super.setConexao(con);
-		this.con = con;
+		super.setConexao(con);
 		lcCliente.setConexao(con);
 		lcPlanoPag.setConexao(con);
 		lcVenda.setConexao(con);
@@ -1122,6 +1123,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 			leituraX();
 		if (evt.getSource() == btF6)
 			abreGaveta();
+		if (evt.getSource() == btF7) {
+			Calc calc = new Calc();
+			Aplicativo.telaPrincipal.dpArea.add("Calc", calc);
+			calc.show();
+		}
 		if (evt.getSource() == btF8)
 			repeteItem();
 		if (evt.getSource() == btF9)
