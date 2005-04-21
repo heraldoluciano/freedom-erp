@@ -39,6 +39,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 
@@ -50,7 +51,7 @@ public class FSuprimento extends FFDialogo {
 	private JTextFieldFK txtStatusAnt = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
 	private JTextFieldFK txtUsuarioAnt = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldFK txtUsuarioAtual = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	public FSuprimento() {
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Suprimento de caixa");
@@ -119,7 +120,7 @@ public class FSuprimento extends FFDialogo {
 	}
 		
 	private void executaSuprimento() {
-		 if (!FreedomPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",FreedomPDV.bModoDemo)) {
+		 if (!AplicativoPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",AplicativoPDV.bModoDemo)) {
 		  try {
 			PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE PVSUPRIMENTOSP(?,?,?,?,?,?)");
 					
@@ -140,8 +141,8 @@ public class FSuprimento extends FFDialogo {
 		  catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao executar suprimento!\n"+err.getMessage());
 		  }
-		  if (FreedomPDV.bECFTerm)
-		    bf.abreGaveta(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
+		  if (AplicativoPDV.bECFTerm)
+		    bf.abreGaveta(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
 		}		  
 	}
 

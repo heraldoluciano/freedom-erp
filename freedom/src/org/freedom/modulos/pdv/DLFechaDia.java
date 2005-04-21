@@ -41,13 +41,14 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaDia extends FFDialogo {
 	private JTextFieldFK txtDataHora = new JTextFieldFK(JTextFieldPad.TP_STRING,16,0);
 	private JTextFieldFK txtVlrCaixa = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad("Deseja executar a redução Z?","S","N");
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	public DLFechaDia() {
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de caixa");
@@ -140,15 +141,15 @@ public class DLFechaDia extends FFDialogo {
 	}	
 	private void fechaCaixa(boolean bReduz) {
 		if (txtVlrCaixa.getVlrDouble().doubleValue() > 0)
-			if (execSangria() && FreedomPDV.bECFTerm) {
-				if (!bf.sangria(Aplicativo.strUsuario,txtVlrCaixa.getVlrBigDecimal(),FreedomPDV.bModoDemo)) {
+			if (execSangria() && AplicativoPDV.bECFTerm) {
+				if (!bf.sangria(Aplicativo.strUsuario,txtVlrCaixa.getVlrBigDecimal(),AplicativoPDV.bModoDemo)) {
 					Funcoes.mensagemErro(null,"Erro ao executar a sangria!");
 					return;
 				}
 			}
 		if (execFechamento(bReduz)) {
-			if (FreedomPDV.bECFTerm && bReduz)
-				if (!bf.reducaoZ(Aplicativo.strUsuario,FreedomPDV.bModoDemo)) {
+			if (AplicativoPDV.bECFTerm && bReduz)
+				if (!bf.reducaoZ(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
 					Funcoes.mensagemErro(null,"Erro ao executar a redução Z!");
 					return;
 				}

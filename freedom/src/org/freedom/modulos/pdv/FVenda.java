@@ -276,7 +276,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
 
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 
 	private Font fntTotalItem = null;
 
@@ -553,7 +553,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 
 		lcVenda.addPostListener(this);
 		
-		if (FreedomPDV.bTEFTerm) {
+		if (AplicativoPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
 		}		
 	}
@@ -594,13 +594,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 					txtAliqIcms.getVlrBigDecimal(),
 					txtBaseCalc.getVlrBigDecimal(),
 					txtValorIcms.getVlrBigDecimal(), "" });
-			if (FreedomPDV.bECFTerm)
+			if (AplicativoPDV.bECFTerm)
 				bf.vendaItem(Aplicativo.strUsuario, txtCodProd.getVlrInteger()
 						.intValue(), txtDescProd.getVlrString(), txtTipoFisc
 						.getVlrString(),
 						txtQtdade.getVlrDouble().doubleValue(), txtPreco
 								.getVlrDouble().doubleValue(), 0,
-						FreedomPDV.bModoDemo);
+						AplicativoPDV.bModoDemo);
 
 			atualizaTot();
 			vCacheItem.clear();

@@ -53,6 +53,7 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
 
@@ -71,7 +72,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
 	JCheckBoxPad cbInteira = new JCheckBoxPad("Cancelar venda inteira","S","N");
 	private ListaCampos lcVenda = new ListaCampos(this,"VD");
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	boolean bCancCupom = false;
 	int iCancItem = -1;
 	public DLCancCupom() {
@@ -199,8 +200,8 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 		if (cbInteira.getVlrString().equals("S")) {
 			if (Funcoes.mensagemConfirma(null,"Deseja realmente cancelar o cupom?") == JOptionPane.YES_OPTION) {
 				if (cancVenda()) {
-					if (FreedomPDV.bECFTerm) {
-						if (bf.cancelaCupom(Aplicativo.strUsuario,FreedomPDV.bModoDemo)) {
+					if (AplicativoPDV.bECFTerm) {
+						if (bf.cancelaCupom(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
 							bCancCupom = true;
 							btOK.doClick();
 						}
@@ -214,8 +215,8 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 				int iItem = Integer.parseInt((String)tab.getValor(i,1));
 				if (Funcoes.mensagemConfirma(null,"Deseja realmente cancelar o item "+iItem+"?") == JOptionPane.YES_OPTION) {
 					if (cancItem(iItem)) {
-						if (FreedomPDV.bECFTerm) {
-							if (bf.cancelaItemGenerico(Aplicativo.strUsuario,iItem,FreedomPDV.bModoDemo)) {
+						if (AplicativoPDV.bECFTerm) {
+							if (bf.cancelaItemGenerico(Aplicativo.strUsuario,iItem,AplicativoPDV.bModoDemo)) {
 								iCancItem = iItem;
 								btOK.doClick();
 							}

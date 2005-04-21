@@ -45,6 +45,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
 
 public class FLeFiscal extends FTabDados {
@@ -117,7 +118,7 @@ public class FLeFiscal extends FTabDados {
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcCaixa = new ListaCampos(this,"");
 	private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	public FLeFiscal() {
 		setTitulo("Leitura de memória fiscal");
 		setAtribos(60,60,540,470);
@@ -294,8 +295,8 @@ public class FLeFiscal extends FTabDados {
     }
     private void buscaAliquotas() {
 		String sAliquota = "";
-		if (FreedomPDV.bECFTerm) {
-		   String sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,FreedomPDV.bModoDemo)+"").trim();
+		if (AplicativoPDV.bECFTerm) {
+		   String sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim();
 		   int iTot = (((sAliquotas.length())+1)/5);
 		   for (int i=1;i<=iTot;i++) {
 		      sAliquota = sAliquotas.substring((5*i)-5,(5*i)-3)+"."+sAliquotas.substring((5*i)-3,(5*i)-1);
@@ -334,11 +335,11 @@ public class FLeFiscal extends FTabDados {
 		  Funcoes.mensagemErro(this,"Erro ao buscar primeiro cupom!\n"+err.getMessage());
 	    }
     	
-		if (FreedomPDV.bECFTerm) {
-            txtRed.setVlrInteger(new Integer (bf.numeroReducoes(Aplicativo.strUsuario,FreedomPDV.bModoDemo)));
-            txtUltCupom.setVlrInteger(new Integer (bf.numeroCupom(Aplicativo.strUsuario,FreedomPDV.bModoDemo)-1));
-            txtCanc.setVlrInteger(new Integer (bf.numeroCancelados(Aplicativo.strUsuario,FreedomPDV.bModoDemo)));
-            txtRed.setVlrInteger(new Integer (bf.numeroReducoes(Aplicativo.strUsuario,FreedomPDV.bModoDemo)));
+		if (AplicativoPDV.bECFTerm) {
+            txtRed.setVlrInteger(new Integer (bf.numeroReducoes(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
+            txtUltCupom.setVlrInteger(new Integer (bf.numeroCupom(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)-1));
+            txtCanc.setVlrInteger(new Integer (bf.numeroCancelados(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
+            txtRed.setVlrInteger(new Integer (bf.numeroReducoes(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
 		}
 		else {
 			txtRed.setVlrInteger(new Integer(0));
@@ -351,16 +352,16 @@ public class FLeFiscal extends FTabDados {
     	
     }
     private void carregaTotalizadores(){
-		if (FreedomPDV.bECFTerm) {
-			String sTotalizadores[] = (bf.retornaTotalizadores(Aplicativo.strUsuario,FreedomPDV.bModoDemo)+"").trim().split(",");
+		if (AplicativoPDV.bECFTerm) {
+			String sTotalizadores[] = (bf.retornaTotalizadores(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim().split(",");
 			String sTot = "";
 			
 			sTot = sTotalizadores[5].substring(0,12)+"."+sTotalizadores[5].substring(12);
             txtTSangria.setVlrDouble(new Double(sTot));
 			sTot = sTotalizadores[6].substring(0,12)+"."+sTotalizadores[6].substring(12);
             txtTSuprimento.setVlrDouble(new Double(sTot));
-            txtVlrCanc.setVlrDouble(new Double(bf.cancelamentos(Aplicativo.strUsuario,FreedomPDV.bModoDemo)));
-            txtVlrDesc.setVlrDouble(new Double(bf.descontos(Aplicativo.strUsuario,FreedomPDV.bModoDemo)));
+            txtVlrCanc.setVlrDouble(new Double(bf.cancelamentos(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
+            txtVlrDesc.setVlrDouble(new Double(bf.descontos(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
 			sTot = sTotalizadores[7].substring(0,16)+"."+sTotalizadores[7].substring(16);
             txtTotal.setVlrBigDecimal(new BigDecimal(sTot));
 
