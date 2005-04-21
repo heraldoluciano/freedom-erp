@@ -187,13 +187,14 @@ public class Funcoes {
 
 	public synchronized static int mensagemConfirma(Component frame,
 			String sMensagem) {
-		if (frame == null)
-			return JOptionPane.showConfirmDialog(frame, sMensagem,
+	    String opt[] = {"Sim","Não"}; 
+		if (frame == null)		    
+			return JOptionPane.showOptionDialog(frame, sMensagem,
 					"Confirmação", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE);
-		return JOptionPane.showInternalConfirmDialog(frame, sMensagem,
+					JOptionPane.QUESTION_MESSAGE,null, opt, opt[1]);
+		return JOptionPane.showInternalOptionDialog(frame, sMensagem,
 				"Confirmação", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
+				JOptionPane.QUESTION_MESSAGE, null, opt, opt[1]);
 	}
 
 	public static String adicEspacosEsquerda(String sTexto, int iEspacos) {
