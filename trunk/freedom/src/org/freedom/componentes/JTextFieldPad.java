@@ -452,7 +452,8 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
     
   public boolean mostraDLF2FK() {
   	boolean bRet = false; 
-    DLF2 dl = new DLF2(lcTabExt,Funcoes.getOwnerTela(this));
+//    DLF2 dl = new DLF2(lcTabExt,Funcoes.getOwnerTela(this));
+  	  DLF2 dl = new DLF2(lcTabExt,Aplicativo.telaPrincipal);
 	  dl.setVisible(true);
     if (dl.OK) {
         if (!bPK)
@@ -525,7 +526,8 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
         }
       }
       else if ((bPK) & (lcTxt != null) & (runDLF2)) {
-        DLF2 dl = new DLF2(lcTxt,Funcoes.getOwnerTela(this));
+//        DLF2 dl = new DLF2(lcTxt,Funcoes.getOwnerTela(this));
+        DLF2 dl = new DLF2(lcTxt,Aplicativo.telaPrincipal);
         dl.setVisible(true);
         if (dl.OK) {
           setVlrString((String)dl.getValor(sNomeCampo));
