@@ -71,6 +71,7 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
@@ -538,6 +539,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		txtCodProd.addKeyListener(this);
 		txtQtdade.addKeyListener(this);
 		lcProduto.addCarregaListener(this);
+		addKeyListener(this);
 
 		btF3.addActionListener(this);
 		btCtrlF3.addActionListener(this);
@@ -550,10 +552,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		btF10.addActionListener(this);
 
 		lcVenda.addPostListener(this);
-
+		
 		if (FreedomPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
-		}
+		}		
 	}
 
 	private void insereItem() {
@@ -791,11 +793,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		txtCodVend.setVlrInteger(new Integer(retVendedor()));
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
-		if (FreedomPDV.bECFTerm)
+		if (AplicativoPDV.bECFTerm)
 			txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(
-					Aplicativo.strUsuario, FreedomPDV.bModoDemo) + 1));
-		else
-			return;
+					Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
 		tbItem.limpa();
 		iniItem();
 	}
@@ -918,15 +918,15 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 			return;
 		}
 		if (Funcoes.mensagemConfirma(null, "Confirma impressão de leitura X?") == JOptionPane.YES_OPTION) {
-			JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-			bf.leituraX(Aplicativo.strUsuario, FreedomPDV.bModoDemo);
+			JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+			bf.leituraX(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
 
 	private void abreGaveta() {
 		if (mostraTelaPass()) {
-			JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-			bf.abreGaveta(Aplicativo.strUsuario, FreedomPDV.bModoDemo);
+			JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+			bf.abreGaveta(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
 
@@ -966,9 +966,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		if (Funcoes.mensagemConfirma(null,
 				"Deseja realmente cancelar o item anterior?") == JOptionPane.YES_OPTION) {
 			if (cancItem(iItem)) {
-				if (FreedomPDV.bECFTerm)
+				if (AplicativoPDV.bECFTerm)
 					if (bf.cancelaItemAnterior(Aplicativo.strUsuario,
-							FreedomPDV.bModoDemo))
+							AplicativoPDV.bModoDemo))
 						btOK.doClick();
 			} else {
 				Funcoes.mensagemErro(null, "Não foi possível cancelar o item.");
@@ -1099,8 +1099,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 
 	public void afterPost(PostEvent pevt) {
 		if (pevt.getListaCampos() == lcVenda && pevt.ok) {
-			if (FreedomPDV.bECFTerm)
-				bf.abreCupom("", Aplicativo.strUsuario, FreedomPDV.bModoDemo);
+			if (AplicativoPDV.bECFTerm)
+				bf.abreCupom("", Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 			else
 				return;
 		}
