@@ -67,7 +67,8 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 	public static boolean bTEFTerm = false;
 
 	public static boolean bModoDemo = true;
-
+	protected JButtonPad btVenda = null;
+	
 	public FreedomPDV() {
 		super("iconConfiguracao32.gif", "splashPDV.jpg", 1, "Freedom", 3, "Ponto de Venda", "freedom.ini", null );
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
@@ -124,7 +125,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 		addSeparador(200000000);
 		addOpcao(200000000, TP_OPCAO_ITEM, "Fechamento de Caixa","Efetua um fechamento de caixa", 'f', 110800001, 2, true, DLFechaDia.class);
 		
-		JButtonPad btVenda = addBotao("barraVenda.gif", "Venda", "", 200100000,	null);
+		btVenda = addBotao("barraVenda.gif", "Venda", "Venda", 200100000, FVenda.class);
 		addBotao("btExcluir.gif", "Cancela venda", "Cancela Venda", 200200000,DLCancCupom.class);
 		addBotao("barraFornecedor.gif", "Suprimento", "Suprimento de caixa",200300000, FSuprimento.class);
 		addBotao("btPdvSangria.gif", "Sangria", "Sangria", 200400000,FSangria.class);
@@ -144,13 +145,7 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 		vEquipeSis.add("Fernando Oliveira - Programação");
 		vEquipeSis.add("Moyzes Braz - Arte gráfica");
 		vEquipeSis.add("Leandro Oliveira - Testes / Suporte");
-		
-		if (abrecaixa()) {
-			btVenda.doClick();
-		} else {
-			killProg(5, "Caixa não foi aberto. A aplicação será fechada!");
-		}
-	}
+}
 
 	private boolean abrecaixa() {
 		boolean bRetorno = false;
@@ -246,6 +241,11 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 		try {
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.show();
+			if (freedom.abrecaixa()) {
+				freedom.btVenda.doClick();
+			} else {
+				freedom.killProg(5, "Caixa não foi aberto. A aplicação será fechada!");
+			}
 		} catch (Throwable e) {
 			Funcoes.criaTelaErro("Erro de execução");
 			e.printStackTrace();
