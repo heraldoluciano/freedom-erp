@@ -39,6 +39,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 
@@ -48,7 +49,7 @@ public class FAliquota extends FFDialogo implements ActionListener {
 	private JTextFieldPad txtAliquota = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	private String sAliquotas = "";
 	private JButton btInsere = new JButton(Icone.novo("btExecuta.gif"));
 	public FAliquota() {
@@ -95,8 +96,8 @@ public class FAliquota extends FFDialogo implements ActionListener {
 			  Funcoes.mensagemErro(this,"Quantidade maxima de aliquotas já foi atingida!");	
 			}	
 			else {
-			  if (FreedomPDV.bECFTerm)
-			     bf.programaAliquotas(Aplicativo.strUsuario,sVal,0,FreedomPDV.bModoDemo);
+			  if (AplicativoPDV.bECFTerm)
+			     bf.programaAliquotas(Aplicativo.strUsuario,sVal,0,AplicativoPDV.bModoDemo);
 			  carregaTabela();
 			}		  
 		  
@@ -107,9 +108,9 @@ public class FAliquota extends FFDialogo implements ActionListener {
 	
 	private void carregaTabela() {		  
 		  String sAliquota = "";
-		  if (!FreedomPDV.bECFTerm)
+		  if (!AplicativoPDV.bECFTerm)
 		  	 return;
-		  sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,FreedomPDV.bModoDemo)+"").trim();
+		  sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim();
 		  int iRow = 0;
 		  int iCol = 0;
 		  int i = 1;

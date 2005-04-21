@@ -33,13 +33,14 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class FGravaMoeda extends FFDialogo {
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
 	private JTextFieldFK txtSingMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldFK txtPlurMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	private ListaCampos lcMoeda = new ListaCampos(this,"");
 	public FGravaMoeda() {
 		setTitulo("Ajusta moeda na impressora.");
@@ -64,7 +65,7 @@ public class FGravaMoeda extends FFDialogo {
 		adic(txtPlurMoeda,210,20,150,20);
 	}
 	private void gravaMoeda() {
-	  if (FreedomPDV.bECFTerm && !bf.programaMoeda(Aplicativo.strUsuario,txtSingMoeda.getVlrString(),txtPlurMoeda.getVlrString(),FreedomPDV.bModoDemo)) {
+	  if (AplicativoPDV.bECFTerm && !bf.programaMoeda(Aplicativo.strUsuario,txtSingMoeda.getVlrString(),txtPlurMoeda.getVlrString(),AplicativoPDV.bModoDemo)) {
 	  	Funcoes.mensagemErro(this,"Erro ao gravar a moeda!!");
 	  }
     }

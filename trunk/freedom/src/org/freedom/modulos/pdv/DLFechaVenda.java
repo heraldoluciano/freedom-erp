@@ -18,7 +18,7 @@ package org.freedom.modulos.pdv;
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Tela de fechamento de venda no PDV.
  * 
  */
 
@@ -48,6 +48,7 @@ import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
 public class DLFechaVenda extends FDialogo implements FocusListener {
@@ -60,7 +61,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	private JTextFieldFK txtVlrPago = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JTextFieldFK txtVlrTroco = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	private Tef tef = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
@@ -146,24 +147,24 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
         if (sLinhas.length == 0)
             return true;
         
-        if (/* bf.iniciaModoTEF(Aplicativo.strUsuario,FreedomPDV.bModoDemo) */true) {
+        if (/* bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo) */true) {
             do {
                 try {
                     //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
                     if (!bLeituraX) {
                         if (!bf.abreComprovanteNaoFiscalVinculado(
                             Aplicativo.strUsuario, txtDescPlanoPag
-                                    .getVlrString(), FreedomPDV.bModoDemo))
+                                    .getVlrString(), AplicativoPDV.bModoDemo))
                             throw new Exception("");
                         if (!bf.usaComprovanteNaoFiscalVinculado(
                                 Aplicativo.strUsuario, sComprovante,
-                                FreedomPDV.bModoDemo))
+                                AplicativoPDV.bModoDemo))
                              throw new Exception("");
                     }
                     else {
                         //Esta reimprimindo entao vamos usar o relatorioGerencial: 
                         if (!bf.relatorioGerencialTef(
-                                Aplicativo.strUsuario, sComprovante, FreedomPDV.bModoDemo))
+                                Aplicativo.strUsuario, sComprovante, AplicativoPDV.bModoDemo))
                                 throw new Exception("");
                     }
                     
@@ -173,13 +174,13 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
                     if (!bLeituraX) {
                         if (!bf.usaComprovanteNaoFiscalVinculado(
                             Aplicativo.strUsuario, "\n\n\n\n\n\n\n\n\n\n",
-                            FreedomPDV.bModoDemo))
+                            AplicativoPDV.bModoDemo))
                          throw new Exception("");
                     }
                     else {
                         if (!bf.relatorioGerencialTef(
                                 Aplicativo.strUsuario, "\n\n\n\n\n\n\n\n\n\n",
-                                FreedomPDV.bModoDemo))
+                                AplicativoPDV.bModoDemo))
                              throw new Exception("");
                     }
 
@@ -190,26 +191,26 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
                     if (!bLeituraX) {
                         if (!bf.usaComprovanteNaoFiscalVinculado(
                             Aplicativo.strUsuario, sComprovante,
-                            FreedomPDV.bModoDemo))
+                            AplicativoPDV.bModoDemo))
                          throw new Exception("");
                     }
                     else {
                         if (!bf.relatorioGerencialTef(
                                 Aplicativo.strUsuario, sComprovante,
-                                FreedomPDV.bModoDemo))
+                                AplicativoPDV.bModoDemo))
                              throw new Exception("");
                     }
 
                     if (!bLeituraX) {
                         if (!bf.fechaComprovanteNaoFiscalVinculado(
                             Aplicativo.strUsuario, 
-                            FreedomPDV.bModoDemo))
+                            AplicativoPDV.bModoDemo))
                          throw new Exception("");
                     }
                     else {
                         if (!bf.fechaRelatorioGerencial(
                                 Aplicativo.strUsuario, 
-                                FreedomPDV.bModoDemo))
+                                AplicativoPDV.bModoDemo))
                              throw new Exception("");
                     }
 
@@ -223,7 +224,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
                     } 
                 } 
                 bf.finalizaModoTEF(Aplicativo.strUsuario,
-                            FreedomPDV.bModoDemo);
+                            AplicativoPDV.bModoDemo);
                 break;
             } while (true);
         } else {
@@ -451,8 +452,8 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	    boolean bRet = false;
 		if (evt.getSource() == btOK) {
 			if (execFechamento()) {
-				if (FreedomPDV.bECFTerm) {
-					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,txtVlrPago.getVlrDouble().doubleValue(),"",FreedomPDV.bModoDemo)) {
+				if (AplicativoPDV.bECFTerm) {
+					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,txtVlrPago.getVlrDouble().doubleValue(),"",AplicativoPDV.bModoDemo)) {
 						if (finalizaVenda()) {
 						    btCancel.setEnabled(false);
 						    

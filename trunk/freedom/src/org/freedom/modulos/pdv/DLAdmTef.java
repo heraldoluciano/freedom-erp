@@ -44,6 +44,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class DLAdmTef extends FFDialogo implements ActionListener {
@@ -51,7 +52,7 @@ public class DLAdmTef extends FFDialogo implements ActionListener {
 
     JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
 
-    private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+    private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 
     Tef tef;
     
@@ -108,10 +109,10 @@ public class DLAdmTef extends FFDialogo implements ActionListener {
             sComprovante += sLinhas[i]+"\n";
         
         while (!bRet) {
-            if (!bf.relatorioGerencialTef(Aplicativo.strUsuario, sComprovante,FreedomPDV.bModoDemo))
+            if (!bf.relatorioGerencialTef(Aplicativo.strUsuario, sComprovante,AplicativoPDV.bModoDemo))
                 bRet = false;
             else {
-                if (!bf.fechaRelatorioGerencial(Aplicativo.strUsuario,FreedomPDV.bModoDemo))
+                if (!bf.fechaRelatorioGerencial(Aplicativo.strUsuario,AplicativoPDV.bModoDemo))
                     bRet = false;
                 else
                     bRet = true;

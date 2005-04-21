@@ -35,6 +35,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.comutacao.Tef;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
 
 public class FPrefere extends FTabDados implements ActionListener {
@@ -90,7 +91,7 @@ public class FPrefere extends FTabDados implements ActionListener {
 
 		adic(btTef,10,150,200,30);
 
-		if (FreedomPDV.bTEFTerm) {
+		if (AplicativoPDV.bTEFTerm) {
 		    tef = new Tef(Aplicativo.strTefEnv,Aplicativo.strTefRet);
 		    btTef.setEnabled(true);
 		}

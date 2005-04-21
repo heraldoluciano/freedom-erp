@@ -38,6 +38,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class FSangria extends FFDialogo {
@@ -48,7 +49,7 @@ public class FSangria extends FFDialogo {
 	private JTextFieldFK txtUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
 	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	public FSangria() {
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Sangria de Caixa");
@@ -157,8 +158,8 @@ public class FSangria extends FFDialogo {
     }
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btOK) {
-			if (execSangria() && FreedomPDV.bECFTerm)
-			  bf.sangria(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),FreedomPDV.bModoDemo);
+			if (execSangria() && AplicativoPDV.bECFTerm)
+			  bf.sangria(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),AplicativoPDV.bModoDemo);
 		    else
 			  return;
 		}

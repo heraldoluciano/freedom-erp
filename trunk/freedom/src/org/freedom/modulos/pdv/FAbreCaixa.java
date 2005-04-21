@@ -35,12 +35,13 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
 public class FAbreCaixa extends FDialogo {
 	private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	private Connection con = null;
 	public FAbreCaixa() {
 		setTitulo("Abrir Caixa");
@@ -58,9 +59,9 @@ public class FAbreCaixa extends FDialogo {
 		
 	}
 	private void dbAbrirCaixa() {
-	  System.out.println("Modo demo PDV: "+FreedomPDV.bModoDemo);
-	  if (!FreedomPDV.bECFTerm || bf.leituraX(Aplicativo.strUsuario,FreedomPDV.bModoDemo)) {
-       if (!FreedomPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",FreedomPDV.bModoDemo)) {
+	  System.out.println("Modo demo PDV: "+AplicativoPDV.bModoDemo);
+	  if (!AplicativoPDV.bECFTerm || bf.leituraX(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
+       if (!AplicativoPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",AplicativoPDV.bModoDemo)) {
 	      try {
 			PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)");
 			ps.setInt(1,Aplicativo.iNumEst);
@@ -78,8 +79,8 @@ public class FAbreCaixa extends FDialogo {
 	      catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao abrir o caixa!\n"+err.getMessage());
 	      }
-	      if (FreedomPDV.bECFTerm)
-	      	 bf.abreGaveta(Aplicativo.strUsuario,FreedomPDV.bModoDemo);
+	      if (AplicativoPDV.bECFTerm)
+	      	 bf.abreGaveta(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
 	    }
 	  }
 	}
