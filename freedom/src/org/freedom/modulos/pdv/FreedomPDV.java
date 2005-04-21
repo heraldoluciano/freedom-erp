@@ -28,11 +28,6 @@
 
 package org.freedom.modulos.pdv;
 
-import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Date;
-
 import org.freedom.componentes.JButtonPad;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
@@ -59,17 +54,11 @@ import org.freedom.modulos.std.FTipoFiscCli;
 import org.freedom.modulos.std.FTratTrib;
 import org.freedom.modulos.std.FUnidade;
 import org.freedom.modulos.std.FVariantes;
-import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPDV;
 
-public class FreedomPDV extends Aplicativo implements ActionListener {
-	public static boolean bECFTerm = false;
-
-	public static boolean bTEFTerm = false;
-
-	public static boolean bModoDemo = true;
+public class FreedomPDV extends AplicativoPDV {
 	protected JButtonPad btVenda = null;
-	
-	public FreedomPDV() {
+    public FreedomPDV() {
 		super("iconConfiguracao32.gif", "splashPDV.jpg", 1, "Freedom", 3, "Ponto de Venda", "freedom.ini", null );
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null);
@@ -145,107 +134,19 @@ public class FreedomPDV extends Aplicativo implements ActionListener {
 		vEquipeSis.add("Fernando Oliveira - Programação");
 		vEquipeSis.add("Moyzes Braz - Arte gráfica");
 		vEquipeSis.add("Leandro Oliveira - Testes / Suporte");
-}
+		
 
-	private boolean abrecaixa() {
-		boolean bRetorno = false;
-		int iRet = 0;
-		try {
-			PreparedStatement ps = con
-					.prepareStatement("SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)"); // caixa,
-																						   // emp,
-																						   // filial
-			ps.setInt(1, iNumEst);
-			ps.setInt(2, iCodEmp);
-			ps.setInt(3, iCodFilial);
-			ps.setDate(4, Funcoes.dateToSQLDate(new Date()));
-			ps.setInt(5, iCodFilialPad);
-			ps.setString(6, strUsuario);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt(1);
-				switch (iRet) {
-				case 0: {
-					bRetorno = pegaValorINI();
-					break;
-				}
-				//case 1: { Reservado.
-				case 2: {
-					Funcoes.mensagemInforma(null, "Caixa já está aberto!");
-					bRetorno = true;
-					break;
-				}
-				case 3: {
-					killProg(3,
-							"Já foi realizada leitura \"Z\" neste caixa hoje!");
-					break;
-				}
-				case 4: {
-					killProg(4, "Caixa foi aberto com outro usuário!");
-					break;
-				}
-				default: {
-					killProg(5, "Erro na ultima transacão de caixa.");
-					break;
-				}
-				}
-			} else {
-				killProg(5, "Não foi possível abrir o caixa!");
-			}
-		} catch (Exception err) {
-			killProg(6, "Erro abrir o caixa!\n" + err.getMessage());
-		}
-		String sSQL = "SELECT CX.ECFCAIXA,CX.TEFCAIXA,(SELECT MODODEMOEST FROM SGESTACAO EST"
-				+ " WHERE EST.CODEMP=CX.CODEMPET AND EST.CODFILIAL=CX.CODFILIALET AND"
-				+ " EST.CODEST=CX.CODEST) FROM PVCAIXA CX WHERE CODCAIXA=?"
-				+ " AND CODFILIAL=? AND CODEMP=?";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iNumEst);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setInt(3, Aplicativo.iCodEmp);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getString("ECFCaixa") != null && rs.getString("ECFCaixa").equals("S"))
-					bECFTerm = true;
-				else
-					bECFTerm = false;
-				if (rs.getString("TEFCaixa") != null && rs.getString("TEFCaixa").equals("S"))
-					bTEFTerm = true;
-				else
-					bTEFTerm = false;
-				if (rs.getString(3) != null && rs.getString(3).equals("S"))
-					bModoDemo = true;
-				else
-					bModoDemo = false;
-			}
-			rs.close();
-			ps.close();
-		} catch (Exception err) {
-		    err.printStackTrace();
-			killProg(6, "Erro ao verificar o caixa!\n" + err.getMessage());
-		}
-		return bRetorno;
-	}
-
-	public boolean pegaValorINI() {
-		boolean bRetorno = false;
-		FAbreCaixa tela = new FAbreCaixa();
-		tela.setConexao(con);
-		tela.setVisible(true);
-		bRetorno = tela.OK;
-		return bRetorno;
 	}
 
 	public static void main(String sParams[]) {
 		try {
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.show();
-			if (freedom.abrecaixa()) {
+			if (freedom.abreCaixa()) {
 				freedom.btVenda.doClick();
 			} else {
 				freedom.killProg(5, "Caixa não foi aberto. A aplicação será fechada!");
-			}
+			}			
 		} catch (Throwable e) {
 			Funcoes.criaTelaErro("Erro de execução");
 			e.printStackTrace();
