@@ -533,7 +533,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
         if (dl.OK) {
           setVlrString((String)dl.getValor(sNomeCampo));
 		  dl.dispose();          
-          if (lcTabExt.carregaDados()) 
+          if (lcTxt.carregaDados()) 
   	        transferFocus();
         }
         else  {
