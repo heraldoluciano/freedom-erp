@@ -243,8 +243,8 @@ public class FRResumoDiario extends FRelatorio {
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow() + 0, 0, "+"
+								+ Funcoes.replicate("-", 133) + "+");
 						imp.incPags();
 						imp.eject();
 					}
@@ -258,7 +258,7 @@ public class FRResumoDiario extends FRelatorio {
 								+ Funcoes.replicate("-", 133) + "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 61, "Totais do Dia-> "
+						imp.say(imp.pRow() + 0, 58, "Totais do Dia-> "
 								+ sDtemitvenda
 								+ " |"
 								+ Funcoes.strDecimalToStrCurrency(10, 2, ""
@@ -361,7 +361,7 @@ public class FRResumoDiario extends FRelatorio {
 							+ Funcoes.replicate("-", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 61, "Totais do Dia-> "
+					imp.say(imp.pRow() + 0, 58, "Totais do Dia-> "
 							+ sDtemitvenda
 							+ " |"
 							+ Funcoes.strDecimalToStrCurrency(10, 2, ""
@@ -378,7 +378,7 @@ public class FRResumoDiario extends FRelatorio {
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "|");
 				imp
-						.say(imp.pRow() + 0, 72, "Totais Geral    |"
+						.say(imp.pRow() + 0, 69, "Totais Geral    |"
 								+ Funcoes.strDecimalToStrCurrency(10, 2, ""
 										+ bTotalVal)
 								+ Funcoes.strDecimalToStrCurrency(10, 2, ""
@@ -469,7 +469,7 @@ public class FRResumoDiario extends FRelatorio {
 
 			imp.say(imp.pRow() + 1, 0, "+" + Funcoes.replicate("=", 133) + "+");
 			imp.say(imp.pRow() + 1, 0, "|");
-			imp.say(imp.pRow() + 0, 88, "| Total Geral do Período   | "
+			imp.say(imp.pRow() + 0, 85, "| Total Geral do Período   | "
 					+ Funcoes.strDecimalToStrCurrency(11, 2, "" + bTotalLiq));
 			imp.say(imp.pRow(), 135, "|");
 			imp.say(imp.pRow() + 1, 0, "+" + Funcoes.replicate("=", 133) + "+");
