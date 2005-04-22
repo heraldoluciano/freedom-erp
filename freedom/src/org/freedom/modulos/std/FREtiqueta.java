@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Classe para impressão de etiquetas de clientes.
  * 
  */
 
@@ -52,7 +52,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldFK txtDescModEtiq = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -117,6 +116,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
  	 lcCliente.setQueryCommit(false);
  	 lcCliente.setReadOnly(true);
  	 txtCodCli.setTabelaExterna(lcCliente);
+ 	 txtCodCli.setNomeCampo("codcli");
 
      lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
      lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
@@ -324,6 +324,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	    			}
  	    		}
 
+	    		if (vCol.size()>0)
+  	    		   vCols.addElement(vCol);
+  	    		
   	    		impCol(imp,vCols);
   				
   	    		rs.close();
@@ -426,10 +429,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
                   Vector vCol = ((Vector)(vCols.elementAt(i1)));                  
                   for(int iNumLinhaEtiqAtual = 0;iNumLinEtiq>iNumLinhaEtiqAtual;iNumLinhaEtiqAtual++){                   
                       for(int i2 = 0;iColsEtiq>i2;i2++){
-          
-                          Vector vEtiqueta = (Vector) vCol.elementAt(i2);
-                          String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
-                          imp.say(imp.pRow()+iSalto,iCol,sImp);
+
+                          if(vCol.size()>i2) {
+                              Vector vEtiqueta = (Vector) vCol.elementAt(i2);
+                              String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
+                              imp.say(imp.pRow()+iSalto,iCol,sImp);
+                          }
                           
                           iSalto = 0;
                           iCol += ((iColPapel/iColsEtiq) + (iEECEtiq) );
@@ -469,14 +474,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	  }  	
   }
   
-  public void afterCarrega(CarregaEvent cevt) {
-//      if (cevt.getListaCampos() == lcModEtiq)
-          //montaTabela(tab);
-  }
+  public void afterCarrega(CarregaEvent cevt) {  }
 
-  public void beforeCarrega(CarregaEvent cevt) {
-  }
-  
+  public void beforeCarrega(CarregaEvent cevt) {  }
   private Vector aplicCampos(int iLinha) {
   	String sCampo = "";
   	String sRetorno = txaEtiqueta.getVlrString();
