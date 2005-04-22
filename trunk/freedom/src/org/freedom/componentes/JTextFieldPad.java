@@ -529,10 +529,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 //        DLF2 dl = new DLF2(lcTxt,Funcoes.getOwnerTela(this));
         DLF2 dl = new DLF2(lcTxt,Aplicativo.telaPrincipal);
         dl.setVisible(true);
+
         if (dl.OK) {
           setVlrString((String)dl.getValor(sNomeCampo));
-		  dl.dispose();
-          if (lcTxt.carregaDados())
+		  dl.dispose();          
+          if (lcTabExt.carregaDados()) 
   	        transferFocus();
         }
         else  {
