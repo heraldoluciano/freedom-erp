@@ -348,7 +348,10 @@ public class Calc extends FFilho implements KeyListener, ActionListener
 		else if (dg == "8") num += 8;
 		else if (dg == "9") num += 9;
 		else if (dg == "0") num += 0;
-		else if (dg == ".") num += ".";
+		else if (dg == ".") { 
+			if(num.indexOf(".")==-1)
+				num += ".";
+		}
 		else if (dg == "Back") { if (num.length() > 0) num = num.substring( 0, num.length() - 1); }                       
 		else if (dg == "CE") num = "0.0";
 		else if (dg == "M+") 
