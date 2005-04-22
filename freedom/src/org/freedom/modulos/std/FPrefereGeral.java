@@ -187,7 +187,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbPepsProd = null;
 	private JCheckBoxPad cbBuscaProdSimilar = null;
 	private JCheckBoxPad cbMultiAlmox = null;
-	
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -208,11 +207,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcClasCli = new ListaCampos(this, "CE");
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
 	private ListaCampos lcPDV = new ListaCampos(this, "");
-	private ListaCampos lcPrefere3 = new ListaCampos(this, "");
+	private ListaCampos lcPrefere3 = new ListaCampos(this, "P3");
 
 	public FPrefereGeral() {
 		setTitulo("Preferências Gerais");
-		setAtribos(40, 40, 690, 420);
+		setAtribos(40, 40, 760, 420);
 
 		lcMoeda.add(new GuardaCampo(txtCodMoeda, "CodMoeda", "Cód.moeda",
 				ListaCampos.DB_PK, true));
@@ -678,21 +677,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDescFK(txtDescTipoMov6, 90, 25, 250, 20, "DescTipoMov",
 				"Descrição do tp. mov. para inventário");
 		adicDB(cbMultiAlmox,7,50,250,20,"MultiAlmox","",true);
-
-		//Email
-
-		setListaCampos(lcPrefere3);
-		setPainel(pinEmail);
-		adicTab("Mail", pinEmail);
-		JLabelPad lbServer = new JLabelPad("  Servidor para envio de email");
-		lbServer.setOpaque(true);
-		adic(lbServer,15,10,200,15);
-		adic(pinSmtp,10,15,220,160);
-		setPainel(pinSmtp);
-		adicCampo(txtSmtpMail,10,30,150,20,"SmtpMail","SMTP", ListaCampos.DB_SI, false);
-		adicCampo(txtUserMail,10,70,150,20,"UserMail","Usuario", ListaCampos.DB_SI,false);
-		adicCampo(txpPassMail,10,110,150,20,"PassMail","Senha",ListaCampos.DB_SI,false);
-		setListaCampos(false, "PREFERE3", "SG");
 		
 		// fim da adicão de abas
 
@@ -742,6 +726,21 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 				"Prazo de Entrega do Orçamento", ListaCampos.DB_SI, true);
 		setListaCampos(false, "PREFERE4", "SG");
 
+		//Email 
+
+		setListaCampos(lcPrefere3);
+		setPainel(pinEmail);
+		adicTab("Mail", pinEmail);
+		JLabelPad lbServer = new JLabelPad("  Configurações para envio de email");
+		lbServer.setOpaque(true);
+		adic(lbServer,15,10,300,15);
+		adic(pinSmtp,10,15,320,160);
+		setPainel(pinSmtp);
+		adicCampo(txtSmtpMail,10,30,150,20,"SmtpMail","Servidor SMTP", ListaCampos.DB_SI, false);
+		adicCampo(txtUserMail,10,70,150,20,"UserMail","Usuario SMTP", ListaCampos.DB_SI,false);
+		adicCampo(txpPassMail,10,110,150,20,"PassMail","Senha SMTP",ListaCampos.DB_SI,false);
+		setListaCampos(false, "PREFERE3", "SG");
+				
 		lcCampos.addCarregaListener(this);
 		lcPDV.addInsertListener(this);
 		lcPDV.addEditListener(this);
@@ -778,8 +777,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		}
 	}
 
-	public void beforeEdit(EditEvent eevt) {
-	}
+	public void beforeEdit(EditEvent eevt) {  }
 
 	public void edit(EditEvent eevt) { }
 
@@ -796,8 +794,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		}		
 	}
 
-	public void beforeInsert(InsertEvent ievt) {
-	}
+	public void beforeInsert(InsertEvent ievt) { }
 
 	public void valorAlterado(CheckBoxEvent cevt) {
 		if (cevt.getCheckBox() == cbJurosPosCalc

@@ -53,6 +53,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   private JLabelPad lbPesq = new JLabelPad("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JPanelPad pnBordCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+  private JPanelPad pinBt = new JPanelPad(30,30);
   private JPanelPad pinCab = new JPanelPad();
   private DefaultTableCellRenderer cabAnt = new DefaultTableCellRenderer();
   private DefaultTableCellRenderer cab = new DefaultTableCellRenderer();
@@ -64,7 +65,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   private ResultSet rsF2 = null;
   private boolean bConsultaAtiva = false;
   private String sTextoAnt = "";
-  private JButton btExecuta = new JButton(Icone.novo("btExecuta.gif"));
+  public JButton btExecuta = new JButton(Icone.novo("btExecuta.gif"));
   boolean bPrimeira = false;
   int ColunaAtiva = -1;
   String sNomeCampoAtual = "";
@@ -72,10 +73,8 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   String sWhereAdic = "";
   public DLF2(ListaCampos lc,Component cOrig) {
   	super(cOrig);
+    btExecuta.setFocusable(false);
     cnF2 = lc.getConexao();     
-    btExecuta.setEnabled(false);
-    btExecuta.setToolTipText("Executa consulta para campos não alfa-numéricos");
-    btExecuta.addActionListener(this);
     if (cnF2 == null) {
 	  Funcoes.mensagemErro(this,"Conexão nula!");
       OK = false;
@@ -91,21 +90,27 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
     pinCab = new JPanelPad(390, 45);
     pinCab.adic(lbPesq, 7, 3, 270, 20);
     pinCab.adic(txtPesq, 7, 23, 270, 20);
-    pinCab.adic(btExecuta, 290,13,30,30);
-    
+    pinCab.adic(btExecuta,290,13,30,30);
+
     pnBordCab.add(pinCab);
     
     c.add( pnBordCab, BorderLayout.NORTH);
     c.add( spnCentro, BorderLayout.CENTER);
     
-    montaColunas();
     txtPesq.addKeyListener(this); 
     txtPesq.setEnterSai(false);
     tab.addKeyListener(this);
-    trocaColuna();
-    trocaColuna(); 
-
+	
     addWindowFocusListener(this);
+
+    btExecuta.setToolTipText("Executa consulta para campos não alfa-numéricos");
+    btExecuta.addActionListener(this);
+
+    montaColunas();
+
+    trocaColuna();
+    trocaColuna();
+        
   }
   public void montaColunas() {
     String tit = "";
@@ -168,11 +173,11 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   } 
   private void habBtPesq() {
     int iTipo = txtPesq.getTipo();
-    if (verifTipoPesq(iTipo))
-    	 btExecuta.setEnabled(true);
+    if (verifTipoPesq(iTipo)) 
+        if (!btExecuta.isEnabled())
+            btExecuta.setEnabled(true);
     else
-   	    btExecuta.setEnabled(false);
-  	
+   	    btExecuta.setEnabled(false);	
   }
   public void voltaColuna() {
     int iTipo = 0;
@@ -378,15 +383,14 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   }
   public void windowLostFocus(WindowEvent e)  { }
   public void keyTyped(KeyEvent kevt) { }
-  /* (non-Javadoc)
- * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
- */
+
   public void actionPerformed(ActionEvent arg0) {
   	if (arg0.getSource()==btExecuta) {
   		montaSql();
   		executaSql();
         sTextoAnt = txtPesq.getText();   		
   	}
+
   	super.actionPerformed(arg0);
 
   }

@@ -37,6 +37,8 @@ import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -76,7 +78,7 @@ import org.freedom.telas.Calc;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
-public class FVenda extends FDialogo implements KeyListener, CarregaListener,
+public class FVenda extends FDialogo implements KeyListener, WindowFocusListener, CarregaListener,
 		PostListener {
 
 	private StatusBar sbVenda = new StatusBar(new BorderLayout());
@@ -555,7 +557,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		if (AplicativoPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
 		}		
-		
+	    addWindowFocusListener(this);
 		setFirstFocus(txtCodProd);
 		setInitFirstFocus(true);
 	}
@@ -664,6 +666,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener,
 		}
 		return iRet;
 	}
+	public void windowGainedFocus(WindowEvent e) {
+	    txtCodProd.requestFocus();
+	}
+	public void windowLostFocus(WindowEvent e)  { }
 
 	private int retTipoMov() {
 		int iRet = 0;
