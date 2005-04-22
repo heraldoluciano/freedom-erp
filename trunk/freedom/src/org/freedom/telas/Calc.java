@@ -141,76 +141,103 @@ public class Calc extends FFilho implements KeyListener, ActionListener
 		pnTeclas1.setLayout(glTeclas);
 		pnTeclas1.add(lbMemo);
 		btBac.addActionListener(this);
+		btBac.addKeyListener(this);
 		pnTeclas1.add(btBac);
 		btAlt.addActionListener(this);
+		btAlt.addKeyListener(this);
 		pnTeclas1.add(btAlt);
 		btPot.addActionListener(this);
+		btPot.addKeyListener(this);
 		pnTeclas1.add(btPot);
 		pnTeclas.add(pnTeclas1);
 		
 		pnTeclas2.setLayout(glTeclas);
 		btPerc.addActionListener(this);
+		btPerc.addKeyListener(this);
 		pnTeclas2.add(btPerc);
 		btRaiz.addActionListener(this);
+		btRaiz.addKeyListener(this);
 		pnTeclas2.add(btRaiz);
 		btC.addActionListener(this);
+		btC.addKeyListener(this);
 		pnTeclas2.add(btC);
 		btCE.addActionListener(this);
+		btCE.addKeyListener(this);
 		pnTeclas2.add(btCE);
 		pnTeclas.add(pnTeclas2);
 		
 		pnTeclas3.setLayout(glTeclas);
 		btMC.addActionListener(this);
+		btMC.addKeyListener(this);
 		pnTeclas3.add(btMC);
 		btMR.addActionListener(this);
+		btMR.addKeyListener(this);
 		pnTeclas3.add(btMR);
 		btMmenos.addActionListener(this);
+		btMmenos.addKeyListener(this);
 		pnTeclas3.add(btMmenos);
 		btMmais.addActionListener(this);
+		btMmais.addKeyListener(this);
 		pnTeclas3.add(btMmais);
 		pnTeclas.add(pnTeclas3);
 		
 		pnTeclas4.setLayout(glTeclas);
 		bt7.addActionListener(this);
+		bt7.addKeyListener(this);
 		pnTeclas4.add(bt7);
 		bt8.addActionListener(this);
+		bt8.addKeyListener(this);
 		pnTeclas4.add(bt8);
 		bt9.addActionListener(this);
+		bt9.addKeyListener(this);
 		pnTeclas4.add(bt9);
 		btDiv.addActionListener(this);
+		btDiv.addKeyListener(this);
 		pnTeclas4.add(btDiv);
 		pnTeclas.add(pnTeclas4);
 		
 		pnTeclas5.setLayout(glTeclas);
 		bt4.addActionListener(this);
+		bt4.addKeyListener(this);
 		pnTeclas5.add(bt4);
 		bt5.addActionListener(this);
+		bt5.addKeyListener(this);
 		pnTeclas5.add(bt5);
 		bt6.addActionListener(this);
+		bt6.addKeyListener(this);
 		pnTeclas5.add(bt6);
 		btVez.addActionListener(this);
+		btVez.addKeyListener(this);
 		pnTeclas5.add(btVez);
 		pnTeclas.add(pnTeclas5);
 		
 		pnTeclas6.setLayout(glTeclas);
 		bt1.addActionListener(this);
+		bt1.addKeyListener(this);
 		pnTeclas6.add(bt1);
 		bt2.addActionListener(this);
+		bt2.addKeyListener(this);
 		pnTeclas6.add(bt2);
 		bt3.addActionListener(this);
+		bt3.addKeyListener(this);
 		pnTeclas6.add(bt3);
 		btMenos.addActionListener(this);
+		btMenos.addKeyListener(this);
 		pnTeclas6.add(btMenos);
 		pnTeclas.add(pnTeclas6);
 		
 		pnTeclas7.setLayout(glTeclas);
 		bt0.addActionListener(this);
+		bt0.addKeyListener(this);
 		pnTeclas7.add(bt0);
 		btPonto.addActionListener(this);
+		btPonto.addKeyListener(this);
 		pnTeclas7.add(btPonto);
 		btIgual.addActionListener(this);
+		btIgual.addKeyListener(this);
 		pnTeclas7.add(btIgual);
 		btMais.addActionListener(this);
+		btMais.addKeyListener(this);
 		pnTeclas7.add(btMais);
 		pnTeclas.add(pnTeclas7);
 		
@@ -237,10 +264,12 @@ public class Calc extends FFilho implements KeyListener, ActionListener
 	}
 
 	public void actionPerformed(ActionEvent evt) { 
+		((JButton)evt.getSource()).requestFocus();		
 		calcular(evt.getActionCommand());
 	}
 	
 	public void keyPressed( KeyEvent kevt) {
+		
 		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;  	
 		if(kevt.getKeyCode() == KeyEvent.VK_ESCAPE) btC.doClick();
 		if(kevt.getKeyCode() == KeyEvent.VK_BACK_SPACE) btBac.doClick();  	
@@ -264,26 +293,45 @@ public class Calc extends FFilho implements KeyListener, ActionListener
 		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true; 
 	}
 	
-	public void keyTyped( KeyEvent kevt ) {
-		if (kevt.getKeyChar() == '0') bt0.doClick();
-		else if (kevt.getKeyChar() == '1') bt1.doClick();
-		else if (kevt.getKeyChar() == '2') bt2.doClick();
-		else if (kevt.getKeyChar() == '3') bt3.doClick();
-		else if (kevt.getKeyChar() == '4') bt4.doClick();
-		else if (kevt.getKeyChar() == '5') bt5.doClick();
-		else if (kevt.getKeyChar() == '6') bt6.doClick();
-		else if (kevt.getKeyChar() == '7') bt7.doClick();
-		else if (kevt.getKeyChar() == '8') bt8.doClick();
-		else if (kevt.getKeyChar() == '9') bt9.doClick();
-		else if (kevt.getKeyChar() == '/') btDiv.doClick();
-		else if (kevt.getKeyChar() == '*') btVez.doClick();
-		else if (kevt.getKeyChar() == '-') btMenos.doClick();
-		else if (kevt.getKeyChar() == '+') btMais.doClick();
-		else if (kevt.getKeyChar() == '=') btIgual.doClick();
-		else if (kevt.getKeyChar() == '.') btPonto.doClick();
-		else if (kevt.getKeyChar() == ',') btPonto.doClick();
-		else if ((kevt.getKeyChar() == 'r') || (kevt.getKeyChar() == 'R')) btRaiz.doClick();
-		else if ((kevt.getKeyChar() == 'p') || (kevt.getKeyChar() == 'P')) btPerc.doClick();
+	public void keyTyped( KeyEvent kevt ) {		
+		if (kevt.getKeyChar() == '0') 
+			bt0.doClick();
+		else if (kevt.getKeyChar() == '1') 
+			bt1.doClick();
+		else if (kevt.getKeyChar() == '2') 
+			bt2.doClick();
+		else if (kevt.getKeyChar() == '3') 
+			bt3.doClick();
+		else if (kevt.getKeyChar() == '4') 
+			bt4.doClick();
+		else if (kevt.getKeyChar() == '5') 
+			bt5.doClick();
+		else if (kevt.getKeyChar() == '6') 
+			bt6.doClick();
+		else if (kevt.getKeyChar() == '7') 
+			bt7.doClick();
+		else if (kevt.getKeyChar() == '8') 
+			bt8.doClick();
+		else if (kevt.getKeyChar() == '9') 
+			bt9.doClick();
+		else if (kevt.getKeyChar() == '/') 
+			btDiv.doClick();
+		else if (kevt.getKeyChar() == '*') 
+			btVez.doClick();
+		else if (kevt.getKeyChar() == '-') 
+			btMenos.doClick();
+		else if (kevt.getKeyChar() == '+') 
+			btMais.doClick();
+		else if (kevt.getKeyChar() == '=') 
+			btIgual.doClick();
+		else if (kevt.getKeyChar() == '.') 
+			btPonto.doClick();
+		else if (kevt.getKeyChar() == ',') 
+			btPonto.doClick();
+		else if ((kevt.getKeyChar() == 'r') || (kevt.getKeyChar() == 'R')) 
+			btRaiz.doClick();
+		else if ((kevt.getKeyChar() == 'p') || (kevt.getKeyChar() == 'P')) 
+			btPerc.doClick();
 	}
 
 	public void calcular(String lb) {
