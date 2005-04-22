@@ -61,6 +61,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private ListaCampos lcModEtiq = new ListaCampos(this);
   private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcTipo = new ListaCampos(this);
+  private ListaCampos lcCliente = new ListaCampos(this);
+  private ListaCampos lcPapel = new ListaCampos(this,"PL");    
+  private ListaCampos lcVendedor = new ListaCampos(this,"VD");
   private JTextAreaPad txaEtiqueta = new JTextAreaPad(500);
   private JTextFieldPad txtNColModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
@@ -70,9 +73,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtEECModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtComprimido = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
-  private ListaCampos lcPapel = new ListaCampos(this,"PL");    
-  private ListaCampos lcCliente = new ListaCampos(this,"CL");
-  private ListaCampos lcVendedor = new ListaCampos(this,"VD");
   private JPanelPad pnTotal = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnDet = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinCab = new JPanelPad(480,230);
@@ -86,7 +86,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 
   public FREtiqueta() {
  	 setPanel(pnTotal);      
-  	 
+  	  
  	 setTitulo("Impressão de etiquetas");
 
   	 setAtribos(20,20,600,450);
@@ -109,15 +109,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
  	 lcPapel.setQueryCommit(false);
  	 lcPapel.setReadOnly(true);
  	 txtCodPapel.setTabelaExterna(lcPapel);
-     
-     lcCliente.add(new GuardaCampo( txtCodCli, "Codcli", "Cod.Cli.", ListaCampos.DB_PK,txtRazCli, false));
-	 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false));
-	 lcCliente.montaSql(false, "CLIENTE", "VD");
- 	 lcCliente.setQueryCommit(false);
- 	 lcCliente.setReadOnly(true);
- 	 txtCodCli.setTabelaExterna(lcCliente);
- 	 txtCodCli.setNomeCampo("codcli");
-
+      	 
      lcModEtiq.add(new GuardaCampo( txtCodModEtiq, "CodModEtiq", "Cód.mod.", ListaCampos.DB_PK,true));
      lcModEtiq.add(new GuardaCampo( txtDescModEtiq, "DescModEtiq", "Descrição do modelo de etiqueta", ListaCampos.DB_SI,false));
      lcModEtiq.add(new GuardaCampo( txaEtiqueta,"TxaModEtiq","Corpo",ListaCampos.DB_SI,false));
@@ -155,16 +147,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      txtCodVend.setTabelaExterna(lcVendedor);
      txtCodVend.setFK(true);
      txtCodVend.setNomeCampo("CodVend");
-
-     lcCliente.add(new GuardaCampo( txtCodCli, "Codcli", "Cod.Cli.", ListaCampos.DB_PK,txtRazCli, false));
-	 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão do cliente", ListaCampos.DB_SI, false));
- 	 lcCliente.setReadOnly(true);
-	 lcCliente.montaSql(false, "CLIENTE", "VD");
- 	 lcCliente.setQueryCommit(false); 	 
- 	 txtCodCli.setTabelaExterna(lcCliente);
- 	 txtCodCli.setFK(true);
- 	 txtCodCli.setNomeCampo("CodCli");
      
+     lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.Cli.", ListaCampos.DB_PK,txtRazCli,false));
+     lcCliente.add(new GuardaCampo( txtRazCli,"RazCli", "Razão do cliente",ListaCampos.DB_SI,false));
+     lcCliente.setReadOnly(true);
+     lcCliente.montaSql(false, "CLIENTE", "VD");
+     txtCodCli.setTabelaExterna(lcCliente);
+     txtCodCli.setFK(true);
+     txtCodCli.setNomeCampo("CodCli");
+
      pinCab.adic(new JLabelPad("Cód.setor"),7,5,80,20);
      pinCab.adic(txtCodSetor,7,25,80,20);
      pinCab.adic(new JLabelPad("Descrição do setor"),90,5,260,20);
