@@ -245,10 +245,10 @@ public class FAprovaSolicitacaoCompra extends FDetalhe implements PostListener,
 			txtRefProd.setSoLeitura(true);
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
-		  	txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
+		  	txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"REFPROD"));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false);
-		  	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+		  	txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
 		}
 
 		txtCodUsu.setSoLeitura(true);

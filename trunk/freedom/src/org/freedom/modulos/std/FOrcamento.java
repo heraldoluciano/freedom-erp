@@ -471,11 +471,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
-			txtRefProd.setBuscaAdic(new DLBuscaProd(this, con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "REFPROD"));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, true);
-			txtCodProd.setBuscaAdic(new DLBuscaProd(this, con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "CODPROD"));
 		}
 		adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd",
 				"Descrição do produto");
@@ -484,7 +484,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 		adicCampoInvisivel(txtCodAlmoxItOrc, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
 		
-		txtQtdItOrc.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,this,con,"qtditvenda"));
+		txtQtdItOrc.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,Aplicativo.telaPrincipal,con,"qtditvenda"));
 				
 		adicCampo(txtPrecoItOrc, 390, 20, 67, 20, "PrecoItOrc", "Preço",
 				ListaCampos.DB_SI, true);

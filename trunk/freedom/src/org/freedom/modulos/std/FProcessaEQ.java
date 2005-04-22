@@ -52,9 +52,9 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFilho;
+import org.freedom.telas.FFDialogo;
 
-public class FProcessaEQ extends FFilho implements ActionListener, CarregaListener {
+public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaListener {
     private JPanelPad pin = new JPanelPad();
 	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -161,12 +161,12 @@ public class FProcessaEQ extends FFilho implements ActionListener, CarregaListen
       }
     }
     private void completaTela(){
-      	txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));    	    	
+      	txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));    	    	
     }
     private boolean processar(int iCodProd) {
        String sSQL = null;
        String sSQLCompra = null;
-       String sSQLInventario = null;
+       String sSQLInventario = null; 
        String sSQLVenda = null;
        String sWhere = null;
        String sProd = null;

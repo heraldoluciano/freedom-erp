@@ -28,6 +28,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 public class FModGrade extends FDetalhe {
   private JPanelPad pinCab = new JPanelPad();
@@ -103,6 +104,6 @@ public class FModGrade extends FDetalhe {
     super.setConexao(cn);
     lcProd.setConexao(cn);
     lcVarG.setConexao(cn);
-    txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+    txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
   }        
 }

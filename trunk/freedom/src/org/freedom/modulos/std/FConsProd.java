@@ -953,12 +953,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 		pinCab.adic(new JLabelPad("Descrição do produto"),80,0,200,20);
 
 		if (bPrefs[0]) {
-			txtRefProd.setBuscaAdic(new DLBuscaProd(this,con,"REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"REFPROD"));
 			pinCab.adic(txtRefProd,7,20,70,20);		
 			txtRefProd.requestFocus();
 		}
 		else {		
-			txtCodProd.setBuscaAdic(new DLBuscaProd(this,con,"CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
 			pinCab.adic(txtCodProd,7,20,70,20);
 			txtCodProd.requestFocus();
 		}

@@ -242,7 +242,7 @@ public class FInventario extends FDados implements CarregaListener,
 				"Descrição do tipo de movimento");
 
 		if (comRef()) {
-			txtRefProd.setBuscaAdic(new DLBuscaProd(this, con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "REFPROD"));
 			adicCampoInvisivel(txtRefProd2, "RefProd", "Referência do produto",
 					ListaCampos.DB_SI, false);
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
@@ -251,7 +251,7 @@ public class FInventario extends FDados implements CarregaListener,
 			adic(new JLabelPad("Referência"), 7, 80, 80, 20);
 			adic(txtRefProd, 7, 100, 80, 20);
 		} else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(this, con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "CODPROD"));
 			adicCampo(txtCodProd, 7, 100, 90, 20, "CodProd", "Cód.prod",
 					ListaCampos.DB_FK, txtDescProd, true);
 		}
