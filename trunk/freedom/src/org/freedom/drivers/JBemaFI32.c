@@ -1353,13 +1353,15 @@ JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaEstadoImpr
      ( JNIEnv * env, jobject obj)
      {
        char * sRet = ( char * ) malloc( 40 * sizeof( char ) );
-       int iACK,iST1,iST2 = 0;
+       char *sACK = ( char * ) malloc( 10 * sizeof( char ) );
+       char *sST1 = ( char * ) malloc( 10 * sizeof( char ) );
+       char *sST2 = ( char * ) malloc( 10 * sizeof( char ) );
        int iRetorno = 0;
        sprintf( sRet, "%39s", " " );
 
-       iRetorno = Bematech_FI_VerificaEstadoImpressora(iACK,iST1,iST2);
+       iRetorno = Bematech_FI_VerificaEstadoImpressoraStr(sACK,sST1,sST2);
 
-       sprintf( sRet, "%-10d%d|%d|%d",iRetorno,iACK,iST1,iST2);
+       sprintf( sRet, "%-10d%s|%s|%s",iRetorno,sACK,sST1,sST2);
 
        return ( * env )->NewStringUTF( env, sRet );
 }
@@ -2321,13 +2323,15 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bAbrePortaSerial( JNIE
 JNIEXPORT jstring JNICALL Java_bibli_drivers_JBemaFI32_bRetornoImpressora( JNIEnv * env, jobject obj)
 {
   char * sRet = ( char * ) malloc( 40 * sizeof( char ) );
-  int iACK,iST1,iST2 = 0;
+  char *sACK = ( char * ) malloc( 10 * sizeof( char ) );
+  char *sST1 = ( char * ) malloc( 10 * sizeof( char ) );
+  char *sST2 = ( char * ) malloc( 10 * sizeof( char ) );
   int iRetorno = 0;
   sprintf( sRet, "%39s", " " );
 
-  iRetorno = Bematech_FI_RetornoImpressora(iACK,iST1,iST2);
+  iRetorno = Bematech_FI_RetornoImpressoraStr(sACK,sST1,sST2);
 
-  sprintf( sRet, "%-10d%d|%d|%d",iRetorno,iACK,iST1,iST2);
+  sprintf( sRet, "%-10d%s|%s|%s",iRetorno,sACK,sST1,sST2);
 
   return ( * env )->NewStringUTF( env, sRet );
 }

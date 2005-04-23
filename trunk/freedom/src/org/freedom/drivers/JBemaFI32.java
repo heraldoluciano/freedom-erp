@@ -322,15 +322,6 @@ public class JBemaFI32 {
    public boolean trataRetornoFuncao(int iRetorno) {
    	 boolean bRetorno = false;
      String sMensagem;
-   /* 0: Erro de comunicação.
-   	  1: OK.
-     -4: O arquivo de inicialização BEMAFI32.INI não foi encontrado no diretório de sistema do Windows.
-     -5: Erro ao abrir a porta de comunicação.
-     -8: Erro ao criar ou gravar no arquivo STATUS.TXT ou RETORNO.TXT.
-     -27: Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2).
-     -30: Função não compatível com a impressora YANCO.
-     -31: Forma de pagamento não finalizada. */
-
      sMensagem = "";
      sMensErroLog = "";
      switch (iRetorno) {
@@ -735,6 +726,25 @@ public class JBemaFI32 {
    	  
    }
 
+   public boolean verificaCupomAberto(String sUserID, boolean bModoDemo) {
+   	 	boolean bState[][] = null;
+		boolean bRet = false;
+		try {
+			if (!bModoDemo) {
+				bState = verificaEstadoImpressora(sUserID, bModoDemo);
+				if (bState != null) {
+						bRet = bState[1][1];
+				} else {
+					Logger.gravaLogTxt("", sUserID, Logger.LGEP_STATUS_IMPRES,
+							sMensErroLog);
+				}
+			}
+		} finally {
+			bState = null;
+		}
+		return bRet;
+   }
+   
    public boolean autenticaDoc(String sUserID, boolean bModoDemo) {
       boolean bState[][] = null;
    	  long lSegIni = 0;
