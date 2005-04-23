@@ -35,12 +35,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.border.Border;
@@ -148,7 +150,15 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener,
 		setSize(Larg, Alt);
 		setLocationRelativeTo(this);
 	}
-
+    public void setPrimeiroFoco(final JComponent comp) {
+    	addWindowListener(
+	    	new WindowAdapter() {
+	    		public void windowActivated(WindowEvent wevt) {
+	    			comp.requestFocusInWindow();
+	    		}
+	    	}
+   		);
+    }
 	public void eUltimo() {
 		bUltimo = true;
 	}
