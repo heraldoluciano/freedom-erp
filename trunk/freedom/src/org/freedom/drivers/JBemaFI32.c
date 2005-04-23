@@ -645,14 +645,11 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bAbreComprovanteNaoFis
        char * pStr2;
        char * pStr3;
        int iRetorno;
-       char * sVar = (char *)malloc(500*sizeof(char));
 
        pStr1 = ( char * ) ( * env )->GetStringUTFChars( env, str1, 0 );
        pStr2 = ( char * ) ( * env )->GetStringUTFChars( env, str2, 0 );
        pStr3 = ( char * ) ( * env )->GetStringUTFChars( env, str3, 0 );
 
-       sprintf(sVar,"abre comprovante nao vinculado -> %s,%s,%s\n", pStr1,pStr2,pStr3);
-       logger(sVar);
        iRetorno = Bematech_FI_AbreComprovanteNaoFiscalVinculado( pStr1, pStr2, pStr3 );
 
        ( * env )->ReleaseStringChars( env, str1, ( jchar * ) pStr1 );
@@ -669,13 +666,8 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bUsaComprovanteNaoFisc
      {
        char * pStr1;
        int iRetorno;
-       char * sVar = (char *)malloc(500*sizeof(char));
-
 
        pStr1 = ( char * ) ( * env )->GetStringUTFChars( env, str1, 0 );
-
-       sprintf(sVar,"comprovante nao vinculado -> %s\n", pStr1);
-       logger(sVar);
 
        iRetorno = Bematech_FI_UsaComprovanteNaoFiscalVinculado( pStr1 );
 
