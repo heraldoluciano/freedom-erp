@@ -130,7 +130,7 @@ public class JBemaFI32 {
    public native int  bVerificaTipoImpressora(int TipoImpressora);
    public native String bVerificaTotalizadoresParciais();
    public native String bRetornoAliquotas();
-   public native String  bVerificaEstadoImpressora();
+   public native String bVerificaEstadoImpressora();
    public native int  bDadosUltimaReducao(String DadosReducao);
    public native int  bMonitoramentoPapel(int Linhas);
    public native int  bVerificaIndiceAliquotasIss(String Flag);
@@ -367,13 +367,12 @@ public class JBemaFI32 {
             sRetorno = bVerificaEstadoImpressora();
             iRetorno = Integer.parseInt(sRetorno.substring(0, 10).trim());
             sRetorno = sRetorno.substring(10);
-            if (sRetorno.length() < 40) {
+            if (!trataRetornoFuncao( iRetorno ) || sRetorno.length() < 5) {
                 sRetorno = Funcoes.replicate(" ", 40);
                 Logger.gravaLogTxt("", sUserID, Logger.LGEP_STATUS_IMPRES,
                         sMensErroLog);
             } else {
-                sRetorno = sRetorno.substring(0, 30);
-                String sStates[] = sRetorno.split("|");
+                String sStates[] = sRetorno.split("\\|");
                 boolean bACK[] = iDecToBin(Integer.parseInt(sStates[0]));
                 boolean bST1[] = iDecToBin(Integer.parseInt(sStates[1]));
                 boolean bST2[] = iDecToBin(Integer.parseInt(sStates[2]));
@@ -394,12 +393,11 @@ public class JBemaFI32 {
            sRetorno = bRetornoImpressora();
            iRetorno = Integer.parseInt(sRetorno.substring(0, 10).trim());
            sRetorno = sRetorno.substring(10);
-           if (sRetorno.length() < 40) {
+           if (!trataRetornoFuncao( iRetorno ) || sRetorno.length() < 40) {
                sRetorno = Funcoes.replicate(" ", 40);
                Logger.gravaLogTxt("", sUserID, Logger.LGEP_STATUS_IMPRES,
                        sMensErroLog);
            } else {
-               sRetorno = sRetorno.substring(0, 30);
                String sStates[] = sRetorno.split("|");
                boolean bACK[] = iDecToBin(Integer.parseInt(sStates[0]));
                boolean bST1[] = iDecToBin(Integer.parseInt(sStates[1]));
@@ -731,7 +729,7 @@ public class JBemaFI32 {
 		boolean bRet = false;
 		try {
 			if (!bModoDemo) {
-				bState = verificaEstadoImpressora(sUserID, bModoDemo);
+				bState = retornoImpressora(sUserID, bModoDemo);
 				if (bState != null) {
 						bRet = bState[1][1];
 				} else {
