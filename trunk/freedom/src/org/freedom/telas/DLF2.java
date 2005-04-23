@@ -37,13 +37,13 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
@@ -88,9 +88,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
     pnBordCab.setPreferredSize(new Dimension(300, 55));
     
     pinCab = new JPanelPad(390, 45);
-    pinCab.adic(lbPesq, 7, 3, 270, 20);
-    pinCab.adic(txtPesq, 7, 23, 270, 20);
+    pinCab.adic(lbPesq, 7, 3, 270, 20);    
     pinCab.adic(btExecuta,290,13,30,30);
+    pinCab.adic(txtPesq, 7, 23, 270, 20);
 
     pnBordCab.add(pinCab);
     
@@ -110,7 +110,9 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 
     trocaColuna();
     trocaColuna();
-        
+    
+    setPrimeiroFoco(txtPesq);
+        	              
   }
   public void montaColunas() {
     String tit = "";
