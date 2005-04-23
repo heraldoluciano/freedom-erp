@@ -1334,7 +1334,7 @@ JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaTotalizado
 }
 
 
-/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bRetornoAliquotas * Signature: ()I */
+/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bRetornoAliquotas * Signature: (Ljava/lang/char*;)I */
 JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoAliquotas( JNIEnv * env, jobject obj )
 {
   char * sRet = ( char * ) malloc( 91 * sizeof( char ) );
@@ -1348,11 +1348,20 @@ JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoAliquotas( 
 }
 
 
-/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bVerificaEstadoImpressora * Signature: (III)I */
-JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaEstadoImpressora
-     ( JNIEnv * env, jobject obj, jint i1, jint i2, jint i3 )
+/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bVerificaEstadoImpressora * Signature: (Ljava/lang/char*;)I */
+JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaEstadoImpressora
+     ( JNIEnv * env, jobject obj)
      {
-       return Bematech_FI_VerificaEstadoImpressora( i1, i2, i3 );
+       char * sRet = ( char * ) malloc( 40 * sizeof( char ) );
+       int iACK,iST1,iST2 = 0;
+       int iRetorno = 0;
+       sprintf( sRet, "%39s", " " );
+
+       iRetorno = Bematech_FI_VerificaEstadoImpressora(iACK,iST1,iST2);
+
+       sprintf( sRet, "%-10d%d|%d|%d",iRetorno,iACK,iST1,iST2);
+
+       return ( * env )->NewStringUTF( env, sRet );
 }
 
 
@@ -2308,10 +2317,19 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bAbrePortaSerial( JNIE
 }
 
 
-/* * Class:     org_freedom_drivers_JBemaFI32 * Method:    bRetornoImpressora * Signature: (III)I */
-JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoImpressora( JNIEnv * env, jobject obj, jint i1, jint i2, jint i3 )
+/* * Class:     bibli_drivers_JBemaFI32 * Method:    bRetornoImpressora * Signature: ()Ljava/lang/String; */
+JNIEXPORT jstring JNICALL Java_bibli_drivers_JBemaFI32_bRetornoImpressora( JNIEnv * env, jobject obj)
 {
-  return Bematech_FI_RetornoImpressora( i1, i2, i3 );
+  char * sRet = ( char * ) malloc( 40 * sizeof( char ) );
+  int iACK,iST1,iST2 = 0;
+  int iRetorno = 0;
+  sprintf( sRet, "%39s", " " );
+
+  iRetorno = Bematech_FI_RetornoImpressora(iACK,iST1,iST2);
+
+  sprintf( sRet, "%-10d%d|%d|%d",iRetorno,iACK,iST1,iST2);
+
+  return ( * env )->NewStringUTF( env, sRet );
 }
 
 

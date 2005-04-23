@@ -651,10 +651,10 @@ JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoAliquotas
 /*
  * Class:     org_freedom_drivers_JBemaFI32
  * Method:    bVerificaEstadoImpressora
- * Signature: (III)I
+ * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaEstadoImpressora
-  (JNIEnv *, jobject, jint, jint, jint);
+JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaEstadoImpressora
+  (JNIEnv *, jobject);
 
 /*
  * Class:     org_freedom_drivers_JBemaFI32
