@@ -556,6 +556,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		if (AplicativoPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
 		}
+		
 		setPrimeiroFoco(txtCodProd);
 		
 	}
@@ -1119,25 +1120,35 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btF3)
 			cancItem();
-		if (evt.getSource() == btCtrlF3)
+		else if (evt.getSource() == btCtrlF3)
 			cancCupom();
-		if (evt.getSource() == btF4)
+		else if (evt.getSource() == btF4)
 			fechaVenda();
-		if (evt.getSource() == btF5)
+		else if (evt.getSource() == btF5)
 			leituraX();
-		if (evt.getSource() == btF6)
+		else if (evt.getSource() == btF6)
 			abreGaveta();
-		if (evt.getSource() == btF7) {
+		else if (evt.getSource() == btF7) {
 			Calc calc = new Calc();
 			Aplicativo.telaPrincipal.dpArea.add("Calc", calc);
 			calc.show();
 		}
-		if (evt.getSource() == btF8)
+		else if (evt.getSource() == btF8)
 			repeteItem();
-		if (evt.getSource() == btF9)
+		else if (evt.getSource() == btF9)
 			trocaCli();
-		if (evt.getSource() == btF10)
+		else if (evt.getSource() == btF10)
 			fechaCaixa();
+	}
+	//O botão sair execute este método para sair:
+	public void setVisible(boolean bVal) {
+		if (!bVal) {
+			if (bf.verificaCupomAberto(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
+				Funcoes.mensagemInforma(null,"Cupom fiscal está aberto!");
+				return;	
+			}
+		}
+		super.setVisible(bVal);
 	}
 
 	public void beforePost(PostEvent pevt) {
