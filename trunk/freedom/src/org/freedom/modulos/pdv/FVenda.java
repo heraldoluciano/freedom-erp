@@ -38,7 +38,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -78,7 +77,7 @@ import org.freedom.telas.Calc;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
-public class FVenda extends FDialogo implements KeyListener, WindowFocusListener, CarregaListener,
+public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		PostListener {
 
 	private StatusBar sbVenda = new StatusBar(new BorderLayout());
@@ -556,10 +555,9 @@ public class FVenda extends FDialogo implements KeyListener, WindowFocusListener
 		
 		if (AplicativoPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
-		}		
-	    addWindowFocusListener(this);
-		setFirstFocus(txtCodProd);
-		setInitFirstFocus(true);
+		}
+		setPrimeiroFoco(txtCodProd);
+		
 	}
 
 	private void insereItem() {
@@ -1014,10 +1012,10 @@ public class FVenda extends FDialogo implements KeyListener, WindowFocusListener
 	}
 
 	private void fechaVenda() {
-		/*
-		 * if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
-		 * Funcoes.mensagemErro(this,"Não existe nenhuma venda ativa!"); return; }
-		 */
+		if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
+			Funcoes.mensagemErro(this, "Não existe nenhuma venda ativa!");
+			return;
+		} 
 		DLFechaVenda fecha = new DLFechaVenda(txtTotalCupom.getVlrBigDecimal(),
 				txtCodVenda.getVlrInteger().intValue(), txtNumeroCupom
 						.getVlrInteger().intValue());
