@@ -2320,7 +2320,7 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bAbrePortaSerial( JNIE
 
 
 /* * Class:     bibli_drivers_JBemaFI32 * Method:    bRetornoImpressora * Signature: ()I */
-JNIEXPORT jstring JNICALL Java_bibli_drivers_JBemaFI32_bRetornoImpressora( JNIEnv * env, jobject obj)
+JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoImpressora( JNIEnv * env, jobject obj)
 {
   char * sRet = ( char * ) malloc( 40 * sizeof( char ) );
   char *sACK = ( char * ) malloc( 10 * sizeof( char ) );
