@@ -49,6 +49,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
+import org.freedom.telas.FAndamento;
 import org.freedom.telas.FDialogo;
 
 public class DLFechaVenda extends FDialogo implements FocusListener {
@@ -135,7 +136,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	    boolean bRet = false;
 	    boolean bLeituraX = false;
         Object sLinhas[] = tef.retImpTef(retTef);
-        String sComprovante = "";
+        String sComprovante = "\n\n";
         for (int i=0;i<sLinhas.length;i++)
             sComprovante += sLinhas[i]+"\n";
         
@@ -148,7 +149,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
         if (sLinhas.length == 0)
             return true;
         
-        if (/* bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo) */true) {
+        if (bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo) /*true*/) {
             do {
                 try {
                     //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
@@ -173,16 +174,18 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
                     //Coloca uns espacos para retirar o comprovante.
 
                     if (!bLeituraX) {
-                        if (!bf.usaComprovanteNaoFiscalVinculado(
-                            Aplicativo.strUsuario, "\n\n\n\n\n\n\n\n\n\n",
-                            AplicativoPDV.bModoDemo))
-                         throw new Exception("");
+                    	for (int i=0;i<10;i++)
+                    		if (!bf.usaComprovanteNaoFiscalVinculado(
+                    				Aplicativo.strUsuario, " ",
+									AplicativoPDV.bModoDemo))
+                    			throw new Exception("");
                     }
                     else {
-                        if (!bf.relatorioGerencialTef(
-                                Aplicativo.strUsuario, "\n\n\n\n\n\n\n\n\n\n",
+                    	for (int i=0;i<10;i++)
+                    		if (!bf.relatorioGerencialTef(
+                                Aplicativo.strUsuario, " ",
                                 AplicativoPDV.bModoDemo))
-                             throw new Exception("");
+                    			throw new Exception("");
                     }
 
                     //Aguarda 5 segundo para imprimir o segundo comprovante:
@@ -223,7 +226,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
                         bLeituraX = true;
                         continue;
                     } 
-                } 
+                }
                 bf.finalizaModoTEF(Aplicativo.strUsuario,
                             AplicativoPDV.bModoDemo);
                 break;
