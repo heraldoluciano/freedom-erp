@@ -83,6 +83,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private boolean bMontaTab = true;
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JComboBoxPad cbAtivoCli = null;
+  private Integer iCodModEtiq = new Integer(0);
 
   public FREtiqueta() {
  	 setPanel(pnTotal);      
@@ -156,11 +157,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      txtCodCli.setFK(true);
      txtCodCli.setNomeCampo("CodCli");
 
-     pinCab.adic(new JLabelPad("Cód.setor"),7,5,80,20);
-     pinCab.adic(txtCodSetor,7,25,80,20);
-     pinCab.adic(new JLabelPad("Descrição do setor"),90,5,260,20);
-     pinCab.adic(txtDescSetor,90,25,260,20);
-     
+     pinCab.adic(new JLabelPad("Cód.mod."),7,5,80,20);
+     pinCab.adic(txtCodModEtiq,7,25,80,20);     
+     pinCab.adic(new JLabelPad("Descrição do modelo"),90,5,260,20);
+     pinCab.adic(txtDescModEtiq,90,25,260,20);
+          
      pinCab.adic(new JLabelPad("Status"),370,5,100,20);
      pinCab.adic(cbAtivoCli,370,25,100,25);     
      
@@ -168,10 +169,11 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      pinCab.adic(txtCodTipo,7,65,80,20);
      pinCab.adic(new JLabelPad("Descrição do tipo de cliente"),90,45,280,20);
      pinCab.adic(txtDescTipo,90,65,260,20);
-     pinCab.adic(new JLabelPad("Cód.mod."),7,85,280,20);
-     pinCab.adic(txtCodModEtiq,7,105,80,20);
-     pinCab.adic(new JLabelPad("Descrição do modelo"),90,85,280,20);
-     pinCab.adic(txtDescModEtiq,90,105,260,20);
+
+     pinCab.adic(new JLabelPad("Cód.setor"),7,85,280,20);
+     pinCab.adic(txtCodSetor,7,105,80,20);     
+     pinCab.adic(new JLabelPad("Descrição do setor"),90,85,280,20);
+     pinCab.adic(txtDescSetor,90,105,260,20);
 
      pinCab.adic(new JLabelPad("Cód.Cli."),7,125,280,20);
      pinCab.adic(txtCodCli,7,145,80,20);
@@ -188,7 +190,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 	 btAdiciona.setToolTipText("Adiciona");
 	 btLimpa.setToolTipText("Limpa o grid");
 	 btExcluir.setToolTipText("Exclui o ítem selecionado");
-
+	 
      pinCab.adic(btAdiciona,555,15,30,30);
      pinCab.adic(btLimpa,555,48,30,30);
      pinCab.adic(btExcluir,555,81,30,30);
@@ -198,6 +200,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      btAdiciona.addActionListener(this);
      btLimpa.addActionListener(this);
      btExcluir.addActionListener(this);
+     
+     setPrimeiroFoco(txtCodModEtiq);
 
   }   
   private void excluir() { 
@@ -222,7 +226,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
           int iiTam = Integer.parseInt(sTmp)*7;          
           tb.setTamColuna(iiTam,i);
       }
-
       
       bMontaTab = false;
   }
@@ -243,6 +246,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
                 vLinha.addElement(sTmp);                
             }
             tab.adicLinha((Vector)vLinha.clone());
+            iCodModEtiq = txtCodModEtiq.getVlrInteger();
         }
     }
     catch(SQLException e){
@@ -252,9 +256,14 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   
   public void actionPerformed(ActionEvent evt) {
       if (evt.getSource() == btAdiciona){ 
-        if(bMontaTab)
-            montaTabela(tab);
-          adicItens();
+          if( (txtCodModEtiq.getVlrInteger().intValue()>0)) {
+              if(bMontaTab)
+                  montaTabela(tab);
+          	  adicItens();
+          }
+          else if (txtCodModEtiq.getVlrInteger().intValue()==0){
+              Funcoes.mensagemInforma(this, "Você deve selecionar um modelo de etiqueta!");
+          }
       }  
       else if (evt.getSource() == btLimpa) {
           tab.limpa();
@@ -262,8 +271,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
       else if (evt.getSource() == btExcluir) 
           excluir();
           
-          
-          super.actionPerformed(evt);
+      super.actionPerformed(evt);
   }
   
   public void setConexao(Connection cn) {
@@ -315,7 +323,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	    			}
  	    		}
 
-	    		if (vCol.size()>0)
+	    		if (vCol.size()>0)  // Recolhe os restos e joga em um nov elemento...
   	    		   vCols.addElement(vCol);
   	    		
   	    		impCol(imp,vCols);
@@ -467,7 +475,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   
   public void afterCarrega(CarregaEvent cevt) {  }
 
-  public void beforeCarrega(CarregaEvent cevt) {  }
+  public void beforeCarrega(CarregaEvent cevt) { 
+      if (cevt.getListaCampos()==lcModEtiq) {
+          if (tab.getNumLinhas()>1) {
+              Funcoes.mensagemInforma(this,"Você deve limpar a seleção atual caso queira trocar de modelo!");
+              cevt.cancela();
+              return;
+          }
+      }    
+  }
   private Vector aplicCampos(int iLinha) {
   	String sCampo = "";
   	String sRetorno = txaEtiqueta.getVlrString();
