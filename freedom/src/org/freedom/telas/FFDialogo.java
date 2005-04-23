@@ -38,6 +38,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 
 import javax.swing.BorderFactory;
@@ -129,6 +131,15 @@ public class FFDialogo extends JDialog implements ActionListener,
             }
         }
 
+    }
+    public void setPrimeiroFoco(final JComponent comp) {
+    	addWindowListener(
+	    	new WindowAdapter() {
+	    		public void windowActivated(WindowEvent wevt) {
+	    			comp.requestFocusInWindow();
+	    		}
+	    	}
+   		);
     }
 
     public FFDialogo(Frame fOrig) {
