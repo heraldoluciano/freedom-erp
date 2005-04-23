@@ -393,12 +393,12 @@ public class JBemaFI32 {
            sRetorno = bRetornoImpressora();
            iRetorno = Integer.parseInt(sRetorno.substring(0, 10).trim());
            sRetorno = sRetorno.substring(10);
-           if (!trataRetornoFuncao( iRetorno ) || sRetorno.length() < 40) {
+           if (!trataRetornoFuncao( iRetorno ) || sRetorno.length() < 5) {
                sRetorno = Funcoes.replicate(" ", 40);
                Logger.gravaLogTxt("", sUserID, Logger.LGEP_STATUS_IMPRES,
                        sMensErroLog);
            } else {
-               String sStates[] = sRetorno.split("|");
+               String sStates[] = sRetorno.split("\\|");
                boolean bACK[] = iDecToBin(Integer.parseInt(sStates[0]));
                boolean bST1[] = iDecToBin(Integer.parseInt(sStates[1]));
                boolean bST2[] = iDecToBin(Integer.parseInt(sStates[2]));
@@ -729,7 +729,7 @@ public class JBemaFI32 {
 		boolean bRet = false;
 		try {
 			if (!bModoDemo) {
-				bState = retornoImpressora(sUserID, bModoDemo);
+				bState = verificaEstadoImpressora(sUserID, bModoDemo);
 				if (bState != null) {
 						bRet = bState[1][1];
 				} else {
