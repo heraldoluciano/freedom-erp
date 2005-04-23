@@ -130,7 +130,7 @@ public class JBemaFI32 {
    public native int  bVerificaTipoImpressora(int TipoImpressora);
    public native String bVerificaTotalizadoresParciais();
    public native String bRetornoAliquotas();
-   public native int  bVerificaEstadoImpressora(int ACK, int ST1, int ST2);
+   public native String  bVerificaEstadoImpressora();
    public native int  bDadosUltimaReducao(String DadosReducao);
    public native int  bMonitoramentoPapel(int Linhas);
    public native int  bVerificaIndiceAliquotasIss(String Flag);
@@ -201,7 +201,7 @@ public class JBemaFI32 {
 // Outras Funções
  
    public native int  bAbrePortaSerial();
-   public native int  bRetornoImpressora(int ACK, int ST1, int ST2);
+   public native String bRetornoImpressora();
    public native int  bFechaPortaSerial();
    public native int  bMapaResumo();
    public native int  bAberturaDoDia(String ValorCompra, String FormaPagamento);
@@ -368,6 +368,60 @@ public class JBemaFI32 {
    	 }
    	 return sRet;
    }
+   public boolean[][] verificaEstadoImpressora(String sUserID, boolean bModoDemo) {
+        boolean bRet[][] = null;
+        String sRetorno = Funcoes.replicate(" ", 40);
+        int iRetorno = 0;
+        if (!bModoDemo) {
+            sRetorno = bVerificaEstadoImpressora();
+            iRetorno = Integer.parseInt(sRetorno.substring(0, 10).trim());
+            sRetorno = sRetorno.substring(10);
+            if (sRetorno.length() < 40) {
+                sRetorno = Funcoes.replicate(" ", 40);
+                Logger.gravaLogTxt("", sUserID, Logger.LGEP_STATUS_IMPRES,
+                        sMensErroLog);
+            } else {
+                sRetorno = sRetorno.substring(0, 30);
+                String sStates[] = sRetorno.split("|");
+                boolean bACK[] = iDecToBin(Integer.parseInt(sStates[0]));
+                boolean bST1[] = iDecToBin(Integer.parseInt(sStates[1]));
+                boolean bST2[] = iDecToBin(Integer.parseInt(sStates[2]));
+                bRet = new boolean[][]{
+                        	bACK,
+                        	bST1,
+                        	bST2
+                        };
+            }
+        }
+        return bRet;
+   }
+   public boolean[][] retornoImpressora(String sUserID, boolean bModoDemo) {
+       boolean bRet[][] = null;
+       String sRetorno = Funcoes.replicate(" ", 40);
+       int iRetorno = 0;
+       if (!bModoDemo) {
+           sRetorno = bRetornoImpressora();
+           iRetorno = Integer.parseInt(sRetorno.substring(0, 10).trim());
+           sRetorno = sRetorno.substring(10);
+           if (sRetorno.length() < 40) {
+               sRetorno = Funcoes.replicate(" ", 40);
+               Logger.gravaLogTxt("", sUserID, Logger.LGEP_STATUS_IMPRES,
+                       sMensErroLog);
+           } else {
+               sRetorno = sRetorno.substring(0, 30);
+               String sStates[] = sRetorno.split("|");
+               boolean bACK[] = iDecToBin(Integer.parseInt(sStates[0]));
+               boolean bST1[] = iDecToBin(Integer.parseInt(sStates[1]));
+               boolean bST2[] = iDecToBin(Integer.parseInt(sStates[2]));
+               bRet = new boolean[][]{
+                       	bACK,
+                       	bST1,
+                       	bST2
+                       };
+           }
+       }
+       return bRet;
+  }
    public static boolean[] iDecToBin(int iNumero) {
    	  boolean[] cRetorno = {false,false,false,false,false,false,false,false};
    	  int[] iByte = {1,2,4,8,16,32,64,128};
@@ -389,77 +443,73 @@ public class JBemaFI32 {
   	  int iAck = 0;
   	  int iSt1 = 0;
   	  int iSt2 = 0;
-  	  boolean[] bAck = null;
-  	  boolean[] bSt1 = null;
-  	  boolean[] bSt2 = null;
+  	  boolean bState[][] = null;
   	  String sMensagem = "";
   	  try {
   	  	if (!bModoDemo) {
-  	  		if (trataRetornoFuncao(bVerificaEstadoImpressora(iAck, iSt1, iSt2))) {
-  	  			bAck = iDecToBin(iAck);
-  	  			bSt1 = iDecToBin(iSt1);
-  	  			bSt2 = iDecToBin(iSt2);
+  	  	    bState = verificaEstadoImpressora(sUserID,bModoDemo);
+  	  		if (bState != null) {
   	  			bRetorno = true;
-  	  			if (bSt1[7]) {
+  	  			if (bState[1][7]) {
   	  				sMensagem = "Fim de papel.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt1[6]) {
+  	  			if (bState[1][6]) {
   	  				sMensagem = sMensagem + "Pouco papel.\n";
   	  			}
-  	  			if (bSt1[5]) {
+  	  			if (bState[1][5]) {
   	  				sMensagem = sMensagem + "Erro no relógio.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt1[4]) {
+  	  			if (bState[1][4]) {
   	  				sMensagem = sMensagem + "Impressora em erro.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt1[3]) {
+  	  			if (bState[1][3]) {
   	  				sMensagem = sMensagem + "Primeiro dado de CMD não foi ESC( 1Bh).\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt1[2]) {
+  	  			if (bState[1][2]) {
   	  				sMensagem = sMensagem + "Comando inexistente.";
   	  				bRetorno = false;	
   	  			}
-  	  			if (bSt1[1]) {
+  	  			if (bState[1][1]) {
   	  				sMensagem = sMensagem + "Cupom fiscal aberto.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt1[0]) {
+  	  			if (bState[1][0]) {
   	  				sMensagem = sMensagem + "Número de parâmetro de CMD inválido.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[7]) {
+  	  			if (bState[2][7]) {
   	  				sMensagem = sMensagem + "Tipo de parâmetro de CMD inválido.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[6]) {
+  	  			if (bState[2][6]) {
   	  				sMensagem = sMensagem + "Memória fiscal lotada.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[5] ) {
+  	  			if (bState[2][5] ) {
   	  				sMensagem = sMensagem + "Erro na memória RAM CMOS não volátil.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[4]) {
+  	  			if (bState[2][4]) {
   	  				sMensagem = sMensagem + "Alíquota não programada.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[3]) {
+  	  			if (bState[2][3]) {
   	  				sMensagem = sMensagem + "Capacidade de alíquotas esgotada.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[2]) {
+  	  			if (bState[2][2]) {
   	  				sMensagem = sMensagem + "Cancelamento não permitido.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[1]) {
+  	  			if (bState[2][1]) {
   	  				sMensagem = sMensagem + "CNPJ/IE do proprietário não programados.\n";
   	  				bRetorno = false;
   	  			}
-  	  			if (bSt2[0]) {
+  	  			if (bState[2][0]) {
   	  				sMensagem = sMensagem + "Comando não executado.\n";
   	  				bRetorno = false;
   	  			}
@@ -480,18 +530,13 @@ public class JBemaFI32 {
   	  	}
   	  }
   	  finally {
-	  	  iAck = 0;
-  	  	  iSt1 = 0;
-  	  	  iSt2 = 0;
-    	  bAck = null;
-      	  bSt1 = null;
-      	  bSt2 = null;
+      	  bState = null;
       	  sMensagem = null;
   	  }
   	  
   	  return bRetorno;
    }
-   
+/*   
    public boolean getStatusVenda(String sUserID, boolean bModoDemo) {
    	  boolean bRetorno = false;
   	  int iAck = 0;
@@ -601,7 +646,7 @@ public class JBemaFI32 {
    	  
    	  return bRetorno;
    }
-   
+  */ 
    public boolean ImpVerao(String sUserID, boolean bModoDemo) {
    	  boolean bRetorno = false;
    	  if (flagFiscal(sUserID, bModoDemo)[2]) 
@@ -691,12 +736,7 @@ public class JBemaFI32 {
    }
 
    public boolean autenticaDoc(String sUserID, boolean bModoDemo) {
-   	  int iAck = 0;
-   	  int iSt1 = 0;
-   	  int iSt2 = 0;
-   	  boolean[] bAck = null;
-   	  boolean[] bSt1 = null;
-   	  boolean[] bSt2 = null;
+      boolean bState[][] = null;
    	  long lSegIni = 0;
    	  long lSegFim = 0;
    	  long lSegDec = 0;
@@ -713,14 +753,9 @@ public class JBemaFI32 {
      	  	 		bRetorno = false;
      	  	 	}
      	  	 	else {
-     	             iAck = 0;
-                     iSt1 = 0;
-                     iSt2 = 0;
-                     if (trataRetornoFuncao(bVerificaEstadoImpressora( iAck, iSt1, iSt2 ))) {
-                        bAck = iDecToBin(iAck);
-                        bSt1 = iDecToBin(iSt1);
-                        bSt2 = iDecToBin(iSt2);
-                        if (bSt2[0]) {
+     	             bState = retornoImpressora(sUserID,bModoDemo);
+                     if (bState != null) {
+                        if (bState[2][0]) {
              	  	 		Logger.gravaLogTxt("",sUserID,Logger.LGEP_AUT_DOC,"COMANDO NÃO EXECUTADO");
                             bRetorno = false;
                         }
@@ -735,12 +770,7 @@ public class JBemaFI32 {
    	  	
    	  }
    	  finally {
-   	  	bAck = null;
-   	  	bSt1 = null;
-   	  	bSt2 = null;
-   	  	iAck = 0;
-   	  	iSt1 = 0;
-   	  	iSt2 = 0;
+   	    bState = null;  
    	  	lSegIni = 0;
    	  	lSegFim = 0;
    	  	lSegDec = 0;
