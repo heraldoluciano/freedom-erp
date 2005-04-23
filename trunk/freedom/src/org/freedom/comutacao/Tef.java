@@ -237,8 +237,12 @@ public class Tef {
             pRet = new Properties();
             pRet.load(fis);
             fis.close();
-            fRetorno.delete();
-            fStatus.delete();
+            //Se não existe linhas para imprimir então apaga o arquivo,
+            //caso contrário só irá apagar o arquivo na confirmação.
+            if (Integer.parseInt(pRet.getProperty(TEF_QTD_LINHAS, "0")) == 0) {
+            	fRetorno.delete();
+            }
+        	fStatus.delete();
         } catch (Exception err) {
             Funcoes.mensagemErro(null,
                     "Não foi possível carregar o retorno da TEF!");
@@ -247,7 +251,11 @@ public class Tef {
         return pRet;
     }
 
-    public Properties solicVenda(int iNumCupom, BigDecimal bigVal) {
+    private void confirmaRetorno() {
+    	fRetorno.delete();
+    }
+
+	public Properties solicVenda(int iNumCupom, BigDecimal bigVal) {
         String pRet = null;
         boolean bRet;
         int iConta;
@@ -275,6 +283,7 @@ public class Tef {
         int iConta;
         if (!verifTef())
             return false;
+        confirmaRetorno();
         bRet = enviaArquivo(new String[] {
                 (TEF_HEADER + " = " + "CNF"),
                 (TEF_IDENTIFICACAO + " = " + prop
@@ -298,6 +307,7 @@ public class Tef {
         int iConta;
         if (!verifTef())
             return false;
+        confirmaRetorno();
         bRet = enviaArquivo(new String[] { (TEF_HEADER + " = " + "CNF"),
                 (TEF_IDENTIFICACAO + " = " + prop.getProperty(TEF_DOC_FISCAL)),
                 (TEF_DOC_FISCAL + " = " + prop.getProperty(TEF_DOC_FISCAL)),
@@ -320,7 +330,7 @@ public class Tef {
         int iConta;
         if (!verifTef())
             return false;
-
+        confirmaRetorno();
         Funcoes.mensagemErro(null, "Cancelada a Transação:\n"
                 + "Doc No: "
                 + prop.getProperty(TEF_DOC_FISCAL)
@@ -385,6 +395,7 @@ public class Tef {
         return Funcoes.transValorInv(prop.getProperty(TEF_VAL_TOTAL, "000"));
     }
 
+    
     public Object[] retImpTef(Properties prop) {
         Vector vRet = new Vector();
         String sLinha = null;
