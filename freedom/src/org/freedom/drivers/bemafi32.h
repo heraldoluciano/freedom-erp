@@ -101,6 +101,7 @@ extern __stdcall Bematech_FI_VerificaTipoImpressora( int TipoImpressora );
 extern __stdcall Bematech_FI_VerificaTotalizadoresParciais( char * Totalizadores );
 extern __stdcall Bematech_FI_RetornoAliquotas( char * Aliquotas );
 extern __stdcall Bematech_FI_VerificaEstadoImpressora( int ACK, int ST1, int ST2 );
+extern __stdcall Bematech_FI_VerificaEstadoImpressoraStr( char * ACK, char * ST1, char * ST2 );
 extern __stdcall Bematech_FI_DadosUltimaReducao( char * DadosReducao );
 extern __stdcall Bematech_FI_MonitoramentoPapel( int Linhas );
 extern __stdcall Bematech_FI_VerificaIndiceAliquotasIss( char * Flag );
@@ -178,6 +179,7 @@ extern __stdcall Bematech_FITEF_VendaCheque(char* Identificacao, char* ValorComp
 
 extern __stdcall Bematech_FI_AbrePortaSerial();
 extern __stdcall Bematech_FI_RetornoImpressora( int ACK, int ST1, int ST2 );
+extern __stdcall Bematech_FI_RetornoImpressoraStr( char * ACK, char * ST1, char * ST2 );
 extern __stdcall Bematech_FI_FechaPortaSerial();
 extern __stdcall Bematech_FI_MapaResumo();
 extern __stdcall Bematech_FI_AberturaDoDia( char * ValorCompra, char * FormaPagamento );
