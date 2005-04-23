@@ -651,7 +651,7 @@ JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoAliquotas
 /*
  * Class:     org_freedom_drivers_JBemaFI32
  * Method:    bVerificaEstadoImpressora
- * Signature: (Ljava/lang/String;)I
+ * Signature: ()I
  */
 JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bVerificaEstadoImpressora
   (JNIEnv *, jobject);
@@ -947,10 +947,10 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bAbrePortaSerial
 /*
  * Class:     org_freedom_drivers_JBemaFI32
  * Method:    bRetornoImpressora
- * Signature: (III)I
+ * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoImpressora
-  (JNIEnv *, jobject, jint, jint, jint);
+JNIEXPORT jstring JNICALL Java_org_freedom_drivers_JBemaFI32_bRetornoImpressora
+  (JNIEnv *, jobject);
 
 /*
  * Class:     org_freedom_drivers_JBemaFI32
