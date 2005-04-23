@@ -402,7 +402,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
           catch(Exception e){
               e.printStackTrace();
           }
-          System.out.println(sSQL);
       }
       catch(Exception e) {
           e.printStackTrace();
@@ -431,7 +430,9 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 
                           if(vCol.size()>i2) {
                               Vector vEtiqueta = (Vector) vCol.elementAt(i2);
-                              String sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
+                              String sImp = "";
+                              if(vEtiqueta.size()>iNumLinhaEtiqAtual)
+                              	 sImp = vEtiqueta.elementAt(iNumLinhaEtiqAtual).toString();
                               imp.say(imp.pRow()+iSalto,iCol,sImp);
                           }
                           
@@ -473,12 +474,15 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	  }  	
   }
   
-  public void afterCarrega(CarregaEvent cevt) {  }
+  public void afterCarrega(CarregaEvent cevt) {
+  	objEtiqCli.setTexto(txaEtiqueta.getVlrString());
+  }
 
   public void beforeCarrega(CarregaEvent cevt) { 
       if (cevt.getListaCampos()==lcModEtiq) {
-          if (tab.getNumLinhas()>1) {
+          if (tab.getNumLinhas()>0) {
               Funcoes.mensagemInforma(this,"Você deve limpar a seleção atual caso queira trocar de modelo!");
+              lcModEtiq.cancelCarrega();
               cevt.cancela();
               return;
           }
