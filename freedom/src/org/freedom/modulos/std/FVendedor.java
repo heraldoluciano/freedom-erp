@@ -161,8 +161,7 @@ public class FVendedor extends FTabDados implements PostListener {
 
 	public FVendedor() {
 		setTitulo("Cadastro de comissionados");
-		setAtribos(50, 50, 400, 460);
-
+		setAtribos(50, 10, 400, 540);
 		
 		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan.",
 				ListaCampos.DB_PK, txtDescPlan, false));
@@ -178,15 +177,15 @@ public class FVendedor extends FTabDados implements PostListener {
 				ListaCampos.DB_PK, txtDescFunc, false));
 		lcFuncao.add(new GuardaCampo(txtDescFunc, "DescFunc",
 				"Descriçao da função", ListaCampos.DB_SI, false));
-
+		
 		//    lcFuncao.setQueryCommit(false);
 
 		txtCodFunc.setTabelaExterna(lcFuncao);
 		txtCodFunc.setNomeCampo("codfunc");
 		txtCodFunc.setFK(true);
 		lcFuncao.setReadOnly(true);
-		lcFuncao.montaSql(false, "FUNCAO", "RH");
-
+		lcFuncao.montaSql(false, "FUNCAO", "RH"); 
+		
 		lcClComis.add(new GuardaCampo(txtCodClComis, "CodClComis",
 				"Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, false));
 		lcClComis.add(new GuardaCampo(txtDescClComis, "DescClComis",
@@ -251,9 +250,13 @@ public class FVendedor extends FTabDados implements PostListener {
 				ListaCampos.DB_FK, txtDescPlan, false);
 		adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan",
 				"Descrição do planejamento");
-		adicCampo(txtCodFunc, 7, 420, 100, 20, "CodFunc", "Cód.função",
+		adicCampo(txtCodClComis, 7, 340, 100, 20, "CodClComis",
+				"Cód.cl.comis.", ListaCampos.DB_FK, txtDescClComis, false);
+		adicDescFK(txtDescClComis, 110, 340, 262, 20, "DescClComis",
+				"Descrição da Classificacao da comissão");
+		adicCampo(txtCodFunc, 7, 380, 100, 20, "CodFunc", "Cód.função",
 				ListaCampos.DB_FK, txtDescFunc, false);
-		adicDescFK(txtDescFunc, 110, 420, 262, 20, "DescFunc",
+		adicDescFK(txtDescFunc, 110, 380, 262, 20, "DescFunc",
 				"Descrição da função");
 
 		txtCpfVend.setMascara(JTextFieldPad.MC_CPF);
@@ -277,7 +280,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	private void montaSetor() {
 
 		Rectangle rec = getBounds();
-		rec.height += 80;
+		rec.height += 40;
 		setBounds(rec);
 
 		lcSetor.add(new GuardaCampo(txtCodSetor, "CodSetor", "Cód.setor",
@@ -289,18 +292,11 @@ public class FVendedor extends FTabDados implements PostListener {
 		lcSetor.setReadOnly(true);
 		txtCodSetor.setTabelaExterna(lcSetor);
 
-		adicCampo(txtCodSetor, 7, 340, 100, 20, "CodSetor", "Cód.setor",
+		adicCampo(txtCodSetor, 7, 420, 100, 20, "CodSetor", "Cód.setor",
 				ListaCampos.DB_FK, txtDescSetor, false);
-		adicDescFK(txtDescSetor, 110, 340, 262, 20, "DescSetor",
+		adicDescFK(txtDescSetor, 110, 420, 262, 20, "DescSetor",
 				"Descrição do setor");
-
-		adicCampo(txtCodClComis, 7, 380, 100, 20, "CodClComis",
-				"Cód.cl.comis.", ListaCampos.DB_FK, txtDescClComis, false);
-		adicDescFK(txtDescClComis, 110, 380, 262, 20, "DescClComis",
-				"Descrição da Classificacao da comissão");
-
 		lcSetor.setConexao(con);
-		lcClComis.setConexao(con);
 	}
 
 	public void beforePost(PostEvent pevt) {
@@ -355,6 +351,7 @@ public class FVendedor extends FTabDados implements PostListener {
 		super.setConexao(cn);
 		if (ehSetorVend())
 			montaSetor();
+		lcClComis.setConexao(cn);
 		lcPlan.setConexao(cn);
 		lcFuncao.setConexao(cn);
 		setListaCampos(true, "VENDEDOR", "VD");
