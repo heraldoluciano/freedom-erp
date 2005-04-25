@@ -375,6 +375,10 @@ public class FAgenda extends FFilho implements ActionListener {
 		Funcoes.mensagemInforma(this,"O usuário ou o agente não foi identificado!");
   		return;
   	}
+  	if (calendarpanel.getValue()==null) {
+		Funcoes.mensagemInforma(this,"Selecione uma data no painel!");
+  		return;
+  	}
   	String sRets[];
   	DLNovoAgen dl = new DLNovoAgen(txtIdUsu.getVlrString(),(Date)(calendarpanel.getValue()),this);
   	dl.setConexao(con);
