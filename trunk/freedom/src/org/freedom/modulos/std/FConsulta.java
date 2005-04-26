@@ -50,10 +50,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JPanelPad pnCliProd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-	private JTextFieldFK txtSldProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
-	private JTextFieldFK txtSldRProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
-	private JTextFieldFK txtSldCProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
-	private JTextFieldFK txtSldLProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSld = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldR = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
 	private JTextFieldFK txtSldC = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,3);
@@ -88,7 +84,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 	
 		// Início da aba de consulta de saldo por grupo
 		
-		txtCodGrup.setRequerido(true);
 		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI,false));
 		txtCodGrup.setTabelaExterna(lcGrup);
@@ -150,10 +145,10 @@ public class FConsulta extends FFilho implements CarregaListener {
 		txtCodProd.setRequerido(true);
 		lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo( txtSldProd, "SldProd", "Saldo", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo( txtSldRProd, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo( txtSldCProd, "SldConsigProd", "Saldo cons.", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo( txtSldLProd, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false));
+//		lcProd.add(new GuardaCampo( txtSldProd, "SldProd", "Saldo", ListaCampos.DB_SI, false));
+//		lcProd.add(new GuardaCampo( txtSldRProd, "SldResProd", "Saldo res.", ListaCampos.DB_SI, false));
+//		lcProd.add(new GuardaCampo( txtSldCProd, "SldConsigProd", "Saldo cons.", ListaCampos.DB_SI, false));
+//		lcProd.add(new GuardaCampo( txtSldLProd, "SldLiqProd", "Saldo liq.", ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo( txtCodAlmoxProd, "CodAlmox","Cód.Almox.", ListaCampos.DB_FK,txtDescAlmoxProd,false));
 
 		txtCodProd.setTabelaExterna(lcProd);
@@ -174,7 +169,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 		pinCabProd.adic(new JLabelPad("Descrição do Almoxarifado"),433,0,200,20);
 		
 		pinCabProd.adic(new JLabelPad("Saldo"),7,40,87,20);
-//		pinCabProd.adic(txtSldProd,7,60,87,20);
+//		pinCabProd.adic(txtSldProd,7,60,87,20); x
 		pinCabProd.adic(txtSld,7,60,87,20);
 		pinCabProd.adic(new JLabelPad("Saldo cons."),97,40,87,20);
 //		pinCabProd.adic(txtSldCProd,97,60,87,20);
@@ -246,76 +241,118 @@ public class FConsulta extends FFilho implements CarregaListener {
 	 * Este método é executado após carregar o ListaCampos da tabela.
 	 *
 	 */ 
-	private void carregaTabGrup() {
-	    String sWhere = "";
+	
+	
+	private void buscaEstoque(String sTipo) {
+		ResultSet rs = null;
+		String sWhere = "";
 		String sSQL = "";
 		int iCodAlmox = 0;
 		int iParam = 0;
 		String sCodGrup = null;
+		String sCodProd = null;
+		String sFiltro = "";
+		
 		try {
-		    iCodAlmox = txtCodAlmoxGrup.getVlrInteger().intValue();
+			if (sTipo.equals("grupo")) {				
+				iCodAlmox = txtCodAlmoxGrup.getVlrInteger().intValue();				
+			    sCodGrup = txtCodGrup.getVlrString().trim();
+				if (sCodGrup.equals("")) {
+					Funcoes.mensagemInforma(this,"Selecione um grupo!");
+					txtCodGrup.requestFocus();
+					return;
+				}
+				if (sCodGrup.length()<TAM_GRUPO)
+					sCodGrup = " LIKE '"+sCodGrup+"%'";
+				else
+				    sCodGrup = "='"+sCodGrup+"'";
+				
+				sFiltro = "P.CODGRUP"+sCodGrup;
+				
+			}
+			else {
+				sCodProd = txtCodProd.getVlrString().trim();
+				iCodAlmox = txtCodAlmoxProd.getVlrInteger().intValue();
+				
+				if (sCodProd.equals("")) {
+					Funcoes.mensagemInforma(this,"Selecione um produto!");
+					txtCodProd.requestFocus();
+					return;
+				}
+				
+				sFiltro = "P.CODPROD="+sCodProd;
+				
+			}
+				
+				
 		    if (iCodAlmox==0) {
 		        sWhere = "SP.CODEMPAX = P.CODEMPAX AND SP.CODFILIALAX=P.CODFILIALAX AND " +
 		        	"SP.CODALMOX = P.CODALMOX";
 		    }
 		    else {
-		        sWhere = "SP.CODEMPAX = ? AND SP.CODFILIALAX=? AND " +
-		        	"SP.CODALMOX = ?";
+		        sWhere = "SP.CODEMPAX = ? AND SP.CODFILIALAX=? AND SP.CODALMOX = ?";
 		    }
-			sCodGrup = txtCodGrup.getVlrString().trim();
-			if (sCodGrup.equals("")) {
-				Funcoes.mensagemInforma(this,"Selecione um grupo!");
-				txtCodGrup.requestFocus();
-				return;
-			}
-			if (sCodGrup.length()<TAM_GRUPO)
-				sCodGrup = " LIKE '"+sCodGrup+"%'";
-			else
-			    sCodGrup = "='"+sCodGrup+"'";
-			
+				    			
 			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " +
 			 "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " +
 			 "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " +
 			 "FROM EQPRODUTO P, EQSALDOPROD SP "+
 			 "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " +
 			 "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " +
-			 "P.CODGRUP"+sCodGrup+" AND " +sWhere+
+			 sFiltro + " AND " + sWhere+
 			 " ORDER BY P.DESCPROD ";	
 			
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));
+			ps.setInt(2,sTipo.equals("grupo")?ListaCampos.getMasterFilial("EQGRUPO"):ListaCampos.getMasterFilial("EQPRODUTO"));
 			iParam = 3;
 			if (iCodAlmox!=0) {
 			    ps.setInt(iParam++,Aplicativo.iCodEmp);
 			    ps.setInt(iParam++,ListaCampos.getMasterFilial("EQALMOX"));
 			    ps.setInt(iParam++,iCodAlmox);
 			}
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			int iLin = 0;
-            tabGrup.limpa();
-			while (rs.next()) {
-				tabGrup.adicLinha();
-				tabGrup.setValor(new StringDireita(rs.getString("CODPROD")),iLin,0);
-				tabGrup.setValor(rs.getString("DESCPROD"),iLin,1);
-				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDPRODX":"SLDPROD")+""),iLin,2);
-				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDRESPRODX":"SLDRESPROD")+""),iLin,3);
-				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDCONSIGPRODX":"SLDCONSIGPROD")+""),iLin,4);
-				tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDLIQPRODX":"SLDLIQPROD")+""),iLin,5); 
-				iLin++;
+			
+			
+			if (sTipo.equals("grupo")) {
+				tabGrup.limpa();
+				while (rs.next()) {
+					tabGrup.adicLinha();
+					tabGrup.setValor(new StringDireita(rs.getString("CODPROD")),iLin,0);
+					tabGrup.setValor(rs.getString("DESCPROD"),iLin,1);
+					tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDPRODAX":"SLDPROD")+""),iLin,2);
+					tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDRESPRODAX":"SLDRESPROD")+""),iLin,3);
+					tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDCONSIGPRODAX":"SLDCONSIGPROD")+""),iLin,4);
+					tabGrup.setValor(new StringDireita(rs.getDouble(iCodAlmox!=0?"SLDLIQPRODAX":"SLDLIQPROD")+""),iLin,5); 
+					iLin++;
+				}
+			}
+			else {
+				while (rs.next()) {
+					txtSld.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDPRODAX":"SLDPROD")+""));
+					txtSldR.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDRESPRODAX":"SLDRESPROD")+""));
+					txtSldC.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDCONSIGPRODAX":"SLDCONSIGPROD")+""));
+					txtSldL.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDLIQPRODAX":"SLDLIQPROD")+""));
+				}				
 			}
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
-                con.commit();
+				con.commit();
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar saldos por grupo!\n"+err.getMessage());
-		}
+		}	
 		finally {
 			sSQL = null;
 			sCodGrup = null;
 		}
+								
+	}
+	
+	private void carregaTabGrup() {
+		buscaEstoque("grupo");
 	}
 	
 	/**
@@ -324,7 +361,9 @@ public class FConsulta extends FFilho implements CarregaListener {
 	 * Este método é executado após carregar o ListaCampos da tabela.
 	 *
 	 */ 
+	
 	private void carregaTabProd() {
+
 		int iCodAlmox = 0;
 		int iParam = 0;
 		int iLin = 0;
@@ -358,34 +397,29 @@ public class FConsulta extends FFilho implements CarregaListener {
 			if (!con.getAutoCommit())
                 con.commit();
 			
-			if(iCodAlmox!=0){
-			    
-			}
-			else {
-			    txtSld = txtSldProd;
-			    txtSldC = txtSldCProd;
-			    txtSldL = txtSldLProd;
-			    txtSldR = txtSldRProd;
-			}
 			
 		}
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PRECOPROD!\n"+err.getMessage());
 		}
+		
+		buscaEstoque("produto");
+		
 	}
+	
 	public void beforeCarrega(CarregaEvent pevt) { 
-		if (pevt.getListaCampos() == lcAlmoxProd){
+/*		if (pevt.getListaCampos() == lcAlmoxProd){
 			carregaTabProd();
 		}
 		if (pevt.getListaCampos() == lcAlmoxGrup) {
 			carregaTabGrup();
-		}
+		}*/
 	}
 	public void afterCarrega(CarregaEvent pevt) {
-		if (pevt.getListaCampos() == lcProd){
+		if ((pevt.getListaCampos() == lcProd) || (pevt.getListaCampos() == lcAlmoxProd)){
 			carregaTabProd();
 		}
-		if (pevt.getListaCampos() == lcGrup) {
+		if ((pevt.getListaCampos() == lcGrup) || (pevt.getListaCampos() == lcAlmoxGrup)) {
 			carregaTabGrup();
 		}
 	}
