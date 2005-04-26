@@ -908,8 +908,41 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		txtCodAltProd.setTabelaExterna(lcCodAltProd);
 		lcCodAltProd.montaTab();
 		tabCodAltProd.setTamColuna(150, 0);
+	
+		//  SaldoProd
 
-		//Fotos
+		setPainel(pinGeral);
+		setListaCampos(lcSaldoProd);
+
+		adic(new JLabelPad("Almoxarifado"), 7, 200, 87, 20);
+		adic(txtAlmox, 7, 220, 97, 20);
+		adic(new JLabelPad("Custo MPM"), 110, 200, 87, 20);
+		adic(txtCustoMPMAlmox, 110, 220, 87, 20);
+		adic(new JLabelPad("Custo PEPS"), 200, 200, 87, 20);
+		adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista
+												   // campos
+		adicCampoInvisivel(txtCodProdSaldo, "CodProd", "cod.prod.",
+				ListaCampos.DB_PK, true);
+		adicCampoInvisivel(txtCodAlmoxSaldo, "CodAlmox", "cod.almox.",
+				ListaCampos.DB_PK, true);
+		adicCampo(txtSldAlmox, 290, 220, 87, 20, "SldProd", "Saldo",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtSldResAlmox, 380, 220, 87, 20, "SldResProd", "Saldo res.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtSldConsigAlmox, 470, 220, 87, 20, "SldConsigProd",
+				"Saldo consig.", ListaCampos.DB_SI, false);
+		adicCampo(txtSldLiqAlmox, 560, 220, 90, 20, "SldLiqProd", "Saldo liq.",
+				ListaCampos.DB_SI, false);
+
+		setListaCampos(true, "SALDOPROD", "EQ");
+		lcFoto.setQueryInsert(false);
+		lcFoto.setQueryCommit(false);
+		tabFoto.setTamColuna(80, 0);
+		tabFoto.setTamColuna(80, 1);
+		tabFoto.setTamColuna(80, 2);
+		tabFoto.setTamColuna(80, 3);
+
+//		Fotos
 		setPainel(pinRodFoto, pnFoto);
 		adicTab("Fotos", pnFoto);
 		setListaCampos(lcFoto);
@@ -945,39 +978,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		tabFoto.setTamColuna(80, 3);
 		tabFoto.setTamColuna(80, 4);
 
-		//  SaldoProd
-
-		setPainel(pinGeral);
-		setListaCampos(lcSaldoProd);
-
-		adic(new JLabelPad("Almoxarifado"), 7, 200, 87, 20);
-		adic(txtAlmox, 7, 220, 97, 20);
-		adic(new JLabelPad("Custo MPM"), 110, 200, 87, 20);
-		adic(txtCustoMPMAlmox, 110, 220, 87, 20);
-		adic(new JLabelPad("Custo PEPS"), 200, 200, 87, 20);
-		adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista
-												   // campos
-		adicCampoInvisivel(txtCodProdSaldo, "CodProd", "cod.prod.",
-				ListaCampos.DB_PK, true);
-		adicCampoInvisivel(txtCodAlmoxSaldo, "CodAlmox", "cod.almox.",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtSldAlmox, 290, 220, 87, 20, "SldProd", "Saldo",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtSldResAlmox, 380, 220, 87, 20, "SldResProd", "Saldo res.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtSldConsigAlmox, 470, 220, 87, 20, "SldConsigProd",
-				"Saldo consig.", ListaCampos.DB_SI, false);
-		adicCampo(txtSldLiqAlmox, 560, 220, 90, 20, "SldLiqProd", "Saldo liq.",
-				ListaCampos.DB_SI, false);
-
-		setListaCampos(true, "SALDOPROD", "EQ");
-		lcFoto.setQueryInsert(false);
-		lcFoto.setQueryCommit(false);
-		tabFoto.setTamColuna(80, 0);
-		tabFoto.setTamColuna(80, 1);
-		tabFoto.setTamColuna(80, 2);
-		tabFoto.setTamColuna(80, 3);
-
+		
 		txtCodProd.requestFocus();
 		btExp.addActionListener(this);
 
