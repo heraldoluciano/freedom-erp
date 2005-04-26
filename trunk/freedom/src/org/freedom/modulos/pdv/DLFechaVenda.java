@@ -34,10 +34,8 @@ import java.sql.Types;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -49,7 +47,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FAndamento;
 import org.freedom.telas.FDialogo;
 
 public class DLFechaVenda extends FDialogo implements FocusListener {
