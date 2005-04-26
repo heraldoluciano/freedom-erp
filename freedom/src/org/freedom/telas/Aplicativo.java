@@ -176,6 +176,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		telaPrincipal = new FPrincipal();
 		this.iCodSis = iCodSis;
 		this.iCodModu = iCodModu;
+		this.sDescSis = sDescSis;
+		this.sDescModu = sDescModu;
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
@@ -528,41 +530,52 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	private boolean upMenuDB(JMenuItem men, JMenuPad menPai) {
 		boolean bRet = false;
+		Class tela = null;
+		String sNomeMenu = null;
+		String sAcaoMenu = null;
 		int iCodMenu = 0;
 		try {
 			if (men instanceof JMenuItemPad) {
 //				iCodSis = ((JMenuItemPad) men).getCodSistema();
 //				iCodModu = ((JMenuItemPad) men).getCodModulo();
 				iCodMenu = ((JMenuItemPad) men).getCodItem();
+				tela = ((JMenuItemPad) men).getTela();
 			} else if (men instanceof JMenuPad) {
 //				iCodSis = ((JMenuPad) men).getCodSistema();
 //				iCodModu = ((JMenuPad) men).getCodModulo();
 				iCodMenu = ((JMenuPad) men).getCodMenu();
 			}
 			//			System.out.println(iCodSis+","+iCodModu+","+iCodMenu+","+men.getText()+","+menPai.getCodSistema()+","+menPai.getCodModulo()+","+menPai.getCodMenu());
+			if (tela!=null) {
+				sNomeMenu = tela.getName();
+				sAcaoMenu = tela.getName();
+			}
+			else {
+				sNomeMenu = ""+iCodMenu;
+				sAcaoMenu = ""+iCodMenu;
+			}
 			PreparedStatement ps = con
-					.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?)");
+					.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)");
 			ps.setInt(1, this.iCodSis);
 			ps.setString(2,this.sDescSis);
 			ps.setInt(3, this.iCodModu);
 			ps.setString(4,Funcoes.copy(this.sDescModu, 50));
 			ps.setInt(5, iCodMenu);
 			ps.setString(6, men.getText());
-
-			if (menPai.getCodSistema() == 0)
-				ps.setNull(7, java.sql.Types.INTEGER);
-			else
-				ps.setInt(7, menPai.getCodModulo());
-
-			if (menPai.getCodModulo() == 0)
-				ps.setNull(8, java.sql.Types.INTEGER);
-			else
-				ps.setInt(8, menPai.getCodModulo());
-
-			if (menPai.getCodMenu() == 0)
+			ps.setString(7,sNomeMenu);
+			ps.setString(8,sAcaoMenu);
+			
+			if (menPai.getCodMenu() == 0) {
 				ps.setNull(9, java.sql.Types.INTEGER);
-			else
-				ps.setInt(9, menPai.getCodMenu());
+				ps.setNull(10, java.sql.Types.INTEGER);
+				ps.setNull(11, java.sql.Types.INTEGER);
+			}
+			else {
+				ps.setInt(9, menPai.getCodModulo());
+				ps.setInt(10, menPai.getCodModulo());
+				ps.setInt(11, menPai.getCodMenu());
+			}
+
 
 			ps.execute();
 			ps.close();
@@ -571,7 +584,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			bRet = true;
 		} catch (SQLException err) {
 			Funcoes.mensagemInforma(telaPrincipal,
-					"Não foi possível atualizar a base de menus!\n" + err);
+					"Não foi possível atualizar a base de menus!\n" + err + 
+					"\n" +this.iCodSis+","+this.sDescSis+"\n"+this.iCodModu+","+this.sDescModu+"\n"+
+					iCodMenu+","+men.getText()+"\n"+","+menPai.getCodMenu());
+		}
+		finally {
+			tela = null;
+			sNomeMenu = null;
+			sAcaoMenu = null;
+			iCodMenu = 0;
 		}
 		return bRet;
 	}
