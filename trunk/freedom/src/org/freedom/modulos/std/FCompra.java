@@ -504,7 +504,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
-			txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD"));
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
@@ -514,9 +514,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
 		} else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "CODPROD"));
-			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD"));
+			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
 		}
 		txtCustoItCompra.setSoLeitura(true);
 		adicDescFK(txtDescProd, 110, 20, 197, 20, "DescProd",
@@ -528,9 +527,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		adicCampoInvisivel(txtCodAlmoxItCompra, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
 		
-		txtQtdItCompra.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,Aplicativo.telaPrincipal,con,"qtditcompra"));		
-		
-		
+		txtQtdItCompra.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditcompra"));		
+				
 		adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço",
 				ListaCampos.DB_SI, true);
 		adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra",

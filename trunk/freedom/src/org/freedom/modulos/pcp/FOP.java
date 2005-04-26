@@ -142,7 +142,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	
   	if (!bPrefs[0]) {
   	  	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, true);
-  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
+  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
   	}
   	else {
   		adic(new JLabelPad("Referência"),60,0,70,20);
@@ -150,7 +150,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   		adicCampo(txtRefProdEst, 80, 20, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
   		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
   	  	txtRefProdEst.setFK(true);
-  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"REFPROD"));  	  	
+  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD"));  	  	
   	}
   	
   	adicDescFK(txtDescEst, 153, 20, 250, 20, "descprod", "Descrição da estrutura");
@@ -171,14 +171,14 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicCampo(txtSeqItOp,7,20,50,20,"seqitop","Seq.", ListaCampos.DB_PK, true);
   	if (!bPrefs[0]){
   		adicCampo(txtCodProdDet,60,20,70,20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true);
-  	  	txtCodProdDet.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
+  	  	txtCodProdDet.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
   	}
   	else {
   		adic(new JLabelPad("Referência"),60,0,70,20);
   		adic(txtRefProdDet,60,20,70,20);
   		adicCampoInvisivel(txtCodProdDet,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdDet, true);
   		txtRefProdDet.setFK(true);
-  	  	txtRefProdDet.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"REFPROD"));
+  	  	txtRefProdDet.setBuscaAdic(new DLBuscaProd(con,"REFPROD"));
   	}
   	adicDescFK(txtDescProdDet,133,20,250,20,"descprod", "Descrição do produto");
   	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", ListaCampos.DB_SI, false);

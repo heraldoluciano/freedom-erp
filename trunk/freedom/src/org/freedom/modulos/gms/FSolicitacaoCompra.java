@@ -235,11 +235,11 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 87, 20);
 			txtRefProd.setFK(true);
-		  	txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"REFPROD"));
+		  	txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD"));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);
-		  	txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
+		  	txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
 		}
 
 		adicCampo(txtCodCC, 7, 60, 60, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);

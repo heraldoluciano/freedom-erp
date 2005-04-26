@@ -9,7 +9,7 @@
  * Classe:
  * @(#)FInventario.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
+ * Este programa é licenciado de acordo c>om a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
  * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
@@ -242,7 +242,7 @@ public class FInventario extends FDados implements CarregaListener,
 				"Descrição do tipo de movimento");
 
 		if (comRef()) {
-			txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD"));
 			adicCampoInvisivel(txtRefProd2, "RefProd", "Referência do produto",
 					ListaCampos.DB_SI, false);
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
@@ -251,7 +251,7 @@ public class FInventario extends FDados implements CarregaListener,
 			adic(new JLabelPad("Referência"), 7, 80, 80, 20);
 			adic(txtRefProd, 7, 100, 80, 20);
 		} else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD"));
 			adicCampo(txtCodProd, 7, 100, 90, 20, "CodProd", "Cód.prod",
 					ListaCampos.DB_FK, txtDescProd, true);
 		}

@@ -22,14 +22,12 @@
 
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.modulos.std.DLBuscaProd;
-import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FEstFase extends FDetalhe {
@@ -135,6 +133,6 @@ public class FEstFase extends FDetalhe {
     lcTipoRec.setConexao(cn);
     txtCodProd.setVlrInteger(new Integer(iCodProd));
     lcCampos.carregaDados();
-    txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));
+    txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
    }        
 }

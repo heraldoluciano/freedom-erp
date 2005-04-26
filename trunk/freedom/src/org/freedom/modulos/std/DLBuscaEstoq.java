@@ -20,7 +20,7 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.Component;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -50,9 +50,8 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
    private ImageIcon imgColuna = null;
    public int iPadrao = 0;
    Vector vLinhasProibidas = new Vector();
-   public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, ListaCampos lc3, Component cOrig,Connection con,String sCol) {
-   	 super(cOrig);
-
+   public DLBuscaEstoq(ListaCampos lc1, ListaCampos lc2, ListaCampos lc3,Connection con,String sCol) {
+   	 
    	 imgBaixa.setDescription("S");
    	 imgVisualiza.setDescription("N");
    	 imgPadrao.setDescription("P");
