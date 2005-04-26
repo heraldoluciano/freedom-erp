@@ -264,17 +264,20 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
 	}  		
   }
   private void gravaAcesso() {
-  	String sSep = "";
-  	String sSqlI = "";
-  	String sSqlD = "";
-    for (int i=0; i<vCodEmp.size();i++) {
-      sSqlI += sSep + vCodEmp.elementAt(i);
-      sSep = ",";
-    }
-    
+  	String sSep = null;
+  	String sSqlI = null;
+  	String sSqlD = null; 
+  	String sSqlG = null;
+  	PreparedStatement ps = null;
     try {
+      sSep = "";
+      sSqlI = "";
+      for (int i=0; i<vCodEmp.size();i++) {
+          sSqlI += sSep + vCodEmp.elementAt(i);
+          sSep = ",";
+      }
       sSqlD = "DELETE FROM SGACESSOEU WHERE IDUSU=? AND CODEMP=?";
-      PreparedStatement ps = con.prepareStatement(sSqlD);
+      ps = con.prepareStatement(sSqlD);
       ps.setString(1,txtIDUsu.getVlrString());
       ps.setInt(2,Aplicativo.iCodEmp);
       ps.executeUpdate();
@@ -292,9 +295,24 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
         if (!con.getAutoCommit())
         	con.commit();
       }
+      sSqlG = "GRANT "+txtIDGrpUsu.getVlrString().trim()+" TO USER "+txtIDUsu.getVlrString().trim();
+      ps = con.prepareStatement(sSqlG);
+//      ps.setString(1,txtIDGrpUsu.getVlrString());
+//      ps.setString(2,txtIDUsu.getVlrString());
+      ps.executeUpdate();
+      ps.close();
+      if (!con.getAutoCommit())
+      	con.commit();
     }
     catch (SQLException err) {
 		Funcoes.mensagemInforma(this,"Erro ao cadastrar o acesso!\n"+err.getMessage());
+    }
+    finally {
+      	sSep = null;
+      	sSqlI = null;
+      	sSqlD = null;
+      	sSqlG = null;
+      	ps = null;
     }
   }
   private int buscaAnoBaseCC() {
@@ -317,19 +335,29 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   }
   public void beforePost(PostEvent pevt) {
   	if (!txpSenha.getVlrString().equals(txpConfirma.getVlrString())) {
+        pevt.cancela();
 		Funcoes.mensagemInforma(this,"Senha diferente da confirmação!");
   		txpSenha.requestFocus();
-        pevt.cancela();
+  		return;
   	}
   	else if (txpSenha.getVlrString().trim().equals("")) {
+        pevt.cancela();
 		Funcoes.mensagemInforma(this,"Senha em branco!");
   		txpSenha.requestFocus();
-        pevt.cancela();
+  		return;
   	}
   	else if (txpSenha.getVlrString().length() > 8) {
+        pevt.cancela();
 		Funcoes.mensagemInforma(this,"A senha não pode ultrapassar 8 caracteres!");
   		txpSenha.requestFocus();
-        pevt.cancela();
+  		return;
+  	}
+  	else if (!txtIDGrpUsu.getVlrString().equalsIgnoreCase("ADM")) {
+  		pevt.cancela();
+  		Funcoes.mensagemInforma(this,"Só o grupo \"ADM\" está disponível!");
+  		//txtIDGrpUsu.setVlrString("ADM");
+  		txtIDGrpUsu.requestFocus();
+  		return;
   	}
   	else {
   		try {
@@ -409,7 +437,8 @@ public class FUsuario extends FDados implements PostListener, DeleteListener, In
   public void beforeCarrega(CarregaEvent pevt) { }
   public void beforeInsert(InsertEvent ievt) { }
   public void afterPost(PostEvent pevt) {
-    gravaAcesso();
+  	if (pevt.ok)
+      gravaAcesso();
   }
   public void afterInsert(InsertEvent ievt) {
 	carregaDisp();
