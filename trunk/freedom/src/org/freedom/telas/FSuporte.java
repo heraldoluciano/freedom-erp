@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -267,7 +268,8 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		if (!bEnvia)
 			return;
 		if (sEmail != null)
-			sEmail = "Suporte" + " <" + sEmail.trim() + '>';
+//			sEmail = "Suporte" + " <" + sEmail.trim() + '>';
+			sEmail = sEmail.trim();
 		else
 			sEmail = sEmail.trim();
 		mandaMail(sEmail, se);
@@ -285,8 +287,12 @@ public class FSuporte extends FFDialogo implements ActionListener {
 			mes.setFrom(new InternetAddress(txtDe.getVlrString()));
 			mes.setSubject(txtAssunto.getVlrString());
 			mes.setSentDate(new Date());
-			mes.addRecipient(RecipientType.TO, new InternetAddress(sTo));
-
+			try {
+				mes.addRecipient(RecipientType.TO, new InternetAddress(sTo,"suporte"));
+			}
+			catch(UnsupportedEncodingException e){
+				e.printStackTrace();
+			}
 			BodyPart parte = new MimeBodyPart();
 			
 			String sTextoAdic = "Novo pedido de suporte da empresa:"+Aplicativo.sRazFilial+"\n"; 
