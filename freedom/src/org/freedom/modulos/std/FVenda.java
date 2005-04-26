@@ -843,7 +843,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		if (bPrefs[0]) {
 			                        
-			txtRefProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD"));
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.",
@@ -852,7 +852,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
 		} else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal, con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD"));
 			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, true);
 		}
@@ -866,7 +866,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		txtCodAlmoxItVenda.setSoLeitura(true);
 		adicCampo(txtCodAlmoxItVenda, 280, 60, 47,20, "codalmox", "Cod.ax",	ListaCampos.DB_FK, false);
 		
-		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,Aplicativo.telaPrincipal,con,"qtditvenda"));
+		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditvenda"));
 				
 		adicCampo(txtPrecoItVenda, 480, 20, 67, 20, "PrecoItVenda", "Preço",
 				ListaCampos.DB_SI, true);

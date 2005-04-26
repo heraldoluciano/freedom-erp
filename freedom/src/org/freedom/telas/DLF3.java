@@ -20,7 +20,6 @@
 
 package org.freedom.telas;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -44,8 +43,8 @@ public abstract class DLF3 extends FFDialogo implements KeyListener {
    * 
    * @param cOrig - Janela mãe do dialogo.
    */
-  public DLF3(Component cOrig) {
-  	super(cOrig);
+  public DLF3() {
+//  	super(cOrig);
     setTitulo("Pesquisa auxiliar");
     setAtribos( 550, 260);
     setResizable(true);

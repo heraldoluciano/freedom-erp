@@ -161,7 +161,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
       }
     }
     private void completaTela(){
-      	txtCodProd.setBuscaAdic(new DLBuscaProd(Aplicativo.telaPrincipal,con,"CODPROD"));    	    	
+      	txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));    	    	
     }
     private boolean processar(int iCodProd) {
        String sSQL = null;

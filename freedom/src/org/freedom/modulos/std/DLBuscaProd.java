@@ -20,7 +20,6 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -28,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import org.freedom.acao.TabelaSelEvent;
 import org.freedom.acao.TabelaSelListener;
 import org.freedom.componentes.ListaCampos;
@@ -42,8 +40,8 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    private String sSQL = "";
    public int iPadrao = 0;
    boolean bRet = false;
-   public DLBuscaProd(Component cOrig,Connection con,String sCol) {
-   	 super(cOrig);
+   public DLBuscaProd(Connection con,String sCol) {
+
    	 this.sCol = sCol;
    	 setConexao(con);
    	 
