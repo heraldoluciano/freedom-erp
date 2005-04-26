@@ -80,7 +80,7 @@ public class FreedomSTD extends Aplicativo {
             
 	addOpcao(100000000,TP_OPCAO_MENU,"Ferramentas","",'F',100200000,1, false, null);
 	  addOpcao(100200000,TP_OPCAO_ITEM,"Alteração de numero de nota","Alteração de doc",'A',100210000,2, true, FTrocaDoc.class);
-	//  addOpcao(100200000,TP_OPCAO_ITEM,"Exportar SVV","Exportação SVV",'E',100220000,2,true, FSVV.class);
+	  addOpcao(100200000,TP_OPCAO_ITEM,"Exportar SVV","Exportação SVV",'E',100220000,2,true, FSVV.class);
 	  addOpcao(100200000,TP_OPCAO_MENU,"Etiquetas","",'t',100230000,2, false, null);
 	     addOpcao(100230000,TP_OPCAO_ITEM,"Modelo","Modelo de etiquetas",'M',100230100,3, true, FModEtiqueta.class);
 	     addOpcao(100230000,TP_OPCAO_ITEM,"Imprimir","Etiquetas",'I',100230200,3, true, FREtiqueta.class); // LOM
