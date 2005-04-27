@@ -122,7 +122,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
       ResultSet rs = null;
       Vector vProds = null;
       if (iUltProd > 0) {
-            if (Funcoes.mensagemConfirma(this,"Gostaria de continuar a partir do produto '"+iUltProd+"'?") != JOptionPane.YES_OPTION)
+            if (Funcoes.mensagemConfirma(null,"Gostaria de continuar a partir do produto '"+iUltProd+"'?") != JOptionPane.YES_OPTION)
                   iUltProd = 0;
       }
       try {
@@ -146,14 +146,14 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
          for (int i=0; i<vProds.size(); i++) {
              iUltProd =  ( (Integer) vProds.elementAt(i) ).intValue();
              if (!processar(iUltProd)) {
-                 if (Funcoes.mensagemConfirma(this,"Ocorreram problemas com o produto: '"+iUltProd+"'.\n" +
+                 if (Funcoes.mensagemConfirma(null,"Ocorreram problemas com o produto: '"+iUltProd+"'.\n" +
                                                    "Deseja continuar mesmo assim?") != JOptionPane.YES_OPTION)
                  	break;
              }
          }
       }
       catch (SQLException err) {
-        Funcoes.mensagemErro(this,"Não foi possível processar um produto.\n" +
+        Funcoes.mensagemErro(null,"Não foi possível processar um produto.\n" +
                                   "Ultimo processado: '"+iUltProd+"'.\n"+err.getMessage());
       }
       finally {
@@ -221,7 +221,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	 bOK = true;
              }
              catch (SQLException err) {
-              	 Funcoes.mensagemErro(this,"Erro ao limpar estoques!\n"+err.getMessage());
+              	 Funcoes.mensagemErro(null,"Erro ao limpar estoques!\n"+err.getMessage());
              }
              if (bOK) {
              	 bOK = false;
@@ -298,7 +298,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                  }
                  catch (SQLException err) {
                     bOK = false;
-                    Funcoes.mensagemErro(this,"Erro ao reconstruir base!\n"+err.getMessage());
+                    Funcoes.mensagemErro(null,"Erro ao reconstruir base!\n"+err.getMessage());
                  }
              }
              try {
@@ -313,7 +313,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                  }
              }
              catch (SQLException err) {
-               Funcoes.mensagemErro(this,"Erro ao relizar procedimento!\n"+err.getMessage());
+               Funcoes.mensagemErro(null,"Erro ao relizar procedimento!\n"+err.getMessage());
              }
            
        }
@@ -456,30 +456,30 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
     		bRet = true;
     	}
     	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao inserir novo movimento!\n"+err.getMessage());
+    		Funcoes.mensagemErro(null,"Erro ao inserir novo movimento!\n"+err.getMessage());
     		//err.printStackTrace();
     	}
     	catch (Exception e) {
-    		Funcoes.mensagemErro(this,"Erro ao inserir novo movimento!\n"+e.getMessage());
+    		Funcoes.mensagemErro(null,"Erro ao inserir novo movimento!\n"+e.getMessage());
     	}
     	finally {
         	sSQL = null;
         	sCIV = null;
         	ps = null;
-    	}
+    	} 
     	return bRet;
     }
 	public void actionPerformed(ActionEvent evt) {
 		 if (evt.getSource() == btProcessar) {
             if (cbTudo.getVlrString().equals("S")) {
-                if (Funcoes.mensagemConfirma(this,"ATENÇÂO!!!\n" +
+                if (Funcoes.mensagemConfirma(null,"ATENÇÂO!!!\n" +
                                                   "Esta operação exige um longo tempo e muitos recursos do banco de dados,\n" +
                                                   "assegure-se que NINGUÉM esteja conectado ao banco de dados em outra \n" +
                                                   "estação de trabalho. Deseja continuar?") != JOptionPane.YES_OPTION)
                 	return;
             }
 		 	else if (txtCodProd.getVlrString().equals("")) {
-		 		Funcoes.mensagemInforma(this,"Código do produto em branco!");
+		 		Funcoes.mensagemInforma(null,"Código do produto em branco!");
 		 		return;
 		 	}
 		 	ProcessoSec pSec = new ProcessoSec(100,
