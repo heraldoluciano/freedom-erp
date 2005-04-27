@@ -62,6 +62,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
 	private JTextFieldFK txtRefProd = new JTextFieldFK(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
     private JCheckBoxPad cbTudo = new JCheckBoxPad("Processar todo estoque (Atenção!)","S","N");
+    private JCheckBoxPad cbAtivo = new JCheckBoxPad("Processar somente produtos ativos","S","N");
 	private JLabelPad lbStatus = new JLabelPad();
 	private ListaCampos lcProd = new ListaCampos(this);
 	boolean bRunProcesso = false;
@@ -101,14 +102,16 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
         pin.adic(txtDescProd,80,200,220,20);
 
         if (Aplicativo.strUsuario.toUpperCase().equals("SYSDBA")) {
+          cbAtivo.setVlrString("S");
           pin.adic(cbTudo,7,240,250,30);
+          pin.adic(cbAtivo,7,270,250,30);
           txtCodProd.setRequerido(false);
         }
-        pin.adic(btProcessar,10,280,180,30);
+        pin.adic(btProcessar,10,310,180,30);
 
     	lbStatus.setForeground(Color.BLUE);
       
-        pin.adic(lbStatus,10,320,400,20);
+        pin.adic(lbStatus,10,350,400,20);
 
 		adicBotaoSair();
 
@@ -126,8 +129,9 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                   iUltProd = 0;
       }
       try {
-          sSQL = "SELECT CODPROD FROM EQPRODUTO WHERE ATIVOPROD='S'" +
-            " AND CODFILIAL=? AND CODEMP=? AND CODPROD>=?" +
+          sSQL = "SELECT CODPROD FROM EQPRODUTO " +
+          	"WHERE "+(cbAtivo.getVlrString().equals("S")?"ATIVOPROD='S' AND":"") +
+		    " CODFILIAL=? AND CODEMP=? AND CODPROD>=?" +
             " ORDER BY CODPROD";
          ps = con.prepareStatement(sSQL);
          ps.setInt(1,ListaCampos.getMasterFilial("EQPRODUTO"));
