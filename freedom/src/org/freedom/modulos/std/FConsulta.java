@@ -329,12 +329,18 @@ public class FConsulta extends FFilho implements CarregaListener {
 				}
 			}
 			else {
-				while (rs.next()) {
+				if (rs.next()) {
 					txtSld.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDPRODAX":"SLDPROD")+""));
 					txtSldR.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDRESPRODAX":"SLDRESPROD")+""));
 					txtSldC.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDCONSIGPRODAX":"SLDCONSIGPROD")+""));
 					txtSldL.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDLIQPRODAX":"SLDLIQPROD")+""));
-				}				
+				}
+				else {
+					txtSld.setVlrDouble(new Double(0));
+					txtSldR.setVlrDouble(new Double(0));
+					txtSldC.setVlrDouble(new Double(0));
+					txtSldL.setVlrDouble(new Double(0));
+				}
 			}
 			rs.close();
 			ps.close();
