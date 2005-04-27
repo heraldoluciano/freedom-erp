@@ -189,9 +189,9 @@ public class Funcoes {
 	    String opt[] = {"Sim","Não"}; 
 		if (frame == null)		    
 			return JOptionPane.showOptionDialog(frame, sMensagem,"Confirmação", JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE,null, opt, opt[1]);
+					JOptionPane.QUESTION_MESSAGE,null, opt, opt[0]);
 		return JOptionPane.showInternalOptionDialog(frame, sMensagem,"Confirmação", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, opt, opt[1]);
+				JOptionPane.QUESTION_MESSAGE, null, opt, opt[0]);
 	}
 
 	public static String adicEspacosEsquerda(String sTexto, int iEspacos) {
