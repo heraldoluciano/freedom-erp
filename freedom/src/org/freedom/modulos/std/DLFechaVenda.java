@@ -296,7 +296,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     txtNParcItRec.setNomeCampo("NParcItRec");
     lcItReceber.add(new GuardaCampo( txtNParcItRec, "NParcItRec", "N.parc.", ListaCampos.DB_PK,false));
     lcItReceber.add(new GuardaCampo( txtVlrParcItRec, "VlrParcItRec", "Valor tot.", ListaCampos.DB_SI,false));
-    lcItReceber.add(new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Valor tot.", ListaCampos.DB_SI,false));
+    lcItReceber.add(new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt. vencto.", ListaCampos.DB_SI,false));
     lcItReceber.add(new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.", ListaCampos.DB_SI,false));
     lcItReceber.montaSql(false, "ITRECEBER", "FN");
     lcItReceber.setConexao(cn);
