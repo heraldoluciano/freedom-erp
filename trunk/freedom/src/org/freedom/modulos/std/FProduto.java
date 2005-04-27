@@ -398,7 +398,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private ListaCampos lcPlanoPagPreco = new ListaCampos(this, "PG");
 
-	private ListaCampos lcSaldoProd = new ListaCampos(this, "");
+	//private ListaCampos lcSaldoProd = new ListaCampos(this, "");
 
 	private Navegador navFatConv = new Navegador(true);
 
@@ -580,7 +580,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			txtAlmox.setVlrString(txtDescAlmox.getVlrString());
 			txtCodAlmoxSaldo.setVlrInteger(txtCodAlmox.getVlrInteger());
 			txtCodProdSaldo.setVlrInteger(txtCodProd.getVlrInteger());
-			lcSaldoProd.carregaDados();
+			// lcSaldoProd.carregaDados();
 
 			if (txtCodProd.getVlrInteger().intValue() != 0) {
 				try {
@@ -674,6 +674,22 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adicCampo(txtSldLiqProd, 560, 180, 90, 20, "SldLiqProd", "Saldo liq.",
 				ListaCampos.DB_SI, false);
 
+		adic(new JLabelPad("Almoxarifado"), 7, 200, 87, 20);
+		adic(txtAlmox, 7, 220, 97, 20);
+		adic(new JLabelPad("Custo MPM"), 110, 200, 87, 20);
+		adic(txtCustoMPMAlmox, 110, 220, 87, 20);
+		adic(new JLabelPad("Custo PEPS"), 200, 200, 87, 20);
+		adic(txtCustoPEPSAlmox, 200, 220, 87, 20); 
+
+		adic(new JLabelPad("Saldo"), 290, 200, 87, 20);
+		adic(txtSldAlmox, 290, 220, 87, 20 );
+		adic(new JLabelPad("Saldo res."), 380, 200, 87, 20);
+		adic(txtSldResAlmox, 380, 220, 87, 20);
+		adic(new JLabelPad("Saldo consig."), 470, 200, 87, 20);
+		adic(txtSldConsigAlmox, 470, 220, 87, 20);
+		adic(new JLabelPad("Saldo liq."), 560, 200, 87, 20);
+		adic(txtSldLiqAlmox, 560, 220, 90, 20);
+		
 		adicDB(cbLote, 7, 260, 70, 20, "CLoteProd", "Estoque", true);
 		adicDB(cbAtivo, 80, 260, 67, 20, "AtivoProd", "Atividade", true);
 		adicDB(cbVerif, 150, 260, 77, 20, "VerifProd", "Abaixo custo", true);
@@ -698,6 +714,11 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adicDB(rgCV, 350, 340, 260, 30, "CVProd", "Cadastro para:", true);
 		adic(btExp, 620, 340, 30, 30);
 
+		// Sem inserir no lista
+												   // campos
+
+		//setListaCampos(true, "SALDOPROD", "EQ"); 
+		
 		//Decrição completa
 
 		adicTab("Descrição completa", pnDesc);
@@ -903,38 +924,15 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adicCampo(txtCodAltProd, 7, 20, 150, 20, "CodAltProd",
 				"Código alternativo", ListaCampos.DB_PK, null, true);
 		setListaCampos(false, "CODALTPROD", "EQ");
-		lcCodAltProd.setQueryInsert(true);
+		lcCodAltProd.setQueryInsert(false);
 		lcCodAltProd.setQueryCommit(false);
 		txtCodAltProd.setTabelaExterna(lcCodAltProd);
+		txtCodAltProd.setEnterSai(false);
 		lcCodAltProd.montaTab();
 		tabCodAltProd.setTamColuna(150, 0);
 	
 		//  SaldoProd
 
-		setPainel(pinGeral);
-		setListaCampos(lcSaldoProd);
-
-		adic(new JLabelPad("Almoxarifado"), 7, 200, 87, 20);
-		adic(txtAlmox, 7, 220, 97, 20);
-		adic(new JLabelPad("Custo MPM"), 110, 200, 87, 20);
-		adic(txtCustoMPMAlmox, 110, 220, 87, 20);
-		adic(new JLabelPad("Custo PEPS"), 200, 200, 87, 20);
-		adic(txtCustoPEPSAlmox, 200, 220, 87, 20); // Sem inserir no lista
-												   // campos
-		adicCampoInvisivel(txtCodProdSaldo, "CodProd", "cod.prod.",
-				ListaCampos.DB_PK, true);
-		adicCampoInvisivel(txtCodAlmoxSaldo, "CodAlmox", "cod.almox.",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtSldAlmox, 290, 220, 87, 20, "SldProd", "Saldo",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtSldResAlmox, 380, 220, 87, 20, "SldResProd", "Saldo res.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtSldConsigAlmox, 470, 220, 87, 20, "SldConsigProd",
-				"Saldo consig.", ListaCampos.DB_SI, false);
-		adicCampo(txtSldLiqAlmox, 560, 220, 90, 20, "SldLiqProd", "Saldo liq.",
-				ListaCampos.DB_SI, false);
-
-		setListaCampos(true, "SALDOPROD", "EQ");
 		lcFoto.setQueryInsert(false);
 		lcFoto.setQueryCommit(false);
 		tabFoto.setTamColuna(80, 0);
@@ -1360,7 +1358,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcTabPreco.setConexao(cn);
 		lcPlanoPagPreco.setConexao(cn);
 		lcCodAltProd.setConexao(cn);
-		lcSaldoProd.setConexao(cn);
+		//lcSaldoProd.setConexao(cn);
 	}
 
 	public void valorAlterado(CheckBoxEvent cbevt) {
