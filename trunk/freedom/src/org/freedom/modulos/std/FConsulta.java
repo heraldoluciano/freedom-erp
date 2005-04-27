@@ -22,16 +22,16 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
@@ -204,9 +204,31 @@ public class FConsulta extends FFilho implements CarregaListener {
 		
 		// Fim da aba de consulta de saldo por produto		
 		adicBotaoSair();
+		
+		txtCodAlmoxGrup.addKeyListener(
+		  new KeyAdapter() {
+		    public void keyPressed(KeyEvent kevt) {
+			  if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (txtCodAlmoxGrup.getVlrInteger().intValue()==0)) {
+				    buscaEstoque("grupo");
+			  }
+			}
+		  }
+		);	
+
+		txtCodAlmoxProd.addKeyListener(
+		  new KeyAdapter() {
+			public void keyPressed(KeyEvent kevt) {
+			  if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && (txtCodAlmoxProd.getVlrInteger().intValue()==0)) {
+				    buscaEstoque("produto");
+			  }
+			}
+		  }
+		);	
+		
+		
 				
 	}
-	
+
 	private void montaTela() {
 	    // Aba de saldos por produto 
 		if (comRef()) {
