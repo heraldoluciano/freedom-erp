@@ -99,8 +99,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodProd = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 10, 0);
 
-	private JTextFieldPad txtCodProdSaldo = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
+	//private JTextFieldPad txtCodProdSaldo = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 
 	private JTextFieldPad txtRefProd = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);
@@ -129,8 +128,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
-	private JTextFieldPad txtCodAlmoxSaldo = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
+//	private JTextFieldPad txtCodAlmoxSaldo = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtDescProd = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 50, 0);
@@ -578,12 +576,10 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		if (cevt.getListaCampos() == lcCampos) {
 
 			txtAlmox.setVlrString(txtDescAlmox.getVlrString());
-			txtCodAlmoxSaldo.setVlrInteger(txtCodAlmox.getVlrInteger());
-			txtCodProdSaldo.setVlrInteger(txtCodProd.getVlrInteger());
-			// lcSaldoProd.carregaDados();
 
 			if (txtCodProd.getVlrInteger().intValue() != 0) {
 				try {
+					buscaEstoque();
 					sSQL = "SELECT NCUSTOPEPS, NCUSTOMPM, NCUSTOMPMAX, NCUSTOPEPSAX FROM EQPRODUTOSP01(?,?,?,?,?,?)";
 					ps = con.prepareStatement(sSQL);
 					ps.setInt(1, Aplicativo.iCodEmp);
@@ -712,12 +708,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adicDescFK(txtDescGrup, 110, 340, 237, 20, "DescGrup",
 				"Descrição do grupo");
 		adicDB(rgCV, 350, 340, 260, 30, "CVProd", "Cadastro para:", true);
+
 		adic(btExp, 620, 340, 30, 30);
-
-		// Sem inserir no lista
-												   // campos
-
-		//setListaCampos(true, "SALDOPROD", "EQ"); 
 		
 		//Decrição completa
 
@@ -926,6 +918,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		setListaCampos(false, "CODALTPROD", "EQ");
 		lcCodAltProd.setQueryInsert(false);
 		lcCodAltProd.setQueryCommit(false);
+
 		txtCodAltProd.setTabelaExterna(lcCodAltProd);
 		txtCodAltProd.setEnterSai(false);
 		lcCodAltProd.montaTab();
@@ -1402,6 +1395,84 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		super.actionPerformed(evt);
 	}
 
+	private void buscaEstoque() {
+		ResultSet rs = null;
+		String sWhere = "";
+		String sSQL = "";
+		int iCodAlmox = 0;
+		int iParam = 0;
+
+		String sCodProd = null;
+		String sFiltro = "";
+		
+		try {
+			sCodProd = txtCodProd.getVlrString().trim();
+			iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
+				
+			if (sCodProd.equals("")) {
+				Funcoes.mensagemInforma(this,"Selecione um produto!");
+				txtCodProd.requestFocus();
+				return;
+			}
+				
+			sFiltro = "P.CODPROD="+sCodProd;
+				
+		    if (iCodAlmox==0) {
+		        sWhere = "SP.CODEMPAX = P.CODEMPAX AND SP.CODFILIALAX=P.CODFILIALAX AND " +
+		        	"SP.CODALMOX = P.CODALMOX";
+		    }
+		    else {
+		        sWhere = "SP.CODEMPAX = ? AND SP.CODFILIALAX=? AND SP.CODALMOX = ?";
+		    }
+				    			
+			sSQL = "SELECT P.CODPROD,P.DESCPROD,P.SLDPROD, P.SLDRESPROD, " +
+			 "P.SLDCONSIGPROD,P.SLDLIQPROD,SP.SLDPROD SLDPRODAX, SP.SLDRESPROD SLDRESPRODAX, " +
+			 "SP.SLDCONSIGPROD SLDCONSIGPRODAX,SP.SLDLIQPROD SLDLIQPRODAX " +
+			 "FROM EQPRODUTO P, EQSALDOPROD SP "+
+			 "WHERE SP.CODEMP=P.CODEMP AND SP.CODFILIAL=P.CODFILIAL AND SP.CODPROD = P.CODPROD AND " +
+			 "P.ATIVOPROD='S' AND P.CODEMPGP=? AND P.CODFILIALGP=? AND " +
+			 sFiltro + " AND " + sWhere+
+			 " ORDER BY P.DESCPROD ";	
+			
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
+			iParam = 3;
+			if (iCodAlmox!=0) {
+			    ps.setInt(iParam++,Aplicativo.iCodEmp);
+			    ps.setInt(iParam++,ListaCampos.getMasterFilial("EQALMOX"));
+			    ps.setInt(iParam++,iCodAlmox);
+			}
+			rs = ps.executeQuery();
+			int iLin = 0;
+						
+			if (rs.next()) {
+				txtSldAlmox.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDPRODAX":"SLDPROD")+""));
+				txtSldResAlmox.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDRESPRODAX":"SLDRESPROD")+""));
+				txtSldConsigAlmox.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDCONSIGPRODAX":"SLDCONSIGPROD")+""));
+				txtSldLiqAlmox.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDLIQPRODAX":"SLDLIQPROD")+""));
+			}
+			else {
+				txtSldAlmox.setVlrDouble(new Double(0));
+				txtSldResAlmox.setVlrDouble(new Double(0));
+				txtSldConsigAlmox.setVlrDouble(new Double(0));
+				txtSldLiqAlmox.setVlrDouble(new Double(0));
+			}
+
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao carregar saldos por almoxarifado!\n"+err.getMessage());
+		}	
+		finally {
+			sSQL = null;
+		}
+								
+	}
+	
 	public void stateChanged(ChangeEvent cevt) {
 		if (cevt.getSource() == tpn) {
 			if (tpn.getSelectedIndex() == 0)
