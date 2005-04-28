@@ -316,7 +316,8 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   public Object getValor(String sNomeCampo) {
     int ind = -1;
     for (int i = 0; i < tab.getNumColunas(); i++) {
-      if ((((GuardaCampo)(lcF2.getComponent(i))).getNomeCampo()) == (sNomeCampo)) {
+//      if ((((GuardaCampo)(lcF2.getComponent(i))).getNomeCampo()) == (sNomeCampo)) {
+    if ((((GuardaCampo)(lcF2.getComponent(i))).getNomeCampo()).equalsIgnoreCase(sNomeCampo)) {
         ind = i;
         break;
       }
