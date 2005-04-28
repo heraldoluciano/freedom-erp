@@ -143,6 +143,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCelCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtCodCliFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldPad txtCodCpCliFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
   private Vector vPessoaLab = new Vector();
@@ -480,8 +481,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     txtCodFor.setTabelaExterna(lcFor);
 
     adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.forn.", ListaCampos.DB_PF, txtDescFor,true);
-    adicDescFK(txtDescFor, 90, 20, 297, 20, "RazFor", "Razão social do fornecedor");
-    adicCampo(txtCodCliFor, 390, 20, 105, 20, "CodCliFor", "Cód.cli.for.", ListaCampos.DB_SI, false);
+    adicDescFK(txtDescFor, 90, 20, 257, 20, "RazFor", "Razão social do fornecedor");
+    adicCampo(txtCodCliFor, 350, 20, 80, 20, "CodCliFor", "Cód.cli.for.", ListaCampos.DB_SI, false);
+    adicCampo(txtCodCpCliFor, 433, 20, 77, 20, "CodCpCliFor", "Cód.compl.", ListaCampos.DB_SI, false);
     setListaCampos( false, "CLIENTEFOR", "VD");
     lcCliFor.montaTab();
     lcCliFor.setQueryInsert(false);

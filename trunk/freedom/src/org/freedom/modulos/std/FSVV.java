@@ -366,9 +366,11 @@ public class FSVV extends FFilho implements ActionListener {
         tab.setValor(verifErro('C',rs.getString("CidCli"),sIdentC+"[Cidade]",sTipoMov),i,12);
         tab.setValor(verifErro('D',rs.getString("UfCli"),sIdentC+"[UF]",sTipoMov),i,13);
         tab.setValor(verifErro('E',rs.getString("CepCli"),sIdentC+"[CEP]",sTipoMov),i,14);
-        String sCliFor = buscaCliFor(rs.getInt("CodCli"));
+        String[] sCodigosCamp = buscaCliFor(rs.getInt("CodCli"));
+        String sCliFor = sCodigosCamp[0];
+        String sCpCliFor = sCodigosCamp[1];
         // Campanha alterar aqui para 02
-        tab.setValor(sCliFor.equals("") ? "" : "01",i,15);
+        tab.setValor(sCpCliFor,i,15);
         tab.setValor(sCliFor,i,16);
         tab.setValor(verifErro('B',(rs.getString("CnpjCli") != null ? rs.getString("CnpjCli") : rs.getString("CpfCli")),sIdentC+"[CNPJ/CPF Cliente]",""),i,17);
         tab.setValor(rs.getString("CodCli"),i,18);
@@ -612,9 +614,9 @@ public class FSVV extends FFilho implements ActionListener {
 
      return sRet; 
   }
-  public String buscaCliFor(int iCodCli) {
-    String sRet = "";
-    String sSQL = "SELECT CF.CODCLIFOR FROM VDCLIENTEFOR CF, SGPREFERE1 P WHERE " +
+  public String[] buscaCliFor(int iCodCli) {
+    String sRet[] = {"",""};
+    String sSQL = "SELECT CF.CODCLIFOR, CF.CODCPCLIFOR FROM VDCLIENTEFOR CF, SGPREFERE1 P WHERE " +
                   "CF.CODFOR=P.CODFOR AND CF.CODFILIALFR=P.CODFILIALFR AND " +
                   "CF.CODEMPFR=P.CODEMPFR AND CF.CODCLI=? AND CF.CODEMP=? AND " +
                   "CF.CODFILIAL=? AND P.CODEMP=? AND P.CODFILIAL=?";
@@ -627,8 +629,11 @@ public class FSVV extends FFilho implements ActionListener {
       ps.setInt(5,ListaCampos.getMasterFilial("SGPREFERE1"));
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-         sRet = rs.getString("CodCliFor") != null ? rs.getString("CodCliFor").trim() : "";   
+         sRet[0] = rs.getString("CodCliFor") != null ? rs.getString("CodCliFor").trim() : "";   
+         sRet[1] = rs.getString("CodCpCliFor") != null ? rs.getString("CodCpCliFor").trim() : "";   
       }
+      if (sRet[0].trim().equals("0"))
+      	sRet[0] = "";
       rs.close();
       ps.close();
     }
