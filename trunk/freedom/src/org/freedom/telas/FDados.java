@@ -308,6 +308,14 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     adic(comp, X, Y, Larg, Alt);
     return lbTmp;
   }
+  public JLabelPad adicDescFKInvisivel(JTextFieldFK comp, String nome, String label) {
+    comp.setNomeCampo(nome);
+    comp.addKeyListener(this);
+    comp.addKeyListener(navSeq);
+    comp.setLabel(label);
+    JLabelPad lbTmp = new JLabelPad(label);
+    return lbTmp;
+  }
   //COMENTADO AQUI
   /*public JLabelPad adicDescFK(JTextFieldFK comp, int X, int Y, int Larg, int Alt, String nome, String label, int Tipo, int tam, int dec) {
     comp.setNomeCampo(nome);

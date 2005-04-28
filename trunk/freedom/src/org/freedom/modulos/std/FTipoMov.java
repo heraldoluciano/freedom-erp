@@ -173,6 +173,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JPanelPad pinLbPadImp = new JPanelPad(53, 15);
 
 	public FTipoMov() {
+
 		setTitulo("Cadastro de Tipos de Movimento");
 		setAtribos(10, 10, 430, 560);
 
@@ -377,6 +378,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 			vVals.addElement("CE");
 			vLabs.addElement("Cancelamento");
 			vVals.addElement("CC");
+			vLabs.addElement("Requisição de material");
+			vVals.addElement("RM");
 		} else if (ES.equals("I")) {
 			vLabs.addElement("Inventário");
 			vVals.addElement("IV");

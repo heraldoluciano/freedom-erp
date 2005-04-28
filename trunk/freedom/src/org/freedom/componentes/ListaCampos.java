@@ -1102,7 +1102,7 @@ public class ListaCampos extends Container implements PostListener,
 			comp = getComponent(i);
 			GuardaCampo gcCampo = ((GuardaCampo) comp);
 			sCampo = gcCampo.getNomeCampo();
-			if (!gcCampo.getSoLeitura()) {
+			if (!gcCampo.getSoLeitura()) { 
 				if (!((GuardaCampo) comp).ehPK()) {
 					sSQLUpdate += sSepU + sCampo + "=?";
 					sSepU = ",";

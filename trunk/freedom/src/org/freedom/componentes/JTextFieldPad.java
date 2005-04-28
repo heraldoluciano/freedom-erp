@@ -124,6 +124,18 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
       bAtivo = true;
     }
   }
+  public void setNaoEditavel(boolean b) {
+//    bSoLeitura = b;
+    if (b) {
+      setEditable(false);
+      bAtivo = false;
+    }
+    else {
+      setEditable(true);
+      bAtivo = true;
+    }
+  }
+
   public boolean isFocusable() {
     return (bAtivo);
   }
