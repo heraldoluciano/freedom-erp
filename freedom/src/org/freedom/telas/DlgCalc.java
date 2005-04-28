@@ -40,7 +40,7 @@ import javax.swing.SwingConstants;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
-public class Calc extends FFilho implements KeyListener, ActionListener {
+public class DlgCalc extends FFDialogo implements KeyListener, ActionListener {
 	
 	GridBagConstraints gbConst = new GridBagConstraints();        
 	GridBagLayout gbCalc = new GridBagLayout();
@@ -73,6 +73,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 	JButton btPot = new JButton("x^x");
 	JButton btAlt = new JButton("+/-");
 	JButton btBac = new JButton("Back");
+	JButton btSair = new JButton("Sair");
 	JLabelPad lbMemo = new JLabelPad(" "); 
 	JPanelPad pnTeclas = new JPanelPad(JPanelPad.TP_JPANEL);
 	JPanelPad pnTeclas1 = new JPanelPad(JPanelPad.TP_JPANEL);
@@ -104,8 +105,10 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 	boolean Ctrl = false;
 	boolean Esc = false;
 	int esp = 32;
-	public Calc() {
+	public DlgCalc() {
 		super();
+		pnBordRodape.setVisible(false);
+		pnBotoes.setVisible(false);
 		Container c = getContentPane();
 		txaCalc.setEnabled(false);
 		txtRes.setEnabled(false);
@@ -139,10 +142,12 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 
 		pnTeclas.setLayout(new GridLayout(7,1));
 		pnTeclas1.setLayout(glTeclas);
-		pnTeclas1.add(lbMemo);
+//		pnTeclas1.add(lbMemo);
 		btBac.addActionListener(this);
+		btSair.addActionListener(this);
 		btBac.addKeyListener(this);
-		pnTeclas1.add(btBac);
+		pnTeclas1.add(btSair);
+		pnTeclas1.add(btBac);		
 		btAlt.addActionListener(this);
 		btAlt.addKeyListener(this);
 		pnTeclas1.add(btAlt);
@@ -273,6 +278,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		if(kevt.getKeyCode() == KeyEvent.VK_CONTROL) Ctrl = true;  	
 		if(kevt.getKeyCode() == KeyEvent.VK_ESCAPE) btC.doClick();
 		if(kevt.getKeyCode() == KeyEvent.VK_BACK_SPACE) btBac.doClick();  	
+		
 		else if (kevt.getKeyCode() == KeyEvent.VK_ENTER) btIgual.doClick();  	
 		if (Ctrl) {
 			if ((kevt.getKeyCode() == KeyEvent.VK_PLUS) || (kevt.getKeyCode() == 107)) 
@@ -339,6 +345,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 		dg = lb;
 		if (num == "0.0") num = "";
 		if (dg == "1") num += 1;
+		else if (dg == "Sair") cancel();
 		else if (dg == "2") num += 2;
 		else if (dg == "3") num += 3;
 		else if (dg == "4") num += 4;

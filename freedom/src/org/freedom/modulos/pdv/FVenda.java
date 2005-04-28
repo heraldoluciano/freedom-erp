@@ -73,7 +73,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.Calc;
+import org.freedom.telas.DlgCalc;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
@@ -1129,9 +1129,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		else if (evt.getSource() == btF6)
 			abreGaveta();
 		else if (evt.getSource() == btF7) {
-			Calc calc = new Calc();
-			Aplicativo.telaPrincipal.dpArea.add("Calc", calc);
-			calc.show();
+			DlgCalc calc = new DlgCalc();
+			Aplicativo.telaPrincipal.criatela("Calc", calc, con);
+			calc.setTelaPrim(Aplicativo.telaPrincipal);			
 		}
 		else if (evt.getSource() == btF8)
 			repeteItem();

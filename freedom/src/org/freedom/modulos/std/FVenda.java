@@ -2348,9 +2348,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if (rs.getString(1).trim().equals("N")) {
 					bRetorno = false;
 				}
-			} else {
-				Funcoes.mensagemErro(this,
-						"Não foi possível checar os pagamentos do cliente!");
+			} 
+			else {
+				Funcoes.mensagemErro(this,"Não foi possível checar os pagamentos do cliente!");
 			}
 			//      rs.close();
 			//      ps.close();
