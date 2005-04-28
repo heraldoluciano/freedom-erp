@@ -360,7 +360,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtUFEnt, 336, 60, 36, 20, "UFEnt", "UF", ListaCampos.DB_SI, false);
   	adicCampo(txtDDDFoneEnt, 7, 100, 40, 20, "DDDFoneEnt", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtFoneEnt, 50, 100, 138, 20, "FoneEnt", "Telefone", ListaCampos.DB_SI, false);
-  	txtFoneEnt.setMascara(JTextFieldPad.MC_FONEDDD);
+  	txtFoneEnt.setMascara(JTextFieldPad.MC_FONE);
   	adicCampo(txtDDDFaxEnt, 192, 100, 40, 20, "DDDFaxEnt", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtFaxEnt, 235, 100, 138, 20, "FaxEnt", "Fax", ListaCampos.DB_SI, false);
   	txtFaxEnt.setMascara(JTextFieldPad.MC_FONE);
@@ -384,7 +384,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtUFCob, 336, 60, 36, 20, "UFCob", "UF", ListaCampos.DB_SI, false);
   	adicCampo(txtDDDFoneCob, 7, 100, 40, 20, "DDDFoneCob", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtFoneCob, 50, 100, 138, 20, "FoneCob", "Telefone", ListaCampos.DB_SI, false);
-  	txtFoneCob.setMascara(JTextFieldPad.MC_FONEDDD);
+  	txtFoneCob.setMascara(JTextFieldPad.MC_FONE);
   	adicCampo(txtDDDFaxCob, 192, 100, 40, 20, "DDDFaxCob", "DDD", ListaCampos.DB_SI, false);
   	adicCampo(txtFaxCob, 235, 100, 138, 20, "FaxCob", "Fax", ListaCampos.DB_SI, false);
   	txtFaxCob.setMascara(JTextFieldPad.MC_FONE);
