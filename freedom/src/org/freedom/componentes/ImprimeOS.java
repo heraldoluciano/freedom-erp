@@ -45,6 +45,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JInternalFrame;
 import javax.swing.Timer;
@@ -368,7 +369,13 @@ public class ImprimeOS implements ActionListener {
         sCarac[2] = "" + expandido();
         sCarac[3] = "" + retiraExpandido();
         for (int i = 0; i < 4; i++) {
-            sRetorno = sRetorno.replaceAll(sCarac[i], "");// tiraCarac(sCarac[i],sRetorno);
+        	try {
+               sRetorno = sRetorno.replaceAll(sCarac[i], "");// tiraCarac(sCarac[i],sRetorno);
+               
+        	}
+            catch( PatternSyntaxException e) {
+               
+            }
         }
         sRetorno = tiraCR(sRetorno);
         return sRetorno;
@@ -683,19 +690,30 @@ public class ImprimeOS implements ActionListener {
         int iRetorno = IMP_NONE;
         String sRetorno = "";
 
-        PreparedStatement ps = null;
+        PreparedStatement ps = null; //ALTERAR AQUI
         ResultSet rs = null;
-
-        String sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGESTACAOIMP EI,SGIMPRESSORA I "
-                + "WHERE EI.CODEST="
-                + Aplicativo.iNumEst
-                + " AND EI.IMPPAD='S'"
-                + " AND I.CODIMP=EI.CODIMP AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP"
-                + " AND EI.CODEMP=? AND EI.CODFILIAL=?";
+        String sSQL = null;
+        
+        if (this.sTipoUsoImp == null)
+            this.sTipoUsoImp = "TO";
+        if (sTipoUsoImp.equals("TO")) {
+            sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGIMPRESSORA I, SGESTACAOIMP EI WHERE "
+                    + "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND EI.IMPPAD='S' AND "
+                    + "EI.CODEMPIP=I.CODEMP AND EI.CODFILIALIP=PP.CODFILIAL AND EI.CODIMP=I.CODIMP";
+        } else {
+            sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGIMPRESSORA I, SGESTACAOIMP EI WHERE "
+                    + "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND "
+                    + "EI.TIPOUSOIMP='"
+                    + this.sTipoUsoImp
+                    + "' AND "
+                    + "EI.CODEMPIP=I.CODEMP AND EI.CODFILIALIP=I.CODFILIAL AND EI.CODIMP=I.CODIMP";
+        }
+        
         try {
             ps = con.prepareStatement(sSQL);
-            ps.setInt(1, Aplicativo.iCodEmp);
-            ps.setInt(2, ListaCampos.getMasterFilial("SGESTACAOIMP"));
+            ps.setInt(1, Aplicativo.iNumEst);
+            ps.setInt(2, Aplicativo.iCodEmp);
+            ps.setInt(3, ListaCampos.getMasterFilial("SGESTACAOIMP"));
             rs = ps.executeQuery();
             if (rs.next()) {
                 sImpressora = rs.getString(1);
