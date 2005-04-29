@@ -609,12 +609,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						}
 						if (imp.pRow() == 0) {
 							imp.montaCab();
-							
+							imp.impCab(136, true); // mexi aqui também
+							imp.say(imp.pRow() + 0, 0, "+"
+									+ Funcoes.replicate("-", 133) + "+");
 							iCol = 0;
 							iPosCol = 0;
 						}
 
-						imp.impCab(136, true);
+						//imp.impCab(136, true); mexi aqui
 
 						if (!sCodSetor.equals(vItem.elementAt(POS_CODSETOR)
 								.toString())) {
@@ -697,18 +699,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 					if (iCol == 0) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"
-								+ vItem.elementAt(POS_MES).toString());
-						imp.say(imp.pRow() + 0, 9,
-								"| "
-										+ (vItem.elementAt(POS_SIGLAGRUP)
-												.equals("") ? Funcoes.copy(
-												vItem.elementAt(POS_CODGRUP)
-														.toString(), 10)
-												: vItem
-														.elementAt(
-																POS_SIGLAGRUP)
-														.toString()));
+						imp.say(imp.pRow() + 0, 0, "|" + vItem.elementAt(POS_MES).toString());
+						imp.say(imp.pRow() + 0, 9, "| "	+ (vItem.elementAt(POS_SIGLAGRUP).equals("") ? 
+								Funcoes.copy(vItem.elementAt(POS_CODGRUP).toString(), 10): 
+									vItem.elementAt(POS_SIGLAGRUP).toString()));
 					}
 
 					iColAnt = iCol;
@@ -1602,7 +1596,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				iColunas = vTotSetor.size() % NUM_COLUNAS;
 				if (iColunas == 0)
 					iColunas = NUM_COLUNAS;
-			}
+			} 
 			for (int i = 0; i < iColunas; i++) {
 				deTemp = (Double) vTotSetor.elementAt(i
 						+ (iPassada * NUM_COLUNAS));
@@ -1621,7 +1615,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "|"
 					+ ((iTotPassadas - 1) == iPassada ? Funcoes
 							.strDecimalToStrCurrency(11, 2, deTotal + "")
-							: Funcoes.replicate(" ", 11));
+							: Funcoes.replicate(" ", 11)); 
 		} finally {
 			vTotSetor = null;
 			deTemp = null;
