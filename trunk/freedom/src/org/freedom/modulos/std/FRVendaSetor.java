@@ -71,8 +71,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	private final int NUM_COLUNAS = 9;
 
-	private Connection con;
-
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
 			10, 0);
 
