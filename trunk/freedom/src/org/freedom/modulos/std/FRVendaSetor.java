@@ -574,6 +574,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sCodGrup = "";
 				vCols = new Vector();
 
+				imp.montaCab();
+
 				for (int i = 0; i < vItens.size(); i++) {
 					vItem = (Vector) vItens.elementAt(i);
 
@@ -608,7 +610,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 							}
 						}
 						if (imp.pRow() == 0) {
-							imp.montaCab();
 							imp.impCab(136, true); // mexi aqui também
 							imp.say(imp.pRow() + 0, 0, "+"
 									+ Funcoes.replicate("-", 133) + "+");
@@ -1018,6 +1019,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				imp.limpaPags();
 
+				imp.montaCab();
+				
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -1028,36 +1031,21 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 					}
 					if (imp.pRow() == 0) {
-						imp.impCab(136, false);
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "| Emitido em :"
-								+ Funcoes.dateToStrDate(new Date()));
-						imp.say(imp.pRow() + 0, 120, "Pagina : "
-								+ (imp.getNumPags()));
-						imp.say(imp.pRow() + 0, 136, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "|");
-						imp.say(imp.pRow() + 0, 55,
-								"VENDAS POR SETOR X PRODUTO");
-						imp.say(imp.pRow() + 0, 136, "|");
+						imp.impCab(136, true);
 						if (!sFiltros1.equals("")) {
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
 							imp.say(imp.pRow() + 0,
 									68 - (sFiltros1.length() / 2), sFiltros1);
 							imp.say(imp.pRow() + 0, 136, "|");
+							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
 						if (!sFiltros2.equals("")) {
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
 							imp.say(imp.pRow() + 0,
 									68 - (sFiltros2.length() / 2), sFiltros2);
 							imp.say(imp.pRow() + 0, 136, "|");
+							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "|");
 						imp.say(imp.pRow() + 0, 50, "PERIODO DE: "
 								+ txtDataini.getVlrString() + " ATE: "
@@ -1340,6 +1328,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				imp.limpaPags();
 
+				imp.montaCab();
+				
 				while (rs.next()) {
 					sCodTipoCli = rs.getString(1);
 					sDescTipoCli = rs.getString(2);
@@ -1351,36 +1341,21 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.eject();
 					}
 					if (imp.pRow() == 0) {
-						imp.impCab(136, false);
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "| Emitido em :"
-								+ Funcoes.dateToStrDate(new Date()));
-						imp.say(imp.pRow() + 0, 120, "Pagina : "
-								+ (imp.getNumPags()));
-						imp.say(imp.pRow() + 0, 136, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "|");
-						imp.say(imp.pRow() + 0, 55,
-								"VENDAS POR SETOR X CLIENTE");
-						imp.say(imp.pRow() + 0, 136, "|");
+						imp.impCab(136, true);
 						if (!sFiltros1.equals("")) {
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
 							imp.say(imp.pRow() + 0,
 									68 - (sFiltros1.length() / 2), sFiltros1);
 							imp.say(imp.pRow() + 0, 136, "|");
+							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
 						if (!sFiltros2.equals("")) {
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
 							imp.say(imp.pRow() + 0,
 									68 - (sFiltros2.length() / 2), sFiltros2);
 							imp.say(imp.pRow() + 0, 136, "|");
+							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "|");
 						imp.say(imp.pRow() + 0, 40, "PERIODO DE: "
 								+ txtDataini.getVlrString() + " ATE: "
