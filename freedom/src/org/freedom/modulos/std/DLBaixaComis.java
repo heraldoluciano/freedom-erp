@@ -181,6 +181,7 @@ public class DLBaixaComis extends FFDialogo {
     }
   }
   public void setConexao(Connection cn) {
+  	super.setConexao(cn);
     lcConta.setConexao(cn);
     lcPlan.setConexao(cn);
   }
