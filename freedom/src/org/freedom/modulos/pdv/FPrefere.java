@@ -22,20 +22,14 @@
 
 
 package org.freedom.modulos.pdv;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 
-import javax.swing.JButton;
-
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.comutacao.Tef;
-import org.freedom.telas.Aplicativo;
-import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
 
 public class FPrefere extends FTabDados implements ActionListener {
@@ -49,13 +43,9 @@ public class FPrefere extends FTabDados implements ActionListener {
 	private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
 	private ListaCampos lcCliente = new ListaCampos(this,"CL");
-	private JButton btTef = new JButton("Funções ADM do Tef...");
-  	Tef tef = null;
 	public FPrefere() {
 		setTitulo("Preferências do PDV");
 		setAtribos(50, 50, 355, 375);
-		
-		btTef.setEnabled(false);
 		
 		lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_PK,true));
 		lcTipoMov.add(new GuardaCampo(txtDescTipoMov,"DescTipoMov","Descrição do tipo de movimento",ListaCampos.DB_SI,false));
@@ -89,26 +79,8 @@ public class FPrefere extends FTabDados implements ActionListener {
 		adicDescFK(txtRazCli,90,110,230,20,"RazCli","Razão do cliente padrão");
 		setListaCampos(false, "PREFERE4", "SG");
 
-		adic(btTef,10,150,200,30);
-
-		if (AplicativoPDV.bTEFTerm) {
-		    tef = new Tef(Aplicativo.strTefEnv,Aplicativo.strTefRet);
-		    btTef.setEnabled(true);
-		}
-		
-		btTef.addActionListener(this);
-
 		nav.setAtivo(0,false);
 		nav.setAtivo(1,false);
-	}
-	public void actionPerformed(ActionEvent evt) {
-	    if (evt.getSource() == btTef) {
-	        DLAdmTef dl = new DLAdmTef(tef,this);
-	        dl.setConexao(con);
-	        dl.setVisible(true);
-	        dl.dispose();
-	    }
-	    super.actionPerformed(evt);
 	}
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
