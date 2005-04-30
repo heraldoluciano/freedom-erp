@@ -365,9 +365,15 @@ public class Tef {
         int iConta;
         if (!verifTef())
             return null;
-        bRet = enviaArquivo(new String[] { (TEF_HEADER + " = " + "ADM"),
-                (TEF_TIPO_TRANSACAO + " = " + sTipoTrans) });
-        if (!bRet || !existeStatus("ADM", 0) || !existeRetorno("ADM", 0))
+
+        //Pega uma identificação e já deixa outra disponível;
+        long lIdent = this.lIdentUniq++;
+        
+       	bRet = enviaArquivo(new String[] { (TEF_HEADER + " = " + "ADM"),
+       									   (TEF_IDENTIFICACAO + " = " + lIdent),
+               						       (TEF_TIPO_TRANSACAO + " = " + sTipoTrans) });
+        	
+        if (!bRet || !existeStatus("ADM", lIdent) || !existeRetorno("ADM", lIdent))
             return null;
 
         return leRetorno();
