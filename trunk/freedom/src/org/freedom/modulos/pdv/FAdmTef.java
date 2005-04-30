@@ -29,7 +29,7 @@ package org.freedom.modulos.pdv;
  *  
  */
 
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
@@ -40,28 +40,24 @@ import javax.swing.JButton;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JComboBoxPad;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FFDialogo;
+import org.freedom.telas.FFilho;
 
-public class DLAdmTef extends FFDialogo implements ActionListener {
+public class FAdmTef extends FFilho implements ActionListener {
     JComboBoxPad cbComando = null;
 
     JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
-
+    JPanelPad pn = new JPanelPad();
     private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
-
-    Tef tef;
-    
+	Tef tef = AplicativoPDV.bTEFTerm ? new Tef(Aplicativo.strTefEnv,Aplicativo.strTefRet) : null;
     Properties retTef = null;
-
-    public DLAdmTef(Tef tef, Component cPai) {
-        super(cPai);
-        this.tef = tef;
-
+    public FAdmTef() {
         Vector vLabs = new Vector();
         Vector vVals = new Vector();
         vLabs.addElement("Administrativas - Outras");
@@ -72,14 +68,20 @@ public class DLAdmTef extends FFDialogo implements ActionListener {
                 0);
 
         setTitulo("Administração TEF");
-        setAtribos(350, 150);
+        setAtribos(100,100,350, 150);
 
-        adic(new JLabelPad("Comando a ser disparado:"), 10, 10, 250, 15);
-        adic(cbComando, 10, 25, 250, 20);
-        adic(btExec, 270, 15, 30, 30);
+        pn.adic(new JLabelPad("Comando a ser disparado:"), 10, 10, 250, 15);
+        pn.adic(cbComando, 10, 25, 250, 20);
+        pn.adic(btExec, 270, 15, 30, 30);
+        
+        getTela().add(pn,BorderLayout.CENTER);
+        adicBotaoSair();
 
         btExec.addActionListener(this);
-
+        if (tef == null) {
+        	Funcoes.mensagemErro(null,"Este terminal não esta capacitado para TEF.");
+            dispose();
+        }
     }
 
     private boolean processaTef() {
@@ -122,13 +124,11 @@ public class DLAdmTef extends FFDialogo implements ActionListener {
         return bRet;
 
     }
-    
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == btExec)
             if (processaTef()) {
                 finalizaTEF(retTef);
             }
-        super.actionPerformed(evt);
     }
 }
 
