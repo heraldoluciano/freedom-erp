@@ -201,10 +201,12 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
             iFilialPadrao = rs.getInt(1);  
       }
       
-      if(bGera) {
+      if(bGera) {      	
       	conLogin.commit();
+      	conLogin.setAutoCommit(true);
       	adicConFilial();      
-      	return (montaCombo(sUsu,sSenha));
+      	conLogin.setAutoCommit(false);
+//      	return (montaCombo(sUsu,sSenha));
       	
       }      
       
@@ -277,7 +279,7 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   		ps.setInt(1,Aplicativo.iCodEmp);
   		ps.setInt(2,iFilialPadrao);
   		ps.setString(3,txtUsuario.getVlrString().trim().toLowerCase());
-		ps.setInt(4,cbEmp.getVlrInteger().intValue());
+		ps.setInt(4,Aplicativo.iCodEmp);
 		ps.setInt(5,iCodEst);
 		ps.execute();
 		ps.close();
