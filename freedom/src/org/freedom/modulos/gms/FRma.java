@@ -143,7 +143,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
 
-		lcProd.setWhereAdic("ATIVOPROD='S'");
+		lcProd.setWhereAdic("ATIVOPROD='S' AND TIPOPROD='C'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
@@ -155,7 +155,7 @@ public class FRma extends FDetalhe implements PostListener,
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		lcProd2.setWhereAdic("ATIVOPROD='S'");
+		lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD='C'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
