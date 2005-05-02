@@ -421,12 +421,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("CA")) {
 				btStatusItem.setText("Item Cancelado");
 			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("SC")) {
-				if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT"))
-					btStatusItem.setText("Aprovado Totalmente");
-				else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP"))
-					btStatusItem.setText("Aprovado Parcialmente");
-				else
-					btStatusItem.setText("Item Concluído");
+				btStatusItem.setText("Item Concluído");
 			}
 		} else if (cevt.getListaCampos() == lcCotacao) {
 			lcCotacao.setReadOnly(!blockItems);
@@ -441,10 +436,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				btStatusItem.setText("Compra Total");
 			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP")) {
 				btStatusItem.setText("Compra Parcial");
+			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")) {
+				btStatusItem.setText("Aprovado Totalmente");
+			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")) {
+				btStatusItem.setText("Aprovado Parcialmente");
+			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("NA")) {
+				btStatusItem.setText("Não Aprovado");
 			} else {
 				btStatusItem.setText("Cotação Concluída");
 			}
-
 		}
 	}
 
@@ -650,7 +650,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		super.keyReleased(kevt);
 	}
 
-	public void beforePost(PostEvent pevt) {}
+	public void beforePost(PostEvent pevt) {
+		if (lcCotacao.getStatus() == ListaCampos.LCS_INSERT) {
+			txtSituaçãoItComp.setVlrString("PE");
+			txtSituaçãoItAprov.setVlrString("PE");
+		}
+	}
 
 	public void beforeInsert(InsertEvent ievt) {}
 

@@ -314,7 +314,7 @@ public class FFDialogo extends JDialog implements ActionListener,
 
     
     public void execShow() {
-        show();
+        setVisible(true);
     }
 
     public boolean getInitFirstFocus() {
