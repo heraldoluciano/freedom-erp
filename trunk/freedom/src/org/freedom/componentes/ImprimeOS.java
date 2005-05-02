@@ -63,7 +63,6 @@ import com.lowagie.text.pdf.PdfWriter;
 
 public class ImprimeOS implements ActionListener {
     public static final int IMP_NONE = -1;
-
     public static final int IMP_MATRICIAL = 1;
 
     public static final int IMP_DESKJET = 2;
@@ -369,10 +368,10 @@ public class ImprimeOS implements ActionListener {
         sCarac[2] = "" + expandido();
         sCarac[3] = "" + retiraExpandido();
         for (int i = 0; i < 4; i++) {
-        	try {
-               sRetorno = sRetorno.replaceAll(sCarac[i], "");// tiraCarac(sCarac[i],sRetorno);
-               
-        	}
+        	try {       		              
+                sRetorno = Funcoes.tiraString(sRetorno,sCarac[i]);  
+                sRetorno = Funcoes.tiraAcentos(sRetorno);                
+        	} 
             catch( PatternSyntaxException e) {
                
             }
@@ -388,13 +387,6 @@ public class ImprimeOS implements ActionListener {
         return sTexto;
     }
 
-    /*
-     * public String tiraCarac(String sParc, String sTexto) { String sRetorno =
-     * sTexto; int iPos = 0; while (iPos>-1) { iPos = sRetorno.indexOf(sParc);
-     * if (iPos>-1) { sRetorno =
-     * sRetorno.substring(0,iPos)+sRetorno.substring(iPos+sParc.length(),sRetorno.length()); } }
-     * return sRetorno; }
-     */
     public int getPagAtual() {
         return iPagAtual;
     }
