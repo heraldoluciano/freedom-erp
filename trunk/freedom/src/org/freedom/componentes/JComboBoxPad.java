@@ -82,7 +82,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     for (int i=0; i<label.size(); i++) {
       addItem(label.elementAt(i));
     }
-    addItem("");
+    //addItem("");
     criando = false;
   }
   public void setAtivo(boolean bVal) {

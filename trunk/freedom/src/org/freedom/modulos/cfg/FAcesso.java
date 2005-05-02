@@ -393,10 +393,10 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   private void montaCombo () {
   	try {
 	  String sSQL = "SELECT FL.CODFILIAL,FL.NOMEFILIAL FROM SGFILIAL FL, SGACESSOEU AC WHERE "+
-				    "FL.CODEMP = ? AND UPPER(AC.IDUSU) = ? AND FL.CODEMP = AC.CODEMPFL AND FL.CODFILIAL = AC.CODFILIALFL";
+				    "FL.CODEMP = ? AND LOWER(AC.IDUSU) = ? AND FL.CODEMP = AC.CODEMPFL AND FL.CODFILIAL = AC.CODFILIALFL";
 	  PreparedStatement ps = con.prepareStatement(sSQL);
 	  ps.setInt(1,Aplicativo.iCodEmp);
-	  ps.setString(2,txtCodUsu.getVlrString().toUpperCase());
+	  ps.setString(2,txtCodUsu.getVlrString().toLowerCase());
 	  ResultSet rs = ps.executeQuery();
 	  vVals.clear();
 	  vLabs.clear();
