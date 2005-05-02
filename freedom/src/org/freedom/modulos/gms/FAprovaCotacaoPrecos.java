@@ -39,7 +39,10 @@ import java.sql.SQLException;
 import java.util.Date;
 
 //import javax.swing.ImageIcon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
@@ -66,27 +69,37 @@ import org.freedom.telas.FDetalhe;
 
 public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
-	
+
 	private int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();
-//	private ImageIcon imgOk = Icone.novo("btOk.gif");
-//	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
+	private ImageIcon imgOk = Icone.novo("btOk.gif");
+	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
 	private JButton btStatusSol = new JButton("Solicitação Pendente", null);
-	private JButton btCancelaCompra = new JButton("Solicitação Pendente", null);
+	private JButton btStatusCompra = new JButton("Solicitação Pendente", null);
 	private JButton btStatusItem = new JButton("Item Pendente", null);
-	private JButton btAprovaCompra = new JButton("Cotação Pendente", null);
+	private JButton btAprovaCompra = new JButton("Aprova Cotação", null);
+	private JButton btCancelaCompra = new JButton("Cancela Cotação", null);
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldPad txtDtAptovItSol = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
-	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
+	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(
+			JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtDtAptovItSol = new JTextFieldPad(
+			JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad(
+			JTextFieldPad.TP_NUMERIC, 15, 3);
+	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(
+			JTextFieldPad.TP_NUMERIC, 15, 3);
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,
@@ -97,10 +110,12 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 			13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			19, 0);
-	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,
+			50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			10, 0);
-	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(
@@ -129,7 +144,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtRefProd2 = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);
-	
+
 	private Tabela tabCot = new Tabela();
 	private JScrollPane spTabCot = new JScrollPane(tabCot);
 	private Navegador navCot = new Navegador(true);
@@ -141,7 +156,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcFor = new ListaCampos(this, "FR");
 	private ListaCampos lcCotacao = new ListaCampos(this, "");
-	
+
 	String sOrdNota = "";
 	Integer anoCC = null;
 	String codCC = null;
@@ -285,7 +300,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		lcDet.addCarregaListener(this);
 		lcDet.addInsertListener(this);
 		lcCampos.addInsertListener(this);
-		btCancelaCompra.addActionListener(this);
+		btStatusCompra.addActionListener(this);
 		btStatusItem.addActionListener(this);
 
 		btImp.addActionListener(this);
@@ -371,8 +386,14 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		setListaCampos(lcCotacao);
 		setNavegador(navCot);
 
+		lcCotacao.setPodeExc(false);
+		lcCotacao.setPodeIns(false);
+
 		txtQtdAprovCot.setSoLeitura(true);
 		txtDtCot.setSoLeitura(true);
+		txtCodFor.setSoLeitura(true);
+		txtQtdCot.setSoLeitura(true);
+		txtPrecoCot.setSoLeitura(true);
 
 		adicCampo(txtCodCot, 7, 210, 77, 20, "CodCot", "Cód.Cot.",
 				ListaCampos.DB_PK, true);
@@ -396,8 +417,10 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		adicCampo(txtPrecoCot, 647, 210, 87, 20, "PrecoCot", "Preco.Cot.",
 				ListaCampos.DB_SI, false);
 
-		adic(btAprovaCompra, 500, 235, 233, 30);
+		adic(btAprovaCompra, 330, 235, 200, 30);
 		btAprovaCompra.setEnabled(false);
+		adic(btCancelaCompra, 533, 235, 200, 30);
+		btCancelaCompra.setEnabled(false);
 
 		lcCotacao.montaSql(true, "COTACAO", "CP");
 		lcCotacao.montaTab();
@@ -482,18 +505,71 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		} else if (cevt.getListaCampos() == lcCotacao) {
 			lcCotacao.setReadOnly(!blockItems);
 
-			if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("PE")) {
+			if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("PE")) {
 				if (allow || allowItems) {
-					btStatusItem.setText("Cotação Pendente");
+					btAprovaCompra.setEnabled(true);
+					btAprovaCompra.setIcon(imgOk);
+					btAprovaCompra.setText("Aprovar");
+					btAprovaCompra.setSize(125, 30);
+					btCancelaCompra.setEnabled(true);
+					btCancelaCompra.setVisible(true);
+				} else {
+					btCancelaCompra.setEnabled(false);
+					btCancelaCompra.setVisible(false);
+					btAprovaCompra.setSize(253, 30);
+					btAprovaCompra.setEnabled(false);
+					btAprovaCompra.setIcon(null);
+					btAprovaCompra.setText("Cotação Pendente");
 				}
 			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CC")) {
-				btStatusItem.setText("Cotação Cancelada");
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Cotação Cancelada");
 			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CT")) {
-				btStatusItem.setText("Compra Total");
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Compra Total");
 			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP")) {
-				btStatusItem.setText("Compra Parcial");
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Compra Parcial");
+			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")) {
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Aprovação Parcial");
+			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")) {
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Aprovação Total");
+			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("NA")) {
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Não Aprovada");
 			} else {
-				btStatusItem.setText("Cotação Concluída");
+				btCancelaCompra.setEnabled(false);
+				btCancelaCompra.setVisible(false);
+				btAprovaCompra.setSize(253, 30);
+				btAprovaCompra.setEnabled(false);
+				btAprovaCompra.setIcon(null);
+				btAprovaCompra.setText("Cotação Concluída");
 			}
 
 		}
@@ -521,13 +597,13 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)
 			imprimir(false, txtCodSolicitacao.getVlrInteger().intValue());
-		else if (evt.getSource() == btCancelaCompra) {
+		else if (evt.getSource() == btStatusCompra) {
 			if (lcCampos.getStatus() != ListaCampos.LCS_EDIT)
 				lcCampos.edit();
 			txtStatusSolicitacao.setVlrString("CA");
-			btCancelaCompra.setEnabled(false);
-			btCancelaCompra.setIcon(null);
-			btCancelaCompra.setText("Solicitação Cancelada");
+			btStatusCompra.setEnabled(false);
+			btStatusCompra.setIcon(null);
+			btStatusCompra.setText("Solicitação Cancelada");
 
 		} else if (evt.getSource() == btStatusItem) {
 			if (lcDet.getStatus() != ListaCampos.LCS_EDIT)
@@ -554,8 +630,8 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 				btStatusItem.setText("Solicitação Cancelada");
 			}
 			txtDtAptovItSol.setVlrDate(new Date());
-		} 
-		
+		}
+
 		super.actionPerformed(evt);
 	}
 
@@ -733,9 +809,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 		super.keyReleased(kevt);
 	}
 
-	public void beforePost(PostEvent pevt) {
-		if (pevt.getListaCampos() == lcDet) {}
-	}
+	public void beforePost(PostEvent pevt) {}
 
 	public void beforeInsert(InsertEvent ievt) {}
 
