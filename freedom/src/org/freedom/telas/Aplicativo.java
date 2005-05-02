@@ -586,6 +586,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			Funcoes.mensagemInforma(telaPrincipal,
 					"Não foi possível atualizar a base de menus!\n" + err + 
 					"\n" +this.iCodSis+","+this.sDescSis+"\n"+this.iCodModu+","+this.sDescModu+"\n"+
+					"acao: "+sAcaoMenu+"\n"+
+					"nome:" +sNomeMenu+"\n"+
 					iCodMenu+","+men.getText()+"\n"+","+menPai.getCodMenu());
 		}
 		finally {
