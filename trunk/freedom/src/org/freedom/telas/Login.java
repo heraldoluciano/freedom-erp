@@ -192,12 +192,22 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
       ResultSet rs = ps.executeQuery();
       vVals.clear();
       vLabs.clear();
+      boolean bGera = true;
       while (rs.next()) {
+      	 bGera = false;
       	 vVals.addElement(new Integer(rs.getInt(1)));
       	 vLabs.addElement(rs.getString("NOMEFILIAL") != null ? rs.getString("NOMEFILIAL") : "");
       	 if ( rs.getInt(1)==rs.getInt(3) ) 
             iFilialPadrao = rs.getInt(1);  
       }
+      
+      if(bGera) {
+      	conLogin.commit();
+      	adicConFilial();      
+      	return (montaCombo(sUsu,sSenha));
+      	
+      }      
+      
       if (!conLogin.getAutoCommit())
       	conLogin.commit();
       cbEmp.setItens(vLabs,vVals);
@@ -216,11 +226,11 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
       if (rs.next() ) {
       	 iFilialMz = rs.getInt("CODFILIAL");
       }
+
       rs.close();
       ps.close();
       if (!conLogin.getAutoCommit())
       	conLogin.commit();
-      
       
     }
     catch(SQLException err) {
@@ -315,9 +325,9 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
            cbEmp.requestFocus();
            return;
         }
-        if (!adicConFilial()) {
-        	return;
-        }
+//        if (!adicConFilial()) {
+//      	return;
+//      }
      }
      super.actionPerformed(evt);
   }
