@@ -428,7 +428,7 @@ public class Funcoes {
 		}
 		return sResult;
 	}
-
+	
 	public static int contaMeses(Date dDataIni, Date dDataFim) {
 		int iMeses = 0;
 		GregorianCalendar cIni = new GregorianCalendar();
@@ -898,8 +898,20 @@ public class Funcoes {
 				sRetorno = sVal.substring(0, iPos);
 		}
 		return sRetorno;
-	}
-
+	} 
+ 
+    public static String tiraString(String sTexto,String sParc) {
+    	String sRetorno =   sTexto; 
+    	int iPos = 0; 
+    	while (iPos>-1) {
+    		iPos = sRetorno.indexOf(sParc);
+    		if (iPos>-1) {
+    			sRetorno = sRetorno.substring(0,iPos)+sRetorno.substring(iPos+sParc.length(),sRetorno.length()); 
+    		} 
+    	}
+      return sRetorno; 
+    }
+    
 	public static String verData(String sData) {
 		if (sData.length() < 10) {
 			return "";
