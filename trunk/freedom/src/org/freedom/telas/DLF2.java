@@ -53,7 +53,6 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
   private JLabelPad lbPesq = new JLabelPad("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JPanelPad pnBordCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-  private JPanelPad pinBt = new JPanelPad(30,30);
   private JPanelPad pinCab = new JPanelPad();
   private DefaultTableCellRenderer cabAnt = new DefaultTableCellRenderer();
   private DefaultTableCellRenderer cab = new DefaultTableCellRenderer();

@@ -74,7 +74,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();
 	private ImageIcon imgOk = Icone.novo("btOk.gif");
-	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
+//	private ImageIcon imgCancel = Icone.novo("btExcluir.gif");
 	private JButton btStatusSol = new JButton("Solicitação Pendente", null);
 	private JButton btStatusCompra = new JButton("Solicitação Pendente", null);
 	private JButton btStatusItem = new JButton("Item Pendente", null);
