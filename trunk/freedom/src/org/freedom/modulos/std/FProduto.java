@@ -1382,6 +1382,11 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		} else if (ievt.getListaCampos() == lcCampos) {
 			carregaMoeda();
 			cbAtivo.setVlrString("S");
+			txtRefProd.setVlrString(txtCodProd.getVlrString());
+			txtCodBarProd.setVlrString(txtCodProd.getVlrString());
+			txtCodFabProd.setVlrString(txtCodProd.getVlrString());
+			txtPesoBrutProd.setVlrDouble(new Double(0.0));
+			txtPesoLiqProd.setVlrDouble(new Double(0.0));
 		}
 	}
 
