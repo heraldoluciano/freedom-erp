@@ -126,7 +126,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
     btSalva.addActionListener(this);
   }
   public void montaArvore() {
-  	if (cbFiliais.getVlrInteger().intValue() == 0)
+  	if ( (cbFiliais.getVlrInteger()==null) || (cbFiliais.getVlrInteger().intValue() == 0) )
   	  return;
     DefaultMutableTreeNode men = new DefaultMutableTreeNode("Acesso aos menus");
 
@@ -147,6 +147,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
    	                "SIS.DESCSIS,MN.CODMODU,MO.DESCMODU,CODMENU,DESCMENU,CODSISPAI,"+
    	                "CODMODUPAI,CODMENUPAI FROM SGMENU MN,SGSISTEMA SIS,SGMODULO MO "+
    	                "WHERE SIS.CODSIS=MN.CODSIS AND MO.CODSIS=MN.CODSIS AND "+
+					"MN.CODMENU!=0 AND "+
    	                "MO.CODMODU = MN.CODMODU ORDER BY MN.CODSIS,MN.CODMODU,MN.CODMENU";
    	  PreparedStatement ps = con.prepareStatement(sSQL);
    	  ps.setInt(1,Aplicativo.iCodEmp);
