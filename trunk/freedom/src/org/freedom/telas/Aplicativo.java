@@ -554,33 +554,33 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				sNomeMenu = ""+iCodMenu;
 				sAcaoMenu = ""+iCodMenu;
 			}
-			PreparedStatement ps = con
-					.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)");
-			ps.setInt(1, this.iCodSis);
-			ps.setString(2,this.sDescSis);
-			ps.setInt(3, this.iCodModu);
-			ps.setString(4,Funcoes.copy(this.sDescModu, 50));
-			ps.setInt(5, iCodMenu);
-			ps.setString(6, men.getText());
-			ps.setString(7,sNomeMenu);
-			ps.setString(8,sAcaoMenu);
-			
-			if (menPai.getCodMenu() == 0) {
-				ps.setNull(9, java.sql.Types.INTEGER);
-				ps.setNull(10, java.sql.Types.INTEGER);
-				ps.setNull(11, java.sql.Types.INTEGER);
+			if (iCodMenu!=0) {
+				PreparedStatement ps = con
+						.prepareStatement("EXECUTE PROCEDURE SGUPMENUSP01(?,?,?,?,?,?,?,?,?,?,?)");
+				ps.setInt(1, this.iCodSis);
+				ps.setString(2,this.sDescSis);
+				ps.setInt(3, this.iCodModu);
+				ps.setString(4,Funcoes.copy(this.sDescModu, 50));
+				ps.setInt(5, iCodMenu);
+				ps.setString(6, men.getText());
+				ps.setString(7,sNomeMenu);
+				ps.setString(8,sAcaoMenu);
+				
+				if (menPai.getCodMenu() == 0) {
+					ps.setNull(9, java.sql.Types.INTEGER);
+					ps.setNull(10, java.sql.Types.INTEGER);
+					ps.setNull(11, java.sql.Types.INTEGER);
+				}
+				else {
+					ps.setInt(9, menPai.getCodModulo());
+					ps.setInt(10, menPai.getCodModulo());
+					ps.setInt(11, menPai.getCodMenu());
+				}
+				ps.execute();
+				ps.close();
+				if (!con.getAutoCommit())
+					con.commit();
 			}
-			else {
-				ps.setInt(9, menPai.getCodModulo());
-				ps.setInt(10, menPai.getCodModulo());
-				ps.setInt(11, menPai.getCodMenu());
-			}
-
-
-			ps.execute();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
 			bRet = true;
 		} catch (SQLException err) {
 			Funcoes.mensagemInforma(telaPrincipal,
