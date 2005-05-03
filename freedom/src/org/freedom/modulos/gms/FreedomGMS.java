@@ -211,6 +211,15 @@ public class FreedomGMS extends Aplicativo {
 				addOpcao(400700000, TP_OPCAO_ITEM, "Conferência","Conferência de Estoque", 'C', 400706000, 2, true,FRConfEstoq.class);
 				addOpcao(400700000, TP_OPCAO_ITEM, "Inventário PEPS","Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class);
 
+				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
+				addBotao("btEntrada.gif","Compra","Compras", 200600000, FCompra.class);
+				addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);   
+				addBotao("btProduto.gif","Cadastro de produtos","Produtos", 100103090, FProduto.class);
+				addBotao("btEmprestimo.gif","Cadastro de similaridades","Similaridade", 100103080, FSimilar.class);
+				addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 300600000, FOrcamento.class);
+				addBotao("btConsOrcamento.gif", "Pesquisa Orçamento", "Pesquisa Orcamentos", 300700000, FConsOrc.class);
+				addBotao("btAprovaOrc.gif", "Aprovações de Orçamantos", "Aprova Orcamento", 300500000, FAprovaOrc.class);				
+		
 		ajustaMenu();
 		
 		sNomeModulo = "Gestão de Materiais e Serviços";
