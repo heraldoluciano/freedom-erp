@@ -103,6 +103,6 @@ public class FModGrade extends FDetalhe {
     super.setConexao(cn);
     lcProd.setConexao(cn);
     lcVarG.setConexao(cn);
-    txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
+    txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
   }        
 }

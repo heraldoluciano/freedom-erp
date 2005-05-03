@@ -37,9 +37,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -104,6 +102,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 	String sOrdRMA = "";
 	Integer anoCC = null;
+	Integer iCodTpMov = null;
 	String codCC = null;
 
 	boolean[] bPrefs = null;
@@ -208,7 +207,7 @@ public class FRma extends FDetalhe implements PostListener,
 		txtDtaReqRma.setNaoEditavel(true);
 		txtCodCC.setNaoEditavel(true);
 		txtAnoCC.setNaoEditavel(true);
-
+		txtCodTpMov.setNaoEditavel(true);
 		
 		setListaCampos(true, "RMA", "EQ");
 		lcCampos.setQueryInsert(false);
@@ -239,16 +238,15 @@ public class FRma extends FDetalhe implements PostListener,
 		if (comRef()) {
 			adicCampo(txtRefProd,40, 20, 87, 20, "RefProd", "Referência",	ListaCampos.DB_FK,txtDescProd, true);
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
-		  	txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD"));
+		  	txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProd2.getWhereAdic()));
 		  	txtQtdItRma.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd2,con,"qtditrma"));
 		} 
 		else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
 			adicCampoInvisivel(txtRefProd,"RefProd", "Referência",	ListaCampos.DB_SI, false);
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
 			txtQtdItRma.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditrma"));
 		}
-
 		
 		adicDescFK(txtDescProd, 130, 20, 197, 20, "DescProd","Descrição do produto");
 
@@ -514,6 +512,8 @@ public class FRma extends FDetalhe implements PostListener,
 			lcCC.carregaDados();
 			txtIDUsu.setVlrString(Aplicativo.strUsuario);
 			txtDtaReqRma.setVlrDate(new Date());
+			txtCodTpMov.setVlrInteger(iCodTpMov);
+			lcTipoMov.carregaDados();
 		}			
 	}
 
@@ -542,6 +542,31 @@ public class FRma extends FDetalhe implements PostListener,
 		catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage());
 		}
+		
+		if(txtCodTpMov.getVlrString().equals("")){
+			sSQL = "SELECT CODTIPOMOV8 FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			try {
+				PreparedStatement ps = con.prepareStatement(sSQL);
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					if(rs.getString(1)!=null) {				
+						iCodTpMov = new Integer(rs.getInt(1));
+					}
+					else {
+						iCodTpMov = new Integer(0);
+						Funcoes.mensagemInforma(null,"Não existe um tipo de movimento padrão para RMA definido nas preferências!");
+					}
+				}
+				rs.close();
+				ps.close();
+			} 
+			catch (SQLException err) {
+				Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n" + err.getMessage());
+			}
+		}
+		
 		return iRet;
 	}
 

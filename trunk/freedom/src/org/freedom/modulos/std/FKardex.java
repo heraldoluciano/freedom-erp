@@ -341,7 +341,7 @@ public class FKardex extends FRelatorio implements ActionListener {
             lcProd.setConexao(cn);
             lcAlmox.setConexao(cn);
             lcLote.setConexao(cn);
-            txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
+            txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
         }
         public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource() == btExec) {

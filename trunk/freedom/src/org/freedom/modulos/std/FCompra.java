@@ -504,7 +504,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
@@ -514,7 +514,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
 		} else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
 			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
 		}
 		txtCustoItCompra.setSoLeitura(true);

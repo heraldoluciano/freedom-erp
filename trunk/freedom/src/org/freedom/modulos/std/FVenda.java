@@ -843,16 +843,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		if (bPrefs[0]) {
 			                        
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.",
+			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", 
 					ListaCampos.DB_SI, false);
 			adic(new JLabelPad("Ref. prod."), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
 		} else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
 			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, true);
 		}

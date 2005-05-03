@@ -343,11 +343,11 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
       adic(new JLabelPad("Referência"), 40, 0, 67, 20);
       adic(txtRefProd, 40, 20, 67, 20);
       txtRefProd.setFK(true);
-      txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD"));
+      txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProd2.getWhereAdic()));
     }
     else {
       adicCampo(txtCodProd, 40, 20, 67, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd,true);
-      txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
+      txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
     }
     adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd", "Descrição do produto");
     adicCampo(txtQtdItOrc, 340, 20, 47, 20,"QtdItOrc","Qtd.", ListaCampos.DB_SI, true);
