@@ -274,11 +274,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
 					ListaCampos.DB_FK, txtDescProd, false);
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
 		}
 
 		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);

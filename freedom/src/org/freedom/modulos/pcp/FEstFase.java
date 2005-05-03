@@ -133,6 +133,6 @@ public class FEstFase extends FDetalhe {
     lcTipoRec.setConexao(cn);
     txtCodProd.setVlrInteger(new Integer(iCodProd));
     lcCampos.carregaDados();
-    txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
+    txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
    }        
 }

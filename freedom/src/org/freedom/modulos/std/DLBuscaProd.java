@@ -40,11 +40,12 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    private String sSQL = "";
    public int iPadrao = 0;
    boolean bRet = false;
-   public DLBuscaProd(Connection con,String sCol) {
+   String sWhereAdic = "";
+   public DLBuscaProd(Connection con,String sCol,String sWhere) {
 
    	 this.sCol = sCol;
    	 setConexao(con);
-   	 
+   	 sWhereAdic = sWhere;
      setAtribos( 575, 260);
      
    	 tab.adicColuna("Cód.");
@@ -66,13 +67,17 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
    public boolean setValor(Object oVal,String sTipo) { 
      
   	 if (sTipo.equals("similar")) {
+  	 	
+  	 	if((sWhereAdic!=null) && (sWhereAdic.length()>0)){
+  	 		sWhereAdic = "AND "+sWhereAdic;
+  	 	}
    	 	sSQL = "SELECT SIM.CODPROD,PROD.REFPROD,PROD.DESCPROD,PROD.SLDPROD "+
 		  	   "FROM EQPRODUTO PROD,EQITSIMILAR SIM "+
 		          "WHERE  SIM.CODEMP = PROD.CODEMP AND SIM.CODFILIAL=PROD.CODFILIAL "+
 		           "AND SIM.CODSIM = (SELECT SIM2.CODSIM FROM EQITSIMILAR SIM2 " +
 		           "                   WHERE SIM2.CODEMP=PROD.CODEMP AND SIM2.CODFILIAL = PROD.CODFILIAL " +
 		           "                   AND SIM2."+sCol+"=?) "+
-		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? AND PROD.CODPROD=SIM.CODPROD";
+		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? "+sWhereAdic+" AND PROD.CODPROD=SIM.CODPROD";
 
    	 	setTitulo("Produtos similares à "+oVal.toString());
    	 }

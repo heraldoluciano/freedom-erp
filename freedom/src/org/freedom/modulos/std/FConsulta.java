@@ -232,7 +232,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private void montaTela() {
 	    // Aba de saldos por produto 
 		if (comRef()) {
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD"));
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProd2.getWhereAdic()));
 			txtRefProd.setRequerido(true);
 			lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Ref.prod", ListaCampos.DB_PK, false));
 			lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
@@ -250,7 +250,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 			lcAlmoxProd.setConexao(con);
 		}
 		else {
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD"));
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
 			pinCabProd.adic(new JLabelPad("Cód.prod."),7,0,90,20);
 			pinCabProd.adic(new JLabelPad("Descrição do produto"),100,0,200,20);
 			pinCabProd.adic(txtCodProd,7,20,90,20);
