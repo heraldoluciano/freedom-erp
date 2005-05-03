@@ -114,9 +114,9 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
     return retorno;
   }
   public Integer getVlrInteger() {
-    if (((Integer) valores.elementAt(getSelectedIndex())==new Integer(0)) && (bZeroNull))
-    	return null;
   	try {
+      if (((Integer) valores.elementAt(getSelectedIndex())==new Integer(0)) && (bZeroNull))
+  	   	return null;
       return (Integer) valores.elementAt(getSelectedIndex());
   	}
   	catch(Exception err) {
