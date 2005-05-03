@@ -260,8 +260,7 @@ public class FRma extends FDetalhe implements PostListener,
 				
 		txtCodAlmox.setNaoEditavel(true);
 		txtPrecoItRma.setNaoEditavel(true);
-		
-//		adicCampoInvisivel(txtCodAlmox,"CodAlmox", "Cód.Almox.",ListaCampos.DB_FK,txtDescAlmox, false);
+				
 		adicCampoInvisivel(txtCodAlmox,"CodAlmox", "Cód.Almox.",ListaCampos.DB_FK,txtDescAlmox, false);
 		adicDescFKInvisivel(txtDescAlmox, "DescAlmox","Descrição do almoxarifado");		 
 		
