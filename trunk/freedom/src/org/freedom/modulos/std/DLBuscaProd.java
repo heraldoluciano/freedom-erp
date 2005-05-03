@@ -66,20 +66,21 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
   }
    public boolean setValor(Object oVal,String sTipo) { 
      
-  	 if (sTipo.equals("similar")) {
-  	 	
-  	 	if((sWhereAdic!=null) && (sWhereAdic.length()>0)){
-  	 		sWhereAdic = "AND "+sWhereAdic;
-  	 	}
-   	 	sSQL = "SELECT SIM.CODPROD,PROD.REFPROD,PROD.DESCPROD,PROD.SLDPROD "+
+  	 if (sTipo.equals("similar")) {  	 	
+
+  	 	if(sWhereAdic==null)
+  	 		sWhereAdic = ""; 
+
+ 	 	sSQL = "SELECT SIM.CODPROD,PROD.REFPROD,PROD.DESCPROD,PROD.SLDPROD "+
 		  	   "FROM EQPRODUTO PROD,EQITSIMILAR SIM "+
 		          "WHERE  SIM.CODEMP = PROD.CODEMP AND SIM.CODFILIAL=PROD.CODFILIAL "+
 		           "AND SIM.CODSIM = (SELECT SIM2.CODSIM FROM EQITSIMILAR SIM2 " +
 		           "                   WHERE SIM2.CODEMP=PROD.CODEMP AND SIM2.CODFILIAL = PROD.CODFILIAL " +
 		           "                   AND SIM2."+sCol+"=?) "+
-		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? "+sWhereAdic+" AND PROD.CODPROD=SIM.CODPROD";
+		           "AND PROD.CODEMP = ? AND PROD.CODFILIAL = ? "+(sWhereAdic.equals("")?"":"AND "+sWhereAdic)+" AND PROD.CODPROD=SIM.CODPROD";
 
    	 	setTitulo("Produtos similares à "+oVal.toString());
+  	 	
    	 }
    	 else {
    	 	sSQL = "SELECT ALT.CODPROD,ALT.REFPROD,PROD.DESCPROD,PROD.SLDPROD FROM eqcodaltprod ALT, EQPRODUTO PROD "+
@@ -164,7 +165,7 @@ public void keyPressed(KeyEvent kevt) {
     	btCancel.doClick();
 
 }   
-public void buscaValores(){
+public void buscaValores(){ 
 	if (tab.getNumLinhas() > 0) {
 		if (bRet) {	
   	 			if (sCol.toUpperCase().equals("REFPROD")) {
