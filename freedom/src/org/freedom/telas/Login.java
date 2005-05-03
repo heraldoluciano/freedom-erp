@@ -29,6 +29,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -153,8 +154,8 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   	    }
   	 }
   }
-   
-  private boolean montaCombo(String sUsu, String sSenha) {
+
+  private boolean execConexao(String sUsu, String sSenha) {
     try {
         Class.forName(strDriver);
     }
@@ -178,8 +179,15 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
         return false;
     }
     
+    return true;
+
+  }
+  private boolean montaCombo(String sUsu) {
+    String sSQL = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+    
     try {
-      String sSQL = "";
       if (bAdmin) {
       	sSQL =  "SELECT CODFILIAL,NOMEFILIAL,1 FROM SGFILIAL FL WHERE CODEMP=?";
       }
@@ -187,9 +195,9 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 		sSQL = "SELECT FL.CODFILIAL,FL.NOMEFILIAL,AC.CODFILIAL FROM SGFILIAL FL, SGACESSOEU AC WHERE "+
 				   "FL.CODEMP = ? AND LOWER(AC.IDUSU) = '"+sUsu+"' AND FL.CODEMP = AC.CODEMPFL AND FL.CODFILIAL = AC.CODFILIALFL";
       }
-      PreparedStatement ps = conLogin.prepareStatement(sSQL);
+      ps = conLogin.prepareStatement(sSQL);
       ps.setInt(1,Aplicativo.iCodEmp);
-      ResultSet rs = ps.executeQuery();
+      rs = ps.executeQuery();
       vVals.clear();
       vLabs.clear();
       boolean bGera = true;
@@ -201,17 +209,16 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
             iFilialPadrao = rs.getInt(1);  
       }
       
-      if(bGera) {      	
+/*      if(bGera) {      	
       	conLogin.commit();
-      	conLogin.setAutoCommit(true);
-      	adicConFilial();      
+      	conLogin.setAutoCommit(false);
       	conLogin.setAutoCommit(false);
 //      	return (montaCombo(sUsu,sSenha));
       	
-      }      
+      } */      
       
-      if (!conLogin.getAutoCommit())
-      	conLogin.commit();
+      /*if (!conLogin.getAutoCommit())
+      	conLogin.commit();*/
       cbEmp.setItens(vLabs,vVals);
       cbEmp.setVlrInteger(new Integer(iFilialPadrao));
       
@@ -228,7 +235,6 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
       if (rs.next() ) {
       	 iFilialMz = rs.getInt("CODFILIAL");
       }
-
       rs.close();
       ps.close();
       if (!conLogin.getAutoCommit())
@@ -238,6 +244,11 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
     catch(SQLException err) {
 		Funcoes.mensagemErro(this,"Erro ao carregar dados da empresa\n"+err);
    	}
+    finally {
+    	sSQL = null;
+    	rs = null;
+    	ps = null;
+    }
     return true;
   }
 
@@ -273,22 +284,35 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   
   private boolean adicConFilial() {
   	boolean bRet = false;
-  	String sSQL = "EXECUTE PROCEDURE SGINICONSP(?,?,?,?,?)";
+  	String sSQL = null;
+  	ResultSet rs = null;
+  	PreparedStatement ps = null;
   	try {
-  		PreparedStatement ps = conLogin.prepareStatement(sSQL);
+  		sSQL = "SELECT SRET FROM SGINICONSP(?,?,?,?)";  		
+  		ps = conLogin.prepareStatement(sSQL);
   		ps.setInt(1,Aplicativo.iCodEmp);
-  		ps.setInt(2,iFilialPadrao);
-  		ps.setString(3,txtUsuario.getVlrString().trim().toLowerCase());
-		ps.setInt(4,Aplicativo.iCodEmp);
-		ps.setInt(5,iCodEst);
-		ps.execute();
+  		//ps.setInt(2,iFilialPadrao);
+  		ps.setString(2,txtUsuario.getVlrString().trim().toLowerCase());
+  		if (iFilialPadrao==0)
+		    ps.setNull(3,Types.INTEGER);
+  		else
+  			ps.setInt(3,iFilialPadrao);
+		ps.setInt(4,iCodEst);
+		rs = ps.executeQuery();
+		if (rs.next()) 
+			bRet = rs.getInt(1)==1; // grava true se tiver efetuado a conexao
+		rs.close();
 		ps.close();
 		if (!conLogin.getAutoCommit())
 			conLogin.commit();
-		bRet = true; 
   	}
   	catch(SQLException err) {
 		Funcoes.mensagemErro(this,"Erro ao gravar filial atual no banco!\n"+err.getMessage());
+  	}
+  	finally {
+  		rs = null;
+  		ps = null;
+  		sSQL = null;
   	}
   	return bRet;
   }
@@ -299,12 +323,12 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
           
      if ( evt.getSource() == btOK ) {
 	  
-        if ( sUsu.length()==0 ) {
+        if ( sUsu.trim().equals("") ) {
            Funcoes.mensagemInforma( this, "Usuario em branco!" );
            txtUsuario.requestFocus();
            return;
         }
-        else if ( txpSenha.getVlrString().trim().length()==0 ) {
+        else if ( txpSenha.getVlrString().trim().equals("") ) {
            Funcoes.mensagemInforma( this, "Senha em branco!" );
            txpSenha.requestFocus();
            return;
@@ -313,10 +337,14 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 		if (sUsu.equals("sysdba"))
 		  bAdmin = true;
 
+		
         if ( !sUsuAnt.equals(sUsu) ) {
-            montaCombo(sUsu , txpSenha.getVlrString().trim());
+        	if (!execConexao(sUsu, txpSenha.getVlrString().trim()))
+        		return;
+          	adicConFilial();      
+            montaCombo(sUsu);
             cbEmp.requestFocus();
-            if (cbEmp.getItemCount() == 2) {
+            if (cbEmp.getItemCount() == 1) {
             	btOK.doClick();
             }
             return;
@@ -327,9 +355,9 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
            cbEmp.requestFocus();
            return;
         }
-//        if (!adicConFilial()) {
-//      	return;
-//      }
+        if (!adicConFilial()) {
+        	return;
+        }
      }
      super.actionPerformed(evt);
   }
