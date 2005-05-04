@@ -208,7 +208,11 @@ public class FSVV extends FFilho implements ActionListener {
   
   private void visualizar() {
   	String sTmp = "";
+  	Object[] oFatConv = null;
+  	String sCodUnid = "";
+  	float ftFatConv = 1;
     sRelErros = "";
+    
     sInfoEmp = buscaInfoEmp();
     btGerar.setEnabled(false);
     cbEstoque.setEnabled(false);
@@ -356,10 +360,13 @@ public class FSVV extends FFilho implements ActionListener {
         		}
         	}
         }
+        oFatConv = buscaUnid(rs.getInt("CodProd"));
+        sCodUnid = oFatConv[0].toString();
+        ftFatConv = ( (Float) oFatConv[1]).floatValue();
         tab.setValor(verifErro('B',rs.getString("CodFabProd"),sIdentP+"[C. Fabricante]",sTipoMov)+sSufixo,i,5);
-        tab.setValor(verifErro('B',Funcoes.copy(buscaUnid(rs.getInt("CodProd")),2).trim(),sIdentP+"[Unidade Conv]",""),i,6);
+        tab.setValor(verifErro('B',Funcoes.copy(sCodUnid,2).trim(),sIdentP+"[Unidade Conv]",""),i,6);
         tab.setValor(rs.getString("CodLote") != null ? rs.getString("CodLote").trim() : "",i,7);
-        tab.setValor(Funcoes.strDecimalToStrCurrency(14,2,rs.getString(8)).trim(),i,8); //A quantidade também precisa de ","
+        tab.setValor(Funcoes.strDecimalToStrCurrency(14,2, (rs.getFloat(8)*ftFatConv)+"" ).trim(),i,8); //A quantidade também precisa de ","
         tab.setValor(Funcoes.strDecimalToStrCurrency(18,2,rs.getString(9)).trim(),i,9);
         tab.setValor(""+(new BigDecimal(rs.getDouble(10)/(rs.getDouble(9) != 0 ? rs.getDouble(9) : 1))).setScale(0,BigDecimal.ROUND_HALF_UP).intValue(),i,10);
         tab.setValor(verifErro('B',Funcoes.strZero(rs.getString("CodTipoCli"),2),sIdentC+"[Cat. Cliente]",null),i,11);
@@ -427,6 +434,9 @@ public class FSVV extends FFilho implements ActionListener {
     }
   }
   private void gerar() {
+  	Object[] oFatConv = null;
+  	float ftFatConv = 1;
+  	String sCodUnid = "";
     iAnd = -1; //Para poder controlar o estoque tb.
     pbAnd.setMaximum(tab.getNumLinhas());
     pbAnd.setValue(iAnd);
@@ -483,11 +493,14 @@ public class FSVV extends FFilho implements ActionListener {
                 String sIdent = "";
                 sRelErros = "";
                 while (rs.next()) {
+                    oFatConv = 	buscaUnid(rs.getInt("CodProd"));
+                    sCodUnid = oFatConv[0].toString();
+                    ftFatConv = ( (Float) oFatConv[1] ).floatValue();
                 	pst.print("80");
                     sIdent = "[Estoque][C.Produto: "+rs.getInt("CodProd")+"]";
                     pst.print(";"+verifErro('B',rs.getString("CodFabProd"),sIdent+"[C. Fabricante]",""));
-                    pst.print(";"+verifErro('B',Funcoes.copy(buscaUnid(rs.getInt("CodProd")),2).trim(),sIdent+"[Unidade Conv]",""));
-                    pst.print(";"+Funcoes.strDecimalToStrCurrency(14,2,rs.getString(4)).trim());
+                    pst.print(";"+verifErro('B',Funcoes.copy(sCodUnid,2).trim(),sIdent+"[Unidade Conv]",""));
+                    pst.print(";"+Funcoes.strDecimalToStrCurrency(14,2, ""+(rs.getFloat(4)*ftFatConv) ).trim());
                 	pst.print(CRLF);
                 }
                 if (!sRelErros.equals(""))
@@ -643,12 +656,13 @@ public class FSVV extends FFilho implements ActionListener {
     }
     return sRet;
   }
-  public String buscaUnid(int iCodProd) {
-    String sRet = "";
-    String sSQL = "SELECT FIRST 1 F.CODUNID FROM EQFATCONV F " +
-                  "WHERE F.CODPROD=? AND " +
-                  "F.CODEMP=? AND " +
-                  "F.CODFILIAL=?";
+  public Object[] buscaUnid(int iCodProd) {
+    Object[] oRet = {"",new Float(1)};
+    String sSQL = "SELECT FIRST 1 F.CODUNID,F.FATCONV FROM EQFATCONV F, EQPRODUTO P  " +
+                  "WHERE P.CODPROD=? AND P.CODEMP=? AND P.CODFILIAL=? AND " +
+                  "F.CODPROD=P.CODPROD AND F.CODEMP=P.CODEMP AND F.CODFILIAL=P.CODFILIAL AND " +
+                  "F.CODUNID!=P.CODUNID " +
+                  "ORDER BY F.CODUNID ";
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
       ps.setInt(1,iCodProd);
@@ -656,7 +670,8 @@ public class FSVV extends FFilho implements ActionListener {
       ps.setInt(3,ListaCampos.getMasterFilial("EQPRODUTO"));
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-         sRet = rs.getString("CodUnid") != null ? rs.getString("CodUnid").trim() : "";   
+         oRet[0] = rs.getString("CodUnid") != null ? rs.getString("CodUnid").trim() : "";
+         oRet[1] = new Float(rs.getFloat("FatConv"));
       }
       rs.close();
       ps.close();
@@ -665,7 +680,7 @@ public class FSVV extends FFilho implements ActionListener {
        Funcoes.mensagemErro(this,"Erro ao buscar a unidade!\n"+err.getMessage());
        err.printStackTrace();
     }
-    return sRet;
+    return oRet;
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btGerar) {
