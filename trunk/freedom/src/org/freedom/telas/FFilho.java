@@ -36,6 +36,7 @@ import java.sql.Connection;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
+//import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -50,6 +51,9 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     private Component firstFocus = null;
 
     private boolean initFirstFocus = true;
+    
+    //private JPanelPad pnSp = new JPanelPad() 
+    //private JScrollPane spTela = new JScrollPane();
 
     public String strTemp = "";
 
