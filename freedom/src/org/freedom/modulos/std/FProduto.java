@@ -319,6 +319,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JCheckBoxPad cbVerif = null;
 
+	private JCheckBoxPad cbCpFatConv = null;
+
 	private Tabela tabFatConv = new Tabela();
 
 	private JScrollPane spnFatConv = new JScrollPane(tabFatConv);
@@ -794,6 +796,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 		//FatConv
 
+		cbCpFatConv = new JCheckBoxPad("", "S", "N");
+		cbCpFatConv.setVlrString("N");
+		
 		setPainel(pinRodFatConv, pnFatConv);
 		adicTab("Fatores de conversão", pnFatConv);
 		setListaCampos(lcFatConv);
@@ -820,6 +825,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				"Descrição da unidade");
 		adicCampo(txtFatConv, 243, 20, 80, 20, "FatConv", "Fator de conv.",
 				ListaCampos.DB_SI, true);
+		adicDB(cbCpFatConv, 336, 20, 100, 20, "CpFatConv", "Pref.p/cp.", true);
+
 		setListaCampos(false, "FATCONV", "EQ");
 		lcFatConv.setOrdem("CodUnid");
 		lcFatConv.montaTab();
