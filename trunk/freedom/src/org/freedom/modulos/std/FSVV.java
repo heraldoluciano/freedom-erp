@@ -658,11 +658,15 @@ public class FSVV extends FFilho implements ActionListener {
   }
   public Object[] buscaUnid(int iCodProd) {
     Object[] oRet = {"",new Float(1)};
-    String sSQL = "SELECT FIRST 1 F.CODUNID,F.FATCONV FROM EQFATCONV F, EQPRODUTO P  " +
-                  "WHERE P.CODPROD=? AND P.CODEMP=? AND P.CODFILIAL=? AND " +
-                  "F.CODPROD=P.CODPROD AND F.CODEMP=P.CODEMP AND F.CODFILIAL=P.CODFILIAL AND " +
-                  "F.CODUNID!=P.CODUNID " +
-                  "ORDER BY F.CODUNID ";
+    String sSQL = "SELECT P.CODUNID," +
+    		      "(SELECT FIRST 1 F.CODUNID FROM EQFATCONV F" +
+    		      " WHERE F.CODPROD=P.CODPROD AND F.CODEMP=P.CODEMP AND F.CODFILIAL=P.CODFILIAL AND " +
+                  "F.CODUNID!=P.CODUNID AND F.CPFATCONV='S' ORDER BY F.CODUNID), " +
+    		      "(SELECT FIRST 1 F.FATCONV FROM EQFATCONV F" +
+    		      " WHERE F.CODPROD=P.CODPROD AND F.CODEMP=P.CODEMP AND F.CODFILIAL=P.CODFILIAL AND " +
+                  "F.CODUNID!=P.CODUNID AND F.CPFATCONV='S' ORDER BY F.CODUNID) " +
+    		      " FROM EQPRODUTO P  " +
+                  "WHERE P.CODPROD=? AND P.CODEMP=? AND P.CODFILIAL=?" ;
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
       ps.setInt(1,iCodProd);
@@ -670,8 +674,14 @@ public class FSVV extends FFilho implements ActionListener {
       ps.setInt(3,ListaCampos.getMasterFilial("EQPRODUTO"));
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-         oRet[0] = rs.getString("CodUnid") != null ? rs.getString("CodUnid").trim() : "";
-         oRet[1] = new Float(rs.getFloat("FatConv"));
+      	 if (rs.getString(2)==null) {
+	         oRet[0] = rs.getString("CodUnid");
+	         oRet[1] = new Float(1);
+      	 }
+      	 else {
+	         oRet[0] = rs.getString(2).trim();
+	         oRet[1] = new Float(rs.getFloat(3));
+      	 }
       }
       rs.close();
       ps.close();
