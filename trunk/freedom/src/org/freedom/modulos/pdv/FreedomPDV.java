@@ -97,7 +97,7 @@ public class FreedomPDV extends AplicativoPDV {
 		           addOpcao(100105000,TP_OPCAO_ITEM,"Lista de preço","Lista de Preços",'l',100105040,3, true, FRListaPreco.class);
 	    
             addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100200000,1, false, null);
-			   addOpcao(100200000, TP_OPCAO_ITEM, "Preferências gerais","Prefere Geral", 'g', 100201000, 2, true, FPrefere.class);
+			   addOpcao(100200000, TP_OPCAO_ITEM, "Preferências gerais","Prefere Geral", 'g', 100201000, 2, true, FPreferePDV.class);
 			   addOpcao(100200000, TP_OPCAO_ITEM, "Funções Administrativas TEF","Admin TEF", 'A', 100202000, 2, true, FAdmTef.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "PDV", "", 'P', 200000000, 1, false, null);

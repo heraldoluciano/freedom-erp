@@ -32,7 +32,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FTabDados;
 
-public class FPrefere extends FTabDados implements ActionListener {
+public class FPreferePDV extends FTabDados implements ActionListener {
 	private JPanelPad pinVenda = new JPanelPad();
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtDescTipoMov= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
@@ -43,7 +43,7 @@ public class FPrefere extends FTabDados implements ActionListener {
 	private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
 	private ListaCampos lcCliente = new ListaCampos(this,"CL");
-	public FPrefere() {
+	public FPreferePDV() {
 		setTitulo("Preferências do PDV");
 		setAtribos(50, 50, 355, 375);
 		
