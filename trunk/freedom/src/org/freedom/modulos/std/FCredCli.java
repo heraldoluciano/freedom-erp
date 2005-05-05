@@ -1144,6 +1144,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 		adicCampo(txtRendaAvalCli, 100, 100, 90, 20, "RendaAvalCli", "Renda",
 				ListaCampos.DB_SI, false);
 
+		//		 ************************* Juridica
+		
 		setPainel(pinJuridica);
 		
 		adicCampo(txtDtFundacCli, 7, 20, 90, 20, "DtFundacCli", "Dat. Fundação",
@@ -1163,7 +1165,272 @@ public class FCredCli extends FTabDados implements ActionListener,
 		lcFicha.setQueryCommit(false);
 		lcFicha.montaTab();
 
-		//  *************************Referencias Pessoais
+		// *************************
+
+		//	  *************************Veiculos
+
+		setPainel(pinDetVeic, pnVeic);
+
+		pinDetVeic.setPreferredSize(new Dimension(600, 130));
+		pinDetVeic.add(pinNavVeic, BorderLayout.SOUTH);
+		pinDetVeic.add(pinCamposVeic, BorderLayout.CENTER);
+		setListaCampos(lcVeic);
+		setNavegador(navVeic);
+
+		pnVeic.add(pinDetVeic, BorderLayout.SOUTH);
+		pnVeic.add(spnVeic, BorderLayout.CENTER);
+
+		pinNavVeic.adic(navVeic, 0, 0, 270, 25);
+
+		setPainel(pinCamposVeic);
+
+		adicCampo(txtPlacaVeic, 7, 20, 80, 20, "PlacaVeic", "Placa",
+				ListaCampos.DB_PK, null, true);
+		adicCampo(txtModeloVeic, 90, 20, 250, 20, "ModeloVeic", "Modelo",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtAlienadoVeic, 343, 20, 150, 20, "AlienadoVeic",
+				"Alienado", ListaCampos.DB_SI, null, false);
+		adicCampo(txtAnoVeic, 7, 60, 80, 20, "AnoVeic", "Ano",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtValorVeic, 90, 60, 100, 20, "ValorVeic", "Valor",
+				ListaCampos.DB_SI, null, false);
+
+		setListaCampos(false, "CLIVEIC", "VD");
+		lcVeic.setQueryInsert(false);
+		lcVeic.setQueryCommit(false);
+		lcVeic.montaTab();
+		tbVeic.setTamColuna(60, 0);
+		tbVeic.setTamColuna(200, 1);
+		tbVeic.setTamColuna(150, 2);
+		tbVeic.setTamColuna(80, 3);
+		tbVeic.setTamColuna(110, 4);
+
+		// **************************
+		
+		//  *************************Imoveis
+
+		setPainel(pinDetImov, pnImov);
+
+		pinDetImov.setPreferredSize(new Dimension(600, 80));
+		pinDetImov.add(pinNavImov, BorderLayout.SOUTH);
+		pinDetImov.add(pinCamposImov, BorderLayout.CENTER);
+		setListaCampos(lcImov);
+		setNavegador(navImov);
+
+		pnImov.add(pinDetImov, BorderLayout.SOUTH);
+		pnImov.add(spnImov, BorderLayout.CENTER);
+
+		pinNavImov.adic(navImov, 0, 0, 270, 25);
+
+		setPainel(pinCamposImov);
+
+		adicCampo(txtCodImov, 7, 20, 50, 20, "CodImov", "Seq.",
+				ListaCampos.DB_PK, null, true);
+		adicCampo(txtTipoImov, 60, 20, 120, 20, "TipoImov", "Propria/Aluguel",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtConstrImov, 183, 20, 120, 20, "ConstrImov",
+				"Tipo construção", ListaCampos.DB_SI, null, false);
+		adicCampo(txtAreaTerImov, 306, 20, 100, 20, "AreaTerImov",
+				"Area terreno", ListaCampos.DB_SI, null, false);
+		adicCampo(txtValorImov, 409, 20, 100, 20, "ValorImov", "Valor",
+				ListaCampos.DB_SI, null, false);
+
+		setListaCampos(true, "CLIIMOV", "VD");
+		lcImov.setQueryInsert(false);
+		lcImov.setQueryCommit(false);
+		lcImov.montaTab();
+		tbImov.setTamColuna(30, 0);
+		tbImov.setTamColuna(150, 1);
+		tbImov.setTamColuna(150, 2);
+		tbImov.setTamColuna(120, 3);
+		tbImov.setTamColuna(120, 4);
+
+		// **************************
+
+		//  *************************Terras
+
+		setPainel(pinDetTerras, pnTerras);
+
+		pinDetTerras.setPreferredSize(new Dimension(600, 230));
+		pinDetTerras.add(pinNavTerras, BorderLayout.SOUTH);
+		pinDetTerras.add(pinCamposTerras, BorderLayout.CENTER);
+		setListaCampos(lcTerras);
+		setNavegador(navTerras);
+
+		pnTerras.add(pinDetTerras, BorderLayout.SOUTH);
+		pnTerras.add(spnTerras, BorderLayout.CENTER);
+
+		pinNavTerras.adic(navTerras, 0, 0, 270, 25);
+
+		setPainel(pinCamposTerras);
+
+		adicCampo(txtCodTerra, 7, 20, 50, 20, "CodTerra", "Seq.",
+				ListaCampos.DB_PK, null, true);
+		adicCampo(txtEndTerra, 60, 20, 250, 20, "EndTerra", "Endereço",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtNumTerra, 313, 20, 90, 20, "NumTerra", "Num.",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtBairTerra, 406, 20, 150, 20, "BairTerra", "Bairro",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtAreaTerra, 559, 20, 100, 20, "AreaTerra", "Area total",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtQtdCafeTerra, 7, 60, 100, 20, "QtdCafeTerra", "Qtd.Café",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtQtdGadoTerra, 110, 60, 100, 20, "QtdGadoTerra",
+				"Qtd.Gado", ListaCampos.DB_SI, null, false);
+		adicDBLiv(txaObsTerra, 7, 100, 300, 80, "ObsTerra", "Observações",
+				false);
+
+		setListaCampos(true, "CLITERRA", "VD");
+		lcTerras.setQueryInsert(false);
+		lcTerras.setQueryCommit(false);
+		lcTerras.montaTab();
+		tbTerras.setTamColuna(30, 0);
+		tbTerras.setTamColuna(200, 1);
+		tbTerras.setTamColuna(150, 2);
+		tbTerras.setTamColuna(120, 3);
+		tbTerras.setTamColuna(120, 4);
+		tbTerras.setTamColuna(120, 5);
+		tbTerras.setTamColuna(200, 6);
+
+		// **************************
+
+		//  *************************Dados bancários
+
+		setPainel(pinDetBancos, pnBancos);
+
+		pinDetBancos.setPreferredSize(new Dimension(600, 80));
+		pinDetBancos.add(pinNavBancos, BorderLayout.SOUTH);
+		pinDetBancos.add(pinCamposBancos, BorderLayout.CENTER);
+		setListaCampos(lcBancos);
+		setNavegador(navBancos);
+
+		pnBancos.add(pinDetBancos, BorderLayout.SOUTH);
+		pnBancos.add(spnBancos, BorderLayout.CENTER);
+
+		pinNavBancos.adic(navBancos, 0, 0, 270, 25);
+
+		setPainel(pinCamposBancos);
+
+		adicCampo(txtConta, 7, 20, 90, 20, "conta", "Conta", ListaCampos.DB_PK,
+				null, false);
+		adicCampo(txtCodBanco, 100, 20, 60, 20, "CodBanco", "Cd.Bco.",
+				ListaCampos.DB_FK, txtNomeBanco, true);
+		adicDescFK(txtNomeBanco, 163, 20, 150, 20, "CodBanco", "Cd.Bco.");
+		adicCampo(txtAgencia, 316, 20, 120, 20, "Agencia", "Agencia",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtDtAbConta, 439, 20, 100, 20, "DtAbConta", "Dt. Abetura",
+				ListaCampos.DB_SI, null, false);
+
+		setListaCampos(false, "CLICONTAS", "VD");
+		lcBancos.setQueryInsert(false);
+		lcBancos.setQueryCommit(false);
+		lcBancos.montaTab();
+		tbBancos.setTamColuna(90, 0);
+		tbBancos.setTamColuna(90, 1);
+		tbBancos.setTamColuna(150, 2);
+		tbBancos.setTamColuna(100, 3);
+
+		// **************************
+
+		//  *************************Referencias Comerciais
+
+		setPainel(pinDetRefC, pnRefC);
+
+		pinDetRefC.setPreferredSize(new Dimension(600, 265));
+		pinDetRefC.add(pinNavRefC, BorderLayout.SOUTH);
+		pinDetRefC.add(pinCamposRefC, BorderLayout.CENTER);
+		setListaCampos(lcRefC);
+		setNavegador(navRefC);
+
+		pnRefC.add(pinDetRefC, BorderLayout.SOUTH);
+		pnRefC.add(spnRefC, BorderLayout.CENTER);
+
+		pinNavRefC.adic(navRefC, 0, 0, 270, 25);
+
+		setPainel(pinCamposRefC);
+
+		adicCampo(txtCodRefC, 7, 20, 50, 20, "CodRefC", "Seq.",
+				ListaCampos.DB_PK, null, true);
+		adicCampo(txtNomeEmpRefC, 60, 20, 370, 20, "NomeEmpRefC", "Empresa",
+				ListaCampos.DB_SI, null, true);
+		adicCampo(txtDDDRefC, 433, 20, 40, 20, "DDDRefC", "DDD",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtFoneRefC, 476, 20, 97, 20, "FoneRefC", "Telefone",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtDtMaiorCpRefC, 576, 20, 100, 20, "DtMaiorCp",
+				"Dt.Maior Cp.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrMaiorCpRefC, 7, 60, 100, 20, "VlrMaiorCp",
+				"Vlr.Maior Cp.", ListaCampos.DB_SI, false);
+		adicCampo(txtNroParcMaiorCpRefC, 110, 60, 100, 20, "NroParcMaiorCp",
+				"Nro.Parc.Maior Cp.", ListaCampos.DB_SI, false);
+		adicCampo(txtDtUltCpRefC, 213, 60, 100, 20, "DtUltCp", "Dt.Ult.Cp.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtVlrUltCpRefC, 316, 60, 100, 20, "VlrUltCp", "Vlr.Ult.Cp.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtNroParcUltCpRefC, 419, 60, 100, 20, "NroParcUltCp",
+				"Nro.Parc.Ult.Cp.", ListaCampos.DB_SI, false);
+		adicDB(cbPontualRefC, 521, 60, 70, 20, "Pontual", "Pontual", true);
+		adicCampo(txtMediaAtrasoRefC, 7, 100, 100, 20, "MediaAtraso",
+				"Media atraso", ListaCampos.DB_SI, false);
+		adicCampo(txtConceitoRefC, 110, 100, 150, 20, "Conceito", "Conceito",
+				ListaCampos.DB_SI, false);
+		adicDB(cbAvalistaRefC, 263, 100, 70, 20, "Avalista", "Avalista", true);
+		adicCampo(txtInformanteRefC, 336, 100, 150, 20, "Informante",
+				"Informante", ListaCampos.DB_SI, false);
+		adicDBLiv(txaObsRefC, 7, 140, 300, 80, "ObsRefC", "Observações", false);
+
+		setListaCampos(true, "CLIREFC", "VD");
+		lcRefC.setQueryInsert(false);
+		lcRefC.setQueryCommit(false);
+		lcRefC.montaTab();
+		tbRefC.setTamColuna(30, 0); // Seq.
+		tbRefC.setTamColuna(200, 1); // NomeRefC
+
+		// **************************
+
+		//  *************************Socios
+
+		setPainel(pinDetSocios, pnSocios);
+
+		pinDetSocios.setPreferredSize(new Dimension(600, 120));
+		pinDetSocios.add(pinNavSocios, BorderLayout.SOUTH);
+		pinDetSocios.add(pinCamposSocios, BorderLayout.CENTER);
+		setListaCampos(lcSocios);
+		setNavegador(navSocios);
+
+		pnSocios.add(pinDetSocios, BorderLayout.SOUTH);
+		pnSocios.add(spnSocios, BorderLayout.CENTER);
+
+		pinNavSocios.adic(navSocios, 0, 0, 270, 25);
+
+		setPainel(pinCamposSocios);
+
+		adicCampo(txtNomeSocio, 7, 20, 250, 20, "NomeSocio", "Nome",
+				ListaCampos.DB_PK, null, true);
+		adicCampo(txtDtNascSocio, 260, 20, 90, 20, "DtNascSocio", "Dt.Nasc.",
+				ListaCampos.DB_SI, false);
+		adicCampo(txtRgSocio, 353, 20, 120, 20, "RgSocio", "Rg",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtSSPSocio, 476, 20, 120, 20, "SSPSocio", "Orgão exp.",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtCPFSocio, 7, 60, 130, 20, "CPFSocio", "CPF",
+				ListaCampos.DB_SI, null, false);
+		adicCampo(txtPercCotasSocio, 140, 60, 50, 20, "PercCotasSocio",
+				"% Cotas", ListaCampos.DB_SI, null, false);
+
+		setListaCampos(false, "CLISOCIOS", "VD");
+		lcSocios.setQueryInsert(false);
+		lcSocios.setQueryCommit(false);
+		lcSocios.montaTab();
+		tbSocios.setTamColuna(200, 0);
+		tbSocios.setTamColuna(100, 1);
+		tbSocios.setTamColuna(120, 2);
+		tbSocios.setTamColuna(120, 3);
+
+		// **************************
+		
+		//	  *************************Referencias Pessoais
 
 		setPainel(pinDetRefP, pnRefP);
 
@@ -1171,7 +1438,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetRefP.add(pinNavRefP, BorderLayout.SOUTH);
 		pinDetRefP.add(pinCamposRefP, BorderLayout.CENTER);
 		setListaCampos(lcRefP);
-		lcRefP.setNavegador(navRefP);
+		setNavegador(navRefP);
 
 		pnRefP.add(pinDetRefP, BorderLayout.SOUTH);
 		pnRefP.add(spnRefP, BorderLayout.CENTER);
@@ -1227,7 +1494,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		pinDetAutP.add(pinNavAutP, BorderLayout.SOUTH);
 		pinDetAutP.add(pinCamposAutP, BorderLayout.CENTER);
 		setListaCampos(lcAutP);
-		lcAutP.setNavegador(navAutP);
+		setNavegador(navAutP);
 
 		pnAutP.add(pinDetAutP, BorderLayout.SOUTH);
 		pnAutP.add(spnAutP, BorderLayout.CENTER);
@@ -1284,270 +1551,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		tbAutP.setTamColuna(50, 13); // Fone
 		tbAutP.setTamColuna(220, 14); // Função
 
-		// **************************
-
-		//  *************************Veiculos
-
-		setPainel(pinDetVeic, pnVeic);
-
-		pinDetVeic.setPreferredSize(new Dimension(600, 130));
-		pinDetVeic.add(pinNavVeic, BorderLayout.SOUTH);
-		pinDetVeic.add(pinCamposVeic, BorderLayout.CENTER);
-		setListaCampos(lcVeic);
-		lcVeic.setNavegador(navVeic);
-
-		pnVeic.add(pinDetVeic, BorderLayout.SOUTH);
-		pnVeic.add(spnVeic, BorderLayout.CENTER);
-
-		pinNavVeic.adic(navVeic, 0, 0, 270, 25);
-
-		setPainel(pinCamposVeic);
-
-		adicCampo(txtPlacaVeic, 7, 20, 80, 20, "PlacaVeic", "Placa",
-				ListaCampos.DB_PK, null, true);
-		adicCampo(txtModeloVeic, 90, 20, 250, 20, "ModeloVeic", "Modelo",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtAlienadoVeic, 343, 20, 150, 20, "AlienadoVeic",
-				"Alienado", ListaCampos.DB_SI, null, false);
-		adicCampo(txtAnoVeic, 7, 60, 80, 20, "AnoVeic", "Ano",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtValorVeic, 90, 60, 100, 20, "ValorVeic", "Valor",
-				ListaCampos.DB_SI, null, false);
-
-		setListaCampos(false, "CLIVEIC", "VD");
-		lcVeic.setQueryInsert(false);
-		lcVeic.setQueryCommit(false);
-		lcVeic.montaTab();
-		tbVeic.setTamColuna(60, 0);
-		tbVeic.setTamColuna(200, 1);
-		tbVeic.setTamColuna(150, 2);
-		tbVeic.setTamColuna(80, 3);
-		tbVeic.setTamColuna(110, 4);
-
-		// **************************
-
-		//  *************************Imoveis
-
-		setPainel(pinDetImov, pnImov);
-
-		pinDetImov.setPreferredSize(new Dimension(600, 80));
-		pinDetImov.add(pinNavImov, BorderLayout.SOUTH);
-		pinDetImov.add(pinCamposImov, BorderLayout.CENTER);
-		setListaCampos(lcImov);
-		lcImov.setNavegador(navImov);
-
-		pnImov.add(pinDetImov, BorderLayout.SOUTH);
-		pnImov.add(spnImov, BorderLayout.CENTER);
-
-		pinNavImov.adic(navImov, 0, 0, 270, 25);
-
-		setPainel(pinCamposImov);
-
-		adicCampo(txtCodImov, 7, 20, 50, 20, "CodImov", "Seq.",
-				ListaCampos.DB_PK, null, true);
-		adicCampo(txtTipoImov, 60, 20, 120, 20, "TipoImov", "Propria/Aluguel",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtConstrImov, 183, 20, 120, 20, "ConstrImov",
-				"Tipo construção", ListaCampos.DB_SI, null, false);
-		adicCampo(txtAreaTerImov, 306, 20, 100, 20, "AreaTerImov",
-				"Area terreno", ListaCampos.DB_SI, null, false);
-		adicCampo(txtValorImov, 409, 20, 100, 20, "ValorImov", "Valor",
-				ListaCampos.DB_SI, null, false);
-
-		setListaCampos(true, "CLIIMOV", "VD");
-		lcImov.setQueryInsert(false);
-		lcImov.setQueryCommit(false);
-		lcImov.montaTab();
-		tbImov.setTamColuna(30, 0);
-		tbImov.setTamColuna(150, 1);
-		tbImov.setTamColuna(150, 2);
-		tbImov.setTamColuna(120, 3);
-		tbImov.setTamColuna(120, 4);
-
-		// **************************
-
-		//  *************************Terras
-
-		setPainel(pinDetTerras, pnTerras);
-
-		pinDetTerras.setPreferredSize(new Dimension(600, 230));
-		pinDetTerras.add(pinNavTerras, BorderLayout.SOUTH);
-		pinDetTerras.add(pinCamposTerras, BorderLayout.CENTER);
-		setListaCampos(lcTerras);
-		lcTerras.setNavegador(navTerras);
-
-		pnTerras.add(pinDetTerras, BorderLayout.SOUTH);
-		pnTerras.add(spnTerras, BorderLayout.CENTER);
-
-		pinNavTerras.adic(navTerras, 0, 0, 270, 25);
-
-		setPainel(pinCamposTerras);
-
-		adicCampo(txtCodTerra, 7, 20, 50, 20, "CodTerra", "Seq.",
-				ListaCampos.DB_PK, null, true);
-		adicCampo(txtEndTerra, 60, 20, 250, 20, "EndTerra", "Endereço",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtNumTerra, 313, 20, 90, 20, "NumTerra", "Num.",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtBairTerra, 406, 20, 150, 20, "BairTerra", "Bairro",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtAreaTerra, 559, 20, 100, 20, "AreaTerra", "Area total",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtQtdCafeTerra, 7, 60, 100, 20, "QtdCafeTerra", "Qtd.Café",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtQtdGadoTerra, 110, 60, 100, 20, "QtdGadoTerra",
-				"Qtd.Gado", ListaCampos.DB_SI, null, false);
-		adicDBLiv(txaObsTerra, 7, 100, 300, 80, "ObsTerra", "Observações",
-				false);
-
-		setListaCampos(true, "CLITERRA", "VD");
-		lcTerras.setQueryInsert(false);
-		lcTerras.setQueryCommit(false);
-		lcTerras.montaTab();
-		tbTerras.setTamColuna(30, 0);
-		tbTerras.setTamColuna(200, 1);
-		tbTerras.setTamColuna(150, 2);
-		tbTerras.setTamColuna(120, 3);
-		tbTerras.setTamColuna(120, 4);
-		tbTerras.setTamColuna(120, 5);
-		tbTerras.setTamColuna(200, 6);
-
-		// **************************
-
-		//  *************************Dados bancários
-
-		setPainel(pinDetBancos, pnBancos);
-
-		pinDetBancos.setPreferredSize(new Dimension(600, 80));
-		pinDetBancos.add(pinNavBancos, BorderLayout.SOUTH);
-		pinDetBancos.add(pinCamposBancos, BorderLayout.CENTER);
-		setListaCampos(lcBancos);
-		lcBancos.setNavegador(navBancos);
-
-		pnBancos.add(pinDetBancos, BorderLayout.SOUTH);
-		pnBancos.add(spnBancos, BorderLayout.CENTER);
-
-		pinNavBancos.adic(navBancos, 0, 0, 270, 25);
-
-		setPainel(pinCamposBancos);
-
-		adicCampo(txtConta, 7, 20, 90, 20, "conta", "Conta", ListaCampos.DB_PK,
-				null, false);
-		adicCampo(txtCodBanco, 100, 20, 60, 20, "CodBanco", "Cd.Bco.",
-				ListaCampos.DB_FK, txtNomeBanco, true);
-		adicDescFK(txtNomeBanco, 163, 20, 150, 20, "CodBanco", "Cd.Bco.");
-		adicCampo(txtAgencia, 316, 20, 120, 20, "Agencia", "Agencia",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtDtAbConta, 439, 20, 100, 20, "DtAbConta", "Dt. Abetura",
-				ListaCampos.DB_SI, null, false);
-
-		setListaCampos(false, "CLICONTAS", "VD");
-		lcBancos.setQueryInsert(false);
-		lcBancos.setQueryCommit(false);
-		lcBancos.montaTab();
-		tbBancos.setTamColuna(90, 0);
-		tbBancos.setTamColuna(90, 1);
-		tbBancos.setTamColuna(150, 2);
-		tbBancos.setTamColuna(100, 3);
-
-		// **************************
-
-		//  *************************Referencias Comerciais
-
-		setPainel(pinDetRefC, pnRefC);
-
-		pinDetRefC.setPreferredSize(new Dimension(600, 265));
-		pinDetRefC.add(pinNavRefC, BorderLayout.SOUTH);
-		pinDetRefC.add(pinCamposRefC, BorderLayout.CENTER);
-		setListaCampos(lcRefC);
-		lcRefC.setNavegador(navRefC);
-
-		pnRefC.add(pinDetRefC, BorderLayout.SOUTH);
-		pnRefC.add(spnRefC, BorderLayout.CENTER);
-
-		pinNavRefC.adic(navRefC, 0, 0, 270, 25);
-
-		setPainel(pinCamposRefC);
-
-		adicCampo(txtCodRefC, 7, 20, 50, 20, "CodRefC", "Seq.",
-				ListaCampos.DB_PK, null, true);
-		adicCampo(txtNomeEmpRefC, 60, 20, 370, 20, "NomeEmpRefC", "Empresa",
-				ListaCampos.DB_SI, null, true);
-		adicCampo(txtDDDRefC, 433, 20, 40, 20, "DDDRefC", "DDD",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtFoneRefC, 476, 20, 97, 20, "FoneRefC", "Telefone",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtDtMaiorCpRefC, 576, 20, 100, 20, "DtMaiorCp",
-				"Dt.Maior Cp.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrMaiorCpRefC, 7, 60, 100, 20, "VlrMaiorCp",
-				"Vlr.Maior Cp.", ListaCampos.DB_SI, false);
-		adicCampo(txtNroParcMaiorCpRefC, 110, 60, 100, 20, "NroParcMaiorCp",
-				"Nro.Parc.Maior Cp.", ListaCampos.DB_SI, false);
-		adicCampo(txtDtUltCpRefC, 213, 60, 100, 20, "DtUltCp", "Dt.Ult.Cp.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrUltCpRefC, 316, 60, 100, 20, "VlrUltCp", "Vlr.Ult.Cp.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtNroParcUltCpRefC, 419, 60, 100, 20, "NroParcUltCp",
-				"Nro.Parc.Ult.Cp.", ListaCampos.DB_SI, false);
-		adicDB(cbPontualRefC, 521, 60, 70, 20, "Pontual", "Pontual", true);
-		adicCampo(txtMediaAtrasoRefC, 7, 100, 100, 20, "MediaAtraso",
-				"Media atraso", ListaCampos.DB_SI, false);
-		adicCampo(txtConceitoRefC, 110, 100, 150, 20, "Conceito", "Conceito",
-				ListaCampos.DB_SI, false);
-		adicDB(cbAvalistaRefC, 263, 100, 70, 20, "Avalista", "Avalista", true);
-		adicCampo(txtInformanteRefC, 336, 100, 150, 20, "Informante",
-				"Informante", ListaCampos.DB_SI, false);
-		adicDBLiv(txaObsRefC, 7, 140, 300, 80, "ObsRefC", "Observações", false);
-
-		setListaCampos(true, "CLIREFC", "VD");
-		lcRefC.setQueryInsert(false);
-		lcRefC.setQueryCommit(false);
-		lcRefC.montaTab();
-		tbRefC.setTamColuna(30, 0); // Seq.
-		tbRefC.setTamColuna(200, 1); // NomeRefC
-
-		// **************************
-
-		//  *************************Socios
-
-		setPainel(pinDetSocios, pnSocios);
-
-		pinDetSocios.setPreferredSize(new Dimension(600, 120));
-		pinDetSocios.add(pinNavSocios, BorderLayout.SOUTH);
-		pinDetSocios.add(pinCamposSocios, BorderLayout.CENTER);
-		setListaCampos(lcSocios);
-		lcSocios.setNavegador(navSocios);
-
-		pnSocios.add(pinDetSocios, BorderLayout.SOUTH);
-		pnSocios.add(spnSocios, BorderLayout.CENTER);
-
-		pinNavSocios.adic(navSocios, 0, 0, 270, 25);
-
-		setPainel(pinCamposSocios);
-
-		adicCampo(txtNomeSocio, 7, 20, 250, 20, "NomeSocio", "Nome",
-				ListaCampos.DB_PK, null, true);
-		adicCampo(txtDtNascSocio, 260, 20, 90, 20, "DtNascSocio", "Dt.Nasc.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtRgSocio, 353, 20, 120, 20, "RgSocio", "Rg",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtSSPSocio, 476, 20, 120, 20, "SSPSocio", "Orgão exp.",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtCPFSocio, 7, 60, 130, 20, "CPFSocio", "CPF",
-				ListaCampos.DB_SI, null, false);
-		adicCampo(txtPercCotasSocio, 140, 60, 50, 20, "PercCotasSocio",
-				"% Cotas", ListaCampos.DB_SI, null, false);
-
-		setListaCampos(false, "CLISOCIOS", "VD");
-		lcSocios.setQueryInsert(false);
-		lcSocios.setQueryCommit(false);
-		lcSocios.montaTab();
-		tbSocios.setTamColuna(200, 0);
-		tbSocios.setTamColuna(100, 1);
-		tbSocios.setTamColuna(120, 2);
-		tbSocios.setTamColuna(120, 3);
-
-		// **************************
+		// **************************		
 
 		nav.setListaCampos(lcCampos);
 		completaTela();
@@ -1569,6 +1573,8 @@ public class FCredCli extends FTabDados implements ActionListener,
 			navFicha.setListaCampos(lcFicha);
 			lcFicha.setNavegador(navFicha);
 		}
+		if (bJurTipoCli) 
+			adicTab("Jurídica", pinJuridica);
 		if (bVeicTipoCli)
 			adicTab("Veículos", pnVeic);
 		if (bImovTipoCli)
@@ -1582,7 +1588,6 @@ public class FCredCli extends FTabDados implements ActionListener,
 		}
 		if (bRefPesTipoCli)
 			adicTab("Ref.Pes.", pnRefP);
-
 		if (bPessAutTipoCli)
 			adicTab("Pess.Autoriz.", pnAutP);
 		if (bFilTipoCli)
@@ -1592,10 +1597,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 		if (bConjTipoCli)
 			tpn2.addTab("Cônjuge", pinConjuge);
 		if (bAvalTipoCli)
-			tpn2.addTab("Avalista", pinAvalista);
-		if (bJurTipoCli) {
-			adicTab("Jurídica", pinJuridica);
-		}
+			tpn2.addTab("Avalista", pinAvalista);		
 	}
 
 	private void setaFoco() {
