@@ -30,14 +30,14 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
-public class FPrefereGeral extends FTabDados {
+public class FPrefereFNC extends FTabDados {
 	private JPanelPad pinGeral = new JPanelPad(330, 350);
 	private JPanelPad pinFin = new JPanelPad();
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private ListaCampos lcMoeda = new ListaCampos(this,"MO");
-	public FPrefereGeral() {
+	public FPrefereFNC() {
 		setTitulo("Preferências Gerais");
 		setAtribos(50, 50, 355, 200);
 		

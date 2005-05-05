@@ -215,7 +215,7 @@ public class FreedomGMS extends Aplicativo {
 				addBotao("btEntrada.gif","Compra","Compras", 200600000, FCompra.class);
 				addBotao("btEstoque.gif","Consulta estoque","Consulta", 400300000, FConsulta.class);   
 				addBotao("btProduto.gif","Cadastro de produtos","Produtos", 100103090, FProduto.class);
-				addBotao("btEmprestimo.gif","Cadastro de similaridades","Similaridade", 100103080, FSimilar.class);
+				addBotao("btSimilar.gif","Cadastro de similaridades","Similaridade", 100103080, FSimilar.class);
 				addBotao("btOrcamento.gif", "Orçamento", "Orcamento", 300600000, FOrcamento.class);
 				addBotao("btConsOrcamento.gif", "Pesquisa Orçamento", "Pesquisa Orcamentos", 300700000, FConsOrc.class);
 				addBotao("btAprovaOrc.gif", "Aprovações de Orçamantos", "Aprova Orcamento", 300500000, FAprovaOrc.class);				

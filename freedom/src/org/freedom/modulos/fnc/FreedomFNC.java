@@ -105,7 +105,7 @@ public class FreedomFNC extends Aplicativo {
 		addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000,
 				1, false, null);
 		addOpcao(100300000, TP_OPCAO_ITEM, "Preferências gerais",
-				"Pref. Gerais", 'g', 100310000, 2, true, FPrefereGeral.class);
+				"Pref. Gerais", 'g', 100310000, 2, true, FPrefereFNC.class);
 		addSeparador(100100000);
 		addOpcao(100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100400000,
 				1, false, null);
