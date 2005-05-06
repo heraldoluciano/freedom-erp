@@ -27,6 +27,7 @@ public class JTextAreaPad extends JTextArea implements KeyListener {
   public int iTamanho = 10000;
   public int iDecimal = 0;
   public int iTipo = JTextFieldPad.TP_STRING;
+  boolean bAtivo = true;
   /**
    *  Construtor da classe (sem tamanho). <BR>
    *  Coloca o tamanho padrão: 10000.
@@ -39,7 +40,7 @@ public class JTextAreaPad extends JTextArea implements KeyListener {
    *  Construtor da classe (com tamanho). <BR>
    *  Número de caracteres que o txa pode aceitar.
    *
-   */
+   */  
   public JTextAreaPad(int iTam) {
   	if (iTam > 0)
   	  iTamanho = iTam;
@@ -66,6 +67,17 @@ public class JTextAreaPad extends JTextArea implements KeyListener {
           lcTxa.edit();     
     }
   }
+  public void setNaoEditavel(boolean b) {
+//  bSoLeitura = b;
+  if (b) {
+    setEditable(false);
+    bAtivo = false;
+  }
+  else {
+    setEditable(true);
+    bAtivo = true;
+  }
+}
   public void keyPressed(KeyEvent kevt) { }
   public void keyReleased(KeyEvent kevt) { }
 }
