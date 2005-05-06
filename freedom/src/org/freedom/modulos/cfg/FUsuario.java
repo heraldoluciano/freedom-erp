@@ -194,8 +194,10 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     vAprovaRMAVal.add("TD");
     
     rgAprovaSolicitacao = new JRadioGroup(3, 1, vAprovaSolicitacaoLab, vAprovaSolicitacaoVal);
+    rgAprovaRMA = new JRadioGroup(3, 1, vAprovaRMALab, vAprovaRMAVal);
+    
     adicDB(rgAprovaSolicitacao, 7, 140, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false);
-    adicDB(rgAprovaRMA, 7, 360, 210, 80, "AprovRMAUsu", "Aprova RMA", false);
+    adicDB(rgAprovaRMA, 7, 240, 210, 80, "AprovRMAUsu", "Aprova RMA", false);
     
     rgAprovaRMA = new JRadioGroup(3, 1, vAprovaRMALab, vAprovaRMAVal);
 

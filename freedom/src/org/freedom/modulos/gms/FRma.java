@@ -32,6 +32,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -99,6 +100,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsu = new ListaCampos(this,"UU");
+	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 	String sOrdRMA = "";
 	Integer anoCC = null;
@@ -106,9 +108,9 @@ public class FRma extends FDetalhe implements PostListener,
 	String codCC = null;
 
 	boolean[] bPrefs = null;
+	boolean bAprova = false;
 
 	public FRma() {
-
 		setAtribos(15, 10, 760, 580);
 
 		pnMaster.remove(2);
@@ -284,7 +286,45 @@ public class FRma extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 7);
 		tab.setTamColuna(250, 8);
 	}
+    private void buscaInfoUsuAtual() {        
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " +
+				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
+				      "AND IDUSU=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
+			ps.setString(3, Aplicativo.strUsuario);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				String sAprova = rs.getString("APROVRMAUSU");
+				if(sAprova!=null)
+					if(!sAprova.equals("ND")) {
+						if(sAprova.equals("TD"))						
+							bAprova = true;
+						else if( (txtCodCC.getVlrString().equals(rs.getString("CODCC"))) &&
+								 (lcCC.getCodEmp()==rs.getInt("CODEMPCC")) &&
+								 (lcCC.getCodFilial()==rs.getInt("CODFILIALCC")) &&
+								 (sAprova.equals("CC"))	) {
+							bAprova = true;							
+						}
+						
+					}
+			}
+			if (!con.getAutoCommit())
+				con.commit();
 
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage());
+		}
+
+    	
+    	
+    }
 	public void focusGained(FocusEvent fevt) {}
 
 	public void focusLost(FocusEvent fevt) {}
@@ -294,8 +334,29 @@ public class FRma extends FDetalhe implements PostListener,
 	public void afterPost(PostEvent pevt) {}
 
 	public void afterCarrega(CarregaEvent cevt) {
+		buscaInfoUsuAtual();
 		if((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble());
+		}
+		else if((cevt.getListaCampos() == lcCampos)){
+			if(!Aplicativo.strUsuario.equals(txtIDUsu.getVlrString())){
+				txtCodProd.setNaoEditavel(true);
+				txtRefProd.setNaoEditavel(true);
+				txtQtdItRma.setNaoEditavel(true);
+				txaMotivoRma.disable();			
+				if(bAprova)
+				   txtQtdItAprovRma.setNaoEditavel(false);
+			}
+			else {
+				txtCodProd.setNaoEditavel(false);
+				txtRefProd.setNaoEditavel(false);
+				txtQtdItRma.setNaoEditavel(false);
+				txaMotivoRma.enable();			
+				if(bAprova)
+				   txtQtdItAprovRma.setNaoEditavel(true);
+				
+			}
+			
 		}
 	}
 
