@@ -54,7 +54,7 @@ public class FSerie extends FDados implements ActionListener {
     txtDocSerie.setSoLeitura(true);
 
     adicCampo(txtSerie, 7, 20, 70, 20,"Serie","Cód.série",ListaCampos.DB_PK,null,true);
-    adicCampo(txtDocSerie, 80, 20, 250, 20,"DocSerie","Doc. número",ListaCampos.DB_SI,null,true);
+    adicCampo(txtDocSerie, 80, 20, 250, 20,"DocSerie","Doc. número",ListaCampos.DB_SI,null,false);
        
     adic(btReset,100,50,130,30);
     setListaCampos( true, "SERIE", "LF");
