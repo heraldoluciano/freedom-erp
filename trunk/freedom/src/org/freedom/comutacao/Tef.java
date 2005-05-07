@@ -37,6 +37,8 @@ import java.math.BigDecimal;
 import java.util.Properties;
 import java.util.Vector;
 
+import org.freedom.acao.Processo;
+import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 
 public class Tef {
@@ -277,6 +279,30 @@ public class Tef {
         return leRetorno();
     }
 
+
+    public boolean cancelaVenda(Properties prop) {
+        String pRet = null;
+        boolean bRet;
+        int iConta;
+        if (!verifTef())
+            return false;
+        confirmaRetorno();
+        bRet = enviaArquivo(new String[] { (TEF_HEADER + " = " + "CNC"),
+                (TEF_IDENTIFICACAO + " = " + prop.getProperty(TEF_IDENTIFICACAO)),
+                (TEF_VAL_TOTAL + " = " + prop.getProperty(TEF_VAL_TOTAL)),
+                (TEF_NOME_REDE + " = " + prop.getProperty(TEF_NOME_REDE)),
+                (TEF_NSU + " = " + prop.getProperty(TEF_NSU)),
+                (TEF_DT_COMPROVANTE + " = " + prop.getProperty(TEF_DT_COMPROVANTE)),
+                (TEF_HR_COMPROVANTE + " = " + prop.getProperty(TEF_HR_COMPROVANTE)) });
+        if (!bRet || !existeStatus("CNC", Long.parseLong(prop.getProperty(
+        		TEF_IDENTIFICACAO, "0"))))
+            return false;
+
+        fStatus.delete();
+
+        return bRet;
+    }
+
     public boolean confirmaAdm(Properties prop) {
         String pRet = null;
         boolean bRet;
@@ -330,18 +356,8 @@ public class Tef {
         int iConta;
         if (!verifTef())
             return false;
+        
         confirmaRetorno();
-        Funcoes.mensagemErro(null, "Cancelada a Transação:\n"
-                + "Doc No: "
-                + prop.getProperty(TEF_DOC_FISCAL)
-                + "\n"
-                + "Rede: "
-                + prop.getProperty(TEF_NOME_REDE)
-                + "\n"
-                + "Valor: "
-                + Funcoes.strDecimalToStrCurrency(2, Funcoes.transValorInv(prop
-                        .getProperty(TEF_VAL_TOTAL, "000"))
-                        + ""));
 
         bRet = enviaArquivo(new String[] { (TEF_HEADER + " = " + "NCN"),
                 (TEF_IDENTIFICACAO + " = " + prop.getProperty(TEF_DOC_FISCAL)),
@@ -354,12 +370,24 @@ public class Tef {
                         .getProperty(TEF_DOC_FISCAL))))
             return false;
 
+        Funcoes.mensagemErro(null, "Cancelada a Transação:\n"
+                + "Doc No: "
+                + prop.getProperty(TEF_DOC_FISCAL)
+                + "\n"
+                + "Rede: "
+                + prop.getProperty(TEF_NOME_REDE)
+                + "\n"
+                + "Valor: "
+                + Funcoes.strDecimalToStrCurrency(2, Funcoes.transValorInv(prop
+                        .getProperty(TEF_VAL_TOTAL, "000"))
+                        + ""));
+        
         fStatus.delete();
 
         return bRet;
     }
 
-    public Properties solicAdm(String sTipoTrans) {
+    public Properties solicAdm() {
         String pRet = null;
         boolean bRet;
         int iConta;
@@ -370,8 +398,7 @@ public class Tef {
         long lIdent = this.lIdentUniq++;
         
        	bRet = enviaArquivo(new String[] { (TEF_HEADER + " = " + "ADM"),
-       									   (TEF_IDENTIFICACAO + " = " + lIdent),
-               						       (TEF_TIPO_TRANSACAO + " = " + sTipoTrans) });
+       									   (TEF_IDENTIFICACAO + " = " + lIdent) });
         	
         if (!bRet || !existeStatus("ADM", lIdent) || !existeRetorno("ADM", lIdent))
             return null;
@@ -379,13 +406,18 @@ public class Tef {
         return leRetorno();
     }
 
-    public boolean validaTef(Properties prop) {
+    public boolean validaTef(final Properties prop) {
         boolean bRet = false;
         if (!prop.getProperty(TEF_ST_TRANSACAO, "").equals("0")) {
-            Funcoes.mensagemErro(null, prop.getProperty(TEF_MSG_OPERADOR));
             bRet = false;
         } else
             bRet = true;
+        if (!prop.getProperty(TEF_MSG_OPERADOR,"").equals("")) {
+        	if (Integer.parseInt(prop.getProperty(TEF_QTD_LINHAS, "0")) > 0)
+        		Funcoes.mensagemTemp(prop.getProperty(TEF_MSG_OPERADOR),"TEF",5);
+        	else
+        		Funcoes.mensagemInforma(null,prop.getProperty(TEF_MSG_OPERADOR));
+        }
         return bRet;
     }
 
