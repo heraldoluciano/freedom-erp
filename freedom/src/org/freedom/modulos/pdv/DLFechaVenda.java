@@ -137,10 +137,6 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
         for (int i=0;i<sLinhas.length;i++)
             sComprovante += sLinhas[i]+"\n";
         
-        //Tirar isto aki!
-        sComprovante = sComprovante.substring(0,450);
-
-        
         
         //verifica se ha linhas a serem impressas, caso contrário sai sem imprimir nada.
         if (sLinhas.length == 0)
