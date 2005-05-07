@@ -31,8 +31,11 @@ package org.freedom.modulos.pdv;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -48,8 +51,10 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -108,7 +113,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 
 	private JPanelPad pinEntrada = new JPanelPad(190, 180);
 
-	private JPanelPad pinTb = new JPanelPad(500, 45);
+	private JPanelPad pnRodTb = new JPanelPad(new BorderLayout());
+	
+	private JPanelPad pnTots = new JPanelPad(440, 45);
 
 	private Tabela tbItem = new Tabela();
 
@@ -278,6 +285,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
 
+	private JLabelPad lbAvisoImp = new JLabelPad();
+
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
 
 	private Font fntTotalItem = null;
@@ -398,6 +407,12 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		txtCodProd.setFK(true);
 		txtCodProd.setNomeCampo("CodProd");
 
+		lbAvisoImp.setFont(new Font(lValorTotalItem.getFont().getFontName(),
+				lValorTotalItem.getFont().getStyle(), 12));
+		lbAvisoImp.setForeground(Color.RED);
+		lbAvisoImp.setHorizontalAlignment(SwingConstants.CENTER);
+		
+
 		txtCodProd1.setSoLeitura(true);
 		txtDescProd.setSoLeitura(true);
 		txtPreco.setTipo(JTextFieldPad.TP_DECIMAL, 12, 2);
@@ -513,21 +528,26 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		pinEntrada.adic(lValorIcms, 70, 129, 115, 15);
 		pinEntrada.adic(txtValorIcms, 70, 146, 115, 20);
 
-		pinTb.adic(lBaseCalc1, 5, 3, 90, 15);
-		pinTb.adic(lValorIcms1, 100, 3, 90, 15);
-		pinTb.adic(lTotalCupom, 195, 3, 90, 15);
-		pinTb.adic(lNumeroCupom, 290, 3, 90, 15);
-		pinTb.adic(lSerieCupom, 385, 3, 90, 15);
+		pnTots.adic(lBaseCalc1, 5, 3, 90, 15);
+		pnTots.adic(lValorIcms1, 100, 3, 90, 15);
+		pnTots.adic(lTotalCupom, 195, 3, 90, 15);
+		pnTots.adic(lNumeroCupom, 290, 3, 90, 15);
+		pnTots.adic(lSerieCupom, 385, 3, 50, 15);
 
-		pinTb.adic(txtBaseCalc1, 5, 20, 90, 20);
-		pinTb.adic(txtValorIcms1, 100, 20, 90, 20);
-		pinTb.adic(txtTotalCupom, 195, 20, 90, 20);
-		pinTb.adic(txtNumeroCupom, 290, 20, 90, 20);
-		pinTb.adic(txtSerieCupom, 385, 20, 50, 20);
+		pnTots.adic(txtBaseCalc1, 5, 20, 90, 20);
+		pnTots.adic(txtValorIcms1, 100, 20, 90, 20);
+		pnTots.adic(txtTotalCupom, 195, 20, 90, 20);
+		pnTots.adic(txtNumeroCupom, 290, 20, 90, 20);
+		pnTots.adic(txtSerieCupom, 385, 20, 50, 20);
+		
+		pnTots.tiraBorda();
+		pnRodTb.add(pnTots,BorderLayout.WEST);
+		pnRodTb.add(lbAvisoImp,BorderLayout.CENTER);
+		pnRodTb.setBorder(BorderFactory.createEtchedBorder());
 
 		pnNorte.add(pinBarra, BorderLayout.NORTH);
 		pnNorte.add(pinCab, BorderLayout.SOUTH);
-		pnTabela.add(pinTb, BorderLayout.SOUTH);
+		pnTabela.add(pnRodTb, BorderLayout.SOUTH);
 		pnTabela.add(spTb, BorderLayout.CENTER);
 		pnEntrada.add(pinEntrada, BorderLayout.CENTER);
 		pnCliente.add(pinProduto, BorderLayout.NORTH);
@@ -800,11 +820,19 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		txtCodVend.setVlrInteger(new Integer(retVendedor()));
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
-		if (AplicativoPDV.bECFTerm)
+		if (AplicativoPDV.bECFTerm) {
 			txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(
 					Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
+		}
 		tbItem.limpa();
+		mostraInfoImp();
 		iniItem();
+	}
+	
+	private void iniItem() {
+		txtQtdade.setVlrBigDecimal(new BigDecimal(1));
+		txtPreco.setVlrString("");
+		txtCodProd.requestFocus();
 	}
 
 	public void setConexao(Connection con) {
@@ -827,13 +855,18 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		sbVenda.setNumEst(Aplicativo.iNumEst);
 		sbVenda.setDescEst(getDescEst());
 	}
-
-	private void iniItem() {
-		txtQtdade.setVlrBigDecimal(new BigDecimal(1));
-		txtPreco.setVlrString("");
-		txtCodProd.requestFocus();
-	}
-
+    private void mostraInfoImp() {
+		if (AplicativoPDV.bECFTerm) {
+			String sStatus = bf.leStatus(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
+			if (!sStatus.equals("")) {
+				sStatus = sStatus.replaceAll("\n","<BR>");
+				sStatus = "<HTML><CENTER>"+sStatus+"</CENTER></HTML>";
+			}
+			lbAvisoImp.setText(sStatus);
+		}
+		else
+			lbAvisoImp.setText("");
+    }
 	private boolean mostraTelaPass() {
 		boolean bRet = false;
 		JTextFieldPad txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
@@ -928,7 +961,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			bf.leituraX(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
-
+    
 	private void abreGaveta() {
 		if (mostraTelaPass()) {
 			JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
