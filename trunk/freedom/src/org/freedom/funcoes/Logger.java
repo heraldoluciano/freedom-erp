@@ -47,7 +47,7 @@ public class Logger {
 	public static final int idErroPDV = 4;
 	
 	public static final LoggerItem LGEP_ABERTFECHA_CAIXA = new LoggerItem(idErroPDV,1,"Erro na abertura/fechamento caixa");
-	public static final LoggerItem LGEP_STATUS_IMPRES = new LoggerItem(idErroPDV,2,"Erro na leitura do status da impressora");
+	public static final LoggerItem LGEP_STATUS_IMPRES = new LoggerItem(idErroPDV,2,"Leitura de status da impressora");
 	public static final LoggerItem LGEP_ABERT_CUPOM = new LoggerItem(idErroPDV,3,"Erro na abertura do cupom fiscal");
 	public static final LoggerItem LGEP_TROCA_VERAO = new LoggerItem(idErroPDV,4,"Erro na troca do horário de verão");
 	public static final LoggerItem LGEP_ABERT_GAVETA = new LoggerItem(idErroPDV,5,"Erro na abertura da gaveta");
