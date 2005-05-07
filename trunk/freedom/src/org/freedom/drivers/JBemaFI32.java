@@ -427,215 +427,96 @@ public class JBemaFI32 {
    	  return cRetorno;
    }
 
-   public boolean leErroStatus(String sUserID, boolean bModoDemo) {
- 	  boolean bRetorno = false;
+   public String leStatus(String sUserID, boolean bModoDemo) {
   	  int iAck = 0;
   	  int iSt1 = 0;
   	  int iSt2 = 0;
   	  boolean bState[][] = null;
   	  String sMensagem = "";
+  	  String sSep = "";
   	  try {
   	  	if (!bModoDemo) {
   	  	    bState = verificaEstadoImpressora(sUserID,bModoDemo);
   	  		if (bState != null) {
-  	  			bRetorno = true;
   	  			if (bState[1][7]) {
-  	  				sMensagem = "Fim de papel.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += "Fim de papel.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][6]) {
-  	  				sMensagem = sMensagem + "Pouco papel.\n";
+  	  				sMensagem += sSep + "Pouco papel.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][5]) {
-  	  				sMensagem = sMensagem + "Erro no relógio.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Erro no relógio.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][4]) {
-  	  				sMensagem = sMensagem + "Impressora em erro.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Impressora em erro.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][3]) {
-  	  				sMensagem = sMensagem + "Primeiro dado de CMD não foi ESC( 1Bh).\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Primeiro dado de CMD não foi ESC( 1Bh).";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][2]) {
-  	  				sMensagem = sMensagem + "Comando inexistente.";
-  	  				bRetorno = false;	
+  	  				sMensagem += sSep + "Comando inexistente.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][1]) {
-  	  				sMensagem = sMensagem + "Cupom fiscal aberto.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Cupom fiscal aberto.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[1][0]) {
-  	  				sMensagem = sMensagem + "Número de parâmetro de CMD inválido.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Número de parâmetro de CMD inválido.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][7]) {
-  	  				sMensagem = sMensagem + "Tipo de parâmetro de CMD inválido.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Tipo de parâmetro de CMD inválido.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][6]) {
-  	  				sMensagem = sMensagem + "Memória fiscal lotada.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Memória fiscal lotada.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][5] ) {
-  	  				sMensagem = sMensagem + "Erro na memória RAM CMOS não volátil.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Erro na memória RAM CMOS não volátil.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][4]) {
-  	  				sMensagem = sMensagem + "Alíquota não programada.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Alíquota não programada.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][3]) {
-  	  				sMensagem = sMensagem + "Capacidade de alíquotas esgotada.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Capacidade de alíquotas esgotada.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][2]) {
-  	  				sMensagem = sMensagem + "Cancelamento não permitido.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Cancelamento não permitido.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][1]) {
-  	  				sMensagem = sMensagem + "CNPJ/IE do proprietário não programados.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "CNPJ/IE do proprietário não programados.";
+  	  				sSep = "\n";
   	  			}
   	  			if (bState[2][0]) {
-  	  				sMensagem = sMensagem + "Comando não executado.\n";
-  	  				bRetorno = false;
+  	  				sMensagem += sSep + "Comando não executado.";
+  	  				sSep = "\n";
   	  			}
-  	  			
   	  			if (!sMensagem.trim().equals("")) {
-  	  		 	    Logger.gravaLogTxt("",sUserID,Logger.LGEP_STATUS_IMPRES,sMensErroLog);
-  	  				Funcoes.mensagemErro(null,sMensagem);
-  	  				
+  	  		 	    Logger.gravaLogTxt("",sUserID,Logger.LGEP_STATUS_IMPRES,sMensagem+"-"+sMensErroLog);
   	  			}
   	  		}
   	  		else {
   	  			Logger.gravaLogTxt("",sUserID,Logger.LGEP_STATUS_IMPRES,sMensErroLog);
-  	  			bRetorno = false;
   	  		}
-  	  	}
-  	  	else {
-  	  		bRetorno = true;
   	  	}
   	  }
   	  finally {
       	  bState = null;
-      	  sMensagem = null;
   	  }
   	  
-  	  return bRetorno;
+  	  return sMensagem;
    }
-/*   
-   public boolean getStatusVenda(String sUserID, boolean bModoDemo) {
-   	  boolean bRetorno = false;
-  	  int iAck = 0;
-  	  int iSt1 = 0;
-  	  int iSt2 = 0;
-  	  boolean[] bAck = null;
-  	  boolean[] bSt1 = null;
-  	  boolean[] bSt2 = null;
-  	  String sMensagem = "";
-  	  try {
-  	  	if (!bModoDemo) {
-  	  		if (trataRetornoFuncao(bVerificaEstadoImpressora( iAck, iSt1, iSt2 ))) {
-  	  			bAck = iDecToBin(iAck);
-  	  			bSt1 = iDecToBin(iSt1);
-  	  			bSt2 = iDecToBin(iSt2);
-  	  			bRetorno = true;
-  	  			
-  	  			if (bSt1[7]) {
-		          sMensagem = "Fim de papel.\n";
-		          bRetorno = false;
-		        }
-		        if (bSt1[6]) 
-		          sMensagem = sMensagem + "Pouco papel.\n";
-		        if (bSt1[5] ) {
-		           sMensagem = sMensagem + "Erro no relógio.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt1[4]) {
-		           sMensagem = sMensagem + "Impressora em erro.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt1[3]) {
-		           sMensagem = sMensagem + "Primeiro dado de CMD não foi ESC( 1Bh).\n";
-		           bRetorno = false;
-		        }
-		        if (bSt1[2]) {
-		           sMensagem = sMensagem + "Comando inexistente.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt1[1]) {
-		           // sMensagem = sMensagem + "Cupom fiscal aberto.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt1[0]) {
-		           sMensagem = sMensagem + "Número de parâmetro de CMD inválido.\n";
-		           bRetorno = false;
-		        }
-
-		        if (bSt2[7]) {
-		          sMensagem = sMensagem + "Tipo de parâmetro de CMD inválido.\n";
-		          bRetorno = false;
-		        }
-		        if (bSt2[6]) {
-		          sMensagem = sMensagem + "Memória fiscal lotada.\n";
-		          bRetorno = false;
-		        }
-		        if (bSt2[5] ) {
-		           sMensagem = sMensagem + "Erro na memória RAM CMOS não volátil.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt2[4]) {
-		           sMensagem = sMensagem + "Alíquota não programada.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt2[3]) {
-		           sMensagem = sMensagem + "Capacidade de alíquotas esgotada.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt2[2]) {
-		           sMensagem = sMensagem + "Cancelamento não permitido.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt2[1]) {
-		           sMensagem = sMensagem + "CNPJ/IE do proprietário não programados.\n";
-		           bRetorno = false;
-		        }
-		        if (bSt2[0]) {
-		           sMensagem = sMensagem + "Comando não executado.\n";
-		           bRetorno = false;
-		        }
-
-		        if (!sMensagem.trim().equals("")) {
-		        	Logger.gravaLogTxt("",sUserID,Logger.LGEP_STATUS_IMPRES,sMensagem);
-		        	Funcoes.mensagemErro(null,sMensagem);
-		        }
-  	  			
-  	  		}
-  	  		else {
-  	  			Logger.gravaLogTxt("",sUserID,Logger.LGEP_STATUS_IMPRES,sMensErroLog);
-  	  			bRetorno = false;
-  	  		}
-  	  	}
-  	  	else {
-  	  		bRetorno = true;
-  	  	}
-  	  	
-  	  }
-  	  finally {
-  	  	  iAck = 0;
-  	  	  iSt1 = 0;
-  	  	  iSt2 = 0;
-    	  bAck = null;
-      	  bSt1 = null;
-      	  bSt2 = null;
-      	  sMensagem = null;
-  	  }
-   	  
-   	  return bRetorno;
-   }
-  */ 
    public boolean ImpVerao(String sUserID, boolean bModoDemo) {
    	  boolean bRetorno = false;
    	  if (flagFiscal(sUserID, bModoDemo)[2]) 
