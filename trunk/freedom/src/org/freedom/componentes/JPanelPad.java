@@ -63,7 +63,9 @@ public class JPanelPad extends JPanel  {
   public JPanelPad(int tppanel) {
 	super();
   }
-
+  public JPanelPad(LayoutManager arg0) {
+	super(arg0);
+  }
   public JPanelPad(int tppanel, boolean arg0) {
 	super(arg0);
   }
