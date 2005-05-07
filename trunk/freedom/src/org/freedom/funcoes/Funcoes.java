@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,10 +59,14 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
 import org.freedom.componentes.StringDireita;
@@ -326,6 +332,44 @@ public class Funcoes {
 			int iOpcao) {
 		//	imgIcone = Aplicativo.imgIcone;
 			JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
+	}
+
+	/**
+	 * Mostra uma mensagem sem botões não-modal por N segundos.
+	 * 
+	 * @see #mensagemTemp(JFrame,String,String,int)
+	 */
+	public static FFDialogo mensagemTemp(final String sMensagem, final String sTitulo,int iTempoShow) {
+		return mensagemTemp(null,sMensagem,sTitulo,iTempoShow);
+	}
+	
+	/**
+	 * Mostra uma mensagem sem botões não-modal por N segundos.
+	 * 
+	 * @see #mensagemTemp(String,String,int)
+	 */
+	public static FFDialogo mensagemTemp(JFrame fOrig,final String sMensagem, final String sTitulo,int iTempoShow) {
+		fOrig = fOrig == null ? fOrig = Aplicativo.telaPrincipal : fOrig;
+		
+		final FFDialogo diag = new FFDialogo(fOrig,false);
+		diag.setAtribos(300,120);
+		
+		JPanelPad pn = new JPanelPad(new BorderLayout());
+		pn.add(new JLabelPad(sMensagem,JLabel.CENTER),BorderLayout.CENTER);
+		
+		diag.setTela(pn);
+		diag.setVisible(true);
+		
+		Timer tim = new Timer(iTempoShow*1000,
+						new ActionListener() {
+							public void actionPerformed(ActionEvent evt) {
+								diag.dispose();
+							}
+						}
+					);
+		tim.start();
+		
+		return diag;
 	}
 
 	public static void mensagemInforma(Component frame, String sMensagem) {
