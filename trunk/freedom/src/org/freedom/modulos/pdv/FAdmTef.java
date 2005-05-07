@@ -61,9 +61,7 @@ public class FAdmTef extends FFilho implements ActionListener {
         Vector vLabs = new Vector();
         Vector vVals = new Vector();
         vLabs.addElement("Administrativas - Outras");
-        vLabs.addElement("Administrativa - Fechamento/Transmissão de Lote");
-        vVals.addElement("00");
-        vVals.addElement("01");
+        vVals.addElement("1");
         cbComando = new JComboBoxPad(vLabs, vVals, JTextFieldPad.TP_STRING, 2,
                 0);
 
@@ -86,8 +84,11 @@ public class FAdmTef extends FFilho implements ActionListener {
 
     private boolean processaTef() {
         boolean bRet = false;
-        
-        retTef = tef.solicAdm(cbComando.getVlrString());
+
+        if (cbComando.getVlrString().equals("1"))
+        	retTef = tef.solicAdm();
+        else 
+        	return false;
 
         if (retTef == null || !tef.validaTef(retTef))
             bRet = false;
