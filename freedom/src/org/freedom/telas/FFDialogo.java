@@ -103,12 +103,12 @@ public class FFDialogo extends JDialog implements ActionListener,
     public JComponent pnPai = null;
 
     public FFDialogo() {
-        this(Aplicativo.telaPrincipal);
+        this(Aplicativo.telaPrincipal,true);
     }
 
     public FFDialogo(Component cOrig) {
         this(cOrig instanceof JFrame ? (JFrame) cOrig
-                : Aplicativo.telaPrincipal);
+                : Aplicativo.telaPrincipal,true);
         
         cPai = cOrig;
 
@@ -142,8 +142,8 @@ public class FFDialogo extends JDialog implements ActionListener,
    		);
     }
 
-    public FFDialogo(Frame fOrig) {
-        super(fOrig, "Dialogo", true);
+    public FFDialogo(Frame fOrig,boolean bModal) {
+        super(fOrig, "Dialogo", bModal);
         if (pnPai == null) {
             pnPai = Aplicativo.telaPrincipal.dpArea;
         }
