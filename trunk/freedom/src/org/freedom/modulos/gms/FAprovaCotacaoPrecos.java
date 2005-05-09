@@ -508,7 +508,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 				if (allow || allowItems) {
 					btAprovaCompra.setEnabled(true);
 					btAprovaCompra.setIcon(imgOk);
-					btAprovaCompra.setText("Aprovar");
+					btAprovaCompra.setText("Aprovar Cotação");
 					btAprovaCompra.setSize(125, 30);
 					btCancelaCompra.setEnabled(true);
 					btCancelaCompra.setVisible(true);
