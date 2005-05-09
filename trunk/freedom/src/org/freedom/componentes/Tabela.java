@@ -48,6 +48,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   boolean bAutoRol = false;
   TabelaEditListener edlis = this;
   TabelaSelListener seLis = this;
+  private String testName = "";
   public Tabela() { 
     setModel(modelo);  
     setAutoResizeMode(AUTO_RESIZE_OFF);
@@ -240,8 +241,13 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   }
   public void valorAlterado(TabelaEditEvent tevt) { }
   public void valorAlterado(TabelaSelEvent tevt) { }
+  public void setTestName(String testName) {
+  	this.testName = testName;
+  }
   
-  
+  public String getTestName() {
+  	return this.testName;
+  }
   
   class Modelo extends AbstractTableModel implements Serializable {
     protected Vector    dataVector;

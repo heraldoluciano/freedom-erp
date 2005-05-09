@@ -141,6 +141,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		setTitulo("Cotação de Preços");
 		setAtribos(15, 10, 760, 580);
 
+		tabCot.setTestName("Isto é um teste");
 		pnMaster.remove(2);
 		pnGImp.removeAll();
 		pnGImp.setLayout(new GridLayout(1, 3));

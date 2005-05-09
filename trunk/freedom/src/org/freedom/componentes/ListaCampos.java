@@ -1283,11 +1283,15 @@ public class ListaCampos extends Container implements PostListener,
 
 	public void next() {
 		int iLin = 0;
-		if ((bDetalhe) & (tab != null) & (tab.getNumLinhas() > 0)) {
-			iLin = getNumLinha();
-			if (iLin < (tab.getNumLinhas() - 1)) {
-				tab.setLinhaSel(iLin + 1);
-				carregaItem(iLin + 1);
+	    int iNumLinhas = 0;
+		if ((bDetalhe) && (tab != null)) {
+			iNumLinhas = tab.getNumLinhas();
+			if (iNumLinhas>0) {
+				iLin = getNumLinha();
+				if (iLin < (iNumLinhas - 1)) {
+					tab.setLinhaSel(iLin + 1);
+					carregaItem(iLin + 1);
+				}
 			}
 		}
 	}
@@ -1305,6 +1309,7 @@ public class ListaCampos extends Container implements PostListener,
 		for (int i = 0; i < getComponentCount(); i++) {
 			if (((GuardaCampo) getComponent(i)).ehPK()) {
 				iCol = i;
+				break;
 			}
 		}
 		if (iCol >= 0) {
