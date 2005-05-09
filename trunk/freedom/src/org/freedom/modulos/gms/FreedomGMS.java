@@ -175,8 +175,9 @@ public class FreedomGMS extends Aplicativo {
 			addOpcao(300000000, TP_OPCAO_ITEM, "Pesquisa Orçamento","Pesquisa Orçamento", 'P', 300700000, 1, true, FConsOrc.class);	
 			addSeparador(300000000);
 			addOpcao(300000000, TP_OPCAO_ITEM, "Romaneio", "Romaneio", 'R',300800000, 1, true, FRomaneio.class);
-			addSeparador(300000000);
-			addOpcao(300000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'm',300900000, 1, true, FRma.class);			
+			addSeparador(300000000);			
+			addOpcao(300000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'm',300900000, 1, true, FRma.class);
+			addOpcao(300000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm',301300000, 1, true, FConsRMA.class);
 			addSeparador(300000000);
 			addOpcao(300000000, TP_OPCAO_MENU, "Listagens", "", 's', 301000000, 1,false, null);
 				addOpcao(301000000, TP_OPCAO_ITEM, "Resumo diário", "Resumo Diário",'R', 301001000, 2, true, FRResumoDiario.class);

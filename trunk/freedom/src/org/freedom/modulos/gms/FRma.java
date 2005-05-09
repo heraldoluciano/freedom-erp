@@ -32,7 +32,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -321,9 +320,6 @@ public class FRma extends FDetalhe implements PostListener,
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage());
 		}
-
-    	
-    	
     }
 	public void focusGained(FocusEvent fevt) {}
 
@@ -577,8 +573,8 @@ public class FRma extends FDetalhe implements PostListener,
 		}			
 	}
 
-	public void exec(int iCodCompra) {
-//		txtCodSolicitacao.setVlrString(iCodCompra + "");
+	public void exec(int iCodRma) {
+		txtCodRma.setVlrString(iCodRma + "");
 		lcCampos.carregaDados();
 	}
 
