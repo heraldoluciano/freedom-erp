@@ -320,6 +320,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbVerif = null;
 
 	private JCheckBoxPad cbCpFatConv = null;
+	
+	private JCheckBoxPad cbRMA = null;                 // botão do RMA
 
 	private Tabela tabFatConv = new Tabela();
 
@@ -548,6 +550,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		cbAtivo.setVlrString("S");
 		cbVerif = new JCheckBoxPad("Senha", "S", "N");
 		cbVerif.setVlrString("S");
+		cbRMA = new JCheckBoxPad("RMA", "S", "N");
+		cbRMA.setVlrString("S");
 
 		txtCustoMPMProd.setSoLeitura(true);
 		txtCustoPEPSProd.setSoLeitura(true);
@@ -688,28 +692,29 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adic(new JLabelPad("Saldo liq."), 560, 200, 87, 20);
 		adic(txtSldLiqAlmox, 560, 220, 90, 20);
 		
-		adicDB(cbLote, 7, 260, 70, 20, "CLoteProd", "Estoque", true);
-		adicDB(cbAtivo, 80, 260, 67, 20, "AtivoProd", "Atividade", true);
-		adicDB(cbVerif, 150, 260, 77, 20, "VerifProd", "Abaixo custo", true);
-		adicCampo(txtDtUltCpProd, 230, 260, 97, 20, "DtUltCpProd",
+		adicDB(cbLote, 7, 260, 55, 20, "CLoteProd", "Estoque", true);
+		adicDB(cbAtivo, 65, 260, 57, 20, "AtivoProd", "Atividade", true);
+		adicDB(cbVerif, 125, 260, 77, 20, "VerifProd", "Abaixo custo", true);
+		adicDB(cbRMA, 205, 260, 50, 20, "RMAProd", "RMA", true);
+		adicCampo(txtDtUltCpProd, 265, 260, 72, 20, "DtUltCpProd",
 				"Ultima compra", ListaCampos.DB_SI, false);
-		adicCampo(txtCodUnid, 330, 260, 77, 20, "CodUnid", "Cód.und.",
+		adicCampo(txtCodUnid, 340, 260, 77, 20, "CodUnid", "Cód.und.",
 				ListaCampos.DB_FK, txtDescUnid, true);
-		adicDescFK(txtDescUnid, 410, 260, 240, 20, "DescUnid",
+		adicDescFK(txtDescUnid, 420, 260, 230, 20, "DescUnid",
 				"Descrição da unidade");
-		adicCampo(txtCodFisc, 7, 300, 80, 20, "CodFisc", "Cód.fisc.",
+		adicCampo(txtCodFisc, 7, 300, 110, 20, "CodFisc", "Cód.fisc.",
 				ListaCampos.DB_FK, txtDescFisc, true);
-		adicDescFK(txtDescFisc, 90, 300, 237, 20, "DescFisc",
+		adicDescFK(txtDescFisc, 120, 300, 217, 20, "DescFisc",
 				"Descrição da classificação fiscal");
-		adicCampo(txtCodMarca, 330, 300, 77, 20, "CodMarca", "Cód.marca",
+		adicCampo(txtCodMarca, 340, 300, 77, 20, "CodMarca", "Cód.marca",
 				ListaCampos.DB_FK, txtDescMarca, true);
-		adicDescFK(txtDescMarca, 410, 300, 240, 20, "DescMarca",
+		adicDescFK(txtDescMarca, 420, 300, 230, 20, "DescMarca",
 				"Descrição da marca");
-		adicCampo(txtCodGrup, 7, 340, 100, 20, "CodGrup", "Cód.grupo",
+		adicCampo(txtCodGrup, 7, 340, 110, 20, "CodGrup", "Cód.grupo",
 				ListaCampos.DB_FK, txtDescGrup, true);
-		adicDescFK(txtDescGrup, 110, 340, 237, 20, "DescGrup",
+		adicDescFK(txtDescGrup, 120, 340, 217, 20, "DescGrup",
 				"Descrição do grupo");
-		adicDB(rgCV, 350, 340, 260, 30, "CVProd", "Cadastro para:", true);
+		adicDB(rgCV, 340, 340, 270, 30, "CVProd", "Cadastro para:", true);
 
 		adic(btExp, 620, 340, 30, 30);
 		
