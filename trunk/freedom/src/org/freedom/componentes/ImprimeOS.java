@@ -597,7 +597,7 @@ public class ImprimeOS implements ActionListener {
             sRetorno = ((char) 27) + "(s0p10h1s3b2T";
             //         sRetorno = ((char) 27)+"E"+((char) 27)+"&l26a66p0o0e6D";
         } else if (iTipoImp == IMP_LASERJET)
-            sRetorno = "" + ((char) 0);
+            sRetorno = ((char) 27) + "(s0p10h1s3b2T";
         return sRetorno;
     }
 
@@ -612,7 +612,7 @@ public class ImprimeOS implements ActionListener {
         else if (iTipoImp == IMP_DESKJET)
             sRetorno = ((char) 27) + "(s0p20h1s0b2T";
         else if (iTipoImp == IMP_LASERJET)
-            sRetorno = "" + ((char) 0);
+            sRetorno = ((char) 27) + "(s0p20h1s0b2T";
         return sRetorno;
     }
 
@@ -626,7 +626,7 @@ public class ImprimeOS implements ActionListener {
         else if (iTipoImp == IMP_DESKJET)
             sRetorno = ((char) 27) + "(s05h1S";
         else if (iTipoImp == IMP_LASERJET)
-            sRetorno = "" + ((char) 0);
+            sRetorno = ((char) 27) + "(s05h1S";
         return sRetorno;
 
     }
@@ -641,7 +641,7 @@ public class ImprimeOS implements ActionListener {
         else if (iTipoImp == IMP_DESKJET)
             sRetorno = ((char) 27) + "E" + ((char) 27) + "&l26a66p0o0e6D";
         else if (iTipoImp == IMP_LASERJET)
-            sRetorno = "" + ((char) 0);
+            sRetorno = ((char) 27) + "E" + ((char) 27) + "&l26a66p0o0e6D";
         return sRetorno;
     }
 
