@@ -18,7 +18,7 @@
  *                   ALTERAR este Programa é preciso estar <BR>
  *                   de acordo com os termos da LPG-PC <BR>
  *                   <BR>
- *                   Formulário de consulta de orçamento.
+ *                   Formulário de consulta de RMA.
  */
 
 package org.freedom.modulos.gms;
@@ -63,10 +63,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Solicitações pendentes", "S", "N");
-	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Solicitações completas", "S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Solicitações canceladas", "S", "N");
-	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
+	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Requisições completas", "S", "N");
+	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
+//	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
@@ -82,7 +82,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	public FConsRMA() {
-		setTitulo("Pesquisa Solicitações de Compra");
+		setTitulo("Pesquisa Requisições de material");
 		setAtribos(10, 10, 513, 480);
 
 		txtDtIni.setRequerido(true);
@@ -166,7 +166,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pinCab.adic(cbPendentes, 15, 122, 170, 20);
 		pinCab.adic(cbCompletas, 15, 147, 170, 20);
 		pinCab.adic(cbCanceladas, 195, 122, 180, 20);
-		pinCab.adic(cbTomadasDePreco, 195, 147, 180, 20);
+//		pinCab.adic(cbTomadasDePreco, 195, 147, 180, 20);
 
 		pinCab.adic(btBusca, 382, 110, 110, 30);
 		pinCab.adic(btPrevimp, 382, 145, 110, 30);
@@ -175,7 +175,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		txtDtFim.setVlrDate(new Date());
 
 		tab.adicColuna("Sit.");
-		tab.adicColuna("Sol.");
+		tab.adicColuna("Rma.");
 		tab.adicColuna("Data");
 		tab.adicColuna("Motivo");
 
@@ -191,12 +191,24 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 			public void mouseClicked(MouseEvent mevt) {
 				if (mevt.getSource() == tab && mevt.getClickCount() == 2)
-					abreSol();
+					abreRma();
 			}
 		});
 		btSair.addActionListener(this);
+		habCampos();
 	}
 
+	private void habCampos(){
+		if(getAprova())
+		  txtCodUsu.setNaoEditavel(false);
+		else {
+		  txtCodUsu.setVlrString(Aplicativo.strUsuario);
+		  txtCodUsu.setNaoEditavel(true);
+		  lcUsuario.carregaDados();
+		}
+		
+	}
+	
 	/**
 	 * Carrega os valores para a tabela de consulta. Este método é executado após
 	 * carregar o ListaCampos da tabela.
@@ -211,42 +223,44 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 		if (cbPendentes.getVlrString().equals("S")) {
 			usaWhere = true;
-			where = " SitSol ='PE'";
+			where = " SitRma ='PE'";
 		}
 		if (cbCompletas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitSol ='SC'";
-			} else {
-				where = where + " OR SitSol ='SC'";
+				where = " SitRma ='FN'";
+			} 
+			else {
+				where = where + " OR SitRma ='FN'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
 		if (cbCanceladas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitSol ='CA'";
+				where = " SitRma ='CA'";
 			} else {
-				where = where + " OR SitSol ='CA'";
+				where = where + " OR SitRma ='CA'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
+/*
 		if (cbTomadasDePreco.getVlrString().equals("S")) {
 			if (where.trim().equals(""))
-				where = " SitSol ='TP'";
+				where = " SitRma ='TP'";
 			else {
-				where = where + " OR SitSol ='TP'";
+				where = where + " OR SitRma ='TP'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
-
+*/
 		if (usaWhere && usaOr)
 			where = " AND (" + where + ")";
 		else if (usaWhere)
 			where = " AND " + where;
 		else
-			where = " AND SitSol='PE'";
+			where = " AND SitRma='PE'";
 
 		if (almoxarifado)
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
@@ -255,15 +269,15 @@ public class FConsRMA extends FFilho implements ActionListener {
 			where += " AND IT.CODCC=? AND IT.CODEMPCC=? AND IT.CODFILIALCC=? ";
 
 		if (usuario)
-			where += " AND (IT.IDUSUITSOL=? OR IT.IDUSUAPROVITSOL=? OR IT.IDUSUCANCITSOL=?) ";
+			where += " AND (IT.IDUSUITRMA=? OR IT.IDUSUAPROVITRMA=? OR IT.IDUSUCANCITRMA=?) ";
 
-		String sSQL = "SELECT O.SITSOL, O.CODSOL,O.DTEMITSOL, O.MOTIVOSOL "
-				+ "FROM  CPSOLICITACAO O, CPITSOLICITACAO IT "
-				+ "WHERE O.CODEMP=? "
-				+ "AND O.CODFILIAL=? "
-				+ "AND IT.CODSOL=O.CODSOL AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL "
-				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) "
-				+ where + " GROUP BY O.CODSol, O.SitSol, O.DTEmitSol, O.MOTIVOSOL ";
+		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.MOTIVORMA "
+				+ "FROM  EQRMA R, EQITRMA IT "
+				+ "WHERE R.CODEMP=? "
+				+ "AND R.CODFILIAL=? "
+				+ "AND IT.CODRMA=R.CODRMA AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "
+				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
+				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.MOTIVORMA ";
 
 		System.out.println("Query completa:" + sSQL);
 		System.out.println(sSQL);
@@ -271,7 +285,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			int param = 1;
 			ps.setInt(param++, Aplicativo.iCodEmp);
-			ps.setInt(param++, ListaCampos.getMasterFilial("CPSOLICITACAO"));
+			ps.setInt(param++, ListaCampos.getMasterFilial("EQRMA"));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtFim.getVlrDate()));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
@@ -302,16 +316,17 @@ public class FConsRMA extends FFilho implements ActionListener {
 			while (rs.next()) {
 				tab.adicLinha();
 				
-				String aprovSolicitacaoCompra = rs.getString(1);
-				if (aprovSolicitacaoCompra.equalsIgnoreCase("PE")) {
+				String aprovRMA = rs.getString(1);
+				if (aprovRMA.equalsIgnoreCase("PE")) {
 					tab.setValor("Pendente", iLin, 0);
-				} else if (aprovSolicitacaoCompra.equalsIgnoreCase("CA")) {
+				} else if (aprovRMA.equalsIgnoreCase("CA")) {
 					tab.setValor("Cancelada", iLin, 0);
-				} else if (aprovSolicitacaoCompra.equalsIgnoreCase("SC")) {
+				} else if (aprovRMA.equalsIgnoreCase("FN")) {
 					tab.setValor("Concluída", iLin, 0);
-				} else if (aprovSolicitacaoCompra.equalsIgnoreCase("TM")) {
+				} 
+/*				else if (aprovRMA.equalsIgnoreCase("TM")) {
 					tab.setValor("Cotação", iLin, 0);
-				}
+				}*/
 
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
 				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
@@ -326,7 +341,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao carregar a tabela CPSOLICITACAO!\n"
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
 					+ err.getMessage());
 			err.printStackTrace();
 		}
@@ -350,11 +365,11 @@ public class FConsRMA extends FFilho implements ActionListener {
 			for (int iLin = 0; iLin < tab.getNumLinhas(); iLin++) {
 				if (imp.pRow() == 0) {
 					imp.montaCab();
-					imp.setTitulo("Relatório de Solicitações de Compra");
-					imp.addSubTitulo("Relatório de Solicitações de Compra");
+					imp.setTitulo("Relatório de Requisições de material");
+					imp.addSubTitulo("Relatório de Requisições de material");
 					imp.impCab(136, true);
 					//	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "| N.Sol.");
+					imp.say(imp.pRow() + 0, 0, "| Rma.");
 					imp.say(imp.pRow() + 0, 15, "| Emissão");
 					imp.say(imp.pRow() + 0, 29, "| Situação");
 					imp.say(imp.pRow() + 0, 45, "| Motivo.");
@@ -438,15 +453,54 @@ public class FConsRMA extends FFilho implements ActionListener {
 		}
 	}
 
-	private void abreSol() {
-		int iCodOrc = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
-		if (fPrim.temTela("Aprova Solicitação de Compra") == false) {
-			FAprovaSolicitacaoCompra tela = new FAprovaSolicitacaoCompra();
-			fPrim.criatela("Aprova Solicitação de Compra", tela, con);
-			tela.exec(iCodOrc);
+	private void abreRma() {
+		int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
+		if (fPrim.temTela("Requisição de material") == false) {
+			FRma tela = new FRma();
+			fPrim.criatela("Requisição de material", tela, con);
+			tela.exec(iRma);
 		}
 	}
 
+    private boolean getAprova() {
+    	boolean bRet = false;
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " +
+				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
+				      "AND IDUSU=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
+			ps.setString(3, Aplicativo.strUsuario);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				String sAprova = rs.getString("APROVRMAUSU");
+				if(sAprova!=null)
+					if(!sAprova.equals("ND")) {
+						if(sAprova.equals("TD"))						
+							bRet = true;
+						else if( (txtCodCC.getVlrString().equals(rs.getString("CODCC"))) &&
+								 (lcCC.getCodEmp()==rs.getInt("CODEMPCC")) &&
+								 (lcCC.getCodFilial()==rs.getInt("CODFILIALCC")) &&
+								 (sAprova.equals("CC"))	) {
+							bRet = true;							
+						}						
+					}
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage());
+		}
+		return bRet;
+    }
+
+	
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btSair) {
 			dispose();
