@@ -105,6 +105,7 @@ public class FRma extends FDetalhe implements PostListener,
 	Integer anoCC = null;
 	Integer iCodTpMov = null;
 	String codCC = null;
+	boolean bAprovaParcial = false;
 
 	boolean[] bPrefs = null;
 	boolean bAprova = false;
@@ -225,6 +226,7 @@ public class FRma extends FDetalhe implements PostListener,
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
+	    setImprimir(true);
 
 	}
 
@@ -329,6 +331,16 @@ public class FRma extends FDetalhe implements PostListener,
 
 	public void afterPost(PostEvent pevt) {}
 
+	public void carregaWhereAdic(){
+		if(bAprova){
+			  if(bAprovaParcial){
+			  	lcCampos.setWhereAdic("CODCC='"+Aplicativo.strCodCCUsu+"' AND ANOCC="+Aplicativo.strAnoCCUsu);
+			  }
+		}
+		else {
+		  	lcCampos.setWhereAdic("IDUSU='"+Aplicativo.strUsuario+"'");
+		}
+	}
 	public void afterCarrega(CarregaEvent cevt) {
 		buscaInfoUsuAtual();
 		if((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) {
