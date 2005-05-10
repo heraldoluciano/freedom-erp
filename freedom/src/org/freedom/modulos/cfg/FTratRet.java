@@ -122,7 +122,7 @@ public class FTratRet extends FDetalhe implements ActionListener {
    btPrevimp.addActionListener(this);  
    
    lcCampos.setReadOnly(true);
-  
+   setImprimir(true);
   }
     
   public void actionPerformed(ActionEvent evt) {

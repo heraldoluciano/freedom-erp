@@ -92,7 +92,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
    btImp.addActionListener(this);
    btPrevimp.addActionListener(this);  
    btTrat.addActionListener(this);
-   
+   setImprimir(true);
   }
   private void abreTrat() {
 	if (fPrim.temTela("Orcamento")==false) {

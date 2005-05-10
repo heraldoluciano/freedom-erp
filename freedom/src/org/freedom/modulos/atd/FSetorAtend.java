@@ -89,6 +89,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
 
    btImp.addActionListener(this);
    btPrevimp.addActionListener(this);  
+   setImprimir(true);
   
   }
     

@@ -326,7 +326,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 
 	btImp.addActionListener(this);
 	btPrevimp.addActionListener(this);
-  	
+    setImprimir(true);
   }
   //Função criada para montar a tela conforme a preferência do usuário:
   //com ou sem Referência sendo PK;
