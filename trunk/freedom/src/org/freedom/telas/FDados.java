@@ -89,6 +89,8 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    boolean setArea = true;
    boolean bMostrar = false;
    public FDados () { 
+   	btImp.setVisible(false);
+   	btPrevimp.setVisible(false);
 //     super();
      setTitulo("Formulário de dados");
      setAtribos( 50, 50, 500, 300);
@@ -138,7 +140,11 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
      setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
   }  
 
-
+  public void setImprimir(boolean bImp){
+  	btImp.setVisible(bImp);
+  	btPrevimp.setVisible(bImp);
+  }
+  
   public void setPKFoco() {
     for (int i=0; i<lcCampos.getComponentCount(); i++) {
       if (((GuardaCampo)lcCampos.getComponent(i)).ehPK())

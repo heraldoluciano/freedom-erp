@@ -275,6 +275,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	    pnObs.add(spnObs);
 	    setListaCampos( true, "VENDEDOR", "VD");
 	    lcCampos.setQueryInsert(false);
+	    setImprimir(true);
 	}
 
 	private void montaSetor() {

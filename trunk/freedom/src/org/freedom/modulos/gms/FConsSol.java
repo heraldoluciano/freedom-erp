@@ -195,6 +195,7 @@ public class FConsSol extends FFilho implements ActionListener {
 			}
 		});
 		btSair.addActionListener(this);
+
 	}
 
 	/**

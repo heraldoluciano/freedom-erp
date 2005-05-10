@@ -654,7 +654,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		btAltComis.addActionListener(this);
-
+	    setImprimir(true);
 	}
 
 	//Função criada para montar a tela conforme a preferência do usuário:

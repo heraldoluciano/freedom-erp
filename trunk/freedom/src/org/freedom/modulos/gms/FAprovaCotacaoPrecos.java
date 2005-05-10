@@ -305,6 +305,7 @@ public class FAprovaCotacaoPrecos extends FDetalhe implements PostListener,
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
+	    setImprimir(true);
 
 	}
 
