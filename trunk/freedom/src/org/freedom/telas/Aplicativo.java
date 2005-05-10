@@ -64,87 +64,48 @@ import org.freedom.funcoes.Funcoes;
 
 public abstract class Aplicativo implements ActionListener, KeyListener {
 	public final static int TP_OPCAO_MENU = 0;
-
 	public final static int TP_OPCAO_ITEM = 1;
-
 	public static int casasDec = 2;
-
 	public Connection con = null; // Variavel de conexao com o banco de dados
-
 	protected String strSenha = "";
-
 	public static FPrincipal telaPrincipal = null;
-
 	public static Component framePrinc = null;
-
-	public static String strUsuario = "";
-
+	public static String strUsuario = "";		
+	public static String strCodCCUsu = "";
+	public static String strAnoCCUsu = "";
 	public static String strTemp = "";
-
 	public static String strOS = "";
-
 	public static String strSplash = "";
-
 	public static int iCodEmp = 0;
-
 	public static int iCodFilial = 0;
-	
 	public static String sRazFilial = "";
-
 	public static int iCodFilialMz = 0;
-
 	public static int iCodFilialPad = 0;
-
 	public static int iNumEst = 0;
-
 	public static String strBanco = "";
-
 	public static String strDriver = "";
-
 	public static String strTefEnv = "";
-
 	public static String strTefRet = "";
-
 	public static TabObjeto tbObjetos = null;
-
 	public static ImageIcon imgIcone = null;
-
 	public Vector vArqINI = null;
-
 	public String[][][] sConfig = new String[0][0][0];
-
 	public JPanelPad pinBotoes = new JPanelPad(30, 30);
-
 	public int iXPanel = 0;
-
 	public static boolean bBuscaProdSimilar = false;
-	
 	public static String sMultiAlmoxEmp = "N";
-
 	private static String sFiltro = "";
-
 	private boolean bCtrl = true;
-
 	private static boolean bAutoCommit = false;
-
 	private String sSplashImg = "";
-
 	private JButton btAtualMenu = new JButton(Icone.novo("btAtualMenu.gif"));
-
 	private Vector vOpcoes = null;
-
 	private Vector vBotoes = null;
-
 	private int iCodSis = 0;
-
 	private int iCodModu = 0;
-
 	private String sDescSis = "";
-	
 	private String sDescModu = "";
-	
 	protected Connection conIB;
-
 	public static Vector vEquipeSis = new Vector();
 	public static String sNomeSis = "";
 	public static String sNomeModulo = "";
@@ -333,6 +294,31 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		iXPanel += 30;
 	}
 
+    private void buscaInfoUsuAtual() {      	
+    	String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " +
+				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
+				      "AND IDUSU=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
+			ps.setString(3, strUsuario);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				strCodCCUsu = rs.getString("CODCC");
+				strAnoCCUsu = rs.getString("ANOCC");
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			killProg(1, "Erro ao carregar informações da tabela de usuários!\n"	+ err.getMessage());
+		}
+    }
+	
 	public boolean verifAcesso(int iCodSis, int iCodModu, int iCodMenu) {
 		boolean bRet = false;
 		if (strUsuario.toUpperCase().equals("SYSDBA"))
@@ -690,6 +676,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			tbObjetos.montaLista(con, iCodEmp, "SGOBJETO", "TB");
 			carregaCasasDec();
 			getMultiAlmox();
+			buscaInfoUsuAtual();
 		} finally {
 			sAutoCommit = null;
 		}
