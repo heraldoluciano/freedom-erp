@@ -230,14 +230,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		setTitulo("Orçamento");
 		setAtribos(15, 10, 765, 460);
 
-		txtDescProd
-				.setToolTipText("Clique aqui duas vezes para alterar a descrição.");
+		txtDescProd.setToolTipText("Clique aqui duas vezes para alterar a descrição.");
 		txtDescProd.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent mevt) {
 				if (mevt.getClickCount() == 2)
 					mostraTelaDecricao();
 			}
 		});
+		setImprimir(true);
 	}
 
 	private void montaOrcamento() {

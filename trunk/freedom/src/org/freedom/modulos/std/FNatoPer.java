@@ -71,6 +71,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
     btItNatoper.addActionListener(this);
     lcCampos.setQueryInsert(false);
     lcCampos.addInsertListener(this);
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp)

@@ -204,7 +204,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     
     pinCli = new JPanelPad(500,330);
     setPainel(pinCli);
-	   
+    setImprimir(true);
   }
   private void montaTela() {
       

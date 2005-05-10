@@ -492,7 +492,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
-
+	    setImprimir(true);
 	}
 
 	private void montaDetalhe() {

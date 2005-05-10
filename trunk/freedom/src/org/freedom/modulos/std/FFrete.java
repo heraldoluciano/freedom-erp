@@ -139,7 +139,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
     
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
-   
+    setImprimir(true);
   }
     
   public void actionPerformed(ActionEvent evt) {

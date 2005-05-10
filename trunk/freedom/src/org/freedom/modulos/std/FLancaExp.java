@@ -79,7 +79,8 @@ public class FLancaExp extends FDados implements ActionListener {
 		adicCampo(txtCodCli, 7, 100, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, txtDescCli, true);
 		adicDescFK(txtDescCli, 90, 100, 250, 20, "RazCli", "Descrição do cliente");
 		setListaCampos( true, "LANCTOEXP", "EQ");
-        lcCampos.setQueryInsert(false);    
+        lcCampos.setQueryInsert(false); 
+        setImprimir(true);
 	}
 	public void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = new ImprimeOS("",con);

@@ -107,6 +107,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     btPrevimp.addActionListener(this);    
     tab.addMouseListener(this);
     tab.addKeyListener(this);
+
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);

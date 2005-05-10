@@ -227,7 +227,7 @@ public class FInventario extends FDados implements CarregaListener,
 				lcCampos.edit();
 			}
 		});
-
+		setImprimir(true);
 	}
 
 	private void montaTela() {

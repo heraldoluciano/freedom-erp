@@ -79,6 +79,7 @@ public class FCLComis extends FDados implements PostListener {
     setListaCampos( true, "CLCOMIS", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
+    setImprimir(true);
     
   }
   
