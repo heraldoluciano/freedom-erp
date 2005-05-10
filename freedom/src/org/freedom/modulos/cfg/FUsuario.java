@@ -69,6 +69,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
   private JTextFieldPad txtIDGrpUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19,0);
+  private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
   private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaComentUsu = new JTextAreaPad();
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(8);
@@ -119,11 +120,13 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     txtIDGrpUsu.setTabelaExterna(lcGrup);
 
     lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
+    lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano.c.c.", ListaCampos.DB_PK, false));
     lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descriçao do centro de custo", ListaCampos.DB_SI, false));
     lcCC.montaSql(false, "CC", "FN");    
     lcCC.setQueryCommit(false);
     lcCC.setReadOnly(true);
     txtCodCC.setTabelaExterna(lcCC);
+    txtCodCC.setNomeCampo("codcc");
     
     adicCampo(txtIDUsu, 7, 20, 80, 20, "IDUsu", "ID.usu.", ListaCampos.DB_PK, true);
     adicCampo(txtNomeUsu, 90, 20, 350, 20, "NomeUsu", "Nome do usuário", ListaCampos.DB_SI, true);
