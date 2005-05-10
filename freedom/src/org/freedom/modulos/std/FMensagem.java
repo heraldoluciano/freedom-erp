@@ -49,6 +49,7 @@ public class FMensagem extends FDados implements ActionListener {
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
     lcCampos.setQueryInsert(false);
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {

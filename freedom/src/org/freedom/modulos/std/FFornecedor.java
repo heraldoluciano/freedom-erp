@@ -90,7 +90,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   public FFornecedor() {
     setTitulo("Cadastro de Fornecedores");
     setAtribos(50, 20, 480, 430);
-    
+    setImprimir(true);
   }
   private void montaTela() {
     lcCampos.addPostListener(this);

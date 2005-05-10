@@ -164,6 +164,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
     lcCampos.setQueryInsert(false);    
     
     btItClFiscal.addActionListener(this);    
+    setImprimir(true);
   }
   public void verifItens() {
   	boolean bAtivo = true;

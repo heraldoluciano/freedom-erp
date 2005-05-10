@@ -135,6 +135,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
     lcCampos.addInsertListener(this);
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {

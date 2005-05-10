@@ -46,6 +46,7 @@ public class FClasCli extends FDados implements ActionListener{
     lcCampos.setQueryInsert(false);    
 //    btPrevimp.addActionListener(this);
 //    btImp.addActionListener(this);
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {

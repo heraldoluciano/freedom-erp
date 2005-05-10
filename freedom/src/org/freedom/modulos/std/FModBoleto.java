@@ -165,6 +165,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
         
         cbCamposDin.addComboBoxListener(this);
         cbAcao.addComboBoxListener(this);
+        setImprimir(true);
     }
 	public void valorAlterado(JComboBoxEvent evt) {
 		if (evt.getComboBoxPad() == cbCamposDin) {
