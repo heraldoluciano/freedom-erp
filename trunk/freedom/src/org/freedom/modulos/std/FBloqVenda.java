@@ -176,8 +176,8 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
             lcVenda.carregaDados();
         }
     }
-    catch(SQLException e) {
-        Funcoes.mensagemErro(this,"Erro bloqueando ou desbloqueando venda!\n"+e.getMessage());
+    catch(SQLException err) {
+        Funcoes.mensagemErro(this,"Erro bloqueando ou desbloqueando venda!\n"+err.getMessage(),true,con,err);
     }
     finally {
         iCodVenda = 0;

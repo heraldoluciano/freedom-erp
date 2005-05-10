@@ -390,8 +390,8 @@ public class FRComissoes extends FRelatorio {
 				//      	dl.dispose();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this,
-						"Erro consulta tabela de commissões!"
-								+ err.getMessage());
+						"Erro consulta tabela de commissões!\n"
+								+ err.getMessage(),true,con,err);
 			}
 
 			if (bVisualizar) {

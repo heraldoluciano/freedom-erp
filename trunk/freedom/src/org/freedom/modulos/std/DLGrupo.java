@@ -112,7 +112,7 @@ public class DLGrupo extends FFDialogo {
          con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela GRUPO!"+"\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela GRUPO!"+"\n"+err.getMessage(),true,con,err);
     }
     return true;
   }          

@@ -375,7 +375,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
      	ps.close();
      }
      catch (SQLException err) {
-     	Funcoes.mensagemErro(this,"Erro ao buscar juros do sistema!\n"+err.getMessage());
+     	Funcoes.mensagemErro(this,"Erro ao buscar juros do sistema!\n"+err.getMessage(),true,con,err);
      	err.printStackTrace();
      }
   }
@@ -393,7 +393,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
         ps.close();
     }
     catch (SQLException err) {
-        Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+        Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
     }
     return bRet;
   }
@@ -411,7 +411,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }

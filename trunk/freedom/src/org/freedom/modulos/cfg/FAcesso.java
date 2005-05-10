@@ -177,7 +177,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
    	  ps.close();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar menus.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar menus.\n"+err.getMessage(),true,con,err);
     }             
 
   	DefaultTreeModel mod = new DefaultTreeModel(men);

@@ -282,7 +282,7 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-      Funcoes.mensagemErro(this,"Erro ao consultar a tabela de lancameto de fretes!"+err.getMessage());      
+      Funcoes.mensagemErro(this,"Erro ao consultar a tabela de lancameto de fretes!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

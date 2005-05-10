@@ -515,7 +515,7 @@ public class FRMovProd extends FRelatorio {
 		 con.commit();		 
 	 }
 	 catch ( SQLException err ) {
-		 Funcoes.mensagemErro(this,"Erro consulta tabela de produtos!"+err.getMessage());
+		 Funcoes.mensagemErro(this,"Erro consulta tabela de produtos!\n"+err.getMessage(),true,con,err);
 	 }
 	 if (bVisualizar) {
 	   imp.preview(this);

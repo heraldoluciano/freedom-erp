@@ -479,9 +479,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 												+ "\n Não pode ser inciada.");
 							}
 							obj = null;
-						} catch (Exception e) {
-							Funcoes.mensagemErro(framePrinc, e.getMessage());
-							e.printStackTrace();
+						} catch (Exception err) {
+							Funcoes.mensagemErro(framePrinc, err.getMessage(),true,con,err);
+							
+							err.printStackTrace();
 						}
 					}
 				}
@@ -641,7 +642,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			} catch (Exception err) {
 				Funcoes.mensagemErro(null,
 						"Não foi possível carregar o parâmetro 'codemp'\n"
-								+ err.getMessage());
+								+ err.getMessage(),true,con,err);
 			}
 
 			try {
@@ -649,7 +650,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			} catch (Exception err) {
 				Funcoes.mensagemErro(null,
 						"Não foi possível carregar o parâmetro 'numterm'\n"
-								+ err.getMessage());
+								+ err.getMessage(),true,con,err);
 			}
 			if (strBanco == null) {
 				Funcoes.mensagemInforma(null,
@@ -748,7 +749,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null, "Erro ao gravar LOG!!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return iRet;
@@ -776,7 +777,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(null, err.getMessage());
+			Funcoes.mensagemErro(null, err.getMessage(),true,con,err);
 			return true;
 		}
 		return bModo;
@@ -798,7 +799,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(null, err.getMessage());
+			Funcoes.mensagemErro(null, err.getMessage(),true,con,err);
 			return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
 		}
 		return sDesc;
@@ -1046,10 +1047,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-		} catch (SQLException e) {
+		} catch (SQLException err) {
 			Funcoes.mensagemErro(null,
 					"Não foi possível obter o número de casas decimais!\n"
-							+ e.getMessage());
+							+ err.getMessage(),true,con,err);
 		} finally {
 			sSQL = null;
 			ps = null;
@@ -1080,7 +1081,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				conF.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null, "NÃO FOI POSSÍVEL CARREGAR OS FILTROS! "
-					+ err.getMessage());
+					+ err.getMessage(),true,conF,err);
 			//		return "NÃO FOI POSSÍVEL CARREGAR OS FILTROSL! ! !";
 		}
 		if (sFiltro == null)
@@ -1121,7 +1122,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					+ sFiltro);
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null, "Erro ao atualizar filtro.\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 

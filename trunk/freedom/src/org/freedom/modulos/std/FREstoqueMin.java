@@ -120,7 +120,7 @@ public class FREstoqueMin extends FRelatorio {
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
     }
     return bRetorno;
   }
@@ -314,7 +314,7 @@ public class FREstoqueMin extends FRelatorio {
 //      dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

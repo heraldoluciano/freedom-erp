@@ -174,7 +174,7 @@ public class FRPagar extends FRelatorio {
   	      ps.close();
   	    }
   	    catch(IOException err) {
-  	       Funcoes.mensagemErro(this,"Erro ao gravar o arquivo!\n"+err.getMessage());
+  	       Funcoes.mensagemErro(this,"Erro ao gravar o arquivo!\n"+err.getMessage(),true,con,err);
   	       err.printStackTrace();
   	    }  		
   	}
@@ -420,7 +420,7 @@ public class FRPagar extends FRelatorio {
       
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

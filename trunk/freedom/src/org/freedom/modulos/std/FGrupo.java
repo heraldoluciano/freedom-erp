@@ -136,7 +136,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       	con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO! ! !\n"+err.getMessage(),true,con,err);
     }
   }
   private void gravaNovoGrup() {
@@ -237,7 +237,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela EQGRUPO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela EQGRUPO!\n"+err.getMessage(),true,con,err);
     }
   }
   public void editaGrup() {
@@ -268,7 +268,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 //      ps.close();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this, "Erro ao editar a tabela EQGRUPO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this, "Erro ao editar a tabela EQGRUPO!\n"+err.getMessage(),true,con,err);
     }
   }
   public void editaSubGrup() {
@@ -293,7 +293,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO!\n"+err.getMessage(),true,con,err);
     }
     DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim());
     dl.setVisible(true);
@@ -320,7 +320,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 //      ps.close();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this, "Erro ao editar a tabela EQGRUPO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this, "Erro ao editar a tabela EQGRUPO!\n"+err.getMessage(),true,con,err);
     }
   }
   public void deletar() {
@@ -344,7 +344,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       if (err.getErrorCode() == 335544466)
 	  Funcoes.mensagemInforma(this, "O registro possui vínculos, não pode ser deletado! ! !");
       else 
-	  Funcoes.mensagemErro(this,"Erro ao deletar um registro na tabela GRUPO! ! !\n"+err.getMessage());
+	  Funcoes.mensagemErro(this,"Erro ao deletar um registro na tabela GRUPO!\n"+err.getMessage(),true,con,err);
     }
   }
   public void actionPerformed(ActionEvent evt) {
@@ -435,7 +435,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 
   	}  
   	catch ( SQLException err ) {
-  		Funcoes.mensagemErro(this,"Erro consulta tabela de Grupo!"+err.getMessage());      
+  		Funcoes.mensagemErro(this,"Erro consulta tabela de Grupo!\n"+err.getMessage(),true,con,err);      
   	}
   	
   	if (bVisualizar) {

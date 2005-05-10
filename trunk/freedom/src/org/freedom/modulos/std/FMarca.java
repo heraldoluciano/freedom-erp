@@ -112,7 +112,7 @@ public class FMarca extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro consulta tabela de marcas!"+err.getMessage());      
+       Funcoes.mensagemErro(this,"Erro consulta tabela de marcas!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

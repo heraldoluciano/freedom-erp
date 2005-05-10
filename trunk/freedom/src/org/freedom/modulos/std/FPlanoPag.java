@@ -159,7 +159,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }
@@ -246,7 +246,7 @@ public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListen
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

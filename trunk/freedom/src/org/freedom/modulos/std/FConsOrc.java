@@ -352,7 +352,7 @@ public class FConsOrc extends FFilho implements ActionListener {
     }
     catch (SQLException err) {
       Funcoes.mensagemErro(this, "Erro ao carregar a tabela VDORÇAMENTO!\n"
-          + err.getMessage());
+          + err.getMessage(),true,con,err);
       err.printStackTrace();
     }
   }
@@ -467,8 +467,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 
     }
     catch (SQLException err) {
-      Funcoes.mensagemErro(this, "Erro consulta tabela de orçamentos!"
-          + err.getMessage());
+      Funcoes.mensagemErro(this, "Erro na consulta à tabela de orçamentos!\n"
+          + err.getMessage(),true,con,err);
     }
 
     if (bVisualizar) {
@@ -510,7 +510,7 @@ public class FConsOrc extends FFilho implements ActionListener {
           con.commit();
       }
       catch (SQLException err) {
-        Funcoes.mensagemErro(this, "Erro ao buscar a venda!\n"+err.getMessage());
+        Funcoes.mensagemErro(this, "Erro ao buscar a venda!\n"+err.getMessage(),true,con,err);
         err.printStackTrace();
         return;
       }

@@ -549,9 +549,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
                        if (!con.getAutoCommit())
                            con.commit();
                    }
-                   catch (SQLException e ) {
+                   catch (SQLException err ) {
                        Funcoes.mensagemErro(this,"Não foi possível inserir a observação.\n" +
-                              e.getMessage());
+                              err.getMessage(),true,con,err);
                        
                    }
                }
@@ -588,9 +588,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
                       con.commit();
                   carregaTabelaObs();
               }
-              catch (SQLException e ) {
+              catch (SQLException err ) {
                   Funcoes.mensagemErro(this,"Não foi possível excluir a observação.\n" +
-                         e.getMessage());
+                         err.getMessage(),true,con,err);
               }
               finally {
                   ps = null;
@@ -632,9 +632,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
                        if (!con.getAutoCommit())
                            con.commit();
                    }
-                   catch (SQLException e ) {
+                   catch (SQLException err ) {
                        Funcoes.mensagemErro(this,"Não foi possível alterar a observação.\n" +
-                              e.getMessage());
+                              err.getMessage(),true,con,err);
                        
                    }
                }
@@ -664,7 +664,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
                 ps.close();
           }
           catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao checar CNPJ.\n"+err);
+			Funcoes.mensagemErro(this,"Erro ao checar CNPJ.\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
           }
           return bRetorno;
@@ -721,10 +721,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
               }
           }
       }
-      catch (Exception e) {
+      catch (Exception err) {
           Funcoes.mensagemErro(this,"Não foi possível carregar dados da tabela " +
             		"observações de cliente (VDOBSCLI).\n"+
-                   e.getMessage());
+                   err.getMessage(),true,con,err);
       }
       finally {
           iCodCli = 0;
@@ -766,10 +766,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
                   con.commit();
           }
       }
-      catch (SQLException e) { 
+      catch (SQLException err) { 
           Funcoes.mensagemErro(this,"Não foi possível carregar dados da tabela " +
           		"observações de cliente (VDOBSCLI).\n"+
-                 e.getMessage());
+                 err.getMessage(),true,con,err);
       }
       finally {
           iCodCli = 0;
@@ -840,7 +840,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   			}
   		}
   		catch(SQLException err) {
-  			Funcoes.mensagemErro(this,"Erro ao verificar preferências!\n"+err.getMessage());
+  			Funcoes.mensagemErro(this,"Erro ao verificar preferências!\n"+err.getMessage(),true,con,err);
   			err.printStackTrace();
   		}
   	}
@@ -1080,7 +1080,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         And.dispose();
       }
       catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de clientes!"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro consulta tabela de clientes!"+err.getMessage(),true,con,err);
 	    err.printStackTrace();
       }
     }
@@ -1191,7 +1191,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         And.dispose();
       }
       catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de contatos!"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro consulta tabela de contatos!\n"+err.getMessage(),true,con,err);
 		err.printStackTrace();
       }
     }
@@ -1305,7 +1305,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
            dl.dispose();
         }
         catch (SQLException err) {
-        	Funcoes.mensagemErro(this,"Erro consulta tabela de clientes!"+err.getMessage());
+        	Funcoes.mensagemErro(this,"Erro consulta tabela de clientes!\n"+err.getMessage(),true,con,err);
         }
    
     }

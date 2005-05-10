@@ -100,7 +100,7 @@ public class DLLote extends FFDialogo {
     	if (err.getErrorCode() == ListaCampos.FB_PK_DUPLA)
     		Funcoes.mensagemErro(this,"Este lote já existe!");
     	else
-    	    Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela EQLOTE!\n"+err.getMessage());
+    	    Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela EQLOTE!\n"+err.getMessage(),true,con,err);
     }
     return bRet;
   }

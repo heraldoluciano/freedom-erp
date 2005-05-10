@@ -305,7 +305,7 @@ public class FInventario extends FDados implements CarregaListener,
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this,
 						"Erro ao consultar a tabela EQLOTE!\n"
-								+ err.getMessage());
+								+ err.getMessage(),true,con,err);
 			}
 		}
 		if (!bValido) {
@@ -342,7 +342,7 @@ public class FInventario extends FDados implements CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao confirmar código do inventário!\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -373,9 +373,9 @@ public class FInventario extends FDados implements CarregaListener,
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-		} catch (SQLException e) {
+		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro carregando preferências!\n"
-					+ e.getMessage());
+					+ err.getMessage(),true,con,err);
 		} finally {
 			rs = null;
 			ps = null;
@@ -530,8 +530,8 @@ public class FInventario extends FDados implements CarregaListener,
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o saldo!!\n"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro ao buscar o saldo!\n"
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		} finally {
 			sSQL = null;
@@ -747,8 +747,8 @@ public class FInventario extends FDados implements CarregaListener,
 			}
 
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta tabela de setores!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro na consulta à tabela de setores!\n"
+					+ err.getMessage(),true,con,err);
 		} finally {
 			imp = null;
 			sOrdem = null;

@@ -365,7 +365,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
         	con.commit();
       }
       catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela VDPRECOPROD!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela VDPRECOPROD!\n"+err.getMessage(),true,con,err);
       }
     }
   }
@@ -402,7 +402,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
 //      con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela VDPRECOPROD!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela VDPRECOPROD!\n"+err.getMessage(),true,con,err);
     }
   }
   private void atualizar(BigDecimal bVal,int iCodProd,int iCodPrecoProd) {
@@ -425,7 +425,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
 //      con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao atualizar registro '"+iCodProd+"' na tabela VDPRECOPROD!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao atualizar registro '"+iCodProd+"' na tabela VDPRECOPROD!\n"+err.getMessage(),true,con,err);
     }
   }
   public void setConexao(Connection cn) {

@@ -87,7 +87,7 @@ public class FSerie extends FDados implements ActionListener {
       	con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao gravar o número inicial!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao gravar o número inicial!\n"+err.getMessage(),true,con,err);
     }
   }
   public void actionPerformed(ActionEvent evt) {

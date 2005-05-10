@@ -106,7 +106,7 @@ public class FTipoFor extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de fornecedor!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de fornecedor!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

@@ -188,7 +188,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 						  th.start();
 						}
 						catch(Exception err) {
-							Funcoes.mensagemErro(this,"Não foi possível criar processo!\n"+err.getMessage());
+							Funcoes.mensagemErro(this,"Não foi possível criar processo!\n"+err.getMessage(),true,con,err);
 						}
 					}
 					else {
@@ -203,7 +203,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 						  th.start();
 						}
 						catch(Exception err) {
-							Funcoes.mensagemErro(this,"Não foi possível criar processo!\n"+err.getMessage());
+							Funcoes.mensagemErro(this,"Não foi possível criar processo!\n"+err.getMessage(),true,con,err);
 						}
 					}
 				}
@@ -265,10 +265,10 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 				}				
 			
 			}
-			catch (Exception e) {
-				Funcoes.mensagemErro(this,"Erro importando arquivo!\n"+e.getMessage());
+			catch (Exception err) {
+				Funcoes.mensagemErro(this,"Erro importando arquivo!\n"+err.getMessage(),true,con,err);
 				bRetorno = false;
-				e.printStackTrace();
+				err.printStackTrace();
 			}		
 			
 		}
@@ -591,10 +591,10 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 				}
 			}
 		}
-		catch (Exception e) {
-		    Funcoes.mensagemErro(this,"Erro convertendo arquivo!\n"+e.getMessage());
+		catch (Exception err) {
+		    Funcoes.mensagemErro(this,"Erro convertendo arquivo!\n"+err.getMessage(),true,con,err);
 			bRetorno = false;
-			e.printStackTrace();
+			err.printStackTrace();
 		}
 		return bRetorno;
 	}

@@ -141,7 +141,7 @@ public class DLBuscaProd extends DLF3 implements TabelaSelListener {
       }
             
       catch (SQLException err) {
-      	 Funcoes.mensagemErro(this,"Erro ao buscar código auxiliar!\n"+err.getMessage());
+      	 Funcoes.mensagemErro(this,"Erro ao buscar código auxiliar!\n"+err.getMessage(),true,con,err);
       	 err.printStackTrace();
       }
       return bRet;

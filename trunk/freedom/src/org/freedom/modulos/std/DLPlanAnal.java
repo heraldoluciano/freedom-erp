@@ -128,7 +128,7 @@ public class DLPlanAnal extends FFDialogo {
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btOK) {
       if (txtDescAnal.getText().trim().length() == 0) {
-		Funcoes.mensagemErro(this,"O campo descrição está em branco! ! !");
+		Funcoes.mensagemErro(this,"O campo descrição está em branco!");
         txtDescAnal.requestFocus();
         return;
       }

@@ -158,7 +158,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
       }
       catch (SQLException err) {
         Funcoes.mensagemErro(null,"Não foi possível processar um produto.\n" +
-                                  "Ultimo processado: '"+iUltProd+"'.\n"+err.getMessage());
+                                  "Ultimo processado: '"+iUltProd+"'.\n"+err.getMessage(),true,con,err);
       }
       finally {
           sSQL = null;
@@ -225,7 +225,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	 bOK = true;
              }
              catch (SQLException err) {
-              	 Funcoes.mensagemErro(null,"Erro ao limpar estoques!\n"+err.getMessage());
+              	 Funcoes.mensagemErro(null,"Erro ao limpar estoques!\n"+err.getMessage(),true,con,err);
              }
              if (bOK) {
              	 bOK = false;
@@ -302,7 +302,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                  }
                  catch (SQLException err) {
                     bOK = false;
-                    Funcoes.mensagemErro(null,"Erro ao reconstruir base!\n"+err.getMessage());
+                    Funcoes.mensagemErro(null,"Erro ao reconstruir base!\n"+err.getMessage(),true,con,err);
                  }
              }
              try {
@@ -317,7 +317,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                  }
              }
              catch (SQLException err) {
-               Funcoes.mensagemErro(null,"Erro ao relizar procedimento!\n"+err.getMessage());
+               Funcoes.mensagemErro(null,"Erro ao relizar procedimento!\n"+err.getMessage(),true,con,err);
              }
            
        }
@@ -460,11 +460,11 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
     		bRet = true;
     	}
     	catch (SQLException err) {
-    		Funcoes.mensagemErro(null,"Erro ao inserir novo movimento!\n"+err.getMessage());
+    		Funcoes.mensagemErro(null,"Erro ao inserir novo movimento!\n"+err.getMessage(),true,con,err);
     		//err.printStackTrace();
     	}
-    	catch (Exception e) {
-    		Funcoes.mensagemErro(null,"Erro ao inserir novo movimento!\n"+e.getMessage());
+    	catch (Exception err) {
+    		Funcoes.mensagemErro(null,"Erro ao inserir novo movimento!\n"+err.getMessage(),true,con,err);
     	}
     	finally {
         	sSQL = null;

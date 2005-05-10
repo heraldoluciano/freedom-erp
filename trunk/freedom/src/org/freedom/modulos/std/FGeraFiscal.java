@@ -264,7 +264,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
       th.start();
     }
     catch(Exception err) {
-		Funcoes.mensagemErro(this,"Não foi possível criar processo!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Não foi possível criar processo!\n"+err.getMessage(),true,con,err);
     }
   }
   
@@ -420,7 +420,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
       }
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao realizar consulta!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao realizar consulta!\n"+err.getMessage(),true,con,err);
       return;
     }
     btGerar.setEnabled(false);
@@ -499,7 +499,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
        
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Consulta não foi executada\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Consulta não foi executada\n"+err.getMessage(),true,con,err);
        return;
     }
     
@@ -585,7 +585,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
          	con.commit();
        }
        catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro gerando livros fiscais de compras!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro gerando livros fiscais de compras!\n"+err.getMessage(),true,con,err);
          break;
        }
        iAnd++;
@@ -659,7 +659,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
 			con.commit();
        }
        catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro gerando livros fiscais de compras!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro gerando livros fiscais de compras!\n"+err.getMessage(),true,con,err);
          break;
        }
        iAnd++;
@@ -724,7 +724,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
       
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao realizar consulta!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao realizar consulta!\n"+err.getMessage(),true,con,err);
       bRetorno = false;
     }
     

@@ -341,7 +341,7 @@ public class FVendedor extends FTabDados implements PostListener {
 			}
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao verificar setor!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return bRet;
@@ -515,8 +515,8 @@ public class FVendedor extends FTabDados implements PostListener {
 				con.commit();
 			dl.dispose();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta tabela de clientes!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro consulta tabela de clientes!\n"
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 

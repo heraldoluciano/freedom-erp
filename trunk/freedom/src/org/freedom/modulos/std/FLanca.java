@@ -242,7 +242,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
 	  atualizaSaldo();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar a tabela!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar a tabela!\n"+err.getMessage(),true,con,err);
     }
   }
   private void montaTabs() {
@@ -317,7 +317,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
 //      con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao atualizar o saldo!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao atualizar o saldo!\n"+err.getMessage(),true,con,err);
     }
   }
   private void prim() {
@@ -379,7 +379,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
         montaTabela(dIniLanca,dFimLanca);
       }
       catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao excluir o lançamento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao excluir o lançamento!\n"+err.getMessage(),true,con,err);
       }
     }
   }
@@ -435,7 +435,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
 			    con.commit();
 			}
 			catch (SQLException err) {
-			  Funcoes.mensagemErro(this,"Erro ao atualizar a data da transferência!\n"+err.getMessage());
+			  Funcoes.mensagemErro(this,"Erro ao atualizar a data da transferência!\n"+err.getMessage(),true,con,err);
 			}
 			tab.setValor(Funcoes.dateToStrDate(dDtNova),tab.getLinhaSel(),1);
 				
@@ -526,7 +526,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
 //      con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao testar o código do lnaçamento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao testar o código do lnaçamento!\n"+err.getMessage(),true,con,err);
     }
     return bRetorno;
   }

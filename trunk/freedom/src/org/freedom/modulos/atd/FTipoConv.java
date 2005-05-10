@@ -108,7 +108,7 @@ public class FTipoConv extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de conveniados!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de conveniados!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

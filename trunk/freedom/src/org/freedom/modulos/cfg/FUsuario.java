@@ -365,7 +365,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }

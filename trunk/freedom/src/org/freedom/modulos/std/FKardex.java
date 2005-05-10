@@ -253,7 +253,7 @@ public class FKardex extends FRelatorio implements ActionListener {
 	                        	con.commit();
 	                }
 	                catch (SQLException err) {
-						Funcoes.mensagemErro(this,"Erro ao carrregar a tabela MOVPROD !\n"+err.getMessage());
+						Funcoes.mensagemErro(this,"Erro ao carrregar a tabela MOVPROD !\n"+err.getMessage(),true,con,err);
 	                }
         	    }
         	    finally {

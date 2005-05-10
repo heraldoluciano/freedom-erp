@@ -279,8 +279,8 @@ public class FRUltimaVenda extends FRelatorio {
 			//      con.commit();
 			//      dl.dispose();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta ao relatório de vendas!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro na consulta ao relatório de vendas!\n"
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

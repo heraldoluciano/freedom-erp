@@ -167,7 +167,7 @@ public class FREvoluVendas extends FRelatorio {
 	  rs = ps.executeQuery();
 	}
 	catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar valores das vendas!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar valores das vendas!\n"+err.getMessage(),true,con,err);
 	}
 	return rs;
   }

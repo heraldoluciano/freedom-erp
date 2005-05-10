@@ -108,7 +108,7 @@ public class FTratTrib extends FDados implements ActionListener{
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de Tratamento Tributário!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de Tratamento Tributário!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

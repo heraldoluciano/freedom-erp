@@ -335,7 +335,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	    		
   	    	}
   	    	catch ( SQLException err ) {
-  	    		Funcoes.mensagemErro(this,"Erro ao consultar informações!"+err.getMessage());
+  	    		Funcoes.mensagemErro(this,"Erro ao consultar informações!\n"+err.getMessage(),true,con,err);
   	    		err.printStackTrace();      
   	    	}
   	    	
@@ -523,8 +523,8 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 		    	   
   	                }
   	            }						
-  	            catch (Exception e) {
-  	                Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+e.getMessage());
+  	            catch (Exception err) {
+  	                Funcoes.mensagemErro(this,"Erro na troca de dados!\n"+err.getMessage(),true,con,err);
   	            }
   	        }
   	        vRet = Funcoes.stringToVector(sRetorno,"[Q]");

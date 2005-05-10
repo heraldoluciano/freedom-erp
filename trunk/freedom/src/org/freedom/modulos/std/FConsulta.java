@@ -370,7 +370,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 				con.commit();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar saldos por grupo!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar saldos por grupo!\n"+err.getMessage(),true,con,err);
 		}	
 		finally {
 			sSQL = null;
@@ -428,7 +428,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 			
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PRECOPROD!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PRECOPROD!\n"+err.getMessage(),true,con,err);
 		}
 		
 		buscaEstoque("produto");
@@ -475,7 +475,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 			}
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}

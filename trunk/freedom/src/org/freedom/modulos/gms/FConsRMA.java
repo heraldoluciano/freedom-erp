@@ -361,7 +361,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 	}
@@ -461,8 +461,8 @@ public class FConsRMA extends FFilho implements ActionListener {
 				con.commit();
 
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta tabela de orçamentos!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro consulta tabela de orçamentos!\n"
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {
@@ -515,11 +515,11 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		return bRet;
     }
-
+  
 	
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btSair) {

@@ -219,7 +219,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
       ps.close();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar tabela de atendimento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar tabela de atendimento!\n"+err.getMessage(),true,con,err);
     }
   }
   
@@ -240,7 +240,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	  	con.commit();
 	}
 	catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao salvar o atendimento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao salvar o atendimento!\n"+err.getMessage(),true,con,err);
 	}
 	carregaTabConv();
   }
@@ -262,7 +262,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	  	con.commit();
 	}
 	catch(SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao salvar o atendimento!\n"+err.getMessage());
+	  Funcoes.mensagemErro(this,"Erro ao salvar o atendimento!\n"+err.getMessage(),true,con,err);
 	}
   }
   private void abreOrc(int iCodOrc) {
@@ -301,7 +301,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
 	    	con.commit();
   	  }
   	  catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao salvar o atendimento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao salvar o atendimento!\n"+err.getMessage(),true,con,err);
   	  }
 	  carregaTabConv();
     }

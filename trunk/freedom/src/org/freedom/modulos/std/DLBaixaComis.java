@@ -177,7 +177,7 @@ public class DLBaixaComis extends FFDialogo {
       	con.commit();
     }
     catch (SQLException err) {
-      Funcoes.mensagemErro(this,"Erro lendo ResultSet!\n"+err.getMessage());
+      Funcoes.mensagemErro(this,"Erro lendo ResultSet!\n"+err.getMessage(),true,con,err);
     }
   }
   public void setConexao(Connection cn) {

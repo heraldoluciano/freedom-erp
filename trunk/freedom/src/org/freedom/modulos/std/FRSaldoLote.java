@@ -123,7 +123,7 @@ public class FRSaldoLote extends FRelatorio {
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
     }
     return bRetorno;
   }
@@ -282,7 +282,7 @@ public class FRSaldoLote extends FRelatorio {
 //      dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PRODUTOS!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PRODUTOS!\n"+err.getMessage(),true,con,err);
     }
     
     if (bVisualizar) {

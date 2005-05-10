@@ -180,7 +180,7 @@ public class FLancaExp extends FDados implements ActionListener {
         			con.commit();
 		}
 		catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela de setores!"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro consulta tabela de setores!\n"+err.getMessage(),true,con,err);
 		}
 		if (bVisualizar) {
 			imp.preview(this);

@@ -212,7 +212,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
       ps.close();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar tabela de históricos!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar tabela de históricos!\n"+err.getMessage(),true,con,err);
     }
   }
   private void editaHist() {
@@ -253,7 +253,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   				con.commit();
   		}
   		catch(SQLException err) {
-  			Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage());
+  			Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
   		}
   		carregaTabCont();
   	}
@@ -279,7 +279,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	  	con.commit();
 	}
 	catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao excluir o histórico!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao excluir o histórico!\n"+err.getMessage(),true,con,err);
 	}
 	carregaTabCont();
   }
@@ -342,7 +342,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	    }
     }
   	  catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
   	  }
 	  carregaTabCont();
     }

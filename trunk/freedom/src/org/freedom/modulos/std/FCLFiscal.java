@@ -188,7 +188,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
 	  ps.close();
     }
 	catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao verificar itens!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao verificar itens!\n"+err.getMessage(),true,con,err);
 		err.printStackTrace();
     }
 	
@@ -426,7 +426,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
       dl.dispose();
     } 
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de classificacao fiscal do produto!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de classificacao fiscal do produto!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

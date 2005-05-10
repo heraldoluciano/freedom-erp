@@ -572,7 +572,7 @@ public class FEmpresa extends FTabDados implements PostListener,
 
         } catch (SQLException err) {
             Funcoes.mensagemErro(this, "Erro ao carregar a tabela SGFILIAL!\n"
-                    + err.getMessage());
+                    + err.getMessage(),true,con,err);
         } finally {
             rs = null;
             ps = null;

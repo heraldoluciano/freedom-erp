@@ -32,7 +32,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -42,7 +41,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
-import java.sql.Time;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,6 +71,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freedom.componentes.StringDireita;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
+import org.freedom.telas.FSuporte;
 
 //import org.freedom.telas.Aplicativo;
 
@@ -328,8 +328,7 @@ public class Funcoes {
 		return lResult;
 	}
 
-	public static void mensagem(String sMensagem, String sTitulo,
-			int iOpcao) {
+	public static void mensagem(String sMensagem, String sTitulo,int iOpcao) {
 		//	imgIcone = Aplicativo.imgIcone;
 			JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
 	}
@@ -376,11 +375,24 @@ public class Funcoes {
 		mensagem(sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void mensagemErro(Component frame, String sMensagem) {
+	public static void mensagemErro(Component frame, String sMensagem,boolean bEnviar,Connection con,Exception err) {		
 		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
-
+		if(bEnviar);
+			if(mensagemConfirma(null,"Deseja enviar erro para o suporte?")==0){
+				FSuporte tela = new FSuporte();
+				tela.setConexao(con);
+				if(err!=null)
+					sMensagem += "\n"+err.getStackTrace();
+				tela.setMensagem(sMensagem);
+				tela.setVisible(true);
+				tela.dispose();
+			}
 	}
 
+	public static void mensagemErro(Component frame, String sMensagem) {		
+		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+	}
+		
 	public static String trimFinal(String sVal) {
 		char[] cVal = sVal.toCharArray();
 		String sRetorno = sVal;

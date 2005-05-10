@@ -130,7 +130,7 @@ public class FStatusItOrc extends FFilho implements ActionListener {
       	con.commit();
     }
     catch(SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao alterar o item!\n"+err.getMessage());
+	  Funcoes.mensagemErro(this,"Erro ao alterar o item!\n"+err.getMessage(),true,con,err);
 	  err.printStackTrace();
     }
   }

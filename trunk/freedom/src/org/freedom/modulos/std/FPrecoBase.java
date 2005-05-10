@@ -121,7 +121,7 @@ public class FPrecoBase extends FFilho implements ActionListener {
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao Gerar Preço Base!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao Gerar Preço Base!\n"+err.getMessage(),true,con,err);
     }
   }
   public void actionPerformed(ActionEvent evt) {

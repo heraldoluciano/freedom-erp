@@ -134,8 +134,8 @@ public class FRRazaoFin extends FRelatorio {
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar saldo.\n"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro ao buscar saldo!\n"
+					+ err.getMessage(),true,con,err);
 		}
 		return dRet;
 	}
@@ -289,8 +289,8 @@ public class FRRazaoFin extends FRelatorio {
 				con.commit();
 
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro na consulta de sublançamentos!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro na consulta de sublançamentos!\n"
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

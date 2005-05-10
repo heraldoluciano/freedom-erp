@@ -350,7 +350,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao checar CNPJ.\n" + err);
+			Funcoes.mensagemErro(this, "Erro ao checar CNPJ.\n" + err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}
@@ -398,7 +398,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao criar cliente!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		dl.dispose();
@@ -619,7 +619,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 				And.dispose();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro consulta tabela de contatos!"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 			}
 		} else if (dl.getValores()[7].equals("R")) {
 			String sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,FONECTO FROM TKCONTATO"
@@ -714,7 +714,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 				And.dispose();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro consulta tabela de contatos!"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 			}
 		}
 		if (bVisualizar) {

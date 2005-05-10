@@ -209,7 +209,7 @@ public class FRInadimplentes extends FRelatorio {
 //      dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta ao relatório de inadimplentes!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta ao relatório de inadimplentes!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

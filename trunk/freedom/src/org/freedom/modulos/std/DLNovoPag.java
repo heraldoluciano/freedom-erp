@@ -200,7 +200,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 //      con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao confirmar código da venda!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao confirmar código da venda!\n"+err.getMessage(),true,con,err);
     }
   }
   public void beforePost(PostEvent evt) { 

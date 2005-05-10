@@ -168,7 +168,7 @@ public class FTurnos extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro consulta tabela de funcionários!"+err.getMessage());      
+       Funcoes.mensagemErro(this,"Erro consulta tabela de funcionários!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

@@ -122,7 +122,7 @@ public class FTipoCred extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro na consulta tabela de tipos de tipos de créditos!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro na consulta tabela de tipos de tipos de créditos!\n"+err.getMessage(),true,con,err);
        err.printStackTrace();      
     }
     

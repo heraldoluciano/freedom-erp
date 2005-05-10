@@ -214,7 +214,7 @@ public class DLEditaRec extends FFDialogo implements CarregaListener {
 		}
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	finally {
 		sSQL = null;

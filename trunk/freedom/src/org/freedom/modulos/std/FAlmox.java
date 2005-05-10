@@ -103,7 +103,7 @@ public class FAlmox extends FDados implements ActionListener{
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

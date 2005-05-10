@@ -887,7 +887,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	        dl.dispose();
 	    }  
 	    catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro na consulta da tabela de Produtos!"+err.getMessage());      
+			Funcoes.mensagemErro(this,"Erro na consulta da tabela de Produtos!\n"+err.getMessage(),true,con,err);      
 	    }
 	  
 	    if (bVisualizar) {
@@ -986,7 +986,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 				con.commit();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}

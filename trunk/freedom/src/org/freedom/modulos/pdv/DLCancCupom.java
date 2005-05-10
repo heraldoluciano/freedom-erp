@@ -258,7 +258,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 			}						
 			
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro carregar ítens da venda!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro carregar ítens da venda!\n"+err.getMessage(),true,con,err);
 		}
 
 	}
@@ -305,7 +305,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 				ps.close();
 			}
 			catch(SQLException err) {
-				Funcoes.mensagemErro(this,"Erro ao buscar a ultima venda.\n+"+err.getMessage());
+				Funcoes.mensagemErro(this,"Erro ao buscar a ultima venda.\n+"+err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
 			return iRet;

@@ -279,7 +279,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE5!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE5!\n"+err.getMessage(),true,con,err);
 	}
 	if (sClassOP.trim().equals("")) {          
 		Funcoes.mensagemErro(this,"Não existe org.freedom.layout para ordem de produção. \n Cadastre o org.freedom.layout no documento de preferências do módulo de produção \n e tente novamente.");
@@ -322,7 +322,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   			con.commit();
   	}
   	catch (SQLException err) {
-  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
   	}
   	return bRetorno;
   }

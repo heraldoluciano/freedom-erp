@@ -166,7 +166,7 @@ public class FProcesso extends FDetalhe implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de Processos!\n"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro na consulta na tabela de Processos!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

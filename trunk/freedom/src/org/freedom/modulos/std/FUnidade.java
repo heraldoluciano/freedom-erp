@@ -108,7 +108,7 @@ public class FUnidade extends FDados implements ActionListener{
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de UNIDADES!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro na consulta à tabela de UNIDADES!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

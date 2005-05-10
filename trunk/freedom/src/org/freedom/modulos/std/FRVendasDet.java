@@ -213,7 +213,7 @@ public class FRVendasDet extends FRelatorio {
     }
     catch (SQLException err) {
       Funcoes.mensagemErro(this, "Erro consulta tabela de preços!"
-          + err.getMessage());
+          + err.getMessage(),true,con,err);
     }
 
     if (bVisualizar) {
@@ -243,7 +243,7 @@ public class FRVendasDet extends FRelatorio {
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
     }
     return bRetorno;
   }

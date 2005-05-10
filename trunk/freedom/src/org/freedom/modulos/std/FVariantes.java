@@ -106,7 +106,7 @@ public class FVariantes extends FDados implements ActionListener{
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro na consulta a tabela VARGRADE!\n"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro na consulta a tabela VARGRADE!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

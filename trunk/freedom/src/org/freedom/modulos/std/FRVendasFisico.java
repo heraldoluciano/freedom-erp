@@ -114,7 +114,7 @@ public class FRVendasFisico extends FRelatorio {
   			con.commit();
   	}
   	catch (SQLException err) {
-  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
   	}
   	return bRetorno;
   }

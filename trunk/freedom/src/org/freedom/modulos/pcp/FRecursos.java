@@ -118,7 +118,7 @@ public class FRecursos extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de recursos de produção!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de recursos de produção!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

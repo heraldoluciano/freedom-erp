@@ -467,7 +467,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao confirmar código da orcamento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao confirmar código da orcamento!\n"+err.getMessage(),true,con,err);
     }
   }
   public void focusGained(FocusEvent fevt) { }
@@ -644,7 +644,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
         	con.commit();
       }
       catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a observação!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a observação!\n"+err.getMessage(),true,con,err);
       }
       if (obs != null) {
       	obs.setSize(400,200);
@@ -659,7 +659,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
             	con.commit();
           }
           catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao inserir observação no orçamento!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao inserir observação no orçamento!\n"+err.getMessage(),true,con,err);
           }
         }
         obs.dispose();
@@ -704,7 +704,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 			  }
 			}		 
 			catch (SQLException err) {
-			  Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+			  Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
 			  err.printStackTrace();
 			}        	     	        	
         }
@@ -712,7 +712,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
         ps.close();
       }  
   	  catch (SQLException err) {
-	    Funcoes.mensagemErro(this,"Erro ao carregar a tabela ATTPCONV!\n"+err.getMessage());
+	    Funcoes.mensagemErro(this,"Erro ao carregar a tabela ATTPCONV!\n"+err.getMessage(),true,con,err);
 	    err.printStackTrace();
 	  }
 
@@ -770,7 +770,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	  txtPrecoItOrc.setVlrBigDecimal(rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0")));
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage(),true,con,err);
 	}
   }
   private Object[] prefs() {
@@ -810,7 +810,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
       	 con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE1!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE1!\n"+err.getMessage(),true,con,err);
     }
     return bRetorno;
   }

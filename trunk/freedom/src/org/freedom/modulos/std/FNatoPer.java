@@ -177,7 +177,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela de natureza de operações!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela de natureza de operações!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

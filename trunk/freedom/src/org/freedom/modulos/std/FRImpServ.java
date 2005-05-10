@@ -366,10 +366,10 @@ public class FRImpServ extends FRelatorio {
 				if (!con.getAutoCommit())
 					con.commit();
 
-			} catch (SQLException e) {
+			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro executando a consulta.\n"
-						+ e.getMessage());
-				e.printStackTrace();
+						+ err.getMessage(),true,con,err);
+				err.printStackTrace();
 			}
 			if (bVisualizar) {
 				imp.preview(this);

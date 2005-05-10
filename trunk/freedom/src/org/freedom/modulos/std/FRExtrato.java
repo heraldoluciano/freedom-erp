@@ -216,7 +216,7 @@ public class FRExtrato extends FRelatorio {
 //      dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {
@@ -251,7 +251,7 @@ public class FRExtrato extends FRelatorio {
       ps.close();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar saldo anterior!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar saldo anterior!\n"+err.getMessage(),true,con,err);
     }
     return bigRetorno;
   }

@@ -114,7 +114,7 @@ public class DLConsultaBaixa extends FFDialogo {
 //      con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage(),true,con,err);
     }
   }
   public void setValores(BigDecimal bigVals[]) {

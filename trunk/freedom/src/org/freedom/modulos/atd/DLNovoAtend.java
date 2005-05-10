@@ -153,7 +153,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			ps.close();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar os tipos de atendimento!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar os tipos de atendimento!\n"+err.getMessage(),true,con,err);
 		}
 	}
 	private void montaComboSetor() {
@@ -181,7 +181,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			ps.close();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar os setores!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar os setores!\n"+err.getMessage(),true,con,err);
 		}
 
 		if (vValsSetor.size() <= 0)
@@ -280,7 +280,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
     			con.commit();
     	}
     	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao buscar novo código para levantamento.\n"+err.getMessage());
+    		Funcoes.mensagemErro(this,"Erro ao buscar novo código para levantamento.\n"+err.getMessage(),true,con,err);
     	}
     	return iRet;
     }

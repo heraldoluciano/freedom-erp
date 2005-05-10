@@ -79,7 +79,7 @@ public class DLAltComisVend extends FFDialogo {
     }
     catch (SQLException err) {
       Funcoes.mensagemErro(this, "Erro ao alterar a venda!\n"
-          + err.getMessage());
+          + err.getMessage(),true,con,err);
       err.printStackTrace();
     }
   }

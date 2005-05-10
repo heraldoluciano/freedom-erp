@@ -140,7 +140,7 @@ public class FRBalanceteGrafico extends FRelatorio {
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo!\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }
@@ -174,7 +174,7 @@ public class FRBalanceteGrafico extends FRelatorio {
 		  ps2.close();			  
 	    } 
 	    catch (SQLException err) {
-		  Funcoes.mensagemErro(this,"Erro ao buscar nivel de planejamento!\n"+err.getMessage());
+		  Funcoes.mensagemErro(this,"Erro ao buscar nivel de planejamento!\n"+err.getMessage(),true,con,err);
 		  err.printStackTrace();
 	    }
 		           
@@ -219,7 +219,7 @@ public class FRBalanceteGrafico extends FRelatorio {
 
 	  }
 	  catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar valores financeiros!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar valores financeiros!\n"+err.getMessage(),true,con,err);
 		err.printStackTrace();
 	  }
 

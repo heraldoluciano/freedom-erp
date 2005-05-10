@@ -77,7 +77,7 @@ public class FAbreCaixa extends FDialogo {
 				con.commit();
 	      }
 	      catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao abrir o caixa!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao abrir o caixa!\n"+err.getMessage(),true,con,err);
 	      }
 	      if (AplicativoPDV.bECFTerm)
 	      	 bf.abreGaveta(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);

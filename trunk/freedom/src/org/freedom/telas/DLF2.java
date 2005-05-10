@@ -240,8 +240,8 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
 //       sqlF2.close();
 //       cnF2.commit();
     }
-    catch ( SQLException e) {
-		Funcoes.mensagemErro(this,"Erro ao relizar consulta!\n"+e.getMessage());
+    catch ( SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao relizar consulta!\n"+err.getMessage(),true,con,err);
     }
   }
   

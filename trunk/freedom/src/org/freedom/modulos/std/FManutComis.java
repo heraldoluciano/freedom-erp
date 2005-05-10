@@ -289,7 +289,7 @@ public class FManutComis extends FFilho implements ActionListener {
        	  con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro na consulta!"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro na consulta!"+err.getMessage(),true,con,err);
     }
   }
   private void liberar() {
@@ -311,7 +311,7 @@ public class FManutComis extends FFilho implements ActionListener {
         	con.commit();
       }
       catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao atualizar os status na tabela COMISSÃO!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao atualizar os status na tabela COMISSÃO!\n"+err.getMessage(),true,con,err);
       }
     }
     calcTotal();
@@ -356,7 +356,7 @@ public class FManutComis extends FFilho implements ActionListener {
         	con.commit();
       }
       catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao baixar a comissão!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao baixar a comissão!\n"+err.getMessage(),true,con,err);
       }
       dl.dispose();
     }
@@ -405,8 +405,8 @@ public class FManutComis extends FFilho implements ActionListener {
         }
         
   	}
-  	catch (SQLException e) {
-		Funcoes.mensagemErro(this,"Erro ao estornar baixas!\n"+e.getMessage());
+  	catch (SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao estornar baixas!\n"+err.getMessage(),true,con,err);
   	}	
   	finally {
   		sSQL = null;

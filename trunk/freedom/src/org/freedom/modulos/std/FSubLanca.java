@@ -242,7 +242,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
         txtVlrAtualLanca.setVlrBigDecimal(new BigDecimal(rs.getString("VlrLanca")));
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao atualizar o saldo!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao atualizar o saldo!\n"+err.getMessage(),true,con,err);
     }
   }
   public void valorAlterado(RadioGroupEvent rgevt) { 
@@ -385,7 +385,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao confirmar código do lanca!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao confirmar código do lanca!\n"+err.getMessage(),true,con,err);
     }
   }
   public void actionPerformed(ActionEvent evt) {
@@ -487,7 +487,7 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 		ps.close();
   	}
   	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o .\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o .\n"+err.getMessage(),true,con,err);
   	}
   	return iRet;
   }

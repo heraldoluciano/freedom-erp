@@ -207,7 +207,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta do relatório\n!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta do relatório\n!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {
@@ -235,7 +235,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
       	con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PREFERE1!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
     }
     return bResultado;
   }

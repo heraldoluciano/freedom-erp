@@ -225,7 +225,7 @@ public class FRFluxoCaixa extends FRelatorio {
       	con.commit();
     }  
     catch ( SQLException err ) {
-    	Funcoes.mensagemErro(this,"Erro consulta ao planejamento!"+err.getMessage());
+    	Funcoes.mensagemErro(this,"Erro consulta ao planejamento!\n"+err.getMessage(),true,con,err);
     	err.printStackTrace();
     }
   }
@@ -293,7 +293,7 @@ public class FRFluxoCaixa extends FRelatorio {
 //      dl.dispose();
   	}  
   	catch ( SQLException err ) {
-  		Funcoes.mensagemErro(this,"Erro consulta ao receber!"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro consulta ao receber!\n"+err.getMessage(),true,con,err);
   		err.printStackTrace();
   	}
   }
@@ -361,7 +361,7 @@ public class FRFluxoCaixa extends FRelatorio {
 //      dl.dispose();
   	}  
   	catch ( SQLException err ) {
-  		Funcoes.mensagemErro(this,"Erro consulta ao pagar!"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro consulta ao pagar!\n"+err.getMessage(),true,con,err);
   		err.printStackTrace();
   	}
   }

@@ -225,7 +225,7 @@ public class FRComprasFor extends FRelatorio {
                 con.commit();
 		}
 		catch ( SQLException err ) {
-			Funcoes.mensagemErro(this,"Erro consulta tabela compras!"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro consulta tabela compras!\n"+err.getMessage(),true,con,err);
 		}
 	 
 		if (bVisualizar) {

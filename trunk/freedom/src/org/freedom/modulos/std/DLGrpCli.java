@@ -149,8 +149,8 @@ public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
               if (!con.getAutoCommit()) 
                  con.commit();
           }
-          catch (SQLException e) {
-              Funcoes.mensagemErro(this,"Erro ao carregar clientes agrupados.\n"+e.getMessage());
+          catch (SQLException err) {
+              Funcoes.mensagemErro(this,"Erro ao carregar clientes agrupados.\n"+err.getMessage(),true,con,err);
           }
           finally {
               rs = null;

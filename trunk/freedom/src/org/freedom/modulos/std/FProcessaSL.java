@@ -100,7 +100,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
        	 bOK = true;
        }
        catch (SQLException err) {
-       	Funcoes.mensagemErro(this,"Erro ao excluir os saldos!\n"+err.getMessage());
+       	Funcoes.mensagemErro(this,"Erro ao excluir os saldos!\n"+err.getMessage(),true,con,err);
        	err.printStackTrace();
        }
        if (bOK) {
@@ -133,7 +133,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
          }
          catch (SQLException err) {
          	bOK = false;
-         	Funcoes.mensagemErro(this,"Erro ao excluir os lançamentos!\n"+err.getMessage());
+         	Funcoes.mensagemErro(this,"Erro ao excluir os lançamentos!\n"+err.getMessage(),true,con,err);
        	    err.printStackTrace();
          }
        }
@@ -149,7 +149,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
          }
        }
        catch (SQLException err) {
-         Funcoes.mensagemErro(this,"Erro ao relizar precedimento!\n"+err.getMessage());
+         Funcoes.mensagemErro(this,"Erro ao relizar precedimento!\n"+err.getMessage(),true,con,err);
          err.printStackTrace();
        }
        bRunProcesso = false;
@@ -176,7 +176,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
     		bRet = true;
     	}
     	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao excluir os lançamentos!");
+    		Funcoes.mensagemErro(this,"Erro ao excluir os lançamentos!"+"\n"+err.getMessage(),true,con,err);
     	}
     	return bRet;
     }
