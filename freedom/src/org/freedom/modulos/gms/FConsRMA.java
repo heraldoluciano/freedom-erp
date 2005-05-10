@@ -82,6 +82,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
+	boolean bAprovaParcial = false;
 	public FConsRMA() {
 		setTitulo("Pesquisa Requisições de material");
 		setAtribos(10, 10, 663, 480);
@@ -201,8 +202,19 @@ public class FConsRMA extends FFilho implements ActionListener {
 	}
 
 	private void habCampos(){
-		if(getAprova())
+		if(getAprova()){
+		  if(bAprovaParcial){
+		  	txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
+			txtAnoCC.setVlrString(Aplicativo.strAnoCCUsu);
+			txtCodCC.setNaoEditavel(true);
+		  	lcUsuario.setWhereAdic("CODCC='"+Aplicativo.strCodCCUsu+"' AND ANOCC="+Aplicativo.strAnoCCUsu);
+		  }
+		  else {
+		  	txtCodCC.setNaoEditavel(false);
+		  	
+		  }
 		  txtCodUsu.setNaoEditavel(false);
+		}
 		else {
 		  txtCodUsu.setVlrString(Aplicativo.strUsuario);		  
 		  txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
@@ -225,7 +237,8 @@ public class FConsRMA extends FFilho implements ActionListener {
 		boolean usaOr = false;
 		boolean usaWhere = false;
 		boolean usuario = (!txtCodUsu.getVlrString().trim().equals(""));
-		boolean almoxarifado = (txtCodAlmoxarife.getVlrInteger().intValue() > 0);
+//		boolean almoxarifado = (txtCodAlmoxarife.getVlrInteger().intValue() > 0);
+		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
 
 		if (cbPendentes.getVlrString().equals("S")) {
@@ -273,7 +286,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
 
 		if (CC)
-			where += " AND IT.CODCC=? AND IT.CODEMPCC=? AND IT.CODFILIALCC=? ";
+			where += " AND R.ANOCC=? AND R.CODCC=? AND R.CODEMPCC=? AND R.CODFILIALCC=? ";
 
 		if (usuario)
 			where += " AND (R.IDUSU=?) ";
@@ -286,7 +299,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
 				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.MOTIVORMA ";
 
-		System.out.println("Query completa:" + sSQL);
 		System.out.println(sSQL);
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
@@ -305,6 +317,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			}
 
 			if (CC) {
+				ps.setInt(param++, txtAnoCC.getVlrInteger().intValue());
 				ps.setString(param++, txtCodCC.getVlrString());
 				ps.setInt(param++, Aplicativo.iCodEmp);
 				ps.setInt(param++, Aplicativo.iCodFilial);
@@ -315,6 +328,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			}
 
 			ResultSet rs = ps.executeQuery();
+			
 			int iLin = 0;
 
 			tab.limpa();
@@ -487,11 +501,12 @@ public class FConsRMA extends FFilho implements ActionListener {
 					if(!sAprova.equals("ND")) {
 						if(sAprova.equals("TD"))						
 							bRet = true;
-						else if( (txtCodCC.getVlrString().equals(rs.getString("CODCC"))) &&
-								 (lcCC.getCodEmp()==rs.getInt("CODEMPCC")) &&
-								 (lcCC.getCodFilial()==rs.getInt("CODFILIALCC")) &&
-								 (sAprova.equals("CC"))	) {
-							bRet = true;							
+						else if( (Aplicativo.strCodCCUsu.equals(rs.getString("CODCC"))) &&
+								 (Aplicativo.iCodEmp==rs.getInt("CODEMPCC")) &&
+								 (ListaCampos.getMasterFilial("FNCC")==rs.getInt("CODFILIALCC")) &&
+								 (sAprova.equals("CC"))	) { 
+							bRet = true;	
+							bAprovaParcial = true;
 						}						
 					}
 			}

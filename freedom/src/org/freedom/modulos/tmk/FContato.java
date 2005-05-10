@@ -334,6 +334,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 		btExportCli.addActionListener(this);
 		tpn.addChangeListener(this);
 		lcCampos.setQueryInsert(false);
+	    setImprimir(true);
 	}
 
 	private boolean duploCNPJ() {

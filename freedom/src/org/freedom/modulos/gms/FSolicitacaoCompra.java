@@ -215,7 +215,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
-
+	    setImprimir(true);
 	}
 
 	private void montaDetalhe() {

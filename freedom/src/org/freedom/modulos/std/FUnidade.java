@@ -44,7 +44,8 @@ public class FUnidade extends FDados implements ActionListener{
     setListaCampos( true, "UNIDADE", "EQ");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);    
+    lcCampos.setQueryInsert(false);  
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {

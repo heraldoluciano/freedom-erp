@@ -246,6 +246,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
+	    setImprimir(true);
 
 	}
 

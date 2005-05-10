@@ -123,12 +123,8 @@ public class FRVendasFisico extends FRelatorio {
     lcVend.setConexao(con);
   }
   public void imprimir(boolean bVisualizar) {
-  	
-  	
   	 String sWhere = "";
 	 String sCab="";
-  	
-  	
      if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 		Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
         return;

@@ -99,6 +99,7 @@ public class FRomaneio extends FDetalhe implements InsertListener,ActionListener
     lcCampos.addInsertListener(this);
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
