@@ -203,7 +203,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     btFase.addActionListener(this);
     btImp.addActionListener(this);
   	btPrevimp.addActionListener(this);     
-
+    setImprimir(true);
   }
   private void abreFase() {
     if (fPrim.temTela("OP x Fases")==false) {

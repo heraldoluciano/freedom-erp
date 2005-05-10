@@ -82,9 +82,7 @@ public class FTurnos extends FDados implements ActionListener {
 	    btPrevimp.addActionListener(this);
 	    lcCampos.setQueryInsert(false);
 	    
-	    
-	       
-	     	  	
+	    setImprimir(true);
   }
   
   public void actionPerformed(ActionEvent evt) {

@@ -84,7 +84,8 @@ public class FFluxo extends FDetalhe implements ActionListener {
    tab.setTamColuna(350,2);
 
    btImp.addActionListener(this);
-   btPrevimp.addActionListener(this);  
+   btPrevimp.addActionListener(this);
+   setImprimir(true); 
   
   }
     

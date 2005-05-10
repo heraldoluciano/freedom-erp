@@ -91,7 +91,8 @@ public class FTipoAtendo extends FDetalhe implements ActionListener {
 
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);    
+    lcCampos.setQueryInsert(false);   
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {

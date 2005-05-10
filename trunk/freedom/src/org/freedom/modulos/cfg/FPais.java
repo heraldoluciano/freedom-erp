@@ -51,7 +51,8 @@ public class FPais extends FDados implements ActionListener {
     setListaCampos( true, "PAIS", "SG");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);    
+    lcCampos.setQueryInsert(false); 
+    setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btPrevimp) {
