@@ -70,6 +70,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
@@ -83,7 +84,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	public FConsRMA() {
 		setTitulo("Pesquisa Requisições de material");
-		setAtribos(10, 10, 513, 480);
+		setAtribos(10, 10, 663, 480);
 
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
@@ -113,6 +114,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		lcUsuario.montaSql(false, "USUARIO", "SG");
 
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.cc.", ListaCampos.DB_PK, false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano.cc.", ListaCampos.DB_PK, false));
 		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
 		lcCC.setReadOnly(true);
 		lcCC.setQueryCommit(false);
@@ -147,20 +149,20 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pinCab.adic(txtDtFim, 139, 25, 95, 20);
 
 		pinCab.adic(new JLabelPad("Cód.c.c."), 237, 5, 70, 20);
-		pinCab.adic(txtCodCC, 237, 25, 70, 20);
+		pinCab.adic(txtCodCC, 237, 25, 140, 20);
 		pinCab.adic(new JLabelPad("Centro de custo"), 310, 5, 410, 20);
-		pinCab.adic(txtDescCC, 310, 25, 180, 20);
+		pinCab.adic(txtDescCC, 380, 25, 180, 20);
 
 		pinCab.adic(new JLabelPad("Cód.usu."), 7, 48, 70, 20);
 		pinCab.adic(txtCodUsu, 7, 70, 70, 20);
 		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 48, 410, 20);
 		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
-
+/*
 		pinCab.adic(new JLabelPad("Cód.almox."), 237, 48, 75, 20);
 		pinCab.adic(txtCodAlmoxarife, 237, 70, 70, 20);
 		pinCab.adic(new JLabelPad("Nome do almoxarifado"), 310, 48, 410, 20);
 		pinCab.adic(txtDescAlmoxarife, 310, 70, 180, 20);
-
+*/
 		pinCab.adic(lbStatus, 15, 100, 50, 18);
 		pinCab.adic(lbLinha2, 7, 110, 373, 66);
 		pinCab.adic(cbPendentes, 15, 122, 170, 20);
@@ -202,8 +204,14 @@ public class FConsRMA extends FFilho implements ActionListener {
 		if(getAprova())
 		  txtCodUsu.setNaoEditavel(false);
 		else {
-		  txtCodUsu.setVlrString(Aplicativo.strUsuario);
-		  txtCodUsu.setNaoEditavel(true);		 
+		  txtCodUsu.setVlrString(Aplicativo.strUsuario);		  
+		  txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
+		  txtAnoCC.setVlrString(Aplicativo.strAnoCCUsu);
+
+		  txtCodUsu.setNaoEditavel(true);
+		  txtCodCC.setNaoEditavel(true);
+		  lcUsuario.carregaDados();
+		  lcCC.carregaDados();
 		}
 		
 	}
@@ -268,7 +276,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			where += " AND IT.CODCC=? AND IT.CODEMPCC=? AND IT.CODFILIALCC=? ";
 
 		if (usuario)
-			where += " AND (IT.IDUSUITRMA=? OR IT.IDUSUAPROVITRMA=? OR IT.IDUSUCANCITRMA=?) ";
+			where += " AND (R.IDUSU=?) ";
 
 		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.MOTIVORMA "
 				+ "FROM  EQRMA R, EQITRMA IT "
@@ -303,8 +311,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 			}
 
 			if (usuario) {
-				ps.setString(param++, txtCodUsu.getVlrString());
-				ps.setString(param++, txtCodUsu.getVlrString());
 				ps.setString(param++, txtCodUsu.getVlrString());
 			}
 
@@ -523,7 +529,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
-
 		lcAlmox.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
