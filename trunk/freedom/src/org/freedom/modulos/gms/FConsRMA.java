@@ -195,7 +195,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			}
 		});
 		btSair.addActionListener(this);
-		habCampos();
+
 	}
 
 	private void habCampos(){
@@ -203,8 +203,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		  txtCodUsu.setNaoEditavel(false);
 		else {
 		  txtCodUsu.setVlrString(Aplicativo.strUsuario);
-		  txtCodUsu.setNaoEditavel(true);
-		  lcUsuario.carregaDados();
+		  txtCodUsu.setNaoEditavel(true);		 
 		}
 		
 	}
@@ -528,5 +527,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 		lcAlmox.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
+		habCampos();
 	}
 }
