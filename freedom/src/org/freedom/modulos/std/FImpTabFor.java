@@ -239,7 +239,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   	  state("Pronto.");
   	}
   	catch(IOException err) {
-  		Funcoes.mensagemErro(this,"Erro ao ler os arquivo!\n"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro ao ler os arquivo!\n"+err.getMessage(),true,con,err);
   		err.printStackTrace();
   		state("Abortado!");
   	}
@@ -265,7 +265,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   	 		ps.close();
   	 	}
   	 	catch (SQLException err) {
-  	 		Funcoes.mensagemErro(this,"Erro ao verificar a existência do registro!\n"+err.getMessage());
+  	 		Funcoes.mensagemErro(this,"Erro ao verificar a existência do registro!\n"+err.getMessage(),true,con,err);
   	 		return false;
   	 	}
   	 	if (!bExiste) {
@@ -289,7 +289,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   	 		    bRet = true;
   	 	    }
   	 	    catch (SQLException err) {
-  	 		  Funcoes.mensagemErro(this,"Erro ao inserir os dados!\n"+err.getMessage());
+  	 		  Funcoes.mensagemErro(this,"Erro ao inserir os dados!\n"+err.getMessage(),true,con,err);
   	 	    }
   	 	}
   	 	else {
@@ -313,7 +313,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   	 			bRet = true;
   	 		}
   	 		catch (SQLException err) {
-  	 			Funcoes.mensagemErro(this,"Erro ao atualizar os dados!\n"+err.getMessage());
+  	 			Funcoes.mensagemErro(this,"Erro ao atualizar os dados!\n"+err.getMessage(),true,con,err);
   	 		}
   	 	}
   	 }

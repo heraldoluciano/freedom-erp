@@ -111,7 +111,7 @@ public class FPais extends FDados implements ActionListener {
       	con.commit();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de paises!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de paises!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

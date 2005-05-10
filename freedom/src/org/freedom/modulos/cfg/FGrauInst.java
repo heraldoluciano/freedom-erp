@@ -106,7 +106,7 @@ public class FGrauInst extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de graus de instrução!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de graus de instrução!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

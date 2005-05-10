@@ -351,7 +351,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao gerar entrada!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return iRet;
@@ -375,7 +375,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao gerar entrada!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 			return iRet;
 		}
@@ -397,7 +397,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 					con.commit();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro ao gerar item da entrada!\n"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
 		}
@@ -509,7 +509,7 @@ public class FDevolucao extends FWizard implements CarregaListener {
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar o tipo de movimento para devolução!\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		if (cPai instanceof FPrincipal)

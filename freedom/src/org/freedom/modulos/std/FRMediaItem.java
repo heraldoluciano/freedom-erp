@@ -202,7 +202,7 @@ public class FRMediaItem extends FRelatorio {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}
@@ -445,7 +445,7 @@ public class FRMediaItem extends FRelatorio {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro consulta tabela vendas!"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

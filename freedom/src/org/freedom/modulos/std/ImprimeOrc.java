@@ -154,7 +154,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		  ps.close();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao montar o relatório!!!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao montar o relatório!!!\n"+err.getMessage(),true,con,err);
 		}
 	}
 	private void montaCab(ResultSet rs) {
@@ -308,7 +308,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		drawLinha(0,iY,0,0,AL_LL);
 	  }
 	  catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar o cabeçalho do relatório!!!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar o cabeçalho do relatório!\n"+err.getMessage(),true,con,err);
 	  }
 	}
 	private void montaTot(ResultSet rs, boolean bValido) {
@@ -364,7 +364,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		  
 	  }
 	  catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar totalizadores do relatório!!!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar totalizadores do relatório!\n"+err.getMessage(),true,con,err);
 	  }
 	}
 	private boolean[] comRef() {
@@ -388,7 +388,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		ps.close();
 	  }
 	  catch (SQLException err) {
-		  Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+		  Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
 	  }
 	  return bRetorno;
 	}

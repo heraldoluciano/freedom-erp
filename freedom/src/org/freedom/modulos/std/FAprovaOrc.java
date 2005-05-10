@@ -253,7 +253,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 		
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITORCAMENTO!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
 		}
 		
 		try {
@@ -273,7 +273,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 			}
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
 		}
 		
 	tab.addTabelaEditListener(this);
@@ -363,7 +363,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 				con.commit();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar a tabela ITORCAMENTO!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
 		}
 		tab.addTabelaEditListener(this);
 		bRecalcula = true;	

@@ -240,7 +240,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 	// 	con.commit();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage(),true,con,err);
 		}
 	}
 	private void buscaVlrLib() {
@@ -261,7 +261,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
           } 
         }
         catch(SQLException err) {
-		  Funcoes.mensagemErro(this,"Erro ao buscar valor liberado!\n"+err.getMessage());
+		  Funcoes.mensagemErro(this,"Erro ao buscar valor liberado!\n"+err.getMessage(),true,con,err);
 		  err.printStackTrace();
         }                       
 	}
@@ -336,7 +336,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 	    }
 	  }
 	  catch(SQLException err) {
-	  	Funcoes.mensagemErro(this,"Erro ao verificar observações!\n"+err.getMessage());
+	  	Funcoes.mensagemErro(this,"Erro ao verificar observações!\n"+err.getMessage(),true,con,err);
 	  	err.printStackTrace();
 	  }
 	  	

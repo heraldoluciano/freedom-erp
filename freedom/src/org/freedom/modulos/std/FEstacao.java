@@ -160,8 +160,8 @@ public class FEstacao extends FDetalhe implements PostListener, ActionListener{
 	    		txtNroImp.setVlrInteger(new Integer(iNroImp));
 	    		lcDet.carregaDados();
 	    	}
-	    	catch (SQLException e) {
-	    		Funcoes.mensagemErro(this,"Erro ajustando impressora padrão!\n"+e.getMessage());
+	    	catch (SQLException err) {
+	    		Funcoes.mensagemErro(this,"Erro ajustando impressora padrão!\n"+err.getMessage(),true,con,err);
 	    	}
 	    	finally {
 	        	ps = null;

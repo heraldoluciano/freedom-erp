@@ -259,7 +259,7 @@ public class FAgenda extends FFilho implements ActionListener {
   			ps.close();
   		}
   		catch (SQLException err) {
-  			Funcoes.mensagemErro(this,"Erro ao carregar agenda!\n"+err.getMessage());
+  			Funcoes.mensagemErro(this,"Erro ao carregar agenda!\n"+err.getMessage(),true,con,err);
   		}
   	}
   	else {
@@ -328,7 +328,7 @@ public class FAgenda extends FFilho implements ActionListener {
   					
   				}
   				catch(SQLException err) {
-  					Funcoes.mensagemErro(this,"Erro ao salvar o agendamento!\n"+err.getMessage());
+  					Funcoes.mensagemErro(this,"Erro ao salvar o agendamento!\n"+err.getMessage(),true,con,err);
   				}
   				carregaTabAgd();
   			}
@@ -340,7 +340,7 @@ public class FAgenda extends FFilho implements ActionListener {
   			con.commit();
   	}
   	catch (SQLException err) {
-  		Funcoes.mensagemErro(this,"Erro ao buscar informações!\n"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro ao buscar informações!\n"+err.getMessage(),true,con,err);
   		err.printStackTrace();
   	}
   }	
@@ -366,7 +366,7 @@ public class FAgenda extends FFilho implements ActionListener {
 	  	con.commit();
 	}
 	catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao excluir agendamento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao excluir agendamento!\n"+err.getMessage(),true,con,err);
 	}
 	carregaTabAgd();
   }
@@ -410,7 +410,7 @@ public class FAgenda extends FFilho implements ActionListener {
 	    	con.commit();
       }
   	  catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao salvar o agendamento!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao salvar o agendamento!\n"+err.getMessage(),true,con,err);
   	  }
 	  carregaTabAgd();
     }

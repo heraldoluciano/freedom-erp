@@ -156,7 +156,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de Setores de Atendimento!\n"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de Setores de Atendimento!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

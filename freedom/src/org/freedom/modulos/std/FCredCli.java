@@ -1730,10 +1730,10 @@ public class FCredCli extends FTabDados implements ActionListener,
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-		} catch (SQLException e) {
+		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Não foi possível carregar estado civil!\n"
-							+ e.getMessage());
+							+ err.getMessage(),true,con,err);
 		} finally {
 			cbEstCivCli.setItens(vDesc, vCod);
 			rs = null;
@@ -1785,10 +1785,10 @@ public class FCredCli extends FTabDados implements ActionListener,
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-		} catch (SQLException e) {
+		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Não foi possível carregar pessoa cliente!\n"
-							+ e.getMessage());
+							+ err.getMessage(),true,con,err);
 		} finally {
 			rs = null;
 			ps = null;

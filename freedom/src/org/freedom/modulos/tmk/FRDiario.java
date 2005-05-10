@@ -206,7 +206,7 @@ public class FRDiario extends FRelatorio {
 //      dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta ao histórico!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta ao histórico!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

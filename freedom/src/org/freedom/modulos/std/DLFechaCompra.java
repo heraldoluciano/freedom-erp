@@ -280,7 +280,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o código da conta a Pagar!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o código da conta a Pagar!\n"+err.getMessage(),true,con,err);
     }
     return iRetorno;
   }

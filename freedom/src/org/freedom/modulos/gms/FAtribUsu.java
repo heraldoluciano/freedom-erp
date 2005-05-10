@@ -149,7 +149,7 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
   	  lsDisp.setListData(vDisp);
 	}
   	catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Não foi carregar as atribuições diponíveis.\n"+err);
+		Funcoes.mensagemErro(this,"Não foi carregar as atribuições diponíveis.\n"+err.getMessage(),true,con,err);
 	}  		
   }
   private void carregaAcesso() {

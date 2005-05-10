@@ -146,7 +146,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
   }
@@ -173,7 +173,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PALNEJAMENTO! ! !\n"+err.getMessage()); 
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err); 
       return;
     }
     DLPlanPrim dl = new DLPlanPrim(this,sCodPrim,null,null);
@@ -201,7 +201,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage()); 
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err); 
       return;
     }
   }
@@ -257,7 +257,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consulta a tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consulta a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
     DLPlanSin dl = new DLPlanSin(this,sCodPai,sDescPai,sCodFilho,null,sTipoFilho);
@@ -288,7 +288,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
   }
@@ -350,7 +350,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
     if ("BC".indexOf(sTipoFilho) >= 0) {
@@ -390,7 +390,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
         	con.commit();
       }
       catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
         return;
       }
       String sSQLCont = "INSERT INTO FNCONTA (CODEMP,CODFILIAL,NUMCONTA,CODEMPBO,CODFILIALBO,CODBANCO,CODEMPPN,CODFILIALPN,CODPLAN,DESCCONTA,TIPOCONTA,DATACONTA,AGENCIACONTA,CODEMPMA,CODFILIALMA,CODMOEDA) "+
@@ -431,7 +431,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
         	con.commit();
       }
       catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela CONTA! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela CONTA!\n"+err.getMessage(),true,con,err);
         return;
       }
     }
@@ -461,7 +461,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
         	con.commit();
       }
       catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
         return;
       }
     }
@@ -493,7 +493,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO\n"+err.getMessage(),true,con,err);
       return;
     }
   }
@@ -518,7 +518,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       sDescPai = rs.getString("DescPlan").trim();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
     DLPlanSin dl = new DLPlanSin(this,sCodPai,sDescPai,sCodFilho,sDescFilho,sTipoFilho);
@@ -543,7 +543,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	 con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
     }
   }
   private void editaAnal() {
@@ -571,7 +571,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       sCodPai = rs.getString("CodSubPlan").trim();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
     DLPlanAnal dl = new DLPlanAnal(this,sCodPai,sDescPai,sCodFilho,sDescFilho,sTipoFilho,sFinPlan);
@@ -598,7 +598,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
     }
   }
   private void editaAnalBanc() {
@@ -639,7 +639,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       sCodMoeda = rs.getString("CodMoeda").trim();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
     String[] sContVals = {sAgConta,sNumConta,sDescConta,sCodBanco,Funcoes.dateToStrDate(cDataConta.getTime()),sCodMoeda};
@@ -672,7 +672,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
     }
     String sSQLCont = "UPDATE FNCONTA SET AGENCIACONTA=?, "+
                   "NUMCONTA=?,DESCCONTA=?,CODBANCO=?, "+
@@ -698,7 +698,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao editar um registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
     }
   }
   public void deletar() {
@@ -725,7 +725,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       if (err.getErrorCode() == 335544466)
         Funcoes.mensagemErro( this, "O registro possui vínculos, não pode ser deletado! ! !");
       else 
-	  Funcoes.mensagemErro(this,"Erro ao deletar um registro na tabela PLANEJAMENTO! ! !\n"+err.getMessage());
+	  Funcoes.mensagemErro(this,"Erro ao deletar um registro na tabela PLANEJAMENTO!\n"+err.getMessage(),true,con,err);
       return;
     }
   }
@@ -811,7 +811,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de Almoxarifados!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

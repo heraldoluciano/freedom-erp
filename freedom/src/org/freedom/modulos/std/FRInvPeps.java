@@ -296,9 +296,9 @@ public class FRInvPeps extends FRelatorio {
   			imp.fechaGravacao();
   			
   		}
-  		catch (SQLException e) {
-  			Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+e.getMessage());
-  			e.printStackTrace();
+  		catch (SQLException err) {
+  			Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+err.getMessage(),true,con,err);
+  			err.printStackTrace();
   		}
   		if (bVisualizar) {
   			imp.preview(this);
@@ -357,7 +357,7 @@ public class FRInvPeps extends FRelatorio {
         con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
     }
     finally {
     	sSQL = null;

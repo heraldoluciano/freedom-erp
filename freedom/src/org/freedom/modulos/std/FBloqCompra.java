@@ -171,8 +171,8 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
             lcCompra.carregaDados();
         }
     }
-    catch(SQLException e) {
-        Funcoes.mensagemErro(this,"Erro bloqueando ou desbloqueando compra!\n"+e.getMessage());
+    catch(SQLException err) {
+        Funcoes.mensagemErro(this,"Erro bloqueando ou desbloqueando compra!\n"+err.getMessage(),true,con,err);
     }
     finally {
         iCodCompra = 0;

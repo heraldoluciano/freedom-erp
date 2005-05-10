@@ -106,7 +106,7 @@ public class FTipoExp extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de cliente!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de cliente!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

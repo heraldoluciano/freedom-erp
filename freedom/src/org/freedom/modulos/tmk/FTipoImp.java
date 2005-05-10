@@ -158,7 +158,7 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
 		ps.close();
     }
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar colunas atuais!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar colunas atuais!\n"+err.getMessage(),true,con,err);
 		err.printStackTrace();
 	}
   }

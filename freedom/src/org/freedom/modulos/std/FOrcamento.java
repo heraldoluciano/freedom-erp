@@ -633,7 +633,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar descrição completa!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return sRet != null ? sRet : "";
@@ -658,7 +658,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao confirmar código da orcamento!\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -793,7 +793,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					con.commit();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro ao carregar a observação!\n"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 			}
 			if (obs != null) {
 				obs.setSize(400, 200);
@@ -810,7 +810,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					} catch (SQLException err) {
 						Funcoes.mensagemErro(this,
 								"Erro ao inserir observação no orçamento!\n"
-										+ err.getMessage());
+										+ err.getMessage(),true,con,err);
 					}
 				}
 				obs.dispose();
@@ -859,7 +859,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao copiar o orçamento!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		dl.dispose();
@@ -887,7 +887,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao carregar a tabela SGPREFERE1!\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		}
 		if (sClassOrc.trim().equals("")) {
 			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger()
@@ -961,7 +961,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao carregar a tabela SGPREFERE1!\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		} finally {
 			sSQL = null;
 			ps = null;
@@ -1062,10 +1062,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"
-					+
-
-					"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage());
+					+"Provavelmente não foram gravadas corretamente as preferências!\n"
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return iRet;
@@ -1087,9 +1085,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o código do cliente.\n" +
-
 			"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return iRet;
@@ -1111,9 +1108,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o prazo.\n" +
-
 			"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return iRet;
@@ -1137,7 +1133,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o comissionado.\n"
 					+ "O usuário '" + Aplicativo.strUsuario
-					+ "' é um comissionado?\n" + err.getMessage());
+					+ "' é um comissionado?\n" + err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return iRet;

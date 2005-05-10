@@ -139,7 +139,7 @@ public class FTrocaDoc extends FFilho implements ActionListener {
       	con.commit();
     }
     catch(SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao alterar a venda!\n"+err.getMessage());
+	  Funcoes.mensagemErro(this,"Erro ao alterar a venda!\n"+err.getMessage(),true,con,err);
 	  err.printStackTrace();
     }
   }

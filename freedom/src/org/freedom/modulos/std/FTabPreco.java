@@ -106,7 +106,7 @@ public class FTabPreco extends FDados implements ActionListener{
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de \"tabelas de preços\"!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de \"tabelas de preços\"!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

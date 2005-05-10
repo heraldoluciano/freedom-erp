@@ -12,12 +12,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
-
-import javax.print.attribute.standard.OrientationRequested;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.freedom.componentes.JTextFieldPad;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

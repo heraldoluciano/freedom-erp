@@ -478,7 +478,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao calcular o peso!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao calcular o peso!\n"+err.getMessage(),true,con,err);
     }
   }
   private int trazCodRec() {
@@ -501,7 +501,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o código da conta a receber!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o código da conta a receber!\n"+err.getMessage(),true,con,err);
     }
     return iRetorno;
   }
@@ -545,7 +545,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o código da Transportadora do cliente!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o código da Transportadora do cliente!\n"+err.getMessage(),true,con,err);
 		err.printStackTrace();
     }
     System.out.println(sSQL);
@@ -586,7 +586,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   	  ps.close();
   	}
     catch(SQLException err) {
-    	Funcoes.mensagemErro(this,"Erro ao buscar codaux.\n"+err.getMessage());
+    	Funcoes.mensagemErro(this,"Erro ao buscar codaux.\n"+err.getMessage(),true,con,err);
     	err.printStackTrace();
     }
   	return iRet;
@@ -736,7 +736,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
         	con.commit();
   	}
   	catch (SQLException err) {
-  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage());
+  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
   	}
   	return bRetorno;
   }

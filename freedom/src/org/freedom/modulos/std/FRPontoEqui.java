@@ -101,7 +101,7 @@ public class FRPontoEqui extends FRelatorio {
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo!\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }
@@ -131,7 +131,7 @@ public class FRPontoEqui extends FRelatorio {
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar os valores de:"+sGet+".\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar os valores de:"+sGet+".\n"+err.getMessage(),true,con,err);
 	}	
   	return bRet;
   }
@@ -163,7 +163,7 @@ public class FRPontoEqui extends FRelatorio {
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar os valores de:"+sFin+".\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar os valores de:"+sFin+".\n"+err.getMessage(),true,con,err);
 	}	
   	return bFin;
   }
@@ -345,7 +345,7 @@ public class FRPontoEqui extends FRelatorio {
       	con.commit();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consultar as bases financeiras!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro ao consultar as bases financeiras!\n"+err.getMessage(),true,con,err);      
 		err.printStackTrace();      
     }
     

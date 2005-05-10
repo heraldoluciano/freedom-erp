@@ -31,11 +31,8 @@ package org.freedom.modulos.pdv;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -632,7 +629,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null,
 					"Erro ao inserir o ítem.\nInforme esta mensagem ao administrador: \n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 	}
@@ -769,7 +766,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar o preço!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -799,7 +796,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null, "Erro ao atualizar o saldo!\n"
 					+ "Talvez esta venda ainda não esteja salva!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 	}

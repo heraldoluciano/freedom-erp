@@ -100,7 +100,7 @@ public class FSangria extends FFDialogo {
 		    ps.close();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao verificar o caixa!!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao verificar o caixa!!\n"+err.getMessage(),true,con,err);
 		}
 		if (iRet != 4 && iRet != 2)
 		  Funcoes.mensagemErro(this,"Caixa não esta aberto!!");
@@ -127,7 +127,7 @@ public class FSangria extends FFDialogo {
 			ps.close();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro carregar informações do caixa!!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro carregar informações do caixa!!\n"+err.getMessage(),true,con,err);
 		}
 	}
 	private boolean execSangria() {
@@ -152,7 +152,7 @@ public class FSangria extends FFDialogo {
 		bRet = true;
       }
       catch (SQLException err) {
-      	Funcoes.mensagemErro(this,"Erro ao executar sangria!\n"+err.getMessage());
+      	Funcoes.mensagemErro(this,"Erro ao executar sangria!\n"+err.getMessage(),true,con,err);
       }
       return bRet;
     }

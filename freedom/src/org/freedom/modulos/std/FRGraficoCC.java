@@ -144,7 +144,7 @@ public class FRGraficoCC extends FRelatorio {
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }
@@ -179,7 +179,7 @@ public class FRGraficoCC extends FRelatorio {
 		  ps2.close();			  
 	    }  
 	    catch (SQLException err) {
-		  Funcoes.mensagemErro(this,"Erro ao buscar nivel de planejamento!\n"+err.getMessage());	      	
+		  Funcoes.mensagemErro(this,"Erro ao buscar nivel de planejamento!\n"+err.getMessage(),true,con,err);	      	
 	    }
 
 		sSQL = "SELECT CC.CODCC,CC.SIGLACC,CC.DESCCC,"+
@@ -211,7 +211,7 @@ public class FRGraficoCC extends FRelatorio {
 
 	  }
 	  catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar valores financeiros!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar valores financeiros!\n"+err.getMessage(),true,con,err);
 	  }
 
     }

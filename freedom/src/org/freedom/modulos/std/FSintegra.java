@@ -248,8 +248,8 @@ public class FSintegra extends FFilho implements ActionListener {
 	try {
 	   fSintegra.createNewFile();     
 	}
-	catch(IOException ioError) {
-		Funcoes.mensagemErro(this,"Erro limpando arquivo: "+sFileName+"\n"+ioError.getMessage());
+	catch(IOException err) {
+		Funcoes.mensagemErro(this,"Erro limpando arquivo: "+sFileName+"\n"+err.getMessage(),true,con,err);
 	   return;
 	}
     
@@ -771,8 +771,8 @@ public class FSintegra extends FFilho implements ActionListener {
       fwSintegra.write(sBuf);
       fwSintegra.flush();
     }
-    catch (IOException ioerr) {
-		Funcoes.mensagemErro(this, "Erro grando no arquivo: '"+sFileName+"\n"+ioerr.getMessage());
+    catch (IOException err) {
+		Funcoes.mensagemErro(this, "Erro grando no arquivo: '"+sFileName+"\n"+err.getMessage(),true,con,err);
     }
           
   }

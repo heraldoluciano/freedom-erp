@@ -249,7 +249,7 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
         }
     }
     catch(SQLException err) {
-        Funcoes.mensagemErro(this,"Erro ao buscar ítems!\n"+err.getMessage());
+        Funcoes.mensagemErro(this,"Erro ao buscar ítens!\n"+err.getMessage(),true,con,err);
         err.printStackTrace();
     }
   }

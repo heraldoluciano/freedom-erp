@@ -180,8 +180,7 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
 		  }
         }
 		catch (SQLException err) {
-				Funcoes.mensagemErro(this, "Erro ao carregar tabela SGFILIAL! ! !");
-				Funcoes.mensagemErro(this, err.getMessage());
+				Funcoes.mensagemErro(this, "Erro ao carregar tabela SGFILIAL!\n"+err.getMessage(),true,con,err);
 			    return;
 	    }
 	  }

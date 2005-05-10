@@ -429,7 +429,7 @@ public class FSVV extends FFilho implements ActionListener {
         Funcoes.criaTelaErro(sRelErros,this);
     }
     catch(SQLException err) {
-    	Funcoes.mensagemErro(this,"Erro ao buscar dados!\n"+err.getMessage());
+    	Funcoes.mensagemErro(this,"Erro ao buscar dados!\n"+err.getMessage(),true,con,err);
     	err.printStackTrace();
     }
   }
@@ -511,7 +511,7 @@ public class FSVV extends FFilho implements ActionListener {
                     con.commit();
             }
             catch(SQLException err) {
-            	Funcoes.mensagemErro(this,"Erro ao buscar o estoque!\n"+err);
+            	Funcoes.mensagemErro(this,"Erro ao buscar o estoque!\n"+err.getMessage(),true,con,err);
             }
         }
         pbAnd.setValue(++iAnd);
@@ -520,7 +520,7 @@ public class FSVV extends FFilho implements ActionListener {
       }
     }
     catch(IOException err) {
-    	Funcoes.mensagemErro(this,"Erro ao gravar arquivo!\n"+err.getMessage());
+    	Funcoes.mensagemErro(this,"Erro ao gravar arquivo!\n"+err.getMessage(),true,con,err);
     	err.printStackTrace();
     }
     lbAnd.setText("Pronto.");
@@ -621,7 +621,7 @@ public class FSVV extends FFilho implements ActionListener {
        ps.close();
      }
     catch (SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao buscar dados da filial!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro ao buscar dados da filial!\n"+err.getMessage(),true,con,err);
        err.printStackTrace();
     }
 
@@ -651,7 +651,7 @@ public class FSVV extends FFilho implements ActionListener {
       ps.close();
     }
     catch(SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao buscar o código do cliente no fornecedor!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro ao buscar o código do cliente no fornecedor!\n"+err.getMessage(),true,con,err);
        err.printStackTrace();
     }
     return sRet;
@@ -687,7 +687,7 @@ public class FSVV extends FFilho implements ActionListener {
       ps.close();
     }
     catch(SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao buscar a unidade!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro ao buscar a unidade!\n"+err.getMessage(),true,con,err);
        err.printStackTrace();
     }
     return oRet;

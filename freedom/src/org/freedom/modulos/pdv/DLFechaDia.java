@@ -81,7 +81,7 @@ public class DLFechaDia extends FFDialogo {
 				con.commit();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(null,"Não foi possível buscar o saldo atual.\n"+err.getMessage());
+			Funcoes.mensagemErro(null,"Não foi possível buscar o saldo atual.\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 	}
@@ -108,7 +108,7 @@ public class DLFechaDia extends FFDialogo {
 			bRet = true;
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(null,"Erro ao executar fechamento do caixa!\n"+err.getMessage());
+			Funcoes.mensagemErro(null,"Erro ao executar fechamento do caixa!\n"+err.getMessage(),true,con,err);
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao executar fechamento do caixa.");
 		}
 		return bRet;
@@ -134,7 +134,7 @@ public class DLFechaDia extends FFDialogo {
 			bRet = true;
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(null,"Erro ao executar o troco!\n"+err.getMessage());
+			Funcoes.mensagemErro(null,"Erro ao executar o troco!\n"+err.getMessage(),true,con,err);
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao executar o troco.");
 		}
 		return bRet;

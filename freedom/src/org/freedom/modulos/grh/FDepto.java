@@ -114,7 +114,7 @@ public class FDepto extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro consulta tabela de departamentos!"+err.getMessage());      
+       Funcoes.mensagemErro(this,"Erro consulta tabela de departamentos!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

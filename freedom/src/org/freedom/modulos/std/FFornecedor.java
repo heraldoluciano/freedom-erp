@@ -343,7 +343,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		And.dispose();
 	  }
 	  catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de setores!"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro consulta tabela de setores!\n"+err.getMessage(),true,con,err);
 	  }
 	}
 	else if (dl.getValores()[7].equals("R")) {
@@ -422,7 +422,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		And.dispose();
 	  }
 	  catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro na consulta da tabela de setores!"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro na consulta da tabela de setores!\n"+err.getMessage(),true,con,err);
 	  }
 	}
 	if (bVisualizar) {
@@ -549,7 +549,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   			}
   		}
   		catch(SQLException err) {
-  			Funcoes.mensagemErro(this,"Erro ao verificar preferências!\n"+err.getMessage());
+  			Funcoes.mensagemErro(this,"Erro ao verificar preferências!\n"+err.getMessage(),true,con,err);
   			err.printStackTrace();
   		}
   	}

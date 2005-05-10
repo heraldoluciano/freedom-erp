@@ -365,7 +365,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
       }
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao executar um procedimento na tabela PRODUTO!\n"+err.getMessage()); 
+		Funcoes.mensagemErro(this,"Erro ao executar um procedimento na tabela PRODUTO!\n"+err.getMessage(),true,con,err); 
     }
   }
   private void carregaTabMod() {
@@ -405,7 +405,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
       	con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro a carregar a tabela ITMODGRADE!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro a carregar a tabela ITMODGRADE!\n"+err.getMessage(),true,con,err);
     }
   }
   private void carregaTudo(Tabela tb) {

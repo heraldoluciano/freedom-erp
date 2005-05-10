@@ -140,8 +140,8 @@ public class FRBalancete extends FRelatorio {
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage());
+					"Erro ao buscar o ano-base para o centro de custo!\n"
+							+ err.getMessage(),true,con,err);
 		}
 		return iRet;
 	}
@@ -341,8 +341,8 @@ public class FRBalancete extends FRelatorio {
 				con.commit();
 			//      dl.dispose();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consultar as bases financeiras!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro consultar as bases financeiras!\n"
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 

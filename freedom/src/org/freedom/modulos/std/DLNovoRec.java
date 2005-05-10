@@ -208,7 +208,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
 //      con.commit();
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao confirmar código da conta a receber!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao confirmar código da conta a receber!\n"+err.getMessage(),true,con,err);
     }
   }
   public void beforePost(PostEvent evt) { 

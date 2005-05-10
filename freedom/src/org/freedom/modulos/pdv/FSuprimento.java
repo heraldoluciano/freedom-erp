@@ -114,7 +114,7 @@ public class FSuprimento extends FFDialogo {
 		  rs.close();
 		}		
 		  catch(SQLException err){
-			Funcoes.mensagemErro(this, "Ocorreu erro na consulta de movimento de caixa!\n"+err.getMessage());	
+			Funcoes.mensagemErro(this, "Ocorreu erro na consulta de movimento de caixa!\n"+err.getMessage(),true,con,err);	
 		  }		
 			 			
 	}
@@ -139,7 +139,7 @@ public class FSuprimento extends FFDialogo {
 				con.commit();
 		  }
 		  catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao executar suprimento!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao executar suprimento!\n"+err.getMessage(),true,con,err);
 		  }
 		  if (AplicativoPDV.bECFTerm)
 		    bf.abreGaveta(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);

@@ -122,7 +122,7 @@ public class FFase extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-        Funcoes.mensagemErro(this,"Erro consulta tabela de fases!"+err.getMessage());      
+        Funcoes.mensagemErro(this,"Erro consulta tabela de fases!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

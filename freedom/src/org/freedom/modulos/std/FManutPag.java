@@ -554,7 +554,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
       }
     }
     catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a consulta!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a consulta!\n"+err.getMessage(),true,con,err);
     }
   }
   private void carregaGridConsulta() {
@@ -603,7 +603,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
       	con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage(),true,con,err);
     }
   }
   private void carregaGridBaixa() {
@@ -664,7 +664,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
         	con.commit();
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage(),true,con,err);
     }
   }
   private boolean validaPeriodo() {
@@ -790,7 +790,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
         	con.commit();
       }
       catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar a tabela de manutenção!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar a tabela de manutenção!\n"+err.getMessage(),true,con,err);
       }
     }
   }
@@ -890,7 +890,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
           	con.commit();
         }
         catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
         }
       }
       dl.dispose();
@@ -963,7 +963,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
           	con.commit();
         }
         catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
         }
       }
       carregaGridBaixa();
@@ -1078,7 +1078,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
             	con.commit();
           }
           catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao editar parcela!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao editar parcela!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
           }
         }
@@ -1111,7 +1111,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
             carregaGridManut();
           }
           catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao excluir parcela!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao excluir parcela!\n"+err.getMessage(),true,con,err);
           }
         }
       }
@@ -1140,7 +1140,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
           	con.commit();
         }
         catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao estornar registro!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao estornar registro!\n"+err.getMessage(),true,con,err);
         }
         carregaGridManut();
       }
@@ -1198,7 +1198,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }

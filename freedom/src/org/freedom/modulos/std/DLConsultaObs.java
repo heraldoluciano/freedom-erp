@@ -104,7 +104,7 @@ public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSe
       tabConsulta.setRowSelectionInterval(0,0);
     }
     catch(SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage(),true,con,err);
     }
   }
   public void valorAlterado(TabelaSelEvent tevt) {

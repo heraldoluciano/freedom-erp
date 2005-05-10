@@ -121,7 +121,7 @@ public class FTipoFiscCli extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro consulta tabela fiscal de tipos de cliente!"+err.getMessage());      
+       Funcoes.mensagemErro(this,"Erro consulta tabela fiscal de tipos de cliente!"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

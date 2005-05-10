@@ -160,7 +160,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage());
+				"Erro ao consultar a tabela FNCC!\n" + err.getMessage(),true,con,err);
 			return;
 		}
 	}
@@ -192,8 +192,8 @@ public class FCentroCusto
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-				"Erro ao consultar a tabela PALNEJAMENTO! ! !\n"
-					+ err.getMessage());
+				"Erro ao consultar a tabela PALNEJAMENTO!\n"
+					+ err.getMessage(),true,con,err);
 			return;
 		}
 		DLCCPrim dl = new DLCCPrim(this,sCodPrim, null, null);
@@ -218,15 +218,15 @@ public class FCentroCusto
 			ps.setString(6, sSigla);  //60211090
 			if (ps.executeUpdate() == 0) {
 				Funcoes.mensagemErro(this,
-					"Não foi possível inserir registro na tabela FNCC! ! !");
+					"Não foi possível inserir registro na tabela FNCC!");
 			}
 			//		ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-				"Erro ao inserir registro na tabela FNCC! ! !\n"
-					+ err.getMessage());
+				"Erro ao inserir registro na tabela FNCC!\n"
+					+ err.getMessage(),true,con,err);
 			return;
 		}
 	}
@@ -299,7 +299,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro ao consulta a tabela FNCC! ! !\n" + err.getMessage());
+				"Erro ao consulta a tabela FNCC!\n" + err.getMessage(),true,con,err);
 			return;
 		}
 		DLCCSin dl = new DLCCSin(this,sCodPai, sDescPai, sCodFilho, null, null);
@@ -327,7 +327,7 @@ public class FCentroCusto
 			if (ps.executeUpdate() == 0) {
 				Funcoes.mensagemErro(
 					this,
-					"Não foi possível inserir registro na tabela FNCC! ! !");
+					"Não foi possível inserir registro na tabela FNCC!");
 				return;
 			}
 			//      ps.close();
@@ -337,7 +337,7 @@ public class FCentroCusto
 			Funcoes.mensagemErro(
 				this,
 				"Erro ao inserir registro na tabela FNCC! ! !\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			return;
 		}
 	}
@@ -413,7 +413,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage());
+				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage(),true,con,err);
 			return;
 		}
 		DLCCAnal dl = new DLCCAnal(this,sCodPai, sDescPai, sCodFilho, null, null);
@@ -455,7 +455,7 @@ public class FCentroCusto
 			Funcoes.mensagemErro(
 				this,
 				"Erro ao inserir registro na tabela FNCC! ! !\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			return;
 		}
 	}
@@ -495,7 +495,7 @@ public class FCentroCusto
 			Funcoes.mensagemErro(
 				this,
 				"Erro ao editar um registro na tabela FNCC! ! !\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			return;
 		}
 	}
@@ -527,7 +527,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage());
+				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage(),true,con,err);
 			return;
 		}
 		DLCCSin dl = new DLCCSin(this,sCodPai, sDescPai, sCodFilho, sDescFilho, sSiglaFilho);
@@ -565,7 +565,7 @@ public class FCentroCusto
 			Funcoes.mensagemErro(
 				this,
 				"Erro ao editar um registro na tabela FNCC! ! !\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 	private void editaAnal() {
@@ -599,7 +599,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage());
+				"Erro ao consultar a tabela FNCC! ! !\n" + err.getMessage(),true,con,err);
 			return;
 		}
 		DLCCAnal dl = new DLCCAnal(this,sCodPai, sDescPai, sCodFilho, sDescFilho, sSiglaFilho);
@@ -637,7 +637,7 @@ public class FCentroCusto
 			Funcoes.mensagemErro(
 				this,
 				"Erro ao editar um registro na tabela FNCC! ! !\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 	public void deletar() {
@@ -708,7 +708,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro ao consultar database." + err.getMessage());
+				"Erro ao consultar database." + err.getMessage(),true,con,err);
 		}
 		return bRet;
 	}
@@ -794,7 +794,7 @@ public class FCentroCusto
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(
 				this,
-				"Erro consulta tabela de Almoxarifados!" + err.getMessage());
+				"Erro consulta tabela de Almoxarifados!" + err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

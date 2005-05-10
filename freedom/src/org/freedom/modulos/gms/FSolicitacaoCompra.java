@@ -313,7 +313,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -438,7 +438,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		finally {
 			rs = null;
@@ -588,7 +588,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {
@@ -660,7 +660,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		}
 		return iRet;
 	}
@@ -697,7 +697,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 }

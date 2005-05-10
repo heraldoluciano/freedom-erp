@@ -155,7 +155,7 @@ public class FRCentroCusto extends FRelatorio {
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		}
 		return iRet;
 	}
@@ -423,8 +423,8 @@ public class FRCentroCusto extends FRelatorio {
 			//      dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-					"Erro na consulta de relatório financeiro por centro de custo!"
-							+ err.getMessage());
+					"Erro na consulta de relatório financeiro por centro de custo!\n"
+							+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

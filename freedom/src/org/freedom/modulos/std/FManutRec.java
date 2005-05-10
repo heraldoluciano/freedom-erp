@@ -631,7 +631,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       }
     }
     catch (SQLException err) {
-      Funcoes.mensagemErro(this,"Erro ao carregar a consulta!\n"+err.getMessage());
+      Funcoes.mensagemErro(this,"Erro ao carregar a consulta!\n"+err.getMessage(),true,con,err);
       err.printStackTrace();
     }
   }
@@ -680,7 +680,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       	con.commit();
     }
     catch(SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro ao montar a tabela de consulta!\n"+err.getMessage(),true,con,err);
        err.printStackTrace();
     }
   }
@@ -742,7 +742,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
         	con.commit();
     }
     catch(SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage(),true,con,err);
     }
   }
   private boolean validaPeriodo() {
@@ -880,7 +880,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       	con.commit();
     }
     catch(SQLException err) {
-       Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage());
+       Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage(),true,con,err);
     }
   }
   private void baixaConsulta() {
@@ -990,7 +990,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
           	con.commit();
         }
         catch(SQLException err) {
-          Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage());
+          Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
         }
       }
       dl.dispose();
@@ -1072,7 +1072,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
           	con.commit();
         }
         catch(SQLException err) {
-          Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage());
+          Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
         }
       }
       carregaGridBaixa();
@@ -1202,7 +1202,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
  					ps.executeUpdate();
  				}
  				catch(SQLException err) {
- 					Funcoes.mensagemErro(this,"Erro ao editar parcela!\n"+err.getMessage());
+ 					Funcoes.mensagemErro(this,"Erro ao editar parcela!\n"+err.getMessage(),true,con,err);
  					err.printStackTrace();
  				}
  			}
@@ -1228,33 +1228,35 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 			carregaGridManut(bBuscaAtual);
 		  }
 		  catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao excluir parcela!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao excluir parcela!\n"+err.getMessage(),true,con,err);
 		  }
 		}
 	  }   
 	}
   }
   private void estorno() {
-    if (tabManut.getLinhaSel() > -1) {
-      if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("RP")) { 
-        int iLin = tabManut.getLinhaSel();
-        iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,5));
-        iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,6));
-        String sSQL = "UPDATE FNITRECEBER SET STATUSITREC='R1' WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?";
-        try {
-          PreparedStatement ps = con.prepareStatement(sSQL);
-          ps.setInt(1,iCodRec);
-          ps.setInt(2,iNParcItRec);
-		  ps.setInt(3,Aplicativo.iCodEmp);
-		  ps.setInt(4,ListaCampos.getMasterFilial("FNRECEBER"));
-          ps.executeUpdate();
-          if (!con.getAutoCommit())
-          	con.commit();
-        }
-        catch(SQLException err) {
-          Funcoes.mensagemErro(this,"Erro ao estornar registro!\n"+err.getMessage());
-        }
-        carregaGridManut(bBuscaAtual);
+  	if(Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==0) {
+  		if (tabManut.getLinhaSel() > -1) {
+  			if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("RP")) { 
+  				int iLin = tabManut.getLinhaSel();
+  				iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,5));
+  				iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,6));
+  				String sSQL = "UPDATE FNITRECEBER SET STATUSITREC='R1' WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?";
+  				try {
+  					PreparedStatement ps = con.prepareStatement(sSQL);
+  					ps.setInt(1,iCodRec);
+  					ps.setInt(2,iNParcItRec);
+  					ps.setInt(3,Aplicativo.iCodEmp);
+  					ps.setInt(4,ListaCampos.getMasterFilial("FNRECEBER"));
+  					ps.executeUpdate();
+  					if (!con.getAutoCommit())
+  						con.commit();
+  				}
+  				catch(SQLException err) {
+  					Funcoes.mensagemErro(this,"Erro ao estornar registro!\n"+err.getMessage(),true,con,err);
+  				}
+  				carregaGridManut(bBuscaAtual);
+  		}
       }
     }
   }
@@ -1352,7 +1354,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		ps.close();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao buscar o ano-base para o centro de custo.\n"+err.getMessage(),true,con,err);
 	}
 	return iRet;
   }

@@ -328,7 +328,7 @@ public class FConsSol extends FFilho implements ActionListener {
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela CPSOLICITACAO!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 	}
@@ -429,7 +429,7 @@ public class FConsSol extends FFilho implements ActionListener {
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro consulta tabela de orçamentos!"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

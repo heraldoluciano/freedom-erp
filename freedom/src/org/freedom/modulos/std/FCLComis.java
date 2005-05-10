@@ -166,7 +166,7 @@ private void imprimir(boolean bVisualizar) {
     dl.dispose();
   }  
   catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro ao consultar a tabela de class.comissão!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro ao consultar a tabela de class.comissão!\n"+err.getMessage(),true,con,err);      
   }
   
   if (bVisualizar) {

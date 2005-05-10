@@ -314,7 +314,7 @@ public class FConveniado extends FTabDados implements PostListener {
 	  	con.commit();
 	}
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE2!\n"+err.getMessage());
+		Funcoes.mensagemErro(this,"Erro ao carregar a tabela SGPREFERE2!\n"+err.getMessage(),true,con,err);
 	}
 	return bRetorno;
   }

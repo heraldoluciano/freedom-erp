@@ -148,8 +148,8 @@ public class FConsPreco extends FFilho implements KeyListener {
 	    	rs.close();
 	    	ps.close();
 	    }
-	    catch (SQLException e) {
-	    	Funcoes.mensagemErro(null,"Erro consultando a tabela de preços!\n"+e.getMessage());
+	    catch (SQLException err) {
+	    	Funcoes.mensagemErro(null,"Erro consultando a tabela de preços!\n"+err.getMessage(),true,con,err);
 	    }
 	    finally {
 	    	rs = null;

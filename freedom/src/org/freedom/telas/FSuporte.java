@@ -142,6 +142,9 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		btBuscaArq.addActionListener(this);
 		btEnviar.addActionListener(this);
 	}
+	public void setMensagem(String sMensagem){
+		txaMen.setVlrString(sMensagem);
+	}
 	private String buscaEmailFilial(){
 	    String sRet = "";
 	    ResultSet rs = null;

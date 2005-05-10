@@ -106,7 +106,7 @@ public class FSetor extends FDados implements ActionListener{
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de setores!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de setores!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

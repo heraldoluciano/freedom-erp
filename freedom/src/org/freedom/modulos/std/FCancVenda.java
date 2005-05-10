@@ -123,7 +123,7 @@ public class FCancVenda extends FFilho implements ActionListener {
           bRet = true;
         }
         catch(SQLException err) {
-			Funcoes.mensagemErro(null,"Erro ao cancelar a venda!\n"+err.getMessage());
+			Funcoes.mensagemErro(null,"Erro ao cancelar a venda!\n"+err.getMessage(),true,con,err);
         }
       }
     }

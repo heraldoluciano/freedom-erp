@@ -656,7 +656,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -688,7 +688,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
-					+ err);
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -717,7 +717,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		if (!bValido) {
 			DLLote dl = new DLLote(this, txtCodLote.getText(), txtCodProd
@@ -791,7 +791,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			calcImpostos(true);
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -1184,7 +1184,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {
@@ -1216,7 +1216,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}

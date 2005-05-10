@@ -980,7 +980,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			calcImpostos(true);
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -1046,7 +1046,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
-					+ err);
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -1077,7 +1077,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-					"Erro ao buscar tratamento tributário!\n" + err);
+					"Erro ao buscar tratamento tributário!\n" + err.getMessage(),true,con,err);
 		}
 	}
 
@@ -1199,7 +1199,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err);
+			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err.getMessage(),true,con,err);
 		}
 		if (!bRet && txtVerifProd.getVlrString().equals("S"))
 			bRet = mostraTelaPass();
@@ -1380,7 +1380,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			}
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar descrição completa!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			//err.printStackTrace();
 		}
 		return sRet != null ? sRet : "";
@@ -1404,7 +1404,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao confirmar número do pedido!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 	}
 
@@ -1508,7 +1508,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		if (!bValido) {
 			bRetorno = txtCodLote.mostraDLF2FK();
@@ -1785,7 +1785,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					con.commit();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro ao carregar a observação!\n"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 			}
 			if (obs != null) {
 				obs.setVisible(true);
@@ -1801,7 +1801,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					} catch (SQLException err) {
 						Funcoes.mensagemErro(this,
 								"Erro ao inserir observação na venda!\n"
-										+ err.getMessage());
+										+ err.getMessage(),true,con,err);
 					}
 				}
 				obs.dispose();
@@ -1835,9 +1835,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if (!con.getAutoCommit())
 					con.commit();
 			}
-		} catch (SQLException e) {
+		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro bloqueando a venda!\n"
-					+ e.getMessage());
+					+ err.getMessage(),true,con,err);
 		} finally {
 			ps = null;
 			sSql = null;
@@ -2223,7 +2223,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Venda!"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {
@@ -2325,7 +2325,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			}
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar tabela de Venda!"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		dl.dispose();
 		if (bImpOK)
@@ -2359,7 +2359,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Não foi possível verificar os pagamentos do cliente!\n"
-							+ err.getMessage());
+							+ err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}
@@ -2423,7 +2423,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}
@@ -2488,10 +2488,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						con.commit();
 					rsTipoMov.close();
 					psTipoMov.close();
-				} catch (SQLException e) {
+				} catch (SQLException err) {
 					Funcoes.mensagemErro(this,
 							"Erro ao pesquisar tipo de movimento!\n"
-									+ e.getMessage());
+									+ err.getMessage(),true,con,err);
 					pevt.cancela();
 				}
 			}

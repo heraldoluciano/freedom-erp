@@ -467,9 +467,9 @@ public class FManutPreco extends FFilho implements ActionListener,
 							+ iRegsInc + "\n" + "Registros atualizados: "
 							+ iRegsAtu + "\n" + "Total processados: "
 							+ (iRegsAtu + iRegsInc));
-				} catch (SQLException e) {
+				} catch (SQLException err) {
 					Funcoes.mensagemErro(this, "Erro atualizando tabela!\n"
-							+ e.getMessage());
+							+ err.getMessage(),true,con,err);
 				}
 			} finally {
 				setCursor(cursorAtual);
@@ -549,7 +549,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 				}
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro ao verificar preferências!\n"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
 		} finally {

@@ -170,8 +170,8 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
             lcVenda.carregaDados();
         }
     }
-    catch(SQLException e) {
-        Funcoes.mensagemErro(this,"Erro cancelando vínculo venda x orçamento!\n"+e.getMessage());
+    catch(SQLException err) {
+        Funcoes.mensagemErro(this,"Erro cancelando vínculo venda x orçamento!\n"+err.getMessage(),true,con,err);
     }
     finally {
         iCodVenda = 0;

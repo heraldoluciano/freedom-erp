@@ -332,7 +332,7 @@ public class FLeFiscal extends FTabDados {
 		  ps.close();
 	    }
 	    catch (SQLException err) {
-		  Funcoes.mensagemErro(this,"Erro ao buscar primeiro cupom!\n"+err.getMessage());
+		  Funcoes.mensagemErro(this,"Erro ao buscar primeiro cupom!\n"+err.getMessage(),true,con,err);
 	    }
     	
 		if (AplicativoPDV.bECFTerm) {

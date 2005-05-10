@@ -158,7 +158,7 @@ public class DLNovoHist extends FFDialogo {
 			ps.close();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao buscar o atendente atual!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao buscar o atendente atual!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		

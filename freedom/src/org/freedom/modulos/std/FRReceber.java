@@ -412,7 +412,7 @@ public class FRReceber extends FRelatorio {
 //      dl.dispose();
   		}  
   		catch ( SQLException err ) {
-  			Funcoes.mensagemErro(this,"Erro consulta tabela de contas a receber!\n"+err.getMessage());      
+  			Funcoes.mensagemErro(this,"Erro consulta tabela de contas a receber!\n"+err.getMessage(),true,con,err);      
   		}
     
   		if (bVisualizar) {
@@ -509,7 +509,7 @@ public class FRReceber extends FRelatorio {
   			}
   		}
   		catch(SQLException err) {
-  			Funcoes.mensagemErro(null,"Erro ao verificar preferências!\n"+err.getMessage());
+  			Funcoes.mensagemErro(null,"Erro ao verificar preferências!\n"+err.getMessage(),true,con,err);
   			err.printStackTrace();
   		}
   	}

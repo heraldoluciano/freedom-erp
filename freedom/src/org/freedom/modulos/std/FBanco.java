@@ -121,7 +121,7 @@ public class FBanco extends FDados implements ActionListener {
       dl.dispose();
     }  
     catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de bancos!"+err.getMessage());      
+		Funcoes.mensagemErro(this,"Erro consulta tabela de bancos!\n"+err.getMessage(),true,con,err);      
     }
     
     if (bVisualizar) {

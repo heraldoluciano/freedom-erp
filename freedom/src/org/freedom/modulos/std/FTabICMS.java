@@ -105,7 +105,7 @@ public class FTabICMS extends FDados implements ActionListener {
       	con.commit();
     }  
     catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro consulta tabela de icms!"+err.getMessage());      
+       Funcoes.mensagemErro(this,"Erro na consulta à tabela de icms!\n"+err.getMessage());      
     }
     
     if (bVisualizar) {

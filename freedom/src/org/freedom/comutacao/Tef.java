@@ -36,9 +36,6 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Properties;
 import java.util.Vector;
-
-import org.freedom.acao.Processo;
-import org.freedom.componentes.ProcessoSec;
 import org.freedom.funcoes.Funcoes;
 
 public class Tef {

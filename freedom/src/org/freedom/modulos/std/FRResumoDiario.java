@@ -484,8 +484,8 @@ public class FRResumoDiario extends FRelatorio {
 				con.commit();
 			//      dl.dispose();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta tabela de vendas!"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro consulta tabela de vendas!\n"
+					+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {

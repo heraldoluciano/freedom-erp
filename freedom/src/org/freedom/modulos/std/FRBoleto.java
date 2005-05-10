@@ -182,7 +182,7 @@ public class FRBoleto extends FRelatorio {
         ps.close();
     }
     catch ( SQLException err ) {
-        Funcoes.mensagemErro(null,"Erro ao consultar informãoes!"+err.getMessage());
+        Funcoes.mensagemErro(null,"Erro ao consultar informãções!\n"+err.getMessage(),true,con,err);
         err.printStackTrace();      
     }
 //    imp.eject();
@@ -332,7 +332,7 @@ public class FRBoleto extends FRelatorio {
         ps.close();
     }
     catch ( SQLException err ) {
-        Funcoes.mensagemErro(this,"Erro consulta ao modelo de orçamento!"+err.getMessage());      
+        Funcoes.mensagemErro(this,"Erro na consulta ao modelo de boleto!\n"+err.getMessage(),true,con,err);      
         err.printStackTrace();      
     }
     return sRet;
@@ -357,7 +357,7 @@ public class FRBoleto extends FRelatorio {
         ps.close();
     }
     catch(SQLException err) {
-        Funcoes.mensagemErro(null,"Erro ao buscar a moeda padrão!\n"+err.getMessage());
+        Funcoes.mensagemErro(null,"Erro ao buscar a moeda padrão!\n"+err.getMessage(),true,con,err);
         err.printStackTrace();
     }
     if (sRet == null) {

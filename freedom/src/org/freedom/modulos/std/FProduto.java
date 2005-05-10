@@ -660,10 +660,10 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 					ps.close();
 					if (!con.getAutoCommit())
 						con.commit();
-				} catch (SQLException e) {
+				} catch (SQLException err) {
 					Funcoes.mensagemErro(this,
 							"Não foi possível carregar o valor de custo PEPS!\n"
-									+ e.getMessage());
+									+ err.getMessage(),true,con,err);
 				} finally {
 					rs = null;
 					ps = null;
@@ -1120,7 +1120,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao copiar o produto!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 	}
@@ -1146,7 +1146,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage());
+					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 		} finally {
 			rs = null;
@@ -1328,7 +1328,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				And.dispose();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro consulta tabela de produtos!"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 			}
 		} else if (dl.getValores()[6].equals("R")) {
 			String sSQL = "SELECT CODPROD,DESCPROD,CODUNID, SLDLIQPROD, PRECOBASEPROD FROM EQPRODUTO"
@@ -1439,7 +1439,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				And.dispose();
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro consulta tabela de produtos!"
-						+ err.getMessage());
+						+ err.getMessage(),true,con,err);
 			}
 		}
 		if (bVisualizar) {
@@ -1592,7 +1592,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				con.commit();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao carregar saldos por almoxarifado!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao carregar saldos por almoxarifado!\n"+err.getMessage(),true,con,err);
 		}	
 		finally {
 			sSQL = null;

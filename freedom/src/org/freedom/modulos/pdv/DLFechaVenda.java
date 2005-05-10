@@ -263,7 +263,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			ps.close();
 		}
 		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao verificar o caixa!!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao verificar o caixa!!\n"+err.getMessage(),true,con,err);
 		}
 		if (iRet != 4 && iRet != 2)
 			Funcoes.mensagemErro(this,"Caixa não esta aberto!!");
@@ -320,7 +320,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			bRet = true;
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(null,"Não foi possível finalizar a venda!");
+			Funcoes.mensagemErro(null,"Não foi possível finalizar a venda!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
 		return bRet;
@@ -380,7 +380,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			bRet = true;
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao executar fechamento!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao executar fechamento!\n"+err.getMessage(),true,con,err);
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao executar fechamento.");
 		}
 		return bRet;
@@ -404,7 +404,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			bRet = true;
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao executar o troco!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao executar o troco!\n"+err.getMessage(),true,con,err);
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao executar o troco.");
 		}
 		return bRet;

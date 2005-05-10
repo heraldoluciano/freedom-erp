@@ -282,9 +282,9 @@ public class FRPisCofins extends FRelatorio {
   			imp.fechaGravacao();
   			
   		}
-  		catch (SQLException e) {
-  			Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+e.getMessage());
-  			e.printStackTrace();
+  		catch (SQLException err) {
+  			Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+err.getMessage(),true,con,err);
+  			err.printStackTrace();
   		}
   		if (bVisualizar) {
   			imp.preview(this);

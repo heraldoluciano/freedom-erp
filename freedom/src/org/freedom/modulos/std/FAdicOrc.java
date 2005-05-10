@@ -294,7 +294,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 			txtVlrLiq.setVlrBigDecimal(new BigDecimal(dValLiq));
   		}
   		catch(SQLException err) {
-  			Funcoes.mensagemErro(this,"Erro ao processar ítem '"+i+"'!\n"+err.getMessage());
+  			Funcoes.mensagemErro(this,"Erro ao processar ítem '"+i+"'!\n"+err.getMessage(),true,con,err);
   		}
   	}
   }
@@ -324,7 +324,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 			ps.close();
  		  }
   		  catch (SQLException err) {
-  		  	Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage());
+  		  	Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage(),true,con,err);
   			return false;
   		  }
   		  bPrim = false;
@@ -342,7 +342,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 		  ps.close();
 		}
 		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao gerar itvenda: '"+(i+1)+"'!\n"+err.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao gerar itvenda: '"+(i+1)+"'!\n"+err.getMessage(),true,con,err);
 			try {
 				con.rollback();
 			}
@@ -356,7 +356,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 		carregar();
 	}
 	catch(SQLException err) {
-	  Funcoes.mensagemErro(this,"Erro ao realizar commit!!");
+	  Funcoes.mensagemErro(this,"Erro ao realizar commit!!"+"\n"+err.getMessage(),true,con,err);
 	  return false;
 	}
 	if (Funcoes.mensagemConfirma(this,
@@ -431,7 +431,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 	  ps.close();
     }
     catch(SQLException err) {
-      Funcoes.mensagemErro(this,"Erro ao buscar orçamentos!\n"+err.getMessage());
+      Funcoes.mensagemErro(this,"Erro ao buscar orçamentos!\n"+err.getMessage(),true,con,err);
     }
   }
   private void carregaTudo(Tabela tb) {
@@ -460,7 +460,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 			con.rollback();
 		}
 		catch(SQLException err) {
-		  Funcoes.mensagemErro(this,"Erro ao realizar rollback!!");
+		  Funcoes.mensagemErro(this,"Erro ao realizar rollback!!\n"+err.getMessage(),true,con,err);
 		}
       }
     }

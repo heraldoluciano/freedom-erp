@@ -58,7 +58,7 @@ public abstract class FVD extends FDetalhe {
 
     	}
     	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage());
+    		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage(),true,con,err);
     	}
     	finally {
     	    sSQL = null;
