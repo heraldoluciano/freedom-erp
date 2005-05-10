@@ -623,7 +623,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		tpn.addChangeListener(this);
-
+		setImprimir(true);
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
