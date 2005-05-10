@@ -138,7 +138,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     adic(txpSenha,300,100,70,20);
     adic(new JLabelPad("Confirma"),373,80,70,20);
     adic(txpConfirma,373,100,70,20);
-    adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
+    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano",ListaCampos.DB_FK, false);
+    adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
     adicDescFK(txtDescCC, 120, 140, 322, 20, "DescCC", "Descrição do centro de custo");
     
     adicDBLiv(txaComentUsu, "ComentUsu", "Comentário", false);
@@ -152,15 +153,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     adic(spnEmp,247,260,195,100);
 
     
-    
-    
-    
-    
-    
   	adicTab("Acesso", pinAcesso); 
     setPainel(pinAcesso);
-    
-   
     
     
     adicDB(cbBaixoCusto, 7, 10, 225, 20, "BaixoCustoUsu", "", false);
@@ -209,12 +203,14 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     lcCampos.addPostListener(this);
 	lcCampos.addInsertListener(this);
     lcCampos.addDeleteListener(this);
+    lcCC.addCarregaListener(this);
     cbAlmoxarife.addCheckBoxListener(this);
        
     lcCampos.setQueryInsert(false);    
 
     btAdicEmp.addActionListener(this);
     btDelEmp.addActionListener(this);
+    
   }
   public void valorAlterado(CheckBoxEvent evt) {
   		boolean checked = evt.getCheckBox().isSelected();
@@ -335,7 +331,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
         if (!con.getAutoCommit())
         	con.commit();
       }
-      sSqlG = "GRANT "+txtIDGrpUsu.getVlrString().trim()+" TO USER "+txtIDUsu.getVlrString().trim();
+      sSqlG = "GRANT "+txtIDGrpUsu.getVlrString().trim()+" TO USER \""+txtIDUsu.getVlrString().trim()+"\"";
       ps = con.prepareStatement(sSqlG);
 //      ps.setString(1,txtIDGrpUsu.getVlrString());
 //      ps.setString(2,txtIDUsu.getVlrString());
@@ -474,7 +470,11 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
   	super.actionPerformed(evt);
 
   }
-  public void beforeCarrega(CarregaEvent pevt) { }
+  public void beforeCarrega(CarregaEvent pevt) {
+  	if (pevt.getListaCampos()==lcCC) {
+  		System.out.println("Carrega CC");
+  	}
+  }
   public void beforeInsert(InsertEvent ievt) { }
   public void afterPost(PostEvent pevt) {
   	if (pevt.ok)

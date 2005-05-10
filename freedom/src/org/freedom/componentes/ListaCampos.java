@@ -1383,8 +1383,10 @@ public class ListaCampos extends Container implements PostListener,
 				for (int i = 0; i < getComponentCount(); i++) {
 					comp = getComponent(i);
 					if (((GuardaCampo) comp).ehPK()) {
-						if (((GuardaCampo) comp).ehNulo())
+						if (((GuardaCampo) comp).ehNulo()) {
+							System.out.println("Campo nulo: "+((GuardaCampo) comp).getNomeCampo());
 							return false;
+						}
 						if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
 							sqlLC.setInt(iParam, ((GuardaCampo) comp)
 									.getVlrInteger().intValue());
@@ -1430,7 +1432,11 @@ public class ListaCampos extends Container implements PostListener,
 					}
 				}
 				//        System.out.println("Vai Executar a SELECT: "+sNovaSelect);
+				// vou executar um teste aqui
+				// fim do teste
+				
 				rsLC = sqlLC.executeQuery();
+				
 				if (rsLC.next()) {
 					for (int i = 0; i < getComponentCount(); i++) {
 						comp = getComponent(i);
