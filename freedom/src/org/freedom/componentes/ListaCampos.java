@@ -805,6 +805,8 @@ public class ListaCampos extends Container implements PostListener,
 				String sNovaSelect = inDinWhereAdic(sTmp, vTxtValor);
 				sqlItens = con.prepareStatement(sNovaSelect);
 				if (bUsaME && !bTiraFI) {
+					sqlItens.setInt(iOrdem, iCodEmp);
+					iOrdem++;
 					sqlItens.setInt(iOrdem, iCodFilial);
 					iOrdem++;
 				}
@@ -1018,11 +1020,11 @@ public class ListaCampos extends Container implements PostListener,
 			}
 		}
 		if (bTiraFI)
-			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP="
-					+ iCodEmp;
+			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP=?";
+					// alterado aqui para gerar codemp dinâmico+ iCodEmp;
 		else if (bUsaME)
-			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP="
-					+ iCodEmp + " AND master.CODFILIAL=?";
+			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP=?"
+					/*+ iCodEmp --código da empresa dinâmico */ + " AND master.CODFILIAL=?";
 		else
 			sSQLTab += " FROM " + sTabela + " master ";
 
@@ -1066,10 +1068,10 @@ public class ListaCampos extends Container implements PostListener,
 			 */
 			if (bTiraFI)
 				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela
-						+ " WHERE CODEMP=" + iCodEmp;
+						+ " WHERE CODEMP=?" /*+ iCodEmp */;
 			else if (bUsaME)
 				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela
-						+ " WHERE CODEMP=" + iCodEmp + " AND CODFILIAL=?";
+						+ " WHERE CODEMP=?" + /*iCodEmp + */" AND CODFILIAL=?";
 			else
 				sSQLMax = "SELECT MAX(" + sPK + ") FROM " + sTabela
 						+ (bDetalhe ? " WHERE " : "");
@@ -1118,8 +1120,8 @@ public class ListaCampos extends Container implements PostListener,
 						if (!((GuardaCampo) comp).ehPK())
 							sSQLUpdate += ",CODEMP"
 									+ lcExt.getSigla()
-									+ "="
-									+ iCodEmp
+									+ "=?"
+									/*+ iCodEmp */
 									+ (lcExt.getUsaFI() ? ",CODFILIAL"
 											+ lcExt.getSigla() + "=?" : "");
 					}
@@ -1131,7 +1133,7 @@ public class ListaCampos extends Container implements PostListener,
 		}
 		sSep = "";
 
-		sWhereEmp = bUsaME ? "CODEMP=" + iCodEmp
+		sWhereEmp = bUsaME ? "CODEMP=?" /* + iCodEmp */
 				+ (bTiraFI ? "" : " AND CODFILIAL = ?") : "";
 
 		sSQLUpdate += " WHERE ";
@@ -1189,14 +1191,14 @@ public class ListaCampos extends Container implements PostListener,
 						if ((lcExt != null) && lcExt.getUsaME()) {
 							sSQLUpdate += " AND CODEMP"
 									+ lcExt.getSigla()
-									+ "="
-									+ iCodEmp
+									+ "=?"
+									/*+ iCodEmp */
 									+ (lcExt.getUsaFI() ? " AND CODFILIAL"
 											+ lcExt.getSigla() + "=?" : "");
 							sSQLDelete += " AND CODEMP"
 									+ lcExt.getSigla()
-									+ "="
-									+ iCodEmp
+									+ "=?"
+									/*+ iCodEmp*/
 									+ (lcExt.getUsaFI() ? " AND CODFILIAL"
 											+ lcExt.getSigla() + "=?" : "");
 						}
@@ -1209,8 +1211,8 @@ public class ListaCampos extends Container implements PostListener,
 					if ((lcExt != null) && lcExt.getUsaME()) {
 						sSQLSelect += " AND CODEMP"
 								+ lcExt.getSigla()
-								+ "="
-								+ iCodEmp
+								+ "=?"
+								/*+ iCodEmp*/
 								+ (lcExt.getUsaFI() ? " AND CODFILIAL"
 										+ lcExt.getSigla() + "=?" : "");
 					}
@@ -1220,16 +1222,16 @@ public class ListaCampos extends Container implements PostListener,
 		}
 
 		if (bTiraFI)
-			sSQLUpdate += sSepU + "CODEMP=" + iCodEmp;
+			sSQLUpdate += sSepU + "CODEMP=?" /*+ iCodEmp*/;
 		else if (bUsaME)
-			sSQLUpdate += sSepU + "CODEMP=" + iCodEmp + " AND CODFILIAL=?";
+			sSQLUpdate += sSepU + "CODEMP=?" /*+ iCodEmp */ + " AND CODFILIAL=?";
 		else
 			sSQLUpdate += "";
 
 		if (bTiraFI)
-			sSQLInsert += ") VALUES (" + iCodEmp + ",";
+			sSQLInsert += ") VALUES (?,";
 		else if (bUsaME)
-			sSQLInsert += ") VALUES (" + iCodEmp + ",?,";
+			sSQLInsert += ") VALUES (?, ?,";
 		else
 			sSQLInsert += ") VALUES (";
 
@@ -1250,7 +1252,7 @@ public class ListaCampos extends Container implements PostListener,
 				if (gcCampo.ehFK()) {
 					ListaCampos lcExt = gcCampo.getCampo().getTabelaExterna();
 					if ((lcExt != null) && lcExt.getUsaME()) {
-						sSQLInsert += "," + iCodEmp
+						sSQLInsert += ",?" /*+ iCodEmp */
 								+ (lcExt.getUsaFI() ? ",?" : "");
 					}
 				}
@@ -1357,6 +1359,10 @@ public class ListaCampos extends Container implements PostListener,
 				 * O bTiraFI foi colocado pq neste IF ele esta setando a
 				 * filial... e naum a empresa como eu estava pensando.
 				 */
+				if (bUsaME) {
+					sqlLC.setInt(iParam, iCodEmp);
+					iParam++;
+				}
 				if (bUsaME && !bTiraFI) {
 					sqlLC.setInt(iParam, iCodFilial);
 					iParam++;
@@ -1414,13 +1420,15 @@ public class ListaCampos extends Container implements PostListener,
 								// comp).getNomeCampo()+" IPARAM: "+iParam);
 								if (lcExt.getUsaME() && lcExt.getUsaFI()) {
 									if (!((GuardaCampo) comp).getSoLeitura()) {
-										if (((GuardaCampo) comp).ehNulo())
-											sqlLC
-													.setNull(iParam,
-															Types.INTEGER);
+										if (((GuardaCampo) comp).ehNulo()) {
+											sqlLC.setNull(iParam,Types.INTEGER);
+											iParam++;
+											sqlLC.setNull(iParam,Types.INTEGER);
+										}
 										else
-											sqlLC.setInt(iParam, lcExt
-													.getCodFilial());
+											sqlLC.setInt(iParam, iCodEmp);
+											iParam++;
+											sqlLC.setInt(iParam, lcExt.getCodFilial());
 									}
 									iParam++;
 									//System.out.println("FILIAL:
@@ -1587,6 +1595,10 @@ public class ListaCampos extends Container implements PostListener,
 				// a
 				// conexão");
 				sqlMax = con.prepareStatement(sSQLMax);
+				if (bUsaME) {
+					sqlMax.setInt(iParam, iCodEmp);
+					iParam++;
+				}
 				if (bUsaME && !bTiraFI) {
 					sqlMax.setInt(iParam, iCodFilial);
 					iParam++;
@@ -1805,12 +1817,16 @@ public class ListaCampos extends Container implements PostListener,
 							 * setando a filial... e nao a empresa como eu
 							 * estava pensando.
 							 */
-							if (bUsaME && !bTiraFI && (iParam == 1)) {
+							if ( (bUsaME) && (iParam == 1)) {
 								//                     System.out.println("MASTER FILIAL:
 								// "+((GuardaCampo) comp).getNomeCampo()+"
 								// IPARAM: "+iParam);
-								sqlLC.setInt(iParam, iCodFilial);
+								sqlLC.setInt(iParam, iCodEmp);
 								iParam++;
+								if (!bTiraFI) {
+									sqlLC.setInt(iParam, iCodFilial);
+									iParam++;
+								}
 							}
 							bParam = true;
 							if ((bDetalhe) && (lcMaster != null)
@@ -2045,13 +2061,16 @@ public class ListaCampos extends Container implements PostListener,
 												&& lcExt.getUsaFI()) {
 											if (!((GuardaCampo) comp)
 													.getSoLeitura()) {
-												if (((GuardaCampo) comp)
-														.ehNulo())
-													sqlLC.setNull(iParam,
-															Types.INTEGER);
-												else
-													sqlLC.setInt(iParam, lcExt
-															.getCodFilial());
+												if (((GuardaCampo) comp).ehNulo()) {
+													sqlLC.setNull(iParam,Types.INTEGER);
+													iParam++;
+													sqlLC.setNull(iParam,Types.INTEGER);
+												}
+												else {
+													sqlLC.setInt(iParam, iCodEmp);
+													iParam++;
+													sqlLC.setInt(iParam, lcExt.getCodFilial());
+												}
 											}
 											iParam++;
 											//System.out.println("FILIAL:
@@ -2240,12 +2259,16 @@ public class ListaCampos extends Container implements PostListener,
 									if (lcExt.getUsaME() && lcExt.getUsaFI()) {
 										if (!((GuardaCampo) comp)
 												.getSoLeitura()) {
-											if (((GuardaCampo) comp).ehNulo())
-												sqlLC.setNull(iParam,
-														Types.INTEGER);
-											else
-												sqlLC.setInt(iParam, lcExt
-														.getCodFilial());
+											if (((GuardaCampo) comp).ehNulo()) {
+												sqlLC.setNull(iParam,Types.INTEGER);
+												iParam++;
+												sqlLC.setNull(iParam,Types.INTEGER);
+											}
+											else {
+												sqlLC.setInt(iParam, iCodEmp);
+												iParam++;
+												sqlLC.setInt(iParam, lcExt.getCodFilial());
+											}
 										}
 										iParam++;
 										//System.out.println("FILIAL:
@@ -2256,6 +2279,10 @@ public class ListaCampos extends Container implements PostListener,
 								}
 							}
 						}
+					}
+					if (bUsaME) {
+						sqlLC.setInt(iParam, iCodEmp);
+						iParam++;
 					}
 					if (bUsaME && !bTiraFI) {
 						sqlLC.setInt(iParam, iCodFilial);
@@ -2361,6 +2388,10 @@ public class ListaCampos extends Container implements PostListener,
 						 * filial... e naum a empresa como eu estava pensando.
 						 */
 						sqlLC = con.prepareStatement(sSQLDelete);
+						if (bUsaME) {
+							sqlLC.setInt(iParam, iCodEmp);
+							iParam++;
+						}
 						if (bUsaME && !bTiraFI) {
 							sqlLC.setInt(iParam, iCodFilial);
 							iParam++;
@@ -2453,20 +2484,23 @@ public class ListaCampos extends Container implements PostListener,
 									if (lcExt != null) {
 										if (lcExt.getUsaME()
 												&& lcExt.getUsaFI()) {
-											if (!((GuardaCampo) comp)
-													.getSoLeitura())
+											if (!((GuardaCampo) comp).getSoLeitura())
 												System.out.println("FILIAL: "
 														+ ((GuardaCampo) comp)
 																.getNomeCampo()
 														+ " IPARAM: " + iParam
 														+ " VALOR: "
 														+ lcExt.getCodFilial());
-											if (((GuardaCampo) comp).ehNulo())
-												sqlLC.setNull(iParam,
-														Types.INTEGER);
-											else
-												sqlLC.setInt(iParam, lcExt
-														.getCodFilial());
+											if (((GuardaCampo) comp).ehNulo()) {
+												sqlLC.setNull(iParam, Types.INTEGER);
+												iParam++;
+												sqlLC.setNull(iParam, Types.INTEGER);
+											}
+											else {
+												sqlLC.setInt(iParam, iCodEmp);
+												iParam++;
+												sqlLC.setInt(iParam, lcExt.getCodFilial());
+											}
 											iParam++;
 										}
 									}
