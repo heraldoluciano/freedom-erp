@@ -381,8 +381,16 @@ public class Funcoes {
 			if(mensagemConfirma(null,"Deseja enviar erro para o suporte?")==0){
 				FSuporte tela = new FSuporte();
 				tela.setConexao(con);
-				if(err!=null)
-					sMensagem += "\n"+err.getStackTrace();
+				if(err!=null) {
+
+					for(int i=0;err.getStackTrace().length>i;i++){
+						if (i==0) {
+							sMensagem += "\nTrace:";
+							
+						}
+						sMensagem += "\n"+err.getStackTrace()[i].toString();
+					}
+				}
 				tela.setMensagem(sMensagem);
 				tela.setVisible(true);
 				tela.dispose();
