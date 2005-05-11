@@ -1123,27 +1123,29 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   		
   }
   private void estorno() {
-    if (tabManut.getLinhaSel() > -1) {
-      if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("PP")) { 
-        int iLin = tabManut.getLinhaSel();
-        iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
-        iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
-        String sSQL = "UPDATE FNITPAGAR SET STATUSITPAG='P1' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
-        try {
-          PreparedStatement ps = con.prepareStatement(sSQL);
-          ps.setInt(1,iCodPag);
-          ps.setInt(2,iNParcPag);
-		  ps.setInt(3,Aplicativo.iCodEmp);
-		  ps.setInt(4,ListaCampos.getMasterFilial("FNPAGAR"));
-          ps.executeUpdate();
-          if (!con.getAutoCommit())
-          	con.commit();
-        }
-        catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao estornar registro!\n"+err.getMessage(),true,con,err);
-        }
-        carregaGridManut();
-      }
+  	if(Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==0) {
+  		if (tabManut.getLinhaSel() > -1) {
+  			if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("PP")) { 
+  				int iLin = tabManut.getLinhaSel();
+  				iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
+  				iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
+  				String sSQL = "UPDATE FNITPAGAR SET STATUSITPAG='P1' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
+  				try {
+  					PreparedStatement ps = con.prepareStatement(sSQL);
+  					ps.setInt(1,iCodPag);
+  					ps.setInt(2,iNParcPag);
+  					ps.setInt(3,Aplicativo.iCodEmp);
+  					ps.setInt(4,ListaCampos.getMasterFilial("FNPAGAR"));
+  					ps.executeUpdate();
+  					if (!con.getAutoCommit())
+  						con.commit();
+  				}
+  				catch(SQLException err) {
+  					Funcoes.mensagemErro(this,"Erro ao estornar registro!\n"+err.getMessage(),true,con,err);
+  				}
+  				carregaGridManut();
+  			}
+  	   }
     }
   }
   public void afterCarrega(CarregaEvent cevt) {

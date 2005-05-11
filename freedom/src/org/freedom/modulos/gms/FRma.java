@@ -352,18 +352,15 @@ public class FRma extends FDetalhe implements PostListener,
 				txtRefProd.setNaoEditavel(true);
 				txtQtdItRma.setNaoEditavel(true);
 				txaMotivoRma.disable();			
-				if(bAprova)
-				   txtQtdItAprovRma.setNaoEditavel(false);
 			}
 			else {
 				txtCodProd.setNaoEditavel(false);
 				txtRefProd.setNaoEditavel(false);
 				txtQtdItRma.setNaoEditavel(false);
 				txaMotivoRma.enable();			
-				if(bAprova)
-				   txtQtdItAprovRma.setNaoEditavel(true);
-				
 			}
+			if(bAprova)
+			   txtQtdItAprovRma.setNaoEditavel(false);
 			
 		}
 	}
@@ -673,5 +670,6 @@ public class FRma extends FDetalhe implements PostListener,
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage());
 		}
+		carregaWhereAdic();
 	}
 }
