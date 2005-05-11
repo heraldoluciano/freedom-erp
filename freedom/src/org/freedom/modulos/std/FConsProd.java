@@ -559,6 +559,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	          imp.setTitulo("Relatorio de Consulta de Produtos");
 	          imp.addSubTitulo("Fornecedor");
 	         for (int i=0;i<tabFor.getNumLinhas(); i++) {
+	         	if (imp.pRow()>=linPag) {
+        		 	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
+        	         imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+           	     imp.incPags();
+           	     imp.eject();
+                   }
 	            if (imp.pRow()==0) {
 	            	imp.impCab(136, true);
 	                
@@ -640,6 +646,12 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
           		imp.setTitulo("Relatorio de Consulta de Produtos");
            		imp.addSubTitulo("Compras");
              	for (int i=0;i<tabFor.getNumLinhas(); i++) {
+             		if (imp.pRow()>=linPag) {
+            		 	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            	         imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+               	     imp.incPags();
+               	     imp.eject();
+                       }
        	            if (imp.pRow()==0) {       	                
        	            	imp.impCab(136, true);
        	                

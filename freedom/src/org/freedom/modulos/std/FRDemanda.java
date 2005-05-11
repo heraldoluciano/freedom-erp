@@ -231,6 +231,9 @@ public class FRDemanda extends FRelatorio {
       ps.setDate(5,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
       ResultSet rs = ps.executeQuery();
       imp.limpaPags();
+      imp.montaCab();
+      imp.setTitulo("Relatorio de Demanda");
+      imp.addSubTitulo("RELATORIO DE DEMANDA");
       while ( rs.next() ) {
         if (imp.pRow()>=(linPag-1)) {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -249,11 +252,8 @@ public class FRDemanda extends FRelatorio {
  
         sCodgrup = rs.getString("codgrup");      
 
-        if (imp.pRow()==0) {
-        	imp.montaCab();
-            imp.setTitulo("Relatorio de Demanda");
-        	imp.impCab(136, true);
-        	imp.addSubTitulo("RELATORIO DE DEMANDA");
+        if (imp.pRow()==0) {        	
+        	imp.impCab(136, true);       	
         	
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,sOrdenado);
