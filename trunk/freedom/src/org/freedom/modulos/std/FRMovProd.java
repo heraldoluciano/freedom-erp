@@ -235,9 +235,7 @@ public class FRMovProd extends FRelatorio {
 	 String sAnd = " and ";
 	 String[] sValores; 
 	 String sTipo = "";
-	 imp.setTitulo("Relatório de Produtos");
-	 imp.montaCab();
-	 	 
+	 
 	 sValores = getValores();
 	   
 	 if (sValores[1].trim().length() > 0) {
@@ -382,7 +380,8 @@ public class FRMovProd extends FRelatorio {
 		 ps.setInt(4,ListaCampos.getMasterFilial("PDPRODUTO"));
 		 rs = ps.executeQuery();
 		 imp.limpaPags();
-
+		 imp.setTitulo("Relatório de Produtos");
+		 imp.montaCab();
 		 boolean bImpNulo = true;
 		 boolean bPulouPagina = false;
 		 String sCodFor = "";
@@ -501,6 +500,8 @@ public class FRMovProd extends FRelatorio {
 		   sCodFor = rs.getString(9)==null?"":rs.getString(9);
 		   
 		   if (imp.pRow()>=linPag) {
+		   	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		     imp.say(imp.pRow()+0,0,"+"+ Funcoes.replicate("-",133)+"+");
 			 imp.incPags();
 			 bPulouPagina = true;
 			 imp.eject();

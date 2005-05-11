@@ -144,7 +144,7 @@ public class FRSaldoLote extends FRelatorio {
 	int iCodProdAnt = -1;
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-//    imp.montaCab();
+    imp.montaCab();
     imp.setTitulo("Relatorio Saldos de Lotes");
     
     if (txtCodGrup.getText().trim().length() > 0) {
