@@ -111,11 +111,17 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
       ps = con.prepareStatement(sSQL);
       rs = ps.executeQuery();
       imp.limpaPags();
+      imp.montaCab();
+      imp.setTitulo("Relatório de naturezas de operações");
+      imp.addSubTitulo("Relatório de naturezas de operações");
       while ( rs.next() ) {
-         if (imp.pRow()==0) {
-         	imp.montaCab();
-            imp.setTitulo("Relatório de naturezas de operações");
-            imp.addSubTitulo("Relatório de naturezas de operações");
+      	 if (imp.pRow()>=linPag) {
+         	imp.say(imp.pRow()+1,0,""+imp.normal());
+            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+            imp.incPags();
+            imp.eject();
+         }
+         if (imp.pRow()==0) {         	
             imp.impCab(136, true);
             
             imp.say(imp.pRow()+0,0,""+imp.normal());
@@ -157,11 +163,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
          imp.say(imp.pRow()+0,102,"|");
          imp.say(imp.pRow()+0,108,sAliqf);
          imp.say(imp.pRow()+0,135,"|");
-         
-         if (imp.pRow()>=linPag) {
-            imp.incPags();
-            imp.eject();
-         }
+                
       }
       
       imp.say(imp.pRow()+1,0,""+imp.normal());
