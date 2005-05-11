@@ -183,9 +183,7 @@ public void imprimir(boolean bVisualizar) {
   		    return;
   		}
   		
-  		imp.setTitulo("Bordero de cobrança");   
-  		imp.montaCab();
-
+  		
   		sDataini = txtDataini.getVlrString();
   		sDatafim = txtDatafim.getVlrString();
      		
@@ -256,12 +254,10 @@ public void imprimir(boolean bVisualizar) {
   			}
 
   			rs = ps.executeQuery();
-  			imp.limpaPags();
-
-  			if (imp.pRow()==0) {
-  				imp.addSubTitulo("BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim);
-  				imp.impCab(136, true);
-  			}
+  			imp.limpaPags();  			
+  			imp.setTitulo("Bordero de cobrança");   
+	  		imp.montaCab();
+			imp.addSubTitulo("BORDERO DE COBRANCA  - PERIODO DE :"+sDataini+" ATE: "+sDatafim); 				  
   			boolean hasData = false;
   			while ( rs.next() ) {
   				hasData = true;
@@ -273,7 +269,9 @@ public void imprimir(boolean bVisualizar) {
   				}
 
   				if (imp.pRow()==0) {
-  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+  					imp.impCab(136, true);
+  					
+  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
   					imp.say(imp.pRow()+0,0,"|Razão social do cliente");
   					imp.say(imp.pRow()+0,43,"Cod.cli");
@@ -292,11 +290,11 @@ public void imprimir(boolean bVisualizar) {
   					imp.say(imp.pRow()+0,122,"Valor");
   					imp.say(imp.pRow()+0,135,"|");
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
   				}
   				else if (iCodCli!=rs.getInt("CODCLI")) {
   					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+  					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
   				}
   				if (rs.getInt("CODCLI")!=iCodCli) { 
   				    imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -342,14 +340,14 @@ public void imprimir(boolean bVisualizar) {
  			}
 
   			imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
-  			imp.say(imp.pRow(),0,"|"+Funcoes.replicate("-",133)+"|");
+  			imp.say(imp.pRow(),0,"+"+Funcoes.replicate("=",133)+"+");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
   			imp.say(imp.pRow()+0,0,"|");
   			imp.say(imp.pRow()+0,55,"Total geral-> ");
   			imp.say(imp.pRow()+0,122,Funcoes.strDecimalToStrCurrency(12,2,""+deTotParc));
   			imp.say(imp.pRow(),135,"|");
   			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       
       
   			imp.eject();

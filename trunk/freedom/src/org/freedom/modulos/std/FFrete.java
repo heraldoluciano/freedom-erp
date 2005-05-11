@@ -204,15 +204,15 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
       ps = con.prepareStatement(sSQL);
       rs = ps.executeQuery();
       imp.limpaPags();
+      imp.montaCab();
+      imp.setTitulo("Relatório de Lancamentos de Fretes");
+      imp.addSubTitulo("RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
       while ( rs.next() ) {
-        if (imp.pRow()==0) {
-        	imp.montaCab();
-            imp.setTitulo("Relatório de Lancamentos de Fretes");
-            imp.addSubTitulo("RELATÓRIO DE LANÇAMENTO DE FRETES   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+        if (imp.pRow()==0) {        	
             imp.impCab(136, true);
                     
           imp.say(imp.pRow()+0,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
           imp.say(imp.pRow()+0,0,"|");
           imp.say(imp.pRow()+0,2,"Tipo frete  ");
@@ -234,11 +234,11 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
           imp.say(imp.pRow()+0,79,"P.bruto :");            	          
           imp.say(imp.pRow()+0,95,"P.liq.:");
           imp.say(imp.pRow()+0,110,"Dt.emit.vd");
-          imp.say(imp.pRow()+0,135,"|");
-          imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("-",133)+"+");
+          imp.say(imp.pRow()+0,135,"|");          
           
         }        
-       
+        imp.say(imp.pRow()+1,0,""+imp.comprimido());
+        imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
         imp.say(imp.pRow()+1,0,""+imp.comprimido());
         imp.say(imp.pRow()+0,0,"|");
         imp.say(imp.pRow()+0,2,rs.getString("TipoFreteVd").equals("C") ? "CIF" : "FOB" );
@@ -261,15 +261,16 @@ public class FFrete extends FDados implements InsertListener, FocusListener {
         imp.say(imp.pRow()+0,95,Funcoes.strDecimalToStrCurrency(9,casasDec,rs.getString("PesoLiqVd")));
         imp.say(imp.pRow()+0,110,Funcoes.dateToStrDate(rs.getDate("DTEMITVENDA")));
         imp.say(imp.pRow()+0,135,"|");
-        imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
-        
+                
         if (imp.pRow()>=linPag) {
+          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
           imp.incPags();
           imp.eject();
         }
       }
-      
+      imp.say(imp.pRow()+1,0,""+imp.comprimido());
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       
       imp.eject();
       

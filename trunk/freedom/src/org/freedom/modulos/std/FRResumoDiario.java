@@ -233,8 +233,7 @@ public class FRResumoDiario extends FRelatorio {
 			if (rgFormato.getVlrString().equals("D")) {
 				
 				imp.setTitulo("Resumo Diário de Vendas");
-				imp
-						.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"
+				imp.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"
 								+ sDataini + " Até: " + sDatafim);
 				if (sCab.length() > 0) {
 					imp.addSubTitulo(sCab);
@@ -249,6 +248,28 @@ public class FRResumoDiario extends FRelatorio {
 						imp.eject();
 					}
 
+					
+					if (imp.pRow() == 0) {
+						imp.montaCab();						
+						imp.impCab(136, true);
+
+						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 0, "|");
+						imp.say(imp.pRow() + 0, 135, "|");
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 0, "|"
+								+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 0, "| Dt. Emissao");
+						imp.say(imp.pRow() + 0, 17, "NF./Ped.");
+						imp.say(imp.pRow() + 0, 31, "Cliente");
+						imp.say(imp.pRow() + 0, 85, "|    Valor   Desconto "
+								+ "  Liquido    F.Pagto.");
+						imp.say(imp.pRow() + 0, 135, "|");
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 0, "|"
+								+ Funcoes.replicate("-", 133) + "|");
+					}
 					if ((!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda"))
 							.equals(sDtemitvenda))
 							& (bFimDia)) {
@@ -276,28 +297,6 @@ public class FRResumoDiario extends FRelatorio {
 						bTotalDiaLiq = new BigDecimal("0");
 						bFimDia = false;
 					}
-					if (imp.pRow() == 0) {
-						imp.montaCab();						
-						imp.impCab(136, true);
-
-						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 135, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "| Dt. Emissao");
-						imp.say(imp.pRow() + 0, 17, "NF./Ped.");
-						imp.say(imp.pRow() + 0, 31, "Cliente");
-						imp.say(imp.pRow() + 0, 85, "|    Valor   Desconto "
-								+ "  Liquido    F.Pagto.");
-						imp.say(imp.pRow() + 0, 135, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 133) + "|");
-					}
-
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|");
 					if (!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda"))

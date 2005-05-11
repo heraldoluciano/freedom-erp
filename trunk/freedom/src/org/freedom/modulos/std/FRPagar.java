@@ -292,19 +292,18 @@ public class FRPagar extends FRelatorio {
     try {
  
       imp.limpaPags();
-     
+      imp.montaCab();
+  	imp.setTitulo("Relatório de contas "+sPag);
+  	imp.addSubTitulo("RELATORIO DE CONTAS "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
       while ( rs.next() ) {
       	
       	if (imp.pRow()>=(linPag-1)) {
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
             imp.incPags();
             imp.eject();
         }
-      	if (imp.pRow()==0) {
-        	imp.montaCab();
-        	imp.setTitulo("Relatório de contas "+sPag);
-        	imp.addSubTitulo("RELATORIO DE CONTAS "+sPag+"   -   PERIODO DE :"+sDataini+" ATE: "+sDatafim);
+      	if (imp.pRow()==0) {        	
         	imp.impCab(136, true);
            
            imp.say(imp.pRow()+0,0,""+imp.comprimido());

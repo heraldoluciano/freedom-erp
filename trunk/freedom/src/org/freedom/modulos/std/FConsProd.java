@@ -555,63 +555,59 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	      imp.limpaPags();
           	
 	  	  if (sRets.equals("F")){
-	  			      
+		  	  imp.montaCab();
+	          imp.setTitulo("Relatorio de Consulta de Produtos");
+	          imp.addSubTitulo("Fornecedor");
 	         for (int i=0;i<tabFor.getNumLinhas(); i++) {
-	            if (imp.pRow()==0) {		            	
-	                imp.montaCab();
-	                imp.setTitulo("Relatorio de Consulta de Produtos");
-	            	imp.addSubTitulo("Fornecedor");
+	            if (imp.pRow()==0) {
 	            	imp.impCab(136, true);
 	                
-	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
-	                imp.say(imp.pRow()+0,0,"|");
-	                imp.say(imp.pRow()+0,135,"|");
-	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	                imp.say(imp.pRow()+0,0,"|");
-	                imp.say(imp.pRow()+0,2,"Cód.prod.:");
-	                imp.say(imp.pRow()+0,15,txtCodProd.getVlrString());    
-	                imp.say(imp.pRow()+0,25,"Ref.prod.:");
-	                imp.say(imp.pRow()+0,40,txtRefProd.getVlrString());
-	                imp.say(imp.pRow()+0,51,"Descrição :");
-	                imp.say(imp.pRow()+0,63,txtDescProd.getVlrString());
-	                imp.say(imp.pRow()+0,108,"Saldo :");
-	                imp.say(imp.pRow()+0,119,txtSldProd.getVlrString());   
-	                imp.say(imp.pRow()+0,135,"|");
-	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	                imp.say(imp.pRow()+0,0,"|");
-	                imp.say(imp.pRow()+0,135,"|");
-	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	                imp.say(imp.pRow()+0,0,"|");
-	                imp.say(imp.pRow()+0,2,"Preço Base");
-	                imp.say(imp.pRow()+0,15,txtPrecoBaseProd.getVlrString());
-	                imp.say(imp.pRow()+0,25,"Dt.ult.cp.:");
-	                imp.say(imp.pRow()+0,38,txtDtUltCp.getVlrString());
-	                imp.say(imp.pRow()+0,51,"Qtd.ult.cp.: ");
-	                imp.say(imp.pRow()+0,68,txtQtUltCp.getVlrString());
-		            imp.say(imp.pRow()+0,80,"Loc.armaz.:");
- 	                imp.say(imp.pRow()+0,94,txtLocalProd.getVlrString()); 
- 	                imp.say(imp.pRow()+0,100,"Un.:");
- 	                imp.say(imp.pRow()+0,106,txtDescUnid.getVlrString());
- 	                imp.say(imp.pRow()+0,115,"Marca :");
- 	                imp.say(imp.pRow()+0,126,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
- 	                imp.say(imp.pRow()+0,135,"|");  
- 	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
- 	                imp.say(imp.pRow()+0,0,"|");
- 	                imp.say(imp.pRow()+0,135,"|");
- 		            imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
- 		            imp.say(imp.pRow()+0,0,"|");   
- 		            imp.say(imp.pRow()+0,2,"Cod.gp:");
- 		            imp.say(imp.pRow()+0,10,txtCodGrup.getVlrString());
- 		            imp.say(imp.pRow()+0,25,"Desc.gp:");
- 		            imp.say(imp.pRow()+0,34,txtDescGrup.getVlrString());
- 		            imp.say(imp.pRow()+0,75,"Cod.clas:");
-    	            imp.say(imp.pRow()+0,85,txtCodFisc.getVlrString());
-    	            imp.say(imp.pRow()+0,99,"Desc.cl.fisc:");
-       	            imp.say(imp.pRow()+0,114,Funcoes.copy(""+txtDescFisc.getVlrString(),20).trim());
-    	            imp.say(imp.pRow()+0,135,"|");
-   	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	            	imp.say(imp.pRow()+0,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
    	                imp.say(imp.pRow()+0,135,"|");
+   	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+   	                imp.say(imp.pRow()+0,0,"|");
+   	                imp.say(imp.pRow()+0,2,"Cód.prod.:");
+   	                imp.say(imp.pRow()+0,15,txtCodProd.getVlrString());    
+   	                imp.say(imp.pRow()+0,25,"Ref.prod.:");
+   	                imp.say(imp.pRow()+0,40,txtRefProd.getVlrString());
+   	                imp.say(imp.pRow()+0,51,"Descrição :");
+   	                imp.say(imp.pRow()+0,63,txtDescProd.getVlrString());
+   	                imp.say(imp.pRow()+0,108,"Saldo :");
+   	                imp.say(imp.pRow()+0,119,txtSldProd.getVlrString());   
+   	                imp.say(imp.pRow()+0,135,"|");
+   	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+   	                imp.say(imp.pRow()+0,0,"|");
+   	                imp.say(imp.pRow()+0,2,"Preço Base");
+   	                imp.say(imp.pRow()+0,15,txtPrecoBaseProd.getVlrString());
+   	                imp.say(imp.pRow()+0,25,"Dt.ut.cp.:");
+   	                imp.say(imp.pRow()+0,38,txtDtUltCp.getVlrString());
+   	                imp.say(imp.pRow()+0,51,"Qtd.ult.cp.: ");
+   	                imp.say(imp.pRow()+0,68,txtQtUltCp.getVlrString());
+   		            imp.say(imp.pRow()+0,80,"Loc.armaz.:");   		            
+    	            imp.say(imp.pRow()+0,94,txtLocalProd.getVlrString());
+    	            imp.say(imp.pRow()+0,135,"|");
+   		            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+   		            imp.say(imp.pRow()+0,0,"|");
+    	            imp.say(imp.pRow()+0,2,"Un.:");
+    	            imp.say(imp.pRow()+0,5,txtDescUnid.getVlrString());
+    	            imp.say(imp.pRow()+0,42,"Marca :");
+    	            imp.say(imp.pRow()+0,50,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
+    	            imp.say(imp.pRow()+0,135,"|");  
+    		        imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
+    		        imp.say(imp.pRow()+0,0,"|");   
+    		        imp.say(imp.pRow()+0,2,"Cod.gp:");
+    		        imp.say(imp.pRow()+0,10,txtCodGrup.getVlrString());
+    		        imp.say(imp.pRow()+0,25,"Desc.gp:");
+    		        imp.say(imp.pRow()+0,34,txtDescGrup.getVlrString());
+    		        imp.say(imp.pRow()+0,75,"Cod.clas:");
+       	            imp.say(imp.pRow()+0,85,txtCodFisc.getVlrString());
+       	            imp.say(imp.pRow()+0,99,"Desc.cl.fisc:");
+       	            imp.say(imp.pRow()+0,114,Funcoes.copy(""+txtDescFisc.getVlrString(),20).trim());
+       	            imp.say(imp.pRow()+0,135,"|");
+      	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+      	            imp.say(imp.pRow()+0,0,"|");
+      	            imp.say(imp.pRow()+0,135,"|");
    	            }           
 	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	            imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
@@ -640,14 +636,14 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
 	         }
 	  	  }
           if (sRets.equals("C")){
+          		imp.montaCab();
+          		imp.setTitulo("Relatorio de Consulta de Produtos");
+           		imp.addSubTitulo("Compras");
              	for (int i=0;i<tabFor.getNumLinhas(); i++) {
-       	            if (imp.pRow()==0) {
-       	                imp.montaCab();
-       	                imp.setTitulo("Relatorio de Consulta de Produtos");
-       	            	imp.addSubTitulo("Compras");
+       	            if (imp.pRow()==0) {       	                
        	            	imp.impCab(136, true);
        	                
-       	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
+       	            	imp.say(imp.pRow()+0,0,""+imp.comprimido());
        	                imp.say(imp.pRow()+0,0,"|");
        	                imp.say(imp.pRow()+0,135,"|");
        	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -663,25 +659,22 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
        	                imp.say(imp.pRow()+0,135,"|");
        	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
        	                imp.say(imp.pRow()+0,0,"|");
-       	                imp.say(imp.pRow()+0,135,"|");
-       	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-       	                imp.say(imp.pRow()+0,0,"|");
        	                imp.say(imp.pRow()+0,2,"Preço Base");
        	                imp.say(imp.pRow()+0,15,txtPrecoBaseProd.getVlrString());
-       	                imp.say(imp.pRow()+0,25,"Dt.ult.cp.:");
+       	                imp.say(imp.pRow()+0,25,"Dt.ut.cp.:");
        	                imp.say(imp.pRow()+0,38,txtDtUltCp.getVlrString());
        	                imp.say(imp.pRow()+0,51,"Qtd.ult.cp.: ");
        	                imp.say(imp.pRow()+0,68,txtQtUltCp.getVlrString());
-       		            imp.say(imp.pRow()+0,80,"Loc.armaz.:");
-        	            imp.say(imp.pRow()+0,94,txtLocalProd.getVlrString()); 
-        	            imp.say(imp.pRow()+0,100,"Un.:");
-        	            imp.say(imp.pRow()+0,106,txtDescUnid.getVlrString());
-        	            imp.say(imp.pRow()+0,115,"Marca :");
-        	            imp.say(imp.pRow()+0,126,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
-        	            imp.say(imp.pRow()+0,135,"|");  
-        	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-        	            imp.say(imp.pRow()+0,0,"|");
+       		            imp.say(imp.pRow()+0,80,"Loc.armaz.:");   		            
+        	            imp.say(imp.pRow()+0,94,txtLocalProd.getVlrString());
         	            imp.say(imp.pRow()+0,135,"|");
+       		            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+       		            imp.say(imp.pRow()+0,0,"|");
+        	            imp.say(imp.pRow()+0,2,"Un.:");
+        	            imp.say(imp.pRow()+0,5,txtDescUnid.getVlrString());
+        	            imp.say(imp.pRow()+0,42,"Marca :");
+        	            imp.say(imp.pRow()+0,50,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
+        	            imp.say(imp.pRow()+0,135,"|");  
         		        imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
         		        imp.say(imp.pRow()+0,0,"|");   
         		        imp.say(imp.pRow()+0,2,"Cod.gp:");
@@ -760,11 +753,17 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
              }
           
           if (sRets.equals("V")){
+          	imp.montaCab();
+           	imp.setTitulo("Relatorio de Consulta de Produtos");
+           	imp.addSubTitulo("Vendas");
          	for (int i=0;i<tabVendas.getNumLinhas(); i++) {
-   	            if (imp.pRow()==0) {
-   	            	imp.montaCab();
-   	            	imp.setTitulo("Relatorio de Consulta de Produtos");
-   	            	imp.addSubTitulo("Vendas");
+         		 if (imp.pRow()>=linPag) {
+         		 	 imp.say(imp.pRow()+1,0,""+imp.comprimido());
+         	         imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+            	     imp.incPags();
+            	     imp.eject();
+                    }
+   	            if (imp.pRow()==0) {   	            	
    	            	imp.impCab(136, true);
    	            	
    	                imp.say(imp.pRow()+0,0,""+imp.comprimido());
@@ -783,25 +782,22 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
    	                imp.say(imp.pRow()+0,135,"|");
    	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
    	                imp.say(imp.pRow()+0,0,"|");
-   	                imp.say(imp.pRow()+0,135,"|");
-   	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-   	                imp.say(imp.pRow()+0,0,"|");
    	                imp.say(imp.pRow()+0,2,"Preço Base");
    	                imp.say(imp.pRow()+0,15,txtPrecoBaseProd.getVlrString());
    	                imp.say(imp.pRow()+0,25,"Dt.ut.cp.:");
    	                imp.say(imp.pRow()+0,38,txtDtUltCp.getVlrString());
    	                imp.say(imp.pRow()+0,51,"Qtd.ult.cp.: ");
    	                imp.say(imp.pRow()+0,68,txtQtUltCp.getVlrString());
-   		            imp.say(imp.pRow()+0,80,"Loc.armaz.:");
-    	            imp.say(imp.pRow()+0,94,txtLocalProd.getVlrString()); 
-    	            imp.say(imp.pRow()+0,100,"Un.:");
-    	            imp.say(imp.pRow()+0,106,txtDescUnid.getVlrString());
-    	            imp.say(imp.pRow()+0,115,"Marca :");
-    	            imp.say(imp.pRow()+0,126,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
-    	            imp.say(imp.pRow()+0,135,"|");  
-    	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-    	            imp.say(imp.pRow()+0,0,"|");
+   		            imp.say(imp.pRow()+0,80,"Loc.armaz.:");   		            
+    	            imp.say(imp.pRow()+0,94,txtLocalProd.getVlrString());
     	            imp.say(imp.pRow()+0,135,"|");
+   		            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+   		            imp.say(imp.pRow()+0,0,"|");
+    	            imp.say(imp.pRow()+0,2,"Un.:");
+    	            imp.say(imp.pRow()+0,5,txtDescUnid.getVlrString());
+    	            imp.say(imp.pRow()+0,42,"Marca :");
+    	            imp.say(imp.pRow()+0,50,Funcoes.copy(""+txtDescMarca.getVlrString(),7).trim());
+    	            imp.say(imp.pRow()+0,135,"|");  
     		        imp.say(imp.pRow()+1,0,""+imp.comprimido()); 
     		        imp.say(imp.pRow()+0,0,"|");   
     		        imp.say(imp.pRow()+0,2,"Cod.gp:");
@@ -818,7 +814,7 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
       	            imp.say(imp.pRow()+0,135,"|");
    	            }             
   	            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+                imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
                 imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,0,"|");
                 imp.say(imp.pRow()+0,2,"Cod.venda:");
@@ -860,25 +856,10 @@ public class FConsProd extends FRelatorio implements ActionListener,ChangeListen
                 imp.say(imp.pRow()+0,115,"Vlr.IPI.:");
                 imp.say(imp.pRow()+0,124,""+tabVendas.getValor(i,11));
                 imp.say(imp.pRow()+0,135,"|");
-                
-                
              
-         	}
-         }
-          
-          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
-          
-          if (imp.pRow()>=linPag) {
-         	     imp.incPags();
-         	     imp.eject();
-                 }
-          
-          
-
-          
-          
-	      	 imp.fechaGravacao();
+         	}  
+          }
+          imp.fechaGravacao();
 	      
 //	      rs.close();
 //	      ps.close();

@@ -111,24 +111,25 @@ public class FRVendasDet extends FRelatorio {
       ps.setInt(4, ListaCampos.getMasterFilial("VDVENDA"));
       rs = ps.executeQuery();
       imp.limpaPags();
+      imp.montaCab();
+  	  imp.setTitulo("Relatório de Vendas Detalhado");
+  	  imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
       while (rs.next()) {
         if (imp.pRow()>=(linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-          imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
           imp.incPags();
           imp.eject();
         }
         
         if (iCodVendaAnt != rs.getInt("CodVenda")) {
-        	if (imp.pRow() == 0) {
-            	imp.montaCab();
-            	imp.setTitulo("Relatório de Vendas Detalhado");
-            	imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
-                imp.impCab(136, true);
-              
+        	if (imp.pRow() == 0) {            	
+                imp.impCab(136, true);    
+                imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+                imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate(" ", 133) + "|");
             }
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
+          imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
           imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
           imp.say(imp.pRow() + 0, 0, "| Pedido: ");
           imp.say(imp.pRow() + 0, 10, Funcoes.strZero(rs.getString("CodVenda"), 8));
@@ -174,7 +175,7 @@ public class FRVendasDet extends FRelatorio {
             imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
             imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
           }
-        }
+        
         imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
         imp.say(imp.pRow() + 0, 0, "| "+(bComRef ? rs.getString("RefProd") : rs.getString("CodProd")));
         imp.say(imp.pRow() + 0, 16, "| "+rs.getString("DescProd"));
@@ -185,6 +186,7 @@ public class FRVendasDet extends FRelatorio {
         imp.say(imp.pRow() + 0, 124, "| "+(rs.getString(1) != null ? rs.getString(1) : ""));
         imp.say(imp.pRow() + 0, 135, "|");
         iCodVendaAnt = rs.getInt("CodVenda");
+        }
       }
       if (iCodVendaAnt > 0) {
         imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
