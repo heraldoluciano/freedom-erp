@@ -75,14 +75,12 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private JPanelPad pinBotoesBaixa = new JPanelPad(40,100);
   private JPanelPad pinBaixa = new JPanelPad(500,140);
   private JPanelPad pnBaixa = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
- 
   private Tabela tabBaixa = new Tabela();
   private JScrollPane spnBaixa = new JScrollPane(tabBaixa);
   private JPanelPad pnTabManut = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinBotoesManut = new JPanelPad(40,130);
   private JPanelPad pinManut = new JPanelPad(500,155);
-  private JPanelPad pnManut = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
- 
+  private JPanelPad pnManut = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); 
   private Tabela tabManut = new Tabela();
   private JScrollPane spnManut = new JScrollPane(tabManut);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -176,6 +174,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   	setTitulo("Manutenção de contas a receber");
 	setAtribos(20,20,750,450);    
 
+	cbAReceber.setVlrString("S");
+	
     btBaixaConsulta.setToolTipText("Baixar");
     btBaixaManut.setToolTipText("Baixar");
     btEditManut.setToolTipText("Editar lançamento");
