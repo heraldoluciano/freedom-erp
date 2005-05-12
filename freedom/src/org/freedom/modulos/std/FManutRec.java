@@ -51,6 +51,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -154,9 +155,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private JRadioGroup rgVenc = null;
   private Vector vValsVenc = new Vector();
   private Vector vLabsVenc = new Vector();  
-  private JRadioGroup rgPg = null;
-  private Vector vValsPg = new Vector();
-  private Vector vLabsPg = new Vector();  
+  private JCheckBoxPad cbRecebidas = new JCheckBoxPad("Recebidas", "S", "N");
+  private JCheckBoxPad cbAReceber = new JCheckBoxPad("À Receber", "S", "N");
+  private JCheckBoxPad cbRecParcial = new JCheckBoxPad("Rec. Parcial", "S", "N");    
   private ImageIcon imgVencido = Icone.novo("clVencido.gif");
   private ImageIcon imgPago = Icone.novo("clPago.gif");
   private ImageIcon imgPagoParcial = Icone.novo("clPagoParcial.gif");
@@ -166,7 +167,12 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   int iCodRec = 0;
   int iNParcItRec = 0;
   int iAnoCC = 0;
+  private JLabelPad lbFiltroStatus = new JLabelPad("Filtrar por:");
+  private JPanelPad pinLbFiltroStatus = new JPanelPad(53,15);
+  private JPanelPad pinFicha = new JPanelPad(300,150);
+
   public FManutRec() {
+  	
   	setTitulo("Manutenção de contas a receber");
 	setAtribos(20,20,750,450);    
 
@@ -195,11 +201,11 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
     pnRod.setBorder(BorderFactory.createEtchedBorder());
     pnRod.setPreferredSize(new Dimension(500,32));
-
     pnRod.add(btSair,BorderLayout.EAST);
 	pnRod.add(pnLegenda,BorderLayout.WEST);
 
     btSair.addActionListener(this);
+
     //Consulta:    
     
     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
@@ -210,7 +216,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodCli.setTabelaExterna(lcCli);
     txtCodCli.setFK(true);
     txtCodCli.setNomeCampo("CodCli");
-
 	
     txtPrimCompr.setAtivo(false);
     txtUltCompr.setAtivo(false);
@@ -226,14 +231,11 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     txtCodRecManut.setRequerido(true);
     
     tpn.addTab("Consulta",pnConsulta);
-    
-        
+
     pnConsulta.add(pinConsulta,BorderLayout.NORTH);
     
-    pnTabConsulta.add(pinBotoesConsulta,BorderLayout.EAST);
-    
-    pnTabConsulta.add(spnConsulta,BorderLayout.CENTER);
-      
+    pnTabConsulta.add(pinBotoesConsulta,BorderLayout.EAST);    
+    pnTabConsulta.add(spnConsulta,BorderLayout.CENTER);      
     pnConsulta.add(pnTabConsulta,BorderLayout.CENTER);
     
     pinConsulta.adic(new JLabelPad("Cód.cli."),7,0,250,20);
@@ -261,8 +263,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     pinConsulta.adic(btCarregaVenda,380,90,30,30);
     
     btCarregaVenda.addActionListener(this);
-    
-    
+        
     pinBotoesConsulta.adic(btBaixaConsulta,3,10,30,30);
     tabConsulta.adicColuna("");
     tabConsulta.adicColuna("Vencimento");//1
@@ -398,7 +399,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     tabBaixa.adicColuna("");//0
     tabBaixa.adicColuna("Vencimento"); //1
-//  tabBaixa.adicColuna("Status"); //1
     tabBaixa.adicColuna("Nº Parcelas"); //2
     tabBaixa.adicColuna("Doc."); //3
     tabBaixa.adicColuna("Pedido"); //4
@@ -415,7 +415,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   
     tabBaixa.setTamColuna(0,0);
     tabBaixa.setTamColuna(100,1);
-//    tabBaixa.setTamColuna(50,1);
     tabBaixa.setTamColuna(120,2);
     tabBaixa.setTamColuna(70,3);
     tabBaixa.setTamColuna(70,4);
@@ -491,19 +490,15 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	pinManut.adic(new JLabelPad("Filtrar por:"),365,0,150,20);
 	pinManut.adic(rgVenc,365,20,115,65);
         
-	vValsPg.addElement("RP"); // Pago
-	vValsPg.addElement("R1"); // Em aberto
-	vValsPg.addElement("RL"); // Pagamento parcial este flag não existe é montado na hora com o valor a pagar 
-	vValsPg.addElement("TT"); // Todos os Status	
-	vLabsPg.addElement("Recebidas"); 
-	vLabsPg.addElement("À receber");
-	vLabsPg.addElement("Rec. parcial");	
-	vLabsPg.addElement("Todas");
-	
-	rgPg = new JRadioGroup(3,2,vLabsPg,vValsPg);
-	rgPg.setVlrString("TT");
-	pinManut.adic(new JLabelPad("Filtrar por:"),488,0,190,20);
-	pinManut.adic(rgPg,488,20,192,65);
+    pinLbFiltroStatus.adic(lbFiltroStatus,0,0,350,15);
+    pinLbFiltroStatus.tiraBorda();
+    
+    pinManut.adic(pinLbFiltroStatus,488,3,80,15);
+    pinManut.adic(pinFicha,488,20,130,65);
+
+	pinFicha.adic(cbAReceber,5,0,120,20);
+	pinFicha.adic(cbRecebidas,5,20,120,20);
+	pinFicha.adic(cbRecParcial,5,40,120,20);
 
 	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
 	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
@@ -548,7 +543,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     
     tabManut.adicColuna(""); //0
     tabManut.adicColuna("Data filtro"); //1
-    tabManut.adicColuna("Status"); //2
     tabManut.adicColuna("Cód.cli."); //3
     tabManut.adicColuna("Razão social do cliente"); //4
     tabManut.adicColuna("Cód.rec."); //5
@@ -569,24 +563,23 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
 	tabManut.setTamColuna(0,0);
 	tabManut.setTamColuna(100,1);
-	tabManut.setTamColuna(60,2);
-	tabManut.setTamColuna(80,3);
-	tabManut.setTamColuna(200,4);
+	tabManut.setTamColuna(80,2);
+	tabManut.setTamColuna(200,3);
+	tabManut.setTamColuna(80,4);
 	tabManut.setTamColuna(80,5);
 	tabManut.setTamColuna(80,6);
 	tabManut.setTamColuna(80,7);
-	tabManut.setTamColuna(80,8);
-	tabManut.setTamColuna(90,9);
+	tabManut.setTamColuna(90,8);
+	tabManut.setTamColuna(100,9);
 	tabManut.setTamColuna(100,10);
 	tabManut.setTamColuna(100,11);
 	tabManut.setTamColuna(100,12);
 	tabManut.setTamColuna(100,13);
 	tabManut.setTamColuna(100,14);
-	tabManut.setTamColuna(100,15);
-	tabManut.setTamColuna(130,16);
-	tabManut.setTamColuna(230,17);
-	tabManut.setTamColuna(240,18);
-	tabManut.setTamColuna(260,19);
+	tabManut.setTamColuna(130,15);
+	tabManut.setTamColuna(230,16);
+	tabManut.setTamColuna(240,17);
+	tabManut.setTamColuna(260,18);
 
     lcRecBaixa.addCarregaListener(this);
     lcRecManut.addCarregaListener(this);
@@ -610,16 +603,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
                   "SUM(R.VLRAPAGREC),MIN(R.DATAREC),MAX(R.DATAREC)" +
                   " FROM FNRECEBER R WHERE R.CODCLI=? AND R.CODEMP=?" +
                   " AND R.CODFILIAL=? GROUP BY R.CODCLI";
-/*    String sSQL = "SELECT R.CODCLI,SUM(R.VLRPARCREC),SUM(R.VLRPAGOREC),"+
-                  "SUM(R.VLRAPAGREC),(SELECT MIN(R1.DATAREC) "+
-                  "FROM FNRECEBER R1 WHERE R1.CODCLI=R.CODCLI" +
-                  " AND R1.CODEMPCL=R.CODEMP AND R1.CODFILIALCL=R.CODFILIAL),"+
-                  "(SELECT MAX(R2.DATAREC) FROM FNRECEBER R2 "+
-                  "WHERE R2.CODCLI=R.CODCLI AND R2.CODEMP=R.CODEMP" +
-                  " AND R2.CODFILIAL=R.CODFILIAL)" +
-                  " FROM FNRECEBER R "+
-                  "WHERE R.CODCLI=? AND R.CODEMP=? AND R.CODFILIAL=?" +
-                  " GROUP BY R.CODCLI";*/
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
       ps.setInt(1,txtCodCli.getVlrInteger().intValue());
@@ -752,7 +735,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
           tabBaixa.adicLinha();
           tabBaixa.setValor(imgColuna,i,0);
           tabBaixa.setValor((rs.getDate("DtVencItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")) : ""),i,1);
-//          tabBaixa.setValor(rs.getString("StatusItRec"),i,2);
           tabBaixa.setValor(rs.getString("NParcItRec"),i,2);
           tabBaixa.setValor((rs.getString("DocLancaItRec") != null ? rs.getString("DocLancaItRec") : rs.getString("DocVenda")),i,3);
           tabBaixa.setValor(""+rs.getInt("CodVenda"),i,4);
@@ -771,8 +753,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
           vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
 		  vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
         }
-//      rs.close();
-//      ps.close();
         if (!con.getAutoCommit())
         	con.commit();
     }
@@ -811,10 +791,36 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       	return;
 	  sWhereManut = " AND "+(rgData.getVlrString().equals("V")?"IR.DTVENCITREC":"IR.DTITREC")+
 					   " BETWEEN ? AND ? AND R.CODEMP=? AND R.CODFILIAL=?";
+/*
 	  if (!rgPg.getVlrString().equals("TT")){
 		  sWhereManut += " AND IR.STATUSITREC='"+rgPg.getVlrString()+"'";
 	  }
-	  					   
+	*/
+	  String sWhereStatus = "";
+	  boolean bStatus = false;
+	  
+	  if((cbRecebidas.getVlrString().equals("S")) || (cbAReceber.getVlrString().equals("S")) || (cbRecParcial.getVlrString().equals("S"))) {
+	  	if (cbRecebidas.getVlrString().equals("S")) {
+	  		sWhereStatus +=  "IR.STATUSITREC='RP'";
+	  		bStatus = true;
+	  	}
+		if (cbAReceber.getVlrString().equals("S")) {
+		    sWhereStatus += bStatus?" OR IR.STATUSITREC='R1' ":" IR.STATUSITREC='R1' ";
+		    bStatus = true;
+		}
+   	    if (cbRecParcial.getVlrString().equals("S")) {
+   	    	sWhereStatus += bStatus?" OR IR.STATUSITREC='RL' ":" IR.STATUSITREC='RL' ";
+		    bStatus = true;
+		}
+	  	sWhereStatus = " AND ("+sWhereStatus+")";		  		
+	  }
+	  else {
+	  	Funcoes.mensagemInforma(null,"Você deve selecionar ao menos um filtro de status!");
+	  	return;
+	  }
+	  sWhereManut += sWhereStatus;
+
+	  
 	  if (!rgVenc.getVlrString().equals("TT")){
 	    sWhereManut += " AND IR.DTVENCITREC";
 		if (rgVenc.getVlrString().equals("VE"))
@@ -882,27 +888,25 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	    else if (rs.getDate("DtVencItRec").after(new Date()))
 		  imgColuna = imgNaoVencido;     
      
-		tabManut.setValor(imgColuna,i,0);
-          
+		tabManut.setValor(imgColuna,i,0);          
         tabManut.setValor((rs.getDate("DtVencItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")) : ""),i,1);
-        tabManut.setValor(rs.getString("StatusItRec"),i,2);
-        tabManut.setValor(rs.getString("CodCli"),i,3);
-        tabManut.setValor(rs.getString("RazCli"),i,4);
-        tabManut.setValor(rs.getString("CodRec"),i,5);
-        tabManut.setValor(rs.getString("NParcItRec"),i,6);
-        tabManut.setValor((rs.getString("DocLancaItRec") != null ? rs.getString("DocLancaItRec") : ""),i,7);
-        tabManut.setValor(Funcoes.copy(rs.getString(22),0,10).trim(),i,8);
-        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItRec")),i,9);
-        tabManut.setValor((rs.getDate("DtPagoItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,10);
-        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItRec")),i,11);
-        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItRec")),i,12);
-        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrJurosItRec")),i,13);
-        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrApagItRec")),i,14);
-        tabManut.setValor(rs.getString(14) != null ? rs.getString(14) : "",i,15);
-        tabManut.setValor(rs.getString(16) != null ? rs.getString(16) : "",i,16);
-		tabManut.setValor(rs.getString(18) != null ? rs.getString(18) : "",i,17);
-        tabManut.setValor(rs.getString(24) != null ? rs.getString(24) : "",i,18);
-		tabManut.setValor(rs.getString("ObsItRec") != null ? rs.getString("ObsItRec") : "",i,19);
+        tabManut.setValor(rs.getString("CodCli"),i,2);
+        tabManut.setValor(rs.getString("RazCli"),i,3);
+        tabManut.setValor(rs.getString("CodRec"),i,4);
+        tabManut.setValor(rs.getString("NParcItRec"),i,5);
+        tabManut.setValor((rs.getString("DocLancaItRec") != null ? rs.getString("DocLancaItRec") : ""),i,6);
+        tabManut.setValor(Funcoes.copy(rs.getString(22),0,10).trim(),i,7);
+        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItRec")),i,8);
+        tabManut.setValor((rs.getDate("DtPagoItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,9);
+        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItRec")),i,10);
+        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItRec")),i,11);
+        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrJurosItRec")),i,12);
+        tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrApagItRec")),i,13);
+        tabManut.setValor(rs.getString(14) != null ? rs.getString(14) : "",i,14);
+        tabManut.setValor(rs.getString(16) != null ? rs.getString(16) : "",i,15);
+		tabManut.setValor(rs.getString(18) != null ? rs.getString(18) : "",i,16);
+        tabManut.setValor(rs.getString(24) != null ? rs.getString(24) : "",i,17);
+		tabManut.setValor(rs.getString("ObsItRec") != null ? rs.getString("ObsItRec") : "",i,18);
         vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
         vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
         vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
@@ -949,35 +953,35 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       int iLin = tabManut.getLinhaSel();
 	  if (iLin < 0)
         return;
-      iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,5));
-      iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,6));
+      iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,4));
+      iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,5));
       String[] sVals = new String[15];
       String[] sRets = null;
       DLBaixaRec dl = new DLBaixaRec(this);
-      sVals[0] = ""+tabManut.getValor(iLin,3);
-      sVals[1] = ""+tabManut.getValor(iLin,4);
+      sVals[0] = ""+tabManut.getValor(iLin,2);
+      sVals[1] = ""+tabManut.getValor(iLin,3);
       sVals[2] = ""+vNumContas.elementAt(iLin);
       sVals[3] = ""+vCodPlans.elementAt(iLin);
-      sVals[4] = ""+(tabManut.getValor(iLin,7).equals("") ? tabManut.getValor(iLin,8) : tabManut.getValor(iLin,7));
+      sVals[4] = ""+(tabManut.getValor(iLin,6).equals("") ? tabManut.getValor(iLin,7) : tabManut.getValor(iLin,6));
       sVals[5] = ""+vDtEmiss.elementAt(iLin);
       sVals[6] = ""+tabManut.getValor(iLin,1);
-      sVals[7] = ""+tabManut.getValor(iLin,9);
-      sVals[8] = ""+tabManut.getValor(iLin,12);
-      sVals[9] = ""+tabManut.getValor(iLin,13);
-      sVals[10] = ""+tabManut.getValor(iLin,14);
+      sVals[7] = ""+tabManut.getValor(iLin,8);
+      sVals[8] = ""+tabManut.getValor(iLin,11);
+      sVals[9] = ""+tabManut.getValor(iLin,12);
+      sVals[10] = ""+tabManut.getValor(iLin,13);
 	  sVals[13] = ""+vCodCCs.elementAt(iLin);
-      if (((String)tabManut.getValor(iLin,10)).trim().equals("")) {
+      if (((String)tabManut.getValor(iLin,9)).trim().equals("")) {
          sVals[11] = Funcoes.dateToStrDate(new Date());
-         sVals[12] = ""+tabManut.getValor(iLin,11);
+         sVals[12] = ""+tabManut.getValor(iLin,10);
       }
       else {
-         sVals[11] = ""+tabManut.getValor(iLin,10);
-         sVals[12] = ""+tabManut.getValor(iLin,11);
+         sVals[11] = ""+tabManut.getValor(iLin,9);
+         sVals[12] = ""+tabManut.getValor(iLin,10);
       }
-      if (((String)tabManut.getValor(iLin,19)).trim().equals(""))
-         sVals[14] = "RECEBIMENTO REF. AO PED.: "+tabManut.getValor(iLin,8);
+      if (((String)tabManut.getValor(iLin,18)).trim().equals(""))
+         sVals[14] = "RECEBIMENTO REF. AO PED.: "+tabManut.getValor(iLin,7);
       else
-         sVals[14] = ""+tabManut.getValor(iLin,19);
+         sVals[14] = ""+tabManut.getValor(iLin,18);
       
       dl.setValores(sVals);
       dl.setConexao(con);
@@ -1123,36 +1127,39 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   }
  private void editar() {
  	String sStatusItRec = null;
+ 	ImageIcon imgStatusAt = null;
  	if (tabManut.getLinhaSel() > -1) {
- 		sStatusItRec = ""+tabManut.getValor(tabManut.getLinhaSel(),2);
- 		if ( (sStatusItRec.equals("R1")) || (sStatusItRec.equals("RL"))) { 
+// 		sStatusItRec = ""+tabManut.getValor(tabManut.getLinhaSel(),2);
+ 		imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0);
+// 		if ( (sStatusItRec.equals("R1")) || (sStatusItRec.equals("RL"))) { 
+		if (imgStatusAt!=imgPago) {
  			int iLin = tabManut.getLinhaSel();
- 			iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,5));
- 			iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,6));
+ 			iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,4));
+ 			iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,5));
  			String[] sVals = new String[13];
  			String[] sRets = null;
  			DLEditaRec dl = new DLEditaRec(this);
- 			sVals[0] = ""+tabManut.getValor(iLin,3);
- 			sVals[1] = ""+tabManut.getValor(iLin,4);
+ 			sVals[0] = ""+tabManut.getValor(iLin,2);
+ 			sVals[1] = ""+tabManut.getValor(iLin,3);
  			sVals[2] = ""+vNumContas.elementAt(iLin);
  			sVals[3] = ""+vCodPlans.elementAt(iLin);
  			sVals[4] = ""+vCodCCs.elementAt(iLin);
- 			if (((String)tabManut.getValor(iLin,7)).trim().equals("")) {
- 				sVals[5] = ""+tabManut.getValor(iLin,8);
+ 			if (((String)tabManut.getValor(iLin,6)).trim().equals("")) {
+ 				sVals[5] = ""+tabManut.getValor(iLin,7);
  			}
  			else {
- 				sVals[5] = ""+tabManut.getValor(iLin,7);
+ 				sVals[5] = ""+tabManut.getValor(iLin,6);
  			}
  			sVals[6] = ""+vDtEmiss.elementAt(iLin);
  			sVals[7] = ""+tabManut.getValor(iLin,1);
- 			sVals[8] = ""+tabManut.getValor(iLin,13);
- 			sVals[9] = ""+tabManut.getValor(iLin,12);
- 			sVals[10] = ""+tabManut.getValor(iLin,14);
- 			if (((String)tabManut.getValor(iLin,19)).trim().equals("")) {
- 				sVals[11] = "PAGAMENTO REF. A VENDA: "+tabManut.getValor(iLin,8);
+ 			sVals[8] = ""+tabManut.getValor(iLin,12);
+ 			sVals[9] = ""+tabManut.getValor(iLin,11);
+ 			sVals[10] = ""+tabManut.getValor(iLin,13);
+ 			if (((String)tabManut.getValor(iLin,18)).trim().equals("")) {
+ 				sVals[11] = "PAGAMENTO REF. A VENDA: "+tabManut.getValor(iLin,7);
  			}
  			else {
- 				sVals[11] = ""+tabManut.getValor(iLin,19);
+ 				sVals[11] = ""+tabManut.getValor(iLin,18);
  			}
             sVals[12] = ""+vCodBOs.elementAt(iLin);
  			dl.setValores(sVals);
