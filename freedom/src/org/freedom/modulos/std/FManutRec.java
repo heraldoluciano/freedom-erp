@@ -167,7 +167,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   int iAnoCC = 0;
   private JLabelPad lbFiltroStatus = new JLabelPad("Filtrar por:");
   private JPanelPad pinLbFiltroStatus = new JPanelPad(53,15);
-  private JPanelPad pinFicha = new JPanelPad(300,150);
+  private JPanelPad pinFiltroStatus = new JPanelPad(300,150);
 
   public FManutRec() {
   	
@@ -494,11 +494,11 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     pinLbFiltroStatus.tiraBorda();
     
     pinManut.adic(pinLbFiltroStatus,488,3,80,15);
-    pinManut.adic(pinFicha,488,20,130,65);
+    pinManut.adic(pinFiltroStatus,488,20,130,65);
 
-	pinFicha.adic(cbAReceber,5,0,120,20);
-	pinFicha.adic(cbRecebidas,5,20,120,20);
-	pinFicha.adic(cbRecParcial,5,40,120,20);
+	pinFiltroStatus.adic(cbAReceber,5,0,120,20);
+	pinFiltroStatus.adic(cbRecebidas,5,20,120,20);
+	pinFiltroStatus.adic(cbRecParcial,5,40,120,20);
 
 	lcCliFiltro.add(new GuardaCampo( txtCodCliFiltro, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
 	lcCliFiltro.add(new GuardaCampo( txtRazCliFiltro, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
