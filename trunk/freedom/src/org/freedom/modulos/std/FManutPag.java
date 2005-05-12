@@ -229,6 +229,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     pinConsulta.adic(txtVlrTotAberto,260,100,117,20);    
     pinBotoesConsulta.adic(btBaixaConsulta,5,10,30,30);
     
+    tabConsulta.adicColuna("");
     tabConsulta.adicColuna("Vencimento");
     tabConsulta.adicColuna("Série");
     tabConsulta.adicColuna("Doc.");
@@ -241,17 +242,18 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     tabConsulta.adicColuna("Observações");
     tabConsulta.adicColuna("Banco");
     
-    tabConsulta.setTamColuna(90,0);
-    tabConsulta.setTamColuna(50,1);
+    tabConsulta.setTamColuna(0,0);
+    tabConsulta.setTamColuna(90,1);
     tabConsulta.setTamColuna(50,2);
-    tabConsulta.setTamColuna(90,3);
-    tabConsulta.setTamColuna(110,4);
-    tabConsulta.setTamColuna(90,5);
-    tabConsulta.setTamColuna(110,6);
-    tabConsulta.setTamColuna(100,7);
-    tabConsulta.setTamColuna(60,8);
-    tabConsulta.setTamColuna(100,9);
-    tabConsulta.setTamColuna(80,10);
+    tabConsulta.setTamColuna(50,3);
+    tabConsulta.setTamColuna(90,4);
+    tabConsulta.setTamColuna(110,5);
+    tabConsulta.setTamColuna(90,6);
+    tabConsulta.setTamColuna(110,7);
+    tabConsulta.setTamColuna(100,8);
+    tabConsulta.setTamColuna(60,9);
+    tabConsulta.setTamColuna(100,10);
+    tabConsulta.setTamColuna(80,11);
     
     //Baixa:    
 
@@ -275,7 +277,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     txtCodForBaixa.setTabelaExterna(lcForBaixa);
     txtCodForBaixa.setFK(true);
     txtCodForBaixa.setNomeCampo("CodFor");
-
 
     lcBancoBaixa.add(new GuardaCampo( txtCodBancoBaixa, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false));
     lcBancoBaixa.add(new GuardaCampo( txtDescBancoBaixa, "NomeBanco", "Nome banco", ListaCampos.DB_SI, false));
@@ -355,9 +356,9 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     pinBaixa.adic(txtJurosBaixa,420,100,90,20);
 
     pinBotoesBaixa.adic(btBaixa,5,10,30,30);
-    
+
+    tabBaixa.adicColuna("");
     tabBaixa.adicColuna("Vencimento");
-    tabBaixa.adicColuna("Status");
     tabBaixa.adicColuna("Nº de parcelas");
     tabBaixa.adicColuna("Doc.");
     tabBaixa.adicColuna("Pedido");
@@ -370,9 +371,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     tabBaixa.adicColuna("Conta");
     tabBaixa.adicColuna("Categoria");
 	tabBaixa.adicColuna("Centro de custo");
-    tabBaixa.adicColuna("Observação");    
-    tabBaixa.setTamColuna(110,0);
-    tabBaixa.setTamColuna(50,1);
+    tabBaixa.adicColuna("Observação");
+
+    tabBaixa.setTamColuna(0,0);
+    tabBaixa.setTamColuna(110,1);
     tabBaixa.setTamColuna(120,2);
     tabBaixa.setTamColuna(50,3);
     tabBaixa.setTamColuna(70,4);
@@ -528,12 +530,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     String sSQL = "SELECT P.CODFOR,SUM(P.VLRPARCPAG),SUM(P.VLRPAGOPAG),"+
                   "SUM(P.VLRAPAGPAG),MIN(P.DATAPAG),MAX(P.DATAPAG) FROM FNPAGAR P "+
                   "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODFOR=? GROUP BY P.CODFOR";
-/*    String sSQL = "SELECT P.CODFOR,SUM(P.VLRPARCPAG),SUM(P.VLRPAGOPAG),"+
-                  "SUM(P.VLRAPAGPAG),(SELECT MIN(P1.DATAPAG) "+
-                  "FROM FNPAGAR P1 WHERE P1.CODFOR=P.CODFOR AND P1.CODEMP=P.CODEMP AND P1.CODFILIAL=P.CODFILIAL),"+
-                  "(SELECT MAX(P2.DATAPAG) FROM FNPAGAR P2 "+
-                  "WHERE P2.CODFOR=P.CODFOR AND P2.CODEMP=P.CODEMP AND P2.CODFILIAL=P.CODFILIAL) FROM FNPAGAR P "+
-                  "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODFOR=? GROUP BY P.CODFOR"; */
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
 	  ps.setInt(1,Aplicativo.iCodEmp);
@@ -569,7 +565,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
                   "P.OBSPAG,(SELECT B.NOMEBANCO FROM FNBANCO B "+
                   "WHERE B.CODBANCO = P.CODBANCO AND B.CODEMP=P.CODEMPBO" +
                   " AND B.CODFILIAL=P.CODFILIALBO) AS NOMEBANCO,"+
-                  "P.CODPAG,IT.NPARCPAG FROM FNPAGAR P,FNITPAGAR IT "+
+                  "P.CODPAG,IT.NPARCPAG,IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.STATUSITPAG FROM FNPAGAR P,FNITPAGAR IT "+
                   "WHERE P.CODFOR=? AND P.CODEMP=? AND P.CODFILIAL=?" +
                   " AND IT.CODPAG = P.CODPAG AND IT.CODEMP=P.CODEMP" +
                   " AND IT.CODFILIAL=P.CODFILIAL ORDER BY P.CODPAG,IT.NPARCPAG";  
@@ -581,19 +577,35 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	  ps.setInt(2,Aplicativo.iCodEmp);
 	  ps.setInt(3,ListaCampos.getMasterFilial("FNPAGAR"));
       ResultSet rs = ps.executeQuery();
-      for (int i=0; rs.next(); i++) {
+      double bdVlrAPagar = 0.0;
+      double bdVlrParc =  0.0;
+      for (int i=0; rs.next(); i++) { 
+        
+        bdVlrAPagar = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrApagItPag")).doubleValue();
+        bdVlrParc = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrParcItPag")).doubleValue();
+                  
+        if ( (rs.getString("StatusItPag").equals("PP") && (bdVlrAPagar==0.0) ))
+        	  imgColuna = imgPago;
+        else if ( (bdVlrAPagar>0.0) && (bdVlrAPagar<bdVlrParc) )
+        	  imgColuna = imgPagoParcial;
+        else if (rs.getDate("DtVencItPag").before(new Date())) 
+			imgColuna = imgVencido;	          
+        else if (rs.getDate("DtVencItPag").after(new Date()))
+        	imgColuna = imgNaoVencido;
+        
         tabConsulta.adicLinha();
-        tabConsulta.setValor((rs.getDate("DtVencItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItPag")) : ""),i,0);
-        tabConsulta.setValor((rs.getString(2) != null ? rs.getString(2) : ""),i,1);
-        tabConsulta.setValor((rs.getString("DocPag") != null ? rs.getString("DocPag") : ""),i,2);
-        tabConsulta.setValor(""+rs.getInt("CodCompra"),i,3);
-        tabConsulta.setValor((rs.getDate("DataPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DataPag")) : ""),i,4);
-        tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItPag")),i,5);
-        tabConsulta.setValor((rs.getDate("DtPagoItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItPag")) : ""),i,6);
-        tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItPag")),i,7);
-        tabConsulta.setValor(new Integer(rs.getInt(9)),i,8);
-        tabConsulta.setValor(rs.getString("ObsPag") != null ? rs.getString("ObsPag") : "",i,9);
-        tabConsulta.setValor(rs.getString(11) != null ? rs.getString(11) : "",i,10);
+        tabConsulta.setValor(imgColuna,i,0);
+        tabConsulta.setValor((rs.getDate("DtVencItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItPag")) : ""),i,1);
+        tabConsulta.setValor((rs.getString(2) != null ? rs.getString(2) : ""),i,2);
+        tabConsulta.setValor((rs.getString("DocPag") != null ? rs.getString("DocPag") : ""),i,3);
+        tabConsulta.setValor(""+rs.getInt("CodCompra"),i,4);
+        tabConsulta.setValor((rs.getDate("DataPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DataPag")) : ""),i,5);
+        tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItPag")),i,6);
+        tabConsulta.setValor((rs.getDate("DtPagoItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItPag")) : ""),i,7);
+        tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItPag")),i,8);
+        tabConsulta.setValor(new Integer(rs.getInt(9)),i,9);
+        tabConsulta.setValor(rs.getString("ObsPag") != null ? rs.getString("ObsPag") : "",i,10);
+        tabConsulta.setValor(rs.getString(11) != null ? rs.getString(11) : "",i,11);
         vCodPag.addElement(rs.getString("CodPag"));        
         vNParcPag.addElement(rs.getString("NParcPag"));        
       }
@@ -612,6 +624,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     vCodPlans = new Vector();
 	vCodCCs = new Vector();
     tabBaixa.limpa();
+
     String sSQL = "SELECT IT.DTVENCITPAG,IT.STATUSITPAG,"+
                   "P.CODPAG,IT.DOCLANCAITPAG,"+
                   "P.CODCOMPRA,IT.VLRPARCITPAG,IT.DTPAGOITPAG,"+
@@ -636,10 +649,24 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		ps.setInt(2,Aplicativo.iCodEmp);
 		ps.setInt(3,ListaCampos.getMasterFilial("FNPAGAR"));
         ResultSet rs = ps.executeQuery();
+        double bdVlrAPagar = 0.0;
+        double bdVlrParc =  0.0;
         for (int i=0; rs.next(); i++) { 
+          bdVlrAPagar = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrApagItPag")).doubleValue();
+          bdVlrParc = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrParcItPag")).doubleValue();
+
+          if ( (rs.getString("StatusItPag").equals("PP") && (bdVlrAPagar==0.0) ))
+          	  imgColuna = imgPago;
+          else if ( (bdVlrAPagar>0.0) && (bdVlrAPagar<bdVlrParc) )
+          	  imgColuna = imgPagoParcial;
+          else if (rs.getDate("DtVencItPag").before(new Date())) 
+  			imgColuna = imgVencido;	          
+          else if (rs.getDate("DtVencItPag").after(new Date()))
+          	imgColuna = imgNaoVencido;        	
+        	
           tabBaixa.adicLinha();
-          tabBaixa.setValor((rs.getDate("DtVencItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItPag")) : ""),i,0);
-          tabBaixa.setValor(rs.getString("StatusItPag"),i,1);
+          tabBaixa.setValor(imgColuna,i,0);
+          tabBaixa.setValor((rs.getDate("DtVencItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItPag")) : ""),i,1);
           tabBaixa.setValor(rs.getString("NParcPag"),i,2);
           tabBaixa.setValor((rs.getString("DocLancaItPag") != null ? rs.getString("DocLancaItPag") : ""),i,3);
           tabBaixa.setValor(""+rs.getInt("CodCompra"),i,4);

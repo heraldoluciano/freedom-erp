@@ -91,6 +91,8 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtDtaReqRma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JTextAreaPad txaMotivoRma = new JTextAreaPad();
+	private JTextFieldPad txtSitItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtSitAprovItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoRma);
 //	private JTextFieldPad txtSitRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 //	private JTextFieldPad txtSitItRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
@@ -199,7 +201,7 @@ public class FRma extends FDetalhe implements PostListener,
 		adicCampo(txtIDUsu, 446, 20, 120, 20, "IdUsu", "Id do usuário",ListaCampos.DB_FK, true);						
 		adicCampo(txtDtaReqRma,569, 20, 80, 20, "DtaReqRma", "Data da Rma",ListaCampos.DB_SI, true);
 		adicCampo(txtCodCC, 7, 60, 110, 20, "CodCC", "Cód.CC.",ListaCampos.DB_FK,txtDescCC, true);		
-		adicCampo(txtAnoCC, 120, 60, 70, 20, "AnoCC", "Ano CC.",ListaCampos.DB_FK, true);		
+		adicCampo(txtAnoCC, 120, 60, 70, 20, "AnoCC", "Ano CC.",ListaCampos.DB_FK, true);
 		adicDescFK(txtDescCC, 193, 60, 250, 20, "DescCC", "Descrição do centro de custos");	
 		adicDBLiv(txaMotivoRma, "MotivoRma", "Observações", false);
 		adic(new JLabelPad("Observações"), 7, 80, 100, 20);
@@ -266,6 +268,8 @@ public class FRma extends FDetalhe implements PostListener,
 				
 		adicCampoInvisivel(txtCodAlmox,"CodAlmox", "Cód.Almox.",ListaCampos.DB_FK,txtDescAlmox, false);
 		adicDescFKInvisivel(txtDescAlmox, "DescAlmox","Descrição do almoxarifado");		 
+		adicCampoInvisivel(txtSitItRma,"sititrma","Sit.It.Rma.",ListaCampos.DB_SI,false);
+		adicCampoInvisivel(txtSitAprovItRma,"sitaprovitrma","Sit.Ap.It.Rma.",ListaCampos.DB_SI,false);
 		
 		txtRefProd.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent kevt) {
@@ -346,12 +350,25 @@ public class FRma extends FDetalhe implements PostListener,
 		if((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble());
 		}
-		else if((cevt.getListaCampos() == lcCampos)){
+		else if((cevt.getListaCampos() == lcCampos)){						
 			if(!Aplicativo.strUsuario.equals(txtIDUsu.getVlrString())){
+
+			}
+			else {
+			}
+		}
+		else if((cevt.getListaCampos() == lcDet)){		
+			String sSitRma = txtSitItRma.getVlrString();
+			if( (sSitRma.equals("AF")) || (sSitRma.equals("EF")) || (sSitRma.equals("CA")) || (!Aplicativo.strUsuario.equals(txtIDUsu.getVlrString()))) {
 				txtCodProd.setNaoEditavel(true);
 				txtRefProd.setNaoEditavel(true);
 				txtQtdItRma.setNaoEditavel(true);
 				txaMotivoRma.disable();			
+			}
+			else if(bAprova){
+				txtQtdItAprovRma.setNaoEditavel(false);
+				if(txtQtdItAprovRma.getVlrString().equals(""))
+					txtQtdItAprovRma.setVlrString(txtQtdItAprovRma.getVlrString());
 			}
 			else {
 				txtCodProd.setNaoEditavel(false);
@@ -359,9 +376,6 @@ public class FRma extends FDetalhe implements PostListener,
 				txtQtdItRma.setNaoEditavel(false);
 				txaMotivoRma.enable();			
 			}
-			if(bAprova)
-			   txtQtdItAprovRma.setNaoEditavel(false);
-			
 		}
 	}
 
