@@ -50,6 +50,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -139,13 +140,21 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private JRadioGroup rgVenc = null;
   private Vector vValsVenc = new Vector();
   private Vector vLabsVenc = new Vector();  
-  private JRadioGroup rgPg = null;
-  private Vector vValsPg = new Vector();
-  private Vector vLabsPg = new Vector();  
+//  private JRadioGroup rgPg = null;
+//  private Vector vValsPg = new Vector();
+//  private Vector vLabsPg = new Vector();  
   private ImageIcon imgVencido = Icone.novo("clVencido.gif");
   private ImageIcon imgPago = Icone.novo("clPago.gif");
   private ImageIcon imgPagoParcial = Icone.novo("clPagoParcial.gif");
   private ImageIcon imgNaoVencido = Icone.novo("clNaoVencido.gif");    
+  private JCheckBoxPad cbPagas = new JCheckBoxPad("Pagas", "S", "N");
+  private JCheckBoxPad cbAPagar = new JCheckBoxPad("À Pagar", "S", "N");
+  private JCheckBoxPad cbPagParcial = new JCheckBoxPad("Pag. Parcial", "S", "N"); 
+  private JLabelPad lbFiltroStatus = new JLabelPad("Filtrar por:");
+  private JPanelPad pinLbFiltroStatus = new JPanelPad(53,15);
+  private JPanelPad pinFiltroStatus = new JPanelPad(300,150);
+
+
   private ImageIcon imgColuna = null;
   
   int iCodPag = 0;
@@ -154,6 +163,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   public FManutPag() {
     setTitulo("Manutenção de contas a pagar");
     setAtribos(20,20,740,390);
+    
+	cbAPagar.setVlrString("S");
     
     Container c = getContentPane();    
     c.setLayout(new BorderLayout());
@@ -435,11 +446,23 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	vLabsVenc.addElement("À vencer");
 	vLabsVenc.addElement("Ambas");	
 	
+	
+    pinLbFiltroStatus.adic(lbFiltroStatus,0,0,350,15);
+    pinLbFiltroStatus.tiraBorda();
+    
+    pinManut.adic(pinLbFiltroStatus,488,3,80,15);
+    pinManut.adic(pinFiltroStatus,488,20,130,65);
+
+	pinFiltroStatus.adic(cbAPagar,5,0,120,20);
+	pinFiltroStatus.adic(cbPagas,5,20,120,20);
+	pinFiltroStatus.adic(cbPagParcial,5,40,120,20);
+		
 	rgVenc = new JRadioGroup(3,2,vLabsVenc,vValsVenc);
 	rgVenc.setVlrString("TT");
 	pinManut.adic(new JLabelPad("Filtrar por:"),365,0,150,20);
 	pinManut.adic(rgVenc,365,20,115,65);
-        
+    
+	/*
 	vValsPg.addElement("PP"); // Pago
 	vValsPg.addElement("P1"); // Em aberto
 	vValsPg.addElement("P3"); // Pagamento parcial este flag não existe é montado na hora com o valor a pagar 
@@ -453,7 +476,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	rgPg.setVlrString("TT");
 	pinManut.adic(new JLabelPad("Filtrar por:"),488,0,190,20);
 	pinManut.adic(rgPg,488,20,190,65);
-
+*/
+	
 	lcForManut.add(new GuardaCampo( txtCodForManut, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
 	lcForManut.add(new GuardaCampo( txtRazForManut, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
 	lcForManut.montaSql(false, "FORNECED", "CP");
@@ -721,7 +745,9 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
       vDtEmiss = new Vector();
       String sWhereManut = " AND "+(rgData.getVlrString().equals("V")?"IT.DTVENCITPAG":"IT.DTITPAG")+
 						   " BETWEEN ? AND ? AND P.CODEMP=? AND P.CODFILIAL=?";
-	  if (!rgPg.getVlrString().equals("TT")){
+
+      /*
+      if (!rgPg.getVlrString().equals("TT")){
 	  	if ( (rgPg.getVlrString().equals("P1")) || (rgPg.getVlrString().equals("PP")) )
 	  	  sWhereManut += " AND IT.STATUSITPAG='"+rgPg.getVlrString()+"'";
 	  	else {
@@ -729,7 +755,32 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	  	}
 		
 	  }
-	  					   
+	  	*/
+      
+	  String sWhereStatus = "";
+	  boolean bStatus = false;
+	  
+	  if((cbPagas.getVlrString().equals("S")) || (cbAPagar.getVlrString().equals("S")) || (cbPagParcial.getVlrString().equals("S"))) {
+	  	if (cbPagas.getVlrString().equals("S")) {
+	  		sWhereStatus +=  "IT.STATUSITPAG='PP'";
+	  		bStatus = true;
+	  	}
+		if (cbAPagar.getVlrString().equals("S")) {
+		    sWhereStatus += bStatus?" OR IT.STATUSITPAG='P1' ":" IT.STATUSITPAG='P1' ";
+		    bStatus = true;
+		}
+   	    if (cbPagParcial.getVlrString().equals("S")) {
+   	    	sWhereStatus += bStatus?" OR IT.STATUSITPAG='PL' ":" IT.STATUSITPAG='PL' ";
+		    bStatus = true;
+		}
+	  	sWhereStatus = " AND ("+sWhereStatus+")";		  		
+	  }
+	  else {
+	  	Funcoes.mensagemInforma(null,"Você deve selecionar ao menos um filtro de status!");
+	  	return;
+	  }
+	  sWhereManut += sWhereStatus;
+
 	  if (!rgVenc.getVlrString().equals("TT")){
 		sWhereManut += " AND IT.DTVENCITPAG";
 		if (rgVenc.getVlrString().equals("VE"))
