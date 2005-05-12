@@ -1129,9 +1129,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
  	String sStatusItRec = null;
  	ImageIcon imgStatusAt = null;
  	if (tabManut.getLinhaSel() > -1) {
-// 		sStatusItRec = ""+tabManut.getValor(tabManut.getLinhaSel(),2);
- 		imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0);
-// 		if ( (sStatusItRec.equals("R1")) || (sStatusItRec.equals("RL"))) { 
+ 		imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0); 
 		if (imgStatusAt!=imgPago) {
  			int iLin = tabManut.getLinhaSel();
  			iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,4));
@@ -1277,12 +1275,15 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	}
   }
  private void estorno() {
-  	if(Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==0) {
-  		if (tabManut.getLinhaSel() > -1) {
-  			if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("RP")) { 
+  	if(Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==0) {  		
+  	 	String sStatusItRec = null;
+  	 	ImageIcon imgStatusAt = null;
+  		if (tabManut.getLinhaSel() > -1) { 			
+  			imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0);
+  			if ((imgStatusAt==imgPago) ||(imgStatusAt==imgPagoParcial)) {
   				int iLin = tabManut.getLinhaSel();
-  				iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,5));
-  				iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,6));
+  				iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,4));
+  				iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,5));
   				String sSQL = "UPDATE FNITRECEBER SET STATUSITREC='R1' WHERE CODREC=? AND NPARCITREC=? AND CODEMP=? AND CODFILIAL=?";
   				try {
   					PreparedStatement ps = con.prepareStatement(sSQL);
