@@ -225,6 +225,8 @@ public class ListaCampos extends Container implements PostListener,
 	private int iCodEmp = Aplicativo.iCodEmp;
 
 	private int iCodFilial = 0;
+	
+	private int iNumPKs = 0;
 
 	private Component cOwner = null;
 
@@ -254,6 +256,14 @@ public class ListaCampos extends Container implements PostListener,
 		sSigla = sSig;
 	}
 
+	public void setNumPKs(int iNumPKs) {
+		this.iNumPKs = iNumPKs;
+	}
+	
+	public int getNumPKs() {
+		return this.iNumPKs;
+	}
+	
 	public void setReadOnly(boolean RO) {
 		readOnly = RO;
 		if (RO)
@@ -1045,6 +1055,26 @@ public class ListaCampos extends Container implements PostListener,
 		//    JOptionPane.showMessageDialog(null,"SQLTAB: "+sSQLTab);
 	}
 
+	public Vector getCamposPK() {
+		Component comp = null;
+		GuardaCampo gcCampo = null;
+		Vector vRetorno = new Vector();
+		try {
+			for (int i = 0; i < getComponentCount(); i++) {
+				comp = getComponent(i);
+				if (comp instanceof GuardaCampo) {
+					gcCampo = ((GuardaCampo) comp);
+					if (gcCampo.ehPK()) 
+						vRetorno.addElement(gcCampo);
+				}
+			}
+		}
+		finally {
+			comp = null;
+			gcCampo = null;
+		}
+		return vRetorno;
+	}
 	public void montaSql(boolean bAuto, String sTab, String sA) {
 		//Funcoes.mensagemInforma(cOwner,"Teste do Owner tela");
 		String sSep = "";
@@ -1059,6 +1089,8 @@ public class ListaCampos extends Container implements PostListener,
 		sArea = sA;
 		sTabela = sArea + sTab;
 		sPK = retPK();
+		this.iNumPKs = 0;
+
 		if (bAutoInc) {
 			/*
 			 * Bom esse negocio que vem ai é para colar o codemp e o codfilial
@@ -1105,7 +1137,7 @@ public class ListaCampos extends Container implements PostListener,
 			GuardaCampo gcCampo = ((GuardaCampo) comp);
 			sCampo = gcCampo.getNomeCampo();
 			if (!gcCampo.getSoLeitura()) { 
-				if (!((GuardaCampo) comp).ehPK()) {
+				if (!gcCampo.ehPK()) {
 					sSQLUpdate += sSepU + sCampo + "=?";
 					sSepU = ",";
 				}
@@ -1117,7 +1149,7 @@ public class ListaCampos extends Container implements PostListener,
 								+ lcExt.getSigla()
 								+ (lcExt.getUsaFI() ? ",CODFILIAL"
 										+ lcExt.getSigla() : "");
-						if (!((GuardaCampo) comp).ehPK())
+						if (!gcCampo.ehPK())
 							sSQLUpdate += ",CODEMP"
 									+ lcExt.getSigla()
 									+ "=?"
@@ -1128,6 +1160,10 @@ public class ListaCampos extends Container implements PostListener,
 				}
 				sSepI = ",";
 			}
+			
+			if (gcCampo.ehPK())
+				this.iNumPKs ++;
+
 			sSQLSelect += sSep + sCampo;
 			sSep = ",";
 		}
