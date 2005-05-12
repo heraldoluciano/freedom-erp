@@ -119,12 +119,15 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     lcGrup.setReadOnly(true);
     txtIDGrpUsu.setTabelaExterna(lcGrup);
 
-    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
-    lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano.c.c.", ListaCampos.DB_PK, false));
+    lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,  false));
+    lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano.c.c.", ListaCampos.DB_PK,  false));
     lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descriçao do centro de custo", ListaCampos.DB_SI, false));
     lcCC.montaSql(false, "CC", "FN");    
     lcCC.setQueryCommit(false);
     lcCC.setReadOnly(true);
+    
+    txtAnoCC.setTabelaExterna(lcCC);
+    txtAnoCC.setNomeCampo("anocc");
     txtCodCC.setTabelaExterna(lcCC);
     txtCodCC.setNomeCampo("codcc");
     
@@ -138,9 +141,9 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     adic(txpSenha,300,100,70,20);
     adic(new JLabelPad("Confirma"),373,80,70,20);
     adic(txpConfirma,373,100,70,20);
-    adicCampoInvisivel(txtAnoCC,"AnoCC","Ano",ListaCampos.DB_FK, false);
-    adicCampo(txtCodCC, 7, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
-    adicDescFK(txtDescCC, 120, 140, 322, 20, "DescCC", "Descrição do centro de custo");
+    adicCampo(txtAnoCC,7, 140, 50, 20, "AnoCC","Ano c.c.",ListaCampos.DB_FK, txtDescCC, false);
+    adicCampo(txtCodCC, 60, 140, 110, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
+    adicDescFK(txtDescCC, 173, 140, 269, 20, "DescCC", "Descrição do centro de custo");
     
     adicDBLiv(txaComentUsu, "ComentUsu", "Comentário", false);
     adic(new JLabelPad("Comentário"),7,160,100,20);
