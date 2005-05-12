@@ -26,14 +26,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Vector;
-
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -43,7 +41,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FREstoqueMin extends FRelatorio {
-  private Connection con;
+  //private Connection con;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
@@ -141,6 +139,10 @@ public class FREstoqueMin extends FRelatorio {
     BigDecimal bVlrEstoqProd = new BigDecimal("0");
     sDivGrupo = cbGrupo.getVlrString();
     
+  	ImprimeOS imp = new ImprimeOS("", con);
+    int linPag = imp.verifLinPag()-1;
+    //imp.verifLinPag();
+    
     if (sDivGrupo.equals("S")) {
       sOrdemGrupo = "P.CODGRUP,";
     }
@@ -162,25 +164,20 @@ public class FREstoqueMin extends FRelatorio {
       sOrdem = sOrdemGrupo+"P.DESCPROD";
       sOrdenado = "ORDENADO POR DESCRICAO"; 
     }
-    sOrdenado = "|"+Funcoes.replicate(" ",68-(sOrdenado.length()/2))+sOrdenado;
-    sOrdenado += Funcoes.replicate(" ",134-sOrdenado.length())+" |";
-    
-    ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;    
+    sOrdenado = Funcoes.replicate(" ",67-(sOrdenado.length()/2))+sOrdenado;
+    sOrdenado += Funcoes.replicate(" ",132-sOrdenado.length());
     
     if (txtCodGrup.getText().trim().length() > 0) {
             sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
             String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
-            sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+            sTmp = Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
     }
     if (txtCodMarca.getText().trim().length() > 0) {
             sWhere += " AND P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
             String sTmp = "MARCA: "+txtDescMarca.getText().trim();
-            sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+            sTmp = Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+            sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
     }
  
     String sSQL = "SELECT P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD,"+
@@ -197,17 +194,22 @@ public class FREstoqueMin extends FRelatorio {
       ps = con.prepareStatement(sSQL);
       rs = ps.executeQuery();
       imp.limpaPags();
+      imp.montaCab();
+      imp.setTitulo("Relatorio de Estoque Abaixo do Minímo");
+      imp.addSubTitulo(sCab);
+      imp.addSubTitulo(sOrdenado);
+      boolean hasData = false;
       while ( rs.next() ) {
         if (imp.pRow()>=(linPag-1)) {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
            imp.incPags();
            imp.eject();
         }
         else if (sDivGrupo.equals("S")) {
            if ((sCodgrup.length() > 0) && (!sCodgrup.equals(rs.getString("Codgrup")))) {
               imp.say(imp.pRow()+1,0,""+imp.comprimido());
-              imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+              imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
               imp.incPags();
               imp.eject();
            }
@@ -215,58 +217,35 @@ public class FREstoqueMin extends FRelatorio {
  
         sCodgrup = rs.getString("codgrup");      
 
-        if (imp.pRow()==0) {
-           imp.montaCab();
-           imp.impCab(136, false);
-           imp.setTitulo("Relatorio de Estoque Abaixo do Minímo");
-           
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,62,"ESTOQUE MINIMO");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,sOrdenado);
-           if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+        if (imp.pRow()==0) {           
+           imp.impCab(136, true);
            
            if (sDivGrupo.equals("S")) {
+           	 hasData = true;
              String sDescGrup = rs.getString("DescGrup");
              sDescGrup = sDescGrup != null ? sDescGrup.trim() : "";
-             sDescGrup = "|"+Funcoes.replicate(" ",68-(sDescGrup.length()/2))+sDescGrup;
-             sDescGrup += Funcoes.replicate(" ",134-sDescGrup.length())+" |";
-             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+             sDescGrup = "|"+Funcoes.replicate(" ",67-(sDescGrup.length()/2))+sDescGrup;
+             sDescGrup += Funcoes.replicate(" ",133-sDescGrup.length())+" |";
+             imp.say(imp.pRow()+0,0,""+imp.comprimido());
+             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              imp.say(imp.pRow()+0,0,sDescGrup);
            }
 
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Linha.        | Ref.         |"+
-                 " Descrição                          | U.Compra  | Estoq.|"+
+                 " Descrição                         | U.Compra  | Estoq.|"+
                  " Min. | Falta| C.Unit. | C.Estoq.  |  C.Falta |");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
 
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
          imp.say(imp.pRow(),0,"| "+Funcoes.copy(rs.getString("Codgrup"),0,14)+
              "| "+Funcoes.copy(rs.getString("Refprod"),0,13)+
-             "| "+Funcoes.copy(rs.getString("Descprod"),0,35)+
+             "| "+Funcoes.copy(rs.getString("Descprod"),0,34)+
              "| "+(rs.getDate("DtUltCpProd") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtUltCpProd")) : "          ")+
              "| "+Funcoes.strDecimalToStrCurrency(6,0,rs.getString("sldliqprod"))+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,rs.getString("qtdminprod"))+
@@ -289,19 +268,19 @@ public class FREstoqueMin extends FRelatorio {
       }
 
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow(),0,"| "+Funcoes.copy(" ",0,14)+
              "| "+Funcoes.replicate(" ",13)+
              "| "+Funcoes.replicate(" ",35)+
-             "| TOTAL     |"+Funcoes.strDecimalToStrCurrency(6,0,""+bSldLiqProd)+
+             "| TOTAL     | "+Funcoes.strDecimalToStrCurrency(6,0,""+bSldLiqProd)+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,""+bQtdMinProd)+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,""+bQtdFaltaProd)+
              "|"+Funcoes.replicate(" ",9)+
-             "|"+Funcoes.strDecimalToStrCurrency(11,2,""+bVlrEstoqProd)+
+             "|"+Funcoes.strDecimalToStrCurrency(10,2,""+bVlrEstoqProd)+
              "|"+Funcoes.strDecimalToStrCurrency(10,2,""+bVlrFaltaProd)+"|");
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
       
       imp.eject();
       
