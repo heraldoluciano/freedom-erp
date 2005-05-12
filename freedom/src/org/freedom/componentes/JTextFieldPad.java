@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
+
 import javax.swing.JTextField;
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
@@ -463,23 +465,43 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   }
     
   public boolean mostraDLF2FK() {
-  	boolean bRet = false; 
-//    DLF2 dl = new DLF2(lcTabExt,Funcoes.getOwnerTela(this));
-  	  DLF2 dl = new DLF2(lcTabExt,Aplicativo.telaPrincipal);
-	  dl.setVisible(true);
-    if (dl.OK) {
-        if (!bPK)
-		    editDB();
-        setVlrString((String)dl.getValor(sNomeCampo));
-		  dl.dispose();
-//        sValAnt = getText();
-        if (lcTabExt.carregaDados() && (!bPK || lcTxt.carregaDados()))
-        	transferFocus();
-        bRet = true;
-    }
-    else  {
-      dl.dispose();
-    }
+  	boolean bRet = false;
+  	Vector vTemp = null;
+  	GuardaCampo gcCampo = null;
+  	DLF2 dl = null;
+  	try {
+	//    DLF2 dl = new DLF2(lcTabExt,Funcoes.getOwnerTela(this));
+	  	dl = new DLF2(lcTabExt,Aplicativo.telaPrincipal);
+		dl.setVisible(true);
+	    if (dl.OK) {
+	        if (!bPK)
+			    editDB();
+	        setVlrString((String)dl.getValor(sNomeCampo));
+	        if (lcTabExt.getNumPKs()>1) {
+	        	vTemp = lcTabExt.getCamposPK();
+	        	for (int i=0; i<vTemp.size(); i++) {
+	        		gcCampo = (GuardaCampo) vTemp.elementAt(i);
+	        		if (gcCampo!=null) {
+	        			if (!gcCampo.getNomeCampo().equalsIgnoreCase(sNomeCampo)) 
+	        				gcCampo.setVlrString((String) dl.getValor(gcCampo.getNomeCampo()));
+	        		}
+	        	}
+	        }
+			dl.dispose();
+	//        sValAnt = getText();
+	        if (lcTabExt.carregaDados() && (!bPK || lcTxt.carregaDados()))
+	        	transferFocus();
+	        bRet = true;
+	    }
+	    else  {
+	      dl.dispose();
+	    }
+  	}
+	finally {
+		vTemp = null;
+		dl = null;
+		gcCampo = null;
+	}
     return bRet;
   }
   public void keyTyped(KeyEvent kevt) { 
