@@ -1,9 +1,8 @@
 /*
- * Created on 03/05/2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Created on 03/05/2005 TODO To change the template for this generated file go
+ * to Window - Preferences - Java - Code Style - Code Templates
  */
+
 package org.freedom.importacao;
 
 import java.io.File;
@@ -23,276 +22,279 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * @author alexandre
- * 
- * TODO To change the template for this generated type comment go to Window -
- * Preferences - Java - Code Style - Code Templates
+ * @author alexandre TODO To change the template for this generated type comment
+ *         go to Window - Preferences - Java - Code Style - Code Templates
  */
 public class DataPump {
-    private Banco banco = null;
 
-    private String url = "jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/clientes/rondobras/elog.fdb";
+	private Banco banco = null;
 
-    private String driver = "org.firebirdsql.jdbc.FBDriver";
+	private String url = "jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/clientes/rondobras/elog.fdb";
 
-    private String arquivo = "";
+	private String driver = "org.firebirdsql.jdbc.FBDriver";
 
-    private String dados = "";
+	private String arquivo = "";
 
-    private Document document = null;
+	private String dados = "";
 
-    private Vector size = new Vector();
+	private Document document = null;
 
-    private Vector values = new Vector();
+	private Vector size = new Vector();
 
-    private Vector fields = new Vector();
+	private Vector values = new Vector();
 
-    protected String extractParenthesis(String field) {
-        String result = field.substring(field.indexOf('(') + 1, field
-                .indexOf(')'));
+	private Vector fields = new Vector();
 
-        return new Integer(Integer.parseInt(result)).toString();
-    }
+	protected String extractParenthesis(String field) {
+		String result = field.substring(field.indexOf('(') + 1, field.indexOf(')'));
 
-    protected String extractType(String field) {
-        String result = field.substring(0, field.indexOf('('));
+		return new Integer(Integer.parseInt(result)).toString();
+	}
 
-        return result;
-    }
+	protected String extractType(String field) {
+		String result = field.substring(0, field.indexOf('('));
 
-    protected String createSQLColumns(Node node, String sql, String tableName) {
-        if (node.hasChildNodes()) {
-            NodeList children = node.getChildNodes();
+		return result;
+	}
 
-            for (int i = 0; i < children.getLength(); i++) {
-                Node child = children.item(i);
-                if (child.hasAttributes()) {
-                    NamedNodeMap attr = child.getAttributes();
+	protected String createSQLColumns(Node node, String sql, String tableName) {
+		if (node.hasChildNodes()) {
+			NodeList children = node.getChildNodes();
 
-                    if (attr.getNamedItem("picture") == null) {
-                        if (child.hasChildNodes())
-                            sql = createSQLColumns(child, sql, tableName);
-                        continue;
-                    }
+			for (int i = 0; i < children.getLength(); i++) {
+				Node child = children.item(i);
+				if (child.hasAttributes()) {
+					NamedNodeMap attr = child.getAttributes();
 
-                    String name = attr.getNamedItem("name").getNodeValue()
-                            .replace('-', '_');
-                    JTextFieldPad field = null;
-                    sql += name + " ";
+					if (attr.getNamedItem("picture") == null) {
+						if (child.hasChildNodes())
+							sql = createSQLColumns(child, sql, tableName);
+						continue;
+					}
 
-                    Integer length = new Integer(extractParenthesis(attr
-                            .getNamedItem("picture").getNodeValue()));
+					String name = attr.getNamedItem("name").getNodeValue().replace('-',
+							'_');
+					JTextFieldPad field = null;
+					sql += name + " ";
 
-                    size.addElement(length);
+					Integer length = new Integer(extractParenthesis(attr.getNamedItem(
+							"picture").getNodeValue()));
 
-                    if (attr.getNamedItem("numeric") != null
-                            && attr.getNamedItem("numeric").getNodeValue()
-                                    .equalsIgnoreCase("true")) {
-                        sql += "NUMERIC(" + length + ",0)";
-                        field = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,
-                                length.intValue(), 0);
-                    } else {
-                        sql += "CHAR(" + length + ")";
-                        field = new JTextFieldPad(JTextFieldPad.TP_STRING,
-                                length.intValue(), 0);
-                    }
+					size.addElement(length);
 
-                    field.setNomeCampo(name);
-                    field.setName(name);
-                    fields.addElement(field);
-                    if (child.getNextSibling() != null)
-                        sql += ", ";
-                }
-            }
-        } else {
-            Node child = node;
-            if (child.hasAttributes()) {
-                NamedNodeMap attr = child.getAttributes();
+					if (attr.getNamedItem("numeric") != null
+							&& attr.getNamedItem("numeric").getNodeValue().equalsIgnoreCase(
+									"true")) {
+						sql += "NUMERIC(" + length + ",0)";
+						field = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, length
+								.intValue(), 0);
+					} else {
+						sql += "CHAR(" + length + ")";
+						field = new JTextFieldPad(JTextFieldPad.TP_STRING, length
+								.intValue(), 0);
+					}
 
-                if (attr.getNamedItem("picture") == null) {
-                    if (child.hasChildNodes())
-                        sql = createSQLColumns(child, sql, tableName);
-                    return sql;
-                }
+					field.setNomeCampo(name);
+					field.setName(name);
+					fields.addElement(field);
+					if (child.getNextSibling() != null)
+						sql += ", ";
+				}
+			}
+		} else {
+			Node child = node;
+			if (child.hasAttributes()) {
+				NamedNodeMap attr = child.getAttributes();
 
-                String name = attr.getNamedItem("name").getNodeValue().replace(
-                        '-', '_');
+				if (attr.getNamedItem("picture") == null) {
+					if (child.hasChildNodes())
+						sql = createSQLColumns(child, sql, tableName);
+					return sql;
+				}
 
-                sql += name + " ";
+				String name = attr.getNamedItem("name").getNodeValue()
+						.replace('-', '_');
 
-                Integer length = new Integer(extractParenthesis(attr
-                        .getNamedItem("picture").getNodeValue()));
+				sql += name + " ";
 
-                size.addElement(length);
-                JTextFieldPad field = null;
+				Integer length = new Integer(extractParenthesis(attr.getNamedItem(
+						"picture").getNodeValue()));
 
-                if (attr.getNamedItem("numeric") != null
-                        && attr.getNamedItem("numeric").getNodeValue()
-                                .equalsIgnoreCase("true")) {
-                    sql += "NUMERIC(" + length + ",0)";
-                    field = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, length
-                            .intValue(), 0);
-                } else {
-                    sql += "CHAR(" + length + ")";
-                    field = new JTextFieldPad(JTextFieldPad.TP_STRING, length
-                            .intValue(), 0);
-                }
+				size.addElement(length);
+				JTextFieldPad field = null;
 
-                field.setNomeCampo(name);
-                field.setName(name);
-                fields.addElement(field);
-                if (child.getNextSibling() != null)
-                    sql += ", ";
-            }
-        }
-        return sql;
-    }
+				if (attr.getNamedItem("numeric") != null
+						&& attr.getNamedItem("numeric").getNodeValue().equalsIgnoreCase(
+								"true")) {
+					sql += "NUMERIC(" + length + ",0)";
+					field = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,
+							length.intValue(), 0);
+				} else {
+					sql += "CHAR(" + length + ")";
+					field = new JTextFieldPad(JTextFieldPad.TP_STRING, length.intValue(),
+							0);
+				}
 
-    protected String leDados(FileReader leDados, String tableName) {
-        String result = "INSERT INTO " + tableName + " ";
-        String columns = "(";
-        String values = "(";
+				field.setNomeCampo(name);
+				field.setName(name);
+				fields.addElement(field);
+				if (child.getNextSibling() != null)
+					sql += ", ";
+			}
+		}
+		return sql;
+	}
 
-        for (int i = 0; i < fields.size(); i++) {
-            int origSize = ((Integer) size.get(i)).intValue();
-            char cbuf[] = new char[origSize];
-            boolean parar = false;
-            try {
-                int j = 0;
-                for (j = 0 ; j < origSize; j++) {                
-                    cbuf[j] = (char) leDados.read(); 
-                    if (cbuf[j] == '\r' || cbuf[j] == -1 ) {
-                        if (cbuf[j] == '\r') {
-                            cbuf[j] = 20;
-                        }
-                        parar = true;
-                        break;
-                    }
-                }
-                
-                String buf = new String(cbuf).trim();
+	protected String leDados(FileReader leDados, String tableName) {
+		String result = "INSERT INTO " + tableName + " ";
+		String columns = "(";
+		String values = "(";
 
-                JTextFieldPad field = (JTextFieldPad) fields.get(i);
-                field.setVlrString(buf);
+		for (int i = 0; i < fields.size(); i++) {
+			int origSize = ((Integer) size.get(i)).intValue();
+			char cbuf[] = new char[origSize];
+			boolean parar = false;
+			try {
+				int j = 0;
+				for (j = 0; j < origSize; j++) {
+					cbuf[j] = (char) leDados.read();
+					if (cbuf[j] == '\r' || cbuf[j] == -1) {
+						if (cbuf[j] == '\r') {
+							cbuf[j] = 20;
+						}
+						parar = true;
+						break;
+					}
+				}
 
-                columns += field.getNomeCampo();
-                switch (field.getTipo()) {
-                case JTextFieldPad.TP_STRING:
-                    values += "'" + field.getVlrString() + "'";
-                    break;
-                case JTextFieldPad.TP_NUMERIC:
-                    values += field.getVlrBigDecimal();
-                default:
-                }
+				String buf = new String(cbuf).trim();
+				if (buf.equals(""))
+					return null;
 
-                if (parar)
-                    break;
-                
-                if (i < size.size() - 1) {
-                    columns += ", ";
-                    values += ", ";
-                }
+				JTextFieldPad field = (JTextFieldPad) fields.get(i);
+				field.setVlrString(buf);
 
-            } catch (IOException e) {
-                break;
-            }
-        }
+				columns += field.getNomeCampo();
+				switch (field.getTipo()) {
+					case JTextFieldPad.TP_STRING:
+						values += "'" + field.getVlrString() + "'";
+						break;
+					case JTextFieldPad.TP_NUMERIC:
+						values += field.getVlrBigDecimal();
+					default:
+				}
 
-        columns += ")";
-        values += ")";
+				if (parar)
+					break;
 
-        result += columns + " VALUES " + values + ";";
-        return result;
-    }
+				if (i < size.size() - 1) {
+					columns += ", ";
+					values += ", ";
+				}
 
-    public DataPump(String user, String pass, String arquivo, String dados) {
-        super();
+			} catch (IOException e) {
+				break;
+			}
+		}
 
-        banco = new Banco(url, driver, user, pass);
+		columns += ")";
+		values += ")";
 
-        if (banco.getConnection() == null) {
-            System.err.println("Não conectou no banco de dados");
-            System.exit(2);
-        }
+		result += columns + " VALUES " + values + ";";
+		return result;
+	}
 
-        this.arquivo = arquivo;
+	public DataPump(String user, String pass, String arquivo, String dados) {
+		super();
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		banco = new Banco(url, driver, user, pass);
 
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            document = builder.parse(new File(arquivo));
+		if (banco.getConnection() == null) {
+			System.err.println("Não conectou no banco de dados");
+			System.exit(2);
+		}
 
-            String filename = document.getDocumentElement().getAttribute(
-                    "filename").replace('.', '_');
-            String sql = "";
+		this.arquivo = arquivo;
 
-            if (document.getDocumentElement().hasChildNodes()) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-                sql = "CREATE TABLE " + filename + " (";
-                sql = createSQLColumns(document.getDocumentElement(), sql,
-                        filename)
-                        + ");\n";
-            }
+		try {
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			document = builder.parse(new File(arquivo));
 
-            try {
-                System.out.println("Tentando dar DROP na tabela");
-                Statement stmt = banco.getStatement();
-                stmt.executeUpdate("DROP TABLE " + filename + ";\n");
-            } catch (SQLException e) {
-                System.err.println("Tabela não encontrada");
-            }
+			String filename = document.getDocumentElement().getAttribute("filename")
+					.replace('.', '_');
+			String sql = "";
 
-            try {
-                System.err.println("Criando a tabela");
-                System.out.println(sql);
-                Statement stmt = banco.getStatement();
-                stmt.executeUpdate(sql);
-            } catch (SQLException e) {
-                System.err.println("ERRO NA CONEXÃO\n");
-                e.printStackTrace();
-                System.exit(-1);
-            }
+			if (document.getDocumentElement().hasChildNodes()) {
 
-            File arquivoDados = new File(dados);
-            FileReader leDados = new FileReader(arquivoDados);
+				sql = "CREATE TABLE " + filename + " (";
+				sql = createSQLColumns(document.getDocumentElement(), sql, filename)
+						+ ");\n";
+			}
 
-            String insertSQL = leDados(leDados, filename);
-            if (insertSQL != null) {
-                try {
-                    System.out.println(insertSQL);
-                    Statement stmt = banco.getStatement();
-                    stmt.executeUpdate(insertSQL);
-                } catch (SQLException e) {
-                    System.err.println("ERRO NA INSERÇÃO\n");
-                    e.printStackTrace();
-                    System.exit(-1);
-                }
+			try {
+				System.out.println("Tentando dar DROP na tabela");
+				Statement stmt = banco.getStatement();
+				stmt.executeUpdate("DROP TABLE " + filename + ";\n");
+			} catch (SQLException e) {
+				System.err.println("Tabela não encontrada");
+			}
 
-            }
+			try {
+				System.err.println("Criando a tabela");
+				System.out.println(sql);
+				Statement stmt = banco.getStatement();
+				stmt.executeUpdate(sql);
+			} catch (SQLException e) {
+				System.err.println("ERRO NA CONEXÃO\n");
+				e.printStackTrace();
+				System.exit(-1);
+			}
 
-        } catch (SAXException sxe) {
-            Exception x = sxe;
-            if (sxe.getException() != null)
-                x = sxe.getException();
-            x.printStackTrace();
+			File arquivoDados = new File(dados);
+			FileReader leDados = new FileReader(arquivoDados);
 
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
+			String insertSQL = "";
 
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
+			while (insertSQL != null) {
+				insertSQL = leDados(leDados, filename);
+				if (insertSQL != null) {
+					try {
+						System.out.println(insertSQL);
+						Statement stmt = banco.getStatement();
+						stmt.executeUpdate(insertSQL);
+					} catch (SQLException e) {
+						System.err.println("ERRO NA INSERÇÃO\n");
+						e.printStackTrace();
+						System.exit(-1);
+					}
 
-    public static void main(String[] args) {
-        if (args.length != 4) {
-            System.err
-                    .println("Uso: java DataPump arquivo_de_dados arquivo_de_definição usuario senha");
-            System.exit(1);
-        }
+				}
+			}
 
-        DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0]);
+		} catch (SAXException sxe) {
+			Exception x = sxe;
+			if (sxe.getException() != null)
+				x = sxe.getException();
+			x.printStackTrace();
 
-    }
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		if (args.length != 4) {
+			System.err
+					.println("Uso: java DataPump arquivo_de_dados arquivo_de_definição usuario senha");
+			System.exit(1);
+		}
+
+		DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0]);
+
+	}
 }
