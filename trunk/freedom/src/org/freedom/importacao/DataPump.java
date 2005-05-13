@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
 public class DataPump {
     private Banco banco = null;
 
-    private String url = "jdbc:firebirdsql:10.1.1.20/3050:/opt/firebird/dados/clientes/pomiagro/freedom.fdb";
+    private String url = "jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/clientes/rondobras/elog.fdb";
 
     private String driver = "org.firebirdsql.jdbc.FBDriver";
 
