@@ -96,11 +96,13 @@ public class FSintegra extends FFilho implements ActionListener {
     
     vLabConvenio.addElement("Convênio 57/95");
     vLabConvenio.addElement("Convênio 69/02");
+    vLabConvenio.addElement("Convênio 57/95 (a partir de Jan.2004)");
 	vValConvenio.addElement("1");
     vValConvenio.addElement("2");
+    vValConvenio.addElement("3");
     
     rgConvenio = new JRadioGroup(1,2,vLabConvenio,vValConvenio);
-    rgConvenio.setVlrString("2");
+    rgConvenio.setVlrString("3");
     
     vLabNatoper.addElement("Interestaduais - Somente operações sujeitas ao regime de substituição tributária");
     vLabNatoper.addElement("Interestaduais - Operações com ou sem substituição tributária");
@@ -341,23 +343,25 @@ public class FSintegra extends FFilho implements ActionListener {
 		  rs = ps.executeQuery();
 		  lbAnd.setText("Gerando Entrada...");
 		  while (rs.next()) {
-			 sBuffer = "50"+Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14)+
-			   Funcoes.adicionaEspacos(Funcoes.limpaString(rs.getString("INSCFOR")),14)+
-			   Funcoes.dataAAAAMMDD(Funcoes.sqlDateToDate(rs.getDate("DTESLF")))+
-			   Funcoes.adicionaEspacos(rs.getString("UFLF"),2)+
-			   Funcoes.strZero(rs.getInt("CODMODNOTA")+"",2)+
-			   Funcoes.adicionaEspacos(rs.getString("SERIELF"),3)+
-			   (sConvenio.equals("1")?Funcoes.replicate(" ",2):"")+ // Sub serie 
-			   Funcoes.strZero(rs.getInt("DOCINILF")+"",6)+
-			   Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4))+
-			   (sConvenio.equals("1")?"":"T")+ // Emitente da nota fiscal P-Própio ou T-Terceiros
-			   Funcoes.transValor(rs.getString("VLRCONTABILLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLRBASEICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLRICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLRISENTASICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLROUTRASICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("ALIQICMSLF"),4,2,true)+
-			   "N" + CR;
+			 sBuffer = 
+			 /* 01 */  "50"+ 
+			 /* 02 */  Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14)+
+			 /* 03 */  Funcoes.adicionaEspacos(Funcoes.limpaString(rs.getString("INSCFOR")),14)+
+			 /* 04 */  Funcoes.dataAAAAMMDD(Funcoes.sqlDateToDate(rs.getDate("DTESLF")))+
+			 /* 05 */  Funcoes.adicionaEspacos(rs.getString("UFLF"),2)+
+			 /* 06 */  Funcoes.strZero(rs.getInt("CODMODNOTA")+"",2)+
+			 /* 07 */  Funcoes.adicionaEspacos(rs.getString("SERIELF"),3)+
+//			 		  (sConvenio.equals("1")?Funcoes.replicate(" ",2):"")+ // Sub serie 
+			 /* 08 */  Funcoes.strZero(rs.getInt("DOCINILF")+"",6)+
+			 /* 09 */  Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4))+
+			 /* 10 */  (sConvenio.equals("1")?"":"T")+ // Emitente da nota fiscal P-Própio ou T-Terceiros
+			 /* 11 */  Funcoes.transValor(rs.getString("VLRCONTABILLF"),13,2,true)+
+			 /* 12 */  Funcoes.transValor(rs.getString("VLRBASEICMSLF"),13,2,true)+
+			 /* 13 */  Funcoes.transValor(rs.getString("VLRICMSLF"),13,2,true)+
+			 /* 14 */  Funcoes.transValor(rs.getString("VLRISENTASICMSLF"),13,2,true)+
+			 /* 15 */  Funcoes.transValor(rs.getString("VLROUTRASICMSLF"),13,2,true)+
+			 /* 16 */  Funcoes.transValor(rs.getString("ALIQICMSLF"),4,2,true)+
+			 /* 17 */  "N" + CR;
 			 gravaBuffer(sBuffer);
 			 iTot50 ++;
 		  }
@@ -389,23 +393,25 @@ public class FSintegra extends FFilho implements ActionListener {
 		  rs = ps.executeQuery();
 		  lbAnd.setText("Gerando Saídas...");
 		  while (rs.next()) {
-			 sBuffer = "50"+Funcoes.adicionaEspacos(rs.getString("CNPJCLI"),14)+
-			   Funcoes.adicionaEspacos(Funcoes.limpaString(rs.getString("INSCCLI")),14)+
-			   Funcoes.dataAAAAMMDD(Funcoes.sqlDateToDate(rs.getDate("DTEMITLF")))+
-			   Funcoes.adicionaEspacos(rs.getString("UFLF"),2)+
-			   Funcoes.strZero(rs.getInt("CODMODNOTA")+"",2)+
-			   Funcoes.adicionaEspacos(rs.getString("SERIELF"),3)+
-			   (sConvenio.equals("1")?Funcoes.replicate(" ",2):"")+ // Sub serie 
-			   Funcoes.strZero(rs.getInt("DOCINILF")+"",6)+
-			   Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4))+
-			   (sConvenio.equals("1")?"":"P") + //Emitente da nota fiscal P-Própio ou T-Terceiros
-			   Funcoes.transValor(rs.getString("VLRCONTABILLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLRBASEICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLRICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLRISENTASICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("VLROUTRASICMSLF"),13,2,true)+
-			   Funcoes.transValor(rs.getString("ALIQICMSLF"),4,2,true)+
-			   "N" + CR;
+			 sBuffer = 
+			   /* 01 */ "50"+
+			   /* 02 */ Funcoes.adicionaEspacos(rs.getString("CNPJCLI"),14)+
+			   /* 03 */ Funcoes.adicionaEspacos(Funcoes.limpaString(rs.getString("INSCCLI")),14)+
+			   /* 04 */ Funcoes.dataAAAAMMDD(Funcoes.sqlDateToDate(rs.getDate("DTEMITLF")))+
+			   /* 05 */ Funcoes.adicionaEspacos(rs.getString("UFLF"),2)+
+			   /* 06 */ Funcoes.strZero(rs.getInt("CODMODNOTA")+"",2)+
+			   /* 07 */ Funcoes.adicionaEspacos(rs.getString("SERIELF"),3)+
+//			   (sConvenio.equals("1")?Funcoes.replicate(" ",2):"")+ // Sub serie 
+			   /* 08 */ Funcoes.strZero(rs.getInt("DOCINILF")+"",6)+
+			   /* 09 */ Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4))+
+			   /* 10 */ (sConvenio.equals("1")?"":"P") + //Emitente da nota fiscal P-Própio ou T-Terceiros
+			   /* 11 */ Funcoes.transValor(rs.getString("VLRCONTABILLF"),13,2,true)+
+			   /* 12 */ Funcoes.transValor(rs.getString("VLRBASEICMSLF"),13,2,true)+
+			   /* 13 */ Funcoes.transValor(rs.getString("VLRICMSLF"),13,2,true)+
+			   /* 14 */ Funcoes.transValor(rs.getString("VLRISENTASICMSLF"),13,2,true)+
+			   /* 15 */ Funcoes.transValor(rs.getString("VLROUTRASICMSLF"),13,2,true)+
+			   /* 16 */ Funcoes.transValor(rs.getString("ALIQICMSLF"),4,2,true)+
+			   /* 17 */ "N" + CR;
 			 gravaBuffer(sBuffer);
 			 iTot50 ++;
 		  }
@@ -429,7 +435,7 @@ public class FSintegra extends FFilho implements ActionListener {
 			 "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND "+
 			 "IC.CODCOMPRA=C.CODCOMPRA AND  IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "+
 			 "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "+
-			 "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODEMP=C.CODFILIALFR AND "+
+			 "F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND "+
 			 "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "+
 			 "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "+
              "TM.FISCALTIPOMOV='S' ORDER BY C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA";
@@ -443,26 +449,51 @@ public class FSintegra extends FFilho implements ActionListener {
 		  rs = ps.executeQuery();
 		  lbAnd.setText("Gerando Itens NF Entrada...");
 		  sDocTmp = "";
+		  
+			 String s54E01 = "54";
+			 String s54E02 = "";
+			 String s54E03 = "";
+			 String s54E04 = "";
+			 String s54E05 = "";
+			 String s54E06 = "";
+			 String s54E07 = "";
+			 String s54E08 = "";
+			 String s54E09 = "";
+			 String s54E10 = "";
+			 String s54E11 = "";
+			 String s54E12 = "";
+			 String s54E13 = "";
+			 String s54E14 = "";
+			 String s54E15 = "";
+			 String s54E16 = "";		  
+		  
+		  
 		  while (rs.next()) {
 			 if (!sDocTmp.equals(""+rs.getInt("DOCCOMPRA"))) {
 				iOrdem = 1;
 			 }
-			 sBuffer = "54"+Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14)+
-			   Funcoes.strZero((rs.getString("CODMODNOTA")==null?0:rs.getInt("CODMODNOTA"))+"",2)+
-			   Funcoes.adicionaEspacos(rs.getString("SERIE"),3)+
-			   (sConvenio.equals("1")?Funcoes.replicate(" ",2):"")+ // Sub serie 
-			   Funcoes.strZero(rs.getInt("DOCCOMPRA")+"",6)+
-			   Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4))+
-			   (sConvenio.equals("1")?"":rs.getString("ORIGFISC")+rs.getString("CODTRATTRIB"))+
-			   Funcoes.strZero(iOrdem+"",3)+
-			   Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14)+
-			   Funcoes.transValor(rs.getString("QTDITCOMPRA"),(sConvenio.equals("1")?13:11),3,true)+
-			   Funcoes.transValor(rs.getString("VLRLIQITCOMPRA"),12,2,true)+
-			   Funcoes.transValor("0",12,2,true)+
-			   Funcoes.transValor(rs.getString("VLRBASEICMSITCOMPRA"),12,2,true)+
-			   Funcoes.transValor("0",12,2,true)+
-			   Funcoes.transValor(rs.getString("VLRIPIITCOMPRA"),12,2,true)+
-			   Funcoes.transValor(rs.getString("PERCICMSITCOMPRA"),4,2,true)+CR;
+
+			 s54E02 = Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14);
+			 s54E03 = Funcoes.strZero((rs.getString("CODMODNOTA")==null?0:rs.getInt("CODMODNOTA"))+"",2);
+			 s54E04 = Funcoes.adicionaEspacos(rs.getString("SERIE"),3);
+//			   (sConvenio.equals("1")?Funcoes.replicate(" ",2):"")+ // Sub serie
+			 s54E05 = Funcoes.strZero(rs.getInt("DOCCOMPRA")+"",6);
+			 s54E06 = Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4));
+			 s54E07 = (sConvenio.equals("1")?"":(rs.getString("ORIGFISC")+rs.getString("CODTRATTRIB")));
+			 s54E08 = Funcoes.strZero(iOrdem+"",3);
+			 s54E09 = Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14);
+			 s54E10 = Funcoes.transValor(rs.getString("QTDITCOMPRA"),(sConvenio.equals("1")?13:11),3,true);
+			 s54E11 = Funcoes.transValor(rs.getString("VLRLIQITCOMPRA"),12,2,true);
+			 s54E12 = Funcoes.transValor("0",12,2,true);
+			 s54E13 = Funcoes.transValor(rs.getString("VLRBASEICMSITCOMPRA"),12,2,true);
+			 s54E14 = Funcoes.transValor("0",12,2,true);
+			 s54E15 = Funcoes.transValor(rs.getString("VLRIPIITCOMPRA"),12,2,true);
+			 s54E16 = Funcoes.transValor(rs.getString("PERCICMSITCOMPRA"),4,2,true);
+
+			 sBuffer = s54E01 + s54E02 + s54E03 + s54E04 + s54E05 + s54E06 +
+			           s54E07 + s54E08 + s54E09 + s54E10 + s54E11 + s54E12 +
+					   s54E13 + s54E14 + s54E15 + s54E16 + CR;
+ 
 			 gravaBuffer(sBuffer);
 			 sDocTmp = rs.getInt("DOCCOMPRA")+"";
 			 iOrdem++;
@@ -591,7 +622,7 @@ public class FSintegra extends FFilho implements ActionListener {
 			 "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "+
 			 "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "+
 			 "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "+
-			 "TM.FISCALTIPOMOV='S' "+
+			 "TM.FISCALTIPOMOV='S' AND IC.PERCIPIITCOMPRA IS NOT NULL AND IC.PERCICMSITCOMPRA IS NOT NULL "+
 			 "GROUP BY IC.CODPROD,P.REFPROD,P.DESCPROD,IC.PERCIPIITCOMPRA,"+
 			 "IC.PERCICMSITCOMPRA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB ";
           
@@ -609,12 +640,12 @@ public class FSintegra extends FFilho implements ActionListener {
 			   Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14)+
 			   Funcoes.replicate(" ",8)+
 			   Funcoes.adicionaEspacos(rs.getString("DESCPROD"),53)+
-			   Funcoes.adicionaEspacos(rs.getString("CODUNID"),6)+
+			   Funcoes.adicionaEspacos(rs.getString("CODUNID"),4)+
 			   rs.getString("ORIGFISC")+rs.getString("CODTRATTRIB")+
 			   Funcoes.transValor(rs.getString("PERCIPIITCOMPRA"),4,2,true)+
 			   Funcoes.transValor(rs.getString("PERCICMSITCOMPRA"),4,2,true)+
 			   Funcoes.strZero("0",4)+
-			   Funcoes.transValor("0",12,2,true)+CR;
+			   Funcoes.transValor("0",14,2,true)+CR;
 			 gravaBuffer(sBuffer);
 			 iTot75 ++;
 		  }
@@ -788,7 +819,8 @@ public class FSintegra extends FFilho implements ActionListener {
     }
     
     FileDialog fdSintegra = null;
-    fdSintegra = new FileDialog(fOrigem,"Salvar sintegra",FileDialog.SAVE);
+//    fdSintegra = new FileDialog(fOrigem,"Salvar sintegra",FileDialog.SAVE);
+    fdSintegra = new FileDialog(Aplicativo.telaPrincipal,"Salvar sintegra",FileDialog.SAVE);
     fdSintegra.setFile("Receita.txt");
     fdSintegra.setVisible(true);
     if (fdSintegra.getFile() == null) {
