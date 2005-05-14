@@ -34,6 +34,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
@@ -418,7 +421,7 @@ public class Tef {
         return bRet;
     }
 
-    public String retNsu(Properties prop) {
+    public static String retNsu(Properties prop) {
         //Se for uma transação de cancelamento busca primeiro o NSU cancelado:
         String sRet = prop.getProperty(TEF_NSU_CANCELADO);
         if (sRet == null)
@@ -426,7 +429,42 @@ public class Tef {
         return sRet;
     }
 
-    public BigDecimal retValor(Properties prop) {
+    public static String retRede(Properties prop) {
+        String sRet = prop.getProperty(TEF_NOME_REDE);
+        return sRet;
+    }
+
+    public static Date retData(Properties prop) {
+        DateFormat df = new SimpleDateFormat("ddMMyyyy");
+        Date dRet = null;
+        try {
+        	 dRet = df.parse(prop.getProperty(TEF_DT_COMPROVANTE));
+        }
+        catch (Exception err) { }
+        return dRet;
+    }
+
+    public static Date retDataHora(Properties prop) {
+        DateFormat df = new SimpleDateFormat("ddMMHHmmss");
+        Date dRet = null;
+        try {
+        	 dRet = df.parse(prop.getProperty(TEF_DT_COMPROVANTE));
+        }
+        catch (Exception err) { }
+        return dRet;
+    }
+
+    public static Date retHora(Properties prop) {
+        DateFormat df = new SimpleDateFormat("HHmmss");
+        Date dRet = null;
+        try {
+        	 dRet = df.parse(prop.getProperty(TEF_DT_COMPROVANTE));
+        }
+        catch (Exception err) { }
+        return dRet;
+    }
+
+    public static BigDecimal retValor(Properties prop) {
         return Funcoes.transValorInv(prop.getProperty(TEF_VAL_TOTAL, "000"));
     }
 
