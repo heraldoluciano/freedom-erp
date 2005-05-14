@@ -30,12 +30,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -229,19 +230,41 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
                             "Não foi possível travar o teclado!!");
             bRet = false;
         }
-		if (bRet)
+		if (bRet) {
 		    bRet = tef.confirmaVenda(retTef);
+		    if (bRet) {
+		    	vinculaTef(retTef);
+		    }
+		}
 		else {
 		    //Estornando a TEF:
 		    bRet = tef.naoConfirmaVenda(retTef);
 		    if (bigPagoTef.doubleValue() > 0.0)
-		        bigPagoTef = bigPagoTef.subtract(tef.retValor(retTef));
+		        bigPagoTef = bigPagoTef.subtract(Tef.retValor(retTef));
 		    recalcPago();
 		    vTefsOK.remove(retTef);
 		}
 		
 		return bRet;
 
+	}
+	private void vinculaTef(Properties prop) {
+		String sSQL = "INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF)"+
+					  " VALUES (?,?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDTEF"));
+			ps.setString(3,"E");
+			ps.setInt(4,iCodVenda);
+			ps.setString(5,Tef.retNsu(prop));
+			ps.setString(6,Tef.retRede(prop));
+			ps.setDate(7,Funcoes.dateToSQLDate(Tef.retData(prop)));
+			ps.setBigDecimal(6,Tef.retValor(prop));
+		}
+		catch (SQLException err) {
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar tef vinculado no banco: "+err.getMessage());
+		}
 	}
 	private boolean verifCaixa() {
 		boolean bRetorno = false;
@@ -278,27 +301,19 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		
 		//Ajusta variaveis de TEF se existir.
 		if (vTefsOK.size() > 0) {
-		    sCVTEF = tef.retNsu((Properties)vTefsOK.elementAt(0));
+		    sCVTEF = Tef.retNsu((Properties)vTefsOK.elementAt(0));
 		    sPlanoTEF = Funcoes.copy(txtDescPlanoPag.getVlrString(),16);
 		}
 		    
 		
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2', CVTEFVENDA=?, DESCPLANOTEFVENDA=? WHERE CODEMP=?" +
+		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2' WHERE CODEMP=?" +
 		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 		
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			if (sCVTEF != null)
-			    ps.setString(1,sCVTEF);
-			else
-			    ps.setNull(1,Types.CHAR);
-			if (sPlanoTEF != null)
-			    ps.setString(2,sPlanoTEF);
-			else
-			    ps.setNull(2,Types.CHAR);
-			ps.setInt(3,Aplicativo.iCodEmp);
-			ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setInt(5,iCodVenda);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(3,iCodVenda);
 			ps.executeUpdate();
 			bRet = true;
 		}
@@ -338,7 +353,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		else if (txtVlrChequeElet.getVlrDouble().doubleValue() > 0) {
 		    Properties ppCompTef;
 		    if ((ppCompTef = processaTef()) == null) {
-		        Funcoes.mensagemInforma(this,"Não foi possível concluir a TEF");
+		        Funcoes.mensagemInforma(this,"Não foi possível processar TEF");
 		        return false;
 		    }
 		    if (txtVlrChequeElet.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
