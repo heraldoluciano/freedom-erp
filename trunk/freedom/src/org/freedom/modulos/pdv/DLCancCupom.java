@@ -35,6 +35,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -49,6 +50,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
+import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
@@ -66,6 +68,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
 	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldFK txtValor = new JTextFieldFK(JTextFieldPad.TP_DOUBLE,10,2);
+	private JTextFieldFK txtCVTef = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private JButton btCanc = new JButton(Icone.novo("btExcluir.gif"));
@@ -73,6 +76,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	JCheckBoxPad cbInteira = new JCheckBoxPad("Cancelar venda inteira","S","N");
 	private ListaCampos lcVenda = new ListaCampos(this,"VD");
 	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+	private Tef tef = null;
 	boolean bCancCupom = false;
 	int iCancItem = -1;
 	public DLCancCupom() {
@@ -98,6 +102,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
         lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
 		lcVenda.add(new GuardaCampo( txtData, "DtEmitVenda", "Data", ListaCampos.DB_SI, false));   
 		lcVenda.add(new GuardaCampo( txtValor, "VlrLiqVenda", "Valor", ListaCampos.DB_SI, false));
+		lcVenda.add(new GuardaCampo( txtCVTef, "CVTefVenda", "CV Tef", ListaCampos.DB_SI, false));
        	
        	txtVenda.setListaCampos(lcVenda);
        	txtVenda.setNomeCampo("CodVenda");
@@ -155,8 +160,32 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 		lcVenda.setWhereAdic("TIPOVENDA='E'");
 		lcVenda.setReadOnly(true);		
 	}
+	private Properties processaTef() {
+		
+		
+		
+//TODO: Continuar aki:
+		
+/*		Properties retTef = tef.cancelaVenda(iNumCupom, txtVlrChequeElet.getVlrBigDecimal());
+		
+		if (retTef == null || !tef.validaTef(retTef))
+			return null;
+		
+		return retTef;
+*/
+		return null;
+	}
 	private boolean cancVenda() {
 		boolean bRet = false;
+		
+	    Properties ppCompTef;
+//	  TODO: Descomentar aki:
+	   /* if ((ppCompTef = processaTef()) == null) {
+	        Funcoes.mensagemInforma(this,"Não foi possível processar TEF");
+	        return false;
+	    }
+		*/
+		
 		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='CV' WHERE CODEMP=?" +
 		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 		try {
@@ -324,6 +353,9 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 				marcaItem(tab.getLinhaSel());
 			}
 		}
+	}
+	public void setTef(Tef tef) {
+		this.tef = tef;
 	}
 	public void setConexao(Connection cn) {
 		lcVenda.setConexao(cn);
