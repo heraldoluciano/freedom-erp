@@ -73,7 +73,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodItRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtQtdItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtQtdItAprovRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtQtdAprovRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtPrecoItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 //	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
@@ -146,7 +146,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
 
-		lcProd.setWhereAdic("ATIVOPROD='S' AND TIPOPROD='C'");
+		lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
@@ -158,7 +158,7 @@ public class FRma extends FDetalhe implements PostListener,
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD='C'");
+		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
@@ -257,10 +257,10 @@ public class FRma extends FDetalhe implements PostListener,
 
 		adicCampo(txtQtdItRma, 330, 20, 67, 20, "QtdItRma", "Qtd.solic.",ListaCampos.DB_SI, true);
 
-		txtQtdItAprovRma.setSoLeitura(true);
-//		txtQtdItAprovRma.setNaoEditavel(true);
+//		txtQtdAprovRma.setSoLeitura(true);
+		txtQtdAprovRma.setNaoEditavel(true);
 		
-		adicCampo(txtQtdItAprovRma, 400, 20, 77, 20, "QtdAprovItRma", "Qtd.aprov.",	ListaCampos.DB_SI, false);		
+		adicCampo(txtQtdAprovRma, 400, 20, 77, 20, "QtdAprovItRma", "Qtd.aprov.",	ListaCampos.DB_SI, false);		
 		adicCampo(txtPrecoItRma,480,20,80,20,"PrecoItRma", "Preço",ListaCampos.DB_SI, true);
 				
 		txtCodAlmox.setNaoEditavel(true);
@@ -365,10 +365,10 @@ public class FRma extends FDetalhe implements PostListener,
 				txtQtdItRma.setNaoEditavel(true);
 				txaMotivoRma.disable();			
 			}
-			else if(bAprova){
-				txtQtdItAprovRma.setNaoEditavel(false);
-				if(txtQtdItAprovRma.getVlrString().equals(""))
-					txtQtdItAprovRma.setVlrString(txtQtdItAprovRma.getVlrString());
+			if(bAprova){
+				txtQtdAprovRma.setNaoEditavel(false);
+				if(!(txtQtdAprovRma.getVlrDouble().doubleValue()>0))
+					txtQtdAprovRma.setVlrString(txtQtdItRma.getVlrString());
 			}
 			else {
 				txtCodProd.setNaoEditavel(false);
@@ -577,8 +577,12 @@ public class FRma extends FDetalhe implements PostListener,
 	public void keyReleased(KeyEvent kevt) {
 		super.keyReleased(kevt);
 	}
-
+	
 	public void beforePost(PostEvent pevt) {
+		if(txtQtdAprovRma.getVlrDouble().doubleValue()>txtQtdItRma.getVlrDouble().doubleValue()){
+			Funcoes.mensagemInforma(null,"Quantidade aprovada maior que a requerida!");
+			pevt.getListaCampos().cancelPost();
+		}
 	}
 
 	public void beforeInsert(InsertEvent ievt) {
