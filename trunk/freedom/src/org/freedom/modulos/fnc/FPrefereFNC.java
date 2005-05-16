@@ -41,6 +41,9 @@ public class FPrefereFNC extends FTabDados {
 		setTitulo("Preferências Gerais");
 		setAtribos(50, 50, 355, 200);
 		
+		lcCampos.setMensInserir(false);
+		
+		
 		lcMoeda.add(new GuardaCampo(txtCodMoeda, "CodMoeda","Cód.moeda", ListaCampos.DB_PK, true));
 		lcMoeda.add(new GuardaCampo(txtDescMoeda, "SingMoeda","Descrição da moeda", ListaCampos.DB_SI, false));
 		lcMoeda.montaSql(false, "MOEDA", "FN");

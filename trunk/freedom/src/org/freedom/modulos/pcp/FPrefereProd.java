@@ -39,6 +39,8 @@ public class FPrefereProd extends FTabDados {
 		setTitulo("Preferências de Produção");
 		setAtribos(50, 50, 330, 375);
 		
+		lcCampos.setMensInserir(false);
+		
         setPainel(pinGeral);
         adicTab("Geral", pinGeral);
 
