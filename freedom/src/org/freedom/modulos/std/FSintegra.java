@@ -202,6 +202,14 @@ public class FSintegra extends FFilho implements ActionListener {
   }
   
   private void gerar() {
+    final int COL_75_CODPROD = 1;
+    final int COL_75_REFPROD = 2;
+    final int COL_75_DESCPROD = 3;
+    final int COL_75_PERCIPI = 4;
+    final int COL_75_PERCICMS = 5;
+    final int COL_75_CODUNID = 6;
+    final int COL_75_ORIGFISC = 7;
+    final int COL_75_CODTRATTRIB = 8;
 	String sBuffer = "";
 	String sReg10 = "";
 	String sReg11 = "";
@@ -211,6 +219,9 @@ public class FSintegra extends FFilho implements ActionListener {
 	String sFinalidade = rgFinalidade.getVlrString();
 	String sTabela = "";
 	String sCodEmp = "";
+	String sSqlEntrada = "";
+	String sSqlSaida = "";
+	String sSqlConsumidor = "";
 	int iOrdem = 0;
 	int iTot50 = 0;
 	int iTot54 = 0;
@@ -218,6 +229,7 @@ public class FSintegra extends FFilho implements ActionListener {
 	int iTot75 = 0;
 	int iTotreg = 0;
 	int iCodEmp = 0;
+	int iParam = 1;
 	String sUsaRefProd = "N";
     
 	iCodEmp = Aplicativo.iCodEmp;
@@ -610,40 +622,92 @@ public class FSintegra extends FFilho implements ActionListener {
 	  }
 
 
-	  if ( cbEntrada.getVlrString().equals("S")) {
-		  // REGISTRO 75 TABELA DE PRODUTOS ENTRADAS
+	  if ( ( cbEntrada.getVlrString().equals("S") ) || (cbSaida.getVlrString().equals("S") || 
+	  		cbConsumidor.getVlrString().equals("S") ) ) {
+		  // REGISTRO 75 TABELA DE PRODUTOS ENTRADAS, SAIDAS, CONSUMIDOR
+          sSqlEntrada = "";
+          sSqlSaida = "";
+          sSqlConsumidor = "";
+          sSql = "";
           
-         
-		  sSql = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,IC.PERCIPIITCOMPRA,"+
-			 "IC.PERCICMSITCOMPRA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,COUNT(*) "+
-			 "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFCLFISCAL CF "+
-			 "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND "+
-			 "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "+
-			 "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "+
-			 "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "+
-			 "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "+
-			 "TM.FISCALTIPOMOV='S' AND IC.PERCIPIITCOMPRA IS NOT NULL AND IC.PERCICMSITCOMPRA IS NOT NULL "+
-			 "GROUP BY IC.CODPROD,P.REFPROD,P.DESCPROD,IC.PERCIPIITCOMPRA,"+
-			 "IC.PERCICMSITCOMPRA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB ";
+          if ( cbEntrada.getVlrString().equals("S") ) 
+          	sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,IC.PERCIPIITCOMPRA,"+
+				 "IC.PERCICMSITCOMPRA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB "+
+				 "FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFCLFISCAL CF "+
+				 "WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND "+
+				 "IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "+
+				 "TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "+
+				 "P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "+
+				 "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "+
+				 "TM.FISCALTIPOMOV='S' AND IC.PERCIPIITCOMPRA IS NOT NULL AND IC.PERCICMSITCOMPRA IS NOT NULL ";
+          if ( cbSaida.getVlrString().equals("S") ) 
+	        sSqlSaida = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,IV.PERCIPIITVENDA,"+
+				 "IV.PERCICMSITVENDA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB "+
+				 "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF "+
+				 "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND "+
+				 "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " +
+				 "C.PESSOACLI='J' AND "+
+				 "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " +
+				 "IV.CODFILIAL=V.CODFILIAL AND "+
+				 "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
+				 "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "+
+				 "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " +
+				 "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC ";
+          if ( cbConsumidor.getVlrString().equals("S") && (sConvenio.equals("1")) )
+	  		sSqlConsumidor = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,IV.PERCIPIITVENDA,"+
+			   "IV.PERCICMSITVENDA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB "+
+			   "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF "+
+			   "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND "+
+			   "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " +
+			   "C.PESSOACLI='F' AND "+
+			   "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " +
+			   "IV.CODFILIAL=V.CODFILIAL AND "+
+			   "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
+			   "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "+
+			   "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " +
+			   "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC ";
+       
+          if (!sSqlEntrada.equals(""))
+          	sSql = sSqlEntrada;
+          if (!sSqlSaida.equals("")) 
+          	sSql += (sSql.equals("")?"":" UNION ") + sSqlSaida;
+          if (!sSqlConsumidor.equals("")) 
+          	sSql += (sSql.equals("")?"":" UNION ") + sSqlConsumidor;
+          sSql += " GROUP BY 1,2,3,4,5,6,7,8 ";
           
 		  ps = con.prepareStatement(sSql);
-		  ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-		  ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-		  ps.setInt(3,iCodEmp);
-		  ps.setInt(4,ListaCampos.getMasterFilial("CPCOMPRA"));
+		  iParam = 1;
+		  if (!sSqlEntrada.equals("")) {
+			ps.setDate(iParam++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+			ps.setDate(iParam++,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+			ps.setInt(iParam++,iCodEmp);
+			ps.setInt(iParam++,ListaCampos.getMasterFilial("CPCOMPRA"));
+		  }
+		  if (!sSqlSaida.equals("")) {
+			ps.setDate(iParam++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+			ps.setDate(iParam++,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+			ps.setInt(iParam++,iCodEmp);
+			ps.setInt(iParam++,ListaCampos.getMasterFilial("VDVENDA"));
+		  }
+		  if (!sSqlConsumidor.equals("")) {
+			ps.setDate(iParam++,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+			ps.setDate(iParam++,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+			ps.setInt(iParam++,iCodEmp);
+			ps.setInt(iParam++,ListaCampos.getMasterFilial("VDVENDA"));
+		  }
 		  rs = ps.executeQuery();
-		  lbAnd.setText("Gerando Tabela de Produtos de Compra...");
+		  lbAnd.setText("Gerando Tabela de Produtos de entradas e saídas...");
 		  while (rs.next()) {
 	         btGerar.setEnabled(false);
 			 sBuffer = "75"+Funcoes.dataAAAAMMDD(txtDataini.getVlrDate())+
 			   Funcoes.dataAAAAMMDD(txtDatafim.getVlrDate())+
-			   Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14)+
+			   Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?COL_75_REFPROD:COL_75_CODPROD)),14)+
 			   Funcoes.replicate(" ",8)+
-			   Funcoes.adicionaEspacos(rs.getString("DESCPROD"),53)+
-			   Funcoes.adicionaEspacos(rs.getString("CODUNID"),4)+
-			   rs.getString("ORIGFISC")+rs.getString("CODTRATTRIB")+
-			   Funcoes.transValor(rs.getString("PERCIPIITCOMPRA"),4,2,true)+
-			   Funcoes.transValor(rs.getString("PERCICMSITCOMPRA"),4,2,true)+
+			   Funcoes.adicionaEspacos(rs.getString(COL_75_DESCPROD),53)+
+			   Funcoes.adicionaEspacos(rs.getString(COL_75_CODUNID),4)+
+			   rs.getString(COL_75_ORIGFISC)+rs.getString(COL_75_CODTRATTRIB)+
+			   Funcoes.transValor(rs.getString(COL_75_PERCIPI),4,2,true)+
+			   Funcoes.transValor(rs.getString(COL_75_PERCICMS),4,2,true)+
 			   Funcoes.strZero("0",4)+
 			   Funcoes.transValor("0",14,2,true)+CR;
 			 gravaBuffer(sBuffer);
@@ -655,103 +719,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		  	con.commit();
 
 	  } 
-      
 
-	  if ( cbSaida.getVlrString().equals("S")) {
-		  // REGISTRO 75 TABELA DE PRODUTOS SAIDAS
-          
-         
-		  sSql = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,IV.PERCIPIITVENDA,"+
-			 "IV.PERCICMSITVENDA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,COUNT(*) "+
-			 "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF "+
-			 "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND "+
-			 "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " +
-			 "C.PESSOACLI='J' AND "+
-			 "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " +
-			 "IV.CODFILIAL=V.CODFILIAL AND "+
-			 "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-			 "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "+
-			 "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " +
-			 "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC "+
-			 "GROUP BY IV.CODPROD,P.REFPROD,P.DESCPROD,IV.PERCIPIITVENDA,"+
-			 "IV.PERCICMSITVENDA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB ";
-          
-		  ps = con.prepareStatement(sSql);
-		  ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-		  ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-		  ps.setInt(3,iCodEmp);
-		  ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
-		  rs = ps.executeQuery();
-		  lbAnd.setText("Gerando Tabela de Produtos de Venda...");
-		  while (rs.next()) {
-			 sBuffer = "75"+Funcoes.dataAAAAMMDD(txtDataini.getVlrDate())+
-			   Funcoes.dataAAAAMMDD(txtDatafim.getVlrDate())+
-			   Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14)+
-			   Funcoes.replicate(" ",8)+
-			   Funcoes.adicionaEspacos(rs.getString("DESCPROD"),53)+
-			   Funcoes.adicionaEspacos(rs.getString("CODUNID"),6)+
-			   rs.getString("ORIGFISC")+rs.getString("CODTRATTRIB")+
-			   Funcoes.transValor(rs.getString("PERCIPIITVENDA"),4,2,true)+
-			   Funcoes.transValor(rs.getString("PERCICMSITVENDA"),4,2,true)+
-			   Funcoes.strZero("0",4)+
-			   Funcoes.transValor("0",12,2,true)+CR;
-			 gravaBuffer(sBuffer);
-			 iTot75 ++;
-		  }
-//			rs.close();
-//			ps.close();
-		  if (!con.getAutoCommit())
-		  	con.commit();
-
-	  } 
-
-	  if ( cbConsumidor.getVlrString().equals("S")) {
-		  // REGISTRO 75 TABELA DE PRODUTOS SAIDAS
-          
-         
-		sSql = "SELECT IV.CODPROD,P.REFPROD,P.DESCPROD,IV.PERCIPIITVENDA,"+
-		   "IV.PERCICMSITVENDA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB,COUNT(*) "+
-		   "FROM VDVENDA V,VDITVENDA IV,EQTIPOMOV TM,EQPRODUTO P,VDCLIENTE C,LFCLFISCAL CF "+
-		   "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? AND "+
-		   "C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " +
-		   "C.PESSOACLI='F' AND "+
-		   "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND IV.CODEMP=V.CODEMP AND " +
-		   "IV.CODFILIAL=V.CODFILIAL AND "+
-		   "TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM AND " +
-		   "TM.CODFILIAL=V.CODFILIALTM AND TM.FISCALTIPOMOV='S' AND "+
-		   "P.CODPROD=IV.CODPROD AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND " +
-		   "CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC "+
-		   "GROUP BY IV.CODPROD,P.REFPROD,P.DESCPROD,IV.PERCIPIITVENDA,"+
-		   "IV.PERCICMSITVENDA,P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB ";
-          
-		  ps = con.prepareStatement(sSql);
-		  ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-		  ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-		  ps.setInt(3,iCodEmp);
-		  ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
-		  rs = ps.executeQuery();
-		  lbAnd.setText("Gerando Tabela de Produtos de Venda (Consumidor)...");
-		  while (rs.next()) {
-			 sBuffer = "75"+Funcoes.dataAAAAMMDD(txtDataini.getVlrDate())+
-			   Funcoes.dataAAAAMMDD(txtDatafim.getVlrDate())+
-			   Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14)+
-			   Funcoes.replicate(" ",8)+
-			   Funcoes.adicionaEspacos(rs.getString("DESCPROD"),53)+
-			   Funcoes.adicionaEspacos(rs.getString("CODUNID"),6)+
-			   rs.getString("ORIGFISC")+rs.getString("CODTRATTRIB")+
-			   Funcoes.transValor(rs.getString("PERCIPIITVENDA"),4,2,true)+
-			   Funcoes.transValor(rs.getString("PERCICMSITVENDA"),4,2,true)+
-			   Funcoes.strZero("0",4)+
-			   Funcoes.transValor("0",12,2,true)+CR;
-			 gravaBuffer(sBuffer);
-			 iTot75 ++;
-		  }
-//			rs.close();
-//			ps.close();
-		  if (!con.getAutoCommit())
-		  	con.commit();
-
-	  } 
       
 	  iTotreg = iTot50 + iTot54 + iTot61 + iTot75 + 3;
       
