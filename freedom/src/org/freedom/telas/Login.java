@@ -178,7 +178,8 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
            Funcoes.mensagemErro( this,"Não foi possível estabelecer conexão com o banco de dados.\n"+e.getMessage());
         return false;
     }
-    
+    txtUsuario.setAtivo(false);
+    txpSenha.setEditable(false);
     return true;
 
   }
