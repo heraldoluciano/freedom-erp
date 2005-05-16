@@ -229,6 +229,7 @@ public class ListaCampos extends Container implements PostListener,
 	private int iNumPKs = 0;
 
 	private Component cOwner = null;
+	private boolean mensInserir = true;
 
 	public static final byte DB_PF = 3; // Não implementado
 
@@ -421,7 +422,12 @@ public class ListaCampos extends Container implements PostListener,
 		tab = tb;
 		tab.addMouseListener(this);
 	}
-
+	public void setMensInserir(boolean mensInserir) {
+		this.mensInserir = mensInserir;
+	}
+	public boolean getMensInserir() {
+		return this.mensInserir;
+	}
 	public void adicDetalhe(ListaCampos lc) {
 		vLcDetalhe.addElement(lc);
 		bMaster = true;
@@ -1575,8 +1581,9 @@ public class ListaCampos extends Container implements PostListener,
 					limpaCampos(bAutoLimpaPK);
 				} else {
 					if (lcState != LCS_INSERT && bPodeIns) {
-						if (Funcoes.mensagemConfirma(cOwner,
-								"Registro não encontrado! Inserir?") == 0) {
+						if(!mensInserir)
+							insert(false);
+						else if(Funcoes.mensagemConfirma(cOwner,"Registro não encontrado! Inserir?") == 0) {
 							insert(false);
 						}
 					} else {

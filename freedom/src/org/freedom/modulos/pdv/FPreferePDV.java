@@ -47,6 +47,8 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 		setTitulo("Preferências do PDV");
 		setAtribos(50, 50, 355, 375);
 		
+		lcCampos.setMensInserir(false);
+		
 		lcTipoMov.add(new GuardaCampo(txtCodTipoMov,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_PK,true));
 		lcTipoMov.add(new GuardaCampo(txtDescTipoMov,"DescTipoMov","Descrição do tipo de movimento",ListaCampos.DB_SI,false));
 		lcTipoMov.montaSql(false, "TIPOMOV", "EQ");

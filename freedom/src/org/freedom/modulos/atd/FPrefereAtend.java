@@ -83,6 +83,8 @@ public class FPrefereAtend extends FTabDados {
 		setTitulo("Preferências do Atendimento");
 		setAtribos(50, 50, 355, 375);
 		
+		lcCampos.setMensInserir(false);
+		
 //Tipo:
           
         lcAtend.add(new GuardaCampo(txtCodAtend, "CodAtend","Cód.atend.", ListaCampos.DB_PK ,true));
