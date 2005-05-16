@@ -84,7 +84,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 		tbPreco.setTamColuna(100,4);
 		montaTabela();
 		
-		pinCab.adic(new JLabelPad("Pesquisa descrição - F2"),7,2,200,20);
+		pinCab.adic(new JLabelPad("Pesquisa produto pela descrição:"),7,2,200,20);
 		pinCab.adic(txtDescProd,7,25,300,20);
 		
 		//pinGrid.add(spPreco, BorderLayout.CENTER);
