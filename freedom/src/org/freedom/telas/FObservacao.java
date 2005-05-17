@@ -26,7 +26,7 @@ import javax.swing.JScrollPane;
 import org.freedom.componentes.JTextAreaPad;
 public class FObservacao extends FDialogo {
   private JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-  private JTextAreaPad txa = new JTextAreaPad();
+  public JTextAreaPad txa = new JTextAreaPad();
   private JScrollPane spn = new JScrollPane(txa);
   /**
    * 
