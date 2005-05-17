@@ -81,8 +81,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JPanelPad pnFatConv = new JPanelPad(JPanelPad.TP_JPANEL,
 			new BorderLayout());
 	
-	//private JPanelPad pnPlan = new JPanelPad(JPanelPad.TP_JPANEL,
-	//		new BorderLayout());
+	private JPanelPad pnProdPlan = new JPanelPad(JPanelPad.TP_JPANEL,
+			new BorderLayout());
 
 	private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,
 			new BorderLayout());
@@ -258,12 +258,15 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JTextFieldPad txtPrecoProd = new JTextFieldPad(
 			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	/*
+	
 	private JTextFieldPad txtSeqPP = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 	
 	private JTextFieldPad txtCodPlan = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);
+
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 4, 0);
 	
 	private JTextFieldPad txtCodCC = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 19, 0);
@@ -272,7 +275,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			JTextFieldPad.TP_STRING, 50, 0);
 	
 	private JTextFieldFK txtDescCC = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);*/
+			JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldFK txtAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			40, 0);
@@ -325,9 +328,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private Vector vValsTF = new Vector();
 	
-	//private Vector vLabsTP = new Vector();
+	private Vector vLabsTipoPP = new Vector();
 	
-	//private Vector vValsTP = new Vector();
+	private Vector vValsTipoPP = new Vector();
 
 	private JRadioGroup rgTipo = null;
 
@@ -335,7 +338,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JRadioGroup rgTF = null;
 	
-	//private JRadioGroup rgTP = null;
+	private JRadioGroup rgTipoPP = null;
 
 	private JCheckBoxPad cbLote = null;
 
@@ -353,9 +356,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JScrollPane spnFatConv = new JScrollPane(tabFatConv);
 	
-	//private Tabela tabPlan = new Tabela();
+	private Tabela tabProdPlan = new Tabela();
 	
-	//private JScrollPane spnPlan = new JScrollPane(tabPlan);
+	private JScrollPane spnPlan = new JScrollPane(tabProdPlan);
 
 	private Tabela tabFor = new Tabela();
 
@@ -379,7 +382,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JPanelPad pinRodFatConv = new JPanelPad(650, 80);
 
-	//private JPanelPad pinRodPlan = new JPanelPad(650, 120);
+	private JPanelPad pinRodProdPlan = new JPanelPad(650, 120);
 	
 	private JPanelPad pinRodFor = new JPanelPad(650, 80);
 
@@ -412,7 +415,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private ListaCampos lcFatConv = new ListaCampos(this);
 	
-	//private ListaCampos lcPlan = new ListaCampos(this);
+	private ListaCampos lcProdPlan = new ListaCampos(this);
 
 	private ListaCampos lcFor = new ListaCampos(this);
 
@@ -420,9 +423,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private ListaCampos lcUnidFat = new ListaCampos(this);
 	
-	//private ListaCampos lcCodPlan = new ListaCampos(this,"");
+	private ListaCampos lcPlan = new ListaCampos(this,"PN");
 	
-	//private ListaCampos lcCodCC = new ListaCampos(this);
+	private ListaCampos lcCC = new ListaCampos(this,"CC");
 
 	private ListaCampos lcForFK = new ListaCampos(this);
 
@@ -442,7 +445,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private Navegador navFatConv = new Navegador(true);
 	
-	//private Navegador navPlan = new Navegador(true);
+	private Navegador navProdPlan = new Navegador(true);
 
 	private Navegador navFor = new Navegador(true);
 
@@ -467,9 +470,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcFatConv.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcFatConv);
 		lcFatConv.setTabela(tabFatConv);
-		//lcPlan.setMaster(lcCampos);
-		//lcCampos.adicDetalhe(lcPlan);
-		//lcPlan.setTabela(tabPlan);
+		lcProdPlan.setMaster(lcCampos);
+		lcCampos.adicDetalhe(lcProdPlan);
+		lcProdPlan.setTabela(tabProdPlan);
 		lcFor.setMaster(lcCampos);
 		lcCodAltProd.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcFor);
@@ -585,12 +588,12 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		rgTF = new JRadioGroup(1, 4, vLabsTF, vValsTF);
 		rgTF.setVlrString("P");
 		
-		/*vValsTP.addElement("R");
-		vValsTP.addElement("D");		
-		vLabsTP.addElement("Receitas");
-		vLabsTP.addElement("Despesas");
-		rgTP = new JRadioGroup(1, 2, vLabsTP, vValsTP);
-		rgTP.setVlrString("R");*/
+		vValsTipoPP.addElement("R");
+		vValsTipoPP.addElement("D");		
+		vLabsTipoPP.addElement("Receitas");
+		vLabsTipoPP.addElement("Despesas");
+		rgTipoPP = new JRadioGroup(1, 2, vLabsTipoPP, vValsTipoPP);
+		rgTipoPP.setVlrString("R");
 
 		cbLote = new JCheckBoxPad("Lote", "S", "N");
 		cbLote.setVlrString("N");
@@ -889,53 +892,60 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcFatConv.setQueryCommit(false);
 		tabFatConv.setTamColuna(120, 1);
 
-		/*
+		
 		//		Planejamento
-		lcCodPlan.setUsaME(false);
-		lcCodPlan.add(new GuardaCampo(txtCodPlan, "CodPlan","Cód.plan.", ListaCampos.DB_PK, true));
-		lcCodPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descrição do planejamento", ListaCampos.DB_SI, false));		
-		lcCodPlan.montaSql(false, "PLANEJAMENTO", "FN");
-		lcCodPlan.setReadOnly(true);
-		lcCodPlan.setQueryCommit(false);
-		txtDescPlan.setListaCampos(lcCodPlan);
-		txtCodPlan.setTabelaExterna(lcCodPlan);
-
-		lcCodCC.setUsaME(false);
-		lcCodCC.add(new GuardaCampo(txtCodCC, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
-		lcCodCC.add(new GuardaCampo(txtDescCC, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
-		lcCodCC.montaSql(false, "CC", "FN");
-		lcCodCC.setReadOnly(true);
-		lcCodCC.setQueryCommit(false);
-		txtDescCC.setListaCampos(lcCodCC);
-		txtCodCC.setTabelaExterna(lcCodCC);
-		
-		cbTipoPP = new JCheckBoxPad("", "S", "N");
-		cbTipoPP.setVlrString("N");
-		
-		setPainel(pinRodPlan, pnPlan);
-		adicTab("Planejamento", pnPlan);
-
-		setListaCampos(lcPlan);
-		setNavegador(navPlan);
-
-		pnPlan.add(pinRodPlan, BorderLayout.SOUTH);
-		pnPlan.add(spnPlan, BorderLayout.CENTER);
-
-		pinRodPlan.adic(navPlan, 0, 90, 270, 25);
-
-		adicCampo(txtSeqPP, 7, 20, 80, 20, "SeqPP", "SeqPP",ListaCampos.DB_PK, null, true);
-		adicCampo(txtCodPlan, 90, 20, 80, 20, "CodPlan", "Cód.plan.",ListaCampos.DB_PF, txtDescPlan, true);
-		adicDescFK(txtDescPlan, 173, 20, 250, 20, "DescPlan","Descrição do planejamento");		
-		adicDB(rgTP, 426, 20, 200, 30, "TipoPP", "Tipo", true);		
-		adicCampo(txtCodCC, 7, 60, 80, 20, "CodCC", "Cód.cc.",ListaCampos.DB_PF, txtDescCC, true);
-		adicDescFK(txtDescCC, 90, 60, 250, 20, "DescCC","Descrição do centro de custo");
-		
-		setListaCampos(false, "PRODPLAN", "EQ");
-		lcPlan.setOrdem("SeqPP");
-		lcPlan.montaTab();
-		lcPlan.setQueryInsert(false);
+		//lcPlan.setUsaME(false);
+		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan","Cód.plan.", ListaCampos.DB_PK, true));
+		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descrição do planejamento", ListaCampos.DB_SI, false));		
+		lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
+		lcPlan.setReadOnly(true);
 		lcPlan.setQueryCommit(false);
-		tabPlan.setTamColuna(250, 1);*/
+		txtDescPlan.setListaCampos(lcPlan);
+		txtCodPlan.setTabelaExterna(lcPlan);
+
+		//lcCC.setUsaME(false);
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
+		lcCC.montaSql(false, "CC", "FN");
+		lcCC.setReadOnly(true);
+		lcCC.setQueryCommit(false);
+		txtDescCC.setListaCampos(lcCC);
+		txtCodCC.setTabelaExterna(lcCC);
+		txtAnoCC.setTabelaExterna(lcCC);
+		
+		setPainel(pinRodProdPlan, pnProdPlan);
+		adicTab("Planejamento", pnProdPlan);
+
+		setListaCampos(lcProdPlan);
+		setNavegador(navProdPlan);
+
+		pnProdPlan.add(pinRodProdPlan, BorderLayout.SOUTH);
+		pnProdPlan.add(spnPlan, BorderLayout.CENTER);
+
+		pinRodProdPlan.adic(navProdPlan, 0, 90, 270, 25);
+
+		adicCampo(txtSeqPP, 7, 20, 80, 20, "SeqPP", "N.seq.",ListaCampos.DB_PK, true);
+		adicCampo(txtCodPlan, 90, 20, 80, 20, "CodPlan", "Cód.plan.",ListaCampos.DB_FK, txtDescPlan, true);
+		adicDescFK(txtDescPlan, 173, 20, 250, 20, "DescPlan","Descrição do planejamento");		
+		adicDB(rgTipoPP, 426, 20, 200, 30, "TipoPP", "Tipo", true);
+
+		adicCampo(txtAnoCC, 7, 60, 80, 20, "AnoCC", "Ano.cc.",ListaCampos.DB_FK, txtDescCC, true);
+		adicCampo(txtCodCC, 90, 60, 107, 20, "CodCC", "Cód.cc.",ListaCampos.DB_FK, txtDescCC, true);
+		adicDescFK(txtDescCC, 200, 60, 250, 20, "DescCC","Descrição do centro de custo");
+		
+		setListaCampos(true, "PRODPLAN", "EQ");
+		lcProdPlan.setOrdem("SeqPP");
+		lcProdPlan.montaTab();
+		//lcProdPlan.setQueryInsert(false);
+		lcProdPlan.setQueryCommit(false);
+		tabProdPlan.setTamColuna(50, 0);
+		tabProdPlan.setTamColuna(100, 1);
+		tabProdPlan.setTamColuna(250, 2);
+		tabProdPlan.setTamColuna(50, 3);
+		tabProdPlan.setTamColuna(50, 4);
+		tabProdPlan.setTamColuna(100, 5);
+		tabProdPlan.setTamColuna(250, 6);
 
 		//	Fornecedor
 		setPainel(pinRodFor, pnFor);
@@ -1452,11 +1462,11 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcGrup.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		lcUnidFat.setConexao(cn);
-		//lcCodPlan.setConexao(cn);
-		//lcCodCC.setConexao(cn);
+		lcPlan.setConexao(cn);
+		lcCC.setConexao(cn);
 		lcForFK.setConexao(cn);
 		lcFatConv.setConexao(cn);
-		//lcPlan.setConexao(cn);
+		lcProdPlan.setConexao(cn);
 		lcFor.setConexao(cn);
 		lcFoto.setConexao(cn);
 		lcPreco.setConexao(cn);
