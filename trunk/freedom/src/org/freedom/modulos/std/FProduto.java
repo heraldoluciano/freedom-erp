@@ -889,7 +889,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcFatConv.setQueryCommit(false);
 		tabFatConv.setTamColuna(120, 1);
 
-		
+		/*
 		//		Planejamento
 		lcCodPlan.setUsaME(false);
 		lcCodPlan.add(new GuardaCampo(txtCodPlan, "CodPlan","Cód.plan.", ListaCampos.DB_PK, true));
@@ -935,7 +935,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcPlan.montaTab();
 		lcPlan.setQueryInsert(false);
 		lcPlan.setQueryCommit(false);
-		tabPlan.setTamColuna(250, 1);
+		tabPlan.setTamColuna(250, 1);*/
 
 		//	Fornecedor
 		setPainel(pinRodFor, pnFor);
