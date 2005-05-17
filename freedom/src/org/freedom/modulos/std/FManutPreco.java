@@ -516,7 +516,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 	}
 
 	public void setConexao(Connection cn) {
-		setConexao(cn);
+		super.setConexao(cn);
 		lcMarca.setConexao(cn);
 		lcGrup.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
