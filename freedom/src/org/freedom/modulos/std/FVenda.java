@@ -1869,7 +1869,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG,F.CODTRAN,"
 				+ "T.RAZTRAN,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,T.CNPJTRAN,T.ENDTRAN,T.NUMTRAN,T.CIDTRAN,"
 				+ "T.UFTRAN,T.INSCTRAN,F.QTDFRETEVD,F.ESPFRETEVD,F.MARCAFRETEVD,F.PESOBRUTVD,"
-				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG,"
+				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI " 
+				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG,"
 				+ "VDFRETEVD F, VDTRANSP T WHERE V.CODVENDA="
 				+ iCodVenda
 				+ " AND C.CODCLI=V.CODCLI"
@@ -1959,8 +1960,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 4, rs.getString("CidCli"));
 					imp.say(imp.pRow() + 0, 39, rs.getString("UfCli"));
-					imp.say(imp.pRow() + 0, 46, Funcoes.setMascara(rs
-							.getString("FoneCli"), "(####)####-####")
+					imp.say(imp.pRow() + 0, 46,Funcoes.setMascara(rs
+							.getString("DDDCli"), "(####)")+ 
+							Funcoes.setMascara(rs
+							.getString("FoneCli"), "####-####")
 							+ " - "
 							+ (rs.getString("FaxCli") != null ? Funcoes
 									.setMascara(rs.getString("FaxCli"),
@@ -2275,7 +2278,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "FL.FAXFILIAL,C.ENDCOB, C.NUMCOB, C.COMPLCOB,C.CEPCOB, C.CIDCOB, P.TIPOPROD, C.INCRACLI, V.CODBANCO,"
 				+ "P.CODFISC, C.ENDENT, C.NUMENT, C.COMPLENT,C.CIDENT,C.UFENT,C.BAIRENT,C.NOMECLI,I.OBSITVENDA,"
 				+ "V.VLRPISVENDA,V.VLRCOFINSVENDA,V.VLRIRVENDA,V.VLRCSOCIALVENDA,V.CODCLCOMIS,V.PERCCOMISVENDA,"
-				+ "V.PERCMCOMISVENDA, N.IMPDTSAIDANAT,P.DESCAUXPROD "
+				+ "V.PERCMCOMISVENDA, N.IMPDTSAIDANAT,P.DESCAUXPROD, C.DDDCLI "
 				+ " FROM VDVENDA V, VDCLIENTE C, VDITVENDA I, EQPRODUTO P, VDVENDEDOR VEND, FNPLANOPAG PG,"
 				+ " VDFRETEVD F, VDTRANSP T, LFNATOPER N, SGFILIAL FL, LFCLFISCAL CL WHERE V.TIPOVENDA='V' AND V.CODVENDA="
 				+ iCodVenda

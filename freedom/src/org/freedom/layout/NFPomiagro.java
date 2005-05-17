@@ -147,7 +147,7 @@ public class NFPomiagro extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,sValsCli[2] != null ? sValsCli[2] : "");
-           imp.say(imp.pRow()+0,63,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"));
+           imp.say(imp.pRow()+0,63,Funcoes.setMascara(rs.getString("DDDCli"),"(####)")+Funcoes.setMascara(rs.getString("FoneCli"),"####-####"));
            imp.say(imp.pRow()+0,87,sValsCli[3] != null ? sValsCli[3] : "");
            imp.say(imp.pRow()+0,96,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
            //imp.say(imp.pRow()+0,128,sHora);
