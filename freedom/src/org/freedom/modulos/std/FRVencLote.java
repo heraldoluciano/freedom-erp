@@ -26,7 +26,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.freedom.componentes.JLabelPad;
@@ -50,7 +49,6 @@ import org.freedom.telas.FRelatorio;
  */
 
 public class FRVencLote extends FRelatorio {
-  private Connection con;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
@@ -146,46 +144,34 @@ public class FRVencLote extends FRelatorio {
    */
 
   public void imprimir(boolean bVisualizar) {
-    String sCab = "";
     String sCodProd;
     String sWhere = "";
+    String sFiltros1 = "";
+    String sFiltros2 = "";
     
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
 //    imp.montaCab();
-    imp.setTitulo("Relatorio Vencimentos do Lotes");
+    imp.setTitulo("Relatorio de Vencimentos de Lotes");
     
-    if (txtCodGrup.getText().trim().length() > 0) {
+    if (!txtCodGrup.getVlrString().trim().equals("")) {
             sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
-            String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
-            sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+            sFiltros1 = "GRUPO: "+txtDescGrup.getVlrString().trim();
     }
     if (txtCodMarca.getText().trim().length() > 0) {
             sWhere += " AND P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
-            String sTmp = "MARCA: "+txtDescMarca.getText().trim();
-            sCab += "\n"+imp.comprimido();
-            sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-            sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+            sFiltros1 += (sFiltros1.equals("")?"":" / ")+"MARCA: "+txtDescMarca.getVlrString().trim();
     }
     if (cbLoteZerado.getVlrString().equals("N")){
     	sWhere +=" AND L.SLDLIQLOTE >0 ";
-    	String sTmp ="Produtos com saldos ";
-		sCab += "\n"+imp.comprimido();
-    	sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-    	sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
-
+    	sFiltros1 += (sFiltros1.equals("")?"":" / ")+"Produtos com saldos";
     }
     	
     if (!txtDataini.getText().trim().equals("") && !txtDatafim.getText().trim().equals("")) {
     	sWhere += " AND L.VENCTOLOTE BETWEEN '"+
 		  Funcoes.dateToStrDB(txtDataini.getVlrDate())+"' AND '"+
     	  Funcoes.dateToStrDB(txtDatafim.getVlrDate())+"'";
-    	String sTmp = "PERIODO DE "+txtDataini.getVlrString()+" ATE "+txtDatafim.getVlrString();
-    	sCab += "\n"+imp.comprimido();
-    	sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-    	sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+    	sFiltros2 = "PERIODO DE "+txtDataini.getVlrString()+" ATE "+txtDatafim.getVlrString();
     }
    if (comRef()) 
       sCodProd = "REFPROD";
@@ -196,43 +182,38 @@ public class FRVencLote extends FRelatorio {
 		  "FROM EQPRODUTO P, EQLOTE L "+
 		  "WHERE L.CODPROD = P.CODPROD"+sWhere+" ORDER BY VENCTOLOTE";
     
-    System.out.println(sSQL);
+//    System.out.println(sSQL);
     
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
       ResultSet rs = ps.executeQuery();
       imp.limpaPags();
+      imp.montaCab();
       while ( rs.next() ) {
         if (imp.pRow()==0) {
-           imp.impCab(136, false);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-           imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,60,"VENCIMENTOS DE LOTES");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|");
-           imp.say(imp.pRow()+0,136,"|");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.impCab(136, true);
+           if (!sFiltros1.trim().equals("")) {
+              imp.say(imp.pRow()+0,0,"|");
+           	  imp.say(imp.pRow()+0,67-(sFiltros1.length()/2),sFiltros1);
+              imp.say(imp.pRow()+0,135,"|");
+              imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           }
+           if (!sFiltros2.trim().equals("")) {
+            imp.say(imp.pRow()+0,0,"|");
+         	  imp.say(imp.pRow()+0,67-(sFiltros2.length()/2),sFiltros2);
+            imp.say(imp.pRow()+0,135,"|");
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+         }
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,0,"| Código");
            imp.say(imp.pRow()+0,16,"| Descrição");
            imp.say(imp.pRow()+0,69,"| Lote");
            imp.say(imp.pRow()+0,85,"| Vencimento");
            imp.say(imp.pRow()+0,98,"| Saldo");
-           imp.say(imp.pRow()+0,136,"|");
+           imp.say(imp.pRow()+0,135,"|");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+           imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
          }
 
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -241,11 +222,11 @@ public class FRVencLote extends FRelatorio {
          imp.say(imp.pRow()+0,69,"| "+rs.getString("CODLOTE"));
          imp.say(imp.pRow()+0,85,"| "+Funcoes.sqlDateToStrDate(rs.getDate("VENCTOLOTE")));
          imp.say(imp.pRow()+0,98,"| "+Funcoes.strDecimalToStrCurrency(15,1,rs.getString("SLDLIQLOTE")));
-         imp.say(imp.pRow()+0,136,"|");
+         imp.say(imp.pRow()+0,135,"|");
          
 		if (imp.pRow()>=linPag) {
 			 imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			 imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+			 imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 			 imp.incPags();
 			 imp.eject();
 		}
@@ -253,7 +234,7 @@ public class FRVencLote extends FRelatorio {
       }
 
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
       
       imp.eject();
       
