@@ -183,7 +183,7 @@ public class DataPump {
 				}
 
 				String buf = new String(cbuf).trim();
-				buf = buf.replace("'", "\"");
+				buf = buf.replaceAll("'", "\"");
 				if (parar && fim && buf.equals(""))
 					return null;
 				
