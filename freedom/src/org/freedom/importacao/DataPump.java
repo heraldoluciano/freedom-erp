@@ -45,6 +45,8 @@ public class DataPump {
 
 	private Vector fields = new Vector();
 
+	private boolean windows = false;
+
 	protected String extractParenthesis(String field) {
 		String result = field.substring(field.indexOf('(') + 1, field.indexOf(')'));
 
@@ -173,12 +175,19 @@ public class DataPump {
 						break;
 					}
 					cbuf[j] = (char) lebuf;
-					if (cbuf[j] == '\r' || cbuf[j] == '\n' || cbuf[j] == -1) {
-						if (cbuf[j] == '\r' || cbuf[j] == '\n') {
+					if (windows) {
+						if (cbuf[j] == '\r') {
+							leDados.read();
 							cbuf[j] = 20;
+							parar = true;
+							break;
 						}
-						parar = true;
-						break;
+					} else {
+						if (cbuf[j] == '\n') {
+							cbuf[j] = 20;
+							parar = true;
+							break;
+						}
 					}
 				}
 
@@ -186,7 +195,7 @@ public class DataPump {
 				buf = buf.replaceAll("'", "\"");
 				if (parar && fim && buf.equals(""))
 					return null;
-				
+
 				JTextFieldPad field = (JTextFieldPad) fields.get(i);
 				field.setVlrString(buf);
 
@@ -202,7 +211,7 @@ public class DataPump {
 
 				if (values.matches("\'?+\'"))
 					return null;
-				
+
 				if (parar)
 					break;
 
@@ -227,8 +236,14 @@ public class DataPump {
 		}
 	}
 
-	public DataPump(String user, String pass, String arquivo, String dados) {
+	public DataPump(String user, String pass, String arquivo, String dados,
+			boolean windows) {
 		super();
+		this.windows = windows;
+		doImport(user, pass, arquivo, dados);
+	}
+
+	public void doImport(String user, String pass, String arquivo, String dados) {
 
 		banco = new Banco(url, driver, user, pass);
 
@@ -310,14 +325,28 @@ public class DataPump {
 		}
 	}
 
+	public DataPump(String user, String pass, String arquivo, String dados) {
+		super();
+		doImport(user, pass, arquivo, dados);
+
+	}
+
 	public static void main(String[] args) {
-		if (args.length != 4) {
+		if (args.length < 4) {
 			System.err
-					.println("Uso: java DataPump arquivo_de_dados arquivo_de_definição usuario senha");
+					.println("Uso: java DataPump arquivo_de_dados arquivo_de_definição usuario senha [/windows | /linux]");
 			System.exit(1);
 		}
 
-		DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0]);
-
+		if (args.length >= 5) {
+			boolean windows = args[4].equalsIgnoreCase("/windows")
+					|| args[4].equalsIgnoreCase("--windows")
+					|| args[4].equalsIgnoreCase("-windows");
+			DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0],
+					windows);
+		} else {
+			DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0]);
+		}
 	}
+
 }
