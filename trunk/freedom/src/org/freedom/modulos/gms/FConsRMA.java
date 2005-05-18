@@ -64,7 +64,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
-	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Requisições completas", "S", "N");
+//	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Requisições completas", "S", "N");
+
+	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Requisições aprovadas", "S", "N");
+	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Requisições expedidas", "S", "N");
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
 //	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
@@ -83,6 +86,8 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	boolean bAprovaParcial = false;
+	boolean bExpede = false;
+	boolean bAprova = false;
 	public FConsRMA() {
 		setTitulo("Pesquisa Requisições de material");
 		setAtribos(10, 10, 663, 480);
@@ -167,8 +172,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pinCab.adic(lbStatus, 15, 100, 50, 18);
 		pinCab.adic(lbLinha2, 7, 110, 373, 66);
 		pinCab.adic(cbPendentes, 15, 122, 170, 20);
-		pinCab.adic(cbCompletas, 15, 147, 170, 20);
-		pinCab.adic(cbCanceladas, 195, 122, 180, 20);
+		pinCab.adic(cbAprovadas, 15, 147, 170, 20);
+		pinCab.adic(cbExpedidas, 195, 122, 180, 20);
+		pinCab.adic(cbCanceladas, 195, 147, 180, 20);
+		
 //		pinCab.adic(cbTomadasDePreco, 195, 147, 180, 20);
 
 		pinCab.adic(btBusca, 382, 110, 110, 30);
@@ -202,30 +209,32 @@ public class FConsRMA extends FFilho implements ActionListener {
 	}
 
 	private void habCampos(){
-		if(getAprova()){
-		  if(bAprovaParcial){
-		  	txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
-			txtAnoCC.setVlrString(Aplicativo.strAnoCCUsu);
-			txtCodCC.setNaoEditavel(true);
-		  	lcUsuario.setWhereAdic("CODCC='"+Aplicativo.strCodCCUsu+"' AND ANOCC="+Aplicativo.strAnoCCUsu);
-		  }
-		  else {
-		  	txtCodCC.setNaoEditavel(false);
-		  	
-		  }
-		  txtCodUsu.setNaoEditavel(false);
-		}
-		else {
-		  txtCodUsu.setVlrString(Aplicativo.strUsuario);		  
-		  txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
-		  txtAnoCC.setVlrString(Aplicativo.strAnoCCUsu);
-
-		  txtCodUsu.setNaoEditavel(true);
-		  txtCodCC.setNaoEditavel(true);
-		  lcUsuario.carregaDados();
-		  lcCC.carregaDados();
-		}
-		
+		getAprova();
+		if(!bExpede){
+			if(bAprova){
+			  if(bAprovaParcial){
+			  	txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
+				txtAnoCC.setVlrString(Aplicativo.strAnoCCUsu);
+				txtCodCC.setNaoEditavel(true);
+			  	lcUsuario.setWhereAdic("CODCC='"+Aplicativo.strCodCCUsu+"' AND ANOCC="+Aplicativo.strAnoCCUsu);
+			  }
+			  else {
+			  	txtCodCC.setNaoEditavel(false);
+			  	
+			  }
+			  txtCodUsu.setNaoEditavel(false);
+			}
+			else {
+			  txtCodUsu.setVlrString(Aplicativo.strUsuario);		  
+			  txtCodCC.setVlrString(Aplicativo.strCodCCUsu);
+			  txtAnoCC.setVlrString(Aplicativo.strAnoCCUsu);
+	
+			  txtCodUsu.setNaoEditavel(true);
+			  txtCodCC.setNaoEditavel(true);
+			  lcUsuario.carregaDados();
+			  lcCC.carregaDados();
+			}
+		}		
 	}
 	
 	/**
@@ -245,16 +254,25 @@ public class FConsRMA extends FFilho implements ActionListener {
 			usaWhere = true;
 			where = " SitRma ='PE'";
 		}
-		if (cbCompletas.getVlrString().equals("S")) {
+		if (cbAprovadas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitRma ='FN'";
+				where = " SitRma ='AF'";
 			} 
 			else {
-				where = where + " OR SitRma ='FN'";
+				where = where + " OR SitRma ='AF'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
+		if (cbExpedidas.getVlrString().equals("S")) {
+			if (where.trim().equals("")) {
+				where = " SitRma ='EF'";
+			} else {
+				where = where + " OR SitRma ='EF'";
+				usaOr = true;
+			}
+			usaWhere = true;
+		}		
 		if (cbCanceladas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
 				where = " SitRma ='CA'";
@@ -335,17 +353,17 @@ public class FConsRMA extends FFilho implements ActionListener {
 			while (rs.next()) {
 				tab.adicLinha();
 				
-				String aprovRMA = rs.getString(1);
-				if (aprovRMA.equalsIgnoreCase("PE")) {
+				String sitRMA = rs.getString(1);
+				if (sitRMA.equalsIgnoreCase("PE")) {
 					tab.setValor("Pendente", iLin, 0);
-				} else if (aprovRMA.equalsIgnoreCase("CA")) {
+				} else if (sitRMA.equalsIgnoreCase("CA")) {
 					tab.setValor("Cancelada", iLin, 0);
-				} else if (aprovRMA.equalsIgnoreCase("FN")) {
-					tab.setValor("Concluída", iLin, 0);
+				} else if (sitRMA.equalsIgnoreCase("EF")) {
+					tab.setValor("Expedida", iLin, 0);
 				} 
-/*				else if (aprovRMA.equalsIgnoreCase("TM")) {
-					tab.setValor("Cotação", iLin, 0);
-				}*/
+				else if (sitRMA.equalsIgnoreCase("AF")) {
+					tab.setValor("Aprovada", iLin, 0);
+				}
 
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
 				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
@@ -481,9 +499,8 @@ public class FConsRMA extends FFilho implements ActionListener {
 		}
 	}
 
-    private boolean getAprova() {
-    	boolean bRet = false;
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " +
+    private void getAprova() {
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " +
 				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
 				      "AND IDUSU=?";
 		PreparedStatement ps = null;
@@ -497,18 +514,28 @@ public class FConsRMA extends FFilho implements ActionListener {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				String sAprova = rs.getString("APROVRMAUSU");
-				if(sAprova!=null)
+				String sExpede = rs.getString("ALMOXARIFEUSU");
+				if(sAprova!=null){
 					if(!sAprova.equals("ND")) {
 						if(sAprova.equals("TD"))						
-							bRet = true;
+							bAprova = true;
 						else if( (Aplicativo.strCodCCUsu.equals(rs.getString("CODCC"))) &&
 								 (Aplicativo.iCodEmp==rs.getInt("CODEMPCC")) &&
 								 (ListaCampos.getMasterFilial("FNCC")==rs.getInt("CODFILIALCC")) &&
 								 (sAprova.equals("CC"))	) { 
-							bRet = true;	
+							bAprova = true;	
 							bAprovaParcial = true;
 						}						
 					}
+				}
+				if(sExpede!=null){
+					if(sExpede.equals("S")){
+						bExpede = true;
+					}
+					else {
+						bExpede = false;
+					}
+				}
 			}
 			if (!con.getAutoCommit())
 				con.commit();
@@ -517,7 +544,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage(),true,con,err);
 		}
-		return bRet;
     }
   
 	
