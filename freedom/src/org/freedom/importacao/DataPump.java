@@ -29,7 +29,7 @@ public class DataPump {
 
 	private Banco banco = null;
 
-	private String url = "jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/clientes/rondobras/elog.fdb";
+	private String url = "jdbc:firebirdsql:localhost/3050:/home/kurumin/work.fdb";
 
 	private String driver = "org.firebirdsql.jdbc.FBDriver";
 
@@ -53,6 +53,14 @@ public class DataPump {
 
 	protected String extractType(String field) {
 		String result = field.substring(0, field.indexOf('('));
+
+		return result;
+	}
+
+	protected String extractSubType(String field) {
+		String result = null;
+		if (field.indexOf(')') != field.length() - 1)
+			result = field.substring(field.indexOf(')') + 1, field.length() - 1);
 
 		return result;
 	}
@@ -146,7 +154,8 @@ public class DataPump {
 	}
 
 	protected String leDados(FileReader leDados, String tableName) {
-		String result = "INSERT INTO " + tableName + " ";
+		String result = "";
+		String command = "INSERT INTO " + tableName + " ";
 		String columns = "(";
 		String values = "(";
 
@@ -154,12 +163,18 @@ public class DataPump {
 			int origSize = ((Integer) size.get(i)).intValue();
 			char cbuf[] = new char[origSize];
 			boolean parar = false;
+			boolean fim = false;
 			try {
-				int j = 0;
-				for (j = 0; j < origSize; j++) {
-					cbuf[j] = (char) leDados.read();
-					if (cbuf[j] == '\r' || cbuf[j] == -1) {
-						if (cbuf[j] == '\r') {
+				for (int j = 0; j < origSize; j++) {
+					int lebuf = leDados.read();
+					if (lebuf == -1) {
+						parar = true;
+						fim = true;
+						break;
+					}
+					cbuf[j] = (char) lebuf;
+					if (cbuf[j] == '\r' || cbuf[j] == '\n' || cbuf[j] == -1) {
+						if (cbuf[j] == '\r' || cbuf[j] == '\n') {
 							cbuf[j] = 20;
 						}
 						parar = true;
@@ -168,9 +183,10 @@ public class DataPump {
 				}
 
 				String buf = new String(cbuf).trim();
-				if (buf.equals(""))
+				buf = buf.replace("'", "\"");
+				if (parar && fim && buf.equals(""))
 					return null;
-
+				
 				JTextFieldPad field = (JTextFieldPad) fields.get(i);
 				field.setVlrString(buf);
 
@@ -184,6 +200,9 @@ public class DataPump {
 					default:
 				}
 
+				if (values.matches("\'?+\'"))
+					return null;
+				
 				if (parar)
 					break;
 
@@ -200,8 +219,12 @@ public class DataPump {
 		columns += ")";
 		values += ")";
 
-		result += columns + " VALUES " + values + ";";
-		return result;
+		if (columns.equals("()") && values.equals("()"))
+			return null;
+		else {
+			result = command + columns + " VALUES " + values + ";";
+			return result;
+		}
 	}
 
 	public DataPump(String user, String pass, String arquivo, String dados) {
