@@ -186,6 +186,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JTextFieldPad txtSerieCompra = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 4, 0);
 
+	private JTextFieldPad txtDocSerie = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0); // Tem que ter esse campo para não gerar N.de documento automático
+
 	private JTextFieldPad txtDocCompra = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
@@ -293,7 +296,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		lcSerie.add(new GuardaCampo(txtSerieCompra, "Serie", "Série",
 				ListaCampos.DB_PK, false));
-		lcSerie.add(new GuardaCampo(txtDocCompra, "DocSerie", "Doc",
+		lcSerie.add(new GuardaCampo(txtDocSerie, "DocSerie", "Doc",
 				ListaCampos.DB_SI, false));
 		lcSerie.montaSql(false, "SERIE", "LF");
 		lcSerie.setQueryCommit(false);
