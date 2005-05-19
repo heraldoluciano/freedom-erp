@@ -671,7 +671,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItRec")),i,5);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItRec")),i,6);
         tabConsulta.setValor((rs.getDate("DtPagoItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,7);
-        tabConsulta.setValor(new Integer(rs.getInt(9)),i,8);
+        tabConsulta.setValor(new Integer(rs.getInt(10)),i,8);
         tabConsulta.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrJurosItRec")),i,9);
         tabConsulta.setValor((rs.getString("Serie") != null ? rs.getString("Serie") : ""),i,10);
         tabConsulta.setValor(""+rs.getInt("CodVenda"),i,11);
