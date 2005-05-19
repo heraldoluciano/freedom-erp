@@ -29,7 +29,7 @@ public class DataPump {
 
 	private Banco banco = null;
 
-	private String url = "jdbc:firebirdsql:localhost/3050:/home/kurumin/work.fdb";
+	private String url = "jdbc:firebirdsql:localhost/3050:/opt/firebird/dados/clientes/rondobras/elog.fdb";
 
 	private String driver = "org.firebirdsql.jdbc.FBDriver";
 
@@ -271,23 +271,24 @@ public class DataPump {
 						+ ");\n";
 			}
 
-			try {
+/*			try {
 				System.out.println("Tentando dar DROP na tabela");
 				Statement stmt = banco.getStatement();
 				stmt.executeUpdate("DROP TABLE " + filename + ";\n");
 			} catch (SQLException e) {
 				System.err.println("Tabela não encontrada");
 			}
-
+			
+*/
 			try {
 				System.err.println("Criando a tabela");
 				System.out.println(sql);
 				Statement stmt = banco.getStatement();
 				stmt.executeUpdate(sql);
 			} catch (SQLException e) {
-				System.err.println("ERRO NA CONEXÃO\n");
-				e.printStackTrace();
-				System.exit(-1);
+				System.err.println("ERRO CRIANDO A TABLEA\n");
+				//e.printStackTrace();
+	//			System.exit(-1);
 			}
 
 			File arquivoDados = new File(dados);
