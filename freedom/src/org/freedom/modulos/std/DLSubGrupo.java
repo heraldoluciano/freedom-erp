@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
@@ -37,22 +38,24 @@ public class DLSubGrupo extends FFDialogo {
   private JTextFieldPad txtCodSubGrup = new JTextFieldPad(JTextFieldPad.TP_INTEGER,20,0);
   private JTextFieldPad txtDescSubGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtSiglaSubGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+  
   private JLabelPad lbCodPai = new JLabelPad("Código");
   private JLabelPad lbDescPai = new JLabelPad("Descrição do grupo superior");
   private JLabelPad lbSiglaPai = new JLabelPad("Sigla");
   private JLabelPad lbCodSubGrup = new JLabelPad("Código");
   private JLabelPad lbDescSubGrup = new JLabelPad("Descrição");
   private JLabelPad lbSiglaSubGrup = new JLabelPad("Sigla");
-  public DLSubGrupo(String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla) {
+  private JCheckBoxPad cbEstNeg = new JCheckBoxPad("Permit. saldo negativo?", "S", "N");
+  public DLSubGrupo(String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla,String sSiglaPai) {
     setTitulo("Novo Sub-Grupo");
-    setAtribos(400,170);
+    setAtribos(400,220);
     cancText(txtCodPai);
     cancText(txtDescPai);
     cancText(txtSiglaPai);
     cancText(txtCodSubGrup);
     txtCodPai.setVlrString(sCodPai);
     txtDescPai.setVlrString(sDescPai);
-    txtSiglaPai.setVlrString(sSigla);	
+    txtSiglaPai.setVlrString(sSiglaPai);	
     txtCodSubGrup.setVlrString(sCod);
     txtSiglaSubGrup.setVlrString(sSigla);	
     adic(lbCodPai,7,0,80,20);
@@ -67,6 +70,8 @@ public class DLSubGrupo extends FFDialogo {
     adic(txtDescSubGrup,90,60,200,20);
     adic(lbSiglaSubGrup,293,40,80,20);
     adic(txtSiglaSubGrup,293,60,80,20);
+    adic(cbEstNeg,7,90,200,20);
+    
     if (sDesc != null) {
       setTitulo("Edição de Sub-Grupo");
       txtDescSubGrup.setVlrString(sDesc);
@@ -93,6 +98,7 @@ public class DLSubGrupo extends FFDialogo {
   	String[] sRetorno = new String[2];
   	sRetorno[0] = txtDescSubGrup.getText();
   	sRetorno[1] = txtSiglaSubGrup.getText();
+    sRetorno[2] = cbEstNeg.getVlrString();
     return sRetorno;
   }
 }

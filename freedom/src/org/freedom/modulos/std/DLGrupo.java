@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.JTextFieldPad;
@@ -42,12 +43,13 @@ public class DLGrupo extends FFDialogo {
   private JLabelPad lbCodGrupo = new JLabelPad("Cód.grupo");
   private JLabelPad lbDescGrupo = new JLabelPad("Descrição do grupo");
   private JLabelPad lbSiglaGrupo = new JLabelPad("Sigla");
+  private JCheckBoxPad cbEstNeg = new JCheckBoxPad("Permit. saldo negativo?", "S", "N");
   private boolean bEdit = false;
-  public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc) {
+  public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc,String sSigla) {
   	super(cOrig);
     setConexao(cn);
     setTitulo("Novo Grupo");
-    setAtribos(400,140);
+    setAtribos(400,180);
     Funcoes.setBordReq(txtCodGrupo);    
     Funcoes.setBordReq(txtDescGrupo);    
    
@@ -57,10 +59,12 @@ public class DLGrupo extends FFDialogo {
     adic(txtDescGrupo,90,20,200,20);
     adic(lbSiglaGrupo,293,0,80,20);
     adic(txtSiglaGrupo,293,20,80,20);
+    adic(cbEstNeg,7,50,200,20);
     if (sCod != null) {
       setTitulo("Edição de Grupo");
       txtCodGrupo.setText(sCod);
       txtDescGrupo.setVlrString(sDesc);
+      txtSiglaGrupo.setVlrString(sSigla);
       txtDescGrupo.selectAll();
       txtCodGrupo.setBackground(Color.lightGray);
       txtCodGrupo.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -74,6 +78,7 @@ public class DLGrupo extends FFDialogo {
     sRetorno[0] = txtCodGrupo.getText();
     sRetorno[1] = txtDescGrupo.getText();
     sRetorno[2] = txtSiglaGrupo.getText();
+    sRetorno[3] = cbEstNeg.getVlrString();
     return sRetorno;
   }
   public void actionPerformed(ActionEvent evt) {
