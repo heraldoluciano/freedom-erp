@@ -184,6 +184,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbInscEstForObrig = null;
 	private JCheckBoxPad cbEstLotNeg = null;
 	private JCheckBoxPad cbEstNeg = null;
+	private JCheckBoxPad cbEstNegGrupo = null;
 	private JCheckBoxPad cbNatVenda = null;
 	private JCheckBoxPad cbComisPDupl = null;
 	private JCheckBoxPad cbCustosSICMS = null;
@@ -402,6 +403,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbEstLotNeg.setVlrString("N");
 		cbEstNeg = new JCheckBoxPad("Permit. saldo negativo?", "S", "N");
 		cbEstNeg.setVlrString("N");
+		
+		
+		cbEstNegGrupo = new JCheckBoxPad("Permit. sld. neg. por grupo?", "S", "N");
+		cbEstNegGrupo.setVlrString("N");
+
 		cbBloqVenda = new JCheckBoxPad("Bloquear venda após impressão da NF?",
 				"S", "N");
 		cbBloqVenda.setVlrString("N");
@@ -506,11 +512,14 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbTravaTMNFVD, 7, 180, 300, 20, "TravaTMNFVD", "", true);
 		adicDB(cbEstLotNeg, 7, 200, 160, 20, "EstLotNeg", "", true);
 		adicDB(cbEstNeg, 177, 200, 160, 20, "EstNeg", "", true);
-		adicDB(cbBloqVenda, 350, 200, 300, 20, "BloqVenda", "", true);
+		
+		adicDB(cbEstNegGrupo, 7, 220, 160, 20, "EstNegGrup", "", true);
+		
+		adicDB(cbBloqVenda, 177, 220, 300, 20, "BloqVenda", "", true);
 
-		adicDB(cbNatVenda, 7, 220, 160, 20, "NatVenda", "", true);
-		adicDB(cbComisPDupl, 177, 220, 300, 20, "ComisPDupl", "", true);
-		adicDB(cbVendaMatPrim, 7, 240, 300, 20, "VendaMatPrim", "", true);
+		adicDB(cbNatVenda, 7, 240, 160, 20, "NatVenda", "", true);
+		adicDB(cbComisPDupl, 177, 240, 300, 20, "ComisPDupl", "", true);
+		adicDB(cbVendaMatPrim, 7, 260, 300, 20, "VendaMatPrim", "", true);
 
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
@@ -712,8 +721,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		lcPDV.addEditListener(this);
 		lcPrefere3.addInsertListener(this);
 		lcPrefere3.addEditListener(this);
+		cbEstNegGrupo.addCheckBoxListener(this);
 		
 	}
+
+
 
 	public void beforePost(PostEvent pevt) {
 		if (txtCasasDec.getVlrInteger().intValue() > 5) {
@@ -763,11 +775,19 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	public void beforeInsert(InsertEvent ievt) { }
 
 	public void valorAlterado(CheckBoxEvent cevt) {
-		if (cevt.getCheckBox() == cbJurosPosCalc
-				&& cbJurosPosCalc.getVlrString().equals("S"))
+		if (cevt.getCheckBox() == cbJurosPosCalc && cbJurosPosCalc.getVlrString().equals("S"))
 			txtCodTabJuros.setAtivo(false);
 		else
 			txtCodTabJuros.setAtivo(true);
+		if(cevt.getCheckBox() == cbEstNegGrupo){
+			if(cbEstNegGrupo.getVlrString().equals("S")){
+				cbEstNeg.setVlrString("N");
+				cbEstNeg.setEnabled(false);
+			}
+			else {
+				cbEstNeg.setEnabled(true);
+			}
+		}
 	}
 
 	public void setConexao(Connection cn) {
