@@ -90,7 +90,7 @@ public class FPrazoEnt extends FDados implements ActionListener {
          imp.say(imp.pRow()+1,0,""+imp.normal());
          imp.say(imp.pRow()+0,2,rs.getString("CodPE"));
          imp.say(imp.pRow()+0,20,rs.getString("DescPE"));
-         imp.say(imp.pRow()+0,60,rs.getString("DiasPE"));
+         imp.say(imp.pRow()+0,70,rs.getString("DiasPE"));
          if (imp.pRow()>=linPag) {
             imp.incPags();
             imp.eject();
