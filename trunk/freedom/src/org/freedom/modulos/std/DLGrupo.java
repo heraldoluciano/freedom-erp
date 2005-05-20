@@ -46,7 +46,7 @@ public class DLGrupo extends FFDialogo {
   private JCheckBoxPad cbEstNeg = new JCheckBoxPad("Permitir saldo negativo?", "S", "N");
   private JCheckBoxPad cbEstLotNeg = new JCheckBoxPad("Permitir saldo de lote negativo?", "S", "N");
   private boolean bEdit = false;
-  public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc,String sSigla) {
+  public DLGrupo(Component cOrig,Connection cn, String sCod, String sDesc,String sSigla,boolean bEstNeg) {
   	super(cOrig);
     setConexao(cn);
     setTitulo("Novo Grupo");
@@ -62,6 +62,10 @@ public class DLGrupo extends FFDialogo {
     adic(txtSiglaGrupo,293,20,80,20);
     adic(cbEstNeg,7,50,200,20);
     adic(cbEstLotNeg,7,70,200,20);
+    
+   	cbEstNeg.setEnabled(bEstNeg);
+   	cbEstLotNeg.setEnabled(bEstNeg);
+
     if (sCod != null) {
       setTitulo("Edição de Grupo");
       txtCodGrupo.setText(sCod);
@@ -81,6 +85,7 @@ public class DLGrupo extends FFDialogo {
     sRetorno[1] = txtDescGrupo.getText();
     sRetorno[2] = txtSiglaGrupo.getText();
     sRetorno[3] = cbEstNeg.getVlrString();
+    sRetorno[4] = cbEstLotNeg.getVlrString();
     return sRetorno;
   }
   public void actionPerformed(ActionEvent evt) {

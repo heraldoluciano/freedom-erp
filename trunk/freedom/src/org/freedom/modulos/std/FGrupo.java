@@ -112,8 +112,8 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
-    montaTab();
     buscaPrefere();
+    montaTab();
   }
   
   private void buscaPrefere(){
@@ -152,6 +152,13 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       ps.setInt(1,Aplicativo.iCodEmp);
       ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));
       rs = ps.executeQuery();
+      if(bEstNeg){
+        tab.adicColuna("Est.neg.");
+        tab.adicColuna("Est.neg.lote");
+        tab.setTamColuna(80,3);
+        tab.setTamColuna(80,4);
+      }
+      
       for (int i=0;rs.next();i++) {
         tab.adicLinha();
         tab.setValor(rs.getString("CodGrup"),i,0);
@@ -168,22 +175,26 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
   }
   private void gravaNovoGrup() {
-    DLGrupo dl = new DLGrupo(this,con,null,null,"");
+    DLGrupo dl = new DLGrupo(this,con,null,null,"",bEstNeg);
     dl.setVisible(true);
     if (!dl.OK)
       return;
     String sCod = (dl.getValores())[0];
     String sDesc = (dl.getValores())[1];
     String sSigla = (dl.getValores())[2];
+    String sEstNeg = (dl.getValores())[3];
+    String sEstNegLot = (dl.getValores())[4];
     dl.dispose();
-    String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,nivelgrup,siglagrup) VALUES(?,?,'"+
+    String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,nivelgrup,siglagrup,estneggrup,estlotneggrup) VALUES(?,?,'"+
                    sCod+Funcoes.replicate("0",4-sCod.trim().length())+"','"+
-                   sDesc.trim()+"',1,'"+sSigla+"')";
+                   sDesc.trim()+"',1,'"+sSigla+"',?,?)";
     PreparedStatement ps = null;
     try {
       ps = con.prepareStatement(sSQL);
       ps.setInt(1,Aplicativo.iCodEmp);
       ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));
+      ps.setString(3,sEstNeg);
+      ps.setString(4,sEstNegLot);
       if (ps.executeUpdate() == 0)
 	  Funcoes.mensagemInforma(this,"Não foi possível inserir na tabela EQGRUPO");
       if (!con.getAutoCommit())
@@ -244,7 +255,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 		Funcoes.mensagemInforma(this,"Erro ao consultar a tabela EQGRUPO! ! !\n"+err.getMessage());    
       return;
     }
-    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,null,"",sSiglaPai);
+    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,null,"",sSiglaPai,bEstNeg);
     dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
@@ -252,16 +263,20 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
     String sDesc = dl.getValor()[0];
     dl.dispose();
-    String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,codsubgrup,nivelgrup,siglagrup,codempsg,codfilialsg) VALUES(?,?,'"+sCodFilho+"','"+sDesc+"','"+sCodPai+"',"+iNivel+",?,?,?)";
+    String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,codsubgrup,nivelgrup,siglagrup,codempsg,codfilialsg,estneggrup,estlotneggrup) VALUES(?,?,'"+sCodFilho+"','"+sDesc+"','"+sCodPai+"',"+iNivel+",?,?,?)";
     PreparedStatement ps = null;
     String sSigla = dl.getValor()[1];
+    String sEstNeg = (dl.getValor())[2];
+    String sEstNegLot = (dl.getValor())[3];
     try {
       ps = con.prepareStatement(sSQL);
       ps.setInt(1,Aplicativo.iCodEmp);
       ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));     
       ps.setString(3,sSigla);
       ps.setInt(4,Aplicativo.iCodEmp);
-      ps.setInt(5,ListaCampos.getMasterFilial("EQGRUPO"));     
+      ps.setInt(5,ListaCampos.getMasterFilial("EQGRUPO"));
+      ps.setString(6,sEstNeg);
+      ps.setString(7,sEstNegLot);
       
       if (ps.executeUpdate() == 0)
 	  Funcoes.mensagemInforma(this,"Não foi possível inserir na tabela EQGRUPO");
@@ -274,7 +289,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
   }
   public void editaGrup() {
-    DLGrupo dl = new DLGrupo(this,con,""+tab.getValor(tab.getLinhaSel(),0),(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim());
+    DLGrupo dl = new DLGrupo(this,con,""+tab.getValor(tab.getLinhaSel(),0),(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),bEstNeg);
     dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
@@ -286,9 +301,11 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     sDesc = sDesc.trim();
     String sSigla = dl.getValores()[2];
     sSigla = sSigla.trim();
+    String sEstNeg = (dl.getValores())[3];
+    String sEstNegLot = (dl.getValores())[4];
     dl.dispose();
-    String sSQL = "UPDATE EQGRUPO SET CODGRUP='"+sCod+"',DESCGRUP='"+sDesc+"',SIGLAGRUP='"+sSigla+
-                  "' WHERE CODEMP=? AND CODFILIAL = ? AND CODGRUP='"+(tab.getValor(tab.getLinhaSel(),0)+"").trim()+"'";     
+    String sSQL = "UPDATE EQGRUPO SET CODGRUP='"+sCod+"',DESCGRUP='"+sDesc+"',SIGLAGRUP='"+sSigla+"', ESTNEGGRUP='"+sEstNeg+"',ESTLOTNEGGRUP='"+sEstNegLot+"'"+
+                  " WHERE CODEMP=? AND CODFILIAL = ? AND CODGRUP='"+(tab.getValor(tab.getLinhaSel(),0)+"").trim()+"'";     
     PreparedStatement ps = null;
     try {
       ps = con.prepareStatement(sSQL);
@@ -330,7 +347,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     catch (SQLException err) {
 		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO!\n"+err.getMessage(),true,con,err);
     }
-    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),sSiglaPai);
+    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),sSiglaPai,bEstNeg);
     dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
@@ -338,11 +355,13 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
     String sDesc = dl.getValor()[0];
     String sSigla = dl.getValor()[1];
+    String sEstNeg = (dl.getValor())[2];
+    String sEstNegLot = (dl.getValor())[3];
     sDesc = sDesc.trim();
     sSigla = sSigla.trim();
     dl.dispose();
-    String sSQL = "UPDATE EQGRUPO SET DESCGRUP='"+sDesc+"',SIGLAGRUP='"+sSigla+
-                  "' WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP='"+sCodFilho+"'";     
+    String sSQL = "UPDATE EQGRUPO SET DESCGRUP='"+sDesc+"',SIGLAGRUP='"+sSigla+"',SIGLAGRUP='"+sSigla+"', ESTNEGGRUP='"+sEstNeg+"',ESTLOTNEGGRUP='"+sEstNegLot+"'"+
+                  " WHERE CODEMP=? AND CODFILIAL=? AND CODGRUP='"+sCodFilho+"'";     
     PreparedStatement ps = null;
     try {
       ps = con.prepareStatement(sSQL);
