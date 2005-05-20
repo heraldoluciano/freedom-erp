@@ -48,6 +48,7 @@ public class FreedomSTD extends Aplicativo {
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Banco","Banco",'B',100113000,2, true, FBanco.class);
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de cobrança","TipoCob",'o',100114000,2, true, FTipoCob.class);
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Plano de pagamento","PlanoPag",'s',100115000,2, true, FPlanoPag.class);
+	    addOpcao(100100000,TP_OPCAO_ITEM,"Prazo de entrega","Prazo de entrega",'e',100116000,2,true, FPrazoEnt.class);
 	 //   addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de expositor",'x',100116000,2,true, FTipoExp.class);	    
 	    addSeparador(100100000);	    
 	    addOpcao(100100000,TP_OPCAO_ITEM,"Transportadora","Transportadora",'p',100117000,2, true, FTransp.class);  	    
