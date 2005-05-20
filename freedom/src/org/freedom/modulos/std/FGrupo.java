@@ -63,6 +63,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   private JButton btSubGrupo = new JButton("Sub-Grupo",Icone.novo("btNovo.gif"));
   private JButton btImp = new JButton(Icone.novo("btImprime.gif"));
   private JButton btPrevimp = new JButton(Icone.novo("btPrevimp.gif"));
+  private boolean bEstNeg = false;
   int iCodFilial = 0;
   public FGrupo() {
     setTitulo("Cadastro de Grupos e Sub-Grupos");
@@ -112,7 +113,34 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     montaTab();
+    buscaPrefere();
   }
+  
+  private void buscaPrefere(){
+  	String sSQL = "SELECT ESTNEGGRUP FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+  	PreparedStatement ps = null;
+  	ResultSet rs = null;
+  	try{
+  		ps = con.prepareStatement(sSQL);
+  		ps.setInt(1,Aplicativo.iCodEmp);
+  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
+  		rs = ps.executeQuery();
+  		
+  		if(rs.next()){
+  			if(rs.getString(1)!=null){
+  				if(rs.getString(1).equals("S"))
+  					bEstNeg = true;
+  				else
+  					bEstNeg = false;
+  			}
+  		}
+  	}
+  	catch(Exception err){
+  		Funcoes.mensagemErro(this,"Erro ao consultar tabela de preferencias!",true,con,err);
+  		err.printStackTrace();
+  	}
+  }
+  
   private void montaTab() {
     String sSQL = "SELECT CODGRUP,DESCGRUP,SIGLAGRUP FROM EQGRUPO WHERE "+
                   "CODEMP=? AND CODFILIAL =? ORDER BY CODGRUP";

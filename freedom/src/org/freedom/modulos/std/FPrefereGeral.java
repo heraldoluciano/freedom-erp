@@ -403,9 +403,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbEstLotNeg.setVlrString("N");
 		cbEstNeg = new JCheckBoxPad("Permit. saldo negativo?", "S", "N");
 		cbEstNeg.setVlrString("N");
-		
-		
-		cbEstNegGrupo = new JCheckBoxPad("Permit. sld. neg. por grupo?", "S", "N");
+				
+		cbEstNegGrupo = new JCheckBoxPad("Controle de saldo negativo por grupo?", "S", "N");
 		cbEstNegGrupo.setVlrString("N");
 
 		cbBloqVenda = new JCheckBoxPad("Bloquear venda após impressão da NF?",
@@ -513,13 +512,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbEstLotNeg, 7, 200, 160, 20, "EstLotNeg", "", true);
 		adicDB(cbEstNeg, 177, 200, 160, 20, "EstNeg", "", true);
 		
-		adicDB(cbEstNegGrupo, 7, 220, 160, 20, "EstNegGrup", "", true);
+		adicDB(cbEstNegGrupo, 7, 220, 250, 20, "EstNegGrup", "", true);
 		
-		adicDB(cbBloqVenda, 177, 220, 300, 20, "BloqVenda", "", true);
+		adicDB(cbBloqVenda, 7, 240, 300, 20, "BloqVenda", "", true);
 
-		adicDB(cbNatVenda, 7, 240, 160, 20, "NatVenda", "", true);
-		adicDB(cbComisPDupl, 177, 240, 300, 20, "ComisPDupl", "", true);
-		adicDB(cbVendaMatPrim, 7, 260, 300, 20, "VendaMatPrim", "", true);
+		adicDB(cbNatVenda, 7, 260, 160, 20, "NatVenda", "", true);
+		adicDB(cbVendaMatPrim, 177, 260, 300, 20, "VendaMatPrim", "", true);
+		adicDB(cbComisPDupl, 7, 280, 300, 20, "ComisPDupl", "", true);
 
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
@@ -783,9 +782,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 			if(cbEstNegGrupo.getVlrString().equals("S")){
 				cbEstNeg.setVlrString("N");
 				cbEstNeg.setEnabled(false);
+				cbEstLotNeg.setVlrString("N");
+				cbEstLotNeg.setEnabled(false);
 			}
 			else {
 				cbEstNeg.setEnabled(true);
+				cbEstLotNeg.setEnabled(true);
 			}
 		}
 	}
