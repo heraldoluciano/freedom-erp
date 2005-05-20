@@ -97,9 +97,14 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     tab.adicColuna("Cód.grupo");
     tab.adicColuna("Descrição do grupo");
     tab.adicColuna("Sigla");
+    tab.adicColuna("Est.neg.");
+    tab.adicColuna("Est.neg.lote");
+
     tab.setTamColuna(100,0);
-    tab.setTamColuna(385,1);
+    tab.setTamColuna(245,1);
     tab.setTamColuna(80,2);
+    tab.setTamColuna(70,3);
+    tab.setTamColuna(70,4);
     
     btSair.addActionListener(this);
     btGrupo.addActionListener(this);
@@ -142,7 +147,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   }
   
   private void montaTab() {
-    String sSQL = "SELECT CODGRUP,DESCGRUP,SIGLAGRUP FROM EQGRUPO WHERE "+
+    String sSQL = "SELECT CODGRUP,DESCGRUP,SIGLAGRUP,ESTNEGGRUP,ESTLOTNEGGRUP FROM EQGRUPO WHERE "+
                   "CODEMP=? AND CODFILIAL =? ORDER BY CODGRUP";
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -152,21 +157,16 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       ps.setInt(1,Aplicativo.iCodEmp);
       ps.setInt(2,ListaCampos.getMasterFilial("EQGRUPO"));
       rs = ps.executeQuery();
-      if(bEstNeg){
-        tab.adicColuna("Est.neg.");
-        tab.adicColuna("Est.neg.lote");
-        tab.setTamColuna(80,3);
-        tab.setTamColuna(80,4);
-      }
-      
+
       for (int i=0;rs.next();i++) {
         tab.adicLinha();
         tab.setValor(rs.getString("CodGrup"),i,0);
         tab.setValor(rs.getString("DescGrup"),i,1);
         tab.setValor(rs.getString("SiglaGrup"),i,2);
+        tab.setValor(rs.getString("ESTNEGGRUP"),i,3);
+        tab.setValor(rs.getString("ESTLOTNEGGRUP"),i,4);
       }
-//      rs.close();
-//      ps.close();
+      
       if (!con.getAutoCommit())
       	con.commit();
     }
@@ -175,7 +175,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
   }
   private void gravaNovoGrup() {
-    DLGrupo dl = new DLGrupo(this,con,null,null,"",bEstNeg);
+    DLGrupo dl = new DLGrupo(this,con,null,null,"",bEstNeg,"","");
     dl.setVisible(true);
     if (!dl.OK)
       return;
@@ -199,19 +199,23 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 	  Funcoes.mensagemInforma(this,"Não foi possível inserir na tabela EQGRUPO");
       if (!con.getAutoCommit())
       	con.commit();
-//      ps.close();
+
     }
     catch (SQLException err) {
 		Funcoes.mensagemInforma(this,"Erro ao inserir registro na tabela EQGRUPO! ! !\n"+err.getMessage());
     }
     if (tab.getNumLinhas() > 0)
       tab.setRowSelectionInterval(0,1);
+
   }
   private void gravaNovoSubGrup() {
     String sCodPai = "";
     String sDescPai= "";
     String sSiglaPai= "";
     String sCodFilho = "";
+    String sEstNegPai = "";
+ 	String sEstNegLotPai = ""; 
+
     int iCodFilho = 0;
     int iNivelPai = 0;
     int iNivel = 0;
@@ -241,6 +245,8 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
       sCodPai = (tab.getValor(tab.getLinhaSel(),0)+"").trim();
       sDescPai = (tab.getValor(tab.getLinhaSel(),1)+"").trim();
       sSiglaPai = (tab.getValor(tab.getLinhaSel(),2)+"").trim();
+      sEstNegPai = (tab.getValor(tab.getLinhaSel(),3)+"").trim();
+	  sEstNegLotPai = (tab.getValor(tab.getLinhaSel(),4)+"").trim();
       iNivelPai = rsQuery.getInt("NivelGrup");
       sMax = rsQuery.getString(2) != null ? rsQuery.getString(2).trim() : sCodPai+"00";
       iCodFilho = Integer.parseInt(sMax.substring(sMax.length()-2,sMax.length()));
@@ -255,7 +261,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
 		Funcoes.mensagemInforma(this,"Erro ao consultar a tabela EQGRUPO! ! !\n"+err.getMessage());    
       return;
     }
-    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,null,"",sSiglaPai,bEstNeg);
+    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,null,"",sSiglaPai,bEstNeg,sEstNegPai,sEstNegLotPai);
     dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
@@ -263,7 +269,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
     String sDesc = dl.getValor()[0];
     dl.dispose();
-    String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,codsubgrup,nivelgrup,siglagrup,codempsg,codfilialsg,estneggrup,estlotneggrup) VALUES(?,?,'"+sCodFilho+"','"+sDesc+"','"+sCodPai+"',"+iNivel+",?,?,?)";
+    String sSQL = "INSERT INTO EQGRUPO (codemp,codfilial,codgrup,descgrup,codsubgrup,nivelgrup,siglagrup,codempsg,codfilialsg,estneggrup,estlotneggrup) VALUES(?,?,'"+sCodFilho+"','"+sDesc+"','"+sCodPai+"',"+iNivel+",?,?,?,?,?)";
     PreparedStatement ps = null;
     String sSigla = dl.getValor()[1];
     String sEstNeg = (dl.getValor())[2];
@@ -289,7 +295,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     }
   }
   public void editaGrup() {
-    DLGrupo dl = new DLGrupo(this,con,""+tab.getValor(tab.getLinhaSel(),0),(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),bEstNeg);
+    DLGrupo dl = new DLGrupo(this,con,""+tab.getValor(tab.getLinhaSel(),0),(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),bEstNeg,tab.getValor(tab.getLinhaSel(),3).toString(),tab.getValor(tab.getLinhaSel(),4).toString());
     dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
@@ -347,7 +353,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
     catch (SQLException err) {
 		Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQGRUPO!\n"+err.getMessage(),true,con,err);
     }
-    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),sSiglaPai,bEstNeg);
+    DLSubGrupo dl = new DLSubGrupo(sCodPai,sDescPai,sCodFilho,(""+tab.getValor(tab.getLinhaSel(),1)).trim(),(""+tab.getValor(tab.getLinhaSel(),2)).trim(),sSiglaPai,bEstNeg,tab.getValor(tab.getLinhaSel(),3).toString(),tab.getValor(tab.getLinhaSel(),4).toString());
     dl.setVisible(true);
     if (!dl.OK) {
       dl.dispose();
