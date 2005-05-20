@@ -48,9 +48,15 @@ public class DataPump {
 	private boolean windows = false;
 
 	protected String extractParenthesis(String field) {
-		String result = field.substring(field.indexOf('(') + 1, field.indexOf(')'));
-
-		return new Integer(Integer.parseInt(result)).toString();
+		int start = 0, end = 0;
+		start = field.indexOf('(');
+		end = field.indexOf(')');
+		if (start == -1 && end == -1) {
+			return "";
+		} else {
+			String result = field.substring(start + 1, end);
+			return new Integer(Integer.parseInt(result)).toString();
+		}
 	}
 
 	protected String extractType(String field) {
@@ -62,9 +68,34 @@ public class DataPump {
 	protected String extractSubType(String field) {
 		String result = null;
 		if (field.indexOf(')') != field.length() - 1)
-			result = field.substring(field.indexOf(')') + 1, field.length() - 1);
+			result = field.substring(field.indexOf(')') + 1, field.length());
 
 		return result;
+	}
+
+	protected Integer getDecimal(String field) {
+		int result = 0;
+
+		String decimal = extractSubType(field);
+		if (decimal != null && !decimal.equals("")) {
+			String length = extractParenthesis(decimal);
+			if (!length.equals(""))
+				result += Integer.parseInt(extractParenthesis(length));
+			else {
+				if (decimal.equalsIgnoreCase("V99"))
+					result += 2;
+			}
+		}
+
+		return new Integer(result);
+	}
+
+	protected Integer getLength(String field) {
+		int result = 0;
+
+		result += Integer.parseInt(extractParenthesis(field));
+
+		return new Integer(result);
 	}
 
 	protected String createSQLColumns(Node node, String sql, String tableName) {
@@ -77,7 +108,7 @@ public class DataPump {
 					NamedNodeMap attr = child.getAttributes();
 
 					if (attr.getNamedItem("picture") == null) {
-						if (child.hasChildNodes())
+						if (child.hasChildNodes() && attr.getNamedItem("redefines") == null)
 							sql = createSQLColumns(child, sql, tableName);
 						continue;
 					}
@@ -87,17 +118,21 @@ public class DataPump {
 					JTextFieldPad field = null;
 					sql += name + " ";
 
-					Integer length = new Integer(extractParenthesis(attr.getNamedItem(
-							"picture").getNodeValue()));
+					Integer length = getLength(attr.getNamedItem("picture")
+							.getNodeValue());
+					Integer decimal = getDecimal(attr.getNamedItem("picture")
+							.getNodeValue());
+					Integer fullLength = new Integer(length.intValue()
+							+ decimal.intValue());
 
-					size.addElement(length);
+					size.addElement(fullLength);
 
 					if (attr.getNamedItem("numeric") != null
 							&& attr.getNamedItem("numeric").getNodeValue().equalsIgnoreCase(
 									"true")) {
-						sql += "NUMERIC(" + length + ",0)";
+						sql += "NUMERIC(" + length + "," + decimal + ")";
 						field = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, length
-								.intValue(), 0);
+								.intValue(), decimal.intValue());
 					} else {
 						sql += "CHAR(" + length + ")";
 						field = new JTextFieldPad(JTextFieldPad.TP_STRING, length
@@ -117,7 +152,7 @@ public class DataPump {
 				NamedNodeMap attr = child.getAttributes();
 
 				if (attr.getNamedItem("picture") == null) {
-					if (child.hasChildNodes())
+					if (child.hasChildNodes() && attr.getNamedItem("redefines") == null)
 						sql = createSQLColumns(child, sql, tableName);
 					return sql;
 				}
@@ -197,14 +232,21 @@ public class DataPump {
 					return null;
 
 				JTextFieldPad field = (JTextFieldPad) fields.get(i);
-				field.setVlrString(buf);
 
 				columns += field.getNomeCampo();
 				switch (field.getTipo()) {
 					case JTextFieldPad.TP_STRING:
+						field.setVlrString(buf);
 						values += "'" + field.getVlrString() + "'";
 						break;
 					case JTextFieldPad.TP_NUMERIC:
+						if (field.iDecimal > 0) {
+							String number = buf.substring(0, buf.length() - field.iDecimal)
+									+ "."
+									+ buf.substring(buf.length() - field.iDecimal, buf.length());
+							field.setVlrDouble(new Double(Double.parseDouble(number)));
+						} else
+							field.setVlrString(buf);
 						values += field.getVlrBigDecimal();
 					default:
 				}
@@ -267,8 +309,11 @@ public class DataPump {
 			if (document.getDocumentElement().hasChildNodes()) {
 
 				sql = "CREATE TABLE " + filename + " (";
-				sql = createSQLColumns(document.getDocumentElement(), sql, filename)
-						+ ");\n";
+				String create = createSQLColumns(document.getDocumentElement(), sql,
+						filename).trim();
+				if (create.charAt(create.length() - 1) == ',')
+					create = create.substring(0, create.length() - 1);
+				sql = create + ");\n";
 			}
 
 /*			try {
