@@ -47,7 +47,7 @@ public class DLSubGrupo extends FFDialogo {
   private JLabelPad lbSiglaSubGrup = new JLabelPad("Sigla");
   private JCheckBoxPad cbEstNeg = new JCheckBoxPad("Permitir saldo negativo?", "S", "N");
   private JCheckBoxPad cbEstLotNeg = new JCheckBoxPad("Permitir saldo de lote negativo?", "S", "N");
-  public DLSubGrupo(String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla,String sSiglaPai,boolean bEstNeg) {
+  public DLSubGrupo(String sCodPai, String sDescPai, String sCod, String sDesc, String sSigla,String sSiglaPai,boolean bEstNeg,String sEstNeg,String sEstNegLot) {
     setTitulo("Novo Sub-Grupo");
     setAtribos(400,240);
     cancText(txtCodPai);
@@ -59,6 +59,8 @@ public class DLSubGrupo extends FFDialogo {
     txtSiglaPai.setVlrString(sSiglaPai);	
     txtCodSubGrup.setVlrString(sCod);
     txtSiglaSubGrup.setVlrString(sSigla);	
+    cbEstLotNeg.setVlrString(sEstNegLot);
+    cbEstNeg.setVlrString(sEstNeg);
     adic(lbCodPai,7,0,80,20);
     adic(txtCodPai,7,20,80,20);
     adic(lbDescPai,90,0,200,20);
@@ -71,8 +73,8 @@ public class DLSubGrupo extends FFDialogo {
     adic(txtDescSubGrup,90,60,200,20);
     adic(lbSiglaSubGrup,293,40,80,20);
     adic(txtSiglaSubGrup,293,60,80,20);
-    adic(cbEstNeg,7,90,200,20);
-    adic(cbEstLotNeg,7,110,200,20);
+    adic(cbEstNeg,7,90,250,20);
+    adic(cbEstLotNeg,7,110,250,20);
     
    	cbEstNeg.setEnabled(bEstNeg);
    	cbEstLotNeg.setEnabled(bEstNeg);
@@ -100,7 +102,7 @@ public class DLSubGrupo extends FFDialogo {
     super.actionPerformed(evt);
   }
   public String[] getValor() {
-  	String[] sRetorno = new String[2];
+  	String[] sRetorno = new String[4];
   	sRetorno[0] = txtDescSubGrup.getText();
   	sRetorno[1] = txtSiglaSubGrup.getText();
     sRetorno[2] = cbEstNeg.getVlrString();
