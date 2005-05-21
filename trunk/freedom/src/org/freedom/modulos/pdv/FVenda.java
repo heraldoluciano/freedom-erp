@@ -1018,6 +1018,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			return;
 		}
 		DLCancCupom canc = new DLCancCupom();
+		canc.setVenda(txtCodVenda.getVlrInteger().intValue());
 		canc.setConexao(con);
 		canc.setVisible(true);
 		if (canc.OK) {
