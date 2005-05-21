@@ -31,10 +31,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JButton;
@@ -68,7 +70,6 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private JTextFieldFK txtSerie = new JTextFieldFK(JTextFieldPad.TP_STRING,10,0);
 	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldFK txtValor = new JTextFieldFK(JTextFieldPad.TP_DOUBLE,10,2);
-	private JTextFieldFK txtCVTef = new JTextFieldFK(JTextFieldPad.TP_STRING,20,0);
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private JButton btCanc = new JButton(Icone.novo("btExcluir.gif"));
@@ -79,6 +80,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	private Tef tef = null;
 	boolean bCancCupom = false;
 	int iCancItem = -1;
+    Properties ppCompTef;
 	public DLCancCupom() {
 //		super(Aplicativo.telaPrincipal);
 	    Funcoes.strDecimalToStrCurrency(2,Funcoes.transValorInv("15")+"");
@@ -102,7 +104,6 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
         lcVenda.add(new GuardaCampo( txtSerie, "Serie", "Série", ListaCampos.DB_SI, false));
 		lcVenda.add(new GuardaCampo( txtData, "DtEmitVenda", "Data", ListaCampos.DB_SI, false));   
 		lcVenda.add(new GuardaCampo( txtValor, "VlrLiqVenda", "Valor", ListaCampos.DB_SI, false));
-		lcVenda.add(new GuardaCampo( txtCVTef, "CVTefVenda", "CV Tef", ListaCampos.DB_SI, false));
        	
        	txtVenda.setListaCampos(lcVenda);
        	txtVenda.setNomeCampo("CodVenda");
@@ -160,47 +161,140 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 		lcVenda.setWhereAdic("TIPOVENDA='E'");
 		lcVenda.setReadOnly(true);		
 	}
+	private boolean vendaComTef() {
+		int iRet = 0;
+		String sSQL = "SELECT COUNT(*) FROM VDTEF WHERE" +
+		  			  " CODEMP=? AND CODFILIAL=? AND TIPOVENDA='E' AND CODVENDA=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(3,txtVenda.getVlrInteger().intValue());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt(1);
+			rs.close();
+			ps.close();
+		}
+		catch (SQLException err) {
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao verificar tef vinculado no banco: "+err.getMessage());
+		}
+		
+		return iRet > 0;
+	}
 	private Properties processaTef() {
+		String sNSU = null, sRede = null;
+		Date dTrans = null;
+		BigDecimal bigVlr = null;
+		String sSQL = "SELECT NSUTEF,REDETEF,DTTRANSTEF,VLRTEF FROM VDTEF WHERE" +
+					  " CODEMP=? AND CODFILIAL=? AND TIPOVENDA='E' AND CODVENDA=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(3,txtVenda.getVlrInteger().intValue());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				sNSU = rs.getString("NSUTEF");
+				sRede = rs.getString("REDETEF");
+				dTrans = Funcoes.sqlDateToDate(rs.getDate("DTTRANSTEF"));
+				bigVlr = rs.getBigDecimal("VLRTEF");
+			}
+			rs.close();
+			ps.close();
+		}
+		catch (SQLException err) {
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao buscar tef vinculado no banco: "+err.getMessage());
+		}
 		
+		if (sNSU == null)
+			return null;
 		
+	    if (tef == null && AplicativoPDV.bTEFTerm)
+			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
+
+		Properties retTef = tef.solicCancelamento(sNSU.trim(),sRede.trim(),dTrans,bigVlr);
 		
-//TODO: Continuar aki:
-		
-/*		Properties retTef = tef.cancelaVenda(iNumCupom, txtVlrChequeElet.getVlrBigDecimal());
 		
 		if (retTef == null || !tef.validaTef(retTef))
 			return null;
 		
 		return retTef;
-*/
-		return null;
 	}
+    private boolean finalizaTEF(Properties retTef) {
+        boolean bRet = false;
+        Object sLinhas[] = tef.retImpTef(retTef);
+        String sComprovante = "";
+
+        //verifica se ha linhas a serem impressas, caso contrário sai sem
+        // imprimir nada.
+        if (sLinhas.length == 0)
+            return true;
+        
+        for (int i=0;i<sLinhas.length;i++)
+            sComprovante += sLinhas[i]+"\n";
+        
+        while (!bRet) {
+            if (!bf.relatorioGerencialTef(Aplicativo.strUsuario, sComprovante,AplicativoPDV.bModoDemo))
+                bRet = false;
+            else {
+                if (!bf.fechaRelatorioGerencial(Aplicativo.strUsuario,AplicativoPDV.bModoDemo))
+                    bRet = false;
+                else
+                    bRet = true;
+            }
+        }
+        tef.confirmaCNF(retTef);
+        return bRet;
+
+    }
 	private boolean cancVenda() {
 		boolean bRet = false;
 		
-	    Properties ppCompTef;
-//	  TODO: Descomentar aki:
-	   /* if ((ppCompTef = processaTef()) == null) {
-	        Funcoes.mensagemInforma(this,"Não foi possível processar TEF");
-	        return false;
-	    }
-		*/
-		
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='CV' WHERE CODEMP=?" +
-		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+    	if (vendaComTef()) {
+		    if ((ppCompTef = processaTef()) == null) {
+		        Funcoes.mensagemInforma(this,"Não foi possível processar o cancelamento de TEF");
+		        return false;
+		    }
+    	}
+//Primeiro estorna o pagamento:		
+     	String sSQL = "UPDATE FNITRECEBER IR SET IR.STATUSITREC='R1' WHERE "+
+					  "IR.CODEMP=? AND IR.CODFILIAL=? AND IR.CODREC IN (" +
+					  "SELECT R.CODREC FROM FNRECEBER R WHERE "+
+					  "R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND "+
+					  "R.CODEMPVA = ? AND R.CODFILIALVA = ? AND " +
+					  "R.CODVENDA = ? AND R.TIPOVENDA='E')";
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setInt(3,txtVenda.getVlrInteger().intValue());
+			ps.setInt(2,ListaCampos.getMasterFilial("FNRECEBER"));
+			ps.setInt(3,Aplicativo.iCodEmp);
+			ps.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(5,txtVenda.getVlrInteger().intValue());
 			ps.executeUpdate();
-			if (!con.getAutoCommit()) {
-				con.commit();
-			}
 			bRet = true;
 		}
 		catch (SQLException err) {
-			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro cancelar o item "+err.getMessage());
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro estornar o pagamento: "+err.getMessage());
+		}
+    	
+		if (bRet) {
+			sSQL = "UPDATE VDVENDA SET STATUSVENDA='CV' WHERE CODEMP=?" +
+				   " AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+			try {
+				PreparedStatement ps = con.prepareStatement(sSQL);
+				ps.setInt(1,Aplicativo.iCodEmp);
+				ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+				ps.setInt(3,txtVenda.getVlrInteger().intValue());
+				ps.executeUpdate();
+				if (!con.getAutoCommit()) {
+					con.commit();
+				}
+				bRet = true;
+			}
+			catch (SQLException err) {
+				Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro cancelar o cupom: "+err.getMessage());
+			}
 		}
 		return bRet;
 	}
@@ -231,7 +325,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 				if (cancVenda()) {
 					if (AplicativoPDV.bECFTerm) {
 						if (bf.cancelaCupom(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
-							bCancCupom = true;
+				            bCancCupom = ppCompTef == null || finalizaTEF(ppCompTef);
 							btOK.doClick();
 						}
 					}
@@ -318,6 +412,9 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	public int getCancItem() {
 		return iCancItem;
 	}
+	public void setVenda(int iCodVenda) {
+		txtVenda.setVlrInteger(new Integer(iCodVenda));
+	}
 	private int buscaUltimaVenda() {
 			int iRet = 0;
 			String sSQL = "SELECT MAX(CODVENDA) FROM VDVENDA WHERE " +
@@ -354,14 +451,13 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 			}
 		}
 	}
-	public void setTef(Tef tef) {
-		this.tef = tef;
-	}
 	public void setConexao(Connection cn) {
 		lcVenda.setConexao(cn);
 		super.setConexao(cn);
 		
-		txtVenda.setVlrInteger(new Integer(buscaUltimaVenda()));
+		if (txtVenda.getVlrInteger().intValue() == 0)
+			txtVenda.setVlrInteger(new Integer(buscaUltimaVenda()));
+		
 		lcVenda.carregaDados();
 		carregaTabela();		
 	}
