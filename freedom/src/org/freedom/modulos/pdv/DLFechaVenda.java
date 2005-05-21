@@ -143,93 +143,93 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
         if (sLinhas.length == 0)
             return true;
         
-        if (bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo) /*true*/) {
-            do {
-                try {
-                    //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
-                    if (!bLeituraX) {
-                        if (!bf.abreComprovanteNaoFiscalVinculado(
-                            Aplicativo.strUsuario, txtDescPlanoPag
-                                    .getVlrString(), AplicativoPDV.bModoDemo))
-                            throw new Exception("");
-                        if (!bf.usaComprovanteNaoFiscalVinculado(
-                                Aplicativo.strUsuario, sComprovante,
-                                AplicativoPDV.bModoDemo))
-                             throw new Exception("");
-                    }
-                    else {
-                        //Esta reimprimindo entao vamos usar o relatorioGerencial: 
-                        if (!bf.relatorioGerencialTef(
-                                Aplicativo.strUsuario, sComprovante, AplicativoPDV.bModoDemo))
-                                throw new Exception("");
-                    }
-                    
-
-                    //Coloca uns espacos para retirar o comprovante.
-
-                    if (!bLeituraX) {
-                    	for (int i=0;i<10;i++)
-                    		if (!bf.usaComprovanteNaoFiscalVinculado(
-                    				Aplicativo.strUsuario, " ",
-									AplicativoPDV.bModoDemo))
-                    			throw new Exception("");
-                    }
-                    else {
-                    	for (int i=0;i<10;i++)
-                    		if (!bf.relatorioGerencialTef(
-                                Aplicativo.strUsuario, " ",
-                                AplicativoPDV.bModoDemo))
-                    			throw new Exception("");
-                    }
-
-                    //Aguarda 5 segundo para imprimir o segundo comprovante:
-
-                    Thread.sleep(5000);
-
-                    if (!bLeituraX) {
-                        if (!bf.usaComprovanteNaoFiscalVinculado(
+        do {
+            try {
+                //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
+                if (!bLeituraX) {
+                    if (!bf.abreComprovanteNaoFiscalVinculado(
+                        Aplicativo.strUsuario, txtDescPlanoPag
+                                .getVlrString(), AplicativoPDV.bModoDemo))
+                        throw new Exception("");
+                    if (!bf.usaComprovanteNaoFiscalVinculadoTef(
                             Aplicativo.strUsuario, sComprovante,
                             AplicativoPDV.bModoDemo))
                          throw new Exception("");
-                    }
-                    else {
-                        if (!bf.relatorioGerencialTef(
-                                Aplicativo.strUsuario, sComprovante,
-                                AplicativoPDV.bModoDemo))
-                             throw new Exception("");
-                    }
+                }
+                else {
+                    //Esta reimprimindo entao vamos usar o relatorioGerencial.
+                    if (!bf.leituraX(
+                            Aplicativo.strUsuario, AplicativoPDV.bModoDemo))
+                            throw new Exception("");
+                    if (!bf.relatorioGerencialTef(
+                            Aplicativo.strUsuario, sComprovante, AplicativoPDV.bModoDemo))
+                            throw new Exception("");
+                }
+                
 
-                    if (!bLeituraX) {
-                        if (!bf.fechaComprovanteNaoFiscalVinculado(
+                //Coloca uns espacos para retirar o comprovante.
+
+                if (!bLeituraX) {
+                	for (int i=0;i<10;i++)
+                		if (!bf.usaComprovanteNaoFiscalVinculadoTef(
+                				Aplicativo.strUsuario, " ",
+								AplicativoPDV.bModoDemo))
+                			throw new Exception("");
+                }
+                else {
+                	for (int i=0;i<10;i++)
+                		if (!bf.relatorioGerencialTef(
+                            Aplicativo.strUsuario, " ",
+                            AplicativoPDV.bModoDemo))
+                			throw new Exception("");
+                }
+
+                //Aguarda 5 segundo para imprimir o segundo comprovante:
+
+                bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
+                
+                Thread.sleep(5000);
+
+                bf.finalizaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
+
+                if (!bLeituraX) {
+                    if (!bf.usaComprovanteNaoFiscalVinculadoTef(
+                        Aplicativo.strUsuario, sComprovante,
+                        AplicativoPDV.bModoDemo))
+                     throw new Exception("");
+                }
+                else {
+                    if (!bf.relatorioGerencialTef(
+                            Aplicativo.strUsuario, sComprovante,
+                            AplicativoPDV.bModoDemo))
+                         throw new Exception("");
+                }
+
+                if (!bLeituraX) {
+                    if (!bf.fechaComprovanteNaoFiscalVinculado(
+                        Aplicativo.strUsuario, 
+                        AplicativoPDV.bModoDemo))
+                     throw new Exception("");
+                }
+                else {
+                    if (!bf.fechaRelatorioGerencial(
                             Aplicativo.strUsuario, 
                             AplicativoPDV.bModoDemo))
                          throw new Exception("");
-                    }
-                    else {
-                        if (!bf.fechaRelatorioGerencial(
-                                Aplicativo.strUsuario, 
-                                AplicativoPDV.bModoDemo))
-                             throw new Exception("");
-                    }
-
-                    bRet = true;
-                } catch (Exception err) {
-                    bRet = false;
-                    if (Funcoes.mensagemConfirma(null,
-                            "Impressora não responde, tente novamente?") == JOptionPane.YES_OPTION) {
-                        bLeituraX = true;
-                        continue;
-                    } 
                 }
-                bf.finalizaModoTEF(Aplicativo.strUsuario,
-                            AplicativoPDV.bModoDemo);
-                break;
-            } while (true);
-        } else {
-            Funcoes.mensagemInforma(null,
-                            "Não foi possível travar o teclado!!");
-            bRet = false;
-        }
+
+                bRet = true;
+            } catch (Exception err) {
+                bf.finalizaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
+                bRet = false;
+                if (Funcoes.mensagemConfirma(null,
+                        "Impressora não responde, tente novamente?") == JOptionPane.YES_OPTION) {
+                    bLeituraX = true;
+                    continue;
+                } 
+            }
+            break;
+        } while (true);
 		if (bRet) {
 		    bRet = tef.confirmaVenda(retTef);
 		    if (bRet) {
@@ -260,7 +260,8 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			ps.setString(5,Tef.retNsu(prop));
 			ps.setString(6,Tef.retRede(prop));
 			ps.setDate(7,Funcoes.dateToSQLDate(Tef.retData(prop)));
-			ps.setBigDecimal(6,Tef.retValor(prop));
+			ps.setBigDecimal(8,Tef.retValor(prop));
+			ps.executeUpdate();
 		}
 		catch (SQLException err) {
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar tef vinculado no banco: "+err.getMessage());
