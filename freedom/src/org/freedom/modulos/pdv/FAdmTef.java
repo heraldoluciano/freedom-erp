@@ -121,7 +121,7 @@ public class FAdmTef extends FFilho implements ActionListener {
                     bRet = true;
             }
         }
-        tef.confirmaAdm(retTef);
+        tef.confirmaCNF(retTef);
         return bRet;
 
     }
