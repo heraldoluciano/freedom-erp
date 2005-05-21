@@ -49,6 +49,7 @@ extern __stdcall Bematech_FI_LeituraMemoriaFiscalSerialReducao( char * ReducaoIn
 
 extern __stdcall Bematech_FI_RecebimentoNaoFiscal( char * IndiceTotalizador, char * Valor, char * FormaPagamento );
 extern __stdcall Bematech_FI_AbreComprovanteNaoFiscalVinculado( char * FormaPagamento, char * Valor, char * NumeroCupom );
+extern __stdcall Bematech_FI_UsaComprovanteNaoFiscalVinculadoTEF( char * Texto );
 extern __stdcall Bematech_FI_UsaComprovanteNaoFiscalVinculado( char * Texto );
 extern __stdcall Bematech_FI_FechaComprovanteNaoFiscalVinculado();
 extern __stdcall Bematech_FI_Sangria( char * Valor );

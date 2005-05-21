@@ -298,9 +298,18 @@ JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bAbreComprovanteNaoFis
 
 /*
  * Class:     org_freedom_drivers_JBemaFI32
+ * Method:    bUsaComprovanteNaoFiscalVinculadoTef
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bUsaComprovanteNaoFiscalVinculadoTef
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_freedom_drivers_JBemaFI32
  * Method:    bUsaComprovanteNaoFiscalVinculado
  * Signature: (Ljava/lang/String;)I
  */
+
 JNIEXPORT jint JNICALL Java_org_freedom_drivers_JBemaFI32_bUsaComprovanteNaoFiscalVinculado
   (JNIEnv *, jobject, jstring);
 
