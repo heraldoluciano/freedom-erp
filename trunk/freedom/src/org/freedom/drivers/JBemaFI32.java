@@ -79,6 +79,7 @@ public class JBemaFI32 {
 
    public native int  bRecebimentoNaoFiscal(String IndiceTotalizador, String Valor, String FormaPagamento);
    public native int  bAbreComprovanteNaoFiscalVinculado(String FormaPagamento, String Valor, String NumeroCupom);
+   public native int  bUsaComprovanteNaoFiscalVinculadoTef(String Texto);
    public native int  bUsaComprovanteNaoFiscalVinculado(String Texto);
    public native int  bFechaComprovanteNaoFiscalVinculado();
    public native int  bSangria(String Valor);
@@ -808,20 +809,34 @@ public class JBemaFI32 {
  	   bRetorno = true;
  	 return bRetorno;
   }
-  public boolean usaComprovanteNaoFiscalVinculado(String sUserID, String sTexto, boolean bModoDemo) {
+  public boolean usaComprovanteNaoFiscalVinculadoTef(String sUserID, String sTexto, boolean bModoDemo) {
   	 boolean bRetorno = false;
   	 if (!bModoDemo) {
        if (sTexto.trim().equals(""))
            sTexto = " ";
-  	   bRetorno = trataRetornoFuncao(  bUsaComprovanteNaoFiscalVinculado( sTexto ) );
+  	   bRetorno = trataRetornoFuncao(  bUsaComprovanteNaoFiscalVinculadoTef( sTexto ) );
   	   if (!bRetorno) {
-  	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_USA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sTexto+"|"+sMensErroLog);
+  	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_USA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO TEF: "+sTexto+"|"+sMensErroLog);
   	   }
   	 }
   	 else
   	   bRetorno = true;
   	 return bRetorno;
   }
+  public boolean usaComprovanteNaoFiscalVinculado(String sUserID, String sTexto, boolean bModoDemo) {
+ 	 boolean bRetorno = false;
+ 	 if (!bModoDemo) {
+      if (sTexto.trim().equals(""))
+          sTexto = " ";
+ 	   bRetorno = trataRetornoFuncao(  bUsaComprovanteNaoFiscalVinculado( sTexto ) );
+ 	   if (!bRetorno) {
+ 	 	   Logger.gravaLogTxt("",sUserID,Logger.LGEP_USA_N_FISCAL_VIN,"ERRO NO COMPROVANTE NÃO FISCAL VINCULADO: "+sTexto+"|"+sMensErroLog);
+ 	   }
+ 	 }
+ 	 else
+ 	   bRetorno = true;
+ 	 return bRetorno;
+ }
   public boolean relatorioGerencialTef(String sUserID, String sTexto, boolean bModoDemo) {
    	 boolean bRetorno = false;
    	 if (!bModoDemo) {
