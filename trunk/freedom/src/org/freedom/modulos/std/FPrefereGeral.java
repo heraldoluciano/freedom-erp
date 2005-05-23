@@ -192,6 +192,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbPepsProd = null;
 	private JCheckBoxPad cbBuscaProdSimilar = null;
 	private JCheckBoxPad cbMultiAlmox = null;
+	private JCheckBoxPad cbPrazoEnt = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -430,6 +431,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima",
 				"S", "N");
 		cbVendaMatPrim.setVlrString("N");
+		cbPrazoEnt = new JCheckBoxPad("Prazo de entrega na venda?", "S", "N");
+		cbPrazoEnt.setVlrString("S");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -519,6 +522,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbNatVenda, 7, 260, 160, 20, "NatVenda", "", true);
 		adicDB(cbVendaMatPrim, 177, 260, 300, 20, "VendaMatPrim", "", true);
 		adicDB(cbComisPDupl, 7, 280, 300, 20, "ComisPDupl", "", true);
+		adicDB(cbPrazoEnt, 7, 300, 300, 20, "UsaTabPE", "", true);
 
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
