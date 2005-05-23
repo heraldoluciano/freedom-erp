@@ -271,6 +271,15 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodCC = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 19, 0);
 	
+	private JTextFieldPad txtPrazoEnt = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldFK txtDias = new JTextFieldFK(
+			JTextFieldPad.TP_INTEGER, 5, 0);
+	
+	private JTextFieldFK txtDescPrazoEnt = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JTextFieldFK txtDescPlan = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
 	
@@ -412,6 +421,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcGrup = new ListaCampos(this, "GP");
 
 	private ListaCampos lcAlmox = new ListaCampos(this, "AX");
+	
+	private ListaCampos lcPrazoEnt = new ListaCampos(this, "PE");
 
 	private ListaCampos lcFatConv = new ListaCampos(this);
 	
@@ -465,7 +476,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	public FProduto() {
 		setTitulo("Cadastro de Produtos");
-		setAtribos(30, 10, 700, 497);
+		setAtribos(30, 10, 680, 565);
 
 		lcFatConv.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcFatConv);
@@ -552,6 +563,19 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcAlmox.setReadOnly(true);
 		lcAlmox.setQueryCommit(false);
 		txtCodAlmox.setTabelaExterna(lcAlmox);
+		
+		lcPrazoEnt.add(new GuardaCampo(txtPrazoEnt, "CodPE", "Prazo para entrega",
+				ListaCampos.DB_PK, false));
+		lcPrazoEnt.add(new GuardaCampo(txtDescPrazoEnt, "DescPE",
+				"Descrição do prazo de entrega", ListaCampos.DB_SI, false));
+		lcPrazoEnt.add(new GuardaCampo(txtDias, "DiasPE",
+				"Nº de dias", ListaCampos.DB_SI, false));
+		lcPrazoEnt.montaSql(false, "PRAZOENT", "VD");
+		lcPrazoEnt.setReadOnly(true);
+		lcPrazoEnt.setQueryCommit(false);
+		txtPrazoEnt.setTabelaExterna(lcPrazoEnt);
+
+
 
 		vValsTipo.addElement("P");
 		vValsTipo.addElement("S");
@@ -574,7 +598,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		vLabsCV.addElement("Compra");
 		vLabsCV.addElement("Venda");
 		vLabsCV.addElement("Ambos");
-		rgCV = new JRadioGroup(1, 3, vLabsCV, vValsCV);
+		rgCV = new JRadioGroup(3, 1, vLabsCV, vValsCV);
 		rgCV.setVlrString("V");
 
 		vValsTF.addElement("P");
@@ -713,63 +737,70 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				ListaCampos.DB_SI, true);
 		adicCampo(txtQtdMaxProd, 440, 140, 72, 20, "QtdMaxProd", "Qtd.máx.",
 				ListaCampos.DB_SI, true);
-		adicCampo(txtLocalProd, 7, 180, 100, 20, "LocalProd", "Local armz.",
+		adicCampo(txtLocalProd, 7, 180, 165, 20, "LocalProd", "Local armz.",
 				ListaCampos.DB_SI, false);
 
-		adic(new JLabelPad("Custo MPM"), 110, 160, 87, 20);
-		adic(txtCustoMPMProd, 110, 180, 87, 20);
-		adic(new JLabelPad("Custo PEPS"), 200, 160, 87, 20);
-		adic(txtCustoPEPSProd, 200, 180, 87, 20); // Sem inserir no lista campos
-		adicCampo(txtSldProd, 290, 180, 87, 20, "SldProd", "Saldo",
+		adic(new JLabelPad("Custo MPM"), 175, 160, 87, 20);
+		adic(txtCustoMPMProd, 175, 180, 76, 20);
+		adic(new JLabelPad("Custo PEPS"), 254, 160, 87, 20);
+		adic(txtCustoPEPSProd, 254, 180, 76, 20); // Sem inserir no lista campos
+		adicCampo(txtSldProd, 333, 180, 76, 20, "SldProd", "Saldo",
 				ListaCampos.DB_SI, false);
-		adicCampo(txtSldResProd, 380, 180, 87, 20, "SldResProd", "Saldo res.",
+		adicCampo(txtSldResProd, 412, 180, 76, 20, "SldResProd", "Saldo res.",
 				ListaCampos.DB_SI, false);
-		adicCampo(txtSldConsigProd, 470, 180, 87, 20, "SldConsigProd",
+		adicCampo(txtSldConsigProd, 491, 180, 76, 20, "SldConsigProd",
 				"Saldo consig.", ListaCampos.DB_SI, false);
-		adicCampo(txtSldLiqProd, 560, 180, 90, 20, "SldLiqProd", "Saldo liq.",
+		adicCampo(txtSldLiqProd, 570, 180, 76, 20, "SldLiqProd", "Saldo liq.",
 				ListaCampos.DB_SI, false);
 
 		adic(new JLabelPad("Almoxarifado"), 7, 200, 87, 20);
-		adic(txtAlmox, 7, 220, 97, 20);
-		adic(new JLabelPad("Custo MPM"), 110, 200, 87, 20);
-		adic(txtCustoMPMAlmox, 110, 220, 87, 20);
-		adic(new JLabelPad("Custo PEPS"), 200, 200, 87, 20);
-		adic(txtCustoPEPSAlmox, 200, 220, 87, 20); 
-
-		adic(new JLabelPad("Saldo"), 290, 200, 87, 20);
-		adic(txtSldAlmox, 290, 220, 87, 20 );
-		adic(new JLabelPad("Saldo res."), 380, 200, 87, 20);
-		adic(txtSldResAlmox, 380, 220, 87, 20);
-		adic(new JLabelPad("Saldo consig."), 470, 200, 87, 20);
-		adic(txtSldConsigAlmox, 470, 220, 87, 20);
-		adic(new JLabelPad("Saldo liq."), 560, 200, 87, 20);
-		adic(txtSldLiqAlmox, 560, 220, 90, 20);
-		
-		adicDB(cbLote, 7, 260, 55, 20, "CLoteProd", "Estoque", true);
-		adicDB(cbAtivo, 65, 260, 57, 20, "AtivoProd", "Atividade", true);
-		adicDB(cbVerif, 125, 260, 77, 20, "VerifProd", "Abaixo custo", true);
-		adicDB(cbRMA, 205, 260, 50, 20, "RMAProd", "RMA", true);
-		adicCampo(txtDtUltCpProd, 265, 260, 72, 20, "DtUltCpProd",
+		adic(txtAlmox, 7, 220, 76, 20);
+		adicCampo(txtDtUltCpProd, 86, 220, 86, 20, "DtUltCpProd",
 				"Ultima compra", ListaCampos.DB_SI, false);
-		adicCampo(txtCodUnid, 340, 260, 77, 20, "CodUnid", "Cód.und.",
+		adic(new JLabelPad("Custo MPM"), 175, 200, 87, 20);
+		adic(txtCustoMPMAlmox, 175, 220, 76, 20);
+		adic(new JLabelPad("Custo PEPS"), 254, 200, 87, 20);
+		adic(txtCustoPEPSAlmox, 254, 220, 76, 20); 
+		adic(new JLabelPad("Saldo"), 333, 200, 87, 20);
+		adic(txtSldAlmox, 333, 220, 76, 20 );
+		adic(new JLabelPad("Saldo res."), 412, 200, 87, 20);
+		adic(txtSldResAlmox, 412, 220, 76, 20);
+		adic(new JLabelPad("Saldo consig."), 491, 200, 87, 20);
+		adic(txtSldConsigAlmox, 491, 220, 76, 20);
+		adic(new JLabelPad("Saldo liq."), 570, 200, 87, 20);
+		adic(txtSldLiqAlmox, 570, 220, 76, 20);
+		
+		
+		adicDB(cbLote, 450, 260, 80, 20, "CLoteProd", "Estoque", true);
+		adicDB(cbAtivo, 450, 300, 80, 20, "AtivoProd", "Atividade", true);
+		adicDB(cbVerif, 550, 260, 80, 20, "VerifProd", "Abaixo custo", true);
+		adicDB(cbRMA, 550, 300, 80, 20, "RMAProd", "RMA", true);
+		
+		adicCampo(txtCodUnid, 7, 260, 110, 20, "CodUnid", "Cód.und.",
 				ListaCampos.DB_FK, txtDescUnid, true);
-		adicDescFK(txtDescUnid, 420, 260, 230, 20, "DescUnid",
+		adicDescFK(txtDescUnid, 120, 260, 327, 20, "DescUnid",
 				"Descrição da unidade");
-		adicCampo(txtCodFisc, 7, 300, 110, 20, "CodFisc", "Cód.fisc.",
-				ListaCampos.DB_FK, txtDescFisc, true);
-		adicDescFK(txtDescFisc, 120, 300, 217, 20, "DescFisc",
-				"Descrição da classificação fiscal");
-		adicCampo(txtCodMarca, 340, 300, 77, 20, "CodMarca", "Cód.marca",
+		adicCampo(txtCodMarca, 7, 300, 110, 20, "CodMarca", "Cód.marca",
 				ListaCampos.DB_FK, txtDescMarca, true);
-		adicDescFK(txtDescMarca, 420, 300, 230, 20, "DescMarca",
+		adicDescFK(txtDescMarca, 120, 300, 327, 20, "DescMarca",
 				"Descrição da marca");
-		adicCampo(txtCodGrup, 7, 340, 110, 20, "CodGrup", "Cód.grupo",
+		adicCampo(txtCodFisc, 7, 340, 110, 20, "CodFisc", "Cód.fisc.",
+				ListaCampos.DB_FK, txtDescFisc, true);
+		adicDescFK(txtDescFisc, 120, 340, 327, 20, "DescFisc",
+				"Descrição da classificação fiscal");		
+		adicCampo(txtCodGrup, 7, 380, 110, 20, "CodGrup", "Cód.grupo",
 				ListaCampos.DB_FK, txtDescGrup, true);
-		adicDescFK(txtDescGrup, 120, 340, 217, 20, "DescGrup",
+		adicDescFK(txtDescGrup, 120, 380, 327, 20, "DescGrup",
 				"Descrição do grupo");
-		adicDB(rgCV, 340, 340, 270, 30, "CVProd", "Cadastro para:", true);
+		adicDB(rgCV, 450, 340, 140, 105, "CVProd", "Cadastro para:", true);
+		
+		adicCampo(txtPrazoEnt, 7, 420, 110, 20, "CodPE", "Cód.prazo.ent.",
+				ListaCampos.DB_FK, txtDescGrup, false);
+		adicDescFK(txtDescPrazoEnt, 120, 420, 240, 20, "DescPE",
+				"Descrição do prazo de entrega");
+		adicDescFK(txtDias, 363, 420, 85, 20, "DiasPE", "Dias p/ ent.");
 
-		adic(btExp, 620, 340, 30, 30);
+		adic(btExp, 610, 380, 30, 30);
 		
 		//Decrição completa
 
@@ -1461,6 +1492,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcMarca.setConexao(cn);
 		lcGrup.setConexao(cn);
 		lcAlmox.setConexao(cn);
+		lcPrazoEnt.setConexao(cn);
 		lcUnidFat.setConexao(cn);
 		lcPlan.setConexao(cn);
 		lcCC.setConexao(cn);
