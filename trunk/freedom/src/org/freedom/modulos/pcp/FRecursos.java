@@ -43,7 +43,8 @@ public class FRecursos extends FDados implements ActionListener {
   private ListaCampos lcTpRecp = new ListaCampos(this,"TR");
   public FRecursos () {
     setTitulo("Cadastro de recursos de producão.");
-    setAtribos( 50, 50, 350, 165);
+//    setAtribos( 50, 50, 365, 175);
+    setAtribos( 50, 50, 500, 500);
 
     lcTpRecp.add(new GuardaCampo( txtCodTpRecp, "Codtprec", "Cód.rec.", ListaCampos.DB_PK, txtDescTpRecp, true));
     lcTpRecp.add(new GuardaCampo( txtDescTpRecp, "Desctprec", "Descriçao do recurso", ListaCampos.DB_SI, false));
@@ -56,10 +57,10 @@ public class FRecursos extends FDados implements ActionListener {
     adicCampo(txtDescRecp, 80, 20, 240, 20,"descrecp","Descrição do recurso", ListaCampos.DB_SI, true);
     adicCampo(txtCodTpRecp, 7, 60, 70, 20, "Codtprec", "Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRecp, false);
     adicDescFK(txtDescTpRecp, 80, 60, 240, 20, "desctprec", "Descrição do tipo de recurso");
-    setListaCampos( false, "RECURSO", "PP");
+    setListaCampos( true, "RECURSO", "PP");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);    
+//    lcCampos.setQueryInsert(false);    
     setImprimir(true);
   }
   public void actionPerformed(ActionEvent evt) {
