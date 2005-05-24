@@ -63,7 +63,11 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 
   public Login (String sBanco, String sDriver, String sImg, int iCodEst) {
     
-	strBanco = sBanco;
+	
+    String sUsuarioTst = 	Aplicativo.getParameter("usuariotst");
+    String sSenhaTst = Aplicativo.getParameter("senhatst");
+    
+    strBanco = sBanco;
 	strDriver = sDriver;
 	
 	this.iCodEst = iCodEst;
@@ -89,13 +93,24 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
 	adic(new JLabelPad("Filial:"),7,iHeight+40,200,20);
 	adic(cbEmp,7,iHeight+60,283,20);
 	adic(lbInstrucoes,7,iHeight+83,300,20);
-        
+	
 	txtUsuario.addFocusListener(this);
 	txpSenha.addFocusListener(this);
 	cbEmp.addFocusListener(this);
 	btOK.addFocusListener(this);
 
-	setVisible(true);    
+	if((sUsuarioTst!=null) && (sSenhaTst!=null)){
+		if((sUsuarioTst.length()>0) && (sSenhaTst.length()>0)){
+			txtUsuario.setVlrString(sUsuarioTst);
+			txpSenha.setVlrString(sSenhaTst);
+			btOK.doClick();			
+		}	
+	}
+	
+	setVisible(true);
+	
+
+
   }
   public String[] getStrVals() {
   	 String[] ret = new String[3];
@@ -167,7 +182,6 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
     try {
 		props.put("user", sUsu);
 		props.put("password", sSenha);
-//		props.put("roleName", "testrole");
 		conLogin = DriverManager.getConnection(strBanco, props);
         conLogin.setAutoCommit(false);
     }
@@ -210,16 +224,6 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
             iFilialPadrao = rs.getInt(1);  
       }
       
-/*      if(bGera) {      	
-      	conLogin.commit();
-      	conLogin.setAutoCommit(false);
-      	conLogin.setAutoCommit(false);
-//      	return (montaCombo(sUsu,sSenha));
-      	
-      } */      
-      
-      /*if (!conLogin.getAutoCommit())
-      	conLogin.commit();*/
       cbEmp.setItens(vLabs,vVals);
       cbEmp.setVlrInteger(new Integer(iFilialPadrao));
       
@@ -292,7 +296,6 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
   		sSQL = "SELECT SRET FROM SGINICONSP(?,?,?,?)";  		
   		ps = conLogin.prepareStatement(sSQL);
   		ps.setInt(1,Aplicativo.iCodEmp);
-  		//ps.setInt(2,iFilialPadrao);
   		ps.setString(2,txtUsuario.getVlrString().trim().toLowerCase());
   		if (iFilialPadrao==0)
 		    ps.setNull(3,Types.INTEGER);
@@ -362,5 +365,4 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
      }
      super.actionPerformed(evt);
   }
-
 }    

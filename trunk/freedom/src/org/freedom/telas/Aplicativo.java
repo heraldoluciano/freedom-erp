@@ -88,7 +88,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strTefRet = "";
 	public static TabObjeto tbObjetos = null;
 	public static ImageIcon imgIcone = null;
-	public Vector vArqINI = null;
+	public static Vector vArqINI = null;
 	public String[][][] sConfig = new String[0][0][0];
 	public JPanelPad pinBotoes = new JPanelPad(30, 30);
 	public int iXPanel = 0;
@@ -994,7 +994,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return vRetorno;
 	}
 
-	public String getValorSecao(String sSecao, String sParam) {
+	public static String getValorSecao(String sSecao, String sParam) {
 		String sLinha = "";
 		String sLabel = "";
 		int iLocal = 0;
@@ -1018,7 +1018,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return "";
 	}
 
-	public String getParameter(String sParam) {
+	public static String getParameter(String sParam) {
 		return getValorSecao("parametros", sParam);
 	}
 
