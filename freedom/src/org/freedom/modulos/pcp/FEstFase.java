@@ -42,7 +42,7 @@ public class FEstFase extends FDetalhe {
   private JTextFieldPad txtNumSeqEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTpRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
+  private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
@@ -54,7 +54,7 @@ public class FEstFase extends FDetalhe {
   
   public FEstFase(int iCodProd) {
     setTitulo("Fases da estrutura");
-    setAtribos( 70, 40, 550, 390);
+    setAtribos( 70, 40, 550, 550);
     setAltCab(130);
     
     this.iCodProd = iCodProd;
@@ -75,7 +75,6 @@ public class FEstFase extends FDetalhe {
     lcProd.setQueryCommit(false);
     lcProd.setReadOnly(true);
     txtCodProd.setTabelaExterna(lcProd);
-    txtDescProd.setListaCampos(lcProd);
     
     adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
     adicDescFK(txtDescProd, 90, 20, 247, 20, "DescProd", "Descrição do produto");
@@ -91,7 +90,6 @@ public class FEstFase extends FDetalhe {
     lcFase.setQueryCommit(false);
     lcFase.setReadOnly(true);
     txtCodFase.setTabelaExterna(lcFase);
-    txtDescFase.setListaCampos(lcFase);
     
     lcTipoRec.add(new GuardaCampo(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_PK, true));
     lcTipoRec.add(new GuardaCampo(txtDescTpRec, "DescTpRec", "Descrição do tipo de recurso", ListaCampos.DB_SI, false));
@@ -99,7 +97,6 @@ public class FEstFase extends FDetalhe {
     lcTipoRec.setQueryCommit(false);
     lcTipoRec.setReadOnly(true);
     txtCodTpRec.setTabelaExterna(lcTipoRec);
-    txtDescTpRec.setListaCampos(lcTipoRec);
 
     setAltDet(100);
     pinDet = new JPanelPad(590,110);
@@ -108,11 +105,9 @@ public class FEstFase extends FDetalhe {
     setNavegador(navRod);
     adicCampo(txtNumSeqEf, 7, 20, 40, 20,"SeqEf","Item", ListaCampos.DB_PK, true);
     adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
-    //adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Código",ListaCampos.DB_FK,true);
     adicDescFK(txtDescFase, 130, 20, 227, 20, "DescFase", "Descrição da fase");
     adicCampo(txtTempoEf, 360, 20, 100, 20,"TempoEf","Tempo (Seg.)",ListaCampos.DB_SI,true);
-    adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_SI, txtDescTpRec, true);
-    //adicCampo(txtCodTpRec, 7, 60, 60, 20,"CodTpRec","Código",ListaCampos.DB_FK,true);
+    adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true);
     adicDescFK(txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Descrição do tipo de recurso");
     setListaCampos( true, "ESTRUFASE", "PP");
     lcDet.setQueryInsert(false);

@@ -64,7 +64,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtRefProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtDescProdDet = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtQtdProdOP = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtDtValidOP = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -146,7 +145,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	}
   	else {
   		adic(new JLabelPad("Referência"),60,0,70,20);
-  		adic(txtRefProdEst,80,20,70,20);
+//  		adic(txtRefProdEst,80,20,70,20);
   		adicCampo(txtRefProdEst, 80, 20, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
   		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
   	  	txtRefProdEst.setFK(true);
