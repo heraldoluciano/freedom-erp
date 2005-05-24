@@ -624,9 +624,10 @@ public class FRma extends FDetalhe implements PostListener,
 		imp.verifLinPag();
 		imp.montaCab();
 		imp.setTitulo("Impressão de RMA");
-		String sSQL = "SELECT (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA),"
-				+ "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,"
-				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA,I.SITITRMA, P.REFPROD,P.DESCPROD, P.CODUNID,"
+		String sSQL = "SELECT  (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA),"
+				+ "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA, R.IDUSU, R.IDUSUAPROV, R.IDUSUEXP"
+				+ "I.DTAPROVITRMA, I.DTAEXPITRMA,"
+				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA,I.SITITRMA, P.REFPROD,P.DESCPROD, P.CODUNID,"
 				+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC"
 				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
 				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
@@ -661,14 +662,36 @@ public class FRma extends FDetalhe implements PostListener,
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
 					imp.impCab(136, false);
-					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-					imp.say(imp.pRow() + 0, 4, "REQUISIÇÃO DE MATERIAL No.: ");
-					imp.say(imp.pRow() + 0, 25, rs.getString("CODRMA"));
-					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 96, "[ Data de emissão ]");
+					imp.say(imp.pRow() + 0, 4, "R.M.A.   No.: ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("CODRMA"));
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 4, "Requisitante: ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSU"));
+					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
+					imp.say(imp.pRow() + 0, 38, rs.getString("CODCC"));
+					imp.say(imp.pRow() + 0, 91, "- Data : ");
 					imp.say(imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate(rs.getDate("DTINS")));
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 4, "Aprovação   : ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUAPROV"));
+					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
+					imp.say(imp.pRow() + 0, 38, rs.getString("CODCC"));
+					imp.say(imp.pRow() + 0, 91, "- Data : ");
+					imp.say(imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate(rs.getDate("DTAPROVITRMA")));
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 4, "Expedição   : ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUEXP"));
+					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
+					imp.say(imp.pRow() + 0, 38, rs.getString("CODCC"));
+					imp.say(imp.pRow() + 0, 91, "- Data : ");
+					imp.say(imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate(rs.getDate("DTAEXPITRMA")));
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 4, "O.P/OS.:");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
+					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -680,23 +703,25 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 18, "Descrição dos produtos");
 					imp.say(imp.pRow() + 0, 60, "Qtd.req.");
 					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
-					imp.say(imp.pRow() + 0, 90, "Sit.item");
-//					imp.say(imp.pRow() + 0, 110, "Sit.compra");
-					imp.say(imp.pRow() + 0, 130, "Sit.aprov.");
+					imp.say(imp.pRow() + 0, 90, "Qtd.exp.");
+					imp.say(imp.pRow() + 0, 105, "Sit.item");
+					imp.say(imp.pRow() + 0, 120, "Sit.aprov.");
+					imp.say(imp.pRow() + 0, 130, "Sit.exp.");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 4, rs.getString("RefProd"));
-				imp.say(imp.pRow() + 0, 18, rs.getString("DescProd").substring(0, 39));
+				imp.say(imp.pRow() + 0, 4, rs.getString("REFPROD"));
+				imp.say(imp.pRow() + 0, 18, rs.getString("DESCPROD").substring(0, 40));
 				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITRMA"));
 				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITRMA"));
+				imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
 				if (rs.getString("SITITRMA").equalsIgnoreCase("PE"))
-					imp.say(imp.pRow() + 0, 90, "PENDENTE");
+					imp.say(imp.pRow() + 0, 105, "PENDENTE");
 				if (rs.getString("SITITRMA").equalsIgnoreCase("SC"))
-					imp.say(imp.pRow() + 0, 90, "CONCLUÍDO");
+					imp.say(imp.pRow() + 0, 105, "CONCLUÍDO");
 				if (rs.getString("SITITRMA").equalsIgnoreCase("SA"))
-					imp.say(imp.pRow() + 0, 90, "CANCELADO");
+					imp.say(imp.pRow() + 0, 105, "CANCELADO");
 //				if (rs.getString("SITCOMPITRMA").equalsIgnoreCase("PE"))
 	//				imp.say(imp.pRow() + 0, 110, "PENDENTE");
 //				if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CP"))
