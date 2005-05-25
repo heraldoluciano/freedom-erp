@@ -52,6 +52,8 @@ public class DLConsultaPgto extends FFDialogo {
   private JPanelPad pinConsulta = new JPanelPad(0,60);
   public DLConsultaPgto(Component cOrig,Connection cn,int iCodCli) {
   	super(cOrig);
+  	con = cn;
+    lcCli.setConexao(cn);
     txtCodCli.setVlrString(""+iCodCli);
     setTitulo("Consulta de Pagamentos");
     setAtribos(100,100,500,300);
@@ -75,7 +77,6 @@ public class DLConsultaPgto extends FFDialogo {
     txtRazCli.setListaCampos(lcCli);
     lcCli.montaSql(false, "CLIENTE", "VD");
     lcCli.setReadOnly(true);
-    lcCli.setConexao(con);
     lcCli.carregaDados();
 
     tabConsulta.adicColuna("Vencto.");
