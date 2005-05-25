@@ -64,7 +64,12 @@ public class NFMaviGesso extends Leiaute {
            if (bFat) {
              if (rsRec.next()) {
                sDuplics[i] = sNumNota+"/"+rsRec.getInt("NPARCITREC");
-               sVencs[i] = Funcoes.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
+               if ( (rsRec.getDate("DtVencItRec")!=null) && (rsRec.getDate("DtVencItRec").equals(rs.getDate("DtEmitVenda"))) ) {
+                  sVencs[i] = "A VISTA";
+               }
+               else {
+                  sVencs[i] = Funcoes.sqlDateToStrDate(rsRec.getDate("DtVencItRec"));
+               }
                sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,rsRec.getString("VlrParcItRec"));
              }
              else {
