@@ -625,9 +625,10 @@ public class FRma extends FDetalhe implements PostListener,
 		imp.montaCab();
 		imp.setTitulo("Impressão de RMA");
 		String sSQL = "SELECT  (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA),"
-				+ "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA, R.IDUSU, R.IDUSUAPROV, R.IDUSUEXP"
-				+ "I.DTAPROVITRMA, I.DTAEXPITRMA,"
-				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA,I.SITITRMA, P.REFPROD,P.DESCPROD, P.CODUNID,"
+				+ "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,"
+				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA, I.SITITRMA,I.DTAPROVITRMA,I.DTAEXPITRMA,"
+				+ "I.SITITRMA,I.SITAPROVITRMA,I.SITEXPITRMA,"
+				+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
 				+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC"
 				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
 				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
@@ -699,44 +700,63 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 4, "Referencia");
-					imp.say(imp.pRow() + 0, 18, "Descrição dos produtos");
+					imp.say(imp.pRow() + 0, 2, "Referencia");
+					imp.say(imp.pRow() + 0, 14, "Descrição dos produtos");
 					imp.say(imp.pRow() + 0, 60, "Qtd.req.");
 					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
 					imp.say(imp.pRow() + 0, 90, "Qtd.exp.");
-					imp.say(imp.pRow() + 0, 105, "Sit.item");
-					imp.say(imp.pRow() + 0, 120, "Sit.aprov.");
-					imp.say(imp.pRow() + 0, 130, "Sit.exp.");
+					imp.say(imp.pRow() + 0, 100, "Sit.item");
+					imp.say(imp.pRow() + 0, 110, "Sit.aprov.");
+					imp.say(imp.pRow() + 0, 122, "Sit.exp.");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 4, rs.getString("REFPROD"));
-				imp.say(imp.pRow() + 0, 18, rs.getString("DESCPROD").substring(0, 40));
+				imp.say(imp.pRow() + 0, 2, rs.getString("REFPROD"));
+				imp.say(imp.pRow() + 0, 14, rs.getString("DESCPROD").substring(0, 40));
 				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITRMA"));
 				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITRMA"));
 				imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
-				if (rs.getString("SITITRMA").equalsIgnoreCase("PE"))
-					imp.say(imp.pRow() + 0, 105, "PENDENTE");
-				if (rs.getString("SITITRMA").equalsIgnoreCase("SC"))
-					imp.say(imp.pRow() + 0, 105, "CONCLUÍDO");
-				if (rs.getString("SITITRMA").equalsIgnoreCase("SA"))
-					imp.say(imp.pRow() + 0, 105, "CANCELADO");
-//				if (rs.getString("SITCOMPITRMA").equalsIgnoreCase("PE"))
-	//				imp.say(imp.pRow() + 0, 110, "PENDENTE");
-//				if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CP"))
-	//				imp.say(imp.pRow() + 0, 110, "COMPRA PARCIAL");
-//				if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CT"))
-	//				imp.say(imp.pRow() + 0, 110, "COMPRA TOTAL");
-//				if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("PE"))
-	//				imp.say(imp.pRow() + 0, 130, "PENDENTE");
-		//		if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("AP"))
+					 if (rs.getString("SITITRMA").equalsIgnoreCase("PE"))
+					imp.say(imp.pRow() + 0, 95, "PE");
+				else if (rs.getString("SITITRMA").equalsIgnoreCase("AF"))
+					imp.say(imp.pRow() + 0, 95, "AF");
+				else if (rs.getString("SITITRMA").equalsIgnoreCase("SA"))
+					imp.say(imp.pRow() + 0, 95, "SA");
+				else if (rs.getString("SITITRMA").equalsIgnoreCase("EA"))
+					imp.say(imp.pRow() + 0, 95, "EA");
+				else if (rs.getString("SITITRMA").equalsIgnoreCase("EF"))
+					imp.say(imp.pRow() + 0, 95, "EF");
+					 if (rs.getString("SITAPROVITRMA").equalsIgnoreCase("PE"))
+					imp.say(imp.pRow() + 0, 105, "PE");
+				else if (rs.getString("SITAPROVITRMA").equalsIgnoreCase("AP"))
+					imp.say(imp.pRow() + 0, 105, "AP");
+				else if (rs.getString("SITAPROVITRMA").equalsIgnoreCase("AT"))
+					imp.say(imp.pRow() + 0, 105, "AT");
+				else if (rs.getString("SITAPROVITRMA").equalsIgnoreCase("NA"))
+					imp.say(imp.pRow() + 0, 105, "NA");
+					 if (rs.getString("SITEXPITRMA").equalsIgnoreCase("PE"))
+					imp.say(imp.pRow() + 0, 115, "PE");
+				else if (rs.getString("SITEXPITRMA").equalsIgnoreCase("EP"))
+					imp.say(imp.pRow() + 0, 115, "EP");
+				else if (rs.getString("SITEXPITRMA").equalsIgnoreCase("ET"))
+					imp.say(imp.pRow() + 0, 115, "ET");
+				else if (rs.getString("SITEXPITRMA").equalsIgnoreCase("NE"))
+					imp.say(imp.pRow() + 0, 115, "NE");
+			//	if (rs.getString("SITCOMPITRMA").equalsIgnoreCase("PE"))
+			//		imp.say(imp.pRow() + 0, 110, "PENDENTE");
+			//	if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CP"))
+			//		imp.say(imp.pRow() + 0, 130, "COMPRA PARCIAL");
+			//	if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CT"))
+			//		imp.say(imp.pRow() + 0, 130, "COMPRA TOTAL");
+			//	if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("PE"))
+			//		imp.say(imp.pRow() + 0, 130, "PENDENTE");
+			//	if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("AP"))
 			//		imp.say(imp.pRow() + 0, 130, "APROVAÇÂO PARCIAL");
-//				if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("AT"))
-	//				imp.say(imp.pRow() + 0, 130, "APROVAÇÂO TOTAL");
-		//		if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("NA"))
+			//	if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("AT"))
+			//		imp.say(imp.pRow() + 0, 130, "APROVAÇÂO TOTAL");
+			//	if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("NA"))
 			//		imp.say(imp.pRow() + 0, 130, "NÃO APROVADA");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				iItImp++;
 				if ((imp.pRow() >= iMaxItem) | (iItImp == rs.getInt(1))) {
 					if ((iItImp == rs.getInt(1))) {
@@ -747,27 +767,28 @@ public class FRma extends FDetalhe implements PostListener,
 						}
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
+					imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 60, "DADOS ADICIONAIS");
+					imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "");
+					imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 3, "MOTIVO DA REQUISIÇÃO: " + rs.getString("MOTIVORMA"));
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					if (rs.getString("SITRMA").equalsIgnoreCase("PE"))
+					if (rs.getString("SITITRMA").equalsIgnoreCase("PE"))
 						imp.say(imp.pRow() + 0, (116 - "Pendente".length()) / 2,
 								"SITUAÇÂO : PENDENTE");
-					if (rs.getString("SITRMA").equalsIgnoreCase("SC"))
+					if (rs.getString("SITITRMA").equalsIgnoreCase("SC"))
 						imp.say(imp.pRow() + 0, (116 - "Pendente".length()) / 2,
 								"SITUAÇÂO : CONCLUÍDA");
-					if (rs.getString("SITRMA").equalsIgnoreCase("SA"))
+					if (rs.getString("SITITRMA").equalsIgnoreCase("SA"))
 						imp.say(imp.pRow() + 0, (116 - "Pendente".length()) / 2,
 								"SITUAÇÂO : CANCELADA");
-					imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 3, "MOTIVO : " + rs.getString("MOTIVORMA"));
+					
 					imp.eject();
 				}
 			}
