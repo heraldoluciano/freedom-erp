@@ -1180,18 +1180,28 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 	private boolean testaLucro() {
 		boolean bRet = false;
-		String sCampoCusto = (bPrefs[3] ? "CUSTOMPMPROD" : "CUSTOPEPSPROD");
-		String sSQL = "SELECT COUNT(*) FROM SGPREFERE1 PF, EQPRODUTO P"
+		String sCampoCusto = (bPrefs[3] ? "NCUSTOMPM" : "NCUSTOPEPS");
+		String sSQL = "SELECT COUNT(*) " +
+				"FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C"
 				+ " WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
-				+ "P.CODPROD=? AND (((P." + sCampoCusto
+				+ "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
+				+ "(((C." + sCampoCusto
 				+ "/100)*(100+PF.PERCPRECOCUSTO)) <= ?"
 				+ " OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
 			ps.setInt(3, txtCodProd.getVlrInteger().intValue());
-			ps.setDouble(4, txtPrecoItVenda.doubleValue());
+			ps.setInt(4, Aplicativo.iCodEmp);
+			ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
+			ps.setInt(6, txtCodAlmoxItVenda.getVlrInteger().intValue());
+			ps.setInt(7, Aplicativo.iCodEmp);
+			ps.setInt(8, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setInt(9, Aplicativo.iCodEmp);
+			ps.setInt(10, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(11, txtCodProd.getVlrInteger().intValue());
+			ps.setDouble(12, txtPrecoItVenda.doubleValue());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next())
 				if (rs.getInt(1) == 1)
