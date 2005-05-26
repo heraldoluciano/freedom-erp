@@ -45,6 +45,7 @@ public class OPSwara extends LeiauteGR {
 	int iCodOP = 0;
 	String sDescProd = "";
 	String sQtd = "";
+	Double dbQtd = new Double(1);
 	String sDtFabrica = "";
 	String sDtValidade = "";
   
@@ -89,7 +90,10 @@ public class OPSwara extends LeiauteGR {
 		  }
 
 		  sDescProd  = (rs.getString(5)!=null?rs.getString(5).trim():"");
-		  sQtd       = (rs.getString(16)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(16)):"");
+//		  sQtd       = (rs.getString(16)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(16)):"");
+//		  sQtd       = (rs.getString(9)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(9)):"");
+		  dbQtd      = (rs.getString(9)!=null?new Double(Funcoes.strDecimalToBigDecimal(3,rs.getString(9)).doubleValue()):dbQtd);
+		  sQtd       = dbQtd.toString();
 		  sDtFabrica = (rs.getDate(8) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(8)) : ""); 
 		  sDtValidade= (rs.getDate(10) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(10)) : "");
 		  montaCabEmp(con);
@@ -167,8 +171,9 @@ public class OPSwara extends LeiauteGR {
                      
             setFonte(fnArial9N);
             drawTexto("Tempo estimado(min.):",220,iY);
-            setFonte(fnArial9);
-            drawTexto((rsFases.getFloat(5)/60)+"",330,iY);
+            setFonte(fnArial9); 
+            Double dbQtdEstr = new Double(rsFases.getFloat(5)/60);
+            drawTexto((dbQtdEstr.floatValue())*(dbQtd.floatValue())+"",330,iY);
             iY = iY+10;
     		drawLinha(5,iY,5,0,AL_CDIR);
             iY = iY+12;

@@ -23,7 +23,9 @@
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.JPanelPad;
@@ -35,10 +37,23 @@ public class FPrefereProd extends FTabDados {
     private JTextFieldPad txtIdentProfResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
     private JTextFieldPad txtCargoResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JPanelPad pinGeral = new JPanelPad();
+	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+
 	public FPrefereProd() {
 		setTitulo("Preferências de Produção");
-		setAtribos(50, 50, 330, 375);
+		setAtribos(50, 50, 370, 375);
 		
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
+		lcTipoMov.setWhereAdic(" TIPOMOV='OP' ");
+		lcTipoMov.setQueryCommit(false);
+		lcTipoMov.setReadOnly(true);
+		txtCodTipoMov.setTabelaExterna(lcTipoMov);
+		txtCodTipoMov.setFK(true);
+	
 		lcCampos.setMensInserir(false);
 		
         setPainel(pinGeral);
@@ -58,7 +73,8 @@ public class FPrefereProd extends FTabDados {
         setPainel(pinGeral);
 
         adicCampo(txtClass,7,200,200,20,"CLASSOP","Classe padrão para O.P.", ListaCampos.DB_SI,false);
-
+        adicCampo(txtCodTipoMov,7,240,100,20,"CODTIPOMOV","Cd.Tp.Mov.OP.",ListaCampos.DB_FK,txtDescTipoMov,true);
+        adicDescFK(txtDescTipoMov,110,240,200,20,"DESCTIPOMOV","Descrição do tipo de movimento");
 		setListaCampos(false, "PREFERE5", "SG");
 		
         nav.setAtivo(0,false);
@@ -66,6 +82,7 @@ public class FPrefereProd extends FTabDados {
         
 	}
 	public void setConexao(Connection cn) {
+		lcTipoMov.setConexao(cn);
 		super.setConexao(cn);
 		lcCampos.carregaDados();
 	}

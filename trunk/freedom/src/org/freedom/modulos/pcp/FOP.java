@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -59,7 +60,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-  private JTextFieldPad txtQtdEst = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
+  private JTextFieldPad txtQtdEst = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtCodProdDet = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtRefProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -68,15 +69,20 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtQtdProdOP = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtDtValidOP = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtSeqItOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0); 
-  private JTextFieldPad txtQtdItOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
+  private JTextFieldPad txtQtdItOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtCodLoteProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-  private ListaCampos lcProdEstCod = new ListaCampos(this,"PP");
-  private ListaCampos lcProdEstRef = new ListaCampos(this,"PP");
+  private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
+  private ListaCampos lcProdEstRef = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetRef = new ListaCampos(this,"PD");
   private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
+  private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
+  private JTextFieldPad txtCodTpMov = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+  private Integer iCodTpMov = null;
+  
   public FOP () { }
   private void montaTela() {
 /*  	
@@ -88,35 +94,102 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   */	
   	setTitulo("Cadastro de Ordens de produção");
   	setAtribos( 10, 10, 600, 500);
-  	setAltCab(130);
-    
-  	txtSeqItOp.setAtivo(false);
-  	txtQtdItOp.setAtivo(false);
-  	txtCodProdDet.setAtivo(false);
-  	txtRefProdDet.setAtivo(false);
-  	txtCodProdEst.setAtivo(false);
-    btFase.setEnabled(false);
+  	setAltCab(180);
+  	
+	lcTipoMov.add(new GuardaCampo(txtCodTpMov, "CodTipoMov",
+			"Cód.tp.mov.", ListaCampos.DB_PK, false));
+	lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov",
+			"Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+	lcTipoMov.setWhereAdic("((ESTIPOMOV = 'E') AND TIPOMOV='OP' AND"
+						 + " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU "
+					     + "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "
+					     + "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
+					     + Aplicativo.iCodEmp + " AND " + "TU.CODFILIALUS="
+					     + ListaCampos.getMasterFilial("SGUSUARIO")
+					     + " AND TU.IDUSU='" + Aplicativo.strUsuario + "') ) "
+					     + ")");
+	lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
+	lcTipoMov.setReadOnly(true);
+	txtCodTpMov.setTabelaExterna(lcTipoMov);
   	
   	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true));
-  	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descriçao da estrutura", ListaCampos.DB_FK, false));
+  	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descriçao da estrutura", ListaCampos.DB_SI, false));
     lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referencia", ListaCampos.DB_SI, false));  	
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
   	lcProdEstCod.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstCod.setQueryCommit(false);
   	lcProdEstCod.setReadOnly(true);
   	txtCodProdEst.setTabelaExterna(lcProdEstCod);
-  	txtCodProdEst.setNomeCampo("codprod");
+  	txtCodProdEst.setNomeCampo("codprod");  	
 
-  	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true));
+    lcProdEstRef.add(new GuardaCampo( txtRefProdEst, "refprod", "Referencia", ListaCampos.DB_PK, txtDescEst, true));
+  	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdEstRef.add(new GuardaCampo( txtDescEst, "DescEst", "Descriçao da estrutura", ListaCampos.DB_SI, false));
-    lcProdEstRef.add(new GuardaCampo( txtRefProdEst, "refprod", "Referencia", ListaCampos.DB_SI, false));  	
+  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false));
   	lcProdEstRef.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstRef.setQueryCommit(false);
   	lcProdEstRef.setReadOnly(true);
   	txtRefProdEst.setTabelaExterna(lcProdEstRef);
   	txtRefProdEst.setNomeCampo("refprod");
-  	  	
+
+    setListaCampos(lcCampos);
+    setPainel( pinCab, pnCliCab);
+    
+    adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
+	adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
+	adicDescFK(txtDescTipoMov, 153, 20, 260, 20, "DescTipoMov", "Cód.Tp.Mov.");
+
+  	if (!bPrefs[0]) {  
+  		adicCampo(txtCodProdEst, 7, 60, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
+  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProdEstCod.getWhereAdic()));
+  		adicCampoInvisivel(txtRefProdEst,"RefProd","Ref.prod.", ListaCampos.DB_FK, null, true);
+  	}
+  	else {
+  		adicCampo(txtRefProdEst, 7, 60, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
+  		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
+  	  	txtRefProdEst.setFK(true);
+  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdEstRef.getWhereAdic()));  	  	
+  	}
+
+  	adicDescFK(txtDescEst, 80, 60, 250, 20, "descprod", "Descrição da estrutura");
+  	
+  	adicCampo(txtQtdProdOP,7,100,100,20,"qtdprodop","Quantidade",ListaCampos.DB_SI, true);
+  	adicCampo(txtDtFabProd,110,100,100,20,"dtfabrop","Dt. fabricação",ListaCampos.DB_SI, true);
+  	adicCampo(txtDtValidOP,213,100,100,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
+
+  	setListaCampos( true, "OP", "PP");  	
+  	
+    txtCodTpMov.setAtivo(false);
+//    btFase.setEnabled(false);
+  	
+    lcCampos.addCancelListener(this);
+  	lcCampos.addPostListener(this);
+    lcCampos.addCarregaListener(this);
+  	lcCampos.addInsertListener(this);
+    lcProdEstCod.addCarregaListener(this);
+    lcProdEstRef.addCarregaListener(this);
+
+    btFase.addActionListener(this);
+    btImp.addActionListener(this);
+  	btPrevimp.addActionListener(this);     
+
+  	montaDet();
+  	
+  	setImprimir(true);
+  }
+  
+  private void montaDet(){
+  	setAltDet(60);  	
+  	pinDet = new JPanelPad(440,50);
+  	setPainel( pinDet, pnDet);
+
+  	txtCodLoteProdDet.setAtivo(false);
+  	txtSeqItOp.setAtivo(false);
+  	txtQtdItOp.setAtivo(false);
+  	txtCodProdDet.setAtivo(false);
+  	txtRefProdDet.setAtivo(false);
+  	
   	lcProdDetCod.add(new GuardaCampo( txtCodProdDet, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdDet, true));
   	lcProdDetCod.add(new GuardaCampo( txtDescProdDet, "Descprod", "Descriçao do produto", ListaCampos.DB_SI, false));
     lcProdDetCod.add(new GuardaCampo( txtRefProdDet, "refprod", "referencia", ListaCampos.DB_SI, false));
@@ -128,6 +201,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 
   	lcProdDetRef.add(new GuardaCampo( txtRefProdDet, "refprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdDet, true));
   	lcProdDetRef.add(new GuardaCampo( txtDescProdDet, "Descprod", "Descriçao do produto", ListaCampos.DB_SI, false));
+  	lcProdDetRef.add(new GuardaCampo( txtCodProdDet, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdDetRef.montaSql(false, "PRODUTO", "EQ");    
   	lcProdDetRef.setQueryCommit(false);
   	lcProdDetRef.setReadOnly(true);
@@ -135,35 +209,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtRefProdDet.setNomeCampo("refprod");
   	txtRefProdDet.setFK(true);
   	
-  	setListaCampos(lcCampos);
-  	setPainel( pinCab, pnCliCab);
-  	adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
-	
-  	if (!bPrefs[0]) {
-  	  	adicCampo(txtCodProdEst, 80, 20, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, true);
-  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProdEstCod.getWhereAdic()));
-  	}
-  	else {
-  		adic(new JLabelPad("Referência"),60,0,70,20);
-//  		adic(txtRefProdEst,80,20,70,20);
-  		adicCampo(txtRefProdEst, 80, 20, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
-  		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
-  	  	txtRefProdEst.setFK(true);
-  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdEstRef.getWhereAdic()));  	  	
-  	}
-  	
-  	adicDescFK(txtDescEst, 153, 20, 250, 20, "descprod", "Descrição da estrutura");
-  	adicCampo(txtQtdProdOP,406,20,100,20,"qtdprodop","Quantidade",ListaCampos.DB_SI, true);
-  	adicCampo(txtDtFabProd,7,60,100,20,"dtfabrop","Dt. fabricação",ListaCampos.DB_SI, true);
-  	adicCampo(txtDtValidOP,110,60,100,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, true);
-    adic(btFase,220,50,100,30);
-
-  	setListaCampos( true, "OP", "PP");
-  	lcCampos.setQueryInsert(true);  
-
-  	setAltDet(60);
-  	pinDet = new JPanelPad(440,50);
-  	setPainel( pinDet, pnDet);
   	setListaCampos(lcDet);
   	setNavegador(navRod);
 
@@ -192,17 +237,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     
     tab.setTamColuna(150,2);
 
-    lcCampos.addCancelListener(this);
-  	lcCampos.addPostListener(this);
-    lcCampos.addCarregaListener(this);
-  	lcCampos.addInsertListener(this);
-    lcProdEstCod.addCarregaListener(this);
-    lcProdEstRef.addCarregaListener(this);
-  	
-    btFase.addActionListener(this);
-    btImp.addActionListener(this);
-  	btPrevimp.addActionListener(this);     
-    setImprimir(true);
   }
   private void abreFase() {
     if (fPrim.temTela("OP x Fases")==false) {
@@ -210,6 +244,31 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
       fPrim.criatela("OP x Fases",tela,con);
       tela.setConexao(con);
     }
+  }
+  private void buscaTipoMov(){
+	if(txtCodTpMov.getVlrString().equals("")){
+		String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if(rs.getString(1)!=null) {				
+					iCodTpMov = new Integer(rs.getInt(1));
+				}
+				else {
+					iCodTpMov = new Integer(0);
+					Funcoes.mensagemInforma(null,"Não existe um tipo de movimento padrão para OP definido nas preferências!");
+				}
+			}
+			rs.close();
+			ps.close();
+		} 
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar documento de preferências!\n" + err.getMessage());
+		}
+	}
   }
   public void actionPerformed(ActionEvent evt) {
     super.actionPerformed(evt);    
@@ -223,13 +282,13 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   }
   public void beforeCarrega(CarregaEvent cevt) { }
   public void afterCarrega(CarregaEvent cevt) {
-    if (cevt.getListaCampos() == lcCampos) {
+/*    if (cevt.getListaCampos() == lcCampos) {
        btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));   
-    }
-    if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
+    }*/
+/*    if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
         if (lcCampos.getStatus() == ListaCampos.LCS_INSERT)
         	txtQtdProdOP.setVlrString(txtQtdEst.getVlrString());
-    }
+    }*/
   }        
   public void afterPost(PostEvent pevt) { 	
   	if (lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT) { 
@@ -243,7 +302,12 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtCodProdEst.setAtivo(false);
   }
   public void afterInsert(InsertEvent ievt) {
-  	txtCodProdEst.setAtivo(true);
+  	if(ievt.getListaCampos()==lcCampos){
+		buscaTipoMov();
+  		txtCodTpMov.setVlrInteger(iCodTpMov);
+		lcTipoMov.carregaDados();
+		txtDtFabProd.setVlrDate(new Date());
+	}			
   }
   public void beforeInsert(InsertEvent ievt) { }
   public void afterCancel(CancelEvent cevt) { }
@@ -255,6 +319,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstRef.setConexao(cn);
   	lcProdDetCod.setConexao(cn);
   	lcProdDetRef.setConexao(cn);
+  	lcTipoMov.setConexao(cn);
+  	
   }
   private void imprimir(boolean bVisualizar) {
 	Vector vParamOP = new Vector();
