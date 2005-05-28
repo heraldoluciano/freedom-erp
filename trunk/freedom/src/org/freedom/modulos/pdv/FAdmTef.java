@@ -111,7 +111,7 @@ public class FAdmTef extends FFilho implements ActionListener {
         for (int i=0;i<sLinhas.length;i++)
             sComprovante += sLinhas[i]+"\n";
         
-        while (!bRet) {
+        for (int i=0;i<3||bRet;i++) {
             if (!bf.relatorioGerencialTef(Aplicativo.strUsuario, sComprovante,AplicativoPDV.bModoDemo))
                 bRet = false;
             else {
@@ -120,6 +120,10 @@ public class FAdmTef extends FFilho implements ActionListener {
                 else
                     bRet = true;
             }
+        }
+        if (!bRet) {
+        	Funcoes.mensagemInforma(null,"Impressão não confimada, transação cancelada.");
+        	tef.naoConfirmaCNF(retTef);
         }
         tef.confirmaCNF(retTef);
         return bRet;
