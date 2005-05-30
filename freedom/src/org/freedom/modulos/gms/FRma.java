@@ -37,6 +37,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -133,8 +134,8 @@ public class FRma extends FDetalhe implements PostListener,
 	boolean bAprova = false;
 	boolean bExpede = false;
 	int cont = 0;
-	String[] prodcan = new String[(cont+1)];
-	String[] motivocan = new String[(cont+1)];
+	Vector vProdCan = new Vector();
+	Vector vMotivoCan = new Vector();
 	
 	boolean infadc = false;
 	
@@ -644,7 +645,8 @@ public class FRma extends FDetalhe implements PostListener,
 				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U " 
 				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " 
 				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP),"
-				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP)"
+				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP)," 
+				+ " I.MOTIVOCANCITRMA, I.CODPROD "	
 				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
 				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA"
@@ -746,9 +748,14 @@ public class FRma extends FDetalhe implements PostListener,
 				imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
 				imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
 				
-				if (rs.getString("SITITRMA") == "CA" || rs.getString("SITAPROVITRMA") == "CA" || rs.getString("SITEXPITRMA") == "CA"){					
-					prodcan[cont] = rs.getString("REFPROD");
-					motivocan[cont] = rs.getString("MOTIVOCANCITRMA");
+				if ((rs.getString("SITITRMA").equals("CA")) || (rs.getString("SITAPROVITRMA").equals("CA"))
+						|| (rs.getString("SITEXPITRMA").equals("CA"))){					
+					if(comRef())
+						vProdCan.addElement(rs.getString("REFPROD"));
+					else
+						vProdCan.addElement(rs.getString("CODPROD"));
+					
+					vMotivoCan.addElement(rs.getString("MOTIVOCANCITRMA")!=null?rs.getString("MOTIVOCANCITRMA"):"");
 					cont ++;
 					infadc = true;
 				}
@@ -766,10 +773,12 @@ public class FRma extends FDetalhe implements PostListener,
 			if (infadc = true){
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:");
-				for (int i = 0; i <= cont; i++){
+				for (int i = 0; vProdCan.size()>i; i++){
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 4, prodcan[i]);
-					imp.say(imp.pRow() + 0, 10, motivocan[i].substring(0, 123));
+					imp.say(imp.pRow() + 0, 4, vProdCan.elementAt(i).toString());
+					String sMotivoCanc = vMotivoCan.elementAt(i).toString();
+					
+					imp.say(imp.pRow() + 0, 10, sMotivoCanc.substring(0, sMotivoCanc.length()>123?123:sMotivoCanc.length()));
 				}
 			}
 			
@@ -789,7 +798,7 @@ public class FRma extends FDetalhe implements PostListener,
 					+ err.getMessage());
 		}
 
-		if (bVisualizar) {
+		if (bVisualizar) { 
 			imp.preview(this);
 		} else {
 			imp.print();
