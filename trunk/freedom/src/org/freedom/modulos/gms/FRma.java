@@ -673,8 +673,7 @@ public class FRma extends FDetalhe implements PostListener,
 			//iMaxItem = imp.verifLinPag() - 23;
 			while (rs.next()) {
 				if (imp.pRow()>=(linPag-1)) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
+					
 		            imp.incPags();
 		            imp.eject();
 		       }
@@ -750,15 +749,15 @@ public class FRma extends FDetalhe implements PostListener,
 			imp.say(imp.pRow() + 0, 0, "");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "");
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "");
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 3, "MOTIVO DA REQUISIÇÃO: " + rs.getString("MOTIVORMA"));
+			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 8, rs.getString(1));
-			imp.say(imp.pRow() + 0, 22, rs.getString("MOTIVOCANCRMA"));
+			imp.say(imp.pRow() + 0, 4, rs.getString(1));
+			imp.say(imp.pRow() + 0, 10, "- " + rs.getString("MOTIVOCANCRMA"));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
 			
 			
 			imp.eject();
