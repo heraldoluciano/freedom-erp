@@ -132,7 +132,12 @@ public class FRma extends FDetalhe implements PostListener,
 	boolean[] bPrefs = null;
 	boolean bAprova = false;
 	boolean bExpede = false;
-
+	int cont = 0;
+	String[] prodcan = new String[(cont+1)];
+	String[] motivocan = new String[(cont+1)];
+	
+	boolean infadc = false;
+	
 	public FRma() {
 		setAtribos(15, 10, 763, 580);
 
@@ -672,8 +677,7 @@ public class FRma extends FDetalhe implements PostListener,
 			imp.limpaPags();
 			//iMaxItem = imp.verifLinPag() - 23;
 			while (rs.next()) {
-				if (imp.pRow()>=(linPag-1)) {
-					
+				if (imp.pRow()>=(linPag-1)) {					
 		            imp.incPags();
 		            imp.eject();
 		       }
@@ -742,6 +746,13 @@ public class FRma extends FDetalhe implements PostListener,
 				imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
 				imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
 				
+				if (rs.getString("SITITRMA") == "CA" || rs.getString("SITAPROVITRMA") == "CA" || rs.getString("SITEXPITRMA") == "CA"){					
+					prodcan[cont] = rs.getString("REFPROD");
+					motivocan[cont] = rs.getString("MOTIVOCANCITRMA");
+					cont ++;
+					infadc = true;
+				}
+				
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
@@ -750,12 +761,18 @@ public class FRma extends FDetalhe implements PostListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 3, "MOTIVO DA REQUISIÇÃO: " + rs.getString("MOTIVORMA"));
-			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:");
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 4, rs.getString(1));
-			imp.say(imp.pRow() + 0, 10, "- " + rs.getString("MOTIVOCANCRMA"));
+			imp.say(imp.pRow() + 0, 3, "MOTIVO DA REQUISIÇÃO: " + rs.getString("MOTIVORMA"));			
+			
+			if (infadc = true){
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:");
+				for (int i = 0; i <= cont; i++){
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 4, prodcan[i]);
+					imp.say(imp.pRow() + 0, 10, motivocan[i].substring(0, 123));
+				}
+			}
+			
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
 			
