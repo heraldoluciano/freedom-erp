@@ -92,6 +92,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtPrecoItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+	private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,	19, 0);
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
@@ -110,10 +111,12 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtSitItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitAprovItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitExpItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-
 	private JTextFieldPad txtSitRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitAprovRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitExpRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+	private JTextFieldFK txtVencLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtSaldoLote = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
 
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoRma);
 
@@ -121,6 +124,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
+	private ListaCampos lcLote = new ListaCampos(this, "LE");
 	private ListaCampos lcUsu = new ListaCampos(this,"UU");
 	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
@@ -182,6 +186,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
@@ -197,7 +202,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
 		txtDescAlmox.setSoLeitura(true);
-		txtCodAlmox.setTabelaExterna(lcAlmox);
+		txtCodAlmox.setTabelaExterna(lcAlmox);	
 
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
 		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false));
@@ -207,6 +212,18 @@ public class FRma extends FDetalhe implements PostListener,
 		lcCC.setReadOnly(true);
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
+		
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",
+				ListaCampos.DB_PK, txtVencLote, false));
+		lcLote.add(new GuardaCampo(txtVencLote, "VenctoLote", "Dt.vencto.",
+				ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtSaldoLote, "SldLiqLote", "Saldo",
+				ListaCampos.DB_SI, false));
+		lcLote.setDinWhereAdic("CODPROD=#N", txtCodProd);
+		lcLote.montaSql(false, "LOTE", "EQ");
+		lcLote.setQueryCommit(false);
+		lcLote.setReadOnly(true);
+		txtCodLote.setTabelaExterna(lcLote);
 
 		lcUsu.add(new GuardaCampo(txtIDUsu,"idusu","Id.Usu.",ListaCampos.DB_PK,false));
 	    lcUsu.add(new GuardaCampo(txtNomeUsu,"nomeusu","Nome do usuário",ListaCampos.DB_SI,false));
@@ -322,10 +339,12 @@ public class FRma extends FDetalhe implements PostListener,
 		
 		adicCampo(txtQtdAprovRma, 400, 20, 77, 20, "QtdAprovItRma", "Qtd.aprov.",	ListaCampos.DB_SI, false);
 		adicCampo(txtQtdExpRma, 480, 20, 77, 20, "QtdExpItRma", "Qtd.exp.",	ListaCampos.DB_SI, false);
+		adicCampo(txtCodLote, 560, 20, 77, 20, "CodLote", "Lote",	ListaCampos.DB_FK, false);
 		adicCampoInvisivel(txtPrecoItRma,"PrecoItRma", "Preço",ListaCampos.DB_SI, true);
 				
 		txtCodAlmox.setNaoEditavel(true);
 		txtPrecoItRma.setNaoEditavel(true);
+		
 				
 		adicCampoInvisivel(txtCodAlmox,"CodAlmox", "Cód.Almox.",ListaCampos.DB_FK,txtDescAlmox, false);
 		adicDescFKInvisivel(txtDescAlmox, "DescAlmox","Descrição do almoxarifado");		 
@@ -419,6 +438,7 @@ public class FRma extends FDetalhe implements PostListener,
 		txtRefProd.setNaoEditavel(bHab);
 		txtQtdItRma.setNaoEditavel(bHab);
 		txaMotivoRma.setEnabled(!bHab);
+		txtCodLote.setNaoEditavel(bHab);
 	}
 	private void desabAprov(boolean bHab){
 		if(txtSitAprovRma.getVlrString().equals("AT")){
@@ -456,9 +476,10 @@ public class FRma extends FDetalhe implements PostListener,
 			btFinExpRMA.setEnabled(!bHab);
 			
 		}
-		
+		txtCodLote.setNaoEditavel(bHab);
 		btExpedirRMA.setEnabled(!bHab);
-		txtQtdExpRma.setNaoEditavel(bHab);		
+		txtQtdExpRma.setNaoEditavel(bHab);
+		
 	}
 
 	
@@ -514,6 +535,10 @@ public class FRma extends FDetalhe implements PostListener,
 			desabExp(true);
 		else
 			desabExp(false);
+		
+		if (txtCLoteProd.getText().trim().equals("N")){
+			txtCodLote.setNaoEditavel(true);
+		}
 		
 		if(((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) && ((lcDet.getStatus()==ListaCampos.LCS_EDIT) || ((lcDet.getStatus()==ListaCampos.LCS_INSERT)))) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
@@ -935,6 +960,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcTipoMov.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
+		lcLote.setConexao(cn);
 		lcCC.setConexao(cn);
 		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());
 		lcAlmox.setConexao(cn);
