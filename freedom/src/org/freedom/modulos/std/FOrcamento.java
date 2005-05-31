@@ -898,7 +898,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				dl.setVisible(true);
 			} else
 				imp.imprimir(true);
-		} else {
+		} 
+		else {
 			try {
 				leiOrc = (LeiauteGR) Class.forName(
 						"org.freedom.layout." + sClassOrc).newInstance();
@@ -907,8 +908,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				vParamOrc.addElement(txtCodOrc.getText());
 				vParamOrc.addElement(txtCodCli.getText());
 				leiOrc.setParam(vParamOrc);
-				if (bVisualizar)
-					dl = new FPrinterJob(leiOrc, this);
+				if (bVisualizar){
+					dl = new FPrinterJob(leiOrc,this);
+				    dl.setVisible(true);
+				}
 				else
 					leiOrc.imprimir(true);
 			} catch (Exception err) {
