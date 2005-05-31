@@ -185,7 +185,11 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 	try {
 	  setMaximum(true);
 	}
-	catch (Exception err) { }  }
+	catch (Exception err) { 
+	   err.printStackTrace();
+	}  
+	
+  }
   
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btSair)
