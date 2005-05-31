@@ -115,8 +115,8 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtSitAprovRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitExpRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-	private JTextFieldFK txtVencLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldPad txtSaldoLote = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
+	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
 
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoRma);
 
@@ -176,6 +176,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
 
 		lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
@@ -186,7 +187,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
@@ -213,17 +214,18 @@ public class FRma extends FDetalhe implements PostListener,
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
 		
-		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",
-				ListaCampos.DB_PK, txtVencLote, false));
-		lcLote.add(new GuardaCampo(txtVencLote, "VenctoLote", "Dt.vencto.",
-				ListaCampos.DB_SI, false));
-		lcLote.add(new GuardaCampo(txtSaldoLote, "SldLiqLote", "Saldo",
-				ListaCampos.DB_SI, false));
-		lcLote.setDinWhereAdic("CODPROD=#N", txtCodProd);
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLote, false));
+		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
+		lcLote.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ",txtCodProd);
+		lcLote.setDinWhereAdic("", txtDtaReqRma);
 		lcLote.montaSql(false, "LOTE", "EQ");
 		lcLote.setQueryCommit(false);
 		lcLote.setReadOnly(true);
 		txtCodLote.setTabelaExterna(lcLote);
+		txtDescLote.setListaCampos(lcLote);
+		txtDescLote.setNomeCampo("VenctoLote");
+		txtDescLote.setLabel("Vencimento");
 
 		lcUsu.add(new GuardaCampo(txtIDUsu,"idusu","Id.Usu.",ListaCampos.DB_PK,false));
 	    lcUsu.add(new GuardaCampo(txtNomeUsu,"nomeusu","Nome do usuário",ListaCampos.DB_SI,false));
@@ -341,7 +343,7 @@ public class FRma extends FDetalhe implements PostListener,
 		adicCampo(txtQtdExpRma, 480, 20, 77, 20, "QtdExpItRma", "Qtd.exp.",	ListaCampos.DB_SI, false);
 		adicCampo(txtCodLote, 560, 20, 77, 20, "CodLote", "Lote",	ListaCampos.DB_FK, false);
 		adicCampoInvisivel(txtPrecoItRma,"PrecoItRma", "Preço",ListaCampos.DB_SI, true);
-				
+			
 		txtCodAlmox.setNaoEditavel(true);
 		txtPrecoItRma.setNaoEditavel(true);
 		
@@ -377,6 +379,33 @@ public class FRma extends FDetalhe implements PostListener,
 //		pinBotDet.adic(btMotivoCancelaItRMA,0,31,110,30);
 //		pinDet.adic(pinBotDet,630,1,114,66);
 		
+	}
+	private void buscaLote() {
+		String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
+				+ "L.CODPROD=? AND L.CODFILIAL=? AND L.SLDLIQLOTE>0 "
+				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
+				+ "( "
+				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
+				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 "
+				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(2, lcProd.getCodFilial());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				String sCodLote = rs.getString(1);
+				if (sCodLote != null) {
+					txtCodLote.setVlrString(sCodLote.trim());
+					lcLote.carregaDados();
+				}
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+		}
 	}
     private void buscaInfoUsuAtual() {        
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " +
@@ -438,7 +467,6 @@ public class FRma extends FDetalhe implements PostListener,
 		txtRefProd.setNaoEditavel(bHab);
 		txtQtdItRma.setNaoEditavel(bHab);
 		txaMotivoRma.setEnabled(!bHab);
-		txtCodLote.setNaoEditavel(bHab);
 	}
 	private void desabAprov(boolean bHab){
 		if(txtSitAprovRma.getVlrString().equals("AT")){
@@ -476,9 +504,11 @@ public class FRma extends FDetalhe implements PostListener,
 			btFinExpRMA.setEnabled(!bHab);
 			
 		}
-		txtCodLote.setNaoEditavel(bHab);
+		
 		btExpedirRMA.setEnabled(!bHab);
 		txtQtdExpRma.setNaoEditavel(bHab);
+		txtCodLote.setNaoEditavel(bHab);
+			
 		
 	}
 
@@ -533,17 +563,17 @@ public class FRma extends FDetalhe implements PostListener,
 		
 		if(!bExpede || bStatusTravaExp)
 			desabExp(true);
-		else
+		else{
 			desabExp(false);
-		
-		if (txtCLoteProd.getText().trim().equals("N")){
-			txtCodLote.setNaoEditavel(true);
+			if(txtCLoteProd.getVlrString().equals("N"))
+				txtCodLote.setAtivo(false);
+			else
+				txtCodLote.setAtivo(true);
 		}
 		
 		if(((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) && ((lcDet.getStatus()==ListaCampos.LCS_EDIT) || ((lcDet.getStatus()==ListaCampos.LCS_INSERT)))) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
 		}
-
 	}
 
 	public boolean[] prefs() {
