@@ -138,6 +138,7 @@ public class FRma extends FDetalhe implements PostListener,
 	boolean bAprova = false;
 	boolean bExpede = false;
 	int cont = 0;
+	Vector vItem = new Vector();
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
 	
@@ -727,10 +728,11 @@ public class FRma extends FDetalhe implements PostListener,
 			ps.setInt(1,lcCampos.getCodEmp());
 			ps.setInt(2,lcCampos.getCodFilial());
 			ps.setInt(3,txtCodRma.getVlrInteger().intValue());
-
-
-		
+			
+			
+			
 			rs = ps.executeQuery();
+			
 			imp.limpaPags();
 			//iMaxItem = imp.verifLinPag() - 23;
 			while (rs.next()) {
@@ -739,11 +741,16 @@ public class FRma extends FDetalhe implements PostListener,
 		            imp.eject();
 		       }
 				if (imp.pRow() == 0) {
-					imp.impCab(136, false);
+					imp.impCab(136, true);					
+					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 0, "|"+Funcoes.replicate("=",133)+"|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "R.M.A.   No.: ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("CODRMA"));
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Requisitante: ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSU"));
 					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
@@ -751,7 +758,9 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 62, "-" + rs.getString("DESCCC"));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs.getDate("DTINS")));
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Aprovação   : ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUAPROV"));
 					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
@@ -759,7 +768,9 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 62, "-" + rs.getString(30));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs.getDate("DTAAPROVRMA")));
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Expedição   : ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUEXP"));
 					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
@@ -767,19 +778,23 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 62, "-" + rs.getString(32));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs.getDate("DTAEXPRMA")));
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "O.P/OS.:");
+					imp.say(imp.pRow() + 0, 136, "|");					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
+					imp.say(imp.pRow() + 0, 0, "|"+Funcoes.replicate("=",133)+"|");
 					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 57, "DADOS DO(S) PRODUTO(S)");
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 2, "Item");
 					imp.say(imp.pRow() + 0, 8, "Referencia");
 					imp.say(imp.pRow() + 0, 22, "Descrição dos produtos");
@@ -789,57 +804,81 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 100, "Sit.item");
 					imp.say(imp.pRow() + 0, 110, "Sit.aprov.");
 					imp.say(imp.pRow() + 0, 122, "Sit.exp.");
+					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 136, "|");
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
 				imp.say(imp.pRow() + 0, 2, rs.getString("CODITRMA"));
 				imp.say(imp.pRow() + 0, 8, rs.getString("REFPROD"));
 				imp.say(imp.pRow() + 0, 22, rs.getString("DESCPROD").substring(0, 37));
 				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITRMA"));
 				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITRMA"));
 				imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
-				imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITRMA"));
-				imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
-				imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
+				if (!rs.getString("SITITRMA").equals("CA"))
+					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITRMA"));
+				else imp.say(imp.pRow() + 0, 105, "--");
+				if (!rs.getString("SITAPROVITRMA").equals("NA"))
+					imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
+				else imp.say(imp.pRow() + 0, 115, "--");
+				if (!rs.getString("SITEXPITRMA").equals("NE"))
+					imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
+				else imp.say(imp.pRow() + 0, 125, "--");
+				imp.say(imp.pRow() + 0, 136, "|");
 				
-				if ((rs.getString("SITITRMA").equals("CA")) || (rs.getString("SITAPROVITRMA").equals("CA"))
-						|| (rs.getString("SITEXPITRMA").equals("CA"))){					
+				if ((rs.getString("SITITRMA").equals("CA")) || (rs.getString("SITAPROVITRMA").equals("NA"))
+						|| (rs.getString("SITEXPITRMA").equals("NE"))){					
 					if(comRef())
 						vProdCan.addElement(rs.getString("REFPROD"));
 					else
 						vProdCan.addElement(rs.getString("CODPROD"));
-					
-					vMotivoCan.addElement(rs.getString("MOTIVOCANCITRMA")!=null?rs.getString("MOTIVOCANCITRMA"):"");
+					vItem.addElement(rs.getString("CODITRMA"));
+					vMotivoCan.addElement(rs.getString("MOTIVOCANCRMA")!=null?rs.getString("MOTIVOCANCRMA"):"");
 					cont ++;
 					infadc = true;
 				}
 				
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
+			imp.say(imp.pRow() + 0, 0, "|"+Funcoes.replicate("=",133)+"|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "");
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
 			imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
-			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 3, "MOTIVO DA REQUISIÇÃO: " + rs.getString("MOTIVORMA"));			
-			
-			if (infadc = true){
+			imp.say(imp.pRow() + 0, 136, "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
+			imp.say(imp.pRow() + 0, 136, "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
+			imp.say(imp.pRow() + 0, 2, "MOTIVO DA REQUISIÇÃO: ");
+			String sMotivoRMA = (rs.getString("MOTIVORMA")!=null?rs.getString("MOTIVORMA"):"").trim();
+			imp.say(imp.pRow() + 0, 26, sMotivoRMA.substring(0, sMotivoRMA.length()>109?109:sMotivoRMA.length()));
+			imp.say(imp.pRow() + 0, 136, "|");
+			if (cont>0){
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
 				imp.say(imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:");
+				imp.say(imp.pRow() + 0, 136, "|");
 				for (int i = 0; vProdCan.size()>i; i++){
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 4, vProdCan.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, vItem.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 9, vProdCan.elementAt(i).toString());
 					String sMotivoCanc = vMotivoCan.elementAt(i).toString();
 					
-					imp.say(imp.pRow() + 0, 10, sMotivoCanc.substring(0, sMotivoCanc.length()>123?123:sMotivoCanc.length()));
+					imp.say(imp.pRow() + 0, 25, "- " + sMotivoCanc.substring(0, sMotivoCanc.length()>108?108:sMotivoCanc.length()));
+					imp.say(imp.pRow() + 0, 136, "|");
 				}
 			}
 			
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, Funcoes.replicate("=",135));
-			
+			imp.say(imp.pRow() + 0, 0, "+"+Funcoes.replicate("=",133)+"+");
+			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 52, Funcoes.replicate("_",41));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 62, "Ass. do requisitante");
 			
 			imp.eject();
 			

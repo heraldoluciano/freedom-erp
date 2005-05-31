@@ -26,7 +26,6 @@ package org.freedom.modulos.gms;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,16 +41,15 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
-
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -98,6 +96,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
+	String  sSitRMA = "";
 	public FConsRMA() {
 		setTitulo("Pesquisa Requisições de material");
 		setAtribos(10, 10, 663, 480);
@@ -369,13 +368,19 @@ public class FConsRMA extends FFilho implements ActionListener {
 				String sitRMA = rs.getString(1);
 				if (sitRMA.equalsIgnoreCase("PE")) {
 					imgColuna = imgPendente;
-				} else if (sitRMA.equalsIgnoreCase("CA")) {
+					sSitRMA = "Pendente";
+				} 
+				else if (sitRMA.equalsIgnoreCase("CA")) {
 					imgColuna = imgCancelada;
-				} else if (sitRMA.equalsIgnoreCase("EF")) {
+					sSitRMA = "Cancelada";
+				} 
+				else if (sitRMA.equalsIgnoreCase("EF")) {
 					imgColuna = imgExpedida;
+					sSitRMA = "Expedida";
 				} 
 				else if (sitRMA.equalsIgnoreCase("AF")) {
 					imgColuna = imgAprovada;
+					sSitRMA = "Aprovada";
 				}
 
 				tab.setValor(imgColuna, iLin, 0);
@@ -387,6 +392,8 @@ public class FConsRMA extends FFilho implements ActionListener {
 						iLin, 3);
 
 				iLin++;
+				
+				
 			}
 
 			if (!con.getAutoCommit())
@@ -446,27 +453,21 @@ public class FConsRMA extends FFilho implements ActionListener {
 				}
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|"
-						+ Funcoes.alinhaDir(tab.getValor(iLin, 1) + "", 8));
-				imp.say(imp.pRow() + 0, 15, "| "
-						+ Funcoes.alinhaDir(tab.getValor(iLin, 2) + "", 8));
-				imp.say(imp.pRow() + 0, 29, "| "
-						+ Funcoes.alinhaDir(tab.getValor(iLin, 0) + "", 8));
-				imp.say(imp.pRow() + 0, 45, "| "
-						+ Funcoes.alinhaDir(tab.getValor(iLin, 3) + "", 87));
+				imp.say(imp.pRow() + 0, 0, "|" + tab.getValor(iLin, 1));
+				imp.say(imp.pRow() + 0, 15, "| " + tab.getValor(iLin, 2));
+				imp.say(imp.pRow() + 0, 29, "| " + sSitRMA);
+				String sMotivo = ""+tab.getValor(iLin, 3);
+				imp.say(imp.pRow() + 0, 45, "| " + sMotivo.substring(0, sMotivo.length()>89?89:sMotivo.length()).trim());
 				imp.say(imp.pRow() + 0, 135, "| ");
 
 				if (bImpCot) {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 2, "|"
-							+ Funcoes.alinhaDir(tab.getValor(iLin, 2) + "", 8));
-					imp.say(imp.pRow() + 0, 15, "|"
-							+ Funcoes.alinhaDir(tab.getValor(iLin, 3) + "", 8));
+					imp.say(imp.pRow() + 0, 2, "|" + tab.getValor(iLin, 2));
+					imp.say(imp.pRow() + 0, 15, "|" + tab.getValor(iLin, 3));
 					imp.say(imp.pRow() + 0, 29, "|");
 					imp.say(imp.pRow() + 0, 41, "|");
 					imp.say(imp.pRow() + 0, 56, "|");
-					imp.say(imp.pRow() + 0, 87, "|"
-							+ Funcoes.alinhaDir(tab.getValor(iLin, 12) + "", 15));
+					imp.say(imp.pRow() + 0, 87, "|" + tab.getValor(iLin, 12));
 					imp.say(imp.pRow() + 0, 105, "|");
 					imp.say(imp.pRow() + 0, 124, "|");
 					imp.say(imp.pRow() + 0, 135, "|");
