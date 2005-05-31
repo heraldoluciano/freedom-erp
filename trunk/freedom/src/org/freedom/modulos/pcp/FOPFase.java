@@ -51,7 +51,7 @@ public class FOPFase extends FDetalhe {
   private int iCodOP;
   public FOPFase(int iCodOP) {
     setTitulo("Fases da OP");
-    setAtribos( 70, 40, 500, 390);
+    setAtribos( 70, 40, 630, 400);
     setAltCab(130);
     
     this.iCodOP = iCodOP;
@@ -120,9 +120,11 @@ public class FOPFase extends FDetalhe {
     lcCampos.setReadOnly(true);
 
     tab.setTamColuna(50,0);
-    tab.setTamColuna(150,2);
-    tab.setTamColuna(170,3);
-    tab.setTamColuna(120,5);
+    tab.setTamColuna(50,1);
+    tab.setTamColuna(200,2);
+    tab.setTamColuna(100,3);
+    tab.setTamColuna(50,4);
+    tab.setTamColuna(200,5);
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);

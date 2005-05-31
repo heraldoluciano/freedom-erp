@@ -63,7 +63,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 					addOpcao(100102000, TP_OPCAO_ITEM, "Estrutura", "Estrutura de produto",'E', 100102040, 2, true, FEstrutura.class);
 		
 		    addOpcao(100000000, TP_OPCAO_MENU, "Preferências", "", 'F', 110100000,1, false, null);
-				addOpcao(110100000, TP_OPCAO_ITEM, "Preferências gerais","Preferências gerais", 'G', 110105000, 2, true,FPrefereProd.class);
+				addOpcao(110100000, TP_OPCAO_ITEM, "Preferências de Produção","Preferências de Produção", 'u', 110105000, 2, true,FPrefereProd.class);
 			
 		addOpcao(-1, TP_OPCAO_MENU, "Produção", "", 'P', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Ordens de produção","Ordens de produção", 'O', 200100000, 1, true, FOP.class);
