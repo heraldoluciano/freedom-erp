@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -39,7 +40,10 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.SwingConstants;
+
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -61,6 +65,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JPanelPad pinCab = new JPanelPad(0, 185);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
@@ -78,6 +83,11 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private Tabela tab = new Tabela();
+	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
+	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
+	private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
+	private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
+	private ImageIcon imgColuna = null;
 	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
 	private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
 			JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
@@ -136,12 +146,15 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pnCli.add(spnTab, BorderLayout.CENTER);
 
 		btSair.setPreferredSize(new Dimension(100, 30));
-
-		JPanelPad pnBordaSair = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 3, 3));
-		pnBordaSair.add(btSair);
-		pnRod.add(pnBordaSair, BorderLayout.EAST);
-		JPanelPad pnBordaConsVenda = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 3, 3));
-		pnRod.add(pnBordaConsVenda, BorderLayout.WEST);
+		
+		pnLegenda.add(new JLabelPad("Cancelada",imgCancelada,SwingConstants.CENTER));
+		pnLegenda.add(new JLabelPad("Aprovada",imgAprovada,SwingConstants.CENTER));
+		pnLegenda.add(new JLabelPad("Expedida",imgExpedida,SwingConstants.CENTER));
+		pnLegenda.add(new JLabelPad("Pendente",imgPendente,SwingConstants.CENTER));
+		
+		pnRod.add(pnLegenda,BorderLayout.WEST);
+		pnRod.add(btSair, BorderLayout.EAST);
+		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbLinha2 = new JLabelPad();
@@ -184,12 +197,12 @@ public class FConsRMA extends FFilho implements ActionListener {
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
 
-		tab.adicColuna("Sit.");
+		tab.adicColuna("");
 		tab.adicColuna("Rma.");
 		tab.adicColuna("Data");
 		tab.adicColuna("Motivo");
 
-		tab.setTamColuna(80, 0);
+		tab.setTamColuna(12, 0);
 		tab.setTamColuna(80, 1);
 		tab.setTamColuna(90, 2);
 		tab.setTamColuna(250, 3);
@@ -355,16 +368,17 @@ public class FConsRMA extends FFilho implements ActionListener {
 				
 				String sitRMA = rs.getString(1);
 				if (sitRMA.equalsIgnoreCase("PE")) {
-					tab.setValor("Pendente", iLin, 0);
+					imgColuna = imgPendente;
 				} else if (sitRMA.equalsIgnoreCase("CA")) {
-					tab.setValor("Cancelada", iLin, 0);
+					imgColuna = imgCancelada;
 				} else if (sitRMA.equalsIgnoreCase("EF")) {
-					tab.setValor("Expedida", iLin, 0);
+					imgColuna = imgExpedida;
 				} 
 				else if (sitRMA.equalsIgnoreCase("AF")) {
-					tab.setValor("Aprovada", iLin, 0);
+					imgColuna = imgAprovada;
 				}
 
+				tab.setValor(imgColuna, iLin, 0);
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
 				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
 						.sqlDateToStrDate(rs.getDate(3))
