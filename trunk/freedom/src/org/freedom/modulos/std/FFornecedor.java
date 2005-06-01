@@ -214,7 +214,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	if (sValores[7].equals("C")) {
 	  String sSQL = "SELECT CODFOR,RAZFOR,PESSOAFOR,NOMEFOR,CONTFOR,ENDFOR,NUMFOR,"+
 					"BAIRFOR,CIDFOR,COMPLFOR,UFFOR,CEPFOR,CNPJFOR,INSCFOR,CPFFOR,RGFOR,"+
-					"FONEFOR,FAXFOR,EMAILFOR"+sObs+" FROM CPFORNECED"+sWhere+" ORDER BY "+sValores[0];
+					"FONEFOR,DDDFONEFOR,FAXFOR,EMAILFOR"+sObs+" FROM CPFORNECED"+sWhere+" ORDER BY "+sValores[0];
 	  PreparedStatement ps = null;
 	  ResultSet rs = null;
 	  try {
@@ -303,7 +303,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 			imp.say(imp.pRow()+0,54,rs.getString("RgFor"));
 		  }
 		  imp.say(imp.pRow()+0,80,"Tel:");
-		  imp.say(imp.pRow()+0,86,rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"(####)####-####") : "");
+		  imp.say(imp.pRow()+0,86,(rs.getString("DDDFoneFor") != null ? rs.getString("DDDFoneFor")+"-" : "")+
+				  				  (rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"####-####") : "").trim());
 		  imp.say(imp.pRow()+0,121,"Fax:");
 		  imp.say(imp.pRow()+0,126,rs.getString("FaxFor") != null ? Funcoes.setMascara(rs.getString("FaxFor"),"####-####") : "");
 		  imp.say(imp.pRow()+0,135,"|");
@@ -347,7 +348,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 	  }
 	}
 	else if (dl.getValores()[7].equals("R")) {
-	  String sSQL = "SELECT CODFOR,RAZFOR,ENDFOR,CIDFOR,FONEFOR FROM CPFORNECED"+sWhere+" ORDER BY "+dl.getValores()[0];
+	  String sSQL = "SELECT CODFOR,RAZFOR,ENDFOR,CIDFOR,DDDFONEFOR,FONEFOR FROM CPFORNECED"+sWhere+" ORDER BY "+dl.getValores()[0];
 //	  System.out.println("...ERRR>"+sSQL);
 	  PreparedStatement ps = null;
 	  ResultSet rs = null;
@@ -398,7 +399,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		  imp.say(imp.pRow()+0,10,rs.getString("RazFor") != null ? rs.getString("RazFor").substring(0,39) : "");
 		  imp.say(imp.pRow()+0,50,rs.getString("EndFor") != null ? rs.getString("EndFor").substring(0,39) : "");
 		  imp.say(imp.pRow()+0,90,rs.getString("CidFor") != null ? rs.getString("CidFor").substring(0,29) : "");
-		  imp.say(imp.pRow()+0,120,rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"(####)####-####") : "");
+		  imp.say(imp.pRow()+0,120,(rs.getString("DDDFoneFor") != null ? rs.getString("DDDFoneFor")+"-" : "")+
+				  				   (rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"####-####") : "").trim());
 		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  if (imp.pRow()>=linPag) {
