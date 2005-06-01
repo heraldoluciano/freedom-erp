@@ -37,6 +37,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -96,7 +97,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
-	String  sSitRMA = "";
+	private Vector vSitRMA = new Vector();
 	public FConsRMA() {
 		setTitulo("Pesquisa Requisições de material");
 		setAtribos(10, 10, 663, 480);
@@ -362,25 +363,26 @@ public class FConsRMA extends FFilho implements ActionListener {
 			int iLin = 0;
 
 			tab.limpa();
+			vSitRMA = new Vector();
 			while (rs.next()) {
 				tab.adicLinha();
 				
 				String sitRMA = rs.getString(1);
 				if (sitRMA.equalsIgnoreCase("PE")) {
 					imgColuna = imgPendente;
-					sSitRMA = "Pendente";
+					vSitRMA.addElement("Pendente");
 				} 
 				else if (sitRMA.equalsIgnoreCase("CA")) {
 					imgColuna = imgCancelada;
-					sSitRMA = "Cancelada";
+					vSitRMA.addElement("Cancelada");
 				} 
 				else if (sitRMA.equalsIgnoreCase("EF")) {
 					imgColuna = imgExpedida;
-					sSitRMA = "Expedida";
+					vSitRMA.addElement("Expedida");
 				} 
 				else if (sitRMA.equalsIgnoreCase("AF")) {
 					imgColuna = imgAprovada;
-					sSitRMA = "Aprovada";
+					vSitRMA.addElement("Aprovada");
 				}
 
 				tab.setValor(imgColuna, iLin, 0);
@@ -455,7 +457,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "|" + tab.getValor(iLin, 1));
 				imp.say(imp.pRow() + 0, 15, "| " + tab.getValor(iLin, 2));
-				imp.say(imp.pRow() + 0, 29, "| " + sSitRMA);
+				imp.say(imp.pRow() + 0, 29, "| " + vSitRMA.elementAt(iLin).toString());
 				String sMotivo = ""+tab.getValor(iLin, 3);
 				imp.say(imp.pRow() + 0, 45, "| " + sMotivo.substring(0, sMotivo.length()>89?89:sMotivo.length()).trim());
 				imp.say(imp.pRow() + 0, 135, "| ");
