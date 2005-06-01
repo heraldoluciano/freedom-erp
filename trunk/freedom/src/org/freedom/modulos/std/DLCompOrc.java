@@ -27,12 +27,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.math.BigDecimal;
+import java.sql.Connection;
 
 import org.freedom.componentes.JLabelPad;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
@@ -47,24 +50,40 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
   private JLabelPad lbVlrAdicOrc = new JLabelPad("V Adic.");
   private JLabelPad lbCodPlanoPag = new JLabelPad("Código e Desc. do plano de pagto.");
   private JCheckBoxPad cbImpOrc = new JCheckBoxPad("Imprime Orçamento?","S","N");
+  private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+  private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+  private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
   BigDecimal bValProd;
   boolean bDescIt = false;
   boolean bTestaAtend = false;
   JTextFieldPad txtAtend = null;
-  JTextFieldPad txtPlano = null;
-  public DLCompOrc(Component cOrig,boolean bDIt,BigDecimal bVP, BigDecimal bVD, BigDecimal bVA, JTextFieldPad txtCodPlanoPag,JTextFieldFK txtDescPlanoPag) {
-  	super(cOrig);
-    bDescIt = bDIt;
+
+  public DLCompOrc(Component cOrig,boolean bDIt,BigDecimal bVP, BigDecimal bVD, BigDecimal bVA, Integer iCodPlanoPag) {
+  	super(cOrig);    
+  	bDescIt = bDIt;
 	bValProd = bVP;
-    
     setTitulo("Completar Orçamento");
     setAtribos(380,240);
     
-    txtCodPlanoPag.setRequerido(true);
-    
+    txtCodPlanoPag.setVlrInteger(iCodPlanoPag);
     txtVlrDescOrc.setVlrBigDecimal(bVD);
 	txtVlrAdicOrc.setVlrBigDecimal(bVA);
-
+	
+    if (bDIt) {
+        txtPercDescOrc.setAtivo(false);
+        txtVlrDescOrc.setAtivo(false);
+      }
+  }
+  public void montaTela(){
+  	   
+	lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_PK,txtDescPlanoPag,true));
+	lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+	lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
+	lcPlanoPag.setReadOnly(true);
+	txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+	txtCodPlanoPag.setFK(true);
+	txtCodPlanoPag.setNomeCampo("CodPlanoPag");
+    
     adic(lbCodPlanoPag,7,0,270,20);
     adic(txtCodPlanoPag,7,20,80,20);
     adic(txtDescPlanoPag,90,20,260,20);
@@ -77,20 +96,14 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
     adic(lbVlrAdicOrc,260,40,90,20);
     adic(txtVlrAdicOrc,260,60,90,20);
     adic(cbImpOrc,7,100,150,20);
-
-    if (bDIt) {
-      txtPercDescOrc.setAtivo(false);
-      txtVlrDescOrc.setAtivo(false);
-    }
     
-	txtPlano = txtCodPlanoPag;
-
     txtPercDescOrc.addFocusListener(this);
     txtVlrDescOrc.addFocusListener(this);
     txtPercAdicOrc.addFocusListener(this);
     txtVlrAdicOrc.addFocusListener(this);
 
     cbImpOrc.setVlrString("N");
+
   }
   public void setFKAtend(JTextFieldPad txtCodAtend,JTextFieldFK txtDescAtend) {
   	txtCodAtend.setRequerido(true);
@@ -122,9 +135,9 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
   }
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btOK) {
-	  if (txtPlano.getVlrInteger().intValue() == 0) {
+	  if (txtCodPlanoPag.getVlrInteger().intValue() == 0) {
 		Funcoes.mensagemInforma(this,"O campo 'Código do plano de pagamento' é requerido!");
-		txtPlano.requestFocus();
+		txtCodPlanoPag.requestFocus();
 		return;
 	  }
       else if (bTestaAtend) {
@@ -138,10 +151,11 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	super.actionPerformed(evt);
   }
   public Object[] getValores() {
-      Object[] bRetorno = new Object[3];
+      Object[] bRetorno = new Object[4];
       bRetorno[0] = txtVlrDescOrc.getVlrBigDecimal();
       bRetorno[1] = txtVlrAdicOrc.getVlrBigDecimal();
       bRetorno[2] = cbImpOrc.getVlrString();
+      bRetorno[3] = txtCodPlanoPag.getVlrInteger();
     return bRetorno;
   }
   public void focusLost(FocusEvent fevt) {
@@ -172,5 +186,12 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
       }
     }
   }
+  public void setConexao(Connection cn) {    
+  	super.setConexao(cn);
+  	lcPlanoPag.setConexao(cn);
+  	montaTela();
+  	lcPlanoPag.carregaDados();
+
+}
   public void focusGained(FocusEvent fevt) { }
 }
