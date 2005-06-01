@@ -741,9 +741,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			DLCompOrc dl = new DLCompOrc(this, (txtVlrDescItOrc
 					.getVlrBigDecimal().intValue() > 0), txtVlrProdOrc
 					.getVlrBigDecimal(), txtVlrEdDescOrc.getVlrBigDecimal(),
-					txtVlrEdAdicOrc.getVlrBigDecimal(), txtCodPlanoPag,
-					txtDescPlanoPag);
-
+					txtVlrEdAdicOrc.getVlrBigDecimal(), txtCodPlanoPag.getVlrInteger());
+			dl.setConexao(con);
 			dl.setVisible(true);
 			if (dl.OK) {
 				bValores = dl.getValores();
@@ -755,6 +754,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				lcCampos.edit();
 				txtVlrEdDescOrc.setVlrBigDecimal((BigDecimal) bValores[0]);
 				txtVlrEdAdicOrc.setVlrBigDecimal((BigDecimal) bValores[1]);
+				if(bValores[3]!=txtCodPlanoPag.getVlrInteger()){
+					txtCodPlanoPag.setVlrInteger((Integer)(bValores[3]));
+				}
 
 				// Ajusta o status para OC - orçamento completo.
 				txtStatusOrc.setVlrString("OC");
