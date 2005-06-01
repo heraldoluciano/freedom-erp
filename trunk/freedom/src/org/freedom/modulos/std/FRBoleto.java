@@ -147,7 +147,7 @@ public class FRBoleto extends FRelatorio {
                 "ITR.VLRDESCITREC,C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI," +
                 "C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI," +
                 "C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB," +
-                "C.CIDCOB,C.UFCOB,C.FONECLI,R.CODREC " +
+                "C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC " +
                 "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R" +
                 " WHERE ITR.CODREC=R.CODREC" +
                 " AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL" +
@@ -267,7 +267,10 @@ public class FRBoleto extends FRelatorio {
                 if ((sCampo = rs.getString("UfCob")) != null || (sCampo = rs.getString("UfCli")) != null)
                     sTxa = sTxa.replaceAll("\\[UF]",Funcoes.copy(sCampo,0,2));
                 if ((sCampo = rs.getString("FoneCli")) != null)
-                    sTxa = sTxa.replaceAll("\\[__TELEFONE___]",Funcoes.setMascara(sCampo,"(####)####-####"));
+                    sTxa = sTxa.replaceAll("\\[__TELEFONE___]",Funcoes.setMascara(sCampo,"####-####"));
+                if ((sCampo = rs.getString("DDDCli")) != null || (sCampo = rs.getString("DDDCli")) != null)
+                    sTxa = sTxa.replaceAll("\\[DDD]",Funcoes.copy(sCampo,0,5));
+                
                 
 //Aplicar campos especiais de dados:
                 
