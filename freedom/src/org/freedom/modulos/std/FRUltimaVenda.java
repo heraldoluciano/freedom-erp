@@ -177,12 +177,12 @@ public class FRUltimaVenda extends FRelatorio {
 			sCab = sTmp ;
 		}
 
-		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,VD.CODVENDA, VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA)"
+		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA)"
 				+ "FROM VDCLIENTE C, VDVENDA VD WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL "
 				+ "AND C.CODFILIAL=VD.CODFILIALCL AND VD.DTEMITVENDA BETWEEN ? AND ? AND C.CODFILIAL=? "
 				+ "AND C.CODEMP=? "
 				+ sWhere
-				+ " GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA ";
+				+ " GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA ";
 
 		System.out.println(sSQL);
 
@@ -246,13 +246,13 @@ public class FRUltimaVenda extends FRelatorio {
 						.getInt("CODVENDA"), 8));
 				imp.say(imp.pRow() + 0, 76, "|");
 				imp.say(imp.pRow() + 0, 79, Funcoes
-						.dateToStrDate(rs.getDate(7)));
+						.dateToStrDate(rs.getDate(8)));
 				imp.say(imp.pRow() + 0, 90, "|");
 				imp.say(imp.pRow() + 0, 91, Funcoes.strDecimalToStrCurrency(18,
 						2, rs.getString("VlrLiqVenda")));
 				imp.say(imp.pRow() + 0, 110, "|");
-				imp.say(imp.pRow() + 0, 112, Funcoes.setMascara(Funcoes.copy(rs
-						.getString("FoneCli"), 0, 12), "(####)####-####"));
+				imp.say(imp.pRow() + 0, 112, (rs.getString("DDDCli") != null ? rs.getString("DDDCli")+"-" : "")+
+							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
 
 				imp.say(imp.pRow() + 0, 135, "|");
 				bTotalVd = bTotalVd.add(new BigDecimal(rs

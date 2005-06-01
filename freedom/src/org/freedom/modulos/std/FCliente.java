@@ -1154,7 +1154,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           imp.say(imp.pRow()+0,93,"|");
           imp.say(imp.pRow()+0,96,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,20) : "");
           imp.say(imp.pRow()+0,117,"|");
-          imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? rs.getString("DDDCli")+"-" : "")+
+          imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
           					   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
           imp.say(imp.pRow()+0,135,"|");
           if (!sObs.equals("")) {
@@ -1270,7 +1270,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         		   imp.say(imp.pRow()+0,101,"|");
         		   imp.say(imp.pRow()+0,103,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,12) : "");
         		   imp.say(imp.pRow()+0,115,"|");
-        		   imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? rs.getString("DDDCli")+"-" : "")+
+        		   imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
         		   							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
         		   imp.say(imp.pRow()+0,135,"|");
         		} 
@@ -1286,7 +1286,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         		   imp.say(imp.pRow()+0,101,"|");
         		   imp.say(imp.pRow()+0,103,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,12) : "");
         		   imp.say(imp.pRow()+0,115,"|"); 
-        		   imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? rs.getString("DDDCli")+"-" : "")+
+        		   imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
 		   									(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
         		   imp.say(imp.pRow()+0,135,"|");
         		     

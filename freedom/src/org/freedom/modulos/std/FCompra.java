@@ -940,7 +940,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		String sSQL = "SELECT (SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA"
 				+ " AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL),"
 				+ "C.CODCOMPRA,C.CODFOR,F.RAZFOR,F.CNPJFOR,F.CPFFOR,C.DTEMITCOMPRA,F.ENDFOR,"
-				+ "F.BAIRFOR,F.CEPFOR,C.DTENTCOMPRA,F.CIDFOR,F.UFFOR,F.FONEFOR,"
+				+ "F.BAIRFOR,F.CEPFOR,C.DTENTCOMPRA,F.CIDFOR,F.UFFOR,F.FONEFOR,F.DDDFONEFOR,"
 				+ "F.FAXFOR,F.INSCFOR,F.RGFOR,I.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,"
 				+ "I.QTDITCOMPRA,I.PRECOITCOMPRA,I.VLRPRODITCOMPRA,I.CODNAT,I.PERCICMSITCOMPRA,"
 				+ "PERCIPIITCOMPRA,VLRIPIITCOMPRA,C.VLRBASEICMSCOMPRA,C.VLRICMSCOMPRA,C.VLRPRODCOMPRA,"
@@ -1019,8 +1019,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 4, rs.getString("CidFor"));
 					imp.say(imp.pRow() + 0, 39, rs.getString("UfFor"));
-					imp.say(imp.pRow() + 0, 46, Funcoes.setMascara(rs
-							.getString("FoneFor"), "(####)####-####")
+					imp.say(imp.pRow() + 0, 46, (rs.getString("DDDFONEFOR") != null ? rs.getString("DDDFONEFOR")+"-" : "")+
+								(rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"####-####") : "").trim()
 							+ " - "
 							+ Funcoes.setMascara(rs.getString("FaxFor"),
 									"####-####"));
