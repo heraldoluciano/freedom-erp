@@ -98,6 +98,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vLabs.addElement("Cidade do cliente");
     	vLabs.addElement("UF do cliente");
     	vLabs.addElement("Telefone do cliente");
+    	vLabs.addElement("DDD do cliente");
     	
     	Vector vVals = new Vector();
     	vVals.addElement("[VENCIMEN]"); //larg: 10
@@ -123,6 +124,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vVals.addElement("[___________CIDADE___________]"); //larg: 30
     	vVals.addElement("[UF]"); //larg: 2
     	vVals.addElement("[__TELEFONE___]"); //larg: 15
+    	vVals.addElement("[DDD]");//larg: 4
     	
     	cbCamposDin = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
     	
