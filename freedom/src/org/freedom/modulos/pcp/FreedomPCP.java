@@ -70,6 +70,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 
 		addBotao("btEstProduto.gif", "Estrutura de produto","Estrutura de produto", 100102040, FEstrutura.class);
 		addBotao("btProduto.gif", "Produtos", "Produto", 100101000,FProduto.class);
+		addBotao("btOP.gif","Ordens de Produção","Ordens de Produção",200100000,FOP.class);
 
 		ajustaMenu(); 
 		

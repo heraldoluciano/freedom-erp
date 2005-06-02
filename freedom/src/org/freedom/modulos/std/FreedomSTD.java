@@ -209,9 +209,10 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(800600000,TP_OPCAO_ITEM,"ICMS sobre vendas","Icms Vendas e Compras",'I',800601000,2, true, FRVendasIcms.class);
 	  addOpcao(800600000,TP_OPCAO_ITEM,"Impostos sobre serviços","Impostos sobre serviços",'S',800602000,2, true, FRImpServ.class);
 	  addOpcao(800600000,TP_OPCAO_ITEM,"Pis e cofins","Pis e cofins",'P',800603000,2, true, FRPisCofins.class);
-
-  addBotao("btCliente.gif","Cliente","Clientes", 100101030, FCliente.class);
+	  
+  addBotao("btCliente.gif","Cliente","Clientes", 100101030, FCliente.class);  
   addBotao("btSaida.gif","Venda","Venda", 300100000, FVenda.class);
+  addBotao("btForneced.gif","Fornecedor","Fornecedor",100119000,FFornecedor.class);
   addBotao("btEntrada.gif","Compra","Compras", 200100000, FCompra.class); 
   addBotao("btContaPagar.gif","Contas a pagar","Manutenção de contas a pagar", 400200000, FManutPag.class);
   addBotao("btContaReceber.gif","Contas a receber","Manutenção de contas a receber", 500100000, FManutRec.class);  
