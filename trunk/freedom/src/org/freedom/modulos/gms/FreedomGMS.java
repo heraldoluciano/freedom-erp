@@ -213,6 +213,7 @@ public class FreedomGMS extends Aplicativo {
 				addOpcao(400700000, TP_OPCAO_ITEM, "Inventário PEPS","Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class);
 
 				addBotao("btCliente.gif","Cliente","Clientes", 100101010, FCliente.class);
+				addBotao("btForneced.gif","Fornecedor","Fornecedor",100102020,FFornecedor.class);
 				addBotao("btRma.gif","Requisição de material", "Requisição de material", 300900000,FRma.class);
 				addBotao("btsoliccp.gif","Solicitação de Compra","Solicitação de Compra",200100000, FSolicitacaoCompra.class);	
 				
