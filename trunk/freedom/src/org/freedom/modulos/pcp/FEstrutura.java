@@ -129,7 +129,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     adicDescFK(txtDescFase, 80, 60, 280, 20, "DescFase", "Descrição da fase");
     adicDB(cbRmaAutoItEst,360,60,120,20,"RmaAutoItEst", "", true);
     adicCampoInvisivel(txtRefProd, "RefProd", "Referncia", ListaCampos.DB_SI, false);
-    adicCampoInvisivel(txtItRefProd, "RefProdPD", "Referncia", ListaCampos.DB_SI, false);
+    adicCampo(txtItRefProd,483,60,80,20, "RefProdPD", "Referncia", ListaCampos.DB_SI, false);
     setListaCampos( true, "ITESTRUTURA", "PP");
     lcDet.setQueryInsert(false);
     montaTab();
