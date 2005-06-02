@@ -52,6 +52,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private JTextFieldPad txtCodProd2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProd2 = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtRMA = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Rma automática","S","N");
   private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
   private ListaCampos lcProd = new ListaCampos(this,"PD");
@@ -71,6 +72,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     lcProd.setUsaME(false);
     lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
     lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false));
     lcProd.setWhereAdic("TIPOPROD='F'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
@@ -80,6 +82,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     
     lcProd2.add(new GuardaCampo( txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
     lcProd2.add(new GuardaCampo( txtDescProd2, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false));
     lcProd2.montaSql(false, "PRODUTO", "EQ");
     lcProd2.setQueryCommit(false);
     lcProd2.setReadOnly(true);
@@ -130,6 +133,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     tab.setTamColuna(50,0);
     tab.setTamColuna(150,2);
     tab.setTamColuna(150,5);
+    
   }
   private void abreFase() {
     if (fPrim.temTela("Estrutura x Fase")==false) {
@@ -154,6 +158,11 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
         boolean bMostraBt = (lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT);
     	btFase.setEnabled(bMostraBt);        
     }
+    if(txtRMA.getVlrString().equals("N"))
+    	cbRmaAutoItEst.setEnabled(false);
+	else
+		cbRmaAutoItEst.setEnabled(true);
+    
   }      
   
   public void beforeCarrega(CarregaEvent cevt) {
