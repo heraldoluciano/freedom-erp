@@ -486,8 +486,8 @@ public class FVendedor extends FTabDados implements PostListener {
 								.getString("CodClComis") : "");
 				imp.say(imp.pRow() + 0, 84, "|");
 				imp.say(imp.pRow() + 0, 86,
-						rs.getString("DDDFoneVend") != null ? rs
-								.getString("DDDFoneVend") : "");
+						rs.getString("DDDFoneVend") != null ? "("+rs
+								.getString("DDDFoneVend")+")" : "");
 				imp.say(imp.pRow() + 0, 92,
 						rs.getString("FoneVend") != null ? Funcoes.setMascara(
 								rs.getString("FoneVend"), "####-####") : "");

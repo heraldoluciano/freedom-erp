@@ -1019,7 +1019,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 4, rs.getString("CidFor"));
 					imp.say(imp.pRow() + 0, 39, rs.getString("UfFor"));
-					imp.say(imp.pRow() + 0, 46, (rs.getString("DDDFONEFOR") != null ? rs.getString("DDDFONEFOR")+"-" : "")+
+					imp.say(imp.pRow() + 0, 46, (rs.getString("DDDFONEFOR") != null ? "("+rs.getString("DDDFONEFOR")+")" : "")+
 								(rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"####-####") : "").trim()
 							+ " - "
 							+ Funcoes.setMascara(rs.getString("FaxFor"),

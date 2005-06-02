@@ -268,7 +268,7 @@ public class FRBoleto extends FRelatorio {
                     sTxa = sTxa.replaceAll("\\[UF]",Funcoes.copy(sCampo,0,2));
                 if ((sCampo = rs.getString("FoneCli")) != null)
                     sTxa = sTxa.replaceAll("\\[__TELEFONE___]",Funcoes.setMascara(sCampo,"####-####"));
-                if ((sCampo = rs.getString("DDDCli")) != null || (sCampo = rs.getString("DDDCli")) != null)
+                if ((sCampo = rs.getString("DDDCli")) != null || (sCampo = "("+rs.getString("DDDCli"))+")" != null)
                     sTxa = sTxa.replaceAll("\\[DDD]",Funcoes.copy(sCampo,0,5));
                 
                 

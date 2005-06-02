@@ -251,7 +251,7 @@ public class FRUltimaVenda extends FRelatorio {
 				imp.say(imp.pRow() + 0, 91, Funcoes.strDecimalToStrCurrency(18,
 						2, rs.getString("VlrLiqVenda")));
 				imp.say(imp.pRow() + 0, 110, "|");
-				imp.say(imp.pRow() + 0, 112, (rs.getString("DDDCli") != null ? rs.getString("DDDCli")+"-" : "")+
+				imp.say(imp.pRow() + 0, 112, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
 							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
 
 				imp.say(imp.pRow() + 0, 135, "|");
