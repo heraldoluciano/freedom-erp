@@ -129,7 +129,7 @@ public class OrcMCraft extends LeiauteGR {
 		  			  "(SELECT COUNT(IO.CODITORC) FROM VDITORCAMENTO IO WHERE IO.CODEMP=O.CODEMP" +
 					  " AND IO.CODFILIAL=O.CODFILIAL AND IO.CODORC=O.CODORC),"+
 					  "O.CODORC,O.OBSORC,O.VLRLIQORC,O.VLRDESCORC, O.VLRDESCITORC,O.VLRPRODORC,F.CIDFILIAL," +
-					  "C.RAZCLI,C.CONTCLI,C.FONECLI,C.FAXCLI,VD.NOMEVEND,O.CODPLANOPAG,O.CODEMPPG," +
+					  "C.RAZCLI,C.CONTCLI,C.FONECLI,C.DDDCLI,C.FAXCLI,VD.NOMEVEND,O.CODPLANOPAG,O.CODEMPPG," +
 					  "O.CODFILIALPG,O.PRAZOENTORC " +
 					  " FROM VDORCAMENTO O,SGFILIAL F, VDCLIENTE C, VDVENDEDOR VD,FNPLANOPAG PG"+
 					  " WHERE C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI"+
@@ -252,7 +252,8 @@ public class OrcMCraft extends LeiauteGR {
 		
 		setFonte(fnCabCliIta);
 		drawTexto("Fone : ",60,225);	
-		drawTexto(Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####")+
+		drawTexto((rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
+				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim()+
 				"    Fax.:  "+Funcoes.setMascara(rs.getString("FaxCli"),"####-####") ,101,225);
 						
         setFonte(fnCabCliIta);
