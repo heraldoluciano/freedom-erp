@@ -131,7 +131,8 @@ public class NFModelCraft extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,9,rs.getString("CidCli"));
-           imp.say(imp.pRow()+0,58,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"));
+           imp.say(imp.pRow()+0,58,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
+				   				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
            imp.say(imp.pRow()+0,83,rs.getString("UfCli"));
            imp.say(imp.pRow()+0,90,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
            imp.say(imp.pRow()+0,125,sHora);
