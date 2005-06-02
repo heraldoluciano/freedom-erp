@@ -53,11 +53,15 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private JTextFieldFK txtDescProd2 = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtRMA = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+  private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,13,0);
+  private JTextFieldPad txtItRefProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,13,0);
   private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Rma automática","S","N");
   private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcProd2 = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
+  String sRma = "";
+  
   public FEstrutura() {
     setTitulo("Estrutura de produtos");
     setAtribos( 50, 20, 600, 390);
@@ -69,10 +73,10 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     lcCampos.addPostListener(this);
-    lcProd.setUsaME(false);
+    lcProd.setUsaME(false);    
     lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
     lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-    lcProd.add(new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false));
+    lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referencia", ListaCampos.DB_SI,false));
     lcProd.setWhereAdic("TIPOPROD='F'");
     lcProd.montaSql(false, "PRODUTO", "EQ");
     lcProd.setQueryCommit(false);
@@ -80,8 +84,10 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtCodProd.setTabelaExterna(lcProd);
     txtDescProd.setListaCampos(lcProd);
     
+    
     lcProd2.add(new GuardaCampo( txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
     lcProd2.add(new GuardaCampo( txtDescProd2, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Referencia", ListaCampos.DB_SI,false));
     lcProd2.add(new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false));
     lcProd2.montaSql(false, "PRODUTO", "EQ");
     lcProd2.setQueryCommit(false);
@@ -103,6 +109,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     adicDescFK(txtDescProd, 90, 20, 297, 20, "DescProd", "Descrição do produto");
     adicCampo(txtQtdEst, 390, 20, 100, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDescEst, 7, 60, 380, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
+    adicCampoInvisivel(txtRefProd, "RefProd", "Referncia", ListaCampos.DB_SI, false);
     adic(btFase,390,55,100,25);
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
@@ -121,6 +128,8 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
     adicDescFK(txtDescFase, 80, 60, 280, 20, "DescFase", "Descrição da fase");
     adicDB(cbRmaAutoItEst,360,60,120,20,"RmaAutoItEst", "", true);
+    adicCampoInvisivel(txtRefProd, "RefProd", "Referncia", ListaCampos.DB_SI, false);
+    adicCampoInvisivel(txtItRefProd, "RefProdPD", "Referncia", ListaCampos.DB_SI, false);
     setListaCampos( true, "ITESTRUTURA", "PP");
     lcDet.setQueryInsert(false);
     montaTab();
@@ -129,10 +138,14 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     
     btFase.addActionListener(this);
     lcCampos.addCarregaListener(this);
-    
+    lcDet.addCarregaListener(this);
+    lcProd2.addCarregaListener(this);
     tab.setTamColuna(50,0);
     tab.setTamColuna(150,2);
     tab.setTamColuna(150,5);
+    
+    
+    cbRmaAutoItEst.setEnabled(false);
     
   }
   private void abreFase() {
@@ -154,15 +167,19 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     lcFase.setConexao(cn);
   }
   public void afterCarrega(CarregaEvent cevt) {
+  	
     if (cevt.getListaCampos() == lcCampos) {
         boolean bMostraBt = (lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT);
-    	btFase.setEnabled(bMostraBt);        
+    	btFase.setEnabled(bMostraBt); 
     }
-    if(txtRMA.getVlrString().equals("N"))
-    	cbRmaAutoItEst.setEnabled(false);
-	else
-		cbRmaAutoItEst.setEnabled(true);
-    
+    else if (cevt.getListaCampos() == lcProd2) {
+    	String sRma = txtRMA.getVlrString();
+	    if (sRma.equals("S"))
+	    	cbRmaAutoItEst.setEnabled(true);
+    	else 
+    		cbRmaAutoItEst.setEnabled(false);
+    }
+    	
   }      
   
   public void beforeCarrega(CarregaEvent cevt) {
