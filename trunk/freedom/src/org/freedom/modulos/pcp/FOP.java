@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Tela de cadastro de emissão de ordens de produção.
+ * Tela de cadastro de ordens de produção.
  * 
  */
 
@@ -293,8 +293,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	setListaCampos( true, "ITOP", "PP");
   	lcDet.setQueryInsert(false);    
 
-  	navRod.setAtivo(4,false);
-  	navRod.setAtivo(5,false);
+  //	navRod.setAtivo(4,false);
+//  	navRod.setAtivo(5,false);
     
     montaTab();
     
