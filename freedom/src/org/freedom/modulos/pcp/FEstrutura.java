@@ -115,14 +115,13 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   	}
     public void montaTela(){
     	
-	    if (comRef()){
-	    	adicCampo(txtRefProd, 7, 20, 80, 20,"RefProd","Referência", ListaCampos.DB_PF, txtDescProd, true);
-	    	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
-	    }
-	    else{ 
-	    	adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
-	    	adicCampoInvisivel(txtRefProd,"RefProd", "Referência",	ListaCampos.DB_SI, false);
-	    }
+	   // if (comRef()){
+	   // 	adicCampo(txtRefProd, 7, 20, 80, 20,"RefProd","Referência", ListaCampos.DB_SI, txtDescProd, true);
+	   // 	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false);
+	   // }
+	   // else{ 
+	    	adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
+	   // }
 	    adicDescFK(txtDescProd, 90, 20, 297, 20, "DescProd", "Descrição do produto");
 	    adicCampo(txtQtdEst, 390, 20, 100, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
 	    adicCampo(txtDescEst, 7, 60, 380, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
@@ -139,14 +138,13 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
 	    cbRmaAutoItEst.setVlrString("N");
 	
 	    adicCampo(txtNumSeq, 7, 20, 40, 20,"SeqItEst","Item", ListaCampos.DB_PK, true);
-	    if (comRef()){
-	    	adicCampo(txtItRefProd, 50, 20, 77, 20,"RefProdPD","Referência", ListaCampos.DB_FK, txtDescProd2, true);
-	    	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
-	    }
-		else {
-			adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Cód.prod.", ListaCampos.DB_FK, txtDescProd2, true);
-			adicCampoInvisivel(txtItRefProd,"RefProdPD", "Ref.prod.it.",ListaCampos.DB_SI, false);
-		}
+	   // if (comRef()){
+	    //	adicCampo(txtItRefProd, 50, 20, 77, 20,"RefProdPD","Referência", ListaCampos.DB_SI, txtDescProd2, true);
+	    //	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, false);
+	    //}
+		///else {
+			adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Cód.prod.", ListaCampos.DB_FK, txtDescProd2, true);			
+		//}
 	    adicDescFK(txtDescProd2, 130, 20, 227, 20, "DescProd", "Descrição do produto");
 	    adicCampo(txtQtdMat, 360, 20, 100, 20,"QtdItEst","Quantidade", ListaCampos.DB_SI, true);
 	    adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
