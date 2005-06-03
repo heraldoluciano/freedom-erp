@@ -954,15 +954,15 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			return;
 		}
 		if (Funcoes.mensagemConfirma(null, "Confirma impressão de leitura X?") == JOptionPane.YES_OPTION) {
-			JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
-			bf.leituraX(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
+			if (FreedomPDV.bECFTerm)
+				bf.leituraX(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
     
 	private void abreGaveta() {
 		if (mostraTelaPass()) {
-			JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
-			bf.abreGaveta(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
+			if (FreedomPDV.bECFTerm)
+				bf.abreGaveta(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
 
@@ -1174,9 +1174,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 	//O botão sair execute este método para sair:
 	public void setVisible(boolean bVal) {
 		if (!bVal) {
-			if (bf.verificaCupomAberto(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
-				Funcoes.mensagemInforma(null,"Cupom fiscal está aberto!");
-				return;	
+			if (FreedomPDV.bECFTerm) {
+				if (bf.verificaCupomAberto(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
+					Funcoes.mensagemInforma(null,"Cupom fiscal está aberto!");
+					return;
+				} 
 			}
 		}
 		super.setVisible(bVal);
