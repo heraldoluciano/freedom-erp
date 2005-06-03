@@ -31,6 +31,8 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.acao.CancelEvent;
@@ -74,6 +76,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtCodLoteProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtDescLoteProdDet = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
   private JTextFieldPad txtCodLoteProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtGeraRMAAut = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
 
   private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, casasDec);
@@ -85,6 +88,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcLoteProdDet = new ListaCampos(this, "LE");  
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
   private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
+  private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
   private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
@@ -108,11 +112,12 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	setAltCab(247);
   	
 	btFase.setToolTipText("Fases da produção");
+	btRMA.setToolTipText("Gera ou exibe RMA.");
 	
 	pinCab.adic(pinBotCab,630,1,114,196);
 	pinBotCab.adic(btFase,0,0,110,30); 
-/*	pinBotCab.adic(btFinAprovRMA,0,31,110,30);
-	pinBotCab.adic(btCancelaRMA,0,62,110,30);
+	pinBotCab.adic(btRMA,0,31,110,30);
+/*	pinBotCab.adic(btCancelaRMA,0,62,110,30);
 	pinBotCab.adic(btMotivoCancelaRMA,0,93,110,30);
 	pinBotCab.adic(btExpedirRMA,0,124,110,30);
 	pinBotCab.adic(btFinExpRMA,0,155,110,30);*/
@@ -215,6 +220,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     lcProdEstRef.addCarregaListener(this);
 
     btFase.addActionListener(this);
+    btRMA.addActionListener(this);
     btImp.addActionListener(this);
   	btPrevimp.addActionListener(this);     
 
@@ -290,11 +296,15 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicDescFK(txtDescProdDet,133,20,250,20,"descprod", "Descrição do produto");
   	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", ListaCampos.DB_SI, false);
   	adicCampo(txtQtdItOp,479,20,90,20,"qtditop","Quantidade", ListaCampos.DB_SI, false);
+  	adicCampoInvisivel(txtGeraRMAAut,"GERARMA","Gera Rma",ListaCampos.DB_SI,false);
   	setListaCampos( true, "ITOP", "PP");
   	lcDet.setQueryInsert(false);    
 
-  //	navRod.setAtivo(4,false);
-//  	navRod.setAtivo(5,false);
+  	btFase.setEnabled(false);
+  	btRMA.setEnabled(false);
+  	
+  	//	navRod.setAtivo(4,false);
+  	// 	navRod.setAtivo(5,false);
     
     montaTab();
     
@@ -362,6 +372,65 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		}
 	}
   }
+  public void geraRMA(){
+	try {
+		PreparedStatement ps = con.prepareStatement("SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND GERARMA='S'");
+		ps.setInt(1, Aplicativo.iCodEmp);
+		ps.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
+		ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			try{
+				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+"?")==JOptionPane.YES_OPTION){
+					PreparedStatement ps2 = null;
+					ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?)");
+					ps2.setInt(1,Aplicativo.iCodEmp);
+					ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+					ps2.setInt(3,txtCodOP.getVlrInteger().intValue());
+					ps2.execute();
+					con.commit();
+					
+					try{
+						PreparedStatement ps3 = con.prepareStatement("SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " +
+																	 "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=?" );
+						ps3.setInt(1, Aplicativo.iCodEmp);
+						ps3.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
+						ps3.setInt(3, ListaCampos.getMasterFilial("PPOP"));
+						ps3.setInt(4,txtCodOP.getVlrInteger().intValue());
+						
+						ResultSet rs2 = ps3.executeQuery();
+						String sRma = "";
+						while(rs2.next()) {
+							sRma += rs2.getString(1)+" - ";
+						}
+						if (sRma.length()>0){
+							Funcoes.mensagemInforma(this,"Foram geradas as seguintes RMA:\n"+sRma);															
+						}
+					}
+					catch(Exception err){
+						Funcoes.mensagemErro(this,"Erro ao buscar RMA criada",true,con,err);
+						err.printStackTrace();
+					}
+					
+				}
+			}
+			catch(Exception err){
+				Funcoes.mensagemErro(this,"Erro ao criar RMA",true,con,err);
+				err.printStackTrace();
+			}
+		}
+		else {
+			Funcoes.mensagemInforma(this,"Não há itens para gerar RMA.\n " +
+					                     "Os itens não geram RMA automaticamente\n" +
+					                     "ou o processo de geração de RMA já foi efetuado.");
+		}
+	}
+	catch(Exception err){
+		Funcoes.mensagemErro(this,"Erro ao consultar RMA",true,con,err);
+		err.printStackTrace();
+	}
+  	
+  }
   public void actionPerformed(ActionEvent evt) {
     super.actionPerformed(evt);    
 	if (evt.getSource() == btImp) 
@@ -370,13 +439,17 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	  imprimir(true);
     else if (evt.getSource() == btFase)
       abreFase();
+    else if (evt.getSource() == btRMA)
+        geraRMA();
+    
     super.actionPerformed(evt);
   }
   public void beforeCarrega(CarregaEvent cevt) { }
   public void afterCarrega(CarregaEvent cevt) {
-/*    if (cevt.getListaCampos() == lcCampos) {
-       btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));   
-    }*/
+    if (cevt.getListaCampos() == lcCampos) {
+       btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
+       btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));       
+    }
 /*    if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
         if (lcCampos.getStatus() == ListaCampos.LCS_INSERT)
         	txtQtdProdOP.setVlrString(txtQtdEst.getVlrString());

@@ -31,6 +31,8 @@ package org.freedom.modulos.pcp;
 import java.awt.event.ActionListener;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.gms.FConsRMA;
+import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FCLFiscal;
 import org.freedom.modulos.std.FGrupo;
@@ -67,11 +69,15 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 			
 		addOpcao(-1, TP_OPCAO_MENU, "Produção", "", 'P', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Ordens de produção","Ordens de produção", 'O', 200100000, 1, true, FOP.class);
+			addSeparador(200000000);			
+			addOpcao(200000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'm',200200000, 1, true, FRma.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm',200300000, 1, true, FConsRMA.class);
 
 		addBotao("btEstProduto.gif", "Estrutura de produto","Estrutura de produto", 100102040, FEstrutura.class);
 		addBotao("btProduto.gif", "Produtos", "Produto", 100101000,FProduto.class);
 		addBotao("btOP.gif","Ordens de Produção","Ordens de Produção",200100000,FOP.class);
-
+		addBotao("btRma.gif","Requisição de material", "Requisição de material", 200200000,FRma.class);
+		
 		ajustaMenu(); 
 		
 		sNomeModulo = "Produção";
