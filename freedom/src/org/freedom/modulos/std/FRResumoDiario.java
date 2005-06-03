@@ -63,8 +63,9 @@ public class FRResumoDiario extends FRelatorio {
 	private JTextFieldFK txtDescVend = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
 
-	private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?", "S", "N");
-
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+	
 	private ListaCampos lcVend = new ListaCampos(this);
 
 	private Vector vLabs = new Vector();
@@ -118,8 +119,10 @@ public class FRResumoDiario extends FRelatorio {
 
 		adic(rgFormato, 7, 115, 265, 25);
 
-		cbVendas.setVlrString("S");
-		adic(cbVendas, 7, 145, 265, 25);
+		cbFaturados.setVlrString("S");
+		cbFinanceiro.setVlrString("S");
+		adic(cbFaturados, 7, 145, 150, 25);
+		adic(cbFinanceiro, 153, 145, 150, 25);
 
 	}
 
@@ -145,9 +148,15 @@ public class FRResumoDiario extends FRelatorio {
 					+ txtDescVend.getText().trim();
 			sWhere += " AND V.CODEMPVD=" + Aplicativo.iCodEmp
 					+ " AND V.CODFILIALVD=" + lcVend.getCodFilial();
-			sCab += (cbVendas.getVlrString().equals("S") ? " - SO VENDAS" : "");
+			sCab += (cbFaturados.getVlrString().equals("S") ? " - SO FATURADOS" : "");
 		} else {
-			sCab += (cbVendas.getVlrString().equals("S") ? "SO VENDAS" : "");
+			sCab += (cbFaturados.getVlrString().equals("S") ? "SO FATURADOS" : "");
+		}
+		if (sCab.trim().length()>0){
+			sCab += (cbFaturados.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
+		}
+		else {
+			sCab += (cbFaturados.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
 		}
 
 		/*
@@ -196,11 +205,10 @@ public class FRResumoDiario extends FRelatorio {
 					+ " AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL"
 					+ " AND V.DTEMITVENDA BETWEEN ? AND ? AND "
 					+ "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "
-					+ Aplicativo.carregaFiltro(con,
-							org.freedom.telas.Aplicativo.iCodEmp)
+					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND V.CODEMP=? AND V.CODFILIAL=?"
-					+ (cbVendas.getVlrString().equals("S") ? " AND TM.TIPOMOV IN ('VD','SE')"
-							: "")
+					+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
+					+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")
 					+ " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' "
 					+ sWhere + " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
 			//				  " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
@@ -213,11 +221,14 @@ public class FRResumoDiario extends FRelatorio {
 					+ " AND TM.CODEMP=V.CODEMPTM"
 					+ " AND TM.CODFILIAL=V.CODFILIALTM"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
-					+ (cbVendas.getVlrString().equals("S") ? " AND TM.TIPOMOV IN ('VD','SE')"
-							: "") + " AND V.CODEMP=? AND V.CODFILIAL=? "
+					+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "") 
+					+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")					
+					+ " AND V.CODEMP=? AND V.CODFILIAL=? "
 					+ sWhere + " GROUP BY V.DTEMITVENDA";
-			System.out.println(sSQL);
+
 		}
+
+		System.out.println(sSQL);
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
