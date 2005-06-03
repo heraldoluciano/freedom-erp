@@ -151,7 +151,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont.estoque?",
 			"S", "N");
 
-	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Soma rel.vendas?",
+	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Financeiro?",
 			"S", "N");
 
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.pedido?",
