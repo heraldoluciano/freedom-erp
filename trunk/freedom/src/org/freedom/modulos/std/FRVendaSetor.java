@@ -115,13 +115,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			40, 0);
 
-	private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?", "S", "N");
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+	private JCheckBoxPad cbMovEstoque = new JCheckBoxPad("Só com mov.estoque?", "S", "N");
 
 	private JCheckBoxPad cbCliPrinc = new JCheckBoxPad(
 			"Mostrar no cliente principal?", "S", "N");
 
-	private JCheckBoxPad cbIncluiPed = new JCheckBoxPad(
-			"Incluir pedidos não faturados?", "S", "N");
+//	private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?", "S", "N");
 
 	private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
 
@@ -180,9 +181,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		txtDataini.setRequerido(true);
 		txtDatafim.setRequerido(true);
 
-		cbVendas.setVlrString("S");
+		cbFaturados.setVlrString("S");
+		cbFinanceiro.setVlrString("N");
+		cbMovEstoque.setVlrString("S");
 		cbCliPrinc.setVlrString("S");
-		cbIncluiPed.setVlrString("N");
+//		cbIncluiPed.setVlrString("N");
 
 		vLabTipoRel.addElement("Vendedor");
 		vLabTipoRel.addElement("Produto");
@@ -293,9 +296,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic(txtCodVend, 7, 270, 120, 20);
 		adic(lbDescCodVend, 130, 250, 250, 20);
 		adic(txtNomeVend, 130, 270, 327, 20);
-		adic(cbVendas, 7, 295, 110, 25);
-		adic(cbCliPrinc, 120, 295, 300, 25);
-		adic(cbIncluiPed, 7, 315, 295, 25);
+		adic(cbFaturados, 7, 295, 110, 25);
+		adic(cbFinanceiro, 130, 295, 110, 25);
+		adic(cbMovEstoque, 260, 295, 200, 25);
+//		adic(cbIncluiPed, 7, 315, 250, 25);
+		adic(cbCliPrinc, 7, 315, 300, 25);
 		adic(new JLabelPad("Cód.cli."), 7, 340, 200, 20);
 		adic(txtCodCli, 7, 360, 120, 20);
 		adic(new JLabelPad("Razão social do cliente"), 130, 340, 200, 20);
@@ -348,7 +353,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sMes = "";
 		String sFiltros1 = "";
 		String sFiltros2 = "";
-		String sTipoMov = "";
+		String sWhereTM = "";
+//		String sTipoMov = "";
 		//  	String sTemp = "";
 		ImprimeOS imp = null;
 		int linPag = 0;
@@ -384,22 +390,36 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iCodSetor = txtCodSetor.getVlrInteger().intValue();
 			iCodVend = txtCodVend.getVlrInteger().intValue();
 			iCodCli = txtCodCli.getVlrInteger().intValue();
-			if (cbVendas.getVlrString().equals("S")) {
-				sFiltros1 = "SOMENTE VENDAS";
-				sTipoMov = "'VD'";
+			
+			if (cbFaturados.getVlrString().equals("S")) {
+				sFiltros1 = "SO FATURADOS";
+				sWhereTM += (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "");
 
+//				sTipoMov = "'VD'";
 			}
-			if (cbIncluiPed.getVlrString().equals("S")) {
-				if (!sTipoMov.equals("")) {
-					sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
-							+ "INCLUI PEDIDOS";
-					sTipoMov += ",'PV'";
-				}
+//			if (cbIncluiPed.getVlrString().equals("S")) {
+//				if (!sTipoMov.equals("")) {
+//					sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
+//							+ "INCLUI PEDIDOS";
+//					sTipoMov += ",'PV'";
+//				}
+//			}
+			
+			if(cbFinanceiro.getVlrString().equals("S")) {
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO FINANCEIRO";	
+				sWhereTM += (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "");
 			}
-			if (!sTipoMov.equals("")) {
+
+			if(cbMovEstoque.getVlrString().equals("S")) {
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO MOV.ESTOQUE";
+				sWhereTM += (cbMovEstoque.getVlrString().equals("S") ? " AND TM.ESTOQTIPOMOV='S' " : "");
+			}
+			
+/*
+		if (!sTipoMov.equals("")) {
 				sTipoMov = " TM.TIPOMOV IN (" + sTipoMov + ") AND ";
 			}
-
+*/
 			if (!sCodMarca.equals("")) {
 				sWhere += "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? ";
 				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: "
@@ -458,10 +478,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
 					+ "G.CODFILIAL=P.CODFILIALGP AND "
 					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) AND "
-					+ sTipoMov
-					+ (sCodGrup1.equals("") ? "P.CODGRUP=G.CODGRUP "
-							: "SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
+					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
+					+ sWhereTM
+					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP "
+							: " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
 									+ ")=G.CODGRUP ") + sWhere
 					+ "GROUP BY 1,2,3,4,5" + "ORDER BY 1,2,3,4,5";
 
@@ -834,7 +854,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iPosColAnt = 0;
 			sCodGrup = null;
 			sSiglaGroup = null;
-			sTipoMov = null;
+//			sTipoMov = null;
+			sWhereTM = null;
 			sMesAnt = null;
 			sMes = null;
 			imp = null;
@@ -867,7 +888,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sCodGrup2 = "";
 		String sFiltros1 = "";
 		String sFiltros2 = "";
-		String sTipoMov = "";
+		String sWhereTM = "";
 		int iCodSetor = 0;
 		int iCodVend = 0;
 		int iCodCli = 0;
@@ -886,6 +907,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			imp.setTitulo("Relatorio de Vendas por Setor x Produto");
 			sFiltros1 = "";
 			sFiltros2 = "";
+/*			
+			
 			if (cbVendas.getVlrString().equals("S")) {
 				sFiltros1 = "SOMENTE VENDAS";
 				sTipoMov = "'VD'";
@@ -899,6 +922,23 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			}
 			if (!sTipoMov.equals("")) {
 				sTipoMov = " TM.TIPOMOV IN (" + sTipoMov + ") AND ";
+			}
+*/
+			
+			if (cbFaturados.getVlrString().equals("S")) {
+				sFiltros1 = "SO FATURADOS";
+				sWhereTM += (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "");
+
+			}
+
+			if(cbFinanceiro.getVlrString().equals("S")) {
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO FINANCEIRO";	
+				sWhereTM += (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "");
+			}
+
+			if(cbMovEstoque.getVlrString().equals("S")) {
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO MOV.ESTOQUE";
+				sWhereTM += (cbMovEstoque.getVlrString().equals("S") ? " AND TM.ESTOQTIPOMOV='S' " : "");
 			}
 
 			sCodMarca = txtCodMarca.getVlrString().trim();
@@ -965,10 +1005,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
 					+ "G.CODFILIAL=P.CODFILIALGP AND "
 					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) AND "
-					+ sTipoMov
-					+ (sCodGrup1.equals("") ? "P.CODGRUP=G.CODGRUP "
-							: "SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
+					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
+					+ sWhereTM
+					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP "
+							: " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
 									+ ")=G.CODGRUP ")
 					+ sWhere
 					+ "GROUP BY 1,2,3" + "ORDER BY 1,2,3";
@@ -1136,7 +1176,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iCodCli = 0;
 			sFiltros1 = null;
 			sFiltros2 = null;
-			sTipoMov = null;
+			sWhereTM = null;
 			imp = null;
 			ps = null;
 			rs = null;
@@ -1149,6 +1189,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private void impCliente(boolean bVisualizar) {
 		String sSql = "";
 		String sWhere = "";
+		String sWhereTM = "";
 		String sCodMarca = "";
 		String sCodGrup1 = "";
 		String sOrdemRel = "";
@@ -1162,7 +1203,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sCodTipoCliAnt = "";
 		String sDescTipoCliAnt = "";
 		String sCab = "";
-		String sTipoMov = "";
+//		String sTipoMov = "";
 
 		int iCodSetor = 0;
 		int iCodCli = 0;
@@ -1184,6 +1225,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			imp.setTitulo("Relatorio de Vendas por Setor x Clientes");
 			sFiltros1 = "";
 			sFiltros2 = "";
+
+			/*
 			if (cbVendas.getVlrString().equals("S")) {
 				sFiltros1 = "SOMENTE VENDAS";
 				sTipoMov = "'VD'";
@@ -1202,7 +1245,24 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			if (cbIncluiPed.getVlrString().equals("S")) {
 				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
 						+ "INCLUI PEDIDOS";
+			}*/
+			
+			
+			if (cbFaturados.getVlrString().equals("S")) {
+				sFiltros1 = "SO FATURADOS";
+				sWhereTM += (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "");
 			}
+				
+			if(cbFinanceiro.getVlrString().equals("S")) {
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO FINANCEIRO";	
+				sWhereTM += (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "");
+			}
+
+			if(cbMovEstoque.getVlrString().equals("S")) {
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO MOV.ESTOQUE";
+				sWhereTM += (cbMovEstoque.getVlrString().equals("S") ? " AND TM.ESTOQTIPOMOV='S' " : "");
+			}
+
 			if (cbCliPrinc.getVlrString().equals("S")) {
 				sFiltros2 += (!sFiltros2.equals("") ? " / " : "")
 						+ "ADIC. CLIENTES PRINCIPAIS";
@@ -1275,10 +1335,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
 					+ "G.CODFILIAL=P.CODFILIALGP AND "
 					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) AND "
-					+ sTipoMov
-					+ (sCodGrup1.equals("") ? "P.CODGRUP=G.CODGRUP "
-							: "SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
+					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
+					+ sWhereTM
+					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP "
+							: " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
 									+ ")=G.CODGRUP ") + sWhere
 					+ "GROUP BY 1,2,3,4 " + "ORDER BY " + sOrderBy;
 
@@ -1504,7 +1564,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sDescTipoCli = null;
 			sCodTipoCliAnt = null;
 			sDescTipoCliAnt = null;
-			sTipoMov = null;
+			sWhereTM = null;
 			sCab = null;
 			sFiltros1 = null;
 			sFiltros2 = null;

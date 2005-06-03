@@ -145,13 +145,13 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad(
 			"Permitir todos os usuários?", "S", "N");
 
-	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Lanc.fiscal?",
+	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Sim?",
 			"S", "N");
 
-	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Cont.estoque?",
+	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Sim?",
 			"S", "N");
 
-	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Financeiro?",
+	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Sim?",
 			"S", "N");
 
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.pedido?",
@@ -276,11 +276,11 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 		adicDB(rgESTipoMov, 7, 320, 300, 30, "ESTipoMov", "Fluxo", true);
 
 		adicDB(chbFiscalTipoMov, 7, 370, 107, 20, "FiscalTipoMov",
-				"Lançamento", true);
+				"Fiscal", true);
 		adicDB(chbEstoqTipoMov, 140, 370, 110, 20, "EstoqTipoMov", "Estoque",
 				true);
 		adicDB(chbSomaTipoMov, 260, 370, 200, 20, "SomaVdTipoMov",
-				"Soma venda", true);
+				"Financeiro", true);
 
 		adicDB(cbTipoMov, 7, 410, 250, 30, "TipoMov", "Tipo de movimento", true);
 		adicCampo(txtEspecieTipomov, 280, 415, 80, 20, "EspecieTipomov",
