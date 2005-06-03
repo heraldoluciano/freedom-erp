@@ -112,61 +112,64 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtCodFase.setTabelaExterna(lcFase);
     txtDescFase.setListaCampos(lcFase);
 
-    if (comRef()){
-    	adicCampo(txtRefProd, 7, 20, 80, 20,"RefProd","Referência", ListaCampos.DB_PF, txtDescProd, true);
-    	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
-    }
-    else{ 
-    	adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
-    	adicCampoInvisivel(txtRefProd,"RefProd", "Referência",	ListaCampos.DB_SI, false);
-    }
-    adicDescFK(txtDescProd, 90, 20, 297, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdEst, 390, 20, 100, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
-    adicCampo(txtDescEst, 7, 60, 380, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
-    adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
-    adic(btFase,390,55,100,25);
-    setListaCampos( false, "ESTRUTURA", "PP");
-    lcCampos.setQueryInsert(false);
-    setAltDet(100);
-    pinDet = new JPanelPad(590,110);
-    setPainel( pinDet, pnDet);
-    setListaCampos(lcDet);
-    setNavegador(navRod);
-    
-    cbRmaAutoItEst.setVlrString("N");
-
-    adicCampo(txtNumSeq, 7, 20, 40, 20,"SeqItEst","Item", ListaCampos.DB_PK, true);
-    if (comRef()){
-    	adicCampo(txtItRefProd, 50, 20, 77, 20,"RefProdPD","Referência", ListaCampos.DB_FK, txtDescProd2, true);
-    	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
-    }
-	else {
-		adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Cód.prod.", ListaCampos.DB_FK, txtDescProd2, true);
-		adicCampoInvisivel(txtItRefProd,"RefProdPD", "Ref.prod.it.",ListaCampos.DB_SI, false);
-	}
-    adicDescFK(txtDescProd2, 130, 20, 227, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdMat, 360, 20, 100, 20,"QtdItEst","Quantidade", ListaCampos.DB_SI, true);
-    adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
-    adicDescFK(txtDescFase, 80, 60, 280, 20, "DescFase", "Descrição da fase");
-    adicDB(cbRmaAutoItEst,360,60,120,20,"RmaAutoItEst", "", true);
-    adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.est.", ListaCampos.DB_SI, false);
-    adicCampoInvisivel(txtItRefProd,"RefProdPD", "Ref.prod.it.", ListaCampos.DB_SI, false);
-    setListaCampos( true, "ITESTRUTURA", "PP");
-    lcDet.setQueryInsert(false);
-    montaTab();
-    
-    txtCodProd2.setNomeCampo("CodProd");
-    
-    btFase.addActionListener(this);
-    lcCampos.addCarregaListener(this);
-    lcDet.addCarregaListener(this);
-    lcProd2.addCarregaListener(this);
-    tab.setTamColuna(50,0);
-    tab.setTamColuna(150,2);
-    tab.setTamColuna(150,5);
-    
-    
-    cbRmaAutoItEst.setEnabled(false);
+  	}
+    public void montaTela(){
+    	
+	    if (comRef()){
+	    	adicCampo(txtRefProd, 7, 20, 80, 20,"RefProd","Referência", ListaCampos.DB_PF, txtDescProd, true);
+	    	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
+	    }
+	    else{ 
+	    	adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
+	    	adicCampoInvisivel(txtRefProd,"RefProd", "Referência",	ListaCampos.DB_SI, false);
+	    }
+	    adicDescFK(txtDescProd, 90, 20, 297, 20, "DescProd", "Descrição do produto");
+	    adicCampo(txtQtdEst, 390, 20, 100, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+	    adicCampo(txtDescEst, 7, 60, 380, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
+	    adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
+	    adic(btFase,390,55,100,25);
+	    setListaCampos( false, "ESTRUTURA", "PP");
+	    lcCampos.setQueryInsert(false);
+	    setAltDet(100);
+	    pinDet = new JPanelPad(590,110);
+	    setPainel( pinDet, pnDet);
+	    setListaCampos(lcDet);
+	    setNavegador(navRod);
+	    
+	    cbRmaAutoItEst.setVlrString("N");
+	
+	    adicCampo(txtNumSeq, 7, 20, 40, 20,"SeqItEst","Item", ListaCampos.DB_PK, true);
+	    if (comRef()){
+	    	adicCampo(txtItRefProd, 50, 20, 77, 20,"RefProdPD","Referência", ListaCampos.DB_FK, txtDescProd2, true);
+	    	adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false);
+	    }
+		else {
+			adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Cód.prod.", ListaCampos.DB_FK, txtDescProd2, true);
+			adicCampoInvisivel(txtItRefProd,"RefProdPD", "Ref.prod.it.",ListaCampos.DB_SI, false);
+		}
+	    adicDescFK(txtDescProd2, 130, 20, 227, 20, "DescProd", "Descrição do produto");
+	    adicCampo(txtQtdMat, 360, 20, 100, 20,"QtdItEst","Quantidade", ListaCampos.DB_SI, true);
+	    adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
+	    adicDescFK(txtDescFase, 80, 60, 280, 20, "DescFase", "Descrição da fase");
+	    adicDB(cbRmaAutoItEst,360,60,120,20,"RmaAutoItEst", "", true);
+	    adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.est.", ListaCampos.DB_SI, false);
+	    adicCampoInvisivel(txtItRefProd,"RefProdPD", "Ref.prod.it.", ListaCampos.DB_SI, false);
+	    setListaCampos( true, "ITESTRUTURA", "PP");
+	    lcDet.setQueryInsert(false);
+	    montaTab();
+	    
+	    txtCodProd2.setNomeCampo("CodProd");
+	    
+	    btFase.addActionListener(this);
+	    lcCampos.addCarregaListener(this);
+	    lcDet.addCarregaListener(this);
+	    lcProd2.addCarregaListener(this);
+	    tab.setTamColuna(50,0);
+	    tab.setTamColuna(150,2);
+	    tab.setTamColuna(150,5);
+	    
+	    
+	    cbRmaAutoItEst.setEnabled(false);
     
   }
   private void abreFase() {
@@ -215,6 +218,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     bPrefs = prefs();
+    montaTela();
     lcProd.setConexao(cn);
     lcProd2.setConexao(cn);
     lcFase.setConexao(cn);

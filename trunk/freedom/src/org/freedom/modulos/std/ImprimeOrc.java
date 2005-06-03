@@ -253,8 +253,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		setFonte(fnCabCliNeg);
 		drawTexto("Telefone:",5,iY);
 		setFonte(fnCabCli);
-		drawTexto(Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"),80,iY);
-		
+		drawTexto("("+rs.getString("DDDCli")+")"+Funcoes.setMascara(rs.getString("FoneCli"),"####-####"),80,iY);
 		
 		iY += 15;
 
