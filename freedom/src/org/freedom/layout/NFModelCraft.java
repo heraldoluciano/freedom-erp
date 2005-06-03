@@ -287,7 +287,7 @@ public class NFModelCraft extends Leiaute {
            
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("EndTran"),0,42)+", "+Funcoes.copy(rs.getString("NumTran"),0,6));
+           imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("EndTran"),0,42)+"   "+Funcoes.copy(rs.getString("NumTran"),0,6));
            imp.say(imp.pRow()+0,77,Funcoes.copy(rs.getString("CidTran"),0,30));
            imp.say(imp.pRow()+0,108,rs.getString("UfTran"));
 
