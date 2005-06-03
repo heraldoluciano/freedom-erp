@@ -1039,7 +1039,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           }
           imp.say(imp.pRow()+0,80,"Tel:");
           imp.say(imp.pRow()+0,86,(rs.getString("DDDCli") != null ? rs.getString("DDDCli")+"-" : "")+
-          						  (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
+          						  (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
           imp.say(imp.pRow()+0,115,"Fax:");
           imp.say(imp.pRow()+0,122,rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : "");
           imp.say(imp.pRow()+0,134,"|");
@@ -1155,7 +1155,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           imp.say(imp.pRow()+0,96,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,20) : "");
           imp.say(imp.pRow()+0,117,"|");
           imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
-          					   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
+          					   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
           imp.say(imp.pRow()+0,135,"|");
           if (!sObs.equals("")) {
           	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsCli")),118);
@@ -1271,7 +1271,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         		   imp.say(imp.pRow()+0,103,rs.getString("CidCli") != null ? rs.getString("CidCli").substring(0,12) : "");
         		   imp.say(imp.pRow()+0,115,"|");
         		   imp.say(imp.pRow()+0,120,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
-        		   							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
+        		   							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
         		   imp.say(imp.pRow()+0,135,"|");
         		} 
         		else if (!rs.getString(1).equals(rs.getString(4))) {

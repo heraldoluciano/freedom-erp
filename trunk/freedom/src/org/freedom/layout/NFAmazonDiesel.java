@@ -133,7 +133,7 @@ public class NFAmazonDiesel extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,4,sValsCli[2] != null ? sValsCli[2] : "");
-           imp.say(imp.pRow()+0,56,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####"));
+           imp.say(imp.pRow()+0,56,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####"));
            imp.say(imp.pRow()+0,85,sValsCli[3] != null ? sValsCli[3] : "");
            imp.say(imp.pRow()+0,96,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
            imp.say(imp.pRow()+0,130,sHora);

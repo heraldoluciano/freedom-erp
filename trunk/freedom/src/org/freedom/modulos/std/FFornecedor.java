@@ -304,7 +304,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		  }
 		  imp.say(imp.pRow()+0,80,"Tel:");
 		  imp.say(imp.pRow()+0,86,(rs.getString("DDDFoneFor") != null ? "("+rs.getString("DDDFoneFor")+")" : "")+
-				  				  (rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"####-####") : "").trim());
+				  				  (rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor").trim(),"####-####") : "").trim());
 		  imp.say(imp.pRow()+0,121,"Fax:");
 		  imp.say(imp.pRow()+0,126,rs.getString("FaxFor") != null ? Funcoes.setMascara(rs.getString("FaxFor"),"####-####") : "");
 		  imp.say(imp.pRow()+0,135,"|");
@@ -400,7 +400,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 		  imp.say(imp.pRow()+0,50,rs.getString("EndFor") != null ? rs.getString("EndFor").substring(0,39) : "");
 		  imp.say(imp.pRow()+0,90,rs.getString("CidFor") != null ? rs.getString("CidFor").substring(0,29) : "");
 		  imp.say(imp.pRow()+0,120,(rs.getString("DDDFoneFor") != null ? "("+rs.getString("DDDFoneFor")+")" : "")+
-				  				   (rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor"),"####-####") : "").trim());
+				  				   (rs.getString("FoneFor") != null ? Funcoes.setMascara(rs.getString("FoneFor").trim(),"####-####") : "").trim());
 		  imp.say(imp.pRow()+0,135,"|");
 		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
 		  if (imp.pRow()>=linPag) {

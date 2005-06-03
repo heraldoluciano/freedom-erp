@@ -182,7 +182,7 @@ public class FRInadimplentes extends FRelatorio {
 	        imp.say(imp.pRow()+0,68,"|"+Funcoes.copy(rs.getString("CodCli"),0,8)
 	            +"-"+Funcoes.copy(rs.getString("RazCli"),0,40));
 	        imp.say(imp.pRow()+0,119,"|"+(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
-	  				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
+	  				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
 	        imp.say(imp.pRow()+0,135,"|");
 	        bTotalDev = bTotalDev.add(new BigDecimal(rs.getString("VlrParcItRec")));
 	        iNumLanca++;

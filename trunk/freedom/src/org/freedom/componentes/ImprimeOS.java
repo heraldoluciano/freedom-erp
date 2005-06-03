@@ -849,7 +849,7 @@ public class ImprimeOS implements ActionListener {
                     return;
                 }
                 //Coloca as Mascaras
-                sVals[1] = Funcoes.setMascara(sVals[1], "(####)####-####");
+                sVals[1] = Funcoes.setMascara(sVals[1], "####-####");
                 sVals[2] = Funcoes.setMascara(sVals[2], "####-####");
             } else if (strTipoCab.compareTo("2") == 0) {
                 sSQL = "SELECT CABEMP FROM SGPREFERE1 AND CODEMP=? AND CODFILIAL=?";

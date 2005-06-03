@@ -78,7 +78,7 @@ public class ImprimeOrc extends ImprimeLayout {
                         " O.VLRDESCITORC, O.CODORC,O.DTORC,O.DTVENCORC," +
 		  	            " O.OBSORC,O.VLRLIQORC,P.CODBARPROD, P.DESCPROD,IT.QTDITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," +
 		  	            " O.VLRDESCORC,  O.VLRADICORC, O.VLRPRODORC, F.CIDFILIAL, CL.CODCLI," +
-		  	            " CL.RAZCLI,CL.ENDCLI,CL.NUMCLI,CL.BAIRCLI,CL.CIDCLI,CL.UFCLI,CL.FONECLI,IT.OBSITORC,PL.DESCPLANOPAG,VD.NOMEVEND,CL.CONTCLI,O.PRAZOENTORC" +
+		  	            " CL.RAZCLI,CL.ENDCLI,CL.NUMCLI,CL.BAIRCLI,CL.CIDCLI,CL.UFCLI,CL.DDDCLI,CL.FONECLI,IT.OBSITORC,PL.DESCPLANOPAG,VD.NOMEVEND,CL.CONTCLI,O.PRAZOENTORC" +
 		  	            " FROM VDORCAMENTO O, VDITORCAMENTO IT, EQPRODUTO P, SGFILIAL F, VDCLIENTE CL,FNPLANOPAG PL,VDVENDEDOR VD"+
 						" WHERE IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL AND IT.TIPOORC=O.TIPOORC"+
 						" AND P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD"+
@@ -253,7 +253,7 @@ public class ImprimeOrc extends ImprimeLayout {
 		setFonte(fnCabCliNeg);
 		drawTexto("Telefone:",5,iY);
 		setFonte(fnCabCli);
-		drawTexto("("+rs.getString("DDDCli")+")"+Funcoes.setMascara(rs.getString("FoneCli"),"####-####"),80,iY);
+		drawTexto((rs.getString("DDDCli")!= null?"("+rs.getString("DDDCli")+")":"")+(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""),80,iY);
 		
 		iY += 15;
 
