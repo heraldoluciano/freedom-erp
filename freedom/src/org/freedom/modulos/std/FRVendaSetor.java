@@ -182,7 +182,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		txtDatafim.setRequerido(true);
 
 		cbFaturados.setVlrString("S");
-		cbFinanceiro.setVlrString("N");
+		cbFinanceiro.setVlrString("S");
 		cbMovEstoque.setVlrString("S");
 		cbCliPrinc.setVlrString("S");
 //		cbIncluiPed.setVlrString("N");
