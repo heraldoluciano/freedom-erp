@@ -252,7 +252,7 @@ public class FRUltimaVenda extends FRelatorio {
 						2, rs.getString("VlrLiqVenda")));
 				imp.say(imp.pRow() + 0, 110, "|");
 				imp.say(imp.pRow() + 0, 112, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
-							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli"),"####-####") : "").trim());
+							(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
 
 				imp.say(imp.pRow() + 0, 135, "|");
 				bTotalVd = bTotalVd.add(new BigDecimal(rs

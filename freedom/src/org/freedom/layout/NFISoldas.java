@@ -117,7 +117,7 @@ public class NFISoldas extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,2,rs.getString("CidCli"));
-           imp.say(imp.pRow()+0,56,Funcoes.setMascara(rs.getString("FoneCli"),"(####)####-####")+" - "+Funcoes.setMascara(rs.getString("FaxCli"),"####-####"));
+           imp.say(imp.pRow()+0,56,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####")+" - "+Funcoes.setMascara(rs.getString("FaxCli"),"####-####"));
            imp.say(imp.pRow()+0,82,rs.getString("UfCli"));
            imp.say(imp.pRow()+0,92,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
            imp.say(imp.pRow()+0,126,sHora);

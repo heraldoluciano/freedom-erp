@@ -340,7 +340,7 @@ public class FConsOrc extends FFilho implements ActionListener {
         tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(12) != null ? rs.getString(12) : ""), iLin, 9);
         tab.setValor(rs.getString(9) != null ? rs.getString(9) : "", iLin, 8);
         tab.setValor(rs.getString(10) != null ? rs.getString(10) : "", iLin, 10);
-        tab.setValor(rs.getString(7) != null ? rs.getString(7) : "", iLin, 11);
+        tab.setValor(rs.getString(7) != null ? rs.getString(7).trim() : "", iLin, 11);
         tab.setValor(Funcoes.strDecimalToStrCurrency(2, rs.getString(15) != null ? rs.getString(15) : ""), iLin, 12);
 
         iLin++;
