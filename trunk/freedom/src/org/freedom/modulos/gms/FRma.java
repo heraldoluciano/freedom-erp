@@ -702,7 +702,7 @@ public class FRma extends FDetalhe implements PostListener,
 				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " 
 				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP),"
 				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP)," 
-				+ " I.MOTIVOCANCITRMA, I.CODPROD "	
+				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP"	
 				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
 				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA"
@@ -754,8 +754,8 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 4, "Requisitante: ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSU"));
 					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
-					imp.say(imp.pRow() + 0, 38, rs.getString("CODCC"));
-					imp.say(imp.pRow() + 0, 62, "-" + rs.getString("DESCCC"));
+					imp.say(imp.pRow() + 0, 38, (rs.getString("CODCC")!= null ? rs.getString("CODCC").trim() : ""));
+					imp.say(imp.pRow() + 0, 62, "-" + (rs.getString("DESCCC")!= null ? rs.getString("DESCCC").trim() : ""));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs.getDate("DTINS")));
 					imp.say(imp.pRow() + 0, 136, "|");
@@ -764,8 +764,8 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 4, "Aprovação   : ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUAPROV"));
 					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
-					imp.say(imp.pRow() + 0, 38, rs.getString(29));
-					imp.say(imp.pRow() + 0, 62, "-" + rs.getString(30));
+					imp.say(imp.pRow() + 0, 38, (rs.getString(29)!= null ? rs.getString(29).trim() : ""));
+					imp.say(imp.pRow() + 0, 62, "-" + (rs.getString(30)!= null ? rs.getString(30).trim() : ""));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs.getDate("DTAAPROVRMA")));
 					imp.say(imp.pRow() + 0, 136, "|");
@@ -774,14 +774,15 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 4, "Expedição   : ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUEXP"));
 					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
-					imp.say(imp.pRow() + 0, 38, rs.getString(31));
-					imp.say(imp.pRow() + 0, 62, "-" + rs.getString(32));
+					imp.say(imp.pRow() + 0, 38, (rs.getString(31)!= null ? rs.getString(31).trim() : ""));
+					imp.say(imp.pRow() + 0, 62, "-" + (rs.getString(32)!= null ? rs.getString(32).trim() : ""));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs.getDate("DTAEXPRMA")));
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "O.P/OS.:");
+					imp.say(imp.pRow() + 0, 13, rs.getString("CodOP").trim());
 					imp.say(imp.pRow() + 0, 136, "|");					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|"+Funcoes.replicate("=",133)+"|");
