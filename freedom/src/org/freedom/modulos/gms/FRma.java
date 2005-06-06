@@ -782,7 +782,7 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "O.P/OS.:");
-					imp.say(imp.pRow() + 0, 13, rs.getString("CodOP").trim());
+					imp.say(imp.pRow() + 0, 13, rs.getString("CodOP") != null ? rs.getString("CodOP").trim() : "");
 					imp.say(imp.pRow() + 0, 136, "|");					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|"+Funcoes.replicate("=",133)+"|");
