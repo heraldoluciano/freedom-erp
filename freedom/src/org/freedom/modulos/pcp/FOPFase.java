@@ -22,15 +22,17 @@
 
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
+import java.util.Date;
 
-import javax.swing.JTextArea;
+
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FOPFase extends FDetalhe {
@@ -134,7 +136,7 @@ public class FOPFase extends FDetalhe {
     if (bExecuta){
 	    adicCampo(txtDataIniProdFs, 273, 60, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
 	    adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
-	    adicCampo(txtDataFimProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
+	    adicCampo(txtDataIniProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
 	    adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
 	    adicDBLiv(txaObs, 7, 100, 591, 52,"ObsFS", "Observações",false);
     }
@@ -151,6 +153,14 @@ public class FOPFase extends FDetalhe {
     tab.setTamColuna(100,3);
     tab.setTamColuna(50,4);
     tab.setTamColuna(200,5);
+
+    Date data = new Date();
+    if (txtDataIniProdFs.getVlrString().length() == 0 || txtDataIniProdFs.getVlrString() == null) {
+    	txtDataIniProdFs.setVlrDate(txtDataFimProdFs.getVlrDate());
+    	txtDataFimProdFs.setVlrDate(data);
+    	txtHFimProdFs.setVlrString(Funcoes.getTimeString(data));
+    } 
+    System.out.println("              #####    "+txtHFimProdFs.getVlrString());
     
     if (txtSitFS.getVlrString().equals("FN")){
 		txtDataIniProdFs.setAtivo(false);
