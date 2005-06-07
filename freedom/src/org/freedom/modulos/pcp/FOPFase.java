@@ -73,6 +73,10 @@ public class FOPFase extends FDetalhe {
 		txtNumSeqOf.setAtivo(false);
 		txtCodRec.setAtivo(false);
 		txtTempoOf.setAtivo(false);
+		txtDataIniProdFs.setAtivo(false);
+		txtHIniProdFs.setAtivo(false);
+		txtDataFimProdFs.setAtivo(false);
+		txtHFimProdFs.setAtivo(false);
     }
     
     pinCab = new JPanelPad(500,90);
@@ -116,7 +120,7 @@ public class FOPFase extends FDetalhe {
     txtDescRec.setListaCampos(lcRec);
 
     setAltDet(100);
-    pinDet = new JPanelPad(590,110);
+    pinDet = new JPanelPad(590,150);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
@@ -126,6 +130,12 @@ public class FOPFase extends FDetalhe {
     adicCampo(txtTempoOf, 360, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, true);
     adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, true);
     adicDescFK(txtDescRec, 70, 60, 200, 20, "DescRecP", "Descrição do recurso");
+    if (bExecuta){
+	    adicCampo(txtDataIniProdFs, 273, 60, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
+	    adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
+	    adicCampo(txtDataFimProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
+	    adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
+    }
     setListaCampos( true, "OPFASE", "PP");
     lcDet.setQueryInsert(false);
     montaTab();
