@@ -91,7 +91,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
   private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
   private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
-  private JButton btExecuta = new JButton("Produção",Icone.novo("btOP.gif"));
+  private JButton btExecuta = new JButton("Finaliza",Icone.novo("btOP.gif"));
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
   private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
@@ -111,15 +111,15 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	pnGImp.add(btImp);  	
   */	
   	setTitulo("Cadastro de Ordens de produção");
-	setAtribos(15, 10, 763, 580);
+	setAtribos(15, 10, 640, 580);
 	
-  	setAltCab(247);
+  	setAltCab(170);
   	
 	btFase.setToolTipText("Fases da produção");
 	btRMA.setToolTipText("Gera ou exibe RMA.");
 	btExecuta.setToolTipText("Processo de produção");
 	
-	pinCab.adic(pinBotCab,630,1,114,196);
+	pinCab.adic(pinBotCab,500,20,115,97);
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
@@ -141,6 +141,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	lcLoteProdEst.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
 //	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D)",txtCodProdEst);
 //	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
+	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ",txtCodProdEst);
+	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
 	lcLoteProdEst.montaSql(false, "LOTE", "EQ");
 	lcLoteProdEst.setQueryCommit(false);
 	lcLoteProdEst.setReadOnly(true);
@@ -192,7 +194,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     
     adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
 	adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
-	adicDescFK(txtDescTipoMov, 153, 20, 260, 20, "DescTipoMov", "Cód.Tp.Mov.");
+	adicDescFK(txtDescTipoMov, 153, 20, 340, 20, "DescTipoMov", "Cód.Tp.Mov.");
 
   	if (!bPrefs[0]) {  
   		adicCampo(txtCodProdEst, 7, 60, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
@@ -206,14 +208,17 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 //  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdEstRef.getWhereAdic()));  	  	
   	}
 
-  	adicDescFK(txtDescEst, 80, 60, 250, 20, "descprod", "Descrição da estrutura");
-  	adicCampo(txtCodAlmoxEst,333,60,60,20,"codalmox","Cód.Almox.",ListaCampos.DB_FK,txtDescAlmoxEst,true);
-  	adicDescFK(txtDescAlmoxEst, 396, 60, 180, 20, "descalmox", "Descrição do almoxarifado");
+  	adicDescFK(txtDescEst, 80, 60, 330, 20, "descprod", "Descrição da estrutura");
+
   	
-  	adicCampo(txtQtdPrevProdOP,7,100,100,20,"qtdprevprodop","Quantidade",ListaCampos.DB_SI, true);
-  	adicCampo(txtDtFabProd,110,100,100,20,"dtfabrop","Dt. fabricação",ListaCampos.DB_SI, true);  	
-    adicCampo(txtCodLoteProdEst,213,100,100,20, "CodLote", "Lote", ListaCampos.DB_SI,false);
-    adicCampo(txtDtValidOP,316,100,100,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
+  	adicCampo(txtQtdPrevProdOP,413,60,80,20,"qtdprevprodop","Quantidade",ListaCampos.DB_SI, true);
+
+  	adicCampo(txtCodAlmoxEst,7,100,70,20,"codalmox","Cód.Almox.",ListaCampos.DB_FK,txtDescAlmoxEst,true);
+  	adicDescFK(txtDescAlmoxEst, 80, 100, 180, 20, "descalmox", "Descrição do almoxarifado");
+  	
+  	adicCampo(txtDtFabProd,263,100,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);  	
+    adicCampo(txtCodLoteProdEst,341,100,75,20, "CodLote", "Lote", ListaCampos.DB_SI,false);
+    adicCampo(txtDtValidOP,419,100,75,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
   	
     txtCodTpMov.setAtivo(false);
@@ -325,10 +330,10 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     tab.setTamColuna(150,2);
 
   }
-	private String buscaLote(ListaCampos lcProd, JTextFieldPad txtProd) {
+	private String buscaLote(ListaCampos lcProd, JTextFieldPad txtProd,boolean bSaldoPos) {
 		String sRet = "";
 		String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
-				+ "L.CODPROD=? AND L.CODFILIAL=? AND L.SLDLIQLOTE>0 "
+				+ "L.CODPROD=? AND L.CODFILIAL=? "+(bSaldoPos?"AND L.SLDLIQLOTE>0 ":"")
 				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
 				+ "( "
 				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
@@ -500,7 +505,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
        	setUsaLote();
     	if((txtCodLoteProdEst.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S"))){
     		txtCodLoteProdEst.setAtivo(true);
-    		txtCodLoteProdEst.setVlrString(buscaLote(lcProdEstCod,txtCodProdEst));
+    		txtCodLoteProdEst.setVlrString(buscaLote(lcProdEstCod,txtCodProdEst,false));
     		txtDtValidOP.setVlrDate(txtDescLoteProdEst.getVlrDate());
     		txtDtValidOP.setAtivo(false);
     		lcLoteProdEst.carregaDados();
@@ -514,7 +519,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	if(cevt.getListaCampos() == lcDet) {
 		if((txtCodLoteProdDet.getVlrString().equals("")) && (txtUsaLoteDet.getVlrString().equals("S"))){
 			txtCodLoteProdDet.setAtivo(true);
-			txtCodLoteProdDet.setVlrString(buscaLote(lcProdDetCod,txtCodProdDet));
+			txtCodLoteProdDet.setVlrString(buscaLote(lcProdDetCod,txtCodProdDet,true));
 			lcLoteProdDet.carregaDados();
 		}
 		else if((txtUsaLoteDet.getVlrString().equals("N"))){
