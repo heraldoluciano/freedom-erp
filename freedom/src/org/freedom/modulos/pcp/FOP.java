@@ -139,9 +139,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	lcLoteProdEst.add(new GuardaCampo(txtCodLoteProdEst, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLoteProdEst, false));
 	lcLoteProdEst.add(new GuardaCampo(txtDescLoteProdEst, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
 	lcLoteProdEst.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
-	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D OR #S IN('DV','PE'))",txtCodProdEst);
-	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
-	lcLoteProdEst.setDinWhereAdic("", txtCodTpMov);
+//	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D)",txtCodProdEst);
+//	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
 	lcLoteProdEst.montaSql(false, "LOTE", "EQ");
 	lcLoteProdEst.setQueryCommit(false);
 	lcLoteProdEst.setReadOnly(true);
@@ -261,9 +260,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 			ListaCampos.DB_PK, txtDescLoteProdDet, false));
 	lcLoteProdDet.add(new GuardaCampo(txtDescLoteProdDet, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
 	lcLoteProdDet.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
-	lcLoteProdDet.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D OR #S IN('DV','PE'))",txtCodProdDet);
-	lcLoteProdDet.setDinWhereAdic("", txtDtFabProd);
-	lcLoteProdDet.setDinWhereAdic("", txtCodTpMov);
+	lcLoteProdDet.setDinWhereAdic("CODPROD=#N",txtCodProdDet);
 	lcLoteProdDet.montaSql(false, "LOTE", "EQ");
 	lcLoteProdDet.setQueryCommit(false);
 	lcLoteProdDet.setReadOnly(true);
@@ -504,9 +501,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     	if((txtCodLoteProdEst.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S"))){
     		txtCodLoteProdEst.setAtivo(true);
     		txtCodLoteProdEst.setVlrString(buscaLote(lcProdEstCod,txtCodProdEst));
-    		lcLoteProdEst.carregaDados();
     		txtDtValidOP.setVlrDate(txtDescLoteProdEst.getVlrDate());
     		txtDtValidOP.setAtivo(false);
+    		lcLoteProdEst.carregaDados();
     	}
     	else if((txtUsaLoteEst.getVlrString().equals("N"))){
     		txtCodLoteProdEst.setAtivo(false);
