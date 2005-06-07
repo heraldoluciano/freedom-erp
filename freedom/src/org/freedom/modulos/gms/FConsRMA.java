@@ -82,7 +82,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDtEmiOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtRefProdOP = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private Tabela tab = new Tabela();
 	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
 	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
@@ -124,10 +127,16 @@ public class FConsRMA extends FFilho implements ActionListener {
 		txtCodOP.setFK(true);
 		
 		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, null, false));
+		lcOP.add(new GuardaCampo(txtDtEmiOP, "DTEMITOP", "Data de emissão", ListaCampos.DB_SI, null, false));
+		lcOP.add(new GuardaCampo(txtDtFabOP, "DTFABROP", "Data de fabricação", ListaCampos.DB_SI, null, false));
+		lcOP.add(new GuardaCampo(txtCodProdOP, "CodProd", "Cód.prod.", ListaCampos.DB_SI, null, false));
+		lcOP.add(new GuardaCampo(txtRefProdOP, "RefProd", "Referência", ListaCampos.DB_SI, null, false));
 		lcOP.setQueryCommit(false);
 		lcOP.setReadOnly(true);
 
-		txtSeqOP.setSoLeitura(true);
+		txtDtEmiOP.setSoLeitura(true);
+		txtDtFabOP.setSoLeitura(true);
+		txtCodProdOP.setSoLeitura(true);
 		txtCodOP.setTabelaExterna(lcOP);
 		lcOP.montaSql(false, "OP", "PP");
 				
