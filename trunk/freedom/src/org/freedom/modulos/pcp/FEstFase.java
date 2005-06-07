@@ -23,6 +23,7 @@
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -46,6 +47,7 @@ public class FEstFase extends FDetalhe {
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
+  private JCheckBoxPad cbFinaliza = new JCheckBoxPad("Sim","S","N");
   private int iCodProd;
   
   public FEstFase() {
@@ -105,10 +107,11 @@ public class FEstFase extends FDetalhe {
     setNavegador(navRod);
     adicCampo(txtNumSeqEf, 7, 20, 40, 20,"SeqEf","Item", ListaCampos.DB_PK, true);
     adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
-    adicDescFK(txtDescFase, 130, 20, 227, 20, "DescFase", "Descrição da fase");
-    adicCampo(txtTempoEf, 360, 20, 100, 20,"TempoEf","Tempo (Seg.)",ListaCampos.DB_SI,true);
+    adicDescFK(txtDescFase, 130, 20, 277, 20, "DescFase", "Descrição da fase");
+    adicCampo(txtTempoEf, 410, 20, 100, 20,"TempoEf","Tempo (Seg.)",ListaCampos.DB_SI,true);
     adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true);
     adicDescFK(txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Descrição do tipo de recurso");
+    adicDB(cbFinaliza,445,60,80,20,"FINALIZAOP","Finaliza O.P",true);
     setListaCampos( true, "ESTRUFASE", "PP");
     lcDet.setQueryInsert(false);
     montaTab();

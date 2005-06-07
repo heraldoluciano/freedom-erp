@@ -78,7 +78,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtCodLoteProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtGeraRMAAut = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
-
   private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, casasDec);
   private JTextFieldFK txtUsaLote = new JTextFieldFK(JTextFieldPad.TP_STRING, 1, 0);
   private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
@@ -87,7 +86,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcProdDetRef = new ListaCampos(this,"PD");
   private ListaCampos lcLoteProdDet = new ListaCampos(this, "LE");  
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
-  private JButton btFase = new JButton("Fases",Icone.novo("btExecuta.gif"));
+  private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
   private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
@@ -158,6 +157,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descriçao da estrutura", ListaCampos.DB_SI, false));
     lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referencia", ListaCampos.DB_SI, false));  	
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
+    lcProdEstCod.setWhereAdic("ATIVOEST='S'");
   	lcProdEstCod.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstCod.setQueryCommit(false);
   	lcProdEstCod.setReadOnly(true);
@@ -168,6 +168,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdEstRef.add(new GuardaCampo( txtDescEst, "DescEst", "Descriçao da estrutura", ListaCampos.DB_SI, false));  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false));
+    lcProdEstRef.setWhereAdic("ATIVOEST='S'");
   	lcProdEstRef.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstRef.setQueryCommit(false);
   	lcProdEstRef.setReadOnly(true);
