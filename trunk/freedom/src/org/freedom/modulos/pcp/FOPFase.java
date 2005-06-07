@@ -23,7 +23,10 @@
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
 
+import javax.swing.JTextArea;
+
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -33,6 +36,7 @@ import org.freedom.telas.FDetalhe;
 public class FOPFase extends FDetalhe {
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
+  private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -48,7 +52,8 @@ public class FOPFase extends FDetalhe {
   private JTextFieldPad txtDataIniProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtHIniProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,10,0);
   private JTextFieldPad txtDataFimProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,10,0);  
+  private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,10,0);
+  private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcRec = new ListaCampos(this,"RP");
@@ -56,7 +61,7 @@ public class FOPFase extends FDetalhe {
   private boolean bExecuta = false;
   public FOPFase(int iCodOP,boolean bExecuta) {
     setTitulo("Fases da OP");
-    setAtribos( 70, 40, 630, 400);
+    setAtribos( 70, 40, 630, 470);
     setAltCab(130);
     
     this.iCodOP = iCodOP;
@@ -73,10 +78,6 @@ public class FOPFase extends FDetalhe {
 		txtNumSeqOf.setAtivo(false);
 		txtCodRec.setAtivo(false);
 		txtTempoOf.setAtivo(false);
-		txtDataIniProdFs.setAtivo(false);
-		txtHIniProdFs.setAtivo(false);
-		txtDataFimProdFs.setAtivo(false);
-		txtHFimProdFs.setAtivo(false);
     }
     
     pinCab = new JPanelPad(500,90);
@@ -96,7 +97,7 @@ public class FOPFase extends FDetalhe {
     adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº OP", ListaCampos.DB_PK, true);
     adicCampo(txtCodProd, 90, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
     adicDescFK(txtDescProd, 170, 20, 197, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdProdOP","Quantidade", ListaCampos.DB_SI, true);
+    //adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdProdOP","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
     setListaCampos( false, "OP", "PP");
@@ -119,8 +120,8 @@ public class FOPFase extends FDetalhe {
     txtCodRec.setTabelaExterna(lcRec);
     txtDescRec.setListaCampos(lcRec);
 
-    setAltDet(100);
-    pinDet = new JPanelPad(590,150);
+    setAltDet(170);
+    pinDet = new JPanelPad(590,180);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
     setNavegador(navRod);
@@ -135,7 +136,9 @@ public class FOPFase extends FDetalhe {
 	    adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
 	    adicCampo(txtDataFimProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
 	    adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
+	    adicDBLiv(txaObs, 7, 100, 591, 52,"ObsFS", "Observações",false);
     }
+    adicCampoInvisivel(txtSitFS,"SITFS", "Situação da fase", ListaCampos.DB_SI, false);
     setListaCampos( true, "OPFASE", "PP");
     lcDet.setQueryInsert(false);
     montaTab();
@@ -148,6 +151,14 @@ public class FOPFase extends FDetalhe {
     tab.setTamColuna(100,3);
     tab.setTamColuna(50,4);
     tab.setTamColuna(200,5);
+    
+    if (txtSitFS.getVlrString().equals("FN")){
+		txtDataIniProdFs.setAtivo(false);
+		txtHIniProdFs.setAtivo(false);
+		txtDataFimProdFs.setAtivo(false);
+		txtHFimProdFs.setAtivo(false);
+		txaObs.setEnabled(false);    	
+    }
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
