@@ -81,6 +81,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, casasDec);
   private JTextFieldFK txtUsaLoteDet = new JTextFieldFK(JTextFieldPad.TP_STRING, 1, 0);
   private JTextFieldFK txtUsaLoteEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 1, 0);
+  private JTextFieldPad txtCodAlmoxEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);	
+  private JTextFieldFK txtDescAlmoxEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);	
   private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdEstRef = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetCod = new ListaCampos(this,"PD");
@@ -97,6 +99,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private Integer iCodTpMov = null;
   private JPanelPad pinBotCab = new JPanelPad(104,96);
+  private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
   
   public FOP () { }
   private void montaTela() {
@@ -124,7 +127,14 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	pinBotCab.adic(btExpedirRMA,0,124,110,30);
 	pinBotCab.adic(btFinExpRMA,0,155,110,30);*/
   	
-  	
+	lcAlmoxEst.add(new GuardaCampo(txtCodAlmoxEst, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmoxEst, false));
+	lcAlmoxEst.add(new GuardaCampo(txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
+	lcAlmoxEst.montaSql(false, "ALMOX", "EQ");
+	lcAlmoxEst.setQueryCommit(false);
+	lcAlmoxEst.setReadOnly(true);
+	txtDescAlmoxEst.setSoLeitura(true);
+	txtCodAlmoxEst.setTabelaExterna(lcAlmoxEst);	
+	
 	//FK de Lotes
 	lcLoteProdEst.add(new GuardaCampo(txtCodLoteProdEst, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLoteProdEst, false));
 	lcLoteProdEst.add(new GuardaCampo(txtDescLoteProdEst, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
@@ -198,6 +208,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	}
 
   	adicDescFK(txtDescEst, 80, 60, 250, 20, "descprod", "Descrição da estrutura");
+  	adicCampo(txtCodAlmoxEst,333,60,60,20,"codalmox","Cód.Almox.",ListaCampos.DB_FK,txtDescAlmoxEst,true);
+  	adicDescFK(txtDescAlmoxEst, 396, 60, 180, 20, "descalmox", "Descrição do almoxarifado");
   	
   	adicCampo(txtQtdProdOP,7,100,100,20,"qtdprodop","Quantidade",ListaCampos.DB_SI, true);
   	adicCampo(txtDtFabProd,110,100,100,20,"dtfabrop","Dt. fabricação",ListaCampos.DB_SI, true);  	
