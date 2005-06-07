@@ -44,6 +44,7 @@ public class FOPFase extends FDetalhe {
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtEmit = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtQtdOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -99,9 +100,10 @@ public class FOPFase extends FDetalhe {
     adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº OP", ListaCampos.DB_PK, true);
     adicCampo(txtCodProd, 90, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
     adicDescFK(txtDescProd, 170, 20, 197, 20, "DescProd", "Descrição do produto");
-    //adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdProdOP","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdProdOP","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
+    adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true); 
     setListaCampos( false, "OP", "PP");
     lcCampos.setQueryInsert(false);
     
@@ -136,7 +138,7 @@ public class FOPFase extends FDetalhe {
     if (bExecuta){
 	    adicCampo(txtDataIniProdFs, 273, 60, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
 	    adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
-	    adicCampo(txtDataIniProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
+	    adicCampo(txtDataFimProdFs, 439, 60, 80, 20,"DataFimProdFs","Data final", ListaCampos.DB_SI, false);
 	    adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
 	    adicDBLiv(txaObs, 7, 100, 591, 52,"ObsFS", "Observações",false);
     }
@@ -153,14 +155,16 @@ public class FOPFase extends FDetalhe {
     tab.setTamColuna(100,3);
     tab.setTamColuna(50,4);
     tab.setTamColuna(200,5);
-
+    
+    String sDtFabProd = txtDtFabProd.getVlrString();
     Date data = new Date();
-    if (txtDataIniProdFs.getVlrString().length() == 0 || txtDataIniProdFs.getVlrString() == null) {
-    	txtDataIniProdFs.setVlrDate(txtDataFimProdFs.getVlrDate());
+    System.out.println("\n     sDtFabProd"+sDtFabProd+"\ndata de inicio: "+txtDataIniProdFs.getVlrString()+"    data de fabricação: "+txtDtFabProd.getVlrDate()+"\n\n");
+    if (!(txtDataIniProdFs.getVlrString().length() > 0) || (txtDataIniProdFs.getVlrString() == null)) {
+    	txtDataIniProdFs.setVlrString(sDtFabProd);
+    	txtHIniProdFs.setVlrString(Funcoes.getTimeString(data));
     	txtDataFimProdFs.setVlrDate(data);
     	txtHFimProdFs.setVlrString(Funcoes.getTimeString(data));
     } 
-    System.out.println("              #####    "+txtHFimProdFs.getVlrString());
     
     if (txtSitFS.getVlrString().equals("FN")){
 		txtDataIniProdFs.setAtivo(false);
