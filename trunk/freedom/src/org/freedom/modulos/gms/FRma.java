@@ -820,13 +820,10 @@ public class FRma extends FDetalhe implements PostListener,
 				imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
 				if (!rs.getString("SITITRMA").equals("CA"))
 					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITRMA"));
-				else imp.say(imp.pRow() + 0, 105, "--");
 				if (!rs.getString("SITAPROVITRMA").equals("NA"))
 					imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
-				else imp.say(imp.pRow() + 0, 115, "--");
 				if (!rs.getString("SITEXPITRMA").equals("NE"))
 					imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
-				else imp.say(imp.pRow() + 0, 125, "--");
 				imp.say(imp.pRow() + 0, 136, "|");
 				
 				if ((rs.getString("SITITRMA").equals("CA")) || (rs.getString("SITAPROVITRMA").equals("NA"))
