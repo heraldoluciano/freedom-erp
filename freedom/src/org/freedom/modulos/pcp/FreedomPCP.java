@@ -29,7 +29,6 @@
 package org.freedom.modulos.pcp;
 
 import java.awt.event.ActionListener;
-
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.gms.FConsRMA;
 import org.freedom.modulos.gms.FRma;
