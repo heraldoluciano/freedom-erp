@@ -45,22 +45,35 @@ public class FOPFase extends FDetalhe {
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtTempoOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDataIniProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtHIniProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,10,0);
+  private JTextFieldPad txtDataFimProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,10,0);  
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcRec = new ListaCampos(this,"RP");
   private int iCodOP;
-  public FOPFase(int iCodOP) {
+  private boolean bExecuta = false;
+  public FOPFase(int iCodOP,boolean bExecuta) {
     setTitulo("Fases da OP");
     setAtribos( 70, 40, 630, 400);
     setAltCab(130);
     
     this.iCodOP = iCodOP;
+    this.bExecuta = bExecuta;
     
     txtCodOP.setAtivo(false);
     txtCodProd.setAtivo(false);
     txtDtEmit.setAtivo(false);
     txtDtValid.setAtivo(false);
     txtQtdOP.setAtivo(false);
+    
+    if(bExecuta) {
+    	txtCodFase.setAtivo(false);
+		txtNumSeqOf.setAtivo(false);
+		txtCodRec.setAtivo(false);
+		txtTempoOf.setAtivo(false);
+    }
     
     pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
