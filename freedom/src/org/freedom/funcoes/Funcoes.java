@@ -88,6 +88,14 @@ public class Funcoes {
 
 	public Funcoes() {
 	} 
+	
+	public static String getTimeString(Date data) {
+		String bRetorno	= "";
+		if (data!=null) 
+		   bRetorno = strZero(data.getHours()+"",2)+":"+
+		      strZero(data.getMinutes()+"",2)+":"+strZero(data.getSeconds()+"",2); 
+		return bRetorno;
+	}
     public static int contaChar(String sTexto,char cChar) {
         int iRet = 0;
         
