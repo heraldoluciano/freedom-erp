@@ -69,7 +69,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtDescProdDet = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtQtdProdOP = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldPad txtQtdPrevProdOP = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtDtValidOP = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtSeqItOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0); 
   private JTextFieldPad txtQtdItOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
@@ -211,7 +211,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicCampo(txtCodAlmoxEst,333,60,60,20,"codalmox","Cód.Almox.",ListaCampos.DB_FK,txtDescAlmoxEst,true);
   	adicDescFK(txtDescAlmoxEst, 396, 60, 180, 20, "descalmox", "Descrição do almoxarifado");
   	
-  	adicCampo(txtQtdProdOP,7,100,100,20,"qtdprodop","Quantidade",ListaCampos.DB_SI, true);
+  	adicCampo(txtQtdPrevProdOP,7,100,100,20,"qtdprevprodop","Quantidade",ListaCampos.DB_SI, true);
   	adicCampo(txtDtFabProd,110,100,100,20,"dtfabrop","Dt. fabricação",ListaCampos.DB_SI, true);  	
     adicCampo(txtCodLoteProdEst,213,100,100,20, "CodLote", "Lote", ListaCampos.DB_SI,false);
     adicCampo(txtDtValidOP,316,100,100,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
@@ -558,6 +558,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcTipoMov.setConexao(cn);
   	lcLoteProdDet.setConexao(cn);
   	lcLoteProdEst.setConexao(cn);
+  	lcAlmoxEst.setConexao(cn);
   	
   }
   private void imprimir(boolean bVisualizar) {
