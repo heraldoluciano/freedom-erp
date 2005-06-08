@@ -254,7 +254,7 @@ public class OrcMCraft extends LeiauteGR {
 		drawTexto("Fone : ",60,225);	
 		drawTexto((rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
 				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim()+
-				"    Fax.:  "+Funcoes.setMascara(rs.getString("FaxCli"),"####-####") ,101,225);
+				"    Fax.:  "+(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####"):"") ,101,225);
 						
         setFonte(fnCabCliIta);
         drawTexto("Prezado(a) Senhor(a);",60,260);

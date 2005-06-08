@@ -133,7 +133,7 @@ public class NFBemabra extends Leiaute {
              imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("CidCli"),30));
            else //Se tiver:
              imp.say(imp.pRow()+0,6,rs.getString("CidCli").trim() + "-" + rs.getString("UfCli"));
-           imp.say(imp.pRow()+0,48,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####"));
+           imp.say(imp.pRow()+0,48,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""));
            if (rs.getString(8) == null) //Se não tem país:
              imp.say(imp.pRow()+0,76,rs.getString("UfCli"));
            else //Se tiver:
