@@ -203,7 +203,7 @@ public class Funcoes {
 		GregorianCalendar gcSel = new GregorianCalendar();
 		try {
 			gcSel.setTime(dtSel);
-			gcSel.set(Calendar.HOUR, iHora);
+			gcSel.set(Calendar.HOUR_OF_DAY, iHora);
 			gcSel.set(Calendar.MINUTE, iMinuto);
 			gcSel.set(Calendar.SECOND, iSegundo);
 			gcSel.set(Calendar.MILLISECOND, iMilesegundo);
@@ -1514,11 +1514,14 @@ public class Funcoes {
 	public static String sqlTimeToStrTime(java.sql.Time t) {
 		if (t == null)
 			return "";
+		System.out.println("Data "+t);
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(t);
-		int iHora = cal.get(Calendar.HOUR);
+		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
+		System.out.println(strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2));
+
 		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2);
 	}
 	
@@ -1587,7 +1590,7 @@ public class Funcoes {
 	public static String dateToStrTime(Date dVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(dVal);
-		int iHora = cal.get(Calendar.HOUR);
+		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
 		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + iSegundo;
