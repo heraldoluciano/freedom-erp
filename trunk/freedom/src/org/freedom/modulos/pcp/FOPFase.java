@@ -76,7 +76,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     setTitulo("Fases da OP");
     setAtribos( 70, 40, 630, 470);
     setAltCab(130);
-    
+       
     this.iCodOP = iCodOP;
     this.bExecuta = bExecuta;
     
@@ -142,9 +142,10 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     adicCampo(txtNumSeqOf, 7, 20, 40, 20,"SeqOf","Item",ListaCampos.DB_PK,true);
     adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
     adicDescFK(txtDescFase, 130, 20, 227, 20,"DescFase", "Descrição da fase");
-    adicCampo(txtTempoOf, 360, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, true);
-    adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, true);
+    adicCampo(txtTempoOf, 360, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, false);
+    adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
     adicDescFK(txtDescRec, 70, 60, 200, 20, "DescRecP", "Descrição do recurso");
+
     if (bExecuta){
 	    adicCampo(txtDataIniProdFs, 273, 60, 80, 20,"DataIniProdFs","Data ínicial", ListaCampos.DB_SI, false);
 	    adicCampo(txtHIniProdFs, 356, 60, 80, 20,"HIniProdFs","Hora ínicial", ListaCampos.DB_SI, false);
@@ -152,9 +153,11 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	    adicCampo(txtHFimProdFs, 522, 60, 80, 20,"HFimProdFs","Hora final", ListaCampos.DB_SI, false);
 	    adicDBLiv(txaObs, 7, 100, 591, 52,"ObsFS", "Observações",false);
     }
+    
+    
     adicCampoInvisivel(txtSitFS,"SITFS", "Situação da fase", ListaCampos.DB_SI, false);
     setListaCampos( true, "OPFASE", "PP");
-    lcDet.setQueryInsert(false);
+    lcDet.setQueryInsert(true);
     montaTab();
     
     lcCampos.setReadOnly(true);
@@ -166,10 +169,6 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     tab.setTamColuna(50,4);
     tab.setTamColuna(200,5);
     
-    String sDtFabProd = txtDtFabProd.getVlrString();
-    Date data = new Date();
-    System.out.println("\n     sDtFabProd"+sDtFabProd+"\ndata de inicio: "+txtDataIniProdFs.getVlrString()+"    data de fabricação: "+txtDtFabProd.getVlrDate()+"\n\n");
-
     lcCampos.addCarregaListener(this);
     lcDet.addCarregaListener(this);
     lcFase.addCarregaListener(this);
