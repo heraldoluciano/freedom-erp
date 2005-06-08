@@ -120,7 +120,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     adicCampo(txtQtdFinalOP, 473, 20, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
-    adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true); 
+    adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
+    
     setListaCampos( false, "OP", "PP");
     lcCampos.setQueryInsert(false);
     
@@ -252,6 +253,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  		}
 	  		else {
 	  			txtQtdFinalOP.setVlrDouble(new Double(dl.getValor()));
+	  			
 	  			atualizaOP();
 	  		}
 	  	}
