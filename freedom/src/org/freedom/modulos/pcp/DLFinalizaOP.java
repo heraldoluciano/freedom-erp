@@ -41,6 +41,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	public DLFinalizaOP(Component cOrig,String sQtdPrevOp) {
 		super(cOrig);
         txtQtdPrevOP.setVlrString(sQtdPrevOp);
+        txtQtdFinalOP.setVlrString(sQtdPrevOp);
 		setTitulo("Finalização da OP.");
 		setAtribos(300,250);
 		
@@ -50,16 +51,26 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		adic(new JLabelPad("Quantidade produzida:"),7,50,150,20);
 		adic(txtQtdFinalOP,7,70,77,20); 
 		
-		txaJustifcQtdProd.setEnabled(bJust);
+		txaJustifcQtdProd.setVisible(false);
 		
 		adic(new JLabelPad("Justificativa da quantidade"),7,90,300,20);
 		adic(txaJustifcQtdProd,7,110,270,50);
 		
+		txtQtdFinalOP.addFocusListener(this);
+		
 	}
 	public void focusLost(FocusEvent fevt){
-		if (fevt.getSource() == txtQtdFinalOP){
-			ok();
-		}
+		if (fevt.getSource() == txtQtdFinalOP){		
+		    if((txtQtdPrevOP.getVlrDouble().doubleValue()!=txtQtdFinalOP.getVlrDouble().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))) {
+		        txaJustifcQtdProd.setVisible(true);
+		        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
+		        txaJustifcQtdProd.requestFocus();
+		    }
+		    else {
+		        txaJustifcQtdProd.setVisible(false);
+		        txaJustifcQtdProd.setVlrString("");
+		    }		    
+		}	
 	}
 	public void focusGained(FocusEvent fevt){
 		
@@ -69,20 +80,19 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		return txtQtdFinalOP.getVlrDouble().doubleValue();
 	}
     public String getObs() {
-    	return "";
+    	return txaJustifcQtdProd.getVlrString();
     }
     public void keyPressed(KeyEvent kevt) {
            super.keyPressed(kevt);
     }
     
     public void ok(){
-    	if (txtQtdPrevOP.getVlrDouble().doubleValue() == getValor())
-			super.ok();
+    	if ((txtQtdPrevOP.getVlrDouble().doubleValue() != getValor()) &&(txaJustifcQtdProd.getVlrString().equals(""))){
+	        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
+    	    return;
+    	}
     	else{
-	    		bJust = true;
-	    		Funcoes.mensagemErro(this,
-							"Justifique a quantidade produzida.");
-	    		return;
+    	    super.ok();
 	    }
     }
 }

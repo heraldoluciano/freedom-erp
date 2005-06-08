@@ -63,6 +63,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private JTextFieldPad txtQtdFinalOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtJustificqtdprod = new JTextFieldPad(JTextFieldPad.TP_STRING,500,0);
   private JTextFieldPad txtNumSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -120,6 +121,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     adicCampo(txtQtdFinalOP, 473, 20, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
+    adicCampoInvisivel(txtJustificqtdprod,"JUSTFICQTDPROD","Justificativa",ListaCampos.DB_SI,false);
     adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
     
     setListaCampos( false, "OP", "PP");
@@ -253,7 +255,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  		}
 	  		else {
 	  			txtQtdFinalOP.setVlrDouble(new Double(dl.getValor()));
-	  			
+	  			txtJustificqtdprod.setVlrString(dl.getObs());
 	  			atualizaOP();
 	  		}
 	  	}
@@ -261,14 +263,15 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   }
 
   public void atualizaOP(){
-  	String sSQL = "UPDATE PPOP SET QtdFinalProdOP=? WHERE CodOP=? AND CODEMP=? AND CODFILIAL=?";
+  	String sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? WHERE CodOP=? AND CODEMP=? AND CODFILIAL=?";
   	try {
   	
 	  	PreparedStatement ps = con.prepareStatement(sSQL);
 	    ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());
-	    ps.setInt(2,txtCodOP.getVlrInteger().intValue());
-	    ps.setInt(3,Aplicativo.iCodEmp);
-		ps.setInt(4,ListaCampos.getMasterFilial("PPOP"));
+	    ps.setString(2,txtJustificqtdprod.getVlrString());
+	    ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+	    ps.setInt(4,Aplicativo.iCodEmp);
+		ps.setInt(5,ListaCampos.getMasterFilial("PPOP"));
 	    ps.executeUpdate();
 	  	
   	}
