@@ -71,7 +71,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private JTextFieldPad txtHIniProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
   private JTextFieldPad txtDataFimProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtHFimProdFs = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
-  private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
+  private JTextFieldPad txtSitFS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcRec = new ListaCampos(this,"RP");
@@ -201,6 +201,14 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  		txtHFimProdFs.setAtivo(false);
 	  		txaObs.setEnabled(false);    	
 	  	}
+	  	else {
+	  		txtDataIniProdFs.setAtivo(true);
+	  		txtHIniProdFs.setAtivo(true);
+	  		txtDataFimProdFs.setAtivo(true);
+	  		txtHFimProdFs.setAtivo(true);
+	  		txaObs.setEnabled(true);    	
+	  		
+	  	}
   	}
   }
 
@@ -229,7 +237,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 		rs.close();
 		ps.close();
 	} catch (SQLException err) {
-		Funcoes.mensagemErro(this, "Erro ao verificar se fase finaliza processo!\n" + err);
+		Funcoes.mensagemErro(this, "Erro ao verificar se fase finaliza processo!\n",true,con,err);
 	}
   	return bRet;
   }
@@ -244,12 +252,29 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  		}
 	  		else {
 	  			txtQtdFinalOP.setVlrDouble(new Double(dl.getValor()));
-	  			lcCampos.post();
+	  			atualizaOP();
 	  		}
 	  	}
   	}
   }
 
+  public void atualizaOP(){
+  	String sSQL = "UPDATE PPOP SET QtdFinalProdOP=? WHERE CodOP=? AND CODEMP=? AND CODFILIAL=?";
+  	try {
+  	
+	  	PreparedStatement ps = con.prepareStatement(sSQL);
+	    ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());
+	    ps.setInt(2,txtCodOP.getVlrInteger().intValue());
+	    ps.setInt(3,Aplicativo.iCodEmp);
+		ps.setInt(4,ListaCampos.getMasterFilial("PPOP"));
+	    ps.executeUpdate();
+	  	
+  	}
+  	catch(Exception err) {
+  		err.printStackTrace();
+		Funcoes.mensagemErro(this, "Erro ao atualizar quantidade produzida na OP.!\n",true,con,err);  		
+  	}
+  }
   public void afterPost(PostEvent pevt) { }
     
   public void beforeCancel(CancelEvent cevt) {}
