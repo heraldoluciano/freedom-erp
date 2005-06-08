@@ -838,8 +838,8 @@ public class ListaCampos extends Container implements PostListener,
 							sqlItens.setDate(iOrdem, Funcoes
 									.dateToSQLDate(gcComp.getVlrDate()));
 						else if (gcComp.getTipo() == JTextFieldPad.TP_TIME)
-							sqlItens.setTime(iOrdem, Funcoes
-									.dateToSQLTime(gcComp.getVlrDate()));
+							sqlItens.setTime(iOrdem, Funcoes.dateToSQLTime(gcComp.getVlrDate()));
+
 						iOrdem++;
 					}
 				}

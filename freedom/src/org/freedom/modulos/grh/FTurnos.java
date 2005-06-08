@@ -38,10 +38,10 @@ public class FTurnos extends FDados implements ActionListener {
   private JTextFieldPad txtCodTurno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtDescTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
   private JTextFieldPad txtNhsTurno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
-  private JTextFieldPad txtHIniTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
-  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
-  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
-  private JTextFieldPad txtHFimTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtHIniTurno = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
+  private JTextFieldPad txtHIniIntTurno = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
+  private JTextFieldPad txtHFimIntTurno = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
+  private JTextFieldPad txtHFimTurno = new JTextFieldPad(JTextFieldPad.TP_TIME,8,0);
   private Vector vTipoTurnoLab = new Vector();
   private Vector vTipoTurnoVal = new Vector();  
   private JRadioGroup rgTipoTurno = null;
@@ -59,10 +59,10 @@ public class FTurnos extends FDados implements ActionListener {
 	    adicCampo(txtHFimIntTurno, 213, 60, 100, 20,"HFimIntTurno","Fim do intervalo", ListaCampos.DB_SI, true);
 	    adicCampo(txtHFimTurno, 316, 60, 100, 20,"HFimTurno","fim do turno", ListaCampos.DB_SI,true);	   
 	    
-	    txtHIniTurno.setStrMascara("##:##");
+/*	    txtHIniTurno.setStrMascara("##:##");
 	    txtHIniIntTurno.setStrMascara("##:##");
 	    txtHFimIntTurno.setStrMascara("##:##");
-	    txtHFimTurno.setStrMascara("##:##");	    
+	    txtHFimTurno.setStrMascara("##:##"); */	    
 	    
 	    vTipoTurnoLab.addElement("Normal ( manhã e tarde )");
 	  	vTipoTurnoLab.addElement("Manhã");

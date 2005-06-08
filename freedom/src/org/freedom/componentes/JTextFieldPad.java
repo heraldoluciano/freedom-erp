@@ -198,9 +198,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
                retorno = true;
        }
      }
-     if ( (tipoCampo==TP_DATE)|| (tipoCampo==TP_TIME) ) {
+     
+     // mexi aqui
+     if (tipoCampo==TP_DATE) {
           retorno = false;
-       /*if ( (Character.isDigit(caract)) | (caract=='/') ) {
+       if ( (Character.isDigit(caract)) | (caract=='/') ) {
          retorno = true;
          if ((getText().trim().length() == 1) & (caract=='/')) 
            super.setText("0"+getText());
@@ -210,8 +212,24 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
            retorno = false; 
          if (((getText().length() == 2) | (getText().length() == 5)) & (caract != '/'))
              super.setText(getText()+"/");
-       }*/
+       }
      }
+     if (tipoCampo==TP_TIME) {
+        retorno = false;
+        if ( (Character.isDigit(caract)) | (caract==':') ) {
+            retorno = true;
+            if ((getText().trim().length() == 1) & (caract==':')) 
+              super.setText("0"+getText());
+            else if ((getText().trim().length() == 4) & (caract==':')) 
+              super.setText(getText().substring(0,3)+"0"+getText().substring(3,4));
+            if ((getCaretPosition() != 2) & (getCaretPosition() != 5) & (caract==':'))  
+              retorno = false; 
+            if (((getText().length() == 2) | (getText().length() == 5)) & (caract != ':'))
+                super.setText(getText()+":");
+          }
+     }
+
+     
     return retorno;       
   }
   public void cancelaDLF2() {
@@ -908,10 +926,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public Date getVlrTime() {
     String sRetorno = "";
     GregorianCalendar cRetorno = new GregorianCalendar(0,0,0);
+    
     if (getText().length() > 0) {
-      sRetorno = transData(getText());
+      sRetorno = transTime(getText());
       try {
-        int iHora = Integer.parseInt(sRetorno.substring(2));
+        int iHora = Integer.parseInt(sRetorno.substring(0,2));
         int iMinuto = Integer.parseInt(sRetorno.substring(3,5));
         int iSegundo = Integer.parseInt(sRetorno.substring(6,8));
         cRetorno.set(0,0,0,iHora,iMinuto,iSegundo);
