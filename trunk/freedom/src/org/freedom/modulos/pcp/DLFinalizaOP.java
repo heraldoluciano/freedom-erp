@@ -21,28 +21,47 @@
 
 package org.freedom.modulos.pcp;
 import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
-public class DLFinalizaOP extends FFDialogo {
+public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	private JTextFieldPad txtQtdPrevOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
 	private JTextFieldPad txtQtdFinalOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
+	private JTextAreaPad txaJustifcQtdProd = new JTextAreaPad();
     private double dVlr;
     private String sObs;
+    boolean bJust = false;
 	public DLFinalizaOP(Component cOrig,String sQtdPrevOp) {
 		super(cOrig);
         txtQtdPrevOP.setVlrString(sQtdPrevOp);
 		setTitulo("Finalização da OP.");
-		setAtribos(300,200);
+		setAtribos(300,250);
 		
 		txtQtdPrevOP.setAtivo(false);
 		adic(new JLabelPad("Quantidade prevista"),7,5,150,20);
 		adic(txtQtdPrevOP,7,25,77,20);
 		adic(new JLabelPad("Quantidade produzida:"),7,50,150,20);
-		adic(txtQtdFinalOP,7,70,77,20);
+		adic(txtQtdFinalOP,7,70,77,20); 
+		
+		txaJustifcQtdProd.setEnabled(bJust);
+		
+		adic(new JLabelPad("Justificativa da quantidade"),7,90,300,20);
+		adic(txaJustifcQtdProd,7,110,270,50);
+		
+	}
+	public void focusLost(FocusEvent fevt){
+		if (fevt.getSource() == txtQtdFinalOP){
+			ok();
+		}
+	}
+	public void focusGained(FocusEvent fevt){
 		
 	}
 
@@ -54,5 +73,16 @@ public class DLFinalizaOP extends FFDialogo {
     }
     public void keyPressed(KeyEvent kevt) {
            super.keyPressed(kevt);
+    }
+    
+    public void ok(){
+    	if (txtQtdPrevOP.getVlrDouble().doubleValue() == getValor())
+			super.ok();
+    	else{
+	    		bJust = true;
+	    		Funcoes.mensagemErro(this,
+							"Justifique a quantidade produzida.");
+	    		return;
+	    }
     }
 }
