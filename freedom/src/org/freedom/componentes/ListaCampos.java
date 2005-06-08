@@ -837,6 +837,9 @@ public class ListaCampos extends Container implements PostListener,
 						else if (gcComp.getTipo() == JTextFieldPad.TP_DATE)
 							sqlItens.setDate(iOrdem, Funcoes
 									.dateToSQLDate(gcComp.getVlrDate()));
+						else if (gcComp.getTipo() == JTextFieldPad.TP_TIME)
+							sqlItens.setTime(iOrdem, Funcoes
+									.dateToSQLTime(gcComp.getVlrDate()));
 						iOrdem++;
 					}
 				}
@@ -855,6 +858,9 @@ public class ListaCampos extends Container implements PostListener,
 						else if (iTipos[iCol] == JTextFieldPad.TP_DATE)
 							tab.setValor(Funcoes.sqlDateToStrDate(rsItens
 									.getDate(iCol + 1)), iLin, iCol);
+						else if (iTipos[iCol] == JTextFieldPad.TP_TIME)
+							tab.setValor(Funcoes.sqlTimeToStrTime(rsItens
+									.getTime(iCol + 1)), iLin, iCol);
 						else if (iTipos[iCol] == JTextFieldPad.TP_DECIMAL)
 							tab.setValor(Funcoes.setPontoDec(rsItens
 									.getString(iCol + 1)), iLin, iCol);
@@ -1423,6 +1429,10 @@ public class ListaCampos extends Container implements PostListener,
 								sqlLC.setDate(iParam, Funcoes
 										.dateToSQLDate(((GuardaCampo) comp)
 												.getVlrDate()));
+							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+								sqlLC.setTime(iParam, Funcoes
+									.dateToSQLTime(((GuardaCampo) comp)
+											.getVlrTime()));
 							}
 							iParam++;
 						}
@@ -1452,7 +1462,15 @@ public class ListaCampos extends Container implements PostListener,
 							vCache
 									.addElement(((GuardaCampo) comp)
 											.getVlrDate());
+						} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+							sqlLC.setTime(iParam, Funcoes
+									.dateToSQLTime(((GuardaCampo) comp)
+										.getVlrTime()));
+							vCache
+									.addElement(((GuardaCampo) comp)
+											.getVlrTime());
 						}
+
 						iParam++;
 						if (((GuardaCampo) comp).ehFK()) {
 							ListaCampos lcExt = ((GuardaCampo) comp).getCampo()
@@ -1533,6 +1551,12 @@ public class ListaCampos extends Container implements PostListener,
 											.setVlrString(Funcoes
 													.sqlDateToStrDate(rsLC
 															.getDate(((GuardaCampo) comp)
+																	.getNomeCampo())));
+								} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+									((GuardaCampo) comp)
+											.setVlrString(Funcoes
+													.sqlTimeToStrTime(rsLC
+															.getTime(((GuardaCampo) comp)
 																	.getNomeCampo())));
 								}
 							} else
@@ -1907,6 +1931,10 @@ public class ListaCampos extends Container implements PostListener,
 												sqlLC.setNull(iParam,
 														Types.DATE);
 											} else if (((GuardaCampo) comp)
+													.getTipo() == JTextFieldPad.TP_TIME) {
+												sqlLC.setNull(iParam,
+														Types.TIME);
+											} else if (((GuardaCampo) comp)
 													.getTipo() == JTextFieldPad.TP_BYTES) {
 												if (((PainelImagem) ((GuardaCampo) comp)
 														.getComponente())
@@ -1963,6 +1991,14 @@ public class ListaCampos extends Container implements PostListener,
 																Funcoes
 																		.dateToSQLDate(((GuardaCampo) comp)
 																				.getVlrDate()));
+											} else if (((GuardaCampo) comp)
+													.getTipo() == JTextFieldPad.TP_TIME) {
+												sqlLC
+														.setTime(
+																iParam,
+																Funcoes
+																		.dateToSQLTime(((GuardaCampo) comp)
+																				.getVlrTime()));
 											} else if (((GuardaCampo) comp)
 													.getTipo() == JTextFieldPad.TP_BYTES) {
 												if (((PainelImagem) ((GuardaCampo) comp)
@@ -2022,6 +2058,8 @@ public class ListaCampos extends Container implements PostListener,
 										sqlLC.setNull(iParam, Types.DOUBLE);
 									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
 										sqlLC.setNull(iParam, Types.DATE);
+									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+										sqlLC.setNull(iParam, Types.TIME);
 									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
 										if (((PainelImagem) ((GuardaCampo) comp)
 												.getComponente()).foiAlterado()) {
@@ -2069,6 +2107,13 @@ public class ListaCampos extends Container implements PostListener,
 														Funcoes
 																.dateToSQLDate(((GuardaCampo) comp)
 																		.getVlrDate()));
+									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+										sqlLC
+												.setTime(
+														iParam,
+														Funcoes
+																.dateToSQLTime(((GuardaCampo) comp)
+																		.getVlrTime()));
 									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
 										if (((PainelImagem) ((GuardaCampo) comp)
 												.getComponente()).foiAlterado()) {
@@ -2197,6 +2242,9 @@ public class ListaCampos extends Container implements PostListener,
 												.getTipo() == JTextFieldPad.TP_DATE) {
 											sqlLC.setNull(iParam, Types.DATE);
 										} else if (((GuardaCampo) comp)
+												.getTipo() == JTextFieldPad.TP_TIME) {
+											sqlLC.setNull(iParam, Types.TIME);
+										} else if (((GuardaCampo) comp)
 												.getTipo() == JTextFieldPad.TP_BYTES) {
 											if (((PainelImagem) ((GuardaCampo) comp)
 													.getComponente())
@@ -2248,6 +2296,14 @@ public class ListaCampos extends Container implements PostListener,
 																	.dateToSQLDate(((GuardaCampo) comp)
 																			.getVlrDate()));
 										} else if (((GuardaCampo) comp)
+												.getTipo() == JTextFieldPad.TP_TIME) {
+											sqlLC
+													.setTime(
+															iParam,
+															Funcoes
+																	.dateToSQLTime(((GuardaCampo) comp)
+																			.getVlrTime()));
+										} else if (((GuardaCampo) comp)
 												.getTipo() == JTextFieldPad.TP_BYTES) {
 											if (((PainelImagem) ((GuardaCampo) comp)
 													.getComponente())
@@ -2290,6 +2346,10 @@ public class ListaCampos extends Container implements PostListener,
 								sqlLC.setDate(iParam, Funcoes
 										.dateToSQLDate(((GuardaCampo) comp)
 												.getVlrDate()));
+							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+								sqlLC.setTime(iParam, Funcoes
+										.dateToSQLTime(((GuardaCampo) comp)
+												.getVlrTime()));
 							}
 							iParam++;
 							if (((GuardaCampo) comp).ehFK()) {
@@ -2462,6 +2522,10 @@ public class ListaCampos extends Container implements PostListener,
 													.getTipo() == JTextFieldPad.TP_DATE) {
 												sqlLC.setNull(iParam,
 														Types.DATE);
+											} else if (((GuardaCampo) comp)
+													.getTipo() == JTextFieldPad.TP_TIME) {
+												sqlLC.setNull(iParam,
+														Types.TIME);
 											}
 										} else {
 											if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2486,6 +2550,14 @@ public class ListaCampos extends Container implements PostListener,
 																Funcoes
 																		.dateToSQLDate(((GuardaCampo) comp)
 																				.getVlrDate()));
+											} else if (((GuardaCampo) comp)
+													.getTipo() == JTextFieldPad.TP_TIME) {
+												sqlLC
+														.setTime(
+																iParam,
+																Funcoes
+																		.dateToSQLTime(((GuardaCampo) comp)
+																				.getVlrTime()));
 											}
 										}
 										iParam++;
@@ -2519,6 +2591,10 @@ public class ListaCampos extends Container implements PostListener,
 									sqlLC.setDate(iParam, Funcoes
 											.dateToSQLDate(((GuardaCampo) comp)
 													.getVlrDate()));
+								} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+									sqlLC.setTime(iParam, Funcoes
+											.dateToSQLTime(((GuardaCampo) comp)
+													.getVlrTime()));
 								}
 								iParam++;
 								if (((GuardaCampo) comp).ehFK()) {
