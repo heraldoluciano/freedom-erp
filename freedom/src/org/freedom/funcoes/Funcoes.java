@@ -182,6 +182,21 @@ public class Funcoes {
 		return dtRetorno;
 	}
 
+	public static java.util.Date strTimeToDate(String sTime) {
+		java.util.Date retorno = new Date();
+		try {
+			int hora = Integer.parseInt(sTime.substring(0,2));
+			int minuto = Integer.parseInt(sTime.substring(3,5));
+			int segundo = Integer.parseInt(sTime.substring(6,8));
+			retorno.setHours(hora);
+			retorno.setMinutes(minuto);
+			retorno.setSeconds(segundo);
+		}
+	    catch (Exception e) {
+			retorno = null;
+	    }
+		return retorno;
+	}
 	public static java.util.Date encodeTime(Date dtSel, int iHora, int iMinuto,
 			int iSegundo, int iMilesegundo) {
 		Date dtRetorno = dtSel;
@@ -1014,6 +1029,32 @@ public class Funcoes {
 		return sData;
 	}
 
+	public static String verTime(String sTime) {
+		if (sTime.length() < 8) {
+			return "";
+		}
+		char cTime[] = sTime.toCharArray();
+		if (!Character.isDigit(cTime[0]))
+			return "";
+		else if (!Character.isDigit(cTime[1]))
+			return "";
+		else if (cTime[2] != ':')
+			return "";
+		else if (!Character.isDigit(cTime[3]))
+			return "";
+		else if (!Character.isDigit(cTime[4]))
+			return "";
+		else if (cTime[5] != ':')
+			return "";
+		else if (!Character.isDigit(cTime[6]))
+			return "";
+		else if (!Character.isDigit(cTime[7]))
+			return "";
+		else if (!validaData(sTime))
+			return "";
+		return sTime;
+	}
+	
 	/**
 	 * Retorna o path para um arquivo que será criado radomicamento no diretório
 	 * TEMP.
@@ -1223,6 +1264,24 @@ public class Funcoes {
 		return retorno;
 	}
 
+	public static boolean validaTime(String time) {
+		boolean retorno = true;
+		if (time.length() < 8)
+			return false;
+		int hora = Integer.parseInt(time.substring(0,2));
+		int minuto = Integer.parseInt(time.substring(3, 5));
+		int segundo = Integer.parseInt(time.substring(6, 8));
+
+
+		if ((hora > 23) || (hora < 0))
+			retorno = false;
+		else if ( (minuto>59) || (minuto<0) )
+			retorno = false;
+		else if ( (segundo>59) || (segundo<0) ) 
+			retorno = false;
+		return retorno;
+	}
+	
 	public static String timeStampToStrDate(Timestamp tVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(tVal);
@@ -1234,6 +1293,10 @@ public class Funcoes {
 
 	public static java.sql.Date dateToSQLDate(Date d) {
 		return new java.sql.Date(d.getTime());
+	}
+
+	public static java.sql.Time dateToSQLTime(Date d) {
+		return new java.sql.Time(d.getTime());
 	}
 
 	public static Date sqlDateToDate(java.sql.Date dVal) {
@@ -1448,6 +1511,17 @@ public class Funcoes {
 		return strZero("" + iDia, 2) + "/" + strZero("" + iMes, 2) + "/" + iAno;
 	}
 
+	public static String sqlTimeToStrTime(java.sql.Time t) {
+		if (t == null)
+			return "";
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(t);
+		int iHora = cal.get(Calendar.HOUR);
+		int iMinuto = cal.get(Calendar.MINUTE);
+		int iSegundo = cal.get(Calendar.SECOND);
+		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + strZero("" + iSegundo, 2);
+	}
+	
 	public static java.sql.Date strDateToSqlDate(String sVal) {
 		GregorianCalendar cal = new GregorianCalendar();
 		if (sVal.trim().length() == 10) {
@@ -1508,6 +1582,15 @@ public class Funcoes {
 		int iMes = cal.get(Calendar.MONTH) + 1;
 		int iDia = cal.get(Calendar.DAY_OF_MONTH);
 		return strZero("" + iDia, 2) + "/" + strZero("" + iMes, 2) + "/" + iAno;
+	}
+
+	public static String dateToStrTime(Date dVal) {
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(dVal);
+		int iHora = cal.get(Calendar.HOUR);
+		int iMinuto = cal.get(Calendar.MINUTE);
+		int iSegundo = cal.get(Calendar.SECOND);
+		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + iSegundo;
 	}
 
 	public static String strDateToStrDB(String sVal) {
