@@ -103,13 +103,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   
   public FOP () { }
   private void montaTela() {
-/*  	
-	pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo
-	pnGImp.setLayout(new GridLayout(1,5)); //redimensiona o painel de impressão
-	pnGImp.setPreferredSize(new Dimension( 210, 26));
-	pnGImp.add(btPrevimp);
-	pnGImp.add(btImp);  	
-  */	
+
   	setTitulo("Cadastro de Ordens de produção");
 	setAtribos(15, 10, 640, 580);
 	
@@ -123,9 +117,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
-/*	pinBotCab.adic(btMotivoCancelaRMA,0,93,110,30);
-	pinBotCab.adic(btExpedirRMA,0,124,110,30);
-	pinBotCab.adic(btFinExpRMA,0,155,110,30);*/
   	
 	lcAlmoxEst.add(new GuardaCampo(txtCodAlmoxEst, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmoxEst, false));
 	lcAlmoxEst.add(new GuardaCampo(txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
@@ -139,17 +130,10 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	lcLoteProdEst.add(new GuardaCampo(txtCodLoteProdEst, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLoteProdEst, false));
 	lcLoteProdEst.add(new GuardaCampo(txtDescLoteProdEst, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
 	lcLoteProdEst.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
-//	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D)",txtCodProdEst);
-//	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
-	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ",txtCodProdEst);
-	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
 	lcLoteProdEst.montaSql(false, "LOTE", "EQ");
 	lcLoteProdEst.setQueryCommit(false);
 	lcLoteProdEst.setReadOnly(true);
 	txtCodLoteProdEst.setTabelaExterna(lcLoteProdEst);
-	txtDescLoteProdEst.setListaCampos(lcLoteProdEst);
-	txtDescLoteProdEst.setNomeCampo("VenctoLote");
-	txtDescLoteProdEst.setLabel("Vencimento");
   	
 	lcTipoMov.add(new GuardaCampo(txtCodTpMov, "CodTipoMov",
 			"Cód.tp.mov.", ListaCampos.DB_PK, false));
@@ -217,7 +201,11 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicDescFK(txtDescAlmoxEst, 80, 100, 180, 20, "descalmox", "Descrição do almoxarifado");
   	
   	adicCampo(txtDtFabProd,263,100,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);  	
-    adicCampo(txtCodLoteProdEst,341,100,75,20, "CodLote", "Lote", ListaCampos.DB_SI,false);
+    adicCampo(txtCodLoteProdEst,341,100,75,20, "CodLote", "Lote", ListaCampos.DB_FK,txtDescLoteProdEst,false);
+    
+	adicDescFKInvisivel(txtDescLoteProdEst,"VenctoLote","Vencto.Lote");
+	
+	
     adicCampo(txtDtValidOP,419,100,75,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
   	
@@ -237,6 +225,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	
     lcProdEstCod.addCarregaListener(this);
     lcProdEstRef.addCarregaListener(this);
+    lcLoteProdEst.addCarregaListener(this);
 
     btFase.addActionListener(this);
     btRMA.addActionListener(this);
@@ -476,7 +465,12 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   }
   
     
-  public void beforeCarrega(CarregaEvent cevt) { }
+  public void beforeCarrega(CarregaEvent cevt) {
+  	
+  }
+  
+  
+  
   public void setUsaLote(){
 	String sSQL = "SELECT CLOTEPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
 	try {
@@ -504,18 +498,25 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
        	setUsaLote();
     	if((txtCodLoteProdEst.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S"))){
-    		txtCodLoteProdEst.setAtivo(true);
+    		
+//    		txtCodLoteProdEst.setVisible(true);
     		txtCodLoteProdEst.setVlrString(buscaLote(lcProdEstCod,txtCodProdEst,false));
-    		txtDtValidOP.setVlrDate(txtDescLoteProdEst.getVlrDate());
     		txtDtValidOP.setAtivo(false);
+    	  	    	  	
+    	  	lcLoteProdEst.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D)",txtCodProdEst);
+    	  	lcLoteProdEst.setDinWhereAdic("", txtDtFabProd);
+    	  	    	  	    		
     		lcLoteProdEst.carregaDados();
     	}
     	else if((txtUsaLoteEst.getVlrString().equals("N"))){
     		txtCodLoteProdEst.setAtivo(false);
+//    		txtDescLoteProdEst.setAtivo(false);
     		txtDtValidOP.setAtivo(true);
     	}
     }
-    
+    if (cevt.getListaCampos() == lcLoteProdEst) {
+		txtDtValidOP.setVlrDate(txtDescLoteProdEst.getVlrDate());    	
+    }
   	if(cevt.getListaCampos() == lcDet) {
 		if((txtCodLoteProdDet.getVlrString().equals("")) && (txtUsaLoteDet.getVlrString().equals("S"))){
 			txtCodLoteProdDet.setAtivo(true);
