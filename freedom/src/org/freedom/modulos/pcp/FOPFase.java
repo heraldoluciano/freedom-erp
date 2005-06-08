@@ -23,6 +23,9 @@
 package org.freedom.modulos.pcp;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 
@@ -42,6 +45,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 
@@ -55,7 +59,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private JTextFieldPad txtDtEmit = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtQtdOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
+  private JTextFieldPad txtQtdPrevOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
+  private JTextFieldPad txtQtdFinalOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtNumSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -84,7 +89,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     txtCodProd.setAtivo(false);
     txtDtEmit.setAtivo(false);
     txtDtValid.setAtivo(false);
-    txtQtdOP.setAtivo(false);
+    txtQtdPrevOP.setAtivo(false);
+    txtQtdFinalOP.setAtivo(false);
     
     if(bExecuta) {
     	txtCodFase.setAtivo(false);
@@ -110,7 +116,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº OP", ListaCampos.DB_PK, true);
     adicCampo(txtCodProd, 90, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
     adicDescFK(txtDescProd, 170, 20, 197, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdPrevProdOP","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtQtdPrevOP, 370, 20, 100, 20,"QtdPrevProdOP","Qtd.prevista", ListaCampos.DB_SI, true);
+    adicCampo(txtQtdFinalOP, 473, 20, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
     adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true); 
@@ -174,6 +181,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     lcFase.addCarregaListener(this);
     lcProd.addCarregaListener(this);
     lcRec.addCarregaListener(this);
+    lcDet.addPostListener(this);
      
   }
   public void beforeCarrega(CarregaEvent cevt) { }
@@ -195,8 +203,55 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  	}
   	}
   }
-  public void afterPost(PostEvent pevt) { }
+
+  public boolean bFinalizaProcesso(){
+  	boolean bRet = false;
+  	String sSQL = "select ef.finalizaop from ppestrufase ef, ppopfase pf, ppop op where "+
+  				  "ef.codemp = pf.codemp and ef.codfilial = pf.codfilial and "+
+  				  "ef.codempfs = pf.codempfs and ef.codfilialfs = pf.codfilialfs and ef.codfase = pf.codfase "+
+			  	  "and pf.codemp = op.codemp and pf.codfilial = op.codfilial and pf.codop = op.codop and pf.seqof = ? "+
+  				  "and op.codemp=? and op.codfilial=? and op.codop=?";
+  	
+	try {
+		PreparedStatement ps = con.prepareStatement(sSQL);
+		ps.setInt(1,txtNumSeqOf.getVlrInteger().intValue()); 
+		ps.setInt(2,Aplicativo.iCodEmp);
+		ps.setInt(3,ListaCampos.getMasterFilial("PPOP"));
+		ps.setInt(4,txtCodOP.getVlrInteger().intValue());		
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			String sFinaliza = rs.getString(1);
+			if (sFinaliza != null) {
+				if(sFinaliza.equals("S"))
+					bRet = true;
+			}
+		}
+		rs.close();
+		ps.close();
+	} catch (SQLException err) {
+		Funcoes.mensagemErro(this, "Erro ao verificar se fase finaliza processo!\n" + err);
+	}
+  	return bRet;
+  }
   
+  public void beforePost(PostEvent pevt) {
+  	if(pevt.getListaCampos()==lcDet){
+	  	if(bFinalizaProcesso()){
+	  		DLFinalizaOP dl = new DLFinalizaOP(this,txtQtdPrevOP.getVlrString());
+	  		dl.show();
+	  		if (!dl.OK) {
+	  			pevt.cancela(); 
+	  		}
+	  		else {
+	  			txtQtdFinalOP.setVlrDouble(new Double(dl.getValor()));
+	  			lcCampos.post();
+	  		}
+	  	}
+  	}
+  }
+
+  public void afterPost(PostEvent pevt) { }
+    
   public void beforeCancel(CancelEvent cevt) {}
   
   public void afterInsert(InsertEvent ievt) { }
