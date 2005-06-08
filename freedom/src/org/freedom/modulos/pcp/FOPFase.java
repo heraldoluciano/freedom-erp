@@ -21,11 +21,20 @@
  */
 
 package org.freedom.modulos.pcp;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.Date;
 
 
 
+import org.freedom.acao.CancelEvent;
+import org.freedom.acao.CancelListener;
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
+import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
@@ -35,7 +44,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
-public class FOPFase extends FDetalhe {
+
+public class FOPFase extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener {
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextAreaPad txaObs = new JTextAreaPad();
@@ -100,7 +110,7 @@ public class FOPFase extends FDetalhe {
     adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº OP", ListaCampos.DB_PK, true);
     adicCampo(txtCodProd, 90, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
     adicDescFK(txtDescProd, 170, 20, 197, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdProdOP","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtQtdOP, 370, 20, 100, 20,"QtdPrevProdOP","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
     adicCampoInvisivel(txtDtFabProd,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true); 
@@ -159,26 +169,49 @@ public class FOPFase extends FDetalhe {
     String sDtFabProd = txtDtFabProd.getVlrString();
     Date data = new Date();
     System.out.println("\n     sDtFabProd"+sDtFabProd+"\ndata de inicio: "+txtDataIniProdFs.getVlrString()+"    data de fabricação: "+txtDtFabProd.getVlrDate()+"\n\n");
-    if (!(txtDataIniProdFs.getVlrString().length() > 0) || (txtDataIniProdFs.getVlrString() == null)) {
-    	txtDataIniProdFs.setVlrString(sDtFabProd);
-    	txtHIniProdFs.setVlrString(Funcoes.getTimeString(data));
-    	txtDataFimProdFs.setVlrDate(data);
-    	txtHFimProdFs.setVlrString(Funcoes.getTimeString(data));
-    } 
-    
-    if (txtSitFS.getVlrString().equals("FN")){
-		txtDataIniProdFs.setAtivo(false);
-		txtHIniProdFs.setAtivo(false);
-		txtDataFimProdFs.setAtivo(false);
-		txtHFimProdFs.setAtivo(false);
-		txaObs.setEnabled(false);    	
-    }
+
+    lcCampos.addCarregaListener(this);
+    lcDet.addCarregaListener(this);
+    lcFase.addCarregaListener(this);
+    lcProd.addCarregaListener(this);
+    lcRec.addCarregaListener(this);
+     
   }
+  public void beforeCarrega(CarregaEvent cevt) { }
+  public void afterCarrega(CarregaEvent cevt) {
+  	if (cevt.getListaCampos() == lcDet) {
+	  	if (!(txtDataIniProdFs.getVlrString().length() > 0) || (txtDataIniProdFs.getVlrString() == null)) {
+	  		txtDataIniProdFs.setVlrDate(txtDtFabProd.getVlrDate());
+	  		txtHIniProdFs.setVlrString(Funcoes.getTimeString(new Date()));
+	  		txtDataFimProdFs.setVlrDate(new Date());
+	  		txtHFimProdFs.setVlrString(Funcoes.getTimeString(new Date()));
+	  	} 
+	
+	  	if (txtSitFS.getVlrString().equals("FN")){
+	  		txtDataIniProdFs.setAtivo(false);
+	  		txtHIniProdFs.setAtivo(false);
+	  		txtDataFimProdFs.setAtivo(false);
+	  		txtHFimProdFs.setAtivo(false);
+	  		txaObs.setEnabled(false);    	
+	  	}
+  	}
+  }
+  public void afterPost(PostEvent pevt) { }
+  
+  public void beforeCancel(CancelEvent cevt) {}
+  
+  public void afterInsert(InsertEvent ievt) { }
+  
+  public void beforeInsert(InsertEvent ievt) { }
+  
+  public void afterCancel(CancelEvent cevt) { }
+  
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcProd.setConexao(cn);
     lcFase.setConexao(cn);
     lcRec.setConexao(cn);
     txtCodOP.setVlrInteger(new Integer(iCodOP));
-    lcCampos.carregaDados();  }        
+    lcCampos.carregaDados();  
+  }        
 }
