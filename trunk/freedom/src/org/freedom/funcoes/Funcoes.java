@@ -1050,7 +1050,7 @@ public class Funcoes {
 			return "";
 		else if (!Character.isDigit(cTime[7]))
 			return "";
-		else if (!validaData(sTime))
+		else if (!validaTime(sTime))
 			return "";
 		return sTime;
 	}
