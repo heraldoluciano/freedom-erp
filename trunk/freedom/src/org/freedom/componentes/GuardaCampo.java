@@ -327,6 +327,14 @@ public class GuardaCampo extends Component {
       dRetorno = ((JTextFieldPad)comp).getVlrDouble();
     return dRetorno;
   }
+
+  public Date getVlrTime() {
+    Date dRetorno = new Date();
+    if (comp instanceof JTextFieldPad)
+      dRetorno = ((JTextFieldPad)comp).getVlrTime();
+    return dRetorno;
+  }
+
   public Date getVlrDate() {
     Date dRetorno = new Date();
     if (comp instanceof JTextFieldPad)

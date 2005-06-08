@@ -65,6 +65,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public static final String PR_TEXTO = "texto"; 
   private EditListener editLis = this;
   private GregorianCalendar data = new GregorianCalendar();
+  private GregorianCalendar time = new GregorianCalendar();
   private boolean bPK = false;
   private boolean bFK = false;
   public  int tipoCampo = TP_NONE; 
@@ -197,9 +198,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
                retorno = true;
        }
      }
-     if (tipoCampo==TP_DATE) {
+     if ( (tipoCampo==TP_DATE)|| (tipoCampo==TP_TIME) ) {
           retorno = false;
-       if ( (Character.isDigit(caract)) | (caract=='/') ) {
+       /*if ( (Character.isDigit(caract)) | (caract=='/') ) {
          retorno = true;
          if ((getText().trim().length() == 1) & (caract=='/')) 
            super.setText("0"+getText());
@@ -209,7 +210,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
            retorno = false; 
          if (((getText().length() == 2) | (getText().length() == 5)) & (caract != '/'))
              super.setText(getText()+"/");
-       }
+       }*/
      }
     return retorno;       
   }
@@ -334,6 +335,8 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
       super.setText(transValorNum(getText()));
     else if (tipoCampo == TP_DATE) 
       super.setText(Funcoes.verData(transData(getText())));
+    else if (tipoCampo == TP_TIME) 
+        super.setText(Funcoes.verTime(transTime(getText())));
     if (bloquear) {
       requestFocus();
       bloquear = false;
@@ -422,6 +425,38 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
     }
     if (!Funcoes.validaData(retorno.trim())) {
        retorno = Funcoes.arredondaData(retorno.trim());
+    }
+    return retorno;
+  }
+
+  private String transTime(String sTime) {
+    String retorno = sTime;
+    time = new GregorianCalendar();
+    switch(retorno.trim().length()) {
+		case 1: 
+		  retorno = "0"+retorno+":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+		case 2: 
+		  retorno += ":"+Funcoes.strZero((time.get(Calendar.MINUTE))+"",2)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+		case 3: 
+		  retorno += Funcoes.strZero((time.get(Calendar.MINUTE))+"",2)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+		case 4: 
+          retorno = retorno.substring(0,3)+"0"+retorno.substring(3)+":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+		case 5: 
+          retorno += ":"+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+		case 6: 
+		  retorno += Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+		case 7: 
+	      retorno = retorno.substring(0,6)+Funcoes.strZero(time.get(Calendar.SECOND)+"",2);
+		  break;
+    }
+    if (!Funcoes.validaTime(retorno.trim())) {
+       retorno = "";
     }
     return retorno;
   }
@@ -763,6 +798,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public void setVlrDate(Date dVal) {
   	super.setText(Funcoes.dateToStrDate(dVal));
   }
+  public void setVlrTime(Date dVal) {
+  	super.setText(Funcoes.dateToStrTime(dVal));
+  }
+
   public void setVlrBoolean(Boolean bVal) {
     super.setText(bVal.toString());
   }
@@ -865,6 +904,25 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
     }
     return cRetorno == null ? null : cRetorno.getTime();
   }
+
+  public Date getVlrTime() {
+    String sRetorno = "";
+    GregorianCalendar cRetorno = new GregorianCalendar(0,0,0);
+    if (getText().length() > 0) {
+      sRetorno = transData(getText());
+      try {
+        int iHora = Integer.parseInt(sRetorno.substring(2));
+        int iMinuto = Integer.parseInt(sRetorno.substring(3,5));
+        int iSegundo = Integer.parseInt(sRetorno.substring(6,8));
+        cRetorno.set(0,0,0,iHora,iMinuto,iSegundo);
+      }
+      catch (Exception err) {
+        cRetorno = null;
+      }
+    }
+    return cRetorno == null ? null : cRetorno.getTime();
+  }
+
   public Boolean getVlrBoolean() {
     return new Boolean(getText());
   }
@@ -883,6 +941,14 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
       	super.setText("");
       }
 	}
+	else if (tipoCampo == TP_TIME) {
+	      try {
+		    setVlrTime(Funcoes.strTimeToDate(sVal));
+	      }
+	      catch (Exception e) {
+	      	super.setText("");
+	      }
+		}
 	else if (tipoCampo == TP_NUMERIC)
 	  setVlrBigDecimal(new BigDecimal(sVal));
 	else if (tipoCampo == TP_DECIMAL)
@@ -897,14 +963,14 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	  setVlrBigDecimal(new BigDecimal(sVal));
 	else if (tipoCampo == TP_STRING)
 	  super.setText(sVal);
-	else if (tipoCampo == TP_TIME) {
+/*	else if (tipoCampo == TP_TIME) {
 	  try {
 		setVlrDate((new SimpleDateFormat()).parse(sVal));
 	  }
 	  catch (ParseException err) {
 		super.setText("");
 	  }
-	}
+	}*/
     else if (tipoCampo == TP_TIMESTAMP) {
       try {
 	    setVlrDate((new SimpleDateFormat()).parse(sVal));
