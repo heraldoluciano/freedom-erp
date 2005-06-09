@@ -258,6 +258,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  			txtJustificqtdprod.setVlrString(dl.getObs());
 	  			atualizaOP();
 	  		}
+			dl.dispose();
 	  	}
   	}
   }
