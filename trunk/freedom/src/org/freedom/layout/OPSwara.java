@@ -44,6 +44,7 @@ public class OPSwara extends LeiauteGR {
 	Vector vItem = new Vector();
 	int iCodOP = 0;
 	String sDescProd = "";
+	String sLote = "";
 	String sQtd = "";
 	Double dbQtd = new Double(1);
 	String sDtFabrica = "";
@@ -62,7 +63,7 @@ public class OPSwara extends LeiauteGR {
 	    iYPosProd = iPosIniItens;
 		try {
 		  String sSQL = "SELECT ITOP.CODOP,ITOP.SEQITOP,OP.DTEMITOP,OP.CODPROD,(SELECT PROD2.DESCPROD FROM EQPRODUTO PROD2 WHERE PROD2.CODPROD=OP.CODPROD  AND PROD2.CODEMP=OP.CODEMPPD  AND PROD2.CODFILIAL=OP.CODFILIALPD),"+
-			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPRODOP,ITOP.CODFASE "+
+			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPREVPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPREVPRODOP,ITOP.CODFASE,OP.CODLOTE "+
 			"FROM PPESTRUTURA EST,PPOP OP, PPITOP ITOP, EQUNIDADE UNID, EQPRODUTO PROD "+
 			"WHERE EST.CODPROD=OP.CODPROD AND ITOP.CODOP=OP.CODOP AND UNID.CODUNID=PROD.CODUNID "+
 			"AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND OP.CODEMP=? AND OP.CODFILIAL=?";
@@ -96,6 +97,7 @@ public class OPSwara extends LeiauteGR {
 		  sQtd       = dbQtd.toString();
 		  sDtFabrica = (rs.getDate(8) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(8)) : ""); 
 		  sDtValidade= (rs.getDate(10) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(10)) : "");
+		  sLote  = (rs.getString(19)!=null?rs.getString(19).trim():"");
 		  montaCabEmp(con);
 		  montaCab();		   	        		  
 
@@ -463,9 +465,7 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto(sDtFabrica,110,106); //Data de fabricação
 	    drawTexto(sDtValidade,110,118); //Data de validade
 	    drawTexto(Funcoes.dateToStrDate(new Date()),110,130);
-	    
-	    
-	    
+	    drawTexto(sLote,110,142);
 	    
 	  }			
 	  catch(Exception err) {
