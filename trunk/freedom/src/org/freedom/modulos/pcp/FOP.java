@@ -63,7 +63,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-  private JTextFieldPad txtQtdEst = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+  private JTextFieldFK txtQtdEst = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,2);
   private JTextFieldPad txtCodProdDet = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtRefProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -192,8 +192,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 //  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdEstRef.getWhereAdic()));  	  	
   	}
 
-  	adicDescFK(txtDescEst, 80, 60, 330, 20, "descprod", "Descrição da estrutura");
+  	adicDescFK(txtDescEst, 80, 60, 247, 20, "descprod", "Descrição da estrutura");
 
+  	adicDescFK(txtQtdEst, 330, 60, 80, 20, "qtdest", "Qtd.est.");
   	
   	adicCampo(txtQtdPrevProdOP,413,60,80,20,"qtdprevprodop","Quantidade",ListaCampos.DB_SI, true);
 

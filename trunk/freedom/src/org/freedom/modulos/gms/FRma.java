@@ -886,7 +886,7 @@ public class FRma extends FDetalhe implements PostListener,
 				con.commit();
 			dl.dispose();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
+			Funcoes.mensagemErro(this, "Erro ao consultar RMA!"
 					+ err.getMessage());
 		}
 
