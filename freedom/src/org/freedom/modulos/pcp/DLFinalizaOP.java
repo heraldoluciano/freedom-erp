@@ -66,7 +66,6 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	public void focusLost(FocusEvent fevt){
 		if (fevt.getSource() == txtQtdFinalOP){		
 		    if((txtQtdPrevOP.getVlrDouble().doubleValue()!=txtQtdFinalOP.getVlrDouble().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))) {
-		    	setAltPanel(250,210);
 		    	setAtribos(250,210);
 		    	lJustifcQtdProd.setVisible(true);
 		        txaJustifcQtdProd.setVisible(true);
