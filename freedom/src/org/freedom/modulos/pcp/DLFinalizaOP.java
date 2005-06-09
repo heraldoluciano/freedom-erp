@@ -25,6 +25,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JScrollPane;
+
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -44,7 +46,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
         txtQtdPrevOP.setVlrString(sQtdPrevOp);
         txtQtdFinalOP.setVlrString(sQtdPrevOp);
 		setTitulo("Finalização da OP.");
-		setAtribos(250,210);
+		setAtribos(250,150);
 		
 		txtQtdPrevOP.setAtivo(false);
 		adic(new JLabelPad("Qtd. prevista:"),7,5,100,20);
@@ -56,7 +58,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		lJustifcQtdProd.setVisible(false);
 		
 		adic(lJustifcQtdProd,7,45,300,20);
-		adic(txaJustifcQtdProd,7,65,220,50);
+		adic(new JScrollPane(txaJustifcQtdProd),7,65,222,50);
 		
 		txtQtdFinalOP.addFocusListener(this);
 		
@@ -64,10 +66,12 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	public void focusLost(FocusEvent fevt){
 		if (fevt.getSource() == txtQtdFinalOP){		
 		    if((txtQtdPrevOP.getVlrDouble().doubleValue()!=txtQtdFinalOP.getVlrDouble().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))) {
+		    	setAltPanel(250,210);
+		    	setAtribos(250,210);
 		    	lJustifcQtdProd.setVisible(true);
 		        txaJustifcQtdProd.setVisible(true);
 		        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
-		        txaJustifcQtdProd.requestFocus();
+		        txaJustifcQtdProd.requestFocus();		        
 		    }
 		    else {
 		    	lJustifcQtdProd.setVisible(false);
