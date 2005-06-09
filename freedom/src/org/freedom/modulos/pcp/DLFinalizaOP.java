@@ -35,6 +35,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	private JTextFieldPad txtQtdPrevOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
 	private JTextFieldPad txtQtdFinalOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
 	private JTextAreaPad txaJustifcQtdProd = new JTextAreaPad();
+	private JLabelPad lJustifcQtdProd = new JLabelPad("Justificativa");
     private double dVlr;
     private String sObs;
     boolean bJust = false;
@@ -43,18 +44,19 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
         txtQtdPrevOP.setVlrString(sQtdPrevOp);
         txtQtdFinalOP.setVlrString(sQtdPrevOp);
 		setTitulo("Finalização da OP.");
-		setAtribos(300,250);
+		setAtribos(250,210);
 		
 		txtQtdPrevOP.setAtivo(false);
-		adic(new JLabelPad("Quantidade prevista"),7,5,150,20);
-		adic(txtQtdPrevOP,7,25,77,20);
-		adic(new JLabelPad("Quantidade produzida:"),7,50,150,20);
-		adic(txtQtdFinalOP,7,70,77,20); 
+		adic(new JLabelPad("Qtd. prevista:"),7,5,100,20);
+		adic(txtQtdPrevOP,7,25,110,20);
+		adic(new JLabelPad("Qtd. produzida:"),120,5,100,20);
+		adic(txtQtdFinalOP,120,25,110,20); 
 		
 		txaJustifcQtdProd.setVisible(false);
+		lJustifcQtdProd.setVisible(false);
 		
-		adic(new JLabelPad("Justificativa da quantidade"),7,90,300,20);
-		adic(txaJustifcQtdProd,7,110,270,50);
+		adic(lJustifcQtdProd,7,45,300,20);
+		adic(txaJustifcQtdProd,7,65,220,50);
 		
 		txtQtdFinalOP.addFocusListener(this);
 		
@@ -62,11 +64,13 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	public void focusLost(FocusEvent fevt){
 		if (fevt.getSource() == txtQtdFinalOP){		
 		    if((txtQtdPrevOP.getVlrDouble().doubleValue()!=txtQtdFinalOP.getVlrDouble().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))) {
+		    	lJustifcQtdProd.setVisible(true);
 		        txaJustifcQtdProd.setVisible(true);
 		        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
 		        txaJustifcQtdProd.requestFocus();
 		    }
 		    else {
+		    	lJustifcQtdProd.setVisible(false);
 		        txaJustifcQtdProd.setVisible(false);
 		        txaJustifcQtdProd.setVlrString("");
 		    }		    
