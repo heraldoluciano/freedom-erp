@@ -56,6 +56,8 @@ public class FRVendasItem extends FRelatorio {
 	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
 	
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
 	private JCheckBoxPad cbListaFilial = null; 
 	
 	private ListaCampos lcVend = new ListaCampos(this);
@@ -67,7 +69,7 @@ public class FRVendasItem extends FRelatorio {
 	private Vector vVals = new Vector(2);
 	public FRVendasItem() {
 		setTitulo("Vendas por Item");
-		setAtribos(80,80,305,430);
+		setAtribos(80,80,305,460);
 		
 		txtDescVend.setAtivo(false);
 		txtDescGrup.setAtivo(false);
@@ -127,6 +129,8 @@ public class FRVendasItem extends FRelatorio {
 		 
 		 cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S", "N");
 		 cbListaFilial.setVlrString("N");
+		 cbFaturados.setVlrString("N");
+		 cbFinanceiro.setVlrString("N");
 		 
 		 
 		adic(new JLabelPad("Periodo:"),7,5,100,20);
@@ -153,14 +157,14 @@ public class FRVendasItem extends FRelatorio {
 		adic(txtCodCli,7,208,70,20);
 		adic(new JLabelPad("Razão social do cliente"),80,188,200,20);
 		adic(txtRazCli,80,208,200,20);
+				
+		adic(cbFaturados, 7, 240, 150, 25);
+		adic(cbFinanceiro, 153, 240, 150, 25);		
+		adic(cbListaFilial, 5, 280, 250, 20 );
 		
-		 adic(cbListaFilial, 5, 240, 250, 20 );
-		
-		
-		
-		adic(lbLinha3,7,274,272,2);
-        adic(new JLabelPad("Ordenado por:"),7,290,180,20);
-        adic(rgOrdem,7,315,273,30);
+		adic(lbLinha3,7,314,272,2);
+        adic(new JLabelPad("Ordenado por:"),7,330,180,20);
+        adic(rgOrdem,7,355,273,30);
        
         
         
@@ -235,6 +239,19 @@ public class FRVendasItem extends FRelatorio {
 			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
 			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
+		if (cbFaturados.getVlrString().equals("S")) {
+		    String sTmp =  "SÓ FATURADOS";
+			sCab += "\n"+imp.comprimido();
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+		}
+		if (cbFinanceiro.getVlrString().equals("S")) {
+		    String sTmp =  "SÓ FINANCEIRO";
+			sCab += "\n"+imp.comprimido();
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+		}
+		
 		
 		/**/
 		if (cbListaFilial.getVlrString().equals("S")&& (txtCodCli.getText().trim().length() > 0) ){  
@@ -244,6 +261,8 @@ public class FRVendasItem extends FRelatorio {
 		        "VDITVENDA IT, EQPRODUTO P WHERE P.CODPROD = IT.CODPROD"+
 		        " AND IT.CODVENDA = V.CODVENDA"+
 		        " AND TM.CODTIPOMOV=V.CODTIPOMOV"+
+				(cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
+				(cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
 		        " AND TM.CODEMP=V.CODEMPTM"+
 		        " AND TM.CODFILIAL=V.CODFILIALTM"+
 		        " AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP "+
@@ -264,6 +283,8 @@ public class FRVendasItem extends FRelatorio {
 				"VDITVENDA IT, EQPRODUTO P WHERE P.CODPROD = IT.CODPROD"+
 				" AND IT.CODVENDA = V.CODVENDA"+
 	            " AND TM.CODTIPOMOV=V.CODTIPOMOV" +
+				(cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
+				(cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
 	            " AND TM.CODEMP=V.CODEMPTM" +
 	            " AND TM.CODFILIAL=V.CODFILIALTM" +
 			    " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
@@ -282,6 +303,9 @@ public class FRVendasItem extends FRelatorio {
 			ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
 			rs = ps.executeQuery();
 			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo("Relatório de Vendas por ítem");
+			imp.addSubTitulo("RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
 			while ( rs.next() ) {
 				if (imp.pRow() == linPag) {
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -291,9 +315,7 @@ public class FRVendasItem extends FRelatorio {
 				}
 				if (imp.pRow()==0) {
 					//imp.actionPerformed();
-					imp.montaCab();
-					imp.setTitulo("Relatório de Vendas por ítem");
-					imp.addSubTitulo("RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :"+sDataini+" Até: "+sDatafim);
+					
 					imp.impCab(136, true);
 					
 					imp.say(imp.pRow()+0,0,""+imp.comprimido());

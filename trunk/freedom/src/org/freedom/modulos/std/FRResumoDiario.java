@@ -144,7 +144,7 @@ public class FRResumoDiario extends FRelatorio {
 
 		if (txtCodVend.getText().trim().length() > 0) {
 			sWhere += " AND V.CODVEND = " + txtCodVend.getText().trim();
-			sCab = "REPR.: " + txtCodVend.getVlrString() + " - "
+			sCab = "COMISS.: " + txtCodVend.getVlrString() + " - "
 					+ txtDescVend.getText().trim();
 			sWhere += " AND V.CODEMPVD=" + Aplicativo.iCodEmp
 					+ " AND V.CODFILIALVD=" + lcVend.getCodFilial();
@@ -153,10 +153,10 @@ public class FRResumoDiario extends FRelatorio {
 			sCab += (cbFaturados.getVlrString().equals("S") ? "SO FATURADOS" : "");
 		}
 		if (sCab.trim().length()>0){
-			sCab += (cbFaturados.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
+			sCab += (cbFinanceiro.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
 		}
 		else {
-			sCab += (cbFaturados.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
+			sCab += (cbFinanceiro.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
 		}
 
 		/*

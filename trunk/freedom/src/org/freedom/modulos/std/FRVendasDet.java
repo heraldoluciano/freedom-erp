@@ -32,6 +32,7 @@ import javax.swing.BorderFactory;
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -40,10 +41,12 @@ import org.freedom.telas.FRelatorio;
 
 public class FRVendasDet extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+  private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
   public FRVendasDet() {
     setTitulo("Vendas Detalhadas");
-    setAtribos(80,80,295,150);
+    setAtribos(80,80,295,160);
     
     txtDataini.setRequerido(true);
     txtDatafim.setRequerido(true);
@@ -62,6 +65,11 @@ public class FRVendasDet extends FRelatorio {
     adic(txtDataini,32,30,97,20);
     adic(new JLabelPad("Até:"),140,30,30,20);
     adic(txtDatafim,170,30,100,20);
+    
+    cbFaturados.setVlrString("N");
+	cbFinanceiro.setVlrString("N");
+	adic(cbFaturados, 7, 55, 150, 25);
+	adic(cbFinanceiro, 153, 55, 150, 25);
   }
   public void imprimir(boolean bVisualizar) {
     boolean bComRef = comRef();
@@ -74,7 +82,8 @@ public class FRVendasDet extends FRelatorio {
 
     ImprimeOS imp = new ImprimeOS("", con);
     int linPag = imp.verifLinPag()-1;
-    
+    boolean bSCab = false;
+    String sCab = "";
     String sDataini = "";
     String sDatafim = "";
 
@@ -84,6 +93,14 @@ public class FRVendasDet extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
 
+    if (cbFaturados.getVlrString().equals("S")){
+    	sCab = "SÓ FATURADOS";
+    	bSCab = true;
+    }
+    if (cbFinanceiro.getVlrString().equals("S")){
+    	sCab = "SÓ FINANCEIROS";
+    	bSCab = true;
+    }
     
     String sSQL = "SELECT (SELECT VO.CODORC FROM VDVENDAORC VO WHERE" +
     		      " VO.CODVENDA=V.CODVENDA AND VO.CODEMP=V.CODEMP" +
@@ -92,10 +109,12 @@ public class FRVendasDet extends FRelatorio {
     		      "V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD," +
     		      "P.DESCPROD,IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA," +
     		      "IT.VLRLIQITVENDA FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C," +
-    		      "VDITVENDA IT, EQPRODUTO P WHERE V.DTEMITVENDA BETWEEN ? AND ?"+
+    		      "VDITVENDA IT, EQPRODUTO P , EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ? AND ?"+
     		      " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG" +
     		      " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL" +
     		      " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL" +
+                  (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
+				  (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
     		      " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA" +
     		      " AND IT.CODEMP=V.CODEMP AND P.CODPROD=IT.CODPROD" +
     		      " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD" +
@@ -113,7 +132,8 @@ public class FRVendasDet extends FRelatorio {
       imp.limpaPags();
       imp.montaCab();
   	  imp.setTitulo("Relatório de Vendas Detalhado");
-  	  imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
+  	  imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim + ( bSCab ? (" / " + sCab) : ""));
+  	  
       while (rs.next()) {
         if (imp.pRow()>=(linPag-1)) {
           imp.say(imp.pRow()+1,0,""+imp.comprimido());
