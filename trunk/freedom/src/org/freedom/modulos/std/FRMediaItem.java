@@ -42,6 +42,7 @@ import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -82,6 +83,9 @@ public class FRMediaItem extends FRelatorio {
 			JTextFieldPad.TP_STRING, 40, 0);
 
 	private JRadioGroup rgOrdem = null;
+	
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
 
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
 
@@ -97,7 +101,7 @@ public class FRMediaItem extends FRelatorio {
 
 	public FRMediaItem() {
 		setTitulo("Media de vendas por item");
-		setAtribos(80, 80, 305, 400);
+		setAtribos(80, 80, 305, 410);
 
 		txtDescGrup.setAtivo(false);
 		txtDescMarca.setAtivo(false);
@@ -176,9 +180,14 @@ public class FRMediaItem extends FRelatorio {
 		adic(new JLabelPad("Nome do comissionado"), 80, 205, 200, 20);
 		adic(txtDescVend, 80, 225, 200, 20);
 
-		adic(lbLinha4, 7, 259, 273, 2);
-		adic(lbOrdem, 7, 270, 80, 15);
-		adic(rgOrdem, 7, 285, 273, 30);
+		cbFaturados.setVlrString("N");
+		cbFinanceiro.setVlrString("N");
+		adic(cbFaturados, 7, 245, 150, 25);
+		adic(cbFinanceiro, 153, 245, 150, 25);
+		
+		adic(lbLinha4, 7, 279, 273, 2);
+		adic(lbOrdem, 7, 290, 80, 15);
+		adic(rgOrdem, 7, 305, 273, 30);
 
 	}
 
@@ -270,6 +279,8 @@ public class FRMediaItem extends FRelatorio {
 							org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT.CODVENDA=V.CODVENDA AND IT.CODPROD=P.CODPROD\n"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
+					+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
+					+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")
 					+ " AND TM.CODEMP=V.CODEMPTM"
 					+ " AND TM.CODFILIAL=V.CODFILIALTM"
 					+ " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
