@@ -66,11 +66,11 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	public void focusLost(FocusEvent fevt){
 		if (fevt.getSource() == txtQtdFinalOP){		
 		    if((txtQtdPrevOP.getVlrDouble().doubleValue()!=txtQtdFinalOP.getVlrDouble().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))) {
-		    	setAtribos(250,210);
+		    	setSize(250,210);
 		    	lJustifcQtdProd.setVisible(true);
 		        txaJustifcQtdProd.setVisible(true);
-		        Funcoes.mensagemErro(this,"Quantidade produzida difere da quantidade prevista.\nJustifique.");
-		        txaJustifcQtdProd.requestFocus();		        
+		        show();
+		        txaJustifcQtdProd.requestFocus();	
 		    }
 		    else {
 		    	lJustifcQtdProd.setVisible(false);

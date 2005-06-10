@@ -33,6 +33,7 @@ import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -47,11 +48,14 @@ public class FRVendasGeral extends FRelatorio {
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
   
+  private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+  private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+  
   private ListaCampos lcVend = new ListaCampos(this);
   
   public FRVendasGeral() {
     setTitulo("Vendas em Geral");
-    setAtribos(80,80,295,195);
+    setAtribos(80,80,295,205);
     
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
@@ -80,6 +84,10 @@ public class FRVendasGeral extends FRelatorio {
 	adic(new JLabelPad("Nome do comissionado"),80,60,210,20);
 	adic(txtDescVend,80,80,190,20);
     
+	cbFaturados.setVlrString("N");
+	cbFinanceiro.setVlrString("N");
+	adic(cbFaturados, 7, 100, 150, 25);
+	adic(cbFinanceiro, 153, 100, 150, 25);
     
   }
   public void setConexao(Connection cn) {
@@ -97,11 +105,21 @@ public class FRVendasGeral extends FRelatorio {
       return;
     }
 	 
-	 if (txtCodVend.getText().trim().length() > 0) {
+	if (txtCodVend.getText().trim().length() > 0) {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		sCab = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-	}  
+		sCab += (cbFaturados.getVlrString().equals("S") ? " - SO FATURADOS" : "");
+	}
+	else{
+		sCab += (cbFaturados.getVlrString().equals("S") ? "SO FATURADOS" : "");
+	}
+	if (sCab.trim().length()>0){
+		sCab += (cbFinanceiro.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
+	}
+	else {
+		sCab += (cbFinanceiro.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
+	}
   	
   	
   	
@@ -134,6 +152,8 @@ public class FRVendasGeral extends FRelatorio {
 		          " AND TM.CODEMP=V.CODEMPTM" +
 		          " AND TM.CODFILIAL=V.CODFILIALTM" +
 				  " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
+                  (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
+				  (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
                   " AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND "+
                   "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "+
                   Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
