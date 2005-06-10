@@ -69,6 +69,9 @@ public class FRUltimaVenda extends FRelatorio {
 			JTextFieldPad.TP_STRING, 50, 0);
 
 	private JCheckBoxPad cbListaFilial = null;
+	
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
 
 	private ListaCampos lcVend = new ListaCampos(this);
 
@@ -76,7 +79,7 @@ public class FRUltimaVenda extends FRelatorio {
 
 	public FRUltimaVenda() {
 		setTitulo("Ultima Venda por Cliente");
-		setAtribos(80, 80, 290, 270);
+		setAtribos(80, 80, 290, 290);
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -128,6 +131,11 @@ public class FRUltimaVenda extends FRelatorio {
 		adic(txtDescVend, 80, 136, 186, 20);
 
 		adic(cbListaFilial, 5, 165, 200, 20);
+		
+		cbFaturados.setVlrString("S");
+		cbFinanceiro.setVlrString("S");
+		adic(cbFaturados, 7, 185, 150, 25);
+		adic(cbFinanceiro, 153, 185, 150, 25);
 
 	}
 
@@ -169,18 +177,32 @@ public class FRUltimaVenda extends FRelatorio {
 
 		if (txtCodVend.getText().trim().length() > 0) {
 			sWhere += " AND VD.CODVEND = " + txtCodVend.getText().trim();
-			String sTmp = "REPR.: " + txtCodVend.getVlrString() + " - "
+			String sTmp = "COMISSs.: " + txtCodVend.getVlrString() + " - "
 					+ txtDescVend.getText().trim();
 			sWhere += " AND VD.CODEMPVD=" + Aplicativo.iCodEmp
 					+ " AND VD.CODFILIALVD=" + lcVend.getCodFilial();
 			
 			sCab = sTmp ;
 		}
-
+		
+		if (sCab.trim().length()>0){
+			if (cbFaturados.getVlrString().equals("S"))
+				sCab += " - SO FATURADOS";
+			if (cbFinanceiro.getVlrString().equals("S"))
+				sCab += " - SO FINANCEIRO";
+		}
+		else {
+			if (cbFaturados.getVlrString().equals("S"))
+				sCab += "SO FATURADOS";
+			if (cbFinanceiro.getVlrString().equals("S"))
+				sCab += "SO FINANCEIRO";
+		}
 		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA)"
-				+ "FROM VDCLIENTE C, VDVENDA VD WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL "
+				+ "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL "
 				+ "AND C.CODFILIAL=VD.CODFILIALCL AND VD.DTEMITVENDA BETWEEN ? AND ? AND C.CODFILIAL=? "
 				+ "AND C.CODEMP=? "
+				+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
+				+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")
 				+ sWhere
 				+ " GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA ";
 
