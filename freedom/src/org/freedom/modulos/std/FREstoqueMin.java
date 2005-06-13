@@ -272,7 +272,7 @@ public class FREstoqueMin extends FRelatorio {
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
       imp.say(imp.pRow(),0,"| "+Funcoes.copy(" ",0,14)+
              "| "+Funcoes.replicate(" ",13)+
-             "| "+Funcoes.replicate(" ",35)+
+             "| "+Funcoes.replicate(" ",34)+
              "| TOTAL     | "+Funcoes.strDecimalToStrCurrency(6,0,""+bSldLiqProd)+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,""+bQtdMinProd)+
              "|"+Funcoes.strDecimalToStrCurrency(6,0,""+bQtdFaltaProd)+
