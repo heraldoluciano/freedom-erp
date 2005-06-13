@@ -889,10 +889,10 @@ public class ImprimeOS implements ActionListener {
             //        Funcoes.mensagemInforma(cOwner,"Enviando comandos cabecalho
             // \n"+normal().length());
             if (borda) {
-                say(pRow() + 0, 0, "" + normal());
+                say(pRow() + 0, 0, "" + comprimido());
                 say(pRow() + 0, 0, "+" + Funcoes.replicate("-", iTamRel - 3)
                         + "+");
-                say(pRow() + 1, 0, normal());
+                say(pRow() + 1, 0, comprimido());
                 say(pRow() + 0, 0, "|" + sVals[0].trim()); //Razão
                 //        say(pRow()+1,0,"");
                 say(pRow() + 0, iTamRel - 15, "Pagina: "
