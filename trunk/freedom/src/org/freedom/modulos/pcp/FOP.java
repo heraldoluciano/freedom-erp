@@ -498,6 +498,10 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     }
     if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
        	setUsaLote();
+       	if(txtQtdPrevProdOP.getVlrString().equals("")){
+       	    txtQtdPrevProdOP.setVlrDouble(txtQtdEst.getVlrDouble());       	    
+       	}
+    
     	if((txtCodLoteProdEst.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S"))){
     		
 //    		txtCodLoteProdEst.setVisible(true);
