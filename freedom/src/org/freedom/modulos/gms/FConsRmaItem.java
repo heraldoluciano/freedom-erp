@@ -1,6 +1,6 @@
 /**
  * @version 02/08/2003 <BR>
- * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
+ * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  *         Projeto: Freedom <BR>
  *         Pacote: org.freedom.modulos.std <BR>
  *         Classe:
@@ -59,21 +59,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
-public class FConsRMA extends FFilho implements ActionListener {
+public class FConsRmaItem extends FFilho implements ActionListener {
 
-	private JPanelPad pinCab = new JPanelPad(0, 185);
+	private JPanelPad pinCab = new JPanelPad(0, 215);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
-//	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Requisições completas", "S", "N");
-
-	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Requisições aprovadas", "S", "N");
-	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Requisições expedidas", "S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
-//	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
@@ -86,6 +79,13 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtRefProdOP = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
+	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Requisições aprovadas", "S", "N");
+	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Requisições expedidas", "S", "N");
+	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
 	private Tabela tab = new Tabela();
 	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
 	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
@@ -94,19 +94,20 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ImageIcon imgColuna = null;
 	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
 	private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
-			JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+	private	JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcOP = new ListaCampos(this, "OF");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
+	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
 	boolean bAprova = false;
 	private Vector vSitRMA = new Vector();
-	public FConsRMA() {
+	public FConsRmaItem() {
 		setTitulo("Pesquisa Requisições de material");
-		setAtribos(10, 10, 663, 480);
+		setAtribos(10, 10, 555, 480);
 
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
@@ -137,8 +138,24 @@ public class FConsRMA extends FFilho implements ActionListener {
 		txtDtEmiOP.setSoLeitura(true);
 		txtDtFabOP.setSoLeitura(true);
 		txtCodProdOP.setSoLeitura(true);
+		txtRefProdOP.setSoLeitura(true);
 		txtCodOP.setTabelaExterna(lcOP);
 		lcOP.montaSql(false, "OP", "PP");
+		
+		
+		txtCodProd.setNomeCampo("CodProd");
+		txtCodProd.setFK(true);
+		
+		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, null, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, null, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, null, false));
+		lcProd.setQueryCommit(false);
+		lcProd.setReadOnly(true);
+
+		txtDescProd.setSoLeitura(true);
+		txtRefProd.setSoLeitura(true);
+		txtCodProd.setTabelaExterna(lcProd);
+		lcProd.montaSql(false, "PRODUTO", "EQ");
 				
 		txtCodUsu.setNomeCampo("IDUSU");
 		txtCodUsu.setFK(true);
@@ -190,36 +207,34 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pinCab.adic(new JLabelPad("Até"), 111, 25, 27, 20);
 		pinCab.adic(txtDtFim, 139, 25, 95, 20);
 
-		pinCab.adic(new JLabelPad("Cód.c.c."), 237, 5, 70, 20);
-		pinCab.adic(txtCodCC, 237, 25, 140, 20);
-		pinCab.adic(new JLabelPad("Centro de custo"), 380, 5, 410, 20);
-		pinCab.adic(txtDescCC, 380, 25, 180, 20);
+		pinCab.adic(new JLabelPad("Cód.usu."), 237, 5, 70, 20);
+		pinCab.adic(txtCodUsu, 237, 25, 80, 20);
+		pinCab.adic(new JLabelPad("Nome do usuário"), 320, 5, 153, 20);
+		pinCab.adic(txtNomeUsu, 320, 25, 163, 20);
+		
+		pinCab.adic(new JLabelPad("Cód.prod."), 7, 45, 80, 20);
+		pinCab.adic(txtCodProd, 7, 65, 80, 20);
+		pinCab.adic(new JLabelPad("Descrição do produto"), 90, 45, 250, 20);
+		pinCab.adic(txtDescProd, 90, 65, 280, 20);
+		pinCab.adic(new JLabelPad("Cód. OP."),373, 45, 80, 20);
+		pinCab.adic(txtCodOP, 373, 65, 110, 20);
 
-		pinCab.adic(new JLabelPad("Cód.usu."), 7, 48, 70, 20);
-		pinCab.adic(txtCodUsu, 7, 70, 70, 20);
-		pinCab.adic(new JLabelPad("Nome do usuário"), 80, 48, 153, 20);
-		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
-		pinCab.adic(new JLabelPad("Cód. OP."),237, 48, 153, 20);
-		pinCab.adic(txtCodOP, 237, 70, 100, 20);
-		
-		
-/*
-		pinCab.adic(new JLabelPad("Cód.almox."), 237, 48, 75, 20);
-		pinCab.adic(txtCodAlmoxarife, 237, 70, 70, 20);
-		pinCab.adic(new JLabelPad("Nome do almoxarifado"), 310, 48, 410, 20);
-		pinCab.adic(txtDescAlmoxarife, 310, 70, 180, 20);
-*/
-		pinCab.adic(lbStatus, 15, 100, 50, 18);
-		pinCab.adic(lbLinha2, 7, 110, 373, 66);
-		pinCab.adic(cbPendentes, 15, 122, 170, 20);
-		pinCab.adic(cbAprovadas, 15, 147, 170, 20);
-		pinCab.adic(cbExpedidas, 195, 122, 180, 20);
-		pinCab.adic(cbCanceladas, 195, 147, 180, 20);
-		
-//		pinCab.adic(cbTomadasDePreco, 195, 147, 180, 20);
+		pinCab.adic(new JLabelPad("Cód.c.c."), 7, 85, 70, 20);
+		pinCab.adic(txtCodCC, 7, 105, 140, 20);
+		pinCab.adic(new JLabelPad("Centro de custo"), 150, 85, 410, 20);
+		pinCab.adic(txtDescCC, 150, 105, 180, 20);
 
-		pinCab.adic(btBusca, 382, 110, 110, 30);
-		pinCab.adic(btPrevimp, 382, 145, 110, 30);
+		
+		pinCab.adic(lbStatus, 15, 125, 50, 18);
+		pinCab.adic(lbLinha2, 7, 135, 373, 66);
+		pinCab.adic(cbPendentes, 15, 147, 170, 20);
+		pinCab.adic(cbAprovadas, 15, 172, 170, 20);
+		pinCab.adic(cbExpedidas, 195, 147, 180, 20);
+		pinCab.adic(cbCanceladas, 195, 172, 180, 20);
+		
+
+		pinCab.adic(btBusca, 392, 135, 130, 30);
+		pinCab.adic(btPrevimp, 392, 170, 130, 30);
 
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
@@ -232,7 +247,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(80, 1);
 		tab.setTamColuna(90, 2);
-		tab.setTamColuna(480, 3);
+		tab.setTamColuna(350, 3);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -290,6 +305,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
 		String sCodOp = txtCodOP.getVlrString();
+		String sCodProd = txtCodProd.getVlrString();
 
 		
 		if (cbPendentes.getVlrString().equals("S")) {
@@ -324,17 +340,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 			}
 			usaWhere = true;
 		}
-/*
-		if (cbTomadasDePreco.getVlrString().equals("S")) {
-			if (where.trim().equals(""))
-				where = " SitRma ='TP'";
-			else {
-				where = where + " OR SitRma ='TP'";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}
-*/
 		if (usaWhere && usaOr)
 			where = " AND (" + where + ")";
 		else if (usaWhere)
@@ -343,7 +348,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 			where = " AND SitRma='PE'";
 		
 		if (sCodOp.length() > 0) 
-			where = " AND R.CODOP = '" + sCodOp + "'";
+			where += " AND R.CODOP = '" + sCodOp + "'";
+		
+		if (sCodProd.length() > 0) 
+			where += " AND IT.CODPROD = '" + sCodProd + "'";
 		
 		if (almoxarifado)
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
@@ -621,6 +629,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		lcOP.setConexao(cn);
+		lcProd.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
 		habCampos();
