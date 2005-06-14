@@ -865,7 +865,7 @@ public class ImprimeLayout extends JPanelPad implements Printable, VetoableChang
 		  	
 		  setFonte(fnTopEmp);
 		  int iLargLogo = 0; 
-		  byte[] bVals = new byte[65000]; 
+		  byte[] bVals = new byte[650000]; 
 		  Blob bVal = rs.getBlob("FotoEmp");
 		  if (bVal != null) {
 		  	try {
@@ -887,7 +887,7 @@ public class ImprimeLayout extends JPanelPad implements Printable, VetoableChang
 		  
 		  sEndEmp = rs.getString("EndEmp").trim()+", "+rs.getInt("NumEmp");
 
-		  iX += 5+iLargLogo;
+		  iX += 15+iLargLogo;
 		  
           if (bimpRaz) 
 		    drawTexto(sNomeEmp,iX,14);		  

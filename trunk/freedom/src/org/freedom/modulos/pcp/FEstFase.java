@@ -106,7 +106,7 @@ public class FEstFase extends FDetalhe {
     lcTipoRec.setReadOnly(true);
     txtCodTpRec.setTabelaExterna(lcTipoRec);
 
-    setAltDet(160);
+    setAltDet(220);
     pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
@@ -121,7 +121,7 @@ public class FEstFase extends FDetalhe {
 
     adicDBLiv(txaModoPreparo, "Instrucoes", "Instruções", false);
 	adic(new JLabelPad("Instruções"), 7, 80, 100, 20);
-	adic(spnModoPreparo, 7, 100, 510, 40);
+	adic(spnModoPreparo, 7, 100, 510, 100);
     
     setListaCampos( true, "ESTRUFASE", "PP");
     lcDet.setQueryInsert(false);
