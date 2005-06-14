@@ -22,8 +22,13 @@
 
 package org.freedom.modulos.pcp;
 import java.sql.Connection;
+
+import javax.swing.JScrollPane;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -48,6 +53,8 @@ public class FEstFase extends FDetalhe {
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
   private JCheckBoxPad cbFinaliza = new JCheckBoxPad("Sim","S","N");
+  private JTextAreaPad txaModoPreparo = new JTextAreaPad();
+  private JScrollPane spnModoPreparo = new JScrollPane(txaModoPreparo);
   private int iCodProd;
   
   public FEstFase() {
@@ -84,8 +91,7 @@ public class FEstFase extends FDetalhe {
     adicCampo(txtDescEst, 7, 60, 250, 20,"DescEst","Descrição da estrutura", ListaCampos.DB_SI,true);
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
-    
-    
+        
     lcFase.add(new GuardaCampo( txtCodFase,"CodFase", "Cód.fase", ListaCampos.DB_PK, true));
     lcFase.add(new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false));
     lcFase.montaSql(false, "FASE", "PP");
@@ -100,7 +106,7 @@ public class FEstFase extends FDetalhe {
     lcTipoRec.setReadOnly(true);
     txtCodTpRec.setTabelaExterna(lcTipoRec);
 
-    setAltDet(100);
+    setAltDet(160);
     pinDet = new JPanelPad(590,110);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
@@ -112,6 +118,11 @@ public class FEstFase extends FDetalhe {
     adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true);
     adicDescFK(txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Descrição do tipo de recurso");
     adicDB(cbFinaliza,445,60,80,20,"FINALIZAOP","Finaliza O.P",true);
+
+    adicDBLiv(txaModoPreparo, "Instrucoes", "Instruções", false);
+	adic(new JLabelPad("Instruções"), 7, 80, 100, 20);
+	adic(spnModoPreparo, 7, 100, 510, 40);
+    
     setListaCampos( true, "ESTRUFASE", "PP");
     lcDet.setQueryInsert(false);
     montaTab();

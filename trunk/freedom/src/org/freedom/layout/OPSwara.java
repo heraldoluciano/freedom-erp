@@ -101,11 +101,14 @@ public class OPSwara extends LeiauteGR {
 		  montaCabEmp(con);
 		  montaCab();		   	        		  
 
-		  sSQL = "SELECT OPF.SEQOF, OPF.CODFASE,F.DESCFASE,F.TIPOFASE,OPF.TEMPOOF,OPF.CODRECP,REC.DESCRECP "+
-		  		 "FROM PPOPFASE OPF, PPFASE F, PPRECURSO REC WHERE "+
-				 "F.CODFASE = OPF.CODFASE AND F.CODEMP = OPF.CODEMPFS  AND F.CODFILIAL = OPF.CODFILIALFS "+
+		  sSQL = "SELECT OPF.SEQOF, OPF.CODFASE,F.DESCFASE,F.TIPOFASE,OPF.TEMPOOF,OPF.CODRECP,REC.DESCRECP,EF.INSTRUCOES "+
+		  		 "FROM PPOP OP, PPOPFASE OPF, PPFASE F, PPRECURSO REC,PPESTRUFASE EF WHERE "+
+				 "F.CODFASE = OPF.CODFASE AND F.CODEMP = OPF.CODEMPFS  AND F.CODFILIAL = OPF.CODFILIALFS "+				 
+				 "AND OP.CODEMP=OPF.CODEMP AND OP.CODFILIAL=OPF.CODFILIAL AND OP.CODOP=OPF.CODOP "+
 				 "AND REC.CODRECP = OPF.CODRECP AND REC.CODEMP = OPF.CODEMPRP AND REC.CODFILIAL = OPF.CODFILIALRP "+
-				 "AND OPF.CODOP=? AND OPF.CODEMP=? AND OPF.CODFILIAL=? "+
+				 "AND OPF.CODOP=? AND OPF.CODEMP=? AND OPF.CODFILIAL=? " +
+				 "AND EF.CODEMP=OPF.CODEMP AND EF.CODFILIAL=OPF.CODFILIAL AND EF.CODPROD=OP.CODPROD " +
+				 "AND EF.SEQEF=OPF.SEQOF " +				 
 				 "ORDER BY OPF.SEQOF";
 		  		  
 		  PreparedStatement psFases = con.prepareStatement(sSQL);
@@ -115,9 +118,7 @@ public class OPSwara extends LeiauteGR {
   	      psFases.setInt(3,ListaCampos.getMasterFilial("PPOPFASE"));
 
   	      ResultSet rsFases = psFases.executeQuery();
-            
-  	      System.out.println("Query das fases:"+sSQL);
-  	      
+              	      
   	      montaFases(rsFases);
   	      	      
 		  rs.close();
@@ -162,20 +163,25 @@ public class OPSwara extends LeiauteGR {
             iY = iY+12;
 		  	int iYIni = iY;	 
 		  		  	
-		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,50,AL_CEN);				
+//		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,50,AL_CEN);				
            
+		  	drawTexto("FASE: "+rsFases.getString(1).trim(),10,iY);
+		  	
             iY = iY+12;
  
             setFonte(fnArial9N);		    
             drawTexto("Recurso:",10,iY);
             setFonte(fnArial9);
             drawTexto(rsFases.getString(7),60,iY);
-                     
+            iY = iY+12;
             setFonte(fnArial9N);
-            drawTexto("Tempo estimado(min.):",220,iY);
+//            drawTexto("Tempo estimado(min.):",220,iY);
+            drawTexto("Tempo estimado(min.):",10,iY);
+            
             setFonte(fnArial9); 
             Double dbQtdEstr = new Double(rsFases.getFloat(5)/60);
-            drawTexto((dbQtdEstr.floatValue())*(dbQtd.floatValue())+"",330,iY);
+            drawTexto((dbQtdEstr.floatValue())*(dbQtd.floatValue())+"",120,iY);
+
             iY = iY+10;
     		drawLinha(5,iY,5,0,AL_CDIR);
             iY = iY+12;
@@ -447,18 +453,38 @@ public class OPSwara extends LeiauteGR {
 	  	setFonte(fnTitulo);
 		drawLinha(0,35,0,0,AL_BDIR);
 	  	drawRetangulo(5,40,5,107,AL_CDIR);
+
 		drawTexto("ORDEM DE PRODUÇÃO",0,55,150,AL_CEN);	
-        setFonte(fnArial9N); 
-	    drawTexto("O.P. número:",10,70);
+		setFonte(fnArial9N); 
+/*
+		drawTexto("O.P. número:",10,70);
 	    drawTexto("Produto:",10,82);
 	    drawTexto("Quantidade:",10,94);
 	    drawTexto("Data de fabricação:",10,106);
 	    drawTexto("Data de validade:",10,118);
         drawTexto("Data de emissão:",10,130);
-	    drawTexto("Lote:",10,142);
-	    
+	    drawTexto("Lote:",10,142);	    
+*/
+
+		drawTexto("O.P. número:",10,70);
+	    drawTexto("Produto:",110,70);
+	    drawTexto("Quantidade:",10,82);
+	    drawTexto("Data de fabricação:",110,82);
+	    drawTexto("Data de validade:",270,82);
+        drawTexto("Data de emissão:",430,70);
+//	    drawTexto("Lote:",580,70);	    
+
 	    setFonte(fnArial9);
+
+	    drawTexto((iCodOP+"").trim(),70,70); //Código da OP
+	    drawTexto(sDescProd,153,70); //Descrição do produto a ser fabricado 
+	    drawTexto(sQtd,70,82); //qtd. a fabricar 
+	    drawTexto(sDtFabrica,200,82); //Data de fabricação
+	    drawTexto(sDtValidade,350,82); //Data de validade
+	    drawTexto(Funcoes.dateToStrDate(new Date()),505,70);
+//	    drawTexto(sLote,560,70);
 	    
+	    /*
 	    drawTexto(iCodOP+"",110,70); //Código da OP
 	    drawTexto(sDescProd,110,82); //Descrição do produto a ser fabricado 
 	    drawTexto(sQtd,110,94); //qtd. a fabricar 
@@ -466,7 +492,7 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto(sDtValidade,110,118); //Data de validade
 	    drawTexto(Funcoes.dateToStrDate(new Date()),110,130);
 	    drawTexto(sLote,110,142);
-	    
+	    */
 	  }			
 	  catch(Exception err) {
 		Funcoes.mensagemErro(this,"Erro ao montar dados do cliente!!!\n"+err.getMessage());
