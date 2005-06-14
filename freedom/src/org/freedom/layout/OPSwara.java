@@ -34,12 +34,13 @@ public class OPSwara extends LeiauteGR {
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,14);
 	private Font fnArial9 = new Font("Arial",Font.PLAIN,9);
+	private Font fnInstrucoes = new Font("Arial",Font.PLAIN,6);
 	private Font fnArial9N = new Font("Arial",Font.BOLD,9);
 	Vector vParamOP = new Vector();
 	final int iPosIniItens = 400;
 	final int iPosMaxItens = 740;
 	int iYPosProd=0;
-	int iY = 160;
+	int iY = 100;
 	Vector vItens = new Vector();
 	Vector vItem = new Vector();
 	int iCodOP = 0;
@@ -51,6 +52,7 @@ public class OPSwara extends LeiauteGR {
 	String sDtValidade = "";
   
 	public void montaG() {
+	    impRaz(false);
 		montaRel();
 	}
 	public void setParam(Vector vParam) {
@@ -151,20 +153,40 @@ public class OPSwara extends LeiauteGR {
 			e.printStackTrace();
 		}
 	}
-	
+	private int impLabelSilabas(String sTexto, int iSalto,int iMargem, int iLargura, int iY, Font fonte) {	
+		double iPixels = getFontMetrics(fonte).stringWidth(sTexto);        
+		double iNLinhas = iPixels/iLargura;
+		int iNCaracteres = Funcoes.tiraChar(sTexto,"\n").length();
+		int iNCaracPorLinha = (int) (iNCaracteres/iNLinhas);  		
+        Vector vTextoSilabas = Funcoes.strToVectorSilabas(sTexto,iNCaracPorLinha);
+		for (int i=0;vTextoSilabas.size()>i;i++) {
+
+			setFonte(fonte);			
+			
+			drawTexto(vTextoSilabas.elementAt(i).toString(),iMargem,iY);	  	
+			iY+=iSalto;
+		}	  
+		return iY;
+	}
+
 	private void impFaseEx(ResultSet rsFases) {        
 		try {
 
 			int iCodFaseF = rsFases.getInt(2);
 		  	int iCodFaseI = 0;
-			setFonte(fnTitulo);
 
-            System.out.println("Entrou no imprime fase do tipo EX. iCodFaseF:"+iCodFaseF);
             iY = iY+12;
 		  	int iYIni = iY;	 
-		  		  	
+            int iInst = 0;
+            if(rsFases.getString("INSTRUCOES")!=null) { 
+                setFonte(fnArial9N);		    
+                drawTexto("Instrução de preparo",200,iY-5);
+                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,200,330,iY+2,fnInstrucoes);
+            }
+
 //		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,50,AL_CEN);				
-           
+			
+            setFonte(fnTitulo);
 		  	drawTexto("FASE: "+rsFases.getString(1).trim(),10,iY);
 		  	
             iY = iY+12;
@@ -183,6 +205,11 @@ public class OPSwara extends LeiauteGR {
             drawTexto((dbQtdEstr.floatValue())*(dbQtd.floatValue())+"",120,iY);
 
             iY = iY+10;
+        
+            if(iInst>iY){
+                iY = iInst+2;
+            }
+            
     		drawLinha(5,iY,5,0,AL_CDIR);
             iY = iY+12;
             setFonte(fnArial9N);
@@ -235,26 +262,43 @@ public class OPSwara extends LeiauteGR {
 		try {
 		  	iCodFaseF = rsFases.getInt(2);
 
-		  	setFonte(fnTitulo);
+
             iY = iY+10;
 		  	iYIni = iY;	 
-		  		  	
-		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+"FASE: "+rsFases.getString(1).trim()+"  "),AL_CEN);				
+
+            int iInst = 0;
+            if(rsFases.getString("INSTRUCOES")!=null) { 
+                setFonte(fnArial9N);		    
+                drawTexto("Instrução de preparo",200,iY-5);
+                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,200,330,iY+2,fnInstrucoes);
+            }
+		  	
+            setFonte(fnTitulo);
+		  	drawTexto("FASE: "+rsFases.getString(1).trim(),10,iY);
+//		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+"FASE: "+rsFases.getString(1).trim()+"  "),AL_CEN);				
 		  			  	
 		  	iY = iY+15;
-		  	drawTexto(rsFases.getString(3).trim().toUpperCase(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+rsFases.getString(3).trim().toUpperCase()+"  "),AL_CEN);		  			  	
+//		  	drawTexto(rsFases.getString(3).trim().toUpperCase(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+rsFases.getString(3).trim().toUpperCase()+"  "),AL_CEN);		  			  	
+		  	drawTexto(rsFases.getString(3).trim().toUpperCase(),10,iY);
             iY = iY+13;
  
             setFonte(fnArial9N);		    
             drawTexto("Recurso:",10,iY);
             setFonte(fnArial9);
             drawTexto(rsFases.getString(7),60,iY);
-                     
+
+            iY = iY+10; 
             setFonte(fnArial9N);
-            drawTexto("Tempo estimado(min.):",220,iY);
+//            drawTexto("Tempo estimado(min.):",220,iY);
+            drawTexto("Tempo estimado(min.):",10,iY);
             setFonte(fnArial9);
-            drawTexto((rsFases.getFloat(5)/60)+"",330,iY);
+//            drawTexto((rsFases.getFloat(5)/60)+"",330,iY);
+            drawTexto((rsFases.getFloat(5)/60)+"",120,iY);
             iY = iY+10;
+
+            if(iInst>iY){
+                iY = iInst+2;
+            }
 
             drawLinha(5,iY,5,0,AL_CDIR);
 
@@ -452,7 +496,7 @@ public class OPSwara extends LeiauteGR {
 		setBordaRel();
 	  	setFonte(fnTitulo);
 		drawLinha(0,35,0,0,AL_BDIR);
-	  	drawRetangulo(5,40,5,107,AL_CDIR);
+	  	drawRetangulo(5,40,5,50,AL_CDIR);
 
 		drawTexto("ORDEM DE PRODUÇÃO",0,55,150,AL_CEN);	
 		setFonte(fnArial9N); 
@@ -471,8 +515,8 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto("Quantidade:",10,82);
 	    drawTexto("Data de fabricação:",110,82);
 	    drawTexto("Data de validade:",270,82);
-        drawTexto("Data de emissão:",430,70);
-//	    drawTexto("Lote:",580,70);	    
+        drawTexto("Data de emissão:",420,82);
+	    drawTexto("Lote:",420,70);	    
 
 	    setFonte(fnArial9);
 
@@ -481,8 +525,8 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto(sQtd,70,82); //qtd. a fabricar 
 	    drawTexto(sDtFabrica,200,82); //Data de fabricação
 	    drawTexto(sDtValidade,350,82); //Data de validade
-	    drawTexto(Funcoes.dateToStrDate(new Date()),505,70);
-//	    drawTexto(sLote,560,70);
+	    drawTexto(Funcoes.dateToStrDate(new Date()),505,82);
+	    drawTexto(sLote,505,70);
 	    
 	    /*
 	    drawTexto(iCodOP+"",110,70); //Código da OP
