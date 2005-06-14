@@ -66,6 +66,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private JTextFieldPad txtJustificqtdprod = new JTextFieldPad(JTextFieldPad.TP_STRING,500,0);
   private JTextFieldPad txtNumSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+//  private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtTempoOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataIniProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -80,8 +81,18 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private boolean bExecuta = false;
   public FOPFase(int iCodOP,boolean bExecuta) {
     setTitulo("Fases da OP");
-    setAtribos( 70, 40, 630, 470);
-    setAltCab(130);
+    if(bExecuta){
+        setAtribos( 70, 40, 630, 470);
+        setAltCab(130);
+        setAltDet(170);
+    }        
+    else {
+        setAtribos( 70, 40, 630, 470);
+        setAltCab(130);
+        setAltDet(100);
+    }
+
+    
        
     this.iCodOP = iCodOP;
     this.bExecuta = bExecuta;
@@ -92,6 +103,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     txtDtValid.setAtivo(false);
     txtQtdPrevOP.setAtivo(false);
     txtQtdFinalOP.setAtivo(false);
+    txtTempoOf.setAtivo(false);
     
     if(bExecuta) {
     	txtCodFase.setAtivo(false);
@@ -126,8 +138,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     
     setListaCampos( false, "OP", "PP");
     lcCampos.setQueryInsert(false);
-    
-    
+        
     lcFase.add(new GuardaCampo( txtCodFase,"CodFase", "Cód.fase", ListaCampos.DB_PK, true));
     lcFase.add(new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false));
     lcFase.montaSql(false, "FASE", "PP");
@@ -138,13 +149,13 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     
     lcRec.add(new GuardaCampo(txtCodRec,"CodRecP", "Cód.rec.", ListaCampos.DB_PK, true));
     lcRec.add(new GuardaCampo(txtDescRec, "DescRecP", "Descrição do recurso de produção", ListaCampos.DB_SI, false));
+//    lcRec.add(new GuardaCampo(txtCodTpRec,"CodTpRec","Cód.Tp.Rec.",ListaCampos.DB_FK,false));
     lcRec.montaSql(false, "RECURSO", "PP");
     lcRec.setQueryCommit(false);
     lcRec.setReadOnly(true);
     txtCodRec.setTabelaExterna(lcRec);
     txtDescRec.setListaCampos(lcRec);
-
-    setAltDet(170);
+    
     pinDet = new JPanelPad(590,180);
     setPainel( pinDet, pnDet);
     setListaCampos(lcDet);
@@ -209,9 +220,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
 	  		txtHIniProdFs.setAtivo(true);
 	  		txtDataFimProdFs.setAtivo(true);
 	  		txtHFimProdFs.setAtivo(true);
-	  		txaObs.setEnabled(true);    	
-	  		
+	  		txaObs.setEnabled(true);    		  		
 	  	}
+	  	//lcRec.setWhereAdic("CODTIPOREC="+txtCodTpRec.getVlrString());
   	}
   }
 
