@@ -18,7 +18,9 @@
  */
 
 package org.freedom.layout;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,9 +28,13 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
+
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
+import com.lowagie.text.pdf.Barcode39; 
 
 public class OPSwara extends LeiauteGR {
 	private Connection con = null;
@@ -174,14 +180,14 @@ public class OPSwara extends LeiauteGR {
 
 			int iCodFaseF = rsFases.getInt(2);
 		  	int iCodFaseI = 0;
-
+		  	
             iY = iY+12;
 		  	int iYIni = iY;	 
             int iInst = 0;
-            if(rsFases.getString("INSTRUCOES")!=null) { 
+            if(rsFases.getString("INSTRUCOES")!=null) {  
                 setFonte(fnArial9N);		    
-                drawTexto("Instrução de preparo",200,iY-5);
-                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,200,330,iY+2,fnInstrucoes);
+                drawTexto("Instrução de preparo",250,iY-5);
+                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,250,280,iY+2,fnInstrucoes);
             }
 
 //		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,50,AL_CEN);				
@@ -214,7 +220,8 @@ public class OPSwara extends LeiauteGR {
             iY = iY+12;
             setFonte(fnArial9N);
             drawTexto("Cód.",10,iY);
-            drawTexto("Descrição",50,iY);            
+            drawTexto("Descrição",50,iY); 
+            drawTexto("Cód.Barras",180,iY);
             drawTexto("Qtd.",300,iY);
             drawTexto("Unidade",350,iY);
             drawTexto("Lote",450,iY);
@@ -238,6 +245,16 @@ public class OPSwara extends LeiauteGR {
               
               if(iCodFaseI==iCodFaseF) {
                 drawTexto(sCod,10,iY); //Codigo	
+                    		  	
+  		        Barcode39 b = new Barcode39();
+  		        b.setCode(Funcoes.strZero(sCod,8));
+  		        b.setBarHeight(90); 
+
+  		        Image image = b.createAwtImage(Color.BLACK, Color.WHITE);
+  		        ImageIcon icon = new ImageIcon(image);
+  		  	
+  		        drawImagem(icon,180,iY-8,90,10);
+  		  	
                 drawTexto(sDesc,50,iY); //Descrição	
                 drawTexto(Funcoes.alinhaDir(sQtd,15),270,iY);//Quantidade
                 drawTexto(sUnid,350,iY);//Unidade
@@ -264,15 +281,17 @@ public class OPSwara extends LeiauteGR {
 
 
             iY = iY+10;
-		  	iYIni = iY;	 
 
+            iYIni = iY;	 
+            
             int iInst = 0;
             if(rsFases.getString("INSTRUCOES")!=null) { 
                 setFonte(fnArial9N);		    
-                drawTexto("Instrução de preparo",200,iY-5);
-                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,200,330,iY+2,fnInstrucoes);
+                drawTexto("Instrução de preparo",250,iY-5);
+                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,250,280,iY+2,fnInstrucoes);
             }
-		  	
+             
+            
             setFonte(fnTitulo);
 		  	drawTexto("FASE: "+rsFases.getString(1).trim(),10,iY);
 //		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+"FASE: "+rsFases.getString(1).trim()+"  "),AL_CEN);				
@@ -296,10 +315,15 @@ public class OPSwara extends LeiauteGR {
             drawTexto((rsFases.getFloat(5)/60)+"",120,iY);
             iY = iY+10;
 
+            int iDif = 0;                        
             if(iInst>iY){
+                iDif = (iInst+2) - iY;
                 iY = iInst+2;
             }
-
+ 
+		  	
+            int iYIni2=iY;
+            
             drawLinha(5,iY,5,0,AL_CDIR);
 
             iY = iY+5;
@@ -365,9 +389,9 @@ public class OPSwara extends LeiauteGR {
             drawTexto("Data:____________________________________________",12+iX,iY);
             iY = iY+30;
 
-            drawLinha(280,iYIni+43,280,iYIni+43+iY-iYIni-55);
-            drawRetangulo(10,iYIni+43,10,iY-iYIni-55,AL_CDIR);
-            drawRetangulo(5,iYIni-15,5,iY-iYIni+8,AL_CDIR);   
+            drawLinha(280,iYIni2+5,280,iYIni2+137);
+            drawRetangulo(10,iYIni2+5,10,132,AL_CDIR);
+            drawRetangulo(5,iYIni-15,5,210,AL_CDIR);   
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -377,27 +401,43 @@ public class OPSwara extends LeiauteGR {
 	private void impFaseCq(ResultSet rsFases) {        
 		try {
 
-			setFonte(fnTitulo);
             iY = iY+10;
 		  	int iYIni = iY;	 
-		  		  	
-		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+"FASE: "+rsFases.getString(1).trim()+"  "),AL_CEN);				
-		  			  	
+
+            int iInst = 0;
+            if(rsFases.getString("INSTRUCOES")!=null) { 
+                setFonte(fnArial9N);		    
+                drawTexto("Instrução de preparo",250,iY-5);
+                iInst = impLabelSilabas(rsFases.getString("INSTRUCOES").trim(),7,250,280,iY+2,fnInstrucoes);
+            }
+
+			setFonte(fnTitulo);
+			
+//		  	drawTexto("FASE: "+rsFases.getString(1).trim(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+"FASE: "+rsFases.getString(1).trim()+"  "),AL_CEN);				
+		  	drawTexto("FASE: "+rsFases.getString(1).trim(),10,iY);
+		  	
 		  	iY = iY+15;
-		  	drawTexto(rsFases.getString(3).trim().toUpperCase(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+rsFases.getString(3).trim().toUpperCase()+"  "),AL_CEN);		  			  	
+//		  	drawTexto(rsFases.getString(3).trim().toUpperCase(),0,iY,getFontMetrics(fnTitulo).stringWidth("  "+rsFases.getString(3).trim().toUpperCase()+"  "),AL_CEN);		  			  	
+		  	drawTexto(rsFases.getString(3).trim().toUpperCase(),10,iY);		  	
             iY = iY+13;
  
             setFonte(fnArial9N);		    
             drawTexto("Recurso:",10,iY);
             setFonte(fnArial9);
             drawTexto(rsFases.getString(7),60,iY);
-                     
+            
+            iY = iY+13;         
+            
             setFonte(fnArial9N);
-            drawTexto("Tempo estimado(min.):",220,iY);
+            drawTexto("Tempo estimado(min.):",10,iY);
             setFonte(fnArial9);
-            drawTexto((rsFases.getFloat(5)/60)+"",330,iY);
+            drawTexto((rsFases.getFloat(5)/60)+"",120,iY);
             iY = iY+10;
 
+            if(iInst>iY){
+                iY = iInst+2;
+            }
+                        
             drawLinha(5,iY,5,0,AL_CDIR);
 
             iY = iY+5;
