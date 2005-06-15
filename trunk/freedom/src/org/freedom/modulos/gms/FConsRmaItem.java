@@ -239,15 +239,34 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
 
-		tab.adicColuna("");
-		tab.adicColuna("Rma.");
-		tab.adicColuna("Data");
-		tab.adicColuna("Motivo");
+		tab.adicColuna("");//0
+		tab.adicColuna("Cód.rma.");//1
+		tab.adicColuna("Cód.prod.");//2
+		tab.adicColuna("Descrição do produto");//3
+		tab.adicColuna("Aprov.");//4
+		tab.adicColuna("Exp.");//5
+		tab.adicColuna("Dt. requisição");//6
+		tab.adicColuna("Qt. requerida");//7
+		tab.adicColuna("Dt. aprovação");//8
+		tab.adicColuna("Qt. aprovada");//9
+		tab.adicColuna("Dt. expedição");//10
+		tab.adicColuna("Qt. expedida");//11
+		tab.adicColuna("Saldo");//12
+		
 
 		tab.setTamColuna(12, 0);
-		tab.setTamColuna(80, 1);
-		tab.setTamColuna(90, 2);
-		tab.setTamColuna(350, 3);
+		tab.setTamColuna(70, 1);
+		tab.setTamColuna(70, 2);
+		tab.setTamColuna(120, 3);
+		tab.setTamColuna(40, 4);
+		tab.setTamColuna(40, 5);
+		tab.setTamColuna(90, 6);
+		tab.setTamColuna(90, 7);
+		tab.setTamColuna(90, 8);
+		tab.setTamColuna(90, 9);
+		tab.setTamColuna(90, 10);
+		tab.setTamColuna(90, 11);
+		tab.setTamColuna(90, 12);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -310,32 +329,32 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		
 		if (cbPendentes.getVlrString().equals("S")) {
 			usaWhere = true;
-			where = " SitRma ='PE'";
+			where = " SitItRma ='PE'";
 		}
 		if (cbAprovadas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitRma ='AF'";
+				where = " SitItRma ='AF'";
 			} 
 			else {
-				where = where + " OR SitRma ='AF'";
+				where = where + " OR SitItRma ='AF'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
 		if (cbExpedidas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitRma ='EF'";
+				where = " SitItRma ='EF'";
 			} else {
-				where = where + " OR SitRma ='EF'";
+				where = where + " OR SitItRma ='EF'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}		
 		if (cbCanceladas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitRma ='CA'";
+				where = " SitItRma ='CA'";
 			} else {
-				where = where + " OR SitRma ='CA'";
+				where = where + " OR SitItRma ='CA'";
 				usaOr = true;
 			}
 			usaWhere = true;
@@ -345,7 +364,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		else if (usaWhere)
 			where = " AND " + where;
 		else
-			where = " AND SitRma='PE'";
+			where = " AND SitItRma='PE'";
 		
 		if (sCodOp.length() > 0) 
 			where += " AND R.CODOP = '" + sCodOp + "'";
@@ -362,20 +381,18 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		if (usuario)
 			where += " AND (R.IDUSU=?) ";
 
-		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.MOTIVORMA "
-				+ "FROM  EQRMA R, EQITRMA IT "
-				+ "WHERE R.CODEMP=? "
-				+ "AND R.CODFILIAL=? "
-				+ "AND IT.CODRMA=R.CODRMA AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "
-				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
-				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.MOTIVORMA ";
-
+		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
+				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
+				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD "
+				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
+				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
+				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
+				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " + where;
+				
 		System.out.println(sSQL);
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			int param = 1;
-			ps.setInt(param++, Aplicativo.iCodEmp);
-			ps.setInt(param++, ListaCampos.getMasterFilial("EQRMA"));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtFim.getVlrDate()));
 			ps.setDate(param++, Funcoes.dateToSQLDate(txtDtIni.getVlrDate()));
@@ -407,7 +424,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 			while (rs.next()) {
 				tab.adicLinha();
 				
-				String sitRMA = rs.getString(1);
+				String sitRMA = rs.getString(5);
 				if (sitRMA.equalsIgnoreCase("PE")) {
 					imgColuna = imgPendente;
 					vSitRMA.addElement("Pendente");
@@ -425,13 +442,19 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 					vSitRMA.addElement("Aprovada");
 				}
 
-				tab.setValor(imgColuna, iLin, 0);
-				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);
-				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
-						.sqlDateToStrDate(rs.getDate(3))
-						+ "", iLin, 2);
-				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
-						iLin, 3);
+				tab.setValor(imgColuna, iLin, 0);//SitItRma
+				tab.setValor(rs.getString(1) == null ? "" : rs.getString(1) + "", iLin, 1);//CodRma
+				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
+				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 3);//DescProd
+				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov
+				tab.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 5);//SitExp
+				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
+				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
+				tab.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 10);//Dt Exp
+				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
+				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 9);//Qtd Aprov
+				tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 11);//Qdt Exp
+				tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 12);//Saldo Prod
 
 				iLin++;
 				
