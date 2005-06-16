@@ -24,7 +24,9 @@
 package org.freedom.modulos.gms;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +44,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -53,6 +56,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -73,7 +77,9 @@ public class FRma extends FDetalhe implements PostListener,
 	private JPanelPad pinBotCab = new JPanelPad(104,92);
 	private JPanelPad pinBotDet = new JPanelPad(104,63);
 	private JPanelPad pinDet = new JPanelPad();
+	private JPanelPad pinLb = new JPanelPad();
 
+	private JLabelPad lSitItRma = null;
 	private JButton btAprovaRMA = new JButton("Aprovar",Icone.novo("btTudo.gif"));
 	private JButton btFinAprovRMA = new JButton("Finaliz. aprov.",Icone.novo("btFechaVenda.gif"));
 	private JButton btExpedirRMA = new JButton("Expedir",Icone.novo("btMedida.gif"));
@@ -82,6 +88,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private JButton btCancelaItem = new JButton("Cancelar",Icone.novo("btRetorno.gif"));
 	private JButton btMotivoCancelaRMA = new JButton("Motivo",Icone.novo("btObs.gif"));
 	private JButton btMotivoCancelaItem = new JButton("Motivo",Icone.novo("btObs.gif"));
+	private JButton btMotivoPrior = new JButton("Motivo Prioridade",Icone.novo("btObs.gif"));
 
 	private JTextFieldPad txtCodRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodItRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -109,6 +116,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextAreaPad txaMotivoRma = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCancRma = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCancItem = new JTextAreaPad();
+	private JTextAreaPad txaMotivoPrior = new JTextAreaPad();
 	private JTextFieldPad txtSitItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitAprovItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtSitExpItRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
@@ -118,7 +126,9 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
-
+	private JRadioGroup rgPriod = null;
+	private Vector vLabsTipo = new Vector();
+	private Vector vValsTipo = new Vector();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoRma);
 
 	private ListaCampos lcAlmox = new ListaCampos(this, "AX");
@@ -134,7 +144,7 @@ public class FRma extends FDetalhe implements PostListener,
 	Integer iCodTpMov = null;
 	String codCC = null;
 	boolean bAprovaParcial = false;
-
+	String SitRma = "";
 	boolean[] bPrefs = null;
 	boolean bAprovaCab = false;
 	boolean bExpede = false;
@@ -238,6 +248,14 @@ public class FRma extends FDetalhe implements PostListener,
 		txtIDUsu.setTabelaExterna(lcUsu);
 //		txtIDUsu.setEnabled(false);
 				
+		vValsTipo.addElement("B");
+		vValsTipo.addElement("M");
+		vValsTipo.addElement("A");
+		vLabsTipo.addElement("Baixa");
+		vLabsTipo.addElement("Média");
+		vLabsTipo.addElement("Alta");
+		rgPriod = new JRadioGroup(3, 1, vLabsTipo, vValsTipo);
+		rgPriod.setVlrString("B");
 
 		setListaCampos(lcCampos);
 		setAltCab(230);
@@ -287,6 +305,7 @@ public class FRma extends FDetalhe implements PostListener,
 		btExpedirRMA.setToolTipText("Expedir todos os ítens.");
 		btMotivoCancelaRMA.setToolTipText("Motivo do cancelamento da RMA.");
 		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
+		btMotivoPrior.setToolTipText("Motivo da prioridade do ítem.");
 		
 		pinCab.adic(pinBotCab,630,1,114,190);
 		pinBotCab.adic(btAprovaRMA,0,0,110,30); 
@@ -304,6 +323,7 @@ public class FRma extends FDetalhe implements PostListener,
 		btExpedirRMA.addActionListener(this);
 		btMotivoCancelaRMA.addActionListener(this);
 		btMotivoCancelaItem.addActionListener(this);
+		btMotivoPrior.addActionListener(this);
 		btFinAprovRMA.addActionListener(this);
 		btFinExpRMA.addActionListener(this);
 
@@ -315,8 +335,8 @@ public class FRma extends FDetalhe implements PostListener,
 	}
 
 	private void montaDetalhe() {
-		setAltDet(100);
-		pinDet = new JPanelPad(740, 97);
+		setAltDet(125);
+		pinDet = new JPanelPad(740, 122);
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
@@ -337,27 +357,26 @@ public class FRma extends FDetalhe implements PostListener,
 		}
 		
 		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd","Descrição do produto");
-
-		adicCampo(txtQtdItRma, 430, 20, 80, 20, "QtdItRma", "Qtd.solic.",ListaCampos.DB_SI, true);
-
-//		txtQtdAprovRma.setNaoEditavel(true);
-//		txtQtdExpRma.setNaoEditavel(true);
+		adicDB(rgPriod, 513, 20, 100, 65, "PriorItRma", "Prioridade:", true);
+		adicCampo(txtQtdItRma, 430, 20, 80, 20, "QtdItRma", "Qtd.solic.",ListaCampos.DB_SI, true);		
 		
-		adicCampo(txtQtdAprovRma, 7, 60, 80, 20, "QtdAprovItRma", "Qtd.aprov.",	ListaCampos.DB_SI, false);
-		adicCampo(txtQtdExpRma, 90, 60, 80, 20, "QtdExpItRma", "Qtd.exp.",	ListaCampos.DB_SI, false);
-		adicCampo(txtCodLote, 173, 60, 80, 20, "CodLote", "Lote",	ListaCampos.DB_FK, false);
+		adicCampo(txtQtdAprovRma, 260, 60, 80, 20, "QtdAprovItRma", "Qtd.aprov.",	ListaCampos.DB_SI, false);
+		adicCampo(txtQtdExpRma, 343, 60, 80, 20, "QtdExpItRma", "Qtd.exp.",	ListaCampos.DB_SI, false);
+		adicCampo(txtCodLote, 426, 60, 80, 20, "CodLote", "Lote",	ListaCampos.DB_FK, false);
 		adicCampoInvisivel(txtPrecoItRma,"PrecoItRma", "Preço",ListaCampos.DB_SI, true);
+		
 			
 		txtCodAlmox.setNaoEditavel(true);
 		txtPrecoItRma.setNaoEditavel(true);
 						
 		adicCampoInvisivel(txtCodAlmox,"CodAlmox", "Cód.Almox.",ListaCampos.DB_FK,txtDescAlmox, false);
-		adicDescFKInvisivel(txtDescAlmox, "DescAlmox","Descrição do almoxarifado");		 
+		adicDescFK(txtDescAlmox, 7, 60, 250, 20, "DescAlmox", "Descrição do almoxarifado");		 
 
 		adicCampoInvisivel(txtSitItRma,"sititrma","Sit.It.Rma.",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtSitAprovItRma,"sitaprovitrma","Sit.Ap.It.Rma.",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtSitExpItRma,"sitexpitrma","Sit.Exp.It.Rma.",ListaCampos.DB_SI,false);
-		adicDBLiv(txaMotivoCancItem,"motivocancitrma","Motivo do cancelamento",false);
+		adicDBLiv(txaMotivoCancItem,"motivocancitrma","Motivo do cancelamento",false);		
+		adicDBLiv(txaMotivoPrior,"MotivoPriorItRma","Motivo da Prioridade",false);
 		
 		txtRefProd.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent kevt) {
@@ -379,10 +398,15 @@ public class FRma extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 7);
 		tab.setTamColuna(250, 8);
 		
-		pinBotDet.adic(btCancelaItem,0,0,110,30);
-		pinBotDet.adic(btMotivoCancelaItem,0,31,110,30);
+		btMotivoPrior.setEnabled(false);
 		
-		pinDet.adic(pinBotDet,630,1,114,65);
+		pinBotDet.adic(btCancelaItem,0,0,110,28);
+		pinBotDet.adic(btMotivoCancelaItem,0,29,110,28);
+		pinBotDet.adic(btMotivoPrior,0,58,110,28);
+		pinDet.adic(pinBotDet,630,1,114,90);
+		lSitItRma = new JLabelPad(SitRma);
+		pinLb.adic(lSitItRma,31,0,110,20);
+		pinDet.adic(pinLb,630,91,114,24);
 		
 	}
 	private void buscaLote() {
@@ -500,6 +524,7 @@ public class FRma extends FDetalhe implements PostListener,
 		btCancelaRMA.setEnabled(!bHab);
 		btCancelaItem.setEnabled(!bHab);
 		txtQtdAprovRma.setNaoEditavel(bHab);
+
 		
 	}
 	private void desabExp(boolean bHab){
@@ -534,6 +559,9 @@ public class FRma extends FDetalhe implements PostListener,
 
 		String sSitItRma = txtSitItRma.getVlrString();
 		String sSitRma = txtSitRma.getVlrString();
+		String sSitAprov = txtSitAprovItRma.getVlrString();
+		String sSitExp = txtSitExpItRma.getVlrString();
+		
 		boolean bStatusTravaTudo = ( (sSitItRma.equals("AF")) || (sSitItRma.equals("EF")) || (sSitItRma.equals("CA")) );
 		boolean bStatusTravaExp = (!(sSitItRma.equals("AF")));
 		
@@ -579,6 +607,42 @@ public class FRma extends FDetalhe implements PostListener,
 		if(((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) && ((lcDet.getStatus()==ListaCampos.LCS_EDIT) || ((lcDet.getStatus()==ListaCampos.LCS_INSERT)))) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
 		}
+		
+		if(sSitItRma.equals("PE"))
+			rgPriod.setAtivo(true);
+		else
+			rgPriod.setAtivo(false);
+		
+		if(bAprovaCab || bExpede){
+			rgPriod.setAtivo(false);
+		}
+		
+		if(bAprovaCab || bExpede){
+			btMotivoPrior.setEnabled(true);
+		}
+		
+		if(sSitRma.equals("CA")){
+			SitRma = "Cancelado";
+			lSitItRma.setText(SitRma);
+			pinLb.setBackground(cor(250,50,50));
+		}
+		else if(sSitRma.equals("PE")){
+			SitRma = "Pendente";
+			lSitItRma.setText(SitRma);
+			pinLb.setBackground(cor(240,240,0));
+		}
+		else if(sSitAprov.equals("AT") || sSitAprov.equals("AP")){
+			SitRma = "Aprovado";
+			lSitItRma.setText(SitRma);
+			pinLb.setBackground(cor(26,140,255));
+		}
+		else if(sSitExp.equals("ET") || sSitExp.equals("EP")){
+			SitRma = "Expedido";
+			lSitItRma.setText(SitRma);
+			pinLb.setBackground(cor(0,170,30));
+		}
+		
+				
 	}
 
 	public boolean[] prefs() {
@@ -639,6 +703,21 @@ public class FRma extends FDetalhe implements PostListener,
 		obs.dispose();
 		return bRet;
 	}
+	private boolean dialogObsPrior(){
+		boolean bRet = false;
+		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
+		if (obs != null) {
+			if(bAprovaCab || bExpede)
+				obs.txa.setEnabled(false);
+			obs.setVisible(true);			
+			if (obs.OK) {
+				txaMotivoPrior.setVlrString(obs.getTexto());
+				bRet = true;
+			}
+		}
+		obs.dispose();
+		return bRet;
+	}
 
 	public void actionPerformed(ActionEvent evt) {
 		String[] sValores = null;
@@ -651,6 +730,9 @@ public class FRma extends FDetalhe implements PostListener,
 		}
 		else if (evt.getSource() == btMotivoCancelaItem) {
 			dialogObsDet();		
+		}
+		else if (evt.getSource() == btMotivoPrior) {
+			dialogObsPrior();		
 		}
 		else if (evt.getSource() == btCancelaRMA) {
 			lcCampos.setState(ListaCampos.LCS_EDIT);
@@ -942,6 +1024,7 @@ public class FRma extends FDetalhe implements PostListener,
 	}
 	
 	public void beforePost(PostEvent pevt) {
+		String sMotvProir = rgPriod.getVlrString();
 		if(pevt.getListaCampos()==lcDet){
 			if(txtQtdAprovRma.getVlrDouble().doubleValue()>txtQtdItRma.getVlrDouble().doubleValue()){
 				Funcoes.mensagemInforma(null,"Quantidade aprovada maior que a requerida!");
@@ -965,6 +1048,9 @@ public class FRma extends FDetalhe implements PostListener,
 			}
 			if(txtQtdExpRma.getVlrString().equals("")){
 				txtQtdExpRma.setVlrDouble(new Double(0));
+			}
+			if(sMotvProir.equals("A")){
+				dialogObsPrior();
 			}
 		}
 		else if(pevt.getListaCampos()==lcCampos){
@@ -1088,5 +1174,9 @@ public class FRma extends FDetalhe implements PostListener,
 					+ err.getMessage());
 		}
 		carregaWhereAdic();
+	}
+	public Color cor(int r, int g, int b){
+		Color color = new Color(r, g, b);
+		return color;
 	}
 }
