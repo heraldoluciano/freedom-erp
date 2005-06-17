@@ -257,7 +257,7 @@ public class OPSwara extends LeiauteGR {
                 drawTexto(Funcoes.alinhaDir(sQtd,15),270,iY);//Quantidade
                 drawTexto(sUnid,350,iY);//Unidade
                 drawTexto(sLote,450,iY);//Lote
-                iY = iY+12;	                            	              	
+                iY = iY+18;	                            	              	
               }            	
             }
             iY = iY+10;          
