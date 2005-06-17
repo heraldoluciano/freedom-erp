@@ -114,7 +114,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtCodFase.setTabelaExterna(lcFase);
     txtDescFase.setListaCampos(lcFase);
 
-    lcModLote.add(new GuardaCampo( txtCodModLote, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_PK, true));
+    lcModLote.add(new GuardaCampo( txtCodModLote, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_PK, false));
     lcModLote.add(new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false));
     lcModLote.montaSql(false, "MODLOTE", "EQ");
     lcModLote.setQueryCommit(false);
@@ -130,7 +130,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
     adicDB(cbAtiva,392,60,50,20,"ATIVOEST","Ativa",true);
     adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
-    adicDescFK(txtDescModLote, 90, 100, 270, 20, "DescModLote", "Descrição do modelo do lote");
+    adicDescFK(txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote");
     
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
@@ -188,6 +188,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     lcProd.setConexao(cn);
     lcProd2.setConexao(cn);
     lcFase.setConexao(cn);
+    lcModLote.setConexao(cn);
   }
   public void afterCarrega(CarregaEvent cevt) {  	
   
