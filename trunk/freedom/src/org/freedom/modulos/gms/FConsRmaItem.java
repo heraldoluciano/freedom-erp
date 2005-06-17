@@ -443,7 +443,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				}
 
 				tab.setValor(imgColuna, iLin, 0);//SitItRma
-				tab.setValor(rs.getString(1) == null ? "" : rs.getString(1) + "", iLin, 1);//CodRma
+				tab.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
 				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
 				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 3);//DescProd
 				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov

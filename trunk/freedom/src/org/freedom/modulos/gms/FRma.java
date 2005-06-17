@@ -41,9 +41,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -139,6 +141,13 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcUsu = new ListaCampos(this,"UU");
 	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
+
+	private ImageIcon imgCancelado = Icone.novo("bt_cancelado.gif");
+	private ImageIcon imgExpedido = Icone.novo("bt_expedido.gif");
+	private ImageIcon imgAprovado = Icone.novo("bt_aprovado.gif");
+	private ImageIcon imgPendento = Icone.novo("bt_pendente.gif");
+	private ImageIcon imgStatus = Icone.novo("");
+	
 	String sOrdRMA = "";
 	Integer anoCC = null;
 	Integer iCodTpMov = null;
@@ -404,7 +413,9 @@ public class FRma extends FDetalhe implements PostListener,
 		pinBotDet.adic(btMotivoCancelaItem,0,29,110,28);
 		pinBotDet.adic(btMotivoPrior,0,58,110,28);
 		pinDet.adic(pinBotDet,630,1,114,90);
-		lSitItRma = new JLabelPad(SitRma);
+		lSitItRma = new JLabelPad();
+		lSitItRma.setForeground(Color.WHITE);
+		//pinLb.add(new JLabelPad("",imgStatus,SwingConstants.CENTER));
 		pinLb.adic(lSitItRma,31,0,110,20);
 		pinDet.adic(pinLb,630,91,114,24);
 		
@@ -608,7 +619,7 @@ public class FRma extends FDetalhe implements PostListener,
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
 		}
 		
-		if(sSitItRma.equals("PE"))
+		if(sSitItRma.equals("PE") || sSitItRma.equals(""))
 			rgPriod.setAtivo(true);
 		else
 			rgPriod.setAtivo(false);
@@ -622,24 +633,28 @@ public class FRma extends FDetalhe implements PostListener,
 		}
 		
 		if(sSitRma.equals("CA")){
+			//imgStatus = imgCancelado;
 			SitRma = "Cancelado";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(250,50,50));
 		}
 		else if(sSitRma.equals("PE")){
+			//imgStatus = imgPendento;
 			SitRma = "Pendente";
 			lSitItRma.setText(SitRma);
-			pinLb.setBackground(cor(240,240,0));
-		}
-		else if(sSitAprov.equals("AT") || sSitAprov.equals("AP")){
-			SitRma = "Aprovado";
-			lSitItRma.setText(SitRma);
-			pinLb.setBackground(cor(26,140,255));
+			pinLb.setBackground(cor(255,204,51));
 		}
 		else if(sSitExp.equals("ET") || sSitExp.equals("EP")){
+			//imgStatus = imgExpedido;
 			SitRma = "Expedido";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(0,170,30));
+		}
+		else if(sSitAprov.equals("AT") || sSitAprov.equals("AP")){
+			//imgStatus = imgAprovado;
+			SitRma = "Aprovado";
+			lSitItRma.setText(SitRma);
+			pinLb.setBackground(cor(26,140,255));
 		}
 		
 				
