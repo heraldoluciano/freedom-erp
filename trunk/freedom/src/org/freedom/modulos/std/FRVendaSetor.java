@@ -115,8 +115,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			40, 0);
 
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
 	private JCheckBoxPad cbMovEstoque = new JCheckBoxPad("Só com mov.estoque?", "S", "N");
 
 	private JCheckBoxPad cbCliPrinc = new JCheckBoxPad(

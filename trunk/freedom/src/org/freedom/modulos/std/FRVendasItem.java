@@ -56,8 +56,8 @@ public class FRVendasItem extends FRelatorio {
 	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
 	
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
 	private JCheckBoxPad cbListaFilial = null; 
 	
 	private ListaCampos lcVend = new ListaCampos(this);

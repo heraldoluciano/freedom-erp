@@ -42,8 +42,8 @@ import org.freedom.telas.FRelatorio;
 public class FRVendasDet extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
-  private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+  private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
+  private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
   public FRVendasDet() {
     setTitulo("Vendas Detalhadas");
     setAtribos(80,80,295,160);
