@@ -31,6 +31,7 @@ package org.freedom.modulos.pcp;
 import java.awt.event.ActionListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.gms.FConsRMA;
+import org.freedom.modulos.gms.FConsRmaItem;
 import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FCLFiscal;
@@ -85,6 +86,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 			addSeparador(200000000);			
 			addOpcao(200000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'm',200200000, 1, true, FRma.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm',200300000, 1, true, FConsRMA.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'm',200400000, 1, true, FConsRmaItem.class);
 
 			addOpcao(-1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false,null);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
