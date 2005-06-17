@@ -26,7 +26,6 @@ package org.freedom.modulos.gms;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,7 +44,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -99,7 +97,12 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtQtdAprovRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtQtdExpRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtPrecoItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-
+	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtSeqOF = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtQtdPrev = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtQtdFabr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtTipoFase = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
@@ -137,6 +140,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
+	private ListaCampos lcOP = new ListaCampos(this, "OF");
 	private ListaCampos lcLote = new ListaCampos(this, "LE");
 	private ListaCampos lcUsu = new ListaCampos(this,"UU");
 	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
@@ -257,6 +261,15 @@ public class FRma extends FDetalhe implements PostListener,
 		txtIDUsu.setTabelaExterna(lcUsu);
 //		txtIDUsu.setEnabled(false);
 				
+		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, false));
+		lcOP.add(new GuardaCampo(txtSeqOF, "SeqOF", "Sequencia da fase", ListaCampos.DB_PK, false));
+		lcOP.montaSql(false, "OPFASE", "PP");
+		lcOP.setQueryCommit(false);
+		lcOP.setReadOnly(true);
+		txtCodOP.setTabelaExterna(lcOP);
+		txtSeqOF.setTabelaExterna(lcOP);
+		
+				
 		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
@@ -272,12 +285,17 @@ public class FRma extends FDetalhe implements PostListener,
 
 		adicCampo(txtCodRma, 7, 20, 110, 20, "CodRma", "Cód.Rma",ListaCampos.DB_PK, true);
 		adicCampo(txtCodTpMov, 120, 20, 90, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
-		adicDescFK(txtDescTipoMov, 213, 20, 260, 20, "DescTipoMov", "Cód.Tp.Mov.");
-		adicCampo(txtIDUsu, 476, 20, 150, 20, "IdUsu", "Id do usuário",ListaCampos.DB_FK, true);						
-		adicCampo(txtCodCC, 7, 60, 200, 20, "CodCC", "Cód.CC.",ListaCampos.DB_FK,txtDescCC, true);		
-		adicCampo(txtAnoCC, 210, 60, 90, 20, "AnoCC", "Ano CC.",ListaCampos.DB_FK, true);
-		adicDescFK(txtDescCC, 303, 60, 240, 20, "DescCC", "Descrição do centro de custos");	
-		adicCampo(txtDtaReqRma,546, 60, 80, 20, "DtaReqRma", "Data da Rma",ListaCampos.DB_SI, true);
+		adicDescFK(txtDescTipoMov, 213, 20, 200, 20, "DescTipoMov", "Descrição do tipo de movimento");
+		adicCampo(txtIDUsu, 416, 20, 120, 20, "IdUsu", "Id do usuário",ListaCampos.DB_FK, true);	
+		adicCampo(txtDtaReqRma,539, 20, 86, 20, "DtaReqRma", "Data da Rma",ListaCampos.DB_SI, true);
+		
+		adicCampo(txtCodOP, 7, 60, 80, 20, "CodOP", "Cód.OP.",ListaCampos.DB_FK, false);		
+		adicCampo(txtSeqOF, 90, 60, 80, 20, "SeqOF", "Seq.fase",ListaCampos.DB_FK, txtDescFase, false);
+		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
+		adicCampo(txtCodCC, 173, 60, 130, 20, "CodCC", "Cód.CC.",ListaCampos.DB_FK,txtDescCC, true);		
+		adicCampo(txtAnoCC, 306, 60, 70, 20, "AnoCC", "Ano CC.",ListaCampos.DB_FK, true);		
+		adicDescFK(txtDescCC, 379, 60, 242, 20, "DescCC", "Descrição do centro de custos");	
+		
 		adicCampoInvisivel(txtSitRma,"sitrma","Sit.Rma.",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtSitAprovRma,"sitaprovrma","Sit.Ap.Rma.",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtSitExpRma,"sitexprma","Sit.Exp.Rma.",ListaCampos.DB_SI,false);
@@ -619,10 +637,16 @@ public class FRma extends FDetalhe implements PostListener,
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
 		}
 		
-		if(sSitItRma.equals("PE") || sSitItRma.equals(""))
+		if(sSitItRma.equals("PE") || sSitItRma.equals("")){
 			rgPriod.setAtivo(true);
-		else
+			txtCodOP.setAtivo(true);
+			txtSeqOF.setAtivo(true);
+		}
+		else{
 			rgPriod.setAtivo(false);
+			txtCodOP.setAtivo(false);
+			txtSeqOF.setAtivo(false);
+		}
 		
 		if(bAprovaCab || bExpede){
 			rgPriod.setAtivo(false);
@@ -1165,6 +1189,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());
 		lcAlmox.setConexao(cn);
 		lcUsu.setConexao(cn);
+		lcOP.setConexao(cn);
 		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
