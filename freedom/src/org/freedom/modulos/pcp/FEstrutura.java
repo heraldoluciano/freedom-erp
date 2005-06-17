@@ -56,6 +56,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtItRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);    
   private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Sim","S","N");
   private JCheckBoxPad cbAtiva = new JCheckBoxPad("Sim","S","N");
@@ -131,6 +132,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     adicDB(cbAtiva,392,60,50,20,"ATIVOEST","Ativa",true);
     adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
     adicDescFK(txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote");
+    adicCampo(txtNroDiasValid,390,100,100,20,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false);
     
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
@@ -205,10 +207,13 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     }    	
     else if (cevt.getListaCampos() == lcProd) {
     	if(txtCLoteProd.getVlrString().equals("S")){
-    	    txtCodModLote.setAtivo(true);       	    
+    	    txtCodModLote.setAtivo(true);   
+    	    txtNroDiasValid.setAtivo(true);
+			
     	} 
     	else {
     	    txtCodModLote.setAtivo(false);
+    	    txtNroDiasValid.setAtivo(false);
     	}
     }
   }      

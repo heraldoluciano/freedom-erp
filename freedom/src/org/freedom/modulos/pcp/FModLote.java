@@ -28,8 +28,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.util.Vector;
+
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+
 import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 import org.freedom.acao.PostEvent;
@@ -55,10 +57,13 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	private JButton btAdic = new JButton(Icone.novo("btOk.gif"));
     private JComboBoxPad cbCampos = null;
     private Vector vTamanhos = new Vector();
+	private Vector vLabs = new Vector();    	
+	private Vector vVals = new Vector();
+	private ObjetoModLote objModLote = new ObjetoModLote();
 
 	public FModLote() {
     	setTitulo("Modelos de lote");
-    	setAtribos(20,100,350,200);
+    	setAtribos(20,100,410,200);
     	
     	pnCliente.add(pinCab,BorderLayout.NORTH);
     	pnCliente.add(spnCli);
@@ -68,15 +73,15 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
     	txaModLote.setFont(new Font("Courier",Font.PLAIN,11));
 
     	adicCampo(txtCodModLote, 7, 20, 90, 20,"CodModLote","Cód.mod.lote", ListaCampos.DB_PK, true);
-    	adicCampo(txtDescModLote, 100, 20, 210, 20,"DescModLote","Descrição do modelo de lote", ListaCampos.DB_SI, true);    	
+    	adicCampo(txtDescModLote, 100, 20, 280, 20,"DescModLote","Descrição do modelo de lote", ListaCampos.DB_SI, true);    	
     	adicDBLiv(txaModLote,"TxaModLote", "Corpo", true);
     	
     	setListaCampos( true, "MODLOTE", "EQ");   	    
     	
-    	Vector vLabs = new Vector();    	
-    	Vector vVals = new Vector();
+    	vLabs = new Vector();    	
+    	vVals = new Vector();
     	vTamanhos = new Vector();
-
+/*
     	vLabs.addElement("Código do produto");
     	vLabs.addElement("Dia");
     	vLabs.addElement("Mês");
@@ -92,7 +97,12 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
     	vTamanhos.addElement(new Integer(2));
     	vTamanhos.addElement(new Integer(4));
     	vTamanhos.addElement(new Integer(5));    	    	
-    	  	
+  */
+    	
+    	vLabs = objModLote.getLabels();
+    	vVals = objModLote.getValores();
+    	vTamanhos = objModLote.getTams();
+    	
     	cbCampos = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);    	    	    	
       	    	
     	adic(new JLabelPad("Campos dinâmicos"), 7, 40, 220, 20); 
@@ -112,12 +122,26 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
     	super.setConexao(cn);
     }
     
-	public void beforePost(PostEvent pevt) {	    
-		int iMax = 13;		
-		int iTam = Funcoes.contaChar(txaModLote.getVlrString(),'-');		
+	public void beforePost(PostEvent pevt) {	     
+		int iMax = 13;	
+		objModLote.setTexto(txaModLote.getVlrString());//carrega o texto criado para o objeto
+		Vector vTemp = new Vector();
+		String sTexto = txaModLote.getVlrString();
+		String sTmp = sTexto;
+
+		vTemp = objModLote.getValoresAdic();	
+
+		for(int i = 0;vTemp.size()>i;i++){
+			sTmp = sTmp.replaceAll("\\"+vTemp.elementAt(i).toString(),"");
+        	sTmp = sTmp.replaceAll("\\[","");
+        	sTmp = sTmp.replaceAll("\\]","");	 
+		}
+		
+		int iTam = sTmp.length();
+				
 		if (iTam>iMax) {	        
 	        pevt.cancela();
-	        Funcoes.mensagemErro(this,"Texto muito grande para o lote ("+iMax+" caracteres).\n " +
+	        Funcoes.mensagemErro(this,"Texto muito grande para o lote ("+iTam+" caracteres).\n " +
 	        						  "O código do lote deve conter no máximo 13 caracteres.");	        		
 	    }
 	}
