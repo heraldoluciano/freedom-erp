@@ -70,8 +70,8 @@ public class FRUltimaVenda extends FRelatorio {
 
 	private JCheckBoxPad cbListaFilial = null;
 	
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
 
 	private ListaCampos lcVend = new ListaCampos(this);
 

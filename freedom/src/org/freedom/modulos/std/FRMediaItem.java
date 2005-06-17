@@ -84,8 +84,8 @@ public class FRMediaItem extends FRelatorio {
 
 	private JRadioGroup rgOrdem = null;
 	
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Só Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Só Financeiro?", "S", "N");
+	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
+	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
 
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
 
