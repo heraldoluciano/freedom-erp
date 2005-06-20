@@ -16,10 +16,10 @@ import org.freedom.componentes.ObjetoModeloLote;
 public class ObjetoModLote extends ObjetoModeloLote {
 
   public ObjetoModLote() { 	
-      adicOpcao("Código do produto","#CODPROD#",new Integer(8));
-      adicOpcao("Dia","#DIA#",new Integer(2));
-      adicOpcao("Mês","#MES#",new Integer(2));
-      adicOpcao("Ano","#ANO#",new Integer(4));
-      adicOpcao("Número da produção no dia","#NPRODDIA#",new Integer(5));                  
+      adicOpcao("Código do produto",VLR_CODPROD,new Integer(8));
+      adicOpcao("Dia",VLR_DIA,new Integer(2));
+      adicOpcao("Mês",VLR_MES,new Integer(2));
+      adicOpcao("Ano",VLR_ANO,new Integer(4));
+      adicOpcao("Número da produção no dia",VLR_NPRODDIA,new Integer(5));                  
   }
 }

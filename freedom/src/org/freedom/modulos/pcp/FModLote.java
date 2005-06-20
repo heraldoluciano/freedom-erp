@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -63,8 +64,8 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 
 	public FModLote() {
     	setTitulo("Modelos de lote");
-    	setAtribos(20,100,410,200);
-    	
+    	setAtribos(20,100,430,200);
+    	setImprimir(true);
     	pnCliente.add(pinCab,BorderLayout.NORTH);
     	pnCliente.add(spnCli);
     	
@@ -81,23 +82,6 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
     	vLabs = new Vector();    	
     	vVals = new Vector();
     	vTamanhos = new Vector();
-/*
-    	vLabs.addElement("Código do produto");
-    	vLabs.addElement("Dia");
-    	vLabs.addElement("Mês");
-    	vLabs.addElement("Ano");
-    	vLabs.addElement("Número da produção no dia");
-    	vVals.addElement("#CODPROD#");
-    	vVals.addElement("#DIA#");
-    	vVals.addElement("#MES#");
-    	vVals.addElement("#ANO#");
-    	vVals.addElement("#NPROD#");
-    	vTamanhos.addElement(new Integer(8));
-    	vTamanhos.addElement(new Integer(2));
-    	vTamanhos.addElement(new Integer(2));
-    	vTamanhos.addElement(new Integer(4));
-    	vTamanhos.addElement(new Integer(5));    	    	
-  */
     	
     	vLabs = objModLote.getLabels();
     	vVals = objModLote.getValores();
@@ -138,12 +122,14 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 		}
 		
 		int iTam = sTmp.length();
-				
+		
+		System.out.println(sTmp);
 		if (iTam>iMax) {	        
 	        pevt.cancela();
 	        Funcoes.mensagemErro(this,"Texto muito grande para o lote ("+iTam+" caracteres).\n " +
 	        						  "O código do lote deve conter no máximo 13 caracteres.");	        		
 	    }
+			
 	}
 	
 	public void valorAlterado(JComboBoxEvent evt) { 
@@ -171,13 +157,17 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	}
 	private void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = new ImprimeOS("",con);
+		objModLote.setTexto(txaModLote.getVlrString());
 		imp.verifLinPag();
-		imp.setTitulo("Teste de Modelo"); 
+		imp.setTitulo("Teste de Modelo de Lote"); 
 	    imp.limpaPags();
-	    String[] sLinhas = txaModLote.getText().split("\n");
-	    for(int i=0;i<sLinhas.length;i++) {
-			imp.say(imp.pRow()+1,0,sLinhas[i]);
-	    }
+	    String sTexto = "É necessário selecionar um modelo de lote válido!";
+	    if(objModLote.getLote(new Integer(30),new Date(),con)!=null){
+	    	sTexto = objModLote.getLote(new Integer(30),new Date(),con);
+	    } 
+
+		imp.say(imp.pRow()+1,0,sTexto);
+
 	    imp.eject();
 	    imp.fechaGravacao();
 		if (bVisualizar) {

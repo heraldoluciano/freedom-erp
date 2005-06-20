@@ -20,9 +20,16 @@
 
 package org.freedom.componentes;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public abstract class ObjetoModeloLote {
   private Vector vLabels = new Vector();
@@ -33,6 +40,12 @@ public abstract class ObjetoModeloLote {
   private Vector vTams = new Vector();
   private Vector vTamsAdic = new Vector();
   private Vector vMascaras = new Vector();
+  public static final String VLR_CODPROD = "#CODPROD#";
+  public static final String VLR_DIA = "#DIA#";
+  public static final String VLR_MES = "#MES#";
+  public static final String VLR_ANO = "#ANO#";
+  public static final String VLR_NPRODDIA = "#NPRODDIA#";
+  
   private String sTexto = "";
 
   public ObjetoModeloLote() { 
@@ -95,16 +108,7 @@ public void setTexto(String sTexto){
     this.sTexto = sTexto;
     getAdic();    
 }
-public int getNumLinEtiq(){
-    int iRet = 0;
-    try {
-       iRet = Funcoes.stringToVector(sTexto).size();   
-    }
-    catch(Exception e) {
-        e.printStackTrace();
-    }    
-    return iRet;
-}
+
 public void getAdic(){
         vTamsAdic = new Vector();
         vLabelsAdic = new Vector ();
@@ -118,14 +122,82 @@ public void getAdic(){
             }                                 
         }       
 }
-public String getLote(Integer iCodProd){
-	String sLote = "";
+
+
+public String getLote(Integer iCodProd,Date dData,Connection con){
+	String sRetorno = "";	
+	sRetorno = sTexto;
+	GregorianCalendar cal = new GregorianCalendar();
+	cal.setTime(dData);
+	    try {
+  	        Vector vTamsAdic = getTamsAdic();
+  	        Vector vValAdic = getValoresAdic();
+  	        if (sRetorno != null) { 
+  	            try {			    	    
+  	                for(int i=0;vValAdic.size()>i;i++) {
+  	                    String sValAdic = vValoresAdic.elementAt(i).toString();
+  	                    String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
+  	                    String sCampo = "";
+  	                    sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));
+  	                    int iTamAdic = Funcoes.contaChar(sFragmento,'-'); 
+  	                    if(sValAdic.equals(VLR_CODPROD)){
+  	                    	sCampo = iCodProd+"";
+  	                    	if(sCampo.length()<iTamAdic){
+  	                    		sCampo = Funcoes.strZero(sCampo,iTamAdic);
+  	                    	}
+  	                    	else if (sCampo.length()>iTamAdic){
+  	                    		sCampo = sCampo.substring(0,iTamAdic);
+  	                    	}
+  	                    }
+  	                    else if (sValAdic.equals(VLR_DIA)){
+  	                    	sCampo = cal.get(Calendar.DAY_OF_MONTH)+"";
+  	                    }	
+  	                    else if (sValAdic.equals(VLR_MES)){
+  	                    	sCampo = cal.get(Calendar.MONTH)+"";
+  	                    }
+  	                    else if (sValAdic.equals(VLR_ANO)){
+  	                    	sCampo = cal.get(Calendar.YEAR)+"";
+  	                    	if(sCampo.length()>iTamAdic){
+  	                    		sCampo = sCampo.substring(sCampo.length()-iTamAdic);
+  	                    	}	
+  	                    }	
+  	                    else if (sValAdic.equals(VLR_NPRODDIA)){   	                    	
+  	                    	try{
+                    			String sSQL = "SELECT coalesce(count(1)+1,1) from ppop op where op.codemppd=? and op.codfilialpd=? and op.codprod=? and op.dtfabrop = ?";
+                    			try {
+                    				PreparedStatement ps = con.prepareStatement(sSQL);
+                    				ps.setInt(1, Aplicativo.iCodEmp);
+                    				ps.setInt(2, ListaCampos.getMasterFilial("PPOP"));
+                    				ps.setInt(3, iCodProd.intValue());
+                    				ps.setDate(4,Funcoes.dateToSQLDate(dData));
+                    				ResultSet rs = ps.executeQuery();
+                    				if (rs.next()) {
+                    					sCampo = rs.getString(1);
+                    				}
+                    			}
+                    		    catch (Exception err) {
+                    		    	err.printStackTrace();
+								}
 	
-	
-	
-	
-	
-	
-	return sLote;
+  	                    	}
+  	                    	catch(Exception err){
+  	                    		err.printStackTrace();
+  	                    	}
+  	                    }
+  	                    	
+  	                    sRetorno = sRetorno.replaceAll("\\"+sFragmento,sCampo);	
+  	              }
+  	               
+  	            }						
+  	            catch (Exception err) {
+  	            	err.printStackTrace();
+  	            }
+  	        }
+  	        
+  	    }
+	    catch(Exception err) {
+	    	err.printStackTrace();
+	    }
+	return sRetorno;
 }
 }
