@@ -681,7 +681,14 @@ public class FRma extends FDetalhe implements PostListener,
 			pinLb.setBackground(cor(26,140,255));
 		}
 		
-				
+		if (cevt.getListaCampos()==lcDet){
+			if((txtQtdAprovRma.isEnabled()) && (txtQtdAprovRma.getVlrString().equals(""))){
+				txtQtdAprovRma.setVlrDouble(txtQtdItRma.getVlrDouble());
+			}
+			if((txtQtdExpRma.isEnabled()) && (txtQtdExpRma.getVlrString().equals(""))){
+				txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());
+			}
+		}			
 	}
 
 	public boolean[] prefs() {
