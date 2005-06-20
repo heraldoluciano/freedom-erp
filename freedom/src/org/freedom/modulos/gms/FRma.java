@@ -86,9 +86,9 @@ public class FRma extends FDetalhe implements PostListener,
 	private JButton btFinExpRMA = new JButton("Finaliz. exp.",Icone.novo("btFechaVenda.gif"));
 	private JButton btCancelaRMA = new JButton("Cancelar",Icone.novo("btRetorno.gif"));
 	private JButton btCancelaItem = new JButton("Cancelar",Icone.novo("btRetorno.gif"));
-	private JButton btMotivoCancelaRMA = new JButton("Motivo",Icone.novo("btObs.gif"));
-	private JButton btMotivoCancelaItem = new JButton("Motivo",Icone.novo("btObs.gif"));
-	private JButton btMotivoPrior = new JButton("Motivo Prioridade",Icone.novo("btObs.gif"));
+	private JButton btMotivoCancelaRMA = new JButton("Mot.Can",Icone.novo("btObs.gif"));
+	private JButton btMotivoCancelaItem = new JButton("Mot.Can",Icone.novo("btObs.gif"));
+	private JButton btMotivoPrior = new JButton("Mot.Prior",Icone.novo("btObs.gif"));
 
 	private JTextFieldPad txtCodRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodItRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -518,7 +518,12 @@ public class FRma extends FDetalhe implements PostListener,
 	public void afterPost(PostEvent pevt) {
 		if(pevt.getListaCampos()==lcCampos){
 			lcCampos.carregaDados();
-		}		
+		}
+		if(pevt.getListaCampos()==lcDet){
+			lcCampos.carregaDados();
+		}	
+
+		
 	}
 	private void desabCampos(boolean bHab) {
 		txtCodProd.setNaoEditavel(bHab);
@@ -682,11 +687,13 @@ public class FRma extends FDetalhe implements PostListener,
 		}
 		
 		if (cevt.getListaCampos()==lcDet){
-			if((txtQtdAprovRma.isEnabled()) && (txtQtdAprovRma.getVlrString().equals(""))){
-				txtQtdAprovRma.setVlrDouble(txtQtdItRma.getVlrDouble());
+			if(txtQtdAprovRma.isEditable()){
+				if(txtQtdAprovRma.getVlrDouble().compareTo(new Double(0))<=0) 
+					txtQtdAprovRma.setVlrDouble(txtQtdItRma.getVlrDouble());
 			}
-			if((txtQtdExpRma.isEnabled()) && (txtQtdExpRma.getVlrString().equals(""))){
-				txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());
+			if(txtQtdExpRma.isEditable()){
+				if(txtQtdExpRma.getVlrDouble().compareTo(new Double(0))<=0)
+					txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());
 			}
 		}			
 	}
