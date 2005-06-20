@@ -593,8 +593,8 @@ public class FRma extends FDetalhe implements PostListener,
 
 		String sSitItRma = txtSitItRma.getVlrString();
 		String sSitRma = txtSitRma.getVlrString();
-		String sSitAprov = txtSitAprovItRma.getVlrString();
-		String sSitExp = txtSitExpItRma.getVlrString();
+		String sSitItAprov = txtSitAprovItRma.getVlrString();
+		String sSitItExp = txtSitExpItRma.getVlrString();
 		
 		boolean bStatusTravaTudo = ( (sSitItRma.equals("AF")) || (sSitItRma.equals("EF")) || (sSitItRma.equals("CA")) );
 		boolean bStatusTravaExp = (!(sSitItRma.equals("AF")));
@@ -661,25 +661,25 @@ public class FRma extends FDetalhe implements PostListener,
 			btMotivoPrior.setEnabled(true);
 		}
 		
-		if(sSitRma.equals("CA")){
+		if(sSitItRma.equals("CA")){
 			//imgStatus = imgCancelado;
 			SitRma = "Cancelado";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(250,50,50));
 		}
-		else if(sSitRma.equals("PE")){
+		else if(sSitItRma.equals("PE")){
 			//imgStatus = imgPendento;
 			SitRma = "Pendente";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(255,204,51));
 		}
-		else if(sSitExp.equals("ET") || sSitExp.equals("EP")){
+		else if(sSitItExp.equals("ET") || sSitItExp.equals("EP")){
 			//imgStatus = imgExpedido;
 			SitRma = "Expedido";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(0,170,30));
 		}
-		else if(sSitAprov.equals("AT") || sSitAprov.equals("AP")){
+		else if(sSitItAprov.equals("AT") || sSitItAprov.equals("AP")){
 			//imgStatus = imgAprovado;
 			SitRma = "Aprovado";
 			lSitItRma.setText(SitRma);
@@ -689,11 +689,11 @@ public class FRma extends FDetalhe implements PostListener,
 		if (cevt.getListaCampos()==lcDet){
 			if(txtQtdAprovRma.isEditable()){
 				if(txtQtdAprovRma.getVlrDouble().compareTo(new Double(0))<=0) 
-					txtQtdAprovRma.setVlrDouble(txtQtdItRma.getVlrDouble());
+					txtQtdAprovRma.setVlrDouble(txtQtdItRma.getVlrDouble());					
 			}
 			if(txtQtdExpRma.isEditable()){
 				if(txtQtdExpRma.getVlrDouble().compareTo(new Double(0))<=0)
-					txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());
+					txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());				    
 			}
 		}			
 	}
