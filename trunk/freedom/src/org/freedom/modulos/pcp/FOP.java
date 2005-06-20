@@ -83,12 +83,16 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldFK txtUsaLoteEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 1, 0);
   private JTextFieldPad txtCodAlmoxEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);	
   private JTextFieldFK txtDescAlmoxEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);	
+  private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtDescModLote = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldFK txtModLote = new JTextFieldFK(JTextFieldPad.TP_STRING, 100, 0);
   private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdEstRef = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetRef = new ListaCampos(this,"PD");
   private ListaCampos lcLoteProdDet = new ListaCampos(this, "LE");  
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
+  private ListaCampos lcModLote = new ListaCampos(this, "ML");
   private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
   private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
   private JButton btExecuta = new JButton("Finaliza",Icone.novo("btOP.gif"));
@@ -118,7 +122,16 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
-  	
+  		
+	lcModLote.add(new GuardaCampo(txtCodAlmoxEst, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmoxEst, false));
+	lcModLote.add(new GuardaCampo(txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
+	lcModLote.add(new GuardaCampo(txtModLote,"txaModLote","Corpo",ListaCampos.DB_SI,false));
+	lcModLote.montaSql(false, "ALMOX", "EQ");
+	lcModLote.setQueryCommit(false);
+	lcModLote.setReadOnly(true);
+	txtDescAlmoxEst.setSoLeitura(true);
+	txtCodAlmoxEst.setTabelaExterna(lcAlmoxEst);	
+	
 	lcAlmoxEst.add(new GuardaCampo(txtCodAlmoxEst, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmoxEst, false));
 	lcAlmoxEst.add(new GuardaCampo(txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
 	lcAlmoxEst.montaSql(false, "ALMOX", "EQ");
@@ -156,6 +169,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
     lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));  	
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
+    lcProdEstCod.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
+    
     lcProdEstCod.setWhereAdic("ATIVOEST='S'");    						   
   	lcProdEstCod.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstCod.setQueryCommit(false);
@@ -167,6 +182,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdEstRef.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false));
+    lcProdEstRef.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
     lcProdEstRef.setWhereAdic("ATIVOEST='S'");
   	lcProdEstRef.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstRef.setQueryCommit(false);
@@ -228,6 +244,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     lcProdEstCod.addCarregaListener(this);
     lcProdEstRef.addCarregaListener(this);
     lcLoteProdEst.addCarregaListener(this);
+    lcModLote.addCarregaListener(this);
 
     btFase.addActionListener(this);
     btRMA.addActionListener(this);
