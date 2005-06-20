@@ -27,10 +27,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
+
 import javax.swing.ImageIcon;
+
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+
 import com.lowagie.text.pdf.Barcode128;
 
 public class OPSwara extends LeiauteGR {
@@ -174,7 +177,7 @@ public class OPSwara extends LeiauteGR {
 
 	private void impFaseEx(ResultSet rsFases) {        
 		try {
-
+			int iSeqOf = rsFases.getInt(1);
 			int iCodFaseF = rsFases.getInt(2);
 		  	int iCodFaseI = 0;
 		  	
@@ -244,9 +247,10 @@ public class OPSwara extends LeiauteGR {
                 drawTexto(sCod,10,iY); //Codigo	
                     		  	
   		        Barcode128 b = new Barcode128();
-  		        String sBarCode = sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+  		        String sBarCode = iSeqOf+"#"+iCodOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+  		        sBarCode = sBarCode.replace('/','_');
+  		           
   		        b.setCode(sBarCode);
-//  		        b.setBarHeight(100); 
 
   		        Image image = b.createAwtImage(Color.BLACK, Color.WHITE);
   		        ImageIcon icon = new ImageIcon(image);
