@@ -21,6 +21,7 @@
  */ 
 
 package org.freedom.modulos.pcp;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -30,7 +31,10 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -40,7 +44,14 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.*;
+import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTabbedPanePad;
+import org.freedom.componentes.JTextFieldFK;
+import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
 import org.freedom.modulos.std.DLBuscaProd;
@@ -50,14 +61,11 @@ import org.freedom.telas.FPrinterJob;
 
 public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
   private int casasDec = Aplicativo.casasDec;
-  private JTabbedPanePad tpnCab = new JTabbedPanePad();
-  private JPanelPad pinCabOP = new JPanelPad();
-  private JPanelPad pinCabRMA = new JPanelPad();
-  private JPanelPad pinRMA = new JPanelPad();
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
-  public  Tabela tab2 = new Tabela();
-  public  JScrollPane spTab2 = new JScrollPane(tab2);
+  private JTabbedPanePad tpnAbas = new JTabbedPanePad();
+  private JPanelPad pinAbaOp = new JPanelPad();
+  private JPanelPad pinAbaRma = new JPanelPad();
 
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -105,6 +113,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private Integer iCodTpMov = null;
   private JPanelPad pinBotCab = new JPanelPad(104,96);
   private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
+  public  Tabela tab2 = new Tabela();
+  public  JScrollPane spTab2 = new JScrollPane(tab2);  
   
   public FOP () { }
   private void montaTela() {
@@ -113,16 +123,19 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	setAtribos(15, 10, 640, 580);
 	
   	setAltCab(200);
-  	pnCliCab.add(tpnCab);
-  	tpnCab.addTab("OP", pinCabOP);
-	tpnCab.addTab("RMA", pinCabRMA);
+  	  	
+  	pnMaster.remove(spTab);
+
+  	tpnAbas.addTab("OP",spTab);
+  	tpnAbas.addTab("Rma",spTab2);
+  	pnMaster.add(tpnAbas, BorderLayout.CENTER);
   	
 	btFase.setToolTipText("Fases da produção");
 	btRMA.setToolTipText("Gera ou exibe RMA.");
 	btExecuta.setToolTipText("Processo de produção");
 	btLote.setToolTipText("Cadastra lote");
 		
-	pinCabOP.adic(pinBotCab,500,1,115,128);
+	pinCab.adic(pinBotCab,500,20,115,128);
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
@@ -196,15 +209,13 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtRefProdEst.setTabelaExterna(lcProdEstRef);
   	txtRefProdEst.setNomeCampo("refprod");
 
-  	/**
-  	 * 			PAINEL OP
-  	 */
     setListaCampos(lcCampos);
-    setPainel( pinCabOP);
+    setPainel( pinCab, pnCliCab);
     
     adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
 	adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
-	adicDescFK(txtDescTipoMov, 153, 20, 340, 20, "DescTipoMov", "Cód.Tp.Mov.");
+	adicDescFK(txtDescTipoMov, 153, 20, 261, 20, "DescTipoMov", "Cód.Tp.Mov.");
+  	adicCampo(txtDtFabProd,417,20,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
 
   	if (!bPrefs[0]) {  
   		adicCampo(txtCodProdEst, 7, 60, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
@@ -225,23 +236,19 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicCampo(txtQtdPrevProdOP,413,60,80,20,"qtdprevprodop","Quantidade",ListaCampos.DB_SI, true);
 
   	adicCampo(txtCodAlmoxEst,7,100,70,20,"codalmox","Cód.Almox.",ListaCampos.DB_FK,txtDescAlmoxEst,true);
-  	adicDescFK(txtDescAlmoxEst, 80, 100, 180, 20, "descalmox", "Descrição do almoxarifado");
+  	adicDescFK(txtDescAlmoxEst, 80, 100,  247, 20, "descalmox", "Descrição do almoxarifado");
   	
-  	adicCampo(txtDtFabProd,263,100,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);  	
-    adicCampo(txtCodLoteProdEst,341,100,75,20, "CodLote", "Lote", ListaCampos.DB_FK,txtDescLoteProdEst,false);
+//  	adicCampo(txtDtFabProd,263,100,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);  	
+    adicCampo(txtCodLoteProdEst,330,100,80,20, "CodLote", "Lote", ListaCampos.DB_FK,txtDescLoteProdEst,false);
     
 	adicDescFKInvisivel(txtDescLoteProdEst,"VenctoLote","Vencto.Lote");
-	
-	
-    adicCampo(txtDtValidOP,419,100,75,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
+		
+    adicCampo(txtDtValidOP,413,100,80,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
-  	
-  	
-  	/**
-  	 * 			PAINEL RMA
-  	 */
-  	
-    setPainel( pinCabRMA);
+
+    
+    
+    setListaCampos( true, "OP", "PP");  	
   	
     txtCodTpMov.setAtivo(false);
 //    btFase.setEnabled(false);
@@ -630,9 +637,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		} 
   	}  	
   	if(cevt.getListaCampos() == lcModLote){
-  		if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) ){
-  			btLote.setEnabled(true);
+  		if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) && (txtCodLoteProdEst.getVlrString().equals(""))){
   			gravaLote(false);
+  			btLote.setEnabled(true);
   		}
   	}
   }  
