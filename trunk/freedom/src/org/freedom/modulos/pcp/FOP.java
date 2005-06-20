@@ -21,22 +21,17 @@
  */ 
 
 package org.freedom.modulos.pcp;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Vector;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -49,15 +44,11 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTabbedPanePad;
-import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
-import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -65,10 +56,7 @@ import org.freedom.telas.FPrinterJob;
 
 public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
   private int casasDec = Aplicativo.casasDec;
-  private JTabbedPanePad tpnCab = new JTabbedPanePad();
-  private JPanelPad pinCabOP = new JPanelPad();
-  private JPanelPad pinCabRMA = new JPanelPad();
-  private JPanelPad pinRMA = new JPanelPad();
+  private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -92,34 +80,18 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldFK txtUsaLoteDet = new JTextFieldFK(JTextFieldPad.TP_STRING, 1, 0);
   private JTextFieldFK txtUsaLoteEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 1, 0);
   private JTextFieldPad txtCodAlmoxEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);	
-  private JTextFieldFK txtDescAlmoxEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-   
-  public  Tabela tab2 = new Tabela();
-  public  JScrollPane spTab2 = new JScrollPane(tab2);
-  private JTextFieldPad txtCodRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-  private JTextFieldPad txtCodTpMovRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-  private JTextFieldFK txtDescTipoMovRma = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
-  private JTextFieldPad txtCodCCRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
-  private JTextFieldPad txtAnoCCRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
-  private JTextFieldFK txtDescCCRma = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
-  private JTextFieldPad txtCodOPRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtSeqOFRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtDtaReqRma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtSitRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-  private JTextFieldPad txtDtaAprovRma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtSitAprovRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-  private JTextFieldPad txtDtaExpRma = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtSitExpRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
-  private JTextAreaPad txaMotivoRma = new JTextAreaPad();
-  private JTextAreaPad txaMotivoCancRma = new JTextAreaPad();
-  
+  private JTextFieldFK txtDescAlmoxEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);	
+  private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldFK txtModLote = new JTextFieldFK(JTextFieldPad.TP_STRING, 100, 0);
+  private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdEstRef = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetRef = new ListaCampos(this,"PD");
   private ListaCampos lcLoteProdDet = new ListaCampos(this, "LE");  
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
-  private ListaCampos lcRMA = new ListaCampos(this, "");
+  private ListaCampos lcModLote = new ListaCampos(this, "ML");
   private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
   private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
   private JButton btExecuta = new JButton("Finaliza",Icone.novo("btOP.gif"));
@@ -133,30 +105,35 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JPanelPad pinBotCab = new JPanelPad(104,96);
   private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
   
-  private Vector vSitRMA = new Vector();
-    
   public FOP () { }
   private void montaTela() {
 
   	setTitulo("Cadastro de Ordens de produção");
 	setAtribos(15, 10, 640, 580);
 	
-	pnCliCab.add(tpnCab);
-	tpnCab.addTab("OP", pinCabOP);
-	tpnCab.addTab("RMA", pinCabRMA);
-	
+  	setAltCab(200);
   	
 	btFase.setToolTipText("Fases da produção");
 	btRMA.setToolTipText("Gera ou exibe RMA.");
 	btExecuta.setToolTipText("Processo de produção");
-
-	pinCabOP.adic(pinBotCab,500,20,115,97);
+	btLote.setToolTipText("Cadastra lote");
+		
+	pinCab.adic(pinBotCab,500,20,115,128);
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
-  	
+	pinBotCab.adic(btLote,0,93,110,30);
+  		
+	lcModLote.add(new GuardaCampo(txtCodModLote, "CodModLote", "Cod.Mod.Lote", ListaCampos.DB_PK,txtDescModLote, false));
+	lcModLote.add(new GuardaCampo(txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false));
+	lcModLote.add(new GuardaCampo(txtModLote,"txaModLote","Corpo",ListaCampos.DB_SI,false));	
+	lcModLote.montaSql(false, "MODLOTE", "EQ");
+	lcModLote.setQueryCommit(false);
+	lcModLote.setReadOnly(true);
+	txtCodModLote.setTabelaExterna(lcModLote);	
+	
 	lcAlmoxEst.add(new GuardaCampo(txtCodAlmoxEst, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmoxEst, false));
-	lcAlmoxEst.add(new GuardaCampo(txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
+	lcAlmoxEst.add(new GuardaCampo(txtDescAlmoxEst, "DescAlmox", "Descrição do almoxarifado", ListaCampos.DB_SI, false));
 	lcAlmoxEst.montaSql(false, "ALMOX", "EQ");
 	lcAlmoxEst.setQueryCommit(false);
 	lcAlmoxEst.setReadOnly(true);
@@ -186,12 +163,15 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 					     + ")");
 	lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
 	lcTipoMov.setReadOnly(true);
-	txtCodTpMov.setTabelaExterna(lcTipoMov);
+	txtCodTpMov.setTabelaExterna(lcTipoMov); 
   	
   	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true));
   	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
     lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));  	
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
+    lcProdEstCod.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
+    lcProdEstCod.add(new GuardaCampo( txtNroDiasValid,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false));
+    
     lcProdEstCod.setWhereAdic("ATIVOEST='S'");    						   
   	lcProdEstCod.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstCod.setQueryCommit(false);
@@ -203,6 +183,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdEstRef.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false));
+    lcProdEstRef.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
+    lcProdEstRef.add(new GuardaCampo( txtNroDiasValid,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false));
     lcProdEstRef.setWhereAdic("ATIVOEST='S'");
   	lcProdEstRef.montaSql(false, "ESTRUTURA", "PP");    
   	lcProdEstRef.setQueryCommit(false);
@@ -210,13 +192,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtRefProdEst.setTabelaExterna(lcProdEstRef);
   	txtRefProdEst.setNomeCampo("refprod");
 
-    /**
-     * 		ABA OP
-     */
-    
-    setListaCampos(lcCampos);    
-	setPainel(pinCabOP);
-    //setPainel( pinCab, pnCliCab);
+    setListaCampos(lcCampos);
+    setPainel( pinCab, pnCliCab);
     
     adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
 	adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
@@ -248,59 +225,12 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     
 	adicDescFKInvisivel(txtDescLoteProdEst,"VenctoLote","Vencto.Lote");
 	
-	txtCodTpMov.setAtivo(false);
-//  btFase.setEnabled(false);
 	
     adicCampo(txtDtValidOP,419,100,75,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
   	
-    /**
-     * 		ABA RMA	
-     */
-  	
-  	setListaCampos(lcCampos);
-  	setAltCab(200);
-	setPainel(pinCabRMA);
-  	
-	tab2.adicColuna("Status");//0
-	tab2.adicColuna("Cód.rma.");//1
-	tab2.adicColuna("Cód.prod.");//2
-	tab2.adicColuna("Descrição do produto");//3
-	tab2.adicColuna("Aprov.");//4
-	tab2.adicColuna("Exp.");//5
-	tab2.adicColuna("Dt. requisição");//6
-	tab2.adicColuna("Qt. requerida");//7
-	tab2.adicColuna("Dt. aprovação");//8
-	tab2.adicColuna("Qt. aprovada");//9
-	tab2.adicColuna("Dt. expedição");//10
-	tab2.adicColuna("Qt. expedida");//11
-	tab2.adicColuna("Saldo");//12
-	
-
-	tab2.setTamColuna(80, 0);
-	tab2.setTamColuna(70, 1);
-	tab2.setTamColuna(70, 2);
-	tab2.setTamColuna(120, 3);
-	tab2.setTamColuna(40, 4);
-	tab2.setTamColuna(40, 5);
-	tab2.setTamColuna(90, 6);
-	tab2.setTamColuna(90, 7);
-	tab2.setTamColuna(90, 8);
-	tab2.setTamColuna(90, 9);
-	tab2.setTamColuna(90, 10);
-	tab2.setTamColuna(90, 11);
-	tab2.setTamColuna(90, 12);
-
-	montaRma();
-	
-	tab2.addMouseListener(new MouseAdapter() {
-
-		public void mouseClicked(MouseEvent mevt) {
-			if (mevt.getSource() == tab2 && mevt.getClickCount() == 2)
-				abreRma();
-		}
-	});
-  	
+    txtCodTpMov.setAtivo(false);
+//    btFase.setEnabled(false);
   	
     lcCampos.addCancelListener(this);
   	lcCampos.addPostListener(this);
@@ -316,15 +246,15 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     lcProdEstCod.addCarregaListener(this);
     lcProdEstRef.addCarregaListener(this);
     lcLoteProdEst.addCarregaListener(this);
+    lcModLote.addCarregaListener(this);
 
     btFase.addActionListener(this);
     btRMA.addActionListener(this);
     btExecuta.addActionListener(this);
+    btLote.addActionListener(this);
     btImp.addActionListener(this);
   	btPrevimp.addActionListener(this);     
 
-  	//  aba ate aqui
-  	
   	montaDet();
   	
   	setImprimir(true);
@@ -402,28 +332,16 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	btFase.setEnabled(false);
   	btRMA.setEnabled(false);
   	btExecuta.setEnabled(false);
+  	btLote.setEnabled(false);
   	
   	//	navRod.setAtivo(4,false);
   	// 	navRod.setAtivo(5,false);
     
     montaTab();
     
-    tab.setTamColuna(200,2);
+    tab.setTamColuna(150,2);
 
   }
-  private void montaRma() {
-  	
-  }
-  
-  private void abreRma() {
-	int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
-	if (fPrim.temTela("Requisição de material") == false) {
-		FRma tela = new FRma();
-		fPrim.criatela("Requisição de material", tela, con);
-		tela.exec(iRma);
-	}
-  }
-  
 	private String buscaLote(ListaCampos lcProd, JTextFieldPad txtProd,boolean bSaldoPos) {
 		String sRet = "";
 		String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
@@ -565,7 +483,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
         geraRMA();
     else if (evt.getSource() == btExecuta)
         executaOP();
-    
+    else if (evt.getSource() == btLote)
+        gravaLote(true);
+   
     super.actionPerformed(evt);
   }
   
@@ -594,6 +514,65 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		Funcoes.mensagemErro(this,"Erro ao buscar obrigatoriedade de lote no produto!\n",true,con,err);
 	}
   }
+  public boolean existeLote(){
+  	boolean bRet = false;
+	String sSQL = "SELECT CODLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=?";
+	try {
+		PreparedStatement ps = con.prepareStatement(sSQL);
+		ps.setInt(1, Aplicativo.iCodEmp);
+		ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
+		ps.setInt(3, txtCodProdEst.getVlrInteger().intValue());
+		ps.setString(4, txtCodLoteProdEst.getVlrString());
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			bRet=true;
+		}
+		rs.close();
+		ps.close();
+	}	
+	catch (SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao buscar existencia do lote!\n",true,con,err);
+	}
+  	return bRet;  	
+  }
+  public void gravaLote(boolean bInsere){
+	if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) ){
+		ObjetoModLote ObjMl = new ObjetoModLote();
+		ObjMl.setTexto(txtModLote.getVlrString());
+		String sLote = ObjMl.getLote(txtCodProdEst.getVlrInteger(),txtDtFabProd.getVlrDate(),con);  			
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(txtDtFabProd.getVlrDate());
+		cal.add(GregorianCalendar.DAY_OF_YEAR,txtNroDiasValid.getVlrInteger().intValue());
+		Date dtVenctoLote = cal.getTime();
+		txtCodLoteProdEst.setVlrString(sLote);
+		txtDtValidOP.setVlrDate(dtVenctoLote);		
+		if((!existeLote()) && (bInsere)){	
+			if(Funcoes.mensagemConfirma(this,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
+				String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
+				try {
+				   PreparedStatement ps = con.prepareStatement(sSql); 
+				   ps.setInt(1,Aplicativo.iCodEmp);
+				   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
+				   ps.setInt(3,txtCodProdEst.getVlrInteger().intValue());
+				   ps.setString(4,sLote);
+				   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
+				   if (ps.executeUpdate() == 0) {
+					  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
+				   }
+				   if (!con.getAutoCommit())
+				      con.commit();
+				   }
+				 catch (SQLException err) {
+				 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
+				 }
+		  	}
+		}
+		else if (bInsere){
+			Funcoes.mensagemInforma(this,"Lote já cadastrado para o produto!");
+		}
+	}
+  }
+  
   public void afterCarrega(CarregaEvent cevt) {
     if (cevt.getListaCampos() == lcCampos) {
        btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
@@ -634,8 +613,14 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		}
 		else if((txtUsaLoteDet.getVlrString().equals("N"))){
 			txtCodLoteProdDet.setAtivo(false);
-		}
+		} 
   	}  	
+  	if(cevt.getListaCampos() == lcModLote){
+  		if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) ){
+  			btLote.setEnabled(true);
+  			gravaLote(false);
+  		}
+  	}
   }  
   
   public void afterPost(PostEvent pevt) { 	
@@ -670,8 +655,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcTipoMov.setConexao(cn);
   	lcLoteProdDet.setConexao(cn);
   	lcLoteProdEst.setConexao(cn);
-  	lcRMA.setConexao(cn);
   	lcAlmoxEst.setConexao(cn);
+  	lcModLote.setConexao(cn);
   	
   }
   private void imprimir(boolean bVisualizar) {
