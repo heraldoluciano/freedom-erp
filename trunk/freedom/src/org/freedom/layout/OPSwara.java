@@ -31,8 +31,7 @@ import javax.swing.ImageIcon;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-
-import com.lowagie.text.pdf.Barcode39; 
+import com.lowagie.text.pdf.Barcode128;
 
 public class OPSwara extends LeiauteGR {
 	private Connection con = null;
@@ -219,10 +218,10 @@ public class OPSwara extends LeiauteGR {
             setFonte(fnArial9N);
             drawTexto("Cód.",10,iY);
             drawTexto("Descrição",50,iY); 
-            drawTexto("Cód.Barras",180,iY);
-            drawTexto("Qtd.",300,iY);
-            drawTexto("Unidade",350,iY);
-            drawTexto("Lote",450,iY);
+            drawTexto("Cód.Barras",210,iY);
+            drawTexto("Qtd.",400,iY);
+            drawTexto("Unidade",430,iY);
+            drawTexto("Lote",500,iY);
     		drawLinha(5,iY+5,5,0,AL_CDIR);
             iY = iY + 15;
             setFonte(fnArial9);
@@ -244,19 +243,20 @@ public class OPSwara extends LeiauteGR {
               if(iCodFaseI==iCodFaseF) {
                 drawTexto(sCod,10,iY); //Codigo	
                     		  	
-  		        Barcode39 b = new Barcode39();
-  		        b.setCode(Funcoes.strZero(sCod,8));
-  		        b.setBarHeight(90); 
+  		        Barcode128 b = new Barcode128();
+  		        String sBarCode = sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+  		        b.setCode(sBarCode);
+//  		        b.setBarHeight(100); 
 
   		        Image image = b.createAwtImage(Color.BLACK, Color.WHITE);
   		        ImageIcon icon = new ImageIcon(image);
   		  	
-  		        drawImagem(icon,180,iY-8,90,10);
+  		        drawImagem(icon,210,iY-8,170,14);
   		  	
                 drawTexto(sDesc,50,iY); //Descrição	
-                drawTexto(Funcoes.alinhaDir(sQtd,15),270,iY);//Quantidade
-                drawTexto(sUnid,350,iY);//Unidade
-                drawTexto(sLote,450,iY);//Lote
+                drawTexto(Funcoes.alinhaDir(sQtd,15),370,iY);//Quantidade
+                drawTexto(sUnid,430,iY);//Unidade
+                drawTexto(sLote,500,iY);//Lote
                 iY = iY+18;	                            	              	
               }            	
             }
