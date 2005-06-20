@@ -24,6 +24,8 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,6 +56,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
+import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -115,6 +118,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
   public  Tabela tab2 = new Tabela();
   public  JScrollPane spTab2 = new JScrollPane(tab2);  
+  
   
   public FOP () { }
   private void montaTela() {
@@ -278,6 +282,45 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 
   	montaDet();
   	
+  	
+  	tab2.adicColuna("");//0
+	tab2.adicColuna("Cód.rma.");//1
+	tab2.adicColuna("Cód.prod.");//2
+	tab2.adicColuna("Descrição do produto");//3
+	tab2.adicColuna("Aprov.");//4
+	tab2.adicColuna("Exp.");//5
+	tab2.adicColuna("Dt. requisição");//6
+	tab2.adicColuna("Qt. requerida");//7
+	tab2.adicColuna("Dt. aprovação");//8
+	tab2.adicColuna("Qt. aprovada");//9
+	tab2.adicColuna("Dt. expedição");//10
+	tab2.adicColuna("Qt. expedida");//11
+	tab2.adicColuna("Saldo");//12
+	
+
+	tab2.setTamColuna(80, 0);
+	tab2.setTamColuna(80, 1);
+	tab2.setTamColuna(80, 2);
+	tab2.setTamColuna(150, 3);
+	tab2.setTamColuna(80, 4);
+	tab2.setTamColuna(80, 5);
+	tab2.setTamColuna(80, 6);
+	tab2.setTamColuna(80, 7);
+	tab2.setTamColuna(80, 8);
+	tab2.setTamColuna(80, 9);
+	tab2.setTamColuna(80, 10);
+	tab2.setTamColuna(80, 11);
+	tab2.setTamColuna(80, 12);
+
+	
+	tab.addMouseListener(new MouseAdapter() {
+
+		public void mouseClicked(MouseEvent mevt) {
+			if (mevt.getSource() == tab && mevt.getClickCount() == 2)
+				abreRma();
+		}
+	});
+  	
   	setImprimir(true);
   }
   
@@ -392,6 +435,78 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		return sRet;
 	}
   
+	private void carregaTabela() {
+						
+		String sSitRma = "";
+		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
+				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
+				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD "
+				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
+				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
+				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD ";
+				
+		System.out.println(sSQL);
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ResultSet rs = ps.executeQuery();
+			
+			int iLin = 0;
+
+			tab2.limpa();
+			while (rs.next()) {
+				tab2.adicLinha();
+				
+				String sitRMA = rs.getString(5);
+				if (sitRMA.equalsIgnoreCase("PE")) {
+					sSitRma = "Pendente";
+				} 
+				else if (sitRMA.equalsIgnoreCase("CA")) {
+					sSitRma = "Cancelada";
+				} 
+				else if (sitRMA.equalsIgnoreCase("EF")) {
+					sSitRma = "Expedida";
+				} 
+				else if (sitRMA.equalsIgnoreCase("AF")) {
+					sSitRma = "Aprovada";
+				}
+
+				tab2.setValor(sSitRma != null ? sSitRma : "", iLin, 0);//SitItRma
+				tab2.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
+				tab2.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
+				tab2.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 3);//DescProd
+				tab2.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov
+				tab2.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 5);//SitExp
+				tab2.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
+				tab2.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
+				tab2.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 10);//Dt Exp
+				tab2.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
+				tab2.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 9);//Qtd Aprov
+				tab2.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 11);//Qdt Exp
+				tab2.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 12);//Saldo Prod
+
+				iLin++;
+				
+				
+			}
+
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		}
+	}
+	
+	private void abreRma() {
+		int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
+		if (fPrim.temTela("Requisição de material") == false) {
+			FRma tela = new FRma();
+			fPrim.criatela("Requisição de material", tela, con);
+			tela.exec(iRma);
+		}
+	}
+	
   private void abreFase() {
     if (fPrim.temTela("OP x Fases")==false) {
       FOPFase tela = new FOPFase(txtCodOP.getVlrInteger().intValue(),false);
@@ -599,9 +714,10 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
        btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));             
        btExecuta.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
+       carregaTabela();
     }
     if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
-       	setUsaLote();
+       	setUsaLote(); 
        	if(txtQtdPrevProdOP.getVlrString().equals("")){
        	    txtQtdPrevProdOP.setVlrDouble(txtQtdEst.getVlrDouble());       	    
        	}
@@ -642,6 +758,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   			btLote.setEnabled(true);
   		}
   	}
+  	
   }  
   
   public void afterPost(PostEvent pevt) { 	
