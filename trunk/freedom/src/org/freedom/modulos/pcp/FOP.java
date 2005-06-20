@@ -30,8 +30,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -41,12 +40,7 @@ import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
-import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JTextFieldFK;
-import org.freedom.componentes.JTextFieldPad;
-import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.*;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
 import org.freedom.modulos.std.DLBuscaProd;
@@ -56,8 +50,15 @@ import org.freedom.telas.FPrinterJob;
 
 public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
   private int casasDec = Aplicativo.casasDec;
+  private JTabbedPanePad tpnCab = new JTabbedPanePad();
+  private JPanelPad pinCabOP = new JPanelPad();
+  private JPanelPad pinCabRMA = new JPanelPad();
+  private JPanelPad pinRMA = new JPanelPad();
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
+  public  Tabela tab2 = new Tabela();
+  public  JScrollPane spTab2 = new JScrollPane(tab2);
+
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
@@ -112,13 +113,16 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	setAtribos(15, 10, 640, 580);
 	
   	setAltCab(200);
+  	pnCliCab.add(tpnCab);
+  	tpnCab.addTab("OP", pinCabOP);
+	tpnCab.addTab("RMA", pinCabRMA);
   	
 	btFase.setToolTipText("Fases da produção");
 	btRMA.setToolTipText("Gera ou exibe RMA.");
 	btExecuta.setToolTipText("Processo de produção");
 	btLote.setToolTipText("Cadastra lote");
 		
-	pinCab.adic(pinBotCab,500,20,115,128);
+	pinCabOP.adic(pinBotCab,500,1,115,128);
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
@@ -192,8 +196,11 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtRefProdEst.setTabelaExterna(lcProdEstRef);
   	txtRefProdEst.setNomeCampo("refprod");
 
+  	/**
+  	 * 			PAINEL OP
+  	 */
     setListaCampos(lcCampos);
-    setPainel( pinCab, pnCliCab);
+    setPainel( pinCabOP);
     
     adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
 	adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
@@ -228,6 +235,13 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	
     adicCampo(txtDtValidOP,419,100,75,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
+  	
+  	
+  	/**
+  	 * 			PAINEL RMA
+  	 */
+  	
+    setPainel( pinCabRMA);
   	
     txtCodTpMov.setAtivo(false);
 //    btFase.setEnabled(false);
