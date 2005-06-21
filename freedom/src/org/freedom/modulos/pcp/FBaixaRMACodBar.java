@@ -31,6 +31,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 import java.util.Vector;
 
 import javax.swing.JTextField;
@@ -42,12 +48,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusListener,KeyListener{
-  private JTextField txtEntrada = new JTextField();
+//  private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
+  private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
   private JTextFieldPad txtSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtQtdEntrada = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,5);
+  private int i77 = 0;
     
   public FBaixaRMACodBar () {
     setTitulo("Cadastro de Tipo de Fornecedor");
@@ -75,8 +83,13 @@ public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusList
   }
   public void keyPressed(KeyEvent kevt) {
   	if(kevt.getSource()==txtEntrada){
-  		System.out.println("COD: "+kevt.getKeyCode());
-  		System.out.println("CHR: "+kevt.getKeyChar());
+  		if(kevt.getKeyCode()==77) 
+  			i77++;
+  		if(i77==2)
+  			kevt.setKeyCode(KeyEvent.VK_ENTER);
+  		
+  		super.keyPressed(kevt);
+//  			transferFocus();  
   	}
   }
   public void keyTyped(KeyEvent kevt) {
@@ -85,7 +98,34 @@ public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusList
   
   }
   private void decodeEntrada(){
+  	String s = "";
   	String sTexto = txtEntrada.getText();
+	    Charset charsetISO = Charset.forName("ISO-8859-1");
+	    Charset charsetASC = Charset.forName("US-ASCII");
+  	    CharsetDecoder decoder = charsetISO.newDecoder();
+  	    CharsetEncoder encoder = charsetASC.newEncoder();
+  	    
+  	    try {
+  	        // Convert a string to ISO-LATIN-1 bytes in a ByteBuffer
+  	        // The new ByteBuffer is ready to be read.
+  	    	System.out.println("ANTES :"+txtEntrada.getText());
+  	        ByteBuffer bbuf = encoder.encode(CharBuffer.wrap(txtEntrada.getText()));
+  	    
+  	        // Convert ISO-LATIN-1 bytes in a ByteBuffer to a character ByteBuffer and then to a string.
+  	        // The new ByteBuffer is ready to be read.
+  	        CharBuffer cbuf = decoder.decode(bbuf);
+  	        s = cbuf.toString();
+  	        System.out.println("DEPOIS:"+s);
+  	    } catch (CharacterCodingException e) {
+  	    }
+
+  	for(int i = 0;s.length()>i;i++){
+ // 		Character c = new Character(sTexto.charAt(i));
+//  		System.out.println("CHAR: "+c.charValue());
+//  		System.out.println("REPR: "+Character.getNumericValue(c.charValue()));
+  		
+  	}
+  	
   	if(sTexto!=null){
 		if (sTexto.length()>0){
 			int iCampos = Funcoes.contaChar(sTexto,'#'); 
