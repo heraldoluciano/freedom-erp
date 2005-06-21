@@ -33,6 +33,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -118,7 +120,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
   public  Tabela tab2 = new Tabela();
   public  JScrollPane spTab2 = new JScrollPane(tab2);  
-  
   
   public FOP () { }
   private void montaTela() {
@@ -283,27 +284,27 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	montaDet();
   	
   	
-  	tab2.adicColuna("");//0
+  	tab2.adicColuna("Sit.rma.");//0
 	tab2.adicColuna("Cód.rma.");//1
 	tab2.adicColuna("Cód.prod.");//2
 	tab2.adicColuna("Descrição do produto");//3
 	tab2.adicColuna("Aprov.");//4
 	tab2.adicColuna("Exp.");//5
-	tab2.adicColuna("Dt. requisição");//6
-	tab2.adicColuna("Qt. requerida");//7
-	tab2.adicColuna("Dt. aprovação");//8
-	tab2.adicColuna("Qt. aprovada");//9
-	tab2.adicColuna("Dt. expedição");//10
-	tab2.adicColuna("Qt. expedida");//11
+	tab2.adicColuna("Dt. req.");//6
+	tab2.adicColuna("Qt. req.");//7
+	tab2.adicColuna("Dt. aprov");//8
+	tab2.adicColuna("Qt. aprov");//9
+	tab2.adicColuna("Dt. exp");//10
+	tab2.adicColuna("Qt. exp");//11
 	tab2.adicColuna("Saldo");//12
 	
 
 	tab2.setTamColuna(80, 0);
 	tab2.setTamColuna(80, 1);
 	tab2.setTamColuna(80, 2);
-	tab2.setTamColuna(150, 3);
-	tab2.setTamColuna(80, 4);
-	tab2.setTamColuna(80, 5);
+	tab2.setTamColuna(180, 3);
+	tab2.setTamColuna(50, 4);
+	tab2.setTamColuna(50, 5);
 	tab2.setTamColuna(80, 6);
 	tab2.setTamColuna(80, 7);
 	tab2.setTamColuna(80, 8);
@@ -313,10 +314,10 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	tab2.setTamColuna(80, 12);
 
 	
-	tab.addMouseListener(new MouseAdapter() {
+	tab2.addMouseListener(new MouseAdapter() {
 
 		public void mouseClicked(MouseEvent mevt) {
-			if (mevt.getSource() == tab && mevt.getClickCount() == 2)
+			if (mevt.getSource() == tab2 && mevt.getClickCount() == 2)
 				abreRma();
 		}
 	});
@@ -436,14 +437,15 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	}
   
 	private void carregaTabela() {
-						
+		String sCodOp = txtCodOP.getVlrString();				
 		String sSitRma = "";
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
 				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
-				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD "
+				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP "
 				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
 				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
-				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD ";
+				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
+				+ "AND R.CODOP=" + sCodOp;
 				
 		System.out.println(sSQL);
 		try {
@@ -473,7 +475,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 				tab2.setValor(sSitRma != null ? sSitRma : "", iLin, 0);//SitItRma
 				tab2.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
 				tab2.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
-				tab2.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 3);//DescProd
+				tab2.setValor(rs.getString(4) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
 				tab2.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov
 				tab2.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 5);//SitExp
 				tab2.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
@@ -499,7 +501,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	}
 	
 	private void abreRma() {
-		int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
+		int iRma = ((Integer) tab2.getValor(tab2.getLinhaSel(), 1)).intValue();
 		if (fPrim.temTela("Requisição de material") == false) {
 			FRma tela = new FRma();
 			fPrim.criatela("Requisição de material", tela, con);
