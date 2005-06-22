@@ -29,26 +29,14 @@ package org.freedom.modulos.pcp;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.util.Vector;
-
-import javax.swing.JTextField;
-
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
-public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusListener,KeyListener{
-//  private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
+public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusListener{
   private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
   private JTextFieldPad txtSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -62,11 +50,17 @@ public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusList
     setAtribos( 50, 50, 350, 350);
     
     adic(txtEntrada,7,10,150,20);
+    txtEntrada.setName("Entrada");
     adic(txtSeqOf,7,30,150,20);
+    txtSeqOf.setName("Sequencial");
     adic(txtCodOp,7,70,150,20);
+    txtCodOp.setName("OP");
     adic(txtCodProd,7,110,150,20);
+    txtCodProd.setName("Produto");
     adic(txtCodLote,7,150,150,20);
+    txtCodLote.setName("Lote");
     adic(txtQtdEntrada,7,190,150,20);
+    txtQtdEntrada.setName("Qtd");
     
     txtEntrada.addFocusListener(this);
     btImp.addActionListener(this);
@@ -81,50 +75,10 @@ public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusList
   		decodeEntrada();
   	}
   }
-  public void keyPressed(KeyEvent kevt) {
-  	if(kevt.getSource()==txtEntrada){
-  		if(kevt.getKeyCode()==77) 
-  			i77++;
-  		if(i77==2)
-  			kevt.setKeyCode(KeyEvent.VK_ENTER);
-  		
-  		super.keyPressed(kevt);
-//  			transferFocus();  
-  	}
-  }
-  public void keyTyped(KeyEvent kevt) {
-//  	if(kevt.getSource()==txtEntrada)
-  //		System.out.println("KT"+kevt.getKeyCode());
-  
-  }
-  private void decodeEntrada(){
-  	String s = "";
-  	String sTexto = txtEntrada.getText();
-	    Charset charsetISO = Charset.forName("ISO-8859-1");
-	    Charset charsetASC = Charset.forName("US-ASCII");
-  	    CharsetDecoder decoder = charsetISO.newDecoder();
-  	    CharsetEncoder encoder = charsetASC.newEncoder();
-  	    
-  	    try {
-  	        // Convert a string to ISO-LATIN-1 bytes in a ByteBuffer
-  	        // The new ByteBuffer is ready to be read.
-  	    	System.out.println("ANTES :"+txtEntrada.getText());
-  	        ByteBuffer bbuf = encoder.encode(CharBuffer.wrap(txtEntrada.getText()));
-  	    
-  	        // Convert ISO-LATIN-1 bytes in a ByteBuffer to a character ByteBuffer and then to a string.
-  	        // The new ByteBuffer is ready to be read.
-  	        CharBuffer cbuf = decoder.decode(bbuf);
-  	        s = cbuf.toString();
-  	        System.out.println("DEPOIS:"+s);
-  	    } catch (CharacterCodingException e) {
-  	    }
 
-  	for(int i = 0;s.length()>i;i++){
- // 		Character c = new Character(sTexto.charAt(i));
-//  		System.out.println("CHAR: "+c.charValue());
-//  		System.out.println("REPR: "+Character.getNumericValue(c.charValue()));
-  		
-  	}
+  private void decodeEntrada(){
+
+  	String sTexto = txtEntrada.getText();
   	
   	if(sTexto!=null){
 		if (sTexto.length()>0){
@@ -139,8 +93,9 @@ public class FBaixaRMACodBar extends FDados implements CarregaListener,FocusList
 
 				String sResto = sTexto;
 				
-				for(int i=0;iCampos>i;i++){					
-					((JTextFieldPad)(vCampos.elementAt(i))).setVlrString(sResto.substring(0,sResto.indexOf("#")));
+				for(int i=0;vCampos.size()>i;i++){		
+					System.out.println("CAMPO:"+((JTextFieldPad)(vCampos.elementAt(i))).getName());
+					((JTextFieldPad)(vCampos.elementAt(i))).setVlrString(sResto.substring(0,sResto.indexOf("#")>0?sResto.indexOf("#"):sResto.length()));
 					sResto = sResto.substring(sResto.indexOf("#")+1);
 				}
 			}
