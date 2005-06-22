@@ -252,8 +252,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     adicCampo(txtDtValidOP,413,100,80,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
 
-    
-    
     setListaCampos( true, "OP", "PP");  	
   	
     txtCodTpMov.setAtivo(false);
@@ -284,8 +282,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	btRatearItem.addActionListener(this);
 
   	montaDet();
-  	
-  	
+  	  	
   	tab2.adicColuna("Sit.rma.");//0
 	tab2.adicColuna("Cód.rma.");//1
 	tab2.adicColuna("Cód.prod.");//2
@@ -300,7 +297,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	tab2.adicColuna("Qt. exp");//11
 	tab2.adicColuna("Saldo");//12
 	
-
 	tab2.setTamColuna(80, 0);
 	tab2.setTamColuna(80, 1);
 	tab2.setTamColuna(80, 2);
@@ -314,7 +310,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	tab2.setTamColuna(80, 10);
 	tab2.setTamColuna(80, 11);
 	tab2.setTamColuna(80, 12);
-
 	
 	tab2.addMouseListener(new MouseAdapter() {
 
