@@ -535,9 +535,10 @@ public class FRma extends FDetalhe implements PostListener,
 		txtQtdItRma.setNaoEditavel(bHab);
 		txaMotivoRma.setEnabled(!bHab);
 		rgPriod.setAtivo(!bHab);
+		txtCodOP.setAtivo(!bHab);
+		txtSeqOF.setAtivo(!bHab);
 	}
 	private void desabAprov(boolean bHab){
-		System.out.println("Passou pelo desabaprov:"+bHab);
 		if(txtSitAprovRma.getVlrString().equals("AT")){
 			btAprovaRMA.setEnabled(false);
 			if(!txtSitRma.getVlrString().equals("AF"))
@@ -618,8 +619,6 @@ public class FRma extends FDetalhe implements PostListener,
 			btMotivoCancelaRMA.setEnabled(true);
 		else
 			btMotivoCancelaRMA.setEnabled(false);
-
-		System.out.println("STATUS:"+lcCampos.getStatus());
 		
 		if(!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario)) || (bStatusTravaTudo))
 			desabCampos(true);		
@@ -634,8 +633,6 @@ public class FRma extends FDetalhe implements PostListener,
 		else {
 			if(!bStatusTravaTudo)
 				txaMotivoCancRma.setEnabled(true);
-			System.out.println("bAprova:"+bAprovaCab);
-			System.out.println("travatudo:"+bStatusTravaTudo);
 			desabAprov(false);
 		}
 		
