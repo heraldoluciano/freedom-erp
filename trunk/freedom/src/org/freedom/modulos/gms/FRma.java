@@ -152,6 +152,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ImageIcon imgPendento = Icone.novo("bt_pendente.gif");
 	private ImageIcon imgStatus = Icone.novo("");
 	
+	String sSitItRma = txtSitItRma.getVlrString();
 	String sOrdRMA = "";
 	Integer anoCC = null;
 	Integer iCodTpMov = null;
@@ -530,6 +531,7 @@ public class FRma extends FDetalhe implements PostListener,
 		txtRefProd.setNaoEditavel(bHab);
 		txtQtdItRma.setNaoEditavel(bHab);
 		txaMotivoRma.setEnabled(!bHab);
+		rgPriod.setAtivo(!bHab);
 	}
 	private void desabAprov(boolean bHab){
 		if(txtSitAprovRma.getVlrString().equals("AT")){
@@ -590,8 +592,8 @@ public class FRma extends FDetalhe implements PostListener,
 		}
 	}
 	public void afterCarrega(CarregaEvent cevt) {
-
-		String sSitItRma = txtSitItRma.getVlrString();
+		
+		
 		String sSitRma = txtSitRma.getVlrString();
 		String sSitItAprov = txtSitAprovItRma.getVlrString();
 		String sSitItExp = txtSitExpItRma.getVlrString();
@@ -653,9 +655,6 @@ public class FRma extends FDetalhe implements PostListener,
 			txtSeqOF.setAtivo(false);
 		}
 		
-		if(bAprovaCab || bExpede){
-			rgPriod.setAtivo(false);
-		}
 		
 		if(bAprovaCab || bExpede){
 			btMotivoPrior.setEnabled(true);
@@ -760,8 +759,6 @@ public class FRma extends FDetalhe implements PostListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
 		if (obs != null) {
-			if(bAprovaCab || bExpede)
-				obs.txa.setEnabled(false);
 			obs.setVisible(true);			
 			if (obs.OK) {
 				txaMotivoPrior.setVlrString(obs.getTexto());
