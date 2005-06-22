@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,12 +34,10 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -110,6 +109,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
   private JButton btExecuta = new JButton("Finaliza",Icone.novo("btOP.gif"));
   private JButton btLote = new JButton("Lote",Icone.novo("btSimilar.gif"));
+  private JButton btDuplicaItem = new JButton("",Icone.novo("btAdic2.gif"));
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
   private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
@@ -123,7 +123,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   
   public FOP () { }
   private void montaTela() {
-
+  	btDuplicaItem.setBorder(BorderFactory.createEmptyBorder());
   	setTitulo("Cadastro de Ordens de produção");
 	setAtribos(15, 10, 640, 580);
 	
@@ -139,6 +139,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	btRMA.setToolTipText("Gera ou exibe RMA.");
 	btExecuta.setToolTipText("Processo de produção");
 	btLote.setToolTipText("Cadastra lote");
+	btDuplicaItem.setToolTipText("Duplicar ítem");
 		
 	pinCab.adic(pinBotCab,500,20,115,128);
 	pinBotCab.adic(btFase,0,0,110,30); 
@@ -279,7 +280,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     btExecuta.addActionListener(this);
     btLote.addActionListener(this);
     btImp.addActionListener(this);
-  	btPrevimp.addActionListener(this);     
+  	btPrevimp.addActionListener(this);
+  	btDuplicaItem.addActionListener(this);
 
   	montaDet();
   	
@@ -394,10 +396,13 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	setListaCampos( true, "ITOP", "PP");
   	lcDet.setQueryInsert(false);    
 
+  	adic(btDuplicaItem,572,20,20,20);
+  	
   	btFase.setEnabled(false);
   	btRMA.setEnabled(false);
   	btExecuta.setEnabled(false);
   	btLote.setEnabled(false);
+  	btDuplicaItem.setEnabled(false);
   	
   	//	navRod.setAtivo(4,false);
   	// 	navRod.setAtivo(5,false);
@@ -623,6 +628,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
         executaOP();
     else if (evt.getSource() == btLote)
         gravaLote(true);
+    else if (evt.getSource() == btDuplicaItem)
+    	duplicaItem(true);
    
     super.actionPerformed(evt);
   }
@@ -633,6 +640,33 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   }
   
   
+  public void duplicaItem(boolean bPergunta){
+  	boolean bResposta = true;
+  	if(bPergunta){
+  		bResposta = Funcoes.mensagemConfirma(Aplicativo.framePrinc,"Deseja realmente duplicar este item para a OP?")==JOptionPane.YES_OPTION;
+  	}
+  	
+	if(bResposta) {  	
+  		JTextFieldPad txtQtdDigitada = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,5);  		
+  		try{  			
+  			txtQtdDigitada.setVlrString(JOptionPane.showInputDialog("Qtd", txtQtdItOp.getVlrString()));
+  			BigDecimal bdVlrNova = txtQtdItOp.getVlrBigDecimal().subtract(txtQtdDigitada.getVlrBigDecimal());
+  			if( (bdVlrNova.compareTo(txtQtdItOp.getVlrBigDecimal())>0) || (bdVlrNova.compareTo(new BigDecimal(0))<=0)){
+  				Funcoes.mensagemErro(Aplicativo.framePrinc,"Quantidade inválida!");
+  				duplicaItem(false);
+  			}
+  			txtQtdItOp.setVlrBigDecimal(bdVlrNova);
+  			lcDet.edit();
+  			lcDet.post();
+  		}
+  		catch(Exception err){
+  			Funcoes.mensagemErro(Aplicativo.framePrinc,"Valor inválido!");
+  			err.printStackTrace();
+  			return;  			
+  		}
+	} 
+  	  	
+  }
   
   public void setUsaLote(){
 	String sSQL = "SELECT CLOTEPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
@@ -749,6 +783,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 			txtCodLoteProdDet.setAtivo(true);
 			txtCodLoteProdDet.setVlrString(buscaLote(lcProdDetCod,txtCodProdDet,true));
 			lcLoteProdDet.carregaDados();
+		    btDuplicaItem.setEnabled((lcDet.getStatus() != ListaCampos.LCS_NONE) && (lcDet.getStatus() != ListaCampos.LCS_INSERT));
 		}
 		else if((txtUsaLoteDet.getVlrString().equals("N"))){
 			txtCodLoteProdDet.setAtivo(false);
