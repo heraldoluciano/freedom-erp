@@ -615,6 +615,12 @@ public class FRma extends FDetalhe implements PostListener,
 			}
 		}
 			 
+		if(rgPriod.getVlrString().equals("A") && sSitRma.equals("PE")){
+			btMotivoPrior.setEnabled(true);
+		}
+		else 
+			btMotivoPrior.setEnabled(false);
+		
 		if(sSitRma.equals("CA"))
 			btMotivoCancelaRMA.setEnabled(true);
 		else
@@ -649,22 +655,8 @@ public class FRma extends FDetalhe implements PostListener,
 		if(((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) && ((lcDet.getStatus()==ListaCampos.LCS_EDIT) || ((lcDet.getStatus()==ListaCampos.LCS_INSERT)))) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
 		}
-		/*
-		if(sSitItRma.equals("PE") || sSitItRma.equals("")){
-			rgPriod.setAtivo(true);
-			txtCodOP.setAtivo(true);
-			txtSeqOF.setAtivo(true);
-		}
-		else{
-			rgPriod.setAtivo(false);
-			txtCodOP.setAtivo(false);
-			txtSeqOF.setAtivo(false);
-		}
-		*/
 		
-		if(bAprovaCab || bExpede){
-			btMotivoPrior.setEnabled(true);
-		}
+		
 		
 		if(sSitItRma.equals("CA")){
 			//imgStatus = imgCancelado;
@@ -735,7 +727,7 @@ public class FRma extends FDetalhe implements PostListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoCancRma.getVlrString());
 		if (obs != null) {
-			if(!bAprovaCab)
+			if((!bAprovaCab) || (sSitItRma.equals("CA")))
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
@@ -750,7 +742,7 @@ public class FRma extends FDetalhe implements PostListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoCancItem.getVlrString());
 		if (obs != null) {
-			if(!bAprovaCab)
+			if((!bAprovaCab) || (sSitItRma.equals("CA")))
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
@@ -765,6 +757,11 @@ public class FRma extends FDetalhe implements PostListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
 		if (obs != null) {
+			if((rgPriod.getVlrString().equals("A")) && (txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))){
+				obs.txa.setEnabled(true);
+			}
+			else 
+				obs.txa.setEnabled(false);
 			obs.setVisible(true);			
 			if (obs.OK) {
 				txaMotivoPrior.setVlrString(obs.getTexto());
