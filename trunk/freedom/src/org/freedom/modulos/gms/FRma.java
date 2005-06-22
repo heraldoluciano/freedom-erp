@@ -492,6 +492,9 @@ public class FRma extends FDetalhe implements PostListener,
 								 (sAprova.equals("CC"))	) {
 							bAprovaCab = true;							
 						}
+						else {
+							bAprovaCab = false;
+						}
 						
 					}
 				}
@@ -534,6 +537,7 @@ public class FRma extends FDetalhe implements PostListener,
 		rgPriod.setAtivo(!bHab);
 	}
 	private void desabAprov(boolean bHab){
+		System.out.println("Passou pelo desabaprov:"+bHab);
 		if(txtSitAprovRma.getVlrString().equals("AT")){
 			btAprovaRMA.setEnabled(false);
 			if(!txtSitRma.getVlrString().equals("AF"))
@@ -592,11 +596,13 @@ public class FRma extends FDetalhe implements PostListener,
 		}
 	}
 	public void afterCarrega(CarregaEvent cevt) {
-		
+
+		buscaInfoUsuAtual();	
 		
 		String sSitRma = txtSitRma.getVlrString();
 		String sSitItAprov = txtSitAprovItRma.getVlrString();
 		String sSitItExp = txtSitExpItRma.getVlrString();
+		sSitItRma = txtSitItRma.getVlrString();
 		
 		boolean bStatusTravaTudo = ( (sSitItRma.equals("AF")) || (sSitItRma.equals("EF")) || (sSitItRma.equals("CA")) );
 		boolean bStatusTravaExp = (!(sSitItRma.equals("AF")));
@@ -608,18 +614,19 @@ public class FRma extends FDetalhe implements PostListener,
 			}
 		}
 			 
-		buscaInfoUsuAtual();	
-		
 		if(sSitRma.equals("CA"))
 			btMotivoCancelaRMA.setEnabled(true);
 		else
 			btMotivoCancelaRMA.setEnabled(false);
 
+		System.out.println("STATUS:"+lcCampos.getStatus());
+		
 		if(!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario)) || (bStatusTravaTudo))
 			desabCampos(true);		
 		else
 			desabCampos(false);
-		
+	
+
 		if(!bAprovaCab || bStatusTravaTudo){
 			desabAprov(true);
 			txaMotivoCancRma.setEnabled(false);
@@ -627,6 +634,8 @@ public class FRma extends FDetalhe implements PostListener,
 		else {
 			if(!bStatusTravaTudo)
 				txaMotivoCancRma.setEnabled(true);
+			System.out.println("bAprova:"+bAprovaCab);
+			System.out.println("travatudo:"+bStatusTravaTudo);
 			desabAprov(false);
 		}
 		
@@ -643,7 +652,7 @@ public class FRma extends FDetalhe implements PostListener,
 		if(((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) && ((lcDet.getStatus()==ListaCampos.LCS_EDIT) || ((lcDet.getStatus()==ListaCampos.LCS_INSERT)))) {
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble()); 
 		}
-		
+		/*
 		if(sSitItRma.equals("PE") || sSitItRma.equals("")){
 			rgPriod.setAtivo(true);
 			txtCodOP.setAtivo(true);
@@ -654,7 +663,7 @@ public class FRma extends FDetalhe implements PostListener,
 			txtCodOP.setAtivo(false);
 			txtSeqOF.setAtivo(false);
 		}
-		
+		*/
 		
 		if(bAprovaCab || bExpede){
 			btMotivoPrior.setEnabled(true);
@@ -1130,6 +1139,7 @@ public class FRma extends FDetalhe implements PostListener,
 			txtDtaReqRma.setVlrDate(new Date());
 			txtCodTpMov.setVlrInteger(iCodTpMov);
 			lcTipoMov.carregaDados();
+			lcCampos.carregaDados();
 		}			
 	}
 
