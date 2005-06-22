@@ -70,7 +70,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTabbedPanePad tpnAbas = new JTabbedPanePad();
   private JPanelPad pinAbaOp = new JPanelPad();
   private JPanelPad pinAbaRma = new JPanelPad();
-
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
