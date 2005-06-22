@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -120,6 +121,11 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
   public  Tabela tab2 = new Tabela();
   public  JScrollPane spTab2 = new JScrollPane(tab2);  
+  private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
+  private ImageIcon imgExpedida = Icone.novo("clPago.gif");
+  private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
+  private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
+  private ImageIcon imgColuna = null;
   
   public FOP () { }
   private void montaTela() {
@@ -282,8 +288,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	btRatearItem.addActionListener(this);
 
   	montaDet();
-  	  	
-  	tab2.adicColuna("Sit.rma.");//0
+  	
+  	
+  	tab2.adicColuna("");//0
 	tab2.adicColuna("Cód.rma.");//1
 	tab2.adicColuna("Cód.prod.");//2
 	tab2.adicColuna("Descrição do produto");//3
@@ -297,7 +304,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	tab2.adicColuna("Qt. exp");//11
 	tab2.adicColuna("Saldo");//12
 	
-	tab2.setTamColuna(80, 0);
+
+	tab2.setTamColuna(13, 0);
 	tab2.setTamColuna(80, 1);
 	tab2.setTamColuna(80, 2);
 	tab2.setTamColuna(180, 3);
@@ -462,19 +470,19 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 				
 				String sitRMA = rs.getString(5);
 				if (sitRMA.equalsIgnoreCase("PE")) {
-					sSitRma = "Pendente";
+					imgColuna = imgPendente;
 				} 
 				else if (sitRMA.equalsIgnoreCase("CA")) {
-					sSitRma = "Cancelada";
+					imgColuna = imgCancelada;
 				} 
 				else if (sitRMA.equalsIgnoreCase("EF")) {
-					sSitRma = "Expedida";
+					imgColuna = imgExpedida;
 				} 
 				else if (sitRMA.equalsIgnoreCase("AF")) {
-					sSitRma = "Aprovada";
+					imgColuna = imgAprovada;
 				}
 
-				tab2.setValor(sSitRma != null ? sSitRma : "", iLin, 0);//SitItRma
+				tab2.setValor(imgColuna, iLin, 0);//SitItRma
 				tab2.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
 				tab2.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
 				tab2.setValor(rs.getString(4) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
