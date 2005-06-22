@@ -57,7 +57,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaListener,FocusListener{
-  private JPanelPad pinCab = new JPanelPad(0, 215);
+  private JPanelPad pinCab = new JPanelPad(0, 190);
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tab = new Tabela();
@@ -76,33 +76,57 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
   private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
   private ImageIcon imgColuna = null;
+  
+  private JPanelPad pinEntrada = new JPanelPad(300,150);
+  private JPanelPad pinLbEntrada = new JPanelPad(150,15);
+  private JLabelPad lbEntrada = new JLabelPad(" Entrada via código de barras");
+  
+  private JPanelPad pinCampos = new JPanelPad(300,150);
+  private JPanelPad pinLbCampos = new JPanelPad(150,15);
+  private JLabelPad lbCampos = new JLabelPad(" Informações decodificadas");
 
     
   public FBaixaRMACodBar () {  
-    setAtribos( 50, 50, 600, 350);
+    setAtribos( 50, 50, 600, 450);
 	Container c = getTela();
 	c.add(pnRod, BorderLayout.SOUTH);
 	c.add(pnCli, BorderLayout.CENTER);
 	pnCli.add(pinCab, BorderLayout.NORTH);
 	pnCli.add(spnTab, BorderLayout.CENTER);
 
-	btSair.setPreferredSize(new Dimension(100, 30));
+	
+	pinLbEntrada.adic(lbEntrada,0,0,180,15);
+	pinLbEntrada.tiraBorda();
+	    
+	pinCab.adic(pinLbEntrada,10,7,180,15);
+	pinCab.adic(pinEntrada,7,15,330,50);
+
+	pinLbCampos.adic(lbCampos,0,0,180,15);
+	pinLbCampos.tiraBorda();
+	
+	pinCab.adic(pinLbCampos,10,72,150,15);
+	pinCab.adic(pinCampos,7,80,330,100);
+	
+	btSair.setPreferredSize(new Dimension(100, 30)); 
 
 	pnRod.add(btSair, BorderLayout.EAST);
     
-    pinCab.adic(new JLabelPad("código de barras"),7,0,150,20);
-    pinCab.adic(txtEntrada,7,20,150,20);
+    pinEntrada.adic(txtEntrada,7,15,306,20);
     
-    pinCab.adic(new JLabelPad("Sequencia da OP"),7,40,150,20);
-    pinCab.adic(txtSeqOf,7,60,150,20);
+    pinCampos.adic(new JLabelPad("Cód.OP"),7,5,100,20);
+    pinCampos.adic(txtCodOp,7,25,100,20);
     
-    pinCab.adic(txtCodOp,7,100,150,20);
+    pinCampos.adic(new JLabelPad("Seq.OP"),110,5,100,20);
+    pinCampos.adic(txtSeqOf,110,25,100,20);
     
-    pinCab.adic(txtCodProd,7,140,150,20);
+    pinCampos.adic(new JLabelPad("Cód.Prod."),213,5,100,20);
+    pinCampos.adic(txtCodProd,213,25,100,20);
     
-    pinCab.adic(txtCodLote,7,200,150,20);
+    pinCampos.adic(new JLabelPad("Cód.Lote"),7,45,203,20);
+    pinCampos.adic(txtCodLote,7,65,203,20);
     
-    pinCab.adic(txtQtdEntrada,7,240,150,20);
+    pinCampos.adic(new JLabelPad("Qtd."),213,45,100,20);
+    pinCampos.adic(txtQtdEntrada,213,65,100,20);
     
 	tab.adicColuna("");//0
 	tab.adicColuna("Cód.rma.");//1
@@ -222,7 +246,10 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   }
   public void beforeCarrega(CarregaEvent cevt){  }
   public void afterCarrega(CarregaEvent cevt){  }
-  public void focusGained(FocusEvent e) {  }
+  public void focusGained(FocusEvent e) {
+  	if(e.getSource()==txtEntrada)
+  		txtEntrada.setVlrString("");
+  }
   public void focusLost(FocusEvent e) { 
   	if(e.getSource()==txtEntrada){
   		decodeEntrada();
@@ -234,11 +261,17 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		dispose();
 	}
   }
-
+  private void limpaCampos(){
+  	txtCodLote.setVlrString("");
+  	txtCodOp.setVlrString("");
+  	txtCodProd.setVlrString("");
+  	txtEntrada.setVlrString("");
+  	txtSeqOf.setVlrString("");
+  }
   private void decodeEntrada(){
 
   	String sTexto = txtEntrada.getText();
-  	
+  	limpaCampos();
   	if(sTexto!=null){
 		if (sTexto.length()>0){
 			int iCampos = Funcoes.contaChar(sTexto,'#'); 
@@ -255,10 +288,10 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 				for(int i=0;vCampos.size()>i;i++){		
 					JTextFieldPad jtCampo = ((JTextFieldPad)(vCampos.elementAt(i))); 
 					jtCampo.setVlrString(sResto.substring(0,sResto.indexOf("#")>0?sResto.indexOf("#"):sResto.length()));
-//					jtCampo.transferFocus();
 					sResto = sResto.substring(sResto.indexOf("#")+1);
 				}
 				buscaItem();
+				txtEntrada.requestFocus();
 			}
 			else{
 				Funcoes.mensagemInforma(this,"Entrada inválida!\nNúmero de campos incoerente."+Funcoes.contaChar(sTexto,'#'));
