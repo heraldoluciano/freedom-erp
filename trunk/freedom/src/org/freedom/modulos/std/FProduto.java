@@ -55,6 +55,8 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
@@ -74,7 +76,7 @@ import org.freedom.telas.FTabDados;
 
 public class FProduto extends FTabDados implements CheckBoxListener,
 		EditListener, InsertListener, ChangeListener, ActionListener,
-		CarregaListener {
+		CarregaListener, RadioGroupListener {
 	int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinGeral = new JPanelPad(650, 340);
 
@@ -88,6 +90,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			new BorderLayout());
 
 	private JPanelPad pnCodAltProd = new JPanelPad(JPanelPad.TP_JPANEL,
+			new BorderLayout());
+	
+	private JPanelPad pnCodAcess = new JPanelPad(JPanelPad.TP_JPANEL,
 			new BorderLayout());
 
 	private JPanelPad pnLote = new JPanelPad(JPanelPad.TP_JPANEL,
@@ -118,6 +123,18 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JTextFieldPad txtCodAltProd = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 20, 0);
+	
+	private JTextFieldPad txtCodPA = new JTextFieldPad( // codigo de acesso
+			JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtAnoCCPA = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 4, 0);
+	
+	private JTextFieldPad txtCodCCPA = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 19, 0);
+	
+	private JTextFieldPad txtCodCaixa = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 19, 0);
 
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);
@@ -340,6 +357,12 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private Vector vLabsTipoPP = new Vector();
 	
 	private Vector vValsTipoPP = new Vector();
+	
+	private Vector vLabsPA = new Vector();
+	
+	private Vector vValsPA = new Vector();
+	
+	private JRadioGroup rgPA = null;
 
 	private JRadioGroup rgTipo = null;
 
@@ -372,10 +395,14 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private Tabela tabFor = new Tabela();
 
 	private Tabela tabCodAltProd = new Tabela();
+	
+	private Tabela tabCodAcess = new Tabela();
 
 	private JScrollPane spnFor = new JScrollPane(tabFor);
 
 	private JScrollPane spnCodAltProd = new JScrollPane(tabCodAltProd);
+	
+	private JScrollPane spnCodAcess = new JScrollPane(tabCodAcess);
 
 	private Tabela tabLote = new Tabela();
 
@@ -397,6 +424,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JPanelPad pinRodCodAltProd = new JPanelPad(650, 80);
 
+	private JPanelPad pinRodCodAcess = new JPanelPad(650, 90);
+	
 	private JPanelPad pinRodLote = new JPanelPad(650, 120);
 
 	private JPanelPad pinRodFoto = new JPanelPad(650, 170);
@@ -431,6 +460,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcFor = new ListaCampos(this);
 
 	private ListaCampos lcCodAltProd = new ListaCampos(this, "");
+	
+	private ListaCampos lcCodAcess = new ListaCampos(this);
 
 	private ListaCampos lcUnidFat = new ListaCampos(this);
 	
@@ -467,6 +498,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private Navegador navPreco = new Navegador(true);
 
 	private Navegador navCodAltProd = new Navegador(true);
+	
+	private Navegador navCodAcess = new Navegador(true);
 
 	private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
 
@@ -481,21 +514,30 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcFatConv.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcFatConv);
 		lcFatConv.setTabela(tabFatConv);
+		
 		lcProdPlan.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcProdPlan);
 		lcProdPlan.setTabela(tabProdPlan);
 		lcFor.setMaster(lcCampos);
+		
 		lcCodAltProd.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcFor);
 		lcCampos.adicDetalhe(lcCodAltProd);
 		lcFor.setTabela(tabFor);
 		lcCodAltProd.setTabela(tabCodAltProd);
+		
+		lcCodAcess.setMaster(lcCampos);
+		lcCampos.adicDetalhe(lcCodAcess);
+		lcCodAcess.setTabela(tabCodAcess);
+		
 		lcLote.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcLote);
 		lcLote.setTabela(tabLote);
+		
 		lcFoto.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcFoto);
 		lcFoto.setTabela(tabFoto);
+		
 		lcPreco.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcPreco);
 		lcPreco.setTabela(tabPreco);
@@ -618,6 +660,14 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		vLabsTipoPP.addElement("Despesas");
 		rgTipoPP = new JRadioGroup(1, 2, vLabsTipoPP, vValsTipoPP);
 		rgTipoPP.setVlrString("R");
+		
+		vValsPA.addElement("RMA");
+		vValsPA.addElement("PDV");		
+		vLabsPA.addElement("RMA");
+		vLabsPA.addElement("PDV");
+		rgPA = new JRadioGroup(1, 2, vLabsPA, vValsPA);
+		rgPA.setVlrString("R");
+		rgPA.addRadioGroupListener(this);
 
 		cbLote = new JCheckBoxPad("Lote", "S", "N");
 		cbLote.setVlrString("N");
@@ -659,7 +709,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		if (cevt.getListaCampos() == lcCampos) {
 
 			txtAlmox.setVlrString(txtDescAlmox.getVlrString());
-
+			
 			if (txtCodProd.getVlrInteger().intValue() != 0) {
 				try {
 					buscaEstoque();
@@ -1075,16 +1125,10 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcCodAltProd.montaTab();
 		tabCodAltProd.setTamColuna(150, 0);
 	
-		//  SaldoProd
-
-		lcFoto.setQueryInsert(false);
-		lcFoto.setQueryCommit(false);
-		tabFoto.setTamColuna(80, 0);
-		tabFoto.setTamColuna(80, 1);
-		tabFoto.setTamColuna(80, 2);
-		tabFoto.setTamColuna(80, 3);
-
-//		Fotos
+		
+		//		Fotos
+		
+		
 		setPainel(pinRodFoto, pnFoto);
 		adicTab("Fotos", pnFoto);
 		setListaCampos(lcFoto);
@@ -1120,6 +1164,39 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		tabFoto.setTamColuna(80, 3);
 		tabFoto.setTamColuna(80, 4);
 
+		//		Acesso
+
+		setPainel(pinRodCodAcess, pnCodAcess);
+		adicTab("Acesso", pnCodAcess);
+		setListaCampos(lcCodAcess);
+		setNavegador(navCodAcess);
+		pnCodAcess.add(pinRodCodAcess, BorderLayout.SOUTH);
+		pnCodAcess.add(spnCodAcess, BorderLayout.CENTER);
+		pinRodCodAcess.adic(navCodAcess, 0, 60, 270, 25);
+		navCodAcess.setAtivo(6, false);
+
+		txtAnoCCPA.setAtivo(false);
+		txtCodCCPA.setAtivo(false);
+		txtAnoCCPA.setAtivo(false);
+		
+		adicCampo(txtCodPA, 7, 20, 90, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
+		adicDB(rgPA, 100, 20, 150, 30, "TipoPA", "Tipo", true);
+		adicCampo(txtAnoCCPA, 253, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_SI, null, false);
+		adicCampo(txtCodCCPA, 336, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_SI, null, false);
+		adicCampo(txtCodCaixa, 489, 20, 90, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_SI, null, false);
+		setListaCampos(false, "PRODACESSO", "EQ");
+		lcCodAcess.setQueryInsert(false);
+		lcCodAcess.setQueryCommit(false);
+
+		txtCodPA.setTabelaExterna(lcCodAcess);
+		txtCodPA.setEnterSai(false);
+		lcCodAcess.montaTab();
+		tabCodAcess.setTamColuna(90, 0);
+		tabCodAcess.setTamColuna(50, 1);
+		tabCodAcess.setTamColuna(70, 2);		
+		tabCodAcess.setTamColuna(120, 3);
+		tabCodAcess.setTamColuna(80, 4);
+		
 		
 		txtCodProd.requestFocus();
 		btExp.addActionListener(this);
@@ -1506,6 +1583,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcTabPreco.setConexao(cn);
 		lcPlanoPagPreco.setConexao(cn);
 		lcCodAltProd.setConexao(cn);
+		lcCodAcess.setConexao(cn);
 		//lcSaldoProd.setConexao(cn);
 	}
 
@@ -1520,6 +1598,23 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			txtDiniLote.setEditable(false);
 			txtVenctoLote.setEditable(false);
 			lcLote.setReadOnly(true);
+		}
+	}
+	public void valorAlterado(RadioGroupEvent rgevt){
+		if (rgPA.getVlrString().equals("RMA")){
+			txtAnoCCPA.setAtivo(true);
+			txtCodCCPA.setAtivo(true);
+		}
+		else{
+			txtAnoCCPA.setAtivo(false);
+			txtCodCCPA.setAtivo(false);				
+		}
+		
+		if (rgPA.getVlrString().equals("PDV")){
+			txtCodCaixa.setAtivo(true);
+		}
+		else{ 
+			txtCodCaixa.setAtivo(false);				
 		}
 	}
 

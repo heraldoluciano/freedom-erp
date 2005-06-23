@@ -113,6 +113,8 @@ public class FRVendasDet extends FRelatorio {
     		      " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG" +
     		      " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL" +
     		      " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL" +
+    		      "AND C.CODEMP=? AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " 
+					+ " TM.CODTIPOMOV=VD.CODTIPOMOV " +
                   (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
 				  (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
     		      " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA" +
