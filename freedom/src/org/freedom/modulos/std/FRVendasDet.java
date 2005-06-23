@@ -113,15 +113,17 @@ public class FRVendasDet extends FRelatorio {
     		      " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG" +
     		      " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL" +
     		      " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL" +
-    		      "AND C.CODEMP=? AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " 
-					+ " TM.CODTIPOMOV=VD.CODTIPOMOV " +
+    		      " AND C.CODEMP=V.CODEMP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND " 
+					+ " TM.CODTIPOMOV=V.CODTIPOMOV " +
                   (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
 				  (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
     		      " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA" +
     		      " AND IT.CODEMP=V.CODEMP AND P.CODPROD=IT.CODPROD" +
     		      " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD" +
     		      " AND IT.CODFILIAL=V.CODFILIAL ORDER BY V.DTEMITVENDA,V.CODVENDA";
- 
+    
+    System.out.println(sSQL);
+    
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
