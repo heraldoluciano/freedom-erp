@@ -94,7 +94,7 @@ public class FRVendasItem extends FRelatorio {
 		
 		lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca", "Cód.marca", ListaCampos.DB_PK, false));
 		lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca", "Descrição da marca", ListaCampos.DB_SI, false));
-		lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_PK, false));
+		lcMarca.add(new GuardaCampo( txtSiglaMarca, "SiglaMarca", "Sigla", ListaCampos.DB_SI, false));
 		txtCodMarca.setTabelaExterna(lcMarca);
 		txtCodMarca.setNomeCampo("CodMarca");
 		txtCodMarca.setFK(true);
