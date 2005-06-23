@@ -335,19 +335,19 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		}
 		if (cbAprovadas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitAprovItRma ='AP' OR SitAprovItRma ='AT'";
+				where = " (SitAprovItRma ='AP' OR SitAprovItRma ='AT')";
 			} 
 			else {
-				where = where + " OR SitAprovItRma ='AP' OR SitAprovItRma ='AT'";
+				where = where + " OR (SitAprovItRma ='AP' OR SitAprovItRma ='AT')";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
 		if (cbExpedidas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitExpItRma ='EP' OR SitExpItRma ='ET'";
+				where = " (SitExpItRma ='EP' OR SitExpItRma ='ET')";
 			} else {
-				where = where + " OR SitExpItRma ='EP' OR SitExpItRma ='ET'";
+				where = where + " OR (SitExpItRma ='EP' OR SitExpItRma ='ET')";
 				usaOr = true;
 			}
 			usaWhere = true;
