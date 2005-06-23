@@ -65,14 +65,8 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    public PreparedStatement deleta = null;
    public ListaCampos lcCampos = new ListaCampos(this); 
    public ListaCampos lcSeq = null;
-   private BorderLayout blDados = new BorderLayout();
-   private BorderLayout blCliente = new BorderLayout();
-   private BorderLayout blRodape = new BorderLayout();
    private GridLayout glImp = new GridLayout( 1, 2); 
    private FlowLayout flImp = new FlowLayout(FlowLayout.CENTER, 0, 0);
-   public JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
-   public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
-   public JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
    public Navegador nav = new Navegador(false); 
    public Navegador navSeq = new Navegador(false); 
    public JPanelPad pnImp = new JPanelPad(JPanelPad.TP_JPANEL);
@@ -82,32 +76,25 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    public JButton btImp = new JButton( Icone.novo("btImprime.gif"));
    public JButton btPrevimp = new JButton( Icone.novo("btPrevimp.gif"));
    public Border br = BorderFactory.createEtchedBorder();
-   public Container c = getTela();
    public JComponent primeiroCompo = null;
    boolean Shift = false;
    boolean Ctrl = false;
    boolean setArea = true;
    boolean bMostrar = false;
-   public FDados () { 
-   	btImp.setVisible(false);
-   	btPrevimp.setVisible(false);
+   public FDados () {
+   	 super();
+   	 btImp.setVisible(false);
+   	 btPrevimp.setVisible(false);
 //     super();
      setTitulo("Formulário de dados");
-     setAtribos( 50, 50, 500, 300);
+//     setAtribos( 50, 50, 450, 350);
 
      lcSeq = lcCampos;
      navSeq = nav;
 
-     c.setLayout(blDados);
-
      btSair.setToolTipText("Fecha a Tela (Shift + F4)");
      btImp.setToolTipText("Imprimir (Ctrl+P)");
      btPrevimp.setToolTipText("Visualizar Impressão (Ctrl+R)");
-     pnCliente.setLayout(blCliente);
-         
-     c.add(pnCliente, BorderLayout.CENTER);
-     
-     pnRodape.setLayout(blRodape);
 
      pnImp.setLayout(flImp);
      pnGImp.setLayout(glImp);
@@ -137,7 +124,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
      pnRodape.add( pnImp, BorderLayout.CENTER);
      c.add(pnBordRod, BorderLayout.SOUTH);
      
-     setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
   }  
 
   public void setImprimir(boolean bImp){
@@ -450,23 +436,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
   public void setBordaPad(JComponent comp) {
     comp.setBorder( BorderFactory.createEtchedBorder());
   }
-  public void internalFrameClosing(InternalFrameEvent ifevt) { 
-    try {
-      setClosed(false);
-      setVisible(true);
-    }
-    catch(Exception err) { }
-/*    if ((lcCampos.getStatus() == lcCampos.LCS_EDIT) | 
-       (lcCampos.getStatus() == lcCampos.LCS_INSERT)) {
-      if (JOptionPane.showConfirmDialog(null, "Dados não foram salvos, deseja descartar?", "Freedom", JOptionPane.YES_NO_OPTION)==0 ) {
-        bMostrar = false;
-      }
-      else { 
-        bMostrar = true;
-      }
-    }*/
-    super.internalFrameClosing(ifevt);
-  }
   public synchronized void setConexao(Connection cn) {
   	super.setConexao(cn);
     lcCampos.setConexao(con);
@@ -474,21 +443,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
     setPKFoco();
   }
 
-  public void internalFrameActivated(InternalFrameEvent ifevt) { }
-  public void internalFrameClosed(InternalFrameEvent ifevt) { 
-    try {
-      setClosed(false);
-      setVisible(true);
-    }
-    catch(Exception err) { }
-/*    if (bMostrar) {
-      setVisible(true);
-      setVisible(true);
-      System.out.println("Executou o show()");
-    }
-    else
-      dispose();*/
-  }
   public void beforePost(PostEvent pevt) {
     setPKFoco();
   }

@@ -30,12 +30,14 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
+//import javax.swing.JScrollPane;
 //import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -46,14 +48,26 @@ import org.freedom.componentes.JPanelPad;
 
 public class FFilho extends JInternalFrame implements InternalFrameListener,
         IFilho {
+	
     protected FPrincipal fPrim;
 
     private Component firstFocus = null;
 
     private boolean initFirstFocus = true;
+
+    private BorderLayout blCliente = new BorderLayout();
+    private BorderLayout blRodape = new BorderLayout();
+    private BorderLayout blDados = new BorderLayout();
+   
+    public Container c = null;
+    
+    public JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
+    public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
+    public JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
+    public ScrollPane spCliente = new ScrollPane(ScrollPane.SCROLLBARS_AS_NEEDED);
     
     //private JPanelPad pnSp = new JPanelPad() 
-    //private JScrollPane spTela = new JScrollPane();
+    //protected JScrollPane spFilho = new JScrollPane();
 
     public String strTemp = "";
 
@@ -62,22 +76,67 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public FFilho() {
         /* Construtor da classe. */
         this("Filho01", true, true, true, true);
-        addInternalFrameListener(this);
     }
 
     public FFilho(String arg01, boolean arg02, boolean arg03, boolean arg04,
             boolean arg05) {
         super(arg01, arg02, arg03, arg04, arg05);
+        c = getContentPane();
+        c.setLayout(blDados);
+        addInternalFrameListener(this);
+        setClosable(true);
+       // pnCliente.setAutoscrolls(false);
+        pnCliente.setLayout(blCliente);
+        pnRodape.setLayout(blRodape);
+        //spCliente.setLayout(blCliente);
+        //spCliente.add(pnCliente);
+        c.add(pnCliente, BorderLayout.CENTER);
+        
+        //spCliente.setVisible(false);
+        //ativaScroll();
+        //rootPane.setAutoscrolls(true);
+        //setAutoscrolls(true);
+        
     }
-
+	public void doDefaultCloseAction() {
+		// este método e reconstruido para evitar o fechamento da janela,
+		// caso queiramos impedir o fechamento.
+		// Para isso basta reconstruir o método validaFechamento() nas tela subsequentes.
+		//System.out.println("doDefaultCloseAction");
+		if (validaFechamento()) {
+			super.doDefaultCloseAction();
+		}
+		//
+	}
     public void setTitulo(String tit) {
         if (getName() == null)
             setName(tit);
         setTitle(tit);
     }
 
-    public void setAtribos(int Esq, int Topo, int Larg, int Alt) {
-        setBounds(Esq, Topo, Larg, Alt);
+    //protected void ativaScroll() {
+    	
+    //}
+    public void setAtribos(int esq, int topo, int larg, int alt) {
+    	int altPrinc = 0;
+    	int largPrinc = 0;
+    	if (Aplicativo.telaPrincipal!=null) {
+	    	altPrinc = (int) Aplicativo.telaPrincipal.dpArea.getSize().getHeight();
+	    	largPrinc = (int) Aplicativo.telaPrincipal.dpArea.getSize().getWidth();
+    	}
+    	if ( (altPrinc<(topo+alt)) || (largPrinc<(esq+larg)) ) {
+    		esq = 0;
+    		topo = 0;
+    		larg = largPrinc;
+    		alt = altPrinc;
+    	}
+    	//spCliente.setBounds(0,0, larg, alt);
+        this.setBounds(esq, topo, larg, alt);
+       // this.spCliente.setVisible(true);
+        //this.pnCliente.setBounds(0,0,larg-20,alt-20);
+        //this.setSize(larg+50,alt+50);
+        //this.show();
+    	//this.spCliente.setBounds(0, 0, 400, 250);
     }
 
     public void setTela(Container c) {
@@ -86,7 +145,6 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 
     public Container getTela() {
         Container tela = getContentPane();
-        tela.setLayout(new BorderLayout());
         return tela;
     }
 
@@ -126,11 +184,19 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     }
 
     public void internalFrameClosed(InternalFrameEvent e) {
-        //System.out.println("Teste 2");
+        //System.out.println("Closed");
     }
 
+    protected boolean validaFechamento() {
+    	return true;
+    }
+ /*   public boolean isClosable() {
+    	return true;
+    }*/
+    
     public void internalFrameClosing(InternalFrameEvent e) {
-        //System.out.println("Teste 3");
+    	
+        //System.out.println("Clossing");
     }
 
     public void internalFrameDeactivated(InternalFrameEvent e) {
