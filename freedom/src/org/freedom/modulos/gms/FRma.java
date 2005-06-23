@@ -470,7 +470,7 @@ public class FRma extends FDetalhe implements PostListener,
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " +
 				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
 				      "AND IDUSU=?";
-		PreparedStatement ps = null;
+		PreparedStatement ps = null; 
 		ResultSet rs = null;
 		try {
 			
@@ -486,7 +486,7 @@ public class FRma extends FDetalhe implements PostListener,
 					if(!sAprova.equals("ND")) {
 						if(sAprova.equals("TD"))						
 							bAprovaCab = true;
-						else if( (txtCodCC.getVlrString().equals(rs.getString("CODCC"))) &&
+						else if( (txtCodCC.getVlrString().trim().equals(rs.getString("CODCC").trim())) &&
 								 (lcCC.getCodEmp()==rs.getInt("CODEMPCC")) &&
 								 (lcCC.getCodFilial()==rs.getInt("CODFILIALCC")) &&
 								 (sAprova.equals("CC"))	) {
