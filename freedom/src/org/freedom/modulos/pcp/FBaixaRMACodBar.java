@@ -42,6 +42,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -65,6 +66,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
   private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
   private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+  private JButton btExpedir = new JButton("Expedir", Icone.novo("btMedida.gif"));
   private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
   private JTextFieldPad txtSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -76,15 +78,12 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
   private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
   private ImageIcon imgColuna = null;
-  
   private JPanelPad pinEntrada = new JPanelPad(300,150);
   private JPanelPad pinLbEntrada = new JPanelPad(150,15);
-  private JLabelPad lbEntrada = new JLabelPad(" Entrada via código de barras");
-  
+  private JLabelPad lbEntrada = new JLabelPad(" Entrada via código de barras");  
   private JPanelPad pinCampos = new JPanelPad(300,150);
   private JPanelPad pinLbCampos = new JPanelPad(150,15);
   private JLabelPad lbCampos = new JLabelPad(" Informações decodificadas");
-
     
   public FBaixaRMACodBar () {  
     setAtribos( 50, 50, 600, 450);
@@ -93,14 +92,15 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	c.add(pnCli, BorderLayout.CENTER);
 	pnCli.add(pinCab, BorderLayout.NORTH);
 	pnCli.add(spnTab, BorderLayout.CENTER);
-
 	
 	pinLbEntrada.adic(lbEntrada,0,0,180,15);
 	pinLbEntrada.tiraBorda();
 	    
 	pinCab.adic(pinLbEntrada,10,7,180,15);
 	pinCab.adic(pinEntrada,7,15,330,50);
-
+ 
+    pinCab.adic(btExpedir,400,50,100,31);
+    
 	pinLbCampos.adic(lbCampos,0,0,180,15);
 	pinLbCampos.tiraBorda();
 	
@@ -128,33 +128,37 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
     pinCampos.adic(new JLabelPad("Qtd."),213,45,100,20);
     pinCampos.adic(txtQtdEntrada,213,65,100,20);
     
+
+    
 	tab.adicColuna("");//0
 	tab.adicColuna("Rma.");//1
-	tab.adicColuna("Prod.");//2
-	tab.adicColuna("Descrição do produto");//3
-	tab.adicColuna("Lote");//4
-	tab.adicColuna("OP");//5
-	tab.adicColuna("Seq");//6	
-	tab.adicColuna("Qtd.req.");//4
-	tab.adicColuna("Qtd.aprov.");//5
-	tab.adicColuna("Qtd. exp.");//6
-	tab.adicColuna("Saldo");//7
+	tab.adicColuna("Item");//2
+	tab.adicColuna("Prod.");//3
+	tab.adicColuna("Descrição do produto");//4
+	tab.adicColuna("Lote");//5
+	tab.adicColuna("OP");//6
+	tab.adicColuna("Seq");//7	
+	tab.adicColuna("Qtd.req.");//8
+	tab.adicColuna("Qtd.aprov.");//9
+	tab.adicColuna("Qtd. exp.");//10
+	tab.adicColuna("Saldo");//11
 	
-
 	tab.setTamColuna(12, 0);
 	tab.setTamColuna(40, 1);
-	tab.setTamColuna(50, 2);
-	tab.setTamColuna(180, 3);
-	tab.setTamColuna(90, 4);
-	tab.setTamColuna(40, 5);
+	tab.setTamColuna(40, 2);
+	tab.setTamColuna(50, 3);
+	tab.setTamColuna(180,4);
+	tab.setTamColuna(90, 5);
 	tab.setTamColuna(40, 6);
-	tab.setTamColuna(70, 7);
+	tab.setTamColuna(40, 7);
 	tab.setTamColuna(70, 8);
-	tab.setTamColuna(90, 9);
-	tab.setTamColuna(100, 10);
+	tab.setTamColuna(70, 9);
+	tab.setTamColuna(90, 10);
+	tab.setTamColuna(100,11);
 
     txtEntrada.addFocusListener(this);
     btSair.addActionListener(this);
+    btExpedir.addActionListener(this);
 	tab.addMouseListener(new MouseAdapter() {
 
 		public void mouseClicked(MouseEvent mevt) {
@@ -164,18 +168,80 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	});
         
   }
-	private void abreRma() {
-		int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
-		if (fPrim.temTela("Requisição de material") == false) {
-			FRma tela = new FRma();
-			fPrim.criatela("Requisição de material", tela, con);
-			tela.exec(iRma);
-		}
+  private void expedeItens(){
+  	if(Funcoes.mensagemConfirma(this,"Confirma a expedição dos ítens selecionados?")==JOptionPane.YES_OPTION){
+  		String sSQL = "UPDATE EQITRMA SET QTDEXPITRMA=? WHERE CODEMP=? AND CODFILIAL=? AND CODRMA=? AND CODITRMA=?";
+  		try{
+	  		PreparedStatement ps = con.prepareStatement(sSQL);
+	  		try{	  			
+	  		  	for(int iLin=0;tab.getNumLinhas()>iLin;iLin++){
+	  		  		ps.setDouble(1,Funcoes.strCurrencyToDouble(tab.getValor(iLin,10).toString()));
+	  		  		ps.setInt(2,Aplicativo.iCodEmp);
+	  	  		    ps.setInt(3,ListaCampos.getMasterFilial("EQRMA"));
+	  	  		    ps.setInt(4,Integer.parseInt(tab.getValor(iLin,1).toString()));
+	  	  		    ps.setInt(5,Integer.parseInt(tab.getValor(iLin,2).toString()));
+
+	  	  		    ps.executeUpdate();
+
+	  		  	}
+	  			
+	  		}
+	  		catch(Exception err){
+	  			Funcoes.mensagemErro(this,"Não foi possível efetuar a expedição do ítem!",true,con,err);
+	  			err.printStackTrace();
+	  		}
+ 		}
+  		catch(Exception err){
+  			Funcoes.mensagemErro(this,"Não foi possível efetuar a expedição do ítem!",true,con,err);
+  			err.printStackTrace();
+  		}
+  		finally{
+  			try{
+  				con.commit();	
+  			}
+  			catch(Exception err){
+  				err.printStackTrace();
+  			}			  		
+  		}
+  	}
+  }
+  private void abreRma() {
+	int iRma = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
+	if (fPrim.temTela("Requisição de material") == false) {
+		FRma tela = new FRma();
+		fPrim.criatela("Requisição de material", tela, con);
+		tela.exec(iRma);
 	}
+  }
+  private void adicionaItem(ResultSet rs){
+	
+	int iLin = tab.getNumLinhas();
+	tab.adicLinha();
+	try {
+		tab.setValor(imgAprovada, iLin, 0);//SitItRma
+		tab.setValor(new Integer(rs.getInt("CODRMA")), iLin, 1);//CodRma
+		tab.setValor(new Integer(rs.getInt("CODITRMA")), iLin, 2);//CodRma
+		tab.setValor(rs.getString("CODPROD") == null ? "" : rs.getString("CODPROD") + "",iLin, 3);//CodProd 
+		tab.setValor(rs.getString("DESCPROD") == null ? "" : rs.getString("DESCPROD") + "",iLin, 4);//DescProd
+		tab.setValor(rs.getString("CODLOTE") == null ? "" : rs.getString("CODLOTE") + "",iLin, 5);//Cód OP
+		tab.setValor(rs.getString("CODOP") == null ? "" : rs.getString("CODOP") + "",iLin, 6);//Cód OP
+		tab.setValor(rs.getString("SEQOF") == null ? "" : rs.getString("SEQOF") + "",iLin, 7);//Seq OP
+		tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 8);//Qtd Req
+		tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 9);//Qtd Aprov
+		tab.setValor(txtQtdEntrada.getVlrString(),iLin,10);//Qdt Exp
+		tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 11);//Saldo Prod
+					
+		iLin++;
+	}
+	catch(Exception err){
+		err.printStackTrace();
+	}
+
+  }
   public void buscaItem(){
 	String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
 		+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
-		+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,IT.CODLOTE,R.CODOP,R.SEQOF "
+		+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,IT.CODLOTE,R.CODOP,R.SEQOF,IT.CODITRMA "
 		+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
 		+ "WHERE " 
 		+ "R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
@@ -197,62 +263,42 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 
 		ResultSet rs = ps.executeQuery();
 		
-
-		int iLin = tab.getNumLinhas();
-	
-//		tab.limpa();
 		Vector vSitRMA = new Vector();
 		if(rs.next()) {
-			String sChaveRs = rs.getString("CODPROD").trim()+
-			   				  rs.getString("CODLOTE").trim()+
-							  rs.getString("CODOP").trim()+
-							  rs.getString("SEQOF").trim();
+			String sChaveRs = rs.getString("CODRMA").trim()+"#"+			
+			   				  rs.getString("CODITRMA").trim();
 			String sChaveTb = "";
 			for(int i =0;tab.getNumLinhas()>i;i++){
-				sChaveTb = tab.getValor(i,2).toString().trim()+
-						   tab.getValor(i,4).toString().trim()+
-						   tab.getValor(i,5).toString().trim()+
-						   tab.getValor(i,6).toString().trim();
+				sChaveTb = tab.getValor(i,1).toString().trim()+"#"+
+						   tab.getValor(i,2).toString().trim();
 				if(sChaveTb.equals(sChaveRs)){
 					Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"O ítem já foi adicionado","Busca de ítens de RMA",1);
 					return;
 				}
 			}
-			tab.adicLinha();
 			
-			String sitRMA = rs.getString(5);
-			if (sitRMA.equalsIgnoreCase("PE")) {
-				imgColuna = imgPendente;
-				vSitRMA.addElement("Pendente");
-			} 
-			else if (sitRMA.equalsIgnoreCase("CA")) {
-				imgColuna = imgCancelada;
-				vSitRMA.addElement("Cancelada");
-			} 
-			else if (sitRMA.equalsIgnoreCase("EF")) {
-				imgColuna = imgExpedida;
-				vSitRMA.addElement("Expedida");
-			} 
-			else if (sitRMA.equalsIgnoreCase("AF")) {
-				imgColuna = imgAprovada;
-				vSitRMA.addElement("Aprovada");
+			if(rs.getString("SITEXPITRMA").equals("PE")){
+				if(!rs.getString("SITAPROVITRMA").equals("PE")){
+					
+					if(new Double(rs.getDouble("QTDAPROVITRMA")).compareTo(new Double(Funcoes.strCurrencyToDouble(txtQtdEntrada.getVlrString())))==0){
+						adicionaItem(rs);
+					}
+					else if (new Double(rs.getDouble("QTDAPROVITRMA")).compareTo(new Double(Funcoes.strCurrencyToDouble(txtQtdEntrada.getVlrString())))<0){
+						if(Funcoes.mensagemConfirma(this,"Quantidade aprovada ("+rs.getString("QTDAPROVITRMA").trim()+") é inferior à quantidade à expedir ("+txtQtdEntrada.getVlrString().trim()+") !\nDeseja expedir a quantidade aprovada?")==JOptionPane.YES_OPTION){
+							txtQtdEntrada.setVlrDouble(new Double(rs.getDouble("QTDAPROVITRMA")));
+							adicionaItem(rs);
+						}
+					}	
+				
+				}
+				else{
+					Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem não foi aprovado!","Busca de ítens de RMA",1);
+				}	
 			}
-	
-			tab.setValor(imgColuna, iLin, 0);//SitItRma
-			tab.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
-			tab.setValor(rs.getString("CODPROD") == null ? "" : rs.getString("CODPROD") + "",iLin, 2);//CodProd 
-			tab.setValor(rs.getString("DESCPROD") == null ? "" : rs.getString("DESCPROD") + "",iLin, 3);//DescProd
-			tab.setValor(rs.getString("CODLOTE") == null ? "" : rs.getString("CODLOTE") + "",iLin, 4);//Cód OP
-			tab.setValor(rs.getString("CODOP") == null ? "" : rs.getString("CODOP") + "",iLin, 5);//Cód OP
-			tab.setValor(rs.getString("SEQOF") == null ? "" : rs.getString("SEQOF") + "",iLin, 6);//Seq OP
-			tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
-			tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 8);//Qtd Aprov
-			tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 9);//Qdt Exp
-			tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 10);//Saldo Prod
-			
-	
-			iLin++;
-			
+			else{
+				Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem já foi expedido!","Busca de ítens de RMA",1);
+			}
+				
 		}
 		else{
 			Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem não encontrado","Busca de ítens de RMA",1);
@@ -284,6 +330,9 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   public void actionPerformed(ActionEvent evt) {
 	if (evt.getSource() == btSair) {
 		dispose();
+	}
+	else if(evt.getSource() == btExpedir){
+		expedeItens();
 	}
   }
   private void limpaCampos(){

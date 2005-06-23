@@ -52,10 +52,10 @@ public class FPrefereProd extends FTabDados {
 
 		vLabs.addElement("Pendente");
 		vLabs.addElement("Aprovada");
-		vLabs.addElement("Expedida");
+//		vLabs.addElement("Expedida");
 		vVals.addElement("PE");
 		vVals.addElement("AF");
-		vVals.addElement("EF");
+//		vVals.addElement("EF");
 		
 		cbSitRMAOP = new JComboBoxPad(vLabs,vVals,JComboBoxPad.TP_STRING,2,0);
 		
