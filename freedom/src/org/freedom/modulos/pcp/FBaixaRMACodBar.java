@@ -132,6 +132,9 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	tab.adicColuna("Rma.");//1
 	tab.adicColuna("Prod.");//2
 	tab.adicColuna("Descrição do produto");//3
+	tab.adicColuna("Lote");//4
+	tab.adicColuna("OP");//5
+	tab.adicColuna("Seq");//6	
 	tab.adicColuna("Qtd.req.");//4
 	tab.adicColuna("Qtd.aprov.");//5
 	tab.adicColuna("Qtd. exp.");//6
@@ -142,10 +145,13 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	tab.setTamColuna(40, 1);
 	tab.setTamColuna(50, 2);
 	tab.setTamColuna(180, 3);
-	tab.setTamColuna(70, 4);
-	tab.setTamColuna(70, 5);
-	tab.setTamColuna(90, 6);
-	tab.setTamColuna(100, 7);
+	tab.setTamColuna(90, 4);
+	tab.setTamColuna(40, 5);
+	tab.setTamColuna(40, 6);
+	tab.setTamColuna(70, 7);
+	tab.setTamColuna(70, 8);
+	tab.setTamColuna(90, 9);
+	tab.setTamColuna(100, 10);
 
     txtEntrada.addFocusListener(this);
     btSair.addActionListener(this);
@@ -169,7 +175,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   public void buscaItem(){
 	String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
 		+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
-		+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD "
+		+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,IT.CODLOTE,R.CODOP,R.SEQOF "
 		+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
 		+ "WHERE " 
 		+ "R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
@@ -197,8 +203,21 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 //		tab.limpa();
 		Vector vSitRMA = new Vector();
 		if(rs.next()) {
-			
-			
+			String sChaveRs = rs.getString("CODPROD").trim()+
+			   				  rs.getString("CODLOTE").trim()+
+							  rs.getString("CODOP").trim()+
+							  rs.getString("SEQOF").trim();
+			String sChaveTb = "";
+			for(int i =0;tab.getNumLinhas()>i;i++){
+				sChaveTb = tab.getValor(i,2).toString().trim()+
+						   tab.getValor(i,4).toString().trim()+
+						   tab.getValor(i,5).toString().trim()+
+						   tab.getValor(i,6).toString().trim();
+				if(sChaveTb.equals(sChaveRs)){
+					Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"O ítem já foi adicionado","Busca de ítens de RMA",1);
+					return;
+				}
+			}
 			tab.adicLinha();
 			
 			String sitRMA = rs.getString(5);
@@ -221,18 +240,23 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	
 			tab.setValor(imgColuna, iLin, 0);//SitItRma
 			tab.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
-			tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
-			tab.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 3);//DescProd
-			tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 4);//Qtd Req
-			tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 5);//Qtd Aprov
-			tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 6);//Qdt Exp
-			tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 7);//Saldo Prod
+			tab.setValor(rs.getString("CODPROD") == null ? "" : rs.getString("CODPROD") + "",iLin, 2);//CodProd 
+			tab.setValor(rs.getString("DESCPROD") == null ? "" : rs.getString("DESCPROD") + "",iLin, 3);//DescProd
+			tab.setValor(rs.getString("CODLOTE") == null ? "" : rs.getString("CODLOTE") + "",iLin, 4);//Cód OP
+			tab.setValor(rs.getString("CODOP") == null ? "" : rs.getString("CODOP") + "",iLin, 5);//Cód OP
+			tab.setValor(rs.getString("SEQOF") == null ? "" : rs.getString("SEQOF") + "",iLin, 6);//Seq OP
+			tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
+			tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 8);//Qtd Aprov
+			tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 9);//Qdt Exp
+			tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 10);//Saldo Prod
+			
 	
 			iLin++;
 			
 		}
 		else{
-			Funcoes.mensagemInforma(this,"Item não encontrado!");
+			Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem não encontrado","Busca de ítens de RMA",1);
+			return;
 		}
 	
 		if (!con.getAutoCommit())
@@ -243,9 +267,6 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		err.printStackTrace();
 	}
 	  	
-	  	
-  	
-  	
   }
   public void beforeCarrega(CarregaEvent cevt){  }
   public void afterCarrega(CarregaEvent cevt){  }
