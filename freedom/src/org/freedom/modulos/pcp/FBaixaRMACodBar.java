@@ -129,21 +129,21 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
     pinCampos.adic(txtQtdEntrada,213,65,100,20);
     
 	tab.adicColuna("");//0
-	tab.adicColuna("Cód.rma.");//1
-	tab.adicColuna("Cód.prod.");//2
+	tab.adicColuna("Rma.");//1
+	tab.adicColuna("Prod.");//2
 	tab.adicColuna("Descrição do produto");//3
-	tab.adicColuna("Qt. requerida");//4
-	tab.adicColuna("Qt. aprovada");//5
-	tab.adicColuna("Qt. expedida");//6
+	tab.adicColuna("Qtd.req.");//4
+	tab.adicColuna("Qtd.aprov.");//5
+	tab.adicColuna("Qtd. exp.");//6
 	tab.adicColuna("Saldo");//7
 	
 
 	tab.setTamColuna(12, 0);
-	tab.setTamColuna(70, 1);
-	tab.setTamColuna(70, 2);
-	tab.setTamColuna(120, 3);
-	tab.setTamColuna(90, 4);
-	tab.setTamColuna(90, 5);
+	tab.setTamColuna(40, 1);
+	tab.setTamColuna(50, 2);
+	tab.setTamColuna(180, 3);
+	tab.setTamColuna(70, 4);
+	tab.setTamColuna(70, 5);
 	tab.setTamColuna(90, 6);
 	tab.setTamColuna(100, 7);
 
@@ -178,8 +178,6 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		+ "AND IT.CODEMPLE=IT.CODEMPPD AND IT.CODFILIALLE=IT.CODFILIALPD AND IT.CODLOTE=? "
 		+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOF=?";
 		
-		
-	System.out.println(sSQL);
 	try {
 		PreparedStatement ps = con.prepareStatement(sSQL);
 		int param = 1;
@@ -198,7 +196,9 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	
 //		tab.limpa();
 		Vector vSitRMA = new Vector();
-		while (rs.next()) {
+		if(rs.next()) {
+			
+			
 			tab.adicLinha();
 			
 			String sitRMA = rs.getString(5);
@@ -231,6 +231,9 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 			iLin++;
 			
 		}
+		else{
+			Funcoes.mensagemInforma(this,"Item não encontrado!");
+		}
 	
 		if (!con.getAutoCommit())
 			con.commit();
@@ -252,7 +255,8 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   }
   public void focusLost(FocusEvent e) { 
   	if(e.getSource()==txtEntrada){
-  		decodeEntrada();
+  		if(txtEntrada.getVlrString().length()>1)
+  			decodeEntrada();
   	}
   }
 	
