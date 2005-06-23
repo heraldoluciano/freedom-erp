@@ -53,6 +53,7 @@ public class FDetalhe extends FDados {
   boolean bSetAreaCab = true;
   boolean bSetAreaDet = true;
   public FDetalhe () {
+  	super();
     pnRodape.remove(nav);
     pnRodape.add(navRod, BorderLayout.WEST); 
     
