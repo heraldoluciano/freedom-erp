@@ -82,10 +82,10 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
-	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Requisições aprovadas", "S", "N");
-	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Requisições expedidas", "S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
+	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Itens pendentes", "S", "N");
+	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Itens aprovadas", "S", "N");
+	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Itens expedidas", "S", "N");
+	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Itens canceladas", "S", "N");
 	private Tabela tab = new Tabela();
 	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
 	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
@@ -243,30 +243,32 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		tab.adicColuna("Cód.rma.");//1
 		tab.adicColuna("Cód.prod.");//2
 		tab.adicColuna("Descrição do produto");//3
-		tab.adicColuna("Aprov.");//4
-		tab.adicColuna("Exp.");//5
-		tab.adicColuna("Dt. requisição");//6
-		tab.adicColuna("Qt. requerida");//7
-		tab.adicColuna("Dt. aprovação");//8
-		tab.adicColuna("Qt. aprovada");//9
-		tab.adicColuna("Dt. expedição");//10
-		tab.adicColuna("Qt. expedida");//11
-		tab.adicColuna("Saldo");//12
+		tab.adicColuna("Cód.OP.");//4
+		tab.adicColuna("Aprov.");//5
+		tab.adicColuna("Exp.");//6
+		tab.adicColuna("Dt. requisição");//7
+		tab.adicColuna("Qt. requerida");//8
+		tab.adicColuna("Dt. aprovação");//9
+		tab.adicColuna("Qt. aprovada");//10
+		tab.adicColuna("Dt. expedição");//11
+		tab.adicColuna("Qt. expedida");//12
+		tab.adicColuna("Saldo");//13
 		
 
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(70, 1);
 		tab.setTamColuna(70, 2);
-		tab.setTamColuna(120, 3);
-		tab.setTamColuna(40, 4);
+		tab.setTamColuna(150, 3);
+		tab.setTamColuna(70, 4);
 		tab.setTamColuna(40, 5);
-		tab.setTamColuna(90, 6);
+		tab.setTamColuna(40, 6);
 		tab.setTamColuna(90, 7);
 		tab.setTamColuna(90, 8);
 		tab.setTamColuna(90, 9);
 		tab.setTamColuna(90, 10);
 		tab.setTamColuna(90, 11);
 		tab.setTamColuna(90, 12);
+		tab.setTamColuna(90, 13);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -333,19 +335,19 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		}
 		if (cbAprovadas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitItRma ='AF'";
+				where = " SitAprovItRma ='AP' OR SitAprovItRma ='AT'";
 			} 
 			else {
-				where = where + " OR SitItRma ='AF'";
+				where = where + " OR SitAprovItRma ='AP' OR SitAprovItRma ='AT'";
 				usaOr = true;
 			}
 			usaWhere = true;
 		}
 		if (cbExpedidas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitItRma ='EF'";
+				where = " SitExpItRma ='EP' OR SitExpItRma ='ET'";
 			} else {
-				where = where + " OR SitItRma ='EF'";
+				where = where + " OR SitExpItRma ='EP' OR SitExpItRma ='ET'";
 				usaOr = true;
 			}
 			usaWhere = true;
@@ -383,7 +385,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
 				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
-				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD "
+				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP "
 				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
 				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
 				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
@@ -425,36 +427,35 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				tab.adicLinha();
 				
 				String sitRMA = rs.getString(5);
+				String sitAprovRMA = rs.getString(6);
+				String sitExpRMA = rs.getString(7);
 				if (sitRMA.equalsIgnoreCase("PE")) {
 					imgColuna = imgPendente;
-					vSitRMA.addElement("Pendente");
 				} 
 				else if (sitRMA.equalsIgnoreCase("CA")) {
 					imgColuna = imgCancelada;
-					vSitRMA.addElement("Cancelada");
 				} 
-				else if (sitRMA.equalsIgnoreCase("EF")) {
+				else if (sitExpRMA.equals("EP") || sitExpRMA.equals("ET")) {
 					imgColuna = imgExpedida;
-					vSitRMA.addElement("Expedida");
 				} 
-				else if (sitRMA.equalsIgnoreCase("AF")) {
+				else if (sitAprovRMA.equals("AP") || sitAprovRMA.equals("AT")) {
 					imgColuna = imgAprovada;
-					vSitRMA.addElement("Aprovada");
 				}
 
 				tab.setValor(imgColuna, iLin, 0);//SitItRma
 				tab.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
 				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
-				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 3);//DescProd
-				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov
-				tab.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 5);//SitExp
-				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
-				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
-				tab.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 10);//Dt Exp
-				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
-				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 9);//Qtd Aprov
-				tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 11);//Qdt Exp
-				tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 12);//Saldo Prod
+				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
+				tab.setValor(rs.getString(15) == null ? "" : rs.getString(15) + "",iLin, 4);//Cod OP
+				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 5);//SitAprov
+				tab.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 6);//SitExp
+				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
+				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 9);//Dt Aprov
+				tab.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 11);//Dt Exp
+				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 8);//Qtd Req
+				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 10);//Qtd Aprov
+				tab.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 12);//Qdt Exp
+				tab.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 13);//Saldo Prod
 
 				iLin++;
 				
