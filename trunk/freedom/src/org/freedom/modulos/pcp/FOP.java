@@ -469,16 +469,18 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 				tab2.adicLinha();
 				
 				String sitRMA = rs.getString(5);
+				String sitAprovRMA = rs.getString(6);
+				String sitExpRMA = rs.getString(7);
 				if (sitRMA.equalsIgnoreCase("PE")) {
 					imgColuna = imgPendente;
 				} 
 				else if (sitRMA.equalsIgnoreCase("CA")) {
 					imgColuna = imgCancelada;
 				} 
-				else if (sitRMA.equalsIgnoreCase("EF")) {
+				else if (sitRMA.equalsIgnoreCase("EF") || sitExpRMA.equals("EP") || sitExpRMA.equals("ET")) {
 					imgColuna = imgExpedida;
 				} 
-				else if (sitRMA.equalsIgnoreCase("AF")) {
+				else if (sitRMA.equalsIgnoreCase("AF") || sitAprovRMA.equals("AP") || sitAprovRMA.equals("AT")) {
 					imgColuna = imgAprovada;
 				}
 
