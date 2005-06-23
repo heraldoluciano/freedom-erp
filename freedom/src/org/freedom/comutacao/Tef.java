@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public class Tef {
     boolean bAtivo = false;
@@ -450,7 +451,7 @@ public class Tef {
             bRet = true;
         if (!prop.getProperty(TEF_MSG_OPERADOR,"").equals("")) {
         	if (Integer.parseInt(prop.getProperty(TEF_QTD_LINHAS, "0")) > 0)
-        		Funcoes.mensagemTemp(prop.getProperty(TEF_MSG_OPERADOR),"TEF",5);
+        		Funcoes.mensagemTemp(Aplicativo.telaPrincipal,prop.getProperty(TEF_MSG_OPERADOR),"TEF",5);
         	else
         		Funcoes.mensagemInforma(null,prop.getProperty(TEF_MSG_OPERADOR));
         }
