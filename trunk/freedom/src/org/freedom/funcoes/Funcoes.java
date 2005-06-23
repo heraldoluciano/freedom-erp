@@ -85,6 +85,8 @@ public class Funcoes {
 	public static String sIEValida = "";
 
 	private static JDialog dlErro = null;
+	
+	private static Timer tim = null;
 
 	public Funcoes() {
 	} 
@@ -355,49 +357,57 @@ public class Funcoes {
 		//	imgIcone = Aplicativo.imgIcone;
 			JOptionPane.showMessageDialog(Aplicativo.telaPrincipal, sMensagem, sTitulo, iOpcao);
 	}
+	
 
 	/**
 	 * Mostra uma mensagem sem botões não-modal por N segundos.
 	 * 
 	 * @see #mensagemTemp(JFrame,String,String,int)
 	 */
-	public static FFDialogo mensagemTemp(final String sMensagem, final String sTitulo,int iTempoShow) {
-		return mensagemTemp(null,sMensagem,sTitulo,iTempoShow);
-	}
+	//public static FFDialogo mensagemTemp(final String sMensagem, final String sTitulo,int iTempoShow) {
+		//return mensagemTemp(null,sMensagem,sTitulo,iTempoShow);x
+	//}
 	
 	/**
 	 * Mostra uma mensagem sem botões não-modal por N segundos.
 	 * 
 	 * @see #mensagemTemp(String,String,int)
 	 */
-	public static FFDialogo mensagemTemp(JFrame fOrig,final String sMensagem, final String sTitulo,int iTempoShow) {
-		fOrig = fOrig == null ? fOrig = Aplicativo.telaPrincipal : fOrig;
-		
+	public synchronized static FFDialogo mensagemTemp(JFrame fOrig,final String sMensagem, final String sTitulo,int iTempoShow) {
 		final FFDialogo diag = new FFDialogo(fOrig,false);
-		diag.setAtribos(300,120);
-		
-		JPanelPad pn = new JPanelPad(new BorderLayout());
-		pn.add(new JLabelPad(sMensagem,JLabel.CENTER),BorderLayout.CENTER);
-		
-		diag.setTela(pn);
-		diag.setVisible(true);
-		
-		Timer tim = new Timer(iTempoShow*1000,
-						new ActionListener() {
-							public void actionPerformed(ActionEvent evt) {
-								diag.dispose();
+		try{
+			fOrig = fOrig == null ? fOrig = Aplicativo.telaPrincipal : fOrig;
+						
+			diag.setAtribos(300,120);
+			
+			JPanelPad pn = new JPanelPad(new BorderLayout());
+			pn.add(new JLabelPad(sMensagem,JLabel.CENTER),BorderLayout.CENTER);
+			
+			diag.setTela(pn);
+			diag.setVisible(true);
+			
+			tim = new Timer(iTempoShow*1000,
+							new ActionListener() {
+								public void actionPerformed(ActionEvent evt) {
+									tim.stop();
+									tim = null;
+									diag.dispose();
+								}
 							}
-						}
-					);
-		tim.start();
-		
-		return diag;
+						);
+			tim.start();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return diag;		
 	}
 
 	public static void mensagemInforma(Component frame, String sMensagem) {
 		mensagem(sMensagem, "Informação", JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	
 	public static void mensagemErro(Component frame, String sMensagem,boolean bEnviar,Connection con,Exception err) {		
 		mensagem(sMensagem, "Erro", JOptionPane.ERROR_MESSAGE);
 		if(bEnviar);
