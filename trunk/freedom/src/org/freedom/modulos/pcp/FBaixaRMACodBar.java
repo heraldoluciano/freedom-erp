@@ -100,7 +100,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	pinCab.adic(pinLbEntrada,10,7,180,15);
 	pinCab.adic(pinEntrada,7,15,330,50);
  
-    pinCab.adic(btExpedir,400,50,100,31);
+    pinCab.adic(btExpedir,400,15,110,31);
     
 	pinLbCampos.adic(lbCampos,0,0,180,15);
 	pinLbCampos.tiraBorda();
@@ -248,7 +248,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		+ "R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
 		+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
 		+ "AND IT.CODEMPPD=? AND IT.CODFILIALPD=? AND IT.CODPROD=? "
-		+ "AND IT.CODEMPLE=IT.CODEMPPD AND IT.CODFILIALLE=IT.CODFILIALPD AND IT.CODLOTE=? "
+		+ (txtCodLote.getVlrString().trim().length()>0?"AND IT.CODEMPLE=IT.CODEMPPD AND IT.CODFILIALLE=IT.CODFILIALPD AND IT.CODLOTE=? ":"")
 		+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOF=?";
 		
 	try {
@@ -257,7 +257,8 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		ps.setInt(param++, Aplicativo.iCodEmp);
 		ps.setInt(param++, ListaCampos.getMasterFilial("EQPRODUTO"));
 		ps.setInt(param++, txtCodProd.getVlrInteger().intValue());
-		ps.setString(param++, txtCodLote.getVlrString());
+		if(txtCodLote.getVlrString().trim().length()>0)
+		    ps.setString(param++, txtCodLote.getVlrString());
 		ps.setInt(param++,ListaCampos.getMasterFilial("PPOP"));
 		ps.setInt(param++,txtCodOp.getVlrInteger().intValue());
 		ps.setInt(param++,txtSeqOf.getVlrInteger().intValue());
@@ -362,7 +363,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 				
 				for(int i=0;vCampos.size()>i;i++){		
 					JTextFieldPad jtCampo = ((JTextFieldPad)(vCampos.elementAt(i))); 
-					jtCampo.setVlrString(sResto.substring(0,sResto.indexOf("#")>0?sResto.indexOf("#"):sResto.length()));
+					jtCampo.setVlrString(sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length()));
 					sResto = sResto.substring(sResto.indexOf("#")+1);
 				}
 				buscaItem();
