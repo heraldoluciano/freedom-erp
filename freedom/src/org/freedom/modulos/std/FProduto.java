@@ -135,7 +135,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			JTextFieldPad.TP_STRING, 19, 0);
 	
 	private JTextFieldPad txtCodCaixa = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 19, 0);
+			JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);
@@ -462,7 +462,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private ListaCampos lcCodAltProd = new ListaCampos(this, "");
 	
-	private ListaCampos lcCodAcess = new ListaCampos(this);
+	private ListaCampos lcProdAcesso = new ListaCampos(this);
 
 	private ListaCampos lcUnidFat = new ListaCampos(this);
 	
@@ -508,8 +508,6 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private String[] sPrefs = null;
 	
-	boolean acesso = false;
-
 	public FProduto() {
 		setTitulo("Cadastro de Produtos");
 		setAtribos(30, 10, 680, 565);
@@ -529,10 +527,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcFor.setTabela(tabFor);
 		lcCodAltProd.setTabela(tabCodAltProd);
 		
-		lcCodAcess.setMaster(lcCampos);
-		lcCampos.adicDetalhe(lcCodAcess);
-		lcCodAcess.setTabela(tabCodAcess);
-		lcCodAcess.addInsertListener(this);
+		lcProdAcesso.setMaster(lcCampos);
+		lcCampos.adicDetalhe(lcProdAcesso);
+		lcProdAcesso.setTabela(tabCodAcess);
 		
 		lcLote.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcLote);
@@ -550,6 +547,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcCampos.addCarregaListener(this);
 		lcFoto.addEditListener(this);
 		lcFoto.addInsertListener(this);
+		lcProdAcesso.addInsertListener(this);
+		lcProdAcesso.addCarregaListener(this);
 
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
@@ -750,23 +749,27 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 					sSQL = null;
 				}
 			}
+		}
+		else if (cevt.getListaCampos()==lcProdAcesso) {
+			habAcesso(false, 0);
 			if (txtCodPA.getVlrInteger().intValue()!=0) {
-				habAcesso(false);
-				acesso = false;
-			}
-			else {
-				habAcesso(true);
-				acesso = true;
+				habAcesso(true, (rgPA.getVlrString().equalsIgnoreCase("RMA")?1:2) );
 			}
 		}
 	}
 
-	private void habAcesso(boolean hab) {
-		txtCodPA.setAtivo(hab);
-		rgPA.setAtivo(hab);	    
-	    txtAnoCCPA.setAtivo(hab);
-		txtCodCCPA.setAtivo(hab);
-		txtCodCaixa.setAtivo(hab);
+	private void habAcesso(boolean hab, int tipo) {
+		if (tipo == 0) {
+			txtCodPA.setAtivo(hab);
+			rgPA.setAtivo(hab);
+		}
+		if ( (tipo==0) || (tipo==1) ) {
+		    txtAnoCCPA.setAtivo(hab);
+			txtCodCCPA.setAtivo(hab);
+		}
+		if ( (tipo==0) || (tipo==2) ) {
+			txtCodCaixa.setAtivo(hab);
+		}
 	}
 	public void beforeCarrega(CarregaEvent cevt) {
 
@@ -1187,7 +1190,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 		setPainel(pinRodCodAcess, pnCodAcess);
 		adicTab("Acesso", pnCodAcess);
-		setListaCampos(lcCodAcess);
+		setListaCampos(lcProdAcesso);
 		setNavegador(navCodAcess);
 		pnCodAcess.add(pinRodCodAcess, BorderLayout.SOUTH);
 		pnCodAcess.add(spnCodAcess, BorderLayout.CENTER);
@@ -1200,13 +1203,13 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		adicCampo(txtAnoCCPA, 253, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_SI, null, false);
 		adicCampo(txtCodCCPA, 336, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_SI, null, false);
 		adicCampo(txtCodCaixa, 489, 20, 90, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_SI, null, false);
-		setListaCampos(false, "PRODACESSO", "EQ");
-		lcCodAcess.setQueryInsert(false);
-		lcCodAcess.setQueryCommit(false);
+		setListaCampos(true, "PRODACESSO", "EQ");
+		lcProdAcesso.setQueryInsert(false);
+		lcProdAcesso.setQueryCommit(false);
 
-		txtCodPA.setTabelaExterna(lcCodAcess);
+		txtCodPA.setTabelaExterna(lcProdAcesso);
 		txtCodPA.setEnterSai(false);
-		lcCodAcess.montaTab();
+		lcProdAcesso.montaTab();
 		tabCodAcess.setTamColuna(90, 0);
 		tabCodAcess.setTamColuna(50, 1);
 		tabCodAcess.setTamColuna(70, 2);		
@@ -1599,7 +1602,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcTabPreco.setConexao(cn);
 		lcPlanoPagPreco.setConexao(cn);
 		lcCodAltProd.setConexao(cn);
-		lcCodAcess.setConexao(cn);
+		lcProdAcesso.setConexao(cn);
 		//lcSaldoProd.setConexao(cn);
 	}
 
@@ -1655,12 +1658,12 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			txtPesoBrutProd.setVlrDouble(new Double(0.0));
 			txtPesoLiqProd.setVlrDouble(new Double(0.0));
 		}
+		else if (ievt.getListaCampos() == lcProdAcesso) {
+			habAcesso(true,0);
+		}
 	}
 	
 	public void afterPost(PostEvent pevt) {
-		if(pevt.getListaCampos()==lcCodAcess){
-			lcCodAcess.carregaDados();
-		}
 	}
 
 	public void actionPerformed(ActionEvent evt) {
@@ -1772,10 +1775,6 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	}
 
 	public void beforeInsert(InsertEvent eevt) {		
-		if (eevt.getListaCampos()==lcCodAcess)
-	  		habAcesso(true);
-		else
-			habAcesso(false);
 	}
 
 	public void edit(EditEvent eevt) {
