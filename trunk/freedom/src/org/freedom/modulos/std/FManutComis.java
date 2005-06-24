@@ -90,6 +90,7 @@ public class FManutComis extends FFilho implements ActionListener {
   BigDecimal bVlrTot = new BigDecimal("0");
   BigDecimal bVlrTotPago = new BigDecimal("0");
   public FManutComis() {
+  	super(false);
     setTitulo("Controle de Comissões");
     setAtribos(50,25,660,400);
     cbLiberadas.setVlrString("S");

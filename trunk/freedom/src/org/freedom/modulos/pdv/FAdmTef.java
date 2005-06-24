@@ -58,6 +58,7 @@ public class FAdmTef extends FFilho implements ActionListener {
 	Tef tef = AplicativoPDV.bTEFTerm ? new Tef(Aplicativo.strTefEnv,Aplicativo.strTefRet) : null;
     Properties retTef = null;
     public FAdmTef() {
+    	super(false);
         Vector vLabs = new Vector();
         Vector vVals = new Vector();
         vLabs.addElement("Administrativas - Outras");

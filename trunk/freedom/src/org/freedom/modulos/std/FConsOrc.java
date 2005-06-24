@@ -84,6 +84,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 
   private ListaCampos lcCli = new ListaCampos(this, "CL");
   public FConsOrc() {
+  	super(false);
     setTitulo("Pesquisa Orçamentos");
     setAtribos(10, 10, 514, 480);
 

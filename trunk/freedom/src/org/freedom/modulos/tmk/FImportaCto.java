@@ -77,6 +77,7 @@ public class FImportaCto extends FFilho implements ActionListener,FocusListener 
 	private Timer tim = null;
 
     public FImportaCto() {
+    	super(false);
     	setTitulo("Importação de Contatos");
     	setAtribos(100,100,380,280);
     	//setSize(380,260);

@@ -56,6 +56,7 @@ public class FPrecoBase extends FFilho implements ActionListener {
   private ListaCampos lcGrup = new ListaCampos(this,"GP");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   public FPrecoBase() {
+  	super(false);
     setTitulo("Ajusta Preço Base");
     setAtribos(50,50,310,190);
     

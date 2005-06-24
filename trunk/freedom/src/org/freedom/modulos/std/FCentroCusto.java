@@ -69,6 +69,7 @@ public class FCentroCusto
 	private JButton btPrevimp = new JButton(Icone.novo("btPrevimp.gif"));
 	int iAnoBase = 0;
 	public FCentroCusto() {
+		super(false);
 		setTitulo("Centro de Custo");
 		setAtribos(25, 25, 620, 380);
 

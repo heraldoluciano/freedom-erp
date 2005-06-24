@@ -135,6 +135,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 	private int iCasasDec = 0;
 
 	public FManutPreco() {
+		super(false);
 		setTitulo("Manutenção de Preços");
 		setAtribos(10, 10, 450, 450);
 

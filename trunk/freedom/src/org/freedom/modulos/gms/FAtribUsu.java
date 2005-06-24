@@ -66,6 +66,7 @@ public class FAtribUsu extends FFilho implements  CarregaListener, ActionListene
   private JButton btSalvar = new JButton(Icone.novo("btSalvar.gif"));
   private ListaCampos lcUsu = new ListaCampos(this,"");
   public FAtribUsu () {
+  	super(false);
     setTitulo("Atribuições por Usuário");
     setAtribos( 50, 50, 395, 240);
   

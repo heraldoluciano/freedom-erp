@@ -56,6 +56,7 @@ public class FStatusItOrc extends FFilho implements ActionListener {
   private ListaCampos lcItOrc = new ListaCampos(this,"");
   private ListaCampos lcOrc = new ListaCampos(this,"");
   public FStatusItOrc() {
+  	super(false);
     setTitulo("Ajusta status do item de orçamento");
     setAtribos(50,50,340,210);
     

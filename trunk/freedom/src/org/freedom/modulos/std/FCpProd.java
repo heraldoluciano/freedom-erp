@@ -92,6 +92,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private JButton btGerar = new JButton("Gerar",Icone.novo("btGerar.gif"));
   public FCpProd() {
+  	super(false);
     setTitulo("Cópia de preços");
     setAtribos(50,20,680,440);
     

@@ -30,13 +30,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
+import javax.swing.JScrollPane;
 //import javax.swing.JScrollPane;
 //import javax.swing.JScrollPane;
 import javax.swing.event.InternalFrameAdapter;
@@ -50,10 +50,12 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         IFilho {
 	
     protected FPrincipal fPrim;
-
+    
     private Component firstFocus = null;
 
     private boolean initFirstFocus = true;
+    
+    private boolean primShow = true;
 
     private BorderLayout blCliente = new BorderLayout();
     private BorderLayout blRodape = new BorderLayout();
@@ -64,7 +66,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
     public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
     public JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
-    public ScrollPane spCliente = new ScrollPane(ScrollPane.SCROLLBARS_AS_NEEDED);
+    public JScrollPane spCliente = new JScrollPane(pnCliente, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
     //private JPanelPad pnSp = new JPanelPad() 
     //protected JScrollPane spFilho = new JScrollPane();
@@ -73,13 +75,13 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 
     public Connection con = null;
 
-    public FFilho() {
+    public FFilho(boolean comScroll) {
         /* Construtor da classe. */
-        this("Filho01", true, true, true, true);
+        this("Filho01", true, true, true, true, comScroll);
     }
 
     public FFilho(String arg01, boolean arg02, boolean arg03, boolean arg04,
-            boolean arg05) {
+            boolean arg05, boolean comScroll) {
         super(arg01, arg02, arg03, arg04, arg05);
         c = getContentPane();
         c.setLayout(blDados);
@@ -88,9 +90,13 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
        // pnCliente.setAutoscrolls(false);
         pnCliente.setLayout(blCliente);
         pnRodape.setLayout(blRodape);
-        //spCliente.setLayout(blCliente);
+        if (comScroll) 
+            c.add(spCliente, BorderLayout.CENTER);
+        else
+            c.add(pnCliente, BorderLayout.CENTER);
+
+        //spCliente.setLayout();
         //spCliente.add(pnCliente);
-        c.add(pnCliente, BorderLayout.CENTER);
         
         //spCliente.setVisible(false);
         //ativaScroll();
@@ -120,6 +126,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public void setAtribos(int esq, int topo, int larg, int alt) {
     	int altPrinc = 0;
     	int largPrinc = 0;
+    	
     	if (Aplicativo.telaPrincipal!=null) {
 	    	altPrinc = (int) Aplicativo.telaPrincipal.dpArea.getSize().getHeight();
 	    	largPrinc = (int) Aplicativo.telaPrincipal.dpArea.getSize().getWidth();
@@ -131,7 +138,8 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     		alt = altPrinc;
     	}
     	//spCliente.setBounds(0,0, larg, alt);
-        this.setBounds(esq, topo, larg, alt);
+        this.setBounds(esq, topo, larg-3, alt-3);
+        //this.pnCliente.setBounds(0,0,100,100);
        // this.spCliente.setVisible(true);
         //this.pnCliente.setBounds(0,0,larg-20,alt-20);
         //this.setSize(larg+50,alt+50);
@@ -258,6 +266,16 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         con = cn;
     }
 
+    public void show() {
+    	super.show();
+    	if (primShow) {
+	    	this.setSize(this.getWidth()+3, this.getHeight()+3);
+	    	spCliente.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    	spCliente.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    	primShow = false;
+    	}
+    	
+    }
     public synchronized void execShow() {
         show();
     }

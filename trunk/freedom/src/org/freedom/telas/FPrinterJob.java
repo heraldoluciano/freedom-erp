@@ -77,6 +77,7 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
   private int iZoomAtual = 100;
   boolean bVisualiza = false;
   public FPrinterJob(ImprimeLayout impL,JInternalFrame ifOrig) {
+  	super(false);
     impLay = impL;
     
     setTitulo("Visualizar Impressão Gráfica");

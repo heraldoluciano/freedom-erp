@@ -70,6 +70,7 @@ public class FSVV extends FFilho implements ActionListener {
   String sRelErros = "";
   String[] sInfoEmp = null;
   public FSVV() {
+  	super(false);
     setTitulo("Exportar vendas");      
     setAtribos(50,50,610,450);
     

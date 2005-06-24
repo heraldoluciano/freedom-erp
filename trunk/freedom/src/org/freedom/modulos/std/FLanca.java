@@ -97,6 +97,7 @@ public class FLanca extends FFilho implements ActionListener,ChangeListener {
   private Date dIniLanca = null;
   private Date dFimLanca = null;
   public FLanca() {
+  	super(false);
     setTitulo("Lançamentos Financeiros");
     setAtribos(50,25,617,400);
     

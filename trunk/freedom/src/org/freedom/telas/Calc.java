@@ -105,7 +105,7 @@ public class Calc extends FFilho implements KeyListener, ActionListener {
 	boolean Esc = false;
 	int esp = 32;
 	public Calc() {
-		super();
+		super(false);
 		Container c = getContentPane();
 		txaCalc.setEnabled(false);
 		txtRes.setEnabled(false);

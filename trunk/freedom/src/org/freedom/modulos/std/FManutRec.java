@@ -170,7 +170,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private JPanelPad pinFiltroStatus = new JPanelPad(300,150);
 
   public FManutRec() {
-  	
+  	super(false);
   	setTitulo("Manutenção de contas a receber");
 	setAtribos(20,20,750,450);    
 

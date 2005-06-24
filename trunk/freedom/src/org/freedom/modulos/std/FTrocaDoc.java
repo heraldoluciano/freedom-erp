@@ -55,6 +55,7 @@ public class FTrocaDoc extends FFilho implements ActionListener {
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
   public FTrocaDoc() {
+  	super(false);
     setTitulo("Troca de documento");
     setAtribos(50,50,350,170);
     

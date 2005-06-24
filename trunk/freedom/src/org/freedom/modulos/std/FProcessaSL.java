@@ -58,6 +58,7 @@ public class FProcessaSL extends FFilho implements ActionListener {
 	private JLabelPad lbStatus = new JLabelPad();
 	boolean bRunProcesso = false;
     public FProcessaSL() {
+    	super(false);
     	setTitulo("Processamento de saldo");
     	setAtribos(100,100,485,390);
     	
