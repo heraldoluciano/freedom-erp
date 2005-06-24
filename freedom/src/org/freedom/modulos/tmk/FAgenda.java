@@ -80,6 +80,7 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   private ListaCampos lcUsu = new ListaCampos(this);
   private Vector vCodAgds = new Vector();
   public FAgenda() {
+  	super(false);
   	setTitulo("Agenda");
   	setAtribos(20,20,540,400);
 

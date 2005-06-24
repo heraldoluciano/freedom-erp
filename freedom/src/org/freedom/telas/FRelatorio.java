@@ -49,6 +49,7 @@ public abstract class FRelatorio extends FFilho implements ActionListener,KeyLis
   boolean bCtrl = false;
   Container c = null;
   public FRelatorio() {
+  	super(false);
     setTitulo("Requisiçao de Relatório");
     setAtribos(100,100,350,200);
     c = super.getTela();

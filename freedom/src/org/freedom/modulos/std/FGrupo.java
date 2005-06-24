@@ -66,6 +66,7 @@ public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyLi
   private boolean bEstNeg = false;
   int iCodFilial = 0;
   public FGrupo() {
+  	super(false);
     setTitulo("Cadastro de Grupos e Sub-Grupos");
     setAtribos( 5, 5, 590, 350);
     

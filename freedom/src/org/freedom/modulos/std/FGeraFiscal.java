@@ -70,6 +70,7 @@ public class FGeraFiscal extends FFilho implements ActionListener {
   private int iTotVendas = 0;
   private JLabelPad lbAnd = new JLabelPad("Aguardando:");
   public FGeraFiscal() {
+  	super(false);
     setTitulo("Gerar Livros Fiscais");      
     setAtribos(50,50,610,400);
     

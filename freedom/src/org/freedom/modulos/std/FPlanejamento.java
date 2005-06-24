@@ -69,6 +69,7 @@ public class FPlanejamento extends FFilho implements ActionListener,MouseListene
   private JButton btImp = new JButton(Icone.novo("btImprime.gif"));
   private JButton btPrevimp = new JButton(Icone.novo("btPrevimp.gif"));
   public FPlanejamento() {
+  	super(false);
     setTitulo("Planejamento de Contas");
     setAtribos( 25, 25, 650, 380);
     

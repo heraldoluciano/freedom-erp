@@ -85,6 +85,7 @@ public class FAgenda extends FFilho implements ActionListener {
   String sTipoAge = "";
 
   public FAgenda() {
+  	super(false);
   	txtIdUsu.setVisible(false);
   	txtIdUsu.setVlrString(Aplicativo.strUsuario);
 

@@ -59,6 +59,8 @@ public class FFDialogo extends JDialog implements ActionListener,
         KeyListener, IFilho {
     protected FPrincipal fPrim;
 
+    public static boolean comScroll = false;
+
     private Component firstFocus = null;
 
     private boolean initFirstFocus = true;

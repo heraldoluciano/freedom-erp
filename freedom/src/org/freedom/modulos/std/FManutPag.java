@@ -161,6 +161,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   int iNParcPag = 0;
   int iAnoCC = 0;
   public FManutPag() {
+  	super(false);
     setTitulo("Manutenção de contas a pagar");
     setAtribos(20,20,740,390);
     

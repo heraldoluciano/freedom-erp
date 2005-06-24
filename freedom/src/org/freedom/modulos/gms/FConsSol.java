@@ -82,6 +82,7 @@ public class FConsSol extends FFilho implements ActionListener {
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	public FConsSol() {
+		super(false);
 		setTitulo("Pesquisa Solicitações de Compra");
 		setAtribos(10, 10, 513, 480);
 

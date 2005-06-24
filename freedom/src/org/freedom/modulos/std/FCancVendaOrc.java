@@ -59,6 +59,7 @@ public class FCancVendaOrc extends FFilho implements ActionListener, CarregaList
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
   public FCancVendaOrc() {
+  	super(false);
     setTitulo("Canc. de vínc. venda x orçamento");
     setAtribos(50,50,350,250);
     

@@ -83,6 +83,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodTpConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipoConv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	public FConsOrc() {
+		super(false);
 		setTitulo("Pesquisa Orçamentos");
 		setAtribos(10,10,605,525);
 		

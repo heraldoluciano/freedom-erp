@@ -40,6 +40,7 @@ public class DLExibePizza extends FFilho implements ActionListener {
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER));
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER));
   public DLExibePizza(JFreeChart ch,int larg,int alt,String sTitulo,String sVlr) {    
+  	super(false);
     setAtribos(0,0,larg,alt);
     setTitulo("Visualização de gráfico");
 	ChartPanel chartPanel = new ChartPanel(ch);

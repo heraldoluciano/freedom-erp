@@ -59,6 +59,7 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
   public FBloqVenda() {
+  	super(false);
     setTitulo("Bloqueio e desbloqueio de vendas");
     setAtribos(50,50,350,250);
     

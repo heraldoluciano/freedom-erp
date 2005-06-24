@@ -38,6 +38,7 @@ public class FCompICMS extends FFilho implements ActionListener {
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JButton btSair = new JButton(Icone.novo("btSair.gif"));
   public FCompICMS() {
+  	super(false);
     setTitulo("Compara ICMS");
     setAtribos(50,50,400,400);
     

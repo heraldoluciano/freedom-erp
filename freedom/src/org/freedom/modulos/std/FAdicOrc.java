@@ -89,7 +89,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
   private FVenda venda = null;
   public FAdicOrc(FVenda vd) {
 // Monta a tela
-
+    super(false);
     venda=vd;
 
     setTitulo("Nova venda de orçamento");

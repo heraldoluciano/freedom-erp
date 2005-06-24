@@ -63,6 +63,7 @@ public class FConsPreco extends FFilho implements KeyListener {
     private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,10);
 	
 	public FConsPreco() {
+		super(false);
 		//super();
 		// 
 		setAtribos(0,0,800,500);

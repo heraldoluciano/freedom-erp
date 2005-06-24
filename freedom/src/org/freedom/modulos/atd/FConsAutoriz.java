@@ -81,6 +81,7 @@ public class FConsAutoriz extends FFilho implements ActionListener {
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcEnc = new ListaCampos(this,"EC");
 	public FConsAutoriz() {
+		super(false);
 		setTitulo("Pesquisa Autorização");
 		setAtribos(10,10,605,430);
 		

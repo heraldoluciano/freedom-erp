@@ -58,6 +58,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcCompra = new ListaCampos(this);
   public FBloqCompra() {
+  	super(false);
     setTitulo("Bloqueio e desbloqueio de compras");
     setAtribos(50,50,350,250);
     

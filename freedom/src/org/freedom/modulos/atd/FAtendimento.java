@@ -80,6 +80,7 @@ public class FAtendimento extends FFilho implements CarregaListener, ActionListe
   private ListaCampos lcCli = new ListaCampos(this);
   private Vector vCodAtends = new Vector();
   public FAtendimento() {
+  	super(false);
   	setTitulo("Atendimento");
   	setAtribos(20,20,540,400);
   	

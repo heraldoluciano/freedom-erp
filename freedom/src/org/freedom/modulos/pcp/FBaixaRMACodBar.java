@@ -85,7 +85,8 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private JPanelPad pinLbCampos = new JPanelPad(150,15);
   private JLabelPad lbCampos = new JLabelPad(" Informações decodificadas");
     
-  public FBaixaRMACodBar () {  
+  public FBaixaRMACodBar () {
+  	super(false);
     setAtribos( 50, 50, 600, 450);
 	Container c = getTela();
 	c.add(pnRod, BorderLayout.SOUTH);

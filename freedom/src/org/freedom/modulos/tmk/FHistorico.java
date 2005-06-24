@@ -83,6 +83,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   private Vector vCodHists = new Vector();
   private Vector vCodAtends = new Vector();
   public FHistorico() {
+  	super(false);
   	setTitulo("Histórico de contatos");
   	setAtribos(20,20,540,400);
   	

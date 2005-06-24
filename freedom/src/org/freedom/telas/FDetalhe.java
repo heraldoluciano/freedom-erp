@@ -32,6 +32,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 
 public class FDetalhe extends FDados {
+  public static boolean comScroll = false;
   private GridLayout glRod = new GridLayout(1,1);
   private GridLayout glCab = new GridLayout(1,1);
   private GridLayout glNavCab = new GridLayout(1,1);
@@ -53,7 +54,7 @@ public class FDetalhe extends FDados {
   boolean bSetAreaCab = true;
   boolean bSetAreaDet = true;
   public FDetalhe () {
-  	super();
+  	super(false);
     pnRodape.remove(nav);
     pnRodape.add(navRod, BorderLayout.WEST); 
     
@@ -88,6 +89,7 @@ public class FDetalhe extends FDados {
     lcCampos.adicDetalhe(lcDet);
     lcDet.setTabela(tab);
   }
+  
   public void montaTab() {
     lcDet.montaTab();      
   }

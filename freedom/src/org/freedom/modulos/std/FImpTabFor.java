@@ -77,6 +77,7 @@ public class FImpTabFor extends FFilho implements ActionListener {
   ProcessoSec pSec = null;
   boolean bRunProcesso = false;
   public FImpTabFor() {
+  	super(false);
     setTitulo("Importação de tabela de produtos.");      
     setAtribos(50,50,510,400);
     

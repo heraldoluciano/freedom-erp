@@ -86,6 +86,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	BigDecimal bVlrTotal = new BigDecimal("0");
 	boolean bRecalcula = true;	
 	public FAprovaOrc() {
+		super(false);
 		setTitulo("Aprova Orçamento");
 		setAtribos(15,30,785,350);
 

@@ -103,6 +103,7 @@ public class FEnviaMail extends FFilho implements ActionListener {
 	File fArq = null;
 	boolean bEnvia = false;
     public FEnviaMail() {
+    	super(false);
     	setTitulo("Envio de e-mail aos contatos");
     	setAtribos(100,100,375,430);
     	

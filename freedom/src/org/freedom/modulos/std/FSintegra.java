@@ -77,6 +77,7 @@ public class FSintegra extends FFilho implements ActionListener {
   
   private JLabelPad lbAnd = new JLabelPad("Aguardando");
   public FSintegra() {
+  	super(false);
     setTitulo("Gera Arquivo Sintegra");
     setAtribos(50,20,710,410);
     

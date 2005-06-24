@@ -53,6 +53,7 @@ public class FCancVenda extends FFilho implements ActionListener {
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
   public FCancVenda() {
+  	super(false);
     setTitulo("Cancelamento");
     setAtribos(50,50,350,170);
     

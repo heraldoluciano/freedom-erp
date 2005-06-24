@@ -75,6 +75,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 	private JTabbedPanePad tpnConsulta = new JTabbedPanePad();
 	
 	public FConsulta() {
+		super(false);
 		setTitulo("Consulta");
 		setAtribos(10,20,790,460);
 		

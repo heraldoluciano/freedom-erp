@@ -93,7 +93,7 @@ public class FGrade extends FFilho implements ActionListener, CarregaListener {
   int iCodProd = 0;
   public FGrade() {
 // Monta a tela
-
+    super(false);
     setTitulo("Grade");
     setAtribos(25,10,700,420);
     Container c = getTela();

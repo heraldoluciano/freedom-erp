@@ -105,6 +105,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	boolean bAprova = false;
 	private Vector vSitRMA = new Vector();
 	public FConsRMA() {
+		super(false);
 		setTitulo("Pesquisa Requisições de material");
 		setAtribos(10, 10, 663, 480);
 

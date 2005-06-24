@@ -35,6 +35,9 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 
 public class FTabDados extends FDados implements KeyListener {
+
+	public static boolean comScroll = false;
+
 	private boolean Ctrl = false;
 
 	public JTabbedPanePad tpn = new JTabbedPanePad();
@@ -42,6 +45,7 @@ public class FTabDados extends FDados implements KeyListener {
 	boolean ind = true;
 
 	public FTabDados() {
+		super(false);
 		setInitFirstFocus(false);
 		setTitulo("Formulário de tabulação");
 		setAtribos(50, 50, 350, 300);
