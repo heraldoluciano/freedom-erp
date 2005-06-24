@@ -37,6 +37,7 @@ public class FTratTrib extends FDados implements ActionListener{
   private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtDescTratTrib= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTratTrib () {
+  	super();
     setTitulo("Tratamento Tributário");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodTratTrib, 7, 20, 70, 20,"CodTratTrib","Cód.tr.trib.",ListaCampos.DB_PK, true);

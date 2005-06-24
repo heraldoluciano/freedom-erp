@@ -43,6 +43,7 @@ public class FEncaminhador extends FDados implements PostListener {
   private JTextFieldPad txtFaxEnc = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtUFEnc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
   public FEncaminhador () {
+  	super();
     setTitulo("Cadastro de Encaminhador");
     setAtribos( 50, 50, 400, 250);
 

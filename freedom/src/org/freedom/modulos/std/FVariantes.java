@@ -37,6 +37,7 @@ public class FVariantes extends FDados implements ActionListener{
   private JTextFieldPad txtCodVarG = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescVarG= new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   public FVariantes () {
+  	super();
     setTitulo("Cadastro de Variantes da Grade");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodVarG, 7, 20, 70, 20,"CodVarG","Cód.var.",ListaCampos.DB_PK,true);

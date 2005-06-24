@@ -47,9 +47,10 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
   private JPanelPad pinDet = new JPanelPad();
   
   public FSetorAtend () {
+  	super();
 
-   setTitulo("Cadastro de Setores de atendimento");
-   setAtribos( 50, 50, 450, 350);
+    setTitulo("Cadastro de Setores de atendimento");
+    setAtribos( 50, 50, 450, 350);
 /*
    pnMaster.remove(2);  //Remove o JPanelPad prédefinido da class FDados
    pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo

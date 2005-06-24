@@ -59,6 +59,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     private JComboBoxPad cbCamposEspec = null;
     private JComboBoxPad cbAcao = null;
 	public FModBoleto() {
+		super();
     	setTitulo("Modelo de boleto");
     	setAtribos(20,100,750,400);
     	

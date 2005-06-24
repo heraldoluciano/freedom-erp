@@ -41,6 +41,7 @@ public class FFase extends FDados implements ActionListener {
   Vector vLabs = new Vector();
   private JComboBoxPad cbTipo = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 3, 0);
   public FFase () {
+  	super();
     setTitulo("Cadastro de fases de produção");
     setAtribos( 50, 50, 350, 165);
 

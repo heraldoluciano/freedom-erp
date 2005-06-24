@@ -72,6 +72,7 @@ public class FCLFiscal extends FDados implements CarregaListener {
   private Vector vValsOrig = new Vector();
   private Vector vLabsOrig = new Vector();
   public FCLFiscal () {
+  	super();
     setTitulo("Cadastro de Classificações Fiscais");
     setAtribos( 0, 0, 420, 470);
 

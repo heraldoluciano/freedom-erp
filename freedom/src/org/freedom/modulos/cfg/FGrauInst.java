@@ -37,6 +37,7 @@ public class FGrauInst extends FDados implements ActionListener {
   private JTextFieldPad txtCodGrauInstru = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescGrauInstru = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   public FGrauInst () {
+  	super();
     setTitulo("Cadastro de Grau de instrução");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodGrauInstru, 7, 20, 70, 20,"CodGri","Cód.gri.", ListaCampos.DB_PK, true);

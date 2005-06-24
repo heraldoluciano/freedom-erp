@@ -63,6 +63,7 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	private ObjetoModLote objModLote = new ObjetoModLote();
 
 	public FModLote() {
+		super();
     	setTitulo("Modelos de lote");
     	setAtribos(20,100,430,200);
     	setImprimir(true);

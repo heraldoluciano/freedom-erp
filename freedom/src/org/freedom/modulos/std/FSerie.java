@@ -46,6 +46,7 @@ public class FSerie extends FDados implements ActionListener {
   private JTextFieldPad txtReset = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JLabelPad lbReset = new JLabelPad("Novo nº.");
   public FSerie () {
+  	super();
     setTitulo("Cadastro de Série de Notas");
     setAtribos( 50, 50, 350, 165);
     

@@ -43,6 +43,7 @@ public class FGrupo extends FDados implements PostListener,DeleteListener {
   private JTextAreaPad txaComentGrup = new JTextAreaPad(JTextFieldPad.TP_STRING);
   private JScrollPane spnObs = new JScrollPane(txaComentGrup);
   public FGrupo () {
+  	super();
     setTitulo("Cadastro de Grupos");
     setAtribos( 50, 50, 400, 200);
 

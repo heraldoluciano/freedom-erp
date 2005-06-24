@@ -39,6 +39,7 @@ public class FAtribuicao extends FDados implements ActionListener {
   private JTextFieldPad txtDescAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaObsAtrib = new JTextAreaPad();
   public FAtribuicao () {
+  	super();
     setTitulo("Cadastro de Atribuições");
     setAtribos( 20, 20, 370, 225);
     adicCampo(txtCodAtrib, 7, 20, 80, 20,"CodAtrib","Cód.atrib.",ListaCampos.DB_PK,true);

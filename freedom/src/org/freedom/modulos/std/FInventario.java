@@ -129,6 +129,7 @@ public class FInventario extends FDados implements CarregaListener,
 	boolean bLote = false;
 
 	public FInventario() {
+		super();
 		setTitulo("Inventário");
 		setAtribos(50, 50, 330, 370);
 

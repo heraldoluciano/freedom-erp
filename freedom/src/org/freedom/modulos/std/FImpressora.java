@@ -47,6 +47,7 @@ public class FImpressora extends FDados {
   private Vector vLabsTipo = new Vector();
   private ListaCampos lcPapel = new ListaCampos(this,"PL");
   public FImpressora() {
+  	super();
 //Remove o painel de impressão:
     pnRodape.remove(2);
 //Constroi a tela FImpressoras:

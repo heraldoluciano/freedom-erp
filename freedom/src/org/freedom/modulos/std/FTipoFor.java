@@ -37,6 +37,7 @@ public class FTipoFor extends FDados implements ActionListener {
   private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescTipoFor = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTipoFor () {
+  	super();
     setTitulo("Cadastro de Tipo de Fornecedor");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodTipoFor, 7, 20, 70, 20,"CodTipoFor","Cód.tp.for.", ListaCampos.DB_PK, true);

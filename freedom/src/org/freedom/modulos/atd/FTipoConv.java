@@ -38,6 +38,7 @@ public class FTipoConv extends FDados implements ActionListener {
   private JTextFieldPad txtDescTipoConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   public FTipoConv () {
+  	super();
     setTitulo("Cadastro de Tipo de Conveniados");
     setAtribos( 50, 50, 370, 150);
     adicCampo(txtCodTipoConv, 7, 20, 80, 20,"CodTpConv","Cód.tp.conv.",ListaCampos.DB_PK,true);

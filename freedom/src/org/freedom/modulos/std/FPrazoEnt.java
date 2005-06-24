@@ -38,6 +38,7 @@ public class FPrazoEnt extends FDados implements ActionListener {
   private JTextFieldPad txtDescPE = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtDiasPE = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   public FPrazoEnt () {
+  	super();
     setTitulo("Cadastro de Prazo de Entrega");
     setAtribos( 50, 50, 410, 125);
     adicCampo(txtCodPE, 7, 20, 70, 20,"CodPE","Cód.p.ent.", ListaCampos.DB_PK, true);

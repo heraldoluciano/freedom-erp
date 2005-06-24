@@ -42,6 +42,7 @@ public class FRecursos extends FDados implements ActionListener {
   private JTextFieldFK txtDescTpRecp = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcTpRecp = new ListaCampos(this,"TR");
   public FRecursos () {
+  	super();
     setTitulo("Cadastro de recursos de producão.");
     setAtribos( 50, 50, 355, 165);
 

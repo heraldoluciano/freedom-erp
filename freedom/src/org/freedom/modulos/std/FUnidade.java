@@ -37,6 +37,7 @@ public class FUnidade extends FDados implements ActionListener{
   private JTextFieldPad txtCodUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtDescUnidade= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FUnidade () {
+  	super();
     setTitulo("Cadastro de Unidades");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodUnidade, 7, 20, 70, 20,"CodUnid","Cód.unid.",ListaCampos.DB_PK, true);

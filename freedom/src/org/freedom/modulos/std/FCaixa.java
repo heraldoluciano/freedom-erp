@@ -40,6 +40,7 @@ public class FCaixa extends FDados implements ActionListener {
   private JCheckBoxPad cbECF = new JCheckBoxPad("Cupom fiscal?","S","N");
   private JCheckBoxPad cbTEF = new JCheckBoxPad("Possui Gerenciador Padrão?","S","N");
   public FCaixa() {
+  	super();
     setTitulo("Cadastro de caixa PDV");
     setAtribos( 50, 50, 420, 200);
 

@@ -55,6 +55,7 @@ public class FAtendente extends FDados {
   private ListaCampos lcUsu = new ListaCampos(this,"US");
   private ListaCampos lcVend = new ListaCampos(this,"VE");
   public FAtendente () {
+  	super();
     setTitulo("Cadastro de Atendentes");
     setAtribos( 50, 20, 500, 440);
 

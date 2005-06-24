@@ -70,6 +70,7 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
     private JCheckBoxPad cbComprimido = new JCheckBoxPad("Imprime Comprimido","S","N");
 	ObjetoEtiquetaCli objEtiqCli = new ObjetoEtiquetaCli();
 	public FModEtiqueta() {
+		super();
     	setTitulo("Modelo de etiqueta");
     	setAtribos(20,100,750,400);
     	

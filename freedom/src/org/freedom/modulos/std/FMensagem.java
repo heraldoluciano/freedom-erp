@@ -40,6 +40,7 @@ public class FMensagem extends FDados implements ActionListener {
   private JTextAreaPad txaMens= new JTextAreaPad(10000);
   private JScrollPane spnMen = new JScrollPane(txaMens);
   public FMensagem () {
+  	super();
     setTitulo("Cadastro de mensagens");
     setAtribos(50, 50, 350, 225);
     adicCampo(txtCod, 7, 20, 80, 20,"CodMens","Cód.mens.", ListaCampos.DB_PK, true);

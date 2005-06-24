@@ -34,6 +34,7 @@ public class FPapel extends FDados {
   private JTextFieldPad txtColPapel = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtClassNotaPapel = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
   public FPapel() {
+  	super();
 //Remove o painel de impressão da classe FDados:
     pnRodape.remove(2);
 //Monta a tela:
