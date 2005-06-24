@@ -55,6 +55,7 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
+import org.freedom.acao.PostEvent;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
@@ -506,6 +507,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private PainelImagem imFotoProd = new PainelImagem(65000);
 
 	private String[] sPrefs = null;
+	
+	boolean acesso = false;
 
 	public FProduto() {
 		setTitulo("Cadastro de Produtos");
@@ -529,6 +532,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcCodAcess.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcCodAcess);
 		lcCodAcess.setTabela(tabCodAcess);
+		lcCodAcess.addInsertListener(this);
 		
 		lcLote.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcLote);
@@ -746,9 +750,24 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 					sSQL = null;
 				}
 			}
+			if (txtCodPA.getVlrInteger().intValue()!=0) {
+				habAcesso(false);
+				acesso = false;
+			}
+			else {
+				habAcesso(true);
+				acesso = true;
+			}
 		}
 	}
 
+	private void habAcesso(boolean hab) {
+		txtCodPA.setAtivo(hab);
+		rgPA.setAtivo(hab);	    
+	    txtAnoCCPA.setAtivo(hab);
+		txtCodCCPA.setAtivo(hab);
+		txtCodCaixa.setAtivo(hab);
+	}
 	public void beforeCarrega(CarregaEvent cevt) {
 
 	}
@@ -1175,9 +1194,6 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		pinRodCodAcess.adic(navCodAcess, 0, 60, 270, 25);
 		navCodAcess.setAtivo(6, false);
 
-		txtAnoCCPA.setAtivo(false);
-		txtCodCCPA.setAtivo(false);
-		txtAnoCCPA.setAtivo(false);
 		
 		adicCampo(txtCodPA, 7, 20, 90, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
 		adicDB(rgPA, 100, 20, 150, 30, "TipoPA", "Tipo", true);
@@ -1616,6 +1632,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		else{ 
 			txtCodCaixa.setAtivo(false);				
 		}
+			
 	}
 
 	public void afterEdit(EditEvent eevt) {
@@ -1637,6 +1654,12 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			txtCodFabProd.setVlrString(txtCodProd.getVlrString());
 			txtPesoBrutProd.setVlrDouble(new Double(0.0));
 			txtPesoLiqProd.setVlrDouble(new Double(0.0));
+		}
+	}
+	
+	public void afterPost(PostEvent pevt) {
+		if(pevt.getListaCampos()==lcCodAcess){
+			lcCodAcess.carregaDados();
 		}
 	}
 
@@ -1748,7 +1771,11 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	public void beforeEdit(EditEvent eevt) {
 	}
 
-	public void beforeInsert(InsertEvent eevt) {
+	public void beforeInsert(InsertEvent eevt) {		
+		if (eevt.getListaCampos()==lcCodAcess)
+	  		habAcesso(true);
+		else
+			habAcesso(false);
 	}
 
 	public void edit(EditEvent eevt) {
