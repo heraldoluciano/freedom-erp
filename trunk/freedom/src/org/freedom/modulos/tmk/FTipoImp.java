@@ -65,6 +65,7 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
   private JButton btAdic = new JButton(Icone.novo("btFlechaDir.gif"));
   private JButton btDel = new JButton(Icone.novo("btFlechaEsq.gif"));
   public FTipoImp() {
+  	super();
     setTitulo("Cadastro de org.freedom.layout de importação");
     setAtribos(50, 20, 497, 390);
 

@@ -37,6 +37,7 @@ public class FTabPreco extends FDados implements ActionListener{
   private JTextFieldPad txtCodTab = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTab= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTabPreco () {
+  	super();
     setTitulo("Cadastro de Tabelas de Preços");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodTab, 7, 20, 70, 20,"CodTab","Cód.tb.pc.", ListaCampos.DB_PK, true);

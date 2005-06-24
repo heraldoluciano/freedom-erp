@@ -49,6 +49,7 @@ public class FLancaExp extends FDados implements ActionListener {
 	private ListaCampos lcTipoExp = new ListaCampos(this,"TE");
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	public FLancaExp() {
+		super();
 		setTitulo("Lançamentos de Expositores");
 		setAtribos(50,50,400,200);
 

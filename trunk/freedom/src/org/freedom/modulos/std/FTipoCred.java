@@ -37,6 +37,7 @@ public class FTipoCred extends FDados implements ActionListener {
   private JTextFieldPad txtDescTipoCred = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtVlrTipoCred = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
   public FTipoCred() {
+  	super();
     setTitulo("Cadastro de tipos de credito");
     setAtribos(50, 50, 350, 165);
     adicCampo(txtCodTipoCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred.", ListaCampos.DB_PK, true);

@@ -36,6 +36,7 @@ public class FTipoRec extends FDados implements ActionListener {
   private JTextFieldPad txtCodTipoRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTipoRec = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   public FTipoRec () {
+  	super();
     setTitulo("Cadastro de tipos de recursos");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodTipoRec, 7, 20, 70, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_PK, true);

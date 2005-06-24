@@ -37,6 +37,7 @@ public class FTipoAtend extends FDados implements ActionListener {
   private JTextFieldPad txtCodTipoAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescTipoAtend = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   public FTipoAtend () {
+  	super();
     setTitulo("Cadastro de Tipo de Atendentes");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodTipoAtend, 7, 20, 70, 20,"CodTpAtend","Cód.atend.",ListaCampos.DB_PK,true);

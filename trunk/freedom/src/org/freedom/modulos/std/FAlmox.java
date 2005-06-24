@@ -36,6 +36,7 @@ public class FAlmox extends FDados implements ActionListener{
   private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescAlmox= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FAlmox () {
+  	super();
     setTitulo("Cadastro de Almoxarifado");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodAlmox, 7, 20, 70, 20,"CodAlmox","Cód.almox.", ListaCampos.DB_PK, true);

@@ -82,6 +82,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
     private Tabela tab = new Tabela();
     private JScrollPane spnTab = new JScrollPane(tab);
 	public FLiberaCredito() {
+		super();
 		setTitulo("Liberação de crédito");
 		setAtribos(10,10,650,400);
 		

@@ -29,6 +29,7 @@ public class FAjustaSeq extends FDados {
   private JTextFieldPad txtSgTab = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtNroSeq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public FAjustaSeq() {
+  	super();
     setTitulo("Ajusta sequencia");
     setAtribos(50,50,350,150);
     

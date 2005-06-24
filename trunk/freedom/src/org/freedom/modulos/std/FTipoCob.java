@@ -38,6 +38,7 @@ public class FTipoCob extends FDados implements ActionListener {
   private JTextFieldPad txtDescTipoCob = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtDuplCob = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   public FTipoCob () {
+  	super();
     setTitulo("Cadastro de Tipo de Cobrança");
     setAtribos( 50, 50, 390, 125);
     adicCampo(txtCodTipoCob, 7, 20, 70, 20,"CodTipoCob","Cód.tp.cob.", ListaCampos.DB_PK, true);

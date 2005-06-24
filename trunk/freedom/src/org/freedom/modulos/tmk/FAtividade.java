@@ -36,6 +36,7 @@ public class FAtividade extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FAtividade () {
+  	super();
     setTitulo("Cadastro de atividades");
     setAtribos(50, 50, 350, 125);
     adicCampo(txtCod, 7, 20, 70, 20,"CodAtiv","Cód.ativ.", ListaCampos.DB_PK, true);

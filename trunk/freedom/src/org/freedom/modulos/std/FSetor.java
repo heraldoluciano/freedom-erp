@@ -37,6 +37,7 @@ public class FSetor extends FDados implements ActionListener{
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescSetor= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FSetor () {
+  	super();
     setTitulo("Cadastro de Setor");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodSetor, 7, 20, 70, 20,"CodSetor","Cód.setor",ListaCampos.DB_PK, true);

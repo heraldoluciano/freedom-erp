@@ -39,6 +39,7 @@ public class FPais extends FDados implements ActionListener {
   private JTextFieldPad txtSiglaPais = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtDDIPais = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public FPais () {
+  	super();
     setTitulo("Cadastro de Paises");
     setAtribos( 50, 50, 400, 125);
     

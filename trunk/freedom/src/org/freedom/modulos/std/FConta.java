@@ -47,6 +47,7 @@ public class FConta extends FDados {
   private ListaCampos lcMoeda = new ListaCampos(this,"MA");
   private ListaCampos lcPlan = new ListaCampos(this,"PN");
   public FConta() {
+  	super();
     setTitulo("Cadastro de Contas");
     setAtribos(50,50,415,290);
 

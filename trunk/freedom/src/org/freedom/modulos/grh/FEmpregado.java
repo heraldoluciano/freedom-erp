@@ -43,6 +43,7 @@ public class FEmpregado extends FDados implements ActionListener {
   private ListaCampos lcTurno = new ListaCampos(this,"TU");
   private ListaCampos lcDepto = new ListaCampos(this,"DP");
   public FEmpregado () {
+  	super();
     setTitulo("Cadastro de Empregados");
     setAtribos(50, 50, 500, 400);
     adicCampo(txtCod, 7, 20, 80, 20,"MatEmpr","Matricula", ListaCampos.DB_PK, true);

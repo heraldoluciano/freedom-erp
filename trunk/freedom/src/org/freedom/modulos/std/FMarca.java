@@ -38,6 +38,7 @@ public class FMarca extends FDados implements ActionListener {
   private JTextFieldPad txtDescMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   public FMarca() {
+  	super();
     setTitulo("Cadastro de marcas de produtos");
     setAtribos( 50, 50, 370, 125);
     adicCampo(txtCodMarca, 7, 20, 70, 20,"CodMarca","Cód.marca", ListaCampos.DB_PK, true);

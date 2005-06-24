@@ -43,6 +43,7 @@ public class FTabICMS extends FDados implements ActionListener {
   private JTextFieldPad txtUFTabICMS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtAliqTabICMS = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
   public FTabICMS() {
+  	super();
     setTitulo("Cadastro de alíquotas de ICMS");
     setAtribos( 50, 50, 330, 125);
     adicCampo(txtUFTabICMS, 7, 20, 50, 20,"UFTI","UF", ListaCampos.DB_PK, true);

@@ -42,6 +42,7 @@ public class FBanco extends FDados implements ActionListener {
   private JTextFieldFK txtDescModBol = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private ListaCampos lcModBol = new ListaCampos(this,"MB");
   public FBanco () {
+  	super();
     setTitulo("Cadastro de Banco");
     setAtribos( 50, 50, 350, 165);
 

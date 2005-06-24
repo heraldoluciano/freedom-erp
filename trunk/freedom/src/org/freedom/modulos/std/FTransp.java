@@ -67,6 +67,7 @@ public class FTransp extends FDados implements PostListener,RadioGroupListener,I
   private Vector vTipoTranspVal = new Vector();
   private JRadioGroup rgTipoTransp =null ;
   public FTransp () {
+  	super();
     setTitulo("Cadastro de Tranportadoras");
     setAtribos( 50, 50, 396, 360);
     

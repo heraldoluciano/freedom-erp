@@ -37,6 +37,7 @@ public class FModNota extends FDados implements ActionListener{
   private JTextFieldPad txtCodModNota = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescModNota= new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   public FModNota () {
+  	super();
     setTitulo("Cadastro de Modelo de NFs");
     setAtribos( 50, 50, 370, 125);
     adicCampo(txtCodModNota, 7, 20, 90, 20,"CodModNota","Cód.mod.nts.", ListaCampos.DB_PK, true);

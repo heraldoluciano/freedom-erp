@@ -36,6 +36,7 @@ public class FClasCli extends FDados implements ActionListener{
   private JTextFieldPad txtCodClasCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescClasCli= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FClasCli () {
+  	super();
     setTitulo("Cadastro de Classificação de Cliente");
     setAtribos( 50, 50, 350, 125);
     adicCampo(txtCodClasCli, 7, 20, 70, 20,"CodClasCli","Cód.c.cli.",ListaCampos.DB_PK,null,true);

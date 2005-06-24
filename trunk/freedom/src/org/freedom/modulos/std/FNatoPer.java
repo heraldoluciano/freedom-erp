@@ -49,6 +49,7 @@ public class FNatoPer extends FDados implements ActionListener, InsertListener {
   private JCheckBoxPad cbImpDtSaidaNat = new JCheckBoxPad("Imprimir data de saída na NF?","S","N");
   private JButton btItNatoper = new JButton(Icone.novo("btBrasil.gif"));
   public FNatoPer() {
+  	super();
   	//cbImpDtSaidaNat.set
     setTitulo("Cadastro de Naturezas de Opreção");
     setAtribos( 50, 50, 330, 265);

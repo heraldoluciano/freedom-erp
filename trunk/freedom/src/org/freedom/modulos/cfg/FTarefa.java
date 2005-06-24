@@ -48,6 +48,7 @@ public class FTarefa extends FDados implements ActionListener {
   private JComboBoxPad cbTipo = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_STRING, 2, 0); 
   private ListaCampos lcObjeto = new ListaCampos(this,"OB");
   public FTarefa () {
+  	super();
     setTitulo("Cadastro de tarefas");
     setAtribos( 50, 50, 330, 205);
     

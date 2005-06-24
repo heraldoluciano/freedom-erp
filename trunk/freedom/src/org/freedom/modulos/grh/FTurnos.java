@@ -47,6 +47,7 @@ public class FTurnos extends FDados implements ActionListener {
   private JRadioGroup rgTipoTurno = null;
   
   public FTurnos () {
+  	super();
     setTitulo("Cadastro de Turnos");
     setAtribos(50, 50, 440, 250);
 	    
