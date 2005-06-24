@@ -56,6 +56,7 @@ public class FTipoCli extends FDados implements ActionListener {
   private JLabelPad lbInfoFicha = new JLabelPad(" Informações complementares na ficha cadastral");
   private JPanelPad pinLbInfoCaixa = new JPanelPad(53,15);
   public FTipoCli () {
+  	super();
     setTitulo("Cadastro de tipos de clientes");
     setAtribos(50, 50, 440, 330);
     adicCampo(txtCod, 7, 20, 70, 20,"CodTipoCli","Cód.tp.cli.", ListaCampos.DB_PK, true);
