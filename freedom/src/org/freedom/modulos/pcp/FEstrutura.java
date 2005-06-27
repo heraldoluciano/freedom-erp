@@ -125,9 +125,9 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtDescModLote.setListaCampos(lcModLote);
 
     adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
-    adicDescFK(txtDescProd, 90, 20, 342, 20, "DescProd", "Descrição do produto");
+    adicDescFK(txtDescProd, 90, 20, 372, 20, "DescProd", "Descrição do produto");
 //    adicCampo(txtQtdEst, 435, 20, 108, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
-    adicCampo(txtSeqEst,435,20,108,20, "SeqEst", "Seq.Est.",ListaCampos.DB_PK,true);
+    adicCampo(txtSeqEst,465,20,78,20, "SeqEst", "Seq.Est.",ListaCampos.DB_PK,true);
     adic(btFase,445,55,100,25);
     adicCampo(txtQtdEst, 7, 60, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDescEst, 90, 60, 297, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
@@ -178,7 +178,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private void abreFase() {
     if (fPrim.temTela("Estrutura x Fase")==false) {
     	
-      FEstFase tela = new FEstFase(txtCodProd.getVlrInteger().intValue());
+      FEstFase tela = new FEstFase(txtCodProd.getVlrInteger().intValue(),txtSeqEst.getVlrInteger().intValue());
       fPrim.criatela("Estrutura x Fase",tela,con);
       tela.setConexao(con);
     }
