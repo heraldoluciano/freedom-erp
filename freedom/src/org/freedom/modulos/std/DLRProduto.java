@@ -38,12 +38,19 @@ public class DLRProduto extends FFDialogo {
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
   private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-  private JPanelPad pinSelec = new JPanelPad(350,90);
-  private JLabelPad lbSelec = new JLabelPad(" Selecão:");
+  private JPanelPad pnlbSelec2 = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+  private JPanelPad pinSelec = new JPanelPad(172,90);
+  private JPanelPad pinSelec2 = new JPanelPad(172,90);
+  private JLabelPad lbSelec = new JLabelPad(" Selecão por descrição:");
+  private JLabelPad lbSelec2 = new JLabelPad(" Selecão por código:");
   private JLabelPad lbDe = new JLabelPad("De:");
   private JLabelPad lbA = new JLabelPad("À:");
   private JTextFieldPad txtDe = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldPad txtA = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+  private JLabelPad lbDe2 = new JLabelPad("De:");
+  private JLabelPad lbA2 = new JLabelPad("À:");
+  private JTextFieldPad txtDe2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,30,0);
+  private JTextFieldPad txtA2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,30,0);
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private JCheckBoxPad cbAtivoProd = new JCheckBoxPad("Ativo","S","N");
   private JLabelPad lbAtivoProd = new JLabelPad(" Produtos Ativos:");
@@ -113,17 +120,28 @@ public class DLRProduto extends FFDialogo {
     
     
 
-    pnlbSelec.add(lbSelec);
+   
     adic(lbOrdem,7,5,180,20);
     adic(rgOrdem,7,25,240,30);
 	adic(lbAtivoProd,250,5,120,15);
 	adic(cbAtivoProd,250,25,290,30);
-    adic(pnlbSelec,10,60,80,15);
+	
+	pnlbSelec.add(lbSelec);
+    adic(pnlbSelec,10,60,146,15);
     pinSelec.adic(lbDe,7,5,30,20);
-    pinSelec.adic(txtDe,7,25,380,20);
+    pinSelec.adic(txtDe,7,25,243,20);
     pinSelec.adic(lbA,7,45,30,20);
-    pinSelec.adic(txtA,7,65,380,20);
-    adic(pinSelec,7,70,433,100);
+    pinSelec.adic(txtA,7,65,243,20);
+    adic(pinSelec,7,70,260,100);
+    
+    pnlbSelec2.add(lbSelec2);
+    adic(pnlbSelec2,275,60,130,15);
+    pinSelec2.adic(lbDe2,7,5,30,20);
+    pinSelec2.adic(txtDe2,7,25,153,20);
+    pinSelec2.adic(lbA2,7,45,30,20);
+    pinSelec2.adic(txtA2,7,65,153,20);
+    adic(pinSelec2,270,70,170,100);
+    
     adic(lbForn,7,180,80,20);
     adic(txtCodForn,7,200,80,20);
     adic(txtDescForn,90,200,350,20);
@@ -144,7 +162,7 @@ public class DLRProduto extends FFDialogo {
 	lcMarca.setConexao(cn);
   }
   public String[] getValores() {
-    String[] sRetorno = new String[11];
+    String[] sRetorno = new String[13];
     if (rgOrdem.getVlrString().compareTo("C") == 0 )
       sRetorno[0] = "CODPROD";
     else if (rgOrdem.getVlrString().compareTo("D") == 0 )
@@ -159,6 +177,8 @@ public class DLRProduto extends FFDialogo {
     sRetorno[8] = txtDescAlmox.getText();
     sRetorno[9] = txtCodMarca.getVlrString();
     sRetorno[10]= txtDescMarca.getText();
+    sRetorno[11] = txtDe2.getText();
+    sRetorno[12] = txtA2.getText();
  
     return sRetorno;
   }

@@ -1353,6 +1353,16 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			vFiltros.add("PRODUTOS MENORES QUE " + sValores[2].trim());
 			sAnd = " AND ";
 		}
+		if (sValores[11].trim().length() > 0) {
+			sWhere = sWhere + sAnd + "CODPROD >= '" + sValores[11] + "'";
+			vFiltros.add("PRODUTOS MAIORES QUE " + sValores[11].trim());
+			sAnd = " AND ";
+		}
+		if (sValores[12].trim().length() > 0) {
+			sWhere = sWhere + sAnd + "CODPROD <= '" + sValores[12] + "'";
+			vFiltros.add("PRODUTOS MENORES QUE " + sValores[12].trim());
+			sAnd = " AND ";
+		}
 		if (sValores[3].equals("S")) {
 			sWhere = sWhere + sAnd + "ATIVOPROD='S'";
 			vFiltros.add("PRODUTOS ATIVOS");
@@ -1402,7 +1412,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				ps = con.prepareStatement(sSQL);
 				rs = ps.executeQuery();
 				imp.limpaPags();
-				
+
+				imp.montaCab();
 				imp.setTitulo("Relatório de Produtos");
 				imp.addSubTitulo("Relatório de Produtos");
 				imp.addSubTitulo("Filtrado por:");
@@ -1413,7 +1424,6 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				
 				while (rs.next()) {
 					if (imp.pRow() == 0) {
-						imp.montaCab();
 						imp.impCab(136, true);
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|");
@@ -1512,12 +1522,12 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 				rs = ps.executeQuery();
 				imp.limpaPags();
 				
+				imp.montaCab();
 				imp.setTitulo("Relatório de Produtos");				
 				imp.addSubTitulo("Relatório de Produtos");
 				
 				while (rs.next()) {
-					if (imp.pRow() == 0) {						
-						imp.montaCab();
+					if (imp.pRow() == 0) {		
 						imp.impCab(136, true);
 						if ( vFiltros.size()>0 ){
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
