@@ -16,7 +16,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Comentários sobre a classe...
+ * Tela para cadastro de estruturas de produtos.
  * 
  */ 
 
@@ -57,7 +57,8 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private JTextFieldPad txtItRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-  private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);    
+  private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);
   private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Sim","S","N");
   private JCheckBoxPad cbAtiva = new JCheckBoxPad("Sim","S","N");
   private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
@@ -125,9 +126,11 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
 
     adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
     adicDescFK(txtDescProd, 90, 20, 342, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdEst, 435, 20, 108, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+//    adicCampo(txtQtdEst, 435, 20, 108, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtSeqEst,435,20,108,20, "SeqEst", "Seq.Est.",ListaCampos.DB_PK,true);
     adic(btFase,445,55,100,25);
-    adicCampo(txtDescEst, 7, 60, 380, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
+    adicCampo(txtQtdEst, 7, 60, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtDescEst, 90, 60, 297, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
     adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
     adicDB(cbAtiva,392,60,50,20,"ATIVOEST","Ativa",true);
     adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
