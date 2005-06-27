@@ -134,7 +134,16 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodCCPA = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 19, 0);
 	
+	private JTextFieldFK txtDescCCPA = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 50, 0);
+	
 	private JTextFieldPad txtCodCaixa = new JTextFieldPad(
+			JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldFK txtDescCaixa = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 20, 0);
+	
+	private JTextFieldPad txtCodEst = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(
@@ -471,6 +480,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcCC = new ListaCampos(this,"CC");
 	
 	private ListaCampos lcCCAcesso = new ListaCampos(this,"CC");
+	
+	private ListaCampos lcCaixa = new ListaCampos(this, "");
 
 	private ListaCampos lcForFK = new ListaCampos(this);
 
@@ -1021,14 +1032,25 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 		//CC Acesso
 		lcCCAcesso.add(new GuardaCampo(txtCodCCPA, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
-//		lcCCAcesso.add(new GuardaCampo(txtDescCC, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
+		lcCCAcesso.add(new GuardaCampo(txtDescCCPA, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
 		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
 		lcCCAcesso.montaSql(false, "CC", "FN");
 		lcCCAcesso.setReadOnly(true);
 		lcCCAcesso.setQueryCommit(false);
-//		txtDescCC.setListaCampos(lcCC);
+		txtDescCCPA.setListaCampos(lcCCAcesso);
 		txtCodCCPA.setTabelaExterna(lcCCAcesso);
 		txtAnoCCPA.setTabelaExterna(lcCCAcesso);
+		
+		//	Caixa
+		lcCaixa.add(new GuardaCampo(txtCodCaixa, "CodCaixa","Cód.caixa", ListaCampos.DB_PK, true));
+		lcCaixa.add(new GuardaCampo(txtDescCaixa, "DescCaixa","Descrição do Caixa", ListaCampos.DB_SI, false));
+		lcCaixa.add(new GuardaCampo(txtCodEst, "CodEst","Estação de trabalho", ListaCampos.DB_SI, false));
+		lcCaixa.montaSql(false, "CAIXA", "PV");
+		lcCaixa.setReadOnly(true);
+		lcCaixa.setQueryCommit(false);
+		txtDescCaixa.setListaCampos(lcCaixa);
+		txtCodCaixa.setTabelaExterna(lcCaixa);
+		
 		
 		
 		setPainel(pinRodProdPlan, pnProdPlan);
@@ -1212,11 +1234,13 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		navCodAcess.setAtivo(6, false);
 
 		
-		adicCampo(txtCodPA, 7, 20, 90, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
-		adicDB(rgPA, 100, 20, 150, 30, "TipoPA", "Tipo", true);
-		adicCampo(txtAnoCCPA, 253, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, null, false);
-		adicCampo(txtCodCCPA, 336, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, null, false);
-		adicCampo(txtCodCaixa, 489, 20, 90, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_SI, null, false);
+		adicCampo(txtCodPA, 7, 20, 70, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
+		adicDB(rgPA, 80, 20, 130, 30, "TipoPA", "Tipo", true);
+		adicCampo(txtAnoCCPA, 213, 20, 70, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, txtDescCCPA, false);
+		adicCampo(txtCodCCPA, 439, 20, 140, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, txtDescCCPA, false);
+		adicDescFK(txtDescCCPA, 286, 20, 150, 20, "DescCC","Descrição do C.C.");
+		adicCampo(txtCodCaixa, 582, 20, 70, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_FK, txtDescCaixa, false);
+		adicDescFKInvisivel(txtDescCaixa,"DescCaixa","Descrição do caixa");
 		setListaCampos(true, "PRODACESSO", "EQ");
 		lcProdAcesso.setQueryInsert(false);
 		lcProdAcesso.setQueryCommit(false);
@@ -1227,8 +1251,10 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		tabCodAcess.setTamColuna(90, 0);
 		tabCodAcess.setTamColuna(50, 1);
 		tabCodAcess.setTamColuna(70, 2);		
-		tabCodAcess.setTamColuna(120, 3);
-		tabCodAcess.setTamColuna(80, 4);
+		tabCodAcess.setTamColuna(0, 3);
+		tabCodAcess.setTamColuna(150, 4);
+		tabCodAcess.setTamColuna(160, 5);
+		tabCodAcess.setTamColuna(160, 7);
 		
 		
 		txtCodProd.requestFocus();
@@ -1607,6 +1633,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcPlan.setConexao(cn);
 		lcCC.setConexao(cn);
 		lcCCAcesso.setConexao(cn);
+		lcCaixa.setConexao(cn);
 		lcForFK.setConexao(cn);
 		lcFatConv.setConexao(cn);
 		lcProdPlan.setConexao(cn);
