@@ -59,6 +59,9 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 
     private boolean initFirstFocus = true;
     
+    private int largAnt = 0;
+    private int altAnt = 0;
+    
     public boolean primShow = true;
 
     private BorderLayout blCliente = new BorderLayout();
@@ -146,6 +149,9 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public void setAtribos(int esq, int topo, int larg, int alt) {
     	int altPrinc = 0;
     	int largPrinc = 0;
+    	
+    	altAnt = alt;  // Guarda a altura anterior para acertar o painel principal
+    	largAnt = larg; // Guarda a largura anteriror para acertar o painel principal
     	
     	if (Aplicativo.telaPrincipal!=null) {
 	    	altPrinc = (int) Aplicativo.telaPrincipal.dpArea.getSize().getHeight();
@@ -295,8 +301,9 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     
     public void ajustaScroll() {
     	this.setSize(this.getWidth()+3, this.getHeight()+3);
-    	pnCliente.setPreferredSize(new Dimension(spPrincipal.getWidth()-3, spPrincipal.getHeight()-pnBordRod.getHeight()-3));
-
+    	//pnCliente.setPreferredSize(new Dimension(spPrincipal.getWidth()-3, spPrincipal.getHeight()-pnBordRod.getHeight()-3));
+    	if ( (largAnt!=0) && (altAnt!=0) ) 
+    		pnCliente.setPreferredSize(new Dimension(largAnt-30, altAnt-pnBordRod.getHeight()-36));
     	spPrincipal.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     	spPrincipal.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	//spCliente.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
