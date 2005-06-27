@@ -690,10 +690,10 @@ public class FRma extends FDetalhe implements PostListener,
 		}	
 		if(cevt.getListaCampos()==lcUsu){
 			String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"+txtIDUsu.getVlrString().trim()+"')) IN "+
-									"(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE PA.codemp=EQPRODUTO.CODEMP AND "+
+									"(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "+
 									"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "+
 									"OR "+
-									"((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE PA.codemp=EQPRODUTO.CODEMP AND "+
+									"((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "+
 									"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "+
 									"OR " +						  
 									"((SELECT ALMOXARIFE FROM sgretinfousu('"+txtIDUsu.getVlrString().trim()+"'))='S')) ";
