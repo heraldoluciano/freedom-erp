@@ -40,7 +40,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -68,6 +67,7 @@ import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
+
 
 public class FRma extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
@@ -146,12 +146,6 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 
-	private ImageIcon imgCancelado = Icone.novo("bt_cancelado.gif");
-	private ImageIcon imgExpedido = Icone.novo("bt_expedido.gif");
-	private ImageIcon imgAprovado = Icone.novo("bt_aprovado.gif");
-	private ImageIcon imgPendento = Icone.novo("bt_pendente.gif");
-	private ImageIcon imgStatus = Icone.novo("");
-	
 	String sSitItRma = txtSitItRma.getVlrString();
 	String sOrdRMA = "";
 	Integer anoCC = null;
@@ -204,7 +198,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
 
-		lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
+	//	lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
@@ -217,7 +211,7 @@ public class FRma extends FDetalhe implements PostListener,
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
+//		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
@@ -324,6 +318,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcDet.addCarregaListener(this);
 		lcDet.addInsertListener(this);
 		lcCampos.addInsertListener(this);
+		lcUsu.addCarregaListener(this);
 
 		btAprovaRMA.setToolTipText("Aprovar todos os ítens.");
 		btFinAprovRMA.setToolTipText("Finaliza Aprovação.");
@@ -692,7 +687,22 @@ public class FRma extends FDetalhe implements PostListener,
 				if(txtQtdExpRma.getVlrDouble().compareTo(new Double(0))<=0)
 					txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());				    
 			}
-		}			
+		}	
+		if(cevt.getListaCampos()==lcUsu){
+			String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"+txtIDUsu.getVlrString().trim()+"')) IN "+
+									"(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE PA.codemp=EQPRODUTO.CODEMP AND "+
+									"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "+
+									"OR "+
+									"((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE PA.codemp=EQPRODUTO.CODEMP AND "+
+									"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "+
+									"OR " +						  
+									"((SELECT ALMOXARIFE FROM sgretinfousu('"+txtIDUsu.getVlrString().trim()+"'))='S')) ";
+			
+			lcProd.setWhereAdic(sWhereAdicProd);
+			lcProd2.setWhereAdic(sWhereAdicProd);
+			
+			carregaWhereAdic();
+		}
 	}
 
 	public boolean[] prefs() {
@@ -1228,6 +1238,12 @@ public class FRma extends FDetalhe implements PostListener,
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage());
 		}
+		
+/*			      
+		lcProd.setWhereAdic(sWhereAdicProd);
+		lcProd2.setWhereAdic(sWhereAdicProd);
+	*/	
+		
 		carregaWhereAdic();
 	}
 	public Color cor(int r, int g, int b){
