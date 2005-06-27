@@ -45,7 +45,7 @@ public class FTabDados extends FDados implements KeyListener {
 	boolean ind = true;
 
 	public FTabDados() {
-		super(false);
+		this(true);
 		setInitFirstFocus(false);
 		setTitulo("Formulário de tabulação");
 		setAtribos(50, 50, 350, 300);
@@ -54,6 +54,10 @@ public class FTabDados extends FDados implements KeyListener {
 		addKeyListener(this);
 	}
 
+	public FTabDados(boolean comScroll) {
+		super(comScroll);
+	}
+	
 	public JTabbedPanePad adicTab(String tit, JPanelPad pn) {
 		tpn.add(tit, pn);
 		pn.addKeyListener(this);
@@ -96,5 +100,11 @@ public class FTabDados extends FDados implements KeyListener {
 				tpn.setSelectedIndex(0);
 		}
 		super.keyTyped(kevt);
+	}
+	public void show() {
+		primShow = false;
+		super.show();
+		ajustaScroll();
+		//this.pnCliente.setBounds(0,0,100,100);
 	}
 }

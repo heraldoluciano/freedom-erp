@@ -247,6 +247,7 @@ public class FEmpresa extends FTabDados implements PostListener,
     private int codFilial;
 
     public FEmpresa() {
+    	super();
         setTitulo("Cadastro da Empresa");
         setAtribos(50, 20, 500, 470);
 

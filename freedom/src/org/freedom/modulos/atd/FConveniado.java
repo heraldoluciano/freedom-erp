@@ -110,6 +110,7 @@ public class FConveniado extends FTabDados implements PostListener {
   private Object[] oPrefs;
  
   public FConveniado () {
+  	super();
     setTitulo("Cadastro de Conveniados");
     setAtribos( 50, 10, 530, 450);
 

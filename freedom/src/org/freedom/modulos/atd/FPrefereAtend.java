@@ -80,6 +80,7 @@ public class FPrefereAtend extends FTabDados {
 	private ListaCampos lcVend = new ListaCampos(this,"VD");
 	
 	public FPrefereAtend() {
+		super();
 		setTitulo("Preferências do Atendimento");
 		setAtribos(50, 50, 355, 375);
 		

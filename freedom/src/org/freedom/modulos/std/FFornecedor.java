@@ -88,6 +88,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   private ListaCampos lcTipoFor = new ListaCampos(this,"TF");
   private boolean[] prefs = null;
   public FFornecedor() {
+  	super();
     setTitulo("Cadastro de Fornecedores");
     setAtribos(50, 20, 480, 430);
     setImprimir(true);

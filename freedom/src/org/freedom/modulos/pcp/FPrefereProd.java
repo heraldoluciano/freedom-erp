@@ -44,6 +44,7 @@ public class FPrefereProd extends FTabDados {
 	private JComboBoxPad cbSitRMAOP = null;
 
 	public FPrefereProd() {
+		super();
 		setTitulo("Preferências de Produção");
 		setAtribos(50, 50, 540, 270);
 

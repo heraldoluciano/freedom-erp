@@ -39,6 +39,7 @@ public class FPrefere extends FTabDados {
 	private JTextFieldPad txtUserMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 	public FPrefere() {
+		super();
 		setTitulo("Preferências do Telemarketing");
 		setAtribos(50, 50, 355, 375);
 		

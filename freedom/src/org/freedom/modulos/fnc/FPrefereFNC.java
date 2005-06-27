@@ -38,6 +38,7 @@ public class FPrefereFNC extends FTabDados {
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private ListaCampos lcMoeda = new ListaCampos(this,"MO");
 	public FPrefereFNC() {
+		super();
 		setTitulo("Preferências Gerais");
 		setAtribos(50, 50, 355, 200);
 		

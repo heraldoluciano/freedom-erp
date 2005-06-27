@@ -40,7 +40,6 @@ import javax.swing.JComponent;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -75,7 +74,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
    public JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
    public JButton btImp = new JButton( Icone.novo("btImprime.gif"));
    public JButton btPrevimp = new JButton( Icone.novo("btPrevimp.gif"));
-   public Border br = BorderFactory.createEtchedBorder();
    public JComponent primeiroCompo = null;
    boolean Shift = false;
    boolean Ctrl = false;
@@ -105,11 +103,6 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
      pnGImp.add(btImp);
      pnGImp.add(btPrevimp);
      pnImp.add(pnGImp);
-
-     pnBordRod.setLayout(new GridLayout(1,1));
-     pnBordRod.setPreferredSize(new Dimension(450, 30));
-     pnBordRod.add(pnRodape);
-     pnBordRod.setBorder(br);
 
      btSair.addActionListener(this);
 

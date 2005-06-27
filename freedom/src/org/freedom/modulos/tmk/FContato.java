@@ -188,6 +188,7 @@ public class FContato extends FTabDados implements RadioGroupListener,
 	private JButton btExportCli = new JButton(Icone.novo("btExportaCli.gif"));
 
 	public FContato() {
+		super();
 		setTitulo("Cadastro de Contatos");
 		setAtribos(50, 10, 530, 400);
 

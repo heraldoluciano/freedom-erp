@@ -194,6 +194,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private boolean[] bPref = null;
   private boolean bExecCargaObs = false;
   public FCliente () {
+  	super();
     setTitulo("Cadastro de Clientes"); 
     setAtribos(50, 0, 530, 520);
     //setFirstFocus(txtCodCli);
@@ -206,6 +207,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     setPainel(pinCli);
     setImprimir(true);
   }
+  /*public void show() {
+  	super.show();
+  	spCliente.add(pnCliente);
+  	c.remove(pnCliente);
+  	c.add(spCliente, BorderLayout.CENTER);
+  }*/
   private void montaTela() {
       
   	adicTab("Cliente", pinCli); 

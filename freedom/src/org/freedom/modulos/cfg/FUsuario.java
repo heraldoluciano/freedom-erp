@@ -103,6 +103,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
   private Connection conIB = null;
   public FUsuario () {
   	
+  	super();
     setTitulo("Cadastro de Usuários");
     setAtribos( 50, 50, 467, 535);
 

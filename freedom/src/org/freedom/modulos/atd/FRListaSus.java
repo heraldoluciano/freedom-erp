@@ -115,6 +115,7 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
   private JCheckBoxPad cbLimpaCheck;
   private JCheckBoxPad cbTicaTudo;
   public FRListaSus() {
+  	super();
     pinGeral = new JPanelPad();
     pinPacientes = new JPanelPad();
     pinPacientes2 = new JPanelPad();

@@ -519,6 +519,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private String[] sPrefs = null;
 	
 	public FProduto() {
+		super();
 		setTitulo("Cadastro de Produtos");
 		setAtribos(30, 10, 680, 565);
 

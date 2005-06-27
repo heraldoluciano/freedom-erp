@@ -160,6 +160,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JScrollPane spnObs = new JScrollPane(txaObs);
 
 	public FVendedor() {
+		super();
 		setTitulo("Cadastro de comissionados");
 		setAtribos(50, 10, 400, 540);
 		
