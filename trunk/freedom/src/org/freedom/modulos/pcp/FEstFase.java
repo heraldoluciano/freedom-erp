@@ -49,6 +49,7 @@ public class FEstFase extends FDetalhe {
   private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTpRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private ListaCampos lcProd = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
@@ -56,21 +57,24 @@ public class FEstFase extends FDetalhe {
   private JTextAreaPad txaModoPreparo = new JTextAreaPad();
   private JScrollPane spnModoPreparo = new JScrollPane(txaModoPreparo);
   private int iCodProd;
+  private int iSeqEst;
   
   public FEstFase() {
-  	this(0);
+  	this(0,0);
   }
   
-  public FEstFase(int iCodProd) {
+  public FEstFase(int iCodProd,int iSeqEst) {
     setTitulo("Fases da estrutura");
     setAtribos( 70, 40, 550, 550);
     setAltCab(130);
     
     this.iCodProd = iCodProd;
+    this.iSeqEst = iSeqEst;
     
     txtCodProd.setAtivo(false);
     txtDescEst.setAtivo(false);
     txtQtdEst.setAtivo(false);
+    txtSeqEst.setAtivo(false);
     
     pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
@@ -87,7 +91,8 @@ public class FEstFase extends FDetalhe {
     
     adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
     adicDescFK(txtDescProd, 90, 20, 247, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdEst, 340, 20, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtSeqEst, 340, 20, 80, 20,"SeqEst","Seq.Est.", ListaCampos.DB_PK, true);
+    adicCampo(txtQtdEst, 423, 20, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDescEst, 7, 60, 250, 20,"DescEst","Descrição da estrutura", ListaCampos.DB_SI,true);
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
@@ -141,6 +146,7 @@ public class FEstFase extends FDetalhe {
     lcFase.setConexao(cn);
     lcTipoRec.setConexao(cn);
     txtCodProd.setVlrInteger(new Integer(iCodProd));
+    txtSeqEst.setVlrInteger(new Integer(iSeqEst));
     lcCampos.carregaDados();
     txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
    }        

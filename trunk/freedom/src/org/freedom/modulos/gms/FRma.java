@@ -199,9 +199,9 @@ public class FRma extends FDetalhe implements PostListener,
 								"((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "+
 								"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "+	
 								"OR "+
-								"((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.strUsuario+"))='S') "+
+								"((SELECT ALMOXARIFE FROM sgretinfousu('"+Aplicativo.strUsuario+"'))='S') "+
 								"OR "+
-								"((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.strUsuario+"))='TD') "+
+								"((SELECT APROVARMA FROM sgretinfousu('"+Aplicativo.strUsuario+"'))='TD') "+
 								") "; 
 				
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, false));

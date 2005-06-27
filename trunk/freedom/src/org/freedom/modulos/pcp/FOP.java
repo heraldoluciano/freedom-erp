@@ -99,6 +99,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldFK txtModLote = new JTextFieldFK(JTextFieldPad.TP_STRING, 100, 0);
   private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdEstRef = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetCod = new ListaCampos(this,"PD");
@@ -196,7 +197,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	
   	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true));
   	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
-    lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));  	
+    lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));    
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
     lcProdEstCod.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
     lcProdEstCod.add(new GuardaCampo( txtNroDiasValid,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false));
@@ -230,18 +231,21 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicCampo(txtDtFabProd,417,20,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
 
   	if (!bPrefs[0]) {  
-  		adicCampo(txtCodProdEst, 7, 60, 70, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
+  		adicCampo(txtCodProdEst, 7, 60, 70, 20,"Estrut.","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
 //  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProdEstCod.getWhereAdic()));
   		adicCampoInvisivel(txtRefProdEst,"RefProd","Ref.prod.", ListaCampos.DB_FK, null, true);
   	}
   	else {
-  		adicCampo(txtRefProdEst, 7, 60, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
+  		adicCampo(txtRefProdEst, 7, 60, 70, 20,"Estrut.","Referência", ListaCampos.DB_FK, true);
   		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
   	  	txtRefProdEst.setFK(true);
 //  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdEstRef.getWhereAdic()));  	  	
   	}
 
-  	adicDescFK(txtDescEst, 80, 60, 247, 20, "descprod", "Descrição da estrutura");
+  	
+  	adicCampo(txtSeqEst,80,60,60,20,"seqest","Seq.Est.",ListaCampos.DB_PF,true);
+  	
+  	adicDescFK(txtDescEst, 143, 60, 247, 20, "descprod", "Descrição da estrutura");
 
   	adicDescFK(txtQtdEst, 330, 60, 80, 20, "qtdest", "Qtd.est.");
   	
