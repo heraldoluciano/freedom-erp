@@ -196,8 +196,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	txtCodTpMov.setTabelaExterna(lcTipoMov); 
   	
   	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true));
+  	lcProdEstCod.add(new GuardaCampo( txtSeqEst,"seqest","Seq.Est.",ListaCampos.DB_PK, true));
   	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
-    lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));    
+  	lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));    
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
     lcProdEstCod.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
     lcProdEstCod.add(new GuardaCampo( txtNroDiasValid,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false));
@@ -210,7 +211,8 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	txtCodProdEst.setNomeCampo("codprod");  	
 
     lcProdEstRef.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_PK, txtDescEst, true));
-  	lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
+  	lcProdEstRef.add(new GuardaCampo( txtSeqEst,"seqest","Seq.Est.",ListaCampos.DB_PK, true));
+    lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdEstRef.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false));
     lcProdEstRef.add(new GuardaCampo( txtCodModLote, "CodModLote", "Modelo de Lote", ListaCampos.DB_FK,false));
@@ -243,9 +245,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	}
 
   	
-  	adicCampo(txtSeqEst,80,60,60,20,"seqest","Seq.Est.",ListaCampos.DB_PF,true);
+  	adicCampo(txtSeqEst,80,60,60,20,"seqest","Seq.Est.",ListaCampos.DB_FK,txtDescEst,true);
   	
-  	adicDescFK(txtDescEst, 143, 60, 247, 20, "descprod", "Descrição da estrutura");
+  	adicDescFK(txtDescEst, 143, 60, 184, 20, "descprod", "Descrição da estrutura");
 
   	adicDescFK(txtQtdEst, 330, 60, 80, 20, "qtdest", "Qtd.est.");
   	
@@ -262,7 +264,6 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
     adicCampo(txtDtValidOP,413,100,80,20,"dtvalidpdop","Dt. validade",ListaCampos.DB_SI, false);
   	setListaCampos( true, "OP", "PP");  	
 
-    setListaCampos( true, "OP", "PP");  	
   	
     txtCodTpMov.setAtivo(false);
 //    btFase.setEnabled(false);
