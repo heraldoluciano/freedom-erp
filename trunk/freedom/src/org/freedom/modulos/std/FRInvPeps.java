@@ -236,7 +236,7 @@ public class FRInvPeps extends FRelatorio {
   			
   			imp.limpaPags();
   			
-  			imp.montaCab();
+  			imp.montaCab(txtPagina.getVlrInteger().intValue()-1);
 			imp.setTitulo("Relatorio de inventário de estoque");
   			imp.addSubTitulo(sFiltros1);
   			imp.addSubTitulo(sFiltros2);
