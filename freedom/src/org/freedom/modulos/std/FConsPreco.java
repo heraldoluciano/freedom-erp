@@ -55,7 +55,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 	/**
 	 * 
 	 */
-    private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+    //private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pinCab = new JPanelPad(800,55);
     private Container c = getContentPane();
     private Tabela tbPreco = new Tabela();
@@ -66,8 +66,8 @@ public class FConsPreco extends FFilho implements KeyListener {
 		super(false);
 		//super();
 		// 
-		setAtribos(0,0,800,500);
 		setTitulo("Consulta de preços");
+		setAtribos(0,0,800,500);
 		//setmmaximizable
 		
 	}
@@ -89,10 +89,10 @@ public class FConsPreco extends FFilho implements KeyListener {
 		pinCab.adic(txtDescProd,7,25,300,20);
 		
 		//pinGrid.add(spPreco, BorderLayout.CENTER);
-		pnClienteGeral.add(pinCab, BorderLayout.NORTH);
+		pnCliente.add(pinCab, BorderLayout.NORTH);
 		//pnClienteGeral.add(tbPreco, BorderLayout.CENTER);
-		pnClienteGeral.add(spPreco, BorderLayout.CENTER);
-        c.add(pnClienteGeral, BorderLayout.CENTER);
+		pnCliente.add(spPreco, BorderLayout.CENTER);
+        //c.add(pnClienteGeral, BorderLayout.CENTER);
 		adicBotaoSair();
 		txtDescProd.addKeyListener(this);
 		tbPreco.addKeyListener(this);
