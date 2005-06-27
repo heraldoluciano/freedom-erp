@@ -434,7 +434,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	private JPanelPad pinRodCodAltProd = new JPanelPad(650, 80);
 
-	private JPanelPad pinRodCodAcess = new JPanelPad(650, 90);
+	private JPanelPad pinRodCodAcess = new JPanelPad(650, 120);
 	
 	private JPanelPad pinRodLote = new JPanelPad(650, 120);
 
@@ -1112,7 +1112,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 		adicCampo(txtCodFor, 7, 20, 80, 20, "CodFor", "Cód.for.",
 				ListaCampos.DB_PF, txtDescFor, true);
-		adicDescFK(txtDescFor, 90, 20, 300, 20, "RazFor",
+		adicDescFK(txtDescFor, 90, 20, 307, 20, "RazFor",
 				"Razão social do fornecedor");
 		adicCampo(txtCodProdFor, 400, 20, 105, 20, "RefProdFor",
 				"Cód.prod.for.", ListaCampos.DB_SI, false);
@@ -1230,17 +1230,17 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		setNavegador(navCodAcess);
 		pnCodAcess.add(pinRodCodAcess, BorderLayout.SOUTH);
 		pnCodAcess.add(spnCodAcess, BorderLayout.CENTER);
-		pinRodCodAcess.adic(navCodAcess, 0, 60, 270, 25);
+		pinRodCodAcess.adic(navCodAcess, 0, 90, 270, 25);
 		navCodAcess.setAtivo(6, false);
 
 		
 		adicCampo(txtCodPA, 7, 20, 70, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
-		adicDB(rgPA, 80, 20, 130, 30, "TipoPA", "Tipo", true);
-		adicCampo(txtAnoCCPA, 213, 20, 70, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, txtDescCCPA, false);
-		adicCampo(txtCodCCPA, 439, 20, 140, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, txtDescCCPA, false);
-		adicDescFK(txtDescCCPA, 286, 20, 150, 20, "DescCC","Descrição do C.C.");
-		adicCampo(txtCodCaixa, 582, 20, 70, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_FK, txtDescCaixa, false);
-		adicDescFKInvisivel(txtDescCaixa,"DescCaixa","Descrição do caixa");
+		adicDB(rgPA, 80, 20, 140, 30, "TipoPA", "Tipo", true);
+		adicCampo(txtAnoCCPA, 223, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, txtDescCCPA, false);
+		adicCampo(txtCodCCPA, 306, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, txtDescCCPA, false);
+		adicDescFK(txtDescCCPA, 459, 20, 180, 20, "DescCC","Descrição do C.C.");
+		adicCampo(txtCodCaixa, 223, 60, 80, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_FK, txtDescCaixa, false);
+		adicDescFK(txtDescCaixa, 306, 60, 250, 20,"DescCaixa","Descrição do caixa");
 		setListaCampos(true, "PRODACESSO", "EQ");
 		lcProdAcesso.setQueryInsert(false);
 		lcProdAcesso.setQueryCommit(false);
