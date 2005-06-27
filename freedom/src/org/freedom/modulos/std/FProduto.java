@@ -469,6 +469,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcPlan = new ListaCampos(this,"PN");
 	
 	private ListaCampos lcCC = new ListaCampos(this,"CC");
+	
+	private ListaCampos lcCCAcesso = new ListaCampos(this,"CC");
 
 	private ListaCampos lcForFK = new ListaCampos(this);
 
@@ -1016,6 +1018,18 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		txtDescCC.setListaCampos(lcCC);
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
+
+		//CC Acesso
+		lcCCAcesso.add(new GuardaCampo(txtCodCCPA, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
+//		lcCCAcesso.add(new GuardaCampo(txtDescCC, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
+		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
+		lcCCAcesso.montaSql(false, "CC", "FN");
+		lcCCAcesso.setReadOnly(true);
+		lcCCAcesso.setQueryCommit(false);
+//		txtDescCC.setListaCampos(lcCC);
+		txtCodCCPA.setTabelaExterna(lcCCAcesso);
+		txtAnoCCPA.setTabelaExterna(lcCCAcesso);
+		
 		
 		setPainel(pinRodProdPlan, pnProdPlan);
 		adicTab("Planejamento", pnProdPlan);
@@ -1200,8 +1214,8 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		
 		adicCampo(txtCodPA, 7, 20, 90, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
 		adicDB(rgPA, 100, 20, 150, 30, "TipoPA", "Tipo", true);
-		adicCampo(txtAnoCCPA, 253, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_SI, null, false);
-		adicCampo(txtCodCCPA, 336, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_SI, null, false);
+		adicCampo(txtAnoCCPA, 253, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, null, false);
+		adicCampo(txtCodCCPA, 336, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, null, false);
 		adicCampo(txtCodCaixa, 489, 20, 90, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_SI, null, false);
 		setListaCampos(true, "PRODACESSO", "EQ");
 		lcProdAcesso.setQueryInsert(false);
@@ -1592,6 +1606,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcUnidFat.setConexao(cn);
 		lcPlan.setConexao(cn);
 		lcCC.setConexao(cn);
+		lcCCAcesso.setConexao(cn);
 		lcForFK.setConexao(cn);
 		lcFatConv.setConexao(cn);
 		lcProdPlan.setConexao(cn);
