@@ -539,11 +539,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcCampos.adicDetalhe(lcCodAltProd);
 		lcFor.setTabela(tabFor);
 		lcCodAltProd.setTabela(tabCodAltProd);
-		
-		lcProdAcesso.setMaster(lcCampos);
-		lcCampos.adicDetalhe(lcProdAcesso);
-		lcProdAcesso.setTabela(tabCodAcess);
-		
+				
 		lcLote.setMaster(lcCampos);
 		lcCampos.adicDetalhe(lcLote);
 		lcLote.setTabela(tabLote);
@@ -556,6 +552,10 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		lcCampos.adicDetalhe(lcPreco);
 		lcPreco.setTabela(tabPreco);
 
+		lcProdAcesso.setMaster(lcCampos);
+		lcCampos.adicDetalhe(lcProdAcesso);
+		lcProdAcesso.setTabela(tabCodAcess);
+		
 		lcCampos.addInsertListener(this);
 		lcCampos.addCarregaListener(this);
 		lcFoto.addEditListener(this);
@@ -1031,18 +1031,18 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		txtAnoCC.setTabelaExterna(lcCC);
 
 		//CC Acesso
-		lcCCAcesso.add(new GuardaCampo(txtCodCCPA, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
+		lcCCAcesso.add(new GuardaCampo(txtCodCCPA, "CodCC","Cód.cc.", ListaCampos.DB_PK, false));
 		lcCCAcesso.add(new GuardaCampo(txtDescCCPA, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
-		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
+		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, false));
 		lcCCAcesso.montaSql(false, "CC", "FN");
-		lcCCAcesso.setReadOnly(true);
+		lcCCAcesso.setReadOnly(true); 
 		lcCCAcesso.setQueryCommit(false);
 		txtDescCCPA.setListaCampos(lcCCAcesso);
 		txtCodCCPA.setTabelaExterna(lcCCAcesso);
 		txtAnoCCPA.setTabelaExterna(lcCCAcesso);
 		
 		//	Caixa
-		lcCaixa.add(new GuardaCampo(txtCodCaixa, "CodCaixa","Cód.caixa", ListaCampos.DB_PK, true));
+		lcCaixa.add(new GuardaCampo(txtCodCaixa, "CodCaixa","Cód.caixa", ListaCampos.DB_PK, false));
 		lcCaixa.add(new GuardaCampo(txtDescCaixa, "DescCaixa","Descrição do Caixa", ListaCampos.DB_SI, false));
 		lcCaixa.add(new GuardaCampo(txtCodEst, "CodEst","Estação de trabalho", ListaCampos.DB_SI, false));
 		lcCaixa.montaSql(false, "CAIXA", "PV");
