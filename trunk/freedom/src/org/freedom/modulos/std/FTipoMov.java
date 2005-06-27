@@ -105,10 +105,10 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JPanelPad pinGeral = new JPanelPad(JPanelPad.TP_JPANEL,
 			new BorderLayout());
 
-	private JPanelPad pnGeral = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
+	//private JPanelPad pnGeral = new JPanelPad(JPanelPad.TP_JPANEL,
+		//	new BorderLayout());
 
-	private JPanelPad pinCamposGeral = new JPanelPad(430, 520);
+	private JPanelPad pinCamposGeral = new JPanelPad(430, 460);
 
 	private JPanelPad pnRestricoes = new JPanelPad(JPanelPad.TP_JPANEL,
 			new BorderLayout());
@@ -128,7 +128,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 
 	private JScrollPane spnRestricoes = new JScrollPane(tbRestricoes);
 
-	private JPanelPad pinCamposRestricoes = new JPanelPad(430, 520);
+	private JPanelPad pinCamposRestricoes = new JPanelPad(430, 460);
 
 	private Vector vVals = new Vector();
 
@@ -145,24 +145,24 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad(
 			"Permitir todos os usuários?", "S", "N");
 
-	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Sim?",
+	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Sim",
 			"S", "N");
 
-	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Sim?",
+	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Sim",
 			"S", "N");
 
-	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Sim?",
+	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Sim",
 			"S", "N");
 
-	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.pedido?",
+	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Sim",
 			"S", "N");
 
-	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp.NF?", "S", "N");
+	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Sim", "S", "N");
 
-	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Imp.bol.?", "S",
+	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Sim", "S",
 			"N");
 
-	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp.NF?", "S",
+	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Sim", "S",
 			"N");
 
 	private JPanelPad pinInfoPadImp = new JPanelPad(300, 150);
@@ -247,60 +247,63 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 		pinGeral.setPreferredSize(new Dimension(430, 560));
 		pinGeral.add(pinCamposGeral, BorderLayout.CENTER);
 
-		pnGeral.add(pinGeral, BorderLayout.SOUTH);
+		//pnGeral.add(pinGeral, BorderLayout.SOUTH);
 
 		setPainel(pinCamposGeral);
 
-		adicTab("Geral", pnGeral);
+		adicTab("Geral", pinCamposGeral);
 
-		adicCampo(txtCodTipoMov, 7, 120, 80, 20, "CodTipoMov", "Cód.tp.mov.",
+		adicCampo(txtCodTipoMov, 7, 20, 80, 20, "CodTipoMov", "Cód.tp.mov.",
 				ListaCampos.DB_PK, true);
-		adicCampo(txtDescTipoMov, 90, 120, 300, 20, "DescTipoMov",
+		adicCampo(txtDescTipoMov, 90, 20, 300, 20, "DescTipoMov",
 				"Descrição do tipo de movimento", ListaCampos.DB_SI, true);
-		adicCampo(txtCodModNota, 7, 160, 80, 20, "CodModNota", "Cód.mod.nota",
+		adicCampo(txtCodModNota, 7, 60, 80, 20, "CodModNota", "Cód.mod.nota",
 				ListaCampos.DB_FK, true);
-		adicDescFK(txtDescModNota, 90, 160, 300, 20, "DescModNota",
+		adicDescFK(txtDescModNota, 90, 60, 300, 20, "DescModNota",
 				"Descrição do modelo de nota");
-		adicCampo(txtCodSerie, 7, 200, 80, 20, "Serie", "Série",
+		adicCampo(txtCodSerie, 7, 100, 80, 20, "Serie", "Série",
 				ListaCampos.DB_FK, txtDescSerie, true);
-		adicDescFK(txtDescSerie, 90, 200, 300, 20, "DocSerie",
+		adicDescFK(txtDescSerie, 90, 100, 300, 20, "DocSerie",
 				"Documento atual");
-		adicCampo(txtCodTab, 7, 240, 80, 20, "CodTab", "Cód.tp.pc.",
+		adicCampo(txtCodTab, 7, 140, 80, 20, "CodTab", "Cód.tp.pc.",
 				ListaCampos.DB_FK, txtDescTab, false);
-		adicDescFK(txtDescTab, 90, 240, 300, 20, "DescTab",
+		adicDescFK(txtDescTab, 90, 140, 300, 20, "DescTab",
 				"Descrição da tab. de preços");
-		adicCampo(txtCodTipoMov2, 7, 280, 80, 20, "CodTipoMovTM",
+		adicCampo(txtCodTipoMov2, 7, 180, 80, 20, "CodTipoMovTM",
 				"Cód.mov.nf.", ListaCampos.DB_FK, txtDescTipoMov2, false);
-		adicDescFK(txtDescTipoMov2, 90, 280, 300, 20, "DescTipoMov",
+		adicDescFK(txtDescTipoMov2, 90, 180, 300, 20, "DescTipoMov",
 				"Descrição do movimento para nota.");
-		adicDB(rgESTipoMov, 7, 320, 300, 30, "ESTipoMov", "Fluxo", true);
+		adicDB(rgESTipoMov, 7, 220, 300, 30, "ESTipoMov", "Fluxo", true);
 
-		adicDB(chbFiscalTipoMov, 7, 370, 107, 20, "FiscalTipoMov",
+		adicDB(chbFiscalTipoMov, 7, 270, 107, 20, "FiscalTipoMov",
 				"Fiscal", true);
-		adicDB(chbEstoqTipoMov, 140, 370, 110, 20, "EstoqTipoMov", "Estoque",
+		adicDB(chbEstoqTipoMov, 140, 270, 110, 20, "EstoqTipoMov", "Estoque",
 				true);
-		adicDB(chbSomaTipoMov, 260, 370, 200, 20, "SomaVdTipoMov",
+		adicDB(chbSomaTipoMov, 260, 270, 200, 20, "SomaVdTipoMov",
 				"Financeiro", true);
 
-		adicDB(cbTipoMov, 7, 410, 250, 30, "TipoMov", "Tipo de movimento", true);
-		adicCampo(txtEspecieTipomov, 280, 415, 80, 20, "EspecieTipomov",
+		adicDB(cbTipoMov, 7, 310, 250, 30, "TipoMov", "Tipo de movimento", true);
+		adicCampo(txtEspecieTipomov, 280, 310, 80, 20, "EspecieTipomov",
 				"Espécie", ListaCampos.DB_SI, true);
-		adicDB(chbImpPedTipoMov, 13, 480, 97, 20, "ImpPedTipoMov",
+
+		
+		adicDB(chbImpPedTipoMov, 13, 390, 97, 20, "ImpPedTipoMov",
 				"Pad.imp.ped.", true);
-		adicDB(chbImpNfTipoMov, 113, 480, 94, 20, "ImpNfTipoMov", "Pad.imp.NF",
+		adicDB(chbImpNfTipoMov, 113, 390, 94, 20, "ImpNfTipoMov", "Pad.imp.NF",
 				true);
-		adicDB(chbImpBolTipoMov, 210, 480, 97, 20, "ImpBolTipoMov",
+		adicDB(chbImpBolTipoMov, 210, 390, 97, 20, "ImpBolTipoMov",
 				"Pad.imp.boleto", true);
-		adicDB(chbReImpNfTipoMov, 310, 480, 90, 20, "ReImpNfTipoMov",
+		adicDB(chbReImpNfTipoMov, 310, 390, 90, 20, "ReImpNfTipoMov",
 				"Pad.reimp.NF", true);
-		adicDB(chbRestritoTipoMov, 13, 520, 240, 20, "TUSUTIPOMOV", "", true);
+		adic(pinLbPadImp, 10, 350, 230, 15);
+		adic(pinInfoPadImp, 7, 360, 400, 60);
+
+		adicDB(chbRestritoTipoMov, 13, 430, 240, 20, "TUSUTIPOMOV", "", true);
 		chbRestritoTipoMov.addCheckBoxListener(this);
 
 		pinLbPadImp.adic(lbInfoPadImp, 0, 0, 230, 15);
 		pinLbPadImp.tiraBorda();
 
-		adic(pinLbPadImp, 10, 445, 230, 15);
-		adic(pinInfoPadImp, 7, 450, 400, 60);
 		setListaCampos(true, "TIPOMOV", "EQ");
 		lcCampos.setQueryInsert(false);
 		
