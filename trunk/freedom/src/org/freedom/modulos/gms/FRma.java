@@ -192,12 +192,24 @@ public class FRma extends FDetalhe implements PostListener,
 		lcTipoMov.setReadOnly(true);
 		txtCodTpMov.setTabelaExterna(lcTipoMov);
 
+		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"+Aplicativo.strUsuario+"')) IN "+
+								"(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "+
+								"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "+
+								"OR "+
+								"((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "+
+								"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "+	
+								"OR "+
+								"((SELECT ALMOXARIFE FROM sgretinfousu("+Aplicativo.strUsuario+"))='S') "+
+								"OR "+
+								"((SELECT APROVARMA FROM sgretinfousu("+Aplicativo.strUsuario+"))='TD') "+
+								") "; 
+				
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
-
+		lcProd.setDinWhereAdic(sWhereAdicProd,txtIDUsu);
 	//	lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
@@ -211,12 +223,17 @@ public class FRma extends FDetalhe implements PostListener,
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
+		lcProd2.setDinWhereAdic(sWhereAdicProd,txtIDUsu);
 //		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2);
 
+
+
+
+		
 		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmox, false));
 		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
@@ -580,8 +597,7 @@ public class FRma extends FDetalhe implements PostListener,
 	}
 	
 	public void carregaWhereAdic(){
-		buscaInfoUsuAtual();
-		
+		buscaInfoUsuAtual();		
 		if((bAprovaCab) || (bExpede)){
 			  if(bAprovaParcial){
 			  	lcCampos.setWhereAdic("CODCC='"+Aplicativo.strCodCCUsu+"' AND ANOCC="+Aplicativo.strAnoCCUsu);
@@ -689,6 +705,7 @@ public class FRma extends FDetalhe implements PostListener,
 			}
 		}	
 		if(cevt.getListaCampos()==lcUsu){
+/*
 			String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"+txtIDUsu.getVlrString().trim()+"')) IN "+
 									"(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "+
 									"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "+
@@ -697,11 +714,14 @@ public class FRma extends FDetalhe implements PostListener,
 									"PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "+
 									"OR " +						  
 									"((SELECT ALMOXARIFE FROM sgretinfousu('"+txtIDUsu.getVlrString().trim()+"'))='S')) ";
+*/			
+
+
+//lcLote.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ",txtCodProd)
+
+
 			
-			lcProd.setWhereAdic(sWhereAdicProd);
-			lcProd2.setWhereAdic(sWhereAdicProd);
-			
-			carregaWhereAdic();
+		//	carregaWhereAdic();
 		}
 	}
 
