@@ -25,7 +25,10 @@ public abstract class FVD extends FDetalhe {
     public abstract int[] getParansPreco();
     
     public abstract void setParansPreco(BigDecimal bdPreco);
-
+    
+    public FVD() {
+    	super();
+    }
     public void buscaPreco() {
     	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
     	PreparedStatement ps = null;

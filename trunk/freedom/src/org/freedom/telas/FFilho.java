@@ -30,15 +30,19 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 //import javax.swing.JScrollPane;
 //import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -55,18 +59,24 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
 
     private boolean initFirstFocus = true;
     
-    private boolean primShow = true;
+    public boolean primShow = true;
 
     private BorderLayout blCliente = new BorderLayout();
+    private BorderLayout blPrincipal = new BorderLayout();
     private BorderLayout blRodape = new BorderLayout();
     private BorderLayout blDados = new BorderLayout();
    
-    public Container c = null;
+    protected Container c = null;
+
+    protected Border br = BorderFactory.createEtchedBorder();
     
-    public JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
-    public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
-    public JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
-    public JScrollPane spCliente = new JScrollPane(pnCliente, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    protected JPanelPad pnPrincipal = new JPanelPad(JPanelPad.TP_JPANEL);
+    protected JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL);
+    protected JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL);
+    protected JPanelPad pnBordRod = new JPanelPad(JPanelPad.TP_JPANEL);
+    protected JScrollPane spPrincipal = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//    public JScrollPane spCliente = new JScrollPane(pnPrincipal, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+//    public JScrollPane spCliente = new JScrollPane(pnCliente, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
     //private JPanelPad pnSp = new JPanelPad() 
     //protected JScrollPane spFilho = new JScrollPane();
@@ -87,13 +97,23 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
         c.setLayout(blDados);
         addInternalFrameListener(this);
         setClosable(true);
+        
+        pnBordRod.setLayout(new GridLayout(1,1));
+        pnBordRod.setPreferredSize(new Dimension(450, 30));
+        pnBordRod.add(pnRodape);
+        pnBordRod.setBorder(br);
+        
        // pnCliente.setAutoscrolls(false);
+        pnPrincipal.setLayout(blPrincipal);
         pnCliente.setLayout(blCliente);
         pnRodape.setLayout(blRodape);
-        if (comScroll) 
-            c.add(spCliente, BorderLayout.CENTER);
-        else
-            c.add(pnCliente, BorderLayout.CENTER);
+        pnPrincipal.add(pnCliente, BorderLayout.CENTER);
+        if (comScroll) {
+            c.add(spPrincipal, BorderLayout.CENTER);
+        }
+        else {
+            c.add(pnPrincipal, BorderLayout.CENTER);
+        }
 
         //spCliente.setLayout();
         //spCliente.add(pnCliente);
@@ -269,13 +289,21 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public void show() {
     	super.show();
     	if (primShow) {
-	    	this.setSize(this.getWidth()+3, this.getHeight()+3);
-	    	spCliente.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-	    	spCliente.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	    	primShow = false;
+    		ajustaScroll();
     	}
-    	
     }
+    
+    public void ajustaScroll() {
+    	this.setSize(this.getWidth()+3, this.getHeight()+3);
+    	pnCliente.setPreferredSize(new Dimension(spPrincipal.getWidth()-3, spPrincipal.getHeight()-pnBordRod.getHeight()-3));
+
+    	spPrincipal.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    	spPrincipal.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    	//spCliente.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    	//spCliente.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    	primShow = false;
+    }
+    
     public synchronized void execShow() {
         show();
     }

@@ -173,7 +173,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JPanelPad pinLbPadImp = new JPanelPad(53, 15);
 
 	public FTipoMov() {
-
+		super();
 		setTitulo("Cadastro de Tipos de Movimento");
 		setAtribos(10, 10, 430, 560);
 

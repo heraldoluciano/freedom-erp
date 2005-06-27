@@ -120,6 +120,7 @@ public class FLeFiscal extends FTabDados {
 	private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
 	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	public FLeFiscal() {
+		super();
 		setTitulo("Leitura de memória fiscal");
 		setAtribos(60,60,540,470);
 

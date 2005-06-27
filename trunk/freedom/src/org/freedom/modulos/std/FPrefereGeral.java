@@ -217,6 +217,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcPrefere3 = new ListaCampos(this, "P3");
 
 	public FPrefereGeral() {
+		super();
 		setTitulo("Preferências Gerais");
 		setAtribos(40, 40, 760, 420);
 

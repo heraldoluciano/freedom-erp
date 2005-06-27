@@ -59,6 +59,7 @@ public class FMoeda extends FTabDados implements RadioGroupListener {
   private ListaCampos lcCot = new ListaCampos(this);
   private Navegador navCot = new Navegador(true);
   public FMoeda() {
+  	super();
     setTitulo("Cadastro de Moedas");
     setAtribos(50,50,420,340);
 

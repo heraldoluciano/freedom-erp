@@ -44,6 +44,7 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
 	private ListaCampos lcCliente = new ListaCampos(this,"CL");
 	public FPreferePDV() {
+		super();
 		setTitulo("Preferências do PDV");
 		setAtribos(50, 50, 355, 375);
 		

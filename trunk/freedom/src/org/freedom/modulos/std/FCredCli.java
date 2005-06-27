@@ -829,6 +829,7 @@ public class FCredCli extends FTabDados implements ActionListener,
 	private JComboBoxPad cbEstCivCli = null;
 
 	public FCredCli() {
+		super();
 		setTitulo("Ficha cadastral/Crédito por cliente");
 		setAtribos(10, 10, 790, 550);
 
