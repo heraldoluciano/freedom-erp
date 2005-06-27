@@ -78,6 +78,8 @@ public class ImprimeOS implements ActionListener {
     private String sClassNota = "";
 
     private String sPrefCab = "";
+    
+    private int numAdicPagina = 0;
 
     private DLVisualiza dlPrev = null;
 
@@ -820,6 +822,11 @@ public class ImprimeOS implements ActionListener {
     }
 
     public void montaCab() {
+    	this.montaCab(0);
+    }
+    
+    public void montaCab(int numAdicPagina) {
+    	this.numAdicPagina = numAdicPagina;
         PreparedStatement ps = null;
         ResultSet rs = null;
         String sSQL = null;
@@ -896,7 +903,7 @@ public class ImprimeOS implements ActionListener {
                 say(pRow() + 0, 0, "|" + sVals[0].trim()); //Razão
                 //        say(pRow()+1,0,"");
                 say(pRow() + 0, iTamRel - 15, "Pagina: "
-                        + Funcoes.strZero("" + getNumPags(), 5));
+                        + Funcoes.strZero("" + ( getNumPags() + this.numAdicPagina ), 5));
                 say(pRow() + 0, iTamRel - 1, "|");
                 say(pRow() + 1, 0, "|" + sTitulo.trim().toUpperCase());
                 say(pRow() + 0, iTamRel - 17, "ID.USU: "
