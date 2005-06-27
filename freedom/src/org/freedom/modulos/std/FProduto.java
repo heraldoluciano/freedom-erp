@@ -478,7 +478,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	
 	private ListaCampos lcCCAcesso = new ListaCampos(this,"CC");
 
-	private ListaCampos lcCaixa = new ListaCampos(this, "");
+	private ListaCampos lcCaixa = new ListaCampos(this, "CX");
 
 	private ListaCampos lcForFK = new ListaCampos(this);
 
