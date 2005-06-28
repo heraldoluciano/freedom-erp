@@ -196,7 +196,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 	txtCodTpMov.setTabelaExterna(lcTipoMov); 
   	
   	lcProdEstCod.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEst, true));
-  	lcProdEstCod.add(new GuardaCampo( txtSeqEst,"seqest","Seq.Est.",ListaCampos.DB_PK, true));
+  	lcProdEstCod.add(new GuardaCampo( txtSeqEst,"seqest","Seq.Est.",ListaCampos.DB_PK,txtDescEst, true));
   	lcProdEstCod.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
   	lcProdEstCod.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_SI, false));    
     lcProdEstCod.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI,false));
@@ -208,10 +208,11 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstCod.setQueryCommit(false);
   	lcProdEstCod.setReadOnly(true);
   	txtCodProdEst.setTabelaExterna(lcProdEstCod);
+  	txtSeqEst.setTabelaExterna(lcProdEstCod);
   	txtCodProdEst.setNomeCampo("codprod");  	
 
     lcProdEstRef.add(new GuardaCampo( txtRefProdEst, "refprod", "Referência", ListaCampos.DB_PK, txtDescEst, true));
-  	lcProdEstRef.add(new GuardaCampo( txtSeqEst,"seqest","Seq.Est.",ListaCampos.DB_PK, true));
+  	lcProdEstRef.add(new GuardaCampo( txtSeqEst,"seqest","Seq.Est.",ListaCampos.DB_PK,txtDescEst, true));
     lcProdEstRef.add(new GuardaCampo( txtCodProdEst, "Codprod", "Cód.prod.", ListaCampos.DB_SI, true));
   	lcProdEstRef.add(new GuardaCampo( txtDescEst, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));  	
     lcProdEstRef.add(new GuardaCampo( txtQtdEst, "QtdEst", "Quantidade", ListaCampos.DB_SI, false));
@@ -222,7 +223,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	lcProdEstRef.setQueryCommit(false);
   	lcProdEstRef.setReadOnly(true);
   	txtRefProdEst.setTabelaExterna(lcProdEstRef);
+  	txtSeqEst.setTabelaExterna(lcProdEstRef);
   	txtRefProdEst.setNomeCampo("refprod");
+  	
 
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
@@ -233,12 +236,12 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	adicCampo(txtDtFabProd,417,20,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
 
   	if (!bPrefs[0]) {  
-  		adicCampo(txtCodProdEst, 7, 60, 70, 20,"Estrut.","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
+  		adicCampo(txtCodProdEst, 7, 60, 70, 20,"codprod","Cód.prod.", ListaCampos.DB_FK,txtDescEst, true);
 //  		txtCodProdEst.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProdEstCod.getWhereAdic()));
   		adicCampoInvisivel(txtRefProdEst,"RefProd","Ref.prod.", ListaCampos.DB_FK, null, true);
   	}
   	else {
-  		adicCampo(txtRefProdEst, 7, 60, 70, 20,"Estrut.","Referência", ListaCampos.DB_FK, true);
+  		adicCampo(txtRefProdEst, 7, 60, 70, 20,"refprod","Referência", ListaCampos.DB_FK, true);
   		adicCampoInvisivel(txtCodProdEst,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescEst, true);
   	  	txtRefProdEst.setFK(true);
 //  		txtRefProdEst.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdEstRef.getWhereAdic()));  	  	

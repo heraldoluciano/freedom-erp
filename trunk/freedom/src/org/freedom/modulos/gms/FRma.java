@@ -203,13 +203,14 @@ public class FRma extends FDetalhe implements PostListener,
 								"OR "+
 								"((SELECT APROVARMA FROM sgretinfousu('"+Aplicativo.strUsuario+"'))='TD') "+
 								") "; 
-				
+		
+		
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",	ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false));
-		lcProd.setDinWhereAdic(sWhereAdicProd,txtIDUsu);
+		lcProd.setWhereAdic(sWhereAdicProd);
 	//	lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
@@ -223,7 +224,7 @@ public class FRma extends FDetalhe implements PostListener,
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		lcProd2.setDinWhereAdic(sWhereAdicProd,txtIDUsu);
+		lcProd2.setWhereAdic(sWhereAdicProd);
 //		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
@@ -745,7 +746,7 @@ public class FRma extends FDetalhe implements PostListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage());
-		}
+		} 
 		finally {
 			rs = null;
 			ps = null;
