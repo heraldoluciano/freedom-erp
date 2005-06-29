@@ -299,9 +299,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
 					  " AND IT.CODFASE=F.CODFASE AND IT.CODEMPFS=F.CODEMP AND IT.CODFILIALFS=F.CODFILIAL" +
 					  sWhere+
 					  " ORDER BY "+sValores[0]+", IT.CODPROD, IT.CODFASE";
-					 
-					  
-    	System.out.println(sSQL);
+		
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
