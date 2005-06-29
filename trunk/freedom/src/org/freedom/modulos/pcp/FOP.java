@@ -39,6 +39,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
 import org.freedom.acao.CarregaEvent;
@@ -64,7 +68,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrinterJob;
 
-public class FOP extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
+public class FOP extends FDetalhe implements ChangeListener, PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
   private int casasDec = Aplicativo.casasDec;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
@@ -127,6 +131,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
   private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
   private ImageIcon imgColuna = null;
+  private boolean bBuscaRMA = false;
   
   public FOP () { }
   private void montaTela() {
@@ -335,6 +340,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		}
 	});
   	
+	tpnAbas.addChangeListener(this);
   	setImprimir(true);
   }
   
@@ -454,8 +460,10 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
 		return sRet;
 	}
   
-	private void carregaTabela() {
+	private void buscaRma() {
 		String sCodOp = txtCodOP.getVlrString();				
+		if(sCodOp.trim().equals(""))
+			return;
 		String sSitRma = "";
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
 				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
@@ -651,7 +659,9 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   
     
   public void beforeCarrega(CarregaEvent cevt) {
-  	
+  	if(cevt.getListaCampos()==lcCampos){
+  		bBuscaRMA = false;
+  	}
   }
   
   
@@ -767,7 +777,7 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
        btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));             
        btExecuta.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
-       carregaTabela();
+       bBuscaRMA = true;
     }
     if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
        	setUsaLote(); 
@@ -919,4 +929,17 @@ public class FOP extends FDetalhe implements PostListener,CancelListener,InsertL
   	}
   	return bRetorno;
   }
+
+  public void stateChanged(ChangeEvent cevt) {
+  	if (((JTabbedPanePad)(cevt.getSource()))==tpnAbas){
+  		if(tpnAbas.getSelectedIndex()==1){
+  			if(bBuscaRMA)
+  				buscaRma();
+  		}  		
+    }
+  }
+
+
+
+
 }
