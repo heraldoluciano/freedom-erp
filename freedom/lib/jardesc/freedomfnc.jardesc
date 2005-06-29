@@ -36,7 +36,6 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.relatorios"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTabJuros.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCentroCusto.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTerminal.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRPlanoPag.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLEditaRec.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
@@ -70,6 +69,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoFor.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FImpressora.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FEstacao.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FLiberaCredito.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRTipoCob.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLEditaPag.java"/>
@@ -104,8 +104,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPrefereGeral.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLRCentroCusto.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLPlanSin.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.layout"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCLFiscal.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FLancaExp.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProcessaSL.java"/>
@@ -114,6 +114,7 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBaixaRec.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FConta.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLConsultaVenda.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.graficos"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTabICMS.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FEmpresa.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLNovoPag.java"/>
