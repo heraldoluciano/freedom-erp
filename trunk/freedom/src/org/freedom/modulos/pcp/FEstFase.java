@@ -138,6 +138,8 @@ public class FEstFase extends FDetalhe {
     tab.setTamColuna(150,2);
     tab.setTamColuna(120,3);
     tab.setTamColuna(170,5);
+    
+    
   }
 
   public void setConexao(Connection cn) {
