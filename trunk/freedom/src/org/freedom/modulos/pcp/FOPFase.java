@@ -54,6 +54,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private JPanelPad pinDet = new JPanelPad();
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtCodProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtEmit = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -78,8 +79,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcRec = new ListaCampos(this,"RP");
   private int iCodOP;
+  private int iSeqOP;
   private boolean bExecuta = false;
-  public FOPFase(int iCodOP,boolean bExecuta) {
+  public FOPFase(int iCodOP,int iSeqOP,boolean bExecuta) {
     setTitulo("Fases da OP");
     if(bExecuta){
         setAtribos( 70, 40, 630, 470);
@@ -95,6 +97,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     
        
     this.iCodOP = iCodOP;
+    this.iSeqOP = iSeqOP;
     this.bExecuta = bExecuta;
     
     txtCodOP.setAtivo(false);
@@ -104,6 +107,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     txtQtdPrevOP.setAtivo(false);
     txtQtdFinalOP.setAtivo(false);
     txtTempoOf.setAtivo(false);
+    txtSeqOP.setAtivo(false);
     
     if(bExecuta) {
     	txtCodFase.setAtivo(false);
@@ -126,10 +130,11 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     txtCodProd.setTabelaExterna(lcProd);
     txtDescProd.setListaCampos(lcProd);
     
-    adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº OP", ListaCampos.DB_PK, true);
-    adicCampo(txtCodProd, 90, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
-    adicDescFK(txtDescProd, 170, 20, 197, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtQtdPrevOP, 370, 20, 100, 20,"QtdPrevProdOP","Qtd.prevista", ListaCampos.DB_SI, true);
+    adicCampo(txtCodOP, 7, 20, 80, 20,"CodOP","Nº.OP", ListaCampos.DB_PK, true);
+    adicCampo(txtSeqOP, 90, 20, 60, 20,"SeqOP","Seq.OP", ListaCampos.DB_PK, true);
+    adicCampo(txtCodProd, 153, 20, 77, 20,"CodProd","Cód.prod.", ListaCampos.DB_FK, txtDescProd, true);
+    adicDescFK(txtDescProd, 233, 20, 147, 20, "DescProd", "Descrição do produto");
+    adicCampo(txtQtdPrevOP, 383, 20, 87, 20,"QtdPrevProdOP","Qtd.prevista", ListaCampos.DB_SI, true);
     adicCampo(txtQtdFinalOP, 473, 20, 100, 20,"QtdFinalProdOP","Qtd.produzida", ListaCampos.DB_SI, true);
     adicCampo(txtDtEmit, 7, 60, 100, 20,"DtEmitOP","Emissão", ListaCampos.DB_SI, true);
     adicCampo(txtDtValid, 110, 60, 100, 20,"DtValidPDOP","Valid.prod.", ListaCampos.DB_SI, true);
@@ -308,6 +313,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     lcFase.setConexao(cn);
     lcRec.setConexao(cn);
     txtCodOP.setVlrInteger(new Integer(iCodOP));
+    txtSeqOP.setVlrInteger(new Integer(iSeqOP));
     lcCampos.carregaDados();  
   }        
 }

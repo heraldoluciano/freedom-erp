@@ -30,28 +30,50 @@ import org.freedom.telas.FFDialogo;
 
 public class DLRRecursos extends FFDialogo {
   private JRadioGroup rgOrdem = null;
+  private JRadioGroup rgTipo = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
+  private JLabelPad lbTipo = new JLabelPad("Tipo de impressão:");
+  private Vector vLabsOrd = new Vector();
+  private Vector vValsOrd = new Vector();
+  private Vector vLabsTipo = new Vector();
+  private Vector vValsTipo = new Vector();
+
   public DLRRecursos(Component cOrig) {
   	super(cOrig);
     setTitulo("Ordem do Relatório");
-    setAtribos(300,140);
-    vLabs.addElement("Código");
-    vLabs.addElement("Nome");
-    vVals.addElement("C");
-    vVals.addElement("N");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+    setAtribos(300,200);
+    vLabsOrd.addElement("Código");
+    vLabsOrd.addElement("Nome");
+    vValsOrd.addElement("C");
+    vValsOrd.addElement("N");
+    rgOrdem = new JRadioGroup(1,2,vLabsOrd,vValsOrd);
     rgOrdem.setVlrString("N");
+    
+    vLabsTipo.addElement("Texto");
+    vLabsTipo.addElement("Gráfica");
+    vValsTipo.addElement("T");
+    vValsTipo.addElement("G");
+    rgTipo = new JRadioGroup(1,2,vLabsTipo,vValsTipo);
+    rgTipo.setVlrString("G");
+
     adic(lbOrdem,7,0,80,15);
     adic(rgOrdem,7,20,280,30);
+    
+    adic(lbTipo,7,40,80,15);
+    adic(rgTipo,7,60,280,30);
+
   }
-  public String getValor() {
-    String sRetorno = "";
-    if (rgOrdem.getVlrString().compareTo("C") == 0 )
-      sRetorno = "CODRECP";
-    else if (rgOrdem.getVlrString().compareTo("N") == 0 )
-      sRetorno = "DESCRECP";
-    return sRetorno;
+  public Vector getValores() {
+  	Vector vRet = new Vector();
+	
+  	if(rgOrdem.getVlrString().compareTo("C") == 0)
+  		vRet.addElement("CODRECP");
+  	else if (rgOrdem.getVlrString().compareTo("N") == 0 )
+  		vRet.addElement("DESCRECP");
+  	if(rgTipo.getVlrString().compareTo("G") == 0)
+  		vRet.addElement("G");
+  	else if (rgTipo.getVlrString().compareTo("T") == 0 )
+  		vRet.addElement("T");
+  	return vRet;
   }
 }

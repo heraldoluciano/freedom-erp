@@ -27,6 +27,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldFK;
@@ -34,6 +36,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 public class FRecursos extends FDados implements ActionListener {
   private JTextFieldPad txtCodRecp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -73,61 +76,87 @@ public class FRecursos extends FDados implements ActionListener {
   }
 
   private void imprimir(boolean bVisualizar) {
-    ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
-    imp.setTitulo("Relatório de Recursos de produção");
     DLRRecursos dl = new DLRRecursos(this);
     dl.setVisible(true);
     if (dl.OK == false) {
       dl.dispose();
       return;
     }
-    String sSQL = "SELECT CODRECP,DESCRECP FROM PPRECURSO ORDER BY "+dl.getValor();
+
+    String sSQL = "SELECT CODRECP,DESCRECP FROM PPRECURSO ORDER BY "+dl.getValores().elementAt(0).toString();
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
       ps = con.prepareStatement(sSQL);
       rs = ps.executeQuery();
-      imp.limpaPags();
-      while ( rs.next() ) {
-         if (imp.pRow()==0) {
-            imp.impCab(80, false);
-            imp.say(imp.pRow()+0,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
-            imp.say(imp.pRow()+0,30,"Descrição");
-            imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
-         }
-         imp.say(imp.pRow()+1,0,""+imp.normal());
-         imp.say(imp.pRow()+0,2,rs.getString("Codrecp"));
-         imp.say(imp.pRow()+0,30,rs.getString("descrecp"));
-         if (imp.pRow()>=linPag) {
-            imp.incPags();
-            imp.eject();
-         }
-      }
-      
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
-      imp.eject();
-      
-      imp.fechaGravacao();
-      if (!con.getAutoCommit())
-      	con.commit();
-      dl.dispose();
-    }  
-    catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de recursos de produção!"+err.getMessage(),true,con,err);      
     }
-    
-    if (bVisualizar) {
-      imp.preview(this);
+    catch(Exception err){
+		Funcoes.mensagemErro(this,"Erro consulta tabela de recursos de produção!"+err.getMessage(),true,con,err);
+    	err.printStackTrace();
+    }
+    	
+    if(dl.getValores().elementAt(1).equals("T")){      
+      ImprimeOS imp = new ImprimeOS("",con);
+      int linPag = imp.verifLinPag()-1;
+      imp.montaCab();
+      imp.setTitulo("Relatório de Recursos de produção");
+
+      imp.limpaPags();
+      try{
+	      while ( rs.next() ) {
+	         if (imp.pRow()==0) {
+	            imp.impCab(80, false);
+	            imp.say(imp.pRow()+0,0,""+imp.normal());
+	            imp.say(imp.pRow()+0,0,"");
+	            imp.say(imp.pRow()+0,2,"Código");
+	            imp.say(imp.pRow()+0,30,"Descrição");
+	            imp.say(imp.pRow()+1,0,""+imp.normal());
+	            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
+	         }
+	         imp.say(imp.pRow()+1,0,""+imp.normal());
+	         imp.say(imp.pRow()+0,2,rs.getString("Codrecp"));
+	         imp.say(imp.pRow()+0,30,rs.getString("descrecp"));
+	         if (imp.pRow()>=linPag) {
+	            imp.incPags();
+	            imp.eject();
+	         }
+	      }
+	      
+	      imp.say(imp.pRow()+1,0,""+imp.normal());
+	      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
+	      imp.eject();
+	      
+	      imp.fechaGravacao();
+	      if (!con.getAutoCommit())
+	      	con.commit();
+	      dl.dispose();
+	    }
+        catch(Exception err){
+    		Funcoes.mensagemErro(this,"Erro na impressão de recursos de produção!"+err.getMessage(),true,con,err);
+        	err.printStackTrace();
+        }
+        if (bVisualizar) {
+            imp.preview(this);
+          }
+          else {
+            imp.print();
+          }
     }
     else {
-      imp.print();
+    	FPrinterJob dlGr = null;
+		dlGr = new FPrinterJob("recursos.jasper",rs,this);
+		if(bVisualizar)
+			dlGr.setVisible(true);  
+		else{			
+			try {
+				JasperPrintManager.printReport(dlGr.getRelatorio(),true);
+			}
+			catch(Exception err){
+				Funcoes.mensagemErro(this,"Erro na impressão de recursos de produção!"+err.getMessage(),true,con,err);
+			}
+		}
     }
+    
   }
   public void setConexao(Connection cn) {
   	super.setConexao(cn);

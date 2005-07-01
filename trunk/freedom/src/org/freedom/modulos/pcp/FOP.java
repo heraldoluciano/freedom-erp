@@ -34,6 +34,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,7 +42,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 
 import org.freedom.acao.CancelEvent;
 import org.freedom.acao.CancelListener;
@@ -76,6 +76,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private JPanelPad pinAbaOp = new JPanelPad();
   private JPanelPad pinAbaRma = new JPanelPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);  
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescEst = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldFK txtQtdEst = new JTextFieldFK(JTextFieldPad.TP_NUMERIC,15,2);
@@ -124,14 +125,20 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private Integer iCodTpMov = null;
   private JPanelPad pinBotCab = new JPanelPad(104,96);
   private ListaCampos lcAlmoxEst = new ListaCampos(this, "AX");
-  public  Tabela tab2 = new Tabela();
-  public  JScrollPane spTab2 = new JScrollPane(tab2);  
+  public  Tabela tabRMA = new Tabela();
+  public  Tabela tabOPS = new Tabela();
+  public  JScrollPane spRma = new JScrollPane(tabRMA);  
+  public  JScrollPane spOPS = new JScrollPane(tabOPS);
   private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
   private ImageIcon imgExpedida = Icone.novo("clPago.gif");
   private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
+  private ImageIcon imgOPPrinc = Icone.novo("clEng_dourada.gif");
+  private ImageIcon imgOPSub = Icone.novo("clEng_azul.gif");
   private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
-  private ImageIcon imgColuna = null;
+  private ImageIcon imgColunaRMA = null;
+  private ImageIcon imgColunaOPS = null;
   private boolean bBuscaRMA = false;
+  private boolean bBuscaOPS = false;
   
   public FOP () { }
   private void montaTela() {
@@ -144,7 +151,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	pnMaster.remove(spTab);
 
   	tpnAbas.addTab("OP",spTab);
-  	tpnAbas.addTab("Rma",spTab2);
+  	tpnAbas.addTab("Rma",spRma);
+  	tpnAbas.addTab("OP's relacionadas",spOPS);
   	pnMaster.add(tpnAbas, BorderLayout.CENTER);
   	
 	btFase.setToolTipText("Fases da produção");
@@ -236,8 +244,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     setPainel( pinCab, pnCliCab);
     
     adicCampo(txtCodOP, 7, 20, 70, 20,"CodOP","Nº OP.", ListaCampos.DB_PK, true);
-	adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
-	adicDescFK(txtDescTipoMov, 153, 20, 261, 20, "DescTipoMov", "Cód.Tp.Mov.");
+    adicCampo(txtSeqOP, 80, 20, 60, 20,"SeqOP","Seq. OP.", ListaCampos.DB_PK, true);
+//    adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
+    adicCampo(txtCodTpMov, 143, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
+	adicDescFK(txtDescTipoMov, 216, 20, 201, 20, "DescTipoMov", "Cód.Tp.Mov.");
   	adicCampo(txtDtFabProd,417,20,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
 
   	if (!bPrefs[0]) {  
@@ -301,45 +311,70 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	btRatearItem.addActionListener(this);
 
   	montaDet();
-  	
-  	
-  	tab2.adicColuna("");//0
-	tab2.adicColuna("Cód.rma.");//1
-	tab2.adicColuna("Cód.prod.");//2
-	tab2.adicColuna("Descrição do produto");//3
-	tab2.adicColuna("Aprov.");//4
-	tab2.adicColuna("Exp.");//5
-	tab2.adicColuna("Dt. req.");//6
-	tab2.adicColuna("Qt. req.");//7
-	tab2.adicColuna("Dt. aprov");//8
-	tab2.adicColuna("Qt. aprov");//9
-	tab2.adicColuna("Dt. exp");//10
-	tab2.adicColuna("Qt. exp");//11
-	tab2.adicColuna("Saldo");//12
+  	  	
+  	tabRMA.adicColuna("");//0
+	tabRMA.adicColuna("Cód.rma.");//1
+	tabRMA.adicColuna("Cód.prod.");//2
+	tabRMA.adicColuna("Descrição do produto");//3
+	tabRMA.adicColuna("Aprov.");//4
+	tabRMA.adicColuna("Exp.");//5
+	tabRMA.adicColuna("Dt. req.");//6
+	tabRMA.adicColuna("Qt. req.");//7
+	tabRMA.adicColuna("Dt. aprov");//8
+	tabRMA.adicColuna("Qt. aprov");//9
+	tabRMA.adicColuna("Dt. exp");//10
+	tabRMA.adicColuna("Qt. exp");//11
+	tabRMA.adicColuna("Saldo");//12
 	
-
-	tab2.setTamColuna(13, 0);
-	tab2.setTamColuna(80, 1);
-	tab2.setTamColuna(80, 2);
-	tab2.setTamColuna(180, 3);
-	tab2.setTamColuna(50, 4);
-	tab2.setTamColuna(50, 5);
-	tab2.setTamColuna(80, 6);
-	tab2.setTamColuna(80, 7);
-	tab2.setTamColuna(80, 8);
-	tab2.setTamColuna(80, 9);
-	tab2.setTamColuna(80, 10);
-	tab2.setTamColuna(80, 11);
-	tab2.setTamColuna(80, 12);
+	tabRMA.setTamColuna(13, 0);
+	tabRMA.setTamColuna(80, 1);
+	tabRMA.setTamColuna(80, 2);
+	tabRMA.setTamColuna(180, 3);
+	tabRMA.setTamColuna(50, 4);
+	tabRMA.setTamColuna(50, 5);
+	tabRMA.setTamColuna(80, 6);
+	tabRMA.setTamColuna(80, 7);
+	tabRMA.setTamColuna(80, 8);
+	tabRMA.setTamColuna(80, 9);
+	tabRMA.setTamColuna(80, 10);
+	tabRMA.setTamColuna(80, 11);
+	tabRMA.setTamColuna(80, 12);
 	
-	tab2.addMouseListener(new MouseAdapter() {
+  	tabOPS.adicColuna("");//0
+	tabOPS.adicColuna("Cód.OP.");//1
+	tabOPS.adicColuna("Seq.OP.");//2
+	tabOPS.adicColuna("Cód.PD.");//3
+	tabOPS.adicColuna("Seq.Est.");//4
+	tabOPS.adicColuna("Descrição do produto");//5
+	tabOPS.adicColuna("Descrição da estrutura");//6
+	
+	tabOPS.setTamColuna(13, 0);
+	tabOPS.setTamColuna(70, 1);
+	tabOPS.setTamColuna(70, 2);
+	tabOPS.setTamColuna(70, 3);
+	tabOPS.setTamColuna(70, 4);
+	tabOPS.setTamColuna(200, 5);
+	tabOPS.setTamColuna(200, 6);
+	
+	tabRMA.addMouseListener(new MouseAdapter() {
 
 		public void mouseClicked(MouseEvent mevt) {
-			if (mevt.getSource() == tab2 && mevt.getClickCount() == 2)
+			if (mevt.getSource() == tabRMA && mevt.getClickCount() == 2)
 				abreRma();
 		}
 	});
-  	
+
+	tabOPS.addMouseListener(new MouseAdapter() {
+		public void mouseClicked(MouseEvent mevt) {
+			if (mevt.getSource() == tabOPS && mevt.getClickCount() == 2)
+				abreOps();
+		}
+		}
+	);
+
+	
+	
+	
 	tpnAbas.addChangeListener(this);
   	setImprimir(true);
   }
@@ -461,8 +496,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	}
   
 	private void buscaRma() {
-		String sCodOp = txtCodOP.getVlrString();				
-		if(sCodOp.trim().equals(""))
+		String sCodOp = txtCodOP.getVlrString();	
+		String sSeqOp = txtSeqOP.getVlrString();
+		if((sCodOp.trim().equals("")) || (sSeqOp.trim().equals("")))
 			return;
 		String sSitRma = "";
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
@@ -471,48 +507,53 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
 				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
 				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
-				+ "AND R.CODOP=" + sCodOp;
+				+ "AND R.CODEMPOF=? AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=?";
 				
 		System.out.println(sSQL);
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,lcCampos.getCodFilial());
+			ps.setInt(3,Integer.parseInt(sCodOp));
+			ps.setInt(4,Integer.parseInt(sSeqOp));
+			
 			ResultSet rs = ps.executeQuery();
 			
 			int iLin = 0;
 
-			tab2.limpa();
+			tabRMA.limpa();
 			while (rs.next()) {
-				tab2.adicLinha();
+				tabRMA.adicLinha();
 				
 				String sitRMA = rs.getString(5);
 				String sitAprovRMA = rs.getString(6);
 				String sitExpRMA = rs.getString(7);
 				if (sitRMA.equalsIgnoreCase("PE")) {
-					imgColuna = imgPendente;
+					imgColunaRMA = imgPendente;
 				} 
 				else if (sitRMA.equalsIgnoreCase("CA")) {
-					imgColuna = imgCancelada;
+					imgColunaRMA = imgCancelada;
 				} 
 				else if (sitRMA.equalsIgnoreCase("EF") || sitExpRMA.equals("EP") || sitExpRMA.equals("ET")) {
-					imgColuna = imgExpedida;
+					imgColunaRMA = imgExpedida;
 				} 
 				else if (sitRMA.equalsIgnoreCase("AF") || sitAprovRMA.equals("AP") || sitAprovRMA.equals("AT")) {
-					imgColuna = imgAprovada;
+					imgColunaRMA = imgAprovada;
 				}
 
-				tab2.setValor(imgColuna, iLin, 0);//SitItRma
-				tab2.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
-				tab2.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
-				tab2.setValor(rs.getString(4) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
-				tab2.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov
-				tab2.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 5);//SitExp
-				tab2.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
-				tab2.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
-				tab2.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 10);//Dt Exp
-				tab2.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
-				tab2.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 9);//Qtd Aprov
-				tab2.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 11);//Qdt Exp
-				tab2.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 12);//Saldo Prod
+				tabRMA.setValor(imgColunaRMA, iLin, 0);//SitItRma
+				tabRMA.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodRma
+				tabRMA.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
+				tabRMA.setValor(rs.getString(4) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
+				tabRMA.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 4);//SitAprov
+				tabRMA.setValor(rs.getString(7) == null ? "" : rs.getString(7) + "",iLin, 5);//SitExp
+				tabRMA.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
+				tabRMA.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
+				tabRMA.setValor(rs.getString(10) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(10))+ "", iLin, 10);//Dt Exp
+				tabRMA.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 7);//Qtd Req
+				tabRMA.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 9);//Qtd Aprov
+				tabRMA.setValor(rs.getString(13) == null ? "" : rs.getString(13) + "",iLin, 11);//Qdt Exp
+				tabRMA.setValor(rs.getString(14) == null ? "" : rs.getString(14) + "",iLin, 12);//Saldo Prod
 
 				iLin++;
 				
@@ -528,18 +569,75 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		}
 	}
 	
+	private void buscaOPS() {
+		String sCodOp = txtCodOP.getVlrString();
+		String sSeqOp = txtSeqOP.getVlrString();
+		if(("".equals(sCodOp)) || ("".equals(sSeqOp)))
+			return;
+		String sSitRma = "";
+		String sSQL = "SELECT OP.CODOP,OP.seqop,PD.codprod,OP.SEQEST,PD.descprod,ET.DESCEST, " +
+					  "OP.qtdprevprodop,OP.qtdfinalprodop,OP.dtfabrop,OP.sitop "+
+					  "FROM PPOP OP, EQPRODUTO PD,ppestrutura ET where "+
+					  "ET.codemp=OP.codemppd AND ET.codfilial=OP.codfilialpd AND ET.codprod=OP.codprod AND ET.seqest = OP.seqest and "+
+					  "PD.codemp = OP.codemppd AND PD.codfilial=OP.codfilialpd AND PD.codprod=OP.codprod and "+
+					  "OP.CODEMP=? AND OP.CODFILIAL=? AND OP.CODOP=? ORDER BY OP.SEQOP";
+
+		//AND OP.SEQOP!=?
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,lcCampos.getCodEmp());
+			ps.setInt(2,lcCampos.getCodFilial());
+			ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+//			ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
+			ResultSet rs = ps.executeQuery();
+			
+			int iLin = 0;
+
+			tabOPS.limpa();
+			while (rs.next()) {
+				tabOPS.adicLinha();
+				
+				if(rs.getInt("SEQOP")==0)
+					tabOPS.setValor(imgOPPrinc, iLin, 0);
+				else
+					tabOPS.setValor(imgOPSub, iLin, 0);
+				
+				tabOPS.setValor(new Integer(rs.getInt("CODOP")), iLin, 1);
+				tabOPS.setValor(new Integer(rs.getInt("SEQOP")), iLin, 2);
+				tabOPS.setValor(new Integer(rs.getInt("CODPROD")), iLin, 3);
+				tabOPS.setValor(new Integer(rs.getInt("SEQEST")), iLin, 4);
+				tabOPS.setValor(rs.getString("DESCPROD"), iLin, 5);
+				tabOPS.setValor(rs.getString("DESCEST"), iLin, 6);
+				
+				iLin++;
+								
+			}
+
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		}
+	}
+	
+	
 	private void abreRma() {
-		int iRma = ((Integer) tab2.getValor(tab2.getLinhaSel(), 1)).intValue();
+		int iRma = ((Integer) tabRMA.getValor(tabRMA.getLinhaSel(), 1)).intValue();
 		if (fPrim.temTela("Requisição de material") == false) {
 			FRma tela = new FRma();
 			fPrim.criatela("Requisição de material", tela, con);
 			tela.exec(iRma);
-		}
+		} 
+	}
+	
+	private void abreOps() {
 	}
 	
   private void abreFase() {
     if (fPrim.temTela("OP x Fases")==false) {
-      FOPFase tela = new FOPFase(txtCodOP.getVlrInteger().intValue(),false);
+      FOPFase tela = new FOPFase(txtCodOP.getVlrInteger().intValue(),txtSeqOP.getVlrInteger().intValue(),false);
       fPrim.criatela("OP x Fases",tela,con);
       tela.setConexao(con);
     }
@@ -547,7 +645,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   
   public void executaOP(){
     if (fPrim.temTela("OP x Fases")==false) {
-        FOPFase tela = new FOPFase(txtCodOP.getVlrInteger().intValue(),true);
+        FOPFase tela = new FOPFase(txtCodOP.getVlrInteger().intValue(),txtSeqOP.getVlrInteger().intValue(),true);
         fPrim.criatela("OP x Fases",tela,con);
         tela.setConexao(con);
       }
@@ -661,6 +759,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   public void beforeCarrega(CarregaEvent cevt) {
   	if(cevt.getListaCampos()==lcCampos){
   		bBuscaRMA = false;
+  		bBuscaOPS = false;
   	}
   }
   
@@ -778,6 +877,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
        btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));             
        btExecuta.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        bBuscaRMA = true;
+       bBuscaOPS = true;
     }
     if ((cevt.getListaCampos() == lcProdEstCod) || (cevt.getListaCampos() == lcProdEstRef)) {
        	setUsaLote(); 
@@ -936,6 +1036,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   			if(bBuscaRMA)
   				buscaRma();
   		}  		
+  		else if(tpnAbas.getSelectedIndex()==2){
+  			if(bBuscaOPS)
+  				buscaOPS();  			
+  		}
     }
   }
 
