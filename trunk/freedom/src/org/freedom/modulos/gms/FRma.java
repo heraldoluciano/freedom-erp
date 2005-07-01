@@ -98,6 +98,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtQtdExpRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtPrecoItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOF = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtQtdPrev = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtQtdFabr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
@@ -141,6 +142,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcOP = new ListaCampos(this, "OF");
+	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcLote = new ListaCampos(this, "LE");
 	private ListaCampos lcUsu = new ListaCampos(this,"UU");
 	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
@@ -282,6 +284,14 @@ public class FRma extends FDetalhe implements PostListener,
 		txtCodOP.setTabelaExterna(lcOP);
 		txtSeqOF.setTabelaExterna(lcOP);
 		
+		
+		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false));
+		lcSeqOP.setQueryCommit(false);
+		lcSeqOP.setReadOnly(true);
+
+		txtSeqOP.setTabelaExterna(lcSeqOP);
+		lcSeqOP.montaSql(false, "OP", "PP");
+		
 				
 		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
@@ -302,12 +312,13 @@ public class FRma extends FDetalhe implements PostListener,
 		adicCampo(txtIDUsu, 416, 20, 120, 20, "IdUsu", "Id do usuário",ListaCampos.DB_FK, true);	
 		adicCampo(txtDtaReqRma,539, 20, 86, 20, "DtaReqRma", "Data da Rma",ListaCampos.DB_SI, true);
 		
-		adicCampo(txtCodOP, 7, 60, 80, 20, "CodOP", "Cód.OP.",ListaCampos.DB_FK, false);		
-		adicCampo(txtSeqOF, 90, 60, 80, 20, "SeqOF", "Seq.fase",ListaCampos.DB_FK, txtDescFase, false);
+		adicCampo(txtCodOP, 7, 60, 80, 20, "CodOP", "Cód.OP.",ListaCampos.DB_FK, false);
+		adicCampo(txtSeqOP, 90, 60, 77, 20, "SeqOP", "Seq.OP.",ListaCampos.DB_FK, false);
+		adicCampo(txtSeqOF, 170, 60, 80, 20, "SeqOF", "Seq.fase",ListaCampos.DB_FK, txtDescFase, false);
 		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
-		adicCampo(txtCodCC, 173, 60, 130, 20, "CodCC", "Cód.CC.",ListaCampos.DB_FK,txtDescCC, true);		
-		adicCampo(txtAnoCC, 306, 60, 70, 20, "AnoCC", "Ano CC.",ListaCampos.DB_FK, true);		
-		adicDescFK(txtDescCC, 379, 60, 242, 20, "DescCC", "Descrição do centro de custos");	
+		adicCampo(txtCodCC, 253, 60, 130, 20, "CodCC", "Cód.CC.",ListaCampos.DB_FK,txtDescCC, true);		
+		adicCampo(txtAnoCC, 386, 60, 70, 20, "AnoCC", "Ano CC.",ListaCampos.DB_FK, true);		
+		adicDescFK(txtDescCC, 459, 60, 162, 20, "DescCC", "Descrição do centro de custos");	
 		
 		adicCampoInvisivel(txtSitRma,"sitrma","Sit.Rma.",ListaCampos.DB_SI,false);
 		adicCampoInvisivel(txtSitAprovRma,"sitaprovrma","Sit.Ap.Rma.",ListaCampos.DB_SI,false);
@@ -549,6 +560,7 @@ public class FRma extends FDetalhe implements PostListener,
 		txaMotivoRma.setEnabled(!bHab);
 		rgPriod.setAtivo(!bHab);
 		txtCodOP.setAtivo(!bHab);
+		txtSeqOP.setAtivo(!bHab);
 		txtSeqOF.setAtivo(!bHab);
 	}
 	private void desabAprov(boolean bHab){
@@ -900,7 +912,7 @@ public class FRma extends FDetalhe implements PostListener,
 				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC " 
 				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP),"
 				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP)," 
-				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP"	
+				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP"	
 				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
 				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA"
@@ -981,6 +993,8 @@ public class FRma extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "O.P/OS.:");
 					imp.say(imp.pRow() + 0, 13, rs.getString("CodOP") != null ? rs.getString("CodOP").trim() : "");
+					imp.say(imp.pRow() + 0, 25, "Seq. O.P.:");
+					imp.say(imp.pRow() + 0, 37, rs.getString("SeqOP") != null ? rs.getString("SeqOP").trim() : "");
 					imp.say(imp.pRow() + 0, 136, "|");					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "|"+Funcoes.replicate("=",133)+"|");
@@ -1236,6 +1250,7 @@ public class FRma extends FDetalhe implements PostListener,
 		lcAlmox.setConexao(cn);
 		lcUsu.setConexao(cn);
 		lcOP.setConexao(cn);
+		lcSeqOP.setConexao(cn);
 		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;

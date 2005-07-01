@@ -82,6 +82,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmiOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -99,6 +100,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcOP = new ListaCampos(this, "OF");
+	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	boolean bAprovaParcial = false;
 	boolean bExpede = false;
@@ -140,6 +142,16 @@ public class FConsRMA extends FFilho implements ActionListener {
 		txtCodProdOP.setSoLeitura(true);
 		txtCodOP.setTabelaExterna(lcOP);
 		lcOP.montaSql(false, "OP", "PP");
+		
+		txtSeqOP.setNomeCampo("SeqOP");
+		txtSeqOP.setFK(true);
+		
+		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false));
+		lcSeqOP.setQueryCommit(false);
+		lcSeqOP.setReadOnly(true);
+
+		txtSeqOP.setTabelaExterna(lcSeqOP);
+		lcSeqOP.montaSql(false, "OP", "PP");
 				
 		txtCodUsu.setNomeCampo("IDUSU");
 		txtCodUsu.setFK(true);
@@ -202,6 +214,8 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pinCab.adic(txtNomeUsu, 80, 70, 153, 20);
 		pinCab.adic(new JLabelPad("Cód. OP."),237, 48, 153, 20);
 		pinCab.adic(txtCodOP, 237, 70, 100, 20);
+		pinCab.adic(new JLabelPad("Seq. OP."),340, 48, 153, 20);
+		pinCab.adic(txtSeqOP, 340, 70, 100, 20);
 		
 		
 /*
@@ -291,6 +305,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
 		String sCodOp = txtCodOP.getVlrString();
+		String sSeqOp = txtSeqOP.getVlrString();
 
 		
 		if (cbPendentes.getVlrString().equals("S")) {
@@ -344,7 +359,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 			where = " AND SitRma='PE'";
 		
 		if (sCodOp.length() > 0) 
-			where = " AND R.CODOP = '" + sCodOp + "'";
+			where += " AND R.CODOP = '" + sCodOp + "'";
+		
+		if (sSeqOp.length() > 0) 
+			where += " AND R.SEQOP = '" + sSeqOp + "'";
 		
 		if (almoxarifado)
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
@@ -622,6 +640,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		lcOP.setConexao(cn);
+		lcSeqOP.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
 		habCampos();
