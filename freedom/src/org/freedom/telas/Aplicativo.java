@@ -47,18 +47,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Vector;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JMenuItemPad;
 import org.freedom.componentes.JMenuPad;
-import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.ObjetoEmpresa;
 import org.freedom.componentes.TabObjeto;
 import org.freedom.funcoes.Funcoes;
 
@@ -112,6 +115,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sEmpSis = "";
 	public static String sArqIni = "";
 	public static String sMailSuporte = "";
+	public static ObjetoEmpresa empresa = null; 
 	
 	public Connection getConIB() {
 		return conIB;
@@ -678,6 +682,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			carregaCasasDec();
 			getMultiAlmox();
 			buscaInfoUsuAtual();
+			empresa = new ObjetoEmpresa(con);
 		} finally {
 			sAutoCommit = null;
 		}
