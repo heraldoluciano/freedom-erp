@@ -75,6 +75,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmiOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -99,6 +100,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
 	private ListaCampos lcOP = new ListaCampos(this, "OF");
+	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	boolean bAprovaParcial = false;
@@ -135,13 +137,25 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		lcOP.add(new GuardaCampo(txtRefProdOP, "RefProd", "Referência", ListaCampos.DB_SI, null, false));
 		lcOP.setQueryCommit(false);
 		lcOP.setReadOnly(true);
-
+		
 		txtDtEmiOP.setSoLeitura(true);
 		txtDtFabOP.setSoLeitura(true);
 		txtCodProdOP.setSoLeitura(true);
 		txtRefProdOP.setSoLeitura(true);
 		txtCodOP.setTabelaExterna(lcOP);
 		lcOP.montaSql(false, "OP", "PP");
+		
+		
+
+		txtSeqOP.setNomeCampo("SeqOP");
+		txtSeqOP.setFK(true);
+		
+		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false));
+		lcSeqOP.setQueryCommit(false);
+		lcSeqOP.setReadOnly(true);
+
+		txtSeqOP.setTabelaExterna(lcSeqOP);
+		lcSeqOP.montaSql(false, "OP", "PP");
 		
 		
 		txtCodProd.setNomeCampo("CodProd");
@@ -215,10 +229,12 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		
 		pinCab.adic(new JLabelPad("Cód.prod."), 7, 45, 80, 20);
 		pinCab.adic(txtCodProd, 7, 65, 80, 20);
-		pinCab.adic(new JLabelPad("Descrição do produto"), 90, 45, 250, 20);
-		pinCab.adic(txtDescProd, 90, 65, 280, 20);
-		pinCab.adic(new JLabelPad("Cód. OP."),373, 45, 80, 20);
-		pinCab.adic(txtCodOP, 373, 65, 110, 20);
+		pinCab.adic(new JLabelPad("Descrição do produto"), 90, 45, 200, 20);
+		pinCab.adic(txtDescProd, 90, 65, 200, 20);
+		pinCab.adic(new JLabelPad("Cód. OP."),293, 45, 80, 20);
+		pinCab.adic(txtCodOP, 293, 65, 80, 20);
+		pinCab.adic(new JLabelPad("Seq. OP."),376, 45, 80, 20);
+		pinCab.adic(txtSeqOP, 376, 65, 80, 20);
 
 		pinCab.adic(new JLabelPad("Cód.c.c."), 7, 85, 70, 20);
 		pinCab.adic(txtCodCC, 7, 105, 140, 20);
@@ -327,6 +343,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
 		String sCodOp = txtCodOP.getVlrString();
+		String sSeqOp = txtSeqOP.getVlrString();
 		String sCodProd = txtCodProd.getVlrString();
 
 		
@@ -372,6 +389,9 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		if (sCodOp.length() > 0) 
 			where += " AND R.CODOP = '" + sCodOp + "'";
 		
+		if (sSeqOp.length() > 0) 
+			where += " AND R.SEQOP = '" + sSeqOp + "'";
+		
 		if (sCodProd.length() > 0) 
 			where += " AND IT.CODPROD = '" + sCodProd + "'";
 		
@@ -391,8 +411,8 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
 				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
 				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) " + where;
-				
-		System.out.println(sSQL);
+
+
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			int param = 1;
@@ -654,6 +674,7 @@ public class FConsRmaItem extends FFilho implements ActionListener {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		lcOP.setConexao(cn);
+		lcSeqOP.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
