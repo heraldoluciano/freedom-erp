@@ -1,14 +1,12 @@
-connect c:\opt\firebird\security.fdb user sysdba password masterkey;
-
 DECLARE EXTERNAL FUNCTION ib_password
         CSTRING(32)
         RETURNS CSTRING(32) /*FREE_IT*/
-        ENTRY_POINT 'ib_password' MODULE_NAME 'stp_udf.dll';
+        ENTRY_POINT 'ib_password' MODULE_NAME 'stp_udf';
 
 DECLARE EXTERNAL FUNCTION printLog
         CSTRING(256)
         RETURNS INT
-        ENTRY_POINT 'printLog' MODULE_NAME 'stp_udf.dll';
+        ENTRY_POINT 'printLog' MODULE_NAME 'stp_udf';
         
 create exception exc_not_permitted 'Ação não permitida';
 
