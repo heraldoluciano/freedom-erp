@@ -24,7 +24,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,23 +33,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.util.HashMap;
+
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
+
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.ImprimeLayout;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
@@ -74,13 +75,10 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
   private JTextFieldPad txtZoom = new JTextFieldPad(JTextFieldPad.TP_INTEGER,3,0);
   private JButton btMais = new JButton(Icone.novo("btZoomMais.gif"));
   private JButton btMenos = new JButton(Icone.novo("btZoomMenos.gif"));
-  private PageFormat pag = null;
-  
+  private PageFormat pag = null;  
   private JPanelPad pinTools = new JPanelPad(47,45);
-  private JButton btPdf = new JButton(Icone.novo("btPdf.gif"));
-  
-  
-  public  String strTemp = ""; 
+  private JButton btPdf = new JButton(Icone.novo("btPdf.gif"));    
+  public String strTemp = ""; 
   private int iZoomAtual = 100;
   boolean bVisualiza = false;
   public FPrinterJob(ImprimeLayout impL,JInternalFrame ifOrig) {
@@ -198,11 +196,10 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 	}  
 	
   }
-  
-  public FPrinterJob(String sLayout,ResultSet rs,JInternalFrame ifOrig) {
+  public FPrinterJob(String sLayout,String sTituloRel,String sFiltros,ResultSet rs,JInternalFrame ifOrig) {
   	super(false);
     
-    setTitulo("Visualizar Impressão Gráfica");
+    setTitulo(sTituloRel);
     
     setBounds(50,50,500,400);
 	
@@ -210,12 +207,13 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 
 	JRResultSetDataSource jrRS = new JRResultSetDataSource(rs);
 	try{
-/*		HashMap hParam = new HashMap();
-		Image img = null;
-		URL url = FPrinterJob.class.getResource("/org/freedom/images/btZoomMais.gif");
-		img = java.awt.Toolkit.getDefaultToolkit().getImage(url);
-	*/			
-		relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/org/freedom/layout/"+sLayout),Aplicativo.empresa.getAll(),jrRS);
+		HashMap hParam = Aplicativo.empresa.getAll();
+		
+		hParam.put("USUARIO",Aplicativo.strUsuario);
+		hParam.put("FILTROS",sFiltros);
+		hParam.put("TITULO",sTituloRel);
+		
+		relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/org/freedom/layout/"+sLayout),hParam,jrRS);
 		JRViewer viewer = new JRViewer(relJasper);
 		this.setContentPane(viewer);
 	}
@@ -234,8 +232,7 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
   public JasperPrint getRelatorio(){
   	return this.relJasper;
   }
-  
-  
+    
   public void actionPerformed(ActionEvent evt) {
     if (evt.getSource() == btSair)
 		dispose();

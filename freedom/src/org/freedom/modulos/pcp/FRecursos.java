@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
@@ -144,7 +143,8 @@ public class FRecursos extends FDados implements ActionListener {
     }
     else {
     	FPrinterJob dlGr = null;
-		dlGr = new FPrinterJob("recursos.jasper",rs,this);
+		dlGr = new FPrinterJob("recursos.jasper","RELATORIO DE RECURSOS DE PRODUÇÃO","Código\nDescrição",rs,this);
+				
 		if(bVisualizar)
 			dlGr.setVisible(true);  
 		else{			

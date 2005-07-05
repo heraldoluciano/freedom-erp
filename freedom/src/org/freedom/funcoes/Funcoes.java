@@ -231,6 +231,12 @@ public class Funcoes {
 		}
 		return sTexto;
 	}
+	public static String adicEspacosDireita(String sTexto, int iEspacos) {
+		if (iEspacos > sTexto.length()) {
+			sTexto = sTexto + replicate(" ", iEspacos - sTexto.length());
+		}
+		return sTexto;
+	}
 
 	public static Vector quebraLinha(Vector vValor, int iTam) {
 		Vector vRetorno = new Vector();

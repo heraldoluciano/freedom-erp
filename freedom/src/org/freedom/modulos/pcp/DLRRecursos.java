@@ -41,7 +41,7 @@ public class DLRRecursos extends FFDialogo {
   public DLRRecursos(Component cOrig) {
   	super(cOrig);
     setTitulo("Ordem do Relatório");
-    setAtribos(300,200);
+    setAtribos(300,220);
     vLabsOrd.addElement("Código");
     vLabsOrd.addElement("Nome");
     vValsOrd.addElement("C");
@@ -56,11 +56,11 @@ public class DLRRecursos extends FFDialogo {
     rgTipo = new JRadioGroup(1,2,vLabsTipo,vValsTipo);
     rgTipo.setVlrString("G");
 
-    adic(lbOrdem,7,0,80,15);
-    adic(rgOrdem,7,20,280,30);
+    adic(lbOrdem,7,5,80,15);
+    adic(rgOrdem,7,25,275,30);
     
-    adic(lbTipo,7,40,80,15);
-    adic(rgTipo,7,60,280,30);
+    adic(lbTipo,7,65,265,15);
+    adic(rgTipo,7,85,275,30);
 
   }
   public Vector getValores() {
