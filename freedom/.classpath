@@ -9,5 +9,7 @@
 	<classpathentry kind="lib" path="lib/jfreechart-0.9.12.jar"/>
 	<classpathentry kind="lib" path="lib/mail.jar"/>
 	<classpathentry kind="lib" path="lib/nachocalendar-0.21.jar"/>
+	<classpathentry kind="lib" path="lib/jasperreports-0.6.7.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
