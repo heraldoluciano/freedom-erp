@@ -13,5 +13,7 @@ cp /dados/freedom/lib/jcommon-0.8.7.jar /opt/freedom/lib/jcommon-0.8.7.jar
 cp /dados/freedom/lib/jfreechart-0.9.12.jar /opt/freedom/lib/jfreechart-0.9.12.jar
 cp /dados/freedom/lib/activation.jar /opt/freedom/lib/activation.jar
 cp /dados/freedom/lib/nachocalendar-0.21.jar /opt/freedom/lib/nachocalendar-0.21.jar
+cp /dados/freedom/lib/commons-logging.jar /opt/freedom/lib/commons-logging.jar
+cp /dados/freedom/lib/jasperreports-0.6.7.jar /opt/freedom/lib/jasperreports-0.6.7.jar
 cp /dados/freedom/exec/*.sh /opt/freedom/
 
