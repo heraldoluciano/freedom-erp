@@ -21,6 +21,7 @@
  */ 
 
 package org.freedom.modulos.pcp;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -29,58 +30,104 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.swing.JButton;
-
+import javax.swing.JScrollPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
-import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTabbedPanePad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
-public class FEstrutura extends FDetalhe implements ActionListener, CarregaListener, PostListener{
+public class FEstrutura extends FDetalhe implements ChangeListener,ActionListener, CarregaListener, PostListener{
   private JPanelPad pinCab = new JPanelPad();
-  private JPanelPad pinDet = new JPanelPad();
-  private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JPanelPad pinDetFases = new JPanelPad();
+  private JPanelPad pinDetItens = new JPanelPad();
+  private JPanelPad pinDetDistrib = new JPanelPad();
+  private JTabbedPanePad tpnAbas = new JTabbedPanePad();  
+  private JPanelPad pinAbaFases = new JPanelPad();
+  private JPanelPad pinAbaItens = new JPanelPad();
+  private JPanelPad pinAbaDistrib = new JPanelPad();
+  private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescProdEst = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldFK txtDescEstDistrib = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtCLoteProd = new JTextFieldFK(JTextFieldPad.TP_STRING,1,0);
-  private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodFaseItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescFaseItem = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+
+  private JTextFieldPad txtCodFaseDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescFaseDistrib = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+
   private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodFaseFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescFaseFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtQtdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNumSeq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtCodProd2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescProd2 = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodProdItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescProdItem = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);  
+  private JTextFieldPad txtCodProdDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+ 
+
   private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtRMA = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
-  private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-  private JTextFieldPad txtItRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtRefProdItem = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldPad txtRefProdDistrib = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtSeqEstDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);
+  private JTextFieldPad txtNumSeqEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescTpRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JCheckBoxPad cbFinaliza = new JCheckBoxPad("Sim","S","N");
   private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Sim","S","N");
   private JCheckBoxPad cbAtiva = new JCheckBoxPad("Sim","S","N");
-  private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
-  private ListaCampos lcProd = new ListaCampos(this,"PD");
-  private ListaCampos lcProd2 = new ListaCampos(this,"PD");
-  private ListaCampos lcFase = new ListaCampos(this,"FS");
+  private ListaCampos lcProdEst = new ListaCampos(this,"PD");
+  private ListaCampos lcProdItem = new ListaCampos(this,"PD");
+  private ListaCampos lcFaseItem = new ListaCampos(this,"FS");
+  private ListaCampos lcFaseFase = new ListaCampos(this,"FS");
   private ListaCampos lcModLote = new ListaCampos(this,"ML");
+  private ListaCampos lcDetFases = new ListaCampos(this);
+  private ListaCampos lcDetDistrib = new ListaCampos(this,"DE");
+  private ListaCampos lcProdDistrib = new ListaCampos(this,"");
+  public  Tabela tabFases = new Tabela();
+  public  Tabela tabDist = new Tabela();
+  public  JScrollPane spFases = new JScrollPane(tabFases);  
+  public  JScrollPane spDist = new JScrollPane(tabDist);
+  private JTextAreaPad txaModoPreparo = new JTextAreaPad();
+  private JScrollPane spnModoPreparo = new JScrollPane(txaModoPreparo);
+  private ListaCampos lcTipoRec = new ListaCampos(this,"TR");
+
   String sRma = "";
   
   public FEstrutura() {
     setTitulo("Estrutura de produtos");
-    setAtribos( 50, 20, 568, 460);
+    setAtribos( 50, 20, 622, 550);
     setAltCab(170);
+    
+  	pnMaster.remove(spTab);
+  	pnMaster.remove(pnDet);
+
+  	tpnAbas.addTab("Fases",spFases);
+  	tpnAbas.addTab("Itens",spTab);
+  	tpnAbas.addTab("Distribuição",spDist);
+  	
+  	pnMaster.add(tpnAbas, BorderLayout.CENTER);
     
     pnGImp.removeAll();
 	pnGImp.setLayout(new GridLayout(1, 2));
@@ -88,48 +135,50 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
 	pnGImp.add(btPrevimp);
 	pnGImp.add(btImp);
     
-	btFase.setToolTipText("Fases da produção");
-    
-    btFase.setEnabled(false);
     cbAtiva.setVlrString("N");
     
+    lcDetFases.setMaster(lcCampos);  
+    lcDetDistrib.setMaster(lcCampos);
+    lcCampos.adicDetalhe(lcDetFases);
+    lcCampos.adicDetalhe(lcDetDistrib);
+       
     pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
     setPainel( pinCab, pnCliCab);
     lcCampos.addPostListener(this);
-    lcProd.setUsaME(false);    
-    lcProd.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
-    lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-    lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referencia", ListaCampos.DB_SI,false));
-    lcProd.add(new GuardaCampo( txtCLoteProd, "CLoteProd", "Usa Lote", ListaCampos.DB_SI,false));
-    lcProd.setWhereAdic("TIPOPROD='F'");
-    lcProd.montaSql(false, "PRODUTO", "EQ");
-    lcProd.setQueryCommit(false);
-    lcProd.setReadOnly(true);
-    txtRefProd.setTabelaExterna(lcProd);
-    txtCodProd.setTabelaExterna(lcProd);
-    txtDescProd.setListaCampos(lcProd);
+    lcProdEst.setUsaME(false);    
+    lcProdEst.add(new GuardaCampo( txtCodProdEst, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
+    lcProdEst.add(new GuardaCampo( txtDescProdEst, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProdEst.add(new GuardaCampo( txtRefProdEst, "RefProd", "Referencia", ListaCampos.DB_SI,false));
+    lcProdEst.add(new GuardaCampo( txtCLoteProd, "CLoteProd", "Usa Lote", ListaCampos.DB_SI,false));
+    lcProdEst.setWhereAdic("TIPOPROD='F'");
+    lcProdEst.montaSql(false, "PRODUTO", "EQ");
+    lcProdEst.setQueryCommit(false);
+    lcProdEst.setReadOnly(true);
+    txtRefProdEst.setTabelaExterna(lcProdEst);
+    txtCodProdEst.setTabelaExterna(lcProdEst);
+    txtDescProdEst.setListaCampos(lcProdEst);
        
-    lcProd2.add(new GuardaCampo( txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
-    lcProd2.add(new GuardaCampo( txtDescProd2, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
-    lcProd2.add(new GuardaCampo( txtItRefProd, "RefProd", "Referencia", ListaCampos.DB_SI,false));
-    lcProd2.add(new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false));
+    lcProdItem.add(new GuardaCampo( txtCodProdItem, "CodProd", "Cód.prod.", ListaCampos.DB_PK, true));
+    lcProdItem.add(new GuardaCampo( txtDescProdItem, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
+    lcProdItem.add(new GuardaCampo( txtRefProdItem, "RefProd", "Referencia", ListaCampos.DB_SI,false));
+    lcProdItem.add(new GuardaCampo( txtRMA, "RMAProd", "RMA", ListaCampos.DB_SI, false));
 
-    lcProd2.montaSql(false, "PRODUTO", "EQ");
-    lcProd2.setQueryCommit(false);
-    lcProd2.setReadOnly(true);
-    txtCodProd2.setTabelaExterna(lcProd2);
-    txtDescProd2.setListaCampos(lcProd2);
+    lcProdItem.montaSql(false, "PRODUTO", "EQ");
+    lcProdItem.setQueryCommit(false);
+    lcProdItem.setReadOnly(true);
+    txtCodProdItem.setTabelaExterna(lcProdItem);
+    txtDescProdItem.setListaCampos(lcProdItem);
 
-    lcFase.add(new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_PK, true));
-    lcFase.add(new GuardaCampo( txtDescFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false));
-    lcFase.setDinWhereAdic("CODFASE IN (SELECT CODFASE FROM PPESTRUFASE WHERE " +
-            "CODEMP=PPFASE.CODEMP AND CODFILIAL=PPFASE.CODFILIAL AND CODPROD=#N)",txtCodProd);
-    lcFase.montaSql(false, "FASE", "PP");
-    lcFase.setQueryCommit(false);
-    lcFase.setReadOnly(true);
-    txtCodFase.setTabelaExterna(lcFase);
-    txtDescFase.setListaCampos(lcFase);
+    lcFaseItem.add(new GuardaCampo( txtCodFaseItem, "CodFase", "Cód.fase", ListaCampos.DB_PK, true));
+    lcFaseItem.add(new GuardaCampo( txtDescFaseItem, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false));
+    lcFaseItem.setDinWhereAdic("CODFASE IN (SELECT CODFASE FROM PPESTRUFASE WHERE " +
+            "CODEMP=PPFASE.CODEMP AND CODFILIAL=PPFASE.CODFILIAL AND CODPROD=#N)",txtCodProdEst);
+    lcFaseItem.montaSql(false, "FASE", "PP");
+    lcFaseItem.setQueryCommit(false);
+    lcFaseItem.setReadOnly(true);
+    txtCodFaseItem.setTabelaExterna(lcFaseItem);
+    txtDescFaseItem.setListaCampos(lcFaseItem);
 
     lcModLote.add(new GuardaCampo( txtCodModLote, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_PK, false));
     lcModLote.add(new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false));
@@ -139,14 +188,12 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     txtCodModLote.setTabelaExterna(lcModLote);
     txtDescModLote.setListaCampos(lcModLote);
 
-    adicCampo(txtCodProd, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProd, true);
-    adicDescFK(txtDescProd, 90, 20, 372, 20, "DescProd", "Descrição do produto");
-//    adicCampo(txtQtdEst, 435, 20, 108, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
+    adicCampo(txtCodProdEst, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdEst, true);
+    adicDescFK(txtDescProdEst, 90, 20, 372, 20, "DescProd", "Descrição do produto");
     adicCampo(txtSeqEst,465,20,78,20, "SeqEst", "Seq.Est.",ListaCampos.DB_PK,true);
-    adic(btFase,445,55,100,25);
     adicCampo(txtQtdEst, 7, 60, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDescEst, 90, 60, 297, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
-    adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
+    adicCampoInvisivel(txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
     adicDB(cbAtiva,392,60,50,20,"ATIVOEST","Ativa",true);
     adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
     adicDescFK(txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote");
@@ -154,45 +201,126 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     
     setListaCampos( false, "ESTRUTURA", "PP");
     lcCampos.setQueryInsert(false);
-    setAltDet(100);
-    pinDet = new JPanelPad(590,110);
-    setPainel( pinDet, pnDet);
+
+    
+    //Detalhe Itens
+
+    pinDetItens = new JPanelPad(590,110);
+    setPainel(pinDetItens);
     setListaCampos(lcDet);
     setNavegador(navRod);
     
     cbRmaAutoItEst.setVlrString("N");
 
     adicCampo(txtNumSeq, 7, 20, 40, 20,"SeqItEst","Item", ListaCampos.DB_PK, true);
-    adicCampo(txtCodProd2, 50, 20, 77, 20,"CodProdPD","Cód.prod.", ListaCampos.DB_FK, txtDescProd2, true);
-    adicDescFK(txtDescProd2, 130, 20, 307, 20, "DescProd", "Descrição do produto");
+    adicCampo(txtCodProdItem, 50, 20, 77, 20,"CodProdPD","Cód.prod.", ListaCampos.DB_FK, txtDescProdItem, true);
+    adicDescFK(txtDescProdItem, 130, 20, 307, 20, "DescProd", "Descrição do produto");
     adicCampo(txtQtdMat, 440, 20, 100, 20,"QtdItEst","Quantidade", ListaCampos.DB_SI, true);
-    adicCampo(txtCodFase, 7, 60, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
-    adicDescFK(txtDescFase, 80, 60, 360, 20, "DescFase", "Descrição da fase");
+    adicCampo(txtCodFaseItem, 7, 60, 70, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFaseItem, true);
+    adicDescFK(txtDescFaseItem, 80, 60, 360, 20, "DescFase", "Descrição da fase");
     adicDB(cbRmaAutoItEst,442,60,120,20,"RmaAutoItEst", "RMA Automática", true);
-    adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.est.", ListaCampos.DB_SI, false);
-    adicCampoInvisivel(txtItRefProd,"RefProdPD", "Ref.prod.it.", ListaCampos.DB_SI, false);
+    adicCampoInvisivel(txtRefProdEst, "RefProd", "Ref.prod.est.", ListaCampos.DB_SI, false);
+    adicCampoInvisivel(txtRefProdItem,"RefProdPD", "Ref.prod.it.", ListaCampos.DB_SI, false);
     setListaCampos( true, "ITESTRUTURA", "PP");
     lcDet.setQueryInsert(false);
-    montaTab();
+
     
-    txtCodProd2.setNomeCampo("CodProd");
+    txtCodProdItem.setNomeCampo("CodProd");
     
-    btFase.addActionListener(this);
     lcCampos.addCarregaListener(this);
     lcDet.addCarregaListener(this);
-    lcProd.addCarregaListener(this);
-    lcProd2.addCarregaListener(this);
+    lcProdEst.addCarregaListener(this);
+    lcProdItem.addCarregaListener(this);
     tab.setTamColuna(50,0);
     tab.setTamColuna(150,2);
     tab.setTamColuna(150,5);
         
     cbRmaAutoItEst.setEnabled(false);
     
+    //Fim Detalhe Itens
+    
+    //Detalhe Fases
+    
+    lcTipoRec.add(new GuardaCampo(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_PK, true));
+    lcTipoRec.add(new GuardaCampo(txtDescTpRec, "DescTpRec", "Descrição do tipo de recurso", ListaCampos.DB_SI, false));
+    lcTipoRec.montaSql(false, "TIPOREC", "PP");
+    lcTipoRec.setQueryCommit(false);
+    lcTipoRec.setReadOnly(true);
+    txtCodTpRec.setTabelaExterna(lcTipoRec);
+
+    lcFaseFase.add(new GuardaCampo( txtCodFaseFase,"CodFase", "Cód.fase", ListaCampos.DB_PK, true));
+    lcFaseFase.add(new GuardaCampo( txtDescFaseFase, "DescFase", "Descrição da fase", ListaCampos.DB_SI, false));
+    lcFaseFase.montaSql(false, "FASE", "PP");
+    lcFaseFase.setQueryCommit(false);
+    lcFaseFase.setReadOnly(true);
+    txtCodFaseFase.setTabelaExterna(lcFaseFase);
+
+//    pinDetFases = new JPanelPad(590,190);
+    setPainel( pinDetFases);
+    setListaCampos(lcDetFases);
+
+    adicCampo(txtNumSeqEf, 7, 20, 40, 20,"SeqEf","Item", ListaCampos.DB_PK, true);
+    adicCampo(txtCodFaseFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFaseFase, true);
+    adicDescFK(txtDescFaseFase, 130, 20, 277, 20, "DescFase", "Descrição da fase");
+    adicCampo(txtTempoEf, 410, 20, 100, 20,"TempoEf","Tempo (Seg.)",ListaCampos.DB_SI,true);
+    adicCampo(txtCodTpRec, 7, 60, 80, 20,"CodTpRec","Cód.tp.rec.", ListaCampos.DB_FK, txtDescTpRec, true);
+    adicDescFK(txtDescTpRec, 90, 60, 350, 20, "DescTpRec", "Descrição do tipo de recurso");
+    adicDB(cbFinaliza,445,60,80,20,"FINALIZAOP","Finaliza O.P",true);
+
+    adicDBLiv(txaModoPreparo, "Instrucoes", "Instruções", false);
+	adic(new JLabelPad("Instruções"), 7, 80, 100, 20);
+	adic(spnModoPreparo, 7, 100, 510, 70);
+    
+    setListaCampos( true, "ESTRUFASE", "PP");
+    lcDetFases.setQueryInsert(false);
+        
+    lcDetFases.setTabela(tabFases);
+    lcDetFases.montaTab();
+        
+    //Fim Detalhe Fases
+    
+    //Detalhe Distribuição
+    
+  	lcProdDistrib.add(new GuardaCampo( txtCodProdDistrib, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEstDistrib, true));
+  	lcProdDistrib.add(new GuardaCampo( txtSeqEstDistrib,"seqest","Seq.Est.",ListaCampos.DB_PK,txtDescEstDistrib, true));
+  	lcProdDistrib.add(new GuardaCampo( txtDescEstDistrib, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
+  	lcProdDistrib.add(new GuardaCampo( txtRefProdDistrib, "refprod", "Referência", ListaCampos.DB_SI, false));    
+    
+    lcProdDistrib.setWhereAdic("ATIVOEST='S'");    						   
+  	lcProdDistrib.montaSql(false, "ESTRUTURA", "PP");    
+  	lcProdDistrib.setQueryCommit(false);
+  	lcProdDistrib.setReadOnly(true);
+  	txtCodProdDistrib.setTabelaExterna(lcProdDistrib);
+  	txtSeqEstDistrib.setTabelaExterna(lcProdDistrib);
+  	txtCodProdDistrib.setNomeCampo("codprod");      
+    
+    setPainel( pinDetDistrib);
+    setListaCampos(lcDetDistrib);
+
+    adicCampo(txtCodProdDistrib, 7, 20, 40, 20,"CodProdDe","Cód.Est.", ListaCampos.DB_PF,txtDescEstDistrib, true);
+    adicCampo(txtSeqEstDistrib, 50, 20, 77, 20,"SeqEstDe","Seq.Est", ListaCampos.DB_PF, txtDescEstDistrib, true);
+    adicDescFK(txtDescEstDistrib, 130, 20, 277, 20, "DescFase", "Descrição da fase");
+    
+    setListaCampos( true, "DISTRIB", "PP");
+    lcDetDistrib.setQueryInsert(false);
+
+    lcDetDistrib.setTabela(tabDist);
+    lcDetDistrib.montaTab();
+    
+    
+    //Fim Detalhe Distribuição
+    
+
+    setPainel( pinDetFases, pnDet);
+	lcDet.montaTab();
+    
     btImp.addActionListener(this);
 	btPrevimp.addActionListener(this);
 	
 	setImprimir(true);
-    
+	tpnAbas.addChangeListener(this);
+	
+	setAltDet(190);
   }
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
@@ -213,7 +341,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
 	dl.dispose();
     
 	if (sValores[2].equals("A")) {
-		sWhere += " AND E.CODPROD="+txtCodProd.getVlrString();
+		sWhere += " AND E.CODPROD="+txtCodProdEst.getVlrString();
 		sWhere += " AND E.SEQEST="+txtSeqEst.getVlrString();
 	}
     
@@ -308,7 +436,7 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
 		ps = con.prepareStatement(sSQL);
 		rs = ps.executeQuery();
 		
-		sCodProd = txtCodProd.getVlrString();		
+		sCodProd = txtCodProdEst.getVlrString();		
 		int cont = 0;
 		imp.limpaPags();
 		
@@ -407,16 +535,13 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   private void abreFase() {
     if (fPrim.temTela("Estrutura x Fase")==false) {
     	
-      FEstFase tela = new FEstFase(txtCodProd.getVlrInteger().intValue(),txtSeqEst.getVlrInteger().intValue());
+      FEstFase tela = new FEstFase(txtCodProdEst.getVlrInteger().intValue(),txtSeqEst.getVlrInteger().intValue());
       fPrim.criatela("Estrutura x Fase",tela,con);
       tela.setConexao(con);
     }
   }
   public void actionPerformed(ActionEvent evt) {
-    if (evt.getSource() == btFase){
-        abreFase();
-    }
-    else if (evt.getSource() == btPrevimp) {   	
+    if (evt.getSource() == btPrevimp) {   	
         imprimir(true);
     }
     else if (evt.getSource() == btImp) 
@@ -425,25 +550,26 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
-    lcProd.setConexao(cn);
-    lcProd2.setConexao(cn);
-    lcFase.setConexao(cn);
+    lcProdEst.setConexao(cn);
+    lcProdItem.setConexao(cn);
+    lcFaseItem.setConexao(cn);
     lcModLote.setConexao(cn);
+    lcTipoRec.setConexao(cn);
+    lcFaseFase.setConexao(cn);
+    lcDetDistrib.setConexao(cn);
+    lcDetFases.setConexao(cn);
+    lcProdDistrib.setConexao(cn);
   }
   public void afterCarrega(CarregaEvent cevt) {  	
   
-  	if (cevt.getListaCampos() == lcCampos) {
-        boolean bMostraBt = (lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT);
-    	btFase.setEnabled(bMostraBt);
-    }
-    else if (cevt.getListaCampos() == lcProd2) {
+    if (cevt.getListaCampos() == lcProdItem) {
     	String sRma = txtRMA.getVlrString();
 	    if (sRma.equals("S"))
 	    	cbRmaAutoItEst.setEnabled(true);
     	else 
     		cbRmaAutoItEst.setEnabled(false);
     }    	
-    else if (cevt.getListaCampos() == lcProd) {
+    else if (cevt.getListaCampos() == lcProdEst) {
     	if(txtCLoteProd.getVlrString().equals("S")){
     	    txtCodModLote.setAtivo(true);   
     	    txtNroDiasValid.setAtivo(true);
@@ -455,12 +581,53 @@ public class FEstrutura extends FDetalhe implements ActionListener, CarregaListe
     	}
     }
   }      
-  
+  public void stateChanged(ChangeEvent cevt) {
+  	if (((JTabbedPanePad)(cevt.getSource()))==tpnAbas){
+  		if(tpnAbas.getSelectedIndex()==0){
+  		    setAltDet(190);
+  			pnDet.removeAll(); 
+  		    setPainel( pinDetFases, pnDet);
+  		    setListaCampos(lcDetFases);
+  		    pnDet.repaint();
+  		    navRod.setListaCampos(lcDetFases);  		    
+  		}  		
+  		else if(tpnAbas.getSelectedIndex()==1){
+  		    setAltDet(110);
+  			pnDet.removeAll();  			
+  		    setPainel( pinDetItens, pnDet);
+  		    setListaCampos(lcDet);
+//  		    lcDet.montaTab();
+  		    pnDet.repaint();
+  		    navRod.setListaCampos(lcDet);
+  		}
+  		else if(tpnAbas.getSelectedIndex()==2){
+  		    setAltDet(80);
+  			pnDet.removeAll();  			
+  		    setPainel( pinDetDistrib, pnDet);
+  		    setListaCampos(lcDetDistrib);
+//  		    lcDetDistrib.montaTab();
+  		    pnDet.repaint();
+  		    navRod.setListaCampos(lcDetDistrib);
+  		}
+    }
+  }
+
   public void beforeCarrega(CarregaEvent cevt) {
   }
-  public void afterPost(PostEvent pevt) { 
-    if (pevt.getListaCampos() == lcCampos) {      
-    	btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));        
-    }  
-  }
+  public void afterPost(PostEvent pevt) {  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
