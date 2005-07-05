@@ -1,12 +1,12 @@
 DECLARE EXTERNAL FUNCTION ib_password
         CSTRING(32)
         RETURNS CSTRING(32) /*FREE_IT*/
-        ENTRY_POINT 'ib_password' MODULE_NAME 'stp_udf.so';
+        ENTRY_POINT 'ib_password' MODULE_NAME 'stp_udf';
 
 DECLARE EXTERNAL FUNCTION printLog
         CSTRING(256)
         RETURNS INT
-        ENTRY_POINT 'printLog' MODULE_NAME 'stp_udf.so';
+        ENTRY_POINT 'printLog' MODULE_NAME 'stp_udf';
                 
 create exception exc_not_permitted 'Ação não permitida';
 

@@ -13,5 +13,7 @@ copy \\servidor\dados\freedom\lib\jcommon-0.8.7.jar \opt\freedom\lib\jcommon-0.8
 copy \\servidor\dados\freedom\lib\jfreechart-0.9.12.jar \opt\freedom\lib\jfreechart-0.9.12.jar
 copy \\servidor\dados\freedom\lib\activation.jar \opt\freedom\lib\activation.jar
 copy \\servidor\dados\freedom\lib\nachocalendar-0.21.jar \opt\freedom\lib\nachocalendar-0.21.jar
+copy \\servidor\dados\freedom\lib\commons-logging.jar \opt\freedom\lib\commons-logging.jar
+copy \\servidor\dados\freedom\lib\jasperreports-0.6.7.jar \opt\freedom\lib\jasperreports-0.6.7.jar
 copy \\servidor\dados\freedom\exec\*.bat \opt\freedom
 
