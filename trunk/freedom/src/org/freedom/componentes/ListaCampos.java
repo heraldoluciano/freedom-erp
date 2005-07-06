@@ -148,7 +148,7 @@ public class ListaCampos extends Container implements PostListener,
 
 	private String sTabela;
 
-	private String sSigla;
+	public String sSigla;
 
 	private String sArea;
 
@@ -429,8 +429,10 @@ public class ListaCampos extends Container implements PostListener,
 		return this.mensInserir;
 	}
 	public void adicDetalhe(ListaCampos lc) {
-		vLcDetalhe.addElement(lc);
-		bMaster = true;
+		if(lc!=null){
+			vLcDetalhe.addElement(lc);
+			bMaster = true;
+		}
 	}
 
 	public void setMaster(ListaCampos lc) {
@@ -811,14 +813,13 @@ public class ListaCampos extends Container implements PostListener,
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcComp = (GuardaCampo) getComponent(i);
 					if (gcComp.ehFK()) {
-						ListaCampos lcExt = gcComp.getCampo()
-								.getTabelaExterna();
+						ListaCampos lcExt = gcComp.getCampo().getTabelaExterna();
 						if (!lcExt.getWhereAdic().equals("")) {
 							sTmp = lcExt.inDinWhereAdic(sTmp, lcExt.vTxtValor);
 						}
 					}
 				}
-				String sNovaSelect = inDinWhereAdic(sTmp, vTxtValor);
+				String sNovaSelect = inDinWhereAdic(sTmp, vTxtValor);					
 				sqlItens = con.prepareStatement(sNovaSelect);
 				if (bUsaME && !bTiraFI) {
 					sqlItens.setInt(iOrdem, iCodEmp);
@@ -1442,7 +1443,8 @@ public class ListaCampos extends Container implements PostListener,
 					comp = getComponent(i);
 					if (((GuardaCampo) comp).ehPK()) {
 						if (((GuardaCampo) comp).ehNulo()) {
-							System.out.println("Campo nulo: "+((GuardaCampo) comp).getNomeCampo());
+							System.out.println("Campo nulo : "+((GuardaCampo) comp).getNomeCampo());
+							System.out.println("ListaCampos: "+this.getNomeTabela());
 							return false;
 						}
 						if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2886,6 +2888,8 @@ public class ListaCampos extends Container implements PostListener,
 			if (bMaster) {
 				//        JOptionPane.showMessageDialog(null,"Master OK");
 				for (int i = 0; i < vLcDetalhe.size(); i++) {
+					String steste = ((ListaCampos) vLcDetalhe.elementAt(i)).getNomeTabela();
+					
 					((ListaCampos) vLcDetalhe.elementAt(i)).carregaItens();
 				}
 			}
