@@ -37,6 +37,10 @@ public class NF {
 
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
+	public static final int C_DESCNAT = 3;
+	public static final int C_CODNAT = 4;
+	public static final int C_DOC = 5;
+	
 	private int casasDec = 2;
 
 	private TabVector cab = new TabVector(10);
