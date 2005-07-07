@@ -195,24 +195,6 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   	txtCodFaseDistrib.setNomeCampo("codfase");
     txtDescFaseDistrib.setListaCampos(lcFaseDistrib);
 
-    
-    
-    
-    
-  /*  
-    lcEstruFaseItem.add(new GuardaCampo( txtCodProdEst, "CODPROD", "Cód.Prod", ListaCampos.DB_PF,true));
-    lcEstruFaseItem.add(new GuardaCampo( txtSeqEst, "SEQEST", "Seq.Est.", ListaCampos.DB_PF,true));
-    lcEstruFaseItem.add(new GuardaCampo( txtSeqEfItem, "SEQEF", "Seq.", ListaCampos.DB_PK,true));
-    lcEstruFaseItem.add(new GuardaCampo( txtCodFaseItem,"CODFASE","Cód.Fase",ListaCampos.DB_PF,true));  	
-    lcEstruFaseItem.setDinWhereAdic("CODFASE IN (SELECT CODFASE FROM PPESTRUFASE WHERE " +
-            "CODEMP=PPESTRUFASE.CODEMPFS AND CODFILIAL=PPESTRUFASE.CODFILIALFS AND CODPROD=#N AND SEQEST=#N)",txtCodProdEst);
-    lcEstruFaseItem.setDinWhereAdic("",txtSeqEst);
-    
-    lcEstruFaseItem.montaSql(false, "ESTRUFASE", "PP");    
-    lcEstruFaseItem.setQueryCommit(false);
-    lcEstruFaseItem.setReadOnly(true);
-  	txtSeqEfItem.setTabelaExterna(lcEstruFaseItem);
-*/
     lcModLote.add(new GuardaCampo( txtCodModLote, "CodModLote", "Cód.Mod.Lote", ListaCampos.DB_PK, false));
     lcModLote.add(new GuardaCampo( txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false));
     lcModLote.montaSql(false, "MODLOTE", "EQ");
@@ -223,10 +205,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
 
     adicCampo(txtCodProdEst, 7, 20, 80, 20,"CodProd","Cód.prod.", ListaCampos.DB_PF, txtDescProdEst, true);
     adicDescFK(txtDescProdEst, 90, 20, 372, 20, "DescProd", "Descrição do produto");
-    adicCampo(txtSeqEst,465,20,78,20, "SeqEst", "Seq.Est.",ListaCampos.DB_PK,true);
+    adicCampo(txtSeqEst,465,20,78,20, "SeqEst", "Seq.Est.",ListaCampos.DB_PF,true);
     adicCampo(txtQtdEst, 7, 60, 80, 20,"QtdEst","Quantidade", ListaCampos.DB_SI, true);
     adicCampo(txtDescEst, 90, 60, 297, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
-    adicCampoInvisivel(txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_FK, false);
+    adicCampoInvisivel(txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false);
     adicDB(cbAtiva,392,60,50,20,"ATIVOEST","Ativa",true);
     adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
     adicDescFK(txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote");
@@ -319,12 +301,12 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     setListaCampos(lcDetDistrib);
 
     adicCampo(txtSeqDistrib,7,20,60,20,"seqde","Seq.",ListaCampos.DB_PK,true);
-    adicCampo(txtCodProdDistrib, 70, 20, 77, 20,"CodProdDe","Cód.prod.", ListaCampos.DB_PF,txtDescEstDistrib, true);
+    adicCampo(txtCodProdDistrib, 70, 20, 77, 20,"CodProdDe","Cód.prod.",ListaCampos.DB_PF, true);
     adicCampo(txtSeqEstDistrib, 150, 20, 77, 20,"SeqEstDe","Seq.Est", ListaCampos.DB_PF,txtDescEstDistrib, true);
     adicDescFK(txtDescEstDistrib, 230, 20, 277, 20, "DescEst", "Descrição da estrutura");
     adicCampo(txtCodFaseDistrib, 7, 60, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_PF, txtDescFaseDistrib, true);
     adicDescFK(txtDescFaseDistrib, 87, 60, 307, 20, "DescFase", "Descrição da fase");
-    adicCampo(txtSeqEfDistrib, 397, 60, 60, 20,"SeqEf","Seq.Fase", ListaCampos.DB_SI,true);
+    adicCampo(txtSeqEfDistrib, 397, 60, 60, 20,"SeqEf","Seq.Fase", ListaCampos.DB_PK,true);
 
     txtSeqEfDistrib.setNomeCampo("seqef");    
     txtCodProdDistrib.setNomeCampo("CodProdDe");
