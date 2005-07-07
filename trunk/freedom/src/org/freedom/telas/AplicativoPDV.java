@@ -134,7 +134,7 @@ public class AplicativoPDV extends Aplicativo {
     
 	public AplicativoPDV(String sIcone, String sSplash, int iCodSis, String sDescSis, 
 			int iCodModu, String sDescModu, String sNomeArqIni, String sDirImagem) {
-	    super(sIcone, sSplash, iCodSis, sDescSis,iCodModu, sDescModu, sNomeArqIni, sDirImagem);
+	    super(sIcone, sSplash, iCodSis, sDescSis,iCodModu, sDescModu, sNomeArqIni, sDirImagem,"bgFreedomSTD.jpg");
 	}
     
 }

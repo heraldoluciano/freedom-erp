@@ -27,6 +27,7 @@
 package org.freedom.telas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -41,17 +42,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JToolBar;
 
 import org.freedom.bmps.Icone;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JMenuPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
@@ -59,7 +62,7 @@ import org.freedom.modulos.atd.FAgenda;
 public class FPrincipal extends JFrame implements ActionListener {
 
 	private Connection con = null;
-
+    
 	public JMenuBar bar = new JMenuBar();
 
 	private JToolBar tBar = new JToolBar();
@@ -80,8 +83,8 @@ public class FPrincipal extends JFrame implements ActionListener {
 	public JDesktopPane dpArea = new JDesktopPane();
 
 	public StatusBar statusBar = new StatusBar();
-
-	public FPrincipal() {
+	
+	public FPrincipal(String sImgFundo) {
 		c.setLayout(new BorderLayout());
 
 		JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
@@ -112,10 +115,39 @@ public class FPrincipal extends JFrame implements ActionListener {
 
 		montaStatus();
 
-		setSize((int) tela.getWidth(), (int) tela.getHeight() - 50);
+		int iWidthArea = (int) tela.getWidth();
+		int iHeightArea = (int) tela.getHeight();
+		
+		setSize(iWidthArea, iHeightArea - 50);
 
 		setExtendedState(MAXIMIZED_BOTH);
 		c.add(dpArea, BorderLayout.CENTER);
+
+//		dpArea.setBackground(new Color(69,62,113));
+		dpArea.setBackground(new Color(153,153,204));
+
+		ImageIcon icFundo = Icone.novo(sImgFundo); 
+		JLabelPad lbFundo = new JLabelPad(icFundo);
+	  	ImageIcon icStpinf = Icone.novo("lgSTP.jpg"); 
+		JLabelPad lbStpinf = new JLabelPad(icStpinf);
+	  	ImageIcon icFreedom = Icone.novo("lgFreedom.jpg"); 
+		JLabelPad lbFreedom = new JLabelPad(icFreedom);
+
+		int iWidthImgFundo = icFundo.getIconWidth();
+		int iHeightImgFundo = icFundo.getIconHeight();
+		int iWidthImgStpinf = icStpinf.getIconWidth();
+		int iHeightImgStpinf = icStpinf.getIconHeight();
+		int iWidthImgFreedom = icFreedom.getIconWidth();
+		int iHeightImgFreedom = icFreedom.getIconHeight();
+		
+	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
+	    lbStpinf.setBounds(20,iHeightArea-250,iWidthImgStpinf,iHeightImgStpinf);
+	    lbFreedom.setBounds(iWidthArea-155,iHeightArea-265,iWidthImgFreedom,iHeightImgFreedom);
+	    
+	    dpArea.add(lbFundo);
+	    dpArea.add(lbStpinf);
+	    dpArea.add(lbFreedom);
+
 		sairMI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fecharJanela();
