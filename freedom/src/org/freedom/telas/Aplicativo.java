@@ -127,18 +127,18 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public Aplicativo(String sIcone, String sSplash, int iCodSis, String sDescSis, 
-			int iCodModu, String sDescModu, String sNomeArqIni, String sDirImagem) {
+			int iCodModu, String sDescModu, String sNomeArqIni, String sDirImagem,String sImgFundo) {
 	    if (sDirImagem!=null) {
 	        Imagem.dirImages = sDirImagem;
 	        Icone.dirImages = sDirImagem;
-	    }
+	    } 
 		if (System.getProperty("ARQLOG") != null)
 			ligaLog(System.getProperty("ARQLOG"));
-		strSplash = sSplash;
+		strSplash = sSplash; 
 		Locale.setDefault(new Locale("pt", "BR"));
 		vOpcoes = new Vector();
 		vBotoes = new Vector();
-		telaPrincipal = new FPrincipal();
+		telaPrincipal = new FPrincipal(sImgFundo);
 		this.iCodSis = iCodSis;
 		this.iCodModu = iCodModu;
 		this.sDescSis = sDescSis;
