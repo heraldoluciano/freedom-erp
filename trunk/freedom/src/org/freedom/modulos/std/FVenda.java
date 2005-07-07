@@ -1970,10 +1970,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 4, rs.getString("CidCli"));
 					imp.say(imp.pRow() + 0, 39, rs.getString("UfCli"));
-					imp.say(imp.pRow() + 0, 46,Funcoes.setMascara(rs
-							.getString("DDDCli"), "(####)")+ 
-							Funcoes.setMascara(rs
-							.getString("FoneCli").trim(), "####-####")
+					imp.say(imp.pRow() + 0, 46,(rs.getString("DDDCli")!=null?Funcoes.setMascara(rs.getString("DDDCli"), "(####)"):"")+ 
+							(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")
 							+ " - "
 							+ (rs.getString("FaxCli") != null ? Funcoes
 									.setMascara(rs.getString("FaxCli"),
