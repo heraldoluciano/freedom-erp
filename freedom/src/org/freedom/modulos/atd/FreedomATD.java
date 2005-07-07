@@ -36,7 +36,7 @@ import org.freedom.telas.Aplicativo;
 
 public class FreedomATD extends Aplicativo implements ActionListener {
 	public FreedomATD() {
-		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento", "freedom.ini", null);
+		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento", "freedom.ini", null,"bgFreedomSTD.jpg");
 
 		//Arquivo:
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,

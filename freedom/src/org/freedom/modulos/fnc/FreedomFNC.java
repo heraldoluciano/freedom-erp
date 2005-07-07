@@ -67,7 +67,7 @@ import org.freedom.telas.Aplicativo;
 
 public class FreedomFNC extends Aplicativo {
 	public FreedomFNC() {
-		super("iconStandart32.gif", "splashFNC.jpg", 1, "Freedom", 6, "Financeiro", "freedom.ini", null);
+		super("iconStandart32.gif", "splashFNC.jpg", 1, "Freedom", 6, "Financeiro", "freedom.ini", null,"bgFreedomSTD.jpg");
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 		addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,
