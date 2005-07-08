@@ -364,7 +364,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
     	double dePrecoMovprod = 0;
     	try {
     	    sSQL =  "EXECUTE PROCEDURE EQMOVPRODIUDSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?," +
-    	    										 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    	    										 "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     		state(sProd+"Processando dia: "+Funcoes.sqlDateToStrDate(rs.getDate(19))+" Doc: ["+rs.getInt(20)+"]");
     		ps = con.prepareStatement(sSQL);
     		sCIV = rs.getString(1); // tipo COMPRA, INVENTARIO, VENDA
@@ -426,21 +426,28 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
   			ps.setNull(25,Types.INTEGER); //CodRma
   			ps.setNull(26,Types.INTEGER); //CodItRma
   			
+  			ps.setNull(27,Types.INTEGER); //CodEmpOP
+  			ps.setNull(28,Types.INTEGER); //CodFilialOP
+  			ps.setNull(29,Types.INTEGER); //CodOP
+  			ps.setNull(30,Types.INTEGER); //CodItOP
+
+  			
+  			
   			if (rs.getString(18)!=null) {
-  			    ps.setInt(27,rs.getInt(16)); // CodEmpNt
-  			    ps.setInt(28,rs.getInt(17)); // CodFilialNt
-  			    ps.setString(29,rs.getString(18)); // CodNat
+  			    ps.setInt(31,rs.getInt(16)); // CodEmpNt
+  			    ps.setInt(32,rs.getInt(17)); // CodFilialNt
+  			    ps.setString(33,rs.getString(18)); // CodNat
   			}
   			else {
-  			    ps.setNull(27,Types.INTEGER); // CodEmpNt
-  			    ps.setNull(28,Types.INTEGER); // CodFilialNt
-  			    ps.setNull(29,Types.CHAR); // CodNat
+  			    ps.setNull(31,Types.INTEGER); // CodEmpNt
+  			    ps.setNull(32,Types.INTEGER); // CodFilialNt
+  			    ps.setNull(33,Types.CHAR); // CodNat
   			}
   			
-  			ps.setDate(30, rs.getDate(19)); // dtMovProd
-  			ps.setInt(31,rs.getInt(20)); // docMovProd
-  			ps.setString(32,rs.getString(21)); // Flag
-  			ps.setDouble(33,rs.getDouble(22)); // QtdMovProd
+  			ps.setDate(34, rs.getDate(19)); // dtMovProd
+  			ps.setInt(35,rs.getInt(20)); // docMovProd
+  			ps.setString(36,rs.getString(21)); // Flag
+  			ps.setDouble(37,rs.getDouble(22)); // QtdMovProd
   			if (sCIV.equals("V")) {
   				if (rs.getDouble(22)>0)
     				dePrecoMovprod = rs.getDouble(23) / rs.getDouble(22);
@@ -450,10 +457,10 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
   			else {
   				dePrecoMovprod = rs.getDouble(23);
   			}
-			ps.setDouble(34,dePrecoMovprod); // PrecoMovProd
-			ps.setDouble(35,rs.getInt(24)); // Codempax
-			ps.setDouble(36,rs.getInt(25)); // Codfilialax
-			ps.setDouble(37,rs.getInt(26)); // Codalmox
+			ps.setDouble(38,dePrecoMovprod); // PrecoMovProd
+			ps.setDouble(39,rs.getInt(24)); // Codempax
+			ps.setDouble(40,rs.getInt(25)); // Codfilialax
+			ps.setDouble(41,rs.getInt(26)); // Codalmox
 			
     		ps.executeUpdate();
    		    ps.close();
