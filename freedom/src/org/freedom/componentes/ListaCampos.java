@@ -2527,8 +2527,10 @@ public class ListaCampos extends Container implements PostListener,
 					((ListaCampos) vLcDetalhe.elementAt(i)).limpaCampos(true);
 					String sNameDet = ((ListaCampos) vLcDetalhe.elementAt(i)).nvLC.getName();
 					String sNameMaster = this.nvLC.getName();
-					if(!sNameDet.equals(sNameMaster))
-						((ListaCampos) vLcDetalhe.elementAt(i)).setState(LCS_NONE);
+					if( !((sNameDet==null) || (sNameMaster==null)) ){
+						if(!sNameDet.equals(sNameMaster))
+							((ListaCampos) vLcDetalhe.elementAt(i)).setState(LCS_NONE);
+					}
 				}
 			}
 			boolean bPost = true;
