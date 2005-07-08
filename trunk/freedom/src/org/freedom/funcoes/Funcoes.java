@@ -496,6 +496,18 @@ public class Funcoes {
 		}
 	}
 
+	public static void setBorder(JComponent comp, Color color, boolean border) {
+		if (border) {
+			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
+					.createMatteBorder(1, 1, 1, 1, color), BorderFactory
+					.createEtchedBorder()));
+		} else {
+			comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
+					.createMatteBorder(0, 0, 0, 0, Color.darkGray),
+					BorderFactory.createEtchedBorder()));
+		}
+	}
+	
 	public static char getPontoDec() {
 		return ',';
 	}

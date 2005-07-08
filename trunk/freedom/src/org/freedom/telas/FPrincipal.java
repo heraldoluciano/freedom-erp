@@ -44,14 +44,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
@@ -89,10 +92,11 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	private int iHeightImgFreedom = 0;
 	private String sURLStpinf = "http://www.stpinf.com";
 	private String sURLFreedom = "http://www.freedom.org.br";
+	private Border borderStpinf = null;
+	private Border borderFreedom = null;
 	
 	public FPrincipal(String sImgFundo) {
 		c.setLayout(new BorderLayout());
-
 		JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
 		pn.setLayout(new GridLayout(1, 1));
 
@@ -144,6 +148,8 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
 	    lbStpinf.setBounds(20,iHeightArea-250,iWidthImgStpinf,iHeightImgStpinf);
 	    lbFreedom.setBounds(iWidthArea-155,iHeightArea-265,iWidthImgFreedom,iHeightImgFreedom);
+	    borderStpinf = lbStpinf.getBorder();
+	    borderFreedom = lbFreedom.getBorder();
 	    
 	    dpArea.add(lbFundo);
 	    dpArea.add(lbStpinf);
@@ -165,6 +171,13 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 
 	}
 
+	private void setBordaURL(JComponent comp) {
+		comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
+				.createMatteBorder(0, 0, 0, 0, Color.BLUE), BorderFactory
+				.createEtchedBorder()));
+
+	}
+	
 	public void mouseClicked(MouseEvent arg0) {
 		if ( (arg0.getSource()==lbStpinf) && (arg0.getClickCount()>=2) ) {
 			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLStpinf);
@@ -177,15 +190,26 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 
 	}
 	public void mouseEntered(MouseEvent arg0) {
-
+		if (arg0.getSource()==lbStpinf) {
+	        setBordaURL(lbStpinf);		
+		}
+		else if (arg0.getSource()==lbFreedom) {
+	        setBordaURL(lbFreedom);		
+		}
 	}
 	public void mouseExited(MouseEvent arg0) {
+		if (arg0.getSource()==lbStpinf) {
+	        lbStpinf.setBorder(borderStpinf);		
+			
+		}
+		else if (arg0.getSource()==lbFreedom) {
+	        lbFreedom.setBorder(borderFreedom);		
+		}
 	}
 	public void mousePressed(MouseEvent arg0) {
 
 	}
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 	public void addKeyListerExterno(KeyListener arg0) {
