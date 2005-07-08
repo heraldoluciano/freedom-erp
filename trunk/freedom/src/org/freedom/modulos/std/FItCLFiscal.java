@@ -24,14 +24,15 @@ package org.freedom.modulos.std;
 import java.sql.Connection;
 import java.util.Vector;
 
+import org.freedom.acao.CarregaEvent;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 
@@ -107,9 +108,11 @@ public class FItCLFiscal extends FDetalhe {
 	vTipoVals.addElement("TT");
 	rgTipoFisc = new JRadioGroup( 2, 2, vTipoLabs, vTipoVals);
 
+	vLabsOrig.addElement("<--Selecione-->");
     vLabsOrig.addElement("Nacional");
     vLabsOrig.addElement("Estrangeira - Importação direta");
     vLabsOrig.addElement("Estrangeira - Adquirida no mercado interno");
+    vValsOrig.addElement("");
     vValsOrig.addElement("0");
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");
@@ -134,10 +137,14 @@ public class FItCLFiscal extends FDetalhe {
     setListaCampos( true, "ITCLFISCAL", "LF");
     lcDet.setQueryInsert(false);
 
+
     montaTab();
     
     tab.setTamColuna(190,2);
     
+  }
+  public void afterCarrega(CarregaEvent cevt) {
+	if (cevt.getListaCampos() == lcCampos) {}
   }
   public void exec(String sCodFisc) {
 	txtCodFisc.setVlrString(sCodFisc);
