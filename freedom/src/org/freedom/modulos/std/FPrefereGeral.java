@@ -7,7 +7,7 @@
  * 
  * Pacote: org.freedom.modulos.std <BR>
  * Classe:
- * @(#)FPrefereGeral.java <BR>
+ * @(#)FPrefere.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
@@ -57,6 +57,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.Navegador;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FTabDados;
+import org.freedom.componentes.JComboBoxPad;
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		PostListener, EditListener, InsertListener, CarregaListener {
@@ -215,6 +216,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
 	private ListaCampos lcPDV = new ListaCampos(this, "");
 	private ListaCampos lcPrefere3 = new ListaCampos(this, "P3");
+	private JComboBoxPad cbTamDescProd = null;
+	private Vector vValsTipo = new Vector();
+	private Vector vLabsTipo = new Vector();
+
 
 	public FPrefereGeral() {
 		super();
@@ -458,7 +463,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 
 		cbInscEstForObrig = new JCheckBoxPad("Inscrição estadual obrigatória para o cadastro de fornecedores ?","S", "N");
 		cbInscEstForObrig.setVlrString("S");
-
+		
+		vLabsTipo.addElement("<--Selecione-->");
+		vLabsTipo.addElement("50 caracteres");
+		vLabsTipo.addElement("100 caracteres");
+		
+		vValsTipo.addElement(new Integer(0));
+		vValsTipo.addElement(new Integer(50));
+		vValsTipo.addElement(new Integer(100));
+		
+		cbTamDescProd = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 4, 0);
+		
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
 		adicCampo(txtAnoCC, 7, 25, 100, 20, "AnoCentroCusto", "Ano Base C.C.",ListaCampos.DB_SI, true);
@@ -468,7 +483,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbCnpjForObrig, 7, 90, 400, 20, "CnpjForObrig", "", true);
 		adicDB(cbInscEstForObrig, 7, 110, 400, 20, "InscEstForObrig", "", true);
 		adicCampo(txtCasasDec, 7, 150, 100, 20, "CasasDec", "Casas Decimais",ListaCampos.DB_SI, true);
-
+		adicDB(cbTamDescProd, 110, 150, 150, 20, "TamDescProd", "Tam. da Desc. do Prod.", false);
+		
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
 		adicCampo(txtCodTipoMov3, 345, 25, 75, 20, "CodTipoMov3", "Cód.tp.mov",ListaCampos.DB_FK, txtDescTipoMov3, false);
