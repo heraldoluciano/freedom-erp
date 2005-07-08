@@ -61,7 +61,9 @@ public class FAdmTef extends FFilho implements ActionListener {
     	super(false);
         Vector vLabs = new Vector();
         Vector vVals = new Vector();
+        vLabs.addElement("<--Selecione-->");
         vLabs.addElement("Administrativas - Outras");
+        vVals.addElement("");
         vVals.addElement("1");
         cbComando = new JComboBoxPad(vLabs, vVals, JTextFieldPad.TP_STRING, 2,
                 0);

@@ -67,7 +67,7 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
   private Vector vAcessos = new Vector();
   private Vector vVals = new Vector();
   private Vector vLabs = new Vector();
-  private JComboBoxPad cbFiliais= new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
+  private JComboBoxPad cbFiliais = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_INTEGER, 8, 0);
   private JButton btSalva = new JButton(Icone.novo("btGerar.gif"));
   boolean bEOF = false;
   int iConta = 0;
@@ -401,6 +401,8 @@ public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
 	  ResultSet rs = ps.executeQuery();
 	  vVals.clear();
 	  vLabs.clear();
+	  vVals.addElement("");
+	  vLabs.addElement("<--Selecione-->");
 	  while (rs.next()) {
 	    vVals.addElement(new Integer(rs.getInt("CODFILIAL")));
 	    vLabs.addElement(rs.getString("NOMEFILIAL") != null ? rs.getString("NOMEFILIAL") : "");

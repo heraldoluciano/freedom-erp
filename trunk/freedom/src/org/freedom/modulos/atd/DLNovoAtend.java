@@ -144,6 +144,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			ResultSet rs = ps.executeQuery();
 			vValsTipo.clear();
 			vLabsTipo.clear();
+			vValsTipo.addElement("");
+			vLabsTipo.addElement("<Selecione>");
 			while(rs.next()) {
 				vValsTipo.addElement(new Integer(rs.getInt("CodTpAtendo")));
 				vLabsTipo.addElement(rs.getString("DescTpAtendo"));
@@ -172,6 +174,8 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			ResultSet rs = ps.executeQuery();
 			vValsSetor.clear();
 			vLabsSetor.clear();
+			vValsTipo.addElement("");
+			vLabsTipo.addElement("<Selecione>");
 			while(rs.next()) {
 				vValsSetor.addElement(new Integer(rs.getInt("CodSetAt")));
 				vLabsSetor.addElement(rs.getString("DescSetAt"));
