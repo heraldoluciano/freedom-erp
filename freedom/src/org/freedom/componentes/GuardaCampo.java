@@ -39,6 +39,7 @@ public class GuardaCampo extends Component {
   private boolean bFK = false;
   private int iTipo = -1;
   private boolean bRequerido = false;
+  private boolean bVisivel = true;
   /*
    *  @deprecated GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, boolean fk, JTextFieldFK descFK, int tip, boolean req)
    */
@@ -64,11 +65,47 @@ public class GuardaCampo extends Component {
  	 setGuardaCampo(c, nome, label, key, descFK, req );
   }
 
-  
+  public GuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req,boolean bVisivel) {
+	 setGuardaCampo(c, nome, label, key, descFK, req, bVisivel );
+ }
   public GuardaCampo(Component c, String nome, String label, byte key, boolean req) {
   	 setGuardaCampo(c, nome, label, key, null, req );
   }
-
+  public void setGuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req,boolean bVisivel) {
+    sNome = nome;          
+    sLabel = label;
+    this.bVisivel = bVisivel;
+    comp = c;
+    bRequerido = req;
+    bPK = (key == ListaCampos.DB_PK) || (key == ListaCampos.DB_PF);
+    bFK = (key == ListaCampos.DB_FK) || (key == ListaCampos.DB_PF);
+    if (comp instanceof JTextFieldPad) {
+      txtCampo = (JTextFieldPad) comp;
+//      txtCampo.setPKFK(bPK,bFK);
+        iTipo = txtCampo.getTipo();
+    }
+	else if  ( (comp instanceof JPasswordFieldPad) ||
+			   (comp instanceof JTextAreaPad ) ) {
+	    iTipo = JTextFieldPad.TP_STRING;
+	}
+	else if (comp instanceof JCheckBoxPad) {
+		iTipo = ( (JCheckBoxPad) comp ).getTipo();
+	}
+	else if (comp instanceof JComboBoxPad) {
+		iTipo = ( (JComboBoxPad) comp ).getTipo();
+	}
+	else if (comp instanceof JRadioGroup) {
+		iTipo = ( (JRadioGroup) comp ).getTipo();
+	}
+	else if (comp instanceof PainelImagem) {
+		iTipo = PainelImagem.TP_BYTES;
+	}
+	if (descFK==null)
+       txtDescFK = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+    else
+       txtDescFK = descFK;
+    setRequerido(req);
+  }
   public void setGuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req) {
     sNome = nome;          
     sLabel = label;
@@ -154,6 +191,9 @@ public class GuardaCampo extends Component {
   public String getNomeCampo() {
      return sNome;
   }
+  public boolean ehVisivel() {
+    return bVisivel;
+ }
   public int getTipo() {
     return iTipo; 
   }
