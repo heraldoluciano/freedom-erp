@@ -143,7 +143,7 @@ public class FRecursos extends FDados implements ActionListener {
     }
     else {
     	FPrinterJob dlGr = null;
-		dlGr = new FPrinterJob("recursos.jasper","RELATORIO DE RECURSOS DE PRODUÇÃO","Código\nDescrição",rs,this);
+		dlGr = new FPrinterJob("relatorios/recursos.jasper","RELATORIO DE RECURSOS DE PRODUÇÃO","Código\nDescrição",rs,this);
 				
 		if(bVisualizar)
 			dlGr.setVisible(true);  

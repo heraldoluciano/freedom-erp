@@ -64,7 +64,8 @@ public class FDetalhe extends FDados {
 // Reconstruiu o FDados
 //********************************************
 // Agora irá construir o FDetalhe 
-    
+    nav.setName("Mestre");
+    navRod.setName("Detalhe");
     pnNavCab.add(nav, BorderLayout.WEST);
     
     pnBordNavCab.setPreferredSize(new Dimension(500,30));

@@ -276,7 +276,7 @@ public class FDados extends FFilho implements ActionListener, KeyListener, Inter
 	comp.setName("txt"+nome);
 	comp.setNomeCampo(nome);
 	comp.setListaCampos(lcSeq);
-	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req));
+	lcSeq.add(new GuardaCampo( comp, nome, label, key, txtDescFK, req,false));
 	navSeq.setListaCampos(lcSeq);
 	lcSeq.setNavegador(navSeq);
 	lcSeq.setState(ListaCampos.LCS_NONE);
