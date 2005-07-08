@@ -91,6 +91,34 @@ public class Funcoes {
 	public Funcoes() {
 	} 
 	
+    public static boolean executeURL(String os, String comando, String url) {
+    	boolean retorno = false;
+    	Vector comandos = new Vector();
+    	if ( (comando!=null) && (!comando.equals("")) ) 
+    		comandos.addElement(comando);
+    	if (os.equalsIgnoreCase("windows")) {
+    		comandos.addElement("start");
+    		comandos.addElement("firefox");
+    		comandos.addElement("explorer");
+    	}
+    	else if (os.equalsIgnoreCase("linux")) {
+    		comandos.addElement("firefox");
+    		comandos.addElement("konqueror");
+    		comandos.addElement("mozilla");
+    		comandos.addElement("nautilus");
+    	}
+    	for (int i=0; i<comandos.size(); i++) {
+           try {
+           	  String[] exec = {comandos.elementAt(i).toString(),url};
+              Runtime.getRuntime().exec(exec);
+              retorno = true;
+              break;
+           } catch (IOException e) {
+              retorno = false;
+           }
+    	}
+    	return retorno;
+    }
 	public static String getTimeString(Date data) {
 		String bRetorno	= "";
 		if (data!=null) 

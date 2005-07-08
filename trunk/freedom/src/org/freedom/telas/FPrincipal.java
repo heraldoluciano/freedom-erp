@@ -36,6 +36,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
@@ -59,30 +61,34 @@ import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
 
-public class FPrincipal extends JFrame implements ActionListener {
+public class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
 	private Connection con = null;
-    
 	public JMenuBar bar = new JMenuBar();
-
 	private JToolBar tBar = new JToolBar();
-
 	// public JMenuPad arquivoMenu = new JMenuPad();
 	private JMenuItem sairMI = new JMenuItem();
-
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-
 	private JButton btCalc = new JButton(Icone.novo("btCalc.gif"));
-
 	private JButton btAgenda = new JButton(Icone.novo("btAgenda.gif"));
-
 	public JPanelPad pinBotoesDir = new JPanelPad();
-
 	public Container c = getContentPane();
-
 	public JDesktopPane dpArea = new JDesktopPane();
-
 	public StatusBar statusBar = new StatusBar();
+  	private ImageIcon icStpinf = Icone.novo("lgSTP.jpg"); 
+	private JLabelPad lbStpinf = new JLabelPad(icStpinf);
+  	private ImageIcon icFreedom = Icone.novo("lgFreedom.jpg"); 
+	private JLabelPad lbFreedom = new JLabelPad(icFreedom);
+	private ImageIcon icFundo = null; 
+	private JLabelPad lbFundo = null;
+	private int iWidthImgFundo = 0;
+	private int iHeightImgFundo = 0;
+	private int iWidthImgStpinf = 0;
+	private int iHeightImgStpinf = 0;
+	private int iWidthImgFreedom = 0;
+	private int iHeightImgFreedom = 0;
+	private String sURLStpinf = "http://www.stpinf.com";
+	private String sURLFreedom = "http://www.freedom.org.br";
 	
 	public FPrincipal(String sImgFundo) {
 		c.setLayout(new BorderLayout());
@@ -125,20 +131,15 @@ public class FPrincipal extends JFrame implements ActionListener {
 
 //		dpArea.setBackground(new Color(69,62,113));
 		dpArea.setBackground(new Color(153,153,204));
+		icFundo = Icone.novo(sImgFundo); 
+		lbFundo = new JLabelPad(icFundo);
 
-		ImageIcon icFundo = Icone.novo(sImgFundo); 
-		JLabelPad lbFundo = new JLabelPad(icFundo);
-	  	ImageIcon icStpinf = Icone.novo("lgSTP.jpg"); 
-		JLabelPad lbStpinf = new JLabelPad(icStpinf);
-	  	ImageIcon icFreedom = Icone.novo("lgFreedom.jpg"); 
-		JLabelPad lbFreedom = new JLabelPad(icFreedom);
-
-		int iWidthImgFundo = icFundo.getIconWidth();
-		int iHeightImgFundo = icFundo.getIconHeight();
-		int iWidthImgStpinf = icStpinf.getIconWidth();
-		int iHeightImgStpinf = icStpinf.getIconHeight();
-		int iWidthImgFreedom = icFreedom.getIconWidth();
-		int iHeightImgFreedom = icFreedom.getIconHeight();
+		iWidthImgFundo = icFundo.getIconWidth();
+		iHeightImgFundo = icFundo.getIconHeight();
+		iWidthImgStpinf = icStpinf.getIconWidth();
+		iHeightImgStpinf = icStpinf.getIconHeight();
+		iWidthImgFreedom = icFreedom.getIconWidth();
+		iHeightImgFreedom = icFreedom.getIconHeight();
 		
 	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
 	    lbStpinf.setBounds(20,iHeightArea-250,iWidthImgStpinf,iHeightImgStpinf);
@@ -148,6 +149,9 @@ public class FPrincipal extends JFrame implements ActionListener {
 	    dpArea.add(lbStpinf);
 	    dpArea.add(lbFreedom);
 
+	    lbFreedom.addMouseListener(this);
+	    lbStpinf.addMouseListener(this);
+	    
 		sairMI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fecharJanela();
@@ -161,6 +165,29 @@ public class FPrincipal extends JFrame implements ActionListener {
 
 	}
 
+	public void mouseClicked(MouseEvent arg0) {
+		if ( (arg0.getSource()==lbStpinf) && (arg0.getClickCount()>=2) ) {
+			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLStpinf);
+           //System.out.println("lbStpinf "+arg0.getClickCount());		
+		}
+		else if ( (arg0.getSource()==lbFreedom) && (arg0.getClickCount()>=2) ) {
+	       // System.out.println("lbFreedom "+arg0.getClickCount());		
+			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLFreedom);
+		}
+
+	}
+	public void mouseEntered(MouseEvent arg0) {
+
+	}
+	public void mouseExited(MouseEvent arg0) {
+	}
+	public void mousePressed(MouseEvent arg0) {
+
+	}
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
 	public void addKeyListerExterno(KeyListener arg0) {
 		this.addKeyListener(arg0);
 		btCalc.addKeyListener(arg0);
