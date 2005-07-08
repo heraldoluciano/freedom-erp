@@ -876,8 +876,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       for (int i=0; rs.next(); i++) { 
         tabManut.adicLinha();
 
-		bdVlrAReceber = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrApagItRec")).doubleValue();
-	    bdVlrParc = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrParcItRec")).doubleValue();
+		bdVlrAReceber = Funcoes.arredDouble(rs.getDouble("VlrApagItRec"),Aplicativo.casasDec);
+	    bdVlrParc = Funcoes.arredDouble(rs.getDouble("VlrParcItRec"),Aplicativo.casasDec);
           
 		if ( rs.getString("StatusItRec").equals("RP") )
 		  imgColuna = imgPago;
