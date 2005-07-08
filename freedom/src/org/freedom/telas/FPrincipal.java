@@ -148,6 +148,8 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
 	    lbStpinf.setBounds(20,iHeightArea-250,iWidthImgStpinf,iHeightImgStpinf);
 	    lbFreedom.setBounds(iWidthArea-155,iHeightArea-265,iWidthImgFreedom,iHeightImgFreedom);
+	    lbStpinf.setToolTipText(sURLStpinf);
+	    lbFreedom.setToolTipText(sURLFreedom);
 	    borderStpinf = lbStpinf.getBorder();
 	    borderFreedom = lbFreedom.getBorder();
 	    
