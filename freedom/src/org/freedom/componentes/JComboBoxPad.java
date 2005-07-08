@@ -67,7 +67,7 @@ public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemLi
         addItem(label.elementAt(i));
       }
     }
-    //addItem(""); Foi removido pois havia sido incluido por engano
+    addItem(""); //Foi removido pois havia sido incluido por engano
     addItemListener(this);
     this.tipo = tipo;
     this.tam = tam;
