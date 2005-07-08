@@ -345,6 +345,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 		cbTipoMov.limpa();
 		vLabs.clear();
 		vVals.clear();
+		vLabs.addElement("<--Selecione-->");
+		vVals.addElement("");
 		if (ES.equals("E")) {
 			vLabs.addElement("Orçamento (compra)");
 			vVals.addElement("OC");

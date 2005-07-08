@@ -124,9 +124,11 @@ public class FCLFiscal extends FDados implements CarregaListener {
     vSitCofinsVals.addElement("S");
     rgSitCofins = new JRadioGroup(3,1,vSitCofinsLabs, vSitCofinsVals);
     
+    vLabsOrig.addElement("<--Selecione-->");
     vLabsOrig.addElement("Nacional");
     vLabsOrig.addElement("Estrangeira - Importação direta");
     vLabsOrig.addElement("Estrangeira - Adquirida no mercado interno");
+    vValsOrig.addElement("");
     vValsOrig.addElement("0");
     vValsOrig.addElement("1");
     vValsOrig.addElement("2");

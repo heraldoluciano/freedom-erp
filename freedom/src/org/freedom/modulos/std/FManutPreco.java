@@ -147,8 +147,10 @@ public class FManutPreco extends FFilho implements ActionListener,
 		vSelTipoOper.addElement("P");
 		rgTipoOper = new JRadioGroup(1, 2, vDescTipoOper, vSelTipoOper);
 
+		vDescOperador.addElement("<--Selecione-->");
 		vDescOperador.addElement("/");
 		vDescOperador.addElement("X");
+		vSelOperador.addElement("");
 		vSelOperador.addElement("/");
 		vSelOperador.addElement("*");
 
@@ -240,7 +242,7 @@ public class FManutPreco extends FFilho implements ActionListener,
 		pinCli.adic(new JLabelPad(" Preço origem: "), 7, 35, 300, 20);
 		pinCli.adic(rgOrigem, 7, 55, 300, 60);
 		pinCli.adic(new JLabelPad("Preço"), 310, 35, 80, 20);
-		pinCli.adic(cbOperador, 310, 55, 80, 20);
+		pinCli.adic(cbOperador, 310, 55, 120, 20);
 		pinCli.adic(txtMultiplic, 310, 75, 80, 20);
 		pinCli.adic(new JLabelPad("Cód.marca"), 7, 115, 300, 20);
 		pinCli.adic(txtCodMarca, 7, 135, 90, 20);

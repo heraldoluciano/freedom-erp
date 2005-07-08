@@ -96,11 +96,16 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
 	 pnTotal.add(pinCab, BorderLayout.NORTH);
      pnTotal.add(pnDet, BorderLayout.CENTER);
 
+     Vector lAtivo = new Vector();
      Vector vAtivo = new Vector();
+     lAtivo.addElement("<--Selecione-->");
+     lAtivo.addElement("Ativos");
+     lAtivo.addElement("Inativos");
+     vAtivo.addElement("");
      vAtivo.addElement("Ativos");
      vAtivo.addElement("Inativos");
 
-     cbAtivoCli = new JComboBoxPad(vAtivo, vAtivo,JComboBoxPad.TP_INTEGER, 5, 0);
+     cbAtivoCli = new JComboBoxPad(lAtivo, vAtivo,JComboBoxPad.TP_INTEGER, 5, 0);
      
      lcPapel.add(new GuardaCampo( txtCodPapel, "Codpapel", "Cod.papel", ListaCampos.DB_PK, false));
 	 lcPapel.add(new GuardaCampo( txtDescPapel, "Descpapel", "Descrição do papel", ListaCampos.DB_SI, false));
@@ -163,7 +168,7 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
      pinCab.adic(txtDescModEtiq,90,25,260,20);
           
      pinCab.adic(new JLabelPad("Status"),370,5,100,20);
-     pinCab.adic(cbAtivoCli,370,25,100,25);     
+     pinCab.adic(cbAtivoCli,370,25,135,25);     
      
      pinCab.adic(new JLabelPad("Cód.tp.cli."),7,45,280,20);
      pinCab.adic(txtCodTipo,7,65,80,20);

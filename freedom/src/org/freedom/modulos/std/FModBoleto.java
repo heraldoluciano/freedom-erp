@@ -76,6 +76,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	setListaCampos( false, "MODBOLETO", "FN");
     	
     	Vector vLabs = new Vector();
+    	vLabs.addElement("<--Selecione-->");
     	vLabs.addElement("Vencimento");
     	vLabs.addElement("Data documento");
     	vLabs.addElement("Nº documento");
@@ -102,6 +103,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vLabs.addElement("DDD do cliente");
     	
     	Vector vVals = new Vector();
+    	vVals.addElement(""); //larg: 10
     	vVals.addElement("[VENCIMEN]"); //larg: 10
     	vVals.addElement("[DATADOC_]"); //larg: 10
     	vVals.addElement("[__DOCUMENTO__]"); //larg: 15
@@ -130,12 +132,14 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	cbCamposDin = new JComboBoxPad(vLabs,vVals, JComboBoxPad.TP_STRING, 50, 0);
     	
     	Vector vLabs2 = new Vector();
+    	vLabs2.addElement("<--Selecione-->");
     	vLabs2.addElement("'%' Valor");
     	vLabs2.addElement("Valor '+'");
     	vLabs2.addElement("Valor '-'");
     	vLabs2.addElement("Vencimento '+'");
     	
     	Vector vVals2 = new Vector();
+    	vVals2.addElement("");
     	vVals2.addElement("[#####.##%_VAL]");
     	vVals2.addElement("[#####.##+_VAL]");
     	vVals2.addElement("[#####.##-_VAL]");
@@ -144,9 +148,11 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	cbCamposEspec = new JComboBoxPad(vLabs2,vVals2, JComboBoxPad.TP_STRING, 20, 0);
     	
     	Vector vLabs3 = new Vector();
+    	vLabs3.addElement("<--Selecione-->");
     	vLabs3.addElement("Limpa se campo vazio");
     	
     	Vector vVals3 = new Vector();
+    	vVals3.addElement("");
     	vVals3.addElement("<LP><_LP>");
 
     	cbAcao = new JComboBoxPad(vLabs3,vVals3, JComboBoxPad.TP_STRING, 10, 0);
