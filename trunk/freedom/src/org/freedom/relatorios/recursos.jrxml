@@ -52,12 +52,12 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="236"  isSplitAllowed="true" >
+			<band height="89"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="5"
-						y="144"
+						x="6"
+						y="72"
 						width="63"
 						height="12"
 						forecolor="#000000"
@@ -78,8 +78,8 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="80"
-						y="144"
+						x="81"
+						y="72"
 						width="398"
 						height="12"
 						forecolor="#000000"
@@ -141,8 +141,8 @@
 				<line direction="BottomUp">
 					<reportElement
 						mode="Opaque"
-						x="1"
-						y="158"
+						x="2"
+						y="86"
 						width="534"
 						height="0"
 						forecolor="#000000"
@@ -159,8 +159,8 @@
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="1"
-						y="143"
+						x="2"
+						y="71"
 						width="534"
 						height="0"
 						forecolor="#000000"
@@ -240,53 +240,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TITULO}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Opaque"
-						x="79"
-						y="54"
-						width="398"
-						height="11"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="Filtros"
-						stretchType="RelativeToTallestObject"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false">
-							<printWhenExpression><![CDATA[new Boolean(!$P{FILTROS}.equals(""))]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Filtrado por:"+"\n"+$P{FILTROS}]]></textFieldExpression>
-				</textField>
-				<subreport  isUsingCache="true">
-					<reportElement
-						mode="Opaque"
-						x="80"
-						y="73"
-						width="399"
-						height="23"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="subreport-1"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false">
-							<printWhenExpression><![CDATA[new Boolean(!$P{FILTROS}.equals(""))]]></printWhenExpression>
-						</reportElement>
-					<subreportParameter  name="LISTA">
-						<subreportParameterExpression><![CDATA[$P{FILTROS}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression  class="java.lang.String"><![CDATA["E:/opt/eclipse/workspace/freedom/src/org/freedom/layout/filtros.jasper"]]></subreportExpression>
-				</subreport>
 			</band>
 		</pageHeader>
 		<columnHeader>
