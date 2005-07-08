@@ -70,12 +70,14 @@ public class DLNovoHist extends FFDialogo {
 		setTitulo("Nova chamada");
 		setAtribos(460,470);		
 		
+		vVals.addElement("");
 		vVals.addElement("RJ");
 		vVals.addElement("AG");
+		vLabs.addElement("<--Selecione-->");	
 		vLabs.addElement("Rejeitado");		
 		vLabs.addElement("Agendar ligação/visita");
 		cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
-		cbSit.setVlrString("AG");
+		//cbSit.setVlrString("AG");
 		
 		lcCont.add(new GuardaCampo( txtCodCont, "CodCto", "Cód.Cont", ListaCampos.DB_PK, txtNomeCont, false));
 		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome", ListaCampos.DB_SI, false));

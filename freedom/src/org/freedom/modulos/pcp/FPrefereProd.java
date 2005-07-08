@@ -51,9 +51,11 @@ public class FPrefereProd extends FTabDados {
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
 
+		vLabs.addElement("<--Selecione-->");
 		vLabs.addElement("Pendente");
 		vLabs.addElement("Aprovada");
 //		vLabs.addElement("Expedida");
+		vVals.addElement("");
 		vVals.addElement("PE");
 		vVals.addElement("AF");
 //		vVals.addElement("EF");

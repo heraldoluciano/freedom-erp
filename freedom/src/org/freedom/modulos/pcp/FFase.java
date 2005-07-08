@@ -47,9 +47,11 @@ public class FFase extends FDados implements ActionListener {
 
 //  Construindo o combobox de tipo.     
 
+    vVals.addElement("");
     vVals.addElement("EX"); 
     vVals.addElement("CQ");
     vVals.addElement("EB");
+    vLabs.addElement("<--Selecione-->");
     vLabs.addElement("Execução");
     vLabs.addElement("Controle da qualidade");
     vLabs.addElement("Embalagem");

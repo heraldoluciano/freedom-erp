@@ -91,11 +91,13 @@ public class DLNovoAgen extends FFDialogo {
 		
 //Construindo o combobox de tipo.		
 
+		vVals.addElement("");
 		vVals.addElement("RE");
 		vVals.addElement("VI");
 		vVals.addElement("LI");
 		vVals.addElement("TA");
 		vVals.addElement("CO");
+		vLabs.addElement("<--Selecione-->");
 		vLabs.addElement("Reunião");
 		vLabs.addElement("Visita");
 		vLabs.addElement("Ligação");
@@ -120,7 +122,7 @@ public class DLNovoAgen extends FFDialogo {
 		adic(new JLabelPad("Nome do usuario"),90,5,200,20);
 		adic(txtNomeUsu,90,25,197,20);
 		adic(new JLabelPad("Tipo"),290,5,150,20);
-		adic(cbTipo,290,25,100,20);
+		adic(cbTipo,290,25,120,20);
 		adic(new JLabelPad("Data inicio:"),7,45,100,20);
 		adic(txtDataini,7,65,100,20);
 		adic(new JLabelPad("hora"),110,45,87,20);

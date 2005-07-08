@@ -55,11 +55,13 @@ public class FTarefa extends FDados implements ActionListener {
     
 //Montando tipos:
 
+    vValsTipo.add("");
 	vValsTipo.add("01");
 	vValsTipo.add("02");
 	vValsTipo.add("03");
 	vValsTipo.add("04");
 	vValsTipo.add("05");
+	vLabsTipo.add("<--Selecione-->");
 	vLabsTipo.add("Consulta");
 	vLabsTipo.add("Insere");
 	vLabsTipo.add("Atualiza");

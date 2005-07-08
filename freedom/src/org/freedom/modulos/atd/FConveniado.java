@@ -154,8 +154,11 @@ public class FConveniado extends FTabDados implements PostListener {
 	lcEnc.setQueryCommit(false);
 	lcEnc.setReadOnly(true);
 	txtCodEnc.setTabelaExterna(lcEnc);	
+
+	vVals.add("");
 	vVals.add("M");
 	vVals.add("F");
+	vLabs.add("<--Selecione-->");
 	vLabs.add("Masculino");
 	vLabs.add("Feminino");
 	cbSexo = new JComboBoxPad(vLabs, vVals, JTextFieldPad.TP_STRING, 1, 0);

@@ -60,8 +60,10 @@ public class FRDiario extends FRelatorio {
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
 
+    vVals.addElement("");
     vVals.addElement("RJ");
     vVals.addElement("AG");
+    vLabs.addElement("<--Selecione-->");	
     vLabs.addElement("Rejeitado");		
     vLabs.addElement("Agendar ligação/visita");
     cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2 , 0);

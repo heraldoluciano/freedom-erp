@@ -84,11 +84,13 @@ public class FAgenda extends FFilho implements JComboBoxListener, ActionListener
   	setTitulo("Agenda");
   	setAtribos(20,20,540,400);
 
+  	vVals.addElement("");
 	vVals.addElement("HO");
 	vVals.addElement("PD");
 	vVals.addElement("PT");
 	vVals.addElement("PS");
 	vVals.addElement("PM");
+	vLabs.addElement("<--Selecione-->");
 	vLabs.addElement("Hoje");
 	vLabs.addElement("Próximo dia");
 	vLabs.addElement("Próximo três dias");

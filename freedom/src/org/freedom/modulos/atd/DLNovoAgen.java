@@ -103,12 +103,14 @@ public class DLNovoAgen extends FFDialogo {
 //Construindo o combobox de tipo.		
 
 		Vector vVals = new Vector();
+		vVals.addElement("");
 		vVals.addElement("RE");
 		vVals.addElement("VI");
 		vVals.addElement("LI");
 		vVals.addElement("TA");
 		vVals.addElement("CO");
 		Vector vLabs = new Vector();
+		vLabs.addElement("<--Selecione-->");
 		vLabs.addElement("Reunião");
 		vLabs.addElement("Visita");
 		vLabs.addElement("Ligação");

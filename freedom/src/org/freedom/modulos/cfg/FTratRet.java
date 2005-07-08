@@ -75,9 +75,11 @@ public class FTratRet extends FDetalhe implements ActionListener {
     
 // Montando tipos:
 
+    vValsTipo.add("");
 	vValsTipo.add("01");
 	vValsTipo.add("02");
 	vValsTipo.add("03");
+	vLabsTipo.add("<--Selecione-->");
 	vLabsTipo.add("IR PARA");
 	vLabsTipo.add("ABORTA");
 	vLabsTipo.add("AGUARDE");
