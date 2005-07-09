@@ -112,6 +112,7 @@ public class FreedomCFG extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomCFG freedom = new FreedomCFG();
 			freedom.show();
 

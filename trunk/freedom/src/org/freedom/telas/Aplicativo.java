@@ -53,6 +53,7 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
 
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
@@ -126,6 +127,20 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public Aplicativo() {
 		Locale.setDefault(new Locale("pt", "BR"));
 	}
+    public static void setLookAndFeel(){
+    	
+    
+		try{
+	//		 UIManager.setLookAndFeel( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel" );
+	//		 UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+	//		UIManager.setLookAndFeel("net.beeger.squareness.SquarenessLookAndFeel");
+			UIManager.setLookAndFeel("net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
+		}
+		catch(Exception err){
+			err.printStackTrace();
+			
+		}
+    }
 
 	public Aplicativo(String sIcone, String sSplash, int iCodSis, String sDescSis, 
 			int iCodModu, String sDescModu, String sNomeArqIni, String sDirImagem,String sImgFundo) {
@@ -148,7 +163,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
 		if (sNomeArqIni==null)
-		    sNomeArqIni="freedom.ini";
+		    sNomeArqIni="freedom.ini"; 
 		sArqIni = sNomeArqIni;
 		String sArqINI = System.getProperty("ARQINI") != null ? System
 				.getProperty("ARQINI") : sNomeArqIni;

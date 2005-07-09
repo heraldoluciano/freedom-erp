@@ -244,6 +244,7 @@ public class FreedomGMS extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomGMS freedom = new FreedomGMS();
 			freedom.show();
 		} catch (Throwable e) {

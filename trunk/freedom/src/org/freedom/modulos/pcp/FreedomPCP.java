@@ -132,6 +132,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomPCP freedom = new FreedomPCP();
 			freedom.show();
 		} catch (Throwable e) {
