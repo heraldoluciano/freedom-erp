@@ -138,6 +138,7 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomATD freedomatd = new FreedomATD();
 			freedomatd.show();
 		} catch (Throwable e) {

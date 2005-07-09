@@ -70,6 +70,7 @@ public class FreedomGRH extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomGRH freedom = new FreedomGRH();
 			freedom.show();
 		} catch (Throwable e) {

@@ -238,13 +238,13 @@ public class FreedomSTD extends Aplicativo {
   
   }
   
-
-
   public static void main(String sParams[]) {
   	try {
-    FreedomSTD freedom = new FreedomSTD();
-    freedom.show();
-	} catch (Throwable e) {
+  		Aplicativo.setLookAndFeel();  		
+  		FreedomSTD freedom = new FreedomSTD();
+		freedom.show();		
+	} 
+  	catch (Throwable e) {
 		Funcoes.criaTelaErro("Erro de execução");
 		e.printStackTrace();
 	}

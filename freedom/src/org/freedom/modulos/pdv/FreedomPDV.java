@@ -141,6 +141,7 @@ public class FreedomPDV extends AplicativoPDV {
 
 	public static void main(String sParams[]) {
 		try {
+			AplicativoPDV.setLookAndFeel();
 			FreedomPDV freedom = new FreedomPDV();
 			freedom.show();
 			if (freedom.abreCaixa()) {

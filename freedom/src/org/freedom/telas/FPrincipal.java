@@ -78,7 +78,7 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	public Container c = getContentPane();
 	public JDesktopPane dpArea = new JDesktopPane();
 	public StatusBar statusBar = new StatusBar();
-  	private ImageIcon icStpinf = Icone.novo("lgSTP.jpg"); 
+  	public ImageIcon icStpinf = Icone.novo("lgSTP.jpg"); 
 	private JLabelPad lbStpinf = new JLabelPad(icStpinf);
   	private ImageIcon icFreedom = Icone.novo("lgFreedom.jpg"); 
 	private JLabelPad lbFreedom = new JLabelPad(icFreedom);
@@ -96,6 +96,7 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	private Border borderFreedom = null;
 	
 	public FPrincipal(String sImgFundo) {
+
 		c.setLayout(new BorderLayout());
 		JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
 		pn.setLayout(new GridLayout(1, 1));
@@ -133,8 +134,8 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 		setExtendedState(MAXIMIZED_BOTH);
 		c.add(dpArea, BorderLayout.CENTER);
 
-//		dpArea.setBackground(new Color(69,62,113));
-		dpArea.setBackground(new Color(153,153,204));
+		dpArea.setBackground(new Color(69,62,113));
+//		dpArea.setBackground(new Color(153,153,204));
 		icFundo = Icone.novo(sImgFundo); 
 		lbFundo = new JLabelPad(icFundo);
 

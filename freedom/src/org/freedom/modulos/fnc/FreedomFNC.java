@@ -226,6 +226,7 @@ public class FreedomFNC extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomFNC freedom = new FreedomFNC();
 			freedom.show();
 		} catch (Throwable e) {

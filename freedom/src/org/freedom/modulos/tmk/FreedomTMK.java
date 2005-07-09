@@ -125,6 +125,7 @@ public class FreedomTMK extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
+			Aplicativo.setLookAndFeel();
 			FreedomTMK fFreedomtmk = new FreedomTMK();
 			fFreedomtmk.show();
 		} catch (Throwable e) {
