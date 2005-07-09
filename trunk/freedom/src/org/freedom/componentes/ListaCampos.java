@@ -182,6 +182,7 @@ public class ListaCampos extends Container implements PostListener,
 	private CarregaListener carLis = this;
 
 	private ListaCampos lcMaster = null;
+	private ListaCampos lcM = null;
 
 	private Vector vLcDetalhe = new Vector();
 
@@ -820,6 +821,7 @@ public class ListaCampos extends Container implements PostListener,
 				String sTmp = sSQLTab;
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcComp = (GuardaCampo) getComponent(i);
+					String sTeste = gcComp.getNomeCampo();
 					if (gcComp.ehFK()) {
 						ListaCampos lcExt = gcComp.getCampo().getTabelaExterna();
 						if (!lcExt.getWhereAdic().equals("")) {
@@ -1025,7 +1027,7 @@ public class ListaCampos extends Container implements PostListener,
 		vDescFK = new Vector();
 		while (i < iTot) {			
 			comp = getComponent(i - iNumDescs);
-			if(((GuardaCampo) comp).ehVisivel()){
+//			if(((GuardaCampo) comp).ehVisivel()){
 				sTitulo = ((GuardaCampo) comp).getTituloCampo();
 				sNome = ((GuardaCampo) comp).getNomeCampo();
 				iTipos[i] = ((GuardaCampo) comp).getTipo();
@@ -1050,10 +1052,10 @@ public class ListaCampos extends Container implements PostListener,
 					}
 				}
 				
-			}
-			else {
-				i++;	
-			}
+//			}
+//			else {
+//				i++;	
+//			}
 			
 		}
 		if (bTiraFI)
@@ -1135,9 +1137,9 @@ public class ListaCampos extends Container implements PostListener,
 	public void montaSqlParte2(ListaCampos lc){
 		Component comp = null;
 		HashMap hmTabelasExternas = new HashMap();
-		ListaCampos lcM = lc.getMaster();
+		lcM = lc.getMaster();
 		if(lcM != null){
-			for (int i = 0; i < lc.getComponentCount(); i++) {				
+			for (int i = 0; i < lcM.getComponentCount(); i++) {				
 				comp = lcM.getComponent(i);
 				if (((GuardaCampo) comp).ehPK()) {
 					//adicionei esse if
