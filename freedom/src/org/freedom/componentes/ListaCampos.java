@@ -728,6 +728,9 @@ public class ListaCampos extends Container implements PostListener,
 	public void setNavegador(Navegador nv) {
 		nvLC = nv;
 	}
+	public Navegador getNavegador() {
+		return nvLC;
+	}
 
 	/**
 	 * Retorna o código da filial. <BR>
@@ -758,7 +761,6 @@ public class ListaCampos extends Container implements PostListener,
 	 *  
 	 */
 	public String getWhereAdic() {
-		//    sWhereAdic = inDinWhereAdic(sWhereAdic,txtValor);
 		return sWhereAdic;
 	}
 
@@ -811,7 +813,7 @@ public class ListaCampos extends Container implements PostListener,
 	public void carregaItens() {
 		int iOrdem = 1;
 		GuardaCampo gcComp = null;
-		String nome = this.getNomeTabela();
+//		String nome = this.getNomeTabela();
 		if ((bDetalhe) & (tab != null)) {
 			limpaCampos(true);
 			tab.limpa();
@@ -821,7 +823,7 @@ public class ListaCampos extends Container implements PostListener,
 				String sTmp = sSQLTab;
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcComp = (GuardaCampo) getComponent(i);
-					String sTeste = gcComp.getNomeCampo();
+//					String sTeste = gcComp.getNomeCampo();
 					if (gcComp.ehFK()) {
 						ListaCampos lcExt = gcComp.getCampo().getTabelaExterna();
 						if (!lcExt.getWhereAdic().equals("")) {
@@ -910,10 +912,10 @@ public class ListaCampos extends Container implements PostListener,
 			if (tab.getNumLinhas() > 0) {
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcCampo = ((GuardaCampo) getComponent(i));
+//					String sTeste = gcCampo.getNomeCampo();
 					if (gcCampo.ehPK()) {
 						//          JOptionPane.showMessageDialog(null,"TAB:"+sTabela+"\nIND:"+ind+"\nI:"+i);
-						gcCampo.getCampo().setVlrString(
-								"" + tab.getValor(ind, i));
+						gcCampo.getCampo().setVlrString("" + tab.getValor(ind, i));
 					}
 				}
 				bRetorno = carregaDados();
@@ -1017,6 +1019,7 @@ public class ListaCampos extends Container implements PostListener,
 		String sNome = "";
 		String sSep = " ";
 		String sWhere = "";
+		HashMap hmTabelasExternas = new HashMap();
 		int i = 0;
 		int iTot = 0;
 		sSQLTab = "SELECT ";
@@ -1027,36 +1030,41 @@ public class ListaCampos extends Container implements PostListener,
 		vDescFK = new Vector();
 		while (i < iTot) {			
 			comp = getComponent(i - iNumDescs);
-//			if(((GuardaCampo) comp).ehVisivel()){
-				sTitulo = ((GuardaCampo) comp).getTituloCampo();
-				sNome = ((GuardaCampo) comp).getNomeCampo();
-				iTipos[i] = ((GuardaCampo) comp).getTipo();
-				if (((GuardaCampo) comp).getCampo() != null)
-					sMascs[i] = ((GuardaCampo) comp).getCampo().getStrMascara();
-				tab.adicColuna(sTitulo);
-				sSQLTab += sSep + sNome;
-				sSep = ",";
-				i++;
-				vDescFK.addElement(null);
-				if (((GuardaCampo) comp).ehFK()	&& (((GuardaCampo) comp).getDescFK() != null)) {
-					sSubSelect = montaSubSelect(comp);
-					if (sSubSelect.trim().length() != 0) {
-						sSQLTab += sSep + sSubSelect;
-						sTitulo = ((GuardaCampo) comp).getDescFK().getLabel();
-						tab.adicColuna(sTitulo);
-						iTipos[i] = ((GuardaCampo) comp).getDescFK().getTipo();
-						vDescFK.addElement(((GuardaCampo) comp).getDescFK());
-						i++;
-						iTot++;
-						iNumDescs++;
+			sTitulo = ((GuardaCampo) comp).getTituloCampo();
+			sNome = ((GuardaCampo) comp).getNomeCampo();
+			iTipos[i] = ((GuardaCampo) comp).getTipo();
+			if (((GuardaCampo) comp).getCampo() != null)
+				sMascs[i] = ((GuardaCampo) comp).getCampo().getStrMascara();
+			tab.adicColuna(sTitulo);
+			sSQLTab += sSep + sNome;
+			sSep = ",";
+			i++;
+			vDescFK.addElement(null);
+			if (((GuardaCampo) comp).ehFK()	&& (((GuardaCampo) comp).getDescFK() != null)) {
+				int iNpk = ((GuardaCampo) comp).getCampo().getTabelaExterna()!=null?((GuardaCampo) comp).getCampo().getTabelaExterna().getNumPKs():((GuardaCampo) comp).getCampo().getListaCampos().getNumPKs();
+				String sSigla = ((GuardaCampo) comp).getCampo().getTabelaExterna()!=null?((GuardaCampo) comp).getCampo().getTabelaExterna().getSigla():((GuardaCampo) comp).getCampo().getListaCampos().getSigla();						
+				if(sSigla!=null){
+					if(sSigla.length()>0){
+						String sNomeTab = ((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela();
+						int iP = hmTabelasExternas.get(sNomeTab)==null?0:((Integer)(hmTabelasExternas.get(sNomeTab))).intValue();
+						hmTabelasExternas.put(((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela(),new Integer(iP+1));
+						if(iNpk==(iP+1)){//Implementado para incluir descrição da fk apenas após ultimo campo da pk.
+							hmTabelasExternas.put(((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela(),new Integer(iP+1));
+							sSubSelect = montaSubSelect(comp);
+							if (sSubSelect.trim().length() != 0) {
+								sSQLTab += sSep + sSubSelect;
+								sTitulo = ((GuardaCampo) comp).getDescFK().getLabel();
+								tab.adicColuna(sTitulo);
+								iTipos[i] = ((GuardaCampo) comp).getDescFK().getTipo();
+								vDescFK.addElement(((GuardaCampo) comp).getDescFK());
+								i++;
+								iTot++;
+								iNumDescs++;
+							}									
+						}
 					}
-				}
-				
-//			}
-//			else {
-//				i++;	
-//			}
-			
+				} 
+			}			
 		}
 		if (bTiraFI)
 			sSQLTab += " FROM " + sTabela + " master WHERE master.CODEMP=?";
@@ -1081,7 +1089,6 @@ public class ListaCampos extends Container implements PostListener,
 
 		if (sWhere.length() > 0)
 			sSQLTab += sWhere + sOrdem;
-		//    JOptionPane.showMessageDialog(null,"SQLTAB: "+sSQLTab);
 	}
 
 	public Vector getCamposPK() {
@@ -1105,7 +1112,7 @@ public class ListaCampos extends Container implements PostListener,
 		return vRetorno;
 	}
 	
-	public void montaParteSql(ListaCampos lc){
+	public void montaSqlCircular2(ListaCampos lc){
 		Component comp = null;
 		ListaCampos lcM = lc.getMaster();
 		if(lcM != null){
@@ -1113,8 +1120,6 @@ public class ListaCampos extends Container implements PostListener,
 			String sWhereEmp = "";
 			for (int i = 0; i < lcM.getComponentCount(); i++) {
 				comp = lcM.getComponent(i);
-				sCampo = ((GuardaCampo) comp).getNomeCampo();
-				//adicionei esse if
 				if (((GuardaCampo) comp).ehPK()) {
 					sCampo = ((GuardaCampo) comp).getNomeCampo();
 					sSQLInsert += sSepI + sCampo;
@@ -1131,10 +1136,10 @@ public class ListaCampos extends Container implements PostListener,
 				}
 				
 			}
-			montaParteSql(lcM);
+			montaSqlCircular2(lcM);
 		}
 	}
-	public void montaSqlParte2(ListaCampos lc){
+	public void montaSqlCircular1(ListaCampos lc){
 		Component comp = null;
 		HashMap hmTabelasExternas = new HashMap();
 		lcM = lc.getMaster();
@@ -1142,14 +1147,10 @@ public class ListaCampos extends Container implements PostListener,
 			for (int i = 0; i < lcM.getComponentCount(); i++) {				
 				comp = lcM.getComponent(i);
 				if (((GuardaCampo) comp).ehPK()) {
-					//adicionei esse if
-					String sNome = ((GuardaCampo) comp).getNomeCampo();
 					sSQLInsert += sSepParam + "?";
-					sSepParam = ",";
-		
+					sSepParam = ",";	
 					if (((GuardaCampo) comp).ehFK()) {
-						String sSigla = ((GuardaCampo) comp).getCampo().getTabelaExterna()!=null?((GuardaCampo) comp).getCampo().getTabelaExterna().getSigla():((GuardaCampo) comp).getCampo().getListaCampos().getSigla();
-						
+						String sSigla = ((GuardaCampo) comp).getCampo().getTabelaExterna()!=null?((GuardaCampo) comp).getCampo().getTabelaExterna().getSigla():((GuardaCampo) comp).getCampo().getListaCampos().getSigla();						
 						if(sSigla!=null){
 							if(sSigla.length()>0){
 								String sNomeTab = ((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela();
@@ -1162,11 +1163,11 @@ public class ListaCampos extends Container implements PostListener,
 					}
 				}
 			}		
-			montaSqlParte2(lcM);
+			montaSqlCircular1(lcM);
 		}
 	}
 	public void montaSql(boolean bAuto, String sTab, String sA) {
-		//Funcoes.mensagemInforma(cOwner,"Teste do Owner tela");
+
 		sSepParam = "";
 		String sSepD = "";
 		sSepU = "";
@@ -1175,10 +1176,6 @@ public class ListaCampos extends Container implements PostListener,
 		String sCampo = "";
 		String sWhereEmp = "";
 
-		if(sTab.equals("ITESTRUTURA")){
-			System.out.println("Teste");
-		}
-				
 		bAutoInc = bAuto;
 		sArea = sA;
 		sTabela = sArea + sTab;
@@ -1216,34 +1213,7 @@ public class ListaCampos extends Container implements PostListener,
 		Component comp = null;
 		
 		if ((bDetalhe) && (lcMaster != null)) {
-			montaParteSql(this); 
-/*			for (int i = 0; i < lcMaster.getComponentCount(); i++) {
-				comp = lcMaster.getComponent(i);
-				sCampo = ((GuardaCampo) comp).getNomeCampo();
-				//adicionei esse if
-				if (((GuardaCampo) comp).ehPK()) {
-					sCampo = ((GuardaCampo) comp).getNomeCampo();
-					sSQLInsert += sSepI + sCampo;
-					sSepI = ",";
-					
-					if (((GuardaCampo) comp).ehFK()) {
-						ListaCampos lcExt = ((GuardaCampo) comp).getCampo().getTabelaExterna();
-						if ((lcExt != null) && lcExt.getUsaME()) {
-							sSQLInsert += ",CODEMP"
-									+ lcExt.getSigla()
-									+ (lcExt.getUsaFI() ? ",CODFILIAL"
-											+ lcExt.getSigla() : "");
-							if (!((GuardaCampo) comp).ehPK())
-								sSQLUpdate += ",CODEMP"
-										+ lcExt.getSigla()
-										+ "=?"
-										+ (lcExt.getUsaFI() ? ",CODFILIAL"
-												+ lcExt.getSigla() + "=?" : "");
-						}
-					}
-
-				}
-			}*/
+			montaSqlCircular2(this); 
 		}
 		sSepParam = "";
 		for (int i = 0; i < getComponentCount(); i++) {
@@ -1283,9 +1253,9 @@ public class ListaCampos extends Container implements PostListener,
 		}
 		sSepParam = "";
 
-		sWhereEmp = bUsaME ? "CODEMP=?" /* + iCodEmp */
-				+ (bTiraFI ? "" : " AND CODFILIAL = ?") : "";
+		sWhereEmp = bUsaME ? "CODEMP=?" + (bTiraFI ? "" : " AND CODFILIAL = ?") : "";
 
+ 
 		sSQLUpdate += " WHERE ";
 		sSQLDelete += " FROM " + sTabela + " WHERE " + sWhereEmp;
 		sSQLSelect += " FROM " + sTabela + " WHERE " + sWhereEmp;
@@ -1389,35 +1359,11 @@ public class ListaCampos extends Container implements PostListener,
 	
 		String sSQLX = sSQLInsert;
 		if ((bDetalhe) & (lcMaster != null)) {
-			montaSqlParte2(this);
-/*			for (int i = 0; i < lcMaster.getComponentCount(); i++) {				
-				comp = lcMaster.getComponent(i);
-				if (((GuardaCampo) comp).ehPK()) {
-					//adicionei esse if
-					String sNome = ((GuardaCampo) comp).getNomeCampo();
-					sSQLInsert += sSep + "?";
-					sSep = ",";
-
-					if (((GuardaCampo) comp).ehFK()) {
-						String sSigla = ((GuardaCampo) comp).getCampo().getTabelaExterna()!=null?((GuardaCampo) comp).getCampo().getTabelaExterna().getSigla():((GuardaCampo) comp).getCampo().getListaCampos().getSigla();
-						
-						if(sSigla!=null){
-							if(sSigla.length()>0){
-								String sNomeTab = ((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela();
-								if(hmTabelasExternas.get(sNomeTab)==null) {
-									hmTabelasExternas.put(((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela(),new Integer(i));
-									sSQLInsert += sSep + "?,?";
-								}
-							}
-						}
-					}
-				}
-			}*/
+			montaSqlCircular1(this);
 		}
 		for (int i = 0; i < getComponentCount(); i++) {
 			GuardaCampo gcCampo = ((GuardaCampo) getComponent(i));
 			String sNomeCampo = gcCampo.getNomeCampo();
-			String sSqlteste = sSQLInsert;
 
 			if (!gcCampo.getSoLeitura()) {
 				sSQLInsert = sSQLInsert + sSepParam + "?";
@@ -1433,6 +1379,7 @@ public class ListaCampos extends Container implements PostListener,
 		}
 
 		sSQLInsert = sSQLInsert + ")";
+			
 		bCamposCanc = new boolean[getComponentCount()];
 
 	}
@@ -2976,8 +2923,7 @@ public class ListaCampos extends Container implements PostListener,
 			if (bMaster) {
 				//        JOptionPane.showMessageDialog(null,"Master OK");
 				for (int i = 0; i < vLcDetalhe.size(); i++) {
-					String steste = ((ListaCampos) vLcDetalhe.elementAt(i)).getNomeTabela();
-					
+//					String steste = ((ListaCampos) vLcDetalhe.elementAt(i)).getNomeTabela();					
 					((ListaCampos) vLcDetalhe.elementAt(i)).carregaItens();
 				}
 			}
