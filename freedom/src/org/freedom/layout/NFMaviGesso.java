@@ -99,7 +99,7 @@ public class NFMaviGesso extends Leiaute {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+"        -        "+rs.getString("RazCli"));
+           imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+"      -      "+rs.getString("RazCli"));
            imp.say(imp.pRow()+0,88,rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
            imp.say(imp.pRow()+0,125,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
 //           imp.say(imp.pRow()+1,0,"");
@@ -119,7 +119,7 @@ public class NFMaviGesso extends Leiaute {
            //imp.say(imp.pRow()+0,60,sDDD+sMeio+"-"+sResto);
            		           
            imp.say(imp.pRow()+0,81,rs.getString("UfCli"));
-           imp.say(imp.pRow()+0,90,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
+           imp.say(imp.pRow()+0,102,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
            imp.say(imp.pRow()+0,125,sHora);
 
            imp.say(imp.pRow()+3,0,""+imp.comprimido());		
@@ -164,7 +164,7 @@ public class NFMaviGesso extends Leiaute {
             		sDesc = "";
             	if (iConta > 0)
             	  imp.say(imp.pRow()+1,0,""+imp.comprimido());
-            	imp.say(imp.pRow()+0,16, sDesc);
+            	imp.say(imp.pRow()+0,15, sDesc);
                 sMensAdic = rs.getString(5) != null ? rs.getString(5).trim() : "";
             }
             iProd = iProd+vDesc.size();
@@ -274,7 +274,7 @@ public class NFMaviGesso extends Leiaute {
 //  	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
   	      imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(0).toString())); // BASE ICM
   	      imp.say(imp.pRow()+0,33,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString())); // VLR ICM
-  	      imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString())); // VLR TOT PROD
+  	      imp.say(imp.pRow()+0,118,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString())); // VLR TOT PROD
   	      imp.say(imp.pRow()+2,0,""+imp.comprimido());
   	      imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));//VLR FRETE
   	      imp.say(imp.pRow()+0,60,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));//VLR ADIC
