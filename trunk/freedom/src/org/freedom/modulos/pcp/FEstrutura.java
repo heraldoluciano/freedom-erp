@@ -98,7 +98,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   private ListaCampos lcFase = new ListaCampos(this,"FS");
   private ListaCampos lcModLote = new ListaCampos(this,"ML");
   private ListaCampos lcDetItens = new ListaCampos(this);
-//  private ListaCampos lcDetDistrib = new ListaCampos(this);
+  private ListaCampos lcDetDistrib = new ListaCampos(this);
 //  private ListaCampos lcEstDistrib = new ListaCampos(this,"DE");
   public  Tabela tabItens = new Tabela();
   public  Tabela tabDist = new Tabela();
@@ -142,6 +142,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     
     lcDetItens.setMaster(lcDet);    
     lcDet.adicDetalhe(lcDetItens);
+    lcDetDistrib.setMaster(lcDet);
+    lcDet.adicDetalhe(lcDetDistrib);
          
     pinCab = new JPanelPad(500,90);
     setListaCampos(lcCampos);
@@ -266,24 +268,24 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     
 //    lcDet.setTabela(tab);
 //    lcDet.montaTab();
-        
+*/        
     //Fim Detalhe Fases
     
     //Detalhe Distribuição
     
-  	lcEstDistrib.add(new GuardaCampo( txtCodProdDistrib, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEstDistrib, true));
-  	lcEstDistrib.add(new GuardaCampo( txtSeqEstDistrib,"seqest","Seq.Est.",ListaCampos.DB_PK,true));
-  	lcEstDistrib.add(new GuardaCampo( txtDescEstDistrib, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
+//  	lcEstDistrib.add(new GuardaCampo( txtCodProdDistrib, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEstDistrib, true));
+  	//lcEstDistrib.add(new GuardaCampo( txtSeqEstDistrib,"seqest","Seq.Est.",ListaCampos.DB_PK,true));
+  	//lcEstDistrib.add(new GuardaCampo( txtDescEstDistrib, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
 //  	lcProdDistrib.add(new GuardaCampo( txtRefProdDistrib, "refprod", "Referência", ListaCampos.DB_SI, false));    
     
-    lcEstDistrib.setWhereAdic("ATIVOEST='S'");    						   
-  	lcEstDistrib.montaSql(false, "ESTRUTURA", "PP");    
-  	lcEstDistrib.setQueryCommit(false);
-  	lcEstDistrib.setReadOnly(true);
-  	txtCodProdDistrib.setTabelaExterna(lcEstDistrib);
-  	txtSeqEstDistrib.setTabelaExterna(lcEstDistrib);
-  	txtCodProdDistrib.setNomeCampo("codprod");
-  	txtSeqEstDistrib.setNomeCampo("seqest");      
+   // lcEstDistrib.setWhereAdic("ATIVOEST='S'");    						   
+  	//lcEstDistrib.montaSql(false, "ESTRUTURA", "PP");    
+  	//lcEstDistrib.setQueryCommit(false);
+  	//lcEstDistrib.setReadOnly(true);
+  	//txtCodProdDistrib.setTabelaExterna(lcEstDistrib);
+  	//txtSeqEstDistrib.setTabelaExterna(lcEstDistrib);
+  	//txtCodProdDistrib.setNomeCampo("codprod");
+  	//txtSeqEstDistrib.setNomeCampo("seqest");      
     
     setPainel( pinDetDistrib);
     setListaCampos(lcDetDistrib);
@@ -306,7 +308,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     lcDetDistrib.montaTab();
         
     //Fim Detalhe Distribuição
-*/    
+    
     setPainel( pinDetFases, pnDet);
 	lcDet.montaTab();
 	lcDetItens.montaTab();
