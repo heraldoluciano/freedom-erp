@@ -55,6 +55,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
+import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
@@ -75,6 +76,8 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   private JButton btOrcTst2 = new JButton(Icone.novo("btEmprestimo.gif"));
   
   private JButton btFechaOrc = new JButton(Icone.novo("btOk.gif"));
+
+  private JTextFieldPad txtCodAlmoxItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);
 
   private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDtOrc = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
@@ -123,6 +126,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
   private ListaCampos lcTipoConv = new ListaCampos(this,"TC");
   private ListaCampos lcCliente = new ListaCampos(this, "CL");
   private ListaCampos lcEnc = new ListaCampos(this,"EC");
+  private ListaCampos lcAlmox = new ListaCampos(this,"AX");
   private FPrinterJob dl = null;
   Object[] oPrefs = null;
   boolean bCtrl = false;
@@ -232,6 +236,17 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	lcProd.setReadOnly(true);
 	txtCodProd.setTabelaExterna(lcProd);
     
+	//FK de Almoxarifado
+
+	lcAlmox.add(new GuardaCampo(txtCodAlmoxItOrc, "codalmox", "Cod.Almox.",
+			ListaCampos.DB_PK, false));
+
+	lcAlmox.montaSql(false, "ALMOX", "EQ");
+	lcAlmox.setQueryCommit(false);
+	lcAlmox.setReadOnly(true);
+	txtCodAlmoxItOrc.setTabelaExterna(lcAlmox);
+
+	
 	//FK do produto (*Somente em caso de referências este listaCampos 
 	  //Trabalha como gatilho para o listaCampos de produtos, assim
 	  //carregando o código do produto que será armazenado no Banco)
@@ -351,6 +366,12 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
     }
     adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd", "Descrição do produto");
     adicCampo(txtQtdItOrc, 340, 20, 47, 20,"QtdItOrc","Qtd.", ListaCampos.DB_SI, true);
+    
+	adicCampoInvisivel(txtCodAlmoxItOrc, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
+	
+	txtQtdItOrc.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditvenda"));
+
+    
     adicCampo(txtPrecoItOrc, 390, 20, 67, 20,"PrecoItOrc","Preço", ListaCampos.DB_SI, true);
     adicCampo(txtPercDescItOrc, 460, 20, 57, 20,"PercDescItOrc","% desc.", ListaCampos.DB_SI, false);
     adicCampo(txtVlrDescItOrc, 520, 20, 57, 20,"VlrDescItOrc","V. desc.", ListaCampos.DB_SI, false);
@@ -603,6 +624,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 		  leiOrc.setParam(vParamOrc);
 		  
 		  dl = new FPrinterJob(leiOrc,this);
+		  dl.setVisible(true);
 		} 
 		catch (Exception err) {
 		  Funcoes.mensagemInforma(this,"Não foi possível carregar o leiaute de Orçamento Fisio.!\n"+err.getMessage());
@@ -858,5 +880,6 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	lcTipoConv.setConexao(cn);
 	lcCliente.setConexao(cn);
 	lcEnc.setConexao(cn);
+	lcAlmox.setConexao(cn);
   }
 }
