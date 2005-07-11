@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="C:/opt/eclipse/workspace/freedom/lib/freedomgms.jar"/>
+    <jar path="freedom/lib/freedomgms.jar"/>
     <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedomgms.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
     <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="" mainClassHandleIdentifier="=freedom/src&lt;org.freedom.modulos.gms{FreedomGMS.java[FreedomGMS">
         <sealing sealJar="true">
