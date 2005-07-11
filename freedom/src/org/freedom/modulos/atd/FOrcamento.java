@@ -642,6 +642,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 		  leiOrc.setParam(vParamOrc);
 		  
 		  dl = new FPrinterJob(leiOrc,this);
+		  dl.setVisible(true);
 		} 
 		catch (Exception err) {
 		  Funcoes.mensagemInforma(this,"Não foi possível carregar o leiaute de Contrato de locação!\n"+err.getMessage());

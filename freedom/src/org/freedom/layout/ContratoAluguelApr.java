@@ -91,7 +91,7 @@ public class ContratoAluguelApr extends LeiauteGR {
 					  (comRef() ? "IT.REFPROD," : "IT.CODPROD,")+
 					  " O.CODORC,C.CODCONV,C.NOMECONV,O.DTORC,O.DTVENCORC,C.CIDCONV,C.UFCONV,C.ENDCONV,C.BAIRCONV,C.FONECONV,C.CPFCONV," +
 					  " T.DESCTPCONV,O.OBSORC,O.VLRLIQORC,P.DESCPROD,IT.QTDITORC,IT.VLRDESCITORC,IT.VLRLIQITORC," +
-					  " O.VLRDESCORC, O.VLRDESCITORC, O.VLRADICORC, O.VLRPRODORC, F.CIDFILIAL, CL.RAZCLI" +
+					  " O.VLRDESCORC, O.VLRDESCITORC, O.VLRADICORC, O.VLRPRODORC, F.CIDFILIAL, CL.RAZCLI,CL.DDDCLI" +
 					  " FROM VDORCAMENTO O, ATCONVENIADO C, ATTIPOCONV T, VDITORCAMENTO IT, EQPRODUTO P, SGFILIAL F"+
 					  ",VDCLIENTE CL "+
 					  " WHERE T.CODEMP=C.CODEMPTC AND T.CODFILIAL=C.CODFILIALTC AND T.CODTPCONV=C.CODTPCONV" +
@@ -121,7 +121,11 @@ public class ContratoAluguelApr extends LeiauteGR {
         
 		    String sTexto = "A "+sNomeEmp.toUpperCase()+", entidade filantrópica, inscrita no CNPJ do Ministério da Fazenda, sob o nro.: "+sCGCEmp+".";
 			sTexto += "Com sede a "+sEndEmp+", daqui em diante denominada LOCATARIA e o Sr.(a) ";
-			sTexto += rs.getString("NomeConv").trim().toUpperCase()+" residente a rua "+rs.getString("EndConv").trim()+" telefone "+(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+(rs.getString("FoneConv") != null ? Funcoes.setMascara(rs.getString("FoneConv").trim(),"####-####") : "")+" CPF: "+(rs.getString("CPFCONV") !=null ? rs.getString("CPFCONV").trim() : "");
+			sTexto += rs.getString("NomeConv").trim().toUpperCase()+
+					" residente a rua "+(rs.getString("EndConv")==null?"":rs.getString("EndConv").trim())+
+					" telefone "+(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
+					(rs.getString("FoneConv") != null ? Funcoes.setMascara(rs.getString("FoneConv").trim(),"####-####") : "")+
+					" CPF: "+(rs.getString("CPFCONV") !=null ? rs.getString("CPFCONV").trim() : "");
 			sTexto += " daqui por diante denominado(a) LOCADOR, acertando os seguintes termos:";
 		
 			iY = impLabel(sTexto,15,5,540,iY+5);
