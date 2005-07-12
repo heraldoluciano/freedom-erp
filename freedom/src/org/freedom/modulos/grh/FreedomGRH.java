@@ -34,7 +34,7 @@ import org.freedom.telas.Aplicativo;
 public class FreedomGRH extends Aplicativo {
 
 	public FreedomGRH() {
-		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", "freedom.ini", null,"bgFreedomSTD.jpg");
+		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null,"bgFreedomSTD.jpg");
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
@@ -70,7 +70,7 @@ public class FreedomGRH extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
-			Aplicativo.setLookAndFeel();
+			Aplicativo.setLookAndFeel("freedom.ini");
 			FreedomGRH freedom = new FreedomGRH();
 			freedom.show();
 		} catch (Throwable e) {

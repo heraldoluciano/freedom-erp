@@ -28,7 +28,7 @@ import org.freedom.telas.Aplicativo;
 
 public class FreedomSTD extends Aplicativo {
   public FreedomSTD() {
-	super("iconStandart32.gif","splashSTD.jpg", 1, "Freedom", 1, "Standard", "freedom.ini", null,"bgFreedomSTD.jpg");
+	super("iconStandart32.gif","splashSTD.jpg", 1, "Freedom", 1, "Standard", null,"bgFreedomSTD.jpg");
 	addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
 	  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100101000,2, false, null);
@@ -240,7 +240,7 @@ public class FreedomSTD extends Aplicativo {
   
   public static void main(String sParams[]) {
   	try {
-  		Aplicativo.setLookAndFeel();  		
+  		Aplicativo.setLookAndFeel("freedom.ini");  		
   		FreedomSTD freedom = new FreedomSTD();
 		freedom.show();		
 	} 

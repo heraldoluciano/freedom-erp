@@ -94,7 +94,7 @@ import org.freedom.telas.Aplicativo;
 public class FreedomGMS extends Aplicativo {
 
 	public FreedomGMS() {
-		super("iconAtendimento32.gif", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", "freedom.ini", null,"bgFreedomSTD.jpg");
+		super("iconAtendimento32.gif", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", null,"bgFreedomSTD.jpg");
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Cadastros", "", 'T', 100100000, 1,false, null);
@@ -244,7 +244,7 @@ public class FreedomGMS extends Aplicativo {
 
 	public static void main(String sParams[]) {
 		try {
-			Aplicativo.setLookAndFeel();
+			Aplicativo.setLookAndFeel("freedom.ini");
 			FreedomGMS freedom = new FreedomGMS();
 			freedom.show();
 		} catch (Throwable e) {

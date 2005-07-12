@@ -36,7 +36,7 @@ import org.freedom.telas.Aplicativo;
 
 public class FreedomATD extends Aplicativo implements ActionListener {
 	public FreedomATD() {
-		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento", "freedom.ini", null,"bgFreedomSTD.jpg");
+		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento",  null,"bgFreedomSTD.jpg");
 
 		//Arquivo:
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
@@ -138,7 +138,7 @@ public class FreedomATD extends Aplicativo implements ActionListener {
 
 	public static void main(String sParams[]) {
 		try {
-			Aplicativo.setLookAndFeel();
+			Aplicativo.setLookAndFeel("freedom.ini");
 			FreedomATD freedomatd = new FreedomATD();
 			freedomatd.show();
 		} catch (Throwable e) {
