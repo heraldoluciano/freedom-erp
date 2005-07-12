@@ -105,7 +105,7 @@ public class AplicativoPDV extends Aplicativo {
 				+ " AND CODFILIAL=? AND CODEMP=?";
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iNumEst);
+			ps.setInt(1, iRet);
 			ps.setInt(2, Aplicativo.iCodFilial);
 			ps.setInt(3, Aplicativo.iCodEmp);
 			ResultSet rs = ps.executeQuery();
