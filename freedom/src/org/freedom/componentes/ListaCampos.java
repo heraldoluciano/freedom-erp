@@ -246,7 +246,6 @@ public class ListaCampos extends Container implements PostListener,
 	private String sSepParam = "";
 	private int iParamPost = 0;
 	
-
 	public int getCodEmp() {
 		return iCodEmp;
 	}
