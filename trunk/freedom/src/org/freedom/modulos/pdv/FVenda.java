@@ -601,8 +601,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 						.getBigDecimal("VlrBaseICMSItVenda"));
 				txtValorIcms.setVlrBigDecimal(rs
 						.getBigDecimal("VlrICMSItVenda"));
-				txtValorTotalItem.setVlrBigDecimal(rs
-						.getBigDecimal("VlrLiqItVenda"));
+				txtValorTotalItem.setVlrBigDecimal(rs.getBigDecimal("VlrLiqItVenda")==null?new BigDecimal(0):rs.getBigDecimal("VlrLiqItVenda"));
 				txtQtdadeItem.setVlrBigDecimal(txtQtdade.getVlrBigDecimal());
 			}
 			if (!con.getAutoCommit())
@@ -817,9 +816,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		txtCodVend.setVlrInteger(new Integer(retVendedor()));
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
-		if (AplicativoPDV.bECFTerm) {
-			txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(
-					Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
+		if ((AplicativoPDV.bECFTerm)) {
+			txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
 		}
 		tbItem.limpa();
 		mostraInfoImp();
