@@ -59,7 +59,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 	public FreedomPCP() {
 
 		super(
-				"iconAtendimento32.gif", "splashPCP.jpg", 1, "Freedom", 5, "Planejamento e Controle da Produção", "freedom.ini", null,"bgFreedomSTD.jpg");
+				"iconAtendimento32.gif", "splashPCP.jpg", 1, "Freedom", 5, "Planejamento e Controle da Produção", null,"bgFreedomSTD.jpg");
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,false, null);			
 				addOpcao(100100000, TP_OPCAO_MENU, "Produtos", "", 'P', 100101000, 2,false, null);
@@ -132,7 +132,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 
 	public static void main(String sParams[]) {
 		try {
-			Aplicativo.setLookAndFeel();
+			Aplicativo.setLookAndFeel("freedom.ini");
 			FreedomPCP freedom = new FreedomPCP();
 			freedom.show();
 		} catch (Throwable e) {

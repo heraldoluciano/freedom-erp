@@ -81,6 +81,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strOS = "";
 	public static String strBrowser = "";
 	public static String strSplash = "";
+	public static String strLookAndFeel = "";
 	public static int iCodEmp = 0;
 	public static int iCodFilial = 0;
 	public static String sRazFilial = "";
@@ -116,6 +117,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sNomeModulo = "";
 	public static String sEmpSis = "";
 	public static String sArqIni = "";
+	private static String sArqINI = "";
 	public static String sMailSuporte = "";
 	public static ObjetoEmpresa empresa = null; 
 	
@@ -127,14 +129,21 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public Aplicativo() {
 		Locale.setDefault(new Locale("pt", "BR"));
 	}
-    public static void setLookAndFeel(){
-    	
+    public static void setLookAndFeel(String sNomeArqIni){
+		if (sNomeArqIni==null)
+		    sNomeArqIni="freedom.ini"; 
+		sArqIni = sNomeArqIni;
+		sArqINI = System.getProperty("ARQINI") != null ? System
+				.getProperty("ARQINI") : sNomeArqIni;
+		vArqINI = getArqINI(sArqINI);
     
 		try{
 	//		 UIManager.setLookAndFeel( "com.sun.java.swing.plaf.windows.WindowsLookAndFeel" );
 	//		 UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
 	//		UIManager.setLookAndFeel("net.beeger.squareness.SquarenessLookAndFeel");
-			UIManager.setLookAndFeel("net.sourceforge.mlf.metouia.MetouiaLookAndFeel");
+			strLookAndFeel = getParameter("lookandfeel");
+			if (!strLookAndFeel.equals(""))
+				UIManager.setLookAndFeel(strLookAndFeel);
 		}
 		catch(Exception err){
 			err.printStackTrace();
@@ -143,7 +152,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     }
 
 	public Aplicativo(String sIcone, String sSplash, int iCodSis, String sDescSis, 
-			int iCodModu, String sDescModu, String sNomeArqIni, String sDirImagem,String sImgFundo) {
+			int iCodModu, String sDescModu, String sDirImagem,String sImgFundo) {
 	    if (sDirImagem!=null) {
 	        Imagem.dirImages = sDirImagem;
 	        Icone.dirImages = sDirImagem;
@@ -162,12 +171,6 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
-		if (sNomeArqIni==null)
-		    sNomeArqIni="freedom.ini"; 
-		sArqIni = sNomeArqIni;
-		String sArqINI = System.getProperty("ARQINI") != null ? System
-				.getProperty("ARQINI") : sNomeArqIni;
-		vArqINI = getArqINI(sArqINI);
 		iniConexao(); // Inicia a variável de conexão
 		//telaPrincipal.tiraEmp();
 		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim(), iCodSis, iCodModu);
@@ -966,7 +969,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return sRetorno;
 	}
 
-	public Vector getArqINI(String sNomeArq) {
+	public static Vector getArqINI(String sNomeArq) {
 		Vector vRetorno = new Vector();
 		String sTemp = "";
 		int iTam = 0;
