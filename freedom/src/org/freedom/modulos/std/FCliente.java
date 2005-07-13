@@ -96,6 +96,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtDDDFaxCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
   private JTextFieldPad txtFaxCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtEmailCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtSiteCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtIncraCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
   private JTextFieldPad txtEndCob = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNumCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -339,11 +340,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	adicCampo(txtFoneCli, 343, 300, 97, 20, "FoneCli", "Telefone", ListaCampos.DB_SI, false);
   	adicCampo(txtRamalCli, 443, 300, 57, 20, "RamalCli", "Ramal", ListaCampos.DB_SI, false);
   	adicCampo(txtDDDFaxCli, 7, 340, 40, 20, "DDDFaxCli", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtFaxCli, 50, 340, 97, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
+  	adicCampo(txtFaxCli, 50, 340, 107, 20, "FaxCli", "Fax", ListaCampos.DB_SI, false);
   	adicCampo(txtDDDCelCli, 160, 340, 40, 20, "DDDCelCli", "DDD", ListaCampos.DB_SI, false);
-  	adicCampo(txtCelCli, 203, 340, 97, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
+  	adicCampo(txtCelCli, 203, 340, 107, 20, "CelCli", "Celular",ListaCampos.DB_SI, false);
   	adicCampo(txtIncraCli, 313, 340, 187, 20, "IncraCli", "Incra", ListaCampos.DB_SI, false);
-  	adicCampo(txtEmailCli, 7, 380, 493, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false);
+  	adicCampo(txtEmailCli, 7, 380, 245, 20, "EmailCli", "E-Mail", ListaCampos.DB_SI, false);
+    adicCampo(txtSiteCli,255, 380, 245, 20, "SiteCli",  "Site", ListaCampos.DB_SI, false);
     txtCpfCli.setMascara(JTextFieldPad.MC_CPF);
   	txtCnpjCli.setMascara(JTextFieldPad.MC_CNPJ);
   	txtCepCli.setMascara(JTextFieldPad.MC_CEP);
