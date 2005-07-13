@@ -664,6 +664,11 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public void keyReleased(KeyEvent kevt) {
   	if ((kevt.isControlDown()) && (kevt.getKeyCode()==KeyEvent.VK_M))
   		((JTextFieldPad) kevt.getSource()).transferFocus();
+  	if ((kevt.isShiftDown()) && (kevt.getKeyCode()==KeyEvent.VK_F3) && (getTipo()==TP_STRING)) {
+  		if ((lcTxt!=null) && ( (lcTxt.getStatus()!=ListaCampos.LCS_EDIT) || (lcTxt.getStatus()!=ListaCampos.LCS_INSERT) ) )
+  			lcTxt.edit();
+  		setVlrString(getVlrString().toUpperCase());
+  	}
   }
   public int getMascara() {
     return iMascara;
