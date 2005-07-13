@@ -78,6 +78,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   private JTextFieldPad txtEmailFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtContFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtCelFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+  private JTextFieldPad txtSiteFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
   private Vector vPessoaLab = new Vector();
   private Vector vPessoaVal = new Vector();
@@ -90,7 +91,7 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
   public FFornecedor() {
   	super();
     setTitulo("Cadastro de Fornecedores");
-    setAtribos(50, 20, 480, 430);
+    setAtribos(50, 20, 480, 470);
     setImprimir(true);
   }
   private void montaTela() {
@@ -143,7 +144,8 @@ public class FFornecedor extends FTabDados implements RadioGroupListener, PostLi
 
     
     adicCampo(txtEmailFor, 7, 300, 220, 20, "EmailFor", "E-Mail", ListaCampos.DB_SI, false);
-    adicCampo(txtContFor,230,   300, 220, 20, "ContFor",  "Contato", ListaCampos.DB_SI, false);
+    adicCampo(txtSiteFor,230, 300, 220, 20, "SiteFor",  "Site", ListaCampos.DB_SI, false);
+    adicCampo(txtContFor, 7, 340, 443, 20, "ContFor",  "Contato", ListaCampos.DB_SI, false);
     txtCnpjFor.setMascara(JTextFieldPad.MC_CNPJ);
     txtCepFor.setMascara(JTextFieldPad.MC_CEP);
     txtFoneFor.setMascara(JTextFieldPad.MC_FONE);
