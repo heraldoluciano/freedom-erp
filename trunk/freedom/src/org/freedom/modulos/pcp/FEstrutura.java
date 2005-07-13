@@ -49,9 +49,11 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FEstrutura extends FDetalhe implements ChangeListener,ActionListener, CarregaListener, PostListener{
+  private int casasDec = Aplicativo.casasDec;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDetFases = new JPanelPad();
   private JPanelPad pinDetItens = new JPanelPad();
@@ -73,7 +75,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   private JTextFieldPad txtCodProdItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProdItem = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);  
   private JTextFieldPad txtCodProdDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
   private JTextFieldPad txtRMA = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtRefProdDistrib = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
