@@ -86,26 +86,25 @@ public class FSuprimento extends FFDialogo {
 	private void executaQuery() {
 		try	 {
 		  
-		  PreparedStatement ps = con.prepareStatement("SELECT * FROM PVRETMOVCAIXASP(?,?,?,?)");
-		  ps.setInt(1,Aplicativo.iNumEst);
-		  System.out.println("caixa: "+Aplicativo.iNumEst);
-		  
-		  ps.setInt(3,ListaCampos.getMasterFilial("PVMOVCAIXA"));
+		  PreparedStatement ps = con.prepareStatement("SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)");
+		  ps.setInt(1,AplicativoPDV.iCodCaixa);
+		  System.out.println("caixa: "+AplicativoPDV.iCodCaixa);
 		  ps.setInt(2,Aplicativo.iCodEmp);
+		  ps.setInt(3,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 		  ps.setDate(4,Funcoes.dateToSQLDate(new Date()));		  		  
 		  ResultSet rs = ps.executeQuery();
 		  if (rs.next()) {
-		    if (rs.getDate(1)==null) {  
+		    if (rs.getDate("DDTAMOVRET")==null) {  
 		      Funcoes.mensagemErro(this,"Caixa não está aberto!");
 		    }
 		    else {
-		     txtDataAnt.setVlrDate(rs.getDate(1));
+		     txtDataAnt.setVlrDate(rs.getDate("DDTAMOVRET"));
 		  
 		  
-			 txtSldAnt.setVlrString(Funcoes.strDecimalToStrCurrency(10,2,rs.getString(3)));
-		     txtUsuarioAnt.setVlrString(rs.getString(4));
+			 txtSldAnt.setVlrString(Funcoes.strDecimalToStrCurrency(10,2,rs.getString("NVLRSLDMOV")));
+		     txtUsuarioAnt.setVlrString(rs.getString("CIDUSU"));
 		     
-		     txtStatusAnt.setVlrString(JBemaFI32.transStatus(rs.getString(2).toCharArray()[0]));	  
+		     txtStatusAnt.setVlrString(JBemaFI32.transStatus(rs.getString("CTIPOMOV").toCharArray()[0]));	  
 		    
 		    } 
 		  }	
