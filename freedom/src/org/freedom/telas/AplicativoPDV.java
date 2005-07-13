@@ -41,6 +41,7 @@ public class AplicativoPDV extends Aplicativo {
 	public static boolean bECFTerm = false;
 	public static boolean bTEFTerm = false;
 	public static boolean bModoDemo = true;
+	public static int iCodCaixa = 0;
 	
 	public boolean pegaValorINI() {
 		boolean bRetorno = false;
@@ -53,7 +54,6 @@ public class AplicativoPDV extends Aplicativo {
 	
 	public boolean abreCaixa() {
 		boolean bRetorno = false;		
-		int iRet = 0;
 		try {
 			PreparedStatement ps = con
 					.prepareStatement("SELECT IRETORNO FROM PVVERIFCAIXASP(?,?,?,?,?,?)"); // caixa,
@@ -67,8 +67,8 @@ public class AplicativoPDV extends Aplicativo {
 			ps.setString(6, strUsuario);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				iRet = rs.getInt(1);
-				switch (iRet) {
+				iCodCaixa = rs.getInt(1);
+				switch (iCodCaixa) {
 				case 0: {
 					bRetorno = pegaValorINI();
 					break;
@@ -105,7 +105,7 @@ public class AplicativoPDV extends Aplicativo {
 				+ " AND CODFILIAL=? AND CODEMP=?";
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, iRet);
+			ps.setInt(1, iCodCaixa);
 			ps.setInt(2, Aplicativo.iCodFilial);
 			ps.setInt(3, Aplicativo.iCodEmp);
 			ResultSet rs = ps.executeQuery();

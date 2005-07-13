@@ -86,7 +86,7 @@ public class FSangria extends FFDialogo {
 		try {
 			String sSQL = "SELECT * FROM PVVERIFCAIXASP (?,?,?,?,?,?)";
 		    PreparedStatement ps = con.prepareStatement(sSQL);
-		    ps.setInt(1,Aplicativo.iNumEst);
+		    ps.setInt(1,AplicativoPDV.iCodCaixa);
 		    ps.setInt(2,Aplicativo.iCodEmp);
 		    ps.setInt(3,ListaCampos.getMasterFilial("PVCAIXA"));
 		    ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
@@ -110,18 +110,18 @@ public class FSangria extends FFDialogo {
 	}
 	private void carregaInfo() {
 		try {
-			String sSQL = "SELECT * FROM PVRETMOVCAIXASP (?,?,?,?)";
+			String sSQL = "SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)";
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iNumEst);
+			ps.setInt(1,AplicativoPDV.iCodCaixa);
 			ps.setInt(2,Aplicativo.iCodEmp);
 			ps.setInt(3,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				txtDataUOper.setVlrDate(rs.getDate(1));
-				txtStatusUOper.setVlrString(JBemaFI32.transStatus(rs.getString(2).toCharArray()[0]));
-				txtSaldoUOper.setVlrString(Funcoes.strDecimalToStrCurrency(10,2,rs.getString(3)));
-				txtUsuUOper.setVlrString(rs.getString(4));
+				txtDataUOper.setVlrDate(rs.getDate("DDTAMOVRET"));
+				txtStatusUOper.setVlrString(JBemaFI32.transStatus(rs.getString("CTIPOMOV").toCharArray()[0]));
+				txtSaldoUOper.setVlrString(Funcoes.strDecimalToStrCurrency(10,2,rs.getString("NVLRSLDMOV")));
+				txtUsuUOper.setVlrString(rs.getString("CIDUSU"));
 		    }
 			rs.close();
 			ps.close();
@@ -142,7 +142,7 @@ public class FSangria extends FFDialogo {
       	ps.setInt(1,Aplicativo.iCodEmp);
       	ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
       	ps.setBigDecimal(3,txtValor.getVlrBigDecimal());
-      	ps.setInt(4,Aplicativo.iNumEst);
+      	ps.setInt(4,AplicativoPDV.iCodCaixa);
         ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
       	ps.setString(6,Aplicativo.strUsuario);
       	ps.execute();

@@ -70,7 +70,7 @@ public class DLFechaDia extends FFDialogo {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,Aplicativo.iCodFilial);
-			ps.setInt(3,Aplicativo.iNumEst);
+			ps.setInt(3,AplicativoPDV.iCodCaixa);
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 			ResultSet rs = ps.executeQuery();
 			if (rs.next())

@@ -267,34 +267,6 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar tef vinculado no banco: "+err.getMessage());
 		}
 	}
-	private boolean verifCaixa() {
-		boolean bRetorno = false;
-		int iRet = -1;
-		try {
-			String sSQL = "SELECT * FROM PVVERIFCAIXASP (?,?,?,?,?,?)";
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iNumEst);
-			ps.setInt(2,Aplicativo.iCodEmp);
-			ps.setInt(3,ListaCampos.getMasterFilial("PVCAIXA"));
-			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
-			ps.setInt(5,Aplicativo.iCodFilial);
-			ps.setString(6,Aplicativo.strUsuario);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt(1);
-			}
-			rs.close();
-			ps.close();
-		}
-		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao verificar o caixa!!\n"+err.getMessage(),true,con,err);
-		}
-		if (iRet != 4 && iRet != 2)
-			Funcoes.mensagemErro(this,"Caixa não esta aberto!!");
-		else
-			bRetorno = true;
-		return bRetorno;
-	}
 	private boolean gravaVenda() {
 		boolean bRet = false;
 		String sCVTEF = null;
@@ -388,7 +360,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrPago.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumEst);
+			ps.setInt(4,AplicativoPDV.iCodCaixa);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();
@@ -412,7 +384,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrTroco.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumEst);
+			ps.setInt(4,AplicativoPDV.iCodCaixa);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();
