@@ -1116,7 +1116,6 @@ public class ListaCampos extends Container implements PostListener,
 		ListaCampos lcM = lc.getMaster();
 		if(lcM != null){
 			String sCampo = "";
-			String sWhereEmp = "";
 			for (int i = 0; i < lcM.getComponentCount(); i++) {
 				comp = lcM.getComponent(i);
 				if (((GuardaCampo) comp).ehPK()) {
