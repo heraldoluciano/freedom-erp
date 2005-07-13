@@ -23,6 +23,7 @@ package org.freedom.modulos.pdv;
  */
 
 import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -73,8 +74,8 @@ public class DLFechaDia extends FFDialogo {
 			ps.setInt(3,AplicativoPDV.iCodCaixa);
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				txtVlrCaixa.setVlrBigDecimal(rs.getBigDecimal("VLRSLDMOV"));
+			if (rs.next()) 
+				txtVlrCaixa.setVlrBigDecimal(new BigDecimal((rs.getBigDecimal("VLRSLDMOV")!=null?rs.getDouble("VLRSLDMOV"):0)));
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
@@ -96,7 +97,7 @@ public class DLFechaDia extends FFDialogo {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
-			ps.setInt(3,Aplicativo.iNumEst);
+			ps.setInt(3,AplicativoPDV.iCodCaixa);
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(5,bReduz ? "S" : "N");
 			ps.setInt(6,Aplicativo.iCodFilial);
@@ -124,7 +125,7 @@ public class DLFechaDia extends FFDialogo {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrCaixa.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumEst);
+			ps.setInt(4,AplicativoPDV.iCodCaixa);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();

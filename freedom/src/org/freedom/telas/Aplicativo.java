@@ -119,7 +119,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sArqIni = "";
 	private static String sArqINI = "";
 	public static String sMailSuporte = "";
-	public static ObjetoEmpresa empresa = null; 
+	public static ObjetoEmpresa empresa = null;
+	public static boolean bModoDemo = true;
 	
 	public Connection getConIB() {
 		return conIB;
@@ -195,6 +196,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		telaPrincipal.adicCompInBar(pinBotoes, BorderLayout.WEST);
 		//	telaPrincipal.setMenu();
 		btAtualMenu.addActionListener(this);
+		bModoDemo = getModoDemo();
 
 	}
 

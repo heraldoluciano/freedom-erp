@@ -59,9 +59,9 @@ public class FAbreCaixa extends FDialogo {
 		
 	}
 	private void dbAbrirCaixa() {
-	  System.out.println("Modo demo PDV: "+AplicativoPDV.bModoDemo);
-	  if (!AplicativoPDV.bECFTerm || bf.leituraX(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
-       if (!AplicativoPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",AplicativoPDV.bModoDemo)) {
+	  System.out.println("Modo demo PDV: "+Aplicativo.bModoDemo);
+	  if (!AplicativoPDV.bECFTerm || bf.leituraX(Aplicativo.strUsuario,Aplicativo.bModoDemo)) {
+	       if (!AplicativoPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",AplicativoPDV.bModoDemo)) {
 	      try {
 			PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)");
 			ps.setInt(1,AplicativoPDV.iCodCaixa);

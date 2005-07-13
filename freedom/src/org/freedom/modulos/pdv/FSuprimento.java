@@ -126,7 +126,7 @@ public class FSuprimento extends FFDialogo {
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtValor.getVlrBigDecimal());
-			ps.setInt(4,Aplicativo.iNumEst);
+			ps.setInt(4,AplicativoPDV.iCodCaixa);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
             ps.setString(6,Aplicativo.strUsuario);
       	
