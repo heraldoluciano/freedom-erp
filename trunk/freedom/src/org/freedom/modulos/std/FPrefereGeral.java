@@ -194,6 +194,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbBuscaProdSimilar = null;
 	private JCheckBoxPad cbMultiAlmox = null;
 	private JCheckBoxPad cbPrazoEnt = null;
+	private JCheckBoxPad cbDescCompl = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -434,11 +435,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbTravaTMNFVD.setVlrString("S");
 		cbCustosSICMS = new JCheckBoxPad("Preço de custo sem ICMS?", "S", "N");
 		cbCustosSICMS.setVlrString("S");
-		cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima",
-				"S", "N");
+		cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima","S", "N");
 		cbVendaMatPrim.setVlrString("N");
 		cbPrazoEnt = new JCheckBoxPad("Prazo de entrega na venda?", "S", "N");
 		cbPrazoEnt.setVlrString("S");
+		cbDescCompl = new JCheckBoxPad("Usar descrição completa do produto para Orçamento e Pedido?", "S", "N");
+		cbDescCompl.setVlrString("N");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -483,7 +485,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbCnpjForObrig, 7, 90, 400, 20, "CnpjForObrig", "", true);
 		adicDB(cbInscEstForObrig, 7, 110, 400, 20, "InscEstForObrig", "", true);
 		adicCampo(txtCasasDec, 7, 150, 100, 20, "CasasDec", "Casas Decimais",ListaCampos.DB_SI, true);
-		adicDB(cbTamDescProd, 110, 150, 150, 20, "TamDescProd", "Tam. da Desc. do Prod.", false);
+		
 		
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
@@ -653,9 +655,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 				"Busca automática de produtos similares?", "S", "N");
 		cbBuscaProdSimilar.setVlrString("N");
 		adicDB(cbPepsProd, 7, 7, 310, 20, "PepsProd", "", false);
-
-		adicDB(cbBuscaProdSimilar, 7, 27, 310, 20, "BuscaProdSimilar", "",
-				false);
+		adicDB(cbBuscaProdSimilar, 7, 27, 310, 20, "BuscaProdSimilar", "",false);
+		adicDB(cbDescCompl, 7, 47, 500, 20, "DescCompPed", "", true);
+		adicDB(cbTamDescProd, 7, 70, 150, 20, "TamDescProd", "Tam. da Desc. do Prod.", false);
 
 		// Estoque
 		setPainel(pinEstoq);
