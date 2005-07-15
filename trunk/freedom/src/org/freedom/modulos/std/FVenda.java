@@ -143,8 +143,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodClComis = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 
-	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtPedCliVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
 
 	private JTextFieldFK txtDescClComis = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
@@ -791,6 +792,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				ListaCampos.DB_FK, txtDescPlanoPag, true);
 		adicDescFK(txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag",
 				"Descrição do plano de pag.");
+		adicCampo(txtPedCliVenda, 570, 60, 77, 20, "PedCliVenda", "N.ped.cli.",
+				ListaCampos.DB_SI, false);
 		setPainel(pinCabComis);
 		adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.",
 				ListaCampos.DB_FK, txtDescVend, true);
@@ -1646,7 +1649,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					lcCampos.post();
 					focusCodprod();
 				}
-			} else if (kevt.getSource() == txtCodPlanoPag) {//Como este é o
+			} else if (kevt.getSource() == txtPedCliVenda) {//Como este é o
 															// ultimo campo da
 															// aba de venda
 															// então abre a tab
