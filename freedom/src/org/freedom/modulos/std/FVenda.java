@@ -1862,6 +1862,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		int linPag = imp.verifLinPag() - 1;
 		int iPares = 0;
 		Vector vDesc = null;
+		Vector vObs = null;
 		String sStrLote = "";
 		imp.montaCab();
 		imp.setTitulo("Relatório de Pedidos");
@@ -1884,7 +1885,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "T.RAZTRAN,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,T.CNPJTRAN,T.ENDTRAN,T.NUMTRAN,T.CIDTRAN,"
 				+ "T.UFTRAN,T.INSCTRAN,F.QTDFRETEVD,F.ESPFRETEVD,F.MARCAFRETEVD,F.PESOBRUTVD,"
 				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA,"
-				+ "I.DIASPE,F.TIPOFRETEVD,C.SITECLI,I.OBSITVENDA " 
+				+ "I.DIASPE,F.TIPOFRETEVD,C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
+				+ "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND "
+				+ "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC) "
 				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG,"
 				+ "VDFRETEVD F, VDTRANSP T WHERE V.CODVENDA="
 				+ iCodVenda
@@ -1957,7 +1960,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 								new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,
 										BigDecimal.ROUND_HALF_UP)));
 						imp.say(imp.pRow() + 0, 105, rs.getString("VlrLiqItVenda"));
-						imp.say(imp.pRow() + 0, 125, rs.getString("PercIPIItVenda"));
+						imp.say(imp.pRow() + 0, 121, rs.getString("PercIPIItVenda"));
 						imp.say(imp.pRow() + 0, 130, rs.getString("PercICMSItVenda"));
 					}
 				}
@@ -1978,7 +1981,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 0, 0, "PAGAMENTO.........:    " + rs.getString("CODPLANOPAG") + " - " + rs.getString("DESCPLANOPAG"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			if (rs.getString("TIPOFRETEVD")!=null)
-				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " + (rs.getString("TIPOFRETEVD").equals("C") ? "Por conta da empreza " : "Por conta do cliente "));
+				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " + (rs.getString("TIPOFRETEVD").equals("C") ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE "));
 			else
 				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " );
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -1990,11 +1993,27 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 62, "OBSERVACÃO");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 20, ""+Funcoes.copy(rs.getString("ObsVenda"), 0, 115));            
+			 //if (!rs.getString("ObsVenda").equals("")) {
+	          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsVenda")),115);
+	          	 for (int i=0; i<vObs.size(); i++) {
+	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	                imp.say(imp.pRow()+0,20,vObs.elementAt(i).toString());
+	                if (imp.pRow()>=linPag) {
+	                    imp.incPags();
+	                    imp.eject();
+	                }
+	          	 }
+	          //}          
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+			imp.say(imp.pRow() + 0, 0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 10,Funcoes.replicate("-", 50));
+			imp.say(imp.pRow() + 0, 5,Funcoes.replicate("-", 40));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5, rs.getString("NomeVend"));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5, rs.getString(76));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5, rs.getString("EmailVend"));
 
 
 			
