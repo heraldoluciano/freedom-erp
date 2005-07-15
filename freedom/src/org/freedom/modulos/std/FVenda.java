@@ -1884,21 +1884,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "I.QTDITVENDA,I.PRECOITVENDA,I.VLRPRODITVENDA,I.CODNAT,I.PERCICMSITVENDA,"
 				+ "I.PERCIPIITVENDA,VLRIPIITVENDA,V.VLRBASEICMSVENDA,V.VLRICMSVENDA,V.VLRPRODVENDA,"
 				+ "V.VLRFRETEVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.VLRADICVENDA,V.VLRIPIVENDA,"
-				+ "V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG,F.CODTRAN,"
-				+ "T.RAZTRAN,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,T.CNPJTRAN,T.ENDTRAN,T.NUMTRAN,T.CIDTRAN,"
-				+ "T.UFTRAN,T.INSCTRAN,F.QTDFRETEVD,F.ESPFRETEVD,F.MARCAFRETEVD,F.PESOBRUTVD,"
-				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA,"
-				+ "I.DIASPE,F.TIPOFRETEVD,C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
+				+ "V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG,"
+				+ "(SELECT T.RAZTRAN FROM VDTRANSP T, VDFRETEVD F WHERE T.CODEMP=F.CODEMPTN AND "
+				+ "T.CODFILIAL=F.CODFILIALTN AND T.CODTRAN=F.CODTRAN AND F.CODEMP=V.CODEMP AND " 
+				+ "F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA),"
+				+ "(SELECT F.TIPOFRETEVD FROM VDFRETEVD F WHERE F.CODEMP=V.CODEMP AND " 
+				+ "F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA),"
+				+ "I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA,"
+				+ "I.DIASPE,C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
 				+ "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND "
 				+ "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), "
-				+ "V.PEDCLIVENDA "
-				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG,"
-				+ "VDFRETEVD F, VDTRANSP T WHERE V.CODVENDA="
-				+ iCodVenda
-				+ " AND C.CODCLI=V.CODCLI"
-				+ " AND I.CODVENDA=V.CODVENDA AND P.CODPROD=I.CODPROD AND VEND.CODVEND=V.CODVEND"
-				+ " AND PG.CODPLANOPAG=V.CODPLANOPAG AND F.CODVENDA=V.CODVENDA AND T.CODTRAN=F.CODTRAN"
-				+ " ORDER BY P." + dl.getValor() + ",P.DESCPROD";
+				+ "V.PEDCLIVENDA,C.CONTCLI "
+				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG "
+				+ "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=? AND "
+				+ "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND "
+				+ "I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA AND "
+				+ "I.CODVENDA=V.CODVENDA AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND "
+				+ "P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND " 
+				+ "VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND "
+				+ "PG.CODPLANOPAG=V.CODPLANOPAG "
+				+ "ORDER BY P." + dl.getValor() + ",P.DESCPROD";
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1908,7 +1913,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.limpaPags();
 			iMaxItem = linPag - 22;
 			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(3,iCodVenda);
 			rs = ps.executeQuery();
+			System.out.println(sSQL);
 			while (rs.next()) {
 				
 				vDesc = new Vector();
@@ -1923,10 +1932,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "CLIENTE");
 						imp.say(imp.pRow() + 0, 70, "PEDIDO CLIENTE: "+(rs.getString("PEDCLIVENDA")==null?"":rs.getString("PEDCLIVENDA")));
-						imp.say(imp.pRow() + 0, 100, rs.getString("CodCli"));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim());//nome cliente
-						imp.say(imp.pRow() + 0, 70, "CONTATO: ");
+						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim() + " - " + rs.getString("CodCli").trim());//nome cliente
+						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ rs.getString("ContCli").trim());
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("CpfCli") != null ? "CPF    : " + Funcoes
 									.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + Funcoes
@@ -1949,7 +1957,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO    |                     DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
+						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO    |                      DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					if (i==0) {
@@ -1984,12 +1992,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "PAGAMENTO.........:    " + rs.getString("CODPLANOPAG") + " - " + rs.getString("DESCPLANOPAG"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			if (rs.getString("TIPOFRETEVD")!=null)
-				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " + (rs.getString("TIPOFRETEVD").equals("C") ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE "));
+			if (rs.getString(51)!=null)
+				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " + (rs.getString(51).equals("C") ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE "));
 			else
 				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " );
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "TRANSPORTADORA....:    " + rs.getString("RAZTRAN"));
+			imp.say(imp.pRow() + 0, 0, "TRANSPORTADORA....:    " + rs.getString(50));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "PRAZO DE ENTREGA..:    " + rs.getString("DIASPE"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -2015,7 +2023,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 5, rs.getString("NomeVend"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 5, rs.getString(76));
+			imp.say(imp.pRow() + 0, 5, rs.getString(61));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 5, rs.getString("EmailVend"));
 
