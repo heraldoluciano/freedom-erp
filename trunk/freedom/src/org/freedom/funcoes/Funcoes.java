@@ -1046,11 +1046,13 @@ public class Funcoes {
     public static String tiraString(String sTexto,String sParc) {
     	String sRetorno =   sTexto; 
     	int iPos = 0; 
-    	while (iPos>-1) {
-    		iPos = sRetorno.indexOf(sParc);
-    		if (iPos>-1) {
-    			sRetorno = sRetorno.substring(0,iPos)+sRetorno.substring(iPos+sParc.length(),sRetorno.length()); 
-    		} 
+    	if (!sParc.equals("")) {
+	    	while (iPos>-1) {
+	    		iPos = sRetorno.indexOf(sParc);
+	    		if (iPos>-1) {
+	    			sRetorno = sRetorno.substring(0,iPos)+sRetorno.substring(iPos+sParc.length(),sRetorno.length()); 
+	    		} 
+	    	}
     	}
       return sRetorno; 
     }
