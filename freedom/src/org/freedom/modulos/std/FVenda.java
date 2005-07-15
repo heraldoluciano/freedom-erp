@@ -1890,7 +1890,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA,"
 				+ "I.DIASPE,F.TIPOFRETEVD,C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
 				+ "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND "
-				+ "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC) "
+				+ "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), "
+				+ "V.PEDCLIVENDA "
 				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG,"
 				+ "VDFRETEVD F, VDTRANSP T WHERE V.CODVENDA="
 				+ iCodVenda
@@ -1921,7 +1922,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.impCab(136, false);
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "CLIENTE");
-						imp.say(imp.pRow() + 0, 70, "PEDIDO CLIENTE:");
+						imp.say(imp.pRow() + 0, 70, "PEDIDO CLIENTE: "+(rs.getString("PEDCLIVENDA")==null?"":rs.getString("PEDCLIVENDA")));
 						imp.say(imp.pRow() + 0, 100, rs.getString("CodCli"));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim());//nome cliente
