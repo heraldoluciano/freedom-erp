@@ -1015,7 +1015,7 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		//CC Acesso
 		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
 		lcCCAcesso.add(new GuardaCampo(txtCodCCPA, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
-		lcCCAcesso.add(new GuardaCampo(txtDescCCPA, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
+		lcCCAcesso.add(new GuardaCampo(txtDescCCPA, "DescCC","Descrição do C.C", ListaCampos.DB_SI, false));		
 		lcCCAcesso.montaSql(false, "CC", "FN");
 		lcCCAcesso.setReadOnly(true);
 		lcCCAcesso.setQueryCommit(false);
@@ -1213,14 +1213,15 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		pnCodAcess.add(spnCodAcess, BorderLayout.CENTER);
 		pinRodCodAcess.adic(navCodAcess, 0, 90, 270, 25);
 		navCodAcess.setAtivo(6, false);
-
 		
 		adicCampo(txtCodPA, 7, 20, 70, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
 		adicDB(rgPA, 80, 20, 140, 30, "TipoPA", "Tipo", true);
-		adicCampo(txtAnoCCPA, 223, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_PF, txtDescCCPA, false);
-		adicCampo(txtCodCCPA, 306, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_PF, txtDescCCPA, false);
+
+		adicCampo(txtAnoCCPA, 223, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, txtDescCCPA, false);
+		adicCampo(txtCodCCPA, 306, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, false);
 		adicDescFK(txtDescCCPA, 459, 20, 180, 20, "DescCC","Descrição do C.C.");
-		adicCampo(txtCodCaixa, 223, 60, 80, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_PF, txtDescCaixa, false);
+
+		adicCampo(txtCodCaixa, 223, 60, 80, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_FK, txtDescCaixa, false);
 		adicDescFK(txtDescCaixa, 306, 60, 250, 20,"DescCaixa","Descrição do caixa");
 		setListaCampos(true, "PRODACESSO", "EQ");
 		lcProdAcesso.setQueryInsert(false);
