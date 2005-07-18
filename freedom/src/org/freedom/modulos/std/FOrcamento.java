@@ -65,6 +65,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -221,6 +222,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private FPrinterJob dl = null;
 
 	Object[] oPrefs = null;
+	
+	String sOrdNota = "";
+	
+	String sModoNota = "";
+	
+	boolean bDescComp = false;
 
 	boolean bCtrl = false;
 
@@ -868,9 +875,28 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void imprimir(boolean bVisualizar) {
+		String sOrdem = "";
+		
+		DLROrcamento dlo = new DLROrcamento(sOrdNota,sModoNota);
+		dlo.setVisible(true);
+		if (dlo.OK == false) {
+			dlo.dispose();
+			return;
+		}
+		if (dlo.getModo().equals("G")){			
+			imprimiGrafico(bVisualizar);			
+		}
+		else if(dlo.getModo().equals("T")){
+			sOrdem = dlo.getOrdem();
+			imprimiTexto(bVisualizar, sOrdem);			
+		}
+	}
+	
+	public void imprimiGrafico(boolean bVisualizar){
 		String sClassOrc = "";
 		String sSql = "SELECT CLASSORC FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		LeiauteGR leiOrc = null;
+
 		try {
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -924,10 +950,177 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			}
 		}
 	}
+	
+	public void imprimiTexto(boolean bVisualizar, String sOrdem){
+		ImprimeOS imp = new ImprimeOS("", con);
+		int iCodOrc = txtCodOrc.getVlrInteger().intValue();
+		int linPag = imp.verifLinPag() - 1;
+		int iPares = 0;
+		Vector vDesc = null;
+		Vector vObs = null;
+		String sStrLote = "";
+		imp.montaCab();
+		imp.setTitulo("ORÇAMENTO");
+		
+		String sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI,"
+				+ " C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"
+				+ " C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD,"
+				+ " I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID,"
+				+ " PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND,"
+				+ " (SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU"
+				+ " AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)"
+				
+			/*	+ " (SELECT T.RAZTRAN FROM VDTRANSP T, VDFRETEVD F WHERE T.CODEMP=F.CODEMPTN"
+				+ " AND F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA),"
+				+ " (SELECT F.TIPOFRETEVD FROM VDFRETEVD F WHERE F.CODEMP=V.CODEMP" 
+				+ " AND F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA)"*/
+				
+				+ " FROM VDORCAMENTO O, VDITORCAMENTO I, VDCLIENTE C, EQPRODUTO P, FNPLANOPAG PG, VDVENDEDOR VEND"
+				+ " WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=?"
+				+ " AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI"
+				+ " AND I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODORC=O.CODORC AND I.TIPOORC=O.TIPOORC"
+				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD"
+				+ " AND PG.CODEMP=O.CODEMPPG AND PG.CODFILIAL=O.CODFILIALPG AND PG.CODPLANOPAG=O.CODPLANOPAG"
+				+ " AND VEND.CODEMP=O.CODEMPVD AND VEND.CODFILIAL=O.CODFILIALVD AND VEND.CODVEND=O.CODVEND"
+				+ " ORDER BY P." + sOrdem + ",P.DESCPROD";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int iItImp = 0;
+		int iMaxItem = 0;
+		try {
+			imp.limpaPags();
+			iMaxItem = linPag - 22;
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));
+			ps.setInt(3,iCodOrc);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				
+				vDesc = new Vector();
+				if (bDescComp)
+					vDesc = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsItOrc")==null?rs.getString("DescProd").trim():rs.getString("ObsItOrc").trim()),50);						
+				else 
+					vDesc = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("DescProd").trim()),50);
+				
+				for (int i=0; i<vDesc.size(); i++) {
+					if (imp.pRow() == 0) {
+						imp.impCab(136, false);
+						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, "CLIENTE");
+						imp.say(imp.pRow() + 0, 70, "ORÇAMENTO: "+(rs.getString("CodOrc")==null?"":rs.getString("CodOrc")));
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim() + " - " + rs.getString("CodCli").trim());
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, rs.getString("CpfCli") != null ? "CPF    : " + Funcoes
+									.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + Funcoes
+										.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
+						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ rs.getString("ContCli").trim());
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + rs.getString("InscCli"));//IE cliente
+						imp.say(imp.pRow() + 0, 70,rs.getString("EndCli").trim() + " N°:" + rs.getString("NumCli"));//rua e número do cliente
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, "SITE   : " + rs.getString("SiteCli").trim());
+						imp.say(imp.pRow() + 0, 70,rs.getString("BairCli").trim()+" - "+ rs.getString("CidCli").trim()+" - "+rs.getString("UFCli").trim()+" - "+rs.getString("CEPCli").trim());//complemento do endereço do cliente
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + rs.getString("EmailCli").trim());
+						imp.say(imp.pRow() + 0, 70, "TEL: "+ (rs.getString("DDDCli")!=null?"("+rs.getString("DDDCli")+")":"")+ 
+												(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
+												(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : ""));
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 55, "DADO(S) DO(S) PRODUTO(S)");
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 0, 1, " IT. |   CÓDIGO   |                    DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.   |   V.DESCONTO   |   V.TOTAL");
+					}
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					if (i==0) {
+						imp.say(imp.pRow() + 0, 1, rs.getString("CodItOrc").trim());
+						if (((Boolean) oPrefs[0]).booleanValue())
+							imp.say(imp.pRow() + 0, 7, rs.getString("RefProd").trim());
+						else
+							imp.say(imp.pRow() + 0, 7, rs.getString("CodProd").trim());
+					}
+					imp.say(imp.pRow() + 0, 20,"" + vDesc.elementAt(i).toString());
+					if (i==0) {
+						imp.say(imp.pRow() + 0, 71, rs.getString("CodUnid").trim());
+						imp.say(imp.pRow() + 0, 76, rs.getString("QtdItOrc"));
+						imp.say(imp.pRow() + 0, 91, rs.getString("PrecoItOrc"));
+						imp.say(imp.pRow() + 0, 105, rs.getString("VlrDescItOrc"));
+						imp.say(imp.pRow() + 0, 121, rs.getString("VlrProdItOrc"));
+					}
+				}
+			}
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			//imp.say(imp.pRow() + 0, 4, "TOTAL IPI: " + rs.getString("VlrICMSVenda"));
+			//imp.say(imp.pRow() + 0, 44, "|    TOTAL ICMS: " + rs.getString("VlrIPIVenda"));
+			imp.say(imp.pRow() + 0, 86, "|    TOTAL PRODUTOS: " + rs.getString("VlrLiqOrc"));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 55, "INFORMAÇÕES COMPLEMENTARES");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 0, "PAGAMENTO.........:    " + rs.getString("CODPLANOPAG") + " - " + rs.getString("DESCPLANOPAG"));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 0, "PRAZO DE ENTREGA..:    " + rs.getString("PrazoEntOrc"));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 62, "OBSERVACÃO");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsOrc")),115);
+          	 for (int i=0; i<vObs.size(); i++) {
+                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                imp.say(imp.pRow()+0,20,vObs.elementAt(i).toString());
+                if (imp.pRow()>=linPag) {
+                    imp.incPags();
+                    imp.eject();
+                }
+          	 }
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 0,Funcoes.replicate("-", 135));
+			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5,Funcoes.replicate("-", 40));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5, rs.getString("NomeVend"));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5, rs.getString(37));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 5, rs.getString("EmailVend"));
+
+
+			
+			imp.eject();
+			imp.fechaGravacao();
+
+			//      rs.close();
+			//      ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Venda!"
+					+ err.getMessage(),true,con,err);
+		}
+
+		if (bVisualizar) {
+			imp.preview(this);
+		} else {
+			imp.print();
+		}
+	}
 
 	private Object[] prefs() {
-		Object[] oRetorno = new Object[4];
-		String sSQL = "SELECT USAREFPROD,USALIQREL,TIPOPRECOCUSTO,CODTIPOMOV2 FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		Object[] oRetorno = new Object[5];
+		String sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED "
+					+ " FROM SGPREFERE1 P "
+					+ " WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -958,6 +1151,28 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					oRetorno[3] = new Integer(rs.getInt("CODTIPOMOV2"));
 				else
 					oRetorno[3] = new Integer(0);
+				if (rs.getString("DescCompPed") != null)
+					bDescComp = true;
+				else
+					bDescComp = false;
+				
+				sOrdNota = rs.getString("OrdNota");
+				
+			}
+			rs.close();
+			ps.close();
+			
+			sSQL = "SELECT IMPGRAFICA FROM SGESTACAOIMP WHERE CODEMP=? AND CODFILIAL=? AND IMPPAD='S' AND CODEST=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGESTACAOIMP"));
+			ps.setInt(3, Aplicativo.iNumEst);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				sModoNota = "G";//rs.getString("OrdNota");
+				if ( (rs.getString("IMPGRAFICA")!=null) && (!rs.getString("IMPGRAFICA").equals("S"))){
+					sModoNota = "T";
+				}
 			}
 			rs.close();
 			ps.close();
