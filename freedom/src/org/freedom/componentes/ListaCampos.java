@@ -1213,8 +1213,8 @@ public class ListaCampos extends Container implements PostListener,
 		iNumDescs = 0;
 		vDescFK = new Vector();
 
-		if (getNomeTabela().equals("PPITESTRUTURA")) {
-//			System.out.println("Teste");
+		if (getNomeTabela().equals("EQPRODACESSO")) {
+			System.out.println("Teste");
 		}
 		while (i < iTot) {
 			comp = getComponent(i - iNumDescs);
@@ -1241,31 +1241,20 @@ public class ListaCampos extends Container implements PostListener,
 								.getSigla();
 				if (sSigla != null) {
 					if (sSigla.length() > 0) {
-						String sNomeTab = ((GuardaCampo) comp).getCampo()
-								.getListaCampos().getNomeTabela()
-								+ sSigla;
-						int iP = hmTabelasExternas.get(sNomeTab) == null ? 0
-								: ((Integer) (hmTabelasExternas.get(sNomeTab)))
-										.intValue();
-						hmTabelasExternas.put(((GuardaCampo) comp).getCampo()
-								.getListaCampos().getNomeTabela()
-								+ sSigla, new Integer(iP + 1));
+						String sNomeTab = ((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela()+ sSigla;
+						int iP = hmTabelasExternas.get(sNomeTab) == null ? 0 : ((Integer) (hmTabelasExternas.get(sNomeTab))).intValue();
+						hmTabelasExternas.put(((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela()+ sSigla, new Integer(iP + 1));
 						if (iNpk == (iP + 1)) {//Implementado para incluir
 											   // descrição da fk apenas após
 											   // ultimo campo da pk.
-							hmTabelasExternas.put(((GuardaCampo) comp)
-									.getCampo().getListaCampos()
-									.getNomeTabela(), new Integer(iP + 1));
+							hmTabelasExternas.put(((GuardaCampo) comp).getCampo().getListaCampos().getNomeTabela(), new Integer(iP + 1));
 							sSubSelect = montaSubSelect(comp, iNpk);
 							if (sSubSelect.trim().length() != 0) {
 								sSQLTab += sSepT + sSubSelect;
-								sTitulo = ((GuardaCampo) comp).getDescFK()
-										.getLabel();
+								sTitulo = ((GuardaCampo) comp).getDescFK().getLabel();
 								tab.adicColuna(sTitulo);
-								iTipos[i] = ((GuardaCampo) comp).getDescFK()
-										.getTipo();
-								vDescFK.addElement(((GuardaCampo) comp)
-										.getDescFK());
+								iTipos[i] = ((GuardaCampo) comp).getDescFK().getTipo();
+								vDescFK.addElement(((GuardaCampo) comp).getDescFK());
 								i++;
 								iTot++;
 								iNumDescs++;
