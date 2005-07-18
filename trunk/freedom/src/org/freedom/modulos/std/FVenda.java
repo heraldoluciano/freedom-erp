@@ -1917,7 +1917,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
 			ps.setInt(3,iCodVenda);
 			rs = ps.executeQuery();
-			System.out.println(sSQL);
 			while (rs.next()) {
 				
 				vDesc = new Vector();
@@ -1931,14 +1930,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.impCab(136, false);
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "CLIENTE");
-						imp.say(imp.pRow() + 0, 70, "PEDIDO CLIENTE: "+(rs.getString("PEDCLIVENDA")==null?"":rs.getString("PEDCLIVENDA")));
+						imp.say(imp.pRow() + 0, 70, "PEDIDO N.: "+ rs.getString("CodVenda").trim());
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim() + " - " + rs.getString("CodCli").trim());//nome cliente
-						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ rs.getString("ContCli").trim());
+						imp.say(imp.pRow() + 0, 70, "PEDIDO CLIENTE: "+(rs.getString("PEDCLIVENDA")==null?"":rs.getString("PEDCLIVENDA")));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("CpfCli") != null ? "CPF    : " + Funcoes
 									.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + Funcoes
 										.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));//CNJP cliente
+						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ rs.getString("ContCli").trim());
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + rs.getString("InscCli"));//IE cliente
 						imp.say(imp.pRow() + 0, 70,rs.getString("EndCli").trim() + " N°:" + rs.getString("NumCli"));//rua e número do cliente
@@ -2005,17 +2005,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 62, "OBSERVACÃO");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			 //if (!rs.getString("ObsVenda").equals("")) {
-	          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsVenda")),115);
-	          	 for (int i=0; i<vObs.size(); i++) {
-	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	                imp.say(imp.pRow()+0,20,vObs.elementAt(i).toString());
-	                if (imp.pRow()>=linPag) {
-	                    imp.incPags();
-	                    imp.eject();
-	                }
-	          	 }
-	          //}          
+          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsVenda")),115);
+          	 for (int i=0; i<vObs.size(); i++) {
+                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                imp.say(imp.pRow()+0,20,vObs.elementAt(i).toString());
+                if (imp.pRow()>=linPag) {
+                    imp.incPags();
+                    imp.eject();
+                }
+          	 }
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
