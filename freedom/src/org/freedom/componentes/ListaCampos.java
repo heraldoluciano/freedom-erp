@@ -1077,8 +1077,8 @@ public class ListaCampos extends Container implements PostListener,
 		String sAnd = "";
 		ListaCampos lcFK = gc.getCampo().getTabelaExterna();
 		sAnd = "";
-		if (getNomeTabela().equals("PPITESTRUTURA")) {
-//			System.out.println("Teste");
+		if (getNomeTabela().equals("EQPRODACESSO")) {
+			System.out.println("Teste");
 		}
 		boolean bPrim = true;
 		int i;
@@ -1087,7 +1087,7 @@ public class ListaCampos extends Container implements PostListener,
 		int iFK = 0;
 		for (i = 0; i < lcFK.getComponentCount(); i++) {
 			gcFK = (GuardaCampo) lcFK.getComponent(i);
-//			String sTeste = lcFK.getNomeTabela();
+			String sTeste = lcFK.getNomeTabela();
 			if (gcFK.ehPK()) {
 				/*
 				 * Se for a primeira PK ele linka com o nome do campo que esta
@@ -1097,51 +1097,64 @@ public class ListaCampos extends Container implements PostListener,
 
 				if (iNpk > 1) {
 					while ((getComponentCount() > i2) & (iPK <= iNpk)) {
-//						String steste31 = ((GuardaCampo) getComponent(i2)).getNomeCampo();
-						if (((GuardaCampo) getComponent(i2)).ehPK()) {
-							iPK++;
+						String steste31 = ((GuardaCampo) getComponent(i2)).getNomeCampo();
+						if ((((GuardaCampo) getComponent(i2)).ehPK()) || (((GuardaCampo) getComponent(i2)).ehFK()) ) {
+							if(((GuardaCampo) getComponent(i2)).ehPK())
+								iPK++;
 
 							if (((GuardaCampo) getComponent(i2)).ehFK()) {
-								String sTabelaExternaComp = ((GuardaCampo) getComponent(i2))
-										.getCampo().getTabelaExterna()
-										.getNomeTabela();
+								String sTabelaExternaComp = ((GuardaCampo) getComponent(i2)).getCampo().getTabelaExterna().getNomeTabela();
 								String sTabelaExternaFK = lcFK.getNomeTabela();
 
 								if (sTabelaExternaComp.equals(sTabelaExternaFK)) {
 									GuardaCampo gcPK = (GuardaCampo) getComponent(i2);
-									GuardaCampo gcFK2 = (GuardaCampo) lcFK
-											.getComponent(iFK);
+									GuardaCampo gcFK2 = (GuardaCampo) lcFK.getComponent(iFK);
 									iFK++;
-//									String steste1 = gcFK2.getNomeCampo();
-//									String steste2 = gcPK.getNomeCampo();
+									String steste1 = gcFK2.getNomeCampo();
+									String steste2 = gcPK.getNomeCampo();
 
-									sWhere = sWhere + sAnd
-											+ gcFK2.getNomeCampo()
-											+ " = master."
-											+ gcPK.getNomeCampo();
+									sWhere = sWhere + sAnd + gcFK2.getNomeCampo() + " = master." + gcPK.getNomeCampo();
 									sAnd = " AND ";
 
 								}
 							}
+/*							else{
+//								String sTabelaExternaComp = ((GuardaCampo) getComponent(i2)).getCampo().getTabelaExterna().getNomeTabela();
+								String sTabelaExternaFK = lcFK.getNomeTabela();
+
+	//							if (sTabelaExternaComp.equals(sTabelaExternaFK)) {
+//									GuardaCampo gcPK = (GuardaCampo) getComponent(i2);
+									GuardaCampo gcFK2 = (GuardaCampo) lcFK.getComponent(iFK);
+									iFK++;
+									String steste1 = gcFK2.getNomeCampo();
+//									String steste2 = gcPK.getNomeCampo();
+
+									sWhere = sWhere + sAnd + gcFK2.getNomeCampo() + " = master." + gcFK2.getNomeCampo();
+									sAnd = " AND ";
+
+//								}
+							}
+	*/						
+							
+							
+							
 						} 
 						i2++;
 					}
-				} else if (!bPrim)
-					sWhere = sWhere + sAnd + gcFK.getNomeCampo() + " = master."
-							+ gcFK.getNomeCampo();
+				} 
+				else if (!bPrim)
+					sWhere = sWhere + sAnd + gcFK.getNomeCampo() + " = master." + gcFK.getNomeCampo();
 				else {
-					sWhere = sWhere + sAnd + gcFK.getNomeCampo() + " = master."
-							+ gc.getNomeCampo();
+					sWhere = sWhere + sAnd + gcFK.getNomeCampo() + " = master." + gc.getNomeCampo();
 					bPrim = false;
 				}
 				sAnd = " AND ";
-			} else if (gcFKCampo == null)
+			} 
+			else if (gcFKCampo == null)
 				gcFKCampo = (GuardaCampo) lcFK.getComponent(i);
 		}
-		sWhere += lcFK.getWhereAdic().equals("") ? "" : sAnd
-				+ lcFK.getWhereAdic();
-		sRetorno = "(SELECT "
-				+ (gcFKCampo != null ? gcFKCampo : gcFK).getNomeCampo()
+		sWhere += lcFK.getWhereAdic().equals("") ? "" : sAnd + lcFK.getWhereAdic();
+		sRetorno = "(SELECT " + (gcFKCampo != null ? gcFKCampo : gcFK).getNomeCampo()
 				+ " FROM "
 				+ lcFK.getNomeTabela()
 				+ " WHERE "

@@ -233,10 +233,6 @@ public class FRma extends FDetalhe implements PostListener,
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2);
 
-
-
-
-		
 		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK,txtDescAlmox, false));
 		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
@@ -392,7 +388,6 @@ public class FRma extends FDetalhe implements PostListener,
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-
 		
 		adicCampo(txtCodItRma, 7, 20, 30, 20, "CodItRma", "Item",ListaCampos.DB_PK, true);
 		if (comRef()) {
