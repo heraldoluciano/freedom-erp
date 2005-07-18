@@ -128,11 +128,9 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodPA = new JTextFieldPad( // codigo de acesso
 			JTextFieldPad.TP_INTEGER, 8, 0);
 	
-	private JTextFieldPad txtAnoCCPA = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 4, 0);
+	private JTextFieldPad txtAnoCCPA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 	
-	private JTextFieldPad txtCodCCPA = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 19, 0);
+	private JTextFieldPad txtCodCCPA = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
 	
 	private JTextFieldPad txtCodCaixa = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
@@ -904,54 +902,38 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 		pinRodPreco.adic(navPreco, 0, 90, 270, 25);
 
-		lcClasCliPreco.add(new GuardaCampo(txtCodClasCliPreco, "CodClasCli",
-				"Cód.c.cli.", ListaCampos.DB_PK, false));
-		lcClasCliPreco.add(new GuardaCampo(txtDescClasCliPreco, "DescClasCli",
-				"Descrição da classificação do cliente", ListaCampos.DB_SI,
-				false));
+		lcClasCliPreco.add(new GuardaCampo(txtCodClasCliPreco, "CodClasCli","Cód.c.cli.", ListaCampos.DB_PK, false));
+		lcClasCliPreco.add(new GuardaCampo(txtDescClasCliPreco, "DescClasCli","Descrição da classificação do cliente", ListaCampos.DB_SI,false));
 		lcClasCliPreco.montaSql(false, "CLASCLI", "VD");
 		lcClasCliPreco.setQueryCommit(false);
 		lcClasCliPreco.setReadOnly(true);
 		txtDescClasCliPreco.setListaCampos(lcClasCliPreco);
 		txtCodClasCliPreco.setTabelaExterna(lcClasCliPreco);
 
-		lcTabPreco.add(new GuardaCampo(txtCodTabPreco, "CodTab", "Cód.tab.pç.",
-				ListaCampos.DB_PK, true));
-		lcTabPreco.add(new GuardaCampo(txtDescTabPreco, "DescTab",
-				"Descrição da tabela de preço", ListaCampos.DB_SI, false));
+		lcTabPreco.add(new GuardaCampo(txtCodTabPreco, "CodTab", "Cód.tab.pç.",ListaCampos.DB_PK, true));
+		lcTabPreco.add(new GuardaCampo(txtDescTabPreco, "DescTab","Descrição da tabela de preço", ListaCampos.DB_SI, false));
 		lcTabPreco.montaSql(false, "TABPRECO", "VD");
 		lcTabPreco.setReadOnly(true);
 		lcTabPreco.setQueryCommit(false);
 		txtDescTabPreco.setListaCampos(lcTabPreco);
 		txtCodTabPreco.setTabelaExterna(lcTabPreco);
 
-		lcPlanoPagPreco.add(new GuardaCampo(txtCodPlanoPagPreco, "CodPlanoPag",
-				"Cód.p.pag.", ListaCampos.DB_PK, true));
-		lcPlanoPagPreco.add(new GuardaCampo(txtDescPlanoPagPreco,
-				"DescPlanoPag", "Descrição do plano de pagamento",
-				ListaCampos.DB_SI, false));
+		lcPlanoPagPreco.add(new GuardaCampo(txtCodPlanoPagPreco, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_PK, true));
+		lcPlanoPagPreco.add(new GuardaCampo(txtDescPlanoPagPreco,"DescPlanoPag", "Descrição do plano de pagamento",ListaCampos.DB_SI, false));
 		lcPlanoPagPreco.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPagPreco.setReadOnly(true);
 		lcPlanoPagPreco.setQueryCommit(false);
 		txtDescPlanoPagPreco.setListaCampos(lcPlanoPagPreco);
 		txtCodPlanoPagPreco.setTabelaExterna(lcPlanoPagPreco);
 
-		adicCampo(txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd",
-				"Cód.pç.prod.", ListaCampos.DB_PK, true);
-		adicCampo(txtCodClasCliPreco, 90, 20, 67, 20, "CodClasCli",
-				"Cód.c.cli.", ListaCampos.DB_FK, txtDescClasCliPreco, false);
-		adicDescFK(txtDescClasCliPreco, 160, 20, 217, 20, "DescClasCli",
-				"Descrição da classificação do cliente");
-		adicCampo(txtCodTabPreco, 380, 20, 77, 20, "CodTab", "Cód.tab.pc.",
-				ListaCampos.DB_FK, txtDescTabPreco, true);
-		adicDescFK(txtDescTabPreco, 460, 20, 190, 20, "DescTab",
-				"Descrição da tab. de preços");
-		adicCampo(txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag",
-				"Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPagPreco, true);
-		adicDescFK(txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag",
-				"Descrição do plano de pagamento");
-		adicCampo(txtPrecoProd, 290, 60, 110, 20, "PrecoProd", "Preço",
-				ListaCampos.DB_SI, true);
+		adicCampo(txtCodPrecoProd, 7, 20, 80, 20, "CodPrecoProd","Cód.pç.prod.", ListaCampos.DB_PK, true);
+		adicCampo(txtCodClasCliPreco, 90, 20, 67, 20, "CodClasCli","Cód.c.cli.", ListaCampos.DB_FK, txtDescClasCliPreco, false);
+		adicDescFK(txtDescClasCliPreco, 160, 20, 217, 20, "DescClasCli","Descrição da classificação do cliente");
+		adicCampo(txtCodTabPreco, 380, 20, 77, 20, "CodTab", "Cód.tab.pc.",ListaCampos.DB_FK, txtDescTabPreco, true);
+		adicDescFK(txtDescTabPreco, 460, 20, 190, 20, "DescTab","Descrição da tab. de preços");
+		adicCampo(txtCodPlanoPagPreco, 7, 60, 80, 20, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPagPreco, true);
+		adicDescFK(txtDescPlanoPagPreco, 90, 60, 197, 20, "DescPlanoPag","Descrição do plano de pagamento");
+		adicCampo(txtPrecoProd, 290, 60, 110, 20, "PrecoProd", "Preço",ListaCampos.DB_SI, true);
 		setListaCampos(true, "PRECOPROD", "VD");
 		lcPreco.setOrdem("CodPrecoProd");
 		lcPreco.setQueryInsert(false);
@@ -1018,26 +1000,29 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		txtCodPlan.setTabelaExterna(lcPlan);
 
 		//lcCC.setUsaME(false);
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
 		lcCC.add(new GuardaCampo(txtCodCC, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
 		lcCC.add(new GuardaCampo(txtDescCC, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
+
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setReadOnly(true);
 		lcCC.setQueryCommit(false);
 		txtDescCC.setListaCampos(lcCC);
-		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
+		txtCodCC.setTabelaExterna(lcCC);
+
 
 		//CC Acesso
+		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
 		lcCCAcesso.add(new GuardaCampo(txtCodCCPA, "CodCC","Cód.cc.", ListaCampos.DB_PK, true));
 		lcCCAcesso.add(new GuardaCampo(txtDescCCPA, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));		
-		lcCCAcesso.add(new GuardaCampo(txtAnoCCPA, "AnoCC","Ano.cc.", ListaCampos.DB_PK, true));
 		lcCCAcesso.montaSql(false, "CC", "FN");
 		lcCCAcesso.setReadOnly(true);
 		lcCCAcesso.setQueryCommit(false);
 		txtDescCCPA.setListaCampos(lcCCAcesso);
-		txtCodCCPA.setTabelaExterna(lcCCAcesso);
 		txtAnoCCPA.setTabelaExterna(lcCCAcesso);
+		txtCodCCPA.setTabelaExterna(lcCCAcesso);
+
 
 		//	Caixa
 		lcCaixa.add(new GuardaCampo(txtCodCaixa, "CodCaixa","Cód.caixa", ListaCampos.DB_PK, false));
@@ -1061,12 +1046,12 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		pinRodProdPlan.adic(navProdPlan, 0, 90, 270, 25);
 
 		adicCampo(txtSeqPP, 7, 20, 80, 20, "SeqPP", "N.seq.",ListaCampos.DB_PK, true);
-		adicCampo(txtCodPlan, 90, 20, 80, 20, "CodPlan", "Cód.plan.",ListaCampos.DB_FK, txtDescPlan, true);
+		adicCampo(txtCodPlan, 90, 20, 80, 20, "CodPlan", "Cód.plan.",ListaCampos.DB_PF, txtDescPlan, true);
 		adicDescFK(txtDescPlan, 173, 20, 250, 20, "DescPlan","Descrição do planejamento");		
 		adicDB(rgTipoPP, 426, 20, 200, 30, "TipoPP", "Tipo", true);
 
-		adicCampo(txtAnoCC, 7, 60, 80, 20, "AnoCC", "Ano.cc.",ListaCampos.DB_FK, txtDescCC, true);
-		adicCampo(txtCodCC, 90, 60, 107, 20, "CodCC", "Cód.cc.",ListaCampos.DB_FK, txtDescCC, true);
+		adicCampo(txtAnoCC, 7, 60, 80, 20, "AnoCC", "Ano.cc.",ListaCampos.DB_PF, txtDescCC, true);
+		adicCampo(txtCodCC, 90, 60, 107, 20, "CodCC", "Cód.cc.",ListaCampos.DB_PF, true);
 		adicDescFK(txtDescCC, 200, 60, 250, 20, "DescCC","Descrição do centro de custo");
 		
 		setListaCampos(true, "PRODPLAN", "EQ");
@@ -1232,10 +1217,10 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		
 		adicCampo(txtCodPA, 7, 20, 70, 20, "CodPA","Cód.acess.", ListaCampos.DB_PK, null, true);
 		adicDB(rgPA, 80, 20, 140, 30, "TipoPA", "Tipo", true);
-		adicCampo(txtAnoCCPA, 223, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_FK, txtDescCCPA, false);
-		adicCampo(txtCodCCPA, 306, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_FK, txtDescCCPA, false);
+		adicCampo(txtAnoCCPA, 223, 20, 80, 20, "AnoCC","Ano CC.", ListaCampos.DB_PF, txtDescCCPA, false);
+		adicCampo(txtCodCCPA, 306, 20, 150, 20, "CodCC","Cód. CC.", ListaCampos.DB_PF, txtDescCCPA, false);
 		adicDescFK(txtDescCCPA, 459, 20, 180, 20, "DescCC","Descrição do C.C.");
-		adicCampo(txtCodCaixa, 223, 60, 80, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_FK, txtDescCaixa, false);
+		adicCampo(txtCodCaixa, 223, 60, 80, 20, "CodCaixa","Cód.caixa", ListaCampos.DB_PF, txtDescCaixa, false);
 		adicDescFK(txtDescCaixa, 306, 60, 250, 20,"DescCaixa","Descrição do caixa");
 		setListaCampos(true, "PRODACESSO", "EQ");
 		lcProdAcesso.setQueryInsert(false);
