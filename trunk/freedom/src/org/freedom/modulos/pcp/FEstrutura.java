@@ -244,7 +244,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     //Fim Detalhe Itens
 
     //Detalhe Distribuição
-    
+
   	lcEstDistrib.add(new GuardaCampo( txtCodProdDistrib, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescEstDistrib, true));
   	lcEstDistrib.add(new GuardaCampo( txtSeqEstDistrib,"seqest","Seq.Est.",ListaCampos.DB_PK,true));
   	lcEstDistrib.add(new GuardaCampo( txtDescEstDistrib, "DescEst", "Descrição da estrutura", ListaCampos.DB_SI, false));
@@ -256,13 +256,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   	txtCodProdDistrib.setTabelaExterna(lcEstDistrib);
   	txtSeqEstDistrib.setTabelaExterna(lcEstDistrib);
   	txtCodProdDistrib.setNomeCampo("codprod");
-  	txtSeqEstDistrib.setNomeCampo("seqest");      
+//  	txtSeqEstDistrib.setNomeCampo("seqest");      
+    txtDescEstDistrib.setListaCampos(lcEstDistrib);
     
     setPainel( pinDetDistrib);
     setListaCampos(lcDetDistrib);
 
     adicCampo(txtSeqDistrib,7,20,60,20,"seqde","Seq.",ListaCampos.DB_PK,true);
-    adicCampo(txtCodProdDistrib, 70, 20, 77, 20,"CodProdDe","Cód.prod.",ListaCampos.DB_PF, true);
+    adicCampo(txtCodProdDistrib, 70, 20, 77, 20,"CodProdDe","Cód.prod.",ListaCampos.DB_PF, txtDescEstDistrib,true);
     adicCampo(txtSeqEstDistrib, 150, 20, 77, 20,"SeqEstDe","Seq.Est", ListaCampos.DB_PF,txtDescEstDistrib, true);
     adicDescFK(txtDescEstDistrib, 230, 20, 277, 20, "DescEst", "Descrição da estrutura");
     txtCodProdDistrib.setNomeCampo("CodProdDe");
