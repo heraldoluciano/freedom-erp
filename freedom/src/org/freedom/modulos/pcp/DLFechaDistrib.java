@@ -27,32 +27,35 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaDistrib extends FFDialogo {
-  private JTextFieldPad txtParcItRec = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-  private JTextFieldPad txtDtVencItRec = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtVlrDescItRec = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
-  public DLFechaDistrib(Component cOrig) {
+  private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtSeqDist = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+  private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
+  private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  public DLFechaDistrib(Component cOrig,int iCodProd,String sDescProd,int iSeqDist) {
   	super(cOrig);
     setTitulo("Parcela");
-    setAtribos(250,220);
-   /* if (bigDescItRec == null)
-    	txtVlrDescItRec.setAtivo(false);
-
-    txtParcItRec.setVlrBigDecimal(bigParcItRec);
-    txtDtVencItRec.setVlrDate(dDtVencItRec);
-    txtVlrDescItRec.setVlrBigDecimal(bigDescItRec);*/
-
-    adic(new JLabelPad("Valor"),7,0,100,20);
-    adic(new JLabelPad("Vencimento"),110,0,100,20);
-    adic(new JLabelPad("Desconto"),7,40,100,20);
-    adic(txtParcItRec,7,20,100,20);
-    adic(txtDtVencItRec,110,20,100,20);
-    adic(txtVlrDescItRec,7,60,100,20);
+    setAtribos(310,220);
+   
+    adic(new JLabelPad("Cód.Prod"),7,10,70,20);
+    adic(txtCodProd,7,30,70,20);
+    adic(new JLabelPad("Descrição do produto"),80,10,180,20);
+    adic(txtDescProd,80,30,200,20);
+    adic(new JLabelPad("Seq.dist."),7,50,80,20);
+    adic(txtSeqDist,7,70,80,20);
+    adic(new JLabelPad("Quantidade"),90,50,100,20);
+    adic(txtQtdDist,90,70,110,20);
+    
+    txtCodProd.setVlrInteger(new Integer(iCodProd));
+    txtDescProd.setVlrString(sDescProd);
+    txtSeqDist.setVlrInteger(new Integer(iSeqDist));
+    
+    txtCodProd.setAtivo(false);
+    txtDescProd.setAtivo(false);
+    txtSeqDist.setAtivo(false);
   }
-  public Object[] getValores() {
-    Object[] oRetorno = new Object[3];
-    oRetorno[0] = txtParcItRec.getVlrBigDecimal();
-    oRetorno[1] = txtDtVencItRec.getVlrDate();
-    oRetorno[2] = txtVlrDescItRec.getVlrBigDecimal();
+  public Object getValor() {
+    Object oRetorno = new Object();
+    oRetorno = txtQtdDist.getVlrBigDecimal();
 
     return oRetorno;
   }
