@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -45,12 +46,12 @@ import org.freedom.telas.FFDialogo;
 public class DLDistrib extends FFDialogo implements MouseListener{
 
 	private int casasDec = Aplicativo.casasDec;
-	private JTextFieldPad txtSeqEF = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-	private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtSeqDE = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtSeqEstDE = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-	private JTextFieldPad txtQuant = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
+	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);  
+	private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+	private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JPanelPad pnDistrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private Tabela tabDistrib = new Tabela();
@@ -58,20 +59,44 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	private int iSeqop = 0;
 	//private ListaCampos lcDistrib = new ListaCampos(this);
   
-  public DLDistrib(Connection cn,Component cOrig) {
+  public DLDistrib(Connection cn,Component cOrig,boolean bPref) {
   	super(cOrig);
     setConexao(cn);
     setTitulo("Distribuição");
-    setAtribos(780,400);
+    setAtribos(757,380);
     
-    //lcDistrib.setTabela(tabDistrib);
-   
-    pinCab.setPreferredSize(new Dimension(400,60));
+    pinCab.setPreferredSize(new Dimension(400,100));
     pnDistrib.add(pinCab,BorderLayout.NORTH);
     JScrollPane spnTabRec = new JScrollPane(tabDistrib);
     pnDistrib.add(spnTabRec,BorderLayout.CENTER);
-
     c.add(pnDistrib, BorderLayout.CENTER);
+    
+    setPainel(pinCab);
+    
+    adic(new JLabelPad("Nº.OP."),7,0,100,20);
+    adic(txtCodOP,7,20,100,20);
+    adic(new JLabelPad("Seq.OP."),110,0,100,20);
+    adic(txtSeqOP,110,20,100,20);
+    if(bPref){
+	    adic(new JLabelPad("Referência"),213,0,100,20);
+	    adic(txtRefProdEst,213,20,100,20);
+    }
+    else{
+    	adic(new JLabelPad("Cód.prod"),213,0,100,20);
+	    adic(txtCodProdEst,213,20,100,20);
+    }	    
+    adic(new JLabelPad("Seq.Est."),7,40,100,20);
+    adic(txtSeqEst,7,60,100,20);
+    adic(new JLabelPad("Descrição da estrutura principal"),110,40,200,20);
+    adic(txtDescEst,110,60,300,20);
+    
+	txtCodOP.setAtivo(false);
+	txtSeqOP.setAtivo(false);
+	txtCodProdEst.setAtivo(false);
+	txtRefProdEst.setAtivo(false);
+	txtSeqEst.setAtivo(false); 
+	txtDescEst.setAtivo(false);
+   
     tabDistrib.adicColuna("Seq.fase");
     tabDistrib.adicColuna("Cód.fase");
     tabDistrib.adicColuna("Descrição da fase");
@@ -81,14 +106,14 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.adicColuna("Seq.est.dist.");
     tabDistrib.adicColuna("Quant.");
     
-    tabDistrib.setTamColuna(50,0);
-    tabDistrib.setTamColuna(50,1);
+    tabDistrib.setTamColuna(60,0);
+    tabDistrib.setTamColuna(60,1);
     tabDistrib.setTamColuna(160,2);
     tabDistrib.setTamColuna(60,3);
     tabDistrib.setTamColuna(70,4);
     tabDistrib.setTamColuna(200,5);
     tabDistrib.setTamColuna(70,6);
-    tabDistrib.setTamColuna(80,7);
+    tabDistrib.setTamColuna(60,7);
        
     tabDistrib.addMouseListener(this);
     
@@ -195,6 +220,15 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  	vLinha = null;
   	  }
   	  
+  }
+  
+  public void caregaCampos(Object[] sValores){
+  	txtCodOP.setVlrInteger((Integer) sValores[0]); 
+	txtSeqOP.setVlrInteger((Integer) sValores[1]); 
+	txtCodProdEst.setVlrInteger((Integer) sValores[2]); 
+	txtRefProdEst.setVlrString((String)sValores[3]); 
+	txtSeqEst.setVlrInteger((Integer) sValores[4]); 
+	txtDescEst.setVlrString((String)sValores[5]);
   }
   
 }

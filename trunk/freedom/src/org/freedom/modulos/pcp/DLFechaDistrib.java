@@ -35,7 +35,7 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
   	super(cOrig);
-    setTitulo("Parcela");
+    setTitulo("Quantidade");
     setAtribos(310,220);
    
     adic(new JLabelPad("Cód.Prod"),7,10,70,20);
