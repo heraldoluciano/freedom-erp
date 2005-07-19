@@ -56,13 +56,16 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	private Tabela tabDistrib = new Tabela();
 	private int iCodop = 0;
 	private int iSeqop = 0;
+	private int iSeqDist = 0;
+	private int iCodProd = 0;
+	private String sDescProd = "";
 	//private ListaCampos lcDistrib = new ListaCampos(this);
   
   public DLDistrib(Connection cn,Component cOrig) {
   	super(cOrig);
     setConexao(cn);
     setTitulo("Distribuição");
-    setAtribos(780,500);
+    setAtribos(780,400);
     
     //lcDistrib.setTabela(tabDistrib);
    
@@ -84,30 +87,12 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.setTamColuna(50,0);
     tabDistrib.setTamColuna(50,1);
     tabDistrib.setTamColuna(160,2);
-    tabDistrib.setTamColuna(50,3);
+    tabDistrib.setTamColuna(60,3);
     tabDistrib.setTamColuna(70,4);
-    tabDistrib.setTamColuna(230,5);
-    tabDistrib.setTamColuna(50,6);
+    tabDistrib.setTamColuna(200,5);
+    tabDistrib.setTamColuna(70,6);
     tabDistrib.setTamColuna(80,7);
-    
-    
-    
-    //txtSeqEF.setNomeCampo("SeqEF");
-//    lcDistrib.add(new GuardaCampo( txtSeqEF, "SeqEF", "Seq.fase", ListaCampos.DB_PK,false));
-    //lcDistrib.add(new GuardaCampo( txtCodFase, "CodFase", "Cód.fase", ListaCampos.DB_SI,false));
-    //lcDistrib.add(new GuardaCampo( txtSeqDE, "SeqDE", "Seq.distrib.", ListaCampos.DB_SI,false));
-    //lcDistrib.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod", ListaCampos.DB_SI,false));
-    //lcDistrib.add(new GuardaCampo( txtSeqEstDE, "SeqEstDE", "N.distrib.", ListaCampos.DB_SI,false));
-   // lcDistrib.add(new GuardaCampo( txtQuant, "", "Quantidade", ListaCampos.DB_SI,false));
-    //lcDistrib.montaSql(false, "DISTRIB", "PP");
-    //lcDistrib.setConexao(cn);
-    //txtSeqEF.setListaCampos(lcDistrib);
-    //txtCodFase.setListaCampos(lcDistrib);
-    //txtSeqDE.setListaCampos(lcDistrib);
-    //txtCodProd.setListaCampos(lcDistrib);
-    //txtSeqEstDE.setListaCampos(lcDistrib);
-    //lcDistrib.montaTab();
-    
+       
     tabDistrib.addMouseListener(this);
     
   }
@@ -120,14 +105,18 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   public void mouseClicked(MouseEvent mevt) {
     if (mevt.getClickCount() == 2) {
     	if (mevt.getSource() == tabDistrib && tabDistrib.getLinhaSel() >= 0)
-    	  alteraDistrib();
+    		iSeqDist = Integer.parseInt(""+tabDistrib.getValor(tabDistrib.getLinhaSel(),3));
+    		iCodProd = Integer.parseInt(""+tabDistrib.getValor(tabDistrib.getLinhaSel(),4));
+	    	sDescProd = ""+tabDistrib.getValor(tabDistrib.getLinhaSel(),5);
+    		alteraDistrib();
     }
   }
   
   public void alteraDistrib(){
-	  	DLFechaDistrib dl = new DLFechaDistrib(DLDistrib.this);
+	  	DLFechaDistrib dl = new DLFechaDistrib(DLDistrib.this,iCodProd,sDescProd,iSeqDist);
 		dl.setVisible(true);
 		if (dl.OK) {
+			tabDistrib.setValor(dl.getValor(),tabDistrib.getLinhaSel(),7);
 			dl.dispose();
 		} else {
 			dl.dispose();
@@ -166,13 +155,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  	ps.setInt(4,iSeqop);
   	  	rs = ps.executeQuery();
   	  	while (rs.next()) {
-/*  	      tabDistrib.adicColuna("Seq.fase");
-  	    tabDistrib.adicColuna("Cód.fase");
-  	    tabDistrib.adicColuna("Descrição da fase");
-  	    tabDistrib.adicColuna("Seq.distrib.");
-  	    tabDistrib.adicColuna("Cód.prod.");
-  	    tabDistrib.adicColuna("Descrição do produto");
-  	    tabDistrib.adicColuna("Quant.");*/
+  	  		
   	  		vLinha = new Vector();
   	  		vLinha.addElement(new Integer(rs.getInt("SEQEF")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODFASE")));
@@ -183,6 +166,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  		vLinha.addElement(new Integer(rs.getInt("SEQESTDE")));
   	  		vLinha.addElement(new StringDireita( "0" ));
   	  		tabDistrib.adicLinha(vLinha);
+  	  		
   	  	}
   	  	rs.close();
   	  	ps.close();
