@@ -24,6 +24,10 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
@@ -68,7 +72,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrinterJob;
 
-public class FOP extends FDetalhe implements ChangeListener, PostListener,CancelListener,InsertListener,ActionListener,CarregaListener { 
+public class FOP extends FDetalhe implements ChangeListener, PostListener,CancelListener,InsertListener,ActionListener,CarregaListener,KeyListener, FocusListener { 
   private int casasDec = Aplicativo.casasDec;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
@@ -380,7 +384,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	
 	
 	tpnAbas.addChangeListener(this);
+	txtCodOP.addFocusListener(this);
+	txtSeqOP.addKeyListener(this);
   	setImprimir(true);
+  
   }
   
   private void montaDet(){
@@ -956,9 +963,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   		txtCodTpMov.setVlrInteger(iCodTpMov);
 		lcTipoMov.carregaDados();
 		txtDtFabProd.setVlrDate(new Date());
+		if (txtSeqOP.getVlrString().trim().equals(""))
+			txtSeqOP.setVlrInteger(new Integer(0));
 	}			
   }
-  public void beforeInsert(InsertEvent ievt) { }
+  public void beforeInsert(InsertEvent ievt) {
+  }
   public void afterCancel(CancelEvent cevt) { }
   public void setConexao(Connection cn) {
   	super.setConexao(cn);
@@ -975,6 +985,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	lcModLote.setConexao(cn);
   	
   }
+  
   private void imprimir(boolean bVisualizar) {
 	Vector vParamOP = new Vector();
   	String sClassOP = "";
@@ -1058,7 +1069,28 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     }
   }
 
+  public void keyPressed(KeyEvent kevt) {
+  	if (kevt.getSource()==txtSeqOP) {
+  		if (((JTextFieldPad) kevt.getSource()).getVlrString().trim().equals(""))
+  			((JTextFieldPad) kevt.getSource()).setVlrInteger(new Integer(0));
+  	}
+  }
+  public void keyTyped(KeyEvent kevt) {
+  	
+  }
+  public void keyReleased(KeyEvent kevt) {
+  	
+  }
 
+  public void focusGained(FocusEvent arg0) {
 
+  }
+  public void focusLost(FocusEvent arg0) {
+  	if (arg0.getSource()==txtCodOP) {
+  		if ( (!((JTextFieldPad) arg0.getSource()).getVlrString().trim().equals("")) && (txtSeqOP.getVlrString().trim().equals("")) ) {
+  			txtSeqOP.setVlrInteger(new Integer(0));
+  		}
+  	}
 
+  }
 }
