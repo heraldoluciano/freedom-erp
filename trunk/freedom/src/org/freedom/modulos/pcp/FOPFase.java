@@ -49,6 +49,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 
+
 public class FOPFase extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener {
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
@@ -67,7 +68,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private JTextFieldPad txtJustificqtdprod = new JTextFieldPad(JTextFieldPad.TP_STRING,500,0);
   private JTextFieldPad txtNumSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-//  private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtTempoOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDataIniProdFs = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -155,6 +156,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     lcRec.add(new GuardaCampo(txtCodRec,"CodRecP", "Cód.rec.", ListaCampos.DB_PK, true));
     lcRec.add(new GuardaCampo(txtDescRec, "DescRecP", "Descrição do recurso de produção", ListaCampos.DB_SI, false));
 //    lcRec.add(new GuardaCampo(txtCodTpRec,"CodTpRec","Cód.Tp.Rec.",ListaCampos.DB_FK,false));
+    lcRec.setDinWhereAdic("	CODTIPOREC=#N ",txtCodTpRec);
     lcRec.montaSql(false, "RECURSO", "PP");
     lcRec.setQueryCommit(false);
     lcRec.setReadOnly(true);
@@ -231,6 +233,40 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   	}
   }
 
+  private void carregaTipoRec() {
+  	PreparedStatement ps = null;
+  	ResultSet rs = null;
+  	String sql = null;
+  	try {
+  		sql = "SELECT EF.CODTIPOREC FROM PPESTRUFASE EF, PPOP OP " +
+  				"WHERE OP.CODEMP=? AND OP.CODFILIAL=? AND OP.CODOP=? AND " +
+  				"OP.SEQOP=? AND EF.CODEMP=OP.CODEMPPD AND " +
+  				"EF.CODFILIAL=OP.CODFILIALPD AND EF.CODPROD=OP.CODPROD AND " +
+  				"EF.SEQEST=OP.SEQEST AND SEQEF=? AND CODEMPFS=? AND " +
+  				"CODFILIALFS=? AND CODFASE=?";
+  		ps = con.prepareStatement(sql);
+  		ps.setInt(1,Aplicativo.iCodEmp);
+  		ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+  		ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+  		ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
+  		ps.setInt(5,txtNumSeqOf.getVlrInteger().intValue());
+  		ps.setInt(6,Aplicativo.iCodEmp);
+  		ps.setInt(7,ListaCampos.getMasterFilial("PPFASE"));
+  		ps.setInt(8,txtCodFase.getVlrInteger().intValue());
+  		
+  		rs.close();
+  		ps.close();
+  	}
+  	catch (SQLException e) {
+  		
+  	}
+  	finally {
+  		rs = null;
+  		ps = null;
+  		sql = null;
+  	}
+  	
+  }
   public boolean bFinalizaProcesso(){
   	boolean bRet = false;
   	String sSQL = "select ef.finalizaop from ppestrufase ef, ppopfase pf, ppop op where "+
