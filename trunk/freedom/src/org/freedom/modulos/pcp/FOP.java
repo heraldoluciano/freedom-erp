@@ -121,7 +121,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private JButton btExecuta = new JButton("Finaliza",Icone.novo("btOP.gif"));
   private JButton btLote = new JButton("Lote",Icone.novo("btSimilar.gif"));
   private JButton btRatearItem = new JButton("",Icone.novo("btAdic2.gif"));
-  private JButton btDistrb = new JButton("Distribuição");
+  private JButton btDistrb = new JButton("Distribuição",Icone.novo("btDistOP.gif"));
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
   private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
