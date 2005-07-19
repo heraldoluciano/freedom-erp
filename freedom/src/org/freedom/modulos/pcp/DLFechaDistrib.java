@@ -21,24 +21,26 @@
 
 package org.freedom.modulos.pcp;
 import java.awt.Component;
+import java.math.BigDecimal;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaDistrib extends FFDialogo {
-  private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+  private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
   private JTextFieldPad txtSeqDist = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  public DLFechaDistrib(Component cOrig,int iCodProd,String sDescProd,int iSeqDist) {
+  public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
   	super(cOrig);
     setTitulo("Parcela");
     setAtribos(310,220);
    
     adic(new JLabelPad("Cód.Prod"),7,10,70,20);
     adic(txtCodProd,7,30,70,20);
-    adic(new JLabelPad("Descrição do produto"),80,10,180,20);
+    adic(new JLabelPad("Descrição da estrutura"),80,10,180,20);
     adic(txtDescProd,80,30,200,20);
     adic(new JLabelPad("Seq.dist."),7,50,80,20);
     adic(txtSeqDist,7,70,80,20);
@@ -48,15 +50,14 @@ public class DLFechaDistrib extends FFDialogo {
     txtCodProd.setVlrInteger(new Integer(iCodProd));
     txtDescProd.setVlrString(sDescProd);
     txtSeqDist.setVlrInteger(new Integer(iSeqDist));
+    txtQtdDist.setVlrBigDecimal(new BigDecimal(ftQtdade));
     
     txtCodProd.setAtivo(false);
     txtDescProd.setAtivo(false);
     txtSeqDist.setAtivo(false);
   }
-  public Object getValor() {
-    Object oRetorno = new Object();
-    oRetorno = txtQtdDist.getVlrBigDecimal();
-
-    return oRetorno;
+  public BigDecimal getValor() {
+    BigDecimal bdRetorno = txtQtdDist.getVlrBigDecimal();
+    return bdRetorno;
   }
 }

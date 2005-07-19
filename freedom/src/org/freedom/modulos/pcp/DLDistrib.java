@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,7 +37,6 @@ import javax.swing.JScrollPane;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -56,9 +56,6 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	private Tabela tabDistrib = new Tabela();
 	private int iCodop = 0;
 	private int iSeqop = 0;
-	private int iSeqDist = 0;
-	private int iCodProd = 0;
-	private String sDescProd = "";
 	//private ListaCampos lcDistrib = new ListaCampos(this);
   
   public DLDistrib(Connection cn,Component cOrig) {
@@ -105,21 +102,35 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   public void mouseClicked(MouseEvent mevt) {
     if (mevt.getClickCount() == 2) {
     	if (mevt.getSource() == tabDistrib && tabDistrib.getLinhaSel() >= 0)
-    		iSeqDist = Integer.parseInt(""+tabDistrib.getValor(tabDistrib.getLinhaSel(),3));
-    		iCodProd = Integer.parseInt(""+tabDistrib.getValor(tabDistrib.getLinhaSel(),4));
-	    	sDescProd = ""+tabDistrib.getValor(tabDistrib.getLinhaSel(),5);
     		alteraDistrib();
     }
   }
   
   public void alteraDistrib(){
-	  	DLFechaDistrib dl = new DLFechaDistrib(DLDistrib.this,iCodProd,sDescProd,iSeqDist);
-		dl.setVisible(true);
-		if (dl.OK) {
-			tabDistrib.setValor(dl.getValor(),tabDistrib.getLinhaSel(),7);
+  	    int iLinha = tabDistrib.getLinhaSel();
+  	    int iCodProd = 0;
+  	    int iSeqDist = 0;
+  	    float ftQtdade = 0;
+  	    String sDescProd = null;
+	  	DLFechaDistrib dl = null; 
+	  	try {
+	  		iSeqDist =((Integer) tabDistrib.getValor(iLinha, 3)).intValue();
+	  		iCodProd = ((Integer) tabDistrib.getValor(iLinha, 4)).intValue();
+	  		sDescProd = ((String) tabDistrib.getValor(iLinha,5));
+	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
+	  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd, ftQtdade);
+			dl.setVisible(true);
+			if (dl.OK) 
+				tabDistrib.setValor(dl.getValor(),iLinha,7);
+	  	}
+		finally {
+			iLinha = 0;
+			iCodProd = 0;
+			iSeqDist = 0;
+			ftQtdade = 0;
+			sDescProd = null;
 			dl.dispose();
-		} else {
-			dl.dispose();
+			dl = null;
 		}
   }
   
@@ -164,7 +175,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  		vLinha.addElement(new Integer(rs.getInt("CODPROD")));
   	  		vLinha.addElement(rs.getString("DESCEST"));
   	  		vLinha.addElement(new Integer(rs.getInt("SEQESTDE")));
-  	  		vLinha.addElement(new StringDireita( "0" ));
+  	  		vLinha.addElement(new BigDecimal(0) );
   	  		tabDistrib.adicLinha(vLinha);
   	  		
   	  	}
