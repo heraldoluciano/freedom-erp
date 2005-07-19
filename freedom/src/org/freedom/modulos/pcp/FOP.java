@@ -117,6 +117,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private JButton btExecuta = new JButton("Finaliza",Icone.novo("btOP.gif"));
   private JButton btLote = new JButton("Lote",Icone.novo("btSimilar.gif"));
   private JButton btRatearItem = new JButton("",Icone.novo("btAdic2.gif"));
+  private JButton btDistrb = new JButton("Distribuição");
   private boolean bPrefs[] = null;
   private FPrinterJob dl = null;
   private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
@@ -160,12 +161,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	btExecuta.setToolTipText("Processo de produção");
 	btLote.setToolTipText("Cadastra lote");
 	btRatearItem.setToolTipText("Ratear ítem");
+	btDistrb.setToolTipText("Distribuição");
 		
-	pinCab.adic(pinBotCab,500,20,115,128);
+	pinCab.adic(pinBotCab,500,2,115,159);
 	pinBotCab.adic(btFase,0,0,110,30); 
 	pinBotCab.adic(btRMA,0,31,110,30);
 	pinBotCab.adic(btExecuta,0,62,110,30);
 	pinBotCab.adic(btLote,0,93,110,30);
+	pinBotCab.adic(btDistrb,0,124,110,30);
   		
 	lcModLote.add(new GuardaCampo(txtCodModLote, "CodModLote", "Cod.Mod.Lote", ListaCampos.DB_PK,txtDescModLote, false));
 	lcModLote.add(new GuardaCampo(txtDescModLote, "DescModLote", "Descrição do modelo de lote", ListaCampos.DB_SI, false));
@@ -247,7 +250,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     adicCampo(txtSeqOP, 80, 20, 60, 20,"SeqOP","Seq. OP.", ListaCampos.DB_PK, true);
 //    adicCampo(txtCodTpMov, 80, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
     adicCampo(txtCodTpMov, 143, 20, 70, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK,txtDescTipoMov, true);
-	adicDescFK(txtDescTipoMov, 216, 20, 201, 20, "DescTipoMov", "Cód.Tp.Mov.");
+	adicDescFK(txtDescTipoMov, 216, 20, 198, 20, "DescTipoMov", "Cód.Tp.Mov.");
   	adicCampo(txtDtFabProd,417,20,75,20,"dtfabrop","Dt.Fabric.",ListaCampos.DB_SI, true);
 
   	if (!bPrefs[0]) {  
@@ -309,6 +312,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     btImp.addActionListener(this);
   	btPrevimp.addActionListener(this);
   	btRatearItem.addActionListener(this);
+  	btDistrb.addActionListener(this);
 
   	montaDet();
   	  	
@@ -751,6 +755,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
         gravaLote(true);
     else if (evt.getSource() == btRatearItem)
     	ratearItem(true);
+    else if (evt.getSource() == btDistrb){
+    	DLDistrib dl = new DLDistrib(con,this);
+		dl.setVisible(true);
+		if (dl.OK) {
+			dl.dispose();
+		} else {
+			dl.dispose();
+		}
+    }
    
     super.actionPerformed(evt);
   }
