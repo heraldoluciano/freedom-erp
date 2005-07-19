@@ -757,6 +757,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     	ratearItem(true);
     else if (evt.getSource() == btDistrb){
     	DLDistrib dl = new DLDistrib(con,this);
+    	dl.carregaTabela(txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue());
+    
 		dl.setVisible(true);
 		if (dl.OK) {
 			dl.dispose();
