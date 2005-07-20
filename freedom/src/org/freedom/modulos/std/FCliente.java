@@ -1207,8 +1207,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       }
     }
     else if (dl.getValores()[7].equals("J")) {///PRA JUNKO
-        sSQL = "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.ENDCLI,C1.NUMCLI,C1.CIDCLI,C1.FONECLI,C1.FAXCLI,C1.DDDCLI,C1.CONTCLI"+sObs+
-  	        " FROM VDCLIENTE C1" +sFrom+
+        sSQL = "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.ENDCLI,C1.NUMCLI,C1.CIDCLI,C1.FONECLI," +
+        		"C1.FAXCLI,C1.DDDCLI,C1.CONTCLI,C1.EMAILCLI,C1.SITECLI"+sObs+
+				" FROM VDCLIENTE C1" +sFrom+
         		" WHERE C1.CODEMP=? AND C1.CODFILIAL=? "+sWhere+" ORDER BY "+dl.getValores()[0];
         System.out.println("sql é "+sSQL);
         PreparedStatement ps = null;
@@ -1248,12 +1249,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
               imp.say(imp.pRow()+0,0,"|");
               imp.say(imp.pRow()+0,2,"Código");
               imp.say(imp.pRow()+0,10,"|");
-              imp.say(imp.pRow()+0,12,"Razão Social e Nome Fantasia");
+              imp.say(imp.pRow()+0,12,"Razão Social / Nome Fantasia");
               imp.say(imp.pRow()+0,42,"|");
-              imp.say(imp.pRow()+0,44,"Contato");
+              imp.say(imp.pRow()+0,44,"Contato / E-Mail");
               imp.say(imp.pRow()+0,74,"|");
-              imp.say(imp.pRow()+0,76,"Endereço:");
-              imp.say(imp.pRow()+0,108,"No:");
+              imp.say(imp.pRow()+0,76,"Endereço / Web Site");
               imp.say(imp.pRow()+0,117,"|");
               imp.say(imp.pRow()+0,120,"Tel / Fax");
               imp.say(imp.pRow()+0,135,"|");
@@ -1268,8 +1268,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
             imp.say(imp.pRow()+0,42,"|");
             imp.say(imp.pRow()+0,43,rs.getString("ContCli") != null ? rs.getString("ContCli").substring(0,30) : "");            
             imp.say(imp.pRow()+0,74,"|");
-            imp.say(imp.pRow()+0,76,rs.getString("EndCli") != null ? rs.getString("EndCli").substring(0,30) : "");
-            imp.say(imp.pRow()+0,108,rs.getString("NumCli") != null ? rs.getString("NumCli") : "");
+            imp.say(imp.pRow()+0,76,(rs.getString("EndCli") != null ? rs.getString("EndCli").substring(0,30) : "").trim()+", "+(rs.getString("NumCli") != null ? rs.getString("NumCli") : ""));
             imp.say(imp.pRow()+0,117,"|");
             imp.say(imp.pRow()+0,119,(rs.getString("FoneCli") != null ? ((rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")
             		+Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####")) : "").trim());
@@ -1278,8 +1277,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
             imp.say(imp.pRow()+0,0,"|");
             imp.say(imp.pRow()+0,10,"|");
             imp.say(imp.pRow()+0,11,rs.getString("NomeCli") != null ? rs.getString("NomeCli").substring(0,30) : "");
-            imp.say(imp.pRow()+0,42,"|");           
+            imp.say(imp.pRow()+0,42,"|");       
+            imp.say(imp.pRow()+0,43,rs.getString("EmailCli") != null ? rs.getString("EmailCli").substring(0,30) : "");
             imp.say(imp.pRow()+0,74,"|");
+            imp.say(imp.pRow()+0,76,(rs.getString("SiteCli") != null ? rs.getString("SiteCli").substring(0,30) : ""));
             imp.say(imp.pRow()+0,117,"|");
             imp.say(imp.pRow()+0,119,(rs.getString("FaxCli") != null ? ((rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")
             		+Funcoes.setMascara(rs.getString("FaxCli").trim(),"####-####")) : "").trim());
