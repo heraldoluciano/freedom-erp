@@ -62,7 +62,7 @@ public class DLRCliente extends FFDialogo {
   private Vector vValsModo = new Vector();
   private JLabelPad lbSetor = new JLabelPad("Cód.setor");
   private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
-  private JLabelPad lbTipoCli = new JLabelPad("Cód.cli.");
+  private JLabelPad lbTipoCli = new JLabelPad("Cód.tp.cli.");
   private JLabelPad lbDescTipoCli = new JLabelPad("Descrição do tipo de cliente");
   private JLabelPad lbVendedor = new JLabelPad("Cód.comiss.");
   private JLabelPad lbNomeVendedor = new JLabelPad("Nome do comissionado");
