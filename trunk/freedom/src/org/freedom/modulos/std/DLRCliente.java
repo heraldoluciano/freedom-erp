@@ -88,14 +88,16 @@ public class DLRCliente extends FFDialogo {
     rgOrdem = new JRadioGroup(1,3,vLabs,vVals);
     rgOrdem.setVlrString("R");
 
-    vLabsModo.addElement("Resumido");
+    vLabsModo.addElement("Resumido 1");
+    vLabsModo.addElement("Resumido 2");
     vLabsModo.addElement("Completo");
     vLabsModo.addElement("Alinhar  Filial");
     vValsModo.addElement("R");
+    vValsModo.addElement("J");
     vValsModo.addElement("C");
     vValsModo.addElement("A");
     
-    rgModo = new JRadioGroup(1,3,vLabsModo,vValsModo);
+    rgModo = new JRadioGroup(1,4,vLabsModo,vValsModo);
     rgModo.setVlrString("R");
 
     cbObs.setVlrString("N");

@@ -1122,13 +1122,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           	imp.montaCab();
             imp.setTitulo("Relatório de Clientes");
             imp.impCab(136, true);
-            imp.say(imp.pRow()+0,2,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+            imp.say(imp.pRow()+0,1,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
             for (int i=0;i<vFiltros.size();i++) {            
                     String sTmp = (String)vFiltros.elementAt(i);
                     sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
                     sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
                     imp.say(imp.pRow()+1,0,""+imp.comprimido());
-                    imp.say(imp.pRow()+0,2,sTmp);
+                    imp.say(imp.pRow()+0,1,sTmp);
             }
             imp.say(imp.pRow()+1,0,""+imp.comprimido());
             imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
@@ -1206,6 +1206,122 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		err.printStackTrace();
       }
     }
+    else if (dl.getValores()[7].equals("J")) {///PRA JUNKO
+        sSQL = "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.ENDCLI,C1.NUMCLI,C1.CIDCLI,C1.FONECLI,C1.FAXCLI,C1.DDDCLI,C1.CONTCLI"+sObs+
+  	        " FROM VDCLIENTE C1" +sFrom+
+        		" WHERE C1.CODEMP=? AND C1.CODFILIAL=? "+sWhere+" ORDER BY "+dl.getValores()[0];
+        System.out.println("sql é "+sSQL);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+          ps = con.prepareStatement("SELECT COUNT(*) FROM VDCLIENTE C1 "+sFrom+" WHERE C1.CODEMP=? AND C1.CODFILIAL=? "+sWhere);
+          ps.setInt(1,Aplicativo.iCodEmp);
+          ps.setInt(2,ListaCampos.getMasterFilial("VDCLIENTE"));
+          rs = ps.executeQuery();
+          rs.next();
+          And = new FAndamento("Montando Relatório, Aguarde!",0,rs.getInt(1)-1);
+//          rs.close();
+//          ps.close();
+          if (!con.getAutoCommit())
+          	con.commit();
+          ps = con.prepareStatement(sSQL);
+          ps.setInt(1,Aplicativo.iCodEmp);
+          ps.setInt(2,ListaCampos.getMasterFilial("VDCLIENTE"));
+          rs = ps.executeQuery();
+          imp.limpaPags();
+          while ( rs.next() ) {
+            if (imp.pRow()==0) {
+            	imp.montaCab();
+              imp.setTitulo("Relatório de Clientes");
+              imp.impCab(136, true);
+              imp.say(imp.pRow()+0,1,"|"+Funcoes.replicate(" ",60)+"Filtrado por:"+Funcoes.replicate(" ",60)+"|");
+              for (int i=0;i<vFiltros.size();i++) {            
+                      String sTmp = (String)vFiltros.elementAt(i);
+                      sTmp = "|"+Funcoes.replicate(" ",(((135-sTmp.length())/2)-1))+sTmp;
+                      sTmp += Funcoes.replicate(" ",134-sTmp.length())+"|";
+                      imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                      imp.say(imp.pRow()+0,1,sTmp);
+              }
+              imp.say(imp.pRow()+1,0,""+imp.comprimido());
+              imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
+              imp.say(imp.pRow()+1,0,""+imp.comprimido());
+              imp.say(imp.pRow()+0,0,"|");
+              imp.say(imp.pRow()+0,2,"Código");
+              imp.say(imp.pRow()+0,10,"|");
+              imp.say(imp.pRow()+0,12,"Razão Social e Nome Fantasia");
+              imp.say(imp.pRow()+0,42,"|");
+              imp.say(imp.pRow()+0,44,"Contato");
+              imp.say(imp.pRow()+0,74,"|");
+              imp.say(imp.pRow()+0,76,"Endereço:");
+              imp.say(imp.pRow()+0,108,"No:");
+              imp.say(imp.pRow()+0,117,"|");
+              imp.say(imp.pRow()+0,120,"Tel / Fax");
+              imp.say(imp.pRow()+0,135,"|");
+              imp.say(imp.pRow()+1,0,""+imp.comprimido());
+              imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("=",133)+"|");
+            }
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,"|");
+            imp.say(imp.pRow()+0,2,rs.getString("CodCli"));
+            imp.say(imp.pRow()+0,10,"|");
+            imp.say(imp.pRow()+0,11,rs.getString("RazCli") != null ? rs.getString("RazCli").substring(0,30) : "");
+            imp.say(imp.pRow()+0,42,"|");
+            imp.say(imp.pRow()+0,43,rs.getString("ContCli") != null ? rs.getString("ContCli").substring(0,30) : "");            
+            imp.say(imp.pRow()+0,74,"|");
+            imp.say(imp.pRow()+0,76,rs.getString("EndCli") != null ? rs.getString("EndCli").substring(0,30) : "");
+            imp.say(imp.pRow()+0,108,rs.getString("NumCli") != null ? rs.getString("NumCli") : "");
+            imp.say(imp.pRow()+0,117,"|");
+            imp.say(imp.pRow()+0,119,(rs.getString("FoneCli") != null ? ((rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")
+            		+Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####")) : "").trim());
+            imp.say(imp.pRow()+0,135,"|");
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,"|");
+            imp.say(imp.pRow()+0,10,"|");
+            imp.say(imp.pRow()+0,11,rs.getString("NomeCli") != null ? rs.getString("NomeCli").substring(0,30) : "");
+            imp.say(imp.pRow()+0,42,"|");           
+            imp.say(imp.pRow()+0,74,"|");
+            imp.say(imp.pRow()+0,117,"|");
+            imp.say(imp.pRow()+0,119,(rs.getString("FaxCli") != null ? ((rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")
+            		+Funcoes.setMascara(rs.getString("FaxCli").trim(),"####-####")) : "").trim());
+            imp.say(imp.pRow()+0,135,"|");
+            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+            imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+            if (!sObs.equals("")) {
+            	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsCli")),118);
+            	 for (int i=0; i<vObs.size(); i++) {
+                  imp.say(imp.pRow()+1,0,""+imp.comprimido());
+                  imp.say(imp.pRow()+0,0,"|");
+                  imp.say(imp.pRow()+0,14,vObs.elementAt(i).toString());
+                  imp.say(imp.pRow()+0,135,"|");
+                  if (imp.pRow()>=linPag) {
+                      imp.incPags();
+                      imp.eject();
+                  }
+            	 }
+            }
+            if (imp.pRow()>=linPag) {
+              imp.incPags();
+              imp.eject();
+            }
+            And.atualiza(iContaReg);
+            iContaReg++;
+          }
+          imp.eject();
+
+          imp.fechaGravacao();
+
+//          rs.close();
+//          ps.close();
+          if (!con.getAutoCommit())
+          	con.commit();
+          dl.dispose();
+          And.dispose();
+        }
+        catch ( SQLException err ) {
+  		Funcoes.mensagemErro(this,"Erro consulta tabela de contatos!\n"+err.getMessage(),true,con,err);
+  		err.printStackTrace();
+        }
+      }
     else if  (dl.getValores()[7].equals("A")) {
     	 
     	sSQL="SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.ENDCLI,C1.CIDCLI,C1.FONECLI " +
