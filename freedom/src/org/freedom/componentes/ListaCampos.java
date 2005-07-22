@@ -1,6 +1,6 @@
 /**
  * @version 01/08/2000 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva/Robson Sanchez
+ * @author Setpoint Informática Ltda./Fernando Oliveira da Silva/Robson Sanchez/Anderson Sanchez
  *         <BR>
  * 
  * Projeto: Freedom <BR>
@@ -1018,11 +1018,11 @@ public class ListaCampos extends Container implements PostListener,
 			if (tab.getNumLinhas() > 0) {
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcCampo = ((GuardaCampo) getComponent(i));
-					String sTeste = gcCampo.getNomeCampo();
-					if(sTeste.equalsIgnoreCase("SEQPP"))
-						System.out.println("Teste");
+//					String sTeste = gcCampo.getNomeCampo();
+//					if(sTeste.equalsIgnoreCase("SEQPP"))
+//						System.out.println("Teste");
 					if (gcCampo.ehPK()) {
-						String sTestex =  tab.getValor(ind, i+iSalto)+"";
+//						String sTestex =  tab.getValor(ind, i+iSalto)+"";
 						gcCampo.getCampo().setVlrString("" + tab.getValor(ind, i+iSalto));
 					}
 					else
@@ -1053,7 +1053,7 @@ public class ListaCampos extends Container implements PostListener,
 		int iFK = 0;
 		for (i = 0; i < lcFK.getComponentCount(); i++) {
 			gcFK = (GuardaCampo) lcFK.getComponent(i);
-			String sTeste = lcFK.getNomeTabela();
+//			String sTeste = lcFK.getNomeTabela();
 			if (gcFK.ehPK()) {
 				/*
 				 * Se for a primeira PK ele linka com o nome do campo que esta
@@ -1063,7 +1063,7 @@ public class ListaCampos extends Container implements PostListener,
 
 				if (iNpk > 1) {
 					while ((getComponentCount() > i2) & (iPK <= iNpk)) {
-						String steste31 = ((GuardaCampo) getComponent(i2)).getNomeCampo();
+//						String steste31 = ((GuardaCampo) getComponent(i2)).getNomeCampo();
 						if ((((GuardaCampo) getComponent(i2)).ehPK()) || (((GuardaCampo) getComponent(i2)).ehFK()) ) {
 							if(((GuardaCampo) getComponent(i2)).ehPK())
 								iPK++;
@@ -1076,8 +1076,8 @@ public class ListaCampos extends Container implements PostListener,
 									GuardaCampo gcPK = (GuardaCampo) getComponent(i2);
 									GuardaCampo gcFK2 = (GuardaCampo) lcFK.getComponent(iFK);
 									iFK++;
-									String steste1 = gcFK2.getNomeCampo();
-									String steste2 = gcPK.getNomeCampo();
+//									String steste1 = gcFK2.getNomeCampo();
+//									String steste2 = gcPK.getNomeCampo();
 
 									sWhere = sWhere + sAnd + gcFK2.getNomeCampo() + " = master." + gcPK.getNomeCampo();
 									sAnd = " AND ";
@@ -1161,9 +1161,9 @@ public class ListaCampos extends Container implements PostListener,
 		iNumDescs = 0;
 		vDescFK = new Vector();
 
-		if (getNomeTabela().equals("EQPRODACESSO")) {
-			System.out.println("Teste");
-		}
+//		if (getNomeTabela().equals("EQPRODACESSO")) {
+//			System.out.println("Teste");
+//		}
 		while (i < iTot) {
 			comp = getComponent(i - iNumDescs);
 			sTitulo = ((GuardaCampo) comp).getTituloCampo();
@@ -1390,9 +1390,9 @@ public class ListaCampos extends Container implements PostListener,
 		else
 			sSQLInsert = "INSERT INTO " + sTabela + " (";
 
-		if (sTabela.equals("EQPRODPLAN")) {
-			System.out.println("teste");
-		}
+//		if (sTabela.equals("EQPRODPLAN")) {
+//			System.out.println("teste");
+//		}
 
 		sSQLUpdate = "UPDATE " + sTabela + " SET  ";
 		sSQLSelect = "SELECT ";
@@ -1440,9 +1440,9 @@ public class ListaCampos extends Container implements PostListener,
 		sSQLDelete += " FROM " + sTabela + " WHERE " + sWhereEmp;
 		sSQLSelect += " FROM " + sTabela + " WHERE " + sWhereEmp;
 
-		if(getNomeTabela().equals("EQPRODPLAN")){
+/*		if(getNomeTabela().equals("EQPRODPLAN")){
 			System.out.println("TESTE:");
-		}
+		}*/
 		sSepD = sSepM = sSepParam = (bTiraFI || bUsaME ? " AND " : "");
 
 		if (!sWhereAdic.trim().equals("")) {
@@ -1452,9 +1452,9 @@ public class ListaCampos extends Container implements PostListener,
 
 		//	Monta o where com as pks da master:
 
-		if (getNomeTabela().equals("PPITESTRUTURA")) {
+		/*if (getNomeTabela().equals("PPITESTRUTURA")) {
 			System.out.println("teste");
-		}
+		}*/
 
 		sSepU = "";
 		if ((bDetalhe) && (lcMaster != null)) {
@@ -1934,9 +1934,9 @@ public class ListaCampos extends Container implements PostListener,
 								ListaCampos lcExt = ((GuardaCampo) comp)
 										.getCampo().getTabelaExterna();
 								if (lcExt != null) {
-									if (lcM.getNomeTabela().equals("PPESTRUFASE")) {
+//									if (lcM.getNomeTabela().equals("PPESTRUFASE")) {
 //										System.out.println("teste");
-									}
+//									}
 									if (lcExt.getUsaME() && lcExt.getUsaFI()) {
 										if (!((GuardaCampo) comp)
 												.getSoLeitura()) {
@@ -2618,8 +2618,8 @@ public class ListaCampos extends Container implements PostListener,
 		ListaCampos lcM = lc.getMaster();
 		if (lcM != null) {
 			try {
-				for (int iMaster = 0; iMaster < lcMaster.getComponentCount(); iMaster++) {
-					comp = lcMaster.getComponent(iMaster);
+				for (int iMaster = 0; iMaster < lcM.getComponentCount(); iMaster++) {
+					comp = lcM.getComponent(iMaster);
 					if (((GuardaCampo) comp).ehPK()) {
 						if (((GuardaCampo) comp).ehNulo()) {
 							if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2703,8 +2703,7 @@ public class ListaCampos extends Container implements PostListener,
 							bParamMaster = false;
 							comp = getComponent(i);
 							if (((GuardaCampo) comp).ehPK()) {
-								System.out.println("CAMPO: " + ((GuardaCampo) comp).getNomeCampo() + " IPARAM: " + iParamDelete + " VALOR: "
-										+ ((GuardaCampo) comp).getCampo().getVlrInteger());
+								System.out.println("CAMPO: " + ((GuardaCampo) comp).getNomeCampo() + " IPARAM: " + iParamDelete + " VALOR: " + ((GuardaCampo) comp).getCampo().getVlrInteger());
 								if (((GuardaCampo) comp).getCampo().getTipo() == JTextFieldPad.TP_INTEGER) {
 									sqlLC.setInt(iParamDelete, ((GuardaCampo) comp).getCampo().getVlrInteger().intValue());
 								} 
@@ -2723,8 +2722,7 @@ public class ListaCampos extends Container implements PostListener,
 									if (lcExt != null) {
 										if (lcExt.getUsaME() && lcExt.getUsaFI()) {
 											if (!((GuardaCampo) comp).getSoLeitura())
-												System.out.println("FILIAL: " + ((GuardaCampo) comp) .getNomeCampo()
-														+ " IPARAM: " + iParamDelete + " VALOR: " + lcExt.getCodFilial());
+												System.out.println("FILIAL: " + ((GuardaCampo) comp) .getNomeCampo()+ " IPARAM: " + iParamDelete + " VALOR: " + lcExt.getCodFilial());
 											if (((GuardaCampo) comp).ehNulo()) {
 												sqlLC.setNull(iParamDelete,Types.INTEGER);
 												iParamDelete++;
@@ -2749,23 +2747,18 @@ public class ListaCampos extends Container implements PostListener,
 						bRetorno = true;
 						limpaCampos(true);
 						setState(LCS_NONE);
-					} catch (SQLException err) {
+					} 
+					catch (SQLException err) {
 						if (err.getErrorCode() == FB_FK_INVALIDA) {
-							Funcoes
-									.mensagemErro(cOwner,
-											"O registro possui vínculos, não pode ser deletado! ! !");
+							Funcoes.mensagemErro(cOwner,"O registro possui vínculos, não pode ser deletado!");
 							bRetorno = false;
-						} else if (err.getErrorCode() == FB_PK_DUPLA) {
-							Funcoes
-									.mensagemErro(cOwner,
-											"A chave de registro duplicada. Escolha outro código! ! !");
+						} 
+						else if (err.getErrorCode() == FB_PK_DUPLA) {
+							Funcoes.mensagemErro(cOwner,"A chave de registro duplicada. Escolha outro código!");
 							bRetorno = false;
-						} else {
-							Funcoes
-									.mensagemErro(cOwner,
-											"Erro ao deletar registro na tabela "
-													+ sTabela + "\n"
-													+ err.getMessage());
+						} 
+						else {
+							Funcoes.mensagemErro(cOwner,"Erro ao deletar registro na tabela " + sTabela + "\n" + err.getMessage());
 							err.printStackTrace();
 							bRetorno = false;
 						}
