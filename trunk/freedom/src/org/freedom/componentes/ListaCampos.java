@@ -827,12 +827,9 @@ public class ListaCampos extends Container implements PostListener,
 		vTxtValor.addElement(txtValor);
 	}
 
-	public void montaPostCircular2(ListaCampos lc) {
+	public void montaPostCarregaItens(ListaCampos lc) {
 		GuardaCampo gcComp = null;
 		ListaCampos lcM = lc.getMaster();
-//		if (getNomeTabela().equals("PPESTRUFASE")) {
-//			System.out.print("teste");
-//		}
 		if (lcM != null) {
 			try {
 				for (int i = 0; i < lcM.getComponentCount(); i++) {
@@ -841,18 +838,15 @@ public class ListaCampos extends Container implements PostListener,
 						if (gcComp.getTipo() == JTextFieldPad.TP_STRING)
 							sqlItens.setString(iOrdemT, gcComp.getVlrString());
 						else if (gcComp.getTipo() == JTextFieldPad.TP_INTEGER)
-							sqlItens.setInt(iOrdemT, gcComp.getVlrInteger()
-									.intValue());
+							sqlItens.setInt(iOrdemT, gcComp.getVlrInteger().intValue());
 						else if (gcComp.getTipo() == JTextFieldPad.TP_DATE)
-							sqlItens.setDate(iOrdemT, Funcoes
-									.dateToSQLDate(gcComp.getVlrDate()));
+							sqlItens.setDate(iOrdemT, Funcoes.dateToSQLDate(gcComp.getVlrDate()));
 						else if (gcComp.getTipo() == JTextFieldPad.TP_TIME)
-							sqlItens.setTime(iOrdemT, Funcoes
-									.dateToSQLTime(gcComp.getVlrDate()));
+							sqlItens.setTime(iOrdemT, Funcoes.dateToSQLTime(gcComp.getVlrDate()));
 						iOrdemT++;
 					}
 				}
-				montaPostCircular2(lcM);
+				montaPostCarregaItens(lcM);
 			} catch (Exception err) {
 				err.printStackTrace();
 			}
@@ -863,9 +857,6 @@ public class ListaCampos extends Container implements PostListener,
 	public void montaPostMax(ListaCampos lc) {
 		GuardaCampo gcComp = null;
 		ListaCampos lcM = lc.getMaster();
-//		if (getNomeTabela().equals("PPITESTRUTURA")) {
-//			System.out.print("teste");
-//		}
 		if (lcM != null) {
 			try {
 				for (int i = 0; i < lcM.getComponentCount(); i++) {
@@ -917,7 +908,8 @@ public class ListaCampos extends Container implements PostListener,
 					}
 				}
 				montaPostCircular4(lcM);
-			} catch (Exception err) {
+			} 
+			catch (Exception err) {
 				err.printStackTrace();
 			}
 		}
@@ -935,19 +927,14 @@ public class ListaCampos extends Container implements PostListener,
 	public void carregaItens() {
 		iOrdemT = 1;
 		GuardaCampo gcComp = null;
-//		String testebb = this.getNomeTabela();
-//		System.out.println("TABELA***:" + testebb);
 		if ((bDetalhe) & (tab != null)) {
 			limpaCampos(true);
 			tab.limpa();
 			try {
-				//Busca listaCampos de fks para inserir campos do whereadic das
-				// fks.
 				String sTmp = sSQLTab;
 
 				for (int i = 0; i < getComponentCount(); i++) {
 					gcComp = (GuardaCampo) getComponent(i);
-//					String sTeste = gcComp.getNomeCampo();
 					if (gcComp.ehFK()) {
 						ListaCampos lcExt = gcComp.getCampo().getTabelaExterna();
 						if (!lcExt.getWhereAdic().equals("")) {
@@ -957,7 +944,6 @@ public class ListaCampos extends Container implements PostListener,
 				}
 
 				String sNovaSelect = inDinWhereAdic(sTmp, vTxtValor);
-//				System.out.println("****SQLTESTE:" + sNovaSelect);
 				sqlItens = con.prepareStatement(sNovaSelect);
 				if (bUsaME && !bTiraFI) {
 					sqlItens.setInt(iOrdemT, iCodEmp);
@@ -966,7 +952,7 @@ public class ListaCampos extends Container implements PostListener,
 					iOrdemT++;
 				}
 
-				montaPostCircular2(this);
+				montaPostCarregaItens(this);
 
 				rsItens = sqlItens.executeQuery();
 				for (int iLin = 0; rsItens.next(); iLin++) {
@@ -2105,53 +2091,33 @@ public class ListaCampos extends Container implements PostListener,
 				if ((lcState == LCS_EDIT) || (lcState == LCS_INSERT)) {
 					for (int i = 0; i < getComponentCount(); i++) {
 						comp = getComponent(i);
-						if ((((GuardaCampo) comp).getRequerido())
-								&& (((GuardaCampo) comp).getCampo() != null)) {
-							if (((GuardaCampo) comp).getCampo().getText()
-									.trim().length() < 1) {
+						if ((((GuardaCampo) comp).getRequerido()) && (((GuardaCampo) comp).getCampo() != null)) {
+							if (((GuardaCampo) comp).getCampo().getText().trim().length() < 1) {
 								if (((GuardaCampo) comp).ehFK()) {
-									Funcoes.mensagemInforma(cOwner,
-											"O campo \""
-													+ ((GuardaCampo) comp)
-															.getLabel()
-													+ " "
-													+ ((GuardaCampo) comp)
-															.getDescFK()
-															.getLabel()
-													+ "\" é requerido ! ! !");
-									((GuardaCampo) comp).getComponente()
-											.requestFocus();
+									Funcoes.mensagemInforma(cOwner,"O campo \"" + ((GuardaCampo) comp).getLabel()+ " " + ((GuardaCampo) comp).getDescFK().getLabel()+ "\" é requerido!");
+									((GuardaCampo) comp).getComponente().requestFocus();
 									bRetorno = false;
 									return false;
 								}
-								Funcoes.mensagemInforma(cOwner, "O campo \""
-										+ ((GuardaCampo) comp).getLabel()
-										+ "\" é requerido ! ! !");
-								((GuardaCampo) comp).getComponente()
-										.requestFocus();
+								Funcoes.mensagemInforma(cOwner, "O campo \"" + ((GuardaCampo) comp).getLabel()+ "\" é requerido!");
+								((GuardaCampo) comp).getComponente().requestFocus();
 								bRetorno = false;
 								return false;
 							}
 						}
 						if (((GuardaCampo) comp).getCampo() != null) {
 							if (((GuardaCampo) comp).getCampo().getMascara() == JTextFieldPad.MC_CNPJ) {
-								if (!Funcoes.ValidaCNPJ(((GuardaCampo) comp)
-										.getVlrString())) {
-									Funcoes.mensagemErro(cOwner,
-											"CNPJ inválido ! ! !");
-									((GuardaCampo) comp).getComponente()
-											.requestFocus();
+								if (!Funcoes.ValidaCNPJ(((GuardaCampo) comp).getVlrString())) {
+									Funcoes.mensagemErro(cOwner,"CNPJ inválido!");
+									((GuardaCampo) comp).getComponente().requestFocus();
 									bRetorno = false;
 									return false;
 								}
-							} else if (((GuardaCampo) comp).getCampo()
-									.getMascara() == JTextFieldPad.MC_CPF) {
-								if (!Funcoes.ValidaCPF(((GuardaCampo) comp)
-										.getCampo().getVlrString())) {
-									Funcoes.mensagemErro(cOwner,
-											"CPF inválido ! ! !");
-									((GuardaCampo) comp).getCampo()
-											.requestFocus();
+							} 
+							else if (((GuardaCampo) comp).getCampo().getMascara() == JTextFieldPad.MC_CPF) {
+								if (!Funcoes.ValidaCPF(((GuardaCampo) comp).getCampo().getVlrString())) {
+									Funcoes.mensagemErro(cOwner,"CPF inválido!");
+									((GuardaCampo) comp).getCampo().requestFocus();
 									bRetorno = false;
 									return false;
 								}
@@ -2171,9 +2137,9 @@ public class ListaCampos extends Container implements PostListener,
 								montaPostCircular(this);
 							}
 							bParamMaster = false;
-						} else {
-							if ((((GuardaCampo) comp).ehPK())
-									|| (((GuardaCampo) comp).getSoLeitura()))
+						} 
+						else {
+							if ((((GuardaCampo) comp).ehPK()) || (((GuardaCampo) comp).getSoLeitura()))
 								bParam = false;
 							else
 								bParam = true;
@@ -2185,119 +2151,84 @@ public class ListaCampos extends Container implements PostListener,
 							if (!((GuardaCampo) comp).getSoLeitura()) {
 								if (((GuardaCampo) comp).ehNulo()) {
 									if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-										sqlLC
-												.setNull(iParamPost,
-														Types.INTEGER);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+										sqlLC.setNull(iParamPost,Types.INTEGER);
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
 										sqlLC.setNull(iParamPost, Types.CHAR);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
-										sqlLC
-												.setNull(iParamPost,
-														Types.DECIMAL);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
-										sqlLC
-												.setNull(iParamPost,
-														Types.NUMERIC);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
+										sqlLC.setNull(iParamPost,Types.DECIMAL);
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
+										sqlLC.setNull(iParamPost,Types.NUMERIC);
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
 										sqlLC.setNull(iParamPost, Types.DOUBLE);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
 										sqlLC.setNull(iParamPost, Types.DATE);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
 										sqlLC.setNull(iParamPost, Types.TIME);
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
-										if (((PainelImagem) ((GuardaCampo) comp)
-												.getComponente()).foiAlterado()) {
-											sqlLC.setNull(iParamPost,
-													Types.BINARY);
-										} else {
-											sqlLC.setNull(iParamPost,
-													Types.BLOB);
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
+										if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
+											sqlLC.setNull(iParamPost,Types.BINARY);
+										} 
+										else {
+											sqlLC.setNull(iParamPost,Types.BLOB);
 										}
 									}
-								} else {
+								} 
+								else {
 									if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
 										if (((GuardaCampo) comp).ehNulo())
-											sqlLC.setNull(iParamPost,
-													Types.INTEGER);
+											sqlLC.setNull(iParamPost,Types.INTEGER);
 										else
-											sqlLC.setInt(iParamPost,
-													((GuardaCampo) comp)
-															.getVlrInteger()
-															.intValue());
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
-										sqlLC.setString(iParamPost,
-												((GuardaCampo) comp)
-														.getVlrString());
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
-										sqlLC.setBigDecimal(iParamPost,
-												((GuardaCampo) comp)
-														.getVlrBigDecimal());
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
-										sqlLC.setBigDecimal(iParamPost,
-												((GuardaCampo) comp)
-														.getVlrBigDecimal());
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
-										sqlLC.setDouble(iParamPost,
-												(((GuardaCampo) comp)
-														.getVlrDouble())
-														.doubleValue());
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
-										sqlLC
-												.setDate(
-														iParamPost,
-														Funcoes
-																.dateToSQLDate(((GuardaCampo) comp)
-																		.getVlrDate()));
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
-										sqlLC
-												.setTime(
-														iParamPost,
-														Funcoes
-																.dateToSQLTime(((GuardaCampo) comp)
-																		.getVlrTime()));
-									} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
-										if (((PainelImagem) ((GuardaCampo) comp)
-												.getComponente()).foiAlterado()) {
-											sqlLC.setBinaryStream(iParamPost,
-													((GuardaCampo) comp)
-															.getVlrBytes()
-															.getInputStream(),
-													((GuardaCampo) comp)
-															.getVlrBytes()
-															.getTamanho());
-										} else {
-											sqlLC.setBytes(iParamPost,
-													((GuardaCampo) comp)
-															.getVlrBytes()
-															.getBytes());
+											sqlLC.setInt(iParamPost,((GuardaCampo) comp).getVlrInteger().intValue());
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+										sqlLC.setString(iParamPost,((GuardaCampo) comp).getVlrString());
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
+										sqlLC.setBigDecimal(iParamPost,((GuardaCampo) comp).getVlrBigDecimal());
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
+										sqlLC.setBigDecimal(iParamPost,((GuardaCampo) comp).getVlrBigDecimal());
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
+										sqlLC.setDouble(iParamPost,(((GuardaCampo) comp).getVlrDouble()).doubleValue());
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+										sqlLC.setDate(iParamPost,Funcoes.dateToSQLDate(((GuardaCampo) comp).getVlrDate()));
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+										sqlLC.setTime(iParamPost,Funcoes.dateToSQLTime(((GuardaCampo) comp).getVlrTime()));
+									} 
+									else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
+										if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
+											sqlLC.setBinaryStream(iParamPost,((GuardaCampo) comp).getVlrBytes().getInputStream(),((GuardaCampo) comp).getVlrBytes().getTamanho());
+										} 
+										else {
+											sqlLC.setBytes(iParamPost,((GuardaCampo) comp).getVlrBytes().getBytes());
 										}
 									}
 								}
 								iParamPost++;
 								if (((GuardaCampo) comp).ehFK()) {
-									ListaCampos lcExt = ((GuardaCampo) comp)
-											.getCampo().getTabelaExterna();
+									ListaCampos lcExt = ((GuardaCampo) comp).getCampo().getTabelaExterna();
 									if (lcExt != null) {
-										if (lcExt.getUsaME()
-												&& lcExt.getUsaFI()) {
-											if (!((GuardaCampo) comp)
-													.getSoLeitura()) {
-												if (((GuardaCampo) comp)
-														.ehNulo()) {
-													sqlLC.setNull(iParamPost,
-															Types.INTEGER);
+										if (lcExt.getUsaME() && lcExt.getUsaFI()) {
+											if (!((GuardaCampo) comp).getSoLeitura()) {
+												if (((GuardaCampo) comp).ehNulo()) {
+													sqlLC.setNull(iParamPost,Types.INTEGER);
 													iParamPost++;
-													sqlLC.setNull(iParamPost,
-															Types.INTEGER);
-												} else {
-													sqlLC.setInt(iParamPost,
-															iCodEmp);
+													sqlLC.setNull(iParamPost,Types.INTEGER);
+												} 
+												else {
+													sqlLC.setInt(iParamPost,iCodEmp);
 													iParamPost++;
-													sqlLC
-															.setInt(
-																	iParamPost,
-																	lcExt
-																			.getCodFilial());
+													sqlLC.setInt(iParamPost,lcExt.getCodFilial());
 												}
 											}
 											iParamPost++;
@@ -2311,154 +2242,83 @@ public class ListaCampos extends Container implements PostListener,
 				if (lcState == LCS_EDIT) {
 					for (int i = 0; i < getComponentCount(); i++) {
 						comp = getComponent(i);
-						if ((((GuardaCampo) comp).getRequerido())
-								&& (((GuardaCampo) comp).getCampo() != null)) {
-							if (((GuardaCampo) comp).getCampo().getText()
-									.trim().length() < 1) {
+						if ((((GuardaCampo) comp).getRequerido()) && (((GuardaCampo) comp).getCampo() != null)) {
+							if (((GuardaCampo) comp).getCampo().getText().trim().length() < 1) {
 								if (((GuardaCampo) comp).ehFK()) {
-									Funcoes.mensagemInforma(cOwner,
-											"O campo \""
-													+ ((GuardaCampo) comp)
-															.getLabel()
-													+ " "
-													+ ((GuardaCampo) comp)
-															.getDescFK()
-															.getLabel()
-													+ "\" é requerido ! ! !");
-									//JOptionPane.showMessageDialog( null, "O
-									// campo \""+((GuardaCampo)
-									// comp).getLabel()+
-									//                                   " "+((GuardaCampo)
-									// comp).getDescFK().getLabel()+
-									//                                 "\" é requerido ! ! !");
-									((GuardaCampo) comp).getComponente()
-											.requestFocus();
+									Funcoes.mensagemInforma(cOwner,"O campo \""+ ((GuardaCampo) comp).getLabel()+ " "+ ((GuardaCampo) comp).getDescFK().getLabel()+ "\" é requerido!");
+									((GuardaCampo) comp).getComponente().requestFocus();
 									bRetorno = false;
 									break;
 								}
-								Funcoes.mensagemInforma(cOwner, "O campo \""
-										+ ((GuardaCampo) comp).getLabel()
-										+ "\" é requerido ! ! !");
-								//JOptionPane.showMessageDialog( null, "O campo
-								// \""+((GuardaCampo) comp).getLabel()+
-								//                                   "\" é requerido ! ! !");
-								((GuardaCampo) comp).getComponente()
-										.requestFocus();
+								Funcoes.mensagemInforma(cOwner, "O campo \""+ ((GuardaCampo) comp).getLabel()+ "\" é requerido ! ! !");
+								((GuardaCampo) comp).getComponente().requestFocus();
 								bRetorno = false;
 								break;
 							}
 						}
 						if ((bDetalhe) && (lcMaster != null) && (bParamMaster)) {
-							for (int iMaster = 0; iMaster < lcMaster
-									.getComponentCount(); iMaster++) {
+							for (int iMaster = 0; iMaster < lcMaster.getComponentCount(); iMaster++) {
 								comp = lcMaster.getComponent(iMaster);
 								if (((GuardaCampo) comp).ehPK()) {
 									if (((GuardaCampo) comp).ehNulo()) {
 										if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-											sqlLC.setNull(iParamPost,
-													Types.INTEGER);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_STRING) {
-											sqlLC.setNull(iParamPost,
-													Types.CHAR);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_DECIMAL) {
-											sqlLC.setNull(iParamPost,
-													Types.DECIMAL);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_NUMERIC) {
-											sqlLC.setNull(iParamPost,
-													Types.NUMERIC);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_DOUBLE) {
-											sqlLC.setNull(iParamPost,
-													Types.DOUBLE);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_DATE) {
-											sqlLC.setNull(iParamPost,
-													Types.DATE);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_TIME) {
-											sqlLC.setNull(iParamPost,
-													Types.TIME);
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_BYTES) {
-											if (((PainelImagem) ((GuardaCampo) comp)
-													.getComponente())
-													.foiAlterado()) {
-												sqlLC.setNull(iParamPost,
-														Types.BINARY);
-											} else {
-												sqlLC.setNull(iParamPost,
-														Types.BLOB);
+											sqlLC.setNull(iParamPost,Types.INTEGER);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+											sqlLC.setNull(iParamPost,Types.CHAR);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
+											sqlLC.setNull(iParamPost,Types.DECIMAL);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
+											sqlLC.setNull(iParamPost,Types.NUMERIC);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
+											sqlLC.setNull(iParamPost,Types.DOUBLE);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+											sqlLC.setNull(iParamPost,Types.DATE);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+											sqlLC.setNull(iParamPost,Types.TIME);
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
+											if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
+												sqlLC.setNull(iParamPost,Types.BINARY);
+											} 
+											else {
+												sqlLC.setNull(iParamPost,Types.BLOB);
 											}
 										}
-									} else {
+									} 
+									else {
 										if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-											sqlLC.setInt(iParamPost,
-													((GuardaCampo) comp)
-															.getVlrInteger()
-															.intValue());
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_STRING) {
-											sqlLC.setString(iParamPost,
-													((GuardaCampo) comp)
-															.getVlrString());
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_DECIMAL) {
-											sqlLC
-													.setBigDecimal(
-															iParamPost,
-															((GuardaCampo) comp)
-																	.getVlrBigDecimal());
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_NUMERIC) {
-											sqlLC
-													.setBigDecimal(
-															iParamPost,
-															((GuardaCampo) comp)
-																	.getVlrBigDecimal());
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_DOUBLE) {
-											sqlLC.setDouble(iParamPost,
-													(((GuardaCampo) comp)
-															.getVlrDouble())
-															.doubleValue());
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_DATE) {
-											sqlLC
-													.setDate(
-															iParamPost,
-															Funcoes
-																	.dateToSQLDate(((GuardaCampo) comp)
-																			.getVlrDate()));
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_TIME) {
-											sqlLC
-													.setTime(
-															iParamPost,
-															Funcoes
-																	.dateToSQLTime(((GuardaCampo) comp)
-																			.getVlrTime()));
-										} else if (((GuardaCampo) comp)
-												.getTipo() == JTextFieldPad.TP_BYTES) {
-											if (((PainelImagem) ((GuardaCampo) comp)
-													.getComponente())
-													.foiAlterado()) {
-												sqlLC
-														.setBinaryStream(
-																iParamPost,
-																((GuardaCampo) comp)
-																		.getVlrBytes()
-																		.getInputStream(),
-																((GuardaCampo) comp)
-																		.getVlrBytes()
-																		.getTamanho());
-											} else {
-												sqlLC.setBytes(iParamPost,
-														((GuardaCampo) comp)
-																.getVlrBytes()
-																.getBytes());
+											sqlLC.setInt(iParamPost,((GuardaCampo) comp).getVlrInteger().intValue());
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+											sqlLC.setString(iParamPost,((GuardaCampo) comp).getVlrString());
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
+											sqlLC.setBigDecimal(iParamPost,((GuardaCampo) comp).getVlrBigDecimal());
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
+											sqlLC.setBigDecimal(iParamPost,((GuardaCampo) comp).getVlrBigDecimal());
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
+											sqlLC.setDouble(iParamPost,(((GuardaCampo) comp).getVlrDouble()).doubleValue());
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+											sqlLC.setDate(iParamPost,Funcoes.dateToSQLDate(((GuardaCampo) comp).getVlrDate()));
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+											sqlLC.setTime(iParamPost,Funcoes.dateToSQLTime(((GuardaCampo) comp).getVlrTime()));
+										} 
+										else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
+											if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
+												sqlLC.setBinaryStream(iParamPost,((GuardaCampo) comp).getVlrBytes().getInputStream(),((GuardaCampo) comp).getVlrBytes().getTamanho());
+											} 
+											else {
+												sqlLC.setBytes(iParamPost,((GuardaCampo) comp).getVlrBytes().getBytes());
 											}
 										}
 									}
@@ -2470,54 +2330,35 @@ public class ListaCampos extends Container implements PostListener,
 						comp = getComponent(i);
 						if (((GuardaCampo) comp).ehPK()) {
 							if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-								sqlLC.setInt(iParamPost, ((GuardaCampo) comp)
-										.getVlrInteger().intValue());
-								//                JOptionPane.showMessageDialog(null,""+((GuardaCampo)
-								// comp).getCampo().getVlrInteger());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
-								sqlLC.setString(iParamPost,
-										((GuardaCampo) comp).getVlrString());
-								//                 JOptionPane.showMessageDialog(null,((GuardaCampo)
-								// comp).getCampo().getVlrString());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
-								sqlLC.setDate(iParamPost, Funcoes
-										.dateToSQLDate(((GuardaCampo) comp)
-												.getVlrDate()));
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
-								sqlLC.setTime(iParamPost, Funcoes
-										.dateToSQLTime(((GuardaCampo) comp)
-												.getVlrTime()));
+								sqlLC.setInt(iParamPost, ((GuardaCampo) comp).getVlrInteger().intValue());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+								sqlLC.setString(iParamPost,((GuardaCampo) comp).getVlrString());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+								sqlLC.setDate(iParamPost, Funcoes.dateToSQLDate(((GuardaCampo) comp).getVlrDate()));
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+								sqlLC.setTime(iParamPost, Funcoes.dateToSQLTime(((GuardaCampo) comp).getVlrTime()));
 							}
 							iParamPost++;
 							if (((GuardaCampo) comp).ehFK()) {
-								ListaCampos lcExt = ((GuardaCampo) comp)
-										.getCampo().getTabelaExterna();
+								ListaCampos lcExt = ((GuardaCampo) comp).getCampo().getTabelaExterna();
 								if (lcExt != null) {
-									//System.out.println("FILIAL:
-									// "+((GuardaCampo) comp).getNomeCampo()+"
-									// iParamPost: "+iParamPost);
 									if (lcExt.getUsaME() && lcExt.getUsaFI()) {
-										if (!((GuardaCampo) comp)
-												.getSoLeitura()) {
+										if (!((GuardaCampo) comp).getSoLeitura()) {
 											if (((GuardaCampo) comp).ehNulo()) {
-												sqlLC.setNull(iParamPost,
-														Types.INTEGER);
+												sqlLC.setNull(iParamPost,Types.INTEGER);
 												iParamPost++;
-												sqlLC.setNull(iParamPost,
-														Types.INTEGER);
-											} else {
-												sqlLC.setInt(iParamPost,
-														iCodEmp);
+												sqlLC.setNull(iParamPost,Types.INTEGER);
+											} 
+											else {
+												sqlLC.setInt(iParamPost,iCodEmp);
 												iParamPost++;
-												sqlLC.setInt(iParamPost, lcExt
-														.getCodFilial());
+												sqlLC.setInt(iParamPost, lcExt.getCodFilial());
 											}
 										}
 										iParamPost++;
-										//System.out.println("FILIAL:
-										// "+((GuardaCampo)
-										// comp).getNomeCampo()+" iParamPost:
-										// "+iParamPost);
 									}
 								}
 							}
@@ -2545,9 +2386,9 @@ public class ListaCampos extends Container implements PostListener,
 				if (bQueryInsert)
 					carregaDados();
 				bRetorno = true;
-			} catch (SQLException err) {
-				Funcoes.mensagemErro(cOwner, "Erro ao salvar dados da tabela: "
-						+ sTabela + "\n" + err.getMessage());
+			} 
+			catch (SQLException err) {
+				Funcoes.mensagemErro(cOwner, "Erro ao salvar dados da tabela: "+ sTabela + "\n" + err.getMessage());
 				err.printStackTrace();
 				return false;
 			}
@@ -2660,8 +2501,6 @@ public class ListaCampos extends Container implements PostListener,
 
 	}
 
-	
-	
 	public boolean delete() {
 		iParamDelete = 1;
 		boolean bRetorno = true;
@@ -2682,10 +2521,6 @@ public class ListaCampos extends Container implements PostListener,
 				if (bDeletar) {
 					boolean bParamMaster = true;
 					try {
-						/*
-						 * O bTiraFI foi colocado pq neste IF ele esta setando a
-						 * filial... e naum a empresa como eu estava pensando.
-						 */
 						sqlLC = con.prepareStatement(sSQLDelete);
 						if (bUsaME) {
 							sqlLC.setInt(iParamDelete, iCodEmp);
