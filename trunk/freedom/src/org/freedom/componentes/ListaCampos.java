@@ -1830,15 +1830,19 @@ public class ListaCampos extends Container implements PostListener,
 		con = cn;
 		if (bUsaME)
 			iCodFilial = getMasterFilial(sTabela);
-		System.out.println("[TABELA: " + sTabela + ", Filial F: "
-				+ Aplicativo.iCodFilial + " Filial M: "
-				+ Aplicativo.iCodFilialMz + "]");
-		System.out.println("SELECT -> " + sSQLSelect);
-		System.out.println("INSERT  -> " + sSQLInsert);
-		System.out.println("DELETE  -> " + sSQLDelete);
-		System.out.println("UPDATE  -> " + sSQLUpdate);
-		System.out.println("TAB  -> " + sSQLTab);
-		System.out.println("MAX  -> " + sSQLMax + "\n");
+		System.out.println("[TABELA: " + sTabela + ", Filial F: "+ Aplicativo.iCodFilial + " Filial M: "+ Aplicativo.iCodFilialMz + "]");
+		if(!"".equals(sSQLSelect))
+			System.out.println("SELECT -> " + sSQLSelect);
+		if(!"".equals(sSQLInsert))
+			System.out.println("INSERT  -> " + sSQLInsert);
+		if(!"".equals(sSQLDelete))
+			System.out.println("DELETE  -> " + sSQLDelete);
+		if(!"".equals(sSQLUpdate))
+			System.out.println("UPDATE  -> " + sSQLUpdate);		
+		if(!"".equals(sSQLTab))
+			System.out.println("TAB  -> " + sSQLTab);
+		if(!"".equals(sSQLMax))
+			System.out.println("MAX  -> " + sSQLMax + "\n");
 	}
 
 	public void limpaCampos(boolean bLimpaPK) {
@@ -1849,7 +1853,8 @@ public class ListaCampos extends Container implements PostListener,
 				if (bLimpaPK) {
 					((GuardaCampo) comp).limpa();
 				}
-			} else {
+			} 
+			else {
 				((GuardaCampo) comp).limpa();
 			}
 		}
@@ -1860,15 +1865,12 @@ public class ListaCampos extends Container implements PostListener,
 		Component comp = null;
 		for (int i = 0; i < getComponentCount(); i++) {
 			comp = getComponent(i);
-			if ((((GuardaCampo) comp).getNomeCampo().toLowerCase().equals(sNome
-					.toLowerCase()))
-					&& (((GuardaCampo) comp).getCampo() != null)) {
+			if ((((GuardaCampo) comp).getNomeCampo().toLowerCase().equals(sNome.toLowerCase())) && (((GuardaCampo) comp).getCampo() != null)) {
 				retorno = ((GuardaCampo) comp).getCampo();
 				break;
 			}
 		}
 		return retorno;
-
 	}
 
 	public boolean montaPostCircular5(ListaCampos lc) {
@@ -1880,73 +1882,51 @@ public class ListaCampos extends Container implements PostListener,
 					comp = lcM.getComponent(i);
 					if (((GuardaCampo) comp).ehPK()) {
 						if (((GuardaCampo) comp).ehNulo()) {
-							System.out.println("Campo nulo : "
-									+ ((GuardaCampo) comp).getNomeCampo());
-							System.out.println("ListaCampos: "
-									+ this.getNomeTabela());
+							System.out.println("Campo nulo : "+ ((GuardaCampo) comp).getNomeCampo());
+							System.out.println("ListaCampos: "+ this.getNomeTabela());
 							return false;
 						}
 						if (Funcoes.contaChar(sSQLSelect, '?') >= iParamC) {
 							if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-//								String sTeste = lcM.getNomeTabela();
-//								System.out.println("TABELA NA POST5 " + sTeste);
-//								String sTeste2 = ((GuardaCampo) comp).getNomeCampo();
 								sqlLC.setInt(iParamC, ((GuardaCampo) comp).getVlrInteger().intValue());
 								vCache.addElement(((GuardaCampo) comp).getVlrInteger());
 								iParamC++;
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
-								sqlLC.setString(iParamC, ((GuardaCampo) comp)
-										.getVlrString());
-								vCache.addElement(((GuardaCampo) comp)
-										.getVlrString());
+							}
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+								sqlLC.setString(iParamC, ((GuardaCampo) comp).getVlrString());
+								vCache.addElement(((GuardaCampo) comp).getVlrString());
 								iParamC++;
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
-								sqlLC.setDate(iParamC, Funcoes
-										.dateToSQLDate(((GuardaCampo) comp)
-												.getVlrDate()));
-								vCache.addElement(((GuardaCampo) comp)
-										.getVlrDate());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+								sqlLC.setDate(iParamC, Funcoes.dateToSQLDate(((GuardaCampo) comp).getVlrDate()));
+								vCache.addElement(((GuardaCampo) comp).getVlrDate());
 								iParamC++;
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
-								sqlLC.setTime(iParamC, Funcoes
-										.dateToSQLTime(((GuardaCampo) comp)
-												.getVlrTime()));
-								vCache.addElement(((GuardaCampo) comp)
-										.getVlrTime());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+								sqlLC.setTime(iParamC, Funcoes.dateToSQLTime(((GuardaCampo) comp).getVlrTime()));
+								vCache.addElement(((GuardaCampo) comp).getVlrTime());
 								iParamC++;
 							}
 
 							if (((GuardaCampo) comp).ehFK()) {
-								ListaCampos lcExt = ((GuardaCampo) comp)
-										.getCampo().getTabelaExterna();
+								ListaCampos lcExt = ((GuardaCampo) comp).getCampo().getTabelaExterna();
 								if (lcExt != null) {
-//									if (lcM.getNomeTabela().equals("PPESTRUFASE")) {
-//										System.out.println("teste");
-//									}
 									if (lcExt.getUsaME() && lcExt.getUsaFI()) {
-										if (!((GuardaCampo) comp)
-												.getSoLeitura()) {
+										if (!((GuardaCampo) comp).getSoLeitura()) {
 											if (((GuardaCampo) comp).ehNulo()) {
-												if (Funcoes.contaChar(
-														sSQLSelect, '?') >= iParamC)
-													sqlLC.setNull(iParamC,
-															Types.INTEGER);
+												if (Funcoes.contaChar(sSQLSelect, '?') >= iParamC)
+													sqlLC.setNull(iParamC,Types.INTEGER);
 												iParamC++;
-												if (Funcoes.contaChar(
-														sSQLSelect, '?') >= iParamC)
-													sqlLC.setNull(iParamC,
-															Types.INTEGER);
+												if (Funcoes.contaChar(sSQLSelect, '?') >= iParamC)
+													sqlLC.setNull(iParamC,Types.INTEGER);
 												iParamC++;
-											} else {
-												if (Funcoes.contaChar(
-														sSQLSelect, '?') >= iParamC)
-													sqlLC.setInt(iParamC,
-															iCodEmp);
+											} 
+											else {
+												if (Funcoes.contaChar(sSQLSelect, '?') >= iParamC)
+													sqlLC.setInt(iParamC,iCodEmp);
 												iParamC++;
-												if (Funcoes.contaChar(
-														sSQLSelect, '?') >= iParamC)
-													sqlLC.setInt(iParamC, lcExt
-															.getCodFilial());
+												if (Funcoes.contaChar(sSQLSelect, '?') >= iParamC)
+													sqlLC.setInt(iParamC, lcExt.getCodFilial());
 												iParamC++;
 											}
 										}
@@ -1976,67 +1956,62 @@ public class ListaCampos extends Container implements PostListener,
 						if (((GuardaCampo) comp).ehNulo()) {
 							if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
 								sqlLC.setNull(iParamPost, Types.INTEGER);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
 								sqlLC.setNull(iParamPost, Types.CHAR);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
 								sqlLC.setNull(iParamPost, Types.DECIMAL);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
 								sqlLC.setNull(iParamPost, Types.NUMERIC);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
 								sqlLC.setNull(iParamPost, Types.DOUBLE);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
 								sqlLC.setNull(iParamPost, Types.DATE);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
 								sqlLC.setNull(iParamPost, Types.TIME);
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
-								if (((PainelImagem) ((GuardaCampo) comp)
-										.getComponente()).foiAlterado()) {
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
+								if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
 									sqlLC.setNull(iParamPost, Types.BINARY);
-								} else {
+								} 
+								else {
 									sqlLC.setNull(iParamPost, Types.BLOB);
 								}
 							}
-						} else {
+						} 
+						else {
 							if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
-								sqlLC.setInt(iParamPost, ((GuardaCampo) comp)
-										.getVlrInteger().intValue());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
-								sqlLC.setString(iParamPost,
-										((GuardaCampo) comp).getVlrString());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
-								sqlLC
-										.setBigDecimal(iParamPost,
-												((GuardaCampo) comp)
-														.getVlrBigDecimal());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
-								sqlLC
-										.setBigDecimal(iParamPost,
-												((GuardaCampo) comp)
-														.getVlrBigDecimal());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
-								sqlLC.setDouble(iParamPost,
-										(((GuardaCampo) comp).getVlrDouble())
-												.doubleValue());
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
-								sqlLC.setDate(iParamPost, Funcoes
-										.dateToSQLDate(((GuardaCampo) comp)
-												.getVlrDate()));
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
-								sqlLC.setTime(iParamPost, Funcoes
-										.dateToSQLTime(((GuardaCampo) comp)
-												.getVlrTime()));
-							} else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
-								if (((PainelImagem) ((GuardaCampo) comp)
-										.getComponente()).foiAlterado()) {
-									sqlLC.setBinaryStream(iParamPost,
-											((GuardaCampo) comp).getVlrBytes()
-													.getInputStream(),
-											((GuardaCampo) comp).getVlrBytes()
-													.getTamanho());
-								} else {
-									sqlLC.setBytes(iParamPost,
-											((GuardaCampo) comp).getVlrBytes()
-													.getBytes());
+								sqlLC.setInt(iParamPost, ((GuardaCampo) comp).getVlrInteger().intValue());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_STRING) {
+								sqlLC.setString(iParamPost,((GuardaCampo) comp).getVlrString());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DECIMAL) {
+								sqlLC.setBigDecimal(iParamPost,((GuardaCampo) comp).getVlrBigDecimal());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_NUMERIC) {
+								sqlLC.setBigDecimal(iParamPost,((GuardaCampo) comp).getVlrBigDecimal());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DOUBLE) {
+								sqlLC.setDouble(iParamPost,(((GuardaCampo) comp).getVlrDouble()).doubleValue());
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_DATE) {
+								sqlLC.setDate(iParamPost, Funcoes.dateToSQLDate(((GuardaCampo) comp).getVlrDate()));
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_TIME) {
+								sqlLC.setTime(iParamPost, Funcoes.dateToSQLTime(((GuardaCampo) comp).getVlrTime()));
+							} 
+							else if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_BYTES) {
+								if (((PainelImagem) ((GuardaCampo) comp).getComponente()).foiAlterado()) {
+									sqlLC.setBinaryStream(iParamPost,((GuardaCampo) comp).getVlrBytes().getInputStream(),((GuardaCampo) comp).getVlrBytes().getTamanho());
+								} 
+								else {
+									sqlLC.setBytes(iParamPost,((GuardaCampo) comp).getVlrBytes().getBytes());
 								}
 							}
 
@@ -2044,26 +2019,20 @@ public class ListaCampos extends Container implements PostListener,
 
 						iParamPost++;
 						if (((GuardaCampo) comp).ehFK()) {
-							String sSigla = ((GuardaCampo) comp).getCampo()
-									.getTabelaExterna() != null ? ((GuardaCampo) comp)
-									.getCampo().getTabelaExterna().getSigla()
-									: ((GuardaCampo) comp).getCampo()
-											.getListaCampos().getSigla();
+							String sSigla = ((GuardaCampo) comp).getCampo().getTabelaExterna() != null ? ((GuardaCampo) comp).getCampo().getTabelaExterna().getSigla() : ((GuardaCampo) comp).getCampo().getListaCampos().getSigla();
 							if (sSigla != null) {
 								if (sSigla.length() > 0) {
-									ListaCampos lcExt = ((GuardaCampo) comp)
-											.getCampo().getTabelaExterna();
-									sqlLC.setInt(iParamPost++, lcExt
-											.getCodEmp());
-									sqlLC.setInt(iParamPost++, lcExt
-											.getCodFilial());
+									ListaCampos lcExt = ((GuardaCampo) comp).getCampo().getTabelaExterna();
+									sqlLC.setInt(iParamPost++, lcExt.getCodEmp());
+									sqlLC.setInt(iParamPost++, lcExt.getCodFilial());
 								}
 							}
 						}
 					}
 				}
 				montaPostCircular(lcM);
-			} catch (Exception err) {
+			} 
+			catch (Exception err) {
 				err.printStackTrace();
 			}
 		}
@@ -2146,8 +2115,6 @@ public class ListaCampos extends Container implements PostListener,
 						}
 						if (bParam) {
 							comp = getComponent(i);
-							String snomex = ((GuardaCampo) comp).getNomeCampo();
-
 							if (!((GuardaCampo) comp).getSoLeitura()) {
 								if (((GuardaCampo) comp).ehNulo()) {
 									if (((GuardaCampo) comp).getTipo() == JTextFieldPad.TP_INTEGER) {
@@ -2378,7 +2345,8 @@ public class ListaCampos extends Container implements PostListener,
 				if (bDetalhe) {
 					if (lcState == LCS_EDIT) {
 						carregaGridEdit(bRetorno);
-					} else {
+					} 
+					else {
 						carregaGridInsert(bRetorno);
 					}
 				}
@@ -2403,7 +2371,8 @@ public class ListaCampos extends Container implements PostListener,
 		if (bCancelEdit) {
 			bCancelEdit = false;
 			bRetorno = false;
-		} else if (lcState == LCS_NONE)
+		} 
+		else if (lcState == LCS_NONE)
 			insert(bAutoInc);
 		else if (lcState == LCS_SELECT)
 			setState(LCS_EDIT);
@@ -2423,13 +2392,11 @@ public class ListaCampos extends Container implements PostListener,
 				for (int i = 0; i < vLcDetalhe.size(); i++) {
 					((ListaCampos) vLcDetalhe.elementAt(i)).getTab().limpa();
 					((ListaCampos) vLcDetalhe.elementAt(i)).limpaCampos(true);
-					String sNameDet = ((ListaCampos) vLcDetalhe.elementAt(i)).nvLC
-							.getName();
+					String sNameDet = ((ListaCampos) vLcDetalhe.elementAt(i)).nvLC.getName();
 					String sNameMaster = this.nvLC.getName();
 					if (!((sNameDet == null) || (sNameMaster == null))) {
 						if (!sNameDet.equals(sNameMaster))
-							((ListaCampos) vLcDetalhe.elementAt(i))
-									.setState(LCS_NONE);
+							((ListaCampos) vLcDetalhe.elementAt(i)).setState(LCS_NONE);
 					}
 				}
 			}
@@ -2617,7 +2584,8 @@ public class ListaCampos extends Container implements PostListener,
 		if (bCancelCancel) {
 			bCancelCancel = false;
 			bRetorno = false;
-		} else if (vCache.size() < 1) {
+		} 
+		else if (vCache.size() < 1) {
 			limpaCampos(true);
 			setState(LCS_NONE);
 			bRetorno = false;
@@ -2627,18 +2595,17 @@ public class ListaCampos extends Container implements PostListener,
 				comp = getComponent(i);
 				if (((GuardaCampo) comp).ehPK()) {
 					if (vCache.elementAt(iContaVal) instanceof Integer)
-						((GuardaCampo) comp).setVlrInteger((Integer) vCache
-								.elementAt(iContaVal));
+						((GuardaCampo) comp).setVlrInteger((Integer) vCache.elementAt(iContaVal));
 					else if (vCache.elementAt(iContaVal) instanceof String)
-						((GuardaCampo) comp).setVlrString((String) vCache
-								.elementAt(iContaVal));
+						((GuardaCampo) comp).setVlrString((String) vCache.elementAt(iContaVal));
 					iContaVal++;
 				}
 			}
 			if ((carrega) & (lcState != LCS_INSERT)) {
 				setState(LCS_SELECT);
 				carregaDados();
-			} else if ((carrega) & (lcState == LCS_INSERT)) {
+			} 
+			else if ((carrega) & (lcState == LCS_INSERT)) {
 				limpaCampos(true);
 				setState(LCS_NONE);
 			}
@@ -2652,29 +2619,19 @@ public class ListaCampos extends Container implements PostListener,
 		int iContaDesc = 0;
 		if ((b) && (tab != null)) {
 			for (int i = 0; i < (getComponentCount() + iNumDescs); i++) {
-				/*
-				 * JOptionPane.showMessageDialog(null,"I
-				 * :"+i+"\niContaDesc"+iContaDesc+ "\nNome: "+((GuardaCampo)
-				 * getComponent(i-iContaDesc)).getNomeCampo()+ "\nValor:
-				 * "+((GuardaCampo)
-				 * getComponent(i-iContaDesc)).getCampo().getText());
-				 */
 				if ((vDescFK.size() > 0) && (vDescFK.elementAt(i) != null)) {
 					vVals.addElement(((JTextFieldPad) vDescFK.elementAt(i))
 							.getVlrString());
 					iContaDesc++;
-				} else if (((GuardaCampo) getComponent(i - iContaDesc))
-						.getTipo() == JTextFieldPad.TP_BYTES) {
+				} 
+				else if (((GuardaCampo) getComponent(i - iContaDesc)).getTipo() == JTextFieldPad.TP_BYTES) {
 					vVals.addElement("# BINÁRIO #");
-				} else if (((GuardaCampo) getComponent(i - iContaDesc))
-						.getTipo() == JTextFieldPad.TP_INTEGER) {
-					vVals
-							.addElement(((GuardaCampo) getComponent(i
-									- iContaDesc)).getVlrInteger());
-				} else {
-					vVals
-							.addElement(((GuardaCampo) getComponent(i
-									- iContaDesc)).getVlrString());
+				} 
+				else if (((GuardaCampo) getComponent(i - iContaDesc)).getTipo() == JTextFieldPad.TP_INTEGER) {
+					vVals.addElement(((GuardaCampo) getComponent(i - iContaDesc)).getVlrInteger());
+				} 
+				else {
+					vVals.addElement(((GuardaCampo) getComponent(i - iContaDesc)).getVlrString());
 				}
 			}
 			tab.adicLinha(vVals);
@@ -2687,27 +2644,18 @@ public class ListaCampos extends Container implements PostListener,
 			int iLin = getNumLinha();
 			if (iLin >= 0) {
 				for (int i = 0; i < (getComponentCount() + iNumDescs); i++) {
-					/*
-					 * JOptionPane.showMessageDialog(null,"I
-					 * :"+i+"\niContaDesc"+iContaDesc+ "\nNome: "+((GuardaCampo)
-					 * getComponent(i-iContaDesc)).getNomeCampo());
-					 */
 					if ((vDescFK.size() > 0) & (vDescFK.elementAt(i) != null)) {
-						tab.setValor(((JTextFieldPad) vDescFK.elementAt(i))
-								.getText(), iLin, i);
+						tab.setValor(((JTextFieldPad) vDescFK.elementAt(i)).getText(), iLin, i);
 						iContaDesc++;
-					} else if (((GuardaCampo) getComponent(i - iContaDesc))
-							.getTipo() == JTextFieldPad.TP_BYTES) {
+					} 
+					else if (((GuardaCampo) getComponent(i - iContaDesc)).getTipo() == JTextFieldPad.TP_BYTES) {
 						tab.setValor("# BINÁRIO #", iLin, i);
-					} else if (((GuardaCampo) getComponent(i - iContaDesc))
-							.getTipo() == JTextFieldPad.TP_INTEGER) {
-						tab.setValor(
-								((GuardaCampo) getComponent(i - iContaDesc))
-										.getVlrInteger(), iLin, i);
-					} else {
-						tab.setValor(
-								((GuardaCampo) getComponent(i - iContaDesc))
-										.getVlr(), iLin, i);
+					} 
+					else if (((GuardaCampo) getComponent(i - iContaDesc)).getTipo() == JTextFieldPad.TP_INTEGER) {
+						tab.setValor(((GuardaCampo) getComponent(i - iContaDesc)).getVlrInteger(), iLin, i);
+					} 
+					else {
+						tab.setValor(((GuardaCampo) getComponent(i - iContaDesc)).getVlr(), iLin, i);
 					}
 				}
 			}
@@ -2818,7 +2766,6 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	private void fireAfterPost(boolean b) {
-		// Chama o Listener
 		PostEvent pevt = new PostEvent(this);
 		pevt.ok = b;
 		posLis.afterPost(pevt);
@@ -2827,15 +2774,11 @@ public class ListaCampos extends Container implements PostListener,
 	private void fireAfterCarrega(boolean b) {
 		if (b) {
 			if (bMaster) {
-				//        JOptionPane.showMessageDialog(null,"Master OK");
 				for (int i = 0; i < vLcDetalhe.size(); i++) {
-					//					String steste = ((ListaCampos)
-					// vLcDetalhe.elementAt(i)).getNomeTabela();
 					((ListaCampos) vLcDetalhe.elementAt(i)).carregaItens();
 				}
 			}
 		}
-		// Chama o listener:
 		CarregaEvent cevt = new CarregaEvent(this);
 		cevt.ok = b;
 		carLis.afterCarrega(cevt);
