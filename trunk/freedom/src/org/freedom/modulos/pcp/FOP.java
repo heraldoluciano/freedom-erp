@@ -467,6 +467,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	btRMA.setEnabled(false);
   	btExecuta.setEnabled(false);
   	btLote.setEnabled(false);
+  	btDistrb.setEnabled(false);
 
   	
   	//	navRod.setAtivo(4,false);
@@ -901,11 +902,13 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	}
   }
   
+  
   public void afterCarrega(CarregaEvent cevt) {
     if (cevt.getListaCampos() == lcCampos) {
        btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));             
        btExecuta.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
+       btDistrb.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        bBuscaRMA = true;
        bBuscaOPS = true;
     }
