@@ -293,6 +293,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 	private Vector vCacheItem = new Vector();
 
 	private Tef tef = null;
+	
+	private Vector  vAliquotas = null;
 
 	public FVenda() {
 		//   	  super(Aplicativo.telaPrincipal);
@@ -580,6 +582,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 
 	private void insereItem() {
 		int iCodItVenda = 0;
+		String sTributo = null;
 		String sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,"
 				+ "VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?)";
 		try {
@@ -613,13 +616,22 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 					txtAliqIcms.getVlrBigDecimal(),
 					txtBaseCalc.getVlrBigDecimal(),
 					txtValorIcms.getVlrBigDecimal(), "" });
-			if (FreedomPDV.bECFTerm)
+			if (FreedomPDV.bECFTerm) {
+				if (txtTipoFisc.getVlrString().equals("TT")) {
+					sTributo = getPosAliquota(txtAliqIcms.getVlrBigDecimal().floatValue());
+					if (sTributo.equals("00")) {
+						Funcoes.mensagemErro(this, "Alíquota "+txtAliqIcms.getVlrBigDecimal().floatValue()+" não foi cadastrada na impressora fiscal!");
+					    return;
+					}
+				}
+				else
+					sTributo = txtTipoFisc.getVlrString();
 				bf.vendaItem(Aplicativo.strUsuario, txtCodProd.getVlrInteger()
-						.intValue(), txtDescProd.getVlrString(), txtTipoFisc
-						.getVlrString(),
+						.intValue(), txtDescProd.getVlrString(), sTributo,
 						txtQtdade.getVlrDouble().doubleValue(), txtPreco
 								.getVlrDouble().doubleValue(), 0,
 						FreedomPDV.bModoDemo);
+			}
 
 			atualizaTot();
 			vCacheItem.clear();
@@ -630,6 +642,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 					"Erro ao inserir o ítem.\nInforme esta mensagem ao administrador: \n"
 							+ err.getMessage(),true,con,err);
 			err.printStackTrace();
+		}
+		finally {
+			sSQL = null;
+			sTributo = null;
+			iCodItVenda = 0;
 		}
 	}
 
@@ -682,7 +699,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		return iRet;
 	}
 	public void windowGainedFocus(WindowEvent e) {
-	    txtCodProd.requestFocus();
+		setFocusProd();
 	}
 	public void windowLostFocus(WindowEvent e)  { }
 
@@ -754,11 +771,12 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			ps.setInt(12, Aplicativo.iCodFilial);
 			rs = ps.executeQuery();
 			if (rs.next())
-				;
-			txtPreco
+				txtPreco
 					.setVlrBigDecimal(rs.getString(1) != null ? (new BigDecimal(
 							rs.getString(1)))
-							: (new BigDecimal("0")));
+							: (new BigDecimal(0)));
+			else
+				txtPreco.setVlrBigDecimal(new BigDecimal(0));
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
@@ -800,7 +818,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		}
 	}
 
-	private void iniVenda() {
+	private synchronized void iniVenda() {
 		lcVenda.insert(true);
 		txtTipoVenda.setVlrString("E");
 		txtCodCli.setVlrString(retCodCli());
@@ -808,8 +826,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		lcProduto.limpaCampos(true);
 		txtCodPlanoPag.setVlrInteger(new Integer(retPlanoPag()));
 		txtQtdadeItem.setVlrString("");
-		txtValorTotalItem.setVlrString("");
 		txtValorTotalCupom.setVlrString("");
+		txtValorTotalItem.setVlrString("");
+		txtBaseCalc1.setVlrString("");
+		txtValorIcms1.setVlrString("");
+		txtTotalCupom.setVlrString("");
 		lcPlanoPag.carregaDados();
 		txtCodTipoMov.setVlrInteger(new Integer(retTipoMov()));
 		lcTipoMov.carregaDados();
@@ -824,10 +845,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		iniItem();
 	}
 	
-	private void iniItem() {
+	private synchronized void iniItem() {
+		txtBaseCalc.setVlrString("");
+		txtAliqIcms.setVlrString("");
+		txtValorIcms.setVlrString("");
 		txtQtdade.setVlrBigDecimal(new BigDecimal(1));
 		txtPreco.setVlrString("");
-		txtCodProd.requestFocus();
+		txtCodProd.setVlrString("");
+		setFocusProd();
 	}
 
 	public void setConexao(Connection con) {
@@ -843,6 +868,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		txtCodCli.setVlrInteger(new Integer(retTipoMov()));
 		pnStatusBar.add(sbVenda, BorderLayout.CENTER);
 		pnRodape.add(pnStatusBar, BorderLayout.CENTER);
+		vAliquotas = getAliquotas();
+		
+		//getPosAliquota((float)17.00);
 		iniVenda();
 		sbVenda.setUsuario(Aplicativo.strUsuario);
 		sbVenda.setCodFilial(Aplicativo.iCodFilial);
@@ -968,7 +996,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		if (vCacheItem.size() == 2) {
 			try {
 				Robot robo = new Robot();
-				txtCodProd.requestFocus();
+				setFocusProd();
 				txtCodProd.setVlrInteger((Integer) vCacheItem.elementAt(0));
 				robo.keyPress(KeyEvent.VK_ENTER);
 				txtQtdade.requestFocus();
@@ -1041,7 +1069,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		}
 	}
 
-	private void fechaVenda() {
+	private synchronized void fechaVenda() {
 		if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
 			Funcoes.mensagemErro(this, "Não existe nenhuma venda ativa!");
 			return;
@@ -1057,8 +1085,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			iniVenda();
 		}
 		fecha.dispose();
+		setFocusProd();
 	}
 
+	public synchronized void setFocusProd() {
+		if ( txtCodProd.isFocusable());
+			txtCodProd.requestFocus();
+		
+	}
 	private void fechaCaixa() {
 		if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
 			Funcoes.mensagemInforma(this, "Ainda existe uma venda ativa!");
@@ -1074,6 +1108,33 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		fecha.dispose();
 	}
 
+	/*public void keyReleased(KeyEvent kevt) {
+		boolean bFocusProd = false;
+		switch (kevt.getKeyCode()) {
+		case KeyEvent.VK_F3 :
+			bFocusProd = true;
+			break;
+		case KeyEvent.VK_F4 :
+			bFocusProd = true;
+			break;
+		case KeyEvent.VK_F5:
+			break;
+		case KeyEvent.VK_F6:
+			break;
+		case KeyEvent.VK_F7:
+			break;
+		case KeyEvent.VK_F8:
+			break;
+		case KeyEvent.VK_F9:
+			btF9.doClick();
+			break;
+		case KeyEvent.VK_F10:
+			btF10.doClick();
+			break;
+		}
+		if (bFocusProd)
+			setFocusProd();
+	}*/
 	public void keyPressed(KeyEvent kevt) {
 		switch (kevt.getKeyCode()) {
 		case KeyEvent.VK_F3:
@@ -1146,13 +1207,16 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 	 * 
 	 * @see org.freedom.acao.PostListener#beforePost(org.freedom.acao.PostEvent)
 	 */
-	public void actionPerformed(ActionEvent evt) {
+	public synchronized void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btF3)
 			cancItem();
 		else if (evt.getSource() == btCtrlF3)
 			cancCupom();
-		else if (evt.getSource() == btF4)
+		else if (evt.getSource() == btF4) { 
 			fechaVenda();
+			setFocusProd();
+			//txtCodProd.requestFocus();
+		}
 		else if (evt.getSource() == btF5)
 			leituraX();
 		else if (evt.getSource() == btF6)
@@ -1169,6 +1233,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		else if (evt.getSource() == btF10)
 			fechaCaixa();
 	}
+	
 	//O botão sair execute este método para sair:
 	public void setVisible(boolean bVal) {
 		if (!bVal) {
@@ -1206,6 +1271,41 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
 		}
 		return sDesc;
+	}
+	
+	public String getPosAliquota(float ftAliquota) {
+		String sRetorno = "";
+		String sAliquota = null;
+		try {
+			sAliquota = Funcoes.transValor(ftAliquota+"",4,2,true);
+			sRetorno = Funcoes.strZero((vAliquotas.indexOf(sAliquota)+1)+"",2);
+		}
+		finally {
+			sAliquota = null;
+		}
+		return sRetorno;
+	}
+	
+	public Vector getAliquotas() {
+		Vector vRetorno = new Vector();
+		String sAliquotas = null;
+		String sAliquota = null;
+		int iTot = 0;
+		try {
+			if (AplicativoPDV.bECFTerm) {
+				sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim();
+				iTot = (((sAliquotas.length())+1)/5);
+				for (int i=1; i<=iTot; i++) {
+					sAliquota = i==1?sAliquotas.substring(0,4):sAliquotas.substring((i*5)-5,(i*5)-1);
+					//sAliquota = "T"+Funcoes.strZero((i+""),2)+"   =   "+sAliquota.substring(0,2)+"."+sAliquota.substring(2)+" %";
+					vRetorno.addElement(sAliquota);
+				}
+			}
+		}
+		finally {
+			sAliquotas = null;
+		}
+		return vRetorno;
 	}
 
 }

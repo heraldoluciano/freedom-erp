@@ -29,7 +29,6 @@
 package org.freedom.modulos.pdv;
 
 import org.freedom.componentes.JButtonPad;
-import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.FAlmox;
 import org.freedom.modulos.std.FBanco;
@@ -111,7 +110,7 @@ public class FreedomPDV extends AplicativoPDV {
 		addOpcao(200000000, TP_OPCAO_ITEM, "Ajusta moeda", "Grava Moeda", 'J',200600000, 2, true, FGravaMoeda.class);		
 		addSeparador(200000000);
 		addOpcao(200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal",'L', 200700000, 2, true, FLeFiscal.class);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Leitura X","Confirma impressão de leitura X ?", 'i', 110800000, 2, true, JBemaFI32.class);
+		addOpcao(200000000, TP_OPCAO_ITEM, "Leitura X","Impressão de leitura X", 'i', 110800000, 2, true, FLeituraX.class);
 		addSeparador(200000000);
 		addOpcao(200000000, TP_OPCAO_ITEM, "Fechamento de Caixa","Efetua um fechamento de caixa", 'f', 110800001, 2, true, DLFechaDia.class);
 		
