@@ -13,8 +13,8 @@
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FUnidade.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoFiscCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FBanco.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTabPreco.java"/>
+        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FBanco.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRListaPreco.java"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
         <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
