@@ -1225,6 +1225,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 	private boolean mostraTelaPass() {
 		boolean bRet = false;
+		String sIDUsu = "";
 		JTextFieldPad txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 		txtUsu.setText(Aplicativo.strUsuario);
 		JPasswordFieldPad txtPass = new JPasswordFieldPad(8);
@@ -1241,9 +1242,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				diag.setVisible(true);
 				if (diag.OK) {
 					Properties props = new Properties();
-					props.put("user", txtUsu.getVlrString());
+					sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
+					props.put("user", sIDUsu);
 					props.put("password", txtPass.getVlrString());
-					if (txtUsu.getVlrString().trim().equals("")
+					if (sIDUsu.equals("")
 							|| txtPass.getVlrString().trim().equals("")) {
 						Funcoes.mensagemErro(this, "Campo em branco!");
 						continue;
@@ -1253,15 +1255,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					String sSQL = "SELECT BAIXOCUSTOUSU FROM SGUSUARIO WHERE "
 							+ "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
 					PreparedStatement ps = con.prepareStatement(sSQL);
-					ps.setString(1, txtUsu.getVlrString());
+					ps.setString(1, sIDUsu);
 					ps.setInt(2, Aplicativo.iCodEmp);
 					ps.setInt(3, Aplicativo.iCodFilial);
 					ResultSet rs = ps.executeQuery();
 					if (rs.next()) {
 						if ((rs.getString(1) != null ? rs.getString(1) : "")
 								.equals("S")) {
-							int iLog[] = Aplicativo.gravaLog(txtUsu
-									.getVlrString(), "PR", "LIB",
+							int iLog[] = Aplicativo.gravaLog(sIDUsu, "PR", "LIB",
 									"Liberação de venda abaixo do custo",
 									"Venda: [" + txtCodVenda.getVlrString()
 											+ "], " + "Item: ["
