@@ -442,9 +442,9 @@ public class FConsSol extends FFilho implements ActionListener {
 
 	private void abreSol() {
 		int iCodOrc = ((Integer) tab.getValor(tab.getLinhaSel(), 1)).intValue();
-		if (fPrim.temTela("Aprova Solicitação de Compra") == false) {
-			FAprovaSolicitacaoCompra tela = new FAprovaSolicitacaoCompra();
-			fPrim.criatela("Aprova Solicitação de Compra", tela, con);
+		if (fPrim.temTela("Solicitação de Compra") == false) {
+			FSolicitacaoCompra tela = new FSolicitacaoCompra();
+			fPrim.criatela("Solicitação de Compra", tela, con);
 			tela.exec(iCodOrc);
 		}
 	}

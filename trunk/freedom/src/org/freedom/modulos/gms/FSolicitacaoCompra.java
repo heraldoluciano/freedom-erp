@@ -24,6 +24,7 @@
 package org.freedom.modulos.gms;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -37,8 +38,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JButton;
+
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
@@ -50,28 +54,45 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FObservacao;
 
 public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
 
 	private int casasDec = Aplicativo.casasDec;
-	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinCab = new JPanelPad(740, 242);
+	private JPanelPad pinBotCab = new JPanelPad(104, 92);
+	private JPanelPad pinBotDet = new JPanelPad(104, 63);
 	private JPanelPad pinDet = new JPanelPad();
-	private JButton btLimpaCompra = new JButton(
-			"Limpa Autorização da Solicitação", null);
-	private JButton btLimpaItem = new JButton("Limpa autorização do item", null);
-	private JButton btStatusCompra = new JButton("Solicitação pendente", null);
-	private JButton btStatusItem = new JButton("Item pendente", null);
+	private JPanelPad pinLb = new JPanelPad();
+
+	private JLabelPad lSitItSol = null;
+	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
+	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
+			.novo("btFechaVenda.gif"));
+	private JButton btCancelaSol = new JButton("Cancelar", Icone
+			.novo("btRetorno.gif"));
+	private JButton btCancelaItem = new JButton("Cancelar", Icone
+			.novo("btRetorno.gif"));
+	private JButton btMotivoCancelaSol = new JButton("Mot.Can", Icone
+			.novo("btObs.gif"));
+	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone
+			.novo("btObs.gif"));
+	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone
+			.novo("btObs.gif"));
+
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(
@@ -82,7 +103,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
+	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			13, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 10, 0);
@@ -102,30 +123,61 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 50, 0);
-	private JTextAreaPad txaMotivoSolicitacao = new JTextAreaPad();
-	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSolicitacao);
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
+			50, 0);
+	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
+			40, 0);
+	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 19, 0);
+
+	private JTextAreaPad txaMotivoSol = new JTextAreaPad();
+	private JTextAreaPad txaMotivoCancSol = new JTextAreaPad();
+	private JTextAreaPad txaMotivoCancItem = new JTextAreaPad();
+	private JTextAreaPad txaMotivoPrior = new JTextAreaPad();
+
 	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
+
+	private JRadioGroup rgPriod = null;
+	private Vector vLabsTipo = new Vector();
+	private Vector vValsTipo = new Vector();
+	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSol);
+
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
+	private ListaCampos lcUsu = new ListaCampos(this, "UU");
+	private ListaCampos lcUsuAtual = new ListaCampos(this, "UA");
+
 	String sOrdNota = "";
+	String sOrdSol = "";
 	Integer anoCC = null;
+	Integer iCodTpMov = null;
 	String codCC = null;
-	Integer codAlmox = null;
-	String aprovSolicitacaoCompra = "";
+	boolean bAprovaParcial = false;
+	String SitSol = "";
 	boolean[] bPrefs = null;
+	boolean bAprovaCab = false;
+	boolean bCotacao = false;
+	int cont = 0;
+	Vector vItem = new Vector();
+	Vector vProdCan = new Vector();
+	Vector vMotivoCan = new Vector();
+	Integer codAlmox = null;
+	String sSitIt = txtSituaçãoIt.getVlrString();
 
 	public FSolicitacaoCompra() {
 		setTitulo("Solicitação de Compra");
-		setAtribos(15, 10, 760, 580);
+		setAtribos(15, 10, 763, 580);
 
 		pnMaster.remove(2);
 		pnGImp.removeAll();
@@ -136,16 +188,32 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
+		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
+				+ Aplicativo.strUsuario
+				+ "')) IN "
+				+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "
+				+ "OR "
+				+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+				+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "
+				+ "OR "
+				+ "((SELECT ALMOXARIFE FROM sgretinfousu('"
+				+ Aplicativo.strUsuario
+				+ "'))='S') "
+				+ "OR "
+				+ "((SELECT APROVARMA FROM sgretinfousu('"
+				+ Aplicativo.strUsuario
+				+ "'))='TD') " + ") ";
+
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
 				ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_SI, false));
-
-		lcProd.setWhereAdic("ATIVOPROD='S'");
+		lcProd.setWhereAdic(sWhereAdicProd);
+		//	lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
-		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
 
@@ -158,49 +226,90 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		lcProd2.setWhereAdic("ATIVOPROD='S'");
+		lcProd2.setWhereAdic(sWhereAdicProd);
+		//		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2);
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxarife, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, false));
-		lcAlmox.add(new GuardaCampo(txtDescAlmoxarife, "DescAlmox", "Descrição do almoxarifado;", ListaCampos.DB_SI, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.",
+				ListaCampos.DB_PK, txtDescAlmox, false));
+		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox",
+				"Descrição do almoxarifado;", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
-		txtDescAlmoxarife.setSoLeitura(true);
-		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
+		txtDescAlmox.setSoLeitura(true);
+		txtCodAlmox.setTabelaExterna(lcAlmox);
 
-		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, false));
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK, false));
-		lcCC.add(new GuardaCampo(txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
+				false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK,
+				false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC",
+				"Descrição do centro de custo", ListaCampos.DB_SI, false));
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
 
-		pinCab = new JPanelPad(740, 180);
+		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
+				false));
+		lcUsu.add(new GuardaCampo(txtNomeUsu, "nomeusu", "Nome do usuário",
+				ListaCampos.DB_SI, false));
+		lcUsu.add(new GuardaCampo(txtCodCCUsu, "codcc", "C.Custo Usuário",
+				ListaCampos.DB_SI, false));
+		lcUsu.montaSql(false, "USUARIO", "SG");
+		lcUsu.setQueryCommit(false);
+		lcUsu.setReadOnly(true);
+		txtIDUsu.setTabelaExterna(lcUsu);
+		//		txtIDUsu.setEnabled(false);
+
+		vValsTipo.addElement("B");
+		vValsTipo.addElement("M");
+		vValsTipo.addElement("A");
+		vLabsTipo.addElement("Baixa");
+		vLabsTipo.addElement("Média");
+		vLabsTipo.addElement("Alta");
+		rgPriod = new JRadioGroup(3, 1, vLabsTipo, vValsTipo);
+		rgPriod.setVlrString("B");
+
 		setListaCampos(lcCampos);
-		setAltCab(180);
+		setAltCab(190);
 		setPainel(pinCab, pnCliCab);
 
-		adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "Nºsolicit.",
+		adicCampo(txtCodSolicitacao, 7, 20, 70, 20, "CodSol", "Cód.Sol",
 				ListaCampos.DB_PK, true);
-		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol",
-				"Data solicitação", ListaCampos.DB_SI, true);
-		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação",
+		adicCampo(txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário",
+				ListaCampos.DB_FK, true);
+		adicCampo(txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol",
+				"Data da Sol.", ListaCampos.DB_SI, true);
+
+		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
+		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.",
+				ListaCampos.DB_FK, txtDescCC, true);
+		adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
+				true);
+		adicDescFK(txtDescCC, 286, 20, 162, 20, "DescCC",
+				"Descrição do centro de custos");
+
+		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Sit.Sol.",
 				ListaCampos.DB_SI, false);
-		adicDBLiv(txaMotivoSolicitacao, "MotivoSol", "Motivo", false);
-		adic(new JLabelPad("Motivo"), 7, 40, 100, 20);
-		adic(spnMotivo, 7, 60, 727, 77);
-		adic(btLimpaCompra, 240, 15, 250, 30);
-		btLimpaCompra.setVisible(false);
-		adic(btStatusCompra, 500, 15, 230, 30);
-		btStatusCompra.setEnabled(false);
+		adicDBLiv(txaMotivoCancSol, "MotivoSol", "Motivo do cancelamento", false);
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem",
 				ListaCampos.DB_SI, false);
+
+		adicDBLiv(txaMotivoSol, "MotivoSol", "Observações", false);
+		adic(new JLabelPad("Observações"), 7, 40, 100, 20);
+		adic(spnMotivo, 7, 60, 617, 90);
+
+		txtIDUsu.setNaoEditavel(true);
+		txtDtEmitSolicitacao.setNaoEditavel(true);
+		txtCodCC.setNaoEditavel(true);
+		txtAnoCC.setNaoEditavel(true);
+
 		setListaCampos(true, "SOLICITACAO", "CP");
 		lcCampos.setQueryInsert(false);
 
@@ -208,19 +317,72 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
 		lcProd.addCarregaListener(this);
+		lcProd2.addCarregaListener(this);
 		lcDet.addPostListener(this);
 		lcDet.addCarregaListener(this);
 		lcDet.addInsertListener(this);
 		lcCampos.addInsertListener(this);
+		lcUsu.addCarregaListener(this);
+
+		btAprovaSol.setToolTipText("Aprovar todos os ítens.");
+		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
+		btCancelaSol.setToolTipText("Cancelar todos os ítens.");
+		btCancelaItem.setToolTipText("Cancelar ítem.");
+		btMotivoCancelaSol.setToolTipText("Motivo do cancelamento da Solicitação.");
+		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
+		btMotivoPrior.setToolTipText("Motivo da prioridade do ítem.");
+
+		pinCab.adic(pinBotCab, 630, 1, 114, 150);
+		pinBotCab.adic(btAprovaSol, 0, 0, 110, 30);
+		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
+		pinBotCab.adic(btCancelaSol, 0, 62, 110, 30);
+		pinBotCab.adic(btMotivoCancelaSol, 0, 93, 110, 30);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
-	    setImprimir(true);
+		btAprovaSol.addActionListener(this);
+		btCancelaSol.addActionListener(this);
+		btCancelaItem.addActionListener(this);
+		btMotivoCancelaSol.addActionListener(this);
+		btMotivoCancelaItem.addActionListener(this);
+		btMotivoPrior.addActionListener(this);
+		btFinAprovSol.addActionListener(this);
+
+		setImprimir(true);
+
+		desabAprov(true);
+	}
+
+	private void desabAprov(boolean bHab) {
+		if (txtStatusSolicitacao.getVlrString().equals("AT")) {
+			btAprovaSol.setEnabled(false);
+			if (!txtStatusSolicitacao.getVlrString().equals("AF"))
+				btFinAprovSol.setEnabled(true);
+			else {
+				btFinAprovSol.setEnabled(false);
+			}
+		} else {
+			btAprovaSol.setEnabled(!bHab);
+		}
+		if (txtStatusSolicitacao.getVlrString().equals("CA")) {
+			btMotivoCancelaSol.setEnabled(true);
+		}
+		if (txtSituacaoItAprov.getVlrString().equals("CA")) {
+			btMotivoCancelaItem.setEnabled(true);
+		} else {
+			btMotivoCancelaSol.setEnabled(!bHab);
+			btMotivoCancelaItem.setEnabled(!bHab);
+		}
+
+		btFinAprovSol.setEnabled(!bHab);
+		btCancelaSol.setEnabled(!bHab);
+		btCancelaItem.setEnabled(!bHab);
+		txtQtdItAprovado.setNaoEditavel(bHab);
 	}
 
 	private void montaDetalhe() {
-		setAltDet(97);
-		pinDet = new JPanelPad(740, 97);
+		setAltDet(125);
+		pinDet = new JPanelPad(740, 122);
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
@@ -228,50 +390,50 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK,
-					txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
-					ListaCampos.DB_FK, false);
-			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
-			adic(txtRefProd, 40, 20, 87, 20);
-			txtRefProd.setFK(true);
-		  	txtRefProd.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProd2.getWhereAdic()));
+			adicCampo(txtRefProd, 40, 20, 87, 20, "RefProd", "Referência",
+					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,
+					false);
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2
+					.getWhereAdic()));
+			txtQtdItSolicitado.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd2,
+					con, "qtditsol"));
 		} else {
 			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
-		  	txtCodProd.setBuscaAdic(new DLBuscaProd(con,"CODPROD",lcProd.getWhereAdic()));
+					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
+					ListaCampos.DB_SI, false);
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd
+					.getWhereAdic()));
+			txtQtdItSolicitado.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd,
+					con, "QtdItSol"));
 		}
 
-		adicCampo(txtCodCC, 7, 60, 60, 20, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
-		txtCodCC.setEditable(false);
-		adicCampo(txtAnoCC, 70, 60, 60, 20, "AnoCC", "ano c.c.", ListaCampos.DB_FK, false);
-		txtAnoCC.setEditable(false);
-		adicDescFK(txtDescCC, 140, 60, 97, 20, "DescCC", "desc c.c.");
-		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_SI,
-				false);
-		adicCampo(txtCodAlmoxarife, 480, 20, 67, 20, "CodAlmox", "Cód.almox.",
-				ListaCampos.DB_FK, txtDescAlmoxarife, false);
-		adicDescFK(txtDescAlmoxarife, 550, 20, 187, 20, "DescAlmox",
+		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
+				"Descrição do produto");
+		adicDB(rgPriod, 513, 20, 100, 65, "PriorItRma", "Prioridade:", true);
+		adicCampo(txtQtdItSolicitado, 430, 20, 80, 20, "QtdItSol", "Qtd.solic.",
+				ListaCampos.DB_SI, true);
+
+		adicCampo(txtQtdItAprovado, 260, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
+				ListaCampos.DB_SI, false);
+
+		txtCodAlmox.setNaoEditavel(true);
+
+		adicCampoInvisivel(txtCodAlmox, "CodAlmox", "Cód.Almox.",
+				ListaCampos.DB_FK, txtDescAlmox, false);
+		adicDescFK(txtDescAlmox, 7, 60, 250, 20, "DescAlmox",
 				"Descrição do almoxarifado");
 
-		txtDescProd.setSoLeitura(true);
-		adicDescFK(txtDescProd, 130, 20, 197, 20, "DescProd",
-				"Descrição do produto");
-		adicCampo(txtQtdItSolicitado, 330, 20, 67, 20, "QtdItSol", "Qtd.solic.",
-				ListaCampos.DB_SI, true);
-		txtQtdItAprovado.setSoLeitura(true);
-		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol", "Qtd.aprov.",
+		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.item",
+		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.compra",
+		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol", "Sit.aprovação",
-				ListaCampos.DB_SI, false);
-		adic(btLimpaItem, 240, 50, 250, 30);
-		btLimpaItem.setVisible(false);
-		adic(btStatusItem, 500, 50, 230, 30);
-		btStatusItem.setEnabled(false);
+		adicDBLiv(txaMotivoCancItem, "motivocancitsol", "Motivo do cancelamento",
+				false);
+		adicDBLiv(txaMotivoPrior, "MotivoPriorItSol", "Motivo da Prioridade", false);
 
 		txtRefProd.addKeyListener(new KeyAdapter() {
 
@@ -285,16 +447,26 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		montaTab();
 
 		tab.setTamColuna(30, 0);
-		tab.setTamColuna(80, 1);
-		tab.setTamColuna(230, 2);
+		tab.setTamColuna(70, 1);
+		tab.setTamColuna(250, 2);
 		tab.setTamColuna(70, 3);
 		tab.setTamColuna(70, 4);
 		tab.setTamColuna(70, 5);
 		tab.setTamColuna(70, 6);
 		tab.setTamColuna(70, 7);
-		tab.setTamColuna(230, 8);
-		tab.setTamColuna(70, 9);
-		tab.setTamColuna(70, 10);
+		tab.setTamColuna(250, 8);
+
+		btMotivoPrior.setEnabled(false);
+
+		pinBotDet.adic(btCancelaItem, 0, 0, 110, 28);
+		pinBotDet.adic(btMotivoCancelaItem, 0, 29, 110, 28);
+		pinBotDet.adic(btMotivoPrior, 0, 58, 110, 28);
+		pinDet.adic(pinBotDet, 630, 1, 114, 90);
+		lSitItSol = new JLabelPad();
+		lSitItSol.setForeground(Color.WHITE);
+		//pinLb.add(new JLabelPad("",imgStatus,SwingConstants.CENTER));
+		pinLb.adic(lSitItSol, 31, 0, 110, 20);
+		pinDet.adic(pinLb, 630, 91, 114, 24);
 	}
 
 	private void testaCodSol() { //Traz o verdadeiro número do codCompra
@@ -313,87 +485,13 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
-					+ err.getMessage(),true,con,err);
+					+ err.getMessage(), true, con, err);
 		}
 	}
 
 	public void focusGained(FocusEvent fevt) {}
 
 	public void focusLost(FocusEvent fevt) {}
-
-	public void beforeCarrega(CarregaEvent cevt) {}
-
-	public void afterPost(PostEvent pevt) {}
-
-	public void afterCarrega(CarregaEvent cevt) {
-		boolean allow = aprovSolicitacaoCompra.equalsIgnoreCase("TD");
-		boolean allowItems = (aprovSolicitacaoCompra.equalsIgnoreCase("CC") && txtCodCC
-				.getVlrString().equals(codCC))
-				|| allow;
-		boolean block = txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")
-				|| allow;
-		boolean blockItems = (block
-				&& txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE") && txtCodUsu
-				.getVlrString().equals(Aplicativo.strUsuario))
-				|| allowItems;
-
-		if (cevt.getListaCampos() == lcCampos) {
-			lcCampos.setPodeExc(block);
-			lcCampos.setReadOnly(!block);
-			lcDet.setPodeIns(block);
-			txtDtEmitSolicitacao.setSoLeitura(!block);
-			txaMotivoSolicitacao.setEditable(block);
-			txaMotivoSolicitacao.setEnabled(block);
-			btLimpaCompra.setVisible(allow
-					&& !txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE"));
-
-			if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")) {
-				btStatusCompra.setText("Solicitação pendente");
-				lcDet.setReadOnly(false);
-			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("CA")) {
-				btStatusCompra.setText("Solicitação cancelada");
-				lcDet.setReadOnly(true);
-			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("SC")) {
-				btStatusCompra.setText("Solicitação concluída");
-				lcDet.setReadOnly(true);
-			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("TM")) {
-				btStatusCompra.setText("Cotação de preços");
-				lcDet.setReadOnly(true);
-			}
-
-		} else if (cevt.getListaCampos() == lcDet) {
-			lcDet.setPodeExc(blockItems);
-			lcDet.setReadOnly(!blockItems);
-			txtCodProd.setSoLeitura(!blockItems);
-			txtRefProd.setSoLeitura(!blockItems);
-			txtCodCC.setSoLeitura(!blockItems);
-			txtAnoCC.setSoLeitura(!blockItems);
-			txtCodUsu.setSoLeitura(!blockItems);
-			txtCodAlmoxarife.setSoLeitura(!blockItems);
-			txtQtdItSolicitado.setSoLeitura(!blockItems);
-			btLimpaItem.setVisible(!txtSituaçãoIt.getVlrString().equalsIgnoreCase(
-					"PE")
-					&& (allowItems || txtCodUsu.getVlrString().equals(
-							Aplicativo.strUsuario)));
-
-			if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE")) {
-				if (allow || allowItems) {
-					btStatusItem.setText("Item pendente");
-				}
-			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("CA")) {
-				btStatusItem.setText("Item cancelado");
-			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("SC")) {
-				if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")
-						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CT"))
-					btStatusItem.setText("Aprovado totalmente");
-				else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")
-						&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP"))
-					btStatusItem.setText("Aprovado parcialmente");
-				else
-					btStatusItem.setText("Item concluído");
-			}
-		}
-	}
 
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -419,7 +517,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public boolean[] prefs() {
-		boolean[] bRet = {false};
+		boolean[] bRet = { false };
 		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -438,15 +536,15 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage(),true,con,err);
-		}
-		finally {
+					+ err.getMessage(), true, con, err);
+		} finally {
 			rs = null;
 			ps = null;
 			sSQL = null;
 		}
 		return bRet;
 	}
+
 	public void actionPerformed(ActionEvent evt) {
 		String[] sValores = null;
 		if (evt.getSource() == btPrevimp)
@@ -588,7 +686,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
-					+ err.getMessage(),true,con,err);
+					+ err.getMessage(), true, con, err);
 		}
 
 		if (bVisualizar) {
@@ -610,30 +708,196 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		super.keyReleased(kevt);
 	}
 
+	private boolean dialogObsPrior() {
+		boolean bRet = false;
+		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
+		if (obs != null) {
+			if ((rgPriod.getVlrString().equals("A"))
+					&& (txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))) {
+				obs.txa.setEnabled(true);
+			} else
+				obs.txa.setEnabled(false);
+			obs.setVisible(true);
+			if (obs.OK) {
+				txaMotivoPrior.setVlrString(obs.getTexto());
+				bRet = true;
+			}
+		}
+		obs.dispose();
+		return bRet;
+	}
+
+	public void beforeCarrega(CarregaEvent cevt) {}
+
+	public void afterCarrega(CarregaEvent cevt) {
+
+		buscaInfoUsuAtual();
+
+		String sSitRma = txtStatusSolicitacao.getVlrString();
+		String sSitItAprov = txtSituacaoItAprov.getVlrString();
+		String sSitItExp = txtSituaçãoItComp.getVlrString();
+		sSitIt = txtSituaçãoIt.getVlrString();
+
+		boolean bStatusTravaTudo = ((sSitIt.equals("AF"))
+				|| (sSitIt.equals("EF")) || (sSitIt.equals("CA")));
+		boolean bStatusTravaExp = (!(sSitIt.equals("AF")));
+
+		if (cevt.getListaCampos() == lcDet) {
+			if (sSitIt.equals("CA")) {
+				desabCampos(true);
+				btMotivoCancelaItem.setEnabled(true);
+			}
+		}
+
+		if (rgPriod.getVlrString().equals("A") && sSitRma.equals("PE")) {
+			btMotivoPrior.setEnabled(true);
+		} else
+			btMotivoPrior.setEnabled(false);
+
+		if (sSitRma.equals("CA"))
+			btMotivoCancelaSol.setEnabled(true);
+		else
+			btMotivoCancelaSol.setEnabled(false);
+
+		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))
+				|| (bStatusTravaTudo))
+			desabCampos(true);
+		else
+			desabCampos(false);
+
+		if (!bAprovaCab || bStatusTravaTudo) {
+			desabAprov(true);
+			txaMotivoCancSol.setEnabled(false);
+		} else {
+			if (!bStatusTravaTudo)
+				txaMotivoCancSol.setEnabled(true);
+			desabAprov(false);
+		}
+
+		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
+				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {
+		}
+
+		if (sSitIt.equals("CA")) {
+			//imgStatus = imgCancelado;
+			SitSol = "Cancelado";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(250, 50, 50));
+		} else if (sSitIt.equals("PE")) {
+			//imgStatus = imgPendento;
+			SitSol = "Pendente";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(255, 204, 51));
+		} else if (sSitItExp.equals("ET") || sSitItExp.equals("EP")) {
+			//imgStatus = imgExpedido;
+			SitSol = "Expedido";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(0, 170, 30));
+		} else if (sSitItAprov.equals("AT") || sSitItAprov.equals("AP")) {
+			//imgStatus = imgAprovado;
+			SitSol = "Aprovado";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(26, 140, 255));
+		}
+
+		if (cevt.getListaCampos() == lcDet) {
+			if (txtQtdItAprovado.isEditable()) {
+				if (txtQtdItAprovado.getVlrDouble().compareTo(new Double(0)) <= 0)
+					txtQtdItAprovado.setVlrDouble(txtQtdItAprovado.getVlrDouble());
+			}
+			if (txtQtdItSolicitado.isEditable()) {
+				if (txtQtdItSolicitado.getVlrDouble().compareTo(new Double(0)) <= 0)
+					txtQtdItSolicitado.setVlrDouble(txtQtdItAprovado.getVlrDouble());
+			}
+		}
+		if (cevt.getListaCampos() == lcUsu) {
+			/*
+			 * String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT
+			 * ANOCCUSU||CODCCUSU FROM
+			 * sgretinfousu('"+txtIDUsu.getVlrString().trim()+"')) IN "+ "(SELECT
+			 * ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND
+			 * PA.codemp=EQPRODUTO.CODEMP AND "+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND
+			 * PA.CODPROD=EQPRODUTO.CODPROD) "+ "OR "+ "((SELECT coalesce(COUNT(1),0)
+			 * FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP
+			 * AND "+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND
+			 * PA.CODPROD=EQPRODUTO.CODPROD)=0) "+ "OR " + "((SELECT ALMOXARIFE FROM
+			 * sgretinfousu('"+txtIDUsu.getVlrString().trim()+"'))='S')) ";
+			 */
+
+			//lcLote.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ",txtCodProd)
+
+			//	carregaWhereAdic();
+		}
+	}
+	public Color cor(int r, int g, int b){
+		Color color = new Color(r, g, b);
+		return color;
+	}
+	private void desabCampos(boolean bHab) {
+		txtCodProd.setNaoEditavel(bHab);
+		txtRefProd.setNaoEditavel(bHab);
+		txtQtdItAprovado.setNaoEditavel(bHab);
+		txaMotivoSol.setEnabled(!bHab);
+		rgPriod.setAtivo(!bHab);
+	}
 	public void beforePost(PostEvent pevt) {
-		if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-			txtSituaçãoItAprov.setVlrString("PE");
-			txtSituaçãoItComp.setVlrString("PE");
-			txtSituaçãoIt.setVlrString("PE");
-		}
-		if (lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
-			testaCodSol();
-			txtStatusSolicitacao.setVlrString("PE");
+		String sMotvProir = rgPriod.getVlrString();
+		if (pevt.getListaCampos() == lcCampos) {
 			txtOrigSolicitacao.setVlrString("AX");
+			if (txtSituaçãoIt.getVlrString().equals("")) {
+				txtStatusSolicitacao.setVlrString("PE");
+			}
+		} else if (pevt.getListaCampos() == lcDet) {
+			if (txtQtdItAprovado.getVlrDouble().doubleValue() > txtQtdItSolicitado
+					.getVlrDouble().doubleValue()) {
+				Funcoes.mensagemInforma(null,
+						"Quantidade aprovada maior que a requerida!");
+				pevt.getListaCampos().cancelPost();
+			}
+			if (txtSituaçãoIt.getVlrString().equals("")) {
+				txtSituaçãoIt.setVlrString("PE");
+			}
+			if (txtSituacaoItAprov.getVlrString().equals("")) {
+				txtSituacaoItAprov.setVlrString("PE");
+			}
+			if (txtSituaçãoItComp.getVlrString().equals("")) {
+				txtSituaçãoItComp.setVlrString("PE");
+			}
+			if (txtQtdItAprovado.getVlrString().equals("")) {
+				txtQtdItAprovado.setVlrDouble(new Double(0));
+			}
+			if (txtQtdItSolicitado.getVlrString().equals("")) {
+				txtQtdItSolicitado.setVlrDouble(new Double(0));
+			}
+			if (sMotvProir.equals("A")) {
+				dialogObsPrior();
+			}
+		} else if (pevt.getListaCampos() == lcCampos) {
+			if (txtStatusSolicitacao.getVlrString().equals("")) {
+				txtStatusSolicitacao.setVlrString("PE");
+			}
+			if (txtSituacaoItAprov.getVlrString().equals("")) {
+				txtSituacaoItAprov.setVlrString("PE");
+			}
+			if (txtSituaçãoItComp.getVlrString().equals("")) {
+				txtSituaçãoItComp.setVlrString("PE");
+			}
+
 		}
+
 	}
 
 	public void beforeInsert(InsertEvent ievt) {}
 
 	public void afterInsert(InsertEvent ievt) {
-		txtAnoCC.setVlrInteger(anoCC);
-		txtCodCC.setVlrString(codCC);
-		lcCC.carregaDados();
-		//txtCodCC.atualizaFK();
-		txtCodAlmoxarife.setVlrInteger(codAlmox);
-		txtCodAlmoxarife.atualizaFK();
-		txtCodUsu.setVlrString(Aplicativo.strUsuario);
-		txtDtEmitSolicitacao.setVlrDate(new Date());
+		if (ievt.getListaCampos() == lcCampos) {
+			txtAnoCC.setVlrInteger(anoCC);
+			txtCodCC.setVlrString(codCC);
+			lcCC.carregaDados();
+			txtIDUsu.setVlrString(Aplicativo.strUsuario);
+			txtDtEmitSolicitacao.setVlrDate(new Date());
+			lcCampos.carregaDados();
+		}
 	}
 
 	public void exec(int iCodCompra) {
@@ -660,20 +924,103 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage(),true,con,err);
+							+ err.getMessage(), true, con, err);
 		}
 		return iRet;
 	}
 
+	public void carregaWhereAdic() {
+		buscaInfoUsuAtual();
+		if ((bAprovaCab) || (bCotacao)) {
+			if (bAprovaParcial) {
+				lcCampos.setWhereAdic("CODCC='" + Aplicativo.strCodCCUsu
+						+ "' AND ANOCC=" + Aplicativo.strAnoCCUsu);
+			}
+		} else {
+			lcCampos.setWhereAdic("IDUSU='" + Aplicativo.strUsuario + "'");
+		}
+	}
+
+	private void buscaInfoUsuAtual() {
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,ALMOXARIFEUSU "
+				+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
+			ps.setString(3, Aplicativo.strUsuario);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				String sAprova = rs.getString("APROVCPSOLICITACAOUSU");
+				String sCotacao = rs.getString("ALMOXARIFEUSU");
+				if (sAprova != null) {
+					if (!sAprova.equals("ND")) {
+						if (sAprova.equals("TD"))
+							bAprovaCab = true;
+						else if ((txtCodCC.getVlrString().trim().equals(rs.getString(
+								"CODCC").trim()))
+								&& (lcCC.getCodEmp() == rs.getInt("CODEMPCC"))
+								&& (lcCC.getCodFilial() == rs.getInt("CODFILIALCC"))
+								&& (sAprova.equals("CC"))) {
+							bAprovaCab = true;
+						} else {
+							bAprovaCab = false;
+						}
+
+					}
+				}
+				if (sCotacao != null) {
+					if (sCotacao.equals("S"))
+						bCotacao = true;
+					else
+						bCotacao = false;
+				}
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage());
+		}
+	}
+
+	private int buscaVlrPadrao() {
+		int iRet = 0;
+		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt("ANOCENTROCUSTO");
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,
+					"Erro ao buscar o ano-base para o centro de custo.\n"
+							+ err.getMessage());
+		}
+
+		return iRet;
+	}
+
 	public void setConexao(Connection cn) {
-		super.setConexao(cn); // tem que setar a conexão principal para verificar preferências
+		super.setConexao(cn); // tem que setar a conexão principal para verificar
+		// preferências
 		bPrefs = prefs();
-		montaDetalhe();		
+		montaDetalhe();
+
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
 		lcCC.setConexao(cn);
-		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaAnoBaseCC());
+		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());
 		lcAlmox.setConexao(cn);
+		lcUsu.setConexao(cn);
 
 		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 		PreparedStatement ps = null;
@@ -687,17 +1034,22 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			if (rs.next()) {
 				anoCC = new Integer(rs.getInt("anoCC"));
 				if (anoCC.intValue() == 0)
-					anoCC = new Integer(buscaAnoBaseCC());
+					anoCC = new Integer(buscaVlrPadrao());
 				codCC = rs.getString("codCC");
-				codAlmox = new Integer(rs.getInt("codAlmox"));
-				aprovSolicitacaoCompra = rs.getString("aprovCPSolicitacaoUsu");
 			}
 
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage(),true,con,err);
+					+ err.getMessage());
 		}
+
+		/*
+		 * lcProd.setWhereAdic(sWhereAdicProd);
+		 * lcProd2.setWhereAdic(sWhereAdicProd);
+		 */
+
+		carregaWhereAdic();
 	}
 }
