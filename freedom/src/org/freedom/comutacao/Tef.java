@@ -123,9 +123,9 @@ public class Tef {
         fAtivo = new File(sPathRet + "/" + ARQ_ATIVO);
 
         if (!verifTef()) {
-            Funcoes.mensagemInforma(null,
-                    "Gerenciador Padrão de TEF não está ativo!");
-        } else if (existeInfo("CRT", fRetorno, 1, 0)) {
+            Funcoes.mensagemInforma(null,"Gerenciador Padrão de TEF não está ativo!");
+        } 
+        else if (existeInfo("CRT", fRetorno, 1, 0)) {
             p = leRetorno();
             if (p != null)
                 naoConfirmaVenda(p);
@@ -146,7 +146,8 @@ public class Tef {
             psEnvio.close();
             fTmp.renameTo(fEnvio);
             bRet = true;
-        } catch (IOException err) {
+        } 
+        catch (IOException err) {
             Funcoes.mensagemErro(null,
                     "Não foi possível gravar o arquivo temporário de TEF!");
             err.printStackTrace();
@@ -166,7 +167,8 @@ public class Tef {
             if (prop.getProperty(TEF_HEADER, "").equals("TEF"))
                 bRet = true;
             prop.clear();
-        } catch (IOException err) {
+        } 
+        catch (IOException err) {
             Funcoes.mensagemErro(null,
                     "Não foi possível verificar se o módulo TEF está ativo!");
             err.printStackTrace();
@@ -189,8 +191,7 @@ public class Tef {
         return existeInfo(sCab, fRetorno, 180, (lIdent > 0 ? lIdent : 0));
     }
 
-    public boolean existeInfo(String sCab, File fArq, int iTentativas,
-            long lIdent) {
+    public boolean existeInfo(String sCab, File fArq, int iTentativas,long lIdent) {
         //Cada tentiva leva por volta de 1 segundo.
         String sLinha;
         boolean bRet = false;
@@ -198,7 +199,8 @@ public class Tef {
         while (true) {
             try {
                 Thread.sleep(1000);
-            } catch (Exception err) {
+            } 
+            catch (Exception err) {
                 break;
             }
             if (fArq.exists() && fArq.canRead()) {
@@ -208,20 +210,16 @@ public class Tef {
                     prop.load(fis);
                     fis.close();
                     //Se for necessário identificação o lIdent será maior a 0;
-                    if (prop.getProperty(TEF_HEADER, "").equals(sCab)
-                            && lIdent > 0
-                            && prop.getProperty(TEF_IDENTIFICACAO, "").equals(
-                                    "" + lIdent))
+                    if (prop.getProperty(TEF_HEADER, "").equals(sCab) && lIdent > 0 && prop.getProperty(TEF_IDENTIFICACAO, "").equals("" + lIdent))
                         bRet = true;
                     //Se não for necessário identificação o lIdent será igual a
                     // 0;
-                    else if (prop.getProperty(TEF_HEADER, "").equals(sCab)
-                            && lIdent == 0)
+                    else if (prop.getProperty(TEF_HEADER, "").equals(sCab) && lIdent == 0)
                         bRet = true;
                     prop.clear();
-                } catch (IOException err) {
-                    Funcoes.mensagemErro(null,
-                            "Não foi possível ler o retorno da TEF!");
+                } 
+                catch (IOException err) {
+                    Funcoes.mensagemErro(null,"Não foi possível ler o retorno da TEF!");
                     err.printStackTrace();
                 }
             }
@@ -246,9 +244,9 @@ public class Tef {
             	fRetorno.delete();
             }
         	fStatus.delete();
-        } catch (Exception err) {
-            Funcoes.mensagemErro(null,
-                    "Não foi possível carregar o retorno da TEF!");
+        } 
+        catch (Exception err) {
+            Funcoes.mensagemErro(null,"Não foi possível carregar o retorno da TEF!");
             err.printStackTrace();
         }
         return pRet;
@@ -271,10 +269,8 @@ public class Tef {
                 (TEF_HEADER + " = " + "CRT"),
                 (TEF_IDENTIFICACAO + " = " + lIdent),
                 (TEF_DOC_FISCAL + " = " + iNumCupom),
-                (TEF_VAL_TOTAL + " = " + (Funcoes.transValor(bigVal, 12, 2,
-                        false)).trim()) });
-        if (!bRet || !existeStatus("CRT", lIdent)
-                || !existeRetorno("CRT", lIdent))
+                (TEF_VAL_TOTAL + " = " + (Funcoes.transValor(bigVal, 12, 2,false)).trim()) });
+        if (!bRet || !existeStatus("CRT", lIdent) || !existeRetorno("CRT", lIdent))
             return null;
 
         return leRetorno();
@@ -313,14 +309,11 @@ public class Tef {
         confirmaRetorno();
         bRet = enviaArquivo(new String[] {
                 (TEF_HEADER + " = " + "CNF"),
-                (TEF_IDENTIFICACAO + " = " + prop
-                        .getProperty(TEF_IDENTIFICACAO)),
+                (TEF_IDENTIFICACAO + " = " + prop.getProperty(TEF_IDENTIFICACAO)),
                 (TEF_NOME_REDE + " = " + prop.getProperty(TEF_NOME_REDE)),
                 (TEF_NSU + " = " + prop.getProperty(TEF_NSU)),
                 (TEF_FINALIZACAO + " = " + prop.getProperty(TEF_FINALIZACAO)) });
-        if (!bRet
-                || !existeStatus("CNF", Long.parseLong(prop.getProperty(
-                        TEF_IDENTIFICACAO, "0"))))
+        if (!bRet || !existeStatus("CNF", Long.parseLong(prop.getProperty(TEF_IDENTIFICACAO, "0"))))
             return false;
 
         fStatus.delete();
@@ -341,9 +334,7 @@ public class Tef {
                 (TEF_NOME_REDE + " = " + prop.getProperty(TEF_NOME_REDE)),
                 (TEF_NSU + " = " + prop.getProperty(TEF_NSU)),
                 (TEF_FINALIZACAO + " = " + prop.getProperty(TEF_FINALIZACAO)) });
-        if (!bRet
-                || !existeStatus("CNF", Long.parseLong(prop.getProperty(
-                        TEF_DOC_FISCAL, "0"))))
+        if (!bRet || !existeStatus("CNF", Long.parseLong(prop.getProperty(TEF_DOC_FISCAL, "0"))))
             return false;
 
         fStatus.delete();
@@ -366,9 +357,7 @@ public class Tef {
                 (TEF_NOME_REDE + " = " + prop.getProperty(TEF_NOME_REDE)),
                 (TEF_NSU + " = " + prop.getProperty(TEF_NSU)),
                 (TEF_FINALIZACAO + " = " + prop.getProperty(TEF_FINALIZACAO)) });
-        if (!bRet
-                || !existeStatus("NCN", Long.parseLong(prop
-                        .getProperty(TEF_DOC_FISCAL))))
+        if (!bRet || !existeStatus("NCN", Long.parseLong(prop.getProperty(TEF_DOC_FISCAL))))
             return false;
 
         Funcoes.mensagemErro(null, "Cancelada a Transação:\n"
@@ -379,9 +368,7 @@ public class Tef {
                 + prop.getProperty(TEF_NOME_REDE)
                 + "\n"
                 + "Valor: "
-                + Funcoes.strDecimalToStrCurrency(2, Funcoes.transValorInv(prop
-                        .getProperty(TEF_VAL_TOTAL, "000"))
-                        + ""));
+                + Funcoes.strDecimalToStrCurrency(2, Funcoes.transValorInv(prop.getProperty(TEF_VAL_TOTAL, "000")) + ""));
         
         fStatus.delete();
 
@@ -402,9 +389,7 @@ public class Tef {
                 (TEF_NOME_REDE + " = " + prop.getProperty(TEF_NOME_REDE)),
                 (TEF_NSU + " = " + prop.getProperty(TEF_NSU)),
                 (TEF_FINALIZACAO + " = " + prop.getProperty(TEF_FINALIZACAO)) });
-        if (!bRet
-                || !existeStatus("NCN", Long.parseLong(prop
-                        .getProperty(TEF_IDENTIFICACAO))))
+        if (!bRet || !existeStatus("NCN", Long.parseLong(prop.getProperty(TEF_IDENTIFICACAO))))
             return false;
 
         Funcoes.mensagemErro(null, "Cancelada a Transação:\n"
@@ -415,9 +400,7 @@ public class Tef {
                 + prop.getProperty(TEF_NSU)
                 + "\n"
                 + "Valor: "
-                + Funcoes.strDecimalToStrCurrency(2, Funcoes.transValorInv(prop
-                        .getProperty(TEF_VAL_TOTAL, "000"))
-                        + ""));
+                + Funcoes.strDecimalToStrCurrency(2, Funcoes.transValorInv(prop.getProperty(TEF_VAL_TOTAL, "000"))+ ""));
         
         fStatus.delete();
 
