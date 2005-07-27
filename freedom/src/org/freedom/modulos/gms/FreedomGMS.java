@@ -154,11 +154,9 @@ public class FreedomGMS extends Aplicativo {
 
 		addOpcao(-1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Solicitação de Compra",	"Solicitação de Compra", 'S', 200100000, 1, true,FSolicitacaoCompra.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Aprova Solicitação de Compra","Aprova Solicitação de Compra", 'A', 200200000, 1, true,FAprovaSolicitacaoCompra.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa Solicitações de Compra","Pesquisa Solicitações de Compra", 'P', 200300000, 1, true,FConsSol.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Cotação de Preços",	"Cotação de Preços", 'T', 200400000, 1, true,FCotacaoPrecos.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Aprova Cotação de Preços","Aprova Cotação de Preços", 'P', 200500000, 1, true,FAprovaCotacaoPrecos.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Compra", "", 'C', 200600000, 1,true, FCompra.class);
 			addOpcao(200000000, TP_OPCAO_MENU, "Listagens", "", 'L', 200700000, 1,false, null);

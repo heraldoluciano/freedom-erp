@@ -163,8 +163,6 @@ public class FRma extends FDetalhe implements PostListener,
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
 	
-	boolean infadc = false;
-	
 	public FRma() {
 		setAtribos(15, 10, 763, 580);
 
@@ -287,8 +285,7 @@ public class FRma extends FDetalhe implements PostListener,
 
 		txtSeqOP.setTabelaExterna(lcSeqOP);
 		lcSeqOP.montaSql(false, "OP", "PP");
-		
-				
+						
 		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
@@ -1042,7 +1039,6 @@ public class FRma extends FDetalhe implements PostListener,
 					vItem.addElement(rs.getString("CODITRMA"));
 					vMotivoCan.addElement(rs.getString("MOTIVOCANCRMA")!=null?rs.getString("MOTIVOCANCRMA"):"");
 					cont ++;
-					infadc = true;
 				}
 				
 			}
