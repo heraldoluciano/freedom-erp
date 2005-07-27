@@ -61,6 +61,7 @@ public class FSerie extends FDados implements ActionListener {
     setListaCampos( false, "SERIE", "LF");
 
     btReset.addActionListener(this);
+    nav.setAtivo(2,false);    
   }
   private void resetar() {
     FFDialogo dlReset = new FFDialogo(this);
