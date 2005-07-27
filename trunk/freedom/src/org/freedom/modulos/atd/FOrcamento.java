@@ -253,6 +253,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	lcProd2.add(new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_PK, false));
 	lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
 	lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false));
+	lcProd2.add(new GuardaCampo( txtCodBarras, "CodBarProd", "Código de Barras", ListaCampos.DB_SI, false));
 	txtRefProd.setNomeCampo("RefProd");
 	txtRefProd.setListaCampos(lcDet);
 	lcProd2.setWhereAdic("ATIVOPROD='S'");
