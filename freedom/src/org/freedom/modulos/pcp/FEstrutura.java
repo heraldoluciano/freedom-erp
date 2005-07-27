@@ -571,7 +571,8 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   		    setPainel( pinDetFases, pnDet);
   		    setListaCampos(lcDet);
   		    pnDet.repaint();
-  		    navRod.setListaCampos(lcDet);  		    
+  		    navRod.setListaCampos(lcDet);
+			navRod.setAtivo(6,true);
   		}  		
   		else if(tpnAbas.getSelectedIndex()==1){
   		    setAltDet(110);
@@ -580,6 +581,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   		    setListaCampos(lcDetItens);
   		    pnDet.repaint();
   		    navRod.setListaCampos(lcDetItens);
+			navRod.setAtivo(6,true);
   		}
   		else if(tpnAbas.getSelectedIndex()==2){
   		    setAltDet(110);
@@ -588,6 +590,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   		    setListaCampos(lcDetDistrib);
   		    pnDet.repaint();
   		    navRod.setListaCampos(lcDetDistrib);
+			navRod.setAtivo(6,false);
   		}
     }
   }
