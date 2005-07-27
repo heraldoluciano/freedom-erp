@@ -141,9 +141,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
 
 	private JRadioGroup rgPriod = null;
@@ -173,7 +173,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
 	Integer codAlmox = null;
-	String sSitIt = txtSituaçãoIt.getVlrString();
+	String sSitIt = txtSituacaoIt.getVlrString();
 
 	public FSolicitacaoCompra() {
 		setTitulo("Solicitação de Compra");
@@ -425,11 +425,11 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicDescFK(txtDescAlmox, 7, 60, 250, 20, "DescAlmox",
 				"Descrição do almoxarifado");
 
-		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.It.Sol.",
+		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.",
 				ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
+		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
 				ListaCampos.DB_SI, false);
 		adicDBLiv(txaMotivoCancItem, "motivocancitsol", "Motivo do cancelamento",
 				false);
@@ -735,8 +735,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		String sSitRma = txtStatusSolicitacao.getVlrString();
 		String sSitItAprov = txtSituacaoItAprov.getVlrString();
-		String sSitItExp = txtSituaçãoItComp.getVlrString();
-		sSitIt = txtSituaçãoIt.getVlrString();
+		String sSitItExp = txtSituacaoItComp.getVlrString();
+		sSitIt = txtSituacaoIt.getVlrString();
 
 		boolean bStatusTravaTudo = ((sSitIt.equals("AF"))
 				|| (sSitIt.equals("EF")) || (sSitIt.equals("CA")));
@@ -844,7 +844,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		String sMotvProir = rgPriod.getVlrString();
 		if (pevt.getListaCampos() == lcCampos) {
 			txtOrigSolicitacao.setVlrString("AX");
-			if (txtSituaçãoIt.getVlrString().equals("")) {
+			if (txtSituacaoIt.getVlrString().equals("")) {
 				txtStatusSolicitacao.setVlrString("PE");
 			}
 		} else if (pevt.getListaCampos() == lcDet) {
@@ -854,14 +854,14 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 						"Quantidade aprovada maior que a requerida!");
 				pevt.getListaCampos().cancelPost();
 			}
-			if (txtSituaçãoIt.getVlrString().equals("")) {
-				txtSituaçãoIt.setVlrString("PE");
+			if (txtSituacaoIt.getVlrString().equals("")) {
+				txtSituacaoIt.setVlrString("PE");
 			}
 			if (txtSituacaoItAprov.getVlrString().equals("")) {
 				txtSituacaoItAprov.setVlrString("PE");
 			}
-			if (txtSituaçãoItComp.getVlrString().equals("")) {
-				txtSituaçãoItComp.setVlrString("PE");
+			if (txtSituacaoItComp.getVlrString().equals("")) {
+				txtSituacaoItComp.setVlrString("PE");
 			}
 			if (txtQtdItAprovado.getVlrString().equals("")) {
 				txtQtdItAprovado.setVlrDouble(new Double(0));
@@ -879,8 +879,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			if (txtSituacaoItAprov.getVlrString().equals("")) {
 				txtSituacaoItAprov.setVlrString("PE");
 			}
-			if (txtSituaçãoItComp.getVlrString().equals("")) {
-				txtSituaçãoItComp.setVlrString("PE");
+			if (txtSituacaoItComp.getVlrString().equals("")) {
+				txtSituacaoItComp.setVlrString("PE");
 			}
 
 		}
