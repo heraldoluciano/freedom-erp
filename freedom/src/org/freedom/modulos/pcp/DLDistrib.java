@@ -105,15 +105,17 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.adicColuna("Descrição da estrutura");
     tabDistrib.adicColuna("Seq.est.dist.");
     tabDistrib.adicColuna("Quant.");
+    tabDistrib.adicColuna("Lote");
     
     tabDistrib.setTamColuna(60,0);
     tabDistrib.setTamColuna(60,1);
-    tabDistrib.setTamColuna(160,2);
+    tabDistrib.setTamColuna(140,2);
     tabDistrib.setTamColuna(60,3);
     tabDistrib.setTamColuna(70,4);
-    tabDistrib.setTamColuna(200,5);
+    tabDistrib.setTamColuna(160,5);
     tabDistrib.setTamColuna(70,6);
     tabDistrib.setTamColuna(60,7);
+    tabDistrib.setTamColuna(60,8);
        
     tabDistrib.addMouseListener(this);
     
@@ -137,16 +139,21 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	    int iSeqDist = 0;
   	    float ftQtdade = 0;
   	    String sDescProd = null;
+  	    String sLote = null;
 	  	DLFechaDistrib dl = null; 
 	  	try {
 	  		iSeqDist =((Integer) tabDistrib.getValor(iLinha, 3)).intValue();
 	  		iCodProd = ((Integer) tabDistrib.getValor(iLinha, 4)).intValue();
 	  		sDescProd = ((String) tabDistrib.getValor(iLinha,5));
 	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
-	  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd, ftQtdade);
+	  		
+	  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
+	  		dl.setConexao(con);
 			dl.setVisible(true);
-			if (dl.OK) 
-				tabDistrib.setValor(dl.getValor(),iLinha,7);
+			if (dl.OK){
+				tabDistrib.setValor(dl.getValor()[0],iLinha,7);
+				tabDistrib.setValor(dl.getValor()[1],iLinha,8);
+			}
 	  	}
 		finally {
 			iLinha = 0;
@@ -154,7 +161,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 			iSeqDist = 0;
 			ftQtdade = 0;
 			sDescProd = null;
-			dl.dispose();
+			if (dl!=null)
+				dl.dispose();
 			dl = null;
 		}
   }
@@ -162,8 +170,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   public void mouseEntered(MouseEvent e) { }
   public void mouseExited(MouseEvent e) { }
   public void mousePressed(MouseEvent e) { }
-  public void mouseReleased(MouseEvent e) { }
-  
+  public void mouseReleased(MouseEvent e) { }  
   
   public void carregaTabela(int iCodop, int iSeqop) {
   	  PreparedStatement ps = null;
@@ -201,6 +208,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  		vLinha.addElement(rs.getString("DESCEST"));
   	  		vLinha.addElement(new Integer(rs.getInt("SEQESTDE")));
   	  		vLinha.addElement(new BigDecimal(0) );
+  	  		vLinha.addElement("");
+  	  		
   	  		tabDistrib.adicLinha(vLinha);
   	  		
   	  	}
@@ -230,5 +239,6 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	txtSeqEst.setVlrInteger((Integer) sValores[4]); 
 	txtDescEst.setVlrString((String)sValores[5]);
   }
-  
+    
+ 
 }

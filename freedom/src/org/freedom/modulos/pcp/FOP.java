@@ -764,7 +764,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     else if (evt.getSource() == btRatearItem)
     	ratearItem(true);
     else if (evt.getSource() == btDistrb){
-    	Object[] sValores = new Object[6];
+    	Object[] sValores = new Object[7];
     	sValores[0]= txtCodOP.getVlrInteger();
     	sValores[1]= txtSeqOP.getVlrInteger();
     	sValores[2]= txtCodProdEst.getVlrInteger();
@@ -864,6 +864,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	}
   	return bRet;  	
   }
+  
   public void gravaLote(boolean bInsere){
 	if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) ){
 		ObjetoModLote ObjMl = new ObjetoModLote();
