@@ -37,6 +37,8 @@ import org.freedom.acao.RadioGroupListener;
 import java.util.Enumeration;
 import java.util.Vector;
 public class JRadioGroup extends JPanel implements ActionListener, KeyListener{
+
+  private static final long serialVersionUID = 1L;
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;
   public static final int TP_INTEGER = 4;

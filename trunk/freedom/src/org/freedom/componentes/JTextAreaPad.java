@@ -23,6 +23,8 @@ import javax.swing.JTextArea;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 public class JTextAreaPad extends JTextArea implements KeyListener { 
+
+  private static final long serialVersionUID = 1L;
   private ListaCampos lcTxa = null;
   public int iTamanho = 10000;
   public int iDecimal = 0;

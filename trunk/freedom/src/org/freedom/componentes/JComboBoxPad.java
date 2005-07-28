@@ -29,6 +29,8 @@ import org.freedom.acao.JComboBoxEvent;
 import org.freedom.acao.JComboBoxListener;
 
 public class JComboBoxPad extends JComboBox implements JComboBoxListener, ItemListener {
+
+  private static final long serialVersionUID = 1L;
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;
   public static final int TP_INTEGER = 4;

@@ -26,6 +26,10 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.freedom.acao.ArvoreFace;
 public class Arvore extends JTree implements ArvoreFace {
+  /**
+	 * 
+	 */
+  private static final long serialVersionUID = 1L;
   private ArvoreFace face = this;
   public Arvore() {
   	setCellRenderer(new NohImg(this));
@@ -41,6 +45,10 @@ public class Arvore extends JTree implements ArvoreFace {
   }
 }
 class NohImg extends DefaultTreeCellRenderer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Arvore pai = null;
     public NohImg(Arvore p) {
       pai = p;

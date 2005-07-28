@@ -23,6 +23,7 @@ import javax.swing.JMenuItem;
 
 public class JMenuItemPad extends JMenuItem {
 
+	private static final long serialVersionUID = 1L;
 	private int iCodSys = 0;
 	private int iCodMod = 0;
     private int iCodIt = 0;
