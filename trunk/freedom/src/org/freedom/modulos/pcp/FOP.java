@@ -77,8 +77,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTabbedPanePad tpnAbas = new JTabbedPanePad();
-  private JPanelPad pinAbaOp = new JPanelPad();
-  private JPanelPad pinAbaRma = new JPanelPad();
   private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);  
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -141,7 +139,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private ImageIcon imgOPSub = Icone.novo("clEng_azul.gif");
   private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
   private ImageIcon imgColunaRMA = null;
-  private ImageIcon imgColunaOPS = null;
   private boolean bBuscaRMA = false;
   private boolean bBuscaOPS = false;
   
@@ -512,7 +509,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		String sSeqOp = txtSeqOP.getVlrString();
 		if((sCodOp.trim().equals("")) || (sSeqOp.trim().equals("")))
 			return;
-		String sSitRma = "";
 		String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
 				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
 				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,R.CODOP "
@@ -586,7 +582,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		String sSeqOp = txtSeqOP.getVlrString();
 		if(("".equals(sCodOp)) || ("".equals(sSeqOp)))
 			return;
-		String sSitRma = "";
 		String sSQL = "SELECT OP.CODOP,OP.seqop,PD.codprod,OP.SEQEST,PD.descprod,ET.DESCEST, " +
 					  "OP.qtdprevprodop,OP.qtdfinalprodop,OP.dtfabrop,OP.sitop "+
 					  "FROM PPOP OP, EQPRODUTO PD,ppestrutura ET where "+

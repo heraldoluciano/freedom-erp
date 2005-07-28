@@ -32,7 +32,6 @@ import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
 import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -46,14 +45,12 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
-  private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec);
-  private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
+  private JTextFieldPad txtDiasValid = new JTextFieldPad(JTextFieldPad.TP_DATE,5,0);
+ 
   Date dtVenctoLote = null;
   int iCodProd = 0;
   int iSeqEst = 0;
-  int iDiasVald = 0;
-  boolean bModLote = false;
+  int iDiasValid = 0;
   String sCodLote = "";
   String sModLote = "";
   String sDtFabric = "";
@@ -77,6 +74,8 @@ public class DLFechaDistrib extends FFDialogo {
     adic(txtQtdDist,90,70,90,20);
     adic(new JLabelPad("Lote"),183,50,80,20);
     adic(txtLote,183,70,97,20);
+    adic(new JLabelPad("Validade"),183,90,80,20);
+    adic(txtDiasValid,183,110,97,20);
     
     txtCodProd.setVlrInteger(new Integer(iCodProd));
     txtDescProd.setVlrString(sDescProd);
@@ -87,6 +86,7 @@ public class DLFechaDistrib extends FFDialogo {
     txtDescProd.setAtivo(false);
     txtSeqDist.setAtivo(false);
     txtLote.setAtivo(false);
+    txtDiasValid.setAtivo(false);
   }
   
   public void setConexao(Connection cn) {
@@ -160,7 +160,7 @@ public class DLFechaDistrib extends FFDialogo {
 	return sUsaLote;
   }
   
-  public boolean existeLote(){
+  public boolean existeLote(String sCodLote){
   	boolean bRet = false;
 	String sSQL = "SELECT CODLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=?";
 	try {
@@ -200,7 +200,7 @@ public class DLFechaDistrib extends FFDialogo {
 			if (rs.next()) {
 				sCodLote = rs.getString(1);
 				sModLote = rs.getString(2);
-				iDiasVald = rs.getInt(3);
+				iDiasValid = rs.getInt(3);
 				
 			}
 			rs.close();
@@ -217,44 +217,45 @@ public class DLFechaDistrib extends FFDialogo {
 		sLote = ObjMl.getLote(new Integer(iCodProd),txtDtFabProd.getVlrDate(),con);  			
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(txtDtFabProd.getVlrDate());
-		cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasVald);
+		cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
 		dtVenctoLote = cal.getTime();	
-		sCodLote = sLote;
-		if((!existeLote())){			
-			txtLote.setVlrString(sLote);	
-			bModLote = true;
+		txtLote.setVlrString(sLote);
+		txtDiasValid.setVlrDate(dtVenctoLote);
+	}
+  }
+  public boolean gravaLote(){
+	  boolean bret = false;
+	  if((!existeLote(sLote))){			
+			txtLote.setVlrString(sLote);
+			txtDiasValid.setVlrDate(dtVenctoLote);
+			if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
+	  			String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
+	  			try {
+	  				   PreparedStatement ps = con.prepareStatement(sSql); 
+	  					   ps.setInt(1,Aplicativo.iCodEmp);
+	  					   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
+	  					   ps.setInt(3,iCodProd);
+	  					   ps.setString(4,sLote);
+	  					   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
+	  				   
+	  				   if (ps.executeUpdate() == 0) {
+	  					  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
+	  				   }
+	  				   if (!con.getAutoCommit())
+	  				      con.commit();
+	  			 }
+	  			 catch (SQLException err) {
+	  			 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
+	  			 }
+	  	  	}
+	  		else
+	  			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+				txtDiasValid.setVlrDate(null);
 		}
 		else {
 			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
-			bModLote = false;
-			Funcoes.mensagemInforma(this,"Lote já cadastrado para o produto!");
+			Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
 		}
-	}
-  }
-  public void gravaLote(){
-  	if(bModLote){
-  		if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
-  			String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
-  			try {
-  				   PreparedStatement ps = con.prepareStatement(sSql); 
-  					   ps.setInt(1,Aplicativo.iCodEmp);
-  					   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
-  					   ps.setInt(3,iCodProd);
-  					   ps.setString(4,sLote);
-  					   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
-  				   
-  				   if (ps.executeUpdate() == 0) {
-  					  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
-  				   }
-  				   if (!con.getAutoCommit())
-  				      con.commit();
-  			 }
-  			 catch (SQLException err) {
-  			 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
-  			 }
-  	  	}
-  		else
-  			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
-  	  }
+	  return bret;
   	}
 }
