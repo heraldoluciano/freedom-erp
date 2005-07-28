@@ -23,15 +23,14 @@ package org.freedom.modulos.pcp;
 import java.awt.Component;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.JOptionPane;
 
-import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -50,12 +49,15 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldFK txtDescLoteProdEst = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
   private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec);
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
+  Date dtVenctoLote = null;
   int iCodProd = 0;
   int iSeqEst = 0;
+  int iDiasVald = 0;
+  boolean bModLote = false;
   String sCodLote = "";
   String sModLote = "";
   String sDtFabric = "";
-  int iDiasVald = 0;
+  String sLote = "";
   
   public DLFechaDistrib(Component cOrig,int iSeqDist, int iCProd,String sDescProd, float ftQtdade) {
   	super(cOrig);
@@ -64,14 +66,6 @@ public class DLFechaDistrib extends FFDialogo {
     
     iCodProd = iCProd;
     iSeqEst = iSeqDist;
-    
-    lcLoteProdEst.add(new GuardaCampo(txtLote, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLoteProdEst, false));
-	lcLoteProdEst.add(new GuardaCampo(txtDescLoteProdEst, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
-	lcLoteProdEst.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
-	lcLoteProdEst.montaSql(false, "LOTE", "EQ");
-	lcLoteProdEst.setQueryCommit(false);
-	lcLoteProdEst.setReadOnly(true);
-	txtLote.setTabelaExterna(lcLoteProdEst);
    
     adic(new JLabelPad("Cód.Prod"),7,10,80,20);
     adic(txtCodProd,7,30,80,20);
@@ -99,7 +93,7 @@ public class DLFechaDistrib extends FFDialogo {
   	 super.setConexao(cn);
      if(getUsaLote().equals("S")){
     	txtLote.setAtivo(true);
-     	gravaLote(true);
+     	getModLote();
      }
      else
      	 txtLote.setAtivo(false);
@@ -188,7 +182,7 @@ public class DLFechaDistrib extends FFDialogo {
   	return bRet;  	
   }
 
-  public void gravaLote(boolean bInsere){
+  public void getModLote(){
   	String sSQL = "SELECT E.CODMODLOTE, M.TXAMODLOTE, E.NRODIASVALID"
   				+ " FROM PPESTRUTURA E, EQMODLOTE M"
 				+ " WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=?"
@@ -220,43 +214,47 @@ public class DLFechaDistrib extends FFDialogo {
 		txtDtFabProd.setVlrDate(new Date());
 		ObjetoModLote ObjMl = new ObjetoModLote();
 		ObjMl.setTexto(sModLote);
-		String sLote = ObjMl.getLote(new Integer(iCodProd),txtDtFabProd.getVlrDate(),con);  			
+		sLote = ObjMl.getLote(new Integer(iCodProd),txtDtFabProd.getVlrDate(),con);  			
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(txtDtFabProd.getVlrDate());
 		cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasVald);
-		Date dtVenctoLote = cal.getTime();	
+		dtVenctoLote = cal.getTime();	
 		sCodLote = sLote;
-		if((!existeLote()) && (bInsere)){
-			
-			txtLote.setVlrString(sLote);
-			
-			if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
-				String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
-				try {
-					   PreparedStatement ps = con.prepareStatement(sSql); 
-						   ps.setInt(1,Aplicativo.iCodEmp);
-						   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
-						   ps.setInt(3,iCodProd);
-						   ps.setString(4,sLote);
-						   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
-					   
-					   if (ps.executeUpdate() == 0) {
-						  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
-					   }
-					   if (!con.getAutoCommit())
-					      con.commit();
-				 }
-				 catch (SQLException err) {
-				 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
-				 }
-		  	}
-			else
-				txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+		if((!existeLote())){			
+			txtLote.setVlrString(sLote);	
+			bModLote = true;
 		}
-		else if (bInsere){
+		else {
 			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+			bModLote = false;
 			Funcoes.mensagemInforma(this,"Lote já cadastrado para o produto!");
 		}
 	}
   }
+  public void gravaLote(){
+  	if(bModLote){
+  		if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
+  			String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
+  			try {
+  				   PreparedStatement ps = con.prepareStatement(sSql); 
+  					   ps.setInt(1,Aplicativo.iCodEmp);
+  					   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
+  					   ps.setInt(3,iCodProd);
+  					   ps.setString(4,sLote);
+  					   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
+  				   
+  				   if (ps.executeUpdate() == 0) {
+  					  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
+  				   }
+  				   if (!con.getAutoCommit())
+  				      con.commit();
+  			 }
+  			 catch (SQLException err) {
+  			 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
+  			 }
+  	  	}
+  		else
+  			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+  	  }
+  	}
 }
