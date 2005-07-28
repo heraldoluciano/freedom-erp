@@ -48,6 +48,15 @@ public class NF {
 	public static final int C_CIDEMITAUX = 12;
 	public static final int C_UFEMITAUX = 13;
 	public static final int C_INCRAEMIT = 14;
+	public static final int C_CODEMIT = 15;
+	public static final int C_DTEMIT = 16;
+	public static final int C_ENDEMIT = 17;
+	public static final int C_NUMEMIT = 18;
+	public static final int C_COMPLEMIT = 19;
+	public static final int C_BAIREMIT = 20;
+	public static final int C_CEPEMIT = 21;
+	public static final int C_IMPDTSAIDA = 22;
+	public static final int C_DTSAIDA = 23;
 	
 	
 	private int casasDec = 2;
