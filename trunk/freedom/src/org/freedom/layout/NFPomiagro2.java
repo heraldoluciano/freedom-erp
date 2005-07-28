@@ -52,7 +52,9 @@ public class NFPomiagro2 extends Layout {
 	vMens.clear();
 	
     String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+    /*
     try {
+    */
       if (cab.next()) {
         iNumNota = cab.getInt(NF.C_DOC);
       }
@@ -129,28 +131,28 @@ public class NFPomiagro2 extends Layout {
            
            sIncra = cab.getString(NF.C_INCRAEMIT);
            if (sIncra != null ){
-			 imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+" - "+sValsCli[1]+"Incra:");
-			 imp.say(imp.pRow()+0,71,rs.getString("IncraCli"));
+			 imp.say(imp.pRow()+0,6,cab.getInt(NF.C_CODEMIT)+" - "+sValsCli[1]+"Incra:");
+			 imp.say(imp.pRow()+0,71,cab.getString(NF.C_INCRAEMIT));
            }
 		   else  {
-             imp.say(imp.pRow()+0,6,rs.getInt("CodCli")+" - "+sValsCli[1]);
+             imp.say(imp.pRow()+0,6,cab.getInt(NF.C_CODEMIT)+" - "+sValsCli[1]);
            }        
             
-           imp.say(imp.pRow()+0,95,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
-           imp.say(imp.pRow()+0,126,Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+           imp.say(imp.pRow()+0,95,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"##.###.###/####-##")) ;
+           imp.say(imp.pRow()+0,126,Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMIT)));
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,Funcoes.copy(rs.getString("EndCli"),0,30).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
-           imp.say(imp.pRow()+0,76,rs.getString("BairCli"));
-           imp.say(imp.pRow()+0,106,Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
-           sImpDtSaidaNat = rs.getString("IMPDTSAIDANAT");
+           imp.say(imp.pRow()+0,6,Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,30).trim()+", "+(cab.getString(NF.C_NUMEMIT) != null ? Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() : "").trim()+" - "+(cab.getString(NF.C_COMPLEMIT) != null ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : "").trim());
+           imp.say(imp.pRow()+0,76,cab.getString(NF.C_BAIREMIT));
+           imp.say(imp.pRow()+0,106,Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
+           sImpDtSaidaNat = cab.getString(NF.C_IMPDTSAIDA);
            if (sImpDtSaidaNat==null) sImpDtSaidaNat = "S";
            if (sImpDtSaidaNat.equals("S"))
-              imp.say(imp.pRow()+0,126,Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+              imp.say(imp.pRow()+0,126,Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)));
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,sValsCli[2] != null ? sValsCli[2] : "");
-           imp.say(imp.pRow()+0,63,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
+           /*imp.say(imp.pRow()+0,63,(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
 				   				   (rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
            imp.say(imp.pRow()+0,87,sValsCli[3] != null ? sValsCli[3] : "");
            imp.say(imp.pRow()+0,96,rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
@@ -348,16 +350,16 @@ public class NFPomiagro2 extends Layout {
              imp.say(imp.pRow()+1,0,"");
            }
            imp.setPrc(0,0);
-           imp.incPags();
+           imp.incPags();*/
          }
       }
       imp.fechaGravacao();
       retorno = true;
-    }
+    /*}
     catch ( SQLException err ) {
       JOptionPane.showMessageDialog(null,"Erro ao consultar tabela de Venda!"+err.getMessage());      
       bRetorno = false;
-    }
+    }*/
     return retorno;
   }
 }
