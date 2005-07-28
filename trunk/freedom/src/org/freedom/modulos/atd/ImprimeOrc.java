@@ -37,6 +37,7 @@ import org.freedom.telas.Aplicativo;
 
 
 public class ImprimeOrc extends ImprimeLayout {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private int iCodOrc = 0;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);

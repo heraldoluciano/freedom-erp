@@ -43,6 +43,8 @@ import org.freedom.telas.DLF3;
 import org.freedom.telas.FAtalhos;
 
 public class JTextFieldPad extends JTextField implements FocusListener, KeyListener, EditListener {
+
+  private static final long serialVersionUID = 1L;
   public static final int TP_NONE = -1;
   public static final int TP_STRING = 0;
   public static final int TP_DATE = 1;

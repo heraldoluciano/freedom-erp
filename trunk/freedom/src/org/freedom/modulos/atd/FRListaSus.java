@@ -39,6 +39,7 @@ import org.freedom.telas.FTabDados;
 
 
 public class FRListaSus extends FTabDados implements PostListener, CheckBoxListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pinGeral;
   private JPanelPad pinPacientes;
   private JPanelPad pinPacientes2;

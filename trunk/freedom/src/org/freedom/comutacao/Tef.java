@@ -193,7 +193,7 @@ public class Tef {
 
     public boolean existeInfo(String sCab, File fArq, int iTentativas,long lIdent) {
         //Cada tentiva leva por volta de 1 segundo.
-        String sLinha;
+//        String sLinha;
         boolean bRet = false;
         int iConta = 1;
         while (true) {
@@ -257,9 +257,9 @@ public class Tef {
     }
 
 	public Properties solicVenda(int iNumCupom, BigDecimal bigVal) {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return null;
         //Pega uma identificação e já deixa outra disponível;
@@ -278,9 +278,9 @@ public class Tef {
 
 
     public Properties solicCancelamento(String sNSU, String sRede, Date dTrans, BigDecimal bigVal) {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return null;
         //Pega uma identificação e já deixa outra disponível;
@@ -301,9 +301,9 @@ public class Tef {
     }
 
     public boolean confirmaCNF(Properties prop) {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return false;
         confirmaRetorno();
@@ -322,9 +322,9 @@ public class Tef {
     }
 
     public boolean confirmaVenda(Properties prop) {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return false;
         confirmaRetorno();
@@ -343,9 +343,9 @@ public class Tef {
     }
 
     public boolean naoConfirmaVenda(Properties prop) {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return false;
         
@@ -376,9 +376,9 @@ public class Tef {
     }
     
     public boolean naoConfirmaCNF(Properties prop) {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return false;
         
@@ -408,9 +408,9 @@ public class Tef {
     }
 
     public Properties solicAdm() {
-        String pRet = null;
+//        String pRet = null;
         boolean bRet;
-        int iConta;
+//        int iConta;
         if (!verifTef())
             return null;
 

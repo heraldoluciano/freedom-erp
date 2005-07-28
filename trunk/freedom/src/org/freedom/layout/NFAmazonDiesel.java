@@ -144,7 +144,7 @@ public class NFAmazonDiesel extends Leiaute {
          }
 //Descrições adicionais colocadas junto a decrição do produto.
          
-         String sDescAdic = ""; 
+//         String sDescAdic = ""; 
          String sTmp = rs.getString(5) != null ? rs.getString(5).trim() : ""; 
 		 sTmp = rs.getString(4) != null ? rs.getString(4).trim() : "";
 		 String sClasFisc = Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2);

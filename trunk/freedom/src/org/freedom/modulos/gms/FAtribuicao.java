@@ -38,6 +38,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener, PostListener, CarregaListener {
+  private static final long serialVersionUID = 1L;	
   private JTextFieldPad txtIdAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
   private JTextFieldPad txtDescAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtRmaAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);

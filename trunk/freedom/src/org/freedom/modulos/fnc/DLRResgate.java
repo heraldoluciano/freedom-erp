@@ -24,6 +24,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLRResgate extends FFDialogo {
+  private static final long serialVersionUID = 1L;	
   private JRadioGroup rgOrdem = null;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
 			10, 0);
@@ -35,7 +36,7 @@ public class DLRResgate extends FFDialogo {
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
-  private Vector vStrTipo = new Vector();
+//  private Vector vStrTipo = new Vector();
   
   public DLRResgate(Component cOrig) {
   	super(cOrig);

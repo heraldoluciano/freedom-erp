@@ -31,12 +31,12 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereAtend extends FTabDados {
+	private static final long serialVersionUID = 1L;
 	private JPanelPad pinGeral = null;
 	private JPanelPad pinTipo = null;
 	private JPanelPad pinSetor = null;
 	private JPanelPad pinConv = null;
 	private JPanelPad pinOrc = null;
-
 	private JTextFieldPad txtClassMedida = new JTextFieldPad(JTextFieldPad.TP_STRING, 20 , 0);
 	private JTextFieldPad txtCodTpAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescTpAtend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);

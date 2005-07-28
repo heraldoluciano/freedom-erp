@@ -39,6 +39,7 @@ import org.jfree.data.CategoryDataset;
 import org.jfree.data.DefaultCategoryDataset;
 
 public class EvoluVendasBarras extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
 	private Font fnCabEmp = new Font("Arial",Font.PLAIN,8);

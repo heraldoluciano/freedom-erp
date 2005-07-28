@@ -43,6 +43,7 @@ import org.jfree.data.DefaultPieDataset;
 import org.jfree.util.Rotation;
 
 public class BalancetePizza extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
 	private Font fnCabEmp = new Font("Arial",Font.PLAIN,8);
@@ -185,6 +186,7 @@ public class BalancetePizza extends LeiauteGR {
 	  return sVlrLabel;
 	}	
 	class Rotator extends Timer implements ActionListener {
+		private static final long serialVersionUID = 1L;
 		private Pie3DPlot plot;
 		private int angle = 270;
 		Rotator(Pie3DPlot plot) {

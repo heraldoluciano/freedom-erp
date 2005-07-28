@@ -70,14 +70,13 @@ import org.freedom.telas.FObservacao;
 
 public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
-
+	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinCab = new JPanelPad(740, 242);
 	private JPanelPad pinBotCab = new JPanelPad(104, 92);
 	private JPanelPad pinBotDet = new JPanelPad(104, 63);
 	private JPanelPad pinDet = new JPanelPad();
 	private JPanelPad pinLb = new JPanelPad();
-
 	private JLabelPad lSitItSol = null;
 	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
 	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
@@ -121,8 +120,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
+//	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
@@ -156,7 +154,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
-	private ListaCampos lcUsuAtual = new ListaCampos(this, "UA");
+//	private ListaCampos lcUsuAtual = new ListaCampos(this, "UA");
 
 	String sOrdNota = "";
 	String sOrdSol = "";
@@ -468,7 +466,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		pinLb.adic(lSitItSol, 31, 0, 110, 20);
 		pinDet.adic(pinLb, 630, 91, 114, 24);
 	}
-
+/*
 	private void testaCodSol() { //Traz o verdadeiro número do codCompra
 		// através do generator do banco
 		PreparedStatement ps = null;
@@ -488,7 +486,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					+ err.getMessage(), true, con, err);
 		}
 	}
-
+*/
 	public void focusGained(FocusEvent fevt) {}
 
 	public void focusLost(FocusEvent fevt) {}
@@ -546,7 +544,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		String[] sValores = null;
+//		String[] sValores = null;
 		if (evt.getSource() == btPrevimp)
 			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)
@@ -740,7 +738,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		boolean bStatusTravaTudo = ((sSitIt.equals("AF"))
 				|| (sSitIt.equals("EF")) || (sSitIt.equals("CA")));
-		boolean bStatusTravaExp = (!(sSitIt.equals("AF")));
+//		boolean bStatusTravaExp = (!(sSitIt.equals("AF")));
 
 		if (cevt.getListaCampos() == lcDet) {
 			if (sSitIt.equals("CA")) {
@@ -908,7 +906,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	public void execDev(int iCodFor, int iCodTipoMov, String sSerie, int iDoc) {
 		lcCampos.insert(true);
 	}
-
+/*
 	private int buscaAnoBaseCC() {
 		int iRet = 0;
 		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
@@ -928,7 +926,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		}
 		return iRet;
 	}
-
+*/
 	public void carregaWhereAdic() {
 		buscaInfoUsuAtual();
 		if ((bAprovaCab) || (bCotacao)) {

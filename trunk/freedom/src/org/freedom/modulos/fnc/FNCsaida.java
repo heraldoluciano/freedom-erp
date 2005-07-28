@@ -32,7 +32,7 @@ import org.freedom.telas.FDados;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class FNCsaida extends FDados implements PostListener {
-	
+	  private static final long serialVersionUID = 1L;	
 	  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 	  private JTextFieldFK  txtBanco = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	  private JTextFieldPad txtNcheque = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);

@@ -24,7 +24,9 @@ import java.awt.Font;
 
 import org.freedom.componentes.JTextFieldPad;
 public class JTextFieldFK extends JTextFieldPad { 
-  public JTextFieldFK (int iTipo, int iTam, int iDec) { 
+
+private static final long serialVersionUID = 1L;
+public JTextFieldFK (int iTipo, int iTam, int iDec) { 
   	super( iTipo, iTam, iDec);
     setBackground(Color.lightGray);
     setFont(new Font("Dialog", Font.BOLD, 12));

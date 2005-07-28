@@ -48,6 +48,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FZoom;
 
 public class PainelImagem extends JPanelPad implements ActionListener, MouseListener {
+
+  private static final long serialVersionUID = 1L;
   public static final int TP_NONE = -1;
   public static final int TP_BYTES = 11;
   private Image imImagem = null;

@@ -33,8 +33,6 @@ public class NF {
 	public static final int T_CAB = 0;
 	public static final int T_ITENS = 1;
 	public static final int T_PARC = 2;
-
-
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
 	public static final int C_DESCNAT = 3;

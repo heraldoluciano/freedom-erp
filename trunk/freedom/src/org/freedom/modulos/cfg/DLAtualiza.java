@@ -34,7 +34,7 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLAtualiza extends FFDialogo {
-   
+   private static final long serialVersionUID = 1L;   
    public DLAtualiza(Component cOrig) {
    	 super(cOrig);
 	 setTitulo("Atualização do sistema");

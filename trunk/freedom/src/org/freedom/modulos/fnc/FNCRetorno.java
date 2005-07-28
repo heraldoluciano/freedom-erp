@@ -39,7 +39,7 @@ import org.freedom.telas.FDados;
  */
 public class FNCRetorno extends FDados implements JComboBoxListener{
 	
-	 
+	  private static final long serialVersionUID = 1L;	 
 	  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 7, 0);
 	  private JTextFieldFK  txtBanco = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	  private JTextFieldPad txtNcheque = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);

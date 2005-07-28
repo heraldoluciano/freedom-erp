@@ -56,6 +56,7 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
+	private static final long serialVersionUID = 1L;
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JPanelPad pnBotoes = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

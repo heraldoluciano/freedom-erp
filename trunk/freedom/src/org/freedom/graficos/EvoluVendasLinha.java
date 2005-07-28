@@ -39,6 +39,7 @@ import org.jfree.data.XYSeriesCollection;
 
 
 public class EvoluVendasLinha extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnLegenda = new Font("Arial",Font.BOLD,10);
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);

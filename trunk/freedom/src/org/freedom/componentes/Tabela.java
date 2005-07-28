@@ -42,6 +42,8 @@ import org.freedom.acao.TabelaSelListener;
 
 
 public class Tabela extends JTable implements TabelaEditListener, TabelaSelListener {
+
+  private static final long serialVersionUID = 1L;
   private Modelo modelo = new Modelo();
   int ContaColunas = 0;
   int ContaLinhas = 0;
@@ -54,7 +56,8 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
     setAutoResizeMode(AUTO_RESIZE_OFF);
     setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     DefaultTableCellRenderer bigDecimalRenderer = new DefaultTableCellRenderer() {
-	    public void setValue(Object value) {
+		private static final long serialVersionUID = 1L;
+		public void setValue(Object value) {
    		    setText((value == null) ? "" : ""+value);
 	    }
     };
@@ -62,7 +65,8 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
     setDefaultRenderer(BigDecimal.class, bigDecimalRenderer);
     
     DefaultTableCellRenderer stringDireitaRenderer = new DefaultTableCellRenderer() {
-    	public void setValue(Object value) {
+		private static final long serialVersionUID = 1L;
+		public void setValue(Object value) {
     		setText((value == null) ? "" : ""+value);
     	}
     };
@@ -250,7 +254,8 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   }
   
   class Modelo extends AbstractTableModel implements Serializable {
-    protected Vector    dataVector;
+	private static final long serialVersionUID = 1L;
+	protected Vector    dataVector;
     protected Vector    columnIdentifiers;
     boolean bEditavel = false;
     boolean[] bColsEdit = null;
@@ -495,10 +500,12 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   }
 }
 class DateEditor extends DefaultCellEditor {
-  public DateEditor() {
+	private static final long serialVersionUID = 1L;
+    public DateEditor() {
 	super(new JTextFieldPad(JTextFieldPad.TP_DATE,10,0));
 	delegate = new EditorDelegate() {
-	  public void setValue(Object value) {
+	private static final long serialVersionUID = 1L;
+	public void setValue(Object value) {
 		((JTextFieldPad)editorComponent).setVlrDate((Date)value);
 	  }
 	};

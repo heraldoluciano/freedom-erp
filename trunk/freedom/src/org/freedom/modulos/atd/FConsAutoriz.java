@@ -52,6 +52,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FConsAutoriz extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;	
 	private JPanelPad pinCab = new JPanelPad(0,210);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

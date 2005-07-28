@@ -63,7 +63,7 @@ import org.freedom.telas.FDetalhe;
 
 public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
-
+	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();
@@ -392,9 +392,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				&& txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE") && txtCodUsu
 				.getVlrString().equals(Aplicativo.strUsuario))
 				|| allowItems;
-		boolean blockCot = (blockItems
-				&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("PE") && txtCodUsu
-				.getVlrString().equals(Aplicativo.strUsuario));
+//		boolean blockCot = (blockItems	&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("PE") && txtCodUsu	.getVlrString().equals(Aplicativo.strUsuario));
 
 		if (cevt.getListaCampos() == lcCampos) {
 			lcCampos.setReadOnly(!block);
@@ -470,7 +468,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		String[] sValores = null;
+//		String[] sValores = null;
 		if (evt.getSource() == btPrevimp)
 			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)

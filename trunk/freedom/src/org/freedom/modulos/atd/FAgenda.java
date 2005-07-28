@@ -60,6 +60,7 @@ import org.freedom.telas.FFilho;
 
 
 public class FAgenda extends FFilho implements ActionListener {
+  private static final long serialVersionUID = 1L;	
   private JPanelPad pinCabAgd = new JPanelPad(0,70);
   private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRodAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -209,7 +210,7 @@ public class FAgenda extends FFilho implements ActionListener {
   	if (iCodAge!=0) {
 		Object[] oDatas = calendarpanel.getValues();
 		Date dData = null;
-		String sData = "";
+//		String sData = "";
 		String sDatas = "";
   		if (oDatas == null) {
   			oDatas = new Object[1];

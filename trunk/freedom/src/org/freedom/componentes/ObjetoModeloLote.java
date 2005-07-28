@@ -130,7 +130,7 @@ public String getLote(Integer iCodProd,Date dData,Connection con){
 	GregorianCalendar cal = new GregorianCalendar();
 	cal.setTime(dData);
 	    try {
-  	        Vector vTamsAdic = getTamsAdic();
+//  	        Vector vTamsAdic = getTamsAdic();
   	        Vector vValAdic = getValoresAdic();
   	        if (sRetorno != null) { 
   	            try {			    	    

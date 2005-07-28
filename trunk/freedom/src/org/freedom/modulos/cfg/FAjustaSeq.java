@@ -26,6 +26,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FAjustaSeq extends FDados {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtSgTab = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtNroSeq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public FAjustaSeq() {

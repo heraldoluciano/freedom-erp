@@ -60,6 +60,7 @@ import org.freedom.telas.FTabDados;
 
 
 public class FUsuario extends FTabDados implements PostListener, DeleteListener, InsertListener, CarregaListener, ActionListener, CheckBoxListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JPanelPad pinGeral = new JPanelPad();
   private JPanelPad pinAcesso = new JPanelPad();

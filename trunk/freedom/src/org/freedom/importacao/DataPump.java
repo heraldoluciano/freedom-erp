@@ -21,10 +21,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/**
- * @author alexandre TODO To change the template for this generated type comment
- *         go to Window - Preferences - Java - Code Style - Code Templates
- */
 public class DataPump {
 
 	private Banco banco = null;
@@ -33,15 +29,15 @@ public class DataPump {
 
 	private String driver = "org.firebirdsql.jdbc.FBDriver";
 
-	private String arquivo = "";
+//	private String arquivo = "";
 
-	private String dados = "";
+//	private String dados = "";
 
 	private Document document = null;
 
 	private Vector size = new Vector();
 
-	private Vector values = new Vector();
+//	private Vector values = new Vector();
 
 	private Vector fields = new Vector();
 
@@ -294,7 +290,7 @@ public class DataPump {
 			System.exit(2);
 		}
 
-		this.arquivo = arquivo;
+//		this.arquivo = arquivo;
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -385,13 +381,10 @@ public class DataPump {
 		}
 
 		if (args.length >= 5) {
-			boolean windows = args[4].equalsIgnoreCase("/windows")
-					|| args[4].equalsIgnoreCase("--windows")
-					|| args[4].equalsIgnoreCase("-windows");
-			DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0],
-					windows);
+//			boolean windows = args[4].equalsIgnoreCase("/windows")|| args[4].equalsIgnoreCase("--windows")|| args[4].equalsIgnoreCase("-windows");
+//			DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0],windows);
 		} else {
-			DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0]);
+//			DataPump dataPump = new DataPump(args[2], args[3], args[1], args[0]);
 		}
 	}
 

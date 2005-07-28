@@ -71,7 +71,7 @@ import org.freedom.telas.FObservacao;
 
 public class FRma extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
-
+	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinCab = new JPanelPad(740,242);
 	private JPanelPad pinBotCab = new JPanelPad(104,92);
@@ -100,10 +100,10 @@ public class FRma extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOF = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtQtdPrev = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtQtdFabr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+//	private JTextFieldPad txtQtdPrev = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+//	private JTextFieldPad txtQtdFabr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
-	private JTextFieldPad txtTipoFase = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+//	private JTextFieldPad txtTipoFase = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
@@ -145,7 +145,7 @@ public class FRma extends FDetalhe implements PostListener,
 	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcLote = new ListaCampos(this, "LE");
 	private ListaCampos lcUsu = new ListaCampos(this,"UU");
-	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
+//	private ListaCampos lcUsuAtual = new ListaCampos(this,"UA");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 
 	String sSitItRma = txtSitItRma.getVlrString();
@@ -454,7 +454,7 @@ public class FRma extends FDetalhe implements PostListener,
 		pinLb.adic(lSitItRma,31,0,110,20);
 		pinDet.adic(pinLb,630,91,114,24);
 		
-	}
+	}/*
 	private void buscaLote() {
 		String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
 				+ "L.CODPROD=? AND L.CODFILIAL=? AND L.SLDLIQLOTE>0 "
@@ -481,7 +481,7 @@ public class FRma extends FDetalhe implements PostListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
 		}
-	}
+	}*/
     private void buscaInfoUsuAtual() {        
 		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " +
 				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
@@ -808,7 +808,7 @@ public class FRma extends FDetalhe implements PostListener,
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		String[] sValores = null;
+//		String[] sValores = null;
 		if (evt.getSource() == btPrevimp)
 			imprimir(true, txtCodRma.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)
@@ -920,8 +920,8 @@ public class FRma extends FDetalhe implements PostListener,
 		ResultSet rs = null;
 		
 		
-		int iItImp = 0;
-		int iMaxItem = 0;
+//		int iItImp = 0;
+//		int iMaxItem = 0;
 		try {
 			
 						

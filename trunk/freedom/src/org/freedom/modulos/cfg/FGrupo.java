@@ -38,6 +38,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FGrupo extends FDados implements PostListener,DeleteListener { 
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldPad txtNomeGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextAreaPad txaComentGrup = new JTextAreaPad(JTextFieldPad.TP_STRING);
