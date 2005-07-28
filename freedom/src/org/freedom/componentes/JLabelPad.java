@@ -24,6 +24,8 @@ import javax.swing.JLabel;
 
 public class JLabelPad extends JLabel {
 
+	private static final long serialVersionUID = 1L;
+
 	public JLabelPad() {
 		super();
 	}

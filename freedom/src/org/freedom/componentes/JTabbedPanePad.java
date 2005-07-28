@@ -19,6 +19,8 @@ import javax.swing.JTabbedPane;
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class JTabbedPanePad extends JTabbedPane implements FocusListener  {
+
+	private static final long serialVersionUID = 1L;
 	private boolean initFirstFocus = true;
 	private boolean controlFocus = true;
 	// Flag que indica para o component procurar o primeiro campo para foco.

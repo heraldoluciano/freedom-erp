@@ -77,6 +77,7 @@ import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
 
 public class ImprimeLayout extends JPanelPad implements Printable, VetoableChangeListener {
+  private static final long serialVersionUID = 1L;
   public static final byte AL_CEN = 0; //Centro
   public static final byte AL_BCEN = 1; //Centro
   public static final byte AL_DIR = 2; //Direita

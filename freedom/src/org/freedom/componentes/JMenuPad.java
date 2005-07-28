@@ -22,6 +22,7 @@ package org.freedom.componentes;
 import javax.swing.JMenu;
 public class JMenuPad extends JMenu {
 
+	private static final long serialVersionUID = 1L;
 	private int iCodSys = 0;
 	private int iCodMod = 0;
     private int iCodMen = 0;

@@ -50,6 +50,7 @@ import org.freedom.telas.Aplicativo;
 
 
 public class JGroupField extends JScrollPane implements CarregaListener, InsertListener, EditListener, DeleteListener, PostListener {
+  private static final long serialVersionUID = 1L;
   private JLayeredPane lpComp = new JLayeredPane();
   private String sTab = "";
   private String sColM = "";

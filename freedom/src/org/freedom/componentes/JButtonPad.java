@@ -30,6 +30,8 @@ import javax.swing.JButton;
 
 public class JButtonPad extends JButton {
 
+	private static final long serialVersionUID = 1L;
+
 	private int iCodSys = 0;
 
 	private int iCodMod = 0;

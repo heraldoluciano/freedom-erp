@@ -29,6 +29,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 //import javax.swing.text.JTextComponent;
 public class JPanelPad extends JPanel  {
+
+  private static final long serialVersionUID = 1L;
   public static int TP_JPANEL = 0; // constante criada para manter a construção anterior de org.freedom.componentes.JPanelPad
   private JLayeredPane lpn = new JLayeredPane();
   private boolean initFirstFocus = true;

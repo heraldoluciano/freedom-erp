@@ -30,6 +30,10 @@ import javax.swing.BorderFactory;
 import org.freedom.funcoes.Funcoes;
 
 public class GuardaCampo extends Component {
+ /**
+  * 
+  */
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCampo = null; 
   private Component comp = null;
   private String sNome = "";
@@ -40,27 +44,7 @@ public class GuardaCampo extends Component {
   private int iTipo = -1;
   private boolean bRequerido = false;
   private boolean bVisivel = true;
-  /*
-   *  @deprecated GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, boolean fk, JTextFieldFK descFK, int tip, boolean req)
-   */
-  // COMENTADO AQUI
- /*public  GuardaCampo(Component c, int X, int Y, int Larg, int Alt, String nome, String Label, boolean pk, 
-  		boolean fk, JTextFieldFK descFK, int tip, boolean req)  {
-      
-    sNome = nome;          
-    sLabel = Label;
-    comp = c;
-    iTipo = tip;
-    bRequerido = req;
-    if (comp instanceof JTextFieldPad) {
-      txtCampo = (JTextFieldPad) comp;
-//      txtCampo.setPKFK(pk,fk);
-    }
-    bPK = pk;
-    bFK = fk;
-    txtDescFK = descFK;
-    setRequerido(req);
-  }*/
+
   public GuardaCampo(Component c, String nome, String label, byte key, JTextFieldFK descFK, boolean req) {
  	 setGuardaCampo(c, nome, label, key, descFK, req );
   }
@@ -81,7 +65,6 @@ public class GuardaCampo extends Component {
     bFK = (key == ListaCampos.DB_FK) || (key == ListaCampos.DB_PF);
     if (comp instanceof JTextFieldPad) {
       txtCampo = (JTextFieldPad) comp;
-//      txtCampo.setPKFK(bPK,bFK);
         iTipo = txtCampo.getTipo();
     }
 	else if  ( (comp instanceof JPasswordFieldPad) ||

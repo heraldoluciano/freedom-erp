@@ -53,15 +53,19 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FEstrutura extends FDetalhe implements ChangeListener,ActionListener, CarregaListener, PostListener{
+  /**
+	 * 
+	 */
+  private static final long serialVersionUID = 1L;
   private int casasDec = Aplicativo.casasDec;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDetFases = new JPanelPad();
   private JPanelPad pinDetItens = new JPanelPad();
   private JPanelPad pinDetDistrib = new JPanelPad();
   private JTabbedPanePad tpnAbas = new JTabbedPanePad();  
-  private JPanelPad pinAbaFases = new JPanelPad();
-  private JPanelPad pinAbaItens = new JPanelPad();
-  private JPanelPad pinAbaDistrib = new JPanelPad();
+//  private JPanelPad pinAbaFases = new JPanelPad();
+//  private JPanelPad pinAbaItens = new JPanelPad();
+//  private JPanelPad pinAbaDistrib = new JPanelPad();
   private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescProdEst = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldFK txtDescEstDistrib = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -78,15 +82,15 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   private JTextFieldPad txtQtdMat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
   private JTextFieldPad txtRMA = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-  private JTextFieldPad txtRefProdDistrib = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+//  private JTextFieldPad txtRefProdDistrib = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtSeqEstDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldFK txtDescModLote = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);
   private JTextFieldPad txtSeqEfEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtSeqEfItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtSeqEfDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+//  private JTextFieldPad txtSeqEfItem = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+//  private JTextFieldPad txtSeqEfDistrib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTpRec = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescTpRec = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtTempoEf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -315,7 +319,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   private void imprimir(boolean bVisualizar) {
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-    int iTot = 0;
+//    int iTot = 0;
     String[] sValores;
     String sWhere = "";
     imp.montaCab();

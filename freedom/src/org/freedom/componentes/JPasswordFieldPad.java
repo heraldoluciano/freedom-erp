@@ -28,6 +28,7 @@ import javax.swing.JPasswordField;
 import org.freedom.componentes.ListaCampos;
 public class JPasswordFieldPad extends JPasswordField {
 
+	private static final long serialVersionUID = 1L;
 	private int iTam = 0;
 	private ListaCampos lcTxt = null;
     private boolean bEnterPula = true;

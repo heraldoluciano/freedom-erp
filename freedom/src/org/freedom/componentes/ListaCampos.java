@@ -64,6 +64,11 @@ public class ListaCampos extends Container implements PostListener,
 		InsertListener, EditListener, CancelListener, DeleteListener,
 		CarregaListener, MouseListener {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * ListaCampos em modo espera. Sem trasação para o momento.
 	 */
 	public static final int LCS_NONE = -1;
@@ -147,8 +152,6 @@ public class ListaCampos extends Container implements PostListener,
 
 	private boolean bCancelCancel = false;
 	
-	private boolean bPermiteUpdate = true;
-
 	private String sTabela;
 
 	public String sSigla;
@@ -856,7 +859,6 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	public void montaPostMax(ListaCampos lc) {
-		GuardaCampo gcComp = null;
 		ListaCampos lcM = lc.getMaster();
 		if (lcM != null) {
 			try {
@@ -1219,12 +1221,9 @@ public class ListaCampos extends Container implements PostListener,
 	}
 
 	public void montaWhereCircular(ListaCampos lc) {
-		Component comp = null;
 		ListaCampos lcM = lc.getMaster();
 
 		if (lcM != null) {
-			String sCampo = "";
-			String sWhereEmp = "";
 			for (int i2 = 0; i2 < lcM.getComponentCount(); i2++) {
 				if (((GuardaCampo) lcM.getComponent(i2)).ehPK()) {
 					sWhereT += sSepT + ((GuardaCampo) lcM.getComponent(i2)).getNomeCampo() + "=?";
@@ -1241,7 +1240,6 @@ public class ListaCampos extends Container implements PostListener,
 		if (lcM != null) {
 			if (bAutoInc) {
 				String sCampo = "";
-				String sWhereEmp = "";
 				for (int i = 0; i < lcM.getComponentCount(); i++) {
 					comp = lcM.getComponent(i);
 					if (((GuardaCampo) comp).ehPK()) {
@@ -1281,7 +1279,6 @@ public class ListaCampos extends Container implements PostListener,
 		ListaCampos lcM = lc.getMaster();
 		if (lcM != null) {
 			String sCampo = "";
-			String sWhereEmp = "";
 			for (int i = 0; i < lcM.getComponentCount(); i++) {
 				comp = lcM.getComponent(i);
 				if (((GuardaCampo) comp).ehPK()) {
@@ -1480,13 +1477,11 @@ public class ListaCampos extends Container implements PostListener,
 
 		sSepParam = "";
 
-		String sSQLX = sSQLInsert;
 		if ((bDetalhe) & (lcMaster != null)) {
 			montaSqlCircular1(this);
 		}
 		for (int i = 0; i < getComponentCount(); i++) {
 			GuardaCampo gcCampo = ((GuardaCampo) getComponent(i));
-			String sNomeCampo = gcCampo.getNomeCampo();
 
 			if (!gcCampo.getSoLeitura()) {
 				sSQLInsert = sSQLInsert + sSepParam + "?";
@@ -1571,7 +1566,6 @@ public class ListaCampos extends Container implements PostListener,
 		iParamC = 1;
 		boolean bResultado = true;
 		Component comp = null;
-		Component compFocus = null;
 		fireBeforeCarrega();
 		if (bCancelCarrega) {
 			bCancelCarrega = false;
