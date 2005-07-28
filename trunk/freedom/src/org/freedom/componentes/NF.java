@@ -33,11 +33,22 @@ public class NF {
 	public static final int T_CAB = 0;
 	public static final int T_ITENS = 1;
 	public static final int T_PARC = 2;
+	public static final int T_ADIC = 3;
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
 	public static final int C_DESCNAT = 3;
 	public static final int C_CODNAT = 4;
 	public static final int C_DOC = 5;
+	public static final int C_CPFEMIT = 6;
+	public static final int C_RAZEMIT = 7;
+	public static final int C_CIDEMIT = 8;
+	public static final int C_UFEMIT = 9;
+	public static final int C_CPFEMITAUX = 10;
+	public static final int C_NOMEEMITAUX = 11;
+	public static final int C_CIDEMITAUX = 12;
+	public static final int C_UFEMITAUX = 13;
+	public static final int C_INCRAEMIT = 14;
+	
 	
 	private int casasDec = 2;
 
