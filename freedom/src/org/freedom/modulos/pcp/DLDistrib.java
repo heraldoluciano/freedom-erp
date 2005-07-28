@@ -151,6 +151,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	  		dl.setConexao(con);
 			dl.setVisible(true);
 			if (dl.OK){
+				dl.gravaLote();
 				tabDistrib.setValor(dl.getValor()[0],iLinha,7);
 				tabDistrib.setValor(dl.getValor()[1],iLinha,8);
 			}
