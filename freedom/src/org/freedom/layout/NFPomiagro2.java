@@ -48,7 +48,7 @@ public class NFPomiagro2 extends Leiaute {
 	String sIncra = "" ;*/
 	Vector vMens = new Vector();
 	vMens.clear();
-/*	
+	
 //    String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
     try {
       cab = nf.getTabVector(NF.T_CAB);
@@ -358,7 +358,7 @@ public class NFPomiagro2 extends Leiaute {
     catch ( SQLException err ) {
       JOptionPane.showMessageDialog(null,"Erro ao consultar tabela de Venda!"+err.getMessage());      
       bRetorno = false;
-    }*/
+    }
     return bRetorno;
   }
 }
