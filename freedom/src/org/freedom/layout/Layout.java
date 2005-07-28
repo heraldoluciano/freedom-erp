@@ -22,10 +22,20 @@ package org.freedom.layout;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
+import org.freedom.componentes.TabVector;
 public class Layout extends Object {
-  public boolean bEntrada = false; 
-  public Layout() { }
-  public boolean imprimir(NF nf, ImprimeOS imp) {
-    return false;
-  }
+	protected boolean bEntrada = false;
+	protected TabVector cab = null;
+	protected TabVector itens = null;
+	protected TabVector parc = null;
+	protected TabVector adic = null;	
+  
+public Layout() { }
+	public boolean imprimir(NF nf, ImprimeOS imp) {
+		cab = nf.getTabVector(NF.T_CAB);
+		itens = nf.getTabVector(NF.T_ITENS);
+		parc = nf.getTabVector(NF.T_PARC);
+		adic = nf.getTabVector(NF.T_ADIC);
+		return false;
+	}
 }
