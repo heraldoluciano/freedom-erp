@@ -29,7 +29,7 @@ import org.freedom.telas.FDados;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Entrada extends FDados implements PostListener {
-	
+	  private static final long serialVersionUID = 1L;	
 	  private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 3, 0);
 	  private JTextFieldFK  txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);

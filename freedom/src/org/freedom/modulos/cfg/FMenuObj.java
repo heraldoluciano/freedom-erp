@@ -31,6 +31,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FMenuObj extends FDetalhe {
+  private static final long serialVersionUID = 1L;	
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodMenu = new JTextFieldPad(JTextFieldPad.TP_INTEGER,9,0);

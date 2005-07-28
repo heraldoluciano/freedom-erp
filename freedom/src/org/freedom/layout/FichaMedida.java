@@ -33,6 +33,7 @@ import org.freedom.telas.Aplicativo;
 
 
 public class FichaMedida extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private int iCodConv = 0;
 	private String sAtend = "";

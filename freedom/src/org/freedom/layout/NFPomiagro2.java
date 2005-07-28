@@ -23,13 +23,13 @@ import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
-import org.freedom.componentes.TabVector;
 
 public class NFPomiagro2 extends Leiaute {
   public boolean imprimir(NF nf,ImprimeOS imp) {
 //    GregorianCalendar cHora = new GregorianCalendar();
     boolean bRetorno = false;
-    int iNumNota = 0;
+    
+/*    int iNumNota = 0;
     int iItImp = 0;
     int iLinPag = imp.verifLinPag("NF");
     String sTipoTran="" ;
@@ -45,7 +45,7 @@ public class NFPomiagro2 extends Leiaute {
 	TabVector itens = null;
 	TabVector parc = null;
 	int iContaMens = 1;
-	String sIncra = "" ;
+	String sIncra = "" ;*/
 	Vector vMens = new Vector();
 	vMens.clear();
 /*	

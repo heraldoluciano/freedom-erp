@@ -40,6 +40,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FTratRet extends FDetalhe implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTar = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodTar2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

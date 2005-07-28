@@ -34,6 +34,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTipoConv extends FDados implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodTipoConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescTipoConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);

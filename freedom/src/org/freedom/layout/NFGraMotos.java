@@ -43,12 +43,12 @@ public class NFGraMotos extends Leiaute {
     String[] sNat = new String[2];
     String[] sVencs = new String[5];
     String[] sVals = new String[4];
-    String sObs = "";
-	String[] sMatObs = null;
+//    String sObs = "";
+//	String[] sMatObs = null;
 	String sImpDtSaidaNat = "";
 	float ftVlrDesc = 0;
-	int iContaMens = 1;	
-	String sIncra = "" ;
+//	int iContaMens = 1;	
+//	String sIncra = "" ;
 	Vector vMens = new Vector();
 	vMens.clear();
 	
@@ -161,7 +161,7 @@ public class NFGraMotos extends Leiaute {
          
 //Descrições adicionais colocadas junto a decrição do produto.
          
-         String sDescAdic = ""; 
+//         String sDescAdic = ""; 
          String sTmp = rs.getString(5) != null ? rs.getString(5).trim() : ""; 
 		 sTmp = rs.getString(4) != null ? rs.getString(4).trim() : "";
 		 String sClasFisc = Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2);

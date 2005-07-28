@@ -27,6 +27,8 @@ import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
 public class Navegador extends JPanel implements ActionListener, KeyListener {
+
+  private static final long serialVersionUID = 1L;
   public  JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
   public  JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   public  JButton btEditar = new JButton(Icone.novo("btEditar.gif"));

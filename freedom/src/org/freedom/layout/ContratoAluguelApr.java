@@ -32,6 +32,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class ContratoAluguelApr extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnTopEmp = new Font("Arial",Font.BOLD,11);
 	private Font fnCabEmp = new Font("Arial",Font.PLAIN,9);

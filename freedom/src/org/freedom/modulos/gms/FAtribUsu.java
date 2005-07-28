@@ -50,6 +50,7 @@ import org.freedom.telas.FFilho;
 
 
 public class FAtribUsu extends FFilho implements  CarregaListener, ActionListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pinCli = new JPanelPad();
   private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
   private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

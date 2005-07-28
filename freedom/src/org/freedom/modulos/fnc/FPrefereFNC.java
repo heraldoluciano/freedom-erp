@@ -31,6 +31,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereFNC extends FTabDados {
+	private static final long serialVersionUID = 1L;	
 	private JPanelPad pinGeral = new JPanelPad(330, 350);
 	private JPanelPad pinFin = new JPanelPad();
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);

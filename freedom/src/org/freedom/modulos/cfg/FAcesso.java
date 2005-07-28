@@ -57,6 +57,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class FAcesso extends FFDialogo implements ArvoreFace, CarregaListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinTop = new JPanelPad(475,90);
   private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);

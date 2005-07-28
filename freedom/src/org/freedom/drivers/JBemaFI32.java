@@ -242,10 +242,10 @@ public class JBemaFI32 {
    
    public String retornaTotalizadores(String sUserID, boolean bModoDemo) {
    	  String sRetorno = Funcoes.replicate(" ",445);
-   	  int iRetorno = 0;
+//   	  int iRetorno = 0;
    	  if (!bModoDemo) {
    	  	sRetorno = bVerificaTotalizadoresParciais();
-   	  	iRetorno = Integer.parseInt(sRetorno.substring(0,10).trim());
+//   	  	iRetorno = Integer.parseInt(sRetorno.substring(0,10).trim());
    	  	sRetorno = sRetorno.substring(10);
    	  	if (sRetorno.length()<445) {
    	  	   sRetorno = Funcoes.replicate(" ",445);
@@ -429,9 +429,9 @@ public class JBemaFI32 {
    }
 
    public String leStatus(String sUserID, boolean bModoDemo) {
-  	  int iAck = 0;
-  	  int iSt1 = 0;
-  	  int iSt2 = 0;
+//  	  int iAck = 0;
+//  	  int iSt1 = 0;
+//  	  int iSt2 = 0;
   	  boolean bState[][] = null;
   	  String sMensagem = "";
   	  String sSep = "";
@@ -1264,8 +1264,8 @@ public class JBemaFI32 {
     int iMinutos = 0;
     int iSegundos = 0;
     int iMilesegundos = 0;
-    int iDiaAtu = 0;
-    int iMesAtu = 0;
+//    int iDiaAtu = 0;
+//    int iMesAtu = 0;
     int iAnoAtu = 0;
     int[] iDataTmp = {0,0,0};
 
@@ -1276,8 +1276,8 @@ public class JBemaFI32 {
           if (trataRetornoFuncao(bDataHoraImpressora(sData,sHora))) {
              iDataTmp = Funcoes.decodeDate(new Date());
              iAnoAtu = iDataTmp[0];
-             iMesAtu = iDataTmp[1];
-             iDiaAtu = iDataTmp[2];
+//             iMesAtu = iDataTmp[1];
+//             iDiaAtu = iDataTmp[2];
              iDia = Integer.parseInt(sData.substring(0,2));
              iMes = Integer.parseInt(sData.substring(2,4));
              iAno = Integer.parseInt(sData.substring(4,6));
@@ -1313,8 +1313,8 @@ public class JBemaFI32 {
         iMinutos = 0;
         iSegundos = 0;
         iMilesegundos = 0;
-        iDiaAtu = 0;
-        iMesAtu = 0;
+//        iDiaAtu = 0;
+//        iMesAtu = 0;
         iAnoAtu = 0;
         iDataTmp = null;
     }
@@ -1334,8 +1334,8 @@ public class JBemaFI32 {
     int iMinutos = 0;
     int iSegundos = 0;
     int iMilesegundos = 0;
-    int iDiaAtu = 0;
-    int iMesAtu = 0;
+//    int iDiaAtu = 0;
+//    int iMesAtu = 0;
     int iAnoAtu = 0;
     int[] iDataTmp = {0,0,0};
     try {
@@ -1345,8 +1345,8 @@ public class JBemaFI32 {
           if (trataRetornoFuncao(bDataHoraReducao(sData,sHora))) {
              iDataTmp = Funcoes.decodeDate(new Date());
              iAnoAtu = iDataTmp[0];
-             iMesAtu = iDataTmp[1];
-             iDiaAtu = iDataTmp[2];
+//             iMesAtu = iDataTmp[1];
+//             iDiaAtu = iDataTmp[2];
              iDia = Integer.parseInt(sData.substring(0,2));
              iMes = Integer.parseInt(sData.substring(2,4));
              iAno = Integer.parseInt(sData.substring(4,6));
@@ -1382,8 +1382,8 @@ public class JBemaFI32 {
        iMinutos = 0;
        iSegundos = 0;
        iMilesegundos = 0;
-       iDiaAtu = 0;
-       iMesAtu = 0;
+//       iDiaAtu = 0;
+//       iMesAtu = 0;
        iAnoAtu = 0;
        iDataTmp = null;
     }

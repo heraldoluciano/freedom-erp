@@ -47,6 +47,7 @@ import org.freedom.bmps.Icone;
  */
 public class StatusBar extends JPanelPad {
 
+	private static final long serialVersionUID = 1L;
 	private JPanelPad pnEst = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnCentro = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnEsquerda = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

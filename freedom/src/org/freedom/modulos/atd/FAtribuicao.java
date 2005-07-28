@@ -35,6 +35,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FAtribuicao extends FDados implements ActionListener {
+  private static final long serialVersionUID = 1L;	
   private JTextFieldPad txtCodAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,15,0);
   private JTextFieldPad txtDescAtrib = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextAreaPad txaObsAtrib = new JTextAreaPad();

@@ -31,6 +31,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class OPApr extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,14);
 	private Font fnArial9 = new Font("Arial",Font.PLAIN,9);

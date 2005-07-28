@@ -36,6 +36,7 @@ import org.freedom.telas.FFilho;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 public class DLExibePizza extends FFilho implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));  
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER));
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER));

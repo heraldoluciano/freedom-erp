@@ -34,6 +34,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FGrauInst extends FDados implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodGrauInstru = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescGrauInstru = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   public FGrauInst () {

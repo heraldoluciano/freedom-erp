@@ -36,6 +36,7 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FObjetoTb extends FDetalhe implements InsertListener,ActionListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtIDObj = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);

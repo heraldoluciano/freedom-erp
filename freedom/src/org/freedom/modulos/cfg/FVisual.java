@@ -31,13 +31,12 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FFilho;
 
 public class FVisual extends FFilho {
-
+	private static final long serialVersionUID = 1L;
 	private JComboBoxPad cbLookAndFeel = null;
 	private Vector vDescLookAndFeel = new Vector();
 	private Vector vValLookAndFeel = new Vector();
 	private JLabelPad lbLookAndFeel = new JLabelPad("Selecione o visual desejado");
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-
 	
 	public FVisual(boolean comScroll) {
 		super(true);

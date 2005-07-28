@@ -33,6 +33,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDetalhe;
 
 public class FTabela extends FDetalhe implements InsertListener,ActionListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodTb = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

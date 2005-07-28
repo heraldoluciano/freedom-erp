@@ -33,6 +33,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class OrcMCraft extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,15);
 	private Font fnCabCliIta = new Font("Times New Roman",Font.ITALIC,14);

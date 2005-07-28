@@ -31,6 +31,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLDescontItOrc extends FFDialogo {
+	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtDesc1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
 	private JTextFieldPad txtDesc2 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);
 	private JTextFieldPad txtDesc3 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,4,1);

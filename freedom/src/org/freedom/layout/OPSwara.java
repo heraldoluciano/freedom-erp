@@ -37,6 +37,7 @@ import org.freedom.telas.Aplicativo;
 import com.lowagie.text.pdf.Barcode128;
 
 public class OPSwara extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
 	private Connection con = null;
 	private Font fnTitulo = new Font("Times New Roman",Font.BOLD,14);
 	private Font fnArial9 = new Font("Arial",Font.PLAIN,9);
@@ -317,9 +318,9 @@ public class OPSwara extends LeiauteGR {
             drawTexto((rsFases.getFloat(5)/60)+"",120,iY);
             iY = iY+10;
 
-            int iDif = 0;                        
+//            int iDif = 0;                        
             if(iInst>iY){
-                iDif = (iInst+2) - iY;
+//                iDif = (iInst+2) - iY;
                 iY = iInst+2;
             }
  

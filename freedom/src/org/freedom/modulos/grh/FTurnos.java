@@ -35,6 +35,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTurnos extends FDados implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodTurno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtDescTurno = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
   private JTextFieldPad txtNhsTurno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);

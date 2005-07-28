@@ -32,7 +32,7 @@ import org.freedom.telas.FDados;
  */
 public class FNCResgate extends FDados implements PostListener{
 	
-	 
+	  private static final long serialVersionUID = 1L;	 
 	  private JTextFieldPad txtCodBanco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 3, 0);
 	  private JTextFieldFK  txtBanco = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	  private JTextFieldPad txtNcheque = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -187,7 +187,7 @@ public class FNCResgate extends FDados implements PostListener{
 	    	  
 	  private void imprimir(boolean bVisualizar) {
 		 
-	        String ordena, ConsNome, CodigoR;
+	        String ordena, ConsNome;
 	        
 		    ImprimeOS imp = new ImprimeOS("",con);
 		    int linPag = imp.verifLinPag()-1;

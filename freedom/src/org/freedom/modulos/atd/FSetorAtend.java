@@ -38,6 +38,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FSetorAtend extends FDetalhe implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodSetAt = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescSetAt = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
@@ -51,14 +52,7 @@ public class FSetorAtend extends FDetalhe implements ActionListener {
 
     setTitulo("Cadastro de Setores de atendimento");
     setAtribos( 50, 50, 450, 350);
-/*
-   pnMaster.remove(2);  //Remove o JPanelPad prédefinido da class FDados
-   pnGImp.removeAll(); //Remove os botões de impressão para adicionar logo embaixo
-   pnGImp.setLayout(new GridLayout(1,3)); //redimensiona o painel de impressão
-   pnGImp.setPreferredSize(new Dimension( 210, 26));
-   pnGImp.add(btPrevimp);
-   pnGImp.add(btImp);
-*/      
+     
    setAltCab(90);
    pinCab = new JPanelPad(420,90);
    setListaCampos(lcCampos);

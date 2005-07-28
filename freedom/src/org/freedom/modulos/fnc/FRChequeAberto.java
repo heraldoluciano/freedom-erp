@@ -29,6 +29,7 @@ import org.freedom.telas.FRelatorio;
 
 
 public class FRChequeAberto extends FRelatorio {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtCliente = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);

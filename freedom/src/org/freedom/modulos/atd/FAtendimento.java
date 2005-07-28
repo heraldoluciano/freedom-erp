@@ -55,6 +55,7 @@ import org.freedom.telas.FFilho;
 
 
 public class FAtendimento extends FFilho implements CarregaListener, ActionListener {
+  private static final long serialVersionUID = 1L;	
   private JPanelPad pinConv = new JPanelPad(510,110);
   private JPanelPad pinCli = new JPanelPad(510,65);
   private JPanelPad pinCabConv = new JPanelPad(530,200);

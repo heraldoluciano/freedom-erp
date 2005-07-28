@@ -30,6 +30,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FAtendente extends FDados { 
+  private static final long serialVersionUID = 1L;	
   private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtNomeAtend = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtRgAtend = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);

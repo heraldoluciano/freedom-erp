@@ -38,6 +38,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FFluxo extends FDetalhe implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodFluxo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescFluxo = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodProc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

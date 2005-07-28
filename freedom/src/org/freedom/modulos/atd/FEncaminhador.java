@@ -31,6 +31,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FEncaminhador extends FDados implements PostListener { 
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodEnc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtNomeEnc = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtEndEnc = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
@@ -47,14 +48,6 @@ public class FEncaminhador extends FDados implements PostListener {
     setTitulo("Cadastro de Encaminhador");
     setAtribos( 50, 50, 400, 250);
 
-   /* lcPlan.add(new GuardaCampo( txtCodPlan, 7, 100, 80, 20, "CodPlan", "Código", true, false, txtDescPlan, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcPlan.add(new GuardaCampo( txtDescPlan, 7, 100, 80, 20, "DescPlan", "Descriçao", false, false, null, JTextFieldPad.TP_STRING,false),"txtCodVendx");
-    lcPlan.setWhereAdic("TIPOPLAN = 'D'");
-    lcPlan.montaSql(false, "PLANEJAMENTO", "FN");    
-    lcPlan.setQueryCommit(false);
-    lcPlan.setReadOnly(true);
-    txtCodPlan.setTabelaExterna(lcPlan);
-    */
     adicCampo(txtCodEnc, 7, 20, 50, 20, "CodEnc", "Cód.enc.", ListaCampos.DB_PK, true);
     adicCampo(txtNomeEnc, 60, 20, 312, 20, "NomeEnc", "Descrição do encaminhador", ListaCampos.DB_SI, true);
     adicCampo(txtEndEnc, 7, 60, 260, 20, "EndEnc", "Endereço",ListaCampos.DB_SI, false);

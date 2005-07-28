@@ -31,6 +31,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLRProcesso extends FFDialogo {
+  private static final long serialVersionUID = 1L;
   private JRadioGroup rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();

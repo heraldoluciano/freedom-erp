@@ -38,6 +38,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDetalhe;
 
 public class FTipoAtendo extends FDetalhe implements ActionListener {
+  private static final long serialVersionUID = 1L;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodTipoAtendo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

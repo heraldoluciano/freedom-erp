@@ -53,6 +53,7 @@ import org.freedom.telas.FTabDados;
 
 
 public class FConveniado extends FTabDados implements PostListener { 
+  private static final long serialVersionUID = 1L;	
   private JPanelPad pinGeral = new JPanelPad(650,520);
   private JPanelPad pinInfo = new JPanelPad(650,520);
   private JPanelPad pnAtrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

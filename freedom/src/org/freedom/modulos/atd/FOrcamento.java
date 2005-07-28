@@ -63,6 +63,7 @@ import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPrinterJob;
 
 public class FOrcamento extends FDetalhe implements PostListener,CarregaListener,FocusListener,ActionListener,InsertListener, DeleteListener {
+  private static final long serialVersionUID = 1L;
   private int casasDec = Aplicativo.casasDec;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();

@@ -67,6 +67,7 @@ import org.freedom.telas.FFilho;
  *
  */
 public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditListener {
+	private static final long serialVersionUID = 1L;
 	private JPanelPad pinCab = new JPanelPad(0,80);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
