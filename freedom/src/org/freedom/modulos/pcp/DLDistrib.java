@@ -45,7 +45,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLDistrib extends FFDialogo implements MouseListener{
 
-	private int casasDec = Aplicativo.casasDec;
+	int casasDec = Aplicativo.casasDec;
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);  
 	private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -55,8 +55,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	private JPanelPad pnDistrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private Tabela tabDistrib = new Tabela();
-	private int iCodop = 0;
-	private int iSeqop = 0;
+	int iCodop = 0;
+	int iSeqop = 0;
 	//private ListaCampos lcDistrib = new ListaCampos(this);
   
   public DLDistrib(Connection cn,Component cOrig,boolean bPref) {
@@ -120,11 +120,6 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.addMouseListener(this);
     
   }
-  public Object[] getValores() {
-    Object[] oRetorno = new Object[3];
-
-    return oRetorno;
-  }
   
   public void mouseClicked(MouseEvent mevt) {
     if (mevt.getClickCount() == 2) {
@@ -139,7 +134,6 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	    int iSeqDist = 0;
   	    float ftQtdade = 0;
   	    String sDescProd = null;
-  	    String sLote = null;
 	  	DLFechaDistrib dl = null; 
 	  	try {
 	  		iSeqDist =((Integer) tabDistrib.getValor(iLinha, 3)).intValue();
@@ -151,9 +145,15 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	  		dl.setConexao(con);
 			dl.setVisible(true);
 			if (dl.OK){
-				dl.gravaLote();
-				tabDistrib.setValor(dl.getValor()[0],iLinha,7);
-				tabDistrib.setValor(dl.getValor()[1],iLinha,8);
+				if(dl.gravaLote()){
+					tabDistrib.setValor(dl.getValor()[0],iLinha,7);
+					tabDistrib.setValor(dl.getValor()[1],iLinha,8);
+				}
+				else{
+					dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
+			  		dl.setConexao(con);
+					dl.setVisible(true);
+				}
 			}
 	  	}
 		finally {
