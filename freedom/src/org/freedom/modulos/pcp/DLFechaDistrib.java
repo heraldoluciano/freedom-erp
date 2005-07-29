@@ -243,18 +243,21 @@ public class DLFechaDistrib extends FFDialogo {
 	  				   }
 	  				   if (!con.getAutoCommit())
 	  				      con.commit();
+	  				   bret = true;
 	  			 }
 	  			 catch (SQLException err) {
 	  			 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
 	  			 }
 	  	  	}
-	  		else
+	  		else{
 	  			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
-				txtDiasValid.setVlrDate(null);
+	  			txtDiasValid.setVlrString("");
+	  		}
 		}
-		else {
-			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+		else {			
 			Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
+			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+			txtDiasValid.setVlrString("");
 		}
 	  return bret;
   	}

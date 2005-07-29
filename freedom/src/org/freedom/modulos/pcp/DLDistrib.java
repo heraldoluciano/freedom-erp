@@ -52,11 +52,15 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
+	private JTextFieldPad txtQtdProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
 	private JPanelPad pnDistrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private Tabela tabDistrib = new Tabela();
 	int iCodop = 0;
 	int iSeqop = 0;
+	int iQtdDistrib = 0;
+	
 	//private ListaCampos lcDistrib = new ListaCampos(this);
   
   public DLDistrib(Connection cn,Component cOrig,boolean bPref) {
@@ -85,6 +89,11 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     	adic(new JLabelPad("Cód.prod"),213,0,100,20);
 	    adic(txtCodProdEst,213,20,100,20);
     }	    
+    adic(new JLabelPad("Qtd.produzida"),316,0,80,20);
+    adic(txtQtdProd,316,20,80,20);
+    adic(new JLabelPad("Qtd.distrb"),399,0,80,20);
+    adic(txtQtdDist,399,20,80,20);
+     
     adic(new JLabelPad("Seq.Est."),7,40,100,20);
     adic(txtSeqEst,7,60,100,20);
     adic(new JLabelPad("Descrição da estrutura principal"),110,40,200,20);
@@ -96,6 +105,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	txtRefProdEst.setAtivo(false);
 	txtSeqEst.setAtivo(false); 
 	txtDescEst.setAtivo(false);
+	txtQtdProd.setAtivo(false); 
+	txtQtdDist.setAtivo(false);
    
     tabDistrib.adicColuna("Seq.fase");
     tabDistrib.adicColuna("Cód.fase");
@@ -133,28 +144,51 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	    int iCodProd = 0;
   	    int iSeqDist = 0;
   	    float ftQtdade = 0;
+  	    float ftQtddig = 0;
+  	    float ftQtddist = 0;
+  	    float ftQtdprod = 0;
   	    String sDescProd = null;
-	  	DLFechaDistrib dl = null; 
+	  	DLFechaDistrib dl = null;
+	  	boolean ok = false;
 	  	try {
 	  		iSeqDist =((Integer) tabDistrib.getValor(iLinha, 3)).intValue();
 	  		iCodProd = ((Integer) tabDistrib.getValor(iLinha, 4)).intValue();
 	  		sDescProd = ((String) tabDistrib.getValor(iLinha,5));
 	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
 	  		
-	  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
-	  		dl.setConexao(con);
-			dl.setVisible(true);
-			if (dl.OK){
-				if(dl.gravaLote()){
-					tabDistrib.setValor(dl.getValor()[0],iLinha,7);
-					tabDistrib.setValor(dl.getValor()[1],iLinha,8);
-				}
-				else{
-					dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
+	  		while (!ok) {
+		  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
+		  		try {
 			  		dl.setConexao(con);
 					dl.setVisible(true);
+					if (dl.OK){
+						ftQtddig = ( (BigDecimal) dl.getValor()[0]).floatValue(); // Quantidade digitada
+						ftQtddist = getSomaTab(); // Quantidade que já foi distribuida
+						ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
+						if (ftQtdprod<(ftQtddist+ftQtddig)) {
+							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
+							ftQtdade = ftQtdprod - ftQtddist;
+						}
+						else {
+							tabDistrib.setValor(new BigDecimal(ftQtddig),iLinha,7);
+							ftQtddist += ftQtddig;
+							txtQtdDist.setVlrBigDecimal(new BigDecimal(ftQtddist));
+							ok = true;
+						}
+						if(dl.gravaLote()){
+							tabDistrib.setValor(dl.getValor()[1],iLinha,8);					
+						}
+					}
+					else {
+						ok = true;
+					}
+		  		}
+				finally {
+					if (dl!=null)
+						dl.dispose();
+					dl = null;
 				}
-			}
+	  		}
 	  	}
 		finally {
 			iLinha = 0;
@@ -162,9 +196,6 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 			iSeqDist = 0;
 			ftQtdade = 0;
 			sDescProd = null;
-			if (dl!=null)
-				dl.dispose();
-			dl = null;
 		}
   }
   
@@ -173,6 +204,23 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   public void mousePressed(MouseEvent e) { }
   public void mouseReleased(MouseEvent e) { }  
   
+  public float getSomaTab() {
+	  float ftTotal =  0;
+	  Vector v = null;
+	  try {
+		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
+			  v = tabDistrib.getLinha(i);
+			  if ( (v!=null) && (v.size()>7)) {
+				  if (v.elementAt(7)!=null) 
+					  ftTotal += ((BigDecimal) v.elementAt(7)).floatValue();
+			  }
+		  }
+	  }
+	  finally {
+		  v = null;
+	  }
+	  return ftTotal;
+  }
   public void carregaTabela(int iCodop, int iSeqop) {
   	  PreparedStatement ps = null;
   	  ResultSet rs = null;
@@ -232,14 +280,15 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  
   }
   
-  public void caregaCampos(Object[] sValores){
-  	txtCodOP.setVlrInteger((Integer) sValores[0]); 
+  public void carregaCampos(Object[] sValores){
+	txtCodOP.setVlrInteger((Integer) sValores[0]); 
 	txtSeqOP.setVlrInteger((Integer) sValores[1]); 
 	txtCodProdEst.setVlrInteger((Integer) sValores[2]); 
-	txtRefProdEst.setVlrString((String)sValores[3]); 
+	txtRefProdEst.setVlrString((String) sValores[3]); 
 	txtSeqEst.setVlrInteger((Integer) sValores[4]); 
-	txtDescEst.setVlrString((String)sValores[5]);
+	txtDescEst.setVlrString((String) sValores[5]);
+	txtQtdProd.setVlrBigDecimal((BigDecimal) sValores[6]); 
+	txtQtdDist.setVlrBigDecimal(new BigDecimal(0));
+	//txtQtdDist.setVlrBigDecimal((BigDecimal)(Integer.parseInt(""+sValores[6])-iQtdDistrib)); 
   }
-    
- 
 }
