@@ -766,9 +766,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     	sValores[3]= txtRefProdEst.getVlrString();
     	sValores[4]= txtSeqEst.getVlrInteger();
     	sValores[5]= txtDescEst.getVlrString();
+    	sValores[6]= txtQtdEst.getVlrBigDecimal();
     	
     	DLDistrib dl = new DLDistrib(con,this,bPrefs[0]);
-    	dl.caregaCampos(sValores);
+    	dl.carregaCampos(sValores);
     	dl.carregaTabela(txtCodOP.getVlrInteger().intValue(), txtSeqOP.getVlrInteger().intValue());
 		dl.setVisible(true);
 		if (dl.OK) {
