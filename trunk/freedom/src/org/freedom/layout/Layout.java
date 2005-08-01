@@ -28,7 +28,8 @@ public class Layout extends Object {
 	protected TabVector cab = null;
 	protected TabVector itens = null;
 	protected TabVector parc = null;
-	protected TabVector adic = null;	
+	protected TabVector adic = null;
+	protected TabVector transp = null;
   
 public Layout() { }
 	public boolean imprimir(NF nf, ImprimeOS imp) {
@@ -36,6 +37,7 @@ public Layout() { }
 		itens = nf.getTabVector(NF.T_ITENS);
 		parc = nf.getTabVector(NF.T_PARC);
 		adic = nf.getTabVector(NF.T_ADIC);
+		transp = nf.getTabVector(NF.T_TRANSP);
 		return false;
 	}
 }

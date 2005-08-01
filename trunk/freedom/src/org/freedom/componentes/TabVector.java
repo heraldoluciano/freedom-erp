@@ -27,6 +27,7 @@
  */
 package org.freedom.componentes;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Vector;
 
@@ -94,6 +95,17 @@ public class TabVector {
 		return value;
 	}
 	
+	public void setFloat(int pos, float value) {
+		setObject(pos, new BigDecimal(value));
+	}
+	
+	public float getFloat(int pos) {
+		float value = 0;
+		Object o = getObject(pos);
+		if (o!=null) 
+			value = ((BigDecimal) o).floatValue();
+		return value;
+	}
 	public void setObject(int pos, Object obj) {
 		Vector v = getCol(this.row);
 		if (v!=null) { 
