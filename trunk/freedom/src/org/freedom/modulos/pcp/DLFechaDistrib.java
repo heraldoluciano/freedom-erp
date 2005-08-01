@@ -48,21 +48,13 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtDiasValid = new JTextFieldPad(JTextFieldPad.TP_DATE,5,0);
  
   Date dtVenctoLote = null;
-  int iCodProd = 0;
-  int iSeqEst = 0;
-  int iDiasValid = 0;
-  String sCodLote = "";
-  String sModLote = "";
-  String sDtFabric = "";
-  String sLote = "";
+ 
   
-  public DLFechaDistrib(Component cOrig,int iSeqDist, int iCProd,String sDescProd, float ftQtdade) {
+  public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
   	super(cOrig);
     setTitulo("Quantidade");
     setAtribos(310,220);
     
-    iCodProd = iCProd;
-    iSeqEst = iSeqDist;
    
     adic(new JLabelPad("Cód.Prod"),7,10,80,20);
     adic(txtCodProd,7,30,80,20);
@@ -93,7 +85,7 @@ public class DLFechaDistrib extends FFDialogo {
   	 super.setConexao(cn);
      if(getUsaLote().equals("S")){
     	txtLote.setAtivo(true);
-     	getModLote();
+     	getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
      }
      else
      	 txtLote.setAtivo(false);
@@ -146,7 +138,7 @@ public class DLFechaDistrib extends FFDialogo {
 		PreparedStatement ps = con.prepareStatement(sSQL);
 		ps.setInt(1, Aplicativo.iCodEmp);
 		ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-		ps.setInt(3, iCodProd);
+		ps.setInt(3, txtCodProd.getVlrInteger().intValue());
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
 			sUsaLote = rs.getString(1);
@@ -160,7 +152,7 @@ public class DLFechaDistrib extends FFDialogo {
 	return sUsaLote;
   }
   
-  public boolean existeLote(String sCodLote){
+  public boolean existeLote(String sCodLote, int iCodProd){
   	boolean bRet = false;
 	String sSQL = "SELECT CODLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=?";
 	try {
@@ -182,7 +174,10 @@ public class DLFechaDistrib extends FFDialogo {
   	return bRet;  	
   }
 
-  public void getModLote(){
+  public void getModLote(int iCodProd, int iSeqEst){
+	int iDiasValid = 0;
+	String sModLote = "";
+	String sCodLote = "";
   	String sSQL = "SELECT E.CODMODLOTE, M.TXAMODLOTE, E.NRODIASVALID"
   				+ " FROM PPESTRUTURA E, EQMODLOTE M"
 				+ " WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=?"
@@ -214,7 +209,7 @@ public class DLFechaDistrib extends FFDialogo {
 		txtDtFabProd.setVlrDate(new Date());
 		ObjetoModLote ObjMl = new ObjetoModLote();
 		ObjMl.setTexto(sModLote);
-		sLote = ObjMl.getLote(new Integer(iCodProd),txtDtFabProd.getVlrDate(),con);  			
+		String sLote = ObjMl.getLote(new Integer(iCodProd),txtDtFabProd.getVlrDate(),con);  			
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(txtDtFabProd.getVlrDate());
 		cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
@@ -224,8 +219,10 @@ public class DLFechaDistrib extends FFDialogo {
 	}
   }
   public boolean gravaLote(){
+	  int iCodProd = txtCodProd.getVlrInteger().intValue();
+	  String sLote = txtLote.getVlrString().trim();
 	  boolean bret = false;
-	  if((!existeLote(sLote))){			
+	  if((!existeLote(sLote,iCodProd))){			
 			txtLote.setVlrString(sLote);
 			txtDiasValid.setVlrDate(dtVenctoLote);
 			if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
@@ -250,13 +247,13 @@ public class DLFechaDistrib extends FFDialogo {
 	  			 }
 	  	  	}
 	  		else{
-	  			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+	  			txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
 	  			txtDiasValid.setVlrString("");
 	  		}
 		}
 		else {			
 			Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
-			txtLote.setVlrString(buscaLote(iCodProd,iSeqEst,true));
+			txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
 			txtDiasValid.setVlrString("");
 		}
 	  return bret;
