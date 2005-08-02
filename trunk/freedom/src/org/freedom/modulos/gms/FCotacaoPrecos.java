@@ -25,6 +25,7 @@ package org.freedom.modulos.gms;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,7 +38,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
+
 import javax.swing.JButton;
+
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import javax.swing.JScrollPane;
 
@@ -49,6 +54,8 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -65,11 +72,26 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
-	private JPanelPad pinCab = new JPanelPad();
+	private JPanelPad pinCab = new JPanelPad(740, 242);
+	private JPanelPad pinBotCab = new JPanelPad(104, 92);
+	private JPanelPad pinBotDet = new JPanelPad(104, 63);
 	private JPanelPad pinDet = new JPanelPad();
-	private JButton btStatusSol = new JButton("Solicitação Pendente", null);
-	private JButton btStatusItem = new JButton("Item Pendente", null);
-	private JButton btStatusCompra = new JButton("Cotação Pendente", null);
+	private JPanelPad pinLb = new JPanelPad();
+	private JLabelPad lSitItSol = null;
+	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
+	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
+			.novo("btFechaVenda.gif"));
+	private JButton btCancelaSol = new JButton("Cancelar", Icone
+			.novo("btRetorno.gif"));
+	private JButton btCancelaItem = new JButton("Cancelar", Icone
+			.novo("btRetorno.gif"));
+	private JButton btMotivoCancelaSol = new JButton("Mot.Can", Icone
+			.novo("btObs.gif"));
+	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone
+			.novo("btObs.gif"));
+	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone
+			.novo("btObs.gif"));
+
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(
@@ -78,7 +100,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
+	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			13, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 10, 0);
@@ -90,6 +112,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			19, 0);
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,
+			50, 0);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			10, 0);
 	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(
@@ -98,11 +122,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			50, 0);
 	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItAprov = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoItComp = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituaçãoIt = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtCodSol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			8, 0);
@@ -122,9 +146,27 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtPrecoCot = new JTextFieldPad(
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	
+	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
+			40, 0);
+	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 19, 0);
+	
+	private JTextAreaPad txaMotivoSol = new JTextAreaPad();
+	private JTextAreaPad txaMotivoCancSol = new JTextAreaPad();
+	private JTextAreaPad txaMotivoCancItem = new JTextAreaPad();
+	private JTextAreaPad txaMotivoPrior = new JTextAreaPad();
+	
 	private Tabela tabCot = new Tabela();
 	private JScrollPane spTabCot = new JScrollPane(tabCot);
 	private Navegador navCot = new Navegador(true);
+	
+	private JRadioGroup rgPriod = null;
+	private Vector vLabsTipo = new Vector();
+	private Vector vValsTipo = new Vector();
+	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSol);
+
+	private ListaCampos lcUsu = new ListaCampos(this, "UU");	
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
@@ -132,16 +174,26 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private ListaCampos lcCotacao = new ListaCampos(this, "");
 
 	String sOrdNota = "";
+	String sOrdSol = "";
 	Integer anoCC = null;
+	Integer iCodTpMov = null;
 	String codCC = null;
+	boolean bAprovaParcial = false;
+	String SitSol = "";
+	boolean[] bPrefs = null;
+	boolean bAprovaCab = false;
+	boolean bCotacao = false;
+	int cont = 0;
+	Vector vItem = new Vector();
+	Vector vProdCan = new Vector();
+	Vector vMotivoCan = new Vector();
 	Integer codAlmox = null;
-	String aprovSolicitacaoCompra = "";
+	String sSitIt = txtSituacaoIt.getVlrString();
 
 	public FCotacaoPrecos() {
 		setTitulo("Cotação de Preços");
-		setAtribos(15, 10, 760, 580);
+		setAtribos(15, 10, 763, 580);
 
-		tabCot.setTestName("Isto é um teste");
 		pnMaster.remove(2);
 		pnGImp.removeAll();
 		pnGImp.setLayout(new GridLayout(1, 3));
@@ -151,47 +203,71 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
+		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
+			+ Aplicativo.strUsuario
+			+ "')) IN "
+			+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD) "
+			+ "OR "
+			+ "((SELECT coalesce(COUNT(1),0) FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
+			+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND PA.CODPROD=EQPRODUTO.CODPROD)=0) "
+			+ "OR "
+			+ "((SELECT ALMOXARIFE FROM sgretinfousu('"
+			+ Aplicativo.strUsuario
+			+ "'))='S') "
+			+ "OR "
+			+ "((SELECT APROVARMA FROM sgretinfousu('"
+			+ Aplicativo.strUsuario
+			+ "'))='TD') " + ") ";
+
 		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
 				ListaCampos.DB_PK, false));
 		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_SI, false));
-
-		lcProd.setWhereAdic("ATIVOPROD='S'");
+		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
-		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
-
 		txtCodProd.setTabelaExterna(lcProd);
+	
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
+				ListaCampos.DB_PK, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",
+				ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
+				ListaCampos.DB_SI, false));
+	
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		txtRefProd.setTabelaExterna(lcProd);
-
-		lcProd2.add(new GuardaCampo(txtCodProd2, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd2.add(new GuardaCampo(txtRefProd2, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
-
-		lcProd2.setWhereAdic("ATIVOPROD='S'");
+		lcProd2.setWhereAdic(sWhereAdicProd);
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
-
-		txtCodProd2.setTabelaExterna(lcProd2);
-		txtRefProd2.setNomeCampo("RefProd");
-		txtRefProd2.setListaCampos(lcCotacao);
-		txtRefProd2.setTabelaExterna(lcProd2);
-
-		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Código", ListaCampos.DB_PK,
+		txtRefProd.setTabelaExterna(lcProd2);
+	
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
 				false));
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano do Centro de Custos",
-				ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK,
+				false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC",
+				"Descrição do centro de custo", ListaCampos.DB_SI, false));
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
+	
+		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
+				false));
+		lcUsu.add(new GuardaCampo(txtNomeUsu, "nomeusu", "Nome do usuário",
+				ListaCampos.DB_SI, false));
+		lcUsu.add(new GuardaCampo(txtCodCCUsu, "codcc", "C.Custo Usuário",
+				ListaCampos.DB_SI, false));
+		lcUsu.montaSql(false, "USUARIO", "SG");
+		lcUsu.setQueryCommit(false);
+		lcUsu.setReadOnly(true);
+		txtIDUsu.setTabelaExterna(lcUsu);
 
 		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",
 				ListaCampos.DB_PK, false));
@@ -202,63 +278,140 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcFor.setReadOnly(true);
 		txtCodFor.setTabelaExterna(lcFor);
 
-		pinCab = new JPanelPad(740, 90);
+		vValsTipo.addElement("B");
+		vValsTipo.addElement("M");
+		vValsTipo.addElement("A");
+		vLabsTipo.addElement("Baixa");
+		vLabsTipo.addElement("Média");
+		vLabsTipo.addElement("Alta");
+		rgPriod = new JRadioGroup(3, 1, vLabsTipo, vValsTipo);
+		rgPriod.setVlrString("B");	
+		
+		pinCab = new JPanelPad(740, 267);
 		setListaCampos(lcCampos);
-		setAltCab(90);
-		setPainel(pinCab, pnCliCab);
-
+		setAltCab(267);
+		setPainel(pinCab, pnCliCab);	
+		
 		txtDtEmitSolicitacao.setEditable(false);
 		lcCampos.setPodeExc(false);
 		lcCampos.setPodeIns(false);
-
-		adicCampo(txtCodSolicitacao, 7, 20, 100, 20, "CodSol", "Nºsolicit.",
+		nav.setAtivo(0, false);
+		nav.setAtivo(1, false);
+		nav.setAtivo(2, false);
+		nav.setAtivo(3, false);
+		nav.setAtivo(4, false);
+		
+		adicCampo(txtCodSolicitacao, 7, 20, 70, 20, "CodSol", "Cód.Sol",
 				ListaCampos.DB_PK, true);
-		adicCampo(txtDtEmitSolicitacao, 110, 20, 100, 20, "DtEmitSol",
-				"Data solicitação", ListaCampos.DB_SI, true);
-		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Situação",
+		adicCampo(txtIDUsu, 451, 20, 80, 20, "IdUsu", "Id do usuário",
+				ListaCampos.DB_FK, true);
+		adicCampo(txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol",
+				"Data da Sol.", ListaCampos.DB_SI, true);
+
+		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
+		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.",
+				ListaCampos.DB_FK, txtDescCC, true);
+		adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
+				true);
+		adicDescFK(txtDescCC, 286, 20, 162, 20, "DescCC",
+				"Descrição do centro de custos");
+
+		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Sit.Sol.",
 				ListaCampos.DB_SI, false);
-		adic(btStatusSol, 500, 15, 230, 30);
-		btStatusSol.setEnabled(false);
+		adicDBLiv(txaMotivoCancSol, "MotivoSol", "Motivo do cancelamento", false);
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem",
 				ListaCampos.DB_SI, false);
+
+		txtIDUsu.setNaoEditavel(true);
+		txtDtEmitSolicitacao.setNaoEditavel(true);
+		txtCodCC.setNaoEditavel(true);
+		txtAnoCC.setNaoEditavel(true);
+
 		setListaCampos(true, "SOLICITACAO", "CP");
 		lcCampos.setQueryInsert(false);
-
+		
 		lcCotacao.setMaster(lcDet);
 		lcDet.adicDetalhe(lcCotacao);
-		lcCotacao.setTabela(tabCot);
 
-		navCot.setListaCampos(lcCotacao);
-		lcCotacao.setNavegador(navCot);
-		pinDet = new JPanelPad(740, 287);
-		setPainel(pinDet, pnDet);
-
-		adic(navCot, 7, 250, 280, 27);
-		adic(spTabCot, 7, 47, 730, 140);
-
+		txtQtdItAprovado.addFocusListener(this);
 		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
 		lcProd.addCarregaListener(this);
+		lcProd2.addCarregaListener(this);
 		lcDet.addPostListener(this);
 		lcDet.addCarregaListener(this);
 		lcDet.addInsertListener(this);
 		lcCampos.addInsertListener(this);
+		lcUsu.addCarregaListener(this);
+
+		btAprovaSol.setToolTipText("Aprovar todos os ítens.");
+		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
+		btCancelaSol.setToolTipText("Cancelar todos os ítens.");
+		btCancelaItem.setToolTipText("Cancelar ítem.");
+		btMotivoCancelaSol.setToolTipText("Motivo do cancelamento da Solicitação.");
+		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
+		btMotivoPrior.setToolTipText("Motivo da prioridade do ítem.");
+
+		pinCab.adic(pinBotCab, 630, 1, 114, 150);
+		pinBotCab.adic(btAprovaSol, 0, 0, 110, 30);
+		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
+		pinBotCab.adic(btCancelaSol, 0, 62, 110, 30);
+		pinBotCab.adic(btMotivoCancelaSol, 0, 93, 110, 30);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
-	    setImprimir(true);
+		btAprovaSol.addActionListener(this);
+		btCancelaSol.addActionListener(this);
+		btCancelaItem.addActionListener(this);
+		btMotivoCancelaSol.addActionListener(this);
+		btMotivoCancelaItem.addActionListener(this);
+		btMotivoPrior.addActionListener(this);
+		btFinAprovSol.addActionListener(this);
 
+		pinDet = new JPanelPad(740, 100);
+		setPainel(pinDet, pnDet);
+	
+		setImprimir(true);
+
+		desabAprov(true);
 	}
 
+	private void desabAprov(boolean bHab) {
+		if (txtStatusSolicitacao.getVlrString().equals("AT")) {
+			btAprovaSol.setEnabled(false);
+			if (!txtStatusSolicitacao.getVlrString().equals("AF"))
+				btFinAprovSol.setEnabled(true);
+			else {
+				btFinAprovSol.setEnabled(false);
+			}
+		} else {
+			btAprovaSol.setEnabled(!bHab);
+		}
+		if (txtStatusSolicitacao.getVlrString().equals("CA")) {
+			btMotivoCancelaSol.setEnabled(true);
+		}
+		if (txtSituacaoItAprov.getVlrString().equals("CA")) {
+			btMotivoCancelaItem.setEnabled(true);
+		} else {
+			btMotivoCancelaSol.setEnabled(!bHab);
+			btMotivoCancelaItem.setEnabled(!bHab);
+		}
+
+		btFinAprovSol.setEnabled(!bHab);
+		btCancelaSol.setEnabled(!bHab);
+		btCancelaItem.setEnabled(!bHab);
+		txtQtdItAprovado.setNaoEditavel(bHab);
+	}	
+	
 	private void montaDetalhe() {
-		setAltDet(287);
-		setPainel(pinDet, pnDet);
+		setAltDet(100);
 		setListaCampos(lcDet);
-		setNavegador(navRod);
-
-		navRod.setAtivo(4, false);
-		navRod.setAtivo(5, false);
-
+		setPainel(pinCab, pnCliCab);
+		setNavegador(navCot);
+		lcDet.setTabela(tabCot);
+		lcDet.setNavegador(navCot);
+		navCot.setListaCampos(lcDet);
+		
 		lcDet.setPodeExc(false);
 		lcDet.setPodeIns(false);
 		txtCodItSolicitacao.setEditable(false);
@@ -266,43 +419,43 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		txtRefProd.setEditable(false);
 		txtQtdItAprovado.setEditable(false);
 
-		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item",
+		adicCampo(txtCodItSolicitacao, 7, 60, 30, 20, "CodItSol", "Item",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK,
-					txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
-					ListaCampos.DB_FK, false);
-			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
-			adic(txtRefProd, 40, 20, 67, 20);
-			txtRefProd.setFK(true);
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
+			adicCampo(txtRefProd, 40, 60, 87, 20, "RefProd", "Referência",
+					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,
+					false);
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2
+					.getWhereAdic()));
 		} else {
-			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
+			adicCampo(txtCodProd, 40, 60, 87, 20, "CodProd", "Cód.prod.",
+					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
+					ListaCampos.DB_SI, false);
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd
+					.getWhereAdic()));
 		}
 
-		adicCampoInvisivel(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_FK, false);
-		adicCampoInvisivel(txtAnoCC, "AnoCC", "ano c.c.", ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodUsu, "IdUsuItSol", "Cód.usu.", ListaCampos.DB_SI,
-				false);
-
-		adicDescFK(txtDescProd, 130, 20, 267, 20, "DescProd",
+		adicDescFK(txtDescProd, 130, 60, 297, 20, "DescProd",
 				"Descrição do produto");
-		adicCampo(txtQtdItAprovado, 400, 20, 77, 20, "QtdAprovItSol", "Qtd.aprov.",
+		adicDB(rgPriod, 635, 156, 100, 65, "PriorItSol", "Prioridade:", true);
+		rgPriod.setEnabled(false);
+		
+		adicCampo(txtQtdItAprovado, 430, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoIt, "SitItSol", "Sit.item",
+
+		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoItComp, "SitCompItSol", "Sit.compra",
+		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituaçãoItAprov, "SitAprovItSol", "Sit.aprovação",
+		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
 				ListaCampos.DB_SI, false);
-		adic(btStatusItem, 500, 10, 230, 30);
-		btStatusItem.setEnabled(false);
+		adicDBLiv(txaMotivoCancItem, "motivocancitsol", "Motivo do cancelamento",
+				false);
+		adicDBLiv(txaMotivoPrior, "MotivoPriorItSol", "Motivo da Prioridade", false);
 
 		txtRefProd.addKeyListener(new KeyAdapter() {
-
 			public void keyPressed(KeyEvent kevt) {
 				lcDet.edit();
 			}
@@ -312,6 +465,67 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcDet.setWhereAdic("SitAprovItSol <> 'NA' AND SitItSol <> 'CA'");
 		lcDet.setQueryInsert(false);
 		montaTab();
+	
+		tabCot.setTamColuna(30, 0);
+		tabCot.setTamColuna(80, 1);
+		tabCot.setTamColuna(230, 2);
+		tabCot.setTamColuna(70, 3);
+		tabCot.setTamColuna(70, 4);
+		tabCot.setTamColuna(70, 5);
+		tabCot.setTamColuna(70, 6);
+		tabCot.setTamColuna(70, 7);
+		tabCot.setTamColuna(70, 8);
+		tabCot.setTamColuna(70, 9);
+		tabCot.setTamColuna(70, 10);
+
+	    nav.setName("Mestre");
+		navCot.setNavigationOnly();
+		navCot.setName("Detalhe 1");
+	    navRod.setName("Detalhe 2");
+	    FlowLayout flNavCot = new FlowLayout(FlowLayout.LEFT, 0, 0);
+	    JPanelPad pnNavCot = new JPanelPad(JPanelPad.TP_JPANEL,flNavCot);
+	    pnNavCot.setBorder(null);
+	    pnNavCot.add(navCot);
+	    pnNavCot.add(nav);
+	    pnNavCab.add(pnNavCot, BorderLayout.WEST);
+		pinCab.adic(spTabCot, 7, 87, 620, 140);			
+	
+		setListaCampos(lcCotacao);
+		setPainel(pinDet, pnDet);
+		setNavegador(navRod);
+		navRod.setListaCampos(lcCotacao);
+		lcCotacao.setNavegador(navRod);
+		lcCotacao.setTabela(tab);
+
+		txtQtdAprovCot.setSoLeitura(true);
+		txtDtCot.setSoLeitura(true);
+
+		adicCampo(txtCodCot, 7, 20, 77, 20, "CodCot", "Cód.Cot.",
+				ListaCampos.DB_PK, true);
+		adicCampoInvisivel(txtCodSol, "CodSol", "Cód.Sol.", ListaCampos.DB_PK, true);
+		adicCampo(txtDtCot, 87, 20, 97, 20, "DtCot", "Dt.Cot.", ListaCampos.DB_SI,
+				false);
+		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.", ListaCampos.DB_SI,
+				false);
+		adicCampo(txtCodFor, 187, 20, 77, 20, "CodFor", "Cod.For.",
+				ListaCampos.DB_FK, txtDescFor, false);
+		adicDescFK(txtDescFor, 267, 20, 197, 20, "RazFor",
+				"Razão social do fornecedor");
+		adicCampo(txtQtdCot, 467, 20, 87, 20, "QtdCot", "Qtd.Cot.",
+				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_FK,
+				false);
+		adicCampoInvisivel(txtRefProd2, "RefProd", "Referência", ListaCampos.DB_FK,
+				false);
+		adicCampo(txtQtdAprovCot, 557, 20, 87, 20, "QtdAprovCot",
+				"Qtd.Aprov.Cot.", ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoCot, 647, 20, 87, 20, "PrecoCot", "Preco.Cot.",
+				ListaCampos.DB_SI, false);
+
+		lcCotacao.montaSql(true, "COTACAO", "CP");
+		lcCotacao.montaTab();
+		lcCotacao.addInsertListener(this);
+		lcCotacao.addCarregaListener(this);
 
 		tab.setTamColuna(30, 0);
 		tab.setTamColuna(80, 1);
@@ -322,55 +536,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 6);
 		tab.setTamColuna(70, 7);
 		tab.setTamColuna(70, 8);
-		tab.setTamColuna(70, 9);
-		tab.setTamColuna(70, 10);
-
-		setListaCampos(lcCotacao);
-		setNavegador(navCot);
-
-		txtQtdAprovCot.setSoLeitura(true);
-		txtDtCot.setSoLeitura(true);
-
-		adicCampo(txtCodCot, 7, 210, 77, 20, "CodCot", "Cód.Cot.",
-				ListaCampos.DB_PK, true);
-		adicCampoInvisivel(txtCodSol, "CodSol", "Cód.Sol.", ListaCampos.DB_PK, true);
-		adicCampo(txtDtCot, 87, 210, 97, 20, "DtCot", "Dt.Cot.", ListaCampos.DB_SI,
-				false);
-		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.", ListaCampos.DB_SI,
-				false);
-		adicCampo(txtCodFor, 187, 210, 77, 20, "CodFor", "Cod.For.",
-				ListaCampos.DB_FK, txtDescFor, false);
-		adicDescFK(txtDescFor, 267, 210, 197, 20, "RazFor",
-				"Razão social do fornecedor");
-		adicCampo(txtQtdCot, 467, 210, 87, 20, "QtdCot", "Qtd.Cot.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_FK,
-				false);
-		adicCampoInvisivel(txtRefProd2, "RefProd", "Referência", ListaCampos.DB_FK,
-				false);
-		adicCampo(txtQtdAprovCot, 557, 210, 87, 20, "QtdAprovCot",
-				"Qtd.Aprov.Cot.", ListaCampos.DB_SI, false);
-		adicCampo(txtPrecoCot, 647, 210, 87, 20, "PrecoCot", "Preco.Cot.",
-				ListaCampos.DB_SI, false);
-
-		adic(btStatusCompra, 500, 235, 233, 30);
-		btStatusCompra.setEnabled(false);
-
-		lcCotacao.montaSql(true, "COTACAO", "CP");
-		lcCotacao.montaTab();
-		lcCotacao.addInsertListener(this);
-		lcCotacao.addCarregaListener(this);
-
-		tabCot.setTamColuna(30, 0);
-		tabCot.setTamColuna(80, 1);
-		tabCot.setTamColuna(230, 2);
-		tabCot.setTamColuna(70, 3);
-		tabCot.setTamColuna(70, 4);
-		tabCot.setTamColuna(70, 5);
-		tabCot.setTamColuna(70, 6);
-		tabCot.setTamColuna(70, 7);
-		tabCot.setTamColuna(70, 8);
-
 	}
 
 	public void focusGained(FocusEvent fevt) {}
@@ -381,72 +546,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 	public void afterPost(PostEvent pevt) {}
 
-	public void afterCarrega(CarregaEvent cevt) {
-		boolean allow = aprovSolicitacaoCompra.equalsIgnoreCase("TD");
-		boolean allowItems = (aprovSolicitacaoCompra.equalsIgnoreCase("CC") && txtCodCC
-				.getVlrString().equals(codCC))
-				|| allow;
-		boolean block = txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")
-				|| allow;
-		boolean blockItems = (block
-				&& txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE") && txtCodUsu
-				.getVlrString().equals(Aplicativo.strUsuario))
-				|| allowItems;
-//		boolean blockCot = (blockItems	&& txtSituaçãoItComp.getVlrString().equalsIgnoreCase("PE") && txtCodUsu	.getVlrString().equals(Aplicativo.strUsuario));
-
-		if (cevt.getListaCampos() == lcCampos) {
-			lcCampos.setReadOnly(!block);
-
-			if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("PE")) {
-				btStatusSol.setText("Solicitação Pendente");
-				lcDet.setReadOnly(false);
-			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("CA")) {
-				btStatusSol.setText("Solicitação Cancelada");
-				lcDet.setReadOnly(true);
-			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("SC")) {
-				btStatusSol.setText("Solicitação Concluída");
-				lcDet.setReadOnly(true);
-			} else if (txtStatusSolicitacao.getVlrString().equalsIgnoreCase("TM")) {
-				btStatusSol.setText("Cotação de Preços");
-				lcDet.setReadOnly(true);
-			}
-
-		} else if (cevt.getListaCampos() == lcDet) {
-			lcCampos.setReadOnly(!blockItems);
-
-			if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("PE")) {
-				if (allow || allowItems) {
-					btStatusItem.setText("Item Pendente");
-				}
-			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("CA")) {
-				btStatusItem.setText("Item Cancelado");
-			} else if (txtSituaçãoIt.getVlrString().equalsIgnoreCase("SC")) {
-				btStatusItem.setText("Item Concluído");
-			}
-		} else if (cevt.getListaCampos() == lcCotacao) {
-			lcCotacao.setReadOnly(!blockItems);
-
-			if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("PE")) {
-				if (allow || allowItems) {
-					btStatusItem.setText("Cotação Pendente");
-				}
-			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CC")) {
-				btStatusItem.setText("Cotação Cancelada");
-			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CT")) {
-				btStatusItem.setText("Compra Total");
-			} else if (txtSituaçãoItComp.getVlrString().equalsIgnoreCase("CP")) {
-				btStatusItem.setText("Compra Parcial");
-			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AT")) {
-				btStatusItem.setText("Aprovado Totalmente");
-			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("AP")) {
-				btStatusItem.setText("Aprovado Parcialmente");
-			} else if (txtSituaçãoItAprov.getVlrString().equalsIgnoreCase("NA")) {
-				btStatusItem.setText("Não Aprovado");
-			} else {
-				btStatusItem.setText("Cotação Concluída");
-			}
-		}
-	}
+	public void afterCarrega(CarregaEvent cevt) {}
 
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -652,8 +752,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 	public void beforePost(PostEvent pevt) {
 		if (lcCotacao.getStatus() == ListaCampos.LCS_INSERT) {
-			txtSituaçãoItComp.setVlrString("PE");
-			txtSituaçãoItAprov.setVlrString("PE");
+			txtSituacaoItComp.setVlrString("PE");
+			txtSituacaoItAprov.setVlrString("PE");
 		}
 	}
 
@@ -700,15 +800,96 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		return iRet;
 	}
 
+	public void carregaWhereAdic() {
+		buscaInfoUsuAtual();
+		if ((bAprovaCab) || (bCotacao)) {
+			if (bAprovaParcial) {
+				lcCampos.setWhereAdic("CODCC='" + Aplicativo.strCodCCUsu
+						+ "' AND ANOCC=" + Aplicativo.strAnoCCUsu);
+			}
+		} else {
+			lcCampos.setWhereAdic("IDUSU='" + Aplicativo.strUsuario + "'");
+		}
+	}
+
+	private void buscaInfoUsuAtual() {
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,ALMOXARIFEUSU "
+				+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGUSUARIO"));
+			ps.setString(3, Aplicativo.strUsuario);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				String sAprova = rs.getString("APROVCPSOLICITACAOUSU");
+				String sCotacao = rs.getString("ALMOXARIFEUSU");
+				if (sAprova != null) {
+					if (!sAprova.equals("ND")) {
+						if (sAprova.equals("TD"))
+							bAprovaCab = true;
+						else if ((txtCodCC.getVlrString().trim().equals(rs.getString(
+								"CODCC").trim()))
+								&& (lcCC.getCodEmp() == rs.getInt("CODEMPCC"))
+								&& (lcCC.getCodFilial() == rs.getInt("CODFILIALCC"))
+								&& (sAprova.equals("CC"))) {
+							bAprovaCab = true;
+						} else {
+							bAprovaCab = false;
+						}
+
+					}
+				}
+				if (sCotacao != null) {
+					if (sCotacao.equals("S"))
+						bCotacao = true;
+					else
+						bCotacao = false;
+				}
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage());
+		}
+	}
+
+	private int buscaVlrPadrao() {
+		int iRet = 0;
+		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt("ANOCENTROCUSTO");
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,
+					"Erro ao buscar o ano-base para o centro de custo.\n"
+							+ err.getMessage());
+		}
+
+		return iRet;
+	}	
+	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		montaDetalhe();
+
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
-		lcCotacao.setConexao(cn);
-		lcFor.setConexao(cn);
 		lcCC.setConexao(cn);
-		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaAnoBaseCC());
+		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());
+		lcUsu.setConexao(cn);
+		lcFor.setConexao(cn);
 
 		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 		PreparedStatement ps = null;
@@ -722,18 +903,22 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			if (rs.next()) {
 				anoCC = new Integer(rs.getInt("anoCC"));
 				if (anoCC.intValue() == 0)
-					anoCC = new Integer(buscaAnoBaseCC());
+					anoCC = new Integer(buscaVlrPadrao());
 				codCC = rs.getString("codCC");
-				codAlmox = new Integer(rs.getInt("codAlmox"));
-				aprovSolicitacaoCompra = rs.getString("aprovCPSolicitacaoUsu");
 			}
 
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage(),true,con,err);
+					+ err.getMessage());
 		}
 
+		/*
+		 * lcProd.setWhereAdic(sWhereAdicProd);
+		 * lcProd2.setWhereAdic(sWhereAdicProd);
+		 */
+
+		carregaWhereAdic();
 	}
 }
