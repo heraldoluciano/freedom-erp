@@ -53,53 +53,101 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     btEditar.setToolTipText("Editar (Ctrl + E)");
     btSalvar.setToolTipText("Salvar (Ctrl + S)");
     btCancelar.setToolTipText("Cancelar (Ctrl + W)");
-
-    setLayout(new GridLayout( 1, 5));
-    setPreferredSize(new Dimension(150, 30));
-    add(btNovo);
-    add(btExcluir);
-    add(btEditar);
-    add(btSalvar);
-    add(btCancelar);
-    
+   
     btNovo.addActionListener(this);
     btExcluir.addActionListener(this);
     btEditar.addActionListener(this);
     btSalvar.addActionListener(this);
     btCancelar.addActionListener(this);
 
-    if (nav) {
-
-      btPrim = new JButton(Icone.novo("btPrim.gif"));
-      btAnt = new JButton(Icone.novo("btAnt.gif"));
-      btProx = new JButton(Icone.novo("btProx.gif"));
-      btUlt = new JButton(Icone.novo("btUlt.gif"));
-
-      btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
-      btAnt.setToolTipText("Anterior (PageUp)");
-      btProx.setToolTipText("Próximo (PageDown)");
-      btUlt.setToolTipText("Último (Ctrl + PageDow)");
-      
-      setLayout(new GridLayout( 1, 9));
-      setPreferredSize(new Dimension(270, 30));
-      removeAll();
-
-      add(btPrim);      // 0
-      add(btAnt);       // 1
-      add(btProx);      // 2
-      add(btUlt);       // 3
-      add(btNovo);      // 4
-      add(btExcluir);   // 5
-      add(btEditar);    // 6
-      add(btSalvar);    // 7
-      add(btCancelar);  // 8
-
-      btPrim.addActionListener(this);
-      btAnt.addActionListener(this);
-      btProx.addActionListener(this);
-      btUlt.addActionListener(this);
-    }
+    setNavigation(nav);
   }
+  
+  public void setNavigation(boolean nav) {
+    removeAll();
+
+  	if (nav) {
+        btPrim = new JButton(Icone.novo("btPrim.gif"));
+        btAnt = new JButton(Icone.novo("btAnt.gif"));
+        btProx = new JButton(Icone.novo("btProx.gif"));
+        btUlt = new JButton(Icone.novo("btUlt.gif"));
+
+        btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
+        btAnt.setToolTipText("Anterior (PageUp)");
+        btProx.setToolTipText("Próximo (PageDown)");
+        btUlt.setToolTipText("Último (Ctrl + PageDow)");
+        
+        setLayout(new GridLayout( 1, 9));
+        setPreferredSize(new Dimension(270, 30));
+
+        add(btPrim);      // 0
+        add(btAnt);       // 1
+        add(btProx);      // 2
+        add(btUlt);       // 3
+
+        btPrim.addActionListener(this);
+        btAnt.addActionListener(this);
+        btProx.addActionListener(this);
+        btUlt.addActionListener(this);
+      } else {
+        setLayout(new GridLayout( 1, 5));
+        setPreferredSize(new Dimension(150, 30));
+            
+        if (btPrim != null)
+        	btPrim.removeActionListener(this);
+        if (btAnt != null)
+        	btAnt.removeActionListener(this);
+        if (btProx != null)
+        	btProx.removeActionListener(this);
+        if (btUlt != null)
+        	btUlt.removeActionListener(this);        
+        
+      	btPrim = null;
+        btAnt = null;
+        btProx = null;
+        btUlt = null;      	
+      }
+    
+  	add(btNovo);      // 4
+    add(btExcluir);   // 5
+    add(btEditar);    // 6
+    add(btSalvar);    // 7
+    add(btCancelar);  // 8
+  }
+  
+  public void setNavigationOnly() {
+    removeAll();
+
+    btPrim = new JButton(Icone.novo("btPrim.gif"));
+    btAnt = new JButton(Icone.novo("btAnt.gif"));
+    btProx = new JButton(Icone.novo("btProx.gif"));
+    btUlt = new JButton(Icone.novo("btUlt.gif"));
+
+    btPrim.setToolTipText("Primeiro (Ctrl + PageUp)");
+    btAnt.setToolTipText("Anterior (PageUp)");
+    btProx.setToolTipText("Próximo (PageDown)");
+    btUlt.setToolTipText("Último (Ctrl + PageDow)");
+    
+    setLayout(new GridLayout( 1, 4));
+    setPreferredSize(new Dimension(120, 30));
+
+    add(btPrim);      // 0
+    add(btAnt);       // 1
+    add(btProx);      // 2
+    add(btUlt);       // 3
+
+    btCancelar.removeActionListener(this);
+    btEditar.removeActionListener(this);
+    btExcluir.removeActionListener(this);
+    btNovo.removeActionListener(this);    
+    btSalvar.removeActionListener(this);    
+    
+    btPrim.addActionListener(this);
+    btAnt.addActionListener(this);
+    btProx.addActionListener(this);
+    btUlt.addActionListener(this);
+  }
+  
   public void setListaCampos(ListaCampos lc) {
     lcNav = lc;    
   }
@@ -175,7 +223,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
       else if (evt.getSource() == btCancelar) {
          lcNav.cancel(true);
       }
-      if (bDet) {
+      if (bDet) {     	
         if (evt.getSource() == btPrim) {
            lcNav.first();
         }

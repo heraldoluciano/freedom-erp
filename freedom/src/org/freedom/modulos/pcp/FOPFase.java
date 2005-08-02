@@ -301,7 +301,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   	if(pevt.getListaCampos()==lcDet){
 	  	if(bFinalizaProcesso() && (txtSitFS.getVlrString().equals("PE"))){
 	  		DLFinalizaOP dl = new DLFinalizaOP(this,txtQtdPrevOP.getVlrString());
-	  		dl.show();
+	  		dl.setVisible(true);
 	  		if (!dl.OK) {
 	  			pevt.cancela(); 
 	  		}

@@ -120,7 +120,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 8, 0);
-//	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
@@ -154,7 +153,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
-//	private ListaCampos lcUsuAtual = new ListaCampos(this, "UA");
 
 	String sOrdNota = "";
 	String sOrdSol = "";
@@ -210,7 +208,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_SI, false));
 		lcProd.setWhereAdic(sWhereAdicProd);
-		//	lcProd.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
@@ -225,7 +222,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
 		lcProd2.setWhereAdic(sWhereAdicProd);
-		//		lcProd2.setWhereAdic("ATIVOPROD='S' AND RMAPROD='S'");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
@@ -263,7 +259,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
 		txtIDUsu.setTabelaExterna(lcUsu);
-		//		txtIDUsu.setEnabled(false);
 
 		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
@@ -409,7 +404,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
 				"Descrição do produto");
-		adicDB(rgPriod, 513, 20, 100, 65, "PriorItRma", "Prioridade:", true);
+		adicDB(rgPriod, 513, 20, 100, 65, "PriorItSol", "Prioridade:", true);
 		adicCampo(txtQtdItSolicitado, 430, 20, 80, 20, "QtdItSol", "Qtd.solic.",
 				ListaCampos.DB_SI, true);
 
@@ -906,27 +901,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	public void execDev(int iCodFor, int iCodTipoMov, String sSerie, int iDoc) {
 		lcCampos.insert(true);
 	}
-/*
-	private int buscaAnoBaseCC() {
-		int iRet = 0;
-		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				iRet = rs.getInt("ANOCENTROCUSTO");
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,
-					"Erro ao buscar o ano-base para o centro de custo.\n"
-							+ err.getMessage(), true, con, err);
-		}
-		return iRet;
-	}
-*/
+
 	public void carregaWhereAdic() {
 		buscaInfoUsuAtual();
 		if ((bAprovaCab) || (bCotacao)) {
@@ -1008,8 +983,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public void setConexao(Connection cn) {
-		super.setConexao(cn); // tem que setar a conexão principal para verificar
-		// preferências
+		super.setConexao(cn); 
 		bPrefs = prefs();
 		montaDetalhe();
 

@@ -69,7 +69,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		    	setSize(250,210);
 		    	lJustifcQtdProd.setVisible(true);
 		        txaJustifcQtdProd.setVisible(true);
-		        show();
+		        setVisible(true);
 		        txaJustifcQtdProd.requestFocus();	
 		    }
 		    else {
