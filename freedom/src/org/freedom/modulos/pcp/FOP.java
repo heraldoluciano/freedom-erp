@@ -839,64 +839,92 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		Funcoes.mensagemErro(this,"Erro ao buscar obrigatoriedade de lote no produto!\n",true,con,err);
 	}
   }
-  public boolean existeLote(){
+  public static boolean existeLote(Connection cn, int iCodProd, String sCodLote){
   	boolean bRet = false;
 	String sSQL = "SELECT CODLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=?";
 	try {
-		PreparedStatement ps = con.prepareStatement(sSQL);
+		PreparedStatement ps = cn.prepareStatement(sSQL);
 		ps.setInt(1, Aplicativo.iCodEmp);
 		ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
-		ps.setInt(3, txtCodProdEst.getVlrInteger().intValue());
-		ps.setString(4, txtCodLoteProdEst.getVlrString());
+		ps.setInt(3, iCodProd);
+		ps.setString(4, sCodLote);
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
 			bRet=true;
 		}
 		rs.close();
 		ps.close();
+		if (!cn.getAutoCommit())
+			cn.commit();
 	}	
 	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar existencia do lote!\n",true,con,err);
+		Funcoes.mensagemErro(null,"Erro ao buscar existencia do lote!\n",true,cn,err);
 	}
   	return bRet;  	
   }
   
+  public static Object[] gravaLote(Connection cn, boolean bInsere, String sCodModLote, String sUsaLoteEst, 
+		  String sModLote, int iCodProd, Date dtFabProd, int iNroDiasValid) {
+	  Object[] retorno = null;
+	  String sCodLote = null;
+	  try {
+			if(!(sCodModLote.equals("")) && (sUsaLoteEst.equals("S")) ){
+				ObjetoModLote ObjMl = new ObjetoModLote();
+				ObjMl.setTexto(sModLote);
+				sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,cn);  			
+				GregorianCalendar cal = new GregorianCalendar();
+				cal.setTime(dtFabProd);
+				cal.add(GregorianCalendar.DAY_OF_YEAR, iNroDiasValid);
+				Date dtVenctoLote = cal.getTime();
+				retorno = new Object[2];
+				retorno[0] = sCodLote;
+				retorno[1] = dtVenctoLote;
+				if((!existeLote(cn, iCodProd, sCodLote)) && (bInsere)){	
+					if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sCodLote.trim()+" ?")==JOptionPane.YES_OPTION){
+						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
+						try {
+						   PreparedStatement ps = cn.prepareStatement(sSql); 
+						   ps.setInt(1,Aplicativo.iCodEmp);
+						   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
+						   ps.setInt(3,iCodProd);
+						   ps.setString(4,sCodLote);
+						   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
+						   if (ps.executeUpdate() == 0) {
+							  Funcoes.mensagemInforma(null,"Não foi possível inserir registro na tabela de Lotes!");
+						   }
+						   if (!cn.getAutoCommit())
+						      cn.commit();
+						   }
+						 catch (SQLException err) {
+						 	Funcoes.mensagemErro(null,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,cn,err); 
+						 }
+				  	}
+				}
+				else if (bInsere){
+					Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
+				}
+			}
+	  }
+	  finally {
+		  sCodLote = null;
+	  }
+	  return retorno;
+  }
+  
   public void gravaLote(boolean bInsere){
-	if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) ){
-		ObjetoModLote ObjMl = new ObjetoModLote();
-		ObjMl.setTexto(txtModLote.getVlrString());
-		String sLote = ObjMl.getLote(txtCodProdEst.getVlrInteger(),txtDtFabProd.getVlrDate(),con);  			
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(txtDtFabProd.getVlrDate());
-		cal.add(GregorianCalendar.DAY_OF_YEAR,txtNroDiasValid.getVlrInteger().intValue());
-		Date dtVenctoLote = cal.getTime();
-		txtCodLoteProdEst.setVlrString(sLote);
-		txtDtValidOP.setVlrDate(dtVenctoLote);		
-		if((!existeLote()) && (bInsere)){	
-			if(Funcoes.mensagemConfirma(this,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
-				String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
-				try {
-				   PreparedStatement ps = con.prepareStatement(sSql); 
-				   ps.setInt(1,Aplicativo.iCodEmp);
-				   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
-				   ps.setInt(3,txtCodProdEst.getVlrInteger().intValue());
-				   ps.setString(4,sLote);
-				   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
-				   if (ps.executeUpdate() == 0) {
-					  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
-				   }
-				   if (!con.getAutoCommit())
-				      con.commit();
-				   }
-				 catch (SQLException err) {
-				 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
-				 }
-		  	}
-		}
-		else if (bInsere){
-			Funcoes.mensagemInforma(this,"Lote já cadastrado para o produto!");
+	  Object[] lote = gravaLote(con, bInsere, txtCodModLote.getVlrString(), txtUsaLoteEst.getVlrString(),
+			  txtModLote.getVlrString(), txtCodProdEst.getVlrInteger().intValue(), txtDtFabProd.getVlrDate(),
+			  txtNroDiasValid.getVlrInteger().intValue() );
+	try {
+		if (lote!=null) {
+			txtCodLoteProdEst.setVlrString((String) lote[0]);
+			txtDtValidOP.setVlrDate((Date) lote[1]);
 		}
 	}
+	finally {
+		lote = null;
+	}
+	  
   }
   
   
