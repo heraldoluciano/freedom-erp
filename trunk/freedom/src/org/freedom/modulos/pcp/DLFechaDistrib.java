@@ -85,12 +85,24 @@ public class DLFechaDistrib extends FFDialogo {
   	 super.setConexao(cn);
      if(getUsaLote().equals("S")){
     	txtLote.setAtivo(true);
-     	getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
+    	setModLote();
      }
      else
      	 txtLote.setAtivo(false);
   }
-  
+
+  public void setModLote() {
+	  Object[] modLote = null;
+	  try {
+		  modLote = getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
+		  txtLote.setVlrString((String) modLote[0]);
+		  txtDtFabProd.setVlrDate((Date) modLote[1]);
+	  	  txtDiasValid.setVlrDate((Date) modLote[2]);
+	  }
+	  finally {
+		  modLote = null;
+	  }
+  }
   public Object[] getValor() {
     Object[] oRetorno = new Object[2]; 
     oRetorno[0] = txtQtdDist.getVlrBigDecimal();
@@ -152,46 +164,37 @@ public class DLFechaDistrib extends FFDialogo {
 	return sUsaLote;
   }
   
-  public boolean existeLote(String sCodLote, int iCodProd){
-  	boolean bRet = false;
-	String sSQL = "SELECT CODLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=?";
-	try {
-		PreparedStatement ps = con.prepareStatement(sSQL);
-		ps.setInt(1, Aplicativo.iCodEmp);
-		ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
-		ps.setInt(3, iCodProd);
-		ps.setString(4, sCodLote);
-		ResultSet rs = ps.executeQuery();
-		if (rs.next()) {
-			bRet=true;
-		}
-		rs.close();
-		ps.close();
-	}	
-	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro ao buscar existencia do lote!\n",true,con,err);
-	}
-  	return bRet;  	
+  public boolean existeLote(int iCodProd, String sCodLote){
+	return FOP.existeLote(con, iCodProd, sCodLote);
   }
 
-  public void getModLote(int iCodProd, int iSeqEst){
+  public Object[] getModLote(int iCodProd, int iSeqEst){
+	Object[] lote = null;
 	int iDiasValid = 0;
-	String sModLote = "";
-	String sCodLote = "";
-  	String sSQL = "SELECT E.CODMODLOTE, M.TXAMODLOTE, E.NRODIASVALID"
-  				+ " FROM PPESTRUTURA E, EQMODLOTE M"
-				+ " WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=?"
-				+ " AND E.CODEMPML=M.CODEMP AND E.CODFILIALML=M.CODFILIAL AND E.CODMODLOTE=M.CODMODLOTE";
-  				
-	  	try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-						
+	Date dtFabProd = null;
+	String sModLote = null;
+	String sCodLote = null;
+	String sSQL = null;
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+	ObjetoModLote ObjMl = null;
+	GregorianCalendar cal = null;
+	try {
+		sModLote = "";
+		sCodLote = "";
+	  	sSQL = "SELECT E.CODMODLOTE, M.TXAMODLOTE, E.NRODIASVALID"
+	  				+ " FROM PPESTRUTURA E, EQMODLOTE M"
+					+ " WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=?"
+					+ " AND E.CODEMPML=M.CODEMP AND E.CODFILIALML=M.CODFILIAL AND E.CODMODLOTE=M.CODMODLOTE";
+	  				
+		try {
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
 			ps.setInt(3, iCodProd);
 			ps.setInt(4, iSeqEst);
 			
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				sCodLote = rs.getString(1);
 				sModLote = rs.getString(2);
@@ -200,62 +203,72 @@ public class DLFechaDistrib extends FFDialogo {
 			}
 			rs.close();
 			ps.close();
-	  	}
-	  	catch (SQLException err) {
-	  			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+			if (!con.getAutoCommit())
+				con.commit();
 		}
-		   
-	if(!(sCodLote.equals("")) && (getUsaLote().equals("S")) ){
-		txtDtFabProd.setVlrDate(new Date());
-		ObjetoModLote ObjMl = new ObjetoModLote();
-		ObjMl.setTexto(sModLote);
-		String sLote = ObjMl.getLote(new Integer(iCodProd),txtDtFabProd.getVlrDate(),con);  			
-		GregorianCalendar cal = new GregorianCalendar();
-		cal.setTime(txtDtFabProd.getVlrDate());
-		cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
-		dtVenctoLote = cal.getTime();	
-		txtLote.setVlrString(sLote);
-		txtDiasValid.setVlrDate(dtVenctoLote);
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+		}
+			   
+		if(!(sCodLote.equals("")) && (getUsaLote().equals("S")) ){
+			dtFabProd = new Date();
+			ObjMl = new ObjetoModLote();
+			ObjMl.setTexto(sModLote);
+			ObjMl.getLote(new Integer(iCodProd),dtFabProd,con);  			
+			cal = new GregorianCalendar();
+			cal.setTime(dtFabProd);
+			cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
+			dtVenctoLote = cal.getTime();
+			lote = new Object[5];
+			lote[0] = sCodLote;
+			lote[1] = dtFabProd;
+			lote[2] = dtVenctoLote;
+			lote[3] = sModLote;
+			lote[4] = new Integer(iDiasValid);
+		}
 	}
+	finally {
+		iDiasValid = 0;
+		dtFabProd = null;
+		sModLote = null;
+		sCodLote = null;
+		sSQL = null;
+		ps = null;
+		rs = null;
+		ObjMl = null;
+		cal = null;
+	}
+	return lote;
   }
   public boolean gravaLote(){
-	  int iCodProd = txtCodProd.getVlrInteger().intValue();
-	  String sLote = txtLote.getVlrString().trim();
 	  boolean bret = false;
-	  if((!existeLote(sLote,iCodProd))){			
-			txtLote.setVlrString(sLote);
-			txtDiasValid.setVlrDate(dtVenctoLote);
-			if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sLote.trim()+" ?")==JOptionPane.YES_OPTION){
-	  			String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
-	  			try {
-	  				   PreparedStatement ps = con.prepareStatement(sSql); 
-	  					   ps.setInt(1,Aplicativo.iCodEmp);
-	  					   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
-	  					   ps.setInt(3,iCodProd);
-	  					   ps.setString(4,sLote);
-	  					   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
-	  				   
-	  				   if (ps.executeUpdate() == 0) {
-	  					  Funcoes.mensagemInforma(this,"Não foi possível inserir registro na tabela de Lotes!");
-	  				   }
-	  				   if (!con.getAutoCommit())
-	  				      con.commit();
-	  				   bret = true;
-	  			 }
-	  			 catch (SQLException err) {
-	  			 	Funcoes.mensagemErro(this,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,con,err); 
-	  			 }
-	  	  	}
-	  		else{
-	  			txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
-	  			txtDiasValid.setVlrString("");
-	  		}
-		}
-		else {			
-			Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
-			txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
-			txtDiasValid.setVlrString("");
-		}
+	  int iCodProd = txtCodProd.getVlrInteger().intValue();
+	  int iSeqDist = txtSeqDist.getVlrInteger().intValue();
+	  String sCodLote = null;
+	  Object lote[] = null;
+	  try {
+		  lote =  getModLote(iCodProd, iSeqDist);
+		  if (lote!=null) {
+			  sCodLote = (String) lote[0]; 
+			  if((!existeLote(iCodProd, sCodLote))){			
+					txtLote.setVlrString(sCodLote);
+					txtDiasValid.setVlrDate((Date) lote[1]);
+					FOP.gravaLote(con, true, sCodLote, getUsaLote(), (String) lote[3], iCodProd, 
+							(Date) lote[1], ((Integer) lote[4]).intValue() );
+		  	  }
+			  else {			
+					Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
+					txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
+					txtDiasValid.setVlrString("");
+			  }
+		  }
+	  }
+	  finally {
+		iCodProd = 0;
+		iSeqDist = 0;
+		sCodLote = null;
+		lote = null;
+	  }
 	  return bret;
-  	}
+  }
 }
