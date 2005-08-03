@@ -1,8 +1,8 @@
 /**
  * @version 14/07/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @author Setpoint Informática Ltda./Alexandre Rocha Lima e Marcondes <BR>
  *         Projeto: Freedom <BR>
- *         Pacote: org.freedom.modulos.std <BR>
+ *         Pacote: org.freedom.modulos.gms <BR>
  *         Classe:
  * @(#)FCompra.java <BR>
  *                  Este programa é licenciado de acordo com a LPG-PC (Licença
@@ -18,7 +18,7 @@
  *                  este Programa é preciso estar <BR>
  *                  de acordo com os termos da LPG-PC <BR>
  *                  <BR>
- *                  Tela para cadastro de notas fiscais de compra.
+ *                  Tela para cadastro de solicitações de compra.
  */
 
 package org.freedom.modulos.gms;
@@ -41,9 +41,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.JButton;
-
-import org.freedom.bmps.Icone;
-import org.freedom.componentes.JLabelPad;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CarregaEvent;
@@ -52,14 +50,16 @@ import org.freedom.acao.InsertEvent;
 import org.freedom.acao.InsertListener;
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
-import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBuscaEstoq;
 import org.freedom.modulos.std.DLBuscaProd;
@@ -70,17 +70,20 @@ import org.freedom.telas.FObservacao;
 
 public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		CarregaListener, FocusListener, ActionListener, InsertListener {
+
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinCab = new JPanelPad(740, 242);
 	private JPanelPad pinBotCab = new JPanelPad(104, 92);
 	private JPanelPad pinBotDet = new JPanelPad(104, 63);
-	private JPanelPad pinDet = new JPanelPad();
 	private JPanelPad pinLb = new JPanelPad();
+
 	private JLabelPad lSitItSol = null;
+	private JPanelPad pinDet = new JPanelPad();
 	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
 	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
 			.novo("btFechaVenda.gif"));
+	private JButton btCotacao = new JButton("Cotação", Icone.novo("btMedida.gif"));
 	private JButton btCancelaSol = new JButton("Cancelar", Icone
 			.novo("btRetorno.gif"));
 	private JButton btCancelaItem = new JButton("Cancelar", Icone
@@ -154,7 +157,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
 
-	String sOrdNota = "";
+	String sSitItSol = txtSituacaoIt.getVlrString();
 	String sOrdSol = "";
 	Integer anoCC = null;
 	Integer iCodTpMov = null;
@@ -168,8 +171,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	Vector vItem = new Vector();
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
-	Integer codAlmox = null;
-	String sSitIt = txtSituacaoIt.getVlrString();
 
 	public FSolicitacaoCompra() {
 		setTitulo("Solicitação de Compra");
@@ -281,8 +282,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				"Data da Sol.", ListaCampos.DB_SI, true);
 
 		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
-		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.",
-				ListaCampos.DB_FK, txtDescCC, true);
+		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK,
+				txtDescCC, true);
 		adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
 				true);
 		adicDescFK(txtDescCC, 286, 20, 162, 20, "DescCC",
@@ -320,6 +321,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		btAprovaSol.setToolTipText("Aprovar todos os ítens.");
 		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
 		btCancelaSol.setToolTipText("Cancelar todos os ítens.");
+		btCotacao.setToolTipText("Cotar todos os ítens.");
 		btCancelaItem.setToolTipText("Cancelar ítem.");
 		btMotivoCancelaSol.setToolTipText("Motivo do cancelamento da Solicitação.");
 		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
@@ -330,12 +332,14 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
 		pinBotCab.adic(btCancelaSol, 0, 62, 110, 30);
 		pinBotCab.adic(btMotivoCancelaSol, 0, 93, 110, 30);
+		pinBotCab.adic(btCotacao, 0, 124, 110, 30);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		btAprovaSol.addActionListener(this);
 		btCancelaSol.addActionListener(this);
 		btCancelaItem.addActionListener(this);
+		btCotacao.addActionListener(this);
 		btMotivoCancelaSol.addActionListener(this);
 		btMotivoCancelaItem.addActionListener(this);
 		btMotivoPrior.addActionListener(this);
@@ -344,33 +348,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setImprimir(true);
 
 		desabAprov(true);
-	}
-
-	private void desabAprov(boolean bHab) {
-		if (txtStatusSolicitacao.getVlrString().equals("AT")) {
-			btAprovaSol.setEnabled(false);
-			if (!txtStatusSolicitacao.getVlrString().equals("AF"))
-				btFinAprovSol.setEnabled(true);
-			else {
-				btFinAprovSol.setEnabled(false);
-			}
-		} else {
-			btAprovaSol.setEnabled(!bHab);
-		}
-		if (txtStatusSolicitacao.getVlrString().equals("CA")) {
-			btMotivoCancelaSol.setEnabled(true);
-		}
-		if (txtSituacaoItAprov.getVlrString().equals("CA")) {
-			btMotivoCancelaItem.setEnabled(true);
-		} else {
-			btMotivoCancelaSol.setEnabled(!bHab);
-			btMotivoCancelaItem.setEnabled(!bHab);
-		}
-
-		btFinAprovSol.setEnabled(!bHab);
-		btCancelaSol.setEnabled(!bHab);
-		btCancelaItem.setEnabled(!bHab);
-		txtQtdItAprovado.setNaoEditavel(bHab);
+		desabCot(true);
 	}
 
 	private void montaDetalhe() {
@@ -399,7 +377,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd
 					.getWhereAdic()));
 			txtQtdItSolicitado.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd,
-					con, "QtdItSol"));
+					con, "qtditsol"));
 		}
 
 		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
@@ -457,465 +435,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		pinDet.adic(pinBotDet, 630, 1, 114, 90);
 		lSitItSol = new JLabelPad();
 		lSitItSol.setForeground(Color.WHITE);
-		//pinLb.add(new JLabelPad("",imgStatus,SwingConstants.CENTER));
 		pinLb.adic(lSitItSol, 31, 0, 110, 20);
 		pinDet.adic(pinLb, 630, 91, 114, 24);
 	}
-/*
-	private void testaCodSol() { //Traz o verdadeiro número do codCompra
-		// através do generator do banco
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setString(3, "CP");
-			rs = ps.executeQuery();
-			rs.next();
-			txtCodSolicitacao.setVlrString(rs.getString(1));
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
-					+ err.getMessage(), true, con, err);
-		}
-	}
-*/
-	public void focusGained(FocusEvent fevt) {}
-
-	public void focusLost(FocusEvent fevt) {}
-
-	public void keyPressed(KeyEvent kevt) {
-		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtCodAlmoxarife) {//Talvez este possa ser
-				// o ultimo campo do
-				// itvenda.
-				txtCodAlmoxarife.atualizaFK();
-				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-					lcDet.post();
-					lcDet.limpaCampos(true);
-					lcDet.setState(ListaCampos.LCS_NONE);
-					if (comRef())
-						txtRefProd.requestFocus();
-					else
-						txtCodProd.requestFocus();
-				} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
-					lcDet.post();
-					txtCodItSolicitacao.requestFocus();
-				}
-			}
-		}
-		super.keyPressed(kevt);
-	}
-
-	public boolean[] prefs() {
-		boolean[] bRet = { false };
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getString("UsaRefProd").trim().equals("S"))
-					bRet[0] = true;
-				//sOrdNota = rs.getString("OrdNota");
-			}
-			if (!con.getAutoCommit())
-				con.commit();
-
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage(), true, con, err);
-		} finally {
-			rs = null;
-			ps = null;
-			sSQL = null;
-		}
-		return bRet;
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-//		String[] sValores = null;
-		if (evt.getSource() == btPrevimp)
-			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
-		else if (evt.getSource() == btImp)
-			imprimir(false, txtCodSolicitacao.getVlrInteger().intValue());
-		super.actionPerformed(evt);
-	}
-
-	private void imprimir(boolean bVisualizar, int iCodSol) {
-		ImprimeOS imp = new ImprimeOS("", con);
-		DLRPedido dl = new DLRPedido(sOrdNota);
-		dl.setVisible(true);
-		if (dl.OK == false) {
-			dl.dispose();
-			return;
-		}
-		imp.verifLinPag();
-		imp.montaCab();
-		imp.setTitulo("Relatório de Solicitação de Compras");
-		String sSQL = "SELECT (SELECT COUNT(IC.CODITSOL) FROM CPITSOLICITACAO IC WHERE IC.CODSOL=S.CODSOL),"
-				+ "S.CODSOL,S.DTEMITSOL,S.SITSOL,S.MOTIVOSOL,"
-				+ "I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL,I.SITAPROVITSOL, I.SITCOMPITSOL, I.SITITSOL,"
-				+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
-				+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC"
-				+ " FROM CPSOLICITACAO S, CPITSOLICITACAO I, EQALMOX A, FNCC CC, EQPRODUTO P"
-				+ " WHERE S.CODSOL="
-				+ iCodSol
-				+ " AND I.CODSOL=S.CODSOL"
-				+ " AND P.CODPROD=I.CODPROD"
-				+ " AND I.CODALMOX=I.CODALMOX"
-				+ " AND CC.CODCC=I.CODCC"
-				+ " ORDER BY S.CODSOL,P."
-				+ dl.getValor()
-				+ ";";
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int iItImp = 0;
-		int iMaxItem = 0;
-		try {
-			ps = con.prepareStatement(sSQL);
-			rs = ps.executeQuery();
-			imp.limpaPags();
-			iMaxItem = imp.verifLinPag() - 23;
-			while (rs.next()) {
-				if (imp.pRow() == 0) {
-					imp.impCab(136, false);
-					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-					imp.say(imp.pRow() + 0, 4, "SOLICITAÇÂO DE COMPRA No.: ");
-					imp.say(imp.pRow() + 0, 25, rs.getString("CODSOL"));
-					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 96, "[ Data de emissão ]");
-					imp.say(imp.pRow() + 0, 100, Funcoes.sqlDateToStrDate(rs
-							.getDate("DTEMITSOL")));
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 57, "DADOS DO(S) PRODUTO(S)");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 4, "Referencia");
-					imp.say(imp.pRow() + 0, 18, "Descrição dos produtos");
-					imp.say(imp.pRow() + 0, 60, "Qtd.sol.");
-					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
-					imp.say(imp.pRow() + 0, 90, "Sit.item");
-					imp.say(imp.pRow() + 0, 110, "Sit.compra");
-					imp.say(imp.pRow() + 0, 130, "Sit.aprov.");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 4, rs.getString("RefProd"));
-				imp.say(imp.pRow() + 0, 18, rs.getString("DescProd").substring(0, 39));
-				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITSOL"));
-				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITSOL"));
-				if (rs.getString("SITITSOL").equalsIgnoreCase("PE"))
-					imp.say(imp.pRow() + 0, 90, "PENDENTE");
-				if (rs.getString("SITITSOL").equalsIgnoreCase("SC"))
-					imp.say(imp.pRow() + 0, 90, "CONCLUÍDO");
-				if (rs.getString("SITITSOL").equalsIgnoreCase("SA"))
-					imp.say(imp.pRow() + 0, 90, "CANCELADO");
-				if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("PE"))
-					imp.say(imp.pRow() + 0, 110, "PENDENTE");
-				if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CP"))
-					imp.say(imp.pRow() + 0, 110, "COMPRA PARCIAL");
-				if (rs.getString("SITCOMPITSOL").equalsIgnoreCase("CT"))
-					imp.say(imp.pRow() + 0, 110, "COMPRA TOTAL");
-				if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("PE"))
-					imp.say(imp.pRow() + 0, 130, "PENDENTE");
-				if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("AP"))
-					imp.say(imp.pRow() + 0, 130, "APROVAÇÂO PARCIAL");
-				if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("AT"))
-					imp.say(imp.pRow() + 0, 130, "APROVAÇÂO TOTAL");
-				if (rs.getString("SITAPROVITSOL").equalsIgnoreCase("NA"))
-					imp.say(imp.pRow() + 0, 130, "NÃO APROVADA");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				iItImp++;
-				if ((imp.pRow() >= iMaxItem) | (iItImp == rs.getInt(1))) {
-					if ((iItImp == rs.getInt(1))) {
-						int iRow = imp.pRow();
-						for (int i = 0; i < (iMaxItem - iRow); i++) {
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 0, "");
-						}
-					}
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 60, "DADOS ADICIONAIS");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					if (rs.getString("SITSOL").equalsIgnoreCase("PE"))
-						imp.say(imp.pRow() + 0, (116 - "Pendente".length()) / 2,
-								"SITUAÇÂO : PENDENTE");
-					if (rs.getString("SITSOL").equalsIgnoreCase("SC"))
-						imp.say(imp.pRow() + 0, (116 - "Pendente".length()) / 2,
-								"SITUAÇÂO : CONCLUÍDA");
-					if (rs.getString("SITSOL").equalsIgnoreCase("SA"))
-						imp.say(imp.pRow() + 0, (116 - "Pendente".length()) / 2,
-								"SITUAÇÂO : CANCELADA");
-					imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 3, "MOTIVO : " + rs.getString("MOTIVOSOL"));
-					imp.eject();
-				}
-			}
-			imp.fechaGravacao();
-
-			if (!con.getAutoCommit())
-				con.commit();
-			dl.dispose();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
-					+ err.getMessage(), true, con, err);
-		}
-
-		if (bVisualizar) {
-			imp.preview(this);
-		} else {
-			imp.print();
-		}
-	}
-
-	private boolean comRef() {
-		return bPrefs[0];
-	}
-
-	public void keyTyped(KeyEvent kevt) {
-		super.keyTyped(kevt);
-	}
-
-	public void keyReleased(KeyEvent kevt) {
-		super.keyReleased(kevt);
-	}
-
-	private boolean dialogObsPrior() {
-		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
-		if (obs != null) {
-			if ((rgPriod.getVlrString().equals("A"))
-					&& (txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))) {
-				obs.txa.setEnabled(true);
-			} else
-				obs.txa.setEnabled(false);
-			obs.setVisible(true);
-			if (obs.OK) {
-				txaMotivoPrior.setVlrString(obs.getTexto());
-				bRet = true;
-			}
-		}
-		obs.dispose();
-		return bRet;
-	}
-
-	public void beforeCarrega(CarregaEvent cevt) {}
-
-	public void afterCarrega(CarregaEvent cevt) {
-
-		buscaInfoUsuAtual();
-
-		String sSitRma = txtStatusSolicitacao.getVlrString();
-		String sSitItAprov = txtSituacaoItAprov.getVlrString();
-		String sSitItExp = txtSituacaoItComp.getVlrString();
-		sSitIt = txtSituacaoIt.getVlrString();
-
-		boolean bStatusTravaTudo = ((sSitIt.equals("AF"))
-				|| (sSitIt.equals("EF")) || (sSitIt.equals("CA")));
-//		boolean bStatusTravaExp = (!(sSitIt.equals("AF")));
-
-		if (cevt.getListaCampos() == lcDet) {
-			if (sSitIt.equals("CA")) {
-				desabCampos(true);
-				btMotivoCancelaItem.setEnabled(true);
-			}
-		}
-
-		if (rgPriod.getVlrString().equals("A") && sSitRma.equals("PE")) {
-			btMotivoPrior.setEnabled(true);
-		} else
-			btMotivoPrior.setEnabled(false);
-
-		if (sSitRma.equals("CA"))
-			btMotivoCancelaSol.setEnabled(true);
-		else
-			btMotivoCancelaSol.setEnabled(false);
-
-		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))
-				|| (bStatusTravaTudo))
-			desabCampos(true);
-		else
-			desabCampos(false);
-
-		if (!bAprovaCab || bStatusTravaTudo) {
-			desabAprov(true);
-			txaMotivoCancSol.setEnabled(false);
-		} else {
-			if (!bStatusTravaTudo)
-				txaMotivoCancSol.setEnabled(true);
-			desabAprov(false);
-		}
-
-		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
-				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {
-		}
-
-		if (sSitIt.equals("CA")) {
-			//imgStatus = imgCancelado;
-			SitSol = "Cancelado";
-			lSitItSol.setText(SitSol);
-			pinLb.setBackground(cor(250, 50, 50));
-		} else if (sSitIt.equals("PE")) {
-			//imgStatus = imgPendento;
-			SitSol = "Pendente";
-			lSitItSol.setText(SitSol);
-			pinLb.setBackground(cor(255, 204, 51));
-		} else if (sSitItExp.equals("ET") || sSitItExp.equals("EP")) {
-			//imgStatus = imgExpedido;
-			SitSol = "Expedido";
-			lSitItSol.setText(SitSol);
-			pinLb.setBackground(cor(0, 170, 30));
-		} else if (sSitItAprov.equals("AT") || sSitItAprov.equals("AP")) {
-			//imgStatus = imgAprovado;
-			SitSol = "Aprovado";
-			lSitItSol.setText(SitSol);
-			pinLb.setBackground(cor(26, 140, 255));
-		}
-
-		if (cevt.getListaCampos() == lcDet) {
-			if (txtQtdItAprovado.isEditable()) {
-				if (txtQtdItAprovado.getVlrDouble().compareTo(new Double(0)) <= 0)
-					txtQtdItAprovado.setVlrDouble(txtQtdItAprovado.getVlrDouble());
-			}
-			if (txtQtdItSolicitado.isEditable()) {
-				if (txtQtdItSolicitado.getVlrDouble().compareTo(new Double(0)) <= 0)
-					txtQtdItSolicitado.setVlrDouble(txtQtdItAprovado.getVlrDouble());
-			}
-		}
-		if (cevt.getListaCampos() == lcUsu) {
-			/*
-			 * String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT
-			 * ANOCCUSU||CODCCUSU FROM
-			 * sgretinfousu('"+txtIDUsu.getVlrString().trim()+"')) IN "+ "(SELECT
-			 * ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND
-			 * PA.codemp=EQPRODUTO.CODEMP AND "+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND
-			 * PA.CODPROD=EQPRODUTO.CODPROD) "+ "OR "+ "((SELECT coalesce(COUNT(1),0)
-			 * FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP
-			 * AND "+ "PA.CODFILIAL=EQPRODUTO.CODFILIAL AND
-			 * PA.CODPROD=EQPRODUTO.CODPROD)=0) "+ "OR " + "((SELECT ALMOXARIFE FROM
-			 * sgretinfousu('"+txtIDUsu.getVlrString().trim()+"'))='S')) ";
-			 */
-
-			//lcLote.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ",txtCodProd)
-
-			//	carregaWhereAdic();
-		}
-	}
-	public Color cor(int r, int g, int b){
-		Color color = new Color(r, g, b);
-		return color;
-	}
-	private void desabCampos(boolean bHab) {
-		txtCodProd.setNaoEditavel(bHab);
-		txtRefProd.setNaoEditavel(bHab);
-		txtQtdItAprovado.setNaoEditavel(bHab);
-		txaMotivoSol.setEnabled(!bHab);
-		rgPriod.setAtivo(!bHab);
-	}
-	public void beforePost(PostEvent pevt) {
-		String sMotvProir = rgPriod.getVlrString();
-		if (pevt.getListaCampos() == lcCampos) {
-			txtOrigSolicitacao.setVlrString("AX");
-			if (txtSituacaoIt.getVlrString().equals("")) {
-				txtStatusSolicitacao.setVlrString("PE");
-			}
-		} else if (pevt.getListaCampos() == lcDet) {
-			if (txtQtdItAprovado.getVlrDouble().doubleValue() > txtQtdItSolicitado
-					.getVlrDouble().doubleValue()) {
-				Funcoes.mensagemInforma(null,
-						"Quantidade aprovada maior que a requerida!");
-				pevt.getListaCampos().cancelPost();
-			}
-			if (txtSituacaoIt.getVlrString().equals("")) {
-				txtSituacaoIt.setVlrString("PE");
-			}
-			if (txtSituacaoItAprov.getVlrString().equals("")) {
-				txtSituacaoItAprov.setVlrString("PE");
-			}
-			if (txtSituacaoItComp.getVlrString().equals("")) {
-				txtSituacaoItComp.setVlrString("PE");
-			}
-			if (txtQtdItAprovado.getVlrString().equals("")) {
-				txtQtdItAprovado.setVlrDouble(new Double(0));
-			}
-			if (txtQtdItSolicitado.getVlrString().equals("")) {
-				txtQtdItSolicitado.setVlrDouble(new Double(0));
-			}
-			if (sMotvProir.equals("A")) {
-				dialogObsPrior();
-			}
-		} else if (pevt.getListaCampos() == lcCampos) {
-			if (txtStatusSolicitacao.getVlrString().equals("")) {
-				txtStatusSolicitacao.setVlrString("PE");
-			}
-			if (txtSituacaoItAprov.getVlrString().equals("")) {
-				txtSituacaoItAprov.setVlrString("PE");
-			}
-			if (txtSituacaoItComp.getVlrString().equals("")) {
-				txtSituacaoItComp.setVlrString("PE");
-			}
-
-		}
-
-	}
-
-	public void beforeInsert(InsertEvent ievt) {}
-
-	public void afterInsert(InsertEvent ievt) {
-		if (ievt.getListaCampos() == lcCampos) {
-			txtAnoCC.setVlrInteger(anoCC);
-			txtCodCC.setVlrString(codCC);
-			lcCC.carregaDados();
-			txtIDUsu.setVlrString(Aplicativo.strUsuario);
-			txtDtEmitSolicitacao.setVlrDate(new Date());
-			lcCampos.carregaDados();
-		}
-	}
-
-	public void exec(int iCodCompra) {
-		txtCodSolicitacao.setVlrString(iCodCompra + "");
-		lcCampos.carregaDados();
-	}
-
-	public void execDev(int iCodFor, int iCodTipoMov, String sSerie, int iDoc) {
-		lcCampos.insert(true);
-	}
-
-	public void carregaWhereAdic() {
-		buscaInfoUsuAtual();
-		if ((bAprovaCab) || (bCotacao)) {
-			if (bAprovaParcial) {
-				lcCampos.setWhereAdic("CODCC='" + Aplicativo.strCodCCUsu
-						+ "' AND ANOCC=" + Aplicativo.strAnoCCUsu);
-			}
-		} else {
-			lcCampos.setWhereAdic("IDUSU='" + Aplicativo.strUsuario + "'");
-		}
-	}
 
 	private void buscaInfoUsuAtual() {
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,ALMOXARIFEUSU "
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU "
 				+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -928,7 +453,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				String sAprova = rs.getString("APROVCPSOLICITACAOUSU");
-				String sCotacao = rs.getString("ALMOXARIFEUSU");
+				String sCotacao = rs.getString("COMPRASUSU");
 				if (sAprova != null) {
 					if (!sAprova.equals("ND")) {
 						if (sAprova.equals("TD"))
@@ -961,6 +486,635 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		}
 	}
 
+	public void focusGained(FocusEvent fevt) {}
+
+	public void focusLost(FocusEvent fevt) {}
+
+	public void beforeCarrega(CarregaEvent cevt) {}
+
+	public void afterPost(PostEvent pevt) {
+		if (pevt.getListaCampos() == lcCampos) {
+			lcCampos.carregaDados();
+		}
+		if (pevt.getListaCampos() == lcDet) {
+			lcCampos.carregaDados();
+		}
+	}
+
+	private void desabCampos(boolean bHab) {
+		txtCodProd.setNaoEditavel(bHab);
+		txtRefProd.setNaoEditavel(bHab);
+		txtQtdItAprovado.setNaoEditavel(bHab);
+		txaMotivoSol.setEnabled(!bHab);
+		rgPriod.setAtivo(!bHab);
+	}
+
+	private void desabAprov(boolean bHab) {
+		if (txtStatusSolicitacao.getVlrString().equals("AT")) {
+			btAprovaSol.setEnabled(false);
+			if (!txtStatusSolicitacao.getVlrString().equals("AF"))
+				btFinAprovSol.setEnabled(true);
+			else {
+				btFinAprovSol.setEnabled(false);
+			}
+		} else {
+			btAprovaSol.setEnabled(!bHab);
+		}
+		if (txtStatusSolicitacao.getVlrString().equals("CA")) {
+			btMotivoCancelaSol.setEnabled(true);
+		}
+		if (txtSituacaoItAprov.getVlrString().equals("CA")) {
+			btMotivoCancelaItem.setEnabled(true);
+		} else {
+			btMotivoCancelaSol.setEnabled(!bHab);
+			btMotivoCancelaItem.setEnabled(!bHab);
+		}
+
+		btFinAprovSol.setEnabled(!bHab);
+		btCancelaSol.setEnabled(!bHab);
+		btCancelaItem.setEnabled(!bHab);
+		txtQtdItAprovado.setNaoEditavel(bHab);
+	}
+
+	private void desabCot(boolean bHab) {
+		btCotacao.setEnabled(!bHab);
+		txtQtdItAprovado.setNaoEditavel(bHab);
+	}
+
+	public void carregaWhereAdic() {
+		buscaInfoUsuAtual();
+		if ((bAprovaCab) || (bCotacao)) {
+			if (bAprovaParcial) {
+				lcCampos.setWhereAdic("CODCC='" + Aplicativo.strCodCCUsu
+						+ "' AND ANOCC=" + Aplicativo.strAnoCCUsu);
+			}
+		} else {
+			lcCampos.setWhereAdic("IDUSU='" + Aplicativo.strUsuario + "'");
+		}
+	}
+
+	public void afterCarrega(CarregaEvent cevt) {
+		buscaInfoUsuAtual();
+
+		String sSitSol = txtStatusSolicitacao.getVlrString();
+		String sSitItAprov = txtSituacaoItAprov.getVlrString();
+		String sSitItExp = txtSituacaoItComp.getVlrString();
+		sSitItSol = txtSituacaoIt.getVlrString();
+
+		boolean bStatusTravaTudo = ((sSitItSol.equals("AF"))
+				|| (sSitItSol.equals("EF")) || (sSitItSol.equals("CA")));
+		boolean bStatusTravaCot = (!(sSitItSol.equals("AF")));
+
+		if (cevt.getListaCampos() == lcDet) {
+			if (sSitItSol.equals("CA")) {
+				desabCampos(true);
+				btMotivoCancelaItem.setEnabled(true);
+			}
+		}
+
+		if (rgPriod.getVlrString().equals("A") && sSitSol.equals("PE")) {
+			btMotivoPrior.setEnabled(true);
+		} else
+			btMotivoPrior.setEnabled(false);
+
+		if (sSitSol.equals("CA"))
+			btMotivoCancelaSol.setEnabled(true);
+		else
+			btMotivoCancelaSol.setEnabled(false);
+
+		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))
+				|| (bStatusTravaTudo))
+			desabCampos(true);
+		else
+			desabCampos(false);
+
+		if (!bAprovaCab || bStatusTravaTudo) {
+			desabAprov(true);
+			txaMotivoCancSol.setEnabled(false);
+		} else {
+			if (!bStatusTravaTudo)
+				txaMotivoCancSol.setEnabled(true);
+			desabAprov(false);
+		}
+
+		if (!bCotacao || bStatusTravaCot)
+			desabCot(true);
+		else {
+			desabCot(false);
+		}
+
+		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
+				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {}
+
+		if (sSitItSol.equals("CA")) {
+			SitSol = "Cancelado";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(250, 50, 50));
+		} else if (sSitItSol.equals("PE")) {
+			SitSol = "Pendente";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(255, 204, 51));
+		} else if (sSitItExp.equals("ET") || sSitItExp.equals("EP")) {
+			SitSol = "Expedido";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(0, 170, 30));
+		} else if (sSitItAprov.equals("AT") || sSitItAprov.equals("AP")) {
+			SitSol = "Aprovado";
+			lSitItSol.setText(SitSol);
+			pinLb.setBackground(cor(26, 140, 255));
+		}
+
+		if (cevt.getListaCampos() == lcDet) {
+			if (txtQtdItAprovado.isEditable()) {
+				if (txtQtdItAprovado.getVlrDouble().compareTo(new Double(0)) <= 0)
+					txtQtdItAprovado.setVlrDouble(txtQtdItAprovado.getVlrDouble());
+			}
+			if (txtQtdItSolicitado.isEditable()) {
+				if (txtQtdItSolicitado.getVlrDouble().compareTo(new Double(0)) <= 0)
+					txtQtdItSolicitado.setVlrDouble(txtQtdItAprovado.getVlrDouble());
+			}
+		}
+	}
+
+	public boolean[] prefs() {
+		boolean[] bRet = { false };
+		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("UsaRefProd").trim().equals("S"))
+					bRet[0] = true;
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage(), true, con, err);
+		} finally {
+			rs = null;
+			ps = null;
+			sSQL = null;
+		}
+		return bRet;
+	}
+
+	private boolean dialogObsCab() {
+		boolean bRet = false;
+		FObservacao obs = new FObservacao(txaMotivoCancSol.getVlrString());
+		if (obs != null) {
+			if ((!bAprovaCab) || (sSitItSol.equals("CA")))
+				obs.txa.setEnabled(false);
+			obs.setVisible(true);
+			if (obs.OK) {
+				txaMotivoCancSol.setVlrString(obs.getTexto());
+				bRet = true;
+			}
+		}
+		obs.dispose();
+		return bRet;
+	}
+
+	private boolean dialogObsDet() {
+		boolean bRet = false;
+		FObservacao obs = new FObservacao(txaMotivoCancItem.getVlrString());
+		if (obs != null) {
+			if ((!bAprovaCab) || (sSitItSol.equals("CA")))
+				obs.txa.setEnabled(false);
+			obs.setVisible(true);
+			if (obs.OK) {
+				txaMotivoCancItem.setVlrString(obs.getTexto());
+				bRet = true;
+			}
+		}
+		obs.dispose();
+		return bRet;
+	}
+
+	private boolean dialogObsPrior() {
+		boolean bRet = false;
+		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
+		if (obs != null) {
+			if ((rgPriod.getVlrString().equals("A"))
+					&& (txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))) {
+				obs.txa.setEnabled(true);
+			} else
+				obs.txa.setEnabled(false);
+			obs.setVisible(true);
+			if (obs.OK) {
+				txaMotivoPrior.setVlrString(obs.getTexto());
+				bRet = true;
+			}
+		}
+		obs.dispose();
+		return bRet;
+	}
+
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btPrevimp)
+			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
+		else if (evt.getSource() == btImp)
+			imprimir(false, txtCodSolicitacao.getVlrInteger().intValue());
+		else if (evt.getSource() == btMotivoCancelaSol) {
+			dialogObsCab();
+		} else if (evt.getSource() == btMotivoCancelaItem) {
+			dialogObsDet();
+		} else if (evt.getSource() == btMotivoPrior) {
+			dialogObsPrior();
+		} else if (evt.getSource() == btCancelaSol) {
+			lcCampos.setState(ListaCampos.LCS_EDIT);
+			if (Funcoes.mensagemConfirma(null,
+					"Deseja cancelar a solicitação de compra de todos os ítens?") == JOptionPane.YES_OPTION) {
+				if (dialogObsCab()) {
+					txtStatusSolicitacao.setVlrString("CA");
+					lcCampos.post();
+				}
+			}
+		} else if (evt.getSource() == btCancelaItem) {
+			lcDet.setState(ListaCampos.LCS_EDIT);
+			if (Funcoes.mensagemConfirma(null,
+					"Deseja cancelar ítem da solicitação de compra?") == JOptionPane.YES_OPTION) {
+				if (dialogObsDet()) {
+					txtSituacaoIt.setVlrString("CA");
+					lcDet.post();
+				}
+			}
+		}
+
+		else if (evt.getSource() == btAprovaSol) {
+			lcCampos.setState(ListaCampos.LCS_EDIT);
+			if (Funcoes
+					.mensagemConfirma(
+							null,
+							"Deseja Aprovar todos os ítens da solicitação de compra?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
+									+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
+				;
+				txtStatusSolicitacao.setVlrString("AT");
+				nav.btSalvar.doClick();
+			}
+		} else if (evt.getSource() == btFinAprovSol) {
+			lcCampos.setState(ListaCampos.LCS_EDIT);
+			if (Funcoes
+					.mensagemConfirma(
+							null,
+							"Deseja finalizar o processo de aprovação da solicitação de compra?\n Após este procedimento a solicitação de compra não poderá mais ser alterada\n"
+									+ "e estará disponível para cotação!") == JOptionPane.OK_OPTION) {
+				;
+				txtStatusSolicitacao.setVlrString("AF");
+				nav.btSalvar.doClick();
+			}
+		} else if (evt.getSource() == btCotacao) {
+			lcCampos.setState(ListaCampos.LCS_EDIT);
+			if (Funcoes
+					.mensagemConfirma(
+							null,
+							"Deseja cotar todos os ítens da solicitação de compra?\n Caso você não tenha informado as quantidades\n a serem cotadas"
+									+ " estará cotando as quantidades aprovadas!") == JOptionPane.OK_OPTION) {
+				;
+				txtSituacaoItComp.setVlrString("AT");
+				nav.btSalvar.doClick();
+			}
+		}
+
+		super.actionPerformed(evt);
+	}
+
+	private void imprimir(boolean bVisualizar, int iCodSol) {
+		ImprimeOS imp = new ImprimeOS("", con);
+		int linPag = imp.verifLinPag() - 1;
+		DLRPedido dl = new DLRPedido(sOrdSol);
+		dl.setVisible(true);
+		if (dl.OK == false) {
+			dl.dispose();
+			return;
+		}
+		imp.verifLinPag();
+		imp.montaCab();
+		/*
+		 * String sSQL = "SELECT (SELECT COUNT(IC.CODITSOL) FROM CPITSOLICITACAO IC
+		 * WHERE IC.CODSOL=S.CODSOL)," +
+		 * "S.CODSOL,S.DTEMITSOL,S.SITSOL,S.MOTIVOSOL," + "I.CODPROD, I.QTDITSOL,
+		 * I.QTDAPROVITSOL,I.SITAPROVITSOL, I.SITCOMPITSOL, I.SITITSOL," +
+		 * "P.REFPROD,P.DESCPROD, P.CODUNID," + "A.CODALMOX, A.DESCALMOX, CC.CODCC,
+		 * CC.ANOCC" + " FROM CPSOLICITACAO S, CPITSOLICITACAO I, EQALMOX A, FNCC
+		 * CC, EQPRODUTO P" + " WHERE S.CODSOL=" + iCodSol + " AND
+		 * I.CODSOL=S.CODSOL" + " AND P.CODPROD=I.CODPROD" + " AND
+		 * I.CODALMOX=I.CODALMOX" + " AND CC.CODCC=I.CODCC" + " ORDER BY
+		 * S.CODSOL,P." + dl.getValor() + ";";
+		 */
+		imp.setTitulo("Relatório de Solicitação de Compras");
+		/*
+		 * String sSQL = "SELECT (SELECT COUNT(IC.CODITSOL) FROM CPITSOLICITACAO IC
+		 * WHERE IC.CODSOL=S.CODSOL)," +
+		 * "S.CODSOL,S.DTEMITSOL,S.SITSOL,S.MOTIVOSOL," + "I.CODPROD, I.QTDITSOL,
+		 * I.QTDAPROVITSOL,I.SITAPROVITSOL, I.SITCOMPITSOL, I.SITITSOL," +
+		 * "P.REFPROD,P.DESCPROD, P.CODUNID," + "A.CODALMOX, A.DESCALMOX, CC.CODCC,
+		 * CC.ANOCC" + " FROM CPSOLICITACAO S, CPITSOLICITACAO I, EQALMOX A, FNCC
+		 * CC, EQPRODUTO P" + " WHERE S.CODSOL=" + iCodSol + " AND
+		 * I.CODSOL=S.CODSOL" + " AND P.CODPROD=I.CODPROD" + " AND
+		 * I.CODALMOX=I.CODALMOX" + " AND CC.CODCC=I.CODCC" + " ORDER BY
+		 * S.CODSOL,P." + dl.getValor() + ";";
+		 */
+		String sSQL = "SELECT  (SELECT COUNT(IT.CODITRMA) FROM EQITRMA IT "
+				+ " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODRMA=R.CODRMA),"
+				+ "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,R.DTAAPROVRMA,R.DTAEXPRMA,R.MOTIVOCANCRMA,"
+				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA, I.SITITRMA,"
+				+ "I.SITITRMA,I.SITAPROVITRMA,I.SITEXPITRMA,I.CODITRMA,"
+				+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
+				+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC,"
+				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV),"
+				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U "
+				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC "
+				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV),"
+				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U "
+				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC "
+				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP),"
+				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP),"
+				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP"
+				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
+				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
+				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA"
+				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD"
+				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
+				+ " AND CC.CODEMP=R.CODEMPCC AND CC.CODFILIAL=R.CODFILIALCC AND CC.CODCC=R.CODCC"
+				+ " AND A.CODEMP=I.CODEMPAX AND A.CODFILIAL=I.CODFILIALAX AND A.CODALMOX=I.CODALMOX "
+				+ " ORDER BY R.CODRMA,P." + dl.getValor() + ";";
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = con.prepareStatement(sSQL);
+
+			ps.setInt(1, lcCampos.getCodEmp());
+			ps.setInt(2, lcCampos.getCodFilial());
+			ps.setInt(3, txtCodSolicitacao.getVlrInteger().intValue());
+
+			rs = ps.executeQuery();
+
+			imp.limpaPags();
+
+			while (rs.next()) {
+				if (imp.pRow() >= (linPag - 1)) {
+					imp.incPags();
+					imp.eject();
+				}
+				if (imp.pRow() == 0) {
+					imp.impCab(136, true);
+					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, "R.M.A.   No.: ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("CODRMA"));
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, "Requisitante: ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSU"));
+					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
+					imp.say(imp.pRow() + 0, 38, (rs.getString("CODCC") != null ? rs
+							.getString("CODCC").trim() : ""));
+					imp.say(imp.pRow() + 0, 62, "-"
+							+ (rs.getString("DESCCC") != null ? rs.getString("DESCCC").trim()
+									: ""));
+					imp.say(imp.pRow() + 0, 113, "- Data : ");
+					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs
+							.getDate("DTINS")));
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, "Aprovação   : ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUAPROV"));
+					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
+					imp.say(imp.pRow() + 0, 38, (rs.getString(29) != null ? rs.getString(
+							29).trim() : ""));
+					imp.say(imp.pRow() + 0, 62, "-"
+							+ (rs.getString(30) != null ? rs.getString(30).trim() : ""));
+					imp.say(imp.pRow() + 0, 113, "- Data : ");
+					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs
+							.getDate("DTAAPROVRMA")));
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, "Expedição   : ");
+					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUEXP"));
+					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
+					imp.say(imp.pRow() + 0, 38, (rs.getString(31) != null ? rs.getString(
+							31).trim() : ""));
+					imp.say(imp.pRow() + 0, 62, "-"
+							+ (rs.getString(32) != null ? rs.getString(32).trim() : ""));
+					imp.say(imp.pRow() + 0, 113, "- Data : ");
+					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs
+							.getDate("DTAEXPRMA")));
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, "O.P/OS.:");
+					imp.say(imp.pRow() + 0, 13, rs.getString("CodOP") != null ? rs
+							.getString("CodOP").trim() : "");
+					imp.say(imp.pRow() + 0, 25, "Seq. O.P.:");
+					imp.say(imp.pRow() + 0, 37, rs.getString("SeqOP") != null ? rs
+							.getString("SeqOP").trim() : "");
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 57, "DADOS DO(S) PRODUTO(S)");
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 2, "Item");
+					imp.say(imp.pRow() + 0, 8, "Referencia");
+					imp.say(imp.pRow() + 0, 22, "Descrição dos produtos");
+					imp.say(imp.pRow() + 0, 60, "Qtd.req.");
+					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
+					imp.say(imp.pRow() + 0, 90, "Qtd.exp.");
+					imp.say(imp.pRow() + 0, 100, "Sit.item");
+					imp.say(imp.pRow() + 0, 110, "Sit.aprov.");
+					imp.say(imp.pRow() + 0, 122, "Sit.exp.");
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 136, "|");
+				}
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
+				imp.say(imp.pRow() + 0, 2, rs.getString("CODITRMA"));
+				imp.say(imp.pRow() + 0, 8, rs.getString("REFPROD"));
+				imp.say(imp.pRow() + 0, 22, rs.getString("DESCPROD").substring(0, 37));
+				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITRMA"));
+				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITRMA"));
+				imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
+				if (!rs.getString("SITITRMA").equals("CA"))
+					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITRMA"));
+				if (!rs.getString("SITAPROVITRMA").equals("NA"))
+					imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
+				if (!rs.getString("SITEXPITRMA").equals("NE"))
+					imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
+				imp.say(imp.pRow() + 0, 136, "|");
+
+				if ((rs.getString("SITITRMA").equals("CA"))
+						|| (rs.getString("SITAPROVITRMA").equals("NA"))
+						|| (rs.getString("SITEXPITRMA").equals("NE"))) {
+					if (comRef())
+						vProdCan.addElement(rs.getString("REFPROD"));
+					else
+						vProdCan.addElement(rs.getString("CODPROD"));
+					vItem.addElement(rs.getString("CODITRMA"));
+					vMotivoCan.addElement(rs.getString("MOTIVOCANCRMA") != null ? rs
+							.getString("MOTIVOCANCRMA") : "");
+					cont++;
+				}
+
+			}
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
+			imp.say(imp.pRow() + 0, 57, "INFORMAÇÕES ADICIONAIS");
+			imp.say(imp.pRow() + 0, 136, "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
+			imp.say(imp.pRow() + 0, 136, "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
+			imp.say(imp.pRow() + 0, 2, "MOTIVO DA REQUISIÇÃO: ");
+			String sMotivoRMA = (rs.getString("MOTIVORMA") != null ? rs
+					.getString("MOTIVORMA") : "").trim();
+			imp.say(imp.pRow() + 0, 26, sMotivoRMA.substring(0,
+					sMotivoRMA.length() > 109 ? 109 : sMotivoRMA.length()));
+			imp.say(imp.pRow() + 0, 136, "|");
+			if (cont > 0) {
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
+				imp.say(imp.pRow() + 0, 4, "ITENS NÃO EXPEDIDOS:");
+				imp.say(imp.pRow() + 0, 136, "|");
+				for (int i = 0; vProdCan.size() > i; i++) {
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 4, vItem.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 9, vProdCan.elementAt(i).toString());
+					String sMotivoCanc = vMotivoCan.elementAt(i).toString();
+
+					imp.say(imp.pRow() + 0, 25, "- "
+							+ sMotivoCanc.substring(0, sMotivoCanc.length() > 108 ? 108
+									: sMotivoCanc.length()));
+					imp.say(imp.pRow() + 0, 136, "|");
+				}
+			}
+
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 52, Funcoes.replicate("_", 41));
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 62, "Ass. do requisitante");
+
+			imp.eject();
+
+			imp.fechaGravacao();
+
+			if (!con.getAutoCommit())
+				con.commit();
+			dl.dispose();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
+					+ err.getMessage(), true, con, err);
+		}
+
+		if (bVisualizar) {
+			imp.preview(this);
+		} else {
+			imp.print();
+		}
+	}
+
+	private boolean comRef() {
+		return bPrefs[0];
+	}
+
+	public void keyTyped(KeyEvent kevt) {
+		super.keyTyped(kevt);
+	}
+
+	public void keyReleased(KeyEvent kevt) {
+		super.keyReleased(kevt);
+	}
+
+	public void beforePost(PostEvent pevt) {
+		String sMotvProir = rgPriod.getVlrString();
+		if (pevt.getListaCampos() == lcDet) {
+			if (txtQtdItAprovado.getVlrDouble().doubleValue() > txtQtdItSolicitado
+					.getVlrDouble().doubleValue()) {
+				Funcoes.mensagemInforma(null,
+						"Quantidade aprovada maior que a requerida!");
+				pevt.getListaCampos().cancelPost();
+			}
+			if (txtSituacaoIt.getVlrString().equals("")) {
+				txtSituacaoIt.setVlrString("PE");
+			}
+			if (txtSituacaoItAprov.getVlrString().equals("")) {
+				txtSituacaoItAprov.setVlrString("PE");
+			}
+			if (txtSituacaoItComp.getVlrString().equals("")) {
+				txtSituacaoItComp.setVlrString("PE");
+			}
+			if (txtQtdItAprovado.getVlrString().equals("")) {
+				txtQtdItAprovado.setVlrDouble(new Double(0));
+			}
+			if (txtQtdItSolicitado.getVlrString().equals("")) {
+				txtQtdItSolicitado.setVlrDouble(new Double(0));
+			}
+			if (sMotvProir.equals("A")) {
+				dialogObsPrior();
+			}
+		} else if (pevt.getListaCampos() == lcCampos) {
+			txtOrigSolicitacao.setVlrString("AX");
+			if (txtStatusSolicitacao.getVlrString().equals("")) {
+				txtStatusSolicitacao.setVlrString("PE");
+			}
+			if (txtSituacaoItAprov.getVlrString().equals("")) {
+				txtSituacaoItAprov.setVlrString("PE");
+			}
+			if (txtSituacaoItComp.getVlrString().equals("")) {
+				txtSituacaoItComp.setVlrString("PE");
+			}
+		}
+	}
+
+	public void beforeInsert(InsertEvent ievt) {}
+
+	public void afterInsert(InsertEvent ievt) {
+		if (ievt.getListaCampos() == lcCampos) {
+			txtAnoCC.setVlrInteger(anoCC);
+			txtCodCC.setVlrString(codCC);
+			lcCC.carregaDados();
+			txtIDUsu.setVlrString(Aplicativo.strUsuario);
+			txtDtEmitSolicitacao.setVlrDate(new Date());
+			lcCampos.carregaDados();
+		}
+	}
+
+	public void exec(int iCodCompra) {
+		txtCodSolicitacao.setVlrString(iCodCompra + "");
+		lcCampos.carregaDados();
+	}
+
+	public void execDev(int iCodFor, int iCodTipoMov, String sSerie, int iDoc) {
+		lcCampos.insert(true);
+	}
+
 	private int buscaVlrPadrao() {
 		int iRet = 0;
 		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
@@ -983,7 +1137,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	public void setConexao(Connection cn) {
-		super.setConexao(cn); 
+		super.setConexao(cn);
 		bPrefs = prefs();
 		montaDetalhe();
 
@@ -993,7 +1147,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());
 		lcAlmox.setConexao(cn);
 		lcUsu.setConexao(cn);
-
 		String sSQL = "SELECT anoCC, codCC, codAlmox, aprovCPSolicitacaoUsu FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? AND IDUsu=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1017,11 +1170,11 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 					+ err.getMessage());
 		}
 
-		/*
-		 * lcProd.setWhereAdic(sWhereAdicProd);
-		 * lcProd2.setWhereAdic(sWhereAdicProd);
-		 */
-
 		carregaWhereAdic();
+	}
+
+	public Color cor(int r, int g, int b) {
+		Color color = new Color(r, g, b);
+		return color;
 	}
 }
