@@ -201,6 +201,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 	Vector vItem = new Vector();
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
+    String sSitItExp;
+    String siStItAprov;
+    String sSitRma;
 
 	public FRma() {
 		setTitulo("RMA");
@@ -637,7 +640,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		if (txtSitRma.getVlrString().equals("CA")) {
 			btMotivoCancelaRMA.setEnabled(true);
 		}
-		if (txtSitItRma.getVlrString().equals("CA")) {
+		if (txtSitItRma.getVlrString().equals("CA") || txtSitExpItRma.getVlrString().equals("CA")) {
 			btMotivoCancelaItem.setEnabled(true);
 		} else {
 			btMotivoCancelaRMA.setEnabled(!bHab);
@@ -646,7 +649,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 		btFinAprovRMA.setEnabled(!bHab);
 		btCancelaRMA.setEnabled(!bHab);
-		btCancelaItem.setEnabled(!bHab);
+		btCancelaItem.setEnabled(!bHab || (bExpede && txtSitRma.getVlrString().equals("AF")));
 		txtQtdAprovRma.setNaoEditavel(bHab);
 	}
 
@@ -656,13 +659,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			btFinExpRMA.setEnabled(!bHab);
 		} else if (bHab) {
 			btFinExpRMA.setEnabled(!bHab);
-
 		}
 
 		btExpedirRMA.setEnabled(!bHab);
 		txtQtdExpRma.setNaoEditavel(bHab);
 		txtCodLote.setNaoEditavel(bHab);
-
 	}
 
 	public void carregaWhereAdic() {
@@ -680,14 +681,14 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 	public void afterCarrega(CarregaEvent cevt) {
 		buscaInfoUsuAtual();
 
-		String sSitRma = txtSitRma.getVlrString();
-		String sSitItAprov = txtSitAprovItRma.getVlrString();
-		String sSitItExp = txtSitExpItRma.getVlrString();
-		sSitItRma = txtSitItRma.getVlrString();
+		sSitRma = txtSitRma.getVlrString();
+        siStItAprov = txtSitAprovItRma.getVlrString();
+        sSitItExp = txtSitExpItRma.getVlrString();
+        sSitItRma = txtSitItRma.getVlrString();
 
 		boolean bStatusTravaTudo = ((sSitItRma.equals("AF"))
 				|| (sSitItRma.equals("EF")) || (sSitItRma.equals("CA")));
-		boolean bStatusTravaExp = (!(sSitItRma.equals("AF")));
+		boolean bStatusTravaExp = (!sSitItRma.equals("AF") || sSitItExp.equals("CA"));
 
 		if (cevt.getListaCampos() == lcDet) {
 			if (sSitItRma.equals("CA")) {
@@ -736,7 +737,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble());
 		}
 
-		if (sSitItRma.equals("CA")) {
+		if (sSitItRma.equals("CA") || sSitItExp.equals("CA")) {
 			SitRma = "Cancelado";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(250, 50, 50));
@@ -748,7 +749,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			SitRma = "Expedido";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(0, 170, 30));
-		} else if (sSitItAprov.equals("AT") || sSitItAprov.equals("AP")) {
+		} else if (siStItAprov.equals("AT") || siStItAprov.equals("AP")) {
 			SitRma = "Aprovado";
 			lSitItRma.setText(SitRma);
 			pinLb.setBackground(cor(26, 140, 255));
@@ -814,7 +815,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoCancItem.getVlrString());
 		if (obs != null) {
-			if ((!bAprovaCab) || (sSitItRma.equals("CA")))
+			if ((!bAprovaCab) || (sSitItRma.equals("CA") || sSitItExp.equals("CA")))
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
@@ -869,8 +870,13 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			lcDet.setState(ListaCampos.LCS_EDIT);
 			if (Funcoes.mensagemConfirma(null, "Deseja cancelar ítem da RMA?") == JOptionPane.YES_OPTION) {
 				if (dialogObsDet()) {
-					txtSitItRma.setVlrString("CA");
-					lcDet.post();
+				    if (!(txtSitRma.getVlrString().equals("AF") || txtSitRma.getVlrString().equals("AT"))) {
+				        txtSitItRma.setVlrString("CA");
+				    } else {
+				        txtSitExpItRma.setVlrString("CA");
+				        txtQtdExpRma.setVlrDouble(new Double(0));
+				    }
+			        lcDet.post();
 				}
 			}
 		}
