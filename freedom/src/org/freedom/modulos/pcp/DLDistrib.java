@@ -108,15 +108,17 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	txtQtdProd.setAtivo(false); 
 	txtQtdDist.setAtivo(false);
    
-    tabDistrib.adicColuna("Seq.fase");
-    tabDistrib.adicColuna("Cód.fase");
-    tabDistrib.adicColuna("Descrição da fase");
-    tabDistrib.adicColuna("Seq.dist.");
-    tabDistrib.adicColuna("Cód.prod.");
-    tabDistrib.adicColuna("Descrição da estrutura");
-    tabDistrib.adicColuna("Seq.est.dist.");
-    tabDistrib.adicColuna("Quant.");
-    tabDistrib.adicColuna("Lote");
+    tabDistrib.adicColuna("Seq.fase");//0
+    tabDistrib.adicColuna("Cód.fase");//1
+    tabDistrib.adicColuna("Descrição da fase");//2
+    tabDistrib.adicColuna("Seq.dist.");//3
+    tabDistrib.adicColuna("Cód.prod.");//4
+    tabDistrib.adicColuna("Descrição da estrutura");//5
+    tabDistrib.adicColuna("Seq.est.dist.");//6
+    tabDistrib.adicColuna("Qtd.distrib");//7
+    tabDistrib.adicColuna("Fator conv.");//8
+    tabDistrib.adicColuna("Qtd.final");//9
+    tabDistrib.adicColuna("Lote");//10
     
     tabDistrib.setTamColuna(60,0);
     tabDistrib.setTamColuna(60,1);
@@ -126,7 +128,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.setTamColuna(160,5);
     tabDistrib.setTamColuna(70,6);
     tabDistrib.setTamColuna(60,7);
-    tabDistrib.setTamColuna(60,8);
+    tabDistrib.setTamColuna(60,10);
        
     tabDistrib.addMouseListener(this);
     
@@ -147,6 +149,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	    float ftQtddig = 0;
   	    float ftQtddist = 0;
   	    float ftQtdprod = 0;
+  	    float ftFator = 0;
+  	    float ftFinal = 0;
   	    String sDescProd = null;
 	  	DLFechaDistrib dl = null;
 	  	boolean ok = false;
@@ -155,6 +159,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	  		iCodProd = ((Integer) tabDistrib.getValor(iLinha, 4)).intValue();
 	  		sDescProd = ((String) tabDistrib.getValor(iLinha,5));
 	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
+	  		ftFator = ((BigDecimal) tabDistrib.getValor(iLinha,8)).floatValue();
 	  		
 	  		while (!ok) {
 		  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
@@ -163,20 +168,22 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 					dl.setVisible(true);
 					if (dl.OK){
 						ftQtddig = ( (BigDecimal) dl.getValor()[0]).floatValue(); // Quantidade digitada
-						ftQtddist = getSomaTab(); // Quantidade que já foi distribuida
+						ftQtddist = getSomaTab(); // Quantidade que já foi distribuida(soma do valor total)
 						ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
-						if (ftQtdprod<(ftQtddist+ftQtddig)) {
+						ftFinal = new BigDecimal(ftQtddig*ftFator).floatValue(); // valor total
+						if (ftQtdprod<(ftQtddist+ftFinal)) {
 							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
-							ftQtdade = ftQtdprod - ftQtddist;
+							ftQtdade = (ftQtdprod - ftQtddist)/ftFator;
 						}
 						else {
 							tabDistrib.setValor(new BigDecimal(ftQtddig),iLinha,7);
-							ftQtddist += ftQtddig;
+							tabDistrib.setValor(new BigDecimal(ftFinal),iLinha,9);
+							ftQtddist = getSomaTab();
 							txtQtdDist.setVlrBigDecimal(new BigDecimal(ftQtddist));
 							ok = true;
 						}
 						if(dl.gravaLote()){
-							tabDistrib.setValor(dl.getValor()[1],iLinha,8);					
+							tabDistrib.setValor(dl.getValor()[1],iLinha,10);					
 						}
 						else 
 							ok = false;
@@ -197,6 +204,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 			iCodProd = 0;
 			iSeqDist = 0;
 			ftQtdade = 0;
+			ftFator = 0;
+			ftFinal = 0;
 			sDescProd = null;
 		}
   }
@@ -212,9 +221,9 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	  try {
 		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
 			  v = tabDistrib.getLinha(i);
-			  if ( (v!=null) && (v.size()>7)) {
-				  if (v.elementAt(7)!=null) 
-					  ftTotal += ((BigDecimal) v.elementAt(7)).floatValue();
+			  if ( (v!=null) && (v.size()>9)) {
+				  if (v.elementAt(9)!=null) 
+					  ftTotal += ((BigDecimal) v.elementAt(9)).floatValue();
 			  }
 		  }
 	  }
@@ -233,15 +242,23 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  try {
   	  	sql = "SELECT O.CODPROD, ED.DESCEST, D.SEQEST, D.SEQEF, " +
   	  			"D.CODFASE, F.DESCFASE, D.SEQDE, D.CODEMPDE, " +
-  	  			"D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE " +
-  	  			"FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F " +
+  	  			"D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE, " +
+  	  			"(SELECT DERETORNO FROM ARREDDOUBLE(ID.QTDITEST*E.QTDEST,"+casasDec+")) " +
+  	  			"FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F, " +
+  	  			"PPITESTRUTURA ID, PPESTRUTURA E " +
   	  			"WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND " +
   	  			"D.CODEMP=O.CODEMPPD AND D.CODFILIAL=O.CODFILIALPD AND " +
   	  			"D.CODPROD=O.CODPROD AND D.SEQEST=O.SEQEST AND " +
   	  			"ED.CODEMP=D.CODEMPDE AND " +
   	  			"ED.CODFILIAL=D.CODFILIALDE AND ED.CODPROD=D.CODPRODDE AND " +
   	  			"ED.SEQEST=D.SEQESTDE AND F.CODEMP=D.CODEMPFS AND " +
-  	  			"F.CODFILIAL=D.CODFILIALFS AND F.CODFASE=D.CODFASE";
+  	  			"F.CODFILIAL=D.CODFILIALFS AND F.CODFASE=D.CODFASE AND " +
+  	  			"ID.CODEMP=ED.CODEMP AND ID.CODFILIAL=ED.CODFILIAL AND " +
+  	  			"ID.CODPROD=ED.CODPROD AND ID.SEQEST=ED.SEQEST AND " +
+  	  			"ID.CODEMPPD=D.CODEMP AND ID.CODFILIALPD=D.CODFILIAL AND " +
+  	  			"ID.CODPRODPD=D.CODPROD AND E.CODEMP=D.CODEMP AND " +
+  	  			"E.CODFILIAL=D.CODFILIAL AND E.CODPROD=D.CODPROD AND " +
+  	  			"E.SEQEST=D.SEQEST ";
   	  	ps = con.prepareStatement(sql);
   	  	ps.setInt(1,Aplicativo.iCodEmp);
   	  	ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
@@ -259,8 +276,10 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  		vLinha.addElement(rs.getString("DESCEST"));
   	  		vLinha.addElement(new Integer(rs.getInt("SEQESTDE")));
   	  		vLinha.addElement(new BigDecimal(0) );
+  	  		vLinha.addElement(rs.getBigDecimal(12)); // Fator de conversão
+  	  		vLinha.addElement(new BigDecimal(0) );
   	  		vLinha.addElement("");
-  	  		
+ 	  		
   	  		tabDistrib.adicLinha(vLinha);
   	  		
   	  	}
