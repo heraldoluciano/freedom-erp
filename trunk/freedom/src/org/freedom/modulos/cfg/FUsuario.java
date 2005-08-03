@@ -94,6 +94,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
   private JCheckBoxPad cbBaixoCusto = new JCheckBoxPad("Permite vendas abaixo do custo","S","N");
   private JCheckBoxPad cbAbreGaveta = new JCheckBoxPad("Permite abrir gaveta no PDV","S","N");
   private JCheckBoxPad cbAlmoxarife = new JCheckBoxPad("Permite atuar como Almoxarife","S","N");
+  private JCheckBoxPad cbCompra = new JCheckBoxPad("Permite fazer compras","S","N");
   private JRadioGroup rgAprovaSolicitacao = null;
   private JRadioGroup rgAprovaRMA = null;
   private Vector vAprovaSolicitacaoLab = new Vector();
@@ -165,12 +166,12 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     adicDB(cbBaixoCusto, 7, 10, 225, 20, "BaixoCustoUsu", "", false);
     adicDB(cbAbreGaveta, 7, 30, 225, 20, "AbreGavetaUsu", "", false);
     adicDB(cbAlmoxarife, 7, 50, 225, 20, "AlmoxarifeUsu", "", false);
+    adicDB(cbCompra, 7, 70, 225, 20, "ComprasUsu", "", false);
     
     txtCodAlmox.setRequerido(cbAlmoxarife.isSelected());
-  	txtCodAlmox.setAtivo(cbAlmoxarife.isSelected());
   	
-    adicCampo(txtCodAlmox, 7, 90, 80, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false);
-    adicDescFK(txtDescAlmox, 90, 90, 170, 20, "DescAlmox", "Descrição do almoxarifado");
+    adicCampo(txtCodAlmox, 7, 110, 80, 20, "CodAlmox", "Cód.almox.", ListaCampos.DB_FK, false);
+    adicDescFK(txtDescAlmox, 90, 110, 170, 20, "DescAlmox", "Descrição do almoxarifado");
 
     lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.", ListaCampos.DB_PK, false));
     lcAlmox.add(new GuardaCampo(txtDescAlmox,"DescAlmox", "Descrição do almoxarifado",ListaCampos.DB_SI, false));
@@ -198,8 +199,8 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     rgAprovaSolicitacao = new JRadioGroup(3, 1, vAprovaSolicitacaoLab, vAprovaSolicitacaoVal);
     rgAprovaRMA = new JRadioGroup(3, 1, vAprovaRMALab, vAprovaRMAVal);
     
-    adicDB(rgAprovaSolicitacao, 7, 140, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false);
-    adicDB(rgAprovaRMA, 7, 240, 210, 80, "AprovRMAUsu", "Aprova RMA", false);
+    adicDB(rgAprovaSolicitacao, 7, 150, 210, 80, "AprovCPSolicitacaoUsu", "Aprova solicitação", false);
+    adicDB(rgAprovaRMA, 7, 250, 210, 80, "AprovRMAUsu", "Aprova RMA", false);
     
     rgAprovaRMA = new JRadioGroup(3, 1, vAprovaRMALab, vAprovaRMAVal);
 
@@ -220,7 +221,6 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
   public void valorAlterado(CheckBoxEvent evt) {
   		boolean checked = evt.getCheckBox().isSelected();
   		txtCodAlmox.setRequerido(checked);
-  		txtCodAlmox.setAtivo(checked);
   }
   private void adicionaEmp() {
   	if (lsDisp.isSelectionEmpty()) 
