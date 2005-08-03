@@ -864,21 +864,25 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   }
   
   public static Object[] gravaLote(Connection cn, boolean bInsere, String sCodModLote, String sUsaLoteEst, 
-		  String sModLote, int iCodProd, Date dtFabProd, int iNroDiasValid) {
+		  String sModLote, int iCodProd, Date dtFabProd, int iNroDiasValid, String sCodLote) {
 	  Object[] retorno = null;
-	  String sCodLote = null;
+	  ObjetoModLote objMl = null;
+	  //String sCodLote = null;
 	  try {
 			if(!(sCodModLote.equals("")) && (sUsaLoteEst.equals("S")) ){
-				ObjetoModLote ObjMl = new ObjetoModLote();
-				ObjMl.setTexto(sModLote);
-				sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,cn);  			
+				if (sCodLote==null) {
+					objMl = new ObjetoModLote();
+					objMl.setTexto(sModLote);
+					sCodLote = objMl.getLote(new Integer(iCodProd),dtFabProd,cn);				  			
+				}
 				GregorianCalendar cal = new GregorianCalendar();
 				cal.setTime(dtFabProd);
 				cal.add(GregorianCalendar.DAY_OF_YEAR, iNroDiasValid);
 				Date dtVenctoLote = cal.getTime();
-				retorno = new Object[2];
+				retorno = new Object[3];
 				retorno[0] = sCodLote;
 				retorno[1] = dtVenctoLote;
+				retorno[2] = new Boolean(false);
 				if((!existeLote(cn, iCodProd, sCodLote)) && (bInsere)){	
 					if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sCodLote.trim()+" ?")==JOptionPane.YES_OPTION){
 						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
@@ -894,7 +898,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 						   }
 						   if (!cn.getAutoCommit())
 						      cn.commit();
-						   }
+						   retorno[2] = new Boolean(true);
+						 }						   
 						 catch (SQLException err) {
 						 	Funcoes.mensagemErro(null,"Erro ao inserir registro na tabela de Lotes!\n"+err.getMessage(),true,cn,err); 
 						 }
@@ -907,14 +912,19 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	  }
 	  finally {
 		  sCodLote = null;
+		  objMl = null;
 	  }
 	  return retorno;
   }
   
   public void gravaLote(boolean bInsere){
+	  //ObjetoModLote ObjMl = new ObjetoModLote();
+		//ObjMl.setTexto(sModLote);
+		
+		//sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,cn);	  
 	  Object[] lote = gravaLote(con, bInsere, txtCodModLote.getVlrString(), txtUsaLoteEst.getVlrString(),
 			  txtModLote.getVlrString(), txtCodProdEst.getVlrInteger().intValue(), txtDtFabProd.getVlrDate(),
-			  txtNroDiasValid.getVlrInteger().intValue() );
+			  txtNroDiasValid.getVlrInteger().intValue(), null );
 	try {
 		if (lote!=null) {
 			txtCodLoteProdEst.setVlrString((String) lote[0]);
