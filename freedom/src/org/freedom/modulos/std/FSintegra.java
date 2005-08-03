@@ -331,8 +331,8 @@ public class FSintegra extends FFilho implements ActionListener {
 		 sBuffer = sReg10+sReg11;
 		 gravaBuffer(sBuffer);
 	   }
-//		 rs.close();
-//		 ps.close();
+  	   rs.close();
+  	   ps.close();
 	   if (!con.getAutoCommit())
 	   	  con.commit();
 	   if (cbEntrada.getVlrString().equals("S")) {
@@ -378,8 +378,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			 gravaBuffer(sBuffer);
 			 iTot50 ++;
 		  }
-//			rs.close();
-//		  ps.close();
+		  rs.close();
+		  ps.close();
 		  if (!con.getAutoCommit())
 		  	con.commit();
 		}
@@ -428,8 +428,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			 gravaBuffer(sBuffer);
 			 iTot50 ++;
 		  }
-//		  rs.close();
-//			ps.close();
+		  rs.close();
+		  ps.close();
 		  if (!con.getAutoCommit())
 		  	con.commit();
 		}
@@ -512,8 +512,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			 iOrdem++;
 			 iTot54 ++;
 		  }
-//			rs.close();
-//			ps.close();
+		  rs.close();
+		  ps.close();
 		  if (!con.getAutoCommit())
 		  	con.commit();
           
@@ -569,8 +569,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			 iTot54 ++;
 			 sDocTmp = rs.getInt("DOCVENDA")+"";
 		  }
-//			rs.close();
-//			ps.close();
+		  rs.close();
+		  ps.close();
 		  if (!con.getAutoCommit())
 		  	con.commit();
           
@@ -586,7 +586,7 @@ public class FSintegra extends FFilho implements ActionListener {
 			"LF.VLRICMSLF,LF.VLRISENTASICMSLF,LF.VLROUTRASICMSLF,"+
 			"LF.CODNAT,LF.CODMODNOTA,C.CNPJCLI,C.INSCCLI "+
 			"FROM LFLIVROFISCAL LF,VDCLIENTE C "+
-			"WHERE LF.DTEMITLF BETWEEN ? AND ? AND LF.CODEMP=? AND LF.CODFILIAL=? "+
+			"WHERE LF.DTEMITLF BETWEEN ? AND ? AND LF.CODEMP=? AND LF.CODFILIAL=? AND "+
 			"C.CODCLI=LF.CODEMITLF AND C.CODEMP=LF.CODEMPET AND C.CODFILIAL=LF.CODFILIALET AND " +
 			"LF.TIPOLF='S' AND C.PESSOACLI='F' "+
 			"ORDER BY LF.DTEMITLF";
@@ -615,8 +615,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			 gravaBuffer(sBuffer);
 			 iTot61 ++;
 		  }
-//			rs.close();
-//			ps.close();
+		  rs.close();
+  		  ps.close();
 		  if (!con.getAutoCommit())
 		  	con.commit();
 
@@ -714,8 +714,8 @@ public class FSintegra extends FFilho implements ActionListener {
 			 gravaBuffer(sBuffer);
 			 iTot75 ++;
 		  }
-//			rs.close();
-//			ps.close();
+  		  rs.close();
+		  ps.close();
 		  if (!con.getAutoCommit())
 		  	con.commit();
 
