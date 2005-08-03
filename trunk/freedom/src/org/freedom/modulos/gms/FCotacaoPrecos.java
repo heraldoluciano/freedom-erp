@@ -206,7 +206,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
+		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
 				+ Aplicativo.strUsuario
 				+ "')) IN "
 				+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
@@ -281,14 +281,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcFor.setReadOnly(true);
 		txtCodFor.setTabelaExterna(lcFor);
 
-		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
-		vLabsTipo.addElement("Baixa");
-		vLabsTipo.addElement("Média");
-		vLabsTipo.addElement("Alta");
-		rgPriod = new JRadioGroup(3, 1, vLabsTipo, vValsTipo);
-		rgPriod.setVlrString("B");
+		vLabsTipo.addElement("Normal");
+		vLabsTipo.addElement("Urgente");
+		rgPriod = new JRadioGroup(2, 1, vLabsTipo, vValsTipo);
+		rgPriod.setVlrString("M");
 
 		pinCab = new JPanelPad(740, 267);
 		setListaCampos(lcCampos);
@@ -356,7 +354,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
 		btMotivoPrior.setToolTipText("Motivo da prioridade do ítem.");
 
-		pinCab.adic(pinBotCab, 630, 1, 114, 150);
+		pinCab.adic(pinBotCab, 630, 1, 114, 159);
 		pinBotCab.adic(btAprovaSol, 0, 0, 110, 30);
 		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
 		pinBotCab.adic(btCancelaSol, 0, 62, 110, 30);
@@ -419,18 +417,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	
 		adicDescFK(txtDescProd, 130, 60, 297, 20, "DescProd",
 				"Descrição do produto");
-		adicDB(rgPriod, 635, 156, 100, 65, "PriorItSol", "Prioridade:", true);
+		adicDB(rgPriod, 635, 177, 100, 50, "PriorItSol", "Prioridade:", true);
 		rgPriod.setEnabled(false);
 	
 		adicCampo(txtQtdItAprovado, 430, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
 				ListaCampos.DB_SI, false);
 	
-		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
-				ListaCampos.DB_SI, false);
 		adicDBLiv(txaMotivoCancItem, "motivocancitsol", "Motivo do cancelamento",
 				false);
 		adicDBLiv(txaMotivoPrior, "MotivoPriorItSol", "Motivo da Prioridade", false);
@@ -501,6 +493,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
 				ListaCampos.DB_SI, false);
 		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.",
+				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.",
+				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
+				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
 				ListaCampos.DB_SI, false);
 	
 		lcCotacao.montaSql(true, "COTACAO", "CP");
@@ -594,8 +592,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 	private void desabCampos(boolean bHab) {
 		txtCodProd.setNaoEditavel(bHab);
-		txtRefProd.setNaoEditavel(bHab);
-		txtQtdItAprovado.setNaoEditavel(bHab);
+		txtQtdCot.setNaoEditavel(bHab);
 		txaMotivoSol.setEnabled(!bHab);
 		rgPriod.setAtivo(!bHab);
 	}

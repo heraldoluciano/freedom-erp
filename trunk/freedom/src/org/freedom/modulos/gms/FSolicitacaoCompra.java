@@ -83,7 +83,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
 	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
 			.novo("btFechaVenda.gif"));
-	private JButton btCotacao = new JButton("Cotação", Icone.novo("btMedida.gif"));
 	private JButton btCancelaSol = new JButton("Cancelar", Icone
 			.novo("btRetorno.gif"));
 	private JButton btCancelaItem = new JButton("Cancelar", Icone
@@ -166,7 +165,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	String SitSol = "";
 	boolean[] bPrefs = null;
 	boolean bAprovaCab = false;
-	boolean bCotacao = false;
 	int cont = 0;
 	Vector vItem = new Vector();
 	Vector vProdCan = new Vector();
@@ -185,7 +183,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
-		String sWhereAdicProd = "ATIVOPROD='S' AND RMAPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
+		String sWhereAdicProd = "ATIVOPROD='S' AND ((SELECT ANOCCUSU||CODCCUSU FROM sgretinfousu('"
 				+ Aplicativo.strUsuario
 				+ "')) IN "
 				+ "(SELECT ANOCC||CODCC FROM EQPRODACESSO PA WHERE TIPOPA='RMA' AND PA.codemp=EQPRODUTO.CODEMP AND "
@@ -261,14 +259,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcUsu.setReadOnly(true);
 		txtIDUsu.setTabelaExterna(lcUsu);
 
-		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
-		vLabsTipo.addElement("Baixa");
-		vLabsTipo.addElement("Média");
-		vLabsTipo.addElement("Alta");
-		rgPriod = new JRadioGroup(3, 1, vLabsTipo, vValsTipo);
-		rgPriod.setVlrString("B");
+		vLabsTipo.addElement("Normal");
+		vLabsTipo.addElement("Urgente");
+		rgPriod = new JRadioGroup(2, 1, vLabsTipo, vValsTipo);
+		rgPriod.setVlrString("M");
 
 		setListaCampos(lcCampos);
 		setAltCab(190);
@@ -321,7 +317,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		btAprovaSol.setToolTipText("Aprovar todos os ítens.");
 		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
 		btCancelaSol.setToolTipText("Cancelar todos os ítens.");
-		btCotacao.setToolTipText("Cotar todos os ítens.");
 		btCancelaItem.setToolTipText("Cancelar ítem.");
 		btMotivoCancelaSol.setToolTipText("Motivo do cancelamento da Solicitação.");
 		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
@@ -332,14 +327,12 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
 		pinBotCab.adic(btCancelaSol, 0, 62, 110, 30);
 		pinBotCab.adic(btMotivoCancelaSol, 0, 93, 110, 30);
-		pinBotCab.adic(btCotacao, 0, 124, 110, 30);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		btAprovaSol.addActionListener(this);
 		btCancelaSol.addActionListener(this);
 		btCancelaItem.addActionListener(this);
-		btCotacao.addActionListener(this);
 		btMotivoCancelaSol.addActionListener(this);
 		btMotivoCancelaItem.addActionListener(this);
 		btMotivoPrior.addActionListener(this);
@@ -348,7 +341,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setImprimir(true);
 
 		desabAprov(true);
-		desabCot(true);
 	}
 
 	private void montaDetalhe() {
@@ -382,7 +374,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
 				"Descrição do produto");
-		adicDB(rgPriod, 513, 20, 100, 65, "PriorItSol", "Prioridade:", true);
+		adicDB(rgPriod, 513, 20, 100, 50, "PriorItSol", "Prioridade:", true);
 		adicCampo(txtQtdItSolicitado, 430, 20, 80, 20, "QtdItSol", "Qtd.solic.",
 				ListaCampos.DB_SI, true);
 
@@ -440,7 +432,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	}
 
 	private void buscaInfoUsuAtual() {
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU "
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU "
 				+ "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " + "AND IDUSU=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -453,7 +445,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				String sAprova = rs.getString("APROVCPSOLICITACAOUSU");
-				String sCotacao = rs.getString("COMPRASUSU");
 				if (sAprova != null) {
 					if (!sAprova.equals("ND")) {
 						if (sAprova.equals("TD"))
@@ -469,12 +460,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 						}
 
 					}
-				}
-				if (sCotacao != null) {
-					if (sCotacao.equals("S"))
-						bCotacao = true;
-					else
-						bCotacao = false;
 				}
 			}
 			if (!con.getAutoCommit())
@@ -504,7 +489,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private void desabCampos(boolean bHab) {
 		txtCodProd.setNaoEditavel(bHab);
 		txtRefProd.setNaoEditavel(bHab);
-		txtQtdItAprovado.setNaoEditavel(bHab);
+		txtQtdItSolicitado.setNaoEditavel(bHab);
 		txaMotivoSol.setEnabled(!bHab);
 		rgPriod.setAtivo(!bHab);
 	}
@@ -536,14 +521,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		txtQtdItAprovado.setNaoEditavel(bHab);
 	}
 
-	private void desabCot(boolean bHab) {
-		btCotacao.setEnabled(!bHab);
-		txtQtdItAprovado.setNaoEditavel(bHab);
-	}
-
 	public void carregaWhereAdic() {
 		buscaInfoUsuAtual();
-		if ((bAprovaCab) || (bCotacao)) {
+		if (bAprovaCab) {
 			if (bAprovaParcial) {
 				lcCampos.setWhereAdic("CODCC='" + Aplicativo.strCodCCUsu
 						+ "' AND ANOCC=" + Aplicativo.strAnoCCUsu);
@@ -563,7 +543,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 
 		boolean bStatusTravaTudo = ((sSitItSol.equals("AF"))
 				|| (sSitItSol.equals("EF")) || (sSitItSol.equals("CA")));
-		boolean bStatusTravaCot = (!(sSitItSol.equals("AF")));
 
 		if (cevt.getListaCampos() == lcDet) {
 			if (sSitItSol.equals("CA")) {
@@ -595,12 +574,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			if (!bStatusTravaTudo)
 				txaMotivoCancSol.setEnabled(true);
 			desabAprov(false);
-		}
-
-		if (!bCotacao || bStatusTravaCot)
-			desabCot(true);
-		else {
-			desabCot(false);
 		}
 
 		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
@@ -766,17 +739,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 									+ "e estará disponível para cotação!") == JOptionPane.OK_OPTION) {
 				;
 				txtStatusSolicitacao.setVlrString("AF");
-				nav.btSalvar.doClick();
-			}
-		} else if (evt.getSource() == btCotacao) {
-			lcCampos.setState(ListaCampos.LCS_EDIT);
-			if (Funcoes
-					.mensagemConfirma(
-							null,
-							"Deseja cotar todos os ítens da solicitação de compra?\n Caso você não tenha informado as quantidades\n a serem cotadas"
-									+ " estará cotando as quantidades aprovadas!") == JOptionPane.OK_OPTION) {
-				;
-				txtSituacaoItComp.setVlrString("AT");
 				nav.btSalvar.doClick();
 			}
 		}
