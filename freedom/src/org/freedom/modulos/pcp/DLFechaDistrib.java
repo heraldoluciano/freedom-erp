@@ -29,8 +29,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.swing.JOptionPane;
-
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;

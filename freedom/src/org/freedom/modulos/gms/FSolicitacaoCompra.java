@@ -169,6 +169,9 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	Vector vItem = new Vector();
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
+    String sSitSol;
+    String sSitItAprov;
+    String sSitItExp;
 
 	public FSolicitacaoCompra() {
 		setTitulo("Solicitação de Compra");
@@ -536,10 +539,10 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	public void afterCarrega(CarregaEvent cevt) {
 		buscaInfoUsuAtual();
 
-		String sSitSol = txtStatusSolicitacao.getVlrString();
-		String sSitItAprov = txtSituacaoItAprov.getVlrString();
-		String sSitItExp = txtSituacaoItComp.getVlrString();
-		sSitItSol = txtSituacaoIt.getVlrString();
+		sSitSol = txtStatusSolicitacao.getVlrString();
+        sSitItAprov = txtSituacaoItAprov.getVlrString();
+        sSitItExp = txtSituacaoItComp.getVlrString();
+        sSitItSol = txtSituacaoIt.getVlrString();
 
 		boolean bStatusTravaTudo = ((sSitItSol.equals("AF"))
 				|| (sSitItSol.equals("EF")) || (sSitItSol.equals("CA")));
