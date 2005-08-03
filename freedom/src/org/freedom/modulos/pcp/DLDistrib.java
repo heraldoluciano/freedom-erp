@@ -178,6 +178,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 						if(dl.gravaLote()){
 							tabDistrib.setValor(dl.getValor()[1],iLinha,8);					
 						}
+						else 
+							ok = false;
 					}
 					else {
 						ok = true;

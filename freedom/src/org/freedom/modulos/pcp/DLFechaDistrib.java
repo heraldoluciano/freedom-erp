@@ -47,9 +47,7 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDiasValid = new JTextFieldPad(JTextFieldPad.TP_DATE,5,0);
  
-  Date dtVenctoLote = null;
- 
-  
+   
   public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
   	super(cOrig);
     setTitulo("Quantidade");
@@ -115,7 +113,7 @@ public class DLFechaDistrib extends FFDialogo {
 	String sRet = "";
 	String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
 				+ "L.CODPROD=? AND L.CODFILIAL=? "
-				+(bSaldoPos?"AND L.SLDLIQLOTE>0 ":"")
+				+ (bSaldoPos?"AND L.SLDLIQLOTE>0 ":"")
 				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
 				+ "(SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
 				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 "
@@ -171,17 +169,16 @@ public class DLFechaDistrib extends FFDialogo {
   public Object[] getModLote(int iCodProd, int iSeqEst){
 	Object[] lote = null;
 	int iDiasValid = 0;
-	Date dtFabProd = null;
-	String sModLote = null;
-	String sCodLote = null;
+	Date dtVenctoLote = null;//data de vencimento(data de fabricação + dias de validade
+	Date dtFabProd = null;//data de fabricação
+	String sModLote = null;//modelo do lote
+	String sCodLote = null;//codigo do lote
 	String sSQL = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	ObjetoModLote ObjMl = null;
 	GregorianCalendar cal = null;
 	try {
-		sModLote = "";
-		sCodLote = "";
 	  	sSQL = "SELECT E.CODMODLOTE, M.TXAMODLOTE, E.NRODIASVALID"
 	  				+ " FROM PPESTRUTURA E, EQMODLOTE M"
 					+ " WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODPROD=? AND E.SEQEST=?"
@@ -214,7 +211,7 @@ public class DLFechaDistrib extends FFDialogo {
 			dtFabProd = new Date();
 			ObjMl = new ObjetoModLote();
 			ObjMl.setTexto(sModLote);
-			ObjMl.getLote(new Integer(iCodProd),dtFabProd,con);  			
+			sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,con);  			
 			cal = new GregorianCalendar();
 			cal.setTime(dtFabProd);
 			cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
@@ -230,6 +227,7 @@ public class DLFechaDistrib extends FFDialogo {
 	finally {
 		iDiasValid = 0;
 		dtFabProd = null;
+		dtVenctoLote = null;
 		sModLote = null;
 		sCodLote = null;
 		sSQL = null;
@@ -244,22 +242,25 @@ public class DLFechaDistrib extends FFDialogo {
 	  boolean bret = false;
 	  int iCodProd = txtCodProd.getVlrInteger().intValue();
 	  int iSeqDist = txtSeqDist.getVlrInteger().intValue();
-	  String sCodLote = null;
+	  String sCodLote = txtLote.getVlrString();
 	  Object lote[] = null;
+	  Object retorno[] = null;
 	  try {
 		  lote =  getModLote(iCodProd, iSeqDist);
 		  if (lote!=null) {
-			  sCodLote = (String) lote[0]; 
 			  if((!existeLote(iCodProd, sCodLote))){			
 					txtLote.setVlrString(sCodLote);
 					txtDiasValid.setVlrDate((Date) lote[1]);
-					FOP.gravaLote(con, true, sCodLote, getUsaLote(), (String) lote[3], iCodProd, 
-							(Date) lote[1], ((Integer) lote[4]).intValue() );
+					retorno = FOP.gravaLote(con, true, (String) lote[3], getUsaLote(), (String) lote[3], iCodProd, 
+							(Date) lote[1], ((Integer) lote[4]).intValue(), sCodLote );
+					
+					bret = ((Boolean) retorno[2]).booleanValue();
 		  	  }
 			  else {			
 					Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
 					txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
 					txtDiasValid.setVlrString("");
+					bret = true;
 			  }
 		  }
 	  }
