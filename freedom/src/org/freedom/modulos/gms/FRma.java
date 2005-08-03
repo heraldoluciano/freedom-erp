@@ -350,13 +350,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		txtSeqOP.setTabelaExterna(lcSeqOP);
 		lcSeqOP.montaSql(false, "OP", "PP");
 
-		vValsTipo.addElement("B");
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
-		vLabsTipo.addElement("Baixa");
-		vLabsTipo.addElement("Média");
-		vLabsTipo.addElement("Alta");
-		rgPriod = new JRadioGroup(3, 1, vLabsTipo, vValsTipo);
+		vLabsTipo.addElement("Normal");
+		vLabsTipo.addElement("Urgente");
+		rgPriod = new JRadioGroup(2, 1, vLabsTipo, vValsTipo);
 		rgPriod.setVlrString("B");
 
 		setListaCampos(lcCampos);
@@ -488,7 +486,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
 				"Descrição do produto");
-		adicDB(rgPriod, 513, 20, 100, 65, "PriorItRma", "Prioridade:", true);
+		adicDB(rgPriod, 513, 20, 100, 50, "PriorItRma", "Prioridade:", true);
 		adicCampo(txtQtdItRma, 430, 20, 80, 20, "QtdItRma", "Qtd.solic.",
 				ListaCampos.DB_SI, true);
 
