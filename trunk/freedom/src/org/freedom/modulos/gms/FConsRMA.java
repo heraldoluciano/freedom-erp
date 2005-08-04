@@ -340,17 +340,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 			}
 			usaWhere = true;
 		}
-/*
-		if (cbTomadasDePreco.getVlrString().equals("S")) {
-			if (where.trim().equals(""))
-				where = " SitRma ='TP'";
-			else {
-				where = where + " OR SitRma ='TP'";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}
-*/
+
 		if (usaWhere && usaOr)
 			where = " AND (" + where + ")";
 		else if (usaWhere)
@@ -445,8 +435,6 @@ public class FConsRMA extends FFilho implements ActionListener {
 						iLin, 3);
 
 				iLin++;
-				
-				
 			}
 
 			if (!con.getAutoCommit())
