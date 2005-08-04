@@ -82,6 +82,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 	private JLabelPad lSitItSol = null;
 	private JPanelPad pinDet = new JPanelPad();
+	private JButton btProduto = new JButton("Produto", Icone.novo("btProduto2.gif"));
 	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
 	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
 			.novo("btFechaVenda.gif"));
@@ -110,10 +111,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodProd = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			13, 0);
-	private JTextFieldPad txtCodProd2 = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
-	private JTextFieldPad txtRefProd2 = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			13, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			19, 0);
@@ -348,6 +345,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcCampos.addInsertListener(this);
 		lcUsu.addCarregaListener(this);
 
+		btProduto.setToolTipText("Ver a descrição do produto.");
 		btAprovaSol.setToolTipText("Aprovar todos os ítens.");
 		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
 		btCancelaSol.setToolTipText("Cancelar todos os ítens.");
@@ -418,13 +416,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					.getWhereAdic()));
 		}
 	
-		adicDescFK(txtDescProd, 130, 60, 297, 20, "DescProd",
+		adicDescFK(txtDescProd, 130, 60, 302, 20, "DescProd",
 				"Descrição do produto");
 		adicDB(rgPriod, 635, 177, 100, 50, "PriorItSol", "Prioridade:", true);
 		rgPriod.setEnabled(false);
 	
-		adicCampo(txtQtdItAprovado, 430, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
+		adicCampo(txtQtdItAprovado, 543, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
 				ListaCampos.DB_SI, false);
+		adic(btProduto, 435, 45, 105, 35);
+		btProduto.setEnabled(false);
 	
 		adicDBLiv(txaMotivoCancItem, "motivocancitsol", "Motivo do cancelamento",
 				false);
@@ -489,10 +489,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				"Razão social do fornecedor");
 		adicCampo(txtQtdCot, 467, 20, 87, 20, "QtdCot", "Qtd.Cot.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodProd2, "CodProd", "Cód.prod.", ListaCampos.DB_FK,
-				false);
-		adicCampoInvisivel(txtRefProd2, "RefProd", "Referência", ListaCampos.DB_FK,
-				false);
 		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
 				ListaCampos.DB_SI, false);
 		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.",
@@ -523,7 +519,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		pinBotDet.adic(btCancelaItem, 0, 0, 110, 28);
 		pinBotDet.adic(btMotivoCancelaItem, 0, 29, 110, 28);
-		//pinBotDet.adic(btMotivoPrior, 0, 58, 110, 28);
 		pinDet.adic(pinBotDet, 630, 1, 114, 90);
 		lSitItSol = new JLabelPad();
 		lSitItSol.setForeground(Color.WHITE);
@@ -661,6 +656,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				desabCampos(true);
 				btMotivoCancelaItem.setEnabled(true);
 			}
+			btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
 		}
 
 		if (rgPriod.getVlrString().equals("A") && sSitSol.equals("PE")) {
@@ -1229,7 +1225,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		super.setConexao(cn);
 		bPrefs = prefs();
 		montaDetalhe();
-
+		lcCotacao.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
 		lcCC.setConexao(cn);

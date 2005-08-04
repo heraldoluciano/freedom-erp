@@ -1,6 +1,6 @@
 /**
  * @version 02/08/2003 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @author Setpoint Informática Ltda./Alexandre Rocha Lima e Marcondes <BR>
  *         Projeto: Freedom <BR>
  *         Pacote: org.freedom.modulos.std <BR>
  *         Classe:
@@ -18,7 +18,7 @@
  *                   ALTERAR este Programa é preciso estar <BR>
  *                   de acordo com os termos da LPG-PC <BR>
  *                   <BR>
- *                   Formulário de consulta de orçamento.
+ *                   Formulário de consulta de solicitação de compra e cotação de preço.
  */
 
 package org.freedom.modulos.gms;
@@ -217,9 +217,9 @@ public class FConsSol extends FFilho implements ActionListener {
 		}
 		if (cbCompletas.getVlrString().equals("S")) {
 			if (where.trim().equals("")) {
-				where = " SitSol ='SC'";
+				where = " SitSol ='AF'";
 			} else {
-				where = where + " OR SitSol ='SC'";
+				where = where + " OR SitSol ='AF'";
 				usaOr = true;
 			}
 			usaWhere = true;
@@ -235,9 +235,9 @@ public class FConsSol extends FFilho implements ActionListener {
 		}
 		if (cbTomadasDePreco.getVlrString().equals("S")) {
 			if (where.trim().equals(""))
-				where = " SitSol ='TP'";
+				where = " SitSol ='EF'";
 			else {
-				where = where + " OR SitSol ='TP'";
+				where = where + " OR SitSol ='EF'";
 				usaOr = true;
 			}
 			usaWhere = true;
@@ -267,7 +267,6 @@ public class FConsSol extends FFilho implements ActionListener {
 				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) "
 				+ where + " GROUP BY O.CODSol, O.SitSol, O.DTEmitSol, O.MOTIVOSOL ";
 
-		System.out.println("Query completa:" + sSQL);
 		System.out.println(sSQL);
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
@@ -298,6 +297,7 @@ public class FConsSol extends FFilho implements ActionListener {
 			}
 
 			ResultSet rs = ps.executeQuery();
+			
 			int iLin = 0;
 
 			tab.limpa();
@@ -472,7 +472,6 @@ public class FConsSol extends FFilho implements ActionListener {
 
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
-
 		lcAlmox.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);

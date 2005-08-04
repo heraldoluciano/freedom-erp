@@ -41,6 +41,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   private ListaCampos lcNav = null;
   boolean Ctrl = false;
   public boolean bDet = false;
+  boolean navigationOnly = false;
   boolean[] podeVer = new boolean[9];
   public Navegador (boolean nav) {
     bDet = nav; 
@@ -116,6 +117,7 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
   }
   
   public void setNavigationOnly() {
+    navigationOnly = true;
     removeAll();
 
     btPrim = new JButton(Icone.novo("btPrim.gif"));
@@ -171,6 +173,8 @@ public class Navegador extends JPanel implements ActionListener, KeyListener {
     }
   }
   public void visivel(String sVal,boolean bVal) {
+    if (navigationOnly)
+        return;
     int ind = 0;
     if (bDet) {
       if (sVal.compareTo("NEW") == 0) ind = 4;
