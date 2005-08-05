@@ -156,7 +156,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     lcRec.add(new GuardaCampo(txtCodRec,"CodRecP", "Cód.rec.", ListaCampos.DB_PK, true));
     lcRec.add(new GuardaCampo(txtDescRec, "DescRecP", "Descrição do recurso de produção", ListaCampos.DB_SI, false));
 //    lcRec.add(new GuardaCampo(txtCodTpRec,"CodTpRec","Cód.Tp.Rec.",ListaCampos.DB_FK,false));
-    lcRec.setDinWhereAdic("	CODTIPOREC=#N ",txtCodTpRec);
+    lcRec.setDinWhereAdic("	CODTPREC=#N ",txtCodTpRec);
     lcRec.montaSql(false, "RECURSO", "PP");
     lcRec.setQueryCommit(false);
     lcRec.setReadOnly(true);
@@ -171,6 +171,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
     adicCampo(txtCodFase, 50, 20, 77, 20,"CodFase","Cód.fase", ListaCampos.DB_FK, txtDescFase, true);
     adicDescFK(txtDescFase, 130, 20, 227, 20,"DescFase", "Descrição da fase");
     adicCampo(txtTempoOf, 360, 20, 100, 20,"TempoOf","Tempo (Seg.)",ListaCampos.DB_SI, false);
+    adicCampoInvisivel(txtCodTpRec,"CodTpRec", "Cód.tp.rec.", ListaCampos.DB_SI, false);
     adicCampo(txtCodRec, 7, 60, 60, 20,"CodRecP","Cód.rec.", ListaCampos.DB_FK, txtDescRec, false);
     adicDescFK(txtDescRec, 70, 60, 200, 20, "DescRecP", "Descrição do recurso");
 
