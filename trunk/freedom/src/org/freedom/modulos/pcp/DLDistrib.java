@@ -422,8 +422,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  
 		  
 		  ps.executeUpdate();
-		  ps.close();
 		  rs.close();
+		  ps.close();
 		  if (!con.getAutoCommit())
 			  con.commit();
 	  }
