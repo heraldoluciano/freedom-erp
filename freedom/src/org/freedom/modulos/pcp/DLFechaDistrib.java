@@ -21,6 +21,8 @@
 
 package org.freedom.modulos.pcp;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,6 +30,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.swing.JOptionPane;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -43,7 +47,7 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtDiasValid = new JTextFieldPad(JTextFieldPad.TP_DATE,5,0);
+  private JTextFieldPad txtDiasValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
  
    
   public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
@@ -75,13 +79,17 @@ public class DLFechaDistrib extends FFDialogo {
     txtSeqDist.setAtivo(false);
     txtLote.setAtivo(false);
     txtDiasValid.setAtivo(false);
+    btOK.addActionListener(this);
   }
   
   public void setConexao(Connection cn) {
   	 super.setConexao(cn);
      if(getUsaLote().equals("S")){
     	txtLote.setAtivo(true);
-    	setModLote();
+    	if(getUsaModLote())
+    		setModLote();
+    	else
+    		txtLote.setVlrString(buscaLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue(),true));
      }
      else
      	 txtLote.setAtivo(false);
@@ -100,9 +108,10 @@ public class DLFechaDistrib extends FFDialogo {
 	  }
   }
   public Object[] getValor() {
-    Object[] oRetorno = new Object[2]; 
+    Object[] oRetorno = new Object[3]; 
     oRetorno[0] = txtQtdDist.getVlrBigDecimal();
     oRetorno[1] = txtLote.getVlrString();
+    oRetorno[2] = txtDiasValid.getVlrString();
     return oRetorno;
   }
   
@@ -137,7 +146,39 @@ public class DLFechaDistrib extends FFDialogo {
 		Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
 	}
 	return sRet;
-}
+  }
+  
+  public boolean getUsaModLote(){
+	  boolean bRetorno = false;
+	  String sCodModLote = null;
+	  String sSQL = "SELECT CODMODLOTE FROM PPESTRUTURA WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND SEQEST=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("PPESTRUTURA"));
+			ps.setInt(3, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(4, txtSeqDist.getVlrInteger().intValue());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				sCodModLote = rs.getString(1);
+			}
+			rs.close();
+			ps.close();
+			
+			if(sCodModLote!=null)
+				bRetorno = true;
+			else
+				bRetorno = false;
+		}	
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar modelo de lote para estrutura!\n",true,con,err);
+		}
+		finally{
+			sCodModLote = null;
+			sSQL = null;
+		}
+	  return bRetorno;
+  }
   
   public String getUsaLote(){
 	String sUsaLote = "";
@@ -248,18 +289,17 @@ public class DLFechaDistrib extends FFDialogo {
 		  if (lote!=null) {
 			  if((!existeLote(iCodProd, sCodLote))){			
 					txtLote.setVlrString(sCodLote);
-					txtDiasValid.setVlrDate((Date) lote[1]);
+					txtDiasValid.setVlrDate((Date) lote[2]);
 					retorno = FOP.gravaLote(con, true, (String) lote[3], getUsaLote(), (String) lote[3], iCodProd, 
 							(Date) lote[1], ((Integer) lote[4]).intValue(), sCodLote );
 					
 					bret = ((Boolean) retorno[2]).booleanValue();
 		  	  }
-			  else {			
-					Funcoes.mensagemInforma(null,"Lote já cadastrado para o produto!");
-					txtLote.setVlrString(buscaLote(iCodProd,txtSeqDist.getVlrInteger().intValue(),true));
-					txtDiasValid.setVlrString("");
-					bret = true;
+			  else if(Funcoes.mensagemConfirma(null,"Lote já cadastrado para o produto!\nDeseja usa-lo?")==JOptionPane.YES_OPTION){	
+				    bret = true;
 			  }
+			  else
+				  bret = false;
 		  }
 	  }
 	  finally {
@@ -270,4 +310,5 @@ public class DLFechaDistrib extends FFDialogo {
 	  }
 	  return bret;
   }
+  
 }

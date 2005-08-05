@@ -685,7 +685,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   }
   public void geraRMA(){
 	try {
-		PreparedStatement ps = con.prepareStatement("SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND GERARMA='S'");
+		PreparedStatement ps = con.prepareStatement("SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'");
 		ps.setInt(1, Aplicativo.iCodEmp);
 		ps.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
 		ps.setInt(3,txtCodOP.getVlrInteger().intValue());
@@ -698,6 +698,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 					ps2.setInt(1,Aplicativo.iCodEmp);
 					ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
 					ps2.setInt(3,txtCodOP.getVlrInteger().intValue());
+					ps2.setInt(4,txtSeqOP.getVlrInteger().intValue());
 					ps2.execute();
 					con.commit();
 					
@@ -766,7 +767,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     	sValores[3]= txtRefProdEst.getVlrString();
     	sValores[4]= txtSeqEst.getVlrInteger();
     	sValores[5]= txtDescEst.getVlrString();
-    	sValores[6]= txtQtdEst.getVlrBigDecimal();
+    	sValores[6]= txtQtdPrevProdOP.getVlrBigDecimal();
     	
     	DLDistrib dl = new DLDistrib(con,this,bPrefs[0]);
     	dl.carregaCampos(sValores);
@@ -779,7 +780,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		}
     }
    
-    super.actionPerformed(evt);
+//    super.actionPerformed(evt);
   }
   
     
