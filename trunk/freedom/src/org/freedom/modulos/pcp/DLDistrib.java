@@ -56,14 +56,12 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
+	private JTextFieldPad txtQtdDistpOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
 	private JTextFieldPad txtQtdProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
 	private JPanelPad pnDistrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private Tabela tabDistrib = new Tabela();
-	int iCodop = 0;
-	int iSeqop = 0;
-	int iQtdDistrib = 0;
-	
+
 	//private ListaCampos lcDistrib = new ListaCampos(this);
   
   public DLDistrib(Connection cn,Component cOrig,boolean bPref) {
@@ -92,11 +90,15 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
     	adic(new JLabelPad("Cód.prod"),213,0,100,20);
 	    adic(txtCodProdEst,213,20,100,20);
     }	    
-    adic(new JLabelPad("Qtd.produzida"),316,0,80,20);
-    adic(txtQtdProd,316,20,80,20);
-    adic(new JLabelPad("Qtd.distrb"),399,0,80,20);
-    adic(txtQtdDist,399,20,80,20);
-     
+    adic(new JLabelPad("Qtd.produzida"),316,0,100,20);
+    adic(txtQtdProd,316,20,100,20);
+    
+    adic(new JLabelPad("Qtd.dist."),419,0,100,20);
+    adic(txtQtdDistpOp,419,20,100,20);
+
+    adic(new JLabelPad("Qtd.dist.at."),522,0,100,20);
+    adic(txtQtdDist,522,20,100,20);
+    
     adic(new JLabelPad("Seq.Est."),7,40,100,20);
     adic(txtSeqEst,7,60,100,20);
     adic(new JLabelPad("Descrição da estrutura principal"),110,40,200,20);
@@ -110,6 +112,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	txtDescEst.setAtivo(false);
 	txtQtdProd.setAtivo(false); 
 	txtQtdDist.setAtivo(false);
+	txtQtdDistpOp.setAtivo(false);
    
     tabDistrib.adicColuna("Seq.fase");//0
     tabDistrib.adicColuna("Cód.fase");//1
@@ -153,6 +156,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	    float ftQtdant = 0;
   	    float ftQtddig = 0;
   	    float ftQtddist = 0;
+  	    float ftQtddistp = 0;
   	    float ftQtdprod = 0;
   	    float ftFator = 0;
   	    float ftFinal = 0;
@@ -166,6 +170,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
 	  		ftQtdant = ftQtdade;
 	  		ftFator = ((BigDecimal) tabDistrib.getValor(iLinha,8)).floatValue();
+	  		ftQtddistp = txtQtdDistpOp.getVlrBigDecimal().floatValue();
 	  		while (!ok) {
 		  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
 		  		try {
@@ -177,17 +182,21 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 						ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
 						ftFinal = ftQtddig*ftFator; // valor total
 				  		
-						if (ftQtdprod<(ftQtddist+ftFinal-(ftQtdant*ftFator))) {
-							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
-							ftQtdade = (ftQtdprod - ftQtddist )/ftFator + ftQtdant;
+						if(ftQtddig>0){
+							if (ftQtdprod<(ftQtddist+ftQtddistp+ftFinal-(ftQtdant*ftFator))) {
+								Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
+								ftQtdade = (ftQtdprod - ftQtddistp - ftQtddist )/ftFator + ftQtdant;
+							}
+							else {
+								tabDistrib.setValor(new BigDecimal(ftQtddig),iLinha,7);
+								tabDistrib.setValor(new BigDecimal(ftFinal),iLinha,9);
+								ftQtddist = getSomaTab();
+								txtQtdDist.setVlrBigDecimal(new BigDecimal(ftQtddist));
+								ok = true;
+							}
 						}
-						else {
-							tabDistrib.setValor(new BigDecimal(ftQtddig),iLinha,7);
-							tabDistrib.setValor(new BigDecimal(ftFinal),iLinha,9);
-							ftQtddist = getSomaTab();
-							txtQtdDist.setVlrBigDecimal(new BigDecimal(ftQtddist));
-							ok = true;
-						}
+						else
+							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida deve ser maior que zero.");
 						if(dl.getUsaModLote()){
 							if(dl.gravaLote()){
 								tabDistrib.setValor(dl.getValor()[1],iLinha,10);
@@ -248,13 +257,13 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  ResultSet rs = null;
   	  String sql = null;
   	  Vector vLinha = null;
-  	  this.iCodop = iCodop;
-  	  this.iSeqop = iSeqop;
+  	  int i = 0;
   	  try {
   	  	sql = "SELECT D.CODPRODDE, ED.DESCEST, D.SEQEST, D.SEQEF, " +
   	  			"D.CODFASE, F.DESCFASE, D.SEQDE, D.CODEMPDE, " +
   	  			"D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE, " +
-  	  			"CAST(ID.QTDITEST*E.QTDEST AS NUMERIC(15,"+casasDec+")) " +
+  	  			"CAST(ID.QTDITEST*E.QTDEST AS NUMERIC(15,"+casasDec+"))," +
+				"O.QTDDISTPOP " +
   	  			"FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F, " +
   	  			"PPITESTRUTURA ID, PPESTRUTURA E " +
   	  			"WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND " +
@@ -277,7 +286,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  	ps.setInt(4,iSeqop);
   	  	rs = ps.executeQuery();
   	  	while (rs.next()) {
-  	  		
+ 	  		
   	  		vLinha = new Vector();
   	  		vLinha.addElement(new Integer(rs.getInt("SEQEF")));
   	  		vLinha.addElement(new Integer(rs.getInt("CODFASE")));
@@ -293,6 +302,10 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  		vLinha.addElement("");
  	  		
   	  		tabDistrib.adicLinha(vLinha);
+  	  		if (i==0)
+  	  			txtQtdDistpOp.setVlrBigDecimal(new BigDecimal(rs.getFloat("QTDDISTPOP")));
+  	  		i++;
+
   	  		
   	  	}
   	  	rs.close();
@@ -307,6 +320,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  finally {
   	  	rs = null;
   	  	ps = null;
+  	  	i = 0;
   	  	sql = null;
   	  	vLinha = null;
   	  }
@@ -422,7 +436,6 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  
 		  
 		  ps.executeUpdate();
-		  rs.close();
 		  ps.close();
 		  if (!con.getAutoCommit())
 			  con.commit();
