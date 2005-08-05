@@ -23,10 +23,13 @@ package org.freedom.modulos.pcp;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +46,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
-public class DLDistrib extends FFDialogo implements MouseListener{
+public class DLDistrib extends FFDialogo implements MouseListener, ActionListener{
 
 	int casasDec = Aplicativo.casasDec;
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -119,6 +122,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.adicColuna("Fator conv.");//8
     tabDistrib.adicColuna("Qtd.final");//9
     tabDistrib.adicColuna("Lote");//10
+    tabDistrib.adicColuna("Validate");//11
     
     tabDistrib.setTamColuna(60,0);
     tabDistrib.setTamColuna(60,1);
@@ -131,7 +135,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
     tabDistrib.setTamColuna(60,10);
        
     tabDistrib.addMouseListener(this);
-    
+    //btOK.addActionListener(this);
   }
   
   public void mouseClicked(MouseEvent mevt) {
@@ -146,6 +150,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	    int iCodProd = 0;
   	    int iSeqDist = 0;
   	    float ftQtdade = 0;
+  	    float ftQtdant = 0;
   	    float ftQtddig = 0;
   	    float ftQtddist = 0;
   	    float ftQtdprod = 0;
@@ -159,8 +164,8 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	  		iCodProd = ((Integer) tabDistrib.getValor(iLinha, 4)).intValue();
 	  		sDescProd = ((String) tabDistrib.getValor(iLinha,5));
 	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
+	  		ftQtdant = ftQtdade;
 	  		ftFator = ((BigDecimal) tabDistrib.getValor(iLinha,8)).floatValue();
-	  		
 	  		while (!ok) {
 		  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
 		  		try {
@@ -170,10 +175,11 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 						ftQtddig = ( (BigDecimal) dl.getValor()[0]).floatValue(); // Quantidade digitada
 						ftQtddist = getSomaTab(); // Quantidade que já foi distribuida(soma do valor total)
 						ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
-						ftFinal = new BigDecimal(ftQtddig*ftFator).floatValue(); // valor total
-						if (ftQtdprod<(ftQtddist+ftFinal)) {
+						ftFinal = ftQtddig*ftFator; // valor total
+				  		
+						if (ftQtdprod<(ftQtddist+ftFinal-(ftQtdant*ftFator))) {
 							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
-							ftQtdade = (ftQtdprod - ftQtddist)/ftFator;
+							ftQtdade = (ftQtdprod - ftQtddist )/ftFator + ftQtdant;
 						}
 						else {
 							tabDistrib.setValor(new BigDecimal(ftQtddig),iLinha,7);
@@ -182,11 +188,16 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 							txtQtdDist.setVlrBigDecimal(new BigDecimal(ftQtddist));
 							ok = true;
 						}
-						if(dl.gravaLote()){
-							tabDistrib.setValor(dl.getValor()[1],iLinha,10);					
+						if(dl.getUsaModLote()){
+							if(dl.gravaLote()){
+								tabDistrib.setValor(dl.getValor()[1],iLinha,10);
+								tabDistrib.setValor(dl.getValor()[2],iLinha,11);
+							}
+							else 
+								ok = false;
 						}
-						else 
-							ok = false;
+						else
+							tabDistrib.setValor(dl.getValor()[1],iLinha,10);
 					}
 					else {
 						ok = true;
@@ -221,7 +232,7 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	  try {
 		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
 			  v = tabDistrib.getLinha(i);
-			  if ( (v!=null) && (v.size()>9)) {
+			  if ( (v!=null) && (v.size()>10)) {
 				  if (v.elementAt(9)!=null) 
 					  ftTotal += ((BigDecimal) v.elementAt(9)).floatValue();
 			  }
@@ -240,10 +251,10 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  this.iCodop = iCodop;
   	  this.iSeqop = iSeqop;
   	  try {
-  	  	sql = "SELECT O.CODPROD, ED.DESCEST, D.SEQEST, D.SEQEF, " +
+  	  	sql = "SELECT D.CODPRODDE, ED.DESCEST, D.SEQEST, D.SEQEF, " +
   	  			"D.CODFASE, F.DESCFASE, D.SEQDE, D.CODEMPDE, " +
   	  			"D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE, " +
-  	  			"(SELECT DERETORNO FROM ARREDDOUBLE(ID.QTDITEST*E.QTDEST,"+casasDec+")) " +
+  	  			"CAST(ID.QTDITEST*E.QTDEST AS NUMERIC(15,"+casasDec+")) " +
   	  			"FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F, " +
   	  			"PPITESTRUTURA ID, PPESTRUTURA E " +
   	  			"WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND " +
@@ -272,12 +283,13 @@ public class DLDistrib extends FFDialogo implements MouseListener{
   	  		vLinha.addElement(new Integer(rs.getInt("CODFASE")));
   	  		vLinha.addElement(rs.getString("DESCFASE"));
   	  		vLinha.addElement(new Integer(rs.getInt("SEQDE")));
-  	  		vLinha.addElement(new Integer(rs.getInt("CODPROD")));
+  	  		vLinha.addElement(new Integer(rs.getInt("CODPRODDE")));
   	  		vLinha.addElement(rs.getString("DESCEST"));
   	  		vLinha.addElement(new Integer(rs.getInt("SEQESTDE")));
   	  		vLinha.addElement(new BigDecimal(0) );
   	  		vLinha.addElement(rs.getBigDecimal(12)); // Fator de conversão
   	  		vLinha.addElement(new BigDecimal(0) );
+  	  		vLinha.addElement("");
   	  		vLinha.addElement("");
  	  		
   	  		tabDistrib.adicLinha(vLinha);
@@ -312,4 +324,123 @@ public class DLDistrib extends FFDialogo implements MouseListener{
 	txtQtdDist.setVlrBigDecimal(new BigDecimal(0));
 	//txtQtdDist.setVlrBigDecimal((BigDecimal)(Integer.parseInt(""+sValores[6])-iQtdDistrib)); 
   }
+  
+  public void actionPerformed(ActionEvent evt) {
+	super.actionPerformed(evt);
+	if (evt.getSource()==btOK) {
+		gravaDistrib();
+	}
+	
+  }
+	  
+  private void gravaDistrib() {
+	  Vector linha = null;
+	  try {
+		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
+			  linha = tabDistrib.getLinha(i);
+			  gravaOp(linha);
+		  }
+	  }
+      finally {
+    	  linha = null;
+      }
+  }
+  
+  private void gravaOp(Vector op) {
+	  PreparedStatement ps = null;
+	  String sql = null;
+	  ResultSet rs = null;
+	  int seqop = 0;
+	  int codTipoMov = 0;
+	  int codAlmox = 0;
+	  Date dtFabrOP = null;
+	  
+	  try {
+		 	  
+		  sql = "SELECT MAX(SEQOP) FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=?";
+		  ps = con.prepareStatement(sql);
+		  ps.setInt(1,Aplicativo.iCodEmp);
+		  ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+		  ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+		  rs = ps.executeQuery();
+		  if (rs.next()) {
+			  seqop = rs.getInt(1)+1;
+		  }		  
+		  rs.close();
+		  ps.close();
+		  if (!con.getAutoCommit())
+			  con.commit();
+		  
+		  sql = "SELECT DTFABROP,CODTIPOMOV,CODALMOX FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+		  ps = con.prepareStatement(sql);
+		  ps.setInt(1,Aplicativo.iCodEmp);
+		  ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+		  ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+		  ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
+		  rs = ps.executeQuery();
+		  if (rs.next()) {
+			  dtFabrOP = rs.getDate(1);
+			  codTipoMov = rs.getInt(2);
+			  codAlmox = rs.getInt(3);
+		  }		  
+		  rs.close();
+		  ps.close();
+		  if (!con.getAutoCommit())
+			  con.commit();
+		  
+		  sql = "INSERT INTO PPOP (CODEMP,CODFILIAL,CODOP,SEQOP,CODEMPPD,CODFILIALPD,CODPROD,SEQEST,DTFABROP," +
+		  		"QTDPREVPRODOP,QTDFINALPRODOP,DTVALIDPDOP,CODEMPLE,CODFILIALLE,CODLOTE,CODEMPTM,CODFILIALTM,CODTIPOMOV," +
+		  		"CODEMPAX,CODFILIALAX,CODALMOX,CODEMPOPM,CODFILIALOPM,CODOPM,SEQOPM,QTDDISTIOP)" +
+		  		" VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		  ps = con.prepareStatement(sql);
+		  ps.setInt(1,Aplicativo.iCodEmp);
+		  ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+		  ps.setInt(3,txtCodOP.getVlrInteger().intValue());
+		  ps.setInt(4,seqop);
+		  ps.setInt(5,Aplicativo.iCodEmp);
+		  ps.setInt(6,ListaCampos.getMasterFilial("PPESTRUTURA"));
+		  ps.setInt(7,((Integer)op.elementAt(4)).intValue()); // Código do produto		  
+		  ps.setInt(8,((Integer)op.elementAt(6)).intValue()); // Sequencia da estrutura
+		  ps.setDate(9,dtFabrOP); // Data de fabricação 			  
+		  ps.setFloat(10,((BigDecimal)op.elementAt(7)).floatValue()); // Qtdade prevista
+		  ps.setFloat(11,((BigDecimal)op.elementAt(7)).floatValue()); // Quantidade produzida		  
+		  ps.setDate(12,(Funcoes.strDateToSqlDate((String)op.elementAt(11)))); // data de validade		   
+		  ps.setInt(13,Aplicativo.iCodEmp); 
+		  ps.setInt(14,ListaCampos.getMasterFilial("EQLOTE"));
+		  ps.setString(15,((String)op.elementAt(10))); // lote 		  
+		  ps.setInt(16,Aplicativo.iCodEmp);
+		  ps.setInt(17,ListaCampos.getMasterFilial("EQTIPOMOV"));
+		  ps.setInt(18,codTipoMov); // tipo de movimento 
+		  ps.setInt(19,Aplicativo.iCodEmp);
+		  ps.setInt(20,ListaCampos.getMasterFilial("EQALMOX"));
+		  ps.setInt(21,codAlmox); // Código do almoxarifado 
+		  ps.setInt(22,Aplicativo.iCodEmp);
+		  ps.setInt(23,ListaCampos.getMasterFilial("PPOP"));
+		  ps.setInt(24,txtCodOP.getVlrInteger().intValue()); // CODOP Principal
+		  ps.setInt(25,txtSeqOP.getVlrInteger().intValue()); // SEQOP Principal
+		  ps.setFloat(26,((BigDecimal)op.elementAt(9)).floatValue()); // Qtdade distribuída
+		  
+		  
+		  ps.executeUpdate();
+		  ps.close();
+		  rs.close();
+		  if (!con.getAutoCommit())
+			  con.commit();
+	  }
+	  catch (SQLException e) {
+		  Funcoes.mensagemErro(null, "Erro ao gerar OP's de distribuição!\n"+e.getMessage());
+		  try { 
+		  	con.rollback();
+		  }
+		  catch (SQLException eb) {
+		  }
+	  }
+	  finally {
+		  rs = null;
+		  ps = null;
+		  sql = null;
+	  }
+	  
+  }
+  
 }
