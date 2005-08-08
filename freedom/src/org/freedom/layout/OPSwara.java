@@ -51,6 +51,7 @@ public class OPSwara extends LeiauteGR {
 	Vector vItens = new Vector();
 	Vector vItem = new Vector();
 	int iCodOP = 0;
+	int iSeqOP = 0;
 	String sDescProd = "";
 	String sLote = "";
 	String sQtd = "";
@@ -69,21 +70,23 @@ public class OPSwara extends LeiauteGR {
 	private void montaRel() {
 		setMargemPdf(5,5);
 		iCodOP = Integer.parseInt(vParamOP.elementAt(0).toString());
+		iSeqOP = Integer.parseInt(vParamOP.elementAt(1).toString());
 	    iYPosProd = iPosIniItens;
 		try {
 		  String sSQL = "SELECT ITOP.CODOP,ITOP.SEQITOP,OP.DTEMITOP,OP.CODPROD,(SELECT PROD2.DESCPROD FROM EQPRODUTO PROD2 WHERE PROD2.CODPROD=OP.CODPROD  AND PROD2.CODEMP=OP.CODEMPPD  AND PROD2.CODFILIAL=OP.CODFILIALPD),"+
 			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPREVPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPREVPRODOP,ITOP.CODFASE,OP.CODLOTE "+
 			"FROM PPESTRUTURA EST,PPOP OP, PPITOP ITOP, EQUNIDADE UNID, EQPRODUTO PROD "+
-			"WHERE EST.CODPROD=OP.CODPROD AND ITOP.CODOP=OP.CODOP AND UNID.CODUNID=PROD.CODUNID "+
-			"AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND OP.CODEMP=? AND OP.CODFILIAL=?";
+			"WHERE EST.CODPROD=OP.CODPROD AND ITOP.CODOP=OP.CODOP AND ITOP.SEQOP=OP.SEQOP AND UNID.CODUNID=PROD.CODUNID "+
+			"AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND OP.SEQOP=? AND OP.CODEMP=? AND OP.CODFILIAL=?";
 
 		  PreparedStatement ps = con.prepareStatement(sSQL);
 		  
 		  System.out.println("SQL:"+sSQL);
 
   		  ps.setInt(1,iCodOP);
-   	      ps.setInt(2,Aplicativo.iCodEmp);
-  	      ps.setInt(3,ListaCampos.getMasterFilial("PPOP"));
+  		  ps.setInt(2,iSeqOP);
+   	      ps.setInt(3,Aplicativo.iCodEmp);
+  	      ps.setInt(4,ListaCampos.getMasterFilial("PPOP"));
 		  
 		  ResultSet rs = ps.executeQuery();
 		  		   
@@ -113,9 +116,9 @@ public class OPSwara extends LeiauteGR {
 		  sSQL = "SELECT OPF.SEQOF, OPF.CODFASE,F.DESCFASE,F.TIPOFASE,OPF.TEMPOOF,OPF.CODRECP,REC.DESCRECP,EF.INSTRUCOES "+
 		  		 "FROM PPOP OP, PPOPFASE OPF, PPFASE F, PPRECURSO REC,PPESTRUFASE EF WHERE "+
 				 "F.CODFASE = OPF.CODFASE AND F.CODEMP = OPF.CODEMPFS  AND F.CODFILIAL = OPF.CODFILIALFS "+				 
-				 "AND OP.CODEMP=OPF.CODEMP AND OP.CODFILIAL=OPF.CODFILIAL AND OP.CODOP=OPF.CODOP "+
+				 "AND OP.CODEMP=OPF.CODEMP AND OP.CODFILIAL=OPF.CODFILIAL AND OP.CODOP=OPF.CODOP AND OP.SEQOP=OPF.SEQOP "+
 				 "AND REC.CODRECP = OPF.CODRECP AND REC.CODEMP = OPF.CODEMPRP AND REC.CODFILIAL = OPF.CODFILIALRP "+
-				 "AND OPF.CODOP=? AND OPF.CODEMP=? AND OPF.CODFILIAL=? " +
+				 "AND OPF.CODOP=? AND OPF.SEQOP=? AND OPF.CODEMP=? AND OPF.CODFILIAL=? " +
 				 "AND EF.CODEMP=OPF.CODEMP AND EF.CODFILIAL=OPF.CODFILIAL AND EF.CODPROD=OP.CODPROD " +
 				 "AND EF.SEQEF=OPF.SEQOF " +				 
 				 "ORDER BY OPF.SEQOF";
@@ -123,8 +126,9 @@ public class OPSwara extends LeiauteGR {
 		  PreparedStatement psFases = con.prepareStatement(sSQL);
 		  
   		  psFases.setInt(1,iCodOP);
-   	      psFases.setInt(2,Aplicativo.iCodEmp);
-  	      psFases.setInt(3,ListaCampos.getMasterFilial("PPOPFASE"));
+  		  psFases.setInt(2,iSeqOP);
+   	      psFases.setInt(3,Aplicativo.iCodEmp);
+  	      psFases.setInt(4,ListaCampos.getMasterFilial("PPOPFASE"));
 
   	      ResultSet rsFases = psFases.executeQuery();
               	      
@@ -275,13 +279,23 @@ public class OPSwara extends LeiauteGR {
 	}
 
 	private void impFaseEB(ResultSet rsFases) {        
-		  	int iCodFaseF = 0;
-		  	int iCodFaseI = 0;
-		  	int iYIni = 0;
-		  	
+	  	int iCodFaseF = 0;
+	  	int iCodFaseI = 0;
+	  	int iSeqOF = 0;
+	  	int iYIni = 0;
+	  	Vector vItensEB = null;
+	  	Vector vColunasEB = null;
+        String sCod = null;
+        String sDesc = null;
+        String sQtd = null;
+        String sUnid = null;
+        String sLote = null;
+        String sSQL = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 		try {
 		  	iCodFaseF = rsFases.getInt(2);
-
+		  	iSeqOF = rsFases.getInt(1);
 
             iY = iY+10;
 
@@ -322,8 +336,7 @@ public class OPSwara extends LeiauteGR {
             if(iInst>iY){
 //                iDif = (iInst+2) - iY;
                 iY = iInst+2;
-            }
- 
+            } 
 		  	
             int iYIni2=iY;
             
@@ -333,71 +346,99 @@ public class OPSwara extends LeiauteGR {
                         
             setFonte(fnArial9N);            
             iY = iY+14;
-            drawTexto("Embalagens a serem descarregadas",60,iY); 
+            drawTexto("EMBALAGENS A SEREM DESCARREGADAS",150,iY); 
             iY = iY+16;
             setFonte(fnArial9N); 
-            drawTexto("Cód.   Tipo de Embalagem    Lote          Qtd. Emb.",20,iY);
+            drawTexto("Cód.      Tipo de Embalagem                               Código de Barras                           Lote        Qtd. Emb.",18,iY);
             iY = iY+20;
-            setFonte(fnArial9);
-            iY = iY+15;
-            iY = iY+15;           
-
-            int iX = 280;
-            iY = iY - 65;
-            setFonte(fnArial9N);  
-            drawTexto("Descarregamento, pesagem e rotulagem",50+iX,iY); 
-            iY = iY+16;            
-            drawTexto("Cód.   Tipo de Embalagem    Lote          Qtd. Emb.",12+iX,iY);
-            setFonte(fnArial9);
-            iY = iY+12;
-
-            String sCod = "";
-            String sDesc = "";
-            String sQtd = "";
-            String sUnid = "";
-            String sLote = "";
-
-            for(int i=0;vItens.size()>i;i++) {
-                sCod  = ((Vector) vItens.elementAt(i)).elementAt(0).toString();
-                sDesc = ((Vector) vItens.elementAt(i)).elementAt(1).toString();
-                sLote = ((Vector) vItens.elementAt(i)).elementAt(4).toString();
-                sQtd  = ((Vector) vItens.elementAt(i)).elementAt(2).toString();
-                sUnid = ((Vector) vItens.elementAt(i)).elementAt(3).toString();
-
-                iCodFaseI = Integer.parseInt(((Vector) vItens.elementAt(i)).elementAt(5).toString());
-                
-                if(iCodFaseI==iCodFaseF) {
-                  drawTexto(sCod,18,iY); //Codigo
-                  drawTexto(sCod,iX+12,iY); //Codigo
-                  drawTexto(sDesc.substring(0,20),47,iY); //Descrição	
-                  drawTexto(sDesc.substring(0,20),iX+42,iY); //Descrição
-                  drawTexto(sLote,145,iY);//Lote
-                  drawTexto(sLote,iX+140,iY);//Lote
-                  drawTexto(Funcoes.alinhaDir(sQtd,15)+" "+sUnid,170,iY);//Quantidade
-                  drawTexto(Funcoes.alinhaDir(sQtd,15)+" "+sUnid,iX+162,iY);//Quantidade
-                  iY = iY+12;	                            	              	
-                }            	
-            }
             
-            setFonte(fnArial9N);
-            iY = iY+15;	 
-            drawTexto("OBS.:____________________________________________",12+iX,iY);
-            iY = iY+15;
-            drawTexto("_________________________________________________",12+iX,iY);
-            iY = iY+15;
-            drawTexto("_________________________________________________",12+iX,iY);
-            iY = iY+20;
-            drawTexto("Nome:____________________________________________",12+iX,iY);
-            iY = iY+15;
-            drawTexto("Data:____________________________________________",12+iX,iY);
-            iY = iY+30;
+	            sSQL = "SELECT I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE " +
+	            		"FROM PPOP O, PPITOP I, EQPRODUTO P " +
+	            		"WHERE O.CODEMPOPM=? AND O.CODFILIALOPM=? AND O.CODOPM=? AND O.SEQOPM=? AND " +
+	            		"I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODOP=O.CODOP AND I.SEQOP=O.SEQOP AND " +
+	            		"P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD";                       
+				ps = con.prepareStatement(sSQL);						
+				ps.setInt(1,Aplicativo.iCodEmp);
+				ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+				ps.setInt(3,iCodOP);
+				ps.setInt(4, iSeqOP);			 
+				rs = ps.executeQuery();
+			
+			vItensEB = new Vector();
+			while (rs.next()) {
+				vColunasEB = new Vector();
+			    vColunasEB.addElement((rs.getString("CODPROD")!=null?rs.getString("CODPROD"):"")); //Código
+			    vColunasEB.addElement((rs.getString("DESCPROD")!=null?rs.getString("DESCPROD"):"")); //Descrição
+			    vColunasEB.addElement((rs.getString("QTDITOP")!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString("QTDITOP")):"0")); //Quantidade
+			    vColunasEB.addElement((rs.getString("CODUNID")!=null?rs.getString("CODUNID"):"")); //Unidade
+			    vColunasEB.addElement((rs.getString("CODLOTE")!=null?rs.getString("CODLOTE"):"")); //Lote
+			    vColunasEB.addElement((rs.getString("CODFASE")!=null?rs.getString("CODFASE"):"0")); //Fase
+			    vItensEB.addElement(vColunasEB);
+			}
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();			
 
-            drawLinha(280,iYIni2+5,280,iYIni2+137);
-            drawRetangulo(10,iYIni2+5,10,132,AL_CDIR);
-            drawRetangulo(5,iYIni-15,5,210,AL_CDIR);   
+            setFonte(fnArial9);
+			
+			for(int i=0;vItensEB.size()>i;i++) {
+				vColunasEB = (Vector) vItensEB.elementAt(i);
+			    sCod  = vColunasEB.elementAt(0).toString();
+			    sDesc = vColunasEB.elementAt(1).toString();
+			    sQtd  = vColunasEB.elementAt(2).toString();
+			    sUnid = vColunasEB.elementAt(3).toString();
+			    sLote = vColunasEB.elementAt(4).toString();
+			    iCodFaseI = Integer.parseInt(vColunasEB.elementAt(5).toString());
+			    
+			    if(iCodFaseI==iCodFaseF) {
+				      drawTexto(sCod,18,iY); //Codigo
+				      drawTexto(sDesc.substring(0,20),47,iY); //Descrição	
+				      
+				      Barcode128 barra = new Barcode128();
+	  		          String sBarCode = iSeqOF+"#"+iCodOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+	  		          sBarCode = sBarCode.replace('/','_');  		           
+	  		          barra.setCode(sBarCode);
+	  		          Image image = barra.createAwtImage(Color.BLACK, Color.WHITE);
+	  		          ImageIcon icon = new ImageIcon(image);
+	  		  	
+		  		      drawImagem(icon,210,iY-8,170,14);
+				      
+				      drawTexto(sLote,350,iY);//Lote
+				      drawTexto(Funcoes.alinhaDir(sQtd,15)+" "+sUnid,420,iY);//Quantidade
+				      drawLinha(470,iY,60,0,AL_BCEN);
+				      iY = iY+20;	                            	              	
+			    }            	
+			}
+			
+			setFonte(fnArial9N);
+			iY = iY+15;	 
+			drawTexto("OBS.:___________________________________________________________________________________________",20,iY);
+			iY = iY+15;
+			drawTexto("Nome:__________________________________________  Data:__________________________________________",20,iY);			
+			iY = iY+20;						
+			
+			drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+50,AL_CDIR);   
+		}
+		catch(SQLException e) {
+			Funcoes.mensagemErro(null, "Erro carregando itens!\n"+e.getMessage());
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			Funcoes.mensagemErro(null, "Erro carregando itens!\n"+e.getMessage());
+		}
+		finally {
+		  	iCodFaseF = 0;
+		  	iCodFaseI = 0;
+		  	iSeqOF = 0;
+		  	iYIni = 0;
+		  	vColunasEB = null;
+		  	vItensEB = null;
+	        sCod = null;
+	        sDesc = null;
+	        sQtd = null;
+	        sUnid = null;
+	        sLote = null;
+	        sSQL = null;		  	
 		}
 	}
 	
