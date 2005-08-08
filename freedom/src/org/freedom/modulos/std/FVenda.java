@@ -73,6 +73,7 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.layout.Layout;
 import org.freedom.layout.Leiaute;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
@@ -1747,7 +1748,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 							|| txtTipoMov.getVlrString().equals("PE")
 							|| txtTipoMov.getVlrString().equals("DV")
 							|| txtTipoMov.getVlrString().equals("BN"))
-						emitNota("NF", txtESTipoMov.getVlrString().equals("E"));
+						emitNota("NF");
 					else if (txtTipoMov.getVlrString().equals("SE"))
 						emitNota("NS");
 					else {
@@ -2351,10 +2352,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void emitNota(String sTipo) {
-		emitNota(sTipo, false);
-	}
-
-	private void emitNota(String sTipo, boolean bEnt) {
+		PreparedStatement ps = null;
+		PreparedStatement psRec = null;
+		PreparedStatement psInfoAdic = null;
+		ResultSet rs = null;
+		ResultSet rsRec = null;
+		ResultSet rsInfoAdic = null;
+		Object layNF = null;
 		boolean bImpOK = false;
 		int iCodVenda = txtCodVenda.getVlrInteger().intValue();
 		ImprimeOS imp = new ImprimeOS("", con, sTipo, true);
@@ -2407,40 +2411,39 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ iCodVenda + " AND I.CODREC=R.CODREC ORDER BY I.DTVENCITREC";
 		String sSQLInfoAdic = "SELECT CODAUXV,CPFCLIAUXV,NOMECLIAUXV,CIDCLIAUXV,UFCLIAUXV "
 				+ "FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=?";
-		PreparedStatement ps = null;
-		PreparedStatement psRec = null;
-		PreparedStatement psInfoAdic = null;
-		ResultSet rs = null;
-		ResultSet rsRec = null;
-		ResultSet rsInfoAdic = null;
-		Leiaute leiNF = null;
 		try {
-			leiNF = (Leiaute) Class.forName(
+			layNF = Class.forName(
 					"org.freedom.layout." + imp.getClassNota()).newInstance();
-			leiNF.bEntrada = bEnt;
+			//leiNF.bEntrada = bEnt;
 		} catch (Exception err) {
 			Funcoes.mensagemInforma(this,
 					"Não foi possível carregar o leiaute de Nota Fiscal!\n"
 							+ err.getMessage());
 		}
 		try {
-			if (leiNF != null) {
-				psRec = con.prepareStatement(sSQLRec);
-				rsRec = psRec.executeQuery();
-				psInfoAdic = con.prepareStatement(sSQLInfoAdic);
-				psInfoAdic.setInt(1, Aplicativo.iCodEmp);
-				psInfoAdic.setInt(2, Aplicativo.iCodFilial);
-				psInfoAdic.setInt(3, txtCodVenda.getVlrInteger().intValue());
-				rsInfoAdic = psInfoAdic.executeQuery();
-				ps = con.prepareStatement(sSQL);
-				ps.setInt(1, Aplicativo.iCodEmp);
-				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
-				rs = ps.executeQuery();
-				bImpOK = leiNF.imprimir(rs, rsRec, rsInfoAdic, imp);
-				if (!con.getAutoCommit())
-					con.commit();
+			if (layNF != null) {
+				if (layNF instanceof Layout) {
+					
+				}
+				else if (layNF instanceof Leiaute) {
+					psRec = con.prepareStatement(sSQLRec);
+					rsRec = psRec.executeQuery();
+					psInfoAdic = con.prepareStatement(sSQLInfoAdic);
+					psInfoAdic.setInt(1, Aplicativo.iCodEmp);
+					psInfoAdic.setInt(2, Aplicativo.iCodFilial);
+					psInfoAdic.setInt(3, txtCodVenda.getVlrInteger().intValue());
+					rsInfoAdic = psInfoAdic.executeQuery();
+					ps = con.prepareStatement(sSQL);
+					ps.setInt(1, Aplicativo.iCodEmp);
+					ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+					rs = ps.executeQuery();
+					bImpOK = ((Leiaute) layNF).imprimir(rs, rsRec, rsInfoAdic, imp);
+					if (!con.getAutoCommit())
+						con.commit();
+				}
 			}
-		} catch (SQLException err) {
+		} 
+		catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar tabela de Venda!"
 					+ err.getMessage(),true,con,err);
 		}
