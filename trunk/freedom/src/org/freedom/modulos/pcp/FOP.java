@@ -1066,6 +1066,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		leiOP.setConexao(con);
 		vParamOP.clear();
 		vParamOP.addElement(txtCodOP.getText());
+		vParamOP.addElement(txtSeqOP.getText());
 		leiOP.setParam(vParamOP);
 		if (bVisualizar) { 
 		  dl = new FPrinterJob(leiOP,this);
