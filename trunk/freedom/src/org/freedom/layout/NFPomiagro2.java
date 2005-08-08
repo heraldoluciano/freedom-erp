@@ -321,7 +321,7 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,25,Funcoes.alinhaDir(transp.getInt(NF.C_CODCLI),10));
+           imp.say(imp.pRow()+0,25,Funcoes.alinhaDir(transp.getInt(NF.C_CODEMIT),10));
            imp.say(imp.pRow()+0,45,Funcoes.alinhaDir(transp.getInt(NF.C_CODPED),10));
            imp.say(imp.pRow()+0,64,transp.getString(NF.C_DOC) != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());

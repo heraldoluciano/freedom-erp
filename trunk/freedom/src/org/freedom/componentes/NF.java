@@ -28,6 +28,9 @@
 
 package org.freedom.componentes;
 
+import java.sql.Connection;
+import java.util.Vector;
+
 public class NF {
 	
 	public static final int T_CAB = 0;
@@ -35,6 +38,9 @@ public class NF {
 	public static final int T_PARC = 2;
 	public static final int T_ADIC = 3;
 	public static final int T_TRANSP = 4;
+
+	public static final int C_CODEMIT = 0;
+	public static final int C_RAZEMIT = 1;
 	
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
@@ -42,7 +48,6 @@ public class NF {
 	public static final int C_CODNAT = 4;
 	public static final int C_DOC = 5;
 	public static final int C_CPFEMIT = 6;
-	public static final int C_RAZEMIT = 7;
 	public static final int C_CIDEMIT = 8;
 	public static final int C_UFEMIT = 9;
 	public static final int C_CPFEMITAUX = 10;
@@ -50,7 +55,6 @@ public class NF {
 	public static final int C_CIDEMITAUX = 12;
 	public static final int C_UFEMITAUX = 13;
 	public static final int C_INCRAEMIT = 14;
-	public static final int C_CODEMIT = 15;
 	public static final int C_DTEMIT = 16;
 	public static final int C_ENDEMIT = 17;
 	public static final int C_NUMEMIT = 18;
@@ -100,7 +104,6 @@ public class NF {
 	public static final int C_MARCAFRETE = 61;
 	public static final int C_PESOBRUTO = 62;
 	public static final int C_PESOLIQ = 63;
-	public static final int C_CODCLI = 64;
 	public static final int C_CODVEND = 65;
 	public static final int C_CODCLCOMIS = 66;
 	public static final int C_PERCMCOMISPED = 67;
@@ -110,9 +113,9 @@ public class NF {
 	
 	private int casasDec = 2;
 
-	private TabVector cab = new TabVector(10);
-	private TabVector itens = new TabVector(10);
-	private TabVector parc = new TabVector(10);
+	protected TabVector cab = null;
+	protected TabVector itens = null;
+	protected TabVector parc = null;
     
     
 	public NF(int casasDec) {
@@ -136,7 +139,9 @@ public class NF {
 		return t;
 	}
 	
-
+	public boolean carregaTabelas(Connection con, Vector parans ) {
+		return false;
+	}
 /* 		String sSQL = "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA),"
 				+ "(SELECT L.CODLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"
 				+ "(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"
