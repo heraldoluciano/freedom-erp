@@ -91,11 +91,11 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
     setPanel(pnCorpo);
 
     lcVenda.add(new GuardaCampo(txtCodVenda, "CodVenda", "Cód.Venda", ListaCampos.DB_PK, true));
+    lcVenda.add(new GuardaCampo(txtTipoVenda, "TipoVenda", "Tipo.Venda", ListaCampos.DB_PK, false));
     lcVenda.add(new GuardaCampo(txtDocVenda, "DocVenda", "Doc.", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo(txtDataVenda, "DtEmitVenda", "Data", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo(txtVlrLiqVenda, "VlrLiqVenda", "V.Liq.", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo(txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
-    lcVenda.add(new GuardaCampo(txtTipoVenda, "TipoVenda", "Tipo.Venda", ListaCampos.DB_SI, false));
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     lcVenda.setConexao(con);
@@ -225,12 +225,13 @@ public class DLBuscaItVenda extends FFDialogo implements ActionListener, Carrega
                   " P.CODPROD=IT.CODPROD AND P.CODFILIAL=IT.CODFILIALPD" +
                   " AND P.CODEMP=IT.CODEMPPD AND (IT.QTDDEVITVENDA < IT.QTDITVENDA " +
                   " OR IT.QTDDEVITVENDA IS NULL)" +
-                  " AND IT.CODVENDA=? AND IT.CODFILIAL=? AND IT.CODEMP=?";
+                  " AND IT.CODVENDA=? AND IT.CODFILIAL=? AND IT.CODEMP=? AND IT.CODTIPOVENDA=?";
     try {
         PreparedStatement ps = con.prepareStatement(sSQL);
         ps.setInt(1,txtCodVenda.getVlrInteger().intValue());
         ps.setInt(2,lcVenda.getCodFilial());
         ps.setInt(3,Aplicativo.iCodEmp);
+        ps.setString(4,txtTipoVenda.getVlrString());
         ResultSet rs = ps.executeQuery();
         while(rs.next()) { 
             Vector vVals = new Vector();

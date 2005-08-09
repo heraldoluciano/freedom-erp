@@ -277,7 +277,7 @@ public class FRMediaItem extends FRelatorio {
 					+ " EQTIPOMOV TM WHERE V.FLAG IN "
 					+ Aplicativo.carregaFiltro(con,
 							org.freedom.telas.Aplicativo.iCodEmp)
-					+ " AND IT.CODVENDA=V.CODVENDA AND IT.CODPROD=P.CODPROD\n"
+					+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
 					+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
 					+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")
@@ -314,13 +314,16 @@ public class FRMediaItem extends FRelatorio {
 					+ ".CODVENDA = IT"
 					+ (i + 2)
 					+ ".CODVENDA\n"
+					+ (i + 2)
+					+ ".TIPOVENDA = IT"
+					+ (i + 2)
+					+ ".TIPOVENDA\n"
 					+ " AND V"
 					+ (i + 2)
 					+ ".DTEMITVENDA BETWEEN '"
 					+ Funcoes.dateToStrDB(cIni.getTime())
 					+ "' AND '"
-					+ Funcoes
-							.dateToStrDB(Funcoes.periodoMes(cIni
+					+ Funcoes.dateToStrDB(Funcoes.periodoMes(cIni
 									.get(Calendar.MONTH) + 1, cIni
 									.get(Calendar.YEAR))[1]) + "')";
 			sSubCab += " | "

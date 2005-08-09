@@ -50,6 +50,7 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private JTextFieldPad txtDtSaida = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private Tabela tabConsulta = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private ListaCampos lcPlanoPag = new ListaCampos(this);
@@ -102,11 +103,13 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
 
     txtCodVenda.setNomeCampo("CodVenda");
     lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Nº pedido", ListaCampos.DB_PK,false));
-    lcVenda.add(new GuardaCampo(txtDocVenda,"DocVenda","Nº documento", ListaCampos.DB_SI,false));
-    lcVenda.add(new GuardaCampo(txtDtEmitVenda,"DtEmitVenda","Dt.emissão", ListaCampos.DB_SI,false));    
-    lcVenda.add(new GuardaCampo(txtDtSaida,"DtSaidaVenda","Dt.saída", ListaCampos.DB_SI,false));        
+    lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo.Venda", ListaCampos.DB_PK, false));
+    lcVenda.add(new GuardaCampo( txtDocVenda,"DocVenda","Nº documento", ListaCampos.DB_SI,false));
+    lcVenda.add(new GuardaCampo( txtDtEmitVenda,"DtEmitVenda","Dt.emissão", ListaCampos.DB_SI,false));    
+    lcVenda.add(new GuardaCampo( txtDtSaida,"DtSaidaVenda","Dt.saída", ListaCampos.DB_SI,false));        
     lcVenda.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_FK,false));
     lcVenda.add(new GuardaCampo( txtVlrVenda, "VlrLiqVenda", "Valor", ListaCampos.DB_SI,false));
+
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
     txtCodPlanoPag.setListaCampos(lcVenda);
     txtVlrVenda.setListaCampos(lcVenda);
@@ -114,7 +117,6 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
     lcVenda.setReadOnly(true);
     lcVenda.setConexao(con);
     lcVenda.carregaDados();
-
 
     tabConsulta.adicColuna("Item");
     tabConsulta.adicColuna("Ref.prod.");
@@ -139,13 +141,15 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private void carregaGridConsulta() {
     String sSQL = "SELECT IT.CODITVENDA, P.DESCPROD, IT.QTDITVENDA,"+
                   "IT.PRECOITVENDA,IT.VLRLIQITVENDA,IT.CODLOTE,IT.VLRDESCITVENDA, IT.REFPROD FROM VDITVENDA IT,"+
-                  "EQPRODUTO P WHERE IT.CODVENDA = ? AND IT.CODEMP=? AND IT.CODFILIAL=? AND "+
+                  "EQPRODUTO P WHERE " +
+                  "IT.CODVENDA = ? AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.TIPOVENDA=? AND "+
                   "P.CODPROD = IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD ORDER BY CODITVENDA";
     try {
       PreparedStatement ps = con.prepareStatement(sSQL);
       ps.setInt(1,txtCodVenda.getVlrInteger().intValue());
       ps.setInt(2,Aplicativo.iCodEmp );
       ps.setInt(3,ListaCampos.getMasterFilial("VDITVENDA"));
+      ps.setString(4,txtTipoVenda.getVlrString());
       
       ResultSet rs = ps.executeQuery();
       for (int i=0; rs.next(); i++) {

@@ -455,7 +455,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     txtEspFreteVD.setVlrString("Volume");
     txtMarcaFreteVD.setVlrString("**********");
     String sSQL = "SELECT SUM(I.QTDITVENDA * P.PESOLIQPROD) AS TOTPESOLIQ, SUM(I.QTDITVENDA * P.PESOBRUTPROD) AS TOTPESOBRUT"+
-                  " FROM VDITVENDA I,EQPRODUTO P WHERE I.CODVENDA=? AND I.CODEMP=? AND I.CODFILIAL=? AND P.CODPROD=I.CODPROD";
+                  " FROM VDITVENDA I,EQPRODUTO P WHERE I.CODVENDA=? AND I.CODEMP=? AND I.CODFILIAL=? AND I.TIPOVENDA=? AND P.CODPROD=I.CODPROD";
     PreparedStatement ps = null;
     ResultSet rs = null;
     try {
@@ -463,6 +463,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
       ps.setInt(1,iCodVendaFecha);
 	  ps.setInt(2,Aplicativo.iCodEmp);
 	  ps.setInt(3,ListaCampos.getMasterFilial("VDITVENDA"));
+	  ps.setString(4,txtTipoVenda.getVlrString());
       rs = ps.executeQuery();
       if (rs.next()) {
         bLiq = new BigDecimal(rs.getString(1) != null ? rs.getString(1) : "0");
