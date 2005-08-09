@@ -198,7 +198,7 @@ public class ImprimeOS implements ActionListener {
 					"Erro de gravação [ InputStream in device: " + sFile + " ]! ! !");
 		}
 		iTipoImp = getTipoImp();
-
+		say(0,0, retiraExpandido());
 	}
 
 	public void setTitulo(String sT) {
@@ -595,7 +595,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_DESKJET)
 			sRetorno = ((char) 27) + "(s0p10h1s3b2T";
 		else if (iTipoImp == IMP_LASERJET)
-			sRetorno = ((char) 27) + "c(s0S";
+			sRetorno = ((char) 27) + "(s10H";
 		return sRetorno;
 	}
 
@@ -610,7 +610,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_DESKJET)
 			sRetorno = ((char) 27) + "(s0p20h1s0b2T";
 		else if (iTipoImp == IMP_LASERJET)
-			sRetorno = ((char) 27) + "c(s8S";
+			sRetorno = ((char) 27) + "(s20H";
 		return sRetorno;
 	}
 
@@ -624,7 +624,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_DESKJET)
 			sRetorno = ((char) 27) + "(s05h1S";
 		else if (iTipoImp == IMP_LASERJET)
-			sRetorno = ((char) 27) + "c(s24S";
+			sRetorno = ((char) 27) + "(s5H";
 		return sRetorno;
 
 	}
@@ -639,7 +639,7 @@ public class ImprimeOS implements ActionListener {
 		else if (iTipoImp == IMP_DESKJET)
 			sRetorno = ((char) 27) + "E" + ((char) 27) + "&l26a66p0o0e6D";
 		else if (iTipoImp == IMP_LASERJET)
-			sRetorno = ((char) 27) + "c(s0S";
+			sRetorno = ((char) 27) + "E" + ((char) 27) + "&l2a&l0o&l6d(s4099t(s0p&k0s(s0s&l12D";
 		return sRetorno;
 	}
 
