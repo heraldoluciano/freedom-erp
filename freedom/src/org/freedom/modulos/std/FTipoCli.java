@@ -37,6 +37,7 @@ import org.freedom.telas.FDados;
 public class FTipoCli extends FDados implements ActionListener {
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtSgTpCli= new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   private JPanelPad pinInfoFicha = new JPanelPad(300,150);  
   private JCheckBoxPad cbTipoCadFis = new JCheckBoxPad("Pessoa física","S","N");
   private JCheckBoxPad cbTipoCadJur = new JCheckBoxPad("Pessoa jurídica","S","N");
@@ -61,6 +62,7 @@ public class FTipoCli extends FDados implements ActionListener {
     setAtribos(50, 50, 440, 330);
     adicCampo(txtCod, 7, 20, 70, 20,"CodTipoCli","Cód.tp.cli.", ListaCampos.DB_PK, true);
     adicCampo(txtDesc, 80, 20, 250, 20,"DescTipoCli","Descrição do tipo de cliente", ListaCampos.DB_SI, true);
+    adicCampo(txtSgTpCli, 333, 20, 71, 20,"SiglaTipoCli","Sigla.tp.cli.", ListaCampos.DB_SI, false);
     adicDB(cbTipoCadFis, 10, 70, 200, 20, "FisTipoCli", "",true);
     adicDB(cbTipoCadJur, 220, 70, 170, 20, "JurTipoCli", "",true);
     adicDB(cbTipoCadCheq, 10, 90, 200, 20, "CheqTipoCli", "",true);
