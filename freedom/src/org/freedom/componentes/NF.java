@@ -60,7 +60,10 @@ public class NF {
 	public static final int C_EMAILEMIT = 17;
 	public static final int C_SITEEMIT = 18;
 	public static final int C_CONTEMIT = 19;
-	public static final int C_DTEMIT = 20;
+	public static final int C_DTEMITPED = 20;
+	public static final int C_DOC = 21;
+	public static final int C_INCRAEMIT = 22;
+	
 	
 	//itens
 	public static final int C_CODITPED = 0;
@@ -94,12 +97,10 @@ public class NF {
 	public static final int C_VLRPARC = 1;
 	public static final int C_DESCNAT = 3;	
 	public static final int C_CODNAT = 4;
-	public static final int C_DOC = 5;
 	public static final int C_CPFEMITAUX = 10;
 	public static final int C_NOMEEMITAUX = 11;
 	public static final int C_CIDEMITAUX = 12;
 	public static final int C_UFEMITAUX = 13;
-	public static final int C_INCRAEMIT = 14;
 	public static final int C_IMPDTSAIDA = 22;
 	public static final int C_DTSAIDA = 23;
 	public static final int C_VENCLOTE = 28;
