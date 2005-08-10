@@ -1986,8 +1986,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 4, "TOTAL IPI: " + rs.getString("VlrICMSVenda"));
-			imp.say(imp.pRow() + 0, 44, "|    TOTAL ICMS: " + rs.getString("VlrIPIVenda"));
+			imp.say(imp.pRow() + 0, 4, "TOTAL IPI: " + rs.getString("VlrIPIVenda"));
+			imp.say(imp.pRow() + 0, 44, "|    TOTAL ICMS: " + rs.getString("VlrICMSVenda"));
 			imp.say(imp.pRow() + 0, 84, "|    TOTAL PRODUTOS: " + rs.getString("VlrLiqVenda"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));

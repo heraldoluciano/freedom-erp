@@ -37,74 +37,94 @@ public class NF {
 	public static final int T_ITENS = 1;
 	public static final int T_PARC = 2;
 	public static final int T_ADIC = 3;
-	public static final int T_TRANSP = 4;
+	public static final int T_TRANSP = 3;
 
-	public static final int C_CODEMIT = 0;
-	public static final int C_RAZEMIT = 1;
+	// cab
+	public static final int C_CODVEND = 0;
+	public static final int C_CODEMIT = 1;
+	public static final int C_RAZEMIT = 2;
+	public static final int C_CNPJEMIT = 3;
+	public static final int C_CPFEMIT = 4;
+	public static final int C_ENDEMIT = 5;
+	public static final int C_NUMEMIT = 6;
+	public static final int C_COMPLEMIT = 7;
+	public static final int C_BAIREMIT = 8;
+	public static final int C_CEPEMIT = 9;
+	public static final int C_CIDEMIT = 10;
+	public static final int C_UFEMIT = 11;
+	public static final int C_FONEEMIT = 12;
+	public static final int C_FAXEMIT = 13;
+	public static final int C_DDDEMIT = 14;
+	public static final int C_INSCEMIT = 15;
+	public static final int C_RGEMIT = 16;
+	public static final int C_EMAILEMIT = 17;
+	public static final int C_SITEEMIT = 18;
+	public static final int C_CONTEMIT = 19;
+	public static final int C_DTEMIT = 20;
+	
+	//itens
+	public static final int C_CODITPED = 0;
+	public static final int C_CODPROD = 1;
+	public static final int C_REFPROD = 2;
+	public static final int C_DESCPROD = 3;
+	public static final int C_OBSITPED = 4;
+	public static final int C_CODUNID = 5;
+	public static final int C_VLRUNIDITPED = 6;
+	public static final int C_PERCIPIITPED = 7;
+	public static final int C_PERCICMSITPED = 8;
+	public static final int C_VLRICMSPED = 9;
+	public static final int C_VLRIPIPED = 10;
+	public static final int C_VLRLIQPED = 11;	
+	
+	//adic
+	public static final int C_CODPLANOPG = 0;
+	public static final int C_DIASPE= 1;
+	public static final int C_OBSPED = 2;
+	public static final int C_NOMEVEND = 3;
+	public static final int C_EMAILVEND = 4;
+	public static final int C_RAZTRANSP = 5;
+	public static final int C_TIPOFRETE = 6;
+	public static final int C_DESCFUNC = 7;
+
+	
+	
+	
 	
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
 	public static final int C_DESCNAT = 3;	
 	public static final int C_CODNAT = 4;
 	public static final int C_DOC = 5;
-	public static final int C_CPFEMIT = 6;
-	public static final int C_CIDEMIT = 8;
-	public static final int C_UFEMIT = 9;
 	public static final int C_CPFEMITAUX = 10;
 	public static final int C_NOMEEMITAUX = 11;
 	public static final int C_CIDEMITAUX = 12;
 	public static final int C_UFEMITAUX = 13;
 	public static final int C_INCRAEMIT = 14;
-	public static final int C_DTEMIT = 16;
-	public static final int C_ENDEMIT = 17;
-	public static final int C_NUMEMIT = 18;
-	public static final int C_COMPLEMIT = 19;
-	public static final int C_BAIREMIT = 20;
-	public static final int C_CEPEMIT = 21;
 	public static final int C_IMPDTSAIDA = 22;
 	public static final int C_DTSAIDA = 23;
-	public static final int C_DDDEMIT = 24;
-	public static final int C_FONEEMIT = 25;
-	public static final int C_RGEMIT = 26;
-	public static final int C_INSCEMIT = 26;
-	public static final int C_CODPROD = 27;
 	public static final int C_VENCLOTE = 28;
 	public static final int C_CODLOTE = 29;
-	public static final int C_CODPED = 30;
 	public static final int C_ORIGFISC = 31;
 	public static final int C_CODTRATTRIB = 32;
-	public static final int C_DESCPROD = 33;
-	public static final int C_CODUNID = 34;
 	public static final int C_QTDITPED = 35;
 	public static final int C_VLRLIQITPED = 36;
-	public static final int C_PERCICMSIT = 37;
-	public static final int C_CODITPED = 38;
 	public static final int C_VLRBASEICMSPED = 39;
-	public static final int C_VLRICMSPED = 40;
 	public static final int C_VLRFRETEPED = 41;
 	public static final int C_VLRADICPED = 42;
-	public static final int C_VLRIPIPED = 43;
-	public static final int C_VLRLIQPED = 44;
-	public static final int C_OBSPED = 45;
-	public static final int C_RAZTRANSP = 46;
-	public static final int C_TIPOFRETE = 47;
 	public static final int C_PLACAFRETE = 48;
 	public static final int C_UFFRETE = 49;
 	public static final int C_TIPOTRANSP = 50;
-	public static final int C_CNPJCLI = 51;
 	public static final int C_CNPJTRANSP = 52;
 	public static final int C_ENDTRANSP = 53;
 	public static final int C_NUMTRANSP = 54;
 	public static final int C_CIDTRANSP = 55;
 	public static final int C_UFTRANSP = 56;
-	public static final int C_INSCCLI = 57;
 	public static final int C_INSCTRANSP = 58;
 	public static final int C_QTDFRETE = 59;
 	public static final int C_ESPFRETE = 60;
 	public static final int C_MARCAFRETE = 61;
 	public static final int C_PESOBRUTO = 62;
 	public static final int C_PESOLIQ = 63;
-	public static final int C_CODVEND = 65;
 	public static final int C_CODCLCOMIS = 66;
 	public static final int C_PERCMCOMISPED = 67;
 	
@@ -116,7 +136,7 @@ public class NF {
 	protected TabVector cab = null;
 	protected TabVector itens = null;
 	protected TabVector parc = null;
-    
+	protected TabVector adic = null;
     
 	public NF(int casasDec) {
 		super();
@@ -135,6 +155,9 @@ public class NF {
 		   case T_PARC:
 		   	  t = parc;
 		   	  break;
+		   case T_ADIC:
+			   	  t = adic;
+			   	  break;
 		}
 		return t;
 	}
