@@ -23,6 +23,8 @@
 package org.freedom.modulos.std;
 
 import org.freedom.funcoes.Funcoes;
+import org.freedom.modulos.atd.FAtendente;
+import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
 
@@ -39,9 +41,12 @@ public class FreedomSTD extends Aplicativo {
 		  addOpcao(100101000,TP_OPCAO_ITEM,"Crédito por cliente...","Crédito por cliente",'r',100101050,3, true, FCredCli.class);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Comissionado","",'C',100102000,2, false, null);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Setor", "Setor",'S',100102010,3, true, FSetor.class);
-	      addOpcao(100102000,TP_OPCAO_ITEM,"Comissionado", "Comissionado",'i',100102020,4, true, FVendedor.class);
-	      addOpcao(100102000,TP_OPCAO_ITEM,"Classif. de Comissões", "Classificação de Comissões",'P',100102030,5, true, FCLComis.class);
-	      addOpcao(100102000,TP_OPCAO_ITEM,"Funções", "Funções",'F',100102040,5, true, FFuncao.class);
+	      addOpcao(100102000,TP_OPCAO_ITEM,"Comissionado", "Comissionado",'i',100102020,3, true, FVendedor.class);
+	      addOpcao(100102000,TP_OPCAO_ITEM,"Classif. de Comissões", "Classificação de Comissões",'P',100102030,3, true, FCLComis.class);
+	      addOpcao(100102000,TP_OPCAO_ITEM,"Funções", "Funções",'F',100102040,3, true, FFuncao.class);
+        addOpcao(100100000,TP_OPCAO_MENU,"Atendente","",'A',100103000,2, false, null);
+	      addOpcao(100103000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'e',100103010, 3, true, FAtendente.class);
+			addOpcao(100103000, TP_OPCAO_ITEM, "Tipo de Atendente","Tipo de Atendente", 'i', 100103020, 4, true, FTipoAtend.class);
 	      
         addSeparador(100100000);
         addOpcao(100100000,TP_OPCAO_ITEM,"Moeda","Moeda",'M',100112000,2, true, FMoeda.class);
