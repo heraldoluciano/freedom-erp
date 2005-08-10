@@ -35,12 +35,14 @@ import org.freedom.telas.FDados;
 public class FClasCli extends FDados implements ActionListener{
   private JTextFieldPad txtCodClasCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescClasCli= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+  private JTextFieldPad txtSgTpCli= new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   public FClasCli () {
   	super();
     setTitulo("Cadastro de Classificação de Cliente");
-    setAtribos( 50, 50, 350, 125);
+    setAtribos( 50, 50, 350, 165);
     adicCampo(txtCodClasCli, 7, 20, 70, 20,"CodClasCli","Cód.c.cli.",ListaCampos.DB_PK,null,true);
     adicCampo(txtDescClasCli, 80, 20, 250, 20,"DescClasCli","Descrição",ListaCampos.DB_SI,null,true);
+    adicCampo(txtSgTpCli, 7, 60, 71, 20,"SiglaClasCli","Sigla.c.cli.", ListaCampos.DB_SI,null, false);
     setListaCampos( true, "CLASCLI", "VD");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
