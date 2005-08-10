@@ -114,7 +114,7 @@ AND CLI.RAZCLI LIKE 'A%']]></queryString>
 						mode="Opaque"
 						x="382"
 						y="7"
-						width="35"
+						width="39"
 						height="6"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
