@@ -46,7 +46,7 @@ public class NFSaida extends NF {
 		try {
 			sql = "SELECT V.CODVENDA, V.CODCLI, C.RAZCLI, C.CNPJCLI, C.CPFCLI, C.ENDCLI, C.NUMCLI, C.COMPLCLI," +
 					"C.BAIRCLI, C.CEPCLI, C.CIDCLI, C.UFCLI, C.FONECLI, C.FAXCLI, C.DDDCLI, C.INSCCLI, C.RGCLI," +
-					"C.EMAILCLI, C.SITECLI, C.CONTCLI, V.DTEMITVENDA" + 
+					"C.EMAILCLI, C.SITECLI, C.CONTCLI, V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI " + 
 					"FROM VDVENDA V, VDCLIENTE C" +
 					"WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " +
 					"C.CODCLI=V.CODCLI AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=?";
@@ -78,7 +78,9 @@ public class NFSaida extends NF {
 				cab.setString(C_EMAILEMIT, rs.getString("EMAILCLI"));
 				cab.setString(C_SITEEMIT, rs.getString("SITECLI"));
 				cab.setString(C_CONTEMIT, rs.getString("CONTCLI"));
-				cab.setDate(C_DTEMIT, rs.getDate("DTEMITVENDA"));			
+				cab.setDate(C_DTEMITPED, rs.getDate("DTEMITVENDA"));
+				cab.setInt(C_DOC, rs.getInt("DOCVENDA"));
+				cab.setString(C_INCRAEMIT, rs.getString("INCRACLI"));
 			}
 			rs.close();
 			ps.close();
