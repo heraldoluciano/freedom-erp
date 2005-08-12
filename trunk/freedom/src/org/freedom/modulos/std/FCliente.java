@@ -31,6 +31,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.Vector;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import org.freedom.componentes.JPanelPad;
@@ -52,6 +54,7 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -68,10 +71,32 @@ import org.freedom.telas.FTabDados;
 
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
                TabelaSelListener, ChangeListener, CarregaListener, InsertListener {
-  private JPanelPad pinCli = new JPanelPad();
-  private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-  private JPanelPad pinFor = new JPanelPad(0,80);
-  private Tabela tbObsData = new Tabela();
+ 
+  private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
+  private JTextFieldPad txtNumVisita1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita8 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita9 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita10 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita11 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNumVisita12 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova8 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova9 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova10 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova11 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtQtdNova12 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtRazCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
@@ -163,7 +188,24 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pnObs1_2_2_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinObs1_2_1_1 = new JPanelPad(200,200); 
   private JPanelPad pinObs1_2_2_2_1 = new JPanelPad(0,30);
-   
+  private JPanelPad pinCli = new JPanelPad();
+  private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pinFor = new JPanelPad(0,80);
+  private JPanelPad pinVisita = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private Tabela tbObsData = new Tabela();
+  private JPanelPad pinMes1 = new JPanelPad();
+  private JPanelPad pinMes2 = new JPanelPad();
+  private JPanelPad pinMes3 = new JPanelPad();
+  private JPanelPad pinMes4 = new JPanelPad();
+  private JPanelPad pinMes5 = new JPanelPad();
+  private JPanelPad pinMes6 = new JPanelPad();
+  private JPanelPad pinMes7 = new JPanelPad();
+  private JPanelPad pinMes8 = new JPanelPad();
+  private JPanelPad pinMes9 = new JPanelPad();
+  private JPanelPad pinMes10 = new JPanelPad();
+  private JPanelPad pinMes11 = new JPanelPad();
+  private JPanelPad pinMes12 = new JPanelPad();
+  private JPanelPad pn = new JPanelPad(600,500);
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
   private JScrollPane spnObs = new JScrollPane(txaObs); // Scrool pane para observações gerais 
@@ -190,6 +232,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btExclObs = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btEditObs = new JButton(Icone.novo("btEditar.gif"));
   private JButton btGrpCli = new JButton(Icone.novo("btCliente.gif"));
+  private JButton btMudaQtd1 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd2 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd3 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd4 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd5 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd6 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd7 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd8 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd9 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd10 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd11 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaQtd12 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
   private Navegador navFor = new Navegador(true);
   private FConveniado telaConv;
   private boolean[] bPref = null;
@@ -197,7 +252,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   public FCliente () {
   	super();
     setTitulo("Cadastro de Clientes"); 
-    setAtribos(50, 0, 530, 520);
+    setAtribos(50, 0, 555, 520);
     //setFirstFocus(txtCodCli);
     
     lcCliFor.setMaster(lcCampos);
@@ -505,6 +560,157 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	btPrevimp.addActionListener(this);
   	tpn.addChangeListener(this);
   	lcCampos.setQueryInsert(false);
+  	
+  	//Visitas
+  	
+      setPainel(pinVisita);
+      adicTab("Visitas",pinVisita);
+      pinVisita.add(pn,BorderLayout.NORTH);
+	 
+	  pn.adic(new JLabelPad("Ano"),7,0,80,20);
+	  pn.adic(txtAno,7,20,80,20);
+	  pn.adic(btMudaTudo,367,15,150,30);
+	  
+	  JLabelPad lbMes1 = new JLabelPad("   Janeiro");
+	  lbMes1.setOpaque(true);
+	  pn.adic(lbMes1,17,55,80,15);
+	  pn.adic(pinMes1,7,60,170,70);
+	  pinMes1.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
+	  lbMes2.setOpaque(true);
+	  pn.adic(lbMes2,192,55,80,15);
+	  pn.adic(pinMes2,182,60,170,70);
+	  pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes3 = new JLabelPad("   Março");
+	  lbMes3.setOpaque(true);
+	  pn.adic(lbMes3,367,55,80,15);
+	  pn.adic(pinMes3,357,60,170,70);
+	  pinMes3.setBorder( BorderFactory.createEtchedBorder());	
+	  
+	  JLabelPad lbMes4 = new JLabelPad("   Abril");
+	  lbMes4.setOpaque(true);
+	  pn.adic(lbMes4,17,135,80,15);
+	  pn.adic(pinMes4,7,140,170,70);
+	  pinMes4.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes5 = new JLabelPad("   Maio");
+	  lbMes5.setOpaque(true);
+	  pn.adic(lbMes5,192,135,80,15);
+	  pn.adic(pinMes5,182,140,170,70);
+	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes6 = new JLabelPad("   Junho");
+	  lbMes6.setOpaque(true);
+	  pn.adic(lbMes6,367,135,80,15);
+	  pn.adic(pinMes6,357,140,170,70);
+	  pinMes6.setBorder( BorderFactory.createEtchedBorder());	
+	  
+	  JLabelPad lbMes7 = new JLabelPad("   Julho");
+	  lbMes7.setOpaque(true);
+	  pn.adic(lbMes7,17,215,80,15);
+	  pn.adic(pinMes7,7,220,170,70);
+	  pinMes7.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes8 = new JLabelPad("   Agosto");
+	  lbMes8.setOpaque(true);
+	  pn.adic(lbMes8,192,215,80,15);
+	  pn.adic(pinMes8,182,220,170,70);
+	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes9 = new JLabelPad("   Setembro");
+	  lbMes9.setOpaque(true);
+	  pn.adic(lbMes9,367,215,80,15);
+	  pn.adic(pinMes9,357,220,170,70);
+	  pinMes9.setBorder( BorderFactory.createEtchedBorder());	  
+	  
+	  JLabelPad lbMes10 = new JLabelPad("   Outubro");
+	  lbMes10.setOpaque(true);
+	  pn.adic(lbMes10,17,295,80,15);
+	  pn.adic(pinMes10,7,300,170,70);
+	  pinMes10.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes11 = new JLabelPad("   Novembro");
+	  lbMes11.setOpaque(true);
+	  pn.adic(lbMes11,192,295,80,15);
+	  pn.adic(pinMes11,182,300,170,70);
+	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	  
+	  JLabelPad lbMes12 = new JLabelPad("   Dezembro");
+	  lbMes12.setOpaque(true);
+	  pn.adic(lbMes12,367,295,80,15);
+	  pn.adic(pinMes12,357,300,170,70);
+	  pinMes12.setBorder( BorderFactory.createEtchedBorder());
+	  
+	 	  
+	  pinMes1.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes1.adic(txtNumVisita1,7,30,70,20);
+	  txtNumVisita1.setAtivo(false);
+	  pinMes1.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes1.adic(txtQtdNova1,80,30,60,20);
+	  pinMes1.adic(btMudaQtd1,143,30,20,20);	  
+	  pinMes2.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes2.adic(txtNumVisita2,7,30,70,20);
+	  txtNumVisita2.setAtivo(false);
+	  pinMes2.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes2.adic(txtQtdNova2,80,30,60,20);
+	  pinMes2.adic(btMudaQtd2,143,30,20,20);
+	  pinMes3.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes3.adic(txtNumVisita3,7,30,70,20);
+	  txtNumVisita3.setAtivo(false);
+	  pinMes3.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes3.adic(txtQtdNova3,80,30,60,20);
+	  pinMes3.adic(btMudaQtd3,143,30,20,20);	 
+	  
+	  pinMes4.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes4.adic(txtNumVisita4,7,30,70,20);
+	  txtNumVisita4.setAtivo(false);
+	  pinMes4.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes4.adic(txtQtdNova4,80,30,60,20);
+	  pinMes4.adic(btMudaQtd4,143,30,20,20);	 
+	  pinMes5.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes5.adic(txtNumVisita5,7,30,70,20);
+	  txtNumVisita5.setAtivo(false);
+	  pinMes5.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes5.adic(txtQtdNova5,80,30,60,20);
+	  pinMes5.adic(btMudaQtd5,143,30,20,20);	 
+	  pinMes6.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes6.adic(txtNumVisita6,7,30,70,20);
+	  txtNumVisita6.setAtivo(false);
+	  pinMes6.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes6.adic(txtQtdNova6,80,30,60,20);
+	  pinMes6.adic(btMudaQtd6,143,30,20,20);	 
+	  
+	  pinMes7.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes7.adic(txtNumVisita7,7,30,70,20);
+	  txtNumVisita7.setAtivo(false);
+	  pinMes7.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes7.adic(txtQtdNova7,80,30,60,20);
+	  pinMes7.adic(btMudaQtd7,143,30,20,20);	 
+	  pinMes8.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes8.adic(txtNumVisita8,7,30,70,20);
+	  txtNumVisita8.setAtivo(false);
+	  pinMes8.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes8.adic(txtQtdNova8,80,30,60,20);
+	  pinMes8.adic(btMudaQtd8,143,30,20,20);	 
+	  pinMes9.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes9.adic(txtNumVisita9,7,30,70,20);
+	  txtNumVisita9.setAtivo(false);
+	  pinMes9.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes9.adic(txtQtdNova9,80,30,60,20);
+	  pinMes9.adic(btMudaQtd9,143,30,20,20);	 
+	  
+	  pinMes10.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes10.adic(txtNumVisita10,7,30,70,20);
+	  txtNumVisita10.setAtivo(false);
+	  pinMes10.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes10.adic(txtQtdNova10,80,30,60,20);
+	  pinMes10.adic(btMudaQtd10,143,30,20,20);	 
+	  pinMes11.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes11.adic(txtNumVisita11,7,30,70,20);
+	  txtNumVisita11.setAtivo(false);
+	  pinMes11.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes11.adic(txtQtdNova11,80,30,60,20);
+	  pinMes11.adic(btMudaQtd11,143,30,20,20);	 
+	  pinMes12.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes12.adic(txtNumVisita12,7,30,70,20);
+	  txtNumVisita12.setAtivo(false);
+	  pinMes12.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes12.adic(txtQtdNova12,80,30,60,20);
+	  pinMes12.adic(btMudaQtd12,143,30,20,20);	 
   	
   	if (bPref[0]) {
         lcSetor = new ListaCampos(this,"SR");
