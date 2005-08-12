@@ -44,7 +44,7 @@ public class FreedomSTD extends Aplicativo {
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Comissionado", "Comissionado",'i',100102020,3, true, FVendedor.class);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Classif. de Comissões", "Classificação de Comissões",'P',100102030,3, true, FCLComis.class);
 	      addOpcao(100102000,TP_OPCAO_ITEM,"Funções", "Funções",'F',100102040,3, true, FFuncao.class);
-	      addOpcao(100102000,TP_OPCAO_ITEM,"Visitas", "Visitas",'V',100102050,3, true, DLVisitas.class);
+	      addOpcao(100102000,TP_OPCAO_ITEM,"Visitas", "Visitas",'V',100102050,3, true, FVisitas.class);
         addOpcao(100100000,TP_OPCAO_MENU,"Atendente","",'A',100103000,2, false, null);
 	      addOpcao(100103000, TP_OPCAO_ITEM, "Atendente", "Atendente", 'e',100103010, 3, true, FAtendente.class);
 			addOpcao(100103000, TP_OPCAO_ITEM, "Tipo de Atendente","Tipo de Atendente", 'i', 100103020, 4, true, FTipoAtend.class);

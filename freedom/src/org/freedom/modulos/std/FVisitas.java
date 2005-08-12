@@ -40,7 +40,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FFilho;
 
-public class DLVisitas extends FFilho implements ActionListener{
+public class FVisitas extends FFilho implements ActionListener{
 	
 	private JPanelPad pinMes1 = new JPanelPad();
 	private JPanelPad pinMes2 = new JPanelPad();
@@ -83,24 +83,24 @@ public class DLVisitas extends FFilho implements ActionListener{
 	private JTextFieldPad txtQtdNova10 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtQtdNova11 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtQtdNova12 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JButtonPad btMudaQtd1 = new JButtonPad();
-	private JButtonPad btMudaQtd2 = new JButtonPad();
-	private JButtonPad btMudaQtd3 = new JButtonPad();
-	private JButtonPad btMudaQtd4 = new JButtonPad();
-	private JButtonPad btMudaQtd5 = new JButtonPad();
-	private JButtonPad btMudaQtd6 = new JButtonPad();
-	private JButtonPad btMudaQtd7 = new JButtonPad();
-	private JButtonPad btMudaQtd8 = new JButtonPad();
-	private JButtonPad btMudaQtd9 = new JButtonPad();
-	private JButtonPad btMudaQtd10 = new JButtonPad();
-	private JButtonPad btMudaQtd11 = new JButtonPad();
-	private JButtonPad btMudaQtd12 = new JButtonPad();
-	private JButtonPad btMudaTudo = new JButtonPad();
+	private JButton btMudaQtd1 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd2 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd3 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd4 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd5 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd6 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd7 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd8 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd9 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd10 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd11 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaQtd12 = new JButton(Icone.novo("btExecuta2.gif"));
+	private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
 	private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
 	private ListaCampos lcCli = new ListaCampos(this, "");
 	
  
-  public DLVisitas() {
+  public FVisitas() {
 	  super(true);
 	  setTitulo("Distribuição");
 	  setAtribos(50,50,660,520);
@@ -131,7 +131,7 @@ public class DLVisitas extends FFilho implements ActionListener{
 	  pn.adic(txtRazCli,90,20,250,20);
 	  pn.adic(new JLabelPad("Ano"),343,0,80,20);
 	  pn.adic(txtAno,343,20,80,20);
-	  pn.adic(btMudaTudo,460,20,20,20);
+	  pn.adic(btMudaTudo,460,15,150,30);
 	  
 	  JLabelPad lbMes1 = new JLabelPad("   Janeiro");
 	  lbMes1.setOpaque(true);
@@ -141,7 +141,7 @@ public class DLVisitas extends FFilho implements ActionListener{
 	  JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
 	  lbMes2.setOpaque(true);
 	  pn.adic(lbMes2,223,55,80,15);
-	  pn.adic(pinMes2,213,60,200,80);
+	  pn.adic(pinMes2,215,60,200,80);
 	  pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
 	  JLabelPad lbMes3 = new JLabelPad("   Março");
 	  lbMes3.setOpaque(true);
@@ -157,7 +157,7 @@ public class DLVisitas extends FFilho implements ActionListener{
 	  JLabelPad lbMes5 = new JLabelPad("   Maio");
 	  lbMes5.setOpaque(true);
 	  pn.adic(lbMes5,223,155,80,15);
-	  pn.adic(pinMes5,213,160,200,80);
+	  pn.adic(pinMes5,215,160,200,80);
 	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	  
 	  JLabelPad lbMes6 = new JLabelPad("   Junho");
 	  lbMes6.setOpaque(true);
@@ -173,7 +173,7 @@ public class DLVisitas extends FFilho implements ActionListener{
 	  JLabelPad lbMes8 = new JLabelPad("   Agosto");
 	  lbMes8.setOpaque(true);
 	  pn.adic(lbMes8,223,255,80,15);
-	  pn.adic(pinMes8,213,260,200,80);
+	  pn.adic(pinMes8,215,260,200,80);
 	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	  
 	  JLabelPad lbMes9 = new JLabelPad("   Setembro");
 	  lbMes9.setOpaque(true);
@@ -189,7 +189,7 @@ public class DLVisitas extends FFilho implements ActionListener{
 	  JLabelPad lbMes11 = new JLabelPad("   Novembro");
 	  lbMes11.setOpaque(true);
 	  pn.adic(lbMes11,223,355,80,15);
-	  pn.adic(pinMes11,213,360,200,80);
+	  pn.adic(pinMes11,215,360,200,80);
 	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	  
 	  JLabelPad lbMes12 = new JLabelPad("   Dezembro");
 	  lbMes12.setOpaque(true);
