@@ -21,13 +21,20 @@
  */
 
 package org.freedom.modulos.std;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
+
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
 
@@ -43,8 +50,8 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRGerContas extends FRelatorio  {
-  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
+//  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -73,13 +80,8 @@ public class FRGerContas extends FRelatorio  {
     setTitulo("Gerenciamento de contas");
     setAtribos(80,0,425,310);
 
-    GregorianCalendar cal = new GregorianCalendar();
-    cal.add(Calendar.DATE,-30);
-    txtDataini.setVlrDate(cal.getTime());
-    cal.add(Calendar.DATE,30);
-    txtDatafim.setVlrDate(cal.getTime());
-    txtDataini.setRequerido(true);    
-    txtDatafim.setRequerido(true);
+    txtAno.setRequerido(true);
+    txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));
 
     cbVendas.setVlrString("S");
     cbCliPrinc.setVlrString("S");
@@ -125,9 +127,10 @@ public class FRGerContas extends FRelatorio  {
     
     adic(new JLabelPad("Ordem"),280,0,80,20);
     adic(rgOrdemRel,280,20,120,120);
-    adic(new JLabelPad("Período"),7,0,250,20);
-    adic(txtDataini,7,20,100,20);
-    adic(txtDatafim,110,20,100,20);    
+    adic(new JLabelPad("Ano"),7,0,250,20);
+    adic(txtAno,7,20,100,20);
+//    adic(txtDatafim,110,20,100,20);
+    
     adic(lbCodSetor,7,45,250,20);
     adic(txtCodSetor,7,65,70,20);
     adic(lbDescSetor,80,45,250,20);
@@ -149,47 +152,32 @@ public class FRGerContas extends FRelatorio  {
 
   
   public void imprimir(boolean bVisualizar) {
-	if (txtDataini.getVlrString().length() < 10 || txtDatafim.getVlrString().length() < 10) {
-		Funcoes.mensagemInforma(this,"Período inválido!");
-		return;
+	    
+	FPrinterJob dlGr = null;
+	HashMap hParam = new HashMap();
+	hParam.put("ANO",txtAno.getVlrInteger());
+	hParam.put("CODEMPVEND",new Integer(lcVendedor.getCodEmp()));
+	hParam.put("CODFILIALVEND",new Integer(lcVendedor.getCodFilial()));
+	hParam.put("CODVEND",txtCodVend.getVlrInteger());
+
+	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",this,hParam,con); 
+			
+			
+	if(bVisualizar)
+		dlGr.setVisible(true);  
+	else{			
+		try {
+			JasperPrintManager.printReport(dlGr.getRelatorio(),true);
+		}
+		catch(Exception err){
+			Funcoes.mensagemErro(this,"Erro na impressão de recursos de produção!"+err.getMessage(),true,con,err);
+		}
 	}
 	
-    
-	vParams.addElement(txtCodSetor.getVlrString());
-	GerContas gerContas = new GerContas();
-	gerContas.setParam(vParams);
-	gerContas.setConexao(con);
-	gerContas.setConsulta(buscaValores());	  
-
-	dl = new FPrinterJob(gerContas,this);
-	dl.setVisible(true);
-
+	
 	
   }
 
-  private ResultSet buscaValores() {
-  	String sSql = "";
-  	String sWhere = "";
-  	String sFrom = "";
-    ResultSet rs = null;
-  	try {
-  		   sSql = "SELECT CLI.NOMECLI,CLI.CODCLI,CLI.CIDCLI,CC.DESCCLASCLI " +
-  		   	      "FROM VDCLIENTE CLI,VDCLASCLI CC "+
-                  "WHERE CC.CODEMP=CLI.CODEMPCC AND CC.CODFILIAL=CLI.CODFILIALCC AND CC.CODCLASCLI=CLI.CODCLASCLI ";
-
-  		    PreparedStatement ps = null;
- 			ps = con.prepareStatement(sSql);  		   
-  		    rs = ps.executeQuery(sSql);
-  			
-  		}
-  		catch (SQLException err) {
-  			Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+err.getMessage(),true,con,err);
-  			err.printStackTrace();
-  		}
-  	return rs;
-  	}
-  	  	
-  
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcSetor.setConexao(cn);
