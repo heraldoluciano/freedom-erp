@@ -33,6 +33,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
@@ -196,6 +197,15 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 	}  
 	
   }
+  
+  /**
+   * Construção do FPrinterJob utilizando JasperReports através de resultset.
+   * @param sLayout
+   * @param sTituloRel
+   * @param sFiltros
+   * @param rs
+   * @param ifOrig
+   */
   public FPrinterJob(String sLayout,String sTituloRel,String sFiltros,ResultSet rs,JInternalFrame ifOrig) {
   	super(false);
     
@@ -214,6 +224,7 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 		hParam.put("TITULO",sTituloRel);
 		
 		relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/org/freedom/"+sLayout),hParam,jrRS);
+		
 		JRViewer viewer = new JRViewer(relJasper);
 		this.setContentPane(viewer);
 	}
@@ -228,6 +239,50 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 	   err.printStackTrace();
 	}  	
   }
+
+  /**
+   * Construção do FPrinterJob utilizando JasperReports através de query no JasperReport.
+   * @param sLayout
+   * @param sTituloRel
+   * @param sFiltros
+   * @param rs
+   * @param ifOrig
+   */
+  public FPrinterJob(String sLayout,String sTituloRel,String sFiltros,JInternalFrame ifOrig,HashMap hParamRel,Connection con) {
+	  	super(false);
+	    
+	    setTitulo(sTituloRel);
+	    
+	    setBounds(50,50,500,400);
+		
+		ifOrig.getDesktopPane().add(this);
+
+		try{
+			HashMap hParam = Aplicativo.empresa.getAll();
+			
+			hParam.put("USUARIO",Aplicativo.strUsuario);
+			hParam.put("FILTROS",sFiltros);
+			hParam.put("TITULO",sTituloRel);
+			
+			hParam.putAll(hParamRel);
+
+			relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/org/freedom/"+sLayout),hParam,con);
+			
+			JRViewer viewer = new JRViewer(relJasper);
+			this.setContentPane(viewer);
+		}
+		catch(JRException err){
+			err.printStackTrace();
+		}
+		
+		try {
+		  setMaximum(true);
+		}
+		catch (Exception err) { 
+		   err.printStackTrace();
+		}  	
+	  }
+
   
   public JasperPrint getRelatorio(){
   	return this.relJasper;
