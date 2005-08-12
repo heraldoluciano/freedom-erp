@@ -420,23 +420,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		pnCenter.add(pnTot, BorderLayout.EAST);
 		pnCenter.add(spTab, BorderLayout.CENTER);
 
-		JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1,
-				1));
+		JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1,1));
 		pnLab.add(new JLabelPad(" Totais:")); //Label do painel de totais
 
 		pnMaster.add(pnCenter, BorderLayout.CENTER);
 
 		//FK Cliente
-		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",
-				ListaCampos.DB_PK, false));
-		lcCli.add(new GuardaCampo(txtDescCli, "RazCli",
-				"Razão social do cliente", ListaCampos.DB_SI, false));
-		lcCli.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",
-				ListaCampos.DB_SI, false));
-		lcCli.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_SI, false));
-		lcCli.add(new GuardaCampo(txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,
-				false));
+		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_PK, false));
+		lcCli.add(new GuardaCampo(txtDescCli, "RazCli","Razão social do cliente", ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,false));
 		//lcCli.setWhereAdic("ATIVOCLI='S'");
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		lcCli.setQueryCommit(false);
@@ -445,47 +439,35 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		//FK Vendedor
 		lcVendedor.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.Venda",ListaCampos.DB_PK, false));
-		lcVendedor.add(new GuardaCampo(txtDescVend, "NomeVend",
-				"Nome do comissionado", ListaCampos.DB_SI, false));
-		lcVendedor.add(new GuardaCampo(txtCodClComis, "CodClComis", "Cód.c.comis.",
-				ListaCampos.DB_SI, false));
-		lcVendedor.add(new GuardaCampo(txtPercComisVenda, "PercComVend",
-				"% Comis.", ListaCampos.DB_SI, false));
+		lcVendedor.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVendedor.add(new GuardaCampo(txtCodClComis, "CodClComis", "Cód.c.comis.",ListaCampos.DB_SI, false));
+		lcVendedor.add(new GuardaCampo(txtPercComisVenda, "PercComVend","% Comis.", ListaCampos.DB_SI, false));
 		lcVendedor.montaSql(false, "VENDEDOR", "VD");
 		lcVendedor.setQueryCommit(false);
 		lcVendedor.setReadOnly(true);
 		txtCodVend.setTabelaExterna(lcVendedor);
 
 		//FK Plano de Pagamento
-		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag",
-				"Cód.p.pg.", ListaCampos.DB_PK, false));
-		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag",
-				"Descrição plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pg.", ListaCampos.DB_PK, false));
+		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setQueryCommit(false);
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 
 		//FK Série
-		lcSerie.add(new GuardaCampo(txtCodSerie, "Serie", "Série",
-				ListaCampos.DB_PK, false));
-		lcSerie.add(new GuardaCampo(txtDocVenda, "DocSerie", "Doc. atual",
-				ListaCampos.DB_SI, false));
+		lcSerie.add(new GuardaCampo(txtCodSerie, "Serie", "Série",ListaCampos.DB_PK, false));
+		lcSerie.add(new GuardaCampo(txtDocVenda, "DocSerie", "Doc. atual",ListaCampos.DB_SI, false));
 		lcSerie.montaSql(false, "SERIE", "LF");
 		lcSerie.setQueryCommit(false);
 		lcSerie.setReadOnly(true);
 		txtCodSerie.setTabelaExterna(lcSerie);
 
 		//FK de Lotes
-		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",
-				ListaCampos.DB_PK, txtDescLote, false));
-		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",
-				ListaCampos.DB_SI, false));
-		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",
-				ListaCampos.DB_SI, false));
-		lcLote.setDinWhereAdic(
-				"CODPROD=#N AND (VENCTOLOTE >= #D OR #S IN('DV','PE'))",
-				txtCodProd);
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLote, false));
+		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",	ListaCampos.DB_SI, false));
+		lcLote.setDinWhereAdic("CODPROD=#N AND (VENCTOLOTE >= #D OR #S IN('DV','PE'))",txtCodProd);
 		lcLote.setDinWhereAdic("", txtDtSaidaVenda);
 		lcLote.setDinWhereAdic("", txtTipoMov);
 		lcLote.montaSql(false, "LOTE", "EQ");
@@ -499,14 +481,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//FK de Classificação Fiscal (É acionada também quando o listaCampos de
 		// produtos é acionado)
 
-		lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",
-				ListaCampos.DB_PK, txtDescFisc, false));
-		lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição fiscal",
-				ListaCampos.DB_SI, false));
-		lcFisc.add(new GuardaCampo(txtAliqIPIFisc, "AliqIPIFisc", "% IPI",
-				ListaCampos.DB_SI, false));
-		lcFisc.add(new GuardaCampo(txtAliqFisc, "AliqFisc", "% ICMS",
-				ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",ListaCampos.DB_PK, txtDescFisc, false));
+		lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição fiscal",ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtAliqIPIFisc, "AliqIPIFisc", "% IPI",ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtAliqFisc, "AliqFisc", "% ICMS",ListaCampos.DB_SI, false));
 		lcFisc.montaSql(false, "CLFISCAL", "LF");
 		lcFisc.setQueryCommit(false);
 		lcFisc.setReadOnly(true);
@@ -516,10 +494,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//FK de Natureza de Operação (É acionada também quando o listaCampos de
 		// Classificação Fiscal é acionado)
 
-		lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP",
-				ListaCampos.DB_PK, false));
-		lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP",
-				ListaCampos.DB_SI, false));
+		lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP",ListaCampos.DB_PK, false));
+		lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP",ListaCampos.DB_SI, false));
 		lcNat.montaSql(false, "NATOPER", "LF");
 		lcNat.setQueryCommit(false);
 		lcNat.setReadOnly(true);
@@ -528,8 +504,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		//FK de Almoxarifado
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxItVenda, "codalmox", "Cod.Almox.",
-				ListaCampos.DB_PK, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxItVenda, "codalmox", "Cod.Almox.",ListaCampos.DB_PK, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
@@ -549,33 +524,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//ListaCampos de Totais (É acionada pelo listaCampos de Venda)
 
 		lcVenda2.add(new GuardaCampo(txtCodVenda, "CodVenda", "N.pedido",ListaCampos.DB_PK, false));
-		lcVenda2.add(new GuardaCampo(txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
-		lcVenda2.add(new GuardaCampo(txtVlrFreteVenda, "VlrFreteVenda",
-				"Vlr. frete", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrComisVenda, "VlrComisVenda",
-				"Vlr. comis.", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtMedComisVenda, "PercMComisVenda",
-				"Med. comis.", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrICMSVenda, "VlrICMSVenda",
-				"Vlr. ICMS", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrIPIVenda, "VlrIPIVenda", "Vlr. IPI",
-				ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrPisVenda, "VlrPisVenda", "Vlr. PIS",
-				ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrCofinsVenda, "VlrCofinsVenda",
-				"Vlr. COFINS", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrIRVenda, "VlrIRVenda", "Vlr. I.R.",
-				ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrCSocialVenda, "VlrCSocialVenda",
-				"Vlr. c.social.", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrProdVenda, "VlrProdVenda",
-				"Vlr. prod.", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrDescVenda, "VlrDescItVenda",
-				"Vlr. desc.", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrLiqVenda, "VlrLiqVenda",
-				"Vlr. liq.", ListaCampos.DB_SI, false));
-		lcVenda2.add(new GuardaCampo(txtVlrBrutVenda, "VlrProdVenda",
-				"Vlr. prod.", ListaCampos.DB_SI, false));
+		//lcVenda2.add(new GuardaCampo(txtTipoVenda, "TipoVenda", "Tp.Venda",ListaCampos.DB_PK, false));
+		lcVenda2.add(new GuardaCampo(txtVlrFreteVenda, "VlrFreteVenda","Vlr. frete", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrComisVenda, "VlrComisVenda","Vlr. comis.", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtMedComisVenda, "PercMComisVenda","Med. comis.", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrICMSVenda, "VlrICMSVenda","Vlr. ICMS", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrIPIVenda, "VlrIPIVenda", "Vlr. IPI",ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrPisVenda, "VlrPisVenda", "Vlr. PIS",ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrCofinsVenda, "VlrCofinsVenda","Vlr. COFINS", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrIRVenda, "VlrIRVenda", "Vlr. I.R.",ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrCSocialVenda, "VlrCSocialVenda","Vlr. c.social.", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrProdVenda, "VlrProdVenda","Vlr. prod.", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrDescVenda, "VlrDescItVenda","Vlr. desc.", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrLiqVenda, "VlrLiqVenda","Vlr. liq.", ListaCampos.DB_SI, false));
+		lcVenda2.add(new GuardaCampo(txtVlrBrutVenda, "VlrProdVenda","Vlr. prod.", ListaCampos.DB_SI, false));
 		lcVenda2.setWhereAdic("TIPOVENDA='V'");
 		lcVenda2.montaSql(false, "VENDA", "VD");
 		lcVenda2.setQueryCommit(false);
@@ -583,11 +545,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		//lc para trazer classificacao da comissao
 
-		lcClComis.add(new GuardaCampo(txtCodClComis, "CodClComis",
-				"Cód.c.comis.", ListaCampos.DB_PK, false));
-		lcClComis.add(new GuardaCampo(txtDescClComis, "DescClComis",
-				"Descrição da classificação da comissão", ListaCampos.DB_SI,
-				false));
+		lcClComis.add(new GuardaCampo(txtCodClComis, "CodClComis","Cód.c.comis.", ListaCampos.DB_PK, false));
+		lcClComis.add(new GuardaCampo(txtDescClComis, "DescClComis","Descrição da classificação da comissão", ListaCampos.DB_SI,false));
 		lcClComis.montaSql(false, "CLCOMIS", "VD");
 		lcClComis.setQueryCommit(false);
 		lcClComis.setReadOnly(true);
@@ -673,24 +632,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		//FK Produto
 
-		lcProd.add(new GuardaCampo(txtCodProd, "codprod", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produtos", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Ref.prod.",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",
-				ListaCampos.DB_FK, false));
-		lcProd.add(new GuardaCampo(txtPercComItVenda, "ComisProd", "% Comis.",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtSldLiqProd, "SldLiqProd", "Saldo",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtVerifProd, "VerifProd", "Verif. custo",
-				ListaCampos.DB_SI, false));
-		lcProd.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'"
-				+ (bPrefs[8] ? ",'M'" : "") + ")");
+		lcProd.add(new GuardaCampo(txtCodProd, "codprod", "Cód.prod.",ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produtos", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Ref.prod.",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",ListaCampos.DB_FK, false));
+		lcProd.add(new GuardaCampo(txtPercComItVenda, "ComisProd", "% Comis.",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtSldLiqProd, "SldLiqProd", "Saldo",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtVerifProd, "VerifProd", "Verif. custo",ListaCampos.DB_SI, false));
+		lcProd.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + (bPrefs[8] ? ",'M'" : "") + ")");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
@@ -698,50 +648,32 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//FK do produto (*Somente em caso de referências este listaCampos
 		//Trabalha como gatilho para o listaCampos de produtos, assim
 		//carregando o código do produto que será armazenado no Banco)
-		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Ref.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",
-				ListaCampos.DB_FK, false));
-		lcProd2.add(new GuardaCampo(txtPercComItVenda, "ComisProd", "% comis.",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtSldLiqProd, "SldLiqProd", "Saldo",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtVerifProd, "VerifProd", "Verif. custo",
-				ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Ref.prod.",ListaCampos.DB_PK, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",ListaCampos.DB_FK, false));
+		lcProd2.add(new GuardaCampo(txtPercComItVenda, "ComisProd", "% comis.",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtSldLiqProd, "SldLiqProd", "Saldo",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtVerifProd, "VerifProd", "Verif. custo",ListaCampos.DB_SI, false));
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
-		lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'"
-				+ (bPrefs[8] ? ",'M'" : "") + ")");
+		lcProd2.setWhereAdic("ATIVOPROD='S' AND TIPOPROD IN ('P','S','F'" + (bPrefs[8] ? ",'M'" : "") + ")");
 		lcProd2.montaSql(false, "PRODUTO", "EQ");
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2);
 
 		//FK Tipo de movimentos
-		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov",
-				"Cód.tp.mov.", ListaCampos.DB_PK, false));
-		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov",
-				"Descrição do tipo de movimento", ListaCampos.DB_SI, false));
-		lcTipoMov.add(new GuardaCampo(txtCodSerie, "Serie", "Série",
-				ListaCampos.DB_FK, false));
-		lcTipoMov.add(new GuardaCampo(txtTipoMov, "TipoMov", "Tipo mov.",
-				ListaCampos.DB_SI, false));
-		lcTipoMov.add(new GuardaCampo(txtESTipoMov, "ESTipoMov", "E/S",
-				ListaCampos.DB_SI, false));
-		lcTipoMov.add(new GuardaCampo(chbImpPedTipoMov, "ImpPedTipoMov",
-				"Imp.ped.", ListaCampos.DB_SI, false));
-		lcTipoMov.add(new GuardaCampo(chbImpNfTipoMov, "ImpNfTipoMov",
-				"Imp.NF", ListaCampos.DB_SI, false));
-		lcTipoMov.add(new GuardaCampo(chbImpBolTipoMov, "ImpBolTipoMov",
-				"Imp.bol.", ListaCampos.DB_SI, false));
-		lcTipoMov.add(new GuardaCampo(chbReImpNfTipoMov, "ReImpNfTipoMov",
-				"Reimp.NF", ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(txtCodSerie, "Serie", "Série",ListaCampos.DB_FK, false));
+		lcTipoMov.add(new GuardaCampo(txtTipoMov, "TipoMov", "Tipo mov.",ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(txtESTipoMov, "ESTipoMov", "E/S",ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(chbImpPedTipoMov, "ImpPedTipoMov","Imp.ped.", ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(chbImpNfTipoMov, "ImpNfTipoMov","Imp.NF", ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(chbImpBolTipoMov, "ImpBolTipoMov","Imp.bol.", ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(chbReImpNfTipoMov, "ReImpNfTipoMov","Reimp.NF", ListaCampos.DB_SI, false));
 		/*
 		 * SELECT CODTIPOMOV, DESCTIPOMOV FROM EQTIPOMOV WHERE ( TUSUTIPOMOV='S'
 		 * OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU WHERE
@@ -776,7 +708,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		setAltCab(160);
 		setPainel(pinCabVenda);
 		adicCampo(txtCodVenda, 7, 20, 90, 20, "CodVenda", "N. pedido",ListaCampos.DB_PK, true);
-		adicCampoInvisivel(txtTipoVenda,"tipovenda","Tp.Venda",ListaCampos.DB_PK,true);
+		//adicCampoInvisivel(txtTipoVenda,"tipovenda","Tp.Venda",ListaCampos.DB_PK,true);
 		adicCampo(txtCodTipoMov, 100, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, true);
 		adicDescFK(txtDescTipoMov, 180, 20, 197, 20, "DescTipoMov",	"Descrição do tipo de movimento");
 		adicCampo(txtCodSerie, 380, 20, 77, 20, "Serie", "Série",ListaCampos.DB_FK, false);
@@ -1787,12 +1719,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		else if (evt.getSource() == btObs) {
 			FObservacao obs = null;
 			try {
-				PreparedStatement ps = con.prepareStatement("SELECT OBSVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA=?");
+				PreparedStatement ps = con.prepareStatement("SELECT OBSVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'");
 				
 				ps.setInt(1,lcCampos.getCodEmp());
 				ps.setInt(2,lcCampos.getCodFilial());
 				ps.setInt(3, txtCodVenda.getVlrInteger().intValue());
-				ps.setString(4, txtTipoVenda.getVlrString());
+				//ps.setString(4, txtTipoVenda.getVlrString());
 				
 				ResultSet rs = ps.executeQuery();
 				if (rs.next())
