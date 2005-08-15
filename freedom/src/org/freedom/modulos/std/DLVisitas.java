@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.Tabela;
@@ -44,16 +45,23 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtNomeCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtHora = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
+  private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextAreaPad txtHist = new JTextAreaPad(1000);
   private JPanelPad pnTab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinCab = new JPanelPad(300,70);
-  private JPanelPad pinRod = new JPanelPad(300,100);
+  private JPanelPad pinRod = new JPanelPad(300,200);
   private Tabela tab = new Tabela();
   private JLabel lbMes = new JLabel();
   
   public DLVisitas(Component cOrig, Connection con) {
     super(cOrig);    
     setTitulo("Alteração de historico");
-    setAtribos(450, 400);
+    setAtribos(520, 500);
     setConexao(con);
     
     c.add(pinCab, BorderLayout.NORTH);
@@ -68,23 +76,48 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     adic(lbMes,15,45,150,20);
     lbMes.setFont(new Font("Arial",Font.BOLD,14));
     lbMes.setForeground(Color.blue);
+    txtCodCli.setAtivo(false);
+    txtAno.setAtivo(false);
    
     
     JScrollPane spnTabRec = new JScrollPane(tab);
     pnTab.add(spnTabRec,BorderLayout.CENTER);
     c.add(pnTab, BorderLayout.CENTER);
     
-    tab.adicColuna("");
-    tab.adicColuna("não sei o que vai na tabela");
+    tab.adicColuna("Contato");
+    tab.adicColuna("Atendente");
+    tab.adicColuna("Data");
+    tab.adicColuna("Hora");
+    tab.adicColuna("Observações");
+    tab.adicColuna("Sit.");
     
-    tab.setTamColuna(20,0);
-    tab.setTamColuna(250,1);
+    tab.setTamColuna(70,0);
+    tab.setTamColuna(80,1);
+    tab.setTamColuna(50,2);
+    tab.setTamColuna(50,3);
+    tab.setTamColuna(210,4);
+    tab.setTamColuna(50,5);
     
     tab.addMouseListener(this);
     
     pnTab.add(pinRod, BorderLayout.SOUTH);
     setPainel(pinRod);
     
+    adic(new JLabelPad("Cód.cont."),7,0,70,20);
+    adic(txtCodCont,7,20,70,20);
+    adic(new JLabelPad("Nome do contato"),80,0,250,20);
+    adic(txtNomeCont,80,20,250,20);
+    adic(new JLabelPad("Data"),333,0,70,20);
+    adic(txtData,333,20,70,20);
+    adic(new JLabelPad("Cód.atend."),7,40,70,20);
+    adic(txtCodAtend,7,60,70,20);
+    adic(new JLabelPad("Nome do atendente"),80,40,250,20);
+    adic(txtNomeAtend,80,60,250,20);
+    adic(new JLabelPad("Hora"),333,40,70,20);
+    adic(txtHora,333,60,70,20);
+    adic(new JLabelPad("Historico"),7,80,70,20);
+    adic(new JScrollPane(txtHist),7,100,480,80);
+    txtHora.setStrMascara("##:##");
   }
   
   public void setCampos(Vector args){
