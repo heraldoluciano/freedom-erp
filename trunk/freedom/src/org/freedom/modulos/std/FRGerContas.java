@@ -21,19 +21,12 @@
  */
 
 package org.freedom.modulos.std;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
 
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 import org.freedom.componentes.JLabelPad;
@@ -45,7 +38,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.relatorios.GerContas;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
