@@ -121,9 +121,12 @@ public class Funcoes {
     }
 	public static String getTimeString(Date data) {
 		String bRetorno	= "";
-		if (data!=null) 
-		   bRetorno = strZero(data.getHours()+"",2)+":"+
-		      strZero(data.getMinutes()+"",2)+":"+strZero(data.getSeconds()+"",2); 
+		if (data!=null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(data);
+		   bRetorno = strZero(cal.get(Calendar.HOUR)+"",2)+":"+
+		      strZero(cal.get(Calendar.MINUTE) +"",2)+":"+strZero(cal.get(Calendar.SECOND)+"",2);
+		}
 		return bRetorno;
 	}
     public static int contaChar(String sTexto,char cChar) {
@@ -213,14 +216,12 @@ public class Funcoes {
 	}
 
 	public static java.util.Date strTimeToDate(String sTime) {
-		java.util.Date retorno = new Date();
+		java.util.Date retorno = null;
 		try {
-			int hora = Integer.parseInt(sTime.substring(0,2));
-			int minuto = Integer.parseInt(sTime.substring(3,5));
-			int segundo = Integer.parseInt(sTime.substring(6,8));
-			retorno.setHours(hora);
-			retorno.setMinutes(minuto);
-			retorno.setSeconds(segundo);
+			int hora = Integer.parseInt(sTime.substring(0,2)) * 60 * 60 * 1000;
+			int minuto = Integer.parseInt(sTime.substring(3,5)) * 60 * 1000;
+			int segundo = Integer.parseInt(sTime.substring(6,8)) * 1000;
+			retorno =  new Date(hora + minuto + segundo);
 		}
 	    catch (Exception e) {
 			retorno = null;
