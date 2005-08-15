@@ -232,6 +232,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btExclObs = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btEditObs = new JButton(Icone.novo("btEditar.gif"));
   private JButton btGrpCli = new JButton(Icone.novo("btCliente.gif"));
+  private JButton btMudaHis1 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis2 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis3 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis4 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis5 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis6 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis7 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis8 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis9 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis10 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis11 = new JButton(Icone.novo("btExecuta2.gif"));
+  private JButton btMudaHis12 = new JButton(Icone.novo("btExecuta2.gif"));
   private JButton btMudaQtd1 = new JButton(Icone.novo("btExecuta2.gif"));
   private JButton btMudaQtd2 = new JButton(Icone.novo("btExecuta2.gif"));
   private JButton btMudaQtd3 = new JButton(Icone.novo("btExecuta2.gif"));
@@ -561,7 +573,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	tpn.addChangeListener(this);
   	lcCampos.setQueryInsert(false);
   	
-  	//Visitas
+//	Visitas
   	
       setPainel(pinVisita);
       adicTab("Visitas",pinVisita);
@@ -575,142 +587,183 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  lbMes1.setOpaque(true);
 	  pn.adic(lbMes1,17,55,80,15);
 	  pn.adic(pinMes1,7,60,170,70);
-	  pinMes1.setBorder( BorderFactory.createEtchedBorder());	  
+	  pinMes1.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes1.adic(txtNumVisita1,7,30,70,20);
+	  txtNumVisita1.setAtivo(false);
+	  pinMes1.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes1.adic(txtQtdNova1,80,30,60,20);
+	  pinMes1.adic(btMudaQtd1,143,19,20,20);
+	  pinMes1.adic(btMudaHis1,143,41,20,20);
+	  pinMes1.setBorder( BorderFactory.createEtchedBorder());
+		  
 	  JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
 	  lbMes2.setOpaque(true);
 	  pn.adic(lbMes2,192,55,80,15);
 	  pn.adic(pinMes2,182,60,170,70);
+	  pinMes2.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes2.adic(txtNumVisita2,7,30,70,20);
+	  txtNumVisita2.setAtivo(false);
+	  pinMes2.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes2.adic(txtQtdNova2,80,30,60,20);
+	  pinMes2.adic(btMudaQtd2,143,19,20,20);
+	  pinMes2.adic(btMudaHis2,143,41,20,20);
+	  
 	  pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
 	  JLabelPad lbMes3 = new JLabelPad("   Março");
 	  lbMes3.setOpaque(true);
 	  pn.adic(lbMes3,367,55,80,15);
 	  pn.adic(pinMes3,357,60,170,70);
 	  pinMes3.setBorder( BorderFactory.createEtchedBorder());	
+	  pinMes3.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes3.adic(txtNumVisita3,7,30,70,20);
+	  txtNumVisita3.setAtivo(false);
+	  pinMes3.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes3.adic(txtQtdNova3,80,30,60,20);
+	  pinMes3.adic(btMudaQtd3,143,19,20,20);	
+	  pinMes3.adic(btMudaHis3,143,41,20,20); 
 	  
 	  JLabelPad lbMes4 = new JLabelPad("   Abril");
 	  lbMes4.setOpaque(true);
 	  pn.adic(lbMes4,17,135,80,15);
 	  pn.adic(pinMes4,7,140,170,70);
 	  pinMes4.setBorder( BorderFactory.createEtchedBorder());	  
+	  pinMes4.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes4.adic(txtNumVisita4,7,30,70,20);
+	  txtNumVisita4.setAtivo(false);
+	  pinMes4.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes4.adic(txtQtdNova4,80,30,60,20);
+	  pinMes4.adic(btMudaQtd4,143,19,20,20);	
+	  pinMes4.adic(btMudaHis4,143,41,20,20);
+	  
 	  JLabelPad lbMes5 = new JLabelPad("   Maio");
 	  lbMes5.setOpaque(true);
 	  pn.adic(lbMes5,192,135,80,15);
 	  pn.adic(pinMes5,182,140,170,70);
-	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	  
+	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	
+	  pinMes5.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes5.adic(txtNumVisita5,7,30,70,20);
+	  txtNumVisita5.setAtivo(false);
+	  pinMes5.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes5.adic(txtQtdNova5,80,30,60,20);
+	  pinMes5.adic(btMudaQtd5,143,19,20,20);
+	  pinMes5.adic(btMudaHis5,143,41,20,20);	
+	  
 	  JLabelPad lbMes6 = new JLabelPad("   Junho");
 	  lbMes6.setOpaque(true);
 	  pn.adic(lbMes6,367,135,80,15);
 	  pn.adic(pinMes6,357,140,170,70);
 	  pinMes6.setBorder( BorderFactory.createEtchedBorder());	
+	  pinMes6.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes6.adic(txtNumVisita6,7,30,70,20);
+	  txtNumVisita6.setAtivo(false);
+	  pinMes6.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes6.adic(txtQtdNova6,80,30,60,20);
+	  pinMes6.adic(btMudaQtd6,143,19,20,20);
+	  pinMes6.adic(btMudaHis6,143,41,20,20);
 	  
 	  JLabelPad lbMes7 = new JLabelPad("   Julho");
 	  lbMes7.setOpaque(true);
 	  pn.adic(lbMes7,17,215,80,15);
 	  pn.adic(pinMes7,7,220,170,70);
 	  pinMes7.setBorder( BorderFactory.createEtchedBorder());	  
+	  pinMes7.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes7.adic(txtNumVisita7,7,30,70,20);
+	  txtNumVisita7.setAtivo(false);
+	  pinMes7.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes7.adic(txtQtdNova7,80,30,60,20);
+	  pinMes7.adic(btMudaQtd7,143,19,20,20);
+	  pinMes7.adic(btMudaHis7,143,41,20,20);	 
+	  
 	  JLabelPad lbMes8 = new JLabelPad("   Agosto");
 	  lbMes8.setOpaque(true);
 	  pn.adic(lbMes8,192,215,80,15);
 	  pn.adic(pinMes8,182,220,170,70);
-	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	  
+	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	
+	  pinMes8.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes8.adic(txtNumVisita8,7,30,70,20);
+	  txtNumVisita8.setAtivo(false);
+	  pinMes8.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes8.adic(txtQtdNova8,80,30,60,20);
+	  pinMes8.adic(btMudaQtd8,143,19,20,20);
+	  pinMes8.adic(btMudaHis8,143,41,20,20);	
+	  
 	  JLabelPad lbMes9 = new JLabelPad("   Setembro");
 	  lbMes9.setOpaque(true);
 	  pn.adic(lbMes9,367,215,80,15);
 	  pn.adic(pinMes9,357,220,170,70);
-	  pinMes9.setBorder( BorderFactory.createEtchedBorder());	  
+	  pinMes9.setBorder( BorderFactory.createEtchedBorder());	
+	  pinMes9.adic(new JLabelPad("N.de visitas"),7,10,70,20);
+	  pinMes9.adic(txtNumVisita9,7,30,70,20);
+	  txtNumVisita9.setAtivo(false);
+	  pinMes9.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes9.adic(txtQtdNova9,80,30,60,20);
+	  pinMes9.adic(btMudaQtd9,143,19,20,20);	
+	  pinMes9.adic(btMudaHis9,143,41,20,20); 
 	  
 	  JLabelPad lbMes10 = new JLabelPad("   Outubro");
 	  lbMes10.setOpaque(true);
 	  pn.adic(lbMes10,17,295,80,15);
 	  pn.adic(pinMes10,7,300,170,70);
 	  pinMes10.setBorder( BorderFactory.createEtchedBorder());	  
-	  JLabelPad lbMes11 = new JLabelPad("   Novembro");
-	  lbMes11.setOpaque(true);
-	  pn.adic(lbMes11,192,295,80,15);
-	  pn.adic(pinMes11,182,300,170,70);
-	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	  
-	  JLabelPad lbMes12 = new JLabelPad("   Dezembro");
-	  lbMes12.setOpaque(true);
-	  pn.adic(lbMes12,367,295,80,15);
-	  pn.adic(pinMes12,357,300,170,70);
-	  pinMes12.setBorder( BorderFactory.createEtchedBorder());
-	  
-	 	  
-	  pinMes1.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes1.adic(txtNumVisita1,7,30,70,20);
-	  txtNumVisita1.setAtivo(false);
-	  pinMes1.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes1.adic(txtQtdNova1,80,30,60,20);
-	  pinMes1.adic(btMudaQtd1,143,30,20,20);	  
-	  pinMes2.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes2.adic(txtNumVisita2,7,30,70,20);
-	  txtNumVisita2.setAtivo(false);
-	  pinMes2.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes2.adic(txtQtdNova2,80,30,60,20);
-	  pinMes2.adic(btMudaQtd2,143,30,20,20);
-	  pinMes3.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes3.adic(txtNumVisita3,7,30,70,20);
-	  txtNumVisita3.setAtivo(false);
-	  pinMes3.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes3.adic(txtQtdNova3,80,30,60,20);
-	  pinMes3.adic(btMudaQtd3,143,30,20,20);	 
-	  
-	  pinMes4.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes4.adic(txtNumVisita4,7,30,70,20);
-	  txtNumVisita4.setAtivo(false);
-	  pinMes4.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes4.adic(txtQtdNova4,80,30,60,20);
-	  pinMes4.adic(btMudaQtd4,143,30,20,20);	 
-	  pinMes5.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes5.adic(txtNumVisita5,7,30,70,20);
-	  txtNumVisita5.setAtivo(false);
-	  pinMes5.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes5.adic(txtQtdNova5,80,30,60,20);
-	  pinMes5.adic(btMudaQtd5,143,30,20,20);	 
-	  pinMes6.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes6.adic(txtNumVisita6,7,30,70,20);
-	  txtNumVisita6.setAtivo(false);
-	  pinMes6.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes6.adic(txtQtdNova6,80,30,60,20);
-	  pinMes6.adic(btMudaQtd6,143,30,20,20);	 
-	  
-	  pinMes7.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes7.adic(txtNumVisita7,7,30,70,20);
-	  txtNumVisita7.setAtivo(false);
-	  pinMes7.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes7.adic(txtQtdNova7,80,30,60,20);
-	  pinMes7.adic(btMudaQtd7,143,30,20,20);	 
-	  pinMes8.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes8.adic(txtNumVisita8,7,30,70,20);
-	  txtNumVisita8.setAtivo(false);
-	  pinMes8.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes8.adic(txtQtdNova8,80,30,60,20);
-	  pinMes8.adic(btMudaQtd8,143,30,20,20);	 
-	  pinMes9.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes9.adic(txtNumVisita9,7,30,70,20);
-	  txtNumVisita9.setAtivo(false);
-	  pinMes9.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes9.adic(txtQtdNova9,80,30,60,20);
-	  pinMes9.adic(btMudaQtd9,143,30,20,20);	 
-	  
 	  pinMes10.adic(new JLabelPad("N.de visitas"),7,10,70,20);
 	  pinMes10.adic(txtNumVisita10,7,30,70,20);
 	  txtNumVisita10.setAtivo(false);
 	  pinMes10.adic(new JLabelPad("nova qtd."),80,10,60,20);
 	  pinMes10.adic(txtQtdNova10,80,30,60,20);
-	  pinMes10.adic(btMudaQtd10,143,30,20,20);	 
+	  pinMes10.adic(btMudaQtd10,143,19,20,20);
+	  pinMes10.adic(btMudaHis10,143,41,20,20);
+	  
+	  JLabelPad lbMes11 = new JLabelPad("   Novembro");
+	  lbMes11.setOpaque(true);
+	  pn.adic(lbMes11,192,295,80,15);
+	  pn.adic(pinMes11,182,300,170,70);
+	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	 
 	  pinMes11.adic(new JLabelPad("N.de visitas"),7,10,70,20);
 	  pinMes11.adic(txtNumVisita11,7,30,70,20);
 	  txtNumVisita11.setAtivo(false);
 	  pinMes11.adic(new JLabelPad("nova qtd."),80,10,60,20);
 	  pinMes11.adic(txtQtdNova11,80,30,60,20);
-	  pinMes11.adic(btMudaQtd11,143,30,20,20);	 
+	  pinMes11.adic(btMudaQtd11,143,19,20,20);
+	  pinMes11.adic(btMudaHis11,143,41,20,20);	 
+	  
+	  JLabelPad lbMes12 = new JLabelPad("   Dezembro");
+	  lbMes12.setOpaque(true);
+	  pn.adic(lbMes12,367,295,80,15);
+	  pn.adic(pinMes12,357,300,170,70);
+	  pinMes12.setBorder( BorderFactory.createEtchedBorder());
 	  pinMes12.adic(new JLabelPad("N.de visitas"),7,10,70,20);
 	  pinMes12.adic(txtNumVisita12,7,30,70,20);
 	  txtNumVisita12.setAtivo(false);
 	  pinMes12.adic(new JLabelPad("nova qtd."),80,10,60,20);
 	  pinMes12.adic(txtQtdNova12,80,30,60,20);
-	  pinMes12.adic(btMudaQtd12,143,30,20,20);	 
+	  pinMes12.adic(btMudaQtd12,143,19,20,20);	 
+	  pinMes12.adic(btMudaHis12,143,41,20,20);
+	  
+	  btMudaHis1.addActionListener(this);
+	  btMudaHis2.addActionListener(this);
+	  btMudaHis3.addActionListener(this);
+	  btMudaHis4.addActionListener(this);
+	  btMudaHis5.addActionListener(this);
+	  btMudaHis6.addActionListener(this);
+	  btMudaHis7.addActionListener(this);
+	  btMudaHis8.addActionListener(this);
+	  btMudaHis9.addActionListener(this);
+	  btMudaHis10.addActionListener(this);
+	  btMudaHis11.addActionListener(this);
+	  btMudaHis12.addActionListener(this);
+	  btMudaQtd1.addActionListener(this);
+	  btMudaQtd2.addActionListener(this);
+	  btMudaQtd3.addActionListener(this);
+	  btMudaQtd4.addActionListener(this);
+	  btMudaQtd5.addActionListener(this);
+	  btMudaQtd6.addActionListener(this);
+	  btMudaQtd7.addActionListener(this);
+	  btMudaQtd8.addActionListener(this);
+	  btMudaQtd9.addActionListener(this);
+	  btMudaQtd10.addActionListener(this);
+	  btMudaQtd11.addActionListener(this);
+	  btMudaQtd12.addActionListener(this);
+	  btMudaTudo.addActionListener(this);
   	
   	if (bPref[0]) {
         lcSetor = new ListaCampos(this,"SR");
@@ -729,6 +782,22 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
   	tbObsData.addTabelaSelListener(this);
   	
+  }
+  
+  public void alteraHis(int mes){
+	  Vector vCli = new Vector();
+	  vCli.addElement(txtCodCli.getVlrInteger());
+	  vCli.addElement(txtRazCli.getVlrString());
+	  vCli.addElement(txtAno.getVlrInteger());
+	  vCli.addElement(new  Integer(mes));
+	  DLVisitas dl = new DLVisitas(FCliente.this,con);
+	  try{
+		  dl.setVisible(true);
+	  }
+	  finally{
+		  vCli = null;
+		  dl = null;
+	  }
   }
   
   private void novaObs() {
@@ -1704,7 +1773,62 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	else if (evt.getSource()==btGrpCli) {
 	    grpCli();
 	}
+	else if (evt.getSource()==btMudaHis1) {
+	    alteraHist(1);
+	}
+	else if (evt.getSource()==btMudaHis2) {
+	    alteraHist(2);
+	}
+	else if (evt.getSource()==btMudaHis3) {
+	    alteraHist(3);
+	}
+	else if (evt.getSource()==btMudaHis4) {
+	    alteraHist(4);
+	}
+	else if (evt.getSource()==btMudaHis5) {
+	    alteraHist(5);
+	}
+	else if (evt.getSource()==btMudaHis6) {
+	    alteraHist(6);
+	}
+	else if (evt.getSource()==btMudaHis7) {
+	    alteraHist(7);
+	}
+	else if (evt.getSource()==btMudaHis8) {
+	    alteraHist(8);
+	}
+	else if (evt.getSource()==btMudaHis9) {
+	    alteraHist(9);
+	}
+	else if (evt.getSource()==btMudaHis10) {
+	    alteraHist(10);
+	}
+	else if (evt.getSource()==btMudaHis11) {
+	    alteraHist(11);
+	}
+	else if (evt.getSource()==btMudaHis12) {
+	    alteraHist(12);
+	}
     super.actionPerformed(evt);
+  }
+  
+  private void alteraHist(int mes){
+	  DLVisitas dl = null;
+	  Vector vCli = new Vector();
+	  try{
+		  vCli.addElement(txtCodCli.getVlrInteger());
+		  vCli.addElement(txtRazCli.getVlrString());
+		  vCli.addElement(txtAno.getVlrInteger());
+		  vCli.addElement(new Integer(mes));		  
+		  dl = new DLVisitas(FCliente.this,con);
+		  
+		  dl.setCampos(vCli);
+		  dl.setVisible(true);		 
+	  }
+	  finally{
+		  dl = null;
+		  vCli = null;
+	  }
   }
   
   private void grpCli() {
