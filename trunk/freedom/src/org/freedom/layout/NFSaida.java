@@ -154,6 +154,7 @@ public class NFSaida extends NF {
 			while (rs.next()) {
 				adic.addRow();
 				adic.setString(C_CODPLANOPG, rs.getString("CODPLANOPAG"));
+				adic.setString(C_DESCPLANOPAG, rs.getString("DESCPLANOPAG"));
 				adic.setInt(C_DIASPE, rs.getInt("DIASPE"));
 				adic.setString(C_OBSPED, rs.getString("OBSVENDA"));
 				adic.setString(C_NOMEVEND, rs.getString("NOMEVEND"));

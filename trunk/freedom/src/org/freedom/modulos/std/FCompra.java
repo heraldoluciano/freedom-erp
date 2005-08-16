@@ -202,6 +202,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 40, 0);
+	
+	private JTextFieldPad txtTipoMov = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 2, 0);
 
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
@@ -275,18 +278,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		pnCenter.add(pnTot, BorderLayout.EAST);
 		pnCenter.add(spTab, BorderLayout.CENTER);
 
-		JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1,
-				1));
+		JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1,1));
 		pnLab.add(new JLabelPad(" Totais:"));
 
 		pnMaster.add(pnCenter, BorderLayout.CENTER);
 
-		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov",
-				"Cód.tp.mov.", ListaCampos.DB_PK, false));
-		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov",
-				"Descrição do tipo de movimento", ListaCampos.DB_SI, false));
-		lcTipoMov
-				.setWhereAdic("((ESTIPOMOV = 'E') AND"
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(txtTipoMov, "TipoMov", "Tipo mov.",ListaCampos.DB_SI, false));
+		lcTipoMov.setWhereAdic("((ESTIPOMOV = 'E') AND"
 						+ " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU "
 						+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "
 						+ "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
@@ -299,65 +299,46 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcTipoMov.setReadOnly(true);
 		txtCodTipoMov.setTabelaExterna(lcTipoMov);
 
-		lcSerie.add(new GuardaCampo(txtSerieCompra, "Serie", "Série",
-				ListaCampos.DB_PK, false));
-		lcSerie.add(new GuardaCampo(txtDocSerie, "DocSerie", "Doc",
-				ListaCampos.DB_SI, false));
+		lcSerie.add(new GuardaCampo(txtSerieCompra, "Serie", "Série",ListaCampos.DB_PK, false));
+		lcSerie.add(new GuardaCampo(txtDocSerie, "DocSerie", "Doc",ListaCampos.DB_SI, false));
 		lcSerie.montaSql(false, "SERIE", "LF");
 		lcSerie.setQueryCommit(false);
 		lcSerie.setReadOnly(true);
 		txtSerieCompra.setTabelaExterna(lcSerie);
 
-		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",
-				ListaCampos.DB_PK, false));
-		lcFor.add(new GuardaCampo(txtDescFor, "RazFor",
-				"Razão social do fornecedor", ListaCampos.DB_SI, false));
-		lcFor.add(new GuardaCampo(txtEstFor, "UFFor", "UF", ListaCampos.DB_SI,
-				false));
+		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",ListaCampos.DB_PK, false));
+		lcFor.add(new GuardaCampo(txtDescFor, "RazFor","Razão social do fornecedor", ListaCampos.DB_SI, false));
+		lcFor.add(new GuardaCampo(txtEstFor, "UFFor", "UF", ListaCampos.DB_SI,false));
 		lcFor.montaSql(false, "FORNECED", "CP");
 		lcFor.setQueryCommit(false);
 		lcFor.setReadOnly(true);
 		txtCodFor.setTabelaExterna(lcFor);
 
-		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag",
-				"Cód.p.pag.", ListaCampos.DB_PK, false));
-		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag",
-				"Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setQueryCommit(false);
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 
-		lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Código",
-				ListaCampos.DB_PK, false));
-		lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição",
-				ListaCampos.DB_SI, false));
-		lcFisc.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Tipo",
-				ListaCampos.DB_SI, false));
-		lcFisc.add(new GuardaCampo(txtRedFisc, "RedFisc", "Redução",
-				ListaCampos.DB_SI, false));
-		lcFisc.add(new GuardaCampo(txtAliqIPIFisc, "AliqIPIFisc", "% IPI",
-				ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtCodFisc, "CodFisc", "Código",ListaCampos.DB_PK, false));
+		lcFisc.add(new GuardaCampo(txtDescFisc, "DescFisc", "Descrição",ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Tipo",ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtRedFisc, "RedFisc", "Redução",ListaCampos.DB_SI, false));
+		lcFisc.add(new GuardaCampo(txtAliqIPIFisc, "AliqIPIFisc", "% IPI",ListaCampos.DB_SI, false));
 		lcFisc.montaSql(false, "CLFISCAL", "LF");
 		lcFisc.setQueryCommit(false);
 		lcFisc.setReadOnly(true);
 		txtCodFisc.setTabelaExterna(lcFisc);
 		txtDescFisc.setListaCampos(lcFisc);
 
-		lcProd.add(new GuardaCampo(txtCodProd, "codprod", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cod.Fiscal",
-				ListaCampos.DB_FK, false));
-		lcProd.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd",
-				"Cod.Fabricante", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodProd, "codprod", "Cód.prod.",ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cod.Fiscal",ListaCampos.DB_FK, false));
+		lcProd.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd","Cod.Fabricante", ListaCampos.DB_SI, false));
 
 		lcProd.setWhereAdic("ATIVOPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
@@ -365,20 +346,13 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
 
-		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_PK, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodProd, "codprod", "Cód.rod.",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodFisc, "CodFisc", "CodFisc",
-				ListaCampos.DB_FK, false));
-		lcProd2.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd",
-				"Cod.Fabricante", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",ListaCampos.DB_PK, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "codprod", "Cód.rod.",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFisc, "CodFisc", "CodFisc",ListaCampos.DB_FK, false));
+		lcProd2.add(new GuardaCampo(txtCodBarProd, "CodBarProd", "Cod.Barra",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd","Cod.Fabricante", ListaCampos.DB_SI, false));
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
@@ -388,12 +362,9 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2);
 
-		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote",
-				ListaCampos.DB_PK, false));
-		lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Vencimento",
-				ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote",ListaCampos.DB_PK, false));
+		lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, false));
+		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Vencimento",ListaCampos.DB_SI, false));
 		//    lcLote.setDinWhereAdic("CODPROD=#N",txtCodProd);
 		lcLote.setAutoLimpaPK(false);
 		lcLote.montaSql(false, "LOTE", "EQ");
@@ -406,33 +377,25 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		//FK de Almoxarifado
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxItCompra, "codalmox", "Cod.Almox.",
-				ListaCampos.DB_PK, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxItCompra, "codalmox", "Cod.Almox.",ListaCampos.DB_PK, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
 		txtCodAlmoxItCompra.setTabelaExterna(lcAlmox);
 		
-		lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP",
-				ListaCampos.DB_PK, false));
-		lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP",
-				ListaCampos.DB_SI, false));
+		lcNat.add(new GuardaCampo(txtCodNat, "CodNat", "CFOP",ListaCampos.DB_PK, false));
+		lcNat.add(new GuardaCampo(txtDescNat, "DescNat", "Descrição da CFOP",ListaCampos.DB_SI, false));
 		lcNat.montaSql(false, "NATOPER", "LF");
 		lcNat.setQueryCommit(false);
 		lcNat.setReadOnly(true);
 		txtCodNat.setTabelaExterna(lcNat);
 		txtDescNat.setListaCampos(lcNat);
 
-		lcCompra2.add(new GuardaCampo(txtCodCompra, "CodCompra", "Código",
-				ListaCampos.DB_PK, false));
-		lcCompra2.add(new GuardaCampo(txtVlrIPICompra, "VlrIPICompra", "IPI",
-				ListaCampos.DB_SI, false));
-		lcCompra2.add(new GuardaCampo(txtVlrDescCompra, "VlrDescItCompra",
-				"Desconto", ListaCampos.DB_SI, false));
-		lcCompra2.add(new GuardaCampo(txtVlrLiqCompra, "VlrLiqCompra", "Geral",
-				ListaCampos.DB_SI, false));
-		lcCompra2.add(new GuardaCampo(txtVlrBrutCompra, "VlrProdCompra",
-				"Geral", ListaCampos.DB_SI, false));
+		lcCompra2.add(new GuardaCampo(txtCodCompra, "CodCompra", "Código",ListaCampos.DB_PK, false));
+		lcCompra2.add(new GuardaCampo(txtVlrIPICompra, "VlrIPICompra", "IPI",ListaCampos.DB_SI, false));
+		lcCompra2.add(new GuardaCampo(txtVlrDescCompra, "VlrDescItCompra","Desconto", ListaCampos.DB_SI, false));
+		lcCompra2.add(new GuardaCampo(txtVlrLiqCompra, "VlrLiqCompra", "Geral",ListaCampos.DB_SI, false));
+		lcCompra2.add(new GuardaCampo(txtVlrBrutCompra, "VlrProdCompra","Geral", ListaCampos.DB_SI, false));
 		lcCompra2.montaSql(false, "COMPRA", "CP");
 		lcCompra2.setQueryCommit(false);
 		lcCompra2.setReadOnly(true);
@@ -447,30 +410,18 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		setListaCampos(lcCampos);
 		setAltCab(130);
 		setPainel(pinCab, pnCliCab);
-		adicCampo(txtCodCompra, 7, 20, 100, 20, "CodCompra", "Nº Compra",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtCodTipoMov, 110, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.",
-				ListaCampos.DB_FK, txtDescTipoMov, true);
-		adicDescFK(txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov",
-				"Descrição do tipo de movimento");
-		adicCampo(txtSerieCompra, 400, 20, 77, 20, "Serie", "Série",
-				ListaCampos.DB_FK, true);
-		adicCampo(txtDocCompra, 480, 20, 77, 20, "DocCompra", "Doc",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtDtEmitCompra, 560, 20, 100, 20, "DtEmitCompra",
-				"Dt.emissão", ListaCampos.DB_SI, true);
-		adicCampo(txtDtEntCompra, 7, 60, 100, 20, "DtEntCompra", "Dt.entrada",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtCodFor, 110, 60, 77, 20, "CodFor", "Cód.for.",
-				ListaCampos.DB_FK, txtDescFor, true);
-		adicDescFK(txtDescFor, 190, 60, 207, 20, "RazFor",
-				"Razão social do fornecedor");
-		adicCampo(txtCodPlanoPag, 400, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.",
-				ListaCampos.DB_FK, txtDescPlanoPag, true);
-		adicDescFK(txtDescPlanoPag, 480, 60, 180, 20, "DescPlanoPag",
-				"Descrição do plano de pagto.");
-		adicCampoInvisivel(txtStatusCompra, "StatusCompra", "Status",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtCodCompra, 7, 20, 100, 20, "CodCompra", "Nº Compra",ListaCampos.DB_PK, true);
+		adicCampo(txtCodTipoMov, 110, 20, 77, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, true);
+		adicDescFK(txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov","Descrição do tipo de movimento");
+		adicCampo(txtSerieCompra, 400, 20, 77, 20, "Serie", "Série",ListaCampos.DB_FK, true);
+		adicCampo(txtDocCompra, 480, 20, 77, 20, "DocCompra", "Doc",ListaCampos.DB_SI, true);
+		adicCampo(txtDtEmitCompra, 560, 20, 100, 20, "DtEmitCompra","Dt.emissão", ListaCampos.DB_SI, true);
+		adicCampo(txtDtEntCompra, 7, 60, 100, 20, "DtEntCompra", "Dt.entrada",ListaCampos.DB_SI, true);
+		adicCampo(txtCodFor, 110, 60, 77, 20, "CodFor", "Cód.for.",ListaCampos.DB_FK, txtDescFor, true);
+		adicDescFK(txtDescFor, 190, 60, 207, 20, "RazFor","Razão social do fornecedor");
+		adicCampo(txtCodPlanoPag, 400, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.",ListaCampos.DB_FK, txtDescPlanoPag, true);
+		adicDescFK(txtDescPlanoPag, 480, 60, 180, 20, "DescPlanoPag","Descrição do plano de pagto.");
+		adicCampoInvisivel(txtStatusCompra, "StatusCompra", "Status",ListaCampos.DB_SI, false);
 		//    lcCampos.setWhereAdic("FLAG IN "+
 		//    projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp));
 		setListaCampos(true, "COMPRA", "CP");
@@ -509,14 +460,11 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-		adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",
-				ListaCampos.DB_PK, true);
+		adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",ListaCampos.DB_PK, true);
 		if (comRef()) {
 			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
-					ListaCampos.DB_FK, false);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",ListaCampos.DB_FK, false);
 
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
@@ -526,44 +474,28 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
 		}
 		txtCustoItCompra.setSoLeitura(true);
-		adicDescFK(txtDescProd, 110, 20, 197, 20, "DescProd",
-				"Descrição do produto");
-		adicCampo(txtCodLote, 310, 20, 67, 20, "CodLote", "Lote",
-				ListaCampos.DB_FK, txtDescLote, false);
-		adicCampo(txtQtdItCompra, 380, 20, 67, 20, "qtditcompra", "Qtd.",
-				ListaCampos.DB_SI, true);
+		adicDescFK(txtDescProd, 110, 20, 197, 20, "DescProd","Descrição do produto");
+		adicCampo(txtCodLote, 310, 20, 67, 20, "CodLote", "Lote",ListaCampos.DB_FK, txtDescLote, false);
+		adicCampo(txtQtdItCompra, 380, 20, 67, 20, "qtditcompra", "Qtd.",ListaCampos.DB_SI, true);
 
-		adicCampoInvisivel(txtCodAlmoxItCompra, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
+		adicCampoInvisivel(txtCodAlmoxItCompra, "codalmox", "Cod.Almox",ListaCampos.DB_FK, false);
 		
 		txtQtdItCompra.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditcompra"));		
 				
-		adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra",
-				"% Desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrDescItCompra, 580, 20, 67, 20, "VlrDescItCompra",
-				"V. Desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtCustoItCompra, 650, 20, 85, 20, "CustoItCompra",
-				"Custo Estoq.", ListaCampos.DB_SI, false);
-		adicCampo(txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP",
-				ListaCampos.DB_FK, txtDescNat, true);
+		adicCampo(txtPrecoItCompra, 450, 20, 67, 20, "PrecoItCompra", "Preço",ListaCampos.DB_SI, true);
+		adicCampo(txtPercDescItCompra, 520, 20, 57, 20, "PercDescItCompra","% Desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrDescItCompra, 580, 20, 67, 20, "VlrDescItCompra","V. Desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtCustoItCompra, 650, 20, 85, 20, "CustoItCompra","Custo Estoq.", ListaCampos.DB_SI, false);
+		adicCampo(txtCodNat, 7, 60, 67, 20, "CodNat", "CFOP",ListaCampos.DB_FK, txtDescNat, true);
 		adicDescFK(txtDescNat, 80, 60, 197, 20, "DescNat", "Descrição da CFOP");
-		adicCampo(txtBaseICMSItCompra, 280, 60, 67, 20, "VlrBaseICMSItCompra",
-				"B. ICMS", ListaCampos.DB_SI, false);
-		adicCampo(txtPercICMSItCompra, 350, 60, 57, 20, "PercICMSItCompra",
-				"% ICMS", ListaCampos.DB_SI, true);
-		adicCampo(txtVlrICMSItCompra, 410, 60, 67, 20, "VlrICMSItCompra",
-				"V. ICMS", ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtBaseIPIItCompra, "VlrBaseIPIItCompra", "B. IPI",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtAliqIPIItCompra, "PercIPIItCompra", "% IPI",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra",
-				"V. IPI", ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrLiqItCompra, 550, 60, 100, 20, "VlrLiqItCompra",
-				"Valor Item", ListaCampos.DB_SI, false);
+		adicCampo(txtBaseICMSItCompra, 280, 60, 67, 20, "VlrBaseICMSItCompra","B. ICMS", ListaCampos.DB_SI, false);
+		adicCampo(txtPercICMSItCompra, 350, 60, 57, 20, "PercICMSItCompra","% ICMS", ListaCampos.DB_SI, true);
+		adicCampo(txtVlrICMSItCompra, 410, 60, 67, 20, "VlrICMSItCompra","V. ICMS", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtBaseIPIItCompra, "VlrBaseIPIItCompra", "B. IPI",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtAliqIPIItCompra, "PercIPIItCompra", "% IPI",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrIPIItCompra, 480, 60, 67, 20, "VlrIPIItCompra","V. IPI", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtVlrProdItCompra, "VlrProdItCompra", "V. Bruto",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItCompra, 550, 60, 100, 20, "VlrLiqItCompra","Valor Item", ListaCampos.DB_SI, false);
 		pinTot.adic(new JLabelPad("Tot. IPI"), 7, 0, 120, 20);
 		pinTot.adic(txtVlrIPICompra, 7, 20, 120, 20);
 		pinTot.adic(new JLabelPad("Tot. Desc."), 7, 40, 120, 20);
@@ -916,7 +848,23 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			if (sValores != null) {
 				lcCampos.edit();
 				if (sValores[4].equals("S")){
-					
+					if (txtTipoMov.getVlrString().equals("VD")
+							|| txtTipoMov.getVlrString().equals("VT")
+							|| txtTipoMov.getVlrString().equals("TR")
+							|| txtTipoMov.getVlrString().equals("CS")
+							|| txtTipoMov.getVlrString().equals("CE")
+							|| txtTipoMov.getVlrString().equals("PE")
+							|| txtTipoMov.getVlrString().equals("DV")
+							|| txtTipoMov.getVlrString().equals("BN"))
+						emitNota("NF");
+					else if (txtTipoMov.getVlrString().equals("SE"))
+						emitNota("NS");
+					else {
+						Funcoes.mensagemErro(this,
+								"Não existe nota para o tipo de movimento: '"
+										+ txtTipoMov.getVlrString() + "'");
+						return;
+					}
 				}
 				else if (sValores[3].equals("S")) {
 					imprimir(true, txtCodCompra.getVlrInteger().intValue());
@@ -968,7 +916,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 				}
 				else if (layNF instanceof Leiaute) {
 					Funcoes.mensagemInforma(this,"O layout de Nota Fiscal\nnão se aplica para nota de entrada ");
-					imprimir(true, txtCodCompra.getVlrInteger().intValue());
+					//imprimir(true, txtCodCompra.getVlrInteger().intValue());
 				}
 			}
 		}
