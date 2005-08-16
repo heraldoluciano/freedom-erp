@@ -94,18 +94,19 @@ public class NF {
 	
 	//adic
 	public static final int C_CODPLANOPG = 0;
-	public static final int C_DIASPE= 1;
-	public static final int C_OBSPED = 2;
-	public static final int C_NOMEVEND = 3;
-	public static final int C_EMAILVEND = 4;
-	public static final int C_DESCFUNC = 5;
-	public static final int C_CODAUXV = 6;
-	public static final int C_CPFEMITAUX = 7;
-	public static final int C_NOMEEMITAUX = 8;
-	public static final int C_CIDEMITAUX = 9;
-	public static final int C_UFEMITAUX = 10;
-	public static final int C_CODCLCOMIS = 11;
-	public static final int C_PERCCOMISVENDA = 12;
+	public static final int C_DESCPLANOPAG = 1;
+	public static final int C_DIASPE= 2;
+	public static final int C_OBSPED = 3;
+	public static final int C_NOMEVEND = 4;
+	public static final int C_EMAILVEND = 5;
+	public static final int C_DESCFUNC = 6;
+	public static final int C_CODAUXV = 7;
+	public static final int C_CPFEMITAUX = 8;
+	public static final int C_NOMEEMITAUX = 9;
+	public static final int C_CIDEMITAUX = 10;
+	public static final int C_UFEMITAUX = 11;
+	public static final int C_CODCLCOMIS = 12;
+	public static final int C_PERCCOMISVENDA = 13;
 	
 	
 	//parc	
