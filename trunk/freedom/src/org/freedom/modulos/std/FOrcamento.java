@@ -1020,7 +1020,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 0, 1, rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + rs.getString("InscCli"));//IE cliente
 						imp.say(imp.pRow() + 0, 70,rs.getString("EndCli").trim() + " N°:" + rs.getString("NumCli"));//rua e número do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "SITE   : " + rs.getString("SiteCli").trim());
+						imp.say(imp.pRow() + 0, 1, "SITE   : " + (rs.getString("SiteCli")!= null ? rs.getString("SiteCli").trim() : ""));
 						imp.say(imp.pRow() + 0, 70,rs.getString("BairCli").trim()+" - "+ rs.getString("CidCli").trim()+" - "+rs.getString("UFCli").trim()+" - "+rs.getString("CEPCli").trim());//complemento do endereço do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + rs.getString("EmailCli").trim());
@@ -1034,7 +1034,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, " IT. |   CÓDIGO   |                    DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.   |   V.DESCONTO   |   V.TOTAL");
+						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO   |                    DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.   |   V.DESCONTO   |   V.TOTAL");
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					if (i==0) {
