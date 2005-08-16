@@ -42,10 +42,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -56,10 +55,16 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.layout.Layout;
+import org.freedom.layout.Leiaute;
+import org.freedom.layout.NFEntrada;
+import org.freedom.layout.NFSaida;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
@@ -910,7 +915,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			lcCampos.carregaDados();
 			if (sValores != null) {
 				lcCampos.edit();
-				if (sValores[3].equals("S")) {
+				if (sValores[4].equals("S")){
+					
+				}
+				else if (sValores[3].equals("S")) {
 					imprimir(true, txtCodCompra.getVlrInteger().intValue());
 					//          if (JOptionPane.showConfirmDialog(null, "Pedido OK?",
 					// "Freedom",
@@ -925,6 +933,49 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		else if (evt.getSource() == btImp)
 			imprimir(false, txtCodCompra.getVlrInteger().intValue());
 		super.actionPerformed(evt);
+	}
+	
+	private void emitNota(String tipo){		
+		Object layNF = null;		
+		Vector parans = null;
+		NFEntrada nf = null;
+		String sTipo = tipo;
+		int iCodCompra = txtCodCompra.getVlrInteger().intValue();
+		ImprimeOS imp = new ImprimeOS("", con, sTipo, true);
+		imp.verifLinPag(sTipo);
+		imp.setTitulo("Nota Fiscal");
+		DLRPedido dl = new DLRPedido(sOrdNota);
+		dl.setVisible(true);
+		if (dl.OK == false) {
+			dl.dispose();
+			return;
+		}
+		try {
+			layNF = Class.forName("org.freedom.layout." + imp.getClassNota()).newInstance();
+		} catch (Exception err) {
+			Funcoes.mensagemInforma(this,"Não foi possível carregar o leiaute de Nota Fiscal!\n"+ err.getMessage());
+		}
+		try {
+			if (layNF != null) {
+				if (layNF instanceof Layout) {
+					parans = new Vector();
+					parans.addElement(new Integer(Aplicativo.iCodEmp));
+					parans.addElement(new Integer(ListaCampos.getMasterFilial("CPCOMPRA")));
+					parans.addElement(new Integer(iCodCompra));
+					nf = new NFEntrada(casasDec);
+					nf.carregaTabelas(con, parans);
+					((Layout) layNF).imprimir(nf, imp);
+				}
+				else if (layNF instanceof Leiaute) {
+					Funcoes.mensagemInforma(this,"O layout de Nota Fiscal\nnão se aplica para nota de entrada ");
+					imprimir(true, txtCodCompra.getVlrInteger().intValue());
+				}
+			}
+		}
+		catch (Exception err) {
+			Funcoes.mensagemErro(this, "Erro ao emitir nota de Compra\n!"
+					+ err.getMessage(),true,con,err);
+		}
 	}
 
 	private void imprimir(boolean bVisualizar, int iCodCompra) {

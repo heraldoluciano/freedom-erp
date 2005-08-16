@@ -1801,10 +1801,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private void imprimir(boolean bVisualizar, int iCodVenda) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
-		int iPares = 0;
+		//int iPares = 0;
 		Vector vDesc = null;
 		Vector vObs = null;
-		String sStrLote = "";
+		//String sStrLote = "";
 		imp.montaCab();
 		imp.setTitulo("Relatório de Pedidos");
 		DLRPedido dl = new DLRPedido(sOrdNota);
@@ -1845,11 +1845,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iItImp = 0;
-		int iMaxItem = 0;
+		//int iItImp = 0;
+		//int iMaxItem = 0;
 		try {
 			imp.limpaPags();
-			iMaxItem = linPag - 22;
+			//iMaxItem = linPag - 22;
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
