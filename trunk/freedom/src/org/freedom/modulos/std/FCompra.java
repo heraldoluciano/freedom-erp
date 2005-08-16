@@ -888,6 +888,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		Vector parans = null;
 		NFEntrada nf = null;
 		String sTipo = tipo;
+		boolean bImpOK = false;
 		int iCodCompra = txtCodCompra.getVlrInteger().intValue();
 		ImprimeOS imp = new ImprimeOS("", con, sTipo, true);
 		imp.verifLinPag(sTipo);
@@ -912,7 +913,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					parans.addElement(new Integer(iCodCompra));
 					nf = new NFEntrada(casasDec);
 					nf.carregaTabelas(con, parans);
-					((Layout) layNF).imprimir(nf, imp);
+					bImpOK = ((Layout) layNF).imprimir(nf, imp);
 				}
 				else if (layNF instanceof Leiaute) {
 					Funcoes.mensagemInforma(this,"O layout de Nota Fiscal\nnão se aplica para nota de entrada ");
@@ -924,6 +925,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			Funcoes.mensagemErro(this, "Erro ao emitir nota de Compra\n!"
 					+ err.getMessage(),true,con,err);
 		}
+		dl.dispose();
+		if (bImpOK)
+			imp.preview(this);
+		imp.fechaPreview();		
 	}
 
 	private void imprimir(boolean bVisualizar, int iCodCompra) {

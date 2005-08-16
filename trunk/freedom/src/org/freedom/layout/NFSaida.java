@@ -54,7 +54,7 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			cab = new TabVector(2);
+			cab = new TabVector(24);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODVENDA"));
@@ -102,7 +102,7 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			itens = new TabVector(2);
+			itens = new TabVector(23);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITVENDA"));
@@ -118,7 +118,7 @@ public class NFSaida extends NF {
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSVENDA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPIVENDA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQVENDA"));
-				itens.setInt(C_IMPDTSAIDA, rs.getInt("IMPDTSAIDANAT"));
+				itens.setString(C_IMPDTSAIDA, rs.getString("IMPDTSAIDANAT"));
 				itens.setFloat(C_VLRPRODITPED, rs.getFloat("VLRPRODITVENDA"));
 				itens.setString(C_DESCNAT, rs.getString("DESCNAT"));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
@@ -150,7 +150,7 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			adic = new TabVector(2);
+			adic = new TabVector(14);
 			while (rs.next()) {
 				adic.addRow();
 				adic.setString(C_CODPLANOPG, rs.getString("CODPLANOPAG"));
@@ -183,7 +183,7 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			parc = new TabVector(2);
+			parc = new TabVector(3);
 			while (rs.next()) {
 				parc.addRow();
 				parc.setDate(C_DTVENCTO, rs.getDate("DTVENCITREC"));
@@ -208,7 +208,7 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			frete = new TabVector(2);
+			frete = new TabVector(19);
 			while (rs.next()) {
 				frete.addRow();
 				frete.setInt(C_CODTRAN, rs.getInt("CODTRAN"));
