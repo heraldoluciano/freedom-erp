@@ -43,7 +43,7 @@ public class NFEntrada extends NF {
 		ResultSet rs = null;
 		String sql = null;
 		try {
-			sql = "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," +
+			sql = "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," +
 					"F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR," +
 					"F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA " + 
 					"FROM CPCOMPRA C, CPFORNECED F  " +
@@ -54,7 +54,7 @@ public class NFEntrada extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			cab = new TabVector(2);
+			cab = new TabVector(24);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODCOMPRA"));
@@ -71,7 +71,7 @@ public class NFEntrada extends NF {
 				cab.setString(C_UFEMIT, rs.getString("UFFOR"));
 				cab.setString(C_FONEEMIT, rs.getString("FONEFOR"));
 				cab.setString(C_FAXEMIT, rs.getString("FAXFOR"));
-				cab.setString(C_DDDEMIT, rs.getString("DDDFOR"));
+				cab.setString(C_DDDEMIT, rs.getString("DDDFONEFOR"));
 				cab.setString(C_INSCEMIT, rs.getString("INSCFOR"));
 				cab.setString(C_RGEMIT, rs.getString("RGFOR"));
 				cab.setString(C_EMAILEMIT, rs.getString("EMAILFOR"));
@@ -94,7 +94,7 @@ public class NFEntrada extends NF {
 					"FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, EQLOTE L " + 
 					"WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " +
 					"AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT " +
-					"AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=P.CODPROD " +
+					"AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " +
 					"AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " +					
 					"AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? ";
 			ps = con.prepareStatement(sql);
@@ -102,7 +102,7 @@ public class NFEntrada extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			itens = new TabVector(2);
+			itens = new TabVector(23);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITCOMPRA"));
@@ -118,7 +118,7 @@ public class NFEntrada extends NF {
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSCOMPRA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPICOMPRA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQCOMPRA"));
-				itens.setInt(C_IMPDTSAIDA, rs.getInt("IMPDTSAIDANAT"));
+				itens.setString(C_IMPDTSAIDA, rs.getString("IMPDTSAIDANAT"));
 				itens.setFloat(C_VLRPRODITPED, rs.getFloat("VLRPRODITCOMPRA"));
 				itens.setString(C_DESCNAT, rs.getString("DESCNAT"));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
@@ -133,18 +133,18 @@ public class NFEntrada extends NF {
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-			
+				
 			sql = "SELECT  PG.CODPLANOPAG, DESCPLANOPAG " +
-					"FROM CPCOMPRA, CPITCOMPRA I, FNPLANOPAG PG " +
-					"WHERE I.CODEMP=C.CODEMP AND C.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " +
+					"FROM CPCOMPRA C, CPITCOMPRA I, FNPLANOPAG PG " +
+					"WHERE I.CODEMP=C.CODEMP AND C.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " +
 					"AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " +
-					"AND V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA='V' ";
+					"AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? ";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			adic = new TabVector(2);
+			adic = new TabVector(14);
 			while (rs.next()) {
 				adic.addRow();
 				adic.setInt(C_CODPLANOPG, rs.getInt("CODPLANOPAG"));
@@ -167,41 +167,37 @@ public class NFEntrada extends NF {
 			if (!con.getAutoCommit())
 			con.commit();
 						
-			parc = new TabVector(2);
-			while (rs.next()) {
-				parc.addRow();
-				parc.setDate(C_DTVENCTO, null);
-				parc.setFloat(C_VLRPARC, 0);
-				parc.setInt(C_NPARCITREC, 0);
-			}
+			parc = new TabVector(3);
+			parc.addRow();
+			parc.setDate(C_DTVENCTO, null);
+			parc.setFloat(C_VLRPARC, 0);
+			parc.setInt(C_NPARCITREC, 0);
 						
-			frete = new TabVector(2);
-			while (rs.next()) {
-				frete.addRow();
-				frete.setInt(C_CODTRAN, 0);
-				frete.setString(C_RAZTRANSP, "");
-				frete.setString(C_NUMTRANSP, "");
-				frete.setString(C_INSCTRANSP, "");
-				frete.setString(C_CNPJTRANSP, "");
-				frete.setString(C_TIPOTRANSP, "");
-				frete.setString(C_ENDTRANSP, "");
-				frete.setInt(C_NUMTRANSP, 0);
-				frete.setString(C_CIDTRANSP,"");
-				frete.setString(C_UFTRANSP, "");
-				frete.setString(C_TIPOFRETE, "");
-				frete.setString(C_PLACAFRETE, "");
-				frete.setString(C_UFFRETE, "");
-				frete.setFloat(C_QTDFRETE, 0);
-				frete.setString(C_ESPFRETE, "");
-				frete.setString(C_MARCAFRETE, "");
-				frete.setFloat(C_PESOBRUTO, 0);
-				frete.setFloat(C_PESOLIQ, 0);
-				frete.setFloat(C_VLRFRETEPED, 0);
-			}
+			frete = new TabVector(19);
+			frete.addRow();
+			frete.setInt(C_CODTRAN, 0);
+			frete.setString(C_RAZTRANSP, "");
+			frete.setString(C_NUMTRANSP, "");
+			frete.setString(C_INSCTRANSP, "");
+			frete.setString(C_CNPJTRANSP, "");
+			frete.setString(C_TIPOTRANSP, "");
+			frete.setString(C_ENDTRANSP, "");
+			frete.setInt(C_NUMTRANSP, 0);
+			frete.setString(C_CIDTRANSP,"");
+			frete.setString(C_UFTRANSP, "");
+			frete.setString(C_TIPOFRETE, "");
+			frete.setString(C_PLACAFRETE, "");
+			frete.setString(C_UFFRETE, "");
+			frete.setFloat(C_QTDFRETE, 0);
+			frete.setString(C_ESPFRETE, "");
+			frete.setString(C_MARCAFRETE, "");
+			frete.setFloat(C_PESOBRUTO, 0);
+			frete.setFloat(C_PESOLIQ, 0);
+			frete.setFloat(C_VLRFRETEPED, 0);
 			
 		}
 		catch (SQLException e) {
-			Funcoes.mensagemErro(null,"Erro na NFSaida\n"+e.getMessage());
+			Funcoes.mensagemErro(null,"Erro na NFEntrada\n"+e.getMessage());
 			retorno = false;
 		}
 		finally {
