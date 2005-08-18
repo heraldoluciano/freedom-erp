@@ -30,6 +30,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -71,32 +73,33 @@ import org.freedom.telas.FTabDados;
 
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
                TabelaSelListener, ChangeListener, CarregaListener, InsertListener {
- 
+
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
-  private JTextFieldPad txtNumVisita1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita8 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita9 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita10 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita11 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtNumVisita12 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova2 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova3 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova4 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova5 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova6 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova7 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova8 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova9 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova10 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova11 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtQtdNova12 = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContJan = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContFev = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContMar = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContAbr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContMai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContJun = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContJul = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContAgo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContSet = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContOut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContNov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtAntQtdContDez = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContJan = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContFev = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContMar = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContAbr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContMai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContJun = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContJul = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContAgo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContSet = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContOut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContNov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtNovaQtdContDez = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtRazCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
@@ -191,7 +194,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinCli = new JPanelPad();
   private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinFor = new JPanelPad(0,80);
-  private JPanelPad pinVisita = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pinContatos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tbObsData = new Tabela();
   private JPanelPad pinMes1 = new JPanelPad();
   private JPanelPad pinMes2 = new JPanelPad();
@@ -232,30 +235,33 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btExclObs = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btEditObs = new JButton(Icone.novo("btEditar.gif"));
   private JButton btGrpCli = new JButton(Icone.novo("btCliente.gif"));
-  private JButton btMudaHis1 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis2 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis3 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis4 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis5 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis6 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis7 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis8 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis9 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis10 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis11 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaHis12 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd1 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd2 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd3 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd4 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd5 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd6 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd7 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd8 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd9 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd10 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd11 = new JButton(Icone.novo("btExecuta2.gif"));
-  private JButton btMudaQtd12 = new JButton(Icone.novo("btExecuta2.gif"));
+  private String sBtBuscaHist = "lupa.gif";
+  private String sBtExecHist = "btExecyta2.gif";
+  private JButton btMudaHis1 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis2 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis3 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis4 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis5 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis6 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis7 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis8 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis9 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis10 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis11 = new JButton(Icone.novo(sBtExecHist));
+  private JButton btMudaHis12 = new JButton(Icone.novo(sBtExecHist));
+  
+  private JButton btMudaQtd1 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd2 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd3 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd4 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd5 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd6 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd7 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd8 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd9 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd10 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd11 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btMudaQtd12 = new JButton(Icone.novo(sBtBuscaHist));
   private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
   private Navegador navFor = new Navegador(true);
   private FConveniado telaConv;
@@ -298,6 +304,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
   	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
   	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
+  	
   	lcVend.montaSql(false, "VENDEDOR", "VD");    
   	lcVend.setQueryCommit(false);
   	lcVend.setReadOnly(true);
@@ -573,25 +580,27 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	tpn.addChangeListener(this);
   	lcCampos.setQueryInsert(false);
   	
-//	Visitas
+//	Contatos
   	
-      setPainel(pinVisita);
-      adicTab("Visitas",pinVisita);
-      pinVisita.add(pn,BorderLayout.NORTH);
+      setPainel(pinContatos);
+      adicTab("Contatos",pinContatos);
+      pinContatos.add(pn,BorderLayout.NORTH);
 	 
 	  pn.adic(new JLabelPad("Ano"),7,0,80,20);
 	  pn.adic(txtAno,7,20,80,20);
 	  pn.adic(btMudaTudo,367,15,150,30);
+	  	  	  
+	  txtAno.setVlrInteger(new Integer(Calendar.getInstance().get(Calendar.YEAR)));
 	  
 	  JLabelPad lbMes1 = new JLabelPad("   Janeiro");
 	  lbMes1.setOpaque(true);
 	  pn.adic(lbMes1,17,55,80,15);
 	  pn.adic(pinMes1,7,60,170,70);
-	  pinMes1.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes1.adic(txtNumVisita1,7,30,70,20);
-	  txtNumVisita1.setAtivo(false);
+	  pinMes1.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes1.adic(txtAntQtdContJan,7,30,70,20);
+	  txtAntQtdContJan.setAtivo(false);
 	  pinMes1.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes1.adic(txtQtdNova1,80,30,60,20);
+	  pinMes1.adic(txtNovaQtdContJan,80,30,60,20);
 	  pinMes1.adic(btMudaQtd1,143,19,20,20);
 	  pinMes1.adic(btMudaHis1,143,41,20,20);
 	  pinMes1.setBorder( BorderFactory.createEtchedBorder());
@@ -600,11 +609,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  lbMes2.setOpaque(true);
 	  pn.adic(lbMes2,192,55,80,15);
 	  pn.adic(pinMes2,182,60,170,70);
-	  pinMes2.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes2.adic(txtNumVisita2,7,30,70,20);
-	  txtNumVisita2.setAtivo(false);
+	  pinMes2.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes2.adic(txtAntQtdContFev,7,30,70,20);
+	  txtAntQtdContFev.setAtivo(false);
 	  pinMes2.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes2.adic(txtQtdNova2,80,30,60,20);
+	  pinMes2.adic(txtNovaQtdContFev,80,30,60,20);
 	  pinMes2.adic(btMudaQtd2,143,19,20,20);
 	  pinMes2.adic(btMudaHis2,143,41,20,20);
 	  
@@ -614,11 +623,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes3,367,55,80,15);
 	  pn.adic(pinMes3,357,60,170,70);
 	  pinMes3.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes3.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes3.adic(txtNumVisita3,7,30,70,20);
-	  txtNumVisita3.setAtivo(false);
+	  pinMes3.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes3.adic(txtAntQtdContMar,7,30,70,20);
+	  txtAntQtdContMar.setAtivo(false);
 	  pinMes3.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes3.adic(txtQtdNova3,80,30,60,20);
+	  pinMes3.adic(txtNovaQtdContMar,80,30,60,20);
 	  pinMes3.adic(btMudaQtd3,143,19,20,20);	
 	  pinMes3.adic(btMudaHis3,143,41,20,20); 
 	  
@@ -627,11 +636,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes4,17,135,80,15);
 	  pn.adic(pinMes4,7,140,170,70);
 	  pinMes4.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes4.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes4.adic(txtNumVisita4,7,30,70,20);
-	  txtNumVisita4.setAtivo(false);
+	  pinMes4.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes4.adic(txtAntQtdContAbr,7,30,70,20);
+	  txtAntQtdContAbr.setAtivo(false);
 	  pinMes4.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes4.adic(txtQtdNova4,80,30,60,20);
+	  pinMes4.adic(txtNovaQtdContAbr,80,30,60,20);
 	  pinMes4.adic(btMudaQtd4,143,19,20,20);	
 	  pinMes4.adic(btMudaHis4,143,41,20,20);
 	  
@@ -640,11 +649,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes5,192,135,80,15);
 	  pn.adic(pinMes5,182,140,170,70);
 	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes5.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes5.adic(txtNumVisita5,7,30,70,20);
-	  txtNumVisita5.setAtivo(false);
+	  pinMes5.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes5.adic(txtAntQtdContMai,7,30,70,20);
+	  txtAntQtdContMai.setAtivo(false);
 	  pinMes5.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes5.adic(txtQtdNova5,80,30,60,20);
+	  pinMes5.adic(txtNovaQtdContMai,80,30,60,20);
 	  pinMes5.adic(btMudaQtd5,143,19,20,20);
 	  pinMes5.adic(btMudaHis5,143,41,20,20);	
 	  
@@ -653,11 +662,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes6,367,135,80,15);
 	  pn.adic(pinMes6,357,140,170,70);
 	  pinMes6.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes6.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes6.adic(txtNumVisita6,7,30,70,20);
-	  txtNumVisita6.setAtivo(false);
+	  pinMes6.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes6.adic(txtAntQtdContJun,7,30,70,20);
+	  txtAntQtdContJun.setAtivo(false);
 	  pinMes6.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes6.adic(txtQtdNova6,80,30,60,20);
+	  pinMes6.adic(txtNovaQtdContJun,80,30,60,20);
 	  pinMes6.adic(btMudaQtd6,143,19,20,20);
 	  pinMes6.adic(btMudaHis6,143,41,20,20);
 	  
@@ -666,11 +675,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes7,17,215,80,15);
 	  pn.adic(pinMes7,7,220,170,70);
 	  pinMes7.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes7.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes7.adic(txtNumVisita7,7,30,70,20);
-	  txtNumVisita7.setAtivo(false);
+	  pinMes7.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes7.adic(txtAntQtdContJul,7,30,70,20);
+	  txtAntQtdContJul.setAtivo(false);
 	  pinMes7.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes7.adic(txtQtdNova7,80,30,60,20);
+	  pinMes7.adic(txtNovaQtdContJul,80,30,60,20);
 	  pinMes7.adic(btMudaQtd7,143,19,20,20);
 	  pinMes7.adic(btMudaHis7,143,41,20,20);	 
 	  
@@ -679,11 +688,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes8,192,215,80,15);
 	  pn.adic(pinMes8,182,220,170,70);
 	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes8.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes8.adic(txtNumVisita8,7,30,70,20);
-	  txtNumVisita8.setAtivo(false);
+	  pinMes8.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes8.adic(txtAntQtdContAgo,7,30,70,20);
+	  txtAntQtdContAgo.setAtivo(false);
 	  pinMes8.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes8.adic(txtQtdNova8,80,30,60,20);
+	  pinMes8.adic(txtNovaQtdContAgo,80,30,60,20);
 	  pinMes8.adic(btMudaQtd8,143,19,20,20);
 	  pinMes8.adic(btMudaHis8,143,41,20,20);	
 	  
@@ -692,11 +701,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes9,367,215,80,15);
 	  pn.adic(pinMes9,357,220,170,70);
 	  pinMes9.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes9.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes9.adic(txtNumVisita9,7,30,70,20);
-	  txtNumVisita9.setAtivo(false);
+	  pinMes9.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes9.adic(txtAntQtdContSet,7,30,70,20);
+	  txtAntQtdContSet.setAtivo(false);
 	  pinMes9.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes9.adic(txtQtdNova9,80,30,60,20);
+	  pinMes9.adic(txtNovaQtdContSet,80,30,60,20);
 	  pinMes9.adic(btMudaQtd9,143,19,20,20);	
 	  pinMes9.adic(btMudaHis9,143,41,20,20); 
 	  
@@ -705,11 +714,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes10,17,295,80,15);
 	  pn.adic(pinMes10,7,300,170,70);
 	  pinMes10.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes10.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes10.adic(txtNumVisita10,7,30,70,20);
-	  txtNumVisita10.setAtivo(false);
+	  pinMes10.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes10.adic(txtAntQtdContOut,7,30,70,20);
+	  txtAntQtdContOut.setAtivo(false);
 	  pinMes10.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes10.adic(txtQtdNova10,80,30,60,20);
+	  pinMes10.adic(txtNovaQtdContOut,80,30,60,20);
 	  pinMes10.adic(btMudaQtd10,143,19,20,20);
 	  pinMes10.adic(btMudaHis10,143,41,20,20);
 	  
@@ -718,11 +727,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes11,192,295,80,15);
 	  pn.adic(pinMes11,182,300,170,70);
 	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	 
-	  pinMes11.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes11.adic(txtNumVisita11,7,30,70,20);
-	  txtNumVisita11.setAtivo(false);
+	  pinMes11.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes11.adic(txtAntQtdContNov,7,30,70,20);
+	  txtAntQtdContNov.setAtivo(false);
 	  pinMes11.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes11.adic(txtQtdNova11,80,30,60,20);
+	  pinMes11.adic(txtNovaQtdContNov,80,30,60,20);
 	  pinMes11.adic(btMudaQtd11,143,19,20,20);
 	  pinMes11.adic(btMudaHis11,143,41,20,20);	 
 	  
@@ -731,11 +740,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes12,367,295,80,15);
 	  pn.adic(pinMes12,357,300,170,70);
 	  pinMes12.setBorder( BorderFactory.createEtchedBorder());
-	  pinMes12.adic(new JLabelPad("N.de visitas"),7,10,70,20);
-	  pinMes12.adic(txtNumVisita12,7,30,70,20);
-	  txtNumVisita12.setAtivo(false);
+	  pinMes12.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes12.adic(txtAntQtdContDez,7,30,70,20);
+	  txtAntQtdContDez.setAtivo(false);
 	  pinMes12.adic(new JLabelPad("nova qtd."),80,10,60,20);
-	  pinMes12.adic(txtQtdNova12,80,30,60,20);
+	  pinMes12.adic(txtNovaQtdContDez,80,30,60,20);
 	  pinMes12.adic(btMudaQtd12,143,19,20,20);	 
 	  pinMes12.adic(btMudaHis12,143,41,20,20);
 	  
@@ -850,7 +859,226 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           }
       }
   }
+
+  private void buscaContatos(){
+	  int iMes = 0;
+	  int iQtd = 0;
+	  try {
+		  String sSql = "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) "+
+			  			"FROM TKHISTORICO TK "+
+			  			"WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? " +
+			  			"GROUP BY 1 ORDER BY 1";
+
+          PreparedStatement ps = con.prepareStatement(sSql);
+          ps.setInt(1,lcCampos.getCodEmp());
+          ps.setInt(2,lcCampos.getCodFilial());
+          ps.setInt(3,txtAno.getVlrInteger().intValue());
+
+          ResultSet rs = ps.executeQuery();
+          
+          while(rs.next()) {        	  
+              iMes = rs.getInt(1);
+              iQtd = rs.getInt(2);
+              
+              if(iMes==1){
+            	  txtAntQtdContJan.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==2){
+            	  txtAntQtdContFev.setVlrInteger(new Integer(iQtd));
+              }             
+              else if(iMes==3){
+            	  txtAntQtdContMar.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==4){
+            	  txtAntQtdContAbr.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==5){
+            	  txtAntQtdContMai.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==6){
+            	  txtAntQtdContJun.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==7){
+            	  txtAntQtdContJul.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==8) {
+            	  txtAntQtdContAgo.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==9){
+            	  txtAntQtdContSet.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==10){
+            	  txtAntQtdContOut.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==11){
+            	  txtAntQtdContNov.setVlrInteger(new Integer(iQtd));
+              }
+              else if(iMes==12){
+            	  txtAntQtdContDez.setVlrInteger(new Integer(iQtd));
+              }
+          }
+          
+          rs.close();
+          ps.close();
+          
+	  }
+	  catch (Exception err) {
+          Funcoes.mensagemErro(this,"Erro na busca de atendente vinculado ao vendedor.\n" + err.getMessage(),true,con,err);
+	  }	  	  
+  }
+
   
+  private Integer buscaAtendente(){
+	  Integer iRet = new Integer(0);	  
+	  try {
+		  String sSql = "SELECT CODATEND FROM ATATENDENTE WHERE CODEMPVE=? AND CODFILIALVE=? AND CODVEND=?";
+          PreparedStatement ps = con.prepareStatement(sSql);
+          ps.setInt(1,lcVend.getCodEmp());
+          ps.setInt(2,lcVend.getCodFilial());
+          ps.setInt(3,txtCodVend.getVlrInteger().intValue());
+
+          ResultSet rs = ps.executeQuery();
+          if (rs.next()) {
+              iRet = new Integer(rs.getInt(1));
+          }
+          rs.close();
+          ps.close();
+	  }
+	  catch (Exception err) {
+          Funcoes.mensagemErro(this,"Erro na busca de atendente vinculado ao vendedor.\n" + err.getMessage(),true,con,err);
+	  }	  	  
+	  return iRet;
+  }
+  
+  private void geraHistoricos(Integer iMes){
+	  HashMap hmMeses = new HashMap();
+	  HashMap hmJan = new HashMap();
+	  HashMap hmFev = new HashMap();
+	  HashMap hmMar = new HashMap();
+	  HashMap hmAbr = new HashMap();
+	  HashMap hmMai = new HashMap();
+	  HashMap hmJun = new HashMap();
+	  HashMap hmJul = new HashMap();
+	  HashMap hmAgo = new HashMap();
+	  HashMap hmSet = new HashMap();
+	  HashMap hmOut = new HashMap();
+	  HashMap hmNov = new HashMap();
+	  HashMap hmDez = new HashMap();
+	  
+	  hmJan.put("ANT",txtAntQtdContJan.getVlrInteger());
+	  hmJan.put("NOVO",txtNovaQtdContJan.getVlrInteger());
+	  hmFev.put("ANT",txtAntQtdContFev.getVlrInteger());
+	  hmFev.put("NOVO",txtNovaQtdContFev.getVlrInteger());
+	  hmMar.put("ANT",txtAntQtdContMar.getVlrInteger());
+	  hmMar.put("NOVO",txtNovaQtdContMar.getVlrInteger());
+	  hmAbr.put("ANT",txtAntQtdContAbr.getVlrInteger());
+	  hmAbr.put("NOVO",txtNovaQtdContAbr.getVlrInteger());
+	  hmMai.put("ANT",txtAntQtdContMai.getVlrInteger());
+	  hmMai.put("NOVO",txtNovaQtdContMai.getVlrInteger());
+	  hmJun.put("ANT",txtAntQtdContJun.getVlrInteger());
+	  hmJun.put("NOVO",txtNovaQtdContJun.getVlrInteger());
+	  hmJul.put("ANT",txtAntQtdContJul.getVlrInteger());
+	  hmJul.put("NOVO",txtNovaQtdContJul.getVlrInteger());
+	  hmAgo.put("ANT",txtAntQtdContAgo.getVlrInteger());
+	  hmAgo.put("NOVO",txtNovaQtdContAgo.getVlrInteger());
+	  hmSet.put("ANT",txtAntQtdContSet.getVlrInteger());
+	  hmSet.put("NOVO",txtNovaQtdContSet.getVlrInteger());
+	  hmOut.put("ANT",txtAntQtdContOut.getVlrInteger());
+	  hmOut.put("NOVO",txtNovaQtdContOut.getVlrInteger());
+	  hmNov.put("ANT",txtAntQtdContNov.getVlrInteger());
+	  hmNov.put("NOVO",txtNovaQtdContNov.getVlrInteger());
+	  hmDez.put("ANT",txtAntQtdContDez.getVlrInteger());
+	  hmDez.put("NOVO",txtNovaQtdContDez.getVlrInteger());
+
+	  
+	  hmMeses.put("1",hmJan);
+	  hmMeses.put("2",hmFev);
+	  hmMeses.put("3",hmMar);
+	  hmMeses.put("4",hmAbr);
+	  hmMeses.put("5",hmMai);
+	  hmMeses.put("6",hmJun);
+	  hmMeses.put("7",hmJul);
+	  hmMeses.put("8",hmAgo);
+	  hmMeses.put("9",hmSet);
+	  hmMeses.put("10",hmOut);
+	  hmMeses.put("11",hmNov);
+	  hmMeses.put("12",hmDez);
+	  
+	  if(iMes==null){
+		  for(int iM=1;iM<13;iM++){
+			  int iQtdAnt = ((Integer)((HashMap)(hmMeses.get(iM+""))).get("ANT")).intValue();
+			  int iQtdNov = ((Integer)((HashMap)(hmMeses.get(iM+""))).get("NOVO")).intValue();
+			  
+			  if(iQtdNov>0){
+				  if(iQtdAnt>iQtdNov){
+					  Funcoes.mensagemInforma(this,"A nova quantidade informada é menor ou igual a quantidade atual, \n você deve excluir os contatos manualmente.");
+				  }
+				  else if (iQtdNov>iQtdAnt) {
+					  for(int i=0;(iQtdNov-iQtdAnt)>i;i++){
+						  geraHistorico(new Integer(iM));  
+					  }				  
+				  }
+			  }
+		  }
+	  }
+	  else {
+		  int iQtdAnt = ((Integer)((HashMap)(hmMeses.get(iMes+""))).get("ANT")).intValue();
+		  int iQtdNov = ((Integer)((HashMap)(hmMeses.get(iMes+""))).get("NOVO")).intValue();
+		  if(iQtdNov>0){
+			  if(iQtdAnt>iQtdNov){
+				  Funcoes.mensagemInforma(this,"A nova quantidade informada é menor ou igual a quantidade atual, \n você deve excluir os contatos manualmente.");
+			  }
+			  else if (iQtdNov>iQtdAnt) {
+				  for(int i=0;(iQtdNov-iQtdAnt)>i;i++){
+					  geraHistorico(iMes);  
+				  }				  
+			  }
+		  }
+		  
+	  }
+	  buscaContatos();
+  }
+  
+  private void geraHistorico(Integer iMes){	  
+      PreparedStatement ps = null;
+      
+      Integer iCodAtende = buscaAtendente();
+
+      String sData = iMes+"-01-"+txtAno.getVlrInteger();
+      
+
+      if(iCodAtende.compareTo(new Integer(0))>0){
+		  try {
+			  String sSql = "INSERT INTO tkhistorico (CODEMP,CODFILIAL,CODHISTTK,DESCHISTTK,SITHISTTK,DATAHISTTK,HORAHISTTK,CODEMPCL,CODFILIALCL,CODCLI,CODEMPAE,CODFILIALAE,CODATEND,TIPOHISTTK) "+
+						    "VALUES(?,?,coalesce((SELECT MAX(CODHISTTK) FROM TKHISTORICO)+1,1),'CONTATO','EF','"+sData+"' ,(CAST('NOW' AS TIME)),?,?,?,?,?,?,'V')";	  
+	
+			  ps = con.prepareStatement(sSql);
+			  ps.setInt(1,Aplicativo.iCodEmp);
+			  ps.setInt(2,ListaCampos.getMasterFilial("TKHISTORICO"));
+			  ps.setInt(3,Aplicativo.iCodEmp);
+			  ps.setInt(4,ListaCampos.getMasterFilial("VDCLIENTE"));
+			  ps.setInt(5,txtCodCli.getVlrInteger().intValue());
+			  ps.setInt(6,Aplicativo.iCodEmp);
+			  ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));
+			  ps.setInt(8,iCodAtende.intValue());
+	
+			  ps.execute();
+			  ps.close();			  
+			  con.commit();
+		  }
+		  catch (Exception err) {
+	          Funcoes.mensagemErro(this,"Erro ao inserir historicos para o cliente.\n" + err.getMessage(),true,con,err);
+		  }
+      }
+      else {
+    	  Funcoes.mensagemInforma(this,"Não é possivel gerar contatos para esse cliente, pois não existe um atendente\nvinculado ao vendedor padrão!");
+      }
+	  
+	  
+	  
+	  
+  }
+    
   private void exclObs() {
       String sSql = null;
       int iCodCli = 0;
@@ -873,8 +1101,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
                   carregaTabelaObs();
               }
               catch (SQLException err ) {
-                  Funcoes.mensagemErro(this,"Não foi possível excluir a observação.\n" +
-                         err.getMessage(),true,con,err);
+                  Funcoes.mensagemErro(this,"Não foi possível excluir a observação.\n" + err.getMessage(),true,con,err);
               }
               finally {
                   ps = null;
@@ -1809,6 +2036,50 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	else if (evt.getSource()==btMudaHis12) {
 	    alteraHist(12);
 	}
+	else if (evt.getSource()==btMudaQtd1) {
+	    geraHistoricos(new Integer(1));
+	}
+	else if (evt.getSource()==btMudaQtd2) {
+	    geraHistoricos(new Integer(2));
+	}
+	else if (evt.getSource()==btMudaQtd3) {
+	    geraHistoricos(new Integer(3));
+	}
+	else if (evt.getSource()==btMudaQtd4) {
+	    geraHistoricos(new Integer(4));
+	}
+	else if (evt.getSource()==btMudaQtd5) {
+	    geraHistoricos(new Integer(5));
+	}
+	else if (evt.getSource()==btMudaQtd6) {
+	    geraHistoricos(new Integer(6));
+	}
+	else if (evt.getSource()==btMudaQtd7) {
+	    geraHistoricos(new Integer(7));
+	}
+	else if (evt.getSource()==btMudaQtd8) {
+	    geraHistoricos(new Integer(8));
+	}
+	else if (evt.getSource()==btMudaQtd9) {
+	    geraHistoricos(new Integer(9));
+	}
+	else if (evt.getSource()==btMudaQtd10) {
+	    geraHistoricos(new Integer(10));
+	}
+	else if (evt.getSource()==btMudaQtd11) {
+	    geraHistoricos(new Integer(11));
+	}
+	else if (evt.getSource()==btMudaQtd12) {
+	    geraHistoricos(new Integer(12));
+	}
+	else if (evt.getSource()==btMudaTudo) {
+	    geraHistoricos(null);
+	}
+
+
+
+
+
     super.actionPerformed(evt);
   }
   
@@ -2002,20 +2273,20 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   public void stateChanged(ChangeEvent cevt){
 	  if (cevt.getSource()==tpn) {
 		  if (tpn.getSelectedIndex()==0)
-	      txtCodCli.requestFocus();
-      else if (tpn.getSelectedIndex()==1)
-	      txtEndEnt.requestFocus();
-	  else if (tpn.getSelectedIndex()==2)
-		  txtEndCob.requestFocus();
-	  else if (tpn.getSelectedIndex()==3)
-	      txtCodVend.requestFocus();
-      else if (tpn.getSelectedIndex()==4)
-		  txaObs.requestFocus();
-	
+			  txtCodCli.requestFocus();
+		  else if (tpn.getSelectedIndex()==1)
+			  txtEndEnt.requestFocus();
+		  else if (tpn.getSelectedIndex()==2)
+			  txtEndCob.requestFocus();
+		  else if (tpn.getSelectedIndex()==3)
+			  txtCodVend.requestFocus();
+		  else if (tpn.getSelectedIndex()==4)
+			  txaObs.requestFocus();
+		  else if (tpn.getSelectedIndex()==6)
+			  buscaContatos();
 	  }
   }	
- 
-		
+ 		
   public void afterPost(PostEvent pevt) {
 	if ( (rgPessoa.getVlrString().equals("F")) && (pevt.ok) ) {
    	   if (telaConv!=null) {
