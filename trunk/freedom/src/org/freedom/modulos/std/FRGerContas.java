@@ -42,8 +42,9 @@ import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRGerContas extends FRelatorio  {
+
+  private static final long serialVersionUID = 1L;
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
-//  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -65,8 +66,6 @@ public class FRGerContas extends FRelatorio  {
   private Vector vLabOrdemRel = new Vector();
   private Vector vValOrdemRel = new Vector();
   private JRadioGroup rgOrdemRel = null;
-  private FPrinterJob dl = null;
-  private Vector vParams = new Vector();
 
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
