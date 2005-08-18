@@ -102,11 +102,13 @@ public class DLBaixaComis extends FFDialogo {
 
     setPainel(pinCentro);
     
-    adic(new JLabelPad("Código e descrição da conta"),7,0,250,20);
+    adic(new JLabelPad("Cód.conta"),7,0,80,20);
     adic(txtCodConta,7,20,80,20);
+    adic(new JLabelPad("Descrição da conta"),90,0,190,20);
     adic(txtDescConta,90,20,197,20);
-    adic(new JLabelPad("Código e descrição da categoria"),290,0,250,20);
+    adic(new JLabelPad("Cód.cat."),290,0,77,20);
     adic(txtCodPlan,290,20,77,20);
+    adic(new JLabelPad("Descrição da categoria"),370,0,200,20);
     adic(txtDescPlan,370,20,200,20);
     adic(new JLabelPad("Data"),7,40,100,20);
     adic(txtData,7,60,100,20);
