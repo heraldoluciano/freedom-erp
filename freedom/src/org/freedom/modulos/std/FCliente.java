@@ -1824,6 +1824,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  
 		  dl.setCampos(vCli);
 		  dl.setVisible(true);		 
+		  if (dl.OK) {		      
+		      dl.dispose();
+		  }
+		  else 
+			  dl.dispose();
 	  }
 	  finally{
 		  dl = null;

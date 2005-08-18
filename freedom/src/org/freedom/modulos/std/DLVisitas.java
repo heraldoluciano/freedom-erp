@@ -33,11 +33,13 @@ import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
+import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.telas.FFDialogo;
 
@@ -46,7 +48,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtNomeCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldFK txtRazCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtHora = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
@@ -54,15 +56,33 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private JTextAreaPad txtHist = new JTextAreaPad(1000);
   private JPanelPad pnTab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinCab = new JPanelPad(300,70);
-  private JPanelPad pinRod = new JPanelPad(300,200);
+  private JPanelPad pinRod = new JPanelPad(300,195);
   private Tabela tab = new Tabela();
   private JLabel lbMes = new JLabel();
+  private ListaCampos lcAtendente = new ListaCampos(this);
+  private ListaCampos lcContato = new ListaCampos(this);
   
   public DLVisitas(Component cOrig, Connection con) {
     super(cOrig);    
     setTitulo("Alteração de historico");
     setAtribos(520, 500);
     setConexao(con);
+    
+    lcAtendente.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atendente.", ListaCampos.DB_PK, false));
+    lcAtendente.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI,false));
+    lcAtendente.montaSql(false, "ATENDENTE", "AT");
+    lcAtendente.setReadOnly(true);
+    txtCodAtend.setTabelaExterna(lcAtendente);
+    txtCodAtend.setFK(true);
+    txtCodAtend.setNomeCampo("CodAtend");
+    
+    lcContato.add(new GuardaCampo( txtCodCont, "CodCto", "Cód.cont.", ListaCampos.DB_PK, false));
+    lcContato.add(new GuardaCampo( txtRazCont, "RazCto", "Nome do contato", ListaCampos.DB_SI,false));
+    lcContato.montaSql(false, "CONTATO", "TK");
+    lcContato.setReadOnly(true);
+    txtCodCont.setTabelaExterna(lcContato);
+    txtCodCont.setFK(true);
+    txtCodCont.setNomeCampo("CodCto");
     
     c.add(pinCab, BorderLayout.NORTH);
     setPainel(pinCab);
@@ -84,6 +104,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     pnTab.add(spnTabRec,BorderLayout.CENTER);
     c.add(pnTab, BorderLayout.CENTER);
     
+    tab.adicColuna("Cód.visita");
     tab.adicColuna("Contato");
     tab.adicColuna("Atendente");
     tab.adicColuna("Data");
@@ -92,11 +113,12 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     tab.adicColuna("Sit.");
     
     tab.setTamColuna(70,0);
-    tab.setTamColuna(80,1);
-    tab.setTamColuna(50,2);
+    tab.setTamColuna(70,1);
+    tab.setTamColuna(80,2);
     tab.setTamColuna(50,3);
-    tab.setTamColuna(210,4);
-    tab.setTamColuna(50,5);
+    tab.setTamColuna(50,4);
+    tab.setTamColuna(210,5);
+    tab.setTamColuna(50,6);
     
     tab.addMouseListener(this);
     
@@ -106,7 +128,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     adic(new JLabelPad("Cód.cont."),7,0,70,20);
     adic(txtCodCont,7,20,70,20);
     adic(new JLabelPad("Nome do contato"),80,0,250,20);
-    adic(txtNomeCont,80,20,250,20);
+    adic(txtRazCont,80,20,250,20);
     adic(new JLabelPad("Data"),333,0,70,20);
     adic(txtData,333,20,70,20);
     adic(new JLabelPad("Cód.atend."),7,40,70,20);
@@ -134,8 +156,14 @@ public class DLVisitas extends FFDialogo implements MouseListener{
 
   public void mouseClicked(MouseEvent mevt) {
     if (mevt.getClickCount() == 2) {
-    	//if (mevt.getSource() == tab && tab.getLinhaSel() >= 0)
+    	if (mevt.getSource() == tab && tab.getLinhaSel() >= 0){
+    		
+    	}
     }
+  }
+  
+  public void carregaTabela(){
+	  
   }
   
   public String getMes(int mes){
@@ -147,5 +175,11 @@ public class DLVisitas extends FFDialogo implements MouseListener{
  
   public void actionPerformed(ActionEvent evt) {
 	  super.actionPerformed(evt);
+  }
+  
+  public void setConexao(Connection cn) {
+  	  super.setConexao(cn);
+      lcContato.setConexao(cn);
+      lcAtendente.setConexao(cn);
   }
 }
