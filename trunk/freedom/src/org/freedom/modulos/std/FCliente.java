@@ -235,33 +235,34 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btExclObs = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btEditObs = new JButton(Icone.novo("btEditar.gif"));
   private JButton btGrpCli = new JButton(Icone.novo("btCliente.gif"));
-  private String sBtBuscaHist = "lupa.gif";
-  private String sBtExecHist = "btExecyta2.gif";
-  private JButton btMudaHis1 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis2 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis3 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis4 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis5 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis6 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis7 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis8 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis9 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis10 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis11 = new JButton(Icone.novo(sBtExecHist));
-  private JButton btMudaHis12 = new JButton(Icone.novo(sBtExecHist));
+  private String sBtEditaHist = "btEditar.gif";
+  private String sBtGeraHist = "btExecuta2.gif";
+
+  private JButton btConsHisJan = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisFev = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisMar = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisAbr = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisMai = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisJun = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisJul = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisAgo = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisSet = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisOut = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisNov = new JButton(Icone.novo(sBtEditaHist));
+  private JButton btConsHisDez = new JButton(Icone.novo(sBtEditaHist));
   
-  private JButton btMudaQtd1 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd2 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd3 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd4 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd5 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd6 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd7 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd8 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd9 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd10 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd11 = new JButton(Icone.novo(sBtBuscaHist));
-  private JButton btMudaQtd12 = new JButton(Icone.novo(sBtBuscaHist));
+  private JButton btSetaQtdJan = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdFev = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdMar = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdAbr = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdMai = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdJun = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdJul = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdAgo = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdSet = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdOut = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdNov = new JButton(Icone.novo(sBtGeraHist));
+  private JButton btSetaQtdDez = new JButton(Icone.novo(sBtGeraHist));
   private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
   private Navegador navFor = new Navegador(true);
   private FConveniado telaConv;
@@ -596,26 +597,34 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  lbMes1.setOpaque(true);
 	  pn.adic(lbMes1,17,55,80,15);
 	  pn.adic(pinMes1,7,60,170,70);
-	  pinMes1.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes1.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes1.adic(txtAntQtdContJan,7,30,70,20);
 	  txtAntQtdContJan.setAtivo(false);
-	  pinMes1.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes1.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes1.adic(txtNovaQtdContJan,80,30,60,20);
-	  pinMes1.adic(btMudaQtd1,143,19,20,20);
-	  pinMes1.adic(btMudaHis1,143,41,20,20);
+	  pinMes1.adic(btSetaQtdJan,143,19,20,20);
+	  pinMes1.adic(btConsHisJan,143,41,20,20);
+	  btSetaQtdJan.setBorder(null);
+	  btConsHisJan.setBorder(null);
+	  btSetaQtdJan.setToolTipText("Gera contatos");
+	  btConsHisJan.setToolTipText("Visualiza contatos");
 	  pinMes1.setBorder( BorderFactory.createEtchedBorder());
 		  
 	  JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
 	  lbMes2.setOpaque(true);
 	  pn.adic(lbMes2,192,55,80,15);
 	  pn.adic(pinMes2,182,60,170,70);
-	  pinMes2.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes2.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes2.adic(txtAntQtdContFev,7,30,70,20);
 	  txtAntQtdContFev.setAtivo(false);
-	  pinMes2.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes2.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes2.adic(txtNovaQtdContFev,80,30,60,20);
-	  pinMes2.adic(btMudaQtd2,143,19,20,20);
-	  pinMes2.adic(btMudaHis2,143,41,20,20);
+	  pinMes2.adic(btSetaQtdFev,143,19,20,20);
+	  pinMes2.adic(btConsHisFev,143,41,20,20);
+	  btSetaQtdFev.setBorder(null);
+	  btConsHisFev.setBorder(null);
+	  btSetaQtdFev.setToolTipText("Gera contatos");
+	  btConsHisFev.setToolTipText("Visualiza contatos");
 	  
 	  pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
 	  JLabelPad lbMes3 = new JLabelPad("   Março");
@@ -623,155 +632,195 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  pn.adic(lbMes3,367,55,80,15);
 	  pn.adic(pinMes3,357,60,170,70);
 	  pinMes3.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes3.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes3.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes3.adic(txtAntQtdContMar,7,30,70,20);
 	  txtAntQtdContMar.setAtivo(false);
-	  pinMes3.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes3.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes3.adic(txtNovaQtdContMar,80,30,60,20);
-	  pinMes3.adic(btMudaQtd3,143,19,20,20);	
-	  pinMes3.adic(btMudaHis3,143,41,20,20); 
+	  pinMes3.adic(btSetaQtdMar,143,19,20,20);	
+	  pinMes3.adic(btConsHisMar,143,41,20,20); 
+	  btSetaQtdMar.setBorder(null);
+	  btConsHisMar.setBorder(null);
+	  btSetaQtdMar.setToolTipText("Gera contatos");
+	  btConsHisMar.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes4 = new JLabelPad("   Abril");
 	  lbMes4.setOpaque(true);
 	  pn.adic(lbMes4,17,135,80,15);
 	  pn.adic(pinMes4,7,140,170,70);
 	  pinMes4.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes4.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes4.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes4.adic(txtAntQtdContAbr,7,30,70,20);
 	  txtAntQtdContAbr.setAtivo(false);
-	  pinMes4.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes4.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes4.adic(txtNovaQtdContAbr,80,30,60,20);
-	  pinMes4.adic(btMudaQtd4,143,19,20,20);	
-	  pinMes4.adic(btMudaHis4,143,41,20,20);
+	  pinMes4.adic(btSetaQtdAbr,143,19,20,20);	
+	  pinMes4.adic(btConsHisAbr,143,41,20,20);
+	  btSetaQtdAbr.setBorder(null);
+	  btConsHisAbr.setBorder(null);
+	  btSetaQtdAbr.setToolTipText("Gera contatos");
+	  btConsHisAbr.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes5 = new JLabelPad("   Maio");
 	  lbMes5.setOpaque(true);
 	  pn.adic(lbMes5,192,135,80,15);
 	  pn.adic(pinMes5,182,140,170,70);
 	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes5.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes5.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes5.adic(txtAntQtdContMai,7,30,70,20);
 	  txtAntQtdContMai.setAtivo(false);
-	  pinMes5.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes5.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes5.adic(txtNovaQtdContMai,80,30,60,20);
-	  pinMes5.adic(btMudaQtd5,143,19,20,20);
-	  pinMes5.adic(btMudaHis5,143,41,20,20);	
+	  pinMes5.adic(btSetaQtdMai,143,19,20,20);
+	  pinMes5.adic(btConsHisMai,143,41,20,20);
+	  btSetaQtdMai.setBorder(null);
+	  btConsHisMai.setBorder(null);
+	  btSetaQtdMai.setToolTipText("Gera contatos");
+	  btConsHisMai.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes6 = new JLabelPad("   Junho");
 	  lbMes6.setOpaque(true);
 	  pn.adic(lbMes6,367,135,80,15);
 	  pn.adic(pinMes6,357,140,170,70);
 	  pinMes6.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes6.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes6.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes6.adic(txtAntQtdContJun,7,30,70,20);
 	  txtAntQtdContJun.setAtivo(false);
-	  pinMes6.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes6.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes6.adic(txtNovaQtdContJun,80,30,60,20);
-	  pinMes6.adic(btMudaQtd6,143,19,20,20);
-	  pinMes6.adic(btMudaHis6,143,41,20,20);
+	  pinMes6.adic(btSetaQtdJun,143,19,20,20);
+	  pinMes6.adic(btConsHisJun,143,41,20,20);
+	  btSetaQtdJun.setBorder(null);
+	  btConsHisJun.setBorder(null);
+	  btSetaQtdJun.setToolTipText("Gera contatos");
+	  btConsHisJun.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes7 = new JLabelPad("   Julho");
 	  lbMes7.setOpaque(true);
 	  pn.adic(lbMes7,17,215,80,15);
 	  pn.adic(pinMes7,7,220,170,70);
 	  pinMes7.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes7.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes7.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes7.adic(txtAntQtdContJul,7,30,70,20);
 	  txtAntQtdContJul.setAtivo(false);
-	  pinMes7.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes7.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes7.adic(txtNovaQtdContJul,80,30,60,20);
-	  pinMes7.adic(btMudaQtd7,143,19,20,20);
-	  pinMes7.adic(btMudaHis7,143,41,20,20);	 
+	  pinMes7.adic(btSetaQtdJul,143,19,20,20);
+	  pinMes7.adic(btConsHisJul,143,41,20,20);
+	  btSetaQtdJul.setBorder(null);
+	  btConsHisJul.setBorder(null);
+	  btSetaQtdJul.setToolTipText("Gera contatos");
+	  btConsHisJul.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes8 = new JLabelPad("   Agosto");
 	  lbMes8.setOpaque(true);
 	  pn.adic(lbMes8,192,215,80,15);
 	  pn.adic(pinMes8,182,220,170,70);
 	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes8.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes8.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes8.adic(txtAntQtdContAgo,7,30,70,20);
 	  txtAntQtdContAgo.setAtivo(false);
-	  pinMes8.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes8.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes8.adic(txtNovaQtdContAgo,80,30,60,20);
-	  pinMes8.adic(btMudaQtd8,143,19,20,20);
-	  pinMes8.adic(btMudaHis8,143,41,20,20);	
+	  pinMes8.adic(btSetaQtdAgo,143,19,20,20);
+	  pinMes8.adic(btConsHisAgo,143,41,20,20);
+	  btSetaQtdAgo.setBorder(null);
+	  btConsHisAgo.setBorder(null);
+	  btSetaQtdAgo.setToolTipText("Gera contatos");
+	  btConsHisAgo.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes9 = new JLabelPad("   Setembro");
 	  lbMes9.setOpaque(true);
 	  pn.adic(lbMes9,367,215,80,15);
 	  pn.adic(pinMes9,357,220,170,70);
 	  pinMes9.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes9.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes9.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes9.adic(txtAntQtdContSet,7,30,70,20);
 	  txtAntQtdContSet.setAtivo(false);
-	  pinMes9.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes9.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes9.adic(txtNovaQtdContSet,80,30,60,20);
-	  pinMes9.adic(btMudaQtd9,143,19,20,20);	
-	  pinMes9.adic(btMudaHis9,143,41,20,20); 
+	  pinMes9.adic(btSetaQtdSet,143,19,20,20);	
+	  pinMes9.adic(btConsHisSet,143,41,20,20);
+	  btSetaQtdSet.setBorder(null);
+	  btConsHisSet.setBorder(null);
+	  btSetaQtdSet.setToolTipText("Gera contatos");
+	  btConsHisSet.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes10 = new JLabelPad("   Outubro");
 	  lbMes10.setOpaque(true);
 	  pn.adic(lbMes10,17,295,80,15);
 	  pn.adic(pinMes10,7,300,170,70);
 	  pinMes10.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes10.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes10.adic(new JLabelPad("Cntatos"),7,10,70,20);
 	  pinMes10.adic(txtAntQtdContOut,7,30,70,20);
 	  txtAntQtdContOut.setAtivo(false);
-	  pinMes10.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes10.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes10.adic(txtNovaQtdContOut,80,30,60,20);
-	  pinMes10.adic(btMudaQtd10,143,19,20,20);
-	  pinMes10.adic(btMudaHis10,143,41,20,20);
+	  pinMes10.adic(btSetaQtdOut,143,19,20,20);
+	  pinMes10.adic(btConsHisOut,143,41,20,20);
+	  btSetaQtdOut.setBorder(null);
+	  btConsHisOut.setBorder(null);
+	  btSetaQtdOut.setToolTipText("Gera contatos");
+	  btConsHisOut.setToolTipText("Visualiza contatos");
 	  
 	  JLabelPad lbMes11 = new JLabelPad("   Novembro");
 	  lbMes11.setOpaque(true);
 	  pn.adic(lbMes11,192,295,80,15);
 	  pn.adic(pinMes11,182,300,170,70);
 	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	 
-	  pinMes11.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes11.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes11.adic(txtAntQtdContNov,7,30,70,20);
 	  txtAntQtdContNov.setAtivo(false);
-	  pinMes11.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes11.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes11.adic(txtNovaQtdContNov,80,30,60,20);
-	  pinMes11.adic(btMudaQtd11,143,19,20,20);
-	  pinMes11.adic(btMudaHis11,143,41,20,20);	 
-	  
+	  pinMes11.adic(btSetaQtdNov,143,19,20,20);
+	  pinMes11.adic(btConsHisNov,143,41,20,20);	 
+	  btSetaQtdNov.setBorder(null);
+	  btConsHisNov.setBorder(null);
+	  btSetaQtdNov.setToolTipText("Gera contatos");
+	  btConsHisNov.setToolTipText("Visualiza contatos");
+
 	  JLabelPad lbMes12 = new JLabelPad("   Dezembro");
 	  lbMes12.setOpaque(true);
 	  pn.adic(lbMes12,367,295,80,15);
 	  pn.adic(pinMes12,357,300,170,70);
 	  pinMes12.setBorder( BorderFactory.createEtchedBorder());
-	  pinMes12.adic(new JLabelPad("N.de contatos"),7,10,70,20);
+	  pinMes12.adic(new JLabelPad("Contatos"),7,10,70,20);
 	  pinMes12.adic(txtAntQtdContDez,7,30,70,20);
 	  txtAntQtdContDez.setAtivo(false);
-	  pinMes12.adic(new JLabelPad("nova qtd."),80,10,60,20);
+	  pinMes12.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	  pinMes12.adic(txtNovaQtdContDez,80,30,60,20);
-	  pinMes12.adic(btMudaQtd12,143,19,20,20);	 
-	  pinMes12.adic(btMudaHis12,143,41,20,20);
+	  pinMes12.adic(btSetaQtdDez,143,19,20,20);	 
+	  pinMes12.adic(btConsHisDez,143,41,20,20);
+	  btSetaQtdDez.setBorder(null);
+	  btConsHisDez.setBorder(null);
+	  btSetaQtdDez.setToolTipText("Gera contatos");
+	  btConsHisDez.setToolTipText("Visualiza contatos");
 	  
-	  btMudaHis1.addActionListener(this);
-	  btMudaHis2.addActionListener(this);
-	  btMudaHis3.addActionListener(this);
-	  btMudaHis4.addActionListener(this);
-	  btMudaHis5.addActionListener(this);
-	  btMudaHis6.addActionListener(this);
-	  btMudaHis7.addActionListener(this);
-	  btMudaHis8.addActionListener(this);
-	  btMudaHis9.addActionListener(this);
-	  btMudaHis10.addActionListener(this);
-	  btMudaHis11.addActionListener(this);
-	  btMudaHis12.addActionListener(this);
-	  btMudaQtd1.addActionListener(this);
-	  btMudaQtd2.addActionListener(this);
-	  btMudaQtd3.addActionListener(this);
-	  btMudaQtd4.addActionListener(this);
-	  btMudaQtd5.addActionListener(this);
-	  btMudaQtd6.addActionListener(this);
-	  btMudaQtd7.addActionListener(this);
-	  btMudaQtd8.addActionListener(this);
-	  btMudaQtd9.addActionListener(this);
-	  btMudaQtd10.addActionListener(this);
-	  btMudaQtd11.addActionListener(this);
-	  btMudaQtd12.addActionListener(this);
+	  btConsHisJan.addActionListener(this);
+	  btConsHisFev.addActionListener(this);
+	  btConsHisMar.addActionListener(this);
+	  btConsHisAbr.addActionListener(this);
+	  btConsHisMai.addActionListener(this);
+	  btConsHisJun.addActionListener(this);
+	  btConsHisJul.addActionListener(this);
+	  btConsHisAgo.addActionListener(this);
+	  btConsHisSet.addActionListener(this);
+	  btConsHisOut.addActionListener(this);
+	  btConsHisNov.addActionListener(this);
+	  btConsHisDez.addActionListener(this);
+	  btSetaQtdJan.addActionListener(this);
+	  btSetaQtdFev.addActionListener(this);
+	  btSetaQtdMar.addActionListener(this);
+	  btSetaQtdAbr.addActionListener(this);
+	  btSetaQtdMai.addActionListener(this);
+	  btSetaQtdJun.addActionListener(this);
+	  btSetaQtdJul.addActionListener(this);
+	  btSetaQtdAgo.addActionListener(this);
+	  btSetaQtdSet.addActionListener(this);
+	  btSetaQtdOut.addActionListener(this);
+	  btSetaQtdNov.addActionListener(this);
+	  btSetaQtdDez.addActionListener(this);
 	  btMudaTudo.addActionListener(this);
   	
   	if (bPref[0]) {
@@ -2000,76 +2049,76 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	else if (evt.getSource()==btGrpCli) {
 	    grpCli();
 	}
-	else if (evt.getSource()==btMudaHis1) {
+	else if (evt.getSource()==btConsHisJan) {
 	    alteraHist(1);
 	}
-	else if (evt.getSource()==btMudaHis2) {
+	else if (evt.getSource()==btConsHisFev) {
 	    alteraHist(2);
 	}
-	else if (evt.getSource()==btMudaHis3) {
+	else if (evt.getSource()==btConsHisMar) {
 	    alteraHist(3);
 	}
-	else if (evt.getSource()==btMudaHis4) {
+	else if (evt.getSource()==btConsHisAbr) {
 	    alteraHist(4);
 	}
-	else if (evt.getSource()==btMudaHis5) {
+	else if (evt.getSource()==btConsHisMai) {
 	    alteraHist(5);
 	}
-	else if (evt.getSource()==btMudaHis6) {
+	else if (evt.getSource()==btConsHisJun) {
 	    alteraHist(6);
 	}
-	else if (evt.getSource()==btMudaHis7) {
+	else if (evt.getSource()==btConsHisJul) {
 	    alteraHist(7);
 	}
-	else if (evt.getSource()==btMudaHis8) {
+	else if (evt.getSource()==btConsHisAgo) {
 	    alteraHist(8);
 	}
-	else if (evt.getSource()==btMudaHis9) {
+	else if (evt.getSource()==btConsHisSet) {
 	    alteraHist(9);
 	}
-	else if (evt.getSource()==btMudaHis10) {
+	else if (evt.getSource()==btConsHisOut) {
 	    alteraHist(10);
 	}
-	else if (evt.getSource()==btMudaHis11) {
+	else if (evt.getSource()==btConsHisNov) {
 	    alteraHist(11);
 	}
-	else if (evt.getSource()==btMudaHis12) {
+	else if (evt.getSource()==btConsHisDez) {
 	    alteraHist(12);
 	}
-	else if (evt.getSource()==btMudaQtd1) {
+	else if (evt.getSource()==btSetaQtdJan) {
 	    geraHistoricos(new Integer(1));
 	}
-	else if (evt.getSource()==btMudaQtd2) {
+	else if (evt.getSource()==btSetaQtdFev) {
 	    geraHistoricos(new Integer(2));
 	}
-	else if (evt.getSource()==btMudaQtd3) {
+	else if (evt.getSource()==btSetaQtdMar) {
 	    geraHistoricos(new Integer(3));
 	}
-	else if (evt.getSource()==btMudaQtd4) {
+	else if (evt.getSource()==btSetaQtdAbr) {
 	    geraHistoricos(new Integer(4));
 	}
-	else if (evt.getSource()==btMudaQtd5) {
+	else if (evt.getSource()==btSetaQtdMai) {
 	    geraHistoricos(new Integer(5));
 	}
-	else if (evt.getSource()==btMudaQtd6) {
+	else if (evt.getSource()==btSetaQtdJun) {
 	    geraHistoricos(new Integer(6));
 	}
-	else if (evt.getSource()==btMudaQtd7) {
+	else if (evt.getSource()==btSetaQtdJul) {
 	    geraHistoricos(new Integer(7));
 	}
-	else if (evt.getSource()==btMudaQtd8) {
+	else if (evt.getSource()==btSetaQtdAgo) {
 	    geraHistoricos(new Integer(8));
 	}
-	else if (evt.getSource()==btMudaQtd9) {
+	else if (evt.getSource()==btSetaQtdSet) {
 	    geraHistoricos(new Integer(9));
 	}
-	else if (evt.getSource()==btMudaQtd10) {
+	else if (evt.getSource()==btSetaQtdOut) {
 	    geraHistoricos(new Integer(10));
 	}
-	else if (evt.getSource()==btMudaQtd11) {
+	else if (evt.getSource()==btSetaQtdNov) {
 	    geraHistoricos(new Integer(11));
 	}
-	else if (evt.getSource()==btMudaQtd12) {
+	else if (evt.getSource()==btSetaQtdDez) {
 	    geraHistoricos(new Integer(12));
 	}
 	else if (evt.getSource()==btMudaTudo) {
