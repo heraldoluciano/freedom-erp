@@ -226,7 +226,7 @@ public class NFPomiagro2 extends Layout {
 		 }
 		 
 		   
-         imp.say(imp.pRow()+0,14,Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,66-sDescAdic.length())+sDescAdic);
+        // imp.say(imp.pRow()+0,14,Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,66-sDescAdic.length())+sDescAdic);
          imp.say(imp.pRow()+0,83,sClasFisc);
          imp.say(imp.pRow()+0,89,itens.getString(NF.C_CODUNID).substring(0,4));
          imp.say(imp.pRow()+0,95,""+itens.getFloat(NF.C_QTDITPED));

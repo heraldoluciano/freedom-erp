@@ -46,7 +46,7 @@ public class TabVector {
 	}
 	
 	public boolean next() {
-		if (row<(vRows.size()-1)) {
+		if (row<(vRows.size())) {
 			row++;
 			return true;
 		}
@@ -55,7 +55,9 @@ public class TabVector {
 	}
 	
 	public void addRow() {
-		vRows.addElement(new Vector(cols));
+		Vector vTemp = new Vector();
+		vTemp.setSize(cols);
+		vRows.addElement(vTemp);
 		row++;
 	}
 	
@@ -109,7 +111,6 @@ public class TabVector {
 	public void setObject(int pos, Object obj) {
 		Vector v = getCol(this.row);
 		if (v!=null) { 
-			v.setSize(pos+1);
 			v.setElementAt(obj, pos);
 			vRows.setElementAt(v, this.row);
 		}
