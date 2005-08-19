@@ -53,8 +53,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLVisitas extends FFDialogo implements MouseListener{
   private JTextFieldPad txtCodHist = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtSitHist = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
-  private JTextFieldPad txtTipoHist = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtSitHist = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtTipoHist = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -83,14 +83,12 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     setAtribos(520, 532);
     setConexao(con);
     
-    lchistorico.add(new GuardaCampo( txtCodHist, "CodHistTK", "Cód.hist.", ListaCampos.DB_PK, false));
-    lchistorico.add(new GuardaCampo( txtDataHist, "DataHistTk", "Data", ListaCampos.DB_SI,false));
-    lchistorico.add(new GuardaCampo( txtHoraHist, "HoraHistTk", "Hora", ListaCampos.DB_SI,false));
+    lchistorico.add(new GuardaCampo( txtCodHist, "CodHistTK", "Cód.hist.", ListaCampos.DB_PK, true));
+    lchistorico.add(new GuardaCampo( txtDataHist, "DataHistTk", "Data", ListaCampos.DB_SI,true));
+    lchistorico.add(new GuardaCampo( txtHoraHist, "HoraHistTk", "Hora", ListaCampos.DB_SI,true));
     lchistorico.add(new GuardaCampo( txtCodCont, "CodCto", "Cod.cont.", ListaCampos.DB_SI,false));
-    lchistorico.add(new GuardaCampo( txtRazCont, "RazCto", "Nome do contato", ListaCampos.DB_SI,false));
-    lchistorico.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cod.cont.", ListaCampos.DB_SI,false));
-    lchistorico.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI,false));
-    lchistorico.add(new GuardaCampo( txaHist, "DescHistTK", "Observações", ListaCampos.DB_SI,false));
+    lchistorico.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cod.atend.", ListaCampos.DB_SI,false));
+    lchistorico.add(new GuardaCampo( txaHist, "DescHistTK", "Observações", ListaCampos.DB_SI,true));
     lchistorico.add(new GuardaCampo( txtSitHist, "SitHistTK", "Sit.", ListaCampos.DB_SI,false));
     lchistorico.add(new GuardaCampo( txtTipoHist, "TipoHistTK", "Tipo", ListaCampos.DB_SI,false));
     lchistorico.montaSql(false, "HISTORICO", "TK");
@@ -178,7 +176,8 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     adic(new JScrollPane(txaHist),7,100,496,80);
     
     pnRod.add(pinNavHist, BorderLayout.SOUTH);
-    pinNavHist.adic(navHist, 0, 0, 270, 25);
+    pinNavHist.adic(navHist, 0, 0, 160, 25);
+    navHist.setListaCampos(lchistorico);
     
   }
   
@@ -213,7 +212,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
 	  txtSitHist.setVlrString((String)tab.getValor(iLinha,6));
   }
   
-  public void carregaTabela(int year,int month){
+  public void carregaTabela(int month,int year){
 	  PreparedStatement ps = null;
   	  ResultSet rs = null;
   	  String sql = null;
