@@ -32,16 +32,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -71,6 +72,8 @@ public class DLNovoPag extends FFDialogo implements PostListener {
   private ListaCampos lcFor = new ListaCampos(this,"FR");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
+  private Navegador navPagar = new Navegador(false);
+  private Navegador navItPagar = new Navegador(false);
   public DLNovoPag(Component cOrig) {
   	super(cOrig);
     setTitulo("Novo");
@@ -79,7 +82,13 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     lcItPagar.setMaster(lcPagar);
     lcPagar.adicDetalhe(lcItPagar);
     lcItPagar.setTabela(tabPag);
+    navPagar.setName("Pagar");
+    lcPagar.setNavegador(navPagar);
 
+    navItPagar.setName("itpagar");
+    lcItPagar.setNavegador(navItPagar);
+
+    
     lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, false));
     lcFor.add(new GuardaCampo( txtDescFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI,false));
     lcFor.montaSql(false, "FORNECED", "CP");

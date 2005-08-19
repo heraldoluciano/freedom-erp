@@ -42,6 +42,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -73,6 +74,8 @@ public class DLNovoRec extends FFDialogo implements PostListener{
   private ListaCampos lcCli = new ListaCampos(this,"CL");
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
+  private Navegador navRec = new Navegador(false);
+  private Navegador navItRec = new Navegador(false);
   public DLNovoRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Novo");
@@ -81,6 +84,11 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcItReceber.setMaster(lcReceber);
     lcReceber.adicDetalhe(lcItReceber);
     lcItReceber.setTabela(tabRec);
+    
+    navRec.setName("Receber");
+    lcReceber.setNavegador(navRec);
+    navItRec.setName("itpagar");
+    lcItReceber.setNavegador(navItRec);
 
     lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.",  ListaCampos.DB_PK, false));
     lcCli.add(new GuardaCampo( txtDescCli, "RazCli", "Razão social do cliente",  ListaCampos.DB_SI, false));
