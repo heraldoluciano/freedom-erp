@@ -80,7 +80,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     lchistorico.add(new GuardaCampo( txtDataHist, "DataHistTk", "Data", ListaCampos.DB_SI,true));
     lchistorico.add(new GuardaCampo( txtHoraHist, "HoraHistTk", "Hora", ListaCampos.DB_SI,true));
     lchistorico.add(new GuardaCampo( txaHist, "DescHistTK", "Observações", ListaCampos.DB_SI,true));
-    lchistorico.montaSql(false, "HISTORICO", "TK");
+    lchistorico.montaSql(true, "HISTORICO", "TK");
     lchistorico.setReadOnly(true);
     txtCodHist.setTabelaExterna(lchistorico);
     txtCodHist.setFK(true);
