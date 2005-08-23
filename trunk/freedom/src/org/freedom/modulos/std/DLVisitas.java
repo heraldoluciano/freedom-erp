@@ -56,7 +56,9 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtHoraHist = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
+  private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtHoraHist = new JTextFieldPad(JTextFieldPad.TP_TIME,5,0);
   private JTextFieldPad txtDataHist = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextAreaPad txaHist = new JTextAreaPad(1000);
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -67,6 +69,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private Tabela tab = new Tabela();
   private JLabel lbMes = new JLabel();
   private ListaCampos lchistorico = new ListaCampos(this);
+  private ListaCampos lcAtendente = new ListaCampos(this);
   private Navegador navHist = new Navegador(false);
   
   public DLVisitas(Component cOrig, Connection con) {
@@ -74,19 +77,29 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     setTitulo("Alteração de historico");
     setAtribos(520, 500);
     setConexao(con);
-    
-   
+
+
     lchistorico.add(new GuardaCampo( txtCodHist, "CodHistTK", "Cód.hist.", ListaCampos.DB_PK, true));
     lchistorico.add(new GuardaCampo( txtDataHist, "DataHistTk", "Data", ListaCampos.DB_SI,true));
     lchistorico.add(new GuardaCampo( txtHoraHist, "HoraHistTk", "Hora", ListaCampos.DB_SI,true));
+    lchistorico.add(new GuardaCampo( txtCodAtend, "CodAtend", "Atendente", ListaCampos.DB_FK,false));
     lchistorico.add(new GuardaCampo( txaHist, "DescHistTK", "Observações", ListaCampos.DB_SI,true));
     lchistorico.montaSql(true, "HISTORICO", "TK");
-    lchistorico.setReadOnly(true);
+    lchistorico.setReadOnly(false);
+    lchistorico.setQueryCommit(true);
     txtCodHist.setTabelaExterna(lchistorico);
     txtCodHist.setFK(true);
     txtCodHist.setNomeCampo("CodHistTK");
+    
     lchistorico.setNavegador(navHist);
     navHist.setListaCampos(lchistorico);
+      
+    lcAtendente.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true));
+    lcAtendente.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false));
+    lcAtendente.montaSql(false, "ATENDENTE", "TK");    
+    lcAtendente.setQueryCommit(false);
+    lcAtendente.setReadOnly(true);
+    txtCodAtend.setTabelaExterna(lcAtendente);
     
       
     c.add(pnCab, BorderLayout.NORTH);
@@ -136,8 +149,12 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     adic(txtCodHist,7,20,70,20);   
     adic(new JLabelPad("Data"),80,0,80,20);
     adic(txtDataHist,80,20,80,20);    
-    adic(new JLabelPad("Hora"),163,0,80,20);
-    adic(txtHoraHist,163,20,80,20);
+    adic(new JLabelPad("Hora"),163,0,70,20);
+    adic(txtHoraHist,163,20,70,20);/*
+    adic(new JLabelPad("Cód.atend."),236,0,70,20);
+    adic(txtCodAtend,236,20,70,20);    
+    adic(new JLabelPad("Nome do atendente"),309,0,180,20);
+    adic(txtNomeAtend,309,20,188,20);*/
     adic(new JLabelPad("Historico"),7,40,70,20);
     adic(new JScrollPane(txaHist),7,60,490,80);
     
@@ -151,6 +168,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
 	  txtRazCli.setVlrString((String)args.elementAt(1));
 	  txtAno.setVlrInteger(((Integer)args.elementAt(2)));	    
 	  lbMes.setText(getMes(((Integer)args.elementAt(3)).intValue()));
+	  txtCodAtend.setVlrInteger(((Integer)args.elementAt(4)));	    
   }
   
   public void mouseEntered(MouseEvent e) { }
@@ -169,6 +187,7 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   public void carregaCampos(){
 	  int iLinha = tab.getLinhaSel();
 	  txtCodHist.setVlrInteger((Integer)tab.getValor(iLinha,0));
+	  txtCodAtend.setVlrInteger((Integer)tab.getValor(iLinha,2));
 	  txtDataHist.setVlrDate((Date)tab.getValor(iLinha,3));
 	  txtHoraHist.setVlrString((String)tab.getValor(iLinha,4));
 	  txaHist.setVlrString((String)tab.getValor(iLinha,5));
@@ -240,5 +259,6 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   public void setConexao(Connection cn) {
   	  super.setConexao(cn);
   	  lchistorico.setConexao(cn);
+  	  lcAtendente.setConexao(cn);
   }
 }
