@@ -841,23 +841,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	tbObsData.addTabelaSelListener(this);
   	
   }
-  
-  public void alteraHis(int mes){
-	  Vector vCli = new Vector();
-	  vCli.addElement(txtCodCli.getVlrInteger());
-	  vCli.addElement(txtRazCli.getVlrString());
-	  vCli.addElement(txtAno.getVlrInteger());
-	  vCli.addElement(new  Integer(mes));
-	  DLVisitas dl = new DLVisitas(FCliente.this,con);
-	  try{
-		  dl.setVisible(true);
-	  }
-	  finally{
-		  vCli = null;
-		  dl = null;
-	  }
-  }
-  
+ 
   private void novaObs() {
       String sSql = null;
       int iCodCli = 0;
@@ -2125,10 +2109,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	    geraHistoricos(null);
 	}
 
-
-
-
-
     super.actionPerformed(evt);
   }
   
@@ -2139,7 +2119,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  vCli.addElement(txtCodCli.getVlrInteger());
 		  vCli.addElement(txtRazCli.getVlrString());
 		  vCli.addElement(txtAno.getVlrInteger());
-		  vCli.addElement(new Integer(mes));		  
+		  vCli.addElement(new Integer(mes));		 
+		  vCli.addElement(buscaAtendente());		 
 		  dl = new DLVisitas(FCliente.this,con);
 		  
 		  dl.setCampos(vCli);
