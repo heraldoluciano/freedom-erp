@@ -170,7 +170,7 @@ public class NFBuzzi extends Leiaute {
                 sMensAdic = rs.getString(5) != null ? rs.getString(5).trim() : "";
             }
             
-/*
+
             String sSigla = "";
             String sCodfisc= rs.getString("CodFisc");
             
@@ -178,18 +178,20 @@ public class NFBuzzi extends Leiaute {
        	      sSigla="";
             sCodfisc = sCodfisc.trim();
             if (sCodfisc.equals("84220202"))
-       	      sSigla = "1"; 	   
+       	      sSigla = "A"; 	   
 	        else if (sCodfisc.equals("84220500"))
-		      sSigla = "2"; 	   	   
+		      sSigla = "B"; 	   	   
 	        else if (sCodfisc.equals("84631700"))
-		      sSigla = "3"; 	    	   
+		      sSigla = "C"; 	    	   
 	        else if (sCodfisc.equals("84631800"))
-		      sSigla = "4"; 	   
+		      sSigla = "D"; 	   
             else if (sCodfisc.equals("84229000"))
-		      sSigla = "5"; 	   
+		      sSigla = "E"; 	   
 	        else if (sCodfisc.equals("84220399"))
-		      sSigla = "6";
-	        else {
+		      sSigla = "F";
+	        else 
+	          sSigla = " ";
+	       /* else {
               if (!sFiscAdic.equals(""))
            	    JOptionPane.showMessageDialog(null,"Mais de um produto sem classificacao definida,sigla assinalada em branco.");
               else {
@@ -198,9 +200,9 @@ public class NFBuzzi extends Leiaute {
        	        
               }
             
-            }  
-*/                        
-            //imp.say(imp.pRow()+0,56,sSigla);
+            }  */
+                      
+            imp.say(imp.pRow()+0,60,sSigla);
             imp.say(imp.pRow()+0,69,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
             imp.say(imp.pRow()+0,79,rs.getString("CodUnid").substring(0,4));
             imp.say(imp.pRow()+0,82,""+rs.getDouble("QtdItVenda"));
@@ -276,7 +278,11 @@ public class NFBuzzi extends Leiaute {
          } 
          
       }
-      if (imp.pRow()<36) {
+      imp.say(imp.pRow()+1,0,""+imp.comprimido());  
+  	  imp.say(imp.pRow()+1,16,"Classificação fiscal");
+  	  imp.say(imp.pRow()+1,16,"A = 84220202   B = 84220500   C = 84631700");
+  	  imp.say(imp.pRow()+1,16,"D = 84631800   E = 84229000   F = 84220399");
+      if (imp.pRow()<36) {    	
       	imp.say(imp.pRow()+1,0,""+imp.comprimido());
       	for (int i=0;i<3;i++) {
       		imp.say(imp.pRow()+1,0,""+imp.comprimido());
