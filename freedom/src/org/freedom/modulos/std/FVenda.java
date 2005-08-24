@@ -713,57 +713,37 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		adicDescFK(txtDescTipoMov, 180, 20, 197, 20, "DescTipoMov",	"Descrição do tipo de movimento");
 		adicCampo(txtCodSerie, 380, 20, 77, 20, "Serie", "Série",ListaCampos.DB_FK, false);
 		adicCampo(txtDocVenda, 460, 20, 77, 20, "DocVenda", "N doc.",ListaCampos.DB_SI, false);
-		adicCampo(txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data emis.",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtDtSaidaVenda, 640, 20, 97, 20, "DtSaidaVenda",
-				"Data saída", ListaCampos.DB_SI, true);
-		adicCampo(txtCodCli, 7, 60, 80, 20, "CodCli", "Cód. cli.",
-				ListaCampos.DB_FK, txtDescCli, true);
-		adicDescFK(txtDescCli, 90, 60, 197, 20, "RazCli",
-				"Razão social do cliente");
-		adicCampo(txtCodPlanoPag, 290, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.",
-				ListaCampos.DB_FK, txtDescPlanoPag, true);
-		adicDescFK(txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag",
-				"Descrição do plano de pag.");
-		adicCampo(txtPedCliVenda, 570, 60, 77, 20, "PedCliVenda", "N.ped.cli.",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtDtEmitVenda, 540, 20, 97, 20, "DtEmitVenda", "Data emis.",ListaCampos.DB_SI, true);
+		adicCampo(txtDtSaidaVenda, 640, 20, 97, 20, "DtSaidaVenda","Data saída", ListaCampos.DB_SI, true);
+		adicCampo(txtCodCli, 7, 60, 80, 20, "CodCli", "Cód. cli.",ListaCampos.DB_FK, txtDescCli, true);
+		adicDescFK(txtDescCli, 90, 60, 197, 20, "RazCli","Razão social do cliente");
+		adicCampo(txtCodPlanoPag, 290, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.",ListaCampos.DB_FK, txtDescPlanoPag, true);
+		adicDescFK(txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag","Descrição do plano de pag.");
+		adicCampo(txtPedCliVenda, 570, 60, 77, 20, "PedCliVenda", "N.ped.cli.",ListaCampos.DB_SI, false);
 		setPainel(pinCabComis);
-		adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_FK, txtDescVend, true);
-		adicDescFK(txtDescVend, 90, 20, 197, 20, "NomeVend",
-				"Nome do comissionado");
+		adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.",ListaCampos.DB_FK, txtDescVend, true);
+		adicDescFK(txtDescVend, 90, 20, 197, 20, "NomeVend","Nome do comissionado");
 		if (bPrefs[4]) {
-			adicCampo(txtCodClComis, 290, 20, 80, 20, "CodClComis",
-					"Cód.c.comis.", ListaCampos.DB_FK, txtDescClComis, true);
-			adicDescFK(txtDescClComis, 373, 20, 260, 20, "DescClComis",
-					"Descrição da class. de comis.");
+			adicCampo(txtCodClComis, 290, 20, 80, 20, "CodClComis","Cód.c.comis.", ListaCampos.DB_FK, txtDescClComis, true);
+			adicDescFK(txtDescClComis, 373, 20, 260, 20, "DescClComis","Descrição da class. de comis.");
 
-			adicCampo(txtPercComisVenda, 640, 20, 57, 20, "PercComisVenda",
-					"% comis.", ListaCampos.DB_SI, true);
+			adicCampo(txtPercComisVenda, 640, 20, 57, 20, "PercComisVenda","% comis.", ListaCampos.DB_SI, true);
 			adic(new JLabelPad("Vlr. comis."), 7, 40, 100, 20);
 			adic(txtVlrComisVenda, 7, 60, 100, 20);
 			adic(new JLabelPad("% M. comis."), 110, 40, 100, 20);
 			adic(txtMedComisVenda, 110, 60, 80, 20);
 			adic(btAltComis, 200, 50, 30, 30);
 		} else {
-			adicCampo(txtPercComisVenda, 290, 20, 57, 20, "PercComisVenda",
-					"% comis.", ListaCampos.DB_SI, true);
+			adicCampo(txtPercComisVenda, 290, 20, 57, 20, "PercComisVenda","% comis.", ListaCampos.DB_SI, true);
 		}
-		adicCampoInvisivel(txtStatusVenda, "StatusVenda", "Sit.",
-				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtStatusVenda, "StatusVenda", "Sit.",ListaCampos.DB_SI, false);
 		setPainel(pinCabFiscal);
-		adicCampo(txtVlrIPIVenda, 7, 20, 80, 20, "VlrIPIVenda", "Vlr. IPI",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrICMSVenda, 7, 60, 80, 20, "VlrICMSVenda", "Vlr. ICMS",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrPisVenda, 90, 20, 77, 20, "VlrPisVenda", "Vlr. PIS",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrCofinsVenda, 90, 60, 77, 20, "VlrCofinsVenda",
-				"Vlr. PIS", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrIRVenda, 170, 20, 80, 20, "VlrIRVenda", "Vlr. I.R.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrCSocialVenda, 170, 60, 80, 20, "VlrCSocialVenda",
-				"Vlr. c. social", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrIPIVenda, 7, 20, 80, 20, "VlrIPIVenda", "Vlr. IPI",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrICMSVenda, 7, 60, 80, 20, "VlrICMSVenda", "Vlr. ICMS",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrPisVenda, 90, 20, 77, 20, "VlrPisVenda", "Vlr. PIS",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrCofinsVenda, 90, 60, 77, 20, "VlrCofinsVenda","Vlr. PIS", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrIRVenda, 170, 20, 80, 20, "VlrIRVenda", "Vlr. I.R.",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrCSocialVenda, 170, 60, 80, 20, "VlrCSocialVenda","Vlr. c. social", ListaCampos.DB_SI, false);
 		lcCampos.setWhereAdic("TIPOVENDA='V'");
 		setListaCampos(true, "VENDA", "VD");
 
@@ -783,80 +763,52 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		if (bPrefs[0]) {
 			                        
 			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", 
-					ListaCampos.DB_SI, false);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false);
 			adic(new JLabelPad("Ref. prod."), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
 		} else {
 			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
-			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
 		}
-		adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd",
-				"Descrição do produto");
-		adicCampo(txtCodLote, 340, 20, 67, 20, "CodLote", "Lote",
-				ListaCampos.DB_FK, txtDescLote, false);
-		adicCampo(txtQtdItVenda, 410, 20, 67, 20, "QtdItVenda", "Qtd.",
-				ListaCampos.DB_SI, true);
+		adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd","Descrição do produto");
+		adicCampo(txtCodLote, 340, 20, 67, 20, "CodLote", "Lote",ListaCampos.DB_FK, txtDescLote, false);
+		adicCampo(txtQtdItVenda, 410, 20, 67, 20, "QtdItVenda", "Qtd.",ListaCampos.DB_SI, true);
 		
 		txtCodAlmoxItVenda.setSoLeitura(true);
 		adicCampo(txtCodAlmoxItVenda, 280, 60, 47,20, "codalmox", "Cod.ax",	ListaCampos.DB_FK, false);
 		
 		txtQtdItVenda.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditvenda"));
 				
-		adicCampo(txtPrecoItVenda, 480, 20, 67, 20, "PrecoItVenda", "Preço",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtPercDescItVenda, 550, 20, 57, 20, "PercDescItVenda",
-				"% desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrDescItVenda, 610, 20, 67, 20, "VlrDescItVenda",
-				"V. desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtPercComItVenda, 680, 20, 57, 20, "PercComisItVenda",
-				"% com.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrComisItVenda, 7, 60, 50, 20, "VlrComisItVenda",
-				"V. com.", ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoItVenda, 480, 20, 67, 20, "PrecoItVenda", "Preço",ListaCampos.DB_SI, true);
+		adicCampo(txtPercDescItVenda, 550, 20, 57, 20, "PercDescItVenda","% desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrDescItVenda, 610, 20, 67, 20, "VlrDescItVenda","V. desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtPercComItVenda, 680, 20, 57, 20, "PercComisItVenda","% com.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrComisItVenda, 7, 60, 50, 20, "VlrComisItVenda","V. com.", ListaCampos.DB_SI, false);
 
-		adicCampo(txtCodNat, 60, 60, 47, 20, "CodNat", "CFOP",
-				ListaCampos.DB_FK, txtDescNat, true);
+		adicCampo(txtCodNat, 60, 60, 47, 20, "CodNat", "CFOP",ListaCampos.DB_FK, txtDescNat, true);
 
 		adicDescFK(txtDescNat, 110, 60, 167, 20, "DescNat", "Descrição da CFOP");
 		// colocar aqui o campo de saldo
 		adicDescFK(txtSldLiqProd, 330, 60, 67, 20, "SldLiqProd", "Saldo");
-		adicCampo(txtBaseICMSItVenda, 400, 60, 67, 20, "VlrBaseICMSItVenda",
-				"B. ICMS", ListaCampos.DB_SI, false);
-		adicCampo(txtPercICMSItVenda, 470, 60, 57, 20, "PercICMSItVenda",
-				"% ICMS", ListaCampos.DB_SI, true);
-		adicCampo(txtVlrICMSItVenda, 530, 60, 67, 20, "VlrICMSItVenda",
-				"V. ICMS", ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtBaseIPIItVenda, "VlrBaseIPIItVenda", "B. IPI",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtAliqIPIItVenda, "PercIPIItVenda", "% IPI",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrIPIItVenda, 600, 60, 67, 20, "VlrIPIItVenda", "V. IPI",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtVlrProdItVenda, "VlrProdItVenda", "V. bruto",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtStrDescItVenda, "StrDescItVenda", "Descontos",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtBaseICMSItVenda, 400, 60, 67, 20, "VlrBaseICMSItVenda","B. ICMS", ListaCampos.DB_SI, false);
+		adicCampo(txtPercICMSItVenda, 470, 60, 57, 20, "PercICMSItVenda","% ICMS", ListaCampos.DB_SI, true);
+		adicCampo(txtVlrICMSItVenda, 530, 60, 67, 20, "VlrICMSItVenda","V. ICMS", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtBaseIPIItVenda, "VlrBaseIPIItVenda", "B. IPI",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtAliqIPIItVenda, "PercIPIItVenda", "% IPI",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrIPIItVenda, 600, 60, 67, 20, "VlrIPIItVenda", "V. IPI",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtVlrProdItVenda, "VlrProdItVenda", "V. bruto",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtStrDescItVenda, "StrDescItVenda", "Descontos",ListaCampos.DB_SI, false);
 		adicDBLiv(txaObsItVenda, "ObsItVenda", "Observação", false);
-		adicCampoInvisivel(txtOrigFisc, "OrigFisc", "Origem",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodTratTrib, "CodTratTrib", "Cód.tr.trib.",
-				ListaCampos.DB_FK, false);
-		adicCampoInvisivel(txtTipoFisc, "TipoFisc", "Tipo fisc.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodMens, "CodMens", "Cód.mens.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtVlrLiqItVenda, 670, 60, 65, 20, "VlrLiqItVenda",
-				"Vlr.item", ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodEmpLG, "CodEmpLG", "Emp.log.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodFilialLG, "CodFilialLG", "Filial log.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI,
-				false);
+		adicCampoInvisivel(txtOrigFisc, "OrigFisc", "Origem",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodTratTrib, "CodTratTrib", "Cód.tr.trib.",ListaCampos.DB_FK, false);
+		adicCampoInvisivel(txtTipoFisc, "TipoFisc", "Tipo fisc.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodMens, "CodMens", "Cód.mens.",ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItVenda, 670, 60, 65, 20, "VlrLiqItVenda","Vlr.item", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodEmpLG, "CodEmpLG", "Emp.log.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodFilialLG, "CodFilialLG", "Filial log.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtCodLog, "CodLog", "Cód.log.", ListaCampos.DB_SI,false);
 		pinTot.adic(new JLabelPad("Vlr.prod."), 7, 0, 90, 20);
 		pinTot.adic(txtVlrProdVenda, 7, 20, 90, 20);
 		pinTot.adic(new JLabelPad("Vlr.desc."), 7, 40, 90, 20);
@@ -1895,12 +1847,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO    |                      DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
+						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO    |                      DESCRIÇÃO                    |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					if (i==0) {
 						imp.say(imp.pRow() + 0, 1, rs.getString("CodItVenda").trim());
-						imp.say(imp.pRow() + 0, 7, rs.getString("RefProd").trim());
+						imp.say(imp.pRow() + 0, 6, rs.getString("RefProd").trim());
 					}
 					imp.say(imp.pRow() + 0, 22,"" + vDesc.elementAt(i).toString());
 					if (i==0) {
@@ -1930,14 +1882,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "PAGAMENTO.........:    " + rs.getString("CODPLANOPAG") + " - " + rs.getString("DESCPLANOPAG"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			if (rs.getString(51)!=null)
-				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " + (rs.getString(51).equals("C") ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE "));
-			else
-				imp.say(imp.pRow() + 0, 0, "FRETE.............:    " );
+			imp.say(imp.pRow() + 0, 0, "FRETE.............:    " + (rs.getString(51)!=null ? (rs.getString(51).equals("C") ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE ") : ""));			
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "TRANSPORTADORA....:    " + rs.getString(50));
+			imp.say(imp.pRow() + 0, 0, "TRANSPORTADORA....:    " + (rs.getString(50)!=null ? rs.getString(50) : ""));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "PRAZO DE ENTREGA..:    " + rs.getString("DIASPE"));
+			imp.say(imp.pRow() + 0, 0, "PRAZO DE ENTREGA..:    " + (rs.getString("DIASPE")!=null ? rs.getString("DIASPE") : ""));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -1957,11 +1906,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 5,Funcoes.replicate("-", 40));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 5, rs.getString("NomeVend"));
+			imp.say(imp.pRow() + 0, 5, (rs.getString("NomeVend")!=null ? rs.getString("NomeVend") : ""));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 5, rs.getString(61));
+			imp.say(imp.pRow() + 0, 5, (rs.getString(61)!=null ? rs.getString(61) : ""));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 5, rs.getString("EmailVend"));
+			imp.say(imp.pRow() + 0, 5, (rs.getString("EmailVend")!=null ? rs.getString("EmailVend") : ""));
 
 
 			
@@ -2010,14 +1959,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "V.VLRLIQVENDA,V.CODVEND,VEND.NOMEVEND,V.CODPLANOPAG,PG.DESCPLANOPAG,F.CODTRAN,"
 				+ "T.RAZTRAN,F.TIPOFRETEVD,F.PLACAFRETEVD,F.UFFRETEVD,T.CNPJTRAN,T.ENDTRAN,T.NUMTRAN,T.CIDTRAN,"
 				+ "T.UFTRAN,T.INSCTRAN,F.QTDFRETEVD,F.ESPFRETEVD,F.MARCAFRETEVD,F.PESOBRUTVD,"
-				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI " 
+				+ "F.PESOLIQVD,I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,P.CODFISC,FC.DESCFISC " 
 				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG,"
-				+ "VDFRETEVD F, VDTRANSP T WHERE V.CODVENDA="
-				+ iCodVenda
+				+ "VDFRETEVD F, VDTRANSP T, LFCLFISCAL FC " 
+				+ "WHERE V.CODVENDA=? " 
 				+ " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " 
 				+ " AND I.CODVENDA=V.CODVENDA AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA "
 				+ " AND P.CODPROD=I.CODPROD AND VEND.CODVEND=V.CODVEND"
 				+ " AND PG.CODPLANOPAG=V.CODPLANOPAG AND F.CODVENDA=V.CODVENDA AND T.CODTRAN=F.CODTRAN"
+				+ " AND FC.CODEMP=P.CODEMPFC AND FC.CODFILIAL=P.CODFILIALFC AND FC.CODFISC=P.CODFISC "
 				+ " ORDER BY P." + dl.getValor() + ",P.DESCPROD";
 
 		PreparedStatement ps = null;
@@ -2028,6 +1978,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.limpaPags();
 			iMaxItem = linPag - 22;
 			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,iCodVenda);
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
