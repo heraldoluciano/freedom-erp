@@ -68,12 +68,9 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Requisições pendentes", "S", "N");
-//	private JCheckBoxPad cbCompletas = new JCheckBoxPad("Requisições completas", "S", "N");
-
 	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Requisições aprovadas", "S", "N");
 	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Requisições expedidas", "S", "N");
 	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Requisições canceladas", "S", "N");
-//	private JCheckBoxPad cbTomadasDePreco = new JCheckBoxPad("Cotações de preço", "S", "N");
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
@@ -216,22 +213,13 @@ public class FConsRMA extends FFilho implements ActionListener {
 		pinCab.adic(txtCodOP, 237, 70, 100, 20);
 		pinCab.adic(new JLabelPad("Seq. OP."),340, 48, 153, 20);
 		pinCab.adic(txtSeqOP, 340, 70, 100, 20);
-		
-		
-/*
-		pinCab.adic(new JLabelPad("Cód.almox."), 237, 48, 75, 20);
-		pinCab.adic(txtCodAlmoxarife, 237, 70, 70, 20);
-		pinCab.adic(new JLabelPad("Nome do almoxarifado"), 310, 48, 410, 20);
-		pinCab.adic(txtDescAlmoxarife, 310, 70, 180, 20);
-*/
+
 		pinCab.adic(lbStatus, 15, 100, 50, 18);
 		pinCab.adic(lbLinha2, 7, 110, 373, 66);
 		pinCab.adic(cbPendentes, 15, 122, 170, 20);
 		pinCab.adic(cbAprovadas, 15, 147, 170, 20);
 		pinCab.adic(cbExpedidas, 195, 122, 180, 20);
 		pinCab.adic(cbCanceladas, 195, 147, 180, 20);
-		
-//		pinCab.adic(cbTomadasDePreco, 195, 147, 180, 20);
 
 		pinCab.adic(btBusca, 382, 110, 110, 30);
 		pinCab.adic(btPrevimp, 382, 145, 110, 30);
@@ -242,12 +230,14 @@ public class FConsRMA extends FFilho implements ActionListener {
 		tab.adicColuna("");
 		tab.adicColuna("Rma.");
 		tab.adicColuna("Data");
+		tab.adicColuna("Usuário");
 		tab.adicColuna("Motivo");
 
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(80, 1);
 		tab.setTamColuna(90, 2);
-		tab.setTamColuna(480, 3);
+		tab.setTamColuna(60, 3);
+		tab.setTamColuna(385, 4);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -301,13 +291,11 @@ public class FConsRMA extends FFilho implements ActionListener {
 		boolean usaOr = false;
 		boolean usaWhere = false;
 		boolean usuario = (!txtCodUsu.getVlrString().trim().equals(""));
-//		boolean almoxarifado = (txtCodAlmoxarife.getVlrInteger().intValue() > 0);
 		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
 		String sCodOp = txtCodOP.getVlrString();
 		String sSeqOp = txtSeqOP.getVlrString();
 
-		
 		if (cbPendentes.getVlrString().equals("S")) {
 			usaWhere = true;
 			where = " SitRma ='PE'";
@@ -363,13 +351,13 @@ public class FConsRMA extends FFilho implements ActionListener {
 		if (usuario)
 			where += " AND (R.IDUSU=?) ";
 
-		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.MOTIVORMA "
+		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.IDUSU, R.MOTIVORMA "
 				+ "FROM  EQRMA R, EQITRMA IT "
 				+ "WHERE R.CODEMP=? "
 				+ "AND R.CODFILIAL=? "
 				+ "AND IT.CODRMA=R.CODRMA AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "
 				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
-				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.MOTIVORMA ";
+				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.MOTIVORMA, R.IDUSU ";
 
 		System.out.println(sSQL);
 		try {
@@ -431,8 +419,10 @@ public class FConsRMA extends FFilho implements ActionListener {
 				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
 						.sqlDateToStrDate(rs.getDate(3))
 						+ "", iLin, 2);
-				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
-						iLin, 3);
+				tab.setValor(rs.getString(4) == null ? "DESCONHECIDO" : rs.getString(4) + "",
+						iLin, 3);				
+				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "",
+						iLin, 4);
 
 				iLin++;
 			}
@@ -467,11 +457,11 @@ public class FConsRMA extends FFilho implements ActionListener {
 					imp.setTitulo("Relatório de Requisições de material");
 					imp.addSubTitulo("Relatório de Requisições de material");
 					imp.impCab(136, true);
-					//	imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "| Rma.");
 					imp.say(imp.pRow() + 0, 15, "| Emissão");
 					imp.say(imp.pRow() + 0, 29, "| Situação");
-					imp.say(imp.pRow() + 0, 45, "| Motivo.");
+					imp.say(imp.pRow() + 0, 45, "| Usuário");
+					imp.say(imp.pRow() + 0, 65, "| Motivo");
 					imp.say(imp.pRow() + 0, 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 
