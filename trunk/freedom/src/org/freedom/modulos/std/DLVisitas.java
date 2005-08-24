@@ -69,14 +69,21 @@ public class DLVisitas extends FFDialogo implements MouseListener{
   private Tabela tab = new Tabela();
   private JLabel lbMes = new JLabel();
   private ListaCampos lchistorico = new ListaCampos(this);
-  private ListaCampos lcAtendente = new ListaCampos(this);
+  private ListaCampos lcAtendente = new ListaCampos(this,"AE");
   private Navegador navHist = new Navegador(false);
   
   public DLVisitas(Component cOrig, Connection con) {
     super(cOrig);    
     setTitulo("Alteração de historico");
     setAtribos(520, 500);
-    setConexao(con);
+    
+    lcAtendente.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true));
+    lcAtendente.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false));
+    lcAtendente.montaSql(false, "ATENDENTE", "TK");    
+    lcAtendente.setQueryCommit(false);
+    lcAtendente.setReadOnly(true);
+    txtCodAtend.setListaCampos(lcAtendente);
+    txtCodAtend.setTabelaExterna(lcAtendente);
 
 
     lchistorico.add(new GuardaCampo( txtCodHist, "CodHistTK", "Cód.hist.", ListaCampos.DB_PK, true));
@@ -85,21 +92,13 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     lchistorico.add(new GuardaCampo( txtCodAtend, "CodAtend", "Atendente", ListaCampos.DB_FK,false));
     lchistorico.add(new GuardaCampo( txaHist, "DescHistTK", "Observações", ListaCampos.DB_SI,true));
     lchistorico.montaSql(true, "HISTORICO", "TK");
-    lchistorico.setReadOnly(false);
     lchistorico.setQueryCommit(true);
+    lchistorico.setReadOnly(false);
     txtCodHist.setTabelaExterna(lchistorico);
-    txtCodHist.setFK(true);
-    txtCodHist.setNomeCampo("CodHistTK");
+    txtCodHist.setListaCampos(lchistorico);
     
     lchistorico.setNavegador(navHist);
-    navHist.setListaCampos(lchistorico);
-      
-    lcAtendente.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.atend.", ListaCampos.DB_PK, true));
-    lcAtendente.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome do atendente", ListaCampos.DB_SI, false));
-    lcAtendente.montaSql(false, "ATENDENTE", "TK");    
-    lcAtendente.setQueryCommit(false);
-    lcAtendente.setReadOnly(true);
-    txtCodAtend.setTabelaExterna(lcAtendente);
+    navHist.setListaCampos(lchistorico);   
     
       
     c.add(pnCab, BorderLayout.NORTH);
