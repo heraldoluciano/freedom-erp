@@ -1784,13 +1784,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "I.DIASPE,C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
 				+ "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND "
 				+ "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), "
-				+ "V.PEDCLIVENDA,C.CONTCLI "
-				+ "FROM VDVENDA V, VDCLIENTE C,VDITVENDA I, EQPRODUTO P,VDVENDEDOR VEND, FNPLANOPAG PG "
+				+ "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FC.DESCFISC "
+				+ "FROM VDVENDA V,VDCLIENTE C,VDITVENDA I,EQPRODUTO P,VDVENDEDOR VEND,FNPLANOPAG PG,LFCLFISCAL FC "
 				+ "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=? AND "
 				+ "C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI AND "
 				+ "I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.TIPOVENDA=V.TIPOVENDA AND "
 				+ "I.CODVENDA=V.CODVENDA AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND "
 				+ "P.CODPROD=I.CODPROD AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND " 
+				+ "P.CODFISC=FC.CODFISC AND P.CODEMPFC=FC.CODEMP AND P.CODFILIALFC=FC.CODFILIAL AND "
 				+ "VEND.CODVEND=V.CODVEND AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND "
 				+ "PG.CODPLANOPAG=V.CODPLANOPAG "
 				+ "ORDER BY P." + dl.getValor() + ",P.DESCPROD";
@@ -1847,7 +1848,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO    |                      DESCRIÇÃO                    |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
+						imp.say(imp.pRow() + 0, 1, "IT. |    CÓDIGO    |                      DESCRIÇÃO                    |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					if (i==0) {
