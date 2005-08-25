@@ -58,6 +58,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaListener,FocusListener{
+	private static final long serialVersionUID = 1L;
+	
   private JPanelPad pinCab = new JPanelPad(0, 190);
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

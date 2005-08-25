@@ -46,6 +46,8 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaDia extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+	
 	private JTextFieldFK txtDataHora = new JTextFieldFK(JTextFieldPad.TP_STRING,16,0);
 	private JTextFieldFK txtVlrCaixa = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad("Deseja executar a redução Z?","S","N");

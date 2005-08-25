@@ -38,6 +38,8 @@ import org.freedom.telas.FDados;
 import org.freedom.telas.FPrinterJob;
 
 public class FRecursos extends FDados implements ActionListener {
+	private static final long serialVersionUID = 1L;
+	
   private JTextFieldPad txtCodRecp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescRecp = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodTpRecp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

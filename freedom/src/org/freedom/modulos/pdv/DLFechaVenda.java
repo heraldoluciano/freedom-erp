@@ -51,6 +51,8 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
 public class DLFechaVenda extends FDialogo implements FocusListener {
+	private static final long serialVersionUID = 1L;
+	
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldFK txtVlrCupom = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);

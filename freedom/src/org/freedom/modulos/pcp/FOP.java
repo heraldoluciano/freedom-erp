@@ -72,7 +72,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FPrinterJob;
 
-public class FOP extends FDetalhe implements ChangeListener, PostListener,CancelListener,InsertListener,ActionListener,CarregaListener,KeyListener, FocusListener { 
+public class FOP extends FDetalhe implements ChangeListener, PostListener,CancelListener,InsertListener,ActionListener,CarregaListener,KeyListener, FocusListener {
+	private static final long serialVersionUID = 1L;
+	
   private int casasDec = Aplicativo.casasDec;
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();

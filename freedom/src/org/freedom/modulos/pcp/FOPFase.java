@@ -51,6 +51,8 @@ import org.freedom.telas.FDetalhe;
 
 
 public class FOPFase extends FDetalhe implements PostListener,CancelListener,InsertListener,ActionListener,CarregaListener {
+	private static final long serialVersionUID = 1L;
+	
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextAreaPad txaObs = new JTextAreaPad();

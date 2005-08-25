@@ -34,6 +34,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLFinalizaOP extends FFDialogo implements FocusListener{
+	
+	private static final long serialVersionUID = 1L;
+	
 	private JTextFieldPad txtQtdPrevOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
 	private JTextFieldPad txtQtdFinalOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
 	private JTextAreaPad txaJustifcQtdProd = new JTextAreaPad();

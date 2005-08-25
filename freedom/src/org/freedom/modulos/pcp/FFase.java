@@ -35,6 +35,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FFase extends FDados implements ActionListener {
+	private static final long serialVersionUID = 1L;
+	
   private JTextFieldPad txtCodFase = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescFase = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   Vector vVals = new Vector();
