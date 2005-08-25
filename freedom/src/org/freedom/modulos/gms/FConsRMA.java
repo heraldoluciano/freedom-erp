@@ -231,13 +231,15 @@ public class FConsRMA extends FFilho implements ActionListener {
 		tab.adicColuna("Rma.");
 		tab.adicColuna("Data");
 		tab.adicColuna("Usuário");
+		tab.adicColuna("CC");
 		tab.adicColuna("Motivo");
 
 		tab.setTamColuna(12, 0);
-		tab.setTamColuna(80, 1);
+		tab.setTamColuna(40, 1);
 		tab.setTamColuna(90, 2);
 		tab.setTamColuna(60, 3);
-		tab.setTamColuna(385, 4);
+		tab.setTamColuna(240, 4);
+		tab.setTamColuna(325, 5);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -351,13 +353,14 @@ public class FConsRMA extends FFilho implements ActionListener {
 		if (usuario)
 			where += " AND (R.IDUSU=?) ";
 
-		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.IDUSU, R.MOTIVORMA "
-				+ "FROM  EQRMA R, EQITRMA IT "
+		String sSQL = "SELECT R.SITRMA, R.CODRMA,R.DTAREQRMA, R.IDUSU, FN.DESCCC, R.MOTIVORMA "
+				+ "FROM  EQRMA R, EQITRMA IT, FNCC FN "
 				+ "WHERE R.CODEMP=? "
 				+ "AND R.CODFILIAL=? "
 				+ "AND IT.CODRMA=R.CODRMA AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "
+				+ "AND R.ANOCC=FN.ANOCC AND R.CODCC=FN.CODCC "				
 				+ "AND ((IT.DTAPROVITRMA BETWEEN ? AND ?) OR  (R.DTAREQRMA BETWEEN ? AND ?)) "
-				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.MOTIVORMA, R.IDUSU ";
+				+ where + " GROUP BY R.CODRMA, R.SitRMA, R.DTAREQRMA, R.IDUSU, FN.DESCCC, R.MOTIVORMA ";
 
 		System.out.println(sSQL);
 		try {
@@ -419,10 +422,12 @@ public class FConsRMA extends FFilho implements ActionListener {
 				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
 						.sqlDateToStrDate(rs.getDate(3))
 						+ "", iLin, 2);
-				tab.setValor(rs.getString(4) == null ? "DESCONHECIDO" : rs.getString(4) + "",
+				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
 						iLin, 3);				
 				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "",
 						iLin, 4);
+				tab.setValor(rs.getString(6) == null ? "-" : rs.getString(6) + "",
+						iLin, 5);
 
 				iLin++;
 			}

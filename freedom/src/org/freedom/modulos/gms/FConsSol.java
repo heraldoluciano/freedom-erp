@@ -197,13 +197,15 @@ public class FConsSol extends FFilho implements ActionListener {
 		tab.adicColuna("Sol.");
 		tab.adicColuna("Data");
 		tab.adicColuna("Usuário");
+		tab.adicColuna("CC");
 		tab.adicColuna("Motivo");
 
 		tab.setTamColuna(12, 0);
-		tab.setTamColuna(80, 1);
+		tab.setTamColuna(40, 1);
 		tab.setTamColuna(90, 2);
 		tab.setTamColuna(60, 3);
-		tab.setTamColuna(385, 4);
+		tab.setTamColuna(240, 4);
+		tab.setTamColuna(325, 5);
 
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -308,13 +310,14 @@ public class FConsSol extends FFilho implements ActionListener {
 		if (usuario)
 			where += " AND (O.IDUSU=?) ";
 
-		String sSQL = "SELECT O.SITSOL, O.CODSOL, O.DTEMITSOL,  O.MOTIVOSOL "
-				+ "FROM  CPSOLICITACAO O, CPITSOLICITACAO IT "
+		String sSQL = "SELECT O.SITSOL, O.CODSOL, O.DTEMITSOL, O.IDUSU, FN.DESCCC, O.MOTIVOSOL "
+				+ "FROM  CPSOLICITACAO O, CPITSOLICITACAO IT, FNCC FN "
 				+ "WHERE O.CODEMP=? "
 				+ "AND O.CODFILIAL=? "
 				+ "AND IT.CODSOL=O.CODSOL AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL "
+				+ "AND O.ANOCC=FN.ANOCC AND O.CODCC=FN.CODCC "
 				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) "
-				+ where + " GROUP BY O.CODSol, O.SitSol, O.DTEmitSol, O.MOTIVOSOL, O.IDUSU ";
+				+ where + " GROUP BY O.CODSol, O.SitSol, O.DTEmitSol, FN.DESCCC, O.IDUSU, O.MOTIVOSOL ";
 
 		System.out.println(sSQL);
 		try {
@@ -376,10 +379,12 @@ public class FConsSol extends FFilho implements ActionListener {
 				tab.setValor(rs.getString(3) == null ? "-" : Funcoes
 						.sqlDateToStrDate(rs.getDate(3))
 						+ "", iLin, 2);
-				tab.setValor(rs.getString(4) == null ? "DESCONHECIDO" : rs.getString(4) + "",
+				tab.setValor(rs.getString(4) == null ? "-" : rs.getString(4) + "",
 						iLin, 3);				
 				tab.setValor(rs.getString(5) == null ? "-" : rs.getString(5) + "",
 						iLin, 4);
+				tab.setValor(rs.getString(6) == null ? "-" : rs.getString(6) + "",
+						iLin, 5);
 
 				iLin++;
 			}
@@ -444,27 +449,20 @@ public class FConsSol extends FFilho implements ActionListener {
 				imp.say(imp.pRow() + 0, 0, "|" + tab.getValor(iLin, 1));
 				imp.say(imp.pRow() + 0, 15, "| " + tab.getValor(iLin, 2));
 				imp.say(imp.pRow() + 0, 29, "| " + vSitSol.elementAt(iLin).toString());
-				String sMotivo = ""+tab.getValor(iLin, 3);
+				String sMotivo = ""+tab.getValor(iLin, 5);
 				imp.say(imp.pRow() + 0, 45, "| " + sMotivo.substring(0, sMotivo.length()>89?89:sMotivo.length()).trim());
 				imp.say(imp.pRow() + 0, 135, "| ");
 
 				if (bImpCot) {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 2, "|" + tab.getValor(iLin, 2));
-					imp.say(imp.pRow() + 0, 15, "|" + tab.getValor(iLin, 3));
+					imp.say(imp.pRow() + 0, 15, "|" + tab.getValor(iLin, 5));
 					imp.say(imp.pRow() + 0, 29, "|");
 					imp.say(imp.pRow() + 0, 41, "|");
 					imp.say(imp.pRow() + 0, 56, "|");
-					imp.say(imp.pRow() + 0, 87, "|" + tab.getValor(iLin, 12));
 					imp.say(imp.pRow() + 0, 105, "|");
 					imp.say(imp.pRow() + 0, 124, "|");
 					imp.say(imp.pRow() + 0, 135, "|");
-				}
-
-				
-				if (tab.getValor(iLin, 9) != null) {
-					bTotalLiq = bTotalLiq.add(new BigDecimal(Funcoes
-							.strCurrencyToDouble("" + tab.getValor(iLin, 9))));
 				}
 
 				if (imp.pRow() >= linPag) {
