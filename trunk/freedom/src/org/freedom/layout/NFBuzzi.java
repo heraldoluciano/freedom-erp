@@ -41,8 +41,13 @@ public class NFBuzzi extends Leiaute {
 	String sTipoTran="";
     boolean bFat = true;
     boolean bTotalizou = false;
+    boolean bjatem = false;
     Vector vValores = new Vector();
     Vector vDescServ = new Vector();
+    Vector vClfisc = new Vector();
+    Vector vSigla = new Vector();
+    String sCodfisc = "";
+    String sSigla = "";   
     String[] sNat = new String[4];
     String[] sVencs = new String[6];
     String[] sVals = new String[6];
@@ -62,7 +67,7 @@ public class NFBuzzi extends Leiaute {
       boolean bNat = true;
 //      Vector vServ = new Vector();
   //    int iServAtual = 0;
-      
+      vClfisc.addElement("");
       while (rs.next()) {
 
          iNumNota = rs.getInt("DocVenda");
@@ -95,7 +100,7 @@ public class NFBuzzi extends Leiaute {
            sMatObs = Funcoes.strToStrArray(rs.getString("ObsVenda") != null ? rs.getString("ObsVenda") : "",3);
            bNat = false;
          }
-         if (imp.pRow()==0) {
+         if (imp.pRow()==0) {        	 
 		   imp.say(imp.pRow()+2,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,90,"X");
 		   imp.say(imp.pRow()+0,124,sNumNota);
@@ -169,39 +174,27 @@ public class NFBuzzi extends Leiaute {
                 
                 sMensAdic = rs.getString(5) != null ? rs.getString(5).trim() : "";
             }
-            
+            sCodfisc = (rs.getString("CodFisc")!=null ? rs.getString("CodFisc") : "");
+           
+    		if(!sCodfisc.equals("")){
+    			for(int i=0;i<vClfisc.size();i++){
+    				if(vClfisc.elementAt(i)!=null){
+    					if(sCodfisc.equals((String)vClfisc.elementAt(i))){
+        					bjatem = true;
+        					sSigla = ""+(char)(64 + i);
+    					}
+        				else{
+        					bjatem = false;
+        				}
+    				}
+    			}
+    			if(!bjatem){
+    				vClfisc.addElement(sCodfisc);
+    				sSigla = ""+(char)(63 + vClfisc.size());
+    				vSigla.addElement(sSigla + " = " + sCodfisc);
+    			}
+    		}
 
-            String sSigla = "";
-            String sCodfisc= rs.getString("CodFisc");
-            
-            if (sCodfisc == null)
-       	      sSigla="";
-            sCodfisc = sCodfisc.trim();
-            if (sCodfisc.equals("84220202"))
-       	      sSigla = "A"; 	   
-	        else if (sCodfisc.equals("84220500"))
-		      sSigla = "B"; 	   	   
-	        else if (sCodfisc.equals("84631700"))
-		      sSigla = "C"; 	    	   
-	        else if (sCodfisc.equals("84631800"))
-		      sSigla = "D"; 	   
-            else if (sCodfisc.equals("84229000"))
-		      sSigla = "E"; 	   
-	        else if (sCodfisc.equals("84220399"))
-		      sSigla = "F";
-	        else 
-	          sSigla = " ";
-	       /* else {
-              if (!sFiscAdic.equals(""))
-           	    JOptionPane.showMessageDialog(null,"Mais de um produto sem classificacao definida,sigla assinalada em branco.");
-              else {
-                sSigla = " ";
-       	        sFiscAdic = sCodfisc ;
-       	        
-              }
-            
-            }  */
-                      
             imp.say(imp.pRow()+0,60,sSigla);
             imp.say(imp.pRow()+0,69,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
             imp.say(imp.pRow()+0,79,rs.getString("CodUnid").substring(0,4));
@@ -278,10 +271,21 @@ public class NFBuzzi extends Leiaute {
          } 
          
       }
-      imp.say(imp.pRow()+1,0,""+imp.comprimido());  
-  	  imp.say(imp.pRow()+1,16,"Classificação fiscal");
-  	  imp.say(imp.pRow()+1,16,"A = 84220202   B = 84220500   C = 84631700");
-  	  imp.say(imp.pRow()+1,16,"D = 84631800   E = 84229000   F = 84220399");
+      imp.say(imp.pRow()+1,0,""+imp.comprimido());
+      imp.say(imp.pRow()+0,16,"classificação fiscal");
+      int pos = 1;
+      for(int i=0;i<vSigla.size();i++){
+    	  if(pos==1){
+    		  imp.say(imp.pRow()+1,16,(String)vSigla.elementAt(i));
+    		  pos = 2;
+    	  }
+    	  else{
+    		  imp.say(imp.pRow()+0,35,(String)vSigla.elementAt(i));
+    		  pos = 1;
+        	  iProd++;
+    	  }
+      }
+     
       if (imp.pRow()<36) {    	
       	imp.say(imp.pRow()+1,0,""+imp.comprimido());
       	for (int i=0;i<3;i++) {
@@ -364,8 +368,16 @@ public class NFBuzzi extends Leiaute {
   	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
   		  imp.say(imp.pRow()+1,0,""+imp.comprimido());
   		  
-
-  		  String[] sMatObs = Funcoes.strToStrArray(sMensAdic,5);
+  		  Vector vObs = Funcoes.quebraLinha(Funcoes.stringToVector(sMensAdic),37);
+     	  for (int i=0; i<vObs.size(); i++) {
+	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	           imp.say(imp.pRow()+0,5,vObs.elementAt(i).toString());
+	           if(i==0)
+	        	   imp.say(imp.pRow()+0,43,"Vendedor: "+vValores.elementAt(25).toString());
+	           if(i==1)
+	        	   imp.say(imp.pRow()+0,43,vValores.elementAt(26).toString().substring(0,20));
+     	  }
+  		 /* String[] sMatObs = Funcoes.strToStrArray(sMensAdic,5);
   		  imp.say(imp.pRow()+1,0,"");
   		  imp.say(imp.pRow()+0,6,sMatObs[0]);
   		  imp.say(imp.pRow()+0,43,"Vendedor: "+vValores.elementAt(25).toString());
@@ -377,7 +389,7 @@ public class NFBuzzi extends Leiaute {
   		  imp.say(imp.pRow()+1,0,"");
   		  imp.say(imp.pRow()+0,6,sMatObs[3]);
   		  imp.say(imp.pRow()+1,0,"");
-  		  imp.say(imp.pRow()+0,6,sMatObs[4]);
+  		  imp.say(imp.pRow()+0,6,sMatObs[4]);*/
   		  
   		  imp.say(imp.pRow()+7,0,""+imp.comprimido());
  		  imp.say(imp.pRow()+0,128,sNumNota);
