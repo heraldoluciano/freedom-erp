@@ -61,7 +61,7 @@ public class NFPomiagro2 extends Layout {
       for (int i=0; i<4; i++) {
         if (bFat) {
           if (parc.next()) {
-            sVencs[i] = Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO));
+            sVencs[i] = (parc.getDate(NF.C_DTVENCTO)!=null ? Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO)) : "");
             sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,parc.getString(NF.C_VLRPARC));
           }
           else {
@@ -139,7 +139,7 @@ public class NFPomiagro2 extends Layout {
            }        
             
            imp.say(imp.pRow()+0,95,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"##.###.###/####-##")) ;
-           imp.say(imp.pRow()+0,126,Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)));
+           imp.say(imp.pRow()+0,126,(cab.getDate(NF.C_DTEMITPED)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)) : ""));
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,30).trim()+", "+(cab.getString(NF.C_NUMEMIT) != null ? Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() : "").trim()+" - "+(cab.getString(NF.C_COMPLEMIT) != null ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : "").trim());
@@ -148,7 +148,7 @@ public class NFPomiagro2 extends Layout {
            sImpDtSaidaNat = itens.getString(NF.C_IMPDTSAIDA);
            if (sImpDtSaidaNat==null) sImpDtSaidaNat = "S";
            if (sImpDtSaidaNat.equals("S"))
-              imp.say(imp.pRow()+0,126,Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)));
+              imp.say(imp.pRow()+0,126,(cab.getDate(NF.C_DTSAIDA)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)) : ""));
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,sValsCli[2] != null ? sValsCli[2] : "");
