@@ -37,6 +37,8 @@ import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.FDetalhe;
 
 public class FEstFase extends FDetalhe {
+	private static final long serialVersionUID = 1L;
+	
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

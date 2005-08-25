@@ -48,7 +48,9 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
-public class FModLote extends FDados implements ActionListener, JComboBoxListener,PostListener {       
+public class FModLote extends FDados implements ActionListener, JComboBoxListener,PostListener {
+	
+	private static final long serialVersionUID = 1L;
 	
     private JPanelPad pinCab = new JPanelPad(0,100);
 	private JTextFieldPad txtCodModLote = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

@@ -61,7 +61,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
 
-public class DLCancCupom extends FDialogo implements ActionListener,MouseListener,KeyListener { 
+public class DLCancCupom extends FDialogo implements ActionListener,MouseListener,KeyListener {
+	private static final long serialVersionUID = 1L;
+	
 	private JPanelPad pinCab = new JPanelPad(400,90);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnBt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));	

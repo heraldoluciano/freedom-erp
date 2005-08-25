@@ -33,6 +33,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereProd extends FTabDados {
+	private static final long serialVersionUID = 1L;
+	
 	private JTextFieldPad txtClass = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
     private JTextFieldPad txtNomeResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
     private JTextFieldPad txtIdentProfResp = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);

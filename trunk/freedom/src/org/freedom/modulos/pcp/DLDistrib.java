@@ -48,6 +48,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLDistrib extends FFDialogo implements MouseListener, ActionListener{
 
+	private static final long serialVersionUID = 1L;
+
 	int casasDec = Aplicativo.casasDec;
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);  

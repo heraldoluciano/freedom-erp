@@ -26,6 +26,8 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 public class DLREstrutura extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+	
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
   private JRadioGroup rgEstrut = null;
