@@ -50,6 +50,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFilho;
 
 public class FAdmTef extends FFilho implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
     JComboBoxPad cbComando = null;
 
     JButton btExec = new JButton(Icone.novo("btExecuta.gif"));

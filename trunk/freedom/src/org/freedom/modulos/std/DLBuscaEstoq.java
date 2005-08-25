@@ -38,6 +38,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF3;
 
 public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
+
+	private static final long serialVersionUID = 1L;
+
    private String sSQL = "";   
    private ListaCampos lcItens = null;
    private ListaCampos lcAlmox = null;

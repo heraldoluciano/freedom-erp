@@ -37,6 +37,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class FGravaMoeda extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
 	private JTextFieldFK txtSingMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldFK txtPlurMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);

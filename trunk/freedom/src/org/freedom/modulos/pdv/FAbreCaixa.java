@@ -39,6 +39,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FDialogo;
 
 public class FAbreCaixa extends FDialogo {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);

@@ -40,6 +40,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLBaixaPag extends FFDialogo implements CarregaListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtRazFor = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);

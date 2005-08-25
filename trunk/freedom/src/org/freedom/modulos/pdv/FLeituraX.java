@@ -39,6 +39,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class FLeituraX extends FFDialogo implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextAreaPad txa = new JTextAreaPad();
 	private JScrollPane spn = new JScrollPane(txa);

@@ -43,6 +43,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLBaixaComis extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinCentro = new JPanelPad(580,100);
 

@@ -82,6 +82,9 @@ import org.freedom.telas.FFDialogo;
 public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		PostListener {
 
+
+	private static final long serialVersionUID = 1L;
+
 	private StatusBar sbVenda = new StatusBar(new BorderLayout());
 
 	private JPanelPad pnStatusBar = new JPanelPad(JPanelPad.TP_JPANEL,

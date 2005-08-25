@@ -49,6 +49,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FTabDados;
 
 public class FLeFiscal extends FTabDados {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCab = new JPanelPad(0,60);
 	private JPanelPad pinGeral = new JPanelPad();
 	private JPanelPad pinAliq = new JPanelPad();
