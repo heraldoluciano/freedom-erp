@@ -38,6 +38,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLAltComisVend extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtPercComis = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
   private int iCodVenda = 0;

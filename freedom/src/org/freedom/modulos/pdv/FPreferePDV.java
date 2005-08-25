@@ -33,6 +33,9 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FTabDados;
 
 public class FPreferePDV extends FTabDados implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinVenda = new JPanelPad();
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtDescTipoMov= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);

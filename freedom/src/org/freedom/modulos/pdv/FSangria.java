@@ -42,6 +42,9 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 public class FSangria extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldFK txtDataUOper = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldFK txtSaldoUOper = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldFK txtStatusUOper = new JTextFieldFK(JTextFieldPad.TP_STRING,30,0);

@@ -43,7 +43,10 @@ import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
 
-public class FAliquota extends FFDialogo implements ActionListener { 
+public class FAliquota extends FFDialogo implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JTextFieldPad txtAliquota = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);

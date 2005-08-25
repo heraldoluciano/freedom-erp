@@ -51,6 +51,9 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLBuscaItVenda extends FFDialogo implements ActionListener, CarregaListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(0,60);
   private JPanelPad pnCorpo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinRod = new JPanelPad(350,55);

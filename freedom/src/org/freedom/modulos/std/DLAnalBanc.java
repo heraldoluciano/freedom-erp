@@ -45,6 +45,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLAnalBanc extends FFDialogo implements FocusListener{
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodPai = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescPai = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodAnal = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

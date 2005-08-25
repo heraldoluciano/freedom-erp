@@ -44,6 +44,9 @@ import org.freedom.telas.FFDialogo;
 
 
 public class FSuprimento extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
 	private JTextFieldFK txtDataAnt = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
