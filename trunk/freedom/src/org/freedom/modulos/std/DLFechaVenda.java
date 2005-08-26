@@ -50,6 +50,7 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
@@ -140,6 +141,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
   private ListaCampos lcItReceber = new ListaCampos(this);
   private ListaCampos lcComis = new ListaCampos(this);
+  private Navegador navItRec = new Navegador(false);
+  private Navegador navRec = new Navegador(false);
+  private Navegador navComis = new Navegador(false);
   private Tabela tabRec = new Tabela();
   private Tabela tabComis = new Tabela();
   private int iCodVendaFecha = 0;
@@ -158,6 +162,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     lcComis.setMaster(lcReceber);
     lcReceber.adicDetalhe(lcComis);
     lcComis.setTabela(tabComis);
+    
+    navItRec.setName("ItReceber");
+    lcItReceber.setNavegador(navItRec);
+    navRec.setName("Receber");
+    lcReceber.setNavegador(navRec);
+    navComis.setName("Comissão");
+    lcComis.setNavegador(navComis);
 
     c.add(tpn);
     
@@ -203,13 +214,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     lcBanco.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_PK, false));
     lcBanco.add(new GuardaCampo( txtDescBanco, "NomeBanco", "Nome do banco", ListaCampos.DB_SI, false));
     lcBanco.add(new GuardaCampo( txtCodModBol, "CodModBol", "Cód.m.bloq.", ListaCampos.DB_SI,false));
-    txtDescBanco.setListaCampos(lcBanco);
-	txtCodBanco.setFK(true);
     lcBanco.montaSql(false, "BANCO", "FN");
     lcBanco.setQueryCommit(false);
     lcBanco.setReadOnly(true);
     lcBanco.setConexao(cn);
     txtCodBanco.setTabelaExterna(lcBanco);
+    txtCodBanco.setListaCampos(lcBanco);
+    txtDescBanco.setListaCampos(lcBanco);
+	txtCodBanco.setFK(true);
 
     txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
     lcVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false));
@@ -294,7 +306,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     lcReceber.setConexao(cn);
     txtCodRec.setListaCampos(lcReceber);
     txtVlrParcRec.setListaCampos(lcReceber);
-    txtCodBanco.setListaCampos(lcReceber);
+    txtTipoVenda.setListaCampos(lcReceber);
+    txtAltUsuRec.setListaCampos(lcReceber);
 
     txtNParcItRec.setNomeCampo("NParcItRec");
     lcItReceber.add(new GuardaCampo( txtNParcItRec, "NParcItRec", "N.parc.", ListaCampos.DB_PK,false));
@@ -302,20 +315,25 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     lcItReceber.add(new GuardaCampo( txtDtVencItRec, "DtVencItRec", "Dt. vencto.", ListaCampos.DB_SI,false));
     lcItReceber.add(new GuardaCampo( txtVlrDescItRec, "VlrDescItRec", "Valor desc.", ListaCampos.DB_SI,false));
     lcItReceber.montaSql(false, "ITRECEBER", "FN");
-    lcItReceber.setConexao(cn);
+    lcItReceber.setQueryCommit(false);
     txtNParcItRec.setListaCampos(lcItReceber);
     txtVlrParcItRec.setListaCampos(lcItReceber);
     txtVlrDescItRec.setListaCampos(lcItReceber);
     txtDtVencItRec.setListaCampos(lcItReceber);
     lcItReceber.montaTab();
+    lcItReceber.setConexao(cn);
+    
     tabRec.addMouseListener(this);
     
+    txtCodComi.setNomeCampo("CodComi");
     lcComis.add(new GuardaCampo( txtCodComi, "CodComi", "Cód.comis.", ListaCampos.DB_PK, false));
     lcComis.add(new GuardaCampo( txtVlrComi, "VlrComi", "Valor da comissão", ListaCampos.DB_SI,false));
     lcComis.add(new GuardaCampo( txtDtVencComi, "DtVencComi", "Dt.vencto.", ListaCampos.DB_SI,false));
     lcComis.montaSql(false, "COMISSAO", "VD");
-    lcComis.setConexao(cn);
+    lcComis.setQueryCommit(false);
     lcComis.montaTab();
+    lcComis.setConexao(cn);
+    
     tabComis.addMouseListener(this);
 
     
@@ -362,8 +380,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
     adic(txtPercAdicVenda,190,60,77,20);
     adic(lbVlrAdicVenda,270,40,100,20);
     adic(txtVlrAdicVenda,270,60,100,20);
-    adic(new JLabelPad("Código e Descrição do Banco"),7,80,250,20);
+    adic(new JLabelPad("Cód.banco"),7,80,100,20);
     adic(txtCodBanco,7,100,80,20);
+    adic(new JLabelPad("Descrição do Banco"),90,80,250,20);
     adic(txtDescBanco,90,100,167,20);
     adic(cbImpPed,7,130,150,20);
     adic(cbImpNot,7,150,150,20);

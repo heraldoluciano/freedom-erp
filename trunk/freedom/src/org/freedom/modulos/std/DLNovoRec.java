@@ -127,7 +127,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrParcRec", "Valor parc.",  ListaCampos.DB_SI,false));
     lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrAPagRec", "Valor a rec.",  ListaCampos.DB_SI,false));
     lcReceber.add(new GuardaCampo( txtVlrParcRec, "VlrRec", "Valor tot.",  ListaCampos.DB_SI,false));
-    lcReceber.add(new GuardaCampo( txtDtEmisRec, "DataRec", "Dt.emissão",  ListaCampos.DB_SI,false));
+    lcReceber.add(new GuardaCampo( txtDtEmisRec, "DataRec", "Dt.emissão",  ListaCampos.DB_SI,true));
     lcReceber.add(new GuardaCampo( txtDocRec, "DocRec", "N.doc.",  ListaCampos.DB_SI,true));
     lcReceber.add(new GuardaCampo( txtObs, "ObsRec", "Obs.",  ListaCampos.DB_SI,false));
     lcReceber.add(new GuardaCampo( txtStatus, "StatusRec", "Status",  ListaCampos.DB_SI, false));
@@ -193,7 +193,7 @@ public class DLNovoRec extends FFDialogo implements PostListener{
     adic(txtDescBanco,90,60,197,20);
     adic(new JLabelPad("Valor"),290,40,107,20);
     adic(txtVlrParcRec,290,60,107,20);
-    adic(new JLabelPad("Emissão"),400,40,100,20);
+    adic(new JLabelPad("Data de Emissão"),400,40,100,20);
     adic(txtDtEmisRec,400,60,100,20);
     adic(new JLabelPad("Doc."),7,80,80,20);
     adic(txtDocRec,7,100,80,20);
