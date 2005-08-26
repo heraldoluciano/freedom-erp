@@ -28,6 +28,8 @@ import org.freedom.telas.FFDialogo;
 
 import java.util.Vector;
 public class DLRAtiv extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
   private JRadioGroup rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();

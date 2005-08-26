@@ -33,6 +33,8 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefere extends FTabDados {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinMail = new JPanelPad();
 	private JPanelPad pinSmtp = new JPanelPad();
 	private JTextFieldPad txtSmtpMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);

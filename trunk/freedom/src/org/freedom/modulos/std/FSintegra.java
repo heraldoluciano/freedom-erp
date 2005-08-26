@@ -24,7 +24,6 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FileDialog;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -51,8 +50,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FSintegra extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private FileWriter fwSintegra;
-  private Frame fOrigem;
   private String sFileName = "";
   private String sCnpjEmp = "";
   private String sInscEmp = "";
@@ -141,10 +141,6 @@ public class FSintegra extends FFilho implements ActionListener {
     pinCliente.adic(lbAnd,7,320,680,20);
     colocaMes();   
     btGerar.addActionListener(this);
-  }
-  
-  public void setOrigem(Frame f) {
-    fOrigem = f;
   }
   
   private void colocaMes() {

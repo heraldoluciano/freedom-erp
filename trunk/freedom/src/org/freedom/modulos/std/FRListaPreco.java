@@ -44,6 +44,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRListaPreco extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinOpt = new JPanelPad(595,100);
 	private JPanelPad pinPlan = new JPanelPad(595,450);
 	private JPanelPad pnOpt = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));

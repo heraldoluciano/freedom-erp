@@ -41,6 +41,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRExtrato extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0); 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -96,12 +98,7 @@ public class FRExtrato extends FRelatorio {
     BigDecimal bSaldo = new BigDecimal("0");
     BigDecimal bAnt = buscaSaldoAnt();
         
-    String sDataini = "";
-    String sDatafim = "";
     String sDataLanca = "";
-    
-    sDataini = txtDataini.getVlrString();
-    sDatafim = txtDatafim.getVlrString();
     
     imp.setTitulo("Extrato Bancário");
     String sSQL = "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA," +

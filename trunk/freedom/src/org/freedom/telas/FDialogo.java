@@ -52,6 +52,8 @@ import org.freedom.componentes.JPanelPad;
 
 public class FDialogo extends JDialog implements ActionListener, KeyListener,
 		WindowListener {
+	private static final long serialVersionUID = 1L;
+
 	public JButton btCancel = new JButton("Cancelar", Icone
 			.novo("btCancelar.gif"));
 

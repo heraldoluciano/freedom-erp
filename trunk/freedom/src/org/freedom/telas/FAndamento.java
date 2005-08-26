@@ -28,6 +28,8 @@ import javax.swing.JProgressBar;
 import org.freedom.componentes.JPanelPad;
 
 public class FAndamento extends JFrame {
+	private static final long serialVersionUID = 1L;
+	
   private JPanelPad pin = new JPanelPad(310,150);
   private JProgressBar pb = new JProgressBar();
   private JLabelPad lbAnd = new JLabelPad(""); 

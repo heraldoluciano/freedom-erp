@@ -34,6 +34,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FTratTrib extends FDados implements ActionListener{
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtDescTratTrib= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FTratTrib () {

@@ -55,8 +55,11 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
-public class FEmpresa extends FTabDados implements PostListener,
-        CarregaListener {
+public class FEmpresa extends FTabDados implements PostListener, CarregaListener {
+
+private static final long serialVersionUID = 1L;
+
+        
     private JPanelPad pinGeral = new JPanelPad(470, 470);
 
     private JPanelPad pinFilial = new JPanelPad(470, 270);

@@ -30,6 +30,9 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaPag extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtParcItPag = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtDtVencItPag = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   public DLFechaPag(Component cOrig,BigDecimal bigParcItPag, Date dDtVencItPag) {

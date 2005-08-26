@@ -48,7 +48,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FREtiqueta extends FRelatorio implements CarregaListener{
-  private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private static final long serialVersionUID = 1L;
+	
+private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescModEtiq = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -83,7 +85,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   private boolean bMontaTab = true;
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JComboBoxPad cbAtivoCli = null;
-  private Integer iCodModEtiq = new Integer(0);
 
   public FREtiqueta() {
  	 setPanel(pnTotal);      
@@ -251,7 +252,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
                 vLinha.addElement(sTmp);                
             }
             tab.adicLinha((Vector)vLinha.clone());
-            iCodModEtiq = txtCodModEtiq.getVlrInteger();
         }
     }
     catch(SQLException e){
@@ -416,7 +416,6 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
     
   private void impCol(ImprimeOS imp, Vector vCols) {
       try {
-  	      int linPag = imp.verifLinPag()-1;
           int iColsEtiq = txtNColModEtiq.getVlrInteger().intValue();
           int iLins = txtLinPapel.getVlrInteger().intValue();
           int iColPapel = txtColPapel.getVlrInteger().intValue();
@@ -500,14 +499,12 @@ public class FREtiqueta extends FRelatorio implements CarregaListener{
   	Vector vRet = null;
   	if (iLinha>-1){
   	    try {
-  	        Vector vTamsAdic = objEtiqCli.getTamsAdic();
   	        Vector vMascAdic = objEtiqCli.getMascarasAdic();
   	        Vector vValAdic = objEtiqCli.getValoresAdic();
   	        Vector vCamposAdic = objEtiqCli.getCamposAdic();
   	        if (sRetorno != null) { 
   	            try {			    	    
   	                for(int i=0;vCamposAdic.size()>i;i++) {
-  	                    String sTmp = vCamposAdic.elementAt(i).toString();
   	                    String sValAdic = vValAdic.elementAt(i).toString();
   	                    String sFragmento = sRetorno.substring(sRetorno.indexOf("["+sValAdic));
   	                    sFragmento = sFragmento.substring(0,("\\"+sFragmento).indexOf("]"));

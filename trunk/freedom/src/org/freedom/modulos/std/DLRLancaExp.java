@@ -36,6 +36,9 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FFDialogo;
 
 public class DLRLancaExp extends FFDialogo implements FocusListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0); 

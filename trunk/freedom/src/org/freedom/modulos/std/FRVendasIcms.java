@@ -34,6 +34,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasIcms extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   public FRVendasIcms() {

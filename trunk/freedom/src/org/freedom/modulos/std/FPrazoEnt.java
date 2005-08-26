@@ -34,6 +34,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FPrazoEnt extends FDados implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodPE = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescPE = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtDiasPE = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

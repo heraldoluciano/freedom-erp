@@ -55,6 +55,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaListener {
+	private static final long serialVersionUID = 1L;
+
     private JPanelPad pin = new JPanelPad();
 	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);

@@ -44,6 +44,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLGrpCli extends FFDialogo implements KeyListener, ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(0,60);
   public JTextFieldPad txtCodPesq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   public JTextFieldFK txtRazPesq = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);

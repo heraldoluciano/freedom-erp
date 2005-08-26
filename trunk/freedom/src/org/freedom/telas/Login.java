@@ -44,6 +44,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
 public class Login extends FDialogo implements ActionListener, FocusListener {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);
   private Vector vVals = new Vector();
@@ -215,9 +217,7 @@ public class Login extends FDialogo implements ActionListener, FocusListener {
       rs = ps.executeQuery();
       vVals.clear();
       vLabs.clear();
-      boolean bGera = true;
       while (rs.next()) {
-      	 bGera = false;
       	 vVals.addElement(new Integer(rs.getInt(1)));
       	 vLabs.addElement(rs.getString("NOMEFILIAL") != null ? rs.getString("NOMEFILIAL") : "");
       	 if ( rs.getInt(1)==rs.getInt(3) ) 

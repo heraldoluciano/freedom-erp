@@ -45,7 +45,9 @@ import org.freedom.componentes.ImprimeLayout;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
-public class DLPrinterJob extends FFDialogo implements ActionListener,KeyListener {
+public class DLPrinterJob extends FFDialogo implements ActionListener,KeyListener {private static final long serialVersionUID = 1L;
+
+
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0));  
   private ImprimeLayout impLay = new ImprimeLayout();

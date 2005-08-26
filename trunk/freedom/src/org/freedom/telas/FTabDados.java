@@ -35,6 +35,8 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 
 public class FTabDados extends FDados implements KeyListener {
+	private static final long serialVersionUID = 1L;
+
 
 	public static boolean comScroll = false;
 

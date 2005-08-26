@@ -46,6 +46,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FBloqCompra extends FFilho implements ActionListener, CarregaListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinFor = new JPanelPad(350,100);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

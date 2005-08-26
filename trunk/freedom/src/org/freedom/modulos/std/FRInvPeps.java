@@ -43,6 +43,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRInvPeps extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 
   private final int TAM_GRUPO = 14;
   
@@ -165,7 +167,6 @@ public class FRInvPeps extends FRelatorio {
   	int iCodAlmox = 0;
   	ImprimeOS imp = null;
   	int linPag = 0;
-  	int iPagina = 0;
   	PreparedStatement ps = null;
   	ResultSet rs = null;
   	double deCustoTot = 0;
@@ -175,7 +176,6 @@ public class FRInvPeps extends FRelatorio {
   		
   		imp = new ImprimeOS("",con);
   		linPag = imp.verifLinPag()-1;
- 		iPagina = txtPagina.getVlrInteger().intValue()-1;
   		  		
   		sCpCodigo = (bPrefs[0]?"REFPROD":"CODPROD");
   		iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
@@ -321,7 +321,6 @@ public class FRInvPeps extends FRelatorio {
   		deCustoTot = 0;
   		deSldProd = 0;
   	  	linPag = 0;
-  		iPagina = 0;
   	}
 
   }

@@ -56,6 +56,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener {
+
+	private static final long serialVersionUID = 1L;
+
   private int casasDec = Aplicativo.casasDec;
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private JPanelPad pinFecha = new JPanelPad(400,300);

@@ -49,6 +49,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRComissoes extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private Vector vVals = new Vector();
 
 	private Vector vLabs = new Vector();
@@ -132,7 +134,6 @@ public class FRComissoes extends FRelatorio {
 	public void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = null;
 		try {
-			String sEmitRel = "";
 			if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 				Funcoes.mensagemInforma(this,
 						"Data final maior que a data inicial!");

@@ -54,6 +54,9 @@ import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FWizard;
 
 public class FDevolucao extends FWizard implements CarregaListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pin1 = null;
 
 	private JPanelPad pin1a = null;

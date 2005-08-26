@@ -46,6 +46,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRBordero extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
 			10, 0);
 
@@ -153,15 +155,11 @@ public void imprimir(boolean bVisualizar) {
   	int iCodCli = 0;
   	int iParans = 0;
 	String sFiltro = "";
-	String sTitulo = "";
 	String sDataini = "";
 	String sDatafim = "";
-	String sDtVencItRec = "";
-	String sDtPago = "";
 	String sSQL = "";
 	String sWhere = "";
 	String sFrom = "";
-	String sImpTotDia = "";
     double deTotParc = 0;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
@@ -380,13 +378,9 @@ public void imprimir(boolean bVisualizar) {
       	iCodVend = 0;
       	iCodCli = 0;
     	sFiltro = null;
-    	sTitulo = null;
     	sDataini = null;
     	sDatafim = null;
-    	sDtVencItRec = null;
-    	sDtPago = null;
     	sSQL = null;
-    	sImpTotDia = null;
     	sWhere = null;
     	sFrom = null;
     	ps = null;

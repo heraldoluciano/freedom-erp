@@ -46,6 +46,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRRazaoFin extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
 			10, 0);
 
@@ -152,12 +154,6 @@ public class FRRazaoFin extends FRelatorio {
 		String sConta = "";
 		BigDecimal bVlrSubLanca = new BigDecimal("0");
 		BigDecimal bTotal = new BigDecimal("0");
-
-		String sDataini = "";
-		String sDatafim = "";
-
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
 
 		if (sCodPlan.equals("")) {
 			Funcoes.mensagemInforma(this, "Informe um código de conta !");

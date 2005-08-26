@@ -52,6 +52,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRMediaItem extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtMesfim = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 2, 0);
 

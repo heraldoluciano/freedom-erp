@@ -37,6 +37,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRConfEstoq extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   
   private Vector vLabTipoRel = new Vector();
   private Vector vValTipoRel = new Vector();

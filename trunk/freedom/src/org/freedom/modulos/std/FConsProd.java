@@ -56,6 +56,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FConsProd extends FRelatorio implements ActionListener,ChangeListener {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCab = new JPanelPad(0,150);
 	private JPanelPad pinPeriodoCompra = new JPanelPad(0,60);
 	private JPanelPad pinPeriodoVenda = new JPanelPad(0,60);

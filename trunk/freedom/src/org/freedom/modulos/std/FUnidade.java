@@ -34,6 +34,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FUnidade extends FDados implements ActionListener{
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodUnidade = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtDescUnidade= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   public FUnidade () {

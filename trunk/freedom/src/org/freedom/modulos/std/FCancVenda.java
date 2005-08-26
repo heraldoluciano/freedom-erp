@@ -42,6 +42,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FCancVenda extends FFilho implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCli = new JPanelPad(350,100);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

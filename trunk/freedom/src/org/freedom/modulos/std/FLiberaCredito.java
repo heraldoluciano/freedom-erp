@@ -56,6 +56,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FLiberaCredito extends FDados implements ActionListener,InsertListener,DeleteListener,PostListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodLib = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

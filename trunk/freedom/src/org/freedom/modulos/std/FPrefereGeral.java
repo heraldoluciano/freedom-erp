@@ -61,6 +61,8 @@ import org.freedom.componentes.JComboBoxPad;
 
 public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		PostListener, EditListener, InsertListener, CarregaListener {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinVenda = new JPanelPad(690, 220);
 	private JPanelPad pinGeral = new JPanelPad(330, 200);
 	private JPanelPad pinPreco = new JPanelPad(330, 200);

@@ -67,7 +67,10 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FCredCli extends FTabDados implements ActionListener,
-		CarregaListener, PostListener, EditListener, InsertListener {
+CarregaListener, PostListener, EditListener, InsertListener {
+
+private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinGeral = new JPanelPad(680, 200);
 
 	private JPanelPad pnFicha = new JPanelPad(JPanelPad.TP_JPANEL,

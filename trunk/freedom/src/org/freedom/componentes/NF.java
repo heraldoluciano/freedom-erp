@@ -136,8 +136,6 @@ public class NF {
 	public static final int C_PESOLIQ = 17;
 	public static final int C_VLRFRETEPED = 18;
 	
-	
-	private int casasDec = 2;
 
 	protected TabVector cab = null;
 	protected TabVector itens = null;
@@ -145,9 +143,8 @@ public class NF {
 	protected TabVector adic = null;
 	protected TabVector frete = null;
     
-	public NF(int casasDec) {
+	public NF() {
 		super();
-		this.casasDec = casasDec;
 	}
 	
 	public TabVector getTabVector(int vector) {

@@ -37,6 +37,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRFluxoCaixa extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   private JCheckBoxPad cbLanca = new JCheckBoxPad("Lançamentos","S","N");
   private JCheckBoxPad cbReceber = new JCheckBoxPad("Clientes","S","N");
   private JCheckBoxPad cbPagar = new JCheckBoxPad("Fornecedores","S","N");

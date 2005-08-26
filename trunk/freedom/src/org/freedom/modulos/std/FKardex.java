@@ -56,6 +56,9 @@ import org.freedom.telas.FRelatorio;
  *
  */
 public class FKardex extends FRelatorio implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
         private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
         private JPanelPad pinCab = new JPanelPad(560,100);
         private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);

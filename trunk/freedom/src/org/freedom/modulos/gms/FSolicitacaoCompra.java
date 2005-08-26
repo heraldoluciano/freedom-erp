@@ -120,8 +120,6 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,
 			50, 0);
-	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 8, 0);
 	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,

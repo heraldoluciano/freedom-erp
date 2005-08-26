@@ -53,6 +53,8 @@ import org.freedom.telas.FFilho;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FProcessaSL extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
     private JPanelPad pin = new JPanelPad();
 	private JButton btProcessar = new JButton("Executar agora!",Icone.novo("btExecuta.gif"));
 	private JLabelPad lbStatus = new JLabelPad();

@@ -39,7 +39,10 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 
-public class FCLComis extends FDados implements PostListener { 
+public class FCLComis extends FDados implements PostListener {
+
+	private static final long serialVersionUID = 1L;
+ 
   private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtDescClComis = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
   private JTextFieldPad txtPercFatClComis = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 2);

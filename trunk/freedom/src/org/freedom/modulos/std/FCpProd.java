@@ -53,6 +53,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinFiltro = new JPanelPad(350,80);

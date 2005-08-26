@@ -50,6 +50,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FGeraFiscal extends FFilho implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCliente = new JPanelPad(600,110);
   private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(2,1));
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,0,10);

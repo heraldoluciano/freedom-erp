@@ -40,6 +40,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FEstacao extends FDetalhe implements PostListener, ActionListener{
+
+	private static final long serialVersionUID = 1L;
+
     private JPanelPad pinCab = new JPanelPad();
     private JPanelPad pinDet = new JPanelPad();
 	private ListaCampos lcImp = new ListaCampos(this,"IP");

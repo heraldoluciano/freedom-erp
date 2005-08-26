@@ -55,6 +55,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FImpTabFor extends FFilho implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(0,205);
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

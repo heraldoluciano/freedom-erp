@@ -63,6 +63,8 @@ import org.freedom.telas.FFilho;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FImportaCto extends FFilho implements ActionListener,FocusListener {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodTipo = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipo = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtArqOrig = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);

@@ -51,6 +51,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLFechaCompra extends FFDialogo implements FocusListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private JPanelPad pinFecha = new JPanelPad(420,300);
   private JPanelPad pnPagar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

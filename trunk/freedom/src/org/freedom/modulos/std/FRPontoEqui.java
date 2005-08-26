@@ -39,6 +39,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRPontoEqui extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodConta = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0); 
   private JTextFieldFK  txtSiglaCC = new JTextFieldFK(JTextFieldPad.TP_STRING,19,0);
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -175,10 +177,6 @@ public class FRPontoEqui extends FRelatorio {
     }
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
-    String sCodConta = txtCodConta.getVlrString();
-	String sCodCC = txtCodCC.getVlrString().trim();
-	String sCC = "";
-    String sConta = "";
         
     String sDataini = "";
     String sDatafim = "";
@@ -212,7 +210,7 @@ public class FRPontoEqui extends FRelatorio {
     
     imp.setTitulo("Apuração de resultados");
     
-    String sSQLX = "SELECT p.tipoplan,p.FINPLAN,SUM(SL.vlrsublanca * -1)" +
+    /*String sSQLX = "SELECT p.tipoplan,p.FINPLAN,SUM(SL.vlrsublanca * -1)" +
 				  "FROM FNPLANEJAMENTO P, fnsublanca SL,FNLANCA L "+
 				  "WHERE P.TIPOPLAN IN ('R','D') "+
 				  "AND P.CODEMP=? AND P.CODFILIAL=? "+
@@ -221,13 +219,10 @@ public class FRPontoEqui extends FRelatorio {
 				  "AND sl.datasublanca between ? and ? "+		
 				  "AND L.FLAG IN "+
                   Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-				  " group BY 1,2 order by 1,2 desc";
+				  " group BY 1,2 order by 1,2 desc";*/
         
     try {
-      int iParam = 1;
-
       imp.limpaPags();
-      BigDecimal bigValMaster = null;
 
         if (imp.pRow()==0) {
         	imp.montaCab();

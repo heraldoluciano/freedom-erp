@@ -32,6 +32,9 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FDados;
 
 public class FCaixa extends FDados implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private ListaCampos lcEst = new ListaCampos(this,"ET");
   private JTextFieldPad txtCodCaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescCaixa = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);

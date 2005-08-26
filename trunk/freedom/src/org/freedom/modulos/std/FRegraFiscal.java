@@ -33,6 +33,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 public class FRegraFiscal extends FDetalhe {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCab = new JPanelPad();
 	private JPanelPad pinDet = new JPanelPad();
 	private JTextFieldPad txtCodRegraFiscal = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);

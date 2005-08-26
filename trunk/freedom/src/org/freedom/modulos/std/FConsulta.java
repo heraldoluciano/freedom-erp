@@ -45,6 +45,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FConsulta extends FFilho implements CarregaListener {
+	private static final long serialVersionUID = 1L;
+
     private final int TAM_GRUPO = 14;
 	private JPanelPad pinCabProd = new JPanelPad(700,100);
 	private JPanelPad pnCliProd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -393,8 +395,6 @@ public class FConsulta extends FFilho implements CarregaListener {
 	
 	private void carregaTabProd() {
 
-		int iCodAlmox = 0;
-		int iParam = 0;
 		int iLin = 0;
 		tabProd.limpa();
 		String sSQL = "SELECT P.CODCLASCLI,(SELECT CL.DESCCLASCLI"+
@@ -409,9 +409,7 @@ public class FConsulta extends FFilho implements CarregaListener {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodProd.getVlrInteger().intValue());
 			ResultSet rs = ps.executeQuery();
-            
-    		iCodAlmox = txtCodAlmoxProd.getVlrInteger().intValue();
-    		
+             		
 			while (rs.next()) {
 				tabProd.adicLinha();
 				tabProd.setValor(rs.getString(1) != null ? rs.getString(1) : "",iLin,0);

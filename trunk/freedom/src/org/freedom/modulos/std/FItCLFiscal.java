@@ -37,6 +37,9 @@ import org.freedom.telas.FDetalhe;
 
 
 public class FItCLFiscal extends FDetalhe {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);

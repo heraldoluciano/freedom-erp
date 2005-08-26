@@ -50,6 +50,8 @@ import org.freedom.telas.FDados;
 
 
 public class FTipoImp extends FDados implements PostListener, CarregaListener, DeleteListener, ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodTpImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtDescTpImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtSepTpImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);

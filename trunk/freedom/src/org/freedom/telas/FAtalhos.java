@@ -25,6 +25,8 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 
 public class FAtalhos extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pnEquipe = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   public FAtalhos () {
   	super(Aplicativo.telaPrincipal);

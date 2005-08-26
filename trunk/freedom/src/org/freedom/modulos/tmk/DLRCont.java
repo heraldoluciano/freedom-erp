@@ -39,6 +39,8 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FFDialogo;
 
 public class DLRCont extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
   private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));

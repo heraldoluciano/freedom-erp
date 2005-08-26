@@ -38,6 +38,8 @@ import org.freedom.funcoes.Funcoes;
  * @author robson
  */
 public class DLInputText extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
 
 	private JTextAreaPad txaMemo = new JTextAreaPad();
 	private JScrollPane spnMemo = new JScrollPane(txaMemo);

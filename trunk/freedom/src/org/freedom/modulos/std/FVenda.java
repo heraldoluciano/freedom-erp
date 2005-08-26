@@ -82,6 +82,8 @@ import org.freedom.telas.FObservacao;
 
 public class FVenda extends FVD implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener, DeleteListener {
+	private static final long serialVersionUID = 1L;
+
 	private int casasDec = Aplicativo.casasDec;
 	
 	private JPanelPad pinCabVenda = new JPanelPad();
@@ -1935,7 +1937,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}
 	}
 	
-	private void imprimir2(boolean bVisualizar, int iCodVenda) {
+/*	private void imprimir2(boolean bVisualizar, int iCodVenda) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
 		int iPares = 0;
@@ -2238,7 +2240,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} else {
 			imp.print();
 		}
-	}
+	}*/
 
 	private void emitNota(String sTipo) {
 		PreparedStatement ps = null;

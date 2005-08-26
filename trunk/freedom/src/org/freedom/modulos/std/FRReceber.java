@@ -42,6 +42,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRReceber extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -149,7 +151,6 @@ public class FRReceber extends FRelatorio {
 	boolean bFimDia = false;
 	String sFiltro = "";
 	String sTipoRel = "";
-	String sTitulo = "";
 	String sTitRel = "";
 	String sDataini = "";
 	String sDatafim = "";
@@ -430,7 +431,6 @@ public class FRReceber extends FRelatorio {
     	sFiltro = null;
     	sTipoRel = null;
     	sTitRel = null;
-    	sTitulo = null;
     	sDataini = null;
     	sDatafim = null;
     	sDtVencItRec = null;

@@ -69,6 +69,8 @@ import org.freedom.telas.FTabDados;
 
 public class FContato extends FTabDados implements RadioGroupListener,
 		PostListener, ActionListener, ChangeListener {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCont = new JPanelPad();
 
 	private JPanelPad pinVend = new JPanelPad(0, 80);

@@ -52,6 +52,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
+	private static final long serialVersionUID = 1L;
+
 	private final int POS_CODSETOR = 0;
 
 	private final int POS_MES = 1;
@@ -360,7 +362,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		int linPag = 0;
 		int iParam = 1;
 		int iCol = 0;
-		int iColAnt = 0;
 		int iPosCol = 0;
 		int iPosColAnt = 0;
 		int iPos = 0;
@@ -696,7 +697,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 									vItem.elementAt(POS_SIGLAGRUP).toString()));
 					}
 
-					iColAnt = iCol;
 					iPosColAnt = iPosCol;
 					iCol = posVendedor(vItem.elementAt(POS_CODVEND).toString(),
 							vCols);

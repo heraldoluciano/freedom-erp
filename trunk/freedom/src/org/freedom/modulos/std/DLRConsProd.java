@@ -31,6 +31,9 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLRConsProd extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JRadioGroup rgOrdem = null;
 
   private Vector vLabs = new Vector();

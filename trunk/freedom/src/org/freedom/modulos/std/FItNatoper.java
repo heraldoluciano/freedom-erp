@@ -31,6 +31,9 @@ import org.freedom.telas.FDetalhe;
 
 
 public class FItNatoper extends FDetalhe {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);

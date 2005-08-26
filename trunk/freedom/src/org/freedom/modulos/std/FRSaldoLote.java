@@ -41,7 +41,8 @@ import org.freedom.telas.FRelatorio;
 
 
 public class FRSaldoLote extends FRelatorio {
-  //private Connection con;
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
   private JTextFieldPad txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);

@@ -35,6 +35,8 @@ import org.freedom.componentes.JPanelPad;
 import javax.swing.border.EtchedBorder;
 
 public class FWizard extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
     private JPanelPad pinCorpo = new JPanelPad();
     private JPanelPad pnTit = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.LEFT,15,10));
     private JPanelPad pnCorpo = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

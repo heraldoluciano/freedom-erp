@@ -61,6 +61,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FManutPag extends FFilho implements ActionListener,KeyListener,CarregaListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
   private JPanelPad pnTabConsulta = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinBotoesConsulta = new JPanelPad(40,100);

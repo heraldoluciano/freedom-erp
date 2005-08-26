@@ -45,6 +45,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FPlanoPag extends FDetalhe implements CarregaListener, InsertListener, PostListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

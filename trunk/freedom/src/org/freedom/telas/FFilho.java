@@ -52,6 +52,8 @@ import org.freedom.componentes.JPanelPad;
 
 public class FFilho extends JInternalFrame implements InternalFrameListener,
         IFilho {
+	private static final long serialVersionUID = 1L;
+
 	
     protected FPrincipal fPrim;
     

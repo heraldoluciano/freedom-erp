@@ -42,6 +42,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRMovProd extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgAtivoProd=null;
   private JRadioGroup rgProduto=null;

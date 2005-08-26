@@ -41,6 +41,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FRomaneio extends FDetalhe implements InsertListener,ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
   private JTextFieldPad txtCodRoma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

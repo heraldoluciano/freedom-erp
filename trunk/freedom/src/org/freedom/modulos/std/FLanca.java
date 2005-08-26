@@ -57,6 +57,9 @@ import org.freedom.telas.FFilho;
 import org.freedom.telas.FPrincipal;
 
 public class FLanca extends FFilho implements ActionListener,ChangeListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(600,64);
   private JPanelPad pnNav = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,7));
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

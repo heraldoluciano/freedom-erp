@@ -39,6 +39,8 @@ import org.freedom.telas.FFDialogo;
 
 public class DLRInventario extends FFDialogo {
 
+	private static final long serialVersionUID = 1L;
+
   private JCheckBoxPad cbGrupo = new JCheckBoxPad("Dividir por grupo","S","N");
   private JRadioGroup rgOrdem = null;
   private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);

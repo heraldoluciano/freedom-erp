@@ -53,6 +53,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FSVV extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCliente = new JPanelPad(0,90);
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);

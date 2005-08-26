@@ -50,6 +50,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FGrupo extends FFilho implements ActionListener,MouseListener,KeyListener {
+
+	private static final long serialVersionUID = 1L;
+
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private FlowLayout flCliRod = new FlowLayout(FlowLayout.CENTER,0,0);
