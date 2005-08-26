@@ -60,6 +60,8 @@ import org.freedom.telas.FFilho;
 
 
 public class FAgenda extends FFilho implements JComboBoxListener, ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCabAgd = new JPanelPad(0,120);
   private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRodAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

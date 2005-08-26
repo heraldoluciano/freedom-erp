@@ -42,7 +42,9 @@ import javax.swing.text.BadLocationException;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.ImprimeOS;
 
-public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {
+public class DLVisualiza extends FFDialogo implements ActionListener, CaretListener {private static final long serialVersionUID = 1L;
+
+
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new FlowLayout(FlowLayout.CENTER, 0, 0));  
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
   private JTextArea txa = new JTextArea();

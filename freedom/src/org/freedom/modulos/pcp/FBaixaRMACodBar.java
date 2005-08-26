@@ -65,8 +65,6 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);	
-  private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
-  private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
   private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
   private JButton btExpedir = new JButton("Expedir", Icone.novo("btMedida.gif"));
   private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
@@ -75,11 +73,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldPad txtQtdEntrada = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,5);
-  private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
-  private ImageIcon imgExpedida = Icone.novo("clPago.gif");
   private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
-  private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
-  private ImageIcon imgColuna = null;
   private JPanelPad pinEntrada = new JPanelPad(300,150);
   private JPanelPad pinLbEntrada = new JPanelPad(150,15);
   private JLabelPad lbEntrada = new JLabelPad(" Entrada via código de barras");  
@@ -267,7 +261,6 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 
 		ResultSet rs = ps.executeQuery();
 		
-		Vector vSitRMA = new Vector();
 		if(rs.next()) {
 			String sChaveRs = rs.getString("CODRMA").trim()+"#"+			
 			   				  rs.getString("CODITRMA").trim();

@@ -52,6 +52,9 @@ import org.freedom.telas.FFilho;
 
 
 public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(0,100);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnSubRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

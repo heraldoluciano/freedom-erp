@@ -37,6 +37,8 @@ import org.freedom.componentes.Tabela;
 import org.freedom.telas.FTabDados;
 
 public class FMoeda extends FTabDados implements RadioGroupListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinGeral = new JPanelPad(370,220);
 
   private Vector vValsTipo = new Vector();

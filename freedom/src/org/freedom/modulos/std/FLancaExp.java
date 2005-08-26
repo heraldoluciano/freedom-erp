@@ -38,6 +38,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FLancaExp extends FDados implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodLExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodTipoExp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescTipoExp = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);

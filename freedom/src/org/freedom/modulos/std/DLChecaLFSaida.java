@@ -29,6 +29,9 @@ import org.freedom.componentes.Tabela;
 import org.freedom.telas.DLRelatorio;
 
 public class DLChecaLFSaida extends DLRelatorio {
+
+	private static final long serialVersionUID = 1L;
+
   public Tabela tab = new Tabela();
   private JScrollPane spnTab = new JScrollPane(tab);
   private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

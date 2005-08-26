@@ -57,6 +57,8 @@ import org.freedom.telas.FFilho;
 
 
 public class FHistorico extends FFilho implements CarregaListener, ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCabCont = new JPanelPad(530,200);
   private JPanelPad pnCabCont = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnCont = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

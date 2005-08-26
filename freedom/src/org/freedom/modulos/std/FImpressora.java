@@ -31,6 +31,9 @@ import org.freedom.telas.FDados;
 
 import java.util.Vector;
 public class FImpressora extends FDados {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtDescImp = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
   //private JTextFieldPad txtLinPagImp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);

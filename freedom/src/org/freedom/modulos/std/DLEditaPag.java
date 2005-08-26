@@ -40,6 +40,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLEditaPag extends FFDialogo implements CarregaListener {
+
+	private static final long serialVersionUID = 1L;
     
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtRazFor = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);

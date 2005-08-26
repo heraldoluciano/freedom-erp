@@ -38,6 +38,8 @@ import org.freedom.funcoes.Funcoes;
 
 
 public class FSobre extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
   private JTabbedPanePad tpnSobre = new JTabbedPanePad();
   private JPanelPad pnSobre = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnEquipe = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

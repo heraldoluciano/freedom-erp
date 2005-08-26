@@ -49,6 +49,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLNovoRec extends FFDialogo implements PostListener{
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pnRec = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinCab = new JPanelPad(580,130);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

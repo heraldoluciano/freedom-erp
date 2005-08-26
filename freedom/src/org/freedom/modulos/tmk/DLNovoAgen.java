@@ -51,6 +51,8 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLNovoAgen extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);

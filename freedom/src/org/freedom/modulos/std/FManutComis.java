@@ -52,6 +52,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FManutComis extends FFilho implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinPeriodo = new JPanelPad(275,65);
   private JPanelPad pinLabel = new JPanelPad(50,20);
   private JLabelPad lbPeriodo = new JLabelPad(" Periodo");

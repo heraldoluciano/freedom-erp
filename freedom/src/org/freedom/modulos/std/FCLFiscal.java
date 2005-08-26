@@ -43,6 +43,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FCLFiscal extends FDados implements CarregaListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
   private JTextFieldPad txtDescFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtCodRegra = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);

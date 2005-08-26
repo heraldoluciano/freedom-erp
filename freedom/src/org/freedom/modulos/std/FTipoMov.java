@@ -55,6 +55,8 @@ import org.freedom.telas.FTabDados;
 
 public class FTipoMov extends FTabDados implements RadioGroupListener,
 		CheckBoxListener {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
 

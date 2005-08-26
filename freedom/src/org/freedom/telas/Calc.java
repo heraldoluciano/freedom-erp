@@ -41,6 +41,8 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 
 public class Calc extends FFilho implements KeyListener, ActionListener {
+	private static final long serialVersionUID = 1L;
+
 	
 	GridBagConstraints gbConst = new GridBagConstraints();        
 	GridBagLayout gbCalc = new GridBagLayout();

@@ -37,6 +37,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLPlanPrim extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JPanelPad pinCont = new JPanelPad(360,220);

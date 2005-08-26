@@ -57,6 +57,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FConsOrc extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(0, 200);
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

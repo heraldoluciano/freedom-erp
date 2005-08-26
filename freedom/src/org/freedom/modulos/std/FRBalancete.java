@@ -46,6 +46,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRBalancete extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodConta = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 10, 0);
 

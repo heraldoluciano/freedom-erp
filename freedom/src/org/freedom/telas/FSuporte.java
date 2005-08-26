@@ -78,6 +78,8 @@ import org.freedom.telas.FPrincipal;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FSuporte extends FFDialogo implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextFieldPad txtAssunto = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 //	private JTextFieldPad txtEmail = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
@@ -242,7 +244,6 @@ public class FSuporte extends FFDialogo implements ActionListener {
 	}
 
 	private void enviar() {
-		String sWhere = "";
 		int iConta = 0;
 		if (!verifSmtp())
 			return;

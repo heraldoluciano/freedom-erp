@@ -32,6 +32,8 @@ import org.freedom.layout.LeiauteGR;
 
 
 public class GerContas extends LeiauteGR {
+	private static final long serialVersionUID = 1L;
+
 	private Connection con = null;
 	private Font fnTituloNeg1 = new Font("Arial",Font.BOLD,10);
 	private Font fnTituloNeg2 = new Font("Arial",Font.BOLD,8);

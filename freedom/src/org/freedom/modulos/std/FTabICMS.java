@@ -40,6 +40,8 @@ import org.freedom.telas.FDados;
  * @author Fernando Oliveira da Silva
  */
 public class FTabICMS extends FDados implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtUFTabICMS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldPad txtAliqTabICMS = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,9,2);
   public FTabICMS() {

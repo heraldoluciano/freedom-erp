@@ -79,6 +79,8 @@ import org.freedom.telas.FPrinterJob;
 
 public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener, DeleteListener {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCab = new JPanelPad();
 
 	private JPanelPad pinDet = new JPanelPad();
@@ -955,10 +957,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		ImprimeOS imp = new ImprimeOS("", con);
 		int iCodOrc = txtCodOrc.getVlrInteger().intValue();
 		int linPag = imp.verifLinPag() - 1;
-		int iPares = 0;
 		Vector vDesc = null;
 		Vector vObs = null;
-		String sStrLote = "";
 		imp.montaCab();
 		imp.setTitulo("ORÇAMENTO");
 		
@@ -985,11 +985,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				+ " ORDER BY P." + sOrdem + ",P.DESCPROD";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iItImp = 0;
-		int iMaxItem = 0;
 		try {
 			imp.limpaPags();
-			iMaxItem = linPag - 22;
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));

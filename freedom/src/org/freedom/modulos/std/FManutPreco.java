@@ -62,6 +62,8 @@ import org.freedom.telas.FFilho;
 
 public class FManutPreco extends FFilho implements ActionListener,
 		RadioGroupListener {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCli = new JPanelPad(400, 400);
 
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,

@@ -30,6 +30,8 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FDetalhe;
 
 public class FTabJuros extends FDetalhe {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(0,90);
   private JPanelPad pinDet = new JPanelPad(0,60);
   private JTextFieldPad txtCodTbJ = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

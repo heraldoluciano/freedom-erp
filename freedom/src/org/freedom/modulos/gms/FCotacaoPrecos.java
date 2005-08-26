@@ -66,6 +66,7 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
+import org.freedom.modulos.std.FProduto;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
@@ -166,8 +167,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JRadioGroup rgPriod = null;
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
-	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSol);
-
+	
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
@@ -362,6 +362,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		pinBotCab.adic(btMotivoCancelaSol, 0, 93, 110, 30);
 		pinBotCab.adic(btCompra, 0, 124, 110, 30);
 
+		btProduto.addActionListener(this);
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		btAprovaSol.addActionListener(this);
@@ -798,7 +799,18 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		return bRet;
 	}
 
+	private void abreProd() {
+		int iCodOrc = txtCodProd.getVlrInteger().intValue();
+		if (fPrim.temTela("Cadastro de Produtos") == false) {
+			FProduto tela = new FProduto();
+			fPrim.criatela("Cadastro de Produtos", tela, con);
+			tela.exec(iCodOrc);
+		}
+	}	
+	
 	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btProduto)
+			abreProd();
 		if (evt.getSource() == btPrevimp)
 			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)

@@ -83,7 +83,6 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private ListaCampos lcRec = new ListaCampos(this,"RP");
   private int iCodOP;
   private int iSeqOP;
-  private boolean bExecuta = false;
   public FOPFase(int iCodOP,int iSeqOP,boolean bExecuta) {
     setTitulo("Fases da OP");
     if(bExecuta){
@@ -101,7 +100,6 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
        
     this.iCodOP = iCodOP;
     this.iSeqOP = iSeqOP;
-    this.bExecuta = bExecuta;
     
     txtCodOP.setAtivo(false);
     txtCodProd.setAtivo(false);
@@ -236,7 +234,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   	}
   }
 
-  private void carregaTipoRec() {
+/*  private void carregaTipoRec() {
   	PreparedStatement ps = null;
   	ResultSet rs = null;
   	String sql = null;
@@ -269,7 +267,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   		sql = null;
   	}
   	
-  }
+  }*/
   public boolean bFinalizaProcesso(){
   	boolean bRet = false;
   	String sSQL = "select ef.finalizaop from ppestrufase ef, ppopfase pf, ppop op where "+

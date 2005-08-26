@@ -44,6 +44,9 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLConsultaObs extends FFDialogo implements ActionListener, TabelaSelListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinConsulta = new JPanelPad(500,180);
   private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

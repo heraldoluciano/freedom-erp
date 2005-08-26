@@ -53,6 +53,9 @@ import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
 public class FFornecedor extends FTabDados implements RadioGroupListener, PostListener, InsertListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinFor = new JPanelPad();
   private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);

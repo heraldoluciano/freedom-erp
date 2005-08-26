@@ -61,7 +61,10 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FInventario extends FDados implements CarregaListener,
-		InsertListener, PostListener, CheckBoxListener {
+	InsertListener, PostListener, CheckBoxListener {
+
+private static final long serialVersionUID = 1L;
+
 	private int casasDec = Aplicativo.casasDec;
 
 	private JTextFieldPad txtCodInv = new JTextFieldPad(

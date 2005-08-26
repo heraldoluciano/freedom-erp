@@ -78,6 +78,8 @@ import org.freedom.telas.FTabDados;
 public class FProduto extends FTabDados implements CheckBoxListener,
 		EditListener, InsertListener, ChangeListener, ActionListener,
 		CarregaListener, RadioGroupListener {
+	private static final long serialVersionUID = 1L;
+
 	int casasDec = Aplicativo.casasDec;
 	private JPanelPad pinGeral = new JPanelPad(650, 340);
 
@@ -1757,7 +1759,6 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 			    ps.setInt(iParam++,iCodAlmox);
 			}
 			rs = ps.executeQuery();
-			int iLin = 0;
 						
 			if (rs.next()) {
 				txtSldAlmox.setVlrDouble(new Double(rs.getDouble(iCodAlmox!=0?"SLDPRODAX":"SLDPROD")+""));
@@ -1811,4 +1812,11 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 
 	public void edit(EditEvent eevt) {
 	}
+	
+	public void exec(int iCodProduto) {
+		txtCodProd.setVlrString(iCodProduto + "");
+		lcCampos.carregaDados();
+	}
+	
+	
 }

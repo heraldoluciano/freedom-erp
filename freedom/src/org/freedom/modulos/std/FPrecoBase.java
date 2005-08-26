@@ -44,6 +44,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFilho;
 
 public class FPrecoBase extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCli = new JPanelPad(300,150);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 

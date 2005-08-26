@@ -50,7 +50,10 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
-public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener,PostListener {       
+public class FModEtiqueta extends FDados implements ActionListener, JComboBoxListener,PostListener {
+
+	private static final long serialVersionUID = 1L;
+       
 	
     private JPanelPad pinCab = new JPanelPad(0,150);
 	private JTextFieldPad txtCodModEtiq = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
@@ -174,8 +177,6 @@ public class FModEtiqueta extends FDados implements ActionListener, JComboBoxLis
 	}
 	
 	public void actionPerformed(ActionEvent evt) {
-		 String Aux, Aux1;// teste
-		 int Tam = 0;
 		 if (evt.getSource() == btAdic) {
 		     adicionaCampo();
 	    }

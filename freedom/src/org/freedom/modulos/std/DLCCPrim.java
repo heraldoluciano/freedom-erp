@@ -31,6 +31,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLCCPrim extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtDescCont = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtSigla = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);

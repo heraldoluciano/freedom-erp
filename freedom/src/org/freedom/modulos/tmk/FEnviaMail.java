@@ -80,6 +80,8 @@ import org.freedom.telas.FFilho;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FEnviaMail extends FFilho implements ActionListener {
+	private static final long serialVersionUID = 1L;
+	
 	private JTextFieldPad txtCodAtiv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescAtiv = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtArqMen = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);

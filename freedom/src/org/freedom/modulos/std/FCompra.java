@@ -64,12 +64,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.Layout;
 import org.freedom.layout.Leiaute;
 import org.freedom.layout.NFEntrada;
-import org.freedom.layout.NFSaida;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener {
+	private static final long serialVersionUID = 1L;
+
+	
 	private int casasDec = Aplicativo.casasDec;
 
 	private JPanelPad pinCab = new JPanelPad();

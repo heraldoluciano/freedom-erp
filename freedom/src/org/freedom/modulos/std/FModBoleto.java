@@ -48,6 +48,9 @@ import org.freedom.telas.FDados;
 
 
 public class FModBoleto extends FDados implements ActionListener, JComboBoxListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pinCab = new JPanelPad(0,150);
 	private JTextFieldPad txtCodModBol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescModBol = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);

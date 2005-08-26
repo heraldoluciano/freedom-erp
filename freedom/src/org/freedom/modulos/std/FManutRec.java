@@ -62,6 +62,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
 public class FManutRec extends FFilho implements ActionListener,KeyListener,CarregaListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
   private JPanelPad pnTabConsulta = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinBotoesConsulta = new JPanelPad(40,100);
@@ -871,14 +873,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	    ps.setInt(3,ListaCampos.getMasterFilial("FNRECEBER"));
       }
       ResultSet rs = ps.executeQuery();
-	  double bdVlrAReceber = 0.0;
-	  double bdVlrParc =  0.0;
       for (int i=0; rs.next(); i++) { 
         tabManut.adicLinha();
-
-		bdVlrAReceber = Funcoes.arredDouble(rs.getDouble("VlrApagItRec"),Aplicativo.casasDec);
-	    bdVlrParc = Funcoes.arredDouble(rs.getDouble("VlrParcItRec"),Aplicativo.casasDec);
-          
+        
 		if ( rs.getString("StatusItRec").equals("RP") )
 		  imgColuna = imgPago;
 	    else if ( rs.getString("StatusItRec").equals("RL") )
@@ -1126,7 +1123,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     carregaGridManut(bBuscaAtual);
   }
  private void editar() {
- 	String sStatusItRec = null;
  	ImageIcon imgStatusAt = null;
  	if (tabManut.getLinhaSel() > -1) {
  		imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0); 
@@ -1276,7 +1272,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   }
  private void estorno() {
   	if(Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==0) {  		
-  	 	String sStatusItRec = null;
   	 	ImageIcon imgStatusAt = null;
   		if (tabManut.getLinhaSel() > -1) { 			
   			imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0);

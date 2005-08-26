@@ -41,8 +41,6 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 	private JTextFieldPad txtQtdFinalOP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
 	private JTextAreaPad txaJustifcQtdProd = new JTextAreaPad();
 	private JLabelPad lJustifcQtdProd = new JLabelPad("Justificativa");
-    private double dVlr;
-    private String sObs;
     boolean bJust = false;
 	public DLFinalizaOP(Component cOrig,String sQtdPrevOp) {
 		super(cOrig);

@@ -60,6 +60,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListener,EditListener,PostListener,DeleteListener,ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(500,200);
   private JPanelPad pinDet = new JPanelPad(500,100);
   private JTextFieldPad txtCodLanca = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);

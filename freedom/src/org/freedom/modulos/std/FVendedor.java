@@ -53,6 +53,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 public class FVendedor extends FTabDados implements PostListener {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodVend = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 5, 0);
 
@@ -366,10 +368,6 @@ public class FVendedor extends FTabDados implements PostListener {
 		int linPag = imp.verifLinPag() - 1;
 		int iContaReg = 0;
 		String sWhere = "";
-		String sWhere2 = "";
-		String sCodpesq = "";
-		String sCodpesqant = "";
-		String sOrdem = "";
 		String sValores[] = null;
 
 		DLRVendedor dl = new DLRVendedor(this, con);
@@ -380,8 +378,6 @@ public class FVendedor extends FTabDados implements PostListener {
 		}
 		sValores = dl.getValores();
 		dl.dispose();
-
-		sOrdem = sValores[0];
 
 		if (sValores[1].length() > 0) {
 			System.out.println("CIDADE NO FILTRO:" + sValores[1]);
@@ -434,7 +430,6 @@ public class FVendedor extends FTabDados implements PostListener {
 				imp.addSubTitulo(sTmp);
 			}
 			
-			boolean hasData = false;
 			while (rs.next()) {
 				if (imp.pRow() == 0) {
 					

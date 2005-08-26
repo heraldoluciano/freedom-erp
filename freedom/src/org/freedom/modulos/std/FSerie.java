@@ -39,6 +39,8 @@ import org.freedom.telas.FDados;
 import org.freedom.telas.FFDialogo;
 
 public class FSerie extends FDados implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
 
   private JTextFieldPad txtSerie = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
   private JTextFieldPad txtDocSerie= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);

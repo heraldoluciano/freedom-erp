@@ -44,6 +44,8 @@ import org.freedom.telas.FDados;
 
 
 public class FTransp extends FDados implements PostListener,RadioGroupListener,InsertListener {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
   private JTextFieldPad txtRazTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtNomeTran = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);

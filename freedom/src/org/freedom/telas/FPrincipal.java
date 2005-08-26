@@ -65,6 +65,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
 
 public class FPrincipal extends JFrame implements ActionListener, MouseListener {
+	private static final long serialVersionUID = 1L;
+
 
 	private Connection con = null;
 	public JMenuBar bar = new JMenuBar();

@@ -42,6 +42,9 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 public class DLConsultaVenda extends FFDialogo implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinConsulta = new JPanelPad(500,100);
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtDocVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);

@@ -48,6 +48,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
 public class FRCentroCusto extends FRelatorio {
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtCodConta = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 10, 0);
 
@@ -176,12 +178,8 @@ public class FRCentroCusto extends FRelatorio {
 
 		BigDecimal bTotal = new BigDecimal("0");
 
-		String sDataini = "";
-		String sDatafim = "";
 		String sDesccc = "";
 		String sSiglacc = "";
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
 
 		String sSQL = "SELECT CM.CODCC,CM.SIGLACC,CM.DESCCC,CM.NIVELCC,"
 				+

@@ -31,7 +31,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -401,7 +400,6 @@ public class FConsSol extends FFilho implements ActionListener {
 	private void imprimir(boolean bVisualizar) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
-		BigDecimal bTotalLiq = new BigDecimal("0");
 		boolean bImpCot = false;
 
 		/*

@@ -59,6 +59,8 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.PainelImagem;
 
 public class FDados extends FFilho implements ActionListener, KeyListener, InternalFrameListener, PostListener{//, FocusListener {
+	private static final long serialVersionUID = 1L;
+
    public PreparedStatement atualiza = null;
    public PreparedStatement insere = null;
    public PreparedStatement deleta = null;

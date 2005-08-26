@@ -271,7 +271,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	}
 	private boolean gravaVenda() {
 		boolean bRet = false;
-		String sCVTEF = null;
+/*		String sCVTEF = null;
 		String sPlanoTEF = null;
 		
 		//Ajusta variaveis de TEF se existir.
@@ -279,7 +279,7 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		    sCVTEF = Tef.retNsu((Properties)vTefsOK.elementAt(0));
 		    sPlanoTEF = Funcoes.copy(txtDescPlanoPag.getVlrString(),16);
 		}
-		    
+*/		    
 		
 		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2' WHERE CODEMP=?" +
 		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";

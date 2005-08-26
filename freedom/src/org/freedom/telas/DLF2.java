@@ -50,6 +50,8 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 
 public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener, ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JLabelPad lbPesq = new JLabelPad("Código");
   private JTextFieldPad txtPesq = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   private JPanelPad pnBordCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));

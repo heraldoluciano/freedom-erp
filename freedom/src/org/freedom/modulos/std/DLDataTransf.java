@@ -31,6 +31,9 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FFDialogo;
 
 public class DLDataTransf extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
 	private JTextFieldPad txtDataTransf = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	public DLDataTransf(Component cOrig) {
 		super(cOrig);

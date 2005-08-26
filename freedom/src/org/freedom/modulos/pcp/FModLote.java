@@ -147,8 +147,6 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 	}
 	
 	public void actionPerformed(ActionEvent evt) {
-		 String Aux, Aux1;// teste
-		 int Tam = 0;
 		 if (evt.getSource() == btAdic) {
 		     adicionaCampo();
 	    }

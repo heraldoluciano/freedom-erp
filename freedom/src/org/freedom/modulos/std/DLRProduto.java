@@ -35,6 +35,9 @@ import org.freedom.telas.FFDialogo;
 import java.sql.Connection;
 import java.util.Vector;
 public class DLRProduto extends FFDialogo {
+
+	private static final long serialVersionUID = 1L;
+
   private JRadioGroup rgOrdem = null;
   private JRadioGroup rgModo = null;
   private JPanelPad pnlbSelec = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));

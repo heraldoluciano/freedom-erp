@@ -22,7 +22,6 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Connection;
@@ -51,13 +50,10 @@ import org.freedom.telas.FFilho;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class FConsPreco extends FFilho implements KeyListener {
+	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
     //private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pinCab = new JPanelPad(800,55);
-    private Container c = getContentPane();
     private Tabela tbPreco = new Tabela();
     private JScrollPane spPreco = new JScrollPane(tbPreco);
     private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,10);

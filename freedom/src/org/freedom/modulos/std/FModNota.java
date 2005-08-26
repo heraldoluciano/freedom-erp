@@ -34,6 +34,8 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 
 public class FModNota extends FDados implements ActionListener{
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCodModNota = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtDescModNota= new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
   public FModNota () {

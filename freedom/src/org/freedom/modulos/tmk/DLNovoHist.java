@@ -51,6 +51,8 @@ import org.freedom.telas.FFDialogo;
 
 
 public class DLNovoHist extends FFDialogo {
+	private static final long serialVersionUID = 1L;
+
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

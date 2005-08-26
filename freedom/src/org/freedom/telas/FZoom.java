@@ -38,6 +38,8 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.PainelImagem;
 public class FZoom extends JDialog implements KeyListener, ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private Image imZoom = null;
   private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());  
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));  

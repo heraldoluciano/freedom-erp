@@ -46,6 +46,9 @@ import org.freedom.telas.FDados;
 
 
 public class FFrete extends FDados implements InsertListener, FocusListener {
+
+	private static final long serialVersionUID = 1L;
+
   private int casasDec = Aplicativo.casasDec;
   private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldFK txtDocVenda = new JTextFieldFK(JTextFieldPad.TP_INTEGER,8,0);

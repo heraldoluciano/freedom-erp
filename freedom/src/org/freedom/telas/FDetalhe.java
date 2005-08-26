@@ -32,6 +32,8 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 
 public class FDetalhe extends FDados {
+	private static final long serialVersionUID = 1L;
+
   public static boolean comScroll = false;
   private GridLayout glRod = new GridLayout(1,1);
   private GridLayout glCab = new GridLayout(1,1);

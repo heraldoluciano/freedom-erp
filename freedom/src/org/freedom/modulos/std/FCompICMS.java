@@ -33,6 +33,9 @@ import org.freedom.bmps.Icone;
 import org.freedom.telas.FFilho;
 
 public class FCompICMS extends FFilho implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
   private JPanelPad pinCab = new JPanelPad(400,100);
   private JPanelPad pinRod = new JPanelPad(400,120);
   private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());

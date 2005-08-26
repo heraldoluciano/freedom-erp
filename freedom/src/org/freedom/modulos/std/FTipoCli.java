@@ -35,6 +35,8 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
 public class FTipoCli extends FDados implements ActionListener {
+	private static final long serialVersionUID = 1L;
+
   private JTextFieldPad txtCod= new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDesc= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtSgTpCli= new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
