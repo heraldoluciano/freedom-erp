@@ -125,7 +125,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
     lcPagar.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_FK,true));
     lcPagar.add(new GuardaCampo( txtCodBanco, "CodBanco", "Cód.banco", ListaCampos.DB_FK, false));
     lcPagar.add(new GuardaCampo( txtVlrParcPag, "VlrParcPag", "Valor da parc.", ListaCampos.DB_SI,false));
-    lcPagar.add(new GuardaCampo( txtDtEmisPag, "DataPag", "Dt.emissão", ListaCampos.DB_SI,false));
+    lcPagar.add(new GuardaCampo( txtDtEmisPag, "DataPag", "Dt.emissão", ListaCampos.DB_SI,true));
     lcPagar.add(new GuardaCampo( txtDocPag, "DocPag", "N.documento", ListaCampos.DB_SI,true));
     lcPagar.add(new GuardaCampo( txtObs, "ObsPag", "Obs.", ListaCampos.DB_SI,false));
     lcPagar.montaSql(true,"PAGAR", "FN");
@@ -187,7 +187,7 @@ public class DLNovoPag extends FFDialogo implements PostListener {
 	adic(txtDescBanco,90,60,197,20);
 	adic(new JLabelPad("Valor"),290,40,107,20);
 	adic(txtVlrParcPag,290,60,107,20);
-	adic(new JLabelPad("Emissão"),400,40,100,20);
+	adic(new JLabelPad("Data de Emissão"),400,40,100,20);
 	adic(txtDtEmisPag,400,60,100,20);
 	adic(new JLabelPad("Doc."),7,80,80,20);
 	adic(txtDocPag,7,100,80,20);
