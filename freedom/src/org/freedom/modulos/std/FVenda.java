@@ -1825,21 +1825,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 0, 1, "CLIENTE");
 						imp.say(imp.pRow() + 0, 70, "PEDIDO N.: "+ rs.getString("CodVenda").trim());
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim() + " - " + rs.getString("CodCli").trim());//nome cliente
+						imp.say(imp.pRow() + 0, 1, (rs.getString("RazCli")!=null ? rs.getString("RazCli").trim() : "") + " - " + rs.getString("CodCli").trim());//nome cliente
 						imp.say(imp.pRow() + 0, 70, "PEDIDO CLIENTE: "+(rs.getString("PEDCLIVENDA")==null?"":rs.getString("PEDCLIVENDA")));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("CpfCli") != null ? "CPF    : " + Funcoes
 									.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + Funcoes
 										.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));//CNJP cliente
-						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ rs.getString("ContCli").trim());
+						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ (rs.getString("ContCli")!=null ? rs.getString("ContCli").trim():""));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + rs.getString("InscCli"));//IE cliente
-						imp.say(imp.pRow() + 0, 70,rs.getString("EndCli").trim() + " N°:" + rs.getString("NumCli"));//rua e número do cliente
+						imp.say(imp.pRow() + 0, 1, (rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + (rs.getString("InscCli")!=null ? rs.getString("InscCli"):"")));//IE cliente
+						imp.say(imp.pRow() + 0, 70,(rs.getString("EndCli")!=null ? rs.getString("EndCli").trim()+ " N°:" + (rs.getString("NumCli")!=null ? rs.getString("NumCli"):""):""));//rua e número do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "SITE   : " + rs.getString("SiteCli").trim());
+						imp.say(imp.pRow() + 0, 1, "SITE   : " + rs.getString("SiteCli")!=null ? rs.getString("SiteCli").trim():"");
 						imp.say(imp.pRow() + 0, 70,rs.getString("BairCli").trim()+" - "+ rs.getString("CidCli").trim()+" - "+rs.getString("UFCli").trim()+" - "+rs.getString("CEPCli").trim());//complemento do endereço do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + rs.getString("EmailCli").trim());
+						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + rs.getString("EmailCli")!=null ? rs.getString("EmailCli").trim():"");
 						imp.say(imp.pRow() + 0, 70, "TEL: "+ (rs.getString("DDDCli")!=null?Funcoes.setMascara(rs.getString("DDDCli"), "(####)"):"")+ 
 												(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
 												(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : ""));
