@@ -34,7 +34,7 @@ import org.freedom.funcoes.Funcoes;
 
 public class NFEntrada extends NF {
 	public NFEntrada(int casasDec) {
-		super(casasDec);		
+		super();		
 	}
 	
 	public boolean carregaTabelas(Connection con, Vector parans ) {
