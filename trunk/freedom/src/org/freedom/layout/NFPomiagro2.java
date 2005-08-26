@@ -20,8 +20,6 @@
 
 package org.freedom.layout;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
@@ -31,7 +29,6 @@ import org.freedom.funcoes.Funcoes;
 public class NFPomiagro2 extends Layout {
   public boolean imprimir(NF nf,ImprimeOS imp) {
     boolean retorno = super.imprimir(nf, imp);
-    GregorianCalendar cHora = new GregorianCalendar();
     
     int iNumNota = 0;
     int iItImp = 0;
@@ -51,10 +48,6 @@ public class NFPomiagro2 extends Layout {
 	Vector vMens = new Vector();
 	vMens.clear();
 	
-    String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
-    /*
-    try {
-    */
       if (cab.next()) {
         iNumNota = cab.getInt(NF.C_DOC);
       }
