@@ -195,8 +195,9 @@ public class NFBuzzi extends Leiaute {
     			}
     		}
 
-            imp.say(imp.pRow()+0,60,sSigla);
             imp.say(imp.pRow()+0,69,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
+            imp.say(imp.pRow()+0,73,sSigla);
+
             imp.say(imp.pRow()+0,79,rs.getString("CodUnid").substring(0,4));
             imp.say(imp.pRow()+0,82,""+rs.getDouble("QtdItVenda"));
             imp.say(imp.pRow()+0,92,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
@@ -272,7 +273,7 @@ public class NFBuzzi extends Leiaute {
          
       }
       imp.say(imp.pRow()+1,0,""+imp.comprimido());
-      imp.say(imp.pRow()+0,16,"classificação fiscal");
+      imp.say(imp.pRow()+0,16,"CLASSIFICACAO FISCAL");
       int pos = 1;
       for(int i=0;i<vSigla.size();i++){
     	  if(pos==1){
