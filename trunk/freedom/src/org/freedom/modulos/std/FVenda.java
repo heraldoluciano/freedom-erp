@@ -2284,7 +2284,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					parans.addElement(new Integer(iCodVenda));
 					nf = new NFSaida(casasDec);
 					nf.carregaTabelas(con, parans);
-					((Layout) layNF).imprimir(nf, imp);
+					bImpOK = ((Layout) layNF).imprimir(nf, imp);
 				}
 				else if (layNF instanceof Leiaute) {
 					sSQL = "SELECT (SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA),"

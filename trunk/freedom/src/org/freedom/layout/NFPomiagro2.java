@@ -221,10 +221,10 @@ public class NFPomiagro2 extends Layout {
 		   
         // imp.say(imp.pRow()+0,14,Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,66-sDescAdic.length())+sDescAdic);
          imp.say(imp.pRow()+0,83,sClasFisc);
-         imp.say(imp.pRow()+0,89,itens.getString(NF.C_CODUNID).substring(0,4));
+         imp.say(imp.pRow()+0,89,itens.getString(NF.C_CODUNID)/*.substring(0,4)*/);
          imp.say(imp.pRow()+0,95,""+itens.getFloat(NF.C_QTDITPED));
           
-         imp.say(imp.pRow()+0,104,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(itens.getString(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)));
+ //ARRUMAR imp.say(imp.pRow()+0,104,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(itens.getString(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)));
 //         imp.say(imp.pRow()+0,97,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrProdItVenda")));
          imp.say(imp.pRow()+0,119,Funcoes.strDecimalToStrCurrency(13,2,""+itens.getString(NF.C_VLRLIQITPED)));
          imp.say(imp.pRow()+0,135,""+itens.getFloat(NF.C_PERCICMSITPED));
