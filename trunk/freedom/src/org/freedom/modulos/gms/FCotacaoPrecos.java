@@ -131,8 +131,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtCodSol = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			8, 0);
 	private JTextFieldPad txtCodCot = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			5, 0);
 	private JTextFieldPad txtDtCot = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,
@@ -337,6 +335,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		txtQtdItAprovado.addFocusListener(this);
 		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
+		lcCotacao.addCarregaListener(this);
+		lcCotacao.addPostListener(this);
 		lcProd.addCarregaListener(this);
 		lcProd2.addCarregaListener(this);
 		lcDet.addPostListener(this);
@@ -476,10 +476,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	
 		txtQtdAprovCot.setSoLeitura(true);
 		txtDtCot.setSoLeitura(true);
-	
+
 		adicCampo(txtCodCot, 7, 20, 77, 20, "CodCot", "Cód.Cot.",
-				ListaCampos.DB_PK, true);
-		adicCampoInvisivel(txtCodSol, "CodSol", "Cód.Sol.", ListaCampos.DB_PK, true);
+				ListaCampos.DB_PK, true);	
 		adicCampo(txtDtCot, 87, 20, 97, 20, "DtCot", "Dt.Cot.", ListaCampos.DB_SI,
 				false);
 		adicCampoInvisivel(txtIdUsuCot, "IdUsuCot", "Usu.Cot.", ListaCampos.DB_SI,
@@ -505,7 +504,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcCotacao.montaTab();
 		lcCotacao.addInsertListener(this);
 		lcCotacao.addCarregaListener(this);
-	
+
 		tab.setTamColuna(30, 0);
 		tab.setTamColuna(80, 1);
 		tab.setTamColuna(230, 2);
@@ -520,11 +519,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		pinBotDet.adic(btCancelaItem, 0, 0, 110, 28);
 		pinBotDet.adic(btMotivoCancelaItem, 0, 29, 110, 28);
-		pinDet.adic(pinBotDet, 630, 1, 114, 90);
+		pinDet.adic(pinBotDet, 630, 1, 114, 64);
 		lSitItSol = new JLabelPad();
 		lSitItSol.setForeground(Color.WHITE);
 		pinLb.adic(lSitItSol, 31, 0, 110, 20);
-		pinDet.adic(pinLb, 630, 91, 114, 24);
+		pinDet.adic(pinLb, 630, 67, 114, 24);
 	}
 
 	private void buscaInfoUsuAtual() {
@@ -648,12 +647,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
         sSitItExp = txtSituacaoItComp.getVlrString();
         sSitItSol = txtSituacaoIt.getVlrString();
 
-		boolean bStatusTravaTudo = ((sSitItSol.equals("AF"))
-				|| (sSitItSol.equals("EF")) || (sSitItSol.equals("CA")));
-		boolean bStatusTravaCot = (!(sSitItSol.equals("AF")));
+		boolean bStatusTravaTudo = ((sSitItExp.equals("AF"))
+				|| (sSitItExp.equals("EF")) || (sSitItSol.equals("CA")) || (sSitItExp.equals("CA")));
+		boolean bStatusTravaCot = (!(sSitItExp.equals("AF")));
 
 		if (cevt.getListaCampos() == lcDet) {
-			if (sSitItSol.equals("CA")) {
+			if (sSitItExp.equals("CA")) {
 				desabCampos(true);
 				btMotivoCancelaItem.setEnabled(true);
 			}
@@ -694,11 +693,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
 				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {}
 
-		if (sSitItSol.equals("CA")) {
+		if (sSitItExp.equals("CA")) {
 			SitSol = "Cancelado";
 			lSitItSol.setText(SitSol);
 			pinLb.setBackground(cor(250, 50, 50));
-		} else if (sSitItSol.equals("PE")) {
+		} else if (sSitItExp.equals("PE")) {
 			SitSol = "Pendente";
 			lSitItSol.setText(SitSol);
 			pinLb.setBackground(cor(255, 204, 51));
@@ -752,7 +751,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoCancSol.getVlrString());
 		if (obs != null) {
-			if ((!bAprovaCab) || (sSitItSol.equals("CA")))
+			if ((!bAprovaCab) || (sSitItExp.equals("CA")))
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
@@ -768,7 +767,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		boolean bRet = false;
 		FObservacao obs = new FObservacao(txaMotivoCancItem.getVlrString());
 		if (obs != null) {
-			if ((!bAprovaCab) || (sSitItSol.equals("CA")))
+			if ((!bAprovaCab) || (sSitItExp.equals("CA")))
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
@@ -1193,13 +1192,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	public void beforeInsert(InsertEvent ievt) {}
 
 	public void afterInsert(InsertEvent ievt) {
-		if (ievt.getListaCampos() == lcCampos) {
-			txtAnoCC.setVlrInteger(anoCC);
-			txtCodCC.setVlrString(codCC);
-			lcCC.carregaDados();
-			txtIDUsu.setVlrString(Aplicativo.strUsuario);
-			txtDtEmitSolicitacao.setVlrDate(new Date());
-			lcCampos.carregaDados();
+		if (ievt.getListaCampos() == lcCotacao) {
+			txtDtCot.setVlrDate(new Date());
+			txtQtdCot.setVlrDouble(txtQtdAprovCot.getVlrDouble());
+			txtIdUsuCot.setVlrString(Aplicativo.strUsuario);
 		}
 	}
 
