@@ -166,7 +166,7 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
     adicDB(cbBaixoCusto, 7, 10, 225, 20, "BaixoCustoUsu", "", false);
     adicDB(cbAbreGaveta, 7, 30, 225, 20, "AbreGavetaUsu", "", false);
     adicDB(cbAlmoxarife, 7, 50, 225, 20, "AlmoxarifeUsu", "", false);
-    //adicDB(cbCompra, 7, 70, 225, 20, "ComprasUsu", "", false);
+    adicDB(cbCompra, 7, 70, 225, 20, "ComprasUsu", "", false);
     
     txtCodAlmox.setRequerido(cbAlmoxarife.isSelected());
   	
