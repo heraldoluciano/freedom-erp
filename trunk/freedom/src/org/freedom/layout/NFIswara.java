@@ -89,7 +89,7 @@ public class NFIswara extends Leiaute {
 
 
          if (bNat) {
-           sNat[0] = rs.getString("DescNat");
+           sNat[0] = Funcoes.copy(rs.getString("DescNat"),40);
            sNat[1] = Funcoes.setMascara(rs.getString("CodNat"),"#.##");
            sMatObs = Funcoes.strToStrArray(rs.getString("ObsVenda") != null ? rs.getString("ObsVenda") : "",3);
              
