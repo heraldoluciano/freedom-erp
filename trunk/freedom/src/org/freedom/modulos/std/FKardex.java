@@ -304,7 +304,7 @@ public class FKardex extends FRelatorio implements ActionListener {
                             imp.say(imp.pRow()+0,45,"| Cód.almox. "); //13
                             imp.say(imp.pRow()+0,58,"| Cód.lote "); //13
                             imp.say(imp.pRow()+0,75,"| Quantidade "); //8
-                            imp.say(imp.pRow()+0,87,"| Valor.unit. "); //15
+                            imp.say(imp.pRow()+0,88,"| Valor.unit. "); //15
                             imp.say(imp.pRow()+0,106,"| Saldo ");//8
                             imp.say(imp.pRow()+0,118,"| Custo MPM "); //15
                             imp.say(imp.pRow()+0,135,"|");
@@ -319,9 +319,9 @@ public class FKardex extends FRelatorio implements ActionListener {
                     imp.say(imp.pRow()+0,45,"| "+tab.getValor(i,4));
                     imp.say(imp.pRow()+0,58,"| "+tab.getValor(i,5));
                     imp.say(imp.pRow()+0,75,"| "+tab.getValor(i,6));
-                    imp.say(imp.pRow()+0,87,"| "+tab.getValor(i,7));
-                    imp.say(imp.pRow()+0,106,"| "+tab.getValor(i,8));
-                    imp.say(imp.pRow()+0,118,"| "+tab.getValor(i,9));
+                    imp.say(imp.pRow()+0,88,"| "+tab.getValor(i,7));
+                    imp.say(imp.pRow()+0,106,"| "+tab.getValor(i,9));
+                    imp.say(imp.pRow()+0,118,"| "+tab.getValor(i,10));
                     imp.say(imp.pRow()+0,135,"|");
                 }
                 imp.say(imp.pRow()+(hasData ? 1 : 0),0,""+imp.comprimido());
