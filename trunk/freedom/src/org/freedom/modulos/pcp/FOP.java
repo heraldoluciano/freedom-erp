@@ -402,8 +402,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	txtRefProdDet.setAtivo(false);
   	
 	//FK de Lotes
-	lcLoteProdDet.add(new GuardaCampo(txtCodLoteProdDet, "CodLote", "Lote",
-			ListaCampos.DB_PK, txtDescLoteProdDet, false));
+	lcLoteProdDet.add(new GuardaCampo(txtCodLoteProdDet, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLoteProdDet, false));
 	lcLoteProdDet.add(new GuardaCampo(txtDescLoteProdDet, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
 	lcLoteProdDet.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
 	lcLoteProdDet.setDinWhereAdic("CODPROD=#N",txtCodProdDet);
@@ -411,11 +410,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	lcLoteProdDet.setQueryCommit(false);
 	lcLoteProdDet.setReadOnly(true);
 	txtCodLoteProdDet.setTabelaExterna(lcLoteProdDet);
-	txtDescLoteProdDet.setListaCampos(lcLoteProdDet);
-	txtDescLoteProdDet.setNomeCampo("VenctoLote");
-	txtDescLoteProdDet.setLabel("Vencimento");
+//	txtDescLoteProdDet.setListaCampos(lcLoteProdDet);
+//	txtDescLoteProdDet.setNomeCampo("VenctoLote");
+//	txtDescLoteProdDet.setLabel("Vencimento");
 
-  	
+	
   	lcProdDetCod.add(new GuardaCampo( txtCodProdDet, "Codprod", "Cód.prod.", ListaCampos.DB_PK, txtDescProdDet, true));
   	lcProdDetCod.add(new GuardaCampo( txtDescProdDet, "Descprod", "Descriçao do produto", ListaCampos.DB_SI, false));
     lcProdDetCod.add(new GuardaCampo( txtRefProdDet, "refprod", "referencia", ListaCampos.DB_SI, false));
@@ -453,7 +452,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	  	txtRefProdDet.setBuscaAdic(new DLBuscaProd(con,"REFPROD",lcProdDetRef.getWhereAdic()));
   	}
   	adicDescFK(txtDescProdDet,133,20,250,20,"descprod", "Descrição do produto");
-  	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", ListaCampos.DB_SI, false);
+  	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", ListaCampos.DB_FK, false);
   	adicCampo(txtQtdItOp,479,20,90,20,"qtditop","Quantidade", ListaCampos.DB_SI, false);
   	adicCampoInvisivel(txtQtdCopiaItOp,"qtdcopiaitop","Qtd. rateada", ListaCampos.DB_SI, false);
   	adicCampoInvisivel(txtGeraRMAAut,"GERARMA","Gera Rma",ListaCampos.DB_SI,false);
@@ -977,9 +976,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		txtDtValidOP.setVlrDate(txtDescLoteProdEst.getVlrDate());    	
     }
   	if(cevt.getListaCampos() == lcDet) {
-		if((txtCodLoteProdDet.getVlrString().equals("")) && (txtUsaLoteDet.getVlrString().equals("S"))){
-			txtCodLoteProdDet.setAtivo(true);
+		if((txtCodLoteProdDet.getVlrString().trim().equals("")) && (txtUsaLoteDet.getVlrString().equals("S"))){			
 			txtCodLoteProdDet.setVlrString(buscaLote(lcProdDetCod,txtCodProdDet,true));
+			txtCodLoteProdDet.setAtivo(true);
 			lcLoteProdDet.carregaDados();
 		}
 		else if((txtUsaLoteDet.getVlrString().equals("N"))){
