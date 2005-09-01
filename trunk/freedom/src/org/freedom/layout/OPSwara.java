@@ -74,7 +74,7 @@ public class OPSwara extends LeiauteGR {
 	    iYPosProd = iPosIniItens;
 		try {
 		  String sSQL = "SELECT ITOP.CODOP,ITOP.SEQITOP,OP.DTEMITOP,OP.CODPROD,(SELECT PROD2.DESCPROD FROM EQPRODUTO PROD2 WHERE PROD2.CODPROD=OP.CODPROD  AND PROD2.CODEMP=OP.CODEMPPD  AND PROD2.CODFILIAL=OP.CODFILIALPD),"+
-			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPREVPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPREVPRODOP,ITOP.CODFASE,OP.CODLOTE "+
+			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPREVPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPREVPRODOP,ITOP.CODFASE,OP.CODLOTE,PROD.CODUNID "+
 			"FROM PPESTRUTURA EST,PPOP OP, PPITOP ITOP, EQUNIDADE UNID, EQPRODUTO PROD "+
 			"WHERE EST.CODPROD=OP.CODPROD AND ITOP.CODOP=OP.CODOP AND ITOP.SEQOP=OP.SEQOP AND UNID.CODUNID=PROD.CODUNID "+
 			"AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND OP.SEQOP=? AND OP.CODEMP=? AND OP.CODFILIAL=?";
@@ -95,7 +95,7 @@ public class OPSwara extends LeiauteGR {
             vItem.addElement((rs.getString(12)!=null?rs.getString(12):"")); //Código
             vItem.addElement((rs.getString(13)!=null?rs.getString(13):"")); //Descrição
             vItem.addElement((rs.getString(16)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(16)):"0")); //Quantidade
-            vItem.addElement((rs.getString(14)!=null?rs.getString(14):"")); //Unidade
+            vItem.addElement((rs.getString(20)!=null?rs.getString(20):"")); //Código da Unidade
             vItem.addElement((rs.getString(15)!=null?rs.getString(15):"")); //Lote
             vItem.addElement((rs.getString(18)!=null?rs.getString(18):"0")); //Fase            
             vItens.addElement(vItem.clone());
@@ -228,7 +228,7 @@ public class OPSwara extends LeiauteGR {
             drawTexto("Descrição",50,iY); 
             drawTexto("Cód.Barras",210,iY);
             drawTexto("Qtd.",400,iY);
-            drawTexto("Unidade",430,iY);
+            drawTexto("Unid",430,iY);
             drawTexto("Lote",500,iY);
     		drawLinha(5,iY+5,5,0,AL_CDIR);
             iY = iY + 15;
@@ -264,7 +264,7 @@ public class OPSwara extends LeiauteGR {
   		  	
                 drawTexto(sDesc,50,iY); //Descrição	
                 drawTexto(Funcoes.alinhaDir(sQtd,15),370,iY);//Quantidade
-                drawTexto(sUnid,430,iY);//Unidade
+                drawTexto(sUnid,432,iY);//Unidade
                 drawTexto(sLote,500,iY);//Lote
                 iY = iY+18;	                            	              	
               }            	
@@ -349,7 +349,7 @@ public class OPSwara extends LeiauteGR {
             drawTexto("EMBALAGENS A SEREM DESCARREGADAS",150,iY); 
             iY = iY+16;
             setFonte(fnArial9N); 
-            drawTexto("Cód.      Tipo de Embalagem                               Código de Barras                           Lote        Qtd. Emb.",18,iY);
+            drawTexto("Cód.      Tipo de Embalagem                 Código de Barras                                    Lote               Qtd. Emb.",18,iY);
             iY = iY+20;
             
 	            sSQL = "SELECT I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE " +
@@ -402,11 +402,11 @@ public class OPSwara extends LeiauteGR {
 	  		          Image image = barra.createAwtImage(Color.BLACK, Color.WHITE);
 	  		          ImageIcon icon = new ImageIcon(image);
 	  		  	
-		  		      drawImagem(icon,210,iY-8,170,14);
+		  		      drawImagem(icon,170,iY-8,170,14);
 				      
-				      drawTexto(sLote,350,iY);//Lote
+				      drawTexto(sLote,380,iY);//Lote
 				      drawTexto(Funcoes.alinhaDir(sQtd,15)+" "+sUnid,420,iY);//Quantidade
-				      drawLinha(470,iY,60,0,AL_BCEN);
+				      drawLinha(470,iY,48,0,AL_BCEN);
 				      iY = iY+20;	                            	              	
 			    }            	
 			}
@@ -415,7 +415,7 @@ public class OPSwara extends LeiauteGR {
 			iY = iY+15;	 
 			drawTexto("OBS.:___________________________________________________________________________________________",20,iY);
 			iY = iY+15;
-			drawTexto("Nome:__________________________________________  Data:__________________________________________",20,iY);			
+			drawTexto("Nome:__________________________________________   Data:__________________________________________",20,iY);			
 			iY = iY+20;						
 			
 			drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+50,AL_CDIR);   
@@ -599,7 +599,7 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto("Quantidade:",10,82);
 	    drawTexto("Data de fabricação:",110,82);
 	    drawTexto("Data de validade:",270,82);
-        drawTexto("Data de emissão:",420,82);
+        drawTexto("Emissão:",420,82);
 	    drawTexto("Lote:",420,70);	    
 
 	    setFonte(fnArial9);
@@ -609,8 +609,8 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto(sQtd,70,82); //qtd. a fabricar 
 	    drawTexto(sDtFabrica,200,82); //Data de fabricação
 	    drawTexto(sDtValidade,350,82); //Data de validade
-	    drawTexto(Funcoes.dateToStrDate(new Date()),505,82);
-	    drawTexto(sLote,505,70);
+	    drawTexto(Funcoes.dateToStrDate(new Date()),475,82);
+	    drawTexto(sLote,475,70);
 	    
 	    /*
 	    drawTexto(iCodOP+"",110,70); //Código da OP
