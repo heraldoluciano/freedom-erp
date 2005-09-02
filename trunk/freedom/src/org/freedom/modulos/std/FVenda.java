@@ -144,6 +144,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 	private JTextFieldPad txtCodCli = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
+	
+	private JTextFieldPad txtNomeCli = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 50, 0);
 
 	private JTextFieldPad txtCodVend = new JTextFieldPad(
 			JTextFieldPad.TP_INTEGER, 8, 0);
@@ -430,6 +433,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		//FK Cliente
 		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_PK, false));
 		lcCli.add(new GuardaCampo(txtDescCli, "RazCli","Razão social do cliente", ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtNomeCli, "NomeCli","Nome do cliente", ListaCampos.DB_SI, false));
 		lcCli.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",ListaCampos.DB_SI, false));
 		lcCli.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_SI, false));
 		lcCli.add(new GuardaCampo(txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,false));
