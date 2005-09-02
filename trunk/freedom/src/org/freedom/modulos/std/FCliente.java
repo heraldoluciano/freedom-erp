@@ -2121,8 +2121,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  vCli.addElement(txtAno.getVlrInteger());
 		  vCli.addElement(new Integer(mes));		 
 		  vCli.addElement(buscaAtendente());		 
-		  dl = new DLVisitas(FCliente.this,con);
-		  dl.setCampos(vCli);
+		  dl = new DLVisitas(FCliente.this,con,vCli);
 		  dl.setConexao(con);
 		  dl.carregaTabela(mes,(txtAno.getVlrInteger()).intValue());
 		  dl.setVisible(true);		 
