@@ -338,7 +338,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adicCampo(txtDtEmitSolicitacao, 539, 20, 86, 20, "DtEmitSol",
 				"Data da Sol.", ListaCampos.DB_SI, true);
 
-		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
+		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do c.c.");
 		adicCampo(txtCodCC, 80, 20, 130, 20, "CodCC", "Cód.CC.", ListaCampos.DB_FK,
 				txtDescCC, true);
 		adicCampo(txtAnoCC, 213, 20, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
