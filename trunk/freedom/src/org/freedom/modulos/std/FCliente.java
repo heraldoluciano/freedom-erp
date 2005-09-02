@@ -377,6 +377,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
   	adicCampo(txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true);
   	adicCampo(txtRazCli, 90, 20, 307, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true);
+  	adicCampo(txtNomeCli, 90, 60, 307, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true);
   	
   	vPessoaLab.addElement("Jurídica");
   	vPessoaLab.addElement("Física");
@@ -389,7 +390,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	rgPessoa.setVlrString("J");
  	
   	adicDB(cbAtivo, 7, 60, 70, 20, "AtivoCli", "Ativo",true);
-  	adicCampo(txtNomeCli, 90, 60, 307, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true);
   	adicCampo(txtCodTipoCli, 7, 100, 80, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_FK, txtDescTipoCli, true);
   	adicDescFK(txtDescTipoCli, 90, 100, 237, 20, "DescTipoCli", "Descrição do tipo de cliente");
   	adicCampo(txtCpfCli, 330, 100, 170, 20, "CpfCli", "CPF", ListaCampos.DB_SI, false);
