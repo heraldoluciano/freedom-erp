@@ -89,11 +89,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JButton btCompra = new JButton("Comprar", Icone.novo("btMedida.gif"));
 	private JButton btCancelaItem = new JButton("Cancelar", Icone
 			.novo("btRetorno.gif"));
-	private JButton btMotivoCancelaSol = new JButton("Mot.Can", Icone
-			.novo("btObs.gif"));
 	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone
 			.novo("btObs.gif"));
-	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone
+	private JButton btMotivoAbaixo = new JButton("Mot.Abaixo", Icone
 			.novo("btObs.gif"));
 
 	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
@@ -158,10 +156,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 19, 0);
 
-	private JTextAreaPad txaMotivoSol = new JTextAreaPad();
-	private JTextAreaPad txaMotivoCancSol = new JTextAreaPad();
-	private JTextAreaPad txaMotivoCancItem = new JTextAreaPad();
-	private JTextAreaPad txaMotivoPrior = new JTextAreaPad();
+	private JTextAreaPad txaMotivoCancCot = new JTextAreaPad();
+	private JTextAreaPad txaMotivoCotAbaixo = new JTextAreaPad();
 
 	private Tabela tabCot = new Tabela();
 	private JScrollPane spTabCot = new JScrollPane(tabCot);
@@ -348,7 +344,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Sit.Sol.",
 				ListaCampos.DB_SI, false);
-		adicDBLiv(txaMotivoCancSol, "MotivoSol", "Motivo do cancelamento", false);
 		adicCampoInvisivel(txtOrigSolicitacao, "OrigSol", "Origem",
 				ListaCampos.DB_SI, false);
 
@@ -368,6 +363,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcCampos.addCarregaListener(this);
 		lcCotacao.addCarregaListener(this);
 		lcCotacao.addPostListener(this);
+		lcCotacao.addInsertListener(this);
 		lcProd.addCarregaListener(this);
 		lcProd2.addCarregaListener(this);
 		lcDet.addPostListener(this);
@@ -381,15 +377,13 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		btFinAprovSol.setToolTipText("Finaliza Aprovação.");
 		btCompra.setToolTipText("Comprar todos os ítens.");
 		btCancelaItem.setToolTipText("Cancelar ítem.");
-		btMotivoCancelaSol.setToolTipText("Motivo do cancelamento da Compra.");
 		btMotivoCancelaItem.setToolTipText("Motivo do cancelamento do ítem.");
-		btMotivoPrior.setToolTipText("Motivo da prioridade do ítem.");
+		btMotivoAbaixo.setToolTipText("Motivo do número de cotações baixo.");
 
-		pinCab.adic(pinBotCab, 630, 1, 114, 129);
+		pinCab.adic(pinBotCab, 630, 1, 114, 99);
 		pinBotCab.adic(btAprovaSol, 0, 0, 110, 30);
 		pinBotCab.adic(btFinAprovSol, 0, 31, 110, 30);
-		pinBotCab.adic(btMotivoCancelaSol, 0, 62, 110, 30);
-		pinBotCab.adic(btCompra, 0, 93, 110, 30);
+		pinBotCab.adic(btCompra, 0, 62, 110, 30);
 
 		btProduto.addActionListener(this);
 		btImp.addActionListener(this);
@@ -397,9 +391,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		btAprovaSol.addActionListener(this);
 		btCancelaItem.addActionListener(this);
 		btCompra.addActionListener(this);
-		btMotivoCancelaSol.addActionListener(this);
 		btMotivoCancelaItem.addActionListener(this);
-		btMotivoPrior.addActionListener(this);
+		btMotivoAbaixo.addActionListener(this);
 		btFinAprovSol.addActionListener(this);
 
 		pinDet = new JPanelPad(740, 100);
@@ -455,17 +448,13 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adic(btProduto, 435, 45, 105, 35);
 		btProduto.setEnabled(false);
 
-		adicDBLiv(txaMotivoCancItem, "motivocancitsol", "Motivo do cancelamento",
-				false);
-		adicDBLiv(txaMotivoPrior, "MotivoPriorItSol", "Motivo da Prioridade", false);
-
 		adicCampoInvisivel(txtSituacaoItAprov2, "SitCompItSol", "Sit.Comp.It.Sol.",
 				ListaCampos.DB_SI, false);
 
-		setListaCampos(true, "ITSOLICITACAO", "CP");
+		lcDet.montaSql(true, "ITSOLICITACAO", "CP");
 		lcDet.setWhereAdic("SitAprovItSol <> 'NA' AND SitItSol <> 'CA'");
 		lcDet.setQueryInsert(false);
-		montaTab();
+		lcDet.montaTab();
 	
 		tabCot.setTamColuna(30, 0);
 		tabCot.setTamColuna(80, 1);
@@ -536,8 +525,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	
 		lcCotacao.montaSql(true, "COTACAO", "CP");
 		lcCotacao.montaTab();
-		lcCotacao.addInsertListener(this);
-		lcCotacao.addCarregaListener(this);
 
 		tab.setTamColuna(30, 0);
 		tab.setTamColuna(80, 1);
@@ -549,7 +536,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		tab.setTamColuna(70, 7);
 		tab.setTamColuna(70, 8);
 
-		btMotivoPrior.setEnabled(false);
+		btMotivoAbaixo.setEnabled(false);
 
 		pinBotDet.adic(btCancelaItem, 0, 0, 110, 28);
 		pinBotDet.adic(btMotivoCancelaItem, 0, 29, 110, 28);
@@ -625,7 +612,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private void desabCampos(boolean bHab) {
 		txtCodProd.setNaoEditavel(bHab);
 		txtQtdCot.setNaoEditavel(bHab);
-		txaMotivoSol.setEnabled(!bHab);
 		rgPriod.setAtivo(!bHab);
 	}
 
@@ -640,10 +626,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		} else {
 			btAprovaSol.setEnabled(!bHab);
 		}
-		if (txtStatusSolicitacao.getVlrString().equals("CA")) {
-			btMotivoCancelaSol.setEnabled(true);
-		}
-		btMotivoCancelaSol.setEnabled(txtStatusSolicitacao.getVlrString().equals("CA"));
 		btMotivoCancelaItem.setEnabled(txtSituacaoItAprov.getVlrString().equals("CA"));
 
 		btFinAprovSol.setEnabled(!bHab);
@@ -695,16 +677,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
 		}
 
-		if (rgPriod.getVlrString().equals("A") && sSitSol.equals("PE")) {
-			btMotivoPrior.setEnabled(true);
-		} else
-			btMotivoPrior.setEnabled(false);
-
-		if (sSitSol.equals("CA"))
-			btMotivoCancelaSol.setEnabled(true);
-		else
-			btMotivoCancelaSol.setEnabled(false);
-
 		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))
 				|| (bStatusTravaTudo))
 			desabCampos(true);
@@ -713,10 +685,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		if (!bAprovaCab || bStatusTravaTudo) {
 			desabAprov(true);
-			txaMotivoCancSol.setEnabled(false);
 		} else {
-			if (!bStatusTravaTudo)
-				txaMotivoCancSol.setEnabled(true);
 			desabAprov(false);
 		}
 
@@ -783,31 +752,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		return bRet;
 	}
 
-	private boolean dialogObsCab() {
-		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoCancSol.getVlrString());
-		if (obs != null) {
-			if ((!bAprovaCab) || (sSitItExp.equals("CA")))
-				obs.txa.setEnabled(false);
-			obs.setVisible(true);
-			if (obs.OK) {
-				txaMotivoCancSol.setVlrString(obs.getTexto());
-				bRet = true;
-			}
-		}
-		obs.dispose();
-		return bRet;
-	}
-
 	private boolean dialogObsDet() {
 		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoCancItem.getVlrString());
+		FObservacao obs = new FObservacao(txaMotivoCancCot.getVlrString());
 		if (obs != null) {
 			if ((!bAprovaCab) || (sSitItExp.equals("CA")))
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
-				txaMotivoCancItem.setVlrString(obs.getTexto());
+				txaMotivoCancCot.setVlrString(obs.getTexto());
 				bRet = true;
 			}
 		}
@@ -815,9 +768,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		return bRet;
 	}
 
-	private boolean dialogObsPrior() {
+	private boolean dialogObsAbaixo() {
 		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
+		FObservacao obs = new FObservacao(txaMotivoCotAbaixo.getVlrString());
 		if (obs != null) {
 			if ((rgPriod.getVlrString().equals("A"))
 					&& (txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))) {
@@ -826,7 +779,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				obs.txa.setEnabled(false);
 			obs.setVisible(true);
 			if (obs.OK) {
-				txaMotivoPrior.setVlrString(obs.getTexto());
+				txaMotivoCotAbaixo.setVlrString(obs.getTexto());
 				bRet = true;
 			}
 		}
@@ -850,12 +803,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			imprimir(true, txtCodSolicitacao.getVlrInteger().intValue());
 		else if (evt.getSource() == btImp)
 			imprimir(false, txtCodSolicitacao.getVlrInteger().intValue());
-		else if (evt.getSource() == btMotivoCancelaSol) {
-			dialogObsCab();
-		} else if (evt.getSource() == btMotivoCancelaItem) {
+		else if (evt.getSource() == btMotivoCancelaItem) {
 			dialogObsDet();
-		} else if (evt.getSource() == btMotivoPrior) {
-			dialogObsPrior();
+		} else if (evt.getSource() == btMotivoAbaixo) {
+			dialogObsAbaixo();
 		} else if (evt.getSource() == btCancelaItem) {
 			lcCotacao.setState(ListaCampos.LCS_EDIT);
 			if (Funcoes.mensagemConfirma(null,
@@ -1179,7 +1130,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	}
 
 	public void beforePost(PostEvent pevt) {
-		String sMotvProir = rgPriod.getVlrString();
 		if (pevt.getListaCampos() == lcCotacao) {
 			if (txtQtdAprovCot.getVlrDouble().doubleValue() > txtQtdCot
 					.getVlrDouble().doubleValue()) {
@@ -1198,9 +1148,6 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			}
 			if (txtQtdItAprovado.getVlrString().equals("")) {
 				txtQtdItAprovado.setVlrDouble(new Double(0));
-			}
-			if (sMotvProir.equals("A")) {
-				dialogObsPrior();
 			}
 		} else if (pevt.getListaCampos() == lcCampos) {
 			txtOrigSolicitacao.setVlrString("AX");
