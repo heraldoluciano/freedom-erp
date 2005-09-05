@@ -65,7 +65,7 @@ public class ListaCampos extends Container implements PostListener,
 		CarregaListener, MouseListener {
 	/**
 	 * 
-	 */
+	 */	
 	private static final long serialVersionUID = 1L;
 
 	/**
