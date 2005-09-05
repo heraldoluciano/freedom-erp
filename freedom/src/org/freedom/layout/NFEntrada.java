@@ -149,7 +149,6 @@ public class NFEntrada extends NF {
 				adic.addRow();
 				adic.setInt(C_CODPLANOPG, rs.getInt("CODPLANOPAG"));
 				adic.setString(C_DESCPLANOPAG, rs.getString("DESCPLANOPAG"));
-				adic.setInt(C_DIASPE, 0);
 				adic.setString(C_OBSPED, "");
 				adic.setString(C_NOMEVEND, "");
 				adic.setString(C_EMAILVEND, "");

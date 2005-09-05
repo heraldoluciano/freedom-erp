@@ -48,6 +48,7 @@ public class NFPomiagro2 extends Layout {
 	Vector vMens = new Vector();
 	vMens.clear();
 	
+	try{
       if (cab.next()) {
         iNumNota = cab.getInt(NF.C_DOC);
       }
@@ -219,14 +220,14 @@ public class NFPomiagro2 extends Layout {
 		 }
 		 
 		   
-        // imp.say(imp.pRow()+0,14,Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,66-sDescAdic.length())+sDescAdic);
+         imp.say(imp.pRow()+0,14,(itens.getString(NF.C_DESCPROD)!=null ? Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,66-sDescAdic.length())+sDescAdic : ""));
          imp.say(imp.pRow()+0,83,sClasFisc);
          imp.say(imp.pRow()+0,89,itens.getString(NF.C_CODUNID)/*.substring(0,4)*/);
          imp.say(imp.pRow()+0,95,""+itens.getFloat(NF.C_QTDITPED));
           
- //ARRUMAR imp.say(imp.pRow()+0,104,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(itens.getString(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)));
+ /*ARRUMAR*/imp.say(imp.pRow()+0,104,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)));
 //         imp.say(imp.pRow()+0,97,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrProdItVenda")));
-         imp.say(imp.pRow()+0,119,Funcoes.strDecimalToStrCurrency(13,2,""+itens.getString(NF.C_VLRLIQITPED)));
+         imp.say(imp.pRow()+0,119,Funcoes.strDecimalToStrCurrency(13,2,""+itens.getFloat(NF.C_VLRLIQITPED)));
          imp.say(imp.pRow()+0,135,""+itens.getFloat(NF.C_PERCICMSITPED));
          
          iItImp++;
@@ -242,18 +243,18 @@ public class NFPomiagro2 extends Layout {
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
              
-             imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRBASEICMSPED)));
-             imp.say(imp.pRow()+0,32,Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRICMSPED)));
+             imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRBASEICMSPED)));
+             imp.say(imp.pRow()+0,32,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRICMSPED)));
 //             imp.say(imp.pRow()+0,116,Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrProdVenda")));
-             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRLIQITPED)));
+             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQITPED)));
              imp.say(imp.pRow()+1,0,"");
              imp.say(imp.pRow()+1,0,""+imp.comprimido());
-             imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,frete.getString(NF.C_VLRFRETEPED)));
-             imp.say(imp.pRow()+0,62,Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRADICPED)));
-             imp.say(imp.pRow()+0,87,Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRIPIPED)));
-             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRLIQPED)));
+             imp.say(imp.pRow()+0,4,Funcoes.strDecimalToStrCurrency(20,2,""+frete.getFloat(NF.C_VLRFRETEPED)));
+             imp.say(imp.pRow()+0,62,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRADICPED)));
+             imp.say(imp.pRow()+0,87,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRIPIPED)));
+             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQPED)));
              iItImp = 0;
-			 sObs += adic.getString(NF.C_OBSPED) != null ? adic.getString(NF.C_OBSPED).trim()+'\n' : "";
+			 sObs += cab.getString(NF.C_OBSPED) != null ? cab.getString(NF.C_OBSPED).trim()+'\n' : "";
            }
            else if (imp.pRow() == 46) {
              imp.say(imp.pRow()+1,0,"");
@@ -272,10 +273,10 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,frete.getString(NF.C_RAZTRANSP));
-           imp.say(imp.pRow()+0,82,frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
-           imp.say(imp.pRow()+0,90,frete.getString(NF.C_PLACAFRETE));
-           imp.say(imp.pRow()+0,104,frete.getString(NF.C_UFFRETE));
+           imp.say(imp.pRow()+0,6,(frete.getString(NF.C_RAZTRANSP)!=null ? frete.getString(NF.C_RAZTRANSP):""));
+           imp.say(imp.pRow()+0,82,(frete.getString(NF.C_TIPOFRETE)!=null ? (frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2"):""));
+           imp.say(imp.pRow()+0,90,(frete.getString(NF.C_PLACAFRETE)!=null ? frete.getString(NF.C_PLACAFRETE):""));
+           imp.say(imp.pRow()+0,104,(frete.getString(NF.C_UFFRETE)!=null ? frete.getString(NF.C_UFFRETE):""));
            
 		   sTipoTran = frete.getString(NF.C_TIPOTRANSP);
 			
@@ -292,24 +293,24 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,Funcoes.copy(frete.getString(NF.C_ENDTRANSP),0,42)+", "+Funcoes.copy(frete.getString(NF.C_NUMTRANSP),0,6));
-           imp.say(imp.pRow()+0,69,frete.getString(NF.C_CIDTRANSP));
-           imp.say(imp.pRow()+0,104,frete.getString(NF.C_UFTRANSP));
+           imp.say(imp.pRow()+0,69,(frete.getString(NF.C_CIDTRANSP)!=null ? frete.getString(NF.C_CIDTRANSP):""));
+           imp.say(imp.pRow()+0,104,(frete.getString(NF.C_UFTRANSP)!=null ? frete.getString(NF.C_UFTRANSP) : ""));
 
   
-		   if (frete.getString(NF.C_TIPOTRANSP).compareTo("C") == 0){
-			   imp.say(imp.pRow()+0,111,cab.getString(NF.C_INSCEMIT));
+		   if (frete.getString(NF.C_TIPOTRANSP)!=null && frete.getString(NF.C_TIPOTRANSP).compareTo("C") == 0){
+			   imp.say(imp.pRow()+0,111,(cab.getString(NF.C_INSCEMIT)!=null ? cab.getString(NF.C_INSCEMIT):""));
 		   }
 		   else { 
-			imp.say(imp.pRow()+0,111,frete.getString(NF.C_INSCTRANSP));
+			imp.say(imp.pRow()+0,111,(frete.getString(NF.C_INSCTRANSP)!=null ? frete.getString(NF.C_INSCTRANSP):""));
 		   }
            
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,frete.getString(NF.C_QTDFRETE));
-           imp.say(imp.pRow()+0,26,frete.getString(NF.C_ESPFRETE));
-           imp.say(imp.pRow()+0,47,frete.getString(NF.C_MARCAFRETE));
-           imp.say(imp.pRow()+0,93,frete.getString(NF.C_PESOBRUTO));
-           imp.say(imp.pRow()+0,120,frete.getString(NF.C_PESOLIQ));
+           imp.say(imp.pRow()+0,6,(frete.getString(NF.C_QTDFRETE)!=null ? frete.getString(NF.C_QTDFRETE):""));
+           imp.say(imp.pRow()+0,26,(frete.getString(NF.C_ESPFRETE)!=null ? frete.getString(NF.C_ESPFRETE):""));
+           imp.say(imp.pRow()+0,47,(frete.getString(NF.C_MARCAFRETE)!=null ? frete.getString(NF.C_MARCAFRETE):""));
+           imp.say(imp.pRow()+0,93,(frete.getString(NF.C_PESOBRUTO)!=null ? frete.getString(NF.C_PESOBRUTO):""));
+           imp.say(imp.pRow()+0,120,(frete.getString(NF.C_PESOLIQ)!=null ? frete.getString(NF.C_PESOLIQ):""));
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
@@ -318,9 +319,9 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+0,45,Funcoes.alinhaDir(cab.getInt(NF.C_CODPED),10));
            imp.say(imp.pRow()+0,64,cab.getString(NF.C_DOC) != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,35,cab.getString(NF.C_CODPED));
-           imp.say(imp.pRow()+0,40,adic.getString(NF.C_CODCLCOMIS) != null ? adic.getString(NF.C_CODCLCOMIS) : "");
-           imp.say(imp.pRow()+0,50,adic.getString(NF.C_PERCCOMISVENDA) != null ? (new BigDecimal(adic.getString(NF.C_PERCCOMISVENDA))).setScale(2,BigDecimal.ROUND_HALF_UP).toString() : "");
+           imp.say(imp.pRow()+0,35,(cab.getString(NF.C_CODPED)!=null ? cab.getString(NF.C_CODPED):""));
+           imp.say(imp.pRow()+0,40,cab.getString(NF.C_CODCLCOMIS) != null ? cab.getString(NF.C_CODCLCOMIS) : "");
+           imp.say(imp.pRow()+0,50,cab.getString(NF.C_PERCCOMISVENDA) != null ? (new BigDecimal(cab.getString(NF.C_PERCCOMISVENDA))).setScale(2,BigDecimal.ROUND_HALF_UP).toString() : "");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            for(int i=0;i<vMens.size();i++)
@@ -348,11 +349,11 @@ public class NFPomiagro2 extends Layout {
       }
       imp.fechaGravacao();
       retorno = true;
-    /*}
-    catch ( SQLException err ) {
-      JOptionPane.showMessageDialog(null,"Erro ao consultar tabela de Venda!"+err.getMessage());      
-      bRetorno = false;
-    }*/
+    }
+    catch ( Exception err ) {
+      	Funcoes.mensagemErro(null,"Erro ao montar nota \n"+err.getMessage()); 
+      	err.printStackTrace();
+    }
     return retorno;
   }
 }
