@@ -151,6 +151,13 @@ public String getLote(Integer iCodProd,Date dData,Connection con){
   	                    }
   	                    else if (sValAdic.equals(VLR_DIA)){
   	                    	sCampo = cal.get(Calendar.DAY_OF_MONTH)+"";
+  	                    	if(sCampo.length()<iTamAdic){
+  	                    		sCampo = Funcoes.strZero(sCampo,iTamAdic);
+  	                    	}
+  	                    	else if (sCampo.length()>iTamAdic){
+  	                    		sCampo = sCampo.substring(0,iTamAdic);
+  	                    	}
+
   	                    }	
   	                    else if (sValAdic.equals(VLR_MES)){
   	                    	sCampo = cal.get(Calendar.MONTH)+1+"";//Somei 1 pq estava retornando um a menos no mês

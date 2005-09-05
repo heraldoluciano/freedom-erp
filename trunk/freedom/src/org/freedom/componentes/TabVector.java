@@ -46,7 +46,7 @@ public class TabVector {
 	}
 	
 	public boolean next() {
-		if (row<(vRows.size())) {
+		if (row<(vRows.size()-1)) {
 			row++;
 			return true;
 		}

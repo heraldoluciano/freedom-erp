@@ -42,19 +42,27 @@ public class NFSaida extends NF {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sql = null;
+		int cont = 0;
 		try {
-			sql = "SELECT V.CODVENDA, V.CODCLI, C.RAZCLI, C.CNPJCLI, C.CPFCLI, C.ENDCLI, C.NUMCLI, C.COMPLCLI," +
-					"C.BAIRCLI, C.CEPCLI, C.CIDCLI, C.UFCLI, C.FONECLI, C.FAXCLI, C.DDDCLI, C.INSCCLI, C.RGCLI," +
-					"C.EMAILCLI, C.SITECLI, C.CONTCLI, V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI, V.DTSAIDAVENDA " + 
-					"FROM VDVENDA V, VDCLIENTE C " +
-					"WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND " +
-					"C.CODCLI=V.CODCLI AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=?";
+			sql = "SELECT V.CODVENDA, V.CODCLI, C.RAZCLI, C.CNPJCLI, C.CPFCLI, C.ENDCLI, C.NUMCLI, C.COMPLCLI,"+
+					"C.BAIRCLI, C.CEPCLI, C.CIDCLI, C.UFCLI, C.FONECLI, C.FAXCLI, C.DDDCLI, C.INSCCLI, C.RGCLI,"+
+					"C.EMAILCLI, C.SITECLI, C.CONTCLI, V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI, V.DTSAIDAVENDA,"+
+					"V.CODPLANOPAG, PG.DESCPLANOPAG, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND,"+
+					"(SELECT F.DESCFUNC FROM RHFUNCAO F "+
+					"WHERE F.CODFUNC=VEND.CODFUNC AND F.CODEMP=VEND.CODEMPFU AND F.CODFILIAL=VEND.CODFILIALFU),"+
+					"V.CODCLCOMIS, V.PERCCOMISVENDA "+
+					"FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND "+
+					"WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "+
+					"AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG "+
+					"AND V.CODVEND=VEND.CODVEND AND V.CODEMPVD=VEND.CODEMP AND V.CODFILIALVD=VEND.CODFILIAL AND C.CODCLI=V.CODCLI " +
+					"AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=?";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			cab = new TabVector(24);
+			cont++;
+			cab = new TabVector(32);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODVENDA"));
@@ -79,29 +87,41 @@ public class NFSaida extends NF {
 				cab.setString(C_CONTEMIT, (rs.getString("CONTCLI")!=null ? rs.getString("CONTCLI") : ""));
 				cab.setDate(C_DTEMITPED, rs.getDate("DTEMITVENDA"));
 				cab.setInt(C_DOC, rs.getInt("DOCVENDA"));
-				cab.setString(C_INCRAEMIT, (rs.getString("INCRACLI")!=null ? rs.getString("INCRACLI") : ""));
-				cab.setDate(C_DTSAIDA, rs.getDate("DTSAIDAVENDA"));
+				cab.setString(C_INCRAEMIT, rs.getString("INCRACLI"));
+				cab.setDate(C_DTSAIDA, rs.getDate("DTSAIDAVENDA"));					
+				cab.setString(C_CODPLANOPG, (rs.getString("CODPLANOPAG")!=null ? rs.getString("CODPLANOPAG") : ""));
+				cab.setString(C_DESCPLANOPAG, (rs.getString("DESCPLANOPAG")!=null ? rs.getString("DESCPLANOPAG") : ""));
+				cab.setString(C_OBSPED, (rs.getString("OBSVENDA")!=null ? rs.getString("OBSVENDA") : ""));
+				cab.setString(C_NOMEVEND, (rs.getString("NOMEVEND")!=null ? rs.getString("NOMEVEND") : ""));
+				cab.setString(C_EMAILVEND, (rs.getString("EMAILVEND")!=null ? rs.getString("EMAILVEND") : ""));
+				cab.setString(C_DESCFUNC, (rs.getString(30)!=null ? rs.getString(30) : ""));
+				cab.setString(C_CODCLCOMIS, (rs.getString("CODCLCOMIS")!=null ? rs.getString("CODCLCOMIS") : ""));
+				cab.setFloat(C_PERCCOMISVENDA, rs.getFloat("PERCCOMISVENDA"));
 			}
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			cab.setRow(-1);
 			
-			sql = "SELECT I.CODITVENDA, I.CODPROD, P.REFPROD, P.DESCPROD, I.OBSITVENDA, P.CODUNID, " +
-					"I.QTDITVENDA, I.VLRLIQITVENDA, I.PERCIPIITVENDA, I.PERCICMSITVENDA, V.VLRICMSVENDA, " +
-					"V.VLRIPIVENDA, V.VLRLIQVENDA, N.IMPDTSAIDANAT, I.VLRPRODITVENDA, N.DESCNAT, N.CODNAT, " +
-					"L.CODLOTE, L.VENCTOLOTE, I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA " +
-					"FROM VDITVENDA I, VDVENDA V, EQPRODUTO P, LFNATOPER N, EQLOTE L " + 
-					"WHERE P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " +
-					"AND L.CODEMP=P.CODPROD AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " +
-					"AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT " +
-					"AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA " +
+			sql = "SELECT I.CODITVENDA, I.CODPROD, P.REFPROD, P.DESCPROD, I.OBSITVENDA, P.CODUNID,"+
+					"I.QTDITVENDA, I.VLRLIQITVENDA, I.PERCIPIITVENDA, I.PERCICMSITVENDA, V.VLRICMSVENDA,"+
+					"V.VLRIPIVENDA, V.VLRLIQVENDA, N.IMPDTSAIDANAT, I.VLRPRODITVENDA, N.DESCNAT, N.CODNAT,"+
+					"I.CODLOTE, (SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND "+
+					"L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"+
+					"I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA "+
+					"FROM VDITVENDA I, VDVENDA V, EQPRODUTO P, LFNATOPER N "+
+					"WHERE P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD "+
+					"AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT "+
+					"AND N.CODNAT=I.CODNAT AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL "+
+					"AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA "+
 					"AND V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA='V' ";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
+			cont++;
 			itens = new TabVector(23);
 			while (rs.next()) {
 				itens.addRow();
@@ -113,8 +133,8 @@ public class NFSaida extends NF {
 				itens.setString(C_CODUNID, (rs.getString("CODUNID")!=null ? rs.getString("CODUNID") : ""));
 				itens.setFloat(C_QTDITPED, rs.getFloat("QTDITVENDA"));
 				itens.setFloat(C_VLRLIQITPED, rs.getFloat("VLRLIQITVENDA"));
-				itens.setString(C_PERCIPIITPED, (rs.getString("PERCIPIITVENDA")!=null ? rs.getString("PERCIPIITVENDA") : ""));
-				itens.setString(C_PERCICMSITPED, (rs.getString("PERCICMSITVENDA")!=null ? rs.getString("PERCICMSITVENDA") : ""));
+				itens.setFloat(C_PERCIPIITPED, rs.getFloat("PERCIPIITVENDA"));
+				itens.setFloat(C_PERCICMSITPED, rs.getFloat("PERCICMSITVENDA"));
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSVENDA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPIVENDA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQVENDA"));
@@ -123,7 +143,7 @@ public class NFSaida extends NF {
 				itens.setString(C_DESCNAT, (rs.getString("DESCNAT")!=null ? rs.getString("DESCNAT") : ""));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, (rs.getString("CODLOTE")!=null ? rs.getString("CODLOTE") : ""));
-				itens.setDate(C_VENCLOTE, rs.getDate("VENCTOLOTE"));
+				itens.setDate(C_VENCLOTE, rs.getDate(19));
 				itens.setString(C_ORIGFISC, (rs.getString("ORIGFISC")!=null ? rs.getString("ORIGFISC") : ""));
 				itens.setString(C_CODTRATTRIB, (rs.getString("CODTRATTRIB")!=null ? rs.getString("CODTRATTRIB") : ""));
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSVENDA"));
@@ -133,45 +153,32 @@ public class NFSaida extends NF {
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			itens.setRow(-1);
 			
-			sql = "SELECT  PG.CODPLANOPAG, I.DIASPE, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND, " +	
-					"(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND " +
-					"FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)," +
-					"AX.CODAUXV, AX.CPFCLIAUXV, AX.NOMECLIAUXV, AX.CIDCLIAUXV, AX.UFCLIAUXV, " +
-					"V.CODCLCOMIS, V.PERCCOMISVENDA " +
-					"FROM VDVENDA V, VDITVENDA I, VDVENDEDOR VEND, FNPLANOPAG PG, VDAUXVENDA AX " +
-					"WHERE I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA " +
-					"AND PG.CODEMP=V.CODEMPPG AND PG.CODFILIAL=V.CODFILIALPG AND PG.CODPLANOPAG=V.CODPLANOPAG " +
-					"AND VEND.CODEMP=V.CODEMPVD AND VEND.CODFILIAL=V.CODFILIALVD AND VEND.CODVEND=V.CODVEND " +
-					"AND AX.CODEMP=V.CODEMP AND AX.CODFILIAL=V.CODFILIAL AND AX.CODVENDA=V.CODVENDA AND AX.TIPOVENDA=V.TIPOVENDA " +
+			sql = "SELECT AUX.CODAUXV, AUX.CPFCLIAUXV, AUX.NOMECLIAUXV, AUX.CIDCLIAUXV, AUX.UFCLIAUXV "+
+					"FROM  VDAUXVENDA AUX, VDVENDA V "+
+					"WHERE AUX.CODEMP=V.CODEMP AND AUX.CODFILIAL=V.CODFILIAL AND AUX.CODVENDA=V.CODVENDA AND AUX.TIPOVENDA=V.TIPOVENDA " +
 					"AND V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA='V' ";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
+			cont++;
 			adic = new TabVector(14);
 			while (rs.next()) {
-				adic.addRow();
-				adic.setString(C_CODPLANOPG, (rs.getString("CODPLANOPAG")!=null ? rs.getString("CODPLANOPAG") : ""));
-				adic.setString(C_DESCPLANOPAG, (rs.getString("DESCPLANOPAG")!=null ? rs.getString("DESCPLANOPAG") : ""));
-				adic.setInt(C_DIASPE, rs.getInt("DIASPE"));
-				adic.setString(C_OBSPED, (rs.getString("OBSVENDA")!=null ? rs.getString("OBSVENDA") : ""));
-				adic.setString(C_NOMEVEND, (rs.getString("NOMEVEND")!=null ? rs.getString("NOMEVEND") : ""));
-				adic.setString(C_EMAILVEND, (rs.getString("EMAILVEND")!=null ? rs.getString("EMAILVEND") : ""));
-				adic.setString(C_DESCFUNC, (rs.getString("DESCFUNC")!=null ? rs.getString("DESCFUNC") : ""));
+				adic.addRow();				
 				adic.setInt(C_CODAUXV, rs.getInt("CODAUXV"));
-				adic.setInt(C_CPFEMITAUX, rs.getInt("CPFCLIAUXV"));
+				adic.setString(C_CPFEMITAUX, rs.getString("CPFCLIAUXV"));
 				adic.setString(C_NOMEEMITAUX, (rs.getString("NOMECLIAUXV")!=null ? rs.getString("NOMECLIAUXV") : ""));
 				adic.setString(C_CIDEMITAUX, (rs.getString("CIDCLIAUXV")!=null ? rs.getString("CIDCLIAUXV") : ""));
 				adic.setString(C_UFEMITAUX, (rs.getString("UFCLIAUXV")!=null ? rs.getString("UFCLIAUXV") : ""));
-				adic.setString(C_CODCLCOMIS, (rs.getString("CODCLCOMIS")!=null ? rs.getString("CODCLCOMIS") : ""));
-				adic.setFloat(C_PERCCOMISVENDA, rs.getFloat("PERCCOMISVENDA"));
 			}
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
-			con.commit();
+				con.commit();
+			adic.setRow(-1);
 			
 			sql = "SELECT I.DTVENCITREC,I.VLRPARCITREC,I.NPARCITREC " +
 					"FROM FNRECEBER R, FNITRECEBER I, VDVENDA V " +
@@ -183,17 +190,19 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
+			cont++;
 			parc = new TabVector(3);
 			while (rs.next()) {
 				parc.addRow();
 				parc.setDate(C_DTVENCTO, rs.getDate("DTVENCITREC"));
 				parc.setFloat(C_VLRPARC, rs.getFloat("VLRPARCITREC"));
-				parc.setInt(C_NPARCITREC, rs.getInt("NPARCITREC"));
+				parc.setFloat(C_NPARCITREC, rs.getFloat("NPARCITREC"));
 			}
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			parc.setRow(-1);
 			
 			sql = "SELECT T.CODTRAN, T.RAZTRAN, T.NOMETRAN, T.INSCTRAN, T.CNPJTRAN, T.TIPOTRAN, " +
 					"T.ENDTRAN, T.NUMTRAN, T.CIDTRAN, T.UFTRAN , F.TIPOFRETEVD, F.PLACAFRETEVD, " +
@@ -208,6 +217,7 @@ public class NFSaida extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
+			cont++;
 			frete = new TabVector(19);
 			while (rs.next()) {
 				frete.addRow();
@@ -235,9 +245,10 @@ public class NFSaida extends NF {
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			frete.setRow(-1);
 		}
 		catch (SQLException e) {
-			Funcoes.mensagemErro(null,"Erro na NFSaida\n"+e.getMessage());
+			Funcoes.mensagemErro(null,"Erro na NFSaida   "+cont+"\n"+e.getMessage());
 			retorno = false;
 		}
 		finally {
