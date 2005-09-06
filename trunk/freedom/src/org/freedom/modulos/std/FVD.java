@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 
 
@@ -28,6 +30,35 @@ public abstract class FVD extends FDetalhe {
     
     public FVD() {
     	super();
+    }
+    public String getObsCli(int iCodCli) {
+    	String sRetorno = "";
+    	String sSQL = "SELECT OBSCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	try {
+    		ps = con.prepareStatement(sSQL);
+    		ps.setInt(1, Aplicativo.iCodEmp);
+    		ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+    		ps.setInt(3, iCodCli);
+    		rs = ps.executeQuery();
+    		if (rs.next()) {
+    			if (rs.getString("OBSCLI")!=null)
+    				sRetorno = rs.getString("OBSCLI").trim();
+    		}
+    		rs.close();
+    		ps.close();
+    		if (!con.getAutoCommit())
+    			con.commit();
+    	}
+    	catch (SQLException e) {
+    		Funcoes.mensagemErro(null, "Erro carregando observações do cliente.\n"+e.getMessage());
+    	}
+    	finally {
+    		rs = null;
+    		ps = null;
+    	}
+    	return sRetorno;
     }
     public void buscaPreco() {
     	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";

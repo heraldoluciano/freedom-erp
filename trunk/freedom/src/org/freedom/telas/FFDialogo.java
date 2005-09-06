@@ -58,7 +58,7 @@ import org.freedom.bmps.Icone;
 public class FFDialogo extends JDialog implements ActionListener,
         KeyListener, IFilho {
 
-        	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     protected FPrincipal fPrim;
 
