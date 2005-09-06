@@ -1479,36 +1479,51 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
-		if ((cevt.getListaCampos() == lcProd)
-				|| (cevt.getListaCampos() == lcProd2)) {
-			if (txtCLoteProd.getText().trim().equals("N")) {
-				txtCodLote.setAtivo(false);//Desativa o Cógigo do lote por o
-										   // produto não possuir lote
-			} else if (txtCLoteProd.getText().trim().equals("S")) {
-				txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
-										  // produto tem lote
-				if (lcDet.getStatus() == ListaCampos.LCS_INSERT)
-					buscaLote();
+		String sObsCli = "";
+		try {
+			if ((cevt.getListaCampos() == lcProd)
+					|| (cevt.getListaCampos() == lcProd2)) {
+				if (txtCLoteProd.getText().trim().equals("N")) {
+					txtCodLote.setAtivo(false);//Desativa o Cógigo do lote por o
+											   // produto não possuir lote
+				} else if (txtCLoteProd.getText().trim().equals("S")) {
+					txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
+											  // produto tem lote
+					if (lcDet.getStatus() == ListaCampos.LCS_INSERT)
+						buscaLote();
+				}
+				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
+					buscaPreco();
+				}
+			} else if ((cevt.getListaCampos() == lcFisc)
+					&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
+				buscaNat();
+				buscaTratTrib();
+			} else if (cevt.getListaCampos() == lcNat) {
+				if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
+					buscaICMS();
+				}
+			} else if (cevt.getListaCampos() == lcDet) {
+				lcVenda2.carregaDados();//Carrega os Totais
+			} else if (cevt.getListaCampos() == lcCampos) {
+				String s = txtCodVenda.getVlrString();
+				lcVenda2.carregaDados();//Carrega os Totais
+				txtCodVenda.setVlrString(s);
+			} else if (cevt.getListaCampos() == lcVenda2) {
+				txtPercComisVenda.setAtivo(txtVlrComisVenda.doubleValue() == 0);
+			} else if (cevt.getListaCampos() == lcCli ) {
+				if ( (bPrefs[11]) ) {
+					sObsCli = getObsCli(txtCodCli.getVlrInteger().intValue());
+					if (!sObsCli.equals("")) {
+						
+						FObsCliVend.showVend(this.getX(),this.getY() + tpnCab.getHeight() + 
+								pnCab.getHeight() ,spTab.getWidth(), spTab.getHeight(), sObsCli);
+					}
+				}
 			}
-			if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-				buscaPreco();
-			}
-		} else if ((cevt.getListaCampos() == lcFisc)
-				&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-			buscaNat();
-			buscaTratTrib();
-		} else if (cevt.getListaCampos() == lcNat) {
-			if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-				buscaICMS();
-			}
-		} else if (cevt.getListaCampos() == lcDet) {
-			lcVenda2.carregaDados();//Carrega os Totais
-		} else if (cevt.getListaCampos() == lcCampos) {
-			String s = txtCodVenda.getVlrString();
-			lcVenda2.carregaDados();//Carrega os Totais
-			txtCodVenda.setVlrString(s);
-		} else if (cevt.getListaCampos() == lcVenda2) {
-			txtPercComisVenda.setAtivo(txtVlrComisVenda.doubleValue() == 0);
+		}
+		finally {
+			sObsCli = null;
 		}
 	}
 
@@ -2393,10 +2408,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private boolean[] prefs() {
-		boolean[] bRetorno = new boolean[11];
-		String sSQL = "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA,"
-				+ "USACLASCOMIS,TRAVATMNFVD,NATVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, TAMDESCPROD"
-				+ " FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		boolean[] bRetorno = new boolean[12];
+		String sSQL = "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," +
+			"USACLASCOMIS,TRAVATMNFVD,NATVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " +
+			"TAMDESCPROD, OBSCLIVEND " + 
+			" FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -2453,15 +2469,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					if (rs.getString("TAMDESCPROD").trim().equals("100"))
 						bRetorno[10] = true;
 				}
+				bRetorno[11] = false;
+				if (rs.getString("OBSCLIVEND") != null) {
+					if (rs.getString("OBSCLIVEND").trim().equals("S"))
+						bRetorno[11] = true;
+				}
 
 			}
-			//      rs.close();
-			//      ps.close();
+			rs.close();
+			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage(),true,con,err);
+		}
+		finally {
+			rs = null;
+			ps = null;
 		}
 		return bRetorno;
 	}

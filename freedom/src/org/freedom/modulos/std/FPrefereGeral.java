@@ -197,6 +197,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbMultiAlmox = null;
 	private JCheckBoxPad cbPrazoEnt = null;
 	private JCheckBoxPad cbDescCompl = null;
+	private JCheckBoxPad cbObsCliVend = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -427,6 +428,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbComisPDupl = new JCheckBoxPad(
 				"Calcula comissão com base nas duplicatas?", "S", "N");
 		cbComisPDupl.setVlrString("S");
+		
+		cbObsCliVend = new JCheckBoxPad("Mostrar observações do cliente na venda?","S","N");
+		cbObsCliVend.setVlrString("N");
 
 		cbTabFreteVd = new JCheckBoxPad("Aba frete na venda?", "S", "N");
 		cbTabFreteVd.setVlrString("S");
@@ -499,6 +503,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDescFK(txtDescTipoMov4, 423, 126, 240, 20, "DescTipoMov","Tipo de movimento para pedido (serviço).");
 		adicCampo(txtCodTransp, 345, 176, 75, 20, "CodTran", "Cód.tran.",ListaCampos.DB_FK, txtDescTransp, false);
 		adicDescFK(txtDescTransp, 423, 176, 240, 20, "RazTran","Razão social da transp.padrao para venda");
+		adicDB(cbObsCliVend, 345, 200,300,20, "ObsCliVend", "", true);
 
 		Vector vLabs2 = new Vector();
 		Vector vVals2 = new Vector();

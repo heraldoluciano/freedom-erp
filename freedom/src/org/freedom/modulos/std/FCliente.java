@@ -184,7 +184,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pnObs1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // JPanelPad de observações com 2 linha e 1 coluna
   private JPanelPad pnObs1_1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // JPanelPad de observações gerais
   private JPanelPad pnObs1_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // JPanelPad principal de observações por data
-  //private JPanelPad pinObs1_2_1 = new JPanelPad(200,100); // JPanelPad para scrool da tabela de datas de observação
+  //private JPanelPad pinObs1_2_1 = new JPanelPad(200,100); // JPanelPad para scroll da tabela de datas de observação
   private JPanelPad pnObs1_2_1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnObs1_2_2 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout()); // Pinel para observações e outros
   private JPanelPad pnObs1_2_2_1 = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -211,7 +211,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pn = new JPanelPad(600,500);
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
-  private JScrollPane spnObs = new JScrollPane(txaObs); // Scrool pane para observações gerais 
+  private JScrollPane spnObs = new JScrollPane(txaObs); // Scroll pane para observações gerais 
   private JScrollPane spnObsCli = new JScrollPane(txaTxtObsCli); // Scrool pane para o campo de observações por data
   private JScrollPane spnObsTb = new JScrollPane(tbObsData); // Cria tabela de observações dentro do scroll pane
   private ListaCampos lcTipoCli = new ListaCampos(this,"TI");
