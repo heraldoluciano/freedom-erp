@@ -420,36 +420,27 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		txtRefProd.setEditable(false);
 		txtQtdItAprovado.setEditable(false);
 	
-		adicCampo(txtCodItSolicitacao, 7, 60, 30, 20, "CodItSol", "Item",
-				ListaCampos.DB_PK, true);
+		adicCampo(txtCodItSolicitacao, 7, 60, 30, 20, "CodItSol", "Item",ListaCampos.DB_PK, true);
 		if (comRef()) {
-			adicCampo(txtRefProd, 40, 60, 87, 20, "RefProd", "Referência",
-					ListaCampos.DB_FK, txtDescProd, true);
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,
-					false);
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2
-					.getWhereAdic()));
-		} else {
-			adicCampo(txtCodProd, 40, 60, 87, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, true);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
-					ListaCampos.DB_SI, false);
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd
-					.getWhereAdic()));
+			adicCampo(txtRefProd, 40, 60, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,false);
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2.getWhereAdic()));
+		} 
+		else {
+			adicCampo(txtCodProd, 40, 60, 87, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",ListaCampos.DB_SI, false);
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd.getWhereAdic()));
 		}
 	
-		adicDescFK(txtDescProd, 130, 60, 302, 20, "DescProd",
-				"Descrição do produto");
+		adicDescFK(txtDescProd, 130, 60, 302, 20, "DescProd","Descrição do produto");
 		adicDB(rgPriod, 635, 177, 100, 50, "PriorItSol", "Prioridade:", true);
 		rgPriod.setEnabled(false);
 	
-		adicCampo(txtQtdItAprovado, 543, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtQtdItAprovado, 543, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",ListaCampos.DB_SI, false);
 		adic(btProduto, 435, 45, 105, 35);
 		btProduto.setEnabled(false);
 
-		adicCampoInvisivel(txtSituacaoItAprov2, "SitCompItSol", "Sit.Comp.It.Sol.",
-				ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoItAprov2, "SitCompItSol", "Sit.Comp.It.Sol.",ListaCampos.DB_SI, false);
 
 		lcDet.montaSql(true, "ITSOLICITACAO", "CP");
 		lcDet.setWhereAdic("SitAprovItSol <> 'NA' AND SitItSol <> 'CA'");
@@ -487,7 +478,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcCotacao.setNavegador(navRod);
 		lcCotacao.setTabela(tab);
 	
-		txtQtdItAprovado.setSoLeitura(true);
+//		txtQtdItAprovado.setSoLeitura(true);
+		txtQtdItAprovado.setNaoEditavel(true);
 		txtDtCot.setSoLeitura(true);
 
 		txtRefProd2.setSoLeitura(true);
@@ -820,8 +812,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 		else if (evt.getSource() == btAprovaSol) {
 			lcDet.setState(ListaCampos.LCS_EDIT);
-			if (Funcoes
-					.mensagemConfirma(
+			if (Funcoes.mensagemConfirma(
 							null,
 							"Deseja Aprovar todos os ítens da compra?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
 									+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
