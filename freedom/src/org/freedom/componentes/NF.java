@@ -98,6 +98,8 @@ public class NF {
 	public static final int C_CODTRATTRIB = 20;
 	public static final int C_VLRBASEICMSPED = 21;
 	public static final int C_VLRADICPED = 22;
+	public static final int C_CONTAITENS = 23;
+	public static final int C_DESCFISC = 24;
 	
 	
 	//adic

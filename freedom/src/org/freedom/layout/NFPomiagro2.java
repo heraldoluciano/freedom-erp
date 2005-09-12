@@ -179,7 +179,7 @@ public class NFPomiagro2 extends Layout {
          if ((itens.getDate(NF.C_VENCLOTE) != null) && (itens.getString(NF.C_CODLOTE) != null)) {
          	sDescAdic = "  - L.:"+itens.getString(NF.C_CODLOTE).trim()+", VC.:"+Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)).substring(3);
          }
-		 String sTmp = cab.getString(NF.C_CODEMIT) != null ? cab.getString(NF.C_CODEMIT).trim() : ""; 
+		 String sTmp = itens.getString(NF.C_DESCFISC) != null ? itens.getString(NF.C_DESCFISC).trim() : ""; 
 		 //Gambs para colocar arteriscos:
 		 if (sTmp.length() > 0) {
 		 	 int iLinha;
@@ -222,7 +222,7 @@ public class NFPomiagro2 extends Layout {
 		   
          imp.say(imp.pRow()+0,14,(itens.getString(NF.C_DESCPROD)!=null ? Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(),0,66-sDescAdic.length())+sDescAdic : ""));
          imp.say(imp.pRow()+0,83,sClasFisc);
-         imp.say(imp.pRow()+0,89,itens.getString(NF.C_CODUNID)/*.substring(0,4)*/);
+         imp.say(imp.pRow()+0,89,itens.getString(NF.C_CODUNID).substring(0,4));
          imp.say(imp.pRow()+0,95,""+itens.getFloat(NF.C_QTDITPED));
           
  /*ARRUMAR*/imp.say(imp.pRow()+0,104,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)));
@@ -232,8 +232,9 @@ public class NFPomiagro2 extends Layout {
          
          iItImp++;
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
-         if ((iItImp == itens.getInt(NF.C_CODITPED)) || (imp.pRow() == 46)) {
-           if (iItImp == itens.getInt(NF.C_CODITPED)) {
+         if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == 46)) {
+        	 frete.next();
+           if (iItImp == itens.getInt(NF.C_CONTAITENS)) {
              int iRow = imp.pRow();
              for (int i=0; i<(46-iRow);i++) {
                  imp.say(imp.pRow()+1,0,"");
@@ -309,7 +310,7 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+0,6,(frete.getString(NF.C_QTDFRETE)!=null ? frete.getString(NF.C_QTDFRETE):""));
            imp.say(imp.pRow()+0,26,(frete.getString(NF.C_ESPFRETE)!=null ? frete.getString(NF.C_ESPFRETE):""));
            imp.say(imp.pRow()+0,47,(frete.getString(NF.C_MARCAFRETE)!=null ? frete.getString(NF.C_MARCAFRETE):""));
-           imp.say(imp.pRow()+0,93,(frete.getString(NF.C_PESOBRUTO)!=null ? frete.getString(NF.C_PESOBRUTO):""));
+           imp.say(imp.pRow()+0,93,""+frete.getFloat(NF.C_PESOBRUTO)/*!=null ? frete.getString(NF.C_PESOBRUTO):"")*/);
            imp.say(imp.pRow()+0,120,(frete.getString(NF.C_PESOLIQ)!=null ? frete.getString(NF.C_PESOLIQ):""));
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
            imp.say(imp.pRow()+1,0,"");
