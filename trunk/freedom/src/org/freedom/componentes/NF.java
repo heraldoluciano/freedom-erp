@@ -103,11 +103,11 @@ public class NF {
 	
 	
 	//adic
-	public static final int C_CODAUXV = 7;
-	public static final int C_CPFEMITAUX = 8;
-	public static final int C_NOMEEMITAUX = 9;
-	public static final int C_CIDEMITAUX = 10;
-	public static final int C_UFEMITAUX = 11;
+	public static final int C_CODAUXV = 0;
+	public static final int C_CPFEMITAUX = 1;
+	public static final int C_NOMEEMITAUX = 2;
+	public static final int C_CIDEMITAUX = 3;
+	public static final int C_UFEMITAUX = 4;
 	
 	
 	//parc	

@@ -170,7 +170,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			adic = new TabVector(14);
+			adic = new TabVector(5);
 			while (rs.next()) {
 				adic.addRow();				
 				adic.setInt(C_CODAUXV, rs.getInt("CODAUXV"));

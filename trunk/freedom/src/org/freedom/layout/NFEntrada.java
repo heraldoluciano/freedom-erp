@@ -45,16 +45,17 @@ public class NFEntrada extends NF {
 		try {
 			sql = "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," +
 					"F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR," +
-					"F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA " + 
-					"FROM CPCOMPRA C, CPFORNECED F  " +
+					"F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, C.CODPLANOPAG, PG.DESCPLANOPAG  " + 
+					"FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG  " +
 					"WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " +
+					"AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " +
 					"AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			cab = new TabVector(24);
+			cab = new TabVector(32);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODCOMPRA"));
@@ -81,28 +82,40 @@ public class NFEntrada extends NF {
 				cab.setInt(C_DOC, rs.getInt("DOCCOMPRA"));
 				cab.setString(C_INCRAEMIT, "");
 				cab.setDate(C_DTSAIDA, rs.getDate("DTENTCOMPRA"));
+				cab.setString(C_CODPLANOPG, (rs.getString("CODPLANOPAG")!=null ? rs.getString("CODPLANOPAG") : ""));
+				cab.setString(C_DESCPLANOPAG, (rs.getString("DESCPLANOPAG")!=null ? rs.getString("DESCPLANOPAG") : ""));				
+				cab.setString(C_OBSPED, "");
+				cab.setString(C_NOMEVEND,"");
+				cab.setString(C_EMAILVEND, "");
+				cab.setString(C_DESCFUNC, "");
+				cab.setString(C_CODCLCOMIS,"");
+				cab.setFloat(C_PERCCOMISVENDA, 0);
 			}
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			cab.setRow(-1);
 			
-			sql = "SELECT I.CODITCOMPRA, I.CODPROD, P.REFPROD, P.DESCPROD, P.CODUNID, " +
-					"I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, I.PERCICMSITCOMPRA, C.VLRICMSCOMPRA, " +
-					"C.VLRIPICOMPRA, C.VLRLIQCOMPRA, N.IMPDTSAIDANAT, I.VLRPRODITCOMPRA, N.DESCNAT, N.CODNAT, " +
-					"L.CODLOTE, L.VENCTOLOTE, C.VLRBASEICMSCOMPRA, C.VLRADICCOMPRA " +
-					"FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, EQLOTE L " + 
-					"WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " +
-					"AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT " +
-					"AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " +
-					"AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " +					
-					"AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? ";
+			sql = "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, "+
+					"I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRICMSCOMPRA, C.VLRIPICOMPRA, C.VLRADICCOMPRA, "+
+					"C.VLRLIQCOMPRA, C.VLRBASEICMSCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, "+
+					"P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, "+
+					"(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE), "+
+					"(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), "+
+					"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) "+
+					"FROM CPITCOMPRA I, CPCOMPRA C, EQPRODUTO P, LFNATOPER N, LFCLFISCAL CL "+
+					"WHERE I.CODEMP=C.CODEMP AND I.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA "+
+					"AND I.CODNAT=N.codnat AND I.CODEMPNT=N.CODEMP AND I.CODFILIALNT=N.CODFILIAL "+
+					"AND I.CODPROD=P.CODPROD AND I.CODEMPPD=P.CODEMP AND I.CODFILIALPD=P.CODFILIAL "+
+					"AND CL.CODFISC=P.CODFISC AND CL.CODEMP=P.CODEMPFC AND CL.CODFILIAL=P.CODFILIALFC "+ 
+					"AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?";
 			ps = con.prepareStatement(sql);
 			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			itens = new TabVector(23);
+			itens = new TabVector(25);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITCOMPRA"));
@@ -113,8 +126,8 @@ public class NFEntrada extends NF {
 				itens.setString(C_CODUNID, rs.getString("CODUNID"));
 				itens.setFloat(C_QTDITPED, rs.getFloat("QTDITCOMPRA"));
 				itens.setFloat(C_VLRLIQITPED, rs.getFloat("VLRLIQITCOMPRA"));
-				itens.setString(C_PERCIPIITPED, rs.getString("PERCIPIITCOMPRA"));
-				itens.setString(C_PERCICMSITPED, rs.getString("PERCICMSITCOMPRA"));
+				itens.setFloat(C_PERCIPIITPED, rs.getFloat("PERCIPIITCOMPRA"));
+				itens.setFloat(C_PERCICMSITPED, rs.getFloat("PERCICMSITCOMPRA"));
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSCOMPRA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPICOMPRA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQCOMPRA"));
@@ -123,54 +136,35 @@ public class NFEntrada extends NF {
 				itens.setString(C_DESCNAT, rs.getString("DESCNAT"));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, rs.getString("CODLOTE"));
-				itens.setDate(C_VENCLOTE, rs.getDate("VENCTOLOTE"));
+				itens.setDate(C_VENCLOTE, rs.getDate(21));
 				itens.setString(C_ORIGFISC, "");
 				itens.setString(C_CODTRATTRIB, "");
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSCOMPRA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICCOMPRA"));
+				itens.setInt(C_CONTAITENS, rs.getInt(22));
+				itens.setString(C_DESCFISC, (rs.getString(23)!=null ? rs.getString(22) : ""));
 			}
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-				
-			sql = "SELECT  PG.CODPLANOPAG, DESCPLANOPAG " +
-					"FROM CPCOMPRA C, CPITCOMPRA I, FNPLANOPAG PG " +
-					"WHERE I.CODEMP=C.CODEMP AND C.CODFILIAL=C.CODFILIAL AND I.CODCOMPRA=C.CODCOMPRA " +
-					"AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " +
-					"AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=? ";
-			ps = con.prepareStatement(sql);
-			ps.setInt(1,((Integer) parans.elementAt(0)).intValue());
-			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
-			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
-			rs = ps.executeQuery();
-			adic = new TabVector(14);
-			while (rs.next()) {
-				adic.addRow();
-				adic.setInt(C_CODPLANOPG, rs.getInt("CODPLANOPAG"));
-				adic.setString(C_DESCPLANOPAG, rs.getString("DESCPLANOPAG"));
-				adic.setString(C_OBSPED, "");
-				adic.setString(C_NOMEVEND, "");
-				adic.setString(C_EMAILVEND, "");
-				adic.setString(C_DESCFUNC, "");
-				adic.setInt(C_CODAUXV, 0);
-				adic.setInt(C_CPFEMITAUX, 0);
-				adic.setString(C_NOMEEMITAUX, "");
-				adic.setString(C_CIDEMITAUX, "");
-				adic.setString(C_UFEMITAUX, "");
-				adic.setString(C_CODCLCOMIS, "");
-				adic.setFloat(C_PERCCOMISVENDA, 0);
-			}
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit())
-			con.commit();
+			itens.setRow(-1);
+						
+			adic = new TabVector(5);
+			adic.addRow();				
+			adic.setInt(C_CODAUXV, 0);
+			adic.setInt(C_CPFEMITAUX, 0);
+			adic.setString(C_NOMEEMITAUX, "");
+			adic.setString(C_CIDEMITAUX, "");
+			adic.setString(C_UFEMITAUX, "");
+			adic.setRow(-1);
 						
 			parc = new TabVector(3);
 			parc.addRow();
 			parc.setDate(C_DTVENCTO, null);
 			parc.setFloat(C_VLRPARC, 0);
 			parc.setInt(C_NPARCITREC, 0);
+			parc.setRow(-1);
 						
 			frete = new TabVector(19);
 			frete.addRow();
@@ -193,6 +187,7 @@ public class NFEntrada extends NF {
 			frete.setFloat(C_PESOBRUTO, 0);
 			frete.setFloat(C_PESOLIQ, 0);
 			frete.setFloat(C_VLRFRETEPED, 0);
+			frete.setRow(-1);
 			
 		}
 		catch (SQLException e) {

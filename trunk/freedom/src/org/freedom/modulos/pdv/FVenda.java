@@ -403,6 +403,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 				ListaCampos.DB_SI, false));
 		lcProduto.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",
 				ListaCampos.DB_FK, false));
+		lcProduto.setWhereAdic("CVPROD IN ('V','A')");
 		lcProduto.montaSql(false, "PRODUTO", "EQ");
 		lcProduto.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProduto);
