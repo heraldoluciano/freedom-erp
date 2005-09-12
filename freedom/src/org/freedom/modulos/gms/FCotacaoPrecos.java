@@ -128,7 +128,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituacaoItAprov2 = new JTextFieldPad(
+	private JTextFieldPad txtSituacaoCompItAprov = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 2, 0);
@@ -440,7 +440,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		adic(btProduto, 435, 45, 105, 35);
 		btProduto.setEnabled(false);
 
-		adicCampoInvisivel(txtSituacaoItAprov2, "SitCompItSol", "Sit.Comp.It.Sol.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSituacaoCompItAprov, "SitCompItSol", "Sit.Comp.It.Sol.",ListaCampos.DB_SI, false);
 
 		lcDet.montaSql(true, "ITSOLICITACAO", "CP");
 		lcDet.setWhereAdic("SitAprovItSol <> 'NA' AND SitItSol <> 'CA'");
@@ -649,9 +649,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
         sSitItExp = txtSituacaoItComp.getVlrString();
         sSitItSol = txtSituacaoIt.getVlrString();
 
-		boolean bStatusTravaTudo = ((sSitItExp.equals("AF"))
-				|| (sSitItExp.equals("EF")) || (sSitItSol.equals("CA")) || (sSitItExp.equals("CA")));
-		boolean bStatusTravaCot = (!(sSitItExp.equals("AF")));
+		boolean bStatusTravaTudo = (sSitItExp.equals("AF") || sSitItSol.equals("EF")
+				|| sSitSol.equals("EF") || sSitItExp.equals("EF") || sSitItSol.equals("CA") || sSitItExp.equals("CA"));
+		boolean bStatusTravaCot = (!sSitItExp.equals("AF"));
+		boolean bCot = bCotacao && !bStatusTravaCot;
 
 		if (cevt.getListaCampos() == lcDet) {
 			if (comRef()) {
@@ -669,26 +670,22 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
 		}
 
-		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))
-				|| (bStatusTravaTudo))
+		if (!txtIDUsu.getVlrString().equals(Aplicativo.strUsuario)
+				|| bStatusTravaTudo)
 			desabCampos(true);
 		else
 			desabCampos(false);
 
-		if (!bAprovaCab || bStatusTravaTudo) {
+		if (!bAprovaCab || bStatusTravaTudo ) {
 			desabAprov(true);
 		} else {
 			desabAprov(false);
 		}
 
-		if (!bCotacao || bStatusTravaCot)
-			desabCot(true);
-		else {
+		if (bCot)
 			desabCot(false);
-		}
-
-		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
-				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {}
+		else 
+			desabCot(true);
 
 		if (sSitItSol.equals("CA")) {
 			SitSol = "Cancelado";
@@ -811,36 +808,36 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		}
 
 		else if (evt.getSource() == btAprovaSol) {
-			lcDet.setState(ListaCampos.LCS_EDIT);
 			if (Funcoes.mensagemConfirma(
 							null,
 							"Deseja Aprovar todos os ítens da compra?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
 									+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
 				;
-				txtSituacaoItAprov2.setVlrString("AT");
-				lcDet.post();
+				lcCampos.setState(ListaCampos.LCS_EDIT);
+				txtStatusSolicitacao.setVlrString("CT");
+				lcCampos.post();
 			}
 		} else if (evt.getSource() == btFinAprovSol) {
-			lcDet.setState(ListaCampos.LCS_EDIT);
 			if (Funcoes
 					.mensagemConfirma(
 							null,
 							"Deseja finalizar o processo de aprovação da compra?\n Após este procedimento a compra não poderá mais ser alterada\n"
 									+ "e estará disponível para expedição da nota fiscal!") == JOptionPane.OK_OPTION) {
 				;
-				txtSituacaoItAprov2.setVlrString("AF");
-				lcDet.post();
+				lcCampos.setState(ListaCampos.LCS_EDIT);
+				txtStatusSolicitacao.setVlrString("CF");
+				lcCampos.post();
 			}
 		} else if (evt.getSource() == btCompra) {
-			lcCotacao.setState(ListaCampos.LCS_EDIT);
 			if (Funcoes
 					.mensagemConfirma(
 							null,
 							"Deseja cotar todos os ítens da solicitação de compra?\n Caso você não tenha informado as quantidades\n a serem cotadas"
 									+ " estará cotando as quantidades aprovadas!") == JOptionPane.OK_OPTION) {
 				;
-				txtSituacaoItComp.setVlrString("ET");
-				nav.btSalvar.doClick();
+				lcCampos.setState(ListaCampos.LCS_EDIT);
+				txtStatusSolicitacao.setVlrString("EF");
+				lcCampos.post();
 			}
 		}
 
