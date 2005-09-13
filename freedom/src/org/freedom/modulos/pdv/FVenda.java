@@ -403,7 +403,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 				ListaCampos.DB_SI, false));
 		lcProduto.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",
 				ListaCampos.DB_FK, false));
-		lcProduto.setWhereAdic("CVPROD IN ('V','A')");
 		lcProduto.montaSql(false, "PRODUTO", "EQ");
 		lcProduto.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProduto);
@@ -616,7 +615,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			tbItem.adicLinha(new Object[] { new Integer(iCodItVenda),
 					txtCodProd.getVlrInteger(), txtDescProd.getVlrString(),
 					txtQtdade.getVlrBigDecimal(),
-					new StringDireita(txtPreco.getVlrString()),
+					txtPreco.getVlrBigDecimal(),
 					txtAliqIcms.getVlrBigDecimal(),
 					txtBaseCalc.getVlrBigDecimal(),
 					txtValorIcms.getVlrBigDecimal(), "" });
@@ -958,22 +957,41 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 
 	private boolean cancItem(int iItem) {
 		boolean bRet = false;
-		String sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' WHERE CODEMP=?"
-				+ " AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E' AND CODITVENDA=?";
+		String sSQL = null;
+		PreparedStatement ps = null;
+		int iLinha = -1;
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' WHERE CODEMP=?"
+				+ " AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E' AND CODITVENDA=?";
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
 			ps.setInt(3, txtCodVenda.getVlrInteger().intValue());
 			ps.setInt(4, iItem);
 			ps.executeUpdate();
+			ps.close();
 			if (!con.getAutoCommit()) {
 				con.commit();
 			}
+			iLinha = getLinha(iItem);
+			if (iLinha>0) {
+				tbItem.setValor(new BigDecimal("0.00"), iLinha, 3);
+				tbItem.setValor(new BigDecimal("0.00"), iLinha, 6);
+				tbItem.setValor(new BigDecimal("0.00"), iLinha, 7);
+				tbItem.setValor("C", iLinha, 8 );
+				marcaLinha(iItem);
+				atualizaTot();
+			}
+
 			bRet = true;
 		} catch (SQLException err) {
 			Logger.gravaLogTxt("", Aplicativo.strUsuario, Logger.LGEB_BD,
 					"Erro cancelar o item " + err.getMessage());
+		}
+		finally {
+			ps = null;
+			sSQL = null;
+			iLinha = 0;
 		}
 		return bRet;
 	}
@@ -1063,13 +1081,23 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		canc.dispose();
 	}
 
-	private void marcaLinha(int iItem) {
+	private int getLinha(int iItem) {
+		int iLinha = -1;
 		for (int i = 0; i < tbItem.getNumLinhas(); i++) {
 			if (iItem == ((Integer) tbItem.getValor(i, 0)).intValue()) {
-				tbItem.setRowBackGround(i, new Color(254, 213, 192));
-				tbItem.updateUI();
+				iLinha = 1;
 				break;
 			}
+		}
+		return iLinha;
+	}
+	
+	private void marcaLinha(int iItem) {
+		int iLinha = -1;
+		iLinha = getLinha(iItem);
+		if (iLinha>=0) {
+			tbItem.setRowBackGround(iLinha, new Color(254, 213, 192));
+			tbItem.updateUI();
 		}
 	}
 
