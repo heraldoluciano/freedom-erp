@@ -39,6 +39,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -391,6 +392,7 @@ public class DLCancCupom extends FDialogo implements ActionListener,MouseListene
 	public void actionPerformed( ActionEvent evt ) {
 	  if (evt.getSource() == btCanc) {
 			executaCanc();
+			carregaTabela();
 	  }
 	  if (evt.getSource() == btExec) {
 			carregaTabela();
