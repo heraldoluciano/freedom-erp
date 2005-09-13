@@ -68,7 +68,7 @@ public class FSerie extends FDados implements ActionListener {
   private void resetar() {
     FFDialogo dlReset = new FFDialogo(this);
     dlReset.setTitulo("Reset");
-    dlReset.setAtribos(280,120);
+    dlReset.setAtribos(280,140);
     dlReset.adic(lbReset,7,5,100,20);
     dlReset.adic(txtReset,7,25,100,20);
     dlReset.setVisible(true);
