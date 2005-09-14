@@ -48,7 +48,8 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JTextFieldPad txtDiasValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private String[] sBuscaLote = new String[2];
  
    
   public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
@@ -68,7 +69,7 @@ public class DLFechaDistrib extends FFDialogo {
     adic(new JLabelPad("Lote"),183,50,80,20);
     adic(txtLote,183,70,97,20);
     adic(new JLabelPad("Validade"),183,90,80,20);
-    adic(txtDiasValid,183,110,97,20);
+    adic(txtDtValid,183,110,97,20);
     
     txtCodProd.setVlrInteger(new Integer(iCodProd));
     txtDescProd.setVlrString(sDescProd);
@@ -79,7 +80,7 @@ public class DLFechaDistrib extends FFDialogo {
     txtDescProd.setAtivo(false);
     txtSeqDist.setAtivo(false);
     txtLote.setAtivo(false);
-    txtDiasValid.setAtivo(false);
+    txtDtValid.setAtivo(false);
     btOK.addActionListener(this);
   }
   
@@ -89,8 +90,11 @@ public class DLFechaDistrib extends FFDialogo {
     	txtLote.setAtivo(true);
     	if(getUsaModLote())
     		setModLote();
-    	else
-    		txtLote.setVlrString(buscaLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue(),true));
+    	else{
+    		buscaLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue(),true);
+    		txtLote.setVlrString(sBuscaLote[0]);
+    		txtDtValid.setVlrDate(Funcoes.strDateToSqlDate(sBuscaLote[1]));
+    	}
      }
      else
      	 txtLote.setAtivo(false);
@@ -102,7 +106,7 @@ public class DLFechaDistrib extends FFDialogo {
 		  modLote = getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
 		  txtLote.setVlrString((String) modLote[0]);
 		  txtDtFabProd.setVlrDate((Date) modLote[1]);
-	  	  txtDiasValid.setVlrDate((Date) modLote[2]);
+	  	  txtDtValid.setVlrDate((Date) modLote[2]);
 	  }
 	  finally {
 		  modLote = null;
@@ -112,41 +116,71 @@ public class DLFechaDistrib extends FFDialogo {
     Object[] oRetorno = new Object[3]; 
     oRetorno[0] = txtQtdDist.getVlrBigDecimal();
     oRetorno[1] = txtLote.getVlrString();
-    oRetorno[2] = txtDiasValid.getVlrString();
+    oRetorno[2] = txtDtValid.getVlrString();
     return oRetorno;
   }
   
 
-  private String buscaLote(int iCodProd,int iSeqEst,boolean bSaldoPos) {
-	String sRet = "";
-	String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
-				+ "L.CODPROD=? AND L.CODFILIAL=? "
-				+ (bSaldoPos?"AND L.SLDLIQLOTE>0 ":"")
-				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
-				+ "(SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
-				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 "
-				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+  private void buscaLote(int iCodProd,int iSeqEst,boolean bSaldoPos){
+	String sCodLote = null;
+	String sDtValid = null;
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+	String sSQL = null;
 	try {
-		System.out.println(sSQL);
-		PreparedStatement ps = con.prepareStatement(sSQL);
+		sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
+			+ "L.CODPROD=? AND L.CODFILIAL=? "
+			+ (bSaldoPos?"AND L.SLDLIQLOTE>0 ":"")
+			+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
+			+ "(SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
+			+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 "
+			+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+		
+		ps = con.prepareStatement(sSQL);
 		
 		ps.setInt(1, iCodProd);
 		ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
 		ps.setInt(3, Aplicativo.iCodEmp);
 						
-		ResultSet rs = ps.executeQuery();
+		rs = ps.executeQuery();
 		if (rs.next()) {
-			String sCodLote = rs.getString(1);
-			if (sCodLote != null) {
-				sRet = sCodLote.trim();
+			sCodLote = rs.getString(1);	
+			
+			sSQL = "SELECT VENCTOLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODLOTE=?";
+			
+			ps = con.prepareStatement(sSQL);
+			
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
+			ps.setString(3, sCodLote);
+							
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				sDtValid = rs.getString(1);			
 			}
 		}
+		
+		if (sCodLote != null) {
+			sBuscaLote [0] = sCodLote.trim();
+			sBuscaLote [1] = sDtValid;
+		}
+		else {
+			sBuscaLote [0] = "";
+			sBuscaLote [1] = "";
+		}
+			
+		
 		rs.close();
 		ps.close();
 	} catch (SQLException err) {
 		Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
 	}
-	return sRet;
+	finally{
+		sCodLote = null;
+		sDtValid = null;
+		ps = null;
+		rs = null;
+	}
   }
   
   public boolean getUsaModLote(){
@@ -290,7 +324,7 @@ public class DLFechaDistrib extends FFDialogo {
 		  if (lote!=null) {
 			  if((!existeLote(iCodProd, sCodLote))){			
 					txtLote.setVlrString(sCodLote);
-					txtDiasValid.setVlrDate((Date) lote[2]);
+					txtDtValid.setVlrDate((Date) lote[2]);
 					retorno = FOP.gravaLote(con, true, (String) lote[3], getUsaLote(), (String) lote[3], iCodProd, 
 							(Date) lote[1], ((Integer) lote[4]).intValue(), sCodLote );
 					
