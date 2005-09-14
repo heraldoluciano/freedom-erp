@@ -144,33 +144,25 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 
 	private JRadioGroup rgESTipoMov = null;
 
-	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad(
-			"Permitir todos os usuários?", "S", "N");
+	private JCheckBoxPad chbRestritoTipoMov = new JCheckBoxPad("Permitir todos os usuários?", "S", "N");
 
-	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Sim",
-			"S", "N");
+	private JCheckBoxPad chbFiscalTipoMov = new JCheckBoxPad("Sim","S", "N");
 
-	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Sim",
-			"S", "N");
+	private JCheckBoxPad chbEstoqTipoMov = new JCheckBoxPad("Sim","S", "N");
 
-	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Sim",
-			"S", "N");
+	private JCheckBoxPad chbSomaTipoMov = new JCheckBoxPad("Sim","S", "N");
 
-	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Sim",
-			"S", "N");
+	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Sim",	"S", "N");
 
 	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Sim", "S", "N");
 
-	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Sim", "S",
-			"N");
-
-	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Sim", "S",
-			"N");
+	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Sim", "S","N");
+	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Sim", "S","N");
+	private JCheckBoxPad chbSeqNfTipoMov = new JCheckBoxPad("Sim", "S","N");
 
 	private JPanelPad pinInfoPadImp = new JPanelPad(300, 150);
 
-	private JLabelPad lbInfoPadImp = new JLabelPad(
-			"  Opções para fechamento de venda");
+	private JLabelPad lbInfoPadImp = new JLabelPad(	" Padrões para fechamento de venda");
 
 	private JPanelPad pinLbPadImp = new JPanelPad(53, 15);
 
@@ -289,14 +281,12 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 				"Espécie", ListaCampos.DB_SI, true);
 
 		
-		adicDB(chbImpPedTipoMov, 13, 390, 97, 20, "ImpPedTipoMov",
-				"Pad.imp.ped.", true);
-		adicDB(chbImpNfTipoMov, 113, 390, 94, 20, "ImpNfTipoMov", "Pad.imp.NF",
-				true);
-		adicDB(chbImpBolTipoMov, 210, 390, 97, 20, "ImpBolTipoMov",
-				"Pad.imp.boleto", true);
-		adicDB(chbReImpNfTipoMov, 310, 390, 90, 20, "ReImpNfTipoMov",
-				"Pad.reimp.NF", true);
+		adicDB(chbImpPedTipoMov, 13, 390, 70, 20, "ImpPedTipoMov","Imp.ped.", true);
+		adicDB(chbImpNfTipoMov, 86, 390, 70, 20, "ImpNfTipoMov", "Imp.NF",	true);
+		adicDB(chbImpBolTipoMov, 159, 390, 70, 20, "ImpBolTipoMov", "Imp.bol.", true);
+		adicDB(chbReImpNfTipoMov, 232, 390, 70, 20, "ReImpNfTipoMov","Reimp.NF", true);
+		adicDB(chbSeqNfTipoMov, 305, 390, 80, 20, "SeqNfTipoMov","Aloca NRO.NF", true);
+
 		adic(pinLbPadImp, 10, 350, 230, 15);
 		adic(pinInfoPadImp, 7, 360, 400, 60);
 
@@ -360,6 +350,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 			vVals.addElement("CC");
 			vLabs.addElement("Ordem de produção");
 			vVals.addElement("OP");
+			vLabs.addElement("Devolução");
+			vVals.addElement("DV");
 		} else if (ES.equals("S")) {
 			vLabs.addElement("Orçamento (venda)");
 			vVals.addElement("OV");
