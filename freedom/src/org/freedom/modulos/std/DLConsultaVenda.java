@@ -58,10 +58,11 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
   private JScrollPane spnTab = new JScrollPane(tabConsulta);
   private ListaCampos lcPlanoPag = new ListaCampos(this);
   private ListaCampos lcVenda = new ListaCampos(this);
-  public DLConsultaVenda(Component cOrig,Connection cn,int iCodVenda) {
+  public DLConsultaVenda(Component cOrig,Connection cn,int iCodVenda, String sTipoVenda) {
   	super(cOrig);
     setConexao(cn);
     txtCodVenda.setVlrString(""+iCodVenda);
+    txtTipoVenda.setVlrString(sTipoVenda);
     setTitulo("Consulta de Venda");
     setAtribos(120,140,500,300);
     
@@ -76,8 +77,6 @@ public class DLConsultaVenda extends FFDialogo implements ActionListener {
     txtDocVenda.setAtivo(false);
     txtDtEmitVenda.setAtivo(false);
     txtDtSaida.setAtivo(false);
-
-    
     
     pinConsulta.adic(new JLabelPad("Nº pedido"),7,0,100,20);
     pinConsulta.adic(txtCodVenda,7,20,100,20);

@@ -93,6 +93,7 @@ public class DLConsultaPgto extends FFDialogo {
     tabConsulta.adicColuna("Atraso");
     tabConsulta.adicColuna("Observações");
     tabConsulta.adicColuna("Banco");
+    tabConsulta.adicColuna("TV");
     
     tabConsulta.setTamColuna(90,0);
     tabConsulta.setTamColuna(50,1);
@@ -105,6 +106,7 @@ public class DLConsultaPgto extends FFDialogo {
     tabConsulta.setTamColuna(60,8);
     tabConsulta.setTamColuna(200,9);
     tabConsulta.setTamColuna(200,10);
+    tabConsulta.setTamColuna(20,11);
     tabConsulta.addMouseListener( 
       new MouseAdapter() {
         public void mouseClicked(MouseEvent mevt) {
@@ -113,7 +115,8 @@ public class DLConsultaPgto extends FFDialogo {
               int iLin = tabConsulta.getLinhaSel();
               if (iLin >= 0) {
                 int iCodVenda = Integer.parseInt((String)tabConsulta.getValor(iLin,3));
-                DLConsultaVenda dl = new DLConsultaVenda(DLConsultaPgto.this,con,iCodVenda);
+                String sTipoVenda = (String) tabConsulta.getValor(iLin,11);
+                DLConsultaVenda dl = new DLConsultaVenda(DLConsultaPgto.this,con,iCodVenda, sTipoVenda);
                 dl.setVisible(true);
                 dl.dispose();
               }
@@ -131,7 +134,8 @@ public class DLConsultaPgto extends FFDialogo {
                   "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO,"+
                   "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B "+
                   "WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO,"+
-                  "R.CODREC,IT.NPARCITREC FROM FNRECEBER R, VDVENDA V, FNITRECEBER IT "+
+                  "R.CODREC,IT.NPARCITREC, R.TIPOVENDA " +
+                  "FROM FNRECEBER R, VDVENDA V, FNITRECEBER IT "+
                   "WHERE R.CODCLI=? AND V.CODVENDA=R.CODVENDA AND"+
                   " IT.STATUSITREC NOT IN ('RP') AND IT.CODREC = R.CODREC "+
                   "ORDER BY IT.DTVENCITREC,R.CODREC,IT.NPARCITREC";  
@@ -152,6 +156,7 @@ public class DLConsultaPgto extends FFDialogo {
         tabConsulta.setValor(rs.getString(9),i,8);
         tabConsulta.setValor(rs.getString("ObsRec") != null ? rs.getString("ObsRec") : "",i,9);
         tabConsulta.setValor(rs.getString(11) != null ? rs.getString(11) : "",i,10);
+        tabConsulta.setValor(rs.getString("TipoVenda"),i,11);
       }
       rs.close();
       ps.close();

@@ -492,12 +492,13 @@ public class FConsOrc extends FFilho implements ActionListener {
   }
   private void consVenda() {
     int iCodVenda = 0;
+    String sTipoVenda = "V";
     int iLin = tab.getLinhaSel();
     if (iLin >= 0) {
       if (!tab.getValor(iLin, 0).toString().equals("OV"))
         return;
       try {
-        String sSQL = "SELECT CODVENDA FROM VDVENDAORC WHERE CODORC=?"+
+        String sSQL = "SELECT CODVENDA, TIPOVENDA FROM VDVENDAORC WHERE CODORC=?"+
                       " AND CODEMPOR=? AND CODFILIALOR=?";
         PreparedStatement ps = con.prepareStatement(sSQL);
         ps.setInt(1, Integer.parseInt(tab.getValor(iLin, 1).toString()));
@@ -506,6 +507,7 @@ public class FConsOrc extends FFilho implements ActionListener {
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
           iCodVenda = rs.getInt("CodVenda");
+          sTipoVenda = rs.getString("TipoVenda");
         }
         rs.close();
         ps.close();
@@ -517,7 +519,7 @@ public class FConsOrc extends FFilho implements ActionListener {
         err.printStackTrace();
         return;
       }
-      DLConsultaVenda dl = new DLConsultaVenda(this, con, iCodVenda);
+      DLConsultaVenda dl = new DLConsultaVenda(this, con, iCodVenda, sTipoVenda);
       dl.setVisible(true);
       dl.dispose();
     }
