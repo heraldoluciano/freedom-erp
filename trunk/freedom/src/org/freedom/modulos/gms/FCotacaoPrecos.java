@@ -604,6 +604,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private void desabCampos(boolean bHab) {
 		txtCodProd.setNaoEditavel(bHab);
 		txtQtdCot.setNaoEditavel(bHab);
+		txtPrecoCot.setNaoEditavel(bHab);
+		txtCodFor.setNaoEditavel(bHab);
+		txtQtdAprovCot.setNaoEditavel(bHab);
 		rgPriod.setAtivo(!bHab);
 	}
 
