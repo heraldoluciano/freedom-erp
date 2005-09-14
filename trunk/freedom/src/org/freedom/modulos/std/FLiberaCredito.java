@@ -160,6 +160,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
         tab.adicColuna("Atraso");
         tab.adicColuna("Observações");
         tab.adicColuna("Banco");
+        tab.adicColuna("TV");
     
         tab.setTamColuna(90,0);
 		tab.setTamColuna(100,1);
@@ -172,6 +173,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
         tab.setTamColuna(60,8);
         tab.setTamColuna(200,9);
         tab.setTamColuna(200,10);
+        tab.setTamColuna(20,11);
 
 		btBusca.addActionListener(this);
 		lcCampos.addInsertListener(this);
@@ -185,7 +187,8 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 				  int iLin = tab.getLinhaSel();
 				  if (iLin >= 0) {
 					int iCodVenda = Integer.parseInt((String)tab.getValor(iLin,4));
-					DLConsultaVenda dl = new DLConsultaVenda(FLiberaCredito.this,con,iCodVenda);
+					String sTipoVenda = (String) tab.getValor(iLin,11);
+					DLConsultaVenda dl = new DLConsultaVenda(FLiberaCredito.this,con,iCodVenda, sTipoVenda);
 					dl.setVisible(true);
 					dl.dispose();
 				  }
@@ -204,7 +207,8 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 					  "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO,"+
 					  "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B "+
 					  "WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO,"+
-					  "R.CODREC,IT.NPARCITREC FROM FNRECEBER R, VDVENDA V, " +
+					  "R.CODREC,IT.NPARCITREC,R.TIPOENDA" +
+					  " FROM FNRECEBER R, VDVENDA V, " +
 					  "FNITRECEBER IT, VDCLIENTE CL WHERE " +
 					  "((CL.CODCLI=? AND CL.CODEMP=? AND CL.CODFILIAL=?) OR " +
 					  " (CL.CODPESQ=? AND CL.CODEMPPQ=? AND CL.CODFILIALPQ=?)) AND " +
@@ -235,6 +239,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 			tab.setValor(rs.getString(9),i,8);
 			tab.setValor(rs.getString("ObsRec") != null ? rs.getString("ObsRec") : "",i,9);
 			tab.setValor(rs.getString(11) != null ? rs.getString(11) : "",i,10);
+			tab.setValor(rs.getString("TIPOVENDA"),i,11);
 			dVal += rs.getDouble("VlrParcItRec");
 		  }
 		  txtVlrAberto.setVlrString(Funcoes.strDecimalToStrCurrency(2,""+(new BigDecimal(dVal)).setScale(2,BigDecimal.ROUND_HALF_UP))); 

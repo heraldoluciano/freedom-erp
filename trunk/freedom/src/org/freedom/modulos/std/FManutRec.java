@@ -281,6 +281,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     tabConsulta.adicColuna("Cód.venda");//11
     tabConsulta.adicColuna("Banco");//12
     tabConsulta.adicColuna("Observações");//13
+    tabConsulta.adicColuna("TV");//14
     
     tabConsulta.setTamColuna(0,0);//status
     tabConsulta.setTamColuna(90,1);//venc
@@ -296,6 +297,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     tabConsulta.setTamColuna(80,11);//codvenda
     tabConsulta.setTamColuna(200,12);//banco        
     tabConsulta.setTamColuna(200,13);//observ
+    tabConsulta.setTamColuna(20,14);//Tipo venda
 
     
     //Baixa:    
@@ -640,7 +642,8 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				  " END ) ATRASO,"+
                   "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODBANCO = IT.CODBANCO" +
                   " AND B.CODEMP=IT.CODEMPBO AND B.CODFILIAL=IT.CODFILIALBO) AS NOMEBANCO,"+
-                  "R.CODREC,IT.NPARCITREC,IT.VLRDESCITREC,IT.VLRJUROSITREC FROM FNRECEBER R,FNITRECEBER IT "+
+                  "R.CODREC,IT.NPARCITREC,IT.VLRDESCITREC,IT.VLRJUROSITREC," +
+                  "R.TIPOVENDA FROM FNRECEBER R,FNITRECEBER IT "+
                   "WHERE R.CODCLI=? AND R.CODEMP=? AND R.CODFILIAL=? AND "+ 
                   " IT.CODREC = R.CODREC AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL"+
                   " ORDER BY R.CODREC,IT.NPARCITREC";  
@@ -679,6 +682,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
         tabConsulta.setValor(""+rs.getInt("CodVenda"),i,11);
         tabConsulta.setValor(rs.getString(11) != null ? rs.getString(11) : "",i,12);
         tabConsulta.setValor(rs.getString("ObsRec") != null ? rs.getString("ObsRec") : "",i,13);
+        tabConsulta.setValor(rs.getString("TipoVenda"),i,14);
         vCodRec.addElement(rs.getString("CodRec"));        
         vNParcItRec.addElement(rs.getString("NParcItRec"));        
       }
@@ -1366,8 +1370,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     	   int iLin = tabConsulta.getLinhaSel();
            if (iLin >= 0) {
              int iCodVenda = Integer.parseInt((String)tabConsulta.getValor(iLin,11));
+             String sTipoVenda = (String) tabConsulta.getValor(iLin, 14);
              if (iCodVenda>0) {
-             	DLConsultaVenda dl = new DLConsultaVenda(this,con,iCodVenda);          
+             	DLConsultaVenda dl = new DLConsultaVenda(this,con,iCodVenda, sTipoVenda);          
              	dl.setVisible(true);
              	dl.dispose();
              }
