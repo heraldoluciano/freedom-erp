@@ -87,7 +87,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
   private JLabelPad lbCodPlanoPag = new JLabelPad("Cód.p.pag.");
   private JLabelPad lbDescPlanoPag = new JLabelPad("Descrição do plano de pagto.");
   private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
-  private JCheckBoxPad cbImpNot = new JCheckBoxPad("Entrada de Nota?","S","N");
+  private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
   private ListaCampos lcCompra = new ListaCampos(this);
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcPagar = new ListaCampos(this);

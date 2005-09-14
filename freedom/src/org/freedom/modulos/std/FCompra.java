@@ -55,6 +55,7 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -226,18 +227,15 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,
 			10, 0);
 
-	private JTextFieldPad txtCodBarProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodBarProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0);
 
-	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0);
 
-	private JTextFieldFK txtDescFisc = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	
-	private JTextFieldPad txtCodAlmoxItCompra = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER,5, 0);
-
+	private JTextFieldPad txtCodAlmoxItCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER,5, 0);
+	
+	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad("Aloc.NF","S","N");
 
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 
@@ -288,6 +286,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, false));
 		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, false));
 		lcTipoMov.add(new GuardaCampo(txtTipoMov, "TipoMov", "Tipo mov.",ListaCampos.DB_SI, false));
+		lcTipoMov.add(new GuardaCampo(cbSeqNfTipoMov, "SeqNfTipomov", "Aloc.NF", ListaCampos.DB_SI, true));
 		lcTipoMov.setWhereAdic("((ESTIPOMOV = 'E') AND"
 						+ " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU "
 						+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "
@@ -450,6 +449,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcDet.addPostListener(this);
 		lcDet.addCarregaListener(this);
 		lcCampos.addInsertListener(this);
+		lcTipoMov.addCarregaListener(this);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -785,14 +785,20 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			lcCompra2.carregaDados(); //Carrega os Totais
 			txtCodCompra.setVlrString(s);
 		} else if (cevt.getListaCampos() == lcSerie) {
-			if (lcCampos.getStatus() == ListaCampos.LCS_INSERT)
-				txtDocCompra.setVlrInteger(new Integer(txtDocCompra
+			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) && (cbSeqNfTipoMov.getVlrString().equals("S")) )
+				txtDocCompra.setVlrInteger(new Integer(txtDocSerie
 						.getVlrInteger().intValue() + 1));
 		} else if (cevt.getListaCampos() == lcNat) {
 			if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
 				buscaICMS();
 			}
+		} else if (cevt.getListaCampos() == lcTipoMov ) {
+			if (cbSeqNfTipoMov.getVlrString().equals("S"))
+				txtDocCompra.setAtivo(false);
+			else
+				txtDocCompra.setAtivo(true);
 		}
+		
 	}
 
 	public void keyPressed(KeyEvent kevt) {
