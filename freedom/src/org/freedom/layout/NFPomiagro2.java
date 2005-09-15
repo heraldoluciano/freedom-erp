@@ -25,6 +25,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public class NFPomiagro2 extends Layout {
   public boolean imprimir(NF nf,ImprimeOS imp) {
@@ -94,7 +95,7 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           if (bEntrada)
+           if (nf.getTipoNF()==NF.TPNF_ENTRADA)
              imp.say(imp.pRow()+0,105,"X");
            else
              imp.say(imp.pRow()+0,93,"X");
@@ -124,7 +125,7 @@ public class NFPomiagro2 extends Layout {
            	
            
            sIncra = cab.getString(NF.C_INCRAEMIT);
-           if (sIncra != null ){
+           if (!sIncra.equals("")){
 			 imp.say(imp.pRow()+0,6,cab.getInt(NF.C_CODEMIT)+" - "+sValsCli[1]+"Incra:");
 			 imp.say(imp.pRow()+0,71,cab.getString(NF.C_INCRAEMIT));
            }
@@ -132,7 +133,7 @@ public class NFPomiagro2 extends Layout {
              imp.say(imp.pRow()+0,6,cab.getInt(NF.C_CODEMIT)+" - "+sValsCli[1]);
            }        
             
-           imp.say(imp.pRow()+0,95,sValsCli[0] != null ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"##.###.###/####-##")) ;
+           imp.say(imp.pRow()+0,95,!sValsCli[0].equals("") ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
            imp.say(imp.pRow()+0,126,(cab.getDate(NF.C_DTEMITPED)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)) : ""));
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -201,7 +202,7 @@ public class NFPomiagro2 extends Layout {
 		 	 }
 		 	 
 		 }
-		 sTmp = cab.getString(NF.C_CODPED) != null ? cab.getString(NF.C_CODPED).trim() : "";
+		 sTmp = itens.getString(NF.C_DESCFISC2) != null ? itens.getString(NF.C_DESCFISC2).trim() : "";
 		 String sClasFisc = Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2);
 		 if (sTmp.length() > 0) {
 		 	int iLinha;
@@ -307,11 +308,11 @@ public class NFPomiagro2 extends Layout {
            
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,(frete.getString(NF.C_QTDFRETE)!=null ? frete.getString(NF.C_QTDFRETE):""));
+           imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(5,Aplicativo.casasDec,""+frete.getString(NF.C_QTDFRETE)));
            imp.say(imp.pRow()+0,26,(frete.getString(NF.C_ESPFRETE)!=null ? frete.getString(NF.C_ESPFRETE):""));
            imp.say(imp.pRow()+0,47,(frete.getString(NF.C_MARCAFRETE)!=null ? frete.getString(NF.C_MARCAFRETE):""));
-           imp.say(imp.pRow()+0,93,""+frete.getFloat(NF.C_PESOBRUTO)/*!=null ? frete.getString(NF.C_PESOBRUTO):"")*/);
-           imp.say(imp.pRow()+0,120,(frete.getString(NF.C_PESOLIQ)!=null ? frete.getString(NF.C_PESOLIQ):""));
+           imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(5,Aplicativo.casasDec,""+frete.getFloat(NF.C_PESOBRUTO)));
+           imp.say(imp.pRow()+0,120,Funcoes.strDecimalToStrCurrency(5,Aplicativo.casasDec,""+frete.getString(NF.C_PESOLIQ)));
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
@@ -320,9 +321,9 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+0,45,Funcoes.alinhaDir(cab.getInt(NF.C_CODPED),10));
            imp.say(imp.pRow()+0,64,cab.getString(NF.C_DOC) != null ? Funcoes.strZero(""+iNumNota,6) : "000000");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,35,(cab.getString(NF.C_CODPED)!=null ? cab.getString(NF.C_CODPED):""));
+           imp.say(imp.pRow()+0,35,""+cab.getInt(NF.C_CODVEND));
            imp.say(imp.pRow()+0,40,cab.getString(NF.C_CODCLCOMIS) != null ? cab.getString(NF.C_CODCLCOMIS) : "");
-           imp.say(imp.pRow()+0,50,cab.getString(NF.C_PERCCOMISVENDA) != null ? (new BigDecimal(cab.getString(NF.C_PERCCOMISVENDA))).setScale(2,BigDecimal.ROUND_HALF_UP).toString() : "");
+           imp.say(imp.pRow()+0,50,(new BigDecimal(cab.getFloat(NF.C_PERCCOMISVENDA))).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            for(int i=0;i<vMens.size();i++)

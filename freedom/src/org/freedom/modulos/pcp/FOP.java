@@ -685,33 +685,39 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	}
   }
   public void geraRMA(){
+	  String sSQL = null;
+	  PreparedStatement ps = null;
+	  ResultSet rs = null;
+	  ResultSet rs2 = null;
+	  PreparedStatement ps2 = null;
+	  PreparedStatement ps3 = null;
 	try {
-		PreparedStatement ps = con.prepareStatement("SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'");
+		sSQL = "SELECT GERARMA FROM PPITOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=? AND GERARMA='S'";
+		ps = con.prepareStatement(sSQL);
 		ps.setInt(1, Aplicativo.iCodEmp);
 		ps.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
 		ps.setInt(3,txtCodOP.getVlrInteger().intValue());
-		ResultSet rs = ps.executeQuery();
+		ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
+		rs = ps.executeQuery();
 		if (rs.next()) {
 			try{
-				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+"?")==JOptionPane.YES_OPTION){
-					PreparedStatement ps2 = null;
+				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
 					ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?)");
 					ps2.setInt(1,Aplicativo.iCodEmp);
 					ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
 					ps2.setInt(3,txtCodOP.getVlrInteger().intValue());
-					ps2.setInt(4,txtSeqOP.getVlrInteger().intValue());
 					ps2.execute();
 					con.commit();
 					
 					try{
-						PreparedStatement ps3 = con.prepareStatement("SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " +
+						ps3 = con.prepareStatement("SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " +
 																	 "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=?" );
 						ps3.setInt(1, Aplicativo.iCodEmp);
 						ps3.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
 						ps3.setInt(3, ListaCampos.getMasterFilial("PPOP"));
 						ps3.setInt(4,txtCodOP.getVlrInteger().intValue());
 						
-						ResultSet rs2 = ps3.executeQuery();
+						rs2 = ps3.executeQuery();
 						String sRma = "";
 						while(rs2.next()) {
 							sRma += rs2.getString(1)+" - ";
@@ -741,6 +747,14 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	catch(Exception err){
 		Funcoes.mensagemErro(this,"Erro ao consultar RMA",true,con,err);
 		err.printStackTrace();
+	}
+	finally{
+		sSQL = null;
+		ps = null;
+		rs = null;
+		rs2 = null;
+		ps2 = null;
+		ps3 = null;
 	}
   	
   }

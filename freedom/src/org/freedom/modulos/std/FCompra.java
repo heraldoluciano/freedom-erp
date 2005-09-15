@@ -921,6 +921,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					parans.addElement(new Integer(iCodCompra));
 					nf = new NFEntrada(casasDec);
 					nf.carregaTabelas(con, parans);
+					//((Layout) layNF).bEntrada = true;
 					bImpOK = ((Layout) layNF).imprimir(nf, imp);
 				}
 				else if (layNF instanceof Leiaute) {

@@ -154,6 +154,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	    int iLinha = tabDistrib.getLinhaSel();
   	    int iCodProd = 0;
   	    int iSeqDist = 0;
+  	    int iCodProdPrinc = 0;
+	    int iSeqProdPrinc = 0;
   	    float ftQtdade = 0;
   	    float ftQtdant = 0;
   	    float ftQtddig = 0;
@@ -166,8 +168,10 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	  	DLFechaDistrib dl = null;
 	  	boolean ok = false;
 	  	try {
-	  		iSeqDist =((Integer) tabDistrib.getValor(iLinha, 3)).intValue();
+	  		iSeqDist =((Integer) tabDistrib.getValor(iLinha, 6)).intValue();
 	  		iCodProd = ((Integer) tabDistrib.getValor(iLinha, 4)).intValue();
+	  		iCodProdPrinc = txtCodProdEst.getVlrInteger().intValue();
+		    iSeqProdPrinc = txtSeqEst.getVlrInteger().intValue();
 	  		sDescProd = ((String) tabDistrib.getValor(iLinha,5));
 	  		ftQtdade = ((BigDecimal) tabDistrib.getValor(iLinha,7)).floatValue();
 	  		ftQtdant = ftQtdade;
@@ -176,6 +180,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	  		while (!ok) {
 		  		dl = new DLFechaDistrib(DLDistrib.this,iSeqDist,iCodProd,sDescProd,ftQtdade);
 		  		try {
+		  			dl.setProdPrinc(iCodProdPrinc,iSeqProdPrinc);
 			  		dl.setConexao(con);
 					dl.setVisible(true);
 					if (dl.OK){
@@ -225,6 +230,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 			iLinha = 0;
 			iCodProd = 0;
 			iSeqDist = 0;
+			iCodProdPrinc = 0;
+		    iSeqProdPrinc = 0;
 			ftQtdade = 0;
 			ftFator = 0;
 			ftFinal = 0;
@@ -338,7 +345,6 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	txtDescEst.setVlrString((String) sValores[5]);
 	txtQtdProd.setVlrBigDecimal((BigDecimal) sValores[6]); 
 	txtQtdDist.setVlrBigDecimal(new BigDecimal(0));
-	//txtQtdDist.setVlrBigDecimal((BigDecimal)(Integer.parseInt(""+sValores[6])-iQtdDistrib)); 
   }
   
   public void actionPerformed(ActionEvent evt) {

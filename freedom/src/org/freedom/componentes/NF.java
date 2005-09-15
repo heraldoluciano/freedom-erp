@@ -33,12 +33,15 @@ import java.util.Vector;
 
 public class NF {
 	
+	public static final int TPNF_NONE = -1;
+	public static final int TPNF_ENTRADA = 0;
+	public static final int TPNF_SAIDA = 1;
 	public static final int T_CAB = 0;
 	public static final int T_ITENS = 1;
 	public static final int T_PARC = 2;
 	public static final int T_ADIC = 3;
 	public static final int T_FRETE = 4;
-
+	
 	// cab
 	public static final int C_CODPED = 0;
 	public static final int C_CODEMIT = 1;
@@ -72,6 +75,7 @@ public class NF {
 	public static final int C_DESCFUNC = 29;
 	public static final int C_CODCLCOMIS = 30;
 	public static final int C_PERCCOMISVENDA = 31;
+	public static final int C_CODVEND = 32;
 	
 	
 	//itens
@@ -100,6 +104,7 @@ public class NF {
 	public static final int C_VLRADICPED = 22;
 	public static final int C_CONTAITENS = 23;
 	public static final int C_DESCFISC = 24;
+	public static final int C_DESCFISC2 = 25;
 	
 	
 	//adic
@@ -143,11 +148,15 @@ public class NF {
 	protected TabVector parc = null;
 	protected TabVector adic = null;
 	protected TabVector frete = null;
+	protected int tipoNF = TPNF_NONE; 
     
 	public NF() {
 		super();
 	}
 	
+	public int getTipoNF() {
+		return tipoNF;
+	}
 	public TabVector getTabVector(int vector) {
 		TabVector t = null;
 		switch(vector) {
