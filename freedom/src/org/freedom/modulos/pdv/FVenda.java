@@ -67,7 +67,6 @@ import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.StatusBar;
-import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
 import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;

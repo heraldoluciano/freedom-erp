@@ -29,7 +29,6 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
-import java.awt.ScrollPane;
 
 import javax.swing.JScrollPane;
 
@@ -37,6 +36,10 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.telas.FFDialogo;
 
 public class FObsCliVend extends FFDialogo {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public JTextAreaPad txaObs = new JTextAreaPad();
 	private JScrollPane spObs = new JScrollPane(txaObs);
 	public FObsCliVend() {
@@ -49,7 +52,7 @@ public class FObsCliVend extends FFDialogo {
 		FObsCliVend tela = new FObsCliVend();
 		tela.setAtribos(x, y, larg, alt + 50 );
 		tela.txaObs.setText(sObsCli);
-		tela.show();
+		tela.setVisible(true);
 		
 	}
 	

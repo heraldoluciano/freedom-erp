@@ -39,7 +39,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
