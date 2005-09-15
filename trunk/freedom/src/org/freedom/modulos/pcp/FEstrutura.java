@@ -97,6 +97,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   private JCheckBoxPad cbFinaliza = new JCheckBoxPad("Sim","S","N");
   private JCheckBoxPad cbRmaAutoItEst = new JCheckBoxPad("Sim","S","N");
   private JCheckBoxPad cbAtiva = new JCheckBoxPad("Sim","S","N");
+  private JCheckBoxPad cbGLoteOPP = new JCheckBoxPad("Sim","S","N");
   private ListaCampos lcProdEst = new ListaCampos(this,"");
   private ListaCampos lcProdItem = new ListaCampos(this,"PD");
   private ListaCampos lcFase = new ListaCampos(this,"FS");
@@ -114,7 +115,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   
   public FEstrutura() { 
     setTitulo("Estrutura de produtos");
-    setAtribos( 50, 20, 622, 550);
+    setAtribos( 50, 20, 625, 550);
     setAltCab(170);
     
   	pnMaster.remove(spTab);
@@ -190,6 +191,7 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     adicCampo(txtDescEst, 90, 60, 297, 20,"DescEst","Descrição", ListaCampos.DB_SI, true);
     adicCampoInvisivel(txtRefProdEst, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false);
     adicDB(cbAtiva,392,60,50,20,"ATIVOEST","Ativa",true);
+    adicDB(cbGLoteOPP,445,60,160,20,"GLOTEOPP","Mod.lote da OP principal",true);
     adicCampo(txtCodModLote,7,100,80,20,"CodModLote","Cód.Mod.Lote",ListaCampos.DB_FK,txtDescModLote,false);
     adicDescFK(txtDescModLote, 90, 100, 297, 20, "DescModLote", "Descrição do modelo do lote");
     adicCampo(txtNroDiasValid,390,100,100,20,"NroDiasValid","Dias de validade",ListaCampos.DB_SI,false);

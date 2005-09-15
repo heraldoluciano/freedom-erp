@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
@@ -49,15 +50,17 @@ public class DLFechaDistrib extends FFDialogo {
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private String[] sBuscaLote = new String[2];
+  private Vector vBuscaLote = new Vector();
+  private int iProdPrinc = 0;
+  private int iSeqPrinc = 0;
  
    
-  public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd,String sDescProd, float ftQtdade) {
+  public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd, String sDescProd, float ftQtdade) {
   	super(cOrig);
     setTitulo("Quantidade");
     setAtribos(310,220);
     
-   
+      
     adic(new JLabelPad("Cód.Prod"),7,10,80,20);
     adic(txtCodProd,7,30,80,20);
     adic(new JLabelPad("Descrição da estrutura"),90,10,180,20);
@@ -83,7 +86,11 @@ public class DLFechaDistrib extends FFDialogo {
     txtDtValid.setAtivo(false);
     btOK.addActionListener(this);
   }
-  
+
+  public void setProdPrinc(int prodPrinc, int seqPrinc){
+	  iProdPrinc = prodPrinc;
+	  iSeqPrinc = seqPrinc;
+  }
   public void setConexao(Connection cn) {
   	 super.setConexao(cn);
      if(getUsaLote().equals("S")){
@@ -91,9 +98,9 @@ public class DLFechaDistrib extends FFDialogo {
     	if(getUsaModLote())
     		setModLote();
     	else{
-    		buscaLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue(),true);
-    		txtLote.setVlrString(sBuscaLote[0]);
-    		txtDtValid.setVlrDate(Funcoes.strDateToSqlDate(sBuscaLote[1]));
+    		buscaLote(txtCodProd.getVlrInteger().intValue());
+    		txtLote.setVlrString((String)vBuscaLote.elementAt(0));
+    		txtDtValid.setVlrDate((java.util.Date)vBuscaLote.elementAt(1));
     	}
      }
      else
@@ -103,7 +110,11 @@ public class DLFechaDistrib extends FFDialogo {
   public void setModLote() {
 	  Object[] modLote = null;
 	  try {
-		  modLote = getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
+		  if(getModLotePrinc())
+			  modLote = getModLote(iProdPrinc,iSeqPrinc);
+		  else
+			  modLote = getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
+		  
 		  txtLote.setVlrString((String) modLote[0]);
 		  txtDtFabProd.setVlrDate((Date) modLote[1]);
 	  	  txtDtValid.setVlrDate((Date) modLote[2]);
@@ -121,16 +132,14 @@ public class DLFechaDistrib extends FFDialogo {
   }
   
 
-  private void buscaLote(int iCodProd,int iSeqEst,boolean bSaldoPos){
-	String sCodLote = null;
-	String sDtValid = null;
+  private void buscaLote(int iCodProd){
+	Object oCodLote = null;
 	PreparedStatement ps = null;
 	ResultSet rs = null;
 	String sSQL = null;
 	try {
 		sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
-			+ "L.CODPROD=? AND L.CODFILIAL=? "
-			+ (bSaldoPos?"AND L.SLDLIQLOTE>0 ":"")
+			+ "L.CODPROD=? AND L.CODFILIAL=? AND L.SLDLIQLOTE>0 "
 			+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
 			+ "(SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
 			+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 "
@@ -144,7 +153,7 @@ public class DLFechaDistrib extends FFDialogo {
 						
 		rs = ps.executeQuery();
 		if (rs.next()) {
-			sCodLote = rs.getString(1);	
+			oCodLote = rs.getString(1);	
 			
 			sSQL = "SELECT VENCTOLOTE FROM EQLOTE WHERE CODEMP=? AND CODFILIAL=? AND CODLOTE=?";
 			
@@ -152,35 +161,64 @@ public class DLFechaDistrib extends FFDialogo {
 			
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
-			ps.setString(3, sCodLote);
+			ps.setString(3, (String) oCodLote);
 							
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				sDtValid = rs.getString(1);			
+				vBuscaLote.addElement(oCodLote);
+				vBuscaLote.addElement(rs.getDate(1));			
 			}
-		}
-		
-		if (sCodLote != null) {
-			sBuscaLote [0] = sCodLote.trim();
-			sBuscaLote [1] = sDtValid;
-		}
-		else {
-			sBuscaLote [0] = "";
-			sBuscaLote [1] = "";
-		}
-			
-		
+		}	
 		rs.close();
 		ps.close();
 	} catch (SQLException err) {
 		Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
 	}
 	finally{
-		sCodLote = null;
-		sDtValid = null;
+		oCodLote = null;
 		ps = null;
 		rs = null;
 	}
+  }
+  
+  public boolean getModLotePrinc(){
+	  boolean retorno = false;
+	  ResultSet rs = null;
+	  PreparedStatement ps = null;
+	  String sSQL = null;
+	  String usaPrinc = null;
+	  try{
+		  sSQL = "SELECT GLOTEOPP FROM PPESTRUTURA " +
+		  		"WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND SEQEST=?";
+		  ps = con.prepareStatement(sSQL);
+		  ps.setInt(1,Aplicativo.iCodEmp);
+		  ps.setInt(2,Aplicativo.iCodFilial);
+		  ps.setInt(3,txtCodProd.getVlrInteger().intValue());
+		  ps.setInt(4,txtSeqDist.getVlrInteger().intValue());
+		  rs = ps.executeQuery();
+		  
+		  if(rs.next()){
+			  usaPrinc = rs.getString("GLOTEOPP");
+		  }
+		  
+		  if(usaPrinc.equals("S"))
+			  retorno = true;
+		  else
+			  retorno = false;
+		  
+		  rs.close();
+		  ps.close();
+	  }
+	  catch ( SQLException ex){
+		  Funcoes.mensagemErro(null,"Erro ao verificar uso de\nmodelo de pote da OP principal\n"+ex.getMessage());
+	  }
+	  finally{
+		  rs = null;
+		  ps = null;
+		  sSQL = null;
+		  usaPrinc = null;
+	  }
+	  return retorno ;
   }
   
   public boolean getUsaModLote(){

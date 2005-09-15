@@ -24,7 +24,7 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.componentes.TabVector;
 public class Layout extends Object {
-	protected boolean bEntrada = false;
+	//public boolean bEntrada = false;
 	protected TabVector cab = null;
 	protected TabVector itens = null;
 	protected TabVector parc = null;

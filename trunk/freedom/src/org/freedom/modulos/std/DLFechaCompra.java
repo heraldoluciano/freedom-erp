@@ -243,8 +243,9 @@ public class DLFechaCompra extends FFDialogo implements FocusListener {
     adic(txtVlrICMSCompra,210,100,97,20);
     adic(new JLabelPad("V. IPI"),310,80,100,20);
     adic(txtVlrIPICompra,310,100,100,20);
-    adic(new JLabelPad("Código e Descrição do Banco"),7,120,250,20);
+    adic(new JLabelPad("Cód.banco"),7,120,80,20);
     adic(txtCodBanco,7,140,80,20);
+    adic(new JLabelPad("Descrição do Banco"),90,120,200,20);
     adic(txtDescBanco,90,140,200,20);
     adic(cbImpPed,7,170,200,20);
     adic(cbImpNot,7,190,200,20);

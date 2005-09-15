@@ -33,6 +33,8 @@ import org.freedom.componentes.TabVector;
 import org.freedom.funcoes.Funcoes;
 
 public class NFEntrada extends NF {
+	protected int tipoNF = TPNF_ENTRADA;
+	
 	public NFEntrada(int casasDec) {
 		super();		
 	}
@@ -55,7 +57,7 @@ public class NFEntrada extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			cab = new TabVector(32);
+			cab = new TabVector(33);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODCOMPRA"));
@@ -90,6 +92,7 @@ public class NFEntrada extends NF {
 				cab.setString(C_DESCFUNC, "");
 				cab.setString(C_CODCLCOMIS,"");
 				cab.setFloat(C_PERCCOMISVENDA, 0);
+				cab.setInt(C_CODVEND, 0);
 			}
 			rs.close();
 			ps.close();
@@ -142,7 +145,8 @@ public class NFEntrada extends NF {
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSCOMPRA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICCOMPRA"));
 				itens.setInt(C_CONTAITENS, rs.getInt(22));
-				itens.setString(C_DESCFISC, (rs.getString(23)!=null ? rs.getString(22) : ""));
+				itens.setString(C_DESCFISC, (rs.getString(23)!=null ? rs.getString(23) : ""));
+				itens.setString(C_DESCFISC2, "");
 			}
 			rs.close();
 			ps.close();
@@ -151,23 +155,23 @@ public class NFEntrada extends NF {
 			itens.setRow(-1);
 						
 			adic = new TabVector(5);
-			adic.addRow();				
+			/*adic.addRow();				
 			adic.setInt(C_CODAUXV, 0);
 			adic.setInt(C_CPFEMITAUX, 0);
 			adic.setString(C_NOMEEMITAUX, "");
 			adic.setString(C_CIDEMITAUX, "");
 			adic.setString(C_UFEMITAUX, "");
-			adic.setRow(-1);
+			adic.setRow(-1);*/
 						
 			parc = new TabVector(3);
-			parc.addRow();
+			/*parc.addRow();
 			parc.setDate(C_DTVENCTO, null);
 			parc.setFloat(C_VLRPARC, 0);
 			parc.setInt(C_NPARCITREC, 0);
-			parc.setRow(-1);
+			parc.setRow(-1);*/
 						
 			frete = new TabVector(19);
-			frete.addRow();
+			/*frete.addRow();
 			frete.setInt(C_CODTRAN, 0);
 			frete.setString(C_RAZTRANSP, "");
 			frete.setString(C_NUMTRANSP, "");
@@ -187,7 +191,7 @@ public class NFEntrada extends NF {
 			frete.setFloat(C_PESOBRUTO, 0);
 			frete.setFloat(C_PESOLIQ, 0);
 			frete.setFloat(C_VLRFRETEPED, 0);
-			frete.setRow(-1);
+			frete.setRow(-1);*/
 			
 		}
 		catch (SQLException e) {
