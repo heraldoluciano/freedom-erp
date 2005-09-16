@@ -25,12 +25,11 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 
 public class NFPomiagro2 extends Layout {
   public boolean imprimir(NF nf,ImprimeOS imp) {
     boolean retorno = super.imprimir(nf, imp);
-    
+
     int iNumNota = 0;
     int iItImp = 0;
     int iLinPag = imp.verifLinPag("NF");
@@ -308,11 +307,11 @@ public class NFPomiagro2 extends Layout {
            
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(5,Aplicativo.casasDec,""+frete.getString(NF.C_QTDFRETE)));
+           imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getString(NF.C_QTDFRETE)));
            imp.say(imp.pRow()+0,26,(frete.getString(NF.C_ESPFRETE)!=null ? frete.getString(NF.C_ESPFRETE):""));
            imp.say(imp.pRow()+0,47,(frete.getString(NF.C_MARCAFRETE)!=null ? frete.getString(NF.C_MARCAFRETE):""));
-           imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(5,Aplicativo.casasDec,""+frete.getFloat(NF.C_PESOBRUTO)));
-           imp.say(imp.pRow()+0,120,Funcoes.strDecimalToStrCurrency(5,Aplicativo.casasDec,""+frete.getString(NF.C_PESOLIQ)));
+           imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getFloat(NF.C_PESOBRUTO)));
+           imp.say(imp.pRow()+0,120,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getString(NF.C_PESOLIQ)));
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");

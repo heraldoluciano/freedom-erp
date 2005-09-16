@@ -36,7 +36,7 @@ public class NFSaida extends NF {
 	protected int tipoNF = TPNF_SAIDA;
 	
 	public NFSaida(int casasDec) {
-		super();
+		super(casasDec);
 	}
 	
 	public boolean carregaTabelas(Connection con, Vector parans ) {

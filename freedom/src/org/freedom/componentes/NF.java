@@ -149,14 +149,21 @@ public class NF {
 	protected TabVector adic = null;
 	protected TabVector frete = null;
 	protected int tipoNF = TPNF_NONE; 
+	protected int casasDec = 2;
     
-	public NF() {
+	public NF(int casasDec) {
 		super();
+		this.casasDec = casasDec;
+	}
+	
+	public int getCasasDec() {
+		return casasDec;
 	}
 	
 	public int getTipoNF() {
 		return tipoNF;
 	}
+	
 	public TabVector getTabVector(int vector) {
 		TabVector t = null;
 		switch(vector) {

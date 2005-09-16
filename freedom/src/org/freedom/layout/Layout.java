@@ -30,6 +30,7 @@ public class Layout extends Object {
 	protected TabVector parc = null;
 	protected TabVector adic = null;
 	protected TabVector frete = null;
+    protected int casasDec = 2;
   
 public Layout() { }
 	public boolean imprimir(NF nf, ImprimeOS imp) {
@@ -38,6 +39,7 @@ public Layout() { }
 		parc = nf.getTabVector(NF.T_PARC);
 		adic = nf.getTabVector(NF.T_ADIC);
 		frete = nf.getTabVector(NF.T_FRETE);
+		casasDec = nf.getCasasDec();
 		return false;
 	}
 	
