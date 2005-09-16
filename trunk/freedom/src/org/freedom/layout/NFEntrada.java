@@ -36,7 +36,7 @@ public class NFEntrada extends NF {
 	protected int tipoNF = TPNF_ENTRADA;
 	
 	public NFEntrada(int casasDec) {
-		super();		
+		super(casasDec);		
 	}
 	
 	public boolean carregaTabelas(Connection con, Vector parans ) {
