@@ -899,13 +899,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  try {
 		  String sSql = "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) "+
 			  			"FROM TKHISTORICO TK "+
-			  			"WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? " +
+			  			"WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? AND " +
+			  			"CODEMPCL=? AND CODFILIALCL=? AND CODCLI=? " +
 			  			"GROUP BY 1 ORDER BY 1";
 
           PreparedStatement ps = con.prepareStatement(sSql);
           ps.setInt(1,lcCampos.getCodEmp());
           ps.setInt(2,lcCampos.getCodFilial());
           ps.setInt(3,txtAno.getVlrInteger().intValue());
+          ps.setInt(4,lcCampos.getCodEmp());
+          ps.setInt(5,lcCampos.getCodFilial());
+          ps.setInt(6,txtCodCli.getVlrInteger().intValue());          
 
           ResultSet rs = ps.executeQuery();
           
