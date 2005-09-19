@@ -105,6 +105,9 @@ public class NF {
 	public static final int C_CONTAITENS = 23;
 	public static final int C_DESCFISC = 24;
 	public static final int C_DESCFISC2 = 25;
+	public static final int C_CODFISC = 26;
+	public static final int C_TIPOPROD = 27;
+	public static final int C_VLRISSPED = 27;
 	
 	
 	//adic
