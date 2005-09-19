@@ -44,6 +44,7 @@ public class NFEntrada extends NF {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sql = null;
+		int cont = 0;
 		try {
 			sql = "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," +
 					"F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR," +
@@ -57,6 +58,7 @@ public class NFEntrada extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
+			cont++;
 			cab = new TabVector(33);
 			while (rs.next()) {
 				cab.addRow();
@@ -103,7 +105,7 @@ public class NFEntrada extends NF {
 			sql = "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, "+
 					"I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRICMSCOMPRA, C.VLRIPICOMPRA, C.VLRADICCOMPRA, "+
 					"C.VLRLIQCOMPRA, C.VLRBASEICMSCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, "+
-					"P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, "+
+					"P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, "+
 					"(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE), "+
 					"(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), "+
 					"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) "+
@@ -118,7 +120,8 @@ public class NFEntrada extends NF {
 			ps.setInt(2,((Integer) parans.elementAt(1)).intValue());
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
-			itens = new TabVector(25);
+			cont++;
+			itens = new TabVector(29);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITCOMPRA"));
@@ -139,14 +142,17 @@ public class NFEntrada extends NF {
 				itens.setString(C_DESCNAT, rs.getString("DESCNAT"));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, rs.getString("CODLOTE"));
-				itens.setDate(C_VENCLOTE, rs.getDate(21));
+				itens.setDate(C_VENCLOTE, rs.getDate(23));
 				itens.setString(C_ORIGFISC, "");
 				itens.setString(C_CODTRATTRIB, "");
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSCOMPRA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICCOMPRA"));
-				itens.setInt(C_CONTAITENS, rs.getInt(22));
-				itens.setString(C_DESCFISC, (rs.getString(23)!=null ? rs.getString(23) : ""));
+				itens.setInt(C_CONTAITENS, rs.getInt(24));
+				itens.setString(C_DESCFISC, (rs.getString(25)!=null ? rs.getString(25) : ""));
 				itens.setString(C_DESCFISC2, "");
+				itens.setString(C_CONTAITENS, rs.getString("CODFISC"));
+				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD"));
+				itens.setFloat(C_VLRISSPED, 0f);
 			}
 			rs.close();
 			ps.close();

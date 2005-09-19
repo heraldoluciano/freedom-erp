@@ -71,7 +71,7 @@ public class NFSaida extends NF {
 				cab.setInt(C_CODEMIT, rs.getInt("CODCLI"));
 				cab.setString(C_RAZEMIT, (rs.getString("RAZCLI")!=null ? rs.getString("RAZCLI") : ""));
 				cab.setString(C_CNPJEMIT, (rs.getString("CNPJCLI")!=null ? rs.getString("CNPJCLI") : ""));
-				cab.setString(C_CPFEMIT, (rs.getString("CPFCLI")!=null ? rs.getString("CPFCLI") : ""));
+				cab.setString(C_CPFEMIT, rs.getString("CPFCLI"));
 				cab.setString(C_ENDEMIT, (rs.getString("ENDCLI")!=null ? rs.getString("ENDCLI") : ""));
 				cab.setInt(C_NUMEMIT, rs.getInt("NUMCLI"));
 				cab.setString(C_COMPLEMIT, (rs.getString("COMPLCLI")!=null ? rs.getString("COMPLCLI") : ""));
@@ -109,10 +109,9 @@ public class NFSaida extends NF {
 			
 			sql = "SELECT I.CODITVENDA, I.CODPROD, P.REFPROD, P.DESCPROD, I.OBSITVENDA, P.CODUNID,"+
 					"I.QTDITVENDA, I.VLRLIQITVENDA, I.PERCIPIITVENDA, I.PERCICMSITVENDA, V.VLRICMSVENDA,"+
-					"V.VLRIPIVENDA, V.VLRLIQVENDA, N.IMPDTSAIDANAT, I.VLRPRODITVENDA, N.DESCNAT, N.CODNAT,"+
-					"I.CODLOTE, (SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND "+
-					"L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"+
-					"I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA,"+
+					"V.VLRIPIVENDA, V.VLRLIQVENDA, V.VLRISSVENDA, N.IMPDTSAIDANAT, I.VLRPRODITVENDA, N.DESCNAT, N.CODNAT,"+
+					"I.CODLOTE, I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA, P.CODFISC, P.TIPOPROD,"+
+					"(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"+
 					"(SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA),"+
 					"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME),"+
 					"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=I.CODMENS AND M.CODFILIAL=I.CODFILIALME AND M.CODEMP=I.CODEMPME) "+
@@ -129,7 +128,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector(26);
+			itens = new TabVector(29);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITVENDA"));
@@ -150,14 +149,17 @@ public class NFSaida extends NF {
 				itens.setString(C_DESCNAT, (rs.getString("DESCNAT")!=null ? rs.getString("DESCNAT") : ""));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, (rs.getString("CODLOTE")!=null ? rs.getString("CODLOTE") : ""));
-				itens.setDate(C_VENCLOTE, rs.getDate(19));
+				itens.setDate(C_VENCLOTE, rs.getDate(26));
 				itens.setString(C_ORIGFISC, (rs.getString("ORIGFISC")!=null ? rs.getString("ORIGFISC") : ""));
 				itens.setString(C_CODTRATTRIB, (rs.getString("CODTRATTRIB")!=null ? rs.getString("CODTRATTRIB") : ""));
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSVENDA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICVENDA"));
-				itens.setInt(C_CONTAITENS, rs.getInt(24));
-				itens.setString(C_DESCFISC, (rs.getString(25)!=null ? rs.getString(25) : ""));
-				itens.setString(C_DESCFISC2, (rs.getString(26)!=null ? rs.getString(26) : ""));
+				itens.setInt(C_CONTAITENS, rs.getInt(27));
+				itens.setString(C_DESCFISC, (rs.getString(28)!=null ? rs.getString(28) : ""));
+				itens.setString(C_DESCFISC2, (rs.getString(29)!=null ? rs.getString(29) : ""));
+				itens.setString(C_CODFISC, rs.getString("CODFISC"));
+				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD"));
+				itens.setFloat(C_VLRISSPED, rs.getFloat("VLRISSVENDA"));
 			}
 			rs.close();
 			ps.close();
