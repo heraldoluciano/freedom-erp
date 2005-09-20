@@ -147,7 +147,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSol);
-
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 13, 0);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
@@ -207,6 +208,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
+				ListaCampos.DB_SI, true));		
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
@@ -218,6 +221,8 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
 				ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
+				ListaCampos.DB_SI, true));		
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
