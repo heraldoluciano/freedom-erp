@@ -37,7 +37,6 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -57,6 +56,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -174,6 +174,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCodCliFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
   private JTextFieldPad txtCodCpCliFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+  private JTextFieldPad txtAnoMetaVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+  private JTextFieldPad txtVlrMetaVend = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec);
   private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
   private Vector vPessoaLab = new Vector();
   private Vector vPessoaVal = new Vector();
@@ -195,7 +197,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinFor = new JPanelPad(0,80);
   private JPanelPad pinContatos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pinMetaVend = new JPanelPad(0,80);
+  private JPanelPad pnMetaVend = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tbObsData = new Tabela();
+  private Tabela tabMetaVend = new Tabela();
+  private Tabela tabFor = new Tabela();
   private JPanelPad pinMes1 = new JPanelPad();
   private JPanelPad pinMes2 = new JPanelPad();
   private JPanelPad pinMes3 = new JPanelPad();
@@ -208,7 +214,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinMes10 = new JPanelPad();
   private JPanelPad pinMes11 = new JPanelPad();
   private JPanelPad pinMes12 = new JPanelPad();
-  private JPanelPad pn = new JPanelPad(600,500);
+  private JPanelPad pn = new JPanelPad(600,400);
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
   private JScrollPane spnObs = new JScrollPane(txaObs); // Scroll pane para observações gerais 
@@ -225,10 +231,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private ListaCampos lcClas = new ListaCampos(this,"CC");
   private ListaCampos lcPesq = new ListaCampos(this,"PQ");
   private ListaCampos lcCliFor = new ListaCampos(this);
+  private ListaCampos lcMetaVend = new ListaCampos(this);
   private ListaCampos lcFor = new ListaCampos(this,"FR");
   private ListaCampos lcPais = new ListaCampos(this,"");
-  private Tabela tabFor = new Tabela();
   private JScrollPane spnTabFor = new JScrollPane(tabFor);
+  private JScrollPane spnMetaVend = new JScrollPane(tabMetaVend);
   private JButton btAtEntrega = new JButton(Icone.novo("btReset.gif"));
   private JButton btAtCobranca = new JButton(Icone.novo("btReset.gif"));
   private JButton btNovaObs = new JButton(Icone.novo("btNovo.gif"));
@@ -265,6 +272,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btSetaQtdDez = new JButton(Icone.novo(sBtGeraHist));
   private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
   private Navegador navFor = new Navegador(true);
+  private Navegador navMetaVend = new Navegador(false);
   private FConveniado telaConv;
   private boolean[] bPref = null;
   private boolean bExecCargaObs = false;
@@ -277,6 +285,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     lcCliFor.setMaster(lcCampos);
     lcCampos.adicDetalhe(lcCliFor);
     lcCliFor.setTabela(tabFor);
+    lcMetaVend.setMaster(lcCampos);
+    lcCampos.adicDetalhe(lcMetaVend);
+    lcMetaVend.setTabela(tabMetaVend);
     
     pinCli = new JPanelPad(500,330);
     setPainel(pinCli);
@@ -426,6 +437,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	txtCepCli.setMascara(JTextFieldPad.MC_CEP);
   	txtFoneCli.setMascara(JTextFieldPad.MC_FONE);
   	txtFaxCli.setMascara(JTextFieldPad.MC_FONE);
+  	
   	pinEnt = new JPanelPad(500,290);
   	setPainel(pinEnt);
   	
@@ -796,6 +808,29 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  btConsHisDez.setBorder(null);
 	  btSetaQtdDez.setToolTipText("Gera contatos");
 	  btConsHisDez.setToolTipText("Visualiza contatos");
+	  
+	  
+// AnotaMetaVend
+	  setPainel(pinMetaVend,pnMetaVend);
+      adicTab("Meta de Vendas",pnMetaVend);
+      setListaCampos(lcMetaVend);
+      setNavegador(navMetaVend);
+      
+      pnMetaVend.add(pinMetaVend,BorderLayout.SOUTH);
+      pnMetaVend.add(spnMetaVend,BorderLayout.CENTER);
+      
+      pinMetaVend.adic(navMetaVend,0,50,150,25);
+      
+      adicCampo(txtAnoMetaVend, 7, 20, 100, 20, "AnoMetaVend", "Ano", ListaCampos.DB_PK, null, true);
+      adicCampo(txtVlrMetaVend, 110, 20, 120, 20, "VlrMetaVend", "Valor da meta", ListaCampos.DB_SI, true);
+      setListaCampos( false, "CLIMETAVEND", "VD");
+      lcMetaVend.montaTab();
+      lcMetaVend.setQueryInsert(false);
+      lcMetaVend.setQueryCommit(false);
+      tabMetaVend.setTamColuna(150,1);
+      
+     
+     
 	  
 	  btConsHisJan.addActionListener(this);
 	  btConsHisFev.addActionListener(this);
@@ -2303,6 +2338,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     lcFor.setConexao(con);
     lcCliFor.setConexao(con);
     lcPais.setConexao(con);
+    lcMetaVend.setConexao(con);
   }
   public void stateChanged(ChangeEvent cevt){
 	  if (cevt.getSource()==tpn) {
