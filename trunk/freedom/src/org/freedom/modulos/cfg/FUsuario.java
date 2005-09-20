@@ -465,7 +465,6 @@ public class FUsuario extends FTabDados implements PostListener, DeleteListener,
   	txpSenha.setVlrString("88888888");
   	txpConfirma.setVlrString("88888888");
     txtCodAlmox.setRequerido(cbAlmoxarife.isSelected());
-  	txtCodAlmox.setAtivo(cbAlmoxarife.isSelected());
   }
   public void actionPerformed(ActionEvent evt) {
   	if (evt.getSource() == btAdicEmp)

@@ -172,6 +172,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			10, 0);
 	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(
 			JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 13, 0);	
 	private JRadioGroup rgPriod = null;
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
@@ -258,6 +260,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
+				ListaCampos.DB_SI, true));				
 		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
@@ -273,6 +277,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
 				ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
+				ListaCampos.DB_SI, true));				
 		lcProd2.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",
 				ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",

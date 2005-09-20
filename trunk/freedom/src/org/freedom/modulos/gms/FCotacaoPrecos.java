@@ -652,10 +652,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
         sSitItExp = txtSituacaoItComp.getVlrString();
         sSitItSol = txtSituacaoIt.getVlrString();
 
-		boolean bStatusTravaTudo = (sSitItExp.equals("AF") || sSitItSol.equals("EF")
-				|| sSitSol.equals("EF") || sSitItExp.equals("EF") || sSitItSol.equals("CA") || sSitItExp.equals("CA"));
-		boolean bStatusTravaCot = (!sSitItExp.equals("AF"));
-		boolean bCot = bCotacao && !bStatusTravaCot;
+		boolean bStatusTravaTudo = (sSitItExp.equals("AF") ||(sSitSol.equals("CF"))||
+				sSitSol.equals("EF") || sSitItExp.equals("EF") || sSitItSol.equals("CA") || sSitItExp.equals("CA"));
+		boolean bCot = bCotacao && sSitItExp.equals("CF");
 
 		if (cevt.getListaCampos() == lcDet) {
 			if (comRef()) {
@@ -673,7 +672,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			btProduto.setEnabled(!txtCodProd.getVlrString().equals(""));
 		}
 
-		if (!txtIDUsu.getVlrString().equals(Aplicativo.strUsuario)
+		if (!txtIDUsu.getVlrString().equals(Aplicativo.strUsuario) && !bCotacao
 				|| bStatusTravaTudo)
 			desabCampos(true);
 		else
@@ -699,7 +698,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			lSitItSol.setText(SitSol);
 			pinLb.setBackground(cor(255, 204, 51));
 		} else if (sSitItSol.equals("ET") || sSitItExp.equals("EP")) {
-			SitSol = "Expedido";
+			SitSol = "Cotado";
 			lSitItSol.setText(SitSol);
 			pinLb.setBackground(cor(0, 170, 30));
 		} else if (sSitItAprov.equals("AT") || sSitItAprov.equals("AP")) {
