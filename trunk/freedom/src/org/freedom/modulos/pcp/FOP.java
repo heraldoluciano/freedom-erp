@@ -701,21 +701,25 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			try{
-				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
-					ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?)");
+				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtCodOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
+					ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)");
 					ps2.setInt(1,Aplicativo.iCodEmp);
 					ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
 					ps2.setInt(3,txtCodOP.getVlrInteger().intValue());
+					ps2.setInt(4,txtSeqOP.getVlrInteger().intValue());
 					ps2.execute();
-					con.commit();
+					ps2.close();
+					if (!con.getAutoCommit())
+					   con.commit();
 					
 					try{
 						ps3 = con.prepareStatement("SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " +
-																	 "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=?" );
+																	 "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
 						ps3.setInt(1, Aplicativo.iCodEmp);
 						ps3.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
 						ps3.setInt(3, ListaCampos.getMasterFilial("PPOP"));
 						ps3.setInt(4,txtCodOP.getVlrInteger().intValue());
+						ps3.setInt(5,txtSeqOP.getVlrInteger().intValue());
 						
 						rs2 = ps3.executeQuery();
 						String sRma = "";
@@ -725,6 +729,8 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 						if (sRma.length()>0){
 							Funcoes.mensagemInforma(this,"Foram geradas as seguintes RMA:\n"+sRma);															
 						}
+						rs2.close();
+						
 					}
 					catch(Exception err){
 						Funcoes.mensagemErro(this,"Erro ao buscar RMA criada",true,con,err);
@@ -743,6 +749,10 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 					                     "Os itens não geram RMA automaticamente\n" +
 					                     "ou o processo de geração de RMA já foi efetuado.");
 		}
+		rs.close();
+		ps.close();
+		if (!con.getAutoCommit())
+			con.commit();
 	}
 	catch(Exception err){
 		Funcoes.mensagemErro(this,"Erro ao consultar RMA",true,con,err);
