@@ -701,7 +701,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			try{
-				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtCodOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
+				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtSeqOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
 					ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)");
 					ps2.setInt(1,Aplicativo.iCodEmp);
 					ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
