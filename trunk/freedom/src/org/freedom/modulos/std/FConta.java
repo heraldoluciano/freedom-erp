@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -43,6 +44,7 @@ public class FConta extends FDados {
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50,0);
   private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+  private JCheckBoxPad cbAtivaConta = new JCheckBoxPad("Sim","S","N");
   private Vector vValsTipo = new Vector();
   private Vector vLabsTipo = new Vector();
   private JRadioGroup rgTipo = null;
@@ -91,7 +93,8 @@ public class FConta extends FDados {
     adicDescFK(txtDescMoeda, 153, 100, 237, 20, "SingMoeda", "Descrição da moeda");
     adicCampo(txtCodPlan, 7, 140, 140, 20, "CodPlan", "Cód.tp.lanç.", ListaCampos.DB_FK, true);
     adicDescFK(txtDescPlan, 150, 140, 240, 20, "DescPlan", "Descrição do tipo de lançamento");
-    adicDB(rgTipo, 7, 180, 383, 30, "TipoConta", "Tipo", true);
+    adicDB(rgTipo, 7, 180, 200, 30, "TipoConta", "Tipo", true);
+    adicDB(cbAtivaConta,220,180,120,20,"ativaconta","Ativa",true);
     setListaCampos(false,"CONTA", "FN");
     lcCampos.setQueryInsert(false);    
   }
