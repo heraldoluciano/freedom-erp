@@ -83,7 +83,8 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   private ListaCampos lcRec = new ListaCampos(this,"RP");
   private int iCodOP;
   private int iSeqOP;
-  public FOPFase(int iCodOP,int iSeqOP,boolean bExecuta) {
+  private int iSeqEst;
+  public FOPFase(int iCodOP,int iSeqOP,int iSeqEst,boolean bExecuta) {
     setTitulo("Fases da OP");
     if(bExecuta){
         setAtribos( 70, 40, 630, 470);
@@ -100,6 +101,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
        
     this.iCodOP = iCodOP;
     this.iSeqOP = iSeqOP;
+    this.iSeqEst = iSeqEst;
     
     txtCodOP.setAtivo(false);
     txtCodProd.setAtivo(false);
@@ -270,18 +272,21 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   }*/
   public boolean bFinalizaProcesso(){
   	boolean bRet = false;
-  	String sSQL = "select ef.finalizaop from ppestrufase ef, ppopfase pf, ppop op where "+
+  	/*String sSQL = "select ef.finalizaop from ppestrufase ef, ppopfase pf, ppop op where "+
   				  "ef.codemp = pf.codemp and ef.codfilial = pf.codfilial and "+
   				  "ef.codempfs = pf.codempfs and ef.codfilialfs = pf.codfilialfs and ef.codfase = pf.codfase "+
 			  	  "and pf.codemp = op.codemp and pf.codfilial = op.codfilial and pf.codop = op.codop and pf.seqof = ? "+
-  				  "and op.codemp=? and op.codfilial=? and op.codop=?";
+  				  "and op.codemp=? and op.codfilial=? and op.codop=? and op.seqop=?";*/
+  	String sSQL = "SELECT FINALIZAOP FROM PPESTRUFASE "+
+  				  "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND SEQEST=? AND CODFASE=?";	
   	
 	try {
 		PreparedStatement ps = con.prepareStatement(sSQL);
-		ps.setInt(1,txtNumSeqOf.getVlrInteger().intValue()); 
-		ps.setInt(2,Aplicativo.iCodEmp);
-		ps.setInt(3,ListaCampos.getMasterFilial("PPOP"));
-		ps.setInt(4,txtCodOP.getVlrInteger().intValue());		
+		ps.setInt(1,Aplicativo.iCodEmp);
+		ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+		ps.setInt(3,txtCodProd.getVlrInteger().intValue()); 
+		ps.setInt(4,iSeqEst);	
+		ps.setInt(5,txtCodFase.getVlrInteger().intValue());		
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
 			String sFinaliza = rs.getString(1);
@@ -317,15 +322,16 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   }
 
   public void atualizaOP(){
-  	String sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? WHERE CodOP=? AND CODEMP=? AND CODFILIAL=?";
+  	String sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=?";
   	try {
   	
 	  	PreparedStatement ps = con.prepareStatement(sSQL);
 	    ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());
 	    ps.setString(2,txtJustificqtdprod.getVlrString());
 	    ps.setInt(3,txtCodOP.getVlrInteger().intValue());
-	    ps.setInt(4,Aplicativo.iCodEmp);
-		ps.setInt(5,ListaCampos.getMasterFilial("PPOP"));
+	    ps.setInt(4,txtSeqOP.getVlrInteger().intValue());
+	    ps.setInt(5,Aplicativo.iCodEmp);
+		ps.setInt(6,ListaCampos.getMasterFilial("PPOP"));
 	    ps.executeUpdate();
 	  	
   	}
