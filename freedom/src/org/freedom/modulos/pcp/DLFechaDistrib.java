@@ -32,7 +32,9 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -45,20 +47,31 @@ public class DLFechaDistrib extends FFDialogo {
 	
   private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
   private JTextFieldPad txtLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec);
   private JTextFieldPad txtSeqDist = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
   private Vector vBuscaLote = new Vector();
   private int iProdPrinc = 0;
-  private int iSeqPrinc = 0;
  
    
   public DLFechaDistrib(Component cOrig,int iSeqDist, int iCodProd, String sDescProd, float ftQtdade) {
   	super(cOrig);
     setTitulo("Quantidade");
     setAtribos(310,220);
+    
+    txtLote.setFK(true);
+    lcLoteProdEst.add(new GuardaCampo(txtLote, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLote, false));
+	lcLoteProdEst.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
+	lcLoteProdEst.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
+	lcLoteProdEst.montaSql(false, "LOTE", "EQ");
+	lcLoteProdEst.setQueryCommit(false);
+	lcLoteProdEst.setReadOnly(true);
+	txtLote.setTabelaExterna(lcLoteProdEst);
     
       
     adic(new JLabelPad("Cód.Prod"),7,10,80,20);
@@ -89,13 +102,13 @@ public class DLFechaDistrib extends FFDialogo {
 
   public void setProdPrinc(int prodPrinc, int seqPrinc){
 	  iProdPrinc = prodPrinc;
-	  iSeqPrinc = seqPrinc;
   }
   public void setConexao(Connection cn) {
   	 super.setConexao(cn);
+  	 lcLoteProdEst.setConexao(cn);
      if(getUsaLote().equals("S")){
     	txtLote.setAtivo(true);
-    	if(getUsaModLote())
+    	if(getUsaModLote() || getModLotePrinc())
     		setModLote();
     	else{
     		buscaLote(txtCodProd.getVlrInteger().intValue());
@@ -110,11 +123,7 @@ public class DLFechaDistrib extends FFDialogo {
   public void setModLote() {
 	  Object[] modLote = null;
 	  try {
-		  if(getModLotePrinc())
-			  modLote = getModLote(iProdPrinc,iSeqPrinc);
-		  else
-			  modLote = getModLote(txtCodProd.getVlrInteger().intValue(),txtSeqDist.getVlrInteger().intValue());
-		  
+		  modLote = getModLote();		  
 		  txtLote.setVlrString((String) modLote[0]);
 		  txtDtFabProd.setVlrDate((Date) modLote[1]);
 	  	  txtDtValid.setVlrDate((Date) modLote[2]);
@@ -123,12 +132,12 @@ public class DLFechaDistrib extends FFDialogo {
 		  modLote = null;
 	  }
   }
-  public Object[] getValor() {
+  public Object getValor(int index) {
     Object[] oRetorno = new Object[3]; 
     oRetorno[0] = txtQtdDist.getVlrBigDecimal();
     oRetorno[1] = txtLote.getVlrString();
     oRetorno[2] = txtDtValid.getVlrString();
-    return oRetorno;
+    return oRetorno[index];
   }
   
 
@@ -278,9 +287,11 @@ public class DLFechaDistrib extends FFDialogo {
 	return FOP.existeLote(con, iCodProd, sCodLote);
   }
 
-  public Object[] getModLote(int iCodProd, int iSeqEst){
+  public Object[] getModLote(){
 	Object[] lote = null;
 	int iDiasValid = 0;
+	int iCodProd = txtCodProd.getVlrInteger().intValue();
+	int iSeqEst = txtSeqDist.getVlrInteger().intValue();
 	Date dtVenctoLote = null;//data de vencimento(data de fabricação + dias de validade
 	Date dtFabProd = null;//data de fabricação
 	String sModLote = null;//modelo do lote
@@ -323,7 +334,10 @@ public class DLFechaDistrib extends FFDialogo {
 			dtFabProd = new Date();
 			ObjMl = new ObjetoModLote();
 			ObjMl.setTexto(sModLote);
-			sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,con);  			
+			if(getModLotePrinc())
+				sCodLote = ObjMl.getLote(new Integer(this.iProdPrinc),dtFabProd,con);
+			else
+				sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,con);
 			cal = new GregorianCalendar();
 			cal.setTime(dtFabProd);
 			cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
@@ -338,6 +352,8 @@ public class DLFechaDistrib extends FFDialogo {
 	}
 	finally {
 		iDiasValid = 0;
+		iCodProd = 0;
+		iSeqEst = 0;
 		dtFabProd = null;
 		dtVenctoLote = null;
 		sModLote = null;
@@ -353,12 +369,11 @@ public class DLFechaDistrib extends FFDialogo {
   public boolean gravaLote(){
 	  boolean bret = false;
 	  int iCodProd = txtCodProd.getVlrInteger().intValue();
-	  int iSeqDist = txtSeqDist.getVlrInteger().intValue();
 	  String sCodLote = txtLote.getVlrString();
 	  Object lote[] = null;
 	  Object retorno[] = null;
 	  try {
-		  lote =  getModLote(iCodProd, iSeqDist);
+		  lote =  getModLote();
 		  if (lote!=null) {
 			  if((!existeLote(iCodProd, sCodLote))){			
 					txtLote.setVlrString(sCodLote);
@@ -377,7 +392,6 @@ public class DLFechaDistrib extends FFDialogo {
 	  }
 	  finally {
 		iCodProd = 0;
-		iSeqDist = 0;
 		sCodLote = null;
 		lote = null;
 	  }
