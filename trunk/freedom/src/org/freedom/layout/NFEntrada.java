@@ -64,24 +64,24 @@ public class NFEntrada extends NF {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODCOMPRA"));
 				cab.setInt(C_CODEMIT, rs.getInt("CODFOR"));
-				cab.setString(C_RAZEMIT, rs.getString("RAZFOR"));
-				cab.setString(C_CNPJEMIT, rs.getString("CNPJFOR"));
-				cab.setString(C_CPFEMIT, rs.getString("CPFFOR"));
-				cab.setString(C_ENDEMIT, rs.getString("ENDFOR"));
+				cab.setString(C_RAZEMIT, rs.getString("RAZFOR")!= null ? rs.getString("RAZFOR") : "");
+				cab.setString(C_CNPJEMIT, rs.getString("CNPJFOR")!= null ? rs.getString("CNPJFOR") : "");
+				cab.setString(C_CPFEMIT, rs.getString("CPFFOR")!= null ? rs.getString("CPFFOR") : "");
+				cab.setString(C_ENDEMIT, rs.getString("ENDFOR")!= null ? rs.getString("ENDFOR") : "");
 				cab.setInt(C_NUMEMIT, rs.getInt("NUMFOR"));
-				cab.setString(C_COMPLEMIT, rs.getString("COMPLFOR"));
-				cab.setString(C_BAIREMIT, rs.getString("BAIRFOR"));
-				cab.setString(C_CEPEMIT, rs.getString("CEPFOR"));
-				cab.setString(C_CIDEMIT, rs.getString("CIDFOR"));
-				cab.setString(C_UFEMIT, rs.getString("UFFOR"));
-				cab.setString(C_FONEEMIT, rs.getString("FONEFOR"));
-				cab.setString(C_FAXEMIT, rs.getString("FAXFOR"));
-				cab.setString(C_DDDEMIT, rs.getString("DDDFONEFOR"));
-				cab.setString(C_INSCEMIT, rs.getString("INSCFOR"));
-				cab.setString(C_RGEMIT, rs.getString("RGFOR"));
-				cab.setString(C_EMAILEMIT, rs.getString("EMAILFOR"));
-				cab.setString(C_SITEEMIT, rs.getString("SITEFOR"));
-				cab.setString(C_CONTEMIT, rs.getString("CONTFOR"));
+				cab.setString(C_COMPLEMIT, rs.getString("COMPLFOR")!= null ? rs.getString("COMPLFOR") : "");
+				cab.setString(C_BAIREMIT, rs.getString("BAIRFOR")!= null ? rs.getString("BAIRFOR") : "");
+				cab.setString(C_CEPEMIT, rs.getString("CEPFOR")!= null ? rs.getString("CEPFOR") : "");
+				cab.setString(C_CIDEMIT, rs.getString("CIDFOR")!= null ? rs.getString("CIDFOR") : "");
+				cab.setString(C_UFEMIT, rs.getString("UFFOR")!= null ? rs.getString("UFFOR") : "");
+				cab.setString(C_FONEEMIT, rs.getString("FONEFOR")!= null ? rs.getString("FONEFOR") : "");
+				cab.setString(C_FAXEMIT, rs.getString("FAXFOR")!= null ? rs.getString("FAXFOR") : "");
+				cab.setString(C_DDDEMIT, rs.getString("DDDFONEFOR")!= null ? rs.getString("DDDFONEFOR") : "");
+				cab.setString(C_INSCEMIT, rs.getString("INSCFOR")!= null ? rs.getString("INSCFOR") : "");
+				cab.setString(C_RGEMIT, rs.getString("RGFOR")!= null ? rs.getString("RGFOR") : "");
+				cab.setString(C_EMAILEMIT, rs.getString("EMAILFOR")!= null ? rs.getString("EMAILFOR") : "");
+				cab.setString(C_SITEEMIT, rs.getString("SITEFOR")!= null ? rs.getString("SITEFOR") : "");
+				cab.setString(C_CONTEMIT, rs.getString("CONTFOR")!= null ? rs.getString("CONTFOR") : "");
 				cab.setDate(C_DTEMITPED, rs.getDate("DTEMITCOMPRA"));
 				cab.setInt(C_DOC, rs.getInt("DOCCOMPRA"));
 				cab.setString(C_INCRAEMIT, "");
@@ -104,7 +104,7 @@ public class NFEntrada extends NF {
 			
 			sql = "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, "+
 					"I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRICMSCOMPRA, C.VLRIPICOMPRA, C.VLRADICCOMPRA, "+
-					"C.VLRLIQCOMPRA, C.VLRBASEICMSCOMPRA, C.VLRBASEIPICOMPRA, P.REFPROD, P.DESCPROD, "+
+					"C.VLRLIQCOMPRA, C.VLRBASEICMSCOMPRA, C.VLRBASEIPICOMPRA, C.VLRPRODCOMPRA, P.REFPROD, P.DESCPROD, "+
 					"P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, "+
 					"(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE), "+
 					"(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), "+
@@ -121,15 +121,15 @@ public class NFEntrada extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector(29);
+			itens = new TabVector(30);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITCOMPRA"));
 				itens.setInt(C_CODPROD, rs.getInt("CODPROD"));
-				itens.setString(C_REFPROD, rs.getString("REFPROD"));
-				itens.setString(C_DESCPROD, rs.getString("DESCPROD"));
+				itens.setString(C_REFPROD, rs.getString("REFPROD")!= null ? rs.getString("REFPROD") : "");
+				itens.setString(C_DESCPROD, rs.getString("DESCPROD")!= null ? rs.getString("DESCPROD") : "");
 				itens.setString(C_OBSITPED, "");
-				itens.setString(C_CODUNID, rs.getString("CODUNID"));
+				itens.setString(C_CODUNID, rs.getString("CODUNID")!= null ? rs.getString("CODUNID") : "");
 				itens.setFloat(C_QTDITPED, rs.getFloat("QTDITCOMPRA"));
 				itens.setFloat(C_VLRLIQITPED, rs.getFloat("VLRLIQITCOMPRA"));
 				itens.setFloat(C_PERCIPIITPED, rs.getFloat("PERCIPIITCOMPRA"));
@@ -137,22 +137,23 @@ public class NFEntrada extends NF {
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSCOMPRA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPICOMPRA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQCOMPRA"));
-				itens.setString(C_IMPDTSAIDA, rs.getString("IMPDTSAIDANAT"));
+				itens.setString(C_IMPDTSAIDA, rs.getString("IMPDTSAIDANAT")!= null ? rs.getString("IMPDTSAIDANAT") : "");
 				itens.setFloat(C_VLRPRODITPED, rs.getFloat("VLRPRODITCOMPRA"));
-				itens.setString(C_DESCNAT, rs.getString("DESCNAT"));
+				itens.setString(C_DESCNAT, rs.getString("DESCNAT")!= null ? rs.getString("DESCNAT") : "");
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
-				itens.setString(C_CODLOTE, rs.getString("CODLOTE"));
-				itens.setDate(C_VENCLOTE, rs.getDate(23));
+				itens.setString(C_CODLOTE, rs.getString("CODLOTE")!= null ? rs.getString("CODLOTE") : "");
+				itens.setDate(C_VENCLOTE, rs.getDate(24));
 				itens.setString(C_ORIGFISC, "");
 				itens.setString(C_CODTRATTRIB, "");
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSCOMPRA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICCOMPRA"));
-				itens.setInt(C_CONTAITENS, rs.getInt(24));
-				itens.setString(C_DESCFISC, (rs.getString(25)!=null ? rs.getString(25) : ""));
+				itens.setInt(C_CONTAITENS, rs.getInt(25));
+				itens.setString(C_DESCFISC, (rs.getString(26)!=null ? rs.getString(26) : ""));
 				itens.setString(C_DESCFISC2, "");
-				itens.setString(C_CONTAITENS, rs.getString("CODFISC"));
-				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD"));
+				itens.setString(C_CONTAITENS, rs.getString("CODFISC")!= null ? rs.getString("CODFISC") : "");
+				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD")!= null ? rs.getString("TIPOPROD") : "");
 				itens.setFloat(C_VLRISSPED, 0f);
+				itens.setFloat(C_VLRPRODPED, rs.getFloat("VLRPRODCOMPRA"));
 			}
 			rs.close();
 			ps.close();

@@ -277,6 +277,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   				  "ef.codempfs = pf.codempfs and ef.codfilialfs = pf.codfilialfs and ef.codfase = pf.codfase "+
 			  	  "and pf.codemp = op.codemp and pf.codfilial = op.codfilial and pf.codop = op.codop and pf.seqof = ? "+
   				  "and op.codemp=? and op.codfilial=? and op.codop=? and op.seqop=?";*/
+  
   	String sSQL = "SELECT FINALIZAOP FROM PPESTRUFASE "+
   				  "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND SEQEST=? AND CODFASE=?";	
   	
