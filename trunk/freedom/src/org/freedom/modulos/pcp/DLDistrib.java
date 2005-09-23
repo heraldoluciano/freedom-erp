@@ -184,7 +184,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 			  		dl.setConexao(con);
 					dl.setVisible(true);
 					if (dl.OK){
-						ftQtddig = ( (BigDecimal) dl.getValor()[0]).floatValue(); // Quantidade digitada
+						ftQtddig = ( (BigDecimal) dl.getValor(0)).floatValue(); // Quantidade digitada
 						ftQtddist = getSomaTab(); // Quantidade que já foi distribuida(soma do valor total)
 						ftQtdprod = txtQtdProd.getVlrBigDecimal().floatValue(); // Quantida produzida
 						ftFinal = ftQtddig*ftFator; // valor total
@@ -206,14 +206,14 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida deve ser maior que zero.");
 						if(dl.getUsaModLote()){
 							if(dl.gravaLote()){
-								tabDistrib.setValor(dl.getValor()[1],iLinha,10);
-								tabDistrib.setValor(dl.getValor()[2],iLinha,11);
+								tabDistrib.setValor(dl.getValor(1),iLinha,10);
+								tabDistrib.setValor(dl.getValor(2),iLinha,11);
 							}
 							else 
 								ok = false;
 						}
 						else
-							tabDistrib.setValor(dl.getValor()[1],iLinha,10);
+							tabDistrib.setValor(dl.getValor(1),iLinha,10);
 					}
 					else {
 						ok = true;
