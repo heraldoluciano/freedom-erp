@@ -27,6 +27,7 @@
 	</parameter>
 	<parameter name="CODVEND" isForPrompting="true" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Vendedor para filtro de clientes]]></parameterDescription>
+		<defaultValueExpression ><![CDATA[new Integer(7)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="CODEMPVD" isForPrompting="false" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Código da empresa no cadastro de vendedores.]]></parameterDescription>
@@ -65,7 +66,9 @@
   (SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=CLI.CODEMP AND CM.CODFILIAL=CLI.CODFILIAL AND CM.CODCLI=CLI.CODCLI AND ANOMETAVEND=($P{ANO}+1)) AS VENDASMETA 
 FROM VDCLIENTE CLI, VDCLASCLI CLA, VDTIPOCLI TC WHERE CLA.CODEMP=CLI.CODEMPCC AND CLA.CODFILIAL=CLI.CODFILIALCC AND CLA.CODCLASCLI=CLI.CODCLASCLI 
 AND TC.CODEMP=CLI.CODEMPTC AND TC.CODFILIAL=CLI.CODFILIALTC AND TC.CODTIPOCLI=CLI.CODTIPOCLI
-AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD}]]></queryString>
+AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD} 
+ORDER BY 2
+]]></queryString>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="CIDCLI" class="java.lang.String"/>
@@ -2102,8 +2105,7 @@ AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{COD
 						isRemoveLineWhenBlank="false"
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false">
-							<printWhenExpression><![CDATA[new Boolean($F{VENDASANTERIOR}.intValue()!=0)
-]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean($F{VENDASANTERIOR}.intValue()!=0)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
