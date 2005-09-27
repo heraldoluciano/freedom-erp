@@ -69,6 +69,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   private JButton btExpedir = new JButton("Expedir", Icone.novo("btMedida.gif"));
   private JTextFieldPad txtEntrada = new JTextFieldPad(JTextFieldPad.TP_STRING,100,0);
   private JTextFieldPad txtSeqOf = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtSeqOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -245,7 +246,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
 		+ "AND IT.CODEMPPD=? AND IT.CODFILIALPD=? AND IT.CODPROD=? "
 		+ (txtCodLote.getVlrString().trim().length()>0?"AND IT.CODEMPLE=IT.CODEMPPD AND IT.CODFILIALLE=IT.CODFILIALPD AND IT.CODLOTE=? ":"")
-		+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOF=?";
+		+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=? AND R.SEQOF=?";
 		
 	try {
 		PreparedStatement ps = con.prepareStatement(sSQL);
@@ -257,6 +258,7 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		    ps.setString(param++, txtCodLote.getVlrString());
 		ps.setInt(param++,ListaCampos.getMasterFilial("PPOP"));
 		ps.setInt(param++,txtCodOp.getVlrInteger().intValue());
+		ps.setInt(param++,txtSeqOp.getVlrInteger().intValue());
 		ps.setInt(param++,txtSeqOf.getVlrInteger().intValue());
 
 		ResultSet rs = ps.executeQuery();
@@ -346,10 +348,11 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   	if(sTexto!=null){
 		if (sTexto.length()>0){
 			int iCampos = Funcoes.contaChar(sTexto,'#'); 
-			if(iCampos==4) {
+			if(iCampos==5) {
 				Vector vCampos = new Vector();
 				vCampos.addElement(txtSeqOf);
 				vCampos.addElement(txtCodOp);
+				vCampos.addElement(txtSeqOp);
 				vCampos.addElement(txtCodProd);
 				vCampos.addElement(txtCodLote); 
 				vCampos.addElement(txtQtdEntrada);
