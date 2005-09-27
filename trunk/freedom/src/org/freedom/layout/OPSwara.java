@@ -281,7 +281,6 @@ public class OPSwara extends LeiauteGR {
 	private void impFaseEB(ResultSet rsFases) {        
 	  	int iCodFaseF = 0;
 	  	int iCodFaseI = 0;
-	  	int iSeqOF = 0;
 	  	int iYIni = 0;
 	  	Vector vItensEB = null;
 	  	Vector vColunasEB = null;
@@ -291,11 +290,12 @@ public class OPSwara extends LeiauteGR {
         String sUnid = null;
         String sLote = null;
         String sSQL = null;
+        String sBarCode = null;
+        String sSeqOF = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 		try {
 		  	iCodFaseF = rsFases.getInt(2);
-		  	iSeqOF = rsFases.getInt(1);
 
             iY = iY+10;
 
@@ -352,11 +352,12 @@ public class OPSwara extends LeiauteGR {
             drawTexto("Cód.      Tipo de Embalagem                 Código de Barras                                    Lote               Qtd. Emb.",18,iY);
             iY = iY+20;
             
-	            sSQL = "SELECT I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE " +
-	            		"FROM PPOP O, PPITOP I, EQPRODUTO P " +
+	            sSQL = "SELECT I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE, OPF.SEQOF " +
+	            		"FROM PPOP O, PPITOP I, EQPRODUTO P, PPOPFASE OPF " +
 	            		"WHERE O.CODEMPOPM=? AND O.CODFILIALOPM=? AND O.CODOPM=? AND O.SEQOPM=? AND " +
 	            		"I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODOP=O.CODOP AND I.SEQOP=O.SEQOP AND " +
-	            		"P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD";                       
+	            		"P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " +
+	            		"AND OPF.CODEMP=O.CODEMP AND OPF.CODFILIAL=O.CODFILIAL AND OPF.CODOP=O.CODOP AND OPF.SEQOP=O.SEQOP";                       
 				ps = con.prepareStatement(sSQL);						
 				ps.setInt(1,Aplicativo.iCodEmp);
 				ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
@@ -372,7 +373,8 @@ public class OPSwara extends LeiauteGR {
 			    vColunasEB.addElement((rs.getString("QTDITOP")!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString("QTDITOP")):"0")); //Quantidade
 			    vColunasEB.addElement((rs.getString("CODUNID")!=null?rs.getString("CODUNID"):"")); //Unidade
 			    vColunasEB.addElement((rs.getString("CODLOTE")!=null?rs.getString("CODLOTE"):"")); //Lote
-			    vColunasEB.addElement((rs.getString("CODFASE")!=null?rs.getString("CODFASE"):"0")); //Fase
+			    vColunasEB.addElement((rs.getString("CODFASE")!=null?rs.getString("CODFASE"):"0")); //Código da Fase
+			    vColunasEB.addElement((rs.getString("SEQOF")!=null?rs.getString("SEQOF"):"0")); //Sequencia da Fase
 			    vItensEB.addElement(vColunasEB);
 			}
 			rs.close();
@@ -389,6 +391,7 @@ public class OPSwara extends LeiauteGR {
 			    sQtd  = vColunasEB.elementAt(2).toString();
 			    sUnid = vColunasEB.elementAt(3).toString();
 			    sLote = vColunasEB.elementAt(4).toString();
+			    sSeqOF = vColunasEB.elementAt(6).toString();
 			    iCodFaseI = Integer.parseInt(vColunasEB.elementAt(5).toString());
 			    
 			    if(iCodFaseI==iCodFaseF) {
@@ -396,8 +399,8 @@ public class OPSwara extends LeiauteGR {
 				      drawTexto(sDesc.substring(0,20),47,iY); //Descrição	
 				      
 				      Barcode128 barra = new Barcode128();
-	  		          String sBarCode = iSeqOF+"#"+iCodOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
-	  		          sBarCode = sBarCode.replace('/','_');  		           
+	  		          sBarCode = sSeqOF+"#"+iCodOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+	  		          sBarCode = sBarCode.replace('/','_');  
 	  		          barra.setCode(sBarCode);
 	  		          Image image = barra.createAwtImage(Color.BLACK, Color.WHITE);
 	  		          ImageIcon icon = new ImageIcon(image);
@@ -429,7 +432,6 @@ public class OPSwara extends LeiauteGR {
 		finally {
 		  	iCodFaseF = 0;
 		  	iCodFaseI = 0;
-		  	iSeqOF = 0;
 		  	iYIni = 0;
 		  	vColunasEB = null;
 		  	vItensEB = null;
@@ -438,7 +440,9 @@ public class OPSwara extends LeiauteGR {
 	        sQtd = null;
 	        sUnid = null;
 	        sLote = null;
-	        sSQL = null;		  	
+	        sSQL = null;
+	        sBarCode = null;
+	        sSeqOF = null;
 		}
 	}
 	
