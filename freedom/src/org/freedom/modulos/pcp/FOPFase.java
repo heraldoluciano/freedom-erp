@@ -325,6 +325,9 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   public void atualizaOP(){
   	String sSQL = "UPDATE PPOP SET QtdFinalProdOP=?, JUSTFICQTDPROD=? WHERE CODOP=? AND SEQOP=? AND CODEMP=? AND CODFILIAL=?";
   	try {
+  		
+  		//if(txtJustificqtdprod.getVlrString().trim().length()<0)
+  			//txtJustificqtdprod.setVlrString(" ");
   	
 	  	PreparedStatement ps = con.prepareStatement(sSQL);
 	    ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());

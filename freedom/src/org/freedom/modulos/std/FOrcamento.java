@@ -82,158 +82,64 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pinCab = new JPanelPad();
-
 	private JPanelPad pinDet = new JPanelPad();
-
 	private JPanelPad pinTot = new JPanelPad(200, 200);
-
-	private JPanelPad pnTot = new JPanelPad(JPanelPad.TP_JPANEL,
-			new GridLayout(1, 1));
-
-	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
+	private JPanelPad pnTot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));
+	private JPanelPad pnCenter = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JButton btObs = new JButton(Icone.novo("btObs.gif"));
-
 	private JButton btOrc = new JButton(Icone.novo("btImprimeOrc.gif"));
-
 	private JButton btFechaOrc = new JButton(Icone.novo("btOk.gif"));
-
-	private JTextFieldPad txtCodOrc = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtDtOrc = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldPad txtDtVencOrc = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-
-	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodCli = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtEstCli = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-
-	private JTextFieldPad txtCodItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtQtdItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtRefProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtCodBarras = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtPrecoItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 6, 2);
-
-	private JTextFieldPad txtVlrDescItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrLiqItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrEdDescOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrEdAdicOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrDescOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrAdicOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrLiqOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtVlrProdItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtStrDescItOrc = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 500, 0);
-
-	private JTextFieldPad txtVlrProdOrc = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 2);
-
-	private JTextFieldPad txtStatusOrc = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-
-	private JTextFieldPad txtCodTpCli = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodVend = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtPrazoEntOrc = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtNomeVend = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-
-	private JTextFieldFK txtDescProd = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescTipoCli = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodAlmoxItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			5, 0);
-	
-//	private JTextFieldFK txtDescAlmox = new JTextFieldFK(
-	//		JTextFieldPad.TP_STRING, 50, 0);
-	
+	private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDtOrc = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldPad txtDtVencOrc = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtEstCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtCodItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtQtdItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodBarras = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtPrecoItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+	private JTextFieldPad txtVlrDescItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrLiqItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrEdDescOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrEdAdicOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrDescOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrAdicOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrLiqOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtVlrProdItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtStrDescItOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 500, 0);
+	private JTextFieldPad txtVlrProdOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtStatusOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtCodTpCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtPrazoEntOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);	
+	private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescTipoCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodAlmoxItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);	
 	private JTextAreaPad txaObsItOrc = new JTextAreaPad(500);
-
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
-
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
-
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
-
 	private ListaCampos lcOrc2 = new ListaCampos(this);
-
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
-
 	private ListaCampos lcVend = new ListaCampos(this, "VD");
-
-	private ListaCampos lcTipoCli = new ListaCampos(this, "TC");
-	
+	private ListaCampos lcTipoCli = new ListaCampos(this, "TC");	
 	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
-
 	private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
-
 	private FPrinterJob dl = null;
-
-	Object[] oPrefs = null;
-	
-	String sOrdNota = "";
-	
-	String sModoNota = "";
-	
-	boolean bDescComp = false;
-
-	boolean bCtrl = false;
-
-	Vector vParamOrc = new Vector();
+	private Object[] oPrefs = null;	
+	private String sOrdNota = "";	
+	private String sModoNota = "";	
+	private boolean bDescComp = false;
+	private boolean bCtrl = false;
+	private Vector vParamOrc = new Vector();
 
 	public FOrcamento() {
 		setTitulo("Orçamento");
@@ -269,36 +175,29 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		pnCenter.add(pnTot, BorderLayout.EAST);
 		pnCenter.add(spTab, BorderLayout.CENTER);
 
-		JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1,
-				1));
+		JPanelPad pnLab = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1,1));
 		pnLab.add(new JLabelPad(" Totais:")); //Label do painel de totais
 
 		pnMaster.add(pnCenter, BorderLayout.CENTER);
 
-		lcTipoCli.add(new GuardaCampo(txtCodTpCli, "CodTipoCli", "Cód.cli.",
-				ListaCampos.DB_PK, false));
-		lcTipoCli.add(new GuardaCampo(txtDescTipoCli, "DescTipoCli",
-				"Razão social do cliente", ListaCampos.DB_SI, false));
+		lcTipoCli.add(new GuardaCampo(txtCodTpCli, "CodTipoCli", "Cód.cli.",ListaCampos.DB_PK, false));
+		lcTipoCli.add(new GuardaCampo(txtDescTipoCli, "DescTipoCli","Razão social do cliente", ListaCampos.DB_SI, false));
 		txtCodTpCli.setTabelaExterna(lcTipoCli);
 		txtDescTipoCli.setListaCampos(lcTipoCli);
 		lcTipoCli.montaSql(false, "TIPOCli", "VD");
 		lcTipoCli.setQueryCommit(false);
 		lcTipoCli.setReadOnly(true);
 
-		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag",
-				"Cód.p.pag.", ListaCampos.DB_PK, false));
-		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag",
-				"Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 		txtDescPlanoPag.setListaCampos(lcPlanoPag);
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setQueryCommit(false);
 		lcPlanoPag.setReadOnly(true);
 
-		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_PK, false));
-		lcVend.add(new GuardaCampo(txtNomeVend, "NomeVend",
-				"Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo(txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
 		txtCodVend.setTabelaExterna(lcVend);
 		txtNomeVend.setListaCampos(lcVend);
 		lcVend.montaSql(false, "VENDEDOR", "VD");
@@ -306,26 +205,22 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcVend.setReadOnly(true);
 
 		//FK Cliente
-		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",
-				ListaCampos.DB_PK, false));
-		lcCli.add(new GuardaCampo(txtRazCli, "RazCli",
-				"Razão social do cliente", ListaCampos.DB_SI, false));
-		lcCli.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",
-				ListaCampos.DB_SI, false));
-		lcCli.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_SI, false));
-		lcCli.add(new GuardaCampo(txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,
-				false));
+		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_PK, false));
+		lcCli.add(new GuardaCampo(txtRazCli, "RazCli","Razão social do cliente", ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtNomeCli, "NomeCli","Nome do cliente", ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_SI, false));
+		lcCli.add(new GuardaCampo(txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,false));
 		//lcCli.setWhereAdic("ATIVOCLI='S'");
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCli);
+		txtNomeCli.setSize(250,20);
 		
 		//FK de Almoxarifado
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmoxItOrc, "codalmox", "Cod.Almox.",
-				ListaCampos.DB_PK, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmoxItOrc, "codalmox", "Cod.Almox.",ListaCampos.DB_PK, false));
 
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
@@ -334,14 +229,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		
 		
 		//FK Produto
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, txtDescProd, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd",
-				"Referência do produto", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodBarras, "CodBarProd",
-				"Código de barras", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, txtDescProd, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd","Referência do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodBarras, "CodBarProd","Código de barras", ListaCampos.DB_SI, false));
 		lcProd.setWhereAdic("ATIVOPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
@@ -351,12 +242,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		//FK do produto (*Somente em caso de referências este listaCampos
 		//Trabalha como gatilho para o listaCampos de produtos, assim
 		//carregando o código do produto que será armazenado no Banco)
-		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Ref.prod.",
-				ListaCampos.DB_PK, txtDescProd, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Ref.prod.",ListaCampos.DB_PK, txtDescProd, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_SI, false));
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
 		lcProd2.setWhereAdic("ATIVOPROD='S'");
@@ -367,16 +255,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 		//ListaCampos de Totais (É acionada pelo listaCampos de Orcamento)
 
-		lcOrc2.add(new GuardaCampo(txtCodOrc, "CodOrc", "Cód.Orç.",
-				ListaCampos.DB_PK, false));
-		lcOrc2.add(new GuardaCampo(txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.",
-				ListaCampos.DB_SI, false));
-		lcOrc2.add(new GuardaCampo(txtVlrAdicOrc, "VlrAdicOrc", "Vlr.adic.",
-				ListaCampos.DB_SI, false));
-		lcOrc2.add(new GuardaCampo(txtVlrLiqOrc, "VlrLiqOrc", "Vlr.total",
-				ListaCampos.DB_SI, false));
-		lcOrc2.add(new GuardaCampo(txtVlrProdOrc, "VlrProdOrc", "Vlr.parcial",
-				ListaCampos.DB_SI, false));
+		lcOrc2.add(new GuardaCampo(txtCodOrc, "CodOrc", "Cód.Orç.",ListaCampos.DB_PK, false));
+		lcOrc2.add(new GuardaCampo(txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.",ListaCampos.DB_SI, false));
+		lcOrc2.add(new GuardaCampo(txtVlrAdicOrc, "VlrAdicOrc", "Vlr.adic.",ListaCampos.DB_SI, false));
+		lcOrc2.add(new GuardaCampo(txtVlrLiqOrc, "VlrLiqOrc", "Vlr.total",ListaCampos.DB_SI, false));
+		lcOrc2.add(new GuardaCampo(txtVlrProdOrc, "VlrProdOrc", "Vlr.parcial",ListaCampos.DB_SI, false));
 		lcOrc2.montaSql(false, "ORCAMENTO", "VD");
 		lcOrc2.setQueryCommit(false);
 		lcOrc2.setReadOnly(true);
@@ -398,34 +281,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		setListaCampos(lcCampos);
 		setAltCab(130);
 		setPainel(pinCab, pnCliCab);
-		adicCampo(txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtDtOrc, 100, 20, 87, 20, "DtOrc", "Data",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtCodCli, 190, 20, 77, 20, "CodCli", "Cód.cli.",
-				ListaCampos.DB_FK, txtRazCli, true);
-		adicDescFK(txtRazCli, 270, 20, 277, 20, "RazCli",
-				"Razão social do cliente");
-		adicCampo(txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtPrazoEntOrc, 640, 20, 100, 20, "PrazoEntOrc",
-				"Dias p/ entrega", ListaCampos.DB_SI, false);
-		adicCampo(txtCodVend, 7, 60, 80, 20, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_FK, txtNomeVend, true);
-		adicDescFK(txtNomeVend, 90, 60, 207, 20, "NomeVend",
-				"Nome do comissionado");
-		adicDescFK(txtDescTipoCli, 300, 60, 117, 20, "DescTipoCli",
-				"Descrição do tipo de cliente");
-		adicCampo(txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.",
-				ListaCampos.DB_FK, txtDescPlanoPag, true);
-		adicDescFK(txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag",
-				"Descrição do plano de pagamento");
-		adicCampoInvisivel(txtVlrEdDescOrc, "VlrDescOrc", "Vlr.desc.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtVlrEdAdicOrc, "VlrAdicOrc", "Vlr.adic.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtStatusOrc, "StatusOrc", "Status",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtCodOrc, 7, 20, 90, 20, "CodOrc", "Nº orçamento",ListaCampos.DB_PK, true);
+		adicCampo(txtDtOrc, 100, 20, 87, 20, "DtOrc", "Data",ListaCampos.DB_SI, true);
+		adicCampo(txtCodCli, 190, 20, 77, 20, "CodCli", "Cód.cli.",ListaCampos.DB_FK, txtRazCli, true);
+		adicDescFK(txtRazCli, 270, 20, 277, 20, "RazCli","Razão social do cliente");
+		adicCampo(txtDtVencOrc, 550, 20, 87, 20, "DtVencOrc", "Dt.valid.",ListaCampos.DB_SI, true);
+		adicCampo(txtPrazoEntOrc, 640, 20, 100, 20, "PrazoEntOrc","Dias p/ entrega", ListaCampos.DB_SI, false);
+		adicCampo(txtCodVend, 7, 60, 80, 20, "CodVend", "Cód.comiss.",ListaCampos.DB_FK, txtNomeVend, true);
+		adicDescFK(txtNomeVend, 90, 60, 207, 20, "NomeVend","Nome do comissionado");
+		adicDescFK(txtDescTipoCli, 300, 60, 117, 20, "DescTipoCli","Descrição do tipo de cliente");
+		adicCampo(txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.",ListaCampos.DB_FK, txtDescPlanoPag, true);
+		adicDescFK(txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag","Descrição do plano de pagamento");
+		adicCampoInvisivel(txtVlrEdDescOrc, "VlrDescOrc", "Vlr.desc.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtVlrEdAdicOrc, "VlrAdicOrc", "Vlr.adic.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtStatusOrc, "StatusOrc", "Status",ListaCampos.DB_SI, false);
 		setListaCampos(true, "ORCAMENTO", "VD");
 
 		//pnRodape.add(btExp);
@@ -470,44 +339,32 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
-		adicCampo(txtCodItOrc, 7, 20, 30, 20, "CodItOrc", "Item",
-				ListaCampos.DB_PK, true);
+		adicCampo(txtCodItOrc, 7, 20, 30, 20, "CodItOrc", "Item",ListaCampos.DB_PK, true);
 		if (((Boolean) oPrefs[0]).booleanValue()) {
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.",
-					ListaCampos.DB_FK, false);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Ref.prod.",ListaCampos.DB_FK, false);
 			adic(new JLabelPad("Referência"), 40, 0, 67, 20);
 			adic(txtRefProd, 40, 20, 67, 20);
 			txtRefProd.setFK(true);
 			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
 		} else {
-			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampo(txtCodProd, 40, 20, 67, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
 			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
 		}
-		adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd",
-				"Descrição do produto");
-		adicCampo(txtQtdItOrc, 340, 20, 47, 20, "QtdItOrc", "Qtd.",
-				ListaCampos.DB_SI, true);
+		adicDescFK(txtDescProd, 110, 20, 227, 20, "DescProd","Descrição do produto");
+		adicCampo(txtQtdItOrc, 340, 20, 47, 20, "QtdItOrc", "Qtd.",ListaCampos.DB_SI, true);
 
 		adicCampoInvisivel(txtCodAlmoxItOrc, "codalmox", "Cod.Almox",	ListaCampos.DB_FK, false);
 		
 		txtQtdItOrc.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox,lcProd,con,"qtditvenda"));
 				
-		adicCampo(txtPrecoItOrc, 390, 20, 67, 20, "PrecoItOrc", "Preço",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtPercDescItOrc, 460, 20, 57, 20, "PercDescItOrc",
-				"% desc.", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrDescItOrc, 520, 20, 80, 20, "VlrDescItOrc",
-				"Valor desc.", ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtVlrProdItOrc, "VlrProdItOrc", "Valor bruto",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtStrDescItOrc, "StrDescItOrc", "Descontos",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoItOrc, 390, 20, 67, 20, "PrecoItOrc", "Preço",ListaCampos.DB_SI, true);
+		adicCampo(txtPercDescItOrc, 460, 20, 57, 20, "PercDescItOrc","% desc.", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrDescItOrc, 520, 20, 80, 20, "VlrDescItOrc","Valor desc.", ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtVlrProdItOrc, "VlrProdItOrc", "Valor bruto",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtStrDescItOrc, "StrDescItOrc", "Descontos",ListaCampos.DB_SI, false);
 		adicDBLiv(txaObsItOrc, "ObsItOrc", "Observação", false);
-		adicCampo(txtVlrLiqItOrc, 603, 20, 80, 20, "VlrLiqItOrc", "Valor item",
-				ListaCampos.DB_SI, false);
+		adicCampo(txtVlrLiqItOrc, 603, 20, 80, 20, "VlrLiqItOrc", "Valor item",ListaCampos.DB_SI, false);
 		pinTot.adic(new JLabelPad("Total desc."), 7, 0, 90, 20);
 		pinTot.adic(txtVlrDescOrc, 7, 20, 100, 20);
 		pinTot.adic(new JLabelPad("Total adic."), 7, 40, 90, 20);
