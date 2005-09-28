@@ -350,7 +350,12 @@ public class OPSwara extends LeiauteGR {
             drawTexto("EMBALAGENS A SEREM DESCARREGADAS",150,iY); 
             iY = iY+16;
             setFonte(fnArial9N); 
-            drawTexto("Cód.      Tipo de Embalagem                 Código de Barras                                    Lote               Qtd. Emb.",18,iY);
+            drawTexto("Cód.",18,iY);
+            drawTexto("Tipo de Embalagem",47,iY);
+            drawTexto("Código de Barras",190,iY);
+            drawTexto("Lote",380,iY);
+            drawTexto("Qtd.",440,iY);
+            drawTexto("Emb.",470,iY);
             iY = iY+20;
             
 	            sSQL = "SELECT I.SEQOP, I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE, OPF.SEQOF " +
@@ -387,6 +392,24 @@ public class OPSwara extends LeiauteGR {
             setFonte(fnArial9);
 			
 			for(int i=0;vItensEB.size()>i;i++) {
+				if(iY>=736){
+				    drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+60,AL_CDIR);
+					termPagina();
+					montaCabEmp(con);
+					montaCab();
+					iY = 110;
+					iYIni = iY;
+					iYIni2 = iY;
+					setFonte(fnArial9N); 
+		            drawTexto("Cód.",18,iY);
+		            drawTexto("Tipo de Embalagem",47,iY);
+		            drawTexto("Código de Barras",190,iY);
+		            drawTexto("Lote",380,iY);
+		            drawTexto("Qtd.",440,iY);
+		            drawTexto("Emb.",470,iY);
+					iY = iY+20;
+				}
+				
 				vColunasEB = (Vector) vItensEB.elementAt(i);
 			    sCod  = vColunasEB.elementAt(0).toString();
 			    sDesc = vColunasEB.elementAt(1).toString();
@@ -399,7 +422,7 @@ public class OPSwara extends LeiauteGR {
 			    
 			    if(iCodFaseI==iCodFaseF) {
 				      drawTexto(sCod,18,iY); //Codigo
-				      drawTexto(sDesc.substring(0,20),47,iY); //Descrição	
+				      drawTexto(sDesc.substring(0,23),47,iY); //Descrição	
 				      
 				      Barcode128 barra = new Barcode128();
 	  		          sBarCode = sSeqOF+"#"+iCodOP+"#"+sSeqOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
@@ -408,11 +431,11 @@ public class OPSwara extends LeiauteGR {
 	  		          Image image = barra.createAwtImage(Color.BLACK, Color.WHITE);
 	  		          ImageIcon icon = new ImageIcon(image);
 	  		  	
-		  		      drawImagem(icon,170,iY-8,170,14);
+		  		      drawImagem(icon,185,iY-8,170,14);
 				      
-				      drawTexto(sLote,380,iY);//Lote
-				      drawTexto(Funcoes.alinhaDir(sQtd,15)+" "+sUnid,420,iY);//Quantidade
-				      drawLinha(470,iY,48,0,AL_BCEN);
+				      drawTexto(sLote,365,iY);//Lote
+				      drawTexto(Funcoes.alinhaDir(sQtd,15)+"   "+sUnid,410,iY);//Quantidade
+				      drawLinha(470,iY,55,0,AL_BCEN);
 				      iY = iY+20;	                            	              	
 			    }            	
 			}
@@ -424,7 +447,7 @@ public class OPSwara extends LeiauteGR {
 			drawTexto("Nome:__________________________________________   Data:__________________________________________",20,iY);			
 			iY = iY+20;						
 			
-			drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+50,AL_CDIR);   
+			drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+20,AL_CDIR);   
 		}
 		catch(SQLException e) {
 			Funcoes.mensagemErro(null, "Erro carregando itens!\n"+e.getMessage());
@@ -592,15 +615,6 @@ public class OPSwara extends LeiauteGR {
 
 		drawTexto("ORDEM DE PRODUÇÃO",0,55,150,AL_CEN);	
 		setFonte(fnArial9N); 
-/*
-		drawTexto("O.P. número:",10,70);
-	    drawTexto("Produto:",10,82);
-	    drawTexto("Quantidade:",10,94);
-	    drawTexto("Data de fabricação:",10,106);
-	    drawTexto("Data de validade:",10,118);
-        drawTexto("Data de emissão:",10,130);
-	    drawTexto("Lote:",10,142);	    
-*/
 
 		drawTexto("O.P. número:",10,70);
 	    drawTexto("Produto:",110,70);
@@ -619,27 +633,14 @@ public class OPSwara extends LeiauteGR {
 	    drawTexto(sDtValidade,350,82); //Data de validade
 	    drawTexto(Funcoes.dateToStrDate(new Date()),475,82);
 	    drawTexto(sLote,475,70);
-	    
-	    /*
-	    drawTexto(iCodOP+"",110,70); //Código da OP
-	    drawTexto(sDescProd,110,82); //Descrição do produto a ser fabricado 
-	    drawTexto(sQtd,110,94); //qtd. a fabricar 
-	    drawTexto(sDtFabrica,110,106); //Data de fabricação
-	    drawTexto(sDtValidade,110,118); //Data de validade
-	    drawTexto(Funcoes.dateToStrDate(new Date()),110,130);
-	    drawTexto(sLote,110,142);
-	    */
+	    	    
 	  }			
 	  catch(Exception err) {
 		Funcoes.mensagemErro(this,"Erro ao montar dados do cliente!!!\n"+err.getMessage());
 		err.printStackTrace();
 	  }
 	}
-    	
-	public void stParam(Vector vParam) {
-		vParamOP = vParam;
-	}
-
+    
 	public void setConexao(Connection cn) {
 		con = cn;
 	}
