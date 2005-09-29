@@ -39,6 +39,10 @@ public class NFSaida extends NF {
 		super(casasDec);
 	}
 	
+	public int getTipoNF(){
+		return this.tipoNF;
+	}
+	
 	public boolean carregaTabelas(Connection con, Vector parans ) {
 		boolean retorno = true;
 		PreparedStatement ps = null;
