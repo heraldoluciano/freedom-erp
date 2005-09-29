@@ -39,6 +39,10 @@ public class NFEntrada extends NF {
 		super(casasDec);		
 	}
 	
+	public int getTipoNF(){
+		return this.tipoNF;
+	}
+	
 	public boolean carregaTabelas(Connection con, Vector parans ) {
 		boolean retorno = true;
 		PreparedStatement ps = null;
@@ -150,7 +154,7 @@ public class NFEntrada extends NF {
 				itens.setInt(C_CONTAITENS, rs.getInt(25));
 				itens.setString(C_DESCFISC, (rs.getString(26)!=null ? rs.getString(26) : ""));
 				itens.setString(C_DESCFISC2, "");
-				itens.setString(C_CONTAITENS, rs.getString("CODFISC")!= null ? rs.getString("CODFISC") : "");
+				itens.setString(C_CODFISC, rs.getString("CODFISC")!= null ? rs.getString("CODFISC") : "");
 				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD")!= null ? rs.getString("TIPOPROD") : "");
 				itens.setFloat(C_VLRISSPED, 0f);
 				itens.setFloat(C_VLRPRODPED, rs.getFloat("VLRPRODCOMPRA"));
@@ -178,7 +182,7 @@ public class NFEntrada extends NF {
 			parc.setRow(-1);*/
 						
 			frete = new TabVector(19);
-			/*frete.addRow();
+			frete.addRow();
 			frete.setInt(C_CODTRAN, 0);
 			frete.setString(C_RAZTRANSP, "");
 			frete.setString(C_NUMTRANSP, "");
@@ -198,7 +202,7 @@ public class NFEntrada extends NF {
 			frete.setFloat(C_PESOBRUTO, 0);
 			frete.setFloat(C_PESOLIQ, 0);
 			frete.setFloat(C_VLRFRETEPED, 0);
-			frete.setRow(-1);*/
+			frete.setRow(-1);
 			
 		}
 		catch (SQLException e) {
