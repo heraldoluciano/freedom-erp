@@ -51,9 +51,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
@@ -66,6 +64,8 @@ import org.freedom.acao.PostListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -971,8 +971,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private Object[] prefs() {
-		Object[] oRetorno = new Object[5];
-		String sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED "
+		Object[] oRetorno = new Object[6];
+		String sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ "
 					+ " FROM SGPREFERE1 P "
 					+ " WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
@@ -1009,6 +1009,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					bDescComp = true;
 				else
 					bDescComp = false;
+				if(rs.getString("UsaOrcSeq").equals("S"))
+					oRetorno[5] = new Boolean(true);
+				else
+					oRetorno[5] = new Boolean(false);
 				
 				sOrdNota = rs.getString("OrdNota");
 				
@@ -1056,9 +1060,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	public void beforePost(PostEvent evt) {
-		if ((evt.getListaCampos() == lcCampos)
-				&& (lcCampos.getStatus() == ListaCampos.LCS_INSERT)) {
-			testaCodOrc();
+		if ((evt.getListaCampos() == lcCampos)&& (lcCampos.getStatus() == ListaCampos.LCS_INSERT)) {
+			if(((Boolean) oPrefs[5]).booleanValue())
+				testaCodOrc();
 			txtStatusOrc.setVlrString("*");
 		}
 	}
