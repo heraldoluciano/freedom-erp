@@ -128,6 +128,9 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
     tabDistrib.adicColuna("Qtd.final");//9
     tabDistrib.adicColuna("Lote");//10
     tabDistrib.adicColuna("Validate");//11
+    tabDistrib.adicColuna("Cód.almox");//12
+    tabDistrib.adicColuna("");//13 
+    tabDistrib.adicColuna("");//14
     
     tabDistrib.setTamColuna(60,0);
     tabDistrib.setTamColuna(60,1);
@@ -272,9 +275,9 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  			"D.CODFASE, F.DESCFASE, D.SEQDE, D.CODEMPDE, " +
   	  			"D.CODFILIALDE, D.CODPRODDE, D.SEQESTDE, " +
   	  			"CAST(ID.QTDITEST*E.QTDEST AS NUMERIC(15,"+casasDec+"))," +
-				"O.QTDDISTPOP " +
+				"O.QTDDISTPOP, PD.CODALMOX, PD.CODEMPAX, PD.CODFILIALAX " +
   	  			"FROM PPDISTRIB D, PPOP O, PPESTRUTURA ED, PPFASE F, " +
-  	  			"PPITESTRUTURA ID, PPESTRUTURA E " +
+  	  			"PPITESTRUTURA ID, PPESTRUTURA E , EQPRODUTO PD " +
   	  			"WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODOP=? AND O.SEQOP=? AND " +
   	  			"D.CODEMP=O.CODEMPPD AND D.CODFILIAL=O.CODFILIALPD AND " +
   	  			"D.CODPROD=O.CODPROD AND D.SEQEST=O.SEQEST AND " +
@@ -287,7 +290,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  			"ID.CODEMPPD=D.CODEMP AND ID.CODFILIALPD=D.CODFILIAL AND " +
   	  			"ID.CODPRODPD=D.CODPROD AND E.CODEMP=D.CODEMP AND " +
   	  			"E.CODFILIAL=D.CODFILIAL AND E.CODPROD=D.CODPROD AND " +
-  	  			"E.SEQEST=D.SEQEST ";
+  	  			"E.SEQEST=D.SEQEST AND D.CODEMPDE=PD.CODEMP AND " +
+  	  			"D.CODFILIALDE=PD.CODFILIAL AND D.CODPRODDE=PD.CODPROD ";
   	  	ps = con.prepareStatement(sql);
   	  	ps.setInt(1,Aplicativo.iCodEmp);
   	  	ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
@@ -309,6 +313,9 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
   	  		vLinha.addElement(new BigDecimal(0) );
   	  		vLinha.addElement("");
   	  		vLinha.addElement("");
+  	  		vLinha.addElement(new Integer(rs.getInt("CODALMOX")));
+	  		vLinha.addElement(new Integer(rs.getInt("CODEMPAX")));
+	  		vLinha.addElement(new Integer(rs.getInt("CODFILIALAX")));
  	  		
   	  		tabDistrib.adicLinha(vLinha);
   	  		if (i==0)
@@ -347,6 +354,32 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	txtQtdDist.setVlrBigDecimal(new BigDecimal(0));
   }
   
+  private int buscaTipoMov(){
+	  	int codTipoMov = 0;
+		String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE5 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				if(rs.getString(1)!=null) {				
+					codTipoMov = rs.getInt(1);
+				}
+				else {
+					codTipoMov = 0;
+					Funcoes.mensagemInforma(null,"Não existe um tipo de movimento padrão para OP definido nas preferências!");
+				}
+			}
+			rs.close();
+			ps.close();
+		} 
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar documento de preferências!\n" + err.getMessage());
+		}
+		return codTipoMov;
+  }
+  
   public void actionPerformed(ActionEvent evt) {
 	super.actionPerformed(evt);
 	if (evt.getSource()==btOK) {
@@ -373,12 +406,10 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	  String sql = null;
 	  ResultSet rs = null;
 	  int seqop = 0;
-	  int codTipoMov = 0;
-	  int codAlmox = 0;
 	  Date dtFabrOP = null;
 	  
 	  try {
-		 	  
+		  
 		  sql = "SELECT MAX(SEQOP) FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=?";
 		  ps = con.prepareStatement(sql);
 		  ps.setInt(1,Aplicativo.iCodEmp);
@@ -393,7 +424,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  if (!con.getAutoCommit())
 			  con.commit();
 		  
-		  sql = "SELECT DTFABROP,CODTIPOMOV,CODALMOX FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
+		  sql = "SELECT DTFABROP FROM PPOP WHERE CODEMP=? AND CODFILIAL=? AND CODOP=? AND SEQOP=?";
 		  ps = con.prepareStatement(sql);
 		  ps.setInt(1,Aplicativo.iCodEmp);
 		  ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
@@ -402,8 +433,6 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  rs = ps.executeQuery();
 		  if (rs.next()) {
 			  dtFabrOP = rs.getDate(1);
-			  codTipoMov = rs.getInt(2);
-			  codAlmox = rs.getInt(3);
 		  }		  
 		  rs.close();
 		  ps.close();
@@ -425,23 +454,22 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 		  ps.setInt(8,((Integer)op.elementAt(6)).intValue()); // Sequencia da estrutura
 		  ps.setDate(9,dtFabrOP); // Data de fabricação 			  
 		  ps.setFloat(10,((BigDecimal)op.elementAt(7)).floatValue()); // Qtdade prevista
-		  ps.setFloat(11,((BigDecimal)op.elementAt(7)).floatValue()); // Quantidade produzida		  
+		  ps.setFloat(11, 0); // Quantidade produzida		  
 		  ps.setDate(12,(Funcoes.strDateToSqlDate((String)op.elementAt(11)))); // data de validade		   
 		  ps.setInt(13,Aplicativo.iCodEmp); 
 		  ps.setInt(14,ListaCampos.getMasterFilial("EQLOTE"));
 		  ps.setString(15,((String)op.elementAt(10))); // lote 		  
 		  ps.setInt(16,Aplicativo.iCodEmp);
 		  ps.setInt(17,ListaCampos.getMasterFilial("EQTIPOMOV"));
-		  ps.setInt(18,codTipoMov); // tipo de movimento 
-		  ps.setInt(19,Aplicativo.iCodEmp);
-		  ps.setInt(20,ListaCampos.getMasterFilial("EQALMOX"));
-		  ps.setInt(21,codAlmox); // Código do almoxarifado 
+		  ps.setInt(18,buscaTipoMov()); // tipo de movimento 
+		  ps.setInt(19,((Integer)op.elementAt(13)).intValue());
+		  ps.setInt(20,((Integer)op.elementAt(14)).intValue());
+		  ps.setInt(21,((Integer)op.elementAt(12)).intValue()); // Código do almoxarifado 
 		  ps.setInt(22,Aplicativo.iCodEmp);
 		  ps.setInt(23,ListaCampos.getMasterFilial("PPOP"));
 		  ps.setInt(24,txtCodOP.getVlrInteger().intValue()); // CODOP Principal
 		  ps.setInt(25,txtSeqOP.getVlrInteger().intValue()); // SEQOP Principal
 		  ps.setFloat(26,((BigDecimal)op.elementAt(9)).floatValue()); // Qtdade distribuída
-		  
 		  
 		  ps.executeUpdate();
 		  ps.close();
