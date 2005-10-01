@@ -387,6 +387,22 @@ public class Funcoes {
 			lResult = (lDias2 - lDias1) / (60 * 24 * 60 * 1000);
 		return lResult;
 	}
+	public static Date getDataFimMes(int iMes, int iAno){				
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.set(Calendar.DAY_OF_MONTH,1);
+		cal.set(Calendar.MONTH,iMes);
+		cal.set(Calendar.YEAR,iAno);
+		int iUltimoDia = cal.getActualMaximum(Calendar.DAY_OF_MONTH);	
+		cal.set(Calendar.DAY_OF_MONTH,iUltimoDia);
+		return cal.getTime();
+	}
+	public static Date getDataIniMes(int iMes, int iAno){				
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.set(Calendar.DAY_OF_MONTH,1);
+		cal.set(Calendar.MONTH,iMes);
+		cal.set(Calendar.YEAR,iAno);
+		return cal.getTime();
+	}
 
 	public static void mensagem(String sMensagem, String sTitulo,int iOpcao) {
 		//	imgIcone = Aplicativo.imgIcone;

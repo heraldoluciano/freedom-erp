@@ -26,14 +26,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-
 import net.sf.jasperreports.engine.JasperPrintManager;
-
 import org.freedom.componentes.JLabelPad;
-
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -73,10 +71,27 @@ public class FRGerContas extends FRelatorio  {
   private JTextFieldFK txtDescGrup2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private ListaCampos lcGrup1 = new ListaCampos(this);
   private ListaCampos lcGrup2 = new ListaCampos(this);
+  private JLabelPad lbCodGrup1 = new JLabelPad("Cód.grupo/somar");
+  private JLabelPad lbDescCodGrup1 = new JLabelPad("Descrição do grupo/somar");
+  private JLabelPad lbCodGrup2 = new JLabelPad("Cód.grupo/subtrair");
+  private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
+  private final int JAN = 0;
+  private final int FEV = 1;
+  private final int MAR = 2;
+  private final int ABR = 3;
+  private final int MAI = 4;
+  private final int JUN = 5;
+  private final int JUL = 6;  
+  private final int AGO = 7;
+  private final int SET = 8;
+  private final int OUT = 9;
+  private final int NOV = 10;
+  private final int DEZ = 11;
+
 
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
-    setAtribos(80,0,425,310);
+    setAtribos(80,0,500,310);
 
     txtAno.setRequerido(true);
     txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));
@@ -99,29 +114,24 @@ public class FRGerContas extends FRelatorio  {
     vValOrdemRel.addElement("T");
     vValOrdemRel.addElement("S");
         
-    rgOrdemRel = new JRadioGroup(5,1,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
                 
-	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",
-			ListaCampos.DB_PK, false));
-	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup",
-			"Descrição do gurpo", ListaCampos.DB_SI, false));
+	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
+	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 	lcGrup1.montaSql(false, "GRUPO", "EQ");
 	lcGrup1.setReadOnly(true);
 	txtCodGrup1.setTabelaExterna(lcGrup1);
 	txtCodGrup1.setFK(true);
 	txtCodGrup1.setNomeCampo("CodGrup");
 
-	lcGrup2.add(new GuardaCampo(txtCodGrup2, "CodGrup", "Cód.grupo",
-			ListaCampos.DB_PK, false));
-	lcGrup2.add(new GuardaCampo(txtDescGrup2, "DescGrup",
-			"Descrição do grupo", ListaCampos.DB_SI, false));
+	lcGrup2.add(new GuardaCampo(txtCodGrup2, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
+	lcGrup2.add(new GuardaCampo(txtDescGrup2, "DescGrup","Descrição do grupo", ListaCampos.DB_SI, false));
 	lcGrup2.montaSql(false, "GRUPO", "EQ");
 	lcGrup2.setReadOnly(true);
 	txtCodGrup2.setTabelaExterna(lcGrup2);
 	txtCodGrup2.setFK(true);
 	txtCodGrup2.setNomeCampo("CodGrup");
-
-    
+/*    
     lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor","Cód.setor", ListaCampos.DB_PK, false ));
     lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor","Descrição do setor", ListaCampos.DB_SI, false ));
     lcSetor.montaSql(false,"SETOR","VD");
@@ -129,7 +139,7 @@ public class FRGerContas extends FRelatorio  {
     txtCodSetor.setTabelaExterna(lcSetor);
     txtCodSetor.setFK(true);
     txtCodSetor.setNomeCampo("CodSetor");
-
+*/
     lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend","Cód.comiss.", ListaCampos.DB_PK, false ));
     lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false ));
     lcVendedor.montaSql(false,"VENDEDOR","VD");
@@ -139,98 +149,63 @@ public class FRGerContas extends FRelatorio  {
     txtCodVend.setNomeCampo("CodVend");
     
     adic(new JLabelPad("Ordem"),280,0,80,20);
-    adic(rgOrdemRel,280,20,160,120);
+    adic(rgOrdemRel,280,20,180,70);
     adic(new JLabelPad("Ano"),7,0,250,20);
-    adic(txtAno,7,20,100,20);
-//    adic(txtDatafim,110,20,100,20);
-    
-    adic(lbCodSetor,7,45,250,20);
-    adic(txtCodSetor,7,65,70,20);
-    adic(lbDescSetor,80,45,250,20);
-    adic(txtDescSetor,80,65,190,20);
-    adic(lbCodVend,7,90,250,20);
-    adic(txtCodVend,7,110,70,20);
-    adic(lbDescVend,80,90,250,20);
-    adic(txtNomeVend,80,110,190,20);
-    
+    adic(txtAno,7,20,70,20);
+    adic(lbCodVend,7,45,250,20);
+    adic(txtCodVend,7,65,70,20);
+    adic(lbDescVend,80,45,250,20);
+    adic(txtNomeVend,80,65,190,20);
+	adic(lbCodGrup1, 7, 90, 250, 20);
+	adic(lbDescCodGrup1, 130, 90, 250, 20);
+	adic(txtCodGrup1, 7, 110, 120, 20);
+	adic(txtDescGrup1, 130, 110, 327, 20);
+	adic(lbCodGrup2, 7, 130, 250, 20);
+	adic(lbDescCodGrup2, 130, 130, 250, 20);
+	adic(txtCodGrup2, 7, 150, 120, 20);
+	adic(txtDescGrup2, 130, 150, 327, 20);
     adic(cbVendas,7,180,100,25);
     adic(cbCliPrinc,110,180,250,25);
-    adic(cbIncluiPed,7,205,295,25);
-    
+    adic(cbIncluiPed,7,205,295,25);    
   }
 
 
 	private ResultSet rodaQuery() {
 		String sSql = "";
 		String sWhere = "";
+		String sWhereCli = "";
 		String sWhereTM = "";
 		String sCodGrup1 = "";
 		String sOrdemRel = "";
 		String sOrderBy = "";
-		String sDescOrdemRel = "";
 		String sCodGrup2 = "";
 		String sFiltros1 = "";
 		String sFiltros2 = "";
-		String sCodTipoCli = "";
-		String sDescTipoCli = "";
-		String sCodTipoCliAnt = "";
-		String sDescTipoCliAnt = "";
-		String sCab = "";
 
 		int iCodCli = 0;
 		int iCodVend = 0;
 		ImprimeOS imp = null;
-		int linPag = 0;
-		int iParam = 0;
+		int iParam = 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		double deVlrTotal = 0;
-		double deQtdTotal = 0;
-		double deVlrSubTotal = 0;
-		double deQtdSubTotal = 0;
 
 		try {
 
 			imp = new ImprimeOS("", con);
-			linPag = imp.verifLinPag() - 1;
-			imp.setTitulo("Relatorio de Vendas por Setor x Clientes");
+
 			sFiltros1 = "";
 			sFiltros2 = "";
-/*		
-			
-			if (cbFaturados.getVlrString().equals("S")) {
-				sFiltros1 = "SO FATURADOS";
-				sWhereTM += (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "");
-			}
-	*/			
-//			if(cbFinanceiro.getVlrString().equals("S")) {
-	//			sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO FINANCEIRO";	
-//				sWhereTM += (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "");
 			sWhereTM += " AND TM.SOMAVDTIPOMOV='S' " ;
-//			}
-/*
-			if(cbMovEstoque.getVlrString().equals("S")) {
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO MOV.ESTOQUE";
-				sWhereTM += (cbMovEstoque.getVlrString().equals("S") ? " AND TM.ESTOQTIPOMOV='S' " : "");
-			}
-*/
+
 			if (cbCliPrinc.getVlrString().equals("S")) {
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "")
-						+ "ADIC. CLIENTES PRINCIPAIS";
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "")+ "ADIC. CLIENTES PRINCIPAIS";
 			}
 			
-//			sCodMarca = txtCodMarca.getVlrString().trim();
 			sCodGrup1 = txtCodGrup1.getVlrString().trim();
 			sCodGrup2 = txtCodGrup2.getVlrString().trim();
-//			iCodSetor = txtCodSetor.getVlrInteger().intValue();
 			iCodVend = txtCodVend.getVlrInteger().intValue();
-//			iCodCli = txtCodCli.getVlrInteger().intValue();
 			sOrdemRel = rgOrdemRel.getVlrString();
-	/*		if (!sCodMarca.equals("")) {
-				sWhere += "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: "
-						+ txtDescMarca.getText().trim();
-			}*/
+
 			if (!sCodGrup1.equals("")) {
 				sWhere += "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? ";
 				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: "
@@ -241,24 +216,15 @@ public class FRGerContas extends FRelatorio  {
 				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
 						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
-		/*	if (iCodSetor != 0) {
-				sWhere += "AND VD.CODSETOR=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: "
-						+ iCodSetor + "-" + txtDescSetor.getVlrString().trim();
-			}*/
+
 			if (iCodVend != 0) {
 				sWhere += "AND V.CODVEND=? ";
+				sWhereCli = "AND C.CODVEND=? ";
 				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "
 						+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
-		/*	if (iCodCli != 0) {
-				sWhere += "AND C2.CODCLI=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " CLI.: "
-						+ iCodCli + "-"
-						+ Funcoes.copy(txtRazCli.getVlrString(), 30);
-			}*/
 
-		    vValOrdemRel.addElement("V");
+			vValOrdemRel.addElement("V");
 		    vValOrdemRel.addElement("R");
 		    vValOrdemRel.addElement("C");
 		    vValOrdemRel.addElement("D");
@@ -270,107 +236,150 @@ public class FRGerContas extends FRelatorio  {
 				sOrderBy = "6,2";
 			} 
 			else if (sOrdemRel.equals("R")) {
-				sOrderBy = "2,6,3";
+				sOrderBy = "2,3";
 			} 
 			else if (sOrdemRel.equals("C")) {
-				sOrderBy = "1,2,6";
+				sOrderBy = "1,2";
 			}
 			else if (sOrdemRel.equals("D")) {
-				sOrderBy = "3,6,2";
+				sOrderBy = "3,2";
 			}
 			else if (sOrdemRel.equals("T")) {
-				sOrderBy = "4,6,2";
+				sOrderBy = "4,2";
 			}
 			else if (sOrdemRel.equals("S")) {
-				sOrderBy = "5,6,2";
+				sOrderBy = "5,2";
 			}
 
+			int iAno = txtAno.getVlrInteger().intValue();
 			
+			java.sql.Date dtIniJan = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno));
+			java.sql.Date dtIniFev = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(FEV,iAno));
+			java.sql.Date dtIniMar = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(MAR,iAno));
+			java.sql.Date dtIniAbr = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(ABR,iAno));
+			java.sql.Date dtIniMai = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(MAI,iAno));
+			java.sql.Date dtIniJun = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JUN,iAno));
+			java.sql.Date dtIniJul = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JUL,iAno));
+			java.sql.Date dtIniAgo = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(AGO,iAno));
+			java.sql.Date dtIniSet = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(SET,iAno));
+			java.sql.Date dtIniOut = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(OUT,iAno));
+			java.sql.Date dtIniNov = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(NOV,iAno));
+			java.sql.Date dtIniDez = Funcoes.dateToSQLDate(Funcoes.getDataIniMes(DEZ,iAno));	
+			
+			java.sql.Date dtFimJan = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(JAN,iAno));
+			java.sql.Date dtFimFev = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(FEV,iAno));
+			java.sql.Date dtFimMar = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(MAR,iAno));
+			java.sql.Date dtFimAbr = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(ABR,iAno));
+			java.sql.Date dtFimMai = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(MAI,iAno));
+			java.sql.Date dtFimJun = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(JUN,iAno));
+			java.sql.Date dtFimJul = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(JUL,iAno));
+			java.sql.Date dtFimAgo = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(AGO,iAno));
+			java.sql.Date dtFimSet = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(SET,iAno));
+			java.sql.Date dtFimOut = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(OUT,iAno));
+			java.sql.Date dtFimNov = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(NOV,iAno));
+			java.sql.Date dtFimDez = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno));
 				
 			sSql = "SELECT C2.CODCLI,C2.RAZCLI,C2.CIDCLI,TI.SIGLATIPOCLI,CLA.SIGLACLASCLI,"
-				   	+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =1)) AS JAN, "
-				   	+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =2)) AS FEV, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =3)) AS MAR, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =4)) AS ABR, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =5)) AS MAI, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =6)) AS JUN, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =7)) AS JUL, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =8)) AS AGO, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =9)) AS SETE, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =10)) AS OUT, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =11)) AS NOV, "
-					+ "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =12)) AS DEZ, "
-					//Vendas no ano
-					+ "SUM((COALESCE(IV.VLRLIQITVENDA,0))) AS VENDASATUAL," 					
-					//Vendas no ano anterior					
-					+ "SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, "
-					+ "EQTIPOMOV TM, VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2 "
-					+ "WHERE V.CODEMP=? AND V.CODFILIAL=? AND "
-					+ "EXTRACT(YEAR FROM V.DTEMITVENDA)="+txtAno.getVlrInteger()  
-					+ " AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI AND "
-					+ (cbCliPrinc.getVlrString().equals("S") ? "C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ AND "
-							: "C2.CODEMP=C.CODEMP AND C2.CODFILIAL=C.CODFILIAL AND C2.CODCLI=C.CODCLI AND ")
-					+ "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND "
-					+ "TI.CODTIPOCLI=C2.CODTIPOCLI AND "
-					+ "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "
-					+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND "
-					+ "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND "
-					+ "VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND "
-					+ "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND "
-					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
-					+ "G.CODFILIAL=P.CODFILIALGP AND "
-					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ))) AS VENDASANTERIOR, "						
+ 			   	 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS JAN, "
+			   	 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS FEV, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS MAR, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS ABR, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS MAI, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS JUN, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS JUL, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS AGO, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS SETE, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS OUT, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS NOV, "
+				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS DEZ, "				
+				//Vendas no ano
+				 
+				 
+				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
+				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
+				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
+				  +" AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ"
+				  +" AND  IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA"
+				  +" AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD"
+				  +" AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
+				  +" AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' )  AND TM.SOMAVDTIPOMOV='S'"
+					+ sWhereTM  
+					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
+				  		+ sWhere +")) VENDASATUAL,"
+
+				 //Vendas no ano anterior
+					
+				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
+				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
+				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
+				  +" AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ"
+				  +" AND  IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA"
+				  +" AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD"
+				  +" AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
+				  +" AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' )  AND TM.SOMAVDTIPOMOV='S'"
+					+ sWhereTM + 
+					 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
+				  		+ sWhere +")) VENDASANTERIOR,"
+					  
 					//meta estimada para ano seguinte					
-					+"SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C2.CODEMP AND CM.CODFILIAL=C2.CODFILIAL AND CM.CODCLI=C2.CODCLI AND ANOMETAVEND=("+txtAno.getVlrInteger()+"+1))) AS VENDASMETA "					
+					+" SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C2.CODEMP AND " +
+					"CM.CODFILIAL=C2.CODFILIAL AND CM.CODCLI=C2.CODCLI AND " +
+					"ANOMETAVEND=("+txtAno.getVlrInteger()+"+1))) AS VENDASMETA "					
 					
 					//From principal
 					
-					+ "FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, "
-					+ "EQTIPOMOV TM, VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2, VDCLASCLI CLA "
+					+ " FROM VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2, VDCLASCLI CLA "
 
 					//Where principal
 					
-					+ "WHERE V.CODEMP=? AND V.CODFILIAL=? AND "
-					+ " CLA.CODEMP=C2.CODEMPCC AND CLA.CODFILIAL=C2.CODFILIALCC AND CLA.CODCLASCLI=C2.CODCLASCLI AND "					
-					+ "EXTRACT(YEAR FROM V.DTEMITVENDA)="+txtAno.getVlrInteger() 
-					+ " AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI AND "
+					+ " WHERE CLA.CODEMP=C2.CODEMPCC AND CLA.CODFILIAL=C2.CODFILIALCC AND CLA.CODCLASCLI=C2.CODCLASCLI AND "					
 					+ (cbCliPrinc.getVlrString().equals("S") ? "C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ AND "
 							: "C2.CODEMP=C.CODEMP AND C2.CODFILIAL=C.CODFILIAL AND C2.CODCLI=C.CODCLI AND ")
 					+ "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND "
-					+ "TI.CODTIPOCLI=C2.CODTIPOCLI AND "
-					+ "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "
-					+ "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND "
-					+ "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND "
-					+ "VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND "
-					+ "P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND "
-					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
-					+ "G.CODFILIAL=P.CODFILIALGP AND "
-					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
-					+ sWhereTM
-					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP "
-							: " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length()
-									+ ")=G.CODGRUP ") + sWhere
-					+ "GROUP BY 1,2,3,4,5 " + "ORDER BY " + sOrderBy;
-								
+					+ "TI.CODTIPOCLI=C2.CODTIPOCLI "+sWhereCli 
+					+ " GROUP BY 1,2,3,4,5 " + "ORDER BY " + sOrderBy;
+														
 			
 			System.out.println(sSql);
 
 			try {
 				ps = con.prepareStatement(sSql);
-				ps.setInt(1, Aplicativo.iCodEmp);
-				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
-				ps.setInt(3, Aplicativo.iCodEmp);
-				ps.setInt(4, ListaCampos.getMasterFilial("VDVENDA"));
+								
+				ps.setDate(iParam++,dtIniJan);
+				ps.setDate(iParam++,dtFimJan);
+				ps.setDate(iParam++,dtIniFev);
+				ps.setDate(iParam++,dtFimFev);
+				ps.setDate(iParam++,dtIniMar);
+				ps.setDate(iParam++,dtFimMar);
+				ps.setDate(iParam++,dtIniAbr);
+				ps.setDate(iParam++,dtFimAbr);
+				ps.setDate(iParam++,dtIniMai);
+				ps.setDate(iParam++,dtFimMai);
+				ps.setDate(iParam++,dtIniJun);
+				ps.setDate(iParam++,dtFimJun);
+				ps.setDate(iParam++,dtIniJul);
+				ps.setDate(iParam++,dtFimJul);
+				ps.setDate(iParam++,dtIniAgo);
+				ps.setDate(iParam++,dtFimAgo);
+				ps.setDate(iParam++,dtIniSet);
+				ps.setDate(iParam++,dtFimSet);
+				ps.setDate(iParam++,dtIniOut);
+				ps.setDate(iParam++,dtFimOut);
+				ps.setDate(iParam++,dtIniNov);
+				ps.setDate(iParam++,dtFimNov);
+				ps.setDate(iParam++,dtIniDez);
+				ps.setDate(iParam++,dtFimDez);
 				
-				iParam = 5;
+				ps.setInt(iParam++, Aplicativo.iCodEmp);
+				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));
+
+				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno)));
+				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno)));										
+				
 				if (!sCodGrup1.equals("")) {
 					ps.setInt(iParam, Aplicativo.iCodEmp);
-					ps.setInt(iParam + 1, ListaCampos
-							.getMasterFilial("EQGRUPO"));
-					ps.setString(iParam + 2, sCodGrup1
-							+ (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQGRUPO"));
+					ps.setString(iParam + 2, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
 					iParam += 3;
 				}
 				if (!sCodGrup2.equals("")) {
@@ -386,12 +395,41 @@ public class FRGerContas extends FRelatorio  {
 					iParam += 1;
 				}
 
+				ps.setInt(iParam++, Aplicativo.iCodEmp);
+				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));
+				
+				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno-1)));
+				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno-1)));										
+
+				if (!sCodGrup1.equals("")) {
+					ps.setInt(iParam, Aplicativo.iCodEmp);
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQGRUPO"));
+					ps.setString(iParam + 2, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
+					iParam += 3;
+				}
+				if (!sCodGrup2.equals("")) {
+					ps.setString(iParam, sCodGrup2);
+					iParam += 1;
+				}
+				if (iCodVend != 0) {
+					ps.setInt(iParam, iCodVend);
+					iParam += 1;
+				}
+				if (iCodCli != 0) {
+					ps.setInt(iParam, iCodCli);
+					iParam += 1;
+				}
+
+				if (iCodVend != 0) {
+					ps.setInt(iParam, iCodVend);
+					iParam += 1;
+				}
+				
 				rs = ps.executeQuery();
 
-
-			} catch (SQLException err) {
-				Funcoes.mensagemErro(this, "Erro executando a consulta.\n"
-						+ err.getMessage(),true,con,err);
+			} 
+			catch (SQLException err) {
+				Funcoes.mensagemErro(this, "Erro executando a consulta.\n"+ err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}			
 		} 
@@ -402,23 +440,13 @@ public class FRGerContas extends FRelatorio  {
 			sCodGrup2 = null;
 			sOrdemRel = null;
 			sOrderBy = null;
-			sDescOrdemRel = null;
 			iCodVend = 0;
 			iCodCli = 0;
-			sCodTipoCli = null;
-			sDescTipoCli = null;
-			sCodTipoCliAnt = null;
-			sDescTipoCliAnt = null;
 			sWhereTM = null;
-			sCab = null;
 			sFiltros1 = null;
 			sFiltros2 = null;
 			imp = null;
 			ps = null;
-			deVlrTotal = 0;
-			deQtdTotal = 0;
-			deVlrSubTotal = 0;
-			deQtdSubTotal = 0;
 		}
 		return rs;
 
@@ -490,8 +518,11 @@ public class FRGerContas extends FRelatorio  {
 
   public void setConexao(Connection cn) {
     super.setConexao(cn);
-    lcSetor.setConexao(cn);
+//    lcSetor.setConexao(cn);
     lcVendedor.setConexao(cn);
+    lcGrup1.setConexao(cn);
+    lcGrup2.setConexao(cn);
+    
   }
   
   

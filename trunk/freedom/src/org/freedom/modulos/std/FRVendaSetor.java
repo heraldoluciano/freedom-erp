@@ -55,46 +55,22 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private static final long serialVersionUID = 1L;
 
 	private final int POS_CODSETOR = 0;
-
 	private final int POS_MES = 1;
-
 	private final int POS_CODGRUP = 2;
-
 	private final int POS_SIGLAGRUP = 3;
-
 	private final int POS_CODVEND = 4;
-
 	private final int POS_VALOR = 5;
-
 	private final int POS_TOTSETOR = 6;
-
 	private final int TAM_GRUPO = 14;
-
 	private final int NUM_COLUNAS = 9;
-
-	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldPad txtCodMarca = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 6, 0);
-
-	private JTextFieldFK txtDescMarca = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodGrup1 = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
-
-	private JTextFieldFK txtDescGrup1 = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodGrup2 = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
-
-	private JTextFieldFK txtDescGrup2 = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING, 6, 0);
+	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodGrup1 = new JTextFieldPad(JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
+	private JTextFieldFK txtDescGrup1 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodGrup2 = new JTextFieldPad(JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
+	private JTextFieldFK txtDescGrup2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 
 	private JTextFieldFK txtSiglaMarca = new JTextFieldFK(
 			JTextFieldPad.TP_STRING, 20, 0);
@@ -125,50 +101,27 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			"Mostrar no cliente principal?", "S", "N");
 
 //	private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?", "S", "N");
-
 	private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
-
 	private JLabelPad lbDescCodMarca = new JLabelPad("Descrição da marca");
-
 	private JLabelPad lbCodGrup1 = new JLabelPad("Cód.grupo/somar");
-
 	private JLabelPad lbDescCodGrup1 = new JLabelPad("Descrição do grupo/somar");
-
 	private JLabelPad lbCodGrup2 = new JLabelPad("Cód.grupo/subtrair");
-
-	private JLabelPad lbDescCodGrup2 = new JLabelPad(
-			"Descrição do grupo/subtrair");
-
+	private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
 	private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
-
 	private JLabelPad lbDescCodSetor = new JLabelPad("Descrição do setor");
-
 	private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
-
 	private JLabelPad lbDescCodVend = new JLabelPad("Nome do comissionado");
-
 	private ListaCampos lcGrup1 = new ListaCampos(this);
-
 	private ListaCampos lcGrup2 = new ListaCampos(this);
-
 	private ListaCampos lcMarca = new ListaCampos(this);
-
 	private ListaCampos lcSetor = new ListaCampos(this);
-
 	private ListaCampos lcVendedor = new ListaCampos(this);
-
 	private ListaCampos lcCliente = new ListaCampos(this);
-
 	private Vector vLabTipoRel = new Vector();
-
 	private Vector vValTipoRel = new Vector();
-
 	private Vector vLabOrdemRel = new Vector();
-
 	private Vector vValOrdemRel = new Vector();
-
 	private JRadioGroup rgTipoRel = null;
-
 	private JRadioGroup rgOrdemRel = null;
 
 	public FRVendaSetor() {
@@ -221,20 +174,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		txtCodMarca.setFK(true);
 		txtCodMarca.setNomeCampo("CodMarca");
 
-		lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",
-				ListaCampos.DB_PK, false));
-		lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup",
-				"Descrição do gurpo", ListaCampos.DB_SI, false));
+		lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
+		lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 		lcGrup1.montaSql(false, "GRUPO", "EQ");
 		lcGrup1.setReadOnly(true);
 		txtCodGrup1.setTabelaExterna(lcGrup1);
 		txtCodGrup1.setFK(true);
 		txtCodGrup1.setNomeCampo("CodGrup");
 
-		lcGrup2.add(new GuardaCampo(txtCodGrup2, "CodGrup", "Cód.grupo",
-				ListaCampos.DB_PK, false));
-		lcGrup2.add(new GuardaCampo(txtDescGrup2, "DescGrup",
-				"Descrição do grupo", ListaCampos.DB_SI, false));
+		lcGrup2.add(new GuardaCampo(txtCodGrup2, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
+		lcGrup2.add(new GuardaCampo(txtDescGrup2, "DescGrup","Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrup2.montaSql(false, "GRUPO", "EQ");
 		lcGrup2.setReadOnly(true);
 		txtCodGrup2.setTabelaExterna(lcGrup2);
