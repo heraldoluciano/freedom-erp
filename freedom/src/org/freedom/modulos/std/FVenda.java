@@ -1574,8 +1574,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void imprimir(boolean bVisualizar, int iCodVenda) {
-		ImprimeOS imp = new ImprimeOS("", con);
-		int linPag = imp.verifLinPag() - 1;
+		ImprimeOS imp = new ImprimeOS("", con,"PD",true);
+		int linPag = imp.verifLinPag("PD") - 1;
 		//int iPares = 0;
 		Vector vDesc = null;
 		Vector vObs = null;
@@ -1657,10 +1657,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 0, 1, (rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + (rs.getString("InscCli")!=null ? rs.getString("InscCli"):"")));//IE cliente
 						imp.say(imp.pRow() + 0, 70,(rs.getString("EndCli")!=null ? rs.getString("EndCli").trim()+ " N°:" + (rs.getString("NumCli")!=null ? rs.getString("NumCli"):""):""));//rua e número do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "SITE   : " + rs.getString("SiteCli")!=null ? rs.getString("SiteCli").trim():"");
+						imp.say(imp.pRow() + 0, 1, "SITE   : " + (rs.getString("SiteCli")!=null?rs.getString("SiteCli").trim():""));
 						imp.say(imp.pRow() + 0, 70,rs.getString("BairCli").trim()+" - "+ rs.getString("CidCli").trim()+" - "+rs.getString("UFCli").trim()+" - "+rs.getString("CEPCli").trim());//complemento do endereço do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + rs.getString("EmailCli")!=null ? rs.getString("EmailCli").trim():"");
+						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + (rs.getString("EmailCli")!=null?rs.getString("EmailCli").trim():""));
 						imp.say(imp.pRow() + 0, 70, "TEL: "+ (rs.getString("DDDCli")!=null?Funcoes.setMascara(rs.getString("DDDCli"), "(####)"):"")+ 
 												(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
 												(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : ""));
@@ -1682,8 +1682,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					if (i==0) {
 						imp.say(imp.pRow() + 0, 73, rs.getString("CodUnid").trim());
 						imp.say(imp.pRow() + 0, 78, rs.getString("QtdItVenda"));
-						imp.say(imp.pRow() + 0, 86, Funcoes.strDecimalToStrCurrency(13,2,""+(
-								new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,
+						imp.say(imp.pRow() + 0, 86, Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,
 										BigDecimal.ROUND_HALF_UP)));
 						imp.say(imp.pRow() + 0, 105, rs.getString("VlrLiqItVenda"));
 						imp.say(imp.pRow() + 0, 121, rs.getString("PercIPIItVenda"));
