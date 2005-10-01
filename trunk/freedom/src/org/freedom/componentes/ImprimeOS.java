@@ -171,13 +171,11 @@ public class ImprimeOS implements ActionListener {
 		iniImprimeOS(sF, cn, null, false);
 	}
 
-	public ImprimeOS(String sF, Connection cn, String sTipoUsoImp,
-			boolean bImpComprimido) {
+	public ImprimeOS(String sF, Connection cn, String sTipoUsoImp,boolean bImpComprimido) {
 		iniImprimeOS(sF, cn, sTipoUsoImp, bImpComprimido);
 	}
 
-	private void iniImprimeOS(String sF, Connection cn, String sTipoUsoImp,
-			boolean bImpComprimido) {
+	private void iniImprimeOS(String sF, Connection cn, String sTipoUsoImp,boolean bImpComprimido) {
 		if (sTipoUsoImp == null) {
 			sTipoUsoImp = "TO";
 		}
@@ -686,11 +684,13 @@ public class ImprimeOS implements ActionListener {
 
 		if (this.sTipoUsoImp == null)
 			this.sTipoUsoImp = "TO";
+		
 		if (sTipoUsoImp.equals("TO")) {
 			sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGIMPRESSORA I, SGESTACAOIMP EI WHERE "
 					+ "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND EI.IMPPAD='S' AND "
 					+ "EI.CODEMPIP=I.CODEMP AND EI.CODFILIALIP=I.CODFILIAL AND EI.CODIMP=I.CODIMP";
-		} else {
+		} 
+		else {
 			sSQL = "SELECT I.CODIMP,I.TIPOIMP,I.DESCIMP FROM SGIMPRESSORA I, SGESTACAOIMP EI WHERE "
 					+ "EI.CODEST=? AND EI.CODEMP=? AND EI.CODFILIAL=? AND "
 					+ "EI.TIPOUSOIMP='"
@@ -709,11 +709,13 @@ public class ImprimeOS implements ActionListener {
 				sImpressora = rs.getString(1);
 				sRetorno = rs.getString(2);
 				sImpressora += " - " + rs.getString(3);
-			} else
-				Funcoes
-						.mensagemErro(
-								null,
-								"Não foi encontrado nenhum tipo de impressora!\n"
+			} 
+			else if(sTipoUsoImp.equals("PD")){
+				sTipoUsoImp = "TO";
+				getTipoImp();				
+			}
+			else
+				Funcoes.mensagemErro(null,"Não foi encontrado nenhum tipo de impressora!\n"
 										+ "Provávelmente não têm impressora cadastrada para esta estação de trabalho!!");
 			rs.close();
 			ps.close();
@@ -1055,11 +1057,13 @@ public class ImprimeOS implements ActionListener {
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRetorno = rs.getInt("LINPAPEL");
-				sClassNota = rs.getString("ClassNotaPapel") != null ? rs.getString(
-						"ClassNotaPapel").trim() : "";
-			} else {
-				Funcoes.mensagemInforma(cOwner,
-						"Não foi encontrada nenhuma impressora do tipo '" + sTipo + "!");
+				sClassNota = rs.getString("ClassNotaPapel") != null ? rs.getString("ClassNotaPapel").trim() : "";
+			} 
+			else if(sTipo.equals("PD")){
+				verifLinPag("TO");				
+			}
+			else {
+				Funcoes.mensagemInforma(cOwner,"Não foi encontrada nenhuma impressora do tipo '" + sTipo + "!");
 			}
 			rs.close();
 			ps.close();
