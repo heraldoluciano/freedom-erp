@@ -32,9 +32,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -47,14 +45,11 @@ public class DLFechaDistrib extends FFDialogo {
 	
   private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
   private JTextFieldPad txtLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
-  private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec);
   private JTextFieldPad txtSeqDist = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
   private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER,15,0);
   private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtDtFabProd = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtDtValid = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
   private Vector vBuscaLote = new Vector();
   private int iProdPrinc = 0;
  
@@ -64,16 +59,7 @@ public class DLFechaDistrib extends FFDialogo {
     setTitulo("Quantidade");
     setAtribos(310,220);
     
-    txtLote.setFK(true);
-    lcLoteProdEst.add(new GuardaCampo(txtLote, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLote, false));
-	lcLoteProdEst.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
-	lcLoteProdEst.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
-	lcLoteProdEst.montaSql(false, "LOTE", "EQ");
-	lcLoteProdEst.setQueryCommit(false);
-	lcLoteProdEst.setReadOnly(true);
-	txtLote.setTabelaExterna(lcLoteProdEst);
     
-      
     adic(new JLabelPad("Cód.Prod"),7,10,80,20);
     adic(txtCodProd,7,30,80,20);
     adic(new JLabelPad("Descrição da estrutura"),90,10,180,20);
@@ -105,7 +91,6 @@ public class DLFechaDistrib extends FFDialogo {
   }
   public void setConexao(Connection cn) {
   	 super.setConexao(cn);
-  	 lcLoteProdEst.setConexao(cn);
      if(getUsaLote().equals("S")){
     	txtLote.setAtivo(true);
     	if(getUsaModLote() || getModLotePrinc())

@@ -194,7 +194,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 				  		
 						if(ftQtddig>0){
 							if (ftQtdprod<(ftQtddist+ftQtddistp+ftFinal-(ftQtdant*ftFator))) {
-								Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
+								Funcoes.mensagemInforma(this, "Quantidade inválida! \nQuantida total de distribuição ultrapassa quantidade produzida!");
 								ftQtdade = (ftQtdprod - ftQtddistp - ftQtddist )/ftFator + ftQtdant;
 							}
 							else {
@@ -206,7 +206,7 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 							}
 						}
 						else
-							Funcoes.mensagemInforma(null, "Quantidade inválida! \nQuantida deve ser maior que zero.");
+							Funcoes.mensagemInforma(this, "Quantidade inválida! \nQuantida deve ser maior que zero.");
 						if(dl.getUsaModLote()){
 							if(dl.gravaLote()){
 								tabDistrib.setValor(dl.getValor(1),iLinha,10);
@@ -393,7 +393,8 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 	  try {
 		  for (int i=0; i<tabDistrib.getNumLinhas(); i++) {
 			  linha = tabDistrib.getLinha(i);
-			  gravaOp(linha);
+			  if(((BigDecimal)linha.elementAt(7)).floatValue()>0)
+				  gravaOp(linha);
 		  }
 	  }
       finally {
