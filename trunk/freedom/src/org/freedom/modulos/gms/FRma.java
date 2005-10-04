@@ -174,6 +174,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			JTextFieldPad.TP_NUMERIC, 15, casasDec);
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 13, 0);	
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescUnid = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 40, 0);
+	
 	private JRadioGroup rgPriod = null;
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
@@ -188,6 +193,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 	private ListaCampos lcLote = new ListaCampos(this, "LE");
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
+	private ListaCampos lcUnid = new ListaCampos(this, "UD");
 
 	String sSitItRma = txtSitItRma.getVlrString();
 	String sOrdRMA = "";
@@ -266,6 +272,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
 				ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
+				ListaCampos.DB_SI, txtDescUnid, false));		
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
@@ -283,7 +291,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
 				ListaCampos.DB_SI, false));
-
+		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
+				ListaCampos.DB_SI, txtDescUnid, false));		
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
 		lcProd2.setWhereAdic(sWhereAdicProd);
@@ -359,6 +368,15 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		txtSeqOP.setTabelaExterna(lcSeqOP);
 		lcSeqOP.montaSql(false, "OP", "PP");
 
+		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
+				ListaCampos.DB_PK, true));
+		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid",
+				"Unidade", ListaCampos.DB_SI, false));
+		lcUnid.montaSql(false, "UNIDADE", "EQ");
+		lcUnid.setReadOnly(true);
+		lcUnid.setQueryCommit(false);
+		txtCodUnid.setTabelaExterna(lcUnid);		
+		
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
 		vLabsTipo.addElement("Normal");
@@ -495,7 +513,8 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
 				"Descrição do produto");
-		adicDB(rgPriod, 513, 20, 100, 50, "PriorItRma", "Prioridade:", true);
+		adic(txtDescUnid, 513, 20, 100, 20);
+		adicDB(rgPriod, 513, 60, 100, 50, "PriorItRma", "Prioridade:", true);
 		adicCampo(txtQtdItRma, 430, 20, 80, 20, "QtdItRma", "Qtd.solic.",
 				ListaCampos.DB_SI, true);
 
@@ -771,6 +790,10 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 					txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());
 			}
 		}
+		
+		if ((cevt.getListaCampos() == lcProd)|| (cevt.getListaCampos() == lcProd2)) {
+			txtCodUnid.atualizaFK();
+		}		
 	}
 
 	public boolean[] prefs() {
@@ -1302,6 +1325,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		bPrefs = prefs();
 		montaDetalhe();
 
+		lcUnid.setConexao(cn);
 		lcTipoMov.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);

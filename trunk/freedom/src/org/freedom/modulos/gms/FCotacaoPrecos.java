@@ -140,6 +140,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			0);
 	private JTextFieldPad txtIdUsuCot = new JTextFieldPad(
 			JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescUnid = new JTextFieldFK(
+			JTextFieldPad.TP_STRING, 40, 0);			
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
 			8, 0);
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,
@@ -150,6 +154,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtPrecoCot = new JTextFieldPad(
 			JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
+			JTextFieldPad.TP_STRING, 13, 0);	
 
 	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
 			40, 0);
@@ -175,7 +181,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcFor = new ListaCampos(this, "FR");
 	private ListaCampos lcCotacao = new ListaCampos(this, "");
-
+	private ListaCampos lcUnid = new ListaCampos(this, "UD");
+	
 	String sSitItSol = txtSituacaoIt.getVlrString();
 	String sOrdSol = "";
 	Integer anoCC = null;
@@ -230,6 +237,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false));
 		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
 				ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
+				ListaCampos.DB_SI, true));		
+		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
+				ListaCampos.DB_SI, txtDescUnid, false));						
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
@@ -241,6 +252,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				ListaCampos.DB_SI, false));
 		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
 				ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
+				ListaCampos.DB_SI, true));		
+		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
+				ListaCampos.DB_SI, txtDescUnid, false));		
 
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
@@ -296,6 +311,15 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
 		txtIDUsu.setTabelaExterna(lcUsu);
+
+		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
+				ListaCampos.DB_PK, true));
+		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid",
+				"Unidade", ListaCampos.DB_SI, false));
+		lcUnid.montaSql(false, "UNIDADE", "EQ");
+		lcUnid.setReadOnly(true);
+		lcUnid.setQueryCommit(false);
+		txtCodUnid.setTabelaExterna(lcUnid);		
 
 		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",
 				ListaCampos.DB_PK, false));
@@ -502,8 +526,9 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				ListaCampos.DB_FK, txtDescFor, false);
 		adicDescFK(txtDescFor, 267, 20, 197, 20, "RazFor",
 				"Razão social do fornecedor");
-		adicCampo(txtQtdCot, 467, 20, 87, 20, "QtdCot", "Qtd.Cot.",
+		adicCampo(txtQtdCot, 467, 20, 57, 20, "QtdCot", "Qtd.Cot.",
 				ListaCampos.DB_SI, false);
+		adic(txtDescUnid, 527, 20, 100, 20);		
 		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
 				ListaCampos.DB_SI, false);
 		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.",
@@ -707,6 +732,10 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			pinLb.setBackground(cor(26, 140, 255));
 		}
 
+		if ((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2)) {
+			txtCodUnid.atualizaFK();
+		}
+		
 		if (cevt.getListaCampos() == lcDet) {
 			if (txtQtdItAprovado.isEditable()) {
 				if (txtQtdAprovCot.getVlrDouble().compareTo(new Double(0)) <= 0)
@@ -1206,6 +1235,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		super.setConexao(cn);
 		bPrefs = prefs();
 		montaDetalhe();
+
+		lcUnid.setConexao(cn);
 		lcCotacao.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
