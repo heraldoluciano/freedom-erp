@@ -294,8 +294,10 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     
 	lcCampos.addCarregaListener(this);
     lcDet.addCarregaListener(this);
+    lcDet.addPostListener(this);
     lcProdEst.addCarregaListener(this);
     lcProdItem.addCarregaListener(this);
+    lcDetDistrib.addCarregaListener(this);
     lcFase.addCarregaListener(this);
 
     tabItens.setTamColuna(45,0);
@@ -568,6 +570,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
     	    txtNroDiasValid.setAtivo(false);
     	}
     }
+    else if (cevt.getListaCampos() == lcDet){
+		  if(!cbFinaliza.getStatus()){
+			  tpnAbas.setEnabledAt(2,false);
+		  }
+		  else{
+			  tpnAbas.setEnabledAt(2,true);
+		  }
+	  }
   }      
   public void stateChanged(ChangeEvent cevt) {
   	if (((JTabbedPanePad)(cevt.getSource()))==tpnAbas){
@@ -602,5 +612,14 @@ public class FEstrutura extends FDetalhe implements ChangeListener,ActionListene
   }
 
   public void beforeCarrega(CarregaEvent cevt) {  }
-  public void afterPost(PostEvent pevt) {  }
+  public void afterPost(PostEvent pevt) { 
+	  if (pevt.getListaCampos() == lcDet){
+		  if(!cbFinaliza.getStatus()){
+			  tpnAbas.setEnabledAt(2,false);
+		  }
+		  else{
+			  tpnAbas.setEnabledAt(2,true);
+		  }
+	  }
+  }
 }

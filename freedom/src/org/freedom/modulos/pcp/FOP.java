@@ -472,8 +472,11 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	// 	navRod.setAtivo(5,false);
     
     montaTab();
-    
-    tab.setTamColuna(150,2);
+    tab.setTamColuna(55,0);
+    tab.setTamColuna(70,1);
+    tab.setTamColuna(200,2);
+    tab.setTamColuna(100,3);
+    tab.setTamColuna(0,4);
 
   }
 	private String buscaLote(ListaCampos lcProd, JTextFieldPad txtProd,boolean bSaldoPos) {
@@ -944,30 +947,78 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   }
   
   public void gravaLote(boolean bInsere){
-	  //ObjetoModLote ObjMl = new ObjetoModLote();
-		//ObjMl.setTexto(sModLote);
-		
-		//sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,cn);	  
 	  Object[] lote = gravaLote(con, bInsere, txtCodModLote.getVlrString(), txtUsaLoteEst.getVlrString(),
-			  txtModLote.getVlrString(), txtCodProdEst.getVlrInteger().intValue(), txtDtFabProd.getVlrDate(),
-			  txtNroDiasValid.getVlrInteger().intValue(), null );
-	try {
-		if (lote!=null) {
+						  txtModLote.getVlrString(), txtCodProdEst.getVlrInteger().intValue(), txtDtFabProd.getVlrDate(),
+						  		txtNroDiasValid.getVlrInteger().intValue(), null );
+	  try {
+		  if (lote!=null) {
 			txtCodLoteProdEst.setVlrString((String) lote[0]);
 			txtDtValidOP.setVlrDate((Date) lote[1]);
-		}
-	}
-	finally {
-		lote = null;
-	}
+		  }
+	  }
+	  finally {
+		  lote = null;
+	  }
 	  
   }
   
+  private boolean liberaRMA(){
+	  boolean retorno = true;
+	  PreparedStatement ps = null;
+	  ResultSet rs = null;
+	  String sUsaLote = null;
+	  String sSQL = null;
+	  String codLote = null;
+	  Integer codProd = null;
+	  try{		  
+		  for(int i=0 ; i<lcDet.getTab().getRowCount() ; i++){
+			  codProd = (Integer)lcDet.getTab().getValor(i,1);
+			  codLote = ""+lcDet.getTab().getValor(i,3);
+			  
+			  sSQL = "SELECT CLOTEPROD FROM EQPRODUTO WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+				
+			  ps = con.prepareStatement(sSQL);
+			  ps.setInt(1, Aplicativo.iCodEmp);
+			  ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
+			  ps.setInt(3, codProd.intValue());
+			  rs = ps.executeQuery();
+			  if (rs.next()) {
+			  	sUsaLote = rs.getString(1);
+			  }
+			  
+			  if(sUsaLote.equals("S")){
+				  if(!FOP.existeLote(con,codProd.intValue(),codLote)){	
+					  retorno = false;
+					  break;
+				  }
+			  }
+			
+			  rs.close();
+			  ps.close();
+		  }				  
+	  }
+	  catch(SQLException ex){
+		  Funcoes.mensagemErro(this,"Erro ao verificar condições para RMA\n"+ex.getMessage());
+		  ex.printStackTrace();
+	  }
+	  catch(Exception ex){
+		  ex.printStackTrace();
+	  }
+	  finally{
+		  codProd = null;
+		  sUsaLote = null;
+		  sSQL = null;
+		  codLote = null;
+		  ps = null;
+		  rs = null;
+	  }
+	  return retorno;
+  }
   
   public void afterCarrega(CarregaEvent cevt) {
     if (cevt.getListaCampos() == lcCampos) {
        btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
-       btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));             
+       btRMA.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT) && liberaRMA());             
        btExecuta.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        btDistrb.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
        bBuscaRMA = true;
@@ -1004,6 +1055,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 			txtCodLoteProdDet.setVlrString(buscaLote(lcProdDetCod,txtCodProdDet,true));
 			txtCodLoteProdDet.setAtivo(true);
 			lcLoteProdDet.carregaDados();
+			btRMA.setEnabled(liberaRMA());
 		}
 		else if((txtUsaLoteDet.getVlrString().equals("N"))){
 			txtCodLoteProdDet.setAtivo(false);
@@ -1022,7 +1074,9 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	if (lcCampos.getStatusAnt() == ListaCampos.LCS_INSERT) { 
   	  txtCodProdEst.setAtivo(false);
   	}
-  	
+  	if (pevt.getListaCampos() == lcDet) { 
+  		btRMA.setEnabled(liberaRMA());
+	}
   	btFase.setEnabled((lcCampos.getStatus() != ListaCampos.LCS_NONE) && (lcCampos.getStatus() != ListaCampos.LCS_INSERT));
   	
   }
