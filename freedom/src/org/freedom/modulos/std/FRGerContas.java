@@ -26,14 +26,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Vector;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.GuardaCampo;
-import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -48,18 +45,13 @@ public class FRGerContas extends FRelatorio  {
 
   private static final long serialVersionUID = 1L;
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
-  private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
-  private JLabelPad lbDescSetor = new JLabelPad("Descrição do setor");
   private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
   private JLabelPad lbDescVend = new JLabelPad("Nome do comissionado");
-  private ListaCampos lcSetor = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
   private Vector vLabOrdemRel = new Vector();
   private Vector vValOrdemRel = new Vector();
@@ -184,14 +176,14 @@ public class FRGerContas extends FRelatorio  {
 
 		int iCodCli = 0;
 		int iCodVend = 0;
-		ImprimeOS imp = null;
+//		ImprimeOS imp = null;
 		int iParam = 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
 
-			imp = new ImprimeOS("", con);
+			//imp = new ImprimeOS("", con);
 
 			sFiltros1 = "";
 			sFiltros2 = "";
@@ -445,7 +437,7 @@ public class FRGerContas extends FRelatorio  {
 			sWhereTM = null;
 			sFiltros1 = null;
 			sFiltros2 = null;
-			imp = null;
+			//imp = null;
 			ps = null;
 		}
 		return rs;
@@ -455,7 +447,7 @@ public class FRGerContas extends FRelatorio  {
   public void imprimir(boolean bVisualizar) {
 	    
 	FPrinterJob dlGr = null;
-	HashMap hParam = new HashMap();
+//	HashMap hParam = new HashMap();
 //	hParam.put("ANO",txtAno.getVlrInteger());
 //	hParam.put("CODEMPVEND",new Integer(lcVendedor.getCodEmp()));
 //	hParam.put("CODFILIALVEND",new Integer(lcVendedor.getCodFilial()));

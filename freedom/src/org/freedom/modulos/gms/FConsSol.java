@@ -146,7 +146,7 @@ public class FConsSol extends FFilho implements ActionListener {
 		
 		pnLegenda.add(new JLabelPad("Cancelada",imgCancelada,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Aprovada",imgAprovada,SwingConstants.CENTER));
-		pnLegenda.add(new JLabelPad("Expedida",imgExpedida,SwingConstants.CENTER));
+		pnLegenda.add(new JLabelPad("Cotação",imgExpedida,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Pendente",imgPendente,SwingConstants.CENTER));
 		
 		pnRod.add(pnLegenda,BorderLayout.WEST);
@@ -366,7 +366,7 @@ public class FConsSol extends FFilho implements ActionListener {
 				} 
 				else if (sitSol.equalsIgnoreCase("EF")) {
 					imgColuna = imgExpedida;
-					vSitSol.addElement("Expedida");
+					vSitSol.addElement("Cotação");
 				} 
 				else if (sitSol.equalsIgnoreCase("AF")) {
 					imgColuna = imgAprovada;
@@ -499,7 +499,7 @@ public class FConsSol extends FFilho implements ActionListener {
 	}
 
     private void getAprova() {
-		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU,ALMOXARIFEUSU " +
+		String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVCPSOLICITACAOUSU,COMPRASUSU " +
 				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
 				      "AND IDUSU=?";
 		PreparedStatement ps = null;
@@ -512,8 +512,8 @@ public class FConsSol extends FFilho implements ActionListener {
 			ps.setString(3, Aplicativo.strUsuario);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				String sAprova = rs.getString("APROVRMAUSU");
-				String sExpede = rs.getString("ALMOXARIFEUSU");
+				String sAprova = rs.getString("APROVCPSOLICITACAOUSU");
+				String sExpede = rs.getString("COMPRASUSU");
 				if(sAprova!=null){
 					if(!sAprova.equals("ND")) {
 						if(sAprova.equals("TD"))						
