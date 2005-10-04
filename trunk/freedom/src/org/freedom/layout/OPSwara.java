@@ -81,7 +81,6 @@ public class OPSwara extends LeiauteGR {
 
 		  PreparedStatement ps = con.prepareStatement(sSQL);
 		  
-		  System.out.println("SQL:"+sSQL);
 
   		  ps.setInt(1,iCodOP);
   		  ps.setInt(2,iSeqOP);
@@ -99,7 +98,6 @@ public class OPSwara extends LeiauteGR {
             vItem.addElement((rs.getString(15)!=null?rs.getString(15):"")); //Lote
             vItem.addElement((rs.getString(18)!=null?rs.getString(18):"0")); //Fase            
             vItens.addElement(vItem.clone());
-            System.out.println("Adicionou:"+rs.getString(13));
 		  }
 
 		  sDescProd  = (rs.getString(5)!=null?rs.getString(5).trim():"");
@@ -180,7 +178,11 @@ public class OPSwara extends LeiauteGR {
 		return iY;
 	}
 
-	private void impFaseEx(ResultSet rsFases) {        
+	private void impFaseEx(ResultSet rsFases) {  
+		String sCod = "";
+        String sQtd = "";
+        String sUnid = "";
+        String sLote = "";
 		try {
 			int iSeqOf = rsFases.getInt(1);
 			int iCodFaseF = rsFases.getInt(2);
@@ -224,32 +226,25 @@ public class OPSwara extends LeiauteGR {
     		drawLinha(5,iY,5,0,AL_CDIR);
             iY = iY+12;
             setFonte(fnArial9N);
-            drawTexto("Cód.",10,iY);
-            drawTexto("Descrição",50,iY); 
-            drawTexto("Cód.Barras",210,iY);
-            drawTexto("Qtd.",400,iY);
-            drawTexto("Unid",430,iY);
-            drawTexto("Lote",500,iY);
+            drawTexto("Cód.",30,iY);
+            drawTexto("Cód.Barras",100,iY);
+            drawTexto("Qtd.",340,iY);
+            drawTexto("Unid",400,iY);
+            drawTexto("Lote",460,iY);
     		drawLinha(5,iY+5,5,0,AL_CDIR);
             iY = iY + 15;
             setFonte(fnArial9);
-            
-            String sCod = "";
-            String sDesc = "";
-            String sQtd = "";
-            String sUnid = "";
-            String sLote = "";
+                        
                         
             for(int i=0;vItens.size()>i;i++) {
               sCod  = ((Vector) vItens.elementAt(i)).elementAt(0).toString();
-              sDesc = ((Vector) vItens.elementAt(i)).elementAt(1).toString();
               sQtd  = ((Vector) vItens.elementAt(i)).elementAt(2).toString();
               sUnid = ((Vector) vItens.elementAt(i)).elementAt(3).toString();
               sLote = ((Vector) vItens.elementAt(i)).elementAt(4).toString();
               iCodFaseI = Integer.parseInt(((Vector) vItens.elementAt(i)).elementAt(5).toString());
               
               if(iCodFaseI==iCodFaseF) {
-                drawTexto(sCod,10,iY); //Codigo	
+                drawTexto(sCod,30,iY); //Codigo	
                     		  	
   		        Barcode128 b = new Barcode128();
   		        String sBarCode = iSeqOf+"#"+iCodOP+"#"+iSeqOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
@@ -260,12 +255,11 @@ public class OPSwara extends LeiauteGR {
   		        Image image = b.createAwtImage(Color.BLACK, Color.WHITE);
   		        ImageIcon icon = new ImageIcon(image);
   		  	
-  		        drawImagem(icon,210,iY-8,170,14);
+  		        drawImagem(icon,100,iY-9,200,15);
   		  	
-                drawTexto(sDesc,50,iY); //Descrição	
-                drawTexto(Funcoes.alinhaDir(sQtd,15),370,iY);//Quantidade
-                drawTexto(sUnid,432,iY);//Unidade
-                drawTexto(sLote,500,iY);//Lote
+                drawTexto(Funcoes.alinhaDir(sQtd,15),320,iY);//Quantidade
+                drawTexto(sUnid,400,iY);//Unidade
+                drawTexto(sLote,460,iY);//Lote
                 iY = iY+18;	                            	              	
               }            	
             }
@@ -276,6 +270,12 @@ public class OPSwara extends LeiauteGR {
 		catch(Exception e) {
 			e.printStackTrace();
 		}		
+		finally{
+			sCod = null;
+            sQtd = null;
+            sUnid = null;
+            sLote = null;
+		}
 	}
 
 	private void impFaseEB(ResultSet rsFases) {        
@@ -350,12 +350,12 @@ public class OPSwara extends LeiauteGR {
             drawTexto("EMBALAGENS A SEREM DESCARREGADAS",150,iY); 
             iY = iY+16;
             setFonte(fnArial9N); 
-            drawTexto("Cód.",18,iY);
-            drawTexto("Tipo de Embalagem",47,iY);
-            drawTexto("Código de Barras",190,iY);
-            drawTexto("Lote",380,iY);
-            drawTexto("Qtd.",440,iY);
-            drawTexto("Emb.",470,iY);
+            drawTexto("Cód.",10,iY);
+            drawTexto("Tipo de Embalagem",40,iY);
+            drawTexto("Código de Barras",180,iY);
+            drawTexto("Lote",385,iY);
+            drawTexto("Qtd.",450,iY);
+            drawTexto("Emb.",480,iY);
             iY = iY+20;
             
 	            sSQL = "SELECT I.SEQOP, I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE, OPF.SEQOF " +
@@ -401,12 +401,12 @@ public class OPSwara extends LeiauteGR {
 					iYIni = iY;
 					iYIni2 = iY;
 					setFonte(fnArial9N); 
-		            drawTexto("Cód.",18,iY);
-		            drawTexto("Tipo de Embalagem",47,iY);
-		            drawTexto("Código de Barras",190,iY);
-		            drawTexto("Lote",380,iY);
-		            drawTexto("Qtd.",440,iY);
-		            drawTexto("Emb.",470,iY);
+		            drawTexto("Cód.",10,iY);
+		            drawTexto("Tipo de Embalagem",40,iY);
+		            drawTexto("Código de Barras",180,iY);
+		            drawTexto("Lote",385,iY);
+		            drawTexto("Qtd.",450,iY);
+		            drawTexto("Emb.",480,iY);
 					iY = iY+20;
 				}
 				
@@ -421,8 +421,8 @@ public class OPSwara extends LeiauteGR {
 			    iCodFaseI = Integer.parseInt(vColunasEB.elementAt(5).toString());
 			    
 			    if(iCodFaseI==iCodFaseF) {
-				      drawTexto(sCod,18,iY); //Codigo
-				      drawTexto(sDesc.substring(0,23),47,iY); //Descrição	
+				      drawTexto(sCod,10,iY); //Codigo
+				      drawTexto(sDesc.substring(0,20),40,iY); //Descrição	
 				      
 				      Barcode128 barra = new Barcode128();
 	  		          sBarCode = sSeqOF+"#"+iCodOP+"#"+sSeqOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
@@ -431,15 +431,24 @@ public class OPSwara extends LeiauteGR {
 	  		          Image image = barra.createAwtImage(Color.BLACK, Color.WHITE);
 	  		          ImageIcon icon = new ImageIcon(image);
 	  		  	
-		  		      drawImagem(icon,185,iY-8,170,14);
+		  		      drawImagem(icon,163,iY-9,200,15);
 				      
-				      drawTexto(sLote,365,iY);//Lote
-				      drawTexto(Funcoes.alinhaDir(sQtd,15)+"   "+sUnid,410,iY);//Quantidade
-				      drawLinha(470,iY,55,0,AL_BCEN);
+				      drawTexto(sLote,370,iY);//Lote
+				      drawTexto(Funcoes.alinhaDir(sQtd,15)+"   "+sUnid,415,iY);//Quantidade
+				      drawLinha(475,iY,55,0,AL_BCEN);
 				      iY = iY+20;	                            	              	
 			    }            	
 			}
 			
+			if(iY>=736){
+			    drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+60,AL_CDIR);
+				termPagina();
+				montaCabEmp(con);
+				montaCab();
+				iY = 110;
+				iYIni = iY;
+				iYIni2 = iY;
+			}
 			setFonte(fnArial9N);
 			iY = iY+15;	 
 			drawTexto("OBS.:___________________________________________________________________________________________",20,iY);
