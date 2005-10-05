@@ -76,6 +76,11 @@ public class NF {
 	public static final int C_CODCLCOMIS = 30;
 	public static final int C_PERCCOMISVENDA = 31;
 	public static final int C_CODVEND = 32;
+	public static final int C_ENDCOBEMIT = 33;
+	public static final int C_CIDCOBEMIT = 34;
+	public static final int C_UFCOBEMIT = 35;
+	public static final int C_BAIRCOBEMIT = 36;
+	public static final int C_NUMCOBEMIT = 37;
 	
 	
 	//itens
