@@ -99,10 +99,9 @@ public class NF014 extends Layout {
 	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	           if (nf.getTipoNF()==NF.TPNF_ENTRADA)
-	               imp.say(imp.pRow()+0,109,"X");
+	               imp.say(imp.pRow()+0,111,"X");
 	             else
-	               imp.say(imp.pRow()+0,93,"X");
-	           imp.say(imp.pRow()+0,125,sNumNota);
+	               imp.say(imp.pRow()+0,95,"X");
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,"");
@@ -117,7 +116,7 @@ public class NF014 extends Layout {
 	           imp.say(imp.pRow()+0,125,Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)));
 	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	           imp.say(imp.pRow()+0,9,Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim()+", "+(!cab.getString(NF.C_NUMEMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() : "").trim()+" - "+(!cab.getString(NF.C_COMPLEMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : "").trim());
+	           imp.say(imp.pRow()+0,9,Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim()+", "+(!(cab.getInt(NF.C_NUMEMIT)==0) ? Funcoes.copy(""+cab.getInt(NF.C_NUMEMIT),0,6).trim() : "").trim()+" - "+(!cab.getString(NF.C_COMPLEMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : "").trim());
 	           imp.say(imp.pRow()+0,80,!cab.getString(NF.C_BAIREMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_BAIREMIT),0,15) : "");
 	           imp.say(imp.pRow()+0,104,Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
 	           imp.say(imp.pRow()+0,125,Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)));
@@ -133,32 +132,37 @@ public class NF014 extends Layout {
 	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,"");
 		
+	           imp.say(imp.pRow()+0,9,sDuplics[0]);
 			   imp.say(imp.pRow()+0,24,sVals[0]);
 			   imp.say(imp.pRow()+0,42,sVencs[0]);
+			   imp.say(imp.pRow()+0,60,sDuplics[1]);
 			   imp.say(imp.pRow()+0,76,sVals[1]);
 			   imp.say(imp.pRow()+0,94,sVencs[1]);
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+1,0,"");
+			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+0,9,cab.getString(NF.C_CIDCOBEMIT)+" / "+cab.getString(NF.C_UFCOBEMIT)+" - "+cab.getString(NF.C_ENDCOBEMIT)+" , "+cab.getString(NF.C_NUMCOBEMIT)+ " - "+cab.getString(NF.C_BAIRCOBEMIT));
 			   imp.say(imp.pRow()+1,0,"");
-			   imp.say(imp.pRow()+1,0,"");
-			   imp.say(imp.pRow()+1,0,"");
+			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   String moeda[] = new String[]{"centavos","centavo","real","reais"};
+			   imp.say(imp.pRow()+0,9,Funcoes.doubleToStrCurExtenso(Double.parseDouble(""+itens.getFloat(NF.C_VLRLIQPED)),moeda));
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+1,0,"");
          }
 	
          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-         imp.say(imp.pRow()+0,6,""+itens.getInt(NF.C_CODPROD));
-         imp.say(imp.pRow()+0,11,itens.getString(NF.C_DESCPROD).trim());	
+         imp.say(imp.pRow()+0,9,""+itens.getInt(NF.C_CODPROD));
+         imp.say(imp.pRow()+0,14,itens.getString(NF.C_DESCPROD).trim());	
 		
-         sCodfisc = (!itens.getString(NF.C_CODFISC).equals("") ? itens.getString(NF.C_CODFISC) : "");
+         sCodfisc = (!itens.getString(NF.C_CODFISC).equals("") ? itens.getString(NF.C_CODFISC).trim() : "");
          
  		 if(!sCodfisc.equals("")){
  			for(int i=0;i<vClfiscal.size();i++){
  				if(vClfiscal.elementAt(i)!=null){
  					if(sCodfisc.equals((String)vClfiscal.elementAt(i))){
      					bjatem = true;
-     					sSigla = ""+(char)(64 + i);
+     					sSigla = ""+(char)(65 + i);
  					}
      				else{
      					bjatem = false;
@@ -172,14 +176,14 @@ public class NF014 extends Layout {
  			}
  		 }     
                     
-         imp.say(imp.pRow()+0,60,sSigla);
-         imp.say(imp.pRow()+0,65,Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
-         imp.say(imp.pRow()+0,71,itens.getString(NF.C_CODUNID).substring(0,4));
-         imp.say(imp.pRow()+0,77,""+itens.getFloat(NF.C_QTDITPED));
-         imp.say(imp.pRow()+0,88,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
-         imp.say(imp.pRow()+0,100,Funcoes.strDecimalToStrCurrency(13,2,""+itens.getFloat(NF.C_VLRLIQITPED)));
-         imp.say(imp.pRow()+0,116,""+itens.getFloat(NF.C_PERCICMSITPED));
-         imp.say(imp.pRow()+0,122,""+itens.getFloat(NF.C_PERCIPIITPED));
+         imp.say(imp.pRow()+0,64,sSigla);
+         imp.say(imp.pRow()+0,68,Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
+         imp.say(imp.pRow()+0,74,itens.getString(NF.C_CODUNID).substring(0,4));
+         imp.say(imp.pRow()+0,80,""+itens.getFloat(NF.C_QTDITPED));
+         imp.say(imp.pRow()+0,92,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
+         imp.say(imp.pRow()+0,103,Funcoes.strDecimalToStrCurrency(13,2,""+itens.getFloat(NF.C_VLRLIQITPED)));
+         imp.say(imp.pRow()+0,119,""+itens.getFloat(NF.C_PERCICMSITPED));
+         imp.say(imp.pRow()+0,125,""+itens.getFloat(NF.C_PERCIPIITPED));
 		 imp.say(imp.pRow()+0,128,Funcoes.strDecimalToStrCurrency(7,2,""+itens.getFloat(NF.C_VLRIPIPED)));
          
          iItImp++;
@@ -214,87 +218,82 @@ public class NF014 extends Layout {
 				 }
 	             imp.say(imp.pRow()+1,0,"");
 	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	             imp.say(imp.pRow()+0,5,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRBASEICMSPED)));
-	             imp.say(imp.pRow()+0,33,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRICMSPED)));
-	             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRPRODPED)));
+	             imp.say(imp.pRow()+0,9,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRBASEICMSPED)));
+	             imp.say(imp.pRow()+0,36,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRICMSPED)));
+	             imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRPRODPED)));
 	             imp.say(imp.pRow()+1,0,"");
 	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	             imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(20,2,""+frete.getFloat(NF.C_VLRFRETEPED)));
-	             imp.say(imp.pRow()+0,65,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRADICPED)));
-	             imp.say(imp.pRow()+0,90,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRIPIPED)));
-	             imp.say(imp.pRow()+0,114,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQPED)));
+	             imp.say(imp.pRow()+0,9,Funcoes.strDecimalToStrCurrency(20,2,""+frete.getFloat(NF.C_VLRFRETEPED)));
+	             imp.say(imp.pRow()+0,68,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRADICPED)));
+	             imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRIPIPED)));
+	             imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQPED)));
 	             iItImp = 0;
            }
            else if (imp.pRow() == iLinMaxItens) {
 	             imp.say(imp.pRow()+1,0,""); 
 	             imp.say(imp.pRow()+1,0,"");
 	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	             imp.say(imp.pRow()+0,6,"***************");
-	             imp.say(imp.pRow()+0,36,"***************");
-	             imp.say(imp.pRow()+0,113,"***************");
+	             imp.say(imp.pRow()+0,9,"***************");
+	             imp.say(imp.pRow()+0,39,"***************");
+	             imp.say(imp.pRow()+0,116,"***************");
 	             imp.say(imp.pRow()+1,0,"");
 	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	             imp.say(imp.pRow()+0,6,"***************");
-	             imp.say(imp.pRow()+0,65,"***************");
-	             imp.say(imp.pRow()+0,90,"***************");
-	             imp.say(imp.pRow()+0,113,"***************");
+	             imp.say(imp.pRow()+0,9,"***************");
+	             imp.say(imp.pRow()+0,68,"***************");
+	             imp.say(imp.pRow()+0,93,"***************");
+	             imp.say(imp.pRow()+0,116,"***************");
            }
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+0,6,frete.getString(NF.C_RAZTRANSP));
-           imp.say(imp.pRow()+0,87,frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
-           imp.say(imp.pRow()+0,93,frete.getString(NF.C_PLACAFRETE));
-           imp.say(imp.pRow()+0,109,frete.getString(NF.C_UFFRETE));
+           imp.say(imp.pRow()+0,9,frete.getString(NF.C_RAZTRANSP));
+           imp.say(imp.pRow()+0,90,frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
+           imp.say(imp.pRow()+0,96,frete.getString(NF.C_PLACAFRETE));
+           imp.say(imp.pRow()+0,112,frete.getString(NF.C_UFFRETE));
            
 		   sTipoTran = frete.getString(NF.C_TIPOTRANSP);
 				 if (sTipoTran==null) sTipoTran = "T";
 	    
 				 if ( sTipoTran.equals("C") ){
-					imp.say(imp.pRow()+0,116,Funcoes.setMascara(!cab.getString(NF.C_CNPJEMIT).equals("") ? cab.getString(NF.C_CNPJEMIT) : "","##.###.###/####-##"));
+					imp.say(imp.pRow()+0,119,Funcoes.setMascara(!cab.getString(NF.C_CNPJEMIT).equals("") ? cab.getString(NF.C_CNPJEMIT) : "","##.###.###/####-##"));
 				 }
 				 else {
-					imp.say(imp.pRow()+0,116,Funcoes.setMascara(!frete.getString(NF.C_CNPJTRANSP).equals("") ? frete.getString(NF.C_CNPJTRANSP) : "","##.###.###/####-##")); 
+					imp.say(imp.pRow()+0,119,Funcoes.setMascara(!frete.getString(NF.C_CNPJTRANSP).equals("") ? frete.getString(NF.C_CNPJTRANSP) : "","##.###.###/####-##")); 
 				 }
            
            
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,Funcoes.copy(frete.getString(NF.C_ENDTRANSP),0,42)+"   "+Funcoes.copy(""+frete.getInt(NF.C_NUMTRANSP),0,6));
-           imp.say(imp.pRow()+0,77,Funcoes.copy(frete.getString(NF.C_CIDTRANSP),0,30));
-           imp.say(imp.pRow()+0,108,frete.getString(NF.C_UFTRANSP));
+           imp.say(imp.pRow()+0,9,Funcoes.copy(frete.getString(NF.C_ENDTRANSP),0,42)+"   "+Funcoes.copy(""+frete.getInt(NF.C_NUMTRANSP),0,6));
+           imp.say(imp.pRow()+0,80,Funcoes.copy(frete.getString(NF.C_CIDTRANSP),0,30));
+           imp.say(imp.pRow()+0,111,frete.getString(NF.C_UFTRANSP));
 
 		   sTipoTran = frete.getString(NF.C_TIPOTRANSP);
 					 if (sTipoTran.equals(""))
 						sTipoTran = "T";
 					 if (sTipoTran.equals("C") ){
-						 imp.say(imp.pRow()+0,116,cab.getString(NF.C_INSCEMIT));
+						 imp.say(imp.pRow()+0,119,cab.getString(NF.C_INSCEMIT));
 					 }
 					 else { 
-					  imp.say(imp.pRow()+0,116,frete.getString(NF.C_INSCTRANSP));
+					  imp.say(imp.pRow()+0,119,frete.getString(NF.C_INSCTRANSP));
 					 }
 
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,6,frete.getString(NF.C_QTDFRETE));
-           imp.say(imp.pRow()+0,26,frete.getString(NF.C_ESPFRETE));
-           imp.say(imp.pRow()+0,55,frete.getString(NF.C_MARCAFRETE));
-           imp.say(imp.pRow()+0,106,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getString(NF.C_PESOBRUTO)));
-           imp.say(imp.pRow()+0,129,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getString(NF.C_PESOLIQ)));
+           imp.say(imp.pRow()+0,9,frete.getString(NF.C_QTDFRETE));
+           imp.say(imp.pRow()+0,29,frete.getString(NF.C_ESPFRETE));
+           imp.say(imp.pRow()+0,58,frete.getString(NF.C_MARCAFRETE));
+           imp.say(imp.pRow()+0,109,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getString(NF.C_PESOBRUTO)));
+           imp.say(imp.pRow()+0,132,Funcoes.strDecimalToStrCurrency(5,casasDec,""+frete.getString(NF.C_PESOLIQ)));
            imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());
-
-          
-		   /*imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+9-iSigla,0,""+imp.comprimido());
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		   imp.say(imp.pRow()+1,0,""+imp.comprimido());*/
-           imp.say(imp.pRow()+1,0,""+imp.comprimido());           
-           imp.say(imp.pRow()+10,125,sNumNota);
+           imp.say(imp.pRow()+1,0,"");
+           
+           int pos = 9;
+           for(int i=0; i<vSigla.size(); i++){
+        	   //if(imp.pRow()==)
+        	   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+        	   imp.say(imp.pRow()+0,pos,(String)vSigla.elementAt(i));
+           }
            
            for (int i=imp.pRow(); i<=iLinPag; i++) { 
              imp.say(imp.pRow()+1,0,"");

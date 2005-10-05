@@ -783,6 +783,8 @@ public class Funcoes {
 			iTmp = iVal / 100;
 			sRet += sNomes[2][iTmp];
 			iVal -= iTmp * 100;
+			if(sRet.equals("cem") && iVal > 0)
+				sRet = "cento";
 			sRet += iVal > 0 ? " e " : "";
 		}
 		if (iVal > 19) {
