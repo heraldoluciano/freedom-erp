@@ -218,7 +218,7 @@ public class NFSaida extends NF {
 				parc.addRow();
 				parc.setDate(C_DTVENCTO, rs.getDate("DTVENCITREC"));
 				parc.setFloat(C_VLRPARC, rs.getFloat("VLRPARCITREC"));
-				parc.setFloat(C_NPARCITREC, rs.getFloat("NPARCITREC"));
+				parc.setInt(C_NPARCITREC, rs.getInt("NPARCITREC"));
 			}
 			rs.close();
 			ps.close();
