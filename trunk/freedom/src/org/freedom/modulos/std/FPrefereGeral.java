@@ -149,6 +149,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbEstNeg = null;
 	private JCheckBoxPad cbEstNegGrupo = null;
 	private JCheckBoxPad cbNatVenda = null;
+	private JCheckBoxPad cbIPIVenda = null;
 	private JCheckBoxPad cbComisPDupl = null;
 	private JCheckBoxPad cbCustosSICMS = null;
 	private JCheckBoxPad cbBloqVenda = null;
@@ -374,6 +375,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 
 		cbNatVenda = new JCheckBoxPad("Habil. campo CFOP ?", "S", "N");
 		cbNatVenda.setVlrString("S");
+		
+		cbIPIVenda = new JCheckBoxPad("Habil. campo IPI ?", "S", "N");
+		cbIPIVenda.setVlrString("S");
 
 		cbComisPDupl = new JCheckBoxPad("Calcula comissão com base nas duplicatas?", "S", "N");
 		cbComisPDupl.setVlrString("S");
@@ -493,14 +497,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbUsaPedSeq, 10, 40, 160, 20, "UsaPedSeq", "", true);
 		adicDB(cbUsaOrcSeq, 10, 60,160,20, "UsaOrcSeq", "", true);
 		adicDB(cbEstNeg, 10, 80, 160, 20, "EstNeg", "", true);	
-		adicDB(cbEstLotNeg, 10, 100, 160, 20, "EstLotNeg", "", true);
-		adicDB(cbNatVenda, 10, 120, 160, 20, "NatVenda", "", true);
+		adicDB(cbNatVenda, 10, 100, 160, 20, "NatVenda", "", true);
+		adicDB(cbEstLotNeg, 10, 120, 160, 20, "EstLotNeg", "", true);
 		adicDB(cbPrazoEnt, 10, 140, 200, 20, "UsaTabPE", "", true);
 		
 		adicDB(cbUsaClasComis, 190, 20, 160, 20, "UsaClasComis", "", true);
 		adicDB(cbTabFreteVd, 190, 40, 160, 20, "TabFreteVd", "", true);
 		adicDB(cbTabAdicVd, 190, 60, 160, 20, "TabAdicVd", "", true);
 		adicDB(cbUsaDescEspelho, 190, 80, 160, 20, "UsaLiqRel", "", true);	
+		adicDB(cbIPIVenda, 190, 100, 160, 20, "IPIVenda", "", true);
 
 		adicDB(cbVendaMatPrim, 10, 160, 300, 20, "VendaMatPrim", "", true);
 		adicDB(cbEstNegGrupo, 10, 180, 250, 20, "EstNegGrup", "", true);

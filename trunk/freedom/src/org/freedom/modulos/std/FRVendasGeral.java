@@ -27,13 +27,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -41,23 +45,25 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
-public class FRVendasGeral extends FRelatorio {
+public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
 	private static final long serialVersionUID = 1L;
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);   
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0); 
-  
-  private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
-  private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
+  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);  
+  private JRadioGroup rgFaturados = null;
+  private JRadioGroup rgFinanceiro = null;
+  private Vector vLabsFat = new Vector();
+  private Vector vValsFat = new Vector();
+  private Vector vLabsFin = new Vector();
+  private Vector vValsFin = new Vector();
   
   private ListaCampos lcVend = new ListaCampos(this);
   
   public FRVendasGeral() {
     setTitulo("Vendas em Geral");
-    setAtribos(80,80,295,205);
+    setAtribos(80,80,295,280);
     
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
@@ -85,21 +91,43 @@ public class FRVendasGeral extends FRelatorio {
 	adic(txtCodVend,7,80,70,20);
 	adic(new JLabelPad("Nome do comissionado"),80,60,210,20);
 	adic(txtDescVend,80,80,190,20);
+	
+	vLabsFat.addElement("Faturado");
+	vLabsFat.addElement("Não Faturado");
+	vLabsFat.addElement("Ambos");
+	vValsFat.addElement("S");
+	vValsFat.addElement("N");
+	vValsFat.addElement("A");
+	rgFaturados = new JRadioGroup(3, 1, vLabsFat, vValsFat);
+	rgFaturados.setVlrString("S");
+	rgFaturados.addRadioGroupListener(this);
+	
+	vLabsFin.addElement("Financeiro");
+	vLabsFin.addElement("Não Finaceiro");
+	vLabsFin.addElement("Ambos");
+	vValsFin.addElement("S");
+	vValsFin.addElement("N");
+	vValsFin.addElement("A");
+	rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
+	rgFinanceiro.setVlrString("S");
+	rgFinanceiro.addRadioGroupListener(this);
     
-	cbFaturados.setVlrString("N");
-	cbFinanceiro.setVlrString("N");
-	adic(cbFaturados, 7, 100, 150, 25);
-	adic(cbFinanceiro, 153, 100, 150, 25);
+	adic(rgFaturados, 7, 120, 120, 70);
+	adic(rgFinanceiro, 153, 120, 120, 70);
     
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcVend.setConexao(con);
   }
+  
+  public void valorAlterado(RadioGroupEvent rgevt) { }
 
   public void imprimir(boolean bVisualizar) {
      
   	 String sWhere = "";
+  	 String sWhere1 = "";
+  	 String sWhere2 = "";
 	 String sCab="";
 	 
 	 if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
@@ -111,18 +139,23 @@ public class FRVendasGeral extends FRelatorio {
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		sCab = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sCab += (cbFaturados.getVlrString().equals("S") ? " - SO FATURADOS" : "");
+		sCab += (rgFaturados.getVlrString().equals("S") ? " - SO FATURADOS" : "");
 	}
 	else{
-		sCab += (cbFaturados.getVlrString().equals("S") ? "SO FATURADOS" : "");
+		sCab += (rgFaturados.getVlrString().equals("S") ? "SO FATURADOS" : "");
 	}
 	if (sCab.trim().length()>0){
-		sCab += (cbFinanceiro.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
+		sCab += (rgFinanceiro.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
 	}
 	else {
-		sCab += (cbFinanceiro.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
+		sCab += (rgFinanceiro.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
 	}
-  	
+	
+	if(rgFaturados.getVlrString().equals("S") || rgFaturados.getVlrString().equals("A"))
+		sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+	
+	if(rgFinanceiro.getVlrString().equals("S") || rgFinanceiro.getVlrString().equals("A"))
+		sWhere2 = " AND TM.FISCALTIPOMOV='S' ";
   	
   	
     ImprimeOS imp = new ImprimeOS("",con);
@@ -142,22 +175,14 @@ public class FRVendasGeral extends FRelatorio {
     sDatafim = txtDatafim.getVlrString();
     
     
-    String sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,"+
-                  "V.STATUSVENDA,V.DOCVENDA,"+
-                  "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,"+
-                  "V.CODPLANOPAG,P.DESCPLANOPAG,"+
-                  "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,"+
-                  "V.CODCLI,C.RAZCLI "+
-                  " FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P,"+
-                  " EQTIPOMOV TM WHERE C.CODCLI=V.CODCLI"+
-                  " AND TM.CODTIPOMOV=V.CODTIPOMOV" +
-		          " AND TM.CODEMP=V.CODEMPTM" +
-		          " AND TM.CODFILIAL=V.CODFILIALTM" +
-				  " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
-                  (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
-				  (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
-                  " AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND "+
-                  "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "+
+    String sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA,"+
+                  "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG,"+
+                  "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI "+
+                  " FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM" +
+                  " WHERE C.CODCLI=V.CODCLI AND TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM" +
+		          " AND TM.CODFILIAL=V.CODFILIALTM AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
+                   sWhere1 + sWhere2 +			  
+                  " AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "+
                   Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
                   " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'"+sWhere+"ORDER BY V.DTSAIDAVENDA,V.DOCVENDA ";
                   
@@ -266,6 +291,12 @@ public class FRVendasGeral extends FRelatorio {
     }  
     catch ( SQLException err ) {
 		Funcoes.mensagemErro(this,"Erro consulta tabela de preços!\n"+err.getMessage(),true,con,err);      
+    }
+    finally{
+    	sWhere = null;
+    	sWhere1 = null;
+    	sWhere2 = null;
+    	sCab = null;
     }
     
     if (bVisualizar) {
