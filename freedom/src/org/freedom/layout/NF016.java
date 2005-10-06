@@ -21,7 +21,6 @@
 package org.freedom.layout;
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
@@ -32,30 +31,24 @@ public class NF016 extends Layout {
 	boolean bRetorno = super.imprimir(nf, imp);
 	final int iLinMaxItens = 46;
     Calendar cHora = Calendar.getInstance();
-	int iSigla = 0;   
     int iNumNota = 0;
     int iItImp = 0;
     int iLinPag = imp.verifLinPag("NF");
-    boolean bjatem = false;
     boolean bFat = true;
-    String sCodfisc = "";
-    String sSigla = "";
     String sNumNota = ""; 
 	String sTipoTran = "";
     String[] sNat = new String[2];
     String[] sVencs = new String[2];
     String[] sVals = new String[2];
     String[] sDuplics = new String[4];
-	String[] sMatObs = null;
+	//String[] sMatObs = null;
 	String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
-	Vector vClfiscal = new Vector();
-	Vector vSigla = new Vector();
 	
     try {
 	     imp.limpaPags();
     	 if(cab.next()){
     		 iNumNota = cab.getInt(NF.C_DOC);
-	         sMatObs = Funcoes.strToStrArray(!cab.getString(NF.C_OBSPED).equals("") ? cab.getString(NF.C_OBSPED) : "",3);
+	         //sMatObs = Funcoes.strToStrArray(!cab.getString(NF.C_OBSPED).equals("") ? cab.getString(NF.C_OBSPED) : "",3);
     	 }
          if (iNumNota==0) {
             sNumNota = "000000";

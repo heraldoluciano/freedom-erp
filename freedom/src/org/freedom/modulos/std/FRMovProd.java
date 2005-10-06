@@ -122,7 +122,7 @@ public class FRMovProd extends FRelatorio {
 	vVals2.addElement("C");
 	vVals2.addElement("T");
 	
-	rgProduto= new JRadioGroup(7,1,vLabs2, vVals2);
+	rgProduto= new JRadioGroup(4,2,vLabs2, vVals2);
 	rgProduto.setVlrString("P");
     
     lcAlmox.add(new GuardaCampo( txtCodAlmox, "CodAlmox", "Cód.almox.", ListaCampos.DB_PK, false));
