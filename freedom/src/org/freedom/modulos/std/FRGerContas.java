@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Vector;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import org.freedom.componentes.JLabelPad;
@@ -91,23 +92,24 @@ public class FRGerContas extends FRelatorio  {
     cbVendas.setVlrString("S");
     cbCliPrinc.setVlrString("S");
     cbIncluiPed.setVlrString("N");        
-    
-    vLabOrdemRel.addElement("Valor");
-    vLabOrdemRel.addElement("Razão social");
+
     vLabOrdemRel.addElement("Cód.cli.");
+    vLabOrdemRel.addElement("Razão");    
     vLabOrdemRel.addElement("Cidade");
     vLabOrdemRel.addElement("Categoria");
-    vLabOrdemRel.addElement("Classificação");
+    vLabOrdemRel.addElement("Classific.");
+    vLabOrdemRel.addElement("Valor");
     
-    vValOrdemRel.addElement("V");
+    vValOrdemRel.addElement("C");    
     vValOrdemRel.addElement("R");
-    vValOrdemRel.addElement("C");
     vValOrdemRel.addElement("D");
     vValOrdemRel.addElement("T");
     vValOrdemRel.addElement("S");
-        
+    vValOrdemRel.addElement("V");
+    
     rgOrdemRel = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
-                
+    rgOrdemRel.setVlrString("C");
+    
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 	lcGrup1.montaSql(false, "GRUPO", "EQ");
@@ -123,16 +125,8 @@ public class FRGerContas extends FRelatorio  {
 	txtCodGrup2.setTabelaExterna(lcGrup2);
 	txtCodGrup2.setFK(true);
 	txtCodGrup2.setNomeCampo("CodGrup");
-/*    
-    lcSetor.add(new GuardaCampo( txtCodSetor, "CodSetor","Cód.setor", ListaCampos.DB_PK, false ));
-    lcSetor.add(new GuardaCampo( txtDescSetor, "DescSetor","Descrição do setor", ListaCampos.DB_SI, false ));
-    lcSetor.montaSql(false,"SETOR","VD");
-    lcSetor.setReadOnly(true);
-    txtCodSetor.setTabelaExterna(lcSetor);
-    txtCodSetor.setFK(true);
-    txtCodSetor.setNomeCampo("CodSetor");
-*/
-    lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend","Cód.comiss.", ListaCampos.DB_PK, false ));
+
+	lcVendedor.add(new GuardaCampo( txtCodVend, "CodVend","Cód.comiss.", ListaCampos.DB_PK, false ));
     lcVendedor.add(new GuardaCampo( txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false ));
     lcVendedor.montaSql(false,"VENDEDOR","VD");
     lcVendedor.setReadOnly(true);
@@ -161,7 +155,6 @@ public class FRGerContas extends FRelatorio  {
     adic(cbIncluiPed,7,205,295,25);    
   }
 
-
 	private ResultSet rodaQuery() {
 		String sSql = "";
 		String sWhere = "";
@@ -176,14 +169,11 @@ public class FRGerContas extends FRelatorio  {
 
 		int iCodCli = 0;
 		int iCodVend = 0;
-//		ImprimeOS imp = null;
 		int iParam = 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-
-			//imp = new ImprimeOS("", con);
 
 			sFiltros1 = "";
 			sFiltros2 = "";
@@ -216,19 +206,18 @@ public class FRGerContas extends FRelatorio  {
 						+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
 
-			vValOrdemRel.addElement("V");
-		    vValOrdemRel.addElement("R");
-		    vValOrdemRel.addElement("C");
+			vValOrdemRel.addElement("C");
+		    vValOrdemRel.addElement("R");	    
 		    vValOrdemRel.addElement("D");
 		    vValOrdemRel.addElement("T");
 		    vValOrdemRel.addElement("S");
-
+			vValOrdemRel.addElement("V");
 			
 			if (sOrdemRel.equals("V")) {
-				sOrderBy = "6,2";
+				sOrderBy = "18,2";
 			} 
 			else if (sOrdemRel.equals("R")) {
-				sOrderBy = "2,3";
+				sOrderBy = "2,1";
 			} 
 			else if (sOrdemRel.equals("C")) {
 				sOrderBy = "1,2";
@@ -285,8 +274,7 @@ public class FRGerContas extends FRelatorio  {
 				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS NOV, "
 				 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=C2.CODEMP AND HIS.CODFILIALCL=C2.CODFILIAL AND HIS.CODCLI=C2.CODCLI AND HIS.TIPOHISTTK='V' AND HIS.DATAHISTTK BETWEEN ? AND ? )) AS DEZ, "				
 				//Vendas no ano
-				 
-				 
+				 				 
 				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
 				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
 				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
@@ -309,34 +297,30 @@ public class FRGerContas extends FRelatorio  {
 				  +" AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD"
 				  +" AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
 				  +" AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' )  AND TM.SOMAVDTIPOMOV='S'"
-					+ sWhereTM + 
+				  + sWhereTM + 
 					 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
-				  		+ sWhere +")) VENDASANTERIOR,"
+				  	+ sWhere +")) VENDASANTERIOR,"
 					  
-					//meta estimada para ano seguinte					
-					+" SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C2.CODEMP AND " +
-					"CM.CODFILIAL=C2.CODFILIAL AND CM.CODCLI=C2.CODCLI AND " +
-					"ANOMETAVEND=("+txtAno.getVlrInteger()+"+1))) AS VENDASMETA "					
+				  //meta estimada para ano seguinte					
+				  +" SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C2.CODEMP AND" 
+				  +" CM.CODFILIAL=C2.CODFILIAL AND CM.CODCLI=C2.CODCLI AND" 
+				  +" ANOMETAVEND=("+txtAno.getVlrInteger()+"+1))) AS VENDASMETA"					
 					
-					//From principal
+  				  //From principal
 					
-					+ " FROM VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2, VDCLASCLI CLA "
+				  + " FROM VDTIPOCLI TI, VDCLIENTE C, VDCLIENTE C2, VDCLASCLI CLA "
 
-					//Where principal
+  				  //Where principal
 					
-					+ " WHERE CLA.CODEMP=C2.CODEMPCC AND CLA.CODFILIAL=C2.CODFILIALCC AND CLA.CODCLASCLI=C2.CODCLASCLI AND "					
-					+ (cbCliPrinc.getVlrString().equals("S") ? "C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ AND "
+				  + " WHERE CLA.CODEMP=C2.CODEMPCC AND CLA.CODFILIAL=C2.CODFILIALCC AND CLA.CODCLASCLI=C2.CODCLASCLI AND "					
+				  + (cbCliPrinc.getVlrString().equals("S") ? "C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ AND "
 							: "C2.CODEMP=C.CODEMP AND C2.CODFILIAL=C.CODFILIAL AND C2.CODCLI=C.CODCLI AND ")
-					+ "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND "
-					+ "TI.CODTIPOCLI=C2.CODTIPOCLI "+sWhereCli 
-					+ " GROUP BY 1,2,3,4,5 " + "ORDER BY " + sOrderBy;
-														
-			
-			System.out.println(sSql);
-
+				  + "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND "
+				  + "TI.CODTIPOCLI=C2.CODTIPOCLI "+sWhereCli 
+				  + " GROUP BY 1,2,3,4,5 " + "ORDER BY " + sOrderBy;
+																	
 			try {
-				ps = con.prepareStatement(sSql);
-								
+				ps = con.prepareStatement(sSql);								
 				ps.setDate(iParam++,dtIniJan);
 				ps.setDate(iParam++,dtFimJan);
 				ps.setDate(iParam++,dtIniFev);
@@ -388,8 +372,7 @@ public class FRGerContas extends FRelatorio  {
 				}
 
 				ps.setInt(iParam++, Aplicativo.iCodEmp);
-				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));
-				
+				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));				
 				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno-1)));
 				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno-1)));										
 
@@ -411,14 +394,11 @@ public class FRGerContas extends FRelatorio  {
 					ps.setInt(iParam, iCodCli);
 					iParam += 1;
 				}
-
 				if (iCodVend != 0) {
 					ps.setInt(iParam, iCodVend);
 					iParam += 1;
-				}
-				
+				}				
 				rs = ps.executeQuery();
-
 			} 
 			catch (SQLException err) {
 				Funcoes.mensagemErro(this, "Erro executando a consulta.\n"+ err.getMessage(),true,con,err);
@@ -437,62 +417,18 @@ public class FRGerContas extends FRelatorio  {
 			sWhereTM = null;
 			sFiltros1 = null;
 			sFiltros2 = null;
-			//imp = null;
 			ps = null;
 		}
 		return rs;
-
 	}
 	
-  public void imprimir(boolean bVisualizar) {
-	    
+  public void imprimir(boolean bVisualizar) {	    
 	FPrinterJob dlGr = null;
-//	HashMap hParam = new HashMap();
-//	hParam.put("ANO",txtAno.getVlrInteger());
-//	hParam.put("CODEMPVEND",new Integer(lcVendedor.getCodEmp()));
-//	hParam.put("CODFILIALVEND",new Integer(lcVendedor.getCodFilial()));
-//	hParam.put("CODVEND",txtCodVend.getVlrInteger());
-//	hParam.put("ORDEM",rgOrdemRel.getVlrString());
-	/*	
-	String sSql = "SELECT CLI.CODCLI,CLI.RAZCLI,CLI.CIDCLI,TC.SIGLATIPOCLI,CLA.SIGLACLASCLI, " +
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =1) AS JAN, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =2) AS FEV, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =3) AS MAR, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =4) AS ABR, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =5) AS MAI, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =6) AS JUN, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =7) AS JUL, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =8) AS AGO, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =9) AS SETE, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =10) AS OUT, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =11) AS NOV, "+
-	"  (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)="+txtAno.getVlrInteger()+" AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =12) AS DEZ, "+
-	"  (SELECT COALESCE(SUM(IV.VLRLIQITVENDA),0) FROM VDVENDA V, VDITVENDA IV, EQTIPOMOV TM  "+
-	"	WHERE V.CODCLI=CLI.CODCLI and V.CODEMPCL=CLI.CODEMP AND V.CODFILIALCL=CLI.CODFILIAL  "+
-	"        AND EXTRACT(YEAR FROM V.DTEMITVENDA)="+txtAno.getVlrInteger()+"  "+
-	"	AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA "+
-	"        AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "+
-	"        AND TM.SOMAVDTIPOMOV='S') AS VENDASATUAL, "+
-	"  (SELECT COALESCE(SUM(IV.VLRLIQITVENDA),0) FROM VDVENDA V, VDITVENDA IV, EQTIPOMOV TM "+ 
-	"	WHERE V.CODCLI=CLI.CODCLI and V.CODEMPCL=CLI.CODEMP AND V.CODFILIALCL=CLI.CODFILIAL  "+
-	"        AND EXTRACT(YEAR FROM V.DTEMITVENDA)=("+txtAno.getVlrInteger()+"-1)  "+
-	"	AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA "+
-	"        AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "+
-	"        AND TM.SOMAVDTIPOMOV='S') AS VENDASANTERIOR, " +
-	"  (SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=CLI.CODEMP AND CM.CODFILIAL=CLI.CODFILIAL AND CM.CODCLI=CLI.CODCLI AND ANOMETAVEND=("+txtAno.getVlrInteger()+"+1)) AS VENDASMETA " + 
-	"FROM VDCLIENTE CLI, VDCLASCLI CLA, VDTIPOCLI TC WHERE CLA.CODEMP=CLI.CODEMPCC AND CLA.CODFILIAL=CLI.CODFILIALCC AND CLA.CODCLASCLI=CLI.CODCLASCLI "+
-	"AND TC.CODEMP=CLI.CODEMPTC AND TC.CODFILIAL=CLI.CODFILIALTC AND TC.CODTIPOCLI=CLI.CODTIPOCLI "+
-	"AND CLI.CODVEND=? AND CLI.CODEMPVD=? AND CODFILIALVD=? "+ 
-	"ORDER BY "+rgOrdemRel.getVlrString(); 
-*/
-	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),this);	
-	
-	
-	
-	
-//	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",this,hParam,con); 
-			
-			
+	HashMap hParam = new HashMap();
+	hParam.put("ANO",txtAno.getVlrInteger());
+	hParam.put("CODVEND",txtCodVend.getVlrInteger());
+	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),hParam,this);	
+						
 	if(bVisualizar)
 		dlGr.setVisible(true);  
 	else{			
@@ -500,23 +436,15 @@ public class FRGerContas extends FRelatorio  {
 			JasperPrintManager.printReport(dlGr.getRelatorio(),true);
 		}
 		catch(Exception err){
-			Funcoes.mensagemErro(this,"Erro na impressão de recursos de produção!"+err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this,"Erro na impressão de relatório de gerenciamento de contas!"+err.getMessage(),true,con,err);
 		}
 	}
-	
-	
-	
   }
 
   public void setConexao(Connection cn) {
     super.setConexao(cn);
-//    lcSetor.setConexao(cn);
     lcVendedor.setConexao(cn);
     lcGrup1.setConexao(cn);
-    lcGrup2.setConexao(cn);
-    
+    lcGrup2.setConexao(cn);    
   }
-  
-  
-  
 }
