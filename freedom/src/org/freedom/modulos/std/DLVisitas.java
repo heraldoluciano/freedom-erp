@@ -159,7 +159,6 @@ public class DLVisitas extends FFDialogo implements MouseListener{
     adic(txtDataHist,80,20,80,20);    
     adic(new JLabelPad("Hora"),163,0,70,20);
     adic(txtHoraHist,163,20,70,20);
-    adicInvisivel(txtCodAtend);    
     adic(new JLabelPad("Historico"),7,40,70,20);
     adic(new JScrollPane(txaHist),7,60,490,80);
     
