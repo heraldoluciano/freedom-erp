@@ -81,78 +81,44 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JLabelPad lSitItSol = null;
 	private JPanelPad pinDet = new JPanelPad();
 	private JButton btAprovaSol = new JButton("Aprovar", Icone.novo("btTudo.gif"));
-	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone
-			.novo("btFechaVenda.gif"));
-	private JButton btCancelaSol = new JButton("Cancelar", Icone
-			.novo("btRetorno.gif"));
-	private JButton btCancelaItem = new JButton("Cancelar", Icone
-			.novo("btRetorno.gif"));
-	private JButton btMotivoCancelaSol = new JButton("Mot.Can", Icone
-			.novo("btObs.gif"));
-	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone
-			.novo("btObs.gif"));
-	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone
-			.novo("btObs.gif"));
-
-	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			13, 0);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
-	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			13, 0);
-	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			19, 0);
-	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			10, 0);
-	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			40, 0);
-	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 19, 0);
-
+	private JButton btFinAprovSol = new JButton("Finaliz. aprov.", Icone.novo("btFechaVenda.gif"));
+	private JButton btCancelaSol = new JButton("Cancelar", Icone.novo("btRetorno.gif"));
+	private JButton btCancelaItem = new JButton("Cancelar", Icone.novo("btRetorno.gif"));
+	private JButton btMotivoCancelaSol = new JButton("Mot.Can", Icone.novo("btObs.gif"));
+	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone.novo("btObs.gif"));
+	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone.novo("btObs.gif"));
+	private JTextFieldPad txtCodSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDtEmitSolicitacao = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodItSolicitacao = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtQtdItSolicitado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtQtdItAprovado = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
+	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19, 0);
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10, 0);
+	private JTextFieldPad txtOrigSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,40, 0);
+	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
 	private JTextAreaPad txaMotivoSol = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCancSol = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCancItem = new JTextAreaPad();
 	private JTextAreaPad txaMotivoPrior = new JTextAreaPad();
-
-	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtCodUnid = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescUnid = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
+	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JRadioGroup rgPriod = null;
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoSol);
-	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");

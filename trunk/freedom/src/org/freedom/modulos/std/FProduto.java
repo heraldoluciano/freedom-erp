@@ -80,442 +80,181 @@ public class FProduto extends FTabDados implements CheckBoxListener,
 		CarregaListener, RadioGroupListener {
 	private static final long serialVersionUID = 1L;
 
-	int casasDec = Aplicativo.casasDec;
+	private int casasDec = Aplicativo.casasDec;
+	private int casasDecFin = Aplicativo.casasDecFin;
 	private JPanelPad pinGeral = new JPanelPad(650, 340);
-
-	private JPanelPad pnFatConv = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-	
-	private JPanelPad pnProdPlan = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnCodAltProd = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-	
-	private JPanelPad pnCodAcess = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnLote = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnFoto = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnPreco = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
-
+	private JPanelPad pnFatConv = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());	
+	private JPanelPad pnProdPlan = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnCodAltProd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());	
+	private JPanelPad pnCodAcess = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnLote = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnFoto = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnPreco = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	//private JTextFieldPad txtCodProdSaldo = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
-
-	private JTextFieldPad txtRefProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtCodMoeda = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 4, 0);
-
-	private JTextFieldPad txtCodUnid = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-
-	private JTextFieldPad txtCodFor = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 5, 0);
-
-	private JTextFieldPad txtCodAltProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 20, 0);
-	
-	private JTextFieldPad txtCodPA = new JTextFieldPad( // codigo de acesso
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	
-	private JTextFieldPad txtAnoCCPA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
-	
-	private JTextFieldPad txtCodCCPA = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
-	
-	private JTextFieldPad txtCodCaixa = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	
-	private JTextFieldFK txtDescCCPA = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldFK txtDescCaixa = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);	
-
-	private JTextFieldPad txtCodFisc = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtCodMarca = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-
-	private JTextFieldPad txtCodGrup = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 14, 0);
-
-	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-//	private JTextFieldPad txtCodAlmoxSaldo = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtDescProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtDescAuxProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodBarProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtComisProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 6, 2);
-
-	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtPesoBrutProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtQtdMinProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtQtdMaxProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtLocalProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 15, 0);
-
-	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtDtUltCpProd = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, casasDec);
-
-	private JTextFieldPad txtSldConsigProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldConsigAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldResProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldResAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtUnidFat = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 4, 0);
-
-	private JTextFieldPad txtFatConv = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtCodLote = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtDiniLote = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-
-	private JTextFieldPad txtVenctoLote = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-
-	private JTextFieldPad txtSldLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldResLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtSldConsigLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, 3);
-
-	private JTextFieldPad txtSldLiqLote = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-
-	private JTextFieldPad txtCodFotoProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtDescFotoProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtLargFotoProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtAltFotoProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodPrecoProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodClasCliPreco = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodTabPreco = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodPlanoPagPreco = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtPrecoProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	
-	private JTextFieldPad txtSeqPP = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	
-	private JTextFieldPad txtCodPlan = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 4, 0);
-	
-	private JTextFieldPad txtCodCC = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 19, 0);
-	
-	private JTextFieldPad txtPrazoEnt = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	
-	private JTextFieldFK txtDias = new JTextFieldFK(
-			JTextFieldPad.TP_INTEGER, 5, 0);
-	
-	private JTextFieldFK txtDescPrazoEnt = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-	
-	private JTextFieldFK txtDescPlan = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-	
-	private JTextFieldFK txtDescCC = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldFK txtAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			40, 0);
-
-	private JTextFieldFK txtDescMoeda = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 20, 0);
-
-	private JTextFieldFK txtDescUnid = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodProdFor = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 18, 0);
-
-	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-
-	private JTextFieldFK txtDescFisc = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldFK txtDescMarca = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescGrup = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldFK txtDescAlmox = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescUnidFat = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescClasCliPreco = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescTabPreco = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescPlanoPagPreco = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 5, 0);
+	private JTextFieldPad txtCodAltProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);	
+	private JTextFieldPad txtCodPA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);//código de acesso	
+	private JTextFieldPad txtAnoCCPA = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);	
+	private JTextFieldPad txtCodCCPA = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);	
+	private JTextFieldPad txtCodCaixa = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);	
+	private JTextFieldFK txtDescCCPA = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescCaixa = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 14, 0);
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+//	private JTextFieldPad txtCodAlmoxSaldo = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0)
+	private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtDescAuxProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodBarProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtComisProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, casasDecFin);
+	private JTextFieldPad txtPesoLiqProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtPesoBrutProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtQtdMinProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtQtdMaxProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtLocalProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 15, 0);
+	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtCustoPEPSProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtSldProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtCustoMPMAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtCustoPEPSAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtSldAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtDtUltCpProd = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, casasDec);
+	private JTextFieldPad txtSldConsigProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldConsigAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldResProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldResAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldLiqAlmox = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtPrecoBaseProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtUnidFat = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtFatConv = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtDiniLote = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtVenctoLote = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtSldLote = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldResLote = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtSldConsigLote = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 3);
+	private JTextFieldPad txtSldLiqLote = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtCodFotoProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDescFotoProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtLargFotoProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtAltFotoProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodPrecoProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodClasCliPreco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodTabPreco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodPlanoPagPreco = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtPrecoProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);	
+	private JTextFieldPad txtSeqPP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);	
+	private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);	
+	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);	
+	private JTextFieldPad txtPrazoEnt = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);	
+	private JTextFieldFK txtDias = new JTextFieldFK(JTextFieldPad.TP_INTEGER, 5, 0);	
+	private JTextFieldFK txtDescPrazoEnt = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);	
+	private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);	
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40, 0);
+	private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodProdFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 18, 0);
+	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldFK txtDescFisc = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescUnidFat = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescClasCliPreco = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescTabPreco = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescPlanoPagPreco = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private Vector vLabsTipo = new Vector();
-
 	private Vector vValsTipo = new Vector();
-
 	private Vector vLabsCV = new Vector();
-
 	private Vector vValsCV = new Vector();
-
 	private Vector vLabsTF = new Vector();
-
-	private Vector vValsTF = new Vector();
-	
-	private Vector vLabsTipoPP = new Vector();
-	
-	private Vector vValsTipoPP = new Vector();
-	
-	private Vector vLabsPA = new Vector();
-	
-	private Vector vValsPA = new Vector();
-	
+	private Vector vValsTF = new Vector();	
+	private Vector vLabsTipoPP = new Vector();	
+	private Vector vValsTipoPP = new Vector();	
+	private Vector vLabsPA = new Vector();	
+	private Vector vValsPA = new Vector();	
 	private JRadioGroup rgPA = null;
-
 	private JRadioGroup rgTipo = null;
-
 	private JRadioGroup rgCV = null;
-
-	private JRadioGroup rgTF = null;
-	
+	private JRadioGroup rgTF = null;	
 	private JRadioGroup rgTipoPP = null;
-
 	private JCheckBoxPad cbLote = null;
-
 	private JCheckBoxPad cbAtivo = null;
-
 	private JCheckBoxPad cbVerif = null;
-
-	private JCheckBoxPad cbCpFatConv = null;
-	
+	private JCheckBoxPad cbCpFatConv = null;	
 	private JCheckBoxPad cbRMA = null;
-	
-	//private JCheckBoxPad cbTipoPP = null;
-
 	private Tabela tabFatConv = new Tabela();
-
-	private JScrollPane spnFatConv = new JScrollPane(tabFatConv);
-	
-	private Tabela tabProdPlan = new Tabela();
-	
+	private JScrollPane spnFatConv = new JScrollPane(tabFatConv);	
+	private Tabela tabProdPlan = new Tabela();	
 	private JScrollPane spnPlan = new JScrollPane(tabProdPlan);
-
 	private Tabela tabFor = new Tabela();
-
-	private Tabela tabCodAltProd = new Tabela();
-	
+	private Tabela tabCodAltProd = new Tabela();	
 	private Tabela tabCodAcess = new Tabela();
-
 	private JScrollPane spnFor = new JScrollPane(tabFor);
-
-	private JScrollPane spnCodAltProd = new JScrollPane(tabCodAltProd);
-	
+	private JScrollPane spnCodAltProd = new JScrollPane(tabCodAltProd);	
 	private JScrollPane spnCodAcess = new JScrollPane(tabCodAcess);
-
 	private Tabela tabLote = new Tabela();
-
 	private JScrollPane spnLote = new JScrollPane(tabLote);
-
 	private Tabela tabFoto = new Tabela();
-
 	private JScrollPane spnFoto = new JScrollPane(tabFoto);
-
 	private Tabela tabPreco = new Tabela();
-
 	private JScrollPane spnPreco = new JScrollPane(tabPreco);
-
 	private JPanelPad pinRodFatConv = new JPanelPad(650, 80);
-
-	private JPanelPad pinRodProdPlan = new JPanelPad(650, 120);
-	
+	private JPanelPad pinRodProdPlan = new JPanelPad(650, 120);	
 	private JPanelPad pinRodFor = new JPanelPad(650, 80);
-
 	private JPanelPad pinRodCodAltProd = new JPanelPad(650, 80);
-
-	private JPanelPad pinRodCodAcess = new JPanelPad(650, 120);
-	
+	private JPanelPad pinRodCodAcess = new JPanelPad(650, 120);	
 	private JPanelPad pinRodLote = new JPanelPad(650, 120);
-
 	private JPanelPad pinRodFoto = new JPanelPad(650, 170);
-
 	private JPanelPad pinRodPreco = new JPanelPad(650, 120);
-
-	private JPanelPad pnDesc = new JPanelPad(JPanelPad.TP_JPANEL,
-			new GridLayout(1, 1));
-
+	private JPanelPad pnDesc = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1, 1));
 	private JTextAreaPad txaDescComp = new JTextAreaPad();
-
 	private JScrollPane spnDesc = new JScrollPane(txaDescComp);
-
 	private ListaCampos lcMoeda = new ListaCampos(this, "MA");
-
 	private ListaCampos lcUnid = new ListaCampos(this, "UD");
-
 	private ListaCampos lcFisc = new ListaCampos(this, "FC");
-
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
-
 	private ListaCampos lcGrup = new ListaCampos(this, "GP");
-
-	private ListaCampos lcAlmox = new ListaCampos(this, "AX");
-	
+	private ListaCampos lcAlmox = new ListaCampos(this, "AX");	
 	private ListaCampos lcPrazoEnt = new ListaCampos(this, "PE");
-
-	private ListaCampos lcFatConv = new ListaCampos(this);
-	
+	private ListaCampos lcFatConv = new ListaCampos(this);	
 	private ListaCampos lcProdPlan = new ListaCampos(this);
-
 	private ListaCampos lcFor = new ListaCampos(this);
-
-	private ListaCampos lcCodAltProd = new ListaCampos(this, "");
-	
+	private ListaCampos lcCodAltProd = new ListaCampos(this, "");	
 	private ListaCampos lcProdAcesso = new ListaCampos(this);
-
-	private ListaCampos lcUnidFat = new ListaCampos(this);
-	
-	private ListaCampos lcPlan = new ListaCampos(this,"PN");
-	
-	private ListaCampos lcCC = new ListaCampos(this,"CC");
-	
+	private ListaCampos lcUnidFat = new ListaCampos(this);	
+	private ListaCampos lcPlan = new ListaCampos(this,"PN");	
+	private ListaCampos lcCC = new ListaCampos(this,"CC");	
 	private ListaCampos lcCCAcesso = new ListaCampos(this,"CC");
-
 	private ListaCampos lcCaixa = new ListaCampos(this, "CX");
-
 	private ListaCampos lcForFK = new ListaCampos(this);
-
 	private ListaCampos lcLote = new ListaCampos(this);
-
 	private ListaCampos lcFoto = new ListaCampos(this);
-
 	private ListaCampos lcPreco = new ListaCampos(this);
-
 	private ListaCampos lcClasCliPreco = new ListaCampos(this, "CC");
-
 	private ListaCampos lcTabPreco = new ListaCampos(this, "TB");
-
 	private ListaCampos lcPlanoPagPreco = new ListaCampos(this, "PG");
-
 	//private ListaCampos lcSaldoProd = new ListaCampos(this, "");
-
-	private Navegador navFatConv = new Navegador(true);
-	
+	private Navegador navFatConv = new Navegador(true);	
 	private Navegador navProdPlan = new Navegador(true);
-
 	private Navegador navFor = new Navegador(true);
-
 	private Navegador navLote = new Navegador(true);
-
 	private Navegador navFoto = new Navegador(true);
-
 	private Navegador navPreco = new Navegador(true);
-
-	private Navegador navCodAltProd = new Navegador(true);
-	
+	private Navegador navCodAltProd = new Navegador(true);	
 	private Navegador navCodAcess = new Navegador(true);
-
 	private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
-
 	private PainelImagem imFotoProd = new PainelImagem(65000);
-
 	private String[] sPrefs = null;
 	
 	public FProduto() {

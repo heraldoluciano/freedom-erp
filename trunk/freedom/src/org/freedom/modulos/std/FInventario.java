@@ -66,67 +66,29 @@ public class FInventario extends FDados implements CarregaListener,
 private static final long serialVersionUID = 1L;
 
 	private int casasDec = Aplicativo.casasDec;
-
-	private JTextFieldPad txtCodInv = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtRefProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtRefProd2 = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodLote = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtDataInvP = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-
-	private JTextFieldPad txtQtdInvP = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-
-	private JTextFieldPad txtPrecoInvP = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-
-	private JTextFieldPad txtSldAtualInvP = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-
-	private JTextFieldPad txtSldNovoInvP = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-
-	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtDescProd = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldFK txtDescAlmox = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
+	private int casasDecFin = Aplicativo.casasDecFin;
+	private JTextFieldPad txtCodInv = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtRefProd2 = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtDataInvP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtQtdInvP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtPrecoInvP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtSldAtualInvP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtSldNovoInvP = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
-
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
-
 	private ListaCampos lcLote = new ListaCampos(this, "LE");
-
 	private ListaCampos lcAlmox = new ListaCampos(this, "AX");
-
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
-
 	private JCheckBoxPad cbLote = new JCheckBoxPad("Lote", "S", "N");
-
 	private int iPrefs[] = { 0, 0, 0 };
 
 	boolean bLote = false;

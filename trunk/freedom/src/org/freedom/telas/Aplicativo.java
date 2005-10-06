@@ -70,6 +70,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public final static int TP_OPCAO_MENU = 0;
 	public final static int TP_OPCAO_ITEM = 1;
 	public static int casasDec = 2;
+	public static int casasDecFin = 2;
 	public Connection con = null; // Variavel de conexao com o banco de dados
 	protected String strSenha = "";
 	public static FPrincipal telaPrincipal = null;
@@ -134,8 +135,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		if (sNomeArqIni==null)
 		    sNomeArqIni="freedom.ini"; 
 		sArqIni = sNomeArqIni;
-		sArqINI = System.getProperty("ARQINI") != null ? System
-				.getProperty("ARQINI") : sNomeArqIni;
+		sArqINI = System.getProperty("ARQINI") != null ? System.getProperty("ARQINI") : sNomeArqIni;
 		vArqINI = getArqINI(sArqINI);
     
 		try{
@@ -259,8 +259,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				mpMaster = (JMenuPad) getOpcao(iSuperMenu);
 				if (mpMaster != null) {
 					if (bExec)
-						((JMenuItemPad) mOpcao).setEnabled(verifAcesso(iCodSis,
-								iCodModu, iOpcao));
+						((JMenuItemPad) mOpcao).setEnabled(verifAcesso(iCodSis,iCodModu, iOpcao));
 					mpMaster.add(mOpcao);
 				}
 			}
@@ -312,8 +311,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	}
 
 	public void adicTelaBotao(JButtonPad bt) {
-		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(), bt
-				.getCodItem()));
+		bt.setEnabled(verifAcesso(bt.getCodSistema(), bt.getCodModulo(), bt.getCodItem()));
 		pinBotoes.adic(bt, iXPanel, 0, 30, 30);
 		bt.addActionListener(this);
 		iXPanel += 30;
@@ -372,15 +370,13 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			killProg(1, "Erro ao verificar acessos para arvore de menus!\n"
-					+ err.getMessage());
+			killProg(1, "Erro ao verificar acessos para arvore de menus!\n"+ err.getMessage());
 		}
 		return bRet;
 	}
 
 	public void adicTelaMenu(JMenuPad menu, JMenuItemPad item) {
-		item.setEnabled(verifAcesso(item.getCodSistema(), item.getCodModulo(),
-				item.getCodItem()));
+		item.setEnabled(verifAcesso(item.getCodSistema(), item.getCodModulo(),item.getCodItem()));
 		menu.add(item);
 		item.addActionListener(this);
 	}
@@ -694,8 +690,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			try {
 				con.setAutoCommit(bAutoCommit);
 				//      	con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-				con
-						.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				con.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			} catch (SQLException err) {
 				Funcoes.mensagemErro(null, err.getMessage());
 			}
@@ -857,8 +852,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		try {
 			Class.forName(strDriver);
 		} catch (java.lang.ClassNotFoundException e) {
-			Funcoes.mensagemErro(null, "[internal]:Driver nao foi encontrado: "
-					+ e.getMessage());
+			Funcoes.mensagemErro(null, "[internal]:Driver nao foi encontrado: "+ e.getMessage());
 			return null;
 		}
 
@@ -944,23 +938,17 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 					i++;
 				}
 			} catch (IOException err) {
-				Funcoes.mensagemErro(null,
-						"Erro ao carregar arquivo de configuração!\n"
-								+ err.getMessage());
+				Funcoes.mensagemErro(null,"Erro ao carregar arquivo de configuração!\n"+ err.getMessage());
 				System.exit(0);
 			}
 		} catch (FileNotFoundException err) {
-			Funcoes.mensagemErro(null,
-					"Erro ao carregar arquivo de configuração!\n"
-							+ err.getMessage());
+			Funcoes.mensagemErro(null,"Erro ao carregar arquivo de configuração!\n"+ err.getMessage());
 			System.exit(0);
 		}
-		Funcoes.mensagemErro(null, "TESTE: " + vSessao.size() + " ~ "
-				+ iMaxCampo);
+		Funcoes.mensagemErro(null, "TESTE: " + vSessao.size() + " ~ "+ iMaxCampo);
 		String[][][] sRetorno = new String[vSessao.size()][iMaxCampo][2];
 		for (int iS = 0; iS < (vSessao.size()); iS++) {
-			sRetorno[iS][0][0] = (String) ((Vector) vSessao.elementAt(iS))
-					.elementAt(0);
+			sRetorno[iS][0][0] = (String) ((Vector) vSessao.elementAt(iS)).elementAt(0);
 			for (int iC = 1; iC < iMaxCampo; iC++) {
 				sRetorno[iS][iC][0] = (String) ((Vector) ((Vector) vSessao
 						.elementAt(iS)).elementAt(iC)).elementAt(0);
@@ -1059,15 +1047,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CASASDEC,BUSCAPRODSIMILAR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CASASDEC,CASASDECFIN,BUSCAPRODSIMILAR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
-				String sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N"
-						: "S");
+				casasDecFin = rs.getInt("CASASDECFIN");
+				String sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N" : "S");
 				bBuscaProdSimilar = sBusca.equals("S") ? true : false;
 			}
 			rs.close();
@@ -1098,8 +1086,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			rs = ps.executeQuery();
 			if (!rs.next()) {
 				sFiltro = "";
-				Funcoes.mensagemInforma(null,
-						"Preferências não foram cadastradas!");
+				Funcoes.mensagemInforma(null,"Preferências não foram cadastradas!");
 			} else
 				sFiltro = rs.getString("FILTRO");
 			//		rs.close();
@@ -1145,8 +1132,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			ps.execute();
 			if (!con.getAutoCommit())
 				con.commit();
-			Funcoes.mensagemInforma(null, "Filtros atualizados para: "
-					+ sFiltro);
+			Funcoes.mensagemInforma(null, "Filtros atualizados para: "+ sFiltro);
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null, "Erro ao atualizar filtro.\n"
 					+ err.getMessage(),true,con,err);

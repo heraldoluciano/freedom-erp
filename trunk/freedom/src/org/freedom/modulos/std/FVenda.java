@@ -84,8 +84,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener, DeleteListener {
 	private static final long serialVersionUID = 1L;
 
-	private int casasDec = Aplicativo.casasDec;
-	
+	private int casasDec = Aplicativo.casasDec;	
+	private int casasDecFin = Aplicativo.casasDecFin;	
 	private JPanelPad pinCabVenda = new JPanelPad();
 	private JPanelPad pinCabComis = new JPanelPad();
 	private JPanelPad pinCabFiscal = new JPanelPad();
@@ -114,23 +114,23 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);	
 	private JTextFieldPad txtPedCliVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
 	private JTextFieldFK txtDescClComis = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
-	private JTextFieldPad txtPercComisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, 3);
+	private JTextFieldPad txtPercComisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, casasDecFin);
 	private JTextFieldPad txtCodItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtQtdItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtVerifProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
-	private JTextFieldPad txtPrecoItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtPercDescItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, casasDec);
-	private JTextFieldPad txtVlrDescItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrComisItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtPercComItVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
+	private JTextFieldPad txtPrecoItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtPercDescItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, casasDecFin);
+	private JTextFieldPad txtVlrDescItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrComisItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtPercComItVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, casasDecFin);
 	private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 	private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtPercICMSItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, casasDec);
-	private JTextFieldPad txtVlrICMSItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrLiqItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtPercICMSItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 7, casasDecFin);
+	private JTextFieldPad txtVlrICMSItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrLiqItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtEstCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtClasComis = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtCodMens = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -138,28 +138,28 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtRedFisc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
-	private JTextFieldPad txtVlrFreteVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrComisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtMedComisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 9, 2);
-	private JTextFieldPad txtVlrICMSVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrIPIVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrPisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrCofinsVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrIRVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrCSocialVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrProdVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrDescVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtVlrProdItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtVlrFreteVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrComisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtMedComisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 9, casasDecFin);
+	private JTextFieldPad txtVlrICMSVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrIPIVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrPisVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrCofinsVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrIRVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrCSocialVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrProdVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrDescVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtVlrProdItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtBaseIPIItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
 	private JTextFieldPad txtStrDescItVenda = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextAreaPad txaObsItVenda = new JTextAreaPad(500);
-	private JTextFieldPad txtBaseICMSItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtAliqFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 2);
-	private JTextFieldPad txtAliqIPIItVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
-	private JTextFieldPad txtVlrIPIItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, 2);
-	private JTextFieldPad txtVlrBrutVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtBaseICMSItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtAliqFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, casasDecFin);
+	private JTextFieldPad txtAliqIPIItVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, casasDecFin);
+	private JTextFieldPad txtVlrIPIItVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
+	private JTextFieldPad txtAliqIPIFisc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 6, casasDecFin);
+	private JTextFieldPad txtVlrBrutVenda = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtStatusVenda = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtOrigFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtCodEmpLG = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -839,12 +839,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if (deVlrProd > 0) {
 					if (bBuscaBase)
 						deBaseICMS = Funcoes.arredDouble(deVlrProd - deVlrProd
-								* deRed / 100, casasDec);
+								* deRed / 100, casasDecFin);
 					deBaseIPI = deVlrProd;
 					deICMS = Funcoes.arredDouble(deBaseICMS
-							* txtPercICMSItVenda.doubleValue() / 100, casasDec);
+							* txtPercICMSItVenda.doubleValue() / 100, casasDecFin);
 					deIPI = Funcoes.arredDouble(deBaseIPI
-							* txtAliqIPIFisc.doubleValue() / 100, casasDec);
+							* txtAliqIPIFisc.doubleValue() / 100, casasDecFin);
 				}
 				txtVlrICMSItVenda.setVlrBigDecimal(new BigDecimal(deICMS));
 				txtBaseICMSItVenda.setVlrBigDecimal(new BigDecimal(deBaseICMS));
@@ -872,7 +872,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		double deVlrItVenda = dePreco * deQtd;
 		//NumberFormat.
 		txtVlrProdItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredDouble(
-				deVlrItVenda, casasDec)));
+				deVlrItVenda, casasDecFin)));
 		//    System.out.println("VlrProdTot:
 		// "+txtVlrProdItVenda.getVlrBigDecimal());
 	}
@@ -1129,7 +1129,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(Funcoes
 						.arredDouble(txtVlrProdItVenda.doubleValue()
 								* txtPercDescItVenda.doubleValue() / 100,
-								casasDec)));
+								casasDecFin)));
 				calcVlrProd();
 				calcImpostos(true);
 				txtVlrDescItVenda.setAtivo(false);
@@ -1150,7 +1150,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 														/ 100
 														* txtPercComisVenda
 																.doubleValue()
-														/ 100, casasDec)));
+														/ 100, casasDecFin)));
 				calcVlrProd();
 				calcImpostos(true);
 				txtVlrComisItVenda.setAtivo(false);

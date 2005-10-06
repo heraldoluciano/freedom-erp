@@ -75,6 +75,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JPanelPad pinSmtp = new JPanelPad();
 	private JPanelPad pinProd = new JPanelPad();
 	private JPanelPad pinOpcoesVenda = new JPanelPad();
+	private JPanelPad pinOpcoesGeral = new JPanelPad();
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
 	private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
@@ -98,6 +99,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtCodTipoMov8 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodTransp = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCasasDec = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 1, 0);
+	private JTextFieldPad txtCasasDecFin = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 1, 0);
 	private JTextFieldPad txtPercPrecoCusto = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
 	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
 	private JTextFieldPad txtDescClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
@@ -125,7 +127,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtSmtpMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JTextFieldPad txtUserMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
-	private JLabelPad lbVendOPcoes = new JLabelPad("    Opções");
+	private JLabelPad lbVendOpcoes = new JLabelPad("    Opções");
+	private JLabelPad lbGeralOpcoes = new JLabelPad("    Opções");
 	private JCheckBoxPad cbUsaRefProd = null;
 	private JCheckBoxPad cbUsaPedSeq = null;
 	private JCheckBoxPad cbUsaOrcSeq = null;
@@ -430,12 +433,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		setPainel(pinGeral);
 		adicTab("Geral", pinGeral);
 		adicCampo(txtAnoCC, 7, 25, 100, 20, "AnoCentroCusto", "Ano Base C.C.",ListaCampos.DB_SI, true);
-		adicDB(cbRgCliObrig, 110, 25, 180, 20, "RgCliObrig", "", true);
-		adicDB(cbCliMesmoCnpj, 7, 50, 250, 20, "CliMesmoCnpj", "", true);
-		adicDB(cbCnpjCliObrig, 7, 70, 300, 20, "CnpjObrigCli", "", true);
-		adicDB(cbCnpjForObrig, 7, 90, 400, 20, "CnpjForObrig", "", true);
-		adicDB(cbInscEstForObrig, 7, 110, 400, 20, "InscEstForObrig", "", true);
-		adicCampo(txtCasasDec, 7, 150, 100, 20, "CasasDec", "Casas Decimais",ListaCampos.DB_SI, true);
+		adic(new JLabelPad("Casas Decimais"),7,60,150,20);
+		adicCampo(txtCasasDecFin, 7, 100, 100, 20, "CasasDecFin", "p/ Financeiro",ListaCampos.DB_SI, true);
+		adicCampo(txtCasasDec, 7, 140, 100, 20, "CasasDec", "Demais",ListaCampos.DB_SI, true);
+		lbGeralOpcoes.setOpaque(true);
+		adic(lbGeralOpcoes,170,5,90,20);
+		adic(pinOpcoesGeral,160,15,560,140);
+		setPainel(pinOpcoesGeral);		
+		adicDB(cbRgCliObrig,7, 20, 180, 20, "RgCliObrig", "", true);
+		adicDB(cbCliMesmoCnpj, 7, 40, 250, 20, "CliMesmoCnpj", "", true);
+		adicDB(cbCnpjCliObrig, 7, 60, 300, 20, "CnpjObrigCli", "", true);
+		adicDB(cbCnpjForObrig, 7, 80, 400, 20, "CnpjForObrig", "", true);
+		adicDB(cbInscEstForObrig, 7, 100, 400, 20, "InscEstForObrig", "", true);
 		
 		
 		setPainel(pinVenda);
@@ -475,8 +484,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicCampo(txtCodTransp,7, 280, 75, 20, "CodTran", "Cód.tran.",ListaCampos.DB_FK, txtDescTransp, false);
 		adicDescFK(txtDescTransp, 85, 280, 250, 20, "RazTran","Razão social da transp.padrao para venda");
 		
-		lbVendOPcoes.setOpaque(true);
-		adic(lbVendOPcoes,360,5,70,20);
+		lbVendOpcoes.setOpaque(true);
+		adic(lbVendOpcoes,360,5,70,20);
 		adic(pinOpcoesVenda,350,15,380,300);
 		setPainel(pinOpcoesVenda);
 
@@ -685,6 +694,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 			Funcoes.mensagemErro(this,
 					"Número de casas decimais acima do permitido!");
 			txtCasasDec.requestFocus();
+			pevt.cancela();
+		}
+		if (txtCasasDecFin.getVlrInteger().intValue() > 5) {
+			Funcoes.mensagemErro(this,
+					"Número de casas decimais acima do permitido!");
+			txtCasasDecFin.requestFocus();
 			pevt.cancela();
 		}
 	}

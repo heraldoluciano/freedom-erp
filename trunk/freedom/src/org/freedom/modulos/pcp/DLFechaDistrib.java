@@ -41,7 +41,7 @@ import org.freedom.telas.FFDialogo;
 
 public class DLFechaDistrib extends FFDialogo {
 	
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 	
   private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
   private JTextFieldPad txtLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);

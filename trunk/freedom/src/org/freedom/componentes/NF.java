@@ -31,6 +31,8 @@ package org.freedom.componentes;
 import java.sql.Connection;
 import java.util.Vector;
 
+import org.freedom.telas.Aplicativo;
+
 public class NF {
 	
 	public static final int TPNF_NONE = -1;
@@ -159,6 +161,7 @@ public class NF {
 	protected TabVector frete = null;
 	protected int tipoNF = TPNF_NONE; 
 	protected int casasDec = 2;
+	protected int casasDecFin = Aplicativo.casasDecFin;
     
 	public NF(int casasDec) {
 		super();
@@ -167,6 +170,10 @@ public class NF {
 	
 	public int getCasasDec() {
 		return casasDec;
+	}
+	
+	public int getCasasDecFin() {
+		return casasDecFin;
 	}
 	
 	public int getTipoNF() {

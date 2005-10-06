@@ -50,16 +50,16 @@ public class DLDistrib extends FFDialogo implements MouseListener, ActionListene
 
 	private static final long serialVersionUID = 1L;
 
-	int casasDec = Aplicativo.casasDec;
+	private int casasDec = Aplicativo.casasDec;
 	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);  
 	private JTextFieldPad txtCodProdEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtRefProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
 	private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescEst = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
-	private JTextFieldPad txtQtdDistpOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
-	private JTextFieldPad txtQtdProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,Aplicativo.casasDec);
+	private JTextFieldPad txtQtdDist = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
+	private JTextFieldPad txtQtdDistpOp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
+	private JTextFieldPad txtQtdProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);
 	private JPanelPad pnDistrib = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pinCab = new JPanelPad(400,60);
 	private Tabela tabDistrib = new Tabela();
