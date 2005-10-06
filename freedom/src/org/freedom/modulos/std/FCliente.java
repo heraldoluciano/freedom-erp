@@ -175,7 +175,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JTextFieldPad txtCodCpCliFor = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
   private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
   private JTextFieldPad txtAnoMetaVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
-  private JTextFieldPad txtVlrMetaVend = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDec);
+  private JTextFieldPad txtVlrMetaVend = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, Aplicativo.casasDecFin);
   private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
   private Vector vPessoaLab = new Vector();
   private Vector vPessoaVal = new Vector();

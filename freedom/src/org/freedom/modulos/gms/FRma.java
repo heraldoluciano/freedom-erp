@@ -73,6 +73,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
+	private int casasDecFin = Aplicativo.casasDecFin;
 	private JPanelPad pinCab = new JPanelPad(740, 242);
 	private JPanelPad pinBotCab = new JPanelPad(104, 92);
 	private JPanelPad pinBotDet = new JPanelPad(104, 63);
@@ -81,109 +82,60 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 	private JLabelPad lSitItRma = null;
 	private JButton btAprovaRMA = new JButton("Aprovar", Icone.novo("btTudo.gif"));
-	private JButton btFinAprovRMA = new JButton("Finaliz. aprov.", Icone
-			.novo("btFechaVenda.gif"));
-	private JButton btExpedirRMA = new JButton("Expedir", Icone
-			.novo("btMedida.gif"));
-	private JButton btFinExpRMA = new JButton("Finaliz. exp.", Icone
-			.novo("btFechaVenda.gif"));
-	private JButton btCancelaRMA = new JButton("Cancelar", Icone
-			.novo("btRetorno.gif"));
-	private JButton btCancelaItem = new JButton("Cancelar", Icone
-			.novo("btRetorno.gif"));
-	private JButton btMotivoCancelaRMA = new JButton("Mot.Can", Icone
-			.novo("btObs.gif"));
-	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone
-			.novo("btObs.gif"));
-	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone
-			.novo("btObs.gif"));
-
-	private JTextFieldPad txtCodRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			8, 0);
-	private JTextFieldPad txtCodItRma = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtQtdItRma = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtQtdAprovRma = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtQtdExpRma = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtPrecoItRma = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, casasDec);
-	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			8, 0);
-	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			8, 0);
-	private JTextFieldPad txtSeqOF = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			8, 0);
-	private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
-	private JTextFieldPad txtCLoteProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 1, 0);
-	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			13, 0);
-	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			19, 0);
-	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,
-			10, 0);
-	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtCodAlmox = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldPad txtCodTpMov = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			50, 0);
-	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			8, 0);
-	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			40, 0);
-	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 19, 0);
-	private JTextFieldPad txtDtaReqRma = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
+	private JButton btFinAprovRMA = new JButton("Finaliz. aprov.", Icone.novo("btFechaVenda.gif"));
+	private JButton btExpedirRMA = new JButton("Expedir", Icone.novo("btMedida.gif"));
+	private JButton btFinExpRMA = new JButton("Finaliz. exp.", Icone.novo("btFechaVenda.gif"));
+	private JButton btCancelaRMA = new JButton("Cancelar", Icone.novo("btRetorno.gif"));
+	private JButton btCancelaItem = new JButton("Cancelar", Icone.novo("btRetorno.gif"));
+	private JButton btMotivoCancelaRMA = new JButton("Mot.Can", Icone.novo("btObs.gif"));
+	private JButton btMotivoCancelaItem = new JButton("Mot.Can", Icone.novo("btObs.gif"));
+	private JButton btMotivoPrior = new JButton("Mot.Prior", Icone.novo("btObs.gif"));
+	private JTextFieldPad txtCodRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
+	private JTextFieldPad txtCodItRma = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtQtdItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtCustoMPMProd = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtQtdAprovRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtQtdExpRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
+	private JTextFieldPad txtPrecoItRma = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
+	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
+	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
+	private JTextFieldPad txtSeqOF = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
+	private JTextFieldFK txtDescFase = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+	private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
+	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
+	private JTextFieldPad txtCodCC = new JTextFieldPad(JTextFieldPad.TP_STRING,19, 0);
+	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10, 0);
+	private JTextFieldFK txtDescProd = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtCodTpMov = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
+	private JTextFieldPad txtIDUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8, 0);
+	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,40, 0);
+	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
+	private JTextFieldPad txtDtaReqRma = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JTextAreaPad txaMotivoRma = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCancRma = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCancItem = new JTextAreaPad();
 	private JTextAreaPad txaMotivoPrior = new JTextAreaPad();
-	private JTextFieldPad txtSitItRma = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSitAprovItRma = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSitExpItRma = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSitRma = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			2, 0);
-	private JTextFieldPad txtSitAprovRma = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSitExpRma = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,
-			13, 0);
-	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,
-			10, 0);
-	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(
-			JTextFieldPad.TP_NUMERIC, 15, casasDec);
-	private JTextFieldPad txtCodFabProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);	
-	private JTextFieldPad txtCodUnid = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescUnid = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-	
+	private JTextFieldPad txtSitItRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSitAprovItRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSitExpItRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSitRma = new JTextFieldPad(JTextFieldPad.TP_STRING,2, 0);
+	private JTextFieldPad txtSitAprovRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtSitExpRma = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING,13, 0);
+	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldPad txtSldLiqProd = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDec);
+	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);	
+	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);	
 	private JRadioGroup rgPriod = null;
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
 	private JScrollPane spnMotivo = new JScrollPane(txaMotivoRma);
-
 	private ListaCampos lcAlmox = new ListaCampos(this, "AX");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");

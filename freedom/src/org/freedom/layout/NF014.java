@@ -165,7 +165,7 @@ public class NF014 extends Layout {
          String sDescAdic = ""; 
          //Gambs para colocar o lote:
          if ((itens.getDate(NF.C_VENCLOTE) != null) && (!itens.getString(NF.C_CODLOTE).equals(""))) {
-         	sDescAdic = "  - L.:"+itens.getString(NF.C_CODLOTE).trim()+", VC.:"+Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)).substring(3);
+         	sDescAdic = "  - "+itens.getString(NF.C_CODLOTE).trim();
          }
          String sTmp = !itens.getString(NF.C_DESCFISC).equals("") ? itens.getString(NF.C_DESCFISC).trim() : ""; 
 		 //Gambs para colocar arteriscos:

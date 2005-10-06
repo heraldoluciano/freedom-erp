@@ -54,51 +54,24 @@ import org.freedom.telas.FRelatorio;
 public class FRMediaItem extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtMesfim = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 2, 0);
-
-	private JTextFieldPad txtAnofim = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 4, 0);
-
-	private JTextFieldPad txtNumMes = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 2, 0);
-
-	private JTextFieldPad txtCodGrup = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 14, 0);
-
-	private JTextFieldPad txtDescGrup = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodMarca = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 6, 0);
-
-	private JTextFieldPad txtDescMarca = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 20, 0);
-
-	private JTextFieldPad txtCodVend = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 10, 0);
-
-	private JTextFieldFK txtDescVend = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JRadioGroup rgOrdem = null;
-	
+	private JTextFieldPad txtMesfim = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 2, 0);
+	private JTextFieldPad txtAnofim = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 4, 0);
+	private JTextFieldPad txtNumMes = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 2, 0);
+	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 14, 0);
+	private JTextFieldPad txtDescGrup = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING, 6, 0);
+	private JTextFieldPad txtDescMarca = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
+	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JRadioGroup rgOrdem = null;	
 	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
 	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
-
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-
 	private Vector vLabs = new Vector();
-
 	private Vector vVals = new Vector();
-
 	private ListaCampos lcGrup = new ListaCampos(this);
-
 	private ListaCampos lcMarca = new ListaCampos(this);
-
 	private ListaCampos lcVend = new ListaCampos(this);
 
 	public FRMediaItem() {
@@ -108,27 +81,20 @@ public class FRMediaItem extends FRelatorio {
 		txtDescGrup.setAtivo(false);
 		txtDescMarca.setAtivo(false);
 
-		lcGrup.add(new GuardaCampo(txtCodGrup, "CodGrup", "Cód.grupo",
-				ListaCampos.DB_PK, false));
-		lcGrup.add(new GuardaCampo(txtDescGrup, "DescGrup",
-				"Descrição do grupo", ListaCampos.DB_SI, false));
+		lcGrup.add(new GuardaCampo(txtCodGrup, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
+		lcGrup.add(new GuardaCampo(txtDescGrup, "DescGrup","Descrição do grupo", ListaCampos.DB_SI, false));
 		txtCodGrup.setTabelaExterna(lcGrup);
 		txtCodGrup.setNomeCampo("CodGrup");
 		txtCodGrup.setFK(true);
 		lcGrup.setReadOnly(true);
 		lcGrup.montaSql(false, "GRUPO", "EQ");
 
-		lcMarca.add(new GuardaCampo(txtCodMarca, "CodMarca", "Cód.marca",
-				ListaCampos.DB_PK, false));
-		lcMarca.add(new GuardaCampo(txtDescMarca, "DescMarca",
-				"Descrição da marca", ListaCampos.DB_SI, false));
-		lcMarca.add(new GuardaCampo(txtSiglaMarca, "SiglaMarca", "Sigla",
-				ListaCampos.DB_SI, false));
+		lcMarca.add(new GuardaCampo(txtCodMarca, "CodMarca", "Cód.marca",ListaCampos.DB_PK, false));
+		lcMarca.add(new GuardaCampo(txtDescMarca, "DescMarca","Descrição da marca", ListaCampos.DB_SI, false));
+		lcMarca.add(new GuardaCampo(txtSiglaMarca, "SiglaMarca", "Sigla",ListaCampos.DB_SI, false));
 
-		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_PK, false));
-		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend",
-				"Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
 		txtCodVend.setTabelaExterna(lcVend);
 		txtCodVend.setNomeCampo("CodVend");
 		txtCodVend.setFK(true);
@@ -162,8 +128,7 @@ public class FRMediaItem extends FRelatorio {
 		adic(txtMesfim, 40, 30, 47, 20);
 		adic(new JLabelPad("Ano:"), 100, 30, 37, 20);
 		adic(txtAnofim, 130, 30, 70, 20);
-		adic(new JLabelPad("Calcular a média dos últmos meses:"), 7, 60, 240,
-				20);
+		adic(new JLabelPad("Calcular a média dos últmos meses:"), 7, 60, 240,20);
 		adic(lbLinha2, 218, 70, 62, 2);
 		adic(new JLabelPad("Nº de meses (máx. 12):"), 7, 85, 200, 20);
 		adic(txtNumMes, 150, 85, 40, 20);
@@ -207,8 +172,6 @@ public class FRMediaItem extends FRelatorio {
 				if (rs.getString("UsaRefProd").trim().equals("S"))
 					bRetorno = true;
 			}
-			//      rs.close();
-			//      ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
@@ -266,19 +229,14 @@ public class FRMediaItem extends FRelatorio {
 		for (int i = 0; i < iNumMes; i++) {
 			cIni.set(Calendar.MONTH, cIni.get(Calendar.MONTH) + 1);
 			if (txtCodVend.getText().trim().length() > 0) {
-				sFiltroVend = " V" + (i + 2) + ".CODVEND = "
-						+ txtCodVend.getText().trim();
-				String sTmp = "REPR.: " + txtCodVend.getVlrString() + " - "
-						+ txtDescVend.getText().trim();
-				sFiltroVend += " AND V" + (i + 2) + ".CODEMPVD="
-						+ Aplicativo.iCodEmp + " AND V" + (i + 2)
-						+ ".CODFILIALVD=" + lcVend.getCodFilial() + " AND ";
+				sFiltroVend = " V" + (i + 2) + ".CODVEND = "+ txtCodVend.getText().trim();
+				String sTmp = "REPR.: " + txtCodVend.getVlrString() + " - "+ txtDescVend.getText().trim();
+				sFiltroVend += " AND V" + (i + 2) + ".CODEMPVD="+ Aplicativo.iCodEmp + " AND V" + (i + 2)+ ".CODFILIALVD=" + lcVend.getCodFilial() + " AND ";
 				sCab = sTmp ;
 			}
 			sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n"
 					+ " EQTIPOMOV TM WHERE V.FLAG IN "
-					+ Aplicativo.carregaFiltro(con,
-							org.freedom.telas.Aplicativo.iCodEmp)
+					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
 					+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
@@ -289,10 +247,7 @@ public class FRMediaItem extends FRelatorio {
 					+ " AND V.DTEMITVENDA BETWEEN '"
 					+ Funcoes.dateToStrDB(cIni.getTime())
 					+ "' AND '"
-					+ Funcoes
-							.dateToStrDB(Funcoes.periodoMes(cIni
-									.get(Calendar.MONTH) + 1, cIni
-									.get(Calendar.YEAR))[1]) + "')";
+					+ Funcoes.dateToStrDB(Funcoes.periodoMes(cIni.get(Calendar.MONTH) + 1, cIni.get(Calendar.YEAR))[1]) + "')";
 			sSubWhere += sOr
 					+ "EXISTS (SELECT IT"
 					+ (i + 2)
@@ -306,8 +261,7 @@ public class FRMediaItem extends FRelatorio {
 					+ "V"
 					+ (i + 2)
 					+ ".FLAG IN "
-					+ Aplicativo.carregaFiltro(con,
-							org.freedom.telas.Aplicativo.iCodEmp)
+					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT"
 					+ (i + 2)
 					+ ".CODPROD = P.CODPROD\n"
@@ -316,6 +270,7 @@ public class FRMediaItem extends FRelatorio {
 					+ ".CODVENDA = IT"
 					+ (i + 2)
 					+ ".CODVENDA\n"
+					+ " AND V"
 					+ (i + 2)
 					+ ".TIPOVENDA = IT"
 					+ (i + 2)
@@ -325,9 +280,7 @@ public class FRMediaItem extends FRelatorio {
 					+ ".DTEMITVENDA BETWEEN '"
 					+ Funcoes.dateToStrDB(cIni.getTime())
 					+ "' AND '"
-					+ Funcoes.dateToStrDB(Funcoes.periodoMes(cIni
-									.get(Calendar.MONTH) + 1, cIni
-									.get(Calendar.YEAR))[1]) + "')";
+					+ Funcoes.dateToStrDB(Funcoes.periodoMes(cIni.get(Calendar.MONTH) + 1, cIni.get(Calendar.YEAR))[1]) + "')";
 			sSubCab += " | "
 					+ Funcoes.strZero("" + (cIni.get(Calendar.MONTH) + 1), 2);
 			sSubCab += "/" + (cIni.get(Calendar.YEAR));
@@ -336,13 +289,11 @@ public class FRMediaItem extends FRelatorio {
 		}
 		sSubCab += " | Media    ";
 		if (txtCodGrup.getText().trim().length() > 0) {
-			sWhere += "P.CODGRUP LIKE '" + txtCodGrup.getText().trim()
-					+ "%' AND ";
+			sWhere += "P.CODGRUP LIKE '" + txtCodGrup.getText().trim()+ "%' AND ";
 			sCab = "GRUPO: " + txtDescGrup.getText().trim();
 		}
 		if (txtCodMarca.getText().trim().length() > 0) {
-			sWhere += "P.CODMARCA = '" + txtCodMarca.getText().trim()
-					+ "' AND ";
+			sWhere += "P.CODMARCA = '" + txtCodMarca.getText().trim()+ "' AND ";
 			sCab = "MARCA: " + txtDescMarca.getText().trim();
 		}
 
@@ -369,12 +320,10 @@ public class FRMediaItem extends FRelatorio {
 					imp.impCab(136, true);
 
 					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 0, "| Cod. Prod     ");
-					imp.say(imp.pRow() + 0, 16,
-							"  Desc. Produto                            ");
+					imp.say(imp.pRow() + 0, 16,"  Desc. Produto                            ");
 					imp.say(imp.pRow() + 0, 59, "| Estoque  ");
 					imp.say(imp.pRow() + 0, 70, "| Dt.Ult.Cp. ");
 					imp.say(imp.pRow() + 0, 83, "| Q.Ult.Cp ");
@@ -384,27 +333,18 @@ public class FRMediaItem extends FRelatorio {
 					imp.say(imp.pRow() + 0, 4, sSubCab);
 					imp.say(imp.pRow() + 0, 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "| "
-						+ Funcoes.copy(rs.getString(1), 0, 13) + " ");
-				imp.say(imp.pRow() + 0, 16, "  "
-						+ Funcoes.copy(rs.getString("DescProd"), 0, 40) + " ");
-				imp.say(imp.pRow() + 0, 59, "| "
-						+ Funcoes.strDecimalToStrCurrency(8, 0, rs
-								.getString("SldProd")) + " ");
+				imp.say(imp.pRow() + 0, 0, "| "+ Funcoes.copy(rs.getString(1), 0, 13) + " ");
+				imp.say(imp.pRow() + 0, 16, "  "+ Funcoes.copy(rs.getString("DescProd"), 0, 40) + " ");
+				imp.say(imp.pRow() + 0, 59, "| "+ Funcoes.strDecimalToStrCurrency(8, 0, rs.getString("SldProd")) + " ");
 				if (rs.getDate("DTULTCPPROD") != null) {
-					imp.say(imp.pRow() + 0, 70, "| "
-							+ Funcoes.sqlDateToStrDate(rs
-									.getDate("DTULTCPPROD")) + " ");
+					imp.say(imp.pRow() + 0, 70, "| "+ Funcoes.sqlDateToStrDate(rs.getDate("DTULTCPPROD")) + " ");
 				} else {
 					imp.say(imp.pRow() + 0, 70, "|            ");
 				}
-				imp.say(imp.pRow() + 0, 83, "| "
-						+ Funcoes.strDecimalToStrCurrency(8, 0, ""
-								+ rs.getDouble("QTDULTCPPROD")) + " ");
+				imp.say(imp.pRow() + 0, 83, "| "+ Funcoes.strDecimalToStrCurrency(8, 0, ""+ rs.getDouble("QTDULTCPPROD")) + " ");
 				imp.say(imp.pRow() + 0, 135, "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "|  ");
@@ -412,23 +352,16 @@ public class FRMediaItem extends FRelatorio {
 				double dMediaItem = 0;
 				iPos = 4;
 				for (int i = 0; i < iSoma; i++) {
-					imp.say(imp.pRow() + 0, iPos, " | "
-							+ Funcoes.strDecimalToStrCurrency(7, 0, rs
-									.getString(6 + i) != null ? rs
-									.getString(6 + i) : " "));
+					imp.say(imp.pRow() + 0, iPos, " | "+ Funcoes.strDecimalToStrCurrency(7, 0, rs.getString(6 + i) != null ? rs.getString(6 + i) : " "));
 					dQtd[i] += rs.getDouble(6 + i);
 					dSomaItem += rs.getDouble(6 + i);
 					iPos += 10;
 				}
 				dMediaItem = dSomaItem / iNumMes;
-				imp
-						.say(imp.pRow() + 0, iPos, " | "
-								+ Funcoes.strDecimalToStrCurrency(7, 0, ""
-										+ dMediaItem));
+				imp.say(imp.pRow() + 0, iPos, " | "+ Funcoes.strDecimalToStrCurrency(7, 0, ""+ dMediaItem));
 				imp.say(imp.pRow() + 0, 135, "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133)
-						+ "|");
+				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133)+ "|");
 				if (imp.pRow() >= (linPag - 1)) {
 					imp.incPags();
 					imp.eject();
@@ -439,14 +372,15 @@ public class FRMediaItem extends FRelatorio {
 			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "| T:");
+			
 			iPos = 4;
 			for (int i = 0; i < iSoma; i++) {
 				BigDecimal bVal = new BigDecimal(dQtd[i]);
 				bVal = bVal.setScale(1);
-				imp.say(imp.pRow() + 0, iPos, "| "
-						+ Funcoes.strDecimalToStrCurrency(7, 0, "" + bVal));
+				imp.say(imp.pRow() + 0, iPos, "| tst"+ Funcoes.strDecimalToStrCurrency(7, 0, "" + bVal));
 				iPos += 10;
 			}
+			
 			imp.say(imp.pRow() + 0, 135, "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
@@ -455,13 +389,11 @@ public class FRMediaItem extends FRelatorio {
 
 			imp.fechaGravacao();
 
-			//      rs.close();
-			//      ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro consulta tabela vendas!"
-					+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this, "Erro consulta tabela vendas!"+ err.getMessage(),true,con,err);
 		}
 
 		if (bVisualizar) {
