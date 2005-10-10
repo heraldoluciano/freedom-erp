@@ -337,7 +337,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	  		          " FROM TKHISTORICO H, ATATENDENTE A" +
 	  		          " WHERE H.CODCLI=? AND H.CODEMPCL=? AND H.CODFILIALCL=?" +
 	  	              " AND A.CODATEND=H.CODATEND AND A.CODEMP=H.CODEMPAE AND A.CODFILIAL=H.CODFILIALAE " +
-	  		          " ORDER BY "+/*H.DATAHISTTK DESC,H.HORAHISTTK DESC,*/"H.CODHISTTK";
+	  		          " ORDER BY H.DATAHISTTK DESC,H.HORAHISTTK DESC,H.CODHISTTK";
 	    try {
 	      PreparedStatement ps = con.prepareStatement(sSQL);
 	      ps.setInt(1,txtCodCli.getVlrInteger().intValue());
@@ -368,10 +368,107 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			Funcoes.mensagemErro(this,"Erro ao carregar tabela de históricos!\n"+err.getMessage(),true,con,err);
 	    }
   }
+    
+  private void novoHist() {
+	  ResultSet rs = null;
+	  PreparedStatement ps = null;
+	  int iCod = 0;
+	  	try{
+	  		
+		  	String sRets[];
+		  	
+		  	if(tabTemp == tabCont){
+	  			if (txtCodCont.getVlrInteger().intValue() == 0) {
+					Funcoes.mensagemInforma(this,"Não ha nenhum contato selecionado!");
+			  		txtCodCont.requestFocus();
+			  		return;
+			  	}
+	  			else
+		  			iCod = txtCodCont.getVlrInteger().intValue();
+		  	}
+	  		else if(tabTemp == tabCli){
+	  			if (txtCodCli.getVlrInteger().intValue() == 0) {
+					Funcoes.mensagemInforma(this,"Não ha nenhum cliente selecionado!");
+					txtCodCli.requestFocus();
+			  		return;
+			  	}
+	  			else 
+		  			iCod = txtCodCli.getVlrInteger().intValue();
+		  	}
+		  	
+		  	DLNovoHist dl = new DLNovoHist(iCod,tpnCont.getSelectedIndex(),this);
+		  	dl.setConexao(con);
+		  	dl.setVisible(true);
+		  	if (dl.OK) {
+		  	  sRets = dl.getValores();
+		  	  int iCodHist = 0;
+		  	  try {
+		        String sSQL = "SELECT IRET FROM TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
+		        ps = con.prepareStatement(sSQL);
+		        ps.setInt(1,Aplicativo.iCodEmp);
+		        ps.setInt(2,lcCont.getCodFilial());
+		        ps.setInt(3,txtCodCont.getVlrInteger().intValue());
+		        ps.setInt(4,lcCli.getCodFilial());  //Filialcli
+		        ps.setInt(5,txtCodCli.getVlrInteger().intValue());  //Codcli
+		        ps.setString(6,sRets[0]);
+		        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));
+			    ps.setString(8,sRets[1]);//codígo atendente
+			    ps.setString(9,sRets[2]);//status do historico
+			    rs = ps.executeQuery();
+			    if (rs.next()) {
+			    	iCodHist = rs.getInt("IRet");
+			    }
+			    rs.close();
+			    ps.close();
+			    
+			    if (!con.getAutoCommit())
+			    	con.commit();
+			    
+			    if (sRets[3] != null) {
+			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			        ps = con.prepareStatement(sSQL);
+			        ps.setInt(1,Aplicativo.iCodEmp);
+			        ps.setString(2,"HISTO");
+			        ps.setInt(3,ListaCampos.getMasterFilial("TKHISTORICO"));
+			        ps.setInt(4,iCodHist);
+			        ps.setDate(5,Funcoes.strDateToSqlDate(sRets[3]));
+			        ps.setString(6,sRets[4]+":00");
+			        ps.setDate(7,Funcoes.strDateToSqlDate(sRets[5]));
+			        ps.setString(8,sRets[6]+":00");
+			        ps.setString(9,sRets[7]);
+			        ps.setString(10,sRets[8]);
+			        ps.setString(11,sRets[9]);
+			        ps.setInt(12,5);
+			        ps.setInt(13,Aplicativo.iCodFilialPad);
+			        ps.setString(14,Aplicativo.strUsuario);
+			        ps.setString(15,sRets[10]);
+			        ps.setString(16,sRets[11]);
+			        ps.execute();
+			        ps.close();
+			        if (!con.getAutoCommit())
+			        	con.commit();
+			    }
+		    }
+		  	catch(SQLException err) {
+				Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
+		  	}
+		  	if(tabTemp == tabCont)
+	  			carregaTabCont();
+	  		else if(tabTemp == tabCli)
+	  			carregaTabCli();
+		    }
+		    dl.dispose();
+	  	}
+	  	finally{
+	  		rs = null;
+	  		ps = null;
+	  		iCod = 0;
+	  	}
+  }
   
   private void editaHist() {
-  		int iLin = 0;
-  		int iCod = 0;
+		int iLin = 0;
+		int iCod = 0;
 	  	try{
 	  		if ((iLin = tabTemp.getLinhaSel()) < 0) {
 		  		Funcoes.mensagemInforma(this,"Não ha nenhum histórico selecionado!");
@@ -427,6 +524,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	  		iCod = 0;
 	  	}
   }
+  
   private void excluiHist() {
 	  	if (tabTemp.getLinhaSel() == -1) { 
 			Funcoes.mensagemInforma(this,"Selecione um item na lista!");
@@ -450,98 +548,11 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			Funcoes.mensagemErro(this,"Erro ao excluir o histórico!\n"+err.getMessage(),true,con,err);
 		}
 		if(tabTemp == tabCont)
-  			carregaTabCont();
-  		else if(tabTemp == tabCli)
-  			carregaTabCli();
+			carregaTabCont();
+		else if(tabTemp == tabCli)
+			carregaTabCli();
   }
-  private void novoHist() {
-	  int iCod = 0;
-	  	try{
-	  		
-		  	String sRets[];
-		  	
-		  	if(tabTemp == tabCont){
-	  			iCod = txtCodCont.getVlrInteger().intValue();
-	  			if (txtCodCont.getVlrInteger().intValue() == 0) {
-					Funcoes.mensagemInforma(this,"Não ha nenhum contato selecionado!");
-			  		txtCodCont.requestFocus();
-			  		return;
-			  	}
-		  	}
-	  		else if(tabTemp == tabCli){
-	  			iCod = txtCodCli.getVlrInteger().intValue();
-	  			if (txtCodCli.getVlrInteger().intValue() == 0) {
-					Funcoes.mensagemInforma(this,"Não ha nenhum cliente selecionado!");
-					txtCodCli.requestFocus();
-			  		return;
-			  	}
-		  	}
-		  	
-		  	DLNovoHist dl = new DLNovoHist(iCod,tpnCont.getSelectedIndex(),this);
-		  	dl.setConexao(con);
-		  	dl.setVisible(true);
-		  	if (dl.OK) {
-		  	  sRets = dl.getValores();
-		  	  int iCodHist = 0;
-		  	  try {
-		        String sSQL = "SELECT IRET FROM TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
-		        PreparedStatement ps = con.prepareStatement(sSQL);
-		        ps.setInt(1,Aplicativo.iCodEmp);
-		        ps.setInt(2,lcCont.getCodFilial());
-		        ps.setInt(3,txtCodCont.getVlrInteger().intValue());
-		        ps.setNull(4,Types.INTEGER);  //Filialcli
-		        ps.setNull(5,Types.INTEGER);  //Codcli
-		        ps.setString(6,sRets[0]);
-		        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));
-			    ps.setString(8,sRets[1]);
-			    ps.setString(9,sRets[2]);
-			    ResultSet rs = ps.executeQuery();
-			    if (rs.next()) {
-			    	iCodHist = rs.getInt("IRet");
-			    }
-			    rs.close();
-			    ps.close();
-			    if (!con.getAutoCommit())
-			    	con.commit();
-			    if (sRets[3] != null) {
-			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			        ps = con.prepareStatement(sSQL);
-			        ps.setInt(1,Aplicativo.iCodEmp);
-			        ps.setString(2,"HISTO");
-			        ps.setInt(3,ListaCampos.getMasterFilial("TKHISTORICO"));
-			        ps.setInt(4,iCodHist);
-			        ps.setDate(5,Funcoes.strDateToSqlDate(sRets[3]));
-			        ps.setString(6,sRets[4]+":00");
-			        ps.setDate(7,Funcoes.strDateToSqlDate(sRets[5]));
-			        ps.setString(8,sRets[6]+":00");
-			        ps.setString(9,sRets[7]);
-			        ps.setString(10,sRets[8]);
-			        ps.setString(11,sRets[9]);
-			        ps.setInt(12,5);
-			        ps.setInt(13,Aplicativo.iCodFilialPad);
-			        ps.setString(14,Aplicativo.strUsuario);
-			        ps.setString(15,sRets[10]);
-			        ps.setString(16,sRets[11]);
-			        ps.execute();
-			        ps.close();
-			        if (!con.getAutoCommit())
-			        	con.commit();
-			    }
-		    }
-		  	catch(SQLException err) {
-				Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
-		  	}
-		  	if(tabTemp == tabCont)
-	  			carregaTabCont();
-	  		else if(tabTemp == tabCli)
-	  			carregaTabCli();
-		    }
-		    dl.dispose();
-	  	}
-	  	finally{
-	  		iCod = 0;
-	  	}
-  }
+  
   public void afterCarrega(CarregaEvent cevt) {  }
   public void beforeCarrega(CarregaEvent cevt) {
 	  	if (cevt.getListaCampos() == lcCont) {

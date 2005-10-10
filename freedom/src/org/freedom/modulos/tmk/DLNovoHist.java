@@ -82,7 +82,6 @@ public class DLNovoHist extends FFDialogo {
 		vLabs.addElement("Rejeitado");		
 		vLabs.addElement("Agendar ligação/visita");
 		cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
-		//cbSit.setVlrString("AG");
 		
 		lcCont.add(new GuardaCampo( txtCodCont , "CodCto", "Cód.cli", ListaCampos.DB_PK, txtNomeCont, false));
 		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome do contato", ListaCampos.DB_SI, false));
