@@ -30,12 +30,13 @@ import org.freedom.funcoes.Funcoes;
 public class NF014 extends Layout {
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 	boolean bRetorno = super.imprimir(nf, imp);
-	final int iLinMax = 55;
+	final int iLinMax = 42;
     Calendar cHora = Calendar.getInstance();
     int iNumNota = 0;
     int iItImp = 0;
     int iLinPag = imp.verifLinPag("NF");
 	int iContaMens = 1;
+	int iRow = 0;
     boolean bjatem = false;
     boolean bFat = true;
     String sCodfisc = "";
@@ -201,13 +202,14 @@ public class NF014 extends Layout {
 		 
 		 Vector vDesc = Funcoes.strToVectorSilabas(itens.getString(NF.C_OBSITPED).equals("") ? (itens.getString(NF.C_DESCPROD).trim()):itens.getString(NF.C_OBSITPED)+sDescAdic,49);
 	     String sDesc = "";
-		 for (int i=0;( (i < 20) && (vDesc.size()>i) );i++){
+		 for (int i=0; i<vDesc.size();i++){
 		 	if (vDesc.elementAt(i)!=null)
 				sDesc = ((String)vDesc.elementAt(i));
 			else
 				sDesc = "";
 
-			imp.say(imp.pRow()+(i>0 ? 1 : 0),0,""+imp.comprimido());
+		 	if (i>0)
+			   imp.say(imp.pRow()+ 1 ,0,""+imp.comprimido());
 			imp.say(imp.pRow()+0,15,sDesc);
 		}
          
@@ -245,20 +247,19 @@ public class NF014 extends Layout {
 		 
          iItImp++;
          if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() > iLinMax)) {
-        	 frete.next();
+           frete.next();
            if ((imp.pRow()+vMatObs.size())> iLinMax) {
-      	 	 Funcoes.mensagemInforma(null,"Número de linhas ultrapassa capacidade do formulário!");
-      	 	 imp.fechaGravacao();
-      	 	 return false;
-      	 	 
+	   	 	 Funcoes.mensagemInforma(null,"Número de linhas ultrapassa capacidade do formulário!");
+	  	 	 imp.fechaGravacao();
+	  	 	 return false;
            }
            if (iItImp == itens.getInt(NF.C_CONTAITENS)) {
-	           	 int iRow = imp.pRow();
 	             for (int i=0; i<vMatObs.size() ;i++ ) {
 					 imp.say(imp.pRow()+1,0,"");
 					 imp.say(imp.pRow()+0,14,(vMatObs.elementAt(i)!=null ? (String)vMatObs.elementAt(i) : ""));
 				 }				
-				 for (int i=0; i<(iLinMax-imp.pRow());i++) {
+	             iRow = imp.pRow();
+				 for (int i=0; i<(iLinMax-iRow);i++) {
 					 imp.say(imp.pRow()+1,0,"");
 				 }
 	             iItImp = 0;
@@ -281,14 +282,14 @@ public class NF014 extends Layout {
            imp.say(imp.pRow()+0,112,frete.getString(NF.C_UFFRETE));
            
 		   sTipoTran = frete.getString(NF.C_TIPOTRANSP);
-				 if (sTipoTran==null) sTipoTran = "T";
-	    
-				 if ( sTipoTran.equals("C") ){
-					imp.say(imp.pRow()+0,119,Funcoes.setMascara(!cab.getString(NF.C_CNPJEMIT).equals("") ? cab.getString(NF.C_CNPJEMIT) : "","##.###.###/####-##"));
-				 }
-				 else {
-					imp.say(imp.pRow()+0,119,Funcoes.setMascara(!frete.getString(NF.C_CNPJTRANSP).equals("") ? frete.getString(NF.C_CNPJTRANSP) : "","##.###.###/####-##")); 
-				 }
+		   if (sTipoTran==null) sTipoTran = "T";
+		
+		   if ( sTipoTran.equals("C") ){
+			 imp.say(imp.pRow()+0,119,Funcoes.setMascara(!cab.getString(NF.C_CNPJEMIT).equals("") ? cab.getString(NF.C_CNPJEMIT) : "","##.###.###/####-##"));
+		   }
+		   else {
+			 imp.say(imp.pRow()+0,119,Funcoes.setMascara(!frete.getString(NF.C_CNPJTRANSP).equals("") ? frete.getString(NF.C_CNPJTRANSP) : "","##.###.###/####-##")); 
+		   }
            
            
            imp.say(imp.pRow()+1,0,"");
@@ -298,14 +299,14 @@ public class NF014 extends Layout {
            imp.say(imp.pRow()+0,111,frete.getString(NF.C_UFTRANSP));
 
 		   sTipoTran = frete.getString(NF.C_TIPOTRANSP);
-					 if (sTipoTran.equals(""))
-						sTipoTran = "T";
-					 if (sTipoTran.equals("C") ){
-						 imp.say(imp.pRow()+0,119,cab.getString(NF.C_INSCEMIT));
-					 }
-					 else { 
-					  imp.say(imp.pRow()+0,119,frete.getString(NF.C_INSCTRANSP));
-					 }
+		   if (sTipoTran.equals(""))
+			   sTipoTran = "T";
+		   if (sTipoTran.equals("C") ){
+			   imp.say(imp.pRow()+0,119,cab.getString(NF.C_INSCEMIT));
+		   }
+		   else { 
+			   imp.say(imp.pRow()+0,119,frete.getString(NF.C_INSCTRANSP));
+		   }
 
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
