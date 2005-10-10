@@ -1074,7 +1074,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  ResultSet rs = null;
 	  int iLinha = 0;
 	  String sSQL = "SELECT H.CODHISTTK,H.SITHISTTK,H.DATAHISTTK,H.DESCHISTTK,H.CODCTO,H.CODATEND," +
-	  				" A.NOMEATEND,H.HORAHISTTK,H.CODATEND" +
+	  				" A.NOMEATEND,H.HORAHISTTK" +
         			" FROM TKHISTORICO H, ATATENDENTE A" +
         			" WHERE H.CODCLI=? AND H.CODEMPCL=? AND H.CODFILIALCL=?" +
         			" AND A.CODATEND=H.CODATEND AND A.CODEMP=H.CODEMPAE AND A.CODFILIAL=H.CODFILIALAE " +

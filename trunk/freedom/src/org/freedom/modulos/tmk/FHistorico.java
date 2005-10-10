@@ -282,11 +282,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 				  	}
 			  }
 		);
-		
-		
-		
-		
-		
+
 		btNovo.addActionListener(this);
 		btExcluir.addActionListener(this);
 		btSair.addActionListener(this);
@@ -425,9 +421,9 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			    	con.commit();
 			    
 			    if (sRets[3] != null) {
-			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			        ps = con.prepareStatement(sSQL);
-			        ps.setInt(1,Aplicativo.iCodEmp);
+			        ps.setInt(2,Aplicativo.iCodEmp);
 			        ps.setString(2,"HISTO");
 			        ps.setInt(3,ListaCampos.getMasterFilial("TKHISTORICO"));
 			        ps.setInt(4,iCodHist);
@@ -450,7 +446,12 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			    }
 		    }
 		  	catch(SQLException err) {
+				Funcoes.mensagemErro(this,"SQL Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
+				err.printStackTrace();
+		  	}
+		  	catch(Exception err) {
 				Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
+				err.printStackTrace();
 		  	}
 		  	if(tabTemp == tabCont)
 	  			carregaTabCont();

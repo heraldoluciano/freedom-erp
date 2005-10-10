@@ -30,7 +30,7 @@ import org.freedom.funcoes.Funcoes;
 public class NF014 extends Layout {
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 	boolean bRetorno = super.imprimir(nf, imp);
-	final int iLinMax = 42;
+	final int iLinMax = 55;
     Calendar cHora = Calendar.getInstance();
     int iNumNota = 0;
     int iItImp = 0;
@@ -246,7 +246,7 @@ public class NF014 extends Layout {
          iItImp++;
          if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() > iLinMax)) {
         	 frete.next();
-           if (imp.pRow()> iLinMax) {
+           if ((imp.pRow()+vMatObs.size())> iLinMax) {
       	 	 Funcoes.mensagemInforma(null,"Número de linhas ultrapassa capacidade do formulário!");
       	 	 imp.fechaGravacao();
       	 	 return false;
@@ -254,9 +254,6 @@ public class NF014 extends Layout {
            }
            if (iItImp == itens.getInt(NF.C_CONTAITENS)) {
 	           	 int iRow = imp.pRow();
-	             for (int i=0; i<(iLinMax-3-iRow);i++) {
-	             	 imp.say(imp.pRow()+1,0,"");
-	             }
 	             for (int i=0; i<vMatObs.size() ;i++ ) {
 					 imp.say(imp.pRow()+1,0,"");
 					 imp.say(imp.pRow()+0,14,(vMatObs.elementAt(i)!=null ? (String)vMatObs.elementAt(i) : ""));
@@ -264,8 +261,8 @@ public class NF014 extends Layout {
 				 for (int i=0; i<(iLinMax-imp.pRow());i++) {
 					 imp.say(imp.pRow()+1,0,"");
 				 }
-	             imp.say(imp.pRow()+1,0,"");
-	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	             iItImp = 0;
+	             imp.say(imp.pRow()+2,0,""+imp.comprimido());
 	             imp.say(imp.pRow()+0,9,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRBASEICMSPED)));
 	             imp.say(imp.pRow()+0,36,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRICMSPED)));
 	             imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRPRODPED)));
@@ -275,25 +272,9 @@ public class NF014 extends Layout {
 	             imp.say(imp.pRow()+0,68,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRADICPED)));
 	             imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRIPIPED)));
 	             imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQPED)));
-	             iItImp = 0;
            }
-           else if (imp.pRow() == iLinMax) {
-	             imp.say(imp.pRow()+1,0,""); 
-	             imp.say(imp.pRow()+1,0,"");
-	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	             imp.say(imp.pRow()+0,9,"***************");
-	             imp.say(imp.pRow()+0,39,"***************");
-	             imp.say(imp.pRow()+0,116,"***************");
-	             imp.say(imp.pRow()+1,0,"");
-	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	             imp.say(imp.pRow()+0,9,"***************");
-	             imp.say(imp.pRow()+0,68,"***************");
-	             imp.say(imp.pRow()+0,93,"***************");
-	             imp.say(imp.pRow()+0,116,"***************");
-           }
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
-           imp.say(imp.pRow()+1,0,"");
+
+           imp.say(imp.pRow()+2,0,"");
            imp.say(imp.pRow()+0,9,frete.getString(NF.C_RAZTRANSP));
            imp.say(imp.pRow()+0,90,frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
            imp.say(imp.pRow()+0,96,frete.getString(NF.C_PLACAFRETE));
