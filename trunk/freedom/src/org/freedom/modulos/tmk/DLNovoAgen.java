@@ -75,6 +75,7 @@ public class DLNovoAgen extends FFDialogo {
 		super(cOrig);
 		setTitulo("Novo agendamento");
 		setAtribos(504,460);
+	  	setLocationRelativeTo(this);
 		
 //Acertando o spinner		
 		

@@ -24,12 +24,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Types;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
@@ -38,6 +41,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -58,6 +62,7 @@ import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -66,6 +71,7 @@ import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FConveniado;
+import org.freedom.modulos.tmk.DLNovoHist;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLInputText;
 import org.freedom.telas.FAndamento;
@@ -196,12 +202,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinCli = new JPanelPad();
   private JPanelPad pnFor = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinFor = new JPanelPad(0,80);
+  private JPanelPad pnCto = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCont = new JPanelPad(new Dimension(600,400));
   private JPanelPad pinContatos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pinHistorico = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinMetaVend = new JPanelPad(0,80);
   private JPanelPad pnMetaVend = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tbObsData = new Tabela();
   private Tabela tabMetaVend = new Tabela();
   private Tabela tabFor = new Tabela();
+  private Tabela tabCont = new Tabela();
   private JPanelPad pinMes1 = new JPanelPad();
   private JPanelPad pinMes2 = new JPanelPad();
   private JPanelPad pinMes3 = new JPanelPad();
@@ -214,7 +224,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinMes10 = new JPanelPad();
   private JPanelPad pinMes11 = new JPanelPad();
   private JPanelPad pinMes12 = new JPanelPad();
-  private JPanelPad pn = new JPanelPad(600,400);
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
   private JScrollPane spnObs = new JScrollPane(txaObs); // Scroll pane para observações gerais 
@@ -235,6 +244,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private ListaCampos lcFor = new ListaCampos(this,"FR");
   private ListaCampos lcPais = new ListaCampos(this,"");
   private JScrollPane spnTabFor = new JScrollPane(tabFor);
+  private JScrollPane spnTabCont = new JScrollPane(tabCont);
   private JScrollPane spnMetaVend = new JScrollPane(tabMetaVend);
   private JButton btAtEntrega = new JButton(Icone.novo("btReset.gif"));
   private JButton btAtCobranca = new JButton(Icone.novo("btReset.gif"));
@@ -242,10 +252,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btExclObs = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btEditObs = new JButton(Icone.novo("btEditar.gif"));
   private JButton btGrpCli = new JButton(Icone.novo("btCliente.gif"));
-  private String sBtEditaHist = "btEditar.gif";
+  //private String sBtEditaHist = "btEditar.gif";
   private String sBtGeraHist = "btExecuta2.gif";
-
-  private JButton btConsHisJan = new JButton(Icone.novo(sBtEditaHist));
+  /*private JButton btConsHisJan = new JButton(Icone.novo(sBtEditaHist));
   private JButton btConsHisFev = new JButton(Icone.novo(sBtEditaHist));
   private JButton btConsHisMar = new JButton(Icone.novo(sBtEditaHist));
   private JButton btConsHisAbr = new JButton(Icone.novo(sBtEditaHist));
@@ -256,8 +265,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btConsHisSet = new JButton(Icone.novo(sBtEditaHist));
   private JButton btConsHisOut = new JButton(Icone.novo(sBtEditaHist));
   private JButton btConsHisNov = new JButton(Icone.novo(sBtEditaHist));
-  private JButton btConsHisDez = new JButton(Icone.novo(sBtEditaHist));
-  
+  private JButton btConsHisDez = new JButton(Icone.novo(sBtEditaHist));*/  
   private JButton btSetaQtdJan = new JButton(Icone.novo(sBtGeraHist));
   private JButton btSetaQtdFev = new JButton(Icone.novo(sBtGeraHist));
   private JButton btSetaQtdMar = new JButton(Icone.novo(sBtGeraHist));
@@ -273,6 +281,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
   private Navegador navFor = new Navegador(true);
   private Navegador navMetaVend = new Navegador(false);
+  private JTabbedPanePad tpnCont = new JTabbedPanePad();
   private FConveniado telaConv;
   private boolean[] bPref = null;
   private boolean bExecCargaObs = false;
@@ -385,7 +394,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	lcClas.setQueryCommit(false);
   	lcClas.setReadOnly(true);
   	txtCodClas.setTabelaExterna(lcClas);
-
+  	
+  	
   	adicCampo(txtCodCli, 7, 20, 80, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true);
   	adicCampo(txtRazCli, 90, 20, 307, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true);
   	adicCampo(txtNomeCli, 90, 60, 307, 20, "NomeCli", "Nome", ListaCampos.DB_SI, true);
@@ -595,219 +605,256 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
 //	Contatos
   	
-      setPainel(pinContatos);
-      adicTab("Contatos",pinContatos);
-      pinContatos.add(pn,BorderLayout.NORTH);
+  	tabCont.adicColuna("Ind.");
+	tabCont.adicColuna("Sit.");
+	tabCont.adicColuna("Contato");
+	tabCont.adicColuna("Atendente");
+	tabCont.adicColuna("Data");
+	tabCont.adicColuna("Histórico");
+	tabCont.adicColuna("Usuário");
+	tabCont.adicColuna("Hora");
+	
+	tabCont.setTamColuna(40,0);
+	tabCont.setTamColuna(30,1);
+	tabCont.setTamColuna(70,2);
+	tabCont.setTamColuna(70,3);
+	tabCont.setTamColuna(75,4);
+	tabCont.setTamColuna(200,5);
+	tabCont.setTamColuna(100,6);
+	tabCont.setTamColuna(70,7);
+	
+	tabCont.addMouseListener(
+			  new MouseAdapter() {
+				  	public void mouseClicked(MouseEvent mevt) {
+					  	  if (mevt.getClickCount() == 2) {
+					  	  	editaHist();
+					  	  }
+				  	}
+			  }
+		);
+  	
+    tpnCont.setTabPlacement(SwingConstants.BOTTOM);
+	tpnCont.add("Historico",pinHistorico);
+	tpnCont.add("Lançamento de Contatos",pinContatos);
+	
+	setPainel(pinContatos);
+	adicTab("Contatos",pnCto);
+	pnCto.add(tpnCont);
+	
+	pinHistorico.add(spnTabCont,BorderLayout.CENTER);
+	pinContatos.add(pnCont,BorderLayout.CENTER);
 	 
-	  pn.adic(new JLabelPad("Ano"),7,0,80,20);
-	  pn.adic(txtAno,7,20,80,20);
-	  pn.adic(btMudaTudo,367,15,150,30);
+	pnCont.adic(new JLabelPad("Ano"),7,0,80,20);
+	pnCont.adic(txtAno,7,20,80,20);
+	pnCont.adic(btMudaTudo,367,15,150,30);
 	  	  	  
-	  txtAno.setVlrInteger(new Integer(Calendar.getInstance().get(Calendar.YEAR)));
-	  
-	  JLabelPad lbMes1 = new JLabelPad("   Janeiro");
-	  lbMes1.setOpaque(true);
-	  pn.adic(lbMes1,17,55,80,15);
-	  pn.adic(pinMes1,7,60,170,70);
-	  pinMes1.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes1.adic(txtAntQtdContJan,7,30,70,20);
-	  txtAntQtdContJan.setAtivo(false);
-	  pinMes1.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes1.adic(txtNovaQtdContJan,80,30,60,20);
-	  pinMes1.adic(btSetaQtdJan,143,19,20,20);
-	  pinMes1.adic(btConsHisJan,143,41,20,20);
-	  btSetaQtdJan.setBorder(null);
-	  btConsHisJan.setBorder(null);
-	  btSetaQtdJan.setToolTipText("Gera contatos");
-	  btConsHisJan.setToolTipText("Visualiza contatos");
-	  pinMes1.setBorder( BorderFactory.createEtchedBorder());
+	txtAno.setVlrInteger(new Integer(Calendar.getInstance().get(Calendar.YEAR)));
+	 
+	JLabelPad lbMes1 = new JLabelPad("   Janeiro");
+	lbMes1.setOpaque(true);
+	pnCont.adic(lbMes1,17,55,80,15);
+	pnCont.adic(pinMes1,7,60,170,70);
+	pinMes1.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes1.adic(txtAntQtdContJan,7,30,70,20);
+	txtAntQtdContJan.setAtivo(false);
+	pinMes1.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes1.adic(txtNovaQtdContJan,80,30,60,20);
+	pinMes1.adic(btSetaQtdJan,143,30,20,20);
+	//pinMes1.adic(btConsHisJan,143,41,20,20);
+	btSetaQtdJan.setBorder(null);
+	//btConsHisJan.setBorder(null);
+	btSetaQtdJan.setToolTipText("Gera contatos");
+	//btConsHisJan.setToolTipText("Visualiza contatos");
+	pinMes1.setBorder( BorderFactory.createEtchedBorder());
 		  
-	  JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
-	  lbMes2.setOpaque(true);
-	  pn.adic(lbMes2,192,55,80,15);
-	  pn.adic(pinMes2,182,60,170,70);
-	  pinMes2.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes2.adic(txtAntQtdContFev,7,30,70,20);
-	  txtAntQtdContFev.setAtivo(false);
-	  pinMes2.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes2.adic(txtNovaQtdContFev,80,30,60,20);
-	  pinMes2.adic(btSetaQtdFev,143,19,20,20);
-	  pinMes2.adic(btConsHisFev,143,41,20,20);
-	  btSetaQtdFev.setBorder(null);
-	  btConsHisFev.setBorder(null);
-	  btSetaQtdFev.setToolTipText("Gera contatos");
-	  btConsHisFev.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
+	lbMes2.setOpaque(true);
+	pnCont.adic(lbMes2,192,55,80,15);
+	pnCont.adic(pinMes2,182,60,170,70);
+	pinMes2.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes2.adic(txtAntQtdContFev,7,30,70,20);
+	txtAntQtdContFev.setAtivo(false);
+	pinMes2.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes2.adic(txtNovaQtdContFev,80,30,60,20);
+	pinMes2.adic(btSetaQtdFev,143,30,20,20);
+	//pinMes2.adic(btConsHisFev,143,41,20,20);
+	btSetaQtdFev.setBorder(null);
+	//btConsHisFev.setBorder(null);
+	btSetaQtdFev.setToolTipText("Gera contatos");
+	//btConsHisFev.setToolTipText("Visualiza contatos");
 	  
-	  pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
-	  JLabelPad lbMes3 = new JLabelPad("   Março");
-	  lbMes3.setOpaque(true);
-	  pn.adic(lbMes3,367,55,80,15);
-	  pn.adic(pinMes3,357,60,170,70);
-	  pinMes3.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes3.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes3.adic(txtAntQtdContMar,7,30,70,20);
-	  txtAntQtdContMar.setAtivo(false);
-	  pinMes3.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes3.adic(txtNovaQtdContMar,80,30,60,20);
-	  pinMes3.adic(btSetaQtdMar,143,19,20,20);	
-	  pinMes3.adic(btConsHisMar,143,41,20,20); 
-	  btSetaQtdMar.setBorder(null);
-	  btConsHisMar.setBorder(null);
-	  btSetaQtdMar.setToolTipText("Gera contatos");
-	  btConsHisMar.setToolTipText("Visualiza contatos");
+	pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
+	JLabelPad lbMes3 = new JLabelPad("   Março");
+	lbMes3.setOpaque(true);
+	pnCont.adic(lbMes3,367,55,80,15);
+	pnCont.adic(pinMes3,357,60,170,70);
+	pinMes3.setBorder( BorderFactory.createEtchedBorder());	
+	pinMes3.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes3.adic(txtAntQtdContMar,7,30,70,20);
+	txtAntQtdContMar.setAtivo(false);
+	pinMes3.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes3.adic(txtNovaQtdContMar,80,30,60,20);
+	pinMes3.adic(btSetaQtdMar,143,30,20,20);	
+	//pinMes3.adic(btConsHisMar,143,41,20,20); 
+	btSetaQtdMar.setBorder(null);
+	//btConsHisMar.setBorder(null);
+	btSetaQtdMar.setToolTipText("Gera contatos");
+	//btConsHisMar.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes4 = new JLabelPad("   Abril");
-	  lbMes4.setOpaque(true);
-	  pn.adic(lbMes4,17,135,80,15);
-	  pn.adic(pinMes4,7,140,170,70);
-	  pinMes4.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes4.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes4.adic(txtAntQtdContAbr,7,30,70,20);
-	  txtAntQtdContAbr.setAtivo(false);
-	  pinMes4.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes4.adic(txtNovaQtdContAbr,80,30,60,20);
-	  pinMes4.adic(btSetaQtdAbr,143,19,20,20);	
-	  pinMes4.adic(btConsHisAbr,143,41,20,20);
-	  btSetaQtdAbr.setBorder(null);
-	  btConsHisAbr.setBorder(null);
-	  btSetaQtdAbr.setToolTipText("Gera contatos");
-	  btConsHisAbr.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes4 = new JLabelPad("   Abril");
+	lbMes4.setOpaque(true);
+	pnCont.adic(lbMes4,17,135,80,15);
+	pnCont.adic(pinMes4,7,140,170,70);
+	pinMes4.setBorder( BorderFactory.createEtchedBorder());	  
+	pinMes4.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes4.adic(txtAntQtdContAbr,7,30,70,20);
+	txtAntQtdContAbr.setAtivo(false);
+	pinMes4.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes4.adic(txtNovaQtdContAbr,80,30,60,20);
+	pinMes4.adic(btSetaQtdAbr,143,30,20,20);	
+	//pinMes4.adic(btConsHisAbr,143,41,20,20);
+	btSetaQtdAbr.setBorder(null);
+	//btConsHisAbr.setBorder(null);
+	btSetaQtdAbr.setToolTipText("Gera contatos");
+	//btConsHisAbr.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes5 = new JLabelPad("   Maio");
-	  lbMes5.setOpaque(true);
-	  pn.adic(lbMes5,192,135,80,15);
-	  pn.adic(pinMes5,182,140,170,70);
-	  pinMes5.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes5.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes5.adic(txtAntQtdContMai,7,30,70,20);
-	  txtAntQtdContMai.setAtivo(false);
-	  pinMes5.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes5.adic(txtNovaQtdContMai,80,30,60,20);
-	  pinMes5.adic(btSetaQtdMai,143,19,20,20);
-	  pinMes5.adic(btConsHisMai,143,41,20,20);
-	  btSetaQtdMai.setBorder(null);
-	  btConsHisMai.setBorder(null);
-	  btSetaQtdMai.setToolTipText("Gera contatos");
-	  btConsHisMai.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes5 = new JLabelPad("   Maio");
+	lbMes5.setOpaque(true);
+	pnCont.adic(lbMes5,192,135,80,15);
+	pnCont.adic(pinMes5,182,140,170,70);
+	pinMes5.setBorder( BorderFactory.createEtchedBorder());	
+	pinMes5.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes5.adic(txtAntQtdContMai,7,30,70,20);
+	txtAntQtdContMai.setAtivo(false);
+	pinMes5.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes5.adic(txtNovaQtdContMai,80,30,60,20);
+	pinMes5.adic(btSetaQtdMai,143,30,20,20);
+	//pinMes5.adic(btConsHisMai,143,41,20,20);
+	btSetaQtdMai.setBorder(null);
+	//btConsHisMai.setBorder(null);
+	btSetaQtdMai.setToolTipText("Gera contatos");
+	//btConsHisMai.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes6 = new JLabelPad("   Junho");
-	  lbMes6.setOpaque(true);
-	  pn.adic(lbMes6,367,135,80,15);
-	  pn.adic(pinMes6,357,140,170,70);
-	  pinMes6.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes6.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes6.adic(txtAntQtdContJun,7,30,70,20);
-	  txtAntQtdContJun.setAtivo(false);
-	  pinMes6.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes6.adic(txtNovaQtdContJun,80,30,60,20);
-	  pinMes6.adic(btSetaQtdJun,143,19,20,20);
-	  pinMes6.adic(btConsHisJun,143,41,20,20);
-	  btSetaQtdJun.setBorder(null);
-	  btConsHisJun.setBorder(null);
-	  btSetaQtdJun.setToolTipText("Gera contatos");
-	  btConsHisJun.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes6 = new JLabelPad("   Junho");
+	lbMes6.setOpaque(true);
+	pnCont.adic(lbMes6,367,135,80,15);
+	pnCont.adic(pinMes6,357,140,170,70);
+	pinMes6.setBorder( BorderFactory.createEtchedBorder());	
+	pinMes6.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes6.adic(txtAntQtdContJun,7,30,70,20);
+	txtAntQtdContJun.setAtivo(false);
+	pinMes6.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes6.adic(txtNovaQtdContJun,80,30,60,20);
+	pinMes6.adic(btSetaQtdJun,143,30,20,20);
+	//pinMes6.adic(btConsHisJun,143,41,20,20);
+	btSetaQtdJun.setBorder(null);
+	//btConsHisJun.setBorder(null);
+	btSetaQtdJun.setToolTipText("Gera contatos");
+	//btConsHisJun.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes7 = new JLabelPad("   Julho");
-	  lbMes7.setOpaque(true);
-	  pn.adic(lbMes7,17,215,80,15);
-	  pn.adic(pinMes7,7,220,170,70);
-	  pinMes7.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes7.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes7.adic(txtAntQtdContJul,7,30,70,20);
-	  txtAntQtdContJul.setAtivo(false);
-	  pinMes7.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes7.adic(txtNovaQtdContJul,80,30,60,20);
-	  pinMes7.adic(btSetaQtdJul,143,19,20,20);
-	  pinMes7.adic(btConsHisJul,143,41,20,20);
-	  btSetaQtdJul.setBorder(null);
-	  btConsHisJul.setBorder(null);
-	  btSetaQtdJul.setToolTipText("Gera contatos");
-	  btConsHisJul.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes7 = new JLabelPad("   Julho");
+	lbMes7.setOpaque(true);
+	pnCont.adic(lbMes7,17,215,80,15);
+	pnCont.adic(pinMes7,7,220,170,70);
+	pinMes7.setBorder( BorderFactory.createEtchedBorder());	  
+	pinMes7.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes7.adic(txtAntQtdContJul,7,30,70,20);
+	txtAntQtdContJul.setAtivo(false);
+	pinMes7.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes7.adic(txtNovaQtdContJul,80,30,60,20);
+	pinMes7.adic(btSetaQtdJul,143,30,20,20);
+	//pinMes7.adic(btConsHisJul,143,41,20,20);
+	btSetaQtdJul.setBorder(null);
+	//btConsHisJul.setBorder(null);
+	btSetaQtdJul.setToolTipText("Gera contatos");
+	//btConsHisJul.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes8 = new JLabelPad("   Agosto");
-	  lbMes8.setOpaque(true);
-	  pn.adic(lbMes8,192,215,80,15);
-	  pn.adic(pinMes8,182,220,170,70);
-	  pinMes8.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes8.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes8.adic(txtAntQtdContAgo,7,30,70,20);
-	  txtAntQtdContAgo.setAtivo(false);
-	  pinMes8.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes8.adic(txtNovaQtdContAgo,80,30,60,20);
-	  pinMes8.adic(btSetaQtdAgo,143,19,20,20);
-	  pinMes8.adic(btConsHisAgo,143,41,20,20);
-	  btSetaQtdAgo.setBorder(null);
-	  btConsHisAgo.setBorder(null);
-	  btSetaQtdAgo.setToolTipText("Gera contatos");
-	  btConsHisAgo.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes8 = new JLabelPad("   Agosto");
+	lbMes8.setOpaque(true);
+	pnCont.adic(lbMes8,192,215,80,15);
+	pnCont.adic(pinMes8,182,220,170,70);
+	pinMes8.setBorder( BorderFactory.createEtchedBorder());	
+	pinMes8.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes8.adic(txtAntQtdContAgo,7,30,70,20);
+	txtAntQtdContAgo.setAtivo(false);
+	pinMes8.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes8.adic(txtNovaQtdContAgo,80,30,60,20);
+	pinMes8.adic(btSetaQtdAgo,143,30,20,20);
+	//pinMes8.adic(btConsHisAgo,143,41,20,20);
+	btSetaQtdAgo.setBorder(null);
+	//btConsHisAgo.setBorder(null);
+	btSetaQtdAgo.setToolTipText("Gera contatos");
+	//btConsHisAgo.setToolTipText("Visualiza contatos");
+	
+	JLabelPad lbMes9 = new JLabelPad("   Setembro");
+	lbMes9.setOpaque(true);
+	pnCont.adic(lbMes9,367,215,80,15);
+	pnCont.adic(pinMes9,357,220,170,70);
+	pinMes9.setBorder( BorderFactory.createEtchedBorder());	
+	pinMes9.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes9.adic(txtAntQtdContSet,7,30,70,20);
+	txtAntQtdContSet.setAtivo(false);
+	pinMes9.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes9.adic(txtNovaQtdContSet,80,30,60,20);
+	pinMes9.adic(btSetaQtdSet,143,30,20,20);	
+	//pinMes9.adic(btConsHisSet,143,41,20,20);
+	btSetaQtdSet.setBorder(null);
+	//btConsHisSet.setBorder(null);
+	btSetaQtdSet.setToolTipText("Gera contatos");
+	//btConsHisSet.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes9 = new JLabelPad("   Setembro");
-	  lbMes9.setOpaque(true);
-	  pn.adic(lbMes9,367,215,80,15);
-	  pn.adic(pinMes9,357,220,170,70);
-	  pinMes9.setBorder( BorderFactory.createEtchedBorder());	
-	  pinMes9.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes9.adic(txtAntQtdContSet,7,30,70,20);
-	  txtAntQtdContSet.setAtivo(false);
-	  pinMes9.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes9.adic(txtNovaQtdContSet,80,30,60,20);
-	  pinMes9.adic(btSetaQtdSet,143,19,20,20);	
-	  pinMes9.adic(btConsHisSet,143,41,20,20);
-	  btSetaQtdSet.setBorder(null);
-	  btConsHisSet.setBorder(null);
-	  btSetaQtdSet.setToolTipText("Gera contatos");
-	  btConsHisSet.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes10 = new JLabelPad("   Outubro");
+	lbMes10.setOpaque(true);
+	pnCont.adic(lbMes10,17,295,80,15);
+	pnCont.adic(pinMes10,7,300,170,70);
+	pinMes10.setBorder( BorderFactory.createEtchedBorder());	  
+	pinMes10.adic(new JLabelPad("Cntatos"),7,10,70,20);
+	pinMes10.adic(txtAntQtdContOut,7,30,70,20);
+	txtAntQtdContOut.setAtivo(false);
+	pinMes10.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes10.adic(txtNovaQtdContOut,80,30,60,20);
+	pinMes10.adic(btSetaQtdOut,143,30,20,20);
+	//pinMes10.adic(btConsHisOut,143,41,20,20);
+	btSetaQtdOut.setBorder(null);
+	//btConsHisOut.setBorder(null);
+	btSetaQtdOut.setToolTipText("Gera contatos");
+	//btConsHisOut.setToolTipText("Visualiza contatos");
 	  
-	  JLabelPad lbMes10 = new JLabelPad("   Outubro");
-	  lbMes10.setOpaque(true);
-	  pn.adic(lbMes10,17,295,80,15);
-	  pn.adic(pinMes10,7,300,170,70);
-	  pinMes10.setBorder( BorderFactory.createEtchedBorder());	  
-	  pinMes10.adic(new JLabelPad("Cntatos"),7,10,70,20);
-	  pinMes10.adic(txtAntQtdContOut,7,30,70,20);
-	  txtAntQtdContOut.setAtivo(false);
-	  pinMes10.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes10.adic(txtNovaQtdContOut,80,30,60,20);
-	  pinMes10.adic(btSetaQtdOut,143,19,20,20);
-	  pinMes10.adic(btConsHisOut,143,41,20,20);
-	  btSetaQtdOut.setBorder(null);
-	  btConsHisOut.setBorder(null);
-	  btSetaQtdOut.setToolTipText("Gera contatos");
-	  btConsHisOut.setToolTipText("Visualiza contatos");
-	  
-	  JLabelPad lbMes11 = new JLabelPad("   Novembro");
-	  lbMes11.setOpaque(true);
-	  pn.adic(lbMes11,192,295,80,15);
-	  pn.adic(pinMes11,182,300,170,70);
-	  pinMes11.setBorder( BorderFactory.createEtchedBorder());	 
-	  pinMes11.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes11.adic(txtAntQtdContNov,7,30,70,20);
-	  txtAntQtdContNov.setAtivo(false);
-	  pinMes11.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes11.adic(txtNovaQtdContNov,80,30,60,20);
-	  pinMes11.adic(btSetaQtdNov,143,19,20,20);
-	  pinMes11.adic(btConsHisNov,143,41,20,20);	 
-	  btSetaQtdNov.setBorder(null);
-	  btConsHisNov.setBorder(null);
-	  btSetaQtdNov.setToolTipText("Gera contatos");
-	  btConsHisNov.setToolTipText("Visualiza contatos");
-
-	  JLabelPad lbMes12 = new JLabelPad("   Dezembro");
-	  lbMes12.setOpaque(true);
-	  pn.adic(lbMes12,367,295,80,15);
-	  pn.adic(pinMes12,357,300,170,70);
-	  pinMes12.setBorder( BorderFactory.createEtchedBorder());
-	  pinMes12.adic(new JLabelPad("Contatos"),7,10,70,20);
-	  pinMes12.adic(txtAntQtdContDez,7,30,70,20);
-	  txtAntQtdContDez.setAtivo(false);
-	  pinMes12.adic(new JLabelPad("Nova qtd."),80,10,60,20);
-	  pinMes12.adic(txtNovaQtdContDez,80,30,60,20);
-	  pinMes12.adic(btSetaQtdDez,143,19,20,20);	 
-	  pinMes12.adic(btConsHisDez,143,41,20,20);
-	  btSetaQtdDez.setBorder(null);
-	  btConsHisDez.setBorder(null);
-	  btSetaQtdDez.setToolTipText("Gera contatos");
-	  btConsHisDez.setToolTipText("Visualiza contatos");
+	JLabelPad lbMes11 = new JLabelPad("   Novembro");
+	lbMes11.setOpaque(true);
+	pnCont.adic(lbMes11,192,295,80,15);
+	pnCont.adic(pinMes11,182,300,170,70);
+	pinMes11.setBorder( BorderFactory.createEtchedBorder());	 
+	pinMes11.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes11.adic(txtAntQtdContNov,7,30,70,20);
+	txtAntQtdContNov.setAtivo(false);
+	pinMes11.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes11.adic(txtNovaQtdContNov,80,30,60,20);
+	pinMes11.adic(btSetaQtdNov,143,30,20,20);
+	//pinMes11.adic(btConsHisNov,143,41,20,20);	 
+	btSetaQtdNov.setBorder(null);
+	//btConsHisNov.setBorder(null);
+	btSetaQtdNov.setToolTipText("Gera contatos");
+	//btConsHisNov.setToolTipText("Visualiza contatos");
+	
+	JLabelPad lbMes12 = new JLabelPad("   Dezembro");
+	lbMes12.setOpaque(true);
+	pnCont.adic(lbMes12,367,295,80,15);
+	pnCont.adic(pinMes12,357,300,170,70);
+	pinMes12.setBorder( BorderFactory.createEtchedBorder());
+	pinMes12.adic(new JLabelPad("Contatos"),7,10,70,20);
+	pinMes12.adic(txtAntQtdContDez,7,30,70,20);
+	txtAntQtdContDez.setAtivo(false);
+	pinMes12.adic(new JLabelPad("Nova qtd."),80,10,60,20);
+	pinMes12.adic(txtNovaQtdContDez,80,30,60,20);
+	pinMes12.adic(btSetaQtdDez,143,30,20,20);	 
+	//pinMes12.adic(btConsHisDez,143,41,20,20);
+	btSetaQtdDez.setBorder(null);
+	//btConsHisDez.setBorder(null);
+	btSetaQtdDez.setToolTipText("Gera contatos");
+	//btConsHisDez.setToolTipText("Visualiza contatos");
+	
+	
 	  
 	  
 // AnotaMetaVend
@@ -832,7 +879,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
      
      
 	  
-	  btConsHisJan.addActionListener(this);
+	  /*tConsHisJan.addActionListener(this);
 	  btConsHisFev.addActionListener(this);
 	  btConsHisMar.addActionListener(this);
 	  btConsHisAbr.addActionListener(this);
@@ -843,7 +890,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  btConsHisSet.addActionListener(this);
 	  btConsHisOut.addActionListener(this);
 	  btConsHisNov.addActionListener(this);
-	  btConsHisDez.addActionListener(this);
+	  btConsHisDez.addActionListener(this);*/
 	  btSetaQtdJan.addActionListener(this);
 	  btSetaQtdFev.addActionListener(this);
 	  btSetaQtdMar.addActionListener(this);
@@ -1022,6 +1069,100 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  return iRet;
   }
   
+  private void carregaTabHist(){
+	  PreparedStatement ps = null;
+	  ResultSet rs = null;
+	  int iLinha = 0;
+	  String sSQL = "SELECT H.CODHISTTK,H.SITHISTTK,H.DATAHISTTK,H.DESCHISTTK,H.CODCTO,H.CODATEND," +
+	  				" A.NOMEATEND,H.HORAHISTTK,H.CODATEND" +
+        			" FROM TKHISTORICO H, ATATENDENTE A" +
+        			" WHERE H.CODCLI=? AND H.CODEMPCL=? AND H.CODFILIALCL=?" +
+        			" AND A.CODATEND=H.CODATEND AND A.CODEMP=H.CODEMPAE AND A.CODFILIAL=H.CODFILIALAE " +
+        			" ORDER BY H.DATAHISTTK DESC,H.HORAHISTTK DESC,H.CODHISTTK";
+	  try {
+		  ps = con.prepareStatement(sSQL);
+		  ps.setInt(1,txtCodCli.getVlrInteger().intValue());
+		  ps.setInt(2,Aplicativo.iCodEmp);
+		  ps.setInt(3,Aplicativo.iCodFilial);
+		  rs = ps.executeQuery();
+		  tabCont.limpa();
+		  while(rs.next()) {
+			  tabCont.adicLinha();
+			  tabCont.setValor(rs.getString("CodHistTK"),iLinha,0);
+			  tabCont.setValor(rs.getString("SitHistTK"),iLinha,1);
+			  tabCont.setValor(rs.getString("CodCto"),iLinha,2);
+			  tabCont.setValor(rs.getString("CodAtend"),iLinha,3);
+			  tabCont.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")),iLinha,4);
+			  tabCont.setValor(rs.getString("DescHistTK"),iLinha,5);
+			  tabCont.setValor(rs.getString("NomeAtend"),iLinha,6);
+			  tabCont.setValor(rs.getString("HoraHistTK"),iLinha,7);
+			  iLinha++;
+		  }
+		
+		  rs.close();
+		  ps.close();
+	}
+	catch (SQLException err) {
+		Funcoes.mensagemErro(this,"Erro ao carregar tabela de históricos!\n"+err.getMessage(),true,con,err);
+	}
+	finally{
+		rs = null;
+		ps = null;
+		iLinha = 0;
+	}
+  }
+  
+  private void editaHist() {
+		int iLin = 0;
+		int iCod = 0;
+	  	try{
+	  		if ((iLin = tabCont.getLinhaSel()) < 0) {
+		  		Funcoes.mensagemInforma(this,"Não ha nenhum histórico selecionado!");
+		  		return;
+		  	}
+		  	String sRets[];
+		  	iCod = txtCodCli.getVlrInteger().intValue();
+		  	
+		  	DLNovoHist dl = new DLNovoHist(iCod,1,this);
+		  	dl.setConexao(con);
+		  	dl.setValores(new String[] {(String)tabCont.getValor(iLin,5),
+							   			(String)tabCont.getValor(iLin,3),
+							   			(String)tabCont.getValor(iLin,1)
+		  							   }
+		  				 );
+		  	dl.setVisible(true);
+		  	if (dl.OK) {
+		  		sRets = dl.getValores();
+		  		try {
+		  			String sSQL = "SELECT IRET FROM TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
+		  			PreparedStatement ps = con.prepareStatement(sSQL);
+		  			ps.setInt(1,Integer.parseInt((String)tabCont.getValor(iLin,0)));
+		  			ps.setInt(2,Aplicativo.iCodEmp);
+		  			ps.setInt(3,Aplicativo.iCodFilial);
+		  			ps.setInt(4,((Integer)tabCont.getValor(iLin,2)).intValue());
+		            ps.setNull(5,Types.INTEGER);  //Filialcli
+		            ps.setNull(6,Types.INTEGER);  //Codcli
+		            ps.setString(7,sRets[0]);
+		  			ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));
+		  			ps.setString(9,sRets[1]);
+		  			ps.setString(10,sRets[2]);
+		  			ps.executeQuery();
+		  			ps.close();
+		  			if (!con.getAutoCommit())
+		  				con.commit();
+		  		}
+		  		catch(SQLException err) {
+		  			Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
+		  		}
+		  	}
+		  	dl.dispose();
+	  	}
+	  	finally{
+	  		iLin = 0;
+	  		iCod = 0;
+	  	}
+  }
+  
   private void geraHistoricos(Integer iMes){
 	  HashMap hmMeses = new HashMap();
 	  HashMap hmJan = new HashMap();
@@ -1109,6 +1250,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  
 	  }
 	  buscaContatos();
+	  carregaTabHist();
   }
   
   private void geraHistorico(Integer iMes){	  
@@ -1145,10 +1287,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       else {
     	  Funcoes.mensagemInforma(this,"Não é possivel gerar contatos para esse cliente, pois não existe um atendente\nvinculado ao vendedor padrão!");
       }
-	  
-	  
-	  
-	  
+      carregaTabHist();
   }
     
   private void exclObs() {
@@ -1266,9 +1405,10 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
  * @see org.freedom.acao.CarregaListener#afterCarrega(org.freedom.acao.CarregaEvent)
  */
   public void afterCarrega(CarregaEvent cevt) {
-    if (cevt.getListaCampos()==lcCampos) 
+    if (cevt.getListaCampos()==lcCampos) {
        carregaTabelaObs();
-    
+       carregaTabHist();
+    }
   }
 
   public void beforeCarrega(CarregaEvent cevt) {
@@ -2071,7 +2211,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	    novaObs();
 	else if (evt.getSource()==btGrpCli) {
 	    grpCli();
-	}
+	}/*
 	else if (evt.getSource()==btConsHisJan) {
 	    alteraHist(1);
 	}
@@ -2107,7 +2247,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
 	else if (evt.getSource()==btConsHisDez) {
 	    alteraHist(12);
-	}
+	}*/
 	else if (evt.getSource()==btSetaQtdJan) {
 	    geraHistoricos(new Integer(1));
 	}
@@ -2150,7 +2290,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
     super.actionPerformed(evt);
   }
-  
+  /*
   private void alteraHist(int mes){
 	  DLVisitas dl = null;
 	  Vector vCli = new Vector();
@@ -2175,7 +2315,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  vCli = null;
 	  }
   }
-  
+  */
   private void grpCli() {
      DLGrpCli dl = null;
      int iCodCli = 0;
