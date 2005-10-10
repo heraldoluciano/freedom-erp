@@ -699,11 +699,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	 */
 	private void buscaLote() {
 		String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
-				+ "L.CODPROD=? AND L.CODFILIAL=? AND L.SLDLIQLOTE>0 "
+				+ "L.CODPROD=? AND L.CODFILIAL=? "+(bPrefs[13]?"AND L.SLDLIQLOTE>0 ":" ")
 				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
 				+ "( "
 				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
-				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 "
+				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP "+(bPrefs[13]?"AND LS.SLDLIQLOTE>0 ":" ")
 				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
@@ -2213,10 +2213,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private boolean[] prefs() {
-		boolean[] bRetorno = new boolean[13];
+		boolean[] bRetorno = new boolean[14];
 		String sSQL = "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," +
 			"USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " +
-			"TAMDESCPROD, OBSCLIVEND " + 
+			"TAMDESCPROD, OBSCLIVEND, CONTESTOQ " + 
 			" FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2283,6 +2283,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if (rs.getString("IPIVenda") != null) {
 					if (rs.getString("IPIVenda").trim().equals("N"))
 						bRetorno[12] = false;
+				}
+				bRetorno[13] = true;
+				if (rs.getString("CONTESTOQ") != null) {
+					if (rs.getString("CONTESTOQ").trim().equals("N"))
+						bRetorno[13] = false;
 				}
 
 			}

@@ -32,12 +32,17 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.acao.InsertEvent;
+import org.freedom.acao.InsertListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
@@ -51,10 +56,12 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Navegador;
 import org.freedom.componentes.Tabela;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 
 public class FTipoMov extends FTabDados implements RadioGroupListener,
-		CheckBoxListener {
+		CheckBoxListener, InsertListener {
 	private static final long serialVersionUID = 1L;
 
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(
@@ -165,6 +172,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 	private JLabelPad lbInfoPadImp = new JLabelPad(	" Padrões para fechamento de venda");
 
 	private JPanelPad pinLbPadImp = new JPanelPad(53, 15);
+	
+	private boolean[] bPrefs = null;
+	
 
 	public FTipoMov() {
 		super();
@@ -330,9 +340,17 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 
 		tbRestricoes.setTamColuna(80, 0);
 		tbRestricoes.setTamColuna(280, 1);
+		lcCampos.addInsertListener(this);
 		
 	}
-
+    public void beforeInsert(InsertEvent ievt) {
+    	
+    }
+	public void afterInsert(InsertEvent ievt) {
+		if (!bPrefs[0])
+			chbEstoqTipoMov.setVlrString("N");
+	}
+	
 	private void montaCbTipoMov(String ES) {
 		cbTipoMov.limpa();
 		vLabs.clear();
@@ -397,6 +415,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 		lcTab.setConexao(cn);
 		lcRestricoes.setConexao(cn);
 		lcUsu.setConexao(cn);
+		bPrefs = prefs();
+		chbEstoqTipoMov.setEnabled(bPrefs[0]); // Habilita controle de estoque de acordo com o preferências
 	}
 
 	public void valorAlterado(RadioGroupEvent evt) {
@@ -418,4 +438,38 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 		}
 
 	}
+	
+	private boolean[] prefs() {
+		boolean[] bRetorno = new boolean[1];
+		String sSQL = "SELECT CONTESTOQ " + 
+			" FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				bRetorno[0] = true;
+				if (rs.getString("CONTESTOQ") != null) {
+					if (rs.getString("CONTESTOQ").trim().equals("N"))
+						bRetorno[0] = false;
+				}
+			}
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage(),true,con,err);
+		}
+		finally {
+			rs = null;
+			ps = null;
+		}
+		return bRetorno;
+	}
+	
 }
