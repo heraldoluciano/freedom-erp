@@ -159,6 +159,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbPrazoEnt = null;
 	private JCheckBoxPad cbDescCompl = null;
 	private JCheckBoxPad cbObsCliVend = null;
+	private JCheckBoxPad cbContEstoq = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -615,12 +616,15 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicTab("Estoque", pinEstoq);
 
 		cbMultiAlmox = new JCheckBoxPad("Multi almoxarifados?","S","N");
-		adicCampo(txtCodTipoMov6, 7, 25, 80, 20, "CodTipoMov6", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, false);
-		adicDescFK(txtDescTipoMov6, 90, 25, 250, 20, "DescTipoMov","Descrição do tp. mov. para inventário");
-		adicCampo(txtCodTipoMov8, 7, 65, 80, 20, "CodTipoMov8", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov8, false);
-		adicDescFK(txtDescTipoMov8, 90, 65, 250, 20, "DescTipoMov","Descrição do tp. mov. para rma");
+		cbContEstoq = new JCheckBoxPad("Controla estoque?","S","N");
 
-		adicDB(cbMultiAlmox,7,90,250,20,"MultiAlmox","",true);
+		adicDB(cbContEstoq,7,3,250,20,"ContEstoq","",true);
+		adicCampo(txtCodTipoMov6, 7, 45, 80, 20, "CodTipoMov6", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, false);
+		adicDescFK(txtDescTipoMov6, 90, 45, 250, 20, "DescTipoMov","Descrição do tp. mov. para inventário");
+		adicCampo(txtCodTipoMov8, 7, 85, 80, 20, "CodTipoMov8", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov8, false);
+		adicDescFK(txtDescTipoMov8, 90, 85, 250, 20, "DescTipoMov","Descrição do tp. mov. para rma");
+
+		adicDB(cbMultiAlmox,7,110,250,20,"MultiAlmox","",true);
 		
 		// fim da adicão de abas
 
