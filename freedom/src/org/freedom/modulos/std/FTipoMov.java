@@ -450,6 +450,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener,
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
 			rs = ps.executeQuery();
+			bRetorno[0] = true;
 			if (rs.next()) {
 				bRetorno[0] = true;
 				if (rs.getString("CONTESTOQ") != null) {
