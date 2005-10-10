@@ -74,7 +74,7 @@ public class DLNovoAgen extends FFDialogo {
 	public DLNovoAgen(String sIdUsu, Component cOrig) {
 		super(cOrig);
 		setTitulo("Novo agendamento");
-		setAtribos(460,470);
+		setAtribos(504,460);
 		
 //Acertando o spinner		
 		
@@ -119,12 +119,12 @@ public class DLNovoAgen extends FFDialogo {
 		pnCab.add(lbImg);
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
-		adic(new JLabelPad("Cód.usu."),7,5,200,20);
+		adic(new JLabelPad("Cód.usu."),7,5,80,20);
 		adic(txtIdUsu,7,25,80,20);
 		adic(new JLabelPad("Nome do usuario"),90,5,200,20);
-		adic(txtNomeUsu,90,25,197,20);
-		adic(new JLabelPad("Tipo"),290,5,150,20);
-		adic(cbTipo,290,25,120,20);
+		adic(txtNomeUsu,90,25,217,20);
+		adic(new JLabelPad("Tipo"),310,5,150,20);
+		adic(cbTipo,310,25,160,20);
 		adic(new JLabelPad("Data inicio:"),7,45,100,20);
 		adic(txtDataini,7,65,100,20);
 		adic(new JLabelPad("hora"),110,45,87,20);
@@ -142,8 +142,8 @@ public class DLNovoAgen extends FFDialogo {
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
 		adic(lbChamada,20,130,60,20);
-		adic(lbLinha,7,140,433,2);
-		adic(spnDesc,7,155,433,180);
+		adic(lbLinha,7,140,470,2);
+		adic(spnDesc,7,155,470,140);
 		
 		if (!sIdUsu.equals("")) {
 		  txtIdUsu.setVlrString(sIdUsu);
