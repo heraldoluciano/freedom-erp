@@ -56,10 +56,13 @@ public class DLNovoHist extends FFDialogo {
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodAtend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeAtend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextAreaPad txaDescAtend = new JTextAreaPad();
 	private ListaCampos lcCont = new ListaCampos(this);
+	private ListaCampos lcCli = new ListaCampos(this);
 	private ListaCampos lcAtend = new ListaCampos(this);
 	private JScrollPane spnDesc = new JScrollPane(txaDescAtend);
 	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKhistorico.jpg"));
@@ -67,10 +70,10 @@ public class DLNovoHist extends FFDialogo {
 	private Vector vLabs = new Vector();
 	private JComboBoxPad cbSit = null; 
 	private String[] sValsAgen = null;
-	public DLNovoHist(int iCodCont,Component cOrig) {
+	public DLNovoHist(int iCod,int index,Component cOrig) {
 		super(cOrig);
 		setTitulo("Nova chamada");
-		setAtribos(460,470);		
+		setAtribos(502,460);		
 		
 		vVals.addElement("");
 		vVals.addElement("RJ");
@@ -81,13 +84,21 @@ public class DLNovoHist extends FFDialogo {
 		cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
 		//cbSit.setVlrString("AG");
 		
-		lcCont.add(new GuardaCampo( txtCodCont, "CodCto", "Cód.Cont", ListaCampos.DB_PK, txtNomeCont, false));
-		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome", ListaCampos.DB_SI, false));
+		lcCont.add(new GuardaCampo( txtCodCont , "CodCto", "Cód.cli", ListaCampos.DB_PK, txtNomeCont, false));
+		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome do contato", ListaCampos.DB_SI, false));
 		lcCont.montaSql(false, "CONTATO", "TK");    
 		lcCont.setReadOnly(true);
 		txtCodCont.setTabelaExterna(lcCont);
 		txtCodCont.setFK(true);
 		txtCodCont.setNomeCampo("CodCto");
+		
+		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.Cont", ListaCampos.DB_PK, txtNomeCli, false));
+		lcCli.add(new GuardaCampo( txtNomeCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
+		lcCli.montaSql(false, "CLIENTE", "VD");    
+		lcCli.setReadOnly(true);
+		txtCodCli.setTabelaExterna(lcCli);
+		txtCodCli.setFK(true);
+		txtCodCli.setNomeCampo("CodCli");
 		
 		lcAtend.add(new GuardaCampo( txtCodAtend, "CodAtend", "Cód.Atend", ListaCampos.DB_PK, txtNomeAtend, true));
 		lcAtend.add(new GuardaCampo( txtNomeAtend, "NomeAtend", "Nome", ListaCampos.DB_SI, false));
@@ -101,26 +112,41 @@ public class DLNovoHist extends FFDialogo {
 		pnCab.add(lbImg);
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
-		adic(new JLabelPad("Código e nome do contato"),7,5,200,20);
-		adic(txtCodCont,7,25,80,20);
-		adic(txtNomeCont,90,25,197,20);
-		adic(new JLabelPad("Situação"),290,5,150,20);
-		adic(cbSit,290,25,150,20);
-		adic(new JLabelPad("Código e nome do atendente"),7,45,200,20);
+	    
+	    if(index==0){
+	    	adic(new JLabelPad("Cód. cont."),7,5,80,20);
+			adic(txtCodCont,7,25,80,20);
+			adic(new JLabelPad("Nome do contato"),90,5,197,20);
+			adic(txtNomeCont,90,25,217,20);
+			txtCodCont.setVlrInteger(new Integer(iCod));
+			txtCodCont.setAtivo(false);			
+		}
+		else if(index==1){
+			adic(new JLabelPad("Cód. cli."),7,5,80,20);
+			adic(txtCodCli,7,25,80,20);
+			adic(new JLabelPad("Razão social do cliente"),90,5,197,20);
+			adic(txtNomeCli,90,25,217,20);
+			txtCodCli.setVlrInteger(new Integer(iCod));
+			txtCodCli.setAtivo(false);
+		}
+	    		
+		adic(new JLabelPad("Situação"),310,5,150,20);
+		adic(cbSit,310,25,170,20);
+		adic(new JLabelPad("Cód. atend."),7,45,80,20);
 		adic(txtCodAtend,7,65,80,20);
-		adic(txtNomeAtend,90,65,197,20);
+		adic(new JLabelPad("Nome do atendente"),90,45,197,20);
+		adic(txtNomeAtend,90,65,217,20);
 		
-		JLabelPad lbChamada = new JLabelPad(" Chamada ");
+		JLabelPad lbChamada = new JLabelPad("   Chamada ");
 		lbChamada.setOpaque(true);
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
 		adic(lbChamada,20,90,80,20);
-		adic(lbLinha,7,100,433,2);
-		adic(spnDesc,7,115,433,220);
+		adic(lbLinha,7,100,470,2);
+		adic(spnDesc,7,115,470,180);
 		
-		txtCodCont.setVlrInteger(new Integer(iCodCont));
-		txtCodCont.setAtivo(false);
+		
 		
 	}
 	public void actionPerformed(ActionEvent evt) {
@@ -196,6 +222,8 @@ public class DLNovoHist extends FFDialogo {
 		lcAtend.setConexao(cn);
 		lcCont.setConexao(cn);
 		lcCont.carregaDados();
+		lcCli.setConexao(cn);
+		lcCli.carregaDados();
 		buscaAtend();
 	}
 }
