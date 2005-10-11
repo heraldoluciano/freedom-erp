@@ -200,7 +200,7 @@ public class NF014 extends Layout {
 		 	}
 		 }
 		 
-		 Vector vDesc = Funcoes.strToVectorSilabas(itens.getString(NF.C_OBSITPED).equals("") ? (itens.getString(NF.C_DESCPROD).trim()):itens.getString(NF.C_OBSITPED)+sDescAdic,49);
+		 Vector vDesc = Funcoes.strToVectorSilabas((itens.getString(NF.C_OBSITPED).equals("") ? (itens.getString(NF.C_DESCPROD).trim()) : itens.getString(NF.C_OBSITPED))+sDescAdic,49);
 	     String sDesc = "";
 		 for (int i=0; i<vDesc.size();i++){
 		 	if (vDesc.elementAt(i)!=null)
