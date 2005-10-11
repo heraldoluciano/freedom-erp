@@ -78,224 +78,97 @@ import org.freedom.telas.DlgCalc;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FFDialogo;
 
-public class FVenda extends FDialogo implements KeyListener,CarregaListener,
-		PostListener {
-
+public class FVenda extends FDialogo implements KeyListener,CarregaListener,PostListener {
 
 	private static final long serialVersionUID = 1L;
-
 	private StatusBar sbVenda = new StatusBar(new BorderLayout());
-
-	private JPanelPad pnStatusBar = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnTabela = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnNorte = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
-	private JPanelPad pnEntrada = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
-
+	private JPanelPad pnStatusBar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnCliente = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnTabela = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnNorte = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JPanelPad pnEntrada = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pinBarra = new JPanelPad(798, 45);
-
 	private JPanelPad pinCab = new JPanelPad(798, 45);
-
 	private JPanelPad pinProduto = new JPanelPad(798, 130);
-
 	private JPanelPad pinEntrada = new JPanelPad(190, 180);
-
-	private JPanelPad pnRodTb = new JPanelPad(new BorderLayout());
-	
+	private JPanelPad pnRodTb = new JPanelPad(new BorderLayout());	
 	private JPanelPad pnTots = new JPanelPad(440, 45);
-
 	private Tabela tbItem = new Tabela();
-
 	private JScrollPane spTb = new JScrollPane(tbItem);
-
 	private JButtonPad btF3 = new JButtonPad();
-
 	private JButtonPad btCtrlF3 = new JButtonPad();
-
 	private JButtonPad btF4 = new JButtonPad();
-
 	private JButtonPad btF5 = new JButtonPad();
-
 	private JButtonPad btF6 = new JButtonPad();
-
 	private JButtonPad btF7 = new JButtonPad();
-
 	private JButtonPad btF8 = new JButtonPad();
-
 	private JButtonPad btF9 = new JButtonPad();
-
 	private JButtonPad btF10 = new JButtonPad();
-
-	private JTextFieldPad txtCodCli = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,
-			40, 0);
-
-	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodVenda = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtTipoVenda = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 1, 0);
-
-	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtDtEmitVenda = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-
-	private JTextFieldPad txtDtSaidaVenda = new JTextFieldPad(
-			JTextFieldPad.TP_DATE, 10, 0);
-
-	private JTextFieldPad txtCodVend = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtCodProd1 = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtDescProd = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtCodProd = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtQtdade = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 9, 2);
-
-	private JTextFieldPad txtPreco = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 15, 2);
-
-	private JTextFieldPad txtBaseCalc = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtAliqIcms = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 7, 2);
-
-	private JTextFieldPad txtTotalItem = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtValorIcms = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtBaseCalc1 = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtValorIcms1 = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtTotalCupom = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtNumeroCupom = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtSerieCupom = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 4, 0);
-
-	private JTextFieldPad txtQtdadeItem = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtValorTotalItem = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtValorTotalCupom = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 12, 2);
-
-	private JTextFieldPad txtCodFisc = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtTipoFisc = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-
+	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40, 0);
+	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
+	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDtEmitVenda = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtDtSaidaVenda = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodProd1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtQtdade = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 2);
+	private JTextFieldPad txtPreco = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
+	private JTextFieldPad txtBaseCalc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtAliqIcms = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 7, 2);
+	private JTextFieldPad txtTotalItem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtValorIcms = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtBaseCalc1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtValorIcms1 = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtTotalCupom = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtNumeroCupom = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtSerieCupom = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtQtdadeItem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtValorTotalItem = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtValorTotalCupom = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
+	private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private ListaCampos lcVenda = new ListaCampos(this);
-
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
-
 	private ListaCampos lcSerie = new ListaCampos(this, "SE");
-
 	private ListaCampos lcCliente = new ListaCampos(this, "CL");
-
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
-
 	private ListaCampos lcProduto = new ListaCampos(this, "PD");
-
 	private ListaCampos lcClFiscal = new ListaCampos(this, "FC");
-
 	private JLabelPad lCodCli = new JLabelPad("Cód.cli.");
-
 	private JLabelPad lRazCli = new JLabelPad("Razão social do cliente");
-
 	private JLabelPad lCodPlanoPag = new JLabelPad("Cód.p.pag.");
-
-	private JLabelPad lDescPlanoPag = new JLabelPad(
-			"Descrição do plano de pagamento");
-
+	private JLabelPad lDescPlanoPag = new JLabelPad("Descrição do plano de pagamento");
 	private JLabelPad lCodVenda = new JLabelPad("Nº seq.venda");
-
 	private JLabelPad lCodProd1 = new JLabelPad("Cód.prod.");
-
 	private JLabelPad lDescProd1 = new JLabelPad("Descrição do produto");
-
 	private JLabelPad lCodProd2 = new JLabelPad("Cód.prod.");
-
 	private JLabelPad lQtd = new JLabelPad("Quantidade");
-
 	private JLabelPad lPreco = new JLabelPad("Preço");
-
 	private JLabelPad lBaseCalc1 = new JLabelPad("Base cálculo");
-
 	private JLabelPad lValorIcms1 = new JLabelPad("Total Icms");
-
 	private JLabelPad lTotalCupom = new JLabelPad("Total cupom");
-
 	private JLabelPad lNumeroCupom = new JLabelPad("Número cupom");
-
 	private JLabelPad lSerieCupom = new JLabelPad("Série");
-
 	private JLabelPad lBaseCalc2 = new JLabelPad("Base cálc.");
-
 	private JLabelPad lAliqIcms = new JLabelPad("% Icms");
-
 	private JLabelPad lTotalItem = new JLabelPad("Total item");
-
 	private JLabelPad lValorIcms = new JLabelPad("Valor Icms");
-
 	private JLabelPad lQtdadeItem = new JLabelPad("Quantidade do item");
-
 	private JLabelPad lValorTotalItem = new JLabelPad("Valor total do item");
-
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
-
 	private JLabelPad lbAvisoImp = new JLabelPad();
-
 	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
-
 	private Font fntTotalItem = null;
-
 	private Font fntTotalCupom = null;
-
 	private Vector vCacheItem = new Vector();
-
-	private Tef tef = null;
-	
+	private Tef tef = null;	
 	private Vector  vAliquotas = null;
 
 	public FVenda() {
@@ -315,33 +188,25 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		txtSerieCupom.setAtivo(false);
 		txtNumeroCupom.setAtivo(false);
 
-		fntTotalItem = new Font(lValorTotalItem.getFont().getFontName(),
-				lValorTotalItem.getFont().getStyle(), 26);
-		fntTotalCupom = new Font(lValorTotalCupom.getFont().getFontName(),
-				lValorTotalCupom.getFont().getStyle(), 26);
+		fntTotalItem = new Font(lValorTotalItem.getFont().getFontName(),lValorTotalItem.getFont().getStyle(), 26);
+		fntTotalCupom = new Font(lValorTotalCupom.getFont().getFontName(),lValorTotalCupom.getFont().getStyle(), 26);
 
-		lcCliente.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",
-				ListaCampos.DB_PK, false));
-		lcCliente.add(new GuardaCampo(txtRazCli, "RazCli",
-				"Razão Social do cliente", ListaCampos.DB_SI, false));
+		lcCliente.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_PK, false));
+		lcCliente.add(new GuardaCampo(txtRazCli, "RazCli","Razão Social do cliente", ListaCampos.DB_SI, false));
 		lcCliente.montaSql(false, "CLIENTE", "VD");
 		lcCliente.setReadOnly(true);
 		txtCodCli.setTabelaExterna(lcCliente);
 		txtCodCli.setFK(true);
 		txtCodCli.setNomeCampo("CodCli");
 
-		lcClFiscal.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc",
-				ListaCampos.DB_PK, false));
-		lcClFiscal.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Cód.tp.fisc.",
-				ListaCampos.DB_SI, false));
+		lcClFiscal.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc",ListaCampos.DB_PK, false));
+		lcClFiscal.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Cód.tp.fisc.",ListaCampos.DB_SI, false));
 		lcClFiscal.montaSql(false, "CLFISCAL", "LF");
 		lcClFiscal.setReadOnly(true);
 		txtCodFisc.setTabelaExterna(lcClFiscal);
 
-		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag",
-				"Cód.p.pag.", ListaCampos.DB_PK, false));
-		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag",
-				"Descrição do plano de pagamento", ListaCampos.DB_SI, false));
+		lcPlanoPag.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_PK, false));
+		lcPlanoPag.add(new GuardaCampo(txtDescPlanoPag, "DescPlanoPag","Descrição do plano de pagamento", ListaCampos.DB_SI, false));
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
@@ -349,67 +214,49 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 
-		lcSerie.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",
-				ListaCampos.DB_PK, false));
-		lcSerie.add(new GuardaCampo(txtNumeroCupom, "DocSerie", "Doc",
-				ListaCampos.DB_SI, true));
+		lcSerie.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",ListaCampos.DB_PK, false));
+		lcSerie.add(new GuardaCampo(txtNumeroCupom, "DocSerie", "Doc",ListaCampos.DB_SI, true));
 		lcSerie.montaSql(false, "SERIE", "LF");
 		lcSerie.setReadOnly(true);
 		txtSerieCupom.setTabelaExterna(lcSerie);
 		txtSerieCupom.setFK(true);
 		txtSerieCupom.setNomeCampo("Serie");
 
-		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov",
-				"Cód.tp.mov.", ListaCampos.DB_PK, true));
-		lcTipoMov.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",
-				ListaCampos.DB_FK, false));
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, true));
+		lcTipoMov.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",ListaCampos.DB_FK, false));
 		lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
 		lcTipoMov.setReadOnly(true);
 		txtCodTipoMov.setTabelaExterna(lcTipoMov);
 		txtCodTipoMov.setFK(true);
 		txtCodTipoMov.setNomeCampo("CodTipoMov");
 
-		lcVenda.add(new GuardaCampo(txtCodVenda, "CodVenda", "Nº pedido",
-				ListaCampos.DB_PK, true));
-		lcVenda.add(new GuardaCampo(txtTipoVenda, "TipoVenda", "Tipo venda.",
-				ListaCampos.DB_PK, true));
-		lcVenda.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.",
-				ListaCampos.DB_FK, true));
-		lcVenda.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",
-				ListaCampos.DB_FK, false));
-		lcVenda.add(new GuardaCampo(txtNumeroCupom, "DocVenda", "Doc",
-				ListaCampos.DB_SI, false));
-		lcVenda.add(new GuardaCampo(txtDtSaidaVenda, "DtSaidaVenda", "Saída",
-				ListaCampos.DB_SI, true));
-		lcVenda.add(new GuardaCampo(txtDtEmitVenda, "DtEmitVenda", "Emissão",
-				ListaCampos.DB_SI, true));
-		lcVenda.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",
-				ListaCampos.DB_FK, true));
-		lcVenda.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag",
-				"Cód.p.pag.", ListaCampos.DB_FK, true));
-		lcVenda.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_SI, true));
+		lcVenda.add(new GuardaCampo(txtCodVenda, "CodVenda", "Nº pedido",ListaCampos.DB_PK, true));
+		lcVenda.add(new GuardaCampo(txtTipoVenda, "TipoVenda", "Tipo venda.",ListaCampos.DB_PK, true));
+		lcVenda.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, true));
+		lcVenda.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",ListaCampos.DB_FK, false));
+		lcVenda.add(new GuardaCampo(txtNumeroCupom, "DocVenda", "Doc",ListaCampos.DB_SI, false));
+		lcVenda.add(new GuardaCampo(txtDtSaidaVenda, "DtSaidaVenda", "Saída",ListaCampos.DB_SI, true));
+		lcVenda.add(new GuardaCampo(txtDtEmitVenda, "DtEmitVenda", "Emissão",ListaCampos.DB_SI, true));
+		lcVenda.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_FK, true));
+		lcVenda.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_FK, true));
+		lcVenda.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_SI, true));
 		lcVenda.montaSql(true, "VENDA", "VD");
 		txtCodVenda.setListaCampos(lcVenda);
 		txtCodVenda.setPK(true);
 		txtCodVenda.setNomeCampo("CodVenda");
 
-		lcProduto.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, true));
-		lcProduto.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProduto.add(new GuardaCampo(txtCodProd1, "CodProd", "Cód.prod.",
-				ListaCampos.DB_SI, false));
-		lcProduto.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",
-				ListaCampos.DB_FK, false));
+		lcProduto.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, true));
+		lcProduto.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProduto.add(new GuardaCampo(txtCodProd1, "CodProd", "Cód.prod.",ListaCampos.DB_SI, false));
+		lcProduto.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",ListaCampos.DB_FK, false));
+		lcProduto.setWhereAdic("CVPROD IN ('V','A')");
 		lcProduto.montaSql(false, "PRODUTO", "EQ");
 		lcProduto.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProduto);
 		txtCodProd.setFK(true);
 		txtCodProd.setNomeCampo("CodProd");
 
-		lbAvisoImp.setFont(new Font(lValorTotalItem.getFont().getFontName(),
-				lValorTotalItem.getFont().getStyle(), 12));
+		lbAvisoImp.setFont(new Font(lValorTotalItem.getFont().getFontName(),lValorTotalItem.getFont().getStyle(), 12));
 		lbAvisoImp.setForeground(Color.RED);
 		lbAvisoImp.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -600,12 +447,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				iCodItVenda = rs.getInt("CodItVenda");
-				txtAliqIcms.setVlrBigDecimal(rs
-						.getBigDecimal("PercICMSItVenda"));
-				txtBaseCalc.setVlrBigDecimal(rs
-						.getBigDecimal("VlrBaseICMSItVenda"));
-				txtValorIcms.setVlrBigDecimal(rs
-						.getBigDecimal("VlrICMSItVenda"));
+				txtAliqIcms.setVlrBigDecimal(rs.getBigDecimal("PercICMSItVenda"));
+				txtBaseCalc.setVlrBigDecimal(rs.getBigDecimal("VlrBaseICMSItVenda"));
+				txtValorIcms.setVlrBigDecimal(rs.getBigDecimal("VlrICMSItVenda"));
 				txtValorTotalItem.setVlrBigDecimal(rs.getBigDecimal("VlrLiqItVenda")==null?new BigDecimal(0):rs.getBigDecimal("VlrLiqItVenda"));
 				txtQtdadeItem.setVlrBigDecimal(txtQtdade.getVlrBigDecimal());
 			}
@@ -628,11 +472,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 				}
 				else
 					sTributo = txtTipoFisc.getVlrString();
-				bf.vendaItem(Aplicativo.strUsuario, txtCodProd.getVlrInteger()
-						.intValue(), txtDescProd.getVlrString(), sTributo,
-						txtQtdade.getVlrDouble().doubleValue(), txtPreco
-								.getVlrDouble().doubleValue(), 0,
-						FreedomPDV.bModoDemo);
+				bf.vendaItem(Aplicativo.strUsuario, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), sTributo,
+						txtQtdade.getVlrDouble().doubleValue(), txtPreco.getVlrDouble().doubleValue(), 0,FreedomPDV.bModoDemo);
 			}
 
 			atualizaTot();
@@ -667,11 +508,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"
-					+
-
-					"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage());
+			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"+
+					"Provavelmente não foram gravadas corretamente as preferências!\n"+
+					err.getMessage());
 			err.printStackTrace();
 		}
 		return iRet;
@@ -693,8 +532,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o código do cliente.\n" +
-
-			"Provavelmente não foram gravadas corretamente as preferências!\n"
+					"Provavelmente não foram gravadas corretamente as preferências!\n"
 					+ err.getMessage());
 			err.printStackTrace();
 		}
@@ -721,7 +559,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o tipo de movimento.\n" +
-
 			"Provavelmente não foram gravadas corretamente as preferências!\n"
 					+ err.getMessage());
 			err.printStackTrace();
@@ -773,10 +610,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			ps.setInt(12, Aplicativo.iCodFilial);
 			rs = ps.executeQuery();
 			if (rs.next())
-				txtPreco
-					.setVlrBigDecimal(rs.getString(1) != null ? (new BigDecimal(
-							rs.getString(1)))
-							: (new BigDecimal(0)));
+				txtPreco.setVlrBigDecimal(rs.getString(1) != null ? (new BigDecimal(rs.getString(1))): (new BigDecimal(0)));
 			else
 				txtPreco.setVlrBigDecimal(new BigDecimal(0));
 			rs.close();
@@ -800,12 +634,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			ps.setInt(3, lcVenda.getCodFilial());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				txtValorTotalCupom.setVlrBigDecimal(rs
-						.getBigDecimal("VlrLiqVenda"));
-				txtBaseCalc1.setVlrBigDecimal(rs
-						.getBigDecimal("VlrBaseICMSVenda"));
-				txtValorIcms1
-						.setVlrBigDecimal(rs.getBigDecimal("VlrICMSVenda"));
+				txtValorTotalCupom.setVlrBigDecimal(rs.getBigDecimal("VlrLiqVenda"));
+				txtBaseCalc1.setVlrBigDecimal(rs.getBigDecimal("VlrBaseICMSVenda"));
+				txtValorIcms1.setVlrBigDecimal(rs.getBigDecimal("VlrICMSVenda"));
 				txtTotalCupom.setVlrBigDecimal(rs.getBigDecimal("VlrLiqVenda"));
 			}
 			rs.close();
@@ -917,8 +748,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 						Funcoes.mensagemErro(this, "Campo em branco!");
 						continue;
 					}
-					DriverManager.getConnection(Aplicativo.strBanco, props)
-							.close();
+					DriverManager.getConnection(Aplicativo.strBanco, props).close();
 					String sSQL = "SELECT ABREGAVETAUSU FROM SGUSUARIO WHERE "
 							+ "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
 					PreparedStatement ps = con.prepareStatement(sSQL);
@@ -927,25 +757,21 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 					ps.setInt(3, Aplicativo.iCodFilial);
 					ResultSet rs = ps.executeQuery();
 					if (rs.next()) {
-						if ((rs.getString(1) != null ? rs.getString(1) : "")
-								.equals("S")) {
+						if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
 							bRet = true;
 						}
 					}
 					if (!bRet)
-						Funcoes.mensagemErro(this,
-								"Ação não permitida para este usuário.");
+						Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
 					rs.close();
 					ps.close();
 				}
 			} catch (java.sql.SQLException e) {
 				if (e.getErrorCode() == 335544472) {
-					Funcoes.mensagemErro(this,
-							"Nome do usuário ou senha inválidos ! ! !");
+					Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
 					continue;
 				}
-				Funcoes.mensagemErro(this,
-						"Não foi possível estabelecer conexão com o banco de dados.\n"
+				Funcoes.mensagemErro(this,"Não foi possível estabelecer conexão com o banco de dados.\n"
 								+ e.getMessage());
 			}
 			break;
@@ -1021,8 +847,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 				txtCodProd.setVlrInteger((Integer) vCacheItem.elementAt(0));
 				robo.keyPress(KeyEvent.VK_ENTER);
 				txtQtdade.requestFocus();
-				txtQtdade
-						.setVlrBigDecimal((BigDecimal) vCacheItem.elementAt(1));
+				txtQtdade.setVlrBigDecimal((BigDecimal) vCacheItem.elementAt(1));
 				robo.keyPress(KeyEvent.VK_ENTER);
 			} catch (AWTException err) {
 			}
@@ -1040,18 +865,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 
 	private void cancItem() {
 		if (tbItem.getNumLinhas() < 1) {
-			Funcoes.mensagemErro(this,
-					"Não existe nenhum item para ser cancelado!");
+			Funcoes.mensagemErro(this,"Não existe nenhum item para ser cancelado!");
 			return;
 		}
-		int iItem = ((Integer) tbItem.getValor(tbItem.getNumLinhas() - 1, 0))
-				.intValue();
-		if (Funcoes.mensagemConfirma(null,
-				"Deseja realmente cancelar o item anterior?") == JOptionPane.YES_OPTION) {
+		int iItem = ((Integer) tbItem.getValor(tbItem.getNumLinhas() - 1, 0)).intValue();
+		if (Funcoes.mensagemConfirma(null,"Deseja realmente cancelar o item anterior?") == JOptionPane.YES_OPTION) {
 			if (cancItem(iItem)) {
 				if (AplicativoPDV.bECFTerm)
-					if (bf.cancelaItemAnterior(Aplicativo.strUsuario,
-							AplicativoPDV.bModoDemo))
+					if (bf.cancelaItemAnterior(Aplicativo.strUsuario,AplicativoPDV.bModoDemo))
 						btOK.doClick();
 			} else {
 				Funcoes.mensagemErro(null, "Não foi possível cancelar o item.");
@@ -1106,8 +927,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 			return;
 		} 
 		DLFechaVenda fecha = new DLFechaVenda(txtTotalCupom.getVlrBigDecimal(),
-				txtCodVenda.getVlrInteger().intValue(), txtNumeroCupom
-						.getVlrInteger().intValue());
+				txtCodVenda.getVlrInteger().intValue(), txtNumeroCupom.getVlrInteger().intValue());
 		fecha.setConexao(con);
 		if (tef != null)
 			fecha.setTef(tef);
@@ -1138,34 +958,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,
 		}
 		fecha.dispose();
 	}
-
-	/*public void keyReleased(KeyEvent kevt) {
-		boolean bFocusProd = false;
-		switch (kevt.getKeyCode()) {
-		case KeyEvent.VK_F3 :
-			bFocusProd = true;
-			break;
-		case KeyEvent.VK_F4 :
-			bFocusProd = true;
-			break;
-		case KeyEvent.VK_F5:
-			break;
-		case KeyEvent.VK_F6:
-			break;
-		case KeyEvent.VK_F7:
-			break;
-		case KeyEvent.VK_F8:
-			break;
-		case KeyEvent.VK_F9:
-			btF9.doClick();
-			break;
-		case KeyEvent.VK_F10:
-			btF10.doClick();
-			break;
-		}
-		if (bFocusProd)
-			setFocusProd();
-	}*/
 	public void keyPressed(KeyEvent kevt) {
 		switch (kevt.getKeyCode()) {
 		case KeyEvent.VK_F3:
