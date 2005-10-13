@@ -70,7 +70,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRodCont = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnBotCont = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
-  private JTabbedPanePad tpnCont = new JTabbedPanePad();
+  private JTabbedPanePad tpnHist = new JTabbedPanePad();
   private Tabela tabCont = new Tabela();
   private Tabela tabCli = new Tabela();
   private JScrollPane spnCont = new JScrollPane(tabCont);
@@ -154,8 +154,8 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		txtTelCli.setMascara(JTextFieldPad.MC_FONEDDD);
 		txtFaxCli.setMascara(JTextFieldPad.MC_FONE);
 	    
-	  	tpnCont.add("Contato",pnCont);
-	  	tpnCont.add("Cliente",pnCli);
+	  	tpnHist.add("Contato",pnCont);
+	  	tpnHist.add("Cliente",pnCli);
 	
 	  	pnCabCont.setPreferredSize(new Dimension(500,200));
 	  	pnCabCont.add(pinCabCont,BorderLayout.CENTER);
@@ -169,7 +169,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		pnCli.add(pnCabCli,BorderLayout.NORTH);
 		pnCli.add(spnCli,BorderLayout.CENTER);
 		
-		getTela().add(tpnCont,BorderLayout.CENTER);
+		getTela().add(tpnHist,BorderLayout.CENTER);
 		
 		pinCabCont.adic(new JLabelPad("Cod.cto."),7,10,250,20);
 		pinCabCont.adic(txtCodCont,7,30,80,20);
@@ -288,7 +288,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		btSair.addActionListener(this);
 		lcCont.addCarregaListener(this);
 		lcCli.addCarregaListener(this);
-		tpnCont.addChangeListener(this);
+		tpnHist.addChangeListener(this);
 	
   }
   private void carregaTabCont() {
@@ -366,7 +366,6 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
   }
     
   private void novoHist() {
-	  ResultSet rs = null;
 	  PreparedStatement ps = null;
 	  int iCod = 0;
 	  	try{
@@ -392,53 +391,59 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  			iCod = txtCodCli.getVlrInteger().intValue();
 		  	}
 		  	
-		  	DLNovoHist dl = new DLNovoHist(iCod,tpnCont.getSelectedIndex(),this);
+		  	DLNovoHist dl = new DLNovoHist(iCod,tpnHist.getSelectedIndex(),this);
 		  	dl.setConexao(con);
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
 		  	  sRets = dl.getValores();
-		  	  int iCodHist = 0;
 		  	  try {
 		        String sSQL = "SELECT IRET FROM TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
 		        ps = con.prepareStatement(sSQL);
 		        ps.setInt(1,Aplicativo.iCodEmp);
-		        ps.setInt(2,lcCont.getCodFilial());
-		        ps.setInt(3,txtCodCont.getVlrInteger().intValue());
-		        ps.setInt(4,lcCli.getCodFilial());  //Filialcli
-		        ps.setInt(5,txtCodCli.getVlrInteger().intValue());  //Codcli
-		        ps.setString(6,sRets[0]);
-		        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));
+		        if(txtCodCont.getVlrInteger().intValue() == 0){//Filial e código do contato
+		        	ps.setNull(2,Types.INTEGER);
+			        ps.setNull(3,Types.INTEGER);
+		        }
+		        else{
+		        	ps.setInt(2,lcCont.getCodFilial());
+			        ps.setInt(3,txtCodCont.getVlrInteger().intValue());
+		        }
+		        if(txtCodCli.getVlrInteger().intValue() == 0){
+		        	ps.setNull(4,Types.INTEGER);
+			        ps.setNull(5,Types.INTEGER);
+		        }
+		        else{
+		        	ps.setInt(4,lcCli.getCodFilial()); 
+		        	ps.setInt(5,txtCodCli.getVlrInteger().intValue());  
+		        }	
+		        ps.setString(6,sRets[0]);//Descrição do historico
+		        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
 			    ps.setString(8,sRets[1]);//codígo atendente
 			    ps.setString(9,sRets[2]);//status do historico
-			    rs = ps.executeQuery();
-			    if (rs.next()) {
-			    	iCodHist = rs.getInt("IRet");
-			    }
-			    rs.close();
+			    ps.executeQuery();			    
 			    ps.close();
 			    
 			    if (!con.getAutoCommit())
 			    	con.commit();
 			    
 			    if (sRets[3] != null) {
-			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			        ps = con.prepareStatement(sSQL);
-			        ps.setInt(2,Aplicativo.iCodEmp);
-			        ps.setString(2,"HISTO");
-			        ps.setInt(3,ListaCampos.getMasterFilial("TKHISTORICO"));
-			        ps.setInt(4,iCodHist);
-			        ps.setDate(5,Funcoes.strDateToSqlDate(sRets[3]));
-			        ps.setString(6,sRets[4]+":00");
-			        ps.setDate(7,Funcoes.strDateToSqlDate(sRets[5]));
-			        ps.setString(8,sRets[6]+":00");
-			        ps.setString(9,sRets[7]);
-			        ps.setString(10,sRets[8]);
-			        ps.setString(11,sRets[9]);
-			        ps.setInt(12,5);
-			        ps.setInt(13,Aplicativo.iCodFilialPad);
-			        ps.setString(14,Aplicativo.strUsuario);
-			        ps.setString(15,sRets[10]);
-			        ps.setString(16,sRets[11]);
+			        ps.setInt(1,Aplicativo.iCodEmp);  
+				    ps.setDate(2,Funcoes.strDateToSqlDate(sRets[3]));
+				    ps.setString(3,sRets[4]+":00"); 
+				    ps.setDate(4,Funcoes.strDateToSqlDate(sRets[5]));
+				    ps.setString(5,sRets[6]+":00");
+				    ps.setString(6,sRets[7]);
+				    ps.setString(7,sRets[8]);
+				    ps.setString(8,sRets[9]); 
+				    ps.setInt(9,5);
+				    ps.setInt(10,Aplicativo.iCodFilialPad);
+				    ps.setString(11,Aplicativo.strUsuario); 
+				    ps.setString(12,sRets[10]);
+				    ps.setString(13,sRets[11]);  
+				    ps.setInt(14,((Integer)buscaAgente(0)).intValue());
+				    ps.setString(15,(String)buscaAgente(1));
 			        ps.execute();
 			        ps.close();
 			        if (!con.getAutoCommit())
@@ -461,7 +466,6 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		    dl.dispose();
 	  	}
 	  	finally{
-	  		rs = null;
 	  		ps = null;
 	  		iCod = 0;
 	  	}
@@ -482,7 +486,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	  		else if(tabTemp == tabCli)
 	  			iCod = txtCodCli.getVlrInteger().intValue();
 		  	
-		  	DLNovoHist dl = new DLNovoHist(iCod,tpnCont.getSelectedIndex(),this);
+		  	DLNovoHist dl = new DLNovoHist(iCod,tpnHist.getSelectedIndex(),this);
 		  	dl.setConexao(con);
 		  	dl.setValores(new String[] {(String)tabTemp.getValor(iLin,3),
 							   			(String)vCodAtends.elementAt(iLin),
@@ -497,15 +501,27 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
 		  			ps.setInt(1,Integer.parseInt((String)tabTemp.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);
-		  			ps.setInt(3,lcCont.getCodFilial());
-		  			ps.setInt(4,txtCodCont.getVlrInteger().intValue());
-		            ps.setNull(5,Types.INTEGER);  //Filialcli
-		            ps.setNull(6,Types.INTEGER);  //Codcli
-		            ps.setString(7,sRets[0]);
-		  			ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));
-		  			ps.setString(9,sRets[1]);
-		  			ps.setString(10,sRets[2]);
-		  			ps.executeQuery();
+			        if(txtCodCont.getVlrInteger().intValue() == 0){//Filial e código do contato
+			        	ps.setNull(3,Types.INTEGER);
+				        ps.setNull(4,Types.INTEGER);
+			        }
+			        else{
+			        	ps.setInt(3,lcCont.getCodFilial());
+				        ps.setInt(4,txtCodCont.getVlrInteger().intValue());
+			        }
+			        if(txtCodCli.getVlrInteger().intValue() == 0){
+			        	ps.setNull(5,Types.INTEGER);
+				        ps.setNull(6,Types.INTEGER);
+			        }
+			        else{
+			        	ps.setInt(5,lcCli.getCodFilial()); 
+			        	ps.setInt(6,txtCodCli.getVlrInteger().intValue());  
+			        }	
+			        ps.setString(7,sRets[0]);//Descrição do historico
+			        ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
+				    ps.setString(9,sRets[1]);//codígo atendente
+				    ps.setString(10,sRets[2]);//status do historico
+				    ps.executeQuery();
 		  			ps.close();
 		  			if (!con.getAutoCommit())
 		  				con.commit();
@@ -554,6 +570,64 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			carregaTabCli();
   }
   
+  private Object buscaAgente(int index) {
+	  	Object[] oRet = new Object[2];
+	  	String sSQL = "SELECT U.CODAGE,U.TIPOAGE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? " +
+	  			  	  "AND IDUSU=?";
+	  	try {
+	  		PreparedStatement ps = con.prepareStatement(sSQL);
+	  		ps.setInt(1,Aplicativo.iCodEmp);
+	  		ps.setInt(2,Aplicativo.iCodFilial);
+	  		ps.setString(3,Aplicativo.strUsuario);
+	  		
+	  		ResultSet rs = ps.executeQuery();
+	  		while (rs.next()) {
+	  			oRet[0] = new Integer(rs.getInt(1));
+	  			oRet[1] = rs.getString(2);  			
+	  		}  		
+	  	}
+	  	catch(Exception e){
+	  		e.printStackTrace();
+	  	}
+	  	finally{
+	  		sSQL = null;
+	  	}
+	  	
+	  	return oRet[index];
+  }
+  
+  private void zeraCampos(){
+	  
+	  if(tpnHist.getSelectedIndex()==1){
+		  txtCodCont.setVlrString("");
+		  txtNomeCont.setVlrString("");
+		  txtTelCont.setVlrString("");
+		  txtFaxCont.setVlrString("");
+		  txtEmpCont.setVlrString("");
+		  txtEmailCont.setVlrString("");
+		  txtEndCont.setVlrString("");
+		  txtNumCont.setVlrString("");
+		  txtComplCont.setVlrString("");
+		  txtBairCont.setVlrString("");
+		  txtCidCont.setVlrString("");
+		  txtUfCont.setVlrString("");
+	  }
+	  else if(tpnHist.getSelectedIndex()==0){
+		  txtCodCli.setVlrString("");
+		  txtNomeCli.setVlrString("");
+		  txtTelCli.setVlrString("");
+		  txtFaxCli.setVlrString("");
+		  txtEmpCli.setVlrString("");
+		  txtEmailCli.setVlrString("");
+		  txtEndCli.setVlrString("");
+		  txtNumCli.setVlrString("");
+		  txtComplCli.setVlrString("");
+		  txtBairCli.setVlrString("");
+		  txtCidCli.setVlrString("");
+		  txtUfCli.setVlrString("");
+	  }
+	  
+  }  
   public void afterCarrega(CarregaEvent cevt) {  }
   public void beforeCarrega(CarregaEvent cevt) {
 	  	if (cevt.getListaCampos() == lcCont) {
@@ -564,12 +638,13 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	  	}
   }
   public void stateChanged(ChangeEvent evt){
-	  if(evt.getSource() == tpnCont){
-		  if(tpnCont.getSelectedIndex() == 0){
+	  if(evt.getSource() == tpnHist){
+		  zeraCampos();
+		  if(tpnHist.getSelectedIndex() == 0){
 			  txtCodCont.requestFocus();
 			  carregaTabCont();
 		  }
-		  else if(tpnCont.getSelectedIndex() == 1){
+		  else if(tpnHist.getSelectedIndex() == 1){
 			  txtCodCli.requestFocus();
 			  carregaTabCli();
 		  }
