@@ -1639,7 +1639,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				
 				vDesc = new Vector();
 				if (bPrefs[9])
-					vDesc = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsItVenda")==null?rs.getString("DescProd").trim():rs.getString("ObsItVenda").trim()),50);						
+					vDesc = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsItVenda")==null?rs.getString("DescProd").trim():rs.getString("ObsItVenda").trim()),40);						
 				else 
 					vDesc = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("DescProd").trim()),50);
 				
@@ -1675,21 +1675,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "IT. |    CÓDIGO    |                      DESCRIÇÃO                    |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
+						imp.say(imp.pRow() + 0, 1, "IT.|  CÓDIGO  |                 DESCRIÇÃO               |     LOTE     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					if (i==0) {
 						imp.say(imp.pRow() + 0, 1, rs.getString("CodItVenda").trim());
 						imp.say(imp.pRow() + 0, 6, rs.getString("RefProd").trim());
 					}
-					imp.say(imp.pRow() + 0, 22,"" + vDesc.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 17,"" + vDesc.elementAt(i).toString());
 					if (i==0) {
-						imp.say(imp.pRow() + 0, 73, rs.getString("CodUnid").trim());
-						imp.say(imp.pRow() + 0, 78, rs.getString("QtdItVenda"));
-						imp.say(imp.pRow() + 0, 86, Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,
+						imp.say(imp.pRow() + 0, 59, rs.getString(2).trim());
+						imp.say(imp.pRow() + 0, 74, rs.getString("CodUnid").trim());
+						imp.say(imp.pRow() + 0, 79, rs.getString("QtdItVenda"));
+						imp.say(imp.pRow() + 0, 87, Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,
 										BigDecimal.ROUND_HALF_UP)));
-						imp.say(imp.pRow() + 0, 105, rs.getString("VlrLiqItVenda"));
-						imp.say(imp.pRow() + 0, 121, rs.getString("PercIPIItVenda"));
+						imp.say(imp.pRow() + 0, 106, rs.getString("VlrLiqItVenda"));
+						imp.say(imp.pRow() + 0, 122, rs.getString("PercIPIItVenda"));
 						imp.say(imp.pRow() + 0, 130, rs.getString("PercICMSItVenda"));
 					}
 				}
