@@ -94,7 +94,7 @@ public class NF014 extends Layout {
      boolean bNat = true;
      while (itens.next()) {
          if (bNat) {
-	           sNat[0] = itens.getString(NF.C_DESCNAT);
+	           sNat[0] = itens.getString(NF.C_DESCNAT).trim();
 	           sNat[1] = Funcoes.setMascara(itens.getString(NF.C_CODNAT),"#.##");
 	           bNat = false;
          }

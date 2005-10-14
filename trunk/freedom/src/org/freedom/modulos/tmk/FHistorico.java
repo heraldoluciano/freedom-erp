@@ -397,7 +397,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	if (dl.OK) {
 		  	  sRets = dl.getValores();
 		  	  try {
-		        String sSQL = "SELECT IRET FROM TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
+		        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
 		        ps = con.prepareStatement(sSQL);
 		        ps.setInt(1,Aplicativo.iCodEmp);
 		        if(txtCodCont.getVlrInteger().intValue() == 0){//Filial e código do contato
@@ -420,7 +420,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
 			    ps.setString(8,sRets[1]);//codígo atendente
 			    ps.setString(9,sRets[2]);//status do historico
-			    ps.executeQuery();			    
+			    ps.execute();			    
 			    ps.close();
 			    
 			    if (!con.getAutoCommit())
@@ -497,7 +497,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	if (dl.OK) {
 		  		sRets = dl.getValores();
 		  		try {
-		  			String sSQL = "SELECT IRET FROM TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
+		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
 		  			ps.setInt(1,Integer.parseInt((String)tabTemp.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);
@@ -521,7 +521,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			        ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
 				    ps.setString(9,sRets[1]);//codígo atendente
 				    ps.setString(10,sRets[2]);//status do historico
-				    ps.executeQuery();
+				    ps.execute();
 		  			ps.close();
 		  			if (!con.getAutoCommit())
 		  				con.commit();

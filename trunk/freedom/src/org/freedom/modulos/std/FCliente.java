@@ -206,12 +206,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pnCont = new JPanelPad(new Dimension(600,400));
   private JPanelPad pinContatos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinHistorico = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pinHistbt = new JPanelPad(0,32);
   private JPanelPad pinMetaVend = new JPanelPad(0,80);
   private JPanelPad pnMetaVend = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tbObsData = new Tabela();
   private Tabela tabMetaVend = new Tabela();
   private Tabela tabFor = new Tabela();
-  private Tabela tabCont = new Tabela();
+  private Tabela tabHist = new Tabela();
   private JPanelPad pinMes1 = new JPanelPad();
   private JPanelPad pinMes2 = new JPanelPad();
   private JPanelPad pinMes3 = new JPanelPad();
@@ -244,7 +245,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private ListaCampos lcFor = new ListaCampos(this,"FR");
   private ListaCampos lcPais = new ListaCampos(this,"");
   private JScrollPane spnTabFor = new JScrollPane(tabFor);
-  private JScrollPane spnTabCont = new JScrollPane(tabCont);
+  private JScrollPane spnTabHist = new JScrollPane(tabHist);
   private JScrollPane spnMetaVend = new JScrollPane(tabMetaVend);
   private JButton btAtEntrega = new JButton(Icone.novo("btReset.gif"));
   private JButton btAtCobranca = new JButton(Icone.novo("btReset.gif"));
@@ -279,6 +280,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JButton btSetaQtdNov = new JButton(Icone.novo(sBtGeraHist));
   private JButton btSetaQtdDez = new JButton(Icone.novo(sBtGeraHist));
   private JButton btMudaTudo = new JButton("Alterar todos",Icone.novo("btExecuta.gif"));
+  private JButton btNovoHist = new JButton(Icone.novo("btNovo.gif"));
+  private JButton btExcluiHist = new JButton(Icone.novo("btExcluir.gif"));
   private Navegador navFor = new Navegador(true);
   private Navegador navMetaVend = new Navegador(false);
   private JTabbedPanePad tpnCont = new JTabbedPanePad();
@@ -605,25 +608,25 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
 //	Contatos
   	
-  	tabCont.adicColuna("Ind.");
-	tabCont.adicColuna("Sit.");
-	tabCont.adicColuna("Contato");
-	tabCont.adicColuna("Atendente");
-	tabCont.adicColuna("Data");
-	tabCont.adicColuna("Histórico");
-	tabCont.adicColuna("Usuário");
-	tabCont.adicColuna("Hora");
+  	tabHist.adicColuna("Ind.");
+	tabHist.adicColuna("Sit.");
+	tabHist.adicColuna("Contato");
+	tabHist.adicColuna("Atendente");
+	tabHist.adicColuna("Data");
+	tabHist.adicColuna("Histórico");
+	tabHist.adicColuna("Usuário");
+	tabHist.adicColuna("Hora");
 	
-	tabCont.setTamColuna(40,0);
-	tabCont.setTamColuna(30,1);
-	tabCont.setTamColuna(70,2);
-	tabCont.setTamColuna(70,3);
-	tabCont.setTamColuna(75,4);
-	tabCont.setTamColuna(200,5);
-	tabCont.setTamColuna(100,6);
-	tabCont.setTamColuna(70,7);
+	tabHist.setTamColuna(40,0);
+	tabHist.setTamColuna(30,1);
+	tabHist.setTamColuna(70,2);
+	tabHist.setTamColuna(70,3);
+	tabHist.setTamColuna(75,4);
+	tabHist.setTamColuna(200,5);
+	tabHist.setTamColuna(100,6);
+	tabHist.setTamColuna(70,7);
 	
-	tabCont.addMouseListener(
+	tabHist.addMouseListener(
 			  new MouseAdapter() {
 				  	public void mouseClicked(MouseEvent mevt) {
 					  	  if (mevt.getClickCount() == 2) {
@@ -641,7 +644,15 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	adicTab("Contatos",pnCto);
 	pnCto.add(tpnCont);
 	
-	pinHistorico.add(spnTabCont,BorderLayout.CENTER);
+	pinHistorico.add(spnTabHist,BorderLayout.CENTER);
+	pinHistorico.add(pinHistbt,BorderLayout.SOUTH);
+	
+	pinHistbt.setPreferredSize(new Dimension(63,36));
+	pinHistbt.adic(btNovoHist,1,1,30,30);
+	pinHistbt.adic(btExcluiHist,31,1,30,30);
+	btNovoHist.addActionListener(this);
+	btExcluiHist.addActionListener(this);
+	
 	pinContatos.add(pnCont,BorderLayout.CENTER);
 	 
 	pnCont.adic(new JLabelPad("Ano"),7,0,80,20);
@@ -1085,17 +1096,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  ps.setInt(2,Aplicativo.iCodEmp);
 		  ps.setInt(3,Aplicativo.iCodFilial);
 		  rs = ps.executeQuery();
-		  tabCont.limpa();
+		  tabHist.limpa();
 		  while(rs.next()) {
-			  tabCont.adicLinha();
-			  tabCont.setValor(rs.getString("CodHistTK"),iLinha,0);
-			  tabCont.setValor(rs.getString("SitHistTK"),iLinha,1);
-			  tabCont.setValor(rs.getString("CodCto"),iLinha,2);
-			  tabCont.setValor(rs.getString("CodAtend"),iLinha,3);
-			  tabCont.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")),iLinha,4);
-			  tabCont.setValor(rs.getString("DescHistTK"),iLinha,5);
-			  tabCont.setValor(rs.getString("NomeAtend"),iLinha,6);
-			  tabCont.setValor(rs.getString("HoraHistTK"),iLinha,7);
+			  tabHist.adicLinha();
+			  tabHist.setValor(rs.getString("CodHistTK"),iLinha,0);
+			  tabHist.setValor(rs.getString("SitHistTK"),iLinha,1);
+			  tabHist.setValor(rs.getString("CodCto"),iLinha,2);
+			  tabHist.setValor(rs.getString("CodAtend"),iLinha,3);
+			  tabHist.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")),iLinha,4);
+			  tabHist.setValor(rs.getString("DescHistTK"),iLinha,5);
+			  tabHist.setValor(rs.getString("NomeAtend"),iLinha,6);
+			  tabHist.setValor(rs.getString("HoraHistTK"),iLinha,7);
 			  iLinha++;
 		  }
 		
@@ -1112,41 +1123,122 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
   }
   
+  private void novoHist() {
+	  PreparedStatement ps = null;
+	  int iCod = 0;
+	  	try{
+	  		
+		  	String sRets[];
+		  	
+		  	
+  			if (txtCodCli.getVlrInteger().intValue() == 0) {
+				Funcoes.mensagemInforma(this,"Não ha nenhum cliente selecionado!");
+				txtCodCli.requestFocus();
+		  		return;
+		  	}
+  			else 
+		  		iCod = txtCodCli.getVlrInteger().intValue();
+		  	
+		  	DLNovoHist dl = new DLNovoHist(iCod,1,this);
+		  	dl.setConexao(con);
+		  	dl.setVisible(true);
+		  	if (dl.OK) {
+		  	  sRets = dl.getValores();
+		  	  	try {
+			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
+			        ps = con.prepareStatement(sSQL);
+			        ps.setInt(1,Aplicativo.iCodEmp);
+		        	ps.setNull(2,Types.INTEGER);
+			        ps.setNull(3,Types.INTEGER);
+		        	ps.setInt(4,lcCampos.getCodFilial()); 
+		        	ps.setInt(5,txtCodCli.getVlrInteger().intValue());  
+			        ps.setString(6,sRets[0]);//Descrição do historico
+			        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
+				    ps.setString(8,sRets[1]);//codígo atendente
+				    ps.setString(9,sRets[2]);//status do historico
+				    ps.execute();			    
+				    ps.close();
+				    
+				    if (!con.getAutoCommit())
+				    	con.commit();
+				    
+				    if (sRets[3] != null) {
+				    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				        ps = con.prepareStatement(sSQL);
+				        ps.setInt(1,Aplicativo.iCodEmp);  
+					    ps.setDate(2,Funcoes.strDateToSqlDate(sRets[3]));
+					    ps.setString(3,sRets[4]+":00"); 
+					    ps.setDate(4,Funcoes.strDateToSqlDate(sRets[5]));
+					    ps.setString(5,sRets[6]+":00");
+					    ps.setString(6,sRets[7]);
+					    ps.setString(7,sRets[8]);
+					    ps.setString(8,sRets[9]); 
+					    ps.setInt(9,5);
+					    ps.setInt(10,Aplicativo.iCodFilialPad);
+					    ps.setString(11,Aplicativo.strUsuario); 
+					    ps.setString(12,sRets[10]);
+					    ps.setString(13,sRets[11]);  
+					    ps.setInt(14,((Integer)buscaAgente(0)).intValue());
+					    ps.setString(15,(String)buscaAgente(1));
+				        ps.execute();
+				        ps.close();
+				        if (!con.getAutoCommit())
+				        	con.commit();
+				    }
+			    }
+			  	catch(SQLException err) {
+					Funcoes.mensagemErro(this,"SQL Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
+					err.printStackTrace();
+			  	}
+			  	catch(Exception err) {
+					Funcoes.mensagemErro(this,"Erro ao salvar o histórico!\n"+err.getMessage(),true,con,err);
+					err.printStackTrace();
+			  	}
+		    dl.dispose();
+		  	}
+		  	carregaTabHist();
+	  	}
+	  	finally{
+	  		ps = null;
+	  		iCod = 0;
+	  	}
+  }
+  
   private void editaHist() {
 		int iLin = 0;
 		int iCod = 0;
+	  	String sRets[];
 	  	try{
-	  		if ((iLin = tabCont.getLinhaSel()) < 0) {
+	  		if ((iLin = tabHist.getLinhaSel()) < 0) {
 		  		Funcoes.mensagemInforma(this,"Não ha nenhum histórico selecionado!");
 		  		return;
 		  	}
-		  	String sRets[];
 		  	iCod = txtCodCli.getVlrInteger().intValue();
 		  	
 		  	DLNovoHist dl = new DLNovoHist(iCod,1,this);
 		  	dl.setConexao(con);
-		  	dl.setValores(new String[] {(String)tabCont.getValor(iLin,5),
-							   			(String)tabCont.getValor(iLin,3),
-							   			(String)tabCont.getValor(iLin,1)
+		  	dl.setValores(new String[] {(String)tabHist.getValor(iLin,5),
+							   			(String)tabHist.getValor(iLin,3),
+							   			(String)tabHist.getValor(iLin,1)
 		  							   }
 		  				 );
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
 		  		sRets = dl.getValores();
 		  		try {
-		  			String sSQL = "SELECT IRET FROM TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
+		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
-		  			ps.setInt(1,Integer.parseInt((String)tabCont.getValor(iLin,0)));
+		  			ps.setInt(1,Integer.parseInt((String)tabHist.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);
-		  			ps.setInt(3,Aplicativo.iCodFilial);
-		  			ps.setInt(4,((Integer)tabCont.getValor(iLin,2)).intValue());
-		            ps.setNull(5,Types.INTEGER);  //Filialcli
-		            ps.setNull(6,Types.INTEGER);  //Codcli
-		            ps.setString(7,sRets[0]);
-		  			ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));
-		  			ps.setString(9,sRets[1]);
-		  			ps.setString(10,sRets[2]);
-		  			ps.executeQuery();
+		        	ps.setNull(3,Types.INTEGER);
+			        ps.setNull(4,Types.INTEGER);
+			        ps.setInt(5,lcCampos.getCodFilial()); 
+			        ps.setInt(6,txtCodCli.getVlrInteger().intValue());  
+			        ps.setString(7,sRets[0]);//Descrição do historico
+			        ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
+				    ps.setString(9,sRets[1]);//codígo atendente
+				    ps.setString(10,sRets[2]);//status do historico
+				    ps.execute();
 		  			ps.close();
 		  			if (!con.getAutoCommit())
 		  				con.commit();
@@ -1156,12 +1248,65 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  		}
 		  	}
 		  	dl.dispose();
+		  	carregaTabHist();
 	  	}
 	  	finally{
 	  		iLin = 0;
 	  		iCod = 0;
 	  	}
   }
+  
+  private void excluiHist() {
+	  	if (tabHist.getLinhaSel() == -1) { 
+			Funcoes.mensagemInforma(this,"Selecione um item na lista!");
+	  	  return;
+	    } 
+	  	else if (Funcoes.mensagemConfirma(this,"Deseja relamente excluir o histórico '"+tabHist.getValor(tabHist.getLinhaSel(),0)+"'?") != JOptionPane.YES_OPTION) {
+	  		return;
+	  	}
+	    try {
+		  String sSQL = "DELETE FROM TKHISTORICO WHERE CODHISTTK=? AND CODEMP=? AND CODFILIAL=?";
+		  PreparedStatement ps = con.prepareStatement(sSQL);
+		  ps.setString(1,(String)tabHist.getValor(tabHist.getLinhaSel(),0));
+		  ps.setInt(2,Aplicativo.iCodEmp);
+		  ps.setInt(3,ListaCampos.getMasterFilial("TKHISTORICO"));
+		  ps.execute();
+		  ps.close();
+		  if (!con.getAutoCommit())
+		  	con.commit();
+		  carregaTabHist();
+		}
+		catch(SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao excluir o histórico!\n"+err.getMessage(),true,con,err);
+		}
+  }
+  
+  private Object buscaAgente(int index) {
+	  	Object[] oRet = new Object[2];
+	  	String sSQL = "SELECT U.CODAGE,U.TIPOAGE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? " +
+	  			  	  "AND IDUSU=?";
+	  	try {
+	  		PreparedStatement ps = con.prepareStatement(sSQL);
+	  		ps.setInt(1,Aplicativo.iCodEmp);
+	  		ps.setInt(2,Aplicativo.iCodFilial);
+	  		ps.setString(3,Aplicativo.strUsuario);
+	  		
+	  		ResultSet rs = ps.executeQuery();
+	  		while (rs.next()) {
+	  			oRet[0] = new Integer(rs.getInt(1));
+	  			oRet[1] = rs.getString(2);  			
+	  		}  		
+	  	}
+	  	catch(Exception e){
+	  		e.printStackTrace();
+	  	}
+	  	finally{
+	  		sSQL = null;
+	  	}
+	  	
+	  	return oRet[index];
+  }
+  
   
   private void geraHistoricos(Integer iMes){
 	  HashMap hmMeses = new HashMap();
@@ -2286,6 +2431,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
 	else if (evt.getSource()==btMudaTudo) {
 	    geraHistoricos(null);
+	}
+	else if (evt.getSource()==btNovoHist) {
+	    novoHist();
+	}
+	else if (evt.getSource()==btExcluiHist) {
+	    excluiHist();
 	}
 
     super.actionPerformed(evt);

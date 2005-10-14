@@ -237,7 +237,9 @@ public class NFIswara extends Leiaute {
          
          iItImp++;
 //         System.out.println(imp.pRow()+" = iItImp : "+iItImp);
-         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 41)) {
+         if ((iItImp == rs.getInt(1)) || (imp.pRow() == 40)) {
+        	 imp.say(imp.pRow()+1,0,"");
+			 imp.say(imp.pRow()+0,9,"Valor do desconto : "+Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItVenda")));        	 
            if (iItImp == rs.getInt(1)) {
              int iRow = imp.pRow();
 			if (!sMatObs[0].equals("")) {
