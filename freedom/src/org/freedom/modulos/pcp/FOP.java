@@ -914,7 +914,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 				retorno[2] = new Boolean(false);
 				if((!existeLote(cn, iCodProd, sCodLote)) && (bInsere)){	
 					if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sCodLote.trim()+" ?")==JOptionPane.YES_OPTION){
-						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
+						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE,DINILOTE) VALUES(?,?,?,?,?,?)";
 						try {
 						   PreparedStatement ps = cn.prepareStatement(sSql); 
 						   ps.setInt(1,Aplicativo.iCodEmp);
@@ -922,6 +922,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 						   ps.setInt(3,iCodProd);
 						   ps.setString(4,sCodLote);
 						   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
+						   ps.setDate(6,Funcoes.dateToSQLDate(dtFabProd));
 						   if (ps.executeUpdate() == 0) {
 							  Funcoes.mensagemInforma(null,"Não foi possível inserir registro na tabela de Lotes!");
 						   }
