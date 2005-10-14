@@ -1782,8 +1782,17 @@ public class Funcoes {
 	}
 
 	public static BigDecimal strDecimalToBigDecimal(int iDec, String sVal) {
-		BigDecimal bigRet = new BigDecimal(sVal);
-		bigRet = bigRet.setScale(iDec);
+		double deVal = 0;
+		BigDecimal bigRet = null;
+		try {
+		   if (sVal==null)
+		      sVal = "0";
+		   deVal = Float.parseFloat(sVal);
+		   deVal = Funcoes.arredDouble(deVal, iDec);
+		}
+		finally {
+			bigRet = new BigDecimal(deVal);
+		}
 		return bigRet;
 	}
 
