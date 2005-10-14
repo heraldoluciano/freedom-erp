@@ -105,7 +105,8 @@ public Vector getLabelsColunas() {
     return vLabelsColunas;
 }
 public void setTexto(String sTexto){
-    this.sTexto = sTexto;
+	if(sTexto!=null)
+		this.sTexto = sTexto;
     getAdic();    
 }
 
@@ -124,15 +125,19 @@ public void getAdic(){
 }
 
 
-public String getLote(Integer iCodProd,Date dData,Connection con){
-	String sRetorno = "";	
-	sRetorno = sTexto;
+public String getLote(Integer iCodProd,Integer iCodProdDist,Date dData,Connection con){
+	String sRetorno = sTexto;
+	int iProcDia = 0;
 	GregorianCalendar cal = new GregorianCalendar();
-	cal.setTime(dData);
 	    try {
-//  	        Vector vTamsAdic = getTamsAdic();
+	    	cal.setTime(dData);
   	        Vector vValAdic = getValoresAdic();
   	        if (sRetorno != null) { 
+  	        	if(iCodProdDist!=null)
+  	        		iProcDia = iCodProdDist.intValue();
+  	        	else
+  	        		iProcDia = iCodProd.intValue();
+  	        	
   	            try {			    	    
   	                for(int i=0;vValAdic.size()>i;i++) {
   	                    String sValAdic = vValoresAdic.elementAt(i).toString();
@@ -181,7 +186,7 @@ public String getLote(Integer iCodProd,Date dData,Connection con){
                     				PreparedStatement ps = con.prepareStatement(sSQL);
                     				ps.setInt(1, Aplicativo.iCodEmp);
                     				ps.setInt(2, ListaCampos.getMasterFilial("PPOP"));
-                    				ps.setInt(3, iCodProd.intValue());
+                    				ps.setInt(3, iProcDia);
                     				ps.setDate(4,Funcoes.dateToSQLDate(dData));
                     				ResultSet rs = ps.executeQuery();
                     				if (rs.next()) {
@@ -211,6 +216,10 @@ public String getLote(Integer iCodProd,Date dData,Connection con){
 	    catch(Exception err) {
 	    	err.printStackTrace();
 	    }
-	return sRetorno;
-}
+	    finally{
+	    	iProcDia = 0;
+	    	cal = null;
+	    }
+	    return sRetorno;
+	}
 }
