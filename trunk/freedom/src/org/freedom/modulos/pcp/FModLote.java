@@ -163,8 +163,8 @@ public class FModLote extends FDados implements ActionListener, JComboBoxListene
 		imp.setTitulo("Teste de Modelo de Lote"); 
 	    imp.limpaPags();
 	    String sTexto = "É necessário selecionar um modelo de lote válido!";
-	    if(objModLote.getLote(new Integer(30),new Date(),con)!=null){
-	    	sTexto = objModLote.getLote(new Integer(30),new Date(),con);
+	    if(objModLote.getLote(new Integer(30),null,new Date(),con)!=null){
+	    	sTexto = objModLote.getLote(new Integer(30),null,new Date(),con);
 	    } 
 
 		imp.say(imp.pRow()+1,0,sTexto);

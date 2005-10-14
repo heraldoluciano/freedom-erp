@@ -902,7 +902,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 				if (sCodLote==null) {
 					objMl = new ObjetoModLote();
 					objMl.setTexto(sModLote);
-					sCodLote = objMl.getLote(new Integer(iCodProd),dtFabProd,cn);				  			
+					sCodLote = objMl.getLote(new Integer(iCodProd),null,dtFabProd,cn);				  			
 				}
 				GregorianCalendar cal = new GregorianCalendar();
 				cal.setTime(dtFabProd);

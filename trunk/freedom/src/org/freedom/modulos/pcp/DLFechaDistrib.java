@@ -315,14 +315,14 @@ public class DLFechaDistrib extends FFDialogo {
 			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
 		}
 			   
-		if(!(sCodLote.equals("")) && (getUsaLote().equals("S")) ){
+		if(!(sCodLote.equals(""))){
 			dtFabProd = new Date();
 			ObjMl = new ObjetoModLote();
 			ObjMl.setTexto(sModLote);
 			if(getModLotePrinc())
-				sCodLote = ObjMl.getLote(new Integer(this.iProdPrinc),dtFabProd,con);
+				sCodLote = ObjMl.getLote(new Integer(this.iProdPrinc),new Integer(iCodProd),dtFabProd,con);
 			else
-				sCodLote = ObjMl.getLote(new Integer(iCodProd),dtFabProd,con);
+				sCodLote = ObjMl.getLote(new Integer(iCodProd),null,dtFabProd,con);
 			cal = new GregorianCalendar();
 			cal.setTime(dtFabProd);
 			cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasValid);
