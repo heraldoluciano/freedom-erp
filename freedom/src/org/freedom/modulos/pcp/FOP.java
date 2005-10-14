@@ -687,6 +687,56 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		}
 	}
   }
+  
+  private boolean temSldLote(){
+	  boolean bRet = false;
+	  ResultSet rs = null;
+	  PreparedStatement ps = null;
+	  String sSQL = null;
+	  int iSldLote = 0;
+	  	try{
+	  		sSQL = "SELECT SLDLOTE FROM EQSALDOLOTE " +
+	  			   "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=? AND CODLOTE=? " +
+	  			   "AND CODEMPAX=? AND CODFILIALAX=? AND CODALMOX=?";
+	  		for(int i=0;i<tab.getRowCount();i++){
+	  			ps = con.prepareStatement(sSQL);
+		  		ps.setInt(1,Aplicativo.iCodEmp);
+		  		ps.setInt(2,Aplicativo.iCodFilial);
+		  		ps.setInt(3,((Integer)tab.getValor(i,1)).intValue());
+		  		ps.setString(4,(String)tab.getValor(i,3));
+		  		ps.setInt(5,Aplicativo.iCodEmp);
+		  		ps.setInt(6,lcAlmoxEst.getCodFilial());
+		  		ps.setInt(7,txtCodAlmoxEst.getVlrInteger().intValue());
+		  		rs = ps.executeQuery();
+		  		if(rs.next()){
+		  			iSldLote = rs.getInt("SLDLOTE");
+		  		}
+		  		if(iSldLote<((new Integer((String)tab.getValor(i,5))).intValue())){
+		  			bRet = false;
+		  			Funcoes.mensagemInforma(this,"Saldo do lote: "+tab.getValor(i,1)+" é insuficiente");
+		  		}
+		  		rs.close();
+		  		ps.close();
+		  		
+	  		}
+	  	}
+	  	catch(SQLException e){
+	  		Funcoes.mensagemErro(this,"Erro ao verificar quantidade de Lote\n"+e.getMessage(),true,con,e);
+	  		e.printStackTrace();
+	  	}
+	  	catch(Exception e){
+	  		Funcoes.mensagemErro(this,"Erro ao verificar quantidade de Lote\n"+e.getMessage(),true,con,e);
+	  		e.printStackTrace();
+	  	}
+	  	finally{
+	  		rs = null;
+	  		ps = null;
+	  		sSQL = null;
+	  		iSldLote = 0;
+	  	}
+	  return bRet;
+  }
+  
   public void geraRMA(){
 	  String sSQL = null;
 	  PreparedStatement ps = null;
