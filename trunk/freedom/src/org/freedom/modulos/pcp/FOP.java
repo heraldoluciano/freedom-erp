@@ -898,7 +898,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	  ObjetoModLote objMl = null;
 	  //String sCodLote = null;
 	  try {
-			if(!(sCodModLote.equals("")) && (sUsaLoteEst.equals("S")) ){
+			if(!(sCodModLote.equals("")) ){
 				if (sCodLote==null) {
 					objMl = new ObjetoModLote();
 					objMl.setTexto(sModLote);
@@ -1062,7 +1062,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		} 
   	}  	
   	if(cevt.getListaCampos() == lcModLote){
-  		if(!(txtCodModLote.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S")) && (txtCodLoteProdEst.getVlrString().equals(""))){
+  		if(!(txtCodModLote.getVlrString().equals("")) && (txtCodLoteProdEst.getVlrString().equals(""))){
   			gravaLote(false);
   			btLote.setEnabled(true);
   		}
@@ -1109,9 +1109,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	lcLoteProdEst.setConexao(cn);
   	lcAlmoxEst.setConexao(cn);
   	lcModLote.setConexao(cn);
-  	
   }
-  
   private void imprimir(boolean bVisualizar) {
 	Vector vParamOP = new Vector();
   	String sClassOP = "";
