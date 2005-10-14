@@ -704,42 +704,44 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		rs = ps.executeQuery();
 		if (rs.next()) {
 			try{
-				if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtSeqOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
-					ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)");
-					ps2.setInt(1,Aplicativo.iCodEmp);
-					ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
-					ps2.setInt(3,txtCodOP.getVlrInteger().intValue());
-					ps2.setInt(4,txtSeqOP.getVlrInteger().intValue());
-					ps2.execute();
-					ps2.close();
-					if (!con.getAutoCommit())
-					   con.commit();
-					
-					try{
-						ps3 = con.prepareStatement("SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " +
-																	 "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
-						ps3.setInt(1, Aplicativo.iCodEmp);
-						ps3.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
-						ps3.setInt(3, ListaCampos.getMasterFilial("PPOP"));
-						ps3.setInt(4,txtCodOP.getVlrInteger().intValue());
-						ps3.setInt(5,txtSeqOP.getVlrInteger().intValue());
+				if(temSldLote()){
+					if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtSeqOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
+						ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)");
+						ps2.setInt(1,Aplicativo.iCodEmp);
+						ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
+						ps2.setInt(3,txtCodOP.getVlrInteger().intValue());
+						ps2.setInt(4,txtSeqOP.getVlrInteger().intValue());
+						ps2.execute();
+						ps2.close();
+						if (!con.getAutoCommit())
+						   con.commit();
 						
-						rs2 = ps3.executeQuery();
-						String sRma = "";
-						while(rs2.next()) {
-							sRma += rs2.getString(1)+" - ";
+						try{
+							ps3 = con.prepareStatement("SELECT CODRMA FROM EQRMA WHERE CODEMP=? AND CODFILIAL=? AND " +
+																		 "CODEMPOF=CODEMP AND CODFILIALOF=? AND CODOP=? AND SEQOP=?" );
+							ps3.setInt(1, Aplicativo.iCodEmp);
+							ps3.setInt(2, ListaCampos.getMasterFilial("PPITOP"));
+							ps3.setInt(3, ListaCampos.getMasterFilial("PPOP"));
+							ps3.setInt(4,txtCodOP.getVlrInteger().intValue());
+							ps3.setInt(5,txtSeqOP.getVlrInteger().intValue());
+							
+							rs2 = ps3.executeQuery();
+							String sRma = "";
+							while(rs2.next()) {
+								sRma += rs2.getString(1)+" - ";
+							}
+							if (sRma.length()>0){
+								Funcoes.mensagemInforma(this,"Foram geradas as seguintes RMA:\n"+sRma);															
+							}
+							rs2.close();
+							
 						}
-						if (sRma.length()>0){
-							Funcoes.mensagemInforma(this,"Foram geradas as seguintes RMA:\n"+sRma);															
+						catch(Exception err){
+							Funcoes.mensagemErro(this,"Erro ao buscar RMA criada",true,con,err);
+							err.printStackTrace();
 						}
-						rs2.close();
 						
 					}
-					catch(Exception err){
-						Funcoes.mensagemErro(this,"Erro ao buscar RMA criada",true,con,err);
-						err.printStackTrace();
-					}
-					
 				}
 			}
 			catch(Exception err){
@@ -914,7 +916,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 				retorno[2] = new Boolean(false);
 				if((!existeLote(cn, iCodProd, sCodLote)) && (bInsere)){	
 					if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sCodLote.trim()+" ?")==JOptionPane.YES_OPTION){
-						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE,DINILOTE) VALUES(?,?,?,?,?,?)";
+						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
 						try {
 						   PreparedStatement ps = cn.prepareStatement(sSql); 
 						   ps.setInt(1,Aplicativo.iCodEmp);
@@ -922,7 +924,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 						   ps.setInt(3,iCodProd);
 						   ps.setString(4,sCodLote);
 						   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
-						   ps.setDate(6,Funcoes.dateToSQLDate(dtFabProd));
 						   if (ps.executeUpdate() == 0) {
 							  Funcoes.mensagemInforma(null,"Não foi possível inserir registro na tabela de Lotes!");
 						   }
