@@ -1043,30 +1043,48 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
       String[] sVals = new String[15];
       String[] sRets = null;
       DLBaixaRec dl = new DLBaixaRec(this);
-      sVals[0] = ""+txtCodCliBaixa.getVlrString();
-      sVals[1] = ""+txtRazCliBaixa.getVlrString();
-      sVals[2] = ""+vNumContas.elementAt(iLin);
-      sVals[3] = ""+vCodPlans.elementAt(iLin);
-      sVals[4] = ""+tabBaixa.getValor(iLin,3);
-      sVals[5] = ""+txtDtEmisBaixa.getVlrString();
-      sVals[6] = ""+tabBaixa.getValor(iLin,0);
-      sVals[7] = ""+tabBaixa.getValor(iLin,5);
-      sVals[8] = ""+tabBaixa.getValor(iLin,8);
-      sVals[9] = ""+tabBaixa.getValor(iLin,9);
-      sVals[10] = ""+tabBaixa.getValor(iLin,10);
-	  sVals[13] = ""+vCodCCs.elementAt(iLin);
-      if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) {
-        sVals[11] = Funcoes.dateToStrDate(new Date());
-        sVals[12] = ""+tabBaixa.getValor(iLin,7);
+      /*
+    tabBaixa.adicColuna("");//0
+    tabBaixa.adicColuna("Vencimento"); //1
+    tabBaixa.adicColuna("Nº Parcelas"); //2
+    tabBaixa.adicColuna("Doc."); //3
+    tabBaixa.adicColuna("Pedido"); //4
+    tabBaixa.adicColuna("Valor parcela"); //5
+    tabBaixa.adicColuna("Data Pagamento"); //6
+    tabBaixa.adicColuna("Valor pago"); //7
+    tabBaixa.adicColuna("Valor desc."); //8
+    tabBaixa.adicColuna("Valor juros"); //9
+    tabBaixa.adicColuna("Valor aberto"); //10
+    tabBaixa.adicColuna("Conta"); //11
+    tabBaixa.adicColuna("Categoria"); //12
+	tabBaixa.adicColuna("Centro de custo"); //13
+    tabBaixa.adicColuna("Observação"); //14
+
+       */
+      sVals[0] = ""+txtCodCliBaixa.getVlrString(); // Codcli
+      sVals[1] = ""+txtRazCliBaixa.getVlrString(); // Razcli
+      sVals[2] = ""+vNumContas.elementAt(iLin); // CodConta
+      sVals[3] = ""+vCodPlans.elementAt(iLin); // Codplan 
+      sVals[4] = ""+tabBaixa.getValor(iLin,3); // Doc 
+      sVals[5] = ""+txtDtEmisBaixa.getVlrString(); // Data emissão
+      sVals[6] = ""+tabBaixa.getValor(iLin,1); // Vencimento  
+      sVals[7] = ""+tabBaixa.getValor(iLin,5); // Vlrparc
+      sVals[8] = ""+tabBaixa.getValor(iLin,8); // Vlrdesc 
+      sVals[9] = ""+tabBaixa.getValor(iLin,9); // Vlrjuros
+      sVals[10] = ""+tabBaixa.getValor(iLin,10); // Vlraberto
+	  sVals[13] = ""+vCodCCs.elementAt(iLin); // Codcc
+      if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) { // Data de pagamento branco
+        sVals[11] = Funcoes.dateToStrDate(new Date()); // Data pagto
+        sVals[12] = ""+tabBaixa.getValor(iLin,7); // Vlrpago
       }
       else {
-        sVals[11] = ""+tabBaixa.getValor(iLin,6);
-        sVals[12] = ""+tabBaixa.getValor(iLin,7);
+        sVals[11] = ""+tabBaixa.getValor(iLin,6); // Data pagto 
+        sVals[12] = ""+tabBaixa.getValor(iLin,7); // valor pago 
       }
       if (((String)tabBaixa.getValor(iLin,14)).trim().equals(""))
-        sVals[14] = "RECEBIMENTO REF. AO PED.: "+txtCodVendaBaixa.getVlrString();
+        sVals[14] = "RECEBIMENTO REF. AO PED.: "+txtCodVendaBaixa.getVlrString(); // histórico 
       else
- 		sVals[14] = ""+tabBaixa.getValor(iLin,14);
+ 		sVals[14] = ""+tabBaixa.getValor(iLin,14); // histórico 
       
       dl.setValores(sVals);
       dl.setConexao(con);
