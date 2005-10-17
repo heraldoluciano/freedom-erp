@@ -689,10 +689,12 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   }
   
   private boolean temSldLote(){
-	  boolean bRet = false;
+	  boolean bRet = true;
 	  ResultSet rs = null;
 	  PreparedStatement ps = null;
 	  String sSQL = null;
+	  String sSaida = "";
+	  int iSldNeg = 0;
 	  float fSldLote = 0f;
 	  	try{
 	  		sSQL = "SELECT SLDLOTE FROM EQLOTE " +
@@ -707,16 +709,18 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		  		if(rs.next()){
 		  			fSldLote = rs.getFloat("SLDLOTE");
 		  		}
-		  		if(fSldLote<(Funcoes.strCurrencyToBigDecimal((String)tab.getValor(i,5)).floatValue())){
-		  			bRet = false;
-		  			Funcoes.mensagemInforma(this,"Saldo do lote: "+tab.getValor(i,1)+" é insuficiente");
-		  		}
-		  		else
-		  			bRet = true;
-		  		
+		  		if((fSldLote<(Funcoes.strCurrencyToBigDecimal((String)tab.getValor(i,5)).floatValue())) 
+		  				&& (!((String)tab.getValor(i,3)).equals(""))){
+		  			iSldNeg++;
+		  			sSaida += "\nProduto: "+tab.getValor(i,1)+Funcoes.replicate(" ",20)+"Lote: "+tab.getValor(i,3);
+		  		}		  		
 		  		rs.close();
-		  		ps.close();
-		  		
+		  		ps.close();		  		
+	  		}
+	  		
+	  		if(iSldNeg > 0){
+	  			Funcoes.mensagemInforma(this,"Estes lotes possuem saldo menor que a quantidade solicitada."+sSaida);
+	  			bRet = false;
 	  		}
 	  	}
 	  	catch(SQLException e){
@@ -731,6 +735,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	  		rs = null;
 	  		ps = null;
 	  		sSQL = null;
+	  		iSldNeg = 0;
 	  		fSldLote = 0;
 	  	}
 	  return bRet;
@@ -754,7 +759,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		if (rs.next()) {
 			try{
 				if(temSldLote()){
-					if(Funcoes.mensagemConfirma(null,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtSeqOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
+					if(Funcoes.mensagemConfirma(this,"Confirma a geração de RMA para a OP:"+txtCodOP.getVlrString()+" SEQ:"+txtSeqOP.getVlrString()+"?")==JOptionPane.YES_OPTION){					
 						ps2 = con.prepareStatement("EXECUTE PROCEDURE EQGERARMASP(?,?,?,?)");
 						ps2.setInt(1,Aplicativo.iCodEmp);
 						ps2.setInt(2,ListaCampos.getMasterFilial("PPOP"));
