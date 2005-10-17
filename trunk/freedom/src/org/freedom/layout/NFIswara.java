@@ -228,11 +228,11 @@ public class NFIswara extends Leiaute {
          imp.say(imp.pRow()+0,65,sSigla);
          imp.say(imp.pRow()+0,67,Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
          imp.say(imp.pRow()+0,72,rs.getString("CodUnid").substring(0,4));
-         imp.say(imp.pRow()+0,80,""+rs.getDouble("QtdItVenda"));
-         imp.say(imp.pRow()+0,91,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
+         imp.say(imp.pRow()+0,80,""+rs.getFloat("QtdItVenda"));
+         imp.say(imp.pRow()+0,91,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(rs.getFloat("VlrLiqItVenda"))).divide(new BigDecimal(rs.getFloat("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP))));
          imp.say(imp.pRow()+0,102,Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
-         imp.say(imp.pRow()+0,120,""+rs.getDouble("PercICMSItVenda"));
-         imp.say(imp.pRow()+0,125,""+rs.getDouble("PercIPIItvenda"));
+         imp.say(imp.pRow()+0,120,""+rs.getFloat("PercICMSItVenda"));
+         imp.say(imp.pRow()+0,125,""+rs.getFloat("PercIPIItvenda"));
 		 imp.say(imp.pRow()+0,130,Funcoes.strDecimalToStrCurrency(7,2,rs.getString("VlrIPIItvenda")));
          
          iItImp++;
