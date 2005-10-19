@@ -116,7 +116,7 @@ public class NFSaida extends NF {
 				con.commit();
 			cab.setRow(-1);
 			
-			sql = "SELECT I.CODITVENDA, I.CODPROD, P.REFPROD, P.DESCPROD, I.OBSITVENDA, P.CODUNID,"+
+			sql = "SELECT I.CODITVENDA, I.CODPROD, P.REFPROD, P.DESCPROD, I.OBSITVENDA, P.CODUNID, I.VLRIPIITVENDA,"+
 					"I.QTDITVENDA, I.VLRLIQITVENDA, I.PERCIPIITVENDA, I.PERCICMSITVENDA, V.VLRICMSVENDA, V.VLRPRODVENDA,"+
 					"V.VLRIPIVENDA, V.VLRLIQVENDA, V.VLRISSVENDA, N.IMPDTSAIDANAT, I.VLRPRODITVENDA, N.DESCNAT, N.CODNAT,"+
 					"I.CODLOTE, I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA, P.CODFISC, P.TIPOPROD,"+
@@ -137,7 +137,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector(30);
+			itens = new TabVector(31);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITVENDA"));
@@ -152,20 +152,21 @@ public class NFSaida extends NF {
 				itens.setFloat(C_PERCICMSITPED, rs.getFloat("PERCICMSITVENDA"));
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSVENDA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPIVENDA"));
+				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPIITVENDA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQVENDA"));
 				itens.setString(C_IMPDTSAIDA, (rs.getString("IMPDTSAIDANAT")!=null ? rs.getString("IMPDTSAIDANAT") : ""));
 				itens.setFloat(C_VLRPRODITPED, rs.getFloat("VLRPRODITVENDA"));
 				itens.setString(C_DESCNAT, (rs.getString("DESCNAT")!=null ? rs.getString("DESCNAT") : ""));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, (rs.getString("CODLOTE")!=null ? rs.getString("CODLOTE") : ""));
-				itens.setDate(C_VENCLOTE, rs.getDate(27));
+				itens.setDate(C_VENCLOTE, rs.getDate(28));
 				itens.setString(C_ORIGFISC, (rs.getString("ORIGFISC")!=null ? rs.getString("ORIGFISC") : ""));
 				itens.setString(C_CODTRATTRIB, (rs.getString("CODTRATTRIB")!=null ? rs.getString("CODTRATTRIB") : ""));
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSVENDA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICVENDA"));
-				itens.setInt(C_CONTAITENS, rs.getInt(28));
-				itens.setString(C_DESCFISC, (rs.getString(29)!=null ? rs.getString(29) : ""));
-				itens.setString(C_DESCFISC2, (rs.getString(30)!=null ? rs.getString(30) : ""));
+				itens.setInt(C_CONTAITENS, rs.getInt(29));
+				itens.setString(C_DESCFISC, (rs.getString(30)!=null ? rs.getString(30) : ""));
+				itens.setString(C_DESCFISC2, (rs.getString(31)!=null ? rs.getString(31) : ""));
 				itens.setString(C_CODFISC, rs.getString("CODFISC")!= null ? rs.getString("CODFISC") : "");
 				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD")!= null ? rs.getString("TIPOPROD") : "");
 				itens.setFloat(C_VLRISSPED, rs.getFloat("VLRISSVENDA"));
