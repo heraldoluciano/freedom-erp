@@ -44,6 +44,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -70,6 +71,7 @@ import org.freedom.modulos.gms.FRma;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPrinterJob;
 
 public class FOP extends FDetalhe implements ChangeListener, PostListener,CancelListener,InsertListener,ActionListener,CarregaListener,KeyListener, FocusListener {
@@ -109,12 +111,17 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private JTextFieldFK txtModLote = new JTextFieldFK(JTextFieldPad.TP_STRING, 100, 0);
   private JTextFieldPad txtNroDiasValid = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtSeqEst = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+  private JTextFieldPad txtQtdDigRat = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,casasDec);  
+  private JTextFieldPad txtLoteRat = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+  private JTextFieldFK txtVencLoteRat = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtSldLoteRat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
   private ListaCampos lcProdEstCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdEstRef = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetCod = new ListaCampos(this,"PD");
   private ListaCampos lcProdDetRef = new ListaCampos(this,"PD");
   private ListaCampos lcLoteProdDet = new ListaCampos(this, "LE");  
   private ListaCampos lcLoteProdEst = new ListaCampos(this, "LE");
+  private ListaCampos lcLoteProdRat = new ListaCampos(this, "LE");
   private ListaCampos lcModLote = new ListaCampos(this, "ML");
   private JButton btFase = new JButton("Fases",Icone.novo("btFechaVenda.gif"));
   private JButton btRMA = new JButton("RMA",Icone.novo("btRma.gif"));
@@ -197,6 +204,18 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	lcLoteProdEst.setQueryCommit(false);
 	lcLoteProdEst.setReadOnly(true);
 	txtCodLoteProdEst.setTabelaExterna(lcLoteProdEst);
+	
+	//lista campos para o lote do rateio
+	txtLoteRat.setNomeCampo("CodLote");
+	txtLoteRat.setFK(true);  	  			
+	lcLoteProdRat.add(new GuardaCampo(txtLoteRat, "CodLote", "Lote",ListaCampos.DB_PK, txtVencLoteRat, false));
+  	lcLoteProdRat.add(new GuardaCampo(txtVencLoteRat, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
+  	lcLoteProdRat.add(new GuardaCampo(txtSldLoteRat, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
+  	lcLoteProdRat.setDinWhereAdic("CODPROD=#N",txtCodProdDet);
+  	lcLoteProdRat.montaSql(false, "LOTE", "EQ");
+  	lcLoteProdRat.setQueryCommit(false);
+  	lcLoteProdRat.setReadOnly(true);
+  	txtLoteRat.setTabelaExterna(lcLoteProdRat);
   	
 	lcTipoMov.add(new GuardaCampo(txtCodTpMov, "CodTipoMov",
 			"Cód.tp.mov.", ListaCampos.DB_PK, false));
@@ -394,7 +413,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	pinDet = new JPanelPad(440,50);
   	setPainel( pinDet, pnDet);
 
-  	txtCodLoteProdDet.setAtivo(false);
+  	//txtCodLoteProdDet.setAtivo(false);
   	txtSeqItOp.setAtivo(false);
   	txtQtdItOp.setAtivo(false);
 
@@ -689,12 +708,13 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   }
   
   private boolean temSldLote(){
-	  boolean bRet = true;
+	  boolean bRet = false;
 	  ResultSet rs = null;
 	  PreparedStatement ps = null;
 	  String sSQL = null;
 	  String sSaida = "";
 	  int iSldNeg = 0;
+	  int iTemp = 0;
 	  float fSldLote = 0f;
 	  	try{
 	  		sSQL = "SELECT SLDLOTE FROM EQLOTE " +
@@ -719,9 +739,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	  		}
 	  		
 	  		if(iSldNeg > 0){
-	  			Funcoes.mensagemInforma(this,"Estes lotes possuem saldo menor que a quantidade solicitada."+sSaida);
-	  			bRet = false;
+	  			iTemp = Funcoes.mensagemConfirma(this,"Estes lotes possuem saldo menor que a quantidade solicitada."+sSaida
+	  					+"\n\nDeseja gerar RMA com lote sem saldo?");
+	  			if(iTemp == JOptionPane.NO_OPTION)
+	  				bRet = false;
+	  			else if (iTemp == JOptionPane.YES_OPTION)
+	  				bRet = true;
 	  		}
+	  		else 
+	  			bRet = true;
 	  	}
 	  	catch(SQLException e){
 	  		Funcoes.mensagemErro(this,"Erro ao verificar quantidade de Lote\n"+e.getMessage(),true,con,e);
@@ -737,6 +763,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 	  		sSQL = null;
 	  		iSldNeg = 0;
 	  		fSldLote = 0;
+	  		iTemp = 0;
 	  	}
 	  return bRet;
   }
@@ -878,32 +905,68 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   
   public void ratearItem(boolean bPergunta){
   	boolean bResposta = true;
-  	if(bPergunta){
-  		bResposta = Funcoes.mensagemConfirma(Aplicativo.framePrinc,"Deseja realmente ratear este item para a OP?")==JOptionPane.YES_OPTION;
-  	}
-  	
-	if(bResposta) {  	
-  		JTextFieldPad txtQtdDigitada = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,5);  		
-  		try{  			
-  			txtQtdDigitada.setVlrString(JOptionPane.showInputDialog("Qtd", txtQtdItOp.getVlrString()));
-  			BigDecimal bdVlrNova = txtQtdItOp.getVlrBigDecimal().subtract(txtQtdDigitada.getVlrBigDecimal());
-  			if( (bdVlrNova.compareTo(txtQtdItOp.getVlrBigDecimal())>0) || (bdVlrNova.compareTo(new BigDecimal(0))<=0)){
-  				Funcoes.mensagemErro(Aplicativo.framePrinc,"Quantidade inválida!");
-  				ratearItem(false);
-  			}
-  			txtQtdCopiaItOp.setVlrBigDecimal(txtQtdDigitada.getVlrBigDecimal());
-  			txtQtdItOp.setVlrBigDecimal(bdVlrNova);
-  			lcDet.edit();
-  			lcDet.post();
-  			lcCampos.carregaDados();
-  		}
-  		catch(Exception err){
-  			Funcoes.mensagemErro(Aplicativo.framePrinc,"Valor inválido!");
-  			err.printStackTrace();
-  			return;  			
-  		}
-	} 
+  	BigDecimal bdVlrNova = null;
+  	BigDecimal bdQtdDigitada = null;
+  	String sCodLote = null;
+  	try{
+  		if(bPergunta){
+  	  		bResposta = (Funcoes.mensagemConfirma(Aplicativo.framePrinc,"Deseja realmente ratear este item para a OP?")==JOptionPane.YES_OPTION);
+  	  	}
   	  	
+  		if(bResposta) {  	
+  			
+  	  		try{  			  	  		
+  	  			
+	  	  		FFDialogo diag = new FFDialogo(this);
+	  			diag.setTitulo("Rateio");
+	  			diag.setAtribos(250, 160);
+	  			diag.adic(new JLabelPad("Quantidade: ",SwingConstants.RIGHT), 7, 10, 80, 20);
+	  			diag.adic(txtQtdDigRat, 90, 10, 120, 20);
+	  			diag.adic(new JLabelPad("Lote: ",SwingConstants.RIGHT), 7, 40, 80, 20);
+	  			diag.adic(txtLoteRat, 90, 40, 120, 20);
+	  			diag.setVisible(true);
+	  			
+	  			if(diag.OK){
+	  				if(!(""+txtQtdDigRat.getVlrBigDecimal()).equals("") && !txtLoteRat.getVlrString().equals("")){
+	  					bdQtdDigitada = txtQtdDigRat.getVlrBigDecimal();
+		  				sCodLote = txtLoteRat.getVlrString();
+		  				
+		  	  			bdVlrNova = txtQtdItOp.getVlrBigDecimal().subtract(bdQtdDigitada);
+		  	  			
+		  	  			if( (bdVlrNova.compareTo(txtQtdItOp.getVlrBigDecimal())>0) || (bdVlrNova.compareTo(new BigDecimal(0))<=0)){
+		  	  				Funcoes.mensagemErro(Aplicativo.framePrinc,"Quantidade inválida!");
+		  	  				ratearItem(false);
+		  	  			}
+		  	  			
+		  	  			txtQtdCopiaItOp.setVlrBigDecimal(bdQtdDigitada);
+		  	  			txtQtdItOp.setVlrBigDecimal(bdVlrNova);
+		  	  			txtCodLoteProdDet.setVlrString(sCodLote);
+		  	  			lcDet.edit();
+		  	  			lcDet.post();
+		  	  			lcCampos.carregaDados();		  	  			
+	  				}
+  	  			}	  			
+
+  	  			txtQtdDigRat.setVlrString("");
+  	  			txtLoteRat.setVlrString("");
+  	  		}
+  	  		catch(Exception err){
+  	  			Funcoes.mensagemErro(Aplicativo.framePrinc,"Valor inválido!");
+  	  			err.printStackTrace();
+  	  			return;  			
+  	  		}
+  		} 
+  	}
+  	catch(Exception err){
+			Funcoes.mensagemErro(Aplicativo.framePrinc,"Erro no rateamento!");
+			err.printStackTrace();
+			return;  			
+	}
+  	finally{
+  		bdVlrNova = null;
+  		bdQtdDigitada = null;
+  		sCodLote = null;
+  	}
   }
   
   public void setUsaLote(){
@@ -970,14 +1033,15 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 				retorno[2] = new Boolean(false);
 				if((!existeLote(cn, iCodProd, sCodLote)) && (bInsere)){	
 					if(Funcoes.mensagemConfirma(null,"Deseja criar o lote "+sCodLote.trim()+" ?")==JOptionPane.YES_OPTION){
-						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,VENCTOLOTE) VALUES(?,?,?,?,?)";
+						String sSql = "INSERT INTO EQLOTE (CODEMP,CODFILIAL,CODPROD,CODLOTE,DINILOTE,VENCTOLOTE) VALUES(?,?,?,?,?,?)";
 						try {
 						   PreparedStatement ps = cn.prepareStatement(sSql); 
 						   ps.setInt(1,Aplicativo.iCodEmp);
 						   ps.setInt(2,ListaCampos.getMasterFilial("EQLOTE"));
 						   ps.setInt(3,iCodProd);
 						   ps.setString(4,sCodLote);
-						   ps.setDate(5,Funcoes.dateToSQLDate(dtVenctoLote));
+						   ps.setDate(5,Funcoes.dateToSQLDate(dtFabProd));
+						   ps.setDate(6,Funcoes.dateToSQLDate(dtVenctoLote));
 						   if (ps.executeUpdate() == 0) {
 							  Funcoes.mensagemInforma(null,"Não foi possível inserir registro na tabela de Lotes!");
 						   }
@@ -1162,6 +1226,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	lcProdDetRef.setConexao(cn);
   	lcTipoMov.setConexao(cn);
   	lcLoteProdDet.setConexao(cn);
+  	lcLoteProdRat.setConexao(cn);
   	lcLoteProdEst.setConexao(cn);
   	lcAlmoxEst.setConexao(cn);
   	lcModLote.setConexao(cn);

@@ -98,24 +98,25 @@ public class NF {
 	public static final int C_PERCICMSITPED = 9;
 	public static final int C_VLRICMSPED = 10;
 	public static final int C_VLRIPIPED = 11;
-	public static final int C_VLRLIQPED = 12;	
-	public static final int C_IMPDTSAIDA = 13;
-	public static final int C_VLRPRODITPED = 14;
-	public static final int C_DESCNAT = 15;	
-	public static final int C_CODNAT = 16;
-	public static final int C_CODLOTE = 17;
-	public static final int C_VENCLOTE = 18;
-	public static final int C_ORIGFISC = 19;
-	public static final int C_CODTRATTRIB = 20;
-	public static final int C_VLRBASEICMSPED = 21;
-	public static final int C_VLRADICPED = 22;
-	public static final int C_CONTAITENS = 23;
-	public static final int C_DESCFISC = 24;
-	public static final int C_DESCFISC2 = 25;
-	public static final int C_CODFISC = 26;
-	public static final int C_TIPOPROD = 27;
-	public static final int C_VLRISSPED = 28;
-	public static final int C_VLRPRODPED = 29;
+	public static final int C_VLRIPIITPED = 12;
+	public static final int C_VLRLIQPED = 13;	
+	public static final int C_IMPDTSAIDA = 14;
+	public static final int C_VLRPRODITPED = 15;
+	public static final int C_DESCNAT = 16;	
+	public static final int C_CODNAT = 17;
+	public static final int C_CODLOTE = 18;
+	public static final int C_VENCLOTE = 19;
+	public static final int C_ORIGFISC = 20;
+	public static final int C_CODTRATTRIB = 21;
+	public static final int C_VLRBASEICMSPED = 22;
+	public static final int C_VLRADICPED = 23;
+	public static final int C_CONTAITENS = 24;
+	public static final int C_DESCFISC = 25;
+	public static final int C_DESCFISC2 = 26;
+	public static final int C_CODFISC = 27;
+	public static final int C_TIPOPROD = 28;
+	public static final int C_VLRISSPED = 29;
+	public static final int C_VLRPRODPED = 30;
 	
 	
 	//adic

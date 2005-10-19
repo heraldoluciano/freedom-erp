@@ -271,7 +271,7 @@ public class NF014 extends Layout {
 	             imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	             imp.say(imp.pRow()+0,9,Funcoes.strDecimalToStrCurrency(20,2,""+frete.getFloat(NF.C_VLRFRETEPED)));
 	             imp.say(imp.pRow()+0,68,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRADICPED)));
-	             imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRIPIPED)));
+	             imp.say(imp.pRow()+0,93,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRIPIITPED)));
 	             imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,""+itens.getFloat(NF.C_VLRLIQPED)));
            }
 
