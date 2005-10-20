@@ -96,6 +96,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   private JTextFieldPad txtSeqItOp = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0); 
   private JTextFieldPad txtQtdItOp = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
   private JTextFieldPad txtQtdCopiaItOp = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
+  private JTextFieldPad txtCodLoteProdRat = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldPad txtCodLoteProdDet = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
   private JTextFieldFK txtDescLoteProdDet = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
   private JTextFieldPad txtCodLoteProdEst = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
@@ -474,6 +475,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	adicCampo(txtCodLoteProdDet,386,20,90,20,"codlote","Lote", ListaCampos.DB_FK, false);
   	adicCampo(txtQtdItOp,479,20,90,20,"qtditop","Quantidade", ListaCampos.DB_SI, false);
   	adicCampoInvisivel(txtQtdCopiaItOp,"qtdcopiaitop","Qtd. rateada", ListaCampos.DB_SI, false);
+  	adicCampoInvisivel(txtCodLoteProdRat,"codloterat","lote rateado", ListaCampos.DB_SI, false);
   	adicCampoInvisivel(txtGeraRMAAut,"GERARMA","Gera Rma",ListaCampos.DB_SI,false);
   	setListaCampos( true, "ITOP", "PP");
   	lcDet.setQueryInsert(false);    
@@ -940,7 +942,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		  	  			
 		  	  			txtQtdCopiaItOp.setVlrBigDecimal(bdQtdDigitada);
 		  	  			txtQtdItOp.setVlrBigDecimal(bdVlrNova);
-		  	  			txtCodLoteProdDet.setVlrString(sCodLote);
+		  	  			txtCodLoteProdRat.setVlrString(sCodLote);
 		  	  			lcDet.edit();
 		  	  			lcDet.post();
 		  	  			lcCampos.carregaDados();		  	  			
