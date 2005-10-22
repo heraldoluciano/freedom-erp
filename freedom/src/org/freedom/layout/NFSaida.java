@@ -152,7 +152,7 @@ public class NFSaida extends NF {
 				itens.setFloat(C_PERCICMSITPED, rs.getFloat("PERCICMSITVENDA"));
 				itens.setFloat(C_VLRICMSPED, rs.getFloat("VLRICMSVENDA"));
 				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPIVENDA"));
-				itens.setFloat(C_VLRIPIPED, rs.getFloat("VLRIPIITVENDA"));
+				itens.setFloat(C_VLRIPIITPED, rs.getFloat("VLRIPIITVENDA"));
 				itens.setFloat(C_VLRLIQPED, rs.getFloat("VLRLIQVENDA"));
 				itens.setString(C_IMPDTSAIDA, (rs.getString("IMPDTSAIDANAT")!=null ? rs.getString("IMPDTSAIDANAT") : ""));
 				itens.setFloat(C_VLRPRODITPED, rs.getFloat("VLRPRODITVENDA"));

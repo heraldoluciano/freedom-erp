@@ -80,6 +80,7 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     lcVenda.add(new GuardaCampo( txtBloqVenda, "BloqVenda", "Bloqueio", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. Liq.", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
+    lcVenda.setWhereAdic("TIPOVENDA='V'");
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
     lcVenda.addCarregaListener(this);

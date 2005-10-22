@@ -168,9 +168,10 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   }
   private void expedeItens(){
   	if(Funcoes.mensagemConfirma(this,"Confirma a expedição dos ítens selecionados?")==JOptionPane.YES_OPTION){
+  		PreparedStatement ps = null;
   		String sSQL = "UPDATE EQITRMA SET QTDEXPITRMA=? WHERE CODEMP=? AND CODFILIAL=? AND CODRMA=? AND CODITRMA=?";
   		try{
-	  		PreparedStatement ps = con.prepareStatement(sSQL);
+	  		ps = con.prepareStatement(sSQL);
 	  		try{	  			
 	  		  	for(int iLin=0;tab.getNumLinhas()>iLin;iLin++){
 	  		  		ps.setDouble(1,Funcoes.strCurrencyToDouble(tab.getValor(iLin,10).toString()));
@@ -178,11 +179,13 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	  	  		    ps.setInt(3,ListaCampos.getMasterFilial("EQRMA"));
 	  	  		    ps.setInt(4,Integer.parseInt(tab.getValor(iLin,1).toString()));
 	  	  		    ps.setInt(5,Integer.parseInt(tab.getValor(iLin,2).toString()));
-
 	  	  		    ps.executeUpdate();
-
 	  		  	}
-	  			
+	  		  	
+	  		  	tab.limpa();
+	  		  	
+	  		  	if(!con.getAutoCommit())
+	  		  		con.commit();
 	  		}
 	  		catch(Exception err){
 	  			Funcoes.mensagemErro(this,"Não foi possível efetuar a expedição do ítem!",true,con,err);
@@ -194,12 +197,8 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   			err.printStackTrace();
   		}
   		finally{
-  			try{
-  				con.commit();	
-  			}
-  			catch(Exception err){
-  				err.printStackTrace();
-  			}			  		
+  			sSQL = null;
+  			ps = null;
   		}
   	}
   }
@@ -234,22 +233,25 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 	catch(Exception err){
 		err.printStackTrace();
 	}
-
   }
-  public void buscaItem(){
+    
+  public void buscaItemPrincipal(){
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+    String sChaveRs = null;
+    String sChaveTb = "";
 	String sSQL = "SELECT R.CODRMA, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
-		+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
-		+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,IT.CODLOTE,R.CODOP,R.SEQOF,IT.CODITRMA "
-		+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
-		+ "WHERE " 
-		+ "R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
-		+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
-		+ "AND IT.CODEMPPD=? AND IT.CODFILIALPD=? AND IT.CODPROD=? "
-		+ (txtCodLote.getVlrString().trim().length()>0?"AND IT.CODEMPLE=IT.CODEMPPD AND IT.CODFILIALLE=IT.CODFILIALPD AND IT.CODLOTE=? ":"")
-		+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=? AND R.SEQOF=?";
+					+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
+					+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,IT.CODLOTE,R.CODOP,R.SEQOF,IT.CODITRMA "
+					+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
+					+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
+					+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
+					+ "AND IT.CODEMPPD=? AND IT.CODFILIALPD=? AND IT.CODPROD=? "
+					+ (txtCodLote.getVlrString().trim().length()>0?"AND IT.CODEMPLE=IT.CODEMPPD AND IT.CODFILIALLE=IT.CODFILIALPD AND IT.CODLOTE=? ":"")
+					+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? AND R.CODOP=? AND R.SEQOP=? AND R.SEQOF=?";
 		
 	try {
-		PreparedStatement ps = con.prepareStatement(sSQL);
+		ps = con.prepareStatement(sSQL);
 		int param = 1;
 		ps.setInt(param++, Aplicativo.iCodEmp);
 		ps.setInt(param++, ListaCampos.getMasterFilial("EQPRODUTO"));
@@ -261,12 +263,10 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 		ps.setInt(param++,txtSeqOp.getVlrInteger().intValue());
 		ps.setInt(param++,txtSeqOf.getVlrInteger().intValue());
 
-		ResultSet rs = ps.executeQuery();
+		rs = ps.executeQuery();
 		
 		if(rs.next()) {
-			String sChaveRs = rs.getString("CODRMA").trim()+"#"+			
-			   				  rs.getString("CODITRMA").trim();
-			String sChaveTb = "";
+			sChaveRs = rs.getString("CODRMA").trim()+"#"+rs.getString("CODITRMA").trim();
 			for(int i =0;tab.getNumLinhas()>i;i++){
 				sChaveTb = tab.getValor(i,1).toString().trim()+"#"+
 						   tab.getValor(i,2).toString().trim();
@@ -289,17 +289,11 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 						}
 					}	
 				
-				}
-				else{
+				} else
 					Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem não foi aprovado!","Busca de ítens de RMA",1);
-				}	
-			}
-			else{
-				Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem já foi expedido!","Busca de ítens de RMA",1);
-			}
-				
-		}
-		else{
+			} else
+				Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem já foi expedido!","Busca de ítens de RMA",1);				
+		} else{
 			Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem não encontrado","Busca de ítens de RMA",1);
 			return;
 		}
@@ -311,8 +305,88 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
 				+ err.getMessage(),true,con,err);
 		err.printStackTrace();
 	}
+	finally{
+		ps = null;
+		rs = null;
+	    sChaveRs = null;
+	    sChaveTb = null;
+		sSQL = null;
+	}
 	  	
   }
+  
+  public void buscaItemDistribuido(){
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int param = 1;
+	    String sChaveRs = null;
+	    String sChaveTb = "";
+		String sSQL = null;
+			
+		try {
+			sSQL = "SELECT R.CODRMA,IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITRMA,"
+				+ "IT.SITAPROVITRMA,IT.SITEXPITRMA,IT.DTINS,IT.DTAPROVITRMA,IT.DTAEXPITRMA,"
+				+ "IT.QTDITRMA,IT.QTDAPROVITRMA,IT.QTDEXPITRMA,PD.SLDPROD,IT.CODLOTE,R.CODOP,R.SEQOF,IT.CODITRMA "
+				+ "FROM EQRMA R, EQITRMA IT, EQPRODUTO PD "
+				+ "WHERE R.CODEMP=IT.CODEMP AND R.CODFILIAL=IT.CODFILIAL AND R.CODRMA=IT.CODRMA "
+				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL "
+				+ "AND IT.CODPROD=PD.CODPROD AND IT.CODEMPPD=PD.CODEMP AND IT.CODFILIALPD=PD.CODFILIAL "
+				+ "AND R.CODEMPOF=IT.CODEMP AND R.CODFILIALOF=? "
+				+ "AND R.CODOP=? AND R.SEQOP=? ";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(param++,ListaCampos.getMasterFilial("PPOPFASE"));
+			ps.setInt(param++,txtCodOp.getVlrInteger().intValue());
+			ps.setInt(param++,txtSeqOp.getVlrInteger().intValue());
+
+			rs = ps.executeQuery();
+						
+			
+			while(rs.next()) {
+				txtQtdEntrada.setVlrString(rs.getString("QTDITRMA"));
+				sChaveRs = rs.getString("CODRMA").trim()+"#"+rs.getString("CODITRMA").trim();
+				for(int i =0;tab.getNumLinhas()>i;i++){
+					sChaveTb = tab.getValor(i,1).toString().trim()+"#"+
+							   tab.getValor(i,2).toString().trim();
+					if(sChaveTb.equals(sChaveRs)){
+						Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"O ítem já foi adicionado","Busca de ítens de RMA",1);
+						return;
+					}
+				}
+				
+				if(rs.getString("SITEXPITRMA").equals("PE")){
+					if(!rs.getString("SITAPROVITRMA").equals("PE")){
+						
+						if(new Double(rs.getDouble("QTDAPROVITRMA")).compareTo(new Double(Funcoes.strCurrencyToDouble(txtQtdEntrada.getVlrString())))==0){
+							adicionaItem(rs);
+						} else if (new Double(rs.getDouble("QTDAPROVITRMA")).compareTo(new Double(Funcoes.strCurrencyToDouble(txtQtdEntrada.getVlrString())))<0){
+							if(Funcoes.mensagemConfirma(this,"Quantidade aprovada ("+rs.getString("QTDAPROVITRMA").trim()+") é inferior à quantidade à expedir ("+txtQtdEntrada.getVlrString().trim()+") !\nDeseja expedir a quantidade aprovada?")==JOptionPane.YES_OPTION){
+								txtQtdEntrada.setVlrDouble(new Double(rs.getDouble("QTDAPROVITRMA")));
+								adicionaItem(rs);
+							}
+						}
+					} else
+						Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem não foi aprovado!","Busca de ítens de RMA",1);
+				} else
+					Funcoes.mensagemTemp(Aplicativo.telaPrincipal,"Ítem já foi expedido!","Busca de ítens de RMA",1);					
+			}
+		
+			if (!con.getAutoCommit())
+				con.commit();
+			
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela EQRMA!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		}
+		finally{
+			ps = null;
+			rs = null;
+		    sChaveRs = null;
+		    sChaveTb = null;
+			sSQL = null;
+		}		  	
+  }
+    
   public void beforeCarrega(CarregaEvent cevt){  }
   public void afterCarrega(CarregaEvent cevt){  }
   public void focusGained(FocusEvent e) {
@@ -342,42 +416,73 @@ public class FBaixaRMACodBar extends FFilho implements ActionListener,CarregaLis
   	txtSeqOf.setVlrString("");
   }
   private void decodeEntrada(){
+  	String sTexto = null;
+  	String sResto = null;
+  	String sOpcao = null;
+  	String sTemp = null;
+  	Vector vCampos = null;
+  	JTextFieldPad jtCampo = null;
+  	try{
+  		sTexto = txtEntrada.getVlrString();
+  		limpaCampos();
+  		if(sTexto!=null){
+  			if (sTexto.length()>0){
+  				int iCampos = Funcoes.contaChar(sTexto,'#'); 
+  				if(iCampos==6) {
+  					vCampos = new Vector();
+  					vCampos.addElement(txtSeqOf);
+  					vCampos.addElement(txtCodOp);
+  					vCampos.addElement(txtSeqOp);
+  					vCampos.addElement(txtCodProd);
+  					vCampos.addElement(txtCodLote); 
+  					vCampos.addElement(txtQtdEntrada);
 
-  	String sTexto = txtEntrada.getText();
-  	limpaCampos();
-  	if(sTexto!=null){
-		if (sTexto.length()>0){
-			int iCampos = Funcoes.contaChar(sTexto,'#'); 
-			if(iCampos==5) {
-				Vector vCampos = new Vector();
-				vCampos.addElement(txtSeqOf);
-				vCampos.addElement(txtCodOp);
-				vCampos.addElement(txtSeqOp);
-				vCampos.addElement(txtCodProd);
-				vCampos.addElement(txtCodLote); 
-				vCampos.addElement(txtQtdEntrada);
-
-				String sResto = sTexto.replace('_','/');
-				
-				for(int i=0;vCampos.size()>i;i++){		
-					JTextFieldPad jtCampo = ((JTextFieldPad)(vCampos.elementAt(i))); 
-					jtCampo.setVlrString(sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length()));
+  					sResto = sTexto.replace('_','/');
+  					
+  					sOpcao = sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length());
 					sResto = sResto.substring(sResto.indexOf("#")+1);
-				}
-				buscaItem();
-				txtEntrada.requestFocus();
-			}
-			else{
-				Funcoes.mensagemInforma(this,"Entrada inválida!\nNúmero de campos incoerente."+Funcoes.contaChar(sTexto,'#'));
-			}
-		}
-		else {
-			Funcoes.mensagemInforma(this,"Entrada inválida!\nTexto em branco.");
-		}
+					
+					if(sOpcao.equals("P")){
+						for(int i=0;vCampos.size()>i;i++){		
+	  						jtCampo = ((JTextFieldPad)(vCampos.elementAt(i))); 
+	  						jtCampo.setVlrString(sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length()));
+	  						sResto = sResto.substring(sResto.indexOf("#")+1);
+	  					}
+	  					buscaItemPrincipal();
+					}
+					else if(sOpcao.equals("D")){
+						for(int i=0;vCampos.size()>i;i++){		
+	  						jtCampo = ((JTextFieldPad)(vCampos.elementAt(i)));
+	  						sTemp = sResto.substring(0,sResto.indexOf("#")>-1?sResto.indexOf("#"):sResto.length());
+	  						if(jtCampo==txtCodOp || jtCampo==txtSeqOp)
+	  							jtCampo.setVlrString(sTemp);
+	  						else
+	  							jtCampo.setVlrString("");
+	  						sResto = sResto.substring(sResto.indexOf("#")+1);
+	  					}
+	  					buscaItemDistribuido();
+					}
+					
+  					txtEntrada.requestFocus();
+  					
+  				} else
+  					Funcoes.mensagemInforma(this,"Entrada inválida!\nNúmero de campos incoerente."+Funcoes.contaChar(sTexto,'#'));
+  			} else
+  				Funcoes.mensagemInforma(this,"Entrada inválida!\nTexto em branco.");
+  	  	} else
+  	  		Funcoes.mensagemInforma(this,"Entrada inválida!\nTexto nulo.");
   	}
-  	else{
-  		Funcoes.mensagemInforma(this,"Entrada inválida!\nTexto nulo.");
+  	catch (Exception e){
+  		Funcoes.mensagemErro(this,"Erro ao decodificar código de barras!",true,con,e);
+  		e.printStackTrace();
   	}
-  }
-	
+  	finally{
+  		sTexto = null;
+  	  	sResto = null;
+  	  	sOpcao = null;
+  	  	sTemp = null;
+  	  	vCampos = null;
+  	  	jtCampo = null;
+  	}
+  }	
 }
