@@ -247,9 +247,9 @@ public class OPSwara extends LeiauteGR {
                 drawTexto(sCod,30,iY); //Codigo	
                     		  	
   		        Barcode128 b = new Barcode128();
-  		        String sBarCode = iSeqOf+"#"+iCodOP+"#"+iSeqOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+  		        String sBarCode = "P#"+iSeqOf+"#"+iCodOP+"#"+iSeqOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
   		        sBarCode = sBarCode.replace('/','_');
-  		           
+  		        System.out.println(sBarCode);
   		        b.setCode(sBarCode);
 
   		        Image image = b.createAwtImage(Color.BLACK, Color.WHITE);
@@ -284,14 +284,14 @@ public class OPSwara extends LeiauteGR {
 	  	int iYIni = 0;
 	  	Vector vItensEB = null;
 	  	Vector vColunasEB = null;
-        String sCod = null;
+        String sCodProd = null;
         String sDesc = null;
         String sQtd = null;
         String sUnid = null;
         String sLote = null;
         String sSQL = null;
         String sBarCode = null;
-        String sSeqOF = null;
+        //String sSeqOF = null;
         String sSeqOP = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -358,17 +358,22 @@ public class OPSwara extends LeiauteGR {
             drawTexto("Emb.",480,iY);
             iY = iY+20;
             
-	            sSQL = "SELECT I.SEQOP, I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE, OPF.SEQOF " +
+	            /*sSQL = "SELECT I.SEQOP, I.CODPROD, P.DESCPROD, I.QTDITOP, P.CODUNID, I.CODLOTE, I.CODFASE, OPF.SEQOF " +
 	            		"FROM PPOP O, PPITOP I, EQPRODUTO P, PPOPFASE OPF " +
 	            		"WHERE O.CODEMPOPM=? AND O.CODFILIALOPM=? AND O.CODOPM=? AND O.SEQOPM=? AND " +
 	            		"I.CODEMP=O.CODEMP AND I.CODFILIAL=O.CODFILIAL AND I.CODOP=O.CODOP AND I.SEQOP=O.SEQOP AND " +
 	            		"P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD " +
-	            		"AND OPF.CODEMP=O.CODEMP AND OPF.CODFILIAL=O.CODFILIAL AND OPF.CODOP=O.CODOP AND OPF.SEQOP=O.SEQOP";                       
+	            		"AND OPF.CODEMP=O.CODEMP AND OPF.CODFILIAL=O.CODFILIAL AND OPF.CODOP=O.CODOP AND OPF.SEQOP=O.SEQOP";*/
+            	sSQL = "SELECT O.SEQOP, O.CODPROD, P.DESCPROD , O.CODLOTE, O.QTDPREVPRODOP, P.CODUNID, F.CODFASE "
+            		 + "FROM PPOP O, EQPRODUTO P, PPOPFASE F "
+            		 + "WHERE O.CODEMPPD=P.CODEMP AND O.CODFILIALPD=P.CODFILIAL AND O.CODPROD=P.CODPROD "
+            		 + "AND O.CODEMP=F.CODEMP AND O.CODFILIAL=F.CODFILIAL AND O.CODOP=F.CODOP AND O.SEQOP=F.SEQOP "
+            		 + "AND O.CODEMP=? AND O.CODFILIAL=? AND O.CODOPM=? AND O.SEQOPM=? ";	
 				ps = con.prepareStatement(sSQL);						
 				ps.setInt(1,Aplicativo.iCodEmp);
 				ps.setInt(2,ListaCampos.getMasterFilial("PPOP"));
 				ps.setInt(3,iCodOP);
-				ps.setInt(4, iSeqOP);			 
+				ps.setInt(4,iSeqOP);			 
 				rs = ps.executeQuery();
 			
 			vItensEB = new Vector();
@@ -376,12 +381,12 @@ public class OPSwara extends LeiauteGR {
 				vColunasEB = new Vector();
 			    vColunasEB.addElement((rs.getString("CODPROD")!=null?rs.getString("CODPROD"):"")); //Código
 			    vColunasEB.addElement((rs.getString("DESCPROD")!=null?rs.getString("DESCPROD"):"")); //Descrição
-			    vColunasEB.addElement((rs.getString("QTDITOP")!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString("QTDITOP")):"0")); //Quantidade
+			    vColunasEB.addElement((rs.getString("QTDPREVPRODOP")!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString("QTDPREVPRODOP")):"0")); //Quantidade
 			    vColunasEB.addElement((rs.getString("CODUNID")!=null?rs.getString("CODUNID"):"")); //Unidade
 			    vColunasEB.addElement((rs.getString("CODLOTE")!=null?rs.getString("CODLOTE"):"")); //Lote
-			    vColunasEB.addElement((rs.getString("CODFASE")!=null?rs.getString("CODFASE"):"0")); //Código da Fase
-			    vColunasEB.addElement((rs.getString("SEQOF")!=null?rs.getString("SEQOF"):"0")); //Sequencia da Fase
 			    vColunasEB.addElement((rs.getString("SEQOP")!=null?rs.getString("SEQOP"):"0")); //Sequencia da OP
+			    vColunasEB.addElement((rs.getString("CODFASE")!=null?rs.getString("CODFASE"):"0")); //Código da Fase
+			    //vColunasEB.addElement((rs.getString("SEQOF")!=null?rs.getString("SEQOF"):"0")); //Sequencia da Fase
 			    vItensEB.addElement(vColunasEB);
 			}
 			rs.close();
@@ -392,7 +397,7 @@ public class OPSwara extends LeiauteGR {
             setFonte(fnArial9);
 			
 			for(int i=0;vItensEB.size()>i;i++) {
-				if(iY>=736){
+				if(iY>=720){
 				    drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+60,AL_CDIR);
 					termPagina();
 					montaCabEmp(con);
@@ -411,23 +416,24 @@ public class OPSwara extends LeiauteGR {
 				}
 				
 				vColunasEB = (Vector) vItensEB.elementAt(i);
-			    sCod  = vColunasEB.elementAt(0).toString();
+			    sCodProd  = vColunasEB.elementAt(0).toString();
 			    sDesc = vColunasEB.elementAt(1).toString();
 			    sQtd  = vColunasEB.elementAt(2).toString();
 			    sUnid = vColunasEB.elementAt(3).toString();
 			    sLote = vColunasEB.elementAt(4).toString();
-			    sSeqOF = vColunasEB.elementAt(6).toString();
-			    sSeqOP = vColunasEB.elementAt(7).toString();
-			    iCodFaseI = Integer.parseInt(vColunasEB.elementAt(5).toString());
+			    sSeqOP = vColunasEB.elementAt(5).toString();
+			    iCodFaseI = Integer.parseInt(vColunasEB.elementAt(6).toString());
+			    //sSeqOF = vColunasEB.elementAt(7).toString();
 			    
 			    if(iCodFaseI==iCodFaseF) {
-				      drawTexto(sCod,10,iY); //Codigo
+				      drawTexto(sCodProd,10,iY); //Codigo
 				      drawTexto(sDesc.substring(0,20),40,iY); //Descrição	
 				      
 				      Barcode128 barra = new Barcode128();
-	  		          sBarCode = sSeqOF+"#"+iCodOP+"#"+sSeqOP+"#"+sCod.trim()+"#"+sLote.trim()+"#"+sQtd.trim();
+	  		          sBarCode = "D#"/*+sSeqOF*/+"#"+iCodOP+"#"+sSeqOP+"###";
 	  		          sBarCode = sBarCode.replace('/','_');  
 	  		          barra.setCode(sBarCode);
+	  		          System.out.println(sBarCode);
 	  		          Image image = barra.createAwtImage(Color.BLACK, Color.WHITE);
 	  		          ImageIcon icon = new ImageIcon(image);
 	  		  	
@@ -435,12 +441,12 @@ public class OPSwara extends LeiauteGR {
 				      
 				      drawTexto(sLote,370,iY);//Lote
 				      drawTexto(Funcoes.alinhaDir(sQtd,15)+"   "+sUnid,415,iY);//Quantidade
-				      drawLinha(475,iY,55,0,AL_BCEN);
+				      drawLinha(480,iY,50,0,AL_BCEN);
 				      iY = iY+20;	                            	              	
 			    }            	
 			}
 			
-			if(iY>=736){
+			if(iY>=710){
 			    drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+60,AL_CDIR);
 				termPagina();
 				montaCabEmp(con);
@@ -450,13 +456,13 @@ public class OPSwara extends LeiauteGR {
 				iYIni2 = iY;
 			}
 			setFonte(fnArial9N);
-			iY = iY+15;	 
+			iY = iY+25;	 
 			drawTexto("OBS.:___________________________________________________________________________________________",20,iY);
 			iY = iY+15;
 			drawTexto("Nome:__________________________________________   Data:__________________________________________",20,iY);			
 			iY = iY+20;						
 			
-			drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+20,AL_CDIR);   
+			drawRetangulo(5,iYIni-15,5,(iY-iYIni2)+5,AL_CDIR);   
 		}
 		catch(SQLException e) {
 			Funcoes.mensagemErro(null, "Erro carregando itens!\n"+e.getMessage());
@@ -470,14 +476,14 @@ public class OPSwara extends LeiauteGR {
 		  	iYIni = 0;
 		  	vColunasEB = null;
 		  	vItensEB = null;
-	        sCod = null;
+	        sCodProd = null;
 	        sDesc = null;
 	        sQtd = null;
 	        sUnid = null;
 	        sLote = null;
 	        sSQL = null;
 	        sBarCode = null;
-	        sSeqOF = null;
+	        //sSeqOF = null;
 	        sSeqOP = null;
 		}
 	}
@@ -602,6 +608,14 @@ public class OPSwara extends LeiauteGR {
 	    catch (SQLException e) {
 	    	e.printStackTrace();
 	    }
+	    
+	    if(iY>=720){
+			termPagina();
+			montaCabEmp(con);
+			montaCab();
+			iY = 110;
+		}
+	    
 	    iY = iY + 30;
 	    setFonte(fnArial9N);
         drawLinha(0,iY,300,0,AL_CEN);
