@@ -129,7 +129,7 @@ public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
   	 String sWhere2 = "";
 	 String sCab="";
 	 
-	 if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
+	if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 		Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
       return;
     }
@@ -138,23 +138,30 @@ public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
 		sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
 		sCab = "REPR.: "+txtCodVend.getVlrString()+" - "+txtDescVend.getText().trim();
 		sWhere += " AND V.CODEMPVD="+Aplicativo.iCodEmp+" AND V.CODFILIALVD="+lcVend.getCodFilial();
-		sCab += (rgFaturados.getVlrString().equals("S") ? " - SO FATURADOS" : "");
-	}
-	else{
-		sCab += (rgFaturados.getVlrString().equals("S") ? "SO FATURADOS" : "");
-	}
-	if (sCab.trim().length()>0){
-		sCab += (rgFinanceiro.getVlrString().equals("S") ? " - SO FINANCEIRO" : "");
-	}
-	else {
-		sCab += (rgFinanceiro.getVlrString().equals("S") ? "SO FINANCEIRO" : "");
 	}
 	
-	if(rgFaturados.getVlrString().equals("S") || rgFaturados.getVlrString().equals("A"))
+	if(rgFaturados.getVlrString().equals("S")){
 		sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-	
-	if(rgFinanceiro.getVlrString().equals("S") || rgFinanceiro.getVlrString().equals("A"))
-		sWhere2 = " AND TM.FISCALTIPOMOV='S' ";
+		sCab += " - SO FATURADO";
+	}
+	else if(rgFaturados.getVlrString().equals("N")){
+		sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+		sCab += " - NAO FATURADO";
+	}
+	else if(rgFaturados.getVlrString().equals("A")){
+		sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+	}	
+	if(rgFinanceiro.getVlrString().equals("S")){
+		sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+		sCab += " - SO FINANCEIRO";
+	}
+	else if(rgFinanceiro.getVlrString().equals("N")){
+		sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+		sCab += " - NAO FINANCEIRO";
+	}
+	else if(rgFinanceiro.getVlrString().equals("A")){
+		sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+	}
   	
   	
     ImprimeOS imp = new ImprimeOS("",con);
