@@ -80,13 +80,11 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
   private ListaCampos lcConta = new ListaCampos(this);
   private ListaCampos lcPlan = new ListaCampos(this);
   private ListaCampos lcCC = new ListaCampos(this);
-//  private ListaCampos lcBanco = new ListaCampos(this);
   boolean bJurosPosCalc = false;
   public DLBaixaRec(Component cOrig) {
   	super(cOrig);
     setTitulo("Baixa");
-    setAtribos(380,450);
-    
+    setAtribos(380,450);    
     
     txtCodPlan.setRequerido(true);
     txtCodConta.setRequerido(true);
@@ -95,15 +93,6 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
     txtVlr.setRequerido(true);
     txtObs.setRequerido(true);
 
-    /*txtCodBanco.setNomeCampo("CodBanco");
-    lcBanco.add(new GuardaCampo( txtCodBanco, 7, 100, 80, 20, "CodBanco", "Código", true, false, null, JTextFieldPad.TP_STRING,false),"txtCodBancox");
-    lcBanco.add(new GuardaCampo( txtDescBanco, 90, 100, 207, 20, "NomeBanco", "Descrição", false, false, null, JTextFieldPad.TP_STRING,false),"txtDescBancox");
-    txtDescBanco.setListaCampos(lcBanco);
-	txtCodBanco.setFK(true);
-    lcBanco.montaSql(false, "BANCO", "FN");
-    lcBanco.setQueryCommit(false);
-    lcBanco.setReadOnly(true);
-    txtCodBanco.setTabelaExterna(lcBanco); */
     
     lcConta.add(new GuardaCampo( txtCodConta, "NumConta", "Nº Conta", ListaCampos.DB_PK, false));
     lcConta.add(new GuardaCampo( txtDescConta, "DescConta", "Descrição da conta", ListaCampos.DB_SI,false));
@@ -145,17 +134,21 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
     txtDtVenc.setAtivo(false);
     txtVlrAberto.setAtivo(false);
     
-    adic(new JLabelPad("Código e razão do cliente"),7,0,250,20);
+    adic(new JLabelPad("Cód.cli."),7,0,80,20);
     adic(txtCodCli,7,20,80,20);
+    adic(new JLabelPad("Razão social do cliente"),90,0,200,20);
     adic(txtRazCli,90,20,200,20);
-    adic(new JLabelPad("Número e descrição da conta"),7,40,250,20);
+    adic(new JLabelPad("Número"),7,40,80,20);
     adic(txtCodConta,7,60,80,20);
+    adic(new JLabelPad("Descrição da conta"),90,40,200,20);
     adic(txtDescConta,90,60,200,20);
-    adic(new JLabelPad("Código e descrição da categoria"),7,80,250,20);
+    adic(new JLabelPad("Cód.ctg."),7,80,80,20);
     adic(txtCodPlan,7,100,100,20);
+    adic(new JLabelPad("Descrição da categoria"),110,80,200,20);
     adic(txtDescPlan,110,100,200,20);
-	adic(new JLabelPad("Código e descrição do centro de custo"),7,120,250,20);
+	adic(new JLabelPad("Cód.c.c."),7,120,100,20);
 	adic(txtCodCC,7,140,100,20);
+	adic(new JLabelPad("Descrição do centro de custo"),110,120,200,20);
 	adic(txtDescCC,110,140,200,20);
     adic(new JLabelPad("Doc."),7,160,110,20);
     adic(txtDoc,7,180,110,20);
@@ -244,50 +237,36 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
   }
   private void calcDesc() {
   	if (txtPercDesc.getVlrDouble().doubleValue() != 0) {
-  		txtVlrDesc.setVlrBigDecimal(
-  				txtPercDesc.getVlrBigDecimal().multiply(
-  						txtVlrParc.getVlrBigDecimal()).divide(
-  								new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP)
-  		);
+  		txtVlrDesc.setVlrBigDecimal(txtPercDesc.getVlrBigDecimal()
+  			.multiply(txtVlrParc.getVlrBigDecimal())
+  				.divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
   	}
   	atualizaAberto();
   }
   private void atualizaPagto() {
     if (txtVlr.getVlrBigDecimal().compareTo(txtVlrAberto.getVlrBigDecimal()) > 0) {
-      txtVlrJuros.setVlrBigDecimal(
-        txtVlrJuros.getVlrBigDecimal().add(
-          txtVlr.getVlrBigDecimal().subtract(txtVlrAberto.getVlrBigDecimal())
-        )
-      );
+      txtVlrJuros.setVlrBigDecimal(txtVlrJuros.getVlrBigDecimal()
+    		.add(txtVlr.getVlrBigDecimal().subtract(txtVlrAberto.getVlrBigDecimal())));
       atualizaAberto();
     }
   }
   private void calcJuros() {
   	if (!bJurosPosCalc) {
         if (txtPercJuros.getVlrDouble().doubleValue() != 0) {
-        	txtVlrJuros.setVlrBigDecimal(
-  				txtPercJuros.getVlrBigDecimal().multiply(
-  						txtVlrParc.getVlrBigDecimal()).divide(
-  								new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP)
-        	);
+        	txtVlrJuros.setVlrBigDecimal(txtPercJuros.getVlrBigDecimal().multiply(txtVlrParc.getVlrBigDecimal())
+  				.divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
         }
   	}
     else 
-        txtVlrJuros.setVlrBigDecimal(
-                txtPercJuros.getVlrBigDecimal().multiply(
-                        txtVlrParc.getVlrBigDecimal()).divide(
-                                new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP).multiply(
-                                        new BigDecimal(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date())))
+        txtVlrJuros.setVlrBigDecimal(txtPercJuros.getVlrBigDecimal().multiply(txtVlrParc.getVlrBigDecimal())
+        	.divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP)
+        		.multiply(new BigDecimal(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date())))
         );
   	atualizaAberto();
   }
   private void atualizaAberto() {
-  	 txtVlrAberto.setVlrBigDecimal(
-  			txtVlrParc.getVlrBigDecimal().subtract(
-  					txtVlrDesc.getVlrBigDecimal()).add(
-  							txtVlrJuros.getVlrBigDecimal()).subtract(
-  									txtVlrPago.getVlrBigDecimal())
-  	 );
+  	 txtVlrAberto.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().subtract(txtVlrDesc.getVlrBigDecimal())
+  			.add(txtVlrJuros.getVlrBigDecimal()).subtract(txtVlrPago.getVlrBigDecimal()));
   }
   private void aplicaJuros() {
      String sSQL = "SELECT FIRST 1 P.CODTBJ,T.TIPOTBJ,IT.PERCITTBJ FROM " +
@@ -314,64 +293,34 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
      	if (rs.next()) {
      	  switch(rs.getString("TipoTBJ").toCharArray()[0]) {
      	    case 'D':
-     	    	txtVlrJuros.setVlrBigDecimal(
-     	    			txtVlrParc.getVlrBigDecimal().multiply(
-     	    					new BigDecimal(
-     	    							(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*
-										rs.getDouble(3)
-     	    					)
-						).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP)
-				);
+     	    	txtVlrJuros.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().multiply(new BigDecimal(
+     	    		(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*rs.getDouble(3)))
+     	    			.divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
      	    	break;
      	    case 'M':
-     	    	txtVlrJuros.setVlrBigDecimal(
-     	    			txtVlrParc.getVlrBigDecimal().multiply(
-     	    					new BigDecimal(
-     	    							(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*
-										rs.getDouble(3)
-     	    					)
-						).divide(new BigDecimal(100*30),2,BigDecimal.ROUND_HALF_UP)
-				);
+     	    	txtVlrJuros.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().multiply(new BigDecimal(
+     	    		(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*rs.getDouble(3)))
+     	    			.divide(new BigDecimal(100*30),2,BigDecimal.ROUND_HALF_UP));
      	    	break;
      	    case 'B':
-     	    	txtVlrJuros.setVlrBigDecimal(
-     	    			txtVlrParc.getVlrBigDecimal().multiply(
-     	    					new BigDecimal(
-     	    							(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*
-										rs.getDouble(3)
-     	    					)
-						).divide(new BigDecimal(100*60),2,BigDecimal.ROUND_HALF_UP)
-				);
+     	    	txtVlrJuros.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().multiply(new BigDecimal(
+     	    		(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*rs.getDouble(3)))
+     	    			.divide(new BigDecimal(100*60),2,BigDecimal.ROUND_HALF_UP));
      	    	break;
      	    case 'T':
-     	    	txtVlrJuros.setVlrBigDecimal(
-     	    			txtVlrParc.getVlrBigDecimal().multiply(
-     	    					new BigDecimal(
-     	    							(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*
-										rs.getDouble(3)
-     	    					)
-						).divide(new BigDecimal(100*90),2,BigDecimal.ROUND_HALF_UP)
-				);
+     	    	txtVlrJuros.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().multiply(new BigDecimal(
+     	    		(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*rs.getDouble(3)))
+     	    			.divide(new BigDecimal(100*90),2,BigDecimal.ROUND_HALF_UP));
      	    	break;
      	    case 'S':
-     	    	txtVlrJuros.setVlrBigDecimal(
-     	    			txtVlrParc.getVlrBigDecimal().multiply(
-     	    					new BigDecimal(
-     	    							(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*
-										rs.getDouble(3)
-     	    					)
-						).divide(new BigDecimal(100*182),2,BigDecimal.ROUND_HALF_UP)
-				);
+     	    	txtVlrJuros.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().multiply(new BigDecimal(
+     	    		(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*rs.getDouble(3)))
+     	    			.divide(new BigDecimal(100*182),2,BigDecimal.ROUND_HALF_UP));
      	    	break;
      	    case 'A':
-     	    	txtVlrJuros.setVlrBigDecimal(
-     	    			txtVlrParc.getVlrBigDecimal().multiply(
-     	    					new BigDecimal(
-     	    							(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*
-										rs.getDouble(3)
-     	    					)
-						).divide(new BigDecimal(100*365),2,BigDecimal.ROUND_HALF_UP)
-				);
+     	    	txtVlrJuros.setVlrBigDecimal(txtVlrParc.getVlrBigDecimal().multiply(new BigDecimal(
+     	    		(Funcoes.getNumDiasAbs(txtDtVenc.getVlrDate(),new Date()))*rs.getDouble(3)))
+     	    			.divide(new BigDecimal(100*365),2,BigDecimal.ROUND_HALF_UP));
      	    	break;
      	  }
      	}
@@ -435,8 +384,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
     lcPlan.carregaDados();
 	lcCC.setConexao(cn);
 	lcCC.carregaDados();
-    if (!(bJurosPosCalc = jurosPosCalc()) &&
-        txtVlrJuros.getVlrBigDecimal().doubleValue() == 0) {
+    if (!(bJurosPosCalc = jurosPosCalc()) && txtVlrJuros.getVlrBigDecimal().doubleValue() == 0) {
         adic(new JLabelPad("% Juros."),180,200,57,20);
         aplicaJuros();
     }

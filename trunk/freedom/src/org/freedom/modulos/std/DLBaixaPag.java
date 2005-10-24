@@ -116,17 +116,21 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
     txtDtVenc.setAtivo(false);
     txtVlrParc.setAtivo(false);
     
-    adic(new JLabelPad("Código e razão do fornecedor"),7,0,250,20);
+    adic(new JLabelPad("Cód.for."),7,0,80,20);
     adic(txtCodFor,7,20,80,20);
+    adic(new JLabelPad("Razão do fornecedor"),90,0,200,20);
     adic(txtRazFor,90,20,200,20);
-    adic(new JLabelPad("Número e descrição da conta"),7,40,250,20);
+    adic(new JLabelPad("Cód.conta"),7,40,80,20);
     adic(txtCodConta,7,60,80,20);
+    adic(new JLabelPad("Descrição da conta"),90,40,200,20);
     adic(txtDescConta,90,60,200,20);
-    adic(new JLabelPad("Código e descrição da categoria"),7,80,250,20);
+    adic(new JLabelPad("Cód.ctg."),7,80,100,20);
     adic(txtCodPlan,7,100,100,20);
+    adic(new JLabelPad("Descrição da categoria"),110,80,200,20);
     adic(txtDescPlan,110,100,200,20);
-	adic(new JLabelPad("Código e descrição do centro de custo"),7,120,250,20);
+	adic(new JLabelPad("Cód.c.c."),7,120,100,20);
 	adic(txtCodCC,7,140,100,20);
+	adic(new JLabelPad("Descrição do centro de custo"),110,120,200,20);
 	adic(txtDescCC,110,140,200,20);
     adic(new JLabelPad("Doc."),7,160,110,20);
     adic(txtDoc,7,180,110,20);
