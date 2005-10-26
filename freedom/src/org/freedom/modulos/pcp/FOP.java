@@ -414,7 +414,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
   	pinDet = new JPanelPad(440,50);
   	setPainel( pinDet, pnDet);
 
-  	//txtCodLoteProdDet.setAtivo(false);
+  	txtCodLoteProdDet.setAtivo(true);
   	txtSeqItOp.setAtivo(false);
   	txtQtdItOp.setAtivo(false);
 
@@ -1153,8 +1153,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
        	}
     
     	if((txtCodLoteProdEst.getVlrString().equals("")) && (txtUsaLoteEst.getVlrString().equals("S"))){
-    		
-//    		txtCodLoteProdEst.setVisible(true);
     		txtCodLoteProdEst.setVlrString(buscaLote(lcProdEstCod,txtCodProdEst,false));
     		txtDtValidOP.setAtivo(false);
     	  	    	  	
@@ -1165,7 +1163,6 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
     	}
     	else if((txtUsaLoteEst.getVlrString().equals("N"))){
     		txtCodLoteProdEst.setAtivo(false);
-//    		txtDescLoteProdEst.setAtivo(false);
     		txtDtValidOP.setAtivo(true);
     	}
     }
@@ -1173,7 +1170,7 @@ public class FOP extends FDetalhe implements ChangeListener, PostListener,Cancel
 		txtDtValidOP.setVlrDate(txtDescLoteProdEst.getVlrDate());    	
     }
   	if(cevt.getListaCampos() == lcDet) {
-		if((txtCodLoteProdDet.getVlrString().trim().equals("")) && (txtUsaLoteDet.getVlrString().equals("S"))){			
+		if(txtUsaLoteDet.getVlrString().equals("S")){			
 			txtCodLoteProdDet.setVlrString(buscaLote(lcProdDetCod,txtCodProdDet,true));
 			txtCodLoteProdDet.setAtivo(true);
 			lcLoteProdDet.carregaDados();
