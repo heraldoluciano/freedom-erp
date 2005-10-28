@@ -51,17 +51,18 @@ public class FRVendasItem extends FRelatorio {
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodCli=new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-
 	private JTextFieldPad txtCodGrup = new JTextFieldPad(JTextFieldPad.TP_STRING,14,0);
 	private JTextFieldFK txtDescGrup = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
 	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
-	
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
-	private JCheckBoxPad cbListaFilial = null; 
-	
+	private JRadioGroup rgFaturados = null;
+	private JRadioGroup rgFinanceiro = null;
+	private Vector vLabsFat = new Vector();
+	private Vector vValsFat = new Vector();
+	private Vector vLabsFin = new Vector();
+	private Vector vValsFin = new Vector();
+	private JCheckBoxPad cbListaFilial = null; 	
 	private ListaCampos lcVend = new ListaCampos(this);
 	private ListaCampos lcGrup = new ListaCampos(this);
 	private ListaCampos lcCliente = new ListaCampos(this);
@@ -71,19 +72,37 @@ public class FRVendasItem extends FRelatorio {
 	private Vector vVals = new Vector(2);
 	public FRVendasItem() {
 		setTitulo("Vendas por Item");
-		setAtribos(80,80,305,460);
+		setAtribos(80,80,305,500);
 		
 		txtDescVend.setAtivo(false);
 		txtDescGrup.setAtivo(false);
 		txtDescMarca.setAtivo(false);
 		txtRazCli.setAtivo(false);
 		
-                vLabs.addElement("Código");
-                vLabs.addElement("Descrição");
-                vVals.addElement("C");
-                vVals.addElement("D");
-                rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
-                rgOrdem.setVlrString("D");
+        vLabs.addElement("Código");
+        vLabs.addElement("Descrição");
+        vVals.addElement("C");
+        vVals.addElement("D");
+        rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+        rgOrdem.setVlrString("D");
+        
+        vLabsFat.addElement("Faturado");
+    	vLabsFat.addElement("Não Faturado");
+    	vLabsFat.addElement("Ambos");
+    	vValsFat.addElement("S");
+    	vValsFat.addElement("N");
+    	vValsFat.addElement("A");
+    	rgFaturados = new JRadioGroup(3, 1, vLabsFat, vValsFat);
+    	rgFaturados.setVlrString("S");
+    	
+    	vLabsFin.addElement("Financeiro");
+    	vLabsFin.addElement("Não Finaceiro");
+    	vLabsFin.addElement("Ambos");
+    	vValsFin.addElement("S");
+    	vValsFin.addElement("N");
+    	vValsFin.addElement("A");
+    	rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
+    	rgFinanceiro.setVlrString("S");
 
 		lcGrup.add(new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false));
 		lcGrup.add(new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false));
@@ -120,21 +139,17 @@ public class FRVendasItem extends FRelatorio {
 		txtDataini.setVlrDate(new Date());
 	    txtDatafim.setVlrDate(new Date());
 		
-		 lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
-		 lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
-		 txtCodCli.setTabelaExterna(lcCliente);
-		 txtCodCli.setNomeCampo("CodCli");
-		 txtCodCli.setFK(true);
-		 lcCliente.setReadOnly(true);
-		 lcCliente.montaSql(false, "CLIENTE", "VD");
+		lcCliente.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, false));
+		lcCliente.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
+		txtCodCli.setTabelaExterna(lcCliente);
+		txtCodCli.setNomeCampo("CodCli");
+		txtCodCli.setFK(true);
+		lcCliente.setReadOnly(true);
+		lcCliente.montaSql(false, "CLIENTE", "VD");
 				
-		 
-		 cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S", "N");
-		 cbListaFilial.setVlrString("N");
-		 cbFaturados.setVlrString("N");
-		 cbFinanceiro.setVlrString("N");
-		 
-		 
+		cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S", "N");
+		cbListaFilial.setVlrString("N");
+				 
 		adic(new JLabelPad("Periodo:"),7,5,100,20);
 		adic(lbLinha,60,15,218,2);
 		adic(new JLabelPad("De:"),7,30,30,20);
@@ -153,20 +168,17 @@ public class FRVendasItem extends FRelatorio {
 		adic(new JLabelPad("Cód.marca"),7,148,200,20);
 		adic(txtCodMarca,7,168,70,20);
 		adic(new JLabelPad("Descrição da marca"),80,148,200,20);
-		adic(txtDescMarca,80,168,200,20);
-		
+		adic(txtDescMarca,80,168,200,20);		
 		adic(new JLabelPad("Cód.cli."),7,188,200,20);
 		adic(txtCodCli,7,208,70,20);
 		adic(new JLabelPad("Razão social do cliente"),80,188,200,20);
-		adic(txtRazCli,80,208,200,20);
-				
-		adic(cbFaturados, 7, 240, 150, 25);
-		adic(cbFinanceiro, 153, 240, 150, 25);		
-		adic(cbListaFilial, 5, 280, 250, 20 );
-		
-		adic(lbLinha3,7,314,272,2);
-        adic(new JLabelPad("Ordenado por:"),7,330,180,20);
-        adic(rgOrdem,7,355,273,30);
+		adic(txtRazCli,80,208,200,20);				
+		adic(rgFaturados, 7, 240, 125, 70);
+		adic(rgFinanceiro, 157, 240, 125, 70);	
+		adic(cbListaFilial, 5, 325, 250, 20 );		
+		adic(lbLinha3,7,350,272,2);
+        adic(new JLabelPad("Ordenado por:"),7,360,180,20);
+        adic(rgOrdem,7,385,273,30);
        
         
         
@@ -182,6 +194,8 @@ public class FRVendasItem extends FRelatorio {
 		int linPag = imp.verifLinPag()-1;
 		
 		String sWhere = "";
+	  	String sWhere1 = "";
+	  	String sWhere2 = "";
 		String sCab = "";
 		String sOrdem = rgOrdem.getVlrString();
 		String sOrdenado = "";
@@ -241,17 +255,39 @@ public class FRVendasItem extends FRelatorio {
 			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
 			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
-		if (cbFaturados.getVlrString().equals("S")) {
-		    String sTmp =  "SÓ FATURADOS";
+		if(rgFaturados.getVlrString().equals("S")){
+			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+			String sTmp =  "SÓ FATURADOS";
 			sCab += "\n"+imp.comprimido();
 			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
 			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
-		if (cbFinanceiro.getVlrString().equals("S")) {
-		    String sTmp =  "SÓ FINANCEIRO";
+		else if(rgFaturados.getVlrString().equals("N")){
+			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+			String sTmp =  "NÃO FATURADOS";
 			sCab += "\n"+imp.comprimido();
 			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
 			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+		}
+		else if(rgFaturados.getVlrString().equals("A")){
+			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+		}	
+		if(rgFinanceiro.getVlrString().equals("S")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+			String sTmp =  "SÓ FINANCEIRO";
+			sCab += "\n"+imp.comprimido();
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+		}
+		else if(rgFinanceiro.getVlrString().equals("N")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+			String sTmp =  "NÃO FINANCEIRO";
+			sCab += "\n"+imp.comprimido();
+			sTmp = "|"+Funcoes.replicate(" ",67-(sTmp.length()/2))+sTmp;
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+		}
+		else if(rgFinanceiro.getVlrString().equals("A")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 		}
 		
 		
@@ -263,8 +299,7 @@ public class FRVendasItem extends FRelatorio {
 		        "VDITVENDA IT, EQPRODUTO P WHERE P.CODPROD = IT.CODPROD"+
 		        " AND IT.CODVENDA = V.CODVENDA"+
 		        " AND TM.CODTIPOMOV=V.CODTIPOMOV"+
-				(cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
-				(cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
+                sWhere1 + sWhere2 +			  
 		        " AND TM.CODEMP=V.CODEMPTM"+
 		        " AND TM.CODFILIAL=V.CODFILIALTM"+
 		        " AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP "+
@@ -285,8 +320,7 @@ public class FRVendasItem extends FRelatorio {
 				"VDITVENDA IT, EQPRODUTO P WHERE P.CODPROD = IT.CODPROD"+
 				" AND IT.CODVENDA = V.CODVENDA"+
 	            " AND TM.CODTIPOMOV=V.CODTIPOMOV" +
-				(cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
-				(cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
+                sWhere1 + sWhere2 +			  
 	            " AND TM.CODEMP=V.CODEMPTM" +
 	            " AND TM.CODFILIAL=V.CODFILIALTM" +
 			    " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+

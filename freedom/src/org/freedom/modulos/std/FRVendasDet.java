@@ -27,12 +27,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -43,13 +44,36 @@ public class FRVendasDet extends FRelatorio {
 	private static final long serialVersionUID = 1L;
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
-  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-  private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
-  private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
+  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JRadioGroup rgFaturados = null;
+  private JRadioGroup rgFinanceiro = null;
+  private Vector vLabsFat = new Vector();
+  private Vector vValsFat = new Vector();
+  private Vector vLabsFin = new Vector();
+  private Vector vValsFin = new Vector();
+  
   public FRVendasDet() {
     setTitulo("Vendas Detalhadas");
-    setAtribos(80,80,295,160);
-    
+    setAtribos(80,80,295,220);
+
+    vLabsFat.addElement("Faturado");
+	vLabsFat.addElement("Não Faturado");
+	vLabsFat.addElement("Ambos");
+	vValsFat.addElement("S");
+	vValsFat.addElement("N");
+	vValsFat.addElement("A");
+	rgFaturados = new JRadioGroup(3, 1, vLabsFat, vValsFat);
+	rgFaturados.setVlrString("S");
+	
+	vLabsFin.addElement("Financeiro");
+	vLabsFin.addElement("Não Finaceiro");
+	vLabsFin.addElement("Ambos");
+	vValsFin.addElement("S");
+	vValsFin.addElement("N");
+	vValsFin.addElement("A");
+	rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
+	rgFinanceiro.setVlrString("S");
+	
     txtDataini.setRequerido(true);
     txtDatafim.setRequerido(true);
 
@@ -67,12 +91,11 @@ public class FRVendasDet extends FRelatorio {
     adic(txtDataini,32,30,97,20);
     adic(new JLabelPad("Até:"),140,30,30,20);
     adic(txtDatafim,170,30,100,20);
-    
-    cbFaturados.setVlrString("N");
-	cbFinanceiro.setVlrString("N");
-	adic(cbFaturados, 7, 55, 150, 25);
-	adic(cbFinanceiro, 153, 55, 150, 25);
+	adic(rgFaturados, 7, 60, 120, 70);
+	adic(rgFinanceiro, 153, 60, 120, 70);
+	
   }
+  
   public void imprimir(boolean bVisualizar) {
     boolean bComRef = comRef();
     int iCodVendaAnt = 0;
@@ -84,8 +107,9 @@ public class FRVendasDet extends FRelatorio {
 
     ImprimeOS imp = new ImprimeOS("", con);
     int linPag = imp.verifLinPag()-1;
-    boolean bSCab = false;
     String sCab = "";
+  	String sWhere1 = "";
+  	String sWhere2 = "";
     String sDataini = "";
     String sDatafim = "";
 
@@ -95,14 +119,28 @@ public class FRVendasDet extends FRelatorio {
     sDataini = txtDataini.getVlrString();
     sDatafim = txtDatafim.getVlrString();
 
-    if (cbFaturados.getVlrString().equals("S")){
-    	sCab = "SÓ FATURADOS";
-    	bSCab = true;
-    }
-    if (cbFinanceiro.getVlrString().equals("S")){
-    	sCab = "SÓ FINANCEIROS";
-    	bSCab = true;
-    }
+    if(rgFaturados.getVlrString().equals("S")){
+		sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+		sCab += " - SO FATURADO";
+	}
+	else if(rgFaturados.getVlrString().equals("N")){
+		sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+		sCab += " - NAO FATURADO";
+	}
+	else if(rgFaturados.getVlrString().equals("A")){
+		sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+	}	
+	if(rgFinanceiro.getVlrString().equals("S")){
+		sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+		sCab += " - SO FINANCEIRO";
+	}
+	else if(rgFinanceiro.getVlrString().equals("N")){
+		sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+		sCab += " - NAO FINANCEIRO";
+	}
+	else if(rgFinanceiro.getVlrString().equals("A")){
+		sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+	}
     
     String sSQL = "SELECT (SELECT VO.CODORC FROM VDVENDAORC VO WHERE" +
     		      " VO.CODVENDA=V.CODVENDA AND VO.CODEMP=V.CODEMP" +
@@ -115,10 +153,8 @@ public class FRVendasDet extends FRelatorio {
     		      " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG" +
     		      " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL" +
     		      " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL" +
-    		      " AND C.CODEMP=V.CODEMP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND " 
-					+ " TM.CODTIPOMOV=V.CODTIPOMOV " +
-                  (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")+
-				  (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")+
+    		      " AND C.CODEMP=V.CODEMP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " +
+	                sWhere1 + sWhere2 +			  
     		      " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA" +
     		      " AND IT.CODEMP=V.CODEMP AND P.CODPROD=IT.CODPROD" +
     		      " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD" +
@@ -138,7 +174,7 @@ public class FRVendasDet extends FRelatorio {
       imp.limpaPags();
       imp.montaCab();
   	  imp.setTitulo("Relatório de Vendas Detalhado");
-  	  imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim + ( bSCab ? (" / " + sCab) : ""));
+  	  imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim + sCab);
   	  
       while (rs.next()) {
         if (imp.pRow()>=(linPag-1)) {
