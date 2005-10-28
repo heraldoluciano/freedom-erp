@@ -38,11 +38,10 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -65,18 +64,22 @@ public class FRMediaItem extends FRelatorio {
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JRadioGroup rgOrdem = null;	
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
 	private Vector vLabs = new Vector();
-	private Vector vVals = new Vector();
+	private Vector vVals = new Vector(); 
+	private JRadioGroup rgFaturados = null;
+	private JRadioGroup rgFinanceiro = null;
+	private Vector vLabsFat = new Vector();
+	private Vector vValsFat = new Vector();
+	private Vector vLabsFin = new Vector();
+	private Vector vValsFin = new Vector();
 	private ListaCampos lcGrup = new ListaCampos(this);
 	private ListaCampos lcMarca = new ListaCampos(this);
 	private ListaCampos lcVend = new ListaCampos(this);
 
 	public FRMediaItem() {
 		setTitulo("Media de vendas por item");
-		setAtribos(80, 80, 305, 410);
+		setAtribos(80, 80, 305, 480);
 
 		txtDescGrup.setAtivo(false);
 		txtDescMarca.setAtivo(false);
@@ -113,6 +116,25 @@ public class FRMediaItem extends FRelatorio {
 		vVals.addElement("D");
 		rgOrdem = new JRadioGroup(1, 2, vLabs, vVals);
 		rgOrdem.setVlrString("D");
+		
+		vLabsFat.addElement("Faturado");
+		vLabsFat.addElement("Não Faturado");
+		vLabsFat.addElement("Ambos");
+		vValsFat.addElement("S");
+		vValsFat.addElement("N");
+		vValsFat.addElement("A");
+		rgFaturados = new JRadioGroup(3, 1, vLabsFat, vValsFat);
+		rgFaturados.setVlrString("S");
+		
+		vLabsFin.addElement("Financeiro");
+		vLabsFin.addElement("Não Finaceiro");
+		vLabsFin.addElement("Ambos");
+		vValsFin.addElement("S");
+		vValsFin.addElement("N");
+		vValsFin.addElement("A");
+		rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
+		rgFinanceiro.setVlrString("S");
+		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbLinha2 = new JLabelPad();
@@ -133,7 +155,6 @@ public class FRMediaItem extends FRelatorio {
 		adic(new JLabelPad("Nº de meses (máx. 12):"), 7, 85, 200, 20);
 		adic(txtNumMes, 150, 85, 40, 20);
 		adic(lbLinha3, 7, 117, 273, 2);
-
 		adic(new JLabelPad("Cód.grupo"), 7, 125, 240, 20);
 		adic(txtCodGrup, 7, 145, 90, 20);
 		adic(new JLabelPad("Descrição do grupo"), 100, 125, 240, 20);
@@ -146,15 +167,11 @@ public class FRMediaItem extends FRelatorio {
 		adic(txtCodVend, 7, 225, 70, 20);
 		adic(new JLabelPad("Nome do comissionado"), 80, 205, 200, 20);
 		adic(txtDescVend, 80, 225, 200, 20);
-
-		cbFaturados.setVlrString("N");
-		cbFinanceiro.setVlrString("N");
-		adic(cbFaturados, 7, 245, 150, 25);
-		adic(cbFinanceiro, 153, 245, 150, 25);
-		
-		adic(lbLinha4, 7, 279, 273, 2);
-		adic(lbOrdem, 7, 290, 80, 15);
-		adic(rgOrdem, 7, 305, 273, 30);
+		adic(rgFaturados, 7, 250, 120, 75);
+		adic(rgFinanceiro, 158, 250, 120, 75);		
+		adic(lbLinha4, 7, 335, 273, 2);
+		adic(lbOrdem, 7, 345, 80, 15);
+		adic(rgOrdem, 7, 370, 273, 30);
 
 	}
 
@@ -186,8 +203,11 @@ public class FRMediaItem extends FRelatorio {
 		int linPag = imp.verifLinPag() - 1;
 
 		String sWhere = " WHERE ";
+	  	String sWhere1 = "";
+	  	String sWhere2 = "";
 		String sFiltroVend = "";
 		String sCab = "";
+		String sCab1 = "";
 		String sOrder = "";
 		String sSubSel = "";
 		String sCodProd = "";
@@ -224,6 +244,30 @@ public class FRMediaItem extends FRelatorio {
 		} else {
 			sOrder = "P.DESCPROD";
 		}
+		
+		if(rgFaturados.getVlrString().equals("S")){
+			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+			sCab1 += " - SO FATURADO";
+		}
+		else if(rgFaturados.getVlrString().equals("N")){
+			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+			sCab1 += " - NAO FATURADO";
+		}
+		else if(rgFaturados.getVlrString().equals("A")){
+			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+		}	
+		if(rgFinanceiro.getVlrString().equals("S")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+			sCab1 += " - SO FINANCEIRO";
+		}
+		else if(rgFinanceiro.getVlrString().equals("N")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+			sCab1 += " - NAO FINANCEIRO";
+		}
+		else if(rgFinanceiro.getVlrString().equals("A")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+		}
+		
 		int iSoma = 0;
 		String sOr = "";
 		for (int i = 0; i < iNumMes; i++) {
@@ -239,8 +283,7 @@ public class FRMediaItem extends FRelatorio {
 					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
-					+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
-					+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")
+	                + sWhere1 + sWhere2 			  
 					+ " AND TM.CODEMP=V.CODEMPTM"
 					+ " AND TM.CODFILIAL=V.CODFILIALTM"
 					+ " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
@@ -311,8 +354,10 @@ public class FRMediaItem extends FRelatorio {
 			
 			imp.setTitulo("Relatório de media de vendas por item");
 			imp.addSubTitulo("RELATORIO DE MEDIAS DE VENDAS POR ITEM");
-			if (sCab.length() > 0)
+			if (sCab.length() > 0){
 				imp.addSubTitulo(sCab);
+				imp.addSubTitulo(sCab1);
+			}
 			
 			while (rs.next()) {
 				if (imp.pRow() == 0) {

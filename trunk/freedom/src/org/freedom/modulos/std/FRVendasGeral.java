@@ -31,8 +31,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
-import org.freedom.acao.RadioGroupEvent;
-import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JLabelPad;
@@ -44,7 +42,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FRelatorio;
 
-public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
+public class FRVendasGeral extends FRelatorio{
 	private static final long serialVersionUID = 1L;
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
@@ -69,29 +67,7 @@ public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
     JLabelPad lbLinha = new JLabelPad();
     lbLinha.setBorder(BorderFactory.createEtchedBorder());
     
-    adic(new JLabelPad("Periodo:"),7,5,100,20);
-    adic(lbLinha,60,15,210,2);
-    adic(new JLabelPad("De:"),7,30,30,20);
-    adic(txtDataini,32,30,97,20);
-    adic(new JLabelPad("Até:"),140,30,30,20);
-    adic(txtDatafim,170,30,100,20);
-    
-
-  	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
-  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
-  	lcVend.montaSql(false, "VENDEDOR", "VD");    
-  	lcVend.setQueryCommit(false);
-  	lcVend.setReadOnly(true);
-  	txtCodVend.setNomeCampo("CodVend");
-	txtCodVend.setFK(true);
-  	txtCodVend.setTabelaExterna(lcVend);
- 
-  	adic(new JLabelPad("Cód.comiss."),7,60,210,20);
-	adic(txtCodVend,7,80,70,20);
-	adic(new JLabelPad("Nome do comissionado"),80,60,210,20);
-	adic(txtDescVend,80,80,190,20);
-	
-	vLabsFat.addElement("Faturado");
+    vLabsFat.addElement("Faturado");
 	vLabsFat.addElement("Não Faturado");
 	vLabsFat.addElement("Ambos");
 	vValsFat.addElement("S");
@@ -99,7 +75,6 @@ public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
 	vValsFat.addElement("A");
 	rgFaturados = new JRadioGroup(3, 1, vLabsFat, vValsFat);
 	rgFaturados.setVlrString("S");
-	rgFaturados.addRadioGroupListener(this);
 	
 	vLabsFin.addElement("Financeiro");
 	vLabsFin.addElement("Não Finaceiro");
@@ -109,25 +84,42 @@ public class FRVendasGeral extends FRelatorio implements RadioGroupListener{
 	vValsFin.addElement("A");
 	rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
 	rgFinanceiro.setVlrString("S");
-	rgFinanceiro.addRadioGroupListener(this);
+	
+	lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false));
+  	lcVend.add(new GuardaCampo( txtDescVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false));
+  	lcVend.montaSql(false, "VENDEDOR", "VD");    
+  	lcVend.setQueryCommit(false);
+  	lcVend.setReadOnly(true);
+  	txtCodVend.setNomeCampo("CodVend");
+	txtCodVend.setFK(true);
+  	txtCodVend.setTabelaExterna(lcVend);
     
+    adic(new JLabelPad("Periodo:"),7,5,100,20);
+    adic(lbLinha,60,15,210,2);
+    adic(new JLabelPad("De:"),7,30,30,20);
+    adic(txtDataini,32,30,97,20);
+    adic(new JLabelPad("Até:"),140,30,30,20);
+    adic(txtDatafim,170,30,100,20);
+  	adic(new JLabelPad("Cód.comiss."),7,60,210,20);
+	adic(txtCodVend,7,80,70,20);
+	adic(new JLabelPad("Nome do comissionado"),80,60,210,20);
+	adic(txtDescVend,80,80,190,20);
 	adic(rgFaturados, 7, 120, 120, 70);
 	adic(rgFinanceiro, 153, 120, 120, 70);
-    
+	
   }
+  
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcVend.setConexao(con);
   }
   
-  public void valorAlterado(RadioGroupEvent rgevt) { }
-
   public void imprimir(boolean bVisualizar) {
      
   	 String sWhere = "";
   	 String sWhere1 = "";
   	 String sWhere2 = "";
-	 String sCab="";
+	 String sCab = "";
 	 
 	if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 		Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");

@@ -43,6 +43,7 @@ import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -59,21 +60,34 @@ public class FRUltimaVenda extends FRelatorio {
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JCheckBoxPad cbListaFilial = null;	
-	private JCheckBoxPad cbFaturados = new JCheckBoxPad("Faturados?", "S", "N");
-	private JCheckBoxPad cbFinanceiro = new JCheckBoxPad("Financeiro?", "S", "N");
 	private JCheckBoxPad cbObsVenda = new JCheckBoxPad("Imprimir Observações da venda?", "S", "N");
+	private JRadioGroup rgFaturados = null;
+	private JRadioGroup rgFinanceiro = null;
+	private Vector vLabsFat = new Vector();
+	private Vector vValsFat = new Vector();
+	private Vector vLabsFin = new Vector();
+	private Vector vValsFin = new Vector();
 	private ListaCampos lcVend = new ListaCampos(this);
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
 	private Vector vObs = null;
 
 	public FRUltimaVenda() {
 		setTitulo("Ultima Venda por Cliente");
-		setAtribos(80, 80, 290, 300);
+		setAtribos(80, 80, 290, 370);
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate(cPeriodo.getTime());
 		cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH) - 30);
 		txtDataini.setVlrDate(cPeriodo.getTime());
+		
+		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVend.montaSql(false, "VENDEDOR", "VD");
+		lcVend.setQueryCommit(false);
+		lcVend.setReadOnly(true);
+		txtCodVend.setNomeCampo("CodVend");
+		txtCodVend.setFK(true);
+		txtCodVend.setTabelaExterna(lcVend);
 
 		lcCli.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_PK, false));
 		lcCli.add(new GuardaCampo(txtNomeCli, "NomeCli","Razão social do cliente", ListaCampos.DB_SI, false));
@@ -84,6 +98,24 @@ public class FRUltimaVenda extends FRelatorio {
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+		
+		vLabsFat.addElement("Faturado");
+		vLabsFat.addElement("Não Faturado");
+		vLabsFat.addElement("Ambos");
+		vValsFat.addElement("S");
+		vValsFat.addElement("N");
+		vValsFat.addElement("A");
+		rgFaturados = new JRadioGroup(3, 1, vLabsFat, vValsFat);
+		rgFaturados.setVlrString("S");
+		
+		vLabsFin.addElement("Financeiro");
+		vLabsFin.addElement("Não Finaceiro");
+		vLabsFin.addElement("Ambos");
+		vValsFin.addElement("S");
+		vValsFin.addElement("N");
+		vValsFin.addElement("A");
+		rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
+		rgFinanceiro.setVlrString("S");
 
 		cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S","N");
 		cbListaFilial.setVlrString("N");
@@ -98,28 +130,14 @@ public class FRUltimaVenda extends FRelatorio {
 		adic(txtCodCli, 07, 90, 70, 20);
 		adic(new JLabelPad("Razão social do cliente:"), 80, 70, 250, 20);
 		adic(txtNomeCli, 80, 90, 186, 20);
-
-		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
-		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
-		lcVend.montaSql(false, "VENDEDOR", "VD");
-		lcVend.setQueryCommit(false);
-		lcVend.setReadOnly(true);
-		txtCodVend.setNomeCampo("CodVend");
-		txtCodVend.setFK(true);
-		txtCodVend.setTabelaExterna(lcVend);
-
 		adic(new JLabelPad("Cód.comiss."), 7, 113, 210, 20);
 		adic(txtCodVend, 7, 136, 70, 20);
 		adic(new JLabelPad("Nome do comissionado"), 80, 113, 210, 20);
 		adic(txtDescVend, 80, 136, 186, 20);
-
-		adic(cbListaFilial, 5, 165, 200, 20);
-		
-		cbFaturados.setVlrString("S");
-		cbFinanceiro.setVlrString("S");
-		adic(cbFaturados, 7, 185, 150, 25);
-		adic(cbFinanceiro, 153, 185, 150, 25);
-		adic(cbObsVenda, 7, 205, 250, 25);
+		adic(cbListaFilial, 7, 165, 200, 20);
+		adic(cbObsVenda, 7, 185, 250, 20);
+		adic(rgFaturados, 7, 215, 120, 70);
+		adic(rgFinanceiro, 148, 215, 120, 70);
 
 	}
 
@@ -136,7 +154,10 @@ public class FRUltimaVenda extends FRelatorio {
 			return;
 		}
 		String sCab = "";
+		String sCab1 = "";
 		String sWhere = "";
+	  	String sWhere1 = "";
+	  	String sWhere2 = "";
 		String sSQL = "";
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
@@ -166,27 +187,36 @@ public class FRUltimaVenda extends FRelatorio {
 			sCab = sTmp ;
 		}
 		
-		if (sCab.trim().length()>0){
-			if (cbFaturados.getVlrString().equals("S"))
-				sCab += " - SO FATURADOS";
-			if (cbFinanceiro.getVlrString().equals("S"))
-				sCab += " - SO FINANCEIRO";
+		if(rgFaturados.getVlrString().equals("S")){
+			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+			sCab1 += " - SO FATURADO";
 		}
-		else {
-			if (cbFaturados.getVlrString().equals("S"))
-				sCab += "SO FATURADOS";
-			if (cbFinanceiro.getVlrString().equals("S"))
-				sCab += "SO FINANCEIRO";
+		else if(rgFaturados.getVlrString().equals("N")){
+			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+			sCab1 += " - NAO FATURADO";
 		}
+		else if(rgFaturados.getVlrString().equals("A")){
+			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+		}	
+		if(rgFinanceiro.getVlrString().equals("S")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+			sCab1 += " - SO FINANCEIRO";
+		}
+		else if(rgFinanceiro.getVlrString().equals("N")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+			sCab1 += " - NAO FINANCEIRO";
+		}
+		else if(rgFinanceiro.getVlrString().equals("A")){
+			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+		}
+		
 		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, "
 				+ "VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA "
 				+ "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL "
 				+ "AND C.CODFILIAL=VD.CODFILIALCL AND VD.DTEMITVENDA BETWEEN ? AND ? AND C.CODFILIAL=? "
 				+ "AND C.CODEMP=? AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " 
 				+ " TM.CODTIPOMOV=VD.CODTIPOMOV "
-				+ (cbFaturados.getVlrString().equals("S") ? " AND TM.FISCALTIPOMOV='S' " : "")
-				+ (cbFinanceiro.getVlrString().equals("S") ? " AND TM.SOMAVDTIPOMOV='S' " : "")
-				+ sWhere
+				+ sWhere + sWhere1 + sWhere2	
 				+ " GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
 
 		System.out.println(sSQL);
@@ -203,11 +233,11 @@ public class FRUltimaVenda extends FRelatorio {
 			imp.limpaPags();
 			
 			imp.setTitulo("Relatório de Ultimas Vendas");
-			imp.addSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"
-					+ sDataini + " ATE: " + sDatafim);
+			imp.addSubTitulo("ULTIMAS VENDAS  -   PERIODO DE :"+ sDataini + " ATE: " + sDatafim);
 			if (sCab.length() > 0) {
 				imp.addSubTitulo(sCab);
 			}
+			imp.addSubTitulo(sCab1);
 
 			while (rs.next()) {
 				if (imp.pRow() == linPag) {

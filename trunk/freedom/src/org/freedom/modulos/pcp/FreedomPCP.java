@@ -107,6 +107,7 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 				addOpcao(400700000, TP_OPCAO_ITEM, "Demanda", "Demanda", 'D',400705000, 2, true, FRDemanda.class);
 				addOpcao(400700000, TP_OPCAO_ITEM, "Conferência","Conferência de Estoque", 'C', 400706000, 2, true,FRConfEstoq.class);
 				addOpcao(400700000, TP_OPCAO_ITEM, "Inventário PEPS","Inventário PEPS", 'I', 400707000, 2, true, FRInvPeps.class);
+				addOpcao(400700000, TP_OPCAO_ITEM, "Custo de Produção","Custo de Produção", 'u', 400708000, 2, true, FRCustoProducao.class);
 					
 		addBotao("btEstProduto.gif", "Estrutura de produto","Estrutura de produto", 100102040, FEstrutura.class);
 		addBotao("btProduto.gif", "Produtos", "Produto", 100101000,FProduto.class);
