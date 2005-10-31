@@ -83,6 +83,7 @@ public class NF {
 	public static final int C_UFCOBEMIT = 35;
 	public static final int C_BAIRCOBEMIT = 36;
 	public static final int C_NUMCOBEMIT = 37;
+	public static final int C_PERCMCOMISPED = 38;
 	
 	
 	//itens

@@ -852,10 +852,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
                   "(SELECT P.DESCPLAN FROM FNPLANEJAMENTO P WHERE P.CODPLAN = IR.CODPLAN AND P.CODEMP=IR.CODEMPPN AND P.CODFILIAL=IR.CODFILIALPN)," +
                   "(SELECT CC.DESCCC FROM FNCC CC WHERE CC.CODCC = IR.CODCC AND CC.CODEMP=IR.CODEMPCC AND CC.CODFILIAL=IR.CODFILIALCC)," +
                   "(SELECT VD.DOCVENDA FROM VDVENDA VD WHERE VD.TIPOVENDA=R.TIPOVENDA AND VD.CODVENDA=R.CODVENDA AND VD.CODEMP=R.CODEMPVA AND VD.CODFILIAL=R.CODFILIALVA),"+
-                  "(SELECT BO.NOMEBANCO FROM FNBANCO BO WHERE BO.CODBANCO = IR.CODBANCO AND BO.CODEMP=IR.CODEMPBO AND BO.CODFILIAL=IR.CODFILIALBO)," +
                   "(SELECT C.CODTIPOCOB FROM VDCLIENTE C WHERE C.CODCLI=R.CODCLI AND C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL)," +
-                  "(SELECT TP.DESCTIPOCOB FROM FNTIPOCOB TP, VDCLIENTE CL WHERE TP.CODEMP=CL.CODEMPTC AND TP.CODFILIAL=CL.CODFILIALTC AND TP.CODTIPOCOB=CL.CODTIPOCOB " +
-                  "AND CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND CL.CODCLI=R.CODCLI)" +
+                  "(SELECT TP.DESCTIPOCOB FROM FNTIPOCOB TP, VDCLIENTE CL WHERE TP.CODEMP=CL.CODEMPTC AND TP.CODFILIAL=CL.CODFILIALTC AND TP.CODTIPOCOB=CL.CODTIPOCOB AND CL.CODEMP=R.CODEMPCL AND CL.CODFILIAL=R.CODFILIALCL AND CL.CODCLI=R.CODCLI)," +
+                  "(SELECT BO.NOMEBANCO FROM FNBANCO BO WHERE BO.CODBANCO = C.CODBANCO AND BO.CODEMP=C.CODEMPBO AND BO.CODFILIAL=C.CODFILIALBO) " +
                   "FROM FNITRECEBER IR, FNRECEBER R, VDCLIENTE C " +
                   "WHERE R.CODREC=IR.CODREC AND C.CODCLI=R.CODCLI " +sWhereManut+
                   "ORDER BY IR.DTVENCITREC,IR.STATUSITREC";
@@ -902,10 +901,10 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
         tabManut.setValor(rs.getString(21) != null ? rs.getString(21) : "",i,14);//DESCCONTA
         tabManut.setValor(rs.getString(22) != null ? rs.getString(22) : "",i,15);//DESCPLAN
 		tabManut.setValor(rs.getString(23) != null ? rs.getString(23) : "",i,16);;//DESCCC
-        tabManut.setValor(rs.getString(25) != null ? rs.getString(25) : "",i,20);//NOMEBANCO
-        tabManut.setValor(rs.getString(26) != null ? rs.getString(26) : "",i,17);;//TIPOCOB
-        tabManut.setValor(rs.getString(27) != null ? rs.getString(27) : "",i,18);//DESCTIPOCOB
-		tabManut.setValor(rs.getString("ObsItRec") != null ? rs.getString("ObsItRec") : "",i,21);
+        tabManut.setValor(rs.getString(25) != null ? rs.getString(25) : "",i,17);;//TIPOCOB
+        tabManut.setValor(rs.getString(26) != null ? rs.getString(26) : "",i,18);//DESCTIPOCOB
+        tabManut.setValor(rs.getString(27) != null ? rs.getString(27) : "",i,19);//NOMEBANCO
+		tabManut.setValor(rs.getString("ObsItRec") != null ? rs.getString("ObsItRec") : "",i,20);
         vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
         vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
         vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
