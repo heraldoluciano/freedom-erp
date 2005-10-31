@@ -56,7 +56,7 @@ public class NFSaida extends NF {
 					"V.CODPLANOPAG, PG.DESCPLANOPAG, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND,"+
 					"(SELECT F.DESCFUNC FROM RHFUNCAO F "+
 					"WHERE F.CODFUNC=VEND.CODFUNC AND F.CODEMP=VEND.CODEMPFU AND F.CODFILIAL=VEND.CODFILIALFU),"+
-					"V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB "+
+					"V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB, V.PERCMCOMISVENDA "+
 					"FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND "+
 					"WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "+
 					"AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG "+
@@ -68,7 +68,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector(38);
+			cab = new TabVector(39);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODVENDA"));
@@ -109,6 +109,7 @@ public class NFSaida extends NF {
 				cab.setString(C_UFCOBEMIT, (rs.getString("UFCOB")!=null ? rs.getString("UFCOB").trim() : ""));
 				cab.setString(C_BAIRCOBEMIT, (rs.getString("BAIRCOB")!=null ? rs.getString("BAIRCOB").trim() : ""));
 				cab.setInt(C_NUMCOBEMIT, rs.getInt("NUMCOB"));
+				cab.setFloat(C_PERCMCOMISPED, rs.getFloat("PERCMCOMISVENDA"));
 			}
 			rs.close();
 			ps.close();

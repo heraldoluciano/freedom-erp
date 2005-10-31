@@ -322,7 +322,7 @@ public class NFPomiagro2 extends Layout {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,35,""+cab.getInt(NF.C_CODVEND));
            imp.say(imp.pRow()+0,40,!cab.getString(NF.C_CODCLCOMIS).equals("") ? cab.getString(NF.C_CODCLCOMIS) : "");
-           imp.say(imp.pRow()+0,50,(new BigDecimal(cab.getFloat(NF.C_PERCCOMISVENDA))).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+           imp.say(imp.pRow()+0,50,(new BigDecimal(cab.getFloat(NF.C_PERCMCOMISPED))).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            for(int i=0;i<vMens.size();i++)
