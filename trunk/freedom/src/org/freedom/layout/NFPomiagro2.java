@@ -56,7 +56,7 @@ public class NFPomiagro2 extends Layout {
         if (bFat) {
           if (parc.next()) {
             sVencs[i] = (parc.getDate(NF.C_DTVENCTO)!=null ? Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO)) : "");
-            sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,parc.getString(NF.C_VLRPARC));
+            sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,""+parc.getFloat(NF.C_VLRPARC));
           }
           else {
             bFat = false;
