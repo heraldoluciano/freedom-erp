@@ -55,6 +55,7 @@ public class OPSwara extends LeiauteGR {
 	String sDescProd = "";
 	String sLote = "";
 	String sQtd = "";
+	String sCodUnid = "";
 	Double dbQtd = new Double(1);
 	String sDtFabrica = "";
 	String sDtValidade = "";
@@ -74,10 +75,12 @@ public class OPSwara extends LeiauteGR {
 	    iYPosProd = iPosIniItens;
 		try {
 		  String sSQL = "SELECT ITOP.CODOP,ITOP.SEQITOP,OP.DTEMITOP,OP.CODPROD,(SELECT PROD2.DESCPROD FROM EQPRODUTO PROD2 WHERE PROD2.CODPROD=OP.CODPROD  AND PROD2.CODEMP=OP.CODEMPPD  AND PROD2.CODFILIAL=OP.CODFILIALPD),"+
-			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPREVPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPREVPRODOP,ITOP.CODFASE,OP.CODLOTE,PROD.CODUNID "+
+			"EST.DESCEST,EST.QTDEST,OP.DTFABROP,OP.QTDPREVPRODOP,DTVALIDPDOP,OP.DTINS,ITOP.CODPROD,PROD.DESCPROD,UNID.DESCUNID,ITOP.CODLOTE,ITOP.QTDITOP,OP.QTDPREVPRODOP,ITOP.CODFASE,OP.CODLOTE,PROD.CODUNID, " +
+			"(SELECT PROD2.CODUNID FROM EQPRODUTO PROD2 WHERE PROD2.CODPROD=OP.CODPROD  AND PROD2.CODEMP=OP.CODEMPPD  AND PROD2.CODFILIAL=OP.CODFILIALPD) "+
 			"FROM PPESTRUTURA EST,PPOP OP, PPITOP ITOP, EQUNIDADE UNID, EQPRODUTO PROD "+
 			"WHERE EST.CODPROD=OP.CODPROD AND ITOP.CODOP=OP.CODOP AND ITOP.SEQOP=OP.SEQOP AND UNID.CODUNID=PROD.CODUNID "+
-			"AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND OP.SEQOP=? AND OP.CODEMP=? AND OP.CODFILIAL=?";
+			"AND PROD.CODPROD = ITOP.CODPROD AND OP.CODOP=? AND OP.SEQOP=? AND OP.CODEMP=? AND OP.CODFILIAL=?" +
+			"ORDER BY ITOP.CODPROD ";
 
 		  PreparedStatement ps = con.prepareStatement(sSQL);
 		  
@@ -104,10 +107,11 @@ public class OPSwara extends LeiauteGR {
 //		  sQtd       = (rs.getString(16)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(16)):"");
 //		  sQtd       = (rs.getString(9)!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString(9)):"");
 		  dbQtd      = (rs.getString(9)!=null?new Double(Funcoes.strDecimalToBigDecimal(3,rs.getString(9)).doubleValue()):dbQtd);
-		  sQtd       = dbQtd.toString();
+		  sQtd       = ((int)dbQtd.doubleValue())+"";
+		  sCodUnid   = (rs.getString(21)!=null?rs.getString(21).trim():"");
 		  sDtFabrica = (rs.getDate(8) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(8)) : ""); 
 		  sDtValidade= (rs.getDate(10) !=null ? Funcoes.sqlDateToStrDate(rs.getDate(10)) : "");
-		  sLote  = (rs.getString(19)!=null?rs.getString(19).trim():"");
+		  sLote      = (rs.getString(19)!=null?rs.getString(19).trim():"");
 		  montaCabEmp(con);
 		  montaCab();		   	        		  
 
@@ -381,7 +385,7 @@ public class OPSwara extends LeiauteGR {
 				vColunasEB = new Vector();
 			    vColunasEB.addElement((rs.getString("CODPROD")!=null?rs.getString("CODPROD"):"")); //Código
 			    vColunasEB.addElement((rs.getString("DESCPROD")!=null?rs.getString("DESCPROD"):"")); //Descrição
-			    vColunasEB.addElement((rs.getString("QTDPREVPRODOP")!=null?Funcoes.strDecimalToStrCurrency(3,rs.getString("QTDPREVPRODOP")):"0")); //Quantidade
+			    vColunasEB.addElement((rs.getString("QTDPREVPRODOP")!=null?Funcoes.strDecimalToStrCurrency(0,rs.getString("QTDPREVPRODOP")):"0")); //Quantidade
 			    vColunasEB.addElement((rs.getString("CODUNID")!=null?rs.getString("CODUNID"):"")); //Unidade
 			    vColunasEB.addElement((rs.getString("CODLOTE")!=null?rs.getString("CODLOTE"):"")); //Lote
 			    vColunasEB.addElement((rs.getString("SEQOP")!=null?rs.getString("SEQOP"):"0")); //Sequencia da OP
@@ -641,7 +645,7 @@ public class OPSwara extends LeiauteGR {
 
 		drawTexto("O.P. número:",10,70);
 	    drawTexto("Produto:",110,70);
-	    drawTexto("Quantidade:",10,82);
+	    drawTexto("Qtd.:",10,82);
 	    drawTexto("Data de fabricação:",110,82);
 	    drawTexto("Data de validade:",270,82);
         drawTexto("Emissão:",420,82);
@@ -651,7 +655,7 @@ public class OPSwara extends LeiauteGR {
 
 	    drawTexto((iCodOP+"").trim(),70,70); //Código da OP
 	    drawTexto(sDescProd,153,70); //Descrição do produto a ser fabricado 
-	    drawTexto(sQtd,70,82); //qtd. a fabricar 
+	    drawTexto(sQtd + " - " + sCodUnid,40,82); //qtd. a fabricar 
 	    drawTexto(sDtFabrica,200,82); //Data de fabricação
 	    drawTexto(sDtValidade,350,82); //Data de validade
 	    drawTexto(Funcoes.dateToStrDate(new Date()),475,82);
