@@ -1341,6 +1341,8 @@ public class ListaCampos extends Container implements PostListener,
 		bAutoInc = bAuto;
 		sArea = sA;
 		sTabela = sArea + sTab;
+		if (bUsaME)
+			iCodFilial = getMasterFilial(sTabela);
 		sPK = retPK();
 		this.iNumPKs = 0;
 		
@@ -1799,8 +1801,8 @@ public class ListaCampos extends Container implements PostListener,
 
 	public void setConexao(Connection cn) {
 		con = cn;
-		if (bUsaME)
-			iCodFilial = getMasterFilial(sTabela);
+//		if (bUsaME)
+//			iCodFilial = getMasterFilial(sTabela);
 		System.out.println("[TABELA: " + sTabela + ", Filial F: "+ Aplicativo.iCodFilial + " Filial M: "+ Aplicativo.iCodFilialMz + "]");
 		if(!"".equals(sSQLSelect))
 			System.out.println("SELECT -> " + sSQLSelect);

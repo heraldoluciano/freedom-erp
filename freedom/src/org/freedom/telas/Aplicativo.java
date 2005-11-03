@@ -780,7 +780,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public boolean getModoDemo() {
 		String sSQL = "SELECT MODODEMOEST FROM SGESTACAO WHERE CODEST="
 				+ iNumEst + "AND CODEMP=" + iCodEmp + " AND CODFILIAL="
-				+ iCodFilial;
+				+ ListaCampos.getMasterFilial("SGESTACAO");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		boolean bModo = true;
@@ -807,7 +807,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	public String getDescEst() {
 		String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST=" + iNumEst
-				+ " AND CODEMP=" + iCodEmp + " AND CODFILIAL=" + iCodFilial;
+				+ " AND CODEMP=" + iCodEmp + " AND CODFILIAL=" + ListaCampos.getMasterFilial("SGESTACAO");
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sDesc = "";
