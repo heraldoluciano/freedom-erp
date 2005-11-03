@@ -74,10 +74,9 @@ public class TabObjeto {
      	for (int i=0; i<vObjetos.size(); i++) {
      		if ( ((ObjetoBD) vObjetos.elementAt(i)).getIDObj().
      		        toUpperCase().trim().equals(sTabela.toUpperCase().trim())) {
-     		   if ( !((ObjetoBD) vObjetos.elementAt(i)).getUsomeObj().equals("S")) {
+     		   if ( !((ObjetoBD) vObjetos.elementAt(i)).getUsomeObj().equals("S")) 
      		   	  bRetorno = false;
-     		   	  break;
-     		   }
+  		   	   break;
      		}
      	}
      }
