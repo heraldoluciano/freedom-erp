@@ -1,8 +1,8 @@
 package org.freedom.modulos.pdv;
 
 /**
- * @version 30/06/2004 <BR>
- * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
+ * @version 01/11/2005 <BR>
+ * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  *
  * Projeto: Freedom <BR>
  *  
@@ -39,6 +39,9 @@ import javax.swing.JOptionPane;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -48,10 +51,14 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
-import org.freedom.telas.FDialogo;
+import org.freedom.telas.FFDialogo;
 
-public class DLFechaVenda extends FDialogo implements FocusListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private static final long serialVersionUID = 1L;
+	private int casasDec = Aplicativo.casasDec;
+
+	private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
 	
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
@@ -61,26 +68,74 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 	private JTextFieldPad txtVlrChequeElet = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
 	private JTextFieldFK txtVlrPago = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JTextFieldFK txtVlrTroco = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
+
+	private JTextFieldPad txtCodTran = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtDescTran = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtPlacaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldPad txtUFFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+	private JTextFieldPad txtVlrFreteVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,2);
+	private JTextFieldPad txtConhecFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
+	private JTextFieldPad txtQtdFreteVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
+	private JTextFieldPad txtPesoBrutVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
+	private JTextFieldPad txtPesoLiqVD = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,casasDec);
+	private JTextFieldPad txtEspFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldPad txtMarcaFreteVD = new JTextFieldPad(JTextFieldPad.TP_STRING,10,0);
+	private JTextFieldPad txtCodAuxV = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtCPFCliAuxV = new JTextFieldPad(JTextFieldPad.TP_STRING,11,0);
+	private JTextFieldPad txtNomeCliAuxV = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtCidCliAuxV = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
+	private JTextFieldPad txtUFCliAuxV = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);	
+
+	
+	private JLabelPad lbCodTran = new JLabelPad("Cód.tran.");
+	private JLabelPad lbNomeTran = new JLabelPad("Nome do transportador");
+	private JLabelPad lbTipoFreteVD = new JLabelPad("Tipo");
+	private JLabelPad lbPlacaFreteVD = new JLabelPad("Placa");
+	private JLabelPad lbUFFreteVD = new JLabelPad("UF");
+	private JLabelPad lbVlrFreteVD = new JLabelPad("Valor");
+	private JLabelPad lbQtdFreteVD = new JLabelPad("Volumes");
+	private JLabelPad lbPesoBrutVD = new JLabelPad("Peso B.");
+	private JLabelPad lbPesoLiqVD = new JLabelPad("Peso L.");
+	private JLabelPad lbEspFreteVD = new JLabelPad("Espec.");
+	private JLabelPad lbMarcaFreteVD = new JLabelPad("Marca");
+
+	private Vector vVals = new Vector();
+	private Vector vLabs = new Vector();
+	private JRadioGroup rgFreteVD = null;
+	private JTabbedPanePad tpn = new JTabbedPanePad();
+	private JPanelPad pnVenda = new JPanelPad(400,300);
+	private JPanelPad pnAdic = new JPanelPad(400,300);
+	private JPanelPad pnFrete = new JPanelPad(400,300);
+	private ListaCampos lcAuxVenda = new ListaCampos(this);
+	private ListaCampos lcFreteVD = new ListaCampos(this);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
+	private ListaCampos lcTran = new ListaCampos(this,"TN");
 	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
 	private Tef tef = null;
+	private String sTipoVenda = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
 	private Vector vTefsOK = new Vector();
 	private BigDecimal bigPagoTef = new BigDecimal("0.00");
 	private JLabelPad lbChequeElet;
 	Connection con = null;
-	public DLFechaVenda(BigDecimal valCupom, int iCodVenda, int iNumCupom) {
+	public DLFechaVenda( int iCodVenda, String sTipoVenda, BigDecimal valCupom, int iNumCupom) {
 		//super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de venda");
-		setAtribos(330,275);
+		setAtribos(330,345);
 		
+		this.sTipoVenda = sTipoVenda;
 		this.iCodVenda = iCodVenda;
 		this.iNumCupom = iNumCupom;
 		
 		txtVlrCupom.setVlrBigDecimal(valCupom);
 		txtVlrChequeElet.setAtivo(false);
 		
+		vVals.addElement("C");
+	    vVals.addElement("F");
+	    vLabs.addElement("CIF");
+	    vLabs.addElement("FOB");	    
+	    rgFreteVD = new JRadioGroup(1,2,vLabs, vVals);
 		
 		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, true));
 		lcPlanoPag.add(new GuardaCampo( txtDescPlanoPag, "DescPlanoPag", "Descrição do plano de pagamento", ListaCampos.DB_SI,false));
@@ -90,10 +145,70 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		txtCodPlanoPag.setFK(true);
 		
-		adic(new JLabelPad("Cód.p.pag."),7,5,250,15);
-		adic(txtCodPlanoPag,7,20,80,20);
-		adic(new JLabelPad("Descrição da forma de pagamento"),90,5,250,15);
-		adic(txtDescPlanoPag,90,20,200,20);
+		txtCodTran.setNomeCampo("CodTran");
+	    lcTran.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false));
+	    lcTran.add(new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI,false));
+	    txtDescTran.setListaCampos(lcTran);
+	    txtCodTran.setTabelaExterna(lcTran);
+		txtCodTran.setFK(true);
+	    lcTran.montaSql(false, "TRANSP", "VD");
+	    lcTran.setQueryCommit(false);
+	    lcTran.setReadOnly(true);
+	    
+	    lcFreteVD.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false));
+	    lcFreteVD.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false));
+	    lcFreteVD.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran, false));
+	    lcFreteVD.add(new GuardaCampo( rgFreteVD, "TipoFreteVD", "Tipo", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtConhecFreteVD, "ConhecFreteVD", "Conhec.", ListaCampos.DB_SI, false));
+	    lcFreteVD.add(new GuardaCampo( txtPlacaFreteVD, "PlacaFreteVD", "Placa", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtUFFreteVD, "UFFreteVD", "Placa", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtVlrFreteVD, "VlrFreteVD", "Valor", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtQtdFreteVD, "QtdFreteVD", "Qtd.", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtPesoBrutVD, "PesoBrutVD", "Peso bruto", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtPesoLiqVD, "PesoLiqVD", "Peso liq.", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtEspFreteVD, "EspFreteVD", "Esp.fiscal", ListaCampos.DB_SI,true));
+	    lcFreteVD.add(new GuardaCampo( txtMarcaFreteVD, "MarcaFreteVD", "Marca", ListaCampos.DB_SI,true));
+	    lcFreteVD.montaSql(false, "FRETEVD", "VD");
+	    rgFreteVD.setListaCampos(lcFreteVD);
+	    txtPlacaFreteVD.setListaCampos(lcFreteVD);
+	    txtUFFreteVD.setListaCampos(lcFreteVD);
+	    txtVlrFreteVD.setListaCampos(lcFreteVD);
+	    txtQtdFreteVD.setListaCampos(lcFreteVD);
+	    txtPesoBrutVD.setListaCampos(lcFreteVD);
+	    txtPesoLiqVD.setListaCampos(lcFreteVD);
+	    txtEspFreteVD.setListaCampos(lcFreteVD);
+	    txtMarcaFreteVD.setListaCampos(lcFreteVD);
+	    txtConhecFreteVD.setListaCampos(lcFreteVD);
+	    txtCodTran.setListaCampos(lcFreteVD);
+	    
+	    lcAuxVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false));
+	    lcAuxVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK,false));
+	    lcAuxVenda.add(new GuardaCampo( txtCodAuxV, "CodAuxV", "Cód.aux.", ListaCampos.DB_PK, false));
+	    lcAuxVenda.add(new GuardaCampo( txtCPFCliAuxV, "CPFCliAuxV", "CPF", ListaCampos.DB_SI ,false));
+	    lcAuxVenda.add(new GuardaCampo( txtNomeCliAuxV, "NomeCliAuxV", "Nome", ListaCampos.DB_SI,false));
+	    lcAuxVenda.add(new GuardaCampo( txtCidCliAuxV, "CidCliAuxV", "Cidade", ListaCampos.DB_SI,false));
+	    lcAuxVenda.add(new GuardaCampo( txtUFCliAuxV, "UFCliAuxV", "UF", ListaCampos.DB_SI,false));
+	    lcAuxVenda.montaSql(false, "AUXVENDA", "VD");
+	    txtCodAuxV.setListaCampos(lcAuxVenda);
+	    txtCPFCliAuxV.setListaCampos(lcAuxVenda);
+	    txtNomeCliAuxV.setListaCampos(lcAuxVenda);
+	    txtCidCliAuxV.setListaCampos(lcAuxVenda);
+	    txtUFCliAuxV.setListaCampos(lcAuxVenda);
+	    txtCPFCliAuxV.setMascara(JTextFieldPad.MC_CPF);
+		
+		c.add(tpn);
+		
+		tpn.add("Fechamento",pnVenda);
+	    tpn.add("Adicionais",pnAdic);
+	    tpn.add("Frete",pnFrete);
+	   	   		
+	    // FECHAMENTO
+	    setPainel(pnVenda);
+	    
+	    adic(new JLabelPad("Cód.p.pag."),7,5,250,15);
+	    adic(txtCodPlanoPag,7,20,80,20);
+	    adic(new JLabelPad("Descrição da forma de pagamento"),90,5,250,15);
+	    adic(txtDescPlanoPag,90,20,200,20);
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
@@ -101,17 +216,59 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		adic(lbLinha,7,50,300,2);
 		
 		adic(new JLabelPad("Valor total do cupom: "),7,60,150,20);
-		adic(txtVlrCupom,160,60,100,20);
+		adic(txtVlrCupom,170,60,120,20);
 		adic(new JLabelPad("Valor em dinheiro: "),7,85,150,20);
-		adic(txtVlrDinheiro,160,85,100,20);
+		adic(txtVlrDinheiro,170,85,120,20);
 		adic(new JLabelPad("Valor em cheque: "),7,110,150,20);
-		adic(txtVlrCheque,160,110,100,20);
+		adic(txtVlrCheque,170,110,120,20);
 		adic((lbChequeElet = new JLabelPad("Valor em ch. elet./cartão: ")),7,135,150,20);
-		adic(txtVlrChequeElet,160,135,100,20);
+		adic(txtVlrChequeElet,170,135,120,20);
 		adic(new JLabelPad("Valor pago: "),7,160,150,20);
-		adic(txtVlrPago,160,160,100,20);
+		adic(txtVlrPago,170,160,120,20);
 		adic(new JLabelPad("Valor troco: "),7,185,150,20);
-		adic(txtVlrTroco,160,185,100,20);
+		adic(txtVlrTroco,170,185,120,20);
+		
+		//AUXILIAR
+		
+		setPainel(pnAdic);
+		
+		adic(new JLabelPad("Nome"),7,0,240,20);
+	    adic(txtNomeCliAuxV,7,20,284,20);
+	    adic(new JLabelPad("CPF"),7,40,120,20);
+	    adic(txtCPFCliAuxV,7,60,120,20);
+	    adic(new JLabelPad("Cidade"),130,40,100,20);
+	    adic(txtCidCliAuxV,130,60,120,20);
+	    adic(new JLabelPad("UF"),253,40,40,20);
+	    adic(txtUFCliAuxV,253,60,40,20);
+		
+		//FRETE
+		
+		setPainel(pnFrete);
+		
+		adic(lbCodTran,7,0,80,20);
+	    adic(txtCodTran,7,20,80,20);
+	    adic(lbNomeTran,90,0,210,20);
+	    adic(txtDescTran,90,20,210,20);
+	    adic(lbTipoFreteVD,7,40,170,20);
+	    adic(rgFreteVD,7,60,130,30);
+	    adic(new JLabelPad("Conhec."),140,50,77,20);
+	    adic(txtConhecFreteVD,140,70,77,20);
+	    adic(lbPlacaFreteVD,220,50,80,20);
+	    adic(txtPlacaFreteVD,220,70,80,20);
+	    adic(lbVlrFreteVD,7,90,120,20);
+	    adic(txtVlrFreteVD,7,110,120,20);
+	    adic(lbQtdFreteVD,130,90,77,20);
+	    adic(txtQtdFreteVD,130,110,120,20);
+	    adic(lbUFFreteVD,253,90,40,20);
+	    adic(txtUFFreteVD,253,110,45,20);
+	    adic(lbPesoBrutVD,7,130,120,20);
+	    adic(txtPesoBrutVD,7,150,120,20);
+	    adic(lbPesoLiqVD,130,130,120,20);
+	    adic(txtPesoLiqVD,130,150,120,20);
+	    adic(lbEspFreteVD,7,170,120,20);
+	    adic(txtEspFreteVD,7,190,120,20);
+	    adic(lbMarcaFreteVD,130,170,120,20);
+	    adic(txtMarcaFreteVD,130,190,120,20);
 		
 		
 //Não pode commitar enquanto todo o processo tive OK:
@@ -489,5 +646,11 @@ public class DLFechaVenda extends FDialogo implements FocusListener {
 		lcPlanoPag.setConexao(cn);
 		txtCodPlanoPag.setVlrInteger(new Integer(buscaPlanoPag()));
 		lcPlanoPag.carregaDados();
+	    lcTran.setConexao(cn);
+	    lcFreteVD.setConexao(cn);
+	    lcAuxVenda.setConexao(cn);
+	    
+	    txtCodVenda.setVlrInteger(new Integer(iCodVenda));
+	    txtTipoVenda.setVlrString(sTipoVenda);
 	}
 }

@@ -46,6 +46,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -1580,10 +1581,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private void imprimir(boolean bVisualizar, int iCodVenda) {
 		ImprimeOS imp = new ImprimeOS("", con,"PD",true);
 		int linPag = imp.verifLinPag("PD") - 1;
-		//int iPares = 0;
 		Vector vDesc = null;
 		Vector vObs = null;
-		//String sStrLote = "";
+		String sDiasPE = null;
+		int iDiasPE = 0;
+		GregorianCalendar cal = null;
+		Date dtHoje = null;
+		
 		imp.montaCab();
 		imp.setTitulo("Relatório de Pedidos");
 		DLRPedido dl = new DLRPedido(sOrdNota);
@@ -1608,7 +1612,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "(SELECT F.TIPOFRETEVD FROM VDFRETEVD F WHERE F.CODEMP=V.CODEMP AND " 
 				+ "F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA),"
 				+ "I.VLRLIQITVENDA,P.DESCAUXPROD,C.DDDCLI,C.EMAILCLI,I.CODITVENDA,"
-				+ "I.DIASPE,C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
+				+ "(SELECT PE.DIASPE FROM VDPRAZOENT PE WHERE PE.CODEMP=P.CODEMPPE AND PE.CODFILIAL=P.CODFILIALPE AND PE.CODPE=P.CODPE),"
+				+ "C.SITECLI,I.OBSITVENDA,VEND.EMAILVEND,"
 				+ "(SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU AND "
 				+ "FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC), "
 				+ "V.PEDCLIVENDA,C.CONTCLI,P.CODFISC,FC.DESCFISC "
@@ -1666,7 +1671,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + (rs.getString("EmailCli")!=null?rs.getString("EmailCli").trim():""));
 						imp.say(imp.pRow() + 0, 70, "TEL: "+ (rs.getString("DDDCli")!=null?Funcoes.setMascara(rs.getString("DDDCli"), "(####)"):"")+ 
-												(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
+											(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
 												(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : ""));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
@@ -1684,7 +1689,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					}
 					imp.say(imp.pRow() + 0, 17,"" + vDesc.elementAt(i).toString());
 					if (i==0) {
-						imp.say(imp.pRow() + 0, 59, rs.getString(2).trim());
+						imp.say(imp.pRow() + 0, 59, (rs.getString(2)!=null ? rs.getString(2).trim() : ""));
 						imp.say(imp.pRow() + 0, 74, rs.getString("CodUnid").trim());
 						imp.say(imp.pRow() + 0, 79, rs.getString("QtdItVenda"));
 						imp.say(imp.pRow() + 0, 87, Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(rs.getString("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,
@@ -1694,6 +1699,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 0, 130, rs.getString("PercICMSItVenda"));
 					}
 				}
+				if(iDiasPE < rs.getInt(57))
+					iDiasPE = rs.getInt(57);
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
@@ -1714,7 +1721,25 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "TRANSPORTADORA....:    " + (rs.getString(50)!=null ? rs.getString(50) : ""));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "PRAZO DE ENTREGA..:    " + (rs.getString("DIASPE")!=null ? rs.getString("DIASPE") : ""));
+						
+			if(bPrefs[14]){
+				dtHoje = new Date();
+				cal = new GregorianCalendar();
+				cal.setTime(dtHoje);
+				if(iDiasPE > 0){
+					cal.add(GregorianCalendar.DAY_OF_YEAR,iDiasPE);
+					sDiasPE = Funcoes.dateToStrDate(cal.getTime());
+				}
+				else
+					sDiasPE = "";
+
+				imp.say(imp.pRow() + 0, 0, "DATA DE ENTREGA...:    " + sDiasPE);
+			}
+			else{
+				sDiasPE = (iDiasPE > 0 ? iDiasPE + " dias" : "");
+				imp.say(imp.pRow() + 0, 0, "PRAZO DE ENTREGA..:    " + sDiasPE );
+			}
+			
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -2214,11 +2239,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private boolean[] prefs() {
-		boolean[] bRetorno = new boolean[14];
+		boolean[] bRetorno = new boolean[15];
 		String sSQL = "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," +
 			"USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " +
-			"TAMDESCPROD, OBSCLIVEND, CONTESTOQ " + 
-			" FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			"TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT " + 
+			"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -2289,6 +2314,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if (rs.getString("CONTESTOQ") != null) {
 					if (rs.getString("CONTESTOQ").trim().equals("N"))
 						bRetorno[13] = false;
+				}
+				bRetorno[14] = false;
+				if (rs.getString("DIASPEDT") != null) {
+					if (rs.getString("DIASPEDT").trim().equals("S"))
+						bRetorno[14] = true;
 				}
 
 			}

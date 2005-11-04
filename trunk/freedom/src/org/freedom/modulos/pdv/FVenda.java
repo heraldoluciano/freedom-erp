@@ -926,8 +926,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			Funcoes.mensagemErro(this, "Não existe nenhuma venda ativa!");
 			return;
 		} 
-		DLFechaVenda fecha = new DLFechaVenda(txtTotalCupom.getVlrBigDecimal(),
-				txtCodVenda.getVlrInteger().intValue(), txtNumeroCupom.getVlrInteger().intValue());
+		DLFechaVenda fecha = new DLFechaVenda(txtCodVenda.getVlrInteger().intValue(),txtTipoVenda.getVlrString(),
+				txtTotalCupom.getVlrBigDecimal(),txtNumeroCupom.getVlrInteger().intValue());
 		fecha.setConexao(con);
 		if (tef != null)
 			fecha.setTef(tef);
