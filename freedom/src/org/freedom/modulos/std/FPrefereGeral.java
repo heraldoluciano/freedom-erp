@@ -157,6 +157,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbBuscaProdSimilar = null;
 	private JCheckBoxPad cbMultiAlmox = null;
 	private JCheckBoxPad cbPrazoEnt = null;
+	private JCheckBoxPad cbDiasPEData = null;
 	private JCheckBoxPad cbDescCompl = null;
 	private JCheckBoxPad cbObsCliVend = null;
 	private JCheckBoxPad cbContEstoq = null;
@@ -190,7 +191,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	public FPrefereGeral() {
 		super();
 		setTitulo("Preferências Gerais");
-		setAtribos(40, 40, 760, 420);
+		setAtribos(40, 40, 760, 440);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -398,6 +399,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbVendaMatPrim.setVlrString("N");
 		cbPrazoEnt = new JCheckBoxPad("Prazo de entrega na venda?", "S", "N");
 		cbPrazoEnt.setVlrString("S");
+		cbDiasPEData = new JCheckBoxPad("Data de entrega no pedido?", "S", "N");
+		cbDiasPEData.setVlrString("N");
 		cbDescCompl = new JCheckBoxPad("Usar descrição completa do produto para Orçamento e Pedido?", "S", "N");
 		cbDescCompl.setVlrString("N");
 
@@ -491,7 +494,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		
 		lbVendOpcoes.setOpaque(true);
 		adic(lbVendOpcoes,360,5,70,20);
-		adic(pinOpcoesVenda,350,15,380,300);
+		adic(pinOpcoesVenda,350,15,380,320);
 		setPainel(pinOpcoesVenda);
 
 		adicDB(cbUsaRefProd, 10, 20, 160, 20, "UsaRefProd", "", true);
@@ -514,6 +517,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbComisPDupl, 10, 220, 300, 20, "ComisPDupl", "", true);
 		adicDB(cbObsCliVend, 10, 240,300,20, "ObsCliVend", "", true);
 		adicDB(cbTravaTMNFVD, 10, 260, 300, 20, "TravaTMNFVD", "", true);
+		adicDB(cbDiasPEData, 10, 280, 300, 20, "DIASPEDT", "", true);
 
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
