@@ -927,8 +927,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			return;
 		} 
 		DLFechaVenda fecha = new DLFechaVenda(txtCodVenda.getVlrInteger().intValue(),txtTipoVenda.getVlrString(),
-				txtTotalCupom.getVlrBigDecimal(),txtNumeroCupom.getVlrInteger().intValue());
-		fecha.setConexao(con);
+				txtTotalCupom.getVlrBigDecimal(),txtNumeroCupom.getVlrInteger().intValue(),con);
 		if (tef != null)
 			fecha.setTef(tef);
 		fecha.setVisible(true);

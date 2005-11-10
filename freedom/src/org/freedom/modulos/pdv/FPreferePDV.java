@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -43,6 +44,7 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 	private JTextFieldFK txtDescPlanoPag= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
+	private JCheckBoxPad cbAdicionais = new JCheckBoxPad("Dados adicionais no fechamento?","S","N");
 	private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
 	private ListaCampos lcCliente = new ListaCampos(this,"CL");
@@ -74,7 +76,8 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
-
+	
+		
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
 		adicCampo(txtCodTipoMov,10,30,77,20,"CodTipoMov","Cód.tp.mov.",ListaCampos.DB_FK,true);
@@ -83,6 +86,7 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","Descrição do plano de pagamento");
 		adicCampo(txtCodCli,10,110,77,20,"CodCli","Cód.cli.",ListaCampos.DB_FK,true);
 		adicDescFK(txtRazCli,90,110,230,20,"RazCli","Razão do cliente padrão");
+		adicDB(cbAdicionais,7,140,250,20,"AdicPDV","",true);
 		setListaCampos(false, "PREFERE4", "SG");
 
 		nav.setAtivo(0,false);
