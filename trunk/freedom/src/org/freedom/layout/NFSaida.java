@@ -112,7 +112,7 @@ public class NFSaida extends NF {
 				cab.setString(C_NOMEEMIT, (rs.getString("NOMECLI")!=null ? rs.getString("NOMECLI").trim() : ""));
 				cab.setString(C_ENDENTEMIT, (rs.getString("ENDENT")!=null ? rs.getString("ENDENT").trim() : ""));
 				cab.setInt(C_NUMENTEMIT, rs.getInt("NUMENT"));
-				cab.setString(C_BAIRENTEMIT, (rs.getString("COMPLENT")!=null ? rs.getString("COMPLENT").trim() : ""));
+				cab.setString(C_COMPLENTEMIT, (rs.getString("COMPLENT")!=null ? rs.getString("COMPLENT").trim() : ""));
 				cab.setString(C_BAIRENTEMIT, (rs.getString("BAIRENT")!=null ? rs.getString("BAIRENT").trim() : ""));
 				cab.setString(C_CIDENTEMIT, (rs.getString("CIDENT")!=null ? rs.getString("CIDENT").trim() : ""));
 				cab.setString(C_UFENTEMIT, (rs.getString("UFENT")!=null ? rs.getString("UFENT").trim() : ""));

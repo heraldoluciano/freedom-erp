@@ -84,6 +84,13 @@ public class NF {
 	public static final int C_BAIRCOBEMIT = 36;
 	public static final int C_NUMCOBEMIT = 37;
 	public static final int C_PERCMCOMISPED = 38;
+	public static final int C_NOMEEMIT = 39;	
+	public static final int C_ENDENTEMIT = 40;
+	public static final int C_NUMENTEMIT = 41;
+	public static final int C_COMPLENTEMIT = 42;
+	public static final int C_BAIRENTEMIT = 43;
+	public static final int C_CIDENTEMIT = 44;
+	public static final int C_UFENTEMIT = 45;
 	
 	
 	//itens
