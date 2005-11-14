@@ -50,13 +50,12 @@ public class NFSaida extends NF {
 		String sql = null;
 		int cont = 0;
 		try {
-			sql = "SELECT V.CODVENDA, V.CODCLI, C.RAZCLI, C.CNPJCLI, C.CPFCLI, C.ENDCLI, C.NUMCLI, C.COMPLCLI,"+
-					"C.BAIRCLI, C.CEPCLI, C.CIDCLI, C.UFCLI, C.FONECLI, C.FAXCLI, C.DDDCLI, C.INSCCLI, C.RGCLI,"+
-					"C.EMAILCLI, C.SITECLI, C.CONTCLI, V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI, V.DTSAIDAVENDA,"+
-					"V.CODPLANOPAG, PG.DESCPLANOPAG, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND,"+
-					"(SELECT F.DESCFUNC FROM RHFUNCAO F "+
-					"WHERE F.CODFUNC=VEND.CODFUNC AND F.CODEMP=VEND.CODEMPFU AND F.CODFILIAL=VEND.CODFILIALFU),"+
-					"V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB, V.PERCMCOMISVENDA "+
+			sql = "SELECT V.CODVENDA, V.CODCLI, C.RAZCLI, C.CNPJCLI, C.CPFCLI, C.ENDCLI, C.NUMCLI, C.COMPLCLI, C.BAIRCLI, C.CEPCLI, "+
+					"C.CIDCLI, C.UFCLI, C.FONECLI, C.FAXCLI, C.DDDCLI, C.INSCCLI, C.RGCLI, C.EMAILCLI, C.SITECLI, C.CONTCLI, "+
+					"V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI, V.DTSAIDAVENDA, V.CODPLANOPAG, PG.DESCPLANOPAG, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND,"+
+					"(SELECT F.DESCFUNC FROM RHFUNCAO F WHERE F.CODFUNC=VEND.CODFUNC AND F.CODEMP=VEND.CODEMPFU AND F.CODFILIAL=VEND.CODFILIALFU),"+
+					"V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB, V.PERCMCOMISVENDA ,C.NOMECLI ,"+
+					"C.ENDENT, C.NUMENT, C.COMPLENT, C.BAIRENT, C.CIDENT, C.UFENT "+
 					"FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND "+
 					"WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "+
 					"AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG "+
@@ -68,7 +67,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector(39);
+			cab = new TabVector(46);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODVENDA"));
@@ -110,6 +109,13 @@ public class NFSaida extends NF {
 				cab.setString(C_BAIRCOBEMIT, (rs.getString("BAIRCOB")!=null ? rs.getString("BAIRCOB").trim() : ""));
 				cab.setInt(C_NUMCOBEMIT, rs.getInt("NUMCOB"));
 				cab.setFloat(C_PERCMCOMISPED, rs.getFloat("PERCMCOMISVENDA"));
+				cab.setString(C_NOMEEMIT, (rs.getString("NOMECLI")!=null ? rs.getString("NOMECLI").trim() : ""));
+				cab.setString(C_ENDENTEMIT, (rs.getString("ENDENT")!=null ? rs.getString("ENDENT").trim() : ""));
+				cab.setInt(C_NUMENTEMIT, rs.getInt("NUMENT"));
+				cab.setString(C_BAIRENTEMIT, (rs.getString("COMPLENT")!=null ? rs.getString("COMPLENT").trim() : ""));
+				cab.setString(C_BAIRENTEMIT, (rs.getString("BAIRENT")!=null ? rs.getString("BAIRENT").trim() : ""));
+				cab.setString(C_CIDENTEMIT, (rs.getString("CIDENT")!=null ? rs.getString("CIDENT").trim() : ""));
+				cab.setString(C_UFENTEMIT, (rs.getString("UFENT")!=null ? rs.getString("UFENT").trim() : ""));
 			}
 			rs.close();
 			ps.close();
