@@ -108,7 +108,7 @@ public class NFEntrada extends NF {
 				cab.setString(C_NOMEEMIT, "");
 				cab.setString(C_ENDENTEMIT, "");
 				cab.setInt(C_NUMENTEMIT, 0);
-				cab.setString(C_BAIRENTEMIT, "");
+				cab.setString(C_COMPLENTEMIT, "");
 				cab.setString(C_BAIRENTEMIT, "");
 				cab.setString(C_CIDENTEMIT, "");
 				cab.setString(C_UFENTEMIT, "");
