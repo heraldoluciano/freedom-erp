@@ -109,7 +109,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private Vector vSitRMA = new Vector();
 	public FConsSolItem() {
 		super(false);
-		setTitulo("Pesquisa Solicitações de Compra");
+		setTitulo("Pesquisa Itens de Solicitações de Compra");
 		setAtribos(10, 10, 555, 480);
 
 		txtDtIni.setRequerido(true);
