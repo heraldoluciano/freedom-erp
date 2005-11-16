@@ -55,7 +55,9 @@ public class NFSaida extends NF {
 					"V.DTEMITVENDA, V.DOCVENDA, C.INCRACLI, V.DTSAIDAVENDA, V.CODPLANOPAG, PG.DESCPLANOPAG, V.OBSVENDA, VEND.NOMEVEND, VEND.EMAILVEND,"+
 					"(SELECT F.DESCFUNC FROM RHFUNCAO F WHERE F.CODFUNC=VEND.CODFUNC AND F.CODEMP=VEND.CODEMPFU AND F.CODFILIAL=VEND.CODFILIALFU),"+
 					"V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB, V.PERCMCOMISVENDA ,C.NOMECLI ,"+
-					"C.ENDENT, C.NUMENT, C.COMPLENT, C.BAIRENT, C.CIDENT, C.UFENT "+
+					"C.ENDENT, C.NUMENT, C.COMPLENT, C.BAIRENT, C.CIDENT, C.UFENT, V.CODBANCO, V.VLRDESCITVENDA, "+
+					"(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=V.CODEMPBO AND B.CODFILIAL=V.CODFILIALBO AND B.CODBANCO=V.CODBANCO), "+
+					"(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR) "+
 					"FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND "+
 					"WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "+
 					"AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG "+
@@ -67,7 +69,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector(46);
+			cab = new TabVector(50);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODVENDA"));
@@ -116,6 +118,10 @@ public class NFSaida extends NF {
 				cab.setString(C_BAIRENTEMIT, (rs.getString("BAIRENT")!=null ? rs.getString("BAIRENT").trim() : ""));
 				cab.setString(C_CIDENTEMIT, (rs.getString("CIDENT")!=null ? rs.getString("CIDENT").trim() : ""));
 				cab.setString(C_UFENTEMIT, (rs.getString("UFENT")!=null ? rs.getString("UFENT").trim() : ""));
+				cab.setString(C_CODBANCO, (rs.getString("CODBANCO")!=null ? rs.getString("CODBANCO").trim() : ""));
+				cab.setString(C_NOMEBANCO, (rs.getString(49)!=null ? rs.getString(49).trim() : ""));
+				cab.setString(C_DESCSETOR, (rs.getString(50)!=null ? rs.getString(50).trim() : ""));
+				cab.setFloat(C_VLRDESCITPED, rs.getFloat("VLRDESCITVENDA"));
 			}
 			rs.close();
 			ps.close();

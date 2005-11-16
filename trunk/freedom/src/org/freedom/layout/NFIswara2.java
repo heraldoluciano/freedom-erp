@@ -152,12 +152,12 @@ public class NFIswara2 extends Layout {
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+0,3,""+Funcoes.strZero(""+cab.getInt(NF.C_CODVEND),8));
 			   imp.say(imp.pRow()+0,48,cab.getInt(NF.C_CODEMIT)+"");
-		//*	   imp.say(imp.pRow()+0,62,cab.getString(6) != null ? Funcoes.copy(cab.getString(6),0,20) : ""); // setor
+			   imp.say(imp.pRow()+0,62,cab.getString(NF.C_DESCSETOR) != null ? Funcoes.copy(cab.getString(NF.C_DESCSETOR),0,20) : ""); // descsetor
 		
 	           imp.say(imp.pRow()+0,96,cab.getString(NF.C_CODVEND));
-		//*	   imp.say(imp.pRow()+0,118,cab.getString("CodBanco") != null ? Funcoes.copy(cab.getString("CodBanco")+"-",0,5) : "");
+			   imp.say(imp.pRow()+0,118,cab.getString(NF.C_CODBANCO) != null ? Funcoes.copy(cab.getString(NF.C_CODBANCO)+"-",0,5) : "");
 	           
-		//*	   imp.say(imp.pRow()+0,124,cab.getString(7)!=null ? Funcoes.copy(cab.getString(7),0,12) : ""); // nome do banco
+			   imp.say(imp.pRow()+0,124,cab.getString(NF.C_NOMEBANCO)!=null ? Funcoes.copy(cab.getString(NF.C_NOMEBANCO),0,12) : ""); // nome do banco
 	           
 			   imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,"");
@@ -249,7 +249,7 @@ public class NFIswara2 extends Layout {
 	         iItImp++;
 	         if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == 40)) {
 		           imp.say(imp.pRow()+1,0,"");
-			//*	   imp.say(imp.pRow()+0,9,"Valor do desconto : "+Funcoes.strDecimalToStrCurrency(15,2,""+itens.getFloat("VlrDescItVenda")));        	 
+				   imp.say(imp.pRow()+0,9,"Valor do desconto : "+Funcoes.strDecimalToStrCurrency(15,2,""+cab.getFloat(NF.C_VLRDESCITPED)));        	 
 		           if (iItImp == itens.getInt(NF.C_CONTAITENS)) {
 		           int iRow = imp.pRow();
 				   if (!sMatObs[0].equals("")) {

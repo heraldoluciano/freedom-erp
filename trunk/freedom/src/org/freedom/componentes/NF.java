@@ -91,6 +91,10 @@ public class NF {
 	public static final int C_BAIRENTEMIT = 43;
 	public static final int C_CIDENTEMIT = 44;
 	public static final int C_UFENTEMIT = 45;
+	public static final int C_CODBANCO = 46;
+	public static final int C_NOMEBANCO = 47;
+	public static final int C_DESCSETOR = 48;
+	public static final int C_VLRDESCITPED = 49;
 	
 	
 	//itens
