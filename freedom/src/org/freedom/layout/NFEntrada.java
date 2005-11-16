@@ -51,8 +51,9 @@ public class NFEntrada extends NF {
 		int cont = 0;
 		try {
 			sql = "SELECT C.CODCOMPRA, C.CODFOR, F.RAZFOR,  F.CNPJFOR, F.CPFFOR, F.ENDFOR, F.NUMFOR, F.COMPLFOR," +
-					"F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR," +
-					"F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, C.CODPLANOPAG, PG.DESCPLANOPAG  " + 
+					"F.BAIRFOR, F.CEPFOR, F.CIDFOR, F.UFFOR, F.FONEFOR, F.FAXFOR, F.DDDFONEFOR, F.INSCFOR, F.RGFOR, C.VLRDESCITCOMPRA," +
+					"F.EMAILFOR, F.SITEFOR, F.CONTFOR, C.DTEMITCOMPRA, C.DOCCOMPRA, C.DTENTCOMPRA, C.CODPLANOPAG, PG.DESCPLANOPAG, C.CODBANCO, "+
+					"(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=C.CODEMPBO AND B.CODFILIAL=C.CODFILIALBO AND B.CODBANCO=C.CODBANCO) "+ 
 					"FROM CPCOMPRA C, CPFORNECED F, FNPLANOPAG PG  " +
 					"WHERE F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR " +
 					"AND PG.CODEMP=C.CODEMPPG AND PG.CODFILIAL=C.CODFILIALPG AND PG.CODPLANOPAG=C.CODPLANOPAG " +
@@ -63,7 +64,7 @@ public class NFEntrada extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector(46);
+			cab = new TabVector(50);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODCOMPRA"));
@@ -112,6 +113,10 @@ public class NFEntrada extends NF {
 				cab.setString(C_BAIRENTEMIT, "");
 				cab.setString(C_CIDENTEMIT, "");
 				cab.setString(C_UFENTEMIT, "");
+				cab.setString(C_CODBANCO, (rs.getString("CODBANCO")!=null ? rs.getString("CODBANCO").trim() : ""));
+				cab.setString(C_NOMEBANCO, (rs.getString(28)!=null ? rs.getString(28).trim() : ""));
+				cab.setString(C_DESCSETOR, "");
+				cab.setFloat(C_VLRDESCITPED, rs.getFloat("VLRDESCITCOMPRA"));
 			}
 			rs.close();
 			ps.close();
