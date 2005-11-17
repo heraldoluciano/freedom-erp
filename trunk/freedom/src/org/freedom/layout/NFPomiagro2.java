@@ -44,6 +44,7 @@ public class NFPomiagro2 extends Layout {
 	String sImpDtSaidaNat = "";
 	//TabVector 
 	int iContaMens = 1;
+	int iContaFrete = 0;
 	String sIncra = "" ;
 	Vector vMens = new Vector();
 	vMens.clear();
@@ -233,7 +234,10 @@ public class NFPomiagro2 extends Layout {
          iItImp++;
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
          if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == 46)) {
-        	 frete.next();
+           if (iContaFrete == 0){
+          	 frete.next();
+          	 iContaFrete++;
+           }
            if (iItImp == itens.getInt(NF.C_CONTAITENS)) {
              int iRow = imp.pRow();
              for (int i=0; i<(46-iRow);i++) {
