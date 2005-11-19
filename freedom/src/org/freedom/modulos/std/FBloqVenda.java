@@ -28,7 +28,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.JButton;
 import org.freedom.componentes.JLabelPad;
@@ -39,6 +41,7 @@ import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
@@ -58,6 +61,10 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
   private JTextFieldPad txtBloqVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);
   private JTextFieldPad txtVlrLiqVenda = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
   private JTextFieldPad txtStatusVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
+  private JTextFieldPad txtDataIni = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtDataFim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JCheckBoxPad cbBloquear = new JCheckBoxPad("Bloquear","S","N");
+
   private JButton btBloquear = new JButton("Executar",Icone.novo("btExecuta.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcVenda = new ListaCampos(this);
@@ -66,12 +73,13 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     setTitulo("Bloqueio e desbloqueio de vendas");
     setAtribos(50,50,350,250);
     
-    Funcoes.setBordReq(txtCodVenda);
+    //Funcoes.setBordReq(txtCodVenda);
     txtDocVenda.setAtivo(false);
     txtSerie.setAtivo(false);
     txtVlrLiqVenda.setAtivo(false);
     txtStatusVenda.setAtivo(false);
     txtBloqVenda.setAtivo(false);
+    cbBloquear.setVlrString("S");
    
     lcVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "Nº pedido", ListaCampos.DB_PK, false));
     lcVenda.add(new GuardaCampo( txtDocVenda, "DocVenda", "Documento", ListaCampos.DB_SI, false));
@@ -80,6 +88,7 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     lcVenda.add(new GuardaCampo( txtBloqVenda, "BloqVenda", "Bloqueio", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "V. Liq.", ListaCampos.DB_SI, false));
     lcVenda.add(new GuardaCampo( txtStatusVenda, "StatusVenda", "Status", ListaCampos.DB_SI, false));
+    
     lcVenda.setWhereAdic("TIPOVENDA='V'");
     lcVenda.montaSql(false, "VENDA", "VD");
     lcVenda.setReadOnly(true);
@@ -109,11 +118,16 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     pinCli.adic(txtSerie,160,20,67,20);
     pinCli.adic(new JLabelPad("Valor"),230,0,100,20);
     pinCli.adic(txtVlrLiqVenda,230,20,100,20);
-    pinCli.adic(new JLabelPad("Situação"),7,40,70,20);
-    pinCli.adic(txtStatusVenda,7,60,70,20);
-    pinCli.adic(new JLabelPad("Bloqueada"),80,40,70,20);
-    pinCli.adic(txtBloqVenda,80,60,70,20);
-    pinCli.adic(btBloquear,7,90,120,30);
+    pinCli.adic(new JLabelPad("Situação"),7,40,60,20);
+    pinCli.adic(txtStatusVenda,7,60,60,20);
+    pinCli.adic(new JLabelPad("Bloqueada"),70,40,70,20);
+    pinCli.adic(txtBloqVenda,70,60,70,20);
+    pinCli.adic(new JLabelPad("De"),143,40,90,20);
+    pinCli.adic(txtDataIni,143,60,90,20);
+    pinCli.adic(new JLabelPad("Até"),236,40,90,20);
+    pinCli.adic(txtDataFim,236,60,90,20);
+    pinCli.adic(cbBloquear,7,90,90,20);
+    pinCli.adic(btBloquear,100,90,120,30);
 
   
     btSair.addActionListener(this);
@@ -128,7 +142,10 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
 
   public void afterCarrega(CarregaEvent ce) {
       if (ce.getListaCampos()==lcVenda) {
-          
+    	 if (txtBloqVenda.getVlrString().equals("S"))
+    		 cbBloquear.setVlrString("N");
+    	 else
+    		 cbBloquear.setVlrString("S");
       }
   }
   
@@ -138,47 +155,93 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
     String sStatus = null;
     String sBloqVenda = null;
     String sSQL = null;
+    String sSQL2 = null;
     String sTexto = null;
+    Date dtIni = null;
+    Date dtFim = null;
     PreparedStatement ps = null;
+    PreparedStatement ps2 = null;
+    ResultSet rs2 = null;
     
     try {
         iCodVenda = txtCodVenda.getVlrInteger().intValue();
         sTipoVenda = txtTipoVenda.getVlrString();
         sStatus = txtStatusVenda.getVlrString();
-        sBloqVenda = txtBloqVenda.getVlrString();
+        sBloqVenda = cbBloquear.getVlrString();
+        dtIni = txtDataIni.getVlrDate();
+        dtFim = txtDataFim.getVlrDate();
 
-        if (iCodVenda == 0) {
-            Funcoes.mensagemInforma(this,"Nenhuma venda foi selecionada!");
+        if ( (iCodVenda == 0) && ( (txtDataIni.getVlrString().trim().equals("") ||
+        		 txtDataFim.getVlrString().trim().equals("") ) ) ) {
+            Funcoes.mensagemInforma(this,"Selecione uma venda ou período!");
             txtCodVenda.requestFocus();
             return;
         }
-        if (sStatus.substring(0,1).equals("C")) {
-            Funcoes.mensagemInforma(this,"Venda cancelada!");
-            txtCodVenda.requestFocus();
-            return;
+        else {
+            if (sBloqVenda.equals("N")) 
+                sTexto = "desbloquear";
+            else 
+                sTexto = "bloquear";
+        	if (iCodVenda!=0) {
+        		txtDataIni.setVlrString("");
+        		txtDataFim.setVlrString("");
+                if (sStatus.substring(0,1).equals("C")) {
+                    Funcoes.mensagemInforma(this,"Venda cancelada!");
+                    txtCodVenda.requestFocus();
+                    return;
+                }
+        	}
+        	else {
+        		if (dtIni.compareTo(dtFim)>0) {
+        			Funcoes.mensagemInforma(this,"Período inválido!");
+        			txtDataIni.requestFocus();
+        			return;
+        		}
+        			
+        	}
         }
-        if (sBloqVenda.equals("S")) {
-            sBloqVenda = "N";
-            sTexto = "desbloquear";
-            Funcoes.mensagemInforma(this,"Esta venda encontra-se bloqueada!");
-        }
-        else { 
-            sBloqVenda = "S";
-            sTexto = "bloquear";
-        }
-        if (Funcoes.mensagemConfirma(this, "Deseja realmente "+sTexto+" esta venda?")==JOptionPane.YES_OPTION ) {
+        if (Funcoes.mensagemConfirma(this, "Deseja realmente "+sTexto+"?")==JOptionPane.YES_OPTION ) {
             sSQL = "EXECUTE PROCEDURE VDBLOQVENDASP(?,?,?,?,?)";
-            ps = con.prepareStatement(sSQL);
-            ps.setInt(1,Aplicativo.iCodEmp);
-            ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
-            ps.setString(3,sTipoVenda);
-            ps.setInt(4,iCodVenda);
-            ps.setString(5,sBloqVenda);
-            ps.executeUpdate();
-            ps.close();
-            if (!con.getAutoCommit())
-                con.commit();
-            lcVenda.carregaDados();
+        	if (iCodVenda!=0) {
+	            ps = con.prepareStatement(sSQL);
+	            ps.setInt(1,Aplicativo.iCodEmp);
+	            ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+	            ps.setString(3,sTipoVenda);
+	            ps.setInt(4,iCodVenda);
+	            ps.setString(5,sBloqVenda);
+	            ps.executeUpdate();
+	            ps.close();
+	            if (!con.getAutoCommit())
+	                con.commit();
+	            lcVenda.carregaDados();
+        	} 
+        	else {
+        		sSQL2 = "SELECT TIPOVENDA, CODVENDA " +
+        				"FROM VDVENDA V WHERE CODEMP=? AND CODFILIAL=? AND " +
+        				"DTEMITVENDA BETWEEN ? AND ? AND BLOQVENDA!=?";
+        		ps2 = con.prepareStatement(sSQL2);
+        		ps2.setInt(1,Aplicativo.iCodEmp);
+        		ps2.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+        		ps2.setDate(3,Funcoes.dateToSQLDate(dtIni));
+        		ps2.setDate(4,Funcoes.dateToSQLDate(dtFim));
+        		ps2.setString(5,sBloqVenda);
+        		
+        		rs2 = ps2.executeQuery();
+        		while (rs2.next()) {
+    	            ps = con.prepareStatement(sSQL);
+    	            ps.setInt(1,Aplicativo.iCodEmp);
+    	            ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+    	            ps.setString(3,rs2.getString("TIPOVENDA"));
+    	            ps.setInt(4,rs2.getInt("CODVENDA"));
+    	            ps.setString(5,sBloqVenda);
+    	            ps.executeUpdate();
+    	            ps.close();
+        		}
+        		rs2.close();
+        		ps2.close();
+	            if (!con.getAutoCommit())
+	                con.commit();
+        	}
         }
     }
     catch(SQLException err) {
@@ -190,8 +253,11 @@ public class FBloqVenda extends FFilho implements ActionListener, CarregaListene
         sStatus = null;
         sBloqVenda = null;
         sSQL = null;
+        sSQL2 = null;
         sTexto = null;
         ps = null;
+        rs2 = null;
+        ps2 = null;
     }
   }
   
