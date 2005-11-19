@@ -1309,93 +1309,99 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   
   
   private void geraHistoricos(Integer iMes){
-	  HashMap hmMeses = new HashMap();
-	  HashMap hmJan = new HashMap();
-	  HashMap hmFev = new HashMap();
-	  HashMap hmMar = new HashMap();
-	  HashMap hmAbr = new HashMap();
-	  HashMap hmMai = new HashMap();
-	  HashMap hmJun = new HashMap();
-	  HashMap hmJul = new HashMap();
-	  HashMap hmAgo = new HashMap();
-	  HashMap hmSet = new HashMap();
-	  HashMap hmOut = new HashMap();
-	  HashMap hmNov = new HashMap();
-	  HashMap hmDez = new HashMap();
-	  
-	  hmJan.put("ANT",txtAntQtdContJan.getVlrInteger());
-	  hmJan.put("NOVO",txtNovaQtdContJan.getVlrInteger());
-	  hmFev.put("ANT",txtAntQtdContFev.getVlrInteger());
-	  hmFev.put("NOVO",txtNovaQtdContFev.getVlrInteger());
-	  hmMar.put("ANT",txtAntQtdContMar.getVlrInteger());
-	  hmMar.put("NOVO",txtNovaQtdContMar.getVlrInteger());
-	  hmAbr.put("ANT",txtAntQtdContAbr.getVlrInteger());
-	  hmAbr.put("NOVO",txtNovaQtdContAbr.getVlrInteger());
-	  hmMai.put("ANT",txtAntQtdContMai.getVlrInteger());
-	  hmMai.put("NOVO",txtNovaQtdContMai.getVlrInteger());
-	  hmJun.put("ANT",txtAntQtdContJun.getVlrInteger());
-	  hmJun.put("NOVO",txtNovaQtdContJun.getVlrInteger());
-	  hmJul.put("ANT",txtAntQtdContJul.getVlrInteger());
-	  hmJul.put("NOVO",txtNovaQtdContJul.getVlrInteger());
-	  hmAgo.put("ANT",txtAntQtdContAgo.getVlrInteger());
-	  hmAgo.put("NOVO",txtNovaQtdContAgo.getVlrInteger());
-	  hmSet.put("ANT",txtAntQtdContSet.getVlrInteger());
-	  hmSet.put("NOVO",txtNovaQtdContSet.getVlrInteger());
-	  hmOut.put("ANT",txtAntQtdContOut.getVlrInteger());
-	  hmOut.put("NOVO",txtNovaQtdContOut.getVlrInteger());
-	  hmNov.put("ANT",txtAntQtdContNov.getVlrInteger());
-	  hmNov.put("NOVO",txtNovaQtdContNov.getVlrInteger());
-	  hmDez.put("ANT",txtAntQtdContDez.getVlrInteger());
-	  hmDez.put("NOVO",txtNovaQtdContDez.getVlrInteger());
-
-	  
-	  hmMeses.put("1",hmJan);
-	  hmMeses.put("2",hmFev);
-	  hmMeses.put("3",hmMar);
-	  hmMeses.put("4",hmAbr);
-	  hmMeses.put("5",hmMai);
-	  hmMeses.put("6",hmJun);
-	  hmMeses.put("7",hmJul);
-	  hmMeses.put("8",hmAgo);
-	  hmMeses.put("9",hmSet);
-	  hmMeses.put("10",hmOut);
-	  hmMeses.put("11",hmNov);
-	  hmMeses.put("12",hmDez);
-	  
-	  if(iMes==null){
-		  for(int iM=1;iM<13;iM++){
-			  int iQtdAnt = ((Integer)((HashMap)(hmMeses.get(iM+""))).get("ANT")).intValue();
-			  int iQtdNov = ((Integer)((HashMap)(hmMeses.get(iM+""))).get("NOVO")).intValue();
-			  
+	  Integer iCodAtende = buscaAtendente();
+	  if(iCodAtende.compareTo(new Integer(0))>0){
+		  HashMap hmMeses = new HashMap();
+		  HashMap hmJan = new HashMap();
+		  HashMap hmFev = new HashMap();
+		  HashMap hmMar = new HashMap();
+		  HashMap hmAbr = new HashMap();
+		  HashMap hmMai = new HashMap();
+		  HashMap hmJun = new HashMap();
+		  HashMap hmJul = new HashMap();
+		  HashMap hmAgo = new HashMap();
+		  HashMap hmSet = new HashMap();
+		  HashMap hmOut = new HashMap();
+		  HashMap hmNov = new HashMap();
+		  HashMap hmDez = new HashMap();
+		  
+		  hmJan.put("ANT",txtAntQtdContJan.getVlrInteger());
+		  hmJan.put("NOVO",txtNovaQtdContJan.getVlrInteger());
+		  hmFev.put("ANT",txtAntQtdContFev.getVlrInteger());
+		  hmFev.put("NOVO",txtNovaQtdContFev.getVlrInteger());
+		  hmMar.put("ANT",txtAntQtdContMar.getVlrInteger());
+		  hmMar.put("NOVO",txtNovaQtdContMar.getVlrInteger());
+		  hmAbr.put("ANT",txtAntQtdContAbr.getVlrInteger());
+		  hmAbr.put("NOVO",txtNovaQtdContAbr.getVlrInteger());
+		  hmMai.put("ANT",txtAntQtdContMai.getVlrInteger());
+		  hmMai.put("NOVO",txtNovaQtdContMai.getVlrInteger());
+		  hmJun.put("ANT",txtAntQtdContJun.getVlrInteger());
+		  hmJun.put("NOVO",txtNovaQtdContJun.getVlrInteger());
+		  hmJul.put("ANT",txtAntQtdContJul.getVlrInteger());
+		  hmJul.put("NOVO",txtNovaQtdContJul.getVlrInteger());
+		  hmAgo.put("ANT",txtAntQtdContAgo.getVlrInteger());
+		  hmAgo.put("NOVO",txtNovaQtdContAgo.getVlrInteger());
+		  hmSet.put("ANT",txtAntQtdContSet.getVlrInteger());
+		  hmSet.put("NOVO",txtNovaQtdContSet.getVlrInteger());
+		  hmOut.put("ANT",txtAntQtdContOut.getVlrInteger());
+		  hmOut.put("NOVO",txtNovaQtdContOut.getVlrInteger());
+		  hmNov.put("ANT",txtAntQtdContNov.getVlrInteger());
+		  hmNov.put("NOVO",txtNovaQtdContNov.getVlrInteger());
+		  hmDez.put("ANT",txtAntQtdContDez.getVlrInteger());
+		  hmDez.put("NOVO",txtNovaQtdContDez.getVlrInteger());
+	
+		  
+		  hmMeses.put("1",hmJan);
+		  hmMeses.put("2",hmFev);
+		  hmMeses.put("3",hmMar);
+		  hmMeses.put("4",hmAbr);
+		  hmMeses.put("5",hmMai);
+		  hmMeses.put("6",hmJun);
+		  hmMeses.put("7",hmJul);
+		  hmMeses.put("8",hmAgo);
+		  hmMeses.put("9",hmSet);
+		  hmMeses.put("10",hmOut);
+		  hmMeses.put("11",hmNov);
+		  hmMeses.put("12",hmDez);
+		  
+		  if(iMes==null){
+			  for(int iM=1;iM<13;iM++){
+				  int iQtdAnt = ((Integer)((HashMap)(hmMeses.get(iM+""))).get("ANT")).intValue();
+				  int iQtdNov = ((Integer)((HashMap)(hmMeses.get(iM+""))).get("NOVO")).intValue();
+				  
+				  if(iQtdNov>0){
+					  if(iQtdAnt>iQtdNov){
+						  Funcoes.mensagemInforma(this,"A nova quantidade informada é menor ou igual a quantidade atual, \n você deve excluir os contatos manualmente.");
+					  }
+					  else if (iQtdNov>iQtdAnt) {
+						  for(int i=0;(iQtdNov-iQtdAnt)>i;i++){
+							  geraHistorico(new Integer(iM));  
+						  }				  
+					  }
+				  }
+			  }
+		  }
+		  else {
+			  int iQtdAnt = ((Integer)((HashMap)(hmMeses.get(iMes+""))).get("ANT")).intValue();
+			  int iQtdNov = ((Integer)((HashMap)(hmMeses.get(iMes+""))).get("NOVO")).intValue();
 			  if(iQtdNov>0){
 				  if(iQtdAnt>iQtdNov){
 					  Funcoes.mensagemInforma(this,"A nova quantidade informada é menor ou igual a quantidade atual, \n você deve excluir os contatos manualmente.");
 				  }
 				  else if (iQtdNov>iQtdAnt) {
 					  for(int i=0;(iQtdNov-iQtdAnt)>i;i++){
-						  geraHistorico(new Integer(iM));  
+						  geraHistorico(iMes);  
 					  }				  
 				  }
 			  }
+			  
 		  }
+		  buscaContatos();
+		  carregaTabHist();
 	  }
 	  else {
-		  int iQtdAnt = ((Integer)((HashMap)(hmMeses.get(iMes+""))).get("ANT")).intValue();
-		  int iQtdNov = ((Integer)((HashMap)(hmMeses.get(iMes+""))).get("NOVO")).intValue();
-		  if(iQtdNov>0){
-			  if(iQtdAnt>iQtdNov){
-				  Funcoes.mensagemInforma(this,"A nova quantidade informada é menor ou igual a quantidade atual, \n você deve excluir os contatos manualmente.");
-			  }
-			  else if (iQtdNov>iQtdAnt) {
-				  for(int i=0;(iQtdNov-iQtdAnt)>i;i++){
-					  geraHistorico(iMes);  
-				  }				  
-			  }
-		  }
-		  
+		  Funcoes.mensagemInforma(this,"Não é possivel gerar contatos para esse cliente, pois não existe um atendente\nvinculado ao vendedor padrão!");
 	  }
-	  buscaContatos();
-	  carregaTabHist();
   }
   
   private void geraHistorico(Integer iMes){	  
