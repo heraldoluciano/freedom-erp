@@ -173,24 +173,26 @@ public class FManutComis extends FFilho implements ActionListener {
     c.add(spnTab,BorderLayout.CENTER);
     
     
-    tab.adicColuna("Cliente"); //0
-    tab.adicColuna("Doc."); //1
-    tab.adicColuna("Parcelamento"); //2
-    tab.adicColuna("TP."); //3
-    tab.adicColuna("Valor"); //4
-    tab.adicColuna("Emissão"); //5
-    tab.adicColuna("Vencimento"); //6
-    tab.adicColuna("Data pagamento"); //7
+    tab.adicColuna(""); //0
+    tab.adicColuna("Cliente"); //1
+    tab.adicColuna("Doc."); //2
+    tab.adicColuna("Parcelamento"); //3
+    tab.adicColuna("TP."); //4
+    tab.adicColuna("Valor"); //5
+    tab.adicColuna("Emissão"); //6
+    tab.adicColuna("Vencimento"); //7
+    tab.adicColuna("Data pagamento"); //8
     
    
-    tab.setTamColuna(80,0);
-    tab.setTamColuna(50,1);
-    tab.setTamColuna(92,2);
-    tab.setTamColuna(30,3);
-    tab.setTamColuna(70,4);
-    tab.setTamColuna(80,5);
-    tab.setTamColuna(85,6);
-    tab.setTamColuna(160,7);
+    tab.setTamColuna(30,0);
+    tab.setTamColuna(180,1);
+    tab.setTamColuna(50,2);
+    tab.setTamColuna(92,3);
+    tab.setTamColuna(30,4);
+    tab.setTamColuna(70,5);
+    tab.setTamColuna(80,6);
+    tab.setTamColuna(85,7);
+    tab.setTamColuna(160,8);
     tab.setColunaEditavel(0,true);
     
     btBusca.addActionListener(this);
