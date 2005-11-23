@@ -48,7 +48,6 @@ import javax.swing.SwingConstants;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
-import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -61,7 +60,7 @@ import org.freedom.telas.FFilho;
 
 public class FConsSolItem extends FFilho implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	private JPanelPad pinCab = new JPanelPad(0, 215);
+	private JPanelPad pinCab = new JPanelPad(0, 145);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,5));
@@ -77,10 +76,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
-	private JCheckBoxPad cbPendentes = new JCheckBoxPad("Itens pendentes", "S", "N");
-	private JCheckBoxPad cbAprovadas = new JCheckBoxPad("Itens aprovadas", "S", "N");
-	private JCheckBoxPad cbExpedidas = new JCheckBoxPad("Itens expedidas", "S", "N");
-	private JCheckBoxPad cbCanceladas = new JCheckBoxPad("Itens canceladas", "S", "N");
 	private Tabela tab = new Tabela();
 	private ImageIcon imgCancelada = Icone.novo("clVencido.gif");
 	private ImageIcon imgExpedida = Icone.novo("clPago.gif");
@@ -176,13 +171,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		pnRod.add(pnLegenda,BorderLayout.WEST);
 		pnRod.add(btSair, BorderLayout.EAST);
 		
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbLinha2 = new JLabelPad();
-		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbStatus = new JLabelPad(" Filtrar:");
-		lbStatus.setOpaque(true);
-
 		pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
 		pinCab.adic(txtDtIni, 7, 25, 95, 20);
 		pinCab.adic(new JLabelPad("Até"), 111, 25, 27, 20);
@@ -203,17 +191,8 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		pinCab.adic(new JLabelPad("Centro de custo"), 150, 85, 410, 20);
 		pinCab.adic(txtDescCC, 150, 105, 180, 20);
 
-		
-		pinCab.adic(lbStatus, 15, 125, 50, 18);
-		pinCab.adic(lbLinha2, 7, 135, 373, 66);
-		pinCab.adic(cbPendentes, 15, 147, 170, 20);
-		pinCab.adic(cbAprovadas, 15, 172, 170, 20);
-		pinCab.adic(cbExpedidas, 195, 147, 180, 20);
-		pinCab.adic(cbCanceladas, 195, 172, 180, 20);
-		
-
-		pinCab.adic(btBusca, 392, 135, 130, 30);
-		pinCab.adic(btPrevimp, 392, 170, 130, 30);
+		pinCab.adic(btBusca, 352, 57, 130, 30);
+		pinCab.adic(btPrevimp, 352, 93, 130, 30);
 
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
@@ -303,38 +282,14 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		String sCodProd = txtCodProd.getVlrString();
 
 		
-		if (cbPendentes.getVlrString().equals("S")) {
-			usaWhere = true;
-			where = " SitItSol ='PE'";
+		if (where.trim().equals("")) {
+			where = " (SitAprovItSol ='AP' OR SitAprovItSol ='AT')";
+		} 
+		else {
+			where = where + " OR (SitAprovItSol ='AP' OR SitAprovItSol ='AT')";
+			usaOr = true;
 		}
-		if (cbAprovadas.getVlrString().equals("S")) {
-			if (where.trim().equals("")) {
-				where = " (SitAprovItSol ='AP' OR SitAprovItSol ='AT')";
-			} 
-			else {
-				where = where + " OR (SitAprovItSol ='AP' OR SitAprovItSol ='AT')";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}
-		if (cbExpedidas.getVlrString().equals("S")) {
-			if (where.trim().equals("")) {
-				where = " (SitCompItSol ='EP' OR SitCompItSol ='ET')";
-			} else {
-				where = where + " OR (SitCompItSol ='EP' OR SitCompItSol ='ET')";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}		
-		if (cbCanceladas.getVlrString().equals("S")) {
-			if (where.trim().equals("")) {
-				where = " SitItRma ='CA'";
-			} else {
-				where = where + " OR SitItSol ='CA'";
-				usaOr = true;
-			}
-			usaWhere = true;
-		}
+		usaWhere = true;
 		if (usaWhere && usaOr)
 			where = " AND (" + where + ")";
 		else if (usaWhere)
