@@ -189,7 +189,6 @@ public class FRVendasCFOP extends FRelatorio{
 	    String sDataini = "";
 	    String sDatafim = "";
 	    String sCFOP = "";
-	    String sCodCli = "";
 	   
 	    sDataini = txtDataini.getVlrString();
 	    sDatafim = txtDatafim.getVlrString();
