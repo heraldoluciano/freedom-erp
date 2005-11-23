@@ -74,12 +74,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private JTextFieldFK txtDescCC = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodAlmoxarife = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescAlmoxarife = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtCodOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtSeqOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtDtEmiOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
-	private JTextFieldPad txtDtFabOP = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
-	private JTextFieldPad txtCodProdOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtRefProdOP = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
@@ -100,8 +94,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");
-	private ListaCampos lcOP = new ListaCampos(this, "OF");
-	private ListaCampos lcSeqOP = new ListaCampos(this, "OF");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	boolean bAprovaParcial = false;
@@ -130,37 +122,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		txtDescAlmoxarife.setSoLeitura(true);
 		txtCodAlmoxarife.setTabelaExterna(lcAlmox);
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
-		
-		txtCodOP.setNomeCampo("CodOP");
-		txtCodOP.setFK(true);
-		
-		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK, null, false));
-		lcOP.add(new GuardaCampo(txtDtEmiOP, "DTEMITOP", "Data de emissão", ListaCampos.DB_SI, null, false));
-		lcOP.add(new GuardaCampo(txtDtFabOP, "DTFABROP", "Data de fabricação", ListaCampos.DB_SI, null, false));
-		lcOP.add(new GuardaCampo(txtCodProdOP, "CodProd", "Cód.prod.", ListaCampos.DB_SI, null, false));
-		lcOP.add(new GuardaCampo(txtRefProdOP, "RefProd", "Referência", ListaCampos.DB_SI, null, false));
-		lcOP.setQueryCommit(false);
-		lcOP.setReadOnly(true);
-		
-		txtDtEmiOP.setSoLeitura(true);
-		txtDtFabOP.setSoLeitura(true);
-		txtCodProdOP.setSoLeitura(true);
-		txtRefProdOP.setSoLeitura(true);
-		txtCodOP.setTabelaExterna(lcOP);
-		lcOP.montaSql(false, "OP", "PP");
-		
-		
-
-		txtSeqOP.setNomeCampo("SeqOP");
-		txtSeqOP.setFK(true);
-		
-		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.", ListaCampos.DB_PK, null, false));
-		lcSeqOP.setQueryCommit(false);
-		lcSeqOP.setReadOnly(true);
-
-		txtSeqOP.setTabelaExterna(lcSeqOP);
-		lcSeqOP.montaSql(false, "OP", "PP");
-		
 		
 		txtCodProd.setNomeCampo("CodProd");
 		txtCodProd.setFK(true);
@@ -236,10 +197,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		pinCab.adic(txtCodProd, 7, 65, 80, 20);
 		pinCab.adic(new JLabelPad("Descrição do produto"), 90, 45, 200, 20);
 		pinCab.adic(txtDescProd, 90, 65, 200, 20);
-		pinCab.adic(new JLabelPad("Cód. OP."),293, 45, 80, 20);
-		pinCab.adic(txtCodOP, 293, 65, 80, 20);
-		pinCab.adic(new JLabelPad("Seq. OP."),376, 45, 80, 20);
-		pinCab.adic(txtSeqOP, 376, 65, 80, 20);
 
 		pinCab.adic(new JLabelPad("Cód.c.c."), 7, 85, 70, 20);
 		pinCab.adic(txtCodCC, 7, 105, 140, 20);
@@ -262,8 +219,8 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		txtDtFim.setVlrDate(new Date());
 
 		tab.adicColuna("");//0
-		tab.adicColuna("Adic.");//1
-		tab.adicColuna("Cód.rma.");//2
+		tab.adicColuna("Cotar");//1		
+		tab.adicColuna("Cód.sol.");//2
 		tab.adicColuna("Cód.prod.");//3
 		tab.adicColuna("Descrição do produto");//4
 		tab.adicColuna("Aprov.");//5
@@ -274,7 +231,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		tab.adicColuna("Qt. aprovada");//10
 		tab.adicColuna("Saldo");//11
 		
-
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(35, 1);
 		tab.setTamColuna(70, 2);
@@ -288,7 +244,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		tab.setTamColuna(90, 10);
 		tab.setTamColuna(90, 11);
 
-		tab.setColunaEditavel(1,true);
+		tab.setColunaEditavel(1, true);
 		
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -344,8 +300,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		boolean usuario = (!txtCodUsu.getVlrString().trim().equals(""));
 		boolean almoxarifado = false;
 		boolean CC = (!txtCodCC.getVlrString().trim().equals(""));
-		String sCodOp = txtCodOP.getVlrString();
-		String sSeqOp = txtSeqOP.getVlrString();
 		String sCodProd = txtCodProd.getVlrString();
 
 		
@@ -388,12 +342,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		else
 			where = " AND SitItSol='PE'";
 		
-		if (sCodOp.length() > 0) 
-			where += " AND R.CODOP = '" + sCodOp + "'";
-		
-		if (sSeqOp.length() > 0) 
-			where += " AND R.SEQOP = '" + sSeqOp + "'";
-		
 		if (sCodProd.length() > 0) 
 			where += " AND IT.CODPROD = '" + sCodProd + "'";
 		
@@ -401,10 +349,10 @@ public class FConsSolItem extends FFilho implements ActionListener {
 			where += " AND IT.CODALMOX=? AND IT.CODEMPAM=? AND IT.CODFILIALAM=? ";
 
 		if (CC)
-			where += " AND R.ANOCC=? AND R.CODCC=? AND R.CODEMPCC=? AND R.CODFILIALCC=? ";
+			where += " AND O.ANOCC=? AND O.CODCC=? AND O.CODEMPCC=? AND O.CODFILIALCC=? ";
 
 		if (usuario)
-			where += " AND (R.IDUSU=?) ";
+			where += " AND (O.IDUSU=?) ";
 
 		String sSQL = "SELECT O.CODSOL, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITSOL,"
 				+ "IT.SITAPROVITSOL,IT.SITCOMPITSOL,IT.DTINS,IT.DTAPROVITSOL,"
@@ -473,10 +421,10 @@ public class FConsSolItem extends FFilho implements ActionListener {
 				tab.setValor(rs.getString(5) == null ? "" : rs.getString(5) + "",iLin, 5);//SitAprov
 				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 6);//SitExp
 				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
-				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
-				tab.setValor(rs.getString(10) == null ? "" : rs.getString(10) + "",iLin, 10);//Qtd Req
-				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 11);//Qtd Aprov
-				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 12);//Saldo Prod
+				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 9);//Dt Aprov
+				tab.setValor(rs.getString(10) == null ? "" : rs.getString(10) + "",iLin, 8);//Qtd Req
+				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 10);//Qtd Aprov
+				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 11);//Saldo Prod
 
 				iLin++;
 				
@@ -672,8 +620,6 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
-		lcOP.setConexao(cn);
-		lcSeqOP.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
