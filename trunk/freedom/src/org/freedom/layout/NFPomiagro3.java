@@ -125,7 +125,7 @@ public class NFPomiagro3 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,30).trim()+", "+(!cab.getString(NF.C_NUMEMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() : "").trim()+" - "+(cab.getString(NF.C_COMPLEMIT) != null ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : "").trim());
-           imp.say(imp.pRow()+0,86,cab.getString(NF.C_BAIREMIT));
+           imp.say(imp.pRow()+0,84,cab.getString(NF.C_BAIREMIT));
            imp.say(imp.pRow()+0,108,Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
            sImpDtSaidaNat = itens.getString(NF.C_IMPDTSAIDA);
            if (sImpDtSaidaNat==null) sImpDtSaidaNat = "S";
@@ -296,8 +296,8 @@ public class NFPomiagro3 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,cab.getString(NF.C_DESCSETOR));
-           imp.say(imp.pRow()+0,40,""+cab.getInt(NF.C_CODPED));
-           imp.say(imp.pRow()+0,50,""+iNumNota);
+           imp.say(imp.pRow()+0,46,""+cab.getInt(NF.C_CODPED));
+           imp.say(imp.pRow()+0,66,""+iNumNota);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            
            for(int i=0;i<vMens.size();i++)
@@ -315,6 +315,9 @@ public class NFPomiagro3 extends Layout {
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+0,2,sMatObs[4]);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
+           imp.say(imp.pRow()+4,0,"");
+           imp.say(imp.pRow()+0,6,""+iNumNota);
+           
            System.out.println(imp.pRow()+" =T Lins: "+iLinPag);
            for (int i=imp.pRow(); i<=iLinPag; i++) { 
              imp.say(imp.pRow()+1,0,"");
