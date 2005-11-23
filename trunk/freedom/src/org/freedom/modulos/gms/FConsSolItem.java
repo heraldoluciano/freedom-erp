@@ -39,7 +39,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -315,7 +314,8 @@ public class FConsSolItem extends FFilho implements ActionListener {
 				+ "FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD "
 				+ "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "
 				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
-				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) " + where;
+				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) " + where
+				+ " ORDER BY PD.DESCPROD, IT.CODPROD, IT.QTDAPROVITSOL";
 
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
