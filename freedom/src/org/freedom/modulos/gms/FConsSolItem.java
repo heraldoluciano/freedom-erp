@@ -64,7 +64,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private JPanelPad pinCab = new JPanelPad(0, 215);
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,4));
+	private JPanelPad pnLegenda = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(0,5));
 	private JTextFieldPad txtDtIni = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtDtFim = new JTextFieldPad(JTextFieldPad.TP_DATE, 10,0);
 	private JTextFieldPad txtCodUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
@@ -93,6 +93,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private ImageIcon imgAprovada = Icone.novo("clPagoParcial.gif");
 	private ImageIcon imgPendente = Icone.novo("clNaoVencido.gif");
 	private ImageIcon imgColuna = null;
+	private JButton btCalc = new JButton(Icone.novo("btExecuta.gif"));
 	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
 	private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
 	private	JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
@@ -112,6 +113,9 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		setTitulo("Pesquisa Itens de Solicitações de Compra");
 		setAtribos(10, 10, 555, 480);
 
+		btCalc.setToolTipText("Criar cotação sumarizada");
+		btCalc.addActionListener(this);
+		
 		txtDtIni.setRequerido(true);
 		txtDtFim.setRequerido(true);
 
@@ -206,6 +210,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		pnLegenda.add(new JLabelPad("Aprovada",imgAprovada,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Em Cotação",imgExpedida,SwingConstants.CENTER));
 		pnLegenda.add(new JLabelPad("Pendente",imgPendente,SwingConstants.CENTER));
+		pnLegenda.add(btCalc);
 		
 		pnRod.add(pnLegenda,BorderLayout.WEST);
 		pnRod.add(btSair, BorderLayout.EAST);
@@ -257,30 +262,34 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		txtDtFim.setVlrDate(new Date());
 
 		tab.adicColuna("");//0
-		tab.adicColuna("Cód.rma.");//1
-		tab.adicColuna("Cód.prod.");//2
-		tab.adicColuna("Descrição do produto");//3
-		tab.adicColuna("Aprov.");//4
-		tab.adicColuna("Comp.");//5
-		tab.adicColuna("Dt. requisição");//6
-		tab.adicColuna("Qt. requerida");//7
-		tab.adicColuna("Dt. aprovação");//8
-		tab.adicColuna("Qt. aprovada");//9
-		tab.adicColuna("Saldo");//10
+		tab.adicColuna("Adic.");//1
+		tab.adicColuna("Cód.rma.");//2
+		tab.adicColuna("Cód.prod.");//3
+		tab.adicColuna("Descrição do produto");//4
+		tab.adicColuna("Aprov.");//5
+		tab.adicColuna("Comp.");//6
+		tab.adicColuna("Dt. requisição");//7
+		tab.adicColuna("Qt. requerida");//8
+		tab.adicColuna("Dt. aprovação");//9
+		tab.adicColuna("Qt. aprovada");//10
+		tab.adicColuna("Saldo");//11
 		
 
 		tab.setTamColuna(12, 0);
-		tab.setTamColuna(70, 1);
+		tab.setTamColuna(35, 1);
 		tab.setTamColuna(70, 2);
-		tab.setTamColuna(150, 3);
-		tab.setTamColuna(40, 4);
+		tab.setTamColuna(70, 3);
+		tab.setTamColuna(150, 4);
 		tab.setTamColuna(40, 5);
-		tab.setTamColuna(90, 6);
+		tab.setTamColuna(40, 6);
 		tab.setTamColuna(90, 7);
 		tab.setTamColuna(90, 8);
 		tab.setTamColuna(90, 9);
 		tab.setTamColuna(90, 10);
+		tab.setTamColuna(90, 11);
 
+		tab.setColunaEditavel(1,true);
+		
 		btBusca.addActionListener(this);
 		btPrevimp.addActionListener(this);
 
@@ -457,16 +466,17 @@ public class FConsSolItem extends FFilho implements ActionListener {
 				}
 
 				tab.setValor(imgColuna, iLin, 0);//SitItSol
-				tab.setValor(new Integer(rs.getInt(1)), iLin, 1);//CodSol
-				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 2);//CodProd 
-				tab.setValor(rs.getString(3) == null ? "" : rs.getString(4).trim() + "",iLin, 3);//DescProd
-				tab.setValor(rs.getString(5) == null ? "" : rs.getString(5) + "",iLin, 4);//SitAprov
-				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 5);//SitExp
-				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 6);//Dt Req
+				tab.setValor(new Boolean(false), iLin, 1);
+				tab.setValor(new Integer(rs.getInt(1)), iLin, 2);//CodSol
+				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 3);//CodProd 
+				tab.setValor(rs.getString(3) == null ? "" : rs.getString(4).trim() + "",iLin, 4);//DescProd
+				tab.setValor(rs.getString(5) == null ? "" : rs.getString(5) + "",iLin, 5);//SitAprov
+				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 6);//SitExp
+				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
 				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 8);//Dt Aprov
-				tab.setValor(rs.getString(10) == null ? "" : rs.getString(10) + "",iLin, 7);//Qtd Req
-				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 9);//Qtd Aprov
-				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 10);//Saldo Prod
+				tab.setValor(rs.getString(10) == null ? "" : rs.getString(10) + "",iLin, 10);//Qtd Req
+				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 11);//Qtd Aprov
+				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 12);//Saldo Prod
 
 				iLin++;
 				
