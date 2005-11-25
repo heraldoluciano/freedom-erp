@@ -170,6 +170,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private Vector vCacheItem = new Vector();
 	private Tef tef = null;	
 	private Vector  vAliquotas = null;
+	private boolean trocouCli = false;
 
 	public FVenda() {
 		//   	  super(Aplicativo.telaPrincipal);
@@ -920,14 +921,62 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			tbItem.updateUI();
 		}
 	}
+	
+	private String[] getInfoCli(int codcli) {
+		
+		String[] ret = new String[6];
+		String sSQL = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try {
+			sSQL = "SELECT RAZCLI, CPFCLI, ENDCLI, NUMCLI, CIDCLI, UFCLI" +
+				   " FROM VDCLIENTE" +
+				   " WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(3,codcli);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				for(int i=0; i<6; i++)
+					ret[i] = rs.getString(i+1);
+			}
+			
+		} catch( SQLException e ) {
+			Funcoes.mensagemErro(this, "Erro ao pegar dados do cliente!\n" +
+										e.getMessage(), true, con, e);
+			e.printStackTrace();
+		}
+		
+		return ret;
+	}
+	
+	public Vector getParam() {
+		Vector param = new Vector();
+
+		param.addElement(txtCodVenda.getVlrInteger());
+		param.addElement(txtTipoVenda.getVlrString());
+		param.addElement(txtTotalCupom.getVlrBigDecimal());
+		param.addElement(txtNumeroCupom.getVlrInteger());
+		param.addElement(txtCodPlanoPag.getVlrInteger());
+		param.addElement(con);
+		param.addElement(getInfoCli(txtCodCli.getVlrInteger().intValue()));
+		param.addElement(new Boolean(trocouCli));
+		
+		return param;
+	}
 
 	private synchronized void fechaVenda() {
 		if (lcVenda.getStatus() != ListaCampos.LCS_SELECT) {
 			Funcoes.mensagemErro(this, "Não existe nenhuma venda ativa!");
 			return;
 		} 
-		DLFechaVenda fecha = new DLFechaVenda(txtCodVenda.getVlrInteger().intValue(),txtTipoVenda.getVlrString(),
-				txtTotalCupom.getVlrBigDecimal(),txtNumeroCupom.getVlrInteger().intValue(),con);
+		if (txtCodCli.getVlrInteger().intValue()!=(Integer.parseInt(retCodCli().trim())))
+			trocouCli = true;
+		
+		DLFechaVenda fecha = new DLFechaVenda( this , getParam() );
+		
 		if (tef != null)
 			fecha.setTef(tef);
 		fecha.setVisible(true);
@@ -936,6 +985,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		}
 		fecha.dispose();
 		setFocusProd();
+		trocouCli = false;
 	}
 
 	public synchronized void setFocusProd() {

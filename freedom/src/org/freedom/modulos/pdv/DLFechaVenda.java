@@ -113,21 +113,30 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private String sTipoVenda = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
+	private int iPlanoPag = 0;
 	private Vector vTefsOK = new Vector();
 	private BigDecimal bigPagoTef = new BigDecimal("0.00");
 	private boolean bPref;
+	private boolean trocouCli = false;
+	private boolean impMens = false;
 	Connection con = null;
+	private FVenda fvenda;
+	private Vector param;
 	
-	public DLFechaVenda( int iCodVenda, String sTipoVenda, BigDecimal valCupom, int iNumCupom,Connection conn) {
+	public DLFechaVenda( FVenda fv, Vector args ) {
 		//super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de venda");
 		setAtribos(330,345);
 		
-		this.sTipoVenda = sTipoVenda;
-		this.iCodVenda = iCodVenda;
-		this.iNumCupom = iNumCupom;
+		fvenda = fv;
+		param = fvenda.getParam();
+		iCodVenda = ((Integer)getParam(0)).intValue();
+		sTipoVenda = (String)getParam(1);
+		iNumCupom = ((Integer)getParam(3)).intValue();
+		iPlanoPag = ((Integer)getParam(4)).intValue();
+		trocouCli = ((Boolean)getParam(7)).booleanValue();
 		
-		txtVlrCupom.setVlrBigDecimal(valCupom);
+		txtVlrCupom.setVlrBigDecimal(((BigDecimal)getParam(2)));
 		txtVlrChequeElet.setAtivo(false);
 		
 		vVals.addElement("C");
@@ -278,7 +287,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	    adic(txtMarcaFreteVD,130,190,120,20);
 	    
 
-		setConexao(conn);
+		setConexao((Connection)getParam(5));
 		
 		if(!bPref){
 	    	tpn.setEnabledAt(1,false);
@@ -303,6 +312,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		txtVlrChequeElet.addFocusListener(this);
 		
 	}
+	
+	private Object getParam(int index){
+		return param.elementAt(index);
+	}
+	
 	private int buscaCodAux() {
 	 	int iRet = 0;
 	 	PreparedStatement ps = null;
@@ -569,6 +583,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 			if(lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT){
 				if(!lcFreteVD.post())
 					return false;
+				else
+					impMens = true;
 			}
 			if(lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT){
 				if(!lcAuxVenda.post())
@@ -639,7 +655,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 				)
 		);
 	}
-	private int buscaPlanoPag() {
+	/*private int buscaPlanoPag() {
 		int iRet = 0;
 		String sSQL = "SELECT CODPLANOPAG FROM SGPREFERE4 WHERE " +
 		"CODEMP=? AND CODFILIAL=?";
@@ -660,11 +676,23 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao buscar o plano de pagemento.");
 		}
 		return iRet;
-	}
+	}*/
 	
 	private String getMenssage(){
 		String sMenssage = "";
-		if(txtNomeCliAuxV.getVlrString().trim().length() > 0){
+		if(trocouCli && impMens){
+			String[] dadosCli = (String[])getParam(6);
+			sMenssage = (dadosCli[0]!=null?dadosCli[0].trim():"")+" - "
+						+ (dadosCli[1]!=null?dadosCli[1].trim():"")+"\n"
+						+ (dadosCli[2]!=null?dadosCli[2].trim():"")+" , "
+						+ (dadosCli[3]!=null?dadosCli[3].trim():"")+" - "
+						+ (dadosCli[4]!=null?dadosCli[4].trim():"")+"/"
+						+ (dadosCli[5]!=null?dadosCli[5].trim():"")+"\n"
+						+ txtDescTran.getVlrString().trim()+" - "
+						+ txtPlacaFreteVD.getVlrString().trim();
+		}
+		
+		else if(txtNomeCliAuxV.getVlrString().trim().length() > 0){
 			sMenssage = txtNomeCliAuxV.getVlrString().trim()+" - "
 						+ txtCPFCliAuxV.getVlrString().trim()+"\n"
 						+ txtEndCliAuxV.getVlrString().trim()+" , "
@@ -672,10 +700,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 						+ txtCidCliAuxV.getVlrString().trim()+"/"
 						+ txtUFCliAuxV.getVlrString().trim()+"\n"
 						+ txtDescTran.getVlrString().trim()+" - "
-						+ txtPlacaFreteVD.getVlrString().trim();
-			if(sMenssage.length()>300)
-				sMenssage = sMenssage.substring(0,300);
+						+ txtPlacaFreteVD.getVlrString().trim();			
 		}
+		if(sMenssage.length()>300)
+			sMenssage = sMenssage.substring(0,300);
 		return sMenssage;
 	}
 	
@@ -684,7 +712,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		if (evt.getSource() == btOK) {
 			if (execFechamento()) {
 				if (AplicativoPDV.bECFTerm) {
-					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,txtVlrPago.getVlrDouble().doubleValue(),getMenssage(),AplicativoPDV.bModoDemo)) {
+					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,
+							txtVlrPago.getVlrDouble().doubleValue(),getMenssage(),AplicativoPDV.bModoDemo)) {
 						if (finalizaVenda()) {
 						    btCancel.setEnabled(false);
 						    
@@ -764,7 +793,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	public void setConexao(Connection cn) {
 		con = cn;
 		lcPlanoPag.setConexao(cn);
-		txtCodPlanoPag.setVlrInteger(new Integer(buscaPlanoPag()));
+		txtCodPlanoPag.setVlrInteger( new Integer(iPlanoPag));
 		lcPlanoPag.carregaDados();
 	    lcTran.setConexao(cn);
 	    lcFreteVD.setConexao(cn);
