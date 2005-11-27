@@ -50,36 +50,24 @@ import org.freedom.telas.FRelatorio;
 
 public class FRComissoes extends FRelatorio {
 	private static final long serialVersionUID = 1L;
-
 	private Vector vVals = new Vector();
-
 	private Vector vLabs = new Vector();
-
+	private Vector vValsOrdem = new Vector();
+	private Vector vLabsOrdem = new Vector();
 	private JRadioGroup rgEmitRel = null;
-
-	private JTextFieldPad txtCodVend = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldFK txtDescVend = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
+	private JRadioGroup rgOrdemRel = null;
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JCheckBoxPad cbNLiberada = new JCheckBoxPad("Não Liber.", "S", "N");
-
 	private JCheckBoxPad cbLiberada = new JCheckBoxPad("Liberadas", "S", "N");
-
 	private JCheckBoxPad cbPaga = new JCheckBoxPad("Pagas", "S", "N");
-
 	private ListaCampos lcVend = new ListaCampos(this);
 
 	public FRComissoes() {
 		setTitulo("Comissões");
-		setAtribos(80, 80, 330, 210);
+		setAtribos(80, 80, 330, 300);
 
 		Funcoes.setBordReq(txtCodVend);
 
@@ -94,6 +82,19 @@ public class FRComissoes extends FRelatorio {
 		rgEmitRel.setAtivo(0, true);
 		rgEmitRel.setAtivo(1, true);
 
+		vValsOrdem.addElement("E");
+		vValsOrdem.addElement("V");
+		vValsOrdem.addElement("P");
+		vValsOrdem.addElement("D");
+		vLabsOrdem.addElement("Emissão");
+		vLabsOrdem.addElement("Vencimento");
+		vLabsOrdem.addElement("Pagto. comissão");
+		vLabsOrdem.addElement("Duplicata");
+		rgOrdemRel = new JRadioGroup(2, 2, vLabsOrdem, vValsOrdem);
+		rgOrdemRel.setVlrString("E");
+		rgOrdemRel.setAtivo(0, true);
+		rgOrdemRel.setAtivo(1, true);
+		
 		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",
 				ListaCampos.DB_PK, false));
 		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend",
@@ -118,6 +119,10 @@ public class FRComissoes extends FRelatorio {
 		adic(cbNLiberada, 7, 107, 100, 20);
 		adic(cbLiberada, 110, 107, 97, 20);
 		adic(cbPaga, 210, 107, 100, 20);
+	
+		adic(new JLabelPad("Ordem:"),9,125,100,20);
+		adic(rgOrdemRel, 7, 145, 280, 65);
+
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -154,6 +159,8 @@ public class FRComissoes extends FRelatorio {
 	public void impRel(boolean bVisualizar, ImprimeOS imp) {
 		String sEmitRel = "";
 		String sFiltro = "";
+		String sOrdem = "";
+		String sOrdemRel = "";
 		String sDataini = "";
 		String sDatafim = "";
 		String sNLiberada = "";
@@ -173,6 +180,7 @@ public class FRComissoes extends FRelatorio {
 		try {
 
 			sEmitRel = rgEmitRel.getVlrString();
+			sOrdemRel = rgOrdemRel.getVlrString();
 
 			sNLiberada = cbNLiberada.getVlrString();
 			sLiberada = cbLiberada.getVlrString();
@@ -193,6 +201,16 @@ public class FRComissoes extends FRelatorio {
 				sTitDataFiltro = "Pagto. Comissão";
 			}
 
+			if (sOrdemRel.equals("E")) {
+				sOrdem = "C.DATACOMI, R.DOCREC, IR.NPARCITREC";
+			} else if (sOrdemRel.equals("V")) {
+				sOrdem = "C.DTVENCCOMI, R.DOCREC, IR.NPARCITREC";
+			} else if (sOrdemRel.equals("P")) {
+				sOrdem = "C.DTPAGTOCOMI, R.DOCREC, IR.NPARCITREC";
+			} else if (sOrdemRel.equals("D")) {
+				sOrdem = "R.DOCREC, IR.NPARCITREC";
+			}
+			
 			imp.setTitulo("Relatório de Comissões");
 			String sSQL = "SELECT C.DATACOMI,V.CODVENDA,V.DOCVENDA,C.STATUSCOMI,"
 					+ "CL.CODCLI,CL.RAZCLI,C.VLRVENDACOMI,P.DESCPLANOPAG,"
@@ -217,7 +235,7 @@ public class FRComissoes extends FRelatorio {
 					+ " AND "
 					+ sDataFiltro
 					+ " BETWEEN ? AND ? AND C.STATUSCOMI IN (?,?,?)"
-					+ " ORDER BY " + sDataFiltro + ",V.CODVENDA";
+					+ " ORDER BY " + sOrdem;
 			//System.out.println(sSQL);
 			try {
 				ps = con.prepareStatement(sSQL);
@@ -252,6 +270,9 @@ public class FRComissoes extends FRelatorio {
 				imp.limpaPags();
 
 				boolean hasData = false;
+
+				imp.addSubTitulo("RELATORIO DE COMISSOES(" + sTitDataFiltro
+						+ ") - PERIODO DE " + sDataini + " ATE " + sDatafim);
 				
 				while (rs.next()) {
 					hasData=true;
@@ -264,8 +285,6 @@ public class FRComissoes extends FRelatorio {
 					}
 
 					if (imp.pRow() == 0) {
-						imp.addSubTitulo("RELATORIO DE COMISSOES(" + sTitDataFiltro
-								+ ") - PERIODO DE " + sDataini + " ATE " + sDatafim);
 						imp.impCab(136, true);
 						
 						String sVendedor = "COMISSIONADO: " + iCodVend + " - "
@@ -404,6 +423,8 @@ public class FRComissoes extends FRelatorio {
 			sEmitRel = null;
 			sFiltro = null;
 			sDataini = null;
+			sOrdem = null;
+			sOrdemRel = null;
 			sDatafim = null;
 			sNLiberada = null;
 			sLiberada = null;
