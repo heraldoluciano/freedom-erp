@@ -155,7 +155,9 @@ public class FreedomGMS extends Aplicativo {
 		addOpcao(-1, TP_OPCAO_MENU, "Entrada", "", 'E', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Solicitação de Compra",	"Solicitação de Compra", 'S', 200100000, 1, true,FSolicitacaoCompra.class);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa Solicitações de Compra","Pesquisa Solicitações de Compra", 'P', 200300000, 1, true,FConsSol.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa Itens de Solicitações de Compra","Pesquisa Itens de Solicitações de Compra", 'P', 200300010, 1, true,FConsSolItem.class);
+			addSeparador(200000000);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Sumário de Solicitações de Compra","Sumário de Solicitações de Compra", 'M', 200300010, 1, true,FConsSolItem.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Cotação Sumarizada de Preços","Cotação Sumarizada de Preços", 'Z', 200300020, 1, true,FCotacaoItens.class);
 			addSeparador(200000000);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Cotação de Preços",	"Cotação de Preços", 'T', 200400000, 1, true,FCotacaoPrecos.class);
 			addSeparador(200000000);
