@@ -129,7 +129,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		txtDescProd.setSoLeitura(true);
 		txtRefProd.setSoLeitura(true);
 		txtCodProd.setTabelaExterna(lcProd);
-		lcProd.montaSql(false, "PRODUTO", "EQ");
+		lcProd.montaSql(false, "PRODUTO", "EQ");		
 				
 		txtCodUsu.setNomeCampo("IDUSU");
 		txtCodUsu.setFK(true);
@@ -198,29 +198,21 @@ public class FConsSolItem extends FFilho implements ActionListener {
 
 		tab.adicColuna("");//0
 		tab.adicColuna("Cotar");//1		
-		tab.adicColuna("Cód.sol.");//2
-		tab.adicColuna("Cód.prod.");//3
+		tab.adicColuna("Cód.prod.");//2
+		tab.adicColuna("Ref.prod");//3
 		tab.adicColuna("Descrição do produto");//4
-		tab.adicColuna("Aprov.");//5
-		tab.adicColuna("Comp.");//6
-		tab.adicColuna("Dt. requisição");//7
-		tab.adicColuna("Qt. requerida");//8
-		tab.adicColuna("Dt. aprovação");//9
-		tab.adicColuna("Qt. aprovada");//10
-		tab.adicColuna("Saldo");//11
+		tab.adicColuna("Qt. requerida");//5
+		tab.adicColuna("Qt. aprovada");//6
+		tab.adicColuna("Saldo");//7
 		
 		tab.setTamColuna(12, 0);
 		tab.setTamColuna(35, 1);
 		tab.setTamColuna(70, 2);
 		tab.setTamColuna(70, 3);
-		tab.setTamColuna(150, 4);
-		tab.setTamColuna(40, 5);
-		tab.setTamColuna(40, 6);
-		tab.setTamColuna(90, 7);
-		tab.setTamColuna(90, 8);
-		tab.setTamColuna(90, 9);
-		tab.setTamColuna(90, 10);
-		tab.setTamColuna(90, 11);
+		tab.setTamColuna(320, 4);
+		tab.setTamColuna(90, 5);
+		tab.setTamColuna(90, 6);
+		tab.setTamColuna(80, 7);
 
 		tab.setColunaEditavel(1, true);
 		
@@ -282,10 +274,10 @@ public class FConsSolItem extends FFilho implements ActionListener {
 
 		
 		if (where.trim().equals("")) {
-			where = " (SitAprovItSol ='AP' OR SitAprovItSol ='AT')";
+			where = " (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT')";
 		} 
 		else {
-			where = where + " OR (SitAprovItSol ='AP' OR SitAprovItSol ='AT')";
+			where = where + " OR (IT.SitAprovItSol ='AP' OR IT.SitAprovItSol ='AT')";
 			usaOr = true;
 		}
 		usaWhere = true;
@@ -294,7 +286,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		else if (usaWhere)
 			where = " AND " + where;
 		else
-			where = " AND SitItSol='PE'";
+			where = " AND IT.SitItSol='PE'";
 		
 		if (sCodProd.length() > 0) 
 			where += " AND IT.CODPROD = '" + sCodProd + "'";
@@ -308,15 +300,16 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		if (usuario)
 			where += " AND (O.IDUSU=?) ";
 
-		String sSQL = "SELECT O.CODSOL, IT.CODPROD,IT.REFPROD,PD.DESCPROD,IT.SITITSOL,"
-				+ "IT.SITAPROVITSOL,IT.SITCOMPITSOL,IT.DTINS,IT.DTAPROVITSOL,"
-				+ "IT.QTDITSOL,IT.QTDAPROVITSOL,PD.SLDPROD "
-				+ "FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD "
-				+ "WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "
-				+ "AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "
-				+ "AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) " + where
-				+ " ORDER BY PD.DESCPROD, IT.CODPROD, IT.QTDAPROVITSOL";
-
+		String sSQL = "	SELECT IT.CODPROD,IT.REFPROD, PD.DESCPROD, "+
+		  "SUM(IT.QTDITSOL), SUM(IT.QTDAPROVITSOL), PD.SLDPROD "+
+		"FROM CPSOLICITACAO O, CPITSOLICITACAO IT, EQPRODUTO PD "+
+		"WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "+
+		"AND PD.CODEMP=IT.CODEMP AND PD.CODFILIAL=IT.CODFILIAL AND PD.CODPROD=IT.CODPROD "+
+		"AND ((IT.DTAPROVITSOL BETWEEN ? AND ?) OR  (O.DTEMITSOL BETWEEN ? AND ?)) "+
+		where + " " +
+		"GROUP BY IT.CODPROD,IT.REFPROD, PD.DESCPROD, PD.SLDPROD "+
+		"ORDER BY PD.DESCPROD, IT.CODPROD, IT.REFPROD, PD.SLDPROD";
+		System.out.println(sSQL);
 		try {
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			int param = 1;
@@ -351,38 +344,18 @@ public class FConsSolItem extends FFilho implements ActionListener {
 			while (rs.next()) {
 				tab.adicLinha();
 				
-				String sitSol = rs.getString(5);
-				String sitAprovSol = rs.getString(6);
-				String sitExpSol = rs.getString(7);
-				
-				if (sitSol.equalsIgnoreCase("PE")) {
-					imgColuna = imgPendente;
-				} 
-				else if (sitSol.equalsIgnoreCase("CA")) {
-					imgColuna = imgCancelada;
-				} 
-				else if (sitExpSol.equals("EP") || sitExpSol.equals("ET")) {
-					imgColuna = imgExpedida;
-				} 
-				else if (sitAprovSol.equals("AP") || sitAprovSol.equals("AT")) {
-					imgColuna = imgAprovada;
-				}
+				imgColuna = imgAprovada;
 
 				tab.setValor(imgColuna, iLin, 0);//SitItSol
 				tab.setValor(new Boolean(false), iLin, 1);
-				tab.setValor(new Integer(rs.getInt(1)), iLin, 2);//CodSol
+				tab.setValor(rs.getString(1) == null ? "" : rs.getString(1) + "",iLin, 2);//CodProd 
 				tab.setValor(rs.getString(2) == null ? "" : rs.getString(2) + "",iLin, 3);//CodProd 
-				tab.setValor(rs.getString(3) == null ? "" : rs.getString(4).trim() + "",iLin, 4);//DescProd
-				tab.setValor(rs.getString(5) == null ? "" : rs.getString(5) + "",iLin, 5);//SitAprov
-				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 6);//SitExp
-				tab.setValor(rs.getString(8) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(8))+ "", iLin, 7);//Dt Req
-				tab.setValor(rs.getString(9) == null ? "" : Funcoes.sqlDateToStrDate(rs.getDate(9))+ "", iLin, 9);//Dt Aprov
-				tab.setValor(rs.getString(10) == null ? "" : rs.getString(10) + "",iLin, 8);//Qtd Req
-				tab.setValor(rs.getString(11) == null ? "" : rs.getString(11) + "",iLin, 10);//Qtd Aprov
-				tab.setValor(rs.getString(12) == null ? "" : rs.getString(12) + "",iLin, 11);//Saldo Prod
+				tab.setValor(rs.getString(3) == null ? "" : rs.getString(3).trim() + "",iLin, 4);//DescProd
+				tab.setValor(rs.getString(4) == null ? "" : rs.getString(4) + "",iLin, 5);//Qtd Req
+				tab.setValor(rs.getString(5) == null ? "" : rs.getString(5) + "",iLin, 6);//Qtd Aprov
+				tab.setValor(rs.getString(6) == null ? "" : rs.getString(6) + "",iLin, 7);//Saldo Prod
 
 				iLin++;
-				
 			}
 
 			if (!con.getAutoCommit())
@@ -550,8 +523,96 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		}
     }
   
+    public void criaCotacao(int codprod) {
+		String sSQLautoincrement = "SELECT coalesce(MAX(SS.CODSUMSOL) + 1, 1) AS CODSUMSOL FROM cpsumsol SS WHERE SS.CODEMP=? AND SS.CODFILIAL=?";
+		
+		String sSQLsumsol = "INSERT INTO CPSUMSOL "+
+		"(CODEMP, CODFILIAL, CODSUMSOL, CODEMPPD, CODFILIALPD, CODPROD, REFPROD, QTDITSOL, QTDAPROVITSOL, SITITSOL, SITAPROVITSOL) "+
+		"SELECT ?, ?, ?, "+
+		  "IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD,IT.REFPROD, "+
+		  "SUM(IT.QTDITSOL), SUM(IT.QTDAPROVITSOL), 'PE', 'PE' "+
+		"FROM CPSOLICITACAO O, CPITSOLICITACAO IT "+
+		"WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "+
+		"AND CODEMPPD = ? AND CODFILIALPD = ? AND CODPROD = ? "+
+		"group BY IT.CODEMPPD, IT.CODFILIALPD, IT.CODPROD, IT.REFPROD";
+
+		String sSQLitsumsol = "INSERT INTO CPITSUMSOL " +
+		"(CODEMP, CODFILIAL, CODSUMSOL, CODEMPSC, CODFILIALSC, CODSOL, CODITSOL) " +
+			"SELECT ?, ?, ?, IT.CODEMP, IT.CODFILIAL, IT.CODSOL, IT.CODITSOL "+
+		"FROM CPSOLICITACAO O, CPITSOLICITACAO IT "+
+		"WHERE O.CODEMP=IT.CODEMP AND O.CODFILIAL=IT.CODFILIAL AND O.CODSOL=IT.CODSOL "+
+		"AND CODEMPPD = ? AND CODFILIALPD = ? AND CODPROD = ?";
+		
+		int codsumsol = 0;
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQLautoincrement);			
+			ps.setInt(1,Aplicativo.iCodEmp);	  	
+			ps.setInt(2,Aplicativo.iCodFilial);		  	
+		    
+	    	ResultSet rs = ps.executeQuery();
+	    	
+	    	if (rs.next()) {
+				codsumsol = rs.getInt("CODSUMSOL");
+	    	}	
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela CPSUMSOL!\n"+err.getMessage(),true,con,err);
+		}
+		
+		try {	
+			PreparedStatement ps2 = con.prepareStatement(sSQLsumsol);
+							
+			ps2.setInt(1,Aplicativo.iCodEmp);	  	
+			ps2.setInt(2,Aplicativo.iCodFilial);
+			ps2.setInt(3,codsumsol);
+			ps2.setInt(4,Aplicativo.iCodEmp);	  	
+			ps2.setInt(5,Aplicativo.iCodFilial);
+			ps2.setInt(6,codprod);
+			
+			ps2.execute();
+			
+			if (!con.getAutoCommit())
+				con.commit();
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela SUMSOL!\n"+err.getMessage(),true,con,err);
+		}	
+
+		try {	
+			PreparedStatement ps3 = con.prepareStatement(sSQLitsumsol);
+							
+			ps3.setInt(1,Aplicativo.iCodEmp);	  	
+			ps3.setInt(2,Aplicativo.iCodFilial);
+			ps3.setInt(3,codsumsol);
+			ps3.setInt(4,Aplicativo.iCodEmp);	  	
+			ps3.setInt(5,Aplicativo.iCodFilial);
+			ps3.setInt(6,codprod);
+			
+			ps3.execute();
+			
+			if (!con.getAutoCommit())
+				con.commit();
+		}
+		catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITSUMSOL!\n"+err.getMessage(),true,con,err);
+		}    
+    }
 	
 	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btCalc) {
+			if (tab.getRowCount() <= 0) {
+				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser cotado");
+				return;
+			}
+			
+		    int iLin = 0;
+		    while (iLin<tab.getRowCount()) {
+		    	if (Boolean.valueOf(tab.getValor(iLin, 1).toString()).booleanValue())
+		    		criaCotacao(Integer.parseInt(tab.getValor(iLin, 3).toString().trim()));
+		    	iLin++;
+		    }
+		}
+		
 		if (evt.getSource() == btSair) {
 			dispose();
 		}
