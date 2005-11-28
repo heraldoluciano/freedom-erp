@@ -619,6 +619,27 @@ public class FConsRMA extends FFilho implements ActionListener {
 
 	}
 
+	private int buscaVlrPadrao() {
+		int iRet = 0;
+		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt("ANOCENTROCUSTO");
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,
+					"Erro ao buscar o ano-base para o centro de custo.\n"
+							+ err.getMessage());
+		}
+
+		return iRet;
+	}
+
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcAlmox.setConexao(cn);
@@ -626,6 +647,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 		lcSeqOP.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
+		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());		
 		habCampos();
 	}
 }

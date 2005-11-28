@@ -96,7 +96,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	private Vector vSitSol = new Vector();
 	public FConsSolItem() {
 		super(false);
-		setTitulo("Pesquisa Itens de Solicitações de Compra");
+		setTitulo("Sumário de Solicitações de Compra");
 		setAtribos(10, 10, 555, 480);
 
 		btCalc.setToolTipText("Criar cotação sumarizada");
@@ -632,6 +632,27 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		}
 
 	}
+	
+	private int buscaVlrPadrao() {
+		int iRet = 0;
+		String sSQL = "SELECT ANOCENTROCUSTO FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt("ANOCENTROCUSTO");
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,
+					"Erro ao buscar o ano-base para o centro de custo.\n"
+							+ err.getMessage());
+		}
+
+		return iRet;
+	}
 
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
@@ -639,6 +660,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 		lcProd.setConexao(cn);
 		lcUsuario.setConexao(cn);
 		lcCC.setConexao(cn);
+		lcCC.setWhereAdic("NIVELCC=10 AND ANOCC=" + buscaVlrPadrao());
 		habCampos();
 	}
 }
