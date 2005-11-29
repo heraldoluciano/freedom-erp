@@ -207,7 +207,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinContatos = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinHistorico = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pinHistbt = new JPanelPad(0,32);
-  private JPanelPad pinMetaVend = new JPanelPad(0,80);
+  private JPanelPad pinMetaVend = new JPanelPad(0,160);
   private JPanelPad pnMetaVend = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private Tabela tbObsData = new Tabela();
   private Tabela tabMetaVend = new Tabela();
@@ -227,6 +227,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private JPanelPad pinMes12 = new JPanelPad();
   private JTextAreaPad txaObs = new JTextAreaPad();
   private JTextAreaPad txaTxtObsCli = new JTextAreaPad(); // Campo memo para observações por data
+  private JTextAreaPad txaObsMetaVend = new JTextAreaPad();
   private JScrollPane spnObs = new JScrollPane(txaObs); // Scroll pane para observações gerais 
   private JScrollPane spnObsCli = new JScrollPane(txaTxtObsCli); // Scrool pane para o campo de observações por data
   private JScrollPane spnObsTb = new JScrollPane(tbObsData); // Cria tabela de observações dentro do scroll pane
@@ -877,10 +878,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       pnMetaVend.add(pinMetaVend,BorderLayout.SOUTH);
       pnMetaVend.add(spnMetaVend,BorderLayout.CENTER);
       
-      pinMetaVend.adic(navMetaVend,0,50,150,25);
+      pinMetaVend.adic(navMetaVend,0,130,150,25);
       
       adicCampo(txtAnoMetaVend, 7, 20, 100, 20, "AnoMetaVend", "Ano", ListaCampos.DB_PK, null, true);
       adicCampo(txtVlrMetaVend, 110, 20, 120, 20, "VlrMetaVend", "Valor da meta", ListaCampos.DB_SI, true);
+      adicDBLiv(txaObsMetaVend , 7, 60, 500, 60, "ObsMetaVend", "Observações", false);
       setListaCampos( false, "CLIMETAVEND", "VD");
       lcMetaVend.montaTab();
       lcMetaVend.setQueryInsert(false);
