@@ -492,6 +492,15 @@ public class FRGerContas extends FRelatorio  {
 					ps.setString(iParam, sCodGrup2);
 					iParam += 1;
 				}
+
+				if (iCodVend != 0) {
+					ps.setInt(iParam, iCodVend);
+					iParam += 1;
+				}
+				if (iCodCli != 0) {
+					ps.setInt(iParam, iCodCli);
+					iParam += 1;
+				}
 				
 				ps.setInt(iParam++, Aplicativo.iCodEmp);
 				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));				
