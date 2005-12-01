@@ -2118,7 +2118,7 @@ ORDER BY 2]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASANTERIOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASANTERIOR2}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
