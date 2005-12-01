@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldPad;
@@ -45,6 +46,7 @@ public class FRVendasDet extends FRelatorio {
 
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
+  private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
   private JRadioGroup rgFaturados = null;
   private JRadioGroup rgFinanceiro = null;
   private Vector vLabsFat = new Vector();
@@ -54,7 +56,7 @@ public class FRVendasDet extends FRelatorio {
   
   public FRVendasDet() {
     setTitulo("Vendas Detalhadas");
-    setAtribos(80,80,295,220);
+    setAtribos(80,80,295,240);
 
     vLabsFat.addElement("Faturado");
 	vLabsFat.addElement("Não Faturado");
@@ -93,6 +95,7 @@ public class FRVendasDet extends FRelatorio {
     adic(txtDatafim,170,30,100,20);
 	adic(rgFaturados, 7, 60, 120, 70);
 	adic(rgFinanceiro, 153, 60, 120, 70);
+	adic(cbVendaCanc, 7, 140, 200, 20);
 	
   }
   
@@ -110,6 +113,7 @@ public class FRVendasDet extends FRelatorio {
     String sCab = "";
   	String sWhere1 = "";
   	String sWhere2 = "";
+  	String sWhere3 = "";
     String sDataini = "";
     String sDatafim = "";
 
@@ -141,24 +145,27 @@ public class FRVendasDet extends FRelatorio {
 	else if(rgFinanceiro.getVlrString().equals("A")){
 		sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 	}
+
+	if(cbVendaCanc.getVlrString().equals("N"))
+		sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
     
-    String sSQL = "SELECT (SELECT VO.CODORC FROM VDVENDAORC VO WHERE" +
-    		      " VO.CODVENDA=V.CODVENDA AND VO.CODEMP=V.CODEMP" +
-    		      " AND VO.CODFILIAL=V.CODFILIAL),V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA," +
-    		      "V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI,C.RAZCLI,V.VLRDESCVENDA," +
-    		      "V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD," +
-    		      "P.DESCPROD,IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA," +
-    		      "IT.VLRLIQITVENDA FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C," +
-    		      "VDITVENDA IT, EQPRODUTO P , EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ? AND ?"+
-    		      " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG" +
-    		      " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL" +
-    		      " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL" +
-    		      " AND C.CODEMP=V.CODEMP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " +
-	                sWhere1 + sWhere2 +			  
-    		      " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA" +
-    		      " AND IT.CODEMP=V.CODEMP AND P.CODPROD=IT.CODPROD" +
-    		      " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD" +
-    		      " AND IT.CODFILIAL=V.CODFILIAL ORDER BY V.DTEMITVENDA,V.CODVENDA";
+    String sSQL = "SELECT (SELECT VO.CODORC FROM VDVENDAORC VO WHERE"
+    		    + " VO.CODVENDA=V.CODVENDA AND VO.CODEMP=V.CODEMP"
+    		    + " AND VO.CODFILIAL=V.CODFILIAL),V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,"
+    		    + "V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI,C.RAZCLI,V.VLRDESCVENDA,"
+    		    + "V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,"
+    		    + "P.DESCPROD,IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,"
+    		    + "IT.VLRLIQITVENDA FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C,"
+    		    + "VDITVENDA IT, EQPRODUTO P , EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ? AND ?"
+    		    + " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG"
+    		    + " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL"
+    		    + " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL"
+    		    + " AND C.CODEMP=V.CODEMP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
+    		    + sWhere1 + sWhere2 + sWhere3			  
+    		    + " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA"
+    		    + " AND IT.CODEMP=V.CODEMP AND P.CODPROD=IT.CODPROD"
+    		    + " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD"
+    		    + " AND IT.CODFILIAL=V.CODFILIAL ORDER BY V.DTEMITVENDA,V.CODVENDA";
     
     System.out.println(sSQL);
     

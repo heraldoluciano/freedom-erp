@@ -442,7 +442,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		btAltComis.addActionListener(this);
 		
 		lbStatus.setForeground(Color.WHITE);
-		lbStatus.setBackground(Color.RED);
 		lbStatus.setFont( new Font("Arial", Font.BOLD, 13));
 		lbStatus.setOpaque(true);
 		lbStatus.setVisible(false);
@@ -1348,10 +1347,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			if (txtStatusVenda.getVlrString().trim().length()>0 && 
 					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
 				lbStatus.setText("  CANCELADA");
+				lbStatus.setBackground(Color.RED);
 				lbStatus.setVisible(true);
 			}
 			else if (verificaBloq()){
 				lbStatus.setText("  BLOQUEADA");
+				lbStatus.setBackground(Color.BLUE);
 				lbStatus.setVisible(true);
 			}
 			else {

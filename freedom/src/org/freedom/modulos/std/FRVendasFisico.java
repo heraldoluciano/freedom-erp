@@ -49,18 +49,19 @@ public class FRVendasFisico extends FRelatorio {
   private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);   
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);    
+  private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);  
+  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");  
   private JRadioGroup rgFaturados = null;
   private JRadioGroup rgFinanceiro = null;
+  private JRadioGroup rgOrdem = null;
   private Vector vLabsFat = new Vector();
   private Vector vValsFat = new Vector();
   private Vector vLabsFin = new Vector();
   private Vector vValsFin = new Vector();
-  private ListaCampos lcVend = new ListaCampos(this);
-  private JRadioGroup rgOrdem = null;
-  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
+  private ListaCampos lcVend = new ListaCampos(this);
+  
   public FRVendasFisico() {
 	    setTitulo("Fechamento Fisico de Vendas");
 	    setAtribos(80,80,295,325);
@@ -153,6 +154,7 @@ public class FRVendasFisico extends FRelatorio {
   	 String sWhere1 = "";
   	 String sWhere2 = "";
 	 String sCab="";
+	 
      if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 		Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
         return;
@@ -186,7 +188,6 @@ public class FRVendasFisico extends FRelatorio {
  	 else if(rgFinanceiro.getVlrString().equals("A")){
  		sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
  	 }
-     
      
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
@@ -223,24 +224,24 @@ public class FRVendasFisico extends FRelatorio {
     else {
     	sOrder = "P.DESCPROD";
     }
-    String sSQL = "SELECT SUBSTRING(P.CODGRUP FROM 1 FOR 4),P."+sCodProd+",P.DESCPROD,G.DESCGRUP,"+
-                          "P.CUSTOMPMPROD,SUM(IT.QTDITVENDA),SUM(IT.VLRDESCITVENDA),"+
-                          "SUM(IT.VLRLIQITVENDA),IT.CODITVENDA FROM VDVENDA V,VDITVENDA IT,"+
-                          "EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ?"+
-                          " AND ? AND G.CODGRUP = P.CODGRUP AND IT.CODVENDA=V.CODVENDA" +
-                          " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM" +
-                       	  sWhere1 + sWhere2 + 
-                          " AND TM.CODTIPOMOV=V.CODTIPOMOV AND P.CODPROD = IT.CODPROD" +
-                          " AND (NOT IT.QTDITVENDA = 0)"+
-                          " AND (V.FLAG IN "+Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+")"+
-                          " AND (NOT SUBSTR(V.STATUSVENDA,1,1)='C') " +
-                          " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
-                          ""+sWhere+" GROUP BY 1," +
-                          "P."+sCodProd+",P.DESCPROD,G.DESCGRUP,IT.CODITVENDA, P.CUSTOMPMPROD" +
-                          " ORDER BY 1,"+sOrder;
+    String sSQL = "SELECT SUBSTRING(P.CODGRUP FROM 1 FOR 4),P."+sCodProd+",P.DESCPROD,G.DESCGRUP,P.CUSTOMPMPROD,"
+                + "SUM(IT.QTDITVENDA),SUM(IT.VLRDESCITVENDA), SUM(IT.VLRLIQITVENDA),IT.CODITVENDA"
+                + " FROM VDVENDA V,VDITVENDA IT, EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM "
+                + " WHERE V.DTEMITVENDA BETWEEN ? AND ? AND G.CODGRUP = P.CODGRUP AND IT.CODVENDA=V.CODVENDA"
+                + " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM"
+                + sWhere + sWhere1 + sWhere2 
+                + " AND TM.CODTIPOMOV=V.CODTIPOMOV AND P.CODPROD = IT.CODPROD"
+                + " AND (NOT IT.QTDITVENDA = 0)"
+                + " AND (V.FLAG IN "+Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+")"
+                + " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
+                + " GROUP BY 1," 
+                + "P."+sCodProd+",P.DESCPROD,G.DESCGRUP,IT.CODITVENDA, P.CUSTOMPMPROD" 
+                + " ORDER BY 1,"+sOrder;
+    
     System.out.println(sSQL);
     PreparedStatement ps = null;
     ResultSet rs = null;
+    
     try {
       ps = con.prepareStatement(sSQL);
       ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
