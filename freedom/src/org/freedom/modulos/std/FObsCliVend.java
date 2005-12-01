@@ -29,13 +29,15 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.telas.FFDialogo;
 
-public class FObsCliVend extends FFDialogo {
+public class FObsCliVend extends FFDialogo implements KeyListener {
 	/**
 	 * 
 	 */
@@ -47,6 +49,9 @@ public class FObsCliVend extends FFDialogo {
 		txaObs.setEditable(false);
 		c.add(spObs, BorderLayout.CENTER);
 		btOK.requestFocus();
+		txaObs.addKeyListener(this);
+		
+		addKeyListener(this);
 	}
 	public static void showVend(int x, int y, int larg, int alt, String sObsCli) {
 		FObsCliVend tela = new FObsCliVend();
@@ -54,6 +59,21 @@ public class FObsCliVend extends FFDialogo {
 		tela.txaObs.setText(sObsCli);
 		tela.setVisible(true);
 		
+	}
+	public void keyPressed(KeyEvent kevt) {
+        if (kevt.getKeyCode() == KeyEvent.VK_ENTER)
+        	btOK.doClick();
+        else
+   		    super.keyPressed(kevt);
+//		System.out.println("KeyPressed "+kevt.getKeyCode());
+	}
+	public void keyReleased(KeyEvent kevt) {
+		super.keyReleased(kevt);
+		//System.out.println("KeyRelease "+kevt.getKeyCode());
+	}
+	public void keyTyped(KeyEvent kevt) {
+        super.keyTyped(kevt);
+		//System.out.println("KeyTyped "+kevt.getKeyCode());
 	}
 	
 }
