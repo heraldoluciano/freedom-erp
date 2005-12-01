@@ -50,6 +50,7 @@ public class FObsCliVend extends FFDialogo implements KeyListener {
 		c.add(spObs, BorderLayout.CENTER);
 		btOK.requestFocus();
 		txaObs.addKeyListener(this);
+		btCancel.setVisible(false);
 		
 		addKeyListener(this);
 	}
