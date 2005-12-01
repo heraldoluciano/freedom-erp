@@ -57,7 +57,7 @@ public class FRGerContas extends FRelatorio  {
   private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtPercFat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JLabelPad lbAno = new JLabelPad("Ano");
-  private JLabelPad lbPercFat = new JLabelPad("% do faturamento");
+  private JLabelPad lbPercFat = new JLabelPad("% de relevância");
   private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
   private JLabelPad lbDescVend = new JLabelPad("Nome do comissionado");
   private JLabelPad lbCodGrup1 = new JLabelPad("Cód.grupo/somar");
@@ -195,6 +195,7 @@ public class FRGerContas extends FRelatorio  {
 		String sWhereTM = "";
 		String sCodGrup1 = "";
 		String sOrdemRel = "";
+		String sOrdemRel2 = "";
 		String sOrderBy = "";
 		String sCodGrup2 = "";
 		String sFiltros1 = "";
@@ -202,6 +203,7 @@ public class FRGerContas extends FRelatorio  {
 
 		int iCodCli = 0;
 		int iCodVend = 0;
+		int iCodFor = 0;
 		int iParam = 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -219,7 +221,9 @@ public class FRGerContas extends FRelatorio  {
 			sCodGrup1 = txtCodGrup1.getVlrString().trim();
 			sCodGrup2 = txtCodGrup2.getVlrString().trim();
 			iCodVend = txtCodVend.getVlrInteger().intValue();
+			iCodFor = txtCodFor.getVlrInteger().intValue();
 			sOrdemRel = rgOrdemRel.getVlrString();
+			sOrdemRel2 = rgOrdemRel2.getVlrString();
 
 			if (!sCodGrup1.equals("")) {
 				sWhere += "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? ";
@@ -232,6 +236,12 @@ public class FRGerContas extends FRelatorio  {
 						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
 
+			if(iCodFor !=0){
+				sWhere += " AND P.CODEMPFOR="+lcFornecedor.getCodEmp()+" AND P.CODFILIALFOR="+lcFornecedor.getCodFilial()+
+				" AND P.CODFOR="+txtCodFor.getVlrString();
+				
+			}
+			
 			if (iCodVend != 0) {
 				sWhere += "AND V.CODVEND=? ";
 				sWhereCli = "AND C.CODVEND=? ";
@@ -247,23 +257,44 @@ public class FRGerContas extends FRelatorio  {
 			vValOrdemRel.addElement("V");
 			
 			if (sOrdemRel.equals("V")) {
-				sOrderBy = "18,2";
+				sOrderBy = "18";
 			} 
 			else if (sOrdemRel.equals("R")) {
-				sOrderBy = "2,1";
+				sOrderBy = "2";
 			} 
 			else if (sOrdemRel.equals("C")) {
-				sOrderBy = "1,2";
+				sOrderBy = "1";
 			}
 			else if (sOrdemRel.equals("D")) {
-				sOrderBy = "3,2";
+				sOrderBy = "3";
 			}
 			else if (sOrdemRel.equals("T")) {
-				sOrderBy = "4,2";
+				sOrderBy = "4";
 			}
 			else if (sOrdemRel.equals("S")) {
-				sOrderBy = "5,2";
+				sOrderBy = "5";
 			}
+
+			if ((sOrdemRel2.equals("V")) & (!sOrdemRel2.equals(sOrdemRel))) {
+				sOrderBy = sOrderBy+",18";
+			} 
+			else if ((sOrdemRel2.equals("R")) & (!sOrdemRel2.equals(sOrdemRel))) {
+				sOrderBy = sOrderBy+",2";
+			} 
+			else if ((sOrdemRel2.equals("C")) & (!sOrdemRel2.equals(sOrdemRel))) {
+				sOrderBy = sOrderBy+",1";
+			}
+			else if ((sOrdemRel2.equals("D")) & (!sOrdemRel2.equals(sOrdemRel))) {
+				sOrderBy = sOrderBy+",3";
+			}
+			else if ((sOrdemRel2.equals("T")) & (!sOrdemRel2.equals(sOrdemRel)))  {
+				sOrderBy = sOrderBy+",4";
+			}
+			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
+				sOrderBy = sOrderBy+",5";
+			}
+
+			
 
 			int iAno = txtAno.getVlrInteger().intValue();
 			
@@ -345,6 +376,20 @@ public class FRGerContas extends FRelatorio  {
 					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
 				  		+ sWhere +")) VENDASATUAL,"
 
+				  //Vendas no ano anterior 2
+				  		
+				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
+				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
+				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
+				  +" AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ"
+				  +" AND  IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA"
+				  +" AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD"
+				  +" AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
+				  +" AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) AND TM.SOMAVDTIPOMOV='S'"
+				  + sWhereTM + 
+					 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
+					 + sWhere +")) VENDASANTERIOR2,"				  		
+				  						  		
 				 //Vendas no ano anterior
 					
 				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
@@ -358,11 +403,11 @@ public class FRGerContas extends FRelatorio  {
 				  + sWhereTM + 
 					 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
 				  	+ sWhere +")) VENDASANTERIOR,"
-					  
-				  //meta estimada para ano seguinte					
+					  			  					  	
+				  //meta estimada para ano corrente					
 				  +" SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C2.CODEMP AND" 
 				  +" CM.CODFILIAL=C2.CODFILIAL AND CM.CODCLI=C2.CODCLI AND" 
-				  +" ANOMETAVEND=("+txtAno.getVlrInteger()+"+1))) AS VENDASMETA"					
+				  +" ANOMETAVEND=("+txtAno.getVlrInteger()+"))) AS VENDASMETA"					
 					
   				  //From principal
 					
@@ -429,6 +474,22 @@ public class FRGerContas extends FRelatorio  {
 					iParam += 1;
 				}
 
+				ps.setInt(iParam++, Aplicativo.iCodEmp);
+				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));				
+				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno-2)));
+				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno-2)));										
+
+				if (!sCodGrup1.equals("")) {
+					ps.setInt(iParam, Aplicativo.iCodEmp);
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQGRUPO"));
+					ps.setString(iParam + 2, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
+					iParam += 3;
+				}
+				if (!sCodGrup2.equals("")) {
+					ps.setString(iParam, sCodGrup2);
+					iParam += 1;
+				}
+				
 				ps.setInt(iParam++, Aplicativo.iCodEmp);
 				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));				
 				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno-1)));
