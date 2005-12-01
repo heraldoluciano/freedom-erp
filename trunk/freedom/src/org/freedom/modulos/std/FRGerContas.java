@@ -45,29 +45,38 @@ import org.freedom.telas.FRelatorio;
 public class FRGerContas extends FRelatorio  {
 
   private static final long serialVersionUID = 1L;
+  private final int TAM_GRUPO = 14;
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
-  private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
-  private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
-  private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
-  private JLabelPad lbDescVend = new JLabelPad("Nome do comissionado");
-  private ListaCampos lcVendedor = new ListaCampos(this);
-  private Vector vLabOrdemRel = new Vector();
-  private Vector vValOrdemRel = new Vector();
-  private JRadioGroup rgOrdemRel = null;
-  private final int TAM_GRUPO = 14;
   private JTextFieldPad txtCodGrup1 = new JTextFieldPad(JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
   private JTextFieldFK txtDescGrup1 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtCodGrup2 = new JTextFieldPad(JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
   private JTextFieldFK txtDescGrup2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
-  private ListaCampos lcGrup1 = new ListaCampos(this);
-  private ListaCampos lcGrup2 = new ListaCampos(this);
+  private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtPercFat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JLabelPad lbAno = new JLabelPad("Ano");
+  private JLabelPad lbPercFat = new JLabelPad("% do faturamento");
+  private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
+  private JLabelPad lbDescVend = new JLabelPad("Nome do comissionado");
   private JLabelPad lbCodGrup1 = new JLabelPad("Cód.grupo/somar");
   private JLabelPad lbDescCodGrup1 = new JLabelPad("Descrição do grupo/somar");
   private JLabelPad lbCodGrup2 = new JLabelPad("Cód.grupo/subtrair");
   private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
+  private JLabelPad lbCodFor = new JLabelPad("Cód.for.");
+  private JLabelPad lbRazFor = new JLabelPad("Razão social do fornecedor");
+  private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
+  private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
+  private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
+  private JRadioGroup rgOrdemRel = null;
+  private JRadioGroup rgOrdemRel2 = null;
+  private Vector vLabOrdemRel = new Vector();
+  private Vector vValOrdemRel = new Vector();
+  private ListaCampos lcGrup1 = new ListaCampos(this);
+  private ListaCampos lcGrup2 = new ListaCampos(this);
+  private ListaCampos lcVendedor = new ListaCampos(this);
+  private ListaCampos lcFornecedor = new ListaCampos(this);
   private final int JAN = 0;
   private final int FEV = 1;
   private final int MAR = 2;
@@ -84,7 +93,7 @@ public class FRGerContas extends FRelatorio  {
 
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
-    setAtribos(80,0,500,310);
+    setAtribos(80,0,550,350);
 
     txtAno.setRequerido(true);
     txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));
@@ -110,6 +119,9 @@ public class FRGerContas extends FRelatorio  {
     rgOrdemRel = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel.setVlrString("C");
     
+    rgOrdemRel2 = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel2.setVlrString("C");
+    
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 	lcGrup1.montaSql(false, "GRUPO", "EQ");
@@ -134,25 +146,46 @@ public class FRGerContas extends FRelatorio  {
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
     
-    adic(new JLabelPad("Ordem"),280,0,80,20);
-    adic(rgOrdemRel,280,20,180,70);
-    adic(new JLabelPad("Ano"),7,0,250,20);
-    adic(txtAno,7,20,70,20);
-    adic(lbCodVend,7,45,250,20);
-    adic(txtCodVend,7,65,70,20);
-    adic(lbDescVend,80,45,250,20);
-    adic(txtNomeVend,80,65,190,20);
-	adic(lbCodGrup1, 7, 90, 250, 20);
-	adic(lbDescCodGrup1, 130, 90, 250, 20);
-	adic(txtCodGrup1, 7, 110, 120, 20);
-	adic(txtDescGrup1, 130, 110, 327, 20);
-	adic(lbCodGrup2, 7, 130, 250, 20);
-	adic(lbDescCodGrup2, 130, 130, 250, 20);
-	adic(txtCodGrup2, 7, 150, 120, 20);
-	adic(txtDescGrup2, 130, 150, 327, 20);
-    adic(cbVendas,7,180,100,25);
-    adic(cbCliPrinc,110,180,250,25);
-    adic(cbIncluiPed,7,205,295,25);    
+    lcFornecedor.add(new GuardaCampo( txtCodFor, "CodFor","Cód.for.", ListaCampos.DB_PK, false ));
+    lcFornecedor.add(new GuardaCampo( txtRazFor, "RazFor","Razão social do fornecedor", ListaCampos.DB_SI, false ));
+    lcFornecedor.montaSql(false,"FORNECED","CP");
+    lcFornecedor.setReadOnly(true);
+    txtCodFor.setTabelaExterna(lcFornecedor);
+    txtCodFor.setFK(true);
+    txtCodFor.setNomeCampo("CodFor");
+    
+
+    adic(lbAno,7,0,100,20);
+    adic(txtAno,7,20,100,20);
+    adic(lbPercFat,7,50,100,20);
+    adic(txtPercFat,7,70,100,20);
+    
+    adic(new JLabelPad("1º Ordem"),120,0,80,20);
+    adic(rgOrdemRel,120,20,200,70);
+    adic(new JLabelPad("2° Ordem"),325,0,80,20);
+    adic(rgOrdemRel2,325,20,200,70);    
+    
+    adic(lbCodVend,7,100,110,20);
+    adic(txtCodVend,7,120,110,20);
+    adic(lbDescVend,120,100,200,20);
+    adic(txtNomeVend,120,120,200,20);    
+	adic(lbCodGrup1, 7, 140, 110, 20);
+	adic(txtCodGrup1, 7, 160, 110, 20);
+	adic(lbDescCodGrup1, 120, 140, 200, 20);
+	adic(txtDescGrup1, 120, 160, 200, 20);	
+	adic(lbCodGrup2, 7, 180, 110, 20);
+	adic(txtCodGrup2, 7, 200, 110, 20);
+	adic(lbDescCodGrup2, 120, 180, 200, 20);
+	adic(txtDescGrup2, 120, 200, 200, 20);	
+	adic(lbCodFor, 7, 220, 110, 20);
+	adic(txtCodFor, 7, 240, 110, 20);
+	adic(lbRazFor, 120, 220, 200, 20);
+	adic(txtRazFor, 120, 240, 200, 20);
+	
+    adic(cbVendas,330,120,100,20);
+    adic(cbCliPrinc,330,150,250,20);
+    adic(cbIncluiPed,330,180,295,20);    
+    
   }
 
 	private ResultSet rodaQuery() {
@@ -469,6 +502,7 @@ public class FRGerContas extends FRelatorio  {
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcVendedor.setConexao(cn);
+    lcFornecedor.setConexao(cn);
     lcGrup1.setConexao(cn);
     lcGrup2.setConexao(cn);    
   }
