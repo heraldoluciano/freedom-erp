@@ -53,8 +53,8 @@ public class FRGerContas extends FRelatorio  {
   private JTextFieldFK txtDescGrup1 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtCodGrup2 = new JTextFieldPad(JTextFieldPad.TP_STRING, TAM_GRUPO, 0);
   private JTextFieldFK txtDescGrup2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
-  private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldFK txtRazFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtPercFat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JLabelPad lbAno = new JLabelPad("Ano");
   private JLabelPad lbPercFat = new JLabelPad("% de relevância");
@@ -64,8 +64,8 @@ public class FRGerContas extends FRelatorio  {
   private JLabelPad lbDescCodGrup1 = new JLabelPad("Descrição do grupo/somar");
   private JLabelPad lbCodGrup2 = new JLabelPad("Cód.grupo/subtrair");
   private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
-  private JLabelPad lbCodFor = new JLabelPad("Cód.for.");
-  private JLabelPad lbRazFor = new JLabelPad("Razão social do fornecedor");
+  private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
+  private JLabelPad lbDescMarc = new JLabelPad("Descrição da marca");
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
@@ -76,7 +76,7 @@ public class FRGerContas extends FRelatorio  {
   private ListaCampos lcGrup1 = new ListaCampos(this);
   private ListaCampos lcGrup2 = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
-  private ListaCampos lcFornecedor = new ListaCampos(this);
+  private ListaCampos lcMarca = new ListaCampos(this);
   private final int JAN = 0;
   private final int FEV = 1;
   private final int MAR = 2;
@@ -146,13 +146,13 @@ public class FRGerContas extends FRelatorio  {
     txtCodVend.setFK(true);
     txtCodVend.setNomeCampo("CodVend");
     
-    lcFornecedor.add(new GuardaCampo( txtCodFor, "CodFor","Cód.for.", ListaCampos.DB_PK, false ));
-    lcFornecedor.add(new GuardaCampo( txtRazFor, "RazFor","Razão social do fornecedor", ListaCampos.DB_SI, false ));
-    lcFornecedor.montaSql(false,"FORNECED","CP");
-    lcFornecedor.setReadOnly(true);
-    txtCodFor.setTabelaExterna(lcFornecedor);
-    txtCodFor.setFK(true);
-    txtCodFor.setNomeCampo("CodFor");
+    lcMarca.add(new GuardaCampo( txtCodMarca, "CodMarca","Cód.marca", ListaCampos.DB_PK, false ));
+    lcMarca.add(new GuardaCampo( txtDescMarca, "DescMarca","Descrição da marca", ListaCampos.DB_SI, false ));
+    lcMarca.montaSql(false,"MARCA","EQ");
+    lcMarca.setReadOnly(true);
+    txtCodMarca.setTabelaExterna(lcMarca);
+    txtCodMarca.setFK(true);
+    txtCodMarca.setNomeCampo("CodMarca");
     
 
     adic(lbAno,7,0,100,20);
@@ -177,10 +177,10 @@ public class FRGerContas extends FRelatorio  {
 	adic(txtCodGrup2, 7, 200, 110, 20);
 	adic(lbDescCodGrup2, 120, 180, 200, 20);
 	adic(txtDescGrup2, 120, 200, 200, 20);	
-	adic(lbCodFor, 7, 220, 110, 20);
-	adic(txtCodFor, 7, 240, 110, 20);
-	adic(lbRazFor, 120, 220, 200, 20);
-	adic(txtRazFor, 120, 240, 200, 20);
+	adic(lbCodMarca, 7, 220, 110, 20);
+	adic(txtCodMarca, 7, 240, 110, 20);
+	adic(lbDescMarc, 120, 220, 200, 20);
+	adic(txtDescMarca, 120, 240, 200, 20);
 	
     adic(cbVendas,330,120,100,20);
     adic(cbCliPrinc,330,150,250,20);
@@ -203,7 +203,7 @@ public class FRGerContas extends FRelatorio  {
 
 		int iCodCli = 0;
 		int iCodVend = 0;
-		int iCodFor = 0;
+		int iCodMarca = 0;
 		int iParam = 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -221,7 +221,7 @@ public class FRGerContas extends FRelatorio  {
 			sCodGrup1 = txtCodGrup1.getVlrString().trim();
 			sCodGrup2 = txtCodGrup2.getVlrString().trim();
 			iCodVend = txtCodVend.getVlrInteger().intValue();
-			iCodFor = txtCodFor.getVlrInteger().intValue();
+			iCodMarca = txtCodMarca.getVlrInteger().intValue();
 			sOrdemRel = rgOrdemRel.getVlrString();
 			sOrdemRel2 = rgOrdemRel2.getVlrString();
 
@@ -236,9 +236,9 @@ public class FRGerContas extends FRelatorio  {
 						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
 
-			if(iCodFor !=0){
-				sWhere += " AND P.CODEMPFOR="+lcFornecedor.getCodEmp()+" AND P.CODFILIALFOR="+lcFornecedor.getCodFilial()+
-				" AND P.CODFOR="+txtCodFor.getVlrString();
+			if(iCodMarca !=0){
+				sWhere += " AND P.CODEMPMC="+lcMarca.getCodEmp()+" AND P.CODFILIALMC="+lcMarca.getCodFilial()+
+				" AND P.CODMARCA="+txtCodMarca.getVlrString();
 				
 			}
 			
@@ -364,7 +364,8 @@ public class FRGerContas extends FRelatorio  {
 
 				 //Vendas no ano
 				 				 
-				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
+				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0))"
+				  +" FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
 				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
 				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
 				  +" AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ"
@@ -378,7 +379,8 @@ public class FRGerContas extends FRelatorio  {
 
 				  //Vendas no ano anterior 2
 				  		
-				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
+				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0))"
+				  +" FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
 				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
 				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
 				  +" AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ"
@@ -392,7 +394,8 @@ public class FRGerContas extends FRelatorio  {
 				  						  		
 				 //Vendas no ano anterior
 					
-				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
+				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0))"
+				  +" FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G,EQTIPOMOV TM, VDCLIENTE C "
 				  +" WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ?"
 				  +" AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
 				  +" AND C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ"
@@ -563,7 +566,7 @@ public class FRGerContas extends FRelatorio  {
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcVendedor.setConexao(cn);
-    lcFornecedor.setConexao(cn);
+    lcMarca.setConexao(cn);
     lcGrup1.setConexao(cn);
     lcGrup2.setConexao(cn);    
   }
