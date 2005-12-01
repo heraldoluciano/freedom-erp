@@ -129,33 +129,33 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     txtVlrAtualLanca.setAtivo(false);
     
 	txtCodPlan.setTipo(JTextFieldPad.TP_STRING,13,0);
-    lcPlan.add(new GuardaCampo( txtCodPlanSub, "CodPlan", "Código", ListaCampos.DB_PK, txtDescPlan, false));
-    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição", ListaCampos.DB_SI, false));
+    lcPlan.add(new GuardaCampo( txtCodPlanSub, "CodPlan", "Cód.planj.", ListaCampos.DB_PK, txtDescPlan, false));
+    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do planejamento", ListaCampos.DB_SI, false));
     lcPlan.setReadOnly(true);
     lcPlan.setQueryCommit(false);
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");    
     txtCodPlanSub.setTabelaExterna(lcPlan);
     txtDescPlan.setListaCampos(lcPlan);
 
-	lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Código", ListaCampos.DB_PK, txtDescPlan, false));
-	lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão", ListaCampos.DB_SI, false));
+	lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli", ListaCampos.DB_PK, txtDescPlan, false));
+	lcCli.add(new GuardaCampo( txtRazCli, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, false));
 	lcCli.setReadOnly(true);
 	lcCli.setQueryCommit(false);
 	lcCli.montaSql(false, "CLIENTE", "VD");    
 	txtCodCli.setTabelaExterna(lcCli);
 	txtRazCli.setListaCampos(lcCli);
 
-	lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Código", ListaCampos.DB_PK, txtDescPlan, false));
-	lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Razão", ListaCampos.DB_SI, false));
+	lcFor.add(new GuardaCampo( txtCodFor, "CodFor", "Cód.for.", ListaCampos.DB_PK, txtDescPlan, false));
+	lcFor.add(new GuardaCampo( txtRazFor, "RazFor", "Razão social do fornecedor", ListaCampos.DB_SI, false));
 	lcFor.setReadOnly(true);
 	lcFor.setQueryCommit(false);
 	lcFor.montaSql(false, "FORNECED", "CP");    
 	txtCodFor.setTabelaExterna(lcFor);
 	txtRazFor.setListaCampos(lcFor);
     
-	lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Código", ListaCampos.DB_PK, txtDescCC, false));
+	lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, txtDescCC, false));
 	lcCC.add(new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false));
-	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição", ListaCampos.DB_SI, false));
+	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
 	lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, txtDescCC, false));
 	lcCC.setReadOnly(true);
 	lcCC.setQueryCommit(false);
@@ -193,11 +193,11 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
     setListaCampos(lcDet);
     setNavegador(navRod);
     adicCampoInvisivel(txtCodSubLanca, "CodSubLanca","Item",ListaCampos.DB_PK, false);
-    adicCampo(txtCodPlanSub, 7, 20, 80, 20,"CodPlan","Código", ListaCampos.DB_FK, txtDescPlan, true);
-    adicDescFK(txtDescPlan, 90, 20, 247, 20, "DescPlan", "e desc. do plano de contas");
-	adicCampo(txtCodCC, 7, 60, 80, 20,"CodCC","Código", ListaCampos.DB_FK, txtDescCC, false);
+    adicCampo(txtCodPlanSub, 7, 20, 80, 20,"CodPlan","Cód.planj.", ListaCampos.DB_FK, txtDescPlan, true);
+    adicDescFK(txtDescPlan, 90, 20, 247, 20, "DescPlan", "Descrição do plano de contas");
+	adicCampo(txtCodCC, 7, 60, 80, 20,"CodCC","Cód.c.c.", ListaCampos.DB_FK, txtDescCC, false);
 	adicCampoInvisivel(txtAnoCC, "AnoCC","Ano-base",ListaCampos.DB_FK, txtDescCC, false);
-	adicDescFK(txtDescCC, 90, 60, 197, 20, "DescCC", "e desc. do centro de custo");
+	adicDescFK(txtDescCC, 90, 60, 197, 20, "DescCC", "Descrição do centro de custo");
     adicCampo(txtVlrLanca,340,20,120,20, "VlrSubLanca","Valor",ListaCampos.DB_SI, true);
 	adicCampo(txtHistSubLanca,7,105,454,20,"HistSubLanca","Histórico do Lancamento",ListaCampos.DB_SI, false);
 
@@ -209,10 +209,10 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 	txtCodFor.setVisible(false);
 	txtRazFor.setVisible(false); 
 	
-	lbCodCli = adicCampo(txtCodCli, 290, 60, 50, 20, "CodCli", "Código", ListaCampos.DB_FK, false);
+	lbCodCli = adicCampo(txtCodCli, 290, 60, 50, 20, "CodCli", "Cód.cli.", ListaCampos.DB_FK, false);
 	lbRazCli = adicDescFK(txtRazCli, 343, 60, 247, 20, "RazCli", "Razão social do cliente"); 
 
-	lbCodFor = adicCampo(txtCodFor, 290, 60, 50, 20, "CodFor", "Código", ListaCampos.DB_FK, false);
+	lbCodFor = adicCampo(txtCodFor, 290, 60, 50, 20, "CodFor", "Cód.for.", ListaCampos.DB_FK, false);
 	lbRazFor = adicDescFK(txtRazFor, 343, 60, 247, 20, "RazFor", "Razão social do fornecedor"); 
 
     lbCodCli.setVisible(false);

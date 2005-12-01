@@ -127,15 +127,15 @@ public class FreedomSTD extends Aplicativo {
 	addOpcao(300000000,TP_OPCAO_ITEM,"Romaneio","Romaneio",'R',300800000,1, true, FRomaneio.class);  		
 	//addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores","LancaExp",'x',300900000,1, true, FLancaExp.class);
 	addOpcao(300000000,TP_OPCAO_MENU,"Listagens","",'s',301000000,1, false, null);				
-      addOpcao(301000000,TP_OPCAO_ITEM,"Resumo diário","Resumo Diário",'R',301001000,2, true, FRResumoDiario.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas geral","Vendas em Geral",'V',301002000,2, true, FRVendasGeral.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas físico","Físico de Vendas",'d',301003000,2, true, FRVendasFisico.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas detalhado","Vendas Detalhadas",'n',301004000,2, true, FRVendasDet.class);	        
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por ítem","Vendas por Item",'e',301005000,2, true, FRVendasItem.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Média de vendas por ítem","Media de vendas por item",'o',301006000,2, true, FRMediaItem.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Ultimas Vendas por Cliente","Ultimas Vendas por Cliente",'C',301007000,2, true, FRUltimaVenda.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por Setor","Vendas por Setor",'t',301008000,2, true, FRVendaSetor.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por CFOP","Vendas por CFOP",'F',301009000,2, true, FRVendasCFOP.class);
+      addOpcao(301000000,TP_OPCAO_ITEM,"Resumo diário","Resumo Diário",'R',301000100,2, true, FRResumoDiario.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas geral","Vendas em Geral",'V',301000200,2, true, FRVendasGeral.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas físico","Físico de Vendas",'d',301000300,2, true, FRVendasFisico.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas detalhado","Vendas Detalhadas",'n',301000400,2, true, FRVendasDet.class);	        
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por ítem","Vendas por Item",'e',301000500,2, true, FRVendasItem.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Média de vendas por ítem","Media de vendas por item",'o',301000600,2, true, FRMediaItem.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Ultimas Vendas por Cliente","Ultimas Vendas por Cliente",'C',301000700,2, true, FRUltimaVenda.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por Setor","Vendas por Setor",'t',301000800,2, true, FRVendaSetor.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por CFOP","Vendas por CFOP",'F',301000900,2, true, FRVendasCFOP.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Gerenciamento de contas","Gerenciamento de contas",'i',301010000,2, true, FRGerContas.class);
 	  
    addOpcao(300000000,TP_OPCAO_MENU,"Gráficos","",'G',301100000,1, false, null);	  

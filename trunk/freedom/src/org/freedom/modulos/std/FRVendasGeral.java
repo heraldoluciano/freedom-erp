@@ -33,6 +33,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -49,6 +50,7 @@ public class FRVendasGeral extends FRelatorio{
   private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);   
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);  
+  private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
   private JRadioGroup rgFaturados = null;
   private JRadioGroup rgFinanceiro = null;
   private Vector vLabsFat = new Vector();
@@ -60,7 +62,7 @@ public class FRVendasGeral extends FRelatorio{
   
   public FRVendasGeral() {
     setTitulo("Vendas em Geral");
-    setAtribos(80,80,295,280);
+    setAtribos(80,80,295,300);
     
     txtDataini.setVlrDate(new Date());
     txtDatafim.setVlrDate(new Date());
@@ -106,6 +108,7 @@ public class FRVendasGeral extends FRelatorio{
 	adic(txtDescVend,80,80,190,20);
 	adic(rgFaturados, 7, 120, 120, 70);
 	adic(rgFinanceiro, 153, 120, 120, 70);
+	adic(cbVendaCanc, 7, 200, 200, 20);
 	
   }
   
@@ -119,6 +122,7 @@ public class FRVendasGeral extends FRelatorio{
   	 String sWhere = "";
   	 String sWhere1 = "";
   	 String sWhere2 = "";
+  	 String sWhere3 = "";
 	 String sCab = "";
 	 
 	if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
@@ -154,6 +158,9 @@ public class FRVendasGeral extends FRelatorio{
 	else if(rgFinanceiro.getVlrString().equals("A")){
 		sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 	}
+
+	if(cbVendaCanc.getVlrString().equals("N"))
+		sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
   	
   	
     ImprimeOS imp = new ImprimeOS("",con);
@@ -173,16 +180,16 @@ public class FRVendasGeral extends FRelatorio{
     sDatafim = txtDatafim.getVlrString();
     
     
-    String sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA,"+
-                  "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG,"+
-                  "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI "+
-                  " FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM" +
-                  " WHERE C.CODCLI=V.CODCLI AND TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM" +
-		          " AND TM.CODFILIAL=V.CODFILIALTM AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
-                   sWhere1 + sWhere2 +			  
-                  " AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-                  " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C'"+sWhere+"ORDER BY V.DTSAIDAVENDA,V.DOCVENDA ";
+    String sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA,"
+                + "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG,"
+                + "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI "
+                + " FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM" 
+                + " WHERE C.CODCLI=V.CODCLI AND TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM" 
+		        + " AND TM.CODFILIAL=V.CODFILIALTM AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
+		        + sWhere + sWhere1 + sWhere2 + sWhere3		  
+                + " AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "
+                + Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
+                + "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA ";
                   
     PreparedStatement ps = null;
     ResultSet rs = null;

@@ -29,7 +29,9 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -177,6 +179,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextField txtFiscalTipoMov1 = new JTextField();
 	private JTextField txtFiscalTipoMov2 = new JTextField();	
 	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);
+	private JLabelPad lbStatus = new JLabelPad();
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.ped.", "S","N");
 	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp.NF", "S", "N");
 	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Imp.bol.?", "S","N");
@@ -197,14 +200,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
 	private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
-	JTextFieldPad txtUltCamp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
-	boolean[] bPrefs = null;
-	boolean bCtrl = false;
-	String sOrdNota = "";
+	private JTextFieldPad txtUltCamp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
+	private boolean[] bPrefs = null;
+	private boolean bCtrl = false;
+	private String sOrdNota = "";
+	private int iVendaTemp = 0;
 
 	public FVenda() {
 		setTitulo("Venda");
-		setAtribos(15, 10, 765, 460);
+		setAtribos(15, 10, 775, 460);
 
 		pnCliCab.add(tpnCab);
 		//pinCabVenda.setFirstFocus(txtCodVenda);
@@ -436,6 +440,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
 		btAltComis.addActionListener(this);
+		
+		lbStatus.setForeground(Color.WHITE);
+		lbStatus.setBackground(Color.RED);
+		lbStatus.setFont( new Font("Arial", Font.BOLD, 13));
+		lbStatus.setOpaque(true);
+		lbStatus.setVisible(false);
+		
 	    setImprimir(true);
 	}
 
@@ -531,7 +542,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		adicDescFK(txtDescCli, 90, 60, 197, 20, "RazCli","Razão social do cliente");
 		adicCampo(txtCodPlanoPag, 290, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.",ListaCampos.DB_FK, txtDescPlanoPag, true);
 		adicDescFK(txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag","Descrição do plano de pag.");
-		adicCampo(txtPedCliVenda, 570, 60, 77, 20, "PedCliVenda", "N.ped.cli.",ListaCampos.DB_SI, false);
+		adicCampo(txtPedCliVenda, 570, 60, 75, 20, "PedCliVenda", "N.ped.cli.",ListaCampos.DB_SI, false);
+		adic(lbStatus, 649, 60, 95, 20);
 		setPainel(pinCabComis);
 		adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.",ListaCampos.DB_FK, txtDescVend, true);
 		adicDescFK(txtDescVend, 90, 20, 197, 20, "NomeVend","Nome do comissionado");
@@ -1320,13 +1332,29 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				txtPercComisVenda.setAtivo(txtVlrComisVenda.doubleValue() == 0);
 			} else if (cevt.getListaCampos() == lcCli ) {
 				if ( (bPrefs[11]) ) {
-					sObsCli = getObsCli(txtCodCli.getVlrInteger().intValue());
-					if (!sObsCli.equals("")) {
-						
-						FObsCliVend.showVend(this.getX(),this.getY() + tpnCab.getHeight() + 
-								pnCab.getHeight() ,spTab.getWidth(), spTab.getHeight(), sObsCli);
+					if(iVendaTemp!=txtCodVenda.getVlrInteger().intValue()){
+						sObsCli = getObsCli(txtCodCli.getVlrInteger().intValue());
+						if (!sObsCli.equals("")) {						
+							FObsCliVend.showVend(this.getX(),this.getY() + tpnCab.getHeight() + 
+									pnCab.getHeight() ,spTab.getWidth(), spTab.getHeight(), sObsCli);
+						}
+						iVendaTemp = txtCodVenda.getVlrInteger().intValue();
 					}
 				}
+			}
+			
+			if (txtStatusVenda.getVlrString().trim().length()>0 && 
+					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
+				lbStatus.setText("  CANCELADA");
+				lbStatus.setVisible(true);
+			}
+			else if (verificaBloq()){
+				lbStatus.setText("  BLOQUEADA");
+				lbStatus.setVisible(true);
+			}
+			else {
+				lbStatus.setText("");
+				lbStatus.setVisible( false );
 			}
 		}
 		finally {
@@ -1576,6 +1604,45 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps = null;
 			sSql = null;
 		}
+	}
+	
+	private boolean verificaBloq() {
+		boolean retorno = false;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String sSql = null;
+		String sTipoVenda = null;
+		int iCodVenda = 0;
+		try {
+			iCodVenda = txtCodVenda.getVlrInteger().intValue();
+			if (iCodVenda != 0) {
+				sTipoVenda = "V";
+				sSql = "SELECT BLOQVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA=?";
+				ps = con.prepareStatement(sSql);
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+				ps.setInt(3, iCodVenda);
+				ps.setString(4, sTipoVenda);
+				rs = ps.executeQuery();
+				
+				if(rs.next()){
+					if(rs.getString(1).equals("S"))
+						retorno = true;
+				}					
+					
+				ps.close();
+				if (!con.getAutoCommit())
+					con.commit();
+			}
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro bloqueando a venda!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			rs = null;
+			ps = null;
+			sSql = null;
+		}
+		return retorno;
 	}
 
 	private void imprimir(boolean bVisualizar, int iCodVenda) {
