@@ -408,8 +408,8 @@ public class FRGerContas extends FRelatorio  {
 				  	+ sWhere +")) VENDASANTERIOR,"
 					  			  					  	
 				  //meta estimada para ano corrente					
-				  +" SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C2.CODEMP AND" 
-				  +" CM.CODFILIAL=C2.CODFILIAL AND CM.CODCLI=C2.CODCLI AND" 
+				  +" SUM((SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=C.CODEMP AND" 
+				  +" CM.CODFILIAL=C.CODFILIAL AND CM.CODCLI=C.CODCLI AND" 
 				  +" ANOMETAVEND=("+txtAno.getVlrInteger()+"))) AS VENDASMETA"					
 					
   				  //From principal
