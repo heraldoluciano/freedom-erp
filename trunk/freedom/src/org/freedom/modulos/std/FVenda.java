@@ -204,7 +204,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private boolean[] bPrefs = null;
 	private boolean bCtrl = false;
 	private String sOrdNota = "";
-	private int iVendaTemp = 0;
+	private int iCodCliAnt = 0;
 
 	public FVenda() {
 		setTitulo("Venda");
@@ -1282,6 +1282,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				txtFiscalTipoMov1.setText("S");
 				txtFiscalTipoMov2.setText("N");
 			}
+			if (bPrefs[11]) 
+				iCodCliAnt = txtCodCli.getVlrInteger().intValue();
 		}
 
 	}
@@ -1332,13 +1334,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				txtPercComisVenda.setAtivo(txtVlrComisVenda.doubleValue() == 0);
 			} else if (cevt.getListaCampos() == lcCli ) {
 				if ( (bPrefs[11]) ) {
-					if(iVendaTemp!=txtCodVenda.getVlrInteger().intValue()){
+					if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
+						iCodCliAnt = txtCodCli.getVlrInteger().intValue();
 						sObsCli = getObsCli(txtCodCli.getVlrInteger().intValue());
 						if (!sObsCli.equals("")) {						
 							FObsCliVend.showVend(this.getX(),this.getY() + tpnCab.getHeight() + 
 									pnCab.getHeight() ,spTab.getWidth(), spTab.getHeight(), sObsCli);
 						}
-						iVendaTemp = txtCodVenda.getVlrInteger().intValue();
 					}
 				}
 			}
