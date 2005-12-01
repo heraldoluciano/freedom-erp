@@ -70,8 +70,8 @@ public class FConta extends FDados {
     lcMoeda.setReadOnly(true);
     txtCodMoeda.setTabelaExterna(lcMoeda);
     
-    lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.tp.lanç.", ListaCampos.DB_PK, true));
-    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do tipo de lançamento", ListaCampos.DB_SI, false));
+    lcPlan.add(new GuardaCampo( txtCodPlan, "CodPlan", "Cód.planj.", ListaCampos.DB_PK, true));
+    lcPlan.add(new GuardaCampo( txtDescPlan, "DescPlan", "Descrição do plano de contas", ListaCampos.DB_SI, false));
     lcPlan.montaSql(false, "PLANEJAMENTO", "FN");    
     lcPlan.setQueryCommit(false);
     lcPlan.setReadOnly(true);

@@ -40,6 +40,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -56,49 +57,25 @@ public class FRResumoDiario extends FRelatorio {
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-	private ListaCampos lcVend = new ListaCampos(this);
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
 	private JRadioGroup rgFaturados = null;
 	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup rgFormato = null;
 	private Vector vLabs = new Vector();
 	private Vector vVals = new Vector();
 	private Vector vLabsFat = new Vector();
 	private Vector vValsFat = new Vector();
 	private Vector vLabsFin = new Vector();
 	private Vector vValsFin = new Vector();
-	private JRadioGroup rgFormato = null;
+	private ListaCampos lcVend = new ListaCampos(this);
 	private int iLinha = 1;
 	private int iCol = 1;
 
 	public FRResumoDiario() {
 		setTitulo("Resumo Diario");
-		setAtribos(80, 80, 296, 320);
-
-		txtDataini.setVlrDate(new Date());
-		txtDatafim.setVlrDate(new Date());
-		JLabelPad lbLinha = new JLabelPad();
-		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-
-		adic(new JLabelPad("Periodo:"), 7, 5, 100, 20);
-		adic(lbLinha, 60, 15, 210, 2);
-		adic(new JLabelPad("De:"), 7, 30, 30, 20);
-		adic(txtDataini, 32, 30, 97, 20);
-		adic(new JLabelPad("Até:"), 140, 30, 30, 20);
-		adic(txtDatafim, 170, 30, 100, 20);
-
-		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
-		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
-		lcVend.montaSql(false, "VENDEDOR", "VD");
-		lcVend.setQueryCommit(false);
-		lcVend.setReadOnly(true);
-		txtCodVend.setNomeCampo("CodVend");
-		txtCodVend.setFK(true);
-		txtCodVend.setTabelaExterna(lcVend);
-
-		adic(new JLabelPad("Cód.comiss."), 7, 60, 210, 20);
-		adic(txtCodVend, 7, 80, 70, 20);
-		adic(new JLabelPad("Nome do comissionado"), 80, 60, 210, 20);
-		adic(txtDescVend, 80, 80, 190, 20);
+		setAtribos(80, 80, 296, 330);
 		
+
 		vLabs.addElement("Detalhado");
 		vLabs.addElement("Resumido");
 		vVals.addElement("D");
@@ -123,10 +100,37 @@ public class FRResumoDiario extends FRelatorio {
 		vValsFin.addElement("A");
 		rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
 		rgFinanceiro.setVlrString("S");
-	    
+
+		lcVend.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVend.montaSql(false, "VENDEDOR", "VD");
+		lcVend.setQueryCommit(false);
+		lcVend.setReadOnly(true);
+		txtCodVend.setNomeCampo("CodVend");
+		txtCodVend.setFK(true);
+		txtCodVend.setTabelaExterna(lcVend);
+
+		txtDataini.setVlrDate(new Date());
+		txtDatafim.setVlrDate(new Date());
+		JLabelPad lbLinha = new JLabelPad();
+		lbLinha.setBorder(BorderFactory.createEtchedBorder());
+
+		adic(new JLabelPad("Periodo:"), 7, 5, 100, 20);
+		adic(lbLinha, 60, 15, 210, 2);
+		adic(new JLabelPad("De:"), 7, 30, 30, 20);
+		adic(txtDataini, 32, 30, 97, 20);
+		adic(new JLabelPad("Até:"), 140, 30, 30, 20);
+		adic(txtDatafim, 170, 30, 100, 20);
+
+		adic(new JLabelPad("Cód.comiss."), 7, 60, 210, 20);
+		adic(txtCodVend, 7, 80, 70, 20);
+		adic(new JLabelPad("Nome do comissionado"), 80, 60, 210, 20);
+		adic(txtDescVend, 80, 80, 190, 20);
+			    
 		adic(rgFormato, 7, 115, 265, 30);
 		adic(rgFaturados, 7, 160, 120, 70);
 		adic(rgFinanceiro, 153, 160, 120, 70);
+		adic(cbVendaCanc, 7, 240, 200, 20);
 
 	}
 
@@ -140,6 +144,7 @@ public class FRResumoDiario extends FRelatorio {
 		String sWhere = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
+		String sWhere3 = "";
 		String sCab = "";
 
 		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
@@ -175,6 +180,9 @@ public class FRResumoDiario extends FRelatorio {
 		else if(rgFinanceiro.getVlrString().equals("A")){
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 		}
+		
+		if(cbVendaCanc.getVlrString().equals("N"))
+			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
@@ -213,9 +221,8 @@ public class FRResumoDiario extends FRelatorio {
 					+ "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "
 					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND V.CODEMP=? AND V.CODFILIAL=?"
-					+ sWhere1 + sWhere2
-					+ " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' "
-					+ sWhere + " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
+					+ sWhere + sWhere1 + sWhere2 + sWhere3 
+					+ " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
 			//				  " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
 
 		} else if (rgFormato.getVlrString().equals("R")) {
@@ -225,9 +232,9 @@ public class FRResumoDiario extends FRelatorio {
 					+ " AND TM.CODEMP=V.CODEMPTM"
 					+ " AND TM.CODFILIAL=V.CODFILIALTM"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
-					+ sWhere1 + sWhere2			
+					+ sWhere + sWhere1 + sWhere2 + sWhere3 
 					+ " AND V.CODEMP=? AND V.CODFILIAL=? "
-					+ sWhere + " GROUP BY V.DTEMITVENDA";
+					+ " GROUP BY V.DTEMITVENDA";
 
 		}
 
