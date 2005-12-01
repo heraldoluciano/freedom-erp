@@ -21,6 +21,7 @@
  */
 
 package org.freedom.modulos.std;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -506,7 +507,8 @@ public class FRGerContas extends FRelatorio  {
 				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));				
 				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataIniMes(JAN,iAno-1)));
 				ps.setDate(iParam++,Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno-1)));										
-
+	
+				
 				if (!sCodGrup1.equals("")) {
 					ps.setInt(iParam, Aplicativo.iCodEmp);
 					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQGRUPO"));
