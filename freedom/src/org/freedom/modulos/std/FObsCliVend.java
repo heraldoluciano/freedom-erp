@@ -62,11 +62,11 @@ public class FObsCliVend extends FFDialogo implements KeyListener {
 		
 	}
 	public void keyPressed(KeyEvent kevt) {
-        if (kevt.getKeyCode() == KeyEvent.VK_ENTER)
+        if (kevt.getKeyCode() == KeyEvent.VK_SPACE)
         	btOK.doClick();
         else
    		    super.keyPressed(kevt);
-//		System.out.println("KeyPressed "+kevt.getKeyCode());
+		//System.out.println("KeyPressed "+kevt.getKeyCode());
 	}
 	public void keyReleased(KeyEvent kevt) {
 		super.keyReleased(kevt);
