@@ -34,6 +34,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -51,6 +52,7 @@ public class FRVendasFisico extends FRelatorio {
   private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);  
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");  
+  private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
   private JRadioGroup rgFaturados = null;
   private JRadioGroup rgFinanceiro = null;
   private JRadioGroup rgOrdem = null;
@@ -64,7 +66,7 @@ public class FRVendasFisico extends FRelatorio {
   
   public FRVendasFisico() {
 	    setTitulo("Fechamento Fisico de Vendas");
-	    setAtribos(80,80,295,325);
+	    setAtribos(80,80,295,345);
 	   
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 	    txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -121,6 +123,7 @@ public class FRVendasFisico extends FRelatorio {
 		adic(rgOrdem,7,125,263,30);	 	    
 		adic(rgFaturados, 7, 165, 120, 70);
 		adic(rgFinanceiro, 153, 165, 120, 70);
+		adic(cbVendaCanc, 7, 245, 200, 20);
 			
   }
   private boolean comRef() {
@@ -153,6 +156,7 @@ public class FRVendasFisico extends FRelatorio {
   	 String sWhere = "";
   	 String sWhere1 = "";
   	 String sWhere2 = "";
+  	 String sWhere3 = "";
 	 String sCab="";
 	 
      if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
@@ -188,6 +192,9 @@ public class FRVendasFisico extends FRelatorio {
  	 else if(rgFinanceiro.getVlrString().equals("A")){
  		sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
  	 }
+
+ 	 if(cbVendaCanc.getVlrString().equals("N"))
+		sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
      
     ImprimeOS imp = new ImprimeOS("",con);
     int linPag = imp.verifLinPag()-1;
@@ -229,7 +236,7 @@ public class FRVendasFisico extends FRelatorio {
                 + " FROM VDVENDA V,VDITVENDA IT, EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM "
                 + " WHERE V.DTEMITVENDA BETWEEN ? AND ? AND G.CODGRUP = P.CODGRUP AND IT.CODVENDA=V.CODVENDA"
                 + " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM"
-                + sWhere + sWhere1 + sWhere2 
+                + sWhere + sWhere1 + sWhere2 + sWhere3 
                 + " AND TM.CODTIPOMOV=V.CODTIPOMOV AND P.CODPROD = IT.CODPROD"
                 + " AND (NOT IT.QTDITVENDA = 0)"
                 + " AND (V.FLAG IN "+Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+")"

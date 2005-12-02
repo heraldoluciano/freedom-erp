@@ -56,23 +56,25 @@ public class FRVendasItem extends FRelatorio {
 	private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
 	private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+	private JCheckBoxPad cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S", "N");	
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
+	private JRadioGroup rgOrdem = null;
 	private JRadioGroup rgFaturados = null;
 	private JRadioGroup rgFinanceiro = null;
 	private Vector vLabsFat = new Vector();
 	private Vector vValsFat = new Vector();
 	private Vector vLabsFin = new Vector();
 	private Vector vValsFin = new Vector();
-	private JCheckBoxPad cbListaFilial = null; 	
+	private Vector vLabs = new Vector(2);
+	private Vector vVals = new Vector(2);
 	private ListaCampos lcVend = new ListaCampos(this);
 	private ListaCampos lcGrup = new ListaCampos(this);
 	private ListaCampos lcCliente = new ListaCampos(this);
 	private ListaCampos lcMarca = new ListaCampos(this);
-	private JRadioGroup rgOrdem = null;
-	private Vector vLabs = new Vector(2);
-	private Vector vVals = new Vector(2);
+	
 	public FRVendasItem() {
 		setTitulo("Vendas por Item");
-		setAtribos(80,80,305,500);
+		setAtribos(80,80,305,520);
 		
 		txtDescVend.setAtivo(false);
 		txtDescGrup.setAtivo(false);
@@ -147,8 +149,6 @@ public class FRVendasItem extends FRelatorio {
 		lcCliente.setReadOnly(true);
 		lcCliente.montaSql(false, "CLIENTE", "VD");
 				
-		cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S", "N");
-		cbListaFilial.setVlrString("N");
 				 
 		adic(new JLabelPad("Periodo:"),7,5,100,20);
 		adic(lbLinha,60,15,218,2);
@@ -179,6 +179,7 @@ public class FRVendasItem extends FRelatorio {
 		adic(lbLinha3,7,350,272,2);
         adic(new JLabelPad("Ordenado por:"),7,360,180,20);
         adic(rgOrdem,7,385,273,30);
+		adic(cbVendaCanc, 7, 425, 200, 20);
        
         
         
@@ -196,6 +197,7 @@ public class FRVendasItem extends FRelatorio {
 		String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 		String sCab = "";
 		String sOrdem = rgOrdem.getVlrString();
 		String sOrdenado = "";
@@ -290,6 +292,8 @@ public class FRVendasItem extends FRelatorio {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 		}
 		
+		if(cbVendaCanc.getVlrString().equals("N"))
+			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 		
 		/**/
 		if (cbListaFilial.getVlrString().equals("S")&& (txtCodCli.getText().trim().length() > 0) ){  
@@ -299,7 +303,7 @@ public class FRVendasItem extends FRelatorio {
 		        "VDITVENDA IT, EQPRODUTO P WHERE P.CODPROD = IT.CODPROD"+
 		        " AND IT.CODVENDA = V.CODVENDA"+
 		        " AND TM.CODTIPOMOV=V.CODTIPOMOV"+
-                sWhere1 + sWhere2 +			  
+                sWhere1 + sWhere2 + sWhere3 +			  
 		        " AND TM.CODEMP=V.CODEMPTM"+
 		        " AND TM.CODFILIAL=V.CODFILIALTM"+
 		        " AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP "+
@@ -308,7 +312,7 @@ public class FRVendasItem extends FRelatorio {
 		        " AND V.DTEMITVENDA BETWEEN"+
 		        " ? AND ? "+sWhere+" AND V.FLAG IN "+
 		        Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
-		        "AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' GROUP BY P."+sCodRel+","+
+		        " GROUP BY P."+sCodRel+","+
 		        "P.DESCPROD,P.CODUNID ORDER BY "+sOrdem;
  		 }
 	 
@@ -320,7 +324,7 @@ public class FRVendasItem extends FRelatorio {
 				"VDITVENDA IT, EQPRODUTO P WHERE P.CODPROD = IT.CODPROD"+
 				" AND IT.CODVENDA = V.CODVENDA"+
 	            " AND TM.CODTIPOMOV=V.CODTIPOMOV" +
-                sWhere1 + sWhere2 +			  
+                sWhere1 + sWhere2 + sWhere3 +			  
 	            " AND TM.CODEMP=V.CODEMPTM" +
 	            " AND TM.CODFILIAL=V.CODFILIALTM" +
 			    " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+

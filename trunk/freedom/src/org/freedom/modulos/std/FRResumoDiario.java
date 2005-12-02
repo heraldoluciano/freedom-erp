@@ -73,7 +73,7 @@ public class FRResumoDiario extends FRelatorio {
 
 	public FRResumoDiario() {
 		setTitulo("Resumo Diario");
-		setAtribos(80, 80, 296, 330);
+		setAtribos(80, 80, 296, 340);
 		
 
 		vLabs.addElement("Detalhado");
