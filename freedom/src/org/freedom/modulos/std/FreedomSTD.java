@@ -134,7 +134,7 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por ítem","Vendas por Item",'e',301000500,2, true, FRVendasItem.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Média de vendas por ítem","Media de vendas por item",'o',301000600,2, true, FRMediaItem.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Ultimas Vendas por Cliente","Ultimas Vendas por Cliente",'U',301000700,2, true, FRUltimaVenda.class);
-	  addOpcao(301000000,TP_OPCAO_ITEM,"Média de vendas por Cliente","Média de vendas por Cliente",'C',301000800,2, true, FRVendasCli.class);
+	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por Cliente","Vendas por Cliente",'C',301000800,2, true, FRVendasCli.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por Setor","Vendas por Setor",'t',301000900,2, true, FRVendaSetor.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Vendas por CFOP","Vendas por CFOP",'F',301001000,2, true, FRVendasCFOP.class);
 	  addOpcao(301000000,TP_OPCAO_ITEM,"Gerenciamento de contas","Gerenciamento de contas",'i',301011000,2, true, FRGerContas.class);
