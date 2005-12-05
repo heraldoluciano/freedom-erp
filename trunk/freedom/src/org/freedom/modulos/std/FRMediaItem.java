@@ -41,6 +41,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -63,12 +64,13 @@ public class FRMediaItem extends FRelatorio {
 	private JTextFieldPad txtSiglaMarca = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 10, 0);
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
-	private JRadioGroup rgOrdem = null;	
 	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-	private Vector vLabs = new Vector();
-	private Vector vVals = new Vector(); 
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
+	private JRadioGroup rgOrdem = null;	
 	private JRadioGroup rgFaturados = null;
 	private JRadioGroup rgFinanceiro = null;
+	private Vector vLabs = new Vector();
+	private Vector vVals = new Vector(); 
 	private Vector vLabsFat = new Vector();
 	private Vector vValsFat = new Vector();
 	private Vector vLabsFin = new Vector();
@@ -79,7 +81,7 @@ public class FRMediaItem extends FRelatorio {
 
 	public FRMediaItem() {
 		setTitulo("Media de vendas por item");
-		setAtribos(80, 80, 305, 480);
+		setAtribos(80, 80, 305, 510);
 
 		txtDescGrup.setAtivo(false);
 		txtDescMarca.setAtivo(false);
@@ -172,6 +174,7 @@ public class FRMediaItem extends FRelatorio {
 		adic(lbLinha4, 7, 335, 273, 2);
 		adic(lbOrdem, 7, 345, 80, 15);
 		adic(rgOrdem, 7, 370, 273, 30);
+		adic(cbVendaCanc, 7, 410, 200, 20);
 
 	}
 
@@ -205,6 +208,7 @@ public class FRMediaItem extends FRelatorio {
 		String sWhere = " WHERE ";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 		String sFiltroVend = "";
 		String sCab = "";
 		String sCab1 = "";
@@ -267,6 +271,9 @@ public class FRMediaItem extends FRelatorio {
 		else if(rgFinanceiro.getVlrString().equals("A")){
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 		}
+
+		if(cbVendaCanc.getVlrString().equals("N"))
+			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 		
 		int iSoma = 0;
 		String sOr = "";
@@ -283,7 +290,7 @@ public class FRMediaItem extends FRelatorio {
 					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
-	                + sWhere1 + sWhere2 			  
+	                + sWhere1 + sWhere2 + sWhere3		  
 					+ " AND TM.CODEMP=V.CODEMPTM"
 					+ " AND TM.CODFILIAL=V.CODFILIALTM"
 					+ " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
