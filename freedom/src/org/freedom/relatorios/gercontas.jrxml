@@ -96,12 +96,6 @@ ORDER BY 2]]></queryString>
 	<field name="VENDASANTERIOR" class="java.lang.Double"/>
 	<field name="VENDASMETA" class="java.lang.Double"/>
 	<field name="VENDASANTERIOR2" class="java.lang.Double"/>
-	<field name="PERCALC" class="java.lang.Double">
-		<fieldDescription><![CDATA[Percentual alcançado da meta.]]></fieldDescription>
-	</field>
-	<field name="VLRALC" class="java.lang.Double">
-		<fieldDescription><![CDATA[Valor restante para alcançar meta.]]></fieldDescription>
-	</field>
 	<variable name="TOTJAN" class="java.lang.Integer" resetType="Report" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{JAN}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
@@ -2195,14 +2189,12 @@ ORDER BY 2]]></queryString>
 						isPrintRepeatedValues="true"
 						isRemoveLineWhenBlank="false"
 						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false">
-							<printWhenExpression><![CDATA[new Boolean($F{PERCALC}.intValue()!=0)]]></printWhenExpression>
-						</reportElement>
+						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{PERCALC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
