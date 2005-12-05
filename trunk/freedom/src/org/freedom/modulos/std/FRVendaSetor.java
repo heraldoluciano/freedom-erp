@@ -77,40 +77,43 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40, 0);
-	private JCheckBoxPad cbMovEstoque = new JCheckBoxPad("Só com mov.estoque?", "S", "N");
-	private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?", "S", "N");
 	private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
 	private JLabelPad lbDescCodMarca = new JLabelPad("Descrição da marca");
-	private JLabelPad lbCodGrup1 = new JLabelPad("Cód.grupo/somar");
+	private JLabelPad lbCodGrup1 = new JLabelPad("Cód.gp/somar");
 	private JLabelPad lbDescCodGrup1 = new JLabelPad("Descrição do grupo/somar");
-	private JLabelPad lbCodGrup2 = new JLabelPad("Cód.grupo/subtrair");
+	private JLabelPad lbCodGrup2 = new JLabelPad("Cód.gp/subtrair");
 	private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
 	private JLabelPad lbCodSetor = new JLabelPad("Cód.setor");
 	private JLabelPad lbDescCodSetor = new JLabelPad("Descrição do setor");
 	private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
 	private JLabelPad lbDescCodVend = new JLabelPad("Nome do comissionado");
+	private JLabelPad lbCodCli = new JLabelPad("Cód.cli.");
+	private JLabelPad lbRazCli = new JLabelPad("Razão social do cliente");
+	private JCheckBoxPad cbMovEstoque = new JCheckBoxPad("Só com mov.estoque?", "S", "N");
+	private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?", "S", "N");
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
+	private JRadioGroup rgFaturados = null;
+	private JRadioGroup rgFinanceiro = null;
+	private JRadioGroup rgTipoRel = null;
+	private JRadioGroup rgOrdemRel = null;
+	private Vector vLabsFat = new Vector();
+	private Vector vValsFat = new Vector();
+	private Vector vLabsFin = new Vector();
+	private Vector vValsFin = new Vector();
+	private Vector vLabTipoRel = new Vector();
+	private Vector vValTipoRel = new Vector();
+	private Vector vLabOrdemRel = new Vector();
+	private Vector vValOrdemRel = new Vector();
 	private ListaCampos lcGrup1 = new ListaCampos(this);
 	private ListaCampos lcGrup2 = new ListaCampos(this);
 	private ListaCampos lcMarca = new ListaCampos(this);
 	private ListaCampos lcSetor = new ListaCampos(this);
 	private ListaCampos lcVendedor = new ListaCampos(this);
 	private ListaCampos lcCliente = new ListaCampos(this); 
-	private JRadioGroup rgFaturados = null;
-	private JRadioGroup rgFinanceiro = null;
-	private Vector vLabsFat = new Vector();
-	private Vector vValsFat = new Vector();
-	private Vector vLabsFin = new Vector();
-	private Vector vValsFin = new Vector();
-	private JRadioGroup rgTipoRel = null;
-	private JRadioGroup rgOrdemRel = null;
-	private Vector vLabTipoRel = new Vector();
-	private Vector vValTipoRel = new Vector();
-	private Vector vLabOrdemRel = new Vector();
-	private Vector vValOrdemRel = new Vector();
 
 	public FRVendaSetor() {
 		setTitulo("Relatório de Vendas por Setor");
-		setAtribos(80, 0, 480, 490);
+		setAtribos(80, 0, 610, 390);
 
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.add(Calendar.DATE, -30);
@@ -210,39 +213,40 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		adic(new JLabelPad("Formato de impressão"), 7, 0, 200, 20);
 		adic(rgTipoRel, 7, 20, 281, 30);
 		adic(new JLabelPad("Ordem"), 295, 0, 70, 20);
-		adic(rgOrdemRel, 295, 20, 157, 77);
+		adic(rgOrdemRel, 303, 20, 283, 77);
 		adic(new JLabelPad("Período"), 7, 50, 100, 20);
 		adic(txtDataini, 7, 70, 120, 20);
 		adic(new JLabelPad("Até"), 138, 70, 40, 20);
-		adic(txtDatafim, 168, 70, 120, 20);
-		adic(lbCodMarca, 7, 90, 250, 20);
-		adic(txtCodMarca, 7, 110, 120, 20);
-		adic(lbDescCodMarca, 130, 90, 250, 20);
-		adic(txtDescMarca, 130, 110, 327, 20);
-		adic(lbCodGrup1, 7, 130, 250, 20);
-		adic(txtCodGrup1, 7, 150, 120, 20);
-		adic(lbDescCodGrup1, 130, 130, 250, 20);
-		adic(txtDescGrup1, 130, 150, 327, 20);
-		adic(lbCodGrup2, 7, 170, 250, 20);
-		adic(txtCodGrup2, 7, 190, 120, 20);
-		adic(lbDescCodGrup2, 130, 170, 250, 20);
-		adic(txtDescGrup2, 130, 190, 327, 20);
-		adic(lbCodSetor, 7, 210, 250, 20);
-		adic(txtCodSetor, 7, 230, 120, 20);
-		adic(lbDescCodSetor, 130, 210, 250, 20);
-		adic(txtDescSetor, 130, 230, 327, 20);
-		adic(lbCodVend, 7, 250, 250, 20);
-		adic(txtCodVend, 7, 270, 120, 20);
-		adic(lbDescCodVend, 130, 250, 250, 20);
-		adic(txtNomeVend, 130, 270, 327, 20);
-		adic(new JLabelPad("Cód.cli."), 7, 290, 200, 20);
-		adic(txtCodCli, 7, 310, 120, 20);
-		adic(new JLabelPad("Razão social do cliente"), 130, 290, 200, 20);
-		adic(txtRazCli, 130, 310, 327, 20);
-		adic(rgFaturados, 7, 340, 120, 70);
-		adic(rgFinanceiro, 140, 340, 120, 70);
-		adic(cbMovEstoque, 270, 340, 200, 25);
-		adic(cbCliPrinc, 270, 360, 300, 25);
+		adic(txtDatafim, 168, 70, 100, 20);
+		adic(lbCodMarca, 7, 100, 190, 20);
+		adic(txtCodMarca, 7, 120, 90, 20);
+		adic(lbDescCodMarca, 100, 100, 190, 20);
+		adic(txtDescMarca, 100, 120, 190, 20);
+		adic(lbCodGrup1, 7, 140, 200, 20);
+		adic(txtCodGrup1, 7, 160, 90, 20);
+		adic(lbDescCodGrup1, 100, 140, 190, 20);
+		adic(txtDescGrup1, 100, 160, 190, 20);
+		adic(lbCodGrup2, 7, 180, 200, 20);
+		adic(txtCodGrup2, 7, 200, 90, 20);
+		adic(lbDescCodGrup2, 100, 180, 190, 20);
+		adic(txtDescGrup2, 100, 200, 190, 20);
+		adic(lbCodSetor, 303, 100, 90, 20);
+		adic(txtCodSetor, 303, 120, 90, 20);
+		adic(lbDescCodSetor, 396, 100, 190, 20);
+		adic(txtDescSetor, 396, 120, 190, 20);
+		adic(lbCodVend, 303, 140, 190, 20);
+		adic(txtCodVend, 303, 160, 90, 20);
+		adic(lbDescCodVend, 396, 140, 190, 20);
+		adic(txtNomeVend, 396, 160, 190, 20);
+		adic(lbCodCli, 303, 180, 90, 20);
+		adic(txtCodCli, 303, 200, 90, 20);
+		adic(lbRazCli, 396, 180, 190, 20);
+		adic(txtRazCli, 396, 200, 190, 20);
+		adic(rgFaturados, 7, 230, 130, 70);
+		adic(rgFinanceiro, 160, 230, 130, 70);
+		adic(cbMovEstoque, 303, 230, 200, 20);
+		adic(cbCliPrinc, 303, 250, 300, 20);
+		adic(cbVendaCanc, 303, 270, 200, 20);
 
 	}
 
@@ -280,6 +284,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere = "";
 		String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 	  	String sCab = "";
 		String sFrom = "";
 		String sCodMarca = "";
@@ -398,7 +403,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " CLI.: "
 						+ iCodCli + "-"
 						+ Funcoes.copy(txtRazCli.getVlrString(), 30);
-			}
+			}			
+
+			if(cbVendaCanc.getVlrString().equals("N"))
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
 			sSql = "SELECT VD.CODSETOR,"
 					+ "CAST(SUBSTR(CAST(V.DTEMITVENDA AS CHAR(10)),1,7) AS CHAR(7)) ANO_MES,"
@@ -415,8 +423,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
 					+ "G.CODFILIAL=P.CODFILIALGP AND "
 					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
-					+ sWhereTM + sWhere1 + sWhere2
+					+ "TM.CODTIPOMOV=V.CODTIPOMOV "
+					+ sWhereTM + sWhere1 + sWhere2 + sWhere3
 					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ") + sWhere
 					+ "GROUP BY 1,2,3,4,5" + "ORDER BY 1,2,3,4,5";
 
@@ -774,6 +782,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 		String sCab = "";
 		String sFrom = "";
 		String sCodMarca = "";
@@ -880,6 +889,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				}
 			}
 
+			if(cbVendaCanc.getVlrString().equals("N"))
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			
 			sSql = "SELECT P.DESCPROD,P.CODPROD,P.REFPROD,SUM(IV.QTDITVENDA) QTDVENDA ,SUM(IV.VLRLIQITVENDA) VLRVENDA "
 					+ "FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, EQTIPOMOV TM "
 					+ sFrom
@@ -893,8 +905,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
 					+ "G.CODFILIAL=P.CODFILIALGP AND "
 					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
-					+ sWhereTM + sWhere1 + sWhere2
+					+ "TM.CODTIPOMOV=V.CODTIPOMOV "
+					+ sWhereTM + sWhere1 + sWhere2 + sWhere3
 					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")
 					+ sWhere
 					+ "GROUP BY 1,2,3" + "ORDER BY 1,2,3";
@@ -1077,6 +1089,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 		String sWhereTM = "";
 		String sCab = "";
 		String sCab1 = "";
@@ -1198,6 +1211,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sOrderBy = "1,2,4";
 				sDescOrdemRel = "Código do cliente";
 			}
+
+			if(cbVendaCanc.getVlrString().equals("N"))
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			
 			sSql = "SELECT C2.CODTIPOCLI,TI.DESCTIPOCLI,C2.RAZCLI,C2.CODCLI,"
 					+ "SUM(IV.QTDITVENDA) QTDVENDA, SUM(IV.VLRLIQITVENDA) VLRVENDA "
 					+ "FROM VDVENDA V, VDITVENDA IV, VDVENDEDOR VD, EQPRODUTO P, EQGRUPO G, "
@@ -1216,8 +1233,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ "P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND "
 					+ "G.CODFILIAL=P.CODFILIALGP AND "
 					+ "TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND "
-					+ "TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
-					+ sWhereTM + sWhere1 + sWhere2
+					+ "TM.CODTIPOMOV=V.CODTIPOMOV "
+					+ sWhereTM + sWhere1 + sWhere2 + sWhere3
 					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ") + sWhere
 					+ "GROUP BY 1,2,3,4 " + "ORDER BY " + sOrderBy;
 

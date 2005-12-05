@@ -59,21 +59,22 @@ public class FRUltimaVenda extends FRelatorio {
 	private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescVend = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-	private JCheckBoxPad cbListaFilial = null;	
+	private JCheckBoxPad cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S","N");	
 	private JCheckBoxPad cbObsVenda = new JCheckBoxPad("Imprimir Observações da venda?", "S", "N");
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
 	private JRadioGroup rgFaturados = null;
 	private JRadioGroup rgFinanceiro = null;
 	private Vector vLabsFat = new Vector();
 	private Vector vValsFat = new Vector();
 	private Vector vLabsFin = new Vector();
 	private Vector vValsFin = new Vector();
+	private Vector vObs = null;
 	private ListaCampos lcVend = new ListaCampos(this);
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
-	private Vector vObs = null;
 
 	public FRUltimaVenda() {
 		setTitulo("Ultima Venda por Cliente");
-		setAtribos(80, 80, 290, 370);
+		setAtribos(80, 80, 290, 390);
 
 		GregorianCalendar cPeriodo = new GregorianCalendar();
 		txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -117,9 +118,7 @@ public class FRUltimaVenda extends FRelatorio {
 		rgFinanceiro = new JRadioGroup(3, 1, vLabsFin, vValsFin);
 		rgFinanceiro.setVlrString("S");
 
-		cbListaFilial = new JCheckBoxPad("Listar vendas das filiais ?", "S","N");
-		cbListaFilial.setVlrString("N");
-
+		
 		adic(new JLabelPad("Periodo:"), 7, 5, 120, 20);
 		adic(new JLabelPad("De:"), 7, 27, 30, 20);
 		adic(txtDataini, 37, 27, 90, 20);
@@ -138,6 +137,7 @@ public class FRUltimaVenda extends FRelatorio {
 		adic(cbObsVenda, 7, 185, 250, 20);
 		adic(rgFaturados, 7, 215, 120, 70);
 		adic(rgFinanceiro, 148, 215, 120, 70);
+		adic(cbVendaCanc, 7, 295, 200, 20);
 
 	}
 
@@ -158,6 +158,7 @@ public class FRUltimaVenda extends FRelatorio {
 		String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 		String sSQL = "";
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
@@ -210,14 +211,17 @@ public class FRUltimaVenda extends FRelatorio {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 		}
 		
-		sSQL = "SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, "
-				+ "VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA "
-				+ "FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL "
-				+ "AND C.CODFILIAL=VD.CODFILIALCL AND VD.DTEMITVENDA BETWEEN ? AND ? AND C.CODFILIAL=? "
-				+ "AND C.CODEMP=? AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " 
-				+ " TM.CODTIPOMOV=VD.CODTIPOMOV "
-				+ sWhere + sWhere1 + sWhere2	
-				+ " GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
+		if(cbVendaCanc.getVlrString().equals("N"))
+			sWhere3 = " AND NOT SUBSTR(VD.STATUSVENDA,1,1)='C' ";
+		
+		sSQL = " SELECT C.CODCLI,C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA, "
+			 + " VD.DOCVENDA, VD.VLRLIQVENDA, MAX(VD.DTEMITVENDA), VD.OBSVENDA "
+			 + " FROM VDCLIENTE C, VDVENDA VD, EQTIPOMOV TM WHERE C.CODCLI=VD.CODCLI AND C.CODEMP=VD.CODEMPCL "
+			 + " AND C.CODFILIAL=VD.CODFILIALCL AND VD.DTEMITVENDA BETWEEN ? AND ? AND C.CODFILIAL=? "
+			 + " AND C.CODEMP=? AND TM.CODEMP=VD.CODEMPTM AND TM.CODFILIAL=VD.CODFILIALTM AND " 
+			 + " TM.CODTIPOMOV=VD.CODTIPOMOV "
+			 +   sWhere + sWhere1 + sWhere2 + sWhere3	
+			 + " GROUP BY C.CODCLI, C.RAZCLI,C.FONECLI,C.DDDCLI,VD.CODVENDA,VD.DOCVENDA,VD.VLRLIQVENDA,VD.OBSVENDA ";
 
 		System.out.println(sSQL);
 

@@ -33,6 +33,7 @@ import javax.swing.BorderFactory;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
@@ -51,6 +52,7 @@ public class FRVendasCFOP extends FRelatorio{
 	private JTextFieldFK txtDescCFOP = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad("Mostrar Canceladas", "S", "N");
 	private JRadioGroup rgFaturados = null;
 	private JRadioGroup rgFinanceiro = null;
 	private Vector vLabsFat = new Vector();
@@ -64,7 +66,7 @@ public class FRVendasCFOP extends FRelatorio{
   
 	public FRVendasCFOP() {
 	    setTitulo("Vendas em Geral");
-	    setAtribos(80,80,295,320);
+	    setAtribos(80,80,295,340);
 	    
 
 	    vLabsFat.addElement("Faturado");
@@ -125,6 +127,7 @@ public class FRVendasCFOP extends FRelatorio{
 		adic(txtDescTipoMov,80,120,190,20);
 		adic(rgFaturados, 7, 160, 120, 70);
 		adic(rgFinanceiro, 153, 160, 120, 70);
+		adic(cbVendaCanc, 7, 240, 200, 20);
 	
 	}
   
@@ -141,6 +144,7 @@ public class FRVendasCFOP extends FRelatorio{
 	  	String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
+	  	String sWhere3 = "";
 		String sCab = "";
 		String sCab1 = "";
 		 
@@ -180,7 +184,9 @@ public class FRVendasCFOP extends FRelatorio{
 		else if(rgFinanceiro.getVlrString().equals("A")){
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
 		}
-	  	
+
+		if(cbVendaCanc.getVlrString().equals("N"))
+			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 	  	
 	    ImprimeOS imp = new ImprimeOS("",con);
 	    int linPag = imp.verifLinPag()-1;
@@ -194,19 +200,19 @@ public class FRVendasCFOP extends FRelatorio{
 	    sDatafim = txtDatafim.getVlrString();
 	    
 	    
-	    String sSQL = "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " +
-	    		      "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, SUM(I.VLRLIQITVENDA)  " +
-	                  "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT " +
-	                  "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' " +
-	                  "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA " +
-	                  "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " +
-	                  "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " +
-	                  "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT " +
-	                  sWhere + sWhere1 + sWhere2 +
-	                  "AND V.DTEMITVENDA BETWEEN ? AND ? " +
-	                  "GROUP BY V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, " +
-	    		      "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI " +
-	                  "ORDER BY I.CODNAT, V.DOCVENDA, V.CODVENDA ";
+	    String sSQL = "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, "
+	    		    + "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, SUM(I.VLRLIQITVENDA)  "
+	    		    + "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT "
+	    		    + "WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' "
+	    		    + "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA "
+	    		    + "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "
+	    		    + "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
+	    		    + "AND NT.CODEMP=I.CODEMPNT AND NT.CODFILIAL=I.CODFILIALNT AND NT.CODNAT=I.CODNAT "
+	    		    + sWhere + sWhere1 + sWhere2 + sWhere3
+	    		    + "AND V.DTEMITVENDA BETWEEN ? AND ? "
+	    		    + "GROUP BY V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, "
+	    		    + "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI "
+	    		    + "ORDER BY I.CODNAT, V.DOCVENDA, V.CODVENDA ";
 	                  
 	    PreparedStatement ps = null;
 	    ResultSet rs = null;
