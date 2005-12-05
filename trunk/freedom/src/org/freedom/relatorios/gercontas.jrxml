@@ -2180,7 +2180,7 @@ ORDER BY 2]]></queryString>
 						x="708"
 						y="3"
 						width="38"
-						height="13"
+						height="7"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-45"
@@ -2189,12 +2189,14 @@ ORDER BY 2]]></queryString>
 						isPrintRepeatedValues="true"
 						isRemoveLineWhenBlank="false"
 						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
+						isPrintWhenDetailOverflows="false">
+							<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.intValue()!=0 & $F{VENDASMETA}.intValue()!=0) ]]></printWhenExpression>
+						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2202,7 +2204,7 @@ ORDER BY 2]]></queryString>
 						x="751"
 						y="3"
 						width="60"
-						height="13"
+						height="7"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-46"
