@@ -96,6 +96,12 @@ ORDER BY 2]]></queryString>
 	<field name="VENDASANTERIOR" class="java.lang.Double"/>
 	<field name="VENDASMETA" class="java.lang.Double"/>
 	<field name="VENDASANTERIOR2" class="java.lang.Double"/>
+	<field name="PERCALC" class="java.lang.Double">
+		<fieldDescription><![CDATA[Percentual alcançado da meta.]]></fieldDescription>
+	</field>
+	<field name="VLRALC" class="java.lang.Double">
+		<fieldDescription><![CDATA[Valor restante para alcançar meta.]]></fieldDescription>
+	</field>
 	<variable name="TOTJAN" class="java.lang.Integer" resetType="Report" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{JAN}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
@@ -2174,11 +2180,11 @@ ORDER BY 2]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
 				</line>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="709"
-						y="2"
+						x="708"
+						y="3"
 						width="38"
 						height="13"
 						forecolor="#000000"
@@ -2190,22 +2196,20 @@ ORDER BY 2]]></queryString>
 						isRemoveLineWhenBlank="false"
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false">
-							<printWhenExpression><![CDATA[new Boolean($F{VENDASMETA}.intValue()!=0)]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean($F{PERCALC}.intValue()!=0)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[
-
-]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{PERCALC}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
 						x="751"
-						y="2"
-						width="61"
+						y="3"
+						width="60"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2216,15 +2220,15 @@ ORDER BY 2]]></queryString>
 						isRemoveLineWhenBlank="false"
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false">
-							<printWhenExpression><![CDATA[new Boolean($F{VENDASMETA}.intValue()!=0)]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.intValue()!=0 & $F{VENDASMETA}.intValue()!=0) 
+]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[
-
-
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[((new BigDecimal($F{VENDASMETA}.doubleValue())).subtract
+(new BigDecimal($F{VENDASATUAL}.doubleValue())))
 ]]></textFieldExpression>
 				</textField>
 			</band>
