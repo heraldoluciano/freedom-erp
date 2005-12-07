@@ -336,7 +336,7 @@ public class NFIswara extends Leiaute {
            sEnt += rs.getString("EndEnt") != null ? rs.getString("EndEnt").trim() : ""; 
 		   sEnt += rs.getString("NumEnt") != null ? ", "+rs.getString("NumEnt").trim() : ""; 
 		   sEnt += rs.getString("ComplEnt") != null ? " - "+rs.getString("ComplEnt").trim() : ""; 
-		   sEnt += rs.getString("BairEnt") != null ? "   "+rs.getString("CidEnt").trim() : ""; 
+		   sEnt += rs.getString("BairEnt") != null ? "   "+rs.getString("BairEnt").trim() : ""; 
 		   sEnt += rs.getString("CidEnt") != null ? " - "+rs.getString("CidEnt").trim() : ""; 
 		   sEnt += rs.getString("UfEnt") != null ? "/"+rs.getString("UfEnt").trim() : ""; 
 		   imp.say(imp.pRow()+0,3,sEnt);

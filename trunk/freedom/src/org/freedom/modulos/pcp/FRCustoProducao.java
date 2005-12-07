@@ -25,6 +25,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import org.freedom.componentes.GuardaCampo;
@@ -41,7 +44,7 @@ import org.freedom.telas.FRelatorio;
 public class FRCustoProducao extends FRelatorio {
   private static final long serialVersionUID = 1L;
   private int casasDecFin = Aplicativo.casasDecFin;
-  //private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+  private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_STRING,6,0);
@@ -70,6 +73,10 @@ public class FRCustoProducao extends FRelatorio {
   public FRCustoProducao() {
     setTitulo("Inventário");
     setAtribos(80,30,365,320);
+    
+    GregorianCalendar cal = new GregorianCalendar();
+    cal.add(Calendar.DATE,0);
+    txtData.setVlrDate(cal.getTime());
         
     vLbOrdem.addElement("Código");
     vLbOrdem.addElement("Descrição");
@@ -112,8 +119,8 @@ public class FRCustoProducao extends FRelatorio {
     
     adic(lbOpcao,7,0,100,20);
     adic(rgOpcao,7,20,200,30);
-   // adic(new JLabelPad("Estoque de:"),223,0,115,20);
-   // adic(txtData,223,20,115,20);
+    adic(new JLabelPad("Estoque de:"),223,0,115,20);
+    adic(txtData,223,20,115,20);
     adic(new JLabelPad("Cód.almox."),7,60,80,20);
     adic(txtCodAlmox,7,80,80,20);
     adic(new JLabelPad("Descrição do almoxarifado"),90,60,250,20);
@@ -133,272 +140,167 @@ public class FRCustoProducao extends FRelatorio {
 
   
   public void imprimir(boolean bVisualizar) {
-  	String sSql = "";
-  	String sCab = "";
-  	PreparedStatement ps = null;
-  	ResultSet rs = null;
-  	ImprimeOS imp = null;
-  	int linPag = 0;
-  	int iparm;
-  	int lin = 0;
+	  String sSql = "";
+	  	String sCpCodigo = "";
+	  	String sCodMarca = "";
+	  	String sCodGrup = "";
+	  	String sFiltros1= "";
+	  	String sFiltros2= "";
+	  	int iCodAlmox = 0;
+	  	ImprimeOS imp = null;
+	  	int linPag = 0;
+	  	PreparedStatement ps = null;
+	  	ResultSet rs = null;
+	  	double deCustoTot = 0;
+	  	double deSldProd = 0;
 
-	imp = new ImprimeOS("",con);
-	linPag = imp.verifLinPag()-1;
+	  	try {
 	  		
-	try {
+	  		imp = new ImprimeOS("",con);
+	  		linPag = imp.verifLinPag()-1;
+	  		  		
+	  		sCpCodigo = (bPrefs[0]?"REFPROD":"CODPROD");
+	  		iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
+	  		sCodMarca = txtCodMarca.getVlrString().trim();
+	  		sCodGrup = txtCodGrup.getVlrString().trim();
+	  		//iCodAlmox = txt
+	  		
+	  		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT FROM PPRELCUSTOSP(?,?,?,?,?,?,?,?,?,?,?,?,?) " 
+			     + " WHERE SLDPROD!=0 "
+			     + " ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
+	  		
+	  		try {
+	  			
+	  			ps = con.prepareStatement(sSql);
+	  			ps.setInt(1,Aplicativo.iCodEmp);
+	  			ps.setInt(2,ListaCampos.getMasterFilial("EQPRODUTO"));
+	  			ps.setDate(3,Funcoes.dateToSQLDate(txtData.getVlrDate()));
+	  			
+	  			if (iCodAlmox!=0) {
+	  	  			sFiltros1 += " / ALMOX.: "+iCodAlmox+"-"+txtDescAlmox.getVlrString().trim();
+	  			}
+	  			if (sCodMarca.equals("")) {
+	  	  			ps.setNull(4,Types.INTEGER);
+	  	  			ps.setNull(5,Types.SMALLINT);
+	  	  			ps.setNull(6,Types.CHAR);
+	  			}
+	  			else {
+	  	  			ps.setInt(4,Aplicativo.iCodEmp);
+	  	  			ps.setInt(5,ListaCampos.getMasterFilial("EQMARCA"));
+	  	  			ps.setString(6,sCodMarca);
+	  	  			sFiltros2 += " / MARCA: "+sCodMarca+"-"+txtDescMarca.getVlrString().trim();
+	  			}
+	  			if (sCodGrup.equals("")) {
+	  	  			ps.setNull(7,Types.INTEGER);
+	  	  			ps.setNull(8,Types.SMALLINT);
+	  	  			ps.setNull(9,Types.CHAR);
+	  			}
+	  			else {
+	  	  			ps.setInt(7,Aplicativo.iCodEmp);
+	  	  			ps.setInt(8,ListaCampos.getMasterFilial("EQGRUPO"));
+	  	  			ps.setString(9,sCodGrup);
+	  	  			sFiltros2 += " / GRUPO: "+sCodGrup+"-"+txtDescGrup.getVlrString().trim();
+	  			}
+	  			ps.setString(10,"M");
+	  			if (iCodAlmox==0) {
+	  				ps.setNull(11,Types.INTEGER);
+	  				ps.setNull(12,Types.INTEGER);
+	  				ps.setNull(13,Types.INTEGER);
+	  			}
+	  			else {
+	  				ps.setInt(11,Aplicativo.iCodEmp);
+	  				ps.setInt(12,ListaCampos.getMasterFilial("EQALMOX"));
+	  				ps.setInt(13,iCodAlmox);
+	  			}
+	  			rs = ps.executeQuery();
+	  			
+	  			imp.limpaPags();
+	  			
+	  			imp.montaCab();
+				imp.setTitulo("Relatorio de inventário de estoque");
+	  			imp.addSubTitulo(sFiltros1);
+	  			imp.addSubTitulo(sFiltros2);
+	  			
+	  			while ( rs.next() ) {
+	  				if (imp.pRow()>=(linPag-1)) {
+	  					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+	  					imp.incPags();
+	  					imp.eject();
 
-		iCodAlmox = 0;
-		sOrdem = "";
-		sMarca = "";
-		sGrupo = "";
-		sWhere = "";
-		
-		if(rgOrdem.getVlrString().equals("C")){
-			if(bPrefs[0])
-				sOrdem = "P.REFPROD";
-			else
-				sOrdem = "P.CODPROD";
-		}
-		else
-			sOrdem = "P.DESCPROD";
+	  				}
+		  			if (imp.pRow()==0) {	  				
+		  				imp.impCab(136, true);
+		  					  				
+						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+						imp.say(imp.pRow()+1,0,""+imp.comprimido());
+						imp.say(imp.pRow()+0,0,"| CODIGO");
+						imp.say(imp.pRow()+0,16,"| DESCRICAO ");
+						imp.say(imp.pRow()+0,70,"| SALDO");
+						imp.say(imp.pRow()+0,83,"| CUSTO UNIT.");
+						imp.say(imp.pRow()+0,101,"| CUSTO TOTAL");
+						imp.say(imp.pRow()+0,135,"|");
+						imp.say(imp.pRow()+1,0,""+imp.comprimido());
+						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+						
+					}
+					
+	  				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  				imp.say(imp.pRow()+0,0,"|"+Funcoes.adicEspacosEsquerda(rs.getString(sCpCodigo).trim(),13));
+	  				imp.say(imp.pRow()+0,16,"| "+Funcoes.adicionaEspacos(rs.getString("DESCPROD"),50));
+	  				imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(rs.getDouble("SLDPROD")+"",10));
+	  				imp.say(imp.pRow()+0,83,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOUNIT")+""));
+	  				imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("CUSTOTOT")+""));
+	  				imp.say(imp.pRow()+0,135,"|");
+	  				deSldProd += rs.getDouble("SLDPROD");
+	  				deCustoTot += rs.getDouble("CUSTOTOT");
+	  				
+	  			}
+	  			
+	  			rs.close();
+	  			ps.close();
+	  			if (!con.getAutoCommit())
+	  				con.commit();
+	  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  			imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  			imp.say(imp.pRow()+0,0,"| TOTAL");
+	  			imp.say(imp.pRow()+0,70,"|"+Funcoes.adicEspacosEsquerda(Funcoes.arredDouble(deSldProd,2)+"",10));
+				imp.say(imp.pRow()+0,83,"|");
+	  			imp.say(imp.pRow()+0,101,"|"+Funcoes.strDecimalToStrCurrency(15,2,deCustoTot+""));
+	  			imp.say(imp.pRow()+0,135,"|");
+	  			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+	  			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
 
-		if(txtCodAlmox.getVlrString().trim().length() > 0) {
-			iCodAlmox = txtCodAlmox.getVlrInteger().intValue();
-			sWhere += "AND P.CODALMOX=? ";
-			sCab += "ALMOXARIFADO : " + txtCodAlmox.getVlrInteger().intValue();
-		}
-		
-		if(txtCodGrup.getVlrString().trim().length() > 0) {
-			sGrupo = txtCodGrup.getVlrString();
-			sWhere += "AND P.CODGRUP=? ";
-			sCab += (sCab.length()>0 ? " - " : "") + "GRUPO : " + txtCodGrup.getVlrString();
-		}
-		
-		if(txtCodMarca.getVlrString().trim().length() > 0) {
-			sMarca = txtCodMarca.getVlrString();
-			sWhere += "AND P.CODMARCA=? ";
-			sCab += (sCab.length()>0 ? " - " : "") + "MARCA : " + txtCodMarca.getVlrString();
-		}
-
-		sSql = "SELECT E.CODPROD, E.SEQEST, P.REFPROD, P.DESCPROD, P.CODUNID, E.QTDEST, P.CUSTOMPMPROD "
-				+ "FROM EQPRODUTO P, PPESTRUTURA E "
-				+ "WHERE E.CODPROD=P.CODPROD AND E.CODEMP=P.CODEMP AND E.CODFILIAL=P.CODFILIAL "
-				+ "AND E.CODEMP=? AND E.CODFILIAL=? "
-				+ sWhere
-				+ "ORDER BY " + sOrdem;
-		
-		ps = con.prepareStatement(sSql); 
-		iparm = 1;
-		ps.setInt(iparm++,Aplicativo.iCodEmp);
-		ps.setInt(iparm++,Aplicativo.iCodFilial);
-		if( iCodAlmox > 0 )
-			ps.setInt(iparm++,iCodAlmox);
-		if( sGrupo.trim().length() > 0 )
-			ps.setString(iparm++,sGrupo);
-		if( sMarca.trim().length() > 0 )
-			ps.setString(iparm++,sMarca);
-		
-		rs = ps.executeQuery();
-		
-		imp.limpaPags();
-		
-		imp.montaCab(1);
-		imp.setTitulo("Relatorio de Custo de Produção");
-		imp.addSubTitulo("- CUSTO DE PRODUÇÃO -");
-		imp.addSubTitulo(sCab);
-		while ( rs.next()) {
-			if (imp.pRow()>=(linPag-1)) {
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
-				imp.incPags();
-				imp.eject();
-
-			}
-  			
-			if(rgOpcao.getVlrString().equals("D")){
-				if (imp.pRow()==0) {	  				
-	  				imp.impCab(136, true);
-	  			} 
-				imp.say(imp.pRow()+lin,0,"|"+Funcoes.replicate("-",133)+"|");
-				lin = 1;
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"| "+(bPrefs[0] ? "REFERENCIA" : "CODIGO"));
-				imp.say(imp.pRow()+0,16,"| DESCRIÇÃO DO PRODUTO");
-				imp.say(imp.pRow()+0,90,"| UND");
-				imp.say(imp.pRow()+0,100,"| QUANTIDADE");
-				imp.say(imp.pRow()+0,118,"| CUSTO TOTAL");
-				imp.say(imp.pRow()+0,135,"|");
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"| "+(bPrefs[0] ? rs.getString("REFPROD") : rs.getString("CODPROD")));
-				imp.say(imp.pRow()+0,16,"| "+rs.getString("DESCPROD"));
-				imp.say(imp.pRow()+0,90,"| "+rs.getString("CODUNID"));
-				imp.say(imp.pRow()+0,100,"| "+rs.getString("QTDEST"));
-				imp.say(imp.pRow()+0,118,"| "+getCustoTotal(rs));
-				//imp.say(imp.pRow()+0,120,"| "+rs.getString("CUSTOMPMPROD"));
-				imp.say(imp.pRow()+0,135,"|");
-				detalhado(imp, rs);
-			}
-			else {
-				if (imp.pRow()==0) {	  				
-	  				imp.impCab(136, true);
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| "+(bPrefs[0] ? "REFERENCIA" : "CODIGO"));
-					imp.say(imp.pRow()+0,16,"| DESCRIÇÃO DO PRODUTO");
-					imp.say(imp.pRow()+0,90,"| UND");
-					imp.say(imp.pRow()+0,100,"| QUANTIDADE");
-					imp.say(imp.pRow()+0,118,"| CUSTO TOTAL");
-					imp.say(imp.pRow()+0,135,"|");
-					imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",133)+"|");
-				}
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"| "+(bPrefs[0] ? rs.getString("REFPROD") : rs.getString("CODPROD")));
-				imp.say(imp.pRow()+0,16,"| "+rs.getString("DESCPROD"));
-				imp.say(imp.pRow()+0,90,"| "+rs.getString("CODUNID"));
-				imp.say(imp.pRow()+0,100,"| "+rs.getString("QTDEST"));
-				imp.say(imp.pRow()+0,118,"| "+getCustoTotal(rs));
-				//imp.say(imp.pRow()+0,120,"| "+rs.getString("CUSTOMPMPROD"));
-				imp.say(imp.pRow()+0,135,"|");
-			}
-		}
-		
-		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-		imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
-		
-		rs.close();
-		ps.close();
-		if (!con.getAutoCommit())
-			con.commit();
-
-		imp.eject();
-		imp.fechaGravacao();
-		
-	}
-	catch (SQLException err) {
-		Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+err.getMessage(),true,con,err);
-		err.printStackTrace();
-	}
-	if (bVisualizar) {
-		imp.preview(this);
-	}
-	else {
-		imp.print();
-	}
-
-  }
-  
-  private void detalhado(ImprimeOS imp, ResultSet rsP) {
-	  String sSQL = null;
-	  ResultSet rs = null;
-	  PreparedStatement ps = null;
-	  int linPag = linPag = imp.verifLinPag()-1;
-	  int iparm = 1;
-	  int cont = 0;
-	  try{
-		  sSQL = "SELECT IE.CODPRODPD, P.REFPROD, P.DESCPROD, P.CODUNID, IE.QTDITEST, P.CUSTOMPMPROD "
-				+ "FROM EQPRODUTO P, PPITESTRUTURA IE "
-				+ "WHERE IE.CODPRODPD=P.CODPROD AND IE.CODEMPPD=P.CODEMP AND IE.CODFILIALPD=P.CODFILIAL "
-				+ "AND IE.CODEMP=? AND IE.CODFILIAL=? AND IE.CODPROD=? AND IE.SEQEST=? "
-				+ sWhere
-				+ "ORDER BY " + sOrdem;
-		  ps = con.prepareStatement(sSQL);
-		  ps.setInt(iparm++,Aplicativo.iCodEmp);
-		  ps.setInt(iparm++,Aplicativo.iCodFilial);
-		  ps.setInt(iparm++,rsP.getInt("CODPROD"));
-		  ps.setInt(iparm++,rsP.getInt("SEQEST"));
-		  if( iCodAlmox > 0 )
-			  ps.setInt(iparm++,iCodAlmox);
-		  if( sGrupo.trim().length() > 0 )
-			  ps.setString(iparm++,sGrupo);
-		  if( sMarca.trim().length() > 0 )
-			  ps.setString(iparm++,sMarca);
-		  rs = ps.executeQuery();
-		  
-		  while ( rs.next()) {
-				if (imp.pRow()>=(linPag-1)) {
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
-					imp.incPags();
-					imp.eject();
-				}
-	  			if (cont==0) {	    					  				
-	  				imp.say(imp.pRow()+1,0,"|"+Funcoes.replicate("-",133)+"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| ");
-					imp.say(imp.pRow()+0,2,"SEQ.EST.");
-					imp.say(imp.pRow()+0,16,"| "+(bPrefs[0] ? "RREFERENCIA" : "CODIGO"));
-					imp.say(imp.pRow()+0,32,"| DESCRIÇÃO DO PRODUTO");
-					imp.say(imp.pRow()+0,90,"| UND");
-					imp.say(imp.pRow()+0,100,"| QUANTIDADE");
-					imp.say(imp.pRow()+0,118,"| CUSTO");
-					imp.say(imp.pRow()+0,135,"|");
-					cont++;				
-				}
-								
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"| ");
-				
-				if(cont==1){
-					imp.say(imp.pRow()+0,2,rsP.getString("SEQEST"));
-					cont++;
-				}
-				
-				imp.say(imp.pRow()+0,16,"| "+(bPrefs[0] ? (rs.getString("REFPROD")!=null ? rs.getString("REFPROD") : "") : (rs.getString("CODPRODPD")!=null ? rs.getString("CODPRODPD") : "")));
-				imp.say(imp.pRow()+0,32,"| "+rs.getString("DESCPROD"));
-				imp.say(imp.pRow()+0,90,"| "+rs.getString("CODUNID"));
-				imp.say(imp.pRow()+0,100,"| "+rs.getString("QTDITEST"));
-				imp.say(imp.pRow()+0,118,"| "+Funcoes.strDecimalToStrCurrency(10,casasDecFin,rs.getString("CUSTOMPMPROD")));
-				imp.say(imp.pRow()+0,135,"|");
-		  }
-		  		  
-	  }
-	  catch (SQLException e) {
-		  Funcoes.mensagemErro(this,"Erro ao montar detalhado.\n"+e.getMessage());
-		  e.printStackTrace();
-	  }
-  }
-  
-  public String getCustoTotal(ResultSet rsP){
-	  String ret = "";
-	  String sSQL = null;
-	  ResultSet rs = null;
-	  PreparedStatement ps = null;
-	  float fCustoTotal = 0f;
-	  int iparm = 1;
-	  try{
-		  sSQL = "SELECT P.CUSTOMPMPROD "
-				+ "FROM EQPRODUTO P, PPITESTRUTURA IE "
-				+ "WHERE IE.CODPRODPD=P.CODPROD AND IE.CODEMPPD=P.CODEMP AND IE.CODFILIALPD=P.CODFILIAL "
-				+ "AND IE.CODEMP=? AND IE.CODFILIAL=? AND IE.CODPROD=? AND IE.SEQEST=? "
-				+ sWhere
-				+ "ORDER BY " + sOrdem;
-		  ps = con.prepareStatement(sSQL);
-		  ps.setInt(iparm++,Aplicativo.iCodEmp);
-		  ps.setInt(iparm++,Aplicativo.iCodFilial);
-		  ps.setInt(iparm++,rsP.getInt("CODPROD"));
-		  ps.setInt(iparm++,rsP.getInt("SEQEST"));
-		  if( iCodAlmox > 0 )
-			  ps.setInt(iparm++,iCodAlmox);
-		  if( sGrupo.trim().length() > 0 )
-			  ps.setString(iparm++,sGrupo);
-		  if( sMarca.trim().length() > 0 )
-			  ps.setString(iparm++,sMarca);
-		  rs = ps.executeQuery();
-		  
-		  while ( rs.next()) {
-			  fCustoTotal = fCustoTotal + rs.getFloat("CUSTOMPMPROD");				
-		  }
-		  
-		  ret = Funcoes.strDecimalToStrCurrency(10,casasDecFin,""+fCustoTotal);
-		  
-	  }
-	  catch (SQLException e) {
-		  Funcoes.mensagemErro(this,"Erro ao montar detalhado.\n"+e.getMessage());
-		  e.printStackTrace();
-	  }
-	  return ret;
+	  			imp.eject();
+	  			imp.fechaGravacao();
+	  			
+	  		}
+	  		catch (SQLException err) {
+	  			Funcoes.mensagemErro(this,"Erro executando a consulta.\n"+err.getMessage(),true,con,err);
+	  			err.printStackTrace();
+	  		}
+	  		if (bVisualizar) {
+	  			imp.preview(this);
+	  		}
+	  		else {
+	  			imp.print();
+	  		}
+	  	}
+	  	finally {
+	  		sSql = null;
+	  		sCpCodigo = null;
+	  	  	sCodMarca = null;
+	  	  	sCodGrup = null;
+	  	  	sFiltros1 = null;
+	  	    sFiltros2 = null;
+	  		imp = null;
+	  		ps = null;
+	  		rs = null;
+	  		deCustoTot = 0;
+	  		deSldProd = 0;
+	  	  	linPag = 0;
+	  	}
   }
   
   public void setConexao(Connection cn) {
