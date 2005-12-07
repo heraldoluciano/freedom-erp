@@ -64,7 +64,7 @@ public class NFEntrada extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			cab = new TabVector(50);
+			cab = new TabVector(51);
 			while (rs.next()) {
 				cab.addRow();
 				cab.setInt(C_CODPED, rs.getInt("CODCOMPRA"));
@@ -117,6 +117,7 @@ public class NFEntrada extends NF {
 				cab.setString(C_NOMEBANCO, (rs.getString(28)!=null ? rs.getString(28).trim() : ""));
 				cab.setString(C_DESCSETOR, "");
 				cab.setFloat(C_VLRDESCITPED, rs.getFloat("VLRDESCITCOMPRA"));
+				cab.setInt(C_DIASPAG, 0);
 			}
 			rs.close();
 			ps.close();
