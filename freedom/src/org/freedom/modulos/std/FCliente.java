@@ -1130,8 +1130,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  int iCod = 0;
 	  	try{
 	  		
-		  	String sRets[];
-		  	
+		  	Object oRets[];		  	
 		  	
   			if (txtCodCli.getVlrInteger().intValue() == 0) {
 				Funcoes.mensagemInforma(this,"Não ha nenhum cliente selecionado!");
@@ -1145,41 +1144,42 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  	dl.setConexao(con);
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
-		  	  sRets = dl.getValores();
+		  	  oRets = dl.getValores();
 		  	  	try {
-			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
+			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?)";
 			        ps = con.prepareStatement(sSQL);
 			        ps.setInt(1,Aplicativo.iCodEmp);
 		        	ps.setNull(2,Types.INTEGER);
 			        ps.setNull(3,Types.INTEGER);
-		        	ps.setInt(4,lcCampos.getCodFilial()); 
+		        	ps.setInt(4,ListaCampos.getMasterFilial("VDCLIENTE")); 
 		        	ps.setInt(5,txtCodCli.getVlrInteger().intValue());  
-			        ps.setString(6,sRets[0]);//Descrição do historico
+			        ps.setString(6,(String)oRets[0]);//Descrição do historico
 			        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
-				    ps.setString(8,sRets[1]);//codígo atendente
-				    ps.setString(9,sRets[2]);//status do historico
+				    ps.setString(8,(String)oRets[1]);//codígo atendente
+				    ps.setString(9,(String)oRets[2]);//status do historico
+				    ps.setDate(10,(Date)oRets[3]);//data do historico
 				    ps.execute();			    
 				    ps.close();
 				    
 				    if (!con.getAutoCommit())
 				    	con.commit();
 				    
-				    if (sRets[3] != null) {
+				    if (oRets[4] != null) {
 				    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				        ps = con.prepareStatement(sSQL);
 				        ps.setInt(1,Aplicativo.iCodEmp);  
-					    ps.setDate(2,Funcoes.strDateToSqlDate(sRets[3]));
-					    ps.setString(3,sRets[4]+":00"); 
-					    ps.setDate(4,Funcoes.strDateToSqlDate(sRets[5]));
-					    ps.setString(5,sRets[6]+":00");
-					    ps.setString(6,sRets[7]);
-					    ps.setString(7,sRets[8]);
-					    ps.setString(8,sRets[9]); 
+					    ps.setDate(2,(Date)oRets[4]);
+					    ps.setString(3,oRets[5]+":00"); 
+					    ps.setDate(4,(Date)oRets[6]);
+					    ps.setString(5,(String)oRets[7]+":00");
+					    ps.setString(6,(String)oRets[8]);
+					    ps.setString(7,(String)oRets[9]);
+					    ps.setString(8,(String)oRets[10]); 
 					    ps.setInt(9,5);
 					    ps.setInt(10,Aplicativo.iCodFilialPad);
 					    ps.setString(11,Aplicativo.strUsuario); 
-					    ps.setString(12,sRets[10]);
-					    ps.setString(13,sRets[11]);  
+					    ps.setString(12,(String)oRets[11]);
+					    ps.setString(13,(String)oRets[12]);  
 					    ps.setInt(14,((Integer)buscaAgente(0)).intValue());
 					    ps.setString(15,(String)buscaAgente(1));
 				        ps.execute();
@@ -1209,7 +1209,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   private void editaHist() {
 		int iLin = 0;
 		int iCod = 0;
-	  	String sRets[];
+	  	Object oRets[];
 	  	try{
 	  		if ((iLin = tabHist.getLinhaSel()) < 0) {
 		  		Funcoes.mensagemInforma(this,"Não ha nenhum histórico selecionado!");
@@ -1219,16 +1219,17 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  	
 		  	DLNovoHist dl = new DLNovoHist(iCod,1,this);
 		  	dl.setConexao(con);
-		  	dl.setValores(new String[] {(String)tabHist.getValor(iLin,5),
+		  	dl.setValores(new Object[] {(String)tabHist.getValor(iLin,5),
 							   			(String)tabHist.getValor(iLin,3),
-							   			(String)tabHist.getValor(iLin,1)
+							   			(String)tabHist.getValor(iLin,1),
+							   			(Date)Funcoes.strDateToSqlDate((String)tabHist.getValor(iLin,4))
 		  							   }
 		  				 );
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
-		  		sRets = dl.getValores();
+		  		oRets = dl.getValores();
 		  		try {
-		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
+		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,?)";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
 		  			ps.setInt(1,Integer.parseInt((String)tabHist.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);
@@ -1236,10 +1237,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			        ps.setNull(4,Types.INTEGER);
 			        ps.setInt(5,lcCampos.getCodFilial()); 
 			        ps.setInt(6,txtCodCli.getVlrInteger().intValue());  
-			        ps.setString(7,sRets[0]);//Descrição do historico
+			        ps.setString(7,(String)oRets[0]);//Descrição do historico
 			        ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
-				    ps.setString(9,sRets[1]);//codígo atendente
-				    ps.setString(10,sRets[2]);//status do historico
+				    ps.setString(9,(String)oRets[1]);//codígo atendente
+				    ps.setString(10,(String)oRets[2]);//status do historico
+				    ps.setDate(11,(Date)oRets[3]);//data do historico
 				    ps.execute();
 		  			ps.close();
 		  			if (!con.getAutoCommit())
