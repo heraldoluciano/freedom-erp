@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -370,7 +371,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 	  int iCod = 0;
 	  	try{
 	  		
-		  	String sRets[];
+		  	Object oRets[];
 		  	
 		  	if(tabTemp == tabCont){
 	  			if (txtCodCont.getVlrInteger().intValue() == 0) {
@@ -395,9 +396,9 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	dl.setConexao(con);
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
-		  	  sRets = dl.getValores();
+		  	  oRets = dl.getValores();
 		  	  try {
-		        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?)";
+		        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?)";
 		        ps = con.prepareStatement(sSQL);
 		        ps.setInt(1,Aplicativo.iCodEmp);
 		        if(txtCodCont.getVlrInteger().intValue() == 0){//Filial e código do contato
@@ -416,32 +417,33 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		        	ps.setInt(4,lcCli.getCodFilial()); 
 		        	ps.setInt(5,txtCodCli.getVlrInteger().intValue());  
 		        }	
-		        ps.setString(6,sRets[0]);//Descrição do historico
+		        ps.setString(6,(String)oRets[0]);//Descrição do historico
 		        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
-			    ps.setString(8,sRets[1]);//codígo atendente
-			    ps.setString(9,sRets[2]);//status do historico
+			    ps.setString(8,(String)oRets[1]);//codígo atendente
+			    ps.setString(9,(String)oRets[2]);//status do historico
+			    ps.setDate(10,(Date)oRets[3]);//data do historico
 			    ps.execute();			    
 			    ps.close();
 			    
 			    if (!con.getAutoCommit())
 			    	con.commit();
 			    
-			    if (sRets[3] != null) {
+			    if (oRets[4] != null) {
 			    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			        ps = con.prepareStatement(sSQL);
 			        ps.setInt(1,Aplicativo.iCodEmp);  
-				    ps.setDate(2,Funcoes.strDateToSqlDate(sRets[3]));
-				    ps.setString(3,sRets[4]+":00"); 
-				    ps.setDate(4,Funcoes.strDateToSqlDate(sRets[5]));
-				    ps.setString(5,sRets[6]+":00");
-				    ps.setString(6,sRets[7]);
-				    ps.setString(7,sRets[8]);
-				    ps.setString(8,sRets[9]); 
+				    ps.setDate(2,(Date)oRets[4]);
+				    ps.setString(3,oRets[5]+":00"); 
+				    ps.setDate(4,(Date)oRets[6]);
+				    ps.setString(5,(String)oRets[7]+":00");
+				    ps.setString(6,(String)oRets[8]);
+				    ps.setString(7,(String)oRets[9]);
+				    ps.setString(8,(String)oRets[10]); 
 				    ps.setInt(9,5);
 				    ps.setInt(10,Aplicativo.iCodFilialPad);
 				    ps.setString(11,Aplicativo.strUsuario); 
-				    ps.setString(12,sRets[10]);
-				    ps.setString(13,sRets[11]);  
+				    ps.setString(12,(String)oRets[11]);
+				    ps.setString(13,(String)oRets[12]);  
 				    ps.setInt(14,((Integer)buscaAgente(0)).intValue());
 				    ps.setString(15,(String)buscaAgente(1));
 			        ps.execute();
@@ -479,7 +481,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  		Funcoes.mensagemInforma(this,"Não ha nenhum histórico selecionado!");
 		  		return;
 		  	}
-		  	String sRets[];
+		  	Object oRets[];
 		  	
 		  	if(tabTemp == tabCont)
 	  			iCod = txtCodCont.getVlrInteger().intValue();
@@ -488,14 +490,15 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	
 		  	DLNovoHist dl = new DLNovoHist(iCod,tpnHist.getSelectedIndex(),this);
 		  	dl.setConexao(con);
-		  	dl.setValores(new String[] {(String)tabTemp.getValor(iLin,3),
+		  	dl.setValores(new Object[] {(String)tabTemp.getValor(iLin,3),
 							   			(String)vCodAtends.elementAt(iLin),
-							   			(String)tabTemp.getValor(iLin,1)
+							   			(String)tabTemp.getValor(iLin,1),
+							   			(Date)Funcoes.strDateToSqlDate((String)tabTemp.getValor(iLin,4))
 		  							   }
 		  				 );
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
-		  		sRets = dl.getValores();
+		  		oRets = dl.getValores();
 		  		try {
 		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
@@ -517,10 +520,11 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 			        	ps.setInt(5,lcCli.getCodFilial()); 
 			        	ps.setInt(6,txtCodCli.getVlrInteger().intValue());  
 			        }	
-			        ps.setString(7,sRets[0]);//Descrição do historico
+			        ps.setString(7,(String)oRets[0]);//Descrição do historico
 			        ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
-				    ps.setString(9,sRets[1]);//codígo atendente
-				    ps.setString(10,sRets[2]);//status do historico
+				    ps.setString(9,(String)oRets[1]);//codígo atendente
+				    ps.setString(10,(String)oRets[2]);//status do historico
+				    ps.setDate(11,(Date)oRets[3]);//data do historico
 				    ps.execute();
 		  			ps.close();
 		  			if (!con.getAutoCommit())

@@ -21,49 +21,49 @@
 package org.freedom.layout;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Vector;
-
-import javax.swing.JOptionPane;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
-import org.freedom.telas.Aplicativo;
 public class NFIswara2 extends Layout {
 	
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 		 
-	    Calendar cHora = Calendar.getInstance();
 	    boolean bRetorno = super.imprimir(nf, imp);
+	    boolean bjatem = false;
+	    boolean bFat = true;
+	    boolean bNat = true;
 	    int iNumNota = 0;
-	    String sNumNota = ""; 
 	    int iItImp = 0;
 	    int iLinPag = imp.verifLinPag("NF");
 		int iContaObs = 0; //Contador para a gamb de asterisco
 		int iContaObs2 = 0; //Contador para a gamb de '"'
-		int menssagem = 0;//condição pra menssagem da cl. fiscal
+	    Calendar cHora = Calendar.getInstance();
+	    Vector vMens = null;
+	    Vector vClfisc = new Vector();
+	    String sDescAdic = "";
+	    String sNumNota = ""; 
 		String sTipoTran = "";
-	    boolean bFat = true;
-	    Vector vDesc = null;
-	    String sDesc = null;
 	    String[] sNat = new String[2];
 	    String[] sVencs = new String[3];
 	    String[] sVals = new String[3];
 	    String[] sDuplics = new String[3];
-		String sMens = "";
-		String sFiscAdic = "";
 		String[] sMatObs = null;
 		String[] sMarcs = {"\"","\"\"","\"\"\"","\"\"\"\""}; //Tipos de Marcs. 
 		String[] sMarcs2 = {"*","**","***","****"}; //Tipos de Marcs.
-		String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+		String sMens = "";
+		String sSigla = "";
+		String sCodfisc = ""; 
+		String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"
+							+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"
+								+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
+		
 	    try {
 	      imp.limpaPags();
-	      boolean bNat = true;
-	      while (itens.next()) {
-
-	    	 cab.next();
+	      
+	      cab.next();
 	         iNumNota = cab.getInt(NF.C_DOC);
 	         if (iNumNota==0) {
 	            sNumNota = "000000";
@@ -77,7 +77,7 @@ public class NFIswara2 extends Layout {
 	             if (parc.next()) {
 	               sDuplics[i] = sNumNota+"/"+parc.getInt(NF.C_NPARCITREC);
 	               sVencs[i] = Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO));
-	               sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,parc.getString(NF.C_VLRPARC));
+	               sVals[i] = Funcoes.strDecimalToStrCurrency(10,2,parc.getString(NF.C_VLRPARC));
 	             }
 	             else {
 	               bFat = false;
@@ -94,7 +94,9 @@ public class NFIswara2 extends Layout {
 	           }
 	         }
 	
-	
+	         
+	      while (itens.next()) {  
+	    	  
 	         if (bNat) {
 	           sNat[0] = Funcoes.copy(itens.getString(NF.C_DESCNAT),40);
 	           sNat[1] = Funcoes.setMascara(""+itens.getInt(NF.C_CODNAT),"#.##");
@@ -102,6 +104,7 @@ public class NFIswara2 extends Layout {
 	
 	           bNat = false;
 	         }
+	         
 	         if (imp.pRow()==0) {
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -169,8 +172,7 @@ public class NFIswara2 extends Layout {
 	         }
 	         imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	         imp.say(imp.pRow()+0,0,""+itens.getInt(NF.C_CODPROD));
-	         
-			String sDescAdic = ""; 
+	        			 
 			
 			//Gambs para colocar o lote.
 			if ((itens.getDate(NF.C_VENCLOTE) != null) && (!itens.getString(NF.C_CODLOTE).equals(""))) {
@@ -191,15 +193,11 @@ public class NFIswara2 extends Layout {
 				sMens += sMarcs2[iContaObs2++]+" "+sTmp2;
 			  }
 			  sDescAdic += "  "+sMarcs2[iContaObs2-1]; 
-			}
-			
-			vDesc = Funcoes.strToVectorSilabas(!itens.getString(NF.C_OBSITPED).equals("") ? itens.getString(NF.C_OBSITPED) : (itens.getString(NF.C_DESCPROD).substring(0,23).trim()),23);
-	                                                                                                       
-			
+			} 
 	       
-	       String sSigla = "";
-	       String sCodfisc= itens.getString(NF.C_CODFISC);
-	         
+	      /* sSigla = "";
+	       sCodfisc= itens.getString(NF.C_CODFISC);
+	       
 	       if (sCodfisc == null)
 	       	   sSigla="";
 	       else if (sCodfisc.equals("3402.20.00"))
@@ -227,8 +225,29 @@ public class NFIswara2 extends Layout {
 	             sSigla = "J";
 	       	     sFiscAdic = sCodfisc ;
 	           }       	   
-	       }  
+	       }  */
 	       
+	       sCodfisc = itens.getString(NF.C_CODFISC);
+           
+	   		if(!sCodfisc.equals("")){
+	   			for(int i=0;i<vClfisc.size();i++){
+	   				if(vClfisc.elementAt(i)!=null){
+	   					if(sCodfisc.equals((String)vClfisc.elementAt(i))){
+	       					bjatem = true;
+	       					sSigla = ""+(char)(65 + i);
+	   					}
+	       				else{
+	       					bjatem = false;
+	       				}
+	   				}
+	   			}
+	   			if(!bjatem){
+	   				vClfisc.addElement(sCodfisc);
+	   				sSigla = ""+(char)(64 + vClfisc.size());
+	   			}
+	   		}
+	       
+	       imp.say(imp.pRow()+0,8,itens.getString(NF.C_DESCPROD).substring(0,23));
 	       imp.say(imp.pRow()+0,34,itens.getString(NF.C_CODLOTE).trim());
 	       imp.say(imp.pRow()+0,49,itens.getString(NF.C_VENCLOTE).trim());
 	       imp.say(imp.pRow()+0,62,sSigla);
@@ -336,19 +355,21 @@ public class NFIswara2 extends Layout {
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	
 	           String sEnt = "";
-	           sEnt += cab.getString(NF.C_ENDENTEMIT); 
-			   sEnt += cab.getString(NF.C_NUMENTEMIT); 
-			   sEnt += cab.getString(NF.C_COMPLENTEMIT); 
-			   sEnt += cab.getString(NF.C_BAIRENTEMIT); 
-			   sEnt += cab.getString(NF.C_CIDENTEMIT); 
+	           sEnt += cab.getString(NF.C_ENDENTEMIT)+" , "; 
+			   sEnt += cab.getString(NF.C_NUMENTEMIT)+"   "; 
+			   sEnt += cab.getString(NF.C_COMPLENTEMIT)+"  /  "; 
+			   sEnt += cab.getString(NF.C_BAIRENTEMIT)+" - "; 
+			   sEnt += cab.getString(NF.C_CIDENTEMIT)+" / "; 
 			   sEnt += cab.getString(NF.C_UFENTEMIT); 
 			   imp.say(imp.pRow()+0,3,sEnt);
 			   
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   
+		   
 	
-			   if (!sDuplics[0].equals("")) {
+/*			   if (!sDuplics[0].equals("")) {
 				imp.say(imp.pRow()+1,0,sDuplics[0]);
 				imp.say(imp.pRow()+0,17,sVencs[0]);
 				imp.say(imp.pRow()+0,29,sVals[0]);
@@ -362,29 +383,32 @@ public class NFIswara2 extends Layout {
 				imp.say(imp.pRow()+1,0,sDuplics[2]);
 				imp.say(imp.pRow()+0,17,sVencs[2]);
 				imp.say(imp.pRow()+0,29,sVals[2]);
+			   } */
+			   
+			   vMens = Funcoes.strToVectorSilabas(sMens,28);
+			   
+			   for (int iPos=0; iPos<6; iPos++) {
+				   imp.say(imp.pRow()+1,0,"");
+				   if (iPos<sDuplics.length) {
+					   imp.say(imp.pRow(),0,sDuplics[iPos]); // imprimir duplicata
+					   imp.say(imp.pRow(),10,sVencs[iPos]); // imprimir vencimento 
+					   imp.say(imp.pRow(),21,sVals[iPos]); // imprimir valor 
+				   }
+				   if (iPos<vClfisc.size() && iPos<5) {
+					   imp.say(imp.pRow(),33,(vClfisc.elementAt(iPos)!=null?(String)vClfisc.elementAt(iPos):"")); // imprimir classificação fiscal
+					   if(vClfisc.size()>(5+iPos))
+						   imp.say(imp.pRow(),45,(vClfisc.elementAt(iPos+5)!=null?(String)vClfisc.elementAt(iPos+5):""));// imprimir classificação fiscal
+				   }
+				   
+				   if (iPos<vMens.size()) {
+					   imp.say(imp.pRow(),57,(vMens.elementAt(iPos)!=null?(String)vMens.elementAt(iPos):"")); // imprimir observaçoes 
+					   
+				   }
 			   }
 			   
-			   Funcoes.strToVectorSilabas(sMens,23);
-			   String[] sMatMens = Funcoes.strToStrArray(sMens,3);
+			   imp.say(imp.pRow()+6,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+0,125,""+iNumNota);
 	
-	
-			   imp.say(imp.pRow()+1,0,"");
-			   imp.say(imp.pRow()+0,0,sMatMens[0]);
-			   imp.say(imp.pRow()+1,0,"");
-			   imp.say(imp.pRow()+0,0,sMatMens[1]);
-			   imp.say(imp.pRow()+1,0,"");
-			   imp.say(imp.pRow()+0,0,sMatMens[2]);
-	           imp.say(imp.pRow()+0,63,sFiscAdic);
-	           
-	           /*imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+0,3,"Total: "+Funcoes.strDecimalToStrCurrency(20,2,itens.getString(NF.C_VLRLIQPED)));
-			   imp.say(imp.pRow()+0,35,!cab.getString(NF.C_NOMEEMIT).equals("") ? "Cliente: "+cab.getString(NF.C_NOMEEMIT) : "");
-			   imp.say(imp.pRow()+0,100,"Emit.: "+Aplicativo.strUsuario);
-			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	           imp.say(imp.pRow()+1,0,""+imp.comprimido());*/
 	           for (int i=imp.pRow(); i<=iLinPag; i++) { 
 	             imp.say(imp.pRow()+1,0,"");
 	           }
@@ -393,8 +417,8 @@ public class NFIswara2 extends Layout {
 	         }
 	      }
 	      
-	      if(menssagem>0)
-	         JOptionPane.showMessageDialog(null,"Mais de um produto sem classificacao definida,sigla assinalada em branco.");
+	      /*if(menssagem>0)
+	         JOptionPane.showMessageDialog(null,"Mais de um produto sem classificacao definida,sigla assinalada em branco.");*/
 	      
 	      imp.fechaGravacao();
 	      bRetorno = true;

@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -54,6 +55,7 @@ public class DLNovoHist extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
+	private JTextFieldPad txtDataCont = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtCodCont = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeCont = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -135,8 +137,10 @@ public class DLNovoHist extends FFDialogo {
 		adic(txtCodAtend,7,65,80,20);
 		adic(new JLabelPad("Nome do atendente"),90,45,197,20);
 		adic(txtNomeAtend,90,65,217,20);
+		adic(new JLabelPad("Data"),310,45,100,20);
+		adic(txtDataCont,310,65,100,20);
 		
-		JLabelPad lbChamada = new JLabelPad("   Chamada ");
+		JLabelPad lbChamada = new JLabelPad("   Chamada");
 		lbChamada.setOpaque(true);
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
@@ -145,7 +149,8 @@ public class DLNovoHist extends FFDialogo {
 		adic(lbLinha,7,100,470,2);
 		adic(spnDesc,7,115,470,180);
 		
-		
+		txtDataCont.setRequerido(true);
+		txtDataCont.setVlrDate(new java.util.Date());
 		
 	}
 	public void actionPerformed(ActionEvent evt) {
@@ -192,29 +197,31 @@ public class DLNovoHist extends FFDialogo {
 		}
 		
     }
-	public void setValores(String[] sVal) {
-		txaDescAtend.setVlrString(sVal[0]);
-		txtCodAtend.setVlrString(sVal[1]);
-		cbSit.setVlrString(sVal[2]);
+	public void setValores(Object[] sVal) {
+		txaDescAtend.setVlrString((String)sVal[0]);
+		txtCodAtend.setVlrString((String)sVal[1]);
+		cbSit.setVlrString((String)sVal[2]);
+		txtDataCont.setVlrDate((Date)sVal[3]);
 		lcAtend.carregaDados();
 	}
-	public String[] getValores() {
-		String[] sVal = new String[12];
-		sVal[0] = txaDescAtend.getVlrString();
-		sVal[1] = txtCodAtend.getVlrString();
-		sVal[2] = cbSit.getVlrString();
+	public Object[] getValores() {
+		Object[] oVal = new Object[13];
+		oVal[0] = txaDescAtend.getVlrString();
+		oVal[1] = txtCodAtend.getVlrString();
+		oVal[2] = cbSit.getVlrString();
+		oVal[3] = Funcoes.dateToSQLDate(txtDataCont.getVlrDate());
 		if (sValsAgen != null) {
-			sVal[3] = sValsAgen[0];
-			sVal[4] = sValsAgen[1];
-			sVal[5] = sValsAgen[2];
-			sVal[6] = sValsAgen[3];
-			sVal[7] = sValsAgen[4];
-			sVal[8] = sValsAgen[5];
-			sVal[9] = sValsAgen[6];
-			sVal[10] = sValsAgen[7];
-			sVal[11] = sValsAgen[8];
+			oVal[4] = sValsAgen[0];
+			oVal[5] = sValsAgen[1];
+			oVal[6] = sValsAgen[2];
+			oVal[7] = sValsAgen[3];
+			oVal[8] = sValsAgen[4];
+			oVal[9] = sValsAgen[5];
+			oVal[10] = sValsAgen[6];
+			oVal[11] = sValsAgen[7];
+			oVal[12] = sValsAgen[8];
 		}
-		return sVal;
+		return oVal;
 	}
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
