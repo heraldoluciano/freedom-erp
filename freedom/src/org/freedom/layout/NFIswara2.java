@@ -1,10 +1,10 @@
 /**
  * @version 10/12/2003 <BR>
- * @author Setpoint Informática Ltda./Marco Antonio Sanchez <BR>
+ * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  *
  * Projeto: Freedom <BR>
  * Pacote: leiautes <BR>
- * Classe: @(#)NFIswara.java <BR>
+ * Classe: @(#)NFIswara2.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -147,7 +147,7 @@ public class NFIswara2 extends Layout {
 			   if (sVencs[1].equals("")) {
 			     imp.say(imp.pRow()+0,70,sVals[0]);
 	             imp.say(imp.pRow()+0,97,sDuplics[0]);
-	             imp.say(imp.pRow()+0,126,cab.getInt(NF.C_DIASPAG)+" DIAS");
+	             imp.say(imp.pRow()+0,124,(cab.getString(NF.C_DESCPLANOPAG).length()>11?cab.getString(NF.C_DESCPLANOPAG).substring(0,11):cab.getString(NF.C_DESCPLANOPAG)));
 			   }
 			   else {
 			     imp.say(imp.pRow()+0,65,Funcoes.strDecimalToStrCurrency(20,2,itens.getFloat(NF.C_VLRLIQPED)+""));
