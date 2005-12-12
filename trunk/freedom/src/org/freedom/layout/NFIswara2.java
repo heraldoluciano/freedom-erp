@@ -360,13 +360,12 @@ public class NFIswara2 extends Layout {
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+0,3,"Total: "+Funcoes.strDecimalToStrCurrency(10,2,cab.getString(NF.C_VLRLIQPED)));
+			   imp.say(imp.pRow()+0,3,"Total: "+Funcoes.strDecimalToStrCurrency(10,2,""+itens.getFloat(NF.C_VLRLIQPED)));
 			   imp.say(imp.pRow()+0,25,"plano.pag.: "+cab.getString(NF.C_DESCPLANOPAG).trim());
 			   imp.say(imp.pRow()+0,60,"Cliente: "+cab.getString(NF.C_NOMEEMIT).trim());
 			   imp.say(imp.pRow()+0,100,"Emit.: "+Aplicativo.strUsuario);
 			   
-			   imp.say(imp.pRow()+2,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+3,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+0,125,""+iNumNota);
 	
 	           for (int i=imp.pRow(); i<=iLinPag; i++) { 
