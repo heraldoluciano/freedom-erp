@@ -27,6 +27,7 @@ import java.util.Vector;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 public class NFIswara2 extends Layout {
 	
 	public boolean imprimir(NF nf,ImprimeOS imp) {
@@ -47,9 +48,9 @@ public class NFIswara2 extends Layout {
 	    String sNumNota = ""; 
 		String sTipoTran = "";
 	    String[] sNat = new String[2];
-	    String[] sVencs = new String[3];
-	    String[] sVals = new String[3];
-	    String[] sDuplics = new String[3];
+	    String[] sVencs = new String[4];
+	    String[] sVals = new String[4];
+	    String[] sDuplics = new String[4];
 		String[] sMatObs = null;
 		String[] sMarcs = {"\"","\"\"","\"\"\"","\"\"\"\""}; //Tipos de Marcs. 
 		String[] sMarcs2 = {"*","**","***","****"}; //Tipos de Marcs.
@@ -72,7 +73,7 @@ public class NFIswara2 extends Layout {
 	            sNumNota = Funcoes.strZero(""+iNumNota,6);
 	         }
 	
-	         for (int i=0; i<3; i++) {
+	         for (int i=0; i<4; i++) {
 	           if (bFat) {
 	             if (parc.next()) {
 	               sDuplics[i] = sNumNota+"/"+parc.getInt(NF.C_NPARCITREC);
@@ -147,12 +148,12 @@ public class NFIswara2 extends Layout {
 			   if (sVencs[1].equals("")) {
 			     imp.say(imp.pRow()+0,70,sVals[0]);
 	             imp.say(imp.pRow()+0,97,sDuplics[0]);
-	             imp.say(imp.pRow()+0,124,(cab.getString(NF.C_DESCPLANOPAG).length()>11?cab.getString(NF.C_DESCPLANOPAG).substring(0,11):cab.getString(NF.C_DESCPLANOPAG)));
 			   }
 			   else {
 			     imp.say(imp.pRow()+0,65,Funcoes.strDecimalToStrCurrency(20,2,itens.getFloat(NF.C_VLRLIQPED)+""));
 				 imp.say(imp.pRow()+0,90,"VIDE DESDOBRAMENTO");
 			   }
+	           imp.say(imp.pRow()+0,124,(cab.getString(NF.C_DESCPLANOPAG).length()>11?cab.getString(NF.C_DESCPLANOPAG).substring(0,11):cab.getString(NF.C_DESCPLANOPAG)));
 	
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+1,0,"");
@@ -194,38 +195,6 @@ public class NFIswara2 extends Layout {
 			  }
 			  sDescAdic += "  "+sMarcs2[iContaObs2-1]; 
 			} 
-	       
-	      /* sSigla = "";
-	       sCodfisc= itens.getString(NF.C_CODFISC);
-	       
-	       if (sCodfisc == null)
-	       	   sSigla="";
-	       else if (sCodfisc.equals("3402.20.00"))
-	       	   sSigla = "A"; 	   
-		   else if (sCodfisc.equals("2828.90.11"))
-			   sSigla = "B"; 	   	   
-		   else if (sCodfisc.equals("3808.40.10"))
-			   sSigla = "C"; 	    	   
-		   else if (sCodfisc.equals("3910.00.12"))
-			   sSigla = "D"; 	   
-	       else if (sCodfisc.equals("1520.00.20"))
-			   sSigla = "E"; 	   
-		   else if (sCodfisc.equals("3404.20.10"))
-			   sSigla = "F"; 	   
-		   else if (sCodfisc.equals("2710.00.19"))
-			   sSigla = "G"; 	   
-	       else if (sCodfisc.equals("3810.10.10"))
-			   sSigla = "H";
-		   else if (sCodfisc.equals("1515.90.00"))
-			   sSigla = "I"; 	    	   
-	       else {
-	           if (!sFiscAdic.equals(""))
-	        	 menssagem++;
-	           else {
-	             sSigla = "J";
-	       	     sFiscAdic = sCodfisc ;
-	           }       	   
-	       }  */
 	       
 	       sCodfisc = itens.getString(NF.C_CODFISC);
            
@@ -278,7 +247,7 @@ public class NFIswara2 extends Layout {
 				  imp.say(imp.pRow()+1,0,"");
 				  imp.say(imp.pRow()+0,23,sMatObs[2]);
 			   }
-			   for (int i=0; i<(39-iRow);i++) {
+			   for (int i=0; i<(40-iRow);i++) {
 			      imp.say(imp.pRow()+1,0,"");
 			   }
 				
@@ -366,25 +335,7 @@ public class NFIswara2 extends Layout {
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   
-		   
-	
-/*			   if (!sDuplics[0].equals("")) {
-				imp.say(imp.pRow()+1,0,sDuplics[0]);
-				imp.say(imp.pRow()+0,17,sVencs[0]);
-				imp.say(imp.pRow()+0,29,sVals[0]);
-			   }
-			   if (!sDuplics[1].equals("")) {
-				imp.say(imp.pRow()+1,0,sDuplics[1]);
-				imp.say(imp.pRow()+0,17,sVencs[1]);
-				imp.say(imp.pRow()+0,29,sVals[1]);
-			   }
-			   if (!sDuplics[2].equals("")) {
-				imp.say(imp.pRow()+1,0,sDuplics[2]);
-				imp.say(imp.pRow()+0,17,sVencs[2]);
-				imp.say(imp.pRow()+0,29,sVals[2]);
-			   } */
-			   
+			   			   
 			   vMens = Funcoes.strToVectorSilabas(sMens,28);
 			   
 			   for (int iPos=0; iPos<6; iPos++) {
@@ -406,7 +357,16 @@ public class NFIswara2 extends Layout {
 				   }
 			   }
 			   
-			   imp.say(imp.pRow()+6,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			   imp.say(imp.pRow()+0,3,"Total: "+Funcoes.strDecimalToStrCurrency(10,2,cab.getString(NF.C_VLRLIQPED)));
+			   imp.say(imp.pRow()+0,25,"plano.pag.: "+cab.getString(NF.C_DESCPLANOPAG).trim());
+			   imp.say(imp.pRow()+0,60,"Cliente: "+cab.getString(NF.C_NOMEEMIT).trim());
+			   imp.say(imp.pRow()+0,100,"Emit.: "+Aplicativo.strUsuario);
+			   
+			   imp.say(imp.pRow()+2,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+0,125,""+iNumNota);
 	
 	           for (int i=imp.pRow(); i<=iLinPag; i++) { 
