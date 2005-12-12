@@ -109,7 +109,6 @@ public class NFIswara2 extends Layout {
 	         if (imp.pRow()==0) {
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			   if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 		           imp.say(imp.pRow()+0,105,"X");
 		       else
@@ -122,6 +121,7 @@ public class NFIswara2 extends Layout {
 	           imp.say(imp.pRow()+3,0,""+imp.comprimido());
 	           imp.say(imp.pRow()+0,2,sNat[0]);
 	           imp.say(imp.pRow()+0,48,sNat[1]);
+			   imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,"");
 	           imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -158,7 +158,7 @@ public class NFIswara2 extends Layout {
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+1,0,"");
-			   imp.say(imp.pRow()+0,3,""+Funcoes.strZero(""+cab.getInt(NF.C_CODVEND),8));
+			   imp.say(imp.pRow()+0,3,""+Funcoes.strZero(""+cab.getInt(NF.C_CODPED),8));
 			   imp.say(imp.pRow()+0,48,cab.getInt(NF.C_CODEMIT)+"");
 			   imp.say(imp.pRow()+0,62,!cab.getString(NF.C_DESCSETOR).equals("") ? Funcoes.copy(cab.getString(NF.C_DESCSETOR),0,20) : ""); // descsetor
 		
@@ -218,7 +218,7 @@ public class NFIswara2 extends Layout {
 	       
 	       imp.say(imp.pRow()+0,8,itens.getString(NF.C_DESCPROD).substring(0,23));
 	       imp.say(imp.pRow()+0,34,itens.getString(NF.C_CODLOTE).trim());
-	       imp.say(imp.pRow()+0,49,itens.getString(NF.C_VENCLOTE).trim());
+	       imp.say(imp.pRow()+0,49,Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
 	       imp.say(imp.pRow()+0,62,sSigla);
 	       imp.say(imp.pRow()+0,66,Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
 	       imp.say(imp.pRow()+0,71,itens.getString(NF.C_CODUNID));
@@ -365,8 +365,8 @@ public class NFIswara2 extends Layout {
 			   imp.say(imp.pRow()+0,60,"Cliente: "+cab.getString(NF.C_NOMEEMIT).trim());
 			   imp.say(imp.pRow()+0,100,"Emit.: "+Aplicativo.strUsuario);
 			   
-			   imp.say(imp.pRow()+3,0,""+imp.comprimido());
-			   imp.say(imp.pRow()+0,125,""+iNumNota);
+			   //imp.say(imp.pRow()+3,0,""+imp.comprimido());
+			   //imp.say(imp.pRow()+0,125,""+iNumNota);
 	
 	           for (int i=imp.pRow(); i<=iLinPag; i++) { 
 	             imp.say(imp.pRow()+1,0,"");
