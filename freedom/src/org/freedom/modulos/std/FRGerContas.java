@@ -122,7 +122,7 @@ public class FRGerContas extends FRelatorio  {
     rgOrdemRel.setVlrString("C");
     
     rgOrdemRel2 = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
-    rgOrdemRel2.setVlrString("C");
+    rgOrdemRel2.setVlrString("R");
     
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
