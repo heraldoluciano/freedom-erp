@@ -8,10 +8,10 @@
 		 orientation="Landscape"
 		 pageWidth="842"
 		 pageHeight="595"
-		 columnWidth="551"
+		 columnWidth="769"
 		 columnSpacing="0"
-		 leftMargin="14"
-		 rightMargin="14"
+		 leftMargin="56"
+		 rightMargin="17"
 		 topMargin="14"
 		 bottomMargin="14"
 		 whenNoDataType="NoPages"
@@ -227,9 +227,9 @@ ORDER BY 2]]></queryString>
 				<rectangle radius="0" >
 					<reportElement
 						mode="Opaque"
-						x="444"
+						x="441"
 						y="0"
-						width="370"
+						width="327"
 						height="30"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -247,7 +247,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="0"
 						y="0"
-						width="426"
+						width="423"
 						height="30"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -285,7 +285,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="120"
+						x="116"
 						y="9"
 						width="26"
 						height="13"
@@ -307,7 +307,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="152"
+						x="149"
 						y="9"
 						width="22"
 						height="13"
@@ -329,7 +329,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="181"
+						x="178"
 						y="9"
 						width="23"
 						height="13"
@@ -351,7 +351,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="209"
+						x="206"
 						y="9"
 						width="24"
 						height="13"
@@ -373,7 +373,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="238"
+						x="235"
 						y="19"
 						width="10"
 						height="7"
@@ -395,7 +395,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="254"
+						x="251"
 						y="19"
 						width="10"
 						height="7"
@@ -417,7 +417,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="270"
+						x="267"
 						y="19"
 						width="10"
 						height="7"
@@ -439,7 +439,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="286"
+						x="283"
 						y="19"
 						width="10"
 						height="7"
@@ -461,7 +461,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="301"
+						x="298"
 						y="19"
 						width="10"
 						height="7"
@@ -483,7 +483,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="318"
+						x="315"
 						y="19"
 						width="10"
 						height="7"
@@ -505,7 +505,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="334"
+						x="331"
 						y="19"
 						width="10"
 						height="7"
@@ -527,7 +527,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="350"
+						x="347"
 						y="19"
 						width="10"
 						height="7"
@@ -549,7 +549,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="366"
+						x="363"
 						y="19"
 						width="10"
 						height="7"
@@ -571,7 +571,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="382"
+						x="379"
 						y="19"
 						width="10"
 						height="7"
@@ -593,7 +593,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="398"
+						x="395"
 						y="19"
 						width="10"
 						height="7"
@@ -615,7 +615,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="414"
+						x="411"
 						y="19"
 						width="10"
 						height="7"
@@ -659,7 +659,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="117"
+						x="112"
 						y="0"
 						width="0"
 						height="30"
@@ -677,7 +677,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="148"
+						x="145"
 						y="0"
 						width="0"
 						height="30"
@@ -695,7 +695,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="178"
+						x="175"
 						y="0"
 						width="0"
 						height="30"
@@ -713,7 +713,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="207"
+						x="204"
 						y="0"
 						width="0"
 						height="30"
@@ -731,7 +731,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="235"
+						x="232"
 						y="0"
 						width="0"
 						height="30"
@@ -749,7 +749,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="235"
+						x="232"
 						y="14"
 						width="191"
 						height="0"
@@ -767,7 +767,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="250"
+						x="247"
 						y="14"
 						width="0"
 						height="16"
@@ -785,7 +785,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="267"
+						x="264"
 						y="14"
 						width="0"
 						height="16"
@@ -803,7 +803,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="283"
+						x="280"
 						y="14"
 						width="0"
 						height="16"
@@ -821,7 +821,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="299"
+						x="296"
 						y="14"
 						width="0"
 						height="16"
@@ -839,7 +839,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="314"
+						x="311"
 						y="14"
 						width="0"
 						height="16"
@@ -857,7 +857,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="331"
+						x="328"
 						y="14"
 						width="0"
 						height="16"
@@ -875,7 +875,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="347"
+						x="344"
 						y="14"
 						width="0"
 						height="16"
@@ -893,7 +893,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="363"
+						x="360"
 						y="14"
 						width="0"
 						height="16"
@@ -911,7 +911,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="379"
+						x="376"
 						y="14"
 						width="0"
 						height="16"
@@ -929,7 +929,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="395"
+						x="392"
 						y="14"
 						width="0"
 						height="16"
@@ -947,7 +947,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="411"
+						x="408"
 						y="14"
 						width="0"
 						height="16"
@@ -965,9 +965,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="578"
+						x="554"
 						y="17"
-						width="60"
+						width="53"
 						height="9"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -987,9 +987,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="643"
+						x="613"
 						y="17"
-						width="60"
+						width="57"
 						height="9"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1009,9 +1009,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="513"
+						x="499"
 						y="17"
-						width="60"
+						width="50"
 						height="9"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1031,10 +1031,10 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="445"
-						y="14"
-						width="369"
-						height="0"
+						x="442"
+						y="13"
+						width="325"
+						height="1"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-42"
@@ -1049,7 +1049,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="426"
+						x="423"
 						y="29"
 						width="17"
 						height="0"
@@ -1067,7 +1067,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="428"
+						x="425"
 						y="2"
 						width="10"
 						height="26"
@@ -1089,9 +1089,9 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="448"
+						x="445"
 						y="1"
-						width="363"
+						width="323"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1111,9 +1111,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="449"
+						x="444"
 						y="17"
-						width="59"
+						width="49"
 						height="9"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1133,7 +1133,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="709"
+						x="675"
 						y="16"
 						width="37"
 						height="11"
@@ -1155,9 +1155,9 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="751"
+						x="717"
 						y="16"
-						width="61"
+						width="50"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1185,7 +1185,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="119"
+						x="116"
 						y="2"
 						width="27"
 						height="14"
@@ -1207,7 +1207,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="147"
 						y="2"
 						width="26"
 						height="14"
@@ -1229,7 +1229,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="180"
+						x="177"
 						y="2"
 						width="24"
 						height="14"
@@ -1253,7 +1253,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="213"
+						x="210"
 						y="2"
 						width="17"
 						height="14"
@@ -1279,7 +1279,7 @@ ORDER BY 2]]></queryString>
 						mode="Transparent"
 						x="2"
 						y="2"
-						width="111"
+						width="107"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1299,7 +1299,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="117"
+						x="112"
 						y="0"
 						width="0"
 						height="20"
@@ -1317,7 +1317,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="148"
+						x="145"
 						y="0"
 						width="0"
 						height="20"
@@ -1335,7 +1335,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="178"
+						x="175"
 						y="0"
 						width="0"
 						height="20"
@@ -1353,7 +1353,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="207"
+						x="204"
 						y="0"
 						width="0"
 						height="20"
@@ -1371,7 +1371,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="235"
+						x="232"
 						y="0"
 						width="0"
 						height="20"
@@ -1389,7 +1389,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="250"
+						x="247"
 						y="0"
 						width="0"
 						height="20"
@@ -1407,7 +1407,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="267"
+						x="264"
 						y="0"
 						width="0"
 						height="20"
@@ -1425,7 +1425,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="283"
+						x="280"
 						y="0"
 						width="0"
 						height="20"
@@ -1443,7 +1443,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="299"
+						x="296"
 						y="0"
 						width="0"
 						height="20"
@@ -1461,7 +1461,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="314"
+						x="311"
 						y="0"
 						width="0"
 						height="20"
@@ -1479,7 +1479,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="331"
+						x="328"
 						y="0"
 						width="0"
 						height="20"
@@ -1497,7 +1497,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="347"
+						x="344"
 						y="0"
 						width="0"
 						height="20"
@@ -1515,7 +1515,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="363"
+						x="360"
 						y="0"
 						width="0"
 						height="20"
@@ -1533,7 +1533,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="379"
+						x="376"
 						y="0"
 						width="0"
 						height="20"
@@ -1551,7 +1551,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="395"
+						x="392"
 						y="0"
 						width="0"
 						height="20"
@@ -1569,7 +1569,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="411"
+						x="408"
 						y="0"
 						width="0"
 						height="20"
@@ -1605,8 +1605,8 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="814"
-						y="0"
+						x="767"
+						y="-1"
 						width="0"
 						height="20"
 						forecolor="#000000"
@@ -1623,7 +1623,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="425"
+						x="422"
 						y="0"
 						width="0"
 						height="20"
@@ -1643,7 +1643,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="1"
 						y="19"
-						width="813"
+						width="767"
 						height="1"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1659,7 +1659,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="236"
+						x="233"
 						y="3"
 						width="13"
 						height="13"
@@ -1683,7 +1683,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="252"
+						x="249"
 						y="3"
 						width="13"
 						height="13"
@@ -1707,7 +1707,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="268"
+						x="265"
 						y="3"
 						width="14"
 						height="13"
@@ -1731,7 +1731,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="284"
+						x="281"
 						y="3"
 						width="14"
 						height="13"
@@ -1755,7 +1755,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="300"
+						x="297"
 						y="3"
 						width="13"
 						height="13"
@@ -1779,7 +1779,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="315"
+						x="312"
 						y="3"
 						width="15"
 						height="13"
@@ -1803,7 +1803,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="332"
+						x="329"
 						y="3"
 						width="14"
 						height="13"
@@ -1827,7 +1827,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="348"
+						x="345"
 						y="3"
 						width="14"
 						height="13"
@@ -1851,7 +1851,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="364"
+						x="361"
 						y="3"
 						width="14"
 						height="13"
@@ -1875,7 +1875,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="380"
+						x="377"
 						y="3"
 						width="14"
 						height="13"
@@ -1899,7 +1899,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="396"
+						x="393"
 						y="3"
 						width="14"
 						height="13"
@@ -1923,7 +1923,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="412"
+						x="409"
 						y="3"
 						width="12"
 						height="13"
@@ -1947,9 +1947,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="578"
+						x="554"
 						y="2"
-						width="60"
+						width="53"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1971,7 +1971,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="576"
+						x="551"
 						y="-16"
 						width="0"
 						height="35"
@@ -1989,7 +1989,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="444"
+						x="441"
 						y="0"
 						width="0"
 						height="20"
@@ -2007,8 +2007,8 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="641"
-						y="-15"
+						x="609"
+						y="-16"
 						width="0"
 						height="35"
 						forecolor="#000000"
@@ -2025,7 +2025,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="426"
+						x="423"
 						y="3"
 						width="15"
 						height="13"
@@ -2052,9 +2052,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="643"
+						x="612"
 						y="2"
-						width="60"
+						width="57"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2076,9 +2076,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="513"
+						x="498"
 						y="2"
-						width="60"
+						width="51"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2100,9 +2100,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="448"
+						x="443"
 						y="2"
-						width="60"
+						width="50"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2124,7 +2124,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="511"
+						x="495"
 						y="-16"
 						width="0"
 						height="35"
@@ -2142,8 +2142,8 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="706"
-						y="-15"
+						x="672"
+						y="-16"
 						width="0"
 						height="35"
 						forecolor="#000000"
@@ -2160,7 +2160,7 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="749"
+						x="714"
 						y="-16"
 						width="0"
 						height="35"
@@ -2178,8 +2178,8 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="###0.00;-###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="708"
-						y="3"
+						x="675"
+						y="2"
 						width="38"
 						height="13"
 						forecolor="#000000"
@@ -2202,9 +2202,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="751"
+						x="717"
 						y="3"
-						width="60"
+						width="50"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2231,7 +2231,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="235"
+						x="232"
 						y="6"
 						width="13"
 						height="10"
@@ -2275,7 +2275,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="251"
+						x="248"
 						y="6"
 						width="13"
 						height="10"
@@ -2297,7 +2297,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="268"
+						x="265"
 						y="6"
 						width="13"
 						height="10"
@@ -2319,7 +2319,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="284"
+						x="281"
 						y="6"
 						width="14"
 						height="10"
@@ -2341,7 +2341,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="300"
+						x="297"
 						y="6"
 						width="13"
 						height="10"
@@ -2363,7 +2363,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="315"
+						x="312"
 						y="6"
 						width="14"
 						height="10"
@@ -2385,7 +2385,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="332"
+						x="329"
 						y="6"
 						width="14"
 						height="10"
@@ -2407,7 +2407,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="348"
+						x="345"
 						y="6"
 						width="14"
 						height="10"
@@ -2429,7 +2429,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="364"
+						x="361"
 						y="6"
 						width="14"
 						height="10"
@@ -2451,7 +2451,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="380"
+						x="377"
 						y="6"
 						width="14"
 						height="10"
@@ -2473,7 +2473,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="396"
+						x="393"
 						y="6"
 						width="14"
 						height="10"
@@ -2495,7 +2495,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="411"
+						x="408"
 						y="6"
 						width="13"
 						height="10"
@@ -2517,9 +2517,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="578"
+						x="564"
 						y="1"
-						width="60"
+						width="57"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2539,7 +2539,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="425"
+						x="422"
 						y="6"
 						width="13"
 						height="10"
@@ -2561,7 +2561,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="513"
+						x="502"
 						y="1"
 						width="60"
 						height="13"
@@ -2583,7 +2583,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="643"
+						x="624"
 						y="1"
 						width="60"
 						height="13"
@@ -2605,9 +2605,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="448"
-						y="2"
-						width="60"
+						x="445"
+						y="1"
+						width="56"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2676,9 +2676,9 @@ ORDER BY 2]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="1"
-						y="3"
-						width="812"
-						height="0"
+						y="-1"
+						width="770"
+						height="4"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line"
