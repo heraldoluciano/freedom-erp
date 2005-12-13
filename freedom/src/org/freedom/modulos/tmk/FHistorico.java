@@ -398,7 +398,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	if (dl.OK) {
 		  	  oRets = dl.getValores();
 		  	  try {
-		        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?)";
+		        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,'')";
 		        ps = con.prepareStatement(sSQL);
 		        ps.setInt(1,Aplicativo.iCodEmp);
 		        if(txtCodCont.getVlrInteger().intValue() == 0){//Filial e código do contato
@@ -500,7 +500,7 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	if (dl.OK) {
 		  		oRets = dl.getValores();
 		  		try {
-		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?)";
+		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,'')";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
 		  			ps.setInt(1,Integer.parseInt((String)tabTemp.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);

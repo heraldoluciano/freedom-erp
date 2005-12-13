@@ -1146,7 +1146,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  	if (dl.OK) {
 		  	  oRets = dl.getValores();
 		  	  	try {
-			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?)";
+			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,'')";
 			        ps = con.prepareStatement(sSQL);
 			        ps.setInt(1,Aplicativo.iCodEmp);
 		        	ps.setNull(2,Types.INTEGER);
@@ -1229,7 +1229,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  	if (dl.OK) {
 		  		oRets = dl.getValores();
 		  		try {
-		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,?)";
+		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,?,'')";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
 		  			ps.setInt(1,Integer.parseInt((String)tabHist.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);
@@ -1418,9 +1418,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
       if(iCodAtende.compareTo(new Integer(0))>0){
 		  try {
-			  String sSql = "INSERT INTO tkhistorico (CODEMP,CODFILIAL,CODHISTTK,DESCHISTTK,SITHISTTK,DATAHISTTK,HORAHISTTK,CODEMPCL,CODFILIALCL,CODCLI,CODEMPAE,CODFILIALAE,CODATEND,TIPOHISTTK) "+
-						    "VALUES(?,?,coalesce((SELECT MAX(CODHISTTK) FROM TKHISTORICO)+1,1),'CONTATO','EF','"+sData+"' ,(CAST('NOW' AS TIME)),?,?,?,?,?,?,'V')";	  
-	
+			 /* String sSql = "INSERT INTO tkhistorico (CODEMP,CODFILIAL,CODHISTTK,DESCHISTTK,SITHISTTK," +
+			  				"DATAHISTTK,HORAHISTTK,CODEMPCL,CODFILIALCL,CODCLI,CODEMPAE,CODFILIALAE,CODATEND,TIPOHISTTK) "+
+						    "VALUES(?,?,coalesce((SELECT MAX(CODHISTTK) FROM TKHISTORICO)+1,1)," +
+						    "'CONTATO','EF','"+sData+"' ,(CAST('NOW' AS TIME)),?,?,?,?,?,?,'V')";	 
+			  
 			  ps = con.prepareStatement(sSql);
 			  ps.setInt(1,Aplicativo.iCodEmp);
 			  ps.setInt(2,ListaCampos.getMasterFilial("TKHISTORICO"));
@@ -1429,7 +1431,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			  ps.setInt(5,txtCodCli.getVlrInteger().intValue());
 			  ps.setInt(6,Aplicativo.iCodEmp);
 			  ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));
-			  ps.setInt(8,iCodAtende.intValue());
+			  ps.setInt(8,iCodAtende.intValue());*/
+	
+			  String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,'"+sData+"','V')";
+			  ps = con.prepareStatement(sSQL);
+			  ps.setInt(1,Aplicativo.iCodEmp);
+			  ps.setNull(2,Types.INTEGER);
+			  ps.setNull(3,Types.INTEGER);
+			  ps.setInt(4,ListaCampos.getMasterFilial("VDCLIENTE")); 
+		      ps.setInt(5,txtCodCli.getVlrInteger().intValue()); 
+		      ps.setString(6,"CONTATO");//Descrição do historico
+		      ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
+			  ps.setInt(8,iCodAtende.intValue());//codígo atendente
+			  ps.setString(9,"EF");//status do historico
 	
 			  ps.execute();
 			  ps.close();			  
