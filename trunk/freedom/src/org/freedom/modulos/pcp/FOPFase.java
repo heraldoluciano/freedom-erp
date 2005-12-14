@@ -327,7 +327,7 @@ public class FOPFase extends FDetalhe implements PostListener,CancelListener,Ins
   	try {
   		
   		//if(txtJustificqtdprod.getVlrString().trim().length()<0)
-  			//txtJustificqtdprod.setVlrString(" ");
+  		//txtJustificqtdprod.setVlrString(" ");
   	
 	  	PreparedStatement ps = con.prepareStatement(sSQL);
 	    ps.setDouble(1,txtQtdFinalOP.getVlrDouble().doubleValue());

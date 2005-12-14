@@ -229,7 +229,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="441"
 						y="0"
-						width="327"
+						width="326"
 						height="30"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1091,8 +1091,8 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="445"
 						y="1"
-						width="323"
-						height="10"
+						width="320"
+						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-23"
@@ -1157,7 +1157,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="717"
 						y="16"
-						width="50"
+						width="48"
 						height="11"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1182,6 +1182,7 @@ ORDER BY 2]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>1500.00)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -2180,7 +2181,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="675"
 						y="2"
-						width="38"
+						width="36"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2204,7 +2205,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="717"
 						y="3"
-						width="50"
+						width="48"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2517,9 +2518,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="564"
-						y="1"
-						width="57"
+						x="554"
+						y="5"
+						width="53"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2561,9 +2562,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="502"
-						y="1"
-						width="60"
+						x="498"
+						y="5"
+						width="51"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2583,9 +2584,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="624"
-						y="1"
-						width="60"
+						x="612"
+						y="5"
+						width="58"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2605,9 +2606,9 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="445"
-						y="1"
-						width="56"
+						x="443"
+						y="5"
+						width="49"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2677,7 +2678,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="1"
 						y="-1"
-						width="770"
+						width="766"
 						height="4"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
