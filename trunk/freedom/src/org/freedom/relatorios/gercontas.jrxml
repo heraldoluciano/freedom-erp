@@ -38,6 +38,10 @@
 		<parameterDescription><![CDATA[Código da filial no cadastro de vendedores]]></parameterDescription>
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="VLRRELEV" isForPrompting="true" class="java.lang.Double">
+		<parameterDescription><![CDATA[Filtro por relevancia de valor.]]></parameterDescription>
+		<defaultValueExpression ><![CDATA[new Double(0)]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT CLI.CODCLI,CLI.RAZCLI,CLI.CIDCLI,TC.SIGLATIPOCLI,CLA.SIGLACLASCLI,
   (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)=$P{ANO} AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =1) AS JAN,
   (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)=$P{ANO} AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =2) AS FEV,
@@ -146,28 +150,38 @@ ORDER BY 2]]></queryString>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASATUAL" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{VENDASATUAL}]]></variableExpression>
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASATUAL}:
+new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVISITAS" class="java.lang.Integer" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[new Integer(
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?new Integer(
 	   ($F{JAN}.intValue())+($F{FEV}.intValue())+($F{MAR}.intValue())+
    	   ($F{ABR}.intValue())+($F{MAI}.intValue())+($F{JUN}.intValue())+
  	   ($F{JUL}.intValue())+($F{AGO}.intValue())+($F{SETE}.intValue())+
     	   ($F{OUT}.intValue())+($F{NOV}.intValue())+($F{DEZ}.intValue())
-)]]></variableExpression>
+)
+
+:
+new Integer(0)
+
+
+]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{VENDASANTERIOR}]]></variableExpression>
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR}:
+new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASMETA" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{VENDASMETA}]]></variableExpression>
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASMETA}:
+new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR2" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[$F{VENDASANTERIOR2}]]></variableExpression>
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR2}:
+new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 		<background>
@@ -1200,7 +1214,7 @@ ORDER BY 2]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>50.00)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -2194,7 +2208,7 @@ ORDER BY 2]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
 				</line>
-				<textField isStretchWithOverflow="false" pattern="###0.00 %" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
 						x="675"
