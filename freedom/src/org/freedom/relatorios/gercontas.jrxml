@@ -193,9 +193,9 @@ new Double(0)]]></variableExpression>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="124"
+						x="77"
 						y="6"
-						width="267"
+						width="650"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
