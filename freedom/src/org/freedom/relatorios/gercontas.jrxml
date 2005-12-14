@@ -150,12 +150,12 @@ ORDER BY 2]]></queryString>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASATUAL" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASATUAL}:
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASATUAL}:
 new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVISITAS" class="java.lang.Integer" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?new Integer(
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?new Integer(
 	   ($F{JAN}.intValue())+($F{FEV}.intValue())+($F{MAR}.intValue())+
    	   ($F{ABR}.intValue())+($F{MAI}.intValue())+($F{JUN}.intValue())+
  	   ($F{JUL}.intValue())+($F{AGO}.intValue())+($F{SETE}.intValue())+
@@ -170,17 +170,17 @@ new Integer(0)
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR}:
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR}:
 new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASMETA" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASMETA}:
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASMETA}:
 new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR2" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR2}:
+		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR2}:
 new Double(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
@@ -1214,7 +1214,7 @@ new Double(0)]]></variableExpression>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean(($F{VENDASATUAL}.doubleValue())>($P{VLRRELEV}.doubleValue()))]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean(($F{VENDASATUAL}.doubleValue())>=($P{VLRRELEV}.doubleValue()))]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
