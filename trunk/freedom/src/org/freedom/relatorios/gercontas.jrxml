@@ -38,9 +38,9 @@
 		<parameterDescription><![CDATA[Código da filial no cadastro de vendedores]]></parameterDescription>
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="VLRRELEV" isForPrompting="false" class="java.lang.Double">
+	<parameter name="VLRRELEV" isForPrompting="true" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Filtro por relevancia de valor.]]></parameterDescription>
-		<defaultValueExpression ><![CDATA[new Double(0)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new Integer(0)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT CLI.CODCLI,CLI.RAZCLI,CLI.CIDCLI,TC.SIGLATIPOCLI,CLA.SIGLACLASCLI,
   (SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS WHERE HIS.CODEMPCL=CLI.CODEMP AND HIS.CODFILIALCL=CLI.CODFILIAL AND HIS.CODCLI=CLI.CODCLI AND HIS.TIPOHISTTK='V' AND EXTRACT(YEAR FROM HIS.DATAHISTTK)=$P{ANO} AND EXTRACT(MONTH FROM HIS.DATAHISTTK) =1) AS JAN,
@@ -78,7 +78,7 @@
   (SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=CLI.CODEMP AND CM.CODFILIAL=CLI.CODFILIAL AND CM.CODCLI=CLI.CODCLI AND ANOMETAVEND=$P{ANO} AS VENDASMETA 
 FROM VDCLIENTE CLI, VDCLASCLI CLA, VDTIPOCLI TC WHERE CLA.CODEMP=CLI.CODEMPCC AND CLA.CODFILIAL=CLI.CODFILIALCC AND CLA.CODCLASCLI=CLI.CODCLASCLI 
 AND TC.CODEMP=CLI.CODEMPTC AND TC.CODFILIAL=CLI.CODFILIALTC AND TC.CODTIPOCLI=CLI.CODTIPOCLI
-AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD} 
+AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD} and $P{VLRRELEV}>0
 ORDER BY 2]]></queryString>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
@@ -247,7 +247,7 @@ new Double(0)]]></variableExpression>
 						mode="Transparent"
 						x="76"
 						y="24"
-						width="94"
+						width="174"
 						height="6"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -262,7 +262,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["VENDAS "+$P{ANO}+" filtrar maiores que:"+($P{VLRRELEV}.doubleValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VENDAS "+$P{ANO}+" filtrar maiores que:"+($P{VLRRELEV})]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>
@@ -681,9 +681,9 @@ new Double(0)]]></variableExpression>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="319"
+						x="235"
 						y="2"
-						width="46"
+						width="184"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -695,7 +695,7 @@ new Double(0)]]></variableExpression>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[CONTATOS]]></text>
