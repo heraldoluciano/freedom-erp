@@ -632,10 +632,10 @@ public class FRGerContas extends FRelatorio  {
 	hParam.put("CODVEND",txtCodVend.getVlrInteger());
 	hParam.put("VLRRELEV",new Double(dbVendasGeral)); 
 	
-	System.out.println("Vai filtrar valor < que:"+dbVendasGeral);
-	dbVendasGeral = 0.00;
-	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),(HashMap)hParam.clone(),this);	
-	hParam = new HashMap();					
+	System.out.println("Vai filtrar valor < que:"+new Double(dbVendasGeral).doubleValue());
+//	dbVendasGeral = 0.00;
+	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),hParam,this);	
+//	hParam = new HashMap();					
 	if(bVisualizar)
 		dlGr.setVisible(true);  
 	else{			
