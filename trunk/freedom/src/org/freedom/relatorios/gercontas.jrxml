@@ -1222,6 +1222,7 @@ new Double(0)]]></variableExpression>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
+				<printWhenExpression><![CDATA[new Boolean((($F{VENDASATUAL}.doubleValue())>=($P{VLRRELEV}.doubleValue())) | ($P{VLRRELEV}.doubleValue()==0.00))]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
