@@ -43,8 +43,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
-import sun.security.krb5.internal.bd;
-
 public class FRGerContas extends FRelatorio  {
 
   private static final long serialVersionUID = 1L;
@@ -632,7 +630,7 @@ public class FRGerContas extends FRelatorio  {
 	HashMap hParam = new HashMap();
 	hParam.put("ANO",txtAno.getVlrInteger());
 	hParam.put("CODVEND",txtCodVend.getVlrInteger());
-	hParam.put("PERCRELEV",new Double(dbVendasGeral)); 
+	hParam.put("VLRRELEV",new Double(dbVendasGeral)); 
 	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),hParam,this);	
 						
 	if(bVisualizar)
