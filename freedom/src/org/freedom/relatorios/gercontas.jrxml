@@ -97,10 +97,18 @@ ORDER BY 2]]></queryString>
 	<field name="OUT" class="java.lang.Integer"/>
 	<field name="NOV" class="java.lang.Integer"/>
 	<field name="DEZ" class="java.lang.Integer"/>
-	<field name="VENDASATUAL" class="java.lang.Double"/>
-	<field name="VENDASANTERIOR" class="java.lang.Double"/>
-	<field name="VENDASMETA" class="java.lang.Double"/>
-	<field name="VENDASANTERIOR2" class="java.lang.Double"/>
+	<field name="VENDASATUAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[Montante de vendas no ano atual]]></fieldDescription>
+	</field>
+	<field name="VENDASANTERIOR" class="java.lang.Double">
+		<fieldDescription><![CDATA[Montante de vendas no ano anterior]]></fieldDescription>
+	</field>
+	<field name="VENDASMETA" class="java.lang.Double">
+		<fieldDescription><![CDATA[Montante de vendas estimada para o ano seguinte]]></fieldDescription>
+	</field>
+	<field name="VENDASANTERIOR2" class="java.lang.Double">
+		<fieldDescription><![CDATA[Montante de vendas no segundo ano anterior]]></fieldDescription>
+	</field>
 	<variable name="TOTJAN" class="java.lang.Integer" resetType="Report" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{JAN}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
@@ -1999,7 +2007,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASATUAL}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASATUAL}!=null?$F{VENDASATUAL}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -2104,7 +2112,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASMETA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASMETA}!=null?$F{VENDASMETA}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2128,7 +2136,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASANTERIOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASANTERIOR}!=null?$F{VENDASANTERIOR}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2152,7 +2160,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASANTERIOR2}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASANTERIOR2}!=null?$F{VENDASANTERIOR2}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -2566,7 +2574,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASATUAL}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASATUAL}!=null?$V{TOTVENDASATUAL}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2610,7 +2618,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASANTERIOR}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASANTERIOR}!=null?$V{TOTVENDASANTERIOR}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2632,7 +2640,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASMETA}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASMETA}!=null?$V{TOTVENDASMETA}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2654,7 +2662,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASANTERIOR2}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASANTERIOR2}!=null?$V{TOTVENDASANTERIOR2}:new Double(0)]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnFooter>
