@@ -21,6 +21,7 @@
  */
 
 package org.freedom.modulos.std;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,8 +92,7 @@ public class FRGerContas extends FRelatorio  {
   private final int OUT = 9;
   private final int NOV = 10;
   private final int DEZ = 11;
-
-
+  
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
     setAtribos(80,0,550,350);
