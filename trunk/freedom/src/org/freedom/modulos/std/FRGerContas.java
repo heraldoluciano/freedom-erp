@@ -633,8 +633,9 @@ public class FRGerContas extends FRelatorio  {
 	hParam.put("VLRRELEV",new Double(dbVendasGeral)); 
 	
 	System.out.println("Vai filtrar valor < que:"+dbVendasGeral);
-	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),hParam,this);	
-						
+	dbVendasGeral = 0.00;
+	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),(HashMap)hParam.clone(),this);	
+	hParam = new HashMap();					
 	if(bVisualizar)
 		dlGr.setVisible(true);  
 	else{			
