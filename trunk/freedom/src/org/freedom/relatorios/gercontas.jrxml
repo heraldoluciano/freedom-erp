@@ -38,7 +38,7 @@
 		<parameterDescription><![CDATA[Código da filial no cadastro de vendedores]]></parameterDescription>
 		<defaultValueExpression ><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
-	<parameter name="VLRRELEV" isForPrompting="true" class="java.lang.Double">
+	<parameter name="VLRRELEV" isForPrompting="false" class="java.lang.Double">
 		<parameterDescription><![CDATA[Filtro por relevancia de valor.]]></parameterDescription>
 		<defaultValueExpression ><![CDATA[new Double(0)]]></defaultValueExpression>
 	</parameter>
@@ -202,7 +202,7 @@ new Double(0)]]></variableExpression>
 					<reportElement
 						mode="Transparent"
 						x="77"
-						y="6"
+						y="4"
 						width="613"
 						height="18"
 						forecolor="#000000"
@@ -241,6 +241,28 @@ new Double(0)]]></variableExpression>
 						<font fontName="Arial" pdfFontName="Helvetica" size="18" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{CODVEND}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="76"
+						y="24"
+						width="94"
+						height="6"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-47"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["VENDAS "+$P{ANO}+" filtrar maiores que:"+($P{VLRRELEV}.doubleValue())]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>
@@ -1222,7 +1244,10 @@ new Double(0)]]></variableExpression>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean((($F{VENDASATUAL}.doubleValue())>=($P{VLRRELEV}.doubleValue())) | ($P{VLRRELEV}.doubleValue()==0.00))]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean(
+	(($F{VENDASATUAL}.doubleValue())>=($P{VLRRELEV}.doubleValue())) || 
+	($P{VLRRELEV}.doubleValue()==0.00)
+)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
