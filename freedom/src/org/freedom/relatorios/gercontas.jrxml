@@ -1051,7 +1051,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="423"
 						y="29"
-						width="17"
+						width="18"
 						height="1"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1067,7 +1067,7 @@ ORDER BY 2]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="425"
+						x="427"
 						y="2"
 						width="10"
 						height="26"
@@ -1174,6 +1174,24 @@ ORDER BY 2]]></queryString>
 					</textElement>
 				<text><![CDATA[A realizar]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="423"
+						y="1"
+						width="18"
+						height="1"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-50"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -1606,10 +1624,10 @@ ORDER BY 2]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="767"
-						y="-1"
+						x="765"
+						y="0"
 						width="1"
-						height="20"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-36"
@@ -2026,7 +2044,7 @@ ORDER BY 2]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="423"
+						x="424"
 						y="3"
 						width="15"
 						height="13"
@@ -2176,7 +2194,7 @@ ORDER BY 2]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
 				</line>
-				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00 %" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00 %" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
 						x="675"
@@ -2205,7 +2223,7 @@ ORDER BY 2]]></queryString>
 						mode="Opaque"
 						x="717"
 						y="3"
-						width="48"
+						width="42"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
