@@ -1200,7 +1200,7 @@ ORDER BY 2]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>1500.00)]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>50.00)]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
