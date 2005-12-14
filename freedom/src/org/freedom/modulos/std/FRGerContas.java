@@ -43,6 +43,8 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
+import sun.security.krb5.internal.bd;
+
 public class FRGerContas extends FRelatorio  {
 
   private static final long serialVersionUID = 1L;
@@ -90,6 +92,8 @@ public class FRGerContas extends FRelatorio  {
   private final int OUT = 9;
   private final int NOV = 10;
   private final int DEZ = 11;
+  private double dbVendasGeral = 0.00;
+
   
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
@@ -121,7 +125,6 @@ public class FRGerContas extends FRelatorio  {
     
     rgOrdemRel2 = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel2.setVlrString("R");
-    
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 	lcGrup1.montaSql(false, "GRUPO", "EQ");
@@ -200,7 +203,6 @@ public class FRGerContas extends FRelatorio  {
 		String sCodGrup2 = "";
 		String sFiltros1 = "";
 		String sFiltros2 = "";
-		double dbVendasGeral = 0.00;
 		double dbPercRel = 0.00;
 		int iCodCli = 0;
 		int iCodVend = 0;
@@ -332,62 +334,65 @@ public class FRGerContas extends FRelatorio  {
 			java.sql.Date dtFimOut = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(OUT,iAno));
 			java.sql.Date dtFimNov = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(NOV,iAno));
 			java.sql.Date dtFimDez = Funcoes.dateToSQLDate(Funcoes.getDataFimMes(DEZ,iAno));
-							
-			String sSqlGeral =  "SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) AS VENDASTOTAL "
-				  +"FROM VDVENDA V, VDITVENDA IV,EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM "
-				  +"WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? "
-				  +"AND  IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA "
-				  +"AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD "
-				  +"AND G.CODEMP=P.codEMPGp AND G.CODFILIAL=P.codfilialgp "
-				  +"AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
-				  +"AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
-				  + sWhereTM + 
-					 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
-				  	+ sWhere;
 				
+			if(dbPercRel>0.00){
 			
-			try {
-				System.out.println(sSqlGeral);
-				ps = con.prepareStatement(sSqlGeral);								
-				ps.setInt(iParam++, Aplicativo.iCodEmp);
-				ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));
-				ps.setDate(iParam++,dtIniJan);
-				ps.setDate(iParam++,dtFimDez);
-
-				if (!sCodGrup1.equals("")) {
-					ps.setInt(iParam++, Aplicativo.iCodEmp);
-					ps.setInt(iParam++, ListaCampos.getMasterFilial("EQGRUPO"));
-					ps.setString(iParam++, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));						
-				}
-				if (!sCodGrup2.equals("")) {
-					ps.setString(iParam++, sCodGrup2);
-				}
-				if (iCodVend != 0) {
-					ps.setInt(iParam++, iCodVend);					
-				}
-				if (iCodCli != 0) {
-					ps.setInt(iParam++, iCodCli);
-				}
-
-				rs = ps.executeQuery();
-				
-				if(rs.next()){
-					dbVendasGeral = rs.getDouble(1);
-					dbPercRel = dbPercRel/100;
- 
-					System.out.println("VALOR TOTAL DAS VENDAS:"+(dbVendasGeral));
-					dbVendasGeral = dbVendasGeral*dbPercRel;
-					System.out.println("VALOR A FILTRAR:"+dbVendasGeral);
+				String sSqlGeral =  "SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0)) AS VENDASTOTAL "
+					  +"FROM VDVENDA V, VDITVENDA IV,EQPRODUTO P,EQGRUPO G,EQTIPOMOV TM "
+					  +"WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? "
+					  +"AND  IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA "
+					  +"AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD "
+					  +"AND G.CODEMP=P.codEMPGp AND G.CODFILIAL=P.codfilialgp "
+					  +"AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
+					  +"AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
+					  + sWhereTM + 
+						 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
+					  	+ sWhere;
 					
+				
+				try {
+					System.out.println(sSqlGeral);
+					ps = con.prepareStatement(sSqlGeral);								
+					ps.setInt(iParam++, Aplicativo.iCodEmp);
+					ps.setInt(iParam++, ListaCampos.getMasterFilial("VDVENDA"));
+					ps.setDate(iParam++,dtIniJan);
+					ps.setDate(iParam++,dtFimDez);
+	
+					if (!sCodGrup1.equals("")) {
+						ps.setInt(iParam++, Aplicativo.iCodEmp);
+						ps.setInt(iParam++, ListaCampos.getMasterFilial("EQGRUPO"));
+						ps.setString(iParam++, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));						
+					}
+					if (!sCodGrup2.equals("")) {
+						ps.setString(iParam++, sCodGrup2);
+					}
+					if (iCodVend != 0) {
+						ps.setInt(iParam++, iCodVend);					
+					}
+					if (iCodCli != 0) {
+						ps.setInt(iParam++, iCodCli);
+					}
+	
+					rs = ps.executeQuery();
+					
+					if(rs.next()){
+						dbVendasGeral = rs.getDouble(1);
+						dbPercRel = dbPercRel/100;
+	 
+						System.out.println("VALOR TOTAL DAS VENDAS:"+(dbVendasGeral));
+						dbVendasGeral = dbVendasGeral*dbPercRel;
+						System.out.println("VALOR A FILTRAR:"+dbVendasGeral);
+						
+					}
+					rs = null;
 				}
-				rs = null;
-			}
-			catch (Exception err) {
-				Funcoes.mensagemErro(this, "Erro consultando total de vendas.\n"+ err.getMessage(),true,con,err);
-				err.printStackTrace();
-			}
-			finally{
-				iParam = 1;
+				catch (Exception err) {
+					Funcoes.mensagemErro(this, "Erro consultando total de vendas.\n"+ err.getMessage(),true,con,err);
+					err.printStackTrace();
+				}
+				finally{
+					iParam = 1;
+				}
 			}
 			
 			sSql = "SELECT C2.CODCLI,C2.RAZCLI,C2.CIDCLI,TI.SIGLATIPOCLI,CLA.SIGLACLASCLI,"
@@ -627,6 +632,7 @@ public class FRGerContas extends FRelatorio  {
 	HashMap hParam = new HashMap();
 	hParam.put("ANO",txtAno.getVlrInteger());
 	hParam.put("CODVEND",txtCodVend.getVlrInteger());
+	hParam.put("PERCRELEV",new Double(dbVendasGeral)); 
 	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),hParam,this);	
 						
 	if(bVisualizar)
