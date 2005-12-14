@@ -1214,7 +1214,7 @@ new Double(0)]]></variableExpression>
 		</columnHeader>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
-				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>($P{VLRRELEV}).doubleValue())]]></printWhenExpression>
+				<printWhenExpression><![CDATA[new Boolean($F{VENDASATUAL}.doubleValue()>$P{VLRRELEV}.doubleValue())]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -2254,8 +2254,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[((new BigDecimal($F{VENDASMETA}.doubleValue())).subtract
-(new BigDecimal($F{VENDASATUAL}.doubleValue())))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{VENDASMETA}.doubleValue()-$F{VENDASATUAL}.doubleValue()))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
