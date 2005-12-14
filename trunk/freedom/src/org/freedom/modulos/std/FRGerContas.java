@@ -90,7 +90,7 @@ public class FRGerContas extends FRelatorio  {
   private final int OUT = 9;
   private final int NOV = 10;
   private final int DEZ = 11;
-  private double dbVendasGeral = 0.00;
+  double dbVendasGeral = 0.00;
 
   
   public FRGerContas() {
@@ -392,6 +392,9 @@ public class FRGerContas extends FRelatorio  {
 					iParam = 1;
 				}
 			}
+			else {
+				dbVendasGeral = 0.00;
+			}
 			
 			sSql = "SELECT C2.CODCLI,C2.RAZCLI,C2.CIDCLI,TI.SIGLATIPOCLI,CLA.SIGLACLASCLI,"
 			   	 + "  SUM((SELECT (CAST((COALESCE(SUM(1),0)) AS INTEGER)) FROM TKHISTORICO HIS " +
@@ -627,15 +630,16 @@ public class FRGerContas extends FRelatorio  {
 	
   public void imprimir(boolean bVisualizar) {	    
 	FPrinterJob dlGr = null;
+	ResultSet rsRel = rodaQuery();
 	HashMap hParam = new HashMap();
-	hParam.put("VLRRELEV",new Integer(new Double(dbVendasGeral).intValue()));
+	hParam.put("VLRRELEV",new Double(dbVendasGeral));
 	hParam.put("ANO",txtAno.getVlrInteger());
 	hParam.put("CODVEND",txtCodVend.getVlrInteger());
-	 
 	
-	System.out.println("Vai filtrar valor < que:"+new Integer(new Double(dbVendasGeral).intValue()));
-//	dbVendasGeral = 0.00;
-	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rodaQuery(),hParam,this);	
+	
+	System.out.println("Vai filtrar valor < que:"+dbVendasGeral);
+	dbVendasGeral = 0.00;
+	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rsRel,hParam,this);	
 //	hParam = new HashMap();					
 	if(bVisualizar)
 		dlGr.setVisible(true);  
