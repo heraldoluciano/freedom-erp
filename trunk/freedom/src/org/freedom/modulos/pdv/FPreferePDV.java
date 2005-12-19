@@ -22,18 +22,18 @@
 
 
 package org.freedom.modulos.pdv;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.telas.FTabDados;
 
-public class FPreferePDV extends FTabDados implements ActionListener {
+public class FPreferePDV extends FTabDados{
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,10 +44,14 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 	private JTextFieldFK txtDescPlanoPag= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
-	private JCheckBoxPad cbAdicionais = new JCheckBoxPad("Dados adicionais no fechamento?","S","N");
+	private JTextFieldPad txtCodProdFrete = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
+	private JTextFieldFK txtDescProdeFrete= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
+	private JLabelPad lbProdFrete = new JLabelPad("Produto para frete.");
+	private JCheckBoxPad cbAdicionais = new JCheckBoxPad("Dados adicionais p/ frete no fechamento?","S","N");
 	private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
 	private ListaCampos lcCliente = new ListaCampos(this,"CL");
+	private ListaCampos lcProdFrete = new ListaCampos(this,"PD");
 	public FPreferePDV() {
 		super();
 		setTitulo("Preferências do PDV");
@@ -76,6 +80,12 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 		lcPlanoPag.montaSql(false, "PLANOPAG", "FN");
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
+
+		lcProdFrete.add(new GuardaCampo(txtCodProdFrete,"CodProd","Cód.prod.",ListaCampos.DB_PK,false));
+		lcProdFrete.add(new GuardaCampo(txtDescProdeFrete,"DescProd","Descrição do produto",ListaCampos.DB_SI,false));
+		lcProdFrete.montaSql(false, "PRODUTO", "EQ");
+		lcProdFrete.setReadOnly(true);
+		txtCodProdFrete.setTabelaExterna(lcProdFrete);
 	
 		
 		setPainel(pinVenda);
@@ -87,16 +97,21 @@ public class FPreferePDV extends FTabDados implements ActionListener {
 		adicCampo(txtCodCli,10,110,77,20,"CodCli","Cód.cli.",ListaCampos.DB_FK,true);
 		adicDescFK(txtRazCli,90,110,230,20,"RazCli","Razão do cliente padrão");
 		adicDB(cbAdicionais,7,140,250,20,"AdicPDV","",true);
+		adic(lbProdFrete,10,160,250,20);
+		adicCampo(txtCodProdFrete,10,200,77,20,"CodProd","Cód.prod.",ListaCampos.DB_FK,false);
+		adicDescFK(txtDescProdeFrete,90,200,230,20,"DescProd","Descrição do produto");
 		setListaCampos(false, "PREFERE4", "SG");
 
 		nav.setAtivo(0,false);
 		nav.setAtivo(1,false);
 	}
+	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcTipoMov.setConexao(cn);
 		lcPlanoPag.setConexao(cn);
 		lcCliente.setConexao(cn);
+		lcProdFrete.setConexao(cn);
 		lcCampos.carregaDados();
 	}
 }
