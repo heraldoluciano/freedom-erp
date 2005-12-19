@@ -120,16 +120,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private boolean trocouCli = false;
 	private boolean impMens = false;
 	Connection con = null;
-	private FVenda fvenda;
 	private Vector param;
 	
-	public DLFechaVenda( FVenda fv, Vector args ) {
+	public DLFechaVenda( Vector args ) {
 		//super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de venda");
 		setAtribos(330,345);
 		
-		fvenda = fv;
-		param = fvenda.getParam();
+		
+		param = args;
 		iCodVenda = ((Integer)getParam(0)).intValue();
 		sTipoVenda = (String)getParam(1);
 		iNumCupom = ((Integer)getParam(3)).intValue();

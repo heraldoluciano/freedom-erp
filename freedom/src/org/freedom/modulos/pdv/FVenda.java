@@ -171,6 +171,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private Tef tef = null;	
 	private Vector  vAliquotas = null;
 	private boolean trocouCli = false;
+	private BigDecimal pesoBrutFrete = new BigDecimal(0);
+	private BigDecimal pesoLiqFrete = new BigDecimal(0);
 
 	public FVenda() {
 		//   	  super(Aplicativo.telaPrincipal);
@@ -477,6 +479,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 						txtQtdade.getVlrDouble().doubleValue(), txtPreco.getVlrDouble().doubleValue(), 0,FreedomPDV.bModoDemo);
 			}
 
+			addPesoFrete(txtCodProd.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal());
 			atualizaTot();
 			vCacheItem.clear();
 			vCacheItem.add(txtCodProd.getVlrInteger());
@@ -806,6 +809,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				tbItem.setValor(new BigDecimal("0.00"), iLinha, 7);
 				tbItem.setValor("C", iLinha, 8 );
 				marcaLinha(iItem);
+				minPesoFrete(txtCodProd.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal());
 				atualizaTot();
 			}
 
@@ -952,7 +956,59 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		return ret;
 	}
 	
-	public Vector getParam() {
+	private void addPesoFrete(int iCodProd, BigDecimal iQtd) {
+		String sSQL = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try {
+			sSQL = "SELECT PESOBRUTPROD, PESOLIQPROD " +
+				   "FROM EQPRODUTO " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(3,iCodProd);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				pesoBrutFrete.add(new BigDecimal(rs.getFloat(1)).multiply(iQtd));
+				pesoLiqFrete.add(new BigDecimal(rs.getFloat(2)).multiply(iQtd));
+			}
+			
+		} catch( SQLException e ) {
+			Funcoes.mensagemErro(this, "Erro ao somar peso do produto!\n" +
+										e.getMessage(), true, con, e);
+			e.printStackTrace();
+		}
+	}
+	
+	private void minPesoFrete(int iCodProd, BigDecimal iQtd) {
+		String sSQL = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try {
+			sSQL = "SELECT PESOBRUTPROD, PESOLIQPROD " +
+				   "FROM EQPRODUTO " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(3,iCodProd);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				pesoBrutFrete.min(new BigDecimal(rs.getFloat(1)).multiply(iQtd));
+				pesoLiqFrete.min(new BigDecimal(rs.getFloat(2)).multiply(iQtd));
+			}
+			
+		} catch( SQLException e ) {
+			Funcoes.mensagemErro(this, "Erro ao somar peso do produto!\n" +
+										e.getMessage(), true, con, e);
+			e.printStackTrace();
+		}
+	}
+	
+	private Vector paramFecha() {
 		Vector param = new Vector();
 
 		param.addElement(txtCodVenda.getVlrInteger());
@@ -975,7 +1031,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		if (txtCodCli.getVlrInteger().intValue()!=(Integer.parseInt(retCodCli().trim())))
 			trocouCli = true;
 		
-		DLFechaVenda fecha = new DLFechaVenda( this , getParam() );
+		DLFechaVenda fecha = new DLFechaVenda( paramFecha() );
 		
 		if (tef != null)
 			fecha.setTef(tef);
