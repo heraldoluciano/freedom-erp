@@ -43,7 +43,7 @@ import org.freedom.telas.FRelatorio;
 
 public class FRCustoProducao extends FRelatorio {
   private static final long serialVersionUID = 1L;
-  private int casasDecFin = Aplicativo.casasDecFin;
+//  private int casasDecFin = Aplicativo.casasDecFin;
   private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private JTextFieldPad txtCodAlmox = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescAlmox = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
@@ -64,11 +64,11 @@ public class FRCustoProducao extends FRelatorio {
   private ListaCampos lcGrup = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
   private boolean[] bPrefs = null;
-  private int iCodAlmox = 0;
-  private String sOrdem = "";
-  private String sMarca = "";
-  private String sGrupo = "";
-  private String sWhere = "";
+//  private int iCodAlmox = 0;
+//  private String sOrdem = "";
+//  private String sMarca = "";
+//  private String sGrupo = "";
+//  private String sWhere = "";
   
   public FRCustoProducao() {
     setTitulo("Inventário");
