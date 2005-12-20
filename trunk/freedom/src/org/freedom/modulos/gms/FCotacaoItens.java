@@ -95,7 +95,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	private JTextFieldFK txtDescProd2 = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
 	private JTextFieldPad txtStatusSolicitacao = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
-	private JTextFieldPad txtSituacaoCompItAprov = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtCodCot = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);
@@ -106,7 +105,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8, 0);
 	private JTextFieldFK txtDescFor = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
 	private JTextFieldPad txtQtdCot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15, casasDec);
-	private JTextFieldPad txtQtdAprovCot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDec);
 	private JTextFieldPad txtPrecoCot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, casasDecFin);
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtNomeUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,40, 0);
@@ -296,9 +294,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	}
 
 	private void montaMestre() {
-		pinCab = new JPanelPad(740, 127);
+		pinCab = new JPanelPad(740, 85);
 		setListaCampos(lcCampos);
-		setAltCab(127);
+		setAltCab(85);
 		setPainel(pinCab, pnCliCab);
 
 		lcCampos.setPodeExc(false);
@@ -311,24 +309,22 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 		adicCampo(txtCodSumSol, 7, 20, 70, 20, "CodSumSol", "Cód.Sum.Sol",
 				ListaCampos.DB_PK, true);
-		adicCampoInvisivel(txtStatusSolicitacao, "SitSol", "Sit.Sol.",
-				ListaCampos.DB_SI, false);
 		
 		if (comRef()) {
-			adicCampo(txtRefProd, 40, 60, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
+			adicCampo(txtRefProd, 80, 20, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,false);
 			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2.getWhereAdic()));
 		} 
 		else {
-			adicCampo(txtCodProd, 40, 60, 87, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
+			adicCampo(txtCodProd, 80, 20, 87, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",ListaCampos.DB_SI, false);
 			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd.getWhereAdic()));
 		}
 	
-		adicDescFK(txtDescProd, 130, 60, 302, 20, "DescProd","Descrição do produto");
+		adicDescFK(txtDescProd, 170, 20, 302, 20, "DescProd","Descrição do produto");
 	
-		adicCampo(txtQtdAprovItSol, 543, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",ListaCampos.DB_SI, false);
-		adic(btProduto, 435, 45, 105, 35);
+		adicCampo(txtQtdAprovItSol, 475, 20, 80, 20, "QtdAprovItSol", "Qtd.aprov.",ListaCampos.DB_SI, false);
+		adic(btProduto, 558, 5, 105, 35);
 		btProduto.setEnabled(false);
 
 		txtIDUsu.setNaoEditavel(true);
@@ -350,15 +346,13 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		txtRefProd.setEditable(false);
 		txtQtdAprovItSol.setEditable(false);
 	
-		adicCampoInvisivel(txtSituacaoCompItAprov, "SitCompItSol", "Sit.Comp.It.Sol.",ListaCampos.DB_SI, false);
-	
 		txtQtdAprovItSol.setNaoEditavel(true);
 		txtDtCot.setSoLeitura(true);
 
 		txtRefProd2.setSoLeitura(true);
 		txtCodProd2.setSoLeitura(true);
 		
-		adicCampo(txtCodCot, 7, 20, 77, 20, "CodCot", "Cód.Cot.",
+		adicCampo(txtCodCot, 7, 20, 77, 20, "CoditSol", "Cód.it.Sol.",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
 			adic(txtRefProd2, 187, 60, 87, 20);
@@ -378,19 +372,10 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		adicCampo(txtQtdCot, 467, 20, 57, 20, "QtdCot", "Qtd.Cot.",
 				ListaCampos.DB_SI, false);
 		adic(txtDescUnid, 527, 20, 100, 20);		
-		adicCampo(txtQtdAprovCot, 7, 60, 87, 20, "QtdAprovCot", "Qtd.Aprov.Cot.",
-				ListaCampos.DB_SI, false);
 		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.",
 				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoIt, "SitItSol", "Sit.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoItAprov, "SitAprovItSol", "Sit.Ap.It.Sol.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSituacaoItComp, "SitCompItSol", "Sit.Cot.It.Sol.",
-				ListaCampos.DB_SI, false);
 	
-		lcDet.montaSql(true, "ITSOLICITACAO", "CP");
-		lcDet.setWhereAdic("SitAprovItSol <> 'NA' AND SitItSol <> 'CA'");
+		lcDet.montaSql(true, "ITSUMSOL", "CP");
 		lcDet.setQueryInsert(false);
 		lcDet.montaTab();
 
@@ -465,7 +450,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		txtQtdCot.setNaoEditavel(bHab);
 		txtPrecoCot.setNaoEditavel(bHab);
 		txtCodFor.setNaoEditavel(bHab);
-		txtQtdAprovCot.setNaoEditavel(bHab);
 	}
 
 	private void desabAprov(boolean bHab) {
@@ -483,7 +467,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 		btFinAprovSol.setEnabled(!bHab);
 		btCancelaItem.setEnabled(!bHab);
-		txtQtdAprovCot.setEnabled(btAprovaSol.isEnabled());
 	}
 
 	private void desabCot(boolean bHab) {
@@ -555,14 +538,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 		if ((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2)) {
 			txtCodUnid.atualizaFK();
-		}
-		
-		if (cevt.getListaCampos() == lcDet) {
-			if (txtQtdAprovItSol.isEditable()) {
-				if (txtQtdAprovCot.getVlrDouble().compareTo(new Double(0)) <= 0)
-					txtQtdAprovCot.setVlrDouble(txtQtdAprovItSol.getVlrDouble());
-			}
-		}
+		}		
 	}
 
 	public boolean[] prefs() {
@@ -966,12 +942,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 	public void beforePost(PostEvent pevt) {
 		if (pevt.getListaCampos() == lcDet) {
-			if (txtQtdAprovCot.getVlrDouble().doubleValue() > txtQtdCot
-					.getVlrDouble().doubleValue()) {
-				Funcoes.mensagemInforma(null,
-						"Quantidade aprovada maior que a cotada!");
-				pevt.getListaCampos().cancelPost();
-			}
 			if (txtSituacaoIt.getVlrString().equals("")) {
 				txtSituacaoIt.setVlrString("PE");
 			}
@@ -1010,9 +980,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 			} else {
 				txtCodProd2.setVlrString(txtCodProd.getVlrString());
 				lcProd3.carregaDados();
-			}
-			
-			txtQtdAprovCot.setVlrDouble(new Double(0.0));
+			}			
 		}
 	}
 
