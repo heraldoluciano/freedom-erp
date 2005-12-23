@@ -174,11 +174,15 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
        String sSQLCompra = null;
        String sSQLInventario = null; 
        String sSQLVenda = null;
+       String sSQLRMA = null;
+//       String sSQLOP = null;
        String sWhere = null;
        String sProd = null;
        String sWhereCompra = null;
        String sWhereInventario = null;
        String sWhereVenda = null;
+       String sWhereRMA = null;
+//       String sWhereOP = null;
        PreparedStatement ps = null;
        ResultSet rs = null;
        boolean bOK = false;
@@ -235,11 +239,15 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	     sWhereCompra = " AND C.DTENTCOMPRA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	     sWhereInventario = " AND I.DATAINVP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	     sWhereVenda = " AND V.DTEMITVENDA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
+             	     sWhereRMA = " AND IT.DTAEXPITRMA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
+ //            	     sWhereOP = " AND V.DTPRODITOP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	 }
              	 else {
                  	 sWhereCompra = "";
                  	 sWhereInventario = "";
                  	 sWhereVenda = "";
+                 	 sWhereRMA = "";
+ //                	 sWhereOP = "";
              	 }
 
              	 sSQLInventario = "SELECT 'A',I.CODEMPPD,I.CODFILIALPD,I.CODPROD," +
@@ -267,9 +275,9 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                                 "IC.QTDITCOMPRA > 0 AND "+
                                 "C.CODEMP=? AND C.CODFILIAL=? AND IC.CODPROD = ?"+sWhereCompra;
                  sSQLVenda = "SELECT 'V',IV.CODEMPPD,IV.CODFILIALPD,IV.CODPROD," +
-                 				"IV.CODEMPLE,IV.CODFILIALLE,IV.CODLOTE," +
-                 				"V.CODEMPTM,V.CODFILIALTM,V.CODTIPOMOV," +
-                 				"V.CODEMP,V.CODFILIAL,V.TIPOVENDA,V.CODVENDA,IV.CODITVENDA,"+
+                 			  "IV.CODEMPLE,IV.CODFILIALLE,IV.CODLOTE," +
+                 		      "V.CODEMPTM,V.CODFILIALTM,V.CODTIPOMOV," +
+                 			  "V.CODEMP,V.CODFILIAL,V.TIPOVENDA,V.CODVENDA,IV.CODITVENDA,"+
                                 "IV.CODEMPNT,IV.CODFILIALNT,IV.CODNAT," +
                                 "V.DTEMITVENDA,V.DOCVENDA,V.FLAG," +
                                 "IV.QTDITVENDA,IV.VLRLIQITVENDA," +
@@ -279,9 +287,26 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
                                 "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND "+
                                 "IV.QTDITVENDA > 0 AND "+
                                 "V.CODEMP=? AND V.CODFILIAL=? AND IV.CODPROD = ?"+sWhereVenda;
+
+                 sSQLRMA = "SELECT 'R',IT.CODEMPPD,IT.CODFILIALPD,IT.CODPROD," +
+  						  "IT.CODEMPLE,IT.CODFILIALLE,IT.CODLOTE," +
+  						  "RMA.CODEMPTM,RMA.CODFILIALTM,RMA.CODTIPOMOV," +
+  						  "RMA.CODEMP,RMA.CODFILIAL,CAST(NULL AS CHAR(1)),IT.CODRMA,CAST(IT.CODITRMA AS INTEGER),"+
+  						  "CAST(NULL AS INTEGER),CAST(NULL AS SMALLINT),CAST(NULL AS CHAR(4))," +
+  						  "COALESCE(IT.DTAEXPITRMA,RMA.DTAREQRMA),RMA.CODRMA,'N'," +
+  						  "IT.QTDEXPITRMA,IT.PRECOITRMA," +
+  						  "IT.CODEMPAX, IT.CODFILIALAX, IT.CODALMOX " +
+  						  "FROM EQRMA RMA ,EQITRMA IT " +
+  						  "WHERE IT.CODRMA=RMA.CODRMA AND "+
+  						  "IT.CODEMP=RMA.CODEMP AND IT.CODFILIAL=RMA.CODFILIAL AND "+
+  						  "IT.QTDITRMA > 0 AND "+
+  						  "RMA.CODEMP=? AND RMA.CODFILIAL=? AND IT.CODPROD = ?"+sWhereRMA;
+                 
+                 
+                 
                  try {
              	    state(sProd+"Iniciando reconstrução...");
-             	    sSQL = sSQLInventario+" UNION "+sSQLCompra+" UNION "+sSQLVenda+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda
+             	    sSQL = sSQLInventario+" UNION "+sSQLCompra+" UNION "+sSQLVenda+" UNION "+sSQLRMA+" ORDER BY 19,1,20";// 1 POR QUE C-Compra,I-Inventario,V-Venda,R-RMA
              	    System.out.println(sSQL);
              	    ps = con.prepareStatement(sSQL);
              	    ps.setInt(1,Aplicativo.iCodEmp);
@@ -293,6 +318,9 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	    ps.setInt(7,Aplicativo.iCodEmp);
              	    ps.setInt(8,ListaCampos.getMasterFilial("VDVENDA"));
              	    ps.setInt(9,iCodProd);
+             	    ps.setInt(10,Aplicativo.iCodEmp);
+             	    ps.setInt(11,ListaCampos.getMasterFilial("VDVENDA"));
+             	    ps.setInt(12,iCodProd);
              	    rs = ps.executeQuery();
              	    bOK = true;
              	    while (rs.next() && bOK) {
@@ -328,12 +356,14 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
            sSQLCompra = null;
            sSQLInventario = null;
            sSQLVenda = null;
+           sSQLRMA = null;
            sWhere = null;
            sProd = null;
            sWhereCompra = null;
            sWhereInventario = null;
            sWhereVenda = null;
-           rs = null;
+           sWhereRMA = null;
+           rs = null; 
            ps = null;
            bRunProcesso = false;
            btProcessar.setEnabled(true);
