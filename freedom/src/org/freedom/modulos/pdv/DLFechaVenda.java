@@ -37,6 +37,8 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
@@ -53,7 +55,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.FFDialogo;
 
-public class DLFechaVenda extends FFDialogo implements FocusListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaListener {
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
 
@@ -85,17 +87,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private JTextFieldPad txtNumCliAuxV = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtCidCliAuxV = new JTextFieldPad(JTextFieldPad.TP_STRING,30,0);
 	private JTextFieldPad txtUFCliAuxV = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);	
-	private JLabelPad lbCodTran = new JLabelPad("Cód.tran.");
-	private JLabelPad lbNomeTran = new JLabelPad("Nome do transportador");
-	private JLabelPad lbTipoFreteVD = new JLabelPad("Tipo");
-	private JLabelPad lbPlacaFreteVD = new JLabelPad("Placa");
-	private JLabelPad lbUFFreteVD = new JLabelPad("UF");
-	private JLabelPad lbVlrFreteVD = new JLabelPad("Valor");
-	private JLabelPad lbQtdFreteVD = new JLabelPad("Volumes");
-	private JLabelPad lbPesoBrutVD = new JLabelPad("Peso B.");
-	private JLabelPad lbPesoLiqVD = new JLabelPad("Peso L.");
-	private JLabelPad lbEspFreteVD = new JLabelPad("Espec.");
-	private JLabelPad lbMarcaFreteVD = new JLabelPad("Marca");
 	private JLabelPad lbChequeElet;
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
@@ -119,10 +110,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	private boolean bPref;
 	private boolean trocouCli = false;
 	private boolean impMens = false;
-	Connection con = null;
-	private Vector param;
+	private BigDecimal pesoBrutFrete = new BigDecimal(0);
+	private BigDecimal pesoLiqFrete = new BigDecimal(0);
+	private BigDecimal vlrFrete = new BigDecimal(0);
+	private Connection con = null;
+	private Object[] param;
 	
-	public DLFechaVenda( Vector args ) {
+	public DLFechaVenda( Object[] args ) {
 		//super(Aplicativo.telaPrincipal);
 		setTitulo("Fechamento de venda");
 		setAtribos(330,345);
@@ -152,7 +146,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		txtCodPlanoPag.setFK(true);
 		
-		txtCodTran.setNomeCampo("CodTran");
 	    lcTran.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false));
 	    lcTran.add(new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI,false));
 	    txtDescTran.setListaCampos(lcTran);
@@ -164,7 +157,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	    
 	    lcFreteVD.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo", ListaCampos.DB_PK, false));
 	    lcFreteVD.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK, false));
-	    lcFreteVD.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran, false));
+	    lcFreteVD.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_FK, txtDescTran, true));
 	    lcFreteVD.add(new GuardaCampo( rgFreteVD, "TipoFreteVD", "Tipo", ListaCampos.DB_SI,true));
 	    lcFreteVD.add(new GuardaCampo( txtConhecFreteVD, "ConhecFreteVD", "Conhec.", ListaCampos.DB_SI, false));
 	    lcFreteVD.add(new GuardaCampo( txtPlacaFreteVD, "PlacaFreteVD", "Placa", ListaCampos.DB_SI,true));
@@ -260,45 +253,56 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		
 		setPainel(pnFrete);
 		
-		adic(lbCodTran,7,0,80,20);
+		adic(new JLabelPad("Cód.tran."),7,0,80,20);
 	    adic(txtCodTran,7,20,80,20);
-	    adic(lbNomeTran,90,0,210,20);
+	    adic(new JLabelPad("Nome do transportador"),90,0,210,20);
 	    adic(txtDescTran,90,20,210,20);
-	    adic(lbTipoFreteVD,7,40,170,20);
+	    adic(new JLabelPad("Tipo"),7,40,170,20);
 	    adic(rgFreteVD,7,60,130,30);
 	    adic(new JLabelPad("Conhec."),140,50,77,20);
 	    adic(txtConhecFreteVD,140,70,77,20);
-	    adic(lbPlacaFreteVD,220,50,80,20);
+	    adic(new JLabelPad("Placa"),220,50,80,20);
 	    adic(txtPlacaFreteVD,220,70,80,20);
-	    adic(lbVlrFreteVD,7,90,120,20);
+	    adic(new JLabelPad("Valor"),7,90,120,20);
 	    adic(txtVlrFreteVD,7,110,120,20);
-	    adic(lbQtdFreteVD,130,90,77,20);
+	    adic(new JLabelPad("Volumes"),130,90,77,20);
 	    adic(txtQtdFreteVD,130,110,120,20);
-	    adic(lbUFFreteVD,253,90,40,20);
+	    adic(new JLabelPad("UF"),253,90,40,20);
 	    adic(txtUFFreteVD,253,110,45,20);
-	    adic(lbPesoBrutVD,7,130,120,20);
+	    adic(new JLabelPad("Peso B."),7,130,120,20);
 	    adic(txtPesoBrutVD,7,150,120,20);
-	    adic(lbPesoLiqVD,130,130,120,20);
+	    adic(new JLabelPad("Peso L."),130,130,120,20);
 	    adic(txtPesoLiqVD,130,150,120,20);
-	    adic(lbEspFreteVD,7,170,120,20);
+	    adic(new JLabelPad("Espec."),7,170,120,20);
 	    adic(txtEspFreteVD,7,190,120,20);
-	    adic(lbMarcaFreteVD,130,170,120,20);
+	    adic(new JLabelPad("Marca"),130,170,120,20);
 	    adic(txtMarcaFreteVD,130,190,120,20);
 	    
 
 		setConexao((Connection)getParam(5));
 		
-		if(!bPref){
+		if(bPref) {
+			if (getParam(8) instanceof BigDecimal) {
+				pesoBrutFrete = (BigDecimal)getParam(8);
+				pesoLiqFrete = (BigDecimal)getParam(9);
+				vlrFrete = (BigDecimal)getParam(10);
+				tpn.setSelectedIndex(2);
+			}
+			else if (getParam(8) instanceof Boolean) {
+		    	tpn.setEnabledAt(1,false);
+		    	tpn.setEnabledAt(2,false);
+			}
+	    } else {
 	    	tpn.setEnabledAt(1,false);
 	    	tpn.setEnabledAt(2,false);
 	    }
-
+		
+		
 	    int iCodAux = buscaCodAux();
 	    if (iCodAux > 0) {
 	    	txtCodAuxV.setVlrInteger(new Integer(iCodAux));
 	        lcAuxVenda.carregaDados();
-	    }
-	    else
+	    } else
 	        txtCodAuxV.setVlrInteger(new Integer(1));
 		
 		
@@ -310,10 +314,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		txtVlrCheque.addFocusListener(this);
 		txtVlrChequeElet.addFocusListener(this);
 		
+		lcTran.addCarregaListener( this );
+		
 	}
 	
 	private Object getParam(int index){
-		return param.elementAt(index);
+		return param[index];
 	}
 	
 	private int buscaCodAux() {
@@ -323,7 +329,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	  	String sSQL = null;
 	  	try {
 	  		sSQL = "SELECT CODAUXV FROM VDAUXVENDA WHERE CODEMP=?" +
-              " AND CODFILIAL=? AND CODVENDA=?";
+              " AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 		  	ps = con.prepareStatement(sSQL);
 		  	ps.setInt(1,Aplicativo.iCodEmp);
 		  	ps.setInt(2,ListaCampos.getMasterFilial("VDAUXVENDA"));
@@ -523,6 +529,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		
 		return bRet;
 	}
+	
 	private boolean finalizaVenda() {
 	    boolean bRet = false;
 		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V3' WHERE CODEMP=?" +
@@ -541,6 +548,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		}
 		return bRet;
 	}
+	
 	private boolean execFechamento() {
 		boolean bRet = false;
 		if (txtVlrPago.getVlrDouble().doubleValue() == 0) {
@@ -616,10 +624,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		}
 		return bRet;
 	}
+	
 	private boolean execTroco() {
 		boolean bRet = false;
 		
-// Sangria para o troco:		
+		// Sangria para o troco:		
 		
 		try {
 			String sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
@@ -640,6 +649,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		}
 		return bRet;
 	}
+	
 	private void recalcPago() {
 		txtVlrPago.setVlrBigDecimal(
 				txtVlrDinheiro.getVlrBigDecimal().add(
@@ -654,28 +664,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 				)
 		);
 	}
-	/*private int buscaPlanoPag() {
-		int iRet = 0;
-		String sSQL = "SELECT CODPLANOPAG FROM SGPREFERE4 WHERE " +
-		"CODEMP=? AND CODFILIAL=?";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CodPlanoPag");
-			}
-			rs.close();
-			ps.close();
-		}
-		catch(SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao buscar o plano de pagemento.\n"+
-					"Provavelmente não foram gravadas corretamente as preferências!\n"+err.getMessage());
-			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao buscar o plano de pagemento.");
-		}
-		return iRet;
-	}*/
 	
 	private String getMenssage(){
 		String sMenssage = "";
@@ -744,6 +732,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 		
 		super.actionPerformed(evt);
 	}
+	
 	public void focusLost(FocusEvent fevt) {
 		if (fevt.getSource() == txtVlrDinheiro ||
 				fevt.getSource() == txtVlrCheque ||
@@ -751,7 +740,19 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 			recalcPago();
 		}
 	}
+	
 	public void focusGained(FocusEvent arg0) { }
+	
+	public void beforeCarrega( CarregaEvent e ) {  
+		if(e.getListaCampos() == lcTran){
+			txtPesoBrutVD.setVlrBigDecimal(pesoBrutFrete);
+			txtPesoLiqVD.setVlrBigDecimal(pesoLiqFrete);
+			txtVlrFreteVD.setVlrBigDecimal(vlrFrete);
+		}		
+	}
+	
+	public void afterCarrega( CarregaEvent e ) {
+	}
 	
 	private boolean prefs() {
 		boolean ret = false;
@@ -766,7 +767,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener {
 	  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE4"));
 	  		rs = ps.executeQuery();
 	  		if (rs.next()) {
-	  			if (rs.getString("AdicPDV").trim().equals("S"))
+	  			if (rs.getString("ADICPDV").trim().equals("S"))
 	  				ret = true;	  			
 	  		}
 	        rs.close();
