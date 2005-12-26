@@ -85,7 +85,8 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
     	vLabs.addElement("Nº documento");
         vLabs.addElement("Nº baixa");
     	vLabs.addElement("Parcela (No.)");
-    	vLabs.addElement("Parcela (A,B..)");
+    	vLabs.addElement("Parcela (A,B...)");
+    	vLabs.addElement("Total de parcelas");
     	vLabs.addElement("Valor do documento");
     	vLabs.addElement("Valor liquido");
     	vLabs.addElement("Valor extenso");
@@ -113,6 +114,7 @@ public class FModBoleto extends FDados implements ActionListener, JComboBoxListe
         vVals.addElement("[CODREC]"); //larg: 8
     	vVals.addElement("[P]"); //larg: 3
     	vVals.addElement("[A]"); //larg: 3
+    	vVals.addElement("[T]"); //larg: 3
     	vVals.addElement("[VALOR_DOCUMEN]"); //larg: 15
     	vVals.addElement("[VLIQ_DOCUMENT]"); //larg: 15
     	vVals.addElement("[VALOR_EXTENSO]"); //larg: 15

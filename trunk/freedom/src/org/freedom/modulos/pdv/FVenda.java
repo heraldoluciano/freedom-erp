@@ -171,8 +171,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private Tef tef = null;	
 	private Vector  vAliquotas = null;
 	private boolean trocouCli = false;
-	private BigDecimal pesoBrutFrete = new BigDecimal(0);
-	private BigDecimal pesoLiqFrete = new BigDecimal(0);
+	private boolean colocouFrete = false;
+	private boolean carregaPesoFrete = false;
+	private float pesoBrutFrete = 0;
+	private float pesoLiqFrete = 0;
+	private float vlrFrete = 0;
 
 	public FVenda() {
 		//   	  super(Aplicativo.telaPrincipal);
@@ -432,13 +435,15 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		
 	}
 
-	private void insereItem() {
+	private boolean insereItem() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int iCodItVenda = 0;
 		String sTributo = null;
 		String sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,"
 				+ "VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?)";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, txtCodVenda.getVlrInteger().intValue());
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, lcVenda.getCodFilial());
@@ -447,7 +452,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(6, lcProduto.getCodFilial());
 			ps.setBigDecimal(7, txtQtdade.getVlrBigDecimal());
 			ps.setBigDecimal(8, txtPreco.getVlrBigDecimal());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iCodItVenda = rs.getInt("CodItVenda");
 				txtAliqIcms.setVlrBigDecimal(rs.getBigDecimal("PercICMSItVenda"));
@@ -470,7 +475,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					sTributo = getPosAliquota(txtAliqIcms.getVlrBigDecimal().floatValue());
 					if (sTributo.equals("00")) {
 						Funcoes.mensagemErro(this, "Alíquota "+txtAliqIcms.getVlrBigDecimal().floatValue()+" não foi cadastrada na impressora fiscal!");
-					    return;
+					    return false;
 					}
 				}
 				else
@@ -489,12 +494,17 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					"Erro ao inserir o ítem.\nInforme esta mensagem ao administrador: \n"
 							+ err.getMessage(),true,con,err);
 			err.printStackTrace();
+			return false;
 		}
 		finally {
+			ps = null;
+			rs = null;
 			sSQL = null;
 			sTributo = null;
 			iCodItVenda = 0;
 		}
+		
+		return true;
 	}
 
 	private int retPlanoPag() {
@@ -809,7 +819,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				tbItem.setValor(new BigDecimal("0.00"), iLinha, 7);
 				tbItem.setValor("C", iLinha, 8 );
 				marcaLinha(iItem);
-				minPesoFrete(txtCodProd.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal());
+				minPesoFrete(txtCodProd1.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal());
 				atualizaTot();
 			}
 
@@ -909,9 +919,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private int getLinha(int iItem) {
 		int iLinha = -1;
 		for (int i = 0; i < tbItem.getNumLinhas(); i++) {
-			if (iItem == ((Integer) tbItem.getValor(i, 0)).intValue()) {
-				iLinha = 1;
-				break;
+			if(!((String) tbItem.getValor(i, 8)).equals("C")){
+				if (iItem == ((Integer) tbItem.getValor(i, 0)).intValue()) {
+					iLinha = i;
+					break;
+				}
 			}
 		}
 		return iLinha;
@@ -971,8 +983,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				pesoBrutFrete.add(new BigDecimal(rs.getFloat(1)).multiply(iQtd));
-				pesoLiqFrete.add(new BigDecimal(rs.getFloat(2)).multiply(iQtd));
+				pesoBrutFrete += (rs.getFloat(1)*iQtd.floatValue());
+				pesoLiqFrete += (rs.getFloat(2)*iQtd.floatValue());
 			}
 			
 		} catch( SQLException e ) {
@@ -997,8 +1009,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				pesoBrutFrete.min(new BigDecimal(rs.getFloat(1)).multiply(iQtd));
-				pesoLiqFrete.min(new BigDecimal(rs.getFloat(2)).multiply(iQtd));
+				pesoBrutFrete -= (rs.getFloat(1)*iQtd.floatValue());
+				pesoLiqFrete -= (rs.getFloat(2)*iQtd.floatValue());
 			}
 			
 		} catch( SQLException e ) {
@@ -1008,17 +1020,28 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		}
 	}
 	
-	private Vector paramFecha() {
-		Vector param = new Vector();
+	private Object[] paramFecha() {
+		Object[] param = new Object[11];
 
-		param.addElement(txtCodVenda.getVlrInteger());
-		param.addElement(txtTipoVenda.getVlrString());
-		param.addElement(txtTotalCupom.getVlrBigDecimal());
-		param.addElement(txtNumeroCupom.getVlrInteger());
-		param.addElement(txtCodPlanoPag.getVlrInteger());
-		param.addElement(con);
-		param.addElement(getInfoCli(txtCodCli.getVlrInteger().intValue()));
-		param.addElement(new Boolean(trocouCli));
+		param[0] = txtCodVenda.getVlrInteger();
+		param[1] = txtTipoVenda.getVlrString();
+		param[2] = txtTotalCupom.getVlrBigDecimal();
+		param[3] = txtNumeroCupom.getVlrInteger();
+		param[4] = txtCodPlanoPag.getVlrInteger();
+		param[5] = con;
+		param[6] = getInfoCli(txtCodCli.getVlrInteger().intValue());
+		param[7] = new Boolean(trocouCli);
+		if(carregaPesoFrete){
+			param[8] = new BigDecimal(pesoBrutFrete);
+			param[9] = new BigDecimal(pesoLiqFrete);
+			param[10] = new BigDecimal(vlrFrete);
+		} else {
+			param[8] = new Boolean(false);
+			param[9] = null;
+			param[10] = null;
+		}
+		
+		carregaPesoFrete = false;
 		
 		return param;
 	}
@@ -1031,14 +1054,45 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		if (txtCodCli.getVlrInteger().intValue()!=(Integer.parseInt(retCodCli().trim())))
 			trocouCli = true;
 		
+		if(((Boolean)prefs(0)).booleanValue()){
+			if(prefs(1)!=null){
+				if(Funcoes.mensagemConfirma(null,"Deseja adicionar o frete ao cupom?")==JOptionPane.YES_OPTION){
+					txtCodProd.setVlrInteger((Integer)prefs(1));
+					lcProduto.carregaDados();
+					txtQtdade.setVlrBigDecimal(new BigDecimal(1));
+					vlrFrete = txtPreco.getVlrBigDecimal().floatValue();
+					if(insereItem()) {
+						iniItem();
+						carregaPesoFrete = true;
+						colocouFrete = true;
+					}
+					else {
+						txtCodProd.setVlrString("");
+						lcProduto.carregaDados();
+						txtQtdade.setVlrBigDecimal(new BigDecimal(0));
+						return;
+					}
+						
+				}
+			}
+		}
+		
 		DLFechaVenda fecha = new DLFechaVenda( paramFecha() );
 		
 		if (tef != null)
 			fecha.setTef(tef);
+		
 		fecha.setVisible(true);
-		if (fecha.OK) {
+		
+		if (fecha.OK) 
 			iniVenda();
+		else{
+			if(colocouFrete){
+				cancItem(((Integer) tbItem.getValor(tbItem.getNumLinhas() - 1, 0)).intValue());
+				colocouFrete = false;
+			}
 		}
+		
 		fecha.dispose();
 		setFocusProd();
 		trocouCli = false;
@@ -1199,6 +1253,46 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			return "NÃO FOI POSSÍVEL REGISTRAR A ESTAÇÃO DE TRABALHO! ! !";
 		}
 		return sDesc;
+	}
+	
+	private Object prefs(int index) {
+		Object[] ret = new Object[2];
+		
+		String sSQL = "SELECT ADICPDV, CODPROD FROM SGPREFERE4 WHERE CODEMP=? AND  CODFILIAL=? ";
+	  	PreparedStatement ps = null;
+	  	ResultSet rs = null;
+	  	
+	  	try {
+	  		ps = con.prepareStatement(sSQL);
+	  		ps.setInt(1,Aplicativo.iCodEmp);
+	  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE4"));
+	  		rs = ps.executeQuery();
+	  		if (rs.next()) {
+	  			if (rs.getString("ADICPDV").trim().equals("S"))
+	  				ret[0] = new Boolean(true);
+	  			else 
+	  				ret[0] = new Boolean(false);
+	  			
+	  			if (rs.getString("CODPROD")!=null)
+	  				ret[1] = new Integer(rs.getInt("CODPROD"));
+	  			else 
+	  				ret[1] = null;
+	  		}
+	        rs.close();
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	  	}
+	  	catch (SQLException err) {
+	  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
+	  	}
+	  	finally{
+	  		sSQL = null;
+	  		ps = null;
+	  		rs = null;
+	  	}
+		
+	  	return ret[index];
 	}
 	
 	public String getPosAliquota(float ftAliquota) {
