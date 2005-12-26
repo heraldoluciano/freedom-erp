@@ -453,10 +453,18 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
       			ps.setNull(21,Types.INTEGER); //CodVenda
       			ps.setNull(22,Types.INTEGER); //CodItVenda
     		}
-  			ps.setNull(23,Types.INTEGER); //CodEmpRm
-  			ps.setNull(24,Types.INTEGER); //CodFilialRm
-  			ps.setNull(25,Types.INTEGER); //CodRma
-  			ps.setNull(26,Types.INTEGER); //CodItRma
+  			if (sCIV.equals("R")) {
+  				ps.setNull(23,rs.getInt(11)); //CodEmpRm
+  				ps.setNull(24,rs.getInt(12)); //CodFilialRm
+  				ps.setNull(25,rs.getInt(14)); //CodRma
+  				ps.setNull(26,rs.getInt(15)); //CodItRma
+  			}
+  			else {
+  				ps.setNull(23,Types.INTEGER); //CodEmpRm
+  				ps.setNull(24,Types.INTEGER); //CodFilialRm
+  				ps.setNull(25,Types.INTEGER); //CodRma
+  				ps.setNull(26,Types.INTEGER); //CodItRma
+  			}
   			
   			ps.setNull(27,Types.INTEGER); //CodEmpOP
   			ps.setNull(28,Types.INTEGER); //CodFilialOP
