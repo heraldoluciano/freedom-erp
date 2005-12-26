@@ -239,7 +239,7 @@ public class FProcessaEQ extends FFDialogo implements ActionListener, CarregaLis
              	     sWhereCompra = " AND C.DTENTCOMPRA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	     sWhereInventario = " AND I.DATAINVP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	     sWhereVenda = " AND V.DTEMITVENDA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
-             	     sWhereRMA = " AND IT.DTAEXPITRMA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
+             	     sWhereRMA = " AND RMA.DTAEXPRMA >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
  //            	     sWhereOP = " AND V.DTPRODITOP >= '"+Funcoes.dateToStrDB(txtDataini.getVlrDate())+"'";
              	 }
              	 else {
