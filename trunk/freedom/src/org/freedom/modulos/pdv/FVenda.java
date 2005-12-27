@@ -507,15 +507,17 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		return true;
 	}
 
-	private int retPlanoPag() {
+	private int getPlanoPag() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int iRet = 0;
 		String sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE "
 				+ "CODEMP=? AND CODFILIAL=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getInt("CodPlanoPag");
 			}
@@ -526,19 +528,26 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					"Provavelmente não foram gravadas corretamente as preferências!\n"+
 					err.getMessage());
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
+		
 		return iRet;
 	}
 
-	private String retCodCli() {
+	private String getCodCli() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String iRet = "";
 		String sSQL = "SELECT CodCli FROM SGPREFERE4 WHERE "
 				+ "CODEMP=? AND CODFILIAL=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getString("CodCli");
 			}
@@ -549,7 +558,12 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					"Provavelmente não foram gravadas corretamente as preferências!\n"
 					+ err.getMessage());
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
+		
 		return iRet;
 	}
 	public void windowGainedFocus(WindowEvent e) {
@@ -557,15 +571,17 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 	public void windowLostFocus(WindowEvent e)  { }
 
-	private int retTipoMov() {
+	private int getTipoMov() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int iRet = 0;
 		String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE "
 				+ "CODEMP=? AND CODFILIAL=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getInt("CodTipoMov");
 			}
@@ -576,20 +592,27 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			"Provavelmente não foram gravadas corretamente as preferências!\n"
 					+ err.getMessage());
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
+		
 		return iRet;
 	}
 
-	private int retVendedor() {
+	private int getVendedor() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int iRet = 0;
 		String sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE "
 				+ "IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setString(1, Aplicativo.strUsuario);
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, Aplicativo.iCodFilialPad);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getInt("CodVend");
 			}
@@ -600,6 +623,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					+ "O usuário '" + Aplicativo.strUsuario
 					+ "' é um comissionado?\n" + err.getMessage());
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return iRet;
 	}
@@ -668,10 +695,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private synchronized void iniVenda() {
 		lcVenda.insert(true);
 		txtTipoVenda.setVlrString("E");
-		txtCodCli.setVlrString(retCodCli());
+		txtCodCli.setVlrString(getCodCli());
 		lcCliente.carregaDados();
 		lcProduto.limpaCampos(true);
-		txtCodPlanoPag.setVlrInteger(new Integer(retPlanoPag()));
+		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
 		txtQtdadeItem.setVlrString("");
 		txtValorTotalCupom.setVlrString("");
 		txtValorTotalItem.setVlrString("");
@@ -679,9 +706,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtValorIcms1.setVlrString("");
 		txtTotalCupom.setVlrString("");
 		lcPlanoPag.carregaDados();
-		txtCodTipoMov.setVlrInteger(new Integer(retTipoMov()));
+		txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
 		lcTipoMov.carregaDados();
-		txtCodVend.setVlrInteger(new Integer(retVendedor()));
+		txtCodVend.setVlrInteger(new Integer(getVendedor()));
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
 		if ((AplicativoPDV.bECFTerm)) {
@@ -711,8 +738,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcTipoMov.setConexao(con);
 		lcSerie.setConexao(con);
 		lcClFiscal.setConexao(con);
-		txtCodTipoMov.setVlrInteger(new Integer(retTipoMov()));
-		txtCodCli.setVlrInteger(new Integer(retTipoMov()));
+		txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
+		txtCodCli.setVlrInteger(new Integer(getTipoMov()));
 		pnStatusBar.add(sbVenda, BorderLayout.CENTER);
 		pnRodape.add(pnStatusBar, BorderLayout.CENTER);
 		vAliquotas = getAliquotas();
@@ -1051,7 +1078,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			Funcoes.mensagemErro(this, "Não existe nenhuma venda ativa!");
 			return;
 		} 
-		if (txtCodCli.getVlrInteger().intValue()!=(Integer.parseInt(retCodCli().trim())))
+		if (txtCodCli.getVlrInteger().intValue()!=(Integer.parseInt(getCodCli().trim())))
 			trocouCli = true;
 		
 		if(((Boolean)prefs(0)).booleanValue()){
@@ -1089,6 +1116,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		else{
 			if(colocouFrete){
 				cancItem(((Integer) tbItem.getValor(tbItem.getNumLinhas() - 1, 0)).intValue());
+				if (AplicativoPDV.bECFTerm)
+					if (bf.cancelaItemAnterior(Aplicativo.strUsuario,AplicativoPDV.bModoDemo))
+						btOK.doClick();
 				colocouFrete = false;
 			}
 		}
