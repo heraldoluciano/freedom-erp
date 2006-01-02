@@ -26,6 +26,7 @@ package org.freedom.modulos.gms;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +41,8 @@ import java.util.Date;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
 import org.freedom.acao.CarregaEvent;
 import org.freedom.acao.CarregaListener;
 import org.freedom.acao.InsertEvent;
@@ -55,6 +58,8 @@ import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Navegador;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBuscaProd;
 import org.freedom.modulos.std.DLRPedido;
@@ -111,6 +116,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	private JTextFieldPad txtCodCCUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 19, 0);
 	private JTextAreaPad txaMotivoCancCot = new JTextAreaPad();
 	private JTextAreaPad txaMotivoCotAbaixo = new JTextAreaPad();
+	private Tabela tabCot = new Tabela();
+	private JScrollPane spTabCot = new JScrollPane(tabCot);
+	private Navegador navCot = new Navegador(true);	
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
 	private ListaCampos lcProd = new ListaCampos(this, "PD");
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
@@ -292,12 +300,16 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		desabAprov(true);
 		desabCot(true);
 	}
-
+	
 	private void montaMestre() {
-		pinCab = new JPanelPad(740, 85);
+		pinCab = new JPanelPad(740, 190);
 		setListaCampos(lcCampos);
-		setAltCab(85);
+		setAltCab(190);
 		setPainel(pinCab, pnCliCab);
+		setNavegador(navCot);
+		lcCampos.setTabela(tabCot);
+		lcCampos.setNavegador(navCot);
+		navCot.setListaCampos(lcCampos);		
 
 		lcCampos.setPodeExc(false);
 		lcCampos.setPodeIns(false);
@@ -306,6 +318,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		nav.setAtivo(2, false);
 		nav.setAtivo(3, false);
 		nav.setAtivo(4, false);
+		
+		txtCodProd.setNaoEditavel(true);
+		txtRefProd.setNaoEditavel(true);
 
 		adicCampo(txtCodSumSol, 7, 20, 70, 20, "CodSumSol", "Cód.Sum.Sol",
 				ListaCampos.DB_PK, true);
@@ -331,8 +346,10 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 		setListaCampos(true, "SUMSOL", "CP");
 		lcCampos.setQueryInsert(false);	
+		
+		pinCab.adic(spTabCot, 7, 47, 640, 100);			
 	}
-	
+
 	private void montaDetalhe() {
 		pinDet = new JPanelPad(740, 180);
 		setPainel(pinDet, pnDet);
@@ -342,8 +359,26 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		lcDet.setPodeExc(false);
 		lcDet.setPodeIns(false);
 		txtCodItSolicitacao.setEditable(false);
-		txtCodProd.setEditable(false);
-		txtRefProd.setEditable(false);
+	
+		nav.setName("Mestre");
+		navCot.setNavigationOnly();
+		navCot.setName("Detalhe 1");
+		navRod.setName("Detalhe 2");
+		FlowLayout flNavCot = new FlowLayout(FlowLayout.LEFT, 0, 0);
+		JPanelPad pnNavCot = new JPanelPad(JPanelPad.TP_JPANEL, flNavCot);
+		pnNavCot.setBorder(null);
+		pnNavCot.add(navCot);
+		pnNavCot.add(nav);
+		pnNavCab.add(pnNavCot, BorderLayout.WEST);
+		
+		setNavegador(navRod);
+		navRod.setListaCampos(lcDet);
+		lcDet.setNavegador(navRod);
+		lcDet.setTabela(tab);
+	
+		lcDet.setPodeExc(false);
+		lcDet.setPodeIns(false);
+
 		txtQtdAprovItSol.setEditable(false);
 	
 		txtQtdAprovItSol.setNaoEditavel(true);
@@ -381,14 +416,12 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 		tab.setTamColuna(30, 0);
 		tab.setTamColuna(80, 1);
-		tab.setTamColuna(230, 2);
-		tab.setTamColuna(70, 3);
-		tab.setTamColuna(70, 4);
+		tab.setTamColuna(115, 2);
+		tab.setTamColuna(115, 3);
+		tab.setTamColuna(230, 4);
 		tab.setTamColuna(70, 5);
 		tab.setTamColuna(70, 6);
-		tab.setTamColuna(70, 7);
-		tab.setTamColuna(70, 8);
-
+		
 		btMotivoAbaixo.setEnabled(false);
 
 		pinBotDet.adic(btCancelaItem, 0, 0, 110, 28);
