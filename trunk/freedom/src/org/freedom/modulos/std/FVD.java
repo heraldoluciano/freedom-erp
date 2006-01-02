@@ -10,10 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.freedom.componentes.JTextAreaPad;
+import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FObservacao;
 
 
 /**
@@ -31,6 +34,11 @@ public abstract class FVD extends FDetalhe {
     public FVD() {
     	super();
     }
+    /**
+     * Busca a observação do cliente.
+     * @param iCodCli codigo do cliente a pesquisar.
+     * @return String contendo a observação do cliente.
+     */
     public String getObsCli(int iCodCli) {
     	String sRetorno = "";
     	String sSQL = "SELECT OBSCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
@@ -60,6 +68,165 @@ public abstract class FVD extends FDetalhe {
     	}
     	return sRetorno;
     }
+    /**
+     * mostra uma FObsevacao contendo a descrição completa do produto,
+     * quando clicado duas vezes sobre o JTextFieldFK do item.
+     * @param txaObsIt JTextAreaPad.
+     * @param iCodProd codigo do produto.
+     * @param sDescProd descrição do produto.
+     */
+	protected void mostraTelaDecricao( JTextAreaPad txaObsIt, int iCodProd, String sDescProd ) {
+		if (iCodProd == 0)
+			return;
+		String sDesc = txaObsIt.getVlrString();
+		if (sDesc.equals(""))
+			sDesc = buscaDescComp( iCodProd );
+		if (sDesc.equals(""))
+			sDesc = sDescProd;
+
+		FObservacao obs = new FObservacao("Descrição completa", sDesc, 500);
+		obs.setVisible(true);
+		if (obs.OK) {
+			txaObsIt.setVlrString(obs.getTexto());
+			lcDet.edit();
+		}
+		obs.dispose();
+	}
+	/**
+	 * Busca descrição completa do produto na tabela de produtos .
+	 * @param iCodProd codigo do produto a pesquizar.
+	 * @return String contendo a descrição completa do produto.
+	 */
+	private String buscaDescComp( int iCodProd) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sRet = "";
+		String sSQL = "SELECT DESCCOMPPROD FROM EQPRODUTO WHERE CODPROD=?"
+				+ " AND CODEMP=? AND CODFILIAL=?";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, iCodProd);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, ListaCampos.getMasterFilial( "EQPRODUTO" ));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				sRet = rs.getString("DescCompProd");
+			}
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar descrição completa!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		}
+		return sRet != null ? sRet : "";
+	}
+    /**
+     * Mostra a observação geral.
+     * @param sTabela tabela a pesquisar.
+     * @param iCod codigo da chave primaria.
+     */
+    public void mostraObs(String sTabela, int iCod) {
+    	FObservacao obs = null;
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	String sSQLselect = null;
+    	String sSQLupdate = null;
+		try {
+			try {
+				if(sTabela.equals("VDVENDA")) {
+					sSQLselect = "SELECT OBSVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
+					sSQLupdate = "UPDATE VDVENDA SET OBSVENDA=? WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
+				}
+				else if(sTabela.equals("VDORCAMENTO")) {
+					sSQLselect = "SELECT OBSORC FROM VDORCAMENTO WHERE CODEMP=? AND CODFILIAL=? AND CODORC=?";
+					sSQLupdate = "UPDATE VDORCAMENTO SET OBSORC=? WHERE CODEMP=? AND CODFILIAL=? AND CODORC=?";
+				}
+					
+				ps = con.prepareStatement(sSQLselect);
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial( sTabela ));
+				ps.setInt(3, iCod);
+				rs = ps.executeQuery();
+				if (rs.next())
+					obs = new FObservacao((rs.getString(1) != null ? rs
+							.getString(1) : ""));
+				else
+					obs = new FObservacao("");
+
+				if (!con.getAutoCommit())
+					con.commit();
+				
+			} catch (SQLException err) {
+				Funcoes.mensagemErro(this, "Erro ao carregar a observação!\n"
+						+ err.getMessage(),true,con,err);
+			}
+			if (obs != null) {
+				obs.setVisible(true);
+				if (obs.OK) {
+					try {
+						ps = con.prepareStatement(sSQLupdate);
+						ps.setString(1, obs.getTexto());
+						ps.setInt(2, Aplicativo.iCodEmp);
+						ps.setInt(3, ListaCampos.getMasterFilial( sTabela ));
+						ps.setInt(4, iCod);
+						ps.executeUpdate();
+						if (!con.getAutoCommit())
+							con.commit();
+					} catch (SQLException err) {
+						Funcoes.mensagemErro(this,
+								"Erro ao inserir observação no orçamento!\n"
+										+ err.getMessage(),true,con,err);
+					}
+				}
+				obs.dispose();
+			}
+		} finally {
+			ps = null;
+	    	rs = null;
+	    	sSQLselect = null;
+	    	sSQLupdate = null;
+		}
+    	
+    }
+    /**
+     * Verifica o proximo codigo na tabela para evitar
+     * erros de chave primaria no banco de dados.
+     * essa verificação depende da configuração do sistema.
+     * @param sTabela tabela a verificar
+     * @param campo campo da chave primaria
+     */
+    public void testaCodPK(String sTabela, JTextFieldPad campo) {
+    	
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
+			ps.setInt(1, Aplicativo.iCodEmp);
+			if(sTabela.equals("VDVENDA")) {
+				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+				ps.setString(3, "VD");
+			}
+			else if(sTabela.equals("VDORCAMENTO")) {
+				ps.setInt(2, ListaCampos.getMasterFilial("VDORCAMENTO"));
+				ps.setString(3, "OC");
+			}
+			rs = ps.executeQuery();
+			rs.next();
+			campo.setVlrString(rs.getString(1));
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao confirmar número do pedido!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+		}
+    	
+    }
+    
     public void buscaPreco() {
     	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
     	PreparedStatement ps = null;
