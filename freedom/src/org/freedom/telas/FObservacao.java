@@ -54,7 +54,7 @@ public class FObservacao extends FDialogo {
   		setTitulo(sTit);
     else
         setTitulo("Observação");
-    setAtribos(250,180);      
+    setAtribos(400,200);      
     pn.add(spn);
     c.add(pn);
     txa.setText(sPad);

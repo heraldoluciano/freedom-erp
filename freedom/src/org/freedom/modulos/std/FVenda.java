@@ -81,7 +81,6 @@ import org.freedom.layout.Leiaute;
 import org.freedom.layout.NFSaida;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FObservacao;
 
 public class FVenda extends FVD implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener, DeleteListener {
@@ -404,7 +403,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		txtDescProd.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent mevt) {
 				if (mevt.getClickCount() == 2)
-					mostraTelaDecricao();
+					mostraTelaDecricao(txaObsItVenda, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString());
 			}
 		});
 
@@ -1070,69 +1069,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}
 		return sRet;
 	}
-
-	private void mostraTelaDecricao() {
-		if (txtCodProd.getVlrString().equals(""))
-			return;
-		String sDesc = txaObsItVenda.getVlrString();
-		if (sDesc.equals(""))
-			sDesc = buscaDescComp();
-		if (sDesc.equals(""))
-			sDesc = txtDescProd.getVlrString();
-
-		FObservacao obs = new FObservacao("Descrição completa", sDesc, 500);
-		obs.setSize(400, 200);
-		obs.setVisible(true);
-		if (obs.OK) {
-			txaObsItVenda.setVlrString(obs.getTexto());
-			lcDet.edit();
-		}
-		obs.dispose();
-	}
-
-	private String buscaDescComp() {
-		String sRet = "";
-		String sSQL = "SELECT DESCCOMPPROD FROM EQPRODUTO WHERE CODPROD=?"
-				+ " AND CODEMP=? AND CODFILIAL=?";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, lcCampos.getCodFilial());
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				sRet = rs.getString("DescCompProd");
-			}
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar descrição completa!\n"
-					+ err.getMessage(),true,con,err);
-			//err.printStackTrace();
-		}
-		return sRet != null ? sRet : "";
-	}
-
-	private void testaCodVenda() { //Traz o verdadeiro número do codvenda
-								   // através do generator do banco
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setString(3, "VD");
-			rs = ps.executeQuery();
-			rs.next();
-			txtCodVenda.setVlrString(rs.getString(1));
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao confirmar número do pedido!\n"
-					+ err.getMessage(),true,con,err);
-		}
-	}
-
+	
 	public void focusGained(FocusEvent fevt) {
 	}
 
@@ -1141,10 +1078,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			if (txtPercDescItVenda.getText().trim().length() < 1) {
 				txtVlrDescItVenda.setAtivo(true);
 			} else {
-				txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(Funcoes
-						.arredDouble(txtVlrProdItVenda.doubleValue()
-								* txtPercDescItVenda.doubleValue() / 100,
-								casasDecFin)));
+				txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(
+						Funcoes.arredDouble(txtVlrProdItVenda.doubleValue()
+								* txtPercDescItVenda.doubleValue() / 100,casasDecFin)));
 				calcVlrProd();
 				calcImpostos(true);
 				txtVlrDescItVenda.setAtivo(false);
@@ -1153,19 +1089,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			if (txtPercComItVenda.getText().trim().length() < 1) {
 				txtVlrComisItVenda.setAtivo(true);
 			} else {
-				txtVlrComisItVenda
-						.setVlrBigDecimal(new BigDecimal(
-								Funcoes
-										.arredDouble(
-												(txtVlrProdItVenda
-														.doubleValue() - txtVlrDescItVenda
-														.doubleValue())
-														* txtPercComItVenda
-																.doubleValue()
-														/ 100
-														* txtPercComisVenda
-																.doubleValue()
-														/ 100, casasDecFin)));
+				txtVlrComisItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredDouble(
+						(txtVlrProdItVenda.doubleValue() - txtVlrDescItVenda.doubleValue())
+							* txtPercComItVenda.doubleValue()/ 100
+							* txtPercComisVenda.doubleValue()/ 100, casasDecFin)));
 				calcVlrProd();
 				calcImpostos(true);
 				txtVlrComisItVenda.setAtivo(false);
@@ -1528,49 +1455,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		else if (evt.getSource() == btImp)
 			imprimir(false, txtCodVenda.getVlrInteger().intValue());
 		else if (evt.getSource() == btObs) {
-			FObservacao obs = null;
-			try {
-				PreparedStatement ps = con.prepareStatement("SELECT OBSVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'");
-				
-				ps.setInt(1,lcCampos.getCodEmp());
-				ps.setInt(2,lcCampos.getCodFilial());
-				ps.setInt(3, txtCodVenda.getVlrInteger().intValue());
-				//ps.setString(4, txtTipoVenda.getVlrString());
-				
-				ResultSet rs = ps.executeQuery();
-				if (rs.next())
-					obs = new FObservacao(
-							(rs.getString("ObsVenda") != null ? rs
-									.getString("ObsVenda") : ""));
-				else
-					obs = new FObservacao("");
-				//        rs.close();
-				//        ps.close();
-				if (!con.getAutoCommit())
-					con.commit();
-			} catch (SQLException err) {
-				Funcoes.mensagemErro(this, "Erro ao carregar a observação!\n"
-						+ err.getMessage(),true,con,err);
-			}
-			if (obs != null) {
-				obs.setVisible(true);
-				if (obs.OK) {
-					try {
-						PreparedStatement ps = con
-								.prepareStatement("UPDATE VDVENDA SET OBSVENDA=? WHERE CODVENDA=?");
-						ps.setString(1, obs.getTexto());
-						ps.setInt(2, txtCodVenda.getVlrInteger().intValue());
-						ps.executeUpdate();
-						if (!con.getAutoCommit())
-							con.commit();
-					} catch (SQLException err) {
-						Funcoes.mensagemErro(this,
-								"Erro ao inserir observação na venda!\n"
-										+ err.getMessage(),true,con,err);
-					}
-				}
-				obs.dispose();
-			}
+			mostraObs( "VDVENDA", txtCodVenda.getVlrInteger().intValue() );
 		} else if (evt.getSource() == btAdicOrc) {
 			abreAdicOrc();
 		} else if (evt.getSource() == btAltComis) {
@@ -2469,7 +2354,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				}
 			}
 			if (bPrefs[1])
-				testaCodVenda();
+				testaCodPK("VDVENDA",txtCodVenda);
 			txtStatusVenda.setVlrString("*");
 		} 
 		else if (pevt.getListaCampos() == lcDet) {
