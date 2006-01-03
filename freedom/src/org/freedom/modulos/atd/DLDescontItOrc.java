@@ -41,6 +41,7 @@ public class DLDescontItOrc extends FFDialogo {
 	private JTextFieldPad txtVlrTot = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
     private double dVlr;
     private String sObs;
+    
 	public DLDescontItOrc(Component cOrig, double dVal,String[] sVals) {
 		super(cOrig);
         dVlr = dVal;
@@ -67,59 +68,66 @@ public class DLDescontItOrc extends FFDialogo {
 		adic(txtVlrTot,110,80,100,20);
 		adic(new JLabelPad("5 :"),7,90,20,20);
 		adic(txtDesc5,30,90,77,20);
-                txtDesc1.setText(sVals[0]);
-                txtDesc2.setVlrString(sVals[1]);
-                txtDesc3.setVlrString(sVals[2]);
-                txtDesc4.setVlrString(sVals[3]);
-                txtDesc5.setVlrString(sVals[4]);
-                calc();
+		
+        txtDesc1.setText(sVals[0]);
+        txtDesc2.setVlrString(sVals[1]);
+        txtDesc3.setVlrString(sVals[2]);
+        txtDesc4.setVlrString(sVals[3]);
+        txtDesc5.setVlrString(sVals[4]);
+        
+        calc();
 	}
-        private void calc() {
-                double dVlrTot = dVlr;
-                double dVlrDescTot = 0;
-                double dVlrTmpDesc = 0;
-                double[] dSet = new double[5];
-                String sSep = "";
-                String sVal = "";
-                sObs = "";
-                dSet[0] = txtDesc1.getVlrDouble().doubleValue();
-                dSet[1] = txtDesc2.getVlrDouble().doubleValue();
-                dSet[2] = txtDesc3.getVlrDouble().doubleValue();
-                dSet[3] = txtDesc4.getVlrDouble().doubleValue();
-                dSet[4] = txtDesc5.getVlrDouble().doubleValue();
-                for (int i=0; i<5;i++) {
-                        if (dSet[i] != 0) {
-                                dVlrTmpDesc = dVlrTot*(dSet[i]/100);
-                                dVlrTot -= dVlrTmpDesc;
-                                dVlrDescTot += dVlrTmpDesc;
-                                sVal = (dSet[i] - dSet[i]) > 0.0 ? ""+dSet[i] : ""+(int)dSet[i];
-                                sObs += sSep + sVal;
-                                sSep = " + ";
-                        }
-                }
-                txtVlrDescTot.setVlrBigDecimal(new BigDecimal(dVlrDescTot));
-                txtVlrTot.setVlrBigDecimal(new BigDecimal(dVlrTot));
-        }
+	
+    private void calc() {
+    	
+	    double dVlrTot = dVlr;
+	    double dVlrDescTot = 0;
+	    double dVlrTmpDesc = 0;
+	    double[] dSet = new double[5];
+	    String sSep = "";
+	    String sVal = "";
+	    sObs = "";
+	    dSet[0] = txtDesc1.getVlrDouble().doubleValue();
+	    dSet[1] = txtDesc2.getVlrDouble().doubleValue();
+	    dSet[2] = txtDesc3.getVlrDouble().doubleValue();
+	    dSet[3] = txtDesc4.getVlrDouble().doubleValue();
+	    dSet[4] = txtDesc5.getVlrDouble().doubleValue();
+	    
+	    for (int i=0; i<5;i++) {
+            if (dSet[i] != 0) {
+	            dVlrTmpDesc = dVlrTot*(dSet[i]/100);
+	            dVlrTot -= dVlrTmpDesc;
+	            dVlrDescTot += dVlrTmpDesc;
+	            sVal = (dSet[i] - dSet[i]) > 0.0 ? ""+dSet[i] : ""+(int)dSet[i];
+	            sObs += sSep + sVal;
+	            sSep = " + ";
+            }
+	    }
+	    
+	    txtVlrDescTot.setVlrBigDecimal(new BigDecimal(dVlrDescTot));
+	    txtVlrTot.setVlrBigDecimal(new BigDecimal(dVlrTot));
+	    
+    }
 	public double getValor() {
 		return txtVlrDescTot.getVlrDouble().doubleValue();
 	}
-        public String getObs() {
-                return "Desc.: "+sObs;
+    public String getObs() {
+        return "Desc.: "+sObs;
+    }
+    public void keyPressed(KeyEvent kevt) {
+        if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (kevt.getSource() == txtDesc1) 
+                txtDesc2.requestFocus();
+            else if (kevt.getSource() == txtDesc2)
+                txtDesc3.requestFocus();
+            else if (kevt.getSource() == txtDesc3)
+                txtDesc4.requestFocus();
+            else if (kevt.getSource() == txtDesc4)
+                txtDesc5.requestFocus();
+            else if (kevt.getSource() == txtDesc5)
+                btOK.requestFocus();
+            calc();
         }
-        public void keyPressed(KeyEvent kevt) {
-                if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-                        if (kevt.getSource() == txtDesc1) 
-                                txtDesc2.requestFocus();
-                        else if (kevt.getSource() == txtDesc2)
-                                txtDesc3.requestFocus();
-                        else if (kevt.getSource() == txtDesc3)
-                                txtDesc4.requestFocus();
-                        else if (kevt.getSource() == txtDesc4)
-                                txtDesc5.requestFocus();
-                        else if (kevt.getSource() == txtDesc5)
-                                btOK.requestFocus();
-                        calc();
-                }
-                super.keyPressed(kevt);
-        }
+        super.keyPressed(kevt);
+    }
 }

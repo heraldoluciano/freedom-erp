@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
@@ -31,9 +32,52 @@ public abstract class FVD extends FDetalhe {
     
     public abstract void setParansPreco(BigDecimal bdPreco);
     
+    public abstract Vector getParansDesconto();
+    
     public FVD() {
     	super();
-    }
+    }    
+
+    public void buscaPreco() {
+    	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	int[] iParans;
+    	try {
+    	  ps = con.prepareStatement(sSQL);
+    	  
+    	  iParans = getParansPreco();
+    	  
+    	  ps.setInt(1,iParans[0]);
+    	  ps.setInt(2,iParans[1]);
+    	  ps.setInt(3,iParans[2]);
+    	  ps.setInt(4,iParans[3]);
+    	  ps.setInt(5,iParans[4]);
+    	  ps.setInt(6,iParans[5]);
+    	  ps.setInt(7,iParans[6]);
+    	  ps.setInt(8,iParans[7]);
+    	  ps.setInt(9,iParans[8]);
+    	  ps.setInt(10,iParans[9]);
+    	  ps.setInt(11,iParans[10]);
+    	  ps.setInt(12,iParans[11]);
+    	  rs = ps.executeQuery();
+    	  rs.next();
+    	  setParansPreco(rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0")));
+    	  rs.close();
+    	  ps.close();
+    	  if (!con.getAutoCommit())
+    	      con.commit();
+
+    	}
+    	catch (SQLException err) {
+    		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage(),true,con,err);
+    	}
+    	finally {
+    	    sSQL = null;
+    	    ps = null;
+    	    rs = null;
+    	}
+    }    
     /**
      * Busca a observação do cliente.
      * @param iCodCli codigo do cliente a pesquisar.
@@ -227,57 +271,97 @@ public abstract class FVD extends FDetalhe {
     	
     }
     /**
-     * Calcula o valor do produto
+     * Calcula o valor bruto do produto
      * @param arg0 preço do produto
      * @param arg1 quantidade do produto
      * @return valor do produto
      */
 	protected BigDecimal calcVlrProd(BigDecimal arg0, BigDecimal arg1) {
-		BigDecimal bdRetorno;
-		bdRetorno = arg0.multiply(arg1).divide(
+		BigDecimal bdRetorno = arg0.multiply(arg1).divide(
 				new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
 		return bdRetorno;
 	}
-    
-    public void buscaPreco() {
-    	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
-    	int[] iParans;
-    	try {
-    	  ps = con.prepareStatement(sSQL);
-    	  
-    	  iParans = getParansPreco();
-    	  
-    	  ps.setInt(1,iParans[0]);
-    	  ps.setInt(2,iParans[1]);
-    	  ps.setInt(3,iParans[2]);
-    	  ps.setInt(4,iParans[3]);
-    	  ps.setInt(5,iParans[4]);
-    	  ps.setInt(6,iParans[5]);
-    	  ps.setInt(7,iParans[6]);
-    	  ps.setInt(8,iParans[7]);
-    	  ps.setInt(9,iParans[8]);
-    	  ps.setInt(10,iParans[9]);
-    	  ps.setInt(11,iParans[10]);
-    	  ps.setInt(12,iParans[11]);
-    	  rs = ps.executeQuery();
-    	  rs.next();
-    	  setParansPreco(rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0")));
-    	  rs.close();
-    	  ps.close();
-    	  if (!con.getAutoCommit())
-    	      con.commit();
+	/**
+     * Calcula o valor total do produto
+     * @param arg0 valor do produto
+     * @param arg1 desconto
+     * @return valor total do produto
+     */
+	protected BigDecimal calcVlrTotalProd(BigDecimal arg0, BigDecimal arg1) {
+		BigDecimal bdRetorno = arg0.subtract(arg1)
+				.divide(new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+		return bdRetorno;
+	}
+	/**
+	 * Abre uma DLDescontItVenda, seta o desconto do item e a String dos descontos
+	 */
+	protected void mostraTelaDesconto() {
+		
+		Vector param = getParansDesconto();
+		/*
+		 * param
+		 * 0 - descontos
+		 * 1 - preço do item
+		 * 2 - valor do desconto do item
+		 * 3 - quantidade do item
+		 */
+		String sObsDesc = null;
+		int iFim = 0;
 
-    	}
-    	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage(),true,con,err);
-    	}
-    	finally {
-    	    sSQL = null;
-    	    ps = null;
-    	    rs = null;
-    	}
-    }
+		try {
+			sObsDesc = ((JTextFieldPad)param.elementAt(0)).getVlrString();
+			
+			DLDescontItVenda dl = new DLDescontItVenda(
+					this, ((JTextFieldPad)param.elementAt(1)).doubleValue(), parseDescs(sObsDesc));
+			dl.setVisible(true);
+			
+			if (dl.OK) {
+				((JTextFieldPad)param.elementAt(2)).setVlrBigDecimal(new BigDecimal(
+								dl.getValor() * ((JTextFieldPad)param.elementAt(3)).doubleValue()));
+				
+				iFim = sObsDesc.indexOf("\n");
+				if (iFim >= 0)
+					sObsDesc = dl.getObs() + " " + sObsDesc.substring(iFim);
+				else
+					sObsDesc = dl.getObs() + " \n";
+				((JTextFieldPad)param.elementAt(0)).setVlrString(sObsDesc);
+			}
+			
+			dl.dispose();
+		} finally {
+			param = null;
+			sObsDesc = null;
+		}
+		
+	}
+	/**
+	 * Corverte para array a String com os descontos.
+	 * @param arg0 String com os descontos.
+	 * @return array dos descontos
+	 */
+	private String[] parseDescs(String arg0) {
+		String[] sRet = new String[5];
+		String sObs = arg0;
+		int iFim = sObs.indexOf('\n');
+		int iPos = 0;
+		if (iFim > 0) {
+			sObs = sObs.substring(0, iFim);
+			if (sObs.indexOf("Desc.: ") == 0) {
+				sObs = sObs.substring(7);
+				iPos = sObs.indexOf('+');
+				for (int i = 0; (iPos > 0) && (i < 5); i++) {
+					sRet[i] = sObs.substring(0, iPos - 1);
+					if (iPos != iFim)
+						sObs = sObs.substring(iPos + 1);
+					if (iPos == iFim)
+						break;
+					if ((iPos = sObs.indexOf('+')) == -1)
+						iPos = iFim = sObs.length();
+				}
+			}
+		}
+		return sRet;
+	}
+    
 }
 
