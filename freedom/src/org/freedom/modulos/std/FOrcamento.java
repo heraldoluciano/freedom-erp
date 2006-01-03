@@ -393,11 +393,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		txtVlrLiqItOrc.setVlrBigDecimal(bVlrProd);
 	}
 
-	private void calcVlrProd() {
-		BigDecimal bPreco = txtPrecoItOrc.getVlrBigDecimal();
-		BigDecimal bQtd = txtQtdItOrc.getVlrBigDecimal();
-		txtVlrProdItOrc.setVlrBigDecimal(bPreco.multiply(bQtd).divide(
-				new BigDecimal("1"), 3, BigDecimal.ROUND_HALF_UP));
+	private void calcVlrProd() {		
+		txtVlrProdItOrc.setVlrBigDecimal(
+				calcVlrProd(txtPrecoItOrc.getVlrBigDecimal(),txtQtdItOrc.getVlrBigDecimal()));
 	}
 
 	private void mostraTelaDescont() {
@@ -592,10 +590,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		DLCopiaOrc dl = null;
 					
 		try {
-			if (txtCodOrc.getVlrInteger().intValue() == 0
-					|| lcCampos.getStatus() != ListaCampos.LCS_SELECT) {
-				Funcoes.mensagemInforma(this,
-						"Selecione um orçamento cadastrado antes!");
+			if (txtCodOrc.getVlrInteger().intValue() == 0 || lcCampos.getStatus() != ListaCampos.LCS_SELECT) {
+				Funcoes.mensagemInforma(this,"Selecione um orçamento cadastrado antes!");
 				return;
 			}
 			dl = new DLCopiaOrc(this);

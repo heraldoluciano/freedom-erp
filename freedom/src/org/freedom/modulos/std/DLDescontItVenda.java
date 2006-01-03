@@ -46,7 +46,7 @@ public class DLDescontItVenda extends FFDialogo {
 		super(cOrig);
         dVlr = dVal;
 		setTitulo("Descontos:");
-		setAtribos(235,175);
+		setAtribos(265,225);
 
         txtVlrDescTot.setAtivo(false);
         txtVlrTot.setAtivo(false);
@@ -56,50 +56,52 @@ public class DLDescontItVenda extends FFDialogo {
         
 		adic(new JLabelPad("1 :"),7,10,20,20);
 		adic(txtDesc1,30,10,77,20);
-		adic(new JLabelPad("Valor Desc.:"),110,20,100,20);
-		adic(new JLabelPad("2 :"),7,30,20,20);
-		adic(txtDesc2,30,30,77,20);
-		adic(txtVlrDescTot,110,40,100,20);
-		adic(new JLabelPad("3 :"),7,50,20,20);
-		adic(txtDesc3,30,50,77,20);
-		adic(new JLabelPad("Preço do Item:"),110,60,100,20);
-		adic(new JLabelPad("4 :"),7,70,20,20);
-		adic(txtDesc4,30,70,77,20);
-		adic(txtVlrTot,110,80,100,20);
-		adic(new JLabelPad("5 :"),7,90,20,20);
-		adic(txtDesc5,30,90,77,20);
+		adic(new JLabelPad("2 :"),7,35,20,20);
+		adic(txtDesc2,30,35,77,20);
+		adic(new JLabelPad("3 :"),7,60,20,20);
+		adic(txtDesc3,30,60,77,20);
+		adic(new JLabelPad("4 :"),7,85,20,20);
+		adic(txtDesc4,30,85,77,20);
+		adic(new JLabelPad("5 :"),7,110,20,20);
+		adic(txtDesc5,30,110,77,20);
+		adic(new JLabelPad("Valor Desc.:"),120,10,120,20);
+		adic(txtVlrDescTot,120,35,120,20);
+		adic(new JLabelPad("Preço do Item:"),120,60,120,20);
+		adic(txtVlrTot,120,85,120,20);
+		
         txtDesc1.setVlrString(sVals[0]);
         txtDesc2.setVlrString(sVals[1]);
         txtDesc3.setVlrString(sVals[2]);
         txtDesc4.setVlrString(sVals[3]);
         txtDesc5.setVlrString(sVals[4]);
+        
         calc();
 	}
     private void calc() {
-                double dVlrTot = dVlr;
-                double dVlrDescTot = 0;
-                double dVlrTmpDesc = 0;
-                double[] dSet = new double[5];
-                String sSep = "";
-                String sVal = "";
-                sObs = "";
-                dSet[0] = txtDesc1.getVlrDouble().doubleValue();
-                dSet[1] = txtDesc2.getVlrDouble().doubleValue();
-                dSet[2] = txtDesc3.getVlrDouble().doubleValue();
-                dSet[3] = txtDesc4.getVlrDouble().doubleValue();
-                dSet[4] = txtDesc5.getVlrDouble().doubleValue();
-                for (int i=0; i<5;i++) {
-                        if (dSet[i] != 0) {
-                                dVlrTmpDesc = dVlrTot*(dSet[i]/100);
-                                dVlrTot -= dVlrTmpDesc;
-                                dVlrDescTot += dVlrTmpDesc;
-                                sVal = (dSet[i] - dSet[i]) > 0 ? ""+dSet[i] : ""+(int)dSet[i];
-                                sObs += sSep + sVal;
-                                sSep = " + ";
-                        }
+        double dVlrTot = dVlr;
+        double dVlrDescTot = 0;
+        double dVlrTmpDesc = 0;
+        double[] dSet = new double[5];
+        String sSep = "";
+        String sVal = "";
+        sObs = "";
+        dSet[0] = txtDesc1.getVlrDouble().doubleValue();
+        dSet[1] = txtDesc2.getVlrDouble().doubleValue();
+        dSet[2] = txtDesc3.getVlrDouble().doubleValue();
+        dSet[3] = txtDesc4.getVlrDouble().doubleValue();
+        dSet[4] = txtDesc5.getVlrDouble().doubleValue();
+        for (int i=0; i<5;i++) {
+                if (dSet[i] != 0) {
+                        dVlrTmpDesc = dVlrTot*(dSet[i]/100);
+                        dVlrTot -= dVlrTmpDesc;
+                        dVlrDescTot += dVlrTmpDesc;
+                        sVal = (dSet[i] - dSet[i]) > 0 ? ""+dSet[i] : ""+(int)dSet[i];
+                        sObs += sSep + sVal;
+                        sSep = " + ";
                 }
-                txtVlrDescTot.setVlrBigDecimal(new BigDecimal(dVlrDescTot));
-                txtVlrTot.setVlrBigDecimal(new BigDecimal(dVlrTot));
+        }
+        txtVlrDescTot.setVlrBigDecimal(new BigDecimal(dVlrDescTot));
+        txtVlrTot.setVlrBigDecimal(new BigDecimal(dVlrTot));
     }
 	public double getValor() {
 		return txtVlrDescTot.getVlrDouble().doubleValue();

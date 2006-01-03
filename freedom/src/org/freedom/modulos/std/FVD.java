@@ -226,6 +226,18 @@ public abstract class FVD extends FDetalhe {
 		}
     	
     }
+    /**
+     * Calcula o valor do produto
+     * @param arg0 preço do produto
+     * @param arg1 quantidade do produto
+     * @return valor do produto
+     */
+	protected BigDecimal calcVlrProd(BigDecimal arg0, BigDecimal arg1) {
+		BigDecimal bdRetorno;
+		bdRetorno = arg0.multiply(arg1).divide(
+				new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+		return bdRetorno;
+	}
     
     public void buscaPreco() {
     	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";

@@ -881,18 +881,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void calcVlrProd() {
-		double dePreco = txtPrecoItVenda.doubleValue();
-		double deQtd = txtQtdItVenda.doubleValue();
-		double deVlrItVenda = dePreco * deQtd;
-		//NumberFormat.
-		txtVlrProdItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredDouble(
-				deVlrItVenda, casasDecFin)));
-		//    System.out.println("VlrProdTot:
-		// "+txtVlrProdItVenda.getVlrBigDecimal());
+		txtVlrProdItVenda.setVlrBigDecimal(
+				calcVlrProd(txtPrecoItVenda.getVlrBigDecimal(),txtQtdItVenda.getVlrBigDecimal()));
 	}
 
 	private boolean testaLucro() {
 		boolean bRet = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sCampoCusto = (bPrefs[3] ? "NCUSTOMPM" : "NCUSTOPEPS");
 		String sSQL = "SELECT COUNT(*) " +
 				"FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C"
@@ -902,7 +898,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				+ "/100)*(100+PF.PERCPRECOCUSTO)) <= ?"
 				+ " OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
 			ps.setInt(3, txtCodProd.getVlrInteger().intValue());
@@ -915,7 +911,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.setInt(10, ListaCampos.getMasterFilial("EQPRODUTO"));
 			ps.setInt(11, txtCodProd.getVlrInteger().intValue());
 			ps.setDouble(12, txtPrecoItVenda.doubleValue());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next())
 				if (rs.getInt(1) == 1)
 					bRet = true;
@@ -923,7 +919,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sCampoCusto = null;
+			sSQL = null;
 		}
+		
 		if (!bRet && txtVerifProd.getVlrString().equals("S"))
 			bRet = mostraTelaPass();
 
@@ -1010,23 +1012,23 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private void mostraTelaDescont() {
 		String sObsDesc = "";
 		int iFim = 0;
-		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT)
-				|| (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
+		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
 			txtVlrDescItVenda.setAtivo(true);
 			txtPercDescItVenda.setAtivo(false);
 			txtPercDescItVenda.setVlrString("");
 			txtVlrDescItVenda.setVlrString("");
 			calcVlrProd();
 			calcImpostos(true);
-			DLDescontItVenda dl = new DLDescontItVenda(this, txtPrecoItVenda
-					.doubleValue(), parseDescs());
+			
+			DLDescontItVenda dl = new DLDescontItVenda(this, txtPrecoItVenda.doubleValue(), parseDescs());
 			dl.setVisible(true);
+			
 			txtVlrDescItVenda.setAtivo(true);
 			txtPercDescItVenda.setAtivo(false);
 			txtPercDescItVenda.setVlrString("");
+			
 			if (dl.OK) {
-				txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(dl.getValor()
-						* txtQtdItVenda.doubleValue()));
+				txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(dl.getValor()* txtQtdItVenda.doubleValue()));
 				sObsDesc = txtStrDescItVenda.getText();
 				iFim = sObsDesc.indexOf("\n");
 				if (iFim >= 0)
@@ -1035,6 +1037,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					sObsDesc = dl.getObs() + " \n";
 				txtStrDescItVenda.setVlrString(sObsDesc);
 			}
+			
 			dl.dispose();
 			calcVlrProd();
 			calcImpostos(true);
@@ -1047,19 +1050,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		String sObs = txtStrDescItVenda.getText();
 		int iFim = sObs.indexOf('\n');
 		int iPos = 0;
-		//        System.out.println("1 :"+sObs);
 		if (iFim > 0) {
 			sObs = sObs.substring(0, iFim);
-			//              System.out.println("2 :"+sObs);
 			if (sObs.indexOf("Desc.: ") == 0) {
 				sObs = sObs.substring(7);
-				//                    System.out.println("3 :"+sObs);
 				iPos = sObs.indexOf('+');
 				for (int i = 0; (iPos > 0) && (i < 5); i++) {
 					sRet[i] = sObs.substring(0, iPos - 1);
 					if (iPos != iFim)
 						sObs = sObs.substring(iPos + 1);
-					//                          System.out.println("4 :"+sObs);
 					if (iPos == iFim)
 						break;
 					if ((iPos = sObs.indexOf('+')) == -1)
