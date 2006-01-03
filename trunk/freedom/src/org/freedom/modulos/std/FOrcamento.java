@@ -72,7 +72,6 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.layout.LeiauteGR;
-import org.freedom.modulos.atd.DLDescontItOrc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrinterJob;
 
@@ -387,10 +386,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void calcTot() {
-		BigDecimal bVlrProd = txtVlrProdItOrc.getVlrBigDecimal().subtract(
-				txtVlrDescItOrc.getVlrBigDecimal()).divide(new BigDecimal("1"),
-				3, BigDecimal.ROUND_HALF_UP);
-		txtVlrLiqItOrc.setVlrBigDecimal(bVlrProd);
+		txtVlrLiqItOrc.setVlrBigDecimal(
+				calcVlrTotalProd(txtVlrProdItOrc.getVlrBigDecimal(),txtVlrDescItOrc.getVlrBigDecimal()));
 	}
 
 	private void calcVlrProd() {		
@@ -398,67 +395,28 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				calcVlrProd(txtPrecoItOrc.getVlrBigDecimal(),txtQtdItOrc.getVlrBigDecimal()));
 	}
 
+	public Vector getParansDesconto(){
+		Vector param = new Vector();
+		param.addElement(txtStrDescItOrc);
+		param.addElement(txtPrecoItOrc);
+		param.addElement(txtVlrDescItOrc);
+		param.addElement(txtQtdItOrc);
+		return param;
+	}
+	
 	private void mostraTelaDescont() {
-		String sObsDesc = "";
-		int iFim = 0;
-		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT)
-				|| (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
+		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
 			txtVlrDescItOrc.setAtivo(true);
 			txtPercDescItOrc.setAtivo(false);
 			txtPercDescItOrc.setVlrString("");
 			txtVlrDescItOrc.setVlrString("");
 			calcVlrProd();
 			calcTot();
-			DLDescontItOrc dl = new DLDescontItOrc(this, txtPrecoItOrc
-					.getVlrDouble().doubleValue(), parseDescs());
-			dl.setVisible(true);
-			txtVlrDescItOrc.setAtivo(true);
-			txtPercDescItOrc.setAtivo(false);
-			txtPercDescItOrc.setVlrString("");
-			if (dl.OK) {
-				txtVlrDescItOrc.setVlrBigDecimal(new BigDecimal(dl.getValor()
-						* txtQtdItOrc.getVlrDouble().doubleValue()));
-				sObsDesc = txtStrDescItOrc.getText();
-				iFim = sObsDesc.indexOf("\n");
-				if (iFim >= 0)
-					sObsDesc = dl.getObs() + " " + sObsDesc.substring(iFim);
-				else
-					sObsDesc = dl.getObs() + " \n";
-				txtStrDescItOrc.setVlrString(sObsDesc);
-			}
-			dl.dispose();
+			mostraTelaDesconto();
 			calcVlrProd();
 			calcTot();
 			txtVlrDescItOrc.requestFocus(true);
 		}
-	}
-
-	private String[] parseDescs() {
-		String[] sRet = new String[5];
-		String sObs = txtStrDescItOrc.getText();
-		int iFim = sObs.indexOf('\n');
-		int iPos = 0;
-		//        System.out.println("1 :"+sObs);
-		if (iFim > 0) {
-			sObs = sObs.substring(0, iFim);
-			//              System.out.println("2 :"+sObs);
-			if (sObs.indexOf("Desc.: ") == 0) {
-				sObs = sObs.substring(7);
-				//                    System.out.println("3 :"+sObs);
-				iPos = sObs.indexOf('+');
-				for (int i = 0; (iPos > 0) && (i < 5); i++) {
-					sRet[i] = sObs.substring(0, iPos - 1);
-					if (iPos != iFim)
-						sObs = sObs.substring(iPos + 1);
-					//                          System.out.println("4 :"+sObs);
-					if (iPos == iFim)
-						break;
-					if ((iPos = sObs.indexOf('+')) == -1)
-						iPos = iFim = sObs.length();
-				}
-			}
-		}
-		return sRet;
 	}
 	
 	public void focusGained(FocusEvent fevt) {
@@ -571,8 +529,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		else if (evt.getSource() == btImp)
 			imprimir(false);
 		else if (evt.getSource() == btOrc) {
-			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger()
-					.intValue());
+			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger().intValue());
 			imp.setConexao(con);
 			dl = new FPrinterJob(imp, this);
 			dl.setVisible(true);
@@ -677,12 +634,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-					"Erro ao carregar a tabela SGPREFERE1!\n"
-							+ err.getMessage(),true,con,err);
+					"Erro ao carregar a tabela SGPREFERE1!\n" + err.getMessage(),true,con,err);
 		}
 		if (sClassOrc.trim().equals("")) {
-			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger()
-					.intValue());
+			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger().intValue());
 			imp.setConexao(con);
 			if (bVisualizar) {
 				dl = new FPrinterJob(imp, this);
@@ -692,8 +647,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		} 
 		else {
 			try {
-				leiOrc = (LeiauteGR) Class.forName(
-						"org.freedom.layout." + sClassOrc).newInstance();
+				leiOrc = (LeiauteGR) Class.forName("org.freedom.layout." + sClassOrc).newInstance();
 				leiOrc.setConexao(con);
 				vParamOrc.clear();
 				vParamOrc.addElement(txtCodOrc.getText());
@@ -707,8 +661,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					leiOrc.imprimir(true);
 			} catch (Exception err) {
 				Funcoes.mensagemInforma(this,
-						"Não foi possível carregar o leiaute de Orçamento!\n"
-								+ err.getMessage());
+						"Não foi possível carregar o leiaute de Orçamento!\n" + err.getMessage());
 				err.printStackTrace();
 			}
 		}
@@ -719,23 +672,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		int iCodOrc = txtCodOrc.getVlrInteger().intValue();
 		int linPag = imp.verifLinPag() - 1;
 		Vector vDesc = null;
-		Vector vObs = null;
-		imp.montaCab();
-		imp.setTitulo("ORÇAMENTO");
+		Vector vObs = null;		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		
-		String sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI,"
+		try {			
+			sSQL = "SELECT O.CODORC, O.CODPLANOPAG, O.CODCLI, O.OBSORC, O.VLRLIQORC, O.PRAZOENTORC, C.RAZCLI,"
 				+ " C.CONTCLI, C.CNPJCLI, C.CPFCLI, C.RGCLI, C.INSCCLI, C.SITECLI, C.EMAILCLI, C.ENDCLI, C.NUMCLI,"
 				+ " C.BAIRCLI, C.CIDCLI, C.UFCLI, C.CEPCLI,C.DDDCLI, C.FONECLI, C.FAXCLI, I.CODITORC, I.CODPROD,"
 				+ " I.QTDITORC, I.PRECOITORC, I.VLRPRODITORC, I.VLRDESCITORC, P.REFPROD, P.DESCPROD, P.CODUNID,"
 				+ " PG.DESCPLANOPAG, I.OBSITORC, VEND.NOMEVEND, VEND.EMAILVEND,"
 				+ " (SELECT FN.DESCFUNC FROM RHFUNCAO FN WHERE FN.CODEMP=VEND.CODEMPFU"
 				+ " AND FN.CODFILIAL=VEND.CODFILIALFU AND FN.CODFUNC=VEND.CODFUNC)"
-				
-			/*	+ " (SELECT T.RAZTRAN FROM VDTRANSP T, VDFRETEVD F WHERE T.CODEMP=F.CODEMPTN"
-				+ " AND F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA),"
-				+ " (SELECT F.TIPOFRETEVD FROM VDFRETEVD F WHERE F.CODEMP=V.CODEMP" 
-				+ " AND F.CODFILIAL=V.CODFILIAL AND F.TIPOVENDA=V.TIPOVENDA AND F.CODVENDA=V.CODVENDA)"*/
-				
 				+ " FROM VDORCAMENTO O, VDITORCAMENTO I, VDCLIENTE C, EQPRODUTO P, FNPLANOPAG PG, VDVENDEDOR VEND"
 				+ " WHERE O.CODEMP=? AND O.CODFILIAL=? AND O.CODORC=?"
 				+ " AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI"
@@ -744,9 +693,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				+ " AND PG.CODEMP=O.CODEMPPG AND PG.CODFILIAL=O.CODFILIALPG AND PG.CODPLANOPAG=O.CODPLANOPAG"
 				+ " AND VEND.CODEMP=O.CODEMPVD AND VEND.CODFILIAL=O.CODFILIALVD AND VEND.CODVEND=O.CODVEND"
 				+ " ORDER BY P." + sOrdem + ",P.DESCPROD";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
+			
+			imp.montaCab();
+			imp.setTitulo("ORÇAMENTO");
 			imp.limpaPags();
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
@@ -792,7 +741,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "IT. |   CÓDIGO   |                    DESCRIÇÃO                     |UN|   QUANT.   |    V.UNIT.   |   V.DESCONTO   |   V.TOTAL");
+						imp.say(imp.pRow() + 0, 1, "IT. " +
+								"|   CÓDIGO   " +
+								"|                    DESCRIÇÃO                     " +
+								"|UN" +
+								"|   QUANT.   " +
+								"|    V.UNIT.   " +
+								"|   V.DESCONTO   " +
+								"|   V.TOTAL");
 					}
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					if (i==0) {
@@ -815,8 +771,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			//imp.say(imp.pRow() + 0, 4, "TOTAL IPI: " + rs.getString("VlrICMSVenda"));
-			//imp.say(imp.pRow() + 0, 44, "|    TOTAL ICMS: " + rs.getString("VlrIPIVenda"));
 			imp.say(imp.pRow() + 0, 86, "|    TOTAL PRODUTOS: " + rs.getString("VlrLiqOrc"));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
@@ -833,16 +787,19 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 62, "OBSERVACÃO");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsOrc")),115);
-          	 for (int i=0; i<vObs.size(); i++) {
-                imp.say(imp.pRow()+1,0,""+imp.comprimido());
+          	
+			vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsOrc")),115);
+          	
+          	for (int i=0; i<vObs.size(); i++) {
+          		imp.say(imp.pRow()+1,0,""+imp.comprimido());
                 imp.say(imp.pRow()+0,20,vObs.elementAt(i).toString());
                 if (imp.pRow()>=linPag) {
                     imp.incPags();
                     imp.eject();
                 }
-          	 }
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+          	}
+			
+          	imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0,Funcoes.replicate("-", 135));
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 5,Funcoes.replicate("-", 40));
@@ -852,19 +809,23 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 0, 5, rs.getString(37));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 5, rs.getString("EmailVend"));
-
-
 			
 			imp.eject();
 			imp.fechaGravacao();
 
-			//      rs.close();
-			//      ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
+			
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Venda!"
 					+ err.getMessage(),true,con,err);
+		} finally {
+			imp = null;
+			vDesc = null;
+			vObs = null;		
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 
 		if (bVisualizar) {
@@ -876,12 +837,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 	private Object[] prefs() {
 		Object[] oRetorno = new Object[6];
-		String sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ "
-					+ " FROM SGPREFERE1 P "
-					+ " WHERE CODEMP=? AND CODFILIAL=?";
+		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ "
+				+ " FROM SGPREFERE1 P "
+				+ " WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
@@ -942,8 +904,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
-					"Erro ao carregar a tabela SGPREFERE1!\n"
-							+ err.getMessage(),true,con,err);
+					"Erro ao carregar a tabela SGPREFERE1!\n" + err.getMessage(),true,con,err);
 		} finally {
 			sSQL = null;
 			ps = null;
@@ -964,7 +925,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	public void beforePost(PostEvent evt) {
-		if ((evt.getListaCampos() == lcCampos)&& (lcCampos.getStatus() == ListaCampos.LCS_INSERT)) {
+		if ((evt.getListaCampos() == lcCampos) && (lcCampos.getStatus() == ListaCampos.LCS_INSERT)) {
 			if(((Boolean) oPrefs[5]).booleanValue())
 				testaCodPK("VDORCAMENTO", txtCodOrc);
 			txtStatusOrc.setVlrString("*");
@@ -1030,13 +991,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 	private int getPlanoPag() {
 		int iRet = 0;
-		String sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getInt("CodPlanoPag");
 			}
@@ -1047,19 +1011,26 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					+"Provavelmente não foram gravadas corretamente as preferências!\n"
 					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return iRet;
 	}
 
-	private String retCodCli() {
+	private String getCodCli() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		String iRet = "";
-		String sSQL = "SELECT CodCli FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			sSQL = "SELECT CodCli FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getString("CodCli");
 			}
@@ -1067,22 +1038,29 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o código do cliente.\n" +
-			"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage(),true,con,err);
+					"Provavelmente não foram gravadas corretamente as preferências!\n"
+						+ err.getMessage(),true,con,err);
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return iRet;
 	}
 
-	private int retPrazo() {
+	private int getPrazo() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int iRet = 0;
-		String sSQL = "SELECT Prazo FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
+		String sSQL = null;
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			sSQL = "SELECT Prazo FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getInt("Prazo");
 			}
@@ -1093,20 +1071,27 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			"Provavelmente não foram gravadas corretamente as preferências!\n"
 					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return iRet;
 	}
 
-	private int retVendedor() {
+	private int getVendedor() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		int iRet = 0;
-		String sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE "
-				+ "IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE "
+				+ "IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
+			ps = con.prepareStatement(sSQL);
 			ps.setString(1, Aplicativo.strUsuario);
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, Aplicativo.iCodFilialPad);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				iRet = rs.getInt("CodVend");
 			}
@@ -1117,13 +1102,17 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					+ "O usuário '" + Aplicativo.strUsuario
 					+ "' é um comissionado?\n" + err.getMessage(),true,con,err);
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return iRet;
 	}
 
 	private synchronized void iniVenda() {
 		lcCampos.insert(true);
-		txtCodCli.setVlrString(retCodCli());
+		txtCodCli.setVlrString(getCodCli());
 		lcCli.carregaDados();
 		lcProd.limpaCampos(true);
 		lcProd2.limpaCampos(true);
@@ -1134,10 +1123,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		txtVlrLiqOrc.setVlrString("");
 		txtVlrProdOrc.setVlrString("");
 		lcPlanoPag.carregaDados();
-		txtCodVend.setVlrInteger(new Integer(retVendedor()));
+		txtCodVend.setVlrInteger(new Integer(getVendedor()));
 		txtDtOrc.setVlrDate(new Date());
 		txtDtVencOrc.setVlrDate(new Date());
-		txtPrazoEntOrc.setVlrInteger(new Integer(retPrazo()));
+		txtPrazoEntOrc.setVlrInteger(new Integer(getPrazo()));
 		tab.limpa();
 		iniItem();
 	}

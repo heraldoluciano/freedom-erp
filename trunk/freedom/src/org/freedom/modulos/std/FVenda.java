@@ -701,6 +701,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
 					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 	}
 
@@ -709,19 +713,22 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	 *  
 	 */
 	private void buscaLote() {
-		String sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
 				+ "L.CODPROD=? AND L.CODFILIAL=? "+(bPrefs[13]?"AND L.SLDLIQLOTE>0 ":" ")
 				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
 				+ "( "
 				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
 				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP "+(bPrefs[13]?"AND LS.SLDLIQLOTE>0 ":" ")
 				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
 			ps.setInt(2, lcProd.getCodFilial());
 			ps.setInt(3, Aplicativo.iCodEmp);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				String sCodLote = rs.getString(1);
 				if (sCodLote != null) {
@@ -733,6 +740,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.close();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 	}
 
@@ -742,9 +753,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	 *  
 	 */
 	private void buscaNat() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodFilial);
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, lcProd.getCodFilial());
@@ -757,7 +770,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.setNull(10, Types.INTEGER);
 			ps.setInt(11, lcTipoMov.getCodFilial());
 			ps.setInt(12, txtCodTipoMov.getVlrInteger().intValue());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				txtCodNat.setVlrString(rs.getString("CODNAT"));
 				lcNat.carregaDados();
@@ -767,14 +780,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
 					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 	}
 
 	private void buscaTratTrib() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "SELECT ORIGFISC,CODTRATTRIB,REDFISC,TIPOFISC,CODMENS,ALIQFISC,ALIQIPIFISC"
 				+ " FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?)";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodFilial);
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, lcProd.getCodFilial());
@@ -782,7 +801,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			ps.setInt(5, Aplicativo.iCodEmp);
 			ps.setInt(6, lcCli.getCodFilial());
 			ps.setInt(7, txtCodCli.getVlrInteger().intValue());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				txtOrigFisc.setVlrString(rs.getString("ORIGFISC"));
 				txtCodTratTrib.setVlrString(rs.getString("CODTRATTRIB"));
@@ -797,6 +816,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,
 					"Erro ao buscar tratamento tributário!\n" + err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 	}
 
@@ -809,7 +832,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		double deIPI = 0;
 		try {
 			deRed = txtRedFisc.getVlrBigDecimal() != null ? txtRedFisc.doubleValue() : 0;
-			deVlrProd = txtVlrProdItVenda.doubleValue() - txtVlrDescItVenda.doubleValue();
+			deVlrProd = calcVlrTotalProd(txtVlrProdItVenda.getVlrBigDecimal(),txtVlrDescItVenda.getVlrBigDecimal()).doubleValue();
 
 			if (bBuscaBase)
 				deBaseICMS = 0;
@@ -1008,65 +1031,29 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		diag.dispose();
 		return bRet;
 	}
+	
+	public Vector getParansDesconto(){
+		Vector param = new Vector();
+		param.addElement(txtStrDescItVenda);
+		param.addElement(txtPrecoItVenda);
+		param.addElement(txtVlrDescItVenda);
+		param.addElement(txtQtdItVenda);
+		return param;
+	}
 
 	private void mostraTelaDescont() {
-		String sObsDesc = "";
-		int iFim = 0;
 		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
 			txtVlrDescItVenda.setAtivo(true);
+			txtVlrDescItVenda.setVlrString("");
 			txtPercDescItVenda.setAtivo(false);
 			txtPercDescItVenda.setVlrString("");
-			txtVlrDescItVenda.setVlrString("");
 			calcVlrProd();
 			calcImpostos(true);
-			
-			DLDescontItVenda dl = new DLDescontItVenda(this, txtPrecoItVenda.doubleValue(), parseDescs());
-			dl.setVisible(true);
-			
-			txtVlrDescItVenda.setAtivo(true);
-			txtPercDescItVenda.setAtivo(false);
-			txtPercDescItVenda.setVlrString("");
-			
-			if (dl.OK) {
-				txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(dl.getValor()* txtQtdItVenda.doubleValue()));
-				sObsDesc = txtStrDescItVenda.getText();
-				iFim = sObsDesc.indexOf("\n");
-				if (iFim >= 0)
-					sObsDesc = dl.getObs() + " " + sObsDesc.substring(iFim);
-				else
-					sObsDesc = dl.getObs() + " \n";
-				txtStrDescItVenda.setVlrString(sObsDesc);
-			}
-			
-			dl.dispose();
+			mostraTelaDesconto();
 			calcVlrProd();
 			calcImpostos(true);
 			txtVlrDescItVenda.requestFocus(true);
 		}
-	}
-
-	private String[] parseDescs() {
-		String[] sRet = new String[5];
-		String sObs = txtStrDescItVenda.getText();
-		int iFim = sObs.indexOf('\n');
-		int iPos = 0;
-		if (iFim > 0) {
-			sObs = sObs.substring(0, iFim);
-			if (sObs.indexOf("Desc.: ") == 0) {
-				sObs = sObs.substring(7);
-				iPos = sObs.indexOf('+');
-				for (int i = 0; (iPos > 0) && (i < 5); i++) {
-					sRet[i] = sObs.substring(0, iPos - 1);
-					if (iPos != iFim)
-						sObs = sObs.substring(iPos + 1);
-					if (iPos == iFim)
-						break;
-					if ((iPos = sObs.indexOf('+')) == -1)
-						iPos = iFim = sObs.length();
-				}
-			}
-		}
-		return sRet;
 	}
 	
 	public void focusGained(FocusEvent fevt) {
