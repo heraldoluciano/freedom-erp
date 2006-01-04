@@ -384,7 +384,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbComisPDupl = new JCheckBoxPad("Calcula comissão com base nas duplicatas?", "S", "N");
 		cbComisPDupl.setVlrString("S");
 		
-		cbObsCliVend = new JCheckBoxPad("Mostrar observações do cliente na venda?","S","N");
+		cbObsCliVend = new JCheckBoxPad("Mostrar observações do cliente na venda e orçamento?","S","N");
 		cbObsCliVend.setVlrString("N");
 
 		cbTabFreteVd = new JCheckBoxPad("Aba frete na venda?", "S", "N");
