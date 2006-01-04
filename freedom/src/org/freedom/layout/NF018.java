@@ -228,11 +228,12 @@ public class NF018 extends Layout {
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,"");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,4,frete.getString(NF.C_RAZTRANSP));
-					imp.say(imp.pRow()+0,85,frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
-					imp.say(imp.pRow()+0,88,frete.getString(NF.C_PLACAFRETE));
-					imp.say(imp.pRow()+0,102,frete.getString(NF.C_UFFRETE));
-					   
+					if (frete.getString(NF.C_TIPOFRETE)!=null) {   
+						imp.say(imp.pRow()+0,4,frete.getString(NF.C_RAZTRANSP));
+						imp.say(imp.pRow()+0,85,frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
+						imp.say(imp.pRow()+0,88,frete.getString(NF.C_PLACAFRETE));
+						imp.say(imp.pRow()+0,102,frete.getString(NF.C_UFFRETE));
+					}
 					sTipoTran = frete.getString(NF.C_TIPOTRANSP);
 					if (sTipoTran==null) 
 						sTipoTran = "T";    
