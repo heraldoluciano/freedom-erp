@@ -5,6 +5,8 @@
  */
 package org.freedom.modulos.std;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -78,6 +80,22 @@ public abstract class FVD extends FDetalhe {
     	    rs = null;
     	}
     }    
+    /**
+     * Mostra a observação do cliente
+     * @param iCodCli codigo do cliente
+     * @param location localização da FObsCliVend na tela
+     * @param dimencao tamanho da FObsCliVend
+     */
+    public void mostraObsCli(int iCodCli, Point location, Dimension dimencao) {
+    	String sObsCli = getObsCli(iCodCli);
+		if (!sObsCli.equals("")) {						
+			FObsCliVend.showVend((int)location.getX(),
+								 (int)location.getY(),
+								 (int)dimencao.getWidth(),
+								 (int)dimencao.getHeight(),
+								 sObsCli);
+		}
+    }
     /**
      * Busca a observação do cliente.
      * @param iCodCli codigo do cliente a pesquisar.

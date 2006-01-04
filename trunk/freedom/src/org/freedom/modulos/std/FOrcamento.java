@@ -33,6 +33,7 @@ package org.freedom.modulos.std;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -138,6 +139,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private boolean bDescComp = false;
 	private boolean bCtrl = false;
 	private Vector vParamOrc = new Vector();
+	private int iCodCliAnt = 0;
 
 	public FOrcamento() {
 		setTitulo("Orçamento");
@@ -307,25 +309,25 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		btFechaOrc.addActionListener(this);
 		btObs.addActionListener(this);
 		btOrc.addActionListener(this);
-
+		btExp.addActionListener(this);
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
 		txtRefProd.addKeyListener(this);
 		txtPercDescItOrc.addFocusListener(this);
 		txtVlrDescItOrc.addFocusListener(this);
 		txtQtdItOrc.addFocusListener(this);
 		txtPrecoItOrc.addFocusListener(this);
-		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
 		lcProd2.addCarregaListener(this);
-		lcDet.addPostListener(this);
+		lcCli.addCarregaListener(this);
+		lcProd.addCarregaListener(this);
+		lcProd2.addCarregaListener(this);
 		lcDet.addCarregaListener(this);
+		lcDet.addPostListener(this);
+		lcCampos.addPostListener(this);
 		lcCampos.addInsertListener(this);
 		lcDet.addDeleteListener(this);
 
-		btExp.addActionListener(this);
-		btImp.addActionListener(this);
-		btPrevimp.addActionListener(this);
-		lcProd.addCarregaListener(this);
-		lcProd2.addCarregaListener(this);
 
 	}
 
@@ -470,6 +472,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			String s = txtCodOrc.getVlrString();
 			lcOrc2.carregaDados();//Carrega os Totais
 			txtCodOrc.setVlrString(s);
+		} else if (cevt.getListaCampos() == lcCli ) {
+			if ( ((Boolean)oPrefs[6]).booleanValue() ) {
+				if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
+					iCodCliAnt = txtCodCli.getVlrInteger().intValue();
+					mostraObsCli(iCodCliAnt,
+								 new Point( this.getX(),this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10),
+								 new Dimension( spTab.getWidth(), spTab.getHeight() ) );
+				}
+			}
 		}
 	}
 
@@ -836,14 +847,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private Object[] prefs() {
-		Object[] oRetorno = new Object[6];
+		Object[] oRetorno = new Object[7];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ "
-				+ " FROM SGPREFERE1 P "
-				+ " WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND "
+				 + "FROM SGPREFERE1 P "
+				 + "WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
@@ -879,6 +890,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					oRetorno[5] = new Boolean(true);
 				else
 					oRetorno[5] = new Boolean(false);
+				if(rs.getString("ObsCliVend").equals("S"))
+					oRetorno[6] = new Boolean(true);
+				else
+					oRetorno[6] = new Boolean(false);
 				
 				sOrdNota = rs.getString("OrdNota");
 				
@@ -969,6 +984,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcVend.setConexao(cn);
 		lcTipoCli.setConexao(cn);
 		lcAlmox.setConexao(cn);
+		//iniVenda();
+	}
+	
+	public void show(){
+		super.show();
 		iniVenda();
 	}
 
@@ -1114,15 +1134,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcCampos.insert(true);
 		txtCodCli.setVlrString(getCodCli());
 		lcCli.carregaDados();
+		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
+		lcPlanoPag.carregaDados();
 		lcProd.limpaCampos(true);
 		lcProd2.limpaCampos(true);
-		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
 		txtVlrAdicOrc.setVlrString("");
 		txtVlrEdAdicOrc.setVlrString("");
 		txtVlrEdDescOrc.setVlrString("");
 		txtVlrLiqOrc.setVlrString("");
 		txtVlrProdOrc.setVlrString("");
-		lcPlanoPag.carregaDados();
 		txtCodVend.setVlrInteger(new Integer(getVendedor()));
 		txtDtOrc.setVlrDate(new Date());
 		txtDtVencOrc.setVlrDate(new Date());

@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -1212,7 +1213,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
-		String sObsCli = "";
 		try {
 			if ((cevt.getListaCampos() == lcProd)
 					|| (cevt.getListaCampos() == lcProd2)) {
@@ -1248,11 +1248,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if ( (bPrefs[11]) ) {
 					if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
 						iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-						sObsCli = getObsCli(txtCodCli.getVlrInteger().intValue());
-						if (!sObsCli.equals("")) {						
-							FObsCliVend.showVend(this.getX(),this.getY() + tpnCab.getHeight() + 
-									pnCab.getHeight() ,spTab.getWidth(), spTab.getHeight(), sObsCli);
-						}
+						mostraObsCli(iCodCliAnt,
+									 new Point( this.getX(),this.getY() + tpnCab.getHeight() + pnCab.getHeight()),
+									 new Dimension( spTab.getWidth(), spTab.getHeight() ) );
 					}
 				}
 			}
@@ -1272,9 +1270,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				lbStatus.setText("");
 				lbStatus.setVisible( false );
 			}
-		}
-		finally {
-			sObsCli = null;
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
