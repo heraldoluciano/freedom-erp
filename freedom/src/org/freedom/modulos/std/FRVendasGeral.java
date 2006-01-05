@@ -262,7 +262,7 @@ public class FRVendasGeral extends FRelatorio{
          	bTotalVal = bTotalVal.add(new BigDecimal(rs.getString("VlrProdVenda")));
          }
          if (rs.getString("VlrDescvenda") != null) {
-         	bTotalDesc = bTotalDesc.add(new BigDecimal(rs.getString("VlrDescVenda")));
+         	bTotalDesc = bTotalDesc.add(new BigDecimal(rs.getDouble("VlrDescVenda")>0?rs.getDouble("VlrDescVenda"):rs.getDouble("VlrDescItVenda")));
          }
 
          if (rs.getString("VlrLiqVenda") != null) {
