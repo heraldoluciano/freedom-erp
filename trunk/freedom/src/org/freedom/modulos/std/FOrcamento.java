@@ -478,7 +478,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					iCodCliAnt = txtCodCli.getVlrInteger().intValue();
 					mostraObsCli(iCodCliAnt,
 								 new Point( this.getX(),this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10),
-								 new Dimension( spTab.getWidth(), spTab.getHeight() ) );
+								 new Dimension( spTab.getWidth(), 150 ) );
 				}
 			}
 		}
