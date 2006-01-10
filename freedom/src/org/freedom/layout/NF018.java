@@ -109,7 +109,7 @@ public class NF018 extends Layout {
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 						imp.say(imp.pRow()+0,105,"X");
 					else
-						imp.say(imp.pRow()+0,89,"X");
+						imp.say(imp.pRow()+0,88,"X");
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					imp.say(imp.pRow()+1,0,"");
@@ -271,7 +271,7 @@ public class NF018 extends Layout {
 					}
 										   
 					imp.say(imp.pRow()+6,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,125,sNumNota);
+					imp.say(imp.pRow()+3,125,sNumNota);
 					
 					for (int i=imp.pRow(); i<=iLinPag; i++)  
 						imp.say(imp.pRow()+1,0,"");
