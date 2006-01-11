@@ -263,7 +263,7 @@ public class FManutComis extends FFilho implements ActionListener {
        tab.limpa();
        bVlrTot = new BigDecimal("0.0");
          bVlrTot.setScale(3);
-       bVlrTotPago = new BigDecimal("0.0");
+       bVlrTotPago = new BigDecimal("0.0").setScale(2,BigDecimal.ROUND_HALF_UP);
        vCodComi = new Vector();
        for (int i=0; rs.next(); i++) {
          tab.adicLinha();
@@ -281,10 +281,10 @@ public class FManutComis extends FFilho implements ActionListener {
          tab.setValor(rs.getString("DocRec"),i,2);
          tab.setValor(rs.getString("NParcItRec"),i,3);
          tab.setValor(rs.getString("TipoComi") != null ? rs.getString("TipoComi") : "",i,4);
-         tab.setValor(Funcoes.strDecimalToStrCurrency(10,2,rs.getString("VlrComi")),i,5);
+         tab.setValor(Funcoes.strDecimalToStrCurrency(10,2,""+(rs.getBigDecimal("VlrComi").setScale(2,BigDecimal.ROUND_HALF_UP))),i,5);
          tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("Datacomi")),i,6);
          tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtVencComi")),i,7);
-         bVlrTot = bVlrTot.add((new BigDecimal(rs.getString("VlrComi"))));
+         bVlrTot = bVlrTot.add((new BigDecimal(rs.getString("VlrComi")).setScale(2,BigDecimal.ROUND_HALF_UP)));
        }
        txtTotComi.setVlrBigDecimal(bVlrTot);
        txtTotPg.setVlrBigDecimal(bVlrTotPago);
