@@ -235,7 +235,7 @@ public class FRDemanda extends FRelatorio {
       imp.limpaPags();
       imp.montaCab();
       imp.setTitulo("Relatorio de Demanda");
-      imp.addSubTitulo("RELATORIO DE DEMANDA");
+      imp.addSubTitulo("RELATORIO DE DEMANDA - PERIODO DE " + txtDataini.getVlrString() + " A " + txtDatafim.getVlrString());
       while ( rs.next() ) {
         if (imp.pRow()>=(linPag-1)) {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
