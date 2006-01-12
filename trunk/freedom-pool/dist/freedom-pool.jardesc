@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jardesc>
+<jar path="freedom-pool/dist/lib/freedom-pool.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/freedom-pool/dist/freedom-pool.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" useSourceFolders="false"/>
+<manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+<sealing sealJar="false">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+<file path="/freedom-pool/.cvsignore"/>
+<file path="/freedom-pool/.project"/>
+<javaElement handleIdentifier="=freedom-pool/src"/>
+<file path="/freedom-pool/.classpath"/>
+</selectedElements>
+</jardesc>
