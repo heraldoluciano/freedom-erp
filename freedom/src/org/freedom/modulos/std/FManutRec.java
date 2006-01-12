@@ -144,6 +144,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
   private Vector vNParcBaixa = new Vector();
   private Date dIniManut = null;
   private Date dFimManut = null;
+  private Vector vCodPed = new Vector();
   private Vector vNumContas = new Vector();
   private Vector vCodPlans = new Vector();
   private Vector vCodCCs = new Vector();
@@ -705,6 +706,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     vNumContas.clear();
     vCodPlans.clear();
 	vCodCCs.clear();
+	vCodPed.clear();
     tabBaixa.limpa();
   	String sSQLDocVd = "(SELECT V.DOCVENDA FROM VDVENDA V WHERE V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA " +
 	 "AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) AS DOCVENDA";
@@ -758,6 +760,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
           tabBaixa.setValor(rs.getString(14) != null ? rs.getString(14) : "",i,12);
 		  tabBaixa.setValor(rs.getString(16) != null ? rs.getString(16) : "",i,13);
 		  tabBaixa.setValor(rs.getString("ObsItRec") != null ? rs.getString("ObsItRec") : "",i,14);
+	      vCodPed.addElement(rs.getString("CodVenda"));
           vNParcBaixa.addElement(rs.getString("NParcItRec"));
           vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
           vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
@@ -796,6 +799,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     vCodCCs.clear();
     vCodBOs.clear();
     vDtEmiss.clear();
+	vCodPed.clear();
     if (bAplicFiltros) {
       if (!validaPeriodo())
       	return;
@@ -905,6 +909,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
         tabManut.setValor(rs.getString(26) != null ? rs.getString(26) : "",i,18);//DESCTIPOCOB
         tabManut.setValor(rs.getString(27) != null ? rs.getString(27) : "",i,19);//NOMEBANCO
 		tabManut.setValor(rs.getString("ObsItRec") != null ? rs.getString("ObsItRec") : "",i,20);
+        vCodPed.addElement(rs.getString("CodVenda"));
         vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
         vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
         vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
@@ -955,12 +960,13 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     	      iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,4));
     	      iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,5));
     	      String[] sVals = new String[15];
+			  String[] sRelPlanPag = buscaRelPlanPag(iLin);
     	      String[] sRets = null;
     	      DLBaixaRec dl = new DLBaixaRec(this);
     	      sVals[0] = ""+tabManut.getValor(iLin,2);
     	      sVals[1] = ""+tabManut.getValor(iLin,3);
-    	      sVals[2] = ""+vNumContas.elementAt(iLin);
-    	      sVals[3] = ""+vCodPlans.elementAt(iLin);
+    	      sVals[2] = !(""+vNumContas.elementAt(iLin)).equals("") ? ""+vNumContas.elementAt(iLin) : sRelPlanPag[2];
+    	      sVals[3] = !(""+vCodPlans.elementAt(iLin)).equals("") ? ""+vCodPlans.elementAt(iLin) : sRelPlanPag[1];
     	      sVals[4] = ""+(tabManut.getValor(iLin,6).equals("") ? tabManut.getValor(iLin,7) : tabManut.getValor(iLin,6));
     	      sVals[5] = ""+vDtEmiss.elementAt(iLin);
     	      sVals[6] = ""+tabManut.getValor(iLin,1);
@@ -968,7 +974,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     	      sVals[8] = ""+tabManut.getValor(iLin,11);
     	      sVals[9] = ""+tabManut.getValor(iLin,12);
     	      sVals[10] = ""+tabManut.getValor(iLin,13);
-    		  sVals[13] = ""+vCodCCs.elementAt(iLin);
+    		  sVals[13] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
     	      if (((String)tabManut.getValor(iLin,9)).trim().equals("")) {
     	         sVals[11] = Funcoes.dateToStrDate(new Date());
     	         sVals[12] = ""+tabManut.getValor(iLin,10);
@@ -1039,13 +1045,14 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     	      iCodRec = txtCodRecBaixa.getVlrInteger().intValue();
     	      iNParcItRec = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
     	      String[] sVals = new String[15];
+			  String[] sRelPlanPag = buscaRelPlanPag(iLin);
     	      String[] sRets = null;
     	      DLBaixaRec dl = new DLBaixaRec(this);
     	      
     	      sVals[0] = ""+txtCodCliBaixa.getVlrString(); // Codcli
     	      sVals[1] = ""+txtRazCliBaixa.getVlrString(); // Razcli
-    	      sVals[2] = ""+vNumContas.elementAt(iLin); // CodConta
-    	      sVals[3] = ""+vCodPlans.elementAt(iLin); // Codplan 
+    	      sVals[2] = !(""+vNumContas.elementAt(iLin)).equals("") ? ""+vNumContas.elementAt(iLin) : sRelPlanPag[2]; // CodConta
+    	      sVals[3] = !(""+vCodPlans.elementAt(iLin)).equals("") ? ""+vCodPlans.elementAt(iLin) : sRelPlanPag[1]; // Codplan 
     	      sVals[4] = ""+tabBaixa.getValor(iLin,3); // Doc 
     	      sVals[5] = ""+txtDtEmisBaixa.getVlrString(); // Data emissão
     	      sVals[6] = ""+tabBaixa.getValor(iLin,1); // Vencimento  
@@ -1053,7 +1060,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     	      sVals[8] = ""+tabBaixa.getValor(iLin,8); // Vlrdesc 
     	      sVals[9] = ""+tabBaixa.getValor(iLin,9); // Vlrjuros
     	      sVals[10] = ""+tabBaixa.getValor(iLin,10); // Vlraberto
-    		  sVals[13] = ""+vCodCCs.elementAt(iLin); // Codcc
+    		  sVals[13] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3]; // Codcc
     	      
     		  if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) { // Data de pagamento branco
     	        sVals[11] = Funcoes.dateToStrDate(new Date()); // Data pagto
@@ -1123,6 +1130,39 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
     	e.printStackTrace();
     }
   }
+
+	private String[] buscaRelPlanPag(int linha) {
+		String[] retorno = new String[4];
+		String sSQL = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		try {
+			sSQL = " SELECT V.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC"
+				 + " FROM VDVENDA V, FNPLANOPAG P"
+				 + " WHERE V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND V.CODPLANOPAG=P.CODPLANOPAG"
+				 + " AND V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA='V'";
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setString(3, ((String)vCodPed.elementAt(linha)).trim());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				for(int i=0; i<retorno.length; i++)
+					retorno[i] = rs.getString(i+1) != null ? rs.getString(i+1) : "";
+			}
+			
+			if (!con.getAutoCommit())
+				con.commit();
+		}
+		catch(SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar Conta!\n"+err.getMessage(),true,con,err);
+		}
+		
+		return retorno;
+	}
  private void novo() { 
     DLNovoRec dl = new DLNovoRec(this);
     dl.setConexao(con);
