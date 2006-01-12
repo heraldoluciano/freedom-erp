@@ -132,6 +132,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   private Vector vNParcBaixa = new Vector();  
   private Date dIniManut = null;
   private Date dFimManut = null;
+  private Vector vCodPed = new Vector();
   private Vector vNumContas = new Vector();
   private Vector vCodPlans = new Vector();
   private Vector vCodCCs = new Vector();
@@ -650,22 +651,24 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     vNumContas = new Vector();
     vCodPlans = new Vector();
 	vCodCCs = new Vector();
+	vCodPed.clear();
     tabBaixa.limpa();
 
-    String sSQL = "SELECT IT.DTVENCITPAG,IT.STATUSITPAG,"+
-                  "P.CODPAG,IT.DOCLANCAITPAG,"+
-                  "P.CODCOMPRA,IT.VLRPARCITPAG,IT.DTPAGOITPAG,"+
-                  "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.NUMCONTA,"+
-                  "IT.VLRDESCITPAG,(SELECT C.DESCCONTA FROM FNCONTA C "+
+    String sSQL = "SELECT IT.DTVENCITPAG,IT.STATUSITPAG,P.CODPAG,IT.DOCLANCAITPAG,"+
+                  "P.CODCOMPRA,IT.VLRPARCITPAG,IT.DTPAGOITPAG,IT.VLRPAGOITPAG," +
+                  "IT.VLRAPAGITPAG,IT.NUMCONTA,IT.VLRDESCITPAG," +
+                  "(SELECT C.DESCCONTA FROM FNCONTA C "+
                   "WHERE C.NUMCONTA = IT.NUMCONTA AND C.CODEMP=IT.CODEMPCA" +
-                  " AND C.CODFILIAL=IT.CODFILIALCA),IT.CODPLAN,"+
+                  " AND C.CODFILIAL=IT.CODFILIALCA)," +
+                  "IT.CODPLAN,"+
                   "(SELECT PL.DESCPLAN FROM FNPLANEJAMENTO PL "+
                   "WHERE PL.CODPLAN = IT.CODPLAN AND PL.CODEMP=IT.CODEMPPN" +
-                  " AND PL.CODFILIAL=IT.CODFILIALPN),IT.CODCC,(SELECT CC.DESCCC " +
-                  "FROM FNCC CC WHERE CC.CODCC = IT.CODCC" +
+                  " AND PL.CODFILIAL=IT.CODFILIALPN)," +
+                  "IT.CODCC," +
+                  "(SELECT CC.DESCCC FROM FNCC CC WHERE CC.CODCC = IT.CODCC" +
                   " AND CC.CODEMP=IT.CODEMPCC AND CC.CODFILIAL=IT.CODFILIALCC),"+
-                  "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG,"+
-                  "IT.DTITPAG FROM FNITPAGAR IT,FNPAGAR P "+
+                  "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG,IT.DTITPAG " +
+                  "FROM FNITPAGAR IT,FNPAGAR P "+
                   "WHERE IT.CODPAG=P.CODPAG AND P.CODPAG = ?" +
                   " AND P.CODEMP=? AND P.CODFILIAL=?" +
                   " AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL"+
@@ -707,6 +710,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
           tabBaixa.setValor(rs.getString(14) != null ? rs.getString(14) : "",i,12);
 		  tabBaixa.setValor(rs.getString(16) != null ? rs.getString(16) : "",i,13);
           tabBaixa.setValor(rs.getString("ObsItPag") != null ? rs.getString("ObsItPag") : "",i,14);
+          vCodPed.addElement(rs.getString("CodCompra"));
           vNParcBaixa.addElement(rs.getString("NParcPag"));
           vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
           vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
@@ -721,24 +725,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		Funcoes.mensagemErro(this,"Erro ao montar a tabela de baixa!\n"+err.getMessage(),true,con,err);
     }
   }
-  private boolean validaPeriodo() {
-    boolean bRetorno = false;
-    if (txtDatainiManut.getText().trim().length() < 10) {
-		Funcoes.mensagemInforma(this,"Data inicial inválida!");
-    }
-    else if (txtDatafimManut.getText().trim().length() < 10) {
-		Funcoes.mensagemInforma(this,"Data final inválida!");
-    }
-    else if (txtDatafimManut.getVlrDate().before(txtDatainiManut.getVlrDate())) {
-		Funcoes.mensagemInforma(this,"Data inicial maior que a data final!");
-    }
-    else {
-      dIniManut = txtDatainiManut.getVlrDate();
-      dFimManut = txtDatafimManut.getVlrDate();
-      bRetorno = true;
-    }
-    return bRetorno;
-  }
   private void carregaGridManut() {
     tabManut.limpa();
     if (validaPeriodo()) {
@@ -746,6 +732,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
       vCodPlans = new Vector();
 	  vCodCCs = new Vector();
       vDtEmiss = new Vector();
+  	  vCodPed.clear();
       String sWhereManut = " AND "+(rgData.getVlrString().equals("V")?"IT.DTVENCITPAG":"IT.DTITPAG")+
 						   " BETWEEN ? AND ? AND P.CODEMP=? AND P.CODFILIAL=?";
 
@@ -799,20 +786,21 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
                     "P.CODFOR,F.RAZFOR,P.CODPAG,IT.DOCLANCAITPAG,"+
                     "P.CODCOMPRA,IT.VLRPARCITPAG,IT.DTPAGOITPAG,"+
                     "IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.NUMCONTA,"+
-                    "IT.VLRDESCITPAG,(SELECT C.DESCCONTA FROM FNCONTA C "+
-                    "WHERE C.NUMCONTA = IT.NUMCONTA AND C.CODEMP=IT.CODEMPCA" +
-                    " AND C.CODFILIAL=IT.CODFILIALCA),IT.CODPLAN,"+
+                    "IT.VLRDESCITPAG," +
+                    "(SELECT C.DESCCONTA FROM FNCONTA C WHERE C.NUMCONTA = IT.NUMCONTA AND C.CODEMP=IT.CODEMPCA" +
+                    " AND C.CODFILIAL=IT.CODFILIALCA)," +
+                    "IT.CODPLAN,"+
                     "(SELECT PL.DESCPLAN FROM FNPLANEJAMENTO PL "+
-                    "WHERE PL.CODPLAN = IT.CODPLAN AND PL.CODEMP=IT.CODEMPPN" +
-                    " AND PL.CODFILIAL=IT.CODFILIALPN),IT.CODCC," +
+                    "WHERE PL.CODPLAN = IT.CODPLAN AND PL.CODEMP=IT.CODEMPPN AND PL.CODFILIAL=IT.CODFILIALPN)," +
+                    "IT.CODCC," +
                     "(SELECT CC.DESCCC FROM FNCC CC WHERE CC.CODCC = IT.CODCC" +
                     " AND CC.CODEMP=IT.CODEMPCC AND CC.CODFILIAL=IT.CODFILIALCC),"+
-                    "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG,(SELECT CO.DOCCOMPRA "+
-                    "FROM CPCOMPRA CO WHERE CO.CODCOMPRA=P.CODCOMPRA" +
+                    "IT.OBSITPAG,IT.NPARCPAG,IT.VLRJUROSITPAG," +
+                    "(SELECT CO.DOCCOMPRA FROM CPCOMPRA CO WHERE CO.CODCOMPRA=P.CODCOMPRA" +
                     " AND CO.CODEMP=P.CODEMPCP AND CO.CODFILIAL=P.CODFILIALCP),"+
-                    "IT.DTITPAG,IT.VLRADICITPAG FROM FNITPAGAR IT,FNPAGAR P,"+
-                    "CPFORNECED F WHERE P.CODPAG=IT.CODPAG"+
-                    " AND F.CODFOR=P.CODFOR"+
+                    "IT.DTITPAG,IT.VLRADICITPAG " +
+                    "FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F " +
+                    "WHERE P.CODPAG=IT.CODPAG AND F.CODFOR=P.CODFOR"+
                     sWhereManut+
                     " AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL"+
                     " ORDER BY IT.DTVENCITPAG,IT.STATUSITPAG";      
@@ -860,6 +848,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
           tabManut.setValor(rs.getString(17) != null ? rs.getString(17) : "",i,17);
 		  tabManut.setValor(rs.getString(19) != null ? rs.getString(19) : "",i,18);
           tabManut.setValor(rs.getString("ObsItPag") != null ? rs.getString("ObsItPag") : "",i,19);
+          vCodPed.addElement(rs.getString("CodCompra"));
           vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
           vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
 		  vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
@@ -874,6 +863,24 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		Funcoes.mensagemErro(this,"Erro ao montar a tabela de manutenção!\n"+err.getMessage(),true,con,err);
       }
     }
+  }
+  private boolean validaPeriodo() {
+    boolean bRetorno = false;
+    if (txtDatainiManut.getText().trim().length() < 10) {
+		Funcoes.mensagemInforma(this,"Data inicial inválida!");
+    }
+    else if (txtDatafimManut.getText().trim().length() < 10) {
+		Funcoes.mensagemInforma(this,"Data final inválida!");
+    }
+    else if (txtDatafimManut.getVlrDate().before(txtDatainiManut.getVlrDate())) {
+		Funcoes.mensagemInforma(this,"Data inicial maior que a data final!");
+    }
+    else {
+      dIniManut = txtDatainiManut.getVlrDate();
+      dFimManut = txtDatafimManut.getVlrDate();
+      bRetorno = true;
+    }
+    return bRetorno;
   }
   private void baixaConsulta() {
     if (tabConsulta.getLinhaSel() != -1) {
@@ -901,161 +908,197 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
     txtDataMaxAcum.setVlrString("");
     txtVlrMaxAcum.setVlrString("");
   }
-  private void baixar(char cOrig) { 
-    try{
-    	if ((cOrig == 'M') & (tabManut.getLinhaSel() > -1)) { //Quando a função eh chamada da tab MANUTENÇÂO
-    	      int iLin = tabManut.getLinhaSel();
-    		  if (iLin < 0)
-    			return;
-    	      iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
-    	      iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
-    	      String[] sVals = new String[12];
-    	      String[] sRets = null;
-    	      DLBaixaPag dl = new DLBaixaPag(this);
-    	      sVals[0] = ""+tabManut.getValor(iLin,3);
-    	      sVals[1] = ""+tabManut.getValor(iLin,4);
-    	      sVals[2] = ""+vNumContas.elementAt(iLin);
-    	      sVals[3] = ""+vCodPlans.elementAt(iLin);
-    	      sVals[4] = ""+tabManut.getValor(iLin,7);
-    	      sVals[5] = ""+vDtEmiss.elementAt(iLin);
-    	      sVals[6] = ""+tabManut.getValor(iLin,1);
-    	      sVals[7] = ""+tabManut.getValor(iLin,9);
-    		  sVals[10] = ""+vCodCCs.elementAt(iLin);
-    	      if (((String)tabManut.getValor(iLin,11)).trim().equals("")) {//Para verificar c jah esta pago testa se a data de pgto esta setada. 
-    	         sVals[11] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,19);
-    	         sVals[8] = Funcoes.dateToStrDate(new Date());
-    	         sVals[9] = ""+tabManut.getValor(iLin,11);
-    	      }
-    	      else {
-    			 sVals[11] = ""+tabManut.getValor(iLin,19);
-    	         sVals[8] = ""+tabManut.getValor(iLin,10);
-    	         sVals[9] = ""+tabManut.getValor(iLin,11);
-    	      }
-    	      dl.setValores(sVals);
-    	      dl.setConexao(con);
-    	      dl.setVisible(true);
-    	      if (dl.OK) {
-    	        sRets = dl.getValores();
-    	        String sSQL = "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?,"+
-    	                      "DOCLANCAITPAG=?,DTPAGOITPAG=?,VLRPAGOITPAG=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," +
-    	                      "OBSITPAG=?,STATUSITPAG='PP' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
-    	        try {
-    	          PreparedStatement ps = con.prepareStatement(sSQL);
-    	          ps.setString(1,sRets[0]);
-    			  ps.setInt(2,Aplicativo.iCodEmp);
-    			  ps.setInt(3,ListaCampos.getMasterFilial("FNCONTA"));
-    			  ps.setString(4,sRets[1]);
-    			  ps.setInt(5,Aplicativo.iCodEmp);
-    			  ps.setInt(6,ListaCampos.getMasterFilial("FNPLANEJAMENTO"));
-    	          ps.setString(7,sRets[2]);
-    	          ps.setDate(8,Funcoes.strDateToSqlDate(sRets[3]));
-    	          ps.setBigDecimal(9,Funcoes.strCurrencyToBigDecimal(sRets[4]));
-    			  if (!sRets[5].trim().equals("")) {
-    			    ps.setInt(10,iAnoCC);
-    			    ps.setString(11,sRets[5]);
-    			    ps.setInt(12,Aplicativo.iCodEmp);
-    			    ps.setInt(13,ListaCampos.getMasterFilial("FNCC"));
-    			  }
-    			  else {
-    			  	ps.setNull(10,Types.INTEGER);
-    			  	ps.setNull(11,Types.CHAR);
-    			  	ps.setNull(12,Types.INTEGER);
-    			  	ps.setNull(13,Types.INTEGER);
-    			  }
-    			  ps.setString(14,sRets[6]);
-    	          ps.setInt(15,iCodPag);
-    	          ps.setInt(16,iNParcPag);
-    			  ps.setInt(17,Aplicativo.iCodEmp);
-    			  ps.setInt(18,ListaCampos.getMasterFilial("FNPAGAR"));
-    	          ps.executeUpdate();
-    	          if (!con.getAutoCommit())
-    	          	con.commit();
-    	        }
-    	        catch(SQLException err) {
-    				Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
-    	        }
-    	      }
-    	      dl.dispose();
-    	      carregaGridManut();
-    	    }
-    	    else if ((cOrig == 'B') & (tabBaixa.getLinhaSel() > -1)) { //Quando a função eh chamada da tab BAIXAR
-    	      int iLin = tabBaixa.getLinhaSel();
-    	      iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
-    	      iNParcPag = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
-    	      String[] sVals = new String[12];
-    	      String[] sRets = null;
-    	      DLBaixaPag dl = new DLBaixaPag(this);
-    	      sVals[0] = ""+txtCodForBaixa.getVlrString();
-    	      sVals[1] = ""+txtRazForBaixa.getVlrString();
-    	      sVals[2] = ""+vNumContas.elementAt(iLin);
-    	      sVals[3] = ""+vCodPlans.elementAt(iLin);
-    	      sVals[4] = ""+txtDoc.getVlrString();
-    	      sVals[5] = ""+txtDtEmisBaixa.getVlrString();
-    	      sVals[6] = ""+tabBaixa.getValor(iLin,1);
-    	      sVals[7] = ""+tabBaixa.getValor(iLin,5);
-    		  sVals[10] = ""+vCodCCs.elementAt(iLin);
-    	      if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) {
-    	        sVals[11] = "PAGAMENTO REF. A COMPRA: "+txtCodCompraBaixa.getVlrString();
-    	        sVals[8] = Funcoes.dateToStrDate(new Date());
-    	        sVals[9] = ""+tabBaixa.getValor(iLin,5);
-    	      }
-    	      else {
-    	         sVals[11] = ""+tabBaixa.getValor(iLin,13);
-    	         sVals[8] = ""+tabBaixa.getValor(iLin,6);
-    	         sVals[9] = ""+tabBaixa.getValor(iLin,7);
-    	      }
-    	      dl.setValores(sVals);
-    	      dl.setConexao(con);
-    	      dl.setVisible(true);
-    	      if (dl.OK) {
-    	        sRets = dl.getValores();
-    	        String sSQL = "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?,"+
-    	                      "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,DTPAGOITPAG=?,VLRPAGOITPAG=?,"+
-    	                      "OBSITPAG=?,STATUSITPAG='PP' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
-    	        try {
-    	          PreparedStatement ps = con.prepareStatement(sSQL);
-    			  ps.setString(1,sRets[0]);
-    			  ps.setInt(2,Aplicativo.iCodEmp);
-    			  ps.setInt(3,ListaCampos.getMasterFilial("FNCONTA"));
-    			  ps.setString(4,sRets[1]);
-    			  ps.setInt(5,Aplicativo.iCodEmp);
-    			  ps.setInt(6,ListaCampos.getMasterFilial("FNPLANEJAMENTO"));
-    			  if (!sRets[5].trim().equals("")) {
-    			    ps.setInt(7,iAnoCC);
-    			    ps.setString(8,sRets[5]);
-    			    ps.setInt(9,Aplicativo.iCodEmp);
-    			    ps.setInt(10,ListaCampos.getMasterFilial("FNCC"));
-    			  }
-    			  else {
-    			  	ps.setNull(7,Types.INTEGER);
-    			  	ps.setNull(8,Types.CHAR);
-    			  	ps.setNull(9,Types.INTEGER);
-    			  	ps.setNull(10,Types.INTEGER);
-    			  }
-    	          ps.setString(11,sRets[2]);
-    	          ps.setDate(12,Funcoes.strDateToSqlDate(sRets[3]));
-    	          ps.setBigDecimal(13,Funcoes.strCurrencyToBigDecimal(sRets[4]));
-    	          ps.setString(14,sRets[6]);
-    	          ps.setInt(15,iCodPag);
-    	          ps.setInt(16,iNParcPag);
-    			  ps.setInt(17,Aplicativo.iCodEmp);
-    			  ps.setInt(18,ListaCampos.getMasterFilial("FNPAGAR"));
-    	          ps.executeUpdate();
-    	          if (!con.getAutoCommit())
-    	          	con.commit();
-    	        }
-    	        catch(SQLException err) {
-    				Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
-    	        }
-    	      }
-    	      carregaGridBaixa();
-    	      dl.dispose();
-    	    }
-    }
-    catch ( Exception e ){
-    	e.printStackTrace();
-    }
-  }
+  	private void baixar(char cOrig) { 
+		try{
+			if ((cOrig == 'M') & (tabManut.getLinhaSel() > -1)) { //Quando a função eh chamada da tab MANUTENÇÂO
+				int iLin = tabManut.getLinhaSel();
+				if (iLin < 0)
+					return;
+				iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
+				iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
+				String[] sVals = new String[12];
+				String[] sRelPlanPag = buscaRelPlanPag(iLin);
+				String[] sRets = null;
+				DLBaixaPag dl = new DLBaixaPag(this);
+				sVals[0] = ""+txtCodForBaixa.getVlrString();
+				sVals[1] = ""+txtRazForBaixa.getVlrString();
+				sVals[2] = !(""+vNumContas.elementAt(iLin)).equals("") ? ""+vNumContas.elementAt(iLin) : sRelPlanPag[2];
+				sVals[3] = !(""+vCodPlans.elementAt(iLin)).equals("") ? ""+vCodPlans.elementAt(iLin) : sRelPlanPag[1];
+				sVals[4] = ""+txtDoc.getVlrString();
+				sVals[5] = ""+txtDtEmisBaixa.getVlrString();
+				sVals[6] = ""+tabBaixa.getValor(iLin,1);
+				sVals[7] = ""+tabBaixa.getValor(iLin,5);
+				sVals[10] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
+				if (((String)tabManut.getValor(iLin,11)).trim().equals("")) {//Para verificar c jah esta pago testa se a data de pgto esta setada. 
+					sVals[11] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,19);
+					sVals[8] = Funcoes.dateToStrDate(new Date());
+					sVals[9] = ""+tabManut.getValor(iLin,11);
+				}
+				else {
+					sVals[11] = ""+tabManut.getValor(iLin,19);
+					sVals[8] = ""+tabManut.getValor(iLin,10);
+					sVals[9] = ""+tabManut.getValor(iLin,11);
+				}
+				dl.setValores(sVals);
+				dl.setConexao(con);
+				dl.setVisible(true);
+				if (dl.OK) {
+					sRets = dl.getValores();
+					String sSQL = "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?,"+
+								  "DOCLANCAITPAG=?,DTPAGOITPAG=?,VLRPAGOITPAG=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," +
+								  "OBSITPAG=?,STATUSITPAG='PP' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
+					try {
+						PreparedStatement ps = con.prepareStatement(sSQL);
+						ps.setString(1,sRets[0]);
+						ps.setInt(2,Aplicativo.iCodEmp);
+						ps.setInt(3,ListaCampos.getMasterFilial("FNCONTA"));
+						ps.setString(4,sRets[1]);
+						ps.setInt(5,Aplicativo.iCodEmp);
+						ps.setInt(6,ListaCampos.getMasterFilial("FNPLANEJAMENTO"));
+						ps.setString(7,sRets[2]);
+						ps.setDate(8,Funcoes.strDateToSqlDate(sRets[3]));
+						ps.setBigDecimal(9,Funcoes.strCurrencyToBigDecimal(sRets[4]));
+						if (!sRets[5].trim().equals("")) {
+							ps.setInt(10,iAnoCC);
+							ps.setString(11,sRets[5]);
+							ps.setInt(12,Aplicativo.iCodEmp);
+							ps.setInt(13,ListaCampos.getMasterFilial("FNCC"));
+						}
+						else {
+							ps.setNull(10,Types.INTEGER);
+							ps.setNull(11,Types.CHAR);
+							ps.setNull(12,Types.INTEGER);
+							ps.setNull(13,Types.INTEGER);
+						}
+						ps.setString(14,sRets[6]);
+						ps.setInt(15,iCodPag);
+						ps.setInt(16,iNParcPag);
+						ps.setInt(17,Aplicativo.iCodEmp);
+						ps.setInt(18,ListaCampos.getMasterFilial("FNPAGAR"));
+						ps.executeUpdate();
+						if (!con.getAutoCommit())
+							con.commit();
+					}
+					catch(SQLException err) {
+						Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
+					}
+				}
+				dl.dispose();
+				carregaGridManut();
+			}
+			else if ((cOrig == 'B') & (tabBaixa.getLinhaSel() > -1)) { //Quando a função eh chamada da tab BAIXAR
+				int iLin = tabBaixa.getLinhaSel();
+				iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
+				iNParcPag = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
+				String[] sVals = new String[12];
+				String[] sRelPlanPag = buscaRelPlanPag(iLin);
+				String[] sRets = null;
+				DLBaixaPag dl = new DLBaixaPag(this);
+				sVals[0] = ""+txtCodForBaixa.getVlrString();
+				sVals[1] = ""+txtRazForBaixa.getVlrString();
+				sVals[2] = !(""+vNumContas.elementAt(iLin)).equals("") ? ""+vNumContas.elementAt(iLin) : sRelPlanPag[2];
+				sVals[3] = !(""+vCodPlans.elementAt(iLin)).equals("") ? ""+vCodPlans.elementAt(iLin) : sRelPlanPag[1];
+				sVals[4] = ""+txtDoc.getVlrString();
+				sVals[5] = ""+txtDtEmisBaixa.getVlrString();
+				sVals[6] = ""+tabBaixa.getValor(iLin,1);
+				sVals[7] = ""+tabBaixa.getValor(iLin,5);
+				sVals[10] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
+				if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) {
+					sVals[11] = "PAGAMENTO REF. A COMPRA: "+txtCodCompraBaixa.getVlrString();
+					sVals[8] = Funcoes.dateToStrDate(new Date());
+					sVals[9] = ""+tabBaixa.getValor(iLin,5);
+				}
+				else {
+					sVals[11] = ""+tabBaixa.getValor(iLin,13);
+					sVals[8] = ""+tabBaixa.getValor(iLin,6);
+					sVals[9] = ""+tabBaixa.getValor(iLin,7);
+				}
+				dl.setValores(sVals);
+				dl.setConexao(con);
+				dl.setVisible(true);
+				if (dl.OK) {
+					sRets = dl.getValores();
+					String sSQL = "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?,"+
+								  "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,DTPAGOITPAG=?,VLRPAGOITPAG=?,"+
+								  "OBSITPAG=?,STATUSITPAG='PP' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
+					try {
+						PreparedStatement ps = con.prepareStatement(sSQL);
+						ps.setString(1,sRets[0]);
+						ps.setInt(2,Aplicativo.iCodEmp);
+						ps.setInt(3,ListaCampos.getMasterFilial("FNCONTA"));
+						ps.setString(4,sRets[1]);
+						ps.setInt(5,Aplicativo.iCodEmp);
+						ps.setInt(6,ListaCampos.getMasterFilial("FNPLANEJAMENTO"));
+						if (!sRets[5].trim().equals("")) {
+							ps.setInt(7,iAnoCC);
+							ps.setString(8,sRets[5]);
+							ps.setInt(9,Aplicativo.iCodEmp);
+							ps.setInt(10,ListaCampos.getMasterFilial("FNCC"));
+						}
+						else {
+							ps.setNull(7,Types.INTEGER);
+							ps.setNull(8,Types.CHAR);
+							ps.setNull(9,Types.INTEGER);
+							ps.setNull(10,Types.INTEGER);
+						}
+						ps.setString(11,sRets[2]);
+						ps.setDate(12,Funcoes.strDateToSqlDate(sRets[3]));
+						ps.setBigDecimal(13,Funcoes.strCurrencyToBigDecimal(sRets[4]));
+						ps.setString(14,sRets[6]);
+						ps.setInt(15,iCodPag);
+						ps.setInt(16,iNParcPag);
+						ps.setInt(17,Aplicativo.iCodEmp);
+						ps.setInt(18,ListaCampos.getMasterFilial("FNPAGAR"));
+						ps.executeUpdate();
+						if (!con.getAutoCommit())
+							con.commit();
+					}
+					catch(SQLException err) {
+						Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
+					}
+				}
+				carregaGridBaixa();
+				dl.dispose();
+			}
+		}
+		catch ( Exception e ){
+			e.printStackTrace();
+		}
+	}
+  	
+  	private String[] buscaRelPlanPag(int linha) {
+  		String[] retorno = new String[4];
+  		String sSQL = null;
+  		PreparedStatement ps = null;
+  		ResultSet rs = null;
+  		
+  		try {
+  			sSQL = " SELECT C.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC"
+  				 + " FROM CPCOMPRA C, FNPLANOPAG P"
+				 + " WHERE C.CODEMPPG=P.CODEMP AND C.CODFILIALPG=P.CODFILIAL AND C.CODPLANOPAG=P.CODPLANOPAG"
+				 + " AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?";
+  			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
+			ps.setString(3, ((String)vCodPed.elementAt(linha)).trim());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				for(int i=0; i<retorno.length; i++)
+					retorno[i] = rs.getString(i+1) != null ? rs.getString(i+1) : "";
+			}
+			
+			if (!con.getAutoCommit())
+				con.commit();
+		}
+		catch(SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar Conta!\n"+err.getMessage(),true,con,err);
+		}
+  		
+  		return retorno;
+  	}
+  	
   private void editar() { 
     if (tabManut.getLinhaSel() > -1) {
       if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("P1")) { 
