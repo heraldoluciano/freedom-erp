@@ -1368,10 +1368,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		String[] sValores = null;
 		if (evt.getSource() == btFechaVenda) {
 			DLFechaVenda dl = new DLFechaVenda(con,
-					txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov
-							.getVlrString(), chbImpNfTipoMov.getVlrString(),
-					chbImpBolTipoMov.getVlrString(), chbReImpNfTipoMov
-							.getVlrString());
+					txtCodVenda.getVlrInteger(), this, chbImpPedTipoMov.getVlrString(), chbImpNfTipoMov.getVlrString(),
+					chbImpBolTipoMov.getVlrString(), chbReImpNfTipoMov.getVlrString());
 			dl.setVisible(true);
 			if (dl.OK) {
 				sValores = dl.getValores();
@@ -1428,6 +1426,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					bloqvenda();
 				}
 			}
+			
+			tpnCab.setSelectedIndex(0);
+			txtCodVenda.requestFocus();
+			
 		} else if (evt.getSource() == btConsPgto) {
 			DLConsultaPgto dl = new DLConsultaPgto(this, con, txtCodCli
 					.getVlrInteger().intValue());

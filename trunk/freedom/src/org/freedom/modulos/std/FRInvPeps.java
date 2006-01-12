@@ -183,10 +183,10 @@ public class FRInvPeps extends FRelatorio {
   		sCodMarca = txtCodMarca.getVlrString().trim();
   		sCodGrup = txtCodGrup.getVlrString().trim();
   		//iCodAlmox = txt
-  		
   		sSql = "SELECT "+sCpCodigo+",DESCPROD,SLDPROD,CUSTOUNIT,CUSTOTOT FROM EQRELPEPSSP(?,?,?,?,?,?,?,?,?,?,?,?,?) " +
 		       (sSemEstoq.equals("N")?" WHERE SLDPROD!=0 ":"")+
   				"ORDER BY "+(rgOrdem.getVlrString().equals("D")?"DESCPROD":sCpCodigo);
+  		System.out.println(sSql);
   		try {
   			if (sSemEstoq.equals("S")) 
   				sFiltros1 = "PROD.S/ESTOQUE";
@@ -205,7 +205,7 @@ public class FRInvPeps extends FRelatorio {
   	  			ps.setNull(6,Types.CHAR);
   			}
   			else {
-  	  			ps.setInt(4,Aplicativo.iCodEmp);
+  	  			ps.setInt(4,Aplicativo.iCodEmp); 
   	  			ps.setInt(5,ListaCampos.getMasterFilial("EQMARCA"));
   	  			ps.setString(6,sCodMarca);
   	  			sFiltros2 += " / MARCA: "+sCodMarca+"-"+txtDescMarca.getVlrString().trim();
