@@ -1,7 +1,7 @@
 /*
  * Created on 05/10/2004
- * Autor: robson 
- * Descrição: Classe de conexão com banco de dados para o sistema ELog
+ * Autor: Robson Sanchez
+ * Descrição: Classe de conexão com banco de dados 
  */
 package org.freedom.jdbc;
 
