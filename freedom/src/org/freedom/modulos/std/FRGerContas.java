@@ -278,7 +278,7 @@ public class FRGerContas extends FRelatorio  {
 				sOrderBy = "3";
 			}
 			else if (sOrdemRel.equals("T")) {
-				sOrderBy = "4";
+				//sOrderBy = "4";
 			}
 			else if (sOrdemRel.equals("S")) {
 				sOrderBy = "5";
@@ -297,7 +297,7 @@ public class FRGerContas extends FRelatorio  {
 				sOrderBy = sOrderBy+",3";
 			}
 			else if ((sOrdemRel2.equals("T")) & (!sOrdemRel2.equals(sOrdemRel)))  {
-				sOrderBy = sOrderBy+",4";
+				//sOrderBy = sOrderBy+",4";
 			}
 			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
 				sOrderBy = sOrderBy+",5";
@@ -445,9 +445,10 @@ public class FRGerContas extends FRelatorio  {
 				  +" AND VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND VD.CODVEND=V.CODVEND AND VD.CODSETOR IS NOT NULL AND P.CODEMP=IV.CODEMPPD"
 				  +" AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
 				  +" AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' )  AND TM.SOMAVDTIPOMOV='S'"
-					+ sWhereTM  
-					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
-				  		+ sWhere +")) AS VENDASATUAL,"
+				  + sWhereTM  
+				  + (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," 
+				      + sCodGrup1.length() + ")=G.CODGRUP ")						  
+				  + sWhere +")) AS VENDASATUAL,"
 
 				  //Vendas no ano anterior 2
 				  		
@@ -496,7 +497,7 @@ public class FRGerContas extends FRelatorio  {
 				  + "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND "
 				  + "TI.CODTIPOCLI=C2.CODTIPOCLI "+sWhereCli 
 				  
-  			  + " GROUP BY 1,2,3,4,5 " + "ORDER BY " + sOrderBy;
+  			  + " GROUP BY 1,2,3,4,5 " + "ORDER BY 4," + sOrderBy;
 												 
 			try {
 				ps = con.prepareStatement(sSql);								
