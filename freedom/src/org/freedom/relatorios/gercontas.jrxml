@@ -2005,7 +2005,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASATUAL}!=null?$F{VENDASATUAL}:new Double(0)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{VENDASATUAL}!=null?new Double((new BigDecimal($F{VENDASATUAL}.doubleValue()).multiply(new BigDecimal(-1))).doubleValue()):new Double(0)]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement

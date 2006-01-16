@@ -30,7 +30,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
+
 import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -217,12 +219,6 @@ public class FRGerContas extends FRelatorio  {
 
 			dbPercRel = txtPercFat.getVlrDouble().doubleValue();
 			
-			
-			if(dbPercRel>0){
-				
-			}
-				
-						
 			if (cbCliPrinc.getVlrString().equals("S")) {
 				sFiltros2 += (!sFiltros2.equals("") ? " / " : "")+ "ADIC. CLIENTES PRINCIPAIS";
 			}
@@ -288,19 +284,19 @@ public class FRGerContas extends FRelatorio  {
 				sOrderBy = sOrderBy+",18";
 			} 
 			else if ((sOrdemRel2.equals("R")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",2";
+				sOrderBy = sOrderBy+",2,18";
 			} 
 			else if ((sOrdemRel2.equals("C")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",1";
+				sOrderBy = sOrderBy+",1,18";
 			}
 			else if ((sOrdemRel2.equals("D")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",3";
+				sOrderBy = sOrderBy+",3,18";
 			}
 			else if ((sOrdemRel2.equals("T")) & (!sOrdemRel2.equals(sOrdemRel)))  {
 				//sOrderBy = sOrderBy+",4";
 			}
 			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",5";
+				sOrderBy = sOrderBy+",5,18";
 			}
 
 			
@@ -448,8 +444,9 @@ public class FRGerContas extends FRelatorio  {
 				  + sWhereTM  
 				  + (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," 
 				      + sCodGrup1.length() + ")=G.CODGRUP ")						  
-				  + sWhere +")) AS VENDASATUAL,"
-
+				  + sWhere +") * -1) AS VENDASATUAL,"
+				  
+			
 				  //Vendas no ano anterior 2
 				  		
 				  +" SUM((SELECT SUM(COALESCE(IV.VLRLIQITVENDA,0))"
@@ -498,6 +495,7 @@ public class FRGerContas extends FRelatorio  {
 				  + "TI.CODTIPOCLI=C2.CODTIPOCLI "+sWhereCli 
 				  
   			  + " GROUP BY 1,2,3,4,5 " + "ORDER BY 4," + sOrderBy;
+			
 												 
 			try {
 				ps = con.prepareStatement(sSql);								
@@ -640,8 +638,8 @@ public class FRGerContas extends FRelatorio  {
 	
 	System.out.println("Vai filtrar valor < que:"+dbVendasGeral);
 	dbVendasGeral = 0.00;
-	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rsRel,hParam,this);	
-//	hParam = new HashMap();					
+	dlGr = new FPrinterJob("relatorios/gercontas.jasper","Gerenciamento de contas","",rsRel,hParam,this);
+	
 	if(bVisualizar)
 		dlGr.setVisible(true);  
 	else{			
