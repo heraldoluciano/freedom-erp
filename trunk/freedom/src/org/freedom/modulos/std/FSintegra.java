@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
@@ -75,11 +76,11 @@ public class FSintegra extends FFilho implements ActionListener {
   private Vector vValFinalidade = new Vector();
   
   
-  private JLabelPad lbAnd = new JLabelPad("Aguardando");
+  private JLabelPad lbAnd = new JLabelPad();
   public FSintegra() {
   	super(false);
     setTitulo("Gera Arquivo Sintegra");
-    setAtribos(50,20,710,410);
+    setAtribos(50,20,710,470);
     
     btGerar.setToolTipText("Exporta arquivo");
     
@@ -102,7 +103,7 @@ public class FSintegra extends FFilho implements ActionListener {
     vValConvenio.addElement("2");
     vValConvenio.addElement("3");
     
-    rgConvenio = new JRadioGroup(1,2,vLabConvenio,vValConvenio);
+    rgConvenio = new JRadioGroup(3,1,vLabConvenio,vValConvenio);
     rgConvenio.setVlrString("3");
     
     vLabNatoper.addElement("Interestaduais - Somente operações sujeitas ao regime de substituição tributária");
@@ -134,11 +135,13 @@ public class FSintegra extends FFilho implements ActionListener {
     pinCliente.adic(cbEntrada,7,50,150,20);
     pinCliente.adic(cbSaida,170,50,150,20);
     pinCliente.adic(cbConsumidor,333,50,150,20);
-    pinCliente.adic(rgConvenio,7,80,680,30);
-    pinCliente.adic(rgNatoper,7,120,680,80);
-    pinCliente.adic(rgFinalidade,7,210,680,100);
+    pinCliente.adic(rgConvenio,7,80,680,80);
+    pinCliente.adic(rgNatoper,7,170,680,80);
+    pinCliente.adic(rgFinalidade,7,260,680,110);
     
-    pinCliente.adic(lbAnd,7,320,680,20);
+    pinCliente.adic(lbAnd,7,380,680,20);
+    lbAnd.setForeground(Color.BLUE);
+    lbAnd.setText("Aguardando...");
     colocaMes();   
     btGerar.addActionListener(this);
   }

@@ -1136,6 +1136,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcCli.carregaDados();
 		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
 		lcPlanoPag.carregaDados();
+		txtCodVend.setVlrInteger(new Integer(getVendedor()));
+		lcVend.carregaDados();
 		lcProd.limpaCampos(true);
 		lcProd2.limpaCampos(true);
 		txtVlrAdicOrc.setVlrString("");
@@ -1143,7 +1145,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		txtVlrEdDescOrc.setVlrString("");
 		txtVlrLiqOrc.setVlrString("");
 		txtVlrProdOrc.setVlrString("");
-		txtCodVend.setVlrInteger(new Integer(getVendedor()));
 		txtDtOrc.setVlrDate(new Date());
 		txtDtVencOrc.setVlrDate(new Date());
 		txtPrazoEntOrc.setVlrInteger(new Integer(getPrazo()));
