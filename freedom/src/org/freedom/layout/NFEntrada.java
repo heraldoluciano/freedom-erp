@@ -115,7 +115,7 @@ public class NFEntrada extends NF {
 				cab.setString(C_UFENTEMIT, "");
 				cab.setString(C_CODBANCO, (rs.getString("CODBANCO")!=null ? rs.getString("CODBANCO").trim() : ""));
 				cab.setString(C_NOMEBANCO, (rs.getString(28)!=null ? rs.getString(28).trim() : ""));
-				cab.setString(C_DESCSETOR, "");
+				cab.setString(C_CODSETOR, "");
 				cab.setFloat(C_VLRDESCITPED, rs.getFloat("VLRDESCITCOMPRA"));
 				cab.setInt(C_DIASPAG, 0);
 			}
