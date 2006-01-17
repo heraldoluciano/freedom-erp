@@ -44,8 +44,7 @@ public class NFPomiagro3 extends Layout {
     String[] sVals = new String[4];
     String sObs = "";
 	String[] sMatObs = null;
-	String sImpDtSaidaNat = "";
-	String sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2); 
+	String sImpDtSaidaNat = ""; 
 	int iContaMens = 1;
 	int iContaFrete = 0;
 	String sIncra = "" ;
@@ -138,7 +137,6 @@ public class NFPomiagro3 extends Layout {
 				   				   (!cab.getString(NF.C_FONEEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####") : "").trim());
            imp.say(imp.pRow()+0,89,sValsCli[3] != null ? sValsCli[3] : "");
            imp.say(imp.pRow()+0,98,!cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
-           imp.say(imp.pRow()+0,128,sHora);
            imp.say(imp.pRow()+3,0,"");
            imp.say(imp.pRow()+0,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,6,sDuplics[0]);
