@@ -160,7 +160,7 @@ public class NFIswara2 extends Layout {
 			   imp.say(imp.pRow()+1,0,"");
 			   imp.say(imp.pRow()+0,3,""+Funcoes.strZero(""+cab.getInt(NF.C_CODPED),8));
 			   imp.say(imp.pRow()+0,48,cab.getInt(NF.C_CODEMIT)+"");
-			   imp.say(imp.pRow()+0,62,!cab.getString(NF.C_DESCSETOR).equals("") ? Funcoes.copy(cab.getString(NF.C_DESCSETOR),0,20) : ""); // descsetor
+			   imp.say(imp.pRow()+0,62,!cab.getString(NF.C_CODSETOR).equals("") ? Funcoes.copy(cab.getString(NF.C_CODSETOR),0,20) : ""); // descsetor
 		
 	           imp.say(imp.pRow()+0,96,cab.getString(NF.C_CODVEND));
 			   imp.say(imp.pRow()+0,118,!cab.getString(NF.C_CODBANCO).equals("") ? Funcoes.copy(cab.getString(NF.C_CODBANCO)+"-",0,5) : "");
