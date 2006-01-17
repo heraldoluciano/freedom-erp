@@ -1577,6 +1577,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     if (cevt.getListaCampos()==lcCampos) {
        carregaTabelaObs();
        carregaTabHist();
+       buscaContatos();
     }
   }
 
@@ -2667,7 +2668,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			  txtCodVend.requestFocus();
 		  else if (tpn.getSelectedIndex()==4)
 			  txaObs.requestFocus();
-		  else if (tpn.getSelectedIndex()==6)
+		  else if (tpn.getSelectedIndex()==6 || tpnCont.getSelectedIndex()==1)
 			  buscaContatos();
 	  }
   }	

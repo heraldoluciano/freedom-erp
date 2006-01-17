@@ -97,7 +97,7 @@ public class FRGerContas extends FRelatorio  {
   
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
-    setAtribos(80,0,550,350);
+    setAtribos(80,50,550,350);
 
     txtAno.setRequerido(true);
     txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));
@@ -109,21 +109,21 @@ public class FRGerContas extends FRelatorio  {
     vLabOrdemRel.addElement("Cód.cli.");
     vLabOrdemRel.addElement("Razão");    
     vLabOrdemRel.addElement("Cidade");
-    vLabOrdemRel.addElement("Categoria");
-    vLabOrdemRel.addElement("Classific.");
+    //vLabOrdemRel.addElement("Categoria");
+    vLabOrdemRel.addElement("Classif.");
     vLabOrdemRel.addElement("Valor");
     
     vValOrdemRel.addElement("C");    
     vValOrdemRel.addElement("R");
     vValOrdemRel.addElement("D");
-    vValOrdemRel.addElement("T");
+    //vValOrdemRel.addElement("T");
     vValOrdemRel.addElement("S");
     vValOrdemRel.addElement("V");
     
-    rgOrdemRel = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel = new JRadioGroup(1,5,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel.setVlrString("C");
     
-    rgOrdemRel2 = new JRadioGroup(3,2,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel2 = new JRadioGroup(1,5,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel2.setVlrString("R");
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
@@ -164,9 +164,9 @@ public class FRGerContas extends FRelatorio  {
     adic(txtPercFat,7,70,100,20);
     
     adic(new JLabelPad("1º Ordem"),120,0,80,20);
-    adic(rgOrdemRel,120,20,200,70);
-    adic(new JLabelPad("2° Ordem"),325,0,80,20);
-    adic(rgOrdemRel2,325,20,200,70);    
+    adic(rgOrdemRel,120,20,405,30);
+    adic(new JLabelPad("2° Ordem"),120,50,80,20);
+    adic(rgOrdemRel2,120,70,405,30);    
     
     adic(lbCodVend,7,100,110,20);
     adic(txtCodVend,7,120,110,20);
@@ -186,8 +186,8 @@ public class FRGerContas extends FRelatorio  {
 	adic(txtDescMarca, 120, 240, 200, 20);
 	
     adic(cbVendas,330,120,100,20);
-    adic(cbCliPrinc,330,150,250,20);
-    adic(cbIncluiPed,330,180,295,20);    
+    adic(cbCliPrinc,330,160,250,20);
+    adic(cbIncluiPed,330,200,295,20);    
     
   }
 
@@ -273,9 +273,9 @@ public class FRGerContas extends FRelatorio  {
 			else if (sOrdemRel.equals("D")) {
 				sOrderBy = "3";
 			}
-			else if (sOrdemRel.equals("T")) {
+			//else if (sOrdemRel.equals("T")) {
 				//sOrderBy = "4";
-			}
+			//}
 			else if (sOrdemRel.equals("S")) {
 				sOrderBy = "5";
 			}
@@ -292,14 +292,12 @@ public class FRGerContas extends FRelatorio  {
 			else if ((sOrdemRel2.equals("D")) & (!sOrdemRel2.equals(sOrdemRel))) {
 				sOrderBy = sOrderBy+",3,18";
 			}
-			else if ((sOrdemRel2.equals("T")) & (!sOrdemRel2.equals(sOrdemRel)))  {
+			//else if ((sOrdemRel2.equals("T")) & (!sOrdemRel2.equals(sOrdemRel)))  {
 				//sOrderBy = sOrderBy+",4";
-			}
+			//}
 			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
 				sOrderBy = sOrderBy+",5,18";
 			}
-
-			
 
 			int iAno = txtAno.getVlrInteger().intValue();
 			
