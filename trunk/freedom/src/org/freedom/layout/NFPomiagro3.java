@@ -300,9 +300,9 @@ public class NFPomiagro3 extends Layout {
            System.out.println(imp.pRow()+" 1= Lins: "+iLinPag);
            imp.say(imp.pRow()+1,0,"");
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
-           imp.say(imp.pRow()+0,12,cab.getString(NF.C_CODSETOR));
+           imp.say(imp.pRow()+0,12,cab.getString(NF.C_CODVEND));
            imp.say(imp.pRow()+0,21,cab.getString(NF.C_CODCLCOMIS));
-           imp.say(imp.pRow()+0,30,cab.getString(NF.C_PERCMCOMISPED));
+           imp.say(imp.pRow()+0,30,Funcoes.strDecimalToStrCurrency(5,casasDec,""+cab.getFloat(NF.C_PERCMCOMISPED)));
            imp.say(imp.pRow()+0,48,""+cab.getInt(NF.C_CODPED));
            imp.say(imp.pRow()+0,66,""+iNumNota);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
