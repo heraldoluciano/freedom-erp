@@ -897,9 +897,9 @@ public class ImprimeOS implements ActionListener {
 				say(pRow() + 0, iTamRel - 15, "Pagina: "
 						+ Funcoes.strZero("" + (getNumPags() + this.numAdicPagina), 5));
 				say(pRow() + 0, iTamRel - 1, "|");
-				say(pRow() + 1, 0, "|" + sTitulo.trim().toUpperCase());
-				say(pRow() + 0, iTamRel - 17, "ID.USU: "
-						+ Aplicativo.strUsuario.toUpperCase());
+				say(pRow() + 1, 0, comprimido());
+				say(pRow() + 0, 0, "| " + sTitulo.trim().toUpperCase());
+				say(pRow() + 0, iTamRel - 17, "ID.USU: "+Aplicativo.strUsuario.toUpperCase());
 				say(pRow() + 0, iTamRel - 1, "|");
 				say(pRow() + 1, 0, comprimido());
 				say(pRow() + 0, 0, "|" + " Fone: " + sVals[1]); //Fone
@@ -917,7 +917,9 @@ public class ImprimeOS implements ActionListener {
 					if ((sTmp.length() + 2) > iTamRel)
 						sTmp = sTmp.substring(0, iTamRel - 4);
 					if (!sTmp.trim().equals("")) {
-						say(pRow() + 1, 0, "|");
+						say(pRow() + 1, 0, comprimido());
+					    
+						say(pRow() + 0, 0, "|");
 						say(pRow() + 0, ((iTamRel - sTmp.length() - 2) / 2), sTmp);
 						say(pRow() + 0, iTamRel - 1, "|");
 					}
