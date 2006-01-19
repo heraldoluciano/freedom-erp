@@ -744,7 +744,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private void imprimir(boolean bVisualizar, int iCodSol) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
-		DLRPedido dl = new DLRPedido(sOrdSol);
+		DLRPedido dl = new DLRPedido(sOrdSol, false);
 		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();

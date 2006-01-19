@@ -147,7 +147,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	public FCotacaoItens() {
 		setTitulo("Cotação Sumarizada de Preços");
 		setAtribos(15, 10, 763, 555);
-
+	
 		pnMaster.remove(2);
 		pnGImp.removeAll();
 		pnGImp.setLayout(new GridLayout(1, 3));
@@ -302,9 +302,9 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	}
 	
 	private void montaMestre() {
-		pinCab = new JPanelPad(740, 190);
+		pinCab = new JPanelPad(740, 200);
 		setListaCampos(lcCampos);
-		setAltCab(190);
+		setAltCab(200);
 		setPainel(pinCab, pnCliCab);
 		setNavegador(navCot);
 		lcCampos.setTabela(tabCot);
@@ -322,8 +322,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		txtCodProd.setNaoEditavel(true);
 		txtRefProd.setNaoEditavel(true);
 
-		adicCampo(txtCodSumSol, 7, 20, 70, 20, "CodSumSol", "Cód.Sum.Sol",
-				ListaCampos.DB_PK, true);
+		adicCampo(txtCodSumSol, 7, 20, 70, 20, "CodSumSol", "Cód.Sum.Sol", ListaCampos.DB_PK, true);
 		
 		if (comRef()) {
 			adicCampo(txtRefProd, 80, 20, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
@@ -344,8 +343,16 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 		txtIDUsu.setNaoEditavel(true);
 
+		
 		setListaCampos(true, "SUMSOL", "CP");
 		lcCampos.setQueryInsert(false);	
+		lcCampos.montaTab();
+		
+		tabCot.setTamColuna(80, 0);
+		tabCot.setTamColuna(80, 1);
+		tabCot.setTamColuna(260, 2);
+		tabCot.setTamColuna(115, 3);
+		tabCot.setTamColuna(70, 4);
 		
 		pinCab.adic(spTabCot, 7, 47, 640, 100);			
 	}
@@ -703,7 +710,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	private void imprimir(boolean bVisualizar, int iCodSol) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
-		DLRPedido dl = new DLRPedido(sOrdSol);
+		DLRPedido dl = new DLRPedido(sOrdSol, false);
 		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();
