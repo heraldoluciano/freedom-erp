@@ -26,15 +26,17 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 
 import java.util.Vector;
+
+import javax.swing.JCheckBox;
 public class DLRPedido extends FFDialogo {
 
-	private static final long serialVersionUID = 1L;
-
+  private static final long serialVersionUID = 1L;
   private JRadioGroup rgOrdem = null;
   private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+  private JCheckBox cbxResumido = new JCheckBox("Relatório Resumido"); 
   private Vector vLabs = new Vector();
   private Vector vVals = new Vector();
-  public DLRPedido(String OrdNota) {
+  public DLRPedido(String OrdNota, boolean RelResumido) {
     setTitulo("Ordem do Relatório");
     setAtribos(350,160);
     vLabs.addElement("Código");
@@ -45,9 +47,16 @@ public class DLRPedido extends FFDialogo {
     vVals.addElement("M");
     rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
     rgOrdem.setVlrString(OrdNota);
+    if (RelResumido)
+    	adic(cbxResumido, 7, 55, 180, 15);
     adic(lbOrdem,7,0,80,15);
     adic(rgOrdem,7,20,330,30);
   }
+  
+  public boolean ehResumido() {
+	  return cbxResumido.isSelected();
+  }
+  
   public String getValor() {
     String sRetorno = "";
     if (rgOrdem.getVlrString().compareTo("C") == 0 )
