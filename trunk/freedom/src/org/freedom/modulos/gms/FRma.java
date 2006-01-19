@@ -914,7 +914,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 	private void imprimir(boolean bVisualizar, int iCodSol) {
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
-		DLRPedido dl = new DLRPedido(sOrdRMA);
+		DLRPedido dl = new DLRPedido(sOrdRMA, true);
 		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();
@@ -928,7 +928,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				+ "R.CODRMA,R.DTINS,R.SITRMA,R.MOTIVORMA,R.IDUSU,R.IDUSUAPROV,R.IDUSUEXP,R.DTAAPROVRMA,R.DTAEXPRMA,R.MOTIVOCANCRMA,"
 				+ "I.CODPROD, I.QTDITRMA, I.QTDAPROVITRMA, I.QTDEXPITRMA, I.SITITRMA,"
 				+ "I.SITITRMA,I.SITAPROVITRMA,I.SITEXPITRMA,I.CODITRMA,"
-				+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
+				+ "P.REFPROD,P.DESCPROD, P.CODUNID, UND.DESCUNID,"
 				+ "A.CODALMOX, A.DESCALMOX, CC.CODCC, CC.ANOCC, CC.DESCCC,"
 				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUAPROV),"
 				+ "(SELECT C.DESCCC FROM FNCC C, SGUSUARIO U "
@@ -939,8 +939,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUEXP),"
 				+ "(SELECT U.CODCC FROM SGUSUARIO U WHERE U.IDUSU=R.IDUSUEXP),"
 				+ " I.MOTIVOCANCITRMA, I.CODPROD , R.CODOP, R.SEQOP"
-				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P"
-				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?"
+				+ " FROM EQRMA R, EQITRMA I, EQALMOX A, FNCC CC, EQPRODUTO P, EQUNIDADE UND"
+				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODRMA=?" 
+				+ " AND P.CODUNID = UND.CODUNID"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODRMA=R.CODRMA"
 				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
@@ -959,7 +960,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			ps.setInt(3, txtCodRma.getVlrInteger().intValue());
 
 			rs = ps.executeQuery();
-
+			
 			imp.limpaPags();
 
 			while (rs.next()) {
@@ -1040,12 +1041,18 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 					imp.say(imp.pRow() + 0, 2, "Item");
 					imp.say(imp.pRow() + 0, 8, "Referencia");
 					imp.say(imp.pRow() + 0, 22, "Descrição dos produtos");
-					imp.say(imp.pRow() + 0, 60, "Qtd.req.");
-					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
-					imp.say(imp.pRow() + 0, 90, "Qtd.exp.");
-					imp.say(imp.pRow() + 0, 100, "Sit.item");
-					imp.say(imp.pRow() + 0, 110, "Sit.aprov.");
-					imp.say(imp.pRow() + 0, 122, "Sit.exp.");
+					if (dl.ehResumido()) {
+						imp.say(imp.pRow() + 0, 60, "Qtd.aprov.");
+						imp.say(imp.pRow() + 0, 75, "Qtd.exp.");
+						imp.say(imp.pRow() + 0, 90, "Unid");
+					} else {
+						imp.say(imp.pRow() + 0, 60, "Qtd.req.");
+						imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
+						imp.say(imp.pRow() + 0, 90, "Qtd.exp.");
+						imp.say(imp.pRow() + 0, 100, "Sit.item");
+						imp.say(imp.pRow() + 0, 110, "Sit.aprov.");
+						imp.say(imp.pRow() + 0, 122, "Sit.exp.");					
+					}
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
@@ -1056,15 +1063,21 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				imp.say(imp.pRow() + 0, 2, rs.getString("CODITRMA"));
 				imp.say(imp.pRow() + 0, 8, rs.getString("REFPROD"));
 				imp.say(imp.pRow() + 0, 22, rs.getString("DESCPROD").substring(0, 37));
-				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITRMA"));
-				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITRMA"));
-				imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
-				if (!rs.getString("SITITRMA").equals("CA"))
-					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITRMA"));
-				if (!rs.getString("SITAPROVITRMA").equals("NA"))
-					imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
-				if (!rs.getString("SITEXPITRMA").equals("NE"))
-					imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
+				if (dl.ehResumido()) {
+					imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDAPROVITRMA"));
+					imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDEXPITRMA"));
+					imp.say(imp.pRow() + 0, 90, "" + rs.getString("DESCUNID"));
+				} else {
+					imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITRMA"));
+					imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITRMA"));
+					imp.say(imp.pRow() + 0, 90, "" + rs.getDouble("QTDEXPITRMA"));
+					if (!rs.getString("SITITRMA").equals("CA"))
+						imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITRMA"));
+					if (!rs.getString("SITAPROVITRMA").equals("NA"))
+						imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITRMA"));
+					if (!rs.getString("SITEXPITRMA").equals("NE"))
+						imp.say(imp.pRow() + 0, 125, "" + rs.getString("SITEXPITRMA"));
+				}					
 				imp.say(imp.pRow() + 0, 136, "|");
 
 				if ((rs.getString("SITITRMA").equals("CA"))

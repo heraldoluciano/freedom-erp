@@ -1530,7 +1530,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		
 		imp.montaCab();
 		imp.setTitulo("Relatório de Pedidos");
-		DLRPedido dl = new DLRPedido(sOrdNota);
+		DLRPedido dl = new DLRPedido(sOrdNota, false);
 		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();
@@ -2056,7 +2056,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		ImprimeOS imp = new ImprimeOS("", con, sTipo, true);
 		imp.verifLinPag(sTipo);
 		imp.setTitulo("Nota Fiscal");
-		DLRPedido dl = new DLRPedido(sOrdNota);
+		DLRPedido dl = new DLRPedido(sOrdNota, false);
 		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();
