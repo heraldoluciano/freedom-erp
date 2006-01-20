@@ -422,7 +422,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		txtPrecoItVenda.addFocusListener(this);
 		txtPercICMSItVenda.addFocusListener(this);
 		txtAliqIPIItVenda.addFocusListener(this);
-		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
 		lcVendedor.addCarregaListener(this);
 		lcCli.addCarregaListener(this);
@@ -430,12 +429,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		lcProd.addCarregaListener(this);
 		lcProd2.addCarregaListener(this);
 		lcNat.addCarregaListener(this);
-		lcDet.addPostListener(this);
+		lcVenda2.addCarregaListener(this);
 		lcDet.addCarregaListener(this);
+		lcPlanoPag.addCarregaListener(this);
+		lcCampos.addPostListener(this);
+		lcDet.addPostListener(this);
 		lcCampos.addInsertListener(this);
 		lcDet.addInsertListener(this);
 		lcDet.addDeleteListener(this);
-		lcVenda2.addCarregaListener(this);
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
@@ -1109,13 +1110,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 	public int[] getParansPreco() {
 		int[] iRetorno = { txtCodProd.getVlrInteger().intValue(),
-				txtCodCli.getVlrInteger().intValue(), Aplicativo.iCodEmp,
+				txtCodCli.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
 				ListaCampos.getMasterFilial("VDCLIENTE"),
-				txtCodPlanoPag.getVlrInteger().intValue(), Aplicativo.iCodEmp,
+				txtCodPlanoPag.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
 				ListaCampos.getMasterFilial("FNPLANOPAG"),
-				txtCodTipoMov.getVlrInteger().intValue(), Aplicativo.iCodEmp,
-				ListaCampos.getMasterFilial("EQTIPOMOV"), Aplicativo.iCodEmp,
-				Aplicativo.iCodFilial };
+				txtCodTipoMov.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("EQTIPOMOV"), 
+				Aplicativo.iCodEmp,
+				Aplicativo.iCodFilial,
+				txtCodVenda.getVlrInteger().intValue(),
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("VDVENDA") };
 		return iRetorno;
 	}
 
@@ -1204,7 +1212,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	public void afterPost(PostEvent pevt) {
 		lcVenda2.carregaDados(); //Carrega os Totais
 		if (pevt.getListaCampos() == lcCampos) {
-
 			if (bPrefs[5]) {
 				txtFiscalTipoMov1.setText("S");
 				txtFiscalTipoMov2.setText("N");
@@ -1226,7 +1233,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						buscaLote();
 				}
 				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-					buscaPreco();
+					calcVlrItem(false,null);
 				}
 			} else if ((cevt.getListaCampos() == lcFisc)
 					&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
@@ -1253,7 +1260,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 									 new Dimension( spTab.getWidth(), spTab.getHeight() ) );
 					}
 				}
-			}
+				if(bPrefs[15]) {
+				    //calcImpostos(true);
+				}
+			} else if(cevt.getListaCampos() == lcPlanoPag)
+				if(bPrefs[15]) {
+				    setReCalcPreco(true);
+				    //calcImpostos(true);
+				}
 			
 			if (txtStatusVenda.getVlrString().trim().length()>0 && 
 					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
@@ -2185,10 +2199,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private boolean[] prefs() {
-		boolean[] bRetorno = new boolean[15];
+		boolean[] bRetorno = new boolean[16];
 		String sSQL = "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," +
 			"USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " +
-			"TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT " + 
+			"TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT, RECALCPCVENDA " + 
 			"FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -2265,6 +2279,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if (rs.getString("DIASPEDT") != null) {
 					if (rs.getString("DIASPEDT").trim().equals("S"))
 						bRetorno[14] = true;
+				}
+				bRetorno[15] = false;
+				if (rs.getString("RECALCPCVENDA") != null) {
+					if (rs.getString("RECALCPCVENDA").trim().equals("S"))
+						bRetorno[15] = true;
 				}
 
 			}
@@ -2348,6 +2367,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				testaCodPK("VDVENDA",txtCodVenda);
 			txtStatusVenda.setVlrString("*");
 		} 
+		else if(pevt.getListaCampos() == lcCampos) {
+		    if(podeReCalcPreco()) {
+			    calcVlrItem(true,"VDVENDA");
+		    }
+		    setReCalcPreco(false);
+		}
 		else if (pevt.getListaCampos() == lcDet) {
 			if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
 				if (pevt.getListaCampos() == lcDet) {

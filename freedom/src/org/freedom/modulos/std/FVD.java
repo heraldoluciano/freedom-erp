@@ -1,7 +1,30 @@
-/*
- * Created on 18/10/2004
- * Autor: robson 
- * Descrição: Classe mãe para telas de venda e orçamento
+/**
+ * @version 18/10/2004 <BR>
+ * @author Setpoint Informática Ltda./Robson Sanches/Alex Rodrigues <BR>
+ * 
+ * Projeto: Freedom <BR>
+ * 
+ * Pacote: org.freedom.modulos.std <BR>
+ * Classe:
+ * @(#)FVD.java <BR>
+ * 
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
+ * Programas de Computador), <BR>
+ * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
+ * Programa. <BR> 
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
+ * pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <BR>
+ * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
+ * preciso estar <BR>
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ * O Objetivo desta classe é de proporcionar a implementação do código comum
+ * entre as telas de orçamento e de venda
+ *  
  */
 package org.freedom.modulos.std;
 
@@ -21,13 +44,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
 import org.freedom.telas.FObservacao;
 
-
-/**
- * @author robson
- *
- * O Objetivo desta classe é de proporcionar a implementação do código comum
- * entre as telas de orçamento e de venda
- */
 public abstract class FVD extends FDetalhe {
 
     public abstract int[] getParansPreco();
@@ -36,11 +52,147 @@ public abstract class FVD extends FDetalhe {
     
     public abstract Vector getParansDesconto();
     
+    /**
+     * indica se pode recalcular os itens.
+     * ela ajuda a evitar updates desnecessarios ou erroneos.
+     */
+    private boolean recalculaPreco = false;
+    
     public FVD() {
     	super();
-    }    
+    }   
+    /**
+     * Altera os valores dos itens quando a alteração no cabeçalho
+     * da venda, se selecionado no preferencias pra recalcular os valores,
+     * conforme a tabela de preços do produto
+     * @param alteraTodos indica se altera todos os itens da venda
+     * @param tabela Tabela a se alterar
+     */
+    protected void calcVlrItem(boolean alteraTodos, String tabela) {
 
-    public void buscaPreco() {
+        if( alteraTodos ) {
+            String sSQLSelect = null;
+            String sSQLUpdate = null;
+        	PreparedStatement ps = null;
+        	PreparedStatement ps2 = null;
+        	ResultSet rs = null;
+        	Vector vCodItem = new Vector();
+        	Vector vQtdItem = new Vector();
+        	Vector vDescProd = new Vector();
+        	Vector vCodProd = new Vector();
+        	Vector vPrecoProd = new Vector();
+        	BigDecimal bdBuscaPreco = null;
+        	BigDecimal bdPrecoProd = null;
+        	BigDecimal bdVlrBrutoProd = null;
+        	BigDecimal bdVlrLiqProd = null;
+        	BigDecimal bdQtdItem = null;
+        	BigDecimal bdDescProd = null;
+        	int[] iParans;
+        	try {
+          	  
+        	    iParans = getParansPreco();
+        	    
+        	    if(tabela.equalsIgnoreCase("VDVENDA")) {
+	        	    sSQLSelect = "SELECT CODITVENDA, CODPROD, PRECOITVENDA, QTDITVENDA, VLRDESCITVENDA FROM VDITVENDA " +
+	        	    	   		  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
+	        	    sSQLUpdate = "UPDATE VDITVENDA SET PRECOITVENDA=?, VLRPRODITVENDA=?, VLRLIQITVENDA=?  " +
+	        	    			 "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND CODITVENDA=? AND TIPOVENDA='V'";
+        	    }
+        	    else if(tabela.equalsIgnoreCase("VDORCAMENTO")) {
+	        	    sSQLSelect = "SELECT CODITORC, CODPROD, PRECOITORC, QTDITORC, VLRDESCITORC FROM VDITORCAMENTO " +
+	 	    	   		   		  "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=?";
+	        	    sSQLUpdate = "UPDATE VDITORCAMENTO SET PRECOITORC=?, VLRPRODITORC=?, VLRLIQITORC=? " +
+	    			 			 "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
+        	    }        	    
+        	    
+        	    // busca as informações do item.
+        	    ps = con.prepareStatement(sSQLSelect);
+        	    ps.setInt(1,iParans[13]);//código da empresa
+        	    ps.setInt(2,iParans[14]);//código da filial
+        	    ps.setInt(3,iParans[12]);//código da PK
+        	    rs = ps.executeQuery();
+
+        	    while(rs.next()) {
+        	        vCodItem.addElement(new Integer(rs.getInt(1)));
+        	        vCodProd.addElement(new Integer(rs.getInt(2)));
+        	        vPrecoProd.addElement(new BigDecimal(rs.getFloat(3)));
+        	        vQtdItem.addElement(new BigDecimal(rs.getFloat(4)));
+        	        vDescProd.addElement(new BigDecimal(rs.getFloat(5)));
+        	    }        
+        	    rs.close();
+        	    ps.close();
+        	    
+        	    // percorre todos os itens
+        	    for(int i=0; i<vCodItem.size(); i++) {
+        	        iParans[0] = ((Integer)vCodProd.elementAt(i)).intValue();
+
+        	        bdBuscaPreco = buscaPreco(iParans);
+        	        bdQtdItem = (BigDecimal)vQtdItem.elementAt(i);
+        	        bdDescProd = ((BigDecimal)vDescProd.elementAt(i)).setScale(Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+        	        bdPrecoProd = ((BigDecimal)vPrecoProd.elementAt(i)).setScale(Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+        	        
+        	        // se o preço for diferente altera.
+        	        if(bdPrecoProd.floatValue()!=bdBuscaPreco.floatValue()) {
+
+            	        bdVlrBrutoProd = calcVlrProd(bdBuscaPreco,bdQtdItem);
+            	        bdVlrLiqProd = calcVlrTotalProd(bdVlrBrutoProd,bdDescProd);
+        	            
+	        	        ps2 = con.prepareStatement(sSQLUpdate);
+	        	        ps2.setBigDecimal(1,bdBuscaPreco);//preço do produto
+	        	        ps2.setBigDecimal(2,bdVlrBrutoProd);//valor do produto
+	        	        ps2.setBigDecimal(3,bdVlrLiqProd);//valor liquido do produto
+	            	    ps2.setInt(4,iParans[13]);//código da empresa
+	            	    ps2.setInt(5,iParans[14]);//código da filial
+	            	    ps2.setInt(6,iParans[12]);//código da PK
+	            	    ps2.setInt(7,((Integer)vCodItem.elementAt(i)).intValue());//código do item
+	            	    ps2.executeUpdate();
+        	        }
+        	    }        	    
+        	    
+        	    calcVlrItem(false,null);
+        	    
+        	    if (!con.getAutoCommit())
+        	        con.commit();
+
+        	}
+        	catch (SQLException err) {
+        		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage(),true,con,err);
+        		err.printStackTrace();
+        	}
+        	catch (Exception err) {
+        		err.printStackTrace();
+        	}
+        	finally {
+        	    sSQLSelect = null;
+                sSQLUpdate = null;
+            	ps = null;
+            	ps2 = null;
+            	rs = null;
+            	vCodItem = null;
+            	vQtdItem = null;
+            	vDescProd = null;
+            	vCodProd = null;
+            	vPrecoProd = null;
+            	bdBuscaPreco = null;
+            	bdPrecoProd = null;
+            	bdVlrBrutoProd = null;
+            	bdVlrLiqProd = null;
+            	bdQtdItem = null;
+            	bdDescProd = null;
+            	iParans = null;
+        	}
+        }        
+        else {
+            setParansPreco(buscaPreco(getParansPreco()));
+        }
+    }    
+    /**
+     * Busca o preço do produto com a procedure VDBUSCAPRECOSP.
+     * @param parametros array de int com os paramentros para a procedure 
+     * @return preço do produto
+     */
+    private BigDecimal buscaPreco(int[] parametros) {
+        BigDecimal retorno = null;
     	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
     	PreparedStatement ps = null;
     	ResultSet rs = null;
@@ -48,23 +200,23 @@ public abstract class FVD extends FDetalhe {
     	try {
     	  ps = con.prepareStatement(sSQL);
     	  
-    	  iParans = getParansPreco();
+    	  iParans = parametros;
     	  
-    	  ps.setInt(1,iParans[0]);
-    	  ps.setInt(2,iParans[1]);
-    	  ps.setInt(3,iParans[2]);
-    	  ps.setInt(4,iParans[3]);
-    	  ps.setInt(5,iParans[4]);
-    	  ps.setInt(6,iParans[5]);
-    	  ps.setInt(7,iParans[6]);
-    	  ps.setInt(8,iParans[7]);
-    	  ps.setInt(9,iParans[8]);
-    	  ps.setInt(10,iParans[9]);
-    	  ps.setInt(11,iParans[10]);
-    	  ps.setInt(12,iParans[11]);
+    	  ps.setInt(1,iParans[0]);//código do produto
+    	  ps.setInt(2,iParans[1]);//código do cliente
+    	  ps.setInt(3,iParans[2]);//código da empresa do cliente
+    	  ps.setInt(4,iParans[3]);//código da filial do cliente
+    	  ps.setInt(5,iParans[4]);//código do plano de pagamento
+    	  ps.setInt(6,iParans[5]);//código da empresa do plano de pagamento
+    	  ps.setInt(7,iParans[6]);//código da filial do plano de pagamento
+    	  ps.setInt(8,iParans[7]);//código do tipo de movimento
+    	  ps.setInt(9,iParans[8]);//código da empresa do tipo de movimento
+    	  ps.setInt(10,iParans[9]);//código da filial do tipo de movimento
+    	  ps.setInt(11,iParans[10]);//código da empresa
+    	  ps.setInt(12,iParans[11]);//código da filial
     	  rs = ps.executeQuery();
     	  rs.next();
-    	  setParansPreco(rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0")));
+    	  retorno = rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0"));
     	  rs.close();
     	  ps.close();
     	  if (!con.getAutoCommit())
@@ -72,13 +224,15 @@ public abstract class FVD extends FDetalhe {
 
     	}
     	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao carregar o preço!\n"+err.getMessage(),true,con,err);
+    		Funcoes.mensagemErro(this,"Erro ao buscar o preço!\n"+err.getMessage(),true,con,err);
+    		err.printStackTrace();
     	}
     	finally {
     	    sSQL = null;
     	    ps = null;
     	    rs = null;
     	}
+    	return retorno;
     }    
     /**
      * Mostra a observação do cliente
@@ -210,8 +364,7 @@ public abstract class FVD extends FDetalhe {
 				ps.setInt(3, iCod);
 				rs = ps.executeQuery();
 				if (rs.next())
-					obs = new FObservacao((rs.getString(1) != null ? rs
-							.getString(1) : ""));
+					obs = new FObservacao((rs.getString(1) != null ? rs.getString(1) : ""));
 				else
 					obs = new FObservacao("");
 
@@ -306,8 +459,8 @@ public abstract class FVD extends FDetalhe {
      * @return valor total do produto
      */
 	protected BigDecimal calcVlrTotalProd(BigDecimal arg0, BigDecimal arg1) {
-		BigDecimal bdRetorno = arg0.subtract(arg1)
-				.divide(new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+		BigDecimal bdRetorno = arg0.subtract(arg1).divide(
+		        new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
 		return bdRetorno;
 	}
 	/**
@@ -379,6 +532,14 @@ public abstract class FVD extends FDetalhe {
 			}
 		}
 		return sRet;
+	}
+	
+	protected void setReCalcPreco(boolean arg0) {
+	    this.recalculaPreco = arg0;
+	}
+	
+	protected boolean podeReCalcPreco() {
+	    return recalculaPreco;
 	}
     
 }
