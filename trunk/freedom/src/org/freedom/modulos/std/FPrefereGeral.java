@@ -161,6 +161,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbDescCompl = null;
 	private JCheckBoxPad cbObsCliVend = null;
 	private JCheckBoxPad cbContEstoq = null;
+	private JCheckBoxPad cbReCalcVenda = null;
+	private JCheckBoxPad cbReCalcOrc = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -367,26 +369,19 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbEstLotNeg = new JCheckBoxPad("Permit. sld. lote neg.?", "S", "N");
 		cbEstLotNeg.setVlrString("N");
 		cbEstNeg = new JCheckBoxPad("Permit. saldo negativo?", "S", "N");
-		cbEstNeg.setVlrString("N");
-				
+		cbEstNeg.setVlrString("N");				
 		cbEstNegGrupo = new JCheckBoxPad("Controle de saldo negativo por grupo?", "S", "N");
 		cbEstNegGrupo.setVlrString("N");
-
 		cbBloqVenda = new JCheckBoxPad("Bloquear venda após impressão da NF?","S", "N");
 		cbBloqVenda.setVlrString("N");
-
 		cbNatVenda = new JCheckBoxPad("Habil. campo CFOP ?", "S", "N");
-		cbNatVenda.setVlrString("S");
-		
+		cbNatVenda.setVlrString("S");		
 		cbIPIVenda = new JCheckBoxPad("Habil. campo IPI ?", "S", "N");
 		cbIPIVenda.setVlrString("S");
-
 		cbComisPDupl = new JCheckBoxPad("Calcula comissão com base nas duplicatas?", "S", "N");
-		cbComisPDupl.setVlrString("S");
-		
+		cbComisPDupl.setVlrString("S");		
 		cbObsCliVend = new JCheckBoxPad("Mostrar observações do cliente na venda e orçamento?","S","N");
 		cbObsCliVend.setVlrString("N");
-
 		cbTabFreteVd = new JCheckBoxPad("Aba frete na venda?", "S", "N");
 		cbTabFreteVd.setVlrString("S");
 		cbTabAdicVd = new JCheckBoxPad("Aba adic. na venda?", "S", "N");
@@ -403,6 +398,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbDiasPEData.setVlrString("N");
 		cbDescCompl = new JCheckBoxPad("Usar descrição completa do produto para Orçamento e Pedido?", "S", "N");
 		cbDescCompl.setVlrString("N");
+		cbReCalcVenda = new JCheckBoxPad("Recalcular preço na venda?", "S", "N");
+		cbReCalcVenda.setVlrString("N");
+		cbReCalcOrc = new JCheckBoxPad("Recalcular preço no orçamento?", "S", "N");
+		cbReCalcOrc.setVlrString("N");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -415,16 +414,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 
 		cbRgCliObrig = new JCheckBoxPad("RG. do cliente obrigatório?", "S", "N");
 		cbRgCliObrig.setVlrString("S");
-
 		cbCliMesmoCnpj = new JCheckBoxPad("Permitir clientes com mesmo CNPJ ?","S", "N");
 		cbCliMesmoCnpj.setVlrString("N");
-
 		cbCnpjCliObrig = new JCheckBoxPad("CNPJ obrigatório para o cadastro de clientes ?", "S", "N");
 		cbCnpjCliObrig.setVlrString("S");
-
 		cbCnpjForObrig = new JCheckBoxPad("CNPJ obrigatório para o cadastro de fornecedores ?", "S", "N");
 		cbCnpjForObrig.setVlrString("S");
-
 		cbInscEstForObrig = new JCheckBoxPad("Inscrição estadual obrigatória para o cadastro de fornecedores ?","S", "N");
 		cbInscEstForObrig.setVlrString("S");
 		
@@ -493,31 +488,33 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDescFK(txtDescTransp, 85, 280, 250, 20, "RazTran","Razão social da transp.padrao para venda");
 		
 		lbVendOpcoes.setOpaque(true);
-		adic(lbVendOpcoes,360,5,70,20);
-		adic(pinOpcoesVenda,350,15,380,320);
+		adic(lbVendOpcoes,357,5,70,20);
+		adic(pinOpcoesVenda,348,15,380,320);
 		setPainel(pinOpcoesVenda);
 
-		adicDB(cbUsaRefProd, 10, 20, 160, 20, "UsaRefProd", "", true);
-		adicDB(cbUsaPedSeq, 10, 40, 160, 20, "UsaPedSeq", "", true);
-		adicDB(cbUsaOrcSeq, 10, 60,160,20, "UsaOrcSeq", "", true);
-		adicDB(cbEstNeg, 10, 80, 160, 20, "EstNeg", "", true);	
-		adicDB(cbNatVenda, 10, 100, 160, 20, "NatVenda", "", true);
-		adicDB(cbEstLotNeg, 10, 120, 160, 20, "EstLotNeg", "", true);
-		adicDB(cbPrazoEnt, 10, 140, 200, 20, "UsaTabPE", "", true);
+		adicDB(cbUsaRefProd, 5, 10, 160, 20, "UsaRefProd", "", true);
+		adicDB(cbUsaPedSeq, 5, 30, 160, 20, "UsaPedSeq", "", true);
+		adicDB(cbUsaOrcSeq, 5, 50,160,20, "UsaOrcSeq", "", true);
+		adicDB(cbEstNeg, 5, 70, 160, 20, "EstNeg", "", true);	
+		adicDB(cbEstLotNeg, 5, 90, 160, 20, "EstLotNeg", "", true);
+		adicDB(cbPrazoEnt, 5, 110, 200, 20, "UsaTabPE", "", true);
 		
-		adicDB(cbUsaClasComis, 190, 20, 160, 20, "UsaClasComis", "", true);
-		adicDB(cbTabFreteVd, 190, 40, 160, 20, "TabFreteVd", "", true);
-		adicDB(cbTabAdicVd, 190, 60, 160, 20, "TabAdicVd", "", true);
-		adicDB(cbUsaDescEspelho, 190, 80, 160, 20, "UsaLiqRel", "", true);	
-		adicDB(cbIPIVenda, 190, 100, 160, 20, "IPIVenda", "", true);
+		adicDB(cbUsaClasComis, 205, 10, 160, 20, "UsaClasComis", "", true);
+		adicDB(cbTabFreteVd, 205, 30, 160, 20, "TabFreteVd", "", true);
+		adicDB(cbTabAdicVd, 205, 50, 160, 20, "TabAdicVd", "", true);
+		adicDB(cbUsaDescEspelho, 205, 70, 160, 20, "UsaLiqRel", "", true);	
+		adicDB(cbIPIVenda, 205, 90, 160, 20, "IPIVenda", "", true);
+		adicDB(cbNatVenda, 205, 110, 160, 20, "NatVenda", "", true);
 
-		adicDB(cbVendaMatPrim, 10, 160, 300, 20, "VendaMatPrim", "", true);
-		adicDB(cbEstNegGrupo, 10, 180, 250, 20, "EstNegGrup", "", true);
-		adicDB(cbBloqVenda, 10, 200, 300, 20, "BloqVenda", "", true);
-		adicDB(cbComisPDupl, 10, 220, 300, 20, "ComisPDupl", "", true);
-		adicDB(cbObsCliVend, 10, 240,300,20, "ObsCliVend", "", true);
-		adicDB(cbTravaTMNFVD, 10, 260, 300, 20, "TravaTMNFVD", "", true);
-		adicDB(cbDiasPEData, 10, 280, 300, 20, "DIASPEDT", "", true);
+		adicDB(cbVendaMatPrim, 5, 130, 300, 20, "VendaMatPrim", "", true);
+		adicDB(cbEstNegGrupo, 5, 150, 250, 20, "EstNegGrup", "", true);
+		adicDB(cbBloqVenda, 5, 170, 300, 20, "BloqVenda", "", true);
+		adicDB(cbComisPDupl, 5, 190, 300, 20, "ComisPDupl", "", true);
+		adicDB(cbDiasPEData, 5, 210, 300, 20, "DIASPEDT", "", true);
+		adicDB(cbReCalcVenda, 5, 230, 250, 20, "ReCalcPCVenda", "", true);	
+		adicDB(cbReCalcOrc, 5, 250, 250, 20, "ReCalcPCOrc", "", true);
+		adicDB(cbTravaTMNFVD, 5, 270, 300, 20, "TravaTMNFVD", "", true);
+		adicDB(cbObsCliVend, 5, 290,350,20, "ObsCliVend", "", true);
 
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
@@ -534,9 +531,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		setPainel(pinOrc);
 		adicTab("Orçamento & PDV", pinOrc);
 		adicCampo(txtCodTipoMov2, 7, 25, 80, 20, "CodTipoMov2", "Cod.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, false);
-		adicDescFK(txtDescTipoMov2, 90, 25, 220, 20, "DescTipoMov","Tipo de movimento para orçamentos.");
-		adicCampo(txtDescClassOrc, 7, 65, 250, 20, "ClassOrc","Classe padrão para orçamento.", ListaCampos.DB_SI, false);
-		adicCampo(txtTitOrcTxt01, 7, 105, 250, 20, "TitOrcTxt01","Título para campo TXT01", ListaCampos.DB_SI, false);
+		adicDescFK(txtDescTipoMov2, 90, 25, 230, 20, "DescTipoMov","Tipo de movimento para orçamentos.");
+		adicCampo(txtDescClassOrc, 330, 25, 250, 20, "ClassOrc","Classe padrão para orçamento.", ListaCampos.DB_SI, false);
+		adicCampo(txtTitOrcTxt01, 330, 65, 250, 20, "TitOrcTxt01","Título para campo TXT01", ListaCampos.DB_SI, false);
 
 		Vector vLabsTpValidOrc1 = new Vector();
 		Vector vValsTpValidOrc1 = new Vector();
@@ -544,10 +541,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		vLabsTpValidOrc1.addElement("Nro. de dias");
 		vValsTpValidOrc1.addElement("D");
 		vValsTpValidOrc1.addElement("N");
-		JRadioGroup rgTipoValidOrc = new JRadioGroup(2, 1, vLabsTpValidOrc1,vValsTpValidOrc1);
+		JRadioGroup rgTipoValidOrc = new JRadioGroup(1, 2, vLabsTpValidOrc1,vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
 
-		adicDB(rgTipoValidOrc, 7, 155, 150, 60, "tipovalidorc","Valid. na impressão", true);
+		adicDB(rgTipoValidOrc, 330, 145, 250, 30, "tipovalidorc","Valid. na impressão", true);
 
 		//Financeiro
 
@@ -667,13 +664,13 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		setNavegador(new Navegador(false));
 		setPainel(pinOrc);
 
-		adicCampo(txtCodTipoMov7, 320, 25, 77, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov7, false);
-		adicDescFK(txtDescTipoMov7, 400, 25, 230, 20, "DescTipoMov","Descrição do tipo de movimento");
-		adicCampo(txtCodPlanoPag2, 320, 65, 77, 20, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag2, false);
-		adicDescFK(txtDescPlanoPag2, 400, 65, 230, 20, "DescPlanoPag","Descrição do plano de pagamento");
-		adicCampo(txtCodCli, 320, 105, 77, 20, "CodCli", "Cód.cli.",ListaCampos.DB_FK, txtDescCli, false);
-		adicDescFK(txtDescCli, 400, 105, 230, 20, "NomeCli", "Nome do cliente");
-		adicCampo(txtPrazo, 320, 145, 230, 20, "Prazo","Prazo de Entrega do Orçamento", ListaCampos.DB_SI, true);
+		adicCampo(txtCodTipoMov7, 7, 65, 80, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov7, false);
+		adicDescFK(txtDescTipoMov7, 90, 65, 230, 20, "DescTipoMov","Descrição do tipo de movimento");
+		adicCampo(txtCodPlanoPag2, 7, 105, 80, 20, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_FK, txtDescPlanoPag2, false);
+		adicDescFK(txtDescPlanoPag2, 90, 105, 230, 20, "DescPlanoPag","Descrição do plano de pagamento");
+		adicCampo(txtCodCli, 7, 145, 80, 20, "CodCli", "Cód.cli.",ListaCampos.DB_FK, txtDescCli, false);
+		adicDescFK(txtDescCli, 90, 145, 230, 20, "NomeCli", "Nome do cliente");
+		adicCampo(txtPrazo, 330, 105, 250, 20, "Prazo","Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false);
 		setListaCampos(false, "PREFERE4", "SG");
 
 		//Email 

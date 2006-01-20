@@ -323,6 +323,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcProd.addCarregaListener(this);
 		lcProd2.addCarregaListener(this);
 		lcDet.addCarregaListener(this);
+		lcPlanoPag.addCarregaListener(this);
+		lcCli.addCarregaListener(this);
 		lcDet.addPostListener(this);
 		lcCampos.addPostListener(this);
 		lcCampos.addInsertListener(this);
@@ -429,11 +431,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			if (txtPercDescItOrc.getText().trim().length() < 1) {
 				txtVlrDescItOrc.setAtivo(true);
 			} else {
-				txtVlrDescItOrc.setVlrBigDecimal(txtVlrProdItOrc
-						.getVlrBigDecimal().multiply(
+				txtVlrDescItOrc.setVlrBigDecimal(
+				        txtVlrProdItOrc.getVlrBigDecimal().multiply(
 								txtPercDescItOrc.getVlrBigDecimal()).divide(
-								new BigDecimal("100"), 3,
-								BigDecimal.ROUND_HALF_UP));
+								        new BigDecimal("100"), 2,BigDecimal.ROUND_HALF_UP));
 				calcVlrProd();
 				calcTot();
 				txtVlrDescItOrc.setAtivo(false);
@@ -450,40 +451,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			calcTot();
 		}
 	}
-
-	public void beforeCarrega(CarregaEvent cevt) {
-		if (cevt.getListaCampos() == lcProd2)
-			lcProd.edit();
-	}
-
-	public void afterPost(PostEvent pevt) {
-		lcOrc2.carregaDados(); //Carrega os Totais
-	}
-
-	public void afterCarrega(CarregaEvent cevt) {
-		if (cevt.getListaCampos() == lcDet) {
-			lcOrc2.carregaDados();//Carrega os Totais
-		} else if ((cevt.getListaCampos() == lcProd)
-				|| (cevt.getListaCampos() == lcProd2)) {
-			if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-				buscaPreco();
-			}
-		} else if (cevt.getListaCampos() == lcCampos) {
-			String s = txtCodOrc.getVlrString();
-			lcOrc2.carregaDados();//Carrega os Totais
-			txtCodOrc.setVlrString(s);
-		} else if (cevt.getListaCampos() == lcCli ) {
-			if ( ((Boolean)oPrefs[6]).booleanValue() ) {
-				if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
-					iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-					mostraObsCli(iCodCliAnt,
-								 new Point( this.getX(),this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10),
-								 new Dimension( spTab.getWidth(), 150 ) );
-				}
-			}
-		}
-	}
-
+	
 	public void keyPressed(KeyEvent kevt) {
 		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) {
 			bCtrl = true;
@@ -847,12 +815,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private Object[] prefs() {
-		Object[] oRetorno = new Object[7];
+		Object[] oRetorno = new Object[8];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND "
+			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,"
+			     + "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC "
 				 + "FROM SGPREFERE1 P "
 				 + "WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
@@ -894,6 +863,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					oRetorno[6] = new Boolean(true);
 				else
 					oRetorno[6] = new Boolean(false);
+				if(rs.getString("ReCalcPCOrc").equals("S"))
+					oRetorno[7] = new Boolean(true);
+				else
+					oRetorno[7] = new Boolean(false);
 				
 				sOrdNota = rs.getString("OrdNota");
 				
@@ -939,15 +912,63 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		super.keyReleased(kevt);
 	}
 
+	public void beforeCarrega(CarregaEvent cevt) {
+		if (cevt.getListaCampos() == lcProd2)
+			lcProd.edit();
+	}
+
+	public void afterCarrega(CarregaEvent cevt) {
+		if (cevt.getListaCampos() == lcDet) {
+			lcOrc2.carregaDados();//Carrega os Totais
+		} else if ((cevt.getListaCampos() == lcProd)
+				|| (cevt.getListaCampos() == lcProd2)) {
+			if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
+				calcVlrItem(false,null);
+			}
+		} else if (cevt.getListaCampos() == lcCampos) {
+			String s = txtCodOrc.getVlrString();
+			lcOrc2.carregaDados();//Carrega os Totais
+			txtCodOrc.setVlrString(s);
+		} else if (cevt.getListaCampos() == lcCli ) {
+			if ( ((Boolean)oPrefs[6]).booleanValue() ) {
+				if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
+					iCodCliAnt = txtCodCli.getVlrInteger().intValue();
+					mostraObsCli(iCodCliAnt,
+								 new Point( this.getX(),this.getY() + pinCab.getHeight() + pnCab.getHeight() + 10),
+								 new Dimension( spTab.getWidth(), 150 ) );
+				}
+			}
+			if(((Boolean) oPrefs[7]).booleanValue()){
+			    setReCalcPreco(true);
+			}
+		} else if(cevt.getListaCampos() == lcPlanoPag)
+		    if(((Boolean) oPrefs[7]).booleanValue()){
+			    setReCalcPreco(true);
+		    }
+	}
+	
 	public void beforePost(PostEvent evt) {
 		if ((evt.getListaCampos() == lcCampos) && (lcCampos.getStatus() == ListaCampos.LCS_INSERT)) {
 			if(((Boolean) oPrefs[5]).booleanValue())
-				testaCodPK("VDORCAMENTO", txtCodOrc);
+				testaCodPK("VDORCAMENTO", txtCodOrc);			
 			txtStatusOrc.setVlrString("*");
+		} else if(evt.getListaCampos() == lcCampos){
+		    if(podeReCalcPreco())
+			    calcVlrItem(true,"VDORCAMENTO");
 		}
+    	setReCalcPreco(false);
+	}
+
+	public void afterPost(PostEvent pevt) {
+		lcOrc2.carregaDados(); //Carrega os Totais
 	}
 
 	public void beforeDelete(DeleteEvent devt) {
+	}
+
+	public void afterDelete(DeleteEvent devt) {
+		if (devt.getListaCampos() == lcDet)
+			lcOrc2.carregaDados();
 	}
 
 	public void beforeInsert(InsertEvent ievt) {
@@ -960,11 +981,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			clVenc.add(Calendar.DATE, 15);
 			txtDtVencOrc.setVlrDate(clVenc.getTime());
 		}
-	}
-
-	public void afterDelete(DeleteEvent devt) {
-		if (devt.getListaCampos() == lcDet)
-			lcOrc2.carregaDados();
 	}
 
 	public void exec(int iCodOrc) {
@@ -994,13 +1010,20 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 	public int[] getParansPreco() {
 		int[] iRetorno = { txtCodProd.getVlrInteger().intValue(),
-				txtCodCli.getVlrInteger().intValue(), Aplicativo.iCodEmp,
+				txtCodCli.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
 				ListaCampos.getMasterFilial("VDCLIENTE"),
-				txtCodPlanoPag.getVlrInteger().intValue(), Aplicativo.iCodEmp,
+				txtCodPlanoPag.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
 				ListaCampos.getMasterFilial("FNPLANOPAG"),
-				((Integer) oPrefs[3]).intValue(), Aplicativo.iCodEmp,
-				ListaCampos.getMasterFilial("EQTIPOMOV"), Aplicativo.iCodEmp,
-				Aplicativo.iCodFilial };
+				((Integer) oPrefs[3]).intValue(), 
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("EQTIPOMOV"), 
+				Aplicativo.iCodEmp,
+				Aplicativo.iCodFilial,
+				txtCodOrc.getVlrInteger().intValue(),
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("VDORCAMENTO") };
 		return iRetorno;
 
 	}
