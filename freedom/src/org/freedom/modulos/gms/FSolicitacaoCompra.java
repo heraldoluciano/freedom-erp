@@ -113,7 +113,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private JTextFieldPad txtSituacaoItComp = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtSituacaoIt = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtCodUnid = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-	private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	//private JTextFieldFK txtDescUnid = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JRadioGroup rgPriod = null;
 	private Vector vLabsTipo = new Vector();
 	private Vector vValsTipo = new Vector();
@@ -124,7 +124,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 	private ListaCampos lcProd2 = new ListaCampos(this, "PD");
 	private ListaCampos lcCC = new ListaCampos(this, "CC");
 	private ListaCampos lcUsu = new ListaCampos(this, "UU");
-	private ListaCampos lcUnid = new ListaCampos(this, "UD");
+	//private ListaCampos lcUnid = new ListaCampos(this, "UD");
 	
 	String sSitItSol = txtSituacaoIt.getVlrString();
 	String sOrdSol = "";
@@ -182,7 +182,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
 				ListaCampos.DB_SI, true));		
 		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
-				ListaCampos.DB_SI, txtDescUnid, false));		
+				ListaCampos.DB_SI, false));		
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
@@ -197,7 +197,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
 				ListaCampos.DB_SI, true));		
 		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
-				ListaCampos.DB_SI, txtDescUnid, false));		
+				ListaCampos.DB_SI, false));		
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
 		lcProd2.setWhereAdic(sWhereAdicProd);
@@ -239,14 +239,14 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		lcUsu.setReadOnly(true);
 		txtIDUsu.setTabelaExterna(lcUsu);
 
-		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
+		/*lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
 				ListaCampos.DB_PK, true));
 		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid",
 				"Unidade", ListaCampos.DB_SI, false));
 		lcUnid.montaSql(false, "UNIDADE", "EQ");
 		lcUnid.setReadOnly(true);
 		lcUnid.setQueryCommit(false);
-		txtCodUnid.setTabelaExterna(lcUnid);		
+		txtCodUnid.setTabelaExterna(lcUnid); */		
 		
 		vValsTipo.addElement("M");
 		vValsTipo.addElement("A");
@@ -338,6 +338,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		setPainel(pinDet, pnDet);
 		setListaCampos(lcDet);
 		setNavegador(navRod);
+		txtCodUnid.setSoLeitura(true);
 
 		adicCampo(txtCodItSolicitacao, 7, 20, 30, 20, "CodItSol", "Item",
 				ListaCampos.DB_PK, true);
@@ -366,7 +367,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		adicDB(rgPriod, 513, 20, 100, 50, "PriorItSol", "Prioridade:", true);
 		adicCampo(txtQtdItSolicitado, 297, 60, 80, 20, "QtdItSol", "Qtd.solic.",
 				ListaCampos.DB_SI, true);
-		adic(txtDescUnid, 380, 60, 100, 20);
+		adic(txtCodUnid, 380, 60, 100, 20);
 
 		adicCampo(txtQtdItAprovado, 210, 60, 80, 20, "QtdAprovItSol", "Qtd.aprov.",
 				ListaCampos.DB_SI, false);
@@ -1098,7 +1099,7 @@ public class FSolicitacaoCompra extends FDetalhe implements PostListener,
 		bPrefs = prefs();
 		montaDetalhe();
 
-		lcUnid.setConexao(cn);
+		//lcUnid.setConexao(cn);
 		lcProd.setConexao(cn);
 		lcProd2.setConexao(cn);
 		lcCC.setConexao(cn);
