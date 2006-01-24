@@ -97,7 +97,7 @@ public class FConsSolItem extends FFilho implements ActionListener {
 	public FConsSolItem() {
 		super(false);
 		setTitulo("Sumário de Solicitações de Compra");
-		setAtribos(10, 10, 555, 480);
+		setAtribos(10, 10, 795, 480);
 
 		btCalc.setToolTipText("Criar cotação sumarizada");
 		btCalc.addActionListener(this);

@@ -146,7 +146,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 
 	public FCotacaoItens() {
 		setTitulo("Cotação Sumarizada de Preços");
-		setAtribos(15, 10, 763, 555);
+		setAtribos(15, 10, 763, 455);
 	
 		pnMaster.remove(2);
 		pnGImp.removeAll();
@@ -342,7 +342,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		btProduto.setEnabled(false);
 
 		txtIDUsu.setNaoEditavel(true);
-
 		
 		setListaCampos(true, "SUMSOL", "CP");
 		lcCampos.setQueryInsert(false);	
@@ -358,13 +357,11 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 	}
 
 	private void montaDetalhe() {
-		pinDet = new JPanelPad(740, 180);
+		pinDet = new JPanelPad(740, 100);
 		setPainel(pinDet, pnDet);
-		setAltDet(180);
+		setAltDet(100);
 		setListaCampos(lcDet);
 	
-		lcDet.setPodeExc(false);
-		lcDet.setPodeIns(false);
 		txtCodItSolicitacao.setEditable(false);
 	
 		nav.setName("Mestre");
@@ -382,9 +379,6 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		navRod.setListaCampos(lcDet);
 		lcDet.setNavegador(navRod);
 		lcDet.setTabela(tab);
-	
-		lcDet.setPodeExc(false);
-		lcDet.setPodeIns(false);
 
 		txtQtdAprovItSol.setEditable(false);
 	
@@ -394,7 +388,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		txtRefProd2.setSoLeitura(true);
 		txtCodProd2.setSoLeitura(true);
 		
-		adicCampo(txtCodCot, 7, 20, 77, 20, "CoditSol", "Cód.it.Sol.",
+		adicCampo(txtCodCot, 7, 20, 77, 20, "CoditSumSolCot", "Cód.it.Sol.",
 				ListaCampos.DB_PK, true);
 		if (comRef()) {
 			adic(txtRefProd2, 187, 60, 87, 20);
@@ -417,7 +411,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		adicCampo(txtPrecoCot, 97, 60, 87, 20, "PrecoCot", "Preco.Cot.",
 				ListaCampos.DB_SI, false);
 	
-		lcDet.montaSql(true, "ITSUMSOL", "CP");
+		lcDet.montaSql(true, "ITSUMSOLCOT", "CP");
 		lcDet.setQueryInsert(false);
 		lcDet.montaTab();
 
