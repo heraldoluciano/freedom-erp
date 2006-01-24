@@ -79,6 +79,7 @@ public abstract class FVD extends FDetalhe {
         	Vector vCodItem = new Vector();
         	Vector vQtdItem = new Vector();
         	Vector vDescProd = new Vector();
+        	Vector vPercDescProd = new Vector();
         	Vector vCodProd = new Vector();
         	Vector vPrecoProd = new Vector();
         	BigDecimal bdBuscaPreco = null;
@@ -87,21 +88,22 @@ public abstract class FVD extends FDetalhe {
         	BigDecimal bdVlrLiqProd = null;
         	BigDecimal bdQtdItem = null;
         	BigDecimal bdDescProd = null;
+        	BigDecimal bdPercDescProd = null;
         	int[] iParans;
         	try {
           	  
         	    iParans = getParansPreco();
         	    
         	    if(tabela.equalsIgnoreCase("VDVENDA")) {
-	        	    sSQLSelect = "SELECT CODITVENDA, CODPROD, PRECOITVENDA, QTDITVENDA, VLRDESCITVENDA FROM VDITVENDA " +
+	        	    sSQLSelect = "SELECT CODITVENDA, CODPROD, PRECOITVENDA, QTDITVENDA, PERCDESCITVENDA, VLRDESCITVENDA FROM VDITVENDA " +
 	        	    	   		  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='V'";
-	        	    sSQLUpdate = "UPDATE VDITVENDA SET PRECOITVENDA=?, VLRPRODITVENDA=?, VLRLIQITVENDA=?  " +
+	        	    sSQLUpdate = "UPDATE VDITVENDA SET PRECOITVENDA=?, VLRPRODITVENDA=?, VLRLIQITVENDA=?, VLRDESCITVENDA=?  " +
 	        	    			 "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND CODITVENDA=? AND TIPOVENDA='V'";
         	    }
         	    else if(tabela.equalsIgnoreCase("VDORCAMENTO")) {
-	        	    sSQLSelect = "SELECT CODITORC, CODPROD, PRECOITORC, QTDITORC, VLRDESCITORC FROM VDITORCAMENTO " +
+	        	    sSQLSelect = "SELECT CODITORC, CODPROD, PRECOITORC, QTDITORC, PERCDESCITORC, VLRDESCITORC FROM VDITORCAMENTO " +
 	 	    	   		   		  "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=?";
-	        	    sSQLUpdate = "UPDATE VDITORCAMENTO SET PRECOITORC=?, VLRPRODITORC=?, VLRLIQITORC=? " +
+	        	    sSQLUpdate = "UPDATE VDITORCAMENTO SET PRECOITORC=?, VLRPRODITORC=?, VLRLIQITORC=?, VLRDESCITORC=? " +
 	    			 			 "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
         	    }        	    
         	    
@@ -117,7 +119,8 @@ public abstract class FVD extends FDetalhe {
         	        vCodProd.addElement(new Integer(rs.getInt(2)));
         	        vPrecoProd.addElement(new BigDecimal(rs.getFloat(3)));
         	        vQtdItem.addElement(new BigDecimal(rs.getFloat(4)));
-        	        vDescProd.addElement(new BigDecimal(rs.getFloat(5)));
+        	        vPercDescProd.addElement(new BigDecimal(rs.getFloat(5)));
+        	        vDescProd.addElement(new BigDecimal(rs.getFloat(6)));
         	    }        
         	    rs.close();
         	    ps.close();
@@ -126,25 +129,32 @@ public abstract class FVD extends FDetalhe {
         	    for(int i=0; i<vCodItem.size(); i++) {
         	        iParans[0] = ((Integer)vCodProd.elementAt(i)).intValue();
 
-        	        bdBuscaPreco = buscaPreco(iParans);
         	        bdQtdItem = (BigDecimal)vQtdItem.elementAt(i);
-        	        bdDescProd = ((BigDecimal)vDescProd.elementAt(i)).setScale(Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+        	        bdBuscaPreco = buscaPreco(iParans);
         	        bdPrecoProd = ((BigDecimal)vPrecoProd.elementAt(i)).setScale(Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
         	        
         	        // se o preço for diferente altera.
         	        if(bdPrecoProd.floatValue()!=bdBuscaPreco.floatValue()) {
 
-            	        bdVlrBrutoProd = calcVlrProd(bdBuscaPreco,bdQtdItem);
+        	        	bdPercDescProd = ((BigDecimal)vPercDescProd.elementAt(i)).setScale(Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);        	        	
+        	        	bdVlrBrutoProd = calcVlrProd(bdBuscaPreco,bdQtdItem);
+
+        	        	if(bdPercDescProd.floatValue()>0)
+        	        		bdDescProd = (bdVlrBrutoProd.multiply(bdPercDescProd).divide(new BigDecimal(100),Aplicativo.casasDecFin,BigDecimal.ROUND_HALF_UP));
+        	        	else
+        	        		bdDescProd = ((BigDecimal)vDescProd.elementAt(i)).setScale(Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+
             	        bdVlrLiqProd = calcVlrTotalProd(bdVlrBrutoProd,bdDescProd);
         	            
 	        	        ps2 = con.prepareStatement(sSQLUpdate);
 	        	        ps2.setBigDecimal(1,bdBuscaPreco);//preço do produto
 	        	        ps2.setBigDecimal(2,bdVlrBrutoProd);//valor do produto
 	        	        ps2.setBigDecimal(3,bdVlrLiqProd);//valor liquido do produto
-	            	    ps2.setInt(4,iParans[13]);//código da empresa
-	            	    ps2.setInt(5,iParans[14]);//código da filial
-	            	    ps2.setInt(6,iParans[12]);//código da PK
-	            	    ps2.setInt(7,((Integer)vCodItem.elementAt(i)).intValue());//código do item
+	        	        ps2.setBigDecimal(4,bdDescProd);//valor do desconto do produto
+	            	    ps2.setInt(5,iParans[13]);//código da empresa
+	            	    ps2.setInt(6,iParans[14]);//código da filial
+	            	    ps2.setInt(7,iParans[12]);//código da PK
+	            	    ps2.setInt(8,((Integer)vCodItem.elementAt(i)).intValue());//código do item
 	            	    ps2.executeUpdate();
         	        }
         	    }        	    
@@ -171,6 +181,7 @@ public abstract class FVD extends FDetalhe {
             	vCodItem = null;
             	vQtdItem = null;
             	vDescProd = null;
+            	vPercDescProd = null;
             	vCodProd = null;
             	vPrecoProd = null;
             	bdBuscaPreco = null;
@@ -179,6 +190,7 @@ public abstract class FVD extends FDetalhe {
             	bdVlrLiqProd = null;
             	bdQtdItem = null;
             	bdDescProd = null;
+            	bdPercDescProd = null;
             	iParans = null;
         	}
         }        

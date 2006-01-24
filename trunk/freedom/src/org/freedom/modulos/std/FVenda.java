@@ -1261,6 +1261,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					}
 				}
 				if(bPrefs[15]) {
+				    setReCalcPreco(true);
 				    //calcImpostos(true);
 				}
 			} else if(cevt.getListaCampos() == lcPlanoPag)
@@ -2315,6 +2316,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	public void beforePost(PostEvent pevt) {
 		PreparedStatement psTipoMov = null;
 		ResultSet rsTipoMov = null;
+
+		if(pevt.getListaCampos() == lcCampos) {
+		    if(podeReCalcPreco()) {
+			    calcVlrItem(true,"VDVENDA");
+			    lcDet.carregaDados();
+			    calcImpostos(true);
+			    lcDet.edit();
+			    lcDet.post();
+		    }
+		    setReCalcPreco(false);
+		}
 		if ((pevt.getListaCampos() == lcCampos)
 				&& (lcCampos.getStatus() == ListaCampos.LCS_INSERT)) {
 			if (txtESTipoMov.getVlrString().equals("E")) {
@@ -2367,12 +2379,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				testaCodPK("VDVENDA",txtCodVenda);
 			txtStatusVenda.setVlrString("*");
 		} 
-		else if(pevt.getListaCampos() == lcCampos) {
-		    if(podeReCalcPreco()) {
-			    calcVlrItem(true,"VDVENDA");
-		    }
-		    setReCalcPreco(false);
-		}
 		else if (pevt.getListaCampos() == lcDet) {
 			if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
 				if (pevt.getListaCampos() == lcDet) {
