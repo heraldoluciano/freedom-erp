@@ -1,10 +1,10 @@
  /**
  * @version 10/12/2003 <BR>
- * @author Setpoint Informática Ltda./Marco Antonio Sanchez <BR>
+ * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  *
  * Projeto: Freedom <BR>
  * Pacote: leiautes <BR>
- * Classe: @(#)NFBuzzi.java <BR>
+ * Classe: @(#)NFBuzzi2.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -58,14 +58,16 @@ public class NFBuzzi2 extends Layout {
       imp.limpaPags();
       boolean bNat = true;
       vClfisc.addElement("");
+      
+      if (cab.next()) {
+          sNumNota = cab.getInt(NF.C_DOC)+"";
+      } 
+      else {
+          sNumNota = Funcoes.strZero(""+iNumNota,6);
+      }
+      
       while (itens.next()) {
-         
-         if (cab.next()) {
-            sNumNota = cab.getInt(NF.C_DOC)+"";
-         } 
-         else {
-            sNumNota = Funcoes.strZero(""+iNumNota,6);
-         }
+                  
          for (int i=0; i<6; i++) {
            if (bFat) {
              if (parc.next()) {
@@ -138,13 +140,7 @@ public class NFBuzzi2 extends Layout {
            imp.say(imp.pRow()+0,83,sVencs[4]);             
 
            imp.say(imp.pRow()+0,102,sVals[5]);
-           imp.say(imp.pRow()+0,130,sVencs[5]);             
-		   
-		 //  imp.say(imp.pRow()+0,05,rs.getString("CidCob"));	   
-		 //  imp.say(imp.pRow()+0,40,rs.getString("EndCob") != null ? rs.getString("EndCob").trim()+", " + (rs.getString("NumCob") != null ? rs.getString("NumCob") : "") : "");
-		   
-		  // String sValorTotLiqVenda = Extenso.extenso(rs.getDouble("VlrLiqVenda"),"real","reais","centavo","centavos").toUpperCase(); 
-		//   imp.say(imp.pRow()+1,3,sValorTotLiqVenda);
+           imp.say(imp.pRow()+0,130,sVencs[5]);    
            imp.say(imp.pRow()+3,0,"");
          }
          
@@ -194,8 +190,6 @@ public class NFBuzzi2 extends Layout {
             imp.say(imp.pRow()+0,92,Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
             imp.say(imp.pRow()+0,106,Funcoes.strDecimalToStrCurrency(13,2,itens.getFloat(NF.C_VLRLIQITPED)+""));
             imp.say(imp.pRow()+0,122,""+itens.getFloat(NF.C_PERCICMSITPED));
-            //imp.say(imp.pRow()+0,120,""+rs.getDouble("PercIPIItvenda"));
-		    //imp.say(imp.pRow()+0,126,Funcoes.strDecimalToStrCurrency(7,2,rs.getString("VlrIPIItvenda")));
          }
         else {
             Vector vDesc = new Vector();
