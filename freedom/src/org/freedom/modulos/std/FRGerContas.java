@@ -58,7 +58,7 @@ public class FRGerContas extends FRelatorio  {
   private JTextFieldFK txtDescGrup2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtPercFat = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldPad txtPercFat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,8,Aplicativo.casasDecFin);
   private JLabelPad lbAno = new JLabelPad("Ano");
   private JLabelPad lbPercFat = new JLabelPad("% de relevância");
   private JLabelPad lbCodVend = new JLabelPad("Cód.comiss.");
@@ -109,22 +109,21 @@ public class FRGerContas extends FRelatorio  {
     vLabOrdemRel.addElement("Cód.cli.");
     vLabOrdemRel.addElement("Razão");    
     vLabOrdemRel.addElement("Cidade");
-    //vLabOrdemRel.addElement("Categoria");
     vLabOrdemRel.addElement("Classif.");
     vLabOrdemRel.addElement("Valor");
     
     vValOrdemRel.addElement("C");    
     vValOrdemRel.addElement("R");
     vValOrdemRel.addElement("D");
-    //vValOrdemRel.addElement("T");
     vValOrdemRel.addElement("S");
     vValOrdemRel.addElement("V");
     
     rgOrdemRel = new JRadioGroup(1,5,vLabOrdemRel,vValOrdemRel);
-    rgOrdemRel.setVlrString("C");
+    rgOrdemRel.setVlrString("S");
     
     rgOrdemRel2 = new JRadioGroup(1,5,vLabOrdemRel,vValOrdemRel);
-    rgOrdemRel2.setVlrString("R");
+    rgOrdemRel2.setVlrString("V");
+    
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
 	lcGrup1.add(new GuardaCampo(txtDescGrup1, "DescGrup","Descrição do gurpo", ListaCampos.DB_SI, false));
 	lcGrup1.montaSql(false, "GRUPO", "EQ");
@@ -273,9 +272,6 @@ public class FRGerContas extends FRelatorio  {
 			else if (sOrdemRel.equals("D")) {
 				sOrderBy = "3";
 			}
-			//else if (sOrdemRel.equals("T")) {
-				//sOrderBy = "4";
-			//}
 			else if (sOrdemRel.equals("S")) {
 				sOrderBy = "5";
 			}
@@ -292,9 +288,6 @@ public class FRGerContas extends FRelatorio  {
 			else if ((sOrdemRel2.equals("D")) & (!sOrdemRel2.equals(sOrdemRel))) {
 				sOrderBy = sOrderBy+",3,18";
 			}
-			//else if ((sOrdemRel2.equals("T")) & (!sOrdemRel2.equals(sOrdemRel)))  {
-				//sOrderBy = sOrderBy+",4";
-			//}
 			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
 				sOrderBy = sOrderBy+",5,18";
 			}
@@ -334,7 +327,7 @@ public class FRGerContas extends FRelatorio  {
 					  +"WHERE V.CODEMP=? AND V.CODFILIAL=? AND V.DTEMITVENDA BETWEEN ? AND ? "
 					  +"AND  IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA "
 					  +"AND P.CODEMP=IV.CODEMPPD AND P.CODFILIAL=IV.CODFILIALPD AND P.CODPROD=IV.CODPROD "
-					  +"AND G.CODEMP=P.codEMPGp AND G.CODFILIAL=P.codfilialgp "
+					  +"AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
 					  +"AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
 					  +"AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
 					  + sWhereTM + 

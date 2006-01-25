@@ -20,7 +20,6 @@
 
 package org.freedom.layout;
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
@@ -30,7 +29,6 @@ import org.freedom.funcoes.Funcoes;
 public class NFPomiagro3 extends Layout {
   public boolean imprimir(NF nf,ImprimeOS imp) {
     boolean retorno = super.imprimir(nf, imp);
-    Calendar cHora = Calendar.getInstance();
     int iNumNota = 0;
     int iItImp = 0;
     int iLinPag = imp.verifLinPag("NF");
@@ -302,7 +300,7 @@ public class NFPomiagro3 extends Layout {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,12,cab.getString(NF.C_CODVEND));
            imp.say(imp.pRow()+0,21,cab.getString(NF.C_CODCLCOMIS));
-           imp.say(imp.pRow()+0,30,Funcoes.strDecimalToStrCurrency(5,casasDec,""+cab.getFloat(NF.C_PERCMCOMISPED)));
+           imp.say(imp.pRow()+0,30,Funcoes.strDecimalToStrCurrency(5,casasDec,(Funcoes.strDecimalToBigDecimal(2,""+cab.getFloat(NF.C_PERCMCOMISPED))).toString()));
            imp.say(imp.pRow()+0,48,""+cab.getInt(NF.C_CODPED));
            imp.say(imp.pRow()+0,66,""+iNumNota);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());

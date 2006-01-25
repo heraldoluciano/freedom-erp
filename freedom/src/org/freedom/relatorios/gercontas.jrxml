@@ -73,12 +73,14 @@
 	AND IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA
         AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV
         AND TM.SOMAVDTIPOMOV='S') AS VENDASANTERIOR2,
+  (SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM 
+	WHERE CM.CODEMP=CLI.CODEMP AND CM.CODFILIAL=CLI.CODFILIAL 
+	AND CM.CODCLI=CLI.CODCLI AND ANOMETAVEND=$P{ANO}) AS VENDASMETA 
 
-
-  (SELECT COALESCE(CM.VLRMETAVEND,0) FROM VDCLIMETAVEND CM WHERE CM.CODEMP=CLI.CODEMP AND CM.CODFILIAL=CLI.CODFILIAL AND CM.CODCLI=CLI.CODCLI AND ANOMETAVEND=$P{ANO} AS VENDASMETA 
-FROM VDCLIENTE CLI, VDCLASCLI CLA, VDTIPOCLI TC WHERE CLA.CODEMP=CLI.CODEMPCC AND CLA.CODFILIAL=CLI.CODFILIALCC AND CLA.CODCLASCLI=CLI.CODCLASCLI 
+FROM VDCLIENTE CLI, VDCLASCLI CLA, VDTIPOCLI TC 
+WHERE CLA.CODEMP=CLI.CODEMPCC AND CLA.CODFILIAL=CLI.CODFILIALCC AND CLA.CODCLASCLI=CLI.CODCLASCLI 
 AND TC.CODEMP=CLI.CODEMPTC AND TC.CODFILIAL=CLI.CODFILIALTC AND TC.CODTIPOCLI=CLI.CODTIPOCLI
-AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD} and $P{VLRRELEV}>0
+AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD} AND $P{VLRRELEV}>=0
 ORDER BY 2]]></queryString>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
@@ -97,18 +99,10 @@ ORDER BY 2]]></queryString>
 	<field name="OUT" class="java.lang.Integer"/>
 	<field name="NOV" class="java.lang.Integer"/>
 	<field name="DEZ" class="java.lang.Integer"/>
-	<field name="VENDASATUAL" class="java.lang.Double">
-		<fieldDescription><![CDATA[Montante de vendas no ano atual]]></fieldDescription>
-	</field>
-	<field name="VENDASANTERIOR" class="java.lang.Double">
-		<fieldDescription><![CDATA[Montante de vendas no ano anterior]]></fieldDescription>
-	</field>
-	<field name="VENDASMETA" class="java.lang.Double">
-		<fieldDescription><![CDATA[Montante de vendas estimada para o ano seguinte]]></fieldDescription>
-	</field>
-	<field name="VENDASANTERIOR2" class="java.lang.Double">
-		<fieldDescription><![CDATA[Montante de vendas no segundo ano anterior]]></fieldDescription>
-	</field>
+	<field name="VENDASATUAL" class="java.lang.Double"/>
+	<field name="VENDASANTERIOR" class="java.lang.Double"/>
+	<field name="VENDASANTERIOR2" class="java.lang.Double"/>
+	<field name="VENDASMETA" class="java.lang.Double"/>
 	<variable name="TOTJAN" class="java.lang.Integer" resetType="Report" incrementType="Column" calculation="Sum">
 		<variableExpression><![CDATA[$F{JAN}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
@@ -1220,8 +1214,7 @@ new Double(0)]]></variableExpression>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean(
-	(($F{VENDASATUAL}.doubleValue())>=($P{VLRRELEV}.doubleValue())) || 
-	($P{VLRRELEV}.doubleValue()==0.00)
+	($F{VENDASATUAL}.doubleValue())<=($P{VLRRELEV}.doubleValue())
 )]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2285,9 +2278,9 @@ new Double(0)]]></variableExpression>
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="168"
+						x="151"
 						y="6"
-						width="62"
+						width="79"
 						height="10"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -2302,7 +2295,7 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Total de visitas:]]></text>
+				<text><![CDATA[Total de contatos:]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
