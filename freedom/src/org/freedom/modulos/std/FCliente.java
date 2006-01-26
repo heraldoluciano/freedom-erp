@@ -24,6 +24,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -78,7 +80,7 @@ import org.freedom.telas.FAndamento;
 import org.freedom.telas.FTabDados;
 
 public class FCliente extends FTabDados implements RadioGroupListener, PostListener, ActionListener, 
-               TabelaSelListener, ChangeListener, CarregaListener, InsertListener {
+               TabelaSelListener, ChangeListener, CarregaListener, InsertListener, FocusListener {
 
   private static final long serialVersionUID = 1L;
   private JTextFieldPad txtAno = new JTextFieldPad(JTextFieldPad.TP_INTEGER,4,0);
@@ -640,6 +642,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
     tpnCont.setTabPlacement(SwingConstants.BOTTOM);
 	tpnCont.add("Historico",pinHistorico);
 	tpnCont.add("Lançamento de Contatos",pinContatos);
+  	tpnCont.addChangeListener(this);
 	
 	setPainel(pinContatos);
 	adicTab("Contatos",pnCto);
@@ -660,6 +663,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pnCont.adic(txtAno,7,20,80,20);
 	pnCont.adic(btMudaTudo,367,15,150,30);
 	  	  	  
+	txtAno.addFocusListener(this);
 	txtAno.setVlrInteger(new Integer(Calendar.getInstance().get(Calendar.YEAR)));
 	 
 	JLabelPad lbMes1 = new JLabelPad("   Janeiro");
@@ -672,11 +676,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes1.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes1.adic(txtNovaQtdContJan,80,30,60,20);
 	pinMes1.adic(btSetaQtdJan,143,30,20,20);
-	//pinMes1.adic(btConsHisJan,143,41,20,20);
 	btSetaQtdJan.setBorder(null);
-	//btConsHisJan.setBorder(null);
 	btSetaQtdJan.setToolTipText("Gera contatos");
-	//btConsHisJan.setToolTipText("Visualiza contatos");
 	pinMes1.setBorder( BorderFactory.createEtchedBorder());
 		  
 	JLabelPad lbMes2 = new JLabelPad("   Fevereiro");
@@ -689,11 +690,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes2.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes2.adic(txtNovaQtdContFev,80,30,60,20);
 	pinMes2.adic(btSetaQtdFev,143,30,20,20);
-	//pinMes2.adic(btConsHisFev,143,41,20,20);
 	btSetaQtdFev.setBorder(null);
-	//btConsHisFev.setBorder(null);
 	btSetaQtdFev.setToolTipText("Gera contatos");
-	//btConsHisFev.setToolTipText("Visualiza contatos");
 	  
 	pinMes2.setBorder( BorderFactory.createEtchedBorder());	  
 	JLabelPad lbMes3 = new JLabelPad("   Março");
@@ -707,11 +705,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes3.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes3.adic(txtNovaQtdContMar,80,30,60,20);
 	pinMes3.adic(btSetaQtdMar,143,30,20,20);	
-	//pinMes3.adic(btConsHisMar,143,41,20,20); 
 	btSetaQtdMar.setBorder(null);
-	//btConsHisMar.setBorder(null);
 	btSetaQtdMar.setToolTipText("Gera contatos");
-	//btConsHisMar.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes4 = new JLabelPad("   Abril");
 	lbMes4.setOpaque(true);
@@ -724,11 +719,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes4.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes4.adic(txtNovaQtdContAbr,80,30,60,20);
 	pinMes4.adic(btSetaQtdAbr,143,30,20,20);	
-	//pinMes4.adic(btConsHisAbr,143,41,20,20);
 	btSetaQtdAbr.setBorder(null);
-	//btConsHisAbr.setBorder(null);
 	btSetaQtdAbr.setToolTipText("Gera contatos");
-	//btConsHisAbr.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes5 = new JLabelPad("   Maio");
 	lbMes5.setOpaque(true);
@@ -741,11 +733,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes5.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes5.adic(txtNovaQtdContMai,80,30,60,20);
 	pinMes5.adic(btSetaQtdMai,143,30,20,20);
-	//pinMes5.adic(btConsHisMai,143,41,20,20);
 	btSetaQtdMai.setBorder(null);
-	//btConsHisMai.setBorder(null);
 	btSetaQtdMai.setToolTipText("Gera contatos");
-	//btConsHisMai.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes6 = new JLabelPad("   Junho");
 	lbMes6.setOpaque(true);
@@ -758,11 +747,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes6.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes6.adic(txtNovaQtdContJun,80,30,60,20);
 	pinMes6.adic(btSetaQtdJun,143,30,20,20);
-	//pinMes6.adic(btConsHisJun,143,41,20,20);
 	btSetaQtdJun.setBorder(null);
-	//btConsHisJun.setBorder(null);
 	btSetaQtdJun.setToolTipText("Gera contatos");
-	//btConsHisJun.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes7 = new JLabelPad("   Julho");
 	lbMes7.setOpaque(true);
@@ -775,11 +761,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes7.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes7.adic(txtNovaQtdContJul,80,30,60,20);
 	pinMes7.adic(btSetaQtdJul,143,30,20,20);
-	//pinMes7.adic(btConsHisJul,143,41,20,20);
 	btSetaQtdJul.setBorder(null);
-	//btConsHisJul.setBorder(null);
 	btSetaQtdJul.setToolTipText("Gera contatos");
-	//btConsHisJul.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes8 = new JLabelPad("   Agosto");
 	lbMes8.setOpaque(true);
@@ -792,11 +775,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes8.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes8.adic(txtNovaQtdContAgo,80,30,60,20);
 	pinMes8.adic(btSetaQtdAgo,143,30,20,20);
-	//pinMes8.adic(btConsHisAgo,143,41,20,20);
 	btSetaQtdAgo.setBorder(null);
-	//btConsHisAgo.setBorder(null);
 	btSetaQtdAgo.setToolTipText("Gera contatos");
-	//btConsHisAgo.setToolTipText("Visualiza contatos");
 	
 	JLabelPad lbMes9 = new JLabelPad("   Setembro");
 	lbMes9.setOpaque(true);
@@ -809,11 +789,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes9.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes9.adic(txtNovaQtdContSet,80,30,60,20);
 	pinMes9.adic(btSetaQtdSet,143,30,20,20);	
-	//pinMes9.adic(btConsHisSet,143,41,20,20);
 	btSetaQtdSet.setBorder(null);
-	//btConsHisSet.setBorder(null);
 	btSetaQtdSet.setToolTipText("Gera contatos");
-	//btConsHisSet.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes10 = new JLabelPad("   Outubro");
 	lbMes10.setOpaque(true);
@@ -826,11 +803,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes10.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes10.adic(txtNovaQtdContOut,80,30,60,20);
 	pinMes10.adic(btSetaQtdOut,143,30,20,20);
-	//pinMes10.adic(btConsHisOut,143,41,20,20);
 	btSetaQtdOut.setBorder(null);
-	//btConsHisOut.setBorder(null);
 	btSetaQtdOut.setToolTipText("Gera contatos");
-	//btConsHisOut.setToolTipText("Visualiza contatos");
 	  
 	JLabelPad lbMes11 = new JLabelPad("   Novembro");
 	lbMes11.setOpaque(true);
@@ -843,11 +817,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes11.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes11.adic(txtNovaQtdContNov,80,30,60,20);
 	pinMes11.adic(btSetaQtdNov,143,30,20,20);
-	//pinMes11.adic(btConsHisNov,143,41,20,20);	 
 	btSetaQtdNov.setBorder(null);
-	//btConsHisNov.setBorder(null);
 	btSetaQtdNov.setToolTipText("Gera contatos");
-	//btConsHisNov.setToolTipText("Visualiza contatos");
 	
 	JLabelPad lbMes12 = new JLabelPad("   Dezembro");
 	lbMes12.setOpaque(true);
@@ -860,11 +831,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	pinMes12.adic(new JLabelPad("Nova qtd."),80,10,60,20);
 	pinMes12.adic(txtNovaQtdContDez,80,30,60,20);
 	pinMes12.adic(btSetaQtdDez,143,30,20,20);	 
-	//pinMes12.adic(btConsHisDez,143,41,20,20);
 	btSetaQtdDez.setBorder(null);
-	//btConsHisDez.setBorder(null);
 	btSetaQtdDez.setToolTipText("Gera contatos");
-	//btConsHisDez.setToolTipText("Visualiza contatos");
 	
 	
 	  
@@ -889,21 +857,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
       lcMetaVend.setQueryCommit(false);
       tabMetaVend.setTamColuna(150,1);
       
-     
-     
-	  
-	  /*tConsHisJan.addActionListener(this);
-	  btConsHisFev.addActionListener(this);
-	  btConsHisMar.addActionListener(this);
-	  btConsHisAbr.addActionListener(this);
-	  btConsHisMai.addActionListener(this);
-	  btConsHisJun.addActionListener(this);
-	  btConsHisJul.addActionListener(this);
-	  btConsHisAgo.addActionListener(this);
-	  btConsHisSet.addActionListener(this);
-	  btConsHisOut.addActionListener(this);
-	  btConsHisNov.addActionListener(this);
-	  btConsHisDez.addActionListener(this);*/
 	  btSetaQtdJan.addActionListener(this);
 	  btSetaQtdFev.addActionListener(this);
 	  btSetaQtdMar.addActionListener(this);
@@ -989,16 +942,19 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   }
 
   private void buscaContatos(){
+	  PreparedStatement ps = null;
+	  ResultSet rs = null;
+	  String sSql = null;
 	  int iMes = 0;
 	  int iQtd = 0;
 	  try {
-		  String sSql = "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) "+
-			  			"FROM TKHISTORICO TK "+
-			  			"WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? AND " +
-			  			"CODEMPCL=? AND CODFILIALCL=? AND CODCLI=? " +
-			  			"GROUP BY 1 ORDER BY 1";
+		  sSql = "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) "+
+			  	 "FROM TKHISTORICO TK "+
+			  	 "WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? AND " +
+			  	 "CODEMPCL=? AND CODFILIALCL=? AND CODCLI=? " +
+			  	 "GROUP BY 1 ORDER BY 1";
 
-          PreparedStatement ps = con.prepareStatement(sSql);
+          ps = con.prepareStatement(sSql);
           ps.setInt(1,lcCampos.getCodEmp());
           ps.setInt(2,lcCampos.getCodFilial());
           ps.setInt(3,txtAno.getVlrInteger().intValue());
@@ -1006,7 +962,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
           ps.setInt(5,lcCampos.getCodFilial());
           ps.setInt(6,txtCodCli.getVlrInteger().intValue());          
 
-          ResultSet rs = ps.executeQuery();
+          rs = ps.executeQuery();
           
           while(rs.next()) {        	  
               iMes = rs.getInt(1);
@@ -1014,40 +970,79 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
               
               if(iMes==1){
             	  txtAntQtdContJan.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContJan.setVlrString("");
               }
               else if(iMes==2){
             	  txtAntQtdContFev.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContFev.setVlrString("");
               }             
               else if(iMes==3){
             	  txtAntQtdContMar.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContMar.setVlrString("");
               }
               else if(iMes==4){
             	  txtAntQtdContAbr.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContAbr.setVlrString("");
               }
               else if(iMes==5){
             	  txtAntQtdContMai.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContMai.setVlrString("");
               }
               else if(iMes==6){
             	  txtAntQtdContJun.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContJun.setVlrString("");
               }
               else if(iMes==7){
             	  txtAntQtdContJul.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContJul.setVlrString("");
               }
               else if(iMes==8) {
             	  txtAntQtdContAgo.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContAgo.setVlrString("");
               }
               else if(iMes==9){
             	  txtAntQtdContSet.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContSet.setVlrString("");
               }
               else if(iMes==10){
             	  txtAntQtdContOut.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContOut.setVlrString("");
               }
               else if(iMes==11){
             	  txtAntQtdContNov.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContNov.setVlrString("");
               }
               else if(iMes==12){
             	  txtAntQtdContDez.setVlrInteger(new Integer(iQtd));
+            	  txtNovaQtdContDez.setVlrString("");
               }
+          }
+          
+          if(iMes==0) {
+        	  txtAntQtdContJan.setVlrString("");
+        	  txtNovaQtdContJan.setVlrString("");
+        	  txtAntQtdContFev.setVlrString("");
+        	  txtNovaQtdContFev.setVlrString("");
+        	  txtAntQtdContMar.setVlrString("");
+        	  txtNovaQtdContMar.setVlrString("");
+        	  txtAntQtdContAbr.setVlrString("");
+        	  txtNovaQtdContAbr.setVlrString("");
+        	  txtAntQtdContMai.setVlrString("");
+        	  txtNovaQtdContMai.setVlrString("");
+        	  txtAntQtdContJun.setVlrString("");
+        	  txtNovaQtdContJun.setVlrString("");
+        	  txtAntQtdContJul.setVlrString("");
+        	  txtNovaQtdContJul.setVlrString("");
+        	  txtAntQtdContAgo.setVlrString("");
+        	  txtNovaQtdContAgo.setVlrString("");
+        	  txtAntQtdContSet.setVlrString("");
+        	  txtNovaQtdContSet.setVlrString("");
+        	  txtAntQtdContOut.setVlrString("");
+        	  txtNovaQtdContOut.setVlrString("");
+        	  txtAntQtdContNov.setVlrString("");
+        	  txtNovaQtdContNov.setVlrString("");
+        	  txtAntQtdContDez.setVlrString("");
+        	  txtNovaQtdContDez.setVlrString("");
           }
           
           rs.close();
@@ -1057,6 +1052,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  catch (Exception err) {
           Funcoes.mensagemErro(this,"Erro na busca de atendente vinculado ao vendedor.\n" + err.getMessage(),true,con,err);
 	  }	  	  
+	  finally {
+		  ps = null;
+		  rs = null;
+		  sSql = null;
+		  iMes = 0;
+		  iQtd = 0;
+	  }
   }
 
   
@@ -1418,21 +1420,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
       if(iCodAtende.compareTo(new Integer(0))>0){
 		  try {
-			 /* String sSql = "INSERT INTO tkhistorico (CODEMP,CODFILIAL,CODHISTTK,DESCHISTTK,SITHISTTK," +
-			  				"DATAHISTTK,HORAHISTTK,CODEMPCL,CODFILIALCL,CODCLI,CODEMPAE,CODFILIALAE,CODATEND,TIPOHISTTK) "+
-						    "VALUES(?,?,coalesce((SELECT MAX(CODHISTTK) FROM TKHISTORICO)+1,1)," +
-						    "'CONTATO','EF','"+sData+"' ,(CAST('NOW' AS TIME)),?,?,?,?,?,?,'V')";	 
-			  
-			  ps = con.prepareStatement(sSql);
-			  ps.setInt(1,Aplicativo.iCodEmp);
-			  ps.setInt(2,ListaCampos.getMasterFilial("TKHISTORICO"));
-			  ps.setInt(3,Aplicativo.iCodEmp);
-			  ps.setInt(4,ListaCampos.getMasterFilial("VDCLIENTE"));
-			  ps.setInt(5,txtCodCli.getVlrInteger().intValue());
-			  ps.setInt(6,Aplicativo.iCodEmp);
-			  ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));
-			  ps.setInt(8,iCodAtende.intValue());*/
-	
 			  String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,'"+sData+"','V')";
 			  ps = con.prepareStatement(sSQL);
 			  ps.setInt(1,Aplicativo.iCodEmp);
@@ -1446,8 +1433,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			  ps.setString(9,"EF");//status do historico
 	
 			  ps.execute();
-			  ps.close();			  
-			  con.commit();
+			  ps.close();		
+			  if (!con.getAutoCommit())
+                  con.commit();
 		  }
 		  catch (Exception err) {
 	          Funcoes.mensagemErro(this,"Erro ao inserir historicos para o cliente.\n" + err.getMessage(),true,con,err);
@@ -1576,8 +1564,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   public void afterCarrega(CarregaEvent cevt) {
     if (cevt.getListaCampos()==lcCampos) {
        carregaTabelaObs();
-       carregaTabHist();
+       txtAno.setVlrInteger(new Integer(Calendar.getInstance().get(Calendar.YEAR)));
        buscaContatos();
+       carregaTabHist();
     }
   }
 
@@ -2338,11 +2327,12 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
         Vector vVal = Funcoes.stringToVector(txaObs.getText());
         int iTam = vVal.size();
         for (int i=0;i<iTam;i++) {
-                System.out.println(i+" : "+vVal.elementAt(i));
+        	System.out.println(i+" : "+vVal.elementAt(i));
         }
     }
-    else if (evt.getSource() == btImp) 
-      imprimir(false);
+    else if (evt.getSource() == btImp) { 
+    	imprimir(false);
+    }
     else if (evt.getSource() == btAtEntrega){    
     	if (lcCampos.getStatus()!=ListaCampos.LCS_EDIT)
     		lcCampos.edit();
@@ -2373,51 +2363,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtDDDFaxCob.setVlrString(txtDDDFaxCli.getVlrString());
 		txtFaxCob.setVlrString(txtFaxCli.getVlrString());    	    	
 	}
-	else if (evt.getSource()==btExclObs)
+	else if (evt.getSource()==btExclObs) {
 	    exclObs();
-	else if (evt.getSource()==btEditObs)
+	}
+	else if (evt.getSource()==btEditObs) {
 	    editObs();
-	else if (evt.getSource()==btNovaObs)
+	}
+	else if (evt.getSource()==btNovaObs) {
 	    novaObs();
+	}
 	else if (evt.getSource()==btGrpCli) {
 	    grpCli();
-	}/*
-	else if (evt.getSource()==btConsHisJan) {
-	    alteraHist(1);
 	}
-	else if (evt.getSource()==btConsHisFev) {
-	    alteraHist(2);
-	}
-	else if (evt.getSource()==btConsHisMar) {
-	    alteraHist(3);
-	}
-	else if (evt.getSource()==btConsHisAbr) {
-	    alteraHist(4);
-	}
-	else if (evt.getSource()==btConsHisMai) {
-	    alteraHist(5);
-	}
-	else if (evt.getSource()==btConsHisJun) {
-	    alteraHist(6);
-	}
-	else if (evt.getSource()==btConsHisJul) {
-	    alteraHist(7);
-	}
-	else if (evt.getSource()==btConsHisAgo) {
-	    alteraHist(8);
-	}
-	else if (evt.getSource()==btConsHisSet) {
-	    alteraHist(9);
-	}
-	else if (evt.getSource()==btConsHisOut) {
-	    alteraHist(10);
-	}
-	else if (evt.getSource()==btConsHisNov) {
-	    alteraHist(11);
-	}
-	else if (evt.getSource()==btConsHisDez) {
-	    alteraHist(12);
-	}*/
 	else if (evt.getSource()==btSetaQtdJan) {
 	    geraHistoricos(new Integer(1));
 	}
@@ -2466,32 +2423,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 
     super.actionPerformed(evt);
   }
-  /*
-  private void alteraHist(int mes){
-	  DLVisitas dl = null;
-	  Vector vCli = new Vector();
-	  try{
-		  vCli.addElement(txtCodCli.getVlrInteger());
-		  vCli.addElement(txtRazCli.getVlrString());
-		  vCli.addElement(txtAno.getVlrInteger());
-		  vCli.addElement(new Integer(mes));		 
-		  vCli.addElement(buscaAtendente());		 
-		  dl = new DLVisitas(FCliente.this,con,vCli);
-		  dl.setConexao(con);
-		  dl.carregaTabela(mes,(txtAno.getVlrInteger()).intValue());
-		  dl.setVisible(true);		 
-		  if (dl.OK) {		      
-		      dl.dispose();
-		  }
-		  else 
-			  dl.dispose();
-	  }
-	  finally{
-		  dl = null;
-		  vCli = null;
-	  }
+  public void focusGained(FocusEvent fevt) { }
+  public void focusLost(FocusEvent fevt) {//Copia a descrição o planejamento para a descrição da conta:
+    if (fevt.getSource() == txtAno) {
+    	if( txtAno.getVlrInteger().intValue() > 0)
+    		buscaContatos();
+    }    	
   }
-  */
   private void grpCli() {
      DLGrpCli dl = null;
      int iCodCli = 0;
@@ -2668,8 +2606,11 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			  txtCodVend.requestFocus();
 		  else if (tpn.getSelectedIndex()==4)
 			  txaObs.requestFocus();
-		  else if (tpn.getSelectedIndex()==6 || tpnCont.getSelectedIndex()==1)
+		  else if (tpn.getSelectedIndex()==6)
 			  buscaContatos();
+	  }
+	  else if(cevt.getSource()==tpnCont){
+		  buscaContatos();
 	  }
   }	
  		
