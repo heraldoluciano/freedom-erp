@@ -81,7 +81,7 @@ FROM VDCLIENTE CLI, VDCLASCLI CLA, VDTIPOCLI TC
 WHERE CLA.CODEMP=CLI.CODEMPCC AND CLA.CODFILIAL=CLI.CODFILIALCC AND CLA.CODCLASCLI=CLI.CODCLASCLI 
 AND TC.CODEMP=CLI.CODEMPTC AND TC.CODFILIAL=CLI.CODFILIALTC AND TC.CODTIPOCLI=CLI.CODTIPOCLI
 AND CLI.CODVEND=$P{CODVEND} AND CLI.CODEMPVD=$P{CODEMPVD} AND CODFILIALVD=$P{CODFILIALVD} AND $P{VLRRELEV}>=0
-ORDER BY 2]]></queryString>
+ORDER BY 4,5,18,2]]></queryString>
 	<field name="CODCLI" class="java.lang.Integer"/>
 	<field name="RAZCLI" class="java.lang.String"/>
 	<field name="CIDCLI" class="java.lang.String"/>
@@ -153,7 +153,7 @@ ORDER BY 2]]></queryString>
 	</variable>
 	<variable name="TOTVENDASATUAL" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASATUAL}:
-new Double(0)]]></variableExpression>
+$F{VENDASATUAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVISITAS" class="java.lang.Integer" resetType="Report" calculation="Sum">
@@ -170,7 +170,7 @@ new Integer(0)]]></variableExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR}:
-new Double(0)]]></variableExpression>
+$F{VENDASANTERIOR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASMETA" class="java.lang.Double" resetType="Report" calculation="Sum">
@@ -180,8 +180,12 @@ new Double(0)]]></variableExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR2" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR2}:
-new Double(0)]]></variableExpression>
+$F{VENDASANTERIOR2}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="VLRTOTRELEV" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VENDASATUAL}]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0.00)]]></initialValueExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -1214,7 +1218,10 @@ new Double(0)]]></variableExpression>
 		<detail>
 			<band height="20"  isSplitAllowed="true" >
 				<printWhenExpression><![CDATA[new Boolean(
-	($F{VENDASATUAL}.doubleValue())<=($P{VLRRELEV}.doubleValue())
+($P{VLRRELEV}.doubleValue()) > 0.00 
+	? (new Double(new BigDecimal($V{VLRTOTRELEV}.doubleValue()).multiply(new BigDecimal(-1)).doubleValue()).doubleValue()) 
+	<= (($P{VLRRELEV}.doubleValue())+(new Double((new BigDecimal($F{VENDASATUAL}.doubleValue()).multiply(new BigDecimal(-1))).doubleValue()).doubleValue()))
+	: true
 )]]></printWhenExpression>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2559,7 +2566,9 @@ new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASATUAL}!=null?$V{TOTVENDASATUAL}:new Double(0)]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TOTVENDASATUAL}!=null
+	?new Double(new BigDecimal($V{TOTVENDASATUAL}.doubleValue()).multiply(new BigDecimal(-1)).doubleValue())
+	:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
