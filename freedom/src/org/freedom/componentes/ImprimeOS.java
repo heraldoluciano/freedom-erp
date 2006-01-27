@@ -81,7 +81,7 @@ public class ImprimeOS implements ActionListener {
 
 	private ImprimeLayout impLay = null;
 
-	private String[] sVals = new String[4];
+	private String[] sVals = new String[5];
 
 	private Component cOwner = null;
 
@@ -827,13 +827,14 @@ public class ImprimeOS implements ActionListener {
 		strTipoCab = verifCab();
 		try {
 			if (strTipoCab.compareTo("1") == 0) {
-				sSQL = "SELECT RAZEMP,FONEEMP,FAXEMP,EMAILEMP FROM SGEMPRESA WHERE CODEMP=?";
+				sSQL = "SELECT RAZEMP,FONEEMP,FAXEMP,EMAILEMP,WWWEMP " +
+					   "FROM SGEMPRESA WHERE CODEMP=?";
 				try {
 					ps = con.prepareStatement(sSQL);
 					ps.setInt(1, Aplicativo.iCodEmp);
 					rs = ps.executeQuery();
 					while (rs.next()) {
-						for (int i = 0; i < 4; i++) {
+						for (int i = 0; i < sVals.length; i++) {
 							if (rs.getString(i + 1) != null)
 								sVals[i] = rs.getString(i + 1);
 							else
@@ -1022,6 +1023,10 @@ public class ImprimeOS implements ActionListener {
 					+ err.getMessage());
 			err.printStackTrace();
 		}
+	}
+	
+	public String[] getValCab() {
+		return sVals;
 	}
 
 	public String getClassNota() {
