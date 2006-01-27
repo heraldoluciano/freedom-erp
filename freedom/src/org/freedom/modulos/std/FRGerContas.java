@@ -58,6 +58,9 @@ public class FRGerContas extends FRelatorio  {
   private JTextFieldFK txtDescGrup2 = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
   private JTextFieldPad txtCodMarca = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldFK txtDescMarca = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodTpCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+  private JTextFieldFK txtDescTpCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtSiglaTpCli = new JTextFieldPad(JTextFieldPad.TP_STRING,3,0);
   private JTextFieldPad txtPercFat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,8,Aplicativo.casasDecFin);
   private JLabelPad lbAno = new JLabelPad("Ano");
   private JLabelPad lbPercFat = new JLabelPad("% de relevância");
@@ -69,6 +72,8 @@ public class FRGerContas extends FRelatorio  {
   private JLabelPad lbDescCodGrup2 = new JLabelPad("Descrição do grupo/subtrair");
   private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
   private JLabelPad lbDescMarc = new JLabelPad("Descrição da marca");
+  private JLabelPad lbCodTpCli = new JLabelPad("Cód.tp.cli.");
+  private JLabelPad lbDescTpCli = new JLabelPad("Descrição do tipo de cliente");
   private JCheckBoxPad cbVendas = new JCheckBoxPad("Só vendas?","S","N");
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
@@ -80,6 +85,7 @@ public class FRGerContas extends FRelatorio  {
   private ListaCampos lcGrup2 = new ListaCampos(this);
   private ListaCampos lcVendedor = new ListaCampos(this);
   private ListaCampos lcMarca = new ListaCampos(this);
+  private ListaCampos lcTpCli = new ListaCampos(this);
   private final int JAN = 0;
   private final int FEV = 1;
   private final int MAR = 2;
@@ -97,7 +103,7 @@ public class FRGerContas extends FRelatorio  {
   
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
-    setAtribos(80,50,550,350);
+    setAtribos(80,50,550,380);
 
     txtAno.setRequerido(true);
     txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));
@@ -156,11 +162,18 @@ public class FRGerContas extends FRelatorio  {
     txtCodMarca.setFK(true);
     txtCodMarca.setNomeCampo("CodMarca");
     
+    lcTpCli.add(new GuardaCampo( txtCodTpCli, "CodTipoCli","Cód.tp.cli.", ListaCampos.DB_PK, false ));
+    lcTpCli.add(new GuardaCampo( txtDescTpCli, "DescTipoCli","Descrição do tipo de cliente", ListaCampos.DB_SI, false ));
+    lcTpCli.add(new GuardaCampo( txtSiglaTpCli, "SiglaTipoCli","Sigla", ListaCampos.DB_SI, false ));
+    lcTpCli.montaSql(false,"TIPOCLI","VD");
+    lcTpCli.setReadOnly(true);
+    txtCodTpCli.setTabelaExterna(lcTpCli);
+    txtCodTpCli.setFK(true);
+    txtCodTpCli.setNomeCampo("CodTipoCli");
+    
 
     adic(lbAno,7,0,100,20);
     adic(txtAno,7,20,100,20);
-    adic(lbPercFat,7,50,100,20);
-    adic(txtPercFat,7,70,100,20);
     
     adic(new JLabelPad("1º Ordem"),120,0,80,20);
     adic(rgOrdemRel,120,20,405,30);
@@ -182,7 +195,14 @@ public class FRGerContas extends FRelatorio  {
 	adic(lbCodMarca, 7, 220, 110, 20);
 	adic(txtCodMarca, 7, 240, 110, 20);
 	adic(lbDescMarc, 120, 220, 200, 20);
-	adic(txtDescMarca, 120, 240, 200, 20);
+	adic(txtDescMarca, 120, 240, 200, 20);	
+	adic(lbCodTpCli, 7, 260, 110, 20);
+	adic(txtCodTpCli, 7, 280, 110, 20);
+	adic(lbDescTpCli, 120, 260, 200, 20);
+	adic(txtDescTpCli, 120, 280, 200, 20);	
+
+    adic(lbPercFat,7,50,100,20);
+    adic(txtPercFat,7,70,100,20);
 	
     adic(cbVendas,330,120,100,20);
     adic(cbCliPrinc,330,160,250,20);
@@ -199,6 +219,7 @@ public class FRGerContas extends FRelatorio  {
 		String sOrdemRel = "";
 		String sOrdemRel2 = "";
 		String sOrderBy = "";
+		String sOrderByTemp = "";
 		String sCodGrup2 = "";
 		String sFiltros1 = "";
 		String sFiltros2 = "";
@@ -206,6 +227,7 @@ public class FRGerContas extends FRelatorio  {
 		int iCodCli = 0;
 		int iCodVend = 0;
 		int iCodMarca = 0;
+		int iCodTpCli = 0;
 		int iParam = 1;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -226,71 +248,76 @@ public class FRGerContas extends FRelatorio  {
 			sCodGrup2 = txtCodGrup2.getVlrString().trim();
 			iCodVend = txtCodVend.getVlrInteger().intValue();
 			iCodMarca = txtCodMarca.getVlrInteger().intValue();
+			iCodTpCli = txtCodTpCli.getVlrInteger().intValue();
 			sOrdemRel = rgOrdemRel.getVlrString();
 			sOrdemRel2 = rgOrdemRel2.getVlrString();
 
 			if (!sCodGrup1.equals("")) {
 				sWhere += "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: "
-						+ txtDescGrup1.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: "+ txtDescGrup1.getText().trim();
 			}
 			if (!sCodGrup2.equals("")) {
 				sWhere += "AND ( NOT P.CODGRUP=? ) ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
-						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")+ " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
-
-			if(iCodMarca !=0){
+			if(iCodMarca!=0){
 				sWhere += " AND P.CODEMPMC="+lcMarca.getCodEmp()+" AND P.CODFILIALMC="+lcMarca.getCodFilial()+
-				" AND P.CODMARCA="+txtCodMarca.getVlrString();
-				
+				" AND P.CODMARCA="+iCodMarca;				
 			}
-			
-			if (iCodVend != 0) {
+			if (iCodVend!= 0) {
 				sWhere += " AND V.CODVEND=? ";
 				sWhereCli = " AND C.CODVEND=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "
-						+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
-
-			vValOrdemRel.addElement("C");
-		    vValOrdemRel.addElement("R");	    
-		    vValOrdemRel.addElement("D");
-		    vValOrdemRel.addElement("T");
-		    vValOrdemRel.addElement("S");
-			vValOrdemRel.addElement("V");
 			
 			if (sOrdemRel.equals("V")) {
-				sOrderBy = "18";
+				sOrderBy = sCodGrup1+",18";
 			} 
 			else if (sOrdemRel.equals("R")) {
-				sOrderBy = "2";
+				sOrderBy = sCodGrup1+",2";
 			} 
 			else if (sOrdemRel.equals("C")) {
-				sOrderBy = "1";
+				sOrderBy = sCodGrup1+",1";
 			}
 			else if (sOrdemRel.equals("D")) {
-				sOrderBy = "3";
+				sOrderBy = sCodGrup1+",3";
 			}
 			else if (sOrdemRel.equals("S")) {
-				sOrderBy = "5";
+				sOrderBy = sCodGrup1+",5";
 			}
 
 			if ((sOrdemRel2.equals("V")) & (!sOrdemRel2.equals(sOrdemRel))) {
 				sOrderBy = sOrderBy+",18";
+				if(sOrderBy.indexOf(",2") == -1)
+					sOrderBy = sOrderBy+",2";
 			} 
 			else if ((sOrdemRel2.equals("R")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",2,18";
+				sOrderBy = sOrderBy+",2";
+				if(sOrderBy.indexOf(",18") == -1)
+					sOrderBy = sOrderBy+",18";
 			} 
 			else if ((sOrdemRel2.equals("C")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",1,18";
+				sOrderBy = sOrderBy+",1";
+				if(sOrderBy.indexOf(",18") == -1)
+					sOrderBy = sOrderBy+",18";
+				if(sOrderBy.indexOf(",2") == -1)
+					sOrderBy = sOrderBy+",2";
 			}
 			else if ((sOrdemRel2.equals("D")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",3,18";
+				sOrderBy = sOrderBy+",3";
+				if(sOrderBy.indexOf(",18") == -1)
+					sOrderBy = sOrderBy+",18";
+				if(sOrderBy.indexOf(",2") == -1)
+					sOrderBy = sOrderBy+",2";
 			}
 			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",5,18";
+				sOrderBy = sOrderBy+",5";
+				if(sOrderBy.indexOf(",18") == -1)
+					sOrderBy = sOrderBy+",18";
+				if(sOrderBy.indexOf(",2") == -1)
+					sOrderBy = sOrderBy+",2";
 			}
+			sOrderBy = "4" + sOrderBy;
 
 			int iAno = txtAno.getVlrInteger().intValue();
 			
@@ -330,9 +357,9 @@ public class FRGerContas extends FRelatorio  {
 					  +"AND G.CODEMP=P.CODEMPGP AND G.CODFILIAL=P.CODFILIALGP "
 					  +"AND TM.CODEMP=V.CODEMPTM  AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
 					  +"AND ( NOT SUBSTR(V.STATUSVENDA,1,1)='C' ) "
-					  + sWhereTM + 
-						 (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
-					  	+ sWhere;
+					  + sWhereTM 
+					  + (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ")						  
+					  + sWhere;
 					
 				
 				try {
@@ -366,16 +393,20 @@ public class FRGerContas extends FRelatorio  {
 	 
 						System.out.println("VALOR TOTAL DAS VENDAS:"+(dbVendasGeral));
 						dbVendasGeral = dbVendasGeral*dbPercRel;
-						System.out.println("VALOR A FILTRAR:"+dbVendasGeral);
-						
+						System.out.println("VALOR A FILTRAR:"+dbVendasGeral);						
 					}
-					rs = null;
+					int i = sOrderBy.indexOf(",18");
+					sOrderByTemp = sOrderBy.substring(0,i);
+					if((sOrderBy.length()-(i+3))>1)
+						sOrderByTemp = sOrderByTemp + sOrderBy.substring(i+3);
+					sOrderBy = "18," + sOrderByTemp;
 				}
 				catch (Exception err) {
 					Funcoes.mensagemErro(this, "Erro consultando total de vendas.\n"+ err.getMessage(),true,con,err);
 					err.printStackTrace();
 				}
 				finally{
+					rs = null;
 					iParam = 1;
 				}
 			}
@@ -483,9 +514,11 @@ public class FRGerContas extends FRelatorio  {
 				  + (cbCliPrinc.getVlrString().equals("S") ? "C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ AND "
 							: "C2.CODEMP=C.CODEMP AND C2.CODFILIAL=C.CODFILIAL AND C2.CODCLI=C.CODCLI AND ")
 				  + "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND "
-				  + "TI.CODTIPOCLI=C2.CODTIPOCLI "+sWhereCli 
+				  + "TI.CODTIPOCLI=C2.CODTIPOCLI "
+				  + (iCodTpCli>0 ? (" AND TI.CODEMP="+lcTpCli.getCodEmp()+" AND TI.CODFILIAL="+lcTpCli.getCodFilial()+" AND TI.CODTIPOCLI="+iCodTpCli) : "")
+				  + sWhereCli 
 				  
-  			  + " GROUP BY 1,2,3,4,5 " + "ORDER BY 4," + sOrderBy;
+  			  + " GROUP BY 1,2,3,4,5 " + "ORDER BY " + sOrderBy;
 			
 												 
 			try {
@@ -608,8 +641,7 @@ public class FRGerContas extends FRelatorio  {
 			sCodGrup2 = null;
 			sOrdemRel = null;
 			sOrderBy = null;
-			iCodVend = 0;
-			iCodCli = 0;
+			sOrderByTemp = null;
 			sWhereTM = null;
 			sFiltros1 = null;
 			sFiltros2 = null;
@@ -646,8 +678,9 @@ public class FRGerContas extends FRelatorio  {
   public void setConexao(Connection cn) {
     super.setConexao(cn);
     lcVendedor.setConexao(cn);
-    lcMarca.setConexao(cn);
     lcGrup1.setConexao(cn);
-    lcGrup2.setConexao(cn);    
+    lcGrup2.setConexao(cn);   
+    lcMarca.setConexao(cn);  
+    lcTpCli.setConexao(cn); 
   }
 }
