@@ -19,6 +19,7 @@
  */
 
 package org.freedom.layout;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -30,11 +31,18 @@ import org.freedom.telas.Aplicativo;
 public class PVNCACongelados extends Leiaute {
 	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
 		boolean bRetorno;
+		final int casaDecFin = Aplicativo.casasDecFin;
+		final int maxLine = 27;
+		int iLinha;
+		int contItem = 0;
+		int iQtdItem = 0;
+		BigDecimal bdTotalItem = new BigDecimal(0);
 		String[] sVal;
 		String sHora = "";
 	    Calendar cHora = Calendar.getInstance();
 	    
 		try {
+			
 	        imp.limpaPags();
 			imp.setTitulo("Pedido de Venda.");
 			imp.montaCab();
@@ -44,9 +52,13 @@ public class PVNCACongelados extends Leiaute {
 						+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"
 							+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
 			
+			rsRec.next();
+			
 			while (rs.next()) {
+				
 				if (imp.pRow() == 0) {
-					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+					
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
@@ -71,33 +83,116 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
-					imp.say(imp.pRow() + 0, 4, "Endereço: " + (rs.getString("ENDCLI")!= null ? (rs.getString("ENDCLI").trim() +
-																							 (rs.getString("NUMCLI")!= null ? " , " + rs.getString("NUMCLI").trim() : "") + 
-																							 (rs.getString("CIDCLI")!= null ? " / " + rs.getString("CIDCLI").trim() : "") + 
-																							 (rs.getString("UFCLI")!= null ? " - " + rs.getString("UFCLI").trim() : "")) : ""));
+					imp.say(imp.pRow() + 0, 4, "Endereço: " + (rs.getString("ENDCLI") != null ? (rs.getString("ENDCLI").trim() +
+																							    (rs.getString("NUMCLI")!= null ? " , " + rs.getString("NUMCLI").trim() : "") + 
+																							    (rs.getString("CIDCLI")!= null ? " / " + rs.getString("CIDCLI").trim() : "") + 
+																							    (rs.getString("UFCLI") != null ? " - " + rs.getString("UFCLI").trim()  : "")) : ""));
 					imp.say(imp.pRow() + 0, 102, "Fone / Fax: " + (rs.getString("FONECLI") != null ? Funcoes.setMascara(rs.getString("FONECLI").trim(),"####-####") : "") + " / " +
-																 (rs.getString("FAXCLI") != null ? Funcoes.setMascara(rs.getString("FAXCLI").trim(),"####-####") : ""));
+																  (rs.getString("FAXCLI")  != null ? Funcoes.setMascara(rs.getString("FAXCLI").trim() ,"####-####") : ""));
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");	
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",85) + "+");
+					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
+					imp.say(imp.pRow() + 0, 121, Funcoes.replicate("-",15) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "  QTD   |");
 					imp.say(imp.pRow() + 0, 14, " UN  |");
 					imp.say(imp.pRow() + 0, 21, "  Produto / Serviço");
 					imp.say(imp.pRow() + 0, 100, "Cod  |");
-					imp.say(imp.pRow() + 0, 107, "P. unit.   |");
-					imp.say(imp.pRow() + 0, 125, "Total");
+					imp.say(imp.pRow() + 0, 107, "P. unit.     |");
+					imp.say(imp.pRow() + 0, 126, "Total");
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");	
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",85) + "+");
+					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
+					imp.say(imp.pRow() + 0, 121, Funcoes.replicate("-",15) + "+");
+					
 				}
+
+				iQtdItem += rs.getInt("QTDITVENDA");
+				bdTotalItem = bdTotalItem.add(new BigDecimal(rs.getFloat("VLRLIQITVENDA")).divide(new BigDecimal(1), casaDecFin, BigDecimal.ROUND_HALF_UP));
+				
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|" + (Funcoes.alinhaDir( rs.getInt("QTDITVENDA"), 8)));
+				imp.say(imp.pRow() + 0, 12, "| " + (rs.getString("CODUNID") != null ? rs.getString("CODUNID").substring(0,4) : ""));
+				imp.say(imp.pRow() + 0, 19, "| " + (rs.getString("DESCPROD") != null ? rs.getString("DESCPROD").trim() : ""));
+				imp.say(imp.pRow() + 0, 96, (Funcoes.alinhaDir( rs.getInt("CODPROD"), 8)));
+				imp.say(imp.pRow() + 0, 105, "| " + Funcoes.strDecimalToStrCurrency(12,casaDecFin,(rs.getString("PRECOITVENDA") != null ? rs.getString("PRECOITVENDA").trim() : "")));
+				imp.say(imp.pRow() + 0, 120, "| " + Funcoes.strDecimalToStrCurrency(13,casaDecFin,(rs.getString("VLRLIQITVENDA") != null ? rs.getString("VLRLIQITVENDA").trim() : "")));
+				imp.say(imp.pRow() + 0, 135, " |");	
+				
+				contItem++;
+				
+				if(rs.getInt(1) == contItem || imp.pRow() == maxLine) {
+		            iLinha = imp.pRow();
+					if(rs.getInt(1) == contItem) {
+			            for (int i=0; i<(maxLine-iLinha);i++) {
+			            	imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate(" ",9) + "|");	
+							imp.say(imp.pRow() + 0, 13, Funcoes.replicate(" ",6) + "|");
+							imp.say(imp.pRow() + 0, 20, Funcoes.replicate(" ",85) + "|");
+							imp.say(imp.pRow() + 0, 106, Funcoes.replicate(" ",14) + "|");
+							imp.say(imp.pRow() + 0, 121, Funcoes.replicate(" ",15) + "|");
+			            }
+					}
+
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",34) + "+");
+					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",50) + "+");
+					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
+					imp.say(imp.pRow() + 0, 121, Funcoes.replicate("-",15) + "+");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|" + (Funcoes.alinhaDir( iQtdItem, 8)));
+					imp.say(imp.pRow() + 0, 12, "| ---- |" );
+					imp.say(imp.pRow() + 0, 21, "Ass.:");
+					imp.say(imp.pRow() + 0, 54, "|Pg.: " + (rs.getString("DESCPLANOPAG") != null ? rs.getString("DESCPLANOPAG").substring(0,28) : ""));
+					imp.say(imp.pRow() + 0, 88, "Venc.: " + (rsRec.getString("DTVENCITREC") != null ? rsRec.getString("DTVENCITREC") : ""));
+					if(iLinha == maxLine)
+						imp.say(imp.pRow() + 0, 105, "| Total parc.:");
+					else 
+						imp.say(imp.pRow() + 0, 105, "| Total :");
+					imp.say(imp.pRow() + 0, 122, Funcoes.strDecimalToStrCurrency(13,casaDecFin,bdTotalItem.toString()));
+					imp.say(imp.pRow() + 0, 135, " |");	
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",34) + "+");
+					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",50) + "+");
+					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",30) + "+");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "| Obrigado pela prefência.");
+					imp.say(imp.pRow() + 0, 54, "|OBS.: " + (rs.getString("OBSVENDA") != null ? rs.getString("OBSVENDA").substring(0,74) : ""));
+					imp.say(imp.pRow() + 0, 136, "|");
+
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",51) + "+");	
+					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",81) + "+");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					
+			        imp.setPrc(0,0);
+			        imp.incPags();
+					
+				}
+				
 			}
+			
 			imp.fechaGravacao();
 			bRetorno = true;
+			
 		}
 		catch ( SQLException err ) {
 			Funcoes.mensagemErro(null,"Erro ao consultar tabela de Venda!"+err.getMessage());      
+			bRetorno = false;
+		}
+		catch ( Exception err ) {
+			Funcoes.mensagemErro(null,"Erro ao montar pedido de venda!"+err.getMessage());      
 			bRetorno = false;
 		}
 		return bRetorno;
