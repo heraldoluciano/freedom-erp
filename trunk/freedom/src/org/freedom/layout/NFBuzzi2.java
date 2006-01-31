@@ -297,12 +297,12 @@ public class NFBuzzi2 extends Layout {
   	      imp.say(imp.pRow()+1,0,""+imp.comprimido());
   	      imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(0).toString()));
   	      imp.say(imp.pRow()+0,35,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString()));
-  	      imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString()));
+  	      imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));
   	      imp.say(imp.pRow()+2,0,""+imp.comprimido());
   	      imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));
   	      imp.say(imp.pRow()+0,65,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));
   	      imp.say(imp.pRow()+0,90,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(5).toString()));
-  	      imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));
+  	      imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString()));
   	      imp.say(imp.pRow()+3,0,""+imp.comprimido());
   	        	        	       	      	      
   	      imp.say(imp.pRow()+0,8,vValores.elementAt(7) != null ? vValores.elementAt(7).toString() : "");
