@@ -307,6 +307,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		setAltCab(200);
 		setPainel(pinCab, pnCliCab);
 		setNavegador(navCot);
+		lcDet.setTabela(tab);
 		lcCampos.setTabela(tabCot);
 		lcCampos.setNavegador(navCot);
 		navCot.setListaCampos(lcCampos);		
@@ -346,6 +347,7 @@ public class FCotacaoItens extends FDetalhe implements PostListener,
 		setListaCampos(true, "SUMSOL", "CP");
 		lcCampos.setQueryInsert(false);	
 		lcCampos.montaTab();
+		lcCampos.carregaDados();
 		
 		tabCot.setTamColuna(80, 0);
 		tabCot.setTamColuna(80, 1);
