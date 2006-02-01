@@ -175,7 +175,7 @@ $F{VENDASANTERIOR}]]></variableExpression>
 	</variable>
 	<variable name="TOTVENDASMETA" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASMETA}:
-new Double(0)]]></variableExpression>
+$F{VENDASMETA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR2" class="java.lang.Double" resetType="Report" calculation="Sum">
@@ -2230,7 +2230,7 @@ $F{VENDASANTERIOR2}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[new BigDecimal(($F{VENDASATUAL}.doubleValue()*100)/$F{VENDASMETA}.doubleValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[new BigDecimal(($F{VENDASATUAL}.doubleValue()*100)/$F{VENDASMETA}.doubleValue()).multiply(new BigDecimal(-1))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2254,7 +2254,7 @@ $F{VENDASANTERIOR2}]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="7" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{VENDASMETA}.doubleValue())-($F{VENDASATUAL}.doubleValue()))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{VENDASMETA}.doubleValue())-(new Double((new BigDecimal($F{VENDASATUAL}.doubleValue()).multiply(new BigDecimal(-1))).doubleValue()).doubleValue()))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
