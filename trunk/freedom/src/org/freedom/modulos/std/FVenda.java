@@ -43,14 +43,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -70,7 +68,6 @@ import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -81,14 +78,11 @@ import org.freedom.layout.Layout;
 import org.freedom.layout.Leiaute;
 import org.freedom.layout.NFSaida;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
 
 public class FVenda extends FVD implements PostListener, CarregaListener,
 		FocusListener, ActionListener, InsertListener, DeleteListener {
-	private static final long serialVersionUID = 1L;
-
-	private int casasDec = Aplicativo.casasDec;	
-	private int casasDecFin = Aplicativo.casasDecFin;	
+	
+	private static final long serialVersionUID = 1L;	
 	private JPanelPad pinCabVenda = new JPanelPad();
 	private JPanelPad pinCabComis = new JPanelPad();
 	private JPanelPad pinCabFiscal = new JPanelPad();
@@ -909,129 +903,29 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		txtVlrProdItVenda.setVlrBigDecimal(
 				calcVlrProd(txtPrecoItVenda.getVlrBigDecimal(),txtQtdItVenda.getVlrBigDecimal()));
 	}
-
-	private boolean testaLucro() {
-		boolean bRet = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sCampoCusto = (bPrefs[3] ? "NCUSTOMPM" : "NCUSTOPEPS");
-		String sSQL = "SELECT COUNT(*) " +
-				"FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C"
-				+ " WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
-				+ "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
-				+ "(((C." + sCampoCusto
-				+ "/100)*(100+PF.PERCPRECOCUSTO)) <= ?"
-				+ " OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-			ps.setInt(3, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(4, Aplicativo.iCodEmp);
-			ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
-			ps.setInt(6, txtCodAlmoxItVenda.getVlrInteger().intValue());
-			ps.setInt(7, Aplicativo.iCodEmp);
-			ps.setInt(8, ListaCampos.getMasterFilial("SGPREFERE1"));
-			ps.setInt(9, Aplicativo.iCodEmp);
-			ps.setInt(10, ListaCampos.getMasterFilial("EQPRODUTO"));
-			ps.setInt(11, txtCodProd.getVlrInteger().intValue());
-			ps.setDouble(12, txtPrecoItVenda.doubleValue());
-			rs = ps.executeQuery();
-			if (rs.next())
-				if (rs.getInt(1) == 1)
-					bRet = true;
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err.getMessage(),true,con,err);
-		} finally {
-			ps = null;
-			rs = null;
-			sCampoCusto = null;
-			sSQL = null;
-		}
-		
-		if (!bRet && txtVerifProd.getVlrString().equals("S"))
-			bRet = mostraTelaPass();
-
-		return bRet;
+	
+	public String[] getParansPass() {
+		return new String[] {"venda",
+				txtCodVenda.getVlrInteger().intValue()+"",
+				txtCodItVenda.getVlrInteger().intValue()+"",
+				txtCodProd.getVlrInteger().intValue()+"",
+				txtVlrProdItVenda.getVlrInteger().intValue()+""};
 	}
 
-	private boolean mostraTelaPass() {
-		boolean bRet = false;
-		String sIDUsu = "";
-		JTextFieldPad txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-		txtUsu.setText(Aplicativo.strUsuario);
-		JPasswordFieldPad txtPass = new JPasswordFieldPad(8);
-		FFDialogo diag = new FFDialogo(this);
-		diag.setTitulo("Permissão");
-		diag.setAtribos(300, 140);
-		diag.adic(new JLabelPad("Usuário: "), 7, 10, 100, 20);
-		diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
-		diag.adic(txtUsu, 110, 10, 150, 20);
-		diag.adic(txtPass, 110, 30, 150, 20);
-		diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
-		do {
-			try {
-				diag.setVisible(true);
-				if (diag.OK) {
-					Properties props = new Properties();
-					sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
-					props.put("user", sIDUsu);
-					props.put("password", txtPass.getVlrString());
-					if (sIDUsu.equals("")
-							|| txtPass.getVlrString().trim().equals("")) {
-						Funcoes.mensagemErro(this, "Campo em branco!");
-						continue;
-					}
-					DriverManager.getConnection(Aplicativo.strBanco, props)
-							.close();
-					String sSQL = "SELECT BAIXOCUSTOUSU FROM SGUSUARIO WHERE "
-							+ "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
-					PreparedStatement ps = con.prepareStatement(sSQL);
-					ps.setString(1, sIDUsu);
-					ps.setInt(2, Aplicativo.iCodEmp);
-					ps.setInt(3, Aplicativo.iCodFilial);
-					ResultSet rs = ps.executeQuery();
-					if (rs.next()) {
-						if ((rs.getString(1) != null ? rs.getString(1) : "")
-								.equals("S")) {
-							int iLog[] = Aplicativo.gravaLog(sIDUsu, "PR", "LIB",
-									"Liberação de venda abaixo do custo",
-									"Venda: [" + txtCodVenda.getVlrString()
-											+ "], " + "Item: ["
-											+ txtCodItVenda.getVlrString()
-											+ "], " + "Produto: ["
-											+ txtCodProd.getVlrString() + "], "
-											+ "Preço: ["
-											+ txtPrecoItVenda.getVlrString()
-											+ "]", con);
-							txtCodEmpLG.setVlrString("" + Aplicativo.iCodEmp);
-							txtCodFilialLG.setVlrString("" + iLog[0]);
-							txtCodLog.setVlrString("" + iLog[1]);
-							bRet = true;
-						}
-					}
-					if (!bRet)
-						Funcoes.mensagemErro(this,
-								"Ação não permitida para este usuário.");
-					rs.close();
-					ps.close();
-				}
-			} catch (java.sql.SQLException e) {
-				if (e.getErrorCode() == 335544472) {
-					Funcoes.mensagemErro(this,
-							"Nome do usuário ou senha inválidos ! ! !");
-					continue;
-				}
-				Funcoes.mensagemErro(this,
-						"Não foi possível estabelecer conexão com o banco de dados.\n"
-								+ e.getMessage());
-			}
-			break;
-		} while (true);
-		diag.dispose();
-		return bRet;
+	private boolean testaLucro() {
+		return super.testaLucro( new Object[] {
+				txtCodProd.getVlrInteger(),
+				txtCodAlmoxItVenda.getVlrInteger(),
+				txtPrecoItVenda.getVlrBigDecimal(),
+				});
+	}
+	
+	public void setLog(String[] args) {
+		if(args != null) {
+			txtCodEmpLG.setVlrString(args[0]);
+			txtCodFilialLG.setVlrString(args[1]);
+			txtCodLog.setVlrString(args[2]);
+		}
 	}
 	
 	public Vector getParansDesconto(){
@@ -1233,7 +1127,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						buscaLote();
 				}
 				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-					calcVlrItem(false,null);
+					calcVlrItem(null,false);
 				}
 			} else if ((cevt.getListaCampos() == lcFisc)
 					&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
@@ -1425,13 +1319,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					}
 					if (sValores[7].equals("N"))
 						txtStatusVenda.setVlrString("V4");
-					//txtDtEmitVenda.setVlrDate(new Date());
 				} else if (sValores[3].equals("S")) {
 					imprimir(true, txtCodVenda.getVlrInteger().intValue());
-					/*
-					 * if (Funcoes.mensagemConfirma(this, "Pedido OK?")==0 ) {
-					 * txtStatusVenda.setVlrString("P4"); }
-					 */// Isto dava problemas de pulos
 				}
 				if (sValores[7].equals("N")) {
 					lcCampos.edit();
@@ -1536,10 +1425,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private void imprimir(boolean bVisualizar, int iCodVenda) {
 		ImprimeOS imp = new ImprimeOS("", con,"PD",true);
 		int linPag = imp.verifLinPag("PD") - 1;
+		int iDiasPE = 0;
 		Vector vDesc = null;
 		Vector vObs = null;
 		String sDiasPE = null;
-		int iDiasPE = 0;
 		GregorianCalendar cal = null;
 		Date dtHoje = null;
 		
@@ -1585,11 +1474,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		//int iItImp = 0;
-		//int iMaxItem = 0;
 		try {
 			imp.limpaPags();
-			//iMaxItem = linPag - 22;
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
@@ -1722,17 +1608,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			imp.say(imp.pRow() + 0, 5, (rs.getString(61)!=null ? rs.getString(61) : ""));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 5, (rs.getString("EmailVend")!=null ? rs.getString("EmailVend") : ""));
-
-
 			
 			imp.eject();
 			imp.fechaGravacao();
-
-			//      rs.close();
-			//      ps.close();
+			
 			if (!con.getAutoCommit())
 				con.commit();
 			dl.dispose();
+			
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Venda!"
 					+ err.getMessage(),true,con,err);
@@ -2080,7 +1963,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		try {
 			layNF = Class.forName(
 					"org.freedom.layout." + imp.getClassNota()).newInstance();
-			//leiNF.bEntrada = bEnt;
 		} catch (Exception err) {
 			Funcoes.mensagemInforma(this,
 					"Não foi possível carregar o leiaute de Nota Fiscal!\n"
@@ -2319,7 +2201,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 
 		if(pevt.getListaCampos() == lcCampos) {
 		    if(podeReCalcPreco()) {
-			    calcVlrItem(true,"VDVENDA");
+			    calcVlrItem("VDVENDA",true);
 			    lcDet.carregaDados();
 			    calcImpostos(true);
 			    lcDet.edit();

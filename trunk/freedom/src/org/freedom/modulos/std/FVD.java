@@ -31,33 +31,61 @@ package org.freedom.modulos.std;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.math.BigDecimal;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.Vector;
 
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
+import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FObservacao;
 
 public abstract class FVD extends FDetalhe {
-
-    public abstract int[] getParansPreco();
+	
+	protected final int TAB_VENDA = 0;
+	protected final int TAB_ORCAMENTO = 1;
     
-    public abstract void setParansPreco(BigDecimal bdPreco);
-    
-    public abstract Vector getParansDesconto();
-    
+	protected int casasDec = Aplicativo.casasDec;	
+	
+	protected int casasDecFin = Aplicativo.casasDecFin;    
     /**
      * indica se pode recalcular os itens.
-     * ela ajuda a evitar updates desnecessarios ou erroneos.
+     * ajuda a evitar updates desnecessarios ou erroneos.
      */
     private boolean recalculaPreco = false;
-    
+    /** 
+     * @return parametros para a procedure que busca o preço do produto.
+     */
+    public abstract int[] getParansPreco();
+    /**
+     * seta os campos com os valores do buscaPreço().
+     */
+    public abstract void setParansPreco(BigDecimal bdPreco);
+    /**
+     * seta os campos de log
+     */
+    public abstract void setLog(String[] args);
+    /**
+     * @return parametros para mostrar a dialog de desconto.
+     */
+    public abstract Vector getParansDesconto();
+    /**
+     * @return parametros para mostrar a dialog de dassword.
+     */
+    public abstract String[] getParansPass();
+    /**
+     * Costrutor padrão.
+     *
+     */
     public FVD() {
     	super();
     }   
@@ -68,7 +96,7 @@ public abstract class FVD extends FDetalhe {
      * @param alteraTodos indica se altera todos os itens da venda
      * @param tabela Tabela a se alterar
      */
-    protected void calcVlrItem(boolean alteraTodos, String tabela) {
+    protected void calcVlrItem(String tabela, boolean alteraTodos) {
 
         if( alteraTodos ) {
             String sSQLSelect = null;
@@ -159,7 +187,7 @@ public abstract class FVD extends FDetalhe {
         	        }
         	    }        	    
         	    
-        	    calcVlrItem(false,null);
+        	    calcVlrItem(null,false);
         	    
         	    if (!con.getAutoCommit())
         	        con.commit();
@@ -447,12 +475,91 @@ public abstract class FVD extends FDetalhe {
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao confirmar número do pedido!\n"
 					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
 		} finally {
 			ps = null;
 			rs = null;
 		}
     	
     }
+	protected boolean testaLucro(Object[] args) {
+		boolean bRet = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sCampoCusto = null;
+		String sVerifProd = null;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD " 
+				 + "FROM SGPREFERE1 P1, EQPRODUTO PD "
+				 + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? "
+				 + "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(5, ((Integer)args[0]).intValue());
+			
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("USALIQREL") == null) {
+						Funcoes.mensagemInforma(this,
+								"Preencha opção de desconto em preferências!");
+				} else {
+					if (rs.getString("TIPOPRECOCUSTO").equals("M"))
+						sCampoCusto = "NCUSTOMPM";
+					else
+						sCampoCusto = "NCUSTOPEPS";
+				}
+				if (rs.getString("VERIFPROD") != null)
+					sVerifProd = rs.getString("VERIFPROD");
+			}
+			
+			
+			
+			sSQL = "SELECT COUNT(*) " +
+			"FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C"
+			+ " WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
+			+ "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
+			+ "(((C." + sCampoCusto
+			+ "/100)*(100+PF.PERCPRECOCUSTO)) <= ?"
+			+ " OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(3, ((Integer)args[0]).intValue());
+			ps.setInt(4, Aplicativo.iCodEmp);
+			ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
+			ps.setInt(6, ((Integer)args[1]).intValue());
+			ps.setInt(7, Aplicativo.iCodEmp);
+			ps.setInt(8, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setInt(9, Aplicativo.iCodEmp);
+			ps.setInt(10, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(11, ((Integer)args[0]).intValue());
+			ps.setBigDecimal(12, (BigDecimal)args[2]);
+			rs = ps.executeQuery();
+			if (rs.next())
+				if (rs.getInt(1) == 1)
+					bRet = true;
+			rs.close();
+			ps.close();
+			
+			if (!bRet && sVerifProd.equals("S"))
+				bRet = mostraTelaPass(getParansPass());
+			
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sCampoCusto = null;
+			sSQL = null;
+		}
+
+		return bRet;
+	}
     /**
      * Calcula o valor bruto do produto
      * @param arg0 preço do produto
@@ -481,8 +588,7 @@ public abstract class FVD extends FDetalhe {
 	protected void mostraTelaDesconto() {
 		
 		Vector param = getParansDesconto();
-		/*
-		 * param
+		/* param
 		 * 0 - descontos
 		 * 1 - preço do item
 		 * 2 - valor do desconto do item
@@ -518,6 +624,100 @@ public abstract class FVD extends FDetalhe {
 		
 	}
 	/**
+	 * Monta uma dialog para confirmação de senha do usuario.
+	 * @param args parametros para a cosulta.
+	 * @return verdadeiro se a confirmado.
+	 */
+	private boolean mostraTelaPass(String[] args) {
+		boolean retorno = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sIDUsu = null;
+		Properties props = null;
+		JTextFieldPad txtUsu = null;
+		JPasswordFieldPad txtPass = null;
+		FFDialogo diag = null;
+		
+		try {
+			
+			txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+			txtUsu.setText(Aplicativo.strUsuario);
+			
+			txtPass = new JPasswordFieldPad(8);
+			
+			diag = new FFDialogo(this);
+			
+			diag.setTitulo("Permissão");
+			diag.setAtribos(300, 140);
+			diag.adic(new JLabelPad("Usuário: "), 7, 10, 100, 20);
+			diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
+			diag.adic(txtUsu, 110, 10, 150, 20);
+			diag.adic(txtPass, 110, 30, 150, 20);
+			diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
+			
+			do {
+				try {
+					diag.setVisible(true);
+					if (diag.OK) {
+						props = new Properties();
+						sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
+						props.put("user", sIDUsu);
+						props.put("password", txtPass.getVlrString());
+						if (sIDUsu.equals("") || txtPass.getVlrString().trim().equals("")) {
+							Funcoes.mensagemErro(this, "Campo em branco!");
+							continue;
+						}
+						DriverManager.getConnection(Aplicativo.strBanco, props).close();
+						String sSQL = "SELECT BAIXOCUSTOUSU FROM SGUSUARIO WHERE "
+								+ "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
+						ps = con.prepareStatement(sSQL);
+						ps.setString(1, sIDUsu);
+						ps.setInt(2, Aplicativo.iCodEmp);
+						ps.setInt(3, Aplicativo.iCodFilial);
+						rs = ps.executeQuery();
+						if (rs.next()) {
+							if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
+								int iLog[] = Aplicativo.gravaLog(sIDUsu, "PR", "LIB",
+										"Liberação de " + args[0] + " abaixo do custo",
+										""+args[0]+" [" + args[1] + "], " + 		//codigo da tabela
+										"Item: ["    	+ args[2] + "], " + 		//codigo do item
+										"Produto: [" 	+ args[3] + "], " +			//codigo do produto
+										"Preço: ["   	+ args[4] + "]"				//preço do produto
+										, con);
+								setLog( new String[]{"" + Aplicativo.iCodEmp 		//codigo da empresa
+													,"" + iLog[0]					//codigo da filial
+								                    ,"" + iLog[1]});				//codigo do log
+								retorno = true;
+							}
+						}
+						if (!retorno)
+							Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
+						rs.close();
+						ps.close();
+					}
+				} catch (java.sql.SQLException e) {
+					if (e.getErrorCode() == 335544472) {
+						Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
+						continue;
+					}
+					Funcoes.mensagemErro(this,"Não foi possível estabelecer conexão com o banco de dados.\n"
+									+ e.getMessage());
+					e.printStackTrace();
+				}
+				break;
+			} while (true);
+			
+			diag.dispose();
+			
+		} catch(Exception e) {
+			Funcoes.mensagemErro(null,"Erro na confirmação do usuario.", true, con, e);
+			e.printStackTrace();
+		} finally {			
+		}
+		
+		return retorno;
+	}
+	/**
 	 * Corverte para array a String com os descontos.
 	 * @param arg0 String com os descontos.
 	 * @return array dos descontos
@@ -545,11 +745,17 @@ public abstract class FVD extends FDetalhe {
 		}
 		return sRet;
 	}
-	
+	/**
+	 * Define a variavel que controla se pode recalcular o preço do item.
+	 * @param arg0 true para pode e, false para não pode
+	 */
 	protected void setReCalcPreco(boolean arg0) {
 	    this.recalculaPreco = arg0;
 	}
-	
+	/**
+	 * Retorna a variavel que controla se pode recalcular o preço do item.
+	 * @return true se pode e, false se não pode
+	 */
 	protected boolean podeReCalcPreco() {
 	    return recalculaPreco;
 	}

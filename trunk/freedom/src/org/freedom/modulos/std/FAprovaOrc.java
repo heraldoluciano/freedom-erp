@@ -211,77 +211,93 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 	}
     
 	public void aprovar() {
-		if (tab.getRowCount() <= 0) {
-			Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser aprovado");
-			return;
-		}
-			
-		String sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=?, EMITITORC='N' WHERE "+
-					  "CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
+		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
+		String sSQL = null;
+		String sStatusAt = null;
 		boolean bAtStOrc = false;
-		String sStatusAt = "OC";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);			
-			for (int iLin=0;iLin<tab.getRowCount();iLin++) {
-			
-				if (tab.getValor(iLin,0).equals(new Boolean("true"))){ 
-			  	  ps.setString(1,"S");	  	
-				}
-				else {
-			  	  ps.setString(1,"N");
-				}    
-				if (tab.getValor(iLin,1).equals(new Boolean("true"))) 
-				  ps.setString(2,"S");		  	
-				else
-				  ps.setString(2,"N");
-			
-				if (tab.getValor(iLin,0).equals(new Boolean("true")) &&
-				   tab.getValor(iLin,1).equals(new Boolean("true"))) {
-				   bAtStOrc = true;
-				   sStatusAt = "OL";	
-				}
-				else if (!sStatusAt.equals("OL")) {
-				   bAtStOrc = true;
-				}
-				ps.setString(3,tab.getValor(iLin,9).toString().trim());  
-				ps.setDate(4,Funcoes.dateToSQLDate((Date)tab.getValor(iLin,10)));
-				ps.setInt(5,Aplicativo.iCodEmp);
-				ps.setInt(6,Aplicativo.iCodFilial);
-				ps.setInt(7,Integer.parseInt(tab.getValor(iLin,2).toString()));
-		    	ps.setInt(8,txtCodOrc.getVlrInteger().intValue()); 
-		    
-		    	ps.execute(); 
+
+			if (tab.getRowCount() <= 0) {
+				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser aprovado");
+				return;
 			}
-			if (!con.getAutoCommit())
-				con.commit();
-		
-		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
-		}
-		
-		try {
-			sSQL = "UPDATE VDORCAMENTO SET STATUSORC=? WHERE "+
-			 	   "CODEMP=? AND CODFILIAL=? AND CODORC=?";
 				
-			PreparedStatement ps2 = con.prepareStatement(sSQL);
-							
-			ps2.setString(1,sStatusAt);
-			ps2.setInt(2,Aplicativo.iCodEmp);
-			ps2.setInt(3,Aplicativo.iCodFilial);
-			ps2.setInt(4,txtCodOrc.getVlrInteger().intValue()); 
-				if (bAtStOrc) { 
-			  ps2.execute();
-			  if (!con.getAutoCommit())
-			  	con.commit();
+			sSQL = "UPDATE VDITORCAMENTO SET ACEITEITORC=?, APROVITORC=?, NUMAUTORIZORC=?, VENCAUTORIZORC=?, EMITITORC='N' WHERE "+
+						  "CODEMP=? AND CODFILIAL=? AND CODITORC=? AND CODORC=?";
+			bAtStOrc = false;
+			sStatusAt = "OC";
+			try {
+				ps = con.prepareStatement(sSQL);			
+				for (int iLin=0;iLin<tab.getRowCount();iLin++) {
+				
+					if (tab.getValor(iLin,0).equals(new Boolean("true"))){ 
+				  	  ps.setString(1,"S");	  	
+					}
+					else {
+				  	  ps.setString(1,"N");
+					}    
+					if (tab.getValor(iLin,1).equals(new Boolean("true"))) 
+					  ps.setString(2,"S");		  	
+					else
+					  ps.setString(2,"N");
+				
+					if (tab.getValor(iLin,0).equals(new Boolean("true")) &&
+					   tab.getValor(iLin,1).equals(new Boolean("true"))) {
+					   bAtStOrc = true;
+					   sStatusAt = "OL";	
+					}
+					else if (!sStatusAt.equals("OL")) {
+					   bAtStOrc = true;
+					}
+					ps.setString(3,tab.getValor(iLin,9).toString().trim());  
+					ps.setDate(4,Funcoes.dateToSQLDate((Date)tab.getValor(iLin,10)));
+					ps.setInt(5,Aplicativo.iCodEmp);
+					ps.setInt(6,Aplicativo.iCodFilial);
+					ps.setInt(7,Integer.parseInt(tab.getValor(iLin,2).toString()));
+			    	ps.setInt(8,txtCodOrc.getVlrInteger().intValue()); 
+			    
+			    	ps.execute(); 
+				}
+				if (!con.getAutoCommit())
+					con.commit();
+			
 			}
+			catch (SQLException err) {
+				Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ITORCAMENTO!\n"+err.getMessage(),true,con,err);
+			}
+			
+			try {
+				sSQL = "UPDATE VDORCAMENTO SET STATUSORC=? WHERE "+
+				 	   "CODEMP=? AND CODFILIAL=? AND CODORC=?";
+					
+				ps2 = con.prepareStatement(sSQL);
+								
+				ps2.setString(1,sStatusAt);
+				ps2.setInt(2,Aplicativo.iCodEmp);
+				ps2.setInt(3,Aplicativo.iCodFilial);
+				ps2.setInt(4,txtCodOrc.getVlrInteger().intValue()); 
+				if (bAtStOrc) { 
+				  ps2.execute();
+				  if (!con.getAutoCommit())
+				  	con.commit();
+				}
+			}
+			catch (SQLException err) {
+				Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
+			}
+			
+			tab.addTabelaEditListener(this);
+			bRecalcula = true;	
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			ps2 = null;
+			sSQL = null;	
+			sStatusAt = null;
+			bAtStOrc = false;		
 		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao atualizar a tabela ORCAMENTO!\n"+err.getMessage(),true,con,err);
-		}
-		
-	tab.addTabelaEditListener(this);
-	bRecalcula = true;	
 	}	
 	
 	public void montaTab(){ 
