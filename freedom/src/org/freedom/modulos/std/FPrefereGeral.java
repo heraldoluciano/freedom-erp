@@ -34,6 +34,8 @@ import java.sql.Connection;
 import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
+
+import javax.swing.BorderFactory;
 import javax.swing.border.EtchedBorder;
 
 import org.freedom.acao.CarregaEvent;
@@ -126,9 +128,17 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JTextFieldFK txtDescCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50, 0);
 	private JTextFieldPad txtSmtpMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JTextFieldPad txtUserMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
+	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
 	private JLabelPad lbVendOpcoes = new JLabelPad("    Opções");
 	private JLabelPad lbGeralOpcoes = new JLabelPad("    Opções");
+	private JLabelPad lbOrcOpcoes = new JLabelPad("    Opções");
+	private JLabelPad lbContOrc = new JLabelPad();
+	private JComboBoxPad cbTamDescProd = null;
+	private JRadioGroup rgTipoValidOrc = null;
+	private JRadioGroup rgTipoPrecoCusto = null;
+	private JRadioGroup rgSetorVenda = null;
+	private JRadioGroup rgOrdNota = null;
 	private JCheckBoxPad cbUsaRefProd = null;
 	private JCheckBoxPad cbUsaPedSeq = null;
 	private JCheckBoxPad cbUsaOrcSeq = null;
@@ -163,6 +173,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbContEstoq = null;
 	private JCheckBoxPad cbReCalcVenda = null;
 	private JCheckBoxPad cbReCalcOrc = null;
+	private JCheckBoxPad cbAprovOrc = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -185,9 +196,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
 	private ListaCampos lcPDV = new ListaCampos(this, "");
 	private ListaCampos lcPrefere3 = new ListaCampos(this, "P3");
-	private JComboBoxPad cbTamDescProd = null;
-	private Vector vValsTipo = new Vector();
-	private Vector vLabsTipo = new Vector();
 
 
 	public FPrefereGeral() {
@@ -402,16 +410,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbReCalcVenda.setVlrString("N");
 		cbReCalcOrc = new JCheckBoxPad("Recalcular preço no orçamento?", "S", "N");
 		cbReCalcOrc.setVlrString("N");
-
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
-		vLabs.addElement("Custo MPM");
-		vLabs.addElement("Custo PEPS");
-		vVals.addElement("M");
-		vVals.addElement("P");
-		JRadioGroup rgTipoPrecoCusto = new JRadioGroup(1, 2, vLabs, vVals);
-		rgTipoPrecoCusto.setVlrString("M");
-
+		cbAprovOrc = new JCheckBoxPad("Permitir aprovação do orçamento na tela de cadastro?", "S", "N");
+		cbAprovOrc.setVlrString("N");
 		cbRgCliObrig = new JCheckBoxPad("RG. do cliente obrigatório?", "S", "N");
 		cbRgCliObrig.setVlrString("S");
 		cbCliMesmoCnpj = new JCheckBoxPad("Permitir clientes com mesmo CNPJ ?","S", "N");
@@ -422,15 +422,55 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbCnpjForObrig.setVlrString("S");
 		cbInscEstForObrig = new JCheckBoxPad("Inscrição estadual obrigatória para o cadastro de fornecedores ?","S", "N");
 		cbInscEstForObrig.setVlrString("S");
+
+		Vector vLabs = new Vector();
+		Vector vVals = new Vector();
+		vLabs.addElement("Custo MPM");
+		vLabs.addElement("Custo PEPS");
+		vVals.addElement("M");
+		vVals.addElement("P");
+		rgTipoPrecoCusto = new JRadioGroup(1, 2, vLabs, vVals);
+		rgTipoPrecoCusto.setVlrString("M");		
+
+		Vector vLabsTpValidOrc1 = new Vector();
+		Vector vValsTpValidOrc1 = new Vector();
+		vLabsTpValidOrc1.addElement("Data");
+		vLabsTpValidOrc1.addElement("Nro. de dias");
+		vValsTpValidOrc1.addElement("D");
+		vValsTpValidOrc1.addElement("N");
+		rgTipoValidOrc = new JRadioGroup(1, 2, vLabsTpValidOrc1,vValsTpValidOrc1);
+		rgTipoValidOrc.setVlrString("D");
 		
+		Vector vLabs2 = new Vector();
+		Vector vVals2 = new Vector();
+		vLabs2.addElement("Cliente/Setor");
+		vLabs2.addElement("Comissionado/Setor");
+		vLabs2.addElement("Ambos");
+		vVals2.addElement("C");
+		vVals2.addElement("V");
+		vVals2.addElement("A");
+		rgSetorVenda = new JRadioGroup(3, 1, vLabs2, vVals2);
+		rgSetorVenda.setVlrString("C");
+		
+		Vector vLabs1 = new Vector();
+		Vector vVals1 = new Vector();
+		vLabs1.addElement("Por Codigo");
+		vLabs1.addElement("Por Descriçao");
+		vLabs1.addElement("Por Marca");
+		vVals1.addElement("C");
+		vVals1.addElement("D");
+		vVals1.addElement("M");
+		rgOrdNota = new JRadioGroup(3, 1, vLabs1, vVals1);
+		rgOrdNota.setVlrString("C");
+
+		Vector vValsTipo = new Vector();
+		Vector vLabsTipo = new Vector();
 		vLabsTipo.addElement("<--Selecione-->");
 		vLabsTipo.addElement("50 caracteres");
-		vLabsTipo.addElement("100 caracteres");
-		
+		vLabsTipo.addElement("100 caracteres");		
 		vValsTipo.addElement(new Integer(0));
 		vValsTipo.addElement(new Integer(50));
-		vValsTipo.addElement(new Integer(100));
-		
+		vValsTipo.addElement(new Integer(100));		
 		cbTamDescProd = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 4, 0);
 		
 		setPainel(pinGeral);
@@ -452,28 +492,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
-		
-		Vector vLabs2 = new Vector();
-		Vector vVals2 = new Vector();
-		vLabs2.addElement("Cliente/Setor");
-		vLabs2.addElement("Comissionado/Setor");
-		vLabs2.addElement("Ambos");
-		vVals2.addElement("C");
-		vVals2.addElement("V");
-		vVals2.addElement("A");
-		JRadioGroup rgSetorVenda = new JRadioGroup(3, 1, vLabs2, vVals2);
-		rgSetorVenda.setVlrString("C");
-		
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
-		vLabs1.addElement("Por Codigo");
-		vLabs1.addElement("Por Descriçao");
-		vLabs1.addElement("Por Marca");
-		vVals1.addElement("C");
-		vVals1.addElement("D");
-		vVals1.addElement("M");
-		JRadioGroup rgOrdNota = new JRadioGroup(3, 1, vLabs1, vVals1);
-		rgOrdNota.setVlrString("C");
 		
 		adicDB(rgSetorVenda, 7, 25, 160, 80, "SetorVenda","Distrib. dos setores", true);
 		adicDB(rgOrdNota, 177, 25, 160, 80, "OrdNota", " Ordem de Emissão",	true);
@@ -534,17 +552,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDescFK(txtDescTipoMov2, 90, 25, 230, 20, "DescTipoMov","Tipo de movimento para orçamentos.");
 		adicCampo(txtDescClassOrc, 330, 25, 250, 20, "ClassOrc","Classe padrão para orçamento.", ListaCampos.DB_SI, false);
 		adicCampo(txtTitOrcTxt01, 330, 65, 250, 20, "TitOrcTxt01","Título para campo TXT01", ListaCampos.DB_SI, false);
-
-		Vector vLabsTpValidOrc1 = new Vector();
-		Vector vValsTpValidOrc1 = new Vector();
-		vLabsTpValidOrc1.addElement("Data");
-		vLabsTpValidOrc1.addElement("Nro. de dias");
-		vValsTpValidOrc1.addElement("D");
-		vValsTpValidOrc1.addElement("N");
-		JRadioGroup rgTipoValidOrc = new JRadioGroup(1, 2, vLabsTpValidOrc1,vValsTpValidOrc1);
-		rgTipoValidOrc.setVlrString("D");
-
-		adicDB(rgTipoValidOrc, 330, 145, 250, 30, "tipovalidorc","Valid. na impressão", true);
+		adicDB(rgTipoValidOrc, 460, 230, 250, 30, "tipovalidorc","Validade na impressão", true);
 
 		//Financeiro
 
@@ -663,6 +671,9 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		setListaCampos(lcPDV);
 		setNavegador(new Navegador(false));
 		setPainel(pinOrc);
+		
+		lbContOrc.setBorder( BorderFactory.createEtchedBorder(1));
+		lbOrcOpcoes.setOpaque(true);
 
 		adicCampo(txtCodTipoMov7, 7, 65, 80, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov7, false);
 		adicDescFK(txtDescTipoMov7, 90, 65, 230, 20, "DescTipoMov","Descrição do tipo de movimento");
@@ -671,6 +682,10 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicCampo(txtCodCli, 7, 145, 80, 20, "CodCli", "Cód.cli.",ListaCampos.DB_FK, txtDescCli, false);
 		adicDescFK(txtDescCli, 90, 145, 230, 20, "NomeCli", "Nome do cliente");
 		adicCampo(txtPrazo, 330, 105, 250, 20, "Prazo","Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false);
+		adicCampo(txtDiasVencOrc, 330, 145, 250, 20, "DiasVencOrc", "Dias p/ vencimento do orçamento",ListaCampos.DB_SI, false);
+		adic(lbOrcOpcoes, 17, 190, 70, 20);
+		adic(lbContOrc, 7, 200, 720, 120);
+		adicDB(cbAprovOrc, 10, 215, 350, 20, "AprovOrc", "", true);
 		setListaCampos(false, "PREFERE4", "SG");
 
 		//Email 
