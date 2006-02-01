@@ -271,19 +271,19 @@ public class FRGerContas extends FRelatorio  {
 			}
 			
 			if (sOrdemRel.equals("V")) {
-				sOrderBy = sCodGrup1+",18";
+				sOrderBy = ",18";
 			} 
 			else if (sOrdemRel.equals("R")) {
-				sOrderBy = sCodGrup1+",2";
+				sOrderBy = ",2";
 			} 
 			else if (sOrdemRel.equals("C")) {
-				sOrderBy = sCodGrup1+",1";
+				sOrderBy = ",1";
 			}
 			else if (sOrdemRel.equals("D")) {
-				sOrderBy = sCodGrup1+",3";
+				sOrderBy = ",3";
 			}
 			else if (sOrdemRel.equals("S")) {
-				sOrderBy = sCodGrup1+",5";
+				sOrderBy = ",5";
 			}
 
 			if ((sOrdemRel2.equals("V")) & (!sOrdemRel2.equals(sOrdemRel))) {
