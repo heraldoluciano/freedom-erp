@@ -1060,130 +1060,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		return bRetorno;
 	}
 
-	public void beforeCarrega(CarregaEvent cevt) {
-		if (cevt.getListaCampos() == lcProd2)
-			lcProd.edit();
-		if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { //Cancela os
-															  // auto-incrementos
-															  // que sobrepõem o
-															  // que está
-															  // guardado na
-															  // tabela venda
-			if (cevt.getListaCampos() == lcVendedor) {
-				lcVendedor.cancLerCampo(2, true); //Comissão do vendedor;
-			} else if (cevt.getListaCampos() == lcCli) {
-				lcCli.cancLerCampo(2, true); //Código de Pagamento
-				lcCli.cancLerCampo(3, true); //Código do Vendador
-			}
-		} else {
-			if (cevt.getListaCampos() == lcVendedor) {//Ativa auto-incrementos
-				lcVendedor.cancLerCampo(2, false); //Comissão do vendedor;
-			} else if (cevt.getListaCampos() == lcCli) {
-				lcCli.cancLerCampo(2, false); //Código do Pagamento
-				lcCli.cancLerCampo(3, false); //Código do Vendedor
-			}
-		}
-		if (lcDet.getStatus() != ListaCampos.LCS_INSERT) {
-			if (cevt.getListaCampos() == lcProd) {
-				lcProd.cancLerCampo(5, true); //Código da Classificação Fiscal
-			}
-		} else {
-			if (cevt.getListaCampos() == lcProd) {
-				lcProd.cancLerCampo(5, false); //Código da Classificação Fiscal
-			}
-		}
-		if (cevt.getListaCampos() == lcCampos) {
-			if (bPrefs[5]) {
-				txtFiscalTipoMov1.setText("S");
-				txtFiscalTipoMov2.setText("N");
-			}
-			if (bPrefs[11]) 
-				iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-		}
-
-	}
-
-	public void afterPost(PostEvent pevt) {
-		lcVenda2.carregaDados(); //Carrega os Totais
-		if (pevt.getListaCampos() == lcCampos) {
-			if (bPrefs[5]) {
-				txtFiscalTipoMov1.setText("S");
-				txtFiscalTipoMov2.setText("N");
-			}
-		}
-	}
-
-	public void afterCarrega(CarregaEvent cevt) {
-		try {
-			if ((cevt.getListaCampos() == lcProd)
-					|| (cevt.getListaCampos() == lcProd2)) {
-				if (txtCLoteProd.getText().trim().equals("N")) {
-					txtCodLote.setAtivo(false);//Desativa o Cógigo do lote por o
-											   // produto não possuir lote
-				} else if (txtCLoteProd.getText().trim().equals("S")) {
-					txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
-											  // produto tem lote
-					if (lcDet.getStatus() == ListaCampos.LCS_INSERT)
-						buscaLote();
-				}
-				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-					calcVlrItem(null,false);
-				}
-			} else if ((cevt.getListaCampos() == lcFisc)
-					&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-				buscaNat();
-				buscaTratTrib();
-			} else if (cevt.getListaCampos() == lcNat) {
-				if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-					buscaICMS();
-				}
-			} else if (cevt.getListaCampos() == lcDet) {
-				lcVenda2.carregaDados();//Carrega os Totais
-			} else if (cevt.getListaCampos() == lcCampos) {
-				String s = txtCodVenda.getVlrString();
-				lcVenda2.carregaDados();//Carrega os Totais
-				txtCodVenda.setVlrString(s);
-			} else if (cevt.getListaCampos() == lcVenda2) {
-				txtPercComisVenda.setAtivo(txtVlrComisVenda.doubleValue() == 0);
-			} else if (cevt.getListaCampos() == lcCli ) {
-				if ( (bPrefs[11]) ) {
-					if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
-						iCodCliAnt = txtCodCli.getVlrInteger().intValue();
-						mostraObsCli(iCodCliAnt,
-									 new Point( this.getX(),this.getY() + tpnCab.getHeight() + pnCab.getHeight()),
-									 new Dimension( spTab.getWidth(), spTab.getHeight() ) );
-					}
-				}
-				if(bPrefs[15]) {
-				    setReCalcPreco(true);
-				    //calcImpostos(true);
-				}
-			} else if(cevt.getListaCampos() == lcPlanoPag)
-				if(bPrefs[15]) {
-				    setReCalcPreco(true);
-				    //calcImpostos(true);
-				}
-			
-			if (txtStatusVenda.getVlrString().trim().length()>0 && 
-					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
-				lbStatus.setText("  CANCELADA");
-				lbStatus.setBackground(Color.RED);
-				lbStatus.setVisible(true);
-			}
-			else if (verificaBloq()){
-				lbStatus.setText("  BLOQUEADA");
-				lbStatus.setBackground(Color.BLUE);
-				lbStatus.setVisible(true);
-			}
-			else {
-				lbStatus.setText("");
-				lbStatus.setVisible( false );
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	private synchronized void focusIni() {
 		tpnCab.requestFocus(true);
 	}
@@ -1264,6 +1140,16 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		if (kevt.getSource() == txtRefProd)
 			lcDet.edit();
 		super.keyPressed(kevt);
+	}
+
+	public void keyTyped(KeyEvent kevt) {
+		super.keyTyped(kevt);
+	}
+
+	public void keyReleased(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
+			bCtrl = false;
+		super.keyReleased(kevt);
 	}
 
 	private void focusCodprod() {
@@ -2185,22 +2071,124 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		return bRetorno;
 	}
 
-	public void keyTyped(KeyEvent kevt) {
-		super.keyTyped(kevt);
+	public void beforeCarrega(CarregaEvent cevt) {
+		if (cevt.getListaCampos() == lcProd2)
+			lcProd.edit();
+		if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { //Cancela os
+															  // auto-incrementos
+															  // que sobrepõem o
+															  // que está
+															  // guardado na
+															  // tabela venda
+			if (cevt.getListaCampos() == lcVendedor) {
+				lcVendedor.cancLerCampo(2, true); //Comissão do vendedor;
+			} else if (cevt.getListaCampos() == lcCli) {
+				lcCli.cancLerCampo(2, true); //Código de Pagamento
+				lcCli.cancLerCampo(3, true); //Código do Vendador
+			}
+		} else {
+			if (cevt.getListaCampos() == lcVendedor) {//Ativa auto-incrementos
+				lcVendedor.cancLerCampo(2, false); //Comissão do vendedor;
+			} else if (cevt.getListaCampos() == lcCli) {
+				lcCli.cancLerCampo(2, false); //Código do Pagamento
+				lcCli.cancLerCampo(3, false); //Código do Vendedor
+			}
+		}
+		if (lcDet.getStatus() != ListaCampos.LCS_INSERT) {
+			if (cevt.getListaCampos() == lcProd) {
+				lcProd.cancLerCampo(5, true); //Código da Classificação Fiscal
+			}
+		} else {
+			if (cevt.getListaCampos() == lcProd) {
+				lcProd.cancLerCampo(5, false); //Código da Classificação Fiscal
+			}
+		}
+		if (cevt.getListaCampos() == lcCampos) {
+			if (bPrefs[5]) {
+				txtFiscalTipoMov1.setText("S");
+				txtFiscalTipoMov2.setText("N");
+			}
+			if (bPrefs[11]) 
+				iCodCliAnt = txtCodCli.getVlrInteger().intValue();
+		}
+
 	}
 
-	public void keyReleased(KeyEvent kevt) {
-		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
-			bCtrl = false;
-		super.keyReleased(kevt);
+	public void afterCarrega(CarregaEvent cevt) {
+		try {
+			if ((cevt.getListaCampos() == lcProd)
+					|| (cevt.getListaCampos() == lcProd2)) {
+				if (txtCLoteProd.getText().trim().equals("N")) {
+					txtCodLote.setAtivo(false);//Desativa o Cógigo do lote por o
+											   // produto não possuir lote
+				} else if (txtCLoteProd.getText().trim().equals("S")) {
+					txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
+											  // produto tem lote
+					if (lcDet.getStatus() == ListaCampos.LCS_INSERT)
+						buscaLote();
+				}
+				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
+					calcVlrItem(null,false);
+				}
+			} else if ((cevt.getListaCampos() == lcFisc)
+					&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
+				buscaNat();
+				buscaTratTrib();
+			} else if (cevt.getListaCampos() == lcNat) {
+				if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
+					buscaICMS();
+				}
+			} else if (cevt.getListaCampos() == lcDet) {
+				lcVenda2.carregaDados();//Carrega os Totais
+			} else if (cevt.getListaCampos() == lcCampos) {
+				String s = txtCodVenda.getVlrString();
+				lcVenda2.carregaDados();//Carrega os Totais
+				txtCodVenda.setVlrString(s);
+			} else if (cevt.getListaCampos() == lcVenda2) {
+				txtPercComisVenda.setAtivo(txtVlrComisVenda.doubleValue() == 0);
+			} else if (cevt.getListaCampos() == lcCli ) {
+				if ( (bPrefs[11]) ) {
+					if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
+						iCodCliAnt = txtCodCli.getVlrInteger().intValue();
+						mostraObsCli(iCodCliAnt,
+									 new Point( this.getX(),this.getY() + tpnCab.getHeight() + pnCab.getHeight()),
+									 new Dimension( spTab.getWidth(), spTab.getHeight() ) );
+					}
+				}
+				if(bPrefs[15]) {
+				    setReCalcPreco(true);
+				}
+			} else if(cevt.getListaCampos() == lcPlanoPag)
+				if(bPrefs[15]) {
+				    setReCalcPreco(true);
+				}
+			
+			if (txtStatusVenda.getVlrString().trim().length()>0 && 
+					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
+				lbStatus.setText("  CANCELADA");
+				lbStatus.setBackground(Color.RED);
+				lbStatus.setVisible(true);
+			}
+			else if (verificaBloq()){
+				lbStatus.setText("  BLOQUEADA");
+				lbStatus.setBackground(Color.BLUE);
+				lbStatus.setVisible(true);
+			}
+			else {
+				lbStatus.setText("");
+				lbStatus.setVisible( false );
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
-
+	
 	public void beforePost(PostEvent pevt) {
 		PreparedStatement psTipoMov = null;
 		ResultSet rsTipoMov = null;
 
 		if(pevt.getListaCampos() == lcCampos) {
-		    if(podeReCalcPreco()) {
+		    if(podeReCalcPreco() && lcDet.getStatus() == ListaCampos.LCS_READ_ONLY) {
 			    calcVlrItem("VDVENDA",true);
 			    lcDet.carregaDados();
 			    calcImpostos(true);
@@ -2271,13 +2259,25 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						}
 					}
 				}
-				if (!testaLucro()) {
-					Funcoes.mensagemInforma(this,"Não é permitido a venda deste produto abaixo do custo!!!");
-					pevt.cancela();
+				if(txtCodProd.getVlrInteger().intValue()>0) {
+					if (!testaLucro()) {
+						Funcoes.mensagemInforma(this,"Não é permitido a venda deste produto abaixo do custo!!!");
+						pevt.cancela();
+					}
 				}
 			}
 		}
 		txtTipoVenda.setVlrString("V");
+	}
+	
+	public void afterPost(PostEvent pevt) {
+		lcVenda2.carregaDados(); //Carrega os Totais
+		if (pevt.getListaCampos() == lcCampos) {
+			if (bPrefs[5]) {
+				txtFiscalTipoMov1.setText("S");
+				txtFiscalTipoMov2.setText("N");
+			}
+		}		
 	}
 
 	public void beforeDelete(DeleteEvent devt) {

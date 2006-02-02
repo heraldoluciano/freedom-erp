@@ -518,13 +518,13 @@ public abstract class FVD extends FDetalhe {
 			
 			
 			
-			sSQL = "SELECT COUNT(*) " +
-			"FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C"
-			+ " WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
-			+ "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
-			+ "(((C." + sCampoCusto
-			+ "/100)*(100+PF.PERCPRECOCUSTO)) <= ?"
-			+ " OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
+			sSQL = "SELECT COUNT(*) "
+				 + "FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C "
+				 + "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
+				 + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
+				 + "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? "
+				 + "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
+			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
