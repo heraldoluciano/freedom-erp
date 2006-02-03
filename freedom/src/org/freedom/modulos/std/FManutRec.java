@@ -981,8 +981,14 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		String[] sRelPlanPag = null;
 		String[] sRets = null;
 		DLBaixaRec dl = null;
+		ImageIcon imgStatusAt = null;
 		try{
 			if ((cOrig == 'M') & (tabManut.getLinhaSel() > -1)) {
+				imgStatusAt = ((ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0)); 
+				if(imgStatusAt == imgPago) {
+					Funcoes.mensagemInforma(this, "Parcela já foi baixada");
+					return;
+				}
 				int iLin = tabManut.getLinhaSel();				
 				if (iLin < 0)
 					return;
@@ -1071,6 +1077,11 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				carregaGridManut(bBuscaAtual);
 			}
 			else if ((cOrig == 'B') & (tabBaixa.getLinhaSel() > -1)) {
+				imgStatusAt = ((ImageIcon)tabBaixa.getValor(tabBaixa.getLinhaSel(),0)); 
+				if(imgStatusAt == imgPago) {
+					Funcoes.mensagemInforma(this, "Parcela já foi baixada");
+					return;
+				}
 				int iLin = tabBaixa.getLinhaSel();
 				iCodRec = txtCodRecBaixa.getVlrInteger().intValue();
 				iNParcItRec = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
@@ -1165,6 +1176,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 			sRelPlanPag = null;
 			sRets = null;
 			dl = null;			
+			imgStatusAt = null;
 		}
 	}
 	
