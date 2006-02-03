@@ -191,7 +191,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
     txtDtEmis.setVlrString(sVals[5]);
     txtDtVenc.setVlrString(sVals[6]);
     txtVlrParc.setVlrString(sVals[7]);
-    txtVlr.setVlrString(sVals[7]);
+    txtVlr.setVlrString(sVals[10]);
     txtVlrDesc.setVlrString(sVals[8]);
     txtVlrJuros.setVlrString(sVals[9]);
     txtVlrAberto.setVlrString(sVals[10]);
