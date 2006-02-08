@@ -21,7 +21,6 @@
 
 package org.freedom.modulos.std;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,16 +30,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
+
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -48,11 +48,10 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FFDialogo;
-import org.freedom.telas.FFilho;
+import org.freedom.telas.FDialogo;
 
 
-public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListener {
+public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -89,18 +88,24 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcConv = new ListaCampos(this,"CV");
 	private Vector vValidos = new Vector();
-	int iCodProd = 0;
-	private FVenda venda = null;
+	private String sTipoVenda = null;
+	private org.freedom.modulos.std.FVenda vendaSTD = null;
+	private org.freedom.modulos.pdv.FVenda vendaPDV = null;
 	
-	public FAdicOrc(FVenda vd) {
+	public FAdicOrc(Object vd,String tipo) {
 		// Monta a tela
-		super(false);
-		venda=vd;
+		//super(false);
+		super();
+		sTipoVenda = tipo;
+		if(sTipoVenda.equals("V"))
+			vendaSTD = (org.freedom.modulos.std.FVenda)vd;
+		else if(sTipoVenda.equals("E"))
+			vendaPDV = (org.freedom.modulos.pdv.FVenda)vd;
 		
 		setTitulo("Nova venda de orçamento");
-		setAtribos(25,10,700,440);
+		setAtribos(700,440);
 		
-		Container c = getTela();
+		//Container c = getTela();
 		c.setLayout(new BorderLayout());
 		c.add(pnRod,BorderLayout.SOUTH);
 		c.add(pnCli,BorderLayout.CENTER);
@@ -326,30 +331,32 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 		int iCodVenda = 0;
 		int[] iVals = null;
 		JTextFieldPad txtNewCodVenda = null;
-		FFDialogo diag = null;
+		FDialogo diag = null;
 		
 		try {
 			
-			boolean usaPedSeq = getUsaPedSeq();
-			diag = new FFDialogo(this);
+			boolean usaPedSeq = (getUsaPedSeq());
+			diag = new FDialogo();
 			txtNewCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 			
 			diag.setTitulo("Confirmação");
-			if(usaPedSeq)
-				diag.setAtribos(250, 140);
-			else
-				diag.setAtribos(250, 160);
-			
-			diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 15, 15, 220, 20);
-			
-			if(!getUsaPedSeq()){
-				diag.adic(new JLabelPad("Nº Pedido"), 15, 40, 80, 20);
-				diag.adic(txtNewCodVenda, 95, 40, 120, 20);
+			if(usaPedSeq || sTipoVenda.equals("E")) {
+				diag.setAtribos(235, 120);
+				diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 17, 220, 20);
 			}
+			else {
+				diag.setAtribos(235, 140);
+				diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 15, 220, 20);
+				diag.adic(new JLabelPad("Nº Pedido"), 7, 40, 80, 20);
+				diag.adic(txtNewCodVenda, 87, 40, 120, 20);
+			}
+			
 			diag.setVisible(true);
 			
-			if (diag.OK)
-				iCodVenda = txtNewCodVenda.getVlrInteger().intValue();
+			if (diag.OK) {
+				if(!usaPedSeq && sTipoVenda.equals("V"))
+					iCodVenda = txtNewCodVenda.getVlrInteger().intValue();
+			}
 			else
 				return false;
 			
@@ -361,12 +368,13 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 				
 				if (bPrim) {
 					try {
-						sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?)";
+						sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
 						ps = con.prepareStatement(sSQL);
 						ps.setInt(1,iVals[0]);
 						ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));
 						ps.setInt(3,Aplicativo.iCodEmp);
-						ps.setInt(4,iCodVenda);
+						ps.setString(4,sTipoVenda);
+						ps.setInt(5,iCodVenda);
 						rs = ps.executeQuery();
 						if (rs.next()) {
 							iCodVenda = rs.getInt(1);
@@ -374,13 +382,21 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 						rs.close();
 						ps.close();
 					} catch (SQLException err) {
-						Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage(),true,con,err);
+						if(err.getErrorCode() == 335544665) {
+							Funcoes.mensagemErro(this,"Número de pedido já existe.\n" + 
+									"Escolha outro numero.");
+							return gerar();
+						}
+						else
+							Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage(),true,con,err);
+						
+						err.printStackTrace();
 						return false;
 					}
 					bPrim = false;
 				}
 				try {
-					sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?)";
+					sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?)";
 					ps2 = con.prepareStatement(sSQL);
 					ps2.setInt(1,Aplicativo.iCodFilial);
 					ps2.setInt(2,iCodVenda);
@@ -388,6 +404,7 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 					ps2.setInt(4,iVals[1]);
 					ps2.setInt(5,ListaCampos.getMasterFilial("VDORCAMENTO"));
 					ps2.setInt(6,Aplicativo.iCodEmp);
+					ps2.setString(7,sTipoVenda);
 					ps2.execute();
 					ps2.close();
 				} catch (SQLException err) {
@@ -407,10 +424,15 @@ public class FAdicOrc extends FFilho implements ActionListener, RadioGroupListen
 				Funcoes.mensagemErro(this,"Erro ao realizar commit!!"+"\n"+err.getMessage(),true,con,err);
 				return false;
 			}
-			if (Funcoes.mensagemConfirma(this,
-						"Venda '"+iCodVenda+"' gerada com sucesso!!!\n\n"+
-						"Deseja edita-la?") == JOptionPane.YES_OPTION) {			
-				venda.exec(iCodVenda);
+			String opt[] = {"Sim","Não"}; 
+			if (JOptionPane.showOptionDialog(null, 
+					"Venda '"+iCodVenda+"' gerada com sucesso!!!\n\n"+
+					"Deseja edita-la?","Confirmação", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,null, opt, opt[0])==JOptionPane.YES_OPTION){
+				if(sTipoVenda.equals("V"))
+					vendaSTD.exec(iCodVenda);
+				if(sTipoVenda.equals("E"))
+					vendaPDV.exec(iCodVenda);
 				btSair.doClick();			                             	
 			
 			}

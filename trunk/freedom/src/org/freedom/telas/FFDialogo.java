@@ -303,7 +303,7 @@ public class FFDialogo extends JDialog implements ActionListener,
     }
 
     public void firstFocus() {
-        if ((firstFocus != null) && (firstFocus.hasFocus()) && (initFirstFocus))
+        if ((firstFocus != null) && (!firstFocus.isFocusOwner()) && (initFirstFocus))
             firstFocus.requestFocus();
 
         /*
@@ -316,7 +316,6 @@ public class FFDialogo extends JDialog implements ActionListener,
     public void setConexao(Connection cn) {
         con = cn;
     }
-
     
     public void execShow() {
         setVisible(true);

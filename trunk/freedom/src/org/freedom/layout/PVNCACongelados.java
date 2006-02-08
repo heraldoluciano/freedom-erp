@@ -59,7 +59,7 @@ public class PVNCACongelados extends Leiaute {
 				if (imp.pRow() == 0) {
 					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",134) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, sVal[0]);//Razão social
@@ -73,7 +73,7 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 118, "ID.USU.: " + Aplicativo.strUsuario.toUpperCase());//usuario
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");	
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",134) + "+");	
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Pedido: " + rs.getString("DOCVENDA"));
@@ -91,7 +91,7 @@ public class PVNCACongelados extends Leiaute {
 																  (rs.getString("FAXCLI")  != null ? Funcoes.setMascara(rs.getString("FAXCLI").trim() ,"####-####") : ""));
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
 					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
 					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",85) + "+");
 					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
@@ -106,7 +106,7 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 126, "Total");
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
 					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
 					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",85) + "+");
 					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
@@ -133,7 +133,7 @@ public class PVNCACongelados extends Leiaute {
 					if(rs.getInt(1) == contItem) {
 			            for (int i=0; i<(maxLine-iLinha);i++) {
 			            	imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate(" ",9) + "|");	
+							imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate(" ",10) + "|");	
 							imp.say(imp.pRow() + 0, 13, Funcoes.replicate(" ",6) + "|");
 							imp.say(imp.pRow() + 0, 20, Funcoes.replicate(" ",85) + "|");
 							imp.say(imp.pRow() + 0, 106, Funcoes.replicate(" ",14) + "|");
@@ -142,7 +142,7 @@ public class PVNCACongelados extends Leiaute {
 					}
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
 					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
 					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",34) + "+");
 					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",50) + "+");
@@ -161,18 +161,18 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 122, Funcoes.strDecimalToStrCurrency(13,casaDecFin,bdTotalItem.toString()));
 					imp.say(imp.pRow() + 0, 135, " |");	
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
 					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
 					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",34) + "+");
 					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",50) + "+");
 					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",30) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "| Obrigado pela prefência.");
-					imp.say(imp.pRow() + 0, 54, "|OBS.: " + (rs.getString("OBSVENDA") != null ? rs.getString("OBSVENDA").substring(0,74) : ""));
+					imp.say(imp.pRow() + 0, 54, "|OBS.: " + ((rs.getString("OBSVENDA") != null && !rs.getString("OBSVENDA").trim().equals("")) ? rs.getString("OBSVENDA").substring(0,74) : ""));
 					imp.say(imp.pRow() + 0, 136, "|");
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",51) + "+");	
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",52) + "+");	
 					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",81) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					
@@ -186,15 +186,21 @@ public class PVNCACongelados extends Leiaute {
 			imp.fechaGravacao();
 			bRetorno = true;
 			
-		}
-		catch ( SQLException err ) {
-			Funcoes.mensagemErro(null,"Erro ao consultar tabela de Venda!"+err.getMessage());      
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro(null,"Erro ao consultar tabela de Venda!"+err.getMessage());  
+			err.printStackTrace();
 			bRetorno = false;
-		}
-		catch ( Exception err ) {
+		} catch ( Exception err ) {
 			Funcoes.mensagemErro(null,"Erro ao montar pedido de venda!"+err.getMessage());      
+			err.printStackTrace();  
 			bRetorno = false;
+		} finally {
+			bdTotalItem = null;
+			sVal = null;
+			sHora = null;
+		    cHora = null;
 		}
+		
 		return bRetorno;
 	}
 }

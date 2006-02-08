@@ -173,15 +173,15 @@ public class FRComissoes extends FRelatorio {
 		ResultSet rs = null;
 		int linPag = imp.verifLinPag() - 1;
 		int iCodVend = txtCodVend.getVlrInteger().intValue();
-		float fPercComi = 0;
-		float fVlrVenda = 0;
-		float fVlrComi = 0;
-		float fVlrPago = 0;
-		float fVlrAPag = 0;
+		BigDecimal bPercComi = new BigDecimal("0");
 		BigDecimal bVlrVenda = new BigDecimal("0");
 		BigDecimal bVlrComi = new BigDecimal("0");
 		BigDecimal bVlrPago = new BigDecimal("0");
 		BigDecimal bVlrAPag = new BigDecimal("0");
+		BigDecimal bVlrTotVenda = new BigDecimal("0");
+		BigDecimal bVlrTotComi = new BigDecimal("0");
+		BigDecimal bVlrTotPago = new BigDecimal("0");
+		BigDecimal bVlrTotAPag = new BigDecimal("0");
 		
 		try {
 
@@ -302,15 +302,15 @@ public class FRComissoes extends FRelatorio {
 						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "| CLIENTE");
-						imp.say(imp.pRow() + 0, 26, "|DUPLIC.");
-						imp.say(imp.pRow() + 0, 37, "|PEDIDO");
-						imp.say(imp.pRow() + 0, 46, "|L");
-						imp.say(imp.pRow() + 0, 48, "|ST");
-						imp.say(imp.pRow() + 0, 51, "| EMISSAO");
-						imp.say(imp.pRow() + 0, 62, "| VENCTO.");
-						imp.say(imp.pRow() + 0, 73, "| VLR.PARC.A");
-						imp.say(imp.pRow() + 0, 86, "|VLR.COMI.");
-						imp.say(imp.pRow() + 0, 97, "|  %");
+						imp.say(imp.pRow() + 0, 24, "|  DUPLIC.");
+						imp.say(imp.pRow() + 0, 35, "| PEDIDO");
+						imp.say(imp.pRow() + 0, 44, "|L");
+						imp.say(imp.pRow() + 0, 46, "|ST");
+						imp.say(imp.pRow() + 0, 49, "| EMISSAO");
+						imp.say(imp.pRow() + 0, 60, "| VENCTO.");
+						imp.say(imp.pRow() + 0, 71, "| VLR.PARC.A");
+						imp.say(imp.pRow() + 0, 84, "|VLR.COMI.");
+						imp.say(imp.pRow() + 0, 93, "|    %");
 						imp.say(imp.pRow() + 0, 104, "| VLR.PAGO");
 						imp.say(imp.pRow() + 0, 114, "|VLR.A PG.");
 						imp.say(imp.pRow() + 0, 124, "| DT.PGTO.");
@@ -319,10 +319,10 @@ public class FRComissoes extends FRelatorio {
 						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
 
 					}
-					if (rs.getDouble("VLRVENDACOMI") != 0)
-						fPercComi = rs.getFloat("VLRCOMI") * 100 / rs.getFloat("VLRPARCITREC");
+					if (rs.getFloat("VLRVENDACOMI") > 0)
+						bPercComi = new BigDecimal(rs.getFloat("VLRCOMI") * 100 / rs.getFloat("VLRPARCITREC")).setScale(4,BigDecimal.ROUND_HALF_UP);
 					else
-						fPercComi = 0;
+						bPercComi = new BigDecimal("0");
 					
 
 					bVlrVenda = rs.getBigDecimal("VLRPARCITREC").setScale(2,BigDecimal.ROUND_HALF_UP);
@@ -330,24 +330,24 @@ public class FRComissoes extends FRelatorio {
 					bVlrPago = rs.getBigDecimal("VLRPAGOCOMI").setScale(2,BigDecimal.ROUND_HALF_UP);
 					bVlrAPag = rs.getBigDecimal("VLRAPAGCOMI").setScale(2,BigDecimal.ROUND_HALF_UP);
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos(rs.getString("RAZCLI"),24));
-					imp.say(imp.pRow() + 0, 26, "|" + Funcoes.adicEspacosEsquerda(rs.getString("DOCREC") + "-" + rs.getString("NPARCITREC"), 10));
-					imp.say(imp.pRow() + 0, 37, "|" + Funcoes.adicEspacosEsquerda(rs.getInt("CODVENDA") + "", 8));
-					imp.say(imp.pRow() + 0, 46, "|" + rs.getString("TIPOCOMI"));
-					imp.say(imp.pRow() + 0, 48, "|" + rs.getString("STATUSCOMI"));
-					imp.say(imp.pRow() + 0, 51, "|" + Funcoes.dateToStrDate(rs.getDate("DATACOMI")));
-					imp.say(imp.pRow() + 0, 62, "|" + Funcoes.dateToStrDate(rs.getDate("DTVENCCOMI")));
-					imp.say(imp.pRow() + 0, 73, "|" + Funcoes.strDecimalToStrCurrency(12, 2, ""+bVlrVenda));
-					imp.say(imp.pRow() + 0, 86, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrComi));
-					imp.say(imp.pRow() + 0, 97, "|" + Funcoes.strDecimalToStrCurrency(5, 2, ""+(Funcoes.strDecimalToBigDecimal(2, fPercComi + ""))));
+					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos(rs.getString("RAZCLI"),22));
+					imp.say(imp.pRow() + 0, 24, "|" + Funcoes.adicEspacosEsquerda(rs.getString("DOCREC") + "-" + rs.getString("NPARCITREC"), 10));
+					imp.say(imp.pRow() + 0, 35, "|" + Funcoes.adicEspacosEsquerda(rs.getInt("CODVENDA") + "", 8));
+					imp.say(imp.pRow() + 0, 44, "|" + rs.getString("TIPOCOMI"));
+					imp.say(imp.pRow() + 0, 46, "|" + rs.getString("STATUSCOMI"));
+					imp.say(imp.pRow() + 0, 49, "|" + Funcoes.dateToStrDate(rs.getDate("DATACOMI")));
+					imp.say(imp.pRow() + 0, 60, "|" + Funcoes.dateToStrDate(rs.getDate("DTVENCCOMI")));
+					imp.say(imp.pRow() + 0, 71, "|" + Funcoes.strDecimalToStrCurrency(12, 2, ""+bVlrVenda));
+					imp.say(imp.pRow() + 0, 84, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrComi));
+					imp.say(imp.pRow() + 0, 94, "|" + Funcoes.alinhaDir(Funcoes.strDecimalToStrCurrency(5, 4, ""+bPercComi),9));
 					imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrPago));
 					imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrAPag));
 					imp.say(imp.pRow() + 0, 124, "|" + (rs.getDate("DTPAGTOCOMI") == null ? "" : Funcoes.dateToStrDate(rs.getDate("DTPAGTOCOMI"))));
 					imp.say(imp.pRow() + 0, 135, "|");
-					fVlrVenda += rs.getFloat("VLRVENDACOMI");
-					fVlrComi += rs.getFloat("VLRCOMI");
-					fVlrPago += rs.getFloat("VLRPAGOCOMI");
-					fVlrAPag += rs.getFloat("VLRAPAGCOMI");
+					bVlrTotVenda = bVlrTotVenda.add(bVlrVenda);
+					bVlrTotComi = bVlrTotComi.add(bVlrComi);
+					bVlrTotPago = bVlrTotPago.add(bVlrPago);
+					bVlrTotAPag = bVlrTotAPag.add(bVlrAPag);
 
 				}
 
@@ -355,12 +355,12 @@ public class FRComissoes extends FRelatorio {
 				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "| TOTAL ->");
-				imp.say(imp.pRow() + 0, 26, "|");
-				imp.say(imp.pRow() + 0, 73, "|" + Funcoes.strDecimalToStrCurrency(12, 2, "" + fVlrVenda));
-				imp.say(imp.pRow() + 0, 86, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + fVlrComi));
-				imp.say(imp.pRow() + 0, 97, "|");
-				imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + fVlrPago));
-				imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + fVlrAPag));
+				imp.say(imp.pRow() + 0, 24, "|");
+				imp.say(imp.pRow() + 0, 71, "|" + Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrTotVenda.setScale(2,BigDecimal.ROUND_HALF_UP)));
+				imp.say(imp.pRow() + 0, 83, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotComi.setScale(2,BigDecimal.ROUND_HALF_UP)));
+				imp.say(imp.pRow() + 0, 94, "|");
+				imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotPago.setScale(2,BigDecimal.ROUND_HALF_UP)));
+				imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotAPag.setScale(2,BigDecimal.ROUND_HALF_UP)));
 				imp.say(imp.pRow(), 124, "|");
 				imp.say(imp.pRow(), 135, "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -398,13 +398,10 @@ public class FRComissoes extends FRelatorio {
 			sTitDataFiltro = null;
 			ps = null;
 			rs = null;
-			linPag = 0;
-			iCodVend = 0;
-			fPercComi = 0;
-			fVlrVenda = 0;
-			fVlrComi = 0;
-			fVlrPago = 0;
-			fVlrAPag = 0;
+			bVlrTotVenda = null;
+			bVlrTotComi = null;
+			bVlrTotPago = null;
+			bVlrTotAPag = null;
 			bVlrVenda = null;
 			bVlrComi = null;
 			bVlrPago = null;
