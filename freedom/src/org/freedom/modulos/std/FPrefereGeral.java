@@ -133,7 +133,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JLabelPad lbVendOpcoes = new JLabelPad("    Opções");
 	private JLabelPad lbGeralOpcoes = new JLabelPad("    Opções");
 	private JLabelPad lbOrcOpcoes = new JLabelPad("    Opções");
-	private JLabelPad lbContOrc = new JLabelPad();
+	private JLabelPad lbOrcCont = new JLabelPad();
 	private JComboBoxPad cbTamDescProd = null;
 	private JRadioGroup rgTipoValidOrc = null;
 	private JRadioGroup rgTipoPrecoCusto = null;
@@ -174,6 +174,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbReCalcVenda = null;
 	private JCheckBoxPad cbReCalcOrc = null;
 	private JCheckBoxPad cbAprovOrc = null;
+	private JCheckBoxPad cbLayoutPed = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -201,7 +202,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	public FPrefereGeral() {
 		super();
 		setTitulo("Preferências Gerais");
-		setAtribos(40, 40, 760, 440);
+		setAtribos(40, 40, 760, 460);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
@@ -398,7 +399,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbTravaTMNFVD.setVlrString("S");
 		cbCustosSICMS = new JCheckBoxPad("Preço de custo sem ICMS?", "S", "N");
 		cbCustosSICMS.setVlrString("S");
-		cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima","S", "N");
+		cbVendaMatPrim = new JCheckBoxPad("Permitir venda de matéria prima?","S", "N");
 		cbVendaMatPrim.setVlrString("N");
 		cbPrazoEnt = new JCheckBoxPad("Prazo de entrega na venda?", "S", "N");
 		cbPrazoEnt.setVlrString("S");
@@ -422,6 +423,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbCnpjForObrig.setVlrString("S");
 		cbInscEstForObrig = new JCheckBoxPad("Inscrição estadual obrigatória para o cadastro de fornecedores ?","S", "N");
 		cbInscEstForObrig.setVlrString("S");
+		cbLayoutPed = new JCheckBoxPad("Usar layout personalizado para pedido?","S", "N");
+		cbLayoutPed.setVlrString("N");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -481,7 +484,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicCampo(txtCasasDec, 7, 140, 100, 20, "CasasDec", "Demais",ListaCampos.DB_SI, true);
 		lbGeralOpcoes.setOpaque(true);
 		adic(lbGeralOpcoes,170,5,90,20);
-		adic(pinOpcoesGeral,160,15,560,140);
+		adic(pinOpcoesGeral,160,15,560,145);
 		setPainel(pinOpcoesGeral);		
 		adicDB(cbRgCliObrig,7, 20, 180, 20, "RgCliObrig", "", true);
 		adicDB(cbCliMesmoCnpj, 7, 40, 250, 20, "CliMesmoCnpj", "", true);
@@ -507,7 +510,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		
 		lbVendOpcoes.setOpaque(true);
 		adic(lbVendOpcoes,357,5,70,20);
-		adic(pinOpcoesVenda,348,15,380,320);
+		adic(pinOpcoesVenda,348,15,380,340);
 		setPainel(pinOpcoesVenda);
 
 		adicDB(cbUsaRefProd, 5, 10, 160, 20, "UsaRefProd", "", true);
@@ -524,15 +527,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbIPIVenda, 205, 90, 160, 20, "IPIVenda", "", true);
 		adicDB(cbNatVenda, 205, 110, 160, 20, "NatVenda", "", true);
 
-		adicDB(cbVendaMatPrim, 5, 130, 300, 20, "VendaMatPrim", "", true);
-		adicDB(cbEstNegGrupo, 5, 150, 250, 20, "EstNegGrup", "", true);
-		adicDB(cbBloqVenda, 5, 170, 300, 20, "BloqVenda", "", true);
-		adicDB(cbComisPDupl, 5, 190, 300, 20, "ComisPDupl", "", true);
-		adicDB(cbDiasPEData, 5, 210, 300, 20, "DIASPEDT", "", true);
-		adicDB(cbReCalcVenda, 5, 230, 250, 20, "ReCalcPCVenda", "", true);	
-		adicDB(cbReCalcOrc, 5, 250, 250, 20, "ReCalcPCOrc", "", true);
-		adicDB(cbTravaTMNFVD, 5, 270, 300, 20, "TravaTMNFVD", "", true);
-		adicDB(cbObsCliVend, 5, 290,350,20, "ObsCliVend", "", true);
+		adicDB(cbDiasPEData, 5, 130, 300, 20, "DIASPEDT", "", true);
+		adicDB(cbReCalcVenda, 5, 150, 250, 20, "ReCalcPCVenda", "", true);	
+		adicDB(cbReCalcOrc, 5, 170, 250, 20, "ReCalcPCOrc", "", true);
+		adicDB(cbVendaMatPrim, 5, 190, 300, 20, "VendaMatPrim", "", true);
+		adicDB(cbTravaTMNFVD, 5, 210, 300, 20, "TravaTMNFVD", "", true);
+		adicDB(cbBloqVenda, 5, 230, 300, 20, "BloqVenda", "", true);
+		adicDB(cbComisPDupl, 5, 250, 300, 20, "ComisPDupl", "", true);
+		adicDB(cbEstNegGrupo, 5, 270, 250, 20, "EstNegGrup", "", true);
+		adicDB(cbLayoutPed, 5, 290, 300, 20, "UsaLayoutPed", "", true);
+		adicDB(cbObsCliVend, 5, 310,350,20, "ObsCliVend", "", true);
 
 		setPainel(pinPreco);
 		adicTab("Preços", pinPreco);
@@ -672,7 +676,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		setNavegador(new Navegador(false));
 		setPainel(pinOrc);
 		
-		lbContOrc.setBorder( BorderFactory.createEtchedBorder(1));
+		lbOrcCont.setBorder( BorderFactory.createEtchedBorder(1));
 		lbOrcOpcoes.setOpaque(true);
 
 		adicCampo(txtCodTipoMov7, 7, 65, 80, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov7, false);
@@ -684,7 +688,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicCampo(txtPrazo, 330, 105, 250, 20, "Prazo","Prazo de Entrega do Orçamento", ListaCampos.DB_SI, false);
 		adicCampo(txtDiasVencOrc, 330, 145, 250, 20, "DiasVencOrc", "Dias p/ vencimento do orçamento",ListaCampos.DB_SI, false);
 		adic(lbOrcOpcoes, 17, 190, 70, 20);
-		adic(lbContOrc, 7, 200, 720, 120);
+		adic(lbOrcCont, 7, 200, 720, 120);
 		adicDB(cbAprovOrc, 10, 215, 350, 20, "AprovOrc", "", true);
 		setListaCampos(false, "PREFERE4", "SG");
 

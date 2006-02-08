@@ -148,13 +148,15 @@ public class FRBoleto extends FRelatorio {
                 "ITR.VLRDESCITREC,C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI," +
                 "C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI," +
                 "C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB," +
-                "C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC " +
-                "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R" +
+                "C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC,N.CODNAT,N.DESCNAT " +
+                "FROM FNITRECEBER ITR,VDVENDA V,VDITVENDA I,VDCLIENTE C, FNRECEBER R, LFNATOPER N" +
                 " WHERE ITR.CODREC=R.CODREC" +
                 " AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL" +
                 " AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA" +
                 " AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI" +
                 " AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL" +
+                " AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA" +
+                " AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT" +
                 " AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=?"+sParc;
 		try {
 			ps = con.prepareStatement(sSQL);
@@ -285,7 +287,10 @@ public class FRBoleto extends FRelatorio {
 		                sTxa = sTxa.replaceAll("\\[__TELEFONE___]",Funcoes.setMascara(sCampo.trim(),"####-####"));
 		            if ((sCampo = rs.getString("DDDCli")) != null || (sCampo = "("+rs.getString("DDDCli"))+")" != null)
 		                sTxa = sTxa.replaceAll("\\[DDD]",Funcoes.copy(sCampo,0,5));
-		            
+		            if ((sCampo = rs.getString("CodNat")) != null)
+		                sTxa = sTxa.replaceAll("\\[CODNAT]",Funcoes.copy(sCampo,0,8));
+		            if ((sCampo = rs.getString("DescNat")) != null)
+		                sTxa = sTxa.replaceAll("\\[______________NATUREZA_DA_OPERACAO______________]",Funcoes.copy(sCampo,0,50));
 		            
 		            //Aplicar campos especiais de dados:
 		            

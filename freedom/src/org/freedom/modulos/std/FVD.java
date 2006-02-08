@@ -31,23 +31,19 @@ package org.freedom.modulos.std;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.math.BigDecimal;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.Vector;
 
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDetalhe;
-import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FObservacao;
+import org.freedom.telas.FPassword;
 
 public abstract class FVD extends FDetalhe {
 	
@@ -625,95 +621,20 @@ public abstract class FVD extends FDetalhe {
 	}
 	/**
 	 * Monta uma dialog para confirmação de senha do usuario.
+	 * A verificação é especifica para o tipo passado no construtor.
 	 * @param args parametros para a cosulta.
 	 * @return verdadeiro se a confirmado.
 	 */
 	private boolean mostraTelaPass(String[] args) {
 		boolean retorno = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sIDUsu = null;
-		Properties props = null;
-		JTextFieldPad txtUsu = null;
-		JPasswordFieldPad txtPass = null;
-		FFDialogo diag = null;
 		
-		try {
-			
-			txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-			txtUsu.setText(Aplicativo.strUsuario);
-			
-			txtPass = new JPasswordFieldPad(8);
-			
-			diag = new FFDialogo(this);
-			
-			diag.setTitulo("Permissão");
-			diag.setAtribos(300, 140);
-			diag.adic(new JLabelPad("Usuário: "), 7, 10, 100, 20);
-			diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
-			diag.adic(txtUsu, 110, 10, 150, 20);
-			diag.adic(txtPass, 110, 30, 150, 20);
-			diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
-			
-			do {
-				try {
-					diag.setVisible(true);
-					if (diag.OK) {
-						props = new Properties();
-						sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
-						props.put("user", sIDUsu);
-						props.put("password", txtPass.getVlrString());
-						if (sIDUsu.equals("") || txtPass.getVlrString().trim().equals("")) {
-							Funcoes.mensagemErro(this, "Campo em branco!");
-							continue;
-						}
-						DriverManager.getConnection(Aplicativo.strBanco, props).close();
-						String sSQL = "SELECT BAIXOCUSTOUSU FROM SGUSUARIO WHERE "
-								+ "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
-						ps = con.prepareStatement(sSQL);
-						ps.setString(1, sIDUsu);
-						ps.setInt(2, Aplicativo.iCodEmp);
-						ps.setInt(3, Aplicativo.iCodFilial);
-						rs = ps.executeQuery();
-						if (rs.next()) {
-							if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
-								int iLog[] = Aplicativo.gravaLog(sIDUsu, "PR", "LIB",
-										"Liberação de " + args[0] + " abaixo do custo",
-										""+args[0]+" [" + args[1] + "], " + 		//codigo da tabela
-										"Item: ["    	+ args[2] + "], " + 		//codigo do item
-										"Produto: [" 	+ args[3] + "], " +			//codigo do produto
-										"Preço: ["   	+ args[4] + "]"				//preço do produto
-										, con);
-								setLog( new String[]{"" + Aplicativo.iCodEmp 		//codigo da empresa
-													,"" + iLog[0]					//codigo da filial
-								                    ,"" + iLog[1]});				//codigo do log
-								retorno = true;
-							}
-						}
-						if (!retorno)
-							Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
-						rs.close();
-						ps.close();
-					}
-				} catch (java.sql.SQLException e) {
-					if (e.getErrorCode() == 335544472) {
-						Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
-						continue;
-					}
-					Funcoes.mensagemErro(this,"Não foi possível estabelecer conexão com o banco de dados.\n"
-									+ e.getMessage());
-					e.printStackTrace();
-				}
-				break;
-			} while (true);
-			
-			diag.dispose();
-			
-		} catch(Exception e) {
-			Funcoes.mensagemErro(null,"Erro na confirmação do usuario.", true, con, e);
-			e.printStackTrace();
-		} finally {			
+		FPassword fpw = new FPassword(this,FPassword.BAIXO_CUSTO, args, con);
+		fpw.execShow();
+		if(fpw.OK){
+			setLog(fpw.getLog());			
+			retorno = true;
 		}
+		fpw.dispose();
 		
 		return retorno;
 	}
