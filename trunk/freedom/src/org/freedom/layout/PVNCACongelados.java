@@ -175,10 +175,7 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",52) + "+");	
 					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",81) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					
-			        imp.setPrc(0,0);
-			        imp.incPags();
-					
+										
 				}
 				
 			}

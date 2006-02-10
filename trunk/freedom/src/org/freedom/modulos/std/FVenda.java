@@ -978,7 +978,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			sSQL = "SELECT P.CLASSNOTAPAPEL "
 				 + "FROM SGPAPEL P, SGIMPRESSORA I, SGESTACAOIMP EI, SGESTACAO E "
 				 + "WHERE P.CODPAPEL=I.CODPAPEL AND P.CODEMP=I.CODEMPPL AND P.CODFILIAL=I.CODFILIALPL "
-				 + "AND I.CODIMP=EI.CODIMP AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP AND EI.IMPPAD='S' "
+				 + "AND I.CODIMP=EI.CODIMP AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP AND EI.TIPOUSOIMP='PD' "
 				 + "AND EI.CODEST=E.CODEST AND EI.CODEMP=E.CODEMP AND EI.CODFILIAL=E.CODFILIAL "
 				 + "AND E.CODEMP=? AND E.CODFILIAL=? AND E.CODEST=?";
 			ps = con.prepareStatement(sSQL);
@@ -1179,7 +1179,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		String sSQLRec = null;
 		String sSQLInfoAdic = null;
 		String sDiasPE = null;
-		ImprimeOS imp = new ImprimeOS("", con,"PD",true);
+		ImprimeOS imp = new ImprimeOS("", con, "PD", true);
 		DLRPedido dl = null; 
 		GregorianCalendar cal = null;
 		Date dtHoje = null;
