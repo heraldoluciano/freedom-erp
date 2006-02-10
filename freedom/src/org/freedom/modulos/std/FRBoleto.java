@@ -124,8 +124,14 @@ public class FRBoleto extends FRelatorio {
 	public void imprimir(boolean bVisualizar) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		PreparedStatement psNat = null;
+		ResultSet rsNat = null;
+		String sSQL = null;
+		String sSQLNat = null;
 		String sVal = null;
 		String sParc = "";
+		String[] sNat = new String[2];
+		ImprimeOS imp = null;
 		if (txtCodVenda.getVlrString().equals("")) {
 			Funcoes.mensagemInforma(this,"Código da venda em branco!");
 			return;
@@ -138,34 +144,52 @@ public class FRBoleto extends FRelatorio {
 		if (txtParc.getVlrInteger().intValue()> 0)
             sParc = " AND ITR.NPARCITREC = "+txtParc.getVlrString();
     
-		ImprimeOS imp = new ImprimeOS("",con);
+		imp = new ImprimeOS("",con);
 		imp.verifLinPag();
 		imp.setTitulo("Boleto");
-		String sSQL = "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE " +
+		sSQL = "SELECT (SELECT COUNT(*) FROM FNITRECEBER ITR2 WHERE " +
                 "ITR2.CODREC=R.CODREC AND ITR2.CODEMP=R.CODEMP AND " +
                 "ITR2.CODFILIAL=R.CODFILIAL),ITR.DTVENCITREC,V.DTEMITVENDA," +
                 "V.DOCVENDA,ITR.NPARCITREC,ITR.VLRAPAGITREC,ITR.VLRPARCITREC," +
                 "ITR.VLRDESCITREC,C.CODCLI,C.RAZCLI,C.NOMECLI,C.CPFCLI,C.CNPJCLI," +
                 "C.RGCLI,C.INSCCLI,C.ENDCLI,C.NUMCLI,C.COMPLCLI,C.CEPCLI,C.BAIRCLI," +
                 "C.CIDCLI,C.UFCLI,C.ENDCOB,C.NUMCOB,C.COMPLCOB,C.CEPCOB,C.BAIRCOB," +
-                "C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC,N.CODNAT,N.DESCNAT " +
-                "FROM FNITRECEBER ITR,VDVENDA V,VDITVENDA I,VDCLIENTE C, FNRECEBER R, LFNATOPER N" +
-                " WHERE ITR.CODREC=R.CODREC" +
-                " AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL" +
-                " AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA" +
-                " AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI" +
-                " AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL" +
-                " AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA" +
-                " AND N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT" +
-                " AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=?"+sParc;
+                "C.CIDCOB,C.UFCOB,C.FONECLI,C.DDDCLI,R.CODREC " +
+                "FROM FNITRECEBER ITR,VDVENDA V,VDCLIENTE C, FNRECEBER R " +
+                "WHERE ITR.CODREC=R.CODREC " +
+                "AND ITR.CODEMP=R.CODEMP AND ITR.CODFILIAL=R.CODFILIAL " +
+                "AND V.CODVENDA=R.CODVENDA AND V.CODEMP=R.CODEMPVA " +
+                "AND V.CODFILIAL=R.CODFILIALVA AND C.CODCLI=V.CODCLI " +
+                "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL " +
+                "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=?"+sParc;
+		
+		sSQLNat = "SELECT I.CODNAT, N.DESCNAT " +
+				  "FROM VDITVENDA I, VDVENDA V, LFNATOPER N, FNRECEBER R " +
+				  "WHERE N.CODEMP=I.CODEMPNT AND N.CODFILIAL=I.CODFILIALNT AND N.CODNAT=I.CODNAT " +
+				  "AND I.CODEMP=V.CODEMP AND I.CODFILIAL=V.CODFILIAL AND I.CODVENDA=V.CODVENDA AND I.TIPOVENDA=V.TIPOVENDA " +
+				  "AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA='V' " +
+				  "AND R.CODEMPVA=? AND R.CODFILIALVA=? AND R.CODVENDA=?";
+		
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
 			ps.setInt(3,txtCodVenda.getVlrInteger().intValue());
 			rs = ps.executeQuery();
+			
+			psNat = con.prepareStatement(sSQLNat);
+			psNat.setInt(1,Aplicativo.iCodEmp);
+			psNat.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+			psNat.setInt(3,txtCodVenda.getVlrInteger().intValue());
+			rsNat = psNat.executeQuery();
+			
+			if(rsNat.next()) {
+				sNat[0] = rsNat.getString("CODNAT");
+				sNat[1] = rsNat.getString("DESCNAT");
+			}
+			
 			while ( rs.next() ) {
-				sVal = aplicCampos(rs);
+				sVal = aplicCampos(rs,sNat);
 				if (sVal != null) {
 					String[] sLinhas = (sVal+" ").split("\n");
 					for(int i=0;i<sLinhas.length;i++) {
@@ -191,6 +215,7 @@ public class FRBoleto extends FRelatorio {
 		finally {
 			ps = null;
 			rs = null;
+			sSQL = null;
 			sVal = null;
 			sParc = null;
 		}
@@ -207,7 +232,7 @@ public class FRBoleto extends FRelatorio {
 		}
 	}
 	
-	private String aplicCampos(ResultSet rs) {
+	private String aplicCampos(ResultSet rs,String[] sNat) {
 		PreparedStatement ps = null;
 		ResultSet rs2 = null;
 		Date dCampo = null;
@@ -287,9 +312,9 @@ public class FRBoleto extends FRelatorio {
 		                sTxa = sTxa.replaceAll("\\[__TELEFONE___]",Funcoes.setMascara(sCampo.trim(),"####-####"));
 		            if ((sCampo = rs.getString("DDDCli")) != null || (sCampo = "("+rs.getString("DDDCli"))+")" != null)
 		                sTxa = sTxa.replaceAll("\\[DDD]",Funcoes.copy(sCampo,0,5));
-		            if ((sCampo = rs.getString("CodNat")) != null)
+		            if ((sCampo = sNat[0]) != null)
 		                sTxa = sTxa.replaceAll("\\[CODNAT]",Funcoes.copy(sCampo,0,8));
-		            if ((sCampo = rs.getString("DescNat")) != null)
+		            if ((sCampo = sNat[1]) != null)
 		                sTxa = sTxa.replaceAll("\\[______________NATUREZA_DA_OPERACAO______________]",Funcoes.copy(sCampo,0,50));
 		            
 		            //Aplicar campos especiais de dados:
