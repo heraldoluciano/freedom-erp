@@ -88,7 +88,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcConv = new ListaCampos(this,"CV");
 	private Vector vValidos = new Vector();
-	private String sTipoVenda = null;
+	private final String sTipoVenda;
 	private org.freedom.modulos.std.FVenda vendaSTD = null;
 	private org.freedom.modulos.pdv.FVenda vendaPDV = null;
 	
@@ -143,9 +143,11 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		pinCab.adic(txtCodConv,7,65,70,20);
 		pinCab.adic(new JLabelPad("Nome do conveniado"),80,45,200,20);
 		pinCab.adic(txtNomeConv,80,65,200,20);
+
+		pinCab.adic(btBusca,480,35,150,40);
+		
 		pinCab.adic(new JLabelPad("Buscar por:"),300,5,120,20);
 		pinCab.adic(rgBusca,300,25,120,60);
-		pinCab.adic(btBusca,480,35,150,40);
 		
 		pnRod.setPreferredSize(new Dimension(600,50));
 		
@@ -334,108 +336,122 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		FDialogo diag = null;
 		
 		try {
-			
-			boolean usaPedSeq = (getUsaPedSeq());
-			diag = new FDialogo();
-			txtNewCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-			
-			diag.setTitulo("Confirmação");
-			if(usaPedSeq || sTipoVenda.equals("E")) {
-				diag.setAtribos(235, 120);
-				diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 17, 220, 20);
-			}
-			else {
-				diag.setAtribos(235, 140);
-				diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 15, 220, 20);
-				diag.adic(new JLabelPad("Nº Pedido"), 7, 40, 80, 20);
-				diag.adic(txtNewCodVenda, 87, 40, 120, 20);
-			}
-			
-			diag.setVisible(true);
-			
-			if (diag.OK) {
-				if(!usaPedSeq && sTipoVenda.equals("V"))
-					iCodVenda = txtNewCodVenda.getVlrInteger().intValue();
-			}
-			else
-				return false;
-			
-			for (int i=0;i<vValidos.size();i++) {
-				if (!((Boolean)tab.getValor(i,0)).booleanValue())
-					continue;
+			if(tab.getNumLinhas()>0) {
+
+				boolean usaPedSeq = (getUsaPedSeq());
+				diag = new FDialogo();
+				txtNewCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 				
-				iVals = (int[])vValidos.elementAt(i);
+				diag.setTitulo("Confirmação");
+				if(usaPedSeq || sTipoVenda.equals("E")) {
+					diag.setAtribos(235, 120);
+					diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 17, 220, 20);
+				}
+				else {
+					diag.setAtribos(235, 140);
+					diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 15, 220, 20);
+					diag.adic(new JLabelPad("Nº Pedido"), 7, 40, 80, 20);
+					diag.adic(txtNewCodVenda, 87, 40, 120, 20);
+				}
 				
-				if (bPrim) {
-					try {
-						sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
-						ps = con.prepareStatement(sSQL);
-						ps.setInt(1,iVals[0]);
-						ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));
-						ps.setInt(3,Aplicativo.iCodEmp);
-						ps.setString(4,sTipoVenda);
-						ps.setInt(5,iCodVenda);
-						rs = ps.executeQuery();
-						if (rs.next()) {
-							iCodVenda = rs.getInt(1);
-						}
-						rs.close();
-						ps.close();
-					} catch (SQLException err) {
-						if(err.getErrorCode() == 335544665) {
-							Funcoes.mensagemErro(this,"Número de pedido já existe.\n" + 
-									"Escolha outro numero.");
-							return gerar();
-						}
-						else
-							Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage(),true,con,err);
+				diag.setVisible(true);
+				
+				if (diag.OK) {
+					if(!usaPedSeq && sTipoVenda.equals("V"))
+						iCodVenda = txtNewCodVenda.getVlrInteger().intValue();
+				}
+				else
+					return false;
+				
+				if(sTipoVenda.equals("V")) {
+
+					for (int i=0;i<vValidos.size();i++) {
+						if (!((Boolean)tab.getValor(i,0)).booleanValue())
+							continue;
 						
-						err.printStackTrace();
-						return false;
+						iVals = (int[])vValidos.elementAt(i);
+						
+						if (bPrim) {
+							try {
+								sSQL = "SELECT IRET FROM VDADICVENDAORCSP(?,?,?,?,?)";
+								ps = con.prepareStatement(sSQL);
+								ps.setInt(1,iVals[0]);
+								ps.setInt(2,ListaCampos.getMasterFilial("VDORCAMENTO"));
+								ps.setInt(3,Aplicativo.iCodEmp);
+								ps.setString(4,sTipoVenda);
+								ps.setInt(5,iCodVenda);
+								rs = ps.executeQuery();
+								if (rs.next()) {
+									iCodVenda = rs.getInt(1);
+								}
+								rs.close();
+								ps.close();
+							} catch (SQLException err) {
+								if(err.getErrorCode() == 335544665) {
+									Funcoes.mensagemErro(this,"Número de pedido já existe!" );
+									return gerar();
+								}
+								else
+									Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage(),true,con,err);
+								
+								err.printStackTrace();
+								return false;
+							}
+							bPrim = false;
+						}
+						try {
+							sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?)";
+							ps2 = con.prepareStatement(sSQL);
+							ps2.setInt(1,Aplicativo.iCodFilial);
+							ps2.setInt(2,iCodVenda);
+							ps2.setInt(3,iVals[0]);
+							ps2.setInt(4,iVals[1]);
+							ps2.setInt(5,ListaCampos.getMasterFilial("VDORCAMENTO"));
+							ps2.setInt(6,Aplicativo.iCodEmp);
+							ps2.setString(7,sTipoVenda);
+							ps2.execute();
+							ps2.close();
+						} catch (SQLException err) {
+							Funcoes.mensagemErro(this,"Erro ao gerar itvenda: '"+(i+1)+"'!\n"+err.getMessage(),true,con,err);
+							try {
+								con.rollback();
+							}
+							catch(SQLException err1) { }
+								return false;
+						}
 					}
-					bPrim = false;
-				}
-				try {
-					sSQL = "EXECUTE PROCEDURE VDADICITVENDAORCSP(?,?,?,?,?,?,?)";
-					ps2 = con.prepareStatement(sSQL);
-					ps2.setInt(1,Aplicativo.iCodFilial);
-					ps2.setInt(2,iCodVenda);
-					ps2.setInt(3,iVals[0]);
-					ps2.setInt(4,iVals[1]);
-					ps2.setInt(5,ListaCampos.getMasterFilial("VDORCAMENTO"));
-					ps2.setInt(6,Aplicativo.iCodEmp);
-					ps2.setString(7,sTipoVenda);
-					ps2.execute();
-					ps2.close();
-				} catch (SQLException err) {
-					Funcoes.mensagemErro(this,"Erro ao gerar itvenda: '"+(i+1)+"'!\n"+err.getMessage(),true,con,err);
 					try {
-						con.rollback();
-					}
-					catch(SQLException err1) { }
+						if (!con.getAutoCommit())
+							con.commit();
+						carregar();
+					} catch(SQLException err) {
+						Funcoes.mensagemErro(this,"Erro ao realizar commit!!"+"\n"+err.getMessage(),true,con,err);
 						return false;
+					}
+					String opt[] = {"Sim","Não"}; 
+					if (JOptionPane.showOptionDialog(null, 
+							"Venda '"+iCodVenda+"' gerada com sucesso!!!\n\n"+
+							"Deseja edita-la?","Confirmação", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE,null, opt, opt[0])==JOptionPane.YES_OPTION){
+						vendaSTD.exec(iCodVenda);
+						btSair.doClick();			                             	
+					
+					}
+				} else if(sTipoVenda.equals("E")) {	
+					iVals = (int[])vValidos.elementAt(0);
+					if(vendaPDV.montaVendaOrc(iVals[0])) {
+						for (int i=0;i<vValidos.size();i++) {
+							if (!((Boolean)tab.getValor(i,0)).booleanValue())
+								continue;
+							
+							iVals = (int[])vValidos.elementAt(i);
+							vendaPDV.adicItemOrc(iVals);
+						}
+					}	
+					this.dispose();
 				}
-			}
-			try {
-				if (!con.getAutoCommit())
-					con.commit();
-				carregar();
-			} catch(SQLException err) {
-				Funcoes.mensagemErro(this,"Erro ao realizar commit!!"+"\n"+err.getMessage(),true,con,err);
-				return false;
-			}
-			String opt[] = {"Sim","Não"}; 
-			if (JOptionPane.showOptionDialog(null, 
-					"Venda '"+iCodVenda+"' gerada com sucesso!!!\n\n"+
-					"Deseja edita-la?","Confirmação", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE,null, opt, opt[0])==JOptionPane.YES_OPTION){
-				if(sTipoVenda.equals("V"))
-					vendaSTD.exec(iCodVenda);
-				if(sTipoVenda.equals("E"))
-					vendaPDV.exec(iCodVenda);
-				btSair.doClick();			                             	
-			
-			}
+			} else 
+				Funcoes.mensagemInforma(this,"Não existe nenhum item pra gerar uma venda!");
 		} catch (Exception e){
 			e.printStackTrace();
 		} finally {

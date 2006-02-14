@@ -36,6 +36,7 @@ public class FPassword extends FFDialogo{
 
 	public static final long serialVersionUID = 1L;
 	public static final int BAIXO_CUSTO = 0;
+	public static final int ABRE_GAVETA = 1;
 	private JTextFieldPad txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
 	private JPasswordFieldPad txtPass = new JPasswordFieldPad(8);
 	private String sTitulo = null;
@@ -49,6 +50,13 @@ public class FPassword extends FFDialogo{
 		montaTela();
 	}
 	
+	public FPassword(Component arg0,int arg1, String[] arg2,String arg3, Connection arg4) {
+		super(arg0);			
+		setParam(arg1,arg2,arg4);
+		setTitulo(arg3);
+		montaTela();
+	}
+	
 	private void montaTela() {
 		setTitulo(sTitulo);
 		setAtribos(300, 140);
@@ -59,10 +67,28 @@ public class FPassword extends FFDialogo{
 		adic(new JLabelPad("Senha: "), 7, 30, 100, 20);		
 		
 		txtUsu.setVlrString(Aplicativo.strUsuario);
-		setFirstFocus(txtPass);
+		setPrimeiroFoco(txtPass);
 	}
 	
 	public void ok() {
+		boolean ret = false;
+		
+		switch (tipo) {
+		case BAIXO_CUSTO:
+			ret = getBaixoCusto();
+			break;
+		case ABRE_GAVETA:
+			ret = getAbreGaveta();
+			break;
+		default:
+			break;
+		}
+
+        OK = ret;
+        setVisible(false);
+	}
+	
+	private boolean getBaixoCusto() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Properties props = null;
@@ -78,35 +104,33 @@ public class FPassword extends FFDialogo{
 					props.put("password", txtPass.getVlrString());
 					if (sIDUsu.equals("") || txtPass.getVlrString().trim().equals("")) {
 						Funcoes.mensagemErro(this, "Campo em branco!");
-						return;
+						continue;
 					}
 					DriverManager.getConnection(Aplicativo.strBanco, props).close();
 					
-					if(tipo == BAIXO_CUSTO) {
-						sSQL = "SELECT BAIXOCUSTOUSU FROM SGUSUARIO "
-							+ "WHERE IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
-						ps = con.prepareStatement(sSQL);
-						ps.setString(1, sIDUsu);
-						ps.setInt(2, Aplicativo.iCodEmp);
-						ps.setInt(3, Aplicativo.iCodFilial);
-						rs = ps.executeQuery();
-						if (rs.next()) {
-							if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
-								log = Aplicativo.gravaLog(sIDUsu, "PR", "LIB",
-										"Liberação de "  + param[0] + " abaixo do custo",
-										""+param[0]+" [" + param[1] + "], " + 		//codigo da tabela
-										"Item: ["    	 + param[2] + "], " + 		//codigo do item
-										"Produto: [" 	 + param[3] + "], " +		//codigo do produto
-										"Preço: ["   	 + param[4] + "]"			//preço do produto
-										, con);
-							} else {
-								Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
-								ret = false;
-							}
+					sSQL = "SELECT BAIXOCUSTOUSU FROM SGUSUARIO "
+						 + "WHERE IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
+					ps = con.prepareStatement(sSQL);
+					ps.setString(1, sIDUsu);
+					ps.setInt(2, Aplicativo.iCodEmp);
+					ps.setInt(3, Aplicativo.iCodFilial);
+					rs = ps.executeQuery();
+					if (rs.next()) {
+						if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
+							log = Aplicativo.gravaLog(sIDUsu, "PR", "LIB",
+									"Liberação de "  + param[0] + " abaixo do custo",
+									""+param[0]+" [" + param[1] + "], " + 		//codigo da tabela
+									"Item: ["    	 + param[2] + "], " + 		//codigo do item
+									"Produto: [" 	 + param[3] + "], " +		//codigo do produto
+									"Preço: ["   	 + param[4] + "]"			//preço do produto
+									, con);
 						} else {
 							Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
 							ret = false;
 						}
+					} else {
+						Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
+						ret = false;
 					}
 					
 				} catch(SQLException sqle){
@@ -133,8 +157,74 @@ public class FPassword extends FFDialogo{
 			e.printStackTrace();
 		}
 
-        OK = ret;
-        setVisible(false);
+		return ret;
+	}
+	
+
+	private boolean getAbreGaveta() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Properties props = null;
+		String sIDUsu = null;
+		String sSQL = null;
+		boolean ret = false;
+		try {
+			do {
+				try {
+					props = new Properties();
+					sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
+					props.put("user", sIDUsu);
+					props.put("password", txtPass.getVlrString());
+					if (sIDUsu.equals("") || txtPass.getVlrString().trim().equals("")) {
+						Funcoes.mensagemErro(this, "Campo em branco!");
+						continue;
+					}
+					DriverManager.getConnection(Aplicativo.strBanco, props).close();
+					
+					sSQL = "SELECT ABREGAVETAUSU FROM SGUSUARIO "
+						 + "WHERE IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
+					ps = con.prepareStatement(sSQL);
+					ps.setString(1, sIDUsu);
+					ps.setInt(2, Aplicativo.iCodEmp);
+					ps.setInt(3, Aplicativo.iCodFilial);
+					rs = ps.executeQuery();
+					if (rs.next()) {
+						if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
+							ret = true;
+						} else {
+							Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
+							ret = false;
+						}
+					} else {
+						Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
+						ret = false;
+					}
+					
+				} catch(SQLException sqle){
+					if (sqle.getErrorCode() == 335544472) {
+						Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
+						continue;
+					}
+					Funcoes.mensagemErro(this,"Erro ao verificar senha.",true,con,sqle);
+					sqle.printStackTrace();
+					ret = false;
+				} catch(Exception e){
+					e.printStackTrace();
+				} finally {
+					ps = null;
+					rs = null;
+					props = null;
+					sIDUsu = null;
+					sSQL = null;
+				}
+				break;
+			} while(true);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ret;
 	}
 	
 	public void execShow(){
@@ -147,6 +237,8 @@ public class FPassword extends FFDialogo{
 			sTitulo = arg0;
 		else 
 			sTitulo = "Permição";
+		
+		setTitle(sTitulo);
 	}
 	
 	private void setParam(int arg0, String[] arg1, Connection arg2) {
