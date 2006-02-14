@@ -152,8 +152,7 @@ ORDER BY 4,5,18,2]]></queryString>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASATUAL" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASATUAL}:
-$F{VENDASATUAL}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VENDASATUAL}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVISITAS" class="java.lang.Integer" resetType="Report" calculation="Sum">
@@ -169,18 +168,15 @@ new Integer(0)]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR}:
-$F{VENDASANTERIOR}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VENDASANTERIOR}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASMETA" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASMETA}:
-$F{VENDASMETA}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VENDASMETA}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="TOTVENDASANTERIOR2" class="java.lang.Double" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[(new Boolean($F{VENDASATUAL}.doubleValue()>=($P{VLRRELEV}).doubleValue())).booleanValue()?$F{VENDASANTERIOR2}:
-$F{VENDASANTERIOR2}]]></variableExpression>
+		<variableExpression><![CDATA[$F{VENDASANTERIOR2}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
 	</variable>
 	<variable name="VLRTOTRELEV" class="java.lang.Double" resetType="Report" calculation="Sum">
