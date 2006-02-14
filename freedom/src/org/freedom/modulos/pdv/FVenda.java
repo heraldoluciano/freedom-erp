@@ -40,12 +40,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -62,7 +60,6 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -77,7 +74,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.DlgCalc;
 import org.freedom.telas.FDialogo;
-import org.freedom.telas.FFDialogo;
+import org.freedom.telas.FPassword;
 
 public class FVenda extends FDialogo implements KeyListener,CarregaListener,PostListener {
 
@@ -178,6 +175,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private float pesoBrutFrete = 0;
 	private float pesoLiqFrete = 0;
 	private float vlrFrete = 0;
+	private int iCodItVenda = 0;
 
 	public FVenda() {
 		//   	  super(Aplicativo.telaPrincipal);
@@ -444,7 +442,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private boolean insereItem() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iCodItVenda = 0;
 		String sTributo = null;
 		String sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,"
 				+ "VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?)";
@@ -507,7 +504,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			rs = null;
 			sSQL = null;
 			sTributo = null;
-			iCodItVenda = 0;
 		}
 		
 		return true;
@@ -592,60 +588,16 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
     }
     
 	private boolean mostraTelaPass() {
-		boolean bRet = false;
-		JTextFieldPad txtUsu = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
-		txtUsu.setText(Aplicativo.strUsuario);
-		JPasswordFieldPad txtPass = new JPasswordFieldPad(8);
-		FFDialogo diag = new FFDialogo(this);
-		diag.setTitulo("Permissão");
-		diag.setAtribos(300, 140);
-		diag.adic(new JLabelPad("Usuário: "), 7, 10, 100, 20);
-		diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
-		diag.adic(txtUsu, 110, 10, 150, 20);
-		diag.adic(txtPass, 110, 30, 150, 20);
-		diag.adic(new JLabelPad("Senha: "), 7, 30, 100, 20);
-		do {
-			try {
-				diag.setVisible(true);
-				if (diag.OK) {
-					Properties props = new Properties();
-					props.put("user", txtUsu.getVlrString());
-					props.put("password", txtPass.getVlrString());
-					if (txtUsu.getVlrString().trim().equals("")
-							|| txtPass.getVlrString().trim().equals("")) {
-						Funcoes.mensagemErro(this, "Campo em branco!");
-						continue;
-					}
-					DriverManager.getConnection(Aplicativo.strBanco, props).close();
-					String sSQL = "SELECT ABREGAVETAUSU FROM SGUSUARIO WHERE "
-							+ "IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
-					PreparedStatement ps = con.prepareStatement(sSQL);
-					ps.setString(1, txtUsu.getVlrString());
-					ps.setInt(2, Aplicativo.iCodEmp);
-					ps.setInt(3, Aplicativo.iCodFilial);
-					ResultSet rs = ps.executeQuery();
-					if (rs.next()) {
-						if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
-							bRet = true;
-						}
-					}
-					if (!bRet)
-						Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
-					rs.close();
-					ps.close();
-				}
-			} catch (java.sql.SQLException e) {
-				if (e.getErrorCode() == 335544472) {
-					Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
-					continue;
-				}
-				Funcoes.mensagemErro(this,"Não foi possível estabelecer conexão com o banco de dados.\n"
-								+ e.getMessage());
-			}
-			break;
-		} while (true);
-		diag.dispose();
-		return bRet;
+		boolean retorno = false;
+		
+		FPassword fpw = new FPassword(this,FPassword.ABRE_GAVETA, null,"Abrir gaveta", con);
+		fpw.execShow();
+		
+		retorno = fpw.OK;
+		
+		fpw.dispose();
+		
+		return retorno;
 	}
 
 	private boolean cancItem(int iItem) {
@@ -925,6 +877,143 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		}
 		fecha.dispose();
 	}
+	
+	public synchronized boolean montaVendaOrc(int arg0) {
+		boolean retorno = true;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		Vector vArgs = new Vector();
+		
+		try {
+			
+			sSQL = "SELECT CODCLI, CODPLANOPAG, CODVEND " +
+				   "FROM VDORCAMENTO " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=?";
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,AplicativoPDV.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("ORCAMENTO"));
+			ps.setInt(3,arg0);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				vArgs.addElement(new Integer(rs.getInt(1)));	
+				vArgs.addElement(new Integer(rs.getInt(2)));	
+				vArgs.addElement(new Integer(rs.getInt(3)));				
+			}
+			
+			if(vArgs.size()==3) {
+				//		inicia a venda...
+				lcVenda.insert(true);
+				txtTipoVenda.setVlrString("E");
+				txtCodCli.setVlrInteger(((Integer)vArgs.elementAt(0)));
+				lcCliente.carregaDados();
+				lcProduto.limpaCampos(true);
+				txtCodPlanoPag.setVlrInteger(((Integer)vArgs.elementAt(1)));
+				txtQtdadeItem.setVlrString("");
+				txtValorTotalCupom.setVlrString("");
+				txtValorTotalItem.setVlrString("");
+				txtBaseCalc1.setVlrString("");
+				txtValorIcms1.setVlrString("");
+				txtTotalCupom.setVlrString("");
+				lcPlanoPag.carregaDados();
+				txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
+				lcTipoMov.carregaDados();
+				txtCodVend.setVlrInteger(((Integer)vArgs.elementAt(2)));
+				txtDtEmitVenda.setVlrDate(new Date());
+				txtDtSaidaVenda.setVlrDate(new Date());
+				if ((AplicativoPDV.bECFTerm)) {
+					txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
+				}
+				tbItem.limpa();
+				mostraInfoImp();
+				iniItem();
+			}
+			
+		} catch(SQLException e) {
+			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.",true,con,e);
+			e.printStackTrace();
+			retorno = false;
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			vArgs = null;
+		}
+		return retorno;
+	}
+	
+	public synchronized void adicItemOrc(int[] args) {
+		
+		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		Robot robo = null;
+		boolean bUPOrc = false;
+		
+		try {
+			robo = new Robot();
+			sSQL = "SELECT CODPROD, QTDITORC " +
+			   "FROM VDITORCAMENTO " +
+			   "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
+		
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,AplicativoPDV.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("ORCAMENTO"));
+			ps.setInt(3,args[0]);
+			ps.setInt(4,args[1]);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				txtCodProd.setVlrInteger(new Integer(rs.getInt(1)));
+				txtCodProd.requestFocus();
+				robo.keyPress(KeyEvent.VK_ENTER);
+				txtQtdade.setVlrBigDecimal(rs.getBigDecimal(2));
+				txtQtdade.requestFocus();
+				robo.keyPress(KeyEvent.VK_ENTER);
+				lcProduto.carregaDados();
+				if (lcVenda.getStatus() == ListaCampos.LCS_INSERT) {
+					if (lcVenda.post()) {
+						bUPOrc = insereItem();
+						iniItem();
+					}
+				} else if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
+					bUPOrc = insereItem();
+					iniItem();
+					lcVenda.carregaDados();
+				}
+			}
+			
+			if(bUPOrc) {
+				sSQL = "EXECUTE PROCEDURE VDUPVENDAORCSP(?,?,?,?,?,?,?,?)";			
+				ps2 = con.prepareStatement(sSQL);
+				ps2.setInt(1,AplicativoPDV.iCodEmp);
+				ps2.setInt(2,ListaCampos.getMasterFilial("ORCAMENTO"));
+				ps2.setInt(3,args[0]);
+				ps2.setInt(4,args[1]);
+				ps2.setInt(5,ListaCampos.getMasterFilial("VDVENDA"));
+				ps2.setInt(6,txtCodVenda.getVlrInteger().intValue());
+				ps2.setInt(7,iCodItVenda);
+				ps2.setString(8,txtTipoVenda.getVlrString());
+				ps2.execute();
+				ps2.close();
+			}
+			
+		} catch(SQLException e) {
+			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.",true,con,e);
+			e.printStackTrace();
+		} catch(AWTException e) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			robo = null;
+		}
+		
+	}
 
 	private void abreAdicOrc() {
 		if (!Aplicativo.telaPrincipal.temTela("Busca orçamento")) {
@@ -932,12 +1021,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			Aplicativo.telaPrincipal.criatela("Orcamento", tela, con);
 		}
 	}
-
-	public void exec(int iCodVenda) {
-		txtCodVenda.setVlrString(iCodVenda + "");
-		lcVenda.carregaDados();
-	}
-
 	
 	public void keyPressed(KeyEvent kevt) {
 		switch (kevt.getKeyCode()) {
@@ -1003,7 +1086,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		else if (evt.getSource() == btF4) { 
 			fechaVenda();
 			setFocusProd();
-			//txtCodProd.requestFocus();
 		}
 		else if (evt.getSource() == btF5)
 			leituraX();
@@ -1372,7 +1454,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcSerie.setConexao(con);
 		lcClFiscal.setConexao(con);
 		txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
-		txtCodCli.setVlrInteger(new Integer(getTipoMov()));
+		txtCodCli.setVlrInteger(new Integer(getCodCli()));
 		pnStatusBar.add(sbVenda, BorderLayout.CENTER);
 		pnRodape.add(pnStatusBar, BorderLayout.CENTER);
 		vAliquotas = getAliquotas();

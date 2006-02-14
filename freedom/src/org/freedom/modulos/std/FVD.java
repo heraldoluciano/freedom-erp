@@ -46,10 +46,7 @@ import org.freedom.telas.FObservacao;
 import org.freedom.telas.FPassword;
 
 public abstract class FVD extends FDetalhe {
-	
-	protected final int TAB_VENDA = 0;
-	protected final int TAB_ORCAMENTO = 1;
-    
+	    
 	protected int casasDec = Aplicativo.casasDec;	
 	
 	protected int casasDecFin = Aplicativo.casasDecFin;    
