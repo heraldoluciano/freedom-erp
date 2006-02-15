@@ -1073,6 +1073,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			if(((Boolean) oPrefs[7]).booleanValue()){
 			    setReCalcPreco(true);
 			}
+			txtCodTpCli.setVlrInteger(new Integer(getCodTipoCli()));
+			lcTipoCli.carregaDados();
 		} else if(cevt.getListaCampos() == lcPlanoPag)
 		    if(((Boolean) oPrefs[7]).booleanValue()){
 			    setReCalcPreco(true);
@@ -1084,7 +1086,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			if(lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
 				if(((Boolean) oPrefs[5]).booleanValue())
 					testaCodPK("VDORCAMENTO", txtCodOrc);			
-				txtStatusOrc.setVlrString("*");
+				txtStatusOrc.setVlrString("OA");
 			}
 			if(podeReCalcPreco())
 			    calcVlrItem("VDORCAMENTO",true);
@@ -1118,14 +1120,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			lcOrc2.carregaDados();
 	}
 
-	public void beforeInsert(InsertEvent ievt) {
-	}
+	public void beforeInsert(InsertEvent ievt) { }
 
 	public void afterInsert(InsertEvent ievt) {
 		if (ievt.getListaCampos() == lcCampos) {
-			txtDtOrc.setVlrDate(new Date());
-			txtDtVencOrc.setVlrDate(getVencimento());
-			txtCodCli.requestFocus();
+			//txtDtOrc.setVlrDate(new Date());
+			//txtDtVencOrc.setVlrDate(getVencimento());
+			//txtCodCli.requestFocus();
+			iniOrc();
 		} else if (ievt.getListaCampos() == lcDet) {
 			focusCodprod();
 		}
@@ -1138,6 +1140,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	
 	public void show(){
 		super.show();
+		lcCampos.insert(true);
 		iniOrc();
 	}
 
@@ -1398,7 +1401,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private synchronized void iniOrc() {
-		lcCampos.insert(true);
 		txtCodCli.setVlrInteger(new Integer(getCodCli()));
 		lcCli.carregaDados();
 		txtCodTpCli.setVlrInteger(new Integer(getCodTipoCli()));
