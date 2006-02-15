@@ -141,8 +141,10 @@ public class DLBuscaEstoq extends DLF3 implements TabelaSelListener {
       	while (rs.next()) {
       		if (iCont ==0)
       			if(lcAlmox!=null) {   	 		  
-   	 		    	if (lcAlmox.getCampo("codalmox")!=null)
-   	 		    		lcAlmox.getCampo("codalmox").setVlrInteger(new Integer(rs.getInt(3)));   	 		    	      	   
+   	 		    	if (lcAlmox.getCampo("codalmox")!=null) {
+   	 		    		if (lcAlmox.getCampo("codalmox").getVlrInteger().intValue()==0)
+   	 		    		   lcAlmox.getCampo("codalmox").setVlrInteger(new Integer(rs.getInt(3)));
+   	 		    	}
       			}
       	   String sImgColuna = rs.getString(6);
       	   if (sImgColuna!=null){
