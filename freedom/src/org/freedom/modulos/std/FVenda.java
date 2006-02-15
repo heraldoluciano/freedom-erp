@@ -604,7 +604,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		adicCampo(txtCodNat, 7, 60, 50, 20, "CodNat", "CFOP",ListaCampos.DB_FK, txtDescNat, true);
 
 		adicDescFK(txtDescNat, 60, 60, 167, 20, "DescNat", "Descrição da CFOP");
-		txtCodAlmoxItVenda.setSoLeitura(true);
+		//txtCodAlmoxItVenda.setSoLeitura(true);
+		txtCodAlmoxItVenda.setAtivo(false);
 		adicCampo(txtCodAlmoxItVenda, 230, 60, 47,20, "codalmox", "Cod.ax",	ListaCampos.DB_FK, false);
 		// colocar aqui o campo de saldo
 		adicDescFK(txtSldLiqProd, 280, 60, 67, 20, "SldLiqProd", "Saldo");
