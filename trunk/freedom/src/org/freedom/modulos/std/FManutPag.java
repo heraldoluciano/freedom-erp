@@ -580,8 +580,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				   "WHERE P.CODFOR=? AND P.CODEMP=? AND P.CODFILIAL=? " +
 				   "AND IT.CODPAG = P.CODPAG AND IT.CODEMP=P.CODEMP " +
 				   "AND IT.CODFILIAL=P.CODFILIAL ORDER BY P.CODPAG,IT.NPARCPAG";  
-			vCodPag = new Vector();
-			vNParcPag = new Vector();
+			vCodPag.clear();
+			vNParcPag.clear();
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodFor.getVlrInteger().intValue());
 			ps.setInt(2,Aplicativo.iCodEmp);
@@ -634,10 +634,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		vNParcBaixa = new Vector();
-		vNumContas = new Vector();
-		vCodPlans = new Vector();
-		vCodCCs = new Vector();
+		vNParcBaixa.clear();
+		vNumContas.clear();
+		vCodPlans.clear();
+		vCodCCs.clear();
 		vCodPed.clear();
 		tabBaixa.limpa();
 		try {
@@ -720,13 +720,13 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		String sSQL = null;
 		String sWhereManut = null;
 		tabManut.limpa();
+		vNumContas.clear();
+		vCodPlans.clear();
+		vCodCCs.clear();
+		vDtEmiss.clear();
+		vCodPed.clear();
 		try {
 			if (validaPeriodo()) {
-				vNumContas = new Vector();
-				vCodPlans = new Vector();
-				vCodCCs = new Vector();
-				vDtEmiss = new Vector();
-				vCodPed.clear();
 				sWhereManut = " AND "+(rgData.getVlrString().equals("V")?"IT.DTVENCITPAG":"IT.DTITPAG")+
 									 " BETWEEN ? AND ? AND P.CODEMP=? AND P.CODFILIAL=?";
 				String sWhereStatus = "";
@@ -855,17 +855,17 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
   
 	private void baixaConsulta() {
 		if (tabConsulta.getLinhaSel() != -1) {
-		txtCodPagBaixa.setVlrString((String)vCodPag.elementAt(tabConsulta.getLinhaSel()));
-		int iNParc = (new Integer((String)vNParcPag.elementAt(tabConsulta.getLinhaSel()))).intValue();
-		lcPagBaixa.carregaDados();
-		tpn.setSelectedIndex(1);
-		btBaixa.requestFocus();
-			for (int i=0; i<vNParcBaixa.size(); i++) {
-				if (iNParc == (new Integer((String)vNParcBaixa.elementAt(i))).intValue()) {
-					tabBaixa.setLinhaSel(i);
-					break;
+			txtCodPagBaixa.setVlrString((String)vCodPag.elementAt(tabConsulta.getLinhaSel()));
+			int iNParc = (new Integer((String)vNParcPag.elementAt(tabConsulta.getLinhaSel()))).intValue();
+			lcPagBaixa.carregaDados();
+			tpn.setSelectedIndex(1);
+			btBaixa.requestFocus();
+				for (int i=0; i<vNParcBaixa.size(); i++) {
+					if (iNParc == (new Integer((String)vNParcBaixa.elementAt(i))).intValue()) {
+						tabBaixa.setLinhaSel(i);
+						break;
+					}
 				}
-			}
 		}
 	}
   
@@ -888,11 +888,15 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		String[] sRelPlanPag = null;
 		String[] sRets = null;
 		DLBaixaPag dl = null;
+		ImageIcon imgStatusAt = null;
 		try{
 			if ((cOrig == 'M') & (tabManut.getLinhaSel() > -1)) { //Quando a função eh chamada da tab MANUTENÇÂO
-				int iLin = tabManut.getLinhaSel();
-				if (iLin < 0)
+				imgStatusAt = ((ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0)); 
+				if(imgStatusAt == imgPago) {
+					Funcoes.mensagemInforma(this, "A PARCELA JÁ FOI PAGA.");
 					return;
+				}
+				int iLin = tabManut.getLinhaSel();				
 				iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
 				iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
 				sVals = new String[12];
@@ -963,6 +967,11 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				carregaGridManut();
 			}
 			else if ((cOrig == 'B') & (tabBaixa.getLinhaSel() > -1)) { //Quando a função eh chamada da tab BAIXAR
+				imgStatusAt = ((ImageIcon)tabBaixa.getValor(tabBaixa.getLinhaSel(),0)); 
+				if(imgStatusAt == imgPago) {
+					Funcoes.mensagemInforma(this, "Parcela já foi paga");
+					return;
+				}
 				int iLin = tabBaixa.getLinhaSel();
 				iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
 				iNParcPag = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
@@ -1034,6 +1043,14 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 			}
 		} catch ( Exception e ){
 			e.printStackTrace();
+		} finally {
+			ps = null;
+			sSQL = null; 
+			sVals = null;
+			sRelPlanPag = null;
+			sRets = null;
+			dl = null;
+			imgStatusAt = null;
 		}
 	}
 
