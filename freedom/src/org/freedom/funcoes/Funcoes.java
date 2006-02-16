@@ -869,6 +869,25 @@ public class Funcoes {
 		return sRetorno;
 	}
 
+	public static String alinhaCentro(int iValor, int iTam) {
+		return alinhaCentro("" + iValor, iTam);
+	}
+	
+	public static String alinhaCentro(String sVal, int iTam) {
+		if (sVal != null)
+			sVal = sVal.trim();
+		else
+			sVal = "";
+		int iTamStr = sVal.length();
+		if(iTamStr > iTam)
+			sVal = sVal.substring(iTam);
+		else if (iTamStr < iTam) {
+			int iSpaceAdic = (iTam - iTamStr) / 2;
+			sVal = replicate(" ", iSpaceAdic) + sVal + replicate(" ", iSpaceAdic);
+		}
+		return sVal;
+	}
+
 	public static String alinhaDir(int iValor, int iTam) {
 		return alinhaDir("" + iValor, iTam);
 	}

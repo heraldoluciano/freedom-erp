@@ -19,6 +19,9 @@
  */
 package org.freedom.layout;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -27,10 +30,12 @@ import javax.swing.JOptionPane;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public class NF2001 extends Layout {
 	private String sMensAdic="";
 	private String sNumNota = ""; 
+	private NF nf = null;
 	  
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 		boolean retorno = super.imprimir(nf, imp);
@@ -44,11 +49,11 @@ public class NF2001 extends Layout {
 		String sSigla = null;   
 		String sTipoTran=  null;
 		String sHora = null;
-		String sMatObs = null;		 
 		String[] sNat = new String[4];
-		String[] sVencs = new String[6];
-		String[] sVals = new String[6];
-		String[] sDuplics = new String[6];
+		String[] sVencs = new String[4];
+		String[] sVals = new String[4];
+		String[] sDuplics = new String[4];
+		String[] sDadosEmp = null;
 		int iNumNota = 0;
 		int iProd = 0;
 		boolean bMensage = false;
@@ -58,6 +63,10 @@ public class NF2001 extends Layout {
 		boolean bNat = true;
 		
 		try {
+			
+			this.nf = nf;
+			
+			sDadosEmp = getDadosEmp();
 			
 			imp.limpaPags();
 			vClfisc.addElement("");
@@ -69,7 +78,7 @@ public class NF2001 extends Layout {
 			else 
 				sNumNota = Funcoes.strZero(""+iNumNota,6);			
 
-			for (int i=0; i<6; i++) {
+			for (int i=0; i<4; i++) {
 				if (bFat) {
 					if (parc.next()) {
 						sDuplics[i] = sNumNota+"/"+parc.getInt(NF.C_NPARCITREC);
@@ -78,8 +87,8 @@ public class NF2001 extends Layout {
 					} else {
 						bFat = false;
 						sDuplics[i] = "********";
-						sVencs[i] = "********";
-						sVals[i] = "********";
+						sVencs[i] = "**********";
+						sVals[i] = "************";
 					}
 				}          
 			}
@@ -89,7 +98,6 @@ public class NF2001 extends Layout {
 				if (bNat) {
 					sNat[0] = itens.getString(NF.C_DESCNAT);
 					sNat[1] = Funcoes.setMascara(itens.getString(NF.C_CODNAT),"#.##");
-					sMatObs = (!cab.getString(NF.C_OBSPED).equals("") ? cab.getString(NF.C_OBSPED) : "");
 					bNat = false;
 				}
 				
@@ -102,11 +110,22 @@ public class NF2001 extends Layout {
 						imp.say(imp.pRow()+0,90,"X");
 					
 					imp.say(imp.pRow()+0,128,sNumNota);
-					imp.say(imp.pRow()+6,0,""+imp.comprimido());
+					imp.say(imp.pRow()+2,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,25,sDadosEmp[0]);
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,25,sDadosEmp[1] + sDadosEmp[2] + 
+							(sDadosEmp[3] != null ? " - " + Funcoes.setMascara(sDadosEmp[3],"(###) ####-####") : "") + 
+							(sDadosEmp[4] != null ? " - " + Funcoes.setMascara(sDadosEmp[4],"####-####") : ""));
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,25,sDadosEmp[5] + 
+							(sDadosEmp[8] != null ? "  -  " + Funcoes.setMascara(sDadosEmp[8],"##.###-###") : "") + 
+							(sDadosEmp[6] != null ? "  -  " + sDadosEmp[6] : "") + 
+							 sDadosEmp[7]); 
+					imp.say(imp.pRow()+2,0,""+imp.comprimido());
 					imp.say(imp.pRow()+0,6,sNat[0]);
 					imp.say(imp.pRow()+0,52,sNat[1]);
 					imp.say(imp.pRow()+2,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,6,cab.getInt(NF.C_CODEMIT)+" - "+cab.getString(NF.C_RAZEMIT));
+					imp.say(imp.pRow()+0,6,cab.getString(NF.C_RAZEMIT));
 					imp.say(imp.pRow()+0,90,!cab.getString(NF.C_CPFEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
 					imp.say(imp.pRow()+0,126,Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)));
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
@@ -124,25 +143,24 @@ public class NF2001 extends Layout {
 					
 					imp.say(imp.pRow()+3,0,""+imp.comprimido());		
 					   
-					/*imp.say(imp.pRow()+0,8,sVals[0]);            
-					imp.say(imp.pRow()+0,36,sVencs[0]);             
-					
-					imp.say(imp.pRow()+0,55,sVals[1]);
-					imp.say(imp.pRow()+0,83,sVencs[1]);             
-					
-					imp.say(imp.pRow()+0,102,sVals[2]);
-					imp.say(imp.pRow()+0,130,sVencs[2]);*/             
+					imp.say(imp.pRow()+0,12,sDuplics[0]);            
+					imp.say(imp.pRow()+0,28,sVals[0]);            
+					imp.say(imp.pRow()+0,55,sVencs[0]);             
 					   
+					imp.say(imp.pRow()+0,78,sDuplics[1]);            
+					imp.say(imp.pRow()+0,102,sVals[1]);            
+					imp.say(imp.pRow()+0,125,sVencs[1]);
+					
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					     
-					/*imp.say(imp.pRow()+0,8,sVals[3]);            
-					imp.say(imp.pRow()+0,36,sVencs[3]);             
+					imp.say(imp.pRow()+0,12,sDuplics[2]);            
+					imp.say(imp.pRow()+0,28,sVals[2]);            
+					imp.say(imp.pRow()+0,55,sVencs[2]);             
+					   
+					imp.say(imp.pRow()+0,78,sDuplics[3]);            
+					imp.say(imp.pRow()+0,102,sVals[3]);            
+					imp.say(imp.pRow()+0,125,sVencs[3]);
 					
-					imp.say(imp.pRow()+0,55,sVals[4]);
-					imp.say(imp.pRow()+0,83,sVencs[4]);             
-					
-					imp.say(imp.pRow()+0,102,sVals[5]);
-					imp.say(imp.pRow()+0,130,sVencs[5]);    */
 					imp.say(imp.pRow()+3,0,"");
 				}
 				 
@@ -190,11 +208,11 @@ public class NF2001 extends Layout {
 				imp.say(imp.pRow()+0,82,Funcoes.alinhaDir(""+itens.getFloat(NF.C_QTDITPED),8));
 				imp.say(imp.pRow()+0,92,Funcoes.strDecimalToStrCurrency(12,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
 				imp.say(imp.pRow()+0,107,Funcoes.strDecimalToStrCurrency(13,2,itens.getFloat(NF.C_VLRLIQITPED)+""));
-				imp.say(imp.pRow()+0,122,""+itens.getFloat(NF.C_PERCICMSITPED));
+				imp.say(imp.pRow()+0,123,""+itens.getFloat(NF.C_PERCICMSITPED));
 				imp.say(imp.pRow()+0,127,""+itens.getFloat(NF.C_PERCIPIITPED));
-				imp.say(imp.pRow()+0,132,Funcoes.strDecimalToStrCurrency(5,2,itens.getFloat(NF.C_VLRIPIITPED)+""));
+				imp.say(imp.pRow()+0,133,Funcoes.strDecimalToStrCurrency(5,2,itens.getFloat(NF.C_VLRIPIITPED)+""));
 			
-				if((iProd+((vSigla.size()/2)+2)) >= 25){
+				if((iProd+2) >= 25){
 					bMensage = true;
 					break;
 				}
@@ -247,29 +265,9 @@ public class NF2001 extends Layout {
 					bTotalizou = true;
 				} 
 				
-			}			
-			
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,14,"CLASSIFICACAO FISCAL");
-			
-			int pos = 1;
-			for(int i=0;i<vSigla.size();i++){
-				if(pos==1){
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,14,(String)vSigla.elementAt(i));
-					pos = 2;
-				} else{
-					imp.say(imp.pRow()+0,35,(String)vSigla.elementAt(i));
-					pos = 1;
-					iProd++;
-				}
 			}
-			 
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,6,(sMatObs.trim().length()>130 ? sMatObs.trim().substring(0,130) : sMatObs.trim()));
 			
-			
-			impTotais(imp,vValores);
+			impTotais(imp,vValores,vSigla);
 			
 			imp.fechaGravacao();
 			
@@ -296,8 +294,7 @@ public class NF2001 extends Layout {
 			sCodfisc = null;
 			sSigla = null;   
 			sTipoTran=  null;
-			sHora = null;
-			sMatObs = null;		 
+			sHora = null; 
 			sNat = null;
 			sVencs = null;
 			sVals = null;
@@ -307,7 +304,7 @@ public class NF2001 extends Layout {
 		return retorno;
 	}
 	
-	private void impTotais(ImprimeOS imp,Vector vValores){
+	private void impTotais(ImprimeOS imp,Vector vValores,Vector vSigla){
 		Vector vObs = null;
 		String sTipoTran = null;
 		try {	
@@ -319,7 +316,7 @@ public class NF2001 extends Layout {
 			imp.say(imp.pRow()+0,35,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString()));
 			imp.say(imp.pRow()+0,117,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));
 			
-			imp.say(imp.pRow()+2,0,""+imp.comprimido());
+			imp.say(imp.pRow()+1,0,""+imp.comprimido());
 			
 			imp.say(imp.pRow()+0,6,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));
 			imp.say(imp.pRow()+0,65,Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));
@@ -358,15 +355,33 @@ public class NF2001 extends Layout {
 			imp.say(imp.pRow()+0,105,vValores.elementAt(22) != null ? vValores.elementAt(22).toString() : "");
 			imp.say(imp.pRow()+0,128,vValores.elementAt(23) != null ? vValores.elementAt(23).toString() : "");
 			  
-			imp.say(imp.pRow()+2,0,""+imp.comprimido());
-			  
-			vObs = Funcoes.quebraLinha(Funcoes.stringToVector(sMensAdic),65);
-			for (int i=0; i<vObs.size(); i++) {
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,6,vObs.elementAt(i).toString());				
+			imp.say(imp.pRow()+1,0,""+imp.comprimido());
+			
+			int pos = 1;
+			for(int i=0;i<vSigla.size();i++){
+				if(pos==1){
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,6,(String)vSigla.elementAt(i));
+					pos = 2;
+				} else if(pos==2){
+					imp.say(imp.pRow()+0,28,(String)vSigla.elementAt(i));
+					pos = 3;
+				} else if(pos==3){
+					imp.say(imp.pRow()+0,50,(String)vSigla.elementAt(i));
+					pos = 1;
+				}
 			}
 			  
-			imp.say(imp.pRow()+7,0,""+imp.comprimido());
+			vObs = Funcoes.quebraLinha(Funcoes.stringToVector(sMensAdic),80);
+			for (int i=0; i<vObs.size(); i++) {
+				if(imp.pRow() < 64) {
+					imp.say(imp.pRow()+1,0,""+imp.comprimido());
+					imp.say(imp.pRow()+0,6,vObs.elementAt(i).toString());
+				}
+			}
+			  
+			for (int i=0;(imp.pRow()<66);i++)
+				imp.say(imp.pRow()+1,0,"");
 			imp.say(imp.pRow()+0,128,sNumNota);
 			imp.setPrc(0,0);
 			
@@ -376,5 +391,45 @@ public class NF2001 extends Layout {
 			vObs = null;
 			sTipoTran = null;
 		}
+	}
+	
+	private String[] getDadosEmp() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		String[] retorno = null;
+		
+		try {
+			
+			sSQL = "SELECT RAZFILIAL, ENDFILIAL, NUMFILIAL, FONEFILIAL, FAXFILIAL, BAIRFILIAL, CIDFILIAL, UFFILIAL, CEPFILIAL "
+				 + "FROM SGFILIAL "
+				 + "WHERE CODEMP=? AND CODFILIAL=?";
+			ps = nf.getConexao().prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retorno = new String[] {rs.getString(1).trim(),
+										rs.getString(2).trim(),
+										rs.getString(3).trim(),
+										rs.getString(4).trim(),
+										rs.getString(5).trim(),
+										rs.getString(6).trim(),
+										rs.getString(7).trim(),
+										rs.getString(8).trim(),
+										rs.getString(9).trim()};
+				
+			}			
+			
+		} catch (SQLException e) {
+			Funcoes.mensagemErro(null,"Erro ao buscar dados da empresa.\n" + e.getMessage(),true,nf.getConexao(),e);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+		return retorno;
 	}
 }

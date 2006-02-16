@@ -59,11 +59,11 @@ public class PVNCACongelados extends Leiaute {
 				if (imp.pRow() == 0) {
 					
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",134) + "+");
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, sVal[0]);//Razão social
-					imp.say(imp.pRow() + 0, 122, "PÁG.: " + Funcoes.strZero("" + (imp.getNumPags()), 5));//pagina
+					imp.say(imp.pRow() + 0, 121, "PÁG.: " + imp.getPagAtual()+1 + " de " + imp.getNumPags());//pagina
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
@@ -73,10 +73,10 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 118, "ID.USU.: " + Aplicativo.strUsuario.toUpperCase());//usuario
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",134) + "+");	
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");	
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
-					imp.say(imp.pRow() + 0, 4, "Pedido: " + rs.getString("DOCVENDA"));
+					imp.say(imp.pRow() + 0, 4, "Pedido: " + rs.getString("CODVENDA"));
 					imp.say(imp.pRow() + 0, 22, "Cliente: " + (rs.getString("RAZCLI") !=null ? rs.getString("RAZCLI").trim() : ""));
 					imp.say(imp.pRow() + 0, 102, "Data: " + Funcoes.sqlDateToStrDate(rs.getDate("DTEMITVENDA")));
 					imp.say(imp.pRow() + 0, 121, "Hora: " + sHora);
@@ -87,15 +87,15 @@ public class PVNCACongelados extends Leiaute {
 																							    (rs.getString("NUMCLI")!= null ? " , " + rs.getString("NUMCLI").trim() : "") + 
 																							    (rs.getString("CIDCLI")!= null ? " / " + rs.getString("CIDCLI").trim() : "") + 
 																							    (rs.getString("UFCLI") != null ? " - " + rs.getString("UFCLI").trim()  : "")) : ""));
-					imp.say(imp.pRow() + 0, 102, "Fone / Fax: " + (rs.getString("FONECLI") != null ? Funcoes.setMascara(rs.getString("FONECLI").trim(),"####-####") : "") + " / " +
+					imp.say(imp.pRow() + 0, 104, "Fone/Fax: " + (rs.getString("FONECLI") != null ? Funcoes.setMascara(rs.getString("FONECLI").trim(),"####-####") : "") + " / " +
 																  (rs.getString("FAXCLI")  != null ? Funcoes.setMascara(rs.getString("FAXCLI").trim() ,"####-####") : ""));
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
-					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
-					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",85) + "+");
-					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
-					imp.say(imp.pRow() + 0, 121, Funcoes.replicate("-",15) + "+");
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 12, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 19, Funcoes.replicate("-",85) + "+");
+					imp.say(imp.pRow() + 0, 105, Funcoes.replicate("-",14) + "+");
+					imp.say(imp.pRow() + 0, 120, Funcoes.replicate("-",15) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "  QTD   |");
@@ -106,11 +106,11 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 126, "Total");
 					imp.say(imp.pRow() + 0, 135, " |");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
-					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
-					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",85) + "+");
-					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
-					imp.say(imp.pRow() + 0, 121, Funcoes.replicate("-",15) + "+");
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 12, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 19, Funcoes.replicate("-",85) + "+");
+					imp.say(imp.pRow() + 0, 105, Funcoes.replicate("-",14) + "+");
+					imp.say(imp.pRow() + 0, 120, Funcoes.replicate("-",15) + "+");
 					
 				}
 
@@ -118,7 +118,7 @@ public class PVNCACongelados extends Leiaute {
 				bdTotalItem = bdTotalItem.add(new BigDecimal(rs.getFloat("VLRLIQITVENDA")).divide(new BigDecimal(1), casaDecFin, BigDecimal.ROUND_HALF_UP));
 				
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "|" + (Funcoes.alinhaDir( rs.getInt("QTDITVENDA"), 8)));
+				imp.say(imp.pRow() + 0, 1, "|" + (Funcoes.alinhaCentro( rs.getInt("QTDITVENDA"), 8)));
 				imp.say(imp.pRow() + 0, 12, "| " + (rs.getString("CODUNID") != null ? rs.getString("CODUNID").substring(0,4) : ""));
 				imp.say(imp.pRow() + 0, 19, "| " + (rs.getString("DESCPROD") != null ? rs.getString("DESCPROD").trim() : ""));
 				imp.say(imp.pRow() + 0, 96, (Funcoes.alinhaDir( rs.getInt("CODPROD"), 8)));
@@ -133,21 +133,21 @@ public class PVNCACongelados extends Leiaute {
 					if(rs.getInt(1) == contItem) {
 			            for (int i=0; i<(maxLine-iLinha);i++) {
 			            	imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate(" ",10) + "|");	
-							imp.say(imp.pRow() + 0, 13, Funcoes.replicate(" ",6) + "|");
-							imp.say(imp.pRow() + 0, 20, Funcoes.replicate(" ",85) + "|");
-							imp.say(imp.pRow() + 0, 106, Funcoes.replicate(" ",14) + "|");
-							imp.say(imp.pRow() + 0, 121, Funcoes.replicate(" ",15) + "|");
+							imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate(" ",9) + "|");	
+							imp.say(imp.pRow() + 0, 12, Funcoes.replicate(" ",6) + "|");
+							imp.say(imp.pRow() + 0, 19, Funcoes.replicate(" ",85) + "|");
+							imp.say(imp.pRow() + 0, 105, Funcoes.replicate(" ",14) + "|");
+							imp.say(imp.pRow() + 0, 120, Funcoes.replicate(" ",15) + "|");
 			            }
 					}
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
-					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
-					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",34) + "+");
-					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",50) + "+");
-					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",14) + "+");
-					imp.say(imp.pRow() + 0, 121, Funcoes.replicate("-",15) + "+");
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 12, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 19, Funcoes.replicate("-",34) + "+");
+					imp.say(imp.pRow() + 0, 54, Funcoes.replicate("-",50) + "+");
+					imp.say(imp.pRow() + 0, 105, Funcoes.replicate("-",14) + "+");
+					imp.say(imp.pRow() + 0, 120, Funcoes.replicate("-",15) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|" + (Funcoes.alinhaDir( iQtdItem, 8)));
 					imp.say(imp.pRow() + 0, 12, "| ---- |" );
@@ -161,19 +161,20 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 122, Funcoes.strDecimalToStrCurrency(13,casaDecFin,bdTotalItem.toString()));
 					imp.say(imp.pRow() + 0, 135, " |");	
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",10) + "+");	
-					imp.say(imp.pRow() + 0, 13, Funcoes.replicate("-",6) + "+");
-					imp.say(imp.pRow() + 0, 20, Funcoes.replicate("-",34) + "+");
-					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",50) + "+");
-					imp.say(imp.pRow() + 0, 106, Funcoes.replicate("-",30) + "+");
+					imp.say(imp.pRow() + 0, 1, "|" + Funcoes.replicate("-",9) + "+");	
+					imp.say(imp.pRow() + 0, 12, Funcoes.replicate("-",6) + "+");
+					imp.say(imp.pRow() + 0, 19, Funcoes.replicate("-",34) + "+");
+					imp.say(imp.pRow() + 0, 54, Funcoes.replicate("-",50) + "+");
+					imp.say(imp.pRow() + 0, 105, Funcoes.replicate("-",30) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "| Obrigado pela prefência.");
-					imp.say(imp.pRow() + 0, 54, "|OBS.: " + ((rs.getString("OBSVENDA") != null && !rs.getString("OBSVENDA").trim().equals("")) ? rs.getString("OBSVENDA").substring(0,74) : ""));
+					imp.say(imp.pRow() + 0, 54, "|OBS.: " + ((rs.getString("OBSCLI") != null && !rs.getString("OBSCLI").trim().equals("")) ? 
+							(rs.getString("OBSCLI").length() > 74 ? rs.getString("OBSCLI").substring(0,74) : rs.getString("OBSCLI")) : ""));
 					imp.say(imp.pRow() + 0, 136, "|");
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",52) + "+");	
-					imp.say(imp.pRow() + 0, 55, Funcoes.replicate("-",81) + "+");
+					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",51) + "+");	
+					imp.say(imp.pRow() + 0, 54, Funcoes.replicate("-",81) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 										
 				}

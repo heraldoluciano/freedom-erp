@@ -95,8 +95,7 @@ public class NF {
 	public static final int C_NOMEBANCO = 47;
 	public static final int C_DESCSETOR = 48;
 	public static final int C_VLRDESCITPED = 49;
-	public static final int C_DIASPAG = 50;
-	
+	public static final int C_DIASPAG = 50;	
 	
 	//itens
 	public static final int C_CODITPED = 0;
@@ -129,22 +128,19 @@ public class NF {
 	public static final int C_CODFISC = 27;
 	public static final int C_TIPOPROD = 28;
 	public static final int C_VLRISSPED = 29;
-	public static final int C_VLRPRODPED = 30;
-	
+	public static final int C_VLRPRODPED = 30;	
 	
 	//adic
 	public static final int C_CODAUXV = 0;
 	public static final int C_CPFEMITAUX = 1;
 	public static final int C_NOMEEMITAUX = 2;
 	public static final int C_CIDEMITAUX = 3;
-	public static final int C_UFEMITAUX = 4;
-	
+	public static final int C_UFEMITAUX = 4;	
 	
 	//parc	
 	public static final int C_DTVENCTO = 0;
 	public static final int C_VLRPARC = 1;
-	public static final int C_NPARCITREC = 2;
-	
+	public static final int C_NPARCITREC = 2;	
 	
 	//frete
 	public static final int C_CODTRAN= 0;
@@ -165,8 +161,7 @@ public class NF {
 	public static final int C_MARCAFRETE = 15;
 	public static final int C_PESOBRUTO = 16;
 	public static final int C_PESOLIQ = 17;
-	public static final int C_VLRFRETEPED = 18;
-	
+	public static final int C_VLRFRETEPED = 18;	
 
 	protected TabVector cab = null;
 	protected TabVector itens = null;
@@ -176,10 +171,20 @@ public class NF {
 	protected int tipoNF = TPNF_NONE; 
 	protected int casasDec = 2;
 	protected int casasDecFin = Aplicativo.casasDecFin;
+	
+	private Connection con = null;
     
 	public NF(int casasDec) {
 		super();
 		this.casasDec = casasDec;
+	}
+	
+	protected void setConexao(Connection arg0) {
+		con = arg0;
+	}
+	
+	public Connection getConexao() {
+		return con;
 	}
 	
 	public int getCasasDec() {
