@@ -40,6 +40,8 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -660,6 +662,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				   "AND P.CODEMP=? AND P.CODFILIAL=? " +
 				   "AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL "+
 				   "ORDER BY IT.DTVENCITPAG,IT.STATUSITPAG ";
+			System.out.println(sSQL);
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodPagBaixa.getVlrInteger().intValue());
@@ -900,7 +903,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
 				iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
 				sVals = new String[12];
-				sRelPlanPag = buscaRelPlanPag(iLin);
+				sRelPlanPag = buscaRelPlanPag(Integer.parseInt(""+tabManut.getValor(iLin,5)));
 				sRets = null;
 				dl = new DLBaixaPag(this);
 				sVals[0] = ""+tabManut.getValor(iLin,3);
@@ -976,7 +979,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
 				iNParcPag = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
 				sVals = new String[12];
-				sRelPlanPag = buscaRelPlanPag(iLin);
+				sRelPlanPag = buscaRelPlanPag(txtCodPagBaixa.getVlrInteger().intValue());
 				dl = new DLBaixaPag(this);
 				sVals[0] = ""+txtCodForBaixa.getVlrString();
 				sVals[1] = ""+txtRazForBaixa.getVlrString();
@@ -1060,10 +1063,12 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		String[] sVals = null;
 		String[] sRets = null;
 		DLEditaPag dl = null;
+		ImageIcon imgStatusAt = null;
 		int iLin;
 		try {
 			if (tabManut.getLinhaSel() > -1) {
-				if ((""+tabManut.getValor(tabManut.getLinhaSel(),2)).equals("P1")) { 
+				imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0); 
+				if (imgStatusAt!=imgPago) { 
 					iLin = tabManut.getLinhaSel();
 					iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
 					iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
@@ -1179,7 +1184,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 			sSQL = null;
 			sVals = null;
 			sRets = null;
-			dl = null;			
+			dl = null;		
+			imgStatusAt = null;
 		}
 	}
   
@@ -1237,8 +1243,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		try{
 			if(tabManut.getLinhaSel() > -1) {
 				imgStatusAt = (ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0);
-				if(Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==0) {
-					if (((imgStatusAt == imgPagoParcial || imgStatusAt == imgPago))) { 
+				if(((imgStatusAt == imgPagoParcial || imgStatusAt == imgPago))) {
+					if (Funcoes.mensagemConfirma(this,"Confirma o estorno do lançamento?")==JOptionPane.YES_OPTION) { 
 						int iLin = tabManut.getLinhaSel();
 						iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
 						iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
@@ -1258,7 +1264,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 						carregaGridManut();
 					}
 				} else {
-					Funcoes.mensagemInforma(this,"Parcela ainda não foi paga.");
+					Funcoes.mensagemInforma(this,"PARCELA AINDA NÃO FOI PAGA.");
 				}
 			} else {
 				Funcoes.mensagemInforma(this,"Nenhum item foi selecionado.");
@@ -1288,21 +1294,22 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		return bRetorno;
 	}
 
-	private String[] buscaRelPlanPag(int linha) {
+	private String[] buscaRelPlanPag(int iCodPag) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;			
 		String sSQL = null;
 		String[] retorno = new String[4];
 		try {
-			sSQL = " SELECT C.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC"
-				 + " FROM CPCOMPRA C, FNPLANOPAG P"
-				 + " WHERE C.CODEMPPG=P.CODEMP AND C.CODFILIALPG=P.CODFILIAL AND C.CODPLANOPAG=P.CODPLANOPAG"
-				 + " AND C.CODEMP=? AND C.CODFILIAL=? AND C.CODCOMPRA=?";
+			sSQL = " SELECT C.CODPLANOPAG, PP.CODPLAN, PP.NUMCONTA, PP.CODCC "
+				 + "FROM CPCOMPRA C, FNPLANOPAG PP, FNPAGAR P "
+				 + "WHERE C.CODEMPPG=PP.CODEMP AND C.CODFILIALPG=PP.CODFILIAL AND C.CODPLANOPAG=PP.CODPLANOPAG "
+				 + "AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA "
+				 + "AND P.CODEMP=? AND P.CODFILIAL=? AND P.CODPAG=?";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
-			ps.setString(3, ((String)vCodPed.elementAt(linha)).trim());
+			ps.setInt(2, ListaCampos.getMasterFilial("FNPAGAR"));
+			ps.setInt(3, iCodPag);
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {

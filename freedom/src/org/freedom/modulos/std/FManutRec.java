@@ -996,7 +996,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				iCodRec = Integer.parseInt((String)tabManut.getValor(iLin,4));
 				iNParcItRec = Integer.parseInt(""+tabManut.getValor(iLin,5));
 				sVals = new String[15];
-				sRelPlanPag = buscaRelPlanPag(iLin);
+				sRelPlanPag = buscaRelPlanPag(Integer.parseInt(""+tabManut.getValor(iLin,4)));
 				dl = new DLBaixaRec(this);
 				sVals[0] = ""+tabManut.getValor(iLin,2);
 				sVals[1] = ""+tabManut.getValor(iLin,3);
@@ -1086,7 +1086,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				iCodRec = txtCodRecBaixa.getVlrInteger().intValue();
 				iNParcItRec = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
 				sVals = new String[15];
-				sRelPlanPag = buscaRelPlanPag(iLin);
+				sRelPlanPag = buscaRelPlanPag(txtCodRecBaixa.getVlrInteger().intValue());
 				dl = new DLBaixaRec(this);
 				
 				sVals[0] = ""+txtCodCliBaixa.getVlrString(); // Codcli
@@ -1407,7 +1407,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 						carregaGridManut(bBuscaAtual);
 					}
 				} else {
-					Funcoes.mensagemInforma(this,"Parcela ainda não foi paga.");
+					Funcoes.mensagemInforma(this,"PARCELA AINDA NÃO FOI PAGA.");
 				}
 			} else {
 				Funcoes.mensagemInforma(this,"Não ha nenhum item selecionado.");
@@ -1437,7 +1437,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		return bRetorno;
 	}
 
-	private String[] buscaRelPlanPag(int linha) {
+	private String[] buscaRelPlanPag(int iCodRec) {
 		String[] retorno = new String[4];
 		String sSQL = null;
 		PreparedStatement ps = null;
@@ -1445,14 +1445,15 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 			
 		try {
 			sSQL = " SELECT V.CODPLANOPAG, P.CODPLAN, P.NUMCONTA, P.CODCC"
-				 + " FROM VDVENDA V, FNPLANOPAG P"
+				 + " FROM VDVENDA V, FNPLANOPAG P, FNRECEBER R"
 				 + " WHERE V.CODEMPPG=P.CODEMP AND V.CODFILIALPG=P.CODFILIAL AND V.CODPLANOPAG=P.CODPLANOPAG"
-				 + " AND V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA='V'";
+				 + " AND V.CODEMP=R.CODEMPVD AND V.CODFILIAL=R.CODFILIALVD AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA='V'"
+				 + " AND R.CODEMP=? AND R.CODFILIAL=? AND R.CODREC=?";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setString(3, ((String)vCodPed.elementAt(linha)).trim());
+			ps.setInt(2, ListaCampos.getMasterFilial("FNRECEBER"));
+			ps.setInt(3, iCodRec);
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
