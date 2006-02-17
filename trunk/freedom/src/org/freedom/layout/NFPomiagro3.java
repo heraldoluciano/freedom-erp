@@ -218,7 +218,7 @@ public class NFPomiagro3 extends Layout {
          imp.say(imp.pRow()+0,100,""+itens.getFloat(NF.C_QTDITPED));          
          imp.say(imp.pRow()+0,104,Funcoes.strDecimalToStrCurrency(13,2,""+(new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)));
          imp.say(imp.pRow()+0,121,Funcoes.strDecimalToStrCurrency(13,2,""+itens.getFloat(NF.C_VLRLIQITPED)));
-         imp.say(imp.pRow()+0,136,""+itens.getFloat(NF.C_PERCICMSITPED));
+         imp.say(imp.pRow()+0,136,((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
          
          iItImp++;
          System.out.println(imp.pRow()+" = iItImp : "+iItImp);
@@ -300,7 +300,7 @@ public class NFPomiagro3 extends Layout {
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
            imp.say(imp.pRow()+0,12,cab.getString(NF.C_CODVEND));
            imp.say(imp.pRow()+0,21,cab.getString(NF.C_CODCLCOMIS));
-           imp.say(imp.pRow()+0,30,Funcoes.strDecimalToStrCurrency(5,casasDec,(Funcoes.strDecimalToBigDecimal(2,""+cab.getFloat(NF.C_PERCMCOMISPED))).toString()));
+           imp.say(imp.pRow()+0,30,Funcoes.strDecimalToStrCurrency(5,2,""+cab.getFloat(NF.C_PERCMCOMISPED)).toString());
            imp.say(imp.pRow()+0,48,""+cab.getInt(NF.C_CODPED));
            imp.say(imp.pRow()+0,66,""+iNumNota);
            imp.say(imp.pRow()+1,0,""+imp.comprimido());
