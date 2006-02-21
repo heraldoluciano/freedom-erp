@@ -7,7 +7,7 @@
  * 
  * Pacote: org.freedom.modulos.std <BR>
  * Classe:
- * @(#)FPrefere.java <BR>
+ * @(#)FPrefereGeral.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
  * Programas de Computador), <BR>
