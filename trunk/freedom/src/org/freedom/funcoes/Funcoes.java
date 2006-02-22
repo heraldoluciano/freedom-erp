@@ -161,6 +161,18 @@ public class Funcoes {
 		return deValor;
 	}
 
+	public static float arredFloat(float fValor, int iDec) {
+		BigDecimal bdValor = null;
+		try {
+			bdValor = new BigDecimal(fValor);
+			bdValor = bdValor.setScale(iDec, BigDecimal.ROUND_HALF_UP);
+			fValor = bdValor.floatValue();
+		} finally {
+			bdValor = null;
+		}
+		return fValor;
+	}
+
 	public static void espera(int iSec) {
 		long iIni = getSeconds();
 		long iFim = getSeconds();
