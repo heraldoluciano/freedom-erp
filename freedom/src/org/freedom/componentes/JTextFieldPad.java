@@ -898,6 +898,9 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
   public double doubleValue() {
       return getVlrDouble().doubleValue();
   }
+  public float floatValue() {
+      return getVlrBigDecimal().floatValue();
+  }
   public BigDecimal getVlrBigDecimal() {
     String sRetorno = "";
     BigDecimal bigRetorno = new BigDecimal("0");
