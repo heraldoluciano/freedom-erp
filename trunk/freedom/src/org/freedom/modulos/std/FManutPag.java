@@ -87,8 +87,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	private JScrollPane spnManut = new JScrollPane(tabManut);
 	private JTextFieldPad txtCodFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtCodForManut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtPrimCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-	private JTextFieldPad txtUltCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtPrimCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
+	private JTextFieldPad txtUltCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
 	private JTextFieldPad txtDataMaxFat = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtVlrMaxFat = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldPad txtVlrTotCompr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
@@ -221,10 +221,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		pinConsulta.adic(txtCodFor,7,20,80,20);
 		pinConsulta.adic(new JLabelPad("Descrição do fornecedor"),90,0,250,20);
 		pinConsulta.adic(txtRazFor,90,20,197,20);
-		pinConsulta.adic(new JLabelPad("C. compra"),290,0,97,20);
-		pinConsulta.adic(txtPrimCompr,290,20,97,20);
-		pinConsulta.adic(new JLabelPad("U. compra"),390,0,100,20);
-		pinConsulta.adic(txtUltCompr,390,20,120,20);
+		pinConsulta.adic(new JLabelPad("Primeira compra"),290,0,97,20);
+		pinConsulta.adic(txtPrimCompr,290,20,120,20);
+		pinConsulta.adic(new JLabelPad("Ultima compra"),390,0,100,20);
+		pinConsulta.adic(txtUltCompr,413,20,120,20);
 		pinConsulta.adic(new JLabelPad("Data"),7,40,200,20);
 		pinConsulta.adic(txtDataMaxFat,7,60,100,20);
 		pinConsulta.adic(new JLabelPad("Valor da maior fatura"),110,40,200,20);
@@ -916,7 +916,11 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				sVals[7] = ""+tabManut.getValor(iLin,9);
 				sVals[10] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
 				if (((String)tabManut.getValor(iLin,10)).trim().equals("")) {//Para verificar c jah esta pago testa se a data de pgto esta setada. 
-					sVals[11] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,19);
+					if (((String)tabManut.getValor(iLin,19)).trim().equals(""))
+						sVals[11] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,19);
+					else
+						sVals[11] = ""+tabManut.getValor(iLin,19);
+						
 					sVals[8] = Funcoes.dateToStrDate(new Date());
 					sVals[9] = ""+tabManut.getValor(iLin,11);
 				} else {
@@ -991,7 +995,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				sVals[7] = ""+tabBaixa.getValor(iLin,5);
 				sVals[10] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
 				if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) {
-					sVals[11] = "PAGAMENTO REF. A COMPRA: "+txtCodCompraBaixa.getVlrString();
+					if (((String)tabBaixa.getValor(iLin,13)).trim().equals(""))
+						sVals[11] = "PAGAMENTO REF. A COMPRA: "+txtCodCompraBaixa.getVlrString();
+					else
+						sVals[11] = ""+tabBaixa.getValor(iLin,13);
 					sVals[8] = Funcoes.dateToStrDate(new Date());
 					sVals[9] = ""+tabBaixa.getValor(iLin,5);
 				} else {
@@ -1087,7 +1094,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 					sVals[10] = ""+tabManut.getValor(iLin,12);
 					sVals[11] = ""+tabManut.getValor(iLin,14);
 					if (((String)tabManut.getValor(iLin,10)).trim().equals("")) {
-						sVals[12] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,8);
+						if (((String)tabManut.getValor(iLin,19)).trim().equals(""))
+							sVals[12] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,8);
+						else
+							sVals[12] = ""+tabManut.getValor(iLin,19);							
 					} else {
 						sVals[12] = ""+tabManut.getValor(iLin,18);
 					}
