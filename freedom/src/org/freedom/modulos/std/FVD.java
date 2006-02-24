@@ -625,7 +625,7 @@ public abstract class FVD extends FDetalhe {
 	private boolean mostraTelaPass(String[] args) {
 		boolean retorno = false;
 		
-		FPassword fpw = new FPassword(this,FPassword.BAIXO_CUSTO, args, con);
+		FPassword fpw = new FPassword(this,FPassword.BAIXO_CUSTO, args, null, con);
 		fpw.execShow();
 		if(fpw.OK){
 			setLog(fpw.getLog());			

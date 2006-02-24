@@ -28,7 +28,9 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -131,6 +133,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JTextFieldPad txtCodFabProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldFK txtDescFisc = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0);	
 	private JTextFieldPad txtCodAlmoxItCompra = new JTextFieldPad( JTextFieldPad.TP_INTEGER,5, 0);	
+	private JLabelPad lbStatus = new JLabelPad();
 	private JCheckBoxPad cbSeqNfTipoMov = new JCheckBoxPad("Aloc.NF","S","N");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 	private ListaCampos lcSerie = new ListaCampos(this, "SE");
@@ -250,7 +253,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote",ListaCampos.DB_PK, false));
 		lcLote.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, false));
 		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Vencimento",ListaCampos.DB_SI, false));
-		//    lcLote.setDinWhereAdic("CODPROD=#N",txtCodProd);
+		lcLote.setDinWhereAdic("CODPROD=#N",txtCodProd);
 		lcLote.setAutoLimpaPK(false);
 		lcLote.montaSql(false, "LOTE", "EQ");
 		lcLote.setQueryCommit(false);
@@ -300,13 +303,14 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		adicDescFK(txtDescTipoMov, 190, 20, 207, 20, "DescTipoMov","Descrição do tipo de movimento");
 		adicCampo(txtSerieCompra, 400, 20, 77, 20, "Serie", "Série",ListaCampos.DB_FK, true);
 		adicCampo(txtDocCompra, 480, 20, 77, 20, "DocCompra", "Doc",ListaCampos.DB_SI, true);
-		adicCampo(txtDtEmitCompra, 560, 20, 100, 20, "DtEmitCompra","Dt.emissão", ListaCampos.DB_SI, true);
-		adicCampo(txtDtEntCompra, 7, 60, 100, 20, "DtEntCompra", "Dt.entrada",ListaCampos.DB_SI, true);
-		adicCampo(txtCodFor, 110, 60, 77, 20, "CodFor", "Cód.for.",ListaCampos.DB_FK, txtDescFor, true);
-		adicDescFK(txtDescFor, 190, 60, 207, 20, "RazFor","Razão social do fornecedor");
-		adicCampo(txtCodPlanoPag, 400, 60, 77, 20, "CodPlanoPag", "Cód.p.pag.",ListaCampos.DB_FK, txtDescPlanoPag, true);
-		adicDescFK(txtDescPlanoPag, 480, 60, 180, 20, "DescPlanoPag","Descrição do plano de pagto.");
+		adicCampo(txtDtEmitCompra, 560, 20, 85, 20, "DtEmitCompra","Dt.emissão", ListaCampos.DB_SI, true);
+		adicCampo(txtDtEntCompra, 648, 20, 85, 20, "DtEntCompra", "Dt.entrada",ListaCampos.DB_SI, true);
+		adicCampo(txtCodFor, 7, 60, 80, 20, "CodFor", "Cód.for.",ListaCampos.DB_FK, txtDescFor, true);
+		adicDescFK(txtDescFor, 90, 60, 210, 20, "RazFor","Razão social do fornecedor");
+		adicCampo(txtCodPlanoPag, 303, 60, 80, 20, "CodPlanoPag", "Cód.p.pag.",ListaCampos.DB_FK, txtDescPlanoPag, true);
+		adicDescFK(txtDescPlanoPag, 386, 60, 245, 20, "DescPlanoPag","Descrição do plano de pagto.");
 		adicCampoInvisivel(txtStatusCompra, "StatusCompra", "Status",ListaCampos.DB_SI, false);
+		adic(lbStatus, 638, 60, 95, 20);
 		//    lcCampos.setWhereAdic("FLAG IN "+
 		//    projetos.freedom.Freedom.carregaFiltro(con,org.freedom.telas.Aplicativo.strCodEmp));
 		setListaCampos(true, "COMPRA", "CP");
@@ -337,6 +341,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
+		
+		lbStatus.setForeground(Color.WHITE);
+		lbStatus.setFont( new Font("Arial", Font.BOLD, 13));
+		lbStatus.setOpaque(true);
+		lbStatus.setVisible(false);
+		
 	    setImprimir(true);
 	}
 
@@ -682,6 +692,22 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 			else
 				txtDocCompra.setAtivo(true);
 		}
+
+		/*if (txtStatusCompra.getVlrString().trim().length()>0 && 
+				txtStatusCompra.getVlrString().substring(0,1).equals("C")){
+			lbStatus.setText("  CANCELADA");
+			lbStatus.setBackground(Color.RED);
+			lbStatus.setVisible(true);
+		}
+		else */if (verificaBloq()){
+			lbStatus.setText("  BLOQUEADA");
+			lbStatus.setBackground(Color.BLUE);
+			lbStatus.setVisible(true);
+		}
+		else {
+			lbStatus.setText("");
+			lbStatus.setVisible( false );
+		}
 		
 	}
 
@@ -766,7 +792,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					//            txtStatusCompra.setVlrString("P4");
 					//          }
 				}
+				
 				lcCampos.post();
+				
+				if(podeBloq()) {
+					bloqCompra();
+				}
 			}
 		} else if (evt.getSource() == btPrevimp)
 			imprimir(true, txtCodCompra.getVlrInteger().intValue());
@@ -1109,16 +1140,109 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					bRetorno = true;
 				sOrdNota = rs.getString("OrdNota");
 			}
-			//      rs.close();
-			//      ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
 					+ err.getMessage(),true,con,err);
+		} finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
 		}
 		return bRetorno;
+	}	
+	
+
+	private boolean verificaBloq() {
+		boolean retorno = false;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String sSQL = null;
+		int iCodCompra = 0;
+		try {
+			iCodCompra = txtCodCompra.getVlrInteger().intValue();
+			if (iCodCompra != 0) {
+				sSQL = "SELECT BLOQCOMPRA FROM CPCOMPRA WHERE CODEMP=? AND CODFILIAL=? AND CODCOMPRA=? ";
+				ps = con.prepareStatement(sSQL);
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("CPCOMPRA"));
+				ps.setInt(3, iCodCompra);
+				rs = ps.executeQuery();
+				
+				if(rs.next()){
+					if(rs.getString(1).equals("S"))
+						retorno = true;
+				}					
+					
+				ps.close();
+				if (!con.getAutoCommit())
+					con.commit();
+			}
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro verificando bloqueido da compra!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			rs = null;
+			ps = null;
+			sSQL = null;
+		}
+		return retorno;
+	}
+
+	private boolean podeBloq() {
+		boolean bRetorno = false;
+		String sSQL = "SELECT BLOQCOMPRA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("BLOQCOMPRA").trim().equals("S"))
+					bRetorno = true;
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			err.printStackTrace();
+		} finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return bRetorno;
+	}
+	
+	private void bloqCompra() {
+		PreparedStatement ps = null;
+		String sSQL = null;
+		int iCodCompra = 0;
+		try {
+			iCodCompra = txtCodCompra.getVlrInteger().intValue();
+			if (iCodCompra != 0) {
+				sSQL = "EXECUTE PROCEDURE CPBLOQCOMPRASP(?,?,?,?)";
+	            ps = con.prepareStatement(sSQL);
+	            ps.setInt(1,Aplicativo.iCodEmp);
+	            ps.setInt(2,ListaCampos.getMasterFilial("CPCOMPRA"));
+	            ps.setInt(3,iCodCompra);
+	            ps.setString(4,"S");
+	            ps.executeUpdate();
+	            ps.close();
+	            if (!con.getAutoCommit())
+	                con.commit();
+			}
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro bloqueando a compra!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			sSQL = null;
+		}
 	}
 
 	public void keyTyped(KeyEvent kevt) {
