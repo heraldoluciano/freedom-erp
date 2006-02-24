@@ -590,7 +590,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private boolean mostraTelaPass() {
 		boolean retorno = false;
 		
-		FPassword fpw = new FPassword(this,FPassword.ABRE_GAVETA, null,"Abrir gaveta", con);
+		FPassword fpw = new FPassword(this,FPassword.ABRE_GAVETA, "Abrir gaveta", con);
 		fpw.execShow();
 		
 		retorno = fpw.OK;
