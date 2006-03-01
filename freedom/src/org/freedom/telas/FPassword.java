@@ -115,43 +115,24 @@ public class FPassword extends FFDialogo{
 	
 	private boolean getBaixoCusto() {
 		boolean ret = false;
-		try {
-			if((ret = getPermissao(BAIXO_CUSTO))) {
-				log = Aplicativo.gravaLog(txtUsu.getVlrString().toLowerCase().trim(), "PR", "LIB",
-						"Liberação de "  + param[0] + " abaixo do custo",
-						""+param[0]+" [" + param[1] + "], " + 		//codigo da tabela
-						"Item: ["    	 + param[2] + "], " + 		//codigo do item
-						"Produto: [" 	 + param[3] + "], " +		//codigo do produto
-						"Preço: ["   	 + param[4] + "]"			//preço do produto
-						, con);
-			} else
-				Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		if((ret = getPermissao(BAIXO_CUSTO))) {
+			log = Aplicativo.gravaLog(txtUsu.getVlrString().toLowerCase().trim(), "PR", "LIB",
+					"Liberação de "  + param[0] + " abaixo do custo",
+					""+param[0]+" [" + param[1] + "], " + 		//codigo da tabela
+					"Item: ["    	 + param[2] + "], " + 		//codigo do item
+					"Produto: [" 	 + param[3] + "], " +		//codigo do produto
+					"Preço: ["   	 + param[4] + "]"			//preço do produto
+					, con);
+		} 
 		return ret;
 	}	
 
-	private boolean getAbreGaveta() {
-		boolean ret = false;
-		try {
-			if(!(ret = getPermissao(ABRE_GAVETA)))
-				Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret;
+	private boolean getAbreGaveta() {		
+		return getPermissao(ABRE_GAVETA);
 	}	
 
 	private boolean getAltParcVenda() {
-		boolean ret = false;
-		try {
-			if(!(ret = getPermissao(ALT_PARC_VENDA)))
-				Funcoes.mensagemErro(this,"Ação não permitida para este usuário.");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret;
+		return getPermissao(ALT_PARC_VENDA);
 	} 	
 
 	private boolean getPermissao(int tipo) {
@@ -162,59 +143,51 @@ public class FPassword extends FFDialogo{
 		String sSQL = null;
 		boolean[] permissoes = new boolean[]{false,false,false};
 		try {
-			do {
-				try {
-					props = new Properties();
-					sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
-					props.put("user", sIDUsu);
-					props.put("password", txtPass.getVlrString());
-					if (sIDUsu.equals("") || txtPass.getVlrString().trim().equals("")) {
-						Funcoes.mensagemErro(this, "Campo em branco!");
-						continue;
-					}
-					DriverManager.getConnection(Aplicativo.strBanco, props).close();
-					
-					sSQL = "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA FROM SGUSUARIO "
-						 + "WHERE IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
-					ps = con.prepareStatement(sSQL);
-					ps.setString(1, sIDUsu);
-					ps.setInt(2, Aplicativo.iCodEmp);
-					ps.setInt(3, Aplicativo.iCodFilial);
-					rs = ps.executeQuery();
-					if (rs.next()) {
-						if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
-							permissoes[0] = true;
-						} 
-						if ((rs.getString(2) != null ? rs.getString(1) : "").equals("S")) {
-							permissoes[1] = true;
-						}
-						if ((rs.getString(3) != null ? rs.getString(1) : "").equals("S")) {
-							permissoes[2] = true;
-						}
-					} 
-					
-				} catch(SQLException sqle){
-					if (sqle.getErrorCode() == 335544472) {
-						Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
-						continue;
-					}
-					Funcoes.mensagemErro(this,"Erro ao verificar senha.",true,con,sqle);
-					sqle.printStackTrace();
-					return false;
-				} catch(Exception e){
-					e.printStackTrace();
-				} finally {
-					ps = null;
-					rs = null;
-					props = null;
-					sIDUsu = null;
-					sSQL = null;
-				}
-				break;
-			} while(true);
+			props = new Properties();
+			sIDUsu = txtUsu.getVlrString().toLowerCase().trim();
+			props.put("user", sIDUsu);
+			props.put("password", txtPass.getVlrString());
+			if (sIDUsu.equals("") || txtPass.getVlrString().trim().equals("")) {
+				Funcoes.mensagemErro(this, "Campo em branco!");
+				return false;
+			}
+			DriverManager.getConnection(Aplicativo.strBanco, props).close();
 			
-		} catch (Exception e) {
+			sSQL = "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA FROM SGUSUARIO "
+				 + "WHERE IDUSU = ? AND CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, sIDUsu);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if ((rs.getString(1) != null ? rs.getString(1) : "").equals("S")) {
+					permissoes[0] = true;
+				} 
+				if ((rs.getString(2) != null ? rs.getString(2) : "").equals("S")) {
+					permissoes[1] = true;
+				}
+				if ((rs.getString(3) != null ? rs.getString(3) : "").equals("S")) {
+					permissoes[2] = true;
+				}
+			} 
+			if(!permissoes[tipo])
+				Funcoes.mensagemErro(this,"Ação não permitida para este usuário ! ! !");
+			
+		} catch(SQLException sqle){
+			if (sqle.getErrorCode() == 335544472) {
+				Funcoes.mensagemErro(this,"Nome do usuário ou senha inválidos ! ! !");
+			} else 
+				Funcoes.mensagemErro(this,"Erro ao verificar senha.",true,con,sqle);
+			sqle.printStackTrace();
+		} catch(Exception e){
 			e.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			props = null;
+			sIDUsu = null;
+			sSQL = null;
 		}
 
 		return permissoes[tipo];
