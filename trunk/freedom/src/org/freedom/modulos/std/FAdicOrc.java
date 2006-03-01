@@ -35,6 +35,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.acao.RadioGroupEvent;
 import org.freedom.acao.RadioGroupListener;
 import org.freedom.bmps.Icone;
@@ -51,7 +53,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDialogo;
 
 
-public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupListener {
+public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -69,6 +71,9 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 	private JPanelPad pnCli = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnTabOrc = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnCliTab = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtDtOrc = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
+	private JTextFieldFK txtDtVal = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtNomeCli = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
@@ -87,6 +92,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
 	private ListaCampos lcCli = new ListaCampos(this,"CL");
 	private ListaCampos lcConv = new ListaCampos(this,"CV");
+	private ListaCampos lcOrc = new ListaCampos(this,"OC");
 	private Vector vValidos = new Vector();
 	private final String sTipoVenda;
 	private org.freedom.modulos.std.FVenda vendaSTD = null;
@@ -110,6 +116,16 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		c.add(pnRod,BorderLayout.SOUTH);
 		c.add(pnCli,BorderLayout.CENTER);
 		c.add(pinCab,BorderLayout.NORTH);
+		
+		lcOrc.add(new GuardaCampo( txtCodOrc, "CodOrc", "N. orçamento",ListaCampos.DB_PK , null, false));	
+		lcOrc.add(new GuardaCampo( txtDtOrc, "DtOrc","Data",ListaCampos.DB_SI, null, false));
+		lcOrc.add(new GuardaCampo( txtDtVal, "DtVencOrc","Validade", ListaCampos.DB_SI , null, false));
+		lcOrc.montaSql(false,"ORCAMENTO","VD");
+		lcOrc.setQueryCommit(false);
+		lcOrc.setReadOnly(true);		
+		txtCodOrc.setNomeCampo("CodOrc");
+		txtCodOrc.setPK(true);
+		txtCodOrc.setListaCampos(lcOrc);
 		
 		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false));
 		lcCli.add(new GuardaCampo( txtNomeCli, "NomeCli", "Razão social do cliente", ListaCampos.DB_SI,false));
@@ -135,19 +151,21 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		vLabs.addElement("Conveniado");
 		rgBusca = new JRadioGroup(2,1,vLabs,vVals);
 		
-		pinCab.adic(new JLabelPad("Cód.cli."),7,5,70,20);
-		pinCab.adic(txtCodCli,7,25,70,20);
-		pinCab.adic(new JLabelPad("Razão social do cliente"),80,5,200,20);
-		pinCab.adic(txtNomeCli,80,25,200,20);
-		pinCab.adic(new JLabelPad("Cód.conv."),7,45,70,20);
-		pinCab.adic(txtCodConv,7,65,70,20);
-		pinCab.adic(new JLabelPad("Nome do conveniado"),80,45,200,20);
-		pinCab.adic(txtNomeConv,80,65,200,20);
-
-		pinCab.adic(btBusca,480,35,150,40);
+		pinCab.adic(new JLabelPad("Nº orçamento"),7,5,90,20);
+		pinCab.adic(txtCodOrc,7,25,90,20);
+		pinCab.adic(new JLabelPad("Cód.cli."),100,5,70,20);
+		pinCab.adic(txtCodCli,100,25,70,20);
+		pinCab.adic(new JLabelPad("Razão social do cliente"),173,5,200,20);
+		pinCab.adic(txtNomeCli,173,25,200,20);
+		pinCab.adic(new JLabelPad("Cód.conv."),100,45,70,20);
+		pinCab.adic(txtCodConv,100,65,70,20);
+		pinCab.adic(new JLabelPad("Nome do conveniado"),173,45,200,20);
+		pinCab.adic(txtNomeConv,173,65,200,20);
 		
-		pinCab.adic(new JLabelPad("Buscar por:"),300,5,120,20);
-		pinCab.adic(rgBusca,300,25,120,60);
+		pinCab.adic(new JLabelPad("Buscar por:"),385,5,120,20);
+		pinCab.adic(rgBusca,385,25,120,60);
+
+		pinCab.adic(btBusca,520,35,150,40);
 		
 		pnRod.setPreferredSize(new Dimension(600,50));
 		
@@ -252,6 +270,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		btTudoIt.addActionListener(this);
 		btNadaIt.addActionListener(this);
 		rgBusca.addRadioGroupListener(this);
+		lcOrc.addCarregaListener(this);
 		
 	}
 	
@@ -473,10 +492,16 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		ResultSet rs = null;
 		String sWhere = null;
 		Vector vVals = null;
+		boolean bOrc = false;
 		boolean bConv = false;
-		int iCod = 0;
+		int iCod;
 		try {
-			if (rgBusca.getVlrString().equals("L")) {
+			if ((iCod = txtCodOrc.getVlrInteger().intValue()) > 0 ) {
+				sWhere = ", VDCLIENTE C WHERE O.CODORC = ? AND O.CODFILIAL = ? AND O.CODEMP = ? " +
+						 "AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI ";
+				bOrc = true;
+			} 
+			else if (rgBusca.getVlrString().equals("L")) {
 				iCod = txtCodCli.getVlrInteger().intValue();
 				if (iCod == 0) {
 					Funcoes.mensagemInforma(this,"Código do cliente inválido!");
@@ -484,7 +509,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 					return;
 				}
 				sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=?" +
-						 " AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP";
+						 " AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC='OL'";
 			}
 			else if (rgBusca.getVlrString().equals("O")) {
 				iCod = txtCodConv.getVlrInteger().intValue();
@@ -494,47 +519,51 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 					return;
 				}
 				sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=?" +
-						 " AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP";
+						 " AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC='OL'";
 				bConv = true;
 			}
-			String sSQL = "SELECT O.CODORC,"+(bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI,")+
+			String sSQL = "SELECT O.CODORC," + (bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI,") +
 						  "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
 						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"+	
 						  "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
 						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
-						  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'),"+	
+						  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S')," +	
 						  "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
-						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"+	
+						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," +	
 						  "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
 						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
-						  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S') " +
-						  "FROM VDORCAMENTO O"+sWhere+" AND O.STATUSORC='OL'";
+						  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), " +
+						  "O.STATUSORC " +
+						  "FROM VDORCAMENTO O" + sWhere + " ";
 			try {
 				ps = con.prepareStatement(sSQL);
 				ps.setInt(1,iCod);	
-				ps.setInt(2,ListaCampos.getMasterFilial(bConv ? "ATCONVENIADO" : "VDCLIENTE"));
+				ps.setInt(2,ListaCampos.getMasterFilial(bOrc ? "VDORCAMENTO" : ( bConv ? "ATCONVENIADO" : "VDCLIENTE") ));
 				ps.setInt(3,Aplicativo.iCodEmp);
 				rs = ps.executeQuery();
 				tabOrc.limpa();	
 				while (rs.next()) {
-					vVals = new Vector();
-					vVals.addElement(new Boolean(true));
-					vVals.addElement(new Integer(rs.getInt("CodOrc")));
-					vVals.addElement(new Integer(rs.getInt(2)));
-					vVals.addElement(rs.getString(3).trim());
-					vVals.addElement(new Integer(rs.getInt(4)));
-					vVals.addElement(new Integer(rs.getInt(5)));
-					vVals.addElement(Funcoes.strDecimalToStrCurrencyd(2,rs.getString(6) != null ? rs.getString(6) : "0"));
-					vVals.addElement(Funcoes.strDecimalToStrCurrencyd(2,rs.getString(7) != null ? rs.getString(7) : "0"));
-					tabOrc.adicLinha(vVals);
+					if(rs.getString(8).equals("OL")) {
+						vVals = new Vector();
+						vVals.addElement(new Boolean(true));
+						vVals.addElement(new Integer(rs.getInt("CodOrc")));
+						vVals.addElement(new Integer(rs.getInt(2)));
+						vVals.addElement(rs.getString(3).trim());
+						vVals.addElement(new Integer(rs.getInt(4)));
+						vVals.addElement(new Integer(rs.getInt(5)));
+						vVals.addElement(Funcoes.strDecimalToStrCurrencyd(2,rs.getString(6) != null ? rs.getString(6) : "0"));
+						vVals.addElement(Funcoes.strDecimalToStrCurrencyd(2,rs.getString(7) != null ? rs.getString(7) : "0"));
+						tabOrc.adicLinha(vVals);
+					} else 
+						Funcoes.mensagemInforma( this, "ORÇAMENTO NÃO LIBERDO!");
 				}
 				rs.close();
 				ps.close();
-			}
-			catch(SQLException err) {
+			} catch(SQLException err) {
 				Funcoes.mensagemErro(this,"Erro ao buscar orçamentos!\n"+err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
+			txtCodOrc.setAtivo(true);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -619,6 +648,15 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		}
 	}
 	
+	public void beforeCarrega( CarregaEvent e ) { }
+	
+	public void afterCarrega( CarregaEvent e ) {
+		txtCodConv.setAtivo(false);
+		txtCodCli.setAtivo(false);
+		lcCli.limpaCampos(true);
+		lcConv.limpaCampos(true);
+	}
+	
 	public void valorAlterado(RadioGroupEvent rgevt) {
 		if (rgBusca.getVlrString().equals("O")) {
 			txtCodConv.setAtivo(true);
@@ -630,11 +668,14 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 			txtCodCli.setAtivo(true);
 			lcConv.limpaCampos(true);
 		}
+		txtCodOrc.setAtivo(false);
+		lcOrc.limpaCampos(true);
 	}
 	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcCli.setConexao(cn);
 		lcConv.setConexao(cn);
+		lcOrc.setConexao(cn);
 	}
 }
