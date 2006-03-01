@@ -89,7 +89,7 @@ public class NFMaviGesso extends Leiaute {
            bNat = false;
          }
          if (imp.pRow()==0) {
-		   imp.say(imp.pRow()+2,0,""+imp.comprimido());
+		   imp.say(imp.pRow()+3,0,""+imp.comprimido());
            imp.say(imp.pRow()+1,90,"X");
 		   imp.say(imp.pRow()+1,126,sNumNota);
 //		   imp.say(imp.pRow()+5,0,""+imp.comprimido());
