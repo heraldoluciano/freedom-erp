@@ -124,9 +124,9 @@ public abstract class ResourcePool implements Runnable {
 	}
 
 	private void closeResources(Hashtable resources) {
-		Enumeration enum = resources.elements();
-		while (enum.hasMoreElements())
-			closeResource((ResourceKey) enum.nextElement());
+		Enumeration enumer = resources.elements();
+		while (enumer.hasMoreElements())
+			closeResource((ResourceKey) enumer.nextElement());
 	}
 
 	private int countResources() {
@@ -159,9 +159,9 @@ public abstract class ResourcePool implements Runnable {
 
 	public ResourceKey getResourceSession(String sessionID) {
 		ResourceKey resource = null;
-		Enumeration enum = inUseResources.elements();
-		while (enum.hasMoreElements()) {
-			resource = (ResourceKey) enum.nextElement();
+		Enumeration enumer = inUseResources.elements();
+		while (enumer.hasMoreElements()) {
+			resource = (ResourceKey) enumer.nextElement();
 			if (resource.getSessionID().equals(sessionID)) {
 				break;
 			}
