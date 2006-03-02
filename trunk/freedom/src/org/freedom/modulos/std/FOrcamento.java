@@ -1089,7 +1089,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		if (evt.getListaCampos() == lcCampos) {
 			if(lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
 				if(((Boolean) oPrefs[5]).booleanValue())
-					testaCodPK("VDORCAMENTO", txtCodOrc);			
+					txtCodOrc.setVlrInteger(testaCodPK("VDORCAMENTO"));			
 				txtStatusOrc.setVlrString("*");
 			}
 			if(podeReCalcPreco())

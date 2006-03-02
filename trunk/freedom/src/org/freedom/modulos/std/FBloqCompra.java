@@ -131,7 +131,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
   
   public void bloquear() {
     int iCodCompra = 0;
-    String sStatus = null;
+    //String sStatus = null;
     String sBloqCompra = null;
     String sSQL = null;
     String sTexto = null;
@@ -139,7 +139,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
     
     try {
         iCodCompra = txtCodCompra.getVlrInteger().intValue();
-        sStatus = txtStatusCompra.getVlrString();
+        //sStatus = txtStatusCompra.getVlrString();
         sBloqCompra = txtBloqCompra.getVlrString();
 
         if (iCodCompra == 0) {
@@ -147,11 +147,11 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
             txtCodCompra.requestFocus();
             return;
         }
-        if (sStatus.substring(0,1).equals("C")) {
+        /*if (sStatus.substring(0,1).equals("C")) {
             Funcoes.mensagemInforma(this,"Compra está cancelada!");
             txtCodCompra.requestFocus();
             return;
-        }
+        }*/
         if (sBloqCompra.equals("S")) {
             sBloqCompra = "N";
             sTexto = "desbloquear";
@@ -180,7 +180,7 @@ public class FBloqCompra extends FFilho implements ActionListener, CarregaListen
     }
     finally {
         iCodCompra = 0;
-        sStatus = null;
+        //sStatus = null;
         sBloqCompra = null;
         sSQL = null;
         sTexto = null;

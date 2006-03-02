@@ -83,6 +83,203 @@ public abstract class FVD extends FDetalhe {
     	super();
     }   
     /**
+     * Busca o preço do produto com a procedure VDBUSCAPRECOSP.
+     * @param parametros array de int com os paramentros para a procedure 
+     * @return preço do produto
+     */
+    private BigDecimal buscaPreco(int[] parametros) {
+        BigDecimal retorno = null;
+    	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	int[] iParans;
+    	try {
+    	  ps = con.prepareStatement(sSQL);
+    	  
+    	  iParans = parametros;
+    	  
+    	  ps.setInt(1,iParans[0]);//código do produto
+    	  ps.setInt(2,iParans[1]);//código do cliente
+    	  ps.setInt(3,iParans[2]);//código da empresa do cliente
+    	  ps.setInt(4,iParans[3]);//código da filial do cliente
+    	  ps.setInt(5,iParans[4]);//código do plano de pagamento
+    	  ps.setInt(6,iParans[5]);//código da empresa do plano de pagamento
+    	  ps.setInt(7,iParans[6]);//código da filial do plano de pagamento
+    	  ps.setInt(8,iParans[7]);//código do tipo de movimento
+    	  ps.setInt(9,iParans[8]);//código da empresa do tipo de movimento
+    	  ps.setInt(10,iParans[9]);//código da filial do tipo de movimento
+    	  ps.setInt(11,iParans[10]);//código da empresa
+    	  ps.setInt(12,iParans[11]);//código da filial
+    	  rs = ps.executeQuery();
+    	  rs.next();
+    	  retorno = rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0"));
+    	  rs.close();
+    	  ps.close();
+    	  if (!con.getAutoCommit())
+    	      con.commit();
+
+    	}
+    	catch (SQLException err) {
+    		Funcoes.mensagemErro(this,"Erro ao buscar o preço!\n"+err.getMessage(),true,con,err);
+    		err.printStackTrace();
+    	}
+    	finally {
+    	    sSQL = null;
+    	    ps = null;
+    	    rs = null;
+    	}
+    	return retorno;
+    }    
+	/**
+	 * Busca descrição completa do produto na tabela de produtos .
+	 * @param iCodProd codigo do produto a pesquizar.
+	 * @return String contendo a descrição completa do produto.
+	 */
+	private String buscaDescComp( int iCodProd) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sRet = "";
+		String sSQL = "SELECT DESCCOMPPROD FROM EQPRODUTO WHERE CODPROD=?"
+				+ " AND CODEMP=? AND CODFILIAL=?";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, iCodProd);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, ListaCampos.getMasterFilial( "EQPRODUTO" ));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				sRet = rs.getString("DescCompProd");
+			}
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar descrição completa!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		}
+		return sRet != null ? sRet : "";
+	}
+    /**
+     * Verifica o proximo codigo na tabela para evitar
+     * erros de chave primaria no banco de dados.
+     * essa verificação depende da configuração do sistema.
+     * @param sTabela tabela a verificar
+     * @param campo campo da chave primaria
+	 * @return int com o código real.
+     */
+    public Integer testaCodPK(String sTabela) {
+    	
+    	PreparedStatement ps = null;
+		ResultSet rs = null;
+		Integer retorno = new Integer(0);
+		try {
+			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
+			ps.setInt(1, Aplicativo.iCodEmp);
+			if(sTabela.equals("VDVENDA")) {
+				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+				ps.setString(3, "VD");
+			}
+			else if(sTabela.equals("VDORCAMENTO")) {
+				ps.setInt(2, ListaCampos.getMasterFilial("VDORCAMENTO"));
+				ps.setString(3, "OC");
+			}
+			rs = ps.executeQuery();
+			rs.next();
+			retorno = new Integer(rs.getString(1));
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao confirmar número do pedido!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+		}
+		
+		return retorno;
+    	
+    }
+	protected boolean testaLucro(Object[] args) {
+		boolean bRet = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sCampoCusto = null;
+		String sVerifProd = null;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD " 
+				 + "FROM SGPREFERE1 P1, EQPRODUTO PD "
+				 + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? "
+				 + "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(5, ((Integer)args[0]).intValue());
+			
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				if (rs.getString("USALIQREL") == null) {
+						Funcoes.mensagemInforma(this,
+								"Preencha opção de desconto em preferências!");
+				} else {
+					if (rs.getString("TIPOPRECOCUSTO").equals("M"))
+						sCampoCusto = "NCUSTOMPM";
+					else
+						sCampoCusto = "NCUSTOPEPS";
+				}
+				if (rs.getString("VERIFPROD") != null)
+					sVerifProd = rs.getString("VERIFPROD");
+			}
+			
+			
+			
+			sSQL = "SELECT COUNT(*) "
+				 + "FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C "
+				 + "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
+				 + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
+				 + "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? "
+				 + "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(3, ((Integer)args[0]).intValue());
+			ps.setInt(4, Aplicativo.iCodEmp);
+			ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
+			ps.setInt(6, ((Integer)args[1]).intValue());
+			ps.setInt(7, Aplicativo.iCodEmp);
+			ps.setInt(8, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setInt(9, Aplicativo.iCodEmp);
+			ps.setInt(10, ListaCampos.getMasterFilial("EQPRODUTO"));
+			ps.setInt(11, ((Integer)args[0]).intValue());
+			ps.setBigDecimal(12, (BigDecimal)args[2]);
+			rs = ps.executeQuery();
+			if (rs.next())
+				if (rs.getInt(1) == 1)
+					bRet = true;
+			rs.close();
+			ps.close();
+			
+			if (!bRet && sVerifProd.equals("S"))
+				bRet = mostraTelaPass(getParansPass());
+			
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sCampoCusto = null;
+			sSQL = null;
+		}
+
+		return bRet;
+	}
+    /**
      * Altera os valores dos itens quando a alteração no cabeçalho
      * da venda, se selecionado no preferencias pra recalcular os valores,
      * conforme a tabela de preços do produto
@@ -220,103 +417,27 @@ public abstract class FVD extends FDetalhe {
         }
     }    
     /**
-     * Busca o preço do produto com a procedure VDBUSCAPRECOSP.
-     * @param parametros array de int com os paramentros para a procedure 
-     * @return preço do produto
+     * Calcula o valor bruto do produto
+     * @param arg0 preço do produto
+     * @param arg1 quantidade do produto
+     * @return valor do produto
      */
-    private BigDecimal buscaPreco(int[] parametros) {
-        BigDecimal retorno = null;
-    	String sSQL = "SELECT PRECO FROM VDBUSCAPRECOSP(?,?,?,?,?,?,?,?,?,?,?,?)";
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
-    	int[] iParans;
-    	try {
-    	  ps = con.prepareStatement(sSQL);
-    	  
-    	  iParans = parametros;
-    	  
-    	  ps.setInt(1,iParans[0]);//código do produto
-    	  ps.setInt(2,iParans[1]);//código do cliente
-    	  ps.setInt(3,iParans[2]);//código da empresa do cliente
-    	  ps.setInt(4,iParans[3]);//código da filial do cliente
-    	  ps.setInt(5,iParans[4]);//código do plano de pagamento
-    	  ps.setInt(6,iParans[5]);//código da empresa do plano de pagamento
-    	  ps.setInt(7,iParans[6]);//código da filial do plano de pagamento
-    	  ps.setInt(8,iParans[7]);//código do tipo de movimento
-    	  ps.setInt(9,iParans[8]);//código da empresa do tipo de movimento
-    	  ps.setInt(10,iParans[9]);//código da filial do tipo de movimento
-    	  ps.setInt(11,iParans[10]);//código da empresa
-    	  ps.setInt(12,iParans[11]);//código da filial
-    	  rs = ps.executeQuery();
-    	  rs.next();
-    	  retorno = rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0"));
-    	  rs.close();
-    	  ps.close();
-    	  if (!con.getAutoCommit())
-    	      con.commit();
-
-    	}
-    	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao buscar o preço!\n"+err.getMessage(),true,con,err);
-    		err.printStackTrace();
-    	}
-    	finally {
-    	    sSQL = null;
-    	    ps = null;
-    	    rs = null;
-    	}
-    	return retorno;
-    }    
-    /**
-     * Mostra a observação do cliente
-     * @param iCodCli codigo do cliente
-     * @param location localização da FObsCliVend na tela
-     * @param dimencao tamanho da FObsCliVend
+	protected BigDecimal calcVlrProd(BigDecimal arg0, BigDecimal arg1) {
+		BigDecimal bdRetorno = arg0.multiply(arg1).divide(
+				new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+		return bdRetorno;
+	}
+	/**
+     * Calcula o valor total do produto
+     * @param arg0 valor do produto
+     * @param arg1 desconto
+     * @return valor total do produto
      */
-    public void mostraObsCli(int iCodCli, Point location, Dimension dimencao) {
-    	String sObsCli = getObsCli(iCodCli);
-		if (!sObsCli.equals("")) {						
-			FObsCliVend.showVend((int)location.getX(),
-								 (int)location.getY(),
-								 (int)dimencao.getWidth(),
-								 (int)dimencao.getHeight(),
-								 sObsCli);
-		}
-    }
-    /**
-     * Busca a observação do cliente.
-     * @param iCodCli codigo do cliente a pesquisar.
-     * @return String contendo a observação do cliente.
-     */
-    public String getObsCli(int iCodCli) {
-    	String sRetorno = "";
-    	String sSQL = "SELECT OBSCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
-    	try {
-    		ps = con.prepareStatement(sSQL);
-    		ps.setInt(1, Aplicativo.iCodEmp);
-    		ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
-    		ps.setInt(3, iCodCli);
-    		rs = ps.executeQuery();
-    		if (rs.next()) {
-    			if (rs.getString("OBSCLI")!=null)
-    				sRetorno = rs.getString("OBSCLI").trim();
-    		}
-    		rs.close();
-    		ps.close();
-    		if (!con.getAutoCommit())
-    			con.commit();
-    	}
-    	catch (SQLException e) {
-    		Funcoes.mensagemErro(null, "Erro carregando observações do cliente.\n"+e.getMessage());
-    	}
-    	finally {
-    		rs = null;
-    		ps = null;
-    	}
-    	return sRetorno;
-    }
+	protected BigDecimal calcVlrTotalProd(BigDecimal arg0, BigDecimal arg1) {
+		BigDecimal bdRetorno = arg0.subtract(arg1).divide(
+		        new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
+		return bdRetorno;
+	}
     /**
      * mostra uma FObsevacao contendo a descrição completa do produto,
      * quando clicado duas vezes sobre o JTextFieldFK do item.
@@ -341,34 +462,22 @@ public abstract class FVD extends FDetalhe {
 		}
 		obs.dispose();
 	}
-	/**
-	 * Busca descrição completa do produto na tabela de produtos .
-	 * @param iCodProd codigo do produto a pesquizar.
-	 * @return String contendo a descrição completa do produto.
-	 */
-	private String buscaDescComp( int iCodProd) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sRet = "";
-		String sSQL = "SELECT DESCCOMPPROD FROM EQPRODUTO WHERE CODPROD=?"
-				+ " AND CODEMP=? AND CODFILIAL=?";
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, iCodProd);
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, ListaCampos.getMasterFilial( "EQPRODUTO" ));
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				sRet = rs.getString("DescCompProd");
-			}
-
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar descrição completa!\n"
-					+ err.getMessage(),true,con,err);
-			err.printStackTrace();
+    /**
+     * Mostra a observação do cliente
+     * @param iCodCli codigo do cliente
+     * @param location localização da FObsCliVend na tela
+     * @param dimencao tamanho da FObsCliVend
+     */
+    public void mostraObsCli(int iCodCli, Point location, Dimension dimencao) {
+    	String sObsCli = getObsCli(iCodCli);
+		if (!sObsCli.equals("")) {						
+			FObsCliVend.showVend((int)location.getX(),
+								 (int)location.getY(),
+								 (int)dimencao.getWidth(),
+								 (int)dimencao.getHeight(),
+								 sObsCli);
 		}
-		return sRet != null ? sRet : "";
-	}
+    }
     /**
      * Mostra a observação geral.
      * @param sTabela tabela a pesquisar.
@@ -436,144 +545,24 @@ public abstract class FVD extends FDetalhe {
 		}
     	
     }
-    /**
-     * Verifica o proximo codigo na tabela para evitar
-     * erros de chave primaria no banco de dados.
-     * essa verificação depende da configuração do sistema.
-     * @param sTabela tabela a verificar
-     * @param campo campo da chave primaria
-     */
-    public void testaCodPK(String sTabela, JTextFieldPad campo) {
-    	
-    	PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
-			ps.setInt(1, Aplicativo.iCodEmp);
-			if(sTabela.equals("VDVENDA")) {
-				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
-				ps.setString(3, "VD");
-			}
-			else if(sTabela.equals("VDORCAMENTO")) {
-				ps.setInt(2, ListaCampos.getMasterFilial("VDORCAMENTO"));
-				ps.setString(3, "OC");
-			}
-			rs = ps.executeQuery();
-			rs.next();
-			campo.setVlrString(rs.getString(1));
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao confirmar número do pedido!\n"
-					+ err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-		}
-    	
-    }
-	protected boolean testaLucro(Object[] args) {
-		boolean bRet = false;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sCampoCusto = null;
-		String sVerifProd = null;
-		String sSQL = null;
-		try {
-			sSQL = "SELECT P1.USALIQREL,P1.TIPOPRECOCUSTO,PD.VERIFPROD " 
-				 + "FROM SGPREFERE1 P1, EQPRODUTO PD "
-				 + "WHERE P1.CODEMP=? AND P1.CODFILIAL=? "
-				 + "AND PD.CODEMP=? AND PD.CODFILIAL=? AND PD.CODPROD=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			ps.setInt(3, Aplicativo.iCodEmp);
-			ps.setInt(4, ListaCampos.getMasterFilial("EQPRODUTO"));
-			ps.setInt(5, ((Integer)args[0]).intValue());
-			
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getString("USALIQREL") == null) {
-						Funcoes.mensagemInforma(this,
-								"Preencha opção de desconto em preferências!");
-				} else {
-					if (rs.getString("TIPOPRECOCUSTO").equals("M"))
-						sCampoCusto = "NCUSTOMPM";
-					else
-						sCampoCusto = "NCUSTOPEPS";
-				}
-				if (rs.getString("VERIFPROD") != null)
-					sVerifProd = rs.getString("VERIFPROD");
-			}
-			
-			
-			
-			sSQL = "SELECT COUNT(*) "
-				 + "FROM SGPREFERE1 PF, EQPRODUTO P, EQPRODUTOSP01(?,?,?,?,?,?) C "
-				 + "WHERE PF.CODEMP=? AND PF.CODFILIAL=? AND "
-				 + "P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? AND "
-				 + "(((C." + sCampoCusto + "/100)*(100+PF.PERCPRECOCUSTO)) <= ? "
-				 + "OR PERCPRECOCUSTO IS NULL OR TIPOPROD='S')";
-			
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
-			ps.setInt(3, ((Integer)args[0]).intValue());
-			ps.setInt(4, Aplicativo.iCodEmp);
-			ps.setInt(5, ListaCampos.getMasterFilial("EQALMOX"));
-			ps.setInt(6, ((Integer)args[1]).intValue());
-			ps.setInt(7, Aplicativo.iCodEmp);
-			ps.setInt(8, ListaCampos.getMasterFilial("SGPREFERE1"));
-			ps.setInt(9, Aplicativo.iCodEmp);
-			ps.setInt(10, ListaCampos.getMasterFilial("EQPRODUTO"));
-			ps.setInt(11, ((Integer)args[0]).intValue());
-			ps.setBigDecimal(12, (BigDecimal)args[2]);
-			rs = ps.executeQuery();
-			if (rs.next())
-				if (rs.getInt(1) == 1)
-					bRet = true;
-			rs.close();
-			ps.close();
-			
-			if (!bRet && sVerifProd.equals("S"))
-				bRet = mostraTelaPass(getParansPass());
-			
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao testar lucro!\n" + err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sCampoCusto = null;
-			sSQL = null;
-		}
-
-		return bRet;
-	}
-    /**
-     * Calcula o valor bruto do produto
-     * @param arg0 preço do produto
-     * @param arg1 quantidade do produto
-     * @return valor do produto
-     */
-	protected BigDecimal calcVlrProd(BigDecimal arg0, BigDecimal arg1) {
-		BigDecimal bdRetorno = arg0.multiply(arg1).divide(
-				new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
-		return bdRetorno;
-	}
 	/**
-     * Calcula o valor total do produto
-     * @param arg0 valor do produto
-     * @param arg1 desconto
-     * @return valor total do produto
-     */
-	protected BigDecimal calcVlrTotalProd(BigDecimal arg0, BigDecimal arg1) {
-		BigDecimal bdRetorno = arg0.subtract(arg1).divide(
-		        new BigDecimal("1"), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP);
-		return bdRetorno;
+	 * Monta uma dialog para confirmação de senha do usuario.
+	 * A verificação é especifica para o tipo passado no construtor.
+	 * @param args parametros para a cosulta.
+	 * @return verdadeiro se a confirmado.
+	 */
+	private boolean mostraTelaPass(String[] args) {
+		boolean retorno = false;
+		
+		FPassword fpw = new FPassword(this,FPassword.BAIXO_CUSTO, args, null, con);
+		fpw.execShow();
+		if(fpw.OK){
+			setLog(fpw.getLog());			
+			retorno = true;
+		}
+		fpw.dispose();
+		
+		return retorno;
 	}
 	/**
 	 * Abre uma DLDescontItVenda, seta o desconto do item e a String dos descontos
@@ -617,25 +606,6 @@ public abstract class FVD extends FDetalhe {
 		
 	}
 	/**
-	 * Monta uma dialog para confirmação de senha do usuario.
-	 * A verificação é especifica para o tipo passado no construtor.
-	 * @param args parametros para a cosulta.
-	 * @return verdadeiro se a confirmado.
-	 */
-	private boolean mostraTelaPass(String[] args) {
-		boolean retorno = false;
-		
-		FPassword fpw = new FPassword(this,FPassword.BAIXO_CUSTO, args, null, con);
-		fpw.execShow();
-		if(fpw.OK){
-			setLog(fpw.getLog());			
-			retorno = true;
-		}
-		fpw.dispose();
-		
-		return retorno;
-	}
-	/**
 	 * Corverte para array a String com os descontos.
 	 * @param arg0 String com os descontos.
 	 * @return array dos descontos
@@ -663,6 +633,40 @@ public abstract class FVD extends FDetalhe {
 		}
 		return sRet;
 	}
+    /**
+     * Busca a observação do cliente.
+     * @param iCodCli codigo do cliente a pesquisar.
+     * @return String contendo a observação do cliente.
+     */
+    public String getObsCli(int iCodCli) {
+    	String sRetorno = "";
+    	String sSQL = "SELECT OBSCLI FROM VDCLIENTE WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	try {
+    		ps = con.prepareStatement(sSQL);
+    		ps.setInt(1, Aplicativo.iCodEmp);
+    		ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+    		ps.setInt(3, iCodCli);
+    		rs = ps.executeQuery();
+    		if (rs.next()) {
+    			if (rs.getString("OBSCLI")!=null)
+    				sRetorno = rs.getString("OBSCLI").trim();
+    		}
+    		rs.close();
+    		ps.close();
+    		if (!con.getAutoCommit())
+    			con.commit();
+    	}
+    	catch (SQLException e) {
+    		Funcoes.mensagemErro(null, "Erro carregando observações do cliente.\n"+e.getMessage());
+    	}
+    	finally {
+    		rs = null;
+    		ps = null;
+    	}
+    	return sRetorno;
+    }
 	/**
 	 * Define a variavel que controla se pode recalcular o preço do item.
 	 * @param arg0 true para pode e, false para não pode
