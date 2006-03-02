@@ -2229,7 +2229,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				}
 			}
 			if (bPrefs[1])
-				testaCodPK("VDVENDA",txtCodVenda);
+				txtCodVenda.setVlrInteger(testaCodPK("VDVENDA"));
 			txtStatusVenda.setVlrString("*");
 		} 
 		else if (pevt.getListaCampos() == lcDet) {

@@ -246,7 +246,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcVenda.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_FK, true));
 		lcVenda.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_FK, true));
 		lcVenda.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_SI, true));
-		lcVenda.montaSql(true, "VENDA", "VD");
+		lcVenda.montaSql(false, "VENDA", "VD");
 		txtCodVenda.setListaCampos(lcVenda);
 		txtCodVenda.setPK(true);
 		txtCodVenda.setNomeCampo("CodVenda");
@@ -906,6 +906,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			if(vArgs.size()==3) {
 				//		inicia a venda...
 				lcVenda.insert(true);
+				txtCodVenda.setVlrInteger(getCodSeqCaixa());
 				txtTipoVenda.setVlrString("E");
 				txtCodCli.setVlrInteger(((Integer)vArgs.elementAt(0)));
 				lcCliente.carregaDados();
@@ -1402,6 +1403,33 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		}
 		
 		return iRet;
+	}
+	private Integer getCodSeqCaixa() {
+		Integer retorno = new Integer(0);
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				retorno = new Integer(rs.getInt("CodPlanoPag"));
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"+
+					"Provavelmente não foram gravadas corretamente as preferências!\n"+
+					err.getMessage());
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return retorno;
 	}
 	
 	private Object prefs(int index) {
