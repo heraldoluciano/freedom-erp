@@ -31,6 +31,7 @@ import org.freedom.telas.Aplicativo;
 public class PVNCACongelados extends Leiaute {
 	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
 		boolean bRetorno;
+		boolean bRec = false;
 		final int casaDecFin = Aplicativo.casasDecFin;
 		final int maxLine = 27;
 		int iLinha;
@@ -45,19 +46,19 @@ public class PVNCACongelados extends Leiaute {
 			
 	        imp.limpaPags();
 			imp.setTitulo("Pedido de Venda.");
-			imp.montaCab();
 			sVal = imp.getValCab();
 			
 			sHora = Funcoes.strZero(""+cHora.get(Calendar.HOUR_OF_DAY),2)+":"
 						+Funcoes.strZero(""+cHora.get(Calendar.MINUTE),2)+":"
 							+Funcoes.strZero(""+cHora.get(Calendar.SECOND),2);
 			
-			rsRec.next();
+			bRec = rsRec.next();
 			
 			while (rs.next()) {
 				
 				if (imp.pRow() == 0) {
-					
+
+					imp.montaCab();
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",133) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -77,7 +78,7 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Pedido: " + rs.getString("CODVENDA"));
-					imp.say(imp.pRow() + 0, 22, "Cliente: " + (rs.getString("RAZCLI") !=null ? rs.getString("RAZCLI").trim() : ""));
+					imp.say(imp.pRow() + 0, 22, "Cliente: " + (rs.getString("RAZCLI") !=null ? rs.getString("RAZCLI").trim() + " - " + rs.getInt("CODCLI") : ""));
 					imp.say(imp.pRow() + 0, 102, "Data: " + Funcoes.sqlDateToStrDate(rs.getDate("DTEMITVENDA")));
 					imp.say(imp.pRow() + 0, 121, "Hora: " + sHora);
 					imp.say(imp.pRow() + 0, 135, " |");
@@ -153,7 +154,7 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 0, 12, "| ---- |" );
 					imp.say(imp.pRow() + 0, 21, "Ass.:");
 					imp.say(imp.pRow() + 0, 54, "|Pg.: " + (rs.getString("DESCPLANOPAG") != null ? rs.getString("DESCPLANOPAG").substring(0,28) : ""));
-					imp.say(imp.pRow() + 0, 88, "Venc.: " + (rsRec.getString("DTVENCITREC") != null ? rsRec.getString("DTVENCITREC") : ""));
+					imp.say(imp.pRow() + 0, 88, "Venc.: " + (bRec ? (rsRec.getString("DTVENCITREC") != null ? Funcoes.dateToStrDate(rsRec.getDate("DTVENCITREC")) : "") : ""));
 					if(iLinha == maxLine)
 						imp.say(imp.pRow() + 0, 105, "| Total parc.:");
 					else 
@@ -169,14 +170,15 @@ public class PVNCACongelados extends Leiaute {
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "| Obrigado pela prefência.");
 					imp.say(imp.pRow() + 0, 54, "|OBS.: " + ((rs.getString("OBSCLI") != null && !rs.getString("OBSCLI").trim().equals("")) ? 
-							(rs.getString("OBSCLI").length() > 74 ? rs.getString("OBSCLI").substring(0,74) : rs.getString("OBSCLI")) : ""));
+							(rs.getString("OBSCLI").length() > 74 ? rs.getString("OBSCLI").substring(0,74) : rs.getString("OBSCLI")).replaceAll("\n\t", " ") : ""));
 					imp.say(imp.pRow() + 0, 136, "|");
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-",51) + "+");	
 					imp.say(imp.pRow() + 0, 54, Funcoes.replicate("-",81) + "+");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-										
+			        imp.setPrc(0,0);
+			        imp.incPags();
 				}
 				
 			}

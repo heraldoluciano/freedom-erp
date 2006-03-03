@@ -536,14 +536,19 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			err.printStackTrace();
 		}
 	}
-
+	
 	private synchronized void iniVenda() {
-		lcVenda.insert(true);
+		iniVenda(getCodCli(), getPlanoPag(), getTipoMov(), getVendedor());
+	}
+
+	private synchronized void iniVenda(int codCli, int codPlanoPag, int tipoMov, int vend) {
+		lcVenda.insert(false);
+		txtCodVenda.setVlrInteger(getCodSeqCaixa());
 		txtTipoVenda.setVlrString("E");
-		txtCodCli.setVlrString(getCodCli());
+		txtCodCli.setVlrInteger(new Integer(codCli));
 		lcCliente.carregaDados();
 		lcProduto.limpaCampos(true);
-		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
+		txtCodPlanoPag.setVlrInteger(new Integer(codPlanoPag));
 		txtQtdadeItem.setVlrString("");
 		txtValorTotalCupom.setVlrString("");
 		txtValorTotalItem.setVlrString("");
@@ -551,9 +556,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtValorIcms1.setVlrString("");
 		txtTotalCupom.setVlrString("");
 		lcPlanoPag.carregaDados();
-		txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
+		txtCodTipoMov.setVlrInteger(new Integer(tipoMov));
 		lcTipoMov.carregaDados();
-		txtCodVend.setVlrInteger(new Integer(getVendedor()));
+		txtCodVend.setVlrInteger(new Integer(vend));
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
 		if ((AplicativoPDV.bECFTerm)) {
@@ -814,7 +819,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			Funcoes.mensagemErro(this, "Não existe nenhuma venda ativa!");
 			return;
 		} 
-		if (txtCodCli.getVlrInteger().intValue()!=(Integer.parseInt(getCodCli().trim())))
+		if (txtCodCli.getVlrInteger().intValue()!=(getCodCli()))
 			trocouCli = true;
 		
 		if(((Boolean)prefs(0)).booleanValue()){
@@ -904,32 +909,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			}
 			
 			if(vArgs.size()==3) {
-				//		inicia a venda...
-				lcVenda.insert(true);
-				txtCodVenda.setVlrInteger(getCodSeqCaixa());
-				txtTipoVenda.setVlrString("E");
-				txtCodCli.setVlrInteger(((Integer)vArgs.elementAt(0)));
-				lcCliente.carregaDados();
-				lcProduto.limpaCampos(true);
-				txtCodPlanoPag.setVlrInteger(((Integer)vArgs.elementAt(1)));
-				txtQtdadeItem.setVlrString("");
-				txtValorTotalCupom.setVlrString("");
-				txtValorTotalItem.setVlrString("");
-				txtBaseCalc1.setVlrString("");
-				txtValorIcms1.setVlrString("");
-				txtTotalCupom.setVlrString("");
-				lcPlanoPag.carregaDados();
-				txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
-				lcTipoMov.carregaDados();
-				txtCodVend.setVlrInteger(((Integer)vArgs.elementAt(2)));
-				txtDtEmitVenda.setVlrDate(new Date());
-				txtDtSaidaVenda.setVlrDate(new Date());
-				if ((AplicativoPDV.bECFTerm)) {
-					txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
-				}
-				tbItem.limpa();
-				mostraInfoImp();
-				iniItem();
+				iniVenda(((Integer)vArgs.elementAt(0)).intValue(), 
+						((Integer)vArgs.elementAt(1)).intValue(), 
+						getTipoMov(), 
+						((Integer)vArgs.elementAt(2)).intValue());				
 			}
 			
 		} catch(SQLException e) {
@@ -1312,10 +1295,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		return iRet;
 	}
 
-	private String getCodCli() {
+	private int getCodCli() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String iRet = "";
+		int iRet = 0;
 		String sSQL = "SELECT CodCli FROM SGPREFERE4 WHERE "
 				+ "CODEMP=? AND CODFILIAL=?";
 		try {
@@ -1324,7 +1307,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(2, Aplicativo.iCodFilial);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				iRet = rs.getString("CodCli");
+				iRet = rs.getInt("CodCli");
 			}
 			rs.close();
 			ps.close();
@@ -1410,18 +1393,47 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		ResultSet rs = null;
 		String sSQL = "";
 		try {
+			sSQL = "SELECT ISEQ FROM SPGERANUMPDV(?,?,?)";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
+			ps.setInt(3, getCaixa());
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				retorno = new Integer(rs.getInt("CodPlanoPag"));
+				retorno = new Integer(rs.getInt(1));
 			}
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"+
-					"Provavelmente não foram gravadas corretamente as preferências!\n"+
+			Funcoes.mensagemErro(this, "Erro ao buscar sequencia."+
+					err.getMessage());
+			err.printStackTrace();
+			setVisible(false);
+		}
+		return retorno;
+	}
+	
+	private int getCaixa() {
+		int retorno = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "";
+		try {
+			sSQL = "SELECT C.CODCAIXA FROM PVCAIXA C, SGESTACAO E " +
+				   "WHERE E.CODEMP=? AND E.CODFILIAL=? AND E.CODEST=?" +
+				   "AND E.CODEMP=C.CODEMPET AND E.CODFILIAL=C.CODFILIALET AND E.CODEST=C.CODEST ";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			ps.setInt(3, Aplicativo.iNumEst);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				retorno = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar caixa.\n"+
 					err.getMessage());
 			err.printStackTrace();
 		} finally {
