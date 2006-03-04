@@ -99,7 +99,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private ListaCampos lcFreteVD = new ListaCampos(this);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
 	private ListaCampos lcTran = new ListaCampos(this,"TN");
-	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf =  null;
 	private Tef tef = null;
 	private String sTipoVenda = null;
 	private int iCodVenda = 0;
@@ -118,6 +118,11 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	
 	public DLFechaVenda( Object[] args ) {
 		//super(Aplicativo.telaPrincipal);
+		
+		if((!FreedomPDV.bModoDemo) && (FreedomPDV.bECFTerm)){
+			bf = new JBemaFI32();
+		}
+		
 		setTitulo("Fechamento de venda");
 		setAtribos(330,345);
 		
@@ -377,10 +382,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
         do {
             try {
                 //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
+
                 if (!bLeituraX) {
-                    if (!bf.abreComprovanteNaoFiscalVinculado(
-                        Aplicativo.strUsuario, txtDescPlanoPag
-                                .getVlrString(), AplicativoPDV.bModoDemo))
+                    if (!bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario, txtDescPlanoPag.getVlrString(), AplicativoPDV.bModoDemo))
                         throw new Exception("");
                     if (!bf.usaComprovanteNaoFiscalVinculadoTef(
                             Aplicativo.strUsuario, sComprovante,
@@ -698,7 +702,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	    boolean bRet = false;
 		if (evt.getSource() == btOK) {
 			if (execFechamento()) {
-				if (AplicativoPDV.bECFTerm) {
+				if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
 					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,
 							txtVlrPago.getVlrDouble().doubleValue(),getMenssage(),AplicativoPDV.bModoDemo)) {
 						if (finalizaVenda()) {
@@ -723,6 +727,17 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 							}
 						}
 					}
+				}
+				else if(AplicativoPDV.bECFTerm){
+					bRet=true;
+					if (finalizaVenda()) {
+					    btCancel.setEnabled(false);
+					}
+					
+					if (txtVlrTroco.getVlrDouble().doubleValue() > 0) {
+					    bRet = execTroco();
+					}
+					//return;
 				}
 			}
 			if (!bRet) {
