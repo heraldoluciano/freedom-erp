@@ -163,7 +163,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JLabelPad lValorTotalItem = new JLabelPad("Valor total do item");
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
 	private JLabelPad lbAvisoImp = new JLabelPad();
-	private JBemaFI32 bf = (FreedomPDV.bECFTerm ? new JBemaFI32() : null);
+	private JBemaFI32 bf = null;
 	private Font fntTotalItem = null;
 	private Font fntTotalCupom = null;
 	private Vector vCacheItem = new Vector();
@@ -178,6 +178,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private int iCodItVenda = 0;
 
 	public FVenda() {
+		
+		if((!FreedomPDV.bModoDemo) && (FreedomPDV.bECFTerm)){
+			bf = new JBemaFI32();
+		}
 		//   	  super(Aplicativo.telaPrincipal);
 		setTitulo("Venda");
 		setAtribos(798, 580);
@@ -473,7 +477,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					txtAliqIcms.getVlrBigDecimal(),
 					txtBaseCalc.getVlrBigDecimal(),
 					txtValorIcms.getVlrBigDecimal(), "" });
-			if (FreedomPDV.bECFTerm) {
+			if ((FreedomPDV.bECFTerm && (bf!=null))) {
 				if (txtTipoFisc.getVlrString().equals("TT")) {
 					sTributo = getPosAliquota(txtAliqIcms.getVlrBigDecimal().floatValue());
 					if (sTributo.equals("00")) {
@@ -561,9 +565,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtCodVend.setVlrInteger(new Integer(vend));
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
-		if ((AplicativoPDV.bECFTerm)) {
+		if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
 			txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
 		}
+		else
+			txtNumeroCupom.setVlrInteger(new Integer(999999999));
 		tbItem.limpa();
 		mostraInfoImp();
 		iniItem();
@@ -580,7 +586,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 	
     private void mostraInfoImp() {
-		if (AplicativoPDV.bECFTerm) {
+		if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
 			String sStatus = bf.leStatus(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 			if (!sStatus.equals("")) {
 				sStatus = sStatus.replaceAll("\n","<BR>");
@@ -653,14 +659,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			return;
 		}
 		if (Funcoes.mensagemConfirma(null, "Confirma impressão de leitura X?") == JOptionPane.YES_OPTION) {
-			if (FreedomPDV.bECFTerm)
+			if ((FreedomPDV.bECFTerm) && (bf!=null))
 				bf.leituraX(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
     
 	private void abreGaveta() {
 		if (mostraTelaPass()) {
-			if (FreedomPDV.bECFTerm)
+			if ((FreedomPDV.bECFTerm) && (bf!=null))
 				bf.abreGaveta(Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 		}
 	}
@@ -1108,7 +1114,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 
 	public void afterPost(PostEvent pevt) {
 		if (pevt.getListaCampos() == lcVenda && pevt.ok) {
-			if (AplicativoPDV.bECFTerm)
+			if ((AplicativoPDV.bECFTerm) && (bf!=null))
 				bf.abreCupom("", Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
 			else
 				return;
@@ -1124,7 +1130,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	//O botão sair execute este método para sair:
 	public void setVisible(boolean bVal) {
 		if (!bVal) {
-			if (FreedomPDV.bECFTerm) {
+			if ((FreedomPDV.bECFTerm) && (bf!=null)) {
 				if (bf.verificaCupomAberto(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)) {
 					Funcoes.mensagemInforma(null,"Cupom fiscal está aberto!");
 					return;
@@ -1219,7 +1225,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		String sAliquota = null;
 		int iTot = 0;
 		try {
-			if (AplicativoPDV.bECFTerm) {
+			if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
 				sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim();
 				iTot = (((sAliquotas.length())+1)/5);
 				for (int i=1; i<=iTot; i++) {
@@ -1228,6 +1234,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					vRetorno.addElement(sAliquota);
 				}
 			}
+			else 
+				vRetorno.addElement("");
 		}
 		finally {
 			sAliquotas = null;
