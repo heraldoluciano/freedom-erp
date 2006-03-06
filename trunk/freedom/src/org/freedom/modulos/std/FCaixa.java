@@ -23,15 +23,22 @@
 package org.freedom.modulos.std;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
+import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
-public class FCaixa extends FDados implements ActionListener {
+public class FCaixa extends FDados implements ActionListener, CarregaListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -68,11 +75,67 @@ public class FCaixa extends FDados implements ActionListener {
 		adicDB(cbECF, 7, 140, 150, 20, "ECFCaixa", "ECF",true);
 		adicDB(cbTEF, 160, 140, 230, 20, "TEFCaixa", "TEF",true);
 		setListaCampos( true, "CAIXA", "PV");
+		
+		lcCampos.addCarregaListener(this);
 	}
 	  
 	public void setConexao(Connection cn) {
 		super.setConexao(cn); 
 		lcEst.setConexao(cn);
+	}
+	
+	private boolean getTemVenda() {		
+        PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;	
+		boolean retorno = false;
+		
+		try {
+			
+			sSQL = "SELECT COUNT(SEQCAIXA) FROM PVSEQUENCIA " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODCAIXA=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("PVSEQUENCIA"));
+			ps.setInt(3, txtCodCaixa.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				retorno = (rs.getInt(1) > 0 );
+			}
+			
+			if(!con.getAutoCommit())
+				con.commit();
+			
+		} catch (SQLException e) {
+			Funcoes.mensagemErro(this,"Erro ao verificar sequencia.\n"+e.getMessage());
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+		return retorno;
+		
+	}
+	
+	public void beforeCarrega( CarregaEvent e ) { 
+		txtSeqIni.setAtivo(true);
+		txtSeqMax.setAtivo(true);
+	}
+
+	public void afterCarrega( CarregaEvent e ) { 
+		if(e.getListaCampos() == lcCampos) {
+			if(getTemVenda())
+				if(txtSeqIni.getVlrInteger().intValue()>0 && 
+						txtSeqMax.getVlrInteger().intValue()>0) {
+					txtSeqIni.setAtivo(false);
+					txtSeqMax.setAtivo(false);
+				}				
+		}
 	}
 
 }
