@@ -44,6 +44,8 @@ import org.freedom.componentes.JTabbedPanePad;
 
 import org.freedom.acao.CheckBoxEvent;
 import org.freedom.acao.CheckBoxListener;
+import org.freedom.acao.RadioGroupEvent;
+import org.freedom.acao.RadioGroupListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JRadioGroup;
@@ -57,7 +59,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 import org.freedom.telas.FPassword;
 
-public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener {
+public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListener, CheckBoxListener, RadioGroupListener {
 
 	private static final long serialVersionUID = 1L;
 	private int casasDec = Aplicativo.casasDec;
@@ -128,9 +130,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 	private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
 	private JCheckBoxPad cbImpBol = new JCheckBoxPad("Imprime Boleto?","S","N");
 	private JCheckBoxPad cbReImpNot = new JCheckBoxPad("Reimprime Nota?","S","N");
+	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad("adiciona valor do frete na nota?","S","N");
+	private JRadioGroup rgFreteVD = null;
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
-	private JRadioGroup rgFreteVD = null;
 	private ListaCampos lcVenda = new ListaCampos(this);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
 	private ListaCampos lcTran = new ListaCampos(this,"TN");
@@ -155,7 +158,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		setConexao(cn);
 		iCodVendaFecha = iCodVenda.intValue();
 		setTitulo("Fechar Venda");
-		setAtribos(410,350);
+		setAtribos(390,350);
 		
 		lcItReceber.setMaster(lcReceber);
 		lcReceber.adicDetalhe(lcItReceber);
@@ -257,6 +260,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add(new GuardaCampo( txtPesoLiqVD, "PesoLiqVD", "Peso liq.", ListaCampos.DB_SI,true));
 		lcFreteVD.add(new GuardaCampo( txtEspFreteVD, "EspFreteVD", "Esp.fiscal", ListaCampos.DB_SI,true));
 		lcFreteVD.add(new GuardaCampo( txtMarcaFreteVD, "MarcaFreteVD", "Marca", ListaCampos.DB_SI,true));
+		lcFreteVD.add(new GuardaCampo( cbAdicFrete, "AdicFreteVD", "frete na nota", ListaCampos.DB_SI,true));
 		lcFreteVD.montaSql(false, "FRETEVD", "VD");
 		lcFreteVD.setConexao(cn);
 		rgFreteVD.setListaCampos(lcFreteVD);
@@ -270,6 +274,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtMarcaFreteVD.setListaCampos(lcFreteVD);
 		txtConhecFreteVD.setListaCampos(lcFreteVD);
 		txtCodTran.setListaCampos(lcFreteVD);
+		cbAdicFrete.setListaCampos(lcFreteVD);
 		
 		lcAuxVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false));
 		lcAuxVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK,false));
@@ -376,12 +381,12 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic(txtVlrDescVenda,90,60,97,20);
 		adic(lbPercAdicVenda,190,40,77,20);
 		adic(txtPercAdicVenda,190,60,77,20);
-		adic(lbVlrAdicVenda,270,40,100,20);
-		adic(txtVlrAdicVenda,270,60,100,20);
+		adic(lbVlrAdicVenda,270,40,90,20);
+		adic(txtVlrAdicVenda,270,60,90,20);
 		adic(new JLabelPad("Cód.banco"),7,80,100,20);
 		adic(txtCodBanco,7,100,80,20);
 		adic(new JLabelPad("Descrição do Banco"),90,80,250,20);
-		adic(txtDescBanco,90,100,167,20);
+		adic(txtDescBanco,90,100,270,20);
 		adic(cbImpPed,7,130,150,20);
 		adic(cbImpNot,7,150,150,20);
 		adic(cbImpBol,7,170,150,20);
@@ -394,24 +399,25 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic(txtDescTran,90,20,270,20);
 		adic(lbTipoFreteVD,7,40,170,20);
 		adic(rgFreteVD,7,60,130,30);
-		adic(new JLabelPad("Conhec."),140,50,97,20);
-		adic(txtConhecFreteVD,140,70,97,20);
-		adic(lbPlacaFreteVD,240,50,77,20);
-		adic(txtPlacaFreteVD,240,70,77,20);
-		adic(lbUFFreteVD,320,50,40,20);
-		adic(txtUFFreteVD,320,70,40,20);
-		adic(lbVlrFreteVD,7,90,90,20);
-		adic(txtVlrFreteVD,7,110,90,20);
-		adic(lbQtdFreteVD,100,90,77,20);
-		adic(txtQtdFreteVD,100,110,77,20);
-		adic(lbPesoBrutVD,180,90,87,20);
-		adic(txtPesoBrutVD,180,110,87,20);
-		adic(lbPesoLiqVD,270,90,87,20);
-		adic(txtPesoLiqVD,270,110,87,20);
-		adic(lbEspFreteVD,7,130,100,20);
-		adic(txtEspFreteVD,7,150,100,20);
-		adic(lbMarcaFreteVD,110,130,100,20);
-		adic(txtMarcaFreteVD,110,150,100,20);
+		adic(cbAdicFrete,150,60,220,30);
+		adic(new JLabelPad("Conhec."),7,90,230,20);
+		adic(txtConhecFreteVD,7,110,175,20);
+		adic(lbPlacaFreteVD,185,90,86,20);
+		adic(txtPlacaFreteVD,185,110,86,20);
+		adic(lbUFFreteVD,274,90,86,20);
+		adic(txtUFFreteVD,274,110,86,20);
+		adic(lbVlrFreteVD,7,130,86,20);
+		adic(txtVlrFreteVD,7,150,86,20);
+		adic(lbQtdFreteVD,96,130,86,20);
+		adic(txtQtdFreteVD,96,150,86,20);
+		adic(lbPesoBrutVD,185,130,86,20);
+		adic(txtPesoBrutVD,185,150,86,20);
+		adic(lbPesoLiqVD,274,130,86,20);
+		adic(txtPesoLiqVD,274,150,86,20);
+		adic(lbEspFreteVD,7,170,175,20);
+		adic(txtEspFreteVD,7,190,175,20);
+		adic(lbMarcaFreteVD,185,170,175,20);
+		adic(txtMarcaFreteVD,185,190,175,20);
 		
 		Funcoes.setBordReq(rgFreteVD);
 		Funcoes.setBordReq(txtPlacaFreteVD);
@@ -422,6 +428,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		Funcoes.setBordReq(txtPesoLiqVD);
 		Funcoes.setBordReq(txtEspFreteVD);
 		Funcoes.setBordReq(txtMarcaFreteVD);
+		
+		rgFreteVD.addRadioGroupListener(this);
 		
 		setPainel(pinInfEspec);
 		
@@ -524,6 +532,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   
 	private void gravaVenda() {
 		if (cbReImpNot.getVlrString().equals("N")) {
+			if (lcFreteVD.getStatus() == ListaCampos.LCS_EDIT ||
+					lcFreteVD.getStatus() == ListaCampos.LCS_INSERT)
+				lcFreteVD.post();
+			
 			lcVenda.edit();
 			if (cbImpNot.getVlrString().equals("S"))
 				txtStatusVenda.setVlrString("V2");
@@ -531,24 +543,22 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtStatusVenda.setVlrString("P2");
 			else if (txtStatusVenda.getVlrString().substring(0,1).equals("V")) 
 				txtStatusVenda.setVlrString("V2");
-			txtPlacaFreteVD.getVlrString();
-			if (lcFreteVD.getStatus() == ListaCampos.LCS_EDIT ||
-					lcFreteVD.getStatus() == ListaCampos.LCS_INSERT)
-				lcFreteVD.post();
+			txtPlacaFreteVD.getVlrString();			
+			lcVenda.post();
+			
 			if (lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT ||
 					lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT)
 				lcAuxVenda.post();
-				lcVenda.post();
 		}
 		int iCodRec = getCodRec();
 		if (iCodRec > 0) {
 			txtCodRec.setVlrInteger(new Integer(iCodRec));
 			lcReceber.carregaDados();
 		}
-		tpn.setEnabledAt(0,false);
+		/*tpn.setEnabledAt(0,false);
 		tpn.setEnabledAt(1,false);
 		tpn.setEnabledAt(2,false);
-		tpn.setSelectedIndex(3);	  	 
+		tpn.setSelectedIndex(3);	*/  	 
 	}
   
 	private void alteraRec() {
@@ -596,6 +606,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				if (bPrefs[0]) {
 					tpn.setEnabledAt(1,true);
 					tpn.setSelectedIndex(1);
+					gravaVenda();
 				} else if (bPrefs[1]) {
 					tpn.setEnabledAt(2,true);
 					tpn.setSelectedIndex(2);
@@ -618,6 +629,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					tpn.setEnabledAt(1,false);
 					tpn.setEnabledAt(3,true);
 					tpn.setEnabledAt(4,true);
+					tpn.setSelectedIndex(3);	  
 					gravaVenda();
 				}
 				break;
@@ -846,6 +858,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			if ( ((JCheckBoxPad)evt.getCheckBox()).getVlrString().equals("S"))
 				cbReImpNot.setVlrString("N");
 		}
+	}
+	
+	public void valorAlterado(RadioGroupEvent evt) {
+		if (rgFreteVD.getVlrString().equals("C")) {
+			cbAdicFrete.setVlrString("S");
+		} else if (rgFreteVD.getVlrString().equals("F")) {
+			cbAdicFrete.setVlrString("N");
+		} 
 	}
   
 }
