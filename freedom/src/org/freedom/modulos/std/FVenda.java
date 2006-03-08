@@ -2263,9 +2263,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}		
 	}
 
-	public void beforeDelete(DeleteEvent devt) {
-	}
-
 	public void beforeInsert(InsertEvent ievt) {
 	}
 
@@ -2280,6 +2277,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} else if (ievt.getListaCampos() == lcDet) {
 			focusCodprod();
 		}
+	}
+
+	public void beforeDelete(DeleteEvent devt) {
 	}
 
 	public void afterDelete(DeleteEvent devt) {

@@ -948,6 +948,32 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  int iMes = 0;
 	  int iQtd = 0;
 	  try {
+		  
+		  txtAntQtdContJan.setVlrString("");
+    	  txtNovaQtdContJan.setVlrString("");
+    	  txtAntQtdContFev.setVlrString("");
+    	  txtNovaQtdContFev.setVlrString("");
+    	  txtAntQtdContMar.setVlrString("");
+    	  txtNovaQtdContMar.setVlrString("");
+    	  txtAntQtdContAbr.setVlrString("");
+    	  txtNovaQtdContAbr.setVlrString("");
+    	  txtAntQtdContMai.setVlrString("");
+    	  txtNovaQtdContMai.setVlrString("");
+    	  txtAntQtdContJun.setVlrString("");
+    	  txtNovaQtdContJun.setVlrString("");
+    	  txtAntQtdContJul.setVlrString("");
+    	  txtNovaQtdContJul.setVlrString("");
+    	  txtAntQtdContAgo.setVlrString("");
+    	  txtNovaQtdContAgo.setVlrString("");
+    	  txtAntQtdContSet.setVlrString("");
+    	  txtNovaQtdContSet.setVlrString("");
+    	  txtAntQtdContOut.setVlrString("");
+    	  txtNovaQtdContOut.setVlrString("");
+    	  txtAntQtdContNov.setVlrString("");
+    	  txtNovaQtdContNov.setVlrString("");
+    	  txtAntQtdContDez.setVlrString("");
+    	  txtNovaQtdContDez.setVlrString("");
+		  
 		  sSql = "SELECT EXTRACT(MONTH FROM TK.DATAHISTTK),COUNT(1) "+
 			  	 "FROM TKHISTORICO TK "+
 			  	 "WHERE TK.CODEMP=? AND TK.CODFILIAL=? AND EXTRACT(YEAR FROM TK.DATAHISTTK)=? AND " +
@@ -1016,33 +1042,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
             	  txtAntQtdContDez.setVlrInteger(new Integer(iQtd));
             	  txtNovaQtdContDez.setVlrString("");
               }
-          }
-          
-          if(iMes==0) {
-        	  txtAntQtdContJan.setVlrString("");
-        	  txtNovaQtdContJan.setVlrString("");
-        	  txtAntQtdContFev.setVlrString("");
-        	  txtNovaQtdContFev.setVlrString("");
-        	  txtAntQtdContMar.setVlrString("");
-        	  txtNovaQtdContMar.setVlrString("");
-        	  txtAntQtdContAbr.setVlrString("");
-        	  txtNovaQtdContAbr.setVlrString("");
-        	  txtAntQtdContMai.setVlrString("");
-        	  txtNovaQtdContMai.setVlrString("");
-        	  txtAntQtdContJun.setVlrString("");
-        	  txtNovaQtdContJun.setVlrString("");
-        	  txtAntQtdContJul.setVlrString("");
-        	  txtNovaQtdContJul.setVlrString("");
-        	  txtAntQtdContAgo.setVlrString("");
-        	  txtNovaQtdContAgo.setVlrString("");
-        	  txtAntQtdContSet.setVlrString("");
-        	  txtNovaQtdContSet.setVlrString("");
-        	  txtAntQtdContOut.setVlrString("");
-        	  txtNovaQtdContOut.setVlrString("");
-        	  txtAntQtdContNov.setVlrString("");
-        	  txtNovaQtdContNov.setVlrString("");
-        	  txtAntQtdContDez.setVlrString("");
-        	  txtNovaQtdContDez.setVlrString("");
           }
           
           rs.close();
