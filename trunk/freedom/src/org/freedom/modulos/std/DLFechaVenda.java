@@ -532,6 +532,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
   
 	private void gravaVenda() {
 		if (cbReImpNot.getVlrString().equals("N")) {
+			txtPlacaFreteVD.getVlrString();			
 			if (lcFreteVD.getStatus() == ListaCampos.LCS_EDIT ||
 					lcFreteVD.getStatus() == ListaCampos.LCS_INSERT)
 				lcFreteVD.post();
@@ -543,7 +544,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				txtStatusVenda.setVlrString("P2");
 			else if (txtStatusVenda.getVlrString().substring(0,1).equals("V")) 
 				txtStatusVenda.setVlrString("V2");
-			txtPlacaFreteVD.getVlrString();			
 			lcVenda.post();
 			
 			if (lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT ||
@@ -606,7 +606,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				if (bPrefs[0]) {
 					tpn.setEnabledAt(1,true);
 					tpn.setSelectedIndex(1);
-					gravaVenda();
 				} else if (bPrefs[1]) {
 					tpn.setEnabledAt(2,true);
 					tpn.setSelectedIndex(2);
@@ -614,14 +613,18 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					tpn.setEnabledAt(0,false);
 					tpn.setEnabledAt(3,true);
 					tpn.setEnabledAt(4,true);
-					gravaVenda();
+					tpn.setSelectedIndex(3);
+					//gravaVenda();
 				}
 				txtCodVenda.setVlrInteger(new Integer(iCodVendaFecha));
 				txtTipoVenda.setVlrString("V");
 				if (!bCarFrete)
 					calcPeso();
+				gravaVenda();
 				break;
 			case 1:
+				if (bPrefs[0])
+					lcFreteVD.edit();
 				if (bPrefs[1]) {
 					tpn.setEnabledAt(2,true);
 					tpn.setSelectedIndex(2);
@@ -629,17 +632,19 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 					tpn.setEnabledAt(1,false);
 					tpn.setEnabledAt(3,true);
 					tpn.setEnabledAt(4,true);
-					tpn.setSelectedIndex(3);	  
-					gravaVenda();
+					tpn.setSelectedIndex(3);
 				}
+				gravaVenda();
 				break;
 			case 2:
 				tpn.setEnabledAt(2,false);
 				tpn.setEnabledAt(3,true);
 				tpn.setEnabledAt(4,true);
+				tpn.setSelectedIndex(3);	
 				gravaVenda();
 				break;
 			default:
+				gravaVenda();
 				bRet = finaliza();
 		}
 		return bRet;
