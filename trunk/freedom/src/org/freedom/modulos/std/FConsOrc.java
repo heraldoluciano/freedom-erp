@@ -229,7 +229,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 		
 		if (cbAberto.getVlrString().equals("S")) {
 			bUsaWhere = true;
-			sWhere = " STATUSORC ='OA'";
+			sWhere = " STATUSORC IN ('OA','*') ";
 		}
 		
 		if (cbCompleto.getVlrString().equals("S")) {
@@ -295,7 +295,7 @@ public class FConsOrc extends FFilho implements ActionListener {
 								
 		sSQL = "SELECT O.STATUSORC,O.CODORC,O.DTORC,O.DTVENCORC,"
 			 + "O.CODCLI,CL.NOMECLI,CL.FONECLI , IT.VENCAUTORIZORC,IT.NUMAUTORIZORC,"
-			 + "CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC " +sSQLFatura 
+			 + "CL.CIDCLI,IT.APROVITORC,IT.VLRLIQITORC, " +sSQLFatura 
 			 + "FROM  VDORCAMENTO O,VDCLIENTE CL,"
 			 + "VDITORCAMENTO IT " 
 			 + "WHERE O.CODEMP=? "
@@ -327,8 +327,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 				tab.adicLinha();
 				tab.setValor(rs.getString(1) + "", iLin, 0);
 				tab.setValor(new Integer(rs.getInt(2)), iLin, 1);				
-				//tab.setValor(rs.getString(13)==null?"-":rs.getString(13)+"",iLin,2);
-				//tab.setValor(rs.getString(14)==null?"-":rs.getString(14)+"",iLin,3);				
+				tab.setValor(rs.getString(13)==null?"-":rs.getString(13)+"",iLin,2);
+				tab.setValor(rs.getString(14)==null?"-":rs.getString(14)+"",iLin,3);				
 				tab.setValor(rs.getInt(5) + "", iLin, 4);
 				tab.setValor(rs.getString(6) != null ? rs.getString(6) : "", iLin, 5);
 				tab.setValor(Funcoes.sqlDateToStrDate(rs.getDate(3)), iLin, 6);
