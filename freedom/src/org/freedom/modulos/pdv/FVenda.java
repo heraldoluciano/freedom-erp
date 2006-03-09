@@ -502,8 +502,13 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 							+ err.getMessage(),true,con,err);
 			err.printStackTrace();
 			return false;
-		}
-		finally {
+		} catch (Exception err) {
+			Funcoes.mensagemErro(null,
+					"Erro ao inserir o ítem.\nInforme esta mensagem ao administrador: \n"
+							+ err.getMessage());
+			err.printStackTrace();
+			return false;
+		} finally {
 			ps = null;
 			rs = null;
 			sSQL = null;
@@ -995,6 +1000,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.",true,con,e);
 			e.printStackTrace();
 		} catch(AWTException e) {
+			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.\n" + e.getMessage());
+			e.printStackTrace();
+		} catch(Exception e) {
+			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.\n" + e.getMessage());
 			e.printStackTrace();
 		} finally {
 			ps = null;
