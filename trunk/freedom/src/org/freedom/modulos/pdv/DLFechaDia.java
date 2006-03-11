@@ -51,9 +51,12 @@ public class DLFechaDia extends FFDialogo {
 	private JTextFieldFK txtDataHora = new JTextFieldFK(JTextFieldPad.TP_STRING,16,0);
 	private JTextFieldFK txtVlrCaixa = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JCheckBoxPad cbReducaoZ = new JCheckBoxPad("Deseja executar a redução Z?","S","N");
-	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
-	public DLFechaDia() {
+	private JBemaFI32 bf = null;
+	public DLFechaDia() {	
 		super(Aplicativo.telaPrincipal);
+		if((!FreedomPDV.bModoDemo) && (FreedomPDV.bECFTerm)){
+			bf = new JBemaFI32();
+		}
 		setTitulo("Fechamento de caixa");
 		setAtribos(310,170);
 		
