@@ -209,11 +209,11 @@ public class NFBuzzi2 extends Layout {
            frete.next();
            vValores.addElement(""+itens.getFloat(NF.C_VLRBASEICMSPED)); //0
            vValores.addElement(""+itens.getFloat(NF.C_VLRICMSPED)); //1
-           vValores.addElement(""+itens.getFloat(NF.C_VLRLIQPED)); // 2
+           vValores.addElement(""+(itens.getFloat(NF.C_VLRLIQPED)-frete.getFloat(NF.C_VLRFRETEPED)-itens.getFloat(NF.C_VLRADICPED))); // 2
            vValores.addElement(""+frete.getFloat(NF.C_VLRFRETEPED));//3
            vValores.addElement(""+itens.getFloat(NF.C_VLRADICPED));//4
            vValores.addElement(""+itens.getFloat(NF.C_VLRIPIPED));//5
-           vValores.addElement(""+(itens.getFloat(NF.C_VLRLIQPED) - frete.getFloat(NF.C_VLRFRETEPED) + itens.getFloat(NF.C_VLRADICPED) - itens.getFloat(NF.C_VLRIPIPED)));//6
+           vValores.addElement(""+itens.getFloat(NF.C_VLRLIQPED));//6
            vValores.addElement(frete.getString(NF.C_RAZTRANSP));//7
            vValores.addElement(frete.getString(NF.C_TIPOFRETE));//8
            vValores.addElement(frete.getString(NF.C_PLACAFRETE));//9
