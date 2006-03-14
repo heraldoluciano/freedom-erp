@@ -220,25 +220,25 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		pinConsulta.adic(new JLabelPad("Cód.for."),7,0,250,20);
 		pinConsulta.adic(txtCodFor,7,20,80,20);
 		pinConsulta.adic(new JLabelPad("Descrição do fornecedor"),90,0,250,20);
-		pinConsulta.adic(txtRazFor,90,20,197,20);
-		pinConsulta.adic(new JLabelPad("Primeira compra"),290,0,97,20);
-		pinConsulta.adic(txtPrimCompr,290,20,120,20);
-		pinConsulta.adic(new JLabelPad("Ultima compra"),390,0,100,20);
-		pinConsulta.adic(txtUltCompr,413,20,120,20);
+		pinConsulta.adic(txtRazFor,90,20,217,20);
+		pinConsulta.adic(new JLabelPad("Primeira compra"),310,0,97,20);
+		pinConsulta.adic(txtPrimCompr,310,20,97,20);
+		pinConsulta.adic(new JLabelPad("Ultima compra"),410,0,97,20);
+		pinConsulta.adic(txtUltCompr,410,20,100,20);
 		pinConsulta.adic(new JLabelPad("Data"),7,40,200,20);
 		pinConsulta.adic(txtDataMaxFat,7,60,100,20);
 		pinConsulta.adic(new JLabelPad("Valor da maior fatura"),110,40,200,20);
-		pinConsulta.adic(txtVlrMaxFat,110,60,137,20);
-		pinConsulta.adic(new JLabelPad("Data"),250,40,200,20);
-		pinConsulta.adic(txtDataMaxAcum,250,60,97,20);
-		pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),350,40,200,20);
-		pinConsulta.adic(txtVlrMaxAcum,350,60,160,20);
+		pinConsulta.adic(txtVlrMaxFat,110,60,147,20);
+		pinConsulta.adic(new JLabelPad("Data"),260,40,200,20);
+		pinConsulta.adic(txtDataMaxAcum,260,60,97,20);
+		pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),360,40,200,20);
+		pinConsulta.adic(txtVlrMaxAcum,360,60,150,20);
 		pinConsulta.adic(new JLabelPad("Total de compras"),7,80,150,20);
-		pinConsulta.adic(txtVlrTotCompr,7,100,150,20);
-		pinConsulta.adic(new JLabelPad("Total pago"),160,80,97,20);
-		pinConsulta.adic(txtVlrTotPago,160,100,97,20);
-		pinConsulta.adic(new JLabelPad("Total em aberto"),260,80,117,20);
-		pinConsulta.adic(txtVlrTotAberto,260,100,117,20);    
+		pinConsulta.adic(txtVlrTotCompr,7,100,165,20);
+		pinConsulta.adic(new JLabelPad("Total pago"),175,80,97,20);
+		pinConsulta.adic(txtVlrTotPago,175,100,165,20);
+		pinConsulta.adic(new JLabelPad("Total em aberto"),343,80,117,20);
+		pinConsulta.adic(txtVlrTotAberto,343,100,166,20);    
 		pinBotoesConsulta.adic(btBaixaConsulta,5,10,30,30);
 		
 		tabConsulta.adicColuna("");
@@ -532,16 +532,33 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		btEstManut.addActionListener(this);
 	}
   
+	private void limpaConsulta() {
+		txtPrimCompr.setVlrString("");
+		txtUltCompr.setVlrString("");
+		txtDataMaxFat.setVlrString("");
+		txtVlrMaxFat.setVlrString("");
+		txtVlrTotCompr.setVlrString("");
+		txtVlrTotPago.setVlrString("");
+		txtVlrTotAberto.setVlrString("");
+		txtDataMaxAcum.setVlrString("");
+		txtVlrMaxAcum.setVlrString("");
+	}
+  
 	private void carregaConsulta() {
 		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 		String sSQL = null;
 		limpaConsulta();
 		tabConsulta.limpa();
 		try {
-			sSQL = "SELECT P.CODFOR,SUM(P.VLRPARCPAG),SUM(P.VLRPAGOPAG),"+
-				   "SUM(P.VLRAPAGPAG),MIN(P.DATAPAG),MAX(P.DATAPAG) FROM FNPAGAR P "+
-				   "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODFOR=? GROUP BY P.CODFOR";
+			sSQL = "SELECT CODFOR,SUM(VLRPARCPAG),SUM(VLRPAGOPAG),SUM(VLRAPAGPAG),"+
+				   "MIN(DATAPAG),MAX(DATAPAG),DATAPAG,MAX(VLRPARCPAG) "+
+				   "FROM FNPAGAR "+
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? "+
+				   "GROUP BY CODFOR,DATAPAG "+
+				   "ORDER BY 8 DESC";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("FNPAGAR"));
@@ -553,12 +570,45 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				txtVlrTotAberto.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(4)));
 				txtPrimCompr.setVlrString(rs.getDate(5) != null ? Funcoes.sqlDateToStrDate(rs.getDate(5)) : "");
 				txtUltCompr.setVlrString(rs.getDate(6) != null ? Funcoes.sqlDateToStrDate(rs.getDate(6)) : "");
-				if (!con.getAutoCommit())
-					con.commit();
-				carregaGridConsulta();
+				txtDataMaxFat.setVlrString(rs.getDate(7) != null ? Funcoes.sqlDateToStrDate(rs.getDate(7)) : "");
+				txtVlrMaxFat.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(8)));
 			}
+			rs.close();
+			ps.close();
+			
+			sSQL = "SELECT P.DATAPAG, P.VLRPARCPAG,"+
+					"(CASE WHEN IT.DTPAGOITPAG IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITPAG "+
+					"ELSE IT.DTPAGOITPAG - IT.DTVENCITPAG END ) ATRASO "+
+					"FROM FNPAGAR P,FNITPAGAR IT "+
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODFOR=? "+
+					"AND IT.CODPAG = P.CODPAG AND IT.CODEMP=P.CODEMP "+
+					"AND IT.CODFILIAL=P.CODFILIAL "+
+					"ORDER BY 3 DESC ";
+			ps2 = con.prepareStatement(sSQL);
+			ps2.setInt(1,Aplicativo.iCodEmp);
+			ps2.setInt(2,ListaCampos.getMasterFilial("FNPAGAR"));
+			ps2.setInt(3,txtCodFor.getVlrInteger().intValue());
+			rs2 = ps2.executeQuery();
+			if(rs2.next()){
+				txtDataMaxAcum.setVlrString(rs2.getDate("DATAPAG") != null ? Funcoes.sqlDateToStrDate(rs2.getDate("DATAPAG")) : "");
+				txtVlrMaxAcum.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(2)));
+			}
+			rs2.close();
+			ps2.close();
+			
+			carregaGridConsulta();
+			
+			if (!con.getAutoCommit())
+				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar a consulta!\n"+err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			ps2 = null;
+			rs = null;
+			rs2 = null;
+			sSQL = null;
 		}
 	}
   
@@ -573,12 +623,13 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				   "P.DOCPAG,P.CODCOMPRA,"+
 				   "P.DATAPAG,IT.VLRPARCITPAG,IT.DTPAGOITPAG,IT.VLRPAGOITPAG,"+
 				   "(CASE WHEN IT.DTPAGOITPAG IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITPAG " +
-				   "ELSE IT.DTPAGOITPAG - IT.DTVENCITPAG "+
-				   "END ) ATRASO,"+
-				   "P.OBSPAG,(SELECT B.NOMEBANCO FROM FNBANCO B "+
+				   "ELSE IT.DTPAGOITPAG - IT.DTVENCITPAG END ) ATRASO,"+
+				   "P.OBSPAG,"+
+				   "(SELECT B.NOMEBANCO FROM FNBANCO B "+
 				   "WHERE B.CODBANCO = P.CODBANCO AND B.CODEMP=P.CODEMPBO " +
 				   "AND B.CODFILIAL=P.CODFILIALBO) AS NOMEBANCO,"+
-				   "P.CODPAG,IT.NPARCPAG,IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.STATUSITPAG FROM FNPAGAR P,FNITPAGAR IT "+
+				   "P.CODPAG,IT.NPARCPAG,IT.VLRPAGOITPAG,IT.VLRAPAGITPAG,IT.STATUSITPAG "+
+				   "FROM FNPAGAR P,FNITPAGAR IT "+
 				   "WHERE P.CODFOR=? AND P.CODEMP=? AND P.CODFILIAL=? " +
 				   "AND IT.CODPAG = P.CODPAG AND IT.CODEMP=P.CODEMP " +
 				   "AND IT.CODFILIAL=P.CODFILIAL ORDER BY P.CODPAG,IT.NPARCPAG";  
@@ -870,18 +921,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 					}
 				}
 		}
-	}
-  
-	private void limpaConsulta() {
-		txtPrimCompr.setVlrString("");
-		txtUltCompr.setVlrString("");
-		txtDataMaxFat.setVlrString("");
-		txtVlrMaxFat.setVlrString("");
-		txtVlrTotCompr.setVlrString("");
-		txtVlrTotPago.setVlrString("");
-		txtVlrTotAberto.setVlrString("");
-		txtDataMaxAcum.setVlrString("");
-		txtVlrMaxAcum.setVlrString("");
 	}
   
 	private void baixar(char cOrig) { 

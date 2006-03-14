@@ -129,10 +129,6 @@ public class FConsOrc extends FFilho implements ActionListener {
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder(BorderFactory.createEtchedBorder());
-		JLabelPad lbStatus = new JLabelPad(" Status:");
-		lbStatus.setOpaque(true);
-		JLabelPad lbFiltrar = new JLabelPad(" Filtrar:");
-		lbFiltrar.setOpaque(true);
 		
 		pinCab.adic(new JLabelPad("Período:"), 7, 5, 50, 20);
 		pinCab.adic(txtDtIni, 7, 25, 100, 20);
@@ -149,18 +145,18 @@ public class FConsOrc extends FFilho implements ActionListener {
 		pinCab.adic(new JLabelPad("Até"), 354, 25, 27, 20);
 		pinCab.adic(txtValorMaior, 380, 25, 110, 20);
 		
-		pinCab.adic(lbStatus, 15, 95, 50, 18);
-		pinCab.adic(lbLinha2, 7, 105, 201, 70);
-		pinCab.adic(cbAberto, 15, 117, 80, 20);
-		pinCab.adic(cbCompleto, 15, 142, 80, 20);
-		pinCab.adic(cbLiberado, 110, 117, 80, 20);
-		pinCab.adic(cbFaturado, 110, 142, 80, 20);
+		pinCab.adic(new JLabelPad(" Status:"), 15, 95, 50, 18);
+		pinCab.adic(lbLinha2, 7, 113, 201, 60);
+		pinCab.adic(cbAberto, 15, 120, 80, 20);
+		pinCab.adic(cbCompleto, 15, 145, 80, 20);
+		pinCab.adic(cbLiberado, 110, 120, 80, 20);
+		pinCab.adic(cbFaturado, 110, 145, 80, 20);
 		
-		pinCab.adic(lbFiltrar, 220, 95, 50, 18);
-		pinCab.adic(gbVenc, 213, 105, 164, 70);
+		pinCab.adic(new JLabelPad(" Filtrar:"), 220, 95, 50, 18);
+		pinCab.adic(gbVenc, 213, 113, 164, 60);
 		
-		pinCab.adic(btBusca, 382, 107, 110, 30);
-		pinCab.adic(btPrevimp, 382, 145, 110, 30);
+		pinCab.adic(btBusca, 382, 110, 110, 30);
+		pinCab.adic(btPrevimp, 382, 148, 110, 30);
 		
 		txtDtIni.setVlrDate(new Date());
 		txtDtFim.setVlrDate(new Date());
