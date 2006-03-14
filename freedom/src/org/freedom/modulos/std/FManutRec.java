@@ -132,7 +132,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	private JButton btCarregaBaixas = new JButton(Icone.novo("btConsBaixa.gif"));
 	private JButton btBaixa = new JButton(Icone.novo("btOk.gif"));
 	private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-	private JButton btCarregaVenda = new JButton(Icone.novo("btSaida.gif"));
+	private JButton btCarregaVenda = new JButton("Consulta venda",Icone.novo("btSaida.gif"));
 	private JCheckBoxPad cbRecebidas = new JCheckBoxPad("Recebidas", "S", "N");
 	private JCheckBoxPad cbAReceber = new JCheckBoxPad("À Receber", "S", "N");
 	private JCheckBoxPad cbRecParcial = new JCheckBoxPad("Rec. Parcial", "S", "N"); 
@@ -188,7 +188,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		btCarregaBaixas.setToolTipText("Carrega baixas");
 		btBaixa.setToolTipText("Baixar");
 		btSair.setToolTipText("Sair");
-		btCarregaVenda.setToolTipText("Carrega venda");
+		btCarregaVenda.setToolTipText("Consulta venda");
 		
 		Container c = getContentPane();    
 		c.setLayout(new BorderLayout());
@@ -257,12 +257,12 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),360,40,200,20);
 		pinConsulta.adic(txtVlrMaxAcum,360,60,150,20);
 		pinConsulta.adic(new JLabelPad("Total de compras"),7,80,150,20);
-		pinConsulta.adic(txtVlrTotCompr,7,100,150,20);
-		pinConsulta.adic(new JLabelPad("Total pago"),160,80,97,20);
-		pinConsulta.adic(txtVlrTotPago,160,100,97,20);
-		pinConsulta.adic(new JLabelPad("Total em aberto"),260,80,117,20);
-		pinConsulta.adic(txtVlrTotAberto,260,100,117,20);
-		pinConsulta.adic(btCarregaVenda,380,90,30,30);
+		pinConsulta.adic(txtVlrTotCompr,7,100,165,20);
+		pinConsulta.adic(new JLabelPad("Total pago"),175,80,97,20);
+		pinConsulta.adic(txtVlrTotPago,175,100,165,20);
+		pinConsulta.adic(new JLabelPad("Total em aberto"),343,80,117,20);
+		pinConsulta.adic(txtVlrTotAberto,343,100,166,20);
+		pinConsulta.adic(btCarregaVenda,575,93,150,30);
 		
 		btCarregaVenda.addActionListener(this);
 		    
@@ -605,16 +605,32 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		btCarregaBaixas.addActionListener(this);
 		
 	}
+ 
+	private void limpaConsulta() {
+		txtPrimCompr.setVlrString("");
+		txtUltCompr.setVlrString("");
+		txtDataMaxFat.setVlrString("");
+		txtVlrMaxFat.setVlrString("");
+		txtVlrTotCompr.setVlrString("");
+		txtVlrTotPago.setVlrString("");
+		txtVlrTotAberto.setVlrString("");
+		txtDataMaxAcum.setVlrString("");
+		txtVlrMaxAcum.setVlrString("");
+	}
   
 	private void carregaConsulta() {
 		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 		limpaConsulta();
 		tabConsulta.limpa();
-		String sSQL = "SELECT R.CODCLI,SUM(R.VLRPARCREC),SUM(R.VLRPAGOREC),"+
-					  "SUM(R.VLRAPAGREC),MIN(R.DATAREC),MAX(R.DATAREC) " +
-					  "FROM FNRECEBER R WHERE R.CODCLI=? AND R.CODEMP=? " +
-					  "AND R.CODFILIAL=? GROUP BY R.CODCLI";
+		String sSQL = "SELECT CODCLI,SUM(VLRPARCREC),SUM(VLRPAGOREC),"+
+					  "SUM(VLRAPAGREC),MIN(DATAREC),MAX(DATAREC),DATAREC,MAX(VLRPARCREC) " +
+					  "FROM FNRECEBER "+
+					  "WHERE CODCLI=? AND CODEMP=? AND CODFILIAL=? "+
+					  "GROUP BY CODCLI,DATAREC "+
+					  "ORDER BY 8 DESC";
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodCli.getVlrInteger().intValue());
@@ -627,12 +643,35 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				txtVlrTotAberto.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(4)));
 				txtPrimCompr.setVlrString(rs.getDate(5) != null ? Funcoes.sqlDateToStrDate(rs.getDate(5)) : "");
 				txtUltCompr.setVlrString(rs.getDate(6) != null ? Funcoes.sqlDateToStrDate(rs.getDate(6)) : "");
-				rs.close();
-				ps.close();
-				if (!con.getAutoCommit())
-					con.commit();
-				carregaGridConsulta();
+				txtDataMaxFat.setVlrString(rs.getDate(7) != null ? Funcoes.sqlDateToStrDate(rs.getDate(7)) : "");
+				txtVlrMaxFat.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(8)));
 			}
+			rs.close();
+			ps.close();
+			
+			sSQL = "SELECT R.DATAREC, R.VLRPARCREC,"+
+					"(CASE WHEN IT.DTPAGOITREC IS NULL THEN CAST('today' AS DATE)-IT.DTVENCITREC "+
+					"ELSE IT.DTPAGOITREC - IT.DTVENCITREC END ) ATRASO "+
+					"FROM FNRECEBER R,FNITRECEBER IT "+
+					"WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODCLI=? "+
+					"AND IT.CODREC = R.CODREC AND IT.CODEMP=R.CODEMP "+
+					"AND IT.CODFILIAL=R.CODFILIAL "+
+					"ORDER BY 3 DESC ";
+			ps2 = con.prepareStatement(sSQL);
+			ps2.setInt(1,Aplicativo.iCodEmp);
+			ps2.setInt(2,ListaCampos.getMasterFilial("FNRECEBER"));
+			ps2.setInt(3,txtCodCli.getVlrInteger().intValue());
+			rs2 = ps2.executeQuery();
+			if(rs2.next()){
+				txtDataMaxAcum.setVlrString(rs2.getDate("DATAREC") != null ? Funcoes.sqlDateToStrDate(rs2.getDate("DATAREC")) : "");
+				txtVlrMaxAcum.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(2)));
+			}
+			rs2.close();
+			ps2.close();
+			
+			if (!con.getAutoCommit())
+				con.commit();
+			carregaGridConsulta();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar a consulta!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
@@ -960,18 +999,6 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				}
 			}
 		}
-	}
- 
-	private void limpaConsulta() {
-		txtPrimCompr.setVlrString("");
-		txtUltCompr.setVlrString("");
-		txtDataMaxFat.setVlrString("");
-		txtVlrMaxFat.setVlrString("");
-		txtVlrTotCompr.setVlrString("");
-		txtVlrTotPago.setVlrString("");
-		txtVlrTotAberto.setVlrString("");
-		txtDataMaxAcum.setVlrString("");
-		txtVlrMaxAcum.setVlrString("");
 	}
 
 	private void baixar(char cOrig) { 
