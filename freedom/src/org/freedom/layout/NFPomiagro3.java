@@ -104,7 +104,7 @@ public class NFPomiagro3 extends Layout {
 				if (imp.pRow()==0) {
 					imp.say(imp.pRow()+1,0,""+imp.comprimido());
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
-						imp.say(imp.pRow()+0,106,"X");
+						imp.say(imp.pRow()+0,108,"X");
 					else
 						imp.say(imp.pRow()+0,94,"X");
 					imp.say(imp.pRow()+0,128,Funcoes.strZero(""+iNumNota,6));
