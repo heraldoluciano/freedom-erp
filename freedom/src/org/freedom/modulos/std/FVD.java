@@ -94,29 +94,30 @@ public abstract class FVD extends FDetalhe {
     	ResultSet rs = null;
     	int[] iParans;
     	try {
-    	  ps = con.prepareStatement(sSQL);
-    	  
-    	  iParans = parametros;
-    	  
-    	  ps.setInt(1,iParans[0]);//código do produto
-    	  ps.setInt(2,iParans[1]);//código do cliente
-    	  ps.setInt(3,iParans[2]);//código da empresa do cliente
-    	  ps.setInt(4,iParans[3]);//código da filial do cliente
-    	  ps.setInt(5,iParans[4]);//código do plano de pagamento
-    	  ps.setInt(6,iParans[5]);//código da empresa do plano de pagamento
-    	  ps.setInt(7,iParans[6]);//código da filial do plano de pagamento
-    	  ps.setInt(8,iParans[7]);//código do tipo de movimento
-    	  ps.setInt(9,iParans[8]);//código da empresa do tipo de movimento
-    	  ps.setInt(10,iParans[9]);//código da filial do tipo de movimento
-    	  ps.setInt(11,iParans[10]);//código da empresa
-    	  ps.setInt(12,iParans[11]);//código da filial
-    	  rs = ps.executeQuery();
-    	  rs.next();
-    	  retorno = rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0"));
-    	  rs.close();
-    	  ps.close();
-    	  if (!con.getAutoCommit())
-    	      con.commit();
+
+    		ps = con.prepareStatement(sSQL);
+  
+			iParans = parametros;
+			  
+			ps.setInt(1,iParans[0]);//código do produto
+			ps.setInt(2,iParans[1]);//código do cliente
+			ps.setInt(3,iParans[2]);//código da empresa do cliente
+			ps.setInt(4,iParans[3]);//código da filial do cliente
+			ps.setInt(5,iParans[4]);//código do plano de pagamento
+			ps.setInt(6,iParans[5]);//código da empresa do plano de pagamento
+			ps.setInt(7,iParans[6]);//código da filial do plano de pagamento
+			ps.setInt(8,iParans[7]);//código do tipo de movimento
+			ps.setInt(9,iParans[8]);//código da empresa do tipo de movimento
+			ps.setInt(10,iParans[9]);//código da filial do tipo de movimento
+			ps.setInt(11,iParans[10]);//código da empresa
+			ps.setInt(12,iParans[11]);//código da filial
+			rs = ps.executeQuery();
+			rs.next();
+			retorno = rs.getString(1) != null ? (new BigDecimal(rs.getString(1))) : (new BigDecimal("0"));
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
 
     	}
     	catch (SQLException err) {
