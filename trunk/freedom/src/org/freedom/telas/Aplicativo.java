@@ -100,6 +100,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public JPanelPad pinBotoes = new JPanelPad(30, 30);
 	public int iXPanel = 0;
 	public static boolean bBuscaProdSimilar = false;
+	public static boolean bBuscaCodProdGen = false;
 	public static String sMultiAlmoxEmp = "N";
 	private static String sFiltro = "";
 	private boolean bCtrl = true;
@@ -1044,10 +1045,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
 	private void carregaCasasDec() {
 		String sSQL = null;
+		String sBusca = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			sSQL = "SELECT CASASDEC,CASASDECFIN,BUSCAPRODSIMILAR FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT CASASDEC,CASASDECFIN,BUSCAPRODSIMILAR,BUSCACODPRODGEN FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
@@ -1055,8 +1057,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
 				casasDecFin = rs.getInt("CASASDECFIN");
-				String sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N" : "S");
+				sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N" : "S");
 				bBuscaProdSimilar = sBusca.equals("S") ? true : false;
+				sBusca = (rs.getString("BUSCACODPRODGEN") == null ? "N" : "S");
+				bBuscaCodProdGen = sBusca.equals("S") ? true : false;
 			}
 			rs.close();
 			ps.close();
@@ -1068,6 +1072,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 							+ err.getMessage(),true,con,err);
 		} finally {
 			sSQL = null;
+			sBusca = null;
 			ps = null;
 			rs = null;
 		}

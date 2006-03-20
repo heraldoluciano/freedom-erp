@@ -146,6 +146,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JRadioGroup rgTipoPrecoCusto = null;
 	private JRadioGroup rgSetorVenda = null;
 	private JRadioGroup rgOrdNota = null;
+	private JRadioGroup rgLibCred = null;
 	private JCheckBoxPad cbUsaRefProd = null;
 	private JCheckBoxPad cbUsaPedSeq = null;
 	private JCheckBoxPad cbUsaOrcSeq = null;
@@ -184,6 +185,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbAprovOrc = null;
 	private JCheckBoxPad cbLayoutPed = null;
 	private JCheckBoxPad cbVerifAltParVenda = null;
+	private JCheckBoxPad cbUsaBuscGenProd = null;
+	private JCheckBoxPad cbFilBuscGenProd1 = null;
+	private JCheckBoxPad cbFilBuscGenProd2 = null;
+	private JCheckBoxPad cbFilBuscGenProd3 = null;
+	private JCheckBoxPad cbFilBuscGenProd4 = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -450,6 +456,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbJurosPosCalc.setVlrString("N");
 		cbVerifAltParVenda = new JCheckBoxPad("Verificar usuario para alterar parcelas?", "S", "N");
 		cbVerifAltParVenda.setVlrString("N");
+		cbUsaBuscGenProd = new JCheckBoxPad("Busca generica do código do produto?", "S", "N");
+		cbUsaBuscGenProd.setVlrString("N");
+		cbFilBuscGenProd1 = new JCheckBoxPad("Código do produto?", "S", "N");
+		cbFilBuscGenProd1.setVlrString("N");
+		cbFilBuscGenProd2 = new JCheckBoxPad("Referência do produto?", "S", "N");
+		cbFilBuscGenProd2.setVlrString("N");
+		cbFilBuscGenProd3 = new JCheckBoxPad("Código de barras", "S", "N");
+		cbFilBuscGenProd3.setVlrString("N");
+		cbFilBuscGenProd4 = new JCheckBoxPad("Código do fabricante", "S", "N");
+		cbFilBuscGenProd4.setVlrString("N");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -458,16 +474,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		vVals.addElement("M");
 		vVals.addElement("P");
 		rgTipoPrecoCusto = new JRadioGroup(1, 2, vLabs, vVals);
-		rgTipoPrecoCusto.setVlrString("M");		
-
-		Vector vLabsTpValidOrc1 = new Vector();
-		Vector vValsTpValidOrc1 = new Vector();
-		vLabsTpValidOrc1.addElement("Data");
-		vLabsTpValidOrc1.addElement("Nro. de dias");
-		vValsTpValidOrc1.addElement("D");
-		vValsTpValidOrc1.addElement("N");
-		rgTipoValidOrc = new JRadioGroup(1, 2, vLabsTpValidOrc1,vValsTpValidOrc1);
-		rgTipoValidOrc.setVlrString("D");
+		rgTipoPrecoCusto.setVlrString("M");	
+		
+		Vector vLabs1 = new Vector();
+		Vector vVals1 = new Vector();
+		vLabs1.addElement("Por Codigo");
+		vLabs1.addElement("Por Descriçao");
+		vLabs1.addElement("Por Marca");
+		vVals1.addElement("C");
+		vVals1.addElement("D");
+		vVals1.addElement("M");
+		rgOrdNota = new JRadioGroup(3, 1, vLabs1, vVals1);
+		rgOrdNota.setVlrString("C");	
 		
 		Vector vLabs2 = new Vector();
 		Vector vVals2 = new Vector();
@@ -480,16 +498,25 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		rgSetorVenda = new JRadioGroup(3, 1, vLabs2, vVals2);
 		rgSetorVenda.setVlrString("C");
 		
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
-		vLabs1.addElement("Por Codigo");
-		vLabs1.addElement("Por Descriçao");
-		vLabs1.addElement("Por Marca");
-		vVals1.addElement("C");
-		vVals1.addElement("D");
-		vVals1.addElement("M");
-		rgOrdNota = new JRadioGroup(3, 1, vLabs1, vVals1);
-		rgOrdNota.setVlrString("C");
+		Vector vLabs3 = new Vector();
+		Vector vVals3 = new Vector();
+		vLabs3.addElement("Não vericar");
+		vLabs3.addElement("Aguardar liberação");
+		vLabs3.addElement("Liberar crédito pré-aprovado");
+		vVals3.addElement("N");
+		vVals3.addElement("A");
+		vVals3.addElement("L");
+		rgLibCred = new JRadioGroup(3, 1, vLabs3, vVals3);
+		rgLibCred.setVlrString("N");
+
+		Vector vLabsTpValidOrc1 = new Vector();
+		Vector vValsTpValidOrc1 = new Vector();
+		vLabsTpValidOrc1.addElement("Data");
+		vLabsTpValidOrc1.addElement("Nro. de dias");
+		vValsTpValidOrc1.addElement("D");
+		vValsTpValidOrc1.addElement("N");
+		rgTipoValidOrc = new JRadioGroup(1, 2, vLabsTpValidOrc1,vValsTpValidOrc1);
+		rgTipoValidOrc.setVlrString("D");
 
 		Vector vValsTipo = new Vector();
 		Vector vLabsTipo = new Vector();
@@ -500,17 +527,6 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		vValsTipo.addElement(new Integer(50));
 		vValsTipo.addElement(new Integer(100));		
 		cbTamDescProd = new JComboBoxPad(vLabsTipo, vValsTipo, JComboBoxPad.TP_INTEGER, 4, 0);
-		
-		Vector vLabs3 = new Vector();
-		Vector vVals3 = new Vector();
-		vLabs3.addElement("Não vericar");
-		vLabs3.addElement("Aguardar liberação");
-		vLabs3.addElement("Liberar crédito pré-aprovado");
-		vVals3.addElement("N");
-		vVals3.addElement("A");
-		vVals3.addElement("L");
-		JRadioGroup rgLibCred = new JRadioGroup(3, 1, vLabs3, vVals3);
-		rgLibCred.setVlrString("N");
 		
 		// Geral
 		
@@ -657,11 +673,16 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		lbProdOpcoes.setOpaque(true);
 
 		adic(lbProdOpcoes, 20, 15, 70, 20);
-		adic(lbProdCont, 10, 25, 450, 150);
+		adic(lbProdCont, 10, 25, 450, 240);
 		adicDB(cbPepsProd, 15, 40, 310, 20, "PepsProd", "", false);
 		adicDB(cbBuscaProdSimilar, 15, 60, 310, 20, "BuscaProdSimilar", "",false);
 		adicDB(cbDescCompl, 15, 80, 500, 20, "DescCompPed", "", true);
-		adicDB(cbTamDescProd, 20, 140, 300, 20, "TamDescProd", "Tamanho da descrição do produto", false);
+		adicDB(cbUsaBuscGenProd, 15, 100, 350, 20, "BUSCACODPRODGEN", "", false);
+		adicDB(cbFilBuscGenProd1, 30, 120, 350, 20, "FILBUSCGENPROD", "", false);
+		adicDB(cbFilBuscGenProd2, 30, 140, 350, 20, "FILBUSCGENREF", "", false);
+		adicDB(cbFilBuscGenProd3, 30, 160, 350, 20, "FILBUSCGENCODBAR", "", false);
+		adicDB(cbFilBuscGenProd4, 30, 180, 350, 20, "FILBUSCGENCODFAB", "", false);
+		adicDB(cbTamDescProd, 20, 230, 300, 20, "TamDescProd", "Tamanho da descrição do produto", false);
 
 		// Estoque
 		setPainel(pinEstoq);
@@ -758,6 +779,12 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		lcPrefere3.addEditListener(this);
 		cbEstNegGrupo.addCheckBoxListener(this);
 		cbJurosPosCalc.addCheckBoxListener(this);
+		cbUsaBuscGenProd.addCheckBoxListener(this);
+		
+		cbFilBuscGenProd1.setEnabled(false);
+		cbFilBuscGenProd2.setEnabled(false);
+		cbFilBuscGenProd3.setEnabled(false);
+		cbFilBuscGenProd4.setEnabled(false);
 		
 	}
 
@@ -832,6 +859,18 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 				cbEstNeg.setEnabled(true);
 				cbEstLotNeg.setEnabled(true);
 			}
+		}
+		if (cevt.getCheckBox() == cbUsaBuscGenProd && cbUsaBuscGenProd.getVlrString().equals("S")) {
+			cbFilBuscGenProd1.setEnabled(true);
+			cbFilBuscGenProd2.setEnabled(true);
+			cbFilBuscGenProd3.setEnabled(true);
+			cbFilBuscGenProd4.setEnabled(true);
+		}
+		else {
+			cbFilBuscGenProd1.setEnabled(false);
+			cbFilBuscGenProd2.setEnabled(false);
+			cbFilBuscGenProd3.setEnabled(false);
+			cbFilBuscGenProd4.setEnabled(false);
 		}
 	}
 

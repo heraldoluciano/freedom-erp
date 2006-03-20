@@ -69,6 +69,7 @@ import org.freedom.comutacao.Tef;
 import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
+import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.FAdicOrc;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -116,7 +117,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodProd1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 13, 0);
 	private JTextFieldPad txtQtdade = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 2);
 	private JTextFieldPad txtPreco = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
 	private JTextFieldPad txtBaseCalc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
@@ -1523,6 +1524,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		sbVenda.setRazFilial(Aplicativo.sRazFilial);
 		sbVenda.setNumEst(Aplicativo.iNumEst);
 		sbVenda.setDescEst(getDescEst());
+		
+		txtCodProd.setBuscaCodProd(new DLCodProd(con));
 	}
 
 }
