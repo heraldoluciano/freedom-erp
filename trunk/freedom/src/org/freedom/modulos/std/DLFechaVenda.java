@@ -274,7 +274,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtMarcaFreteVD.setListaCampos(lcFreteVD);
 		txtConhecFreteVD.setListaCampos(lcFreteVD);
 		txtCodTran.setListaCampos(lcFreteVD);
-		cbAdicFrete.setListaCampos(lcFreteVD);
+		cbAdicFrete.setListaCampos(lcFreteVD);		
+
+		cbAdicFrete.setVlrString("S");
 		
 		lcAuxVenda.add(new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false));
 		lcAuxVenda.add(new GuardaCampo( txtCodVenda, "CodVenda", "N.pedido", ListaCampos.DB_PK,false));
@@ -466,6 +468,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		    
 		bPrefs = prefs();
 		lcVenda.edit();
+		getTipoFrete();
 	}
   
 	private void calcPeso() {
@@ -776,6 +779,33 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		}
 		System.out.println(sSQL);
 		return iRetorno;
+	}
+
+	private void getTipoFrete() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "SELECT T.CTIPOFRETE FROM EQTIPOMOV T, VDVENDA V "+ 
+					  "WHERE T.CODEMP=V.CODEMPTM AND T.CODFILIAL=V.CODFILIALTM AND T.CODTIPOMOV=V.CODTIPOMOV "+
+					  "AND V.CODEMP=? AND V.CODFILIAL=? AND V.CODVENDA=? AND V.TIPOVENDA='V'";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("EQTIPOMOV"));
+			ps.setInt(3,iCodVendaFecha);
+			rs = ps.executeQuery();
+			if (rs.next())
+				if(!rs.getString(1).equals("") && rs.getString(1)!=null)
+					rgFreteVD.setVlrString(rs.getString(1).equals("F")? "F" : "C");
+			
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar o código da conta a receber!\n"+err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
 	}
   
 	public String[] getValores() {

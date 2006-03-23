@@ -21,29 +21,55 @@
 
 package org.freedom.modulos.std;
 
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
+
+import javax.swing.JScrollPane;
 
 import org.freedom.componentes.ListaCampos;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.DLF3;
+import org.freedom.telas.FFDialogo;
 
-public class DLCodProd extends DLF3 {
+public class DLCodProd extends FFDialogo implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
+	public Tabela tab = new Tabela();
+	private JScrollPane spnCentro = new JScrollPane(tab); 
 	private int iCodProd = 0;
 	private boolean bFilCodProd = false;
 	private boolean bFilRefProd = false;
 	private boolean bFilCodBar = false;
 	private boolean bFilCodFab = false;
+	private Vector vProds = new Vector();
 	
 	public DLCodProd(Connection con) {
-	   	 		 
-		setAtribos( 575, 260);			 
+
+		setTitulo("Pesquisa auxiliar");
+		setAtribos( 575, 260);		
+	    setResizable(true);	 
 		setConexao(con);
+	    
+	    c.add( spnCentro, BorderLayout.CENTER);    
+	    
+	    addWindowFocusListener( new WindowAdapter() {
+			 public void windowGainedFocus(WindowEvent e) {
+	            if (tab.getNumLinhas() > 0)
+	              tab.requestFocus();
+	            else
+	              btCancel.requestFocus();
+			 }
+	       }
+	    );
 		 
 		tab.adicColuna("Cód.prod.");
 		tab.adicColuna("Ref.prod.");
@@ -85,13 +111,20 @@ public class DLCodProd extends DLF3 {
 		
 		try{
 			
+			vProds.clear();
 			tab.limpa();
 			iCodProd = 0;
 			
+			if(bFilCodBar)
+				sWhere = "AND (P.CODBARPROD=?) ";
 			if(bFilCodProd) {
 				try{
 					int val = Integer.parseInt(valor);
 					if(val < Integer.MAX_VALUE && val < Integer.MIN_VALUE ) {
+						if(sWhere.length()>0) {
+							sWhere += " OR (P.CODPROD=?) ";
+							usaOR = true;
+						}
 						sWhere = "AND P.CODPROD=? ";
 						adicCodProd = true;
 					}
@@ -105,14 +138,7 @@ public class DLCodProd extends DLF3 {
 					usaOR = true;
 				}
 				else
-					sWhere = "AND (P.REFPROD=?) ";
-			if(bFilCodBar)
-				if(sWhere.length()>0) {
-					sWhere += " OR (P.CODBARPROD=?) ";
-					usaOR = true;
-				}
-				else
-					sWhere = "AND (P.CODBARPROD=?) ";
+					sWhere = "AND (P.REFPROD=?) ";			
 			if(bFilCodFab)
 				if(sWhere.length()>0) {
 					sWhere += " OR (P.CODFABPROD=?) ";
@@ -142,11 +168,11 @@ public class DLCodProd extends DLF3 {
 			int iparam = 1;
 			ps.setInt(iparam++, Aplicativo.iCodEmp);
 			ps.setInt(iparam++, ListaCampos.getMasterFilial("EQPRODUTO"));
+			if(bFilCodBar)
+				ps.setString(iparam++, valor);
 			if(adicCodProd)
 				ps.setString(iparam++, valor);
 			if(bFilRefProd)
-				ps.setString(iparam++, valor);
-			if(bFilCodBar)
 				ps.setString(iparam++, valor);
 			if(bFilCodFab)
 				ps.setString(iparam++, valor);
@@ -165,18 +191,24 @@ public class DLCodProd extends DLF3 {
 											(rs.getString("SLDLOTE") != null ? rs.getString("SLDLOTE") : ""),
 											(rs.getString("CODALMOX") != null ? rs.getString("CODALMOX") : "")});
 				ilinha++;
+				vProds.addElement(new Integer(rs.getString("CODPROD") != null ? rs.getString("CODPROD") : "0"));
 			}
+			
+			/*tab.adicLinha( new Object[]{"0","","","","","","","",""});
+			vProds.addElement(new Integer(0));*/
 			
 			if(ilinha <= 0) {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
 			}
-			else if(ilinha == 1)
-				iCodProd = Integer.parseInt((String)tab.getValor(0,0));
+			else if(ilinha == 1) {
+				iCodProd = ((Integer)vProds.elementAt(0)).intValue();
+				super.ok();
+			}
 			else {
-				tab.setLinhaSel(1);
+				tab.changeSelection(0,0,true,true);
+				tab.setLinhaSel(0);
 				setVisible(true);
-				iCodProd = Integer.parseInt((String)tab.getValor(tab.getLinhaSel(),0));
 			}
 			
 		} catch (SQLException e) {
@@ -234,16 +266,25 @@ public class DLCodProd extends DLF3 {
 		}
 		
 	}
-	/*
-    public void ok() {
-    	iCodProd = null;
-    	if (tab.getNumLinhas() > 0 && tab.getLinhaSel() >= 0) {
-    		iCodProd = new Integer((String)tab.getValor(tab.getLinhaSel(),0));
-    		super.ok();
-    	} else {
-    		Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");
-    		iCodProd = null;
+
+    public void keyPressed(KeyEvent kevt) {
+    	if ( kevt.getSource() == tab && kevt.getKeyCode() == KeyEvent.VK_ENTER) {       
+    		int ilin = tab.getLinhaSel();
+        	iCodProd = 0;
+        	if (tab.getNumLinhas() > 0 && ilin >= 0) {
+        		iCodProd = ((Integer)vProds.elementAt(ilin)).intValue();
+        		super.ok();
+        	} else {
+        		Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");
+        		iCodProd = 0;
+        	}
     	}
-    }*/
-	
+    	else
+    		super.keyPressed(kevt);
+    }
+    
+    public void keyReleased(KeyEvent kevt) { }
+    
+    public void keyTyped(KeyEvent kevt) { }
+        
 }        

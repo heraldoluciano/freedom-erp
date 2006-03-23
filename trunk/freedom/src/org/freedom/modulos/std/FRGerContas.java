@@ -78,6 +78,7 @@ public class FRGerContas extends FRelatorio  {
   private JCheckBoxPad cbCliPrinc = new JCheckBoxPad("Mostrar no cliente principal?","S","N");
   private JCheckBoxPad cbIncluiPed = new JCheckBoxPad("Incluir pedidos não faturados?","S","N");
   private JRadioGroup rgOrdemRel = null;
+  private JRadioGroup rgOrdemRel1 = null;
   private JRadioGroup rgOrdemRel2 = null;
   private Vector vLabOrdemRel = new Vector();
   private Vector vValOrdemRel = new Vector();
@@ -103,7 +104,7 @@ public class FRGerContas extends FRelatorio  {
   
   public FRGerContas() {
     setTitulo("Gerenciamento de contas");
-    setAtribos(80,50,550,380);
+    setAtribos(80,50,665,430);
 
     txtAno.setRequerido(true);
     txtAno.setVlrInteger(new Integer((new GregorianCalendar()).get(Calendar.YEAR)));
@@ -114,20 +115,25 @@ public class FRGerContas extends FRelatorio  {
 
     vLabOrdemRel.addElement("Cód.cli.");
     vLabOrdemRel.addElement("Razão");    
+    vLabOrdemRel.addElement("Categoria");  
     vLabOrdemRel.addElement("Cidade");
     vLabOrdemRel.addElement("Classif.");
     vLabOrdemRel.addElement("Valor");
     
     vValOrdemRel.addElement("C");    
     vValOrdemRel.addElement("R");
+    vValOrdemRel.addElement("T");
     vValOrdemRel.addElement("D");
     vValOrdemRel.addElement("S");
     vValOrdemRel.addElement("V");
     
-    rgOrdemRel = new JRadioGroup(1,5,vLabOrdemRel,vValOrdemRel);
-    rgOrdemRel.setVlrString("S");
+    rgOrdemRel = new JRadioGroup(1,6,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel.setVlrString("T");
     
-    rgOrdemRel2 = new JRadioGroup(1,5,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel1 = new JRadioGroup(1,6,vLabOrdemRel,vValOrdemRel);
+    rgOrdemRel1.setVlrString("S");
+    
+    rgOrdemRel2 = new JRadioGroup(1,6,vLabOrdemRel,vValOrdemRel);
     rgOrdemRel2.setVlrString("V");
     
 	lcGrup1.add(new GuardaCampo(txtCodGrup1, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
@@ -175,38 +181,40 @@ public class FRGerContas extends FRelatorio  {
     adic(lbAno,7,0,100,20);
     adic(txtAno,7,20,100,20);
     
-    adic(new JLabelPad("1º Ordem"),120,0,80,20);
-    adic(rgOrdemRel,120,20,405,30);
-    adic(new JLabelPad("2° Ordem"),120,50,80,20);
-    adic(rgOrdemRel2,120,70,405,30);    
+    adic(new JLabelPad("1º Ordem"),125,0,80,20);
+    adic(rgOrdemRel,120,20,520,30);
+    adic(new JLabelPad("2° Ordem"),125,50,80,20);
+    adic(rgOrdemRel1,120,70,520,30); 
+    adic(new JLabelPad("3° Ordem"),125,100,80,20);
+    adic(rgOrdemRel2,120,120,520,30);   
     
-    adic(lbCodVend,7,100,110,20);
-    adic(txtCodVend,7,120,110,20);
-    adic(lbDescVend,120,100,200,20);
-    adic(txtNomeVend,120,120,200,20);    
-	adic(lbCodGrup1, 7, 140, 110, 20);
-	adic(txtCodGrup1, 7, 160, 110, 20);
-	adic(lbDescCodGrup1, 120, 140, 200, 20);
-	adic(txtDescGrup1, 120, 160, 200, 20);	
-	adic(lbCodGrup2, 7, 180, 110, 20);
-	adic(txtCodGrup2, 7, 200, 110, 20);
-	adic(lbDescCodGrup2, 120, 180, 200, 20);
-	adic(txtDescGrup2, 120, 200, 200, 20);	
-	adic(lbCodMarca, 7, 220, 110, 20);
-	adic(txtCodMarca, 7, 240, 110, 20);
-	adic(lbDescMarc, 120, 220, 200, 20);
-	adic(txtDescMarca, 120, 240, 200, 20);	
-	adic(lbCodTpCli, 7, 260, 110, 20);
-	adic(txtCodTpCli, 7, 280, 110, 20);
-	adic(lbDescTpCli, 120, 260, 200, 20);
-	adic(txtDescTpCli, 120, 280, 200, 20);	
+    adic(lbCodVend,7,150,110,20);
+    adic(txtCodVend,7,170,110,20);
+    adic(lbDescVend,120,150,200,20);
+    adic(txtNomeVend,120,170,280,20);    
+	adic(lbCodGrup1, 7, 190, 110, 20);
+	adic(txtCodGrup1, 7, 210, 110, 20);
+	adic(lbDescCodGrup1, 120, 190, 200, 20);
+	adic(txtDescGrup1, 120, 210, 280, 20);	
+	adic(lbCodGrup2, 7, 230, 110, 20);
+	adic(txtCodGrup2, 7, 250, 110, 20);
+	adic(lbDescCodGrup2, 120, 230, 200, 20);
+	adic(txtDescGrup2, 120, 250, 280, 20);	
+	adic(lbCodMarca, 7, 270, 110, 20);
+	adic(txtCodMarca, 7, 290, 110, 20);
+	adic(lbDescMarc, 120, 270, 200, 20);
+	adic(txtDescMarca, 120, 290, 280, 20);	
+	adic(lbCodTpCli, 7, 310, 110, 20);
+	adic(txtCodTpCli, 7, 330, 110, 20);
+	adic(lbDescTpCli, 120, 310, 200, 20);
+	adic(txtDescTpCli, 120, 330, 280, 20);	
 
-    adic(lbPercFat,7,50,100,20);
-    adic(txtPercFat,7,70,100,20);
+    adic(lbPercFat,7,110,100,20);
+    adic(txtPercFat,7,130,100,20);
 	
-    adic(cbVendas,330,120,100,20);
-    adic(cbCliPrinc,330,160,250,20);
-    adic(cbIncluiPed,330,200,295,20);    
+    adic(cbVendas,430,170,100,20);
+    adic(cbCliPrinc,430,210,250,20);
+    adic(cbIncluiPed,430,250,295,20);    
     
   }
 
@@ -217,6 +225,7 @@ public class FRGerContas extends FRelatorio  {
 		String sWhereTM = "";
 		String sCodGrup1 = "";
 		String sOrdemRel = "";
+		String sOrdemRel1 = "";
 		String sOrdemRel2 = "";
 		String sOrderBy = "";
 		String sOrderByTemp = "";
@@ -250,6 +259,7 @@ public class FRGerContas extends FRelatorio  {
 			iCodMarca = txtCodMarca.getVlrInteger().intValue();
 			iCodTpCli = txtCodTpCli.getVlrInteger().intValue();
 			sOrdemRel = rgOrdemRel.getVlrString();
+			sOrdemRel1 = rgOrdemRel1.getVlrString();
 			sOrdemRel2 = rgOrdemRel2.getVlrString();
 
 			if (!sCodGrup1.equals("")) {
@@ -270,54 +280,72 @@ public class FRGerContas extends FRelatorio  {
 				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
 			
-			if (sOrdemRel.equals("V")) {
-				sOrderBy = ",18";
-			} 
-			else if (sOrdemRel.equals("R")) {
-				sOrderBy = ",2";
-			} 
-			else if (sOrdemRel.equals("C")) {
-				sOrderBy = ",1";
-			}
-			else if (sOrdemRel.equals("D")) {
-				sOrderBy = ",3";
-			}
-			else if (sOrdemRel.equals("S")) {
-				sOrderBy = ",5";
-			}
+			if (sOrdemRel.equals("C"))
+				sOrderBy = "1";
+			else if (sOrdemRel.equals("R"))
+				sOrderBy = "2";
+			else if (sOrdemRel.equals("D"))
+				sOrderBy = "3";
+			else if (sOrdemRel.equals("T"))
+				sOrderBy = "4";
+			else if (sOrdemRel.equals("S"))
+				sOrderBy = "5";
+			else if (sOrdemRel.equals("V"))
+				sOrderBy = "18";
+			
 
-			if ((sOrdemRel2.equals("V")) & (!sOrdemRel2.equals(sOrdemRel))) {
-				sOrderBy = sOrderBy+",18";
-				if(sOrderBy.indexOf(",2") == -1)
-					sOrderBy = sOrderBy+",2";
-			} 
-			else if ((sOrdemRel2.equals("R")) & (!sOrdemRel2.equals(sOrdemRel))) {
+			if ((sOrdemRel1.equals("C")) && (!sOrdemRel1.equals(sOrdemRel)))
+				sOrderBy = sOrderBy+",1";
+			else if ((sOrdemRel1.equals("R")) && (!sOrdemRel1.equals(sOrdemRel)))
 				sOrderBy = sOrderBy+",2";
-				if(sOrderBy.indexOf(",18") == -1)
-					sOrderBy = sOrderBy+",18";
-			} 
-			else if ((sOrdemRel2.equals("C")) & (!sOrdemRel2.equals(sOrdemRel))) {
+			else if ((sOrdemRel1.equals("D")) && (!sOrdemRel1.equals(sOrdemRel)))
+				sOrderBy = sOrderBy+",3";
+			else if ((sOrdemRel1.equals("T")) && (!sOrdemRel1.equals(sOrdemRel)))
+				sOrderBy = sOrderBy+",4";
+			else if ((sOrdemRel1.equals("S")) && (!sOrdemRel1.equals(sOrdemRel)))
+				sOrderBy = sOrderBy+",5";
+			else if ((sOrdemRel1.equals("V")) && (!sOrdemRel1.equals(sOrdemRel)))
+				sOrderBy = sOrderBy+",18";			
+			
+			 
+			if ((sOrdemRel2.equals("C")) && (!sOrdemRel2.equals(sOrdemRel) && !sOrdemRel2.equals(sOrdemRel1))) {
 				sOrderBy = sOrderBy+",1";
 				if(sOrderBy.indexOf(",18") == -1)
 					sOrderBy = sOrderBy+",18";
 				if(sOrderBy.indexOf(",2") == -1)
 					sOrderBy = sOrderBy+",2";
 			}
-			else if ((sOrdemRel2.equals("D")) & (!sOrdemRel2.equals(sOrdemRel))) {
+			else if ((sOrdemRel2.equals("R")) && (!sOrdemRel2.equals(sOrdemRel) && !sOrdemRel2.equals(sOrdemRel1))) {
+				sOrderBy = sOrderBy+",2";
+				if(sOrderBy.indexOf(",18") == -1)
+					sOrderBy = sOrderBy+",18";
+			}
+			else if ((sOrdemRel2.equals("D")) && (!sOrdemRel2.equals(sOrdemRel) && !sOrdemRel2.equals(sOrdemRel1))) {
 				sOrderBy = sOrderBy+",3";
 				if(sOrderBy.indexOf(",18") == -1)
 					sOrderBy = sOrderBy+",18";
 				if(sOrderBy.indexOf(",2") == -1)
 					sOrderBy = sOrderBy+",2";
 			}
-			else if ((sOrdemRel2.equals("S")) & (!sOrdemRel2.equals(sOrdemRel))) {
+			else if ((sOrdemRel2.equals("T")) && (!sOrdemRel2.equals(sOrdemRel) && !sOrdemRel2.equals(sOrdemRel1))) {
+				sOrderBy = sOrderBy+",4";
+				if(sOrderBy.indexOf(",18") == -1)
+					sOrderBy = sOrderBy+",18";
+				if(sOrderBy.indexOf(",2") == -1)
+					sOrderBy = sOrderBy+",2";
+			}
+			else if ((sOrdemRel2.equals("S")) && (!sOrdemRel2.equals(sOrdemRel) && !sOrdemRel2.equals(sOrdemRel1))) {
 				sOrderBy = sOrderBy+",5";
 				if(sOrderBy.indexOf(",18") == -1)
 					sOrderBy = sOrderBy+",18";
 				if(sOrderBy.indexOf(",2") == -1)
 					sOrderBy = sOrderBy+",2";
 			}
-			sOrderBy = "4" + sOrderBy;
+			else if ((sOrdemRel2.equals("V")) && (!sOrdemRel2.equals(sOrdemRel) && !sOrdemRel2.equals(sOrdemRel1))) {
+				sOrderBy = sOrderBy+",18";
+				if(sOrderBy.indexOf(",2") == -1)
+					sOrderBy = sOrderBy+",2";
+			}
 
 			int iAno = txtAno.getVlrInteger().intValue();
 			
@@ -635,16 +663,19 @@ public class FRGerContas extends FRelatorio  {
 			
 		} 
 		finally {
-			sWhere = null;
-			sSql = null;
-			sCodGrup1 = null;
-			sCodGrup2 = null;
-			sOrdemRel = null;
-			sOrderBy = null;
-			sOrderByTemp = null;
-			sWhereTM = null;
-			sFiltros1 = null;
-			sFiltros2 = null;
+			sSql = "";
+			sWhere = "";
+			sWhereCli = "";
+			sWhereTM = "";
+			sCodGrup1 = "";
+			sOrdemRel = "";
+			sOrdemRel1 = "";
+			sOrdemRel2 = "";
+			sOrderBy = "";
+			sOrderByTemp = "";
+			sCodGrup2 = "";
+			sFiltros1 = "";
+			sFiltros2 = "";
 			ps = null;
 		}
 		return rs;

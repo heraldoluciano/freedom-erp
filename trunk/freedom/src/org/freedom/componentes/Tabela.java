@@ -135,15 +135,16 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   			if (iTam>0) {
   				for (int i=0; i<getNumLinhas(); i++) {
   					vTemp = getLinha(i);
-  					if ( ((String) vTemp.elementAt(iCol)).substring(0,iTam).equals(sTexto)) {
+  					if (((String) vTemp.elementAt(iCol)).substring(0,iTam).equals(sTexto)) {
   						iRetorno = i;
   						break;
   					}
   				}
   			}
   		}
-  	}
-  	finally {
+  	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
   		vTemp = null;
   	}
   	return iRetorno;
