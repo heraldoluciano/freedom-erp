@@ -33,11 +33,11 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.JTextField;
+
 import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBuscaEstoq;
-import org.freedom.modulos.std.DLCodProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
@@ -93,7 +93,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private ListaCampos lcTxt = null;
 	private ListaCampos lcTabExt = null;
 	private DLF3 dlBuscaAdic = null; 
-	private DLCodProd dlBuscaCodProd = null; 
 	
 	public JTextFieldPad (int tipo, int tam, int dec) {
 		addFocusListener(this);
@@ -392,10 +391,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		}
 	}
 
-	public void setBuscaCodProd(DLCodProd dl) {
-		dlBuscaCodProd = dl;
-	}
-
 	public boolean getAtivo() {
 		return bAtivo;
 	}
@@ -684,16 +679,6 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				}
 	}
 	
-	public void buscaCodProd() {
-		if (dlBuscaCodProd != null)
-			if (dlBuscaCodProd.buscaCodProd(getVlrString())) {
-				if(dlBuscaCodProd.OK)
-					setVlrString(String.valueOf(dlBuscaCodProd.getCodProd()));					
-				else
-					setVlrString(String.valueOf(0));
-			}
-	}
-	
 	private String transValorNum(String sNum) {
 		if (sNum.equals(""))
 			return "";
@@ -920,11 +905,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			buscaAdic("estoque");
 		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
 				(getText().trim().length() > 0) && (bPK || bFK)) {
-			if(Aplicativo.bBuscaCodProdGen) {
-				buscaCodProd();
-				transferFocus();
-			}
-			else if(Aplicativo.bBuscaProdSimilar)
+			if(Aplicativo.bBuscaProdSimilar)
 				buscaAdic("similar");		  
 			//   	lcTxt.carregaDados();
 			//   	transferFocus();		
@@ -934,9 +915,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 				((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
 					(getText().trim().length() == 0))) && ((bPK) || (bFK))) {    	
 			if ((bFK) && (lcTabExt != null)) {
-				if (kevt.getKeyCode() == KeyEvent.VK_ENTER)
+				if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 					if (bRequerido)
 						mostraDLF2FK();
+				}
 				else
 					mostraDLF2FK();
 			}

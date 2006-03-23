@@ -1053,7 +1053,18 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			break;
 		}
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtQtdade) {
+			if (kevt.getSource() == txtCodProd) {
+				if(Aplicativo.bBuscaCodProdGen) {
+					DLCodProd dl = new DLCodProd(con);
+					dl.buscaCodProd(txtCodProd.getVlrString());
+					if(dl.OK){
+						txtCodProd.setVlrString(String.valueOf(dl.getCodProd()));
+						txtQtdade.requestFocus();
+					}
+					dl.dispose();
+				}
+			}
+			else if (kevt.getSource() == txtQtdade) {
 				if (txtCodProd.getVlrDouble().doubleValue() == 0)
 					Funcoes.mensagemInforma(null, "Produto em branco.");
 				else if (txtQtdade.getVlrDouble().doubleValue() == 0)
@@ -1524,8 +1535,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		sbVenda.setRazFilial(Aplicativo.sRazFilial);
 		sbVenda.setNumEst(Aplicativo.iNumEst);
 		sbVenda.setDescEst(getDescEst());
-		
-		txtCodProd.setBuscaCodProd(new DLCodProd(con));
 	}
 
 }

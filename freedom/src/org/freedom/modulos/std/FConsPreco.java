@@ -22,19 +22,19 @@
 package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
+
+import javax.swing.JScrollPane;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
-import javax.swing.JScrollPane;
-
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.StringDireita;
 import org.freedom.componentes.Tabela;
@@ -49,23 +49,18 @@ import org.freedom.telas.FFilho;
  * Tela de consulta de preços
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class FConsPreco extends FFilho implements KeyListener {
+public class FConsPreco extends FFilho implements KeyListener/*, FocusListener */{
 	private static final long serialVersionUID = 1L;
-
-    //private JPanelPad pnClienteGeral = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pinCab = new JPanelPad(800,55);
     private Tabela tbPreco = new Tabela();
     private JScrollPane spPreco = new JScrollPane(tbPreco);
+    private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_STRING,13,0);
     private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING,50,10);
 	
 	public FConsPreco() {
 		super(false);
-		//super();
-		// 
 		setTitulo("Consulta de preços");
-		setAtribos(0,0,800,500);
-		//setmmaximizable
-		
+		setAtribos(50,50,778,500);		
 	}
 	
 	private void montaTela() {
@@ -74,43 +69,67 @@ public class FConsPreco extends FFilho implements KeyListener {
 		tbPreco.adicColuna("Descrição");
 		tbPreco.adicColuna("Preço");
 		tbPreco.adicColuna("Saldo");
-		tbPreco.setTamColuna(90,0);
-		tbPreco.setTamColuna(90,1);
+		tbPreco.setTamColuna(100,0);
+		tbPreco.setTamColuna(100,1);
 		tbPreco.setTamColuna(350,2);
 		tbPreco.setTamColuna(100,3);
 		tbPreco.setTamColuna(100,4);
+		tbPreco.setFont( new Font("Tomoha", Font.PLAIN, 14) );
 		montaTabela();
+
+		pinCab.adic(new JLabelPad("Código do produto:"),7,2,120,20);
+		pinCab.adic(txtCodProd,7,25,120,20);
+		pinCab.adic(new JLabelPad("Pesquisa produto pela descrição:"),130,2,200,20);
+		pinCab.adic(txtDescProd,130,25,300,20);
 		
-		pinCab.adic(new JLabelPad("Pesquisa produto pela descrição:"),7,2,200,20);
-		pinCab.adic(txtDescProd,7,25,300,20);
-		
-		//pinGrid.add(spPreco, BorderLayout.CENTER);
 		pnCliente.add(pinCab, BorderLayout.NORTH);
-		//pnClienteGeral.add(tbPreco, BorderLayout.CENTER);
 		pnCliente.add(spPreco, BorderLayout.CENTER);
-        //c.add(pnClienteGeral, BorderLayout.CENTER);
+		
 		adicBotaoSair();
-		txtDescProd.addKeyListener(this);
+		
 		tbPreco.addKeyListener(this);
+		txtDescProd.addKeyListener(this);
+		txtCodProd.addKeyListener(this);
+		txtCodProd.setPK(true);
 	}
 
-	private void pesqProduto(String sDescProd) {
+	private void pesqDescProd(String sDescProd) {
 		int iPesq = -1;
 		try {
-			iPesq = tbPreco.pesqLinha(2,sDescProd);
+			iPesq = tbPreco.pesqLinha(2,sDescProd.trim());
 			if (iPesq!=-1) {
 				tbPreco.changeSelection(iPesq,0,true,true);
 				tbPreco.setLinhaSel(iPesq);
 			}
-		}
-		finally {
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			iPesq = 0;
 		}
 	}
-	public void setConexao(Connection cn) {
-	    super.setConexao(cn);
-		montaTela();
-    }
+	
+	private void pesqCodProd(String sCodProd) {
+		Vector vtemp = null;
+		int iPesq = -1;
+		try {
+			for(int i=0; i<tbPreco.getNumLinhas(); i++) {
+				vtemp = tbPreco.getLinha(i);
+				if(sCodProd.equals(((StringDireita)vtemp.elementAt(0)).toString().trim())) {
+					iPesq = i;
+					break;
+				}
+			}
+			if (iPesq!=-1) {
+				tbPreco.changeSelection(iPesq,0,true,true);
+				tbPreco.setLinhaSel(iPesq);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			vtemp = null;
+			iPesq = 0;
+		}
+	}
 	
 	private void montaTabela() {
 	    ResultSet rs = null;
@@ -132,7 +151,7 @@ public class FConsPreco extends FFilho implements KeyListener {
 	    	tbPreco.limpa();
 	    	while (rs.next()) {
 	    		vLinha = new Vector();
-	    		vLinha.addElement(new Integer(rs.getInt("CODPROD")));
+	    		vLinha.addElement(new StringDireita(String.valueOf(rs.getInt("CODPROD"))));
 	    		vLinha.addElement(new StringDireita(rs.getString("REFPROD")));
 	    		vLinha.addElement(rs.getString("DESCPROD"));
 	    		vLinha.addElement(new StringDireita(Funcoes.strDecimalToStrCurrency(15,2,rs.getDouble("PRECOPROD")+"")));
@@ -151,18 +170,35 @@ public class FConsPreco extends FFilho implements KeyListener {
 	    finally {
 	    	rs = null;
 	    	ps = null;
+	    	sSql = null;
 	    	vLinha = null;
 	    }
 	}
 	
-	public void keyTyped(KeyEvent e) {
-		
-	}
+	public void setConexao(Connection cn) {
+	    super.setConexao(cn);
+		montaTela();
+    }
+	
+	public void keyTyped(KeyEvent e) { }
 
 	public void keyPressed(KeyEvent e) {
-
-		if (e.getSource()==txtDescProd) {
-			pesqProduto(((JTextFieldPad) e.getSource()).getText().trim());
+		if (e.getSource()==txtDescProd)
+			pesqDescProd(((JTextFieldPad) e.getSource()).getText().trim());
+		else if (e.getSource()==txtCodProd && e.getKeyCode()==KeyEvent.VK_ENTER) {
+			if(Aplicativo.bBuscaCodProdGen) {
+				DLCodProd dl = new DLCodProd(con);
+				dl.buscaCodProd(txtCodProd.getVlrString());
+				if(dl.OK){
+					txtCodProd.setVlrString(String.valueOf(dl.getCodProd()));
+					pesqCodProd(txtCodProd.getVlrString().trim());
+					tbPreco.requestFocus();
+				}
+				dl.dispose();
+			} else {
+				pesqCodProd(txtCodProd.getVlrString().trim());
+				tbPreco.requestFocus();
+			}
 		}
 	}
 	
@@ -172,7 +208,6 @@ public class FConsPreco extends FFilho implements KeyListener {
 				txtDescProd.requestFocus();
 		}
 	}
-
-
+	
 }
 
