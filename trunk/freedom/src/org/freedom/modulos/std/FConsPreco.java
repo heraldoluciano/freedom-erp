@@ -23,6 +23,8 @@ package org.freedom.modulos.std;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.Connection;
@@ -49,7 +51,7 @@ import org.freedom.telas.FFilho;
  * Tela de consulta de preços
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class FConsPreco extends FFilho implements KeyListener/*, FocusListener */{
+public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	private static final long serialVersionUID = 1L;
     private JPanelPad pinCab = new JPanelPad(800,55);
     private Tabela tbPreco = new Tabela();
@@ -87,6 +89,7 @@ public class FConsPreco extends FFilho implements KeyListener/*, FocusListener *
 		
 		adicBotaoSair();
 		
+		tbPreco.addFocusListener(this);
 		tbPreco.addKeyListener(this);
 		txtDescProd.addKeyListener(this);
 		txtCodProd.addKeyListener(this);
@@ -178,6 +181,7 @@ public class FConsPreco extends FFilho implements KeyListener/*, FocusListener *
 	public void setConexao(Connection cn) {
 	    super.setConexao(cn);
 		montaTela();
+		txtCodProd.setBuscaGenProd(new DLCodProd(con,tbPreco));
     }
 	
 	public void keyTyped(KeyEvent e) { }
@@ -185,9 +189,9 @@ public class FConsPreco extends FFilho implements KeyListener/*, FocusListener *
 	public void keyPressed(KeyEvent e) {
 		if (e.getSource()==txtDescProd)
 			pesqDescProd(((JTextFieldPad) e.getSource()).getText().trim());
-		else if (e.getSource()==txtCodProd && e.getKeyCode()==KeyEvent.VK_ENTER) {
+		/*else if (e.getSource()==txtCodProd && e.getKeyCode()==KeyEvent.VK_ENTER) {
 			if(Aplicativo.bBuscaCodProdGen) {
-				DLCodProd dl = new DLCodProd(con);
+				DLCodProd dl = new DLCodProd(con,tbPreco);
 				dl.buscaCodProd(txtCodProd.getVlrString());
 				if(dl.OK){
 					txtCodProd.setVlrString(String.valueOf(dl.getCodProd()));
@@ -199,7 +203,7 @@ public class FConsPreco extends FFilho implements KeyListener/*, FocusListener *
 				pesqCodProd(txtCodProd.getVlrString().trim());
 				tbPreco.requestFocus();
 			}
-		}
+		}*/
 	}
 	
 	public void keyReleased(KeyEvent e) {
@@ -208,6 +212,13 @@ public class FConsPreco extends FFilho implements KeyListener/*, FocusListener *
 				txtDescProd.requestFocus();
 		}
 	}
+	
+	public void focusGained(FocusEvent e) {
+		if(e.getSource()==tbPreco)
+			pesqCodProd(txtCodProd.getVlrString().trim());
+	}
+	
+	public void focusLost(FocusEvent e) { }
 	
 }
 

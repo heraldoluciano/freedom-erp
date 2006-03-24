@@ -38,6 +38,7 @@ import org.freedom.acao.EditEvent;
 import org.freedom.acao.EditListener;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.std.DLBuscaEstoq;
+import org.freedom.modulos.std.DLCodProd;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLF2;
 import org.freedom.telas.DLF3;
@@ -93,6 +94,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	private ListaCampos lcTxt = null;
 	private ListaCampos lcTabExt = null;
 	private DLF3 dlBuscaAdic = null; 
+	private DLCodProd dlCodProd = null;
 	
 	public JTextFieldPad (int tipo, int tam, int dec) {
 		addFocusListener(this);
@@ -166,6 +168,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 
 	public void setBuscaAdic(DLF3 dl) {
 		dlBuscaAdic = dl;
+	}
+
+	public void setBuscaGenProd(DLCodProd dl) {
+		dlCodProd = dl;
 	}
 
 	public void setTipo(int tipo, int tam, int dec) {
@@ -905,6 +911,15 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			buscaAdic("estoque");
 		else if ((kevt.getKeyCode() == KeyEvent.VK_ENTER) && 
 				(getText().trim().length() > 0) && (bPK || bFK)) {
+			if(dlCodProd!=null) {
+				if(Aplicativo.bBuscaCodProdGen) {
+					dlCodProd.buscaCodProd(getVlrString());
+					if(dlCodProd.OK){
+						setVlrString(String.valueOf(dlCodProd.getCodProd()));
+						dlCodProd.passaFocus();
+					}
+				}
+			}
 			if(Aplicativo.bBuscaProdSimilar)
 				buscaAdic("similar");		  
 			//   	lcTxt.carregaDados();
