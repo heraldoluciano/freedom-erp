@@ -32,6 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
 import org.freedom.componentes.ListaCampos;
@@ -51,13 +52,15 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	private boolean bFilCodBar = false;
 	private boolean bFilCodFab = false;
 	private Vector vProds = new Vector();
+	private JComponent proxFoco = null;
 	
-	public DLCodProd(Connection con) {
+	public DLCodProd(Connection con, JComponent proxFoco) {
 
 		setTitulo("Pesquisa auxiliar");
 		setAtribos( 575, 260);		
 	    setResizable(true);	 
 		setConexao(con);
+		this.proxFoco = proxFoco;
 	    
 	    c.add( spnCentro, BorderLayout.CENTER);    
 	    
@@ -95,6 +98,11 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		
 		getPrefere();
 		
+	}
+	
+	public void passaFocus() {
+		if(proxFoco!=null)
+			proxFoco.requestFocus();
 	}
 	
 	public boolean buscaCodProd(String valor) {
@@ -273,6 +281,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
         	iCodProd = 0;
         	if (tab.getNumLinhas() > 0 && ilin >= 0) {
         		iCodProd = ((Integer)vProds.elementAt(ilin)).intValue();
+        		passaFocus();
         		super.ok();
         	} else {
         		Funcoes.mensagemInforma(this, "Nenhum produto foi selecionado.");

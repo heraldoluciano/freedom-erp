@@ -117,7 +117,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodProd1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 13, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtQtdade = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 2);
 	private JTextFieldPad txtPreco = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
 	private JTextFieldPad txtBaseCalc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
@@ -455,7 +455,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(1, txtCodVenda.getVlrInteger().intValue());
 			ps.setInt(2, Aplicativo.iCodEmp);
 			ps.setInt(3, lcVenda.getCodFilial());
-			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
+			ps.setString(4, txtCodProd.getVlrString().trim());
 			ps.setInt(5, Aplicativo.iCodEmp);
 			ps.setInt(6, lcProduto.getCodFilial());
 			ps.setBigDecimal(7, txtQtdade.getVlrBigDecimal());
@@ -472,7 +472,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			if (!con.getAutoCommit())
 				con.commit();
 			tbItem.adicLinha(new Object[] { new Integer(iCodItVenda),
-					txtCodProd.getVlrInteger(), txtDescProd.getVlrString(),
+					txtCodProd.getVlrString().trim(), 
+					txtDescProd.getVlrString(),
 					txtQtdade.getVlrBigDecimal(),
 					txtPreco.getVlrBigDecimal(),
 					txtAliqIcms.getVlrBigDecimal(),
@@ -488,14 +489,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				}
 				else
 					sTributo = txtTipoFisc.getVlrString();
-				bf.vendaItem(Aplicativo.strUsuario, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString(), sTributo,
+				bf.vendaItem(Aplicativo.strUsuario, Integer.parseInt(txtCodProd.getVlrString().trim()), txtDescProd.getVlrString(), sTributo,
 						txtQtdade.getVlrDouble().doubleValue(), txtPreco.getVlrDouble().doubleValue(), 0,FreedomPDV.bModoDemo);
 			}
 
-			addPesoFrete(txtCodProd.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal());
+			addPesoFrete(Integer.parseInt(txtCodProd.getVlrString().trim()), txtQtdade.getVlrBigDecimal());
 			atualizaTot();
 			vCacheItem.clear();
-			vCacheItem.add(txtCodProd.getVlrInteger());
+			vCacheItem.add(txtCodProd.getVlrString());
 			vCacheItem.add(txtQtdade.getVlrBigDecimal());
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(null,
@@ -682,7 +683,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			try {
 				Robot robo = new Robot();
 				setFocusProd();
-				txtCodProd.setVlrInteger((Integer) vCacheItem.elementAt(0));
+				txtCodProd.setVlrString((String) vCacheItem.elementAt(0));
 				robo.keyPress(KeyEvent.VK_ENTER);
 				txtQtdade.requestFocus();
 				txtQtdade.setVlrBigDecimal((BigDecimal) vCacheItem.elementAt(1));
@@ -837,7 +838,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		if(((Boolean)prefs(0)).booleanValue()){
 			if(prefs(1)!=null){
 				if(Funcoes.mensagemConfirma(null,"Deseja adicionar o frete ao cupom?")==JOptionPane.YES_OPTION){
-					txtCodProd.setVlrInteger((Integer)prefs(1));
+					txtCodProd.setVlrString((String)prefs(1));
 					lcProduto.carregaDados();
 					txtQtdade.setVlrBigDecimal(new BigDecimal(1));
 					vlrFrete = txtPreco.getVlrBigDecimal().floatValue();
@@ -963,7 +964,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				txtCodProd.setVlrInteger(new Integer(rs.getInt(1)));
+				txtCodProd.setVlrString(rs.getString(1));
 				txtCodProd.requestFocus();
 				robo.keyPress(KeyEvent.VK_ENTER);
 				txtQtdade.setVlrBigDecimal(rs.getBigDecimal(2));
@@ -1053,7 +1054,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			break;
 		}
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtCodProd) {
+			/*if (kevt.getSource() == txtCodProd) {
 				if(Aplicativo.bBuscaCodProdGen) {
 					DLCodProd dl = new DLCodProd(con);
 					dl.buscaCodProd(txtCodProd.getVlrString());
@@ -1064,8 +1065,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 					dl.dispose();
 				}
 			}
-			else if (kevt.getSource() == txtQtdade) {
-				if (txtCodProd.getVlrDouble().doubleValue() == 0)
+			else */if (kevt.getSource() == txtQtdade) {
+				if (txtCodProd.getVlrString().length() == 0)
 					Funcoes.mensagemInforma(null, "Produto em branco.");
 				else if (txtQtdade.getVlrDouble().doubleValue() == 0)
 					Funcoes.mensagemInforma(null, "Quantidade em branco.");
@@ -1127,7 +1128,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 
 	public void afterCarrega(CarregaEvent cevt) {
 		if (cevt.getListaCampos() == lcProduto
-				&& txtCodProd.getVlrInteger().intValue() > 0)
+				&& txtCodProd.getVlrString().length() > 0)
 			buscaPreco();
 	}
 
@@ -1360,7 +1361,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(1, Integer.parseInt(txtCodProd.getVlrString().trim()));
 			ps.setInt(2, txtCodCli.getVlrInteger().intValue());
 			ps.setInt(3, Aplicativo.iCodEmp);
 			ps.setInt(4, lcCliente.getCodFilial());
@@ -1492,7 +1493,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	  				ret[0] = new Boolean(false);
 	  			
 	  			if (rs.getString("CODPROD")!=null)
-	  				ret[1] = new Integer(rs.getInt("CODPROD"));
+	  				ret[1] =rs.getString("CODPROD");
 	  			else 
 	  				ret[1] = null;
 	  		}
@@ -1535,6 +1536,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		sbVenda.setRazFilial(Aplicativo.sRazFilial);
 		sbVenda.setNumEst(Aplicativo.iNumEst);
 		sbVenda.setDescEst(getDescEst());
+		
+		txtCodProd.setBuscaGenProd(new DLCodProd(con,txtQtdade));
 	}
 
 }
