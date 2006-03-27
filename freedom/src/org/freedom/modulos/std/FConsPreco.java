@@ -189,21 +189,6 @@ public class FConsPreco extends FFilho implements KeyListener, FocusListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getSource()==txtDescProd)
 			pesqDescProd(((JTextFieldPad) e.getSource()).getText().trim());
-		/*else if (e.getSource()==txtCodProd && e.getKeyCode()==KeyEvent.VK_ENTER) {
-			if(Aplicativo.bBuscaCodProdGen) {
-				DLCodProd dl = new DLCodProd(con,tbPreco);
-				dl.buscaCodProd(txtCodProd.getVlrString());
-				if(dl.OK){
-					txtCodProd.setVlrString(String.valueOf(dl.getCodProd()));
-					pesqCodProd(txtCodProd.getVlrString().trim());
-					tbPreco.requestFocus();
-				}
-				dl.dispose();
-			} else {
-				pesqCodProd(txtCodProd.getVlrString().trim());
-				tbPreco.requestFocus();
-			}
-		}*/
 	}
 	
 	public void keyReleased(KeyEvent e) {

@@ -4,7 +4,7 @@
  *
  * Projeto: Freedom <BR>
  * Pacote: leiautes <BR>
- * Classe: @(#)NFIswara2.java <BR>
+ * Classe: @(#)NF018.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -15,7 +15,7 @@
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR> <BR>
  *
- * Layout da nota fiscal para a empresa Iswara Ltda.
+ * Layout da nota fiscal para a empresa 018 Ltda.
  */
 
 package org.freedom.layout;
