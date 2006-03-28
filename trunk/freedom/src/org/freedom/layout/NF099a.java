@@ -102,7 +102,7 @@ public class NF099a extends Layout {
 				imp.say(imp.pRow()+1,0,""+imp.comprimido());
 				imp.say(imp.pRow()+0,6,""+itens.getInt(NF.C_CODPROD));
 				imp.say(imp.pRow()+0,14,itens.getString(NF.C_DESCPROD));
-				imp.say(imp.pRow()+0,77,Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
+				imp.say(imp.pRow()+0,82,Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
 				imp.say(imp.pRow()+0,87,itens.getString(NF.C_CODUNID).substring(0,4));
 				imp.say(imp.pRow()+0,94,Funcoes.strDecimalToStrCurrency(6,2,""+itens.getFloat(NF.C_QTDITPED)));
 				imp.say(imp.pRow()+0,102,Funcoes.strDecimalToStrCurrency(12,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
