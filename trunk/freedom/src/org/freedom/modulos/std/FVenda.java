@@ -821,16 +821,20 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 	
 	private void calcDescIt() {
-		txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(
-				Funcoes.arredFloat(txtVlrProdItVenda.floatValue()
-						* txtPercDescItVenda.floatValue() / 100,casasDecFin)));
+		if(txtPercDescItVenda.floatValue()!=0) {
+			txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(
+					Funcoes.arredFloat(txtVlrProdItVenda.floatValue()
+							* txtPercDescItVenda.floatValue() / 100,casasDecFin)));
+		} 
 	}
 	
 	private void calcComisIt() {
-		txtVlrComisItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredFloat(
-				(txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue())
-					* txtPercComItVenda.floatValue()/ 100
-					* txtPercComisVenda.floatValue()/ 100, casasDecFin)));		
+		if(txtPercComItVenda.floatValue()!=0) {
+			txtVlrComisItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredFloat(
+					(txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue())
+						* txtPercComItVenda.floatValue()/ 100
+						* txtPercComisVenda.floatValue()/ 100, casasDecFin)));
+		}
 	}
 
 	private void calcImpostos(boolean bBuscaBase) {
