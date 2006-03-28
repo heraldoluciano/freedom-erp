@@ -1057,9 +1057,9 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			if (rs.next()) {
 				casasDec = rs.getInt("CASASDEC");
 				casasDecFin = rs.getInt("CASASDECFIN");
-				sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N" : "S");
+				sBusca = (rs.getString("BUSCAPRODSIMILAR") == null ? "N" : rs.getString("BUSCAPRODSIMILAR"));
 				bBuscaProdSimilar = sBusca.equals("S") ? true : false;
-				sBusca = (rs.getString("BUSCACODPRODGEN") == null ? "N" : "S");
+				sBusca = (rs.getString("BUSCACODPRODGEN") == null ? "N" : rs.getString("BUSCACODPRODGEN"));
 				bBuscaCodProdGen = sBusca.equals("S") ? true : false;
 			}
 			rs.close();
