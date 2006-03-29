@@ -944,7 +944,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Venda!"
 					+ err.getMessage(),true,con,err);
 		} finally {
-			imp = null;
 			vDesc = null;
 			vObs = null;		
 			ps = null;
