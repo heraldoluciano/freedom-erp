@@ -161,7 +161,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	}
 	private void montaComboSetor() {
 		Integer iTipo = cbTipo.getVlrInteger();
-		if (iTipo == null)
+		if ( (iTipo == null) || (iTipo.intValue() == 0) ) 
 			return; 
 		String sSQL = "SELECT S.CODSETAT,S.DESCSETAT FROM ATSETOR S, ATTIPOATENDOSETOR TS" +
 			           " WHERE S.CODEMP=TS.CODEMPST AND S.CODFILIAL=TS.CODFILIAL AND S.CODSETAT=TS.CODSETAT"+
