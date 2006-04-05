@@ -8,6 +8,7 @@ package org.freedom.ecf.driver;
 
 public abstract class ECFDriver {
 	public static final byte ESC = 27;
+	public static final byte STX = 2;
 	protected String porta;
 	public ECFDriver() {
 		
@@ -20,5 +21,7 @@ public abstract class ECFDriver {
 		this.porta = porta;
 		return retorno;
 	}
-	public abstract String preparaCmd();
+	public abstract byte[] preparaCmd(byte[] CMD);
+	
+	public abstract int leituraX();
 }
