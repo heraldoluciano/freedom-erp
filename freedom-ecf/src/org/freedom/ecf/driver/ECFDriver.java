@@ -20,4 +20,5 @@ public abstract class ECFDriver {
 		this.porta = porta;
 		return retorno;
 	}
+	public abstract String preparaCmd();
 }
