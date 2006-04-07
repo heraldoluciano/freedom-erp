@@ -401,16 +401,19 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 	
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btOK) {
-			if (txtCodConta.getVlrString().length() < 1)
+			if (txtCodConta.getVlrString().length() < 1) {
 				Funcoes.mensagemInforma(this,"Número da conta é requerido!");
-			else if (txtCodPlan.getVlrString().length() < 13)
+			} else if (txtCodPlan.getVlrString().length() < 13) {
 				Funcoes.mensagemInforma(this,"Código da categoria é requerido!");
-			else if (txtDtPagto.getVlrString().length() < 10)
+			} else if (txtDtPagto.getVlrString().length() < 10) {
 				Funcoes.mensagemInforma(this,"Data do pagamento é requerido!");
-			else if (txtVlr.getVlrString().length() < 4)
+			} else if (txtVlr.getVlrString().length() < 4) {
 				Funcoes.mensagemInforma(this,"Valor pago é requerido!");
-			else
+			} else if (txtVlr.getVlrDouble().doubleValue() <= 0) {
+				Funcoes.mensagemInforma(this,"Valor pago deve ser maior que zero!");
+			} else {
 				super.actionPerformed(evt);
+			}
 		} else
 			super.actionPerformed(evt);
 	}
