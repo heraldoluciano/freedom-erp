@@ -64,9 +64,11 @@ public class FRComissoes extends FRelatorio {
 	private JCheckBoxPad cbNLiberada = new JCheckBoxPad("Não Liber.", "S", "N");
 	private JCheckBoxPad cbLiberada = new JCheckBoxPad("Liberadas", "S", "N");
 	private JCheckBoxPad cbPaga = new JCheckBoxPad("Pagas", "S", "N");
+	private JCheckBoxPad cbResumido = new JCheckBoxPad("Relatório Resumido", "S", "N");
 	private ListaCampos lcVend = new ListaCampos(this);
 
 	public FRComissoes() {
+	  	super();		
 		setTitulo("Comissões");
 		setAtribos(80, 80, 330, 300);
 
@@ -123,7 +125,9 @@ public class FRComissoes extends FRelatorio {
 	
 		adic(new JLabelPad("Ordem:"),9,125,100,20);
 		adic(rgOrdemRel, 7, 145, 280, 65);
-
+		
+		adic(cbResumido, 7, 210, 170, 20);
+		cbResumido.setSelected(true);
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate(cPeriodo.getTime());
@@ -300,20 +304,33 @@ public class FRComissoes extends FRelatorio {
 						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "| CLIENTE");
-						imp.say(imp.pRow() + 0, 24, "|  DUPLIC.");
-						imp.say(imp.pRow() + 0, 35, "| PEDIDO");
-						imp.say(imp.pRow() + 0, 44, "|L");
-						imp.say(imp.pRow() + 0, 46, "|ST");
-						imp.say(imp.pRow() + 0, 49, "| EMISSAO");
-						imp.say(imp.pRow() + 0, 60, "| VENCTO.");
-						imp.say(imp.pRow() + 0, 71, "| VLR.PARC.A");
-						imp.say(imp.pRow() + 0, 84, "|VLR.COMI.");
-						imp.say(imp.pRow() + 0, 93, "|    %");
-						imp.say(imp.pRow() + 0, 104, "| VLR.PAGO");
-						imp.say(imp.pRow() + 0, 114, "|VLR.A PG.");
-						imp.say(imp.pRow() + 0, 124, "| DT.PGTO.");
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());					
+						if (cbResumido.getStatus()) {
+							imp.say(imp.pRow() + 0, 0, "| CLIENTE");
+							imp.say(imp.pRow() + 0, 38, "|  DUPLIC.");							
+							imp.say(imp.pRow() + 0, 49, "| PEDIDO");
+							imp.say(imp.pRow() + 0, 60, "| EMISSAO");
+							imp.say(imp.pRow() + 0, 73, "| VENCTO.");
+							imp.say(imp.pRow() + 0, 84, "| VLR.PARC.A");							
+							imp.say(imp.pRow() + 0, 98, "|VLR.COMI.");
+							imp.say(imp.pRow() + 0, 108, "|    %");
+							imp.say(imp.pRow() + 0, 114, "| VLR.PAGO");
+							imp.say(imp.pRow() + 0, 124, "| DT.PGTO.");							
+						} else {
+							imp.say(imp.pRow() + 0, 0, "| CLIENTE");
+							imp.say(imp.pRow() + 0, 24, "|  DUPLIC.");							
+							imp.say(imp.pRow() + 0, 35, "| PEDIDO");
+							imp.say(imp.pRow() + 0, 44, "|L");
+							imp.say(imp.pRow() + 0, 46, "|ST");
+							imp.say(imp.pRow() + 0, 49, "| EMISSAO");
+							imp.say(imp.pRow() + 0, 60, "| VENCTO.");
+							imp.say(imp.pRow() + 0, 71, "| VLR.PARC.A");
+							imp.say(imp.pRow() + 0, 84, "|VLR.COMI.");
+							imp.say(imp.pRow() + 0, 93, "|    %");
+							imp.say(imp.pRow() + 0, 104, "| VLR.PAGO");
+							imp.say(imp.pRow() + 0, 114, "|VLR.A PG.");
+							imp.say(imp.pRow() + 0, 124, "| DT.PGTO.");							
+						}
 						imp.say(imp.pRow() + 0, 135, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
@@ -324,25 +341,37 @@ public class FRComissoes extends FRelatorio {
 					else
 						bPercComi = new BigDecimal("0");
 					
-
 					bVlrVenda = rs.getBigDecimal("VLRPARCITREC").setScale(2,BigDecimal.ROUND_HALF_UP);
 					bVlrComi = rs.getBigDecimal("VLRCOMI").setScale(2,BigDecimal.ROUND_HALF_UP);
 					bVlrPago = rs.getBigDecimal("VLRPAGOCOMI").setScale(2,BigDecimal.ROUND_HALF_UP);
 					bVlrAPag = rs.getBigDecimal("VLRAPAGCOMI").setScale(2,BigDecimal.ROUND_HALF_UP);
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos(rs.getString("RAZCLI"),22));
-					imp.say(imp.pRow() + 0, 24, "|" + Funcoes.adicEspacosEsquerda(rs.getString("DOCREC") + "-" + rs.getString("NPARCITREC"), 10));
-					imp.say(imp.pRow() + 0, 35, "|" + Funcoes.adicEspacosEsquerda(rs.getInt("CODVENDA") + "", 8));
-					imp.say(imp.pRow() + 0, 44, "|" + rs.getString("TIPOCOMI"));
-					imp.say(imp.pRow() + 0, 46, "|" + rs.getString("STATUSCOMI"));
-					imp.say(imp.pRow() + 0, 49, "|" + Funcoes.dateToStrDate(rs.getDate("DATACOMI")));
-					imp.say(imp.pRow() + 0, 60, "|" + Funcoes.dateToStrDate(rs.getDate("DTVENCCOMI")));
-					imp.say(imp.pRow() + 0, 71, "|" + Funcoes.strDecimalToStrCurrency(12, 2, ""+bVlrVenda));
-					imp.say(imp.pRow() + 0, 84, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrComi));
-					imp.say(imp.pRow() + 0, 94, "|" + Funcoes.alinhaDir(Funcoes.strDecimalToStrCurrency(5, 4, ""+bPercComi),9));
-					imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrPago));
-					imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrAPag));
-					imp.say(imp.pRow() + 0, 124, "|" + (rs.getDate("DTPAGTOCOMI") == null ? "" : Funcoes.dateToStrDate(rs.getDate("DTPAGTOCOMI"))));
+					if (cbResumido.getStatus()) {
+						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos(rs.getString("RAZCLI"),36));
+						imp.say(imp.pRow() + 0, 38, "|" + Funcoes.adicEspacosEsquerda(rs.getString("DOCREC") + "-" + rs.getString("NPARCITREC"), 10));
+						imp.say(imp.pRow() + 0, 49, "|" + Funcoes.adicEspacosEsquerda(rs.getInt("CODVENDA") + "", 8));
+						imp.say(imp.pRow() + 0, 60, "|" + Funcoes.dateToStrDate(rs.getDate("DATACOMI")));
+						imp.say(imp.pRow() + 0, 73, "|" + Funcoes.dateToStrDate(rs.getDate("DTVENCCOMI")));
+						imp.say(imp.pRow() + 0, 84, "|" + Funcoes.strDecimalToStrCurrency(12, 2, ""+bVlrVenda));
+						imp.say(imp.pRow() + 0, 98, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrComi));
+						imp.say(imp.pRow() + 0, 108, "|" + Funcoes.alinhaDir(Funcoes.strDecimalToStrCurrency(5, 2, ""+bPercComi),5));
+						imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrPago));
+						imp.say(imp.pRow() + 0, 124, "|" + (rs.getDate("DTPAGTOCOMI") == null ? "" : Funcoes.dateToStrDate(rs.getDate("DTPAGTOCOMI"))));
+					} else {
+						imp.say(imp.pRow() + 0, 0, "|" + Funcoes.adicionaEspacos(rs.getString("RAZCLI"),22));
+						imp.say(imp.pRow() + 0, 24, "|" + Funcoes.adicEspacosEsquerda(rs.getString("DOCREC") + "-" + rs.getString("NPARCITREC"), 10));
+						imp.say(imp.pRow() + 0, 35, "|" + Funcoes.adicEspacosEsquerda(rs.getInt("CODVENDA") + "", 8));
+						imp.say(imp.pRow() + 0, 44, "|" + rs.getString("TIPOCOMI"));
+						imp.say(imp.pRow() + 0, 46, "|" + rs.getString("STATUSCOMI"));
+						imp.say(imp.pRow() + 0, 49, "|" + Funcoes.dateToStrDate(rs.getDate("DATACOMI")));
+						imp.say(imp.pRow() + 0, 60, "|" + Funcoes.dateToStrDate(rs.getDate("DTVENCCOMI")));
+						imp.say(imp.pRow() + 0, 71, "|" + Funcoes.strDecimalToStrCurrency(12, 2, ""+bVlrVenda));
+						imp.say(imp.pRow() + 0, 84, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrComi));
+						imp.say(imp.pRow() + 0, 94, "|" + Funcoes.alinhaDir(Funcoes.strDecimalToStrCurrency(5, 4, ""+bPercComi),9));
+						imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrPago));
+						imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, ""+bVlrAPag));
+						imp.say(imp.pRow() + 0, 124, "|" + (rs.getDate("DTPAGTOCOMI") == null ? "" : Funcoes.dateToStrDate(rs.getDate("DTPAGTOCOMI"))));
+					}
 					imp.say(imp.pRow() + 0, 135, "|");
 					bVlrTotVenda = bVlrTotVenda.add(bVlrVenda);
 					bVlrTotComi = bVlrTotComi.add(bVlrComi);
@@ -354,14 +383,26 @@ public class FRComissoes extends FRelatorio {
 				imp.say(imp.pRow() + ((hasData) ? 1 : 0), 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "| TOTAL ->");
-				imp.say(imp.pRow() + 0, 24, "|");
-				imp.say(imp.pRow() + 0, 71, "|" + Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrTotVenda.setScale(2,BigDecimal.ROUND_HALF_UP)));
-				imp.say(imp.pRow() + 0, 83, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotComi.setScale(2,BigDecimal.ROUND_HALF_UP)));
-				imp.say(imp.pRow() + 0, 94, "|");
-				imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotPago.setScale(2,BigDecimal.ROUND_HALF_UP)));
-				imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotAPag.setScale(2,BigDecimal.ROUND_HALF_UP)));
-				imp.say(imp.pRow(), 124, "|");
+				if (cbResumido.getStatus()) 
+				{				
+					imp.say(imp.pRow() + 0, 0, "| TOTAL ->");
+					imp.say(imp.pRow() + 0, 38, "|");
+					imp.say(imp.pRow() + 0, 84, "|" + Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrTotVenda.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow() + 0, 98, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotComi.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow() + 0, 108, "|");
+					imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotPago.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow(), 124, "|");
+				} else 
+				{
+					imp.say(imp.pRow() + 0, 0, "| TOTAL ->");
+					imp.say(imp.pRow() + 0, 24, "|");
+					imp.say(imp.pRow() + 0, 71, "|" + Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrTotVenda.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow() + 0, 83, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotComi.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow() + 0, 94, "|");
+					imp.say(imp.pRow() + 0, 104, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotPago.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow() + 0, 114, "|" + Funcoes.strDecimalToStrCurrency(9, 2, "" + bVlrTotAPag.setScale(2,BigDecimal.ROUND_HALF_UP)));
+					imp.say(imp.pRow(), 124, "|");
+				}
 				imp.say(imp.pRow(), 135, "|");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");

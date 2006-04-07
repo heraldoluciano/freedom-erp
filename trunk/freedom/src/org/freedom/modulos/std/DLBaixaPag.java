@@ -186,9 +186,11 @@ public class DLBaixaPag extends FFDialogo implements CarregaListener {
 		Funcoes.mensagemInforma(this,"Data do pagamento é requerido!");
       }
       else if (txtVlrPago.getVlrString().length() < 4) {
-		Funcoes.mensagemInforma(this,"Valor pago é requerido!");
+    	   Funcoes.mensagemInforma(this,"Valor pago é requerido!");
       }
-      else {
+      else if (txtVlrPago.getVlrDouble().doubleValue() <= 0.0 ) {
+		   Funcoes.mensagemInforma(this,"Valor pago deve ser maior que zero!");
+      } else {
         super.actionPerformed(evt);
       }
     }
