@@ -52,6 +52,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	private boolean bFilCodBar = false;
 	private boolean bFilCodFab = false;
 	private Vector vProds = new Vector();
+	private Vector vUsaLote = new Vector();
 	private JComponent proxFoco = null;
 	
 	public DLCodProd(Connection con, JComponent proxFoco) {
@@ -67,9 +68,9 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	    addWindowFocusListener( new WindowAdapter() {
 			 public void windowGainedFocus(WindowEvent e) {
 	            if (tab.getNumLinhas() > 0)
-	              tab.requestFocus();
+	            	tab.requestFocus();
 	            else
-	              btCancel.requestFocus();
+	            	btCancel.requestFocus();
 			 }
 	       }
 	    );
@@ -79,10 +80,10 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		tab.adicColuna("Cód.bar.prod.");
 		tab.adicColuna("Cód.fab.prod.");
 		tab.adicColuna("Descrição do produto");    
+		tab.adicColuna("Cód.amox.");
 		tab.adicColuna("lote");
 		tab.adicColuna("Validade");   	  
 		tab.adicColuna("Saldo");   	
-		tab.adicColuna("Cód.amox.");
 		tab.setTamColuna(80,0);
 		tab.setTamColuna(80,1);
 		tab.setTamColuna(80,2);
@@ -108,9 +109,14 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 	public boolean buscaCodProd(String valor) {
 
 		PreparedStatement ps = null;
+		PreparedStatement ps2 = null;
 		ResultSet rs = null;
+		ResultSet rs2 = null;
 		String sSQL = null;
+		String sSQL1 = null;
+		String sSQL2 = null;
 		String sWhere = "";
+		String sTemp = null;
 		boolean usaOR = false;
 		boolean adicCodProd = false;
 		
@@ -120,6 +126,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		try{
 			
 			vProds.clear();
+			vUsaLote.clear();
 			tab.limpa();
 			iCodProd = 0;
 			
@@ -128,49 +135,53 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			if(bFilCodProd) {
 				try{
 					int val = Integer.parseInt(valor);
-					if(val < Integer.MAX_VALUE && val < Integer.MIN_VALUE ) {
+					if(val < Integer.MAX_VALUE && val > Integer.MIN_VALUE ) {
 						if(sWhere.length()>0) {
-							sWhere += " OR (P.CODPROD=?) ";
+							sWhere += "OR (P.CODPROD=?) ";
 							usaOR = true;
-						}
-						sWhere = "AND P.CODPROD=? ";
+						} else 
+							sWhere += "AND P.CODPROD=? ";
 						adicCodProd = true;
 					}
 				} catch (NumberFormatException e) {
-					System.out.println(e.getMessage());
+					System.out.println("Erro ao fazer busca generica de produtos\n"+e.getMessage());
 				}
 			}
 			if(bFilRefProd)
 				if(sWhere.length()>0) {
-					sWhere += " OR (P.REFPROD=?) ";
+					sWhere += "OR (P.REFPROD=?) ";
 					usaOR = true;
-				}
-				else
+				} else
 					sWhere = "AND (P.REFPROD=?) ";			
 			if(bFilCodFab)
 				if(sWhere.length()>0) {
-					sWhere += " OR (P.CODFABPROD=?) ";
+					sWhere += "OR (P.CODFABPROD=?) ";
 					usaOR = true;
-				}
-				else
+				} else
 					sWhere = "AND (P.CODFABPROD=?) ";
 			if(usaOR)
-				sWhere = " AND (" + sWhere.substring(4,sWhere.length()) +") ";
+				sWhere = " AND (" + sWhere.substring(4,sWhere.length()) +") ";	
 			
-					
-				
-			sSQL =  "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " +
+			sSQL1 = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " +
 					"L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " +
 					"FROM EQPRODUTO P, EQLOTE L, EQALMOX A " +
-					"WHERE P.CODEMP=? AND P.CODFILIAL=? " +
-					sWhere +
-					"AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " +
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " +
 					"AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX " +
+					"AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD " +
 					"AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " +
 					                     "FROM EQLOTE LS " +
 					                     "WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " +
-					                     "AND LS.CODEMP=L.CODEMP AND LS.SLDLIQLOTE>0 " +
-					                     "AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
+					                     "AND LS.CODEMP=L.CODEMP AND VENCTOLOTE >= CAST('today' AS DATE) ) ";
+			
+			sSQL2 = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, A.CODALMOX " +
+					"FROM EQPRODUTO P, EQALMOX A " +
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " +
+					"AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";	
+			
+			sSQL =  "SELECT P.CODPROD, P.CLOTEPROD " +
+					"FROM EQPRODUTO P " +
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? " +
+					sWhere;
 			
 			ps = con.prepareStatement(sSQL);
 			int iparam = 1;
@@ -187,37 +198,59 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			
 			rs = ps.executeQuery();
 			
-			int ilinha = 0;
 			while(rs.next()) {
-				tab.adicLinha( new Object[]{(rs.getString("CODPROD") != null ? rs.getString("CODPROD") : ""),
-											(rs.getString("REFPROD") != null ? rs.getString("REFPROD") : ""),
-											(rs.getString("CODBARPROD") != null ? rs.getString("CODBARPROD") : ""),
-											(rs.getString("CODFABPROD") != null ? rs.getString("CODFABPROD") : ""),
-											(rs.getString("DESCPROD") != null ? rs.getString("DESCPROD") : ""),
-											(rs.getString("CODLOTE") != null ? rs.getString("CODLOTE") : ""),
-											(rs.getString("VENCTOLOTE") != null ? rs.getString("VENCTOLOTE") : ""),
-											(rs.getString("SLDLOTE") != null ? rs.getString("SLDLOTE") : ""),
-											(rs.getString("CODALMOX") != null ? rs.getString("CODALMOX") : "")});
-				ilinha++;
 				vProds.addElement(new Integer(rs.getString("CODPROD") != null ? rs.getString("CODPROD") : "0"));
+				vUsaLote.addElement(rs.getString("CLOTEPROD") != null ? rs.getString("CLOTEPROD") : "N");
 			}
 			
-			/*tab.adicLinha( new Object[]{"0","","","","","","","",""});
-			vProds.addElement(new Integer(0));*/
-			
-			if(ilinha <= 0) {
+			if(vProds.size() <= 0) {
 				Funcoes.mensagemErro(this, "Código Invalido!");
 				return false;
-			}
-			else if(ilinha == 1) {
+			} else if(vProds.size() == 1) {
 				iCodProd = ((Integer)vProds.elementAt(0)).intValue();
-				super.ok();
+				ok();
+				return true;
 			}
-			else {
-				tab.changeSelection(0,0,true,true);
-				tab.setLinhaSel(0);
-				setVisible(true);
+			
+			for(int i=0; i<vProds.size(); i++) {
+				if(((String)vUsaLote.elementAt(i)).equals("S"))
+					sTemp = sSQL1;
+				else 
+					sTemp = sSQL2;
+				
+				ps2 = con.prepareStatement(sTemp);
+				ps2.setInt(1, Aplicativo.iCodEmp);
+				ps2.setInt(2, ListaCampos.getMasterFilial("EQPRODUTO"));
+				ps2.setInt(3, ((Integer)vProds.elementAt(i)).intValue());
+				
+				rs2 = ps2.executeQuery();
+				
+				if(rs2.next()) {
+					if(((String)vUsaLote.elementAt(i)).equals("S")) {
+						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD") : ""),
+													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD") : ""),
+													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD") : ""),
+													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD") : ""),
+													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD") : ""),
+													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX") : ""),					
+													(rs2.getString("CODLOTE") != null ? rs2.getString("CODLOTE") : ""),
+													(rs2.getString("VENCTOLOTE") != null ? rs2.getString("VENCTOLOTE") : ""),
+													(rs2.getString("SLDLOTE") != null ? rs2.getString("SLDLOTE") : "")});
+					} else {
+						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD") : ""),
+													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD") : ""),
+													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD") : ""),
+													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD") : ""),
+													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD") : ""),
+													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX") : ""),					
+													"","",""});
+					}	
+				}				
 			}
+			
+			tab.changeSelection(0,0,true,true);
+			tab.setLinhaSel(0);
+			setVisible(true);
 			
 		} catch (SQLException e) {
 			Funcoes.mensagemErro(this, "Erro ao buscar produtos por código de barras!\n"+
@@ -234,7 +267,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		
 	}
 
-	public int getCodProd() {
+	public int getCodProd() { 
 		return iCodProd;
 	}
 	
@@ -256,12 +289,18 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 			
 			rs = ps.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				bFilCodProd = (rs.getString(1)!=null && rs.getString(1).equals("S")) ? true : false;
 				bFilRefProd = (rs.getString(2)!=null && rs.getString(2).equals("S")) ? true : false;
 				bFilCodBar  = (rs.getString(3)!=null && rs.getString(3).equals("S")) ? true : false;
 				bFilCodFab  = (rs.getString(4)!=null && rs.getString(4).equals("S")) ? true : false;
 			}
+			
+			// Garante pelo menos um filtro na busca...
+			// Caso se defina no preferencias so a busca generica 
+			// e não escolha as opções...
+			if(!bFilCodProd && !bFilRefProd && !bFilCodBar && !bFilCodFab)
+				bFilCodProd = true;
 			
 		} catch (SQLException e) {
 			Funcoes.mensagemErro(this, "Erro ao buscar filtros!\n"+
