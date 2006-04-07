@@ -1,47 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jardesc>
-    <jar path="freedom/lib/freedompdv.jar"/>
-    <options overwrite="false" compress="true" exportErrors="false" exportWarnings="true" saveDescription="true" descriptionLocation="/freedom/lib/jardesc/freedompdv.jardesc" useSourceFolders="false" buildIfNeeded="true"/>
-    <manifest manifestVersion="1.0" usesManifest="true" reuseManifest="false" saveManifest="false" generateManifest="true" manifestLocation="">
-        <sealing sealJar="false">
-            <packagesToSeal/>
-            <packagesToUnSeal/>
-        </sealing>
-    </manifest>
-    <selectedElements exportClassFiles="true" exportOutputFolder="false" exportJavaFiles="false">
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{DLBuscaProd.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FUnidade.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoFiscCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTabPreco.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FBanco.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FRListaPreco.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTratTrib.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FVariantes.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FGrupo.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCredCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FSimilar.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCliente.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FMoeda.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FGrade.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCLFiscal.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FAlmox.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FTipoCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FProduto.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FItCLFiscal.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FModGrade.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FClasCli.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FCpProd.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FMarca.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FManutPreco.java"/>
-        <javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std{FPlanoPag.java"/>
-    </selectedElements>
+<jar path="freedom/lib/freedompdv.jar"/>
+<options buildIfNeeded="true" compress="true" descriptionLocation="/freedom/lib/jardesc/freedompdv.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" useSourceFolders="false"/>
+<manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+<sealing sealJar="false">
+<packagesToSeal/>
+<packagesToUnSeal/>
+</sealing>
+</manifest>
+<selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.drivers"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.componentes"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.std"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.pdv"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.funcoes"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.acao"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.bmps"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.images"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.modulos.atd{FAgenda.java"/>
+<javaElement handleIdentifier="=freedom/src&lt;org.freedom.telas"/>
+</selectedElements>
 </jardesc>
