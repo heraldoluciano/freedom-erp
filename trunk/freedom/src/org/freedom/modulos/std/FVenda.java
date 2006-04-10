@@ -2178,9 +2178,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				lbStatus.setVisible(true);
 			}
 			else if (txtStatusVenda.getVlrString().trim().length()>0 && 
-					txtStatusVenda.getVlrString().substring(0,1).equals("V")){
-				lbStatus.setText("   IMPRESSA");
-				lbStatus.setBackground(Color.BLUE);
+					(txtStatusVenda.getVlrString().trim().equals("V2")
+							|| txtStatusVenda.getVlrString().trim().equals("V3"))){
+				lbStatus.setText(" NOTA EMITIDA");
+				lbStatus.setBackground(Color.GREEN);
 				lbStatus.setVisible(true);
 			}
 			else if (verificaBloq()){
