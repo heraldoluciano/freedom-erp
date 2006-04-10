@@ -145,6 +145,8 @@ public class FRVendasDet extends FRelatorio {
 		int iCodVendaAnt = 0;				
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag()-1;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sCab = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
@@ -152,13 +154,10 @@ public class FRVendasDet extends FRelatorio {
 		String sWhere4 = "";
 		String sWhere5 = "";
 		String sDataini = "";
-		String sDatafim = "";
-		
+		String sDatafim = "";		
 		BigDecimal bVlrDesc = new BigDecimal("0");
 		BigDecimal bVlrLiq = new BigDecimal("0");
 		
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
 		
 		if(txtCodCli.getVlrInteger().intValue() > 0)
 			sWhere4 = " AND C.CODCLI=" + txtCodCli.getVlrInteger().intValue() + " ";
@@ -166,28 +165,23 @@ public class FRVendasDet extends FRelatorio {
 		if(txtCodProd.getVlrInteger().intValue() > 0)
 			sWhere5 = " AND IT.CODPROD=" + txtCodProd.getVlrInteger().intValue() + " ";
 		
-		if(rgFaturados.getVlrString().equals("S")){
+		if(rgFaturados.getVlrString().equals("S")) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 			sCab += " - SO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("N")){
+		} else if(rgFaturados.getVlrString().equals("N")) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 			sCab += " - NAO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("A")){
+		} else if(rgFaturados.getVlrString().equals("A"))
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-		}	
-		if(rgFinanceiro.getVlrString().equals("S")){
+		
+		if(rgFinanceiro.getVlrString().equals("S")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 			sCab += " - SO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("N")){
+		} else if(rgFinanceiro.getVlrString().equals("N")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 			sCab += " - NAO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("A")){
+		} else if(rgFinanceiro.getVlrString().equals("A"))
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-		}
 		
 		if(cbVendaCanc.getVlrString().equals("N"))
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
@@ -210,9 +204,12 @@ public class FRVendasDet extends FRelatorio {
 					+ " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD"
 					+ " AND IT.CODFILIAL=V.CODFILIAL ORDER BY V.DTEMITVENDA,V.CODVENDA";
 		
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
+			
+
+			sDataini = txtDataini.getVlrString();
+			sDatafim = txtDatafim.getVlrString();
+			
 			ps = con.prepareStatement(sSQL);
 			ps.setDate(1, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
 			ps.setDate(2, Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
@@ -311,6 +308,10 @@ public class FRVendasDet extends FRelatorio {
 			Funcoes.mensagemErro(this, "Erro consulta tabela de preços!"
 			+ err.getMessage(),true,con,err);
 		} finally {		
+			ps = null;
+			rs = null;
+			bVlrDesc = null;
+			bVlrLiq = null;
 			sCab = null;
 			sWhere1 = null;
 			sWhere2 = null;
@@ -321,12 +322,10 @@ public class FRVendasDet extends FRelatorio {
 			sDatafim = null;
 		}
 		
-		if (bVisualizar) {
+		if (bVisualizar) 
 			imp.preview(this);
-		}
-		else {
+		else 
 			imp.print();
-		}
 	}
 	
 	private boolean comRef() {

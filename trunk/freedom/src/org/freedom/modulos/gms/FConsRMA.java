@@ -92,7 +92,7 @@ public class FConsRMA extends FFilho implements ActionListener {
 	private ImageIcon imgColuna = null;
 	private JButton btBusca = new JButton("Buscar", Icone.novo("btPesquisa.gif"));
 	private JButton btPrevimp = new JButton("Imprimir", Icone.novo("btPrevimp.gif"));
-			JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
+	private JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcAlmox = new ListaCampos(this, "AM");
 	private ListaCampos lcUsuario = new ListaCampos(this, "");

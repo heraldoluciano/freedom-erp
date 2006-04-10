@@ -123,13 +123,16 @@ public class FRVendasCli extends FRelatorio {
 			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
 			return;
 		}
-		
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sCab = "";
 		String sOrdem = "";
 		String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
 		String sSQL = "";
+		
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
 		int count = 1;
@@ -142,28 +145,23 @@ public class FRVendasCli extends FRelatorio {
 		sDatafim = txtDatafim.getVlrString();
 
 		
-		if(rgFaturados.getVlrString().equals("S")){
+		if(rgFaturados.getVlrString().equals("S")){ 
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 			sCab += " - SO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("N")){
+		} else if(rgFaturados.getVlrString().equals("N")) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 			sCab += " - NAO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("A")){
+		} else if(rgFaturados.getVlrString().equals("A"))
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-		}	
-		if(rgFinanceiro.getVlrString().equals("S")){
+
+		if(rgFinanceiro.getVlrString().equals("S")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 			sCab += " - SO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("N")){
+		} else if(rgFinanceiro.getVlrString().equals("N")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 			sCab += " - NAO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("A")){
+		} else if(rgFinanceiro.getVlrString().equals("A"))
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-		}
 		
 		if(rgOrdem.getVlrString().equals("C"))
 			sOrdem = " V.CODCLI, C.RAZCLI, C.FONECLI";
@@ -184,8 +182,6 @@ public class FRVendasCli extends FRelatorio {
 
 		System.out.println(sSQL);
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
@@ -242,12 +238,20 @@ public class FRVendasCli extends FRelatorio {
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro na consulta ao relatório de vendas!\n"
 					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sCab = null;
+			sOrdem = null;
+			sWhere = null;
+		  	sWhere1 = null;
+		  	sWhere2 = null;
+			sSQL = null;			
 		}
 
-		if (bVisualizar) {
+		if (bVisualizar)
 			imp.preview(this);
-		} else {
+		else
 			imp.print();
-		}
 	}
 }

@@ -1383,17 +1383,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						iDiasPE = rs.getInt(57);
 				}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+				imp.say(imp.pRow() + 0, 0, Funcoes.replicate("-", 135));
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 4, "TOTAL IPI: " + rs.getString("VlrIPIVenda"));
 				imp.say(imp.pRow() + 0, 44, "|    TOTAL ICMS: " + rs.getString("VlrICMSVenda"));
 				imp.say(imp.pRow() + 0, 84, "|    TOTAL PRODUTOS: " + rs.getString("VlrLiqVenda"));
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+				imp.say(imp.pRow() + 0, 0, Funcoes.replicate("-", 135));
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 55, "INFORMAÇÕES COMPLEMENTARES");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+				imp.say(imp.pRow() + 0, 0, Funcoes.replicate("-", 135));
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0, "PAGAMENTO.........:    " + rs.getString("CODPLANOPAG") + " - " + rs.getString("DESCPLANOPAG"));
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -1421,19 +1421,19 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				}
 				
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0,0,Funcoes.replicate("-", 135));
+				imp.say(imp.pRow() + 0, 0, Funcoes.replicate("-", 135));
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 62, "OBSERVACÃO");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-	          	 vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsVenda")),115);
-	          	 for (int i=0; i<vObs.size(); i++) {
+	          	vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsVenda")),115);
+	          	for (int i=0; i<vObs.size(); i++) {
 	                imp.say(imp.pRow()+1,0,""+imp.comprimido());
 	                imp.say(imp.pRow()+0,20,vObs.elementAt(i).toString());
 	                if (imp.pRow()>=linPag) {
 	                    imp.incPags();
 	                    imp.eject();
 	                }
-	          	 }
+	          	}
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 0,Funcoes.replicate("-", 135));
 				imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
@@ -2154,6 +2154,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
 				lbStatus.setText("  CANCELADA");
 				lbStatus.setBackground(Color.RED);
+				lbStatus.setVisible(true);
+			}
+			else if (txtStatusVenda.getVlrString().trim().length()>0 && 
+					txtStatusVenda.getVlrString().substring(0,1).equals("V")){
+				lbStatus.setText("   IMPRESSA");
+				lbStatus.setBackground(Color.BLUE);
 				lbStatus.setVisible(true);
 			}
 			else if (verificaBloq()){

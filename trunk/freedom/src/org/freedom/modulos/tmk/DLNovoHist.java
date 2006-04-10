@@ -70,7 +70,10 @@ public class DLNovoHist extends FFDialogo {
 	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKhistorico.jpg"));
 	private Vector vVals = new Vector();
 	private Vector vLabs = new Vector();
+	private Vector vVals1 = new Vector();
+	private Vector vLabs1 = new Vector();
 	private JComboBoxPad cbSit = null; 
+	private JComboBoxPad cbTipo = null; 
 	private String[] sValsAgen = null;
 	public DLNovoHist(int iCod,int index,Component cOrig) {
 		super(cOrig);
@@ -80,10 +83,24 @@ public class DLNovoHist extends FFDialogo {
 		vVals.addElement("");
 		vVals.addElement("RJ");
 		vVals.addElement("AG");
+		vVals.addElement("EF");
 		vLabs.addElement("<--Selecione-->");	
 		vLabs.addElement("Rejeitado");		
 		vLabs.addElement("Agendar ligação/visita");
-		cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0);
+		vLabs.addElement("Efetivada");
+		cbSit = new JComboBoxPad(vLabs, vVals, JComboBoxPad.TP_STRING, 3, 0);
+		
+		vVals1.addElement("");
+		vVals1.addElement("H");
+		vVals1.addElement("V");
+		vVals1.addElement("N");
+		vVals1.addElement("I");
+		vLabs1.addElement("<--Selecione-->");	
+		vLabs1.addElement("Historico");		
+		vLabs1.addElement("Visita");
+		vLabs1.addElement("Visita(cliente náo cadastrado)");
+		vLabs1.addElement("Indefinida");
+		cbTipo = new JComboBoxPad(vLabs1, vVals1, JComboBoxPad.TP_STRING, 4, 2);
 		
 		lcCont.add(new GuardaCampo( txtCodCont , "CodCto", "Cód.cli", ListaCampos.DB_PK, txtNomeCont, false));
 		lcCont.add(new GuardaCampo( txtNomeCont, "NomeCto", "Nome do contato", ListaCampos.DB_SI, false));
@@ -118,7 +135,7 @@ public class DLNovoHist extends FFDialogo {
 	    	adic(new JLabelPad("Cód. cont."),7,5,80,20);
 			adic(txtCodCont,7,25,80,20);
 			adic(new JLabelPad("Nome do contato"),90,5,197,20);
-			adic(txtNomeCont,90,25,217,20);
+			adic(txtNomeCont,90,25,390,20);
 			txtCodCont.setVlrInteger(new Integer(iCod));
 			txtCodCont.setAtivo(false);			
 		}
@@ -126,28 +143,30 @@ public class DLNovoHist extends FFDialogo {
 			adic(new JLabelPad("Cód. cli."),7,5,80,20);
 			adic(txtCodCli,7,25,80,20);
 			adic(new JLabelPad("Razão social do cliente"),90,5,197,20);
-			adic(txtNomeCli,90,25,217,20);
+			adic(txtNomeCli,90,25,390,20);
 			txtCodCli.setVlrInteger(new Integer(iCod));
 			txtCodCli.setAtivo(false);
 		}
 	    		
-		adic(new JLabelPad("Situação"),310,5,150,20);
-		adic(cbSit,310,25,170,20);
-		adic(new JLabelPad("Cód. atend."),7,45,80,20);
-		adic(txtCodAtend,7,65,80,20);
-		adic(new JLabelPad("Nome do atendente"),90,45,197,20);
-		adic(txtNomeAtend,90,65,217,20);
-		adic(new JLabelPad("Data"),310,45,100,20);
-		adic(txtDataCont,310,65,100,20);
+		adic(new JLabelPad("Situação"),7,45,150,20);
+		adic(cbSit,7,65,235,20);
+		adic(new JLabelPad("Tipo do contato"),245,45,150,20);
+		adic(cbTipo,245,65,235,20);
+		adic(new JLabelPad("Cód. atend."),7,85,80,20);
+		adic(txtCodAtend,7,105,80,20);
+		adic(new JLabelPad("Nome do atendente"),90,85,197,20);
+		adic(txtNomeAtend,90,105,287,20);
+		adic(new JLabelPad("Data"),380,85,100,20);
+		adic(txtDataCont,380,105,100,20);
 		
 		JLabelPad lbChamada = new JLabelPad("   Chamada");
 		lbChamada.setOpaque(true);
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
-		adic(lbChamada,20,90,80,20);
-		adic(lbLinha,7,100,470,2);
-		adic(spnDesc,7,115,470,180);
+		adic(lbChamada,20,130,80,20);
+		adic(lbLinha,7,140,470,2);
+		adic(spnDesc,7,155,470,140);
 		
 		txtDataCont.setRequerido(true);
 		txtDataCont.setVlrDate(new java.util.Date());
@@ -201,7 +220,8 @@ public class DLNovoHist extends FFDialogo {
 		txaDescAtend.setVlrString((String)sVal[0]);
 		txtCodAtend.setVlrString((String)sVal[1]);
 		cbSit.setVlrString((String)sVal[2]);
-		txtDataCont.setVlrDate((Date)sVal[3]);
+		cbTipo.setVlrString((String)sVal[3]);
+		txtDataCont.setVlrDate((Date)sVal[4]);
 		lcAtend.carregaDados();
 	}
 	public Object[] getValores() {
@@ -209,17 +229,18 @@ public class DLNovoHist extends FFDialogo {
 		oVal[0] = txaDescAtend.getVlrString();
 		oVal[1] = txtCodAtend.getVlrString();
 		oVal[2] = cbSit.getVlrString();
-		oVal[3] = Funcoes.dateToSQLDate(txtDataCont.getVlrDate());
+		oVal[3] = cbTipo.getVlrString();
+		oVal[4] = Funcoes.dateToSQLDate(txtDataCont.getVlrDate());
 		if (sValsAgen != null) {
-			oVal[4] = sValsAgen[0];
-			oVal[5] = sValsAgen[1];
-			oVal[6] = sValsAgen[2];
-			oVal[7] = sValsAgen[3];
-			oVal[8] = sValsAgen[4];
-			oVal[9] = sValsAgen[5];
-			oVal[10] = sValsAgen[6];
-			oVal[11] = sValsAgen[7];
-			oVal[12] = sValsAgen[8];
+			oVal[5] = sValsAgen[0];
+			oVal[6] = sValsAgen[1];
+			oVal[7] = sValsAgen[2];
+			oVal[8] = sValsAgen[3];
+			oVal[9] = sValsAgen[4];
+			oVal[10] = sValsAgen[5];
+			oVal[11] = sValsAgen[6];
+			oVal[12] = sValsAgen[7];
+			oVal[13] = sValsAgen[8];
 		}
 		return oVal;
 	}
