@@ -31,109 +31,117 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 public class FTipoCred extends FDados implements ActionListener {
 	private static final long serialVersionUID = 1L;
+	private JTextFieldPad txtCodTipoCred = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtDescTipoCred = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtVlrTipoCred = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
+	
+	public FTipoCred() {
+		super();
+		setTitulo("Cadastro de tipos de credito");
+		setAtribos(50, 50, 350, 165);
+		adicCampo(txtCodTipoCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred.", ListaCampos.DB_PK, true);
+		adicCampo(txtDescTipoCred, 90, 20, 240, 20,"DescTpCred","Descrição do tipo de credito", ListaCampos.DB_SI, true);
+		adicCampo(txtVlrTipoCred, 7, 60, 120, 20,"VlrTpCred","Valor", ListaCampos.DB_SI, true);
+		setListaCampos( true, "TIPOCRED", "FN");
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
+		lcCampos.setQueryInsert(false);
+		setImprimir(true);
+	}
+	
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btPrevimp)      	
+			imprimir(true);
+		else if (evt.getSource() == btImp) 
+			imprimir(false);
+		super.actionPerformed(evt);
+	}
+	
+	private void imprimir(boolean bVisualizar) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		DLRTipoCred dl = null;
+		ImprimeOS imp = new ImprimeOS("",con);
+		int linPag = 0;
+		int iTot = 0;
+		
+		dl = new DLRTipoCred();
+		dl.setVisible(true);
+		if (dl.OK == false) {
+			dl.dispose();
+			return;
+		}
 
-  private JTextFieldPad txtCodTipoCred = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-  private JTextFieldPad txtDescTipoCred = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
-  private JTextFieldPad txtVlrTipoCred = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,3);
-  public FTipoCred() {
-  	super();
-    setTitulo("Cadastro de tipos de credito");
-    setAtribos(50, 50, 350, 165);
-    adicCampo(txtCodTipoCred, 7, 20, 80, 20,"CodTpCred","Cód.tp.cred.", ListaCampos.DB_PK, true);
-    adicCampo(txtDescTipoCred, 90, 20, 240, 20,"DescTpCred","Descrição do tipo de credito", ListaCampos.DB_SI, true);
-	adicCampo(txtVlrTipoCred, 7, 60, 120, 20,"VlrTpCred","Valor", ListaCampos.DB_SI, true);
-    setListaCampos( true, "TIPOCRED", "FN");
-    btImp.addActionListener(this);
-    btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);
-    setImprimir(true);
-  }
-  public void actionPerformed(ActionEvent evt) {
-    if (evt.getSource() == btPrevimp) {
-
-      	
-        imprimir(true);
-    }
-    else if (evt.getSource() == btImp) 
-      imprimir(false);
-    super.actionPerformed(evt);
-  }
-
-  private void imprimir(boolean bVisualizar) {
-    ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;
-    int iTot = 0;
-    imp.montaCab();
-    imp.setTitulo("Relatório de Tipos de Crédito");
-    DLRTipoCred dl = new DLRTipoCred();
-    dl.setVisible(true);
-    if (dl.OK == false) {
-      dl.dispose();
-      return;
-    }
-    String sSQL = "SELECT TP.CODTPCRED,TP.DESCTPCRED,(SELECT COUNT(CLI.CODCLI) \n"+
-                  "FROM VDCLIENTE CLI WHERE CLI.CODTPCRED = TP.CODTPCRED) \n"+
-                  "FROM FNTIPOCRED TP ORDER BY TP."+dl.getValor();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      ps = con.prepareStatement(sSQL);
-      rs = ps.executeQuery();
-      imp.limpaPags();
-      while ( rs.next() ) {
-         if (imp.pRow()==0) {
-            imp.impCab(80, false);
-            imp.say(imp.pRow()+0,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Cód.tp.cred.");
-            imp.say(imp.pRow()+0,20,"Descrição");
-            imp.say(imp.pRow()+0,70,"Qtd.cli.");
-            imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",80));
-         }
-         imp.say(imp.pRow()+1,0,""+imp.normal());
-         imp.say(imp.pRow()+0,2,rs.getString("CodTpCred"));
-         imp.say(imp.pRow()+0,20,rs.getString("DescTpCred"));
-         imp.say(imp.pRow()+0,70,Funcoes.alinhaDir(rs.getInt(3),8));
-         iTot += rs.getInt(3);
-         if (imp.pRow()>=linPag) {
-            imp.incPags();
-            imp.eject();
-         }
-      }
-      
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,"|");
-      imp.say(imp.pRow()+0,50,"Total de clientes:");
-      imp.say(imp.pRow()+0,71,Funcoes.alinhaDir(iTot,8));
-      imp.say(imp.pRow()+0,80,"|");
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",80));
-      imp.eject();
-      
-      imp.fechaGravacao();
-      
-//      rs.close();
-//      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-      dl.dispose();
-    }  
-    catch ( SQLException err ) {
-       Funcoes.mensagemErro(this,"Erro na consulta tabela de tipos de tipos de créditos!\n"+err.getMessage(),true,con,err);
-       err.printStackTrace();      
-    }
-    
-    if (bVisualizar) {
-      imp.preview(this);
-    }
-    else {
-      imp.print();
-    }
-  }
+		try {
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.montaCab();
+			imp.setTitulo("Relatório de Tipos de Crédito");
+			imp.limpaPags();
+			
+			sSQL = "SELECT TP.CODTPCRED,TP.DESCTPCRED," +
+				   "(SELECT COUNT(CLI.CODCLI) FROM VDCLIENTE CLI " +
+				   							 "WHERE CLI.CODEMP=TP.CODEMP AND CLI.CODFILAL=TP.CODFILIAL " +
+				   							 "AND CLI.CODTPCRED = TP.CODTPCRED) "+
+				   "FROM FNTIPOCRED TP " +
+				   "WHERE TP.CODEMP=? AND TP.CODFILIAL=? " +
+				   "ORDER BY TP." + dl.getValor();
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("FNTIPOCRED"));
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				if (imp.pRow()==0) {
+					imp.impCab(80, false);
+					imp.say(imp.pRow(),0, "" + imp.normal());
+					imp.say(imp.pRow(), 2, "Cód.tp.cred.");
+					imp.say(imp.pRow(), 20, "Descrição");
+					imp.say(imp.pRow(), 70, "Qtd.cli.");
+					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+				}
+				imp.say(imp.pRow() + 1,0, "" + imp.normal());
+				imp.say(imp.pRow(), 2, rs.getString("CodTpCred"));
+				imp.say(imp.pRow(), 20, rs.getString("DescTpCred"));
+				imp.say(imp.pRow(), 70, Funcoes.alinhaDir(rs.getInt(3),8));
+				iTot += rs.getInt(3);
+				if (imp.pRow()>=linPag) {
+					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+					imp.incPags();
+					imp.eject();
+				}
+			}
+			  
+			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow(), 0, "|");
+			imp.say(imp.pRow(), 50, "Total de clientes:");
+			imp.say(imp.pRow(), 71, Funcoes.alinhaDir(iTot,8));
+			imp.say(imp.pRow(), 80, "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+			  
+			imp.eject();      
+			imp.fechaGravacao();
+			if (!con.getAutoCommit())
+				con.commit();
+			dl.dispose();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro(this,"Erro na consulta tabela de tipos de tipos de créditos!\n"+err.getMessage(),true,con,err);
+			err.printStackTrace();      
+		}
+		    
+		if (bVisualizar)
+			imp.preview(this);
+		else
+			imp.print();
+	}
 }

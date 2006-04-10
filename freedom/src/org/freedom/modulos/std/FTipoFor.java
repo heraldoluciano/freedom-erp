@@ -31,92 +31,108 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FTipoFor extends FDados implements ActionListener {
 	private static final long serialVersionUID = 1L;
-
-  private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-  private JTextFieldPad txtDescTipoFor = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-  public FTipoFor () {
-  	super();
-    setTitulo("Cadastro de Tipo de Fornecedor");
-    setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTipoFor, 7, 20, 70, 20,"CodTipoFor","Cód.tp.for.", ListaCampos.DB_PK, true);
-    adicCampo(txtDescTipoFor, 80, 20, 250, 20,"DescTipoFor","Descrição do tipo de fornecedor", ListaCampos.DB_SI, true);
-    setListaCampos( true, "TIPOFOR", "CP");
-    btImp.addActionListener(this);
-    btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);    
-    setImprimir(true);
-  }
-  public void actionPerformed(ActionEvent evt) {
-    if (evt.getSource() == btPrevimp) {
-        imprimir(true);
-    }
-    else if (evt.getSource() == btImp) 
-      imprimir(false);
-    super.actionPerformed(evt);
-  }
-
-  private void imprimir(boolean bVisualizar) {
-    ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
-    imp.setTitulo("Relatório de Tipos de Fornecedor");
-    DLRTipoFor dl = new DLRTipoFor();
-    dl.setVisible(true);
-    if (dl.OK == false) {
-      dl.dispose();
-      return;
-    }
-    String sSQL = "SELECT CODTIPOFOR,DESCTIPOFOR FROM CPTIPOFOR ORDER BY "+dl.getValor();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      ps = con.prepareStatement(sSQL);
-      rs = ps.executeQuery();
-      imp.limpaPags();
-      while ( rs.next() ) {
-         if (imp.pRow()==0) {
-            imp.impCab(80, false);
-            imp.say(imp.pRow()+0,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Cód.tp.for.");
-            imp.say(imp.pRow()+0,30,"Descrição");
-            imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
-         }
-         imp.say(imp.pRow()+1,0,""+imp.normal());
-         imp.say(imp.pRow()+0,2,rs.getString("CodTipoFor"));
-         imp.say(imp.pRow()+0,30,rs.getString("DescTipoFor"));
-         if (imp.pRow()>=linPag) {
-            imp.incPags();
-            imp.eject();
-         }
-      }
-      
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
-      imp.eject();
-      
-      imp.fechaGravacao();
-      
-//      rs.close();
-//      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-      dl.dispose();
-    }  
-    catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de fornecedor!"+err.getMessage(),true,con,err);      
-    }
-    
-    if (bVisualizar) {
-      imp.preview(this);
-    }
-    else {
-      imp.print();
-    }
-  }
+	private JTextFieldPad txtCodTipoFor = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
+	private JTextFieldPad txtDescTipoFor = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	
+	public FTipoFor () {
+		super();
+		setTitulo("Cadastro de Tipo de Fornecedor");
+		setAtribos( 50, 50, 350, 125);
+		adicCampo(txtCodTipoFor, 7, 20, 70, 20,"CodTipoFor","Cód.tp.for.", ListaCampos.DB_PK, true);
+		adicCampo(txtDescTipoFor, 80, 20, 250, 20,"DescTipoFor","Descrição do tipo de fornecedor", ListaCampos.DB_SI, true);
+		setListaCampos( true, "TIPOFOR", "CP");
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
+		lcCampos.setQueryInsert(false);    
+		setImprimir(true);
+	}
+	
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btPrevimp)
+			imprimir(true);
+		else if (evt.getSource() == btImp) 
+			imprimir(false);
+		super.actionPerformed(evt);
+	}
+	
+	private void imprimir(boolean bVisualizar) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		DLRTipoFor dl = null;
+		ImprimeOS imp = null;
+		int linPag = 0;
+		
+		dl = new DLRTipoFor();
+		dl.setVisible(true);
+		if (dl.OK == false) {
+			dl.dispose();
+			return;
+		}
+		
+		try {
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.montaCab();
+			imp.setTitulo("Relatório de Tipos de Fornecedor");
+			imp.limpaPags();
+			
+			sSQL = "SELECT CODTIPOFOR,DESCTIPOFOR " +
+				   "FROM CPTIPOFOR " +
+				   "WHERE CODEMP=? AND CODFILIAL=? " +
+				   "ORDER BY "+dl.getValor();
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("CPTIPOFOR"));
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				if (imp.pRow()==0) {
+					imp.impCab(80, false);
+					imp.say(imp.pRow(), 0, "" + imp.normal());
+					imp.say(imp.pRow(), 2, "Cód.tp.for.");
+					imp.say(imp.pRow(), 30, "Descrição");
+					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+				}
+				imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+				imp.say(imp.pRow(), 2, rs.getString("CodTipoFor"));
+				imp.say(imp.pRow(), 30, rs.getString("DescTipoFor"));
+				if (imp.pRow()>=linPag) {
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow(), 0, Funcoes.replicate("-", 79));
+					imp.incPags();
+					imp.eject();
+				}
+			}
+			  
+			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+			imp.eject();
+			  
+			imp.fechaGravacao();
+			if (!con.getAutoCommit())
+				con.commit();
+			dl.dispose();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro(this,"Erro consulta tabela de tipos de fornecedor!"+err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			dl = null;
+		}
+		    
+		if (bVisualizar)
+			imp.preview(this);
+		else
+			imp.print();
+	}
 }

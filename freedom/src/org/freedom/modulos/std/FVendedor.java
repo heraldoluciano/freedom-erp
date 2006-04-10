@@ -54,146 +54,70 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FTabDados;
 public class FVendedor extends FTabDados implements PostListener {
 	private static final long serialVersionUID = 1L;
-
-	private JTextFieldPad txtCodVend = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 5, 0);
-
-	private JTextFieldPad txtNomeVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCpfVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 14, 0);
-
-	private JTextFieldPad txtRgVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 12, 0);
-
-	private JTextFieldPad txtCnpjVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 18, 0);
-
-	private JTextFieldPad txtInscVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 20, 0);
-
-	private JTextFieldPad txtEndVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtNumVend = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldPad txtBairVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 30, 0);
-
-	private JTextFieldPad txtComplVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 20, 0);
-
-	private JTextFieldPad txtCidVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 30, 0);
-
-	private JTextFieldPad txtCepVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-
-	private JTextFieldPad txtDDDFoneVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 4, 0);
-
-	private JTextFieldPad txtFoneVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 12, 0);
-
-	private JTextFieldPad txtDDDCelVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 4, 0);
-
-	private JTextFieldPad txtCelVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 12, 0);
-
-	private JTextFieldPad txtDDDFaxVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 4, 0);
-
-	private JTextFieldPad txtFaxVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 8, 0);
-
-	private JTextFieldPad txtUFVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 2, 0);
-
-	private JTextFieldPad txtEmailVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtPercComVend = new JTextFieldPad(
-			JTextFieldPad.TP_DECIMAL, 7, 3);
-
-	private JTextFieldPad txtCodFornVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldPad txtCodPlan = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
-	private JTextFieldFK txtDescPlan = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtCodFunc = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtDescFunc = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtCodClComis = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtDescClComis = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private JTextFieldPad txtSSPVend = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 10, 0);
-
-	private JTextFieldPad txtCodSetor = new JTextFieldPad(
-			JTextFieldPad.TP_INTEGER, 8, 0);
-
-	private JTextFieldFK txtDescSetor = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 50, 0);
-
-	private ListaCampos lcPlan = new ListaCampos(this, "PN");
-
-	private ListaCampos lcSetor = new ListaCampos(this, "SE");
-
-	private ListaCampos lcClComis = new ListaCampos(this, "CM");
-
-	private ListaCampos lcFuncao = new ListaCampos(this, "FU");
-	
 	private JPanelPad pinFor = new JPanelPad(470,300);
 	private JPanelPad pnObs = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
 	private JTextAreaPad txaObs = new JTextAreaPad();
 	private JScrollPane spnObs = new JScrollPane(txaObs);
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0);
+	private JTextFieldPad txtNomeVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCpfVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 14, 0);
+	private JTextFieldPad txtRgVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+	private JTextFieldPad txtCnpjVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 18, 0);
+	private JTextFieldPad txtInscVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldPad txtEndVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtNumVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtBairVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+	private JTextFieldPad txtComplVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 20, 0);
+	private JTextFieldPad txtCidVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 30, 0);
+	private JTextFieldPad txtCepVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtDDDFoneVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtFoneVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+	private JTextFieldPad txtDDDCelVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtCelVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 12, 0);
+	private JTextFieldPad txtDDDFaxVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtFaxVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 8, 0);
+	private JTextFieldPad txtUFVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtEmailVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtPercComVend = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 7, 3);
+	private JTextFieldPad txtCodFornVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodFunc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescFunc = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescClComis = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtSSPVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
+	private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private ListaCampos lcPlan = new ListaCampos(this, "PN");
+	private ListaCampos lcSetor = new ListaCampos(this, "SE");
+	private ListaCampos lcClComis = new ListaCampos(this, "CM");
+	private ListaCampos lcFuncao = new ListaCampos(this, "FU");	
 
 	public FVendedor() {
 		super();
 		setTitulo("Cadastro de comissionados");
 		setAtribos(50, 10, 400, 540);
 		
-		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan.",
-				ListaCampos.DB_PK, txtDescPlan, false));
-		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan",
-				"Descriçao do planejamento", ListaCampos.DB_SI, false));
+		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan.",ListaCampos.DB_PK, txtDescPlan, false));
+		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descriçao do planejamento", ListaCampos.DB_SI, false));
 		lcPlan.setWhereAdic("TIPOPLAN = 'D'");
 		lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
 		lcPlan.setQueryCommit(false);
 		lcPlan.setReadOnly(true);
 		txtCodPlan.setTabelaExterna(lcPlan);
 
-		lcFuncao.add(new GuardaCampo(txtCodFunc, "CodFunc", "Cód.função",
-				ListaCampos.DB_PK, txtDescFunc, false));
-		lcFuncao.add(new GuardaCampo(txtDescFunc, "DescFunc",
-				"Descriçao da função", ListaCampos.DB_SI, false));
+		lcFuncao.add(new GuardaCampo(txtCodFunc, "CodFunc", "Cód.função",ListaCampos.DB_PK, txtDescFunc, false));
+		lcFuncao.add(new GuardaCampo(txtDescFunc, "DescFunc","Descriçao da função", ListaCampos.DB_SI, false));
 		
-		//    lcFuncao.setQueryCommit(false);
-
 		txtCodFunc.setTabelaExterna(lcFuncao);
 		txtCodFunc.setNomeCampo("codfunc");
 		txtCodFunc.setFK(true);
 		lcFuncao.setReadOnly(true);
 		lcFuncao.montaSql(false, "FUNCAO", "RH"); 
 		
-		lcClComis.add(new GuardaCampo(txtCodClComis, "CodClComis",
-				"Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, false));
-		lcClComis.add(new GuardaCampo(txtDescClComis, "DescClComis",
-				"Descriçao da classificação da comissão", ListaCampos.DB_SI,
-				false));
+		lcClComis.add(new GuardaCampo(txtCodClComis, "CodClComis","Cód.cl.comis.", ListaCampos.DB_PK, txtDescClComis, false));
+		lcClComis.add(new GuardaCampo(txtDescClComis, "DescClComis","Descriçao da classificação da comissão", ListaCampos.DB_SI,false));
 		lcClComis.montaSql(false, "CLCOMIS", "VD");
 		lcClComis.setQueryCommit(false);
 		lcClComis.setReadOnly(true);
@@ -202,65 +126,35 @@ public class FVendedor extends FTabDados implements PostListener {
 		setPainel(pinFor);
 	    adicTab("Comissionado", pinFor);
 
-		adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend",
-				"Nome do comissionado", ListaCampos.DB_SI, true);
-		adicCampo(txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtRgVend, 140, 60, 149, 20, "RgVend", "RG",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "Orgão exp.",
-				ListaCampos.DB_SI, false);
-
-		adicCampo(txtCnpjVend, 7, 100, 180, 20, "CnpjVend", "CNPJ",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtInscVend, 190, 100, 182, 20, "InscVend", "IE",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtEndVend, 7, 140, 260, 20, "EndVend", "Endereço",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtNumVend, 270, 140, 50, 20, "NumVend", "Num.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtComplVend, 323, 140, 49, 20, "ComplVend", "Compl.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtBairVend, 7, 180, 120, 20, "BairVend", "Bairro",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtCidVend, 130, 180, 120, 20, "CidVend", "Cidade",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtCepVend, 253, 180, 80, 20, "CepVend", "Cep",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtUFVend, 336, 180, 36, 20, "UFVend", "UF",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtDDDFoneVend, 7, 220, 40, 20, "DDDFoneVend", "DDD",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtFoneVend, 50, 220, 77, 20, "FoneVend", "Telefone",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtDDDFaxVend, 130, 220, 40, 20, "DDDFaxVend", "DDD",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtFaxVend, 177, 220, 77, 20, "FaxVend", "Fax",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtDDDCelVend, 257, 220, 40, 20, "DDDCelVend", "DDD",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtCelVend, 300, 220, 72, 20, "CelVend", "Cel",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtEmailVend, 7, 260, 200, 20, "EmailVend", "E-Mail",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtPercComVend, 210, 260, 77, 20, "PercComVend", "Comissão",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend",
-				"Cód.comis.for.", ListaCampos.DB_SI, false);
-		adicCampo(txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.",
-				ListaCampos.DB_FK, txtDescPlan, false);
-		adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan",
-				"Descrição do planejamento");
-		adicCampo(txtCodClComis, 7, 340, 100, 20, "CodClComis",
-				"Cód.cl.comis.", ListaCampos.DB_FK, txtDescClComis, false);
-		adicDescFK(txtDescClComis, 110, 340, 262, 20, "DescClComis",
-				"Descrição da Classificacao da comissão");
-		adicCampo(txtCodFunc, 7, 380, 100, 20, "CodFunc", "Cód.função",
-				ListaCampos.DB_FK, txtDescFunc, false);
-		adicDescFK(txtDescFunc, 110, 380, 262, 20, "DescFunc",
-				"Descrição da função");
+		adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, true);
+		adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, true);
+		adicCampo(txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF",ListaCampos.DB_SI, false);
+		adicCampo(txtRgVend, 140, 60, 149, 20, "RgVend", "RG",ListaCampos.DB_SI, false);
+		adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "Orgão exp.",ListaCampos.DB_SI, false);
+		adicCampo(txtCnpjVend, 7, 100, 180, 20, "CnpjVend", "CNPJ",ListaCampos.DB_SI, false);
+		adicCampo(txtInscVend, 190, 100, 182, 20, "InscVend", "IE",ListaCampos.DB_SI, false);
+		adicCampo(txtEndVend, 7, 140, 260, 20, "EndVend", "Endereço",ListaCampos.DB_SI, false);
+		adicCampo(txtNumVend, 270, 140, 50, 20, "NumVend", "Num.",ListaCampos.DB_SI, false);
+		adicCampo(txtComplVend, 323, 140, 49, 20, "ComplVend", "Compl.",ListaCampos.DB_SI, false);
+		adicCampo(txtBairVend, 7, 180, 120, 20, "BairVend", "Bairro",ListaCampos.DB_SI, false);
+		adicCampo(txtCidVend, 130, 180, 120, 20, "CidVend", "Cidade",ListaCampos.DB_SI, false);
+		adicCampo(txtCepVend, 253, 180, 80, 20, "CepVend", "Cep",ListaCampos.DB_SI, false);
+		adicCampo(txtUFVend, 336, 180, 36, 20, "UFVend", "UF",ListaCampos.DB_SI, false);
+		adicCampo(txtDDDFoneVend, 7, 220, 40, 20, "DDDFoneVend", "DDD",ListaCampos.DB_SI, false);
+		adicCampo(txtFoneVend, 50, 220, 77, 20, "FoneVend", "Telefone",ListaCampos.DB_SI, false);
+		adicCampo(txtDDDFaxVend, 130, 220, 40, 20, "DDDFaxVend", "DDD",ListaCampos.DB_SI, false);
+		adicCampo(txtFaxVend, 177, 220, 77, 20, "FaxVend", "Fax",ListaCampos.DB_SI, false);
+		adicCampo(txtDDDCelVend, 257, 220, 40, 20, "DDDCelVend", "DDD",ListaCampos.DB_SI, false);
+		adicCampo(txtCelVend, 300, 220, 72, 20, "CelVend", "Cel",ListaCampos.DB_SI, false);
+		adicCampo(txtEmailVend, 7, 260, 200, 20, "EmailVend", "E-Mail",ListaCampos.DB_SI, false);
+		adicCampo(txtPercComVend, 210, 260, 77, 20, "PercComVend", "Comissão",ListaCampos.DB_SI, false);
+		adicCampo(txtCodFornVend, 290, 260, 82, 20, "CodFornVend","Cód.comis.for.", ListaCampos.DB_SI, false);
+		adicCampo(txtCodPlan, 7, 300, 100, 20, "CodPlan", "Cód.plan.",ListaCampos.DB_FK, txtDescPlan, false);
+		adicDescFK(txtDescPlan, 110, 300, 262, 20, "DescPlan","Descrição do planejamento");
+		adicCampo(txtCodClComis, 7, 340, 100, 20, "CodClComis","Cód.cl.comis.", ListaCampos.DB_FK, txtDescClComis, false);
+		adicDescFK(txtDescClComis, 110, 340, 262, 20, "DescClComis","Descrição da Classificacao da comissão");
+		adicCampo(txtCodFunc, 7, 380, 100, 20, "CodFunc", "Cód.função",ListaCampos.DB_FK, txtDescFunc, false);
+		adicDescFK(txtDescFunc, 110, 380, 262, 20, "DescFunc","Descrição da função");
 
 		txtCpfVend.setMascara(JTextFieldPad.MC_CPF);
 		txtCnpjVend.setMascara(JTextFieldPad.MC_CNPJ);
@@ -282,59 +176,32 @@ public class FVendedor extends FTabDados implements PostListener {
 	}
 
 	private void montaSetor() {
-
 		Rectangle rec = getBounds();
 		rec.height += 40;
 		setBounds(rec);
 
-		lcSetor.add(new GuardaCampo(txtCodSetor, "CodSetor", "Cód.setor",
-				ListaCampos.DB_PK, txtDescSetor, false));
-		lcSetor.add(new GuardaCampo(txtDescSetor, "DescSetor",
-				"Descriçao do setor", ListaCampos.DB_SI, false));
+		lcSetor.add(new GuardaCampo(txtCodSetor, "CodSetor", "Cód.setor",ListaCampos.DB_PK, txtDescSetor, false));
+		lcSetor.add(new GuardaCampo(txtDescSetor, "DescSetor","Descriçao do setor", ListaCampos.DB_SI, false));
 		lcSetor.montaSql(false, "SETOR", "VD");
 		lcSetor.setQueryCommit(false);
 		lcSetor.setReadOnly(true);
 		txtCodSetor.setTabelaExterna(lcSetor);
 
-		adicCampo(txtCodSetor, 7, 420, 100, 20, "CodSetor", "Cód.setor",
-				ListaCampos.DB_FK, txtDescSetor, false);
-		adicDescFK(txtDescSetor, 110, 420, 262, 20, "DescSetor",
-				"Descrição do setor");
+		adicCampo(txtCodSetor, 7, 420, 100, 20, "CodSetor", "Cód.setor",ListaCampos.DB_FK, txtDescSetor, false);
+		adicDescFK(txtDescSetor, 110, 420, 262, 20, "DescSetor","Descrição do setor");
 		lcSetor.setConexao(con);
-	}
-
-	public void beforePost(PostEvent pevt) {
-		if (txtInscVend.getText().trim().length() < 1) {
-			if (Funcoes.mensagemConfirma(this,
-					"Inscrição Estadual em branco! Inserir ISENTO?") == JOptionPane.OK_OPTION)
-				txtInscVend.setVlrString("ISENTO");
-
-			pevt.cancela();
-			txtInscVend.requestFocus();
-		} else if (txtInscVend.getText().trim().toUpperCase().compareTo(
-				"ISENTO") == 0)
-			return;
-		else if (txtUFVend.getText().trim().length() < 2) {
-			pevt.cancela();
-			Funcoes.mensagemInforma(this, "Campo UF é requerido! ! !");
-			txtUFVend.requestFocus();
-		} else if (Funcoes.vIE(txtInscVend.getText(), txtUFVend.getText()))
-			txtInscVend.setVlrString(Funcoes.sIEValida);
-		else {
-			pevt.cancela();
-			Funcoes.mensagemInforma(this, "Inscrição Estadual Inválida ! ! !");
-			txtInscVend.requestFocus();
-		}
 	}
 
 	private boolean ehSetorVend() {
 		boolean bRet = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "SELECT SETORVENDA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				String sVal = null;
 				if ((sVal = rs.getString("SetorVenda")) != null) {
@@ -343,34 +210,30 @@ public class FVendedor extends FTabDados implements PostListener {
 				}
 			}
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao verificar setor!\n"
-					+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this, "Erro ao verificar setor!\n" + err.getMessage(),true,con,err);
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return bRet;
 
 	}
 
-	public void setConexao(Connection cn) {
-		super.setConexao(cn);
-		if (ehSetorVend())
-			montaSetor();
-		lcClComis.setConexao(cn);
-		lcPlan.setConexao(cn);
-		lcFuncao.setConexao(cn);
-		setListaCampos(true, "VENDEDOR", "VD");
-	}
-
 	private void imprimir(boolean bVisualizar) {
-		ImprimeOS imp = new ImprimeOS("", con);
-		Vector vFiltros = new Vector();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "";
-		int linPag = imp.verifLinPag() - 1;
-		int iContaReg = 0;
 		String sWhere = "";
 		String sValores[] = null;
+		int linPag = 0;
+		int iContaReg = 0;
 
+		ImprimeOS imp = new ImprimeOS("", con);
 		DLRVendedor dl = new DLRVendedor(this, con);
+		Vector vFiltros = new Vector();
+
 		dl.setVisible(true);
 		if (dl.OK == false) {
 			dl.dispose();
@@ -383,9 +246,9 @@ public class FVendedor extends FTabDados implements PostListener {
 			System.out.println("CIDADE NO FILTRO:" + sValores[1]);
 			sWhere += " AND VD.CIDVEND = '" + sValores[1] + "'";
 			vFiltros.add("CIDADE = " + sValores[1].trim());
-		} else {
+		} else 
 			System.out.println("Cidade nula no filtro");
-		}
+
 		if (sValores[2].length() > 0) {
 			sWhere += " AND VD.CODCLCOMIS=" + sValores[2];
 			vFiltros.add("CLAS.COMISSÃO = " + sValores[2]);
@@ -411,102 +274,82 @@ public class FVendedor extends FTabDados implements PostListener {
 				+ sWhere
 				+ " order by " + sValores[0];
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		System.out.println("sql é " + sSQL);
 		try {
-
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDEDOR"));
-			rs = ps.executeQuery();
-			imp.limpaPags();
 			
+			linPag = imp.verifLinPag() - 1;
+			imp.limpaPags();
 			imp.setTitulo("Relatório de Comissionados");
 			imp.addSubTitulo("RELATÓRIO DE COMISSIONADOS");
 			imp.addSubTitulo("Filtrado por:");
+			
 			for (int i = 0; i < vFiltros.size(); i++) {
 				String sTmp = (String) vFiltros.elementAt(i);
 				imp.addSubTitulo(sTmp);
 			}
 			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDEDOR"));
+			rs = ps.executeQuery();			
+			
 			while (rs.next()) {
-				if (imp.pRow() == 0) {
-					
+				if (imp.pRow() == 0) {					
 					imp.montaCab();
 					imp.impCab(136, true);
-
-					imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow(), 0, "" + imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 4, "Código");
-					imp.say(imp.pRow() + 0, 12, "|");
-					imp.say(imp.pRow() + 0, 14, "Nome:");
-					imp.say(imp.pRow() + 0, 46, "|");
-					imp.say(imp.pRow() + 0, 48, "Setor:");
-					imp.say(imp.pRow() + 0, 58, "|");
-					imp.say(imp.pRow() + 0, 60, "Fução:");
-					imp.say(imp.pRow() + 0, 70, "|");
-					imp.say(imp.pRow() + 0, 72, "Cl.comis.:");
-					imp.say(imp.pRow() + 0, 84, "|");
-					imp.say(imp.pRow() + 0, 92, "Fone:");
-					imp.say(imp.pRow() + 0, 106, "|");
-					// if(sValores[1].length()>0)
-					imp.say(imp.pRow() + 0, 108, "Cidade:");
-					imp.say(imp.pRow() + 0, 135, "|");
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 4, "Código");
+					imp.say(imp.pRow(), 12, "|");
+					imp.say(imp.pRow(), 14, "Nome:");
+					imp.say(imp.pRow(), 46, "|");
+					imp.say(imp.pRow(), 48, "Setor:");
+					imp.say(imp.pRow(), 58, "|");
+					imp.say(imp.pRow(), 60, "Fução:");
+					imp.say(imp.pRow(), 70, "|");
+					imp.say(imp.pRow(), 72, "Cl.comis.:");
+					imp.say(imp.pRow(), 84, "|");
+					imp.say(imp.pRow(), 92, "Fone:");
+					imp.say(imp.pRow(), 106, "|");
+					imp.say(imp.pRow(), 108, "Cidade:");
+					imp.say(imp.pRow(), 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
 				}
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|");
-				imp.say(imp.pRow() + 0, 4, rs.getString("CodVend"));
-				imp.say(imp.pRow() + 0, 12, "|");
-				imp.say(imp.pRow() + 0, 14,
-						rs.getString("NomeVend") != null ? rs.getString(
-								"NomeVend").substring(0, 30) : "");
-				imp.say(imp.pRow() + 0, 46, "|");
-				imp.say(imp.pRow() + 0, 48,
-						rs.getString("CodSetor") != null ? rs
-								.getString("CodSetor") : "");
-				imp.say(imp.pRow() + 0, 58, "|");
-				imp.say(imp.pRow() + 0, 60,
-						rs.getString("CodFunc") != null ? rs
-								.getString("CodFunc") : "");
-				imp.say(imp.pRow() + 0, 70, "|");
-				imp.say(imp.pRow() + 0, 72,
-						rs.getString("CodClComis") != null ? rs
-								.getString("CodClComis") : "");
-				imp.say(imp.pRow() + 0, 84, "|");
-				imp.say(imp.pRow() + 0, 86,
-						rs.getString("DDDFoneVend") != null ? "("+rs
-								.getString("DDDFoneVend")+")" : "");
-				imp.say(imp.pRow() + 0, 92,
-						rs.getString("FoneVend") != null ? Funcoes.setMascara(
-								rs.getString("FoneVend").trim(), "####-####") : "");
-				imp.say(imp.pRow() + 0, 106, "|");
-				imp.say(imp.pRow() + 0, 108,
-						rs.getString("CidVend") != null ? rs.getString(
-								"CidVend").substring(0, 19) : "");
-				imp.say(imp.pRow() + 0, 135, "|");
+				imp.say(imp.pRow(), 0, "|");
+				imp.say(imp.pRow(), 4, rs.getString("CodVend"));
+				imp.say(imp.pRow(), 12, "|");
+				imp.say(imp.pRow(), 14, rs.getString("NomeVend") != null ? rs.getString("NomeVend").substring(0, 30) : "");
+				imp.say(imp.pRow(), 46, "|");
+				imp.say(imp.pRow(), 48, rs.getString("CodSetor") != null ? rs.getString("CodSetor") : "");
+				imp.say(imp.pRow(), 58, "|");
+				imp.say(imp.pRow(), 60, rs.getString("CodFunc") != null ? rs.getString("CodFunc") : "");
+				imp.say(imp.pRow(), 70, "|");
+				imp.say(imp.pRow(), 72, rs.getString("CodClComis") != null ? rs.getString("CodClComis") : "");
+				imp.say(imp.pRow(), 84, "|");
+				imp.say(imp.pRow(), 86, rs.getString("DDDFoneVend") != null ? "("+rs.getString("DDDFoneVend")+")" : "");
+				imp.say(imp.pRow(), 92, rs.getString("FoneVend") != null ? Funcoes.setMascara(rs.getString("FoneVend").trim(), "####-####") : "");
+				imp.say(imp.pRow(), 106, "|");
+				imp.say(imp.pRow(), 108, rs.getString("CidVend") != null ? rs.getString("CidVend").substring(0, 19) : "");
+				imp.say(imp.pRow(), 135, "|");
 
 				if (imp.pRow() >= linPag) {
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 					imp.incPags();
 					imp.eject();
 				}
 				iContaReg++;
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
+			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 			imp.eject();
 
 			imp.fechaGravacao();
-
-			//        rs.close();
-			//        ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
 			dl.dispose();
@@ -514,14 +357,30 @@ public class FVendedor extends FTabDados implements PostListener {
 			Funcoes.mensagemErro(this, "Erro consulta tabela de clientes!\n"
 					+ err.getMessage(),true,con,err);
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			sWhere = null;
+			sValores = null;
+			dl = null;
+			vFiltros = null;
 		}
 
-		if (bVisualizar) {
+		if (bVisualizar)
 			imp.preview(this);
-		} else {
+		else
 			imp.print();
-		}
+	}
 
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
+		if (ehSetorVend())
+			montaSetor();
+		lcClComis.setConexao(cn);
+		lcPlan.setConexao(cn);
+		lcFuncao.setConexao(cn);
+		setListaCampos(true, "VENDEDOR", "VD");
 	}
 
 	public void actionPerformed(ActionEvent evt) {
@@ -530,6 +389,29 @@ public class FVendedor extends FTabDados implements PostListener {
 		} else if (evt.getSource() == btImp)
 			imprimir(false);
 		super.actionPerformed(evt);
+	}
+
+	public void beforePost(PostEvent pevt) {
+		if (txtInscVend.getText().trim().length() < 1) {
+			if (Funcoes.mensagemConfirma(this,"Inscrição Estadual em branco! Inserir ISENTO?") == JOptionPane.OK_OPTION)
+				txtInscVend.setVlrString("ISENTO");
+			pevt.cancela();
+			txtInscVend.requestFocus();
+		} 
+		else if (txtInscVend.getText().trim().toUpperCase().compareTo("ISENTO") == 0)
+			return;
+		else if (txtUFVend.getText().trim().length() < 2) {
+			pevt.cancela();
+			Funcoes.mensagemInforma(this, "Campo UF é requerido! ! !");
+			txtUFVend.requestFocus();
+		} 
+		else if (Funcoes.vIE(txtInscVend.getText(), txtUFVend.getText()))
+			txtInscVend.setVlrString(Funcoes.sIEValida);
+		else {
+			pevt.cancela();
+			Funcoes.mensagemInforma(this, "Inscrição Estadual Inválida ! ! !");
+			txtInscVend.requestFocus();
+		}
 	}
 
 }
