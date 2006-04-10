@@ -640,7 +640,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 		btExpedirRMA.setEnabled(!bHab);
 		txtQtdExpRma.setNaoEditavel(bHab);
-		txtCodLote.setNaoEditavel(bHab);
+		//txtCodLote.setNaoEditavel(bHab);
 	}
 
 	public void carregaWhereAdic() {
@@ -656,24 +656,17 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 	}
 
 	public void afterCarrega(CarregaEvent cevt) {
+		
 		buscaInfoUsuAtual();
 
 		sSitRma = txtSitRma.getVlrString();
         siStItAprov = txtSitAprovItRma.getVlrString();
         sSitItExp = txtSitExpItRma.getVlrString();
         sSitItRma = txtSitItRma.getVlrString();
-
-		boolean bStatusTravaTudo = ((sSitItRma.equals("AF"))
-				|| (sSitItRma.equals("EF")) || (sSitItRma.equals("CA")));
+		boolean bStatusTravaTudo = ((sSitItRma.equals("AF")) || (sSitItRma.equals("EF")) || (sSitItRma.equals("CA")));
 		boolean bStatusTravaExp = (!sSitItRma.equals("AF") || sSitItExp.equals("CA"));
 
-		if (cevt.getListaCampos() == lcDet) {
-			if (sSitItRma.equals("CA")) {
-				desabCampos(true);
-				btMotivoCancelaItem.setEnabled(true);
-			}
-		}
-
+		
 		if (rgPriod.getVlrString().equals("A") && sSitRma.equals("PE")) {
 			btMotivoPrior.setEnabled(true);
 		} else
@@ -684,8 +677,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		else
 			btMotivoCancelaRMA.setEnabled(false);
 
-		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))
-				|| (bStatusTravaTudo))
+		if (!(txtIDUsu.getVlrString().equals(Aplicativo.strUsuario)) || (bStatusTravaTudo))
 			desabCampos(true);
 		else
 			desabCampos(false);
@@ -707,12 +699,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				txtCodLote.setAtivo(false);
 			else
 				txtCodLote.setAtivo(true);
-		}
-
-		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
-				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {
-			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble());
-		}
+		}		
 
 		if (sSitItRma.equals("CA") || sSitItExp.equals("CA")) {
 			SitRma = "Cancelado";
@@ -732,7 +719,24 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			pinLb.setBackground(cor(26, 140, 255));
 		}
 
+		if (((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2))
+				&& ((lcDet.getStatus() == ListaCampos.LCS_EDIT) || ((lcDet.getStatus() == ListaCampos.LCS_INSERT)))) {
+			txtPrecoItRma.setVlrDouble(txtCustoMPMProd.getVlrDouble());
+		}
+		
+		if ((cevt.getListaCampos() == lcProd)||(cevt.getListaCampos() == lcProd2)) {
+			txtCodUnid.atualizaFK();
+			if (txtCLoteProd.getVlrString().equals("N"))
+				txtCodLote.setAtivo(false);
+			else
+				txtCodLote.setAtivo(true);
+		}	
+		
 		if (cevt.getListaCampos() == lcDet) {
+			if (sSitItRma.equals("CA")) {
+				desabCampos(true);
+				btMotivoCancelaItem.setEnabled(true);
+			}
 			if (txtQtdAprovRma.isEditable()) {
 				if (txtQtdAprovRma.getVlrDouble().compareTo(new Double(0)) <= 0)
 					txtQtdAprovRma.setVlrDouble(txtQtdItRma.getVlrDouble());
@@ -742,10 +746,6 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 					txtQtdExpRma.setVlrDouble(txtQtdAprovRma.getVlrDouble());
 			}
 		}
-		
-		if ((cevt.getListaCampos() == lcProd)|| (cevt.getListaCampos() == lcProd2)) {
-			txtCodUnid.atualizaFK();
-		}		
 	}
 
 	public boolean[] prefs() {

@@ -138,52 +138,51 @@ public class FRVendasCFOP extends FRelatorio{
 	}
   
 	public void imprimir(boolean bVisualizar) {
-     
+
 		bTotalCFOP = new BigDecimal("0");
 	    bTotalGeral = new BigDecimal("0");
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
 	  	String sWhere = "";
 	  	String sWhere1 = "";
 	  	String sWhere2 = "";
 	  	String sWhere3 = "";
 		String sCab = "";
 		String sCab1 = "";
+	    String sDataini = "";
+	    String sDatafim = "";
+	    String sCFOP = "";
 		 
 		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
 			return;
 	    }
 		
-		if(txtCodCFOP.getVlrInteger().intValue() > 0){
+		if(txtCodCFOP.getVlrInteger().intValue() > 0)
 			sWhere += " AND I.CODNAT="+txtCodCFOP.getVlrInteger().intValue();
-		}
 		
 		if(txtCodTipoMov.getVlrInteger().intValue() > 0){
 			sWhere += " AND V.CODTIPOMOV="+txtCodTipoMov.getVlrInteger().intValue();
 			sCab1 = "FILTRADO POR TIPO DE MOVIMENTO - " + txtDescTipoMov.getVlrString();
 		}
 		 		
-		if(rgFaturados.getVlrString().equals("S")){
+		if(rgFaturados.getVlrString().equals("S")) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 			sCab += " - SO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("N")){
+		} else if(rgFaturados.getVlrString().equals("N")) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 			sCab += " - NAO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("A")){
+		} else if(rgFaturados.getVlrString().equals("A"))
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-		}	
-		if(rgFinanceiro.getVlrString().equals("S")){
+
+		if(rgFinanceiro.getVlrString().equals("S")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 			sCab += " - SO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("N")){
+		} else if(rgFinanceiro.getVlrString().equals("N")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 			sCab += " - NAO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("A")){
+		} else if(rgFinanceiro.getVlrString().equals("A"))
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-		}
 
 		if(cbVendaCanc.getVlrString().equals("N"))
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
@@ -191,14 +190,9 @@ public class FRVendasCFOP extends FRelatorio{
 	    ImprimeOS imp = new ImprimeOS("",con);
 	    int linPag = imp.verifLinPag()-1;
 	    imp.verifLinPag();
-	    
-	    String sDataini = "";
-	    String sDatafim = "";
-	    String sCFOP = "";
-	   
+	    	   
 	    sDataini = txtDataini.getVlrString();
-	    sDatafim = txtDatafim.getVlrString();
-	    
+	    sDatafim = txtDatafim.getVlrString();	    
 	    
 	    String sSQL = "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, "
 	    		    + "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, SUM(I.VLRLIQITVENDA)  "
@@ -214,8 +208,6 @@ public class FRVendasCFOP extends FRelatorio{
 	    		    + "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI "
 	    		    + "ORDER BY I.CODNAT, V.DOCVENDA, V.CODVENDA ";
 	                  
-	    PreparedStatement ps = null;
-	    ResultSet rs = null;
 	    try {
 		      ps = con.prepareStatement(sSQL);
 		      ps.setInt(1,Aplicativo.iCodEmp);
@@ -274,18 +266,15 @@ public class FRVendasCFOP extends FRelatorio{
 		    		  imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
 		    	  }
 		    	  
-		    	 // if(!String.valueOf(rs.getInt("CodVenda")).equals(sCodCli)){
-		    		  //sCodCli = String.valueOf(rs.getInt("CodVenda"));
-			    	  imp.say(imp.pRow()+1,0,""+imp.comprimido());		
-			    	  imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString("DocVenda"),0,10));
-			    	  imp.say(imp.pRow()+0,14,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
-			    	  imp.say(imp.pRow()+0,27,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
-			    	  imp.say(imp.pRow()+0,40,"| "+rs.getInt("CodVenda"));
-			    	  imp.say(imp.pRow()+0,50,"| "+rs.getInt("CodCli"));
-			    	  imp.say(imp.pRow()+0,61,"| "+Funcoes.copy(rs.getString("RazCli"),0,50));
-			    	  imp.say(imp.pRow()+0,114,"| "+Funcoes.strDecimalToStrCurrency(15,2,""+rs.getFloat(9)));
-			    	  imp.say(imp.pRow()+0,135,"|");
-		    	 // }
+		    	  imp.say(imp.pRow()+1,0,""+imp.comprimido());		
+		    	  imp.say(imp.pRow()+0,0,"| "+Funcoes.copy(rs.getString("DocVenda"),0,10));
+		    	  imp.say(imp.pRow()+0,14,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+		    	  imp.say(imp.pRow()+0,27,"| "+Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+		    	  imp.say(imp.pRow()+0,40,"| "+rs.getInt("CodVenda"));
+		    	  imp.say(imp.pRow()+0,50,"| "+rs.getInt("CodCli"));
+		    	  imp.say(imp.pRow()+0,61,"| "+Funcoes.copy(rs.getString("RazCli"),0,50));
+		    	  imp.say(imp.pRow()+0,114,"| "+Funcoes.strDecimalToStrCurrency(15,2,""+rs.getFloat(9)));
+		    	  imp.say(imp.pRow()+0,135,"|");
 		    	  
 		    	  if (rs.getString(9) != null) {
 		    		  bTotalCFOP = bTotalCFOP.add(new BigDecimal(rs.getString(9)));
@@ -294,39 +283,41 @@ public class FRVendasCFOP extends FRelatorio{
 	      	  }
 
     		  subTotal(imp,rs);
-		      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("=",133)+"+");
-		      imp.say(imp.pRow()+1,0,"|");
-		      imp.say(imp.pRow()+0,96,"TOTAL GERAL       |"+" "+
-	      			Funcoes.strDecimalToStrCurrency(15,2,"" +bTotalGeral));
+	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		      imp.say(imp.pRow()+0,0,"|");
+		      imp.say(imp.pRow()+0,96,"TOTAL GERAL       |"+" "+ Funcoes.strDecimalToStrCurrency(15,2,"" +bTotalGeral));
 		      imp.say(imp.pRow()+0,135,"|");
+	          imp.say(imp.pRow()+1,0,""+imp.comprimido());
+		      imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
 	      
-		      imp.say(imp.pRow()+1,0,"+"+Funcoes.replicate("=",133)+"+");
-	      
-		      imp.eject();
-	      
+		      imp.eject();	      
 		      imp.fechaGravacao();
 		      
 		      if (!con.getAutoCommit())
 	      			con.commit();
 	      	
-	    }  
-	    catch ( SQLException err ) {
+	    }   catch ( SQLException err ) {
 			Funcoes.mensagemErro(this,"Erro consulta tabela de venda!\n"+err.getMessage(),true,con,err);      
-	    }
-	    finally{
-	    	sWhere = null;
-	    	sWhere1 = null;
-	    	sWhere2 = null;
-	    	sCab = null;
+	    } finally{
+	    	ps = null;
+		    rs = null;
+		  	sWhere = null;
+		  	sWhere1 = null;
+		  	sWhere2 = null;
+		  	sWhere3 = null;
+			sCab = null;
+			sCab1 = null;
+		    sDataini = null;
+		    sDatafim = null;
+		    sCFOP = null;
 	    }
 	    
-	    if (bVisualizar) {
+	    if (bVisualizar) 
 	    	imp.preview(this);
-	    }
-	    else {
+	    else 
 	    	imp.print();
-	    }
-    
 	}
 	
 	private void subTotal(ImprimeOS imp, ResultSet rs){
@@ -346,10 +337,8 @@ public class FRVendasCFOP extends FRelatorio{
 	  		  
 	  		  	bTotalCFOP = new BigDecimal("0");
 			}
-		}
-		catch(SQLException err){
+		} catch(SQLException err){
 			Funcoes.mensagemErro(this,"Erro consulta tabela de venda!\n"+err.getMessage(),true,con,err); 
 		}
-	}
-	
+	}	
 }

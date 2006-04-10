@@ -334,28 +334,23 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iCodVend = txtCodVend.getVlrInteger().intValue();
 			iCodCli = txtCodCli.getVlrInteger().intValue();
 			
-			if(rgFaturados.getVlrString().equals("S")){
+			if(rgFaturados.getVlrString().equals("S")) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 				sCab += " - SO FATURADO";
-			}
-			else if(rgFaturados.getVlrString().equals("N")){
+			} else if(rgFaturados.getVlrString().equals("N")) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 				sCab += " - NAO FATURADO";
-			}
-			else if(rgFaturados.getVlrString().equals("A")){
+			} else if(rgFaturados.getVlrString().equals("A"))
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-			}	
-			if(rgFinanceiro.getVlrString().equals("S")){
+			
+			if(rgFinanceiro.getVlrString().equals("S")) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 				sCab += " - SO FINANCEIRO";
-			}
-			else if(rgFinanceiro.getVlrString().equals("N")){
+			} else if(rgFinanceiro.getVlrString().equals("N")) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 				sCab += " - NAO FINANCEIRO";
-			}
-			else if(rgFinanceiro.getVlrString().equals("A")){
+			} else if(rgFinanceiro.getVlrString().equals("A"))
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-			}
 
 			if(cbMovEstoque.getVlrString().equals("S")) {
 				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO MOV.ESTOQUE";
@@ -364,33 +359,27 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		
 			if (!sCodMarca.equals("")) {
 				sWhere += "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: "
-						+ txtDescMarca.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: " + txtDescMarca.getText().trim();
 			}
 			if (!sCodGrup1.equals("")) {
 				sWhere += "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: "
-						+ txtDescGrup1.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: " + txtDescGrup1.getText().trim();
 			}
 			if (!sCodGrup2.equals("")) {
 				sWhere += "AND ( NOT P.CODGRUP=? ) ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
-						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
 			if (iCodSetor != 0) {
 				sWhere += "AND VD.CODSETOR=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: "
-						+ iCodSetor + "-" + txtDescSetor.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: " + iCodSetor + "-" + txtDescSetor.getVlrString().trim();
 			}
 			if (iCodVend != 0) {
 				sWhere += "AND VD.CODVEND=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "
-						+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: " + iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
 			if (iCodCli != 0) {
 				if (cbCliPrinc.getVlrString().equals("S")) {
-					sFiltros2 += (!sFiltros2.equals("") ? " / " : "")
-							+ "AGRUP. CLI. PRINC.";
+					sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + "AGRUP. CLI. PRINC.";
 				}
 				if (cbCliPrinc.getVlrString().equals("S")) {
 					sWhere += "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND "
@@ -427,8 +416,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ sWhereTM + sWhere1 + sWhere2 + sWhere3
 					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ") + sWhere
 					+ "GROUP BY 1,2,3,4,5" + "ORDER BY 1,2,3,4,5";
-
-			//System.out.println(sSql);
 
 			try {
 				ps = con.prepareStatement(sSql);
@@ -495,10 +482,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sCodSetor = "" + rs.getInt(1);
 					sMes = rs.getString(2);
 					sCodGrup = rs.getString(3);
-					if ((!sCodSetorAnt.equals(""))
-							&& ((!sCodSetorAnt.equals(sCodSetor))
-									|| (!sCodGrupAnt.equals(sCodGrup)) || (!sMesAnt
-									.equals(sMes))))
+					if ((!sCodSetorAnt.equals("")) && ((!sCodSetorAnt.equals(sCodSetor))
+									|| (!sCodGrupAnt.equals(sCodGrup)) || (!sMesAnt.equals(sMes))))
 						deTotal1 = 0;
 					sSiglaGroup = rs.getString(4);
 					if (sSiglaGroup == null)
@@ -541,20 +526,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				for (int i = 0; i < vItens.size(); i++) {
 					vItem = (Vector) vItens.elementAt(i);
 
-					if ((!sCodSetor.equals(vItem.elementAt(POS_CODSETOR)
-							.toString()))
-							|| (!sMes.equals(vItem.elementAt(POS_MES)
-									.toString()))
-							|| (!sCodGrup.equals(vItem.elementAt(POS_CODGRUP)
-									.toString()))) {
+					if ((!sCodSetor.equals(vItem.elementAt(POS_CODSETOR).toString()))
+							|| (!sMes.equals(vItem.elementAt(POS_MES).toString()))
+							|| (!sCodGrup.equals(vItem.elementAt(POS_CODGRUP) .toString()))) {
 						if (!sCodSetorAnt.equals("")) {
 							for (int iConta = iPosCol; iConta < NUM_COLUNAS; iConta++) {
+								imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 								imp.say(imp.pRow() + 0, 21 + (iConta * 11), "|" + Funcoes.replicate(" ", 10));
 							}
 							imp.say(imp.pRow() + 0, 123, "|" + Funcoes.strDecimalToStrCurrency(11, 2,
-											((Vector) vItens.elementAt(i - 1))
-													.elementAt(POS_TOTSETOR)
-													.toString()));
+											((Vector) vItens.elementAt(i - 1)).elementAt(POS_TOTSETOR).toString()));
 							imp.say(imp.pRow() + 0, 135, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
@@ -567,19 +548,17 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						}
 						if (imp.pRow() == 0) {
 							imp.impCab(136, true); // mexi aqui também
-							imp.say(imp.pRow() + 0, 0, "+"
-									+ Funcoes.replicate("-", 133) + "+");
+							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
 							iCol = 0;
 							iPosCol = 0;
 						}
 
 						//imp.impCab(136, true); mexi aqui
 
-						if (!sCodSetor.equals(vItem.elementAt(POS_CODSETOR)
-								.toString())) {
+						if (!sCodSetor.equals(vItem.elementAt(POS_CODSETOR).toString())) {
 							if (!sCodSetorAnt.equals("")) {
-								if (iLinsSetor > 1) {
-									
+								if (iLinsSetor > 1) {									
 									iTotPassadas = getPassadas(vCols.size());
 									for (int iPassada = 0; iPassada < iTotPassadas; iPassada++) {
 										imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -592,8 +571,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 								}
 								iLinsSetor = 0;
 							}
-							sCodSetor = vItem.elementAt(POS_CODSETOR)
-									.toString();
+							sCodSetor = vItem.elementAt(POS_CODSETOR).toString();
 							vCols = getVendedores(sCodSetor, vItens);
 							vTotSetor = initTotSetor(vCols);
 							iTotPassadas = getPassadas(vCols.size());
@@ -605,8 +583,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 									imp.say(imp.pRow() + 0, 70, "SETOR: " + sCodSetor);
 									imp.say(imp.pRow() + 0, 135, "|");
 								}
-								imp.say(imp.pRow() + 1, 0, ""
-										+ imp.comprimido());
+								imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 								if (iPassada == 0) {
 									imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
 									imp.say(imp.pRow() + 1, 0, "|MES");
@@ -635,19 +612,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 0, "|" + vItem.elementAt(POS_MES).toString());
 						imp.say(imp.pRow() + 0, 9, "| "	+ (vItem.elementAt(POS_SIGLAGRUP).equals("") ? 
-								Funcoes.copy(vItem.elementAt(POS_CODGRUP).toString(), 10): 
-									vItem.elementAt(POS_SIGLAGRUP).toString()));
+								Funcoes.copy(vItem.elementAt(POS_CODGRUP).toString(), 10): vItem.elementAt(POS_SIGLAGRUP).toString()));
 					}
 
 					iPosColAnt = iPosCol;
-					iCol = posVendedor(vItem.elementAt(POS_CODVEND).toString(),
-							vCols);
+					iCol = posVendedor(vItem.elementAt(POS_CODVEND).toString(),vCols);
 					iPosCol = getPosCol(iCol);
 					if ((iCol >= NUM_COLUNAS) && (iPosCol < iPosColAnt)) {
 						// Para fechar as colunas na linha atual
 						for (int iAjusta = iPosColAnt; iAjusta < NUM_COLUNAS; iAjusta++) {
-							imp.say(imp.pRow() + 0, 21 + (iAjusta * 11), "|"
-									+ Funcoes.replicate(" ", 10));
+							imp.say(imp.pRow() + 0, 21 + (iAjusta * 11), "|" + Funcoes.replicate(" ", 10));
 						}
 						iPosColAnt = 0;
 						imp.say(imp.pRow() + 0, 124, "|");
@@ -658,15 +632,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					for (int iAjusta = iPosColAnt; iAjusta < iPosCol; iAjusta++) {
 						imp.say(imp.pRow() + 0, 21 + (iAjusta * 11), "|" + Funcoes.replicate(" ", 10));
 					}
-					//  				sTemp = ""+vItem.elementAt(POS_VALOR);
-					imp.say(imp.pRow() + 0, 21 + (iPosCol * 11), "|" + Funcoes.strDecimalToStrCurrency(10, 2, vItem
-									.elementAt(POS_VALOR) + ""));
+					imp.say(imp.pRow() + 0, 21 + (iPosCol * 11), "|" + Funcoes.strDecimalToStrCurrency(10, 2, vItem.elementAt(POS_VALOR) + ""));
 					vTotSetor = adicValorSetor(iCol, (Double) vItem.elementAt(POS_VALOR), vTotSetor);
-					//  				imp.say(imp.pRow()+0,136,"|");
 					iCol++;
 					iPosCol++;
 					iPos = i;
-					//  				bVlrTotal += v
 				}
 				// Imprime o total do setor após a impressão do relatório, caso
 				// não tenha sido impresso
@@ -685,9 +655,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say(imp.pRow() + 0, 21 + (iConta * 11), "|" + Funcoes.replicate(" ", 10));
 					}
 					imp.say(imp.pRow() + 0, 124, "|" + Funcoes .strDecimalToStrCurrency(11, 2,
-											((Vector) vItens.elementAt(iPos))
-													.elementAt(POS_TOTSETOR)
-													.toString()));
+											((Vector) vItens.elementAt(iPos)).elementAt(POS_TOTSETOR).toString()));
 					imp.say(imp.pRow() + 0, 135, "|");
 					iLinsSetor++;
 					iCol = 0;
@@ -717,21 +685,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				// Fim da impressão do total por setor
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133)
-						+ "+");
+				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
 				imp.eject();
 				imp.fechaGravacao();
 
 			} catch (SQLException err) {
-				Funcoes.mensagemErro(this, "Erro executando a consulta.\n"
-						+ err.getMessage(),true,con,err);
+				Funcoes.mensagemErro(this, "Erro executando a consulta.\n" + err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
-			if (bVisualizar) {
+			
+			if (bVisualizar) 
 				imp.preview(this);
-			} else {
+			else 
 				imp.print();
-			}
 		} finally {
 			sWhere = null;
 			sSql = null;
@@ -752,7 +718,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iPosColAnt = 0;
 			sCodGrup = null;
 			sSiglaGroup = null;
-//			sTipoMov = null;
 			sWhereTM = null;
 			sMesAnt = null;
 			sMes = null;
@@ -810,28 +775,23 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sFiltros1 = "";
 			sFiltros2 = "";
 			
-			if(rgFaturados.getVlrString().equals("S")){
+			if(rgFaturados.getVlrString().equals("S")) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 				sCab += " - SO FATURADO";
-			}
-			else if(rgFaturados.getVlrString().equals("N")){
+			} else if(rgFaturados.getVlrString().equals("N")) {
 				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 				sCab += " - NAO FATURADO";
-			}
-			else if(rgFaturados.getVlrString().equals("A")){
+			} else if(rgFaturados.getVlrString().equals("A"))
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-			}	
-			if(rgFinanceiro.getVlrString().equals("S")){
+
+			if(rgFinanceiro.getVlrString().equals("S")) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 				sCab += " - SO FINANCEIRO";
-			}
-			else if(rgFinanceiro.getVlrString().equals("N")){
+			} else if(rgFinanceiro.getVlrString().equals("N")) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 				sCab += " - NAO FINANCEIRO";
-			}
-			else if(rgFinanceiro.getVlrString().equals("A")){
+			} else if(rgFinanceiro.getVlrString().equals("A"))
 				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-			}
 
 			if(cbMovEstoque.getVlrString().equals("S")) {
 				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "SO MOV.ESTOQUE";
@@ -846,34 +806,28 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iCodCli = txtCodCli.getVlrInteger().intValue();
 			if (!sCodMarca.equals("")) {
 				sWhere += "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: "
-						+ txtDescMarca.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: " + txtDescMarca.getText().trim();
 			}
 			if (!sCodGrup1.equals("")) {
 				sWhere += "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: "
-						+ txtDescGrup1.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: " + txtDescGrup1.getText().trim();
 			}
 			if (!sCodGrup2.equals("")) {
 				sWhere += "AND ( NOT P.CODGRUP=? ) ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
-						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
 			if (iCodSetor != 0) {
 				sWhere += "AND VD.CODSETOR=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: "
-						+ iCodSetor + "-" + txtDescSetor.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: " + iCodSetor + "-" + txtDescSetor.getVlrString().trim();
 			}
 			if (iCodVend != 0) {
 				sWhere += "AND V.CODVEND=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "
-						+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: " + iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
 			if (iCodCli != 0) {
 				if (iCodCli != 0) {
 					if (cbCliPrinc.getVlrString().equals("S")) {
-						sFiltros2 += (!sFiltros2.equals("") ? " / " : "")
-								+ "AGRUP. CLI. PRINC.";
+						sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + "AGRUP. CLI. PRINC.";
 					}
 					if (cbCliPrinc.getVlrString().equals("S")) {
 						sWhere += "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND "
@@ -911,8 +865,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ sWhere
 					+ "GROUP BY 1,2,3" + "ORDER BY 1,2,3";
 
-			//  		System.out.println(sSql);
-
 			try {
 				ps = con.prepareStatement(sSql);
 				ps.setInt(1, Aplicativo.iCodEmp);
@@ -922,17 +874,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				iParam = 5;
 				if (!sCodMarca.equals("")) {
 					ps.setInt(iParam, Aplicativo.iCodEmp);
-					ps.setInt(iParam + 1, ListaCampos
-							.getMasterFilial("EQMARCA"));
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQMARCA"));
 					ps.setString(iParam + 2, sCodMarca);
 					iParam += 3;
 				}
 				if (!sCodGrup1.equals("")) {
 					ps.setInt(iParam, Aplicativo.iCodEmp);
-					ps.setInt(iParam + 1, ListaCampos
-							.getMasterFilial("EQGRUPO"));
-					ps.setString(iParam + 2, sCodGrup1
-							+ (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQGRUPO"));
+					ps.setString(iParam + 2, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
 					iParam += 3;
 				}
 				if (!sCodGrup2.equals("")) {
@@ -961,8 +910,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "+"
-								+ Funcoes.replicate("-", 133) + "+");
+						imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133) + "+");
 						imp.incPags();
 						imp.eject();
 
@@ -970,27 +918,27 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					if (imp.pRow() == 0) {
 						imp.impCab(136, true);
 						if (!sFiltros1.equals("")) {
+							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
-							imp.say(imp.pRow() + 0,
-									68 - (sFiltros1.length() / 2), sFiltros1);
+							imp.say(imp.pRow() + 0, 68 - (sFiltros1.length() / 2), sFiltros1);
 							imp.say(imp.pRow() + 0, 136, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
 						if (!sFiltros2.equals("")) {
+							imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
-							imp.say(imp.pRow() + 0,
-									68 - (sFiltros2.length() / 2), sFiltros2);
+							imp.say(imp.pRow() + 0, 68 - (sFiltros2.length() / 2), sFiltros2);
 							imp.say(imp.pRow() + 0, 136, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
+						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "|");
 						imp.say(imp.pRow() + 0, 50, "PERIODO DE: "
 								+ txtDataini.getVlrString() + " ATE: "
 								+ txtDatafim.getVlrString());
 						imp.say(imp.pRow() + 0, 136, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
+						imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "| DESCRICAO DO PRODUTO");
 						imp.say(imp.pRow() + 0, 55, "| CODIGO");
@@ -999,26 +947,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say(imp.pRow() + 0, 99, "|");
 						imp.say(imp.pRow() + 0, 136, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
-
+						imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 					}
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
-					imp.say(imp.pRow() + 0, 4, Funcoes.adicionaEspacos(rs
-							.getString(1), 50)
-							+ " |");
-					imp.say(imp.pRow() + 0, 56, Funcoes.adicEspacosEsquerda(rs
-							.getString(2), 10)
-							+ " |");
-					imp.say(imp.pRow() + 0, 70, Funcoes.adicEspacosEsquerda(rs
-							.getDouble(4)
-							+ "", 10)
-							+ " |");
-					imp.say(imp.pRow() + 0, 83, Funcoes
-							.strDecimalToStrCurrency(15, 2, rs.getString(5))
-							+ " |");
+					imp.say(imp.pRow() + 0, 4, Funcoes.adicionaEspacos(rs.getString(1), 50) + " |");
+					imp.say(imp.pRow() + 0, 56, Funcoes.adicEspacosEsquerda(rs.getString(2), 10) + " |");
+					imp.say(imp.pRow() + 0, 70, Funcoes.adicEspacosEsquerda(rs.getDouble(4) + "", 10) + " |");
+					imp.say(imp.pRow() + 0, 83, Funcoes.strDecimalToStrCurrency(15, 2, rs.getString(5)) + " |");
 					imp.say(imp.pRow() + 0, 136, "|");
 					deQtdTotal += rs.getDouble(4);
 					deVlrTotal += rs.getDouble(5);
@@ -1033,21 +970,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				// Fim da impressão do total por setor
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133)
-						+ "+");
+				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 1, "| TOTAL");
-				imp.say(imp.pRow() + 0, 67, "| "
-						+ Funcoes.strDecimalToStrCurrency(11, 2, deQtdTotal
-								+ ""));
-				imp.say(imp.pRow() + 0, 81, "| "
-						+ Funcoes.strDecimalToStrCurrency(15, 2, deVlrTotal
-								+ "") + " |");
+				imp.say(imp.pRow() + 0, 67, "| " + Funcoes.strDecimalToStrCurrency(11, 2, deQtdTotal + ""));
+				imp.say(imp.pRow() + 0, 81, "| " + Funcoes.strDecimalToStrCurrency(15, 2, deVlrTotal + "") + " |");
 				imp.say(imp.pRow() + 0, 136, "|");
-
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133)
-						+ "+");
+				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 
 				imp.eject();
 				imp.fechaGravacao();
@@ -1057,11 +987,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						+ err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
-			if (bVisualizar) {
+			if (bVisualizar) 
 				imp.preview(this);
-			} else {
+			else 
 				imp.print();
-			}
 		} finally {
 			sWhere = null;
 			sSql = null;
@@ -1105,7 +1034,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		String sDescTipoCli = "";
 		String sCodTipoCliAnt = "";
 		String sDescTipoCliAnt = "";
-//		String sTipoMov = "";
 
 		int iCodSetor = 0;
 		int iCodCli = 0;
@@ -1157,8 +1085,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			}
 
 			if (cbCliPrinc.getVlrString().equals("S")) {
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "")
-						+ "ADIC. CLIENTES PRINCIPAIS";
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + "ADIC. CLIENTES PRINCIPAIS";
 			}
 			
 			sCodMarca = txtCodMarca.getVlrString().trim();
@@ -1171,34 +1098,27 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			
 			if (!sCodMarca.equals("")) {
 				sWhere += "AND P.CODEMPMC=? AND P.CODFILIALMC=? AND P.CODMARCA=? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: "
-						+ txtDescMarca.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "M.: " + txtDescMarca.getText().trim();
 			}
 			if (!sCodGrup1.equals("")) {
 				sWhere += "AND G.CODEMP=? AND G.CODFILIAL=? AND G.CODGRUP LIKE ? ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: "
-						+ txtDescGrup1.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + "G.: " + txtDescGrup1.getText().trim();
 			}
 			if (!sCodGrup2.equals("")) {
 				sWhere += "AND ( NOT P.CODGRUP=? ) ";
-				sFiltros1 += (!sFiltros1.equals("") ? " / " : "")
-						+ " EXCL. G.: " + txtDescGrup2.getText().trim();
+				sFiltros1 += (!sFiltros1.equals("") ? " / " : "") + " EXCL. G.: " + txtDescGrup2.getText().trim();
 			}
 			if (iCodSetor != 0) {
 				sWhere += "AND VD.CODSETOR=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: "
-						+ iCodSetor + "-" + txtDescSetor.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " SETOR: " + iCodSetor + "-" + txtDescSetor.getVlrString().trim();
 			}
 			if (iCodVend != 0) {
 				sWhere += "AND V.CODVEND=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: "
-						+ iCodVend + "-" + txtNomeVend.getVlrString().trim();
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " REPR.: " + iCodVend + "-" + txtNomeVend.getVlrString().trim();
 			}
 			if (iCodCli != 0) {
 				sWhere += "AND C2.CODCLI=? ";
-				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " CLI.: "
-						+ iCodCli + "-"
-						+ Funcoes.copy(txtRazCli.getVlrString(), 30);
+				sFiltros2 += (!sFiltros2.equals("") ? " / " : "") + " CLI.: " + iCodCli + "-" + Funcoes.copy(txtRazCli.getVlrString(), 30);
 			}
 
 			if (sOrdemRel.equals("V")) {
@@ -1238,8 +1158,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					+ (sCodGrup1.equals("") ? " AND P.CODGRUP=G.CODGRUP " : " AND SUBSTR(P.CODGRUP,1," + sCodGrup1.length() + ")=G.CODGRUP ") + sWhere
 					+ "GROUP BY 1,2,3,4 " + "ORDER BY " + sOrderBy;
 
-			//System.out.println(sSql);
-
 			try {
 				ps = con.prepareStatement(sSql);
 				ps.setInt(1, Aplicativo.iCodEmp);
@@ -1249,17 +1167,14 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				iParam = 5;
 				if (!sCodMarca.equals("")) {
 					ps.setInt(iParam, Aplicativo.iCodEmp);
-					ps.setInt(iParam + 1, ListaCampos
-							.getMasterFilial("EQMARCA"));
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQMARCA"));
 					ps.setString(iParam + 2, sCodMarca);
 					iParam += 3;
 				}
 				if (!sCodGrup1.equals("")) {
 					ps.setInt(iParam, Aplicativo.iCodEmp);
-					ps.setInt(iParam + 1, ListaCampos
-							.getMasterFilial("EQGRUPO"));
-					ps.setString(iParam + 2, sCodGrup1
-							+ (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
+					ps.setInt(iParam + 1, ListaCampos.getMasterFilial("EQGRUPO"));
+					ps.setString(iParam + 2, sCodGrup1 + (sCodGrup1.length() < TAM_GRUPO ? "%" : ""));
 					iParam += 3;
 				}
 				if (!sCodGrup2.equals("")) {
@@ -1290,24 +1205,22 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					sDescTipoCli = rs.getString(2);
 					if (imp.pRow() >= (linPag - 1)) {
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "+"
-								+ Funcoes.replicate("-", 134) + "+");
+						imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 134) + "+");
 						imp.incPags();
 						imp.eject();
 					}
 					if (imp.pRow() == 0) {
 						imp.impCab(136, true);
+						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						if (!sFiltros1.equals("")) {
 							imp.say(imp.pRow() + 0, 1, "|");
-							imp.say(imp.pRow() + 0,
-									68 - (sFiltros1.length() / 2), sFiltros1);
+							imp.say(imp.pRow() + 0, 68 - (sFiltros1.length() / 2), sFiltros1);
 							imp.say(imp.pRow() + 0, 136, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
 						if (!sFiltros2.equals("")) {
 							imp.say(imp.pRow() + 0, 1, "|");
-							imp.say(imp.pRow() + 0,
-									68 - (sFiltros2.length() / 2), sFiltros2);
+							imp.say(imp.pRow() + 0, 68 - (sFiltros2.length() / 2), sFiltros2);
 							imp.say(imp.pRow() + 0, 136, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						}
@@ -1318,8 +1231,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 								+ sDescOrdemRel);
 						imp.say(imp.pRow() + 0, 136, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
+						imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "| RAZAO SOCIAL");
 						imp.say(imp.pRow() + 0, 55, "| CODIGO");
@@ -1328,63 +1240,39 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						imp.say(imp.pRow() + 0, 99, "|");
 						imp.say(imp.pRow() + 0, 136, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
+						imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 					}
 					if (!sCodTipoCli.equals(sCodTipoCliAnt)) {
 						if (!sCodTipoCliAnt.equals("")) {
 							sCab = "SUB-TOTAL " + sDescTipoCliAnt.trim() + ":";
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 1, "+"
-									+ Funcoes.replicate("-", 133) + "+");
+							imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 							imp.say(imp.pRow() + 0, 1, "|");
 							imp.say(imp.pRow() + 0, 3, sCab);
-							imp.say(imp.pRow() + 0, 68, "| "
-									+ Funcoes.strDecimalToStrCurrency(10, 2,
-											deQtdSubTotal + ""));
-							imp.say(imp.pRow() + 0, 81, "| "
-									+ Funcoes.strDecimalToStrCurrency(15, 2,
-											deVlrSubTotal + "") + " |");
+							imp.say(imp.pRow() + 0, 68, "| " + Funcoes.strDecimalToStrCurrency(10, 2, deQtdSubTotal + ""));
+							imp.say(imp.pRow() + 0, 81, "| " + Funcoes.strDecimalToStrCurrency(15, 2, deVlrSubTotal + "") + " |");
 							imp.say(imp.pRow() + 0, 136, "|");
 							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 1, "+"
-									+ Funcoes.replicate("-", 133) + "+");
+							imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 							deVlrSubTotal = 0;
 							deQtdSubTotal = 0;
 						}
 						sCab = sCodTipoCli + " - " + sDescTipoCli.trim();
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "|");
-						imp.say(imp.pRow() + 0, ((136 - sCab.length()) / 2),
-								sCab);
+						imp.say(imp.pRow() + 0, ((136 - sCab.length()) / 2), sCab);
 						imp.say(imp.pRow() + 0, 136, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "+"
-								+ Funcoes.replicate("-", 133) + "+");
+						imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("-", 133) + "+");
 					}
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
-					imp.say(imp.pRow() + 0, 4, Funcoes.adicionaEspacos(rs
-							.getString(3), 50)
-							+ " |");
-					imp.say(imp.pRow() + 0, 56, Funcoes.adicEspacosEsquerda(rs
-							.getString(4), 10)
-							+ " |");
-					imp.say(imp.pRow() + 0, 70, Funcoes.adicEspacosEsquerda(rs
-							.getDouble(5)
-							+ "", 10)
-							+ " |");
-					imp.say(imp.pRow() + 0, 83, Funcoes
-							.strDecimalToStrCurrency(15, 2, rs.getString(6))
-							+ " |");
-					/*
-					 * System.out.println(Funcoes.adicionaEspacos(rs.getString(3),50)+
-					 * "-"+Funcoes.adicEspacosEsquerda(rs.getString(4),10)+"-"+
-					 * Funcoes.adicEspacosEsquerda(rs.getDouble(5)+"",10)+"-"+
-					 * Funcoes.strDecimalToStrCurrency(15,2,rs.getString(6)));
-					 */
+					imp.say(imp.pRow() + 0, 4, Funcoes.adicionaEspacos(rs.getString(3), 50) + " |");
+					imp.say(imp.pRow() + 0, 56, Funcoes.adicEspacosEsquerda(rs.getString(4), 10) + " |");
+					imp.say(imp.pRow() + 0, 70, Funcoes.adicEspacosEsquerda(rs.getDouble(5) + "", 10) + " |");
+					imp.say(imp.pRow() + 0, 83, Funcoes.strDecimalToStrCurrency(15, 2, rs.getString(6)) + " |");
 					imp.say(imp.pRow() + 0, 136, "|");
 					deQtdTotal += rs.getDouble(5);
 					deVlrTotal += rs.getDouble(6);
@@ -1401,35 +1289,24 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				sCab = "SUB-TOTAL " + sDescTipoCliAnt.trim() + ":";
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("=", 133)
-						+ "+");
+				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("=", 133) + "+");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 1, "|");
 				imp.say(imp.pRow() + 0, 3, sCab);
-				imp.say(imp.pRow() + 0, 68, "| "
-						+ Funcoes.strDecimalToStrCurrency(10, 2, deQtdSubTotal
-								+ ""));
-				imp.say(imp.pRow() + 0, 81, "| "
-						+ Funcoes.strDecimalToStrCurrency(15, 2, deVlrSubTotal
-								+ "") + " |");
+				imp.say(imp.pRow() + 0, 68, "| " + Funcoes.strDecimalToStrCurrency(10, 2, deQtdSubTotal + ""));
+				imp.say(imp.pRow() + 0, 81, "| " + Funcoes.strDecimalToStrCurrency(15, 2, deVlrSubTotal + "") + " |");
 				imp.say(imp.pRow() + 0, 136, "|");
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("=", 133)
-						+ "+");
+				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("=", 133) + "+");
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 				imp.say(imp.pRow() + 0, 1, "| TOTAL");
-				imp.say(imp.pRow() + 0, 68, "| "
-						+ Funcoes.strDecimalToStrCurrency(10, 2, deQtdTotal
-								+ ""));
-				imp.say(imp.pRow() + 0, 81, "| "
-						+ Funcoes.strDecimalToStrCurrency(15, 2, deVlrTotal
-								+ "") + " |");
+				imp.say(imp.pRow() + 0, 68, "| " + Funcoes.strDecimalToStrCurrency(10, 2, deQtdTotal + ""));
+				imp.say(imp.pRow() + 0, 81, "| " + Funcoes.strDecimalToStrCurrency(15, 2, deVlrTotal + "") + " |");
 				imp.say(imp.pRow() + 0, 136, "|");
 
 				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("=", 133)
-						+ "+");
+				imp.say(imp.pRow() + 0, 1, "+" + Funcoes.replicate("=", 133) + "+");
 
 				imp.eject();
 				imp.fechaGravacao();
@@ -1439,11 +1316,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 						+ err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
-			if (bVisualizar) {
+			if (bVisualizar) 
 				imp.preview(this);
-			} else {
+			else 
 				imp.print();
-			}
 		} finally {
 			sWhere = null;
 			sSql = null;
@@ -1497,17 +1373,13 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					iColunas = NUM_COLUNAS;
 			}
 			for (int i = 0; i < iColunas; i++) {
-				sRetorno += "| "
-						+ Funcoes.adicionaEspacos(vCols.elementAt(
-								i + (iPassada * NUM_COLUNAS)).toString(),
-								NUM_COLUNAS);
+				sRetorno += "| " + Funcoes.adicionaEspacos(vCols.elementAt(i + (iPassada * NUM_COLUNAS)).toString(),NUM_COLUNAS);
 				iCols = i;
 			}
 			for (int i = iCols; i < (NUM_COLUNAS - 1); i++) {
 				sRetorno += "|" + Funcoes.replicate(" ", 10);
 			}
-			sRetorno += Funcoes.replicate(" ", 103 - sRetorno.length())
-					+ (iPassada == 0 ? "| TOTAL" : "|      ");
+			sRetorno += Funcoes.replicate(" ", 103 - sRetorno.length()) + (iPassada == 0 ? "| TOTAL" : "|      ");
 		} finally {
 			vCols = null;
 		}
@@ -1528,24 +1400,18 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					iColunas = NUM_COLUNAS;
 			} 
 			for (int i = 0; i < iColunas; i++) {
-				deTemp = (Double) vTotSetor.elementAt(i
-						+ (iPassada * NUM_COLUNAS));
+				deTemp = (Double) vTotSetor.elementAt(i + (iPassada * NUM_COLUNAS));
 				if (deTemp == null)
 					deTemp = new Double(0);
 				deTotal += deTemp.doubleValue();
-				sRetorno += "|"
-						+ Funcoes.strDecimalToStrCurrency(10, 2, deTemp
-								.toString());
+				sRetorno += "|" + Funcoes.strDecimalToStrCurrency(10, 2, deTemp.toString());
 				iCols = i;
 			}
 			for (int i = iCols; i < (NUM_COLUNAS - 1); i++) {
 				sRetorno += "|" + Funcoes.replicate(" ", 10);
 			}
-			sRetorno += Funcoes.replicate(" ", 103 - sRetorno.length())
-					+ "|"
-					+ ((iTotPassadas - 1) == iPassada ? Funcoes
-							.strDecimalToStrCurrency(11, 2, deTotal + "")
-							: Funcoes.replicate(" ", 11)); 
+			sRetorno += Funcoes.replicate(" ", 103 - sRetorno.length()) + "|" + ((iTotPassadas - 1) == iPassada ? Funcoes
+							.strDecimalToStrCurrency(11, 2, deTotal + "") : Funcoes.replicate(" ", 11)); 
 		} finally {
 			vTotSetor = null;
 			deTemp = null;
@@ -1602,11 +1468,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		boolean bInicio = false;
 		try {
 			for (int i = 0; i < vItens.size(); i++) {
-				if (((Vector) vItens.elementAt(i)).elementAt(POS_CODSETOR)
-						.toString().equals(sCodSetor)) {
+				if (((Vector) vItens.elementAt(i)).elementAt(POS_CODSETOR).toString().equals(sCodSetor)) {
 					bInicio = true;
-					sCodVend = new String(((Vector) vItens.elementAt(i))
-							.elementAt(POS_CODVEND).toString());
+					sCodVend = new String(((Vector) vItens.elementAt(i)).elementAt(POS_CODVEND).toString());
 					if (vRetorno.indexOf(sCodVend) == -1)
 						vRetorno.addElement(sCodVend);
 				} else {

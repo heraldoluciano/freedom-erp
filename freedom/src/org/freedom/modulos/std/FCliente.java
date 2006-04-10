@@ -613,6 +613,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
   	
   	tabHist.adicColuna("Ind.");
 	tabHist.adicColuna("Sit.");
+	tabHist.adicColuna("tipo");
 	tabHist.adicColuna("Contato");
 	tabHist.adicColuna("Atendente");
 	tabHist.adicColuna("Data");
@@ -622,12 +623,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	
 	tabHist.setTamColuna(40,0);
 	tabHist.setTamColuna(30,1);
-	tabHist.setTamColuna(70,2);
+	tabHist.setTamColuna(30,2);
 	tabHist.setTamColuna(70,3);
-	tabHist.setTamColuna(75,4);
-	tabHist.setTamColuna(200,5);
-	tabHist.setTamColuna(100,6);
-	tabHist.setTamColuna(70,7);
+	tabHist.setTamColuna(70,4);
+	tabHist.setTamColuna(75,5);
+	tabHist.setTamColuna(200,6);
+	tabHist.setTamColuna(100,7);
+	tabHist.setTamColuna(70,8);
 	
 	tabHist.addMouseListener(
 			  new MouseAdapter() {
@@ -1087,7 +1089,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	  PreparedStatement ps = null;
 	  ResultSet rs = null;
 	  int iLinha = 0;
-	  String sSQL = "SELECT H.CODHISTTK,H.SITHISTTK,H.DATAHISTTK,H.DESCHISTTK,H.CODCTO,H.CODATEND," +
+	  String sSQL = "SELECT H.CODHISTTK,H.SITHISTTK,H.TIPOHISTTK,H.DATAHISTTK,H.DESCHISTTK,H.CODCTO,H.CODATEND," +
 	  				" A.NOMEATEND,H.HORAHISTTK" +
         			" FROM TKHISTORICO H, ATATENDENTE A" +
         			" WHERE H.CODCLI=? AND H.CODEMPCL=? AND H.CODFILIALCL=?" +
@@ -1104,12 +1106,13 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			  tabHist.adicLinha();
 			  tabHist.setValor(rs.getString("CodHistTK"),iLinha,0);
 			  tabHist.setValor(rs.getString("SitHistTK"),iLinha,1);
-			  tabHist.setValor(rs.getString("CodCto"),iLinha,2);
-			  tabHist.setValor(rs.getString("CodAtend"),iLinha,3);
-			  tabHist.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")),iLinha,4);
-			  tabHist.setValor(rs.getString("DescHistTK"),iLinha,5);
-			  tabHist.setValor(rs.getString("NomeAtend"),iLinha,6);
-			  tabHist.setValor(rs.getString("HoraHistTK"),iLinha,7);
+			  tabHist.setValor(rs.getString("TipoHistTK"),iLinha,2);
+			  tabHist.setValor(rs.getString("CodCto"),iLinha,3);
+			  tabHist.setValor(rs.getString("CodAtend"),iLinha,4);
+			  tabHist.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DataHistTK")),iLinha,5);
+			  tabHist.setValor(rs.getString("DescHistTK"),iLinha,6);
+			  tabHist.setValor(rs.getString("NomeAtend"),iLinha,7);
+			  tabHist.setValor(rs.getString("HoraHistTK"),iLinha,8);
 			  iLinha++;
 		  }
 		
@@ -1147,7 +1150,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  	if (dl.OK) {
 		  	  oRets = dl.getValores();
 		  	  	try {
-			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,'')";
+			        String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(0,?,?,?,?,?,?,?,?,?,?,?)";
 			        ps = con.prepareStatement(sSQL);
 			        ps.setInt(1,Aplicativo.iCodEmp);
 		        	ps.setNull(2,Types.INTEGER);
@@ -1158,29 +1161,30 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			        ps.setInt(7,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
 				    ps.setString(8,(String)oRets[1]);//codígo atendente
 				    ps.setString(9,(String)oRets[2]);//status do historico
-				    ps.setDate(10,(Date)oRets[3]);//data do historico
+				    ps.setDate(10,(Date)oRets[4]);//data do historico
+				    ps.setString(11,(String)oRets[3]);//tipo do historico
 				    ps.execute();			    
 				    ps.close();
 				    
 				    if (!con.getAutoCommit())
 				    	con.commit();
 				    
-				    if (oRets[4] != null) {
+				    if (oRets[5] != null) {
 				    	sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				        ps = con.prepareStatement(sSQL);
 				        ps.setInt(1,Aplicativo.iCodEmp);  
-					    ps.setDate(2,(Date)oRets[4]);
-					    ps.setString(3,oRets[5]+":00"); 
-					    ps.setDate(4,(Date)oRets[6]);
-					    ps.setString(5,(String)oRets[7]+":00");
-					    ps.setString(6,(String)oRets[8]);
-					    ps.setString(7,(String)oRets[9]);
-					    ps.setString(8,(String)oRets[10]); 
+					    ps.setDate(2,(Date)oRets[5]);
+					    ps.setString(3,oRets[6]+":00"); 
+					    ps.setDate(4,(Date)oRets[7]);
+					    ps.setString(5,(String)oRets[8]+":00");
+					    ps.setString(6,(String)oRets[9]);
+					    ps.setString(7,(String)oRets[10]);
+					    ps.setString(8,(String)oRets[11]); 
 					    ps.setInt(9,5);
 					    ps.setInt(10,Aplicativo.iCodFilialPad);
 					    ps.setString(11,Aplicativo.strUsuario); 
-					    ps.setString(12,(String)oRets[11]);
-					    ps.setString(13,(String)oRets[12]);  
+					    ps.setString(12,(String)oRets[12]);
+					    ps.setString(13,(String)oRets[13]);  
 					    ps.setInt(14,((Integer)buscaAgente(0)).intValue());
 					    ps.setString(15,(String)buscaAgente(1));
 				        ps.execute();
@@ -1220,17 +1224,18 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		  	
 		  	DLNovoHist dl = new DLNovoHist(iCod,1,this);
 		  	dl.setConexao(con);
-		  	dl.setValores(new Object[] {(String)tabHist.getValor(iLin,5),
-							   			(String)tabHist.getValor(iLin,3),
+		  	dl.setValores(new Object[] {(String)tabHist.getValor(iLin,6),
+							   			(String)tabHist.getValor(iLin,4),
 							   			(String)tabHist.getValor(iLin,1),
-							   			(Date)Funcoes.strDateToSqlDate((String)tabHist.getValor(iLin,4))
+							   			(String)tabHist.getValor(iLin,2),
+							   			(Date)Funcoes.strDateToSqlDate((String)tabHist.getValor(iLin,5))
 		  							   }
 		  				 );
 		  	dl.setVisible(true);
 		  	if (dl.OK) {
 		  		oRets = dl.getValores();
 		  		try {
-		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,?,'')";
+		  			String sSQL = "EXECUTE PROCEDURE TKSETHISTSP(?,?,?,?,?,?,?,?,?,?,?,?)";
 		  			PreparedStatement ps = con.prepareStatement(sSQL);
 		  			ps.setInt(1,Integer.parseInt((String)tabHist.getValor(iLin,0)));
 		  			ps.setInt(2,Aplicativo.iCodEmp);
@@ -1242,7 +1247,8 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			        ps.setInt(8,ListaCampos.getMasterFilial("ATATENDENTE"));//Filial do atendete
 				    ps.setString(9,(String)oRets[1]);//codígo atendente
 				    ps.setString(10,(String)oRets[2]);//status do historico
-				    ps.setDate(11,(Date)oRets[3]);//data do historico
+				    ps.setDate(11,(Date)oRets[4]);//data do historico
+				    ps.setString(12,(String)oRets[3]);//status do historico
 				    ps.execute();
 		  			ps.close();
 		  			if (!con.getAutoCommit())
