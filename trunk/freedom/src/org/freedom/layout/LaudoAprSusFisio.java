@@ -235,7 +235,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		drawRetangulo(420,165,5,24,AL_CDIR);
 		drawTexto("Telefone",424,173);
 		setFonte(fnConteudo);
-		drawTexto(rs.getString("FONECONV") !=null ? Funcoes.setMascara(rs.getString("FoneConv").substring(5),"####-####") : "",424,183);		
+		drawTexto(rs.getString("FONECONV") !=null ? Funcoes.setMascara(rs.getString("FONECONV").substring(4),"####-####") : "",424,183);		
 		
 //		Linha 4
 		setFonte(fnSubTitulo);
