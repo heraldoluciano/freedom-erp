@@ -1,6 +1,6 @@
 /*
  * Classe de driver para impressoras Bematech
- * Autor: Robson Sanchez
+ * Autor: Robson Sanchez/Setpoint Informática Ltda.
  * Data: 05/04/2006
  */
 package org.freedom.ecf.driver;
@@ -33,7 +33,7 @@ public class ECFBematech extends ECFDriver {
 	public int leituraX() {
 		byte[] CMD = {ESC,6}; 
 		CMD = preparaCmd(CMD);
-		System.out.println(CMD);
+		//System.out.println(CMD);
 		return 0;
 	}
 
