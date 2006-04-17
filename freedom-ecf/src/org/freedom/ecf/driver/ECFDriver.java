@@ -21,6 +21,11 @@ public abstract class ECFDriver {
 	public static final int DATABITS = SerialPort.DATABITS_8;
 	public static final int STOPBITS = SerialPort.STOPBITS_1;
 	public static final int PARITY = SerialPort.PARITY_NONE;
+	public static final int COM1 = 0;
+	public static final int COM2 = 1;
+	public static final int COM3 = 2;
+	public static final int COM4 = 3;
+	public static final int COM5 = 4;
 	protected String porta;
 	protected boolean ativada = false;
 	protected SerialPort portaSerial = null;
@@ -29,6 +34,7 @@ public abstract class ECFDriver {
 	}
 	public ECFDriver(String porta) {
 		this.porta = porta;
+		abrePorta(porta);
 	}
 	public boolean abrePorta(String porta) {
 		boolean retorno = true;
