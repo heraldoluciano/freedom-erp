@@ -47,14 +47,14 @@ public class ECFBematech extends ECFDriver {
 	}
 	
 	public void aguardaImpressao() {
-		byte[] CMD = {ESC,19};
+		byte[] CMD = {ESC,19}; // status 
 		byte[] retorno = null;
 		CMD = preparaCmd(CMD);
-		//while ((retorno==null) || (retorno[0]!=ACK)) {
-		while (true) {
+		while ((retorno==null) || (retorno.length<2)) {
+		//while (true) {
 		   retorno = enviaCmd(CMD);
 		   try {
-			   Thread.sleep(5000);
+			   Thread.sleep(3000);
 		   }
 		   catch (InterruptedException e) {
 			   
