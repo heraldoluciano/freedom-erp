@@ -42,12 +42,29 @@ public class ECFBematech extends ECFDriver {
 		byte[] retorno = null;
 		CMD = preparaCmd(CMD);
 		retorno = enviaCmd(CMD);
+		aguardaImpressao();
 		return checkRetorno(retorno);
 	}
 	
+	public void aguardaImpressao() {
+		byte[] CMD = {ESC,19};
+		byte[] retorno = null;
+		CMD = preparaCmd(CMD);
+		//while ((retorno==null) || (retorno[0]!=ACK)) {
+		while (true) {
+		   retorno = enviaCmd(CMD);
+		   try {
+			   Thread.sleep(5000);
+		   }
+		   catch (InterruptedException e) {
+			   
+		   }
+		}
+	}
 	public int checkRetorno(byte[] bytes) {
 		int retorno = 0;
 		bytesLidos = null;
+		//byte[] flags = new byte[3];
 		byte ack = 0;
 		byte st1 = 0;
 		byte st2 = 0;
@@ -58,31 +75,23 @@ public class ECFBematech extends ECFDriver {
 			   if (i==0)
 			       ack = bytes[i];
 			   else if (i==1)
-				   st1 = bytes[i];
+			       st1 = bytes[i];
 			   else if (i==2)
 				   st2 = bytes[i];
 			   else
 				   bytesLidos[i-3] = bytes[i];
 		   }
-		   if (ack==ACK) {
+		   if (ack==ACK)
 			   retorno = 1;
-		   }
 		   else {
 			   retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
-			   if (st1>127) 
-				   st1 -= 128;
-			   if (st1>63) 
-				   st1 -= 64;
-			   if (st1>31)
-				   st1 -= 32;
-			   if (st1>15)
-				   st1 -= 16;
-			   if (st1>7)
-				   st1 -= 8;
-			   if (st1>3)
-				   st1 -= 4;
-			   if (st1>1)
-				   st1 -= 2;
+			   if (st1>127) st1 -= 128;
+			   if (st1>63) st1 -= 64;
+			   if (st1>31) st1 -= 32;
+			   if (st1>15) st1 -= 16;
+			   if (st1>7) st1 -= 8;
+			   if (st1>3) st1 -= 4;
+			   if (st1>1) st1 -= 2;
 			   if (st1>0) {
 				   st1 -= 1;
 				   retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
@@ -91,18 +100,12 @@ public class ECFBematech extends ECFDriver {
 				   retorno = -2; //"Parâmetro inválido na função."
 				   st2 -= 128;
 			   }
-			   if (st2>63) 
-				   st2 -= 64;
-			   if (st2>31)
-				   st2 -= 32;
-			   if (st2>15)
-				   st2 -= 16;
-			   if (st2>7)
-				   st2 -= 8;
-			   if (st2>3)
-				   st2 -= 4;
-			   if (st2>1)
-				   st2 -= 2;
+			   if (st2>63) st2 -= 64;
+			   if (st2>31) st2 -= 32;
+			   if (st2>15) st2 -= 16;
+			   if (st2>7) st2 -= 8;
+			   if (st2>3) st2 -= 4;
+			   if (st2>1) st2 -= 2;
 			   if (st2>0) {
 				   st2 -= 1;
 				   retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
