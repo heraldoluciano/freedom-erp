@@ -20,7 +20,9 @@ public abstract class ECFDriver {
 	public static final byte ESC = 27;
 	public static final byte STX = 2;
 	public static final byte ACK = 6;
-	public static final int TIMEOUT = 60;
+	public static final byte NAK = 21;
+	public static final int TIMEOUT = 1000;
+	public static final int TIMEOUT_ACK = 1500;
 	public static final int BAUDRATE = 9600;
 	public static final int DATABITS = SerialPort.DATABITS_8;
 	public static final int STOPBITS = SerialPort.STOPBITS_1;
@@ -126,23 +128,58 @@ public abstract class ECFDriver {
 		ativada = false;
 	}
 	
-	public byte[] enviaCmd(byte[] CMD) {
+	public byte[] enviaCmd(byte[] CMD ) {
 		return enviaCmd(CMD, portaSel);
 	}
 	public byte[] enviaCmd(byte[] CMD, int com) {
 		byte[] retorno = null;
+		byte[] buffer = null;
+		byte[] tmp = null;
+		int vezes = 0;
 		if (ativaPorta(com)) {
 		   try {
+			 // saida.
+			  saida.flush();
 		      saida.write(CMD);
+		      Thread.sleep(TIMEOUT_ACK);
 		      System.out.println(entrada.available());
-		      retorno = new byte[entrada.available()];
-		      entrada.read(retorno);
+		      while ( (entrada.available()<=0) && (vezes<100) ) {
+		    	  System.out.println("Aguardando retorno...");
+		    	  Thread.sleep(100);
+		    	  vezes ++;
+		      }
+		      vezes = 0;
+		      while ((entrada.available()>0) && (vezes<100)) {
+		    	  System.out.println("Lendo retorno: "+entrada.available());
+		    	  retorno = new byte[entrada.available()];
+		    	  entrada.read(retorno);
+		    	  if (buffer==null)
+		    		  buffer = retorno;
+		    	  else {
+		    		  tmp = buffer;
+		    		  buffer = new byte[tmp.length + retorno.length];
+		    		  for (int i=0; i<buffer.length; i++) {
+		    			  if (i<tmp.length) 
+		    				  buffer[i] = tmp[i];
+		    			  else 
+		    				  buffer[i] = retorno[i-tmp.length];
+		    		  }
+		    	  }
+	    	     Thread.sleep(100);
+		      }
 		   }
 		   catch (IOException e) {
 			   
 		   }
+		   catch (InterruptedException e) {
+			   
+		   }
 		}
-		return retorno;
+		System.out.println("tamanho do retorno: "+buffer.length);
+		for (int i=0; i<buffer.length; i++) {
+			System.out.println("Retorno "+i+" = "+buffer[i]);
+		}
+		return buffer;
 	}
 	public abstract byte[] preparaCmd(byte[] CMD);
 	
