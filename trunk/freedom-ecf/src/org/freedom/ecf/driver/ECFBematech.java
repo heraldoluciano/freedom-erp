@@ -7,6 +7,9 @@ package org.freedom.ecf.driver;
 
 public class ECFBematech extends ECFDriver {
 	
+	public ECFBematech(int com) {
+		super(com);
+	}
 	public byte[] preparaCmd(byte[] CMD) {
 		int tamCMD = CMD.length;
 		int tam = tamCMD + 2;

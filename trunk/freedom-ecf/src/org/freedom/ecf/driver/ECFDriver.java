@@ -73,7 +73,7 @@ public abstract class ECFDriver {
 		  if (os.indexOf("linux")>OS_NONE)
 			  sistema = OS_LINUX;
 		  else if (os.indexOf("windows")>OS_NONE)
-			  sistema = OS_LINUX;
+			  sistema = OS_WINDOWS;
 		}
 		return sistema;
 	}
