@@ -32,26 +32,30 @@ public abstract class ECFDriver {
 	public static final int OS_NONE = -1;
 	public static final int OS_LINUX = 0;
 	public static final int OS_WINDOWS = 1;
-	private static int sistema = -1;
+	protected int sistema = -1;
     private InputStream entrada = null;
     private OutputStream saida = null;
 	
 	protected String porta;
+	protected int portaSel = -1;
 	protected boolean ativada = false;
 	protected SerialPort portaSerial = null;
 	public ECFDriver() {
 		
 	}
 	public ECFDriver(int com) {
-		abrePorta(com);
+		ativaPorta(com);
 	}
-	public boolean abrePorta(int com) {
+	public boolean ativaPorta(int com) {
 		boolean retorno = true;
-		porta = convPorta(com);
-		portaSerial = abreSerial(porta);
-		if (portaSerial==null)
-			retorno = false;
-		ativada = retorno;
+		if ( (com!=portaSel) || (portaSerial==null) ) {
+			portaSel = com;
+			porta = convPorta(com);
+			portaSerial = ativaSerial(porta);
+			if (portaSerial==null)
+				retorno = false;
+			ativada = retorno;
+		}
 		return retorno;
 	}
 	public String convPorta(int com) {
@@ -73,7 +77,7 @@ public abstract class ECFDriver {
 		}
 		return sistema;
 	}
-	public SerialPort abreSerial(String porta) {
+	public SerialPort ativaSerial(String porta) {
 		SerialPort portaSerial = null;
 		Enumeration listaPortas = null;
 		CommPortIdentifier ips = null;
@@ -118,9 +122,27 @@ public abstract class ECFDriver {
 		ativada = false;
 	}
 	
+	public byte[] enviaCmd(byte[] CMD) {
+		return enviaCmd(CMD, portaSel);
+	}
+	public byte[] enviaCmd(byte[] CMD, int com) {
+		byte[] retorno = null;
+		if (ativaPorta(com)) {
+		   try {
+		      saida.write(CMD);
+		      entrada.read(retorno);
+		   }
+		   catch (IOException e) {
+			   
+		   }
+		}
+		return retorno;
+	}
 	public abstract byte[] preparaCmd(byte[] CMD);
 	
 	public abstract int leituraX();
+	
+	public abstract int checkRetorno(byte[] retorno);
 	
 	
 }

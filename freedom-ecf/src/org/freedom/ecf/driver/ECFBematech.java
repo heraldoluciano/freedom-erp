@@ -31,10 +31,15 @@ public class ECFBematech extends ECFDriver {
 	}
 	
 	public int leituraX() {
-		byte[] CMD = {ESC,6}; 
+		byte[] CMD = {ESC,6};
+		byte[] retorno = null;
 		CMD = preparaCmd(CMD);
-		//System.out.println(CMD);
-		return 0;
+		retorno = enviaCmd(CMD);
+		return checkRetorno(retorno);
 	}
 
+	public int checkRetorno(byte[] retorno) {
+		return 0;
+	}
+	
 }
