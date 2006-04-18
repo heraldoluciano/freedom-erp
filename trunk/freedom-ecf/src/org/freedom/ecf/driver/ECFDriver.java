@@ -19,6 +19,7 @@ import javax.comm.UnsupportedCommOperationException;
 public abstract class ECFDriver {
 	public static final byte ESC = 27;
 	public static final byte STX = 2;
+	public static final byte ACK = 6;
 	public static final int TIMEOUT = 60;
 	public static final int BAUDRATE = 9600;
 	public static final int DATABITS = SerialPort.DATABITS_8;
@@ -33,9 +34,9 @@ public abstract class ECFDriver {
 	public static final int OS_LINUX = 0;
 	public static final int OS_WINDOWS = 1;
 	protected int sistema = -1;
+	protected byte[] bytesLidos = null;
     private InputStream entrada = null;
     private OutputStream saida = null;
-	
 	protected String porta;
 	protected int portaSel = -1;
 	protected boolean ativada = false;
@@ -45,6 +46,9 @@ public abstract class ECFDriver {
 	}
 	public ECFDriver(int com) {
 		ativaPorta(com);
+	}
+	public byte[] getBytesLidos() {
+		return bytesLidos;
 	}
 	public boolean ativaPorta(int com) {
 		boolean retorno = true;
@@ -130,6 +134,8 @@ public abstract class ECFDriver {
 		if (ativaPorta(com)) {
 		   try {
 		      saida.write(CMD);
+		      System.out.println(entrada.available());
+		      retorno = new byte[entrada.available()];
 		      entrada.read(retorno);
 		   }
 		   catch (IOException e) {
@@ -142,7 +148,8 @@ public abstract class ECFDriver {
 	
 	public abstract int leituraX();
 	
-	public abstract int checkRetorno(byte[] retorno);
+	public abstract int executaCmd(byte[] CMD);
+	public abstract int checkRetorno(byte[] bytes);
 	
 	
 }
