@@ -190,6 +190,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbFilBuscGenProd2 = null;
 	private JCheckBoxPad cbFilBuscGenProd3 = null;
 	private JCheckBoxPad cbFilBuscGenProd4 = null;
+	private JCheckBoxPad cbUsaBuscGenProdORC = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -466,6 +467,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbFilBuscGenProd3.setVlrString("N");
 		cbFilBuscGenProd4 = new JCheckBoxPad("Código do fabricante", "S", "N");
 		cbFilBuscGenProd4.setVlrString("N");
+		cbUsaBuscGenProdORC = new JCheckBoxPad("Permitir busca generica de produto no orçamento?", "S", "N");
+		cbUsaBuscGenProdORC.setVlrString("N");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -753,6 +756,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adic(lbOrcOpcoes, 17, 190, 70, 20);
 		adic(lbOrcCont, 7, 200, 720, 120);
 		adicDB(cbAprovOrc, 10, 215, 350, 20, "AprovOrc", "", true);
+		adicDB(cbUsaBuscGenProdORC, 10, 275, 350, 20, "USABUSCAGENPROD", "", false);
 		setListaCampos(false, "PREFERE4", "SG");
 
 		//Email 

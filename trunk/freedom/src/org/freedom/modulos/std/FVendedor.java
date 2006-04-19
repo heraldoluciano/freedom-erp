@@ -297,9 +297,9 @@ public class FVendedor extends FTabDados implements PostListener {
 				if (imp.pRow() == 0) {					
 					imp.montaCab();
 					imp.impCab(136, true);
-					imp.say(imp.pRow(), 0, "" + imp.comprimido());
+					imp.say(imp.pRow(), 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|");
 					imp.say(imp.pRow(), 4, "Código");
 					imp.say(imp.pRow(), 12, "|");
@@ -315,11 +315,11 @@ public class FVendedor extends FTabDados implements PostListener {
 					imp.say(imp.pRow(), 106, "|");
 					imp.say(imp.pRow(), 108, "Cidade:");
 					imp.say(imp.pRow(), 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
 				}
 
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "|");
 				imp.say(imp.pRow(), 4, rs.getString("CodVend"));
 				imp.say(imp.pRow(), 12, "|");
@@ -338,14 +338,14 @@ public class FVendedor extends FTabDados implements PostListener {
 				imp.say(imp.pRow(), 135, "|");
 
 				if (imp.pRow() >= linPag) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 					imp.incPags();
 					imp.eject();
 				}
 				iContaReg++;
 			}
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 			imp.eject();
 

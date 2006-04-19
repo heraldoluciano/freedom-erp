@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -124,7 +125,6 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		lcOrc.setQueryCommit(false);
 		lcOrc.setReadOnly(true);		
 		txtCodOrc.setNomeCampo("CodOrc");
-		txtCodOrc.setPK(true);
 		txtCodOrc.setListaCampos(lcOrc);
 		
 		lcCli.add(new GuardaCampo( txtCodCli, "CodCli", "Cód.cli.", ListaCampos.DB_PK, null, false));
@@ -260,7 +260,12 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		tab.setTamColuna(100,7);
 		    
 		tab.setColunaEditavel(0,true);
-		    
+		
+		tab.addKeyListener(this);
+		tabOrc.addKeyListener(this);
+		btBusca.addKeyListener(this);
+		
+		txtCodOrc.addActionListener(this);		    
 		btSair.addActionListener(this);
 		btBusca.addActionListener(this);
 		btExec.addActionListener(this);
@@ -269,7 +274,9 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		btNadaOrc.addActionListener(this);
 		btTudoIt.addActionListener(this);
 		btNadaIt.addActionListener(this);
+		
 		rgBusca.addRadioGroupListener(this);
+		
 		lcOrc.addCarregaListener(this);
 		
 	}
@@ -372,7 +379,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 					diag.adic(new JLabelPad("Nº Pedido"), 7, 40, 80, 20);
 					diag.adic(txtNewCodVenda, 87, 40, 120, 20);
 				}
-				
+
 				diag.setVisible(true);
 				
 				if (diag.OK) {
@@ -490,52 +497,64 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sSQL = null;
 		String sWhere = null;
 		Vector vVals = null;
 		boolean bOrc = false;
 		boolean bConv = false;
-		int iCod;
+		int iCod = -1;
 		try {
-			if ((iCod = txtCodOrc.getVlrInteger().intValue()) > 0 ) {
+			 
+			if (txtCodOrc.getVlrInteger().intValue() > 0 ) {
+				iCod = txtCodOrc.getVlrInteger().intValue();
 				sWhere = ", VDCLIENTE C WHERE O.CODORC = ? AND O.CODFILIAL = ? AND O.CODEMP = ? " +
 						 "AND C.CODEMP=O.CODEMPCL AND C.CODFILIAL=O.CODFILIALCL AND C.CODCLI=O.CODCLI ";
 				bOrc = true;
-			} 
-			else if (rgBusca.getVlrString().equals("L")) {
-				iCod = txtCodCli.getVlrInteger().intValue();
-				if (iCod == 0) {
-					Funcoes.mensagemInforma(this,"Código do cliente inválido!");
-					txtCodCli.requestFocus();
+			} else {
+				if (rgBusca.getVlrString().equals("L") && txtCodCli.getText().trim().length() > 0) {
+					iCod = txtCodCli.getVlrInteger().intValue();
+					if (iCod == 0) {
+						Funcoes.mensagemInforma(this,"Código do cliente inválido!");
+						txtCodCli.requestFocus();
+						return;
+					}
+					sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=?" +
+							 " AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC='OL'";
+				} else if (rgBusca.getVlrString().equals("O") && txtCodConv.getText().trim().length() > 0) {
+					iCod = txtCodConv.getVlrInteger().intValue();
+					if (iCod == 0) {
+						Funcoes.mensagemInforma(this,"Código do conveniado inválido!");
+						txtCodConv.requestFocus();
+						return;
+					}
+					sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=?" +
+							 " AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC='OL'";
+					bConv = true;
+				} else if(iCod == -1){
+					txtCodOrc.requestFocus();
+					Funcoes.mensagemInforma(this,"Número do orçamento inválido!");
 					return;
 				}
-				sWhere = ", VDCLIENTE C WHERE C.CODCLI=? AND C.CODFILIAL=? AND C.CODEMP=?" +
-						 " AND O.CODCLI=C.CODCLI AND O.CODFILIALCL=C.CODFILIAL AND O.CODEMPCL=C.CODEMP AND O.STATUSORC='OL'";
+				
 			}
-			else if (rgBusca.getVlrString().equals("O")) {
-				iCod = txtCodConv.getVlrInteger().intValue();
-				if (iCod == 0) {
-					Funcoes.mensagemInforma(this,"Código do conveniado inválido!");
-					txtCodConv.requestFocus();
-					return;
-				}
-				sWhere = ", ATCONVENIADO C WHERE C.CODCONV=? AND C.CODFILIAL=? AND C.CODEMP=?" +
-						 " AND O.CODCONV=C.CODCONV AND O.CODFILIALCV=C.CODFILIAL AND O.CODEMPCV=C.CODEMP AND O.STATUSORC='OL'";
-				bConv = true;
-			}
-			String sSQL = "SELECT O.CODORC," + (bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI,") +
-						  "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
-						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"+	
-						  "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
-						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
-						  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S')," +	
-						  "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
-						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," +	
-						  "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
-						  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
-						  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), " +
-						  "O.STATUSORC " +
-						  "FROM VDORCAMENTO O" + sWhere + " ";
+			
+			
 			try {
+
+				sSQL = "SELECT O.CODORC," + (bConv ? "O.CODCONV,C.NOMECONV," : "O.CODCLI,C.NOMECLI,") +
+					  "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
+					  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP),"+	
+					  "(SELECT COUNT(IT.CODITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
+					  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
+					  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S')," +	
+					  "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
+					  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP)," +	
+					  "(SELECT SUM(IT.VLRLIQITORC) FROM VDITORCAMENTO IT WHERE IT.CODORC=O.CODORC " +
+					  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
+					  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), " +
+					  "O.STATUSORC " +
+					  "FROM VDORCAMENTO O" + sWhere + " ";
+		
 				ps = con.prepareStatement(sSQL);
 				ps.setInt(1,iCod);	
 				ps.setInt(2,ListaCampos.getMasterFilial(bOrc ? "VDORCAMENTO" : ( bConv ? "ATCONVENIADO" : "VDCLIENTE") ));
@@ -554,8 +573,11 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						vVals.addElement(Funcoes.strDecimalToStrCurrencyd(2,rs.getString(6) != null ? rs.getString(6) : "0"));
 						vVals.addElement(Funcoes.strDecimalToStrCurrencyd(2,rs.getString(7) != null ? rs.getString(7) : "0"));
 						tabOrc.adicLinha(vVals);
-					} else 
+					} else {
+						txtCodOrc.requestFocus();
 						Funcoes.mensagemInforma( this, "ORÇAMENTO NÃO LIBERDO!");
+						return;
+					}
 				}
 				rs.close();
 				ps.close();
@@ -569,6 +591,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		} finally {
 			ps = null;
 			rs = null;
+			sSQL = null;
 			sWhere = null;
 			vVals = null;			
 		}
@@ -614,37 +637,49 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		}
 	}
 	
+	public void keyPressed(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(kevt.getSource() == btBusca){
+				btBusca.doClick();
+				tabOrc.requestFocus();
+			}
+			else if(kevt.getSource() == tabOrc) {
+				btExec.doClick();
+				tab.requestFocus();
+			}
+			else if(kevt.getSource() == tab)
+				btGerar.doClick();
+		}
+		//super.keyPressed(kevt);
+	}
+	
 	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btSair) {
+		if (evt.getSource() == btSair)
 			dispose();
-		}
-		else if (evt.getSource() == btBusca) {
+		else if (evt.getSource() == btBusca)
 			buscar();
-		}
-		else if (evt.getSource() == btExec) {
+		else if (evt.getSource() == btExec)
 			carregar();
-		}
 		else if (evt.getSource() == btGerar) {
 			if (!gerar()) {
 				try {
 					con.rollback();
-				}
-				catch(SQLException err) {
+				} catch(SQLException err) {
 					Funcoes.mensagemErro(this,"Erro ao realizar rollback!!\n"+err.getMessage(),true,con,err);
 				}
 			}
 		}
-		else if (evt.getSource() == btTudoOrc) {
+		else if (evt.getSource() == btTudoOrc)
 			carregaTudo(tabOrc);
-		}
-		else if (evt.getSource() == btNadaOrc) {
+		else if (evt.getSource() == btNadaOrc)
 			carregaNada(tabOrc);
-		}
-		else if (evt.getSource() == btTudoIt) {
+		else if (evt.getSource() == btTudoIt)
 			carregaTudo(tab);
-		}
-		else if (evt.getSource() == btNadaIt) {
+		else if (evt.getSource() == btNadaIt)
 			carregaNada(tab);
+		else if(evt.getSource() == txtCodOrc) {
+			if(txtCodOrc.getVlrInteger().intValue() > 0)
+				btBusca.requestFocus();
 		}
 	}
 	
@@ -668,7 +703,6 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 			txtCodCli.setAtivo(true);
 			lcConv.limpaCampos(true);
 		}
-		txtCodOrc.setAtivo(false);
 		lcOrc.limpaCampos(true);
 	}
 	

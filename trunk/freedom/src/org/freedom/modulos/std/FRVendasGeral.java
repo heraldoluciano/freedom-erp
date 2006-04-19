@@ -116,24 +116,27 @@ private static final long serialVersionUID = 1L;
 	}
 	  
 	public void imprimir(boolean bVisualizar) {
+				 
+		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
+			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
+			return;
+		}
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sSQL = null;
 		String sWhere = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
 		String sCab = "";
-		String sDataini = "";
-		String sDatafim = "";
-		String sDatasaidavenda = "";		   
-		BigDecimal bTotalVal = new BigDecimal("0");
-		BigDecimal bTotalDesc = new BigDecimal("0");
-		BigDecimal bTotalLiq = new BigDecimal("0");
-		 
-		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
-			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
-			return;
-		}
+		String sDatasaidavenda = null;		   
+		BigDecimal bTotalVal = null;
+		BigDecimal bTotalDesc = null;
+		BigDecimal bTotalLiq = null;
+		ImprimeOS imp = null;
+		int linPag = 0;	
+
 		 
 		if (txtCodVend.getText().trim().length() > 0) {
 			sWhere += " AND V.CODVEND = "+txtCodVend.getText().trim();
@@ -161,84 +164,85 @@ private static final long serialVersionUID = 1L;
 		
 		if(cbVendaCanc.getVlrString().equals("N"))
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
-		
-		
-		ImprimeOS imp = new ImprimeOS("",con);
-		int linPag = imp.verifLinPag()-1;
-		imp.verifLinPag();
-		
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
-		
-		
-		String sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA,"
-					+ "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG,"
-					+ "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI "
-					+ "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " 
-					+ "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "
-					+ "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=P.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG "
-					+ "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " 
-					+ "AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
-					+ sWhere + sWhere1 + sWhere2 + sWhere3		  
-					+ "AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND V.FLAG IN "
-					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
-					+ "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA ";
 		              
 		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-			ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-			rs = ps.executeQuery();
-			imp.limpaPags();
-			  
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.verifLinPag();
+			imp.montaCab(); 
 			imp.setTitulo("Relatório de Vendas Geral");
-			imp.addSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+sDataini+" Até: "+sDatafim);
+			imp.addSubTitulo("RELATORIO DE VENDAS GERAL   -   PERIODO DE :"+txtDataini.getVlrString()+" Até: "+txtDatafim.getVlrString());
+			imp.limpaPags();
 			if (sCab.length() > 0)
-				imp.addSubTitulo(sCab);
-			  
+				imp.addSubTitulo(sCab);			
+
+			bTotalVal = new BigDecimal("0");
+			bTotalDesc = new BigDecimal("0");
+			bTotalLiq = new BigDecimal("0");
+			
+			sSQL = "SELECT V.DTSAIDAVENDA,V.CODVENDA,V.SERIE,V.STATUSVENDA,V.DOCVENDA,"
+				 + "V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODPLANOPAG,P.DESCPLANOPAG,"
+				 + "V.VLRCOMISVENDA,V.VLRDESCVENDA,V.VLRDESCITVENDA,V.CODCLI,C.RAZCLI "
+				 + "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " 
+				 + "WHERE V.CODEMP=? AND V.CODFILIAL=? "
+				 + "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI "
+				 + "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG "
+				 + "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " 
+				 + "AND TM.TIPOMOV IN ('VD','PV','VT','SE') "
+				 + sWhere + sWhere1 + sWhere2 + sWhere3		  
+				 + "AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND V.FLAG IN "
+				 + Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
+				 + "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA ";
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setDate(3,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+			ps.setDate(4,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+			rs = ps.executeQuery();			  
 			while ( rs.next() ) {
 				if (imp.pRow()>=(linPag-1)) {
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
 					imp.incPags();
 					imp.eject();
 				}
 				if (imp.pRow()==0) {
-					imp.montaCab(); 
 					imp.impCab(136, true);					                 
-					imp.say(imp.pRow()+0,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");  
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|Dt.Saida");
-					imp.say(imp.pRow()+0,12,"| NF./Ped.");
-					imp.say(imp.pRow()+0,27,"| Cod.Cli.");
-					imp.say(imp.pRow()+0,36,"| Cliente");
-					imp.say(imp.pRow()+0,80,"|   Valor");
-					imp.say(imp.pRow()+0,93,"| Desconto");
-					imp.say(imp.pRow()+0,105,"|  Liquido");
-					imp.say(imp.pRow()+0,119,"| F.Pagto.");
-					imp.say(imp.pRow()+0,135,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+					imp.say(imp.pRow(), 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");  
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|Dt.Saida");
+					imp.say(imp.pRow(), 12, "| NF./Ped.");
+					imp.say(imp.pRow(), 27, "| Cod.Cli.");
+					imp.say(imp.pRow(), 36, "| Cliente");
+					imp.say(imp.pRow(), 80, "|   Valor");
+					imp.say(imp.pRow(), 93, "| Desconto");
+					imp.say(imp.pRow(),106, "|  Liquido");
+					imp.say(imp.pRow(),119, "| F.Pagto.");
+					imp.say(imp.pRow(),135, "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
 				}
 				 
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				if (!rs.getString("dtsaidavenda").equals(sDatasaidavenda))
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.sqlDateToStrDate(rs.getDate("dtsaidavenda")));
+					imp.say(imp.pRow(), 0, "|" + Funcoes.sqlDateToStrDate(rs.getDate("dtsaidavenda")));
 				else
-					imp.say(imp.pRow()+0,0,"|");
+					imp.say(imp.pRow(), 0, "|");
 				
 				if (Funcoes.copy(rs.getString("statusvenda"),0,1)=="P")
-					imp.say(imp.pRow()+0,12,"|"+Funcoes.copy(rs.getString("codvenda"),0,13));
+					imp.say(imp.pRow(), 12, "|" + Funcoes.copy(rs.getString("codvenda"),0,13));
 				else {
-					imp.say(imp.pRow()+0,12,"| "+Funcoes.copy(rs.getString("docvenda"),0,13));
-					imp.say(imp.pRow()+0,26,"| "+Funcoes.copy(rs.getString("CodCli"),0,8));
-					imp.say(imp.pRow()+0,36,"| "+Funcoes.copy(rs.getString("razcli"),0,40));
-					imp.say(imp.pRow()+0,80,"| "+Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrprodvenda")));
-					imp.say(imp.pRow()+0,93,"|"+(rs.getDouble("VlrDescVenda") > 0 ? Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescvenda")) : Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescitvenda"))));
-					imp.say(imp.pRow()+0,105,"| "+Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrliqvenda")));
-					imp.say(imp.pRow()+0,119,"| "+Funcoes.copy(rs.getString("descplanopag"),0,13));
-					imp.say(imp.pRow()+0,135,"|");				   
+					imp.say(imp.pRow(), 12, "| " + Funcoes.copy(rs.getString("docvenda"),0,13));
+					imp.say(imp.pRow(), 26, "| " + Funcoes.copy(rs.getString("CodCli"),0,8));
+					imp.say(imp.pRow(), 36, "| " + Funcoes.copy(rs.getString("razcli"),0,40));
+					imp.say(imp.pRow(), 80, "| " + Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrprodvenda")));
+					imp.say(imp.pRow(), 93, "| " + (rs.getDouble("VlrDescVenda") > 0 ? Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescvenda")) : Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrdescitvenda"))));
+					imp.say(imp.pRow(),106, "| " + Funcoes.strDecimalToStrCurrency(10,2,rs.getString("vlrliqvenda")));
+					imp.say(imp.pRow(),119, "| " + Funcoes.copy(rs.getString("descplanopag"),0,13));
+					imp.say(imp.pRow(),135, "|");				   
 				}
 				     
 				if (rs.getString("VlrProdVenda") != null)
@@ -251,24 +255,24 @@ private static final long serialVersionUID = 1L;
 				sDatasaidavenda = rs.getString("dtsaidavenda");   				    
 			}
 			
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"|");
-			imp.say(imp.pRow()+0,64," Total Geral    |"+" "+
-				Funcoes.strDecimalToStrCurrency(10,2,"" +bTotalVal)+" |"+""+
-				Funcoes.strDecimalToStrCurrency(10,2,""+bTotalDesc)+" |"+
-				Funcoes.strDecimalToStrCurrency(11,2,"" +bTotalLiq)+"  |");
-			imp.say(imp.pRow()+0,135,"|");			  
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "|");
+			imp.say(imp.pRow(), 64, " Total Geral    | " +
+				Funcoes.strDecimalToStrCurrency(10,2,"" + bTotalVal)  + " |" +
+				Funcoes.strDecimalToStrCurrency(10,2,"" + bTotalDesc) + " |" +
+				Funcoes.strDecimalToStrCurrency(11,2,"" + bTotalLiq) + "  |");
+			imp.say(imp.pRow(), 135, "|");			  
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
 			  
 			imp.eject();      
 			imp.fechaGravacao();
 			  
 			if (!con.getAutoCommit())
 				con.commit();
-		}  catch ( SQLException err ) {
+		} catch ( SQLException err ) {
 			Funcoes.mensagemErro(this,"Erro consulta tabela de preços!\n"+err.getMessage(),true,con,err);      
 		} finally{
 			ps = null;
@@ -278,12 +282,11 @@ private static final long serialVersionUID = 1L;
 			sWhere2 = null;
 			sWhere3 = null;
 			sCab = null;
-			sDataini = null;
-			sDatafim = null;
 			sDatasaidavenda = null;		   
 			bTotalVal = null;
 			bTotalDesc = null;
 			bTotalLiq = null;
+			System.gc();
 		}
 		
 		if (bVisualizar)

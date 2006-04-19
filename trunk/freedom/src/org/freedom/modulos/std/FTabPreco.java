@@ -31,92 +31,107 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
 
 public class FTabPreco extends FDados implements ActionListener{
 	private static final long serialVersionUID = 1L;
-
-  private JTextFieldPad txtCodTab = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-  private JTextFieldPad txtDescTab= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
-  public FTabPreco () {
-  	super();
-    setTitulo("Cadastro de Tabelas de Preços");
-    setAtribos( 50, 50, 350, 125);
-    adicCampo(txtCodTab, 7, 20, 70, 20,"CodTab","Cód.tb.pc.", ListaCampos.DB_PK, true);
-    adicCampo(txtDescTab, 80, 20, 250, 20,"DescTab","Descrição da tabela de preço", ListaCampos.DB_SI, true);
-    setListaCampos( true, "TABPRECO", "VD");
-    btImp.addActionListener(this);
-    btPrevimp.addActionListener(this);
-    lcCampos.setQueryInsert(false);  
-    setImprimir(true);
-  }
-  public void actionPerformed(ActionEvent evt) {
-    if (evt.getSource() == btPrevimp) {
-        imprimir(true);
-    }
-    else if (evt.getSource() == btImp) 
-      imprimir(false);
-    super.actionPerformed(evt);
-  }
-
-  private void imprimir(boolean bVisualizar) {
-    ImprimeOS imp = new ImprimeOS("",con);
-    int linPag = imp.verifLinPag()-1;
-    imp.montaCab();
-    imp.setTitulo("Relatório de Tabelas de Preços");
-    DLRTabPreco dl = new DLRTabPreco();
-    dl.setVisible(true);
-    if (dl.OK == false) {
-      dl.dispose();
-      return;
-    }
-    String sSQL = "SELECT CODTAB,DESCTAB FROM VDTABPRECO ORDER BY "+dl.getValor();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    try {
-      ps = con.prepareStatement(sSQL);
-      rs = ps.executeQuery();
-      imp.limpaPags();
-      while ( rs.next() ) {
-         if (imp.pRow()==0) {
-            imp.impCab(80, false);
-            imp.say(imp.pRow()+0,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,"");
-            imp.say(imp.pRow()+0,2,"Código");
-            imp.say(imp.pRow()+0,30,"Descrição");
-            imp.say(imp.pRow()+1,0,""+imp.normal());
-            imp.say(imp.pRow()+0,0,Funcoes.replicate("-",79));
-         }
-         imp.say(imp.pRow()+1,0,""+imp.normal());
-         imp.say(imp.pRow()+0,2,rs.getString("CodTab"));
-         imp.say(imp.pRow()+0,30,rs.getString("DescTab"));
-         if (imp.pRow()>=linPag) {
-            imp.incPags();
-            imp.eject();
-         }
-      }
-      
-      imp.say(imp.pRow()+1,0,""+imp.normal());
-      imp.say(imp.pRow()+0,0,Funcoes.replicate("=",79));
-      imp.eject();
-      
-      imp.fechaGravacao();
-      
-//      rs.close();
-//      ps.close();
-      if (!con.getAutoCommit())
-      	con.commit();
-      dl.dispose();
-    }  
-    catch ( SQLException err ) {
-		Funcoes.mensagemErro(this,"Erro consulta tabela de \"tabelas de preços\"!\n"+err.getMessage(),true,con,err);      
-    }
-    
-    if (bVisualizar) {
-      imp.preview(this);
-    }
-    else {
-      imp.print();
-    }
-  }
+	private JTextFieldPad txtCodTab = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtDescTab= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	
+	public FTabPreco () {
+		super();
+		setTitulo("Cadastro de Tabelas de Preços");
+		setAtribos( 50, 50, 350, 125);
+		adicCampo(txtCodTab, 7, 20, 70, 20,"CodTab","Cód.tb.pc.", ListaCampos.DB_PK, true);
+		adicCampo(txtDescTab, 80, 20, 250, 20,"DescTab","Descrição da tabela de preço", ListaCampos.DB_SI, true);
+		setListaCampos( true, "TABPRECO", "VD");
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
+		lcCampos.setQueryInsert(false);  
+		setImprimir(true);
+	}
+	
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btPrevimp)
+			imprimir(true);
+		else if (evt.getSource() == btImp) 
+			imprimir(false);
+		super.actionPerformed(evt);
+	}
+	
+	private void imprimir(boolean bVisualizar) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		DLRTabPreco dl = null;
+		ImprimeOS imp = null;
+		int linPag = 0;
+		
+		dl = new DLRTabPreco();
+		dl.setVisible(true);
+		if (dl.OK == false) {
+			dl.dispose();
+			return;
+		}
+		 
+		try {
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
+			imp.montaCab();
+			imp.setTitulo("Relatório de Tabelas de Preços");
+			imp.limpaPags();
+			
+			sSQL = "SELECT CODTAB,DESCTAB " +
+				   "FROM VDTABPRECO " +
+				   "WHERE CODEMP=? AND CODFILIAL=? " +
+				   "ORDER BY "+dl.getValor();
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDTABPRECO"));
+			rs = ps.executeQuery();
+			while ( rs.next() ) {
+				if (imp.pRow()==0) {
+					imp.impCab(80, false);
+					imp.say(imp.pRow(), 0, imp.normal());
+					imp.say(imp.pRow(), 2, "Código");
+					imp.say(imp.pRow(), 30, "Descrição");
+					imp.say(imp.pRow() + 1, 0, imp.normal());
+					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+				}
+				imp.say(imp.pRow() + 1, 0, imp.normal());
+				imp.say(imp.pRow(), 2, rs.getString("CodTab"));
+				imp.say(imp.pRow(), 30, rs.getString("DescTab"));
+				if (imp.pRow()>=linPag) {
+					imp.say(imp.pRow() + 1, 0, imp.normal());
+					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
+					imp.incPags();
+					imp.eject();
+				}
+			}
+			
+			imp.say(imp.pRow() + 1, 0, imp.normal());
+			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
+			imp.eject();
+			  
+			imp.fechaGravacao();
+			if (!con.getAutoCommit())
+				con.commit();
+			dl.dispose();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro(this,"Erro consulta tabela de \"tabelas de preços\"!\n"+err.getMessage(),true,con,err);      
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			dl = null;
+		}
+		    
+		if (bVisualizar)
+		imp.preview(this);
+		else
+		imp.print();
+	}
 }

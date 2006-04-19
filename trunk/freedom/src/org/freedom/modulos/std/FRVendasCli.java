@@ -113,10 +113,6 @@ public class FRVendasCli extends FRelatorio {
 
 	}
 
-	public void setConexao(Connection cn) {
-		super.setConexao(cn);
-	}
-
 	public void imprimir(boolean bVisualizar) {
 
 		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
@@ -126,24 +122,14 @@ public class FRVendasCli extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sSQL = null;
 		String sCab = "";
 		String sOrdem = "";
-		String sWhere = "";
-	  	String sWhere1 = "";
-	  	String sWhere2 = "";
-		String sSQL = "";
-		
+	  	String sWhere1 = null;
+	  	String sWhere2 = null;		
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
 		int count = 1;
-
-
-		String sDataini = "";
-		String sDatafim = "";
-
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
-
 		
 		if(rgFaturados.getVlrString().equals("S")){ 
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
@@ -169,66 +155,65 @@ public class FRVendasCli extends FRelatorio {
 			sOrdem = " C.RAZCLI, V.CODCLI, C.FONECLI";
 		else if(rgOrdem.getVlrString().equals("V"))
 			sOrdem = " 5";
-		
-		sSQL = " SELECT V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI, SUM(V.VLRLIQVENDA)"
-			 + " FROM VDVENDA V, VDCLIENTE C, EQTIPOMOV TM"
-			 + " WHERE C.CODEMP=? AND C.CODFILIAL=?"
-			 + " AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
-			 + " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND NOT V.VLRLIQVENDA=0 AND V.TIPOVENDA='V'"
-			 + " AND V.DTEMITVENDA BETWEEN ? AND ?"
-			 + sWhere + sWhere1 + sWhere2 
-			 + " GROUP BY V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI"
-			 + " ORDER BY " + sOrdem + " DESC";
 
-		System.out.println(sSQL);
+		try {			
 
-		try {
+			imp = new ImprimeOS("", con);
+			linPag = imp.verifLinPag() - 1;
+			imp.montaCab();			
+			imp.setTitulo("Relatório de Vendas por Cliente");
+			imp.addSubTitulo("VENDAS  -  PERIODO DE :"+ txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString());
+			imp.addSubTitulo(sCab);
+			imp.limpaPags();
+			
+			sSQL = " SELECT V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI, SUM(V.VLRLIQVENDA)"
+				 + " FROM VDVENDA V, VDCLIENTE C, EQTIPOMOV TM"
+				 + " WHERE C.CODEMP=? AND C.CODFILIAL=?"
+				 + " AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI"
+				 + " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' AND NOT V.VLRLIQVENDA=0 AND V.TIPOVENDA='V'"
+				 + " AND V.DTEMITVENDA BETWEEN ? AND ?"
+				 + sWhere1 + sWhere2 
+				 + " GROUP BY V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI"
+				 + " ORDER BY " + sOrdem + " DESC";
+			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
 			ps.setDate(3, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
 			ps.setDate(4, Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
 			rs = ps.executeQuery();
-			imp.limpaPags();
-			
-			imp.setTitulo("Relatório de Vendas por Cliente");
-			imp.addSubTitulo("VENDAS  -  PERIODO DE :"+ sDataini + " ATE: " + sDatafim);
-			imp.addSubTitulo(sCab);
-
 			while (rs.next()) {
 				if (imp.pRow() == linPag) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "+"+ Funcoes.replicate("-", 133) + "+");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "+"+ Funcoes.replicate("-", 133) + "+");
 					imp.eject();
 					imp.incPags();
 				}
-				if (imp.pRow() == 0) {
-					imp.montaCab();					
+				if (imp.pRow() == 0) {		
 					imp.impCab(136, true);
-
-					imp.say(imp.pRow() + 0, 0, ""+ imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 10, "|  Cod.cli");
-					imp.say(imp.pRow() + 0, 23, "|  Razao Social");
-					imp.say(imp.pRow() + 0, 75, "|  Telefone");
-					imp.say(imp.pRow() + 0, 95, "|  Valor Total");
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow(), 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 10, "|  Cod.cli");
+					imp.say(imp.pRow(), 23, "|  Razao Social");
+					imp.say(imp.pRow(), 75, "|  Telefone");
+					imp.say(imp.pRow(), 95, "|  Valor Total");
+					imp.say(imp.pRow(), 135, "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.alinhaDir( count++, 7 ) );
-				imp.say(imp.pRow() + 0, 10, "| " + Funcoes.alinhaDir(rs.getInt("CODCLI"), 10));
-				imp.say(imp.pRow() + 0, 23, "| " + rs.getString("RAZCLI"));
-				imp.say(imp.pRow() + 0, 75, "| " + (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "|" + Funcoes.alinhaDir( count++, 7 ) );
+				imp.say(imp.pRow(), 10, "| " + Funcoes.alinhaDir(rs.getInt("CODCLI"), 10));
+				imp.say(imp.pRow(), 23, "| " + rs.getString("RAZCLI"));
+				imp.say(imp.pRow(), 75, "| " + (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
 						(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
-				imp.say(imp.pRow() + 0, 95, "| " + Funcoes.strDecimalToStrCurrency(18,2, rs.getString(5)));
-				imp.say(imp.pRow() + 0, 135, "|");
+				imp.say(imp.pRow(), 95, "| " + Funcoes.strDecimalToStrCurrency(18,2, rs.getString(5)));
+				imp.say(imp.pRow(), 135, "|");
 				
 			}
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
 			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=", 133) + "+");
 
 			imp.eject();
@@ -236,22 +221,26 @@ public class FRVendasCli extends FRelatorio {
 			imp.fechaGravacao();
 
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro na consulta ao relatório de vendas!\n"
-					+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this, "Erro na consulta ao relatório de vendas!\n" + err.getMessage(),true,con,err);
+			err.printStackTrace();
 		} finally {
 			ps = null;
 			rs = null;
 			sCab = null;
 			sOrdem = null;
-			sWhere = null;
 		  	sWhere1 = null;
 		  	sWhere2 = null;
-			sSQL = null;			
+			sSQL = null;	
+			System.gc();
 		}
 
 		if (bVisualizar)
 			imp.preview(this);
 		else
 			imp.print();
+	}
+
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
 	}
 }

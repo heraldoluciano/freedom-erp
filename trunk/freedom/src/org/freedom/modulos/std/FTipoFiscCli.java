@@ -98,35 +98,34 @@ public class FTipoFiscCli extends FDados implements ActionListener {
 			while ( rs.next() ) {
 				if (imp.pRow()==0) {
 					imp.impCab(80, false);
-					imp.say(imp.pRow(), 0, "" + imp.normal());
-					imp.say(imp.pRow(), 0, "");
+					imp.say(imp.pRow(), 0, imp.normal());
 					imp.say(imp.pRow(), 2, "Cód.fisc.cli.");
 					imp.say(imp.pRow(), 20, "Descrição");
 					imp.say(imp.pRow(), 70, "Qtd.cli.");
-					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+					imp.say(imp.pRow() + 1, 0, imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+				imp.say(imp.pRow() + 1, 0, imp.normal());
 				imp.say(imp.pRow(), 2, rs.getString("CodFiscCli"));
 				imp.say(imp.pRow(), 20, rs.getString("DescFiscCli"));
 				imp.say(imp.pRow(), 70, Funcoes.alinhaDir(rs.getInt(3),8));
 				iTot += rs.getInt(3);
 				if (imp.pRow()>=linPag) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-", 79));
 					imp.incPags();
 					imp.eject();
 				}
 			}
 			  
-			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow() + 1, 0, imp.normal());
 			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
-			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow() + 1, 0, imp.normal());
 			imp.say(imp.pRow(), 0, "|");
 			imp.say(imp.pRow(), 50, "Total de clientes:");
 			imp.say(imp.pRow(), 70, Funcoes.alinhaDir(iTot,8));
 			imp.say(imp.pRow(), 80, "|");
-			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow() + 1, 0, imp.normal());
 			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
 			imp.eject();  
 			imp.fechaGravacao();

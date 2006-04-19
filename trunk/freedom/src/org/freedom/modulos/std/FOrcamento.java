@@ -96,7 +96,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtEstCli = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtCodItOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtQtdItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
-	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtRefProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtCodBarras = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtPrecoItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
@@ -471,8 +471,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		}
 	}
 	
-	public void focusGained(FocusEvent fevt) {
-	}
+	public void focusGained(FocusEvent fevt) { }
 
 	public void focusLost(FocusEvent fevt) {
 		if (fevt.getSource() == txtPercDescItOrc) {
@@ -839,22 +838,25 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 						imp.impCab(136, false);
 						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "CLIENTE");
-						imp.say(imp.pRow() + 0, 70, "ORÇAMENTO: "+(rs.getString("CodOrc")==null?"":rs.getString("CodOrc")));
+						imp.say(imp.pRow() + 0, 70, "ORÇAMENTO: "+(rs.getString("CodOrc")!=null ? rs.getString("CodOrc").trim() : ""));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, rs.getString("RazCli").trim() + " - " + rs.getString("CodCli").trim());
+						imp.say(imp.pRow() + 0, 1, (rs.getString("RazCli")!=null ? rs.getString("RazCli").trim() : "") + " - " + (rs.getString("CodCli")!=null ? rs.getString("CodCli").trim() : ""));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, rs.getString("CpfCli") != null ? "CPF    : " + Funcoes
-									.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + Funcoes
-										.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
-						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ rs.getString("ContCli").trim());
+						imp.say(imp.pRow() + 0, 1, rs.getString("CpfCli") != null ? "CPF    : " + 
+												Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + 
+												Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));
+						imp.say(imp.pRow() + 0, 70, "CONTATO: "+ (rs.getString("ContCli")!=null ? rs.getString("ContCli").trim() : ""));
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + rs.getString("InscCli"));//IE cliente
-						imp.say(imp.pRow() + 0, 70,rs.getString("EndCli").trim() + " N°:" + rs.getString("NumCli"));//rua e número do cliente
+						imp.say(imp.pRow() + 0, 70,(rs.getString("EndCli")!=null ? rs.getString("EndCli").trim() : "") + (rs.getString("NumCli")!=null ? "  Nº: " + rs.getString("NumCli").trim() : ""));//rua e número do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 						imp.say(imp.pRow() + 0, 1, "SITE   : " + (rs.getString("SiteCli")!= null ? rs.getString("SiteCli").trim() : ""));
-						imp.say(imp.pRow() + 0, 70,rs.getString("BairCli").trim()+" - "+ rs.getString("CidCli").trim()+" - "+rs.getString("UFCli").trim()+" - "+rs.getString("CEPCli").trim());//complemento do endereço do cliente
+						imp.say(imp.pRow() + 0, 70,(rs.getString("BairCli")!=null ? rs.getString("BairCli").trim() : "") +
+												(rs.getString("CidCli")!=null ? " - " + rs.getString("CidCli").trim() : "") +
+												(rs.getString("UFCli")!=null ? " - " + rs.getString("UFCli").trim() : "") + 
+												(rs.getString("CepCli")!=null ? " - " + rs.getString("CepCli").trim() : ""));//complemento do endereço do cliente
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + rs.getString("EmailCli").trim());
+						imp.say(imp.pRow() + 0, 1, "E-MAIl : " + (rs.getString("EmailCli") != null ? rs.getString("EmailCli").trim() : ""));
 						imp.say(imp.pRow() + 0, 70, "TEL: "+ (rs.getString("DDDCli")!=null?"("+rs.getString("DDDCli")+")":"")+ 
 												(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
 												(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : ""));
@@ -959,15 +961,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private Object[] prefs() {
-		Object[] oRetorno = new Object[8];
+		Object[] oRetorno = new Object[9];
 		String sSQL = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			sSQL = "SELECT P.USAREFPROD,P.USALIQREL,P.TIPOPRECOCUSTO,P.CODTIPOMOV2,"
-			     + "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC "
-				 + "FROM SGPREFERE1 P "
-				 + "WHERE CODEMP=? AND CODFILIAL=?";
+			     + "P.ORDNOTA,P.DESCCOMPPED,P.USAORCSEQ,P.OBSCLIVEND,P.RECALCPCORC,P4.USABUSCAGENPROD "
+				 + "FROM SGPREFERE1 P, SGPREFERE4 P4 "
+				 + "WHERE P.CODEMP=? AND P.CODFILIAL=? "
+				 + "AND P4.CODEMP=P.CODEMP AND P4.CODFILIAL=P.CODFILIAL";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
@@ -979,8 +982,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					oRetorno[0] = new Boolean(false);
 				if (rs.getString("UsaLiqRel") == null) {
 					oRetorno[1] = new Boolean(false);
-					Funcoes.mensagemInforma(this,
-							"Preencha opção de desconto em preferências!");
+					Funcoes.mensagemInforma(this, "Preencha opção de desconto em preferências!");
 				} else {
 					if (rs.getString("UsaLiqRel").trim().equals("S"))
 						oRetorno[1] = new Boolean(true);
@@ -1011,6 +1013,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					oRetorno[7] = new Boolean(true);
 				else
 					oRetorno[7] = new Boolean(false);
+				if(rs.getString("USABUSCAGENPROD").equals("S"))
+					oRetorno[8] = new Boolean(true);
+				else
+					oRetorno[8] = new Boolean(false);
 				
 				sOrdNota = rs.getString("OrdNota");
 				
@@ -1429,11 +1435,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private synchronized void iniItem() {
 		lcDet.insert(true);
 		txtCodItOrc.setVlrInteger(new Integer(1));
-		if (((Boolean) oPrefs[0]).booleanValue()) {
+		if (((Boolean) oPrefs[0]).booleanValue())
 			txtRefProd.requestFocus();
-		} else {
+		else
 			txtCodProd.requestFocus();
-		}
 	}
 
 	public void setConexao(Connection cn) {
@@ -1449,5 +1454,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcTipoCli.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		lcClComiss.setConexao(cn);
+		
+		if (((Boolean) oPrefs[8]).booleanValue()) {
+			if (((Boolean) oPrefs[0]).booleanValue())
+				txtRefProd.setBuscaGenProd( new DLCodProd( cn, null ) );
+			else
+				txtCodProd.setBuscaGenProd( new DLCodProd( cn, null ) );
+		}
 	}
 }
