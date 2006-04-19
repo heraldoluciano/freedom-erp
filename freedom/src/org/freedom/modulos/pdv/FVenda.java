@@ -35,6 +35,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -77,7 +79,7 @@ import org.freedom.telas.DlgCalc;
 import org.freedom.telas.FDialogo;
 import org.freedom.telas.FPassword;
 
-public class FVenda extends FDialogo implements KeyListener,CarregaListener,PostListener {
+public class FVenda extends FDialogo implements KeyListener,CarregaListener,PostListener,FocusListener {
 
 	private static final long serialVersionUID = 1L;
 	private StatusBar sbVenda = new StatusBar(new BorderLayout());
@@ -115,7 +117,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JTextFieldPad txtDtEmitVenda = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtDtSaidaVenda = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtCodProd1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtCodProd1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 13, 0);
 	private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtQtdade = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 9, 2);
@@ -134,6 +136,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JTextFieldPad txtValorTotalCupom = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 12, 2);
 	private JTextFieldPad txtCodFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
+	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
+	private JTextFieldPad txtVlrDescItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
 	private ListaCampos lcVenda = new ListaCampos(this);
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 	private ListaCampos lcSerie = new ListaCampos(this, "SE");
@@ -163,6 +167,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JLabelPad lQtdadeItem = new JLabelPad("Quantidade do item");
 	private JLabelPad lValorTotalItem = new JLabelPad("Valor total do item");
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
+	private JLabelPad lPercDesc = new JLabelPad("% Desc.");
+	private JLabelPad lValorDesc = new JLabelPad("Valor desc.");
 	private JLabelPad lbAvisoImp = new JLabelPad();
 	private JBemaFI32 bf = null;
 	private Font fntTotalItem = null;
@@ -376,19 +382,24 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		pinProduto.adic(txtValorTotalCupom, 445, 82, 220, 40);
 
 		pinEntrada.adic(lCodProd2, 5, 3, 70, 15);
-		pinEntrada.adic(txtCodProd, 5, 20, 180, 20);
+		pinEntrada.adic(txtCodProd, 5, 20, 175, 20);
 		pinEntrada.adic(lQtd, 5, 45, 85, 15);
 		pinEntrada.adic(txtQtdade, 5, 62, 85, 20);
-		pinEntrada.adic(lPreco, 95, 45, 90, 15);
-		pinEntrada.adic(txtPreco, 95, 62, 90, 20);
-		pinEntrada.adic(lTotalItem, 5, 87, 88, 15);
-		pinEntrada.adic(txtTotalItem, 5, 104, 88, 20);
-		pinEntrada.adic(lBaseCalc2, 98, 87, 87, 15);
-		pinEntrada.adic(txtBaseCalc, 98, 104, 87, 20);
-		pinEntrada.adic(lAliqIcms, 5, 129, 60, 15);
-		pinEntrada.adic(txtAliqIcms, 5, 146, 60, 20);
-		pinEntrada.adic(lValorIcms, 70, 129, 115, 15);
-		pinEntrada.adic(txtValorIcms, 70, 146, 115, 20);
+		pinEntrada.adic(lPreco, 95, 45, 85, 15);
+		pinEntrada.adic(txtPreco, 95, 62, 85, 20);
+		pinEntrada.adic(lPercDesc, 5, 85, 50, 15);
+		pinEntrada.adic(txtPercDescItOrc, 5, 102, 50, 20);
+		pinEntrada.adic(lValorDesc, 60, 85, 120, 15);
+		pinEntrada.adic(txtVlrDescItOrc, 60, 102, 120, 20);		
+		pinEntrada.adic(lTotalItem, 5, 127, 85, 15);
+		pinEntrada.adic(txtTotalItem, 5, 144, 85, 20);
+		pinEntrada.adic(lBaseCalc2, 95, 127, 85, 15);
+		pinEntrada.adic(txtBaseCalc, 95, 144, 85, 20);
+		
+		pinEntrada.adic(lAliqIcms, 5, 169, 50, 15);
+		pinEntrada.adic(txtAliqIcms, 5, 186, 50, 20);
+		pinEntrada.adic(lValorIcms, 60, 169, 120, 15);
+		pinEntrada.adic(txtValorIcms, 60, 186, 120, 20);
 
 		pnTots.adic(lBaseCalc1, 5, 3, 90, 15);
 		pnTots.adic(lValorIcms1, 100, 3, 90, 15);
@@ -418,10 +429,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		pnClienteGeral.add(pnNorte, BorderLayout.NORTH);
 		pnClienteGeral.add(pnCliente, BorderLayout.CENTER);
 
+		addKeyListener(this);
 		txtCodProd.addKeyListener(this);
 		txtQtdade.addKeyListener(this);
-		lcProduto.addCarregaListener(this);
-		addKeyListener(this);
+		txtPercDescItOrc.addKeyListener(this);
+		txtVlrDescItOrc.addKeyListener(this);
 
 		btF3.addActionListener(this);
 		btCtrlF3.addActionListener(this);
@@ -433,8 +445,13 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		btF9.addActionListener(this);
 		btF10.addActionListener(this);
 		btF11.addActionListener(this);
+		
+		txtPercDescItOrc.addFocusListener(this);
+		txtVlrDescItOrc.addFocusListener(this);
 
 		lcVenda.addPostListener(this);
+		
+		lcProduto.addCarregaListener(this);
 		
 		if (AplicativoPDV.bTEFTerm) {
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
@@ -449,7 +466,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		ResultSet rs = null;
 		String sTributo = null;
 		String sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,"
-				+ "VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?)";
+				+ "VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?)";
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, txtCodVenda.getVlrInteger().intValue());
@@ -460,6 +477,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(6, lcProduto.getCodFilial());
 			ps.setBigDecimal(7, txtQtdade.getVlrBigDecimal());
 			ps.setBigDecimal(8, txtPreco.getVlrBigDecimal());
+			ps.setBigDecimal(9, txtVlrDescItOrc.getVlrBigDecimal());
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				iCodItVenda = rs.getInt("CodItVenda");
@@ -489,8 +507,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				}
 				else
 					sTributo = txtTipoFisc.getVlrString();
-				bf.vendaItem(Aplicativo.strUsuario, Integer.parseInt(txtCodProd.getVlrString().trim()), txtDescProd.getVlrString(), sTributo,
-						txtQtdade.getVlrDouble().doubleValue(), txtPreco.getVlrDouble().doubleValue(), 0,FreedomPDV.bModoDemo);
+				bf.vendaItem(Aplicativo.strUsuario, Integer.parseInt(txtCodProd.getVlrString().trim()), 
+						txtDescProd.getVlrString(), sTributo, txtQtdade.getVlrDouble().doubleValue(), 
+						txtPreco.getVlrDouble().doubleValue(), txtVlrDescItOrc.getVlrDouble().doubleValue(),
+						FreedomPDV.bModoDemo);
 			}
 
 			addPesoFrete(Integer.parseInt(txtCodProd.getVlrString().trim()), txtQtdade.getVlrBigDecimal());
@@ -589,6 +609,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtQtdade.setVlrBigDecimal(new BigDecimal(1));
 		txtPreco.setVlrString("");
 		txtCodProd.setVlrString("");
+		txtPercDescItOrc.setVlrString("");
+		txtVlrDescItOrc.setVlrString("");
+		txtPercDescItOrc.setAtivo(true);
+		txtVlrDescItOrc.setAtivo(false);
 		setFocusProd();
 	}
 	
@@ -951,8 +975,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		boolean bUPOrc = false;
 		
 		try {
+
 			robo = new Robot();
-			sSQL = "SELECT CODPROD, QTDITORC " +
+			
+			sSQL = "SELECT CODPROD, QTDITORC, VLRPRODITORC, PERCDESCITORC, VLRDESCITORC " +
 			   "FROM VDITORCAMENTO " +
 			   "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
 		
@@ -964,10 +990,22 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				txtCodProd.setVlrString(rs.getString(1));
+				txtCodProd.setVlrString(rs.getString("CODPROD"));
 				txtCodProd.requestFocus();
 				robo.keyPress(KeyEvent.VK_ENTER);
-				txtQtdade.setVlrBigDecimal(rs.getBigDecimal(2));
+				txtPreco.setVlrBigDecimal(rs.getBigDecimal("VLRPRODITORC"));
+
+				txtPercDescItOrc.setVlrBigDecimal(rs.getBigDecimal("PERCDESCITORC")!=null ?rs.getBigDecimal("PERCDESCITORC") : new BigDecimal("0"));
+				txtPercDescItOrc.setAtivo(false);
+				//if (txtPercDescItOrc.getAtivo())
+					//robo.keyPress(KeyEvent.VK_ENTER);
+
+				txtVlrDescItOrc.setAtivo(false);
+				txtVlrDescItOrc.setVlrBigDecimal(rs.getBigDecimal("VLRDESCITORC")!=null ?rs.getBigDecimal("VLRDESCITORC") : new BigDecimal("0"));
+				//if (txtVlrDescItOrc.getAtivo())
+					//robo.keyPress(KeyEvent.VK_ENTER);
+				
+				txtQtdade.setVlrBigDecimal(rs.getBigDecimal("QTDITORC"));
 				txtQtdade.requestFocus();
 				robo.keyPress(KeyEvent.VK_ENTER);
 				lcProduto.carregaDados();
@@ -1000,9 +1038,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			
 		} catch(SQLException e) {
 			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.",true,con,e);
-			e.printStackTrace();
-		} catch(AWTException e) {
-			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.\n" + e.getMessage());
 			e.printStackTrace();
 		} catch(Exception e) {
 			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.\n" + e.getMessage());
@@ -1054,22 +1089,13 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			break;
 		}
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			/*if (kevt.getSource() == txtCodProd) {
-				if(Aplicativo.bBuscaCodProdGen) {
-					DLCodProd dl = new DLCodProd(con);
-					dl.buscaCodProd(txtCodProd.getVlrString());
-					if(dl.OK){
-						txtCodProd.setVlrString(String.valueOf(dl.getCodProd()));
-						txtQtdade.requestFocus();
-					}
-					dl.dispose();
-				}
-			}
-			else */if (kevt.getSource() == txtQtdade) {
+			if (kevt.getSource() == txtQtdade) {
 				if (txtCodProd.getVlrString().length() == 0)
 					Funcoes.mensagemInforma(null, "Produto em branco.");
 				else if (txtQtdade.getVlrDouble().doubleValue() == 0)
 					Funcoes.mensagemInforma(null, "Quantidade em branco.");
+				else if (txtPercDescItOrc.getAtivo())
+					txtPercDescItOrc.requestFocus();
 				else {
 					if (lcVenda.getStatus() == ListaCampos.LCS_INSERT) {
 						if (lcVenda.post()) {
@@ -1081,6 +1107,18 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 						iniItem();
 						lcVenda.carregaDados();
 					}
+				}
+			}
+			else if (kevt.getSource() == txtVlrDescItOrc) {
+				if (lcVenda.getStatus() == ListaCampos.LCS_INSERT) {
+					if (lcVenda.post()) {
+						insereItem();
+						iniItem();
+					}
+				} else if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
+					insereItem();
+					iniItem();
+					lcVenda.carregaDados();
 				}
 			}
 		}
@@ -1142,11 +1180,44 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				return;
 		}
 	}
+	
+	public void focusGained(FocusEvent fevt) { }
+
+	public void focusLost(FocusEvent fevt) {
+		if (fevt.getSource() == txtPercDescItOrc) {
+			if (txtPercDescItOrc.getText().trim().length() < 1) {
+				txtVlrDescItOrc.setAtivo(true);
+				txtVlrDescItOrc.requestFocus();
+			} else {
+				txtVlrDescItOrc.setVlrBigDecimal(
+				        txtQtdade.getVlrBigDecimal().multiply(
+				        		txtPreco.getVlrBigDecimal().multiply(
+				        				txtPercDescItOrc.getVlrBigDecimal()).divide(
+				        						new BigDecimal("100"), 2,BigDecimal.ROUND_HALF_UP)));
+				txtVlrDescItOrc.setAtivo(false);
+				if (lcVenda.getStatus() == ListaCampos.LCS_INSERT) {
+					if (lcVenda.post()) {
+						insereItem();
+						iniItem();
+					}
+				} else if (lcVenda.getStatus() == ListaCampos.LCS_SELECT) {
+					insereItem();
+					iniItem();
+					lcVenda.carregaDados();
+				}
+			}
+		} else if (fevt.getSource() == txtVlrDescItOrc) {
+			if (txtVlrDescItOrc.getText().trim().length() < 1) {
+				txtPercDescItOrc.setAtivo(true);
+			} else if (txtVlrDescItOrc.getAtivo()) {
+				txtPercDescItOrc.setAtivo(false);
+			}
+		}
+	}
 
 	public synchronized void setFocusProd() {
 		if ( txtCodProd.isFocusable());
-			txtCodProd.requestFocus();
-		
+			txtCodProd.requestFocus();		
 	}
 	
 	//O botão sair execute este método para sair:

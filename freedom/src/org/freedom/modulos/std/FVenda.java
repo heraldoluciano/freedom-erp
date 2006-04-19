@@ -1197,13 +1197,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		String sSQLRec = null;
 		String sSQLInfoAdic = null;
 		String sDiasPE = null;
-		ImprimeOS imp = new ImprimeOS("", con, "PD", true);
 		DLRPedido dl = null; 
 		GregorianCalendar cal = null;
 		Date dtHoje = null;
 		Vector vDesc = null;
 		Vector vObs = null;
 		Object layNF = null;
+		ImprimeOS imp = new ImprimeOS("", con, "PD", true);
 		boolean bImpOK = false;	
 		int linPag = imp.verifLinPag("PD") - 1;
 		int iDiasPE = 0;
@@ -1328,41 +1328,41 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					for (int i=0; i<vDesc.size(); i++) {
 						if (imp.pRow() == 0) {
 							imp.impCab(136, false);
-							imp.say(imp.pRow(), 0, "" + imp.comprimido());
+							imp.say(imp.pRow(), 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, "CLIENTE");
 							imp.say(imp.pRow(), 70, "PEDIDO N.: "+ rs.getString("CodVenda").trim());
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, (rs.getString("RazCli")!=null ? rs.getString("RazCli").trim() : "") + " - " + rs.getString("CodCli").trim());//nome cliente
 							imp.say(imp.pRow(), 70, "PEDIDO CLIENTE: "+(rs.getString("PEDCLIVENDA")==null?"":rs.getString("PEDCLIVENDA")));
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, rs.getString("CpfCli") != null ? "CPF    : " + Funcoes
 										.setMascara(rs.getString("CpfCli"),"###.###.###-##") : "CNPJ   : " + Funcoes
 											.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##"));//CNJP cliente
 							imp.say(imp.pRow(), 70, "CONTATO: "+ (rs.getString("ContCli")!=null ? rs.getString("ContCli").trim():""));
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, (rs.getString("RgCli") != null ? "R.G.   : " + rs.getString("RgCli") : "I.E.   : " + (rs.getString("InscCli")!=null ? rs.getString("InscCli"):"")));//IE cliente
 							imp.say(imp.pRow(), 70,(rs.getString("EndCli")!=null ? rs.getString("EndCli").trim()+ " N°:" + (rs.getString("NumCli")!=null ? rs.getString("NumCli"):""):""));//rua e número do cliente
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, "SITE   : " + (rs.getString("SiteCli")!=null?rs.getString("SiteCli").trim():""));
 							imp.say(imp.pRow(), 70,(rs.getString("BairCli")!=null?rs.getString("BairCli").trim():"")
 									+(rs.getString("CidCli")!=null?" - "+ rs.getString("CidCli").trim():"")
 									+(rs.getString("UFCli")!=null?" - "+rs.getString("UFCli").trim():"")
 									+(rs.getString("CEPCli")!=null?" - "+rs.getString("CEPCli").trim():""));//complemento do endereço do cliente
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, "E-MAIl : " + (rs.getString("EmailCli")!=null?rs.getString("EmailCli").trim():""));
 							imp.say(imp.pRow(), 70, "TEL: "+ (rs.getString("DDDCli")!=null?Funcoes.setMascara(rs.getString("DDDCli"), "(####)"):"")+ 
 												(rs.getString("FoneCli")!=null?Funcoes.setMascara(rs.getString("FoneCli").trim(), "####-####"):"")+ " - FAX:" +
 													(rs.getString("FaxCli") != null ? Funcoes.setMascara(rs.getString("FaxCli"),"####-####") : ""));
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 0, Funcoes.replicate("-", 135));
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 55, "DADO(S) DO(S) PRODUTO(S)");
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 0, Funcoes.replicate("-", 135));
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+							imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							imp.say(imp.pRow(), 1, "IT.|  CÓDIGO  |                 DESCRIÇÃO               |     LOTE     |UN|   QUANT.   |    V.UNIT.  |    V.TOTAL    |  IPI%  |  ICMS% ");
 						}
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
 						if (i==0) {
 							imp.say(imp.pRow() + 0, 1, rs.getString("CodItVenda").trim());
 							imp.say(imp.pRow(), 6, rs.getString("RefProd").trim());
@@ -1382,25 +1382,25 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					if(iDiasPE < rs.getInt(57))
 						iDiasPE = rs.getInt(57);
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, Funcoes.replicate("-", 135));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 4, "TOTAL IPI: " + rs.getString("VlrIPIVenda"));
 				imp.say(imp.pRow(), 44, "|    TOTAL ICMS: " + rs.getString("VlrICMSVenda"));
 				imp.say(imp.pRow(), 84, "|    TOTAL PRODUTOS: " + rs.getString("VlrLiqVenda"));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, Funcoes.replicate("-", 135));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 55, "INFORMAÇÕES COMPLEMENTARES");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, Funcoes.replicate("-", 135));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "PAGAMENTO.........:    " + rs.getString("CODPLANOPAG") + " - " + rs.getString("DESCPLANOPAG"));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "FRETE.............:    " + (rs.getString(51)!=null ? (rs.getString(51).equals("C") ? "POR CONTA DA EMPRESA " : "POR CONTA DO CLIENTE ") : ""));			
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "TRANSPORTADORA....:    " + (rs.getString(50)!=null ? rs.getString(50) : ""));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 							
 				if(bPrefs[14]){
 					dtHoje = new Date();
@@ -1419,11 +1419,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					imp.say(imp.pRow(), 0, "PRAZO DE ENTREGA..:    " + sDiasPE );
 				}
 				
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, Funcoes.replicate("-", 135));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 62, "OBSERVACÃO");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 	          	vObs = Funcoes.quebraLinha(Funcoes.stringToVector(rs.getString("ObsVenda")),115);
 	          	for (int i=0; i<vObs.size(); i++) {
 	                imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -1433,15 +1433,15 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	                    imp.eject();
 	                }
 	          	}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0,Funcoes.replicate("-", 135));
-				imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 2, 0, imp.comprimido());
 				imp.say(imp.pRow(), 5,Funcoes.replicate("-", 40));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 5, (rs.getString("NomeVend")!=null ? rs.getString("NomeVend") : ""));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 5, (rs.getString(61)!=null ? rs.getString(61) : ""));
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 5, (rs.getString("EmailVend")!=null ? rs.getString("EmailVend") : ""));
 				
 				imp.eject();
@@ -1463,6 +1463,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} catch (Exception err) {
 			Funcoes.mensagemErro(this, "Erro ao montar impressão!");
 			err.printStackTrace();
+		} finally {
+			ps = null;
+			psRec = null;
+			psInfoAdic = null;
+			rs = null;
+			rsRec = null;
+			rsInfoAdic = null;
+			sSQL = null;
+			sSQLRec = null;
+			sSQLInfoAdic = null;
+			sDiasPE = null;
+			dl = null; 
+			cal = null;
+			dtHoje = null;
+			vDesc = null;
+			vObs = null;
+			layNF = null;
+			System.gc();
 		}
 	}
 
@@ -2171,7 +2189,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				}
 			}
 			
-			if (txtStatusVenda.getVlrString().trim().length()>0 && 
+
+			if (verificaBloq()){
+				lbStatus.setText("  BLOQUEADA");
+				lbStatus.setBackground(Color.BLUE);
+				lbStatus.setVisible(true);
+			}
+			else if (txtStatusVenda.getVlrString().trim().length()>0 && 
 					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
 				lbStatus.setText("  CANCELADA");
 				lbStatus.setBackground(Color.RED);
@@ -2182,11 +2206,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 							|| txtStatusVenda.getVlrString().trim().equals("V3"))){
 				lbStatus.setText(" NOTA EMITIDA");
 				lbStatus.setBackground(Color.GREEN);
-				lbStatus.setVisible(true);
-			}
-			else if (verificaBloq()){
-				lbStatus.setText("  BLOQUEADA");
-				lbStatus.setBackground(Color.BLUE);
 				lbStatus.setVisible(true);
 			}
 			else {

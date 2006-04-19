@@ -94,7 +94,6 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		tab.setTamColuna(80,7);
 		tab.setTamColuna(80,8); 
 		
-		setTitulo("Saldo do produto nos almoxarifados");
 		tab.addKeyListener(this);
 		
 		getPrefere();
@@ -119,6 +118,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 		String sTemp = null;
 		boolean usaOR = false;
 		boolean adicCodProd = false;
+		int ilinha = 0;
 		
 		if(valor == null || valor.trim().length() <= 0)
 			return false;		
@@ -161,6 +161,12 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 					sWhere = "AND (P.CODFABPROD=?) ";
 			if(usaOR)
 				sWhere = " AND (" + sWhere.substring(4,sWhere.length()) +") ";	
+
+			
+			sSQL =  "SELECT P.CODPROD, P.CLOTEPROD " +
+					"FROM EQPRODUTO P " +
+					"WHERE P.CODEMP=? AND P.CODFILIAL=? " +
+					sWhere;
 			
 			sSQL1 = "SELECT P.CODPROD, P.REFPROD, P.CODBARPROD, P.CODFABPROD, P.DESCPROD, " +
 					"L.CODLOTE, L.VENCTOLOTE, L.SLDLOTE, A.CODALMOX " +
@@ -177,11 +183,6 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 					"FROM EQPRODUTO P, EQALMOX A " +
 					"WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=? " +
 					"AND A.CODEMP=P.CODEMPAX AND A.CODFILIAL=P.CODFILIALAX AND A.CODALMOX=P.CODALMOX ";	
-			
-			sSQL =  "SELECT P.CODPROD, P.CLOTEPROD " +
-					"FROM EQPRODUTO P " +
-					"WHERE P.CODEMP=? AND P.CODFILIAL=? " +
-					sWhere;
 			
 			ps = con.prepareStatement(sSQL);
 			int iparam = 1;
@@ -227,25 +228,35 @@ public class DLCodProd extends FFDialogo implements KeyListener {
 				
 				if(rs2.next()) {
 					if(((String)vUsaLote.elementAt(i)).equals("S")) {
-						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD") : ""),
-													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD") : ""),
-													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD") : ""),
-													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD") : ""),
-													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD") : ""),
-													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX") : ""),					
-													(rs2.getString("CODLOTE") != null ? rs2.getString("CODLOTE") : ""),
-													(rs2.getString("VENCTOLOTE") != null ? rs2.getString("VENCTOLOTE") : ""),
-													(rs2.getString("SLDLOTE") != null ? rs2.getString("SLDLOTE") : "")});
+						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : ""),
+													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : ""),
+													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : ""),
+													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD").trim() : ""),
+													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD").trim() : ""),
+													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX").trim() : ""),					
+													(rs2.getString("CODLOTE") != null ? rs2.getString("CODLOTE").trim() : ""),
+													(rs2.getString("VENCTOLOTE") != null ? rs2.getString("VENCTOLOTE").trim() : ""),
+													(rs2.getString("SLDLOTE") != null ? rs2.getString("SLDLOTE").trim() : "")});
 					} else {
-						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD") : ""),
-													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD") : ""),
-													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD") : ""),
-													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD") : ""),
-													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD") : ""),
-													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX") : ""),					
+						tab.adicLinha( new Object[]{(rs2.getString("CODPROD") != null ? rs2.getString("CODPROD").trim() : ""),
+													(rs2.getString("REFPROD") != null ? rs2.getString("REFPROD").trim() : ""),
+													(rs2.getString("CODBARPROD") != null ? rs2.getString("CODBARPROD").trim() : ""),
+													(rs2.getString("CODFABPROD") != null ? rs2.getString("CODFABPROD").trim() : ""),
+													(rs2.getString("DESCPROD") != null ? rs2.getString("DESCPROD").trim() : ""),
+													(rs2.getString("CODALMOX") != null ? rs2.getString("CODALMOX").trim() : ""),					
 													"","",""});
 					}	
+					ilinha++;
 				}				
+			}
+			
+			if(ilinha <= 0) {
+				Funcoes.mensagemErro(this, "Código Invalido!");
+				return false;
+			} else if(ilinha == 1) {
+				iCodProd = ((Integer)vProds.elementAt(0)).intValue();
+				ok();
+				return true;
 			}
 			
 			tab.changeSelection(0,0,true,true);
@@ -319,7 +330,7 @@ public class DLCodProd extends FFDialogo implements KeyListener {
     		int ilin = tab.getLinhaSel();
         	iCodProd = 0;
         	if (tab.getNumLinhas() > 0 && ilin >= 0) {
-        		iCodProd = ((Integer)vProds.elementAt(ilin)).intValue();
+        		iCodProd = Integer.parseInt((String)tab.getValor(ilin, 0));
         		passaFocus();
         		super.ok();
         	} else {

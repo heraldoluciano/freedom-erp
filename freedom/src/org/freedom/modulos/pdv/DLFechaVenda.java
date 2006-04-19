@@ -614,7 +614,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
-			ps.setBigDecimal(3,txtVlrPago.getVlrBigDecimal());
+			ps.setObject(3,txtVlrPago.getVlrBigDecimal());
 			ps.setInt(4,AplicativoPDV.iCodCaixa);
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
@@ -722,27 +722,21 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 						    else
 							    bRet = true;
 						        
-							if (bRet && txtVlrTroco.getVlrDouble().doubleValue() > 0) {
+							if (bRet && txtVlrTroco.getVlrDouble().doubleValue() > 0)
 							    bRet = execTroco();
-							}
 						}
 					}
 				}
 				else if(AplicativoPDV.bECFTerm){
 					bRet=true;
-					if (finalizaVenda()) {
-					    btCancel.setEnabled(false);
-					}
-					
-					if (txtVlrTroco.getVlrDouble().doubleValue() > 0) {
+					if (finalizaVenda())
+					    btCancel.setEnabled(false);					
+					if (txtVlrTroco.getVlrDouble().doubleValue() > 0)
 					    bRet = execTroco();
-					}
-					//return;
 				}
 			}
-			if (!bRet) {
+			if (!bRet)
 			    return;
-			}
 		}
 		
 		super.actionPerformed(evt);

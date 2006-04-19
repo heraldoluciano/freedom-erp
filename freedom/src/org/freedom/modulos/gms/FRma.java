@@ -178,12 +178,9 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 		pnMaster.add(spTab, BorderLayout.CENTER);
 
-		lcTipoMov.add(new GuardaCampo(txtCodTpMov, "CodTipoMov", "Cód.tp.mov.",
-				ListaCampos.DB_PK, false));
-		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov",
-				"Descrição do tipo de movimento", ListaCampos.DB_SI, false));
-		lcTipoMov
-				.setWhereAdic("((ESTIPOMOV = 'S') AND TIPOMOV='RM' AND"
+		lcTipoMov.add(new GuardaCampo(txtCodTpMov, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_PK, false));
+		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMov.setWhereAdic("((ESTIPOMOV = 'S') AND TIPOMOV='RM' AND"
 						+ " ( TUSUTIPOMOV='S' OR	EXISTS (SELECT * FROM EQTIPOMOVUSU TU "
 						+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "
 						+ "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
@@ -212,39 +209,25 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 				+ Aplicativo.strUsuario
 				+ "'))='TD') " + ") ";
 
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
-				ListaCampos.DB_SI, true));				
-		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
-				ListaCampos.DB_SI, txtDescUnid, false));		
+		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição do produto",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante",ListaCampos.DB_SI, true));				
+		lcProd.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",ListaCampos.DB_SI, txtDescUnid, false));		
 		lcProd.setWhereAdic(sWhereAdicProd);
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
 
-		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",
-				ListaCampos.DB_PK, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante", 
-				ListaCampos.DB_SI, true));				
-		lcProd2.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",
-				ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",
-				ListaCampos.DB_SI, txtDescUnid, false));		
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd", "Referência",ListaCampos.DB_PK, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd", "Descrição",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.rod.",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodFabProd, "CodFabProd", "Código do fabricante",ListaCampos.DB_SI, true));				
+		lcProd2.add(new GuardaCampo(txtCustoMPMProd, "CustoMPMProd", "Custo MPM",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.und.",ListaCampos.DB_SI, txtDescUnid, false));		
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcDet);
 		lcProd2.setWhereAdic(sWhereAdicProd);
@@ -253,34 +236,26 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		lcProd2.setReadOnly(true);
 		txtRefProd.setTabelaExterna(lcProd2);
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.",
-				ListaCampos.DB_PK, txtDescAlmox, false));
-		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox",
-				"Descrição do almoxarifado;", ListaCampos.DB_SI, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.almox.",ListaCampos.DB_PK, txtDescAlmox, false));
+		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox","Descrição do almoxarifado;", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
 		txtDescAlmox.setSoLeitura(true);
 		txtCodAlmox.setTabelaExterna(lcAlmox);
 
-		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,
-				false));
-		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK,
-				false));
-		lcCC.add(new GuardaCampo(txtDescCC, "DescCC",
-				"Descrição do centro de custo", ListaCampos.DB_SI, false));
+		lcCC.add(new GuardaCampo(txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK,false));
+		lcCC.add(new GuardaCampo(txtAnoCC, "AnoCC", "Ano c.c.", ListaCampos.DB_PK,false));
+		lcCC.add(new GuardaCampo(txtDescCC, "DescCC","Descrição do centro de custo", ListaCampos.DB_SI, false));
 		lcCC.montaSql(false, "CC", "FN");
 		lcCC.setQueryCommit(false);
 		lcCC.setReadOnly(true);
 		txtCodCC.setTabelaExterna(lcCC);
 		txtAnoCC.setTabelaExterna(lcCC);
 
-		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",
-				ListaCampos.DB_PK, txtDescLote, false));
-		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",
-				ListaCampos.DB_SI, false));
-		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",
-				ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote",ListaCampos.DB_PK, txtDescLote, false));
+		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.",ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo",ListaCampos.DB_SI, false));
 		lcLote.setDinWhereAdic("CODPROD=#N AND VENCTOLOTE >= #D ", txtCodProd);
 		lcLote.setDinWhereAdic("", txtDtaReqRma);
 		lcLote.montaSql(false, "LOTE", "EQ");
@@ -291,39 +266,31 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		txtDescLote.setNomeCampo("VenctoLote");
 		txtDescLote.setLabel("Vencimento");
 
-		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,
-				false));
-		lcUsu.add(new GuardaCampo(txtNomeUsu, "nomeusu", "Nome do usuário",
-				ListaCampos.DB_SI, false));
-		lcUsu.add(new GuardaCampo(txtCodCCUsu, "codcc", "C.Custo Usuário",
-				ListaCampos.DB_SI, false));
+		lcUsu.add(new GuardaCampo(txtIDUsu, "idusu", "Id.Usu.", ListaCampos.DB_PK,false));
+		lcUsu.add(new GuardaCampo(txtNomeUsu, "nomeusu", "Nome do usuário",ListaCampos.DB_SI, false));
+		lcUsu.add(new GuardaCampo(txtCodCCUsu, "codcc", "C.Custo Usuário",ListaCampos.DB_SI, false));
 		lcUsu.montaSql(false, "USUARIO", "SG");
 		lcUsu.setQueryCommit(false);
 		lcUsu.setReadOnly(true);
 		txtIDUsu.setTabelaExterna(lcUsu);
 
-		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK,
-				false));
-		lcOP.add(new GuardaCampo(txtSeqOF, "SeqOF", "Sequencia da fase",
-				ListaCampos.DB_PK, false));
+		lcOP.add(new GuardaCampo(txtCodOP, "CodOP", "Cód. OP.", ListaCampos.DB_PK,false));
+		lcOP.add(new GuardaCampo(txtSeqOF, "SeqOF", "Sequencia da fase",ListaCampos.DB_PK, false));
 		lcOP.montaSql(false, "OPFASE", "PP");
 		lcOP.setQueryCommit(false);
 		lcOP.setReadOnly(true);
 		txtCodOP.setTabelaExterna(lcOP);
 		txtSeqOF.setTabelaExterna(lcOP);
 
-		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.",
-				ListaCampos.DB_PK, null, false));
+		lcSeqOP.add(new GuardaCampo(txtSeqOP, "SeqOP", "Seq. OP.",ListaCampos.DB_PK, null, false));
 		lcSeqOP.setQueryCommit(false);
 		lcSeqOP.setReadOnly(true);
 
 		txtSeqOP.setTabelaExterna(lcSeqOP);
 		lcSeqOP.montaSql(false, "OP", "PP");
 
-		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",
-				ListaCampos.DB_PK, true));
-		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid",
-				"Unidade", ListaCampos.DB_SI, false));
+		lcUnid.add(new GuardaCampo(txtCodUnid, "CodUnid", "Cód.unid.",ListaCampos.DB_PK, true));
+		lcUnid.add(new GuardaCampo(txtDescUnid, "DescUnid","Unidade", ListaCampos.DB_SI, false));
 		lcUnid.montaSql(false, "UNIDADE", "EQ");
 		lcUnid.setReadOnly(true);
 		lcUnid.setQueryCommit(false);
@@ -340,40 +307,22 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		setAltCab(230);
 		setPainel(pinCab, pnCliCab);
 
-		adicCampo(txtCodRma, 7, 20, 110, 20, "CodRma", "Cód.Rma",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtCodTpMov, 120, 20, 90, 20, "CodTipoMov", "Cód.Tp.Mov.",
-				ListaCampos.DB_FK, txtDescTipoMov, true);
-		adicDescFK(txtDescTipoMov, 213, 20, 200, 20, "DescTipoMov",
-				"Descrição do tipo de movimento");
-		adicCampo(txtIDUsu, 416, 20, 120, 20, "IdUsu", "Id do usuário",
-				ListaCampos.DB_FK, true);
-		adicCampo(txtDtaReqRma, 539, 20, 86, 20, "DtaReqRma", "Data da Rma",
-				ListaCampos.DB_SI, true);
-
-		adicCampo(txtCodOP, 7, 60, 80, 20, "CodOP", "Cód.OP.", ListaCampos.DB_FK,
-				false);
-		adicCampo(txtSeqOP, 90, 60, 77, 20, "SeqOP", "Seq.OP.", ListaCampos.DB_FK,
-				false);
-		adicCampo(txtSeqOF, 170, 60, 80, 20, "SeqOF", "Seq.fase",
-				ListaCampos.DB_FK, txtDescFase, false);
+		adicCampo(txtCodRma, 7, 20, 110, 20, "CodRma", "Cód.Rma",ListaCampos.DB_PK, true);
+		adicCampo(txtCodTpMov, 120, 20, 90, 20, "CodTipoMov", "Cód.Tp.Mov.",ListaCampos.DB_FK, txtDescTipoMov, true);
+		adicDescFK(txtDescTipoMov, 213, 20, 200, 20, "DescTipoMov","Descrição do tipo de movimento");
+		adicCampo(txtIDUsu, 416, 20, 120, 20, "IdUsu", "Id do usuário",ListaCampos.DB_FK, true);
+		adicCampo(txtDtaReqRma, 539, 20, 86, 20, "DtaReqRma", "Data da Rma",ListaCampos.DB_SI, true);
+		adicCampo(txtCodOP, 7, 60, 80, 20, "CodOP", "Cód.OP.", ListaCampos.DB_FK,false);
+		adicCampo(txtSeqOP, 90, 60, 77, 20, "SeqOP", "Seq.OP.", ListaCampos.DB_FK,false);
+		adicCampo(txtSeqOF, 170, 60, 80, 20, "SeqOF", "Seq.fase",ListaCampos.DB_FK, txtDescFase, false);
 		adicDescFKInvisivel(txtDescCC, "DescCC", "Descrição do centro de custos");
-		adicCampo(txtCodCC, 253, 60, 130, 20, "CodCC", "Cód.CC.",
-				ListaCampos.DB_FK, txtDescCC, true);
-		adicCampo(txtAnoCC, 386, 60, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,
-				true);
-		adicDescFK(txtDescCC, 459, 60, 162, 20, "DescCC",
-				"Descrição do centro de custos");
-
-		adicCampoInvisivel(txtSitRma, "sitrma", "Sit.Rma.", ListaCampos.DB_SI,
-				false);
-		adicCampoInvisivel(txtSitAprovRma, "sitaprovrma", "Sit.Ap.Rma.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSitExpRma, "sitexprma", "Sit.Exp.Rma.",
-				ListaCampos.DB_SI, false);
-		adicDBLiv(txaMotivoCancRma, "motivocancrma", "Motivo do cancelamento",
-				false);
-
+		adicCampo(txtCodCC, 253, 60, 130, 20, "CodCC", "Cód.CC.",ListaCampos.DB_FK, txtDescCC, true);
+		adicCampo(txtAnoCC, 386, 60, 70, 20, "AnoCC", "Ano CC.", ListaCampos.DB_FK,true);
+		adicDescFK(txtDescCC, 459, 60, 162, 20, "DescCC","Descrição do centro de custos");
+		adicCampoInvisivel(txtSitRma, "sitrma", "Sit.Rma.", ListaCampos.DB_SI,false);
+		adicCampoInvisivel(txtSitAprovRma, "sitaprovrma", "Sit.Ap.Rma.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSitExpRma, "sitexprma", "Sit.Exp.Rma.",ListaCampos.DB_SI, false);
+		adicDBLiv(txaMotivoCancRma, "motivocancrma", "Motivo do cancelamento",false);
 		adicDBLiv(txaMotivoRma, "MotivoRma", "Observações", false);
 		adic(new JLabelPad("Observações"), 7, 80, 100, 20);
 		adic(spnMotivo, 7, 100, 617, 90);
@@ -441,68 +390,44 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 
-		adicCampo(txtCodItRma, 7, 20, 30, 20, "CodItRma", "Item",
-				ListaCampos.DB_PK, true);
+		adicCampo(txtCodItRma, 7, 20, 30, 20, "CodItRma", "Item",ListaCampos.DB_PK, true);
 		if (comRef()) {
-			adicCampo(txtRefProd, 40, 20, 87, 20, "RefProd", "Referência",
-					ListaCampos.DB_FK, txtDescProd, true);
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,
-					false);
-			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2
-					.getWhereAdic()));
-			txtQtdItRma.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd2, con,
-					"qtditrma"));
+			adicCampo(txtRefProd, 40, 20, 87, 20, "RefProd", "Referência",ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI,false);
+			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD", lcProd2.getWhereAdic()));
+			txtQtdItRma.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd2, con,"qtditrma"));
 		} else {
-			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, true);
-			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",
-					ListaCampos.DB_SI, false);
-			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd
-					.getWhereAdic()));
-			txtQtdItRma.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd, con,
-					"qtditrma"));
+			adicCampo(txtCodProd, 40, 20, 87, 20, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, true);
+			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",ListaCampos.DB_SI, false);
+			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD", lcProd.getWhereAdic()));
+			txtQtdItRma.setBuscaAdic(new DLBuscaEstoq(lcDet, lcAlmox, lcProd, con,"qtditrma"));
 		}
 
-		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd",
-				"Descrição do produto");
+		adicDescFK(txtDescProd, 130, 20, 297, 20, "DescProd","Descrição do produto");
 		adic(txtDescUnid, 513, 20, 100, 20);
 		adicDB(rgPriod, 513, 60, 100, 50, "PriorItRma", "Prioridade:", true);
-		adicCampo(txtQtdItRma, 430, 20, 80, 20, "QtdItRma", "Qtd.solic.",
-				ListaCampos.DB_SI, true);
-
-		adicCampo(txtQtdAprovRma, 260, 60, 80, 20, "QtdAprovItRma", "Qtd.aprov.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtQtdExpRma, 343, 60, 80, 20, "QtdExpItRma", "Qtd.exp.",
-				ListaCampos.DB_SI, false);
-		adicCampo(txtCodLote, 426, 60, 80, 20, "CodLote", "Lote",
-				ListaCampos.DB_FK, false);
-		adicCampoInvisivel(txtPrecoItRma, "PrecoItRma", "Preço", ListaCampos.DB_SI,
-				true);
+		adicCampo(txtQtdItRma, 430, 20, 80, 20, "QtdItRma", "Qtd.solic.",ListaCampos.DB_SI, true);
+		adicCampo(txtQtdAprovRma, 260, 60, 80, 20, "QtdAprovItRma", "Qtd.aprov.",ListaCampos.DB_SI, false);
+		adicCampo(txtQtdExpRma, 343, 60, 80, 20, "QtdExpItRma", "Qtd.exp.",ListaCampos.DB_SI, false);
+		adicCampo(txtCodLote, 426, 60, 80, 20, "CodLote", "Lote",ListaCampos.DB_FK, false);
+		adicCampoInvisivel(txtPrecoItRma, "PrecoItRma", "Preço", ListaCampos.DB_SI,true);
 
 		txtCodAlmox.setNaoEditavel(true);
 		txtPrecoItRma.setNaoEditavel(true);
 
-		adicCampoInvisivel(txtCodAlmox, "CodAlmox", "Cód.Almox.",
-				ListaCampos.DB_FK, txtDescAlmox, false);
-		adicDescFK(txtDescAlmox, 7, 60, 250, 20, "DescAlmox",
-				"Descrição do almoxarifado");
-
-		adicCampoInvisivel(txtSitItRma, "sititrma", "Sit.It.Rma.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSitAprovItRma, "sitaprovitrma", "Sit.Ap.It.Rma.",
-				ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtSitExpItRma, "sitexpitrma", "Sit.Exp.It.Rma.",
-				ListaCampos.DB_SI, false);
-		adicDBLiv(txaMotivoCancItem, "motivocancitrma", "Motivo do cancelamento",
-				false);
+		adicCampoInvisivel(txtCodAlmox, "CodAlmox", "Cód.Almox.",ListaCampos.DB_FK, txtDescAlmox, false);
+		adicDescFK(txtDescAlmox, 7, 60, 250, 20, "DescAlmox","Descrição do almoxarifado");
+		adicCampoInvisivel(txtSitItRma, "sititrma", "Sit.It.Rma.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSitAprovItRma, "sitaprovitrma", "Sit.Ap.It.Rma.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtSitExpItRma, "sitexpitrma", "Sit.Exp.It.Rma.",ListaCampos.DB_SI, false);
+		adicDBLiv(txaMotivoCancItem, "motivocancitrma", "Motivo do cancelamento",false);
 		adicDBLiv(txaMotivoPrior, "MotivoPriorItRma", "Motivo da Prioridade", false);
 
-		txtRefProd.addKeyListener(new KeyAdapter() {
-
+		/*txtRefProd.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent kevt) {
 				lcDet.edit();
 			}
-		});
+		});*/
 
 		setListaCampos(true, "ITRMA", "EQ");
 		lcDet.setQueryInsert(false);
@@ -778,7 +703,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 	private boolean dialogObsCab() {
 		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoCancRma.getVlrString());
+		FObservacao obs = new FObservacao("Cancelando RMA",txaMotivoCancRma.getVlrString());
 		if (obs != null) {
 			if ((!bAprovaCab) || (sSitItRma.equals("CA")))
 				obs.txa.setEnabled(false);
@@ -794,7 +719,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 	private boolean dialogObsDet() {
 		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoCancItem.getVlrString());
+		FObservacao obs = new FObservacao("Cancelando item",txaMotivoCancItem.getVlrString());
 		if (obs != null) {
 			if ((!bAprovaCab) || (sSitItRma.equals("CA") || sSitItExp.equals("CA")))
 				obs.txa.setEnabled(false);
@@ -810,7 +735,7 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 
 	private boolean dialogObsPrior() {
 		boolean bRet = false;
-		FObservacao obs = new FObservacao(txaMotivoPrior.getVlrString());
+		FObservacao obs = new FObservacao("Motivo da prioridade",txaMotivoPrior.getVlrString());
 		if (obs != null) {
 			if ((rgPriod.getVlrString().equals("A"))
 					&& (txtIDUsu.getVlrString().equals(Aplicativo.strUsuario))) {
@@ -860,16 +785,11 @@ public class FRma extends FDetalhe implements PostListener, CarregaListener,
 			        lcDet.post();
 				}
 			}
-		}
-
-		else if (evt.getSource() == btAprovaRMA) {
+		} else if (evt.getSource() == btAprovaRMA) {
 			lcCampos.setState(ListaCampos.LCS_EDIT);
-			if (Funcoes
-					.mensagemConfirma(
-							null,
-							"Deseja Aprovar todos os ítens da RMA?\n Caso você não tenha informado as quantidades\n a serem aprovadas"
-									+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
-				;
+			if (Funcoes.mensagemConfirma(null,"Deseja Aprovar todos os ítens da RMA?\n " +
+					"Caso você não tenha informado as quantidades\n a serem aprovadas"
+						+ " estará aprovando as quantidades requeridas!") == JOptionPane.OK_OPTION) {
 				txtSitAprovRma.setVlrString("AT");
 				nav.btSalvar.doClick();
 			}

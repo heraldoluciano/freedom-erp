@@ -139,8 +139,11 @@ public class FRVendasCFOP extends FRelatorio{
   
 	public void imprimir(boolean bVisualizar) {
 
-		bTotalCFOP = new BigDecimal("0");
-	    bTotalGeral = new BigDecimal("0");
+		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
+			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
+			return;
+	    }
+		
 	    PreparedStatement ps = null;
 	    ResultSet rs = null;
 	  	String sWhere = "";
@@ -149,14 +152,12 @@ public class FRVendasCFOP extends FRelatorio{
 	  	String sWhere3 = "";
 		String sCab = "";
 		String sCab1 = "";
-	    String sDataini = "";
-	    String sDatafim = "";
 	    String sCFOP = "";
+		bTotalCFOP = new BigDecimal("0");
+	    bTotalGeral = new BigDecimal("0");
+	    ImprimeOS imp = new ImprimeOS("",con);
+	    int linPag = imp.verifLinPag()-1;
 		 
-		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
-			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
-			return;
-	    }
 		
 		if(txtCodCFOP.getVlrInteger().intValue() > 0)
 			sWhere += " AND I.CODNAT="+txtCodCFOP.getVlrInteger().intValue();
@@ -187,13 +188,7 @@ public class FRVendasCFOP extends FRelatorio{
 		if(cbVendaCanc.getVlrString().equals("N"))
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 	  	
-	    ImprimeOS imp = new ImprimeOS("",con);
-	    int linPag = imp.verifLinPag()-1;
-	    imp.verifLinPag();
-	    	   
-	    sDataini = txtDataini.getVlrString();
-	    sDatafim = txtDatafim.getVlrString();	    
-	    
+	    	   	    
 	    String sSQL = "SELECT V.CODVENDA, V.DOCVENDA, V.DTEMITVENDA, V.DTSAIDAVENDA, "
 	    		    + "I.CODNAT, NT.DESCNAT, V.CODCLI, C.RAZCLI, SUM(I.VLRLIQITVENDA)  "
 	    		    + "FROM VDVENDA V,VDITVENDA I,VDCLIENTE C, EQTIPOMOV TM, LFNATOPER NT "
@@ -209,28 +204,29 @@ public class FRVendasCFOP extends FRelatorio{
 	    		    + "ORDER BY I.CODNAT, V.DOCVENDA, V.CODVENDA ";
 	                  
 	    try {
+	    	
+	    	imp = new ImprimeOS("",con);
+		    linPag = imp.verifLinPag()-1;
+		    imp.verifLinPag();
+		      imp.setTitulo("Relatório de Vendas por CFOP");
+		  	  imp.addSubTitulo("RELATORIO DE VENDAS POR CFOP");
+		  	  imp.addSubTitulo("PERIODO DE :"+txtDataini.getVlrString()+" Até: "+txtDatafim.getVlrString());
+		  	  if (sCab1.length() > 0)
+		    	  imp.addSubTitulo(sCab1);
+		      if (sCab.length() > 0)
+		    	  imp.addSubTitulo(sCab);
+		      imp.limpaPags();
+	    	
 		      ps = con.prepareStatement(sSQL);
 		      ps.setInt(1,Aplicativo.iCodEmp);
 		      ps.setInt(2,Aplicativo.iCodFilial);
 		      ps.setDate(3,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
 		      ps.setDate(4,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
 		      rs = ps.executeQuery();
-		      imp.limpaPags();
-		      
-		      imp.setTitulo("Relatório de Vendas por CFOP");
-		  	  imp.addSubTitulo("RELATORIO DE VENDAS POR CFOP");
-		  	  imp.addSubTitulo("PERIODO DE :"+sDataini+" Até: "+sDatafim);
-		  	  if (sCab1.length() > 0) {
-		    	  imp.addSubTitulo(sCab1);
-		      }
-		      if (sCab.length() > 0) {
-		    	  imp.addSubTitulo(sCab);
-		      }
-	      
 		      while ( rs.next() ) {
 		    	  if (imp.pRow()>=(linPag-1)) {
-			          imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			          imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+			          imp.say(imp.pRow()+1, 0, imp.comprimido());
+			          imp.say(imp.pRow() , 0, "+" + Funcoes.replicate("-",133) + "+");
 			          imp.incPags();
 			          imp.eject();
 		    	  }
@@ -276,9 +272,8 @@ public class FRVendasCFOP extends FRelatorio{
 		    	  imp.say(imp.pRow()+0,114,"| "+Funcoes.strDecimalToStrCurrency(15,2,""+rs.getFloat(9)));
 		    	  imp.say(imp.pRow()+0,135,"|");
 		    	  
-		    	  if (rs.getString(9) != null) {
+		    	  if (rs.getString(9) != null)
 		    		  bTotalCFOP = bTotalCFOP.add(new BigDecimal(rs.getString(9)));
-		          }
 		                         
 	      	  }
 
@@ -309,8 +304,6 @@ public class FRVendasCFOP extends FRelatorio{
 		  	sWhere3 = null;
 			sCab = null;
 			sCab1 = null;
-		    sDataini = null;
-		    sDatafim = null;
 		    sCFOP = null;
 	    }
 	    
@@ -323,17 +316,15 @@ public class FRVendasCFOP extends FRelatorio{
 	private void subTotal(ImprimeOS imp, ResultSet rs){
 		try{
 			if(bTotalCFOP.floatValue()!=0f){
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-	  		  	imp.say(imp.pRow()+1,0,""+imp.comprimido());
-	  		  	imp.say(imp.pRow()+0,0,"|");
-	  		  	imp.say(imp.pRow()+0,96,"SubTotal          | "+
-	  				  Funcoes.strDecimalToStrCurrency(15,2,"" +bTotalCFOP));
-	  		  	imp.say(imp.pRow()+0,135,"|");
-	  		  
-	  		  	if (rs.getString(9) != null) {
+				imp.say(imp.pRow()+1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+	  		  	imp.say(imp.pRow()+1,0, imp.comprimido());
+	  		  	imp.say(imp.pRow(), 0, "|");
+	  		  	imp.say(imp.pRow(), 96, "SubTotal          | " + Funcoes.strDecimalToStrCurrency(15,2,"" +bTotalCFOP));
+	  		  	imp.say(imp.pRow(),135, "|");
+	  		  	
+	  		  	if (rs.getString(9) != null)
 		    		  bTotalGeral = bTotalGeral.add(bTotalCFOP);
-		        }
 	  		  
 	  		  	bTotalCFOP = new BigDecimal("0");
 			}

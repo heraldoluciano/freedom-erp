@@ -96,24 +96,24 @@ public class FTipoExp extends FDados implements ActionListener {
 			while ( rs.next() ) {
 				if (imp.pRow()==0) {
 					imp.impCab(80, false);
-					imp.say(imp.pRow(), 0, "" + imp.normal());
+					imp.say(imp.pRow(), 0, imp.normal());
 					imp.say(imp.pRow(), 2, "Cód.tp.exp.");
 					imp.say(imp.pRow(), 30, "Descrição");
 					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+				imp.say(imp.pRow() + 1, 0, imp.normal());
 				imp.say(imp.pRow(), 2, rs.getString("CodTipoExp"));
 				imp.say(imp.pRow(), 30, rs.getString("DescTipoExp"));
 				if (imp.pRow()>=linPag) {
-					imp.say(imp.pRow() + 1 , 0, "" + imp.normal());
+					imp.say(imp.pRow() + 1 , 0, imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
 					imp.incPags();
 					imp.eject();
 				}
 			}
 			  
-			imp.say(imp.pRow() + 1 , 0, "" + imp.normal());
+			imp.say(imp.pRow() + 1 , 0, imp.normal());
 			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
 			imp.eject();
 			  

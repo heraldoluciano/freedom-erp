@@ -38,28 +38,28 @@ public class FTratTrib extends FDados implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtCodTratTrib = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
 	private JTextFieldPad txtDescTratTrib= new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
+	
 	public FTratTrib () {
-	super();
-	setTitulo("Tratamento Tributário");
-	setAtribos( 50, 50, 350, 125);
-	adicCampo(txtCodTratTrib, 7, 20, 70, 20,"CodTratTrib","Cód.tr.trib.",ListaCampos.DB_PK, true);
-	adicCampo(txtDescTratTrib, 80, 20, 250, 20,"DescTratTrib","Descrição do tratamento tributário",ListaCampos.DB_SI, true);
-	setListaCampos( true, "TRATTRIB", "LF");
-	btImp.addActionListener(this);
-	btPrevimp.addActionListener(this);
-	lcCampos.setQueryInsert(false);    
-	btPrevimp.addActionListener(this);
-	btImp.addActionListener(this);
-	setImprimir(true);
+		super();
+		setTitulo("Tratamento Tributário");
+		setAtribos( 50, 50, 350, 125);
+		adicCampo(txtCodTratTrib, 7, 20, 70, 20,"CodTratTrib","Cód.tr.trib.",ListaCampos.DB_PK, true);
+		adicCampo(txtDescTratTrib, 80, 20, 250, 20,"DescTratTrib","Descrição do tratamento tributário",ListaCampos.DB_SI, true);
+		setListaCampos( true, "TRATTRIB", "LF");
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
+		lcCampos.setQueryInsert(false);    
+		btPrevimp.addActionListener(this);
+		btImp.addActionListener(this);
+		setImprimir(true);
 	}
 	
 	public void actionPerformed(ActionEvent evt) {
-	if (evt.getSource() == btPrevimp) {
-	imprimir(true);
-	}
-	else if (evt.getSource() == btImp) 
-	imprimir(false);
-	super.actionPerformed(evt);
+		if (evt.getSource() == btPrevimp)
+			imprimir(true);
+		else if (evt.getSource() == btImp) 
+			imprimir(false);
+		super.actionPerformed(evt);
 	}
 	
 	private void imprimir(boolean bVisualizar) {
@@ -97,25 +97,24 @@ public class FTratTrib extends FDados implements ActionListener{
 			while ( rs.next() ) {
 				if (imp.pRow()==0) {
 					imp.impCab(80, false);
-					imp.say(imp.pRow(), 0, "" + imp.normal());
-					imp.say(imp.pRow(), 0, "");
+					imp.say(imp.pRow(), 0, imp.normal());
 					imp.say(imp.pRow(), 2, "Código");
 					imp.say(imp.pRow(), 30, "Descrição");
-					imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+					imp.say(imp.pRow() + 1, 0, imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-",79));
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+				imp.say(imp.pRow() + 1, 0, imp.normal());
 				imp.say(imp.pRow(), 2, rs.getString("Codtrattrib"));
 				imp.say(imp.pRow(), 30, rs.getString("Desctrattrib"));
 				if (imp.pRow()>=linPag) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, imp.normal());
 					imp.say(imp.pRow(), 0, Funcoes.replicate("-", 79));
 					imp.incPags();
 					imp.eject();
 				}
 			}
 			  
-			imp.say(imp.pRow() + 1, 0, "" + imp.normal());
+			imp.say(imp.pRow() + 1, 0, imp.normal());
 			imp.say(imp.pRow(), 0, Funcoes.replicate("=",79));
 			imp.eject();
 			  

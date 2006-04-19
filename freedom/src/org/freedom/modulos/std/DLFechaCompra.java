@@ -351,7 +351,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 				lcCompra.edit();
 				if (txtStatusCompra.getVlrString().trim().equals("P1")) 
 					txtStatusCompra.setVlrString("P2");
-				if (txtStatusCompra.getVlrString().trim().equals("V1"))
+				if (txtStatusCompra.getVlrString().trim().equals("C1"))
 					txtStatusCompra.setVlrString("C2");
 				lcCompra.post();
 				tpn.setEnabledAt(1,true);
@@ -359,7 +359,6 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 				int iCodPag = getCodPag();
 				if (iCodPag > 0) {
 					txtCodPag.setVlrInteger(new Integer(iCodPag));
-					lcPagar.carregaDados();
 					lcPagar.carregaDados();
 				}
 				bPodeSair = true;
