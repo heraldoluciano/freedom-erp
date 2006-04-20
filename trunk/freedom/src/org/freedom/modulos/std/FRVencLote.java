@@ -140,14 +140,13 @@ public class FRVencLote extends FRelatorio {
 	public void imprimir(boolean bVisualizar) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sCodProd;
+		String sSQL = null;
 		String sWhere = "";
 		String sFiltros1 = "";
 		String sFiltros2 = "";
-		
-		ImprimeOS imp = new ImprimeOS("",con);
-		int linPag = imp.verifLinPag()-1;
-		imp.setTitulo("Relatorio de Vencimentos de Lotes");
+		String sCodProd;		
+		ImprimeOS imp = null;
+		int linPag = 0;
 		
 		if (!txtCodGrup.getVlrString().trim().equals("")) {
 			sWhere += " AND P.CODGRUP LIKE '"+txtCodGrup.getText().trim()+"%'";
@@ -165,69 +164,80 @@ public class FRVencLote extends FRelatorio {
 		if (!txtDataini.getText().trim().equals("") && !txtDatafim.getText().trim().equals("")) {
 			sWhere += " AND L.VENCTOLOTE BETWEEN '"+
 			Funcoes.dateToStrDB(txtDataini.getVlrDate())+"' AND '"+
-			Funcoes.dateToStrDB(txtDatafim.getVlrDate())+"'";
+			Funcoes.dateToStrDB(txtDatafim.getVlrDate())+"' ";
 			sFiltros2 = "PERIODO DE "+txtDataini.getVlrString()+" ATE "+txtDatafim.getVlrString();
 		}
+		
 		if (comRef()) 
 			sCodProd = "REFPROD";
 		else
 			sCodProd = "CODPROD";
 		
-		String sSQL = "SELECT P."+sCodProd+",P.DESCPROD,L.CODLOTE,L.VENCTOLOTE,L.SLDLIQLOTE "+
-					  "FROM EQPRODUTO P, EQLOTE L "+
-					  "WHERE L.CODPROD = P.CODPROD"+sWhere+" ORDER BY VENCTOLOTE";
-		
 		try {
-			ps = con.prepareStatement(sSQL);
-			rs = ps.executeQuery();
-			imp.limpaPags();
+			
+			imp = new ImprimeOS("",con);
+			linPag = imp.verifLinPag()-1;
 			imp.montaCab();
+			imp.setTitulo("Relatorio de Vencimentos de Lotes");
+			imp.limpaPags();
+			
+			sSQL = "SELECT P."+sCodProd+",P.DESCPROD,L.CODLOTE,L.VENCTOLOTE,L.SLDLIQLOTE "+
+				   "FROM EQPRODUTO P, EQLOTE L "+
+				   "WHERE L.CODEMP=? AND L.CODFILIAL=? " +
+				   "AND L.CODEMP=P.CODEMP AND L.CODFILIAL=P.CODFILIAL AND L.CODPROD=P.CODPROD "+
+				   sWhere+
+				   "ORDER BY VENCTOLOTE";
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
+			rs = ps.executeQuery();
 			while ( rs.next() ) {
 				if (imp.pRow()==0) {
 					imp.impCab(136, true);
-					imp.say(imp.pRow()+0,0,""+imp.comprimido());
+					imp.say(imp.pRow(), 0, imp.comprimido());
 					if (!sFiltros1.trim().equals("")) {
-						imp.say(imp.pRow()+0,0,"|");
-						imp.say(imp.pRow()+0,67-(sFiltros1.length()/2),sFiltros1);
-						imp.say(imp.pRow()+0,135,"|");
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
+						imp.say(imp.pRow(), 0, "|");
+						imp.say(imp.pRow(), 67-(sFiltros1.length()/2),sFiltros1);
+						imp.say(imp.pRow(), 135, "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
 					}
 					if (!sFiltros2.trim().equals("")) {
-						imp.say(imp.pRow()+0,0,"|");
-						imp.say(imp.pRow()+0,67-(sFiltros2.length()/2),sFiltros2);
-						imp.say(imp.pRow()+0,135,"|");
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
+						imp.say(imp.pRow(), 0, "|");
+						imp.say(imp.pRow(), 67-(sFiltros2.length()/2),sFiltros2);
+						imp.say(imp.pRow(), 135,"|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
 					}
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| Código");
-					imp.say(imp.pRow()+0,16,"| Descrição");
-					imp.say(imp.pRow()+0,69,"| Lote");
-					imp.say(imp.pRow()+0,85,"| Vencimento");
-					imp.say(imp.pRow()+0,98,"| Saldo");
-					imp.say(imp.pRow()+0,135,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "| Código");
+					imp.say(imp.pRow(), 16, "| Descrição");
+					imp.say(imp.pRow(), 69, "| Lote");
+					imp.say(imp.pRow(), 85, "| Vencimento");
+					imp.say(imp.pRow(), 98, "| Saldo");
+					imp.say(imp.pRow(),135, "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
 				}
 				
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"| "+(sCodProd.equals("REFPROD") ? rs.getString("REFPROD") : Funcoes.alinhaDir(rs.getInt("CODPROD"),13)));
-				imp.say(imp.pRow()+0,16,"| "+rs.getString("DESCPROD"));
-				imp.say(imp.pRow()+0,69,"| "+rs.getString("CODLOTE"));
-				imp.say(imp.pRow()+0,85,"| "+Funcoes.sqlDateToStrDate(rs.getDate("VENCTOLOTE")));
-				imp.say(imp.pRow()+0,98,"| "+Funcoes.strDecimalToStrCurrency(15,1,rs.getString("SLDLIQLOTE")));
-				imp.say(imp.pRow()+0,135,"|");
+				imp.say(imp.pRow()+1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "| " + (sCodProd.equals("REFPROD") ? rs.getString("REFPROD") : Funcoes.alinhaDir(rs.getInt("CODPROD"),13)));
+				imp.say(imp.pRow(), 16, "| " + rs.getString("DESCPROD"));
+				imp.say(imp.pRow(), 69, "| " + rs.getString("CODLOTE"));
+				imp.say(imp.pRow(), 85, "| " + Funcoes.sqlDateToStrDate(rs.getDate("VENCTOLOTE")));
+				imp.say(imp.pRow(), 98, "| " + Funcoes.strDecimalToStrCurrency(15,1,rs.getString("SLDLIQLOTE")));
+				imp.say(imp.pRow(),135, "|");
 				 
 				if (imp.pRow()>=linPag) {
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
 					imp.incPags();
 					imp.eject();
 				}         
 			}
 			
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+			imp.say(imp.pRow()+1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
 			  
 			imp.eject();      
 			imp.fechaGravacao();
@@ -236,6 +246,15 @@ public class FRVencLote extends FRelatorio {
 				con.commit();
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro(this,"Erro ao consultar a tabela PRODUTOS!\n"+err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			sWhere = null;
+			sFiltros1 = null;
+			sFiltros2 = null;
+			sCodProd = null;	
+			System.gc();
 		}
 		    
 		if (bVisualizar) 
