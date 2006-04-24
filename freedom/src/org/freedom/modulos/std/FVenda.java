@@ -1501,26 +1501,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		DLRPedido dl = null;
 		boolean bImpOK = false;
 		int iCodVenda = txtCodVenda.getVlrInteger().intValue();
-		
-		
-		dl = new DLRPedido(sOrdNota, false);
-		dl.setVisible(true);
-		if (dl.OK == false) {
-			dl.dispose();
-			return;
-		}
-		
-		try {
-			layNF = Class.forName("org.freedom.layout." + imp.getClassNota()).newInstance();
-		} catch (Exception err) {
-			Funcoes.mensagemInforma(this, "Não foi possível carregar o layout de Nota Fiscal!\n" + err.getMessage());
-		}
-		
+					
 		try {
 			
 			imp = new ImprimeOS("", con, sTipo, true);
 			imp.verifLinPag(sTipo);
 			imp.setTitulo("Nota Fiscal");
+			
+
+			dl = new DLRPedido(sOrdNota, false);
+			dl.setVisible(true);
+			if (dl.OK == false) {
+				dl.dispose();
+				return;
+			}
+			
+			try {
+				layNF = Class.forName("org.freedom.layout." + imp.getClassNota()).newInstance();
+			} catch (Exception err) {
+				Funcoes.mensagemInforma(this, "Não foi possível carregar o layout de Nota Fiscal!\n" + err.getMessage());
+			}
 			
 			if (layNF != null) {
 				if (layNF instanceof Layout) {
