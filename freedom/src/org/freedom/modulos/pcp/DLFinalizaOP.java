@@ -64,6 +64,7 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		txtQtdFinalOP.addFocusListener(this);
 		
 	}
+	
 	public void focusLost(FocusEvent fevt){
 		if (fevt.getSource() == txtQtdFinalOP){		
 		    if((txtQtdPrevOP.getVlrDouble().doubleValue()!=txtQtdFinalOP.getVlrDouble().doubleValue()) && (txaJustifcQtdProd.getVlrString().equals(""))) {
@@ -80,16 +81,16 @@ public class DLFinalizaOP extends FFDialogo implements FocusListener{
 		    }		    
 		}	
 	}
-	public void focusGained(FocusEvent fevt){
-		
-	}
+	public void focusGained(FocusEvent fevt){ }
 
 	public double getValor() {
 		return txtQtdFinalOP.getVlrDouble().doubleValue();
 	}
+	
     public String getObs() {
     	return txaJustifcQtdProd.getVlrString();
     }
+    
     public void keyPressed(KeyEvent kevt) {
            super.keyPressed(kevt);
     }
