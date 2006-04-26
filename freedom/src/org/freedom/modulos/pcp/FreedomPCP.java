@@ -84,11 +84,12 @@ public class FreedomPCP extends Aplicativo implements ActionListener {
 			
 		addOpcao(-1, TP_OPCAO_MENU, "Produção", "", 'P', 200000000, 0, false,null);
 			addOpcao(200000000, TP_OPCAO_ITEM, "Ordens de produção","Ordens de produção", 'O', 200100000, 1, true, FOP.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Simulação de OP","Simulação de OP", 'S', 200200000, 1, true, FSimulaOP.class);
 			addSeparador(200000000);			
-			addOpcao(200000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'm',200200000, 1, true, FRma.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'm',200300000, 1, true, FConsRMA.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'm',200400000, 1, true, FConsRmaItem.class);
-			addOpcao(200000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras","Baixa RMA", 'B', 200500000, 1, true,FBaixaRMACodBar.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Requisição de material", "Requisição de material", 'R',200300000, 1, true, FRma.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa requisição de material", "Pesquisa requisição de material", 'P',200400000, 1, true, FConsRMA.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Pesquisa RMA por item", "Pesquisa RMA por item", 'i',200500000, 1, true, FConsRmaItem.class);
+			addOpcao(200000000, TP_OPCAO_ITEM, "Baixa RMA via Cód.Barras","Baixa RMA", 'B', 200600000, 1, true,FBaixaRMACodBar.class);
 
 			addOpcao(-1, TP_OPCAO_MENU, "Estoque", "", 'E', 400000000, 0, false,null);
 			addOpcao(400000000, TP_OPCAO_ITEM, "Kardex", "Kardex", 'K', 400100000,1, true, FKardex.class);
