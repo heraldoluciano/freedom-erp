@@ -143,22 +143,19 @@ public class FRReceber extends FRelatorio {
 	public void imprimir(boolean bVisualizar) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		Vector vObs = null;
-		ImprimeOS imp = null;
+		String sSQL = null;
+		String sWhere = "";
+		String sFrom = "";
 		String sFiltro = "";
 		String sTipoRel = "";
 		String sTitRel = "";
-		String sDataini = "";
-		String sDatafim = "";
 		String sDtVencItRec = "";
 		String sDtPago = "";
-		String sSQL = "";
-		String sWhere = "";
-		String sFrom = "";
 		String sObs = "";
 		String sImpTotDia = "";
 		String sCodBanco = "";
-		boolean bFimDia = false;
+		Vector vObs = null;
+		ImprimeOS imp = null;
 		int linPag = 0;
 		int iCodCli = 0;
 		int iCodSetor = 0;
@@ -170,6 +167,8 @@ public class FRReceber extends FRelatorio {
 		double deTotParc = 0;
 		double deTotalPago = 0;
 		double deTotalApag = 0;
+		boolean bFimDia = false;
+		
 		try {
 			if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
 				Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
@@ -190,9 +189,7 @@ public class FRReceber extends FRelatorio {
 			iCodSetor = txtCodSetor.getVlrInteger().intValue();
 			iCodVend = txtCodVend.getVlrInteger().intValue();
 			sCodBanco = txtCodBanco.getVlrString();
-				  		
-			sDataini = txtDataini.getVlrString();
-			sDatafim = txtDatafim.getVlrString();
+				  
 			sObs = cbObs.getVlrString();
 			sImpTotDia = cbImpTotDia.getVlrString();
 			
@@ -281,57 +278,57 @@ public class FRReceber extends FRelatorio {
 				imp.limpaPags();
 				imp.montaCab();
 				imp.setTitulo("Relatório de contas "+sTitRel);
-				imp.addSubTitulo("RELATORIO DE CONTAS "+sTitRel+" - PERIODO DE :"+sDataini+" ATE: "+sDatafim);  				
+				imp.addSubTitulo("RELATORIO DE CONTAS "+sTitRel+" - PERIODO DE :"+txtDataini.getVlrString()+" ATE: "+txtDatafim.getVlrString());  				
 				while ( rs.next() ) {
 					if (imp.pRow()>=(linPag-1)) {
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",133)+"+");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
 						imp.incPags();
 						imp.eject();
 					} 
 					
 					if (imp.pRow()==0) {  					
 						imp.impCab(136, true);						
-						imp.say(imp.pRow()+0,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"| Vencto.    |");
-						imp.say(imp.pRow()+0,15," Cliente                                  |");
-						imp.say(imp.pRow()+0,59," Doc.      |");
-						imp.say(imp.pRow()+0,72," Vlr. da Parc. |");
-						imp.say(imp.pRow()+0,89," Vlr Recebido  |");
-						imp.say(imp.pRow()+0,106," Vlr Aberto   |");
-						imp.say(imp.pRow()+0,122," Data Receb. |");
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+						imp.say(imp.pRow(), 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "| Vencto.    |");
+						imp.say(imp.pRow(), 15, " Cliente                                  |");
+						imp.say(imp.pRow(), 59, " Doc.      |");
+						imp.say(imp.pRow(), 72, " Vlr. da Parc. |");
+						imp.say(imp.pRow(), 89, " Vlr Recebido  |");
+						imp.say(imp.pRow(),106, " Vlr Aberto   |");
+						imp.say(imp.pRow(),122, " Data Receb. |");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
 					}
 					
 					if ((!Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")).equals(sDtVencItRec)) && 
 								(bFimDia) && (sImpTotDia.equals("S")) ) {					  					
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"|");
-						imp.say(imp.pRow()+0,41,"Totais do Dia-> | "+sDtVencItRec+" | "+
-						Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaParc)+" | "+
-						Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaPago)+" | "+
-						Funcoes.strDecimalToStrCurrency(13,2,""+deTotalDiaApag));
-						imp.say(imp.pRow(),135,"|");
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|");
+						imp.say(imp.pRow(), 41, "Totais do Dia-> | "+sDtVencItRec+" | "+
+											Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaParc)+" | "+
+											Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaPago)+" | "+
+											Funcoes.strDecimalToStrCurrency(13,2,""+deTotalDiaApag)+" | ");
+						imp.say(imp.pRow(),135, "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
 						deTotalDiaParc = 0;
 						deTotalDiaPago = 0;
 						deTotalDiaApag = 0;
 						bFimDia = false;
 					}
 					 				
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
 					
 					if (!Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")).equals(sDtVencItRec))
 						imp.say(imp.pRow()+0,3,Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec"))+" |");
 					
-					imp.say(imp.pRow()+0,16,Funcoes.copy(rs.getString("CodCli"),0,6)+"-"+Funcoes.copy(rs.getString("RazCli"),0,33)+" |");
+					imp.say(imp.pRow(), 16, Funcoes.copy(rs.getString("CodCli"),0,6)+"-"+Funcoes.copy(rs.getString("RazCli"),0,33)+" |");
 					
 					if (rs.getString("DtPagoItRec") != null)    
 						sDtPago = Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec"));
@@ -340,8 +337,8 @@ public class FRReceber extends FRelatorio {
 					
 					sDtPago = Funcoes.copy(sDtPago,0,10);
 					
-					imp.say(imp.pRow()+0,61,(Funcoes.copy(rs.getString(10),0,1).equals("P") ? 
-									Funcoes.copy(rs.getString("CodVenda"),0,6) : 
+					imp.say(imp.pRow(), 61, (Funcoes.copy(rs.getString(10),0,1).equals("P") ? 
+									    Funcoes.copy(rs.getString("CodVenda"),0,6) : 
 										Funcoes.copy(rs.getString("DocRec"),0,6))+"/"+Funcoes.copy(rs.getString("NParcItRec"),0,2)+"| "+
 										Funcoes.strDecimalToStrCurrency(14,2,rs.getString("VlrParcItRec"))+" | "+
 										Funcoes.strDecimalToStrCurrency(14,2,rs.getString("VlrPagoItRec"))+" | "+
@@ -351,9 +348,9 @@ public class FRReceber extends FRelatorio {
 						if (rs.getString("OBSITREC")!=null) {
 							vObs = getObs(rs.getString("OBSITREC"),108);
 							for (int i=0; i<vObs.size(); i++) {
-								imp.say(imp.pRow()+1,0,"|");
-								imp.say(imp.pRow()+0,16,(i==0?"OBS.: ":"      ")+vObs.elementAt(i).toString());
-								imp.say(imp.pRow()+0,135,"|");
+								imp.say(imp.pRow()+1, 0, "|");
+								imp.say(imp.pRow(), 16, (i==0?"OBS.: ":"      ")+vObs.elementAt(i).toString());
+								imp.say(imp.pRow(),135, "|");
 							}
 						}
 					}
@@ -375,28 +372,28 @@ public class FRReceber extends FRelatorio {
 				}
 				
 				if ((bFimDia) && (sImpTotDia.equals("S"))) {
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",133)+"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,41,"Totais do Dia-> | "+sDtVencItRec+" | "+
-					Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaParc)+" | "+
-					Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaPago)+" | "+
-					Funcoes.strDecimalToStrCurrency(13,2,""+deTotalDiaApag));
-					imp.say(imp.pRow(),135,"|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 41, "Totais do Dia-> | "+sDtVencItRec+" | "+
+										Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaParc)+" | "+
+										Funcoes.strDecimalToStrCurrency(14,2,""+deTotalDiaPago)+" | "+
+										Funcoes.strDecimalToStrCurrency(13,2,""+deTotalDiaApag));
+					imp.say(imp.pRow(),135, "|");
 				}
 				  
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow(),0,"|"+Funcoes.replicate("=",133)+"|");
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"|");
-				imp.say(imp.pRow()+0,55,"Totais Geral-> | "+
-				Funcoes.strDecimalToStrCurrency(14,2,""+deTotParc)+" | "+
-				Funcoes.strDecimalToStrCurrency(14,2,""+deTotalPago)+" | "+
-				Funcoes.strDecimalToStrCurrency(13,2,""+deTotalApag));
-				imp.say(imp.pRow(),135,"|");
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("=",133)+"+");
+				imp.say(imp.pRow()+1, 0, imp.comprimido());
+				imp.say(imp.pRow(),0, "|" + Funcoes.replicate("=",133) + "|");
+				imp.say(imp.pRow()+1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "|");
+				imp.say(imp.pRow(), 55, "Totais Geral-> | "+
+									Funcoes.strDecimalToStrCurrency(14,2,""+deTotParc)+" | "+
+									Funcoes.strDecimalToStrCurrency(14,2,""+deTotalPago)+" | "+
+									Funcoes.strDecimalToStrCurrency(13,2,""+deTotalApag));
+				imp.say(imp.pRow(),135, "|");
+				imp.say(imp.pRow()+1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=",133) + "+");
 				 
 				imp.eject();  
 				imp.fechaGravacao();
@@ -426,8 +423,6 @@ public class FRReceber extends FRelatorio {
 			sFiltro = null;
 			sTipoRel = null;
 			sTitRel = null;
-			sDataini = null;
-			sDatafim = null;
 			sDtVencItRec = null;
 			sDtPago = null;
 			sSQL = null;
@@ -445,6 +440,7 @@ public class FRReceber extends FRelatorio {
 			deTotalPago = 0;
 			deTotalApag = 0;
 			vObs = null;
+			System.gc();
 		}
 	}
 	

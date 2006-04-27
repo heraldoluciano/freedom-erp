@@ -307,16 +307,20 @@ public class FContato extends FTabDados implements RadioGroupListener,
 	}
 
 	private void imprimir(boolean bVisualizar) {
-		FAndamento And = null;
-		ImprimeOS imp = new ImprimeOS("", con);
-		Vector vFiltros = new Vector();
-		int linPag = imp.verifLinPag() - 1;
-		int iContaReg = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		String sObs = "";
 		String sWhere = "";
 		String sAnd = " WHERE ";
+		String sTmp = null;
 		String[] sValores;
+		Vector vFiltros = new Vector();
+		ImprimeOS imp = new ImprimeOS("", con);
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
 
+		FAndamento And = null;
 		DLRCont dl = new DLRCont(this, con);
 		dl.setVisible(true);
 		if (dl.OK == false) {
@@ -359,134 +363,119 @@ public class FContato extends FTabDados implements RadioGroupListener,
 			sAnd = " AND ";
 		}
 		if (sValores[7].equals("C")) {
-			String sSQL = "SELECT CODCTO,RAZCTO,PESSOACTO,NOMECTO,CONTCTO,ENDCTO,NUMCTO,"
+			sSQL = "SELECT CODCTO,RAZCTO,PESSOACTO,NOMECTO,CONTCTO,ENDCTO,NUMCTO,"
 					+ "BAIRCTO,CIDCTO,COMPLCTO,UFCTO,CEPCTO,CNPJCTO,INSCCTO,CPFCTO,RGCTO,"
 					+ "FONECTO,FAXCTO,EMAILCTO"
 					+ sObs
 					+ " FROM TKCONTATO"
 					+ sWhere + " ORDER BY " + sValores[0];
-			PreparedStatement ps = null;
-			ResultSet rs = null;
 			try {
-				ps = con.prepareStatement("SELECT COUNT(*) FROM TKCONTATO"
-						+ sWhere);
+				ps = con.prepareStatement("SELECT COUNT(*) FROM TKCONTATO" + sWhere);
 				rs = ps.executeQuery();
 				rs.next();
 				And = new FAndamento("Montando relatório, Aguarde!", 0, rs.getInt(1) - 1);
-				//        rs.close();
-				//        ps.close();
 				if (!con.getAutoCommit())
 					con.commit();
 				
 				ps = con.prepareStatement(sSQL);
 				rs = ps.executeQuery();
+
+				imp.montaCab();
+				imp.setTitulo("Relatório de Contatos");
+				imp.addSubTitulo("Relatório de Contatos");
+				imp.addSubTitulo("Filtrado por:");
+				for (int i = 0; i < vFiltros.size(); i++) {
+					sTmp = (String) vFiltros.elementAt(i);
+					imp.addSubTitulo(sTmp);
+				}
 				imp.limpaPags();
-				
 				while (rs.next()) {
-					if (imp.pRow() == 0) {
-						imp.setTitulo("Relatório de Contatos");
-						imp.addSubTitulo("Relatório de Contatos");
-						imp.addSubTitulo("Filtrado por:");
-						for (int i = 0; i < vFiltros.size(); i++) {
-							String sTmp = (String) vFiltros.elementAt(i);
-							imp.addSubTitulo(sTmp);
-						}
-						imp.montaCab();
-						imp.impCab(136, true);
-					}
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 2, "Cód.cto.:");
-					imp.say(imp.pRow() + 0, 10, rs.getString("CodCto"));
-					imp.say(imp.pRow() + 0, 20, "Razão:");
-					imp.say(imp.pRow() + 0, 27, rs.getString("RazCto"));
-					imp.say(imp.pRow() + 0, 127, "Setor:");
-					imp.say(imp.pRow() + 0, 133, rs.getString("PessoaCto"));
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 0, "Nome:");
-					imp.say(imp.pRow() + 0, 7, rs.getString("NomeCto"));
-					imp.say(imp.pRow() + 0, 60, "Contato:");
-					imp.say(imp.pRow() + 0, 70, rs.getString("ContCto"));
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 1, "Endereço:");
-					imp.say(imp.pRow() + 0, 11, rs.getString("EndCto"));
-					imp.say(imp.pRow() + 0, 62, "N.:");
-					imp.say(imp.pRow() + 0, 67, "" + rs.getInt("NumCto"));
-					imp.say(imp.pRow() + 0, 76, "Compl.:");
-					imp.say(imp.pRow() + 0, 85,rs.getString("ComplCto") != null ? rs.getString("ComplCto").trim() : "");
-					imp.say(imp.pRow() + 0, 94, "Bairro:");
-					imp.say(imp.pRow() + 0, 103,rs.getString("BairCto") != null ? rs.getString("BairCto").trim() : "");
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 1, "Cidade:");
-					imp.say(imp.pRow() + 0, 8, rs.getString("CidCto"));
-					imp.say(imp.pRow() + 0, 88, "UF:");
-					imp.say(imp.pRow() + 0, 93, rs.getString("UfCto"));
-					imp.say(imp.pRow() + 0, 120, "CEP:");
-					imp.say(imp.pRow() + 0, 126,rs.getString("CepCto") != null ? Funcoes.setMascara(rs.getString("CepCto"),"#####-###") : "");
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					if ((rs.getString("CnpjCto")) != null && (rs.getString("InscCto") != null)) {
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 1, "CNPJ:");
-						imp.say(imp.pRow() + 0, 7, Funcoes.setMascara(rs.getString("CnpjCto"), "##.###.###/####-##"));
-						imp.say(imp.pRow() + 0, 50, "IE:");
-						if (!rs.getString("InscCto").trim().toUpperCase().equals("ISENTO") && rs.getString("UFCto") != null) {
-							Funcoes.vIE(rs.getString("InscCto"), rs.getString("UFCto"));
-							imp.say(imp.pRow() + 0, 55, Funcoes.sIEValida);
-						}
-						imp.say(imp.pRow() + 0, 135, "|");
-					} else {
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 1, "CPF:");
-						imp.say(imp.pRow() + 0, 6, Funcoes.setMascara(rs.getString("CPFCto"), "###.###.###-##"));
-						imp.say(imp.pRow() + 0, 50, "RG:");
-						imp.say(imp.pRow() + 0, 55, rs.getString("RgCto"));
-					}
-					imp.say(imp.pRow() + 0, 80, "Tel:");
-					imp.say(imp.pRow() + 0, 86,rs.getString("FoneCto") != null ? Funcoes.setMascara(rs.getString("FoneCto"),"(####)####-####") : "");
-					imp.say(imp.pRow() + 0, 120, "Fax:");
-					imp.say(imp.pRow() + 0, 126,rs.getString("FaxCto") != null ? Funcoes.setMascara(rs.getString("FaxCto"),"####-####") : "");
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 1, "Contato:");
-					imp.say(imp.pRow() + 0, 9, rs.getString("ContCto"));
-					imp.say(imp.pRow() + 0, 70, "E-mail:");
-					imp.say(imp.pRow() + 0, 79, rs.getString("EmailCto"));
-					imp.say(imp.pRow() + 0, 135, "|");
-					if (sObs.length() > 0) {
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 1, "Obs:");
-						imp.say(imp.pRow() + 0, 6, rs.getString("ObsCto"));
-						imp.say(imp.pRow() + 0, 135, "|");
-					}
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
 					if (imp.pRow() >= linPag) {
 						imp.incPags();
 						imp.eject();
 					}
+					if (imp.pRow() == 0)
+						imp.impCab(136, true);
+						
+					imp.say(imp.pRow(), 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 2, "Cód.cto.:");
+					imp.say(imp.pRow(), 10, rs.getString("CodCto"));
+					imp.say(imp.pRow(), 20, "Razão:");
+					imp.say(imp.pRow(), 27, rs.getString("RazCto"));
+					imp.say(imp.pRow(), 127, "Setor:");
+					imp.say(imp.pRow(), 133, rs.getString("PessoaCto"));
+					imp.say(imp.pRow(), 135, "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 0, "Nome:");
+					imp.say(imp.pRow(), 7, rs.getString("NomeCto"));
+					imp.say(imp.pRow(), 60, "Contato:");
+					imp.say(imp.pRow(), 70, rs.getString("ContCto"));
+					imp.say(imp.pRow(), 135, "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 1, "Endereço:");
+					imp.say(imp.pRow(), 11, rs.getString("EndCto"));
+					imp.say(imp.pRow(), 62, "N.:");
+					imp.say(imp.pRow(), 67, "" + rs.getInt("NumCto"));
+					imp.say(imp.pRow(), 76, "Compl.:");
+					imp.say(imp.pRow(), 85,rs.getString("ComplCto") != null ? rs.getString("ComplCto").trim() : "");
+					imp.say(imp.pRow(), 94, "Bairro:");
+					imp.say(imp.pRow(), 103,rs.getString("BairCto") != null ? rs.getString("BairCto").trim() : "");
+					imp.say(imp.pRow(), 135, "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|Cidade:");
+					imp.say(imp.pRow(), 8, rs.getString("CidCto"));
+					imp.say(imp.pRow(), 88, "UF:");
+					imp.say(imp.pRow(), 93, rs.getString("UfCto"));
+					imp.say(imp.pRow(), 120, "CEP:");
+					imp.say(imp.pRow(), 126,rs.getString("CepCto") != null ? Funcoes.setMascara(rs.getString("CepCto"),"#####-###") : "");
+					imp.say(imp.pRow(), 135, "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					if ((rs.getString("CnpjCto")) != null && (rs.getString("InscCto") != null)) {
+						imp.say(imp.pRow(), 0, "|CNPJ:");
+						imp.say(imp.pRow(), 7, Funcoes.setMascara(rs.getString("CnpjCto"), "##.###.###/####-##"));
+						imp.say(imp.pRow(), 50, "IE:");
+						if (!rs.getString("InscCto").trim().toUpperCase().equals("ISENTO") && rs.getString("UFCto") != null) {
+							Funcoes.vIE(rs.getString("InscCto"), rs.getString("UFCto"));
+							imp.say(imp.pRow(), 55, Funcoes.sIEValida);
+						}
+						imp.say(imp.pRow(), 135, "|");
+					} else {
+						imp.say(imp.pRow(), 0, "|CPF:");
+						imp.say(imp.pRow(), 6, Funcoes.setMascara(rs.getString("CPFCto"), "###.###.###-##"));
+						imp.say(imp.pRow(), 50, "RG:");
+						imp.say(imp.pRow(), 55, rs.getString("RgCto"));
+					}
+					imp.say(imp.pRow(), 80, "Tel:");
+					imp.say(imp.pRow(), 86,rs.getString("FoneCto") != null ? Funcoes.setMascara(rs.getString("FoneCto"),"(####)####-####") : "");
+					imp.say(imp.pRow(), 120, "Fax:");
+					imp.say(imp.pRow(), 126,rs.getString("FaxCto") != null ? Funcoes.setMascara(rs.getString("FaxCto"),"####-####") : "");
+					imp.say(imp.pRow(), 135, "|");
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|Contato:");
+					imp.say(imp.pRow(), 9, rs.getString("ContCto"));
+					imp.say(imp.pRow(), 70, "E-mail:");
+					imp.say(imp.pRow(), 79, rs.getString("EmailCto"));
+					imp.say(imp.pRow(), 135, "|");
+					if (sObs.length() > 0) {
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|Obs:");
+						imp.say(imp.pRow(), 6, rs.getString("ObsCto"));
+						imp.say(imp.pRow(), 135, "|");
+					}
+					imp.say(imp.pRow()+1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					
 					And.atualiza(iContaReg);
 					iContaReg++;
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133)
-						+ "+");
 				imp.eject();
-
 				imp.fechaGravacao();
 
-				//        rs.close();
-				//        ps.close();
 				if (!con.getAutoCommit())
 					con.commit();
 				dl.dispose();
@@ -496,63 +485,58 @@ public class FContato extends FTabDados implements RadioGroupListener,
 			}
 		} 
 		else if (dl.getValores()[7].equals("R")) {
-			String sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,FONECTO FROM TKCONTATO"
-						+ sWhere + " ORDER BY " + dl.getValores()[0];
-			PreparedStatement ps = null;
-			ResultSet rs = null;
+			sSQL = "SELECT CODCTO,NOMECTO,ENDCTO,CIDCTO,FONECTO "
+						+ "FROM TKCONTATO"
+						+ sWhere 
+						+ " ORDER BY " + dl.getValores()[0];
 			
 			try {
-				ps = con.prepareStatement("SELECT COUNT(*) FROM TKCONTATO"
-						+ sWhere);
+				ps = con.prepareStatement("SELECT COUNT(*) FROM TKCONTATO" + sWhere);
 				rs = ps.executeQuery();
 				rs.next();
-				And = new FAndamento("Montando Relatório, Aguarde!", 0, rs
-						.getInt(1) - 1);
-				//        rs.close();
-				//        ps.close();
+				And = new FAndamento("Montando Relatório, Aguarde!", 0, rs .getInt(1) - 1);
 				if (!con.getAutoCommit())
 					con.commit();
 				
 				ps = con.prepareStatement(sSQL);
 				rs = ps.executeQuery();
+
+				imp.montaCab();
+				imp.setTitulo("Relatório de Contatos");
+				imp.addSubTitulo("Relatório de Contatos");
 				imp.limpaPags();
 				
 				while (rs.next()) {
 					if (imp.pRow() == 0) {
-						imp.setTitulo("Relatório de Contatos");
-						imp.addSubTitulo("Relatório de Contatos");
-						imp.montaCab();
 						imp.impCab(136, true);
 						imp.say(imp.pRow() + 0, 2, "|"+ Funcoes.replicate(" ", 60) + "Filtrado por:"+ Funcoes.replicate(" ", 60) + "|");
 						for (int i = 0; i < vFiltros.size(); i++) {
-							String sTmp = (String) vFiltros.elementAt(i);
+							sTmp = (String) vFiltros.elementAt(i);
 							sTmp = "|"+ Funcoes.replicate(" ", (((135 - sTmp.length()) / 2) - 1)) + sTmp;
 							sTmp += Funcoes.replicate(" ", 134 - sTmp.length())+ "|";
-							imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-							imp.say(imp.pRow() + 0, 2, sTmp);
+							imp.say(imp.pRow()+1, 0, imp.comprimido());
+							imp.say(imp.pRow(), 2, sTmp);
 						}
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 2, "Código");
-						imp.say(imp.pRow() + 0, 10, "Nome:");
-						imp.say(imp.pRow() + 0, 50, "Endereço:");
-						imp.say(imp.pRow() + 0, 90, "Cidade:");
-						imp.say(imp.pRow() + 0, 120, "Tel:");
-						imp.say(imp.pRow() + 0, 135, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "| Código");
+						imp.say(imp.pRow(), 10, "Nome:");
+						imp.say(imp.pRow(), 50, "Endereço:");
+						imp.say(imp.pRow(), 90, "Cidade:");
+						imp.say(imp.pRow(), 120, "Tel:");
+						imp.say(imp.pRow(), 135, "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
 					}
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 2, rs.getString("CodCto"));
-					imp.say(imp.pRow() + 0, 10,rs.getString("NomeCto") != null ? rs.getString("NomeCto").substring(0, 39) : "");
-					imp.say(imp.pRow() + 0, 50,rs.getString("EndCto") != null ? rs.getString("EndCto").substring(0, 39) : "");
-					imp.say(imp.pRow() + 0, 90,rs.getString("CidCto") != null ? rs.getString("CidCto").substring(0, 29) : "");
-					imp.say(imp.pRow() + 0, 120,rs.getString("FoneCto") != null ? Funcoes.setMascara(rs.getString("FoneCto"),"(####)####-####") : "");
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 2, rs.getString("CodCto"));
+					imp.say(imp.pRow(), 10,rs.getString("NomeCto") != null ? rs.getString("NomeCto").substring(0, 39) : "");
+					imp.say(imp.pRow(), 50,rs.getString("EndCto") != null ? rs.getString("EndCto").substring(0, 39) : "");
+					imp.say(imp.pRow(), 90,rs.getString("CidCto") != null ? rs.getString("CidCto").substring(0, 29) : "");
+					imp.say(imp.pRow(), 120,rs.getString("FoneCto") != null ? Funcoes.setMascara(rs.getString("FoneCto"),"(####)####-####") : "");
+					imp.say(imp.pRow(), 135, "|");
 					if (imp.pRow() >= linPag) {
 						imp.incPags();
 						imp.eject();
@@ -560,15 +544,10 @@ public class FContato extends FTabDados implements RadioGroupListener,
 					And.atualiza(iContaReg);
 					iContaReg++;
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133)
-						+ "+");
+				imp.say(imp.pRow()+1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 				imp.eject();
-
 				imp.fechaGravacao();
-
-				//        rs.close();
-				//        ps.close();
 				if (!con.getAutoCommit())
 					con.commit();
 				
@@ -578,11 +557,10 @@ public class FContato extends FTabDados implements RadioGroupListener,
 				Funcoes.mensagemErro(this, "Erro consulta tabela de contatos!"+ err.getMessage(),true,con,err);
 			}
 		}
-		if (bVisualizar) {
+		if (bVisualizar) 
 			imp.preview(this);
-		} else {
+		else
 			imp.print();
-		}
 	}
 
 	public void actionPerformed(ActionEvent evt) {

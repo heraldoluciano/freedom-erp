@@ -497,11 +497,11 @@ public class FHistorico extends FFilho implements CarregaListener, ActionListene
 		  	
 		  	DLNovoHist dl = new DLNovoHist(iCod,tpnHist.getSelectedIndex(),this);
 		  	dl.setConexao(con);
-		  	dl.setValores(new Object[] {(String)tabTemp.getValor(iLin,4),
+		  	dl.setValores(new Object[] {(String)tabTemp.getValor(iLin,5),
 							   			(String)vCodAtends.elementAt(iLin),
 							   			(String)tabTemp.getValor(iLin,1),
 							   			(String)tabTemp.getValor(iLin,2),
-							   			(Date)Funcoes.strDateToSqlDate((String)tabTemp.getValor(iLin,5))
+							   			(Date)Funcoes.strDateToSqlDate((String)tabTemp.getValor(iLin,3))
 		  							   }
 		  				 );
 		  	dl.setVisible(true);
