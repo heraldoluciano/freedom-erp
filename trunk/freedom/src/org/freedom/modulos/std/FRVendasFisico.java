@@ -275,7 +275,6 @@ public class FRVendasFisico extends FRelatorio {
 			ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
 			rs = ps.executeQuery();
 			while ( rs.next() ) {
-				System.out.println("GRUPO:"+rs.getString(1)+" DESC: "+rs.getString("DescProd"));
 				if (imp.pRow()>=(linPag-1)) {
 					imp.say(imp.pRow()+1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
@@ -328,7 +327,7 @@ public class FRVendasFisico extends FRelatorio {
 						imp.say(imp.pRow(),105, " LUCRO: " + Funcoes.strDecimalToStrCurrency(13,2,""+bTotalLucroGrupo)+"  "+Funcoes.copy(""+bTotalMargemGrupo,0,6)+"|");
 						imp.say(imp.pRow()+1, 0, imp.comprimido());
 						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-",133) + "|");
-						imp.say(imp.pRow(), 0, imp.comprimido());
+						imp.say(imp.pRow()+1, 0, imp.comprimido());
 						
 						bTotalVenda = bTotalVenda.add(bTotalVendaGrupo);
 						bTotalCusto = bTotalCusto.add(bTotalCustoGrupo);

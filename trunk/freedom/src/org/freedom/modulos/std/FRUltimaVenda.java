@@ -238,7 +238,7 @@ public class FRUltimaVenda extends FRelatorio {
 			rs = ps.executeQuery();
 						
 			while (rs.next()) {
-				if (imp.pRow() == linPag) {
+				if (imp.pRow() >= linPag) {
 					imp.say(imp.pRow() + 1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 					imp.eject();

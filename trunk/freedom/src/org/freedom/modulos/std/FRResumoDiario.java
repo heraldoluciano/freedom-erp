@@ -141,16 +141,29 @@ public class FRResumoDiario extends FRelatorio {
 
 	public void imprimir(boolean bVisualizar) {
 
+		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
+			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
+			return;
+		}
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "";
 		String sWhere = "";
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
 		String sCab = "";
-
-		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
-			Funcoes.mensagemInforma(this,"Data final maior que a data inicial!");
-			return;
-		}
+		String sDtemitvenda = "";
+		BigDecimal bTotalDiaVal = new BigDecimal("0");
+		BigDecimal bTotalDiaDesc = new BigDecimal("0");
+		BigDecimal bTotalDiaLiq = new BigDecimal("0");
+		BigDecimal bTotalVal = new BigDecimal("0");
+		BigDecimal bTotalDesc = new BigDecimal("0");
+		BigDecimal bTotalLiq = new BigDecimal("0");
+		ImprimeOS imp = new ImprimeOS("", con);
+		int linPag = imp.verifLinPag() - 1;
+		boolean bFimDia = false;
 
 		if (txtCodVend.getText().trim().length() > 0) {
 			sWhere += " AND V.CODVEND = " + txtCodVend.getText().trim();
@@ -161,48 +174,24 @@ public class FRResumoDiario extends FRelatorio {
 		if(rgFaturados.getVlrString().equals("S")){
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
 			sCab += " - SO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("N")){
+		} else if(rgFaturados.getVlrString().equals("N")){
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
 			sCab += " - NAO FATURADO";
-		}
-		else if(rgFaturados.getVlrString().equals("A")){
+		} else if(rgFaturados.getVlrString().equals("A"))
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-		}	
+			
 		if(rgFinanceiro.getVlrString().equals("S")){
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 			sCab += " - SO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("N")){
+		} else if(rgFinanceiro.getVlrString().equals("N")){
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 			sCab += " - NAO FINANCEIRO";
-		}
-		else if(rgFinanceiro.getVlrString().equals("A")){
+		} else if(rgFinanceiro.getVlrString().equals("A"))
 			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-		}
 		
 		if(cbVendaCanc.getVlrString().equals("N"))
 			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
 
-		ImprimeOS imp = new ImprimeOS("", con);
-		int linPag = imp.verifLinPag() - 1;
-		boolean bFimDia = false;
-		String sSQL = "";
-
-		BigDecimal bTotalDiaVal = new BigDecimal("0");
-		BigDecimal bTotalDiaDesc = new BigDecimal("0");
-		BigDecimal bTotalDiaLiq = new BigDecimal("0");
-
-		BigDecimal bTotalVal = new BigDecimal("0");
-		BigDecimal bTotalDesc = new BigDecimal("0");
-		BigDecimal bTotalLiq = new BigDecimal("0");
-
-		String sDataini = "";
-		String sDatafim = "";
-		String sDtemitvenda = "";
-
-		sDataini = txtDataini.getVlrString();
-		sDatafim = txtDatafim.getVlrString();
 
 		if (rgFormato.getVlrString().equals("D")) {
 			sSQL = "SELECT V.DTEMITVENDA,V.CODTIPOMOV,V.CODVENDA,V.DOCVENDA,V.SERIE,"
@@ -223,7 +212,6 @@ public class FRResumoDiario extends FRelatorio {
 					+ " AND V.CODEMP=? AND V.CODFILIAL=?"
 					+ sWhere + sWhere1 + sWhere2 + sWhere3 
 					+ " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
-			//				  " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
 
 		} else if (rgFormato.getVlrString().equals("R")) {
 			sSQL = "SELECT V.DTEMITVENDA,SUM(V.VLRLIQVENDA) FROM VDVENDA V,"
@@ -238,10 +226,6 @@ public class FRResumoDiario extends FRelatorio {
 
 		}
 
-		System.out.println(sSQL);
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setDate(1, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
@@ -249,66 +233,62 @@ public class FRResumoDiario extends FRelatorio {
 			ps.setInt(3, Aplicativo.iCodEmp);
 			ps.setInt(4, ListaCampos.getMasterFilial("VDVENDA"));
 			rs = ps.executeQuery();
-			imp.limpaPags();
 
 			if (rgFormato.getVlrString().equals("D")) {
-				
+
+				imp.montaCab();
 				imp.setTitulo("Resumo Diário de Vendas");
-				imp.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+ sDataini + " Até: " + sDatafim);
-				if (sCab.length() > 0) {
+				imp.addSubTitulo("RESUMO DIARIO DE VENDAS   -   PERIODO DE :"+ txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString());
+				if (sCab.length() > 0)
 					imp.addSubTitulo(sCab);
-				}
+				imp.limpaPags();
 
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "+"+ Funcoes.replicate("-", 133) + "+");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
 						imp.incPags();
 						imp.eject();
 					}
-
-					
-					if (imp.pRow() == 0) {
-						imp.montaCab();						
+					if (imp.pRow() == 0) {				
 						imp.impCab(136, true);
-
-						imp.say(imp.pRow() + 0, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 135, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "| Dt. Emissao");
-						imp.say(imp.pRow() + 0, 17, "NF./Ped.");
-						imp.say(imp.pRow() + 0, 31, "Cliente");
-						imp.say(imp.pRow() + 0, 85, "|    Valor   Desconto "+ "  Liquido    F.Pagto.");
-						imp.say(imp.pRow() + 0, 135, "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-					}
-					if ((!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda))& (bFimDia)) {
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, 58, "Totais do Dia-> "+ sDtemitvenda+ " |"+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDiaVal)
-								+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDiaDesc)+ Funcoes.strDecimalToStrCurrency(11, 2, ""+ bTotalDiaLiq));
+						imp.say(imp.pRow(), 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|");
 						imp.say(imp.pRow(), 135, "|");
 						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+						imp.say(imp.pRow(), 0, "| Dt. Emissao");
+						imp.say(imp.pRow(), 17, "NF./Ped.");
+						imp.say(imp.pRow(), 31, "Cliente");
+						imp.say(imp.pRow(), 85, "|    Valor   Desconto "+ "  Liquido    F.Pagto.");
+						imp.say(imp.pRow(), 135, "|");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					}
+					if ((!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda))& (bFimDia)) {
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|");
+						imp.say(imp.pRow(), 58, "Totais do Dia-> "+ sDtemitvenda+ " |"+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDiaVal)
+								+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDiaDesc)+ Funcoes.strDecimalToStrCurrency(11, 2, ""+ bTotalDiaLiq));
+						imp.say(imp.pRow(), 135, "|");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
 						bTotalDiaVal = new BigDecimal("0");
 						bTotalDiaDesc = new BigDecimal("0");
 						bTotalDiaLiq = new BigDecimal("0");
 						bFimDia = false;
 					}
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
 					if (!Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")).equals(sDtemitvenda)) {
-						imp.say(imp.pRow() + 0, 3, Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")));
+						imp.say(imp.pRow(), 3, Funcoes.sqlDateToStrDate(rs.getDate("dtemitvenda")));
 					}
 
-					imp.say(imp.pRow() + 0, 17, rs.getString("StatusVenda").substring(0, 1).equals("P") ? "P-"+ Funcoes.copy(rs.getString("codvenda"), 0, 6): "V-"+ Funcoes.copy(rs.getString("docvenda"), 0,6));
-					imp.say(imp.pRow() + 0, 31, Funcoes.copy(rs.getString("codcli"), 0, 8)+ "-"+ Funcoes.copy(rs.getString("razcli"), 0, 45)+ "|"+ Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("vlrprodvenda"))
+					imp.say(imp.pRow(), 17, rs.getString("StatusVenda").substring(0, 1).equals("P") ? "P-"+ Funcoes.copy(rs.getString("codvenda"), 0, 6): "V-"+ Funcoes.copy(rs.getString("docvenda"), 0,6));
+					imp.say(imp.pRow(), 31, Funcoes.copy(rs.getString("codcli"), 0, 8)+ "-"+ Funcoes.copy(rs.getString("razcli"), 0, 45)+ "|"+ Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("vlrprodvenda"))
 							+ Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("vlrdescitvenda"))+ Funcoes.strDecimalToStrCurrency(11, 2, rs.getString("vlrliqvenda"))+ "  "+ Funcoes.copy(rs.getString("descplanopag"), 0, 16)+ "|");
 					if (rs.getString("VlrProdVenda") != null) {
 						bTotalDiaVal = bTotalDiaVal.add(new BigDecimal(rs.getString("VlrProdVenda")));
@@ -331,67 +311,65 @@ public class FRResumoDiario extends FRelatorio {
 				}
 
 				if (bFimDia) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|");
-					imp.say(imp.pRow() + 0, 58, "Totais do Dia-> "+ sDtemitvenda+ " |"
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 58, "Totais do Dia-> "+ sDtemitvenda+ " |"
 							+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDiaVal)
 							+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDiaDesc)
 							+ Funcoes.strDecimalToStrCurrency(11, 2, ""+ bTotalDiaLiq));
 					imp.say(imp.pRow(), 135, "|");
 				}
 
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
 				imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=", 133) + "|");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|");
-				imp.say(imp.pRow() + 0, 69, "Totais Geral    |"+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalVal)
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "|");
+				imp.say(imp.pRow(), 69, "Totais Geral    |"+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalVal)
 								+ Funcoes.strDecimalToStrCurrency(10, 2, ""+ bTotalDesc)
 								+ Funcoes.strDecimalToStrCurrency(11, 2, ""+ bTotalLiq));
 				imp.say(imp.pRow(), 135, "|");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133)+ "|");
+				imp.say(imp.pRow() + 1, 0, imp.comprimido());
+				imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=", 133)+ "|");
 
 			} else if (rgFormato.getVlrString().equals("R")) {
 				iLinha = 1;
 				iCol = 0;
-				
+
+				imp.montaCab();		
 				imp.setTitulo("Resumo Diário de Vendas");
-				imp.addSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+ sDataini + " Até: " + sDatafim);
+				imp.addSubTitulo("RESUMO DE TOTAL DE VENDAS - PERIODO DE :"+ txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString());
 				if (sCab.length() > 0) {
 					imp.addSubTitulo(sCab);
 				}
 				
 				while (rs.next()) {
 					if (imp.pRow() >= (linPag - 1)) {
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"+ Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "+"+ Funcoes.replicate("-", 133) + "+");
 						imp.incPags();
 						imp.eject();
 					}
-					if (imp.pRow() == 0) {
-						imp.montaCab();
-						
+					if (imp.pRow() == 0) {						
 						imp.impCab(136, true);
-
-						imp.say(imp.pRow() + 0, 0,"|" + Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|  Data");
-						imp.say(imp.pRow() + 0, 14, "        Valor");
-						imp.say(imp.pRow() + 0, 35, "|  Data");
-						imp.say(imp.pRow() + 0, 49, "        Valor");
-						imp.say(imp.pRow() + 0, 70, "|  Data");
-						imp.say(imp.pRow() + 0, 84, "        Valor");
-						imp.say(imp.pRow() + 0, 105, "|  Data");
-						imp.say(imp.pRow() + 0, 119, "       Valor");
-						imp.say(imp.pRow() + 0, 135, "|");
-						imp.say(imp.pRow() + 1, 0, "|"+ Funcoes.replicate("-", 133) + "|");
-
+						imp.say(imp.pRow(), 0,"|" + Funcoes.replicate("-", 133) + "|");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|  Data");
+						imp.say(imp.pRow(), 14, "        Valor");
+						imp.say(imp.pRow(), 35, "|  Data");
+						imp.say(imp.pRow(), 49, "        Valor");
+						imp.say(imp.pRow(), 70, "|  Data");
+						imp.say(imp.pRow(), 84, "        Valor");
+						imp.say(imp.pRow(), 105, "|  Data");
+						imp.say(imp.pRow(), 119, "       Valor");
+						imp.say(imp.pRow(), 135, "|");
+						imp.say(imp.pRow() + 1, 0, imp.comprimido());
+						imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
 					}
 
 					imp.say(imp.pRow() + iLinha, iCol, "|  "+ Funcoes.sqlDateToStrDate(rs.getDate(1)));
-					imp.say(imp.pRow() + 0, iCol + 14, " "+ Funcoes.strDecimalToStrCurrency(15, 2, ""+ rs.getString(2)));
+					imp.say(imp.pRow(), iCol + 14, " "+ Funcoes.strDecimalToStrCurrency(15, 2, ""+ rs.getString(2)));
 
 					if (iCol == 0) {
 						iLinha = 0;
@@ -410,38 +388,48 @@ public class FRResumoDiario extends FRelatorio {
 						bTotalDiaLiq = bTotalDiaLiq.add(new BigDecimal(rs.getString(2)));
 						bTotalLiq = bTotalLiq.add(new BigDecimal(rs.getString(2)));
 					}
-
 				}
-
-				if ((iCol < 105) && (iLinha == 0)) {
-					imp.say(imp.pRow() + 0, 135, "|");
-				}
+				if ((iCol < 105) && (iLinha == 0))
+					imp.say(imp.pRow(), 135, "|");
 
 			}
 
-			imp.say(imp.pRow() + 1, 0, "+" + Funcoes.replicate("=", 133) + "+");
-			imp.say(imp.pRow() + 1, 0, "|");
-			imp.say(imp.pRow() + 0, 85, "| Total Geral do Período   | "+ Funcoes.strDecimalToStrCurrency(11, 2, "" + bTotalLiq));
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.say(imp.pRow() + 1, 0, imp.comprimido());
+			imp.say(imp.pRow(), 0, "|");
+			imp.say(imp.pRow(), 85, "| Total Geral do Período   | "+ Funcoes.strDecimalToStrCurrency(11, 2, "" + bTotalLiq));
 			imp.say(imp.pRow(), 135, "|");
 			imp.say(imp.pRow() + 1, 0, "+" + Funcoes.replicate("=", 133) + "+");
 
 			imp.eject();
-
 			imp.fechaGravacao();
-
-			//      rs.close();
-			//      ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-			//      dl.dispose();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro consulta tabela de vendas!\n"+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			sWhere = null;
+			sWhere1 = null;
+			sWhere2 = null;
+			sWhere3 = null;
+			sCab = null;
+			sDtemitvenda = null;
+			bTotalDiaVal = null;
+			bTotalDiaDesc = null;
+			bTotalDiaLiq = null;
+			bTotalVal = null;
+			bTotalDesc = null;
+			bTotalLiq = null;
+			System.gc();
 		}
 
-		if (bVisualizar) {
+		if (bVisualizar) 
 			imp.preview(this);
-		} else {
+		else 
 			imp.print();
-		}
 	}
 }

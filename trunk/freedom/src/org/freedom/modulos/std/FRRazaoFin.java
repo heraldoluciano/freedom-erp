@@ -47,29 +47,18 @@ import org.freedom.telas.FRelatorio;
 
 public class FRRazaoFin extends FRelatorio {
 	private static final long serialVersionUID = 1L;
-
-	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,
-			10, 0);
-
-	private JTextFieldFK txtDescPlan = new JTextFieldFK(
-			JTextFieldPad.TP_STRING, 40, 0);
-
-	private JTextFieldPad txtCodPlan = new JTextFieldPad(
-			JTextFieldPad.TP_STRING, 13, 0);
-
+	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldFK txtDescPlan = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldPad txtCodPlan = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
 	private ListaCampos lcPlan = new ListaCampos(this);
 
 	public FRRazaoFin() {
 		setTitulo("Relatório razão financeiro");
 		setAtribos(80, 80, 330, 180);
 
-		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan",
-				ListaCampos.DB_PK, false));
-		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan",
-				"Descrição do planejamento", ListaCampos.DB_SI, false));
+		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan",ListaCampos.DB_PK, false));
+		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descrição do planejamento", ListaCampos.DB_SI, false));
 		lcPlan.montaSql(false, "PLANEJAMENTO", "FN");
 		lcPlan.setWhereAdic("NIVELPLAN=6");
 		lcPlan.setReadOnly(true);
@@ -89,8 +78,7 @@ public class FRRazaoFin extends FRelatorio {
 
 		Calendar cPeriodo = Calendar.getInstance();
 		txtDatafim.setVlrDate(cPeriodo.getTime());
-		cPeriodo.set(Calendar.DAY_OF_MONTH,
-				cPeriodo.get(Calendar.DAY_OF_MONTH) - 30);
+		cPeriodo.set(Calendar.DAY_OF_MONTH,cPeriodo.get(Calendar.DAY_OF_MONTH) - 30);
 		txtDataini.setVlrDate(cPeriodo.getTime());
 		txtCodPlan.setRequerido(true);
 	}
@@ -103,115 +91,117 @@ public class FRRazaoFin extends FRelatorio {
 	private double buscaSaldo() {
 		double dRet = 0.00;
 
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "SELECT SL.CODPLAN, SALDOSL FROM FNSALDOLANCA SL "
 				+ "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODEMPPN=? AND SL.CODFILIALPN=? AND SL.CODPLAN=? AND SL.DATASL="
 				+ "(SELECT MAX(SL2.DATASL) FROM FNSALDOLANCA SL2 WHERE SL2.CODPLAN=SL.CODPLAN AND SL2.DATASL<?)";
 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
 			int iParam = 1;
 			ps = con.prepareStatement(sSQL);
-
-			//	 Parametros da subselect to max
-
-			//	 Parametros da select master
-
 			ps.setInt(iParam++, Aplicativo.iCodEmp);
 			ps.setInt(iParam++, Aplicativo.iCodFilial);
 			ps.setInt(iParam++, Aplicativo.iCodEmp);
 			ps.setInt(iParam++, lcPlan.getCodFilial());
 			ps.setString(iParam++, txtCodPlan.getVlrString());
-
-			ps
-					.setDate(iParam++, Funcoes.dateToSQLDate(txtDataini
-							.getVlrDate()));
-
+			ps.setDate(iParam++, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
 			rs = ps.executeQuery();
 
 			if (rs.next())
-				dRet = Funcoes
-						.strCurrencyToDouble(rs.getString("SALDOSL") == null ? "0,00"
-								: rs.getString("SALDOSL"));
+				dRet = Funcoes.strCurrencyToDouble(rs.getString("SALDOSL") == null ? "0,00": rs.getString("SALDOSL"));
+			
 			rs.close();
 			ps.close();
+			
+			if(!con.getAutoCommit())
+				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar saldo!\n"
-					+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this, "Erro ao buscar saldo!\n" + err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 		return dRet;
 	}
 
 	public void imprimir(boolean bVisualizar) {
 		if (txtDatafim.getVlrDate().before(txtDataini.getVlrDate())) {
-			Funcoes.mensagemInforma(this,
-					"Data final maior que a data inicial!");
+			Funcoes.mensagemInforma(this, "Data final maior que a data inicial!");
 			return;
 		}
-		ImprimeOS imp = new ImprimeOS("", con);
-		int linPag = imp.verifLinPag() - 1;
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		String sCodPlan = txtCodPlan.getVlrString().trim();
 		String sConta = "";
+		String sSaldoAnt = "";
 		BigDecimal bVlrSubLanca = new BigDecimal("0");
 		BigDecimal bTotal = new BigDecimal("0");
+		ImprimeOS imp = null;
+		int linPag = 0;
 
 		if (sCodPlan.equals("")) {
 			Funcoes.mensagemInforma(this, "Informe um código de conta !");
 			return;
 		}
 
-		String sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA "
-				+ "FROM FNSUBLANCA SL WHERE SL.CODEMP=? AND "
-				+ "SL.CODFILIAL=? AND SL.CODPLAN=? AND SL.CODEMPPN=? AND CODFILIALPN=? AND "
-				+ "SL.DATASUBLANCA BETWEEN ? AND ? ORDER BY DATASUBLANCA";
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
-			int iParam = 1;
-			ps = con.prepareStatement(sSQL);
-
-			ps.setInt(iParam++, Aplicativo.iCodEmp);
-			ps.setInt(iParam++, Aplicativo.iCodFilial);
-			ps.setString(iParam++, txtCodPlan.getVlrString());
-			ps.setInt(iParam++, Aplicativo.iCodEmp);
-			ps.setInt(iParam++, lcPlan.getCodFilial());
-			ps
-					.setDate(iParam++, Funcoes.dateToSQLDate(txtDataini
-							.getVlrDate()));
-			ps
-					.setDate(iParam++, Funcoes.dateToSQLDate(txtDatafim
-							.getVlrDate()));
-
-			rs = ps.executeQuery();
-			imp.limpaPags();
-
+			
+			imp = new ImprimeOS("", con);
+			linPag = imp.verifLinPag() - 1;
+			imp.montaCab();		
 			imp.setTitulo("Razão financeiro");
 			imp.addSubTitulo("RELATORIO RAZÃO FINANCEIRO");
 			if (!(sCodPlan.trim().equals(""))) {
-				sConta = "CONTA: " + sCodPlan + " - "
-						+ txtDescPlan.getVlrString();
+				sConta = "CONTA: " + sCodPlan + " - " + txtDescPlan.getVlrString();
 				imp.addSubTitulo(sConta);
 			}
+			imp.limpaPags();			
+
+			sSaldoAnt = Funcoes.strDecimalToStrCurrency(13, 2, buscaSaldo() + "");
+			
+			sSQL = "SELECT SL.DATASUBLANCA,SL.CODLANCA,SL.HISTSUBLANCA,SL.VLRSUBLANCA "
+				 + "FROM FNSUBLANCA SL "
+				 + "WHERE SL.CODEMP=? AND SL.CODFILIAL=? AND SL.CODPLAN=? "
+				 + "AND SL.CODEMPPN=? AND CODFILIALPN=? "
+				 + "AND SL.DATASUBLANCA BETWEEN ? AND ? "
+				 + "ORDER BY SL.DATASUBLANCA";
+			
+			ps = con.prepareStatement(sSQL);
+
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			ps.setString(3, txtCodPlan.getVlrString());
+			ps.setInt(4, Aplicativo.iCodEmp);
+			ps.setInt(5, lcPlan.getCodFilial());
+			ps.setDate(6, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+			ps.setDate(7, Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+			rs = ps.executeQuery();
 			
 			while (rs.next()) {
-				if (imp.pRow() == 0) {
-					imp.montaCab();					
-					imp.impCab(136, true);
-
-					String sSaldoAnt = Funcoes.strDecimalToStrCurrency(13, 2,
-							buscaSaldo() + "");
-
-					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "|");
-					imp.say(imp.pRow() + 0, 104, "SALDO ANTERIOR:");
-					imp.say(imp.pRow() + 0, 118, "" + sSaldoAnt);
+				if (imp.pRow() >= linPag) {
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-", 133) + "+");
+					imp.eject();
+					imp.incPags();	
+				}
+				if (imp.pRow() == 0) {			
+					imp.impCab(136, true);				
+					imp.say(imp.pRow(), 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|");
+					imp.say(imp.pRow(), 104, "SALDO ANTERIOR:");
+					imp.say(imp.pRow(), 118, "" + sSaldoAnt);
 					imp.say(imp.pRow(), 135, "|");
-					imp.say(imp.pRow() + 1, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(imp.pRow() + 1, 0, imp.comprimido());
 					imp.say(imp.pRow(), 0, "| Data.");
 					imp.say(imp.pRow(), 23, "| Cód.Lanc.");
 					imp.say(imp.pRow(), 36, "| Histórico");
@@ -220,13 +210,11 @@ public class FRRazaoFin extends FRelatorio {
 					imp.say(imp.pRow(), 119, "| Saldo ");
 					imp.say(imp.pRow(), 135, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133)
-							+ "|");
+					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
 				}
 
 				imp.say(imp.pRow() + 1, 1, "|");
-				imp.say(imp.pRow() + 0, 3, Funcoes.dateToStrDate(rs
-						.getDate("DATASUBLANCA")));
+				imp.say(imp.pRow() + 0, 3, Funcoes.dateToStrDate(rs.getDate("DATASUBLANCA")));
 				imp.say(imp.pRow() + 0, 23, "|");
 				imp.say(imp.pRow(), 25, rs.getString("CODLANCA"));
 				imp.say(imp.pRow() + 0, 36, "|");
@@ -237,32 +225,19 @@ public class FRRazaoFin extends FRelatorio {
 
 				if (bVlrSubLanca.doubleValue() < 0) {
 					imp.say(imp.pRow() + 0, 89, "|");
-					imp.say(imp.pRow(), 89, Funcoes.strDecimalToStrCurrency(13,
-							2, (bVlrSubLanca.doubleValue() * -1) + ""));
+					imp.say(imp.pRow(), 89, Funcoes.strDecimalToStrCurrency(13,2, (bVlrSubLanca.doubleValue() * -1) + ""));
 					imp.say(imp.pRow() + 0, 104, "|");
 					imp.say(imp.pRow() + 0, 119, "|");
 				} else {
 					imp.say(imp.pRow() + 0, 89, "|");
 					imp.say(imp.pRow() + 0, 104, "|");
-					imp.say(imp.pRow(), 104, Funcoes.strDecimalToStrCurrency(
-							13, 2, bVlrSubLanca.doubleValue() + ""));
+					imp.say(imp.pRow(), 104, Funcoes.strDecimalToStrCurrency( 13, 2, bVlrSubLanca.doubleValue() + ""));
 					imp.say(imp.pRow() + 0, 119, "|");
 				}
 
-				imp.say(imp.pRow() + 0, 121, ""
-						+ Funcoes.strDecimalToStrCurrency(12, 2, "" + bTotal));
+				imp.say(imp.pRow() + 0, 121, "" + Funcoes.strDecimalToStrCurrency(12, 2, "" + bTotal));
 				imp.say(imp.pRow() + 0, 135, "|");
 			
-
-				if (imp.pRow() == (linPag - 1)) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("-", 133)
-							+ "+");
-					imp.eject();
-					imp.incPags();
-	
-				}
-
 			}
 			
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -271,8 +246,7 @@ public class FRRazaoFin extends FRelatorio {
 			imp.say(imp.pRow() + 0, 0, "|");
 			imp.say(imp.pRow() + 0, 104, "|");
 			imp.say(imp.pRow() + 0, 106, "SALDO");
-			imp.say(imp.pRow() + 0, 119, "| "
-					+ Funcoes.strDecimalToStrCurrency(12, 2, "" + bTotal));
+			imp.say(imp.pRow() + 0, 119, "| " + Funcoes.strDecimalToStrCurrency(12, 2, "" + bTotal));
 			imp.say(imp.pRow() + 0, 135, "|");
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
@@ -285,14 +259,22 @@ public class FRRazaoFin extends FRelatorio {
 				con.commit();
 
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro na consulta de sublançamentos!\n"
-					+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this, "Erro na consulta de sublançamentos!\n" + err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+			sCodPlan = null;
+			sConta = null;
+			sSaldoAnt = null;
+			bVlrSubLanca = null;
+			bTotal = null;
+			System.gc();
 		}
 
-		if (bVisualizar) {
+		if (bVisualizar)
 			imp.preview(this);
-		} else {
+		else 
 			imp.print();
-		}
 	}
 }
