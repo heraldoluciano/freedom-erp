@@ -23,12 +23,15 @@ import java.sql.ResultSet;
 
 import org.freedom.componentes.ImprimeOS;
 public class Leiaute extends Object {
-  public boolean bEntrada = false; 
-  public Leiaute() { }
-  public boolean imprimir(ResultSet rs,ResultSet rsRec,ResultSet rsInfoAdic,ImprimeOS imp) {
-    return imprimir(rs,rsRec,imp);
-  }
-  public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
-  	 return false;
-  }
+	public boolean bEntrada = false; 
+	
+	public Leiaute() { }
+	
+	public boolean imprimir(ResultSet rs,ResultSet rsRec,ResultSet rsInfoAdic,ImprimeOS imp) {
+		return imprimir(rs,rsRec,imp);
+	}
+	
+	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
+		return false;
+	}
 }

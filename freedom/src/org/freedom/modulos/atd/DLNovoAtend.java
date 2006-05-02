@@ -54,7 +54,6 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.DLPrinterJob;
 import org.freedom.telas.FFDialogo;
 
-
 public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
@@ -77,7 +76,7 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 	private JButton btMedida = new JButton(Icone.novo("btMedida.gif"));
 	private String sPrefs[] = null;
 	private int iDoc = 0;
-//	boolean bImp = false; ///Verifica se jah foi impresso a ficha de levantamento.
+	
 	public DLNovoAtend(int iCodConv,Component cOrig) {
 		super(cOrig);
 		setTitulo("Novo atendimento");
@@ -98,51 +97,55 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 		txtCodAtend.setTabelaExterna(lcAtend);
 		txtCodAtend.setFK(true);
 		txtCodAtend.setNomeCampo("CodAtend");
-	
+		
 		btMedida.setPreferredSize(new Dimension(30,30));	
 				
-	    pnCab.setPreferredSize(new Dimension(500,60));
+		pnCab.setPreferredSize(new Dimension(500,60));
 		pnCab.add(lbImg);
-	    c.add(pnCab,BorderLayout.NORTH);
+		c.add(pnCab,BorderLayout.NORTH);
 		pnBotoes.setPreferredSize(new Dimension(35,60));
 		pnBotoes.add(btMedida,BorderLayout.NORTH);
-	    pnBotoes.setToolTipText("Ficha de medidas");
-	    c.add(pnBotoes,BorderLayout.EAST);
-	    
-		adic(new JLabelPad("Código e nome do conveniado"),7,5,200,20);
+		pnBotoes.setToolTipText("Ficha de medidas");
+		c.add(pnBotoes,BorderLayout.EAST);
+		
+		adic(new JLabelPad("Cód.conv."),7,5,200,20);
 		adic(txtCodConv,7,25,80,20);
+		adic(new JLabelPad("Nome do conveniado"),90,5,200,20);
 		adic(txtNomeConv,90,25,197,20);
 		adic(new JLabelPad("Tipo de atendimento"),290,5,150,20);
 		adic(cbTipo,290,25,150,20);
-		adic(new JLabelPad("Código e nome do atendente"),7,45,200,20);
+		adic(new JLabelPad("Cód.atd"),7,45,200,20);
 		adic(txtCodAtend,7,65,80,20);
+		adic(new JLabelPad("Nome do atendente"),90,45,200,20);
 		adic(txtNomeAtend,90,65,197,20);
 		adic(new JLabelPad("Setor"),290,45,150,20);
 		adic(cbSetor,290,65,150,20);
 		
 		JPanelPad pnLbAtend = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
-		pnLbAtend.add(new JLabelPad(" Atendimento"));
+		pnLbAtend.add(new JLabelPad("   Atendimento"));
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
-		
+			
 		btMedida.addActionListener(this);
 		cbTipo.addComboBoxListener(this);
-		
+			
 		adic(pnLbAtend,20,90,90,20);
 		adic(lbLinha,7,100,433,2);
-		adic(spnDesc,7,115,433,220);
-		
+		adic(spnDesc,7,115,433,200);
+			
 		txtCodConv.setVlrInteger(new Integer(iCodConv));
-		txtCodConv.setAtivo(false);
-				
+		txtCodConv.setAtivo(false);			
 	}
+	
 	private void montaComboTipo() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "SELECT CODTPATENDO,DESCTPATENDO FROM ATTIPOATENDO WHERE CODEMP=? AND CODFILIAL=?";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("ATTIPOATENDO"));
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			vValsTipo.clear();
 			vLabsTipo.clear();
 			vValsTipo.addElement("");
@@ -154,25 +157,33 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			cbTipo.setItens(vLabsTipo,vValsTipo);
 			rs.close();
 			ps.close();
-		}
-		catch(SQLException err) {
+			if(!con.getAutoCommit())
+				con.commit();
+		} catch(SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar os tipos de atendimento!\n"+err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
 		}
 	}
+	
 	private void montaComboSetor() {
 		Integer iTipo = cbTipo.getVlrInteger();
 		if ( (iTipo == null) || (iTipo.intValue() == 0) ) 
 			return; 
+			
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		String sSQL = "SELECT S.CODSETAT,S.DESCSETAT FROM ATSETOR S, ATTIPOATENDOSETOR TS" +
-			           " WHERE S.CODEMP=TS.CODEMPST AND S.CODFILIAL=TS.CODFILIAL AND S.CODSETAT=TS.CODSETAT"+
-			           " AND TS.CODEMP=? AND TS.CODFILIAL=? AND TS.CODTPATENDO=?";
+					 " WHERE S.CODEMP=TS.CODEMPST AND S.CODFILIAL=TS.CODFILIAL AND S.CODSETAT=TS.CODSETAT"+
+					 " AND TS.CODEMP=? AND TS.CODFILIAL=? AND TS.CODTPATENDO=?";
 			           
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("ATTIPOATENDO"));
 			ps.setInt(3,iTipo.intValue());
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			vValsSetor.clear();
 			vLabsSetor.clear();
 			vValsTipo.addElement("");
@@ -184,18 +195,103 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 			cbSetor.setItens(vLabsSetor,vValsSetor);
 			rs.close();
 			ps.close();
-		}
-		catch(SQLException err) {
+			if(!con.getAutoCommit())
+				con.commit();
+		} catch(SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao carregar os setores!\n"+err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
 		}
-
+		
 		if (vValsSetor.size() <= 0)
 			Funcoes.mensagemInforma(this,"Não existe setor cadastrado para este tipo de atendimento.");
 		else if (vValsSetor.size() == 1)
 			cbSetor.setEnabled(false);
 		else
-		    cbSetor.setEnabled(true);
+			cbSetor.setEnabled(true);
 	}
+	
+	private String[] getPref() {
+		String sRets[] = {"",""};
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "SELECT CODTPATENDO,CLASSMEDIDA FROM SGPREFERE2 WHERE CODEMP=? AND CODFILIAL=?";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				sRets[0] = rs.getString("CodTpAtendo") != null ? rs.getString("CodTpAtendo") : "";
+				sRets[1] = rs.getString("ClassMedida");
+			}
+			rs.close();
+			ps.close();
+			if(!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao veficar levantamento. ");
+		} finally {
+			ps = null;
+			rs = null;
+		}
+		return sRets;
+	}
+	
+	private int getCodLev() {
+		int iRet = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "SELECT ISEQ FROM SPGERANUM(?,?,?)";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setString(3,"LV");
+			rs = ps.executeQuery();
+			if (rs.next())
+				iRet = rs.getInt(1);
+			
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,"Erro ao buscar novo código para levantamento.\n"+err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+		}
+		return iRet;
+	}
+	
+	public String[] getValores() {
+		String[] sVal = new String[5];
+		sVal[0] = ""+cbTipo.getVlrInteger();
+		sVal[1] = txtCodAtend.getVlrString();
+		sVal[2] = ""+cbSetor.getVlrInteger();
+		sVal[3] = txaDescAtend.getVlrString();
+		sVal[4] = ""+iDoc;
+		return sVal;
+	}
+	
+	public void setConexao(Connection cn) {
+		super.setConexao(cn);
+		montaComboTipo();
+		montaComboSetor();
+		lcAtend.setConexao(cn);
+		lcConv.setConexao(cn);
+		lcConv.carregaDados();
+		sPrefs = getPref();
+	}
+
+	public void valorAlterado(JComboBoxEvent evt) {
+		if (evt.getComboBoxPad() == cbTipo) {
+			montaComboSetor();
+		}
+	}
+
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btOK) {
 			if (cbTipo.getVlrInteger().equals("")) {
@@ -214,10 +310,6 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 				Funcoes.mensagemInforma(this,"Não foi digitado nenhum procedimento!");
 				return;
 			}
-/*			else if (sPrefs[0].equals(cbTipo.getVlrString()) && !bImp) {
-				Funcoes.mensagemInforma(this,"Não foi impresso a ficha de levantamento!");
-				return;
-			} */
 		}
 		else if (evt.getSource() == btMedida) {
 			if (sPrefs[1] == null) {
@@ -225,91 +317,21 @@ public class DLNovoAtend extends FFDialogo implements JComboBoxListener {
 				return;
 			}
 			try {
-			  iDoc = getCodLev();
-			  Vector vParam = new Vector();
-			  LeiauteGR lei = (LeiauteGR)Class.forName("org.freedom.layout."+sPrefs[1].trim()).newInstance();      
-			  lei.setConexao(con);
-			  vParam.addElement(txtCodConv.getVlrInteger());
-			  vParam.addElement(txtNomeAtend.getVlrString());
-			  vParam.addElement(""+iDoc);
-			  lei.setParam(vParam);
-			  DLPrinterJob dl = new DLPrinterJob(lei,this);
-			  //bImp = dl.OK;
-			  dl.dispose();
+				iDoc = getCodLev();
+				Vector vParam = new Vector();
+				LeiauteGR lei = (LeiauteGR)Class.forName("org.freedom.layout."+sPrefs[1].trim()).newInstance();      
+				lei.setConexao(con);
+				vParam.addElement(txtCodConv.getVlrInteger());
+				vParam.addElement(txtNomeAtend.getVlrString());
+				vParam.addElement(""+iDoc);
+				lei.setParam(vParam);
+				DLPrinterJob dl = new DLPrinterJob(lei,this);
+				dl.dispose();
+			} catch (Exception err) {
+				Funcoes.mensagemInforma(this,"Não foi possível carregar org.freedom.layout de levantamento!\n"+err.getMessage());
+				err.printStackTrace();
 			}
-			catch (Exception err) {
-			  Funcoes.mensagemInforma(this,"Não foi possível carregar org.freedom.layout de levantamento!\n"+err.getMessage());
-			  err.printStackTrace();
-			}
-		}	
-				
-		super.actionPerformed(evt);
-		
-		
-	}
-    private String[] verifPref() {
-    	String sRets[] = {"",""};
-    	String sSQL = "SELECT CODTPATENDO,CLASSMEDIDA FROM SGPREFERE2 WHERE CODEMP=? AND CODFILIAL=?";
-    	try {
-          PreparedStatement ps = con.prepareStatement(sSQL);
-          ps.setInt(1,Aplicativo.iCodEmp);
-		  ps.setInt(2,Aplicativo.iCodFilial);
-          ResultSet rs = ps.executeQuery();
-          if (rs.next()) {
-			  sRets[0] = rs.getString("CodTpAtendo") != null ? rs.getString("CodTpAtendo") : "";
-        	  sRets[1] = rs.getString("ClassMedida");
-          }
-          rs.close();
-          ps.close();
-    	}
-    	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao veficar levantamento. ");
-    	}
-    	return sRets;
-    }
-    private int getCodLev() {
-    	int iRet = 0;
-    	String sSQL = "SELECT ISEQ FROM SPGERANUM(?,?,?)";
-    	try {
-    		PreparedStatement ps = con.prepareStatement(sSQL);
-    		ps.setInt(1,Aplicativo.iCodEmp);
-    		ps.setInt(2,Aplicativo.iCodFilial);
-    		ps.setString(3,"LV");
-    		ResultSet rs = ps.executeQuery();
-    		if (rs.next()) {
-    			iRet = rs.getInt(1);
-    		}
-    		rs.close();
-    		ps.close();
-    		if (!con.getAutoCommit())
-    			con.commit();
-    	}
-    	catch (SQLException err) {
-    		Funcoes.mensagemErro(this,"Erro ao buscar novo código para levantamento.\n"+err.getMessage(),true,con,err);
-    	}
-    	return iRet;
-    }
-    public void valorAlterado(JComboBoxEvent evt) {
-      if (evt.getComboBoxPad() == cbTipo) {
-      	montaComboSetor();
-      }
-    }
-	public String[] getValores() {
-		String[] sVal = new String[5];
-		sVal[0] = ""+cbTipo.getVlrInteger();
-		sVal[1] = txtCodAtend.getVlrString();
-		sVal[2] = ""+cbSetor.getVlrInteger();
-		sVal[3] = txaDescAtend.getVlrString();
-		sVal[4] = ""+iDoc;
-		return sVal;
-	}
-	public void setConexao(Connection cn) {
-		super.setConexao(cn);
-		montaComboTipo();
-		montaComboSetor();
-		lcAtend.setConexao(cn);
-		lcConv.setConexao(cn);
-		lcConv.carregaDados();
-		sPrefs = verifPref();
+		}		
+		super.actionPerformed(evt);		
 	}
 }
