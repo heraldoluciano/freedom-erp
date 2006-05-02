@@ -413,8 +413,8 @@ public class FRListaSus extends FTabDados implements PostListener, CheckBoxListe
     adic(cbDepen, 220, 170, 125, 20);
     adic(cbIndAjudTecn, 220, 190, 600, 20);
     adic(cbObito, 220, 210, 600, 20);
-    txtFoneEnc.setMascara(110);
-    txtFaxEnc.setMascara(111);
+    txtFoneEnc.setMascara(JTextFieldPad.MC_FONEDDD);
+    txtFaxEnc.setMascara(JTextFieldPad.MC_FONE);
     lcCampos.addPostListener(this);
     lcCampos.setQueryInsert(false);
     cbLimpaCheck.addCheckBoxListener(this);

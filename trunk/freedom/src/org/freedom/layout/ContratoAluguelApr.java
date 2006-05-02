@@ -125,7 +125,7 @@ public class ContratoAluguelApr extends LeiauteGR {
 			sTexto += rs.getString("NomeConv").trim().toUpperCase()+
 					" residente a rua "+(rs.getString("EndConv")==null?"":rs.getString("EndConv").trim())+
 					" telefone "+(rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
-					(rs.getString("FoneConv") != null ? Funcoes.setMascara(rs.getString("FoneConv").trim(),"####-####") : "")+
+					(rs.getString("FoneConv") != null ? Funcoes.setMascara(rs.getString("FoneConv").trim(),"(####)####-####") : "")+
 					" CPF: "+(rs.getString("CPFCONV") !=null ? rs.getString("CPFCONV").trim() : "");
 			sTexto += " daqui por diante denominado(a) LOCADOR, acertando os seguintes termos:";
 		

@@ -288,12 +288,11 @@ public class NFSaida extends NF {
 			if (!con.getAutoCommit())
 				con.commit();
 			frete.setRow(-1);
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
+			e.printStackTrace();
 			Funcoes.mensagemErro(null,"Erro na NFSaida   "+cont+"\n"+e.getMessage());
 			retorno = false;
-		}
-		finally {
+		} finally {
 			rs = null;
 			ps = null;
 		}

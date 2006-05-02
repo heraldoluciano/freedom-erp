@@ -233,13 +233,13 @@ public class LaudoAprSus extends LeiauteGR {
 		drawRetangulo(370,165,45,24);
 		drawTexto("DDD",374,173);
 		setFonte(fnConteudo);
-		drawTexto(rs.getString("FONECONV") !=null ? rs.getString("FONECONV").trim().substring(0,3) : "",374,183);
+		drawTexto(rs.getString("FONECONV") !=null ? rs.getString("FONECONV").trim().substring(0,4) : "",374,183);
 		
 		setFonte(fnSubTitulo);
 		drawRetangulo(420,165,5,24,AL_CDIR);
 		drawTexto("Telefone",424,173);
 		setFonte(fnConteudo);
-		drawTexto(rs.getString("FONECONV") !=null ? Funcoes.setMascara(rs.getString("FONECONV").substring(3),"####-####") : "",424,183);		
+		drawTexto(rs.getString("FONECONV") !=null ? Funcoes.setMascara(rs.getString("FONECONV").substring(4),"####-####") : "",424,183);		
 		
 //		Linha 4
 		setFonte(fnSubTitulo);
