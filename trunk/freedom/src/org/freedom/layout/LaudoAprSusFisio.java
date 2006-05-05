@@ -191,7 +191,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 //		Informações do paciente
 		setFonte(fnTitulo);
 		drawTexto("Dados do Paciente",0,100);
-		drawRetangulo(0,102,0,550,AL_LL);
+		drawRetangulo(0,102,0,600,AL_LL);
 
 //      Linha 1
 		setFonte(fnSubTitulo);
@@ -283,7 +283,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(rs.getDate("DtOrc"));
-		int iMes = cal.get(Calendar.MONTH);
+		int iMes = cal.get(Calendar.MONTH) + 1;
 	    String sMes = Funcoes.strMes(iMes).toUpperCase();
 
 		drawTexto("DECLARO QUE NO MÊS DE "+sMes+" O PACIENTE IDENTIFICADO ACIMA, FOI SUBMETIDO AOS PROCEDIMENTOS",9,231);
@@ -325,7 +325,7 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		setFonte(fnSubTitulo);
 		drawTexto("Atenção: assine apenas uma vez para procedimentos de órteses, próteses e/ou meios auxiliares de locomoção.",9,438);		
 
-        drawRetangulo(5,445,5,165,AL_CDIR);
+        drawRetangulo(5,445,5,215,AL_CDIR);
         		      
         drawLinha(5,460,5,0,AL_CDIR);  // Linhas Horizontais
 		drawLinha(5,470,5,0,AL_CDIR);  // Linhas Horizontais
@@ -342,9 +342,14 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		drawLinha(5,580,5,0,AL_CDIR);  // Linhas Horizontais
 		drawLinha(5,590,5,0,AL_CDIR);  // Linhas Horizontais
 		drawLinha(5,600,5,0,AL_CDIR);  // Linhas Horizontais
+		drawLinha(5,610,5,0,AL_CDIR);  // Linhas Horizontais
+		drawLinha(5,620,5,0,AL_CDIR);  // Linhas Horizontais
+		drawLinha(5,630,5,0,AL_CDIR);  // Linhas Horizontais
+		drawLinha(5,640,5,0,AL_CDIR);  // Linhas Horizontais
+		drawLinha(5,650,5,0,AL_CDIR);  // Linhas Horizontais
 		
-		drawLinha(35,445,35,610);      // Linhas Verticais
-		drawLinha(100,445,100,610);    // Linhas Verticais
+		drawLinha(35,445,35,660);      // Linhas Verticais
+		drawLinha(100,445,100,660);    // Linhas Verticais
 		
 		setFonte(fnCabCli);
 		
@@ -366,11 +371,16 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		drawTexto("13",5,588,30,AL_BCEN);
 		drawTexto("14",5,598,30,AL_BCEN);
 		drawTexto("15",5,608,30,AL_BCEN);
+		drawTexto("16",5,618,30,AL_BCEN);
+		drawTexto("17",5,628,30,AL_BCEN);
+		drawTexto("18",5,638,30,AL_BCEN);
+		drawTexto("19",5,648,30,AL_BCEN);
+		drawTexto("20",5,658,30,AL_BCEN);
 		
 		setFonte(fnSubTitulo);
-		drawTexto("Este procedimento está sendo pago pelo SUS. Não é permitido cobrança complementar. Central de Atendimento ao Paciente: 350 9326.",5,620);
-		drawTexto("ASSINATURA DO PACIENTE",5,635);
-		drawLinha(120,635,320,635);
+		drawTexto("Este procedimento está sendo pago pelo SUS. Não é permitido cobrança complementar. Central de Atendimento ao Paciente: 350 9326.",5,670);
+		drawTexto("ASSINATURA DO PACIENTE",5,695);
+		drawLinha(120,695,320,695);
 		
 	  }			
 	  catch(SQLException err) {

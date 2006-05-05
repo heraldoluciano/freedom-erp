@@ -225,11 +225,12 @@ public class ContratoAluguelApr extends LeiauteGR {
 		iY += 15;	
 		drawTexto("3° O primeiro pagamento efetuado pelo LOCADOR do objeto do contrato será no ato da locação.",5,iY);
         iY +=15;
-        String sTexto = "4° Os pagamentos subsequentes a contar de períodos iguais a 30 (trinta) dias, deverão ser pagos na sede da LOCATARIA, no dia 10 de cada mês.";
+        String sTexto = "4° Os pagamentos subsequentes a contar de períodos iguais a ____________ dias, deverão ser pagos na sede da LOCATARIA ,  no dia ____/____/________ .";
         iY = impLabel(sTexto,15,5,540,iY)+5;
         sTexto = "5° O presente contrato é valido até a data final do último pagamento, ou com as concordâncias das partes, será renovado, até o prazo que se fizer necessário."; 
         iY = impLabel(sTexto,15,5,540,iY)+5;
-		sTexto = "6° Na assinatura do presente deverá o LOCADOR deixar um cheque de caução, no mesmo valor do objeto, ora locado. Que passado o período de 05(cinco) dias após o vencimento de qualquer uma das parcelas autoriza a LOCATARIA a descontar o cheque abaixo descrito, pois o contrato se fará rescindido."; 
+		sTexto = "6° Na assinatura do presente deverá o LOCADOR deixar um cheque de caução, no mesmo valor do objeto, ora locado.Que passadoo período de 05(cinco) " +
+				 "dias após o vencimento de qualquer uma das parcelas autoriza a LOCATARIA  descontar o cheque abaixo descrito, pois o contrato se fará rescindido."; 
 		iY = impLabel(sTexto,15,5,540,iY)+25;
 
         setFonte(fnCabEmpNeg);
