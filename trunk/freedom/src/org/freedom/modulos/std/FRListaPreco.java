@@ -26,15 +26,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.Vector;
-
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -73,29 +71,7 @@ public class FRListaPreco extends FRelatorio {
 	private JTextFieldPad txtDescPlanoPag5 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDescPlanoPag6 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDescPlanoPag7 = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-	private JLabelPad lbCodGrup = new JLabelPad("Cód.gurpo");
-	private JLabelPad lbDescCodGrup = new JLabelPad("Descrição do grupo");
-	private JLabelPad lbCodMarca = new JLabelPad("Cód.marca");
-	private JLabelPad lbDescCodMarca = new JLabelPad("Descrição da marca");
-	private JLabelPad lbCodClasCli = new JLabelPad( "Cód.c.cli.");
-	private JLabelPad lbDescClasCli = new JLabelPad( "Descrição da classf. do cliente");
-	private JLabelPad lbCodTabPreco = new JLabelPad("Cód.tab.pc.");
-	private JLabelPad lbDescTabPreco = new JLabelPad("Descrição da tabela de preço");
-	private JLabelPad lbOrdem = new JLabelPad("Ordem");
-	private JLabelPad lbCodPlanoPag1 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag1 = new JLabelPad("Descrição do plano de pgto. (1)");
-	private JLabelPad lbCodPlanoPag2 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag2 = new JLabelPad("Descrição do plano de pgto. (2)");
-	private JLabelPad lbCodPlanoPag3 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag3 = new JLabelPad("Descrição do plano de pgto. (3)");
-	private JLabelPad lbCodPlanoPag4 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag4 = new JLabelPad("Descrição do plano de pgto. (4)");
-	private JLabelPad lbCodPlanoPag5 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag5 = new JLabelPad("Descrição do plano de pgto. (5)");
-	private JLabelPad lbCodPlanoPag6 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag6 = new JLabelPad("Descrição do plano de pgto. (6)");
-	private JLabelPad lbCodPlanoPag7 = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lbDescPlanoPag7 = new JLabelPad("Descrição do plano de pgto. (7)");
+    private JCheckBoxPad cbAgrupar = new JCheckBoxPad("Agrupar","S","N");
 	private JRadioGroup rgOrdem = null;
 	private Vector vLabs = new Vector(2);
 	private Vector vVals = new Vector(2);
@@ -110,7 +86,6 @@ public class FRListaPreco extends FRelatorio {
 	private ListaCampos lcPlanoPag5 = new ListaCampos(this);
 	private ListaCampos lcPlanoPag6 = new ListaCampos(this);
 	private ListaCampos lcPlanoPag7 = new ListaCampos(this);
-        private JCheckBoxPad cbAgrupar = new JCheckBoxPad("Agrupar","S","N");
         
 	public FRListaPreco() {
 		setTitulo("Lista de Preços");
@@ -221,62 +196,60 @@ public class FRListaPreco extends FRelatorio {
 		adic(pnPlan,10,125,200,15);
 		adic(pinPlan,5,130,595,180);
 
-		pinOpt.adic(lbCodGrup,7,10,200,20);
+		pinOpt.adic(new JLabelPad("Cód.gurpo"),7,10,200,20);
 		pinOpt.adic(txtCodGrup,7,30,70,20);
-		pinOpt.adic(lbDescCodGrup,80,10,200,20);
+		pinOpt.adic(new JLabelPad("Descrição do grupo"),80,10,200,20);
 		pinOpt.adic(txtDescGrup,80,30,145,20);
 		
-		pinOpt.adic(lbCodMarca,7,50,200,20);
+		pinOpt.adic(new JLabelPad("Cód.marca"),7,50,200,20);
 		pinOpt.adic(txtCodMarca,7,70,70,20);
-		pinOpt.adic(lbDescCodMarca,80,50,200,20);
+		pinOpt.adic(new JLabelPad("Descrição da marca"),80,50,200,20);
 		pinOpt.adic(txtDescMarca,80,70,145,20);
 		
-		pinOpt.adic(lbCodClasCli,230,10,280,20);
+		pinOpt.adic(new JLabelPad( "Cód.c.cli."),230,10,280,20);
 		pinOpt.adic(txtCodClasCli,230,30,70,20);
-		pinOpt.adic(lbDescClasCli,303,10,280,20);
+		pinOpt.adic(new JLabelPad( "Descrição da classf. do cliente"),303,10,280,20);
 		pinOpt.adic(txtDescClasCli,303,30,170,20);
 				
-		pinOpt.adic(lbCodTabPreco,230,50,280,20);
+		pinOpt.adic(new JLabelPad("Cód.tab.pc."),230,50,280,20);
 		pinOpt.adic(txtCodTabPreco,230,70,70,20);
-		pinOpt.adic(lbDescTabPreco,303,50,280,20);
-		pinOpt.adic(txtDescTabPreco,303,70,170,20);
+		pinOpt.adic(new JLabelPad("Descrição da tabela de preço"),303,50,280,20);
+		pinOpt.adic(txtDescTabPreco,303,70,170,20);		
 		
-		
-		
-		pinOpt.adic(lbOrdem,480,10,100,20);
+		pinOpt.adic(new JLabelPad("Ordem"),480,10,100,20);
 		pinOpt.adic(rgOrdem,480,30,100,60);
-		pinPlan.adic(lbCodPlanoPag1,7,10,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,10,250,20);
 		pinPlan.adic(txtCodPlanoPag1,7,30,80,20);
-		pinPlan.adic(lbDescPlanoPag1,90,10,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (1)"),90,10,250,20);
 		pinPlan.adic(txtDescPlanoPag1,90,30,200,20);
-		pinPlan.adic(lbCodPlanoPag2,300,10,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,10,250,20);
 		pinPlan.adic(txtCodPlanoPag2,300,30,77,20);
-		pinPlan.adic(lbDescPlanoPag2,380,10,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (2)"),380,10,250,20);
 		pinPlan.adic(txtDescPlanoPag2,380,30,200,20);
-		pinPlan.adic(lbCodPlanoPag3,7,50,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,50,250,20);
 		pinPlan.adic(txtCodPlanoPag3,7,70,80,20);
-		pinPlan.adic(lbDescPlanoPag3,90,50,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (3)"),90,50,250,20);
 		pinPlan.adic(txtDescPlanoPag3,90,70,200,20);
-		pinPlan.adic(lbCodPlanoPag4,300,50,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,50,250,20);
 		pinPlan.adic(txtCodPlanoPag4,300,70,77,20);
-		pinPlan.adic(lbDescPlanoPag4,380,50,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (4)"),380,50,250,20);
 		pinPlan.adic(txtDescPlanoPag4,380,70,200,20);
-		pinPlan.adic(lbCodPlanoPag5,7,90,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,90,250,20);
 		pinPlan.adic(txtCodPlanoPag5,7,110,80,20);
-		pinPlan.adic(lbDescPlanoPag5,90,90,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (5)"),90,90,250,20);
 		pinPlan.adic(txtDescPlanoPag5,90,110,200,20);
-		pinPlan.adic(lbCodPlanoPag6,300,90,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),300,90,250,20);
 		pinPlan.adic(txtCodPlanoPag6,300,110,77,20);
-		pinPlan.adic(lbDescPlanoPag6,380,90,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (6)"),380,90,250,20);
 		pinPlan.adic(txtDescPlanoPag6,380,110,200,20);
-		pinPlan.adic(lbCodPlanoPag7,7,130,250,20);
+		pinPlan.adic(new JLabelPad("Cód.p.pag."),7,130,250,20);
 		pinPlan.adic(txtCodPlanoPag7,7,150,77,20);
-		pinPlan.adic(lbDescPlanoPag7,90,130,250,20);
+		pinPlan.adic(new JLabelPad("Descrição do plano de pgto. (7)"),90,130,250,20);
 		pinPlan.adic(txtDescPlanoPag7,90,150,200,20);
-        pinPlan.adic(cbAgrupar,300,150,200,20);
-        
+        pinPlan.adic(cbAgrupar,300,150,200,20);        
         
 	}
+	
 	private boolean comRef() {
 		boolean bRetorno = false;
 		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
@@ -291,26 +264,26 @@ public class FRListaPreco extends FRelatorio {
 				if (rs.getString("UsaRefProd").trim().equals("S"))
 					bRetorno = true;
 			}
-//			rs.close();
-//			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-		}
-		catch (SQLException err) {
+		} catch (SQLException err) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
 		}
 		return bRetorno;
 	}
 	public void imprimir(boolean bVisualizar) {
-//		boolean bFechaImp = false;
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		String sOrdem = rgOrdem.getVlrString();
 		String sCab = "";
 		String sWhere = "";
-		String sOrdenado = "";
-		String sSubGrupo = "";
-                String sCodRel = "";
-                String sAgrupar = "";
-
+		String sOrdenado = null;
+		String sSubGrupo = null;
+        String sCodRel = null;
+        String sAgrupar = cbAgrupar.getVlrString();
 		String sCodprod = "";
 		String sCodProdPrint = Funcoes.replicate(" ",12)+"|";
 		String sDescProd = Funcoes.replicate(" ",39)+"|";
@@ -324,18 +297,15 @@ public class FRListaPreco extends FRelatorio {
 		String sPrecopag5 = Funcoes.replicate(" ",9)+"|";
 		String sPrecopag6 = Funcoes.replicate(" ",9)+"|";
 		String sPrecopag7 = Funcoes.replicate(" ",9)+"|";
-		int iContaItem = 0;
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
-		imp.setTitulo("Lista de Preços");
-                
-                sAgrupar = cbAgrupar.getVlrString();
-                //System.out.println("Agrupar: "+sAgrupar);
-                
-                if (comRef()) 
-                  sCodRel = "REFPROD";
-                else
-                  sCodRel = "CODPROD";
+		int iContaItem = 0;
+
+                        
+        if (comRef()) 
+        	sCodRel = "REFPROD";
+        else
+        	sCodRel = "CODPROD";
 
 		if (sOrdem.equals("C")) {
 			sOrdem = (sAgrupar.equals("S")?"P.CODGRUP,":"")+"P."+sCodRel;
@@ -345,21 +315,23 @@ public class FRListaPreco extends FRelatorio {
 			sOrdem = (sAgrupar.equals("S")?"P.CODGRUP,":"")+"P.DESCPROD";
 			sOrdenado = "ORDENADO POR DESCRICAO";
 		}
+		
 		sOrdem = sOrdem + ",PP.CODPLANOPAG";
 		sOrdenado = "|"+Funcoes.replicate(" ",68-(sOrdenado.length()/2))+sOrdenado;
-		sOrdenado += Funcoes.replicate(" ",134-sOrdenado.length())+" |";
+		sOrdenado += Funcoes.replicate(" ",133-sOrdenado.length())+" |";
+		
 		if (txtCodGrup.getText().trim().length() > 0) {
 			String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
 			sCab += "\n"+imp.comprimido();
 			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		if (txtCodMarca.getText().trim().length() > 0) {
 			sWhere += " AND P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
 			String sTmp = "MARCA: "+txtDescMarca.getText().trim();
 			sCab += "\n"+imp.comprimido();
 			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 
 		if (txtCodClasCli.getText().trim().length() > 0) {
@@ -367,7 +339,7 @@ public class FRListaPreco extends FRelatorio {
 			String sTmp = "CLASS.CLIENTE: "+txtDescClasCli.getText().trim();
 			sCab += "\n"+imp.comprimido();
 			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		
 		if (txtCodTabPreco.getText().trim().length() > 0) {
@@ -375,23 +347,22 @@ public class FRListaPreco extends FRelatorio {
 			String sTmp = "TABELA: "+txtDescTabPreco.getText().trim();
 			sCab += "\n"+imp.comprimido();
 			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",134-sTmp.length())+" |";
+			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
 		}
 		
-		
-		String sSQL = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD,P.REFPROD,"+
-			"P.DESCPROD,P.CODUNID,"+
-			"PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD "+
-			"FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G "+ 
-			"WHERE P.CODPROD = PP.CODPROD "+
-			"AND G.CODGRUP = P.CODGRUP "+
-			"AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' "+
-			"AND PG.CODPLANOPAG = PP.CODPLANOPAG "+
-			"AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)"+sWhere+
-			" ORDER BY "+sOrdem; 
-		PreparedStatement ps = null;
-		ResultSet rs = null;
 		try {
+			
+			sSQL  = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD,P.REFPROD,"+
+					"P.DESCPROD,P.CODUNID,"+
+					"PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD "+
+					"FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G "+ 
+					"WHERE P.CODPROD = PP.CODPROD "+
+					"AND G.CODGRUP = P.CODGRUP "+
+					"AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' "+
+					"AND PG.CODPLANOPAG = PP.CODPLANOPAG "+
+					"AND PP.CODPLANOPAG IN (?,?,?,?,?,?,?)"+sWhere+
+					" ORDER BY "+sOrdem; 
+			
 			ps = con.prepareStatement(sSQL);
 			ps.setString(1,txtCodGrup.getVlrString().trim().length() < 14 ? txtCodGrup.getVlrString().trim()+"%":txtCodGrup.getVlrString().trim());
 			ps.setInt(2,txtCodPlanoPag1.getVlrInteger().intValue());
@@ -402,22 +373,29 @@ public class FRListaPreco extends FRelatorio {
 			ps.setInt(7,txtCodPlanoPag6.getVlrInteger().intValue());
 			ps.setInt(8,txtCodPlanoPag7.getVlrInteger().intValue());
 			rs = ps.executeQuery();
+			
+			imp.montaCab();
+			imp.setTitulo("Lista de Preços");
 			imp.limpaPags();
+			
 			while ( rs.next() ) {
+				
             	if ((sCodprod.length() > 0) && (!sCodprod.equals(rs.getString("codprod")))) {
-					sTextoImp = sPrecopag1+sPrecopag2+sPrecopag3+sPrecopag4+
-					sPrecopag5+sPrecopag6+sPrecopag7+" "+
-					Funcoes.copy(sCodunid,0,8)+"|";
-					imp.impCab(136, false);
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.copy(sCodProdPrint,0,12));
-					imp.say(imp.pRow()+0,14,"|"+Funcoes.copy(sDescProd,0,39));
-					imp.say(imp.pRow()+0,56,"|");
-					imp.say(imp.pRow()+0,57,sTextoImp);
+            		
+					sTextoImp = sPrecopag1 + sPrecopag2 + sPrecopag3 + sPrecopag4 +
+								sPrecopag5 + sPrecopag6 + sPrecopag7 + " " + Funcoes.copy(sCodunid,0,7)+"|";
+					
+					
+					imp.pulaLinha( 1, imp.comprimido() );					
+					imp.say(  0, "|" + Funcoes.copy(sCodProdPrint,0,12) );
+					imp.say( 14, "|" + Funcoes.copy(sDescProd,0,39) );
+					imp.say( 56, "|" + sTextoImp);
+					
 					if (!(imp.pRow()>=(linPag-1))) {
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-   						imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+						imp.pulaLinha( 1, imp.comprimido() );
+   						imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
 					}
+					
 					sTextoImp = "";
 					sPrecopag1 = Funcoes.replicate(" ",9)+"|";
 					sPrecopag2 = Funcoes.replicate(" ",9)+"|";
@@ -427,18 +405,14 @@ public class FRListaPreco extends FRelatorio {
 					sPrecopag6 = Funcoes.replicate(" ",9)+"|";
 					sPrecopag7 = Funcoes.replicate(" ",9)+"|";
                 }
+            	
 				if (imp.pRow()>=(linPag-1)) {
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
 					imp.incPags();
 					imp.eject();
 				}
-                else if ((sAgrupar.equals("S")) && (sCodgrup.length() > 0) && (!sCodgrup.equals(rs.getString("Codgrup")))) {
-			 		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-					imp.incPags();
-					imp.eject();
-				}
+				
 				sCodgrup = rs.getString("codgrup");
 				sCodProdPrint = rs.getString(sCodRel);
 				sDescProd = rs.getString("descprod");
@@ -447,102 +421,113 @@ public class FRListaPreco extends FRelatorio {
 				if (imp.pRow()==0) {
 					
 					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
-					sSubGrupo = "|"+Funcoes.replicate(" ",68-(sSubGrupo.length()/2))+sSubGrupo;
-					sSubGrupo += Funcoes.replicate(" ",134-sSubGrupo.length())+" |";
+					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
+					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
+
+					imp.impCab(136, true);
+					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" );
+					imp.say(135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|");
+					imp.say( 62, "LISTA DE PREÇOS");
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|");
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, sOrdenado);
 					
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| Emitido em :"+Funcoes.dateToStrDate(new Date()));
-					imp.say(imp.pRow()+0,120,"Pagina : "+(imp.getNumPags()));
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,62,"LISTA DE PREÇOS");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,sOrdenado);
-					if (sCab.length() > 0) imp.say(imp.pRow()+0,0,sCab);
-						imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+					if (sCab.length() > 0)
+						imp.say(  0, sCab);
+						
+					imp.pulaLinha( 1, imp.comprimido() );						
+					imp.say(  0, "|");
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
+					
                    	if (sAgrupar.equals("S")) {
-				   		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				   		imp.say(imp.pRow()+0,0,sSubGrupo);
-				   		imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				   		imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+                   		imp.pulaLinha( 1, imp.comprimido() );
+				   		imp.say(  0, sSubGrupo);
+				   		imp.pulaLinha( 1, imp.comprimido() );
+				   		imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
                     }
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"| Codigo");
-					imp.say(imp.pRow()+0,14,"| Desc.");
-					imp.say(imp.pRow()+0,56,"| "+Funcoes.copy(txtDescPlanoPag1.getVlrString(),0,8)+
-								"| "+Funcoes.copy(txtDescPlanoPag2.getVlrString(),0,8)+
-								"| "+Funcoes.copy(txtDescPlanoPag3.getVlrString(),0,8)+
-								"| "+Funcoes.copy(txtDescPlanoPag4.getVlrString(),0,8)+
-								"| "+Funcoes.copy(txtDescPlanoPag5.getVlrString(),0,8)+
-								"| "+Funcoes.copy(txtDescPlanoPag6.getVlrString(),0,8)+
-								"| "+Funcoes.copy(txtDescPlanoPag7.getVlrString(),0,8)+
-								"| Unidade");
-					imp.say(imp.pRow()+0,136,"|");
-					imp.say(imp.pRow()+1,0,""+imp.comprimido());
-					imp.say(imp.pRow()+0,0,"|"+Funcoes.replicate("-",134)+"|");
+                   	
+                   	imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "| Codigo");
+					imp.say( 14, "| Desc.");
+					imp.say( 56, "| " + Funcoes.copy(txtDescPlanoPag1.getVlrString(),0,8) +
+								 "| " + Funcoes.copy(txtDescPlanoPag2.getVlrString(),0,8) +
+								 "| " + Funcoes.copy(txtDescPlanoPag3.getVlrString(),0,8) +
+								 "| " + Funcoes.copy(txtDescPlanoPag4.getVlrString(),0,8) +
+								 "| " + Funcoes.copy(txtDescPlanoPag5.getVlrString(),0,8) +
+								 "| " + Funcoes.copy(txtDescPlanoPag6.getVlrString(),0,8) +
+								 "| " + Funcoes.copy(txtDescPlanoPag7.getVlrString(),0,8) +
+								 "|Unidade");
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
 				}
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag1.getVlrString()))
-					sPrecopag1 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag1 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
 				else if (rs.getString("Codplanopag").equals(txtCodPlanoPag2.getVlrString()))
-					sPrecopag2 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag2 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
+				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag3.getVlrString()))
-					sPrecopag3 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag3 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
+				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag4.getVlrString()))
-					sPrecopag4 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag4 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
+				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag5.getVlrString()))
-					sPrecopag5 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag5 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
+				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag6.getVlrString()))
-					sPrecopag6 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag6 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
+				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag7.getVlrString()))
-					sPrecopag7 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd"))+"|";
+					sPrecopag7 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
+				
 				sCodunid = rs.getString("Codunid");
 				sCodprod = rs.getString("Codprod");
 				sCodgrup = rs.getString("Codgrup");
 			    iContaItem++;
 			}	
-			System.out.println("Items: "+iContaItem);
+
             if (sCodprod.length() > 0) {
-				sTextoImp = sPrecopag1+sPrecopag2+sPrecopag3+sPrecopag4+
-				sPrecopag5+sPrecopag6+sPrecopag7+" "+
-				Funcoes.copy(sCodunid,0,8)+"|";
-				imp.say(imp.pRow()+1,0,""+imp.comprimido());
-				imp.say(imp.pRow()+0,0,"|"+Funcoes.copy(sCodProdPrint,0,12));
-				imp.say(imp.pRow()+0,14,"|"+Funcoes.copy(sDescProd,0,39));
-				imp.say(imp.pRow()+0,56,"|");
-				imp.say(imp.pRow()+0,57,sTextoImp); 
+				sTextoImp = sPrecopag1 + sPrecopag2 + sPrecopag3 + sPrecopag4 +
+							sPrecopag5 + sPrecopag6 + sPrecopag7 + " " + Funcoes.copy(sCodunid,0,7) + "|";
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say(  0, "|" + Funcoes.copy(sCodProdPrint,0,12) );
+				imp.say( 14, "|" + Funcoes.copy(sDescProd,0,39) );
+				imp.say( 56, "|" );
+				imp.say( 57, sTextoImp ); 
             }
-			imp.say(imp.pRow()+1,0,""+imp.comprimido());
-			imp.say(imp.pRow()+0,0,"+"+Funcoes.replicate("-",134)+"+");
+            
+            imp.pulaLinha( 1, imp.comprimido() );
+			imp.say(  0, "+" + Funcoes.replicate("-",133) + "+" );
 
 			imp.eject();
 				
 			imp.fechaGravacao();
 			
-//			rs.close();
-//			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-//			dl.dispose();
-		}	
-		catch ( SQLException err ) {
+			
+		} catch ( SQLException err ) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this,"Erro consulta tabela de preços!\n"+err.getMessage(),true,con,err);
         }
+		
 		if (bVisualizar)
 			imp.preview(this);
 		else
 			imp.print();
 	}
+	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcGrup.setConexao(cn);

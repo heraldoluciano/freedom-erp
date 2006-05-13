@@ -623,14 +623,16 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		PreparedStatement ps2 = null;
 		ResultSet rs = null;
 		ResultSet rs2 = null;
-		limpaConsulta();
-		tabConsulta.limpa();
 		String sSQL = "SELECT CODCLI,SUM(VLRPARCREC),SUM(VLRPAGOREC),"+
 					  "SUM(VLRAPAGREC),MIN(DATAREC),MAX(DATAREC),DATAREC,MAX(VLRPARCREC) " +
 					  "FROM FNRECEBER "+
 					  "WHERE CODCLI=? AND CODEMP=? AND CODFILIAL=? "+
 					  "GROUP BY CODCLI,DATAREC "+
 					  "ORDER BY 8 DESC";
+
+		limpaConsulta();
+		tabConsulta.limpa();
+		
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodCli.getVlrInteger().intValue());

@@ -57,21 +57,26 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	private JLabelPad lbVlrDescOrc = new JLabelPad("V Desc.");
 	private JLabelPad lbPercAdicOrc = new JLabelPad("% Adic.");
 	private JLabelPad lbVlrAdicOrc = new JLabelPad("V Adic.");
-	private JLabelPad lbCodPlanoPag = new JLabelPad("Código e Desc. do plano de pagto.");
+	private JLabelPad lbCodPlanoPag = new JLabelPad("Cód.p.pg.");
+	private JLabelPad lbDescPlanoPag = new JLabelPad("Descrição do plano de pagamento");
 	private JCheckBoxPad cbImpOrc = new JCheckBoxPad("Imprime Orçamento?","S","N");
 	private JCheckBoxPad cbAprovOrc = new JCheckBoxPad("Aprova Orçamento?","S","N");
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
 	private BigDecimal bValProd;
 	private boolean bTestaAtend = false;
 	
-	public DLCompOrc(Component cOrig,boolean bDIt,BigDecimal bVP, BigDecimal bVD, BigDecimal bVA, Integer iCodPlanoPag) {
+	public DLCompOrc(Component cOrig, boolean bDIt, 
+			BigDecimal bVP, BigDecimal bVPD, BigDecimal bVD, BigDecimal bVPA, BigDecimal bVA, Integer iCodPlanoPag) {
+		
 		super(cOrig);    
 		bValProd = bVP;
 		setTitulo("Completar Orçamento");
 		setAtribos(380,240);
 		
 		txtCodPlanoPag.setVlrInteger(iCodPlanoPag);
+		txtPercDescOrc.setVlrBigDecimal(bVPD);
 		txtVlrDescOrc.setVlrBigDecimal(bVD);
+		txtPercAdicOrc.setVlrBigDecimal(bVPA);
 		txtVlrAdicOrc.setVlrBigDecimal(bVA);
 		
 		if (bDIt) {
@@ -92,6 +97,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		
 		adic(lbCodPlanoPag,7,0,270,20);
 		adic(txtCodPlanoPag,7,20,80,20);
+		adic(lbDescPlanoPag,90,0,270,20);
 		adic(txtDescPlanoPag,90,20,260,20);
 		adic(lbPercDescOrc,7,40,80,20);
 		adic(txtPercDescOrc,7,60,80,20);
@@ -103,7 +109,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		adic(txtVlrAdicOrc,260,60,90,20);
 		adic(cbImpOrc,7,100,150,20);
 		
-		if(podeAprova()) {
+		if(getAprova()) {
 			adic(cbAprovOrc,7,120,150,20);
 		}
 		
@@ -119,8 +125,9 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 	public void setFKAtend(JTextFieldPad txtCodAtend,JTextFieldFK txtDescAtend) {
 		txtCodAtend.setRequerido(true);
 		  	
-		adic(new JLabelPad("Código e descrição do atendente."),7,40,270,20);
+		adic(new JLabelPad("Cód.atd."),7,40,270,20);
 		adic(txtCodAtend,7,60,80,20);
+		adic(new JLabelPad("Nome do atendente."),90,40,270,20);
 		adic(txtDescAtend,90,60,260,20);
 		
 		//Aumenta mais 40 pxs a janela.
@@ -145,71 +152,7 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 		bTestaAtend = true;
 	}
 	
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btOK) {
-			if (txtCodPlanoPag.getVlrInteger().intValue() == 0) {
-				Funcoes.mensagemInforma(this,"O campo 'Código do plano de pagamento' é requerido!");
-				txtCodPlanoPag.requestFocus();
-				return;
-			}
-			else if (bTestaAtend) {
-				if (txtAtend.getVlrInteger().intValue() == 0) {
-					Funcoes.mensagemInforma(this,"O campo 'Código do atendente' é requerido!");
-					txtAtend.requestFocus();
-					return;
-				}
-			}
-		}
-		super.actionPerformed(evt);
-	}
-	
-	public Object[] getValores() {
-		Object[] bRetorno = new Object[5];
-		bRetorno[0] = txtVlrDescOrc.getVlrBigDecimal();
-		bRetorno[1] = txtVlrAdicOrc.getVlrBigDecimal();
-		bRetorno[2] = cbImpOrc.getVlrString();
-		bRetorno[3] = txtCodPlanoPag.getVlrInteger();
-		bRetorno[4] = cbAprovOrc.getVlrString();
-		return bRetorno;
-	}
-	
-	public void focusLost(FocusEvent fevt) {
-		if (fevt.getSource() == txtPercDescOrc) {
-			if (txtPercDescOrc.getText().trim().length() < 1) {
-				txtVlrDescOrc.setAtivo(true);
-			}
-			else {
-				txtVlrDescOrc.setVlrBigDecimal(
-					bValProd.multiply(
-							txtPercDescOrc.getVlrBigDecimal()).divide(
-									new BigDecimal("100"),3,BigDecimal.ROUND_HALF_UP));
-				txtVlrDescOrc.setAtivo(false);
-			}
-		}
-		if (fevt.getSource() == txtPercAdicOrc) {
-			if (txtPercAdicOrc.getText().trim().length() < 1) {
-				txtVlrAdicOrc.setAtivo(true);
-			}
-			else {
-				txtVlrAdicOrc.setVlrBigDecimal(
-					bValProd.multiply(
-							txtPercAdicOrc.getVlrBigDecimal()).divide(
-									new BigDecimal("100"),3,BigDecimal.ROUND_HALF_UP));
-				txtVlrAdicOrc.setAtivo(false);
-			}
-		}
-	}
-	
-	public void setConexao(Connection cn) {    
-		super.setConexao(cn);
-		lcPlanoPag.setConexao(cn);
-		montaTela();
-		lcPlanoPag.carregaDados();	
-	}
-	
-	public void focusGained(FocusEvent fevt) { }
-	
-	private boolean podeAprova() {
+	private boolean getAprova() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
@@ -240,5 +183,67 @@ public class DLCompOrc extends FFDialogo implements FocusListener {
 			sAprovOrc = null;
 		}
 		return bRet;
+	}
+
+	public Object[] getValores() {
+		Object[] bRetorno = new Object[5];
+		bRetorno[0] = txtVlrDescOrc.getVlrBigDecimal();
+		bRetorno[1] = txtVlrAdicOrc.getVlrBigDecimal();
+		bRetorno[2] = cbImpOrc.getVlrString();
+		bRetorno[3] = txtCodPlanoPag.getVlrInteger();
+		bRetorno[4] = cbAprovOrc.getVlrString();
+		return bRetorno;
+	}
+	
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btOK) {
+			if (txtCodPlanoPag.getVlrInteger().intValue() == 0) {
+				Funcoes.mensagemInforma(this,"O campo 'Código do plano de pagamento' é requerido!");
+				txtCodPlanoPag.requestFocus();
+				return;
+			}
+			else if (bTestaAtend) {
+				if (txtAtend.getVlrInteger().intValue() == 0) {
+					Funcoes.mensagemInforma(this,"O campo 'Código do atendente' é requerido!");
+					txtAtend.requestFocus();
+					return;
+				}
+			}
+		}
+		super.actionPerformed(evt);
+	}
+
+	public void focusLost(FocusEvent fevt) {
+		if (fevt.getSource() == txtPercDescOrc) {
+			if (txtPercDescOrc.getText().trim().length() < 1) {
+				txtVlrDescOrc.setAtivo(true);
+			}
+			else {
+				txtVlrDescOrc.setVlrBigDecimal(
+					bValProd.multiply( txtPercDescOrc.getVlrBigDecimal()).divide(
+									new BigDecimal("100"),3,BigDecimal.ROUND_HALF_UP));
+				txtVlrDescOrc.setAtivo(false);
+			}
+		}
+		if (fevt.getSource() == txtPercAdicOrc) {
+			if (txtPercAdicOrc.getText().trim().length() < 1) {
+				txtVlrAdicOrc.setAtivo(true);
+			}
+			else {
+				txtVlrAdicOrc.setVlrBigDecimal(
+					bValProd.multiply( txtPercAdicOrc.getVlrBigDecimal()).divide(
+									new BigDecimal("100"),3,BigDecimal.ROUND_HALF_UP));
+				txtVlrAdicOrc.setAtivo(false);
+			}
+		}
+	}
+	
+	public void focusGained(FocusEvent fevt) { }
+	
+	public void setConexao(Connection cn) {    
+		super.setConexao(cn);
+		lcPlanoPag.setConexao(cn);
+		montaTela();
+		lcPlanoPag.carregaDados();	
 	}
 }

@@ -88,6 +88,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private JButton btObs = new JButton(Icone.novo("btObs.gif"));
 	private JButton btOrc = new JButton(Icone.novo("btImprimeOrc.gif"));
 	private JButton btFechaOrc = new JButton(Icone.novo("btOk.gif"));
+	private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
 	private JTextFieldPad txtCodOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtDtOrc = new JTextFieldPad(JTextFieldPad.TP_DATE,10, 0);
 	private JTextFieldPad txtDtVencOrc = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
@@ -139,14 +140,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private ListaCampos lcTipoCli = new ListaCampos(this, "TC");	
 	private ListaCampos lcAlmox = new ListaCampos(this, "AX");	
 	private ListaCampos lcClComiss = new ListaCampos(this, "CM");
-	private JButton btExp = new JButton(Icone.novo("btExportar.gif"));
-	private FPrinterJob dl = null;
-	private Object[] oPrefs = null;	
+	private Vector vParamOrc = new Vector();
 	private String sOrdNota = "";	
 	private String sModoNota = "";	
+	private BigDecimal bdVlrDescItAnt;
+	private FPrinterJob dl = null;
+	private Object[] oPrefs = null;	
 	private boolean bDescComp = false;
 	private boolean bCtrl = false;
-	private Vector vParamOrc = new Vector();
 	private int iCodCliAnt = 0;
 
 	public FOrcamento() {
@@ -154,7 +155,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		setAtribos(15, 10, 769, 460);
 
 		txtDescProd.setToolTipText("Clique aqui duas vezes para alterar a descrição.");
-		txtDescProd.addMouseListener(new MouseAdapter() {
+		txtDescProd.addMouseListener( new MouseAdapter() {
 			public void mouseClicked(MouseEvent mevt) {
 				if (mevt.getClickCount() == 2)
 					mostraTelaDecricao(txaObsItOrc, txtCodProd.getVlrInteger().intValue(), txtDescProd.getVlrString());
@@ -330,11 +331,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		btExp.addActionListener(this);
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
-		txtRefProd.addKeyListener(this);
+		
+		txtRefProd.addKeyListener(this);	
+		
 		txtPercDescItOrc.addFocusListener(this);
-		txtVlrDescItOrc.addFocusListener(this);
+		txtVlrDescItOrc.addFocusListener(this);		
 		txtQtdItOrc.addFocusListener(this);
 		txtPrecoItOrc.addFocusListener(this);
+		
 		lcCampos.addCarregaListener(this);
 		lcProd2.addCarregaListener(this);
 		lcCli.addCarregaListener(this);
@@ -343,10 +347,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		lcDet.addCarregaListener(this);
 		lcPlanoPag.addCarregaListener(this);
 		lcCli.addCarregaListener(this);
+		
 		lcCampos.addInsertListener(this);
 		lcDet.addInsertListener(this);
+		
 		lcDet.addPostListener(this);
 		lcCampos.addPostListener(this);
+		
 		lcDet.addDeleteListener(this);
 
 
@@ -421,14 +428,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		}
 	}
 
-	private void calcTot() {
-		txtVlrLiqItOrc.setVlrBigDecimal(
-				calcVlrTotalProd(txtVlrProdItOrc.getVlrBigDecimal(),txtVlrDescItOrc.getVlrBigDecimal()));
-	}
-
-	private void calcVlrProd() {		
-		txtVlrProdItOrc.setVlrBigDecimal(
-				calcVlrProd(txtPrecoItOrc.getVlrBigDecimal(),txtQtdItOrc.getVlrBigDecimal()));
+	public void setParansPreco(BigDecimal bdPreco) {
+		txtPrecoItOrc.setVlrBigDecimal(bdPreco);
 	}
 
 	public Vector getParansDesconto(){
@@ -448,6 +449,270 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				txtVlrProdItOrc.getVlrInteger().intValue()+""};
 	}
 
+	public int[] getParansPreco() {
+		int[] iRetorno = { txtCodProd.getVlrInteger().intValue(),
+				txtCodCli.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("VDCLIENTE"),
+				txtCodPlanoPag.getVlrInteger().intValue(), 
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("FNPLANOPAG"),
+				((Integer) oPrefs[3]).intValue(), 
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("EQTIPOMOV"), 
+				Aplicativo.iCodEmp,
+				Aplicativo.iCodFilial,
+				txtCodOrc.getVlrInteger().intValue(),
+				Aplicativo.iCodEmp,
+				ListaCampos.getMasterFilial("VDORCAMENTO") };
+		return iRetorno;
+	
+	}
+
+	private int getPlanoPag() {
+		int iRet = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("CodPlanoPag");
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"
+					+"Provavelmente não foram gravadas corretamente as preferências!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return iRet;
+	}
+
+	private int getCodCli() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		int iRet = 0;
+		try {
+			sSQL = "SELECT CODCLI FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("CODCLI");
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar o código do cliente.\n" +
+					"Provavelmente não foram gravadas corretamente as preferências!\n"
+						+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return iRet;
+	}
+
+	private int getCodTipoCli() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		int iRet = 0;
+		try {
+			sSQL = "SELECT CODTIPOCLI FROM VDCLIENTE "
+				 + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+			ps.setInt(3, txtCodCli.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("CODTIPOCLI");
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar o código do tipo de cliente.\n"
+						+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return iRet;
+	}
+
+	private int getPrazo() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int iRet = 0;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT Prazo FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("Prazo");
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar o prazo.\n" +
+			"Provavelmente não foram gravadas corretamente as preferências!\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return iRet;
+	}
+
+	private Date getVencimento() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		GregorianCalendar clVenc = new GregorianCalendar();
+		Date dtRet = null;
+		String sSQL = null;
+		int diasVenc = 0;
+		try {
+			sSQL = "SELECT DIASVENCORC FROM SGPREFERE4 WHERE "
+				+ "CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				diasVenc = rs.getInt("DIASVENCORC");
+				clVenc.add(Calendar.DATE, diasVenc);
+				dtRet = clVenc.getTime();
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar a data de vencimento.\n"
+					+ err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return dtRet;
+	}
+
+	private int getVendedor() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		int iRet = 0;
+		try {
+			sSQL = "SELECT CODVEND FROM VDCLIENTE "
+				 + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+			ps.setInt(3, txtCodCli.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("CodVend");
+				return iRet;
+			}
+			
+			sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE "
+				+ "IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, Aplicativo.strUsuario);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, Aplicativo.iCodFilialPad);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("CodVend");
+			}
+			
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar o comissionado.\n"
+					+ "O usuário '" + Aplicativo.strUsuario
+					+ "' é um comissionado?\n" + err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return iRet;
+	}
+
+	private int getClComiss(int iCodVend) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		int iRet = 0;
+		try {
+			sSQL = "SELECT CODCLCOMIS FROM VDVENDEDOR "
+				 + "WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
+			ps.setInt(3, iCodVend);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				iRet = rs.getInt("CODCLCOMIS");
+				return iRet;
+			}
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar a class. da comissão." + err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		return iRet;
+	}
+
+	private void calcDescIt() {
+		if(txtPercDescItOrc.floatValue()>0) {
+			txtVlrDescItOrc.setVlrBigDecimal(new BigDecimal(
+					Funcoes.arredFloat(txtVlrProdItOrc.floatValue()
+							* txtPercDescItOrc.floatValue() / 100,casasDecFin)));
+			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
+		} 
+	}
+
+	private void calcTot() {
+		txtVlrLiqItOrc.setVlrBigDecimal(
+				calcVlrTotalProd(txtVlrProdItOrc.getVlrBigDecimal(),txtVlrDescItOrc.getVlrBigDecimal()));
+	}
+
+	private void calcVlrProd() {		
+		txtVlrProdItOrc.setVlrBigDecimal(
+				calcVlrProd(txtPrecoItOrc.getVlrBigDecimal(),txtQtdItOrc.getVlrBigDecimal()));
+	}
+
 	private boolean testaLucro() {
 		return super.testaLucro( new Object[] {
 				txtCodProd.getVlrInteger(),
@@ -458,8 +723,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		
 	private void mostraTelaDescont() {
 		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
-			txtVlrDescItOrc.setAtivo(true);
-			txtPercDescItOrc.setAtivo(false);
 			txtPercDescItOrc.setVlrString("");
 			txtVlrDescItOrc.setVlrString("");
 			calcVlrProd();
@@ -471,102 +734,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		}
 	}
 	
-	public void focusGained(FocusEvent fevt) { }
-
-	public void focusLost(FocusEvent fevt) {
-		if (fevt.getSource() == txtPercDescItOrc) {
-			if (txtPercDescItOrc.getText().trim().length() < 1) {
-				txtVlrDescItOrc.setAtivo(true);
-			} else {
-				txtVlrDescItOrc.setVlrBigDecimal(
-				        txtVlrProdItOrc.getVlrBigDecimal().multiply(
-								txtPercDescItOrc.getVlrBigDecimal()).divide(
-								        new BigDecimal("100"), 2,BigDecimal.ROUND_HALF_UP));
-				calcVlrProd();
-				calcTot();
-				txtVlrDescItOrc.setAtivo(false);
-			}
-		} else if (fevt.getSource() == txtVlrDescItOrc) {
-			if (txtVlrDescItOrc.getText().trim().length() < 1) {
-				txtPercDescItOrc.setAtivo(true);
-			} else if (txtVlrDescItOrc.getAtivo()) {
-				txtPercDescItOrc.setAtivo(false);
-			}
-		} else if ((fevt.getSource() == txtQtdItOrc)
-				| (fevt.getSource() == txtPrecoItOrc)) {
-			calcVlrProd();
-			calcTot();
-		}
-	}
-	
-	public void keyPressed(KeyEvent kevt) {
-		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) {
-			bCtrl = true;
-		} else if (kevt.getKeyCode() == KeyEvent.VK_O) {
-			if (bCtrl) {
-				btObs.doClick();
-			}
-		} else if (kevt.getKeyCode() == KeyEvent.VK_F4) {
-			btFechaOrc.doClick();
-		} else if (kevt.getKeyCode() == KeyEvent.VK_F3) {
-			if (kevt.getSource() == txtPercDescItOrc
-					|| kevt.getSource() == txtVlrDescItOrc)
-				mostraTelaDescont();
-		} else if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if ((kevt.getSource() == txtPercDescItOrc && !txtVlrDescItOrc.getAtivo()) ||
-					(kevt.getSource() == txtVlrDescItOrc)) {
-				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-					lcDet.post();
-					lcDet.limpaCampos(true);
-					lcDet.setState(ListaCampos.LCS_NONE);
-					lcDet.edit();
-					focusCodprod();
-				} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
-					lcDet.post();
-					txtCodItOrc.requestFocus();
-				}
-			}
-		}
-		if (kevt.getSource() == txtRefProd)
-			lcDet.edit();
-		super.keyPressed(kevt);
-	}
-
-	public void keyTyped(KeyEvent kevt) {
-		super.keyTyped(kevt);
-	}
-
-	public void keyReleased(KeyEvent kevt) {
-		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
-			bCtrl = false;
-		super.keyReleased(kevt);
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btFechaOrc) {
-			fechaOrc();
-		} else if (evt.getSource() == btPrevimp)
-			imprimir(true);
-		else if (evt.getSource() == btImp)
-			imprimir(false);
-		else if (evt.getSource() == btOrc) {
-			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger().intValue());
-			imp.setConexao(con);
-			dl = new FPrinterJob(imp, this);
-			dl.setVisible(true);
-		} else if (evt.getSource() == btObs) {
-			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
-		} else if (evt.getSource() == btExp)
-			exportar();
-		super.actionPerformed(evt);
-	}
-	
 	private void fechaOrc() {
 		Object[] oValores = null;
-		DLCompOrc dl = new DLCompOrc(this, (txtVlrDescItOrc
-				.getVlrBigDecimal().intValue() > 0), txtVlrProdOrc
-				.getVlrBigDecimal(), txtVlrEdDescOrc.getVlrBigDecimal(),
-				txtVlrEdAdicOrc.getVlrBigDecimal(), txtCodPlanoPag.getVlrInteger());
+		DLCompOrc dl = new DLCompOrc(this, (txtVlrDescItOrc .getVlrBigDecimal().floatValue() > 0), 
+				txtVlrProdOrc.getVlrBigDecimal(),
+				txtPercDescItOrc.getVlrBigDecimal(),
+				txtVlrDescItOrc.getVlrBigDecimal(),
+				txtVlrDescItOrc.getVlrBigDecimal(),
+				txtVlrAdicOrc.getVlrBigDecimal(), 
+				txtCodPlanoPag.getVlrInteger());
 		try {
 			dl.setConexao(con);
 			dl.setVisible(true);
@@ -716,6 +892,56 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			sSQL = null;		
 		}
 	}	
+
+	private synchronized void iniOrc() {
+		txtCodCli.setVlrInteger(new Integer(getCodCli()));
+		lcCli.carregaDados();
+		txtCodTpCli.setVlrInteger(new Integer(getCodTipoCli()));
+		lcTipoCli.carregaDados();
+		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
+		lcPlanoPag.carregaDados();
+		txtCodVend.setVlrInteger(new Integer(getVendedor()));
+		lcVend.carregaDados();
+		lcProd.limpaCampos(true);
+		lcProd2.limpaCampos(true);
+		txtVlrAdicOrc.setVlrString("");
+		txtVlrEdAdicOrc.setVlrString("");
+		txtVlrEdDescOrc.setVlrString("");
+		txtVlrLiqOrc.setVlrString("");
+		txtVlrProdOrc.setVlrString("");
+		txtDtOrc.setVlrDate(new Date());
+		txtDtVencOrc.setVlrDate(getVencimento());
+		txtPrazoEntOrc.setVlrInteger(new Integer(getPrazo()));
+		tab.limpa();
+		txtCodOrc.requestFocus();
+	}
+
+	private synchronized void iniItem() {
+		lcDet.insert(true);
+		txtCodItOrc.setVlrInteger(new Integer(1));
+		if (((Boolean) oPrefs[0]).booleanValue())
+			txtRefProd.requestFocus();
+		else
+			txtCodProd.requestFocus();
+	}
+
+	public void exec(int iCodOrc) {
+		txtCodOrc.setVlrString(iCodOrc + "");
+		lcCampos.carregaDados();
+	}
+
+	public void show(){
+		super.show();
+		lcCampos.insert(true);
+		iniOrc();
+	}
+
+	private void focusCodprod() {
+		if (((Boolean)oPrefs[0]).booleanValue())
+			txtRefProd.requestFocus();
+		else
+			txtCodProd.requestFocus();
+	}
 
 	private void imprimir(boolean bVisualizar) {
 		String sOrdem = "";
@@ -1052,6 +1278,97 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		return oRetorno;
 	}
 
+	public void focusGained(FocusEvent fevt) { }
+
+	public void focusLost(FocusEvent fevt) {
+		if(fevt.getSource() == txtPercDescItOrc) {
+			if (txtPercDescItOrc.getText().trim().length() > 1) {
+				calcDescIt();
+				calcVlrProd();
+				calcTot();
+			}
+		}
+		else if(fevt.getSource() == txtVlrDescItOrc) {
+			if( bdVlrDescItAnt != txtVlrDescItOrc.getVlrBigDecimal())
+				txtPercDescItOrc.setVlrString("");
+			if( txtVlrDescItOrc.getVlrBigDecimal().floatValue() <= 0 ) { 
+				if( txtPercDescItOrc.getVlrBigDecimal().floatValue() > 0 ) {
+					calcDescIt();
+					calcVlrProd();
+					calcTot();
+				}						
+			}
+			
+			if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
+				lcDet.post();
+				lcDet.limpaCampos(true);
+				lcDet.setState(ListaCampos.LCS_NONE);
+				lcDet.edit();
+				focusCodprod();
+			} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
+				lcDet.post();
+				txtCodItOrc.requestFocus();
+			}
+		}
+		else if ((fevt.getSource() == txtQtdItOrc) || (fevt.getSource() == txtPrecoItOrc)) {
+			calcVlrProd();
+			calcTot();
+		}
+	}
+
+	public void keyPressed(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL) {
+			bCtrl = true;
+		} else if (kevt.getKeyCode() == KeyEvent.VK_O) {
+			if (bCtrl) {
+				btObs.doClick();
+			}
+		} else if (kevt.getKeyCode() == KeyEvent.VK_F4) {
+			btFechaOrc.doClick();
+		} else if (kevt.getKeyCode() == KeyEvent.VK_F3) {
+			if (kevt.getSource() == txtPercDescItOrc
+					|| kevt.getSource() == txtVlrDescItOrc)
+				mostraTelaDescont();
+		} else if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(kevt.getSource() == txtCodPlanoPag)
+				if(lcCampos.getStatus() == ListaCampos.LCS_INSERT)
+					lcCampos.post();
+		}
+		if (kevt.getSource() == txtRefProd)
+			lcDet.edit();
+		
+		super.keyPressed(kevt);
+	}
+
+	public void keyTyped(KeyEvent kevt) {
+		super.keyTyped(kevt);
+	}
+
+	public void keyReleased(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_CONTROL)
+			bCtrl = false;
+		super.keyReleased(kevt);
+	}
+
+	public void actionPerformed(ActionEvent evt) {
+		if (evt.getSource() == btFechaOrc) {
+			fechaOrc();
+		} else if (evt.getSource() == btPrevimp)
+			imprimir(true);
+		else if (evt.getSource() == btImp)
+			imprimir(false);
+		else if (evt.getSource() == btOrc) {
+			ImprimeOrc imp = new ImprimeOrc(txtCodOrc.getVlrInteger().intValue());
+			imp.setConexao(con);
+			dl = new FPrinterJob(imp, this);
+			dl.setVisible(true);
+		} else if (evt.getSource() == btObs) {
+			mostraObs( "VDORCAMENTO", txtCodOrc.getVlrInteger().intValue() );
+		} else if (evt.getSource() == btExp)
+			exportar();
+		super.actionPerformed(evt);
+	}
+
 	public void beforeCarrega(CarregaEvent cevt) {
 		if (cevt.getListaCampos() == lcProd2) {
 			lcProd.edit();
@@ -1084,10 +1401,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			}
 			txtCodTpCli.setVlrInteger(new Integer(getCodTipoCli()));
 			lcTipoCli.carregaDados();
-		} else if(cevt.getListaCampos() == lcPlanoPag)
-		    if(((Boolean) oPrefs[7]).booleanValue()){
+		} else if(cevt.getListaCampos() == lcPlanoPag) {
+		    if(((Boolean) oPrefs[7]).booleanValue())
 			    setReCalcPreco(true);
-		    }
+		}
 	}
 	
 	public void beforePost(PostEvent evt) {
@@ -1121,8 +1438,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		}
 	}
 
-	public void beforeDelete(DeleteEvent devt) {
-	}
+	public void beforeDelete(DeleteEvent devt) { }
 
 	public void afterDelete(DeleteEvent devt) {
 		if (devt.getListaCampos() == lcDet)
@@ -1132,313 +1448,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	public void beforeInsert(InsertEvent ievt) { }
 
 	public void afterInsert(InsertEvent ievt) {
-		if (ievt.getListaCampos() == lcCampos) {
-			//txtDtOrc.setVlrDate(new Date());
-			//txtDtVencOrc.setVlrDate(getVencimento());
-			//txtCodCli.requestFocus();
+		if (ievt.getListaCampos() == lcCampos)
 			iniOrc();
-		} else if (ievt.getListaCampos() == lcDet) {
+		else if (ievt.getListaCampos() == lcDet)
 			focusCodprod();
-		}
-	}
-
-	public void exec(int iCodOrc) {
-		txtCodOrc.setVlrString(iCodOrc + "");
-		lcCampos.carregaDados();
-	}
-	
-	public void show(){
-		super.show();
-		lcCampos.insert(true);
-		iniOrc();
-	}
-
-	private void focusCodprod() {
-		if (((Boolean)oPrefs[0]).booleanValue())
-			txtRefProd.requestFocus();
-		else
-			txtCodProd.requestFocus();
-	}
-
-	public int[] getParansPreco() {
-		int[] iRetorno = { txtCodProd.getVlrInteger().intValue(),
-				txtCodCli.getVlrInteger().intValue(), 
-				Aplicativo.iCodEmp,
-				ListaCampos.getMasterFilial("VDCLIENTE"),
-				txtCodPlanoPag.getVlrInteger().intValue(), 
-				Aplicativo.iCodEmp,
-				ListaCampos.getMasterFilial("FNPLANOPAG"),
-				((Integer) oPrefs[3]).intValue(), 
-				Aplicativo.iCodEmp,
-				ListaCampos.getMasterFilial("EQTIPOMOV"), 
-				Aplicativo.iCodEmp,
-				Aplicativo.iCodFilial,
-				txtCodOrc.getVlrInteger().intValue(),
-				Aplicativo.iCodEmp,
-				ListaCampos.getMasterFilial("VDORCAMENTO") };
-		return iRetorno;
-
-	}
-
-	public void setParansPreco(BigDecimal bdPreco) {
-		txtPrecoItOrc.setVlrBigDecimal(bdPreco);
-	}
-
-	private int getPlanoPag() {
-		int iRet = 0;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		try {
-			sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CodPlanoPag");
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o plano de pagamento.\n"
-					+"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
-	}
-
-	private int getCodCli() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		int iRet = 0;
-		try {
-			sSQL = "SELECT CODCLI FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CODCLI");
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o código do cliente.\n" +
-					"Provavelmente não foram gravadas corretamente as preferências!\n"
-						+ err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
-	}
-
-	private int getCodTipoCli() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		int iRet = 0;
-		try {
-			sSQL = "SELECT CODTIPOCLI FROM VDCLIENTE "
-				 + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
-			ps.setInt(3, txtCodCli.getVlrInteger().intValue());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CODTIPOCLI");
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o código do tipo de cliente.\n"
-						+ err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
-	}
-
-	private int getPrazo() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int iRet = 0;
-		String sSQL = null;
-		try {
-			sSQL = "SELECT Prazo FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("Prazo");
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o prazo.\n" +
-			"Provavelmente não foram gravadas corretamente as preferências!\n"
-					+ err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
-	}
-
-	private Date getVencimento() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		GregorianCalendar clVenc = new GregorianCalendar();
-		Date dtRet = null;
-		String sSQL = null;
-		int diasVenc = 0;
-		try {
-			sSQL = "SELECT DIASVENCORC FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				diasVenc = rs.getInt("DIASVENCORC");
-				clVenc.add(Calendar.DATE, diasVenc);
-				dtRet = clVenc.getTime();
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar a data de vencimento.\n"
-					+ err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return dtRet;
-	}
-
-	private int getVendedor() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		int iRet = 0;
-		try {
-			sSQL = "SELECT CODVEND FROM VDCLIENTE "
-				 + "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
-			ps.setInt(3, txtCodCli.getVlrInteger().intValue());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CodVend");
-				return iRet;
-			}
-			
-			sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE "
-				+ "IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setString(1, Aplicativo.strUsuario);
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, Aplicativo.iCodFilialPad);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CodVend");
-			}
-			
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar o comissionado.\n"
-					+ "O usuário '" + Aplicativo.strUsuario
-					+ "' é um comissionado?\n" + err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
-	}
-
-	private int getClComiss(int iCodVend) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		int iRet = 0;
-		try {
-			sSQL = "SELECT CODCLCOMIS FROM VDVENDEDOR "
-				 + "WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDCLIENTE"));
-			ps.setInt(3, iCodVend);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				iRet = rs.getInt("CODCLCOMIS");
-				return iRet;
-			}
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar a class. da comissão." + err.getMessage(),true,con,err);
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-		return iRet;
-	}
-
-	private synchronized void iniOrc() {
-		txtCodCli.setVlrInteger(new Integer(getCodCli()));
-		lcCli.carregaDados();
-		txtCodTpCli.setVlrInteger(new Integer(getCodTipoCli()));
-		lcTipoCli.carregaDados();
-		txtCodPlanoPag.setVlrInteger(new Integer(getPlanoPag()));
-		lcPlanoPag.carregaDados();
-		txtCodVend.setVlrInteger(new Integer(getVendedor()));
-		lcVend.carregaDados();
-		lcProd.limpaCampos(true);
-		lcProd2.limpaCampos(true);
-		txtVlrAdicOrc.setVlrString("");
-		txtVlrEdAdicOrc.setVlrString("");
-		txtVlrEdDescOrc.setVlrString("");
-		txtVlrLiqOrc.setVlrString("");
-		txtVlrProdOrc.setVlrString("");
-		txtDtOrc.setVlrDate(new Date());
-		txtDtVencOrc.setVlrDate(getVencimento());
-		txtPrazoEntOrc.setVlrInteger(new Integer(getPrazo()));
-		tab.limpa();
-		txtCodOrc.requestFocus();
-	}
-
-	private synchronized void iniItem() {
-		lcDet.insert(true);
-		txtCodItOrc.setVlrInteger(new Integer(1));
-		if (((Boolean) oPrefs[0]).booleanValue())
-			txtRefProd.requestFocus();
-		else
-			txtCodProd.requestFocus();
 	}
 
 	public void setConexao(Connection cn) {

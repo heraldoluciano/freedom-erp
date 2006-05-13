@@ -98,6 +98,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 	private final String sTipoVenda;
 	private org.freedom.modulos.std.FVenda vendaSTD = null;
 	private org.freedom.modulos.pdv.FVenda vendaPDV = null;
+	private boolean[] prefs;
 	
 	public FAdicOrc(Object vd,String tipo) {
 		// Monta a tela
@@ -279,6 +280,8 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		
 		lcOrc.addCarregaListener(this);
 		
+		addWindowListener( this );
+		
 	}
 	
 	private void carregar() {
@@ -325,10 +328,8 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						fValDesc += rs.getFloat("VlrDescItOrc");
 						fValLiq += rs.getFloat("VlrLiqItOrc");
 						
-						vValidos.addElement(new int[] {
-											rs.getInt("CodOrc"),
-											rs.getInt("CodItOrc")
-											});							
+						vValidos.addElement(new int[] { rs.getInt("CodOrc"),
+														rs.getInt("CodItOrc") });							
 						tab.adicLinha(vVals);				
 					}
 					txtVlrProd.setVlrBigDecimal(new BigDecimal(fValProd));
@@ -358,33 +359,18 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		boolean bPrim = true;
 		int iCodVenda = 0;
 		int[] iVals = null;
-		JTextFieldPad txtNewCodVenda = null;
-		FDialogo diag = null;
+		DLCriaVendaOrc diag = null;
 		
 		try {
 			if(tab.getNumLinhas()>0) {
 
-				boolean usaPedSeq = (getUsaPedSeq());
-				diag = new FDialogo();
-				txtNewCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
-				
-				diag.setTitulo("Confirmação");
-				if(usaPedSeq || sTipoVenda.equals("E")) {
-					diag.setAtribos(235, 120);
-					diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 17, 220, 20);
-				}
-				else {
-					diag.setAtribos(235, 140);
-					diag.adic(new JLabelPad("DEJEJA CRIAR UMA VENDA AGORA?"), 7, 15, 220, 20);
-					diag.adic(new JLabelPad("Nº Pedido"), 7, 40, 80, 20);
-					diag.adic(txtNewCodVenda, 87, 40, 120, 20);
-				}
-
-				diag.setVisible(true);
+				boolean usaPedSeq = prefs[0];
+				diag = new DLCriaVendaOrc(usaPedSeq,sTipoVenda);				
+				diag.setVisible(true);			
 				
 				if (diag.OK) {
 					if(!usaPedSeq && sTipoVenda.equals("V"))
-						iCodVenda = txtNewCodVenda.getVlrInteger().intValue();
+						iCodVenda = diag.getNewCodVenda();
 				}
 				else
 					return false;
@@ -407,17 +393,17 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 								ps.setString(4,sTipoVenda);
 								ps.setInt(5,iCodVenda);
 								rs = ps.executeQuery();
-								if (rs.next()) {
+								
+								if (rs.next())
 									iCodVenda = rs.getInt(1);
-								}
+								
 								rs.close();
 								ps.close();
 							} catch (SQLException err) {
 								if(err.getErrorCode() == 335544665) {
 									Funcoes.mensagemErro(this,"Número de pedido já existe!" );
 									return gerar();
-								}
-								else
+								} else
 									Funcoes.mensagemErro(this,"Erro ao gerar venda!\n"+err.getMessage(),true,con,err);
 								
 								err.printStackTrace();
@@ -460,21 +446,19 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 							"Deseja edita-la?","Confirmação", JOptionPane.YES_NO_OPTION,
 								JOptionPane.QUESTION_MESSAGE,null, opt, opt[0])==JOptionPane.YES_OPTION){
 						vendaSTD.exec(iCodVenda);
-						btSair.doClick();			                             	
-					
+						dispose();
 					}
 				} else if(sTipoVenda.equals("E")) {	
 					iVals = (int[])vValidos.elementAt(0);
 					if(vendaPDV.montaVendaOrc(iVals[0])) {
-						for (int i=0;i<vValidos.size();i++) {
-							if (!((Boolean)tab.getValor(i,0)).booleanValue())
-								continue;
-							
+						for (int i=0;i<vValidos.size();i++) {							
 							iVals = (int[])vValidos.elementAt(i);
 							vendaPDV.adicItemOrc(iVals);
 						}
 					}	
-					this.dispose();
+					dispose();
+					if(prefs[1])
+						vendaPDV.fechaVenda();
 				}
 			} else 
 				Funcoes.mensagemInforma(this,"Não existe nenhum item pra gerar uma venda!");
@@ -486,7 +470,6 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 			rs = null;
 			sSQL = null;
 			iVals = null;
-			txtNewCodVenda = null;
 			diag = null;
 		}
 		
@@ -597,20 +580,25 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		}
 	}
 	
-	private boolean getUsaPedSeq() {
+	private boolean[] getPrefs() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
-		boolean ret = false;
+		boolean[] ret = new boolean[2];
 		try {
-			sSQL = "SELECT USAPEDSEQ FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			sSQL = "SELECT P1.USAPEDSEQ, P4.AUTOFECHAVENDA " +
+				   "FROM SGPREFERE1 P1, SGPREFERE4 P4 " +
+				   "WHERE P1.CODEMP=? AND P1.CODFILIAL=? " +
+				   "AND P4.CODEMP=P1.CODEMP AND P4.CODFILIAL=P4.CODFILIAL";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE1"));
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				if(rs.getString(1).equals("S"))
-					ret = true;
+					ret[0] = true;
+				if(rs.getString(2).equals("S"))
+					ret[1] = true;
 			}
 			rs.close();
 			ps.close();
@@ -706,10 +694,19 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		lcOrc.limpaCampos(true);
 	}
 	
+	public void firstFocus() {
+		txtCodOrc.requestFocus();
+	}
+	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcCli.setConexao(cn);
 		lcConv.setConexao(cn);
 		lcOrc.setConexao(cn);
+		
+		prefs = getPrefs();
+		
+		txtCodOrc.setFocusable(true);
+		setFirstFocus( txtCodOrc );
 	}
 }

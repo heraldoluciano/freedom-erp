@@ -80,13 +80,6 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
   private JTextFieldPad txtStatusCompra = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);
   private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
-  private JLabelPad lbPercDescCompra = new JLabelPad("% Desc.");
-  private JLabelPad lbVlrDescCompra = new JLabelPad("V Desc.");
-  private JLabelPad lbVlrFreteCompra = new JLabelPad("V Frete.");
-  private JLabelPad lbPercAdicCompra = new JLabelPad("% Adic.");
-  private JLabelPad lbVlrAdicCompra = new JLabelPad("V Adic.");
-  private JLabelPad lbCodPlanoPag = new JLabelPad("Cód.p.pag.");
-  private JLabelPad lbDescPlanoPag = new JLabelPad("Descrição do plano de pagto.");
   private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
   private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
   private ListaCampos lcCompra = new ListaCampos(this);
@@ -198,21 +191,21 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		txtCodCompra.setVlrInteger(iCodCompra);
 		lcCompra.carregaDados();
 		
-		
+
 		setPainel(pinFecha);
-		adic(lbCodPlanoPag,7,0,270,20);
+		adic(new JLabelPad("Cód.p.pag."),7,0,270,20);
 		adic(txtCodPlanoPag,7,20,80,20);
-		adic(lbDescPlanoPag,90,0,270,20);
+		adic(new JLabelPad("Descrição do plano de pagto."),90,0,270,20);
 		adic(txtDescPlanoPag,90,20,270,20);
-		adic(lbPercDescCompra,7,40,100,20);
+		adic(new JLabelPad("% Desc."),7,40,100,20);
 		adic(txtPercDescCompra,7,60,100,20);
-		adic(lbVlrDescCompra,110,40,97,20);
+		adic(new JLabelPad("V Desc."),110,40,97,20);
 		adic(txtVlrDescCompra,110,60,97,20);
-		adic(lbPercAdicCompra,210,40,97,20);
+		adic(new JLabelPad("% Adic."),210,40,97,20);
 		adic(txtPercAdicCompra,210,60,97,20);
-		adic(lbVlrAdicCompra,310,40,100,20);
+		adic(new JLabelPad("V Adic."),310,40,100,20);
 		adic(txtVlrAdicCompra,310,60,100,20);
-		adic(lbVlrFreteCompra,7,80,100,20);
+		adic(new JLabelPad("V Frete."),7,80,100,20);
 		adic(txtVlrFreteCompra,7,100,100,20);
 		adic(new JLabelPad("V. Compra"),110,80,100,20);
 		adic(txtVlrLiqCompra,110,100,97,20);
