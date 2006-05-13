@@ -94,6 +94,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JButton btFechaVenda = new JButton(Icone.novo("btOk.gif"));
 	private JButton btConsPgto = new JButton(Icone.novo("btConsPgto.gif"));
 	private JButton btAdicOrc = new JButton("Busca Orçamento", Icone.novo("btOrcVenda.gif"));
+	private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
 	private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtCodSerie = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
@@ -173,11 +174,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private JTextField txtFiscalTipoMov1 = new JTextField();
 	private JTextField txtFiscalTipoMov2 = new JTextField();	
 	private JTextFieldPad txtCodAlmoxItVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5, 0);
+	private JTextFieldPad txtUltCamp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JLabelPad lbStatus = new JLabelPad();
 	private JCheckBoxPad chbImpPedTipoMov = new JCheckBoxPad("Imp.ped.", "S","N");
 	private JCheckBoxPad chbImpNfTipoMov = new JCheckBoxPad("Imp.NF", "S", "N");
 	private JCheckBoxPad chbImpBolTipoMov = new JCheckBoxPad("Imp.bol.?", "S","N");
 	private JCheckBoxPad chbReImpNfTipoMov = new JCheckBoxPad("Reimp.NF?", "S","N");
+	private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
 	private ListaCampos lcTratTrib = new ListaCampos(this, "TT");
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 	private ListaCampos lcCli = new ListaCampos(this, "CL");
@@ -193,8 +196,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	private ListaCampos lcVenda2 = new ListaCampos(this);	
 	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
 	private JTabbedPanePad tpnCab = new JTabbedPanePad();
-	private JButton btAltComis = new JButton(Icone.novo("btEditar.gif"));
-	private JTextFieldPad txtUltCamp = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private boolean[] bPrefs = null;
 	private boolean bCtrl = false;
 	private String sOrdNota = "";
@@ -205,7 +206,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		setAtribos(15, 10, 775, 460);
 
 		pnCliCab.add(tpnCab);
-		//pinCabVenda.setFirstFocus(txtCodVenda);
+		pinCabVenda.setFirstFocus(txtCodVenda);
 		tpnCab.addTab("Venda", pinCabVenda);
 		tpnCab.addTab("Comissão", pinCabComis);
 		tpnCab.addTab("Fiscal", pinCabFiscal);
@@ -242,7 +243,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		lcCli.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.",ListaCampos.DB_SI, false));
 		lcCli.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_SI, false));
 		lcCli.add(new GuardaCampo(txtEstCli, "UfCli", "UF", ListaCampos.DB_SI,false));
-		//lcCli.setWhereAdic("ATIVOCLI='S'");
 		lcCli.montaSql(false, "CLIENTE", "VD");
 		lcCli.setQueryCommit(false);
 		lcCli.setReadOnly(true);
@@ -253,6 +253,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		lcVendedor.add(new GuardaCampo(txtDescVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
 		lcVendedor.add(new GuardaCampo(txtCodClComis, "CodClComis", "Cód.c.comis.",ListaCampos.DB_SI, false));
 		lcVendedor.add(new GuardaCampo(txtPercComisVenda, "PercComVend","% Comis.", ListaCampos.DB_SI, false));
+		lcVendedor.add(new GuardaCampo(cbAtivo, "AtivoComis","Ativo", ListaCampos.DB_SI, false));
+		lcVendedor.setWhereAdic("ATIVOCOMIS='S'");
 		lcVendedor.montaSql(false, "VENDEDOR", "VD");
 		lcVendedor.setQueryCommit(false);
 		lcVendedor.setReadOnly(true);
@@ -539,7 +541,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		adicCampo(txtPedCliVenda, 570, 60, 75, 20, "PedCliVenda", "N.ped.cli.",ListaCampos.DB_SI, false);
 		adic(lbStatus, 649, 60, 95, 20);
 		setPainel(pinCabComis);
-		adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comiss.",ListaCampos.DB_FK, txtDescVend, true);
+		adicCampo(txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comis.",ListaCampos.DB_FK, txtDescVend, true);
 		adicDescFK(txtDescVend, 90, 20, 197, 20, "NomeVend","Nome do comissionado");
 		if (bPrefs[4]) {
 			adicCampo(txtCodClComis, 290, 20, 80, 20, "CodClComis","Cód.c.comis.", ListaCampos.DB_FK, txtDescClComis, true);
@@ -675,166 +677,26 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		tab.setAutoRol(true);
 	}
 
-	private void buscaICMS() {
-		if (txtAliqFisc.floatValue() > 0) {
-			txtPercICMSItVenda.setVlrBigDecimal(txtAliqFisc.getVlrBigDecimal());
-			return; //Ele cai fora porque se existe um valor no CLFISCAL ele
-					// nem busca a Aliq. por Natureza da operaçao.
-		}
-		String sSQL = "SELECT PERCICMS FROM LFBUSCAICMSSP(?,?,?,?)";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setString(1, txtCodNat.getVlrString());
-			ps.setString(2, txtEstCli.getVlrString());
-			ps.setInt(3, Aplicativo.iCodEmp);
-			ps.setInt(4, Aplicativo.iCodFilialMz);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				txtPercICMSItVenda.setVlrBigDecimal(new BigDecimal(rs.getString(1)));
-			}
-			calcImpostos(true);
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
-					+ err.getMessage(),true,con,err);
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-	}
-
-	/**
-	 * Busca de lote. Busca do lote mais proximo da data de venda.
-	 *  
-	 */
-	private void buscaLote() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		try {
-			sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
-				+ "L.CODPROD=? AND L.CODFILIAL=? "+(bPrefs[13]?"AND L.SLDLIQLOTE>0 ":" ")
-				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
-				+ "( "
-				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
-				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP "+(bPrefs[13]?"AND LS.SLDLIQLOTE>0 ":" ")
-				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(2, lcProd.getCodFilial());
-			ps.setInt(3, Aplicativo.iCodEmp);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				String sCodLote = rs.getString(1);
-				if (sCodLote != null) {
-					txtCodLote.setVlrString(sCodLote.trim());
-					lcLote.carregaDados();
-				}
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-	}
-
-	/**
-	 * Busca da Natureza de Operação . Busca a natureza de operação através da
-	 * tabela de regras fiscais.
-	 *  
-	 */
-	private void buscaNat() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodFilial);
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, lcProd.getCodFilial());
-			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(5, Aplicativo.iCodEmp);
-			ps.setInt(6, lcCli.getCodFilial());
-			ps.setInt(7, txtCodCli.getVlrInteger().intValue());
-			ps.setNull(8, Types.INTEGER);
-			ps.setNull(9, Types.INTEGER);
-			ps.setNull(10, Types.INTEGER);
-			ps.setInt(11, lcTipoMov.getCodFilial());
-			ps.setInt(12, txtCodTipoMov.getVlrInteger().intValue());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				txtCodNat.setVlrString(rs.getString("CODNAT"));
-				lcNat.carregaDados();
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
-					+ err.getMessage(),true,con,err);
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-	}
-
-	private void buscaTratTrib() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = "SELECT ORIGFISC,CODTRATTRIB,REDFISC,TIPOFISC,CODMENS,ALIQFISC,ALIQIPIFISC"
-				+ " FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?)";
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodFilial);
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, lcProd.getCodFilial());
-			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(5, Aplicativo.iCodEmp);
-			ps.setInt(6, lcCli.getCodFilial());
-			ps.setInt(7, txtCodCli.getVlrInteger().intValue());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				txtOrigFisc.setVlrString(rs.getString("ORIGFISC"));
-				txtCodTratTrib.setVlrString(rs.getString("CODTRATTRIB"));
-				txtRedFisc.setVlrBigDecimal(new BigDecimal(rs.getString("REDFISC") != null ? rs.getString("REDFISC"): "0"));
-				txtTipoFisc.setVlrString(rs.getString("TIPOFISC"));
-				txtCodMens.setVlrString(rs.getString("CODMENS"));
-				txtAliqFisc.setVlrString(rs.getString("ALIQFISC"));
-				txtAliqIPIFisc.setVlrBigDecimal(new BigDecimal(rs.getString("ALIQIPIFISC") != null ? rs.getString("ALIQIPIFISC"): "0"));
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,
-					"Erro ao buscar tratamento tributário!\n" + err.getMessage(),true,con,err);
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
-	}
-	
 	private void calcDescIt() {
 		if(txtPercDescItVenda.floatValue()!=0) {
 			txtVlrDescItVenda.setVlrBigDecimal(new BigDecimal(
 					Funcoes.arredFloat(txtVlrProdItVenda.floatValue()
-							* txtPercDescItVenda.floatValue() / 100,casasDecFin)));
+							* txtPercDescItVenda.floatValue() / 100, casasDecFin)));
 		} 
 	}
 	
 	private void calcComisIt() {
 		if(txtPercComItVenda.floatValue()!=0) {
-			txtVlrComisItVenda.setVlrBigDecimal(new BigDecimal(Funcoes.arredFloat(
-					(txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue())
+			txtVlrComisItVenda.setVlrBigDecimal(new BigDecimal(
+					Funcoes.arredFloat((txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue())
 						* txtPercComItVenda.floatValue()/ 100
 						* txtPercComisVenda.floatValue()/ 100, casasDecFin)));
 		}
+	}
+
+	private void calcVlrProd() {
+		txtVlrProdItVenda.setVlrBigDecimal(
+				calcVlrProd(txtPrecoItVenda.getVlrBigDecimal(),txtQtdItVenda.getVlrBigDecimal()));
 	}
 
 	private void calcImpostos(boolean bBuscaBase) {
@@ -917,19 +779,151 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}
 	}
 
-	private void calcVlrProd() {
-		txtVlrProdItVenda.setVlrBigDecimal(
-				calcVlrProd(txtPrecoItVenda.getVlrBigDecimal(),txtQtdItVenda.getVlrBigDecimal()));
-	}
-	
-	public void setLog(String[] args) {
-		if(args != null) {
-			txtCodEmpLG.setVlrString(args[0]);
-			txtCodFilialLG.setVlrString(args[1]);
-			txtCodLog.setVlrString(args[2]);
+	private void getICMS() {
+		if (txtAliqFisc.floatValue() > 0) {
+			txtPercICMSItVenda.setVlrBigDecimal(txtAliqFisc.getVlrBigDecimal());
+			return; //Ele cai fora porque se existe um valor no CLFISCAL ele
+					// nem busca a Aliq. por Natureza da operaçao.
+		}
+		String sSQL = "SELECT PERCICMS FROM LFBUSCAICMSSP(?,?,?,?)";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, txtCodNat.getVlrString());
+			ps.setString(2, txtEstCli.getVlrString());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, Aplicativo.iCodFilialMz);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				txtPercICMSItVenda.setVlrBigDecimal(new BigDecimal(rs.getString(1)));
+			}
+			calcImpostos(true);
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
 		}
 	}
-	
+
+	/**
+	 * Busca de lote. Busca do lote mais proximo da data de venda.
+	 *  
+	 */
+	private void getLote() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
+				+ "L.CODPROD=? AND L.CODFILIAL=? "+(bPrefs[13]?"AND L.SLDLIQLOTE>0 ":" ")
+				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
+				+ "( "
+				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
+				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP "+(bPrefs[13]?"AND LS.SLDLIQLOTE>0 ":" ")
+				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(2, lcProd.getCodFilial());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				String sCodLote = rs.getString(1);
+				if (sCodLote != null) {
+					txtCodLote.setVlrString(sCodLote.trim());
+					lcLote.carregaDados();
+				}
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+	}
+
+	/**
+	 * Busca da Natureza de Operação . Busca a natureza de operação através da
+	 * tabela de regras fiscais.
+	 *  
+	 */
+	private void getCFOP() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodFilial);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, lcProd.getCodFilial());
+			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(5, Aplicativo.iCodEmp);
+			ps.setInt(6, lcCli.getCodFilial());
+			ps.setInt(7, txtCodCli.getVlrInteger().intValue());
+			ps.setNull(8, Types.INTEGER);
+			ps.setNull(9, Types.INTEGER);
+			ps.setNull(10, Types.INTEGER);
+			ps.setInt(11, lcTipoMov.getCodFilial());
+			ps.setInt(12, txtCodTipoMov.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				txtCodNat.setVlrString(rs.getString("CODNAT"));
+				lcNat.carregaDados();
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+	}
+
+	private void getTratTrib() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "SELECT ORIGFISC,CODTRATTRIB,REDFISC,TIPOFISC,CODMENS,ALIQFISC,ALIQIPIFISC"
+				+ " FROM LFBUSCAFISCALSP(?,?,?,?,?,?,?)";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodFilial);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, lcProd.getCodFilial());
+			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(5, Aplicativo.iCodEmp);
+			ps.setInt(6, lcCli.getCodFilial());
+			ps.setInt(7, txtCodCli.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				txtOrigFisc.setVlrString(rs.getString("ORIGFISC"));
+				txtCodTratTrib.setVlrString(rs.getString("CODTRATTRIB"));
+				txtRedFisc.setVlrBigDecimal(new BigDecimal(rs.getString("REDFISC") != null ? rs.getString("REDFISC"): "0"));
+				txtTipoFisc.setVlrString(rs.getString("TIPOFISC"));
+				txtCodMens.setVlrString(rs.getString("CODMENS"));
+				txtAliqFisc.setVlrString(rs.getString("ALIQFISC"));
+				txtAliqIPIFisc.setVlrBigDecimal(new BigDecimal(rs.getString("ALIQIPIFISC") != null ? rs.getString("ALIQIPIFISC"): "0"));
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this,
+					"Erro ao buscar tratamento tributário!\n" + err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+	}
+
 	public Vector getParansDesconto(){
 		Vector param = new Vector();
 		param.addElement(txtStrDescItVenda);
@@ -945,21 +939,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				txtCodItVenda.getVlrInteger().intValue()+"",
 				txtCodProd.getVlrInteger().intValue()+"",
 				txtVlrProdItVenda.getVlrInteger().intValue()+""};
-	}
-
-	private void mostraTelaDescont() {
-		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
-			txtVlrDescItVenda.setAtivo(true);
-			txtVlrDescItVenda.setVlrString("");
-			txtPercDescItVenda.setAtivo(false);
-			txtPercDescItVenda.setVlrString("");
-			calcVlrProd();
-			calcImpostos(true);
-			mostraTelaDesconto();
-			calcVlrProd();
-			calcImpostos(true);
-			txtVlrDescItVenda.requestFocus(true);
-		}
 	}
 
 	public int[] getParansPreco() {
@@ -981,10 +960,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		return iRetorno;
 	}
 
-	public void setParansPreco(BigDecimal bdPreco) {
-		txtPrecoItVenda.setVlrBigDecimal(bdPreco);
-	}
-	
 	private String getLayoutPedido() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1024,6 +999,91 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}
 		
 		return retorno;
+	}
+
+	private boolean getVendaBloqueada() {
+		boolean retorno = false;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String sSql = null;
+		String sTipoVenda = null;
+		int iCodVenda = 0;
+		try {
+			iCodVenda = txtCodVenda.getVlrInteger().intValue();
+			if (iCodVenda != 0) {
+				sTipoVenda = "V";
+				sSql = "SELECT BLOQVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA=?";
+				ps = con.prepareStatement(sSql);
+				ps.setInt(1, Aplicativo.iCodEmp);
+				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
+				ps.setInt(3, iCodVenda);
+				ps.setString(4, sTipoVenda);
+				rs = ps.executeQuery();
+				
+				if(rs.next()){
+					if(rs.getString(1).equals("S"))
+						retorno = true;
+				}					
+					
+				ps.close();
+				if (!con.getAutoCommit())
+					con.commit();
+			}
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro bloqueando a venda!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			rs = null;
+			ps = null;
+			sSql = null;
+		}
+		return retorno;
+	}
+
+	private boolean isComissAtivo() {
+		boolean retorno = false;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String sSql = null;
+		try {
+				
+			sSql = "SELECT ATIVOCOMIS FROM VDVENDEDOR WHERE CODEMP=? AND CODFILIAL=? AND CODVEND=?";
+			ps = con.prepareStatement(sSql);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDVENDEDOR"));
+			ps.setInt(3, txtCodVend.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			
+			if(rs.next()){
+				if(rs.getString(1).equals("S"))
+					retorno = true;
+			}					
+				
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro verificando comissionado ativo!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			rs = null;
+			ps = null;
+			sSql = null;
+		}
+		return retorno;
+	}
+
+	public void setLog(String[] args) {
+		if(args != null) {
+			txtCodEmpLG.setVlrString(args[0]);
+			txtCodFilialLG.setVlrString(args[1]);
+			txtCodLog.setVlrString(args[2]);
+		}
+	}
+
+	public void setParansPreco(BigDecimal bdPreco) {
+		txtPrecoItVenda.setVlrBigDecimal(bdPreco);
 	}
 
 	private boolean testaPgto() {
@@ -1098,6 +1158,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		return bRetorno;
 	}
 
+	private void mostraTelaDescont() {
+		if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
+			txtVlrDescItVenda.setAtivo(true);
+			txtVlrDescItVenda.setVlrString("");
+			txtPercDescItVenda.setAtivo(false);
+			txtPercDescItVenda.setVlrString("");
+			calcVlrProd();
+			calcImpostos(true);
+			mostraTelaDesconto();
+			calcVlrProd();
+			calcImpostos(true);
+			txtVlrDescItVenda.requestFocus(true);
+		}
+	}
+
 	private void bloqvenda() {
 		PreparedStatement ps = null;
 		String sSql = null;
@@ -1128,45 +1203,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}
 	}
 	
-	private boolean verificaBloq() {
-		boolean retorno = false;
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		String sSql = null;
-		String sTipoVenda = null;
-		int iCodVenda = 0;
-		try {
-			iCodVenda = txtCodVenda.getVlrInteger().intValue();
-			if (iCodVenda != 0) {
-				sTipoVenda = "V";
-				sSql = "SELECT BLOQVENDA FROM VDVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA=?";
-				ps = con.prepareStatement(sSql);
-				ps.setInt(1, Aplicativo.iCodEmp);
-				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
-				ps.setInt(3, iCodVenda);
-				ps.setString(4, sTipoVenda);
-				rs = ps.executeQuery();
-				
-				if(rs.next()){
-					if(rs.getString(1).equals("S"))
-						retorno = true;
-				}					
-					
-				ps.close();
-				if (!con.getAutoCommit())
-					con.commit();
-			}
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro bloqueando a venda!\n"
-					+ err.getMessage(),true,con,err);
-		} finally {
-			rs = null;
-			ps = null;
-			sSql = null;
-		}
-		return retorno;
-	}
-
 	private void abreAdicOrc() {
 		if (!Aplicativo.telaPrincipal.temTela("Busca orçamento")) {
 			FAdicOrc tela = new FAdicOrc(this,"V");
@@ -1175,12 +1211,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void altComisVend() {
-		if (lcCampos.getStatus() != ListaCampos.LCS_SELECT) {
+		if (lcCampos.getStatus() != ListaCampos.LCS_SELECT)
 			return;
-		}
-		DLAltComisVend dl = new DLAltComisVend(this, txtCodVenda
-				.getVlrInteger().intValue(), txtMedComisVenda
-				.getVlrBigDecimal(), con);
+
+		DLAltComisVend dl = new DLAltComisVend(this, txtCodVenda.getVlrInteger().intValue(), 
+													 txtMedComisVenda.getVlrBigDecimal(), con);
 		dl.setVisible(true);
 		dl.dispose();
 		lcCampos.carregaDados();
@@ -2052,54 +2087,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		return bRetorno;
 	}
 	
-	public void focusGained(FocusEvent fevt) { }
-
-	public void focusLost(FocusEvent fevt) {
-		if (fevt.getSource() == txtPercDescItVenda) {
-			if (txtPercDescItVenda.getText().trim().length() < 1) {
-				txtVlrDescItVenda.setAtivo(true);
-			} else {
-				calcDescIt();
-				calcVlrProd();
-				calcImpostos(true);
-				txtVlrDescItVenda.setAtivo(false);
-			}
-		} else if (fevt.getSource() == txtPercComItVenda) {
-			if (txtPercComItVenda.getText().trim().length() < 1) {
-				txtVlrComisItVenda.setAtivo(true);
-			} else {
-				calcComisIt();
-				calcVlrProd();
-				calcImpostos(true);
-				txtVlrComisItVenda.setAtivo(false);
-			}
-		} else if (fevt.getSource() == txtVlrDescItVenda) {
-			if (txtVlrDescItVenda.getText().trim().length() < 1) {
-				txtPercDescItVenda.setAtivo(true);
-			} else if (txtVlrDescItVenda.getAtivo()) {
-				txtPercDescItVenda.setAtivo(false);
-			}
-		} else if (fevt.getSource() == txtVlrComisItVenda) {
-			if (txtVlrComisItVenda.getText().trim().length() < 1) {
-				txtPercComItVenda.setAtivo(true);
-			} else if (txtVlrComisItVenda.getAtivo()) {
-				txtPercComItVenda.setAtivo(false);
-			}
-		} else if ((fevt.getSource() == txtQtdItVenda)
-				| (fevt.getSource() == txtPrecoItVenda)
-				| (fevt.getSource() == txtCodNat)) {
-			calcVlrProd();
-			calcImpostos(true);
-		} else if ((fevt.getSource() == txtPercICMSItVenda)
-				| (fevt.getSource() == txtAliqIPIItVenda)) {
-			calcImpostos(false);
-		}
-	}
-
 	public void beforeCarrega(CarregaEvent cevt) {
+		
 		if (cevt.getListaCampos() == lcProd2)
 			lcProd.edit();
-		if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { //Cancela os
+		
+		/*if (lcCampos.getStatus() != ListaCampos.LCS_INSERT) { //Cancela os
 															  // auto-incrementos
 															  // que sobrepõem o
 															  // que está
@@ -2118,7 +2111,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				lcCli.cancLerCampo(2, false); //Código do Pagamento
 				lcCli.cancLerCampo(3, false); //Código do Vendedor
 			}
+		}*/ // Por que faz a mesma coisa no if e no else?
+		
+		if (cevt.getListaCampos() == lcVendedor) {//Ativa auto-incrementos
+			lcVendedor.cancLerCampo(2, false); //Comissão do vendedor;
+			if(!isComissAtivo()) //Verifica se o comissionado é ativo.
+				Funcoes.mensagemInforma( this, "Comissionado Inativo!" );
+		} else if (cevt.getListaCampos() == lcCli) {
+			lcCli.cancLerCampo(2, false); //Código do Pagamento
+			lcCli.cancLerCampo(3, false); //Código do Vendedor
 		}
+		
 		if (lcDet.getStatus() != ListaCampos.LCS_INSERT) {
 			if (cevt.getListaCampos() == lcProd) {
 				lcProd.cancLerCampo(5, true); //Código da Classificação Fiscal
@@ -2128,6 +2131,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				lcProd.cancLerCampo(5, false); //Código da Classificação Fiscal
 			}
 		}
+		
 		if (cevt.getListaCampos() == lcCampos) {
 			if (bPrefs[5]) {
 				txtFiscalTipoMov1.setText("S");
@@ -2150,18 +2154,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
 											  // produto tem lote
 					if (lcDet.getStatus() == ListaCampos.LCS_INSERT)
-						buscaLote();
+						getLote();
 				}
 				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
 					calcVlrItem(null,false);
 				}
 			} else if ((cevt.getListaCampos() == lcFisc)
 					&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-				buscaNat();
-				buscaTratTrib();
+				getCFOP();
+				getTratTrib();
 			} else if (cevt.getListaCampos() == lcNat) {
 				if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-					buscaICMS();
+					getICMS();
 				}
 			} else if (cevt.getListaCampos() == lcDet) {
 				lcVenda2.carregaDados();//Carrega os Totais
@@ -2169,6 +2173,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				String s = txtCodVenda.getVlrString();
 				lcVenda2.carregaDados();//Carrega os Totais
 				txtCodVenda.setVlrString(s);
+				s = null;
 			} else if (cevt.getListaCampos() == lcVenda2) {
 				txtPercComisVenda.setAtivo(txtVlrComisVenda.floatValue() == 0);
 			} else if (cevt.getListaCampos() == lcCli ) {
@@ -2190,7 +2195,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			}
 			
 
-			if (verificaBloq()){
+			if (getVendaBloqueada()){
 				lbStatus.setText("  BLOQUEADA");
 				lbStatus.setBackground(Color.BLUE);
 				lbStatus.setVisible(true);
@@ -2502,6 +2507,50 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			altComisVend();
 		}
 		super.actionPerformed(evt);
+	}
+
+	public void focusGained(FocusEvent fevt) { }
+
+	public void focusLost(FocusEvent fevt) {
+		if (fevt.getSource() == txtPercDescItVenda) {
+			if (txtPercDescItVenda.getText().trim().length() < 1) {
+				txtVlrDescItVenda.setAtivo(true);
+			} else {
+				calcDescIt();
+				calcVlrProd();
+				calcImpostos(true);
+				txtVlrDescItVenda.setAtivo(false);
+			}
+		} else if (fevt.getSource() == txtPercComItVenda) {
+			if (txtPercComItVenda.getText().trim().length() < 1) {
+				txtVlrComisItVenda.setAtivo(true);
+			} else {
+				calcComisIt();
+				calcVlrProd();
+				calcImpostos(true);
+				txtVlrComisItVenda.setAtivo(false);
+			}
+		} else if (fevt.getSource() == txtVlrDescItVenda) {
+			if (txtVlrDescItVenda.getText().trim().length() < 1) {
+				txtPercDescItVenda.setAtivo(true);
+			} else if (txtVlrDescItVenda.getAtivo()) {
+				txtPercDescItVenda.setAtivo(false);
+			}
+		} else if (fevt.getSource() == txtVlrComisItVenda) {
+			if (txtVlrComisItVenda.getText().trim().length() < 1) {
+				txtPercComItVenda.setAtivo(true);
+			} else if (txtVlrComisItVenda.getAtivo()) {
+				txtPercComItVenda.setAtivo(false);
+			}
+		} else if ((fevt.getSource() == txtQtdItVenda)
+				| (fevt.getSource() == txtPrecoItVenda)
+				| (fevt.getSource() == txtCodNat)) {
+			calcVlrProd();
+			calcImpostos(true);
+		} else if ((fevt.getSource() == txtPercICMSItVenda)
+				| (fevt.getSource() == txtAliqIPIItVenda)) {
+			calcImpostos(false);
+		}
 	}
 
 	public void setConexao(Connection cn) {

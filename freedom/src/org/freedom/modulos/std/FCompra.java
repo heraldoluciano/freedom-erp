@@ -762,8 +762,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	public void actionPerformed(ActionEvent evt) {
 		String[] sValores = null;
 		if (evt.getSource() == btFechaCompra) {
-			DLFechaCompra dl = new DLFechaCompra(con, txtCodCompra
-					.getVlrInteger(), this);
+			DLFechaCompra dl = new DLFechaCompra(con, txtCodCompra .getVlrInteger(), this);
 			dl.setVisible(true);
 			if (dl.OK) {
 				sValores = dl.getValores();
@@ -787,19 +786,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					else if (txtTipoMov.getVlrString().equals("SE"))
 						emitNota("NS");
 					else {
-						Funcoes.mensagemErro(this,
-								"Não existe nota para o tipo de movimento: '"
-										+ txtTipoMov.getVlrString() + "'");
+						Funcoes.mensagemErro(this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'");
 						return;
 					}
 				}
 				else if (sValores[3].equals("S")) {
 					imprimir(true, txtCodCompra.getVlrInteger().intValue());
-					//          if (JOptionPane.showConfirmDialog(null, "Pedido OK?",
-					// "Freedom",
-					// JOptionPane.YES_NO_OPTION)==0 ) {
-					//            txtStatusCompra.setVlrString("P4");
-					//          }
 				}
 				
 				lcCampos.post();
@@ -845,12 +837,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 					parans.addElement(new Integer(iCodCompra));
 					nf = new NFEntrada(casasDec);
 					nf.carregaTabelas(con, parans);
-					//((Layout) layNF).bEntrada = true;
 					bImpOK = ((Layout) layNF).imprimir(nf, imp);
 				}
 				else if (layNF instanceof Leiaute) {
 					Funcoes.mensagemInforma(this,"O layout de Nota Fiscal\nnão se aplica para nota de entrada ");
-					//imprimir(true, txtCodCompra.getVlrInteger().intValue());
 				}
 			}
 		}

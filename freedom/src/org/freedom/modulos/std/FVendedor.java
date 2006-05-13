@@ -44,6 +44,7 @@ import org.freedom.acao.PostEvent;
 import org.freedom.acao.PostListener;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextAreaPad;
 import org.freedom.componentes.JTextFieldFK;
@@ -89,6 +90,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	private JTextFieldPad txtSSPVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 10, 0);
 	private JTextFieldPad txtCodSetor = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldFK txtDescSetor = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
+	private JCheckBoxPad cbAtivo = new JCheckBoxPad("Ativo","S","N");
 	private ListaCampos lcPlan = new ListaCampos(this, "PN");
 	private ListaCampos lcSetor = new ListaCampos(this, "SE");
 	private ListaCampos lcClComis = new ListaCampos(this, "CM");
@@ -97,7 +99,7 @@ public class FVendedor extends FTabDados implements PostListener {
 	public FVendedor() {
 		super();
 		setTitulo("Cadastro de comissionados");
-		setAtribos(50, 10, 400, 540);
+		setAtribos(50, 10, 400, 520);
 		
 		lcPlan.add(new GuardaCampo(txtCodPlan, "CodPlan", "Cód.plan.",ListaCampos.DB_PK, txtDescPlan, false));
 		lcPlan.add(new GuardaCampo(txtDescPlan, "DescPlan","Descriçao do planejamento", ListaCampos.DB_SI, false));
@@ -127,7 +129,8 @@ public class FVendedor extends FTabDados implements PostListener {
 	    adicTab("Comissionado", pinFor);
 
 		adicCampo(txtCodVend, 7, 20, 100, 20, "CodVend", "Cód.comiss.",ListaCampos.DB_PK, true);
-		adicCampo(txtNomeVend, 110, 20, 262, 20, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, true);
+		adicCampo(txtNomeVend, 110, 20, 192, 20, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, true);
+	  	adicDB(cbAtivo, 305, 20, 70, 20, "AtivoComis", "Ativo",true);
 		adicCampo(txtCpfVend, 7, 60, 130, 20, "CpfVend", "CPF",ListaCampos.DB_SI, false);
 		adicCampo(txtRgVend, 140, 60, 149, 20, "RgVend", "RG",ListaCampos.DB_SI, false);
 		adicCampo(txtSSPVend, 292, 60, 80, 20, "SSPVend", "Orgão exp.",ListaCampos.DB_SI, false);

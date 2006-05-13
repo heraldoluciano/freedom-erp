@@ -478,7 +478,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		pinBotoesManut.adic(btExcluirManut,5,130,30,30);
 		
 		tabManut.adicColuna(""); //0
-		tabManut.adicColuna("Data filtro"); //1    	
+		tabManut.adicColuna("Vencimento"); //1    	
 		tabManut.adicColuna("Status"); //2
 		tabManut.adicColuna("Cód.for."); //3
 		tabManut.adicColuna("Razão social do fornecedor"); //4
@@ -559,6 +559,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? "+
 				   "GROUP BY CODFOR,DATAPAG "+
 				   "ORDER BY 8 DESC";
+			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("FNPAGAR"));
@@ -713,7 +714,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				   "AND P.CODEMP=? AND P.CODFILIAL=? " +
 				   "AND IT.CODEMP=P.CODEMP AND IT.CODFILIAL=P.CODFILIAL "+
 				   "ORDER BY IT.DTVENCITPAG,IT.STATUSITPAG ";
-			System.out.println(sSQL);
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,txtCodPagBaixa.getVlrInteger().intValue());
@@ -722,6 +722,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 			rs = ps.executeQuery();
 			double bdVlrAPagar = 0.0;
 			double bdVlrParc =  0.0;
+			
 			for (int i=0; rs.next(); i++) { 
 				bdVlrAPagar = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrApagItPag")).doubleValue();
 				bdVlrParc = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrParcItPag")).doubleValue();
@@ -773,6 +774,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		ResultSet rs = null;
 		String sSQL = null;
 		String sWhereManut = null;
+		String sWhereStatus = "";
+		boolean bStatus = false;
 		tabManut.limpa();
 		vNumContas.clear();
 		vCodPlans.clear();
@@ -783,8 +786,6 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 			if (validaPeriodo()) {
 				sWhereManut = " AND "+(rgData.getVlrString().equals("V")?"IT.DTVENCITPAG":"IT.DTITPAG")+
 									 " BETWEEN ? AND ? AND P.CODEMP=? AND P.CODFILIAL=?";
-				String sWhereStatus = "";
-				boolean bStatus = false;
 				  
 				if((cbPagas.getVlrString().equals("S")) || 
 						(cbAPagar.getVlrString().equals("S")) || 
@@ -851,45 +852,46 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 					rs = ps.executeQuery();
 					double bdVlrAPagar = 0.0;
 					double bdVlrParc =  0.0;
-					for (int i=0; rs.next(); i++) { 
-					tabManut.adicLinha();
-					bdVlrAPagar = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrApagItPag")).doubleValue();
-					bdVlrParc = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrParcItPag")).doubleValue();
-					            
-					if ( (rs.getString("StatusItPag").equals("PP") && (bdVlrAPagar==0.0) ))
-						imgColuna = imgPago;
-					else if ( (bdVlrAPagar>0.0) && (bdVlrAPagar<bdVlrParc) )
-						imgColuna = imgPagoParcial;
-					else if (rs.getDate("DtVencItPag").before(new Date())) 
-						imgColuna = imgVencido;	          
-					else if (rs.getDate("DtVencItPag").after(new Date()))
-						imgColuna = imgNaoVencido;
 					
-					tabManut.setValor(imgColuna,i,0);
-					tabManut.setValor((rs.getDate("DtVencItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItPag")) : ""),i,1);
-					tabManut.setValor(rs.getString("StatusItPag"),i,2);
-					tabManut.setValor(rs.getString("CodFor"),i,3);
-					tabManut.setValor(rs.getString("RazFor"),i,4);
-					tabManut.setValor(rs.getString("CodPag"),i,5);
-					tabManut.setValor(rs.getString("NParcPag"),i,6);
-					tabManut.setValor((rs.getString("DocLancaItPag") != null ? rs.getString("DocLancaItPag") : ""),i,7);
-					tabManut.setValor(Funcoes.copy(rs.getString(23),0,10).trim(),i,8);
-					tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItPag")),i,9);
-					tabManut.setValor((rs.getDate("DtPagoItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItPag")) : ""),i,10);
-					tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItPag")),i,11);
-					tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItPag")),i,12);
-					tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrJurosItPag")),i,13);
-					tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrAdicItPag")),i,14);
-					tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrApagItPag")),i,15);
-					tabManut.setValor(rs.getString(13) != null ? rs.getString(13) : "",i,16);
-					tabManut.setValor(rs.getString(17) != null ? rs.getString(17) : "",i,17);
-					tabManut.setValor(rs.getString(19) != null ? rs.getString(19) : "",i,18);
-					tabManut.setValor(rs.getString("ObsItPag") != null ? rs.getString("ObsItPag") : "",i,19);
-					vCodPed.addElement(rs.getString("CodCompra"));
-					vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
-					vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
-					vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
-					vDtEmiss.addElement(rs.getDate("DtItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtItPag")) : "");
+					for (int i=0; rs.next(); i++) { 
+						tabManut.adicLinha();
+						bdVlrAPagar = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrApagItPag")).doubleValue();
+						bdVlrParc = Funcoes.strDecimalToBigDecimal(2,rs.getString("VlrParcItPag")).doubleValue();
+						            
+						if ( (rs.getString("StatusItPag").equals("PP") && (bdVlrAPagar==0.0) ))
+							imgColuna = imgPago;
+						else if ( (bdVlrAPagar>0.0) && (bdVlrAPagar<bdVlrParc) )
+							imgColuna = imgPagoParcial;
+						else if (rs.getDate("DtVencItPag").before(new Date())) 
+							imgColuna = imgVencido;	          
+						else if (rs.getDate("DtVencItPag").after(new Date()))
+							imgColuna = imgNaoVencido;
+						
+						tabManut.setValor(imgColuna,i,0);
+						tabManut.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtVencItPag")),i,1);
+						tabManut.setValor(rs.getString("StatusItPag"),i,2);
+						tabManut.setValor(rs.getString("CodFor"),i,3);
+						tabManut.setValor(rs.getString("RazFor"),i,4);
+						tabManut.setValor(rs.getString("CodPag"),i,5);
+						tabManut.setValor(rs.getString("NParcPag"),i,6);
+						tabManut.setValor((rs.getString("DocLancaItPag") != null ? rs.getString("DocLancaItPag") : ""),i,7);
+						tabManut.setValor(Funcoes.copy(rs.getString(23),0,10).trim(),i,8);
+						tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItPag")),i,9);
+						tabManut.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItPag")),i,10);
+						tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItPag")),i,11);
+						tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrDescItPag")),i,12);
+						tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrJurosItPag")),i,13);
+						tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrAdicItPag")),i,14);
+						tabManut.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrApagItPag")),i,15);
+						tabManut.setValor(rs.getString(13) != null ? rs.getString(13) : "",i,16);
+						tabManut.setValor(rs.getString(17) != null ? rs.getString(17) : "",i,17);
+						tabManut.setValor(rs.getString(19) != null ? rs.getString(19) : "",i,18);
+						tabManut.setValor(rs.getString("ObsItPag") != null ? rs.getString("ObsItPag") : "",i,19);
+						vCodPed.addElement(rs.getString("CodCompra"));
+						vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
+						vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
+						vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
+						vDtEmiss.addElement(rs.getDate("DtItPag") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtItPag")) : "");
 					}
 					if (!con.getAutoCommit())
 						con.commit();
@@ -903,7 +905,8 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 			ps = null; 
 			rs = null;
 			sSQL = null;
-			sWhereManut = null;			
+			sWhereManut = null;		
+			sWhereStatus = null;
 		}
 	}
   
@@ -933,48 +936,56 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		ImageIcon imgStatusAt = null;
 		try{
 			if ((cOrig == 'M') & (tabManut.getLinhaSel() > -1)) { //Quando a função eh chamada da tab MANUTENÇÂO
+				
 				imgStatusAt = ((ImageIcon)tabManut.getValor(tabManut.getLinhaSel(),0)); 
 				if(imgStatusAt == imgPago) {
 					Funcoes.mensagemInforma(this, "A PARCELA JÁ FOI PAGA.");
 					return;
 				}
+				
 				int iLin = tabManut.getLinhaSel();				
 				iCodPag = Integer.parseInt((String)tabManut.getValor(iLin,5));
-				iNParcPag = Integer.parseInt(""+tabManut.getValor(iLin,6));
+				iNParcPag = Integer.parseInt((String)tabManut.getValor(iLin,6));
 				sVals = new String[12];
-				sRelPlanPag = buscaRelPlanPag(Integer.parseInt(""+tabManut.getValor(iLin,5)));
+				sRelPlanPag = buscaRelPlanPag(Integer.parseInt((String)tabManut.getValor(iLin,5)));
 				sRets = null;
 				dl = new DLBaixaPag(this);
-				sVals[0] = ""+tabManut.getValor(iLin,3);
-				sVals[1] = ""+tabManut.getValor(iLin,4);
-				sVals[2] = !(""+vNumContas.elementAt(iLin)).equals("") ? ""+vNumContas.elementAt(iLin) : sRelPlanPag[2];
-				sVals[3] = !(""+vCodPlans.elementAt(iLin)).equals("") ? ""+vCodPlans.elementAt(iLin) : sRelPlanPag[1];
-				sVals[4] = ""+(tabManut.getValor(iLin,7).equals("") ? tabManut.getValor(iLin,8) : tabManut.getValor(iLin,7));
-				sVals[5] = ""+tabManut.getValor(iLin,1);
-				sVals[6] = ""+tabManut.getValor(iLin,1);
-				sVals[7] = ""+tabManut.getValor(iLin,9);
-				sVals[10] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
+				
+				sVals[0] = (String)tabManut.getValor(iLin,3);
+				sVals[1] = (String)tabManut.getValor(iLin,4);
+				sVals[2] = !((String)vNumContas.elementAt(iLin)).equals("") ? (String)vNumContas.elementAt(iLin) : sRelPlanPag[2];
+				sVals[3] = !((String)vCodPlans.elementAt(iLin)).equals("") ? (String)vCodPlans.elementAt(iLin) : sRelPlanPag[1];
+				sVals[4] = (String)(tabManut.getValor(iLin,7).equals("") ? tabManut.getValor(iLin,8) : tabManut.getValor(iLin,7));
+				sVals[5] = (String)tabManut.getValor(iLin,1);
+				sVals[6] = (String)tabManut.getValor(iLin,1);
+				sVals[7] = (String)tabManut.getValor(iLin,9);
+				sVals[8] = Funcoes.dateToStrDate(new Date());
+				sVals[10] = !((String)vCodCCs.elementAt(iLin)).equals("") ? (String)vCodCCs.elementAt(iLin) : sRelPlanPag[3];
+				
 				if (((String)tabManut.getValor(iLin,10)).trim().equals("")) {//Para verificar c jah esta pago testa se a data de pgto esta setada. 
 					if (((String)tabManut.getValor(iLin,19)).trim().equals(""))
-						sVals[11] = "PAGAMENTO REF. A COMPRA: "+tabManut.getValor(iLin,19);
+						sVals[11] = "PAGAMENTO REF. A COMPRA: " + tabManut.getValor(iLin,8);
 					else
-						sVals[11] = ""+tabManut.getValor(iLin,19);
+						sVals[11] = (String)tabManut.getValor(iLin,19);
 						
-					sVals[8] = Funcoes.dateToStrDate(new Date());
-					sVals[9] = ""+tabManut.getValor(iLin,11);
+					sVals[9] = (String)tabManut.getValor(iLin,11);
 				} else {
-					sVals[11] = ""+tabManut.getValor(iLin,19);
-					sVals[8] = ""+tabManut.getValor(iLin,10);
-					sVals[9] = ""+tabManut.getValor(iLin,11);
+					sVals[11] = (String)tabManut.getValor(iLin,19);
+					sVals[9] = (String)tabManut.getValor(iLin,11);
 				}
+				
 				dl.setValores(sVals);
 				dl.setConexao(con);
 				dl.setVisible(true);
+				
 				if (dl.OK) {
 					sRets = dl.getValores();
-					sSQL = "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?,"+
+					sSQL = "UPDATE FNITPAGAR " +
+						   "SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," +
 						   "DOCLANCAITPAG=?,DTPAGOITPAG=?,VLRPAGOITPAG=?,ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?," +
-						   "OBSITPAG=?,STATUSITPAG='PP' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
+						   "OBSITPAG=?,STATUSITPAG='PP' " +
+						   "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
+					
 					try {
 						ps = con.prepareStatement(sSQL);
 						ps.setString(1,sRets[0]);
@@ -1011,48 +1022,56 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 				}
 				dl.dispose();
 				carregaGridManut();
+				
 			}
 			else if ((cOrig == 'B') & (tabBaixa.getLinhaSel() > -1)) { //Quando a função eh chamada da tab BAIXAR
+				
 				imgStatusAt = ((ImageIcon)tabBaixa.getValor(tabBaixa.getLinhaSel(),0)); 
 				if(imgStatusAt == imgPago) {
 					Funcoes.mensagemInforma(this, "Parcela já foi paga");
 					return;
 				}
+				
 				int iLin = tabBaixa.getLinhaSel();
 				iCodPag = txtCodPagBaixa.getVlrInteger().intValue();
-				iNParcPag = Integer.parseInt(""+tabBaixa.getValor(iLin,2));
+				iNParcPag = Integer.parseInt((String)tabBaixa.getValor(iLin,2));
 				sVals = new String[12];
 				sRelPlanPag = buscaRelPlanPag(txtCodPagBaixa.getVlrInteger().intValue());
 				dl = new DLBaixaPag(this);
-				sVals[0] = ""+txtCodForBaixa.getVlrString();
-				sVals[1] = ""+txtRazForBaixa.getVlrString();
-				sVals[2] = !(""+vNumContas.elementAt(iLin)).equals("") ? ""+vNumContas.elementAt(iLin) : sRelPlanPag[2];
-				sVals[3] = !(""+vCodPlans.elementAt(iLin)).equals("") ? ""+vCodPlans.elementAt(iLin) : sRelPlanPag[1];
-				sVals[4] = ""+txtDoc.getVlrString();
-				sVals[5] = ""+txtDtEmisBaixa.getVlrString();
-				sVals[6] = ""+tabBaixa.getValor(iLin,1);
-				sVals[7] = ""+tabBaixa.getValor(iLin,5);
-				sVals[10] = !(""+vCodCCs.elementAt(iLin)).equals("") ? ""+vCodCCs.elementAt(iLin) : sRelPlanPag[3];
+				
+				sVals[0] = txtCodForBaixa.getVlrString();
+				sVals[1] = txtRazForBaixa.getVlrString();
+				sVals[2] = !((String)vNumContas.elementAt(iLin)).equals("") ? (String)vNumContas.elementAt(iLin) : sRelPlanPag[2];
+				sVals[3] = !((String)vCodPlans.elementAt(iLin)).equals("") ? (String)vCodPlans.elementAt(iLin) : sRelPlanPag[1];
+				sVals[4] = txtDoc.getVlrString();
+				sVals[5] = txtDtEmisBaixa.getVlrString();
+				sVals[6] = (String)tabBaixa.getValor(iLin,1);
+				sVals[7] = (String)tabBaixa.getValor(iLin,5);
+				sVals[8] = Funcoes.dateToStrDate(new Date());
+				sVals[10] = !((String)vCodCCs.elementAt(iLin)).equals("") ? (String)vCodCCs.elementAt(iLin) : sRelPlanPag[3];
+				
 				if (((String)tabBaixa.getValor(iLin,6)).trim().equals("")) {
 					if (((String)tabBaixa.getValor(iLin,13)).trim().equals(""))
-						sVals[11] = "PAGAMENTO REF. A COMPRA: "+txtCodCompraBaixa.getVlrString();
+						sVals[11] = "PAGAMENTO REF. A COMPRA: " + txtCodCompraBaixa.getVlrString();
 					else
-						sVals[11] = ""+tabBaixa.getValor(iLin,13);
-					sVals[8] = Funcoes.dateToStrDate(new Date());
-					sVals[9] = ""+tabBaixa.getValor(iLin,5);
+						sVals[11] = (String)tabBaixa.getValor(iLin,13);
+					sVals[9] = (String)tabBaixa.getValor(iLin,5);
 				} else {
-					sVals[11] = ""+tabBaixa.getValor(iLin,13);
-					sVals[8] = ""+tabBaixa.getValor(iLin,6);
-					sVals[9] = ""+tabBaixa.getValor(iLin,7);
+					sVals[11] = (String)tabBaixa.getValor(iLin,13);
+					sVals[9] = (String)tabBaixa.getValor(iLin,7);
 				}
+				
 				dl.setValores(sVals);
 				dl.setConexao(con);
 				dl.setVisible(true);
+				
 				if (dl.OK) {
 					sRets = dl.getValores();
-					sSQL = "UPDATE FNITPAGAR SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?,"+
+					sSQL = "UPDATE FNITPAGAR " +
+						   "SET NUMCONTA=?,CODEMPCA=?,CODFILIALCA=?,CODPLAN=?,CODEMPPN=?,CODFILIALPN=?," +
 						   "ANOCC=?,CODCC=?,CODEMPCC=?,CODFILIALCC=?,DOCLANCAITPAG =?,DTPAGOITPAG=?,VLRPAGOITPAG=?,"+
-						   "OBSITPAG=?,STATUSITPAG='PP' WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
+						   "OBSITPAG=?,STATUSITPAG='PP' " +
+						   "WHERE CODPAG=? AND NPARCPAG=? AND CODEMP=? AND CODFILIAL=?";
 					try {
 						ps = con.prepareStatement(sSQL);
 						ps.setString(1,sRets[0]);
@@ -1086,9 +1105,10 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 					} catch(SQLException err) {
 						Funcoes.mensagemErro(this,"Erro ao baixar parcela!\n"+err.getMessage(),true,con,err);
 					}
-				}
+				}				
 				carregaGridBaixa();
 				dl.dispose();
+				
 			}
 		} catch ( Exception e ){
 			e.printStackTrace();
@@ -1126,7 +1146,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 					sVals[3] = ""+vCodPlans.elementAt(iLin);
 					sVals[4] = ""+vCodCCs.elementAt(iLin);
 					sVals[5] = ""+tabManut.getValor(iLin,5);
-					sVals[6] = ""+vDtEmiss.elementAt(iLin);
+					sVals[6] = String.valueOf(vDtEmiss.elementAt(iLin));
 					sVals[7] = ""+tabManut.getValor(iLin,1);
 					sVals[8] = ""+tabManut.getValor(iLin,9);
 					sVals[9] = ""+tabManut.getValor(iLin,13);
