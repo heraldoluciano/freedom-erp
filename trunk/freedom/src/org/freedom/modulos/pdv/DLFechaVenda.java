@@ -25,6 +25,7 @@ package org.freedom.modulos.pdv;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -740,7 +741,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		}
 		
 		super.actionPerformed(evt);
-	}
+	}	
+
+    public void keyPressed(KeyEvent kevt) {
+        if (kevt.getSource() == btOK)
+            btOK.doClick();
+        super.keyPressed(kevt);
+    }
 	
 	public void focusLost(FocusEvent fevt) {
 		if (fevt.getSource() == txtVlrDinheiro ||

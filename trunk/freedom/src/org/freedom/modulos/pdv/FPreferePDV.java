@@ -24,6 +24,9 @@
 package org.freedom.modulos.pdv;
 import java.sql.Connection;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
@@ -46,7 +49,7 @@ public class FPreferePDV extends FTabDados{
 	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
 	private JTextFieldPad txtCodProdFrete = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JTextFieldFK txtDescProdeFrete= new JTextFieldFK(JTextFieldPad.TP_STRING, 50 , 0);
-	private JLabelPad lbProdFrete = new JLabelPad("Produto para frete.");
+	private JCheckBoxPad cbAutoFechaVenda = new JCheckBoxPad("Fechar a venda apos buscar orçamento?","S","N");
 	private JCheckBoxPad cbAdicionais = new JCheckBoxPad("Dados adicionais p/ frete no fechamento?","S","N");
 	private ListaCampos lcTipoMov = new ListaCampos(this,"TM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PP");
@@ -86,7 +89,7 @@ public class FPreferePDV extends FTabDados{
 		lcProdFrete.montaSql(false, "PRODUTO", "EQ");
 		lcProdFrete.setReadOnly(true);
 		txtCodProdFrete.setTabelaExterna(lcProdFrete);
-	
+		
 		
 		setPainel(pinVenda);
 		adicTab("Venda", pinVenda);
@@ -96,10 +99,20 @@ public class FPreferePDV extends FTabDados{
 		adicDescFK(txtDescPlanoPag,90,70,230,20,"DescPlanoPag","Descrição do plano de pagamento");
 		adicCampo(txtCodCli,10,110,77,20,"CodCli","Cód.cli.",ListaCampos.DB_FK,true);
 		adicDescFK(txtRazCli,90,110,230,20,"RazCli","Razão do cliente padrão");
-		adicDB(cbAdicionais,7,140,250,20,"AdicPDV","",true);
-		adic(lbProdFrete,10,160,250,20);
-		adicCampo(txtCodProdFrete,10,200,77,20,"CodProd","Cód.prod.",ListaCampos.DB_FK,false);
-		adicDescFK(txtDescProdeFrete,90,200,230,20,"DescProd","Descrição do produto");
+		adicDB(cbAutoFechaVenda,20,155,270,20,"AutoFechaVenda","",true);
+		adicDB(cbAdicionais,20,175,270,20,"AdicPDV","",true);
+		adic(new JLabelPad("Produto para frete."),20,200,250,20);
+		adicCampo(txtCodProdFrete,20,235,77,20,"CodProd","Cód.prod.",ListaCampos.DB_FK,false);
+		adicDescFK(txtDescProdeFrete,100,235,200,20,"DescProd","Descrição do produto");
+
+		JLabel lbBorda = new JLabel();
+		lbBorda.setBorder( BorderFactory.createEtchedBorder() );
+		JLabel lbOpcoes =new JLabelPad("   Opções");
+		lbOpcoes.setOpaque( true );
+		
+		adic(lbOpcoes,15,135,60,20);
+		adic(lbBorda,10,145,310,120);
+		
 		setListaCampos(false, "PREFERE4", "SG");
 
 		nav.setAtivo(0,false);
