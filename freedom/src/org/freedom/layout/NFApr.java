@@ -100,64 +100,56 @@ public class NFApr extends Leiaute {
 				
 				if (imp.pRow()==0) {
 					
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),124, sNumNota);
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(), 90, "X");
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(), 24, Funcoes.copy(rs.getString("EndFilial"),0,30).trim()+", "+rs.getString("NumFilial"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(), 24, Funcoes.copy(rs.getString("CidFilial"),0,15).trim());
-					imp.say(imp.pRow(), 39, rs.getString("UfFilial"));
-					imp.say(imp.pRow(), 43, "Bairro: " + Funcoes.copy(rs.getString("BairFilial"), 0,25).trim());
-					imp.say(imp.pRow(), 70, "Cep: " +  Funcoes.setMascara(rs.getString("CepFilial"),"#####-###"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(), 24, "Emitente: " + Aplicativo.strUsuario);
-					imp.say(imp.pRow(), 92, Funcoes.setMascara(rs.getString("Cnpjfilial"),"##.###.###/####-##"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, sNat[0]);
-					imp.say(imp.pRow(), 47, sNat[1]);
-					imp.say(imp.pRow(), 93, rs.getString("Inscfilial"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
-					imp.say(imp.pRow(), 92, rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
-					imp.say(imp.pRow(),124, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, Funcoes.copy(rs.getString("EndCli"),0,30).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
-					imp.say(imp.pRow(), 80, Funcoes.copy(rs.getString("BairCli"),0,25));
-					imp.say(imp.pRow(),105, Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
-					imp.say(imp.pRow(),124, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, rs.getString("CidCli"));
-					imp.say(imp.pRow(), 67, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""));
-					imp.say(imp.pRow(), 83, rs.getString("UfCli"));
-					imp.say(imp.pRow(), 93, rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
-					imp.say(imp.pRow(),124, sHora);
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(124, sNumNota);
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 90, "X");
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 24, Funcoes.copy(rs.getString("EndFilial"),0,30).trim()+", "+rs.getString("NumFilial"));
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 24, Funcoes.copy(rs.getString("CidFilial"),0,15).trim());
+					imp.say( 39, rs.getString("UfFilial"));
+					imp.say( 43, "Bairro: " + Funcoes.copy(rs.getString("BairFilial"), 0,25).trim());
+					imp.say( 70, "Cep: " +  Funcoes.setMascara(rs.getString("CepFilial"),"#####-###"));
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 24, "Emitente: " + Aplicativo.strUsuario);
+					imp.say( 92, Funcoes.setMascara(rs.getString("Cnpjfilial"),"##.###.###/####-##"));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  2, sNat[0]);
+					imp.say( 47, sNat[1]);
+					imp.say( 93, rs.getString("Inscfilial"));
+					imp.pulaLinha(3, imp.comprimido());
+					imp.say(  2, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
+					imp.say( 92, rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
+					imp.say(124, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  2, Funcoes.copy(rs.getString("EndCli"),0,30).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
+					imp.say( 80, Funcoes.copy(rs.getString("BairCli"),0,25));
+					imp.say(105, Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
+					imp.say(124, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  2, rs.getString("CidCli"));
+					imp.say( 67, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""));
+					imp.say( 83, rs.getString("UfCli"));
+					imp.say( 93, rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
+					imp.say(124, sHora);
+					imp.pulaLinha(3, imp.comprimido());
 					
 				}
 				
 				if (!rs.getString("TipoProd").equals("S")) {
 					
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, Funcoes.copy(rs.getString("RefProd"),9));
-					imp.say(imp.pRow(), 11, Funcoes.copy(rs.getString("DescProd"),0,45));
-					imp.say(imp.pRow(), 57, Funcoes.copy(rs.getString("CodBarProd"),0,9)); 
-					imp.say(imp.pRow(), 73, Funcoes.copy(rs.getString("OrigFisc"),0,1) + Funcoes.copy(rs.getString("CodTratTrib"),0,2));
-					imp.say(imp.pRow(), 79, rs.getString("CodUnid").substring(0,4));
-					imp.say(imp.pRow(), 85, String.valueOf(rs.getDouble("QtdItVenda")));
-					imp.say(imp.pRow(), 89, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)))));
-					imp.say(imp.pRow(),104, Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
-					imp.say(imp.pRow(),119, String.valueOf(rs.getDouble("PercICMSItVenda")));
-					imp.say(imp.pRow(),124, String.valueOf(rs.getDouble("PercIPIItVenda")));
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(  2, Funcoes.copy(rs.getString("RefProd"),9));
+					imp.say( 11, Funcoes.copy(rs.getString("DescProd"),0,45));
+					imp.say( 57, Funcoes.copy(rs.getString("CodBarProd"),0,9)); 
+					imp.say( 73, Funcoes.copy(rs.getString("OrigFisc"),0,1) + Funcoes.copy(rs.getString("CodTratTrib"),0,2));
+					imp.say( 79, rs.getString("CodUnid").substring(0,4));
+					imp.say( 85, String.valueOf(rs.getDouble("QtdItVenda")));
+					imp.say( 89, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)))));
+					imp.say(104, Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
+					imp.say(119, String.valueOf(rs.getDouble("PercICMSItVenda")));
+					imp.say(124, String.valueOf(rs.getDouble("PercIPIItVenda")));
 										   
 					bigSomaProd = bigSomaProd.add(((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)).multiply(new BigDecimal(rs.getDouble("QtdItVenda"))));
 				
@@ -171,8 +163,7 @@ public class NFApr extends Leiaute {
 					
 					iRow = imp.pRow();
 					
-					for (int i=0; i<(34-iRow);i++)
-						imp.say(imp.pRow()+1,0, imp.comprimido());
+					imp.pulaLinha(34 - iRow, imp.comprimido());
 
 					bigSomaServ = new BigDecimal(0);
 					
@@ -190,8 +181,8 @@ public class NFApr extends Leiaute {
 								else
 									sDesc = "";
 								
-								imp.say(imp.pRow(),  4, Funcoes.copy(sDesc,80));
-								imp.say(imp.pRow()+1,0, imp.comprimido());
+								imp.say(  4, Funcoes.copy(sDesc,80));
+								imp.pulaLinha(1, imp.comprimido());
 								iServ++;
 							}	
 							
@@ -199,111 +190,95 @@ public class NFApr extends Leiaute {
 							iServAtual++;
 							
 						} else {
-							imp.say(imp.pRow()+1,0, imp.comprimido());
+							imp.pulaLinha(1, imp.comprimido());
 							iServ++;
 						}
 						
 					}
 					
 					if (iServ==0)
-						imp.say(imp.pRow(),116, Funcoes.strDecimalToStrCurrency(20,2,"0.0"));
+						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,"0.0"));
 					else if (iServ>=3)
-						imp.say(imp.pRow(),116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(bigSomaServ.setScale(2,BigDecimal.ROUND_HALF_UP))));
+						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(bigSomaServ.setScale(2,BigDecimal.ROUND_HALF_UP))));
 					
 					if (iItImp == rs.getInt(1)) {
 
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow(),  1, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrBaseICMSVenda")));
-						imp.say(imp.pRow(), 32, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrICMSVenda")));
-						imp.say(imp.pRow(),116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(bigSomaProd)));
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow(),  2, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrFreteVenda")));
-						imp.say(imp.pRow(), 62, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrAdicVenda")));
-						imp.say(imp.pRow(), 87, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrIPIVenda")));
-						imp.say(imp.pRow(),116, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrLiqVenda")));
+						imp.pulaLinha(3, imp.comprimido());
+						imp.say(  1, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrBaseICMSVenda")));
+						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrICMSVenda")));
+						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(bigSomaProd)));
+						imp.pulaLinha(2, imp.comprimido());
+						imp.say(  2, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrFreteVenda")));
+						imp.say( 62, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrAdicVenda")));
+						imp.say( 87, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrIPIVenda")));
+						imp.say(116, Funcoes.strDecimalToStrCurrency(20,2,rs.getString("VlrLiqVenda")));
 						iItImp = 0;
 						
 					} 
 					else if (iRow == 32) {
 						
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow(),  2, "***************");
-						imp.say(imp.pRow(), 32, "***************");
-						imp.say(imp.pRow(),116, "***************");
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow()+1,0, imp.comprimido());
-						imp.say(imp.pRow(),  2, "***************");
-						imp.say(imp.pRow(), 62, "***************");
-						imp.say(imp.pRow(), 87, "***************");
-						imp.say(imp.pRow(),116, "***************");
+						imp.pulaLinha(3, imp.comprimido());
+						imp.say(  2, "***************");
+						imp.say( 32, "***************");
+						imp.say(116, "***************");
+						imp.pulaLinha(2, imp.comprimido());
+						imp.say(  2, "***************");
+						imp.say( 62, "***************");
+						imp.say( 87, "***************");
+						imp.say(116, "***************");
 						
 					}
 					
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, rs.getString("RazTran"));
-					imp.say(imp.pRow(), 86, rs.getString("TipoFreteVD").equals("C") ? "1" : "2");
-					imp.say(imp.pRow(), 93, rs.getString("PlacaFreteVD"));
-					imp.say(imp.pRow(),108, rs.getString("UfFreteVD"));
+					imp.pulaLinha(3, imp.comprimido());
+					imp.say(  2, rs.getString("RazTran"));
+					imp.say( 86, rs.getString("TipoFreteVD").equals("C") ? "1" : "2");
+					imp.say( 93, rs.getString("PlacaFreteVD"));
+					imp.say(108, rs.getString("UfFreteVD"));
 					   
 					sTipoTran = rs.getString("TipoTran");					    
 					
 					if ( sTipoTran.equals("C") )
-						imp.say(imp.pRow(),115, Funcoes.setMascara(rs.getString("CnpjCli") != null ? rs.getString("CnpjCli") : "","##.###.###/####-##"));
+						imp.say(115, Funcoes.setMascara(rs.getString("CnpjCli") != null ? rs.getString("CnpjCli") : "","##.###.###/####-##"));
 					else
-						imp.say(imp.pRow(),115, Funcoes.setMascara(rs.getString("CnpjTran") != null ? rs.getString("CnpjTran") : "","##.###.###/####-##")); 
+						imp.say(115, Funcoes.setMascara(rs.getString("CnpjTran") != null ? rs.getString("CnpjTran") : "","##.###.###/####-##")); 
 
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, Funcoes.copy(rs.getString("EndTran"),0,42)+", "+Funcoes.copy(rs.getString("NumTran"),0,6));
-					imp.say(imp.pRow(), 76, rs.getString("CidTran"));
-					imp.say(imp.pRow(),108, rs.getString("UfTran"));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  2, Funcoes.copy(rs.getString("EndTran"),0,42)+", "+Funcoes.copy(rs.getString("NumTran"),0,6));
+					imp.say( 76, rs.getString("CidTran"));
+					imp.say(108, rs.getString("UfTran"));
 					   
 					if (sTipoTran.equals("C") )
-						imp.say(imp.pRow(),115, rs.getString("InscCli"));
+						imp.say(115, rs.getString("InscCli"));
 					else 
-						imp.say(imp.pRow(),115, rs.getString("InscTran"));
+						imp.say(115, rs.getString("InscTran"));
 					   
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, rs.getString("QtdFreteVD"));
-					imp.say(imp.pRow(), 22, rs.getString("EspFreteVD"));
-					imp.say(imp.pRow(), 58, rs.getString("MarcaFreteVD"));
-					imp.say(imp.pRow(),100, rs.getString("PesoBrutVD"));
-					imp.say(imp.pRow(),124, rs.getString("PesoLiqVD"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, "ENTREGA PREVISTA : "+Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, "VENDEDOR : "+rs.getString("NomeVend"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, "FORMA DE PAGAMENTO : "+rs.getString("DescPlanoPag"));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, "PEDIDO No.: "+Funcoes.strZero(""+rs.getInt("CodVenda"),8));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  2, rs.getString("QtdFreteVD"));
+					imp.say( 22, rs.getString("EspFreteVD"));
+					imp.say( 58, rs.getString("MarcaFreteVD"));
+					imp.say(100, rs.getString("PesoBrutVD"));
+					imp.say(124, rs.getString("PesoLiqVD"));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  2, "ENTREGA PREVISTA : "+Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(  2, "VENDEDOR : "+rs.getString("NomeVend"));
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(  2, "FORMA DE PAGAMENTO : "+rs.getString("DescPlanoPag"));
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(  2, "PEDIDO No.: "+Funcoes.strZero(""+rs.getInt("CodVenda"),8));
 					
 					if (iNumPares>0)
-						imp.say(imp.pRow(),  2, "Numero de Pares: " + iNumPares);
+						imp.say(  2, "Numero de Pares: " + iNumPares);
 
 					sObs = Funcoes.strToStrArray(rs.getString("ObsVenda") != null ? rs.getString("ObsVenda") : "",3);
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, sObs[0].trim());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  2, sObs[1].trim());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),124, sNumNota);
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(  2, sObs[0].trim());
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(  2, sObs[1].trim());
+					imp.pulaLinha(5, imp.comprimido());
+					imp.say(124, sNumNota);
 
-					for (int j=imp.pRow(); j<=iLinPag; j++) 
-						imp.say(imp.pRow()+1,0, imp.comprimido());
+					imp.pulaLinha(iLinPag + 1, imp.comprimido());
 
 					imp.setPrc(0,0);
 					imp.incPags();

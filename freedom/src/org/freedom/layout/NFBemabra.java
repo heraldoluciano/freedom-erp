@@ -29,7 +29,6 @@ import org.freedom.funcoes.Funcoes;
 
 public class NFBemabra extends Leiaute {
 	
-	private BigDecimal bigSomaServ = null;
 	private String sMensAdic = null;
 	 
 	public boolean imprimir(ResultSet rs,ResultSet rsRec,ImprimeOS imp) {
@@ -37,7 +36,6 @@ public class NFBemabra extends Leiaute {
 		boolean bRetorno;
 		int iNumNota = 0;
 		int iProd = 0;
-		int iServ = 0;
 		boolean bFat = true;
 		boolean bNat = true;
 		boolean bTotalizou = false;
@@ -52,11 +50,9 @@ public class NFBemabra extends Leiaute {
 		String[] sDuplics = new String[4];
 		String[] sMatObs = null;
 		Vector vValores = new Vector();
-		Vector vDesc = new Vector();
-		Vector vDesc2 = null;
+		Vector vDesc = null;
 		Calendar cHora = Calendar.getInstance();
 
-		bigSomaServ = new BigDecimal(0);
 
 		try {
 			
@@ -105,108 +101,82 @@ public class NFBemabra extends Leiaute {
 				
 				if (imp.pRow()==0) {
 					
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(), 85,"X");
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),118, sNumNota);
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  6, sNat[0]);
-					imp.say(imp.pRow(), 50, sNat[1]);
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  6, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
-					imp.say(imp.pRow(), 85, rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
-					imp.say(imp.pRow(),120, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(),  6, Funcoes.copy(rs.getString("EndCli"),0,50).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
-					imp.say(imp.pRow(), 71, rs.getString("BairCli")!=null ? Funcoes.copy(rs.getString("BairCli"),0,15) : "");
-					imp.say(imp.pRow(), 99, Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
-					imp.say(imp.pRow(),120, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 85,"X");
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say(118, sNumNota);
+					imp.pulaLinha(5, imp.comprimido());
+					imp.say(  6, sNat[0]);
+					imp.say( 50, sNat[1]);
+					imp.pulaLinha(3, imp.comprimido());
+					imp.say(  6, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
+					imp.say( 85, rs.getString("CpfCli") != null ? Funcoes.setMascara(rs.getString("CpfCli"),"###.###.###-##") : Funcoes.setMascara(rs.getString("CnpjCli"),"##.###.###/####-##")) ;
+					imp.say(120, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+					imp.pulaLinha(2, imp.comprimido());
+					imp.say(  6, Funcoes.copy(rs.getString("EndCli"),0,50).trim()+", "+(rs.getString("NumCli") != null ? Funcoes.copy(rs.getString("NumCli"),0,6).trim() : "").trim()+" - "+(rs.getString("ComplCli") != null ? Funcoes.copy(rs.getString("ComplCli"),0,9).trim() : "").trim());
+					imp.say( 71, rs.getString("BairCli")!=null ? Funcoes.copy(rs.getString("BairCli"),0,15) : "");
+					imp.say( 99, Funcoes.setMascara(rs.getString("CepCli"),"#####-###"));
+					imp.say(120, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.pulaLinha(2, imp.comprimido());
 					
 					if (rs.getString(8) == null) {//Se não tem país:
 						
-						imp.say(imp.pRow(),  6, Funcoes.copy(rs.getString("CidCli"),30));
-						imp.say(imp.pRow(), 48, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "") +
+						imp.say(  6, Funcoes.copy(rs.getString("CidCli"),30));
+						imp.say( 48, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "") +
 												(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""));
-						imp.say(imp.pRow(), 76, rs.getString("UfCli"));
+						imp.say( 76, rs.getString("UfCli"));
 						
 					} else {
 						
-						imp.say(imp.pRow(),  6, rs.getString("CidCli").trim() + "-" + rs.getString("UfCli"));
-						imp.say(imp.pRow(), 48, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "") +
+						imp.say(  6, rs.getString("CidCli").trim() + "-" + rs.getString("UfCli"));
+						imp.say( 48, (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "") +
 												(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : ""));
-						imp.say(imp.pRow(), 76, Funcoes.copy(rs.getString(8),5));
+						imp.say( 76, Funcoes.copy(rs.getString(8),5));
 						
 					}
 					
-					imp.say(imp.pRow(), 85, rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
-					imp.say(imp.pRow(),120, sHora);
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow()+1,0, imp.comprimido());
+					imp.say( 85, rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
+					imp.say(120, sHora);
+					imp.pulaLinha(7, imp.comprimido());
 					
 				}
 				 
 				if (!rs.getString("TipoProd").equals("S")) {
 					
-					imp.say(imp.pRow()+1,0, imp.comprimido());         
-					imp.say(imp.pRow(),  6, rs.getString("CodProd"));
+					imp.pulaLinha(1, imp.comprimido());      
+					imp.say(  6, rs.getString("CodProd"));
 					
 					sDescProdConcatenada = rs.getString("DescProd").trim() + " - " + 
 										  (rs.getString("DescAuxProd") != null ? rs.getString("DescAuxProd") : "");
 					
-					vDesc2 = Funcoes.strToVectorSilabas((rs.getString("ObsItVenda") == null || rs.getString("ObsItVenda").equals(""))
+					vDesc = Funcoes.strToVectorSilabas((rs.getString("ObsItVenda") == null || rs.getString("ObsItVenda").equals(""))
 							? (sDescProdConcatenada) : rs.getString("ObsItVenda"), 46);
 										
-					for (int iConta=0; ( (iConta < 20) && (vDesc2.size()>iConta) ); iConta++){
-						if (!vDesc2.elementAt(iConta).toString().equals(""))
-							sDesc = vDesc2.elementAt(iConta).toString();
+					for (int iConta=0; ( (iConta < 20) && (vDesc.size()>iConta) ); iConta++){
+						if (!vDesc.elementAt(iConta).toString().equals(""))
+							sDesc = vDesc.elementAt(iConta).toString();
 						else
 							sDesc = "";
 						
 						if (iConta > 0)
-							imp.say(imp.pRow()+1,0, imp.comprimido());
+							imp.pulaLinha(1, imp.comprimido());
 						
-						imp.say(imp.pRow(), 14, sDesc);
+						imp.say( 14, sDesc);
 						
-						iProd = iProd + vDesc2.size();
+						iProd = iProd + vDesc.size();
 						
 						sMensAdic = rs.getString(5) != null ? rs.getString(5).trim() : "";
 						sMensAdic += rs.getString(4) != null ? rs.getString(4).trim() : "";
 					}    
 					
-					imp.say(imp.pRow(), 81, Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
-					imp.say(imp.pRow(), 87, rs.getString("CodUnid").substring(0,4));
-					imp.say(imp.pRow(), 92, String.valueOf(rs.getDouble("QtdItVenda")));
-					imp.say(imp.pRow(),102, Funcoes.strDecimalToStrCurrency(8,2,String.valueOf(((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)))));
-					imp.say(imp.pRow(),113, Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
-					imp.say(imp.pRow(),130, String.valueOf(rs.getDouble("PercICMSItVenda")));
+					imp.say( 81, Funcoes.copy(rs.getString("OrigFisc"),0,1)+Funcoes.copy(rs.getString("CodTratTrib"),0,2));
+					imp.say( 87, rs.getString("CodUnid").substring(0,4));
+					imp.say( 92, String.valueOf(rs.getDouble("QtdItVenda")));
+					imp.say(102, Funcoes.strDecimalToStrCurrency(8,2,String.valueOf(((new BigDecimal(rs.getDouble("VlrLiqItVenda"))).divide(new BigDecimal(rs.getDouble("QtdItVenda")),2,BigDecimal.ROUND_HALF_UP)))));
+					imp.say(113, Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda")));
+					imp.say(130, String.valueOf(rs.getDouble("PercICMSItVenda")));
 					
-				} else {
-					
-					vDesc.clear();
-					vDesc.addElement(Funcoes.strToVectorSilabas((rs.getString("ObsItVenda") == null || rs.getString("ObsItVenda").equals(""))
-										? (rs.getString("DescProd").trim()) : rs.getString("ObsItVenda"), 45 ));
-					
-					vDesc.addElement(Funcoes.strDecimalToStrCurrency(13,2,rs.getString("VlrLiqItVenda"))); 
-										
-					bigSomaServ = bigSomaServ.add(new BigDecimal(rs.getDouble("VlrLiqItVenda")));
-					 	
-					iServ = iServ + vDesc.size();
-				    
-				}
+				} 
 				 
 				if (!bTotalizou) {
 					 
@@ -256,11 +226,11 @@ public class NFBemabra extends Leiaute {
 			}
 			if (imp.pRow()<39) {
 				
-				imp.say(imp.pRow()+1,0, imp.comprimido());
+				imp.pulaLinha(1, imp.comprimido());
 				
 				for (int i=0; i < 3; i++) {
-					imp.say(imp.pRow()+1,0, imp.comprimido());
-					imp.say(imp.pRow(), 21, sMatObs[i]);
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 21, sMatObs[i]);
 				}
 			}
 
@@ -277,7 +247,23 @@ public class NFBemabra extends Leiaute {
 			err.printStackTrace();
 			Funcoes.mensagemErro(null,"Erro ao consultar tabela de Venda!" + err.getMessage());      
 			bRetorno = false;
+		} finally {
+			sTipoTran = null;
+			sDesc = null;
+			sNumNota = null; 
+			sHora = null;
+			sDescProdConcatenada = null;
+			sNat = null;
+			sVencs = null;
+			sVals = null;
+			sDuplics = null;
+			sMatObs = null;
+			vValores = null;
+			vDesc = null;
+			cHora = null;
+			System.gc();
 		}
+		
 		return bRetorno;
 		
 	}
@@ -288,64 +274,52 @@ public class NFBemabra extends Leiaute {
 		
 		try {	
 				
-			for (int i=0;(imp.pRow()<40);i++)
-				imp.say(imp.pRow()+1,0, imp.comprimido());
+			imp.pulaLinha(40 - imp.pRow(), imp.comprimido());
 			  
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  4, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(0).toString()));
-			imp.say(imp.pRow(),  3, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString()));
-			imp.say(imp.pRow(),115, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString()));
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  4, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));
-			imp.say(imp.pRow(), 57, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));
-			imp.say(imp.pRow(), 83, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(5).toString()));
-			imp.say(imp.pRow(),115, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  6, vValores.elementAt(7).toString());
-			imp.say(imp.pRow(), 83, vValores.elementAt(8).toString().equals("C") ? "1" : "2");
-			imp.say(imp.pRow(), 90, vValores.elementAt(9).toString());
-			imp.say(imp.pRow(),102, vValores.elementAt(10).toString());
+			imp.pulaLinha(1, imp.comprimido());
+			imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(0).toString()));
+			imp.say(  3, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString()));
+			imp.say(115, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString()));
+			imp.pulaLinha(2, imp.comprimido());
+			imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));
+			imp.say( 57, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));
+			imp.say( 83, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(5).toString()));
+			imp.say(115, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));
+			imp.pulaLinha(3, imp.comprimido());
+			imp.say(  6, vValores.elementAt(7).toString());
+			imp.say( 83, vValores.elementAt(8).toString().equals("C") ? "1" : "2");
+			imp.say( 90, vValores.elementAt(9).toString());
+			imp.say(102, vValores.elementAt(10).toString());
 			  			  
 			if ( !vValores.elementAt(11).toString().equals("C") )
-				imp.say(imp.pRow(),113, Funcoes.setMascara(vValores.elementAt(13).toString() != null ? vValores.elementAt(13).toString() : "","##.###.###/####-##"));
+				imp.say(113, Funcoes.setMascara(vValores.elementAt(13).toString() != null ? vValores.elementAt(13).toString() : "","##.###.###/####-##"));
 
-			imp.say(imp.pRow()+1,0, imp.comprimido());			  
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  6, vValores.elementAt(14).toString().trim());
-			imp.say(imp.pRow(), 66, vValores.elementAt(16).toString().trim());
-			imp.say(imp.pRow(),102, vValores.elementAt(17).toString().trim());
-			imp.say(imp.pRow(),119, vValores.elementAt(18).toString());			  
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());			
-			imp.say(imp.pRow(),  6, vValores.elementAt(19).toString());
-			imp.say(imp.pRow(), 23, vValores.elementAt(20).toString());
-			imp.say(imp.pRow(), 46, vValores.elementAt(21).toString());
-			imp.say(imp.pRow(), 97, vValores.elementAt(22).toString());
-			imp.say(imp.pRow(),120, vValores.elementAt(23).toString());			  
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());			  
+			imp.pulaLinha(2, imp.comprimido());
+			imp.say(  6, vValores.elementAt(14).toString().trim());
+			imp.say( 66, vValores.elementAt(16).toString().trim());
+			imp.say(102, vValores.elementAt(17).toString().trim());
+			imp.say(119, vValores.elementAt(18).toString());			  
+			imp.pulaLinha(2, imp.comprimido());		
+			imp.say(  6, vValores.elementAt(19).toString());
+			imp.say( 23, vValores.elementAt(20).toString());
+			imp.say( 46, vValores.elementAt(21).toString());
+			imp.say( 97, vValores.elementAt(22).toString());
+			imp.say(120, vValores.elementAt(23).toString());			  
+			imp.pulaLinha(2, imp.comprimido());	  
 			  
 			sMatObs = Funcoes.strToStrArray(sMensAdic,5);
 			
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  2, sMatObs[0]);
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  2, sMatObs[1]);
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  2, sMatObs[2]);
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  2, sMatObs[3]);
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow(),  2, sMatObs[4]);			  
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
-			imp.say(imp.pRow()+1,0, imp.comprimido());
+			imp.pulaLinha(1, imp.comprimido());
+			imp.say(  2, sMatObs[0]);
+			imp.pulaLinha(1, imp.comprimido());
+			imp.say(  2, sMatObs[1]);
+			imp.pulaLinha(1, imp.comprimido());
+			imp.say(  2, sMatObs[2]);
+			imp.pulaLinha(1, imp.comprimido());
+			imp.say(  2, sMatObs[3]);
+			imp.pulaLinha(1, imp.comprimido());
+			imp.say(  2, sMatObs[4]);			  
+			imp.pulaLinha(6, imp.comprimido());
 			  			      
 			imp.setPrc(0,0);
 			
