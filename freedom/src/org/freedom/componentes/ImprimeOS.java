@@ -552,6 +552,15 @@ public class ImprimeOS implements ActionListener {
 		iCol = iCol + sTexto.length();
 
 	}
+	
+	public void say(int iC, String sTexto) {
+		say(pRow(), iC, sTexto);
+	}
+	
+	public void pulaLinha(int x, String sTexto) {
+		for(int i=0; i < x; i++)
+			say(pRow()+1, 0, sTexto);
+	}
 
 	public void setPrc(int iR, int iC) {
 		iCol = iC;
