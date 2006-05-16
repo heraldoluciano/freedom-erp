@@ -409,7 +409,7 @@ public class DLBaixaRec extends FFDialogo implements CarregaListener, FocusListe
 				Funcoes.mensagemInforma(this,"Data do pagamento é requerido!");
 			} else if (txtVlr.getVlrString().length() < 4) {
 				Funcoes.mensagemInforma(this,"Valor pago é requerido!");
-			} else if (txtVlr.getVlrDouble().doubleValue() <= 0) {
+			} else if (txtVlr.floatValue() <= 0) {
 				Funcoes.mensagemInforma(this,"Valor pago deve ser maior que zero!");
 			} else {
 				super.actionPerformed(evt);
