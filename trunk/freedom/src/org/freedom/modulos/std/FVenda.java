@@ -686,7 +686,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 	
 	private void calcComisIt() {
-		if(txtPercComItVenda.floatValue()!=0) {
+		if(txtPercComItVenda.floatValue()>=0) {
 			txtVlrComisItVenda.setVlrBigDecimal(new BigDecimal(
 					Funcoes.arredFloat((txtVlrProdItVenda.floatValue() - txtVlrDescItVenda.floatValue())
 						* txtPercComItVenda.floatValue()/ 100
@@ -715,8 +715,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			else
 				fBaseICMS = txtBaseICMSItVenda.floatValue();
 
-			//	  System.out.println("Red: "+bRed);
-			//	  System.out.println("VlrProd: "+bVlrProd);
 			txtPercICMSItVenda.setAtivo(true);
 			txtVlrICMSItVenda.setAtivo(true);
 			txtBaseICMSItVenda.setAtivo(true);
