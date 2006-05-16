@@ -128,43 +128,43 @@ public class NFPomiagro3 extends Layout {
 					} else
 						imp.say(imp.pRow(),  6, cab.getInt(NF.C_CODEMIT) + " - " + sValsCli[1] );
 					    
-					imp.say(imp.pRow(), 96, !sValsCli[0].equals("") ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
-					imp.say(imp.pRow(),126, (cab.getDate(NF.C_DTEMITPED)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)) : ""));
+					imp.say( 96, !sValsCli[0].equals("") ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
+					imp.say(126, (cab.getDate(NF.C_DTEMITPED)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)) : ""));
 					imp.pulaLinha( 1, imp.comprimido());
-					imp.say(imp.pRow(),  6, Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim() + ", " + Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() + " - " + Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim());
-					imp.say(imp.pRow(), 85, Funcoes.copy(cab.getString(NF.C_BAIREMIT),0,20));
-					imp.say(imp.pRow(),108, Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
+					imp.say(  6, Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim() + ", " + Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() + " - " + Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim());
+					imp.say( 85, Funcoes.copy(cab.getString(NF.C_BAIREMIT),0,20));
+					imp.say(108, Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
 					
 					if (!sImpDtSaidaNat.equals("N"))
-						imp.say(imp.pRow(),126, (cab.getDate(NF.C_DTSAIDA)!= null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)) : ""));
+						imp.say(126, (cab.getDate(NF.C_DTSAIDA)!= null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)) : ""));
 					
 					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(imp.pRow(),  6, sValsCli[2]);
-					imp.say(imp.pRow(), 65, (!cab.getString(NF.C_DDDEMIT).equals("") ? "("+cab.getString(NF.C_DDDEMIT)+")" : "")+
+					imp.say(  6, sValsCli[2]);
+					imp.say( 65, (!cab.getString(NF.C_DDDEMIT).equals("") ? "("+cab.getString(NF.C_DDDEMIT)+")" : "")+
 											(!cab.getString(NF.C_FONEEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####") : "").trim());
-					imp.say(imp.pRow(), 89, sValsCli[3]);
-					imp.say(imp.pRow(), 96, !cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
+					imp.say( 89, sValsCli[3]);
+					imp.say( 96, !cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
 					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(imp.pRow(),  6, sDuplics[0]);
-					imp.say(imp.pRow(), 30, sVencs[0]);
-					imp.say(imp.pRow(), 55, sVals[0]);
-					imp.say(imp.pRow(), 80, sDuplics[1]);
-					imp.say(imp.pRow(),105, sVencs[1]);
-					imp.say(imp.pRow(),125, sVals[1]);
+					imp.say(  6, sDuplics[0]);
+					imp.say( 30, sVencs[0]);
+					imp.say( 55, sVals[0]);
+					imp.say( 80, sDuplics[1]);
+					imp.say(105, sVencs[1]);
+					imp.say(125, sVals[1]);
 					imp.pulaLinha( 1, imp.comprimido());
-					imp.say(imp.pRow(),  6, sDuplics[2]);
-					imp.say(imp.pRow(), 30, sVencs[2]);
-					imp.say(imp.pRow(), 55, sVals[2]);
-					imp.say(imp.pRow(), 80, sDuplics[3]);
-					imp.say(imp.pRow(),105, sVencs[3]);
-					imp.say(imp.pRow(),125, sVals[3]);
+					imp.say(  6, sDuplics[2]);
+					imp.say( 30, sVencs[2]);
+					imp.say( 55, sVals[2]);
+					imp.say( 80, sDuplics[3]);
+					imp.say(105, sVencs[3]);
+					imp.say(125, sVals[3]);
 					imp.pulaLinha( 1, imp.comprimido());
-					imp.say(imp.pRow(),  6, sDuplics[4]);
-					imp.say(imp.pRow(), 30, sVencs[4]);
-					imp.say(imp.pRow(), 55, sVals[4]);
-					imp.say(imp.pRow(), 80, sDuplics[5]);
-					imp.say(imp.pRow(),105, sVencs[5]);
-					imp.say(imp.pRow(),125, sVals[5]);
+					imp.say(  6, sDuplics[4]);
+					imp.say( 30, sVencs[4]);
+					imp.say( 55, sVals[4]);
+					imp.say( 80, sDuplics[5]);
+					imp.say(105, sVencs[5]);
+					imp.say(125, sVals[5]);
 					imp.pulaLinha( 2, imp.comprimido());
 					
 				}
