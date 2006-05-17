@@ -1018,11 +1018,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				ps.setString(4, sTipoVenda);
 				rs = ps.executeQuery();
 				
-				if(rs.next()){
+				if(rs.next())
 					if(rs.getString(1).equals("S"))
 						retorno = true;
-				}					
 					
+				rs.close();
 				ps.close();
 				if (!con.getAutoCommit())
 					con.commit();
@@ -1972,7 +1972,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 	}
 
 	public void exec(int iCodVenda) {
-		txtCodVenda.setVlrString(iCodVenda + "");
+		txtCodVenda.setVlrString(String.valueOf(iCodVenda));
 		lcCampos.carregaDados();
 	}
 
@@ -2192,29 +2192,27 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				}
 			}
 			
-
-			if (getVendaBloqueada()){
-				lbStatus.setText("  BLOQUEADA");
-				lbStatus.setBackground(Color.BLUE);
-				lbStatus.setVisible(true);
-			}
-			else if (txtStatusVenda.getVlrString().trim().length()>0 && 
+			if (txtStatusVenda.getVlrString().trim().length()>0 && 
 					txtStatusVenda.getVlrString().substring(0,1).equals("C")){
 				lbStatus.setText("  CANCELADA");
 				lbStatus.setBackground(Color.RED);
 				lbStatus.setVisible(true);
 			}
+			else if (getVendaBloqueada()){
+				lbStatus.setText("  BLOQUEADA");
+				lbStatus.setBackground(Color.BLUE);
+				lbStatus.setVisible(true);
+			}
 			else if (txtStatusVenda.getVlrString().trim().length()>0 && 
 					(txtStatusVenda.getVlrString().trim().equals("V2")
 							|| txtStatusVenda.getVlrString().trim().equals("V3"))){
-				lbStatus.setText(" NOTA EMITIDA");
-				lbStatus.setBackground(Color.GREEN);
+				lbStatus.setText("  NF EMITIDA");
+				lbStatus.setBackground(new Color( 45, 190, 60 ));
 				lbStatus.setVisible(true);
 			}
-			else {
-				lbStatus.setText("");
+			else 
 				lbStatus.setVisible( false );
-			}
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
