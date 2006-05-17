@@ -179,6 +179,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private boolean trocouCli = false;
 	private boolean colocouFrete = false;
 	private boolean carregaPesoFrete = false;
+	private boolean CTRL = false;
 	private float pesoBrutFrete = 0;
 	private float pesoLiqFrete = 0;
 	private float vlrFrete = 0;
@@ -1343,8 +1344,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			rs.close();
 			ps.close();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar sequencia."+
-					err.getMessage());
+			Funcoes.mensagemErro(this, "Erro ao buscar sequencia."+ err.getMessage());
 			err.printStackTrace();
 			setVisible(false);
 		}
@@ -1426,33 +1426,40 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 
 	public void keyPressed(KeyEvent kevt) {
 		switch (kevt.getKeyCode()) {
-		case KeyEvent.VK_F3:
-			btF3.doClick();
-			break;
-		case KeyEvent.VK_F4:
-			btF4.doClick();
-			break;
-		case KeyEvent.VK_F5:
-			btF5.doClick();
-			break;
-		case KeyEvent.VK_F6:
-			btF6.doClick();
-			break;
-		case KeyEvent.VK_F7:
-			btF7.doClick();
-			break;
-		case KeyEvent.VK_F8:
-			btF8.doClick();
-			break;
-		case KeyEvent.VK_F9:
-			btF9.doClick();
-			break;
-		case KeyEvent.VK_F10:
-			btF10.doClick();
-			break;
-		case KeyEvent.VK_F11:
-			btF11.doClick();
-			break;
+			case KeyEvent.VK_CONTROL:
+				CTRL = true;
+				break;
+			case KeyEvent.VK_F3:
+				if(CTRL)
+					btCtrlF3.doClick();
+				else
+					btF3.doClick();
+				CTRL = false;
+				break;
+			case KeyEvent.VK_F4:
+				btF4.doClick();
+				break;
+			case KeyEvent.VK_F5:
+				btF5.doClick();
+				break;
+			case KeyEvent.VK_F6:
+				btF6.doClick();
+				break;
+			case KeyEvent.VK_F7:
+				btF7.doClick();
+				break;
+			case KeyEvent.VK_F8:
+				btF8.doClick();
+				break;
+			case KeyEvent.VK_F9:
+				btF9.doClick();
+				break;
+			case KeyEvent.VK_F10:
+				btF10.doClick();
+				break;
+			case KeyEvent.VK_F11:
+				btF11.doClick();
+				break;
 		}
 		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
 			if (kevt.getSource() == txtQtdade) {

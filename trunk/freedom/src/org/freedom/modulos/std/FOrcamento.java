@@ -106,7 +106,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private JTextFieldPad txtVlrLiqItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
 	private JTextFieldPad txtVlrEdDescOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
 	private JTextFieldPad txtVlrEdAdicOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtPercDescOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
 	private JTextFieldPad txtVlrDescOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
+	private JTextFieldPad txtPercAdicOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
 	private JTextFieldPad txtVlrAdicOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
 	private JTextFieldPad txtVlrLiqOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
 	private JTextFieldPad txtVlrProdItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
@@ -274,7 +276,9 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		//ListaCampos de Totais (É acionada pelo listaCampos de Orcamento)
 
 		lcOrc2.add(new GuardaCampo(txtCodOrc, "CodOrc", "Cód.Orç.",ListaCampos.DB_PK, false));
+		lcOrc2.add(new GuardaCampo(txtPercDescOrc, "PercDescOrc", "% desc.",ListaCampos.DB_SI, false));
 		lcOrc2.add(new GuardaCampo(txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.",ListaCampos.DB_SI, false));
+		lcOrc2.add(new GuardaCampo(txtPercAdicOrc, "PercAdicOrc", "% adic.",ListaCampos.DB_SI, false));
 		lcOrc2.add(new GuardaCampo(txtVlrAdicOrc, "VlrAdicOrc", "Vlr.adic.",ListaCampos.DB_SI, false));
 		lcOrc2.add(new GuardaCampo(txtVlrLiqOrc, "VlrLiqOrc", "Vlr.total",ListaCampos.DB_SI, false));
 		lcOrc2.add(new GuardaCampo(txtVlrProdOrc, "VlrProdOrc", "Vlr.parcial",ListaCampos.DB_SI, false));
@@ -310,8 +314,15 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		adicDescFK(txtDescTipoCli, 270, 60, 147, 20, "DescTipoCli","Desc. do tipo de cliente");
 		adicCampo(txtCodPlanoPag, 420, 60, 77, 20, "CodPlanoPag", "Cód.p.pg.",ListaCampos.DB_FK, txtDescPlanoPag, true);
 		adicDescFK(txtDescPlanoPag, 500, 60, 240, 20, "DescPlanoPag","Descrição do plano de pagamento");
-		adicCampoInvisivel(txtVlrEdDescOrc, "VlrDescOrc", "Vlr.desc.",ListaCampos.DB_SI, false);
-		adicCampoInvisivel(txtVlrEdAdicOrc, "VlrAdicOrc", "Vlr.adic.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtPercDescOrc, "PercDescOrc", "% desc.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtVlrDescOrc, "VlrDescOrc", "Vlr.desc.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtPercAdicOrc, "PercAdicOrc", "% adic.",ListaCampos.DB_SI, false);
+		adicCampoInvisivel(txtVlrAdicOrc, "VlrAdicOrc", "Vlr.adic.",ListaCampos.DB_SI, false);
+		
+		/* porque usar estes campos?
+		 * adicCampoInvisivel(txtVlrEdDescOrc, "VlrDescOrc", "Vlr.desc.",ListaCampos.DB_SI, false);
+		 * adicCampoInvisivel(txtVlrEdAdicOrc, "VlrAdicOrc", "Vlr.adic.",ListaCampos.DB_SI, false);*/
+		
 		adicCampoInvisivel(txtStatusOrc, "StatusOrc", "Status",ListaCampos.DB_SI, false);
 		adicCampoInvisivel(txtCodClComiss, "CodClComis", "Cód.cl.comiss.",ListaCampos.DB_FK, txtDescClComiss, false);
 		setListaCampos(true, "ORCAMENTO", "VD");
@@ -443,10 +454,10 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		
 	public String[] getParansPass() {
 		return new String[] {"orçamento",
-				txtCodOrc.getVlrInteger().intValue()+"",
-				txtCodItOrc.getVlrInteger().intValue()+"",
-				txtCodProd.getVlrInteger().intValue()+"",
-				txtVlrProdItOrc.getVlrInteger().intValue()+""};
+				txtCodOrc.getVlrString().trim(),
+				txtCodItOrc.getVlrString().trim(),
+				txtCodProd.getVlrString().trim(),
+				txtVlrProdItOrc.getVlrString().trim()};
 	}
 
 	public int[] getParansPreco() {
@@ -695,12 +706,16 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void calcDescIt() {
-		if(txtPercDescItOrc.floatValue()>0) {
+		if(txtVlrDescItOrc.floatValue() == 0) {
+			txtPercDescItOrc.setVlrString("");
+			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
+		}
+		else if(txtPercDescItOrc.floatValue()>0) {
 			txtVlrDescItOrc.setVlrBigDecimal(new BigDecimal(
 					Funcoes.arredFloat(txtVlrProdItOrc.floatValue()
 							* txtPercDescItOrc.floatValue() / 100,casasDecFin)));
 			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
-		} 
+		} 		
 	}
 
 	private void calcTot() {
@@ -736,11 +751,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	
 	private void fechaOrc() {
 		Object[] oValores = null;
-		DLCompOrc dl = new DLCompOrc(this, (txtVlrDescItOrc .getVlrBigDecimal().floatValue() > 0), 
+		DLCompOrc dl = new DLCompOrc(this, (txtVlrDescOrc.floatValue() > 0), 
 				txtVlrProdOrc.getVlrBigDecimal(),
-				txtPercDescItOrc.getVlrBigDecimal(),
-				txtVlrDescItOrc.getVlrBigDecimal(),
-				txtVlrDescItOrc.getVlrBigDecimal(),
+				txtPercDescOrc.getVlrBigDecimal(),
+				txtVlrDescOrc.getVlrBigDecimal(),
+				txtPercAdicOrc.getVlrBigDecimal(),
 				txtVlrAdicOrc.getVlrBigDecimal(), 
 				txtCodPlanoPag.getVlrInteger());
 		try {
@@ -754,23 +769,24 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			}
 			if (oValores != null) {
 				lcCampos.edit();
-				txtVlrEdDescOrc.setVlrBigDecimal((BigDecimal) oValores[0]);
-				txtVlrEdAdicOrc.setVlrBigDecimal((BigDecimal) oValores[1]);
-				if(oValores[3]!=txtCodPlanoPag.getVlrInteger()){
-					txtCodPlanoPag.setVlrInteger((Integer)(oValores[3]));
-				}
+				
+				txtPercDescOrc.setVlrBigDecimal((BigDecimal) oValores[0]);
+				txtVlrDescOrc.setVlrBigDecimal((BigDecimal) oValores[1]);
+				txtPercAdicOrc.setVlrBigDecimal((BigDecimal) oValores[2]);
+				txtVlrAdicOrc.setVlrBigDecimal((BigDecimal) oValores[3]);
+				
+				if(oValores[3] != txtCodPlanoPag.getVlrInteger())
+					txtCodPlanoPag.setVlrInteger((Integer)(oValores[4]));
 
 				// Ajusta o status para OC - orçamento completo.
 				txtStatusOrc.setVlrString("OC");
 				lcCampos.post();
 				lcCampos.carregaDados();
 
-				if (oValores[4].equals("S")) {
+				if (oValores[5].equals("S"))
 					aprovar();
-				}
-				if (oValores[2].equals("S")) {
+				if (oValores[6].equals("S"))
 					imprimir(true);
-				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -926,7 +942,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	public void exec(int iCodOrc) {
-		txtCodOrc.setVlrString(iCodOrc + "");
+		txtCodOrc.setVlrString(String.valueOf(iCodOrc));
 		lcCampos.carregaDados();
 	}
 
@@ -1290,13 +1306,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 		}
 		else if(fevt.getSource() == txtVlrDescItOrc) {
 			if( bdVlrDescItAnt != txtVlrDescItOrc.getVlrBigDecimal())
-				txtPercDescItOrc.setVlrString("");
-			if( txtVlrDescItOrc.getVlrBigDecimal().floatValue() <= 0 ) { 
-				if( txtPercDescItOrc.getVlrBigDecimal().floatValue() > 0 ) {
-					calcDescIt();
-					calcVlrProd();
-					calcTot();
-				}						
+				if(txtPercDescItOrc.getText().trim().length() < 1)
+					txtPercDescItOrc.setVlrString("");
+			if( txtVlrDescItOrc.getVlrBigDecimal().floatValue() >= 0 ) { 
+				calcDescIt();
+				calcVlrProd();
+				calcTot();						
 			}
 			
 			if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
@@ -1387,6 +1402,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			String s = txtCodOrc.getVlrString();
 			lcOrc2.carregaDados();//Carrega os Totais
 			txtCodOrc.setVlrString(s);
+			s = null;
 		} else if (cevt.getListaCampos() == lcCli ) {
 			if ( ((Boolean)oPrefs[6]).booleanValue() ) {
 				if(iCodCliAnt!=txtCodCli.getVlrInteger().intValue()){
