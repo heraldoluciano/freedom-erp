@@ -56,8 +56,7 @@ import org.freedom.telas.FDialogo;
 
 public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupListener, CarregaListener {
 	
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private Tabela tabOrc = new Tabela();
@@ -440,21 +439,22 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						Funcoes.mensagemErro(this,"Erro ao realizar commit!!"+"\n"+err.getMessage(),true,con,err);
 						return false;
 					}
-					String opt[] = {"Sim","Não"}; 
-					if (JOptionPane.showOptionDialog(null, 
+					if (Funcoes.mensagemConfirma(null,
 							"Venda '"+iCodVenda+"' gerada com sucesso!!!\n\n"+
-							"Deseja edita-la?","Confirmação", JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE,null, opt, opt[0])==JOptionPane.YES_OPTION){
+							"Deseja edita-la?")==JOptionPane.YES_OPTION){
 						vendaSTD.exec(iCodVenda);
 						dispose();
 					}
 				} else if(sTipoVenda.equals("E")) {	
 					iVals = (int[])vValidos.elementAt(0);
-					if(vendaPDV.montaVendaOrc(iVals[0])) {
-						for (int i=0;i<vValidos.size();i++) {							
+					
+					if(vendaPDV.montaVendaOrc(iVals[0])) {// Gera a venda
+						
+						for (int i=0;i<vValidos.size();i++) {// Adiciona os itens							
 							iVals = (int[])vValidos.elementAt(i);
-							vendaPDV.adicItemOrc(iVals);
+							vendaPDV.adicItemOrc(iVals[1]);
 						}
+						
 					}	
 					dispose();
 					if(prefs[1])
