@@ -145,6 +145,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	private Vector vParamOrc = new Vector();
 	private String sOrdNota = "";	
 	private String sModoNota = "";	
+	private String oldStatusOrc = null;
 	private BigDecimal bdVlrDescItAnt;
 	private FPrinterJob dl = null;
 	private Object[] oPrefs = null;	
@@ -706,14 +707,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 
 	private void calcDescIt() {
-		if(txtVlrDescItOrc.floatValue() == 0) {
-			txtPercDescItOrc.setVlrString("");
-			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
-		}
-		else if(txtPercDescItOrc.floatValue()>0) {
+		if(txtPercDescItOrc.floatValue()>0) {
 			txtVlrDescItOrc.setVlrBigDecimal(new BigDecimal(
 					Funcoes.arredFloat(txtVlrProdItOrc.floatValue()
 							* txtPercDescItOrc.floatValue() / 100,casasDecFin)));
+			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
+		} else if(txtVlrDescItOrc.floatValue() == 0) {
+			txtPercDescItOrc.setVlrString("");
 			bdVlrDescItAnt = txtVlrDescItOrc.getVlrBigDecimal();
 		} 		
 	}
@@ -778,6 +778,8 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				if(oValores[3] != txtCodPlanoPag.getVlrInteger())
 					txtCodPlanoPag.setVlrInteger((Integer)(oValores[4]));
 
+				// pega o status antigo do orçamento;
+				oldStatusOrc = txtStatusOrc.getVlrString().trim();
 				// Ajusta o status para OC - orçamento completo.
 				txtStatusOrc.setVlrString("OC");
 				lcCampos.post();
@@ -853,13 +855,22 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 
 	public void aprovar() {
 		PreparedStatement ps = null;
-		PreparedStatement ps2 = null;
 		String sSQL = null;
 		String status = "OC";
 		try {
 
 			if (tab.getRowCount() <= 0) {
 				Funcoes.mensagemInforma(this,"Não ha nenhum ítem para ser aprovado");
+				return;
+			}
+			/* isso aqui é pra não deixar aprovar mais de uma vez...*/
+			if (oldStatusOrc.equals("OL") || oldStatusOrc.equals("OV")) {
+				if(oldStatusOrc.equals("OV"))
+					Funcoes.mensagemInforma(this,"Orçamento já foi faturado.");
+				lcCampos.edit();
+				txtStatusOrc.setVlrString(oldStatusOrc);
+				lcCampos.post();
+				lcCampos.carregaDados();
 				return;
 			}
 				
@@ -871,7 +882,7 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				for (int iLin=0;iLin<tab.getRowCount();iLin++) {
 					ps.setDate(1,Funcoes.dateToSQLDate(txtDtVencOrc.getVlrDate()));
 					ps.setInt(2,Aplicativo.iCodEmp);
-					ps.setInt(3,Aplicativo.iCodFilial);
+					ps.setInt(3,ListaCampos.getMasterFilial("VDITORCAMENTO"));
 					ps.setInt(4,Integer.parseInt(tab.getValor(iLin,0).toString()));
 			    	ps.setInt(5,txtCodOrc.getVlrInteger().intValue()); 
 			    
@@ -888,13 +899,13 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				sSQL = "UPDATE VDORCAMENTO SET STATUSORC=? WHERE "+
 				 	   "CODEMP=? AND CODFILIAL=? AND CODORC=?";
 					
-				ps2 = con.prepareStatement(sSQL);
+				ps = con.prepareStatement(sSQL);
 								
-				ps2.setString(1,status);
-				ps2.setInt(2,Aplicativo.iCodEmp);
-				ps2.setInt(3,Aplicativo.iCodFilial);
-				ps2.setInt(4,txtCodOrc.getVlrInteger().intValue()); 
-				ps2.execute();
+				ps.setString(1,status);
+				ps.setInt(2,Aplicativo.iCodEmp);
+				ps.setInt(3,ListaCampos.getMasterFilial("VDORCAMENTO"));
+				ps.setInt(4,txtCodOrc.getVlrInteger().intValue()); 
+				ps.execute();
 				if (!con.getAutoCommit())
 				  	con.commit();
 			} catch (SQLException err) {
@@ -904,7 +915,6 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			e.printStackTrace();
 		} finally {
 			ps = null;
-			ps2 = null;
 			sSQL = null;		
 		}
 	}	

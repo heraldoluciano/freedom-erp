@@ -299,7 +299,8 @@ public class FConsOrc extends FFilho implements ActionListener {
 			 + "AND IT.CODORC=O.CODORC AND IT.CODEMP=O.CODEMP AND IT.CODFILIAL=O.CODFILIAL "
 			 + "AND IT.TIPOORC=O.TIPOORC "
 			 + "AND CL.CODEMP=O.CODEMPCL AND CL.CODFILIAL=O.CODFILIALCL "
-			 + "AND CL.CODCLI=O.CODCLI" + sWhere;
+			 + "AND CL.CODCLI=O.CODCLI" + sWhere
+			 + " ORDER BY 2";
 		
 		System.out.println("Query completa:"+sSQL);
 		try {
