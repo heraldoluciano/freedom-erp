@@ -36,19 +36,20 @@ public class NFBuzzi2 extends Layout {
 		boolean retorno = super.imprimir(nf, imp);
 		int iNumNota = 0;
 		int iProd = 0;
+		final int MAXPROD = 15;
 		boolean bFat = true;
 		boolean bNat = true;
 		boolean bTotalizou = false;
 		boolean bjatem = false;
-		String sTipoTran="";
 		String sCodfisc = "";
 		String sSigla = "";  
+		String sDesc = "";
 		String sHora = null;
 		String[] sNat = new String[4];
 		String[] sVencs = new String[6];
 		String[] sVals = new String[6];
-		String[] sDuplics = new String[6];
-		String[] sMatObs = null;
+		//String[] sMatObs = null;
+		Vector vDesc = null;
 		Vector vValores = new Vector();
 		Vector vClfisc = new Vector();
 		Vector vSigla = new Vector();
@@ -74,27 +75,24 @@ public class NFBuzzi2 extends Layout {
 				for (int i=0; i<6; i++) {
 					if (bFat) {
 						if (parc.next()) {
-							sDuplics[i] = sNumNota+"/"+parc.getInt(NF.C_NPARCITREC);
 							sVencs[i] = Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO));
 							sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,parc.getString(NF.C_VLRPARC));
 						} else {
 							bFat = false;
-							sDuplics[i] = "********";
-							sVencs[i] = "********";
-							sVals[i] = "********";
+							sVencs[i] = "**********";
+							sVals[i] = "************";
 						}
 					} else {
 						bFat = false;
-						sDuplics[i] = "********";
-						sVencs[i] = "********";
-						sVals[i] = "********";
+						sVencs[i] = "**********";
+						sVals[i] = "************";
 					}          
 				}
 				
 				if (bNat) {
 					sNat[0] = itens.getString(NF.C_DESCNAT);
 					sNat[1] = Funcoes.setMascara(itens.getString(NF.C_CODNAT),"#.##");
-					sMatObs = Funcoes.strToStrArray(!cab.getString(NF.C_OBSPED).equals("") ? cab.getString(NF.C_OBSPED) : "",3);
+					//sMatObs = Funcoes.strToStrArray(!cab.getString(NF.C_OBSPED).equals("") ? cab.getString(NF.C_OBSPED) : "",3);
 					bNat = false;
 				}
 				
@@ -144,40 +142,39 @@ public class NFBuzzi2 extends Layout {
 					
 				}
 				 
-				if (!itens.getString(NF.C_TIPOPROD).equals("S")) {
+				if (!itens.getString(NF.C_TIPOPROD).equals("S") && iProd<MAXPROD) {
 					imp.pulaLinha(1, imp.comprimido());            
-					imp.say(  8, ""+itens.getInt(NF.C_CODPROD));   
+					imp.say(  8, String.valueOf(itens.getInt(NF.C_CODPROD)));   
 					
-					Vector vDesc = Funcoes.strToVectorSilabas(itens.getString(NF.C_OBSITPED)==null || itens.getString(NF.C_OBSITPED).equals("") ? (itens.getString(NF.C_DESCPROD).trim()):itens.getString(NF.C_OBSITPED),46);
-					String sDesc = "";
+					vDesc = Funcoes.strToVectorSilabas(itens.getString(NF.C_OBSITPED).equals("") ? 
+									itens.getString(NF.C_DESCPROD).trim() : 
+										itens.getString(NF.C_OBSITPED).trim() ,46);
 					
-					for (int iConta=0;( (iConta < 20) && (vDesc.size()>iConta) );iConta++){
-						if (!vDesc.elementAt(iConta).toString().equals(""))
-							sDesc = vDesc.elementAt(iConta).toString();
-						else
-							sDesc = "";
+					for (int i=0;(i < (MAXPROD-iProd)) && (vDesc.size()>i); i++){
+						sDesc = vDesc.elementAt(i).toString();
 						
-						if (iConta > 0)
+						if (i > 0) {
 							imp.pulaLinha(1, imp.comprimido());
+							iProd++;
+						}
 						
 						imp.say( 16, sDesc);
 						
-						iProd = iProd+vDesc.size();
 						
-						sMensAdic = !itens.getString(NF.C_DESCFISC).equals("") ? itens.getString(NF.C_DESCFISC).trim() : "";
 					}
 					
-					sCodfisc = (!itens.getString(NF.C_CODFISC).equals("") ? itens.getString(NF.C_CODFISC) : "");
+					sMensAdic = itens.getString(NF.C_DESCFISC) + " - ";
+					sCodfisc = itens.getString(NF.C_CODFISC);
 					   
 					if(!sCodfisc.equals("")){
 						
-						for(int i=0;i<vClfisc.size();i++){
+						for(int i=0; i< vClfisc.size(); i++){
 							
-							if(vClfisc.elementAt(i)!=null){
+							if(vClfisc.elementAt(i) != null){
 								
 								if(sCodfisc.equals((String)vClfisc.elementAt(i))){
 									bjatem = true;
-									sSigla = ""+(char)(64 + i);
+									sSigla = String.valueOf((char)(64 + i));
 								} else
 									bjatem = false;
 								
@@ -187,68 +184,70 @@ public class NFBuzzi2 extends Layout {
 						
 						if(!bjatem){
 							vClfisc.addElement(sCodfisc);
-							sSigla = ""+(char)(63 + vClfisc.size());
+							sSigla = String.valueOf((char)(63 + vClfisc.size()));
 							vSigla.addElement(sSigla + " = " + sCodfisc);
 						}
 						
 					}
 					
-					imp.say( 69, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
-					imp.say( 73, sSigla);					
-					imp.say( 79, itens.getString(NF.C_CODUNID).substring(0,4));
-					imp.say( 82, ""+itens.getFloat(NF.C_QTDITPED));
-					imp.say( 92, Funcoes.strDecimalToStrCurrency(8,2,""+((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP))));
-					imp.say(106, Funcoes.strDecimalToStrCurrency(13,2,itens.getFloat(NF.C_VLRLIQITPED)+""));
-					imp.say(122, ""+itens.getFloat(NF.C_PERCICMSITPED));
+					if( iProd < MAXPROD ) {
+						imp.say( 69, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
+						imp.say( 73, sSigla);					
+						imp.say( 79, itens.getString(NF.C_CODUNID).substring(0,4));
+						imp.say( 82, String.valueOf(itens.getFloat(NF.C_QTDITPED)));
+						imp.say( 92, Funcoes.strDecimalToStrCurrency(8,2,String.valueOf(((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)))));
+						imp.say(106, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
+						imp.say(122, String.valueOf(itens.getFloat(NF.C_PERCICMSITPED)));
+						iProd++;
+					}
 					
 				}
 				 
 				if (!bTotalizou) {
 					frete.next();
 					
-					vValores.addElement(""+itens.getFloat(NF.C_VLRBASEICMSPED)); //0
-					vValores.addElement(""+itens.getFloat(NF.C_VLRICMSPED)); //1
-					vValores.addElement(""+(itens.getFloat(NF.C_VLRLIQPED)-frete.getFloat(NF.C_VLRFRETEPED)-itens.getFloat(NF.C_VLRADICPED))); // 2
-					vValores.addElement(""+frete.getFloat(NF.C_VLRFRETEPED));//3
-					vValores.addElement(""+itens.getFloat(NF.C_VLRADICPED));//4
-					vValores.addElement(""+itens.getFloat(NF.C_VLRIPIPED));//5
-					vValores.addElement(""+itens.getFloat(NF.C_VLRLIQPED));//6
+					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRBASEICMSPED)));//0
+					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRICMSPED)));//1
+					vValores.addElement(String.valueOf((itens.getFloat(NF.C_VLRLIQPED)-frete.getFloat(NF.C_VLRFRETEPED)-itens.getFloat(NF.C_VLRADICPED))));// 2
+					vValores.addElement(String.valueOf(frete.getFloat(NF.C_VLRFRETEPED)));//3
+					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRADICPED)));//4
+					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRIPIPED)));//5
+					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRLIQPED)));//6
 					vValores.addElement(frete.getString(NF.C_RAZTRANSP));//7
 					vValores.addElement(frete.getString(NF.C_TIPOFRETE));//8
 					vValores.addElement(frete.getString(NF.C_PLACAFRETE));//9
-					vValores.addElement(frete.getString(NF.C_UFFRETE));      //10   
-					sTipoTran = !frete.getString(NF.C_TIPOTRANSP).equals("") ? frete.getString(NF.C_TIPOTRANSP) : "";
-					vValores.addElement(sTipoTran);//11
+					vValores.addElement(frete.getString(NF.C_UFFRETE));//10   
+					vValores.addElement(frete.getString(NF.C_TIPOTRANSP));//11
 					vValores.addElement(cab.getString(NF.C_CNPJEMIT));//12
 					vValores.addElement(frete.getString(NF.C_CNPJTRANSP));   //13         
-					vValores.addElement(!frete.getString(NF.C_ENDTRANSP).equals("")?frete.getString(NF.C_ENDTRANSP):"");//14
+					vValores.addElement(frete.getString(NF.C_ENDTRANSP));//14
 					   
-					if (sTipoTran.equals("C")) {
+					if (frete.getString(NF.C_TIPOTRANSP).equals("C")) {
 						
 						vValores.addElement("");//15
 						vValores.addElement("");//16
 						vValores.addElement("");//17
-						vValores.addElement(""); //18
+						vValores.addElement("");//18
 						
 					} else {
 						
-						vValores.addElement(""+frete.getInt(NF.C_NUMTRANSP));//15
-						vValores.addElement(!frete.getString(NF.C_CIDTRANSP).equals("")?frete.getString(NF.C_CIDTRANSP):"");//16
-						vValores.addElement(!frete.getString(NF.C_UFTRANSP).equals("")?frete.getString(NF.C_UFTRANSP): "");//17
-						vValores.addElement(!frete.getString(NF.C_INSCTRANSP).equals("")?frete.getString(NF.C_INSCTRANSP):""); //18
+						vValores.addElement(String.valueOf(frete.getInt(NF.C_NUMTRANSP)));//15
+						vValores.addElement(frete.getString(NF.C_CIDTRANSP));//16
+						vValores.addElement(frete.getString(NF.C_UFTRANSP));//17
+						vValores.addElement(frete.getString(NF.C_INSCTRANSP));//18
 					
 					}
 					   
-					vValores.addElement(""+frete.getFloat(NF.C_QTDFRETE));//19
+					vValores.addElement(String.valueOf(frete.getFloat(NF.C_QTDFRETE)));//19
 					vValores.addElement(frete.getString(NF.C_ESPFRETE));//20
 					vValores.addElement(frete.getString(NF.C_MARCAFRETE));//21
-					vValores.addElement(""+frete.getFloat(NF.C_PESOBRUTO));//22
-					vValores.addElement(""+frete.getFloat(NF.C_PESOLIQ));//23
-					vValores.addElement(""+itens.getFloat(NF.C_VLRISSPED));//24
-					vValores.addElement(""+cab.getInt(NF.C_CODVEND));//25
+					vValores.addElement(String.valueOf(frete.getFloat(NF.C_PESOBRUTO)));//22
+					vValores.addElement(String.valueOf(frete.getFloat(NF.C_PESOLIQ)));//23
+					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRISSPED)));//24
+					vValores.addElement(String.valueOf(cab.getInt(NF.C_CODVEND)));//25
 					
-					if (cab.getString(NF.C_NOMEVEND)==null || cab.getString(NF.C_NOMEVEND).equals(""))
-						vValores.addElement(Funcoes.replicate(" ",25)); // 26
+					if (cab.getString(NF.C_NOMEVEND).equals(""))
+						vValores.addElement(Funcoes.replicate(" ",25));// 26
 					else 
 						vValores.addElement(cab.getString(NF.C_NOMEVEND)+Funcoes.replicate(" ",25-cab.getString(NF.C_NOMEVEND).length()));
 					
@@ -276,8 +275,15 @@ public class NFBuzzi2 extends Layout {
 				}
 				
 			}
-			 
-			if (imp.pRow()<36) {   
+			
+			imp.pulaLinha( 38-imp.pRow(), imp.comprimido());
+			imp.say( 10, "PRORROGADO O PRAZO DE VALIDADE DA EMISSÃO DAS NOTAS FISCAIS PARA 18 MESES.");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say( 10, "DE ACORDO COM O DECRETO N. 5502 DE 10 DE OUTUBRO DE 2005,");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say( 10, "COM VIGENCIA A PARTIR DE 1 DE SETEMBRO DE 2005.");
+			
+			/*if (imp.pRow()<36) {   
 				
 				imp.pulaLinha(1, imp.comprimido());
 				
@@ -286,7 +292,7 @@ public class NFBuzzi2 extends Layout {
 					imp.say( 23, sMatObs[i]);
 				}
 				
-			}
+			}*/
 			
 			impTotais(imp,vValores);
 			
@@ -294,22 +300,22 @@ public class NFBuzzi2 extends Layout {
 			
 			retorno = true;
 			
-			if (iProd>20) 
-				Funcoes.mensagemInforma(null,"Podem haver erros na impressão da nota fiscal."+"\n"+"Produtos ultrapassam vinte linhas!");
+			if (iProd>=MAXPROD) 
+				Funcoes.mensagemInforma(null,"Podem haver erros na impressão da nota fiscal.\n" + 
+						"Produtos ultrapassam " + MAXPROD + " linhas!");
 
 		} catch ( Exception err ) {
-			Funcoes.mensagemErro(null,"Erro ao montar Nota Fiscal!"+err.getMessage());      
+			err.printStackTrace();
+			Funcoes.mensagemErro(null,"Erro ao montar Nota Fiscal!\n"+err.getMessage());      
 			retorno = false;
 		} finally {
-			sTipoTran = null;
 			sCodfisc = null;
 			sSigla = null;  
 			sHora = null;
 			sNat = null;
 			sVencs = null;
 			sVals = null;
-			sDuplics = null;
-			sMatObs = null;
+			//sMatObs = null;
 			vValores = null;
 			vClfisc = null;
 			vSigla = null;
@@ -327,19 +333,18 @@ public class NFBuzzi2 extends Layout {
 		
 		try {	
 			
-			for (int i=0; imp.pRow() < 45; i++)
-				imp.pulaLinha(1, imp.comprimido());
+			imp.pulaLinha( 45-imp.pRow(), imp.comprimido());
 			
-			imp.pulaLinha(1, imp.comprimido());
+			imp.pulaLinha( 1, imp.comprimido());
 			imp.say(  6, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(0).toString()));
 			imp.say( 35, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString()));
 			imp.say(117, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString()));
-			imp.pulaLinha(2, imp.comprimido());
+			imp.pulaLinha( 2, imp.comprimido());
 			imp.say(  6, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(3).toString()));
 			imp.say( 65, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(4).toString()));
 			imp.say( 90, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(5).toString()));
 			imp.say(117, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(6).toString()));
-			imp.pulaLinha(3, imp.comprimido());		    	        	       	      	      
+			imp.pulaLinha( 3, imp.comprimido());		    	        	       	      	      
 			imp.say(  8, vValores.elementAt(7) != null ? vValores.elementAt(7).toString() : "");
 			imp.say( 80, vValores.elementAt(8) != null ? (vValores.elementAt(8).toString().equals("C") ? "1" : "2") : "");
 			imp.say( 87, vValores.elementAt(9) != null ? vValores.elementAt(9).toString() : "");
@@ -348,29 +353,29 @@ public class NFBuzzi2 extends Layout {
 			if ( ! vValores.elementAt(11).toString().equals("C") )
 				imp.say(118, Funcoes.setMascara(vValores.elementAt(13) != null ? vValores.elementAt(13).toString() : "","##.###.###/####-##"));
 
-			imp.pulaLinha(2, imp.comprimido());
+			imp.pulaLinha( 2, imp.comprimido());
 			imp.say(  8, vValores.elementAt(14) != null ? vValores.elementAt(14).toString().trim() : "");
 			imp.say( 68, vValores.elementAt(16) != null ? vValores.elementAt(16).toString().trim() : "");
 			imp.say(102, vValores.elementAt(17) != null ? vValores.elementAt(17).toString().trim() : "");
 			imp.say(121, vValores.elementAt(18) != null ? vValores.elementAt(18).toString() : "");			    	      
-			imp.pulaLinha(2, imp.comprimido());		  
+			imp.pulaLinha( 2, imp.comprimido());		  
 			imp.say(  8, vValores.elementAt(19) != null ? vValores.elementAt(19).toString() : "");
 			imp.say( 25, vValores.elementAt(20) != null ? vValores.elementAt(20).toString() : "");
 			imp.say( 48, vValores.elementAt(21) != null ? vValores.elementAt(21).toString() : "");
 			imp.say(103, vValores.elementAt(22) != null ? vValores.elementAt(22).toString() : "");
 			imp.say(128, vValores.elementAt(23) != null ? vValores.elementAt(23).toString() : "");			  
-			imp.pulaLinha(2, imp.comprimido());
+			imp.pulaLinha( 2, imp.comprimido());
 			  
 			vObs = Funcoes.quebraLinha(Funcoes.stringToVector(sMensAdic),37);
 			
 			for (int i=0; i < vObs.size(); i++) {
 				imp.pulaLinha(1, imp.comprimido());				
-				imp.say(  5, vObs.elementAt(i).toString());
+				imp.say(  4, vObs.elementAt(i).toString());
 				
 				if(i==0)
-					imp.say( 43, "Vendedor: " + ( vValores.elementAt(25) != null ? vValores.elementAt(25).toString() : "" ));
+					imp.say( 45, "Vendedor: " + ( vValores.elementAt(25) != null ? vValores.elementAt(25).toString() : "" ));
 				if(i==1)
-					imp.say( 43, vValores.elementAt(26) != null ? vValores.elementAt(26).toString().substring(0,20) : "");
+					imp.say( 45, vValores.elementAt(26) != null ? vValores.elementAt(26).toString().substring(0,20) : "");
 			}
 			  
 			imp.pulaLinha(7, imp.comprimido());
