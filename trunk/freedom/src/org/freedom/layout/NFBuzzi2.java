@@ -48,7 +48,7 @@ public class NFBuzzi2 extends Layout {
 		String[] sNat = new String[4];
 		String[] sVencs = new String[6];
 		String[] sVals = new String[6];
-		//String[] sMatObs = null;
+		Vector vMatObs = null;
 		Vector vDesc = null;
 		Vector vValores = new Vector();
 		Vector vClfisc = new Vector();
@@ -92,7 +92,7 @@ public class NFBuzzi2 extends Layout {
 				if (bNat) {
 					sNat[0] = itens.getString(NF.C_DESCNAT);
 					sNat[1] = Funcoes.setMascara(itens.getString(NF.C_CODNAT),"#.##");
-					//sMatObs = Funcoes.strToStrArray(!cab.getString(NF.C_OBSPED).equals("") ? cab.getString(NF.C_OBSPED) : "",3);
+					vMatObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),70);
 					bNat = false;
 				}
 				
@@ -262,8 +262,7 @@ public class NFBuzzi2 extends Layout {
 			
 			int pos = 1;
 			
-			for(int i=0; i < vSigla.size(); i++){
-				
+			for(int i=0; i < vSigla.size(); i++){				
 				if(pos==1){
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say( 16, (String)vSigla.elementAt(i));
@@ -272,8 +271,14 @@ public class NFBuzzi2 extends Layout {
 					imp.say( 35, (String)vSigla.elementAt(i));
 					pos = 1;
 					iProd++;
-				}
-				
+				}				
+			}
+
+			if (imp.pRow()<36) {   								
+				for (int i=0; i < vMatObs.size(); i++) {
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 10, (String)vMatObs.elementAt(i));
+				}				
 			}
 			
 			imp.pulaLinha( 38-imp.pRow(), imp.comprimido());
@@ -283,16 +288,6 @@ public class NFBuzzi2 extends Layout {
 			imp.pulaLinha( 1, imp.comprimido());
 			imp.say( 10, "COM VIGENCIA A PARTIR DE 1 DE SETEMBRO DE 2005.");
 			
-			/*if (imp.pRow()<36) {   
-				
-				imp.pulaLinha(1, imp.comprimido());
-				
-				for (int i=0; i < 3; i++) {
-					imp.pulaLinha(1, imp.comprimido());
-					imp.say( 23, sMatObs[i]);
-				}
-				
-			}*/
 			
 			impTotais(imp,vValores);
 			
