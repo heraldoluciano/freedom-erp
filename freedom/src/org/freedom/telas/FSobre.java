@@ -38,7 +38,7 @@ import org.freedom.funcoes.Funcoes;
 
 public class FSobre extends FFDialogo {
 	private static final long serialVersionUID = 1L;
-	private JButton btMemoria = new JButton("RMA",Icone.novo("btExecutar.gif"));
+	private JButton btMemoria = new JButton("Reciclar",Icone.novo("btExecuta.gif"));
     private JTabbedPanePad tpnSobre = new JTabbedPanePad();
     private JPanelPad pnSobre = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
     private JPanelPad pnEquipe = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
@@ -48,13 +48,14 @@ public class FSobre extends FFDialogo {
   	private long lMemTotal;
   	private long lMemUtilizada;
   	private long lMemMaxima;
+  	private JLabelPad labelSistema = null;
 
   	public FSobre () {
   		super(Aplicativo.telaPrincipal);
   		setTitulo("Sobre...");
   		setAtribos(312,330);	
   		setToFrameLayout();
-  		
+  		btMemoria.addActionListener(this);
   		c.add(tpnSobre,BorderLayout.CENTER);
   		tpnSobre.addTab("Sobre",pnSobre);
 	
@@ -72,12 +73,7 @@ public class FSobre extends FFDialogo {
   		pnSobre.add(lbImg,BorderLayout.NORTH);
   		pnSobre.add(new JLabelPad ("<HTML><BR> Versão do jar: "+sVersao+"<BR> "+ Aplicativo.sEmpSis+"<BR>" +
   				(new GregorianCalendar().get(Calendar.YEAR))+"<BR></HTML>"),BorderLayout.CENTER);
-	
-  		
-	
-  //  System.gc();
-	
-	
+		
 	tpnSobre.addTab("Equipe "+Aplicativo.sNomeSis ,pnEquipe);
     String sHtmlEquipe = "<HTML><BR><CENTER>";
     for (int i = 0;Aplicativo.vEquipeSis.size()>i;i++){
@@ -89,20 +85,30 @@ public class FSobre extends FFDialogo {
 	
 	tpnSobre.addTab("Sistema" ,pnSistema);
 	carregaInfoSis();
-	pnSistema.add(new JLabelPad("<HTML>" +
- 				"Memória maxima:"+lMemMaxima+" MB" + "<BR>" +
- 				"Memória total:"+lMemTotal+" MB" + "<BR>" +
- 				"Memória utilizada:"+lMemUtilizada+" MB" + "<BR>" +
- 				"Memória livre:"+lMemLivre+" MB"+"<HTML>"),BorderLayout.NORTH);
+	
     pnSistema.add(btMemoria,BorderLayout.SOUTH);
 	
   }
   public void carregaInfoSis() {
+	    if(labelSistema!=null){
+	    	pnSistema.remove(labelSistema);
+	    	System.out.println("Removeu label");
+	  		Runtime.getRuntime().gc();
+	  		System.gc();
+	    }
 		lMemLivre =((Runtime.getRuntime().freeMemory() / 1024) / 1024);
   		lMemTotal = ((Runtime.getRuntime().totalMemory() / 1024) / 1024);
   		lMemUtilizada = lMemTotal - lMemLivre;
   		lMemMaxima = ((Runtime.getRuntime().maxMemory() /1024) / 1024);
   		System.out.println("Carregando informações de memória..");
+
+  		labelSistema = new JLabelPad("<HTML>" +
+ 				"Memória maxima:"+lMemMaxima+" MB" + "<BR>" +
+ 				"Memória total:"+lMemTotal+" MB" + "<BR>" +
+ 				"Memória utilizada:"+lMemUtilizada+" MB" + "<BR>" +
+ 				"Memória livre:"+lMemLivre+" MB"+"<HTML>");
+ 		pnSistema.add(labelSistema,BorderLayout.NORTH);
+  		
   }
    public void actionPerformed(ActionEvent evt) {
         super.actionPerformed(evt);    
