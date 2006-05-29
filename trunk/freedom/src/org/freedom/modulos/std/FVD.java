@@ -173,7 +173,7 @@ public abstract class FVD extends FDetalhe {
 		ResultSet rs = null;
 		Integer retorno = new Integer(0);
 		try {
-			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
+			ps = con.prepareStatement("SELECT ISEQ FROM SPGERANUM(?,?,?)");
 			ps.setInt(1, Aplicativo.iCodEmp);
 			if(sTabela.equals("VDVENDA")) {
 				ps.setInt(2, ListaCampos.getMasterFilial("VDVENDA"));
@@ -202,6 +202,51 @@ public abstract class FVD extends FDetalhe {
 		return retorno;
     	
     }
+    /**
+     * Testa o lote.
+     * @param lote Código do lote.
+     * @param codProd Código do produto.
+     * @return verdadeiro se tem o lote.
+     */
+	protected boolean testaCodLote( String lote, int codProd ) {
+		boolean bValido = false;
+		String sSQL = "SELECT COUNT(*) FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?"
+				+ " AND CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, lote);
+			ps.setInt(2, codProd);
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, ListaCampos.getMasterFilial("EQLOTE"));
+			rs = ps.executeQuery();
+			if (rs.next()) 
+				if (rs.getInt(1) > 0)
+					bValido = true;
+
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+		return bValido;
+		
+	}
+    /**
+     * Verifica se a lucro na venda.
+     * @param args parametros
+     * @return se a lucro verdadeiro, se não falso.
+     */
 	protected boolean testaLucro(Object[] args) {
 		boolean bRet = false;
 		PreparedStatement ps = null;
@@ -633,6 +678,50 @@ public abstract class FVD extends FDetalhe {
 			}
 		}
 		return sRet;
+	}
+	/**
+	 * Busca o lote do produto.
+	 * @param iCodProd Código do produto.
+	 * @param testar Testar saldo maior que zero.
+	 * @return
+	 */
+	protected String getLote( int iCodProd, boolean testar ) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		String sCodLote = null;
+		try {
+			sSQL = "SELECT MIN(L.CODLOTE) " +
+				   "FROM EQLOTE L " +
+				   "WHERE L.CODPROD=? AND L.CODFILIAL=? " + (testar ? "AND L.SLDLIQLOTE>0 " : "") +
+				   "AND L.CODEMP=? " +
+				   "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " +
+				   			  		    "FROM EQLOTE LS " +
+				   						"WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " +
+				   						"AND LS.CODEMP=L.CODEMP " + (testar ? "AND LS.SLDLIQLOTE>0 " : "") +
+				   						"AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, iCodProd);
+			ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
+			ps.setInt(3, Aplicativo.iCodEmp);
+			rs = ps.executeQuery();
+			if (rs.next())
+				sCodLote = rs.getString(1) != null ? rs.getString(1) : "" ;
+
+			rs.close();
+			ps.close();
+			if(!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+		return sCodLote;
 	}
     /**
      * Busca a observação do cliente.

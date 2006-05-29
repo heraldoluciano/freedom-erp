@@ -23,6 +23,7 @@ package org.freedom.layout;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.componentes.TabVector;
+import org.freedom.telas.Aplicativo;
 public class Layout extends Object {
 	//public boolean bEntrada = false;
 	protected TabVector cab = null;
@@ -30,7 +31,8 @@ public class Layout extends Object {
 	protected TabVector parc = null;
 	protected TabVector adic = null;
 	protected TabVector frete = null;
-    protected int casasDec = 2;
+    protected int casasDec = Aplicativo.casasDec;
+    protected int casasDecFin = Aplicativo.casasDecFin;
   
 public Layout() { }
 	public boolean imprimir(NF nf, ImprimeOS imp) {

@@ -807,43 +807,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}
 	}
 
-	/**
-	 * Busca de lote. Busca do lote mais proximo da data de venda.
-	 *  
-	 */
 	private void getLote() {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		String sSQL = null;
-		try {
-			sSQL = "SELECT MIN(L.CODLOTE) FROM EQLOTE L WHERE "
-				+ "L.CODPROD=? AND L.CODFILIAL=? "+(bPrefs[13]?"AND L.SLDLIQLOTE>0 ":" ")
-				+ "AND L.CODEMP=? AND L.VENCTOLOTE = "
-				+ "( "
-				+ "SELECT MIN(VENCTOLOTE) FROM EQLOTE LS WHERE LS.CODPROD=L.CODPROD "
-				+ "AND LS.CODFILIAL=L.CODFILIAL AND LS.CODEMP=L.CODEMP "+(bPrefs[13]?"AND LS.SLDLIQLOTE>0 ":" ")
-				+ "AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(2, lcProd.getCodFilial());
-			ps.setInt(3, Aplicativo.iCodEmp);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				String sCodLote = rs.getString(1);
-				if (sCodLote != null) {
-					txtCodLote.setVlrString(sCodLote.trim());
-					lcLote.carregaDados();
-				}
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-		}
+		txtCodLote.setVlrString(getLote(txtCodProd.getVlrInteger().intValue(),bPrefs[13]));
+		lcLote.carregaDados();
 	}
 
 	/**
@@ -1121,39 +1087,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				});
 	}
 
-	public boolean testaCodLote() {
-		boolean bRetorno = false;
-		boolean bValido = false;
-		String sSQL = "SELECT COUNT(*) FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?"
-				+ " AND CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setString(1, txtCodLote.getText().trim());
-			ps.setInt(2, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(3, Aplicativo.iCodEmp);
-			ps.setInt(4, lcLote.getCodFilial());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getInt(1) > 0) {
-					bValido = true;
-				}
-			}
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
-					+ err.getMessage(),true,con,err);
-		}
-		if (!bValido) {
-			bRetorno = txtCodLote.mostraDLF2FK();
-		} else {
-			bRetorno = true;
-		}
-		return bRetorno;
+	public boolean testaCodLote() {		
+		if (!testaCodLote(txtCodLote.getVlrString().trim(), txtCodProd.getVlrInteger().intValue()))
+			return txtCodLote.mostraDLF2FK();
+		return true;
 	}
 
 	private void mostraTelaDescont() {
@@ -2280,13 +2217,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 					pevt.cancela();
 				}
 			}
-			if (bPrefs[1])
-				txtCodVenda.setVlrInteger(testaCodPK("VDVENDA"));
 			txtStatusVenda.setVlrString("*");
 		} 
 		else if (pevt.getListaCampos() == lcDet) {
 			if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
-				//txtRefProd.setVlrString(txtRefProd.getText()); // ?
 				if (txtCLoteProd.getVlrString().equals("S")) {
 					if (!testaCodLote()) {
 						pevt.cancela();
@@ -2315,11 +2249,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		}		
 	}
 
-	public void beforeInsert(InsertEvent ievt) {
-	}
+	public void beforeInsert(InsertEvent ievt) { }
 
 	public void afterInsert(InsertEvent ievt) {
 		if (ievt.getListaCampos() == lcCampos) {
+			if (bPrefs[1])
+				txtCodVenda.setVlrInteger(testaCodPK("VDVENDA"));
 			if (bPrefs[5]) {
 				txtFiscalTipoMov1.setText("N");
 				txtFiscalTipoMov2.setText("N");

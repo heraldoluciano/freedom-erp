@@ -109,9 +109,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JButtonPad btF10 = new JButtonPad();
 	private JButtonPad btF11 = new JButtonPad();
 	private JTextFieldPad txtCodCli = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40, 0);
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
 	private JTextFieldPad txtCodVenda = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
@@ -119,6 +117,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JTextFieldPad txtDtSaidaVenda = new JTextFieldPad(JTextFieldPad.TP_DATE, 10, 0);
 	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtNomeVend = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
+	private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtDescClComis = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodProd1 = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 13, 0);
 	private JTextFieldPad txtDescProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 50, 0);
 	private JTextFieldPad txtCodProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
@@ -140,45 +140,32 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad(JTextFieldPad.TP_STRING, 2, 0);
 	private JTextFieldPad txtPercDescItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
 	private JTextFieldPad txtVlrDescItOrc = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, 2);
-	private JLabelPad lCodCli = new JLabelPad("Cód.cli.");
-	private JLabelPad lRazCli = new JLabelPad("Razão social do cliente");
-	private JLabelPad lCodPlanoPag = new JLabelPad("Cód.p.pag.");
-	private JLabelPad lDescPlanoPag = new JLabelPad("Descrição do plano de pagamento");
-	private JLabelPad lCodVenda = new JLabelPad("Nº seq.venda");
-	private JLabelPad lCodProd1 = new JLabelPad("Cód.prod.");
-	private JLabelPad lDescProd1 = new JLabelPad("Descrição do produto");
-	private JLabelPad lCodProd2 = new JLabelPad("Cód.prod.");
-	private JLabelPad lQtd = new JLabelPad("Quantidade");
-	private JLabelPad lPreco = new JLabelPad("Preço");
-	private JLabelPad lBaseCalc1 = new JLabelPad("Base cálculo");
-	private JLabelPad lValorIcms1 = new JLabelPad("Total Icms");
-	private JLabelPad lTotalCupom = new JLabelPad("Total cupom");
-	private JLabelPad lNumeroCupom = new JLabelPad("Número cupom");
-	private JLabelPad lSerieCupom = new JLabelPad("Série");
-	private JLabelPad lBaseCalc2 = new JLabelPad("Base cálc.");
-	private JLabelPad lAliqIcms = new JLabelPad("% Icms");
-	private JLabelPad lTotalItem = new JLabelPad("Total item");
-	private JLabelPad lValorIcms = new JLabelPad("Valor Icms");
-	private JLabelPad lQtdadeItem = new JLabelPad("Quantidade do item");
+	private JTextFieldPad txtCodLote = new JTextFieldPad(JTextFieldPad.TP_STRING, 13, 0);
+	private JTextFieldPad txtCLoteProd = new JTextFieldPad(JTextFieldPad.TP_STRING, 1, 0);
+	private JTextFieldFK txtRazCli = new JTextFieldFK(JTextFieldPad.TP_STRING,40, 0);
+	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING, 40, 0);
+	private JTextFieldFK txtDescLote = new JTextFieldFK(JTextFieldPad.TP_DATE,10, 0);
+	private JTextFieldFK txtSldLiqProd = new JTextFieldFK(JTextFieldPad.TP_NUMERIC, 15, AplicativoPDV.casasDec);
 	private JLabelPad lValorTotalItem = new JLabelPad("Valor total do item");
 	private JLabelPad lValorTotalCupom = new JLabelPad("Valor total do cupom");
-	private JLabelPad lPercDesc = new JLabelPad("% Desc.");
-	private JLabelPad lValorDesc = new JLabelPad("Valor desc.");
 	private JLabelPad lbAvisoImp = new JLabelPad();
 	private ListaCampos lcVenda = new ListaCampos(this);
 	private ListaCampos lcTipoMov = new ListaCampos(this, "TM");
 	private ListaCampos lcSerie = new ListaCampos(this, "SE");
 	private ListaCampos lcCliente = new ListaCampos(this, "CL");
 	private ListaCampos lcVendedor = new ListaCampos(this, "VD");
+	private ListaCampos lcClComis = new ListaCampos(this, "CM");
 	private ListaCampos lcPlanoPag = new ListaCampos(this, "PG");
 	private ListaCampos lcProduto = new ListaCampos(this, "PD");
 	private ListaCampos lcClFiscal = new ListaCampos(this, "FC");
+	private ListaCampos lcLote = new ListaCampos(this, "LE");
 	private Vector vCacheItem = new Vector();
 	private Vector  vAliquotas = null;
 	private JBemaFI32 bf = null;
 	private Tef tef = null;	
 	private Font fntTotalItem = null;
 	private Font fntTotalCupom = null;
+	private Object[] pref = new Object[3];
 	private boolean trocouCli = false;
 	private boolean colocouFrete = false;
 	private boolean carregaPesoFrete = false;
@@ -224,11 +211,20 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		
 		lcVendedor.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comis.",ListaCampos.DB_PK, false));
 		lcVendedor.add(new GuardaCampo(txtNomeVend, "NomeVend","Nome do comissionado", ListaCampos.DB_SI, false));
+		lcVendedor.add(new GuardaCampo(txtCodClComis, "CodClComis", "Cód.cl.comis.",ListaCampos.DB_FK, false));
 		lcVendedor.montaSql(false, "VENDEDOR", "VD");
 		lcVendedor.setReadOnly(true);
 		txtCodVend.setTabelaExterna(lcVendedor);
 		txtCodVend.setFK(true);
 		txtCodVend.setNomeCampo("CodVend");
+		
+		lcClComis.add(new GuardaCampo(txtCodClComis, "CodClComis", "Cód.cl.comis.",ListaCampos.DB_PK, false));
+		lcClComis.add(new GuardaCampo(txtDescClComis, "DescClComis","Descrição da classificação da comissã", ListaCampos.DB_SI, false));
+		lcClComis.montaSql(false, "CLCOMIS", "VD");
+		lcClComis.setReadOnly(true);
+		txtCodClComis.setTabelaExterna(lcClComis);
+		txtCodClComis.setFK(true);
+		txtCodClComis.setNomeCampo("CodClComis");
 
 		lcClFiscal.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc",ListaCampos.DB_PK, false));
 		lcClFiscal.add(new GuardaCampo(txtTipoFisc, "TipoFisc", "Cód.tp.fisc.",ListaCampos.DB_SI, false));
@@ -242,7 +238,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcPlanoPag.setReadOnly(true);
 		txtCodPlanoPag.setTabelaExterna(lcPlanoPag);
 		txtCodPlanoPag.setFK(true);
-
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 
 		lcSerie.add(new GuardaCampo(txtSerieCupom, "Serie", "Serie",ListaCampos.DB_PK, false));
@@ -271,15 +266,29 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcVenda.add(new GuardaCampo(txtCodCli, "CodCli", "Cód.cli.",ListaCampos.DB_FK, true));
 		lcVenda.add(new GuardaCampo(txtCodPlanoPag, "CodPlanoPag","Cód.p.pag.", ListaCampos.DB_FK, true));
 		lcVenda.add(new GuardaCampo(txtCodVend, "CodVend", "Cód.comiss.",ListaCampos.DB_FK, false));
+		lcVenda.add(new GuardaCampo(txtCodClComis, "CodClComis", "Cód.cl.comiss.",ListaCampos.DB_FK, false));
 		lcVenda.montaSql(false, "VENDA", "VD");
 		txtCodVenda.setListaCampos(lcVenda);
 		txtCodVenda.setPK(true);
 		txtCodVenda.setNomeCampo("CodVenda");
 
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Lote", ListaCampos.DB_PK, txtDescLote, false));
+		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote", "Dt.vencto.", ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo", ListaCampos.DB_SI, false));
+		lcLote.setDinWhereAdic("CODPROD=#N ",txtCodProd);
+		lcLote.montaSql(false, "LOTE", "EQ");
+		lcLote.setQueryCommit(false);
+		lcLote.setReadOnly(true);
+		txtCodLote.setTabelaExterna(lcLote);
+		txtDescLote.setListaCampos(lcLote);
+		txtDescLote.setNomeCampo("VenctoLote");
+		txtDescLote.setLabel("Vencimento");
+
 		lcProduto.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, true));
 		lcProduto.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
 		lcProduto.add(new GuardaCampo(txtCodProd1, "CodProd", "Cód.prod.",ListaCampos.DB_SI, false));
 		lcProduto.add(new GuardaCampo(txtCodFisc, "CodFisc", "Cód.fisc.",ListaCampos.DB_FK, false));
+		lcProduto.add(new GuardaCampo(txtCLoteProd, "CLoteProd", "C/Lote",ListaCampos.DB_SI, false));
 		lcProduto.setWhereAdic("CVPROD IN ('V','A')");
 		lcProduto.montaSql(false, "PRODUTO", "EQ");
 		lcProduto.setReadOnly(true);
@@ -361,15 +370,15 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		pinBarra.adic(btF10, 525, 3, 60, 35);
 		pinBarra.adic(btF11, 590, 3, 60, 35);
 
-		pinCab.adic(lCodCli, 5, 3, 70, 15);
-		pinCab.adic(lRazCli, 75, 3, 200, 15);
+		pinCab.adic(new JLabelPad("Cód.cli."), 5, 3, 70, 15);
+		pinCab.adic(new JLabelPad("Razão social do cliente"), 75, 3, 200, 15);
 		pinCab.adic(txtCodCli, 5, 20, 68, 20);
 		pinCab.adic(txtRazCli, 75, 20, 200, 20);
-		pinCab.adic(lCodPlanoPag, 283, 3, 70, 15);
-		pinCab.adic(lDescPlanoPag, 353, 3, 200, 15);
+		pinCab.adic(new JLabelPad("Cód.p.pag."), 283, 3, 70, 15);
+		pinCab.adic(new JLabelPad("Descrição do plano de pagamento"), 353, 3, 200, 15);
 		pinCab.adic(txtCodPlanoPag, 283, 20, 68, 20);
 		pinCab.adic(txtDescPlanoPag, 353, 20, 200, 20);
-		pinCab.adic(lCodVenda, 561, 3, 105, 15);
+		pinCab.adic(new JLabelPad("Nº seq.venda"), 561, 3, 105, 15);
 		pinCab.adic(txtCodVenda, 561, 20, 105, 20);
 
 		txtDescProd.setFont(fntTotalItem);
@@ -384,42 +393,43 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtValorTotalItem.setForeground(Color.BLUE);
 		txtValorTotalCupom.setForeground(Color.RED);
 
-		pinProduto.adic(lDescProd1, 5, 3, 450, 15);
-		pinProduto.adic(lCodProd1, 460, 3, 206, 15);
+		pinProduto.adic(new JLabelPad("Descrição do produto"), 5, 3, 450, 15);
+		pinProduto.adic(new JLabelPad("Cód.prod."), 460, 3, 206, 15);
 		pinProduto.adic(txtDescProd, 5, 20, 450, 40);
 		pinProduto.adic(txtCodProd1, 460, 20, 206, 40);
-		pinProduto.adic(lQtdadeItem, 5, 65, 215, 15);
+		pinProduto.adic(new JLabelPad("Quantidade do item"), 5, 65, 215, 15);
 		pinProduto.adic(lValorTotalItem, 225, 65, 215, 15);
 		pinProduto.adic(lValorTotalCupom, 445, 65, 220, 15);
 		pinProduto.adic(txtQtdadeItem, 5, 82, 215, 40);
 		pinProduto.adic(txtValorTotalItem, 225, 82, 215, 40);
 		pinProduto.adic(txtValorTotalCupom, 445, 82, 220, 40);
 
-		pinEntrada.adic(lCodProd2, 5, 3, 70, 15);
+		pinEntrada.adic(new JLabelPad("Cód.prod."), 5, 0, 70, 20);
 		pinEntrada.adic(txtCodProd, 5, 20, 175, 20);
-		pinEntrada.adic(lQtd, 5, 45, 85, 15);
-		pinEntrada.adic(txtQtdade, 5, 62, 85, 20);
-		pinEntrada.adic(lPreco, 95, 45, 85, 15);
-		pinEntrada.adic(txtPreco, 95, 62, 85, 20);
-		pinEntrada.adic(lPercDesc, 5, 85, 50, 15);
-		pinEntrada.adic(txtPercDescItOrc, 5, 102, 50, 20);
-		pinEntrada.adic(lValorDesc, 60, 85, 120, 15);
-		pinEntrada.adic(txtVlrDescItOrc, 60, 102, 120, 20);		
-		pinEntrada.adic(lTotalItem, 5, 127, 85, 15);
-		pinEntrada.adic(txtTotalItem, 5, 144, 85, 20);
-		pinEntrada.adic(lBaseCalc2, 95, 127, 85, 15);
-		pinEntrada.adic(txtBaseCalc, 95, 144, 85, 20);
-		
-		pinEntrada.adic(lAliqIcms, 5, 169, 50, 15);
-		pinEntrada.adic(txtAliqIcms, 5, 186, 50, 20);
-		pinEntrada.adic(lValorIcms, 60, 169, 120, 15);
-		pinEntrada.adic(txtValorIcms, 60, 186, 120, 20);
+		pinEntrada.adic(new JLabelPad("Quantidade"), 5, 40, 85, 20);
+		pinEntrada.adic(txtQtdade, 5, 60, 85, 20);
+		pinEntrada.adic(new JLabelPad("Preço"), 95, 40, 85, 20);
+		pinEntrada.adic(txtPreco, 95, 60, 85, 20);
+		pinEntrada.adic(new JLabelPad("% Desc."), 5, 80, 50, 20);
+		pinEntrada.adic(txtPercDescItOrc, 5, 100, 50, 20);
+		pinEntrada.adic(new JLabelPad("Valor desc."), 60, 80, 120, 20);
+		pinEntrada.adic(txtVlrDescItOrc, 60, 100, 120, 20);		
+		pinEntrada.adic(new JLabelPad("Total item"), 5, 120, 85, 20);
+		pinEntrada.adic(txtTotalItem, 5, 140, 85, 20);
+		pinEntrada.adic(new JLabelPad("Base cálc."), 95, 120, 85, 20);
+		pinEntrada.adic(txtBaseCalc, 95, 140, 85, 20);
+		pinEntrada.adic(new JLabelPad("Còd.lote"), 5, 160, 70, 20);
+		pinEntrada.adic(txtCodLote, 5, 180, 175, 20);
+		pinEntrada.adic(new JLabelPad("% Icms"), 5, 200, 50, 20);
+		pinEntrada.adic(txtAliqIcms, 5, 220, 50, 20);
+		pinEntrada.adic(new JLabelPad("Valor Icms"), 60, 200, 120, 20);
+		pinEntrada.adic(txtValorIcms, 60, 220, 120, 20);
 
-		pnTots.adic(lBaseCalc1, 5, 3, 90, 15);
-		pnTots.adic(lValorIcms1, 100, 3, 90, 15);
-		pnTots.adic(lTotalCupom, 195, 3, 90, 15);
-		pnTots.adic(lNumeroCupom, 290, 3, 90, 15);
-		pnTots.adic(lSerieCupom, 385, 3, 50, 15);
+		pnTots.adic(new JLabelPad("Base cálculo"), 5, 3, 90, 15);
+		pnTots.adic(new JLabelPad("Total Icms"), 100, 3, 90, 15);
+		pnTots.adic(new JLabelPad("Total cupom"), 195, 3, 90, 15);
+		pnTots.adic(new JLabelPad("Número cupom"), 290, 3, 90, 15);
+		pnTots.adic(new JLabelPad("Série"), 385, 3, 50, 15);
 
 		pnTots.adic(txtBaseCalc1, 5, 20, 90, 20);
 		pnTots.adic(txtValorIcms1, 100, 20, 90, 20);
@@ -467,9 +477,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		
 		lcProduto.addCarregaListener(this);
 		
-		if (AplicativoPDV.bTEFTerm) {
+		if (AplicativoPDV.bTEFTerm)
 			tef = new Tef(Aplicativo.strTefEnv, Aplicativo.strTefRet);
-		}
 		
 		setPrimeiroFoco(txtCodProd);
 		
@@ -489,36 +498,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		}
 	}
 
-	private void addPesoFrete(int iCodProd, BigDecimal iQtd) {
-		String sSQL = null;
-		ResultSet rs = null;
-		PreparedStatement ps = null;
-		try {
-			sSQL = "SELECT PESOBRUTPROD, PESOLIQPROD " +
-				   "FROM EQPRODUTO " +
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,Aplicativo.iCodFilial);
-			ps.setInt(3,iCodProd);
-			rs = ps.executeQuery();
-			
-			if(rs.next()) {
-				pesoBrutFrete += (rs.getFloat(1)*iQtd.floatValue());
-				pesoLiqFrete += (rs.getFloat(2)*iQtd.floatValue());
-			}
-			
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch( SQLException e ) {
-			Funcoes.mensagemErro(this, "Erro ao somar peso do produto!\n" +
-										e.getMessage(), true, con, e);
-			e.printStackTrace();
-		}
-	}
-
 	public synchronized void adicItemOrc(int iCodItOrc) {
 		
 		PreparedStatement ps = null;
@@ -532,7 +511,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	
 			robo = new Robot();
 			
-			sSQL = "SELECT CODPROD, QTDITORC, VLRPRODITORC, PERCDESCITORC, VLRDESCITORC " +
+			sSQL = "SELECT CODPROD, QTDITORC, VLRPRODITORC, PERCDESCITORC, VLRDESCITORC, CODLOTE " +
 				   "FROM VDITORCAMENTO " +
 				   "WHERE CODEMP=? AND CODFILIAL=? AND CODORC=? AND CODITORC=?";
 		
@@ -553,11 +532,13 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				txtPercDescItOrc.setVlrBigDecimal(rs.getBigDecimal("PERCDESCITORC")!=null ?rs.getBigDecimal("PERCDESCITORC") : new BigDecimal("0"));
 				txtVlrDescItOrc.setVlrBigDecimal(rs.getBigDecimal("VLRDESCITORC")!=null ?rs.getBigDecimal("VLRDESCITORC") : new BigDecimal("0"));
 				txtQtdade.setVlrBigDecimal(rs.getBigDecimal("QTDITORC"));
+				txtCodLote.setVlrBigDecimal(rs.getBigDecimal("CODLOTE"));
 				txtQtdade.requestFocus();
 				
 				robo.keyPress(KeyEvent.VK_ENTER);
 				
 				lcProduto.carregaDados();
+				lcLote.carregaDados();
 				if (lcVenda.getStatus() == ListaCampos.LCS_INSERT) {
 					if (lcVenda.post()) {
 						bUPOrc = insereItem(iCodItOrc);
@@ -591,7 +572,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				con.commit();
 			
 		} catch(SQLException e) {
-			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.",true,con,e);
+			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.\n"+e.getMessage());
 			e.printStackTrace();
 		} catch(Exception e) {
 			Funcoes.mensagemErro(this,"Erro ao gerar venda do orçamento.\n" + e.getMessage());
@@ -603,6 +584,36 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			robo = null;
 		}
 		
+	}
+
+	private void addPesoFrete(int iCodProd, BigDecimal iQtd) {
+		String sSQL = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try {
+			sSQL = "SELECT PESOBRUTPROD, PESOLIQPROD " +
+				   "FROM EQPRODUTO " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODPROD=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setInt(3,iCodProd);
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				pesoBrutFrete += (rs.getFloat(1)*iQtd.floatValue());
+				pesoLiqFrete += (rs.getFloat(2)*iQtd.floatValue());
+			}
+			
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch( SQLException e ) {
+			Funcoes.mensagemErro(this, "Erro ao somar peso do produto!\n" +
+										e.getMessage(), true, con, e);
+			e.printStackTrace();
+		}
 	}
 
 	private void atualizaTot() {
@@ -706,8 +717,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		canc.setConexao(con);
 		canc.setVisible(true);
 		if (canc.OK) {
-			if (canc.isCancCupom())
+			if (canc.isCancCupom()) {
 				iniVenda();
+			}
 			else {
 				int iItemCanc = canc.getCancItem();
 				marcaLinha(iItemCanc);
@@ -794,23 +806,32 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtCodProd.setVlrString("");
 		txtPercDescItOrc.setVlrString("");
 		txtVlrDescItOrc.setVlrString("");
+		txtCodLote.setVlrString("");
+		txtCodLote.setAtivo(false);
 		setFocusProd();
 	}
 	
 	private boolean insereItem() {
+		//passa -1 pra que no metodo getItComis(int) seja buscado pelo produto e não pelo orçamento.
 		return insereItem(-1);
 	}
 
 	private boolean insereItem( int iCodItOrc ) {
+		
+		if( txtCLoteProd.getVlrString().equals("S") ) {
+			if( txtCodLote.getVlrString().length() <= 0 || testaCodLote() ) {
+				Funcoes.mensagemErro( null, "Código do lote é requerido!" );
+				return false;
+			}			
+		}
+		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sTributo = null;
 		String sSQL = null;
 		BigDecimal[] argsComis = getItComis( iCodItOrc );
 		try {
-			
-			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,"
-				 + "VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?)";
+			sSQL = "EXECUTE PROCEDURE VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, txtCodVenda.getVlrInteger().intValue());
@@ -821,34 +842,53 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(6, ListaCampos.getMasterFilial("EQPRODUTO"));
 			ps.setBigDecimal(7, txtQtdade.getVlrBigDecimal());
 			ps.setBigDecimal(8, txtPreco.getVlrBigDecimal());
-			ps.setBigDecimal(9, txtVlrDescItOrc.getVlrBigDecimal());
+			ps.setBigDecimal(9, txtPercDescItOrc.getVlrBigDecimal());
+			ps.setBigDecimal(10, txtVlrDescItOrc.getVlrBigDecimal());			
 			if(argsComis[1]!=null) {
-				ps.setBigDecimal(10, argsComis[1]);
-				ps.setBigDecimal(11, argsComis[0]);
+				ps.setBigDecimal(11, argsComis[1]);
+				ps.setBigDecimal(12, argsComis[0]);
 			} else  {
-				ps.setNull(10, Types.NUMERIC);
 				ps.setNull(11, Types.NUMERIC);
+				ps.setNull(12, Types.NUMERIC);
 			}
+			ps.setString(13, txtCodLote.getVlrString().trim());
+			ps.setInt(14, Aplicativo.iCodEmp);
+			ps.setInt(15, ListaCampos.getMasterFilial("EQLOTE"));
+			
+			ps.execute();
+			if (!con.getAutoCommit())
+				con.commit();
+			
+			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA," +
+				   "VLRICMSITVENDA,VLRLIQITVENDA " +
+				   "FROM VDITVENDA " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("VDITVENDA"));
+			ps.setInt(3, txtCodVenda.getVlrInteger().intValue());
 			rs = ps.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				iCodItVenda = rs.getInt("CodItVenda");
 				txtAliqIcms.setVlrBigDecimal(rs.getBigDecimal("PercICMSItVenda"));
 				txtBaseCalc.setVlrBigDecimal(rs.getBigDecimal("VlrBaseICMSItVenda"));
 				txtValorIcms.setVlrBigDecimal(rs.getBigDecimal("VlrICMSItVenda"));
-				txtValorTotalItem.setVlrBigDecimal(rs.getBigDecimal("VlrLiqItVenda")==null?new BigDecimal(0):rs.getBigDecimal("VlrLiqItVenda"));
+				txtValorTotalItem.setVlrBigDecimal(rs.getBigDecimal("VlrLiqItVenda") == null ? new BigDecimal(0) : rs.getBigDecimal("VlrLiqItVenda"));
 				txtQtdadeItem.setVlrBigDecimal(txtQtdade.getVlrBigDecimal());
+				
+				tbItem.adicLinha(new Object[] { new Integer(iCodItVenda),
+						txtCodProd.getVlrString().trim(), 
+						txtDescProd.getVlrString(),
+						txtQtdade.getVlrBigDecimal(),
+						txtPreco.getVlrBigDecimal(),
+						txtAliqIcms.getVlrBigDecimal(),
+						txtBaseCalc.getVlrBigDecimal(),
+						txtValorIcms.getVlrBigDecimal(), "" });
 			}
 			if (!con.getAutoCommit())
 				con.commit();
 			
-			tbItem.adicLinha(new Object[] { new Integer(iCodItVenda),
-											txtCodProd.getVlrString().trim(), 
-											txtDescProd.getVlrString(),
-											txtQtdade.getVlrBigDecimal(),
-											txtPreco.getVlrBigDecimal(),
-											txtAliqIcms.getVlrBigDecimal(),
-											txtBaseCalc.getVlrBigDecimal(),
-											txtValorIcms.getVlrBigDecimal(), "" });
+			
 			
 			if ((FreedomPDV.bECFTerm && (bf!=null))) {
 				if (txtTipoFisc.getVlrString().equals("TT")) {
@@ -897,6 +937,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 
 	private synchronized void iniVenda(int codCli, int codPlanoPag, int tipoMov, int vend) {
+		iCodOrc = 0;
 		lcVenda.insert(false);
 		txtCodVenda.setVlrInteger(getCodSeqCaixa());
 		txtTipoVenda.setVlrString("E");
@@ -915,11 +956,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcTipoMov.carregaDados();
 		txtCodVend.setVlrInteger(new Integer(vend));
 		lcVendedor.carregaDados();
+		lcClComis.carregaDados();
 		txtDtEmitVenda.setVlrDate(new Date());
 		txtDtSaidaVenda.setVlrDate(new Date());
-		if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
+		if ((AplicativoPDV.bECFTerm) && (bf!=null))
 			txtNumeroCupom.setVlrInteger(new Integer(bf.numeroCupom(Aplicativo.strUsuario, AplicativoPDV.bModoDemo) + 1));
-		}
 		else
 			txtNumeroCupom.setVlrInteger(new Integer(999999999));
 		tbItem.limpa();
@@ -1057,7 +1098,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 
 	private Object[] paramFecha() {
-		Object[] param = new Object[11];
+		Object[] param = new Object[13];
 
 		param[0] = txtCodVenda.getVlrInteger();
 		param[1] = txtTipoVenda.getVlrString();
@@ -1076,6 +1117,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			param[9] = null;
 			param[10] = null;
 		}
+		param[11] = new Boolean(iCodOrc > 0);
+		param[12] = txtCodVend.getVlrInteger();
 		
 		carregaPesoFrete = false;
 		
@@ -1095,6 +1138,41 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			} catch (AWTException err) {
 			}
 		}
+	}
+	
+	private boolean testaCodLote() {
+		boolean bValido = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = "SELECT COUNT(*) FROM EQLOTE " +
+				      "WHERE CODLOTE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, txtCodLote.getVlrString().trim());
+			ps.setInt(2, txtCodPlanoPag.getVlrInteger().intValue());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, ListaCampos.getMasterFilial("EQLOTE"));
+			rs = ps.executeQuery();
+			if (rs.next()) 
+				if (rs.getInt(1) > 0)
+					bValido = true;
+
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+		return bValido;
+		
 	}
 
 	private void trocaCli() {
@@ -1170,6 +1248,45 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		return iLinha;
 	}
 	
+	private void getLote() {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		try {
+			sSQL = "SELECT MIN(L.CODLOTE) " +
+				   "FROM EQLOTE L " +
+				   "WHERE L.CODPROD=? AND L.CODFILIAL=? " + (((Boolean)prefs(2)).booleanValue() ? "AND L.SLDLIQLOTE>0 " : "") +
+				   "AND L.CODEMP=? " +
+				   "AND L.VENCTOLOTE = ( SELECT MIN(VENCTOLOTE) " +
+				   			  		    "FROM EQLOTE LS " +
+				   						"WHERE LS.CODPROD=L.CODPROD AND LS.CODFILIAL=L.CODFILIAL " +
+				   						"AND LS.CODEMP=L.CODEMP " + (((Boolean)prefs(2)).booleanValue() ? "AND LS.SLDLIQLOTE>0 " : "") +
+				   						"AND VENCTOLOTE >= CAST('today' AS DATE)" + ")";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(2, ListaCampos.getMasterFilial("EQLOTE"));
+			ps.setInt(3, Aplicativo.iCodEmp);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				txtCodLote.setVlrString(rs.getString(1) != null ? rs.getString(1) : "") ;
+				lcLote.carregaDados();
+			}
+
+			rs.close();
+			ps.close();
+			if(!con.getAutoCommit())
+				con.commit();
+		} catch (Exception err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this, "Erro ao buscar lote!\n" + err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+	}
+	
 	private String[] getInfoCli(int codcli) {
 		
 		String[] ret = new String[6];
@@ -1177,9 +1294,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		try {
-			sSQL = "SELECT RAZCLI, CPFCLI, ENDCLI, NUMCLI, CIDCLI, UFCLI" +
-				   " FROM VDCLIENTE" +
-				   " WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=?";
+			sSQL = "SELECT RAZCLI, CPFCLI, ENDCLI, NUMCLI, CIDCLI, UFCLI " +
+				   "FROM VDCLIENTE " +
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODCLI=? ";
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,Aplicativo.iCodFilial);
@@ -1205,18 +1322,18 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 
 	public String getDescEst() {
+
+		String sDesc = "ESTAÇÃO DE TRABALHO NÃO CADASTRADA";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST="
-					+ Aplicativo.iNumEst + " AND CODEMP=" + Aplicativo.iCodEmp
-					+ " AND CODFILIAL=" + Aplicativo.iCodFilial;
-		String sDesc = "";
+		String sSQL = "SELECT DESCEST FROM SGESTACAO WHERE CODEST=? AND CODEMP=? AND CODFILIAL=?";
 		try {
 			ps = con.prepareStatement(sSQL);
+			ps.setInt( 1, Aplicativo.iNumEst );
+			ps.setInt( 2, Aplicativo.iCodEmp );
+			ps.setInt( 3, Aplicativo.iCodFilial );
 			rs = ps.executeQuery();
-			if (!rs.next())
-				sDesc = "ESTAÇÃO DE TRABALHO NÃO CADASTRADA";
-			else
+			if (rs.next())
 				sDesc = rs.getString("DescEst");
 			
 			rs.close();
@@ -1234,8 +1351,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		String sRetorno = "";
 		String sAliquota = null;
 		try {
-			sAliquota = Funcoes.transValor(ftAliquota+"",4,2,true);
-			sRetorno = Funcoes.strZero((vAliquotas.indexOf(sAliquota)+1)+"",2);
+			sAliquota = Funcoes.transValor(String.valueOf(ftAliquota),4,2,true);
+			sRetorno = Funcoes.strZero(String.valueOf(vAliquotas.indexOf(sAliquota)+1),2);
 		}
 		finally {
 			sAliquota = null;
@@ -1250,11 +1367,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		int iTot = 0;
 		try {
 			if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
-				sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim();
+				sAliquotas = bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo).trim();
 				iTot = (((sAliquotas.length())+1)/5);
 				for (int i=1; i<=iTot; i++) {
-					sAliquota = i==1?sAliquotas.substring(0,4):sAliquotas.substring((i*5)-5,(i*5)-1);
-					//sAliquota = "T"+Funcoes.strZero((i+""),2)+"   =   "+sAliquota.substring(0,2)+"."+sAliquota.substring(2)+" %";
+					sAliquota = i==1 ? sAliquotas.substring(0,4) : sAliquotas.substring((i*5)-5,(i*5)-1);
 					vRetorno.addElement(sAliquota);
 				}
 			}
@@ -1271,8 +1387,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iRet = 0;
-		String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
+		String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
@@ -1300,19 +1415,20 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 
 	private int getVendedor() {
+
+		int iRet = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iRet = 0;
-		String sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE "
-				+ "IDUSU=? AND CODEMPUS=? AND CODFILIALUS=?";
+		String sSQL = "SELECT CODVEND FROM ATATENDENTE WHERE CODEMPUS=? AND CODFILIALUS=? AND IDUSU=?";
+		
 		try {
 			ps = con.prepareStatement(sSQL);
-			ps.setString(1, Aplicativo.strUsuario);
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, Aplicativo.iCodFilialPad);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("ATENDENTE"));
+			ps.setString(3, Aplicativo.strUsuario);
 			rs = ps.executeQuery();
 			if (rs.next()) 
-				iRet = rs.getInt("CodVend");
+				iRet = rs.getInt("CODVEND");
 			
 			rs.close();
 			ps.close();
@@ -1320,9 +1436,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				con.commit();
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro ao buscar o comissionado.\n"
-					+ "O usuário '" + Aplicativo.strUsuario
-					+ "' é um comissionado?\n" + err.getMessage());
+					+ err.getMessage());
 			err.printStackTrace();
+			dispose();
 		} finally {
 			ps = null;
 			rs = null;
@@ -1375,6 +1491,43 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				sSQL = null;
 			}
 			
+		} else {
+			
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			String sSQL = null;
+			
+			try {
+				
+				sSQL = "SELECT P.COMISPROD " +
+					   "FROM EQPRODUTO P " +
+					   "WHERE P.CODEMP=? AND P.CODFILIAL=? AND P.CODPROD=?"; 
+									
+				ps = con.prepareStatement( sSQL );
+				ps.setInt( 1, Aplicativo.iCodEmp );
+				ps.setInt( 2, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
+				ps.setInt( 3, txtCodProd.getVlrInteger().intValue() );
+				rs = ps.executeQuery();
+				
+				if (rs.next()) {
+					retorno[0] = rs.getBigDecimal( "COMISPROD" );
+					retorno[1] = ( rs.getBigDecimal( "COMISPROD" ).multiply( txtPreco.getVlrBigDecimal() ) ).divide(
+										new BigDecimal(100), AplicativoPDV.casasDecFin, BigDecimal.ROUND_HALF_UP );
+				}
+
+				rs.close();
+				ps.close();
+				if (!con.getAutoCommit())
+					con.commit();
+			} catch (SQLException err) {
+				Funcoes.mensagemErro(this, "Erro ao buscar comissão.\n" + err.getMessage());
+				err.printStackTrace();
+			} finally {
+				ps = null;
+				rs = null;
+				sSQL = null;
+			}
+			
 		}
 		
 		return retorno;
@@ -1385,15 +1538,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iRet = 0;
-		String sSQL = "SELECT CodCli FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
+		String sSQL = "SELECT CODCLI FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
 			ps.setInt(2, Aplicativo.iCodFilial);
 			rs = ps.executeQuery();
 			if (rs.next())
-				iRet = rs.getInt("CodCli");
+				iRet = rs.getInt("CODCLI");
 			
 			rs.close();
 			ps.close();
@@ -1417,8 +1569,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int iRet = 0;
-		String sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE "
-				+ "CODEMP=? AND CODFILIAL=?";
+		String sSQL = "SELECT CodPlanoPag FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, Aplicativo.iCodEmp);
@@ -1481,7 +1632,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(1, Integer.parseInt(txtCodProd.getVlrString().trim()));
 			ps.setInt(2, txtCodCli.getVlrInteger().intValue());
 			ps.setInt(3, Aplicativo.iCodEmp);
-			ps.setInt(4, lcCliente.getCodFilial());
+			ps.setInt(4, ListaCampos.getMasterFilial("VDCLIENTE"));
 			ps.setInt(5, txtCodPlanoPag.getVlrInteger().intValue());
 			ps.setInt(6, Aplicativo.iCodEmp);
 			ps.setInt(7, lcPlanoPag.getCodFilial());
@@ -1506,43 +1657,50 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 
 	private Object prefs(int index) {
-		Object[] ret = new Object[2];
 		
-		String sSQL = "SELECT ADICPDV, CODPROD FROM SGPREFERE4 WHERE CODEMP=? AND  CODFILIAL=? ";
-	  	PreparedStatement ps = null;
-	  	ResultSet rs = null;
-	  	
-	  	try {
-	  		ps = con.prepareStatement(sSQL);
-	  		ps.setInt(1,Aplicativo.iCodEmp);
-	  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE4"));
-	  		rs = ps.executeQuery();
-	  		if (rs.next()) {
-	  			if (rs.getString("ADICPDV").trim().equals("S"))
-	  				ret[0] = new Boolean(true);
-	  			else 
-	  				ret[0] = new Boolean(false);
-	  			
-	  			if (rs.getString("CODPROD")!=null)
-	  				ret[1] =rs.getString("CODPROD");
-	  			else 
-	  				ret[1] = null;
-	  		}
-	        rs.close();
-	        ps.close();
-	        if (!con.getAutoCommit())
-	        	con.commit();
-	  	}
-	  	catch (SQLException err) {
-	  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
-	  	}
-	  	finally{
-	  		sSQL = null;
-	  		ps = null;
-	  		rs = null;
-	  	}
+		if(pref[0] == null) {
+			
+			pref = new Object[3];
+
+		  	PreparedStatement ps = null;
+		  	ResultSet rs = null;
+			String sSQL = "SELECT P4.ADICPDV, P4.CODPROD, P1.CONTESTOQ " +
+						  "FROM SGPREFERE1 P1, SGPREFERE4 P4 " +
+						  "WHERE P4.CODEMP=? AND P4.CODFILIAL=? " +
+						  "AND P1.CODEMP=P4.CODEMP AND P1.CODFILIAL=P4.CODFILIAL";
+		  	
+		  	try {
+		  		ps = con.prepareStatement(sSQL);
+		  		ps.setInt(1,Aplicativo.iCodEmp);
+		  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE4"));
+		  		rs = ps.executeQuery();
+		  		if (rs.next()) {
+		  			pref[0] = new Boolean(rs.getString("ADICPDV").equals("S"));
+		  			
+		  			if (rs.getString("CODPROD")!=null)
+		  				pref[1] =rs.getString("CODPROD");
+		  			else 
+		  				pref[1] = null;
+		  			
+		  			pref[2] = new Boolean(rs.getString("CONTESTOQ").equals("S"));
+		  		}
+		        rs.close();
+		        ps.close();
+		        if (!con.getAutoCommit())
+		        	con.commit();
+		  	}
+		  	catch (SQLException err) {
+		  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
+		  	}
+		  	finally{
+		  		sSQL = null;
+		  		ps = null;
+		  		rs = null;
+		  	}
+			
+		}
 		
-	  	return ret[index];
+	  	return pref[index];
 	}
 
 	public void keyPressed(KeyEvent kevt) {
@@ -1659,8 +1817,14 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 
 	public void afterCarrega(CarregaEvent cevt) {
 		if (cevt.getListaCampos() == lcProduto
-				&& txtCodProd.getVlrString().length() > 0)
+				&& txtCodProd.getVlrString().length() > 0) {
 			buscaPreco();
+			if(txtCLoteProd.getVlrString().equals("S")) {
+				txtCodLote.setAtivo(true);
+				getLote();
+			} else
+				txtCodLote.setAtivo(false);
+		}
 	}
 
 	public void beforePost(PostEvent pevt) { }
@@ -1712,9 +1876,11 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		super.setConexao(con);
 		lcCliente.setConexao(con);
 		lcVendedor.setConexao(con);
+		lcClComis.setConexao(con);
 		lcPlanoPag.setConexao(con);
 		lcVenda.setConexao(con);
 		lcProduto.setConexao(con);
+		lcLote.setConexao(con);
 		lcTipoMov.setConexao(con);
 		lcSerie.setConexao(con);
 		lcClFiscal.setConexao(con);
