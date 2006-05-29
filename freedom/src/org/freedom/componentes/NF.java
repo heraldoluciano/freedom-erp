@@ -129,6 +129,7 @@ public class NF {
 	public static final int C_TIPOPROD = 28;
 	public static final int C_VLRISSPED = 29;
 	public static final int C_VLRPRODPED = 30;	
+	public static final int C_VLRDESCITPROD = 31;	
 	
 	//adic
 	public static final int C_CODAUXV = 0;
@@ -162,6 +163,7 @@ public class NF {
 	public static final int C_PESOBRUTO = 16;
 	public static final int C_PESOLIQ = 17;
 	public static final int C_VLRFRETEPED = 18;	
+	public static final int C_CONHECFRETEPED = 19;	
 
 	protected TabVector cab = null;
 	protected TabVector itens = null;
