@@ -488,15 +488,20 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			for (int i = 0; i < getText().length(); i++)
 				if ( ma[i] == '#' )
 					sRetorno += va[i];
-		} else 
+		} 
+		else 
 			sRetorno = getText();
+		sRetorno = sRetorno.replaceAll("\\.","");
 		char[] ret = sRetorno.toCharArray(); 
+		
 		if ((pontoDecMask == ',') & (sRetorno.indexOf(',') != -1))
 			ret[sRetorno.indexOf(',')] = '.';
 		sRetorno = new String(ret);
 		try {
 			dRetorno = new Double(sRetorno);
-		} catch (Exception err) {
+		} 
+		catch (Exception err) {
+			err.printStackTrace();
 			dRetorno = new Double(0);
 		}
 		return dRetorno;
