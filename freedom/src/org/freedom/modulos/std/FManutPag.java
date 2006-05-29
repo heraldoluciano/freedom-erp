@@ -89,7 +89,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	private JTextFieldPad txtCodForManut = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldPad txtPrimCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
 	private JTextFieldPad txtUltCompr = new JTextFieldPad(JTextFieldPad.TP_INTEGER,10,0);
-	private JTextFieldPad txtDataMaxFat = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
+//	private JTextFieldPad txtDataMaxFat = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtVlrMaxFat = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldPad txtVlrTotCompr = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JTextFieldPad txtVlrTotPago = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
@@ -198,7 +198,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		
 		txtPrimCompr.setAtivo(false);
 		txtUltCompr.setAtivo(false);
-		txtDataMaxFat.setAtivo(false);
+//		txtDataMaxFat.setAtivo(false);
 		txtVlrMaxFat.setAtivo(false);
 		txtVlrTotCompr.setAtivo(false);
 		txtVlrTotPago.setAtivo(false);
@@ -225,14 +225,14 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		pinConsulta.adic(txtPrimCompr,310,20,97,20);
 		pinConsulta.adic(new JLabelPad("Ultima compra"),410,0,97,20);
 		pinConsulta.adic(txtUltCompr,410,20,100,20);
-		pinConsulta.adic(new JLabelPad("Data"),7,40,200,20);
-		pinConsulta.adic(txtDataMaxFat,7,60,100,20);
-		pinConsulta.adic(new JLabelPad("Valor da maior fatura"),110,40,200,20);
-		pinConsulta.adic(txtVlrMaxFat,110,60,147,20);
-		pinConsulta.adic(new JLabelPad("Data"),260,40,200,20);
-		pinConsulta.adic(txtDataMaxAcum,260,60,97,20);
-		pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),360,40,200,20);
-		pinConsulta.adic(txtVlrMaxAcum,360,60,150,20);
+//		pinConsulta.adic(new JLabelPad("Data"),7,40,200,20);
+//		pinConsulta.adic(txtDataMaxFat,7,60,100,20);
+		pinConsulta.adic(new JLabelPad("Valor da maior fatura"),7,40,165,20);
+		pinConsulta.adic(txtVlrMaxFat,7,60,165,20);
+		pinConsulta.adic(new JLabelPad("Data"),175,40,97,20);
+		pinConsulta.adic(txtDataMaxAcum,175,60,97,20);
+		pinConsulta.adic(new JLabelPad("Valor do maior acumulo"),275,40,200,20);
+		pinConsulta.adic(txtVlrMaxAcum,275,60,150,20);
 		pinConsulta.adic(new JLabelPad("Total de compras"),7,80,150,20);
 		pinConsulta.adic(txtVlrTotCompr,7,100,165,20);
 		pinConsulta.adic(new JLabelPad("Total pago"),175,80,97,20);
@@ -535,7 +535,7 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 	private void limpaConsulta() {
 		txtPrimCompr.setVlrString("");
 		txtUltCompr.setVlrString("");
-		txtDataMaxFat.setVlrString("");
+//		txtDataMaxFat.setVlrString("");
 		txtVlrMaxFat.setVlrString("");
 		txtVlrTotCompr.setVlrString("");
 		txtVlrTotPago.setVlrString("");
@@ -553,12 +553,11 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 		limpaConsulta();
 		tabConsulta.limpa();
 		try {
-			sSQL = "SELECT CODFOR,SUM(VLRPARCPAG),SUM(VLRPAGOPAG),SUM(VLRAPAGPAG),"+
-				   "MIN(DATAPAG),MAX(DATAPAG),DATAPAG,MAX(VLRPARCPAG) "+
+			sSQL = "SELECT SUM(VLRPARCPAG),SUM(VLRPAGOPAG),SUM(VLRAPAGPAG),MIN(DATAPAG),MAX(DATAPAG),MAX(VLRPARCPAG) "+
 				   "FROM FNPAGAR "+
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? "+
-				   "GROUP BY CODFOR,DATAPAG "+
-				   "ORDER BY 8 DESC";
+				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? ";
+//				   "GROUP BY CODFOR,DATAPAG "
+//				   "ORDER BY 7 DESC";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
@@ -566,13 +565,13 @@ public class FManutPag extends FFilho implements ActionListener,KeyListener,Carr
 			ps.setInt(3,txtCodFor.getVlrInteger().intValue());
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				txtVlrTotCompr.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(2)));
-				txtVlrTotPago.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(3)));
-				txtVlrTotAberto.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(4)));
-				txtPrimCompr.setVlrString(rs.getDate(5) != null ? Funcoes.sqlDateToStrDate(rs.getDate(5)) : "");
-				txtUltCompr.setVlrString(rs.getDate(6) != null ? Funcoes.sqlDateToStrDate(rs.getDate(6)) : "");
-				txtDataMaxFat.setVlrString(rs.getDate(7) != null ? Funcoes.sqlDateToStrDate(rs.getDate(7)) : "");
-				txtVlrMaxFat.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(8)));
+				txtVlrTotCompr.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(1)));
+				txtVlrTotPago.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(2)));
+				txtVlrTotAberto.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(3)));
+				txtPrimCompr.setVlrString(rs.getDate(4) != null ? Funcoes.sqlDateToStrDate(rs.getDate(4)) : "");
+				txtUltCompr.setVlrString(rs.getDate(5) != null ? Funcoes.sqlDateToStrDate(rs.getDate(5)) : "");
+//				 txtDataMaxFat.setVlrString(rs.getDate(7) != null ? Funcoes.sqlDateToStrDate(rs.getDate(7)) : "");
+				txtVlrMaxFat.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(6)));
 			}
 			rs.close();
 			ps.close();
