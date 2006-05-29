@@ -768,9 +768,42 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 	}
 	
 	private boolean testaCodLote() {		
-		if (!testaCodLote(txtCodLote.getVlrString().trim(), txtCodProd.getVlrInteger().intValue()))
-			return txtCodLote.mostraDLF2FK();
-		return true;
+		boolean bValido = false;
+		String sSQL = "SELECT SLDLIQLOTE FROM EQLOTE " +
+				      "WHERE CODLOTE=? AND CODPROD=? AND CODEMP=? AND CODFILIAL=?";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, txtCodLote.getVlrString().trim());
+			ps.setInt(2, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, ListaCampos.getMasterFilial("EQLOTE"));
+			rs = ps.executeQuery();
+			if ( rs.next() ) { 
+				if ( rs.getFloat(1) > 0.0f )
+					bValido = true;
+				else
+					Funcoes.mensagemInforma( this, "LOTE SEM SALDO!" );
+			} else
+				Funcoes.mensagemErro( this, "Cód.lote é requerido." );
+			
+
+			rs.close();
+			ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+		
+		return bValido;
 	}
 		
 	private void mostraTelaDescont() {

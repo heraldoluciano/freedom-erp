@@ -277,12 +277,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcLote.add(new GuardaCampo(txtSldLiqProd, "SldLiqLote", "Saldo", ListaCampos.DB_SI, false));
 		lcLote.setDinWhereAdic("CODPROD=#N ",txtCodProd);
 		lcLote.montaSql(false, "LOTE", "EQ");
-		lcLote.setQueryCommit(false);
 		lcLote.setReadOnly(true);
 		txtCodLote.setTabelaExterna(lcLote);
-		txtDescLote.setListaCampos(lcLote);
-		txtDescLote.setNomeCampo("VenctoLote");
-		txtDescLote.setLabel("Vencimento");
+		txtCodLote.setFK(true);
+		txtCodLote.setNomeCampo("CodLote");
 
 		lcProduto.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, true));
 		lcProduto.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
@@ -532,7 +530,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				txtPercDescItOrc.setVlrBigDecimal(rs.getBigDecimal("PERCDESCITORC")!=null ?rs.getBigDecimal("PERCDESCITORC") : new BigDecimal("0"));
 				txtVlrDescItOrc.setVlrBigDecimal(rs.getBigDecimal("VLRDESCITORC")!=null ?rs.getBigDecimal("VLRDESCITORC") : new BigDecimal("0"));
 				txtQtdade.setVlrBigDecimal(rs.getBigDecimal("QTDITORC"));
-				txtCodLote.setVlrBigDecimal(rs.getBigDecimal("CODLOTE"));
+				txtCodLote.setVlrString(rs.getString("CODLOTE"));
 				txtQtdade.requestFocus();
 				
 				robo.keyPress(KeyEvent.VK_ENTER);
@@ -831,7 +829,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		String sSQL = null;
 		BigDecimal[] argsComis = getItComis( iCodItOrc );
 		try {
-			sSQL = "EXECUTE PROCEDURE VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA," +
+				   "VLRICMSITVENDA,VLRLIQITVENDA " +
+				   "FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setInt(1, txtCodVenda.getVlrInteger().intValue());
@@ -842,8 +842,8 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(6, ListaCampos.getMasterFilial("EQPRODUTO"));
 			ps.setBigDecimal(7, txtQtdade.getVlrBigDecimal());
 			ps.setBigDecimal(8, txtPreco.getVlrBigDecimal());
-			ps.setBigDecimal(9, txtPercDescItOrc.getVlrBigDecimal());
-			ps.setBigDecimal(10, txtVlrDescItOrc.getVlrBigDecimal());			
+			ps.setBigDecimal(9, txtVlrDescItOrc.getVlrBigDecimal());	
+			ps.setBigDecimal(10, txtPercDescItOrc.getVlrBigDecimal());		
 			if(argsComis[1]!=null) {
 				ps.setBigDecimal(11, argsComis[1]);
 				ps.setBigDecimal(12, argsComis[0]);
@@ -853,20 +853,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			}
 			ps.setString(13, txtCodLote.getVlrString().trim());
 			ps.setInt(14, Aplicativo.iCodEmp);
-			ps.setInt(15, ListaCampos.getMasterFilial("EQLOTE"));
-			
-			ps.execute();
-			if (!con.getAutoCommit())
-				con.commit();
-			
-			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA," +
-				   "VLRICMSITVENDA,VLRLIQITVENDA " +
-				   "FROM VDITVENDA " +
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("VDITVENDA"));
-			ps.setInt(3, txtCodVenda.getVlrInteger().intValue());
+			ps.setInt(15, ListaCampos.getMasterFilial("EQLOTE"));			
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				iCodItVenda = rs.getInt("CodItVenda");

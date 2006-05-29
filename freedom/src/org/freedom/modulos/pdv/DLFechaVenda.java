@@ -807,6 +807,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	public void actionPerformed(ActionEvent evt) {
 	    boolean bRet = false;
 		if (evt.getSource() == btOK) {
+			lcVend.carregaDados();
+			lcClComis.carregaDados();
 			if (execFechamento()) {
 				if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
 					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,
