@@ -20,13 +20,18 @@
 
 package org.freedom.layout;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
 
 public class NFIswara extends Layout {
+    
+	private NF nf = null;
 	
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 	
@@ -36,7 +41,7 @@ public class NFIswara extends Layout {
 		boolean bjatem = false;
 		boolean bjatem1 = false;
 		boolean bjatem2 = false;
-		final int MAXLINE = 37;
+		final int MAXLINE = 35;
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iContaFrete = 0;
@@ -47,34 +52,36 @@ public class NFIswara extends Layout {
 		int indexObs = 0;
 		String sCodfisc = null;
 		String sSigla = null;
-		String sDescFisc = null;
+		String sTemp = null;
+		String sDescFisc = "";
+		String sEmitente = null;
 		String[] sValsCli = new String[4];
 		String[] sNat = new String[2];
-		String[] sDuplics = new String[6];
-		String[] sVencs = new String[6];
-		String[] sVals = new String[6];
+		String[] sVencs = new String[4];
+		String[] sVals = new String[4];
 		Vector vClfisc = new Vector();
 		Vector vSigla = new Vector();
 		Vector vObs = new Vector();
 		Vector vDescFisc = new Vector();
 		
 		try{
+		    
+		    this.nf = nf;
+		    
+		    sEmitente = getEmitente();
 			
-			if (cab.next()) { 
+			if ( cab.next() ) { 
 				iNumNota = cab.getInt(NF.C_DOC);
 		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),51);				
 			}
-				
-			
-			for (int i=0; i<6; i++) {
-				if (bFat) {
-					if (parc.next()) {
-						sDuplics[i] = iNumNota + " / " + parc.getInt(NF.C_NPARCITREC);
+							
+			for ( int i=0; i < 4; i++ ) {
+				if ( bFat ) {
+					if ( parc.next() ) {
 						sVencs[i] = (parc.getDate(NF.C_DTVENCTO)!=null ? Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO)) : "");
-						sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,""+parc.getFloat(NF.C_VLRPARC));
+						sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(parc.getFloat(NF.C_VLRPARC)));
 					} else {
 						bFat = false;
-						sDuplics[i] = "";
 						sVencs[i] = "";
 						sVals[i] = "";
 					}
@@ -113,15 +120,14 @@ public class NFIswara extends Layout {
 					
 					//	Imprime cabeçalho da nota ...
 					
-					imp.pulaLinha( 1, imp.normal() );
-					imp.say( 73, Funcoes.strZero(String.valueOf(iNumNota),6) );
 					imp.pulaLinha( 1, imp.comprimido());
 					
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 						imp.say(103, "X");
 					else
 						imp.say( 88, "X");
-					
+
+					imp.say( 130, Funcoes.strZero(String.valueOf(iNumNota),6) );
 					imp.pulaLinha( 5, imp.comprimido());
 					imp.say(  4, sNat[0]);
 					imp.say( 37, sNat[1]);
@@ -149,47 +155,43 @@ public class NFIswara extends Layout {
 					//	Imprime dados da fatura ...
 										
 					imp.pulaLinha( 3, imp.comprimido());
-					imp.say(  4, "String da fatura ----------------------------------------------------------");
+					imp.say(  2, Funcoes.copy(cab.getString(NF.C_DESCPLANOPAG),26) + " = " +
+					             (!sVencs[0].equals("") ? ( sVencs[0] + " | " + sVals[0] ) : "" ) +
+					             (!sVencs[1].equals("") ? ( " - " + sVencs[1] + " |" + sVals[1] ) : "" ) +
+					             (!sVencs[2].equals("") ? ( " - " + sVencs[2] + " |" + sVals[2] ) : "" ) +
+					             (!sVencs[3].equals("") ? ( " - " + sVencs[3] + " |" + sVals[3] ) : "" ) );
 					imp.pulaLinha( 2, imp.comprimido());
 					imp.say(  2, Funcoes.copy(String.valueOf(cab.getInt(NF.C_CODPED)),26));
 					imp.say( 30, Funcoes.copy(String.valueOf(cab.getInt(NF.C_CODEMIT)),26));
-					imp.say( 58, Funcoes.copy(cab.getString(NF.C_DESCSETOR),26));
-					imp.say( 86, Funcoes.copy(cab.getString(NF.C_NOMEVEND),26));
+					imp.say( 58, sEmitente);
+					imp.say( 86, Funcoes.copy(cab.getString(NF.C_CODVEND),26));
 					imp.say(114, Funcoes.copy(cab.getString(NF.C_NOMEBANCO),26));
-					imp.pulaLinha( 3, imp.comprimido());
+					imp.pulaLinha( 2, imp.comprimido());
 					
 					//	Fim dos dados da fatura ...
 					
 				}
 				
 				//	Monta a observação ...
-				sDescFisc = itens.getString(NF.C_DESCFISC).trim();
-				if( vDescFisc.size() > 0 ) {
-					for( int i=0; i < vDescFisc.size(); i++ ) {
-						if( ((String)vDescFisc.elementAt(i)).equals( sDescFisc ) ) {
-							bjatem1 = true;
-							break;
-						}
-					}						
+				sTemp = itens.getString(NF.C_DESCFISC).trim();
+				if( sDescFisc.length() > 0 ) {
+					if( sDescFisc.indexOf( sTemp ) > -1 )
+						bjatem1 = true;
 					if(!bjatem1)
 						vDescFisc.addElement( sDescFisc );
 					bjatem1 = false;
 				} else 
-					vDescFisc.addElement( sDescFisc );
+				    sDescFisc = sTemp;
 				
 				sDescFisc = itens.getString(NF.C_DESCFISC2).trim();
-				if( vDescFisc.size() > 0 ) {
-					for( int i=0; i < vDescFisc.size(); i++ ) {
-						if( ((String)vDescFisc.elementAt(i)).equals( sDescFisc ) ) {
-							bjatem2 = true;
-							break;
-						}
-					}					
+				if( sDescFisc.length() > 0 ) {
+					if( sDescFisc.indexOf( sTemp ) > -1 )
+						bjatem2 = true;				
 					if(!bjatem2)
 						vDescFisc.addElement( sDescFisc );	
 					bjatem2 = false;					
 				} else 
-					vDescFisc.addElement( sDescFisc );
+				    sDescFisc = sTemp;
 				//	Fim da observação ...
 				
 				//	Definição da sigla para a classificação fiscal...
@@ -217,19 +219,19 @@ public class NFIswara extends Layout {
 				// 	Fim da classificação fiscal ...
 				
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say(  0, Funcoes.alinhaDir(itens.getInt(NF.C_CODPROD),6) );
-				imp.say(  8, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
+				imp.say(  0, Funcoes.alinhaDir(itens.getInt(NF.C_CODPROD),5) );
+				imp.say(  7, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
 				imp.say( 32, itens.getString(NF.C_CODLOTE) );
 				imp.say( 49, Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
 				imp.say( 62, sSigla);
 				imp.say( 66, Funcoes.copy(itens.getString(NF.C_ORIGFISC),1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),2));
 				imp.say( 71, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
-				imp.say( 77, Funcoes.strDecimalToStrCurrency( 9,casasDec,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
-				imp.say( 90, Funcoes.strDecimalToStrCurrency(12,casasDecFin,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),BigDecimal.ROUND_HALF_UP))));
-				imp.say(105, Funcoes.strDecimalToStrCurrency(12,casasDecFin,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
+				imp.say( 77, Funcoes.strDecimalToStrCurrency( 9,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
+				imp.say( 90, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED)).add(new BigDecimal(itens.getFloat(NF.C_VLRDESCITPROD)))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),BigDecimal.ROUND_HALF_UP))));
+				imp.say(105, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED)).add(new BigDecimal(itens.getFloat(NF.C_VLRDESCITPROD)))))));
 				imp.say(121, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
 				imp.say(126, ((int)itens.getFloat(NF.C_PERCIPIITPED))+"%");
-				imp.say(130, Funcoes.strDecimalToStrCurrency(6,casasDecFin,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
+				imp.say(130, Funcoes.strDecimalToStrCurrency(6,2,String.valueOf(itens.getFloat(NF.C_VLRIPIITPED))));
 				
 				
 				iItImp++;
@@ -238,7 +240,11 @@ public class NFIswara extends Layout {
 						frete.next();
 						iContaFrete++;
 					}
-										
+					
+
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9,2,String.valueOf(cab.getFloat(NF.C_VLRDESCITPED))));
+					
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
 					if (iItImp == itens.getInt(NF.C_CONTAITENS)) {        
@@ -268,7 +274,7 @@ public class NFIswara extends Layout {
 						
 					}
 					
-					imp.pulaLinha( 2, imp.comprimido());
+					imp.pulaLinha( 3, imp.comprimido());
 					imp.say(  2, frete.getString(NF.C_RAZTRANSP));
 					imp.say( 81, frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
 					imp.say( 90, frete.getString(NF.C_PLACAFRETE));
@@ -290,11 +296,12 @@ public class NFIswara extends Layout {
 						imp.say(116, frete.getString(NF.C_INSCTRANSP));
 					   
 					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(  6, Funcoes.strDecimalToStrCurrency(10,casasDec,String.valueOf(frete.getString(NF.C_QTDFRETE))));
+					imp.say(  6, Funcoes.strDecimalToStrCurrency(10,0,String.valueOf(frete.getString(NF.C_QTDFRETE))));
 					imp.say( 21, Funcoes.copy(frete.getString(NF.C_ESPFRETE),17));
 					imp.say( 40, frete.getString(NF.C_MARCAFRETE));
-					imp.say( 87, Funcoes.strDecimalToStrCurrency(20,casasDecFin,String.valueOf(frete.getFloat(NF.C_PESOBRUTO))));
-					imp.say(114, Funcoes.strDecimalToStrCurrency(20,casasDecFin,String.valueOf(frete.getString(NF.C_PESOLIQ))));
+					imp.say( 62, Funcoes.copy(frete.getString(NF.C_CONHECFRETEPED),20));
+					imp.say( 87, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(frete.getFloat(NF.C_PESOBRUTO))));
+					imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(frete.getString(NF.C_PESOLIQ))));
 					imp.pulaLinha( 3, imp.comprimido());					
 					imp.say(  2, cab.getString(NF.C_ENDENTEMIT) + " , " + 
 							     cab.getString(NF.C_NUMENTEMIT) + "   " + 
@@ -302,7 +309,9 @@ public class NFIswara extends Layout {
 							     cab.getString(NF.C_BAIRENTEMIT) + " - " + 
 							     cab.getString(NF.C_CIDENTEMIT) + " / " + 
 							     cab.getString(NF.C_UFENTEMIT));					
-					imp.pulaLinha( 3, imp.comprimido());
+					imp.pulaLinha( 2, imp.comprimido());
+					
+					vDescFisc = Funcoes.strToVectorSilabas(sDescFisc,51);
 					
 					sizeObs = vSigla.size();
 					sizeObs = vObs.size() > sizeObs ? vObs.size() : sizeObs;
@@ -313,7 +322,7 @@ public class NFIswara extends Layout {
 						if( aux < 5 ) {
 							imp.pulaLinha( 1, imp.comprimido());
 							if( vSigla.size() > 0 && indexSigla < vSigla.size() )
-								imp.say( 2, (String)vSigla.elementAt(indexSigla++));
+								imp.say(  2, (String)vSigla.elementAt(indexSigla++));
 							
 							if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() )
 								imp.say( 31, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));
@@ -325,8 +334,7 @@ public class NFIswara extends Layout {
 					}
 					
 					imp.pulaLinha( 4, imp.comprimido());
-					imp.pulaLinha( 1, imp.normal());
-					imp.say( 73, Funcoes.strZero(String.valueOf(iNumNota),6) );
+					imp.say(130, Funcoes.strZero(String.valueOf(iNumNota),6) );
 					
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());					
 					imp.setPrc(0,0);
@@ -343,7 +351,6 @@ public class NFIswara extends Layout {
 		} finally {
 			sValsCli = null;
 			sNat = null;
-			sDuplics = null;
 			sVencs = null;
 			sVals = null;
 			System.gc();
@@ -351,6 +358,38 @@ public class NFIswara extends Layout {
 		
 		return retorno;
 		
+	}
+	
+	private String getEmitente() {
+	    
+	    String retorno = "";
+	    String sSQL = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	        
+	        sSQL =  "SELECT COMENTUSU FROM SGUSUARIO " +
+	        		"WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?"; 
+	        ps = nf.getConexao().prepareStatement(sSQL);
+	        ps.setInt(1, Aplicativo.iCodEmp);
+	        ps.setInt(2, Aplicativo.iCodFilial);
+	        ps.setString(3, Aplicativo.strUsuario);
+	        rs = ps.executeQuery();
+	        
+	        if(rs.next()) {
+	            retorno = Funcoes.copy(rs.getString("COMENTUSU"),4);
+	        }
+	        
+	        if(!nf.getConexao().getAutoCommit())
+	            nf.getConexao().commit();
+	        
+	    } catch ( Exception e ) {
+	        e.printStackTrace();
+        }
+	    
+	    return retorno;
+	    
 	}
 	
 }

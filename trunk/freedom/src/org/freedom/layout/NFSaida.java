@@ -138,7 +138,7 @@ public class NFSaida extends NF {
 			sql = "SELECT I.CODITVENDA, I.CODPROD, P.REFPROD, P.DESCPROD, I.OBSITVENDA, P.CODUNID, I.VLRIPIITVENDA,"+
 					"I.QTDITVENDA, I.VLRLIQITVENDA, I.PERCIPIITVENDA, I.PERCICMSITVENDA, V.VLRICMSVENDA, V.VLRPRODVENDA,"+
 					"V.VLRIPIVENDA, V.VLRLIQVENDA, V.VLRISSVENDA, N.IMPDTSAIDANAT, I.VLRPRODITVENDA, N.DESCNAT, N.CODNAT,"+
-					"I.CODLOTE, I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA, P.CODFISC, P.TIPOPROD,"+
+					"I.CODLOTE, I.ORIGFISC, I.CODTRATTRIB, V.VLRBASEICMSVENDA, V.VLRADICVENDA, P.CODFISC, P.TIPOPROD, I.VLRDESCITVENDA,"+
 					"(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE),"+
 					"(SELECT COUNT(IC.CODITVENDA) FROM VDITVENDA IC WHERE IC.CODVENDA=V.CODVENDA AND IC.CODEMP=V.CODEMP AND IC.CODFILIAL=V.CODFILIAL AND IC.TIPOVENDA=V.TIPOVENDA),"+
 					"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME),"+
@@ -156,7 +156,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector(31);
+			itens = new TabVector(32);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITVENDA"));
@@ -178,18 +178,19 @@ public class NFSaida extends NF {
 				itens.setString(C_DESCNAT, (rs.getString("DESCNAT")!=null ? rs.getString("DESCNAT") : ""));
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, (rs.getString("CODLOTE")!=null ? rs.getString("CODLOTE") : ""));
-				itens.setDate(C_VENCLOTE, rs.getDate(28));
+				itens.setDate(C_VENCLOTE, rs.getDate(29));
 				itens.setString(C_ORIGFISC, (rs.getString("ORIGFISC")!=null ? rs.getString("ORIGFISC") : ""));
 				itens.setString(C_CODTRATTRIB, (rs.getString("CODTRATTRIB")!=null ? rs.getString("CODTRATTRIB") : ""));
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSVENDA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICVENDA"));
-				itens.setInt(C_CONTAITENS, rs.getInt(29));
-				itens.setString(C_DESCFISC, (rs.getString(30)!=null ? rs.getString(30) : ""));
-				itens.setString(C_DESCFISC2, (rs.getString(31)!=null ? rs.getString(31) : ""));
+				itens.setInt(C_CONTAITENS, rs.getInt(30));
+				itens.setString(C_DESCFISC, (rs.getString(31)!=null ? rs.getString(31) : ""));
+				itens.setString(C_DESCFISC2, (rs.getString(32)!=null ? rs.getString(32) : ""));
 				itens.setString(C_CODFISC, rs.getString("CODFISC")!= null ? rs.getString("CODFISC") : "");
 				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD")!= null ? rs.getString("TIPOPROD") : "");
 				itens.setFloat(C_VLRISSPED, rs.getFloat("VLRISSVENDA"));
 				itens.setFloat(C_VLRPRODPED, rs.getFloat("VLRPRODVENDA"));
+				itens.setFloat(C_VLRDESCITPROD, rs.getFloat("VLRDESCITVENDA"));
 			}
 			rs.close();
 			ps.close();
@@ -249,7 +250,7 @@ public class NFSaida extends NF {
 			sql = "SELECT T.CODTRAN, T.RAZTRAN, T.NOMETRAN, T.INSCTRAN, T.CNPJTRAN, T.TIPOTRAN, " +
 					"T.ENDTRAN, T.NUMTRAN, T.CIDTRAN, T.UFTRAN , F.TIPOFRETEVD, F.PLACAFRETEVD, " +
 					"F.UFFRETEVD, F.QTDFRETEVD, F.ESPFRETEVD, F.MARCAFRETEVD, F.PESOBRUTVD, F.PESOLIQVD, " +
-					"V.VLRFRETEVENDA " +
+					"V.VLRFRETEVENDA, F.CONHECFRETEVD " +
 					"FROM VDTRANSP T, VDFRETEVD F, VDVENDA V " +
 					"WHERE T.CODEMP=F.CODEMPTN AND T.CODFILIAL=F.CODFILIALTN AND T.CODTRAN=F.CODTRAN " +
 					"AND F.CODEMP=V.CODEMP AND F.CODFILIAL=V.CODFILIAL AND F.CODVENDA=V.CODVENDA AND F.TIPOVENDA=V.TIPOVENDA " +
@@ -260,7 +261,7 @@ public class NFSaida extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			frete = new TabVector(19);
+			frete = new TabVector(20);
 			while (rs.next()) {
 				frete.addRow();
 				frete.setInt(C_CODTRAN, rs.getInt("CODTRAN"));
@@ -282,6 +283,7 @@ public class NFSaida extends NF {
 				frete.setFloat(C_PESOBRUTO, rs.getFloat("PESOBRUTVD"));
 				frete.setFloat(C_PESOLIQ, rs.getFloat("PESOLIQVD"));
 				frete.setFloat(C_VLRFRETEPED, rs.getFloat("VLRFRETEVENDA"));
+				frete.setString(C_CONHECFRETEPED, (rs.getString("CONHECFRETEVD")!=null ? rs.getString("CONHECFRETEVD") : ""));
 			}
 			rs.close();
 			ps.close();
