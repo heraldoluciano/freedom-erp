@@ -123,28 +123,28 @@ public class NFBuzzi2 extends Layout {
 					imp.say( 50, (!cab.getString(NF.C_DDDEMIT).equals("") ? "("+cab.getString(NF.C_DDDEMIT)+")" : "")+(!cab.getString(NF.C_FONEEMIT).equals("")? Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####") : ""));
 					imp.say( 83, cab.getString(NF.C_UFEMIT));
 					imp.say( 90, !cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
-					imp.say(125, sHora);
-					imp.pulaLinha(3, imp.comprimido());					   
+					imp.say(126, sHora);
+					imp.pulaLinha(5, imp.comprimido());					   
 					imp.say(  8, sVals[0]);            
 					imp.say( 36, sVencs[0]);
 					imp.say( 55, sVals[1]);
 					imp.say( 83, sVencs[1]);
 					imp.say(102, sVals[2]);
-					imp.say(130, sVencs[2]);
-					imp.pulaLinha(1, imp.comprimido());
+					imp.say(126, sVencs[2]);
+					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  8, sVals[3]);            
 					imp.say( 36, sVencs[3]);
 					imp.say( 55, sVals[4]);
 					imp.say( 83, sVencs[4]);
 					imp.say(102, sVals[5]);
-					imp.say(130, sVencs[5]);    
+					imp.say(126, sVencs[5]);    
 					imp.pulaLinha(3, imp.comprimido());
 					
 				}
 				 
 				if (!itens.getString(NF.C_TIPOPROD).equals("S") && iProd<MAXPROD) {
 					imp.pulaLinha(1, imp.comprimido());            
-					imp.say(  8, String.valueOf(itens.getInt(NF.C_CODPROD)));   
+					imp.say(  6, String.valueOf(itens.getInt(NF.C_CODPROD)));   
 					
 					vDesc = Funcoes.strToVectorSilabas(itens.getString(NF.C_OBSITPED).equals("") ? 
 									itens.getString(NF.C_DESCPROD).trim() : 
@@ -156,11 +156,8 @@ public class NFBuzzi2 extends Layout {
 						if (i > 0) {
 							imp.pulaLinha(1, imp.comprimido());
 							iProd++;
-						}
-						
-						imp.say( 16, sDesc);
-						
-						
+						}						
+						imp.say( 16, sDesc);						
 					}
 					
 					sMensAdic = itens.getString(NF.C_DESCFISC) + " - ";
@@ -274,14 +271,14 @@ public class NFBuzzi2 extends Layout {
 				}				
 			}
 
-			if (imp.pRow()<36) {   								
+			if (imp.pRow()<40) {   								
 				for (int i=0; i < vMatObs.size(); i++) {
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say( 10, (String)vMatObs.elementAt(i));
 				}				
 			}
 			
-			imp.pulaLinha( 38-imp.pRow(), imp.comprimido());
+			imp.pulaLinha( 43-imp.pRow(), imp.comprimido());
 			imp.say( 10, "PRORROGADO O PRAZO DE VALIDADE DA EMISSÃO DAS NOTAS FISCAIS PARA 18 MESES.");
 			imp.pulaLinha( 1, imp.comprimido());
 			imp.say( 10, "DE ACORDO COM O DECRETO N. 5502 DE 10 DE OUTUBRO DE 2005,");
@@ -310,7 +307,7 @@ public class NFBuzzi2 extends Layout {
 			sNat = null;
 			sVencs = null;
 			sVals = null;
-			//sMatObs = null;
+			vMatObs = null;
 			vValores = null;
 			vClfisc = null;
 			vSigla = null;
@@ -328,9 +325,7 @@ public class NFBuzzi2 extends Layout {
 		
 		try {	
 			
-			imp.pulaLinha( 45-imp.pRow(), imp.comprimido());
-			
-			imp.pulaLinha( 1, imp.comprimido());
+			imp.pulaLinha( 48-imp.pRow(), imp.comprimido());
 			imp.say(  6, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(0).toString()));
 			imp.say( 35, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(1).toString()));
 			imp.say(117, Funcoes.strDecimalToStrCurrency(20,2,vValores.elementAt(2).toString()));
@@ -373,7 +368,7 @@ public class NFBuzzi2 extends Layout {
 					imp.say( 45, vValores.elementAt(26) != null ? vValores.elementAt(26).toString().substring(0,20) : "");
 			}
 			  
-			imp.pulaLinha(7, imp.comprimido());
+			imp.pulaLinha(5, imp.comprimido());
 			imp.say(124, sNumNota);
 			imp.pulaLinha(3, imp.comprimido());
 			

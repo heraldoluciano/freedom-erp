@@ -574,15 +574,14 @@ public class Funcoes {
 	}
 
 	public static String copy(String sTmp, int iPos, int iTam) {
-		String sResultado = "";
 		if (sTmp == null)
 			sTmp = "";
 		if (sTmp.length() < (iTam + 1)) {
-			sResultado = sTmp + replicate(" ", iTam - sTmp.length());
+			sTmp = sTmp + replicate(" ", iTam - sTmp.length());
 		} else {
-			sResultado = sTmp.substring(iPos, iTam);
+			sTmp = sTmp.substring(iPos, iTam);
 		}
-		return sResultado;
+		return sTmp;
 	}
 
 	public static String copy(String sTmp, int iTam) {
@@ -1692,7 +1691,7 @@ public class Funcoes {
 		int iAno = cal.get(Calendar.YEAR);
 		int iMes = cal.get(Calendar.MONTH) + 1;
 		int iDia = cal.get(Calendar.DAY_OF_MONTH);
-		return strZero("" + iDia, 2) + "/" + strZero("" + iMes, 2) + "/" + iAno;
+		return strZero(String.valueOf(iDia), 2) + "/" + strZero(String.valueOf(iMes), 2) + "/" + String.valueOf(iAno);
 	}
 
 	public static String dateToStrTime(Date dVal) {
@@ -1701,7 +1700,7 @@ public class Funcoes {
 		int iHora = cal.get(Calendar.HOUR_OF_DAY);
 		int iMinuto = cal.get(Calendar.MINUTE);
 		int iSegundo = cal.get(Calendar.SECOND);
-		return strZero("" + iHora, 2) + ":" + strZero("" + iMinuto, 2) + ":" + iSegundo;
+		return strZero(String.valueOf(iHora), 2) + ":" + strZero(String.valueOf(iMinuto), 2) + ":" + iSegundo;
 	}
 
 	public static String strDateToStrDB(String sVal) {

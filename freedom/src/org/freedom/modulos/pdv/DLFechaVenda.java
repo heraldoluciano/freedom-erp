@@ -64,6 +64,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private JTextFieldPad txtTipoVenda = new JTextFieldPad(JTextFieldPad.TP_STRING,1,0);	
 	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtCodVend = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldFK txtNomeVend = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtCodClComis = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldFK txtDescClComis = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldFK txtVlrCupom = new JTextFieldFK(JTextFieldPad.TP_DECIMAL,12,2);
 	private JTextFieldPad txtVlrDinheiro = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
 	private JTextFieldPad txtVlrCheque = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,12,2);
@@ -99,13 +103,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private ListaCampos lcAuxVenda = new ListaCampos(this);
 	private ListaCampos lcFreteVD = new ListaCampos(this);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
+	private ListaCampos lcVend = new ListaCampos(this,"VD");
+	private ListaCampos lcClComis = new ListaCampos(this,"CM");
 	private ListaCampos lcTran = new ListaCampos(this,"TN");
 	private JBemaFI32 bf =  null;
 	private Tef tef = null;
 	private String sTipoVenda = null;
 	private int iCodVenda = 0;
 	private int iNumCupom = 0;
-	private int iPlanoPag = 0;
 	private Vector vTefsOK = new Vector();
 	private BigDecimal bigPagoTef = new BigDecimal("0.00");
 	private boolean bPref;
@@ -125,15 +130,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		}
 		
 		setTitulo("Fechamento de venda");
-		setAtribos(330,345);
+		setAtribos(330,385);
 		
 		
 		param = args;
 		iCodVenda = ((Integer)getParam(0)).intValue();
 		sTipoVenda = (String)getParam(1);
 		iNumCupom = ((Integer)getParam(3)).intValue();
-		iPlanoPag = ((Integer)getParam(4)).intValue();
+		txtCodPlanoPag.setVlrInteger( (Integer)getParam(4) );
 		trocouCli = ((Boolean)getParam(7)).booleanValue();
+		txtCodVend.setVlrInteger( (Integer)getParam(12) );
 		
 		txtVlrCupom.setVlrBigDecimal(((BigDecimal)getParam(2)));
 		txtVlrChequeElet.setAtivo(false);
@@ -152,6 +158,24 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		txtCodPlanoPag.setFK(true);
 		
+		lcVend.add(new GuardaCampo( txtCodVend, "CodVend", "Cód.comis.", ListaCampos.DB_PK, false));
+		lcVend.add(new GuardaCampo( txtNomeVend, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI,false));
+		lcVend.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.",ListaCampos.DB_FK, false));
+		lcVend.montaSql(false, "VENDEDOR", "VD");
+		lcVend.setReadOnly(true);
+		txtCodVend.setTabelaExterna(lcVend);
+		txtCodVend.setNomeCampo("CodVend");
+		txtCodVend.setFK(true);
+		txtCodVend.setAtivo(!((Boolean)getParam(11)).booleanValue());
+		
+		lcClComis.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, false));
+		lcClComis.add(new GuardaCampo( txtDescClComis, "DescClComis", "Descrição da classificassão da comissão", ListaCampos.DB_SI,false));
+		lcClComis.montaSql(false, "CLCOMIS", "VD");
+		lcClComis.setReadOnly(true);
+		txtCodClComis.setTabelaExterna(lcClComis);
+		txtCodClComis.setNomeCampo("CodClComis");
+		txtCodClComis.setFK(true);
+				
 	    lcTran.add(new GuardaCampo( txtCodTran, "CodTran", "Cód.tran.", ListaCampos.DB_PK, false));
 	    lcTran.add(new GuardaCampo( txtDescTran, "RazTran", "Nome do transportador", ListaCampos.DB_SI,false));
 	    txtDescTran.setListaCampos(lcTran);
@@ -214,29 +238,33 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	    	    	   	   		
 	    // FECHAMENTO
 	    setPainel(pnVenda);
-	    
-	    adic(new JLabelPad("Cód.p.pag."),7,5,250,15);
-	    adic(txtCodPlanoPag,7,20,80,20);
-	    adic(new JLabelPad("Descrição da forma de pagamento"),90,5,250,15);
-	    adic(txtDescPlanoPag,90,20,200,20);
+
+	    adic(new JLabelPad("Cód.comis."),7,5,250,15);
+	    adic(txtCodVend,7,20,80,20);
+	    adic(new JLabelPad("Nome do comissionado"),90,5,250,15);
+	    adic(txtNomeVend,90,20,200,20);
+	    adic(new JLabelPad("Cód.p.pag."),7,45,250,15);
+	    adic(txtCodPlanoPag,7,60,80,20);
+	    adic(new JLabelPad("Descrição da forma de pagamento"),90,45,250,15);
+	    adic(txtDescPlanoPag,90,60,200,20);
 		
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder(BorderFactory.createEtchedBorder());
 		
-		adic(lbLinha,7,50,300,2);
+		adic(lbLinha,7,90,300,2);
 		
-		adic(new JLabelPad("Valor total do cupom: "),7,60,150,20);
-		adic(txtVlrCupom,170,60,120,20);
-		adic(new JLabelPad("Valor em dinheiro: "),7,85,150,20);
-		adic(txtVlrDinheiro,170,85,120,20);
-		adic(new JLabelPad("Valor em cheque: "),7,110,150,20);
-		adic(txtVlrCheque,170,110,120,20);
-		adic((lbChequeElet = new JLabelPad("Valor em ch. elet./cartão: ")),7,135,150,20);
-		adic(txtVlrChequeElet,170,135,120,20);
-		adic(new JLabelPad("Valor pago: "),7,160,150,20);
-		adic(txtVlrPago,170,160,120,20);
-		adic(new JLabelPad("Valor troco: "),7,185,150,20);
-		adic(txtVlrTroco,170,185,120,20);
+		adic(new JLabelPad("Valor total do cupom: "),7,100,150,20);
+		adic(txtVlrCupom,170,100,120,20);
+		adic(new JLabelPad("Valor em dinheiro: "),7,125,150,20);
+		adic(txtVlrDinheiro,170,125,120,20);
+		adic(new JLabelPad("Valor em cheque: "),7,150,150,20);
+		adic(txtVlrCheque,170,150,120,20);
+		adic((lbChequeElet = new JLabelPad("Valor em ch. elet./cartão: ")),7,175,150,20);
+		adic(txtVlrChequeElet,170,175,120,20);
+		adic(new JLabelPad("Valor pago: "),7,200,150,20);
+		adic(txtVlrPago,170,200,120,20);
+		adic(new JLabelPad("Valor troco: "),7,225,150,20);
+		adic(txtVlrTroco,170,225,120,20);
 		
 		//AUXILIAR
 		
@@ -304,7 +332,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	    }
 		
 		
-	    int iCodAux = buscaCodAux();
+	    int iCodAux = getCodAux();
 	    if (iCodAux > 0) {
 	    	txtCodAuxV.setVlrInteger(new Integer(iCodAux));
 	        lcAuxVenda.carregaDados();
@@ -312,7 +340,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	        txtCodAuxV.setVlrInteger(new Integer(1));
 		
 		
-//Não pode commitar enquanto todo o processo tive OK:
+    	//Não pode commitar enquanto todo o processo tive OK:
 		
 		lcPlanoPag.setPodeCommit(false);
 		
@@ -321,237 +349,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		txtVlrChequeElet.addFocusListener(this);
 		
 		lcTran.addCarregaListener( this );
+		lcVend.addCarregaListener( this );
 		
-	}
-	
-	private Object getParam(int index){
-		return param[index];
-	}
-	
-	private int buscaCodAux() {
-	 	int iRet = 0;
-	 	PreparedStatement ps = null;
-	 	ResultSet rs = null;
-	  	String sSQL = null;
-	  	try {
-	  		sSQL = "SELECT CODAUXV FROM VDAUXVENDA WHERE CODEMP=?" +
-              " AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
-		  	ps = con.prepareStatement(sSQL);
-		  	ps.setInt(1,Aplicativo.iCodEmp);
-		  	ps.setInt(2,ListaCampos.getMasterFilial("VDAUXVENDA"));
-		  	ps.setInt(3,txtCodVenda.getVlrInteger().intValue());
-		  	rs = ps.executeQuery();
-		  	if (rs.next()) {
-		  		 iRet = rs.getInt("CodAuxV");
-		  	}
-		  	rs.close();
-		  	ps.close();
-	  	}
-	    catch(SQLException err) {
-	    	Funcoes.mensagemErro(this,"Erro ao buscar codaux.\n"+err.getMessage(),true,con,err);
-	    	err.printStackTrace();
-	    }
-	    finally{
-	    	ps = null;
-	    	rs = null;
-	    	sSQL = null;
-	    }
-	  	return iRet;
-	}
-	private Properties processaTef() {
-		Properties retTef = tef.solicVenda(iNumCupom, txtVlrChequeElet.getVlrBigDecimal());
-		
-		if (retTef == null || !tef.validaTef(retTef))
-			return null;
-		
-		return retTef;
-			
-	}
-	private boolean finalizaTEF(Properties retTef) {
-	    boolean bRet = false;
-	    boolean bLeituraX = false;
-        Object sLinhas[] = tef.retImpTef(retTef);
-        String sComprovante = "\n\n";
-        for (int i=0;i<sLinhas.length;i++)
-            sComprovante += sLinhas[i]+"\n";
-        
-        
-        //verifica se ha linhas a serem impressas, caso contrário sai sem imprimir nada.
-        if (sLinhas.length == 0)
-            return true;
-        
-        do {
-            try {
-                //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
-
-                if (!bLeituraX) {
-                    if (!bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario, txtDescPlanoPag.getVlrString(), AplicativoPDV.bModoDemo))
-                        throw new Exception("");
-                    if (!bf.usaComprovanteNaoFiscalVinculadoTef(
-                            Aplicativo.strUsuario, sComprovante,
-                            AplicativoPDV.bModoDemo))
-                         throw new Exception("");
-                }
-                else {
-                    //Esta reimprimindo entao vamos usar o relatorioGerencial.
-                    if (!bf.leituraX(
-                            Aplicativo.strUsuario, AplicativoPDV.bModoDemo))
-                            throw new Exception("");
-                    if (!bf.relatorioGerencialTef(
-                            Aplicativo.strUsuario, sComprovante, AplicativoPDV.bModoDemo))
-                            throw new Exception("");
-                }
-                
-
-                //Coloca uns espacos para retirar o comprovante.
-
-                if (!bLeituraX) {
-                	for (int i=0;i<10;i++)
-                		if (!bf.usaComprovanteNaoFiscalVinculadoTef(
-                				Aplicativo.strUsuario, " ",
-								AplicativoPDV.bModoDemo))
-                			throw new Exception("");
-                }
-                else {
-                	for (int i=0;i<10;i++)
-                		if (!bf.relatorioGerencialTef(
-                            Aplicativo.strUsuario, " ",
-                            AplicativoPDV.bModoDemo))
-                			throw new Exception("");
-                }
-
-                //Aguarda 5 segundo para imprimir o segundo comprovante:
-
-                bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
-                
-                Thread.sleep(5000);
-
-                bf.finalizaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
-
-                if (!bLeituraX) {
-                    if (!bf.usaComprovanteNaoFiscalVinculadoTef(
-                        Aplicativo.strUsuario, sComprovante,
-                        AplicativoPDV.bModoDemo))
-                     throw new Exception("");
-                }
-                else {
-                    if (!bf.relatorioGerencialTef(
-                            Aplicativo.strUsuario, sComprovante,
-                            AplicativoPDV.bModoDemo))
-                         throw new Exception("");
-                }
-
-                if (!bLeituraX) {
-                    if (!bf.fechaComprovanteNaoFiscalVinculado(
-                        Aplicativo.strUsuario, 
-                        AplicativoPDV.bModoDemo))
-                     throw new Exception("");
-                }
-                else {
-                    if (!bf.fechaRelatorioGerencial(
-                            Aplicativo.strUsuario, 
-                            AplicativoPDV.bModoDemo))
-                         throw new Exception("");
-                }
-
-                bRet = true;
-            } catch (Exception err) {
-                bf.finalizaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
-                bRet = false;
-                if (Funcoes.mensagemConfirma(null,
-                        "Impressora não responde, tente novamente?") == JOptionPane.YES_OPTION) {
-                    bLeituraX = true;
-                    continue;
-                } 
-            }
-            break;
-        } while (true);
-		if (bRet) {
-		    bRet = tef.confirmaVenda(retTef);
-		    if (bRet) {
-		    	vinculaTef(retTef);
-		    }
-		}
-		else {
-		    //Estornando a TEF:
-		    bRet = tef.naoConfirmaVenda(retTef);
-		    if (bigPagoTef.doubleValue() > 0.0)
-		        bigPagoTef = bigPagoTef.subtract(Tef.retValor(retTef));
-		    recalcPago();
-		    vTefsOK.remove(retTef);
-		}
-		
-		return bRet;
-
-	}
-	private void vinculaTef(Properties prop) {
-		String sSQL = "INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF)"+
-					  " VALUES (?,?,?,?,?,?,?,?)";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("VDTEF"));
-			ps.setString(3,"E");
-			ps.setInt(4,iCodVenda);
-			ps.setString(5,Tef.retNsu(prop));
-			ps.setString(6,Tef.retRede(prop));
-			ps.setDate(7,Funcoes.dateToSQLDate(Tef.retData(prop)));
-			ps.setBigDecimal(8,Tef.retValor(prop));
-			ps.executeUpdate();
-		}
-		catch (SQLException err) {
-			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar tef vinculado no banco: "+err.getMessage());
-		}
-	}
-	private boolean gravaVenda() {
-		boolean bRet = false;
-		PreparedStatement ps = null;
-/*		String sCVTEF = null;
-		String sPlanoTEF = null;
-		
-		//Ajusta variaveis de TEF se existir.
-		if (vTefsOK.size() > 0) {
-		    sCVTEF = Tef.retNsu((Properties)vTefsOK.elementAt(0));
-		    sPlanoTEF = Funcoes.copy(txtDescPlanoPag.getVlrString(),16);
-		}
-*/					
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2' WHERE CODEMP=?" +
-					" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";			
-		
-		try {
-			
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setInt(3,iCodVenda);
-			ps.executeUpdate();
-			bRet = true;
-			
-		}
-		catch (SQLException err) {
-			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar a venda: "+err.getMessage());
-		}
-		
-		return bRet;
-	}
-	
-	private boolean finalizaVenda() {
-	    boolean bRet = false;
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V3' WHERE CODEMP=?" +
-		" AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
-			ps.setInt(3,iCodVenda);
-			ps.executeUpdate();
-			bRet = true;
-		}
-		catch (SQLException err) {
-			Funcoes.mensagemErro(null,"Não foi possível finalizar a venda!\n"+err.getMessage(),true,con,err);
-			err.printStackTrace();
-		}
-		return bRet;
 	}
 	
 	private boolean execFechamento() {
@@ -609,7 +408,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 				
 		try {
 			
-//			Fecha a venda:			
+			//	Fecha a venda:			
 
 			String sSQL = "EXECUTE PROCEDURE PVFECHAVENDASP(?,?,?,?,?,?)";
 			PreparedStatement ps = con.prepareStatement(sSQL);
@@ -620,10 +419,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();
-			ps.close();
+
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	        
 			bRet = true;
-		}
-		catch (SQLException err) {
+			
+		} catch (SQLException err) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this,"Erro ao executar fechamento!\n"+err.getMessage(),true,con,err);
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao executar fechamento.");
 		}
@@ -632,12 +436,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	
 	private boolean execTroco() {
 		boolean bRet = false;
-		
+		PreparedStatement ps = null;
+		String sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
 		// Sangria para o troco:		
 		
 		try {
-			String sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setBigDecimal(3,txtVlrTroco.getVlrBigDecimal());
@@ -645,16 +450,204 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
 			ps.setString(6,Aplicativo.strUsuario);
 			ps.execute();
-			ps.close();
+
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	        
 			bRet = true;
-		}
-		catch (SQLException err) {
+			
+		} catch (SQLException err) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this,"Erro ao executar o troco!\n"+err.getMessage(),true,con,err);
 			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao executar o troco.");
-		}
+		} finally{
+	    	ps = null;
+	    	sSQL = null;
+	    }
 		return bRet;
 	}
 	
+	private boolean finalizaVenda() {
+	    boolean bRet = false;
+	    PreparedStatement ps = null;
+		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V3' " +
+					  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(3,iCodVenda);
+			ps.executeUpdate();
+	
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	        
+			bRet = true;
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(null,"Não foi possível finalizar a venda!\n"+err.getMessage(),true,con,err);
+			err.printStackTrace();
+		} finally{
+	    	ps = null;
+	    	sSQL = null;
+	    }
+		return bRet;
+	}
+
+	private boolean finalizaTEF(Properties retTef) {
+	    boolean bRet = false;
+	    boolean bLeituraX = false;
+	    Object sLinhas[] = tef.retImpTef(retTef);
+	    String sComprovante = "\n\n";
+	    for (int i=0;i<sLinhas.length;i++)
+	        sComprovante += sLinhas[i]+"\n";
+	    
+	    
+	    //verifica se ha linhas a serem impressas, caso contrário sai sem imprimir nada.
+	    if (sLinhas.length == 0)
+	        return true;
+	    
+	    do {
+	        try {
+	            //Soh abre o comprovante vinculado se não é para imprimir a leituraX (ou seja não esta reimprimindo).
+	
+	            if (!bLeituraX) {
+	                if (!bf.abreComprovanteNaoFiscalVinculado(Aplicativo.strUsuario, txtDescPlanoPag.getVlrString(), AplicativoPDV.bModoDemo))
+	                    throw new Exception("");
+	                if (!bf.usaComprovanteNaoFiscalVinculadoTef(
+	                        Aplicativo.strUsuario, sComprovante,
+	                        AplicativoPDV.bModoDemo))
+	                     throw new Exception("");
+	            }
+	            else {
+	                //Esta reimprimindo entao vamos usar o relatorioGerencial.
+	                if (!bf.leituraX(
+	                        Aplicativo.strUsuario, AplicativoPDV.bModoDemo))
+	                        throw new Exception("");
+	                if (!bf.relatorioGerencialTef(
+	                        Aplicativo.strUsuario, sComprovante, AplicativoPDV.bModoDemo))
+	                        throw new Exception("");
+	            }
+	            
+	
+	            //Coloca uns espacos para retirar o comprovante.
+	
+	            if (!bLeituraX) {
+	            	for (int i=0;i<10;i++)
+	            		if (!bf.usaComprovanteNaoFiscalVinculadoTef(
+	            				Aplicativo.strUsuario, " ",
+								AplicativoPDV.bModoDemo))
+	            			throw new Exception("");
+	            }
+	            else {
+	            	for (int i=0;i<10;i++)
+	            		if (!bf.relatorioGerencialTef(
+	                        Aplicativo.strUsuario, " ",
+	                        AplicativoPDV.bModoDemo))
+	            			throw new Exception("");
+	            }
+	
+	            //Aguarda 5 segundo para imprimir o segundo comprovante:
+	
+	            bf.iniciaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
+	            
+	            Thread.sleep(5000);
+	
+	            bf.finalizaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
+	
+	            if (!bLeituraX) {
+	                if (!bf.usaComprovanteNaoFiscalVinculadoTef(
+	                    Aplicativo.strUsuario, sComprovante,
+	                    AplicativoPDV.bModoDemo))
+	                 throw new Exception("");
+	            }
+	            else {
+	                if (!bf.relatorioGerencialTef(
+	                        Aplicativo.strUsuario, sComprovante,
+	                        AplicativoPDV.bModoDemo))
+	                     throw new Exception("");
+	            }
+	
+	            if (!bLeituraX) {
+	                if (!bf.fechaComprovanteNaoFiscalVinculado(
+	                    Aplicativo.strUsuario, 
+	                    AplicativoPDV.bModoDemo))
+	                 throw new Exception("");
+	            }
+	            else {
+	                if (!bf.fechaRelatorioGerencial(
+	                        Aplicativo.strUsuario, 
+	                        AplicativoPDV.bModoDemo))
+	                     throw new Exception("");
+	            }
+	
+	            bRet = true;
+	        } catch (Exception err) {
+	            bf.finalizaModoTEF(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
+	            bRet = false;
+	            if (Funcoes.mensagemConfirma(null,
+	                    "Impressora não responde, tente novamente?") == JOptionPane.YES_OPTION) {
+	                bLeituraX = true;
+	                continue;
+	            } 
+	        }
+	        break;
+	    } while (true);
+		if (bRet) {
+		    bRet = tef.confirmaVenda(retTef);
+		    if (bRet) {
+		    	vinculaTef(retTef);
+		    }
+		}
+		else {
+		    //Estornando a TEF:
+		    bRet = tef.naoConfirmaVenda(retTef);
+		    if (bigPagoTef.doubleValue() > 0.0)
+		        bigPagoTef = bigPagoTef.subtract(Tef.retValor(retTef));
+		    recalcPago();
+		    vTefsOK.remove(retTef);
+		}
+		
+		return bRet;
+	
+	}
+
+	private boolean gravaVenda() {
+		boolean bRet = false;
+		PreparedStatement ps = null;		
+		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2', CODVEND=?, CODEMPCM=?, CODFILIALCM=?, CODCLCOMIS=? " +
+					  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";			
+		
+		try {
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,txtCodVend.getVlrInteger().intValue());
+			ps.setInt(2,lcClComis.getCodEmp());
+			ps.setInt(3,lcClComis.getCodFilial());
+			ps.setInt(4,txtCodClComis.getVlrInteger().intValue());
+			ps.setInt(5,Aplicativo.iCodEmp);
+			ps.setInt(6,ListaCampos.getMasterFilial("VDVENDA"));
+			ps.setInt(7,iCodVenda);
+			ps.executeUpdate();
+	
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	        
+			bRet = true;
+			
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar a venda: "+err.getMessage());
+		} finally{
+	    	ps = null;
+	    	sSQL = null;
+	    }
+		
+		return bRet;
+	}
+
 	private void recalcPago() {
 		txtVlrPago.setVlrBigDecimal(
 				txtVlrDinheiro.getVlrBigDecimal().add(
@@ -670,6 +663,77 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		);
 	}
 	
+	private Properties processaTef() {
+		Properties retTef = tef.solicVenda(iNumCupom, txtVlrChequeElet.getVlrBigDecimal());
+		
+		if (retTef == null || !tef.validaTef(retTef))
+			return null;
+		
+		return retTef;
+			
+	}
+
+	private void vinculaTef(Properties prop) {
+		PreparedStatement ps = null;
+		String sSQL = "INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF) "+
+					  "VALUES (?,?,?,?,?,?,?,?)";
+		try {
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,ListaCampos.getMasterFilial("VDTEF"));
+			ps.setString(3,"E");
+			ps.setInt(4,iCodVenda);
+			ps.setString(5,Tef.retNsu(prop));
+			ps.setString(6,Tef.retRede(prop));
+			ps.setDate(7,Funcoes.dateToSQLDate(Tef.retData(prop)));
+			ps.setBigDecimal(8,Tef.retValor(prop));
+			ps.executeUpdate();
+	
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+			
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Logger.gravaLogTxt("",Aplicativo.strUsuario,Logger.LGEB_BD,"Erro ao gravar tef vinculado no banco: "+err.getMessage());
+		}  finally{
+	    	ps = null;
+	    	sSQL = null;
+	    }
+	}
+
+	private int getCodAux() {
+	 	int iRet = 0;
+	 	PreparedStatement ps = null;
+	 	ResultSet rs = null;
+	  	String sSQL = null;
+	  	try {
+	  		sSQL = "SELECT CODAUXV FROM VDAUXVENDA " +
+	  			   "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+		  	ps = con.prepareStatement(sSQL);
+		  	ps.setInt(1,Aplicativo.iCodEmp);
+		  	ps.setInt(2,ListaCampos.getMasterFilial("VDAUXVENDA"));
+		  	ps.setInt(3,txtCodVenda.getVlrInteger().intValue());
+		  	rs = ps.executeQuery();
+		  	if (rs.next())
+		  		 iRet = rs.getInt("CodAuxV");
+	
+		  	rs.close();
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	  	} catch(SQLException err) {
+	    	Funcoes.mensagemErro(this,"Erro ao buscar codaux.\n"+err.getMessage(),true,con,err);
+	    	err.printStackTrace();
+	    } finally{
+	    	ps = null;
+	    	rs = null;
+	    	sSQL = null;
+	    }
+	  	return iRet;
+	}
+
 	private String getMenssage(){
 		String sMenssage = "";
 		if(trocouCli && impMens){
@@ -699,6 +763,47 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		return sMenssage;
 	}
 	
+	public void setTef(Tef tef) {
+		this.tef = tef;
+		txtVlrChequeElet.setAtivo(true);
+	}
+
+	private Object getParam(int index){
+		return param[index];
+	}
+
+	private boolean prefs() {
+		boolean ret = false;
+		
+		String sSQL = "SELECT ADICPDV FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
+	  	PreparedStatement ps = null;
+	  	ResultSet rs = null;
+	  	
+	  	try {
+	  		ps = con.prepareStatement(sSQL);
+	  		ps.setInt(1,Aplicativo.iCodEmp);
+	  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE4"));
+	  		rs = ps.executeQuery();
+	  		if (rs.next()) {
+	  			if (rs.getString("ADICPDV").trim().equals("S"))
+	  				ret = true;	  			
+	  		}
+	        rs.close();
+	        ps.close();
+	        if (!con.getAutoCommit())
+	        	con.commit();
+	  	} catch (SQLException err) {
+	  		err.printStackTrace();
+	  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
+	  	} finally{
+	  		sSQL = null;
+	  		ps = null;
+	  		rs = null;
+	  	}
+		
+		return ret;
+	}
+
 	public void actionPerformed(ActionEvent evt) {
 	    boolean bRet = false;
 		if (evt.getSource() == btOK) {
@@ -749,6 +854,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
         super.keyPressed(kevt);
     }
 	
+	public void focusGained(FocusEvent arg0) { }
+	
 	public void focusLost(FocusEvent fevt) {
 		if (fevt.getSource() == txtVlrDinheiro ||
 				fevt.getSource() == txtVlrCheque ||
@@ -756,8 +863,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			recalcPago();
 		}
 	}
-	
-	public void focusGained(FocusEvent arg0) { }
 	
 	public void beforeCarrega( CarregaEvent e ) {  
 		if(e.getListaCampos() == lcTran){
@@ -768,49 +873,18 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	}
 	
 	public void afterCarrega( CarregaEvent e ) {
+		if(e.getListaCampos() == lcVend)
+			lcClComis.carregaDados();
 	}
 	
-	private boolean prefs() {
-		boolean ret = false;
-		
-		String sSQL = "SELECT ADICPDV FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
-	  	PreparedStatement ps = null;
-	  	ResultSet rs = null;
-	  	
-	  	try {
-	  		ps = con.prepareStatement(sSQL);
-	  		ps.setInt(1,Aplicativo.iCodEmp);
-	  		ps.setInt(2,ListaCampos.getMasterFilial("SGPREFERE4"));
-	  		rs = ps.executeQuery();
-	  		if (rs.next()) {
-	  			if (rs.getString("ADICPDV").trim().equals("S"))
-	  				ret = true;	  			
-	  		}
-	        rs.close();
-	        ps.close();
-	        if (!con.getAutoCommit())
-	        	con.commit();
-	  	}
-	  	catch (SQLException err) {
-	  		Funcoes.mensagemErro(this,"Erro ao carregar a tabela PREFERE1!\n"+err.getMessage(),true,con,err);
-	  	}
-	  	finally{
-	  		sSQL = null;
-	  		ps = null;
-	  		rs = null;
-	  	}
-		
-		return ret;
-	}
-	public void setTef(Tef tef) {
-		this.tef = tef;
-		txtVlrChequeElet.setAtivo(true);
-	}
 	public void setConexao(Connection cn) {
 		con = cn;
-		lcPlanoPag.setConexao(cn);
-		txtCodPlanoPag.setVlrInteger( new Integer(iPlanoPag));
+		lcPlanoPag.setConexao(cn);		
 		lcPlanoPag.carregaDados();
+		lcVend.setConexao(cn);	
+		lcClComis.setConexao(cn);		
+		lcVend.carregaDados();	
+		lcClComis.carregaDados();
 	    lcTran.setConexao(cn);
 	    lcFreteVD.setConexao(cn);
 	    lcAuxVenda.setConexao(cn);

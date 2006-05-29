@@ -265,7 +265,7 @@ public class NFSaida extends NF {
 				frete.addRow();
 				frete.setInt(C_CODTRAN, rs.getInt("CODTRAN"));
 				frete.setString(C_RAZTRANSP, (rs.getString("RAZTRAN")!=null ? rs.getString("RAZTRAN") : ""));
-				frete.setString(C_NUMTRANSP, (rs.getString("NOMETRAN")!=null ? rs.getString("NOMETRAN") : ""));
+				frete.setString(C_NOMETRANSP, (rs.getString("NOMETRAN")!=null ? rs.getString("NOMETRAN") : ""));
 				frete.setString(C_INSCTRANSP, (rs.getString("INSCTRAN")!=null ? rs.getString("INSCTRAN") : ""));
 				frete.setString(C_CNPJTRANSP, (rs.getString("CNPJTRAN")!=null ? rs.getString("CNPJTRAN") : ""));
 				frete.setString(C_TIPOTRANSP, (rs.getString("TIPOTRAN")!=null ? rs.getString("TIPOTRAN") : ""));

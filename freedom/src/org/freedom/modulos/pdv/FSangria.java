@@ -53,10 +53,12 @@ public class FSangria extends FFDialogo {
 	private JTextFieldFK txtData = new JTextFieldFK(JTextFieldPad.TP_DATE,10,0);
 	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,15,2);
 	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+	
 	public FSangria() {
+		
 		super(Aplicativo.telaPrincipal);
 		setTitulo("Sangria de Caixa");
-		setAtribos(390,240);
+		setAtribos(390,275);
 		
 		adic(new JLabelPad("Data da última operação"),7,5,150,15);
 		adic(txtDataUOper,7,20,150,20);
@@ -82,94 +84,145 @@ public class FSangria extends FFDialogo {
 		txtUsu.setVlrString(Aplicativo.strUsuario);
 		txtData.setVlrDate(new Date());
 		txtValor.setVlrBigDecimal(new BigDecimal(0));
+		
 	}
+	
 	private boolean verifCaixa() {
+		
 		boolean bRetorno = false;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		int iRet = -1;
+		
 		try {
-			String sSQL = "SELECT * FROM PVVERIFCAIXASP (?,?,?,?,?,?)";
-		    PreparedStatement ps = con.prepareStatement(sSQL);
+			
+			sSQL = "SELECT IRETORNO FROM PVVERIFCAIXASP (?,?,?,?,?,?)";
+		    ps = con.prepareStatement(sSQL);
 		    ps.setInt(1,AplicativoPDV.iCodCaixa);
 		    ps.setInt(2,Aplicativo.iCodEmp);
 		    ps.setInt(3,ListaCampos.getMasterFilial("PVCAIXA"));
 		    ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
 		    ps.setInt(5,Aplicativo.iCodFilial);
 			ps.setString(6,Aplicativo.strUsuario);
-		    ResultSet rs = ps.executeQuery();
-		    if (rs.next()) {
+		    rs = ps.executeQuery();
+		    if (rs.next()) 
 		      iRet = rs.getInt(1);
-			}
+
 		    rs.close();
 		    ps.close();
-		}
-		catch(SQLException err) {
+		    if (!con.getAutoCommit())
+		  		con.commit();
+			
+		} catch(SQLException err) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this,"Erro ao verificar o caixa!!\n"+err.getMessage(),true,con,err);
-		}
+		} finally {
+	  		ps = null;
+	  		rs = null;
+	  		sSQL = null;
+	  	}
+		
 		if (iRet != 4 && iRet != 2)
-		  Funcoes.mensagemErro(this,"Caixa não esta aberto!!");
+			Funcoes.mensagemErro(this,"Caixa não esta aberto!!");
 		else
-		  bRetorno = true;
+			bRetorno = true;
+		
 		return bRetorno;
+		
 	}
+	
 	private void carregaInfo() {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		
 		try {
-			String sSQL = "SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)";
-			PreparedStatement ps = con.prepareStatement(sSQL);
+			
+			sSQL = "SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)";
+			ps = con.prepareStatement(sSQL);
 			ps.setInt(1,AplicativoPDV.iCodCaixa);
 			ps.setInt(2,Aplicativo.iCodEmp);
 			ps.setInt(3,ListaCampos.getMasterFilial("PVMOVCAIXA"));
 			ps.setDate(4,Funcoes.dateToSQLDate(new Date()));
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if (rs.next()) {
 				txtDataUOper.setVlrDate(rs.getDate("DDTAMOVRET"));
 				txtStatusUOper.setVlrString(JBemaFI32.transStatus(rs.getString("CTIPOMOV").toCharArray()[0]));
 				txtSaldoUOper.setVlrString(Funcoes.strDecimalToStrCurrency(10,2,rs.getString("NVLRSLDMOV")));
 				txtUsuUOper.setVlrString(rs.getString("CIDUSU"));
 		    }
+			
 			rs.close();
 			ps.close();
-		}
-		catch(SQLException err) {
+		  	if (!con.getAutoCommit())
+		  		con.commit();
+			
+		} catch(SQLException err) {
+			err.printStackTrace();
 			Funcoes.mensagemErro(this,"Erro carregar informações do caixa!!\n"+err.getMessage(),true,con,err);
-		}
+		} finally {
+	  		ps = null;
+	  		rs = null;
+	  		sSQL = null;
+	  	}
+		
 	}
+	
 	private boolean execSangria() {
-	  boolean bRet = false;
-	  if (txtValor.getVlrDouble().doubleValue() == 0) {
-	  	Funcoes.mensagemInforma(this,"Valor de sangria inválido!");
-	  	return false;
-	  }
-      try {
-      	String sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
-      	PreparedStatement ps = con.prepareStatement(sSQL);
-      	ps.setInt(1,Aplicativo.iCodEmp);
-      	ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
-      	ps.setBigDecimal(3,txtValor.getVlrBigDecimal());
-      	ps.setInt(4,AplicativoPDV.iCodCaixa);
-        ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
-      	ps.setString(6,Aplicativo.strUsuario);
-      	ps.execute();
-      	ps.close();
-      	if (!con.getAutoCommit())
-      		con.commit();
-		bRet = true;
-      }
-      catch (SQLException err) {
-      	Funcoes.mensagemErro(this,"Erro ao executar sangria!\n"+err.getMessage(),true,con,err);
-      }
-      return bRet;
+		
+		boolean bRet = false;
+		
+		if (txtValor.doubleValue() == 0) {
+		  	Funcoes.mensagemInforma(this,"Valor de sangria inválido!");
+		  	return false;
+		}
+		
+		PreparedStatement ps = null;
+		String sSQL = null;
+		
+		try {
+		  	sSQL = "EXECUTE PROCEDURE PVSANGRIASP(?,?,?,?,?,?)";
+		  	ps = con.prepareStatement(sSQL);
+		  	ps.setInt(1,Aplicativo.iCodEmp);
+		  	ps.setInt(2,ListaCampos.getMasterFilial("PVMOVCAIXA"));
+		  	ps.setBigDecimal(3,txtValor.getVlrBigDecimal());
+		  	ps.setInt(4,AplicativoPDV.iCodCaixa);
+		    ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
+		  	ps.setString(6,Aplicativo.strUsuario);
+		  	ps.execute();
+		  	
+		  	ps.close();
+		  	if (!con.getAutoCommit())
+		  		con.commit();
+		  	
+			bRet = true;
+			
+		} catch (SQLException err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this,"Erro ao executar sangria!\n"+err.getMessage(),true,con,err);
+	  	} finally {
+	  		ps = null;
+	  		sSQL = null;
+	  	}
+		
+      	return bRet;
+      	
     }
+	
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btOK) {
 			if (execSangria() && AplicativoPDV.bECFTerm)
-			  bf.sangria(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),AplicativoPDV.bModoDemo);
+				bf.sangria(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),AplicativoPDV.bModoDemo);
 		    else
-			  return;
+		    	return;
 		}
 		super.actionPerformed(evt);
 	}
+	
 	public void setConexao(Connection cn) {
-		setConexao(cn);
+		super.setConexao(cn);
 		if (verifCaixa())
 		  carregaInfo();
 		else

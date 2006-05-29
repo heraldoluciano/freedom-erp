@@ -62,11 +62,11 @@ public class FreedomPDV extends AplicativoPDV {
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);
 			addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null);
 				addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100101000,2, false, null);
-			      addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de cliente...","TipoCli",'T',100101010,3, true, FTipoCli.class);
-			      addOpcao(100101000,TP_OPCAO_ITEM,"Classificação de cliente...", "Classifição de Clientes", 'f',100101020,3, true, FClasCli.class);
-			      addOpcao(100101000,TP_OPCAO_ITEM,"Cliente...", "Clientes",'C',100101030,3, true, FCliente.class);
-				  addOpcao(100101000,TP_OPCAO_ITEM,"Tipo fiscal de cliente...","Tipo Fiscal de Cliente",'p',100101040,3, true, FTipoFiscCli.class);
-				  addOpcao(100101000,TP_OPCAO_ITEM,"Crédito por cliente...","Crédito por cliente",'r',100101050,3, true, FCredCli.class);
+			       addOpcao(100101000,TP_OPCAO_ITEM,"Tipo de cliente...","TipoCli",'T',100101010,3, true, FTipoCli.class);
+			       addOpcao(100101000,TP_OPCAO_ITEM,"Classificação de cliente...", "Classifição de Clientes", 'f',100101020,3, true, FClasCli.class);
+			       addOpcao(100101000,TP_OPCAO_ITEM,"Cliente...", "Clientes",'C',100101030,3, true, FCliente.class);
+				   addOpcao(100101000,TP_OPCAO_ITEM,"Tipo fiscal de cliente...","Tipo Fiscal de Cliente",'p',100101040,3, true, FTipoFiscCli.class);
+				   addOpcao(100101000,TP_OPCAO_ITEM,"Crédito por cliente...","Crédito por cliente",'r',100101050,3, true, FCredCli.class);
 			    		      
 		        addSeparador(100100000);
 		        addOpcao(100100000,TP_OPCAO_ITEM,"Moeda","Moeda",'M',100102000,2, true, FMoeda.class);
@@ -100,19 +100,19 @@ public class FreedomPDV extends AplicativoPDV {
 			   addOpcao(100200000, TP_OPCAO_ITEM, "Funções Administrativas TEF","Admin TEF", 'A', 100202000, 2, true, FAdmTef.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "PDV", "", 'P', 200000000, 1, false, null);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 200100000, 2,	true, FVenda.class);		
-		addOpcao(200000000, TP_OPCAO_ITEM, "Cancela venda", "Cancela Venda",'C', 200200000, 2, true, DLCancCupom.class);	
-		addSeparador(200000000);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Suprimento", "Suprimento de caixa",'S', 200300000, 2, true, FSuprimento.class);	
-		addOpcao(200000000, TP_OPCAO_ITEM, "Sangria", "Sangria", 'G',200400000, 2, true, FSangria.class);
-		addSeparador(200000000);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Aliquota", "Inserir Aliquota", 'Q',200500000, 2, true, FAliquota.class);		
-		addOpcao(200000000, TP_OPCAO_ITEM, "Ajusta moeda", "Grava Moeda", 'J',200600000, 2, true, FGravaMoeda.class);		
-		addSeparador(200000000);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal",'L', 200700000, 2, true, FLeFiscal.class);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Leitura X","Impressão de leitura X", 'i', 110800000, 2, true, FLeituraX.class);
-		addSeparador(200000000);
-		addOpcao(200000000, TP_OPCAO_ITEM, "Fechamento de Caixa","Efetua um fechamento de caixa", 'f', 110800001, 2, true, DLFechaDia.class);
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 200100000, 2,	true, FVenda.class);		
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Cancela venda", "Cancela Venda",'C', 200200000, 2, true, DLCancCupom.class);	
+		   addSeparador(200000000);
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Suprimento", "Suprimento de caixa",'S', 200300000, 2, true, FSuprimento.class);	
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Sangria", "Sangria", 'G',200400000, 2, true, FSangria.class);
+		   addSeparador(200000000);
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Aliquota", "Inserir Aliquota", 'Q',200500000, 2, true, FAliquota.class);		
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Ajusta moeda", "Grava Moeda", 'J',200600000, 2, true, FGravaMoeda.class);		
+		   addSeparador(200000000);
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Ler memória fiscal", "Le Fiscal",'L', 200700000, 2, true, FLeFiscal.class);
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Leitura X","Impressão de leitura X", 'i', 110800000, 2, true, FLeituraX.class);
+		   addSeparador(200000000);
+		   addOpcao(200000000, TP_OPCAO_ITEM, "Fechamento de Caixa","Efetua um fechamento de caixa", 'f', 110800001, 2, true, DLFechaDia.class);
 		
 		btVenda = addBotao("barraVenda.gif", "Venda", "Venda", 200100000, FVenda.class);
 		addBotao("btExcluir.gif", "Cancela venda", "Cancela Venda", 200200000,DLCancCupom.class);
