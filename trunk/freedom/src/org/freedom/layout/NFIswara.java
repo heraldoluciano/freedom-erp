@@ -40,7 +40,7 @@ public class NFIswara extends Layout {
 		boolean bjatem = false;
 		boolean bjatem1 = false;
 		boolean bjatem2 = false;
-		final int MAXLINE = 34;
+		final int MAXLINE = 35;
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iContaFrete = 0;
