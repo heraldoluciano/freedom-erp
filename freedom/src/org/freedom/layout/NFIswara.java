@@ -19,7 +19,6 @@
  */
 
 package org.freedom.layout;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -41,7 +40,7 @@ public class NFIswara extends Layout {
 		boolean bjatem = false;
 		boolean bjatem1 = false;
 		boolean bjatem2 = false;
-		final int MAXLINE = 35;
+		final int MAXLINE = 34;
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iContaFrete = 0;
@@ -72,7 +71,7 @@ public class NFIswara extends Layout {
 			
 			if ( cab.next() ) { 
 				iNumNota = cab.getInt(NF.C_DOC);
-		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),51);				
+		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),120);				
 			}
 							
 			for ( int i=0; i < 4; i++ ) {
@@ -99,7 +98,7 @@ public class NFIswara extends Layout {
 			while (itens.next()) {
 				
 				if (bNat) {
-					sNat[0] = Funcoes.copy(itens.getString(NF.C_DESCNAT).trim(),30);
+					sNat[0] = Funcoes.copy(itens.getString(NF.C_DESCNAT).trim(),32);
 					sNat[1] = Funcoes.setMascara(itens.getString(NF.C_CODNAT),"#.###");
 					bNat = false;				     
 				}
@@ -129,14 +128,14 @@ public class NFIswara extends Layout {
 
 					imp.say( 130, Funcoes.strZero(String.valueOf(iNumNota),6) );
 					imp.pulaLinha( 5, imp.comprimido());
-					imp.say(  4, sNat[0]);
+					imp.say(  2, sNat[0]);
 					imp.say( 37, sNat[1]);
 					imp.pulaLinha( 3, imp.comprimido());  
-					imp.say(  4, sValsCli[1] );
+					imp.say(  2, sValsCli[1] );
 					imp.say( 91, !sValsCli[0].equals("") ? Funcoes.setMascara(sValsCli[0],"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
 					imp.say(124, (cab.getDate(NF.C_DTEMITPED) != null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)) : ""));
 					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(  4, Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim() + ", " + Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() + " - " + Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim());
+					imp.say(  2, Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim() + ", " + Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() + " - " + Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim());
 					imp.say( 72, Funcoes.copy(cab.getString(NF.C_BAIREMIT),0,23));
 					imp.say( 102, Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
 					
@@ -144,7 +143,7 @@ public class NFIswara extends Layout {
 						imp.say(124, (cab.getDate(NF.C_DTSAIDA)!= null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)) : ""));
 					
 					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(  4, sValsCli[2]);
+					imp.say(  2, sValsCli[2]);
 					imp.say( 50, (!cab.getString(NF.C_DDDEMIT).equals("") ? "("+cab.getString(NF.C_DDDEMIT)+")" : "")+
 											(!cab.getString(NF.C_FONEEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####") : "").trim());
 					imp.say( 81, sValsCli[3]);
@@ -173,6 +172,7 @@ public class NFIswara extends Layout {
 				}
 				
 				//	Monta a observação ...
+				
 				sTemp = itens.getString(NF.C_DESCFISC).trim();
 				if( sDescFisc.length() > 0 ) {
 					if( sDescFisc.indexOf( sTemp ) > -1 )
@@ -192,9 +192,11 @@ public class NFIswara extends Layout {
 					bjatem2 = false;					
 				} else 
 				    sDescFisc = sTemp;
+				
 				//	Fim da observação ...
 				
 				//	Definição da sigla para a classificação fiscal...
+				
 				sCodfisc = itens.getString(NF.C_CODFISC);
 				   
 				if( ! sCodfisc.equals("") ) {
@@ -216,10 +218,13 @@ public class NFIswara extends Layout {
 					}
 					
 				}
+				
 				// 	Fim da classificação fiscal ...
 				
+				//	Imprime os dados do item no corpo da nota ...
+				
 				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say(  0, Funcoes.alinhaDir(itens.getInt(NF.C_CODPROD),5) );
+				imp.say(  0, Funcoes.alinhaCentro(itens.getInt(NF.C_CODPROD),5) );
 				imp.say(  7, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
 				imp.say( 32, itens.getString(NF.C_CODLOTE) );
 				imp.say( 49, Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
@@ -227,25 +232,35 @@ public class NFIswara extends Layout {
 				imp.say( 66, Funcoes.copy(itens.getString(NF.C_ORIGFISC),1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),2));
 				imp.say( 71, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 77, Funcoes.strDecimalToStrCurrency( 9,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
-				imp.say( 90, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED)).add(new BigDecimal(itens.getFloat(NF.C_VLRDESCITPROD)))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),BigDecimal.ROUND_HALF_UP))));
-				imp.say(105, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED)).add(new BigDecimal(itens.getFloat(NF.C_VLRDESCITPROD)))))));
+				imp.say( 90, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED))));
+				imp.say(105, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED))));
 				imp.say(121, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
 				imp.say(126, ((int)itens.getFloat(NF.C_PERCIPIITPED))+"%");
 				imp.say(130, Funcoes.strDecimalToStrCurrency(6,2,String.valueOf(itens.getFloat(NF.C_VLRIPIITPED))));
 				
+				// 	Fim da impressão do item ...
+				
 				
 				iItImp++;
 				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 1)) {
-					if (iContaFrete == 0){
-						frete.next();
-						iContaFrete++;
-					}
+										
+					//	Imprime o desconto ...
 					
-
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say(  8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9,2,String.valueOf(cab.getFloat(NF.C_VLRDESCITPED))));
 					
+					//	Imprime observação no corpo da nota ...
+					
+					for( int i=0; i < vObs.size(); i++ ) {
+					    if( imp.pRow() < MAXLINE ) {
+					        imp.pulaLinha( 1, imp.comprimido() );
+							imp.say(  8, (String)vObs.elementAt(i));
+					    }
+					}
+					
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
+					
+					//	Imprime totais ...
 					
 					if (iItImp == itens.getInt(NF.C_CONTAITENS)) {        
 
@@ -272,6 +287,15 @@ public class NFIswara extends Layout {
 						imp.say( 87, "********************");
 						imp.say(114, "********************");
 						
+					}
+					
+					//	Fim da impressão dos totais ...
+					
+					//	Imprime informações do frete ...
+					
+					if (iContaFrete == 0){
+						frete.next();
+						iContaFrete++;
 					}
 					
 					imp.pulaLinha( 3, imp.comprimido());
@@ -309,12 +333,15 @@ public class NFIswara extends Layout {
 							     cab.getString(NF.C_BAIRENTEMIT) + " - " + 
 							     cab.getString(NF.C_CIDENTEMIT) + " / " + 
 							     cab.getString(NF.C_UFENTEMIT));					
-					imp.pulaLinha( 2, imp.comprimido());
+					imp.pulaLinha( 2, imp.comprimido());					
+
+					//	Fim da impressão do frete ...
+					
+					//	Imprime observação e classificações fiscais ...
 					
 					vDescFisc = Funcoes.strToVectorSilabas(sDescFisc,51);
 					
 					sizeObs = vSigla.size();
-					sizeObs = vObs.size() > sizeObs ? vObs.size() : sizeObs;
 					sizeObs = vDescFisc.size() > sizeObs ? vDescFisc.size() : sizeObs;
 					
 					int aux = 0;
@@ -322,18 +349,21 @@ public class NFIswara extends Layout {
 						if( aux < 5 ) {
 							imp.pulaLinha( 1, imp.comprimido());
 							if( vSigla.size() > 0 && indexSigla < vSigla.size() )
-								imp.say(  2, (String)vSigla.elementAt(indexSigla++));
-							
+								imp.say(  2, (String)vSigla.elementAt(indexSigla++));							
 							if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() )
-								imp.say( 31, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));
-							
-							else if( vObs.size() > 0 && indexObs < vObs.size() )
-								imp.say( 31, (String)vObs.elementAt(indexObs++));
+								imp.say( 31, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
 						} else 
 							break;
 					}
 					
-					imp.pulaLinha( 4, imp.comprimido());
+					// 	Fim da observação ...
+					
+					//	Imprime canhoto ...
+					
+					imp.pulaLinha( 4, imp.normal());
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say( 31, Funcoes.copy(cab.getString(NF.C_RAZEMIT),40) );
+					imp.say( 73, Funcoes.copy(cab.getString(NF.C_NOMEEMIT),40) );
 					imp.say(130, Funcoes.strZero(String.valueOf(iNumNota),6) );
 					
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());					
