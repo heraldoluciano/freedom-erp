@@ -1453,8 +1453,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 			lcOrc2.carregaDados();//Carrega os Totais
 		} else if ((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2)) {
 			if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-				if(((Boolean) oPrefs[9]).booleanValue())
+				if(((Boolean) oPrefs[9]).booleanValue() && txtCLoteProd.getVlrString().equals("S")) {
 					getLote();
+					txtCodLote.setAtivo(true);
+				} else {
+					txtCodLote.setAtivo(false);
+				}
 				calcVlrItem(null,false);
 			}
 			lcAlmox.carregaDados();

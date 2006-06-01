@@ -859,7 +859,7 @@ public class ImprimeOS implements ActionListener {
 					return;
 				}
 				//Coloca as Mascaras
-				sVals[1] = Funcoes.setMascara(sVals[1], "####-####");
+				sVals[1] = Funcoes.setMascara(sVals[1], "(####)####-####");
 				sVals[2] = Funcoes.setMascara(sVals[2], "####-####");
 			} else if (strTipoCab.compareTo("2") == 0) {
 				sSQL = "SELECT CABEMP FROM SGPREFERE1 AND CODEMP=? AND CODFILIAL=?";
@@ -892,106 +892,104 @@ public class ImprimeOS implements ActionListener {
 		//Seta Data
 
 		String sData = Funcoes.dateToStrDataHora(hoje.getTime());
-		String sTmp = "";
+		String sTmp = null;
 
 		//Imprime linhas
 		if (strTipoCab.compareTo("1") == 0) {
-			//        Funcoes.mensagemInforma(cOwner,"Enviando comandos cabecalho
-			// \n"+normal().length());
+			
 			if (borda) {
-				say(pRow() + 0, 0, "" + comprimido());
-				say(pRow() + 0, 0, "+" + Funcoes.replicate("-", iTamRel - 3) + "+");
+				say(  0, comprimido());
+				say(  0, "+" + Funcoes.replicate("-", iTamRel - 3) + "+");
+				
+				say(pRow() + 1, 0, comprimido());				
+				say(  0, "| " + sVals[0].trim()); //Razão
+				say(  iTamRel - 15, "Pagina: " + Funcoes.strZero(String.valueOf((getNumPags() + this.numAdicPagina)), 5));
+				say( iTamRel - 1, "|");
+				
 				say(pRow() + 1, 0, comprimido());
-				say(pRow() + 0, 0, "|" + sVals[0].trim()); //Razão
-				//        say(pRow()+1,0,"");
-				say(pRow() + 0, iTamRel - 15, "Pagina: "
-						+ Funcoes.strZero("" + (getNumPags() + this.numAdicPagina), 5));
-				say(pRow() + 0, iTamRel - 1, "|");
+				say(  0, "| " + sTitulo.trim().toUpperCase());
+				say( iTamRel - 18, "ID.USU: " + Funcoes.alinhaDir(Aplicativo.strUsuario.toUpperCase(),8));
+				say( iTamRel - 1, "|");
+				
 				say(pRow() + 1, 0, comprimido());
-				say(pRow() + 0, 0, "| " + sTitulo.trim().toUpperCase());
-				say(pRow() + 0, iTamRel - 17, "ID.USU: "+Aplicativo.strUsuario.toUpperCase());
-				say(pRow() + 0, iTamRel - 1, "|");
+				say(  0, "| Fone: " + sVals[1]); //Fone
+				say( 25, " - Fax: " + sVals[2]); //Fax
+				say( iTamRel - 29, "Data: " + sData);
+				say( iTamRel - 1, "|");
+				
 				say(pRow() + 1, 0, comprimido());
-				say(pRow() + 0, 0, "|" + " Fone: " + sVals[1]); //Fone
-				say(pRow() + 0, 25, " - Fax: " + sVals[2]); //Fax
-				say(pRow() + 0, iTamRel - 29, "Data: " + sData);
-				say(pRow() + 0, iTamRel - 1, "|");
-				say(pRow() + 1, 0, comprimido());
-				say(pRow() + 0, 0, "|" + " E-mail: " + sVals[3]); //E-mail
-				say(pRow() + 0, iTamRel - 1, "|");
-				//say(pRow() + 1, 0, "|");
-				//say(pRow() + 0, iTamRel - 1, "|");
+				say( 0, "| E-mail: " + sVals[3]); //E-mail
+				say( iTamRel - 1, "|");
 
 				for (int i = 0; i < subTitulos.size(); i++) {
 					sTmp = subTitulos.elementAt(i).toString();
 					if ((sTmp.length() + 2) > iTamRel)
 						sTmp = sTmp.substring(0, iTamRel - 4);
 					if (!sTmp.trim().equals("")) {
-						say(pRow() + 1, 0, comprimido());
-					    
-						say(pRow() + 0, 0, "|");
-						say(pRow() + 0, ((iTamRel - sTmp.length() - 2) / 2), sTmp);
-						say(pRow() + 0, iTamRel - 1, "|");
+						say(pRow() + 1, 0, comprimido());					    
+						say(  0, "|");
+						say( ((iTamRel - sTmp.length() - 2) / 2), sTmp);
+						say( iTamRel - 1, "|");
 					}
 				}
-				/*
-				 * if (iTamRel == 80) say(pRow() + 1, 0, normal()); else say(pRow() + 1,
-				 * 0, comprimido()); say(pRow() + 0, 0, "|"); say(pRow() + 0, iTamRel -
-				 * 1, "|");
-				 */
 
 				if (iTamRel == 136)
 					say(pRow() + 0, 0, comprimido());
 				else
 					say(pRow() + 0, 0, normal());
+				
 				say(pRow() + 1, 0, normal());
+				
 			} else {
+				
 				say(pRow() + 1, 0, normal());
-				say(pRow() + 0, 0, sVals[0].trim()); //Razão
-				//        say(pRow()+1,0,"");
-				say(pRow() + 0, iTamRel - 15, "Pagina: "
-						+ Funcoes.strZero("" + getNumPags(), 5));
+				say(  0, sVals[0].trim()); //Razão
+				say( iTamRel - 15, "Pagina: " + Funcoes.strZero("" + getNumPags(), 5));
 				say(pRow() + 1, 0, sTitulo.trim().toUpperCase());
-				say(pRow() + 0, iTamRel - 16, "ID.USU: "
-						+ Aplicativo.strUsuario.toUpperCase());
+				say( iTamRel - 16, "ID.USU: " + Aplicativo.strUsuario.toUpperCase());
 				say(pRow() + 1, 0, comprimido());
-				say(pRow() + 0, 0, "Fone: " + sVals[1]); //Fone
-				say(pRow() + 0, 25, " - Fax: " + sVals[2]); //Fax
-				say(pRow() + 0, 50, " - E-mail: " + sVals[3]); //E-mail
+				say(  0, "Fone: " + sVals[1]); //Fone
+				say( 25, " - Fax: " + sVals[2]); //Fax
+				say( 50, " - E-mail: " + sVals[3]); //E-mail
 				if (iTamRel == 80)
 					say(pRow() + 1, 0, normal());
 				else
 					say(pRow() + 1, 0, comprimido());
-				say(pRow() + 0, 0, "Relatório emitido por "
-						+ Aplicativo.strUsuario.toUpperCase());
-				say(pRow() + 0, iTamRel - 29, "Data: " + sData);
+				
+				say(  0, "Relatório emitido por " + Aplicativo.strUsuario.toUpperCase());
+				say( iTamRel - 29, "Data: " + sData);
 
 				if (iTamRel == 136)
 					say(pRow() + 1, 0, comprimido());
 				else
 					say(pRow() + 1, 0, normal());
-				say(pRow() + 0, 0, Funcoes.replicate("=", iTamRel - 1));
+				
+				say(  0, Funcoes.replicate("=", iTamRel - 1));
 				say(pRow() + 1, 0, normal());
+				
 			}
+			
 		} else if (strTipoCab.compareTo("2") == 0) {
-			//        Funcoes.mensagemInforma(cOwner,"Enviando comandos cabecalho 2");
-			say(pRow() + 0, 0, normal());
-			say(pRow() + 0, 0, sPrefCab);
-			say(pRow() + 1, 0, "" + normal());
-			say(pRow() + 0, 0, sTitulo.toUpperCase().trim());
-			say(pRow() + 1, 0, "" + normal());
-			say(pRow() + 0, 0, "");
-			say(pRow() + 1, 0, "" + normal());
-			say(pRow() + 0, 0, "");
+			
+			say(  0, normal());
+			say(  0, sPrefCab);
+			say(pRow() + 1, 0, normal());
+			say(  0, sTitulo.toUpperCase().trim());
+			say(pRow() + 1, 0, normal());
+			say(pRow() + 1, 0, normal());
+			
 			if (iTamRel == 80)
-				say(pRow() + 1, 0, "" + normal());
+				say(pRow() + 1, 0, normal());
 			else
-				say(pRow() + 1, 0, "" + comprimido());
-			say(pRow() + 0, 0, Funcoes.replicate("=", iTamRel));
+				say(pRow() + 1, 0, comprimido());
+			
+			say(  0, Funcoes.replicate("=", iTamRel));
+			
 			if (iTamRel == 80)
-				say(pRow() + 1, 0, "" + normal());
+				say(pRow() + 1, 0, normal());
 			else
-				say(pRow() + 1, 0, "" + comprimido());
+				say(pRow() + 1, 0, comprimido());
+			
 		}
 	}
 

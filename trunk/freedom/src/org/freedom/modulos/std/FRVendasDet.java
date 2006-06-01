@@ -149,12 +149,14 @@ public class FRVendasDet extends FRelatorio {
 		String sWhere2 = null;
 		String sWhere3 = "";
 		String sWhere4 = "";
-		String sWhere5 = "";	
+		String sWhere5 = "";
+		String sLinFina = Funcoes.replicate("-", 133);
+		String sLinLarga = Funcoes.replicate("=", 133);
 		BigDecimal bVlrDesc = new BigDecimal("0");
 		BigDecimal bVlrLiq = new BigDecimal("0");	
 		ImprimeOS imp = null;
 		int linPag = 0;
-		int iCodVendaAnt = 0;			
+		int iCodVendaAnt = 0;	
 		boolean bComRef = comRef();
 					
 		if(rgFaturados.getVlrString().equals("S")) {
@@ -189,23 +191,22 @@ public class FRVendasDet extends FRelatorio {
 			imp.addSubTitulo("RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :"+ txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() + sCab);
 			imp.limpaPags();
 
-			sSQL = "SELECT (SELECT VO.CODORC FROM VDVENDAORC VO WHERE"
-				 + " VO.CODVENDA=V.CODVENDA AND VO.CODEMP=V.CODEMP"
-				 + " AND VO.CODFILIAL=V.CODFILIAL),V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,"
-				 + "V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI,C.RAZCLI,V.VLRDESCVENDA,"
-				 + "V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,"
-				 + "P.DESCPROD,IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,"
-				 + "IT.VLRLIQITVENDA FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C,"
-				 + "VDITVENDA IT, EQPRODUTO P , EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ? AND ?"
-				 + " AND V.CODEMP=? AND V.CODFILIAL=? AND PP.CODPLANOPAG=V.CODPLANOPAG"
-				 + " AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL"
-				 + " AND C.CODCLI=V.CODCLI AND C.CODEMP=V.CODEMPCL"
-				 + " AND C.CODEMP=V.CODEMP AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
-				 + sWhere1 + sWhere2 + sWhere3 + sWhere4 + sWhere5			  
-				 + " AND C.CODFILIAL=V.CODFILIALCL AND IT.CODVENDA=V.CODVENDA"
-				 + " AND IT.CODEMP=V.CODEMP AND P.CODPROD=IT.CODPROD"
-				 + " AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD"
-				 + " AND IT.CODFILIAL=V.CODFILIAL ORDER BY V.DTEMITVENDA,V.CODVENDA";
+			sSQL =  "SELECT (SELECT VO.CODORC " +
+					        "FROM VDVENDAORC VO " +
+					        "WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " +
+					        "AND VO.CODVENDA=IT.CODVENDA AND VO.CODITVENDA=IT.CODITVENDA AND VO.TIPOVENDA=IT.TIPOVENDA), " +
+					"V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," +
+					"C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,P.DESCPROD," +
+					"IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,IT.VLRLIQITVENDA " +
+					"FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P , EQTIPOMOV TM " +
+					"WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? " +
+					"AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL AND PP.CODPLANOPAG=V.CODPLANOPAG " +
+					"AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " +
+					"AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " +
+					"AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA " +
+					"AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " +
+				    sWhere1 + sWhere2 + sWhere3 + sWhere4 + sWhere5 +			  
+				    "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA";
 			
 			ps = con.prepareStatement(sSQL);
 			ps.setDate(1, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
@@ -215,81 +216,81 @@ public class FRVendasDet extends FRelatorio {
 			rs = ps.executeQuery();		
 			while (rs.next()) {
 				if (imp.pRow()>=(linPag-1)) {
-					imp.say(imp.pRow()+1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("-",133) + "+");
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say(  0, "+" + sLinFina + "+");
 					imp.incPags();
 					imp.eject();
 				}
-				
+				if (imp.pRow() == 0) {            	
+					imp.impCab(136, true);    
+					imp.pulaLinha( 0, imp.comprimido());
+					imp.say(  0, "|" + sLinFina + "|");
+				}
 				if (iCodVendaAnt != rs.getInt("CodVenda")) {
-					if (imp.pRow() == 0) {            	
-						imp.impCab(136, true);    
-						imp.say(imp.pRow(), 0, imp.comprimido());
-						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate(" ", 133) + "|");
+					
+					if (iCodVendaAnt != 0) {
+						
+						imp.pulaLinha( 1, imp.comprimido());
+						imp.say(  0, "|" + sLinLarga + "|");
+						imp.pulaLinha( 1, imp.comprimido());
+						imp.say(  0, "|");
+						imp.say( 64, " Totais da venda: ");
+						imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(bVlrDesc)));
+						imp.say(109, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(bVlrLiq)));
+						imp.say(124, "|");
+						imp.say(135, "|");
+						imp.pulaLinha( 1, imp.comprimido());
+						imp.say(  0, "|" + sLinLarga + "|");
+					
 					}
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "| Pedido: ");
-					imp.say(imp.pRow(), 10, Funcoes.strZero(rs.getString("CodVenda"), 8));
-					imp.say(imp.pRow(), 25, "Doc: ");
-					imp.say(imp.pRow(), 30, Funcoes.strZero(rs.getString("DocVenda"), 8));
-					imp.say(imp.pRow(), 45, "Emissão: ");
-					imp.say(imp.pRow(), 53, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
-					imp.say(imp.pRow(), 68, "Saida: ");
-					imp.say(imp.pRow(), 75, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
-					imp.say(imp.pRow(), 90, "Plano Pagto.: ");
-					imp.say(imp.pRow(), 104, Funcoes.copy(rs.getString("DescPlanoPag"), 30));
-					imp.say(imp.pRow(), 135, "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "| Cliente: ");
-					imp.say(imp.pRow(), 11, rs.getInt("CodCli")+" - "+rs.getString("RazCli"));
-					imp.say(imp.pRow(), 135, "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "| Cod/Ref");
-					imp.say(imp.pRow(), 16, "| Descrição");
-					imp.say(imp.pRow(), 69, "| Quant.");
-					imp.say(imp.pRow(), 79, "| Preco");
-					imp.say(imp.pRow(), 94, "| Vlr.Desc.");
-					imp.say(imp.pRow(), 109, "| Vlr.Liq.");
-					imp.say(imp.pRow(), 124, "| Orcam.");
-					imp.say(imp.pRow(), 135, "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
+					
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say(  0, "| Pedido: ");
+					imp.say( 10, Funcoes.strZero(rs.getString("CodVenda"), 8));
+					imp.say( 25, "Doc: ");
+					imp.say( 30, Funcoes.strZero(rs.getString("DocVenda"), 8));
+					imp.say( 45, "Emissão: ");
+					imp.say( 53, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+					imp.say( 68, "Saida: ");
+					imp.say( 75, Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.say( 90, "Plano Pagto.: ");
+					imp.say(104, Funcoes.copy(rs.getString("DescPlanoPag"), 30));
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say(  0, "| Cliente: ");
+					imp.say( 11, rs.getInt("CodCli") + " - " + rs.getString("RazCli"));
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say(  0, "|" + sLinFina + "|");
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say(  0, "| Cod/Ref");
+					imp.say( 16, "| Descrição");
+					imp.say( 69, "| Quant.");
+					imp.say( 79, "| Preco");
+					imp.say( 94, "| Vlr.Desc.");
+					imp.say(109, "| Vlr.Liq.");
+					imp.say(124, "| Orcam.");
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say(imp.pRow(), 0, "|" + sLinFina + "|");
 					bVlrDesc = rs.getBigDecimal("VlrDescVenda");
 					bVlrLiq = rs.getBigDecimal("VlrLiqVenda");
-										
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "| " + (bComRef ? rs.getString("RefProd") : rs.getString("CodProd")));
-					imp.say(imp.pRow(), 16, "| " + rs.getString("DescProd"));
-					imp.say(imp.pRow(), 69, "| " + rs.getBigDecimal("QtdItVenda").setScale(1,BigDecimal.ROUND_HALF_UP));
-					imp.say(imp.pRow(), 79, "| " + Funcoes.strDecimalToStrCurrency(12,2,rs.getString("PrecoItVenda")));
-					imp.say(imp.pRow(), 94, "| " + Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VlrDescItVenda")));
-					imp.say(imp.pRow(), 109, "| " + Funcoes.strDecimalToStrCurrency(12,2,rs.getString("VlrLiqItVenda")));
-					imp.say(imp.pRow(), 124, "| " + (rs.getString(1) != null ? rs.getString(1) : ""));
-					imp.say(imp.pRow(), 135, "|");
-					iCodVendaAnt = rs.getInt("CodVenda");					
-
-					if (iCodVendaAnt > 0) {
-						imp.say(imp.pRow() + 1, 0, imp.comprimido());
-						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, imp.comprimido());
-						imp.say(imp.pRow(), 0, "|");
-						imp.say(imp.pRow(), 64, " Totais da venda: ");
-						imp.say(imp.pRow(), 94, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrDesc));
-						imp.say(imp.pRow(), 109, "| "+Funcoes.strDecimalToStrCurrency(12, 2, "" + bVlrLiq));
-						imp.say(imp.pRow(), 124, "|");
-						imp.say(imp.pRow(), 135, "|");
-						imp.say(imp.pRow() + 1, 0, imp.comprimido());
-						imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("=", 133) + "|");
-					}
+					
 				}
+				
+				imp.pulaLinha( 1, imp.comprimido());
+				imp.say(  0, "| " + (bComRef ? rs.getString("RefProd") : rs.getString("CodProd")));
+				imp.say( 16, "| " + rs.getString("DescProd"));
+				imp.say( 69, "| " + rs.getBigDecimal("QtdItVenda").setScale(1,BigDecimal.ROUND_HALF_UP));
+				imp.say( 79, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(rs.getFloat("PrecoItVenda"))));
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(rs.getFloat("VlrDescItVenda"))));
+				imp.say(109, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(rs.getFloat("VlrLiqItVenda"))));
+				imp.say(124, "| " + (rs.getString(1) != null ? rs.getString(1) : ""));
+				imp.say(135, "|");			
+					
+				iCodVendaAnt = rs.getInt("CodVenda");	
+				
 			}
-			
-			imp.say(imp.pRow() + 1, 0, imp.comprimido());
-			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=", 133) + "+");
 			
 			imp.eject();
 			imp.fechaGravacao();
