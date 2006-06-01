@@ -851,9 +851,15 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 				ps.setNull(11, Types.NUMERIC);
 				ps.setNull(12, Types.NUMERIC);
 			}
-			ps.setString(13, txtCodLote.getVlrString().trim());
-			ps.setInt(14, Aplicativo.iCodEmp);
-			ps.setInt(15, ListaCampos.getMasterFilial("EQLOTE"));			
+			if(txtCLoteProd.getVlrString().equals("S")) {
+				ps.setString(13, txtCodLote.getVlrString().trim());
+				ps.setInt(14, Aplicativo.iCodEmp);
+				ps.setInt(15, ListaCampos.getMasterFilial("EQLOTE"));
+			} else  {
+				ps.setNull(13, Types.INTEGER);
+				ps.setNull(14, Types.SMALLINT);
+				ps.setNull(15, Types.CHAR);
+			}
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				iCodItVenda = rs.getInt("CodItVenda");
@@ -1236,6 +1242,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 	
 	private void getLote() {
+				
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
@@ -1809,8 +1816,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			if(txtCLoteProd.getVlrString().equals("S")) {
 				txtCodLote.setAtivo(true);
 				getLote();
-			} else
+			} else {
+				txtCodLote.setVlrString("");
 				txtCodLote.setAtivo(false);
+			}
 		}
 	}
 

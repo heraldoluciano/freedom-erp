@@ -141,12 +141,18 @@ public class Funcoes {
         
         return iRet;
     }
+    
 	public static String replicate(String texto, int Quant) {
-		String sRetorno = "";
+		/*String sRetorno = "";
 		for (int i = 1; i <= Quant; i++) {
 			sRetorno = sRetorno + texto;
+		}*/
+		// fazendo assim evita a copia de varias strings.
+		StringBuffer sRetorno = new StringBuffer();
+		for (int i = 0; i < Quant; i++) {
+			sRetorno.append(texto);
 		}
-		return sRetorno;
+		return sRetorno.toString();
 	}
 
 	public static double arredDouble(double deValor, int iDec) {
