@@ -17,6 +17,7 @@ import javax.comm.SerialPort;
 import javax.comm.UnsupportedCommOperationException;
 
 public abstract class ECFDriver {
+	
 	public static final byte ESC = 27;
 	public static final byte STX = 2;
 	public static final byte ACK = 6;
@@ -43,15 +44,17 @@ public abstract class ECFDriver {
 	protected int portaSel = -1;
 	protected boolean ativada = false;
 	protected SerialPort portaSerial = null;
-	public ECFDriver() {
-		
-	}
+	
+	public ECFDriver() { }
+	
 	public ECFDriver(int com) {
 		ativaPorta(com);
 	}
+	
 	public byte[] getBytesLidos() {
 		return bytesLidos;
 	}
+	
 	public boolean ativaPorta(int com) {
 		boolean retorno = true;
 		if ( (com!=portaSel) || (portaSerial==null) ) {
@@ -64,6 +67,7 @@ public abstract class ECFDriver {
 		}
 		return retorno;
 	}
+	
 	public String convPorta(int com) {
 		String porta = null;
 		if (getSistema()==OS_WINDOWS) 
@@ -72,6 +76,7 @@ public abstract class ECFDriver {
 			porta = "/dev/ttyS"+com;
 		return porta;
 	}
+	
 	public int getSistema() {
 		String os = null;
 		if (sistema==OS_NONE) {
@@ -83,6 +88,7 @@ public abstract class ECFDriver {
 		}
 		return sistema;
 	}
+	
 	public SerialPort ativaSerial(String porta) {
 		SerialPort portaSerial = null;
 		Enumeration listaPortas = null;
@@ -117,6 +123,7 @@ public abstract class ECFDriver {
 		}
 		return portaSerial;
 	}
+	
 	public boolean getAtivada() {
 		return ativada;
 	}
@@ -131,6 +138,7 @@ public abstract class ECFDriver {
 	public byte[] enviaCmd(byte[] CMD ) {
 		return enviaCmd(CMD, portaSel);
 	}
+	
 	public byte[] enviaCmd(byte[] CMD, int com) {
 		byte[] retorno = null;
 		byte[] buffer = null;
@@ -181,12 +189,17 @@ public abstract class ECFDriver {
 		}
 		return buffer;
 	}
+	
 	public abstract byte[] preparaCmd(byte[] CMD);
+	
+	public abstract int executaCmd(byte[] CMD);
+	
+	public abstract int checkRetorno(byte[] bytes);
+	
+	public abstract int aberturaDeCupom();
 	
 	public abstract int leituraX();
 	
-	public abstract int executaCmd(byte[] CMD);
-	public abstract int checkRetorno(byte[] bytes);
-	
+	public abstract int reducaoZ();
 	
 }
