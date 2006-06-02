@@ -897,7 +897,8 @@ public class ImprimeOS implements ActionListener {
 		//Imprime linhas
 		if (strTipoCab.compareTo("1") == 0) {
 			
-			if (borda) {
+			if (borda) { // com borda
+				
 				say(  0, comprimido());
 				say(  0, "+" + Funcoes.replicate("-", iTamRel - 3) + "+");
 				
@@ -934,30 +935,37 @@ public class ImprimeOS implements ActionListener {
 				}
 
 				if (iTamRel == 136)
-					say(pRow() + 0, 0, comprimido());
-				else
-					say(pRow() + 0, 0, normal());
-				
-				say(pRow() + 1, 0, normal());
-				
-			} else {
-				
-				say(pRow() + 1, 0, normal());
-				say(  0, sVals[0].trim()); //Razão
-				say( iTamRel - 15, "Pagina: " + Funcoes.strZero("" + getNumPags(), 5));
-				say(pRow() + 1, 0, sTitulo.trim().toUpperCase());
-				say( iTamRel - 16, "ID.USU: " + Aplicativo.strUsuario.toUpperCase());
-				say(pRow() + 1, 0, comprimido());
-				say(  0, "Fone: " + sVals[1]); //Fone
-				say( 25, " - Fax: " + sVals[2]); //Fax
-				say( 50, " - E-mail: " + sVals[3]); //E-mail
-				if (iTamRel == 80)
-					say(pRow() + 1, 0, normal());
-				else
 					say(pRow() + 1, 0, comprimido());
+				else
+					say(pRow() + 1, 0, normal());
 				
-				say(  0, "Relatório emitido por " + Aplicativo.strUsuario.toUpperCase());
-				say( iTamRel - 29, "Data: " + sData);
+			} else { // sem borda
+				
+				say(pRow() + 1, 0, comprimido());				
+				say(  0, " " + sVals[0].trim()); //Razão
+				say(  iTamRel - 14, "Pagina: " + Funcoes.strZero(String.valueOf((getNumPags() + this.numAdicPagina)), 5));
+				
+				say(pRow() + 1, 0, comprimido());
+				say(  0, " " + sTitulo.trim().toUpperCase());
+				say( iTamRel - 17, "ID.USU: " + Funcoes.alinhaDir(Aplicativo.strUsuario.toUpperCase(),8));
+				
+				say(pRow() + 1, 0, comprimido());
+				say(  0, " Fone: " + sVals[1]); //Fone
+				say( 25, " - Fax: " + sVals[2]); //Fax
+				say( iTamRel - 28, "Data: " + sData);
+				
+				say(pRow() + 1, 0, comprimido());
+				say( 0, " E-mail: " + sVals[3]); //E-mail
+
+				for (int i = 0; i < subTitulos.size(); i++) {
+					sTmp = subTitulos.elementAt(i).toString();
+					if ((sTmp.length()) > iTamRel)
+						sTmp = sTmp.substring(0, iTamRel - 2);
+					if (!sTmp.trim().equals("")) {
+						say(pRow() + 1, 0, comprimido());	
+						say( ((iTamRel - sTmp.length()) / 2), sTmp);
+					}
+				}
 
 				if (iTamRel == 136)
 					say(pRow() + 1, 0, comprimido());
@@ -965,7 +973,11 @@ public class ImprimeOS implements ActionListener {
 					say(pRow() + 1, 0, normal());
 				
 				say(  0, Funcoes.replicate("=", iTamRel - 1));
-				say(pRow() + 1, 0, normal());
+
+				if (iTamRel == 136)
+					say(pRow() + 1, 0, comprimido());
+				else
+					say(pRow() + 1, 0, normal());
 				
 			}
 			

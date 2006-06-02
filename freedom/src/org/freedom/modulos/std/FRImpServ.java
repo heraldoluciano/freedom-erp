@@ -54,20 +54,20 @@ public class FRImpServ extends FRelatorio {
 	private JRadioGroup rgFormato = null;
 	private String linhaFina = Funcoes.replicate("-", 133);
 	private String linhaLarga = Funcoes.replicate("=", 133);
-	private double dTotMesBase = 0;
-	private double dTotMesISS = 0;
-	private double dTotMesPIS = 0;
-	private double dTotMesCOFINS = 0;
-	private double dTotMesIR = 0;
-	private double dTotMesCSocial = 0;
-	private double dTotMesLiq = 0;
-	private double dTotBase = 0;
-	private double dTotISS = 0;
-	private double dTotPIS = 0;
-	private double dTotCOFINS = 0;
-	private double dTotIR = 0;
-	private double dTotCSocial = 0;
-	private double dTotLiq = 0;
+	private float fTotMesBase = 0;
+	private float fTotMesISS = 0;
+	private float fTotMesPIS = 0;
+	private float fTotMesCOFINS = 0;
+	private float fTotMesIR = 0;
+	private float fTotMesCSocial = 0;
+	private float fTotMesLiq = 0;
+	private float fTotBase = 0;
+	private float fTotISS = 0;
+	private float fTotPIS = 0;
+	private float fTotCOFINS = 0;
+	private float fTotIR = 0;
+	private float fTotCSocial = 0;
+	private float fTotLiq = 0;
 
 	public FRImpServ() {
 		setTitulo("Relatório de Impostos/Serviços");
@@ -110,6 +110,21 @@ public class FRImpServ extends FRelatorio {
 				Funcoes.mensagemInforma(this, "Período inválido!");
 				return;
 			}
+			
+			fTotMesBase = 0;
+			fTotMesISS = 0;
+			fTotMesPIS = 0;
+			fTotMesCOFINS = 0;
+			fTotMesIR = 0;
+			fTotMesCSocial = 0;
+			fTotMesLiq = 0;
+			fTotBase = 0;
+			fTotISS = 0;
+			fTotPIS = 0;
+			fTotCOFINS = 0;
+			fTotIR = 0;
+			fTotCSocial = 0;
+			fTotLiq = 0;
 			
 			imp = new ImprimeOS("", con);
 			iLinPag = imp.verifLinPag() - 1;
@@ -170,23 +185,23 @@ public class FRImpServ extends FRelatorio {
 							imp.say(  0, 0, "|");
 							imp.say(  0, 135, "|");
 							imp.pulaLinha( 1, imp.comprimido());
-							imp.say(  0, "+" + linhaFina + "+");
+							imp.say(  0, "|" + linhaFina + "|");
 							imp.pulaLinha( 1, imp.comprimido());
-							imp.say(  0, "|Pedido ");
-							imp.say( 10, "Doc ");
-							imp.say( 19, "Ser");
-							imp.say( 23, "Emissão ");
-							imp.say( 34, "Codigo e Razão do cliente");
-							imp.say( 60, "Base");
-							imp.say( 71, "ISS");
-							imp.say( 82, "PIS");
-							imp.say( 92, "Cofins");
-							imp.say(103, "IR");
-							imp.say(114, "C.SOCIAL");
-							imp.say(125, "V.LIQ");
+							imp.say(  0, "| Ped.");
+							imp.say( 10, "| Doc");
+							imp.say( 19, "|Ser");
+							imp.say( 24, "| Emissão");
+							imp.say( 35, "| Cliente");
+							imp.say( 60, "| Base");
+							imp.say( 71, "| ISS");
+							imp.say( 81, "| PIS");
+							imp.say( 91, "| Cofins");
+							imp.say(101, "| IR");
+							imp.say(111, "| C.SOCIAL");
+							imp.say(121, "| V.LIQ");
 							imp.say(135, "|");
 							imp.pulaLinha( 1, imp.comprimido());
-							imp.say(  0, "+" + linhaFina + "+");
+							imp.say(  0, "|" + linhaFina + "|");
 							
 						}
 						
@@ -195,48 +210,48 @@ public class FRImpServ extends FRelatorio {
 							
 							impTotMes(imp);
 							imp.pulaLinha( 1, imp.comprimido());
-							imp.say(  0, "|Pedido ");
-							imp.say( 10, "Doc ");
-							imp.say( 19, "Ser.");
-							imp.say( 23, "Emissão ");
-							imp.say( 34, "Codigo e Razão do cliente");
-							imp.say( 60, "Base");
-							imp.say( 71, "ISS");
-							imp.say( 82, "PIS");
-							imp.say( 92, "Cofins");
-							imp.say(103, "IR");
-							imp.say(114, "C.SOCIAL");
-							imp.say(125, "V.LIQ");
+							imp.say(  0, "| Ped.");
+							imp.say( 10, "| Doc");
+							imp.say( 19, "|Ser");
+							imp.say( 24, "| Emissão");
+							imp.say( 35, "| Cliente");
+							imp.say( 60, "| Base");
+							imp.say( 71, "| ISS");
+							imp.say( 81, "| PIS");
+							imp.say( 91, "| Cofins");
+							imp.say(101, "| IR");
+							imp.say(111, "| C.SOCIAL");
+							imp.say(121, "| V.LIQ");
 							imp.say(135, "|");
 							imp.pulaLinha( 1, imp.comprimido());
-							imp.say(  0, "+" + linhaFina + "+");
+							imp.say(  0, "|" + linhaFina + "|");
 							
 						}
 						
 						imp.pulaLinha( 1, imp.comprimido());
 						imp.say(  0, "|" + Funcoes.strZero(rs.getString("CodVenda"), 7));
-						imp.say( 10, Funcoes.strZero(rs.getString("DocVenda"), 7));
-						imp.say( 19, Funcoes.copy(rs.getString("Serie"), 4));
-						imp.say( 23, Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
-						imp.say( 34, Funcoes.copy(rs.getInt("CodCli") + " - " + rs.getString("RazCli"), 25));
-						imp.say( 60, Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrBaseIssVenda")));
-						imp.say( 71, Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrIssVenda")));
-						imp.say( 82, Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrPisVenda")));
-						imp.say( 92, Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrCofinsVenda")));
-						imp.say( 103, Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrIRVenda")));
-						imp.say( 114, Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrCSocialVenda")));
-						imp.say( 125, Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrLiqVenda")));
-						imp.say( 135, "|");
+						imp.say( 10, "|" + Funcoes.strZero(rs.getString("DocVenda"), 7));
+						imp.say( 19, "|" + Funcoes.copy(rs.getString("Serie"), 4));
+						imp.say( 23, "|" + Funcoes.sqlDateToStrDate(rs.getDate("DtEmitVenda")));
+						imp.say( 35, "|" + Funcoes.copy(rs.getInt("CodCli") + "-" + rs.getString("RazCli"), 24));
+						imp.say( 60, "|" + Funcoes.strDecimalToStrCurrency(10, 2, rs.getString("VlrBaseIssVenda")));
+						imp.say( 71, "|" + Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrIssVenda")));
+						imp.say( 81, "|" + Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrPisVenda")));
+						imp.say( 91, "|" + Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrCofinsVenda")));
+						imp.say(101, "|" + Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrIRVenda")));
+						imp.say(111, "|" + Funcoes.strDecimalToStrCurrency(9, 2, rs.getString("VlrCSocialVenda")));
+						imp.say(121, "|" + Funcoes.strDecimalToStrCurrency(13, 2, rs.getString("VlrLiqVenda")));
+						imp.say(135, "|");
 						
 						iMesAnt = Funcoes.sqlDateToGregorianCalendar(rs.getDate("DtEmitVenda")).get(Calendar.MONTH);
 						
-						dTotMesBase += rs.getDouble("VlrBaseIssVenda");
-						dTotMesISS += rs.getDouble("VlrIssVenda");
-						dTotMesPIS += rs.getDouble("VlrPisVenda");
-						dTotMesCOFINS += rs.getDouble("VlrCofinsVenda");
-						dTotMesIR += rs.getDouble("VlrIRVenda");
-						dTotMesCSocial += rs.getDouble("VlrCSocialVenda");
-						dTotMesLiq += rs.getDouble("VlrLiqVenda");
+						fTotMesBase += rs.getDouble("VlrBaseIssVenda");
+						fTotMesISS += rs.getDouble("VlrIssVenda");
+						fTotMesPIS += rs.getDouble("VlrPisVenda");
+						fTotMesCOFINS += rs.getDouble("VlrCofinsVenda");
+						fTotMesIR += rs.getDouble("VlrIRVenda");
+						fTotMesCSocial += rs.getDouble("VlrCSocialVenda");
+						fTotMesLiq += rs.getDouble("VlrLiqVenda");
 						
 					}
 					
@@ -319,32 +334,33 @@ public class FRImpServ extends FRelatorio {
 		imp.pulaLinha( 1, imp.comprimido());
 		imp.say(  0, "|" + Funcoes.replicate("-", 133) + "|");
 		imp.pulaLinha( 1, imp.comprimido());
-		imp.say(  0, "|     TOTAIS DO MES -->");
-		imp.say( 57, "|" + Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesBase )));
-		imp.say( 69, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesISS )));
-		imp.say( 80, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesPIS )));
-		imp.say( 90, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesCOFINS )));
-		imp.say(101, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesIR )));
-		imp.say(112, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesCSocial )));
-		imp.say(123, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotMesLiq )));
+		imp.say(  0, "|");
+		imp.say( 24, "TOTAIS DO MES");
+		imp.say( 60, "|" + Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( fTotMesBase )));
+		imp.say( 71, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotMesISS )));
+		imp.say( 81, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotMesPIS )));
+		imp.say( 91, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotMesCOFINS )));
+		imp.say(101, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotMesIR )));
+		imp.say(111, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotMesCSocial )));
+		imp.say(121, "|" + Funcoes.strDecimalToStrCurrency(13, 2, String.valueOf( fTotMesLiq )));
 		imp.say(135, "|");
 		imp.pulaLinha( 1, imp.comprimido());
 		imp.say(  0, "|" + linhaFina + "|");
 		
-		dTotBase += dTotMesBase;
-		dTotISS += dTotMesISS;
-		dTotPIS += dTotMesPIS;
-		dTotCOFINS += dTotMesCOFINS;
-		dTotIR += dTotMesIR;
-		dTotCSocial += dTotMesCSocial;
-		dTotLiq += dTotMesLiq;
-		dTotMesBase = 0;
-		dTotMesISS = 0;
-		dTotMesPIS = 0;
-		dTotMesCOFINS = 0;
-		dTotMesIR = 0;
-		dTotMesCSocial = 0;
-		dTotMesLiq = 0;
+		fTotBase += fTotMesBase;
+		fTotISS += fTotMesISS;
+		fTotPIS += fTotMesPIS;
+		fTotCOFINS += fTotMesCOFINS;
+		fTotIR += fTotMesIR;
+		fTotCSocial += fTotMesCSocial;
+		fTotLiq += fTotMesLiq;
+		fTotMesBase = 0;
+		fTotMesISS = 0;
+		fTotMesPIS = 0;
+		fTotMesCOFINS = 0;
+		fTotMesIR = 0;
+		fTotMesCSocial = 0;
+		fTotMesLiq = 0;
 		
 	}
 
@@ -353,14 +369,15 @@ public class FRImpServ extends FRelatorio {
 		imp.pulaLinha( 1, imp.comprimido());
 		imp.say(  0, "|" + linhaLarga + "|");
 		imp.pulaLinha( 1, imp.comprimido());
-		imp.say( 0, "|     TOTAIS GERAIS -->");
-		imp.say( 57, "|" + Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotBase )));
-		imp.say( 69, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotISS )));
-		imp.say( 80, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotPIS )));
-		imp.say( 90, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotCOFINS )));
-		imp.say(101, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotIR )));
-		imp.say(112, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotCSocial )));
-		imp.say(123, Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( dTotLiq )));
+		imp.say(  0, "|");
+		imp.say( 24, "TOTAIS GERAIS");
+		imp.say( 60, "|" + Funcoes.strDecimalToStrCurrency(10, 2, String.valueOf( fTotBase )));
+		imp.say( 71, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotISS )));
+		imp.say( 81, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotPIS )));
+		imp.say( 91, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotCOFINS )));
+		imp.say(101, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotIR )));
+		imp.say(111, "|" + Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( fTotCSocial )));
+		imp.say(121, "|" + Funcoes.strDecimalToStrCurrency(13, 2, String.valueOf( fTotLiq )));
 		imp.say(135, "|");
 		imp.pulaLinha( 1, imp.comprimido());
 		imp.say(  0, "+" + linhaLarga + "+");
