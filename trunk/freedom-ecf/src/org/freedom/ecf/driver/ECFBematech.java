@@ -10,6 +10,7 @@ public class ECFBematech extends ECFDriver {
 	public ECFBematech(int com) {
 		super(com);
 	}
+	
 	public byte[] preparaCmd(byte[] CMD) {
 		int tamCMD = CMD.length;
 		int tam = tamCMD + 2;
@@ -31,11 +32,6 @@ public class ECFBematech extends ECFDriver {
         retorno[retorno.length-2] = CSL;
         retorno[retorno.length-1] = CSH;
 		return retorno;
-	}
-	
-	public int leituraX() {
-		byte[] CMD = {ESC,6};
-		return executaCmd(CMD);
 	}
 
 	public int executaCmd(byte[] CMD) {
@@ -61,6 +57,7 @@ public class ECFBematech extends ECFDriver {
 		   }
 		}
 	}
+	
 	public int checkRetorno(byte[] bytes) {
 		int retorno = 0;
 		bytesLidos = null;
@@ -114,6 +111,22 @@ public class ECFBematech extends ECFDriver {
 		}
 		return retorno;
 	}
+	
+	public int aberturaDeCupom() {
+		byte[] CMD = {ESC,0};
+		return executaCmd(CMD);
+	}
+	
+	public int reducaoZ() {
+		byte[] CMD = {ESC,5};
+		return executaCmd(CMD);
+	}
+	
+	public int leituraX() {
+		byte[] CMD = {ESC,6};
+		return executaCmd(CMD);
+	}
+	
 	/*
 	 *        case 0: sMensagem = "Erro de comunicação física"; break;
        case 1: sMensagem = ""; break;

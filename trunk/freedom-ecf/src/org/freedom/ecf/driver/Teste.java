@@ -11,10 +11,12 @@ public class Teste {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Date data = new Date();
 		ECFBematech ecf = new ECFBematech(ECFBematech.COM1);
-		System.out.println("Inicio "+(new Date()));
-		ecf.leituraX();
-		System.out.println("Fim "+(new Date()));
+		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
+		ecf.aberturaDeCupom ();
+		data = new Date();
+		System.out.println("Fim -----> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
 		//Properties p = System.getProperties();
 		
 	//	System.out.println(p.getProperty("os.arch"));
