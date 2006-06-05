@@ -149,6 +149,7 @@ public class Funcoes {
 		}*/
 		// fazendo assim evita a copia de varias strings.
 		StringBuffer sRetorno = new StringBuffer();
+		sRetorno.append("");
 		for (int i = 0; i < Quant; i++) {
 			sRetorno.append(texto);
 		}
