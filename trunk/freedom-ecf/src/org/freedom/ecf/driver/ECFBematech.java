@@ -5,6 +5,7 @@
  */
 package org.freedom.ecf.driver;
 
+
 public class ECFBematech extends ECFDriver {
 	
 	public ECFBematech(int com) {
@@ -47,7 +48,6 @@ public class ECFBematech extends ECFDriver {
 		byte[] retorno = null;
 		CMD = preparaCmd(CMD);
 		while ((retorno==null) || (retorno.length<2)) {
-		//while (true) {
 		   retorno = enviaCmd(CMD);
 		   try {
 			   Thread.sleep(3000);
@@ -112,20 +112,74 @@ public class ECFBematech extends ECFDriver {
 		return retorno;
 	}
 	
+	//	Abre o cupom para venda.
 	public int aberturaDeCupom() {
 		byte[] CMD = {ESC,0};
 		return executaCmd(CMD);
 	}
 	
+	//	Abre o cupom para venda passando o cnpj/cpf do cliente.
+	public int aberturaDeCupom(String cnpj) {
+		byte[] CMD = {ESC,0};
+		byte[] PARAM = parseParam(cnpj);
+		CMD = adicBytes(CMD,PARAM);
+		return executaCmd(CMD);
+	}
+	
+	//	Altera simbolo da moeda corrente, não a nescidade de passar o $ no parametro.
+	public int alteraSimboloMoeda(String simbolo) {
+		byte[] CMD = {ESC,1};
+		byte[] PARAM = parseParam(simbolo);
+		CMD = adicBytes(CMD,PARAM);
+		return executaCmd(CMD);
+	}
+	
+	//	Executa a redução Z.
 	public int reducaoZ() {
 		byte[] CMD = {ESC,5};
 		return executaCmd(CMD);
 	}
 	
+	// 	Executa a leitura X.
 	public int leituraX() {
 		byte[] CMD = {ESC,6};
 		return executaCmd(CMD);
 	}
+	
+	//	Venda de item.
+	public int vendaItem(String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto) {
+		byte[] CMD = {ESC,9};
+		byte[] PARAM0 = parseParam(codProd);
+		byte[] PARAM1 = parseParam(descProd);
+		byte[] PARAM2 = parseParam(sitTrib);
+		byte[] PARAM3 = parseParam(qtd,7,3);
+		byte[] PARAM4 = parseParam(valor,8,2);
+		byte[] PARAM5 = parseParam(desconto,8,2);
+		CMD = adicBytes(CMD,PARAM0);
+		CMD = adicBytes(CMD,PARAM1);
+		CMD = adicBytes(CMD,PARAM2);
+		CMD = adicBytes(CMD,PARAM3);
+		CMD = adicBytes(CMD,PARAM4);
+		CMD = adicBytes(CMD,PARAM5);
+		return executaCmd(CMD);
+	}
+	
+	//	Cancelamento do item anterior.
+	public int cancelaItemAnterior() {
+		byte[] CMD = {ESC,13};
+		return executaCmd(CMD);
+	}
+	
+	public int cancelaItemGenerico(int item) {
+		byte[] CMD = {ESC,31};
+		byte[] PARAM = parseParam(item,4);
+		CMD = adicBytes(CMD,PARAM);
+		return executaCmd(CMD);
+	}
+	
+	
+	
+	
 	
 	/*
 	 *        case 0: sMensagem = "Erro de comunicação física"; break;

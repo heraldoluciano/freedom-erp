@@ -2,28 +2,26 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
-//import java.util.Properties;
-
 public class Teste {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Date data = new Date();
+
 		ECFBematech ecf = new ECFBematech(ECFBematech.COM1);
+		
+		Date data = new Date();
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
-		ecf.aberturaDeCupom ();
+		
+		//ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 15.001f, 0.12f, 0f);
+		ecf.cancelaItemGenerico(2);
+		
 		data = new Date();
 		System.out.println("Fim -----> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
-		//Properties p = System.getProperties();
 		
-	//	System.out.println(p.getProperty("os.arch"));
-		//System.out.println(p.getProperty("os.name"));
-		//System.out.println(p.getProperty("os.version"));
-		//os.version
-
+		
+		System.exit(0);
 	}
 
 }

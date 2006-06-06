@@ -51,10 +51,17 @@ public abstract class ECFDriver {
 		ativaPorta(com);
 	}
 	
-	public byte[] getBytesLidos() {
-		return bytesLidos;
+	public byte[] adicBytes(byte[] variavel, byte[] incremental) {
+		byte[] retorno = new byte[variavel.length+incremental.length];
+		for (int i=0; i<retorno.length; i++) {
+			if (i<variavel.length)
+				retorno[i] = variavel[i];
+			else
+				retorno[i] = incremental[i-variavel.length];
+		}
+		return retorno;
 	}
-	
+
 	public boolean ativaPorta(int com) {
 		boolean retorno = true;
 		if ( (com!=portaSel) || (portaSerial==null) ) {
@@ -66,27 +73,6 @@ public abstract class ECFDriver {
 			ativada = retorno;
 		}
 		return retorno;
-	}
-	
-	public String convPorta(int com) {
-		String porta = null;
-		if (getSistema()==OS_WINDOWS) 
-			porta = "COM"+(com+1);
-		else
-			porta = "/dev/ttyS"+com;
-		return porta;
-	}
-	
-	public int getSistema() {
-		String os = null;
-		if (sistema==OS_NONE) {
-		  os = System.getProperty("os.name").toLowerCase();
-		  if (os.indexOf("linux")>OS_NONE)
-			  sistema = OS_LINUX;
-		  else if (os.indexOf("windows")>OS_NONE)
-			  sistema = OS_WINDOWS;
-		}
-		return sistema;
 	}
 	
 	public SerialPort ativaSerial(String porta) {
@@ -123,11 +109,36 @@ public abstract class ECFDriver {
 		}
 		return portaSerial;
 	}
+
+	public String convPorta(int com) {
+		String porta = null;
+		if (getSistema()==OS_WINDOWS) 
+			porta = "COM"+(com+1);
+		else
+			porta = "/dev/ttyS"+com;
+		return porta;
+	}
 	
 	public boolean getAtivada() {
 		return ativada;
 	}
 
+	public byte[] getBytesLidos() {
+		return bytesLidos;
+	}
+
+	public int getSistema() {
+		String os = null;
+		if (sistema==OS_NONE) {
+		  os = System.getProperty("os.name").toLowerCase();
+		  if (os.indexOf("linux")>OS_NONE)
+			  sistema = OS_LINUX;
+		  else if (os.indexOf("windows")>OS_NONE)
+			  sistema = OS_WINDOWS;
+		}
+		return sistema;
+	}
+	
 	public void desativaPorta() {
 		if (portaSerial==null) 
 			portaSerial.close();
@@ -190,16 +201,79 @@ public abstract class ECFDriver {
 		return buffer;
 	}
 	
+	public byte[] parseParam(String param) {
+		return param.getBytes();
+	}
+	
+	public byte[] parseParam(int param, int tamanho) {				
+		return strZero( String.valueOf(param) , tamanho).getBytes();
+	}
+	
+	public byte[] parseParam(float param,int tamanho,int casasdec) {				
+		return strDecimalToStrCurrency(param,tamanho,casasdec).getBytes();
+	}
+    
+	public String replicate(String texto, int Quant) {		
+		StringBuffer sRetorno = new StringBuffer();
+		sRetorno.append("");
+		for (int i = 0; i < Quant; i++)
+			sRetorno.append(texto);
+		return sRetorno.toString();
+	}
+
+	public String strDecimalToStrCurrency(float param,int tamanho,int casasdec) {
+		StringBuffer str = new StringBuffer();
+		str.append( String.valueOf( param ) );
+		
+		char[] c = str.toString().toCharArray();
+		int index = str.indexOf(".");
+		int indexDesc = ((c.length-1)-index) - casasdec;
+		str.delete(0,c.length);
+		
+		for(int i=0; i < c.length; i++)
+			if( i!= index )
+				str.append(c[i]);
+		
+		for(int i=0; i < indexDesc; i++)
+			str.append("0");
+		
+		return strZero( str.toString() , tamanho);
+	}
+
+	public String strZero(String val, int zeros) {
+		if (val == null)
+			return val;
+		String sRetorno = replicate("0", zeros - val.trim().length());
+		sRetorno += val.trim();
+		return sRetorno;
+	}
+	
 	public abstract byte[] preparaCmd(byte[] CMD);
 	
 	public abstract int executaCmd(byte[] CMD);
 	
 	public abstract int checkRetorno(byte[] bytes);
 	
-	public abstract int aberturaDeCupom();
+	////////////////////////
+	/////              /////
+	/////	COMANDOS   /////
+	/////              /////
+	////////////////////////
 	
-	public abstract int leituraX();
+	public abstract int aberturaDeCupom();// 0
 	
-	public abstract int reducaoZ();
+	public abstract int aberturaDeCupom(String cnpj);// 0
+	
+	public abstract int alteraSimboloMoeda(String simbolo);// 1
+	
+	public abstract int leituraX();// 5
+	
+	public abstract int reducaoZ();// 6
+	
+	public abstract int vendaItem(String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto);// 9
+	
+	public abstract int cancelaItemAnterior();// 13
+	
+	public abstract int cancelaItemGenerico(int item);// 31
 	
 }
