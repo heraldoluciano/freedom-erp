@@ -100,7 +100,6 @@ public class FreedomSTD extends Aplicativo {
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Preferências gerais","Pref. Gerais",'g',100310000,2, true, FPrefereGeral.class);
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Série de NFs","Serie NF",'N',100320000,2, true, FSerie.class);
 	  addOpcao(100300000,TP_OPCAO_ITEM,"Modelo de NFs","Modelo NF",'M',100330000,2, true, FModNota.class);
-	addSeparador(100100000);
 	addOpcao(100000000,TP_OPCAO_MENU,"Configurações","",'C',100400000,1, false, null);
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Caixa PDV","Configurações",'C',100410000,2, true, FCaixa.class);		  
 	  addOpcao(100400000,TP_OPCAO_ITEM,"Impressora","Impressoras",'I',100420000,2, true, FImpressora.class);
