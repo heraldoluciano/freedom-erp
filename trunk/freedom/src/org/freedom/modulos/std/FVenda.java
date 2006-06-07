@@ -410,8 +410,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		btAdicOrc.addActionListener(this);
 
 		txtPercDescItVenda.addFocusListener(this);
-		txtPercComItVenda.addFocusListener(this);
 		txtVlrDescItVenda.addFocusListener(this);
+		txtPercComItVenda.addFocusListener(this);
+		txtVlrComisItVenda.addFocusListener(this);
 		txtVlrProdItVenda.addFocusListener(this);
 		txtQtdItVenda.addFocusListener(this);
 		txtCodNat.addFocusListener(this);
@@ -1181,6 +1182,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		try {
 			
 			dl = new DLRPedido(sOrdNota, false);
+			dl.setConexao( con );
 			dl.setVisible(true);
 			
 			if (dl.OK == false) {
@@ -2467,12 +2469,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			} else if (txtVlrDescItVenda.getAtivo()) {
 				txtPercDescItVenda.setAtivo(false);
 			}
+			calcDescIt();
+			calcVlrProd();
+			calcImpostos(true);
 		} else if (fevt.getSource() == txtVlrComisItVenda) {
 			if (txtVlrComisItVenda.getText().trim().length() < 1) {
 				txtPercComItVenda.setAtivo(true);
 			} else if (txtVlrComisItVenda.getAtivo()) {
 				txtPercComItVenda.setAtivo(false);
 			}
+			calcComisIt();
+			calcVlrProd();
+			calcImpostos(true);
 		} else if ((fevt.getSource() == txtQtdItVenda)
 				| (fevt.getSource() == txtPrecoItVenda)
 				| (fevt.getSource() == txtCodNat)) {

@@ -36,7 +36,7 @@ public class FItNatoper extends FDetalhe {
 
   private JPanelPad pinCab = new JPanelPad();
   private JPanelPad pinDet = new JPanelPad();
-  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
   private JTextFieldPad txtDescNat = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
   private JTextFieldPad txtCodItNatoper = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtUFTabICMS = new JTextFieldPad(JTextFieldPad.TP_STRING,2,0);

@@ -20,51 +20,94 @@
  */
 
 package org.freedom.modulos.std;
-import org.freedom.componentes.JLabelPad;
-
-import org.freedom.componentes.JRadioGroup;
-import org.freedom.telas.FFDialogo;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Vector;
 
 import javax.swing.JCheckBox;
+
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JRadioGroup;
+import org.freedom.componentes.ListaCampos;
+import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FFDialogo;
 public class DLRPedido extends FFDialogo {
 
-  private static final long serialVersionUID = 1L;
-  private JRadioGroup rgOrdem = null;
-  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private JCheckBox cbxResumido = new JCheckBox("Relatório Resumido"); 
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  public DLRPedido(String OrdNota, boolean RelResumido) {
-    setTitulo("Ordem do Relatório");
-    setAtribos(350,160);
-    vLabs.addElement("Código");
-    vLabs.addElement("Descrição");
-    vLabs.addElement("Marca");
-    vVals.addElement("C");
-    vVals.addElement("D");
-    vVals.addElement("M");
-    rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
-    rgOrdem.setVlrString(OrdNota);
-    if (RelResumido)
-    	adic(cbxResumido, 7, 55, 180, 15);
-    adic(lbOrdem,7,0,80,15);
-    adic(rgOrdem,7,20,330,30);
-  }
+	private static final long serialVersionUID = 1L;
+	private JRadioGroup rgOrdem = null;
+	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+	private JCheckBox cbxResumido = new JCheckBox("Relatório Resumido"); 
+	private Vector vLabs = new Vector();
+	private Vector vVals = new Vector();
+	
+	public DLRPedido(String OrdNota, boolean RelResumido) {
+		setTitulo("Ordem do Relatório");
+		setAtribos(350,160);
+		vLabs.addElement("Código");
+		vLabs.addElement("Descrição");
+		vLabs.addElement("Marca");
+		vVals.addElement("C");
+		vVals.addElement("D");
+		vVals.addElement("M");
+		rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
+		rgOrdem.setVlrString(OrdNota);
+		if (RelResumido)
+		adic(cbxResumido, 7, 55, 180, 15);
+		adic(lbOrdem,7,0,80,15);
+		adic(rgOrdem,7,20,330,30);
+	}
+	  
+	public boolean ehResumido() {
+		return cbxResumido.isSelected();
+	}
+	  
+	public String getValor() {
+		String sRetorno = "";
+		if (rgOrdem.getVlrString().compareTo("C") == 0 )
+			sRetorno = getComRef();
+		else if (rgOrdem.getVlrString().compareTo("D") == 0 )
+			sRetorno = "DESCPROD";
+		else if (rgOrdem.getVlrString().compareTo("M") == 0 )
+			sRetorno = "CODMARCA";
+		return sRetorno;
+	}
+	  
+	private String getComRef() {
+		  
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;		
+		String retorno = null;
+				
+		try {
+					
+			sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+				
+			if(rs.next())
+				retorno = rs.getString(1).trim();
+			
+			if(retorno.equals("S"))
+				return "REFPROD";
+				
+			if(!con.getAutoCommit())
+				con.commit();
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ps = null;
+			rs = null;
+			sSQL = null;
+		}
+	  
+		return "CODPROD";
+	}
   
-  public boolean ehResumido() {
-	  return cbxResumido.isSelected();
-  }
-  
-  public String getValor() {
-    String sRetorno = "";
-    if (rgOrdem.getVlrString().compareTo("C") == 0 )
-      sRetorno = "REFPROD";
-    else if (rgOrdem.getVlrString().compareTo("D") == 0 )
-      sRetorno = "DESCPROD";
-    else if (rgOrdem.getVlrString().compareTo("M") == 0 )
-      sRetorno = "CODMARCA";
-    return sRetorno;
-  }
 }

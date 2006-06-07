@@ -43,7 +43,7 @@ import org.freedom.telas.FDados;
 public class FNatoPer extends FDados implements ActionListener, InsertListener {
 	private static final long serialVersionUID = 1L;
 
-  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,4,0);
+  private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
   private JTextFieldPad txtDescNat = new JTextFieldPad(JTextFieldPad.TP_STRING,60,0);
   private JTextFieldPad txtAliqeNat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
   private JTextFieldPad txtAliqfNat = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
