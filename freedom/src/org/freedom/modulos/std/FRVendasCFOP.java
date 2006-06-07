@@ -47,7 +47,7 @@ public class FRVendasCFOP extends FRelatorio{
 	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0); 
 	private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);   
-	private JTextFieldPad txtCodCFOP = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
+	private JTextFieldPad txtCodCFOP = new JTextFieldPad(JTextFieldPad.TP_STRING,5,0);
 	private JTextFieldFK txtDescCFOP = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtCodTipoMov = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
 	private JTextFieldFK txtDescTipoMov = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);

@@ -278,7 +278,6 @@ public class FRListaPreco extends FRelatorio {
 		ResultSet rs = null;
 		String sSQL = null;
 		String sOrdem = rgOrdem.getVlrString();
-		String sCab = "";
 		String sWhere = "";
 		String sOrdenado = null;
 		String sSubGrupo = null;
@@ -288,20 +287,26 @@ public class FRListaPreco extends FRelatorio {
 		String sCodProdPrint = Funcoes.replicate(" ",12)+"|";
 		String sDescProd = Funcoes.replicate(" ",39)+"|";
 		String sCodunid = "";
-		String sCodgrup = "";
+		//String sCodgrup = "";
 		String sTextoImp = "";
-		String sPrecopag1 = Funcoes.replicate(" ",9)+"|";
-		String sPrecopag2 = Funcoes.replicate(" ",9)+"|";
-		String sPrecopag3 = Funcoes.replicate(" ",9)+"|";
-		String sPrecopag4 = Funcoes.replicate(" ",9)+"|";
-		String sPrecopag5 = Funcoes.replicate(" ",9)+"|";
-		String sPrecopag6 = Funcoes.replicate(" ",9)+"|";
-		String sPrecopag7 = Funcoes.replicate(" ",9)+"|";
+		String linhaFina = Funcoes.replicate("-",133);
+		String space = Funcoes.replicate(" ",9);
+		String sPrecopag1 = space+"|";
+		String sPrecopag2 = space+"|";
+		String sPrecopag3 = space+"|";
+		String sPrecopag4 = space+"|";
+		String sPrecopag5 = space+"|";
+		String sPrecopag6 = space+"|";
+		String sPrecopag7 = space+"|";
 		ImprimeOS imp = new ImprimeOS("",con);
 		int linPag = imp.verifLinPag()-1;
 		int iContaItem = 0;
 
-                        
+		imp.montaCab();
+		imp.setTitulo("Lista de Preços");
+		imp.addSubTitulo("LISTA DE PREÇOS");
+		imp.limpaPags();		
+		
         if (comRef()) 
         	sCodRel = "REFPROD";
         else
@@ -317,46 +322,32 @@ public class FRListaPreco extends FRelatorio {
 		}
 		
 		sOrdem = sOrdem + ",PP.CODPLANOPAG";
-		sOrdenado = "|"+Funcoes.replicate(" ",68-(sOrdenado.length()/2))+sOrdenado;
-		sOrdenado += Funcoes.replicate(" ",133-sOrdenado.length())+" |";
+		imp.addSubTitulo(sOrdenado);		
 		
 		if (txtCodGrup.getText().trim().length() > 0) {
-			String sTmp = "GRUPO: "+txtDescGrup.getText().trim();
-			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+			imp.addSubTitulo("GRUPO: "+txtDescGrup.getText().trim());
 		}
 		if (txtCodMarca.getText().trim().length() > 0) {
 			sWhere += " AND P.CODMARCA = '"+txtCodMarca.getText().trim()+"'";
-			String sTmp = "MARCA: "+txtDescMarca.getText().trim();
-			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+			imp.addSubTitulo("MARCA: "+txtDescMarca.getText().trim());
 		}
 
 		if (txtCodClasCli.getText().trim().length() > 0) {
 			sWhere += " AND PP.CODCLASCLI = '"+txtCodClasCli.getText().trim()+"'";
-			String sTmp = "CLASS.CLIENTE: "+txtDescClasCli.getText().trim();
-			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+			imp.addSubTitulo("CLASS.CLIENTE: "+txtDescClasCli.getText().trim());
 		}
 		
 		if (txtCodTabPreco.getText().trim().length() > 0) {
 			sWhere += " AND PP.CODTAB = '"+txtCodTabPreco.getText().trim()+"'";
-			String sTmp = "TABELA: "+txtDescTabPreco.getText().trim();
-			sCab += "\n"+imp.comprimido();
-			sTmp = "|"+Funcoes.replicate(" ",68-(sTmp.length()/2))+sTmp;
-			sCab += sTmp+Funcoes.replicate(" ",133-sTmp.length())+" |";
+			imp.addSubTitulo("TABELA: "+txtDescTabPreco.getText().trim());
 		}
 		
 		try {
 			
-			sSQL  = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD,P.REFPROD,"+
-					"P.DESCPROD,P.CODUNID,"+
+			sSQL  = "SELECT G.DESCGRUP,P.CODGRUP,P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,"+
 					"PP.CODPLANOPAG,PG.DESCPLANOPAG,PP.PRECOPROD "+
 					"FROM EQPRODUTO P, VDPRECOPROD PP, FNPLANOPAG PG, EQGRUPO G "+ 
-					"WHERE P.CODPROD = PP.CODPROD "+
+					"WHERE P.CODPROD=PP.CODPROD "+
 					"AND G.CODGRUP = P.CODGRUP "+
 					"AND P.CODGRUP LIKE ? AND P.ATIVOPROD='S' "+
 					"AND PG.CODPLANOPAG = PP.CODPLANOPAG "+
@@ -373,86 +364,32 @@ public class FRListaPreco extends FRelatorio {
 			ps.setInt(7,txtCodPlanoPag6.getVlrInteger().intValue());
 			ps.setInt(8,txtCodPlanoPag7.getVlrInteger().intValue());
 			rs = ps.executeQuery();
-			
-			imp.montaCab();
-			imp.setTitulo("Lista de Preços");
-			imp.limpaPags();
-			
+						
 			while ( rs.next() ) {
-				
-            	if ((sCodprod.length() > 0) && (!sCodprod.equals(rs.getString("codprod")))) {
-            		
-					sTextoImp = sPrecopag1 + sPrecopag2 + sPrecopag3 + sPrecopag4 +
-								sPrecopag5 + sPrecopag6 + sPrecopag7 + " " + Funcoes.copy(sCodunid,0,7)+"|";
-					
-					
-					imp.pulaLinha( 1, imp.comprimido() );					
-					imp.say(  0, "|" + Funcoes.copy(sCodProdPrint,0,12) );
-					imp.say( 14, "|" + Funcoes.copy(sDescProd,0,39) );
-					imp.say( 56, "|" + sTextoImp);
-					
-					if (!(imp.pRow()>=(linPag-1))) {
-						imp.pulaLinha( 1, imp.comprimido() );
-   						imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
-					}
-					
-					sTextoImp = "";
-					sPrecopag1 = Funcoes.replicate(" ",9)+"|";
-					sPrecopag2 = Funcoes.replicate(" ",9)+"|";
-					sPrecopag3 = Funcoes.replicate(" ",9)+"|";
-					sPrecopag4 = Funcoes.replicate(" ",9)+"|";
-					sPrecopag5 = Funcoes.replicate(" ",9)+"|";
-					sPrecopag6 = Funcoes.replicate(" ",9)+"|";
-					sPrecopag7 = Funcoes.replicate(" ",9)+"|";
-                }
             	
-				if (imp.pRow()>=(linPag-1)) {
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
+				if (imp.pRow()>=(linPag-1)) {	
+                   	imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + linhaFina + "|" );
 					imp.incPags();
 					imp.eject();
 				}
-				
-				sCodgrup = rs.getString("codgrup");
-				sCodProdPrint = rs.getString(sCodRel);
-				sDescProd = rs.getString("descprod");
-				sCodprod = rs.getString("codprod");
 
-				if (imp.pRow()==0) {
-					
-					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
-					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
-					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
+				if (imp.pRow()==0) {				
 
-					imp.impCab(136, true);
-					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, "|" );
-					imp.say(135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, "|");
-					imp.say( 62, "LISTA DE PREÇOS");
-					imp.say(135, "|");
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, "|");
-					imp.say(135, "|");
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, sOrdenado);
-					
-					if (sCab.length() > 0)
-						imp.say(  0, sCab);
-						
-					imp.pulaLinha( 1, imp.comprimido() );						
-					imp.say(  0, "|");
-					imp.say(135, "|");
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
+					imp.impCab(136, true);						
+					imp.say(  0, imp.comprimido() );	
+					imp.say(  0, "|" + linhaFina + "|" );
 					
                    	if (sAgrupar.equals("S")) {
+
+    					sSubGrupo = "SUBGRUPO: "+rs.getString("DescGrup").trim();
+    					sSubGrupo = "|" + Funcoes.replicate(" ",68-(sSubGrupo.length()/2)) + sSubGrupo;
+    					sSubGrupo += Funcoes.replicate(" ", 133-sSubGrupo.length()) + " |";
+    					
                    		imp.pulaLinha( 1, imp.comprimido() );
 				   		imp.say(  0, sSubGrupo);
 				   		imp.pulaLinha( 1, imp.comprimido() );
-				   		imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
+				   		imp.say(  0, "|" + linhaFina + "|" );
                     }
                    	
                    	imp.pulaLinha( 1, imp.comprimido() );
@@ -468,8 +405,41 @@ public class FRListaPreco extends FRelatorio {
 								 "|Unidade");
 					imp.say(135, "|");
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  0, "|" + Funcoes.replicate("-",133) + "|" );
+					imp.say(  0, "|" + linhaFina + "|" );
+					
 				}
+				
+            	if ((sCodprod.length() > 0) && (!sCodprod.equals(rs.getString("codprod")))) {
+            		
+					sTextoImp = sPrecopag1 + sPrecopag2 + sPrecopag3 + sPrecopag4 +
+								sPrecopag5 + sPrecopag6 + sPrecopag7 + " " + Funcoes.copy(sCodunid,0,7)+"|";					
+					
+					imp.pulaLinha( 1, imp.comprimido() );					
+					imp.say(  0, "|" + Funcoes.copy(sCodProdPrint,0,12) );
+					imp.say( 14, "|" + Funcoes.copy(sDescProd,0,39) );
+					imp.say( 56, "|" + sTextoImp);
+					
+					if (!(imp.pRow()>=(linPag-1))) {
+						imp.pulaLinha( 1, imp.comprimido() );
+   						imp.say(  0, "|" + linhaFina + "|" );
+					}
+					
+					sTextoImp = "";
+					sPrecopag1 = space+"|";
+					sPrecopag2 = space+"|";
+					sPrecopag3 = space+"|";
+					sPrecopag4 = space+"|";
+					sPrecopag5 = space+"|";
+					sPrecopag6 = space+"|";
+					sPrecopag7 = space+"|";
+					
+                }
+				
+				//sCodgrup = rs.getString("codgrup");
+				sCodProdPrint = rs.getString(sCodRel);
+				sDescProd = rs.getString("descprod");
+				sCodprod = rs.getString("codprod");
+				
 				if (rs.getString("Codplanopag").equals(txtCodPlanoPag1.getVlrString()))
 					sPrecopag1 = Funcoes.strDecimalToStrCurrency(9,2,rs.getString("PrecoProd")) + "|";
 				else if (rs.getString("Codplanopag").equals(txtCodPlanoPag2.getVlrString()))
@@ -492,7 +462,7 @@ public class FRListaPreco extends FRelatorio {
 				
 				sCodunid = rs.getString("Codunid");
 				sCodprod = rs.getString("Codprod");
-				sCodgrup = rs.getString("Codgrup");
+				//sCodgrup = rs.getString("Codgrup");
 			    iContaItem++;
 			}	
 
@@ -508,7 +478,7 @@ public class FRListaPreco extends FRelatorio {
             }
             
             imp.pulaLinha( 1, imp.comprimido() );
-			imp.say(  0, "+" + Funcoes.replicate("-",133) + "+" );
+			imp.say(  0, "+" + linhaFina + "+" );
 
 			imp.eject();
 				

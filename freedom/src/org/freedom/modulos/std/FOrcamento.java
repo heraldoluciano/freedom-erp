@@ -1191,14 +1191,14 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 						imp.pulaLinha( 1, imp.comprimido());
 						imp.say(  0, linhaFina);
 						imp.pulaLinha( 1, imp.comprimido());
-						imp.say(  1, "IT. " +
-								"|   CÓDIGO   " +
-								"|                    DESCRIÇÃO                     " +
-								"|UN" +
-								"|   QUANT.   " +
-								"|    V.UNIT.   " +
-								"|   V.DESCONTO   " +
-								"|   V.TOTAL");
+						imp.say(  1, "IT" );
+						imp.say(  6, "|   CÓDIGO" );
+						imp.say( 19, "|                     DESCRIÇÃO" );
+						imp.say( 72, "| UN" );
+						imp.say( 77, "|    QUANT." );
+						imp.say( 91, "|   V.UNIT." );
+						imp.say(105, "|   V.DESC." );
+						imp.say(119, "|     V.TOTAL" );
 					}
 					
 					imp.pulaLinha( 1, imp.comprimido());
@@ -1215,11 +1215,11 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 					imp.say( 20, (String)vDesc.elementAt(i).toString());
 					
 					if (i==0) {
-						imp.say( 71, "| " + rs.getString("CodUnid").trim());
-						imp.say( 76, "| " + rs.getString("QtdItOrc"));
-						imp.say( 91, "| " + rs.getString("PrecoItOrc"));
-						imp.say(105, "| " + rs.getString("VlrDescItOrc"));
-						imp.say(121, "| " + rs.getString("VlrProdItOrc"));
+						imp.say( 74, Funcoes.copy(rs.getString("CodUnid").trim(),2));
+						imp.say( 78, Funcoes.strDecimalToStrCurrency(12, 2,rs.getString("QtdItOrc")));
+						imp.say( 92, Funcoes.strDecimalToStrCurrency(12, 2,rs.getString("PrecoItOrc")));
+						imp.say(106, Funcoes.strDecimalToStrCurrency(12, 2,rs.getString("VlrDescItOrc")));
+						imp.say(120, Funcoes.strDecimalToStrCurrency(15, 2,rs.getString("VlrProdItOrc")));
 					}
 				}
 			}

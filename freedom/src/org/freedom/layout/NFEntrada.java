@@ -131,7 +131,7 @@ public class NFEntrada extends NF {
 			sql = "SELECT I.CODITCOMPRA, I.CODPROD, I.QTDITCOMPRA, I.VLRLIQITCOMPRA, I.PERCIPIITCOMPRA, I.VLRIPIITCOMPRA, "+
 					"I.PERCICMSITCOMPRA, I.VLRPRODITCOMPRA, C.VLRICMSCOMPRA, C.VLRIPICOMPRA, C.VLRADICCOMPRA, "+
 					"C.VLRLIQCOMPRA, C.VLRBASEICMSCOMPRA, C.VLRBASEIPICOMPRA, C.VLRPRODCOMPRA, P.REFPROD, P.DESCPROD, "+
-					"P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, "+
+					"P.CODUNID, I.CODNAT, N.DESCNAT, N.IMPDTSAIDANAT, I.CODLOTE, P.CODFISC, P.TIPOPROD, I.VLRDESCITCOMPRA "+
 					"(SELECT L.VENCTOLOTE FROM EQLOTE L WHERE L.CODEMP=I.CODEMPLE AND L.CODFILIAL=I.CODFILIALLE AND L.CODPROD=I.CODPROD AND L.CODLOTE=I.CODLOTE), "+
 					"(SELECT COUNT(IC.CODITCOMPRA) FROM CPITCOMPRA IC WHERE IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL), "+
 					"(SELECT M.MENS FROM LFMENSAGEM M WHERE M.CODMENS=CL.CODMENS AND M.CODFILIAL=CL.CODFILIALME AND M.CODEMP=CL.CODEMPME) "+
@@ -147,7 +147,7 @@ public class NFEntrada extends NF {
 			ps.setInt(3,((Integer) parans.elementAt(2)).intValue());
 			rs = ps.executeQuery();
 			cont++;
-			itens = new TabVector(31);
+			itens = new TabVector(32);
 			while (rs.next()) {
 				itens.addRow();
 				itens.setInt(C_CODITPED, rs.getInt("CODITCOMPRA"));
@@ -169,18 +169,19 @@ public class NFEntrada extends NF {
 				itens.setString(C_DESCNAT, rs.getString("DESCNAT")!= null ? rs.getString("DESCNAT") : "");
 				itens.setInt(C_CODNAT, rs.getInt("CODNAT"));
 				itens.setString(C_CODLOTE, rs.getString("CODLOTE")!= null ? rs.getString("CODLOTE") : "");
-				itens.setDate(C_VENCLOTE, rs.getDate(25));
+				itens.setDate(C_VENCLOTE, rs.getDate(26));
 				itens.setString(C_ORIGFISC, "");
 				itens.setString(C_CODTRATTRIB, "");
 				itens.setFloat(C_VLRBASEICMSPED, rs.getFloat("VLRBASEICMSCOMPRA"));
 				itens.setFloat(C_VLRADICPED, rs.getFloat("VLRADICCOMPRA"));
-				itens.setInt(C_CONTAITENS, rs.getInt(26));
-				itens.setString(C_DESCFISC, (rs.getString(27)!=null ? rs.getString(27) : ""));
+				itens.setInt(C_CONTAITENS, rs.getInt(27));
+				itens.setString(C_DESCFISC, (rs.getString(28)!=null ? rs.getString(28) : ""));
 				itens.setString(C_DESCFISC2, "");
 				itens.setString(C_CODFISC, rs.getString("CODFISC")!= null ? rs.getString("CODFISC") : "");
 				itens.setString(C_TIPOPROD, rs.getString("TIPOPROD")!= null ? rs.getString("TIPOPROD") : "");
 				itens.setFloat(C_VLRISSPED, 0f);
 				itens.setFloat(C_VLRPRODPED, rs.getFloat("VLRPRODCOMPRA"));
+				itens.setFloat(C_VLRDESCITPROD, rs.getFloat("VLRDESCITCOMPRA"));
 			}
 			rs.close();
 			ps.close();
@@ -204,7 +205,7 @@ public class NFEntrada extends NF {
 			parc.setInt(C_NPARCITREC, 0);
 			parc.setRow(-1);*/
 						
-			frete = new TabVector(19);
+			frete = new TabVector(20);
 			frete.addRow();
 			frete.setInt(C_CODTRAN, 0);
 			frete.setString(C_RAZTRANSP, "");
@@ -225,6 +226,7 @@ public class NFEntrada extends NF {
 			frete.setFloat(C_PESOBRUTO, 0);
 			frete.setFloat(C_PESOLIQ, 0);
 			frete.setFloat(C_VLRFRETEPED, 0);
+			frete.setString(C_CONHECFRETEPED, ""); 
 			frete.setRow(-1);
 			
 		}

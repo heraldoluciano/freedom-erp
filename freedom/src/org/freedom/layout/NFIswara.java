@@ -1,6 +1,6 @@
 /**
- * @version 14/07/2003 <BR>
- * @author Setpoint Informática Ltda./Robson Sanchez <BR>
+ * @version 22/05/2006 <BR>
+ * @author Setpoint Informática Ltda./Alex Rodrigues <BR>
  *
  * Projeto: Freedom <BR>
  * Pacote: layout <BR>

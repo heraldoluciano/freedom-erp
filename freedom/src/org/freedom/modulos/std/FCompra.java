@@ -98,7 +98,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private JTextFieldPad txtPercDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
 	private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtPercComItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 6, 2);
-	private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
+	private JTextFieldPad txtCodNat = new JTextFieldPad(JTextFieldPad.TP_STRING, 5, 0);
 	private JTextFieldPad txtBaseICMSItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtPercICMSItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
 	private JTextFieldPad txtVlrICMSItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC, 15, casasDecFin);
