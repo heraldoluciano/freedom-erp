@@ -632,68 +632,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 
 		limpaConsulta();
 		tabConsulta.limpa();
-		/*//	Busca os totais ...
-			sSQL = "SELECT SUM(VLRPARCPAG),SUM(VLRPAGOPAG),SUM(VLRAPAGPAG),MIN(DATAPAG),MAX(DATAPAG) "+
-				   "FROM FNPAGAR "+
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? ";
-			
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,ListaCampos.getMasterFilial("FNPAGAR"));
-			ps.setInt(3,txtCodFor.getVlrInteger().intValue());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				txtVlrTotCompr.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(1)));
-				txtVlrTotPago.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(2)));
-				txtVlrTotAberto.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs.getString(3)));
-				txtPrimCompr.setVlrString(rs.getDate(4) != null ? Funcoes.sqlDateToStrDate(rs.getDate(4)) : "");
-				txtUltCompr.setVlrString(rs.getDate(5) != null ? Funcoes.sqlDateToStrDate(rs.getDate(5)) : "");
-			}
-			rs.close();
-			ps.close();	
-			if (!con.getAutoCommit())
-				con.commit();
-			
-			//	Busca a maior fatura ...
-			sSQL = "SELECT MAX(VLRPARCPAG),DATAPAG "+
-				   "FROM FNPAGAR "+
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? " +
-				   "GROUP BY DATAPAG " +
-				   "ORDER BY 1 DESC";
 		
-			ps1 = con.prepareStatement(sSQL);
-			ps1.setInt(1,Aplicativo.iCodEmp);
-			ps1.setInt(2,ListaCampos.getMasterFilial("FNPAGAR"));
-			ps1.setInt(3,txtCodFor.getVlrInteger().intValue());
-			rs1 = ps1.executeQuery();
-			if (rs1.next()) {
-				txtVlrMaxFat.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs1.getString(1)));
-				txtDataMaxFat.setVlrString(rs1.getDate("DATAPAG") != null ? Funcoes.sqlDateToStrDate(rs1.getDate("DATAPAG")) : "");
-			}
-			rs1.close();
-			ps1.close();		
-			if (!con.getAutoCommit())
-				con.commit();
-			
-			//	Busca o maior acumulo ...
-			sSQL = "SELECT EXTRACT(MONTH FROM DATAPAG), SUM(VLRPARCPAG), EXTRACT(YEAR FROM DATAPAG) " +
-				   "FROM FNPAGAR " +
-				   "WHERE CODEMP=? AND CODFILIAL=? AND CODFOR=? " +
-				   "GROUP BY 1, 3 " +
-				   "ORDER BY 2 DESC";
-			ps2 = con.prepareStatement(sSQL);
-			ps2.setInt(1,Aplicativo.iCodEmp);
-			ps2.setInt(2,ListaCampos.getMasterFilial("FNPAGAR"));
-			ps2.setInt(3,txtCodFor.getVlrInteger().intValue());
-			rs2 = ps2.executeQuery();
-			if(rs2.next()){
-				txtDataMaxAcum.setVlrString(Funcoes.strMes(rs2.getInt(1)) + " de " + rs2.getInt(3) );
-				txtVlrMaxAcum.setVlrString(Funcoes.strDecimalToStrCurrency(15,2,rs2.getString(2)));
-			}
-			rs2.close();
-			ps2.close();	
-			if (!con.getAutoCommit())
-				con.commit();*/
 		try {
 			
 			//	Busca totais ...

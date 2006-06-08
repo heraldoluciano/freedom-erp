@@ -193,7 +193,12 @@ public class NF025 extends Layout {
 				
 				iItImp++;
 				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 1)) {
-										
+					
+					if (iContaFrete == 0){
+						frete.next();
+						iContaFrete++;
+					}
+					
 					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
 					
 					//	Imprime totais ...
@@ -228,12 +233,7 @@ public class NF025 extends Layout {
 					//	Fim da impressão dos totais ...
 					
 					//	Imprime informações do frete ...
-					
-					if (iContaFrete == 0){
-						frete.next();
-						iContaFrete++;
-					}
-					
+										
 					imp.pulaLinha( 3, imp.comprimido());
 					imp.say(  0, frete.getString(NF.C_RAZTRANSP));
 					imp.say( 84, frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
