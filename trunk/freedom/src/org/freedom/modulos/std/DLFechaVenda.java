@@ -468,7 +468,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		    
 		bPrefs = prefs();
 		lcVenda.edit();
-		getTipoFrete();
 	}
   
 	private void calcPeso() {
@@ -621,8 +620,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 				}
 				txtCodVenda.setVlrInteger(new Integer(iCodVendaFecha));
 				txtTipoVenda.setVlrString("V");
-				if (!bCarFrete)
+				if (!bCarFrete) {
 					calcPeso();
+					getTipoFrete();
+				}
 				gravaVenda();
 				break;
 			case 1:
