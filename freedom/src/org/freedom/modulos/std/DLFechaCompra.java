@@ -34,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.JScrollPane;
 
@@ -41,6 +42,7 @@ import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JRadioGroup;
 import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
@@ -58,7 +60,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
   private JTabbedPanePad tpn = new JTabbedPanePad();
   private JPanelPad pinFecha = new JPanelPad(420,300);
   private JPanelPad pnPagar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-
+  private Tabela tabPag = new Tabela();
   private JTextFieldPad txtCodCompra = new JTextFieldPad(JTextFieldPad.TP_INTEGER,8,0);
   private JTextFieldPad txtVlrDescItCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,15,3);
   private JTextFieldPad txtPercDescCompra = new JTextFieldPad(JTextFieldPad.TP_NUMERIC,6,2);
@@ -82,12 +84,15 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
   private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
   private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
   private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
+	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad("adiciona valor do frete na nota?","S","N");
+	private JRadioGroup rgFreteVD = null;
   private ListaCampos lcCompra = new ListaCampos(this);
   private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
   private ListaCampos lcPagar = new ListaCampos(this);
   private ListaCampos lcBanco = new ListaCampos(this,"BO");
   private ListaCampos lcItPagar = new ListaCampos(this);
-  private Tabela tabPag = new Tabela();
+	private Vector vVals = new Vector();
+	private Vector vLabs = new Vector();
   private int iCodCompraFecha = 0;
   private boolean bPodeSair = false;
 
@@ -96,7 +101,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		setConexao(cn);
 		iCodCompraFecha = iCodCompra.intValue();
 		setTitulo("Fechar Compra");
-		setAtribos(440,350);
+		setAtribos(440,370);
 		
 		lcItPagar.setMaster(lcPagar);
 		lcPagar.adicDetalhe(lcItPagar);
@@ -106,6 +111,12 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		
 		tpn.add("Fechamento",pinFecha);
 		tpn.add("Pagar",pnPagar);
+		
+		vVals.addElement("C");
+		vVals.addElement("F");
+		vLabs.addElement("CIF");
+		vLabs.addElement("FOB");		
+		rgFreteVD = new JRadioGroup(1,2,vLabs, vVals);
 		
 		txtCodPlanoPag.setNomeCampo("CodPlanoPag");
 		lcPlanoPag.add(new GuardaCampo( txtCodPlanoPag, "CodPlanoPag", "Cód.p.pg.", ListaCampos.DB_PK, false));
@@ -142,6 +153,8 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		lcCompra.add(new GuardaCampo( txtVlrFreteCompra, "VlrFreteCompra", "V.prod.", ListaCampos.DB_SI,false));
 		lcCompra.add(new GuardaCampo( txtStatusCompra, "StatusCompra", "Status", ListaCampos.DB_SI,false));
 		lcCompra.add(new GuardaCampo( txtCodBanco, "CodBanco", "CodBanco", ListaCampos.DB_FK, txtDescBanco,false));
+		lcCompra.add(new GuardaCampo( rgFreteVD, "TipoFreteCompra", "Tipo do frete", ListaCampos.DB_SI,false));
+		lcCompra.add(new GuardaCampo( cbAdicFrete, "AdicFreteCompra", "frete na campra", ListaCampos.DB_SI,false));
 		lcCompra.montaSql(false, "COMPRA", "CP");
 		lcCompra.setConexao(cn);
 		txtVlrLiqCompra.setListaCampos(lcCompra);
@@ -213,12 +226,15 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 		adic(txtVlrICMSCompra,210,100,97,20);
 		adic(new JLabelPad("V. IPI"),310,80,100,20);
 		adic(txtVlrIPICompra,310,100,100,20);
-		adic(new JLabelPad("Cód.banco"),7,120,80,20);
-		adic(txtCodBanco,7,140,80,20);
-		adic(new JLabelPad("Descrição do Banco"),90,120,200,20);
-		adic(txtDescBanco,90,140,200,20);
-		adic(cbImpPed,7,170,200,20);
-		adic(cbImpNot,7,190,200,20);
+		adic(new JLabelPad("Tipo frete"),7,120,100,20);
+		adic(rgFreteVD,7,140,160,30);
+		adic(cbAdicFrete,200,145,300,20);
+		adic(new JLabelPad("Cód.banco"),7,175,100,20);
+		adic(txtCodBanco,7,195,100,20);
+		adic(new JLabelPad("Descrição do Banco"),110,175,200,20);
+		adic(txtDescBanco,110,195,300,20);
+		adic(cbImpPed,7,225,180,20);
+		adic(cbImpNot,200,225,180,20);
 		
 		if (txtVlrDescItCompra.getVlrString().length() > 0) {
 			txtPercDescCompra.setAtivo(false);

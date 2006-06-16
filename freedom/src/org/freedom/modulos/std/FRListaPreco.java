@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import net.sf.jasperreports.engine.JasperPrintManager;
 
+import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -527,7 +528,7 @@ public class FRListaPreco extends FRelatorio {
 		   	
     	try {
     		
-        	hParam.put("LOGOEMP",null);
+        	hParam.put("LOGOEMP",Icone.novo("btSair.gif").getImage());
         	hParam.put("RAZAOEMP",Aplicativo.sRazFilial);
         	hParam.put("DESCPLANOPAG",txtDescPlanoPag1.getVlrString().trim());
         	hParam.put("DESCGRUPO",txtDescGrup.getVlrString().trim());

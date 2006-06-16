@@ -146,7 +146,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 	private ListaCampos lcFisc = new ListaCampos(this);
 	private ListaCampos lcCompra2 = new ListaCampos(this);
 	private ListaCampos lcAlmox = new ListaCampos(this,"AX");
-	String sOrdNota = "";
+	private String sOrdNota = "";
+	private boolean comref = false;
+	private boolean podeBloq = false;
+	private boolean buscaVlrUltCompra = false;
 
 	public FCompra() {
 		setTitulo("Compra");
@@ -317,7 +320,8 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcCampos.setQueryInsert(false);
 
 		btFechaCompra.addActionListener(this);
-
+		btImp.addActionListener(this);
+		btPrevimp.addActionListener(this);
 		txtPercDescItCompra.addFocusListener(this);
 		txtPercComItCompra.addFocusListener(this);
 		txtVlrDescItCompra.addFocusListener(this);
@@ -326,7 +330,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		txtPrecoItCompra.addFocusListener(this);
 		txtPercICMSItCompra.addFocusListener(this);
 		txtVlrIPIItCompra.addFocusListener(this);
-		lcCampos.addPostListener(this);
 		lcCampos.addCarregaListener(this);
 		lcFor.addCarregaListener(this);
 		lcSerie.addCarregaListener(this);
@@ -334,13 +337,12 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcFisc.addCarregaListener(this);
 		lcNat.addCarregaListener(this);
 		lcLote.addCarregaListener(this);
-		lcDet.addPostListener(this);
 		lcDet.addCarregaListener(this);
-		lcCampos.addInsertListener(this);
 		lcTipoMov.addCarregaListener(this);
+		lcCampos.addInsertListener(this);
+		lcCampos.addPostListener(this);
+		lcDet.addPostListener(this);
 
-		btImp.addActionListener(this);
-		btPrevimp.addActionListener(this);
 		
 		lbStatus.setForeground(Color.WHITE);
 		lbStatus.setFont( new Font("Arial", Font.BOLD, 13));
@@ -357,7 +359,7 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		setListaCampos(lcDet);
 		setNavegador(navRod);
 		adicCampo(txtCodItCompra, 7, 20, 30, 20, "CodItCompra", "N.item",ListaCampos.DB_PK, true);
-		if (comRef()) {
+		if (comref) {
 			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
 			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
 			adicCampoInvisivel(txtRefProd, "RefProd", "Referência",ListaCampos.DB_FK, false);
@@ -437,376 +439,62 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		txtVlrLiqItCompra.setVlrBigDecimal(new BigDecimal(deVlrProd));
 	}
 
-	private void calcImpostos(boolean bCalcBase) {
-		double deRed = txtRedFisc.doubleValue();
-		double deVlrProd = Funcoes.arredDouble(txtVlrProdItCompra.doubleValue()
-				- txtVlrDescItCompra.doubleValue(), casasDecFin);
-		double deBaseICMS = Funcoes.arredDouble(txtBaseICMSItCompra
-				.doubleValue(), casasDecFin);
-		double deBaseIPI = txtBaseIPIItCompra.doubleValue();
-		double deICMS = 0;
-		//    System.out.println("Red: "+bRed);
-		//    System.out.println("VlrProd: "+bVlrProd);
-		if (deVlrProd > 0) {
-			if (bCalcBase) {
-				deBaseICMS = Funcoes.arredDouble(deVlrProd
-						- (deVlrProd * deRed / 100), casasDecFin);
-				deBaseIPI = deVlrProd;
+	private void bloqCompra() {
+		PreparedStatement ps = null;
+		String sSQL = null;
+		int iCodCompra = 0;
+		try {
+			iCodCompra = txtCodCompra.getVlrInteger().intValue();
+			if (iCodCompra != 0) {
+				sSQL = "EXECUTE PROCEDURE CPBLOQCOMPRASP(?,?,?,?)";
+	            ps = con.prepareStatement(sSQL);
+	            ps.setInt(1,Aplicativo.iCodEmp);
+	            ps.setInt(2,ListaCampos.getMasterFilial("CPCOMPRA"));
+	            ps.setInt(3,iCodCompra);
+	            ps.setString(4,"S");
+	            ps.executeUpdate();
+	            ps.close();
+	            if (!con.getAutoCommit())
+	                con.commit();
 			}
-			deICMS = Funcoes.arredDouble(deBaseICMS
-					* txtPercICMSItCompra.doubleValue() / 100, casasDecFin);
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro bloqueando a compra!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			ps = null;
+			sSQL = null;
 		}
-		txtVlrICMSItCompra.setVlrBigDecimal(new BigDecimal(deICMS));
+	}
+
+	private void calcImpostos(boolean bCalcBase) {
+		float fRed = txtRedFisc.floatValue();
+		float fVlrProd = Funcoes.arredFloat(txtVlrProdItCompra.floatValue() - txtVlrDescItCompra.floatValue(), casasDecFin);
+		float fBaseICMS = Funcoes.arredFloat(txtBaseICMSItCompra.floatValue(), casasDecFin);
+		float fBaseIPI = txtBaseIPIItCompra.floatValue();
+		float fICMS = 0;
+		if (fVlrProd > 0) {
+			if (bCalcBase) {
+				fBaseICMS = Funcoes.arredFloat(fVlrProd - (fVlrProd * fRed / 100), casasDecFin);
+				fBaseIPI = fVlrProd;
+			}
+			fICMS = Funcoes.arredFloat(fBaseICMS * txtPercICMSItCompra.floatValue() / 100, casasDecFin);
+		}
+		txtVlrICMSItCompra.setVlrBigDecimal(new BigDecimal(fICMS));
 		if (bCalcBase) {
-			txtBaseICMSItCompra.setVlrBigDecimal(new BigDecimal(deBaseICMS));
-			txtBaseIPIItCompra.setVlrBigDecimal(new BigDecimal(deBaseIPI));
+			txtBaseICMSItCompra.setVlrBigDecimal(new BigDecimal(String.valueOf(fBaseICMS)));
+			txtBaseIPIItCompra.setVlrBigDecimal(new BigDecimal(String.valueOf(fBaseIPI)));
 		}
-		txtVlrLiqItCompra.setVlrBigDecimal(new BigDecimal(deVlrProd));
+		txtVlrLiqItCompra.setVlrBigDecimal(new BigDecimal(String.valueOf(fVlrProd)));
 		txtAliqIPIItCompra.setVlrBigDecimal(txtAliqIPIFisc.getVlrBigDecimal());
 	}
 
 	private void calcVlrProd() {
-		double dePreco = txtPrecoItCompra.doubleValue();
-		double deQtd = txtQtdItCompra.doubleValue();
-		txtVlrProdItCompra.setVlrBigDecimal(new BigDecimal(Funcoes.arredDouble(
-				dePreco * deQtd, casasDecFin)));
-		//    System.out.println("VlrProdTot:
-		// "+txtVlrProdItCompra.getVlrBigDecimal());
+		float fPreco = txtPrecoItCompra.floatValue();
+		float fQtd = txtQtdItCompra.floatValue();
+		txtVlrProdItCompra.setVlrBigDecimal(new BigDecimal(Funcoes.arredFloat(
+				fPreco * fQtd, casasDecFin)));
 	}
 
-	private void testaCodCompra() { //Traz o verdadeiro número do codCompra
-		// através do generator do banco
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilial);
-			ps.setString(3, "CP");
-			rs = ps.executeQuery();
-			rs.next();
-			txtCodCompra.setVlrString(rs.getString(1));
-			//      rs.close();
-			//      ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
-					+ err.getMessage(),true,con,err);
-		}
-	}
-
-	/**
-	 * Busca da Natureza de Operação . Busca a natureza de operação através da
-	 * tabela de regras fiscais.
-	 */
-	private void buscaNat() {
-		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
-		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodFilial);
-			ps.setInt(2, Aplicativo.iCodEmp);
-			ps.setInt(3, lcProd.getCodFilial());
-			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
-			ps.setNull(5, Types.INTEGER);
-			ps.setNull(6, Types.INTEGER);
-			ps.setNull(7, Types.INTEGER);
-			ps.setInt(8, Aplicativo.iCodEmp);
-			ps.setInt(9, lcFor.getCodFilial());
-			ps.setInt(10, txtCodFor.getVlrInteger().intValue());
-			ps.setInt(11, lcTipoMov.getCodFilial());
-			ps.setInt(12, txtCodTipoMov.getVlrInteger().intValue());
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				txtCodNat.setVlrString(rs.getString("CODNAT"));
-			}
-			rs.close();
-			ps.close();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
-					+ err.getMessage(),true,con,err);
-		}
-	}
-
-	public boolean testaCodLote() {
-		boolean bRetorno = false;
-		boolean bValido = false;
-		String sSQL = "SELECT COUNT(*) FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?"
-				+ " AND CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setString(1, txtCodLote.getText().trim());
-			ps.setInt(2, txtCodProd.getVlrInteger().intValue());
-			ps.setInt(3, Aplicativo.iCodEmp);
-			ps.setInt(4, lcLote.getCodFilial());
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getInt(1) > 0) {
-					bValido = true;
-				}
-			}
-			rs.close();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
-					+ err.getMessage(),true,con,err);
-		}
-		if (!bValido) {
-			DLLote dl = new DLLote(this, txtCodLote.getText(), txtCodProd
-					.getText(), txtDescProd.getText(), con);
-			dl.setVisible(true);
-			if (dl.OK) {
-				bRetorno = true;
-				txtCodLote.setVlrString(dl.getValor());
-				lcLote.carregaDados();
-			}
-			dl.dispose();
-		} else {
-			bRetorno = true;
-		}
-		return bRetorno;
-	}
-
-	public void focusGained(FocusEvent fevt) {
-	}
-
-	public void focusLost(FocusEvent fevt) {
-		if (fevt.getSource() == txtPercDescItCompra) {
-			if (txtPercDescItCompra.getText().trim().length() < 1) {
-				txtVlrDescItCompra.setAtivo(true);
-			} else {
-				txtVlrDescItCompra.setVlrBigDecimal(new BigDecimal(Funcoes
-						.arredDouble(txtVlrProdItCompra.doubleValue()
-								* txtPercDescItCompra.doubleValue() / 100,
-								casasDecFin)));
-				calcVlrProd();
-				calcImpostos(true);
-				txtVlrDescItCompra.setAtivo(false);
-			}
-		} else if (fevt.getSource() == txtVlrIPIItCompra) {
-			adicIPI();
-		} else if (fevt.getSource() == txtVlrDescItCompra) {
-			if (txtVlrDescItCompra.getText().trim().length() < 1) {
-				txtPercDescItCompra.setAtivo(true);
-			} else if (txtVlrDescItCompra.getAtivo()) {
-				txtPercDescItCompra.setAtivo(false);
-			}
-		} else if ((fevt.getSource() == txtQtdItCompra)
-				|| (fevt.getSource() == txtPrecoItCompra)
-				|| (fevt.getSource() == txtCodNat)) {
-			calcVlrProd();
-			calcImpostos(true);
-		} else if (fevt.getSource() == txtPercICMSItCompra) {
-			calcVlrProd();
-			calcImpostos(false);
-		}
-	}
-
-	/**
-	 * Busca de icms. Busca a percentagem de ICMS conforme a regra fiscal.
-	 */
-	private void buscaICMS() {
-		String sSQL = "SELECT PERCICMS FROM LFBUSCAICMSSP(?,?,?,?)";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setString(1, txtCodNat.getVlrString());
-			ps.setString(2, txtEstFor.getVlrString());
-			ps.setInt(3, Aplicativo.iCodEmp);
-			ps.setInt(4, Aplicativo.iCodFilialMz);
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				txtPercICMSItCompra.setVlrBigDecimal(new BigDecimal(rs
-						.getString(1)));
-			}
-			calcImpostos(true);
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
-					+ err.getMessage(),true,con,err);
-		}
-	}
-
-	public void beforeCarrega(CarregaEvent cevt) {
-		if (lcDet.getStatus() != ListaCampos.LCS_INSERT) {
-			if (cevt.getListaCampos() == lcProd) {
-				lcProd.cancLerCampo(4, true); //Código da Classificação Fiscal
-			}
-		} else {
-			if (cevt.getListaCampos() == lcProd) {
-				lcProd.cancLerCampo(4, false); //Código da Classificação Fiscal
-			}
-		}
-		if (cevt.getListaCampos() == lcLote) {
-			if (txtCodLote.getText().trim().length() == 0) {
-				cevt.cancela(); //Cancela o carregaDados do lcLote para não
-								// zerar o
-				// codprod.
-			}
-		}
-	}
-
-	public void afterPost(PostEvent pevt) {
-		String s = txtCodCompra.getText();
-		lcCompra2.carregaDados(); //Carrega os Totais
-		txtCodCompra.setVlrString(s);
-	}
-
-	public void afterCarrega(CarregaEvent cevt) {
-		if (cevt.getListaCampos() == lcProd) {
-			if (txtCLoteProd.getText().trim().equals("N")) {
-				txtCodLote.setAtivo(false);//Desativa o Cógigo do lote por o
-										   // produto
-				// não possuir lote
-			} else if (txtCLoteProd.getText().trim().equals("S")) {
-				txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
-										  // produto tem
-				// lote
-			}
-		} else if ((cevt.getListaCampos() == lcFisc)
-				&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-			buscaNat();
-		} else if (cevt.getListaCampos() == lcDet) {
-			String s = txtCodCompra.getText();
-			lcCompra2.carregaDados(); //Carrega os Totais
-			txtCodCompra.setVlrString(s);
-		} else if (cevt.getListaCampos() == lcCampos) {
-			String s = txtCodCompra.getText();
-			lcCompra2.carregaDados(); //Carrega os Totais
-			txtCodCompra.setVlrString(s);
-		} else if (cevt.getListaCampos() == lcSerie) {
-			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) && (cbSeqNfTipoMov.getVlrString().equals("S")) )
-				txtDocCompra.setVlrInteger(new Integer(txtDocSerie
-						.getVlrInteger().intValue() + 1));
-		} else if (cevt.getListaCampos() == lcNat) {
-			if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
-				buscaICMS();
-			}
-		} else if (cevt.getListaCampos() == lcTipoMov ) {
-			if (cbSeqNfTipoMov.getVlrString().equals("S"))
-				txtDocCompra.setAtivo(false);
-			else
-				txtDocCompra.setAtivo(true);
-		}
-		/*
-		if (txtStatusCompra.getVlrString().trim().length()>0 && 
-				txtStatusCompra.getVlrString().substring(0,1).equals("C")){
-			lbStatus.setText("  CANCELADA");
-			lbStatus.setBackground(Color.RED);
-			lbStatus.setVisible(true);
-		}
-		else 
-			*/
-			if (txtStatusCompra.getVlrString().trim().length()>0 && 
-				(txtStatusCompra.getVlrString().trim().equals("C2")
-						|| txtStatusCompra.getVlrString().trim().equals("C3"))){
-			lbStatus.setText("NOTA RECEBIDA");
-			lbStatus.setBackground(Color.GREEN);
-			lbStatus.setVisible(true);
-		}
-		else if (verificaBloq()){
-			lbStatus.setText("  BLOQUEADA");
-			lbStatus.setBackground(Color.BLUE);
-			lbStatus.setVisible(true);
-		}
-		else {
-			lbStatus.setText("");
-			lbStatus.setVisible( false );
-		}
-		
-	}
-
-	public void keyPressed(KeyEvent kevt) {
-		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (kevt.getSource() == txtCodPlanoPag) {//Talvez este possa ser o
-													 // ultimo
-				// campo do itvenda.
-				if (lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
-					lcCampos.post();
-					lcDet.insert(true);
-					txtRefProd.requestFocus();
-				} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
-					lcCampos.post();
-					txtCodItCompra.requestFocus();
-				}
-			} else if (kevt.getSource() == txtVlrLiqItCompra) {//Talvez este
-															   // possa ser
-				// o ultimo campo do
-				// itvenda.
-				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-					lcDet.post();
-					lcDet.limpaCampos(true);
-					lcDet.setState(ListaCampos.LCS_NONE);
-					if (comRef())
-						txtRefProd.requestFocus();
-					else
-						txtCodProd.requestFocus();
-				} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
-					lcDet.post();
-					txtCodItCompra.requestFocus();
-				}
-			}
-		} else if (kevt.getKeyCode() == KeyEvent.VK_F4) {
-			btFechaCompra.doClick();
-		}
-		if (kevt.getSource() == txtRefProd)
-			lcDet.edit();
-
-		super.keyPressed(kevt);
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-		String[] sValores = null;
-		if (evt.getSource() == btFechaCompra) {
-			DLFechaCompra dl = new DLFechaCompra(con, txtCodCompra .getVlrInteger(), this);
-			dl.setVisible(true);
-			if (dl.OK) {
-				sValores = dl.getValores();
-				dl.dispose();
-			} else {
-				dl.dispose();
-			}
-			lcCampos.carregaDados();
-			if (sValores != null) {
-				lcCampos.edit();
-				if (sValores[4].equals("S")){
-					if (txtTipoMov.getVlrString().equals("VD")
-							|| txtTipoMov.getVlrString().equals("VT")
-							|| txtTipoMov.getVlrString().equals("TR")
-							|| txtTipoMov.getVlrString().equals("CS")
-							|| txtTipoMov.getVlrString().equals("CE")
-							|| txtTipoMov.getVlrString().equals("PE")
-							|| txtTipoMov.getVlrString().equals("DV")
-							|| txtTipoMov.getVlrString().equals("BN"))
-						emitNota("NF");
-					else if (txtTipoMov.getVlrString().equals("SE"))
-						emitNota("NS");
-					else {
-						Funcoes.mensagemErro(this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'");
-						return;
-					}
-				}
-				else if (sValores[3].equals("S")) {
-					imprimir(true, txtCodCompra.getVlrInteger().intValue());
-				}
-				
-				lcCampos.post();
-				
-				if(podeBloq()) {
-					bloqCompra();
-				}
-			}
-		} else if (evt.getSource() == btPrevimp)
-			imprimir(true, txtCodCompra.getVlrInteger().intValue());
-		else if (evt.getSource() == btImp)
-			imprimir(false, txtCodCompra.getVlrInteger().intValue());
-		super.actionPerformed(evt);
-	}
-	
 	private void emitNota(String tipo){		
 		Object layNF = null;		
 		Vector parans = null;
@@ -852,6 +540,137 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		if (bImpOK)
 			imp.preview(this);
 		imp.fechaPreview();		
+	}
+
+	public void exec(int iCodCompra) {
+		txtCodCompra.setVlrString(iCodCompra + "");
+		lcCampos.carregaDados();
+	}
+
+	public void execDev(int iCodFor, int iCodTipoMov, String sSerie, int iDoc) {
+		lcCampos.insert(true);
+		txtCodFor.setVlrString(iCodFor + "");
+		lcFor.carregaDados();
+		txtCodTipoMov.setVlrString(iCodTipoMov + "");
+		lcTipoMov.carregaDados();
+		txtSerieCompra.setVlrString(sSerie);
+		txtDocCompra.setVlrString(iDoc + "");
+	}
+
+	/**
+	 * Busca da Natureza de Operação . Busca a natureza de operação através da
+	 * tabela de regras fiscais.
+	 */
+	private void getCFOP() {
+		String sSQL = "SELECT CODNAT FROM LFBUSCANATSP (?,?,?,?,?,?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodFilial);
+			ps.setInt(2, Aplicativo.iCodEmp);
+			ps.setInt(3, lcProd.getCodFilial());
+			ps.setInt(4, txtCodProd.getVlrInteger().intValue());
+			ps.setNull(5, Types.INTEGER);
+			ps.setNull(6, Types.INTEGER);
+			ps.setNull(7, Types.INTEGER);
+			ps.setInt(8, Aplicativo.iCodEmp);
+			ps.setInt(9, lcFor.getCodFilial());
+			ps.setInt(10, txtCodFor.getVlrInteger().intValue());
+			ps.setInt(11, lcTipoMov.getCodFilial());
+			ps.setInt(12, txtCodTipoMov.getVlrInteger().intValue());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				txtCodNat.setVlrString(rs.getString("CODNAT"));
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar natureza da operação!\n"
+					+ err.getMessage(),true,con,err);
+		}
+	}
+
+	/**
+	 * Busca de icms. Busca a percentagem de ICMS conforme a regra fiscal.
+	 */
+	private void getICMS() {
+		String sSQL = "SELECT PERCICMS FROM LFBUSCAICMSSP(?,?,?,?)";
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement(sSQL);
+			ps.setString(1, txtCodNat.getVlrString());
+			ps.setString(2, txtEstFor.getVlrString());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, Aplicativo.iCodFilialMz);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				txtPercICMSItCompra.setVlrBigDecimal(new BigDecimal(rs
+						.getString(1)));
+			}
+			calcImpostos(true);
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao buscar percentual de ICMS!\n"
+					+ err.getMessage(),true,con,err);
+		}
+	}
+	
+	private boolean getPrefere() {
+	
+		boolean bRetorno = false;
+		String sSQL = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			
+			sSQL = "SELECT USAREFPROD, ORDNOTA, BLOQCOMPRA, BUSCAVLRULTCOMPRA " +
+				   "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+			
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				comref = rs.getString("USAREFPROD").trim().equals("S");
+				podeBloq = rs.getString("BLOQCOMPRA").trim().equals("S");
+				buscaVlrUltCompra = rs.getString("BUSCAVLRULTCOMPRA").trim().equals("S");
+				sOrdNota = rs.getString("ORDNOTA");
+			}
+			if (!con.getAutoCommit())
+				con.commit();
+	
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
+					+ err.getMessage(),true,con,err);
+		} finally {
+			sSQL = null;
+			ps = null;
+			rs = null;
+		}
+		return bRetorno;
+	}
+
+	private void getVlrUltimaCompra() {
+		String sSQL = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			sSQL = "SELECT IT.PRECOITCOMPRA " +
+				   "FROM CPCOMPRA C, CPITCOMPRA IT " +
+				   "WHERE C.CODEMP=IT.CODEMP AND C.CODFILIAL=IT.CODFILIAL " +
+				   "AND IT.CODEMP=? AND IT.CODFILIAL=? AND IT.CODPROD=? " +
+				   "ORDER BY C.DTENTCOMPRA DESC";
+			ps = con.prepareStatement(sSQL);
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, ListaCampos.getMasterFilial("CPITCOMPRA"));
+			ps.setInt(3, txtCodProd.getVlrInteger().intValue());
+			rs = ps.executeQuery();
+			if (rs.next())
+				txtPrecoItCompra.setVlrBigDecimal(new BigDecimal(rs .getString(1)));
+			
+		} catch (Exception err) {
+			err.printStackTrace();
+			Funcoes.mensagemErro(this, "Erro ao buscar valor da ultima compra!\n" + err.getMessage(),true,con,err);
+		}
 	}
 
 	private void imprimir(boolean bVisualizar, int iCodCompra) {
@@ -1124,36 +943,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		}
 	}
 
-	private boolean comRef() {
-		boolean bRetorno = false;
-		String sSQL = "SELECT USAREFPROD, ORDNOTA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		try {
-			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
-			rs = ps.executeQuery();
-			if (rs.next()) {
-				if (rs.getString("UsaRefProd").trim().equals("S"))
-					bRetorno = true;
-				sOrdNota = rs.getString("OrdNota");
-			}
-			if (!con.getAutoCommit())
-				con.commit();
-
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao carregar a tabela PREFERE1!\n"
-					+ err.getMessage(),true,con,err);
-		} finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
-		}
-		return bRetorno;
-	}	
-	
-
 	private boolean verificaBloq() {
 		boolean retorno = false;
 		ResultSet rs = null;
@@ -1189,67 +978,292 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		}
 		return retorno;
 	}
+	
+	private void testaCodCompra() { //Traz o verdadeiro número do codCompra
+		// através do generator do banco
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = con.prepareStatement("SELECT * FROM SPGERANUM(?,?,?)");
+			ps.setInt(1, Aplicativo.iCodEmp);
+			ps.setInt(2, Aplicativo.iCodFilial);
+			ps.setString(3, "CP");
+			rs = ps.executeQuery();
+			rs.next();
+			txtCodCompra.setVlrString(rs.getString(1));
+			//      rs.close();
+			//      ps.close();
+			if (!con.getAutoCommit())
+				con.commit();
+		} catch (SQLException err) {
+			Funcoes.mensagemErro(this, "Erro ao confirmar código da Compra!\n"
+					+ err.getMessage(),true,con,err);
+		}
+	}
 
-	private boolean podeBloq() {
+	public boolean testaCodLote() {
 		boolean bRetorno = false;
-		String sSQL = "SELECT BLOQCOMPRA FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
+		boolean bValido = false;
+		String sSQL = "SELECT COUNT(*) FROM EQLOTE WHERE CODLOTE=? AND CODPROD=?"
+				+ " AND CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, ListaCampos.getMasterFilial("SGPREFERE1"));
+			ps.setString(1, txtCodLote.getText().trim());
+			ps.setInt(2, txtCodProd.getVlrInteger().intValue());
+			ps.setInt(3, Aplicativo.iCodEmp);
+			ps.setInt(4, lcLote.getCodFilial());
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				if (rs.getString("BLOQCOMPRA").trim().equals("S"))
-					bRetorno = true;
+				if (rs.getInt(1) > 0) {
+					bValido = true;
+				}
 			}
+			rs.close();
+			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
-
 		} catch (SQLException err) {
-			err.printStackTrace();
-		} finally {
-			sSQL = null;
-			ps = null;
-			rs = null;
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela EQLOTE!\n"
+					+ err.getMessage(),true,con,err);
+		}
+		if (!bValido) {
+			DLLote dl = new DLLote(this, txtCodLote.getText(), txtCodProd
+					.getText(), txtDescProd.getText(), con);
+			dl.setVisible(true);
+			if (dl.OK) {
+				bRetorno = true;
+				txtCodLote.setVlrString(dl.getValor());
+				lcLote.carregaDados();
+			}
+			dl.dispose();
+		} else {
+			bRetorno = true;
 		}
 		return bRetorno;
 	}
-	
-	private void bloqCompra() {
-		PreparedStatement ps = null;
-		String sSQL = null;
-		int iCodCompra = 0;
-		try {
-			iCodCompra = txtCodCompra.getVlrInteger().intValue();
-			if (iCodCompra != 0) {
-				sSQL = "EXECUTE PROCEDURE CPBLOQCOMPRASP(?,?,?,?)";
-	            ps = con.prepareStatement(sSQL);
-	            ps.setInt(1,Aplicativo.iCodEmp);
-	            ps.setInt(2,ListaCampos.getMasterFilial("CPCOMPRA"));
-	            ps.setInt(3,iCodCompra);
-	            ps.setString(4,"S");
-	            ps.executeUpdate();
-	            ps.close();
-	            if (!con.getAutoCommit())
-	                con.commit();
+
+	public void actionPerformed(ActionEvent evt) {
+		String[] sValores = null;
+		if (evt.getSource() == btFechaCompra) {
+			DLFechaCompra dl = new DLFechaCompra(con, txtCodCompra .getVlrInteger(), this);
+			dl.setVisible(true);
+			if (dl.OK) {
+				sValores = dl.getValores();
+				dl.dispose();
+			} else {
+				dl.dispose();
 			}
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro bloqueando a compra!\n"
-					+ err.getMessage(),true,con,err);
-		} finally {
-			ps = null;
-			sSQL = null;
+			lcCampos.carregaDados();
+			if (sValores != null) {
+				lcCampos.edit();
+				if (sValores[4].equals("S")){
+					if (txtTipoMov.getVlrString().equals("VD")
+							|| txtTipoMov.getVlrString().equals("VT")
+							|| txtTipoMov.getVlrString().equals("TR")
+							|| txtTipoMov.getVlrString().equals("CS")
+							|| txtTipoMov.getVlrString().equals("CE")
+							|| txtTipoMov.getVlrString().equals("PE")
+							|| txtTipoMov.getVlrString().equals("DV")
+							|| txtTipoMov.getVlrString().equals("BN"))
+						emitNota("NF");
+					else if (txtTipoMov.getVlrString().equals("SE"))
+						emitNota("NS");
+					else {
+						Funcoes.mensagemErro(this, "Não existe nota para o tipo de movimento: '" + txtTipoMov.getVlrString() + "'");
+						return;
+					}
+				}
+				else if (sValores[3].equals("S")) {
+					imprimir(true, txtCodCompra.getVlrInteger().intValue());
+				}
+				
+				lcCampos.post();
+				
+				if(podeBloq) {
+					bloqCompra();
+				}
+			}
+		} else if (evt.getSource() == btPrevimp)
+			imprimir(true, txtCodCompra.getVlrInteger().intValue());
+		else if (evt.getSource() == btImp)
+			imprimir(false, txtCodCompra.getVlrInteger().intValue());
+		super.actionPerformed(evt);
+	}
+
+	public void focusGained(FocusEvent fevt) {
+	}
+
+	public void focusLost(FocusEvent fevt) {
+		if (fevt.getSource() == txtPercDescItCompra) {
+			if (txtPercDescItCompra.getText().trim().length() < 1) {
+				txtVlrDescItCompra.setAtivo(true);
+			} else {
+				txtVlrDescItCompra.setVlrBigDecimal(new BigDecimal(Funcoes
+						.arredDouble(txtVlrProdItCompra.doubleValue()
+								* txtPercDescItCompra.doubleValue() / 100,
+								casasDecFin)));
+				calcVlrProd();
+				calcImpostos(true);
+				txtVlrDescItCompra.setAtivo(false);
+			}
+		} else if (fevt.getSource() == txtVlrIPIItCompra) {
+			adicIPI();
+		} else if (fevt.getSource() == txtVlrDescItCompra) {
+			if (txtVlrDescItCompra.getText().trim().length() < 1) {
+				txtPercDescItCompra.setAtivo(true);
+			} else if (txtVlrDescItCompra.getAtivo()) {
+				txtPercDescItCompra.setAtivo(false);
+			}
+		} else if ((fevt.getSource() == txtQtdItCompra)
+				|| (fevt.getSource() == txtPrecoItCompra)
+				|| (fevt.getSource() == txtCodNat)) {
+			calcVlrProd();
+			calcImpostos(true);
+		} else if (fevt.getSource() == txtPercICMSItCompra) {
+			calcVlrProd();
+			calcImpostos(false);
 		}
+	}
+
+	public void keyPressed(KeyEvent kevt) {
+		if (kevt.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (kevt.getSource() == txtCodPlanoPag) {//Talvez este possa ser o
+													 // ultimo
+				// campo do itvenda.
+				if (lcCampos.getStatus() == ListaCampos.LCS_INSERT) {
+					lcCampos.post();
+					lcDet.insert(true);
+					txtRefProd.requestFocus();
+				} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
+					lcCampos.post();
+					txtCodItCompra.requestFocus();
+				}
+			} else if (kevt.getSource() == txtVlrLiqItCompra) {//Talvez este
+															   // possa ser
+				// o ultimo campo do
+				// itvenda.
+				if (lcDet.getStatus() == ListaCampos.LCS_INSERT) {
+					lcDet.post();
+					lcDet.limpaCampos(true);
+					lcDet.setState(ListaCampos.LCS_NONE);
+					if (comref)
+						txtRefProd.requestFocus();
+					else
+						txtCodProd.requestFocus();
+				} else if (lcDet.getStatus() == ListaCampos.LCS_EDIT) {
+					lcDet.post();
+					txtCodItCompra.requestFocus();
+				}
+			}
+		} else if (kevt.getKeyCode() == KeyEvent.VK_F4) {
+			btFechaCompra.doClick();
+		}
+		if (kevt.getSource() == txtRefProd)
+			lcDet.edit();
+	
+		super.keyPressed(kevt);
+	}
+
+	public void keyReleased(KeyEvent kevt) {
+		super.keyReleased(kevt);
 	}
 
 	public void keyTyped(KeyEvent kevt) {
 		super.keyTyped(kevt);
 	}
 
-	public void keyReleased(KeyEvent kevt) {
-		super.keyReleased(kevt);
+	public void beforeCarrega(CarregaEvent cevt) {
+		if (lcDet.getStatus() != ListaCampos.LCS_INSERT) {
+			if (cevt.getListaCampos() == lcProd) {
+				lcProd.cancLerCampo(4, true); //Código da Classificação Fiscal				
+			}
+		} else {
+			if (cevt.getListaCampos() == lcProd) {
+				lcProd.cancLerCampo(4, false); //Código da Classificação Fiscal
+				if(buscaVlrUltCompra)
+					getVlrUltimaCompra();
+			}
+		}
+		if (cevt.getListaCampos() == lcLote) {
+			if (txtCodLote.getText().trim().length() == 0) {
+				cevt.cancela(); //Cancela o carregaDados do lcLote para não
+								// zerar o codprod.
+			}
+		}
+	}
+
+	public void afterCarrega(CarregaEvent cevt) {
+		if (cevt.getListaCampos() == lcProd) {
+			if (txtCLoteProd.getText().trim().equals("N")) {
+				txtCodLote.setAtivo(false);//Desativa o Cógigo do lote por o
+										   // produto
+				// não possuir lote
+			} else if (txtCLoteProd.getText().trim().equals("S")) {
+				txtCodLote.setAtivo(true);//Ativa o Cógigo do Lote pois o
+										  // produto tem
+				// lote
+			}
+		} else if ((cevt.getListaCampos() == lcFisc)
+				&& (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
+			getCFOP();
+		} else if (cevt.getListaCampos() == lcDet) {
+			String s = txtCodCompra.getText();
+			lcCompra2.carregaDados(); //Carrega os Totais
+			txtCodCompra.setVlrString(s);
+		} else if (cevt.getListaCampos() == lcCampos) {
+			String s = txtCodCompra.getText();
+			lcCompra2.carregaDados(); //Carrega os Totais
+			txtCodCompra.setVlrString(s);
+		} else if (cevt.getListaCampos() == lcSerie) {
+			if ( (lcCampos.getStatus() == ListaCampos.LCS_INSERT) && (cbSeqNfTipoMov.getVlrString().equals("S")) )
+				txtDocCompra.setVlrInteger(new Integer(txtDocSerie
+						.getVlrInteger().intValue() + 1));
+		} else if (cevt.getListaCampos() == lcNat) {
+			if ((cevt.ok) & (lcDet.getStatus() == ListaCampos.LCS_INSERT)) {
+				getICMS();
+			}
+		} else if (cevt.getListaCampos() == lcTipoMov ) {
+			if (cbSeqNfTipoMov.getVlrString().equals("S"))
+				txtDocCompra.setAtivo(false);
+			else
+				txtDocCompra.setAtivo(true);
+		}
+		/*
+		if (txtStatusCompra.getVlrString().trim().length()>0 && 
+				txtStatusCompra.getVlrString().substring(0,1).equals("C")){
+			lbStatus.setText("  CANCELADA");
+			lbStatus.setBackground(Color.RED);
+			lbStatus.setVisible(true);
+		}
+		else 
+			*/
+			if (txtStatusCompra.getVlrString().trim().length()>0 && 
+				(txtStatusCompra.getVlrString().trim().equals("C2")
+						|| txtStatusCompra.getVlrString().trim().equals("C3"))){
+			lbStatus.setText("NOTA RECEBIDA");
+			lbStatus.setBackground(Color.GREEN);
+			lbStatus.setVisible(true);
+		}
+		else if (verificaBloq()){
+			lbStatus.setText("  BLOQUEADA");
+			lbStatus.setBackground(Color.BLUE);
+			lbStatus.setVisible(true);
+		}
+		else {
+			lbStatus.setText("");
+			lbStatus.setVisible( false );
+		}
+		
+	}
+
+	public void beforeInsert(InsertEvent ievt) {
+	}
+
+	public void afterInsert(InsertEvent ievt) {
+		txtDtEntCompra.setVlrDate(new Date());
+		txtDtEmitCompra.setVlrDate(new Date());
 	}
 
 	public void beforePost(PostEvent pevt) {
@@ -1267,27 +1281,10 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		}
 	}
 
-	public void beforeInsert(InsertEvent ievt) {
-	}
-
-	public void afterInsert(InsertEvent ievt) {
-		txtDtEntCompra.setVlrDate(new Date());
-		txtDtEmitCompra.setVlrDate(new Date());
-	}
-
-	public void exec(int iCodCompra) {
-		txtCodCompra.setVlrString(iCodCompra + "");
-		lcCampos.carregaDados();
-	}
-
-	public void execDev(int iCodFor, int iCodTipoMov, String sSerie, int iDoc) {
-		lcCampos.insert(true);
-		txtCodFor.setVlrString(iCodFor + "");
-		lcFor.carregaDados();
-		txtCodTipoMov.setVlrString(iCodTipoMov + "");
-		lcTipoMov.carregaDados();
-		txtSerieCompra.setVlrString(sSerie);
-		txtDocCompra.setVlrString(iDoc + "");
+	public void afterPost(PostEvent pevt) {
+		String s = txtCodCompra.getText();
+		lcCompra2.carregaDados(); //Carrega os Totais
+		txtCodCompra.setVlrString(s);
 	}
 
 	public void setConexao(Connection cn) {
@@ -1304,5 +1301,6 @@ public class FCompra extends FDetalhe implements PostListener, CarregaListener,
 		lcCompra2.setConexao(cn);
 		lcAlmox.setConexao(cn);
 		montaDetalhe();
+		getPrefere();
 	}
 }
