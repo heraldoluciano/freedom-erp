@@ -36,6 +36,12 @@ public abstract class ECFDriver {
 	public static final int OS_NONE = -1;
 	public static final int OS_LINUX = 0;
 	public static final int OS_WINDOWS = 1;
+	
+	public static final char ACRECIMO_PERCENTUAL = 'A';
+	public static final char DESCONTO_PERCENTUAL = 'D';
+	public static final char ACRECIMO_POR_VALOR = 'a';
+	public static final char DESCONTO_POR_VALOR = 'd';
+	
 	protected int sistema = -1;
 	protected byte[] bytesLidos = null;
     private InputStream entrada = null;
@@ -201,16 +207,18 @@ public abstract class ECFDriver {
 		return buffer;
 	}
 	
-	public byte[] parseParam(String param) {
-		return param.getBytes();
+	public String parseParam(String param, int tamanho) {
+		if(param.length() > tamanho)
+			param = param.substring( tamanho );
+		return param;
 	}
 	
-	public byte[] parseParam(int param, int tamanho) {				
-		return strZero( String.valueOf(param) , tamanho).getBytes();
+	public String parseParam(int param, int tamanho) {				
+		return strZero( String.valueOf(param) , tamanho);
 	}
 	
-	public byte[] parseParam(float param,int tamanho,int casasdec) {				
-		return strDecimalToStrCurrency(param,tamanho,casasdec).getBytes();
+	public String parseParam(float param,int tamanho,int casasdec) {				
+		return strDecimalToStrCurrency(param,tamanho,casasdec);
 	}
     
 	public String replicate(String texto, int Quant) {		
@@ -227,7 +235,7 @@ public abstract class ECFDriver {
 		
 		char[] c = str.toString().toCharArray();
 		int index = str.indexOf(".");
-		int indexDesc = ((c.length-1)-index) - casasdec;
+		int indexDesc = casasdec - ((c.length-1)-index);
 		str.delete(0,c.length);
 		
 		for(int i=0; i < c.length; i++)
@@ -274,6 +282,27 @@ public abstract class ECFDriver {
 	
 	public abstract int cancelaItemAnterior();// 13
 	
+	public abstract int cancelaCupom();// 14
+	
 	public abstract int cancelaItemGenerico(int item);// 31
+	
+	public abstract int iniciaFechamentoCupom(char opt, float percentual);// 32
+	
+	public abstract int terminaFechamentoCupom(String menssagem);// 34
+	
+	//	tertar com outro papel.
+	public abstract int programaUnidadeMedida(String descUnid);// 62 51
+	
+	public abstract int aumentaDescItem(String descricao);// 62 52
+	
+	// com problemas devido a falta de informação sobre os parametros.
+	public abstract int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, String departamento, String unidade, String codProd, String descProd);// 63
+	
+	public abstract int nomeiaDepartamento(int index, String descricao);// 65
+	
+	//	ver rotina de funcionamento.
+	public abstract int efetuaFormaPagamento(int indice, float valor, String descForma);// 72
+	//	são 50 parametros ????
+	//public abstract int programaDescFormaPagamento(String descT2, String descT3);// 73
 	
 }

@@ -6,6 +6,8 @@
 package org.freedom.ecf.driver;
 
 
+
+
 public class ECFBematech extends ECFDriver {
 	
 	public ECFBematech(int com) {
@@ -121,16 +123,14 @@ public class ECFBematech extends ECFDriver {
 	//	Abre o cupom para venda passando o cnpj/cpf do cliente.
 	public int aberturaDeCupom(String cnpj) {
 		byte[] CMD = {ESC,0};
-		byte[] PARAM = parseParam(cnpj);
-		CMD = adicBytes(CMD,PARAM);
+		CMD = adicBytes(CMD,parseParam(cnpj,29).getBytes());
 		return executaCmd(CMD);
 	}
 	
 	//	Altera simbolo da moeda corrente, não a nescidade de passar o $ no parametro.
 	public int alteraSimboloMoeda(String simbolo) {
 		byte[] CMD = {ESC,1};
-		byte[] PARAM = parseParam(simbolo);
-		CMD = adicBytes(CMD,PARAM);
+		CMD = adicBytes(CMD,parseParam(simbolo,2).getBytes());
 		return executaCmd(CMD);
 	}
 	
@@ -149,18 +149,14 @@ public class ECFBematech extends ECFDriver {
 	//	Venda de item.
 	public int vendaItem(String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto) {
 		byte[] CMD = {ESC,9};
-		byte[] PARAM0 = parseParam(codProd);
-		byte[] PARAM1 = parseParam(descProd);
-		byte[] PARAM2 = parseParam(sitTrib);
-		byte[] PARAM3 = parseParam(qtd,7,3);
-		byte[] PARAM4 = parseParam(valor,8,2);
-		byte[] PARAM5 = parseParam(desconto,8,2);
-		CMD = adicBytes(CMD,PARAM0);
-		CMD = adicBytes(CMD,PARAM1);
-		CMD = adicBytes(CMD,PARAM2);
-		CMD = adicBytes(CMD,PARAM3);
-		CMD = adicBytes(CMD,PARAM4);
-		CMD = adicBytes(CMD,PARAM5);
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(codProd,13) );
+		buf.append( parseParam(descProd,29) );
+		buf.append( parseParam(sitTrib,2) );
+		buf.append( parseParam(qtd,7,3) );
+		buf.append( parseParam(valor,8,3) );
+		buf.append( parseParam(desconto,8,2) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());
 		return executaCmd(CMD);
 	}
 	
@@ -170,12 +166,109 @@ public class ECFBematech extends ECFDriver {
 		return executaCmd(CMD);
 	}
 	
-	public int cancelaItemGenerico(int item) {
-		byte[] CMD = {ESC,31};
-		byte[] PARAM = parseParam(item,4);
-		CMD = adicBytes(CMD,PARAM);
+	//	Cancelamento do cupom.
+	public int cancelaCupom() {
+		byte[] CMD = {ESC,14};
 		return executaCmd(CMD);
 	}
+	
+	//	Cancelamento de item generico.
+	public int cancelaItemGenerico(int item) {
+		byte[] CMD = {ESC,31};
+		CMD = adicBytes(CMD,parseParam(item,4).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Inicia o fechamento do cupom.
+	public int iniciaFechamentoCupom(char opt, float valor) {
+		int tamanho = 14;
+		if( opt == ACRECIMO_PERCENTUAL || opt == DESCONTO_PERCENTUAL ) 
+			tamanho = 4;			
+		byte[] CMD = {ESC,32};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(String.valueOf(opt),1) );
+		buf.append( parseParam(valor,tamanho,2) );		
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Termina o fechamento do cupom.
+	public int terminaFechamentoCupom(String menssagem) {
+		byte[] CMD = {ESC,34};
+		CMD = adicBytes(CMD,parseParam(menssagem + "/0",384).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Programa a unidade de medida
+	//	Valida somente para um item, depois volta ao default.
+	public int programaUnidadeMedida(String descUnid) {
+		byte[] CMD = {ESC,62,51};
+		CMD = adicBytes(CMD,parseParam(descUnid,2).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Aumenta a descrição do item para 200 caracteres
+	//	Valida somente para um item, depois volta ao default.
+	public int aumentaDescItem(String descricao) {
+		byte[] CMD = {ESC,62,52};
+		CMD = adicBytes(CMD,parseParam(descricao,200).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Venda de item com entrada de Departamento, Desconto e Unidade
+	public int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, String departamento, String unidade, String codProd, String descProd) {
+		byte[] CMD = {ESC,63};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(sitTrib,2) );
+		buf.append( parseParam(valor,9,3) );
+		buf.append( parseParam(qtd,7,3) );
+		buf.append( parseParam(desconto,10,2) );
+		buf.append( parseParam(acrescimo,10,2) );
+		buf.append( parseParam(departamento,2) );
+		buf.append( parseParam("00000000000000000000",20) );
+		buf.append( parseParam(unidade,2) );
+		buf.append( parseParam(codProd + "/0",49) );
+		buf.append( parseParam(descProd + "/0",201) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Nomeia os departamentos.
+	public int nomeiaDepartamento(int index, String descricao) {
+		byte[] CMD = {ESC,65};
+		CMD = adicBytes(CMD,parseParam(descricao,20).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Efetua forma de pagamento.
+	public int efetuaFormaPagamento(int indice, float valor, String descForma) {
+		byte[] CMD = {ESC,72};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(indice,2) );
+		buf.append( parseParam(valor,14,2) );
+		buf.append( parseParam(descForma,80) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
