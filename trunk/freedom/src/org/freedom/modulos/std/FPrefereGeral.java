@@ -192,6 +192,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbFilBuscGenProd4 = null;
 	private JCheckBoxPad cbUsaBuscGenProdORC = null;
 	private JCheckBoxPad cbUsaLoteOrc = null;
+	private JCheckBoxPad cbBuscaVlrUltCompra = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -472,6 +473,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbUsaBuscGenProdORC.setVlrString("N");
 		cbUsaLoteOrc = new JCheckBoxPad("Usa lote no orçamento?", "S", "N");
 		cbUsaLoteOrc.setVlrString("N");
+		cbBuscaVlrUltCompra = new JCheckBoxPad("Busca valor da ultima compra?", "S", "N");
+		cbBuscaVlrUltCompra.setVlrString("N");
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -703,10 +706,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDescFK(txtDescTipoMov8, 90, 75, 250, 20, "DescTipoMov","Descrição do tp. mov. para RMA");
 		
 		adic(lbEstOpcoes, 380, 5, 70, 20);
-		adic(lbEstCont, 370, 15, 340, 85);
+		adic(lbEstCont, 370, 15, 340, 110);
 		adicDB(cbContEstoq, 380, 35, 250, 20,"ContEstoq","",true);
 		adicDB(cbMultiAlmox, 380, 55, 250, 20,"MultiAlmox","",true);
 		adicDB(cbBloqCompra, 380, 75, 300, 20, "BloqCompra", "", true);
+		adicDB(cbBuscaVlrUltCompra, 380, 95, 300, 20, "BuscaVlrUltCompra", "", true);
 
 		
 		nav.setAtivo(0, false);
