@@ -154,7 +154,7 @@ public class ECFBematech extends ECFDriver {
 		buf.append( parseParam(descProd,29) );
 		buf.append( parseParam(sitTrib,2) );
 		buf.append( parseParam(qtd,7,3) );
-		buf.append( parseParam(valor,8,3) );
+		buf.append( parseParam(valor,8,2) );
 		buf.append( parseParam(desconto,8,2) );
 		CMD = adicBytes(CMD,buf.toString().getBytes());
 		return executaCmd(CMD);
@@ -195,7 +195,7 @@ public class ECFBematech extends ECFDriver {
 	//	Termina o fechamento do cupom.
 	public int terminaFechamentoCupom(String menssagem) {
 		byte[] CMD = {ESC,34};
-		CMD = adicBytes(CMD,parseParam(menssagem + "/0",384).getBytes());
+		CMD = adicBytes(CMD,parseParam(menssagem,384).getBytes());
 		return executaCmd(CMD);
 	}
 	
@@ -227,8 +227,8 @@ public class ECFBematech extends ECFDriver {
 		buf.append( parseParam(departamento,2) );
 		buf.append( parseParam("00000000000000000000",20) );
 		buf.append( parseParam(unidade,2) );
-		buf.append( parseParam(codProd + "/0",49) );
-		buf.append( parseParam(descProd + "/0",201) );
+		buf.append( parseParam(codProd,49) );
+		buf.append( parseParam(descProd,201) );
 		CMD = adicBytes(CMD,buf.toString().getBytes());
 		return executaCmd(CMD);
 	}
@@ -237,6 +237,19 @@ public class ECFBematech extends ECFDriver {
 	public int nomeiaDepartamento(int index, String descricao) {
 		byte[] CMD = {ESC,65};
 		CMD = adicBytes(CMD,parseParam(descricao,20).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Programa formas de pagamentos,
+	//	Validas somente para o mesmo dia.
+	public int programaFormaPagamento(String[] descricoes) {
+		byte[] CMD = {ESC,73};
+		StringBuffer buf = new StringBuffer();
+		int size = descricoes.length < 48 ? descricoes.length : 48; 
+		for(int i=0; i<size; i++) {
+			buf.append( parseParam(descricoes[i],16) );
+		}
+		CMD = adicBytes(CMD,buf.toString().getBytes());
 		return executaCmd(CMD);
 	}
 	
