@@ -209,7 +209,7 @@ public abstract class ECFDriver {
 	
 	public String parseParam(String param, int tamanho) {
 		if(param.length() > tamanho)
-			param = param.substring( tamanho );
+			param = param.substring( 0, tamanho );
 		return param;
 	}
 	
@@ -300,9 +300,9 @@ public abstract class ECFDriver {
 	
 	public abstract int nomeiaDepartamento(int index, String descricao);// 65
 	
+	public abstract int programaFormaPagamento(String[] descricoes);// 71 ou 73
+	
 	//	ver rotina de funcionamento.
 	public abstract int efetuaFormaPagamento(int indice, float valor, String descForma);// 72
-	//	são 50 parametros ????
-	//public abstract int programaDescFormaPagamento(String descT2, String descT3);// 73
 	
 }
