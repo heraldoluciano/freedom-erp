@@ -57,6 +57,19 @@ public class DbConnectionFactory {
 		}
 	}
 
+	public static void closeConnection(ServletContext context,
+			String sessionID) throws ResourceException {
+		ResourceKey resource = null;
+
+		pool = (DbConnectionPool) context.getAttribute("db-connection-pool");
+		try {
+			resource = pool.getResourceSession(sessionID);
+			if (resource != null)
+				pool.closeResource(resource);
+		} catch (Exception e) {
+			throw new ResourceException(e.getMessage());
+		}
+	}	
 	public static java.sql.Connection getConnection(ServletContext context,
 			String sessionID, String userid, String password)
 			throws SQLException {
@@ -89,7 +102,7 @@ public class DbConnectionFactory {
 																	// de senha
 																	// inválida
 						} 
-							conn = (java.sql.Connection) resource.getResource();
+						conn = (java.sql.Connection) resource.getResource();
 					}
 				}
 			} catch (Exception esql) {
