@@ -146,9 +146,9 @@ public class LaudoAprSusFisio extends LeiauteGR {
 		drawTexto("Saúde",100,30);
 
 		setFonte(fnTituloBanner);
-		drawTexto("LAUDO MÉDICO PARA EMISSÃO DE APAC",153,9,260,AL_BCEN);
-		drawTexto("REABILITAÇÃO FÍSICA / ÓRTESES,PRÓTESES",153,17,260,AL_BCEN);
-		drawTexto("E MEIOS AUXILIARES DE LOCOMOÇÃO",153,26,260,AL_BCEN);
+		//drawTexto("LAUDO MÉDICO PARA EMISSÃO DE APAC",153,9,260,AL_BCEN);
+		drawTexto("REABILITAÇÃO FÍSICA / ÓRTESES, PRÓTESES",153,15,260,AL_BCEN);
+		drawTexto("E MEIOS AUXILIARES DE LOCOMOÇÃO",153,24,260,AL_BCEN);
 
 		drawRetangulo(422,0,70,32,AL_BDIR);
 		setFonte(fnSubTitulo);

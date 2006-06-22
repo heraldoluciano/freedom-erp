@@ -232,6 +232,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	lcProd.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
 	lcProd.add(new GuardaCampo( txtRefProd, "RefProd", "Referência", ListaCampos.DB_SI, false));
 	lcProd.add(new GuardaCampo( txtCodBarras, "CodBarProd", "Código de Barras", ListaCampos.DB_SI, false));
+	lcProd.add(new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cód.almox.",ListaCampos.DB_SI, false));
 	lcProd.setWhereAdic("ATIVOPROD='S'");
 	lcProd.montaSql(false, "PRODUTO", "EQ");
 	lcProd.setQueryCommit(false);
@@ -240,9 +241,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
     
 	//FK de Almoxarifado
 
-	lcAlmox.add(new GuardaCampo(txtCodAlmoxItOrc, "codalmox", "Cod.Almox.",
-			ListaCampos.DB_PK, false));
-
+	lcAlmox.add(new GuardaCampo(txtCodAlmoxItOrc, "codalmox", "Cod.Almox.", ListaCampos.DB_PK, false));
 	lcAlmox.montaSql(false, "ALMOX", "EQ");
 	lcAlmox.setQueryCommit(false);
 	lcAlmox.setReadOnly(true);
@@ -256,6 +255,7 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
 	lcProd2.add(new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false));
 	lcProd2.add(new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false));
 	lcProd2.add(new GuardaCampo( txtCodBarras, "CodBarProd", "Código de Barras", ListaCampos.DB_SI, false));
+	lcProd2.add(new GuardaCampo( txtCodAlmoxItOrc, "CodAlmox", "Cód.almox.",ListaCampos.DB_SI, false));
 	txtRefProd.setNomeCampo("RefProd");
 	txtRefProd.setListaCampos(lcDet);
 	lcProd2.setWhereAdic("ATIVOPROD='S'");
@@ -536,8 +536,10 @@ public class FOrcamento extends FDetalhe implements PostListener,CarregaListener
     if (cevt.getListaCampos() == lcDet) {
       lcOrc2.carregaDados();//Carrega os Totais
     }
-	else if (cevt.getListaCampos() == lcProd2 && lcDet.getStatus() == ListaCampos.LCS_INSERT) {
-	  buscaPreco(); 
+	else if ((cevt.getListaCampos() == lcProd) || (cevt.getListaCampos() == lcProd2)) {
+		if (lcDet.getStatus() == ListaCampos.LCS_INSERT)
+			buscaPreco();
+	  lcAlmox.carregaDados();
 	}
     else if (cevt.getListaCampos() == lcCampos) {
       String s = txtCodOrc.getVlrString();
