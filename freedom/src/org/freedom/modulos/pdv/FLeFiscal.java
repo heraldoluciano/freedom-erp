@@ -29,6 +29,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -402,7 +403,31 @@ public class FLeFiscal extends FTabDados {
 			carregaTotalizadores();
 		}
 		super.actionPerformed(evt);
-	} 
+	}
+	
+	public boolean gravaReducaoZ( Date data, int codCaixa ) {
+		
+		try {
+			
+			lcCampos.insert( false );
+			txtDataX.setVlrDate( data );
+			txtNumTermX.setVlrInteger( new Integer( codCaixa ) );
+			lcCaixa.carregaDados();
+			buscaAliquotas();
+			carregaContadores();
+			carregaTotalizadores();
+			lcCampos.post();
+			
+		} catch ( Exception e ) {
+			Funcoes.mensagemErro( null, "Erro ao gravar Redução Z\n" + e.getMessage() );
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcCampos.setConexao(cn);

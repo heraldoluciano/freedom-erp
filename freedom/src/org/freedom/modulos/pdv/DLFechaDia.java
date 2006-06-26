@@ -29,6 +29,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.freedom.componentes.JLabelPad;
@@ -97,6 +98,12 @@ public class DLFechaDia extends FFDialogo {
 		try {
 			
 //			Fecha o caixa:			
+			
+			if( bReduz ) {
+				FLeFiscal fiscal = new FLeFiscal();
+				fiscal.setConexao( con );
+				fiscal.gravaReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa );
+			}
 
 			String sSQL = "EXECUTE PROCEDURE PVFECHACAIXASP(?,?,?,?,?,?,?)";
 			PreparedStatement ps = con.prepareStatement(sSQL);
