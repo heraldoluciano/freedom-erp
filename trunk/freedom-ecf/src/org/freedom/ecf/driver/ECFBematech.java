@@ -5,6 +5,8 @@
  */
 package org.freedom.ecf.driver;
 
+import java.util.Date;
+
 
 
 
@@ -146,6 +148,28 @@ public class ECFBematech extends ECFDriver {
 		return executaCmd(CMD);
 	}
 	
+	//	Leitura da memoria fiscal por data.
+	public int leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo) {
+		byte[] CMD = {ESC,8};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(dataIni) );
+		buf.append( parseParam(dataFim) );
+		buf.append( parseParam(tipo,1) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Leitura da memoria fiscal por reuções.
+	public int leituraMemoriaFiscal( int ini, int fim, char tipo) {
+		byte[] CMD = {ESC,8};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(ini,6) );
+		buf.append( parseParam(fim,6) );
+		buf.append( parseParam(tipo,1) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
 	//	Venda de item.
 	public int vendaItem(String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto) {
 		byte[] CMD = {ESC,9};
@@ -195,7 +219,7 @@ public class ECFBematech extends ECFDriver {
 	//	Termina o fechamento do cupom.
 	public int terminaFechamentoCupom(String menssagem) {
 		byte[] CMD = {ESC,34};
-		CMD = adicBytes(CMD,parseParam(menssagem,384).getBytes());
+		CMD = adicBytes(CMD,parseParam(menssagem,492).getBytes());
 		return executaCmd(CMD);
 	}
 	
@@ -243,7 +267,7 @@ public class ECFBematech extends ECFDriver {
 	//	Programa formas de pagamentos,
 	//	Validas somente para o mesmo dia.
 	public int programaFormaPagamento(String[] descricoes) {
-		byte[] CMD = {ESC,73};
+		byte[] CMD = {ESC,71};
 		StringBuffer buf = new StringBuffer();
 		int size = descricoes.length < 48 ? descricoes.length : 48; 
 		for(int i=0; i<size; i++) {
@@ -261,6 +285,18 @@ public class ECFBematech extends ECFDriver {
 		buf.append( parseParam(valor,14,2) );
 		buf.append( parseParam(descForma,80) );
 		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Estorna de uma forma de pagamento a outra.
+	//	O valor não pode exceder o valor da forma de origem. 
+	public int estornoFormaPagamento(String descOrigem, String descDestino, float valor) {		
+		byte[] CMD = {ESC,74};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(descOrigem,16) );
+		buf.append( parseParam(descDestino,16) );
+		buf.append( parseParam(valor,14,2) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());		
 		return executaCmd(CMD);
 	}
 	

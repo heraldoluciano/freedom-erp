@@ -9,6 +9,8 @@ package org.freedom.ecf.driver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 
 import javax.comm.CommPortIdentifier;
@@ -41,6 +43,8 @@ public abstract class ECFDriver {
 	public static final char DESCONTO_PERCENTUAL = 'D';
 	public static final char ACRECIMO_POR_VALOR = 'a';
 	public static final char DESCONTO_POR_VALOR = 'd';
+	public static final char IMPRESSAO = 'I';
+	public static final char RETORNO = 'R';
 	
 	protected int sistema = -1;
 	protected byte[] bytesLidos = null;
@@ -210,6 +214,8 @@ public abstract class ECFDriver {
 	public String parseParam(String param, int tamanho) {
 		if(param.length() > tamanho)
 			param = param.substring( 0, tamanho );
+		//else
+			//param += replicate( "\0", tamanho - param.length() );
 		return param;
 	}
 	
@@ -217,8 +223,17 @@ public abstract class ECFDriver {
 		return strZero( String.valueOf(param) , tamanho);
 	}
 	
+	public String parseParam(char param, int tamanho) {				
+		return strZero( String.valueOf(param) , tamanho);
+	}
+	
 	public String parseParam(float param,int tamanho,int casasdec) {				
 		return strDecimalToStrCurrency(param,tamanho,casasdec);
+	}
+	
+	public String parseParam(Date param) {			
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy");		
+		return sdf.format(param).trim();
 	}
     
 	public String replicate(String texto, int Quant) {		
@@ -278,6 +293,10 @@ public abstract class ECFDriver {
 	
 	public abstract int reducaoZ();// 6
 	
+	public abstract int leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo);// 8
+	
+	public abstract int leituraMemoriaFiscal( int ini, int fim, char tipo);// 8
+	
 	public abstract int vendaItem(String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto);// 9
 	
 	public abstract int cancelaItemAnterior();// 13
@@ -290,7 +309,6 @@ public abstract class ECFDriver {
 	
 	public abstract int terminaFechamentoCupom(String menssagem);// 34
 	
-	//	tertar com outro papel.
 	public abstract int programaUnidadeMedida(String descUnid);// 62 51
 	
 	public abstract int aumentaDescItem(String descricao);// 62 52
@@ -300,9 +318,10 @@ public abstract class ECFDriver {
 	
 	public abstract int nomeiaDepartamento(int index, String descricao);// 65
 	
-	public abstract int programaFormaPagamento(String[] descricoes);// 71 ou 73
+	public abstract int programaFormaPagamento(String[] descricoes);// 71
 	
-	//	ver rotina de funcionamento.
 	public abstract int efetuaFormaPagamento(int indice, float valor, String descForma);// 72
+	
+	public abstract int estornoFormaPagamento(String descOrigem, String descDestino, float valor);// 74
 	
 }
