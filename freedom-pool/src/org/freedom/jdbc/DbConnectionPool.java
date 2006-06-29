@@ -1,144 +1,177 @@
-/*
- * Created on 05/10/2004
- * Autor: robson 
- * Descrição: Pool de conexões JDBC
- */
 package org.freedom.jdbc;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import org.freedom.util.resource.ResourceException;
 import org.freedom.util.resource.ResourceKey;
-import org.freedom.util.resource.ResourcePool;
+import org.freedom.util.resource.AbstractResourcePool;
 
 /**
- * @author robson
- * 
- * Pool de conexões JDBC
+ * @author Robson Sanchez/Setpoint Informática Ltda.
+ *
+ * Pool de conexões JDBC. <BR>
+ * criada: 05/10/2004. <BR>
+ * Projeto: freedom-pool <BR>
+ * Pacote: org.freedom.jdbc <BR>
+ * Classe: DbConnectionPool <BR> <BR>
+ * Este programa é licenciado de acordo com a LGPL
+ * (Lesser General Public License), <BR>
+ * versão 2.1, Fevereiro de 1999 <BR>
+ * A LGPL deve acompanhar todas PUBLICAÇÕES,
+ * DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LGPL não esteja disponível
+ * junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em:
+ * <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt>
+ * Creative Commons</a> <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou
+ * ALTERAR este Programa é preciso estar
+ * de acordo com os termos da LGPL <BR> <BR>
  */
-public class DbConnectionPool extends ResourcePool {
+public class DbConnectionPool extends AbstractResourcePool {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.elog.system.util.ResourcePool#createResource()
-	 */
+   /**
+    * driver Caminho para o driver JDBC.
+    * url URL para a conexão com o banco de dados.
+    */
+   private transient String driver, url;
 
-	private final String driver, url;
+   /**
+    * initialCons Número de conexões iniciais.
+    */
+   private transient int initialCons;
 
-	private final int initialConnections = 0;
+   /**
+    * driverLoaded Flag que indica se o driver já foi carregado.
+    */
+   private transient boolean driverLoaded = false;
 
-	private boolean driverLoaded = false;
+   /**
+    * user ID do usuário para conexão com banco de dados.
+    * password Senha do usuário de banco de dados.
+    */
+   private transient String user, password;
 
-	private String user, password;
+   /**
+    * userweb Usuário para o pool de conexões configurado no web.xml.
+    * passwordweb Senha para o pool de conexões configurado no web.xml.
+    */
+   private transient String userweb, passwordweb;
 
-	private String userweb, passwordweb; // User name e password configurados em
-										 // web.xml
+   /**
+    * sessionID ID da sessão do servidor http. Utilizado como chave para pool.
+    */
+   private transient String sessionID;
 
-	private String sessionID;
+   /**
+    * Construtor da classe sem as informações de usuário e senha.
+    * @param drivercon Caminho para o driver de conexão JDBC.
+    * @param urlcon URL para a conexão com o banco de dados.
+    */
+   public DbConnectionPool(final String drivercon, final String urlcon) {
+      this(drivercon, urlcon, null, null);
+   }
 
-	public DbConnectionPool(String driver, String url) {
-		this(driver, url, null, null);
-	}
+   /**
+    * Construtor da classe com as informações de usuário e senha.
+    * @param drivercon Caminho para o driver de conexão JDBC.
+    * @param urlcon URL para a conexão com o banco de dados.
+    * @param usercon ID do usuário para conexão com o banco de dados.
+    * @param passwordcon Senha do usuário para a conexão com o banco de dados.
+    */
+   public DbConnectionPool(final String drivercon, final String urlcon,
+         final String usercon, final String passwordcon) {
+      super();
+      this.initialCons = 0;
+      this.driver = drivercon;
+      this.url = urlcon;
+      ResourceKey resource;
+      if ((usercon != null) || (passwordcon != null)) { // se o usuário e senha
+         // estiverem definidos no
+         // web xml
+         this.userweb = usercon;
+         this.passwordweb = passwordcon;
+         try {
+            for (int i = 0; i < initialCons; i++) {
+               resource = createResource();
+               getAvailableRes().put(resource.getHashKey(), resource);
+            }
+         } catch (Exception ex) {
+         }
+      }
+   }
+   
 
-	public DbConnectionPool(String driver, String url, String user,
-			String password) {
-		this.driver = driver;
-		this.url = url;
-		if ((user != null) || (password != null)) { // se o usuário e senha
-													// estiverem definidos no
-													// web xml
-			this.userweb = user;
-			this.passwordweb = password;
-			try {
-				for (int i = 0; i < initialConnections; i++) {
-					ResourceKey resource = createResource();
-					availableResources.put(resource.getHashKey(), resource);
-				}
-			} catch (Exception ex) {
-			}
-		}
-	}
+   public final ResourceKey createResource() throws ResourceException {
+      Connection connection = null;
+      ResourceKey resource = null;
+      String key = null;
+      String pwd = null;
+      try {
+         if (!driverLoaded) {
+            Class.forName(driver);
+            driverLoaded = true;
+         }
+         if ((user == null) || (password == null)) { // se o username ou a
+            // password informada
+            // estiverem nulos
+            // conectará com as informações de web xml
+            connection = DriverManager.getConnection(url, userweb, passwordweb);
+            key = userweb;
+            pwd = passwordweb;
+         } else {
+            connection = DriverManager.getConnection(url, user, password);
+            key = user;
+            pwd = password;
+         }
+         resource = new ResourceKey(sessionID, key, pwd, connection);
+      } catch (Exception ex) {
+         // ClassNotFoundException ou SQLException
+         throw new ResourceException(ex.getMessage());
+      } finally {
+         key = null;
+      }
 
-	public ResourceKey createResource() throws ResourceException {
-		Connection connection = null;
-		ResourceKey resource = null;
-		String key = null;
-		String pwd = null;
-		try {
-			if (!driverLoaded) {
-				Class.forName(driver);
-				driverLoaded = true;
-			}
-			if ((user == null) || (password == null)) { // se o username ou a
-														// password informada
-														// estiverem nulos
-				// conectará com as informações de web xml
-				connection = DriverManager.getConnection(url, userweb,
-						passwordweb);
-				key = userweb;
-				pwd = passwordweb;
-			} else {
-				connection = DriverManager.getConnection(url, user, password);
-				key = user;
-				pwd = password;
-			}
-			resource = new ResourceKey(sessionID, key, pwd, connection);
-		} catch (Exception ex) {
-			// ClassNotFoundException ou SQLException
-			throw new ResourceException(ex.getMessage());
-		} finally {
-			key = null;
-		}
+      return resource;
+   }
 
-		return resource;
-	}
+   public final void closeResource(final ResourceKey resource) {
+      java.sql.Connection connection = null;
+      try {
+         connection = (Connection) resource.getResource();
+         connection.close();
+      } catch (SQLException ex) {
+         // ignora exceção
+      }
+   }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.elog.system.util.ResourcePool#closeResource(java.lang.Object)
-	 */
-	public void closeResource(ResourceKey resource) {
-		java.sql.Connection connection = null;
-		try {
-			connection = (Connection) resource.getResource();
-			connection.close();
-			resource = null;
-		} catch (SQLException ex) {
-			// ignora exceção
-		}
-	}
+   /*
+    * (non-Javadoc)
+    * 
+    * @see com.elog.system.util.ResourcePool#isResourceValid(java.lang.Object)
+    */
+   public boolean isResourceValid(ResourceKey resource) {
+      Connection connection = null;
+      boolean valid = false;
+      try {
+         connection = (Connection) resource.getResource();
+         valid = !connection.isClosed();
+      } catch (SQLException ex) {
+         valid = false;
+      }
+      return valid;
+   }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.elog.system.util.ResourcePool#isResourceValid(java.lang.Object)
-	 */
-	public boolean isResourceValid(ResourceKey resource) {
-		Connection connection = null;
-		boolean valid = false;
-		try {
-			connection = (Connection) resource.getResource();
-			valid = !connection.isClosed();
-		} catch (SQLException ex) {
-			valid = false;
-		}
-		return valid;
-	}
+   public final void setUser(final String usercon) {
+      this.user = usercon;
+   }
 
-	public void setUser(String user) {
-		this.user = user;
-	}
+   public final void setPassword(final String passwordcon) {
+      this.password = passwordcon;
+   }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setSessionID(String sessionID) {
-		this.sessionID = sessionID;
-	}
+   public final void setSessionID(final String sessionIDcon) {
+      this.sessionID = sessionIDcon;
+   }
 
 }

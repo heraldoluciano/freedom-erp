@@ -12,8 +12,8 @@ package org.freedom.util.resource;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ResourceException extends Exception {
-	private static final long serialVersionUID = 1L;
-    public ResourceException(String e) {
-        super(e);
-    }
+   private static final long serialVersionUID = 1L;
+   public ResourceException(final String error) {
+      super(error);
+   }
 }
