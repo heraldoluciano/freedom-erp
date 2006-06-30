@@ -26,6 +26,10 @@
 
 package org.freedom.componentes;
 
+import java.awt.Cursor;
+
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 
 public class JButtonPad extends JButton {
@@ -64,6 +68,18 @@ public class JButtonPad extends JButton {
 
 	//private int iCodNiv = 0;
 
+	public JButtonPad(Icon icon) {
+        this(null, icon);
+    }
+	
+    public JButtonPad(String text, Icon icon) {
+        // Create the model
+    	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setModel(new DefaultButtonModel());
+        // initialize
+        init(text, icon);
+    }
+	
 	/**
 	 * Construtor da classe JButtonPad(). <BR>
 	 *  

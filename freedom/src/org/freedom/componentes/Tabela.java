@@ -20,6 +20,7 @@
 
 package org.freedom.componentes;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -53,6 +54,7 @@ public class Tabela extends JTable implements TabelaEditListener, TabelaSelListe
   
   public Tabela() { 
     setModel(modelo);  
+    setCursor(new Cursor(Cursor.HAND_CURSOR));
     setAutoResizeMode(AUTO_RESIZE_OFF);
     setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
     DefaultTableCellRenderer bigDecimalRenderer = new DefaultTableCellRenderer() {
