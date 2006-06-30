@@ -23,6 +23,7 @@
 package org.freedom.modulos.atd;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -46,6 +47,7 @@ import net.sf.nachocalendar.components.CalendarPanel;
 import net.sf.nachocalendar.tasks.TaskCalendarFactory;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JButtonPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -57,7 +59,7 @@ import org.freedom.telas.FFilho;
 
 public class FAgenda extends FFilho implements ActionListener {
   private static final long serialVersionUID = 1L;	
-  private JPanelPad pinCabAgd = new JPanelPad(0,70);
+  private JPanelPad pinCabAgd = new JPanelPad(0,40);
   private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JPanelPad pnRodAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTabbedPanePad tpnAgd = new JTabbedPanePad();
@@ -66,7 +68,7 @@ public class FAgenda extends FFilho implements ActionListener {
   private JScrollPane spnAgd = new JScrollPane(tabAgd);  
   private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
-  private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
+  private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
   private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
@@ -95,6 +97,9 @@ public class FAgenda extends FFilho implements ActionListener {
   	
 
   	pnAgd.add(pinCabAgd,BorderLayout.NORTH);
+  	
+  	calendarpanel.setAntiAliased(true);
+  	calendarpanel.setCursor(new Cursor(Cursor.HAND_CURSOR)); 	
   	pnAgd.add(calendarpanel,BorderLayout.WEST);
   	pnAgd.add(spnAgd,BorderLayout.CENTER);
   	
@@ -105,10 +110,9 @@ public class FAgenda extends FFilho implements ActionListener {
 //	pinCabAgd.adic(new JLabelPad("Usuário"),7,10,250,20);
 //	pinCabAgd.adic(txtIdUsu,7,30,80,20);
 	
-	txtNomeUsu.setBackground(this.getBackground());
-	
+	txtNomeUsu.setBackground(this.getBackground());	
 	txtNomeUsu.tiraBorda();
-	pinCabAgd.adic(txtNomeUsu,7,30,250,20);
+	pinCabAgd.adic(txtNomeUsu,7,10,250,20);
 //	pinCabAgd.adic(btExec,360,23,30,30);
 		
 	tabAgd.adicColuna("Ind.");
