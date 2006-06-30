@@ -134,14 +134,14 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		
 		
 		param = args;
-		iCodVenda = ((Integer)getParam(0)).intValue();
-		sTipoVenda = (String)getParam(1);
-		iNumCupom = ((Integer)getParam(3)).intValue();
-		txtCodPlanoPag.setVlrInteger( (Integer)getParam(4) );
-		trocouCli = ((Boolean)getParam(7)).booleanValue();
-		txtCodVend.setVlrInteger( (Integer)getParam(12) );
+		iCodVenda = ((Integer)param[0]).intValue();
+		sTipoVenda = (String)param[1];
+		iNumCupom = ((Integer)param[3]).intValue();
+		txtCodPlanoPag.setVlrInteger( (Integer)param[4] );
+		trocouCli = ((Boolean)param[7]).booleanValue();
+		txtCodVend.setVlrInteger( (Integer)param[12] );
 		
-		txtVlrCupom.setVlrBigDecimal(((BigDecimal)getParam(2)));
+		txtVlrCupom.setVlrBigDecimal(((BigDecimal)param[2]));
 		txtVlrChequeElet.setAtivo(false);
 		
 		vVals.addElement("C");
@@ -166,7 +166,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		txtCodVend.setTabelaExterna(lcVend);
 		txtCodVend.setNomeCampo("CodVend");
 		txtCodVend.setFK(true);
-		txtCodVend.setAtivo(!((Boolean)getParam(11)).booleanValue());
+		txtCodVend.setAtivo(!((Boolean)param[11]).booleanValue());
 		
 		lcClComis.add(new GuardaCampo( txtCodClComis, "CodClComis", "Cód.cl.comis.", ListaCampos.DB_PK, false));
 		lcClComis.add(new GuardaCampo( txtDescClComis, "DescClComis", "Descrição da classificassão da comissão", ListaCampos.DB_SI,false));
@@ -313,16 +313,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	    adic(txtMarcaFreteVD,130,190,120,20);
 	    
 
-		setConexao((Connection)getParam(5));
+		setConexao((Connection)param[5]);
 		
 		if(bPref) {
-			if (getParam(8) instanceof BigDecimal) {
-				pesoBrutFrete = (BigDecimal)getParam(8);
-				pesoLiqFrete = (BigDecimal)getParam(9);
-				vlrFrete = (BigDecimal)getParam(10);
+			if (param[8] instanceof BigDecimal) {
+				pesoBrutFrete = (BigDecimal)param[8];
+				pesoLiqFrete = (BigDecimal)param[9];
+				vlrFrete = (BigDecimal)param[10];
 				tpn.setSelectedIndex(2);
 			}
-			else if (getParam(8) instanceof Boolean) {
+			else if (param[8] instanceof Boolean) {
 		    	tpn.setEnabledAt(1,false);
 		    	tpn.setEnabledAt(2,false);
 			}
@@ -355,7 +355,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	
 	private boolean execFechamento() {
 		boolean bRet = false;
-		if (txtVlrPago.getVlrDouble().doubleValue() == 0) {
+		if (txtVlrPago.doubleValue() == 0) {
 			Funcoes.mensagemInforma(this,"Digite o valor pago!");
 			return false;
 		}
@@ -363,13 +363,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			Funcoes.mensagemInforma(this,"Digite o código da forma de pagamento!");
 			return false;
 		}
-		else if (txtVlrChequeElet.getVlrDouble().doubleValue() > 0) {
+		else if (txtVlrChequeElet.doubleValue() > 0) {
 		    Properties ppCompTef;
 		    if ((ppCompTef = processaTef()) == null) {
 		        Funcoes.mensagemInforma(this,"Não foi possível processar TEF");
 		        return false;
 		    }
-		    if (txtVlrChequeElet.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
+		    if (txtVlrChequeElet.doubleValue() < txtVlrCupom.doubleValue()) {
 		        bigPagoTef = bigPagoTef.add(txtVlrChequeElet.getVlrBigDecimal());
 		        txtVlrChequeElet.setVlrString("");
 		        vTefsOK.add(ppCompTef);
@@ -385,7 +385,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		    }
 		    vTefsOK.add(ppCompTef);
 		}
-		else if (txtVlrPago.getVlrDouble().doubleValue() < txtVlrCupom.getVlrDouble().doubleValue()) {
+		else if (txtVlrPago.doubleValue() < txtVlrCupom.doubleValue()) {
 			Funcoes.mensagemInforma(this,"Valor pago menor que o valor da venda!");
 			return false;
 		}
@@ -616,7 +616,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private boolean gravaVenda() {
 		boolean bRet = false;
 		PreparedStatement ps = null;		
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2', CODVEND=?, CODEMPCM=?, CODFILIALCM=?, CODCLCOMIS=? " +
+		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V2', CODVEND=?, CODEMPCM=?, CODFILIALCM=?, CODCLCOMIS=?, IMPNOTAVENDA='S' " +
 					  "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";			
 		
 		try {
@@ -737,7 +737,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private String getMenssage(){
 		String sMenssage = "";
 		if(trocouCli && impMens){
-			String[] dadosCli = (String[])getParam(6);
+			String[] dadosCli = (String[])param[6];
 			sMenssage = (dadosCli[0]!=null?dadosCli[0].trim():"")+" - "
 						+ (dadosCli[1]!=null?dadosCli[1].trim():"")+"\n"
 						+ (dadosCli[2]!=null?dadosCli[2].trim():"")+" , "
@@ -766,10 +766,6 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	public void setTef(Tef tef) {
 		this.tef = tef;
 		txtVlrChequeElet.setAtivo(true);
-	}
-
-	private Object getParam(int index){
-		return param[index];
 	}
 
 	private boolean prefs() {
@@ -808,11 +804,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	    boolean bRet = false;
 		if (evt.getSource() == btOK) {
 			lcVend.carregaDados();
-			lcClComis.carregaDados();
 			if (execFechamento()) {
 				if ((AplicativoPDV.bECFTerm) && (bf!=null)) {
 					if (bf.fechaCupomFiscal(Aplicativo.strUsuario,Funcoes.copy(txtDescPlanoPag.getVlrString(),16),"","",0.0,
-							txtVlrPago.getVlrDouble().doubleValue(),getMenssage(),AplicativoPDV.bModoDemo)) {
+							txtVlrPago.doubleValue(),getMenssage(),AplicativoPDV.bModoDemo)) {
 						if (finalizaVenda()) {
 						    btCancel.setEnabled(false);
 						    
@@ -830,7 +825,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 						    else
 							    bRet = true;
 						        
-							if (bRet && txtVlrTroco.getVlrDouble().doubleValue() > 0)
+							if (bRet && txtVlrTroco.doubleValue() > 0)
 							    bRet = execTroco();
 						}
 					}
@@ -839,7 +834,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 					bRet=true;
 					if (finalizaVenda())
 					    btCancel.setEnabled(false);					
-					if (txtVlrTroco.getVlrDouble().doubleValue() > 0)
+					if (txtVlrTroco.doubleValue() > 0)
 					    bRet = execTroco();
 				}
 			}
