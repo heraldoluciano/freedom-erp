@@ -207,7 +207,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	}
 
 	public void setNomeCampo(String nm) {
-		sNomeCampo = nm;
+		sNomeCampo = nm; 
 	}
 
 	public void setRequerido(boolean bR) {
@@ -216,6 +216,10 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 			Funcoes.setBordReq(this);
 		else
 			setBorder((new JTextField()).getBorder());
+	}
+	
+	public void tiraBorda(){
+		setBorder(null);
 	}
 
 	public void setLabel(String lab) {
@@ -989,7 +993,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public void addEditListener(EditListener eLis) {
 		editLis = eLis;
 	}
-
+ 
 	private void fireEdit() {
 		editLis.edit(new EditEvent(this));
 	}
@@ -999,5 +1003,5 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 	public void beforeEdit(EditEvent eevt) { }
 	
 	public void afterEdit(EditEvent eevt) { }
-
+		
 }

@@ -37,17 +37,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
 import javax.swing.JOptionPane;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
-
 import net.sf.nachocalendar.components.CalendarPanel;
 import net.sf.nachocalendar.tasks.TaskCalendarFactory;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JTextFieldFK;
@@ -67,19 +63,13 @@ public class FAgenda extends FFilho implements ActionListener {
   private JTabbedPanePad tpnAgd = new JTabbedPanePad();
   private Tabela tabAgd = new Tabela();
   private CalendarPanel calendarpanel  = TaskCalendarFactory.createCalendarPanel(1);
- // private CalendarPanel calendarpanel = CalendarFactory.createCalendarPanel(1);
-  
-  private JScrollPane spnAgd = new JScrollPane(tabAgd);
-  
+  private JScrollPane spnAgd = new JScrollPane(tabAgd);  
   private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JButton btExec = new JButton(Icone.novo("btExecuta.gif"));
   private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
   private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
   private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
-//  private JComboBoxPad cbPeriodo = new JComboBoxPad();
-//  private JTextFieldPad txtDataini = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-//  private JTextFieldPad txtDatafim = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
   private ListaCampos lcUsu = new ListaCampos(this);
   private Vector vCodAgds = new Vector();
   int iCodAge = 0;
@@ -89,14 +79,10 @@ public class FAgenda extends FFilho implements ActionListener {
   	super(false);
   	txtIdUsu.setVisible(false);
   	txtIdUsu.setVlrString(Aplicativo.strUsuario);
-
   	
   	setTitulo("Agenda");
   	setAtribos(10,10,760,400);
-  	
- // 	txtDataini.setVlrDate(new Date());
- // 	txtDatafim.setVlrDate(new Date());
-  	
+  	  	
 	lcUsu.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID Usuario", ListaCampos.DB_PK, false));
 	lcUsu.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome", ListaCampos.DB_SI,false));
 	lcUsu.montaSql(false, "USUARIO", "SG");    
@@ -116,28 +102,15 @@ public class FAgenda extends FFilho implements ActionListener {
   	
 	getTela().add(tpnAgd);
 	
-	pinCabAgd.adic(new JLabelPad("Usuário"),7,10,250,20);
-	pinCabAgd.adic(txtIdUsu,7,30,80,20);
+//	pinCabAgd.adic(new JLabelPad("Usuário"),7,10,250,20);
+//	pinCabAgd.adic(txtIdUsu,7,30,80,20);
+	
+	txtNomeUsu.setBackground(this.getBackground());
+	
+	txtNomeUsu.tiraBorda();
 	pinCabAgd.adic(txtNomeUsu,7,30,250,20);
-	pinCabAgd.adic(btExec,360,23,30,30);
-	
-	
-	
-/*	Vector vVals = new Vector();
-	vVals.addElement("HO");
-	vVals.addElement("PD");
-	vVals.addElement("PT");
-	vVals.addElement("PS");
-	vVals.addElement("PM");
-
-	Vector vLabs = new Vector();
-	vLabs.addElement("Hoje");
-	vLabs.addElement("Próximo dia");
-	vLabs.addElement("Próximo três dias");
-	vLabs.addElement("Próxima semana");
-	vLabs.addElement("Próximo mes");
-	cbPeriodo.setItens(vLabs,vVals);
-*/	
+//	pinCabAgd.adic(btExec,360,23,30,30);
+		
 	tabAgd.adicColuna("Ind.");
 	tabAgd.adicColuna("Sit.");
 	tabAgd.adicColuna("Data ini.");
@@ -155,9 +128,10 @@ public class FAgenda extends FFilho implements ActionListener {
 	tabAgd.setTamColuna(160,6);
 	
 	JPanelPad pnBot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
-	pnBot.setPreferredSize(new Dimension(60,30));
+	pnBot.setPreferredSize(new Dimension(90,30));
 	pnBot.add(btNovo);
 	pnBot.add(btExcluir);
+	pnBot.add(btExec);
 	
 	pnRodAgd.add(pnBot,BorderLayout.WEST);
 	
@@ -181,8 +155,6 @@ public class FAgenda extends FFilho implements ActionListener {
 	btNovo.addActionListener(this);
 	btExcluir.addActionListener(this);
 	btExec.addActionListener(this);
-
-	
 
 }
   private void buscaAgente() {
@@ -210,7 +182,6 @@ public class FAgenda extends FFilho implements ActionListener {
   	if (iCodAge!=0) {
 		Object[] oDatas = calendarpanel.getValues();
 		Date dData = null;
-//		String sData = "";
 		String sDatas = "";
   		if (oDatas == null) {
   			oDatas = new Object[1];
@@ -240,9 +211,6 @@ public class FAgenda extends FFilho implements ActionListener {
   			ps.setInt(3,iCodAge);
   			ps.setString(4,sTipoAge);
   			
-
- // 			ps.setDate(5,Funcoes.dateToSQLDate(dts));
- // 			ps.setDate(6,Funcoes.dateToSQLDate(dts));
   			ResultSet rs = ps.executeQuery();
   			tabAgd.limpa();
   			vCodAgds.clear();
