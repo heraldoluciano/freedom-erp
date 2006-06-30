@@ -174,6 +174,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	private float pesoLiqFrete = 0;
 	private float vlrFrete = 0;
 	private int iCodItVenda = 0;
+	private int iCodTipoMov = 0;
 	private int iCodCaixa = 0;
 	private int iCodOrc = 0;
 
@@ -926,10 +927,10 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	}
 
 	private synchronized void iniVenda() {
-		iniVenda(getCodCli(), getPlanoPag(), getTipoMov(), getVendedor());
+		iniVenda(getCodCli(), getPlanoPag(), getVendedor());
 	}
 
-	private synchronized void iniVenda(int codCli, int codPlanoPag, int tipoMov, int vend) {
+	private synchronized void iniVenda(int codCli, int codPlanoPag, int vend) {
 		iCodOrc = 0;
 		lcVenda.insert(false);
 		txtCodVenda.setVlrInteger(getCodSeqCaixa());
@@ -945,7 +946,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		txtValorIcms1.setVlrString("");
 		txtTotalCupom.setVlrString("");
 		lcPlanoPag.carregaDados();
-		txtCodTipoMov.setVlrInteger(new Integer(tipoMov));
+		txtCodTipoMov.setVlrInteger(new Integer(iCodTipoMov));
 		lcTipoMov.carregaDados();
 		txtCodVend.setVlrInteger(new Integer(vend));
 		lcVendedor.carregaDados();
@@ -1038,10 +1039,13 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			}
 			
 			if(vArgs.size()==3) {
-				iniVenda(((Integer)vArgs.elementAt(0)).intValue(), 
-						((Integer)vArgs.elementAt(1)).intValue(), 
-						getTipoMov(), 
-						((Integer)vArgs.elementAt(2)).intValue());	
+				txtCodCli.setVlrInteger((Integer)vArgs.elementAt(0));
+				lcCliente.carregaDados();
+				txtCodPlanoPag.setVlrInteger((Integer)vArgs.elementAt(1));
+				lcPlanoPag.carregaDados();
+				txtCodVend.setVlrInteger((Integer)vArgs.elementAt(2));
+				lcVendedor.carregaDados();
+				lcClComis.carregaDados();
 				
 				iCodOrc = arg;
 			}
@@ -1377,10 +1381,9 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		return vRetorno;
 	}
 
-	private int getTipoMov() {
+	private void setTipoMov() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int iRet = 0;
 		String sSQL = "SELECT CODTIPOMOV FROM SGPREFERE4 WHERE CODEMP=? AND CODFILIAL=?";
 		try {
 			ps = con.prepareStatement(sSQL);
@@ -1388,7 +1391,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			ps.setInt(2, Aplicativo.iCodFilial);
 			rs = ps.executeQuery();
 			if (rs.next())
-				iRet = rs.getInt("CodTipoMov");
+				iCodTipoMov = rs.getInt("CodTipoMov");
 
 			rs.close();
 			ps.close();
@@ -1405,7 +1408,6 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 			sSQL = null;
 		}
 		
-		return iRet;
 	}
 
 	private int getVendedor() {
@@ -1826,6 +1828,7 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 	public void beforePost(PostEvent pevt) { }
 
 	public void afterPost(PostEvent pevt) {
+		System.out.println("primeiro salvamento...");
 		if (pevt.getListaCampos() == lcVenda && pevt.ok) {
 			if ((AplicativoPDV.bECFTerm) && (bf!=null))
 				bf.abreCupom("", Aplicativo.strUsuario, AplicativoPDV.bModoDemo);
@@ -1879,16 +1882,18 @@ public class FVenda extends FDialogo implements KeyListener,CarregaListener,Post
 		lcLote.setConexao(con);
 		lcTipoMov.setConexao(con);
 		lcSerie.setConexao(con);
-		lcClFiscal.setConexao(con);
+		lcClFiscal.setConexao(con);		
+
+		setCodCaixa();
+		setTipoMov();
 		
-		txtCodTipoMov.setVlrInteger(new Integer(getTipoMov()));
+		txtCodTipoMov.setVlrInteger(new Integer(iCodTipoMov));
 		txtCodCli.setVlrInteger(new Integer(getCodCli()));
 		
 		pnStatusBar.add(sbVenda, BorderLayout.CENTER);
 		pnRodape.add(pnStatusBar, BorderLayout.CENTER);
 		vAliquotas = getAliquotas();
 
-		setCodCaixa();
 
 		iniVenda();
 		sbVenda.setUsuario(Aplicativo.strUsuario);

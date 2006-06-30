@@ -264,6 +264,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 		tab.addKeyListener(this);
 		tabOrc.addKeyListener(this);
 		btBusca.addKeyListener(this);
+		btGerar.addKeyListener(this);
 		
 		txtCodOrc.addActionListener(this);		    
 		btSair.addActionListener(this);
@@ -374,6 +375,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 				else
 					return false;
 				
+				// STD
 				if(sTipoVenda.equals("V")) {
 
 					for (int i=0;i<vValidos.size();i++) {
@@ -445,16 +447,16 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						vendaSTD.exec(iCodVenda);
 						dispose();
 					}
-				} else if(sTipoVenda.equals("E")) {	
+				} 
+				// PDV
+				else if(sTipoVenda.equals("E")) {	
 					iVals = (int[])vValidos.elementAt(0);
 					
-					if(vendaPDV.montaVendaOrc(iVals[0])) {// Gera a venda
-						
-						for (int i=0;i<vValidos.size();i++) {// Adiciona os itens							
+					if(vendaPDV.montaVendaOrc(iVals[0])) {// Gera a venda					
+						for (int i=0;i<vValidos.size();i++) {						
 							iVals = (int[])vValidos.elementAt(i);
-							vendaPDV.adicItemOrc(iVals[1]);
-						}
-						
+							vendaPDV.adicItemOrc(iVals[1]);// Adiciona os itens	
+						}					
 					}	
 					dispose();
 					if(prefs[1])
@@ -558,7 +560,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 						tabOrc.adicLinha(vVals);
 					} else {
 						txtCodOrc.requestFocus();
-						Funcoes.mensagemInforma( this, "ORÇAMENTO NÃO LIBERDO!");
+						Funcoes.mensagemInforma( this, "ORÇAMENTO NÃO ESTÁ LIBERADO!");
 						return;
 					}
 				}
@@ -635,8 +637,17 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 				btExec.doClick();
 				tab.requestFocus();
 			}
+			else if (kevt.getSource() == btGerar) {
+				if (!gerar()) {
+					try {
+						con.rollback();
+					} catch(SQLException err) {
+						Funcoes.mensagemErro(this,"Erro ao realizar rollback!!\n"+err.getMessage(),true,con,err);
+					}
+				}
+			}
 			else if(kevt.getSource() == tab)
-				btGerar.doClick();
+				btGerar.requestFocus();
 		}
 		//super.keyPressed(kevt);
 	}
