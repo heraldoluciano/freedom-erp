@@ -22,6 +22,7 @@
 
 package org.freedom.modulos.atd;
 
+import java.util.List;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -34,11 +35,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
+//import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
-import javax.swing.JButton;
+
 import javax.swing.JOptionPane;
 import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
@@ -56,29 +59,64 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
 
+import bizcal.common.CalendarViewConfig;
+import bizcal.common.DayViewConfig;
+import bizcal.common.Event;
+import bizcal.swing.DayView;
+import bizcal.swing.MonthView;
+import bizcal.util.DateInterval;
+import bizcal.util.DateUtil;
+import bizcal.common.CalendarModel;
+import bizcal.common.Calendar;
 
 public class FAgenda extends FFilho implements ActionListener {
   private static final long serialVersionUID = 1L;	
   private JPanelPad pinCabAgd = new JPanelPad(0,40);
   private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnCalendar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+  private JPanelPad pnFiltros = new JPanelPad(JPanelPad.TP_JPANEL);
   private JPanelPad pnRodAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
   private JTabbedPanePad tpnAgd = new JTabbedPanePad();
   private Tabela tabAgd = new Tabela();
+  private JTabbedPanePad tpnVisoes = new JTabbedPanePad();
   private CalendarPanel calendarpanel  = TaskCalendarFactory.createCalendarPanel(1);
-  private JScrollPane spnAgd = new JScrollPane(tabAgd);  
+  private JScrollPane spnAgd = new JScrollPane(tpnVisoes);  
   private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
   private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
   private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
-  private JButton btNovo = new JButton(Icone.novo("btNovo.gif"));
-  private JButton btExcluir = new JButton(Icone.novo("btExcluir.gif"));
-  private JButton btSair = new JButton("Sair",Icone.novo("btSair.gif"));
+  private JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.gif"));
+  private JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.gif"));
+  private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
   private ListaCampos lcUsu = new ListaCampos(this);
   private Vector vCodAgds = new Vector();
+  private MonthView Mes = null;
+  private DayView Dia = null;
+   
+  
   int iCodAge = 0;
   String sTipoAge = "";
-
+  
   public FAgenda() {
   	super(false);
+ 
+  	try {
+		Dia = new DayView(new DayViewConfig());
+		Dia.setModel(new ThisModel());
+		Dia.refresh();
+  	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+	}
+
+  	try {
+		Mes = new MonthView(new CalendarViewConfig());
+		Dia.setModel(new ThisModel());
+		Dia.refresh();
+  	}
+  	catch (Exception e) {
+  		e.printStackTrace();
+	}
+
   	txtIdUsu.setVisible(false);
   	txtIdUsu.setVlrString(Aplicativo.strUsuario);
   	
@@ -94,26 +132,39 @@ public class FAgenda extends FFilho implements ActionListener {
 	txtIdUsu.setNomeCampo("IdUsu");
     
   	tpnAgd.add("Agenda do usuário",pnAgd);
-  	
+  	tpnVisoes.add("   Lista de eventos  ",tabAgd);
+//  	tpnVisoes.add("   Dia   ",Dia.getComponent());
 
   	pnAgd.add(pinCabAgd,BorderLayout.NORTH);
   	
   	calendarpanel.setAntiAliased(true);
-  	calendarpanel.setCursor(new Cursor(Cursor.HAND_CURSOR)); 	
-  	pnAgd.add(calendarpanel,BorderLayout.WEST);
-  	pnAgd.add(spnAgd,BorderLayout.CENTER);
+  	calendarpanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
   	
-  	//pnAgd.add(calendarpanel);
-  	
-	getTela().add(tpnAgd);
+  		tabAgd.addMouseListener(
+			  new MouseAdapter() {
+			  	public void mouseClicked(MouseEvent mevt) {
+			  	  if (mevt.getClickCount() == 2) {
+			  	  	editaAgd();
+			  	  }
+			  	}
+			  }
+			);
+
 	
-//	pinCabAgd.adic(new JLabelPad("Usuário"),7,10,250,20);
-//	pinCabAgd.adic(txtIdUsu,7,30,80,20);
+//  	pnAgd.add(calendarpanel,BorderLayout.WEST);
+  		
+  		pnCalendar.add(calendarpanel,BorderLayout.NORTH);
+  		pnCalendar.add(pnFiltros,BorderLayout.CENTER);
+  		
+  		pnAgd.add(pnCalendar,BorderLayout.WEST);
+
+  	pnAgd.add(spnAgd,BorderLayout.CENTER);
+
+  	getTela().add(tpnAgd);
 	
 	txtNomeUsu.setBackground(this.getBackground());	
 	txtNomeUsu.tiraBorda();
 	pinCabAgd.adic(txtNomeUsu,7,10,250,20);
-//	pinCabAgd.adic(btExec,360,23,30,30);
 		
 	tabAgd.adicColuna("Ind.");
 	tabAgd.adicColuna("Sit.");
@@ -161,6 +212,7 @@ public class FAgenda extends FFilho implements ActionListener {
 	btExec.addActionListener(this);
 
 }
+  
   private void buscaAgente() {
 
   	String sSQL = "SELECT U.CODAGE,U.TIPOAGE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? " +
@@ -265,9 +317,10 @@ public class FAgenda extends FFilho implements ActionListener {
   			dl.setValores(
   					new String[] {
 							   Funcoes.sqlDateToStrDate(rs.getDate("DtaIniAgd")),
-							   Funcoes.strZero(""+calIni.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+calIni.get(Calendar.MINUTE),2),
+							   Funcoes.strZero(""+calIni.get(java.util.Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+calIni.get(java.util.Calendar.MINUTE),2),
+
 							   Funcoes.sqlDateToStrDate(rs.getDate("DtaFimAgd")),
-							   Funcoes.strZero(""+calFim.get(Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+calIni.get(Calendar.MINUTE),2),
+							   Funcoes.strZero(""+calFim.get(java.util.Calendar.HOUR_OF_DAY),2)+":"+Funcoes.strZero(""+calIni.get(java.util.Calendar.MINUTE),2),
 							   rs.getString("AssuntoAgd"),
 							   rs.getString("DescAgd"),
 							   rs.getString("TipoAgd"),
@@ -412,4 +465,53 @@ public class FAgenda extends FFilho implements ActionListener {
     lcUsu.carregaDados();
     carregaTabAgd();
   }
+  
+  private static class ThisModel extends CalendarModel.BaseImpl {
+	private List events = new ArrayList();
+	private DateInterval interval;
+	private Calendar cal;
+	
+	public ThisModel()
+		throws Exception
+	{
+		Date date = DateUtil.round2Week(new Date());
+		date = new Date(date.getTime() + 8*60*60*1000);
+		for (int i=0; i < 7; i++) {
+			Event event = new Event();
+			event.setStart(date);
+			event.setEnd(new Date(date.getTime() + 90*60*1000));
+			event.setSummary("Test " + i);
+			events.add(event);
+			date = DateUtil.getDiffDay(date, +1);
+			date = new Date(date.getTime() + 60*60*1000);
+		}
+		Date start = DateUtil.round2Week(new Date());
+		Date end = DateUtil.getDiffDay(start, +7);
+		interval = new DateInterval(start, end);
+		cal = new Calendar();
+//		cal.setId(1);
+//		cal.setSummary("Peter");
+	}
+	
+	public List getEvents(Object calId)
+	throws Exception
+	{
+		return events;
+	}
+
+	public List getSelectedCalendars()
+	throws Exception
+	{
+		return Collections.nCopies(1, cal);
+	}
+	
+	public DateInterval getInterval()
+	{
+		return interval;
+	}
+
+	
 }
+  
+}
+
