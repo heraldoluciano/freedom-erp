@@ -45,6 +45,10 @@ public abstract class ECFDriver {
 	public static final char DESCONTO_POR_VALOR = 'd';
 	public static final char IMPRESSAO = 'I';
 	public static final char RETORNO = 'R';
+	public static final char ICMS = '0';
+	public static final char ISS = '1';
+	public static final char TRUNCA = '0';
+	public static final char ARREDONDA = '1';
 	
 	protected int sistema = -1;
 	protected byte[] bytesLidos = null;
@@ -293,6 +297,8 @@ public abstract class ECFDriver {
 	
 	public abstract int reducaoZ();// 6
 	
+	public abstract int adicaoDeAliquotaTriburaria(float aliq, char opt);// 7
+	
 	public abstract int leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo);// 8
 	
 	public abstract int leituraMemoriaFiscal( int ini, int fim, char tipo);// 8
@@ -303,11 +309,15 @@ public abstract class ECFDriver {
 	
 	public abstract int cancelaCupom();// 14
 	
+	public abstract int programaHorarioVerao();// 18
+	
 	public abstract int cancelaItemGenerico(int item);// 31
 	
 	public abstract int iniciaFechamentoCupom(char opt, float percentual);// 32
 	
 	public abstract int terminaFechamentoCupom(String menssagem);// 34
+	
+	public abstract int programaTruncamentoArredondamento(char opt);// 39
 	
 	public abstract int programaUnidadeMedida(String descUnid);// 62 51
 	

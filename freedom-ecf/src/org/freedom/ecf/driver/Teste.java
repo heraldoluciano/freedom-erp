@@ -1,6 +1,5 @@
 package org.freedom.ecf.driver;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class Teste {
@@ -14,6 +13,9 @@ public class Teste {
 		
 		Date data = new Date();
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
+		
+		
+		ecf.programaTruncamentoArredondamento(ECFBematech.TRUNCA);
 		
 		/*
 		ecf.aberturaDeCupom();
@@ -29,17 +31,6 @@ public class Teste {
 		*/
 		
 		//ecf.programaFormaPagamento(new String[]{"Cartao Credito  "});
-		
-		//ecf.estornoFormaPagamento("Cartao Credito  ", "Dinheiro        ", 0.40f );
-		
-		Date dt = Calendar.getInstance().getTime();
-		Date dt2 = Calendar.getInstance().getTime();
-		dt.setDate(1);
-		dt.setMonth( dt.getMonth() - 1 );
-		dt2.setDate(31);
-		dt2.setMonth( dt2.getMonth() - 1 );
-		
-		ecf.leituraMemoriaFiscal( 1, 10, 'I');
 		
 		data = new Date();
 		System.out.println("Fim -----> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );

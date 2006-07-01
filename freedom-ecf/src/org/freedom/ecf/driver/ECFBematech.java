@@ -148,6 +148,17 @@ public class ECFBematech extends ECFDriver {
 		return executaCmd(CMD);
 	}
 	
+	//	adiciona aliquotas.
+	public int adicaoDeAliquotaTriburaria(float aliq, char opt) {
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(aliq,4,2) );
+		if(ISS == opt)
+			buf.append(opt);
+		byte[] CMD = {ESC,7};
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
 	//	Leitura da memoria fiscal por data.
 	public int leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo) {
 		byte[] CMD = {ESC,8};
@@ -196,6 +207,12 @@ public class ECFBematech extends ECFDriver {
 		return executaCmd(CMD);
 	}
 	
+	//	Ativa ou desativa o horario de verão.
+	public int programaHorarioVerao() {
+		byte[] CMD = {ESC,18};
+		return executaCmd(CMD);
+	}
+	
 	//	Cancelamento de item generico.
 	public int cancelaItemGenerico(int item) {
 		byte[] CMD = {ESC,31};
@@ -220,6 +237,13 @@ public class ECFBematech extends ECFDriver {
 	public int terminaFechamentoCupom(String menssagem) {
 		byte[] CMD = {ESC,34};
 		CMD = adicBytes(CMD,parseParam(menssagem,492).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	// Truncamento / aredondamento
+	public int programaTruncamentoArredondamento(char opt) {
+		byte[] CMD = {ESC,39};
+		CMD = adicBytes(CMD,parseParam(opt,1).getBytes());
 		return executaCmd(CMD);
 	}
 	
