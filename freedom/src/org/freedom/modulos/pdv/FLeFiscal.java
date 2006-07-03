@@ -298,16 +298,17 @@ public class FLeFiscal extends FTabDados {
 		tab.setTamColuna(80,14);
 		tab.setTamColuna(100,15);
     }
+    
     private void buscaAliquotas() {
 		String sAliquota = "";
-		if (AplicativoPDV.bECFTerm) {
+		//if (AplicativoPDV.bECFTerm) {
 		   String sAliquotas = (bf.retornaAliquotas(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim();
 		   int iTot = (((sAliquotas.length())+1)/5);
 		   for (int i=1;i<=iTot;i++) {
 		      sAliquota = sAliquotas.substring((5*i)-5,(5*i)-3)+"."+sAliquotas.substring((5*i)-3,(5*i)-1);
  		      lcCampos.getCampo("Aliq"+Funcoes.strZero(""+(i),2)).setVlrDouble(new Double(sAliquota));
 	       }
-		}
+		//}
     }
 
     private void carregaContadores(){        
@@ -340,24 +341,23 @@ public class FLeFiscal extends FTabDados {
 		  Funcoes.mensagemErro(this,"Erro ao buscar primeiro cupom!\n"+err.getMessage(),true,con,err);
 	    }
     	
-		if (AplicativoPDV.bECFTerm) {
+		//if (AplicativoPDV.bECFTerm) {
             txtRed.setVlrInteger(new Integer (bf.numeroReducoes(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
             txtUltCupom.setVlrInteger(new Integer (bf.numeroCupom(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)-1));
             txtCanc.setVlrInteger(new Integer (bf.numeroCancelados(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
             txtRed.setVlrInteger(new Integer (bf.numeroReducoes(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)));
-		}
+		/*}
 		else {
 			txtRed.setVlrInteger(new Integer(0));
 			txtUltCupom.setVlrInteger(new Integer(0));
 			txtCanc.setVlrInteger(new Integer(0));
 			txtRed.setVlrInteger(new Integer(0));
-		}
-			
-			
+		}*/
     	
     }
+    
     private void carregaTotalizadores(){
-		if (AplicativoPDV.bECFTerm) {
+		//if (AplicativoPDV.bECFTerm) {
 			String sTotalizadores[] = (bf.retornaTotalizadores(Aplicativo.strUsuario,AplicativoPDV.bModoDemo)+"").trim().split(",");
 			String sTot = "";
 			
@@ -387,12 +387,12 @@ public class FLeFiscal extends FTabDados {
             txtVlrNI.setVlrDouble(new Double(sTot));
 			sTot = sTotalizadores[3].substring(0,12)+"."+sTotalizadores[3].substring(12);
             txtVlrSubst.setVlrDouble(new Double(sTot));
-		}
+		/*}
 		else {
 			txtVlrCanc.setVlrInteger(new Integer(0));
 			txtVlrDesc.setVlrInteger(new Integer(0));
 			txtTotal.setVlrInteger(new Integer(0));
-		}    
+		}   */ 
 
     }
     
