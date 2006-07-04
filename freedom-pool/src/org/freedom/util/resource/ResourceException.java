@@ -1,18 +1,36 @@
-/*
- * Created on 05/10/2004
- * Autor: robson 
- * Descrição: 
- */
 package org.freedom.util.resource;
 
 /**
- * @author robson
+ * @author Robson Sanchez/Setpoint Informática Ltda.
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Classe de tratamento de erros do gerenciador de pool. <BR>
+ * criada: 05/10/2004. <BR>
+ * Projeto: freedom-pool <BR>
+ * Pacote: org.freedom.util.resource <BR>
+ * Classe: ResourceException <BR> <BR>
+ * Este programa é licenciado de acordo com a LGPL
+ * (Lesser General Public License), <BR>
+ * versão 2.1, Fevereiro de 1999 <BR>
+ * A LGPL deve acompanhar todas PUBLICAÇÕES,
+ * DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LGPL não esteja disponível
+ * junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em:
+ * <a href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt>
+ * Creative Commons</a> <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou
+ * ALTERAR este Programa é preciso estar
+ * de acordo com os termos da LGPL <BR> <BR>
  */
+
 public class ResourceException extends Exception {
+   /** variável de versionamento da classe para serialização. */
    private static final long serialVersionUID = 1L;
+
+   /**
+    * Método construtor da classe.
+    * @param error recebe string de descrição do erro.
+    */
    public ResourceException(final String error) {
       super(error);
    }

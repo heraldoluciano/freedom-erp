@@ -7,13 +7,7 @@ import org.freedom.util.resource.ResourceKey;
 import org.freedom.util.resource.AbstractResourcePool;
 
 /**
- * @author Robson Sanchez/Setpoint Informática Ltda.
- *
  * Pool de conexões JDBC. <BR>
- * criada: 05/10/2004. <BR>
- * Projeto: freedom-pool <BR>
- * Pacote: org.freedom.jdbc <BR>
- * Classe: DbConnectionPool <BR> <BR>
  * Este programa é licenciado de acordo com a LGPL
  * (Lesser General Public License), <BR>
  * versão 2.1, Fevereiro de 1999 <BR>
@@ -27,40 +21,39 @@ import org.freedom.util.resource.AbstractResourcePool;
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou
  * ALTERAR este Programa é preciso estar
  * de acordo com os termos da LGPL <BR> <BR>
+ * criada: 05/10/2004. <BR>
+ * Projeto: freedom-pool <BR>
+ * Pacote: org.freedom.jdbc <BR>
+ * Classe: DbConnectionPool <BR> <BR>
+ * @author Robson Sanchez/Setpoint Informática Ltda.
  */
 public class DbConnectionPool extends AbstractResourcePool {
 
-   /**
-    * driver Caminho para o driver JDBC.
-    * url URL para a conexão com o banco de dados.
-    */
-   private transient String driver, url;
+   /** Caminho para o driver JDBC. */
+   private transient String driver;
 
-   /**
-    * initialCons Número de conexões iniciais.
-    */
+   /** url URL para a conexão com o banco de dados. */
+   private transient String url;
+
+   /** Número de conexões iniciais. */
    private transient int initialCons;
 
-   /**
-    * driverLoaded Flag que indica se o driver já foi carregado.
-    */
+   /** Flag que indica se o driver já foi carregado. */
    private transient boolean driverLoaded = false;
 
-   /**
-    * user ID do usuário para conexão com banco de dados.
-    * password Senha do usuário de banco de dados.
-    */
-   private transient String user, password;
+   /** ID do usuário para conexão com banco de dados. */
+   private transient String user;
 
-   /**
-    * userweb Usuário para o pool de conexões configurado no web.xml.
-    * passwordweb Senha para o pool de conexões configurado no web.xml.
-    */
-   private transient String userweb, passwordweb;
+   /** Senha do usuário de banco de dados. */
+   private transient String password;
 
-   /**
-    * sessionID ID da sessão do servidor http. Utilizado como chave para pool.
-    */
+   /** Usuário para o pool de conexões configurado no web.xml. */
+   private transient String userweb;
+
+   /** Senha para o pool de conexões configurado no web.xml. */
+   private transient String passwordweb;
+
+   /** ID da sessão do servidor http. Utilizado como chave para pool. */
    private transient String sessionID;
 
    /**
@@ -82,7 +75,7 @@ public class DbConnectionPool extends AbstractResourcePool {
    public DbConnectionPool(final String drivercon, final String urlcon,
          final String usercon, final String passwordcon) {
       super();
-      this.initialCons = 0;
+      setInitialCons(0);
       this.driver = drivercon;
       this.url = urlcon;
       ResourceKey resource;
@@ -100,7 +93,13 @@ public class DbConnectionPool extends AbstractResourcePool {
          }
       }
    }
-   
+
+   /**
+    * Método que instância e disponibiliza nova conexão de banco de dados.
+    * @throws ResourceException Exceção gerada quando não for possível
+    * instânciar um novo recurso.
+    * @return ResourceKey
+    */
 
    public final ResourceKey createResource() throws ResourceException {
       Connection connection = null;
@@ -128,50 +127,84 @@ public class DbConnectionPool extends AbstractResourcePool {
       } catch (Exception ex) {
          // ClassNotFoundException ou SQLException
          throw new ResourceException(ex.getMessage());
-      } finally {
-         key = null;
       }
-
       return resource;
    }
 
+   /**
+    * Fecha as conexões com banco de dados.
+    * @param resource Recebe o recurso a ser finalizado.
+    */
    public final void closeResource(final ResourceKey resource) {
       java.sql.Connection connection = null;
       try {
-         connection = (Connection) resource.getResource();
+         connection = (Connection)
+            resource.getResource();
          connection.close();
       } catch (SQLException ex) {
          // ignora exceção
       }
    }
 
-   /*
-    * (non-Javadoc)
-    * 
-    * @see com.elog.system.util.ResourcePool#isResourceValid(java.lang.Object)
+   /**
+    * Consiste se um recurso é válido.
+    * @param resource Recebe o recurso para avaliação.
+    * @return Devolve um flag indicando se o recurso é válido.
     */
-   public boolean isResourceValid(ResourceKey resource) {
-      Connection connection = null;
+   public final boolean isResourceValid(final ResourceKey resource) {
       boolean valid = false;
       try {
-         connection = (Connection) resource.getResource();
-         valid = !connection.isClosed();
+         final Connection connection = (Connection)
+            resource.getResource();
+         valid = (!connection.isClosed());
       } catch (SQLException ex) {
          valid = false;
       }
       return valid;
    }
 
+   /**
+    * Seta o usuário corrente para conexão.
+    * @author Robson Sanchez/Setpoint Informática Ltda.
+    * @param usercon ID do usuário.
+    */
    public final void setUser(final String usercon) {
       this.user = usercon;
    }
 
+   /**
+    * Seta senha corrente.
+    * @author Robson Sanchez
+    * @param passwordcon senha.
+    */
    public final void setPassword(final String passwordcon) {
       this.password = passwordcon;
    }
 
+   /**
+    * seta a sessão http corrente.
+    * @author Robson Sanchez
+    * @param sessionIDcon ID da sessão corrente.
+    */
    public final void setSessionID(final String sessionIDcon) {
       this.sessionID = sessionIDcon;
    }
 
+   /**
+    * Seta o número de conexões iniciais.
+    * @author Robson Sanchez
+    * @param initial número de conexões iniciais.
+    */
+   public final void setInitialCons(final int initial) {
+      this.initialCons = initial;
+   }
+
+   /**
+    * Seta o flag indicando se o driver de conexão com banco de dados
+    * foi carregado.
+    * @param driverLoad Verdadeiro se o driver já foi carregado.
+    */
+   public final void setDriverLoaded(final boolean driverLoad) {
+      this.driverLoaded = driverLoad;
+   }
 }
