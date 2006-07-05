@@ -10,6 +10,9 @@ import java.util.Map;
  */
 public abstract class AbstractResourcePool implements Runnable {
 
+   /** Número inicial de conexões. */
+   public static final int INI_CON = 10;
+
    /** availableRes - Recursos disponíveis. */
    private transient Map availableRes , inUseResources;
 
@@ -40,17 +43,17 @@ public abstract class AbstractResourcePool implements Runnable {
    public abstract void closeResource(ResourceKey resource);
 
    public AbstractResourcePool() {
-      this(10, // por padrão, um máximo de 10 recursos no pool
+      this(INI_CON, // por padrão, um máximo de 10 recursos no pool
             false); // não espera pelo recurso se maximizado
    }
-   
+
    public AbstractResourcePool(int max, boolean waitIfMaxedOut) {
       availableRes = new HashMap();
       inUseResources = new HashMap();
       this.maxResources = max;
       this.waitIfMaxedOut = waitIfMaxedOut;
    }
-   
+
    protected final Map getAvailableRes() {
       return this.availableRes;
    }
