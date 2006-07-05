@@ -1,8 +1,3 @@
-/*
- * Created on 05/10/2004
- * Autor: Robson Sanchez
- * Descrição: Classe de conexão com banco de dados
- */
 package org.freedom.jdbc;
 
 import java.sql.PreparedStatement;
@@ -15,20 +10,44 @@ import org.freedom.util.resource.ResourceException;
 import org.freedom.util.resource.ResourceKey;
 
 /**
- * @author robson TODO To change the template for this generated type comment go
- *         to Window - Preferences - Java - Code Style - Code Templates
+ * Classe de conexão com o banco de dados <BR>
+ * Projeto: org.freedom.jdbc <BR>
+ * Pacote: org.freedom.jdbc <BR>
+ * Classe: DbConnectionFactory.java <BR>
+ * <BR>
+ * Este programa é licenciado de acordo com a LGPL (Lesser General Public
+ * License), <BR>
+ * versão 2.1, Fevereiro de 1999 <BR>
+ * A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
+ * Programa. <BR>
+ * Caso uma cópia da LGPL não esteja disponível junto com este Programa, você
+ * pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <a
+ * href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative
+ * Commons</a> <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
+ * preciso estar de acordo com os termos da LGPL. <BR>
+ * <BR>
+ * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
+ * criada: 05/10/2004. <BR>
  */
-
 public class DbConnectionFactory {
-   // protected static ServletContext context;
-   protected static DbConnectionPool pool;
 
-   /*
-    * protected static void initPool() throws Exception { if (pool == null) {
-    * try { } catch (Exception ex) { System.out.println(ex.getMessage()); throw
-    * ex; } } }
+   /** Construtor da classe. **/
+   public DbConnectionFactory() {
+      super();
+   }
+
+   /** Referência para a instância do pool em questão. */
+   private static DbConnectionPool pool;
+
+   /**
+    * Retorna uma conexão do concentrador.
+    * @param context Contexto http.
+    * @param sessionID Sessão utilizada como chave para o recurso.
+    * @return Retorna uma conexão JDBC.
+    * @throws SQLException Propaga exceções JDBC.
     */
-
    public static java.sql.Connection getConnection(final ServletContext context,
          final String sessionID) throws SQLException {
       java.sql.Connection conn = null;
@@ -41,6 +60,13 @@ public class DbConnectionFactory {
       return conn;
    }
 
+   /**
+    * Libera um recurso para ser reutilizado.
+    * @param context Contexto da aplicação.
+    * @param sessionID Sessão utilizada como chave.
+    * @throws ResourceException Propaga exceção caso não possa
+    * liberar o recurso.
+    */
    public static void recycleConnection(final ServletContext context,
          final String sessionID) throws ResourceException {
       ResourceKey resource = null;
@@ -57,6 +83,13 @@ public class DbConnectionFactory {
       }
    }
 
+   /**
+    * Fecha a conexão com banco de dados JDBC.
+    * @param context Contexto da aplicação para buscar o pool de recursos.
+    * @param sessionID Sessão chave para o recurso.
+    * @throws ResourceException Propaga a exceção se não for possível
+    * fechar a conexão.
+    */
    public static void closeConnection(final ServletContext context,
          final String sessionID) throws ResourceException {
       ResourceKey resource = null;
@@ -68,12 +101,23 @@ public class DbConnectionFactory {
       }
    }
 
+   /**
+    * Retorna a conexão JDBC consistindo usuário e senha.
+    * @param context Contexto do aplicativo para pesquisar o pool.
+    * @param sessionID Identificação da sessão chave.
+    * @param useridcon ID. do usuário a consistir.
+    * @param passwordcon Senha do usuário a consistir.
+    * @return Retorna uma referência para objeto de conexão JDBC.
+    * @throws SQLException Propaga uma exceção SQL caso não encontre um
+    * objeto consistente.
+    */
    public static java.sql.Connection getConnection(
          final ServletContext context, final String sessionID,
          final String useridcon, final String passwordcon) throws SQLException {
       java.sql.Connection conn = null;
       ResourceKey resource = null;
-      pool = (DbConnectionPool) context.getAttribute("db-connection-pool");
+      pool = (DbConnectionPool)
+         context.getAttribute("db-connection-pool");
       resource = pool.getResourceSession(sessionID);
       if (resource == null) {
          try {
@@ -83,7 +127,8 @@ public class DbConnectionFactory {
                pool.setPassword(passwordcon);
                pool.setSessionID(sessionID);
             }
-            if (resource == null || !resource.getPassword().equals(passwordcon)) {
+            if (resource == null
+                  || !resource.getPassword().equals(passwordcon)) {
                recycleConnection(context, sessionID); // Recicla a
                // conexão e
                // retorna
@@ -92,7 +137,8 @@ public class DbConnectionFactory {
                // de senha
                // inválida
             }
-            conn = (java.sql.Connection) resource.getResource();
+            conn = (java.sql.Connection)
+               resource.getResource();
          } catch (ResourceException e) {
 
          }
@@ -100,6 +146,12 @@ public class DbConnectionFactory {
       return conn;
    }
 
+   /**
+    * Fecha a conexão JDBC, bem como os recursos SQL.
+    * @param conn Recebe como parâmetro a conexão.
+    * @param statement Sentença SQL aberta.
+    * @param resultset ResultSet aberto.
+    */
    public static void closeConnection(final java.sql.Connection conn,
          final PreparedStatement statement, final ResultSet resultset) {
       if (resultset != null) {
