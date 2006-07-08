@@ -49,6 +49,8 @@ public abstract class ECFDriver {
 	public static final char ISS = '1';
 	public static final char TRUNCA = '0';
 	public static final char ARREDONDA = '1';
+	public static final char DESABILITA_CUPOM_ADIC = '0';
+	public static final char HABILITA_CUPOM_ADIC = '1';
 	
 	protected int sistema = -1;
 	protected byte[] bytesLidos = null;
@@ -228,7 +230,7 @@ public abstract class ECFDriver {
 	}
 	
 	public String parseParam(char param, int tamanho) {				
-		return strZero( String.valueOf(param) , tamanho);
+		return parseParam( String.valueOf(param) , tamanho);
 	}
 	
 	public String parseParam(float param,int tamanho,int casasdec) {				
@@ -319,14 +321,24 @@ public abstract class ECFDriver {
 	
 	public abstract int programaTruncamentoArredondamento(char opt);// 39
 	
+	public abstract int nomeiaTotalizadorNaoSujeitoICMS(int indice, String desc);// 40
+	
+	public abstract int programarEspacoEntreLinhas(int espaco);// 60
+	
+	public abstract int programarEspacoEntreCupons(int espaco);// 61
+	
 	public abstract int programaUnidadeMedida(String descUnid);// 62 51
 	
 	public abstract int aumentaDescItem(String descricao);// 62 52
 	
 	// com problemas devido a falta de informação sobre os parametros.
-	public abstract int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, String departamento, String unidade, String codProd, String descProd);// 63
+	public abstract int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, int departamento, String unidade, String codProd, String descProd);// 63
 	
 	public abstract int nomeiaDepartamento(int index, String descricao);// 65
+	
+	public abstract int habilitaCupomAdicional(char opt);// 68
+	
+	public abstract int resetErro();// 70
 	
 	public abstract int programaFormaPagamento(String[] descricoes);// 71
 	
