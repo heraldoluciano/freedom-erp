@@ -7,9 +7,6 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
-
-
-
 public class ECFBematech extends ECFDriver {
 	
 	public ECFBematech(int com) {
@@ -247,6 +244,30 @@ public class ECFBematech extends ECFDriver {
 		return executaCmd(CMD);
 	}
 	
+	//	
+	public int nomeiaTotalizadorNaoSujeitoICMS(int indice, String desc) {
+		byte[] CMD = {ESC,40};
+		StringBuffer buf = new StringBuffer();
+		buf.append( parseParam(indice,2) );
+		buf.append( parseParam(desc,19) );
+		CMD = adicBytes(CMD,buf.toString().getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Programa espaço entre as linhas em dots.
+	public int programarEspacoEntreLinhas(int espaco) {
+		byte[] CMD = {ESC,60};
+		CMD = adicBytes(CMD,parseParam(espaco,1).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Programa espaço entre as linhas em dots.
+	public int programarEspacoEntreCupons(int espaco) {
+		byte[] CMD = {ESC,61};
+		CMD = adicBytes(CMD,parseParam(espaco,1).getBytes());
+		return executaCmd(CMD);
+	}
+	
 	//	Programa a unidade de medida
 	//	Valida somente para um item, depois volta ao default.
 	public int programaUnidadeMedida(String descUnid) {
@@ -264,7 +285,7 @@ public class ECFBematech extends ECFDriver {
 	}
 	
 	//	Venda de item com entrada de Departamento, Desconto e Unidade
-	public int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, String departamento, String unidade, String codProd, String descProd) {
+	public int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, int departamento, String unidade, String codProd, String descProd) {
 		byte[] CMD = {ESC,63};
 		StringBuffer buf = new StringBuffer();
 		buf.append( parseParam(sitTrib,2) );
@@ -285,6 +306,19 @@ public class ECFBematech extends ECFDriver {
 	public int nomeiaDepartamento(int index, String descricao) {
 		byte[] CMD = {ESC,65};
 		CMD = adicBytes(CMD,parseParam(descricao,20).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	public int habilitaCupomAdicional(char opt) {
+		byte[] CMD = {ESC,68};
+		CMD = adicBytes(CMD,parseParam(opt,1).getBytes());
+		return executaCmd(CMD);
+	}
+	
+	//	Caso a impressora estiver em erro inicialia a mesma.
+	//  alguns erro podem ser recuperado em modo remoto.
+	public int resetErro() {
+		byte[] CMD = {ESC,70};
 		return executaCmd(CMD);
 	}
 	
