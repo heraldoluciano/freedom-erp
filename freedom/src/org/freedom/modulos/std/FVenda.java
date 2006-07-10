@@ -711,9 +711,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 			fRed = txtRedFisc.getVlrBigDecimal() != null ? txtRedFisc.floatValue() : 0;
 			fVlrProd = calcVlrTotalProd(txtVlrProdItVenda.getVlrBigDecimal(),txtVlrDescItVenda.getVlrBigDecimal()).floatValue();
 
-			if (bBuscaBase)
-				fBaseICMS = 0;
-			else
+			if (!bBuscaBase)
 				fBaseICMS = txtBaseICMSItVenda.floatValue();
 
 			txtPercICMSItVenda.setAtivo(true);
@@ -2223,6 +2221,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 		} 
 		else if (pevt.getListaCampos() == lcDet) {
 			if ((lcDet.getStatus() == ListaCampos.LCS_INSERT) || (lcDet.getStatus() == ListaCampos.LCS_EDIT)) {
+				if( txtQtdItVenda.getVlrBigDecimal().floatValue() <= 0 ) {
+					Funcoes.mensagemInforma(this,"Quantidade invalida!");
+					pevt.cancela();
+				}
 				if (txtCLoteProd.getVlrString().equals("S")) {
 					if (!testaCodLote()) {
 						pevt.cancela();

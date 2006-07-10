@@ -206,9 +206,7 @@ public class FSintegra extends FFilho implements ActionListener {
 	private void gerar() {
 			
 		String sSql = "";
-		String sBuffer = "";
-		String sTabela = "";
-		String sCodEmp = "";
+		StringBuffer sBuffer = new StringBuffer();
 		int iTot50 = 0;
 		int iTot54 = 0;
 		int iTot60 = 0;
@@ -218,12 +216,7 @@ public class FSintegra extends FFilho implements ActionListener {
 		int iCodEmp = 0;
 		
 		iCodEmp = Aplicativo.iCodEmp;
-		if (sCodEmp!=null) {
-			if (!sCodEmp.trim().equals("")) {
-				iCodEmp = Integer.parseInt(sCodEmp.trim());
-			}
-		}
-		
+				
 		if (!valida()) {
 			return;
 		}
@@ -277,37 +270,42 @@ public class FSintegra extends FFilho implements ActionListener {
 			
 			if (!con.getAutoCommit())
 				con.commit();
-
-			geraRegistro10e11();
-
-			iTot50 = geraRegistro50();
-			iTot54 = geraRegistro54();
-			iTot60 = geraRegistro60();
-			iTot61 = geraRegistro61();
-			iTot75 = geraRegistro75();
-			
-			iTotreg = iTot50 + iTot54 + iTot61 + iTot75 + 3;
-			  
-			sBuffer = "";
-			if (iTot50 > 0) 
-			sBuffer = sBuffer + retorna90(sBuffer,"50",iTot50);
-			if (iTot54 > 0)
-			sBuffer = sBuffer + retorna90(sBuffer,"54",iTot54);
-			if (iTot61 > 0)
-			sBuffer = sBuffer + retorna90(sBuffer,"60",iTot60);
-			if (iTot61 > 0)
-			sBuffer = sBuffer + retorna90(sBuffer,"61",iTot61);
-			if (iTot75 > 0) 
-			sBuffer = sBuffer + retorna90(sBuffer,"75",iTot75);
-			     
-			sBuffer = sBuffer + "99"+Funcoes.strZero(iTotreg+"",8);
-			sBuffer = sBuffer + Funcoes.replicate(" ",125-sBuffer.length())+"1"+CR;
-			gravaBuffer(sBuffer);
 			   
 		} catch (SQLException sqlErr) {
 			sqlErr.printStackTrace();
-			Funcoes.mensagemErro(this,"Erro consultando arquivo: "+sTabela+"\n"+sqlErr.getMessage());
+			Funcoes.mensagemErro(this,"Erro ao consultar preferencias.\n"+sqlErr.getMessage());
 		}
+		
+		geraRegistro10e11();
+
+		iTot50 = geraRegistro50();
+		iTot54 = geraRegistro54();
+		iTot60 = geraRegistro60();
+		iTot61 = geraRegistro61();
+		iTot75 = geraRegistro75();
+		
+		iTotreg = iTot50 + iTot54 + iTot60 + iTot61 + iTot75 + 3;
+		  
+		if (iTot50 > 0) 
+			sBuffer.append(retorna90(sBuffer.toString(),"50",iTot50));
+		
+		if (iTot54 > 0)
+			sBuffer.append(retorna90(sBuffer.toString(),"54",iTot54));
+		
+		if (iTot60 > 0)
+			sBuffer.append(retorna90(sBuffer.toString(),"60",iTot60));
+		
+		if (iTot61 > 0)
+			sBuffer.append(retorna90(sBuffer.toString(),"61",iTot61));
+		
+		if (iTot75 > 0) 
+			sBuffer.append(retorna90(sBuffer.toString(),"75",iTot75));
+		     
+		sBuffer.append("99");
+		sBuffer.append(Funcoes.strZero(String.valueOf(iTotreg),8));
+		sBuffer.append(Funcoes.replicate(" ",125-sBuffer.length()) + "1" + CR);
+		gravaBuffer(sBuffer.toString());
+		
 		
 		try {
 			fwSintegra.close();
@@ -731,10 +729,8 @@ public class FSintegra extends FFilho implements ActionListener {
 		ResultSet rs;
 		StringBuffer sSql = new StringBuffer();
 		StringBuffer sBuffer = new StringBuffer();
-		StringBuffer sBufferM = new StringBuffer();
 		String sAliq = "";
 		String sCampo = "";
-		boolean impM = false;
 		float fValor = 0;
 		int cont = 0;
 		
@@ -742,14 +738,11 @@ public class FSintegra extends FFilho implements ActionListener {
 			
 			try {
 				//	REGISTRO 60 INFORMAÇÕES DOS ITENS DAS NOTAS FISCAIS DE SAÍDA POR ECF
-				sSql.append("SELECT L.DTLX, L.CODCAIXA, L.PRIMCUPOMLX, L.ULTCUPOMLX, L.NUMREDLX, L.TGTOTAL AS GTFIM,");
-				sSql.append("( SELECT MAX( L2.TGTOTAL ) FROM PVLEITURAX L2 ");
-				sSql.append("        WHERE L2.CODEMP=L.CODEMP AND L2.CODFILIAL=L.CODFILIAL ");
-				sSql.append("        AND L2.DTLX < L.DTLX ) AS GTINI,");
-				sSql.append("( SELECT I.NSERIEIMP FROM SGIMPRESSORA I, SGESTACAOIMP EI ");
-				sSql.append("        WHERE EI.CODEMP=? AND EI.CODFILIAL=? AND EI.CODEST=? ");
-				sSql.append("        AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP ");
-				sSql.append("		 AND I.CODIMP=EI.CODIMP AND I.TIPOIMP IN (6,8) ) AS NUMSERIEIMP,");
+				sSql.append("SELECT L.DTLX, L.CODCAIXA, L.PRIMCUPOMLX, L.ULTCUPOMLX, L.NUMREDLX, L.TGTOTAL,L.VLRCONTABILLX,");
+				sSql.append("( SELECT I.NSERIEIMP FROM PVCAIXA C, SGESTACAOIMP EI, SGIMPRESSORA I ");
+				sSql.append("        WHERE C.CODEMP=L.CODEMP AND C.CODFILIAL=L.CODFILIAL AND C.CODCAIXA=L.CODCAIXA ");
+				sSql.append("        AND EI.CODEMP=C.CODEMPET AND EI.CODFILIAL=C.CODFILIALET AND EI.CODEST=C.CODEST ");
+				sSql.append("		 AND I.CODEMP=EI.CODEMPIP AND I.CODFILIAL=EI.CODFILIALIP AND I.CODIMP=EI.CODIMP AND I.TIPOIMP IN (6,8) ) AS NUMSERIEIMP,");
 				sSql.append("L.TSUBSTITUICAO,L.TISENCAO,L.TNINCIDENCIA,");
 				sSql.append("L.ALIQ01,L.ALIQ02,L.ALIQ03,L.ALIQ04,L.ALIQ05,L.ALIQ06,L.ALIQ07,L.ALIQ08,");
 				sSql.append("L.ALIQ09,L.ALIQ10,L.ALIQ11,L.ALIQ01,L.ALIQ12,L.ALIQ13,L.ALIQ14,L.ALIQ15,L.ALIQ16,");
@@ -761,43 +754,39 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append("ORDER BY L.DTLX");
 				  
 				ps = con.prepareStatement(sSql.toString());
-				ps.setInt(1,iCodEmp);
-				ps.setInt(2,ListaCampos.getMasterFilial("PVLEITURAX"));
-				ps.setInt(3,Aplicativo.iNumEst);
-				ps.setDate(4,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
-				ps.setDate(5,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
-				ps.setInt(6,iCodEmp);
-				ps.setInt(7,ListaCampos.getMasterFilial("VDVENDA"));
+				ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+				ps.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
+				ps.setInt(3,iCodEmp);
+				ps.setInt(4,ListaCampos.getMasterFilial("PVLEITURAX"));
 				rs = ps.executeQuery();
 				
-				lbAnd.setText("Gerando registro mestre de ECF...");
+				lbAnd.setText("Gerando registro de ECF...");
 				
 				while (rs.next()) {
+															
+					/* 01 */ sBuffer.append("60");
+					/* 02 */ sBuffer.append("M"); 
+					/* 03 */ sBuffer.append(Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate(rs.getDate("DTLX")) ));
+					/* 04 */ sBuffer.append(Funcoes.adicionaEspacos( rs.getString("NUMSERIEIMP"), 20 ));
+					/* 05 */ sBuffer.append(Funcoes.strZero( String.valueOf(rs.getInt("CODCAIXA")), 3 ));
+					/* 06 */ sBuffer.append("2D"); // por se tratar de emição por ECF.
+					/* 07 */ sBuffer.append(Funcoes.strZero( String.valueOf(rs.getInt("PRIMCUPOMLX")), 6 ));
+					/* 08 */ sBuffer.append(Funcoes.strZero( String.valueOf(rs.getInt("ULTCUPOMLX")), 6 ));
+					/* 09 */ sBuffer.append(Funcoes.strZero( String.valueOf(rs.getInt("NUMREDLX")), 6 ));
+					/* ?? */ sBuffer.append("000");
+					/* 10 */ sBuffer.append(Funcoes.transValor( String.valueOf(rs.getInt("VLRCONTABILLX")), 16, 2, true ));
+					/* 11 */ sBuffer.append(Funcoes.transValor( String.valueOf(rs.getInt("TGTOTAL")), 16, 2, true ));
+					/* 12 */ sBuffer.append(Funcoes.replicate( " ", 37 ) + CR );					
+
+					gravaBuffer(sBuffer.toString());
+					sBuffer.delete(0,sBuffer.length());
+					cont ++;		
 					
-					sBufferM.delete(0,sBufferM.length());
-					
-					impM = false;
-					
-					/* 01 */ sBufferM.append("60");
-					/* 02 */ sBufferM.append("M"); 
-					/* 03 */ sBufferM.append(Funcoes.dataAAAAMMDD( Funcoes.sqlDateToDate(rs.getDate("DTLX")) ));
-					/* 04 */ sBufferM.append(Funcoes.adicionaEspacos( rs.getString("NUMSERIEIMP"), 20 ));
-					/* 05 */ sBufferM.append(Funcoes.strZero( String.valueOf(rs.getInt("CODCAIXA")), 3 ));
-					/* 06 */ sBufferM.append("2D"); // por se tratar de emição por ECF.
-					/* 07 */ sBufferM.append(Funcoes.strZero( String.valueOf(rs.getInt("PRIMCUPOMLX")), 8 ));
-					/* 08 */ sBufferM.append(Funcoes.strZero( String.valueOf(rs.getInt("ULTCUPOMLX")), 8 ));
-					/* 09 */ sBufferM.append(Funcoes.strZero( String.valueOf(rs.getInt("NUMREDLX")), 6 ));
-					/* 10 */ sBufferM.append(Funcoes.transValor( String.valueOf(rs.getInt("GTINI")), 16, 2, true ));
-					/* 11 */ sBufferM.append(Funcoes.transValor( String.valueOf(rs.getInt("GTFIM")), 16, 2, true ));
-					/* 12 */ sBufferM.append(Funcoes.replicate( " ", 37 ) + CR );
-					
-					lbAnd.setText("Gerando registro analítico de ECF...");
 					//	19 é o número de aliquotas. 
 					for( int i=1; i<= 19; i++ ) {
 						
-						sBuffer.delete(0,sBuffer.length());
-						
 						fValor = 0;
+						
 						if( i <= 16 ) {
 							sCampo = "ALIQ"+Funcoes.strZero(String.valueOf(i),2);
 							sAliq = rs.getString(sCampo);
@@ -836,15 +825,9 @@ public class FSintegra extends FFilho implements ActionListener {
 						/* 06 */ sBuffer.append(Funcoes.transValor( String.valueOf(fValor), 12, 2, true ));
 						/* 07 */ sBuffer.append(Funcoes.replicate( " ", 79 ) + CR);
 									
-						if( fValor > 0 ) {
-							if(!impM) {
-								gravaBuffer(sBufferM.toString());
-								cont ++;				 
-								impM = true;
-							}
-							gravaBuffer(sBuffer.toString());
-							cont ++;				 
-						}
+						gravaBuffer(sBuffer.toString());
+						sBuffer.delete(0,sBuffer.length());
+						cont ++;
 					}
 				}
 				rs.close();
@@ -880,17 +863,17 @@ public class FSintegra extends FFilho implements ActionListener {
 					
 					/* 01 */ sBuffer.append("60");
 					/* 02 */ sBuffer.append("R");
-					/* 03 */ sBuffer.append(Funcoes.strZero( String.valueOf(txtDataini.getVlrDate().getMonth()), 2 ));
-					/* 03 */ sBuffer.append(Funcoes.strZero( String.valueOf(txtDataini.getVlrDate().getYear()), 4 ));
+					/* 03 */ sBuffer.append(Funcoes.strZero( rs.getString("MES"), 2 ));
+					/* 03 */ sBuffer.append(Funcoes.strZero( rs.getString("ANO"), 4 ));
 					/* 04 */ sBuffer.append(Funcoes.adicionaEspacos( rs.getString("CODPROD").trim(), 14 ));
 					/* 05 */ sBuffer.append(Funcoes.transValor( rs.getString("QTDITVENDA"), 13, 3, true ));
 					/* 06 */ sBuffer.append(Funcoes.transValor( rs.getString("VLRBRUTO"), 16, 2, true ));
 					/* 07 */ sBuffer.append(Funcoes.transValor( rs.getString("VLRBASEICMSITVENDA"), 16, 2, true ));	
 					
 					if("TT".equals(rs.getString("TIPOFISC").trim())) {
-						/* 08 */ sBuffer.append(Funcoes.adicionaEspacos( Funcoes.copy(rs.getString("TIPOFISC"),1), 4 ) );
-					} else {
 						/* 08 */ sBuffer.append(Funcoes.transValor( rs.getString("PERCICMSITVENDA"), 4, 2, true ) );
+					} else {
+						/* 08 */ sBuffer.append(Funcoes.copy(rs.getString("TIPOFISC"),1) + "   " );
 					}
 		
 					/* 09 */ sBuffer.append(Funcoes.replicate( " ", 54 ) + CR);

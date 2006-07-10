@@ -33,12 +33,12 @@ import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import org.freedom.componentes.JLabelPad;
-import org.freedom.componentes.JPanelPad;
 import javax.swing.JScrollPane;
 
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
+import org.freedom.componentes.JLabelPad;
+import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
@@ -115,9 +115,10 @@ public class FLeFiscal extends FTabDados {
 	private JTextFieldPad txtRed = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
 	private JTextFieldPad txtVlrDesc = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 15, 2);
 	private JTextFieldPad txtSequencia = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtVlrIsento = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtVlrNI = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
-	private JTextFieldPad txtVlrSubst = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8, 0);
+	private JTextFieldPad txtVlrIsento = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 16, 2);
+	private JTextFieldPad txtVlrNI = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 16, 2);
+	private JTextFieldPad txtVlrSubst = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 16, 2);
+	private JTextFieldPad txtVlrContabil = new JTextFieldPad(JTextFieldPad.TP_DECIMAL, 16, 2);
 	private Tabela tab = new Tabela();
 	private JScrollPane spnTab = new JScrollPane(tab);
 	private ListaCampos lcCaixa = new ListaCampos(this,"");
@@ -200,6 +201,7 @@ public class FLeFiscal extends FTabDados {
 		adicCampo(txtVlrCanc, 220,230,102,20, "VlrCancLX", "Cancelamento", ListaCampos.DB_SI, false);
 		adicCampo(txtVlrDesc, 325,230,105,20, "VlrDescLX", "Desconto", ListaCampos.DB_SI, false);
 		adicCampo(txtTotal, 7,270,100,20, "TGTotal", "Grande total", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrContabil, 110,270,100,20, "VlrContabilLX", "Valor Contabil", ListaCampos.DB_SI, false);
 		
 		adicTab("Tributado", pinTributado); 
 		setPainel(pinTributado);
@@ -395,6 +397,25 @@ public class FLeFiscal extends FTabDados {
 		}   */ 
 
     }
+    /*
+    private BigDecimal getVlrContabil() {
+    	
+    	PreparedStatement ps = null;
+    	ResultSet rs = null;
+    	String sSQL = null;
+    	BigDecimal retorno = null;
+    	
+    	try {
+    		
+    		sSQL = "";
+    		
+    	} catch ( Exception e ) {
+			Funcoes.mensagemErro( this, "Erro ao buscar valor contabil\n" + e.getMessage() );
+		}
+    	
+    	return retorno;
+    	
+    }*/
     
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btExec) {
