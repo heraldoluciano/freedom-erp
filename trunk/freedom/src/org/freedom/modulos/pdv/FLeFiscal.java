@@ -200,8 +200,8 @@ public class FLeFiscal extends FTabDados {
 		adicCampo(txtTSuprimento, 115,230,102,20, "TSuprimento", "Suprimento", ListaCampos.DB_SI, false);
 		adicCampo(txtVlrCanc, 220,230,102,20, "VlrCancLX", "Cancelamento", ListaCampos.DB_SI, false);
 		adicCampo(txtVlrDesc, 325,230,105,20, "VlrDescLX", "Desconto", ListaCampos.DB_SI, false);
-		adicCampo(txtTotal, 7,270,100,20, "TGTotal", "Grande total", ListaCampos.DB_SI, false);
-		adicCampo(txtVlrContabil, 110,270,100,20, "VlrContabilLX", "Valor Contabil", ListaCampos.DB_SI, false);
+		adicCampo(txtTotal, 7,270,105,20, "TGTotal", "Grande total", ListaCampos.DB_SI, false);
+		adicCampo(txtVlrContabil, 115,270,100,20, "VlrContabilLX", "Valor Contabil", ListaCampos.DB_SI, false);
 		
 		adicTab("Tributado", pinTributado); 
 		setPainel(pinTributado);
@@ -265,7 +265,9 @@ public class FLeFiscal extends FTabDados {
 		btExec.addActionListener(this); 
 
     }
+	
     private void montaTabela() {
+    	
     	tab.adicColuna("%Aliq");
 		tab.adicColuna("Total isenção");
 		tab.adicColuna("Total não incidência");
@@ -389,6 +391,13 @@ public class FLeFiscal extends FTabDados {
             txtVlrNI.setVlrDouble(new Double(sTot));
 			sTot = sTotalizadores[3].substring(0,12)+"."+sTotalizadores[3].substring(12);
             txtVlrSubst.setVlrDouble(new Double(sTot));
+            
+            txtVlrContabil.setVlrBigDecimal( new BigDecimal(
+            			txtVlrIsento.floatValue() +
+            			txtVlrNI.floatValue() +
+            			txtVlrSubst.floatValue() 
+            		) );
+            
 		/*}
 		else {
 			txtVlrCanc.setVlrInteger(new Integer(0));
@@ -397,25 +406,6 @@ public class FLeFiscal extends FTabDados {
 		}   */ 
 
     }
-    /*
-    private BigDecimal getVlrContabil() {
-    	
-    	PreparedStatement ps = null;
-    	ResultSet rs = null;
-    	String sSQL = null;
-    	BigDecimal retorno = null;
-    	
-    	try {
-    		
-    		sSQL = "";
-    		
-    	} catch ( Exception e ) {
-			Funcoes.mensagemErro( this, "Erro ao buscar valor contabil\n" + e.getMessage() );
-		}
-    	
-    	return retorno;
-    	
-    }*/
     
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getSource() == btExec) {
