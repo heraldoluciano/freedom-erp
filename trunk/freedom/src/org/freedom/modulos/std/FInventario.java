@@ -103,32 +103,21 @@ private static final long serialVersionUID = 1L;
 		txtQtdInvP.setAtivo(false);
 		txtSldAtualInvP.setAtivo(false);
 
-		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_PK, txtDescProd, true));
-		lcProd.add(new GuardaCampo(txtRefProd, "RefProd",
-				"Referência do produto", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(cbLote, "CLoteProd", "Classifica por lote?",
-				ListaCampos.DB_SI, false));
-		lcProd.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.Almox.",
-				ListaCampos.DB_FK,txtDescAlmox, false));
+		lcProd.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_PK, txtDescProd, true));
+		lcProd.add(new GuardaCampo(txtRefProd, "RefProd","Referência do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(cbLote, "CLoteProd", "Classifica por lote?",ListaCampos.DB_SI, false));
+		lcProd.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cod.Almox.",ListaCampos.DB_FK,txtDescAlmox, false));
 		lcProd.setWhereAdic("NOT TIPOPROD = 'S' AND ATIVOPROD='S'");
 		lcProd.montaSql(false, "PRODUTO", "EQ");
 		lcProd.setQueryCommit(false);
 		lcProd.setReadOnly(true);
 		txtCodProd.setTabelaExterna(lcProd);
 
-		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",
-				ListaCampos.DB_FK, false));
-		lcProd2
-				.add(new GuardaCampo(txtRefProd, "RefProd",
-						"Referência do produto", ListaCampos.DB_PK,
-						txtDescProd, false));
-		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd",
-				"Descrição do produto", ListaCampos.DB_SI, false));
-		lcProd2.add(new GuardaCampo(cbLote, "CLoteProd",
-				"Classifica por lote?", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, false));
+		lcProd2.add(new GuardaCampo(txtRefProd, "RefProd","Referência do produto", ListaCampos.DB_PK,txtDescProd, false));
+		lcProd2.add(new GuardaCampo(txtDescProd, "DescProd","Descrição do produto", ListaCampos.DB_SI, false));
+		lcProd2.add(new GuardaCampo(cbLote, "CLoteProd","Classifica por lote?", ListaCampos.DB_SI, false));
 		txtRefProd.setChave(ListaCampos.DB_PK);
 		txtRefProd.setNomeCampo("RefProd");
 		txtRefProd.setListaCampos(lcProd2);
@@ -137,12 +126,9 @@ private static final long serialVersionUID = 1L;
 		lcProd2.setQueryCommit(false);
 		lcProd2.setReadOnly(true);
 
-		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov",
-				"Cód.tp.mov.", ListaCampos.DB_PK, false));
-		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov",
-				"Descrição do tipo de movimento", ListaCampos.DB_SI, false));
-		lcTipoMov
-				.setWhereAdic("( ( ESTIPOMOV = 'I' )  AND "
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descrição do tipo de movimento", ListaCampos.DB_SI, false));
+		lcTipoMov.setWhereAdic("( ( ESTIPOMOV = 'I' )  AND "
 						+ " ( TUSUTIPOMOV='S' OR EXISTS (SELECT * FROM EQTIPOMOVUSU TU "
 						+ "WHERE TU.CODEMP=EQTIPOMOV.CODEMP AND TU.CODFILIAL=EQTIPOMOV.CODFILIAL AND "
 						+ "TU.CODTIPOMOV=EQTIPOMOV.CODTIPOMOV AND TU.CODEMPUS="
@@ -156,10 +142,8 @@ private static final long serialVersionUID = 1L;
 		txtCodTipoMov.setTabelaExterna(lcTipoMov);
 
 		txtCodLote.setAtivo(false);
-		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote",
-				ListaCampos.DB_PK, false));
-		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote",
-				"Vencimento do lote", ListaCampos.DB_SI, false));
+		lcLote.add(new GuardaCampo(txtCodLote, "CodLote", "Cód.lote",ListaCampos.DB_PK, false));
+		lcLote.add(new GuardaCampo(txtDescLote, "VenctoLote","Vencimento do lote", ListaCampos.DB_SI, false));
 		//lcLote.add(new GuardaCampo( txtSldAtualInvP, 90, 100, 207, 20,
 		// "SldLiqLote", "Saldo", false, false, null,
 		// JTextFieldPad.TP_DECIMAL,false),"txtDescLotex");
@@ -170,10 +154,8 @@ private static final long serialVersionUID = 1L;
 		lcLote.setAutoLimpaPK(false);
 		txtCodLote.setTabelaExterna(lcLote);
 
-		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cód.almox.",
-				ListaCampos.DB_PK, false));
-		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox",
-				"Descrição do almoxarifado", ListaCampos.DB_SI, false));
+		lcAlmox.add(new GuardaCampo(txtCodAlmox, "CodAlmox", "Cód.almox.",ListaCampos.DB_PK, false));
+		lcAlmox.add(new GuardaCampo(txtDescAlmox, "DescAlmox","Descrição do almoxarifado", ListaCampos.DB_SI, false));
 		lcAlmox.montaSql(false, "ALMOX", "EQ");
 		lcAlmox.setQueryCommit(false);
 		lcAlmox.setReadOnly(true);
@@ -197,50 +179,35 @@ private static final long serialVersionUID = 1L;
 	}
 
 	private void montaTela() {
-		adicCampo(txtCodInv, 7, 20, 90, 20, "CodInvProd", "Cód.inv.prod.",
-				ListaCampos.DB_PK, true);
-		adicCampo(txtDataInvP, 100, 20, 100, 20, "DataInvP", "Data",
-				ListaCampos.DB_SI, true);
-
-		adicCampo(txtCodTipoMov, 7, 60, 90, 20, "CodTipoMov", "Cód.tp.mov.",
-				ListaCampos.DB_FK, txtDescTipoMov, true);
-		adicDescFK(txtDescTipoMov, 100, 60, 207, 20, "DescTipoMov",
-				"Descrição do tipo de movimento");
+		
+		adicCampo(txtCodInv, 7, 20, 90, 20, "CodInvProd", "Cód.inv.prod.",ListaCampos.DB_PK, true);
+		adicCampo(txtDataInvP, 100, 20, 100, 20, "DataInvP", "Data",ListaCampos.DB_SI, true);
+		adicCampo(txtCodTipoMov, 7, 60, 90, 20, "CodTipoMov", "Cód.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, true);
+		adicDescFK(txtDescTipoMov, 100, 60, 207, 20, "DescTipoMov","Descrição do tipo de movimento");
 
 		if (comRef()) {
 			txtRefProd.setBuscaAdic(new DLBuscaProd(con, "REFPROD",lcProd2.getWhereAdic()));
-			adicCampoInvisivel(txtRefProd2, "RefProd", "Referência do produto",
-					ListaCampos.DB_SI, false);
-			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",
-					ListaCampos.DB_FK, txtDescProd, false);
+			adicCampoInvisivel(txtRefProd2, "RefProd", "Referência do produto",ListaCampos.DB_SI, false);
+			adicCampoInvisivel(txtCodProd, "CodProd", "Cód.prod.",ListaCampos.DB_FK, txtDescProd, false);
 			txtRefProd.setRequerido(true);
 			adic(new JLabelPad("Referência"), 7, 80, 80, 20);
 			adic(txtRefProd, 7, 100, 80, 20);
 		} else {
 			txtCodProd.setBuscaAdic(new DLBuscaProd(con, "CODPROD",lcProd.getWhereAdic()));
-			adicCampo(txtCodProd, 7, 100, 90, 20, "CodProd", "Cód.prod",
-					ListaCampos.DB_FK, txtDescProd, true);
+			adicCampo(txtCodProd, 7, 100, 90, 20, "CodProd", "Cód.prod",ListaCampos.DB_FK, txtDescProd, true);
 		}
-		adicDescFK(txtDescProd, 100, 100, 207, 20, "DescProd",
-				"Descrição do produto");
-		adicCampo(txtCodLote, 7, 140, 90, 20, "CodLote", "Cód.lote",
-				ListaCampos.DB_FK, txtDescLote, false);
-		adicDescFK(txtDescLote, 100, 140, 207, 20, "VenctoLote",
-				"Vencimento do lote");
-		adicCampo(txtCodAlmox, 7, 180, 90, 20, "CodAlmox", "Cód.amox.",
-				ListaCampos.DB_FK, txtDescAlmox, true);
-		adicDescFK(txtDescAlmox, 100, 180, 207, 20, "DescAlmox",
-				"Descrição do almoxarifado");
-		adicCampo(txtSldAtualInvP, 7, 220, 140, 20, "SldAtualInvP",
-				"Estoque atual", ListaCampos.DB_SI, false);
-		adicCampo(txtSldNovoInvP, 150, 220, 137, 20, "SldDigInvP",
-				"Estoque novo", ListaCampos.DB_SI, false);
-		adicCampo(txtPrecoInvP, 90, 260, 97, 20, "PrecoInvP", "Custo unitário",
-				ListaCampos.DB_SI, true);
-		adicCampo(txtQtdInvP, 7, 260, 80, 20, "QtdInvP", "Quantidade",
-				ListaCampos.DB_SI, true);
+		adicDescFK(txtDescProd, 100, 100, 207, 20, "DescProd","Descrição do produto");
+		adicCampo(txtCodLote, 7, 140, 90, 20, "CodLote", "Cód.lote",ListaCampos.DB_FK, txtDescLote, false);
+		adicDescFK(txtDescLote, 100, 140, 207, 20, "VenctoLote","Vencimento do lote");
+		adicCampo(txtCodAlmox, 7, 180, 90, 20, "CodAlmox", "Cód.amox.",ListaCampos.DB_FK, txtDescAlmox, true);
+		adicDescFK(txtDescAlmox, 100, 180, 207, 20, "DescAlmox","Descrição do almoxarifado");
+		adicCampo(txtSldAtualInvP, 7, 220, 140, 20, "SldAtualInvP","Estoque atual", ListaCampos.DB_SI, false);
+		adicCampo(txtSldNovoInvP, 150, 220, 137, 20, "SldDigInvP","Estoque novo", ListaCampos.DB_SI, false);
+		adicCampo(txtPrecoInvP, 90, 260, 97, 20, "PrecoInvP", "Custo unitário",ListaCampos.DB_SI, true);
+		adicCampo(txtQtdInvP, 7, 260, 80, 20, "QtdInvP", "Quantidade",ListaCampos.DB_SI, true);
 		lcCampos.setQueryInsert(false);
 		setListaCampos(true, "INVPROD", "EQ");
+		
 	}
 
 	public boolean testaCodLote() {
@@ -269,14 +236,11 @@ private static final long serialVersionUID = 1L;
 				if (!con.getAutoCommit())
 					con.commit();
 			} catch (SQLException err) {
-				Funcoes.mensagemErro(this,
-						"Erro ao consultar a tabela EQLOTE!\n"
-								+ err.getMessage(),true,con,err);
+				Funcoes.mensagemErro(this,"Erro ao consultar a tabela EQLOTE!\n" + err.getMessage(),true,con,err);
 			}
 		}
 		if (!bValido) {
-			DLLote dl = new DLLote(this, txtCodLote.getText(), txtCodProd
-					.getText(), txtDescProd.getText(), con);
+			DLLote dl = new DLLote(this, txtCodLote.getText(), txtCodProd.getText(), txtDescProd.getText(), con);
 			dl.setVisible(true);
 			if (dl.OK) {
 				bRetorno = true;
@@ -306,9 +270,7 @@ private static final long serialVersionUID = 1L;
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,
-					"Erro ao confirmar código do inventário!\n"
-							+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this,"Erro ao confirmar código do inventário!\n" + err.getMessage(),true,con,err);
 		}
 	}
 
@@ -340,8 +302,7 @@ private static final long serialVersionUID = 1L;
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro carregando preferências!\n"
-					+ err.getMessage(),true,con,err);
+			Funcoes.mensagemErro(this, "Erro carregando preferências!\n" + err.getMessage(),true,con,err);
 		} finally {
 			rs = null;
 			ps = null;
@@ -422,8 +383,7 @@ private static final long serialVersionUID = 1L;
 
 	public void setSaldo() {
 		double deSaldo[] = { 0, 0 };
-		deSaldo = buscaSaldo(txtCodProd.getVlrInteger().intValue(), txtDataInvP
-				.getVlrDate());
+		deSaldo = buscaSaldo(txtCodProd.getVlrInteger().intValue(), txtDataInvP.getVlrDate());
 		txtSldAtualInvP.setVlrDouble(new Double(deSaldo[0]));
 		txtPrecoInvP.setVlrDouble(new Double(deSaldo[1]));
 	}
@@ -525,21 +485,24 @@ private static final long serialVersionUID = 1L;
 
 	private void imprimir(boolean bVisualizar) {
 
-		ImprimeOS imp = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
 		String sOrdem = null;
 		String sOrdenado = null;
 		String sRefCod = null;
 		String sOrdemGrupo = null;
 		String sDivGrupo = null;
-		String sCodgrup = null;
+		String sCodgrup = "";
+		String sRef = null;
 		String sCodgrupFiltro = null;
-		String sSQL = null;
+		String sLinhaFina = Funcoes.replicate("-", 133);
+		String sLinhaLarga = Funcoes.replicate("=", 133);
 		double deTotal = 0;
 		Date dtEstoq = null;
 		Object[] oVals = null;
 		DLRInventario dl = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		ImprimeOS imp = null;
 
 		try {
 
@@ -604,113 +567,107 @@ private static final long serialVersionUID = 1L;
 				ps.setNull(6, Types.CHAR);
 			else
 				ps.setString(6, sCodgrupFiltro);
-			ps
-					.setDate(7, Funcoes.dateToSQLDate(Funcoes
-							.dateToSQLDate(dtEstoq)));
+			ps.setDate(7, Funcoes.dateToSQLDate(Funcoes.dateToSQLDate(dtEstoq)));
 			rs = ps.executeQuery();
+			
 			imp.limpaPags();
-
-			sCodgrup = "";
+			imp.montaCab();
+			imp.setTitulo("Relatório de Inventário");
+			imp.addSubTitulo("POSIÇÃO DO ESTOQUE EM " + Funcoes.dateToStrDate(dtEstoq));
+			imp.addSubTitulo(sOrdenado);
 
 			while (rs.next()) {
-				if (imp.pRow() >= (linPag - 1)) {
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+				
+				if ( imp.pRow() >= ( linPag - 1 ) ) {
+					
+					imp.say(  0, imp.comprimido() );
+					imp.say(  0, "|" + sLinhaFina + "|");
 					imp.incPags();
 					imp.eject();
-				} else if (sDivGrupo.equals("S")) {
-					if (!sCodgrup.equals(rs.getString("Codgrup"))) {
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 133) + "|");
+					
+				} else if ( "S".equals(sDivGrupo) ) {
+					
+					if ( ! sCodgrup.equals( rs.getString("Codgrup") ) ) {
+						
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say(  0, "|" + sLinhaFina + "|" );
 						imp.incPags();
 						imp.eject();
+						
 					}
+					
 				}
 
-				if (imp.pRow() == 0) {
-					imp.montaCab();
-					imp.setTitulo("Relatório de Inventário");
-					imp.addSubTitulo("POSIÇÃO DO ESTOQUE EM "
-							+ Funcoes.dateToStrDate(dtEstoq));
-					imp.addSubTitulo(sOrdenado);
+				if ( imp.pRow() == 0 ) {
+					
 					imp.impCab(136, true);
 
-					if (sDivGrupo.equals("S")) {
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|"
-								+ Funcoes.replicate("-", 133) + "|");
-						imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-						imp.say(imp.pRow() + 0, 0, "|");
-						imp.say(imp.pRow() + 0, (136 - rs.getString("CodGrup")
-								.length()) / 2, rs.getString("CodGrup"));
-						imp.say(imp.pRow() + 0, 135, "|");
+					if ( "S".equals(sDivGrupo) ) {
+						
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say(  0, "|" + sLinhaFina + "|");
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say(  0, "|");
+						imp.say(( 136 - rs.getString("CodGrup").length() ) / 2, rs.getString("CodGrup") );
+						imp.say(135, "|");
+						
 					}
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "| Grupo/" + sRefCod);
-					imp.say(imp.pRow() + 0, 26, "| Descriçao");
-					imp.say(imp.pRow() + 0, 69, "| Quant.");
-					imp.say(imp.pRow() + 0, 80, "| "
-							+ (tipoCusto().equals("M") ? "Custo MPM"
-									: "Custo PEPS"));
-					imp.say(imp.pRow() + 0, 103, "| Total");
-					imp.say(imp.pRow() + 0, 135, "|");
-					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 0, "|"
-							+ Funcoes.replicate("-", 133) + "|");
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + sLinhaFina + "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "| Grupo/" + sRefCod );
+					imp.say( 26, "| Descriçao" );
+					imp.say( 69, "| Quant." );
+					imp.say( 80, "| " + (tipoCusto().equals("M") ? "Custo MPM" : "Custo PEPS") );
+					imp.say(103, "| Total" );
+					imp.say(135, "|");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + sLinhaFina + "|" );
+					
 				}
-				String sRef = "";
-				if (sRefCod.equals("Ref"))
+				
+				if ( "Ref".equals(sRefCod) )
 					sRef = rs.getString("RefProd");
 				else
 					sRef = rs.getString("CodProd");
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 0, "| "
-						+ Funcoes.copy(rs.getString("CODGRUP") + "/" + sRef, 0,
-								23));
-				imp.say(imp.pRow() + 0, 26, Funcoes.copy("| "
-						+ rs.getString("DESCPROD"), 0, 43));
-				imp.say(imp.pRow() + 0, 69, Funcoes.copy("| "
-						+ rs.getString("SALDO"), 0, 11));
-				imp.say(imp.pRow() + 0, 80, "| "
-						+ Funcoes.strDecimalToStrCurrency(20, 2, rs
-								.getString("CUSTO")));
-				imp.say(imp.pRow() + 0, 103, "| "
-						+ Funcoes.strDecimalToStrCurrency(28, 2, rs
-								.getString("VLRESTOQ")) + "  |");
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say(  0, "| " + Funcoes.copy(rs.getString("CODGRUP") + "/" + sRef, 0, 23) );
+				imp.say( 26, Funcoes.copy("| " + rs.getString("DESCPROD"), 0, 43) );
+				imp.say( 69, Funcoes.copy("| " + rs.getString("SALDO"), 0, 11) );
+				imp.say( 80, "| " + Funcoes.strDecimalToStrCurrency(20, 2, rs.getString("CUSTO")) );
+				imp.say(103, "| " + Funcoes.strDecimalToStrCurrency(28, 2, rs.getString("VLRESTOQ")) + "  |" );
+				
 				deTotal += rs.getDouble("VLRESTOQ");
-
 				sCodgrup = rs.getString("CODGRUP");
+				
 			}
+			
 			rs.close();
 			ps.close();
 			if (!con.getAutoCommit())
 				con.commit();
 
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "|   VALOR TOTAL DO ESTOQUE EM "
-					+ Funcoes.dateToStrDate(dtEstoq)
-					+ ": "
-					+ Funcoes.strDecimalToStrCurrency(15, 2, "" + deTotal)
-							.trim());
-			imp.say(imp.pRow() + 0, 135, "|");
-			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say(  0, "+" + sLinhaLarga + "+" ) ;
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say(  0, "|   VALOR TOTAL DO ESTOQUE EM "
+						+ Funcoes.dateToStrDate(dtEstoq)
+						+ ": "
+						+ Funcoes.strDecimalToStrCurrency(15, 2, "" + deTotal).trim());
+			imp.say(135, "|" );
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say(  0, "+" + sLinhaLarga + "+" );
 			imp.incPags();
 
 			imp.eject();
 			imp.fechaGravacao();
-			if (bVisualizar) {
+			
+			if ( bVisualizar )
 				imp.preview(this);
-			} else {
+			else
 				imp.print();
-			}
 
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this, "Erro na consulta à tabela de setores!\n"
