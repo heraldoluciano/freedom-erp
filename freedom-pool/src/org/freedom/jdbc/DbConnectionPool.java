@@ -2,6 +2,8 @@ package org.freedom.jdbc;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
 import org.freedom.util.resource.ResourceException;
 import org.freedom.util.resource.ResourceKey;
 import org.freedom.util.resource.AbstractResourcePool;
@@ -30,32 +32,35 @@ import org.freedom.util.resource.AbstractResourcePool;
  */
 public class DbConnectionPool extends AbstractResourcePool {
 
-   /** Caminho para o driver JDBC. */
+   /** Caminho para o driver JDBC. **/
    private transient String driver;
 
-   /** url URL para a conexão com o banco de dados. */
+   /** url URL para a conexão com o banco de dados. **/
    private transient String url;
 
-   /** Número de conexões iniciais. */
+   /** Número de conexões iniciais. **/
    private transient int initialCons;
 
-   /** Flag que indica se o driver já foi carregado. */
+   /** Flag que indica se o driver já foi carregado. **/
    private transient boolean driverLoaded = false;
 
-   /** ID do usuário para conexão com banco de dados. */
+   /** ID do usuário para conexão com banco de dados. **/
    private transient String user;
 
-   /** Senha do usuário de banco de dados. */
+   /** Senha do usuário de banco de dados. **/
    private transient String password;
 
-   /** Usuário para o pool de conexões configurado no web.xml. */
+   /** Usuário para o pool de conexões configurado no web.xml. **/
    private transient String userweb;
 
-   /** Senha para o pool de conexões configurado no web.xml. */
+   /** Senha para o pool de conexões configurado no web.xml. **/
    private transient String passwordweb;
 
-   /** ID da sessão do servidor http. Utilizado como chave para pool. */
+   /** ID da sessão do servidor http. Utilizado como chave para pool. **/
    private transient String sessionID;
+
+   /** Log4j da classe. **/
+   private static final Logger LOGGER = createLogger();
 
    /**
     * Construtor da classe sem as informações de usuário e senha.
@@ -91,8 +96,17 @@ public class DbConnectionPool extends AbstractResourcePool {
                getAvailableRes().put(resource.getHashKey(), resource);
             }
          } catch (Exception ex) {
+            LOGGER.error(ex);
          }
       }
+   }
+
+   /**
+    * Cria uma instância de Log4j para a classe.
+    * @return Retorna o log instânciado.
+    */
+   private static Logger createLogger() {
+      return Logger.getLogger("org.freedom.jdbc.DbConnectionPool");
    }
 
    /**
@@ -127,6 +141,7 @@ public class DbConnectionPool extends AbstractResourcePool {
          resource = new ResourceKey(sessionID, key, pwd, connection);
       } catch (Exception ex) {
          // ClassNotFoundException ou SQLException
+         LOGGER.error(ex);
          throw new ResourceException(ex.getMessage());
       }
       return resource;
@@ -143,6 +158,7 @@ public class DbConnectionPool extends AbstractResourcePool {
             resource.getResource();
          connection.close();
       } catch (SQLException ex) {
+         LOGGER.error(ex);
          // ignora exceção
       }
    }
@@ -160,6 +176,7 @@ public class DbConnectionPool extends AbstractResourcePool {
          valid = (!connection.isClosed());
       } catch (SQLException ex) {
          valid = false;
+         LOGGER.error(ex);
       }
       return valid;
    }
