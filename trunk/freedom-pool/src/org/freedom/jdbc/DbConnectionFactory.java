@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
 import org.freedom.util.resource.ResourceException;
 import org.freedom.util.resource.ResourceKey;
 
@@ -31,15 +32,35 @@ import org.freedom.util.resource.ResourceKey;
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 05/10/2004. <BR>
  */
-public class DbConnectionFactory {
+public final class DbConnectionFactory {
+
+   /** Log da classe. **/
+   private static final Logger LOGGER = createLogger();
+
+   /** Instância no formato Singleton. **/
+   private static final DbConnectionFactory INSTANCE =
+      new DbConnectionFactory();
 
    /** Construtor da classe. **/
-   public DbConnectionFactory() {
-      super();
+   private DbConnectionFactory() {
+      //Não tem conteúdo.
    }
 
-   /** Referência para a instância do pool em questão. */
-   private static DbConnectionPool pool;
+   /**
+    * Tem como objetivo retornar a instância da classe.
+    * @return Retorna a instância da classe DbConnectionFactory.
+    */
+   public static DbConnectionFactory getInstance() {
+      return INSTANCE;
+   }
+
+   /**
+    * Retorna a instância do Log.
+    * @return Retorna um Log4j.
+    */
+   private Logger getLogger() {
+      return LOGGER;
+   }
 
    /**
     * Retorna uma conexão do concentrador.
@@ -48,13 +69,14 @@ public class DbConnectionFactory {
     * @return Retorna uma conexão JDBC.
     * @throws SQLException Propaga exceções JDBC.
     */
-   public static java.sql.Connection getConnection(final ServletContext context,
+   public java.sql.Connection getConnection(final ServletContext context,
          final String sessionID) throws SQLException {
       java.sql.Connection conn = null;
       try {
          conn = getConnection(context, sessionID, "", "");
          // conn = dataSource.getConnection();
       } catch (SQLException esql) {
+         getLogger().error(esql);
          throw esql;
       }
       return conn;
@@ -67,11 +89,10 @@ public class DbConnectionFactory {
     * @throws ResourceException Propaga exceção caso não possa
     * liberar o recurso.
     */
-   public static void recycleConnection(final ServletContext context,
+   public void recycleConnection(final ServletContext context,
          final String sessionID) throws ResourceException {
       ResourceKey resource = null;
-
-      pool = (DbConnectionPool)
+      final DbConnectionPool pool = (DbConnectionPool)
          context.getAttribute("db-connection-pool");
       try {
          resource = pool.getResourceSession(sessionID);
@@ -79,6 +100,7 @@ public class DbConnectionFactory {
             pool.recycleResource(resource);
          }
       } catch (Exception e) {
+         getLogger().error(e);
          throw new ResourceException(e.getMessage());
       }
    }
@@ -90,10 +112,10 @@ public class DbConnectionFactory {
     * @throws ResourceException Propaga a exceção se não for possível
     * fechar a conexão.
     */
-   public static void closeConnection(final ServletContext context,
+   public void closeConnection(final ServletContext context,
          final String sessionID) throws ResourceException {
       ResourceKey resource = null;
-      pool = (DbConnectionPool)
+      final DbConnectionPool pool = (DbConnectionPool)
          context.getAttribute("db-connection-pool");
       resource = pool.getResourceSession(sessionID);
       if (resource != null) {
@@ -111,12 +133,12 @@ public class DbConnectionFactory {
     * @throws SQLException Propaga uma exceção SQL caso não encontre um
     * objeto consistente.
     */
-   public static java.sql.Connection getConnection(
+   public java.sql.Connection getConnection(
          final ServletContext context, final String sessionID,
          final String useridcon, final String passwordcon) throws SQLException {
       java.sql.Connection conn = null;
       ResourceKey resource = null;
-      pool = (DbConnectionPool)
+      final DbConnectionPool pool = (DbConnectionPool)
          context.getAttribute("db-connection-pool");
       resource = pool.getResourceSession(sessionID);
       if (resource == null) {
@@ -140,10 +162,18 @@ public class DbConnectionFactory {
             conn = (java.sql.Connection)
                resource.getResource();
          } catch (ResourceException e) {
-
+            getLogger().error(e);
          }
       }
       return conn;
+   }
+
+   /**
+    * Cria uma instância do log4j da classe.
+    * @return Retorna a instância do log da classe.
+    */
+   private static Logger createLogger() {
+      return Logger.getLogger("org.freedom.jdbc.DbConnectionFactory");
    }
 
    /**
@@ -152,24 +182,27 @@ public class DbConnectionFactory {
     * @param statement Sentença SQL aberta.
     * @param resultset ResultSet aberto.
     */
-   public static void closeConnection(final java.sql.Connection conn,
+   public void closeConnection(final java.sql.Connection conn,
          final PreparedStatement statement, final ResultSet resultset) {
       if (resultset != null) {
          try {
             resultset.close();
          } catch (SQLException e) {
+            getLogger().error(e);
          }
       }
       if (statement != null) {
          try {
             statement.close();
          } catch (SQLException e) {
+            getLogger().error(e);
          }
       }
       if (conn != null) {
          try {
             conn.close();
          } catch (SQLException e) {
+            getLogger().error(e);
          }
       }
    }

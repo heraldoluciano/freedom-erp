@@ -3,6 +3,8 @@ package org.freedom.util.resource;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * Pool de recursos genérico.
  * Serve para o armazenamento qualquer tipo de objeto.
@@ -25,6 +27,9 @@ public abstract class AbstractResourcePool implements Runnable {
    /** error - Guarda a última exceção ocorrida ( método @see run() ). */
    private transient ResourceException error = null;
 
+   /** Log4j da classe. */
+   private static final Logger LOGGER = createLogger();
+
    // Extensões têm que implementar estes três métodos
    /**
     * Criador de recursos.
@@ -40,29 +45,65 @@ public abstract class AbstractResourcePool implements Runnable {
     */
    public abstract boolean isResourceValid(ResourceKey resource);
 
+   /**
+    * Fecha um determinado recurso.
+    * @param resource Recurso que devera ser fechado.
+    */
    public abstract void closeResource(ResourceKey resource);
 
+   /**
+    * Construtor da classe sem parânetros.
+    */
    public AbstractResourcePool() {
       this(INI_CON, // por padrão, um máximo de 10 recursos no pool
             false); // não espera pelo recurso se maximizado
    }
 
-   public AbstractResourcePool(int max, boolean waitIfMaxedOut) {
+   /**
+    * Construtor da classe com parâmetros iniciais.
+    * @param max Número máximo de recursos inicializados.
+    * @param waitIfMaxOut Flag que indica se deverá esperar
+    * um conexão ser liberada.
+    */
+   public AbstractResourcePool(final int max, final boolean waitIfMaxOut) {
       availableRes = new HashMap();
       inUseResources = new HashMap();
       this.maxResources = max;
-      this.waitIfMaxedOut = waitIfMaxedOut;
+      this.waitIfMaxedOut = waitIfMaxOut;
    }
 
+   /**
+    * Retorna um vetor com os recursos disponíveis.
+    * @return HashMap com os recursos disponíveis.
+    */
    protected final Map getAvailableRes() {
       return this.availableRes;
    }
 
-   public ResourceKey getResource(String sessionID, String key, String password)
-         throws ResourceException {
+   /**
+    * Valida e retorna os recursos a partir dos parâmetros.
+    * @param sessionID Sessão chave.
+    * @param key Chave secundária.
+    * @param password Senha.
+    * @return Retorna um recurso.
+    * @throws ResourceException Caso aconteça uma exceção aborta
+    * com um ResourceException.
+    */
+   public final ResourceKey getResource(final String sessionID,
+         final String key, final String password) throws ResourceException {
       return getResource(sessionID, key, password, 0);
    }
 
+   /**
+    * Retorna um recurso a partir dos parâmetros chave.
+    * @param sessionID Sessão chave.
+    * @param key Chave secundária.
+    * @param password Senha.
+    * @param timeout Tempo de espera pelo recurso.
+    * @return Retorna um recurso.
+    * @throws ResourceException Caso aconteça uma exceção aborta
+    * com um ResourceException.
+    */
    public final synchronized ResourceKey getResource(
       final String sessionID, final String key, final String password,
       final long timeout) throws ResourceException {
@@ -75,6 +116,7 @@ public abstract class AbstractResourcePool implements Runnable {
             try {
                wait(timeout);
             } catch (InterruptedException ex) {
+               LOGGER.error(ex);
             }
             resource = getFirstResource(sessionID, key, password);
          } else {
@@ -89,12 +131,26 @@ public abstract class AbstractResourcePool implements Runnable {
       return resource;
    }
 
-   public final synchronized void recycleResource(ResourceKey resource) {
+   /** Cria a instância do Log4j da classe.
+    ** @return Retorna a instância de log para a classe.
+    */
+   private static Logger createLogger() {
+      return Logger.getLogger("org.freedom.util.resource.AbstractResourcePool");
+   }
+
+   /**
+    * Recicla o recurso para reutilização.
+    * @param resource Recebe o recurso para a reciclagem.
+    */
+   public final synchronized void recycleResource(final ResourceKey resource) {
       inUseResources.remove(resource.getHashKey());
       availableRes.put(resource.getHashKey(), resource);
       notifyAll(); // notifica threads em espera de con disponíveis
    }
 
+   /**
+    * Desliga o Pool fechando todos os recursos.
+    */
    public final void shutdown() {
       closeResources(availableRes);
       closeResources(inUseResources);
@@ -102,6 +158,9 @@ public abstract class AbstractResourcePool implements Runnable {
       inUseResources.clear();
    }
 
+   /**
+    * Inicia o Thread do Pool de recursos.
+    */
    public final synchronized void run() {
       ResourceKey resource;
       ResourceException errorrun = null;
@@ -117,6 +176,11 @@ public abstract class AbstractResourcePool implements Runnable {
       notifyAll(); // notifica threas em espera
    }
 
+   /**
+    * Retorna o primeiro recurso disponível.
+    * @param key Chave para buscar o recursos.
+    * @return Retorna o recurso disponível.
+    */
    private ResourceKey getFirstAvailableResource(final String key) {
       ResourceKey resource = null;
 
@@ -129,6 +193,11 @@ public abstract class AbstractResourcePool implements Runnable {
       return resource;
    }
 
+   /**
+    * Aguarda a liberação de um recurso.
+    * @throws ResourceException Caso aconteça uma exceção aborta
+    * o método através de um ResourceException.
+    */
    private void waitForAvailableResource() throws ResourceException {
       final Thread thread = new Thread(this);
       thread.start(); // thread cria um recurso: veja run()
@@ -136,20 +205,34 @@ public abstract class AbstractResourcePool implements Runnable {
          wait(); // espera que un novo recurso seja criado
          // ou que um recurso seja reciclado
       } catch (InterruptedException ex) {
+         LOGGER.error(ex);
       }
       if (error != null) { // exceção pega em run()
          throw error;
       } // reemite exceção pega em run()
    }
 
+   /**
+    * Fecha um lista de recursos.
+    * @param resources Recebe a lista de recursos a fechar.
+    */
    private void closeResources(final Map resources) {
       resources.clear();
    }
 
+   /**
+    * Consulta o número de recursos totais.
+    * @return Retorna o número de recursos.
+    */
    private int countResources() {
       return availableRes.size() + inUseResources.size();
    }
 
+   /**
+    * Encontra e retorna o primeiro recurso encontrado com a chave.
+    * @param key Chave para a pesquisa do recurso.
+    * @return Retorna o recurso encontrado.
+    */
    private ResourceKey getFirstResource(final String key) {
       String keypesq = null;
       if (key == null) {
@@ -165,6 +248,13 @@ public abstract class AbstractResourcePool implements Runnable {
       return resource;
    }
 
+   /**
+    * Retorna o primerio recurso econtrado através de uma chave composta.
+    * @param sessionID ID da Sessão chave.
+    * @param key Chave secundária.
+    * @param password Senha para validação.
+    * @return Retorna o recurso encontrado.
+    */
    private ResourceKey getFirstResource(final String sessionID,
          final String key, final String password) {
       final String keypesq = (key == null ? "" : key);
@@ -176,10 +266,14 @@ public abstract class AbstractResourcePool implements Runnable {
       return resource;
    }
 
+   /**
+    * Retorna um recurso a partir de uma sessão chave.
+    * @param sessionID ID da Sessão chave para a pesquisa.
+    * @return Retorna o recurso encontrado.
+    */
    public final ResourceKey getResourceSession(final String sessionID) {
       final ResourceKey resource = (ResourceKey)
          inUseResources.get(sessionID);
       return resource;
    }
-
 }
