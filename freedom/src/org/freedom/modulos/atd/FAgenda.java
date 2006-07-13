@@ -133,7 +133,7 @@ public class FAgenda extends FFilho implements ActionListener {
     
   	tpnAgd.add("Agenda do usuário",pnAgd);
   	tpnVisoes.add("   Lista de eventos  ",tabAgd);
-//  	tpnVisoes.add("   Dia   ",Dia.getComponent());
+  	tpnVisoes.add("   Dia   ",Dia.getComponent());
 
   	pnAgd.add(pinCabAgd,BorderLayout.NORTH);
   	
