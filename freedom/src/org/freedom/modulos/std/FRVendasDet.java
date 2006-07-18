@@ -154,6 +154,8 @@ public class FRVendasDet extends FRelatorio {
 		String sLinLarga = Funcoes.replicate("=", 133);
 		BigDecimal bVlrDesc = new BigDecimal("0");
 		BigDecimal bVlrLiq = new BigDecimal("0");	
+		BigDecimal bVlrDescTot = new BigDecimal("0");
+		BigDecimal bVlrLiqTot = new BigDecimal("0");	
 		ImprimeOS imp = null;
 		int linPag = 0;
 		int iCodVendaAnt = 0;	
@@ -214,21 +216,29 @@ public class FRVendasDet extends FRelatorio {
 			ps.setInt(3, Aplicativo.iCodEmp);
 			ps.setInt(4, ListaCampos.getMasterFilial("VDVENDA"));
 			rs = ps.executeQuery();		
-			while (rs.next()) {
-				if (imp.pRow()>=(linPag-1)) {
+			
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() >= linPag - 1 ) {
+					
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say(  0, "+" + sLinFina + "+");
 					imp.incPags();
 					imp.eject();
+					
 				}
-				if (imp.pRow() == 0) {            	
+				
+				if ( imp.pRow() == 0 ) {
+					
 					imp.impCab(136, true);    
 					imp.pulaLinha( 0, imp.comprimido());
 					imp.say(  0, "|" + sLinFina + "|");
-				}
-				if (iCodVendaAnt != rs.getInt("CodVenda")) {
 					
-					if (iCodVendaAnt != 0) {
+				}
+				
+				if ( iCodVendaAnt != rs.getInt("CodVenda") ) {
+					
+					if ( iCodVendaAnt != 0 ) {
 						
 						imp.pulaLinha( 1, imp.comprimido());
 						imp.say(  0, "|" + sLinLarga + "|");
@@ -273,8 +283,13 @@ public class FRVendasDet extends FRelatorio {
 					imp.say(135, "|");
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say(imp.pRow(), 0, "|" + sLinFina + "|");
-					bVlrDesc = rs.getBigDecimal("VlrDescVenda");
+					
 					bVlrLiq = rs.getBigDecimal("VlrLiqVenda");
+					
+					bVlrDescTot = bVlrDescTot.add( bVlrDesc );
+					bVlrLiqTot = bVlrLiqTot.add( bVlrLiq );
+
+					bVlrDesc = new BigDecimal("0");
 					
 				}
 				
@@ -287,10 +302,35 @@ public class FRVendasDet extends FRelatorio {
 				imp.say(109, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(rs.getFloat("VlrLiqItVenda"))));
 				imp.say(124, "| " + (rs.getString(1) != null ? rs.getString(1) : ""));
 				imp.say(135, "|");			
+				
+				bVlrDesc = bVlrDesc.add(rs.getBigDecimal("VlrDescItVenda"));
 					
 				iCodVendaAnt = rs.getInt("CodVenda");	
 				
 			}
+			
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say(  0, "|" + sLinLarga + "|");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say(  0, "|");
+			imp.say( 64, " Totais da venda: ");
+			imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(bVlrDesc)));
+			imp.say(109, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(bVlrLiq)));
+			imp.say(124, "|");
+			imp.say(135, "|");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say(  0, "|" + sLinLarga + "|");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say(  0, "|" + sLinLarga + "|");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say(  0, "|");
+			imp.say( 64, " TOTAL GERAL : ");
+			imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(bVlrDescTot)));
+			imp.say(109, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(bVlrLiqTot)));
+			imp.say(124, "|");
+			imp.say(135, "|");
+			imp.pulaLinha( 1, imp.comprimido());
+			imp.say(  0, "+" + sLinLarga + "+");
 			
 			imp.eject();
 			imp.fechaGravacao();
