@@ -149,6 +149,7 @@ public final class DbConnectionFactory {
                pool.setPassword(passwordcon);
                pool.setSessionID(sessionID);
             }
+            resource = pool.getResource(sessionID, useridcon, passwordcon);
             if (resource == null
                   || !resource.getPassword().equals(passwordcon)) {
                recycleConnection(context, sessionID); // Recicla a
