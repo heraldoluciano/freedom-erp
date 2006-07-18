@@ -267,6 +267,14 @@ public abstract class AbstractResourcePool implements Runnable {
    }
 
    /**
+    * Seta o número máximo de recursos.
+    * @param maxRes Recebe o número máximo de recursos.
+    */
+   public final void setMaxResources(final int maxRes) {
+      this.maxResources = maxRes;
+   }
+
+   /**
     * Retorna um recurso a partir de uma sessão chave.
     * @param sessionID ID da Sessão chave para a pesquisa.
     * @return Retorna o recurso encontrado.

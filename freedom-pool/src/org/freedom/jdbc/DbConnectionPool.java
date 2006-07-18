@@ -66,22 +66,29 @@ public class DbConnectionPool extends AbstractResourcePool {
     * Construtor da classe sem as informações de usuário e senha.
     * @param drivercon Caminho para o driver de conexão JDBC.
     * @param urlcon URL para a conexão com o banco de dados.
+    * @param nInitialCons Número inicial de conexões.
+    * @param nMaxCons Número máximo de conexões.
     */
-   public DbConnectionPool(final String drivercon, final String urlcon) {
-      this(drivercon, urlcon, null, null);
+   public DbConnectionPool(final String drivercon, final String urlcon,
+      final int nInitialCons, final int nMaxCons) {
+      this(drivercon, urlcon, nInitialCons, nMaxCons, null, null);
    }
 
    /**
     * Construtor da classe com as informações de usuário e senha.
     * @param drivercon Caminho para o driver de conexão JDBC.
     * @param urlcon URL para a conexão com o banco de dados.
+    * @param nInitialCons Número inicial de conexões.
+    * @param nMaxCons Número máximo de conexões.
     * @param usercon ID do usuário para conexão com o banco de dados.
     * @param passwordcon Senha do usuário para a conexão com o banco de dados.
     */
    public DbConnectionPool(final String drivercon, final String urlcon,
+         final int nInitialCons, final int nMaxCons, 
          final String usercon, final String passwordcon) {
       super();
-      setInitialCons(0);
+      setInitialCons(nInitialCons);
+      setMaxResources(nMaxCons);
       this.driver = drivercon;
       this.url = urlcon;
       ResourceKey resource;
