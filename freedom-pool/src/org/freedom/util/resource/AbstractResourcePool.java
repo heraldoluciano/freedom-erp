@@ -109,7 +109,7 @@ public abstract class AbstractResourcePool implements Runnable {
       final long timeout) throws ResourceException {
       ResourceKey resource = getFirstAvailableResource(sessionID + key);
       if (resource == null) { // Sem recursos disponíveis
-         if (countResources() < maxResources) {
+         if ((countResources() < maxResources) || (maxResources == 0)) {
             waitForAvailableResource();
             resource = getFirstResource(sessionID, key, password);
          } else if (waitIfMaxedOut) { // limite máximo de recursos atingido

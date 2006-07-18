@@ -114,10 +114,29 @@ public final class DbConnectionFactory {
     */
    public void closeConnection(final ServletContext context,
          final String sessionID) throws ResourceException {
+      this.closeConnection(context, sessionID, null, null);
+   }
+
+   /**
+    * Fecha a conexão com banco de dados JDBC.
+    * @param context Contexto da aplicação para buscar o pool de recursos.
+    * @param sessionID Sessão chave para o recurso.
+    * @param useriddb ID do usuário conectado.
+    * @param passworddb Senha do usuário.
+    * @throws ResourceException Propaga a exceção se não for possível
+    * fechar a conexão.
+    */
+   public void closeConnection(final ServletContext context,
+         final String sessionID, final String useriddb, final String passworddb)
+         throws ResourceException {
       ResourceKey resource = null;
       final DbConnectionPool pool = (DbConnectionPool)
          context.getAttribute("db-connection-pool");
-      resource = pool.getResourceSession(sessionID);
+      if (useriddb == null) {
+         resource = pool.getResourceSession(sessionID);
+      } else {
+         resource = pool.getResource(sessionID, useriddb, passworddb);
+      }
       if (resource != null) {
          pool.closeResource(resource);
       }
