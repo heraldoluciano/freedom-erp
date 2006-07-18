@@ -89,8 +89,8 @@ public class NF099c extends Layout {
 					imp.say(125, Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)));
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  8, cab.getString(NF.C_CIDEMIT));
-					imp.say( 52, Funcoes.setMascara(cab.getString(NF.C_DDDEMIT) + " ", "(####)" +
-											Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####")));
+					imp.say( 52, Funcoes.setMascara(cab.getString(NF.C_DDDEMIT) + " ", "(####)") +
+											Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####"));
 					imp.say( 83, cab.getString(NF.C_UFEMIT));
 					imp.say( 92, !cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
 					imp.say(126, sHora);
@@ -102,7 +102,7 @@ public class NF099c extends Layout {
 				imp.say( 17, Funcoes.copy(itens.getString(NF.C_DESCPROD),0,48));
 				imp.say( 84, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
 				imp.say( 90, itens.getString(NF.C_CODUNID).substring(0,4));
-				imp.say( 98, Funcoes.strDecimalToStrCurrency( 7,2,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
+				imp.say( 98, Funcoes.strDecimalToStrCurrency( 7,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
 				imp.say(106, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)))));
 				imp.say(120, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
 				imp.say(134, Funcoes.strDecimalToStrCurrency( 2,0,String.valueOf(itens.getFloat(NF.C_PERCICMSITPED))));
@@ -166,11 +166,11 @@ public class NF099c extends Layout {
 						imp.say(115, frete.getString(NF.C_INSCTRANSP));
 					
 					imp.pulaLinha(2, imp.comprimido());
-					imp.say(  8, ""+frete.getFloat(NF.C_QTDFRETE));
+					imp.say(  8, Funcoes.strDecimalToStrCurrency(16,0,String.valueOf(frete.getFloat(NF.C_QTDFRETE))));
 					imp.say( 25, frete.getString(NF.C_ESPFRETE));
 					imp.say( 50, frete.getString(NF.C_MARCAFRETE));
-					imp.say( 97, ""+frete.getFloat(NF.C_PESOBRUTO));
-					imp.say(122, ""+frete.getFloat(NF.C_PESOLIQ));					 
+					imp.say( 97, String.valueOf(frete.getFloat(NF.C_PESOBRUTO)));
+					imp.say(122, String.valueOf(frete.getFloat(NF.C_PESOLIQ)));					 
 										   
 					imp.pulaLinha(14, imp.comprimido());
 					imp.say(125,sNumNota);
