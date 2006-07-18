@@ -83,7 +83,7 @@ public class DLFechaCompra extends FFDialogo implements FocusListener, MouseList
 	private JTextFieldFK txtDescBanco = new JTextFieldFK(JTextFieldPad.TP_STRING,40,0);
 	private JCheckBoxPad cbImpPed = new JCheckBoxPad("Imprime Pedido?","S","N");
 	private JCheckBoxPad cbImpNot = new JCheckBoxPad("Imprime Nota?","S","N");
-	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad("adiciona valor do frete na nota?","S","N");
+	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad("adiciona valor do frete ao custo?","S","N");
 	private JRadioGroup rgFreteVD = null;
 	private ListaCampos lcCompra = new ListaCampos(this);
 	private ListaCampos lcPlanoPag = new ListaCampos(this,"PG");
