@@ -84,7 +84,7 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @param passwordcon Senha do usuário para a conexão com o banco de dados.
     */
    public DbConnectionPool(final String drivercon, final String urlcon,
-         final int nInitialCons, final int nMaxCons, 
+         final int nInitialCons, final int nMaxCons,
          final String usercon, final String passwordcon) {
       super();
       setInitialCons(nInitialCons);
