@@ -556,7 +556,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append("F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND ");
 				sSql.append("P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND ");
 				sSql.append("CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND ");
-				sSql.append("TM.FISCALTIPOMOV='S' ORDER BY C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA");				     
+				sSql.append("TM.FISCALTIPOMOV='S' AND F.PESSOAFOR='J' ORDER BY C.DTENTCOMPRA,C.DOCCOMPRA,IC.CODITCOMPRA");				     
 				  
 				ps = con.prepareStatement(sSql.toString());
 				ps.setDate(1,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
@@ -569,65 +569,31 @@ public class FSintegra extends FFilho implements ActionListener {
 				
 				sDocTmp = "";
 				  
-				String s54E01 = "54";
-				String s54E02 = "";
-				String s54E03 = "";
-				String s54E04 = "";
-				String s54E05 = "";
-				String s54E06 = "";
-				String s54E07 = "";
-				String s54E08 = "";
-				String s54E09 = "";
-				String s54E10 = "";
-				String s54E11 = "";
-				String s54E12 = "";
-				String s54E13 = "";
-				String s54E14 = "";
-				String s54E15 = "";
-				String s54E16 = "";		  
-				  
 				  
 				while (rs.next()) {
 					if (!sDocTmp.equals(""+rs.getInt("DOCCOMPRA"))) {
 						iOrdem = 1;
 					}
-					
-					sBuffer.delete(0,sBuffer.length());
-					
-					s54E02 = Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14);
-					s54E03 = Funcoes.strZero((rs.getString("CODMODNOTA")==null?0:rs.getInt("CODMODNOTA"))+"",2);
-					s54E04 = Funcoes.adicionaEspacos(rs.getString("SERIE"),3);
-					s54E05 = Funcoes.strZero(rs.getInt("DOCCOMPRA")+"",6);
-					s54E06 = Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4));
-					s54E07 = Funcoes.copy((sConvenio.equals("1")?"":(rs.getString("ORIGFISC").trim()+rs.getString("CODTRATTRIB").trim())),3);
-					s54E08 = Funcoes.strZero(iOrdem+"",3);
-					s54E09 = Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14);
-					s54E10 = Funcoes.transValor(rs.getString("QTDITCOMPRA"),(sConvenio.equals("1")?13:11),3,true);
-					s54E11 = Funcoes.transValor(rs.getString("VLRLIQITCOMPRA"),12,2,true);
-					s54E12 = Funcoes.transValor("0",12,2,true);
-					s54E13 = Funcoes.transValor(rs.getString("VLRBASEICMSITCOMPRA"),12,2,true);
-					s54E14 = Funcoes.transValor("0",12,2,true);
-					s54E15 = Funcoes.transValor(rs.getString("VLRIPIITCOMPRA"),12,2,true);
-					s54E16 = Funcoes.transValor(rs.getString("PERCICMSITCOMPRA"),4,2,true);
-					
-					sBuffer.append(s54E01);
-					sBuffer.append(s54E02);
-					sBuffer.append(s54E03);
-					sBuffer.append(s54E04);
-					sBuffer.append(s54E05);
-					sBuffer.append(s54E06);
-					sBuffer.append(s54E07);
-					sBuffer.append(s54E08);
-					sBuffer.append(s54E09);
-					sBuffer.append(s54E10);
-					sBuffer.append(s54E11);
-					sBuffer.append(s54E12);
-					sBuffer.append(s54E13);
-					sBuffer.append(s54E14);
-					sBuffer.append(s54E15);
-					sBuffer.append(s54E16 + CR);
+								
+					/* 01 */ sBuffer.append( "54" );
+					/* 02 */ sBuffer.append( Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14) );
+					/* 03 */ sBuffer.append( Funcoes.strZero( String.valueOf( rs.getString("CODMODNOTA")==null ? 0 : rs.getInt("CODMODNOTA") ),2) );
+					/* 04 */ sBuffer.append( Funcoes.adicionaEspacos( rs.getString("SERIE"), 3 ) );
+					/* 05 */ sBuffer.append( Funcoes.strZero( String.valueOf(rs.getInt("DOCCOMPRA")),6) );
+					/* 06 */ sBuffer.append( Funcoes.adicionaEspacos( rs.getString("CODNAT"),(sConvenio.equals("1") ? 3 : 4)) );
+					/* 07 */ sBuffer.append( Funcoes.copy((sConvenio.equals("1") ? "" : (rs.getString("ORIGFISC").trim() + rs.getString("CODTRATTRIB").trim())),3) );
+					/* 08 */ sBuffer.append( Funcoes.strZero(String.valueOf(iOrdem),3) );
+					/* 09 */ sBuffer.append( Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S") ? "REFPROD" : "CODPROD")),14) );
+					/* 10 */ sBuffer.append( Funcoes.transValor(rs.getString("QTDITCOMPRA"),(sConvenio.equals("1") ? 13 : 11),3,true) );
+					/* 11 */ sBuffer.append( Funcoes.transValor(rs.getString("VLRLIQITCOMPRA"),12,2,true) );
+					/* 12 */ sBuffer.append( Funcoes.transValor("0",12,2,true) );
+					/* 13 */ sBuffer.append( Funcoes.transValor(rs.getString("VLRBASEICMSITCOMPRA"),12,2,true) );
+					/* 14 */ sBuffer.append( Funcoes.transValor("0",12,2,true) );
+					/* 15 */ sBuffer.append( Funcoes.transValor(rs.getString("VLRIPIITCOMPRA"),12,2,true) );
+					/* 16 */ sBuffer.append( Funcoes.transValor(rs.getString("PERCICMSITCOMPRA"),4,2,true) + CR );
 					 
 					gravaBuffer(sBuffer.toString());
+					sBuffer.delete(0,sBuffer.length());
 					sDocTmp = String.valueOf(rs.getInt("DOCCOMPRA"));
 					iOrdem++;
 					cont ++;
@@ -680,23 +646,23 @@ public class FSintegra extends FFilho implements ActionListener {
 					
 					sBuffer.delete(0,sBuffer.length());
 					
-					sBuffer.append("54");
-					sBuffer.append(Funcoes.adicionaEspacos(rs.getString("CNPJCLI"),14));
-					sBuffer.append(Funcoes.strZero((rs.getString("CODMODNOTA")==null?0:rs.getInt("CODMODNOTA"))+"",2));
-					sBuffer.append(Funcoes.adicionaEspacos(rs.getString("SERIE"),3));
-					sBuffer.append((sConvenio.equals("1")?Funcoes.replicate(" ",2):"")); // Sub serie 
-					sBuffer.append(Funcoes.strZero(rs.getInt("DOCVENDA")+"",6));
-					sBuffer.append(Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4)));
-					sBuffer.append(Funcoes.copy((sConvenio.equals("1")?"":rs.getString("ORIGFISC").trim()+rs.getString("CODTRATTRIB").trim()),3));
-					sBuffer.append(Funcoes.strZero(iOrdem+"",3));
-					sBuffer.append(Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S")?"REFPROD":"CODPROD")),14));
-					sBuffer.append(Funcoes.transValor(rs.getString("QTDITVENDA"),(sConvenio.equals("1")?13:11),3,true));
-					sBuffer.append(Funcoes.transValor(rs.getString("VLRLIQITVENDA"),12,2,true));
-					sBuffer.append(Funcoes.transValor("0",12,2,true));
-					sBuffer.append(Funcoes.transValor(rs.getString("VLRBASEICMSITVENDA"),12,2,true));
-					sBuffer.append(Funcoes.transValor("0",12,2,true));
-					sBuffer.append(Funcoes.transValor(rs.getString("VLRIPIITVENDA"),12,2,true));
-					sBuffer.append(Funcoes.transValor(rs.getString("PERCICMSITVENDA"),4,2,true)+CR);
+					/* 01 */ sBuffer.append("54");
+					/* 02 */ sBuffer.append(Funcoes.adicionaEspacos(rs.getString("CNPJCLI"),14));
+					/* 03 */ sBuffer.append(Funcoes.strZero(String.valueOf(rs.getString("CODMODNOTA") == null ? 0 : rs.getInt("CODMODNOTA")),2));
+					/* 04 */ sBuffer.append(Funcoes.adicionaEspacos(rs.getString("SERIE"),3));
+					/* 05 */ sBuffer.append((sConvenio.equals("1") ? Funcoes.replicate(" ",2) : "")); // Sub serie 
+					/* 06 */ sBuffer.append(Funcoes.strZero(String.valueOf(rs.getInt("DOCVENDA")),6));
+					/* 07 */ sBuffer.append(Funcoes.adicionaEspacos(rs.getString("CODNAT"),(sConvenio.equals("1")?3:4)));
+					/* 08 */ sBuffer.append(Funcoes.copy((sConvenio.equals("1") ? "" : rs.getString("ORIGFISC").trim() + rs.getString("CODTRATTRIB").trim()),3));
+					/* 09 */ sBuffer.append(Funcoes.strZero(String.valueOf(iOrdem),3));
+					/* 10 */ sBuffer.append(Funcoes.adicionaEspacos(rs.getString((sUsaRefProd.equals("S") ? "REFPROD" : "CODPROD")),14));
+					/* 11 */ sBuffer.append(Funcoes.transValor(rs.getString("QTDITVENDA"),(sConvenio.equals("1") ? 13 : 11),3,true));
+					/* 12 */ sBuffer.append(Funcoes.transValor(rs.getString("VLRLIQITVENDA"),12,2,true));
+					/* 13 */ sBuffer.append(Funcoes.transValor("0",12,2,true));
+					/* 14 */ sBuffer.append(Funcoes.transValor(rs.getString("VLRBASEICMSITVENDA"),12,2,true));
+					/* 15 */ sBuffer.append(Funcoes.transValor("0",12,2,true));
+					/* 16 */ sBuffer.append(Funcoes.transValor(rs.getString("VLRIPIITVENDA"),12,2,true));
+					/* 17 */ sBuffer.append(Funcoes.transValor(rs.getString("PERCICMSITVENDA"),4,2,true)+CR);
 					
 					gravaBuffer(sBuffer.toString());
 					iOrdem++;

@@ -126,23 +126,24 @@ public class FRVendasCli extends FRelatorio {
 		String sCab = "";
 		String sOrdem = "";
 	  	String sWhere1 = null;
-	  	String sWhere2 = null;		
+	  	String sWhere2 = null;	
+	  	String sLinhaFina = Funcoes.replicate("-", 133);
 		ImprimeOS imp = new ImprimeOS("", con);
 		int linPag = imp.verifLinPag() - 1;
 		int count = 1;
 		
 		if(rgFaturados.getVlrString().equals("S")){ 
 			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			sCab += " - SO FATURADO";
+			sCab += "FATURADO";
 		} else if(rgFaturados.getVlrString().equals("N")) {
 			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
-			sCab += " - NAO FATURADO";
+			sCab += "NAO FATURADO";
 		} else if(rgFaturados.getVlrString().equals("A"))
 			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
 
 		if(rgFinanceiro.getVlrString().equals("S")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			sCab += " - SO FINANCEIRO";
+			sCab += " - FINANCEIRO";
 		} else if(rgFinanceiro.getVlrString().equals("N")) {
 			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
 			sCab += " - NAO FINANCEIRO";
@@ -158,13 +159,15 @@ public class FRVendasCli extends FRelatorio {
 
 		try {			
 
-			imp = new ImprimeOS("", con);
 			linPag = imp.verifLinPag() - 1;
+			imp.limpaPags();
 			imp.montaCab();			
 			imp.setTitulo("Relatório de Vendas por Cliente");
 			imp.addSubTitulo("VENDAS  -  PERIODO DE :"+ txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString());
-			imp.addSubTitulo(sCab);
-			imp.limpaPags();
+			if(sCab.equals(" - FINANCEIRO") || sCab.equals(" - NAO FINANCEIRO"))
+				imp.addSubTitulo(sCab.substring(3,sCab.length()));
+			else
+				imp.addSubTitulo(sCab);
 			
 			sSQL = " SELECT V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI, SUM(V.VLRLIQVENDA)"
 				 + " FROM VDVENDA V, VDCLIENTE C, EQTIPOMOV TM"
@@ -182,39 +185,48 @@ public class FRVendasCli extends FRelatorio {
 			ps.setDate(3, Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
 			ps.setDate(4, Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
 			rs = ps.executeQuery();
-			while (rs.next()) {
-				if (imp.pRow() == linPag) {
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "+"+ Funcoes.replicate("-", 133) + "+");
+			
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() == linPag ) {
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "+" + sLinhaFina + "+" );
 					imp.eject();
 					imp.incPags();
+					
 				}
-				if (imp.pRow() == 0) {		
+				
+				if (imp.pRow() == 0) {	
+					
 					imp.impCab(136, true);
-					imp.say(imp.pRow(), 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|"+ Funcoes.replicate("-", 133) + "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|");
-					imp.say(imp.pRow(), 10, "|  Cod.cli");
-					imp.say(imp.pRow(), 23, "|  Razao Social");
-					imp.say(imp.pRow(), 75, "|  Telefone");
-					imp.say(imp.pRow(), 95, "|  Valor Total");
-					imp.say(imp.pRow(), 135, "|");
-					imp.say(imp.pRow() + 1, 0, imp.comprimido());
-					imp.say(imp.pRow(), 0, "|" + Funcoes.replicate("-", 133) + "|");
+					imp.say(  0, imp.comprimido() );
+					imp.say(imp.pRow(), 0, "|"+ sLinhaFina + "|");
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" );
+					imp.say( 10, "|  Cod.cli" );
+					imp.say( 23, "|  Razao Social" );
+					imp.say( 75, "|  Telefone" );
+					imp.say( 95, "|  Valor Total" );
+					imp.say(135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say(  0, "|" + sLinhaFina + "|" );
+					
 				}
-				imp.say(imp.pRow() + 1, 0, imp.comprimido());
-				imp.say(imp.pRow(), 0, "|" + Funcoes.alinhaDir( count++, 7 ) );
-				imp.say(imp.pRow(), 10, "| " + Funcoes.alinhaDir(rs.getInt("CODCLI"), 10));
-				imp.say(imp.pRow(), 23, "| " + rs.getString("RAZCLI"));
-				imp.say(imp.pRow(), 75, "| " + (rs.getString("DDDCli") != null ? "("+rs.getString("DDDCli")+")" : "")+
-						(rs.getString("FoneCli") != null ? Funcoes.setMascara(rs.getString("FoneCli").trim(),"####-####") : "").trim());
-				imp.say(imp.pRow(), 95, "| " + Funcoes.strDecimalToStrCurrency(18,2, rs.getString(5)));
-				imp.say(imp.pRow(), 135, "|");
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say(  0, "| " + Funcoes.alinhaDir( count++, 6 ) );
+				imp.say( 10, "| " + Funcoes.alinhaDir( rs.getInt("CODCLI"), 10 ) );
+				imp.say( 23, "| " + rs.getString("RAZCLI") );
+				imp.say( 75, "| " + ( rs.getString("DDDCli") != null ? "(" + rs.getString("DDDCli") + ")" : "" ) +
+									( rs.getString("FoneCli") != null ? Funcoes.setMascara( rs.getString("FoneCli").trim(), "####-####" ) : "" ) );
+				imp.say( 95, "| " + Funcoes.strDecimalToStrCurrency( 18,2, rs.getString(5) ) );
+				imp.say(135, "|" );
 				
 			}
-			imp.say(imp.pRow() + 1, 0, imp.comprimido());
-			imp.say(imp.pRow(), 0, "+" + Funcoes.replicate("=", 133) + "+");
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say(  0, "+" + sLinhaFina + "+");
 
 			imp.eject();
 

@@ -99,7 +99,7 @@ public class NF099b extends Layout {
 				imp.say( 14, itens.getString(NF.C_DESCPROD));
 				imp.say( 82, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1)+Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2));
 				imp.say( 87, itens.getString(NF.C_CODUNID).substring(0,4));
-				imp.say( 94, Funcoes.strDecimalToStrCurrency( 6,2,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
+				imp.say( 94, Funcoes.strDecimalToStrCurrency( 6,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
 				imp.say(102, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(((new BigDecimal(itens.getFloat(NF.C_VLRLIQITPED))).divide(new BigDecimal(itens.getFloat(NF.C_QTDITPED)),2,BigDecimal.ROUND_HALF_UP)))));
 				imp.say(116, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
 				imp.say(132, String.valueOf(itens.getFloat(NF.C_PERCICMSITPED)));
@@ -162,7 +162,7 @@ public class NF099b extends Layout {
 						imp.say(115, frete.getString(NF.C_INSCTRANSP));
 					
 					imp.pulaLinha(2, imp.comprimido());
-					imp.say(  6, String.valueOf(frete.getFloat(NF.C_QTDFRETE)));
+					imp.say(  6, Funcoes.strDecimalToStrCurrency(16,0,String.valueOf(frete.getFloat(NF.C_QTDFRETE))));
 					imp.say( 27, frete.getString(NF.C_ESPFRETE));
 					imp.say( 55, frete.getString(NF.C_MARCAFRETE));
 					imp.say(102, String.valueOf(frete.getFloat(NF.C_PESOBRUTO)));
