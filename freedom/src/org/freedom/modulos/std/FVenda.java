@@ -2202,8 +2202,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 						}
 					} 
 					else {
-						Funcoes.mensagemInforma(this,
-								"Tipo de movimento não permitido na inserção!");
+						Funcoes.mensagemInforma(this, "Tipo de movimento não permitido na inserção!");
 						pevt.cancela();
 						return;
 					}
@@ -2224,6 +2223,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener,
 				if( txtQtdItVenda.getVlrBigDecimal().floatValue() <= 0 ) {
 					Funcoes.mensagemInforma(this,"Quantidade invalida!");
 					pevt.cancela();
+					return;
+				}
+				if( txtPrecoItVenda.getVlrBigDecimal().floatValue() <= 0 ) {
+					Funcoes.mensagemInforma(this,"Preço invalido!");
+					pevt.cancela();
+					return;
 				}
 				if (txtCLoteProd.getVlrString().equals("S")) {
 					if (!testaCodLote()) {
