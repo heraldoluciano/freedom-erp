@@ -1510,6 +1510,12 @@ public class FOrcamento extends FVD implements PostListener, CarregaListener,
 				if( txtQtdItOrc.getVlrBigDecimal().floatValue() <= 0 ) {
 					Funcoes.mensagemInforma(this,"Quantidade invalida!");
 					evt.cancela();
+					return;
+				}
+				if( txtPrecoItOrc.getVlrBigDecimal().floatValue() <= 0 ) {
+					Funcoes.mensagemInforma(this,"Preço invalido!");
+					evt.cancela();
+					return;
 				}
 				if (txtCLoteProd.getVlrString().equals("S") && ((Boolean) oPrefs[9]).booleanValue()) {
 					if (!testaCodLote())
