@@ -148,7 +148,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	private ListaCampos lcVendaBaixa = new ListaCampos(this);
 	private ListaCampos lcRecManut = new ListaCampos(this);
 	private ListaCampos lcRecBaixa = new ListaCampos(this);
-	private ListaCampos lcBancoBaixa = new ListaCampos(this);
+	private ListaCampos lcBancoBaixa = new ListaCampos(this, "BC");
 	private Vector vCodRec = new Vector();
 	private Vector vNParcItRec = new Vector();
 	private Vector vNParcBaixa = new Vector();
@@ -796,6 +796,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		PreparedStatement ps = null;
 		ResultSet  rs = null;
 		String sSQL = null;
+		String sCodBanco = null;
 		float bdVlrAReceber = 0.0f;
 		float bdVlrParc =  0.0f;
 		
@@ -825,7 +826,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 			       "IR.OBSITREC,IR.NPARCITREC,IR.VLRJUROSITREC,IR.DTITREC," +
 			       "(SELECT V.DOCVENDA FROM VDVENDA V " +
 			       					  "WHERE V.CODEMP=R.CODEMPVA " +
-			       					  "AND V.CODFILIAL=R.CODFILIALVA AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) AS DOCVENDA " +
+			       					  "AND V.CODFILIAL=R.CODFILIALVA AND V.TIPOVENDA=R.TIPOVENDA AND V.CODVENDA=R.CODVENDA) AS DOCVENDA," +
+				   "(SELECT C.CODBANCO FROM VDCLIENTE C " +
+				   					  "WHERE C.CODEMP=R.CODEMPCL AND C.CODFILIAL=R.CODFILIALCL AND C.CODCLI=R.CODCLI) AS CODBANCO " +
 			       "FROM FNITRECEBER IR,FNRECEBER R  "+
 			       "WHERE IR.CODREC=R.CODREC AND R.CODREC=? AND R.CODEMP=? AND R.CODFILIAL=? "+
 			       "ORDER BY IR.DTVENCITREC,IR.STATUSITREC";
@@ -855,7 +858,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				tabBaixa.setValor((rs.getDate("DtVencItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtVencItRec")) : ""),i,1);
 				tabBaixa.setValor(rs.getString("NParcItRec"),i,2);
 				tabBaixa.setValor((rs.getString("DocLancaItRec") != null ? rs.getString("DocLancaItRec") : rs.getString("DocVenda")),i,3);
-				tabBaixa.setValor(""+rs.getInt("CodVenda"),i,4);
+				tabBaixa.setValor(rs.getString("CodVenda"),i,4);
 				tabBaixa.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrParcItRec")),i,5);
 				tabBaixa.setValor((rs.getDate("DtPagoItRec") != null ? Funcoes.sqlDateToStrDate(rs.getDate("DtPagoItRec")) : ""),i,6);
 				tabBaixa.setValor(Funcoes.strDecimalToStrCurrency(15,2,rs.getString("VlrPagoItRec")),i,7);
@@ -871,7 +874,11 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 				vNumContas.addElement(rs.getString("NumConta") != null ? rs.getString("NumConta") : "");
 				vCodPlans.addElement(rs.getString("CodPlan") != null ? rs.getString("CodPlan") : "");
 				vCodCCs.addElement(rs.getString("CodCC") != null ? rs.getString("CodCC") : "");
+				sCodBanco = rs.getString("CODBANCO");
+				
 			}
+			txtCodBancoBaixa.setVlrString(sCodBanco);
+			lcBancoBaixa.carregaDados();
 			if (!con.getAutoCommit())
 				con.commit();
 		} catch(SQLException err) {
@@ -1656,6 +1663,7 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 		if (cevt.getListaCampos() == lcRecBaixa) {
 			tabBaixa.limpa();
 			carregaGridBaixa();   
+			lcBancoBaixa.carregaDados();
 		}
 		else if (cevt.getListaCampos() == lcRecManut) {
 			bBuscaAtual = false;
@@ -1666,8 +1674,9 @@ public class FManutRec extends FFilho implements ActionListener,KeyListener,Carr
 	public void stateChanged(ChangeEvent cevt) {
 		if( tpn.getSelectedIndex() == 0 )
 			carregaConsulta();
-		if( tpn.getSelectedIndex() == 1 )
+		if( tpn.getSelectedIndex() == 1 ){
 			lcRecBaixa.carregaDados();
+		}
 	}
 	
 	public void setConexao(Connection cn) {
