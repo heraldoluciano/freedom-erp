@@ -111,18 +111,18 @@ public class NFBuzzi2 extends Layout {
 					imp.say( 46, sNat[1]);
 					imp.pulaLinha(3, imp.comprimido());
 					imp.say(  6, cab.getInt(NF.C_CODEMIT)+" - "+cab.getString(NF.C_RAZEMIT));
-					imp.say( 90, !cab.getString(NF.C_CPFEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
-					imp.say(125, Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)));
+					imp.say( 90, !"".equals(cab.getString(NF.C_CPFEMIT)) ? Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
+					imp.say(125, cab.getDate(NF.C_DTEMITPED)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)) : "");
 					imp.pulaLinha(2, imp.comprimido());
-					imp.say(  6, Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim()+", "+(!cab.getString(NF.C_NUMEMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_NUMEMIT),0,6).trim() : "").trim()+" - "+(!cab.getString(NF.C_COMPLEMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : "").trim());
-					imp.say( 76, !cab.getString(NF.C_BAIREMIT).equals("") ? Funcoes.copy(cab.getString(NF.C_BAIREMIT),0,15) : "");
+					imp.say(  6, Funcoes.copy(cab.getString(NF.C_ENDEMIT),0,50).trim()+", "+Funcoes.copy(String.valueOf(cab.getInt(NF.C_NUMEMIT)),0,6)+" - "+(!"".equals(cab.getString(NF.C_COMPLEMIT)) ? Funcoes.copy(cab.getString(NF.C_COMPLEMIT),0,9).trim() : ""));
+					imp.say( 76, !"".equals(cab.getString(NF.C_BAIREMIT)) ? Funcoes.copy(cab.getString(NF.C_BAIREMIT),0,15) : "");
 					imp.say(106, Funcoes.setMascara(cab.getString(NF.C_CEPEMIT),"#####-###"));
-					imp.say(125, Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)));
+					imp.say(125, cab.getDate(NF.C_DTSAIDA)!=null ? Funcoes.dateToStrDate(cab.getDate(NF.C_DTSAIDA)) : "");
 					imp.pulaLinha(2, imp.comprimido());
 					imp.say(  6, cab.getString(NF.C_CIDEMIT));
-					imp.say( 50, (!cab.getString(NF.C_DDDEMIT).equals("") ? "("+cab.getString(NF.C_DDDEMIT)+")" : "")+(!cab.getString(NF.C_FONEEMIT).equals("")? Funcoes.setMascara(cab.getString(NF.C_FONEEMIT).trim(),"####-####") : ""));
+					imp.say( 50, (!"".equals(cab.getString(NF.C_DDDEMIT)) ? "("+cab.getString(NF.C_DDDEMIT)+")" : "")+(!"".equals(cab.getString(NF.C_FONEEMIT))? Funcoes.setMascara(cab.getString(NF.C_FONEEMIT),"####-####") : ""));
 					imp.say( 83, cab.getString(NF.C_UFEMIT));
-					imp.say( 90, !cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
+					imp.say( 90, !"".equals(cab.getString(NF.C_RGEMIT)) ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
 					imp.say(126, sHora);
 					imp.pulaLinha(5, imp.comprimido());					   
 					imp.say(  8, sVals[0]);            
@@ -243,7 +243,7 @@ public class NFBuzzi2 extends Layout {
 					vValores.addElement(String.valueOf(itens.getFloat(NF.C_VLRISSPED)));//24
 					vValores.addElement(String.valueOf(cab.getInt(NF.C_CODVEND)));//25
 					
-					if (cab.getString(NF.C_NOMEVEND).equals(""))
+					if (cab.getString(NF.C_NOMEVEND)==null)
 						vValores.addElement(Funcoes.replicate(" ",25));// 26
 					else 
 						vValores.addElement(cab.getString(NF.C_NOMEVEND)+Funcoes.replicate(" ",25-cab.getString(NF.C_NOMEVEND).length()));
@@ -271,7 +271,7 @@ public class NFBuzzi2 extends Layout {
 				}				
 			}
 
-			if (imp.pRow()<40) {   								
+			if (imp.pRow()<40 && vMatObs != null) {   								
 				for (int i=0; i < vMatObs.size(); i++) {
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say( 10, (String)vMatObs.elementAt(i));
