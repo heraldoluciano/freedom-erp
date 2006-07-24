@@ -128,7 +128,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JTextFieldPad txtUserMail = new JTextFieldPad(JTextFieldPad.TP_STRING, 40 , 0);
 	private JTextFieldPad txtDiasVencOrc = new JTextFieldPad(JTextFieldPad.TP_INTEGER, 8 , 0);
 	private JPasswordFieldPad txpPassMail = new JPasswordFieldPad(16);
-	private final String opcoes = "    Opï¿½ï¿½es";
+	private final String opcoes = "    Opções";
 	private JLabelPad lbVendOpcoes = new JLabelPad(opcoes);
 	private JLabelPad lbGeralOpcoes = new JLabelPad(opcoes);
 	private JLabelPad lbOrcOpcoes = new JLabelPad(opcoes);
@@ -219,56 +219,56 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 
 	public FPrefereGeral() {
 		super();
-		setTitulo("Preferï¿½ncias Gerais");
+		setTitulo("Preferências Gerais");
 		setAtribos(40, 40, 760, 460);
 
 		lcCampos.setMensInserir(false);
 		lcPrefere3.setMensInserir(false);
 		lcPDV.setMensInserir(false);
 		
-		lcMoeda.add(new GuardaCampo(txtCodMoeda, "CodMoeda", "Cï¿½d.moeda",ListaCampos.DB_PK, true));
-		lcMoeda.add(new GuardaCampo(txtDescMoeda, "SingMoeda","Descriï¿½ï¿½o da moeda", ListaCampos.DB_SI, false));
+		lcMoeda.add(new GuardaCampo(txtCodMoeda, "CodMoeda", "Cód.moeda",ListaCampos.DB_PK, true));
+		lcMoeda.add(new GuardaCampo(txtDescMoeda, "SingMoeda","Descrição da moeda", ListaCampos.DB_SI, false));
 		lcMoeda.montaSql(false, "MOEDA", "FN");
 		lcMoeda.setQueryCommit(false);
 		lcMoeda.setReadOnly(true);
 		txtCodMoeda.setTabelaExterna(lcMoeda);
 
-		lcTabJuros.add(new GuardaCampo(txtCodTabJuros, "CodTbj", "Cï¿½d.tb.jur.",ListaCampos.DB_PK, false));
-		lcTabJuros.add(new GuardaCampo(txtDescTabJuros, "DescTbJ","Descriï¿½ï¿½o da tabela de juros", ListaCampos.DB_SI, false));
+		lcTabJuros.add(new GuardaCampo(txtCodTabJuros, "CodTbj", "Cód.tb.jur.",ListaCampos.DB_PK, false));
+		lcTabJuros.add(new GuardaCampo(txtDescTabJuros, "DescTbJ","Descrição da tabela de juros", ListaCampos.DB_SI, false));
 		lcTabJuros.montaSql(false, "TBJUROS", "FN");
 		lcTabJuros.setQueryCommit(false);
 		lcTabJuros.setReadOnly(true);
 		txtCodTabJuros.setTabelaExterna(lcTabJuros);
 
-		lcMarca.add(new GuardaCampo(txtCodMarca, "CodMarca", "Cï¿½d.marca",ListaCampos.DB_PK, false));
-		lcMarca.add(new GuardaCampo(txtDescMarca, "DescMarca","Descriï¿½ï¿½o da marca", ListaCampos.DB_SI, false));
+		lcMarca.add(new GuardaCampo(txtCodMarca, "CodMarca", "Cód.marca",ListaCampos.DB_PK, false));
+		lcMarca.add(new GuardaCampo(txtDescMarca, "DescMarca","Descrição da marca", ListaCampos.DB_SI, false));
 		lcMarca.montaSql(false, "MARCA", "EQ");
 		lcMarca.setQueryCommit(false);
 		lcMarca.setReadOnly(true);
 		txtCodMarca.setTabelaExterna(lcMarca);
 
-		lcGrupo.add(new GuardaCampo(txtCodGrup, "CodGrup", "Cï¿½d.grupo",ListaCampos.DB_PK, false));
-		lcGrupo.add(new GuardaCampo(txtDescGrup, "DescGrup","Descriï¿½ï¿½o do grupo", ListaCampos.DB_SI, false));
+		lcGrupo.add(new GuardaCampo(txtCodGrup, "CodGrup", "Cód.grupo",ListaCampos.DB_PK, false));
+		lcGrupo.add(new GuardaCampo(txtDescGrup, "DescGrup","Descrição do grupo", ListaCampos.DB_SI, false));
 		lcGrupo.montaSql(false, "GRUPO", "EQ");
 		lcGrupo.setQueryCommit(false);
 		lcGrupo.setReadOnly(true);
 		txtCodGrup.setTabelaExterna(lcGrupo);
 
-		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cï¿½d.for.",ListaCampos.DB_PK, false));
-		lcFor.add(new GuardaCampo(txtDescFor, "RazFor","Razï¿½o social do fornecedor", ListaCampos.DB_SI, false));
+		lcFor.add(new GuardaCampo(txtCodFor, "CodFor", "Cód.for.",ListaCampos.DB_PK, false));
+		lcFor.add(new GuardaCampo(txtDescFor, "RazFor","Razão social do fornecedor", ListaCampos.DB_SI, false));
 		lcFor.montaSql(false, "FORNECED", "CP");
 		lcFor.setQueryCommit(false);
 		lcFor.setReadOnly(true);
 		txtCodFor.setTabelaExterna(lcFor);
 
-		lcTipoFor.add(new GuardaCampo(txtCodTipoFor, "CodTipoFor","Cï¿½d.tp.for.", ListaCampos.DB_PK, false));
-		lcTipoFor.add(new GuardaCampo(txtDescTipoFor, "DescTipoFor","Descriï¿½ï¿½o do tipo de fornecedor", ListaCampos.DB_SI, false));
+		lcTipoFor.add(new GuardaCampo(txtCodTipoFor, "CodTipoFor","Cód.tp.for.", ListaCampos.DB_PK, false));
+		lcTipoFor.add(new GuardaCampo(txtDescTipoFor, "DescTipoFor","Descrição do tipo de fornecedor", ListaCampos.DB_SI, false));
 		lcTipoFor.montaSql(false, "TIPOFOR", "CP");
 		lcTipoFor.setQueryCommit(false);
 		lcTipoFor.setReadOnly(true);
 		txtCodTipoFor.setTabelaExterna(lcTipoFor);
 
-		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cï¿½d.tp.mov.", ListaCampos.DB_PK, false));
+		lcTipoMov.add(new GuardaCampo(txtCodTipoMov, "CodTipoMov","Cód.tp.mov.", ListaCampos.DB_PK, false));
 		lcTipoMov.add(new GuardaCampo(txtDescTipoMov, "DescTipoMov","Descriï¿½ï¿½o do tipo de movimento", ListaCampos.DB_SI, false));
 		lcTipoMov.montaSql(false, "TIPOMOV", "EQ");
 		lcTipoMov.setQueryCommit(false);
