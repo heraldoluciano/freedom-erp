@@ -1,7 +1,11 @@
 package org.freedom.util.resource;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import javax.servlet.http.HttpSessionBindingEvent;
+import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.log4j.Logger;
 
@@ -10,7 +14,7 @@ import org.apache.log4j.Logger;
  * Serve para o armazenamento qualquer tipo de objeto.
  * @author: Robson Sanchez/Setpoint Informática Ltda.
  */
-public abstract class AbstractResourcePool implements Runnable {
+public abstract class AbstractResourcePool implements Runnable, HttpSessionBindingListener {
 
    /** Número inicial de conexões. */
    public static final int INI_CON = 10;
@@ -24,8 +28,11 @@ public abstract class AbstractResourcePool implements Runnable {
    /** waitIfMaxedOut - Indica se deve aguardar a liberação de recursos. */
    private transient boolean waitIfMaxedOut;
 
-   /** error - Guarda a última exceção ocorrida ( método @see run() ). */
+   /** Guarda a última exceção ocorrida ( método @see run() ). */
    private transient ResourceException error = null;
+
+   /** Indica se o comportamento é realmente de um pool de recursos. */
+   private transient boolean ispool; 
 
    /** Log4j da classe. */
    private static final Logger LOGGER = createLogger();
@@ -57,6 +64,22 @@ public abstract class AbstractResourcePool implements Runnable {
    public AbstractResourcePool() {
       this(INI_CON, // por padrão, um máximo de 10 recursos no pool
             false); // não espera pelo recurso se maximizado
+   }
+
+   /**
+    * Seta o atributo ispool.
+    * @param isp Recebe um valor lógico para ispool.
+    */
+   public final void setIspool(boolean isp) {
+      this.ispool = isp;
+   }
+
+   /**
+    * Retorna flag ispool.
+    * @return Retorna um valor lógico indicando o comportamento do pool.
+    */
+   public final boolean getIspool() {
+      return this.ispool;
    }
 
    /**
@@ -267,6 +290,19 @@ public abstract class AbstractResourcePool implements Runnable {
    }
 
    /**
+    * Limpa o recurso do cache.
+    * @param resource ResourceKey Recurso a ser removido.
+    */
+   public final synchronized void clearResource(final ResourceKey resource) {
+      if (availableRes != null) {
+         availableRes.remove(resource.getHashKey());
+      }
+      if (inUseResources != null) {
+         inUseResources.remove(resource.getHashKey());
+      }
+   }
+
+   /**
     * Seta o número máximo de recursos.
     * @param maxRes Recebe o número máximo de recursos.
     */
@@ -283,5 +319,26 @@ public abstract class AbstractResourcePool implements Runnable {
       final ResourceKey resource = (ResourceKey)
          inUseResources.get(sessionID);
       return resource;
+   }
+
+   /**
+    * Método executado quando uma sessão http for iniciada.
+    * @param event HttpSessionBindingEvent.
+    */
+   public final void valueBound(final HttpSessionBindingEvent event) {
+   }
+
+   /**
+    * Método será executado quando uma sessão http expirar.
+    * @param event HttpSessionBindingEvent.
+    */
+   public final void valueUnbound(final HttpSessionBindingEvent event) {
+      final String sessionID = event.getSession().getId();
+      final ResourceKey resource = getResourceSession(sessionID);
+      if (getIspool()) {
+         recycleResource(resource);
+      } else {
+         closeResource(resource);
+      }
    }
 }

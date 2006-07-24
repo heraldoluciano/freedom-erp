@@ -68,10 +68,11 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @param urlcon URL para a conexão com o banco de dados.
     * @param nInitialCons Número inicial de conexões.
     * @param nMaxCons Número máximo de conexões.
+    * @param isp Seta o comportamento do pool.
     */
    public DbConnectionPool(final String drivercon, final String urlcon,
-      final int nInitialCons, final int nMaxCons) {
-      this(drivercon, urlcon, nInitialCons, nMaxCons, null, null);
+      final int nInitialCons, final int nMaxCons, final boolean isp) {
+      this(drivercon, urlcon, nInitialCons, nMaxCons, null, null, isp);
    }
 
    /**
@@ -82,13 +83,15 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @param nMaxCons Número máximo de conexões.
     * @param usercon ID do usuário para conexão com o banco de dados.
     * @param passwordcon Senha do usuário para a conexão com o banco de dados.
+    * @param isp Seta o comportamento do pool.
     */
    public DbConnectionPool(final String drivercon, final String urlcon,
          final int nInitialCons, final int nMaxCons,
-         final String usercon, final String passwordcon) {
+         final String usercon, final String passwordcon, final boolean isp) {
       super();
       setInitialCons(nInitialCons);
       setMaxResources(nMaxCons);
+      setIspool(isp);
       this.driver = drivercon;
       this.url = urlcon;
       ResourceKey resource;
@@ -161,6 +164,7 @@ public class DbConnectionPool extends AbstractResourcePool {
    public final void closeResource(final ResourceKey resource) {
       java.sql.Connection connection = null;
       try {
+         clearResource(resource);
          connection = (Connection)
             resource.getResource();
          connection.close();
