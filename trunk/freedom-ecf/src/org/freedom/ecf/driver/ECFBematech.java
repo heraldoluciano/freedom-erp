@@ -9,6 +9,28 @@ import java.util.Date;
 
 public class ECFBematech extends AbstractECFDriver {
 	
+	private static final String[] ST1 = new String[] {
+		"fim de papel",
+		"pouco de papel",
+		"erro no relogio",
+		"impressora em erro",
+		"primeiro dado do CMD não foi ESC",
+		"comando inexistente",
+		"cupom aberto",
+		"número de parâmetros inválido"
+	};
+	private static final String[] ST2 = new String[] {
+		"tipo de parâmetro do comando inválido",
+		"memoria fiscal invalida",
+		"erro na memória RAM CMOS são volátil",
+		"alíquota não programada",
+		"capacidade de alíquotas programéveis lotada",
+		"cancelamento não permitido",
+		"CNPJ/IE do proprietário não programados",
+		"comando não executado"
+	};	
+	private static final int[] bytes = new int[] {128,64,32,16,8,4,2,1};
+	
 	public ECFBematech( final int com ) {
 		super();
 		ativaPorta( com );
@@ -64,57 +86,21 @@ public class ECFBematech extends AbstractECFDriver {
 		
 		if( buffer.length > 2 ) {
 			
-			final int ST1 = buffer[buffer.length-2];
-			final int ST2 = buffer[buffer.length-1];
+			final int st1 = buffer[buffer.length-2];
+			final int st2 = buffer[buffer.length-1];
 			
-			if( ST1 >= 128 ) {
-				System.out.println("ST1 = fim de papel");
-			}
-			else if( ST1 >= 64 ) {
-				System.out.println("ST1 = pouco de papel");
-			}
-			else if( ST1 >= 32 ) {
-				System.out.println("ST1 = erro no relogio");
-			}
-			else if( ST1 >= 16 ) {
-				System.out.println("ST1 = impressora em erro");
-			}
-			else if( ST1 >= 8 ) {
-				System.out.println("ST1 = primeiro dado do CMD não foi ESC");
-			}
-			else if( ST1 >= 4 ) {
-				System.out.println("ST1 = comando inexistente");
-			}
-			else if( ST1 >= 2 ) {
-				System.out.println("ST1 = cupom aberto");
-			}
-			else if( ST1 >= 1 ) {
-				System.out.println("ST1 = número de parâmetros inválido");
+			for ( int i=0; i < bytes.length; i++ ) {
+				if( st1 >= bytes[i] ) {
+					System.out.println("ST1 = " + ST1[i]);
+					break;
+				}
 			}
 			
-			if( ST2 >= 128 ) {
-				System.out.println("ST2 = tipo de parâmetro do comando inválido");
-			}
-			else if( ST2 >= 64 ) {
-				System.out.println("ST2 = memoria fiscal invalida");
-			}
-			else if( ST2 >= 32 ) {
-				System.out.println("ST2 = erro na memória RAM CMOS são volátil");
-			}
-			else if( ST2 >= 16 ) {
-				System.out.println("ST2 = alíquota não programada");
-			}
-			else if( ST2 >= 8 ) {
-				System.out.println("ST2 = capacidade de alíquotas programéveis lotada");
-			}
-			else if( ST2 >= 4 ) {
-				System.out.println("ST2 = cancelamento não permitido");
-			}
-			else if( ST2 >= 2 ) {
-				System.out.println("ST2 = CNPJ/IE do proprietário não programados");
-			}
-			else if( ST2 >= 1 ) {
-				System.out.println("ST2 = comando não executado");
+			for ( int i=0; i < bytes.length; i++ ) {
+				if( st2 >= bytes[i] ) {
+					System.out.println("ST2 = " + ST2[i]);
+					break;
+				}
 			}
 			
 		}
@@ -125,31 +111,33 @@ public class ECFBematech extends AbstractECFDriver {
 		
 		int retorno = 0;
 		bytesLidos = null;
+		//byte ack = 0;
+		//byte st1 = 0;
+		//byte st2 = 0;
 		byte ack = 0;
 		byte st1 = 0;
 		byte st2 = 0;
 		
 		if ( bytes != null ) {
 			
+			ack = bytes[0];
+			
 		   if ( bytes.length > 3 ) {
+
+				st1 = bytes[bytes.length-2];
+				st2 = bytes[bytes.length-1];
+			   
 			   bytesLidos = new byte[bytes.length-3];
+			   System.arraycopy( bytes, 1, bytesLidos, 0, bytesLidos.length );
+			   
 		   }
 		   
-		   for ( int i=0; i < bytes.length; i++ ) {
-			   if ( i == 0 ) {
-			       ack = bytes[i];
-			   }
-			   else if ( i == 1 ) {
-			       st1 = bytes[i];
-			   }
-			   else if ( i == 2 ) {
-				   st2 = bytes[i];
-			   }
-			   else {
-				   bytesLidos[i-3] = bytes[i];
-			   }
-		   }
 		   
+		 //  for ( int i=0; i < bytes.length-3; i++ ) {
+		//	   bytesLidos[i] = bytes[i+1];
+		  // }
+		   
+		   /*
 		   if ( ack == ACK ) {
 			   retorno = 1;
 		   }
@@ -181,10 +169,10 @@ public class ECFBematech extends AbstractECFDriver {
 				   retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
 			   }
 			   
-		   }
+		   }*/
 		   
 		}
-		
+				
 		return retorno;
 		
 	}
@@ -238,6 +226,10 @@ public class ECFBematech extends AbstractECFDriver {
 	
 	//	adiciona aliquotas.
 	public int adicaoDeAliquotaTriburaria( final float aliq, final char opt ) {
+		
+		if( aliq > 99 ) {
+			throw new IllegalArgumentException( "Alíquota invalida. Não pode superar 99,99 %." );
+		}
 
 		byte[] CMD = {ESC,7};
 		
@@ -407,6 +399,46 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
+	public int retornoAliquotas() {
+		
+		final byte[] CMD = {ESC,26};
+		
+		/*executaCmd( CMD );
+		
+		final byte[] tmp = getBytesLidos();
+		for(int i=0; i<tmp.length; i++){
+			System.out.print( (int)tmp[i] + "," );
+		}
+		System.out.print( "\n" );*/
+		
+		return executaCmd( CMD );
+		
+	}
+	
+	public int retornoTotalizadoresParciais() {
+
+		final byte[] CMD = {ESC,27};
+		
+		return executaCmd( CMD );
+		
+	}
+	
+	public int retornoSubTotal() {
+
+		final byte[] CMD = {ESC,29};
+		
+		return executaCmd( CMD );
+		
+	}	
+
+	public int retornoNumeroCupom() {
+
+		final byte[] CMD = {ESC,30};
+		
+		return executaCmd( CMD );
+		
+	}
+	
 	//	Cancelamento de item generico.
 	public int cancelaItemGenerico( final int item ) {
 		
@@ -568,11 +600,11 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
-	public int programaCaracterParaAutenticacao( final char[] caracteres ) {
+	public int programaCaracterParaAutenticacao( final byte[] caracteres ) {
 		
 		byte[] CMD = {ESC,64};
-				
-		CMD = adicBytes( CMD, new String( caracteres ).getBytes() );
+			
+		CMD = adicBytes( CMD, caracteres );
 		
 		return executaCmd( CMD );
 		
@@ -630,6 +662,15 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
+	// 	Executa a leitura X.
+	public int leituraXSerial() {
+		
+		final byte[] CMD = {ESC,69};
+		
+		return executaCmd( CMD );
+		
+	}
+	
 	//	Caso a impressora estiver em erro inicialia a mesma.
 	//  alguns erro podem ser recuperado em modo remoto.
 	public int resetErro() {
@@ -653,6 +694,7 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 	
 	//	Efetua forma de pagamento.
+	//	tem que ter troco...
 	public int efetuaFormaPagamento( final int indice, final float valor, final String descForma ) {
 		
 		byte[] CMD = {ESC,72};

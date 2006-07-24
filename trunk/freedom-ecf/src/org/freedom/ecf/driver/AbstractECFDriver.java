@@ -49,8 +49,8 @@ public abstract class AbstractECFDriver {
 	public static final char ISS = '1';
 	public static final char TRUNCA = '0';
 	public static final char ARREDONDA = '1';
-	public static final char DESABILITA_CUPOMADIC = '0';
-	public static final char HABILITA_CUPOMADIC = '1';
+	public static final char DESABILITA_CUPOM_ADIC = '0';
+	public static final char HABILITA_CUPOM_ADIC = '1';
 	
 	protected int sistema = -1;
 	protected byte[] bytesLidos = null;
@@ -306,16 +306,18 @@ public abstract class AbstractECFDriver {
 			
 			if( param.indexOf( String.valueOf( (char)10 ) ) <= -1 ) {
 				
-				if( tamanho >= param.length() ) {
+				if( tamanho <= param.length() ) {
 					tmp.append( param.substring( 0, tamanho-1 ) );
 				}
 				
+				tmp.append( param );
 				tmp.append( (char)10 );
+				
 			}
 			
 		} else {
 			
-			if( tamanho > param.length() ) {
+			if( tamanho < param.length() ) {
 				tmp.append( param.substring( 0, tamanho ) );
 			}
 			else {
@@ -453,6 +455,14 @@ public abstract class AbstractECFDriver {
 	
 	public abstract int comprovanteNFiscalNVinculado(String opt, float valor, String formaPag);// 25
 	
+	public abstract int retornoAliquotas();// 26
+	
+	public abstract int retornoTotalizadoresParciais();// 27
+	
+	public abstract int retornoSubTotal();// 29
+	
+	public abstract int retornoNumeroCupom();// 30
+	
 	public abstract int cancelaItemGenerico(int item);// 31
 	
 	public abstract int iniciaFechamentoCupom(char opt, float percentual);// 32
@@ -476,7 +486,7 @@ public abstract class AbstractECFDriver {
 	// com problemas devido a falta de informação sobre os parametros.
 	public abstract int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, int departamento, String unidade, String codProd, String descProd);// 63
 	
-	public abstract int programaCaracterParaAutenticacao(char[] caracteres);// 64
+	public abstract int programaCaracterParaAutenticacao(byte[] caracteres);// 64
 	
 	public abstract int nomeiaDepartamento(int index, String descricao);// 65
 	
@@ -485,6 +495,8 @@ public abstract class AbstractECFDriver {
 	public abstract int usaComprovanteNFiscalVinculado(String texto);// 67
 	
 	public abstract int habilitaCupomAdicional(char opt);// 68
+	
+	public abstract int leituraXSerial();// 69
 	
 	public abstract int resetErro();// 70
 	

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Teste {
 	
-	public Teste(){
+	private Teste(){
 		System.out.println("teste");
 	}
 	
@@ -18,38 +18,40 @@ public class Teste {
 		Date data = new Date();
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
 		
+		//formatar retornos...
+		//ecf.retornoAliquotas();
 		
-		//ecf.programaCaracterParaAutenticacao(new char[]{1,2,4,8,16,32,64,128,64,32,16,8,4,2,1,129,129,129});
+		//verificar bytes...
+		//ecf.programaCaracterParaAutenticacao(new byte[]{1,2,4,8,64,64,64,64,64,64,64,64,64,64,8,4,2,1});
 
-		ecf.autenticacaoDeDocumento();
-		ecf.comprovanteNFiscalNVinculado( "01", 10f,"Cartao Credito  ");
+		
+		//ecf.comprovanteNFiscalNVinculado( "10", 1f,"A vista         ");
+		
+				
 		
 		
-		
-		//ecf.abreComprovanteNFiscalVinculado("Cheque Predatado", 1, 726 );
-		// não vinga...
-		//ecf.usaComprovanteNFiscalVinculado("Testando comprovante nao fiscal vinculado...");
-		
-		
-		
-		//ecf.aberturaDeCupom();
+		ecf.aberturaDeCupom();
 		
 		//ecf.programaUnidadeMedida("KG");
 		//ecf.aumentaDescItem("Caneta                       0123456789" );
 		
-		//ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 1f, 0.12f, 0f);
+		ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 1f, 0.12f, 0f);
 		
 		//ecf.vendaItemTresCasas("0000000000001", "Caneta                       ", "FF", 1f, 0.125f, 0f);
 		
 		//ecf.vendaItemDepartamento("FF", 15.001f, 1f, 0.001f, 0.001f, 3, "UN", "0000000000001", "Caneta");
 		
-		//ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERCENTUAL,0);
-		//ecf.efetuaFormaPagamento(1,1f,"ta pago");
-		//ecf.terminaFechamentoCupom("Obrigado pela Preferencia!!!");
+		ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERCENTUAL,0);
+		ecf.efetuaFormaPagamento(2,0.20f,"to testando...");
+		ecf.terminaFechamentoCupom("Obrigado pela Preferencia!!!");		
 		
+
+		ecf.autenticacaoDeDocumento();
 		
 		//ecf.programaFormaPagamento("Cartao Credito  ");// 2
-		//ecf.programaFormaPagamento("Cartao Visa     ");// 3
+		//ecf.programaFormaPagamento("A vista         ");// 3		
+
+		//ecf.comprovanteNFiscalNVinculado("SU",100,"");
 		
 		data = new Date();
 		System.out.println("Fim -----> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
