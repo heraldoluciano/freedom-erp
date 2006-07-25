@@ -37,11 +37,12 @@ import org.freedom.modulos.std.FSetor;
 import org.freedom.modulos.std.FTipoCli;
 import org.freedom.modulos.std.FVendedor;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrincipalPD;
 
 public class FreedomTMK extends Aplicativo {
 
 	public FreedomTMK() {
-		super("iconAtendimento32.gif", "splashTMK.jpg", 1, "Freedom", 7, "Telemarketing", null,"bgFreedomSTD.jpg");
+		super("iconAtendimento32.gif", "splashTMK.jpg", 1, "Freedom", 7, "Telemarketing", null, new FPrincipalPD("bgFreedomSTD.jpg"));
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 
