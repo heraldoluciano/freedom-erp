@@ -28,7 +28,7 @@ public class Teste {
 		//ecf.comprovanteNFiscalNVinculado( "10", 1f,"A vista         ");
 		
 	
-      ecf.leituraX();
+      System.out.println(ecf.retornoAliquotas());
       
       System.out.println("FIM DA LEITURA");
 		

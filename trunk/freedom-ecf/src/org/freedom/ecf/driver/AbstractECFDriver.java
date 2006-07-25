@@ -464,7 +464,7 @@ public abstract class AbstractECFDriver {
 	
 	public abstract int comprovanteNFiscalNVinculado(String opt, float valor, String formaPag);// 25
 	
-	public abstract int retornoAliquotas();// 26
+	public abstract String retornoAliquotas();// 26
 	
 	public abstract int retornoTotalizadoresParciais();// 27
 	

@@ -108,7 +108,22 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 		
 	}
-	
+   
+   private String bcdToAsc(final byte[] bcdParam) {
+      StringBuffer retorno = new StringBuffer();
+      byte bcd = 0;
+      byte bh = 0;
+      byte bl = 0;
+      for (int i = 0; i<bcdParam.length; i++) {
+         bcd = bcdParam[i];
+         bh = (byte) ( (int) bcd / 16);
+         bl = (byte) ( (int) bcd % 16);
+         retorno.append(bh);
+         retorno.append(bl);
+      }
+      return retorno.toString();
+   }
+
 	public int checkRetorno( final byte[] bytes ) {
 		
 		int retorno = 0;
@@ -402,20 +417,10 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
-	public int retornoAliquotas() {
-		
+	public String retornoAliquotas() {
 		final byte[] CMD = {ESC,26};
-		
-		/*executaCmd( CMD );
-		
-		final byte[] tmp = getBytesLidos();
-		for(int i=0; i<tmp.length; i++){
-			System.out.print( (int)tmp[i] + "," );
-		}
-		System.out.print( "\n" );*/
-		
-		return executaCmd( CMD );
-		
+		executaCmd( CMD );
+		return bcdToAsc(getBytesLidos());
 	}
 	
 	public int retornoTotalizadoresParciais() {
