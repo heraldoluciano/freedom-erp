@@ -76,7 +76,9 @@ public class ECFBematech extends AbstractECFDriver {
 		retorno = enviaCmd( cmd );
 		getMenssagemRetorno( retorno );
 		
-		aguardaImpressao();
+      if (getAguardaImp()) {
+		   aguardaImpressao();
+      }
 		
 		return checkRetorno( retorno );
 		
@@ -356,9 +358,10 @@ public class ECFBematech extends AbstractECFDriver {
 			
 		   retorno = enviaCmd( CMD );
 		   getMenssagemRetorno( retorno );
+         System.out.println("Aguardando o retorno de aguarda Impressao");
 		   
 		   try {
-			   Thread.sleep(3000);
+			   Thread.sleep(100);
 		   } catch (InterruptedException e) { }
 		   
 		}
