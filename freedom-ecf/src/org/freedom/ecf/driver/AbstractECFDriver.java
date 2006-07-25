@@ -51,7 +51,8 @@ public abstract class AbstractECFDriver {
 	public static final char ARREDONDA = '1';
 	public static final char DESABILITA_CUPOM_ADIC = '0';
 	public static final char HABILITA_CUPOM_ADIC = '1';
-	
+
+   private boolean aguardaImp = true;
 	protected int sistema = -1;
 	protected byte[] bytesLidos = null;
     private InputStream entrada = null;
@@ -69,6 +70,14 @@ public abstract class AbstractECFDriver {
 	//	ativaPorta( com );
 	//}
 	
+   public void setAguardaImp(boolean agImp) {
+      this.aguardaImp = agImp;
+   }
+   
+   public boolean getAguardaImp() {
+      return this.aguardaImp;
+   }
+   
 	public byte[] adicBytes( final byte[] variavel, final byte[] incremental ) {
 		
 		byte[] retorno = new byte[ variavel.length + incremental.length ];
