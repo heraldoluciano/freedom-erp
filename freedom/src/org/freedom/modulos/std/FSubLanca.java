@@ -154,9 +154,9 @@ public class FSubLanca extends FDetalhe implements RadioGroupListener,FocusListe
 	txtRazFor.setListaCampos(lcFor);
     
 	lcCC.add(new GuardaCampo( txtCodCC, "CodCC", "Cód.c.c.", ListaCampos.DB_PK, txtDescCC, false));
-	lcCC.add(new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false));
-	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
 	lcCC.add(new GuardaCampo( txtAnoCC, "AnoCC", "Ano-Base", ListaCampos.DB_PK, txtDescCC, false));
+	lcCC.add(new GuardaCampo( txtDescCC, "DescCC", "Descrição do centro de custo", ListaCampos.DB_SI, false));
+	lcCC.add(new GuardaCampo( txtSiglaCC, "SiglaCC", "Sigla", ListaCampos.DB_SI, false));
 	lcCC.setReadOnly(true);
 	lcCC.setQueryCommit(false);
 	lcCC.setWhereAdic("NIVELCC=10");

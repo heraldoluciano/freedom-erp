@@ -561,7 +561,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicTab("Venda", pinVenda);
 		
 		adicDB(rgSetorVenda, 7, 25, 160, 80, "SetorVenda","Distrib. dos setores", true);
-		adicDB(rgOrdNota, 177, 25, 160, 80, "OrdNota", " Ordem de Emissï¿½o",	true);
+		adicDB(rgOrdNota, 177, 25, 160, 80, "OrdNota", " Ordem de Emissão",	true);
 		
 		adicCampo(txtCodTipoMov3, 7, 130, 75, 20, "CodTipoMov3", "Cód.tp.mov",ListaCampos.DB_FK, txtDescTipoMov3, false);
 		adicDescFK(txtDescTipoMov3, 85, 130, 250, 20, "DescTipoMov","Tipo de movimento para pedido.");
@@ -624,7 +624,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		// Orçamento
 		
 		setPainel(pinOrc);
-		adicTab("Orï¿½amento & PDV", pinOrc);
+		adicTab("Orçamento & PDV", pinOrc);
 		adicCampo(txtCodTipoMov2, 7, 25, 80, 20, "CodTipoMov2", "Cod.tp.mov.",ListaCampos.DB_FK, txtDescTipoMov, false);
 		adicDescFK(txtDescTipoMov2, 90, 25, 230, 20, "DescTipoMov","Tipo de movimento para orçamentos.");
 		adicCampo(txtDescClassOrc, 330, 25, 250, 20, "ClassOrc","Classe padrão para orçamento.", ListaCampos.DB_SI, false);
