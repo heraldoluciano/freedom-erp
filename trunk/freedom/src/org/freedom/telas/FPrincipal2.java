@@ -42,7 +42,7 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 	public void inicializaTela() {
 		setBgColor(new Color(255,255,255)); 
 		addFundo();
-	    addLinks(Icone.novo("lgSTP.jpg"), Icone.novo("lgFreedom.jpg"));
+	    addLinks(Icone.novo("lgSTP2.jpg"), Icone.novo("lgFreedom2.jpg"));
 		adicBotoes();
 		
 	}
