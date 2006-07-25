@@ -106,10 +106,12 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 		setExtendedState(MAXIMIZED_BOTH);
 		
-		inicializaTela();
+	
 
 		c.add(dpArea, BorderLayout.CENTER);
-			    
+
+		inicializaTela();	    
+				
 		sairMI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fecharJanela();
@@ -120,6 +122,10 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				fecharJanela();
 			}
 		});
+		
+		
+
+		
 	}
 
 	public abstract void inicializaTela();
@@ -373,6 +379,8 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 	
 	public void addLinks(final ImageIcon icStpinf, final ImageIcon icFreedom){
+		JLabelPad lbFreedom = new JLabelPad(icStpinf);
+		JLabelPad lbStpinf = new JLabelPad(icFreedom);	
 		
 		final int iWidthImgStpinf = icStpinf.getIconWidth();
 		final int iHeightImgStpinf = icStpinf.getIconHeight();

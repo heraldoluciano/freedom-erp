@@ -31,7 +31,7 @@ import org.freedom.telas.FPrincipal2;
 
 public class FreedomSTD2 extends Aplicativo {
   public FreedomSTD2() {
-	super("iconStandart32.gif","splashSTD.jpg", 1, "Freedom", 1, "Standard", null,new FPrincipal2("bgFreedom2.jpg"));
+	super("iconStandart32.gif","splashSTD.jpg", 1, "Freedom", 1, "Standard", null,new FPrincipal2("bgFreedomSTD2.jpg"));
 	addOpcao(-1,TP_OPCAO_MENU,"Arquivo","",'A',100000000,0, false, null);
 	  addOpcao(100000000,TP_OPCAO_MENU,"Tabelas","",'T',100100000,1, false, null);
 	    addOpcao(100100000,TP_OPCAO_MENU,"Cliente","",'C',100101000,2, false, null);
