@@ -154,7 +154,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     }
 
 	public Aplicativo(String sIcone, String sSplash, int iCodSis, String sDescSis, 
-			int iCodModu, String sDescModu, String sDirImagem,String sImgFundo) {
+			int iCodModu, String sDescModu, String sDirImagem,final FPrincipal telaP) {
 	    if (sDirImagem!=null) {
 	        Imagem.dirImages = sDirImagem;
 	        Icone.dirImages = sDirImagem;
@@ -165,7 +165,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		Locale.setDefault(new Locale("pt", "BR"));
 		vOpcoes = new Vector();
 		vBotoes = new Vector();
-		telaPrincipal = new FPrincipal(sImgFundo);
+//		telaPrincipal = new FPrincipal(sImgFundo);
+		telaPrincipal = telaP;
 		this.iCodSis = iCodSis;
 		this.iCodModu = iCodModu;
 		this.sDescSis = sDescSis;

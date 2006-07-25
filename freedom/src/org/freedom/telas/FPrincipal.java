@@ -64,14 +64,11 @@ import org.freedom.componentes.StatusBar;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
 
-public class FPrincipal extends JFrame implements ActionListener, MouseListener {
+public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-
-
 	private Connection con = null;
 	public JMenuBar bar = new JMenuBar();
 	private JToolBar tBar = new JToolBar();
-	// public JMenuPad arquivoMenu = new JMenuPad();
 	private JMenuItem sairMI = new JMenuItem();
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
 	private JButton btCalc = new JButton(Icone.novo("btCalc.gif"));
@@ -80,25 +77,20 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	public Container c = getContentPane();
 	public JDesktopPane dpArea = new JDesktopPane();
 	public StatusBar statusBar = new StatusBar();
-  	public ImageIcon icStpinf = Icone.novo("lgSTP.jpg"); 
-	private JLabelPad lbStpinf = new JLabelPad(icStpinf);
-  	private ImageIcon icFreedom = Icone.novo("lgFreedom.jpg"); 
-	private JLabelPad lbFreedom = new JLabelPad(icFreedom);
+	private JLabelPad lbFreedom = new JLabelPad( Icone.novo("lgSTP.jpg"));
+	private JLabelPad lbStpinf = new JLabelPad(Icone.novo("lgFreedom.jpg"));	
 	private ImageIcon icFundo = null; 
 	private JLabelPad lbFundo = null;
 	private int iWidthImgFundo = 0;
-	private int iHeightImgFundo = 0;
-	private int iWidthImgStpinf = 0;
-	private int iHeightImgStpinf = 0;
-	private int iWidthImgFreedom = 0;
-	private int iHeightImgFreedom = 0;
+	private int iHeightImgFundo = 0;	
 	private String sURLStpinf = "http://www.stpinf.com";
 	private String sURLFreedom = "http://www.freedom.org.br";
 	private Border borderStpinf = null;
 	private Border borderFreedom = null;
-	
+	public Color padrao = new Color(69,62,113);
+	public String sImgFundo = null;
 	public FPrincipal(String sImgFundo) {
-
+		this.sImgFundo = sImgFundo;
 		c.setLayout(new BorderLayout());
 		JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
 		pn.setLayout(new GridLayout(1, 1));
@@ -110,59 +102,14 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 
 		c.add(pn);
 
-		btCalc.setPreferredSize(new Dimension(34, 34));
-		btCalc.setToolTipText("Calculadora");
-		btCalc.addActionListener(this);
-
-		btAgenda.setPreferredSize(new Dimension(34, 34));
-		btAgenda.setToolTipText("Agenda");
-		btAgenda.addActionListener(this);
-		pinBotoesDir.setBorder(null);
-		c.add(tBar, BorderLayout.NORTH);
-		tBar.setLayout(new BorderLayout());
-		pinBotoesDir.setPreferredSize(new Dimension(102, 34));
-		tBar.add(pinBotoesDir, BorderLayout.EAST);
-
-		pinBotoesDir.add(btCalc);
-		pinBotoesDir.add(btAgenda);
-
 		montaStatus();
 
-		int iWidthArea = (int) tela.getWidth();
-		int iHeightArea = (int) tela.getHeight();
-		
-		setSize(iWidthArea, iHeightArea - 50);
-
 		setExtendedState(MAXIMIZED_BOTH);
-		c.add(dpArea, BorderLayout.CENTER);
-
-		dpArea.setBackground(new Color(69,62,113));
-//		dpArea.setBackground(new Color(153,153,204));
-		icFundo = Icone.novo(sImgFundo); 
-		lbFundo = new JLabelPad(icFundo);
-
-		iWidthImgFundo = icFundo.getIconWidth();
-		iHeightImgFundo = icFundo.getIconHeight();
-		iWidthImgStpinf = icStpinf.getIconWidth();
-		iHeightImgStpinf = icStpinf.getIconHeight();
-		iWidthImgFreedom = icFreedom.getIconWidth();
-		iHeightImgFreedom = icFreedom.getIconHeight();
 		
-	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
-	    lbStpinf.setBounds(20,iHeightArea-250,iWidthImgStpinf,iHeightImgStpinf);
-	    lbFreedom.setBounds(iWidthArea-155,iHeightArea-265,iWidthImgFreedom,iHeightImgFreedom);
-	    lbStpinf.setToolTipText(sURLStpinf);
-	    lbFreedom.setToolTipText(sURLFreedom);
-	    borderStpinf = lbStpinf.getBorder();
-	    borderFreedom = lbFreedom.getBorder();
-	    
-	    dpArea.add(lbFundo);
-	    dpArea.add(lbStpinf);
-	    dpArea.add(lbFreedom);
+		inicializaTela();
 
-	    lbFreedom.addMouseListener(this);
-	    lbStpinf.addMouseListener(this);
-	    
+		c.add(dpArea, BorderLayout.CENTER);
+			    
 		sairMI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fecharJanela();
@@ -173,27 +120,25 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 				fecharJanela();
 			}
 		});
-
 	}
 
+	public abstract void inicializaTela();
+	
 	private void setBordaURL(JComponent comp) {
 		comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createMatteBorder(0, 0, 0, 0, Color.BLUE), BorderFactory
 				.createEtchedBorder()));
-
 	}
 	
 	public void mouseClicked(MouseEvent arg0) {
 		if ( (arg0.getSource()==lbStpinf) && (arg0.getClickCount()>=2) ) {
 			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLStpinf);
-           //System.out.println("lbStpinf "+arg0.getClickCount());		
 		}
 		else if ( (arg0.getSource()==lbFreedom) && (arg0.getClickCount()>=2) ) {
-	       // System.out.println("lbFreedom "+arg0.getClickCount());		
 			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLFreedom);
 		}
-
 	}
+	
 	public void mouseEntered(MouseEvent arg0) {
 		if (arg0.getSource()==lbStpinf) {
 	        setBordaURL(lbStpinf);		
@@ -202,6 +147,7 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	        setBordaURL(lbFreedom);		
 		}
 	}
+	
 	public void mouseExited(MouseEvent arg0) {
 		if (arg0.getSource()==lbStpinf) {
 	        lbStpinf.setBorder(borderStpinf);		
@@ -211,12 +157,15 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	        lbFreedom.setBorder(borderFreedom);		
 		}
 	}
+	
 	public void mousePressed(MouseEvent arg0) {
 
 	}
+	
 	public void mouseReleased(MouseEvent arg0) {
 
 	}
+	
 	public void addKeyListerExterno(KeyListener arg0) {
 		this.addKeyListener(arg0);
 		btCalc.addKeyListener(arg0);
@@ -418,4 +367,64 @@ public class FPrincipal extends JFrame implements ActionListener, MouseListener 
 	public void adicCompInBar(Component comp, String sAling) {
 		tBar.add(comp, sAling);
 	}
+	
+	public void setBgColor(final Color cor) {
+		dpArea.setBackground(cor);		
+	}
+	
+	public void addLinks(final ImageIcon icStpinf, final ImageIcon icFreedom){
+		
+		final int iWidthImgStpinf = icStpinf.getIconWidth();
+		final int iHeightImgStpinf = icStpinf.getIconHeight();
+		final int iWidthImgFreedom = icFreedom.getIconWidth();
+		final int iHeightImgFreedom = icFreedom.getIconHeight();
+	    
+	    lbStpinf.setBounds(20,(int) tela.getHeight()-250,iWidthImgStpinf,iHeightImgStpinf);
+	    lbFreedom.setBounds((int) tela.getWidth()-155,(int) tela.getHeight()-265,iWidthImgFreedom,iHeightImgFreedom);
+	    lbStpinf.setToolTipText(sURLStpinf);
+	    lbFreedom.setToolTipText(sURLFreedom);
+	    
+	    borderStpinf = lbStpinf.getBorder();
+	    borderFreedom = lbFreedom.getBorder();
+	    
+	    dpArea.add(lbStpinf);
+	    dpArea.add(lbFreedom);
+
+	    lbFreedom.addMouseListener(this);
+	    lbStpinf.addMouseListener(this);
+	    
+	}
+	
+	public void addFundo(){		
+		final int iWidthArea = (int) tela.getWidth();
+		final int iHeightArea = (int) tela.getHeight();
+		setSize(iWidthArea, iHeightArea - 50);
+		
+		icFundo = Icone.novo(sImgFundo); 
+		lbFundo = new JLabelPad(icFundo);
+
+		iWidthImgFundo = icFundo.getIconWidth();
+		iHeightImgFundo = icFundo.getIconHeight();
+	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
+	    dpArea.add(lbFundo);		
+	}
+	
+	public void adicBotoes(){
+		btCalc.setPreferredSize(new Dimension(34, 34));
+		btCalc.setToolTipText("Calculadora");
+		btCalc.addActionListener(this);
+
+		btAgenda.setPreferredSize(new Dimension(34, 34));
+		btAgenda.setToolTipText("Agenda");
+		btAgenda.addActionListener(this);
+		pinBotoesDir.setBorder(null);
+		c.add(tBar, BorderLayout.NORTH);
+		tBar.setLayout(new BorderLayout());
+		pinBotoesDir.setPreferredSize(new Dimension(102, 34));
+		tBar.add(pinBotoesDir, BorderLayout.EAST);
+
+		pinBotoesDir.add(btCalc);
+		pinBotoesDir.add(btAgenda);
+	}
+	
 }
