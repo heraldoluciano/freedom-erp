@@ -145,7 +145,8 @@ public class FTipoImp extends FDados implements PostListener, CarregaListener, D
 				continue;
 			for (int j=0;j<sLinhas.length;j++) {
 				String[] sVals = sLinhas[j].split(" ");
-				if (bColEq = met.getColumnName(i).equals(sVals[0])) {
+				bColEq = met.getColumnName(i).equals(sVals[0]);
+				if (bColEq) {
 					tabDest.adicLinha(sVals);
 					break;
 				}
