@@ -182,7 +182,7 @@ public class NF025 extends Layout {
 				imp.say( 65, itens.getString(NF.C_CODFISC));
 				imp.say( 79, Funcoes.copy(itens.getString(NF.C_ORIGFISC),1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),2));
 				imp.say( 84, Funcoes.copy(itens.getString(NF.C_CODUNID),2));
-				imp.say( 88, Funcoes.strDecimalToStrCurrency( 8,2,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
+				imp.say( 88, Funcoes.strDecimalToStrCurrency( 8,4,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
 				imp.say( 99, Funcoes.strDecimalToStrCurrency(10,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED))));
 				imp.say(113, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
 				imp.say(129, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
