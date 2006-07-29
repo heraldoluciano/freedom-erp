@@ -1,7 +1,26 @@
-/*
- * Classe de driver para impressoras Bematech
- * Autor: Robson Sanchez/Setpoint Informática Ltda.
- * Data: 05/04/2006
+/**
+ * @version 1.0.0 - 05/04/2006 <BR>
+ * @author Setpoint Informática Ltda./Robson Sanchez/Alex Rodrigues <BR>
+ * 
+ * Projeto: Freedom-ECF <BR>
+ * Pacote: org.freedom.ecf.driver <BR>
+ * Classe:
+ * @(#)ECFBematech.java <BR>
+ * @see org.freedom.ecf.driver.AbstractECFDriver
+ * 
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
+ * versão 2.1.0 ou qualquer versão posterior. <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <BR>
+ * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
+ * Esta classe implementa metodos de acesso a comandos de impressão <BR>
+ * para impressoras fiscais Bematech.
+ * 
  */
 package org.freedom.ecf.driver;
 
@@ -9,33 +28,32 @@ import java.util.Date;
 
 public class ECFBematech extends AbstractECFDriver {
 	
-	private static final String[] ST1 = new String[] {
-		"fim de papel",
-		"pouco de papel",
-		"erro no relogio",
-		"impressora em erro",
-		"primeiro dado do CMD não foi ESC",
-		"comando inexistente",
-		"cupom aberto",
-		"número de parâmetros inválido"
-	};
-	private static final String[] ST2 = new String[] {
-		"tipo de parâmetro do comando inválido",
-		"memoria fiscal invalida",
-		"erro na memória RAM CMOS são volátil",
-		"alíquota não programada",
-		"capacidade de alíquotas programéveis lotada",
-		"cancelamento não permitido",
-		"CNPJ/IE do proprietário não programados",
-		"comando não executado"
-	};	
-	private static final int[] bytes = new int[] {128,64,32,16,8,4,2,1};
-	
+	/**
+	 * Construtor da classe ECFBematech. <BR>
+	 * Inicia a construção da classe chamando o construtor padrão da classe super <BR>
+	 * e chama o metodo ativaPorta(int). <BR>
+	 * 
+	 * @param com parametro para ativação da porta serial.<BR>
+	 */
 	public ECFBematech( final int com ) {
 		super();
 		ativaPorta( com );
 	}
 	
+	/**
+	 *  Prepara o comando conforme o protocolo de comunicação com a impressora. <BR>
+	 *  O protocolo de comunicação com a impressora é estruturado <BR>
+	 *  em blocos e possui a seguinte forma: <BR>
+	 *  <BR>
+	 *  STX - byte indicativo de inicio de transmissão. <BR>
+	 *  NBL - byte nenos significativo, da soma do número de bytes que serão enviados. <BR>
+	 *  NBH - byte mais significativo, da soma do número de bytes que serão enviados. <BR>
+	 *  CMD - Sequência de bytes que compõe o comando e seus parâmetros. <BR>
+	 *  CSL - byte menos significativo, da soma dos valores dos bytes que compõem o camando e seu parâmetros(CMD). <BR>
+	 *  
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#preparaCmd(byte[])
+	 * @param CMD comando a ser executado e seus parâmetros. <BR>
+	 */
 	public byte[] preparaCmd( final byte[] CMD ) {
 		
 		final int tamCMD = CMD.length;
@@ -65,136 +83,143 @@ public class ECFBematech extends AbstractECFDriver {
 		return retorno;
 		
 	}
-
+	
+	/**
+	 * Este metodo executa o comando chamando os metodos <BR>
+	 * preparaCmd(byte[]) <BR>
+	 * enviaCmd(byte[]) <BR>
+	 * aguardaImpressal(byte[]) <BR>
+	 * e devolve o resultado do emvio do camando. <BR>
+	 * 
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#executaCmd(byte[])
+	 * @param CMD comando a ser executado e seus parâmetros. <BR>
+	 */
 	public int executaCmd( final byte[] CMD ) {
 		
 		byte[] retorno = null;
 		byte[] cmd = null ;
 		
-		cmd = preparaCmd( CMD );
-		
+		cmd = preparaCmd( CMD );		
 		retorno = enviaCmd( cmd );
-		getMenssagemRetorno( retorno );
 		
-      if (getAguardaImp()) {
-		   aguardaImpressao();
-      }
+		aguardaImpressao();
 		
 		return checkRetorno( retorno );
 		
 	}
 	
-	private void getMenssagemRetorno( final byte[] buffer ) {
-		
-		if( buffer.length > 2 ) {
-			
-			final int st1 = buffer[buffer.length-2];
-			final int st2 = buffer[buffer.length-1];
-			
-			for ( int i=0; i < bytes.length; i++ ) {
-				if( st1 >= bytes[i] ) {
-					System.out.println("ST1 = " + ST1[i]);
-					break;
-				}
-			}
-			
-			for ( int i=0; i < bytes.length; i++ ) {
-				if( st2 >= bytes[i] ) {
-					System.out.println("ST2 = " + ST2[i]);
-					break;
-				}
-			}
-			
+	/**
+	 * Converte o retorno dos comandos <BR>
+	 * do formato BCD para ASCII. <BR>
+	 * 
+	 * @param bcdParam Retorno a ser convertido. <BR>
+	 * @return String com o resultado da converção. <BR>
+	 */
+	private String bcdToAsc( final byte[] bcdParam ) {
+		   
+		final StringBuffer retorno = new StringBuffer();
+		      
+		byte bcd = 0;
+		byte byteBH = 0;
+		byte byteBL = 0;
+		      
+		for ( int i = 0; i < bcdParam.length; i++ ) {
+		    	  
+			bcd = bcdParam[ i ];
+			         
+			byteBH = (byte) ( (int) bcd / 16 );
+			byteBL = (byte) ( (int) bcd % 16 );
+			         
+			retorno.append( byteBH );
+			retorno.append( byteBL );
+		         
 		}
-		
+		      
+		return retorno.toString();
+	      
 	}
-   
-   private String bcdToAsc(final byte[] bcdParam) {
-      StringBuffer retorno = new StringBuffer();
-      byte bcd = 0;
-      byte bh = 0;
-      byte bl = 0;
-      for (int i = 0; i<bcdParam.length; i++) {
-         bcd = bcdParam[i];
-         bh = (byte) ( (int) bcd / 16);
-         bl = (byte) ( (int) bcd % 16);
-         retorno.append(bh);
-         retorno.append(bl);
-      }
-      return retorno.toString();
-   }
 
+	/**
+	 * Formata os retorna enviado pela impressora <BR>
+	 * separando o STATUS do estado da impressora <BR>
+	 * dos dados do retorno, onde <BR>
+	 * ACK (06) - byte indicativo de recebimento correto. <BR>
+	 * ST1 2 ST2 - bytes de estado da impressora. <BR>
+	 * NAK (15h ou 21d) - byte indicativo de recebimento incorreto. <BR>
+	 * <BR>
+	 * O retorno tem a seguinte sintaxe : <BR>
+	 * [ACK][retorno solicitado][ST1][ST2] <BR>
+	 * 
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#checkRetorno(byte[])
+	 * @param bytes bytes retornados pela porta serial.<BR>
+	 * @return retorno indece para a mensagem.
+	 */
 	public int checkRetorno( final byte[] bytes ) {
 		
 		int retorno = 0;
-		bytesLidos = null;
-		//byte ack = 0;
-		//byte st1 = 0;
-		//byte st2 = 0;
 		byte ack = 0;
 		byte st1 = 0;
 		byte st2 = 0;
-		
+			
 		if ( bytes != null ) {
-			
+					
 			ack = bytes[0];
+					
+			if ( bytes.length > 3 ) {
 			
-		   if ( bytes.length > 3 ) {
-
 				st1 = bytes[bytes.length-2];
 				st2 = bytes[bytes.length-1];
-			   
-			   bytesLidos = new byte[bytes.length-3];
-			   System.arraycopy( bytes, 1, bytesLidos, 0, bytesLidos.length );
-			   
-		   }
-		   
-		   
-		 //  for ( int i=0; i < bytes.length-3; i++ ) {
-		//	   bytesLidos[i] = bytes[i+1];
-		  // }
-		   
-		   /*
-		   if ( ack == ACK ) {
-			   retorno = 1;
-		   }
-		   else {
-			   retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
-			   if (st1>127) { st1 -= 128; }
-			   if (st1>63) { st1 -= 64; }
-			   if (st1>31) { st1 -= 32; }
-			   if (st1>15) { st1 -= 16; }
-			   if (st1>7) { st1 -= 8; }
-			   if (st1>3) { st1 -= 4; }
-			   if (st1>1) { st1 -= 2; }
-			   if (st1>0) {
-				   st1 -= 1;
-				   retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
-			   }
-			   if (st2>127) {
-				   retorno = -2; //"Parâmetro inválido na função."
-				   st2 -= 128;
-			   }
-			   if (st2>63) { st2 -= 64; }
-			   if (st2>31) { st2 -= 32; }
-			   if (st2>15) { st2 -= 16; }
-			   if (st2>7) { st2 -= 8; }
-			   if (st2>3) { st2 -= 4; }
-			   if (st2>1) { st2 -= 2; }
-			   if (st2>0) {
-				   st2 -= 1;
-				   retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
-			   }
-			   
-		   }*/
-		   
-		}
 				
+				final byte[] bytesLidos = new byte[bytes.length-3];
+				System.arraycopy( bytes, 1, bytesLidos, 0, bytesLidos.length );						   
+				setBytesLidos( bytesLidos );
+					   
+			}
+				   
+			if ( ack == ACK ) {
+				retorno = 1;
+			}
+			else {
+				retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
+				if ( st1 > 127 ) { st1 -= 128; }
+				if ( st1 > 63 ) { st1 -= 64; }
+				if ( st1 > 31 ) { st1 -= 32; }
+				if ( st1 > 15 ) { st1 -= 16; }
+				if ( st1 > 7 ) { st1 -= 8; }
+				if ( st1 > 3 ) { st1 -= 4; }
+				if ( st1 > 1 ) { st1 -= 2; }
+				if ( st1 > 0 ) {
+					st1 -= 1;
+					retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
+				}
+				if ( st2 > 127 ) {
+					retorno = -2; //"Parâmetro inválido na função."
+					st2 -= 128;
+				}
+				if ( st2 > 63 ) { st2 -= 64; }
+				if ( st2 > 31 ) { st2 -= 32; }
+				if ( st2 > 15 ) { st2 -= 16; }
+				if ( st2 > 7 ) { st2 -= 8; }
+				if ( st2 > 3 ) { st2 -= 4; }
+				if ( st2 > 1 ) { st2 -= 2; }
+				if ( st2 > 0 ) {
+					st2 -= 1;
+					retorno = -2; //"Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
+				}
+						   
+			}
+				   
+		}
+					
 		return retorno;
-		
+			
 	}
-	
-	//	Abre o cupom para venda.
+
+	/**
+	 * Abertura de Cupom Fiscal. <BR>
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#aberturaDeCupom()
+	 * @return vide metodo checkRetorno(byte[]).<BR>
+	 */
 	public int aberturaDeCupom() {
 		
 		final byte[] CMD = {ESC,0};
@@ -203,7 +228,12 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
-	//	Abre o cupom para venda passando o cnpj/cpf do cliente.
+	/**
+	 * Abertura de Cupom Fiscal com CNPJ do cliente.<BR>
+	 * @see org.freedom.ecf.driver.AbstractECFDriver#aberturaDeCupom(java.lang.String)
+	 * @param cnpj CNPJ/CPF do cliente.<BR>
+	 * @return vide metodo checkRetorno(byte[]).<BR>
+	 */
 	public int aberturaDeCupom( final String cnpj ) {
 		
 		byte[] CMD = {ESC,0};
@@ -244,10 +274,6 @@ public class ECFBematech extends AbstractECFDriver {
 	//	adiciona aliquotas.
 	public int adicaoDeAliquotaTriburaria( final float aliq, final char opt ) {
 		
-		if( aliq > 99 ) {
-			throw new IllegalArgumentException( "Alíquota invalida. Não pode superar 99,99 %." );
-		}
-
 		byte[] CMD = {ESC,7};
 		
 		final StringBuffer buf = new StringBuffer();
@@ -371,13 +397,13 @@ public class ECFBematech extends AbstractECFDriver {
 		
 		while ( retorno == null || retorno.length < 2 ) {
 			
-		   retorno = enviaCmd( CMD );
-		   getMenssagemRetorno( retorno );
-         System.out.println("Aguardando o retorno de aguarda Impressao");
+			retorno = enviaCmd( CMD );
+
+			System.out.println("Aguardando o retorno de aguarda Impressao");
 		   
-		   try {
-			   Thread.sleep(100);
-		   } catch (InterruptedException e) { }
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) { }
 		   
 		}
 		
@@ -401,6 +427,26 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
+	public int acionaGavetaDinheiro( final int time ) {
+		
+		byte[] CMD = {ESC,22};
+		
+		CMD = adicBytes( CMD, parseParam( (char)time ).getBytes() );
+		
+		return executaCmd( CMD );
+		
+	}
+	
+	public String retornoEstadoGavetaDinheiro() {
+		
+		final byte[] CMD = {ESC,23};
+		
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
+		
+	}
+	
 	public int comprovanteNFiscalNVinculado( final String opt, final float valor, final String formaPag ) {
 		
 		byte[] CMD = {ESC,25};
@@ -418,32 +464,42 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 	
 	public String retornoAliquotas() {
+		
 		final byte[] CMD = {ESC,26};
+		
 		executaCmd( CMD );
+		
 		return bcdToAsc(getBytesLidos());
+		
 	}
 	
-	public int retornoTotalizadoresParciais() {
+	public String retornoTotalizadoresParciais() {
 
 		final byte[] CMD = {ESC,27};
 		
-		return executaCmd( CMD );
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
 		
 	}
 	
-	public int retornoSubTotal() {
+	public String retornoSubTotal() {
 
 		final byte[] CMD = {ESC,29};
 		
-		return executaCmd( CMD );
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
 		
 	}	
 
-	public int retornoNumeroCupom() {
+	public String retornoNumeroCupom() {
 
 		final byte[] CMD = {ESC,30};
 		
-		return executaCmd( CMD );
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
 		
 	}
 	
@@ -488,6 +544,16 @@ public class ECFBematech extends AbstractECFDriver {
 		CMD = adicBytes( CMD, parseParam( menssagem, 492, true).getBytes() );
 		
 		return executaCmd( CMD );
+		
+	}
+
+	public String retornoVariaveis( final char var ) {
+
+		final byte[] CMD = {ESC,35,(byte)var};
+		
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
 		
 	}
 	
@@ -584,6 +650,26 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
+	public String retornoEstadoPapel() {
+		
+		final byte[] CMD = {ESC,62,54};
+		
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
+		
+	}
+	
+	public String retornoUltimaReducao() {
+		
+		final byte[] CMD = {ESC,62,55};
+		
+		executaCmd( CMD );
+		
+		return bcdToAsc(getBytesLidos());
+		
+	}
+	
 	//	Venda de item com entrada de Departamento, Desconto e Unidade
 	public int vendaItemDepartamento( final String sitTrib, final float valor, final float qtd, final float desconto, final float acrescimo, final int departamento, final String unidade, final String codProd, final String descProd ) {
 		
@@ -608,11 +694,15 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
-	public int programaCaracterParaAutenticacao( final byte[] caracteres ) {
+	public int programaCaracterParaAutenticacao( final int[] caracteres ) {
 		
 		byte[] CMD = {ESC,64};
 			
-		CMD = adicBytes( CMD, caracteres );
+		byte[] bytes = new byte[caracteres.length];
+		for (int i=0; i<caracteres.length; i++) {
+			bytes[i] = (byte) caracteres[i];
+		}
+		CMD = adicBytes( CMD, bytes );
 		
 		return executaCmd( CMD );
 		
@@ -737,40 +827,4 @@ public class ECFBematech extends AbstractECFDriver {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	 *        case 0: sMensagem = "Erro de comunicação física"; break;
-       case 1: sMensagem = ""; break;
-       case -2: sMensagem = "Parâmetro inválido na função."; break;
-       case -3: sMensagem = "Aliquota não programada"; break;
-       case -4: sMensagem = "O arquivo de inicialização BEMAFI32.INI não foi encontrado no diretório de sistema do Windows"; break;
-       case -5: sMensagem = "Erro ao abrir a porta de comunicação"; break;
-       case -8: sMensagem = "Erro ao criar ou gravar no arquivo STATUS.TXT ou RETORNO.TXT"; break;
-       case -27: sMensagem = "Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)"; break;
-       case -30: sMensagem = "Função não compatível com a impressora YANCO"; break;
-       case -31: sMensagem = "Forma de pagamento não finalizada"; break;
-       default : sMensagem = "Retorno indefinido: "+iRetorno; break;
-	 */
 }
