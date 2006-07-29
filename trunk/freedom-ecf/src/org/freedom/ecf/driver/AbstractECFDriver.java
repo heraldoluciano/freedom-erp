@@ -52,32 +52,15 @@ public abstract class AbstractECFDriver {
 	public static final char DESABILITA_CUPOM_ADIC = '0';
 	public static final char HABILITA_CUPOM_ADIC = '1';
 
-   private boolean aguardaImp = true;
-	protected int sistema = -1;
-	protected byte[] bytesLidos = null;
+	private int sistema = -1;
+	private byte[] bytesLidos = null;
     private InputStream entrada = null;
     private OutputStream saida = null;
 	protected String porta;
 	protected int portaSel = -1;
 	protected boolean ativada = false;
 	protected SerialPort portaSerial = null;
-	
-	public AbstractECFDriver() {
-		// construtor padrão.
-	}
-	
-	//public AbstractECFDriver( final int com ) {
-	//	ativaPorta( com );
-	//}
-	
-   public void setAguardaImp(boolean agImp) {
-      this.aguardaImp = agImp;
-   }
-   
-   public boolean getAguardaImp() {
-      return this.aguardaImp;
-   }
-   
+		   
 	public byte[] adicBytes( final byte[] variavel, final byte[] incremental ) {
 		
 		byte[] retorno = new byte[ variavel.length + incremental.length ];
@@ -186,6 +169,13 @@ public abstract class AbstractECFDriver {
 	public boolean getAtivada() {
 		return ativada;
 	}
+	
+	public void setBytesLidos( final byte[] arg ) {
+		
+		bytesLidos = new byte[ arg.length ];
+		System.arraycopy( arg, 0, bytesLidos, 0, bytesLidos.length );
+		
+	}
 
 	public byte[] getBytesLidos() {
 		
@@ -248,9 +238,7 @@ public abstract class AbstractECFDriver {
 			   saida.flush();
 			   saida.write( CMD );
 			   Thread.sleep( TIMEOUT_ACK );
-			   
-			   System.out.println( entrada.available() );
-			   
+			   			   
 			   while ( entrada.available() <= 0 && vezes < 100 ) {
 				   
 				   System.out.println( "Aguardando retorno..." );
@@ -462,21 +450,27 @@ public abstract class AbstractECFDriver {
 	
 	public abstract int fechamentoRelatorioGerencial();// 21
 	
+	public abstract int acionaGavetaDinheiro(int time);// 22
+	
+	public abstract String retornoEstadoGavetaDinheiro();// 23
+	
 	public abstract int comprovanteNFiscalNVinculado(String opt, float valor, String formaPag);// 25
 	
 	public abstract String retornoAliquotas();// 26
 	
-	public abstract int retornoTotalizadoresParciais();// 27
+	public abstract String retornoTotalizadoresParciais();// 27
 	
-	public abstract int retornoSubTotal();// 29
+	public abstract String retornoSubTotal();// 29
 	
-	public abstract int retornoNumeroCupom();// 30
+	public abstract String retornoNumeroCupom();// 30
 	
 	public abstract int cancelaItemGenerico(int item);// 31
 	
 	public abstract int iniciaFechamentoCupom(char opt, float percentual);// 32
 	
 	public abstract int terminaFechamentoCupom(String menssagem);// 34
+	
+	public abstract String retornoVariaveis(char var);// 35
 	
 	public abstract int programaTruncamentoArredondamento(char opt);// 39
 	
@@ -492,10 +486,13 @@ public abstract class AbstractECFDriver {
 	
 	public abstract int aumentaDescItem(String descricao);// 62 52
 	
-	// com problemas devido a falta de informação sobre os parametros.
+	public abstract String retornoEstadoPapel();// 62 54
+	
+	public abstract String retornoUltimaReducao();// 62 55
+	
 	public abstract int vendaItemDepartamento(String sitTrib, float valor, float qtd, float desconto, float acrescimo, int departamento, String unidade, String codProd, String descProd);// 63
 	
-	public abstract int programaCaracterParaAutenticacao(byte[] caracteres);// 64
+	public abstract int programaCaracterParaAutenticacao(int[] caracteres);// 64
 	
 	public abstract int nomeiaDepartamento(int index, String descricao);// 65
 	
