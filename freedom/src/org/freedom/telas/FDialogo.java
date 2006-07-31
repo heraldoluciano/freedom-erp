@@ -54,19 +54,15 @@ public class FDialogo extends JDialog implements ActionListener, KeyListener,
 		WindowListener {
 	private static final long serialVersionUID = 1L;
 
-	public JButton btCancel = new JButton("Cancelar", Icone
-			.novo("btCancelar.gif"));
+	public JButton btCancel = new JButton("Cancelar", Icone.novo("btCancelar.gif"));
 
 	public JButton btOK = new JButton("OK", Icone.novo("btOk.gif"));
 
-	public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL,
-			new BorderLayout());
+	public JPanelPad pnRodape = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
-	private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL,
-			new GridLayout(1, 2));
+	private JPanelPad pnGrid = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 2));
 
-	private JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL,
-			new GridLayout(1, 1));
+	private JPanelPad pnBordRodape = new JPanelPad(JPanelPad.TP_JPANEL, new GridLayout(1, 1));
 
 	private JPanelPad pin = new JPanelPad();
 
