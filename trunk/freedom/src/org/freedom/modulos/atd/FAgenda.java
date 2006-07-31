@@ -157,6 +157,8 @@ public class FAgenda extends FFilho implements ActionListener {
 			}
 		} );
 			
+
+		pnRodAgd.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 		pnAgd.add(pnRodAgd,BorderLayout.SOUTH);
 			
 		btNovo.addActionListener(this);

@@ -224,7 +224,10 @@ public class DLNovoAgen extends FFDialogo {
 			}
 		}
 		else if (evt.getSource() == btTipoAGD) {
-			new FTipoAgenda();		
+			FTipoAgenda tipoAgd = new FTipoAgenda();
+			tipoAgd.setConexao(con);
+			tipoAgd.setVisible(true);
+			tipoAgd.toFront();
 			carregaTipoAgenda();
 		}
 		super.actionPerformed(evt);
