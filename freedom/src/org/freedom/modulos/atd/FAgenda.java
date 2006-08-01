@@ -23,6 +23,7 @@
 package org.freedom.modulos.atd;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -40,6 +41,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -59,6 +61,8 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
 public class FAgenda extends FFilho implements ActionListener {
 
@@ -126,8 +130,8 @@ public class FAgenda extends FFilho implements ActionListener {
 		tabUsu.adicColuna("usuario");
 		tabUsu.adicColuna("cor");
 		
-		tabUsu.setTamColuna( 0, calendarpanel.getPreferredSize().width/2 );
-		tabUsu.setTamColuna( 1, calendarpanel.getPreferredSize().height/2 );
+		tabUsu.setTamColuna( pnUsuarios.getPreferredSize().width/2-3, 0 );
+		tabUsu.setTamColuna( pnUsuarios.getPreferredSize().width/2-3, 1 );
 					
 		pnAgd.add(pnCalendar,BorderLayout.WEST);
 		
@@ -255,21 +259,53 @@ public class FAgenda extends FFilho implements ActionListener {
 	
 	private void montaPanelUsu() {
 		
+		tabUsu.limpa();
+		Vector cores = new Vector();
+		
 		if( vUsu != null || vUsu.size() > 0) {
 			
+			boolean jatem = false;
 			
+			for( int i=0; i < vUsu.size(); i++ ) {
+				
+				jatem = false;
+				
+				for( int j=0; j < vUsu.size(); j++ ) {
+					if( ((String)vUsu.elementAt( i )).equals((String)vUsu.elementAt( j )) ) {
+						jatem = true;
+						break;
+					}
+				}
+				
+				if( ! jatem ) {
+					
+					cores.add( new Color( (int)Math.random() * 255, (int)Math.random() * 255, (int)Math.random() * 255 ) );
+					
+					tabUsu.adicLinha( new Object[] {
+							vUsu.elementAt( i ),
+							cores.elementAt( i )
+					} );
+					
+				}
+				
+			}
 			
 		}
 		
 	}
 	
 	private void carregaTabAgd() {
+		
+		tabUsu.limpa();
 
 		buscaAgente();
 		
 		carregaTabAgd(  iCodAge, sTipoAge, calendarpanel.getValues(), tabAgd,
 				( "S".equals( cbTodos.getVlrString() ) ), con, this, vUsu );
 		
+		if( "S".equals( cbTodos.getVlrString() ) ) {
+			montaPanelUsu();
+		}
 		
 	}
 	
