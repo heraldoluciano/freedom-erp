@@ -229,27 +229,6 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 	
 	}
 	
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btOK) {
-			if (txtCodAge.getVlrString().equals("")) { 
-				Funcoes.mensagemInforma(this,"Código do usuario inválido!");
-				return;
-			}
-			else if (txaDescAtend.getVlrString().equals("")) {
-				Funcoes.mensagemInforma(this,"Não foi digitado nenhuma ação!");
-				return;
-			}
-		}
-		else if (evt.getSource() == btTipoAGD) {
-			FTipoAgenda tipoAgd = new FTipoAgenda();
-			tipoAgd.setConexao(con);
-			tipoAgd.setVisible(true);
-			tipoAgd.toFront();
-			carregaTipoAgenda();
-		}
-		super.actionPerformed(evt);
-	}
-	
 	public String[] getValores() {
 		
 		final String[] sVal = new String[12];
@@ -334,6 +313,38 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 		
 	}
 	
+	public void actionPerformed( ActionEvent evt ) {
+		
+		if ( evt.getSource() == btOK ) {
+			
+			if ( txtCodAge.getVlrString().equals("") ) { 
+				
+				Funcoes.mensagemInforma(this,"Código do usuario inválido!");
+				return;
+				
+			}
+			else if ( txaDescAtend.getVlrString().equals("") ) {
+				
+				Funcoes.mensagemInforma(this,"Não foi digitado nenhuma ação!");
+				return;
+				
+			}
+			
+		}
+		else if ( evt.getSource() == btTipoAGD ) {
+			
+			FTipoAgenda tipoAgd = new FTipoAgenda();
+			tipoAgd.setConexao(con);
+			tipoAgd.setVisible(true);
+			tipoAgd.toFront();
+			carregaTipoAgenda();
+			
+		}
+		
+		super.actionPerformed(evt);
+		
+	}
+	
 	public void beforeCarrega( CarregaEvent e ) {
 		if( e.getListaCampos() == lcUsu ) {
 			lcAgente.carregaDados();
@@ -344,7 +355,7 @@ public class DLNovoAgen extends FFDialogo implements CarregaListener {
 		if( e.getListaCampos() == lcUsu ) {
 			lcAgente.carregaDados();
 		}
-	}
+	}	
 	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);

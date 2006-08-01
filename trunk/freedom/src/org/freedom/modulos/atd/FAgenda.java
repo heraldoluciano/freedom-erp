@@ -23,6 +23,7 @@
 package org.freedom.modulos.atd;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -36,8 +37,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -47,6 +49,7 @@ import net.sf.nachocalendar.tasks.TaskCalendarFactory;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JButtonPad;
+import org.freedom.componentes.JCheckBoxPad;
 import org.freedom.componentes.JPanelPad;
 import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.JTextFieldFK;
@@ -60,24 +63,25 @@ import org.freedom.telas.FFilho;
 public class FAgenda extends FFilho implements ActionListener {
 
 	private static final long serialVersionUID = 1L;	
+	private Tabela tabAgd = new Tabela();
+	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
+	private JTabbedPanePad tpnVisoes = new JTabbedPanePad();
+	private JScrollPane spnAgd = new JScrollPane(tpnVisoes);  
 	private JPanelPad pinCabAgd = new JPanelPad(0,40);
 	private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
 	private JPanelPad pnCalendar = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JPanelPad pnFiltros = new JPanelPad(JPanelPad.TP_JPANEL);
+	private JPanelPad pnUsuarios = new JPanelPad();
+	//private JPanelPad pnFiltros = new JPanelPad(JPanelPad.TP_JPANEL);
 	private JPanelPad pnRodAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
-	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
-	private JTabbedPanePad tpnVisoes = new JTabbedPanePad();
-	private Tabela tabAgd = new Tabela();
-	private CalendarPanel calendarpanel  = TaskCalendarFactory.createCalendarPanel(1);
-	private JScrollPane spnAgd = new JScrollPane(tpnVisoes);  
 	private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JCheckBoxPad cbTodos = new JCheckBoxPad( "Mostrar todos os agendamentos", "S", "N" );
 	private JButtonPad btExec = new JButtonPad(Icone.novo("btExecuta.gif"));
 	private JButtonPad btNovo = new JButtonPad(Icone.novo("btNovo.gif"));
 	private JButtonPad btExcluir = new JButtonPad(Icone.novo("btExcluir.gif"));
 	private JButtonPad btSair = new JButtonPad("Sair",Icone.novo("btSair.gif"));
+	private CalendarPanel calendarpanel  = TaskCalendarFactory.createCalendarPanel(1);
 	private ListaCampos lcUsu = new ListaCampos(this);
-	private Vector vCodAgds = new Vector();   	  
 	private int iCodAge = 0;  	  
 	private int iCodFilialAge = 0;
 	private String sTipoAge = "";
@@ -106,9 +110,15 @@ public class FAgenda extends FFilho implements ActionListener {
 		
 		calendarpanel.setAntiAliased(true);
 		calendarpanel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		
+		calendarpanel.setBorder(BorderFactory.createEtchedBorder());
+
+		pnCalendar.setBorder(BorderFactory.createEtchedBorder());
 		pnCalendar.add(calendarpanel,BorderLayout.NORTH);
-		pnCalendar.add(pnFiltros,BorderLayout.CENTER);
+		//pnCalendar.add(pnFiltros,BorderLayout.CENTER);
+		pnUsuarios.setBorder(BorderFactory.createEtchedBorder());
+		pnCalendar.add(pnUsuarios,BorderLayout.CENTER);
+		
+		pnUsuarios.adic( new JLabel("Teste"), 10, 10, 100, 20 );
 			
 		pnAgd.add(pnCalendar,BorderLayout.WEST);
 		
@@ -119,6 +129,8 @@ public class FAgenda extends FFilho implements ActionListener {
 		txtNomeUsu.setBackground(this.getBackground());	
 		txtNomeUsu.tiraBorda();
 		pinCabAgd.adic(txtNomeUsu,7,10,250,20);
+		
+		pinCabAgd.adic( cbTodos, 270, 10, 300, 20 );
 			
 		tabAgd.adicColuna("Ind.");
 		tabAgd.adicColuna("Sit.");
@@ -128,7 +140,7 @@ public class FAgenda extends FFilho implements ActionListener {
 		tabAgd.adicColuna("Hora fim.");
 		tabAgd.adicColuna("Assunto");
 			
-		tabAgd.setTamColuna(40,0);
+		tabAgd.setTamColuna(28,0);
 		tabAgd.setTamColuna(20,1);
 		tabAgd.setTamColuna(80,2);
 		tabAgd.setTamColuna(60,3);
@@ -158,33 +170,40 @@ public class FAgenda extends FFilho implements ActionListener {
 		} );
 			
 
-		pnRodAgd.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+		pnRodAgd.setBorder(BorderFactory.createEtchedBorder());
 		pnAgd.add(pnRodAgd,BorderLayout.SOUTH);
 			
-		btNovo.addActionListener(this);
-		btExcluir.addActionListener(this);
-		btExec.addActionListener(this);
+		btNovo.addActionListener( this );
+		btExcluir.addActionListener( this );
+		btExec.addActionListener( this );
+		cbTodos.addActionListener( this );
 		
 	}
 	  
 	private void buscaAgente() {
 	
 		try {
+			
 			String sSQL = "SELECT U.CODAGE,U.TIPOAGE,U.CODFILIALAE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?";
 			PreparedStatement ps = con.prepareStatement(sSQL);
 			ps.setInt(1,Aplicativo.iCodEmp);
 			ps.setInt(2,Aplicativo.iCodFilial);
 			ps.setString(3,Aplicativo.strUsuario);			
 			ResultSet rs = ps.executeQuery();
+			
 			while (rs.next()) {
 				iCodAge = rs.getInt(1);
 				sTipoAge = rs.getString(2);  
 				iCodFilialAge = rs.getInt(3);			
 			}  		
+			
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit())
+			
+			if (!con.getAutoCommit()) {
 				con.commit();
+			}
+			
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -192,10 +211,19 @@ public class FAgenda extends FFilho implements ActionListener {
 	}
 	
 	private void carregaTabAgd() {
+
 		buscaAgente();
-		if (iCodAge!=0) {
-			Object[] oDatas = calendarpanel.getValues();
-			Date dData = null;
+		
+		carregaTabAgd(  iCodAge, sTipoAge, calendarpanel.getValues(), tabAgd,
+				( "S".equals( cbTodos.getVlrString() ) ), con, this );
+	}
+	
+	public static void carregaTabAgd( final int codAge, final String tipoAge, final Object[] datas, final Tabela tabAgd,
+			final boolean todos, final Connection con, final Component cOrig ) {
+				
+		if ( codAge > 0 ) {
+			
+			Object[] oDatas = datas;
 			String sDatas = "";
 			
 			if (oDatas == null) {
@@ -203,34 +231,46 @@ public class FAgenda extends FFilho implements ActionListener {
 				oDatas[1] = new Date();
 			}	
 			
-			for (int i=0;oDatas.length>i;i++) {
-				dData = (Date) (oDatas[i]);
-				if(i==0) {
-					sDatas = "'"+Funcoes.dateToStrDB(dData)+"'";
+			for ( int i=0; i < oDatas.length; i++ ) {
+				if( i == 0 ) {
+					sDatas = "'"+Funcoes.dateToStrDB( (Date) oDatas[i] )+"'";
 				}
 				else {
-					sDatas = sDatas + "," + "'"+Funcoes.dateToStrDB(dData)+"'";
+					sDatas = sDatas + "," + "'"+Funcoes.dateToStrDB( (Date) oDatas[i] )+"'";
 				}
 			}
 			
 				
-			String sSQL = "SELECT A.CODAGD,A.SITAGD,A.DTAINIAGD,A.HRINIAGD,A.DTAFIMAGD,A.HRFIMAGD,A.ASSUNTOAGD" +
-						  " FROM SGAGENDA A WHERE A.CODEMP=? AND A.CODFILIAL=? AND A.CODAGE=? AND A.TIPOAGE=?" +
-						  " AND DTAINIAGD IN("+sDatas+") "+
-						  " ORDER BY A.DTAINIAGD DESC,A.HRINIAGD DESC,A.DTAFIMAGD DESC,A.HRFIMAGD DESC";
+			StringBuffer sSQL = new StringBuffer(); 
+			sSQL.append( "SELECT A.CODAGD,A.SITAGD,A.DTAINIAGD,A.HRINIAGD,A.DTAFIMAGD,A.HRFIMAGD,A.ASSUNTOAGD" );
+			sSQL.append( " FROM SGAGENDA A" );
+			sSQL.append( " WHERE A.CODEMP=? AND A.CODFILIAL=?" );
+			
+			if( todos ) {
+				sSQL.append( " AND A.CAAGD='PU' OR ( A.CODAGE=? AND A.TIPOAGE=? )" );
+			}
+			else {				
+				sSQL.append( " AND A.CODAGE=? AND A.TIPOAGE=?" );
+			}
+			
+			sSQL.append( " AND DTAINIAGD IN(" + sDatas + ")" );
+			sSQL.append( " ORDER BY A.DTAINIAGD DESC,A.HRINIAGD DESC,A.DTAFIMAGD DESC,A.HRFIMAGD DESC" );
 			
 			try {
-				PreparedStatement ps = con.prepareStatement(sSQL);
+				
+				PreparedStatement ps = con.prepareStatement(sSQL.toString());
 				ps.setInt(1,Aplicativo.iCodEmp);
 				ps.setInt(2,Aplicativo.iCodFilialPad);
-				ps.setInt(3,iCodAge);
-				ps.setString(4,sTipoAge);
+				ps.setInt(3,codAge);
+				ps.setString(4,tipoAge);
 					
 				ResultSet rs = ps.executeQuery();
 				tabAgd.limpa();
-				vCodAgds.clear();
+				//vCodAgds.clear();
+				
 				for (int i=0;rs.next();i++) {
-					vCodAgds.addElement(rs.getString("CodAgd")); 
+					
+					//vCodAgds.addElement(rs.getString("CodAgd")); 
 					tabAgd.adicLinha();
 					tabAgd.setValor(rs.getString("CodAgd"),i,0);
 					tabAgd.setValor(rs.getString("SitAgd"),i,1);
@@ -239,28 +279,40 @@ public class FAgenda extends FFilho implements ActionListener {
 					tabAgd.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtaFimAgd")),i,4);
 					tabAgd.setValor(rs.getString("HrFimAgd"),i,5);
 					tabAgd.setValor(rs.getString("AssuntoAgd"),i,6);
+					
 				}
+				
 				rs.close();
 				ps.close();
-				if (!con.getAutoCommit())
+				
+				if (!con.getAutoCommit()) {
 					con.commit();
+				}
+				
 			} catch (SQLException err) {
-				Funcoes.mensagemErro(this,"Erro ao carregar agenda!\n"+err.getMessage(),true,con,err);
+				Funcoes.mensagemErro(cOrig,"Erro ao carregar agenda!\n"+err.getMessage(),true,con,err);
 			}
+			
 		}
 		else {
-			Funcoes.mensagemErro(this,"Não existe agente para o objeto especificado!");
+			Funcoes.mensagemErro(cOrig,"Não existe agente para o objeto especificado!");
 		}
+		
+		tabAgd.repaint();
+		
 	}
 	
 	private void editaAgd() {
-		int iLin = 0;
-		if ((iLin = tabAgd.getLinhaSel()) < 0) {
+		
+		int iLin = tabAgd.getLinhaSel();
+		
+		if ( iLin < 0) {
 			Funcoes.mensagemInforma(this,"Não ha nenhum agendamento selecionado!");
 			return;
 		}
 				
 		try {
+			
 			String sSQL = "SELECT A.DTAINIAGD, A.HRINIAGD, A.DTAFIMAGD, A.HRFIMAGD, " +
 						  "A.ASSUNTOAGD, A.DESCAGD, A.CAAGD, A.PRIORAGD, A.CODTIPOAGD, A.CODAGE, " +
 						  "U.IDUSU " +
@@ -276,15 +328,15 @@ public class FAgenda extends FFilho implements ActionListener {
 			
 			ResultSet rs = ps.executeQuery();
 			
-			if (rs.next()) {
+			if ( rs.next() ) {
 				
 				GregorianCalendar calIni = new GregorianCalendar();
 				GregorianCalendar calFim = new GregorianCalendar();
 				DLNovoAgen dl = new DLNovoAgen(rs.getString("IDUSU"),(Date)(calendarpanel.getValue()),this);
 				dl.setConexao(con);
 				
-				calIni.setTime(rs.getTime("HRINIAGD"));
-				calFim.setTime(rs.getTime("HRFIMAGD"));
+				calIni.setTime( rs.getTime("HRINIAGD") );
+				calFim.setTime( rs.getTime("HRFIMAGD") );
 				dl.setValores(
 					new String[] { rs.getString("CODAGE"),
 							   	   Funcoes.sqlDateToStrDate(rs.getDate("DTAINIAGD")),
@@ -300,9 +352,12 @@ public class FAgenda extends FFilho implements ActionListener {
 				);
 				dl.setVisible(true);
 				
-				if (dl.OK) {
+				if ( dl.OK ) {
+					
 					String[] sRets = dl.getValores();
+					
 					try {
+						
 						sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 						PreparedStatement ps2 = con.prepareStatement(sSQL);
 						ps2.setInt(1,Integer.parseInt((String)tabAgd.getValor(iLin,0)));
@@ -325,71 +380,96 @@ public class FAgenda extends FFilho implements ActionListener {
 						  					
 						ps2.execute();
 						ps2.close();
-						if (!con.getAutoCommit())
+						
+						if (!con.getAutoCommit()) {
 							con.commit();
+						}
+						
 					} catch(SQLException err) {
 						Funcoes.mensagemErro(this,"Erro ao salvar o agendamento!\n"+err.getMessage(),true,con,err);
 					}
+					
 					carregaTabAgd();
+					
 				}
+				
 				dl.dispose();
+				
 			}
+			
 			rs.close();
 			ps.close();
-			if (!con.getAutoCommit())
+			
+			if (!con.getAutoCommit()) {
 				con.commit();
+			}
+			
 		} catch (SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao buscar informações!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
+		
 	}	
 	
 	private void excluiAgd() {
-			if (tabAgd.getLinhaSel() == -1) { 
-			Funcoes.mensagemInforma(this,"Selecione um item na lista!");
+		
+		if ( tabAgd.getLinhaSel() == -1 ) { 
+			Funcoes.mensagemInforma( this, "Selecione um item na lista!" );
 			return;
 		} 
-		else if (Funcoes.mensagemConfirma(this,"Deseja relamente excluir o agendamento '"+vCodAgds.elementAt(tabAgd.getLinhaSel())+"'?") != JOptionPane.YES_OPTION) {
+		else if ( Funcoes.mensagemConfirma( this,
+				"Deseja relamente excluir o agendamento '" + 
+					(String)tabAgd.getValor(tabAgd.getLinhaSel(),0) + "'?" ) != JOptionPane.YES_OPTION ) {
 			return;
 		}
 			
 		try {
+			
 			String sSQL = "DELETE FROM SGAGENDA WHERE CODAGD=? AND CODEMP=? AND CODFILIAL=? AND CODAGE=? AND TIPOAGE=?";
 			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setString(1,""+vCodAgds.elementAt(tabAgd.getLinhaSel()));
+			ps.setString(1,(String)tabAgd.getValor(tabAgd.getLinhaSel(),0));
 			ps.setInt(2,Aplicativo.iCodEmp);
 			ps.setInt(3,ListaCampos.getMasterFilial("SGAGENDA"));
 			ps.setInt(4,iCodAge);
 			ps.setString(5,sTipoAge);
 			ps.execute();
 			ps.close();
-			if (!con.getAutoCommit())
+			
+			if (!con.getAutoCommit()) {
 				con.commit();
+			}
+			
 		} catch(SQLException err) {
 			Funcoes.mensagemErro(this,"Erro ao excluir agendamento!\n"+err.getMessage(),true,con,err);
 			err.printStackTrace();
 		}
+		
 		carregaTabAgd();
+		
 	}
 	
 	private void novoAgd() {
-		if (txtIdUsu.getVlrString().equals("") || (iCodAge==0)) {
+		
+		if ( txtIdUsu.getVlrString().equals("") || iCodAge==0 ) {
 			Funcoes.mensagemInforma(this,"O usuário ou o agente não foi identificado!");
 			return;
 		}
-		if (calendarpanel.getValue()==null) {
-			Funcoes.mensagemInforma(this,"Selecione uma data no painel!");
+		if ( calendarpanel.getValue() == null ) {
+			Funcoes.mensagemInforma( this, "Selecione uma data no painel!" );
 			return;
 		}
 		
 		String sRets[];
-		DLNovoAgen dl = new DLNovoAgen(txtIdUsu.getVlrString(),(Date)(calendarpanel.getValue()),this);
+		DLNovoAgen dl = new DLNovoAgen( txtIdUsu.getVlrString(), (Date)(calendarpanel.getValue()), this );
 		dl.setConexao(con);
 		dl.setVisible(true);
 		
-		if (dl.OK) {
+		if ( dl.OK ) {
+			
 			sRets = dl.getValores();
+			
 			try {
+				
 				String sSQL = "EXECUTE PROCEDURE SGSETAGENDASP(0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				PreparedStatement ps = con.prepareStatement(sSQL);
 				ps.setInt(1,Aplicativo.iCodEmp);// código da empresa  
@@ -413,34 +493,42 @@ public class FAgenda extends FFilho implements ActionListener {
 				ps.close();
 				if (!con.getAutoCommit())
 					con.commit();
+				
 			} catch(SQLException err) {
 				Funcoes.mensagemErro(this,"Erro ao salvar o agendamento!\n"+err.getMessage(),true,con,err);
 				err.printStackTrace();
 			}
+			
 			carregaTabAgd();
+			
 		}
+		
 		dl.dispose();
+		
 	}
 	
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btSair) {
+	public void actionPerformed( ActionEvent evt ) {
+		
+		if ( evt.getSource() == btSair ) {
 			dispose();
 		}
-		else if (evt.getSource() == btNovo) {
+		else if ( evt.getSource() == btNovo ) {
 			novoAgd();
 		}
-		else if (evt.getSource() == btExcluir) {
+		else if ( evt.getSource() == btExcluir ) {
 			excluiAgd();
 		}		
-		else if (evt.getSource() == btExec) {
+		else if ( evt.getSource() == btExec || evt.getSource() == cbTodos ) {
 			carregaTabAgd();
 		}
+		
 	}
 	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcUsu.setConexao(cn);
 		lcUsu.carregaDados();
+		
 		carregaTabAgd();
 	}
 	  
