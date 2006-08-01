@@ -40,6 +40,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
+import org.freedom.acao.CarregaEvent;
+import org.freedom.acao.CarregaListener;
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.JButtonPad;
@@ -56,7 +58,7 @@ import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFDialogo;
 
 
-public class DLNovoAgen extends FFDialogo {
+public class DLNovoAgen extends FFDialogo implements CarregaListener {
 	
 	private static final long serialVersionUID = 1L;
 	private JPanelPad pnCab = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,1));
@@ -68,6 +70,8 @@ public class DLNovoAgen extends FFDialogo {
 	private JTextFieldFK txtDescAge = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JTextFieldPad txtIdUsu = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
 	private JTextFieldFK txtNomeUsu = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
+	private JTextFieldPad txtIdUsuEmit = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+	private JTextFieldFK txtNomeUsuEmit = new JTextFieldFK(JTextFieldPad.TP_STRING,50,0);
 	private JSpinner txtHoraini = new JSpinner();
 	private JSpinner txtHorafim = new JSpinner();
 	private JComboBoxPad cbPrioridade = null;
@@ -78,6 +82,7 @@ public class DLNovoAgen extends FFDialogo {
 	private JLabelPad lbImg = new JLabelPad(Icone.novo("bannerTMKagendamento.jpg"));
 	private JButtonPad btTipoAGD = new JButtonPad( Icone.novo("btExecuta.gif") );
 	private ListaCampos lcAgente = new ListaCampos(this);
+	private ListaCampos lcUsuEmit = new ListaCampos(this);
 	private ListaCampos lcUsu = new ListaCampos(this);
 	private Vector vCodTipoAGD = new Vector();
 	private Vector vDescTipoAGD = new Vector();
@@ -144,6 +149,15 @@ public class DLNovoAgen extends FFDialogo {
 		vLabs2.addElement("alta");
 		cbPrioridade = new JComboBoxPad(vLabs2, vVals2, JComboBoxPad.TP_STRING, 2, 0); 
 		
+		lcUsuEmit.add(new GuardaCampo( txtIdUsuEmit, "IdUsu", "ID Usuario", ListaCampos.DB_PK, false));
+		lcUsuEmit.add(new GuardaCampo( txtNomeUsuEmit, "NomeUsu", "Nome", ListaCampos.DB_SI,false));
+		lcUsuEmit.add(new GuardaCampo( txtCodAge, "CodAge", "Cód.age.", ListaCampos.DB_FK, true));
+		lcUsuEmit.montaSql(false, "USUARIO", "SG");    
+		lcUsuEmit.setReadOnly(true);
+		txtIdUsuEmit.setTabelaExterna(lcUsuEmit);
+		txtIdUsuEmit.setFK(true);
+		txtIdUsuEmit.setNomeCampo("IdUsu");
+		
 		lcUsu.add(new GuardaCampo( txtIdUsu, "IdUsu", "ID Usuario", ListaCampos.DB_PK, false));
 		lcUsu.add(new GuardaCampo( txtNomeUsu, "NomeUsu", "Nome", ListaCampos.DB_SI,false));
 		lcUsu.add(new GuardaCampo( txtCodAge, "CodAge", "Cód.age.", ListaCampos.DB_FK, true));
@@ -167,11 +181,11 @@ public class DLNovoAgen extends FFDialogo {
 	    c.add(pnCab,BorderLayout.NORTH);
 	    
 		adic(new JLabelPad("Usuário"),10,5,60,20);
-		adic(txtIdUsu,10,25,70,20);
-		adic(new JLabelPad("Cód.age."),83,5,60,20);
-		adic(txtCodAge,83,25,70,20);
-		adic(new JLabelPad("Descrição do agente"),156,5,155,20);
-		adic(txtDescAge,156,25,155,20);
+		adic(txtIdUsuEmit,10,25,70,20);
+		adic(new JLabelPad("ID usu"),83,5,60,20);
+		adic(txtIdUsu,83,25,70,20);
+		adic(new JLabelPad("Nome do usuario"),156,5,155,20);
+		adic(txtNomeUsu,156,25,155,20);
 		adic(rgCAAGD,315,20,170,30);
 
 		adic(new JLabelPad("prioridade"),10,45,100,20);
@@ -201,14 +215,17 @@ public class DLNovoAgen extends FFDialogo {
 		adic(spnDesc,10,205,475,115);
 		
 		if( ! "".equals(sIdUsu) ) {
+			txtIdUsuEmit.setVlrString(sIdUsu);
+			txtIdUsuEmit.setAtivo( false );
 			txtIdUsu.setVlrString(sIdUsu);
-			txtIdUsu.setAtivo( false );
 		} else {
 			Funcoes.mensagemErro( this, "Usuario invalido!");
 			cancel();
 		}
 		
 		btTipoAGD.addActionListener( this );
+		
+		lcUsu.addCarregaListener( this );
 	
 	}
 	
@@ -312,17 +329,33 @@ public class DLNovoAgen extends FFDialogo {
 		cbPrioridade.setVlrString(sVal[8]);
 		cbTipo.setVlrString(sVal[9]);
 		
-		lcUsu.carregaDados();
+		lcUsuEmit.carregaDados();
 		lcAgente.carregaDados();
 		
+	}
+	
+	public void beforeCarrega( CarregaEvent e ) {
+		if( e.getListaCampos() == lcUsu ) {
+			lcAgente.carregaDados();
+		}
+	}
+	
+	public void afterCarrega( CarregaEvent e ) {
+		if( e.getListaCampos() == lcUsu ) {
+			lcAgente.carregaDados();
+		}
 	}
 	
 	public void setConexao(Connection cn) {
 		super.setConexao(cn);
 		lcUsu.setConexao(cn);
+		lcUsuEmit.setConexao(cn);
 		lcAgente.setConexao(cn);
+		
 		lcUsu.carregaDados();
+		lcUsuEmit.carregaDados();
 		lcAgente.carregaDados();
+		
 		carregaTipoAgenda();
 	}
 	
