@@ -23,7 +23,6 @@
 package org.freedom.modulos.atd;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -41,7 +40,7 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
@@ -61,8 +60,6 @@ import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FFilho;
-
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 
 public class FAgenda extends FFilho implements ActionListener {
 
@@ -146,6 +143,7 @@ public class FAgenda extends FFilho implements ActionListener {
 		pinCabAgd.adic( cbTodos, 270, 10, 300, 20 );
 			
 		tabAgd.adicColuna("Ind.");
+		tabAgd.adicColuna("Prioridade");
 		tabAgd.adicColuna("Sit.");
 		tabAgd.adicColuna("Data ini.");
 		tabAgd.adicColuna("Hora ini.");
@@ -154,12 +152,13 @@ public class FAgenda extends FFilho implements ActionListener {
 		tabAgd.adicColuna("Assunto");
 			
 		tabAgd.setTamColuna(28,0);
-		tabAgd.setTamColuna(20,1);
-		tabAgd.setTamColuna(80,2);
-		tabAgd.setTamColuna(60,3);
-		tabAgd.setTamColuna(80,4);
-		tabAgd.setTamColuna(60,5);
-		tabAgd.setTamColuna(160,6);
+		tabAgd.setTamColuna(50,1);
+		tabAgd.setTamColuna(20,2);
+		tabAgd.setTamColuna(80,3);
+		tabAgd.setTamColuna(60,4);
+		tabAgd.setTamColuna(80,5);
+		tabAgd.setTamColuna(60,6);
+		tabAgd.setTamColuna(160,7);
 		
 		JPanelPad pnBot = new JPanelPad(JPanelPad.TP_JPANEL,new GridLayout(1,2));
 		pnBot.setPreferredSize(new Dimension(90,30));
@@ -259,7 +258,7 @@ public class FAgenda extends FFilho implements ActionListener {
 	
 	private void montaPanelUsu() {
 		
-		tabUsu.limpa();
+		/*tabUsu.limpa();
 		Vector cores = new Vector();
 		
 		if( vUsu != null || vUsu.size() > 0) {
@@ -270,7 +269,7 @@ public class FAgenda extends FFilho implements ActionListener {
 				
 				jatem = false;
 				
-				for( int j=0; j < vUsu.size(); j++ ) {
+				for( int j=i+1; j < vUsu.size(); j++ ) {
 					if( ((String)vUsu.elementAt( i )).equals((String)vUsu.elementAt( j )) ) {
 						jatem = true;
 						break;
@@ -279,18 +278,23 @@ public class FAgenda extends FFilho implements ActionListener {
 				
 				if( ! jatem ) {
 					
-					cores.add( new Color( (int)Math.random() * 255, (int)Math.random() * 255, (int)Math.random() * 255 ) );
+					cores.add( new Color( (int)Math.random() * 254, (int)Math.random() * 254, (int)Math.random() * 254 ) );
 					
 					tabUsu.adicLinha( new Object[] {
-							vUsu.elementAt( i ),
-							cores.elementAt( i )
-					} );
+							vUsu.elementAt( i )						
+					} );					
 					
 				}
 				
 			}
 			
-		}
+			for( int i=0; i < tabUsu.getRowCount(); i++ ) {
+
+				tabUsu.setRowBackGround( i , (Color)cores.elementAt( i ) );
+				
+			}
+			
+		}*/
 		
 	}
 	
@@ -317,9 +321,15 @@ public class FAgenda extends FFilho implements ActionListener {
 			Object[] oDatas = datas;
 			String sDatas = "";
 			
+			ImageIcon nenhuma = Icone.novo("zeroEstrela.gif");
+			ImageIcon baixa = Icone.novo("umaEstrela.gif");
+			ImageIcon media = Icone.novo("duasEstrelas.gif");
+			ImageIcon alta = Icone.novo("tresEstrelas.gif");
+			ImageIcon prioridade = null;
+			
 			if (oDatas == null) {
 				oDatas = new Object[1];
-				oDatas[1] = new Date();
+				oDatas[0] = new Date();
 			}	
 			
 			for ( int i=0; i < oDatas.length; i++ ) {
@@ -334,7 +344,7 @@ public class FAgenda extends FFilho implements ActionListener {
 				
 			StringBuffer sSQL = new StringBuffer(); 
 			sSQL.append( "SELECT A.CODAGD,A.SITAGD,A.DTAINIAGD,A.HRINIAGD,A.DTAFIMAGD," );
-			sSQL.append( "A.HRFIMAGD,A.ASSUNTOAGD,U.IDUSU" );
+			sSQL.append( "A.HRFIMAGD,A.ASSUNTOAGD,A.PRIORAGD,U.IDUSU" );
 			sSQL.append( " FROM SGAGENDA A, SGUSUARIO U" );
 			sSQL.append( " WHERE A.CODEMP=? AND A.CODFILIAL=?" );
 			sSQL.append( " AND U.CODEMPAE=A.CODEMP AND U.CODFILIALAE=A.CODFILIAL" );
@@ -371,14 +381,31 @@ public class FAgenda extends FFilho implements ActionListener {
 						usu.addElement(rs.getString("IDUSU"));
 					}
 					
+					switch ( rs.getInt("PriorAgd") ) {
+					case 2://baixa
+						prioridade = baixa;
+						break;
+					case 3://media
+						prioridade = media;
+						break;
+					case 4://alta
+						prioridade = alta;
+						break;
+
+					default://nenhuma
+						prioridade = nenhuma;
+						break;
+					}
+					
 					tabAgd.adicLinha();
 					tabAgd.setValor(rs.getString("CodAgd"),i,0);
-					tabAgd.setValor(rs.getString("SitAgd"),i,1);
-					tabAgd.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtaIniAgd")),i,2);
-					tabAgd.setValor(rs.getString("HrIniAgd"),i,3);
-					tabAgd.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtaFimAgd")),i,4);
-					tabAgd.setValor(rs.getString("HrFimAgd"),i,5);
-					tabAgd.setValor(rs.getString("AssuntoAgd"),i,6);
+					tabAgd.setValor(prioridade,i,1);
+					tabAgd.setValor(rs.getString("SitAgd"),i,2);
+					tabAgd.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtaIniAgd")),i,3);
+					tabAgd.setValor(rs.getString("HrIniAgd"),i,4);
+					tabAgd.setValor(Funcoes.sqlDateToStrDate(rs.getDate("DtaFimAgd")),i,5);
+					tabAgd.setValor(rs.getString("HrFimAgd"),i,6);
+					tabAgd.setValor(rs.getString("AssuntoAgd"),i,7);
 					
 				}
 				
