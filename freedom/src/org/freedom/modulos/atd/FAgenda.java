@@ -321,10 +321,10 @@ public class FAgenda extends FFilho implements ActionListener {
 			Object[] oDatas = datas;
 			String sDatas = "";
 			
-			ImageIcon nenhuma = Icone.novo("zeroEstrela.gif");
-			ImageIcon baixa = Icone.novo("umaEstrela.gif");
-			ImageIcon media = Icone.novo("duasEstrelas.gif");
-			ImageIcon alta = Icone.novo("tresEstrelas.gif");
+			ImageIcon nenhuma = Icone.novo("prior_sem.gif");
+			ImageIcon baixa = Icone.novo("prior_baixa.gif");
+			ImageIcon media = Icone.novo("prior_media.gif");
+			ImageIcon alta = Icone.novo("prior_alta.gif");
 			ImageIcon prioridade = null;
 			
 			if (oDatas == null) {
