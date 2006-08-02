@@ -31,7 +31,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +41,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -53,6 +54,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
 
@@ -60,13 +63,15 @@ import org.freedom.bmps.Icone;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JMenuPad;
 import org.freedom.componentes.JPanelPad;
+import org.freedom.componentes.JTabbedPanePad;
 import org.freedom.componentes.StatusBar;
+import org.freedom.componentes.Tabela;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private Connection con = null;
+	private static Connection con = null;
 	public JMenuBar bar = new JMenuBar();
 	private JToolBar tBar = new JToolBar();
 	private JMenuItem sairMI = new JMenuItem();
@@ -75,7 +80,8 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	private JButton btAgenda = new JButton(Icone.novo("btAgenda.gif"));
 	public JPanelPad pinBotoesDir = new JPanelPad();
 	public Container c = getContentPane();
-	public JDesktopPane dpArea = new JDesktopPane();
+	public JDesktopPane dpArea = new JDesktopPane()	;
+	
 	public StatusBar statusBar = new StatusBar();
 	private JLabelPad lbFreedom = new JLabelPad( Icone.novo("lgSTP.jpg"));
 	private JLabelPad lbStpinf = new JLabelPad(Icone.novo("lgFreedom.jpg"));	
@@ -89,29 +95,43 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	private Border borderFreedom = null;
 	public Color padrao = new Color(69,62,113);
 	public String sImgFundo = null;
+	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
+	private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+	private static Tabela tabAgd = new Tabela();
+	private JScrollPane spnAgd = new JScrollPane(tabAgd);
+	private JSplitPane splitPane = null;
+	
 	public FPrincipal(String sImgFundo) {
 		this.sImgFundo = sImgFundo;
 		c.setLayout(new BorderLayout());
-		JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
-		pn.setLayout(new GridLayout(1, 1));
+		//JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
+		//pn.setLayout(new GridLayout(1, 1));
 
 		setJMenuBar(bar);
 
 		sairMI.setText("Sair");
 		sairMI.setMnemonic('r');
-
-		c.add(pn);
-
-		montaStatus();
-
-		setExtendedState(MAXIMIZED_BOTH);
 		
+		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setContinuousLayout(true);
+		splitPane.setOneTouchExpandable(true);	
+		
+		splitPane.setTopComponent( dpArea );
+		
+		splitPane.setDividerSize( 1 );
+		splitPane.setDividerLocation( (int)tela.getHeight() );
 	
+	
+		montaStatus();
+		
+//		c.add(dpArea, BorderLayout.CENTER);
+		c.add(splitPane, BorderLayout.CENTER);
 
-		c.add(dpArea, BorderLayout.CENTER);
 
-		inicializaTela();	    
-				
+		setExtendedState(MAXIMIZED_BOTH); 
+		
+		inicializaTela();	
+		
 		sairMI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fecharJanela();
@@ -122,13 +142,76 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				fecharJanela();
 			}
 		});
-		
-		
-
-		
+				
 	}
 
 	public abstract void inicializaTela();
+	
+	public void adicAgenda() {	
+		
+		tabAgd.adicColuna("Ind.");
+		tabAgd.adicColuna("Prioridade");
+		tabAgd.adicColuna("Sit.");
+		tabAgd.adicColuna("Data ini.");
+		tabAgd.adicColuna("Hora ini.");
+		tabAgd.adicColuna("Data fim.");
+		tabAgd.adicColuna("Hora fim.");
+		tabAgd.adicColuna("Assunto");
+			
+		tabAgd.setTamColuna(50,0);
+		tabAgd.setTamColuna(70,1);
+		tabAgd.setTamColuna(30,2);
+		tabAgd.setTamColuna(100,3);
+		tabAgd.setTamColuna(80,4);
+		tabAgd.setTamColuna(100,5);
+		tabAgd.setTamColuna(80,6);
+		tabAgd.setTamColuna(350,7);
+
+		splitPane.setBottomComponent( tpnAgd );
+		
+		pnAgd.add(spnAgd,BorderLayout.CENTER);
+		tpnAgd.add("Agenda do usuário",pnAgd);	
+		
+		splitPane.setDividerSize( 10 );
+		splitPane.setDividerLocation( 500 );
+
+	}
+	
+	public static void carregaAgenda() {
+		
+		System.out.println("Vai carregar agenda");
+		
+		int iCodAge = 0;
+		String sTipoAge = null;
+		
+		try {
+			
+			String sSQL = "SELECT U.CODAGE,U.TIPOAGE,U.CODFILIALAE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?";
+			PreparedStatement ps = con.prepareStatement(sSQL);
+			ps.setInt(1,Aplicativo.iCodEmp);
+			ps.setInt(2,Aplicativo.iCodFilial);
+			ps.setString(3,Aplicativo.strUsuario);			
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				iCodAge = rs.getInt(1);
+				sTipoAge = rs.getString(2);  		
+			}  		
+			
+			rs.close();
+			ps.close();
+			
+			if (!con.getAutoCommit()) {
+				con.commit();
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		FAgenda.carregaTabAgd(iCodAge,sTipoAge,new Object[]{new Date()},tabAgd,true,con,null,null);
+		
+	}
 	
 	private void setBordaURL(JComponent comp) {
 		comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
@@ -244,6 +327,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 			if (this.temTela("Agenda") == false) {
 				FAgenda tela = new FAgenda();
 				this.criatela("Agenda", tela, con);
+				carregaAgenda();
 			}
 		}
 
@@ -345,12 +429,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	/**
 	 * Ajusta a identificação do sistema. <BR>
 	 * 
-	 * @param sDesc -
-	 *            Descrição do sistema.
-	 * @param iCod -
-	 *            Código do sistema.
-	 * @param iMod -
-	 *            Código do módulo.
+	 * @param sDesc - Descrição do sistema.
+	 * @param iCod - Código do sistema.
+	 * @param iMod - Código do módulo.
 	 *  
 	 */
 
@@ -365,8 +446,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	/**
 	 * Adiciona um componente na barra de ferramentas. <BR>
 	 * 
-	 * @param comp -
-	 *            Componente a ser adicionado.
+	 * @param comp - Componente a ser adicionado.
 	 *  
 	 */
 
@@ -397,10 +477,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	    
 	    dpArea.add(lbStpinf);
 	    dpArea.add(lbFreedom);
-
+	    
 	    lbFreedom.addMouseListener(this);
 	    lbStpinf.addMouseListener(this);
-	    
 	}
 	
 	public void addFundo(){		

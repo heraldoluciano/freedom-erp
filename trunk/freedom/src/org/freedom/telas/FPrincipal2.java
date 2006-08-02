@@ -34,7 +34,7 @@ import org.freedom.bmps.Icone;
 
 public class FPrincipal2 extends FPrincipal implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-
+	
 	public FPrincipal2(String sImgFundo) {
 		super(sImgFundo);
 	}
@@ -44,7 +44,7 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 		addFundo();
 	    addLinks(Icone.novo("lgSTP2.jpg"), Icone.novo("lgFreedom2.jpg"));
 		adicBotoes();
-		
+		adicAgenda();
 	}
 
 }

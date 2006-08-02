@@ -27,6 +27,7 @@ import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrincipal2;
 
 public class FreedomSTD2 extends Aplicativo {
@@ -250,6 +251,7 @@ public class FreedomSTD2 extends Aplicativo {
   	try {
   		Aplicativo.setLookAndFeel("freedom.ini");  		
   		FreedomSTD2 freedom = new FreedomSTD2();
+		FPrincipal2.carregaAgenda();
 		freedom.show();		
 	} 
   	catch (Throwable e) {
