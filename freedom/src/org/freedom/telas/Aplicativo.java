@@ -79,6 +79,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String strCodCCUsu = "";
 	public static String strAnoCCUsu = "";
 	public static String strTemp = "";
+	public static String strCharSetRel = "";
 	public static String strOS = "";
 	public static String strBrowser = "";
 	public static String strSplash = "";
@@ -660,6 +661,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 			strBrowser = getParameter("browser");
 			strTefEnv = getParameter("tef_path_envio");
 			strTefRet = getParameter("tef_path_retorno");
+			strCharSetRel = getParameter("charSetRel");
+			if ((strCharSetRel == null) || ("".equals(strCharSetRel))) {
+				strCharSetRel = "ISO8859-1";
+			}
 
 			try {
 				iCodEmp = Integer.parseInt(getParameter("codemp"));

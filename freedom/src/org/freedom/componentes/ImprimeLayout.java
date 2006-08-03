@@ -829,7 +829,7 @@ public class ImprimeLayout extends JPanelPad implements Printable, VetoableChang
 	  DOMSource source = new DOMSource(rel); 
 	  StreamResult result = new StreamResult(out);
 	  Transformer trans = TransformerFactory.newInstance().newTransformer();
-	  //trans.setOutputProperty(OutputKeys.ENCODING,"ISO8859-1");
+	  trans.setOutputProperty(OutputKeys.ENCODING,Aplicativo.strCharSetRel);
 	  trans.transform(source, result); 
 	  out.close();
 	}
