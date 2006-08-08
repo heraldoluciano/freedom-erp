@@ -21,11 +21,9 @@ public class Teste {
 		
 		
 		
-		System.out.println("\nUltima Redução Z\n");
+		System.out.println("\nRetorno de Variaveis\n");
 	
-		System.out.println("\n"+ecf.retornoEstadoGavetaDinheiro() );
-      
-		System.out.println("\nFIM DA LEITURA\n");
+		System.out.println("\n" + ecf.retornoVariaveis( ecf.VAR_FORMAS_PAG ) + "\n" );
 		
 		
 		/*

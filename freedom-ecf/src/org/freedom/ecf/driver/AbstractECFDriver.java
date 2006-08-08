@@ -17,6 +17,9 @@ import javax.comm.CommPortIdentifier;
 import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
 import javax.comm.UnsupportedCommOperationException;
+import javax.swing.SwingConstants;
+
+import sun.security.action.GetLongAction;
 
 public abstract class AbstractECFDriver {
 	
@@ -51,11 +54,49 @@ public abstract class AbstractECFDriver {
 	public static final char ARREDONDA = '1';
 	public static final char DESABILITA_CUPOM_ADIC = '0';
 	public static final char HABILITA_CUPOM_ADIC = '1';
+	
+	public static final char VAR_NUM_SERIE = 0;
+	public static final char VAR_VER_FIRMWARE = 1;
+	public static final char VAR_CNPJ_IE = 2;
+	public static final char VAR_GRANDE_TOTAL= 3;
+	public static final char VAR_CANCELAMENTOS = 4;
+	public static final char VAR_DESCONTOS = 5;
+	public static final char VAR_CONT_SEQ = 6;
+	public static final char VAR_OP_N_FISCAIS = 7;
+	public static final char VAR_CUPONS_CANC = 8;
+	public static final char VAR_REDUCOES = 9;
+	public static final char VAR_NUM_INT_TEC = 10;
+	public static final char VAR_NUM_SUB_PROP = 11;
+	public static final char VAR_NUM_ULT_ITEM = 12;
+	public static final char VAR_CLICHE = 13;
+	public static final char VAR_NUM_CAIXA = 14;
+	public static final char VAR_NUM_LOJA = 15;
+	public static final char VAR_MOEDA = 16;
+	public static final char VAR_FLAG_FISCAL = 17;
+	public static final char VAR_TMP_LIGADA = 18;
+	public static final char VAR_TMP_IMPRIMNDO = 19;
+	public static final char VAR_FLAG_TEC = 20;
+	public static final char VAR_FLAG_EPROM = 21;
+	public static final char VAR_VLR_ULT_CUPOM = 22;
+	public static final char VAR_DT_HORA = 23;
+	public static final char VAR_TOT_NICMS = 24;
+	public static final char VAR_DESC_TOT_NICMS = 25;
+	public static final char VAR_DT_ULT_REDUCAO = 26;
+	public static final char VAR_DT_MOVIMENTO = 27;
+	public static final char VAR_FLAG_TRUNCA = 28;
+	public static final char VAR_FLAG_VINC_ISS = 29;
+	public static final char VAR_TOT_ACRECIMOS = 30;
+	//public static final char VAR_CONT_BILHETE = 31;
+	public static final char VAR_FORMAS_PAG = 32;
+	public static final char VAR_CNF_NVINCULADO = 33;
+	public static final char VAR_DEPARTAMENTOS = 34;
+	public static final char VAR_TIPO_IMP = 253;
 
 	private int sistema = -1;
 	private byte[] bytesLidos = null;
     private InputStream entrada = null;
     private OutputStream saida = null;
+    
 	protected String porta;
 	protected int portaSel = -1;
 	protected boolean ativada = false;
@@ -278,9 +319,7 @@ public abstract class AbstractECFDriver {
 			   }
 			   
 		   	} catch (IOException e) {
-		   		// faz nada.
 		   	} catch (InterruptedException e) {
-		   		// faz nada.
 		   	}
 		   	
 		}
@@ -346,7 +385,7 @@ public abstract class AbstractECFDriver {
 	
 	public String parseParam( final Date param ) {
 		
-		final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy");
+		final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy" );
 		
 		return sdf.format( param ).trim();
 		
