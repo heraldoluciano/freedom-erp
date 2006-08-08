@@ -7,17 +7,13 @@
  * Classe:
  * @(#)FPrincipal.java <BR>
  * 
- * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para
- * Programas de Computador), <BR>
+ * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
- * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
- * Programa. <BR>
- * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você
- * pode contatar <BR>
+ * A LPG-PC deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste Programa. <BR>
+ * Caso uma cópia da LPG-PC não esteja disponível junto com este Programa, você pode contatar <BR>
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
  * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
- * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
- * preciso estar <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
  * de acordo com os termos da LPG-PC <BR>
  * <BR>
  * 
@@ -70,85 +66,112 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.atd.FAgenda;
 
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
+
 	private static final long serialVersionUID = 1L;
+
 	private static Connection con = null;
+
 	public JMenuBar bar = new JMenuBar();
+
 	private JToolBar tBar = new JToolBar();
+
 	private JMenuItem sairMI = new JMenuItem();
+
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-	private JButton btCalc = new JButton(Icone.novo("btCalc.gif"));
-	private JButton btAgenda = new JButton(Icone.novo("btAgenda.gif"));
+
+	private JButton btCalc = new JButton( Icone.novo( "btCalc.gif" ) );
+
+	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.gif" ) );
+
 	public JPanelPad pinBotoesDir = new JPanelPad();
+
 	public Container c = getContentPane();
-	public JDesktopPane dpArea = new JDesktopPane()	;
-	
+
+	public JDesktopPane dpArea = new JDesktopPane();
+
 	public StatusBar statusBar = new StatusBar();
-	private JLabelPad lbFreedom = new JLabelPad( Icone.novo("lgSTP.jpg"));
-	private JLabelPad lbStpinf = new JLabelPad(Icone.novo("lgFreedom.jpg"));	
-	private ImageIcon icFundo = null; 
+
+	private JLabelPad lbFreedom = new JLabelPad( Icone.novo( "lgSTP.jpg" ) );
+
+	private JLabelPad lbStpinf = new JLabelPad( Icone.novo( "lgFreedom.jpg" ) );
+
+	private ImageIcon icFundo = null;
+
 	private JLabelPad lbFundo = null;
+
 	private int iWidthImgFundo = 0;
-	private int iHeightImgFundo = 0;	
+
+	private int iHeightImgFundo = 0;
+
 	private String sURLStpinf = "http://www.stpinf.com";
+
 	private String sURLFreedom = "http://www.freedom.org.br";
+
 	private Border borderStpinf = null;
+
 	private Border borderFreedom = null;
-	public Color padrao = new Color(69,62,113);
+
+	public Color padrao = new Color( 69, 62, 113 );
+
 	public String sImgFundo = null;
+
 	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
-	private JPanelPad pnAgd = new JPanelPad(JPanelPad.TP_JPANEL,new BorderLayout());
+
+	private JPanelPad pnAgd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private static Tabela tabAgd = new Tabela();
-	private JScrollPane spnAgd = new JScrollPane(tabAgd);
+
+	private JScrollPane spnAgd = new JScrollPane( tabAgd );
+
 	private JSplitPane splitPane = null;
-	
-	public FPrincipal(String sImgFundo) {
+
+	public FPrincipal( String sImgFundo ) {
+
 		this.sImgFundo = sImgFundo;
-		c.setLayout(new BorderLayout());
-		//JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
-		//pn.setLayout(new GridLayout(1, 1));
+		c.setLayout( new BorderLayout() );
+		// JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
+		// pn.setLayout(new GridLayout(1, 1));
 
-		setJMenuBar(bar);
+		setJMenuBar( bar );
 
-		sairMI.setText("Sair");
-		sairMI.setMnemonic('r');
-		
-		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setContinuousLayout(true);
-		splitPane.setOneTouchExpandable(true);	
-		
+		sairMI.setText( "Sair" );
+		sairMI.setMnemonic( 'r' );
+
+		splitPane = new JSplitPane( JSplitPane.VERTICAL_SPLIT );
+		splitPane.setContinuousLayout( true );
+		splitPane.setOneTouchExpandable( true );
+
 		splitPane.setTopComponent( dpArea );
-		
+
 		splitPane.setDividerSize( 1 );
-		splitPane.setDividerLocation( (int)tela.getHeight() );
-	
-	
+		splitPane.setDividerLocation( (int) tela.getHeight() );
+
 		montaStatus();
-		
-//		c.add(dpArea, BorderLayout.CENTER);
-		c.add(splitPane, BorderLayout.CENTER);
 
+		// c.add(dpArea, BorderLayout.CENTER);
+		c.add( splitPane, BorderLayout.CENTER );
 
-		setExtendedState(MAXIMIZED_BOTH); 
-		
-		inicializaTela();	
-		
-		sairMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		setExtendedState( MAXIMIZED_BOTH );
+
+		inicializaTela();
+
+		sairMI.addActionListener( new ActionListener() {
+			public void actionPerformed( ActionEvent e ) {
 				fecharJanela();
 			}
-		});
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
+		} );
+		addWindowListener( new WindowAdapter() {
+			public void windowClosing( WindowEvent e ) {
 				fecharJanela();
 			}
-		});
-				
+		} );
+
 	}
 
 	public abstract void inicializaTela();
-	
-	public void adicAgenda() {	
-		
+
+	public void adicAgenda() {
+
 		tabAgd.adicColuna( "Ind." );
 		tabAgd.adicColuna( "Sit." );
 		tabAgd.adicColuna( "Prioridade" );
@@ -157,206 +180,214 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		tabAgd.adicColuna( "Hora ini." );
 		tabAgd.adicColuna( "Data fim." );
 		tabAgd.adicColuna( "Hora fim." );
-			
-		tabAgd.setTamColuna(50,0);
-		tabAgd.setTamColuna(50,1);
-		tabAgd.setTamColuna(100,2);
-		tabAgd.setTamColuna(250,3);
-		tabAgd.setTamColuna(100,4);
-		tabAgd.setTamColuna(120,5);
-		tabAgd.setTamColuna(100,6);
-		tabAgd.setTamColuna(120,7);
+
+		tabAgd.setTamColuna( 50, 0 );
+		tabAgd.setTamColuna( 50, 1 );
+		tabAgd.setTamColuna( 100, 2 );
+		tabAgd.setTamColuna( 250, 3 );
+		tabAgd.setTamColuna( 100, 4 );
+		tabAgd.setTamColuna( 120, 5 );
+		tabAgd.setTamColuna( 100, 6 );
+		tabAgd.setTamColuna( 120, 7 );
 
 		splitPane.setBottomComponent( tpnAgd );
-		
-		pnAgd.add(spnAgd,BorderLayout.CENTER);
-		tpnAgd.add("Agenda do usuário",pnAgd);	
-		
+
+		pnAgd.add( spnAgd, BorderLayout.CENTER );
+		tpnAgd.add( "Agenda do usuário", pnAgd );
+
 		splitPane.setDividerSize( 10 );
-		splitPane.setDividerLocation( 500 );
+		splitPane.setDividerLocation( ( (int) tela.getHeight() - 300 ) );
 
 	}
-	
+
 	public static void carregaAgenda() {
-		
-		System.out.println("Vai carregar agenda");
-		
+
+		System.out.println( "Vai carregar agenda" );
+
 		int iCodAge = 0;
 		String sTipoAge = null;
-		
+
 		try {
-			
+
 			String sSQL = "SELECT U.CODAGE,U.TIPOAGE,U.CODFILIALAE FROM SGUSUARIO U WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?";
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1,Aplicativo.iCodEmp);
-			ps.setInt(2,Aplicativo.iCodFilial);
-			ps.setString(3,Aplicativo.strUsuario);			
+			PreparedStatement ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setString( 3, Aplicativo.strUsuario );
 			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
-				iCodAge = rs.getInt(1);
-				sTipoAge = rs.getString(2);  		
-			}  		
-			
+
+			while ( rs.next() ) {
+				iCodAge = rs.getInt( 1 );
+				sTipoAge = rs.getString( 2 );
+			}
+
 			rs.close();
 			ps.close();
-			
-			if (!con.getAutoCommit()) {
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-			
-		} catch(Exception e){
+
+		} catch ( Exception e ) {
 			e.printStackTrace();
 		}
-		
-		FAgenda.carregaTabAgd(iCodAge,sTipoAge,new Object[]{new Date()},tabAgd,true,con,null,null);
-		
-	}
-	
-	private void setBordaURL(JComponent comp) {
-		comp.setBorder(BorderFactory.createCompoundBorder(BorderFactory
-				.createMatteBorder(0, 0, 0, 0, Color.BLUE), BorderFactory
-				.createEtchedBorder()));
-	}
-	
-	public void mouseClicked(MouseEvent arg0) {
-		if ( (arg0.getSource()==lbStpinf) && (arg0.getClickCount()>=2) ) {
-			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLStpinf);
-		}
-		else if ( (arg0.getSource()==lbFreedom) && (arg0.getClickCount()>=2) ) {
-			Funcoes.executeURL(Aplicativo.strOS, Aplicativo.strBrowser, sURLFreedom);
-		}
-	}
-	
-	public void mouseEntered(MouseEvent arg0) {
-		if (arg0.getSource()==lbStpinf) {
-	        setBordaURL(lbStpinf);		
-		}
-		else if (arg0.getSource()==lbFreedom) {
-	        setBordaURL(lbFreedom);		
-		}
-	}
-	
-	public void mouseExited(MouseEvent arg0) {
-		if (arg0.getSource()==lbStpinf) {
-	        lbStpinf.setBorder(borderStpinf);		
-			
-		}
-		else if (arg0.getSource()==lbFreedom) {
-	        lbFreedom.setBorder(borderFreedom);		
-		}
-	}
-	
-	public void mousePressed(MouseEvent arg0) {
+
+		FAgenda.carregaTabAgd( iCodAge, sTipoAge, new Object[] { new Date() }, tabAgd, true, con, null, null );
 
 	}
-	
-	public void mouseReleased(MouseEvent arg0) {
+
+	private void setBordaURL( JComponent comp ) {
+
+		comp.setBorder( BorderFactory.createCompoundBorder( BorderFactory.createMatteBorder( 0, 0, 0, 0, Color.BLUE ), BorderFactory.createEtchedBorder() ) );
+	}
+
+	public void mouseClicked( MouseEvent arg0 ) {
+
+		if ( ( arg0.getSource() == lbStpinf ) && ( arg0.getClickCount() >= 2 ) ) {
+			Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLStpinf );
+		}
+		else if ( ( arg0.getSource() == lbFreedom ) && ( arg0.getClickCount() >= 2 ) ) {
+			Funcoes.executeURL( Aplicativo.strOS, Aplicativo.strBrowser, sURLFreedom );
+		}
+	}
+
+	public void mouseEntered( MouseEvent arg0 ) {
+
+		if ( arg0.getSource() == lbStpinf ) {
+			setBordaURL( lbStpinf );
+		}
+		else if ( arg0.getSource() == lbFreedom ) {
+			setBordaURL( lbFreedom );
+		}
+	}
+
+	public void mouseExited( MouseEvent arg0 ) {
+
+		if ( arg0.getSource() == lbStpinf ) {
+			lbStpinf.setBorder( borderStpinf );
+
+		}
+		else if ( arg0.getSource() == lbFreedom ) {
+			lbFreedom.setBorder( borderFreedom );
+		}
+	}
+
+	public void mousePressed( MouseEvent arg0 ) {
 
 	}
-	
-	public void addKeyListerExterno(KeyListener arg0) {
-		this.addKeyListener(arg0);
-		btCalc.addKeyListener(arg0);
-		bar.addKeyListener(arg0);
-		tBar.addKeyListener(arg0);
-		btAgenda.addKeyListener(arg0);
+
+	public void mouseReleased( MouseEvent arg0 ) {
+
+	}
+
+	public void addKeyListerExterno( KeyListener arg0 ) {
+
+		this.addKeyListener( arg0 );
+		btCalc.addKeyListener( arg0 );
+		bar.addKeyListener( arg0 );
+		tBar.addKeyListener( arg0 );
+		btAgenda.addKeyListener( arg0 );
 	}
 
 	public void montaStatus() {
-		c.add(statusBar, BorderLayout.SOUTH);
+
+		c.add( statusBar, BorderLayout.SOUTH );
 	}
 
 	public void remConFilial() {
+
 		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP(?,?,?)";
 		try {
-			PreparedStatement ps = con.prepareStatement(sSQL);
-			ps.setInt(1, Aplicativo.iCodEmp);
-			ps.setInt(2, Aplicativo.iCodFilialPad);
-			ps.setString(3, Aplicativo.strUsuario);
+			PreparedStatement ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilialPad );
+			ps.setString( 3, Aplicativo.strUsuario );
 			ps.execute();
 			ps.close();
-			if (!con.getAutoCommit())
+			if ( !con.getAutoCommit() )
 				con.commit();
-		} catch (SQLException err) {
-			Funcoes.mensagemErro(this,
-					"Erro ao remover filial ativa no banco!\n"
-							+ err.getMessage());
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro ao remover filial ativa no banco!\n" + err.getMessage() );
 		}
 	}
 
-	public void setConexao(Connection conGeral) {
+	public void setConexao( Connection conGeral ) {
+
 		con = conGeral;
 	}
 
 	public void fecharJanela() {
-		if (con != null) {
+
+		if ( con != null ) {
 			try {
 				remConFilial();
 				con.close();
-			} catch (java.sql.SQLException e) {
-				Funcoes
-						.mensagemErro(this,
-								"Não foi possível fechar a conexao com o banco de dados!");
+			} catch ( java.sql.SQLException e ) {
+				Funcoes.mensagemErro( this, "Não foi possível fechar a conexao com o banco de dados!" );
 			}
 		}
-		System.exit(0);
+		System.exit( 0 );
 	}
 
-	public void adicFilha(Container filha) {
-		dpArea.add(filha);
+	public void adicFilha( Container filha ) {
+
+		dpArea.add( filha );
 	}
 
-	public void adicMenu(JMenuPad menu) {
-		bar.add(menu);
+	public void adicMenu( JMenuPad menu ) {
+
+		bar.add( menu );
 	}
 
 	/*
 	 * public void adicItemArq(JMenuItemPad menu) { arquivoMenu.add(menu); }
 	 * 
-	 * public void setMenu() { arquivoMenu.addSeparator();
-	 * arquivoMenu.add(sairMI);
-	 *  } public void tiraEmp() { arquivoMenu.remove(0); }
+	 * public void setMenu() { arquivoMenu.addSeparator(); arquivoMenu.add(sairMI); } public void tiraEmp() { arquivoMenu.remove(0); }
 	 */
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btCalc) {
+	public void actionPerformed( ActionEvent evt ) {
+
+		if ( evt.getSource() == btCalc ) {
 			Calc calc = new Calc();
-			dpArea.add("Calc", calc);
+			dpArea.add( "Calc", calc );
 			calc.show();
-		} else if (evt.getSource() == btAgenda) {
-			if (this.temTela("Agenda") == false) {
+		}
+		else if ( evt.getSource() == btAgenda ) {
+			if ( this.temTela( "Agenda" ) == false ) {
 				FAgenda tela = new FAgenda();
-				this.criatela("Agenda", tela, con);
+				this.criatela( "Agenda", tela, con );
 				carregaAgenda();
 			}
 		}
 
 	}
 
-	public boolean temTela(String nome) {
+	public boolean temTela( String nome ) {
+
 		boolean retorno = false;
 		int i = 0;
 
 		JInternalFrame[] telas = dpArea.getAllFrames();
 		JInternalFrame tela = null;
 
-		while (true) {
+		while ( true ) {
 
 			try {
-				tela = telas[i];
-			} catch (java.lang.Exception e) {
+				tela = telas[ i ];
+			} catch ( java.lang.Exception e ) {
 				break;
 			}
 
-			if (tela == null) {
+			if ( tela == null ) {
 				break;
-			} else if (tela.getName() == null) {
+			}
+			else if ( tela.getName() == null ) {
 				i++;
 				continue;
-			} else if (tela.getName().equals(nome)) {
+			}
+			else if ( tela.getName().equals( nome ) ) {
 				try {
-					tela.setSelected(true);
-				} catch (Exception e) {
+					tela.setSelected( true );
+				} catch ( Exception e ) {
 				}
 				retorno = true;
 				break;
@@ -369,29 +400,32 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	}
 
-	public JInternalFrame getTela(String nome) {
+	public JInternalFrame getTela( String nome ) {
+
 		JInternalFrame retorno = null;
 
 		JInternalFrame[] telas = dpArea.getAllFrames();
 		JInternalFrame tela = null;
 
-		for (int i = 0; i < telas.length; i++) {
+		for ( int i = 0; i < telas.length; i++ ) {
 
 			try {
-				tela = telas[i];
-			} catch (java.lang.Exception e) {
+				tela = telas[ i ];
+			} catch ( java.lang.Exception e ) {
 				break;
 			}
 
-			if (tela == null) {
+			if ( tela == null ) {
 				break;
-			} else if (tela.getName() == null) {
+			}
+			else if ( tela.getName() == null ) {
 				break;
-			} else if (tela.getName().equals(nome)) {
+			}
+			else if ( tela.getName().equals( nome ) ) {
 				try {
 					retorno = tela;
 					break;
-				} catch (Exception e) {
+				} catch ( Exception e ) {
 					retorno = null;
 					break;
 				}
@@ -401,117 +435,131 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		return retorno;
 
 	}
-	public void criatela(String nome, FFDialogo comp, Connection cn) {
-		comp.setName(nome);
-		comp.setTitulo(nome);
-		comp.setConexao(cn);
+
+	public void criatela( String nome, FFDialogo comp, Connection cn ) {
+
+		comp.setName( nome );
+		comp.setTitulo( nome );
+		comp.setConexao( cn );
 		comp.execShow();
 	}
-	public void criatela(String nome, FFilho comp, Connection cn) {
-		comp.setName(nome);
-		comp.setTitulo(nome);
-		dpArea.add(nome, comp);
-		comp.setConexao(cn);
+
+	public void criatela( String nome, FFilho comp, Connection cn ) {
+
+		comp.setName( nome );
+		comp.setTitulo( nome );
+		dpArea.add( nome, comp );
+		comp.setConexao( cn );
 		comp.execShow();
 		try {
-			comp.setSelected(true);
-		} catch (Exception e) {
+			comp.setSelected( true );
+		} catch ( Exception e ) {
 		}
 	}
 
-	public void criatela(String nome, FDialogo comp, Connection cn) {
-		comp.setName(nome);
-		comp.setTitulo(nome);
-		comp.setConexao(cn);
-		comp.setVisible(true);
+	public void criatela( String nome, FDialogo comp, Connection cn ) {
+
+		comp.setName( nome );
+		comp.setTitulo( nome );
+		comp.setConexao( cn );
+		comp.setVisible( true );
 	}
 
 	/**
 	 * Ajusta a identificação do sistema. <BR>
 	 * 
-	 * @param sDesc - Descrição do sistema.
-	 * @param iCod - Código do sistema.
-	 * @param iMod - Código do módulo.
-	 *  
+	 * @param sDesc -
+	 *            Descrição do sistema.
+	 * @param iCod -
+	 *            Código do sistema.
+	 * @param iMod -
+	 *            Código do módulo.
+	 * 
 	 */
 
-	public void setIdent(String sDesc, int iCod, int iMod) {
-		setTitle(sDesc);
+	public void setIdent( String sDesc, int iCod, int iMod ) {
+
+		setTitle( sDesc );
 		/*
-		 * arquivoMenu.setCodSistema(iCod); arquivoMenu.setCodModulo(iMod);
-		 * arquivoMenu.setCodMenu(100000000); arquivoMenu.setNivel(0);
+		 * arquivoMenu.setCodSistema(iCod); arquivoMenu.setCodModulo(iMod); arquivoMenu.setCodMenu(100000000); arquivoMenu.setNivel(0);
 		 */
 	}
 
 	/**
 	 * Adiciona um componente na barra de ferramentas. <BR>
 	 * 
-	 * @param comp - Componente a ser adicionado.
-	 *  
+	 * @param comp -
+	 *            Componente a ser adicionado.
+	 * 
 	 */
 
-	public void adicCompInBar(Component comp, String sAling) {
-		tBar.add(comp, sAling);
+	public void adicCompInBar( Component comp, String sAling ) {
+
+		tBar.add( comp, sAling );
 	}
-	
-	public void setBgColor(final Color cor) {
-		dpArea.setBackground(cor);		
+
+	public void setBgColor( final Color cor ) {
+
+		dpArea.setBackground( cor );
 	}
-	
-	public void addLinks(final ImageIcon icStpinf, final ImageIcon icFreedom){
-		JLabelPad lbFreedom = new JLabelPad(icStpinf);
-		JLabelPad lbStpinf = new JLabelPad(icFreedom);	
-		
+
+	public void addLinks( final ImageIcon icStpinf, final ImageIcon icFreedom ) {
+
+		JLabelPad lbFreedom = new JLabelPad( icStpinf );
+		JLabelPad lbStpinf = new JLabelPad( icFreedom );
+
 		final int iWidthImgStpinf = icStpinf.getIconWidth();
 		final int iHeightImgStpinf = icStpinf.getIconHeight();
 		final int iWidthImgFreedom = icFreedom.getIconWidth();
 		final int iHeightImgFreedom = icFreedom.getIconHeight();
-	    
-	    lbStpinf.setBounds(20,(int) tela.getHeight()-250,iWidthImgStpinf,iHeightImgStpinf);
-	    lbFreedom.setBounds((int) tela.getWidth()-155,(int) tela.getHeight()-265,iWidthImgFreedom,iHeightImgFreedom);
-	    lbStpinf.setToolTipText(sURLStpinf);
-	    lbFreedom.setToolTipText(sURLFreedom);
-	    
-	    borderStpinf = lbStpinf.getBorder();
-	    borderFreedom = lbFreedom.getBorder();
-	    
-	    dpArea.add(lbStpinf);
-	    dpArea.add(lbFreedom);
-	    
-	    lbFreedom.addMouseListener(this);
-	    lbStpinf.addMouseListener(this);
+
+		lbStpinf.setBounds( 20, (int) tela.getHeight() - 250, iWidthImgStpinf, iHeightImgStpinf );
+		lbFreedom.setBounds( (int) tela.getWidth() - 155, (int) tela.getHeight() - 265, iWidthImgFreedom, iHeightImgFreedom );
+		lbStpinf.setToolTipText( sURLStpinf );
+		lbFreedom.setToolTipText( sURLFreedom );
+
+		borderStpinf = lbStpinf.getBorder();
+		borderFreedom = lbFreedom.getBorder();
+
+		dpArea.add( lbStpinf );
+		dpArea.add( lbFreedom );
+
+		lbFreedom.addMouseListener( this );
+		lbStpinf.addMouseListener( this );
 	}
-	
-	public void addFundo(){		
+
+	public void addFundo() {
+
 		final int iWidthArea = (int) tela.getWidth();
 		final int iHeightArea = (int) tela.getHeight();
-		setSize(iWidthArea, iHeightArea - 50);
-		
-		icFundo = Icone.novo(sImgFundo); 
-		lbFundo = new JLabelPad(icFundo);
+		setSize( iWidthArea, iHeightArea - 50 );
+
+		icFundo = Icone.novo( sImgFundo );
+		lbFundo = new JLabelPad( icFundo );
 
 		iWidthImgFundo = icFundo.getIconWidth();
 		iHeightImgFundo = icFundo.getIconHeight();
-	    lbFundo.setBounds((iWidthArea/2)-(iWidthImgFundo/2),((iHeightArea-200)/2)-(iHeightImgFundo/2),iWidthImgFundo,iHeightImgFundo);
-	    dpArea.add(lbFundo);		
+		lbFundo.setBounds( ( iWidthArea / 2 ) - ( iWidthImgFundo / 2 ), ( ( iHeightArea - 200 ) / 2 ) - ( iHeightImgFundo / 2 ), iWidthImgFundo, iHeightImgFundo );
+		dpArea.add( lbFundo );
 	}
-	
-	public void adicBotoes(){
-		btCalc.setPreferredSize(new Dimension(34, 34));
-		btCalc.setToolTipText("Calculadora");
-		btCalc.addActionListener(this);
 
-		btAgenda.setPreferredSize(new Dimension(34, 34));
-		btAgenda.setToolTipText("Agenda");
-		btAgenda.addActionListener(this);
-		pinBotoesDir.setBorder(null);
-		c.add(tBar, BorderLayout.NORTH);
-		tBar.setLayout(new BorderLayout());
-		pinBotoesDir.setPreferredSize(new Dimension(102, 34));
-		tBar.add(pinBotoesDir, BorderLayout.EAST);
+	public void adicBotoes() {
 
-		pinBotoesDir.add(btCalc);
-		pinBotoesDir.add(btAgenda);
+		btCalc.setPreferredSize( new Dimension( 34, 34 ) );
+		btCalc.setToolTipText( "Calculadora" );
+		btCalc.addActionListener( this );
+
+		btAgenda.setPreferredSize( new Dimension( 34, 34 ) );
+		btAgenda.setToolTipText( "Agenda" );
+		btAgenda.addActionListener( this );
+		pinBotoesDir.setBorder( null );
+		c.add( tBar, BorderLayout.NORTH );
+		tBar.setLayout( new BorderLayout() );
+		pinBotoesDir.setPreferredSize( new Dimension( 102, 34 ) );
+		tBar.add( pinBotoesDir, BorderLayout.EAST );
+
+		pinBotoesDir.add( btCalc );
+		pinBotoesDir.add( btAgenda );
 	}
-	
+
 }
