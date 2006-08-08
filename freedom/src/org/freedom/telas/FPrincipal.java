@@ -149,23 +149,23 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	
 	public void adicAgenda() {	
 		
-		tabAgd.adicColuna("Ind.");
-		tabAgd.adicColuna("Prioridade");
-		tabAgd.adicColuna("Sit.");
-		tabAgd.adicColuna("Data ini.");
-		tabAgd.adicColuna("Hora ini.");
-		tabAgd.adicColuna("Data fim.");
-		tabAgd.adicColuna("Hora fim.");
-		tabAgd.adicColuna("Assunto");
+		tabAgd.adicColuna( "Ind." );
+		tabAgd.adicColuna( "Sit." );
+		tabAgd.adicColuna( "Prioridade" );
+		tabAgd.adicColuna( "Assunto" );
+		tabAgd.adicColuna( "Data ini." );
+		tabAgd.adicColuna( "Hora ini." );
+		tabAgd.adicColuna( "Data fim." );
+		tabAgd.adicColuna( "Hora fim." );
 			
 		tabAgd.setTamColuna(50,0);
-		tabAgd.setTamColuna(70,1);
-		tabAgd.setTamColuna(30,2);
-		tabAgd.setTamColuna(100,3);
-		tabAgd.setTamColuna(80,4);
-		tabAgd.setTamColuna(100,5);
-		tabAgd.setTamColuna(80,6);
-		tabAgd.setTamColuna(350,7);
+		tabAgd.setTamColuna(50,1);
+		tabAgd.setTamColuna(100,2);
+		tabAgd.setTamColuna(250,3);
+		tabAgd.setTamColuna(100,4);
+		tabAgd.setTamColuna(120,5);
+		tabAgd.setTamColuna(100,6);
+		tabAgd.setTamColuna(120,7);
 
 		splitPane.setBottomComponent( tpnAgd );
 		
