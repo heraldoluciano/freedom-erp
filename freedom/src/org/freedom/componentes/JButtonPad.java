@@ -92,8 +92,8 @@ public class JButtonPad extends JButton {
 	/**
 	 * Construtor da classe JButtonPad(). <BR>
 	 * Construtor que ja ajusta os paramatros basicos do JButtonPad.
-	 * @param tela TODO
-	 * @param titulo TODO
+	 * @param tela Tela que receberá o botão.
+	 * @param titulo Título do botão.
 	 *  
 	 */
 
