@@ -231,7 +231,7 @@ public class NFEntrada extends NF {
 			
 		}
 		catch (SQLException e) {
-			Funcoes.mensagemErro(null,"Erro na NFEntrada\n"+e.getMessage());
+			Funcoes.mensagemErro(null,"Erro na NFEntrada\n" + cont + "\n" + e.getMessage());
 			e.printStackTrace();
 			retorno = false;
 		}
