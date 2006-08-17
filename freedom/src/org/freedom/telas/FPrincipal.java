@@ -69,68 +69,54 @@ import org.freedom.modulos.atd.FAgenda;
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
-
 	private static Connection con = null;
-
 	public JMenuBar bar = new JMenuBar();
-
 	private JToolBar tBar = new JToolBar();
-
 	private JMenuItem sairMI = new JMenuItem();
-
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-
 	private JButton btCalc = new JButton( Icone.novo( "btCalc.gif" ) );
-
 	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.gif" ) );
-
 	public JPanelPad pinBotoesDir = new JPanelPad();
-
 	public Container c = getContentPane();
-
 	public JDesktopPane dpArea = new JDesktopPane();
-
 	public StatusBar statusBar = new StatusBar();
-
-	private JLabelPad lbFreedom = new JLabelPad( Icone.novo( "lgSTP.jpg" ) );
-
-	private JLabelPad lbStpinf = new JLabelPad( Icone.novo( "lgFreedom.jpg" ) );
-
+	private JLabelPad lbFreedom = null;
+	private JLabelPad lbStpinf = null;
 	private ImageIcon icFundo = null;
-
 	private JLabelPad lbFundo = null;
-
 	private int iWidthImgFundo = 0;
-
 	private int iHeightImgFundo = 0;
-
 	private String sURLStpinf = "http://www.stpinf.com";
-
 	private String sURLFreedom = "http://www.freedom.org.br";
-
 	private Border borderStpinf = null;
-
 	private Border borderFreedom = null;
-
 	public Color padrao = new Color( 69, 62, 113 );
-
 	public String sImgFundo = null;
-
 	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
-
 	private JPanelPad pnAgd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
-
 	private static Tabela tabAgd = new Tabela();
-
 	private JScrollPane spnAgd = new JScrollPane( tabAgd );
-
 	private JSplitPane splitPane = null;
+	private String imgLogoSis = "lgFreedom.jpg";
+	private String imgLogoEmp = "lgSTP.jpg";
 
 	public FPrincipal( String sDirImagem, String sImgFundo ) {
+		this(sDirImagem, sImgFundo, null, null);
+	}
+	
+	public FPrincipal( String sDirImagem, String sImgFundo, String sImgLogoSis, String sImgLogoEmp ) {
 	    if (sDirImagem!=null) {
 	        Imagem.dirImages = sDirImagem;
 	        Icone.dirImages = sDirImagem;
 	    } 
+	    if (sImgLogoSis!=null) {
+	    	imgLogoSis = sImgLogoSis;
+	    }
+	    if (sImgLogoEmp!=null) {
+	    	imgLogoEmp = sImgLogoEmp;
+	    }
+		lbFreedom = new JLabelPad( Icone.novo( imgLogoSis ) );
+		lbStpinf = new JLabelPad( Icone.novo( imgLogoEmp ) );
 		this.sImgFundo = sImgFundo;
 		c.setLayout( new BorderLayout() );
 		// JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);
