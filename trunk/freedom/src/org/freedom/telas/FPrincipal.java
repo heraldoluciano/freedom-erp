@@ -56,6 +56,7 @@ import javax.swing.JToolBar;
 import javax.swing.border.Border;
 
 import org.freedom.bmps.Icone;
+import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JMenuPad;
 import org.freedom.componentes.JPanelPad;
@@ -125,8 +126,11 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	private JSplitPane splitPane = null;
 
-	public FPrincipal( String sImgFundo ) {
-
+	public FPrincipal( String sDirImagem, String sImgFundo ) {
+	    if (sDirImagem!=null) {
+	        Imagem.dirImages = sDirImagem;
+	        Icone.dirImages = sDirImagem;
+	    } 
 		this.sImgFundo = sImgFundo;
 		c.setLayout( new BorderLayout() );
 		// JPanelPad pn = new JPanelPad(JPanelPad.TP_JPANEL);

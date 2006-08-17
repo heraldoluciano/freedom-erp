@@ -42,7 +42,7 @@ import org.freedom.telas.FPrincipalPD;
 public class FreedomTMK extends Aplicativo {
 
 	public FreedomTMK() {
-		super("iconAtendimento32.gif", "splashTMK.jpg", 1, "Freedom", 7, "Telemarketing", null, new FPrincipalPD("bgFreedomSTD.jpg"));
+		super("iconAtendimento32.gif", "splashTMK.jpg", 1, "Freedom", 7, "Telemarketing", null, new FPrincipalPD(null, "bgFreedomSTD.jpg"));
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 

@@ -36,7 +36,7 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 	private static final long serialVersionUID = 1L;
 	
 	public FPrincipal2(String sImgFundo) {
-		super(sImgFundo);
+		super(null, sImgFundo);
 	}
 
 	public void inicializaTela() {

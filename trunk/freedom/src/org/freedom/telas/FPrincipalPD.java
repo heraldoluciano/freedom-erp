@@ -32,8 +32,8 @@ import org.freedom.bmps.Icone;
 
 public class FPrincipalPD extends FPrincipal implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	public FPrincipalPD(String sImgFundo) {
-		super(sImgFundo);
+	public FPrincipalPD(String sDirImagem, String sImgFundo) {
+		super(sDirImagem, sImgFundo);
 	}
 	public void inicializaTela() {
 		addFundo();
