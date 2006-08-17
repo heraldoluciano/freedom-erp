@@ -1973,7 +1973,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				bRetorno[ 0 ] = "S".equals( rs.getString( "TravaTmNfVd" ) );
 
-				bRetorno[ 1 ] = "S".equals( rs.getString( "TravaTmNfVd" ) );
+				bRetorno[ 1 ] = "S".equals( rs.getString( "USAPEDSEQ" ) );
 				
 				if ( rs.getString( "UsaLiqRel" ) == null ) {
 					Funcoes.mensagemInforma( this, "Preencha opção de desconto em preferências!" );
