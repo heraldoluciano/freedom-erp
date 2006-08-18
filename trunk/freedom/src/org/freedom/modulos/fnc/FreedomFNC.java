@@ -66,10 +66,11 @@ import org.freedom.modulos.std.FVendedor;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrincipalPD;
+import org.freedom.telas.LoginPD;
 
 public class FreedomFNC extends Aplicativo {
 	public FreedomFNC() {
-		super("iconStandart32.gif", "splashFNC.jpg", 1, "Freedom", 6, "Financeiro", null, new FPrincipalPD(null, "bgFreedomSTD.jpg"));
+		super("iconStandart32.gif", "splashFNC.jpg", 1, "Freedom", 6, "Financeiro", null, new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
 		addOpcao(100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1,

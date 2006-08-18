@@ -47,14 +47,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
-
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JButtonPad;
@@ -105,8 +103,8 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sMultiAlmoxEmp = "N";
 	private static String sFiltro = "";
 	private boolean bCtrl = true;
-	private static boolean bAutoCommit = false;
-	private String sSplashImg = "";
+	protected static boolean bAutoCommit = false;
+	protected String sSplashImg = "";
 	private JButton btAtualMenu = new JButton(Icone.novo("btAtualMenu.gif"));
 	private Vector vOpcoes = null;
 	private Vector vBotoes = null;
@@ -124,6 +122,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static String sMailSuporte = "";
 	public static ObjetoEmpresa empresa = null;
 	public static boolean bModoDemo = true;
+	private Class cLoginExec = null;
 	
 	public Connection getConIB() {
 		return conIB;
@@ -155,7 +154,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     }
 
 	public Aplicativo(String sIcone, String sSplash, int iCodSis, String sDescSis, 
-			int iCodModu, String sDescModu, String sDirImagem,final FPrincipal telaP) {
+			int iCodModu, String sDescModu, String sDirImagem,final FPrincipal telaP, Class cLogin) {
 	    if (sDirImagem!=null) {
 	        Imagem.dirImages = sDirImagem;
 	        Icone.dirImages = sDirImagem;
@@ -172,9 +171,11 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		this.iCodModu = iCodModu;
 		this.sDescSis = sDescSis;
 		this.sDescModu = sDescModu;
+		this.cLoginExec = cLogin;
 		imgIcone = Icone.novo(sIcone);
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		setSplashName(sSplash);
+		
 		iniConexao(); // Inicia a variável de conexão
 		//telaPrincipal.tiraEmp();
 		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim(), iCodSis, iCodModu);
@@ -320,7 +321,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		iXPanel += 30;
 	}
 
-    private void buscaInfoUsuAtual() {      	
+    protected void buscaInfoUsuAtual() {      	
     	String sSQL = "SELECT ANOCC,CODCC,CODEMPCC,CODFILIALCC,APROVRMAUSU " +
 				      "FROM SGUSUARIO WHERE CODEMP=? AND CODFILIAL=? " +
 				      "AND IDUSU=?";
@@ -720,13 +721,25 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return bAutoCommit;
 	}
 
+	public Object criaLogin() {
+		Object retorno = null;
+		try {
+			retorno = cLoginExec.newInstance();			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return retorno;
+	}
+	
 	public Connection conexao(String strDriver, String strBanco) {
 		String sVals[];
 		Connection conRetorno = null;
 
 		if (strUsuario.equals("") && strSenha.equals("")) {
 
-			Login lgBanco = new Login(strBanco, strDriver, sSplashImg, iNumEst);
+			Login lgBanco = (Login) criaLogin();
+			lgBanco.execLogin(strBanco, strDriver, sSplashImg, iNumEst);
 			if (!lgBanco.OK)
 				System.exit(0);
 			sVals = lgBanco.getStrVals();
@@ -1049,7 +1062,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		System.exit(iTerm);
 	}
 
-	private void carregaCasasDec() {
+	protected void carregaCasasDec() {
 		String sSQL = null;
 		String sBusca = null;
 		PreparedStatement ps = null;
