@@ -35,10 +35,11 @@ import org.freedom.modulos.std.FCliente;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrincipalPD;
+import org.freedom.telas.LoginPD;
 
 public class FreedomATD extends Aplicativo implements ActionListener {
 	public FreedomATD() {
-		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento",  null,new FPrincipalPD(null, "bgFreedomSTD.jpg"));
+		super("iconAtendimento32.gif", "splashATD.jpg",  1, "Freedom" , 4, "Atendimento",  null,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
 
 		//Arquivo:
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,null);

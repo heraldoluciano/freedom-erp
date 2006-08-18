@@ -32,11 +32,12 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FPrincipal;
 import org.freedom.telas.FPrincipalPD;
+import org.freedom.telas.LoginPD;
 
 public class FreedomGRH extends Aplicativo {
 
 	public FreedomGRH() {
-		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null,new FPrincipalPD(null, "bgFreedomSTD.jpg"));
+		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
 
 		addOpcao(-1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false,
 				null);
