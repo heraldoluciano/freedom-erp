@@ -2,6 +2,8 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
+import org.freedom.ecf.com.Serial;
+
 public class Teste {
 	
 	private Teste(){
@@ -13,7 +15,7 @@ public class Teste {
 	 */
 	public static void main(final String[] args) {
 
-		final ECFBematech ecf = new ECFBematech(ECFBematech.COM1);
+		final ECFBematech ecf = new ECFBematech(Serial.COM1);
 		
 		Date data = new Date();
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
