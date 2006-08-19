@@ -26,7 +26,6 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
-
 public class ECFBematech extends AbstractECFDriver {
 
 	/**
@@ -107,7 +106,7 @@ public class ECFBematech extends AbstractECFDriver {
 		cmd = preparaCmd( CMD );
 		retorno = enviaCmd( cmd, tamRetorno );
 
-		//aguardaImpressao();
+		// aguardaImpressao();
 
 		return checkRetorno( retorno );
 
@@ -187,11 +186,11 @@ public class ECFBematech extends AbstractECFDriver {
 				retorno = 1;
 			}
 			else {
-				
+
 				retorno = -27; // Status da impressora diferente de 6,0,0 (ACK, ST1 e ST2)
-				
+
 				retorno = checkST1( st1 );
-				
+
 				retorno = checkST2( st2 );
 
 			}
@@ -201,12 +200,12 @@ public class ECFBematech extends AbstractECFDriver {
 		return retorno;
 
 	}
-	
+
 	private int checkST1( final byte ST1 ) {
-		
+
 		int retorno = 0;
-		byte st1 = ST1;		
-		
+		byte st1 = ST1;
+
 		if ( st1 > 127 ) {
 			st1 -= 128;
 		}
@@ -232,16 +231,16 @@ public class ECFBematech extends AbstractECFDriver {
 			st1 -= 1;
 			retorno = -2; // "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
 		}
-		
+
 		return retorno;
-		
+
 	}
-		
+
 	private int checkST2( final byte ST2 ) {
-		
+
 		int retorno = 0;
-		byte st2 = ST2;	
-		
+		byte st2 = ST2;
+
 		if ( st2 > 127 ) {
 			retorno = -2; // "Parâmetro inválido na função."
 			st2 -= 128;
@@ -268,9 +267,9 @@ public class ECFBematech extends AbstractECFDriver {
 			st2 -= 1;
 			retorno = -2; // "Parâmetro inválido na função. ou Número de parâmetros inválido na funçao"
 		}
-		
+
 		return retorno;
-		
+
 	}
 
 	/**
@@ -442,15 +441,15 @@ public class ECFBematech extends AbstractECFDriver {
 
 	public String getStatus() {
 
-		final byte[] CMD = preparaCmd( new byte[]{ ESC, 19 } );
-		
+		final byte[] CMD = preparaCmd( new byte[] { ESC, 19 } );
+
 		final byte[] ret = enviaCmd( CMD, 3 );
-		
+
 		final StringBuffer retorno = new StringBuffer();
-		retorno.append( ret[0] + "," );
-		retorno.append( ret[1] + "," );
-		retorno.append( ret[2] );
-				
+		retorno.append( ret[ 0 ] + "," );
+		retorno.append( ret[ 1 ] + "," );
+		retorno.append( ret[ 2 ] );
+
 		return retorno.toString();
 
 	}
@@ -458,14 +457,14 @@ public class ECFBematech extends AbstractECFDriver {
 	public void aguardaImpressao() {
 
 		byte[] CMD = { ESC, 19 };
-		//byte[] retorno = null;
+		// byte[] retorno = null;
 		byte[] retorno = new byte[ 1 ];
 		CMD = preparaCmd( CMD );
 
-		while ( /*retorno == null ||*/ retorno.length < 2 ) {
-			
+		while ( /* retorno == null || */retorno.length < 2 ) {
+
 			// depois que entra do laço e ocorre algum erro no envio do comando
-			// a condição de retorno == null valida o laço 
+			// a condição de retorno == null valida o laço
 			// tornando ele um laço infinito...
 
 			retorno = enviaCmd( CMD, 3 );
@@ -616,27 +615,26 @@ public class ECFBematech extends AbstractECFDriver {
 		return executaCmd( CMD, 3 );
 
 	}
-	
+
 	public String retornoVariaveis( final char var ) {
 
 		final byte[] CMD = { ESC, 35, (byte) var };
 		/*
-		 * o tamanho dos bytes de retorno varia conforme o parametro. 
+		 * o tamanho dos bytes de retorno varia conforme o parametro.
 		 */
 		executaCmd( CMD, 0 );
-		
+
 		String retorno = "";
-		
-		if( var == VAR_NUM_SERIE || var == VAR_CNPJ_IE || 
-				var == VAR_CLICHE || var == VAR_MOEDA ) {
-			
+
+		if ( var == VAR_NUM_SERIE || var == VAR_CNPJ_IE || var == VAR_CLICHE || var == VAR_MOEDA ) {
+
 			retorno = new String( getBytesLidos() );
-			
+
 		}
 		else {
-			
+
 			retorno = bcdToAsc( getBytesLidos() );
-			
+
 		}
 
 		return retorno;
@@ -872,9 +870,9 @@ public class ECFBematech extends AbstractECFDriver {
 		byte[] CMD = { ESC, 71 };
 
 		CMD = adicBytes( CMD, parseParam( descricao, 16, false ).getBytes() );
-		
+
 		executaCmd( CMD, 5 );
-		
+
 		final String retorno = bcdToAsc( getBytesLidos() );
 
 		return Integer.parseInt( retorno.substring( 0, 2 ) );
