@@ -19,7 +19,9 @@ public class Teste {
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
 		
 		
-		System.out.println(ecf.getStatus());
+		ecf.leituraX();
+		System.out.println("leu leiturax");
+		ecf.getStatus();
 		
 		//System.out.println("\nRetorno de Variaveis\n");
 	
