@@ -26,6 +26,8 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
+import sun.security.krb5.internal.bd;
+
 public class ECFBematech extends AbstractECFDriver {
 
 	/**
@@ -332,12 +334,12 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 
 	// adiciona aliquotas.
-	public int adicaoDeAliquotaTriburaria( final float aliq, final char opt ) {
+	public int adicaoDeAliquotaTriburaria( final String aliq, final char opt ) {
 
 		byte[] CMD = { ESC, 7 };
 
 		final StringBuffer buf = new StringBuffer();
-		buf.append( parseParam( aliq, 4, 2 ) );
+		buf.append( parseParam( aliq, 4, false ) );
 
 		if ( ISS == opt ) {
 			buf.append( opt );
@@ -439,26 +441,35 @@ public class ECFBematech extends AbstractECFDriver {
 
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 
-		final byte[] CMD = { ESC, 19 };
-
-		return executaCmd( CMD );
+		final byte[] CMD = preparaCmd( new byte[]{ ESC, 19 } );
+		
+		final byte[] ret = enviaCmd( CMD );
+		
+		final StringBuffer retorno = new StringBuffer();
+		retorno.append( ret[0] + "," );
+		retorno.append( ret[1] + "," );
+		retorno.append( ret[2] );
+				
+		return retorno.toString();
 
 	}
 
 	public void aguardaImpressao() {
 
-		byte[] CMD = { ESC, 19 }; // status
-		byte[] retorno = null;
-
+		byte[] CMD = { ESC, 19 };
+		//byte[] retorno = null;
+		byte[] retorno = new byte[ 1 ];
 		CMD = preparaCmd( CMD );
 
-		while ( retorno == null || retorno.length < 2 ) {
+		while ( /*retorno == null ||*/ retorno.length < 2 ) {
+			
+			// depois que entra do laço e ocorre algum erro no envio do comando
+			// a condição de retorno == null valida o laço 
+			// tornando ele um laço infinito...
 
 			retorno = enviaCmd( CMD );
-
-			System.out.println( "Aguardando o retorno de aguarda Impressao" );
 
 			try {
 				Thread.sleep( 100 );
@@ -581,7 +592,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		int tamanho = 14;
 
-		if ( opt == ACRECIMO_PERCENTUAL || opt == DESCONTO_PERCENTUAL ) {
+		if ( opt == ACRECIMO_PERC || opt == DESCONTO_PERC ) {
 			tamanho = 4;
 		}
 
@@ -860,8 +871,12 @@ public class ECFBematech extends AbstractECFDriver {
 		byte[] CMD = { ESC, 71 };
 
 		CMD = adicBytes( CMD, parseParam( descricao, 16, false ).getBytes() );
+		
+		executaCmd( CMD );
+		
+		final String retorno = bcdToAsc( getBytesLidos() );
 
-		return executaCmd( CMD );
+		return Integer.parseInt( retorno.substring( 0, 2 ) );
 
 	}
 

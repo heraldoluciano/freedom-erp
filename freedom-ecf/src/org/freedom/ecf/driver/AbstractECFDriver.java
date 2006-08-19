@@ -17,9 +17,6 @@ import javax.comm.CommPortIdentifier;
 import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
 import javax.comm.UnsupportedCommOperationException;
-import javax.swing.SwingConstants;
-
-import sun.security.action.GetLongAction;
 
 public abstract class AbstractECFDriver {
 	
@@ -28,7 +25,8 @@ public abstract class AbstractECFDriver {
 	public static final byte ACK = 6;
 	public static final byte NAK = 21;
 	public static final int TIMEOUT = 1000;
-	public static final int TIMEOUT_ACK = 1500;
+	public static final int TIMEOUT_ACK = 3000;
+	//public static final int TIMEOUT_ACK = 1500;
 	public static final int BAUDRATE = 9600;
 	public static final int DATABITS = SerialPort.DATABITS_8;
 	public static final int STOPBITS = SerialPort.STOPBITS_1;
@@ -42,8 +40,8 @@ public abstract class AbstractECFDriver {
 	public static final int OS_LINUX = 0;
 	public static final int OS_WINDOWS = 1;
 	
-	public static final char ACRECIMO_PERCENTUAL = 'A';
-	public static final char DESCONTO_PERCENTUAL = 'D';
+	public static final char ACRECIMO_PERC = 'A';
+	public static final char DESCONTO_PERC = 'D';
 	public static final char ACRECIMO_VALOR = 'a';
 	public static final char DESCONTO_VALOR = 'd';
 	public static final char IMPRESSAO = 'I';
@@ -52,8 +50,8 @@ public abstract class AbstractECFDriver {
 	public static final char ISS = '1';
 	public static final char TRUNCA = '0';
 	public static final char ARREDONDA = '1';
-	public static final char DESABILITA_CUPOM_ADIC = '0';
-	public static final char HABILITA_CUPOM_ADIC = '1';
+	public static final char DES_CUPOM_ADIC = '0';
+	public static final char HAB_CUPOM_ADIC = '1';
 	
 	public static final char VAR_NUM_SERIE = 0;
 	public static final char VAR_VER_FIRMWARE = 1;
@@ -93,7 +91,7 @@ public abstract class AbstractECFDriver {
 	public static final char VAR_TIPO_IMP = 253;
 
 	private int sistema = -1;
-	private byte[] bytesLidos = null;
+	private byte[] bytesLidos = new byte[3];
     private InputStream entrada = null;
     private OutputStream saida = null;
     
@@ -101,6 +99,10 @@ public abstract class AbstractECFDriver {
 	protected int portaSel = -1;
 	protected boolean ativada = false;
 	protected SerialPort portaSerial = null;
+	
+	public AbstractECFDriver () {
+		
+	}
 		   
 	public byte[] adicBytes( final byte[] variavel, final byte[] incremental ) {
 		
@@ -164,7 +166,7 @@ public abstract class AbstractECFDriver {
 		if ( ips != null ) {
 			
 			try {
-				
+								
 				portaSerial = ( SerialPort ) ips.open( "SComm", TIMEOUT );
 				
 				if ( portaSerial != null ) {
@@ -177,7 +179,7 @@ public abstract class AbstractECFDriver {
 				}
 				
 			} catch( PortInUseException e ) {
-				portaSerial = null;
+				e.printStackTrace();
 			} catch ( UnsupportedCommOperationException e ) {
 				
 			} catch ( IOException e ) {
@@ -282,7 +284,7 @@ public abstract class AbstractECFDriver {
 			   			   
 			   while ( entrada.available() <= 0 && vezes < 100 ) {
 				   
-				   System.out.println( "Aguardando retorno..." );
+				   //System.out.println( "Aguardando retorno..." );
 				   Thread.sleep(100);
 				   vezes ++;
 				   
@@ -292,7 +294,7 @@ public abstract class AbstractECFDriver {
 			   
 			   while ( entrada.available() > 0 && vezes < 100 ) {
 				   
-				   System.out.println( "Lendo retorno: " + entrada.available() );
+				  // System.out.println( "Lendo retorno: " + entrada.available() );
 				   retorno = new byte[ entrada.available() ];
 				   entrada.read( retorno );
 				   
@@ -323,12 +325,12 @@ public abstract class AbstractECFDriver {
 		   	}
 		   	
 		}
-		
+		/*
 		System.out.println("tamanho do retorno: "+buffer.length);
 		
 		for (int i=0; i<buffer.length; i++) {
 			System.out.println("Retorno "+i+" = "+buffer[i]);
-		}
+		}*/
 		
 		return buffer;
 		
@@ -338,27 +340,31 @@ public abstract class AbstractECFDriver {
 		
 		final StringBuffer tmp = new StringBuffer(); 
 		
-		if( terminador ) {
+		if ( param != null ) {
 			
-			if( param.indexOf( String.valueOf( (char)10 ) ) <= -1 ) {
+			if( terminador ) {
 				
-				if( tamanho <= param.length() ) {
-					tmp.append( param.substring( 0, tamanho-1 ) );
+				if( param.indexOf( String.valueOf( (char)10 ) ) <= -1 ) {
+					
+					if( tamanho <= param.length() ) {
+						tmp.append( param.substring( 0, tamanho-1 ) );
+					}
+					
+					tmp.append( param );
+					tmp.append( (char)10 );
+					
 				}
 				
-				tmp.append( param );
-				tmp.append( (char)10 );
+			} else {
 				
+				if( tamanho < param.length() ) {
+					tmp.append( param.substring( 0, tamanho ) );
+				}
+				else {
+					tmp.append( param );
+				}
 			}
 			
-		} else {
-			
-			if( tamanho < param.length() ) {
-				tmp.append( param.substring( 0, tamanho ) );
-			}
-			else {
-				tmp.append( param );
-			}
 		}
 		
 		return tmp.toString();
@@ -467,7 +473,7 @@ public abstract class AbstractECFDriver {
 	
 	public abstract int reducaoZ();// 6
 	
-	public abstract int adicaoDeAliquotaTriburaria(float aliq, char opt);// 7
+	public abstract int adicaoDeAliquotaTriburaria(String aliq, char opt);// 7
 	
 	public abstract int leituraMemoriaFiscal( Date dataIni, Date dataFim, char tipo);// 8
 	
@@ -483,7 +489,7 @@ public abstract class AbstractECFDriver {
 	
 	public abstract int programaHorarioVerao();// 18
 	
-	public abstract int getStatus();// 19;
+	public abstract String getStatus();// 19;
 	
 	public abstract int relatorioGerencial(String texto);// 20
 	
