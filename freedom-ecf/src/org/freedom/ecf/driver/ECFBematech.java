@@ -87,6 +87,10 @@ public class ECFBematech extends AbstractECFDriver {
 		return retorno;
 
 	}
+	
+	public int executaCmd( final byte[] CMD ) {
+		return executaCmd( CMD, 0 );		
+	}
 
 	/**
 	 * Este metodo executa o comando chamando os metodos <BR>
@@ -99,15 +103,15 @@ public class ECFBematech extends AbstractECFDriver {
 	 * @param CMD
 	 *            comando a ser executado e seus parâmetros. <BR>
 	 */
-	public int executaCmd( final byte[] CMD ) {
+	public int executaCmd( final byte[] CMD, final int tamRetorno ) {
 
 		byte[] retorno = null;
 		byte[] cmd = null;
 
 		cmd = preparaCmd( CMD );
-		retorno = enviaCmd( cmd );
+		retorno = enviaCmd( cmd, tamRetorno );
 
-		aguardaImpressao();
+		//aguardaImpressao();
 
 		return checkRetorno( retorno );
 
@@ -283,7 +287,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 0 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -300,7 +304,7 @@ public class ECFBematech extends AbstractECFDriver {
 		byte[] CMD = { ESC, 0 };
 		CMD = adicBytes( CMD, parseParam( cnpj, 29, false ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -310,7 +314,7 @@ public class ECFBematech extends AbstractECFDriver {
 		byte[] CMD = { ESC, 1 };
 		CMD = adicBytes( CMD, parseParam( simbolo, 2, false ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -319,7 +323,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 5 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -328,7 +332,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 6 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -346,7 +350,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -363,7 +367,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -380,7 +384,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -400,7 +404,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -409,7 +413,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 13 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -418,7 +422,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 14 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -427,7 +431,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 16 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -436,7 +440,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 18 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -444,7 +448,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = preparaCmd( new byte[]{ ESC, 19 } );
 		
-		final byte[] ret = enviaCmd( CMD );
+		final byte[] ret = enviaCmd( CMD, 3 );
 		
 		final StringBuffer retorno = new StringBuffer();
 		retorno.append( ret[0] + "," );
@@ -468,7 +472,7 @@ public class ECFBematech extends AbstractECFDriver {
 			// a condição de retorno == null valida o laço 
 			// tornando ele um laço infinito...
 
-			retorno = enviaCmd( CMD );
+			retorno = enviaCmd( CMD, 3 );
 
 			try {
 				Thread.sleep( 100 );
@@ -485,7 +489,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( texto, 620, true ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -493,7 +497,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 21 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -503,7 +507,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( (char) time ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -529,7 +533,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
