@@ -12,20 +12,24 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.TooManyListenersException;
 
 import javax.comm.CommPortIdentifier;
 import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
+import javax.comm.SerialPortEvent;
+import javax.comm.SerialPortEventListener;
 import javax.comm.UnsupportedCommOperationException;
 
-public abstract class AbstractECFDriver {
+public abstract class AbstractECFDriver implements SerialPortEventListener {
 	
 	public static final byte ESC = 27;
 	public static final byte STX = 2;
 	public static final byte ACK = 6;
 	public static final byte NAK = 21;
 	public static final int TIMEOUT = 1000;
-	public static final int TIMEOUT_ACK = 3000;
+	public static final int TIMEOUT_ACK = 150;
+	public static final int TIMEOUT_READ = 30000;
 	//public static final int TIMEOUT_ACK = 1500;
 	public static final int BAUDRATE = 9600;
 	public static final int DATABITS = SerialPort.DATABITS_8;
@@ -94,6 +98,7 @@ public abstract class AbstractECFDriver {
 	private byte[] bytesLidos = new byte[3];
     private InputStream entrada = null;
     private OutputStream saida = null;
+	private byte[] buffer = null;
     
 	protected String porta;
 	protected int portaSel = -1;
@@ -126,22 +131,27 @@ public abstract class AbstractECFDriver {
 		boolean retorno = true;
 		
 		if ( com != portaSel || portaSerial == null ) {
-			
 			portaSel = com;
 			porta = convPorta( com );
 			portaSerial = ativaSerial( porta );
 			
 			if ( portaSerial == null ) {
 				retorno = false;
+			} else {
+				try {
+					portaSerial.addEventListener(this);
+					portaSerial.notifyOnDataAvailable(true);
+				}
+				catch (TooManyListenersException e) {
+					retorno = false;
+				}
 			}
-			
 			ativada = retorno;
-			
 		}
-		
 		return retorno;
-		
 	}
+	
+	
 	
 	public SerialPort ativaSerial( final String porta ) {
 		
@@ -192,6 +202,41 @@ public abstract class AbstractECFDriver {
 		
 	}
 
+	public void serialEvent(SerialPortEvent event) {
+		byte[] retorno = null;
+		byte[] tmp = null;
+		try {
+			switch (event.getEventType()) {
+				case SerialPortEvent.DATA_AVAILABLE:
+				   retorno = new byte[ entrada.available() ];
+				   entrada.read( retorno );
+				   if ( buffer == null ) {
+					   buffer = retorno;
+				   }
+				   else {
+					   tmp = buffer;
+					   buffer = new byte[tmp.length + retorno.length];
+					   for ( int i=0; i < buffer.length; i++ ) {						   
+						   if ( i < tmp.length ) {
+							   buffer[i] = tmp[i];
+						   }
+						   else { 
+							   buffer[i] = retorno[i-tmp.length];
+						   }
+					   }
+						   
+				   }
+				   break;
+			default:
+				break;
+			}
+		}
+		catch (IOException e) {
+			
+		}
+		
+	}
+	
 	public String convPorta( final int com ) {
 		
 		final StringBuffer porta = new StringBuffer();
@@ -269,9 +314,11 @@ public abstract class AbstractECFDriver {
 	public byte[] enviaCmd( final byte[] CMD, final int com ) {
 		
 		byte[] retorno = null;
-		byte[] buffer = null;
 		byte[] tmp = null;
 		int vezes = 0;
+		long tempo = 0;
+		long tempoAtual = 0;
+		buffer = null;
 		
 		if ( ativaPorta( com ) ) {
 			
@@ -279,20 +326,25 @@ public abstract class AbstractECFDriver {
 			   
 			   // saida.
 			   saida.flush();
+			   tempo = System.currentTimeMillis();
 			   saida.write( CMD );
-			   Thread.sleep( TIMEOUT_ACK );
+			   do {
+				   Thread.sleep( TIMEOUT_ACK );
+				   tempoAtual = System.currentTimeMillis();
+			   } 
+			   while ((tempoAtual-tempo)>=(tempo+TIMEOUT_READ));
 			   			   
-			   while ( entrada.available() <= 0 && vezes < 100 ) {
+/*			   while ( entrada.available() <= 0 && vezes < 100 ) {
 				   
 				   //System.out.println( "Aguardando retorno..." );
 				   Thread.sleep(100);
 				   vezes ++;
 				   
-			   }
+			   } */
 			   
-			   vezes = 0;
+			   //vezes = 0;
 			   
-			   while ( entrada.available() > 0 && vezes < 100 ) {
+/*			   while ( entrada.available() > 0 && vezes < 100 ) {
 				   
 				  // System.out.println( "Lendo retorno: " + entrada.available() );
 				   retorno = new byte[ entrada.available() ];
@@ -318,7 +370,7 @@ public abstract class AbstractECFDriver {
 				   
 				   Thread.sleep(100);
 				   
-			   }
+			   } */
 			   
 		   	} catch (IOException e) {
 		   	} catch (InterruptedException e) {
