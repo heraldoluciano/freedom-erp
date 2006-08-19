@@ -87,10 +87,6 @@ public class ECFBematech extends AbstractECFDriver {
 		return retorno;
 
 	}
-	
-	public int executaCmd( final byte[] CMD ) {
-		return executaCmd( CMD, 0 );		
-	}
 
 	/**
 	 * Este metodo executa o comando chamando os metodos <BR>
@@ -515,7 +511,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 23 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 4 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -541,7 +537,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 26 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 68 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -551,7 +547,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 27 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 222 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -561,7 +557,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 29 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 17 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -571,7 +567,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 30 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 9 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -584,7 +580,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( item, 4 ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -606,7 +602,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -617,15 +613,17 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( menssagem, 492, true ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
-
+	
 	public String retornoVariaveis( final char var ) {
 
 		final byte[] CMD = { ESC, 35, (byte) var };
-
-		executaCmd( CMD );
+		/*
+		 * o tamanho dos bytes de retorno varia conforme o parametro. 
+		 */
+		executaCmd( CMD, 0 );
 		
 		String retorno = "";
 		
@@ -652,7 +650,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( opt, 1 ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -668,7 +666,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -688,7 +686,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -699,7 +697,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( (char) espaco ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -710,7 +708,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( (char) espaco ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -722,7 +720,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( descUnid, 2, false ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -734,7 +732,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( descricao, 200, true ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -742,7 +740,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 62, 54 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 5 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -752,7 +750,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 62, 55 };
 
-		executaCmd( CMD );
+		executaCmd( CMD, 308 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -778,7 +776,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -792,7 +790,7 @@ public class ECFBematech extends AbstractECFDriver {
 		}
 		CMD = adicBytes( CMD, bytes );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -808,7 +806,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -824,7 +822,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -834,7 +832,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( texto, 620, false ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -844,7 +842,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( opt, 1 ).getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -853,7 +851,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 69 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -863,7 +861,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 70 };
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -875,7 +873,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, parseParam( descricao, 16, false ).getBytes() );
 		
-		executaCmd( CMD );
+		executaCmd( CMD, 5 );
 		
 		final String retorno = bcdToAsc( getBytesLidos() );
 
@@ -897,7 +895,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
@@ -915,7 +913,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
-		return executaCmd( CMD );
+		return executaCmd( CMD, 3 );
 
 	}
 
