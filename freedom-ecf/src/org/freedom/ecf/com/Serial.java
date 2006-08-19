@@ -63,7 +63,7 @@ public class Serial {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Serial getInstance() {
+	public static Serial getInstance() {
 		if (instance==null) {
 			instance = new Serial();
 		}
@@ -179,6 +179,17 @@ public class Serial {
 		
 		return sistema;
 		
+	}
+	
+	public void desativaPorta() {
+
+		if ( portaSerial == null ) {
+			portaSerial.close();
+		}
+
+		portaSerial = null;
+		ativada = false;
+
 	}
 	
 	public boolean getAtivada() {

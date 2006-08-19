@@ -9,15 +9,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.TooManyListenersException;
 
-import javax.comm.CommPortIdentifier;
-import javax.comm.PortInUseException;
 import javax.comm.SerialPort;
 import javax.comm.SerialPortEvent;
 import javax.comm.SerialPortEventListener;
-import javax.comm.UnsupportedCommOperationException;
+
+import org.freedom.ecf.com.Serial;
 
 public abstract class AbstractECFDriver implements SerialPortEventListener {
 
@@ -29,35 +26,11 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final byte NAK = 21;
 
-	public static final int TIMEOUT = 1000;
+//	public static final int TIMEOUT = 1000;
 
 	public static final int TIMEOUT_ACK = 150;
 
 	public static final int TIMEOUT_READ = 30000;
-
-	public static final int BAUDRATE = 9600;
-
-	public static final int DATABITS = SerialPort.DATABITS_8;
-
-	public static final int STOPBITS = SerialPort.STOPBITS_1;
-
-	public static final int PARITY = SerialPort.PARITY_NONE;
-
-	public static final int COM1 = 0;
-
-	public static final int COM2 = 1;
-
-	public static final int COM3 = 2;
-
-	public static final int COM4 = 3;
-
-	public static final int COM5 = 4;
-
-	public static final int OS_NONE = -1;
-
-	public static final int OS_LINUX = 0;
-
-	public static final int OS_WINDOWS = 1;
 
 	public static final char ACRECIMO_PERC = 'A';
 
@@ -154,13 +127,11 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final char VAR_TIPO_IMP = 253;
 
-	private int sistema = -1;
-
 	private byte[] bytesLidos = new byte[ 3 ];
 
-	private InputStream entrada = null;
+//	private InputStream entrada = null;
 
-	private OutputStream saida = null;
+//	private OutputStream saida = null;
 
 	private byte[] buffer = null;
 
@@ -196,100 +167,17 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	}
 
 	public boolean ativaPorta( final int com ) {
-
 		boolean retorno = true;
-
-		if ( com != portaSel || portaSerial == null ) {
-			portaSel = com;
-			porta = convPorta( com );
-			portaSerial = ativaSerial( porta );
-
-			if ( portaSerial == null ) {
-				retorno = false;
-			}
-			else {
-				try {
-					portaSerial.addEventListener( this );
-					portaSerial.notifyOnDataAvailable( true );
-				} catch ( TooManyListenersException e ) {
-					retorno = false;
-				}
-			}
-			ativada = retorno;
+		if (!Serial.getInstance().getAtivada()) {
+			retorno = Serial.getInstance().ativaPorta(com, this);
 		}
 		return retorno;
 	}
 
-	public SerialPort ativaSerial( final String porta ) {
-
-		SerialPort portaSerial = null;
-		Enumeration listaPortas = null;
-		CommPortIdentifier ips = null;
-		listaPortas = CommPortIdentifier.getPortIdentifiers();
-
-		while ( listaPortas.hasMoreElements() ) {
-
-			ips = (CommPortIdentifier) listaPortas.nextElement();
-
-			if ( ips.getName().equalsIgnoreCase( porta ) ) {
-				break;
-			}
-			else {
-				ips = null;
-			}
-
-		}
-
-		if ( ips != null ) {
-
-			try {
-
-				portaSerial = (SerialPort) ips.open( "SComm", TIMEOUT );
-
-				if ( portaSerial != null ) {
-
-					entrada = portaSerial.getInputStream();
-					saida = portaSerial.getOutputStream();
-					portaSerial.setFlowControlMode( SerialPort.FLOWCONTROL_RTSCTS_OUT );
-					portaSerial.setSerialPortParams( BAUDRATE, DATABITS, STOPBITS, PARITY );
-
-				}
-
-			} catch ( PortInUseException e ) {
-				e.printStackTrace();
-			} catch ( UnsupportedCommOperationException e ) {
-
-			} catch ( IOException e ) {
-				portaSerial = null;
-			}
-
-		}
-
-		return portaSerial;
-
-	}
-
-	public String convPorta( final int com ) {
-
-		final StringBuffer porta = new StringBuffer();
-
-		if ( getSistema() == OS_WINDOWS ) {
-			porta.append( "COM" );
-			porta.append( com + 1 );
-		}
-		else {
-			porta.append( "/dev/ttyS" );
-			porta.append( com );
-		}
-
-		return porta.toString();
-
-	}
-
-	public boolean getAtivada() {
+	/*public boolean getAtivada() {
 
 		return ativada;
-	}
+	}*/
 
 	public void setBytesLidos( final byte[] arg ) {
 
@@ -308,40 +196,14 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	}
 
-	public int getSistema() {
-
-		final String system = System.getProperty( "os.name" ).toLowerCase();
-
-		if ( sistema == OS_NONE ) {
-
-			if ( system.indexOf( "linux" ) > OS_NONE ) {
-				sistema = OS_LINUX;
-			}
-			else if ( system.indexOf( "windows" ) > OS_NONE ) {
-				sistema = OS_WINDOWS;
-			}
-
-		}
-
-		return sistema;
-
-	}
-
-	public void desativaPorta() {
-
-		if ( portaSerial == null ) {
-			portaSerial.close();
-		}
-
-		portaSerial = null;
-		ativada = false;
-
-	}
-
 	public void serialEvent( SerialPortEvent event ) {
 
 		byte[] retorno = null;
 		byte[] tmp = null;
+		InputStream entrada = Serial.getInstance().getEntrada();
+
+//		private OutputStream saida = null;
+
 		try {
 			System.out.println( "entrou no evento" );
 			switch ( event.getEventType() ) {
@@ -392,6 +254,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		long tempoAtual = 0;
 		buffer = null;
 		leuEvento = false;
+		OutputStream saida = Serial.getInstance().getSaida();
 
 		if ( ativaPorta( com ) ) {
 
