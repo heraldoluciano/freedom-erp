@@ -26,7 +26,6 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
-import sun.security.krb5.internal.bd;
 
 public class ECFBematech extends AbstractECFDriver {
 
