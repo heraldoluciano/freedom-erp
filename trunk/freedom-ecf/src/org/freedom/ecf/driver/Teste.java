@@ -19,11 +19,11 @@ public class Teste {
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
 		
 		
+		System.out.println(ecf.getStatus());
 		
-		
-		System.out.println("\nRetorno de Variaveis\n");
+		//System.out.println("\nRetorno de Variaveis\n");
 	
-		System.out.println("\n" + ecf.retornoVariaveis( ecf.VAR_FORMAS_PAG ) + "\n" );
+		//System.out.println("\n" + ecf.retornoVariaveis( ecf.VAR_FORMAS_PAG ) + "\n" );
 		
 		
 		/*
