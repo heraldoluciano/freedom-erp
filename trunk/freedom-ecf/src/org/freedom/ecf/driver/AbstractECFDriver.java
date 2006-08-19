@@ -30,7 +30,6 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public static final int TIMEOUT = 1000;
 	public static final int TIMEOUT_ACK = 150;
 	public static final int TIMEOUT_READ = 30000;
-	//public static final int TIMEOUT_ACK = 1500;
 	public static final int BAUDRATE = 9600;
 	public static final int DATABITS = SerialPort.DATABITS_8;
 	public static final int STOPBITS = SerialPort.STOPBITS_1;
