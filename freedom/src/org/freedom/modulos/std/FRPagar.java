@@ -49,6 +49,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 
@@ -217,16 +218,16 @@ public class FRPagar extends FRelatorio {
 					"IT.VLRAPAGITPAG,IT.DTPAGOITPAG,"+
 					"(SELECT C.STATUSCOMPRA FROM CPCOMPRA C "+
 					"WHERE C.FLAG IN "+
-					Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+					AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 					" AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA)," +
 					"P.DOCPAG,IT.OBSITPAG, " +
 					"(SELECT C.DTEMITCOMPRA FROM CPCOMPRA C "+
 					"WHERE C.FLAG IN "+
-					Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+					AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 					" AND C.CODEMP=P.CODEMPCP AND C.CODFILIAL=P.CODFILIALCP AND C.CODCOMPRA=P.CODCOMPRA) AS DTEMITCOMPRA " +
 					"FROM FNITPAGAR IT,FNPAGAR P,CPFORNECED F "+
 					" WHERE P.FLAG IN "+
-					Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+					AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 					" AND IT.CODEMP = P.CODEMP AND IT.CODFILIAL=P.CODFILIAL AND IT.DTVENCITPAG BETWEEN ? AND ? AND"+
 					" IT.STATUSITPAG IN (?,?) AND P.CODPAG = IT.CODPAG" +
 					" AND F.CODEMP=P.CODEMPFR AND F.CODFILIAL=P.CODFILIALFR AND F.CODFOR=P.CODFOR"+

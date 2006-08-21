@@ -38,6 +38,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRExtrato extends FRelatorio {
@@ -104,7 +105,7 @@ public class FRExtrato extends FRelatorio {
     String sSQL = "SELECT S.DATASL,L.HISTBLANCA,L.DOCLANCA," +
 	              "SL.VLRSUBLANCA,S.SALDOSL FROM FNSALDOLANCA S," +
 				  "FNLANCA L,FNCONTA C, FNSUBLANCA SL WHERE L.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" "+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" "+
                   "AND C.CODEMP=? AND C.CODFILIAL=? " +
 	 			  "AND C.NUMCONTA=? " +
 	 			  "AND L.CODEMP=? AND L.CODFILIAL=? " +

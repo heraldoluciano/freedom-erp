@@ -47,6 +47,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRComissoes extends FRelatorio {
@@ -229,7 +230,7 @@ public class FRComissoes extends FRelatorio {
 					+ "IR.VLRPARCITREC "
 					+ "FROM FNRECEBER R, FNITRECEBER IR, VDVENDA V, VDCOMISSAO C,"
 					+ "VDCLIENTE CL, FNPLANOPAG P WHERE V.FLAG IN "
-					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
+					+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND R.CODEMPVD = ? AND R.CODFILIALVD = ? AND R.CODVEND = ?"
 					+ " AND C.CODEMP = ? AND C.CODFILIAL = ? "
 					+ " AND R.CODEMP = C.CODEMPRC AND R.CODFILIAL = C.CODFILIALRC "

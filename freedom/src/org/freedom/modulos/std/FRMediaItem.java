@@ -49,6 +49,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRMediaItem extends FRelatorio {
@@ -287,7 +288,7 @@ public class FRMediaItem extends FRelatorio {
 			}
 			sSubSel += ",(SELECT SUM(IT.QTDITVENDA) FROM VDITVENDA IT, VDVENDA V,\n"
 					+ " EQTIPOMOV TM WHERE V.FLAG IN "
-					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
+					+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA AND IT.CODPROD=P.CODPROD\n"
 					+ " AND TM.CODTIPOMOV=V.CODTIPOMOV"
 	                + sWhere1 + sWhere2 + sWhere3		  
@@ -311,7 +312,7 @@ public class FRMediaItem extends FRelatorio {
 					+ "V"
 					+ (i + 2)
 					+ ".FLAG IN "
-					+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
+					+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)
 					+ " AND IT"
 					+ (i + 2)
 					+ ".CODPROD = P.CODPROD\n"

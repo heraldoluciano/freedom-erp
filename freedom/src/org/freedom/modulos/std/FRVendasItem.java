@@ -40,6 +40,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasItem extends FRelatorio {
@@ -277,7 +278,7 @@ public class FRVendasItem extends FRelatorio {
 		           "AND TM.TIPOMOV IN ('VD','PV','VT','SE') "+
 		           "AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL "+
 		           "AND V.DTEMITVENDA BETWEEN ? AND ? "+
-		           sWhere + " AND V.FLAG IN " + Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+		           sWhere + " AND V.FLAG IN " + AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 		           " GROUP BY P."+sCodRel+","+
 		           "P.DESCPROD,P.CODUNID " +
 		           "ORDER BY "+sOrdem;

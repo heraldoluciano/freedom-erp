@@ -29,10 +29,11 @@ import org.freedom.modulos.atd.FAtendente;
 import org.freedom.modulos.atd.FTipoAtend;
 import org.freedom.modulos.grh.FFuncao;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipal2;
 import org.freedom.telas.LoginPD;
 
-public class FreedomSTD2 extends Aplicativo {
+public class FreedomSTD2 extends AplicativoPD {
 
 	public FreedomSTD2() {
 

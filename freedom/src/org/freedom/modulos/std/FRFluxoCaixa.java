@@ -34,6 +34,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRFluxoCaixa extends FRelatorio {
@@ -154,7 +155,7 @@ public class FRFluxoCaixa extends FRelatorio {
                   "(SELECT SUM(SL.VLRSUBLANCA*-1)"+
                   " FROM FNSUBLANCA SL,FNLANCA L " + 
                   "WHERE L.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
                   " AND SUBSTR(SL.CODPLAN,1,STRLEN(RTRIM(P.CODPLAN)))=RTRIM(P.CODPLAN) AND "+
                   "SL.CODLANCA=L.CODLANCA AND "+
                   "SL.DATASUBLANCA <= ? AND "+
@@ -236,7 +237,7 @@ public class FRFluxoCaixa extends FRelatorio {
   	String sSQL = "SELECT C.CODCLI,C.RAZCLI,SUM(IR.VLRPARCITREC)"+
   	" FROM FNITRECEBER IR,FNRECEBER R, VDCLIENTE C" + 
   	" WHERE R.FLAG IN "+
-  	Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+  	AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
   	" AND IR.DTVENCITREC <= ? AND IR.CODEMP=R.CODEMP" +
   	" AND IR.CODFILIAL=R.CODFILIAL AND IR.CODREC=R.CODREC" +
   	" AND C.CODCLI=R.CODCLI AND R.CODEMPCL=C.CODEMP" +
@@ -304,7 +305,7 @@ public class FRFluxoCaixa extends FRelatorio {
   	String sSQL = "SELECT F.CODFOR,F.RAZFOR,SUM(IP.VLRPARCITPAG)"+
   	" FROM FNITPAGAR IP,FNPAGAR P, CPFORNECED F" + 
   	" WHERE P.FLAG IN "+
-  	Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+  	AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
   	" AND IP.DTVENCITPAG <= ? AND IP.CODEMP=P.CODEMP" +
   	" AND IP.CODFILIAL=P.CODFILIAL AND IP.CODPAG=P.CODPAG" +
   	" AND P.CODFOR=F.CODFOR AND P.CODEMPFR=F.CODEMP" +

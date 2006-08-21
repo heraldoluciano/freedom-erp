@@ -116,7 +116,7 @@ public class FPassword extends FFDialogo{
 	private boolean getBaixoCusto() {
 		boolean ret = getPermissao(BAIXO_CUSTO);
 		if(ret) {
-			log = Aplicativo.gravaLog(txtUsu.getVlrString().toLowerCase().trim(), "PR", "LIB",
+			log = AplicativoPD.gravaLog(txtUsu.getVlrString().toLowerCase().trim(), "PR", "LIB",
 					"Liberação de "  + param[0] + " abaixo do custo",
 					""+param[0]+" [" + param[1] + "], " + 		//codigo da tabela
 					"Item: ["    	 + param[2] + "], " + 		//codigo do item
