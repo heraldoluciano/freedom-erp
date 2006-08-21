@@ -41,6 +41,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRReceber extends FRelatorio {
@@ -249,10 +250,10 @@ public class FRReceber extends FRelatorio {
 			sSQL =  "SELECT IT.DTVENCITREC,IT.NPARCITREC,R.CODVENDA,R.CODCLI,C.RAZCLI," +
 					"IT.VLRPARCITREC,IT.VLRPAGOITREC,IT.VLRAPAGITREC,IT.DTPAGOITREC,R.DOCREC,IT.OBSITREC,"+
 					"(SELECT V.STATUSVENDA FROM VDVENDA V "+
-						"WHERE V.FLAG IN "+Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+						"WHERE V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 						" AND V.CODEMP=R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA AND V.TIPOVENDA=R.TIPOVENDA) " +
 					"FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C" + sFrom +
-					"WHERE R.FLAG IN "+ Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+					"WHERE R.FLAG IN "+ AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 					"AND R.CODEMP=? AND R.CODFILIAL=? AND IT.DTVENCITREC BETWEEN ? AND ? "+
 					"AND IT.STATUSITREC IN (?,?,?) AND R.CODREC = IT.CODREC " +
 					"AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL " +

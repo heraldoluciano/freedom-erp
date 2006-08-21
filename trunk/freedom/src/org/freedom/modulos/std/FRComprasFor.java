@@ -36,6 +36,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRComprasFor extends FRelatorio {
@@ -109,7 +110,7 @@ public class FRComprasFor extends FRelatorio {
 			  " AND F.CODFOR = C.CODFOR"+
 	                  " AND C.DTEMITCOMPRA BETWEEN"+
 	                  " ? AND ? "+sWhere+" AND C.FLAG IN "+
-	                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+	                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 			  " ORDER BY C.CODFOR,C.DTEMITCOMPRA";
 		PreparedStatement ps = null;
 		ResultSet rs = null;

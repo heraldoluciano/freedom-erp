@@ -44,6 +44,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasGeral extends FRelatorio {
@@ -217,7 +218,7 @@ public class FRVendasGeral extends FRelatorio {
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
-			sSQL.append( "AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND V.FLAG IN " + Aplicativo.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+			sSQL.append( "AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 			sSQL.append( "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA " );
 
 			ps = con.prepareStatement( sSQL.toString() );

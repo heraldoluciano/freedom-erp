@@ -26,10 +26,11 @@ package org.freedom.modulos.cfg;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
 import org.freedom.telas.LoginPD;
 
-public class FreedomCFG extends Aplicativo {
+public class FreedomCFG extends AplicativoPD {
 
 	public FreedomCFG() {
 

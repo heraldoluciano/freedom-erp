@@ -38,6 +38,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRInadimplentes extends FRelatorio {
@@ -124,11 +125,11 @@ public class FRInadimplentes extends FRelatorio {
                   "R.CODCLI,C.RAZCLI,IT.VLRPARCITREC,C.FONECLI,C.DDDCLI,"+
                   "IT.DTITREC,(SELECT V.STATUSVENDA FROM VDVENDA V"+
                   " WHERE V.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND V.CODVENDA=R.CODVENDA),"+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND V.CODVENDA=R.CODVENDA),"+
                   "R.DOCREC,R.CODREC,R.CODVENDA"+
                   " FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C"+
                   " WHERE R.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND IT.DTVENCITREC BETWEEN ? AND ? AND"+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+" AND IT.DTVENCITREC BETWEEN ? AND ? AND"+
                   " R.CODREC = IT.CODREC AND IT.STATUSITREC='R1' AND"+
                   " C.CODCLI=R.CODCLI AND R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL "+sWhere+" ORDER BY IT.DTVENCITREC,C.RAZCLI";
     PreparedStatement ps = null;

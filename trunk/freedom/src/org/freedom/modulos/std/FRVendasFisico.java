@@ -42,6 +42,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasFisico extends FRelatorio {
@@ -264,7 +265,7 @@ public class FRVendasFisico extends FRelatorio {
 			     + sWhere + sWhere1 + sWhere2 + sWhere3 
 			     + " AND TM.CODTIPOMOV=V.CODTIPOMOV AND P.CODPROD = IT.CODPROD"
 			     + " AND (NOT IT.QTDITVENDA = 0)"
-			     + " AND (V.FLAG IN "+Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+")"
+			     + " AND (V.FLAG IN "+AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+")"
 			     + " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"
 			     + " GROUP BY 1," 
 			     + "P."+sCodProd+",P.DESCPROD,G.DESCGRUP,IT.CODITVENDA, P.CUSTOMPMPROD" 

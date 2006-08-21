@@ -43,6 +43,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRBalancete extends FRelatorio {
@@ -177,7 +178,7 @@ public class FRBalancete extends FRelatorio {
 				+ "(SELECT SUM(SL.VLRSUBLANCA*-1)"
 				+ " FROM FNSUBLANCA SL,FNLANCA L "
 				+ "WHERE L.FLAG IN "
-				+ Aplicativo.carregaFiltro(con,
+				+ AplicativoPD.carregaFiltro(con,
 						org.freedom.telas.Aplicativo.iCodEmp)
 				+ " AND SUBSTR(SL.CODPLAN,1,STRLEN(RTRIM(P.CODPLAN)))=RTRIM(P.CODPLAN) AND "
 				+ "SL.CODLANCA=L.CODLANCA AND "

@@ -37,10 +37,11 @@ import org.freedom.modulos.std.FSetor;
 import org.freedom.modulos.std.FTipoCli;
 import org.freedom.modulos.std.FVendedor;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
 import org.freedom.telas.LoginPD;
 
-public class FreedomTMK extends Aplicativo {
+public class FreedomTMK extends AplicativoPD {
 
 	public FreedomTMK() {
 		super("iconAtendimento32.gif", "splashTMK.jpg", 1, "Freedom", 7, "Telemarketing", null, new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);

@@ -39,7 +39,7 @@ import org.freedom.modulos.pdv.FAbreCaixa;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class AplicativoPDV extends Aplicativo {
+public class AplicativoPDV extends AplicativoPD {
 	public static boolean bECFTerm = false;
 	public static boolean bTEFTerm = false;
 	public static int iCodCaixa = 0;

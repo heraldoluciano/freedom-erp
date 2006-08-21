@@ -54,11 +54,11 @@ import org.freedom.modulos.std.FRVencLote;
 import org.freedom.modulos.std.FTipoMov;
 import org.freedom.modulos.std.FUnidade;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipal;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
 import org.freedom.telas.LoginPD;
 
-public class FreedomPCP extends Aplicativo implements ActionListener {
+public class FreedomPCP extends AplicativoPD implements ActionListener {
 	public FreedomPCP() {
 
 		super(

@@ -43,6 +43,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRBordero extends FRelatorio {
@@ -213,12 +214,12 @@ public void imprimir(boolean bVisualizar) {
                   "IT.VLRPARCITREC, IT.DTPAGOITREC, R.DATAREC, "+
                   "(SELECT V.STATUSVENDA FROM VDVENDA V "+
                   "WHERE V.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
                   " AND V.CODEMP = R.CODEMPVA AND V.CODFILIAL=R.CODFILIALVA AND V.CODVENDA=R.CODVENDA)," +
                   "R.DOCREC "+
                   " FROM FNITRECEBER IT,FNRECEBER R,VDCLIENTE C"+sFrom+
                   " WHERE R.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
                   " AND R.CODEMP=? AND R.CODFILIAL=? AND IT.DTVENCITREC BETWEEN ? AND ? AND"+
                   " IT.STATUSITREC IN (?,?) AND R.CODREC = IT.CODREC" +
                   " AND IT.CODEMP=R.CODEMP AND IT.CODFILIAL=R.CODFILIAL" +

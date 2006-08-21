@@ -30,11 +30,11 @@ package org.freedom.modulos.grh;
 
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipal;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
 import org.freedom.telas.LoginPD;
 
-public class FreedomGRH extends Aplicativo {
+public class FreedomGRH extends AplicativoPD {
 
 	public FreedomGRH() {
 		super("iconAtendimento32.gif", "splashGRH.jpg", 1, "Freedom", 9, "Gestão de Recursos Humandos", null,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);

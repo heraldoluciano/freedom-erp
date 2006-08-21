@@ -45,6 +45,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRCentroCusto extends FRelatorio {
@@ -186,7 +187,7 @@ public class FRCentroCusto extends FRelatorio {
 				//  Primeira sub-select >>
 				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL"
 				+ " WHERE L.FLAG IN "
-				+ Aplicativo.carregaFiltro(con,
+				+ AplicativoPD.carregaFiltro(con,
 						org.freedom.telas.Aplicativo.iCodEmp)
 				+ (sCodPlan.equals("") ? "" : " AND L.CODPLAN=?")
 				+ " AND L.CODEMP=CM.CODEMP"
@@ -207,7 +208,7 @@ public class FRCentroCusto extends FRelatorio {
 				//  Fim da primeira e inicio da segunda >>
 				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL"
 				+ " WHERE L.FLAG IN "
-				+ Aplicativo.carregaFiltro(con,
+				+ AplicativoPD.carregaFiltro(con,
 						org.freedom.telas.Aplicativo.iCodEmp)
 				+ (sCodPlan.equals("") ? "" : " AND L.CODPLAN=?")
 				+ " AND L.CODEMP=CM.CODEMP"
@@ -228,7 +229,7 @@ public class FRCentroCusto extends FRelatorio {
 				//  Fim da segunda e inicio da terceira >>
 				"(SELECT SUM(SL.VLRSUBLANCA*-1) FROM FNSUBLANCA SL, FNLANCA L, FNPLANEJAMENTO PL"
 				+ " WHERE L.FLAG IN "
-				+ Aplicativo.carregaFiltro(con,
+				+ AplicativoPD.carregaFiltro(con,
 						org.freedom.telas.Aplicativo.iCodEmp)
 				+ (sCodPlan.equals("") ? "" : " AND L.CODPLAN=?")
 				+ " AND L.CODEMP=CM.CODEMP"

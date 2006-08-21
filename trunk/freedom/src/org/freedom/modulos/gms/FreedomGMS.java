@@ -90,11 +90,11 @@ import org.freedom.modulos.std.FUnidade;
 import org.freedom.modulos.std.FVariantes;
 import org.freedom.modulos.std.FVenda;
 import org.freedom.telas.Aplicativo;
-import org.freedom.telas.FPrincipal;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FPrincipalPD;
 import org.freedom.telas.LoginPD;
 
-public class FreedomGMS extends Aplicativo {
+public class FreedomGMS extends AplicativoPD {
 
 	public FreedomGMS() {
 		super("iconAtendimento32.gif", "splashGMS.jpg",	1, "Freedom", 8, "Gestão de Materiais e Serviços", null, new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);

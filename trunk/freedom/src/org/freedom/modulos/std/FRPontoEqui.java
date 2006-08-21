@@ -36,6 +36,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FRPontoEqui extends FRelatorio {
@@ -130,7 +131,7 @@ public class FRPontoEqui extends FRelatorio {
 					  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
 					  "AND L.codemp = P.codemp AND L.codfilial = P.codfilial AND L.codlanca = SL.codLANca "+
 					  "AND sl.datasublanca between ? and ? AND TIPOPLAN=?"+
-					  "AND L.FLAG IN " + Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp);
+					  "AND L.FLAG IN " + AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp);
 		
 		try {
 			ps = con.prepareStatement(sSQL);
@@ -169,7 +170,7 @@ public class FRPontoEqui extends FRelatorio {
 					  "AND SL.codemp = P.codemp AND SL.codfilial = P.codfilial AND SL.codplan = P.codplan "+
 					  "AND L.codemp = P.codemp AND L.codfilial = P.codfilial AND L.codlanca = SL.codLANca "+
 					  "AND sl.datasublanca between ? and ? AND P.FINPLAN=? "+
-					  "AND L.FLAG IN " + Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp);
+					  "AND L.FLAG IN " + AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp);
 		
 		try {
 			ps = con.prepareStatement(sSQL);

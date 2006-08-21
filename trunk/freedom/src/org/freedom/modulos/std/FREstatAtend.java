@@ -37,6 +37,7 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.AplicativoPD;
 import org.freedom.telas.FRelatorio;
 
 public class FREstatAtend extends FRelatorio {
@@ -120,7 +121,7 @@ public class FREstatAtend extends FRelatorio {
                   " AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL" +
                   " AND V.DTEMITVENDA BETWEEN ? AND ? AND "+
                   "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN "+
-                  Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+                  AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 				  " AND V.CODEMP=? AND V.CODFILIAL=?" +
 				  " AND TM.TIPOMOV IN ('VD','PV','VT','SE')"+
                   " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ORDER BY V.DTEMITVENDA,V.DOCVENDA";
@@ -128,7 +129,7 @@ public class FREstatAtend extends FRelatorio {
     else if (rgFormato.getVlrString().equals("R")){
           sSQL= "SELECT V.DTEMITVENDA,SUM(V.VLRLIQVENDA) FROM VDVENDA V,"+
 		        " EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN "+
-				Aplicativo.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
+				AplicativoPD.carregaFiltro(con,org.freedom.telas.Aplicativo.iCodEmp)+
 				" AND TM.CODEMP=V.CODEMPTM" +
 				" AND TM.CODFILIAL=V.CODFILIALTM" +
 				" AND TM.CODTIPOMOV=V.CODTIPOMOV" +
