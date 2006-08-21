@@ -40,7 +40,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -54,7 +53,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
-
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JLabelPad;
@@ -69,10 +67,10 @@ import org.freedom.modulos.atd.FAgenda;
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
-	private static Connection con = null;
+	protected static Connection con = null;
 	public JMenuBar bar = new JMenuBar();
 	private JToolBar tBar = new JToolBar();
-	private JMenuItem sairMI = new JMenuItem();
+	protected JMenuItem sairMI = new JMenuItem();
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
 	private JButton btCalc = new JButton( Icone.novo( "btCalc.gif" ) );
 	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.gif" ) );
@@ -99,7 +97,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	private JSplitPane splitPane = null;
 	private String imgLogoSis = "lgFreedom.jpg";
 	private String imgLogoEmp = "lgSTP.jpg";
-
+	
 	public FPrincipal( String sDirImagem, String sImgFundo ) {
 		this(sDirImagem, sImgFundo, null, null);
 	}
@@ -147,17 +145,21 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 		sairMI.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent e ) {
-				fecharJanela();
+				
 			}
 		} );
 		addWindowListener( new WindowAdapter() {
-			public void windowClosing( WindowEvent e ) {
-				fecharJanela();
+			public void windowClosing( WindowEvent e ) {				 
+	
 			}
 		} );
 
 	}
 
+	public abstract void remConFilial();	
+	
+	public abstract void fecharJanela();	
+	
 	public abstract void inicializaTela();
 
 	public void adicAgenda() {
@@ -284,39 +286,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		c.add( statusBar, BorderLayout.SOUTH );
 	}
 
-	public void remConFilial() {
-
-		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP(?,?,?)";
-		try {
-			PreparedStatement ps = con.prepareStatement( sSQL );
-			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt( 2, Aplicativo.iCodFilialPad );
-			ps.setString( 3, Aplicativo.strUsuario );
-			ps.execute();
-			ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro ao remover filial ativa no banco!\n" + err.getMessage() );
-		}
-	}
-
 	public void setConexao( Connection conGeral ) {
 
 		con = conGeral;
-	}
-
-	public void fecharJanela() {
-
-		if ( con != null ) {
-			try {
-				remConFilial();
-				con.close();
-			} catch ( java.sql.SQLException e ) {
-				Funcoes.mensagemErro( this, "Não foi possível fechar a conexao com o banco de dados!" );
-			}
-		}
-		System.exit( 0 );
 	}
 
 	public void adicFilha( Container filha ) {
@@ -348,11 +320,9 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 				carregaAgenda();
 			}
 		}
-
 	}
 
 	public boolean temTela( String nome ) {
-
 		boolean retorno = false;
 		int i = 0;
 
@@ -391,14 +361,11 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public JInternalFrame getTela( String nome ) {
-
 		JInternalFrame retorno = null;
-
 		JInternalFrame[] telas = dpArea.getAllFrames();
 		JInternalFrame tela = null;
 
 		for ( int i = 0; i < telas.length; i++ ) {
-
 			try {
 				tela = telas[ i ];
 			} catch ( java.lang.Exception e ) {
@@ -427,7 +394,6 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void criatela( String nome, FFDialogo comp, Connection cn ) {
-
 		comp.setName( nome );
 		comp.setTitulo( nome );
 		comp.setConexao( cn );
@@ -435,7 +401,6 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void criatela( String nome, FFilho comp, Connection cn ) {
-
 		comp.setName( nome );
 		comp.setTitulo( nome );
 		dpArea.add( nome, comp );
@@ -448,7 +413,6 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void criatela( String nome, FDialogo comp, Connection cn ) {
-
 		comp.setName( nome );
 		comp.setTitulo( nome );
 		comp.setConexao( cn );
@@ -457,34 +421,19 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	/**
 	 * Ajusta a identificação do sistema. <BR>
-	 * 
-	 * @param sDesc -
-	 *            Descrição do sistema.
-	 * @param iCod -
-	 *            Código do sistema.
-	 * @param iMod -
-	 *            Código do módulo.
-	 * 
+	 * @param sDesc - Descrição do sistema.
+	 * @param iCod - Código do sistema.
+	 * @param iMod - Código do módulo. 
 	 */
-
-	public void setIdent( String sDesc, int iCod, int iMod ) {
-
+	public void setIdent( String sDesc) {
 		setTitle( sDesc );
-		/*
-		 * arquivoMenu.setCodSistema(iCod); arquivoMenu.setCodModulo(iMod); arquivoMenu.setCodMenu(100000000); arquivoMenu.setNivel(0);
-		 */
 	}
 
 	/**
 	 * Adiciona um componente na barra de ferramentas. <BR>
-	 * 
-	 * @param comp -
-	 *            Componente a ser adicionado.
-	 * 
+	 * @param comp - Componente a ser adicionado.
 	 */
-
 	public void adicCompInBar( Component comp, String sAling ) {
-
 		tBar.add( comp, sAling );
 	}
 
@@ -495,8 +444,8 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	public void addLinks( final ImageIcon icStpinf, final ImageIcon icFreedom ) {
 
-		JLabelPad lbFreedom = new JLabelPad( icStpinf );
-		JLabelPad lbStpinf = new JLabelPad( icFreedom );
+		lbFreedom = new JLabelPad( icFreedom );
+		lbStpinf = new JLabelPad( icStpinf );
 
 		final int iWidthImgStpinf = icStpinf.getIconWidth();
 		final int iHeightImgStpinf = icStpinf.getIconHeight();
@@ -534,22 +483,31 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void adicBotoes() {
-
-		btCalc.setPreferredSize( new Dimension( 34, 34 ) );
-		btCalc.setToolTipText( "Calculadora" );
-		btCalc.addActionListener( this );
-
-		btAgenda.setPreferredSize( new Dimension( 34, 34 ) );
-		btAgenda.setToolTipText( "Agenda" );
-		btAgenda.addActionListener( this );
+		preparaBarra();
+		adicBtAgenda();
+		adicBtCalc();
+	}
+	
+	public void preparaBarra() {
 		pinBotoesDir.setBorder( null );
 		c.add( tBar, BorderLayout.NORTH );
 		tBar.setLayout( new BorderLayout() );
 		pinBotoesDir.setPreferredSize( new Dimension( 102, 34 ) );
-		tBar.add( pinBotoesDir, BorderLayout.EAST );
-
-		pinBotoesDir.add( btCalc );
-		pinBotoesDir.add( btAgenda );
+		tBar.add( pinBotoesDir, BorderLayout.EAST );		
 	}
-
+	
+	public void adicBtAgenda(){
+		btAgenda.setPreferredSize( new Dimension( 34, 34 ) );
+		btAgenda.setToolTipText( "Agenda" );
+		btAgenda.addActionListener( this );
+		pinBotoesDir.add( btAgenda );		
+	}
+	
+	public void adicBtCalc() {
+		btCalc.setPreferredSize( new Dimension( 34, 34 ) );
+		btCalc.setToolTipText( "Calculadora" );
+		btCalc.addActionListener( this );
+		pinBotoesDir.add( btCalc );
+	}
+	
 }

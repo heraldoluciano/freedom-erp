@@ -29,8 +29,11 @@ package org.freedom.telas;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import org.freedom.bmps.Icone;
+import org.freedom.funcoes.Funcoes;
 
 public class FPrincipal2 extends FPrincipal implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -47,4 +50,32 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 		adicAgenda();
 	}
 
+	public void remConFilial(){ 	
+		String sSQL = "EXECUTE PROCEDURE SGFIMCONSP(?,?,?)";
+		try {
+			PreparedStatement ps = con.prepareStatement( sSQL );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilialPad );
+			ps.setString( 3, Aplicativo.strUsuario );
+			ps.execute();
+			ps.close();
+			if ( !con.getAutoCommit() )
+				con.commit();
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro(null, "Erro ao remover filial ativa no banco!\n" + err.getMessage() );
+		}
+	}	
+	
+	public void fecharJanela() {
+		if ( con != null ) {
+			try {
+				remConFilial();
+				con.close();
+			} catch ( java.sql.SQLException e ) {
+				Funcoes.mensagemErro(null, "Não foi possível fechar a conexao com o banco de dados!" );
+			}
+		}
+		System.exit( 0 );
+	}
+		
 }

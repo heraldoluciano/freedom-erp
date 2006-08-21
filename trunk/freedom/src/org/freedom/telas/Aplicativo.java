@@ -151,7 +151,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
     public abstract void setaSysdba();
 	
 	public void setaInfoTela() {
-		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim(), iCodSis, iCodModu);
+		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim());
 		telaPrincipal.setConexao(con); // Variavel de conexão da Classe
 
 		telaPrincipal.statusBar.setUsuario(strUsuario);//Variavel de usuario da
