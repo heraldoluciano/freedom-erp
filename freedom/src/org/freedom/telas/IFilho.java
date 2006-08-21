@@ -27,6 +27,8 @@ public interface IFilho {
 
     public abstract Container getTela();
 
+    
+    
     public abstract JPanelPad adicBotaoSair();
 
     public abstract void setFirstFocus(Component firstFocus);
