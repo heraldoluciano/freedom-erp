@@ -68,6 +68,8 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbObs = new JCheckBoxPad( "Imprimir observações?", "S", "N" );
+	
+	private JCheckBoxPad cbSoVendas = new JCheckBoxPad( "Mostrar somente recebimentos de vendas?", "S", "N" );
 
 	private JRadioGroup cbTipoRel = null;
 
@@ -82,7 +84,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		super();
 
 		setTitulo( "Descontos por Setor" );
-		setAtribos( 80, 80, 387, 360 );
+		setAtribos( 80, 80, 387, 380 );
 
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
@@ -121,6 +123,10 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		vVals.addElement( "A" );
 
 		cbTipoRel = new JRadioGroup( 3, 1, vLabs, vVals );
+		cbTipoRel.setVlrString( "A" );
+		
+		cbObs.setVlrString( "S" );
+		cbSoVendas.setVlrString( "S" );
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
@@ -147,6 +153,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		adic( new JLabelPad( "Nome do comissionado" ), 90, 210, 250, 20 );
 		adic( txtNomeVend, 90, 230, 270, 20 );
 		adic( cbObs, 10, 260, 200, 20 );
+		adic( cbSoVendas, 10, 280, 300, 20 );
 
 	}
 
@@ -159,8 +166,11 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
+		StringBuffer sFrom = new StringBuffer();
 		String sTipoRel = null;
-		String sTitRel = null;
+		StringBuffer sFiltros = new StringBuffer();
 
 		try {
 
@@ -171,34 +181,60 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 			sTipoRel = cbTipoRel.getVlrString();
 
 			if ( sTipoRel.equals( "R" ) ) {
-				sTitRel = "A RECEBER";
+				sFiltros.append( "A RECEBER\n" );
 			}
 			else if ( sTipoRel.equals( "P" ) ) {
-				sTitRel = "RECEBIDAS";
+				sFiltros.append( "RECEBIDAS\n" );
 			}
 			else if ( sTipoRel.equals( "A" ) ) {
-				sTitRel = "A RECEBER/RECEBIDAS";
+				sFiltros.append( "A RECEBER  /  RECEBIDAS\n" );
 			}
+			
+			sFrom.append( "FROM FNRECEBER R, FNITRECEBER IR, VDCLIENTE C " );
 
-			StringBuffer sSQL = new StringBuffer();
+			if ( iCodSetor > 0 || iCodVend > 0 ) { 
+				sFrom.append( ", VDVENDEDOR VD " );
+				sWhere.append( "AND R.CODEMPVD=VD.CODEMP AND R.CODFILIALVD=VD.CODFILIAL AND R.CODVEND=VD.CODVEND " );
+				if ( iCodSetor > 0 ) {
+					sFrom.append( ", VDSETOR S " );
+					sWhere.append( "AND S.CODEMP=VD.CODEMPSE AND S.CODFILIAL=VD.CODFILIALSE AND S.CODSETOR=VD.CODSETOR " );
+				}
+			}
+			
+			if ( iCodSetor > 0 ) {
+				sWhere.append( "AND S.CODSETOR=? " );
+				sFiltros.append( "SETOR = " + txtDescSetor.getVlrString().trim() );
+			}
+			if ( iCodCli > 0 ) {
+				sWhere.append( "AND C.CODCLI=? " );
+				if ( sFiltros.indexOf( "SETOR" ) > -1 ) {
+					sFiltros.append( "  /  " );
+				}
+				sFiltros.append( "CLIENTE = " + txtRazCli.getVlrString().trim() );
+			}
+			if ( iCodVend > 0 ) {
+				sWhere.append( "AND VD.CODVEND=? " );
+				if ( sFiltros.indexOf( "SETOR" ) > -1 || sFiltros.indexOf( "CLIENTE" ) > -1 ) {
+					sFiltros.append( "  /  " );
+				}
+				sFiltros.append( "VENDEDOR = " + txtNomeVend.getVlrString().trim() );
+			}
+			
+			if ( "S".equals( cbSoVendas.getVlrString() ) ) {
+				sFiltros.append( "\nSOMENTE RESEBIMENTOS SOBRE VENDAS" );
+				sFrom.append( ", VDVENDA V, EQTIPOMOV TM " );
+				sWhere.append( "AND R.CODEMPVA=V.CODEMP AND R.CODFILIALVA=V.CODFILIAL AND R.CODVENDA=V.CODVENDA AND R.TIPOVENDA=V.TIPOVENDA " );
+				sWhere.append( "AND V.CODEMPTM=TM.CODEMP AND V.CODFILIALTM=TM.CODFILIAL AND V.CODTIPOMOV=TM.CODTIPOMOV AND TM.TIPOMOV IN('PV','VD','VE','VT','SE') " );
+			}
 
 			sSQL.append( "SELECT IR.DTVENCITREC, C.RAZCLI, R.DOCREC, IR.VLRPARCITREC, " );
 			sSQL.append( "IR.VLRPAGOITREC, IR.VLRDESCITREC, IR.DTPAGOITREC, IR.OBSITREC " );
-			sSQL.append( "FROM FNRECEBER R, FNITRECEBER IR, VDCLIENTE C, VDSETOR S, VDVENDEDOR V " );
+			sSQL.append( sFrom );
 			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC " );
 			sSQL.append( "AND R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI " );
-			sSQL.append( "AND R.CODEMPVD=V.CODEMP AND R.CODFILIALVD=V.CODFILIAL AND R.CODVEND=V.CODVEND " );
-			sSQL.append( "AND S.CODEMP=V.CODEMPSE AND S.CODFILIAL=V.CODFILIALSE AND S.CODSETOR=V.CODSETOR " );
 			sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? AND IR.DTVENCITREC BETWEEN ? AND ? AND IR.STATUSITREC IN (?,?,?) " );
-			if ( iCodSetor > 0 ) {
-				sSQL.append( "AND S.CODSETOR=? " );
-			}
-			if ( iCodCli > 0 ) {
-				sSQL.append( "AND C.CODCLI=? " );
-			}
-			if ( iCodVend > 0 ) {
-				sSQL.append( "AND V.CODVEND=? " );
-			}
+			sSQL.append( sWhere );
+			sSQL.append( "ORDER BY 1" );
 
 			ps = con.prepareStatement( sSQL.toString() );
 
@@ -240,7 +276,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 			hParam.put( "MOSTRAOBS", cbObs.getVlrString() );
 
 			FPrinterJob dlGr = null;
-			dlGr = new FPrinterJob( "relatorios/receberSetor.jasper", "RELATORIO DE DESCONTOS POR SETOR", sTitRel, rs, hParam, this );
+			dlGr = new FPrinterJob( "relatorios/receberSetor.jasper", "RELATORIO DE DESCONTOS POR SETOR", sFiltros.toString(), rs, hParam, this );
 
 			if ( bVisualizar ) {
 				dlGr.setVisible( true );
