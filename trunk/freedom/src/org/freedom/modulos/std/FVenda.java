@@ -250,6 +250,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldFK txtDescProdAux = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JTextFieldFK txtDescNat = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescLote = new JTextFieldFK( JTextFieldPad.TP_DATE, 10, 0 );
@@ -567,10 +569,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		bPrefs = prefs(); // Carrega as preferências
 
 		// FK Produto
+		
+		//pra definir o tamanho na tela de pesquisa.
+		txtDescProdAux.setSize( 150, 20 );
 
 		lcProd.add( new GuardaCampo( txtCodProd, "codprod", "Cód.prod.", ListaCampos.DB_PK, false ) );
 		lcProd.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produtos", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false ) );
+		lcProd.add( new GuardaCampo( txtDescProdAux, "DescAuxProd", "Descrição auxiliar do produtos", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false ) );
 		lcProd.add( new GuardaCampo( txtPercComItVenda, "ComisProd", "% Comis.", ListaCampos.DB_SI, false ) );
@@ -588,6 +594,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcProd2.add( new GuardaCampo( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_PK, false ) );
 		lcProd2.add( new GuardaCampo( txtDescProd, "DescProd", "Descrição do produto", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
+		lcProd2.add( new GuardaCampo( txtDescProdAux, "DescAuxProd", "Descrição auxiliar do produtos", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
 		lcProd2.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false ) );
 		lcProd2.add( new GuardaCampo( txtPercComItVenda, "ComisProd", "% comis.", ListaCampos.DB_SI, false ) );
