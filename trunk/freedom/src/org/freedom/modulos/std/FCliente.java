@@ -1906,24 +1906,9 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 	}
 
 	private void imprimir( boolean bVisualizar ) {
-
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		StringBuffer sSQL = new StringBuffer();
-		String sObs = "";
-		StringBuffer sWhere = new StringBuffer();
-		StringBuffer sWhere2 = new StringBuffer();
-		String sCodpesq = "";
-		String sCodpesqant = "";
-		String sOrdem = "";
-		String sFrom = "";
-		String linhaFina = Funcoes.replicate( "-", 133 );
-		String[] sValores;
+		
 		ImprimeOS imp = new ImprimeOS( "", con );
-		Vector vObs = null;
-		FAndamento And = null;
-		int linPag = imp.verifLinPag() - 1;
-		int iContaReg = 0;
+		String[] sValores;
 
 		DLRCliente dl = new DLRCliente( this, con );
 		dl.setVisible( true );
@@ -1933,17 +1918,888 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		}
 
 		sValores = dl.getValores();
-		dl.dispose();
+
+		if ( "1".equals( sValores[ 7 ] ) ) {
+			imprimeResumido1( imp, sValores );
+		}
+		else if ( "2".equals( sValores[ 7 ] ) ) {
+			imprimeResumido2( imp, sValores );			
+		}
+		else if ( "3".equals( sValores[ 7 ] ) ) {
+			imprimeResumido3( imp, sValores );			
+		}
+		else if ( "C".equals( sValores[ 7 ] ) ) {
+			imprimeCompleto( imp, sValores );			
+		}
+		else if ( "A".equals( sValores[ 7 ] ) ) {
+			imprimeAlinhaFilial( imp, sValores );
+		}
+		
+		dl.dispose();	
+
+		if ( bVisualizar ) {
+			imp.preview( this );
+		}
+		else { 
+			imp.print();
+		}
+
+	}
+	
+	private void imprimeResumido1( final ImprimeOS imp, final String[] sValores ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		String sObs = "";
+		StringBuffer sWhere = new StringBuffer();
+		String sFrom = "";
+		String linhaFina = Funcoes.replicate( "-", 133 );
+		Vector vObs = null;
+		FAndamento And = null;
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
+		
+
+		if ( sValores[ 1 ].equals( "S" ) ) {
+			sObs = ",C1.OBSCLI ";
+		}
+
+		if ( sValores[ 2 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+		}
+		if ( sValores[ 3 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+		}
+		if ( sValores[ 4 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
+			imp.addSubTitulo( "PESSOAS JURIDICAS" );
+		}
+		if ( sValores[ 5 ].length() > 0 ) {
+			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
+		}
+		if ( sValores[ 6 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'J'" );
+			imp.addSubTitulo( "PESSOAS FISICA" );
+		}
+		if ( !sValores[ 13 ].trim().equals( "" ) ) {
+			sWhere.append( " AND C1.CODVEND =" + sValores[ 13 ] );
+			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
+		}
+		if ( sValores[ 8 ].length() > 0 ) {
+			if ( !bPref[ 0 ] ) {
+				sFrom = ",VDVENDEDOR V ";
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );;
+			}
+			else {
+				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
+			}
+			imp.addSubTitulo( "SETOR = " + sValores[ 9 ] );
+		}
+		if ( sValores[ 10 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ 10 ] );
+			imp.addSubTitulo( "TIPO DE CLIENTE=" + sValores[ 11 ] );
+		}
+		if ( sValores[ 15 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODCLASCLI=" + sValores[ 15 ] );
+			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
+		}
+		if ( sValores[ 18 ].length() > 0 ) {
+			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+		}
+
+		try {				
+
+			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Clientes" );
+			
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			rs.next();
+			
+			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
+			And.setVisible( true );
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI," );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCLI,C1.CIDCLI," );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI," );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI," );
+			}
+			sSQL.append( "C1.FONECLI,C1.DDDCLI,C1.CODPESQ " );
+			sSQL.append(  sObs );
+			sSQL.append( "FROM VDCLIENTE C1 " );
+			sSQL.append( sFrom );
+			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
+			sSQL.append( sWhere );
+			sSQL.append( " ORDER BY " + sValores[ 0 ] );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() >= linPag ) {
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + linhaFina + "+" );
+					imp.incPags();
+					imp.eject();
+					
+				}
+				
+				if ( imp.pRow() == 0 ) {
+					
+					imp.impCab( 136, true );
+					imp.pulaLinha( 0, imp.comprimido() );
+					imp.say( 0, "|" + linhaFina + "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|  Código" );
+					imp.say( 12, "|  Razão:" );
+					imp.say( 46, "|  Matriz" );
+					imp.say( 57, "|  Endereço:" );
+					imp.say( 93, "|  Cidade:" );
+					imp.say( 117, "|  Tel:" );
+					imp.say( 135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" + linhaFina + "|" );
+					
+				}
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				imp.say( 4, rs.getString( "CodCli" ) );
+				imp.say( 12, "|" );
+				imp.say( 14, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
+				imp.say( 46, "|" );
+
+				if ( rs.getString( "CodPesq" ) != null && !rs.getString( "CodPesq" ).equals( rs.getString( "CodCLi" ) ) ) {
+					imp.say( 49, String.valueOf( rs.getString( "CodPesq" ) ) );
+				}
+
+				imp.say( 57, "|" );
+				imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
+				imp.say( 93, "|" );
+				imp.say( 96, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 20 ) : "" );
+				imp.say( 117, "|" );
+				imp.say( 120, ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ).trim() );
+				imp.say( 135, "|" );
+
+				if ( !sObs.equals( "" ) ) {
+					
+					vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 101 );
+					
+					for ( int i = 0; i < vObs.size(); i++ ) {
+						
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" );
+						imp.say( 14, vObs.elementAt( i ).toString() );
+						imp.say( 117, "|" );
+						imp.say( 135, "|" );
+						
+						if ( imp.pRow() >= linPag ) {
+							
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 0, "+" + linhaFina + "+" );
+							imp.incPags();
+							imp.eject();
+							
+						}
+						
+					}
+					
+				}
+				
+				And.atualiza( iContaReg );
+				iContaReg++;
+				
+			}
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + linhaFina + "+" );
+			
+			imp.eject();
+			imp.fechaGravacao();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			And.dispose();
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+	}
+	
+	private void imprimeResumido2( final ImprimeOS imp, final String[] sValores ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		String sObs = "";
+		StringBuffer sWhere = new StringBuffer();
+		String sFrom = "";
+		String linhaFina = Funcoes.replicate( "-", 133 );
+		Vector vObs = null;
+		FAndamento And = null;
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
+		
+
+		if ( sValores[ 1 ].equals( "S" ) ) {
+			sObs = ",C1.OBSCLI ";
+		}
+
+		if ( sValores[ 2 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+		}
+		if ( sValores[ 3 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+		}
+		if ( sValores[ 4 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
+			imp.addSubTitulo( "PESSOAS JURIDICAS" );
+		}
+		if ( sValores[ 5 ].length() > 0 ) {
+			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
+		}
+		if ( sValores[ 6 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'J'" );
+			imp.addSubTitulo( "PESSOAS FISICA" );
+		}
+		if ( !sValores[ 13 ].trim().equals( "" ) ) {
+			sWhere.append( " AND C1.CODVEND =" + sValores[ 13 ] );
+			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
+		}
+		if ( sValores[ 8 ].length() > 0 ) {
+			if ( !bPref[ 0 ] ) {
+				sFrom = ",VDVENDEDOR V ";
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
+			}
+			else {
+				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
+			}
+			imp.addSubTitulo( "SETOR = " + sValores[ 9 ] );
+		}
+		if ( sValores[ 10 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ 10 ] );
+			imp.addSubTitulo( "TIPO DE CLIENTE=" + sValores[ 11 ] );
+		}
+		if ( sValores[ 15 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODCLASCLI=" + sValores[ 15 ] );
+			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
+		}
+		if ( sValores[ 18 ].length() > 0 ) {
+			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+		}
+
+		try {				
+
+			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Clientes" );
+			
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			rs.next();
+			
+			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
+			And.setVisible( true );
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.FONECLI," );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCLI,C1.CIDCLI,C1.NUMCLI," );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI,C1.NUMENT AS NUMCLI," );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI,C1.NUMCOB AS NUMCLI," );
+			}
+			sSQL.append( "C1.FAXCLI,C1.DDDCLI,C1.CONTCLI,C1.EMAILCLI,C1.SITECLI " );
+			sSQL.append( sObs );
+			sSQL.append( "FROM VDCLIENTE C1 " );
+			sSQL.append( sFrom );
+			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
+			sSQL.append( sWhere );
+			sSQL.append( " ORDER BY " + sValores[ 0 ] );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+
+			while ( rs.next() ) {
+
+				if ( imp.pRow() >= linPag ) {
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + linhaFina + "+" );
+					imp.incPags();
+					imp.eject();
+					
+				}
+
+				if ( imp.pRow() == 0 ) {
+					
+					imp.impCab( 136, true );
+					imp.pulaLinha( 0, imp.comprimido() );
+					imp.say( 0, "|" + linhaFina + "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|  Código" );
+					imp.say( 10, "|  Razão Social / Nome Fantasia" );
+					imp.say( 42, "|  Contato / E-Mail" );
+					imp.say( 74, "|  Endereço / Web Site" );
+					imp.say( 117, "|   Tel / Fax" );
+					imp.say( 135, "|" );
+					
+				}					
+
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" + linhaFina + "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				imp.say( 2, rs.getString( "CodCli" ) );
+				imp.say( 10, "|" );
+				imp.say( 11, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
+				imp.say( 42, "|" );
+				imp.say( 43, rs.getString( "ContCli" ) != null ? rs.getString( "ContCli" ).substring( 0, 30 ) : "" );
+				imp.say( 74, "|" );
+				imp.say( 76, ( rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" ).trim() + ", " + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) );
+				imp.say( 117, "|" );
+				imp.say( 119, ( rs.getString( "FoneCli" ) != null ? ( ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) ) : "" ).trim() );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				imp.say( 10, "|" );
+				imp.say( 11, rs.getString( "NomeCli" ) != null ? rs.getString( "NomeCli" ).substring( 0, 30 ) : "" );
+				imp.say( 42, "|" );
+				imp.say( 43, rs.getString( "EmailCli" ) != null ? rs.getString( "EmailCli" ).substring( 0, 30 ) : "" );
+				imp.say( 74, "|" );
+				imp.say( 76, ( rs.getString( "SiteCli" ) != null ? rs.getString( "SiteCli" ).substring( 0, 30 ) : "" ) );
+				imp.say( 117, "|" );
+				imp.say( 119, ( rs.getString( "FaxCli" ) != null ? ( ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + Funcoes.setMascara( rs.getString( "FaxCli" ).trim(), "####-####" ) ) : "" ).trim() );
+				imp.say( 135, "|" );
+
+				if ( !sObs.equals( "" ) ) {
+					
+					vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 101 );
+					
+					for ( int i = 0; i < vObs.size(); i++ ) {
+						
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" );
+						imp.say( 14, vObs.elementAt( i ).toString() );
+						imp.say( 117, "|" );
+						imp.say( 135, "|" );
+						
+						if ( imp.pRow() >= linPag ) {
+							imp.incPags();
+							imp.eject();
+						}
+						
+					}
+					
+				}
+				
+				And.atualiza( iContaReg );
+				iContaReg++;
+				
+			}
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + linhaFina + "+" );
+			
+			imp.eject();
+			imp.fechaGravacao();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			And.dispose();
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+	}
+	
+	private void imprimeResumido3( final ImprimeOS imp, final String[] sValores ) {
+
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		String sObs = "";
+		StringBuffer sWhere = new StringBuffer();
+		String sFrom = "";
+		String linhaFina = Funcoes.replicate( "-", 133 );
+		Vector vObs = null;
+		FAndamento And = null;
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
+		
+
+		if ( sValores[ 1 ].equals( "S" ) ) {
+			sObs = ",C1.OBSCLI ";
+		}
+
+		if ( sValores[ 2 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.NOMECLI >='" + sValores[ 2 ] + "'" );
+			imp.addSubTitulo( "NOMES MAIORES QUE " + sValores[ 2 ].trim() );
+		}
+		if ( sValores[ 3 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.NOMECLI <='" + sValores[ 3 ] + "'" );
+			imp.addSubTitulo( "NOMES MENORES QUE " + sValores[ 3 ].trim() );
+		}
+		if ( sValores[ 4 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
+			imp.addSubTitulo( "PESSOAS JURIDICAS" );
+		}
+		if ( sValores[ 5 ].length() > 0 ) {
+			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
+		}
+		if ( sValores[ 6 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'J'" );
+			imp.addSubTitulo( "PESSOAS FISICA" );
+		}
+		if ( !sValores[ 13 ].trim().equals( "" ) ) {
+			sWhere.append( " AND C1.CODVEND =" + sValores[ 13 ] );
+			imp.addSubTitulo( "REPRESENTANTE = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
+		}
+		if ( sValores[ 8 ].length() > 0 ) {
+			if ( !bPref[ 0 ] ) {
+				sFrom = ",VDVENDEDOR V ";
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );;
+			}
+			else {
+				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
+			}
+			imp.addSubTitulo( "SETOR = " + sValores[ 9 ] );
+		}
+		if ( sValores[ 10 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ 10 ] );
+			imp.addSubTitulo( "TIPO DE CLIENTE=" + sValores[ 11 ] );
+		}
+		if ( sValores[ 15 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODCLASCLI=" + sValores[ 15 ] );
+			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
+		}
+		if ( sValores[ 18 ].length() > 0 ) {
+			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+		}
+
+		try {				
+
+			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Clientes" );
+			
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			rs.next();
+			
+			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
+			And.setVisible( true );
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			sSQL.append( "SELECT C1.CODCLI,C1.NOMECLI," );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI," );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
+				sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI," );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
+				sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI," );
+			}
+			sSQL.append( "C1.FONECLI,C1.DDDCLI " );
+			sSQL.append(  sObs );
+			sSQL.append( "FROM VDCLIENTE C1 " );
+			sSQL.append( sFrom );
+			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
+			sSQL.append( sWhere );
+			sSQL.append( " ORDER BY " + sValores[ 0 ] );
+			
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() >= linPag ) {
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + linhaFina + "+" );
+					imp.incPags();
+					imp.eject();
+					
+				}
+				
+				if ( imp.pRow() == 0 ) {
+					
+					imp.impCab( 136, true );
+					imp.say( 0, "|" + linhaFina + "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|  Código" );
+					imp.say( 9, "|  Nome fantazia:" );
+					imp.say( 40, "|  Endereço:" );
+					imp.say( 76, "|  Bairro:" );
+					imp.say( 96, "|  Cidade:" );
+					imp.say( 116, "|UF" );
+					imp.say( 119, "|     Fone" );
+					imp.say( 135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" + linhaFina + "|" );
+					
+				}
+				
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" + Funcoes.alinhaDir( rs.getString( "CODCLI" ), 8 ) );
+				imp.say( 9, "|" + ( rs.getString( "NOMECLI" ) != null ? Funcoes.copy( rs.getString( "NOMECLI" ), 29 ) : "" ) );
+				imp.say( 40, "|" + ( rs.getString( "ENDCLI" ) != null ? Funcoes.copy( rs.getString( "ENDCLI" ), 30 ) : "" ) );
+				imp.say( 71, rs.getString( "NUMCLI" ) != null ? Funcoes.alinhaDir( rs.getString( "NUMCLI" ), 5 ) : "" );
+				imp.say( 76, "|" + ( rs.getString( "BAIRCLI" ) != null ? Funcoes.copy( rs.getString( "BAIRCLI" ), 19 ) : "" ) );
+				imp.say( 96, "|" + ( rs.getString( "CIDCLI" ) != null ? Funcoes.copy( rs.getString( "CIDCLI" ), 19 ) : "" ) );
+				imp.say( 116, "|" + ( rs.getString( "UFCLI" ) != null ? Funcoes.copy( rs.getString( "UFCLI" ), 2 ) : "" ) );
+				imp.say( 119, "|" + ( rs.getString( "DDDCLI" ) != null ? ("(" + rs.getString( "DDDCLI" ) + ")") : "" ) + ( rs.getString( "FONECLI" ) != null ? Funcoes.setMascara( rs.getString( "FONECLI" ).trim(), "####-####" ) : "" ).trim() );
+				imp.say( 135, "|" );
+
+				if ( "S".equals( sValores[ 1 ] ) ) {
+					
+					vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 100 );
+					
+					for ( int i = 0; i < vObs.size(); i++ ) {
+						
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|      Obs: " + vObs.elementAt( i ).toString() );
+						imp.say( 119, "|" );
+						imp.say( 135, "|" );
+						
+						if ( imp.pRow() >= linPag ) {
+							
+							imp.pulaLinha( 1, imp.comprimido() );
+							imp.say( 0, "+" + linhaFina + "+" );
+							imp.incPags();
+							imp.eject();
+							
+						}
+						
+					}
+					
+				}
+				
+				And.atualiza( iContaReg );
+				iContaReg++;
+				
+			}
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + linhaFina + "+" );
+			
+			imp.eject();
+			imp.fechaGravacao();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			
+			And.dispose();
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+	}
+	
+	private void imprimeCompleto( final ImprimeOS imp, final String[] sValores ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		String sObs = "";
+		StringBuffer sWhere = new StringBuffer();
+		String sFrom = "";
+		String linhaFina = Funcoes.replicate( "-", 133 );
+		FAndamento And = null;
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
+		
+
+		if ( sValores[ 1 ].equals( "S" ) ) {
+			sObs = ",C1.OBSCLI ";
+		}
+
+		if ( sValores[ 2 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI >='" + sValores[ 2 ] + "'" );
+			imp.addSubTitulo( "RAZAO MAIORES QUE " + sValores[ 2 ].trim() );
+		}
+		if ( sValores[ 3 ].trim().length() > 0 ) {
+			sWhere.append( " AND C1.RAZCLI <='" + sValores[ 3 ] + "'" );
+			imp.addSubTitulo( "RAZAO MENORES QUE " + sValores[ 3 ].trim() );
+		}
+		if ( sValores[ 4 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'F'" );
+			imp.addSubTitulo( "PESSOAS JURIDICAS" );
+		}
+		if ( sValores[ 5 ].length() > 0 ) {
+			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
+		}
+		if ( sValores[ 6 ].equals( "N" ) ) {
+			sWhere.append( " AND C1.PESSOACLI <> 'J'" );
+			imp.addSubTitulo( "PESSOAS FISICA" );
+		}
+		if ( !sValores[ 13 ].trim().equals( "" ) ) {
+			sWhere.append( " AND C1.CODVEND =" + sValores[ 13 ] );
+			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
+		}
+		if ( sValores[ 8 ].length() > 0 ) {
+			if ( !bPref[ 0 ] ) {
+				sFrom = ",VDVENDEDOR V ";
+				sWhere.append( " AND C1.CODEMPVD=V.CODEMP AND C1.CODFILIALVD=V.CODFILIAL AND C1.CODVEND=V.CODVEND AND V.CODSETOR = " + sValores[ 8 ] );
+			}
+			else {
+				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
+			}
+			imp.addSubTitulo( "SETOR = " + sValores[ 9 ] );
+		}
+		if ( sValores[ 10 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ 10 ] );
+			imp.addSubTitulo( "TIPO DE CLIENTE=" + sValores[ 11 ] );
+		}
+		if ( sValores[ 15 ].length() > 0 ) {
+			sWhere.append( " AND C1.CODCLASCLI=" + sValores[ 15 ] );
+			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
+		}
+		if ( sValores[ 18 ].length() > 0 ) {
+			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+		}
+
+		
+		try {				
+
+			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Clientes" );
+			
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			rs.next();
+			
+			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
+			And.setVisible( true );
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+
+			sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.PESSOACLI,C1.NOMECLI,C1.CONTCLI," );
+			sSQL.append( "C1.CNPJCLI,C1.INSCCLI,C1.CPFCLI," );
+			sSQL.append( "C1.RGCLI,C1.FONECLI,C1.DDDCLI,C1.FAXCLI,C1.EMAILCLI,C1.CODPESQ, " );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI,C1.CEPCLI " );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
+				sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI,C1.CEPENT AS CEPCLI " );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
+				sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI,C1.CEPCOB AS CEPCLI " );
+			}
+			sSQL.append( sObs );
+			sSQL.append( "FROM VDCLIENTE C1 " );
+			sSQL.append( sFrom );
+			sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
+			sSQL.append( sWhere );
+			sSQL.append( " ORDER BY " + sValores[ 0 ] );
+		
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			
+			while ( rs.next() ) {
+				
+				if ( imp.pRow() == 0 ) {
+					imp.impCab( 136, true );
+					imp.pulaLinha( 0, imp.comprimido() );
+					imp.say( 0, "|" );
+					imp.say( 135, "|" );
+				}
+
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" + linhaFina + "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "| Código:" );
+				imp.say( 10, rs.getString( "CodCli" ) );
+				imp.say( 20, "Razão:" );
+				imp.say( 27, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
+
+				if ( rs.getString( "CodPesq" ) != null && !rs.getString( "CodPesq" ).equals( rs.getString( "CodCLi" ) ) ) {
+					imp.say( 57, "Cod.Matriz : " + rs.getString( "CodPesq" ) );
+				}
+
+				imp.say( 127, "Tipo:" );
+				imp.say( 133, rs.getString( "PessoaCli" ) );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "| Nome:" );
+				imp.say( 8, rs.getString( "NomeCli" ) );
+				imp.say( 60, "Contato:" );
+				imp.say( 70, rs.getString( "ContCli" ) );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "| Endereço:" );
+				imp.say( 12, rs.getString( "EndCli" ) );
+				imp.say( 63, "N.:" );
+				imp.say( 67, String.valueOf( rs.getInt( "NumCli" ) ) );
+				imp.say( 76, "Compl.:" );
+				imp.say( 85, rs.getString( "ComplCli" ) != null ? rs.getString( "ComplCli" ).trim() : "" );
+				imp.say( 94, "Bairro:" );
+				imp.say( 103, rs.getString( "BairCli" ) != null ? rs.getString( "BairCli" ).trim() : "" );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "| Cidade:" );
+				imp.say( 10, rs.getString( "CidCli" ) );
+				imp.say( 88, "UF:" );
+				imp.say( 93, rs.getString( "UfCli" ) );
+				imp.say( 120, "CEP:" );
+				imp.say( 125, rs.getString( "CepCli" ) != null ? Funcoes.setMascara( rs.getString( "CepCli" ), "#####-###" ) : "" );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+
+				if ( ( rs.getString( "CnpjCli" ) ) != null && ( rs.getString( "InscCli" ) != null ) ) {
+					imp.say( 0, "| CNPJ:" );
+					imp.say( 7, Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );
+					imp.say( 50, "IE:" );
+					if ( !rs.getString( "InscCli" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCli" ) != null ) {
+						Funcoes.vIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
+						imp.say( 55, Funcoes.sIEValida );
+					}
+				}
+				else {
+					imp.say( 0, "| CPF:" );
+					imp.say( 6, Funcoes.setMascara( rs.getString( "CPFCli" ), "###.###.###-##" ) );
+					imp.say( 50, "RG:" );
+					imp.say( 55, rs.getString( "RgCli" ) );
+				}
+
+				imp.say( 80, "Tel:" );
+				imp.say( 86, ( rs.getString( "DDDCli" ) != null ? rs.getString( "DDDCli" ) + "-" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ).trim() );
+				imp.say( 115, "Fax:" );
+				imp.say( 122, rs.getString( "FaxCli" ) != null ? Funcoes.setMascara( rs.getString( "FaxCli" ), "####-####" ) : "" );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "| Contato:" );
+				imp.say( 12, rs.getString( "ContCli" ) );
+				imp.say( 72, "E-mail:" );
+				imp.say( 79, rs.getString( "EmailCli" ) );
+				imp.say( 135, "|" );
+
+				if ( sObs.length() > 0 ) {
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|Obs:" );
+					imp.say( 6, rs.getString( "ObsCli" ) );
+					imp.say( 135, "|" );
+				}
+
+				if ( imp.pRow() >= linPag ) {
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + linhaFina + "+" );
+					imp.incPags();
+					imp.eject();
+				}
+				
+				And.atualiza( iContaReg++ );
+				
+			}
+			
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + linhaFina + "+" );
+			
+			imp.eject();
+			imp.fechaGravacao();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}			
+			
+			And.dispose();
+			
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!" + err.getMessage(), true, con, err );
+			err.printStackTrace();
+		}
+		
+		
+	}
+	
+	private void imprimeAlinhaFilial( final ImprimeOS imp, final String[] sValores ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
+		StringBuffer sWhere2 = new StringBuffer();
+		String sCodpesq = "";
+		String sCodpesqant = "";
+		String sOrdem = "";
+		String sFrom = "";
+		String linhaFina = Funcoes.replicate( "-", 133 );
+		FAndamento And = null;
+		int linPag = imp.verifLinPag() - 1;
+		int iContaReg = 0;
+		
 
 		if ( sValores[ 12 ].equals( "C" ) ) {
 			sOrdem = "1,3,4";
 		}
 		else {
 			sOrdem = "2,3,5";
-		}
-
-		if ( sValores[ 1 ].equals( "S" ) ) {
-			sObs = ",C1.OBSCLI ";
 		}
 
 		if ( sValores[ 2 ].trim().length() > 0 ) {
@@ -1998,614 +2854,167 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sWhere2.append( " AND C2.CODCLASCLI=" + sValores[ 15 ] );
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
-
-		if ( sValores[ 7 ].equals( "C" ) ) {
-
-			try {				
-
-				imp.limpaPags();
-				imp.montaCab();
-				imp.setTitulo( "Relatório de Clientes" );
-				
-				ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-				rs.next();
-				
-				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-
-				sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.PESSOACLI,C1.NOMECLI,C1.CONTCLI," );
-				sSQL.append( "C1.CNPJCLI,C1.INSCCLI,C1.CPFCLI," );
-				sSQL.append( "C1.RGCLI,C1.FONECLI,C1.DDDCLI,C1.FAXCLI,C1.EMAILCLI,C1.CODPESQ, " );
-				if( "A".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCLI,C1.NUMCLI,C1.BAIRCLI,C1.CIDCLI,C1.COMPLCLI,C1.UFCLI,C1.CEPCLI " );
-				}
-				else if( "E".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDENT AS ENDCLI,C1.NUMENT AS NUMCLI,C1.BAIRENT AS BAIRCLI," );
-					sSQL.append( "C1.CIDENT AS CIDCLI,C1.COMPLENT AS COMPLCLI,C1.UFENT AS UFCLI,C1.CEPENT AS CEPCLI " );
-				}
-				else if( "C".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCOB AS ENDCLI,C1.NUMCOB AS NUMCLI,C1.BAIRCOB AS BAIRCLI," );
-					sSQL.append( "C1.CIDCOB AS CIDCLI,C1.COMPLCOB AS COMPLCLI,C1.UFCOB AS UFCLI,C1.CEPCOB AS CEPCLI " );
-				}
-				sSQL.append( sObs );
-				sSQL.append( "FROM VDCLIENTE C1 " );
-				sSQL.append( sFrom );
-				sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
-				sSQL.append( sWhere.toString() );
-				sSQL.append( " ORDER BY " + sValores[ 0 ] );
-			
-				ps = con.prepareStatement( sSQL.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-				
-				while ( rs.next() ) {
-					
-					if ( imp.pRow() == 0 ) {
-						imp.impCab( 136, true );
-						imp.pulaLinha( 0, imp.comprimido() );
-						imp.say( 0, "|" );
-						imp.say( 135, "|" );
-					}
-
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" + linhaFina + "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "| Código:" );
-					imp.say( 10, rs.getString( "CodCli" ) );
-					imp.say( 20, "Razão:" );
-					imp.say( 27, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-
-					if ( rs.getString( "CodPesq" ) != null && !rs.getString( "CodPesq" ).equals( rs.getString( "CodCLi" ) ) ) {
-						imp.say( 57, "Cod.Matriz : " + rs.getString( "CodPesq" ) );
-					}
-
-					imp.say( 127, "Tipo:" );
-					imp.say( 133, rs.getString( "PessoaCli" ) );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "| Nome:" );
-					imp.say( 8, rs.getString( "NomeCli" ) );
-					imp.say( 60, "Contato:" );
-					imp.say( 70, rs.getString( "ContCli" ) );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "| Endereço:" );
-					imp.say( 12, rs.getString( "EndCli" ) );
-					imp.say( 63, "N.:" );
-					imp.say( 67, String.valueOf( rs.getInt( "NumCli" ) ) );
-					imp.say( 76, "Compl.:" );
-					imp.say( 85, rs.getString( "ComplCli" ) != null ? rs.getString( "ComplCli" ).trim() : "" );
-					imp.say( 94, "Bairro:" );
-					imp.say( 103, rs.getString( "BairCli" ) != null ? rs.getString( "BairCli" ).trim() : "" );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "| Cidade:" );
-					imp.say( 10, rs.getString( "CidCli" ) );
-					imp.say( 88, "UF:" );
-					imp.say( 93, rs.getString( "UfCli" ) );
-					imp.say( 120, "CEP:" );
-					imp.say( 125, rs.getString( "CepCli" ) != null ? Funcoes.setMascara( rs.getString( "CepCli" ), "#####-###" ) : "" );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-
-					if ( ( rs.getString( "CnpjCli" ) ) != null && ( rs.getString( "InscCli" ) != null ) ) {
-						imp.say( 0, "| CNPJ:" );
-						imp.say( 7, Funcoes.setMascara( rs.getString( "CnpjCli" ), "##.###.###/####-##" ) );
-						imp.say( 50, "IE:" );
-						if ( !rs.getString( "InscCli" ).trim().toUpperCase().equals( "ISENTO" ) && rs.getString( "UFCli" ) != null ) {
-							Funcoes.vIE( rs.getString( "InscCli" ), rs.getString( "UFCli" ) );
-							imp.say( 55, Funcoes.sIEValida );
-						}
-					}
-					else {
-						imp.say( 0, "| CPF:" );
-						imp.say( 6, Funcoes.setMascara( rs.getString( "CPFCli" ), "###.###.###-##" ) );
-						imp.say( 50, "RG:" );
-						imp.say( 55, rs.getString( "RgCli" ) );
-					}
-
-					imp.say( 80, "Tel:" );
-					imp.say( 86, ( rs.getString( "DDDCli" ) != null ? rs.getString( "DDDCli" ) + "-" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ).trim() );
-					imp.say( 115, "Fax:" );
-					imp.say( 122, rs.getString( "FaxCli" ) != null ? Funcoes.setMascara( rs.getString( "FaxCli" ), "####-####" ) : "" );
-					imp.say( 135, "|" );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "| Contato:" );
-					imp.say( 12, rs.getString( "ContCli" ) );
-					imp.say( 72, "E-mail:" );
-					imp.say( 79, rs.getString( "EmailCli" ) );
-					imp.say( 135, "|" );
-
-					if ( sObs.length() > 0 ) {
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|Obs:" );
-						imp.say( 6, rs.getString( "ObsCli" ) );
-						imp.say( 135, "|" );
-					}
-
-					if ( imp.pRow() >= linPag ) {
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + linhaFina + "+" );
-						imp.incPags();
-						imp.eject();
-					}
-					
-					And.atualiza( iContaReg );
-					iContaReg++;
-					
-				}
-				
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + linhaFina + "+" );
-				
-				imp.eject();
-				imp.fechaGravacao();
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-				dl.dispose();
-				And.dispose();
-				
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!" + err.getMessage(), true, con, err );
-				err.printStackTrace();
-			}
-			
+		if ( sValores[ 18 ].length() > 0 ) {
+			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			sWhere2.append( " AND C2.BAIRCLI='" + sValores[ 18 ] + "'" );
+			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
-		else if ( dl.getValores()[ 7 ].equals( "R" ) ) {
+
+		try {				
+
+			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Clientes" );
 			
-			try {				
-
-				imp.limpaPags();
-				imp.montaCab();
-				imp.setTitulo( "Relatório de Clientes" );
-				
-				ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-				rs.next();
-				
-				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-				sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI," );
-				if( "A".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCLI,C1.CIDCLI," );
-				}
-				else if( "E".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI," );
-				}
-				else if( "C".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI," );
-				}
-				sSQL.append( "C1.FONECLI,C1.DDDCLI,C1.CODPESQ " );
-				sSQL.append(  sObs );
-				sSQL.append( "FROM VDCLIENTE C1 " );
-				sSQL.append( sFrom );
-				sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
-				sSQL.append( sWhere );
-				sSQL.append( " ORDER BY " + dl.getValores()[ 0 ] );
-				
-				ps = con.prepareStatement( sSQL.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-
-				while ( rs.next() ) {
-					
-					if ( imp.pRow() >= linPag ) {
-						
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + linhaFina + "+" );
-						imp.incPags();
-						imp.eject();
-						
-					}
-					
-					if ( imp.pRow() == 0 ) {
-						
-						imp.impCab( 136, true );
-						imp.pulaLinha( 0, imp.comprimido() );
-						imp.say( 0, "|" + linhaFina + "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|  Código" );
-						imp.say( 12, "|  Razão:" );
-						imp.say( 46, "|  Matriz" );
-						imp.say( 57, "|  Endereço:" );
-						imp.say( 93, "|  Cidade:" );
-						imp.say( 117, "|  Tel:" );
-						imp.say( 135, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|" + linhaFina + "|" );
-						
-					}
-					
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 0, "|" );
-					imp.say( 4, rs.getString( "CodCli" ) );
-					imp.say( 12, "|" );
-					imp.say( 14, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-					imp.say( 46, "|" );
-
-					if ( rs.getString( "CodPesq" ) != null && !rs.getString( "CodPesq" ).equals( rs.getString( "CodCLi" ) ) ) {
-						imp.say( 49, String.valueOf( rs.getString( "CodPesq" ) ) );
-					}
-
-					imp.say( 57, "|" );
-					imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
-					imp.say( 93, "|" );
-					imp.say( 96, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 20 ) : "" );
-					imp.say( 117, "|" );
-					imp.say( 120, ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ).trim() );
-					imp.say( 135, "|" );
-
-					if ( !sObs.equals( "" ) ) {
-						
-						vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 101 );
-						
-						for ( int i = 0; i < vObs.size(); i++ ) {
-							
-							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( 0, "|" );
-							imp.say( 14, vObs.elementAt( i ).toString() );
-							imp.say( 117, "|" );
-							imp.say( 135, "|" );
-							
-							if ( imp.pRow() >= linPag ) {
-								
-								imp.pulaLinha( 1, imp.comprimido() );
-								imp.say( 0, "+" + linhaFina + "+" );
-								imp.incPags();
-								imp.eject();
-								
-							}
-							
-						}
-						
-					}
-					
-					And.atualiza( iContaReg );
-					iContaReg++;
-					
-				}
-				
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + linhaFina + "+" );
-				
-				imp.eject();
-				imp.fechaGravacao();
-
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-				dl.dispose();
-				And.dispose();
-				
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			rs.next();
+			
+			And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
+			And.setVisible( true );
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
 			}
-		}
+			
+			sSQL.append( "SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.FONECLI," );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCLI,C1.CIDCLI " );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI " );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI " );
+			}
+			sSQL.append( "FROM VDCLIENTE C1" );
+			sSQL.append( sFrom );
+			sSQL.append( " WHERE C1.CODCLI=C1.CODPESQ " );
+			sSQL.append( " AND C1.CODEMP=? AND C1.CODFILIAL=? " );
+			sSQL.append( sWhere );
+			sSQL.append( " UNION SELECT C2.CODPESQ,");
+			sSQL.append( "(SELECT C3.RAZCLI FROM VDCLIENTE C3 WHERE C3.CODCLI=C2.CODPESQ) AS RAZMATRIZ," );
+			sSQL.append( "'B' TIPO,C2.CODCLI,C2.RAZCLI,C2.DDDCLI,C2.FONECLI," );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C2.ENDCLI,C2.CIDCLI " );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C2.ENDENT AS ENDCLI,C2.CIDENT AS CIDCLI " );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sSQL.append( "C2.ENDCOB AS ENDCLI,C2.CIDCOB AS CIDCLI " );
+			}
+			sSQL.append( "FROM VDCLIENTE C2" );
+			sSQL.append( sFrom );
+			sSQL.append( " WHERE NOT C2.CODCLI=C2.CODPESQ AND " );
+			sSQL.append( "C2.CODEMP=? AND C2.CODFILIAL=? " );
+			sSQL.append( sWhere2 );
+			sSQL.append( " ORDER BY " + sOrdem );
+			
+			System.out.println( sSQL.toString() );
 
-		else if ( dl.getValores()[ 7 ].equals( "J" ) ) {// pra Junko
-
-			try {				
-
-				imp.limpaPags();
-				imp.montaCab();
-				imp.setTitulo( "Relatório de Clientes" );
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
+			rs = ps.executeQuery();
+			
+			while ( rs.next() ) {
 				
-				ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-				rs.next();
+				sCodpesq = String.valueOf( rs.getInt( 1 ) );
 				
-				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
+				if ( sCodpesqant.equals( "" ) ){
+					sCodpesqant = sCodpesq;
 				}
-				
-				sSQL.append( "SELECT C1.CODCLI,C1.RAZCLI,C1.NOMECLI,C1.FONECLI," );
-				if( "A".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCLI,C1.CIDCLI,C1.NUMCLI," );
+
+				if ( imp.pRow() >= linPag ) {
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + linhaFina + "+" );
+					imp.incPags();
+					imp.eject();
 				}
-				else if( "E".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI,C1.NUMENT AS NUMCLI," );
-				}
-				else if( "C".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI,C1.NUMCOB AS NUMCLI," );
-				}
-				sSQL.append( "C1.FAXCLI,C1.DDDCLI,C1.CONTCLI,C1.EMAILCLI,C1.SITECLI " );
-				sSQL.append( sObs );
-				sSQL.append( "FROM VDCLIENTE C1 " );
-				sSQL.append( sFrom );
-				sSQL.append( "WHERE C1.CODEMP=? AND C1.CODFILIAL=? " );
-				sSQL.append( sWhere );
-				sSQL.append( " ORDER BY " + dl.getValores()[ 0 ] );
-				
-				ps = con.prepareStatement( sSQL.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
 
-				while ( rs.next() ) {
+				if ( imp.pRow() == 0 ) {
 
-					if ( imp.pRow() >= linPag ) {
-						
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + linhaFina + "+" );
-						imp.incPags();
-						imp.eject();
-						
-					}
-
-					if ( imp.pRow() == 0 ) {
-						
-						imp.impCab( 136, true );
-						imp.pulaLinha( 0, imp.comprimido() );
-						imp.say( 0, "|" + linhaFina + "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|  Código" );
-						imp.say( 10, "|  Razão Social / Nome Fantasia" );
-						imp.say( 42, "|  Contato / E-Mail" );
-						imp.say( 74, "|  Endereço / Web Site" );
-						imp.say( 117, "|   Tel / Fax" );
-						imp.say( 135, "|" );
-						
-					}					
-
+					imp.impCab( 136, true );
+					imp.pulaLinha( 0, imp.comprimido() );
+					imp.say( imp.pRow() + 0, 0, "+" + linhaFina + "+" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "| Codigo" );
+					imp.say( 12, "| Nome" );
+					imp.say( 58, "| Endereco" );
+					imp.say( 101, "| Cidade" );
+					imp.say( 115, "|  Telefone" );
+					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + linhaFina + "|" );
+
+				}
+				else {
+					if ( !sCodpesq.equals( sCodpesqant ) ) {
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" + linhaFina + "|" );
+					}
+				}
+
+				if ( rs.getString( 3 ).equals( "A" ) ) {
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
 					imp.say( 2, rs.getString( "CodCli" ) );
-					imp.say( 10, "|" );
-					imp.say( 11, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-					imp.say( 42, "|" );
-					imp.say( 43, rs.getString( "ContCli" ) != null ? rs.getString( "ContCli" ).substring( 0, 30 ) : "" );
-					imp.say( 74, "|" );
-					imp.say( 76, ( rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" ).trim() + ", " + ( rs.getString( "NumCli" ) != null ? rs.getString( "NumCli" ) : "" ) );
-					imp.say( 117, "|" );
-					imp.say( 119, ( rs.getString( "FoneCli" ) != null ? ( ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) ) : "" ).trim() );
+					imp.say( 12, "|" );
+					imp.say( 14, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
+					imp.say( 47, "(M)" );
+					imp.say( 58, "|" );
+					imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
+					imp.say( 101, "|" );
+					imp.say( 103, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 12 ) : "" );
+					imp.say( 115, "|" );
+					imp.say( 120, ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ).trim() );
 					imp.say( 135, "|" );
+
+				}
+				else if ( !rs.getString( 1 ).equals( rs.getString( 4 ) ) ) {
+
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" );
-					imp.say( 10, "|" );
-					imp.say( 11, rs.getString( "NomeCli" ) != null ? rs.getString( "NomeCli" ).substring( 0, 30 ) : "" );
-					imp.say( 42, "|" );
-					imp.say( 43, rs.getString( "EmailCli" ) != null ? rs.getString( "EmailCli" ).substring( 0, 30 ) : "" );
-					imp.say( 74, "|" );
-					imp.say( 76, ( rs.getString( "SiteCli" ) != null ? rs.getString( "SiteCli" ).substring( 0, 30 ) : "" ) );
-					imp.say( 117, "|" );
-					imp.say( 119, ( rs.getString( "FaxCli" ) != null ? ( ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + Funcoes.setMascara( rs.getString( "FaxCli" ).trim(), "####-####" ) ) : "" ).trim() );
+					imp.say( 2, rs.getString( "CodCli" ) );
+					imp.say( 12, "|" );
+					imp.say( 15, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
+					imp.say( 47, "(F)" );
+					imp.say( 58, "|" );
+					imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
+					imp.say( 101, "|" );
+					imp.say( 103, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 12 ) : "" );
+					imp.say( 115, "|" );
+					imp.say( 120, ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ), "####-####" ) : "" ).trim() );
 					imp.say( 135, "|" );
 
-					if ( !sObs.equals( "" ) ) {
-						
-						vObs = Funcoes.quebraLinha( Funcoes.stringToVector( rs.getString( "ObsCli" ) ), 101 );
-						
-						for ( int i = 0; i < vObs.size(); i++ ) {
-							
-							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( 0, "|" );
-							imp.say( 14, vObs.elementAt( i ).toString() );
-							imp.say( 117, "|" );
-							imp.say( 135, "|" );
-							
-							if ( imp.pRow() >= linPag ) {
-								imp.incPags();
-								imp.eject();
-							}
-							
-						}
-						
-					}
-					
-					And.atualiza( iContaReg );
-					iContaReg++;
-					
 				}
-				
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + linhaFina + "+" );
-				
-				imp.eject();
-				imp.fechaGravacao();
 
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-				dl.dispose();
-				And.dispose();
-				
-			} catch ( SQLException err ) {
-				Funcoes.mensagemErro( this, "Erro consulta tabela de contatos!\n" + err.getMessage(), true, con, err );
-				err.printStackTrace();
+				And.atualiza( iContaReg++ );
+				sCodpesqant = sCodpesq;
+
 			}
+
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + linhaFina + "+" );
+			imp.eject();
+			imp.fechaGravacao();
+
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}			
 			
-		}
-
-		else if ( dl.getValores()[ 7 ].equals( "A" ) ) {
-
-			try {				
-
-				imp.limpaPags();
-				imp.montaCab();
-				imp.setTitulo( "Relatório de Clientes" );
-				
-				ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-				rs.next();
-				
-				And = new FAndamento( "Montando Relatório, Aguarde!", 0, rs.getInt( 1 ) - 1 );
-				
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-				sSQL.append( "SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.FONECLI," );
-				if( "A".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCLI,C1.CIDCLI " );
-				}
-				else if( "E".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDENT AS ENDCLI,C1.CIDENT AS CIDCLI " );
-				}
-				else if( "C".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C1.ENDCOB AS ENDCLI,C1.CIDCOB AS CIDCLI " );
-				}
-				sSQL.append( "FROM VDCLIENTE C1" );
-				sSQL.append( sFrom );
-				sSQL.append( " WHERE C1.CODCLI=C1.CODPESQ " );
-				sSQL.append( " AND C1.CODEMP=? AND C1.CODFILIAL=? " );
-				sSQL.append( sWhere );
-				sSQL.append( " UNION SELECT C2.CODPESQ,");
-				sSQL.append( "(SELECT C3.RAZCLI FROM VDCLIENTE C3 WHERE C3.CODCLI=C2.CODPESQ) AS RAZMATRIZ," );
-				sSQL.append( "'B' TIPO,C2.CODCLI,C2.RAZCLI,C2.DDDCLI,C2.FONECLI," );
-				if( "A".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C2.ENDCLI,C2.CIDCLI " );
-				}
-				else if( "E".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C2.ENDENT AS ENDCLI,C2.CIDENT AS CIDCLI " );
-				}
-				else if( "C".equals( sValores[ 17 ] ) ) {
-					sSQL.append( "C2.ENDCOB AS ENDCLI,C2.CIDCOB AS CIDCLI " );
-				}
-				sSQL.append( "FROM VDCLIENTE C2" );
-				sSQL.append( sFrom );
-				sSQL.append( " WHERE NOT C2.CODCLI=C2.CODPESQ AND " );
-				sSQL.append( "C2.CODEMP=? AND C2.CODFILIAL=? " );
-				sSQL.append( sWhere2 );
-				sSQL.append( " ORDER BY " + sOrdem );
-				
-				System.out.println( sSQL.toString() );
-
-				ps = con.prepareStatement( sSQL.toString() );
-				ps.setInt( 1, Aplicativo.iCodEmp );
-				ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				ps.setInt( 3, Aplicativo.iCodEmp );
-				ps.setInt( 4, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
-				rs = ps.executeQuery();
-				
-				while ( rs.next() ) {
-					
-					sCodpesq = String.valueOf( rs.getInt( 1 ) );
-					
-					if ( sCodpesqant.equals( "" ) ){
-						sCodpesqant = sCodpesq;
-					}
-
-					if ( imp.pRow() >= linPag ) {
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "+" + linhaFina + "+" );
-						imp.incPags();
-						imp.eject();
-					}
-
-					if ( imp.pRow() == 0 ) {
-
-						imp.impCab( 136, true );
-						imp.pulaLinha( 0, imp.comprimido() );
-						imp.say( imp.pRow() + 0, 0, "+" + linhaFina + "+" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "| Codigo" );
-						imp.say( 12, "| Nome" );
-						imp.say( 58, "| Endereco" );
-						imp.say( 101, "| Cidade" );
-						imp.say( 115, "|  Telefone" );
-						imp.say( 135, "|" );
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|" + linhaFina + "|" );
-
-					}
-					else {
-						if ( !sCodpesq.equals( sCodpesqant ) ) {
-							imp.pulaLinha( 1, imp.comprimido() );
-							imp.say( 0, "|" + linhaFina + "|" );
-						}
-					}
-
-					if ( rs.getString( 3 ).equals( "A" ) ) {
-
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|" );
-						imp.say( 2, rs.getString( "CodCli" ) );
-						imp.say( 12, "|" );
-						imp.say( 14, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-						imp.say( 47, "(M)" );
-						imp.say( 58, "|" );
-						imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
-						imp.say( 101, "|" );
-						imp.say( 103, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 12 ) : "" );
-						imp.say( 115, "|" );
-						imp.say( 120, ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ).trim(), "####-####" ) : "" ).trim() );
-						imp.say( 135, "|" );
-
-					}
-					else if ( !rs.getString( 1 ).equals( rs.getString( 4 ) ) ) {
-
-						imp.pulaLinha( 1, imp.comprimido() );
-						imp.say( 0, "|" );
-						imp.say( 2, rs.getString( "CodCli" ) );
-						imp.say( 12, "|" );
-						imp.say( 15, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-						imp.say( 47, "(F)" );
-						imp.say( 58, "|" );
-						imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
-						imp.say( 101, "|" );
-						imp.say( 103, rs.getString( "CidCli" ) != null ? rs.getString( "CidCli" ).substring( 0, 12 ) : "" );
-						imp.say( 115, "|" );
-						imp.say( 120, ( rs.getString( "DDDCli" ) != null ? "(" + rs.getString( "DDDCli" ) + ")" : "" ) + ( rs.getString( "FoneCli" ) != null ? Funcoes.setMascara( rs.getString( "FoneCli" ), "####-####" ) : "" ).trim() );
-						imp.say( 135, "|" );
-
-					}
-
-					sCodpesqant = sCodpesq;
-
-				}
-
-				imp.pulaLinha( 1, imp.comprimido() );
-				imp.say( 0, "+" + linhaFina + "+" );
-				imp.eject();
-				imp.fechaGravacao();
-
-				if ( !con.getAutoCommit() ) {
-					con.commit();
-				}
-				
-				dl.dispose();
-				
-			} catch ( SQLException err ) {
-				err.printStackTrace();
-				Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!\n" + err.getMessage(), true, con, err );
-			}
-
-		}
-
-		if ( bVisualizar ) {
-			imp.preview( this );
-		}
-		else { 
-			imp.print();
+			And.dispose();
+			
+		} catch ( SQLException err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro consulta tabela de clientes!\n" + err.getMessage(), true, con, err );
 		}
 
 	}
