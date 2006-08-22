@@ -273,6 +273,8 @@ public class ListaCampos extends Container implements PostListener,
 	private int iParamDelete = 0;
 	
 	private int iOrdemT = 1;
+	
+	private String sSchema = ""; // Schema/Owner da tabela
 
 	public int getCodEmp() {
 		return iCodEmp;
@@ -697,7 +699,7 @@ public class ListaCampos extends Container implements PostListener,
 	 *  
 	 */
 	public void setUsaFI(boolean bVal) {
-		bTiraFI = !bVal;
+		bTiraFI = bVal;
 	}
 
 	/**
@@ -1340,7 +1342,7 @@ public class ListaCampos extends Container implements PostListener,
 		
 		bAutoInc = bAuto;
 		sArea = sA;
-		sTabela = sArea + sTab;
+		sTabela = sSchema + sArea + sTab;
 		if (bUsaME)
 			iCodFilial = getMasterFilial(sTabela);
 		sPK = retPK();
@@ -2753,5 +2755,20 @@ public class ListaCampos extends Container implements PostListener,
 
 	public String getNomeTabela() {
 		return sTabela;
+	}
+
+	
+	/**
+	 * @return Returns the sSchema.
+	 */
+	public String getSchema() {	
+		return sSchema;
+	}
+	
+	/**
+	 * @param schema The sSchema to set.
+	 */
+	public void setSchema( String schema ) {	
+		sSchema = schema.trim() + ".";
 	}
 }
