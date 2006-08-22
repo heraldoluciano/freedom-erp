@@ -45,6 +45,8 @@ public class DLRCliente extends FFDialogo {
 
 	private JTextFieldPad txtCid = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
+	private JTextFieldPad txtBairro = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+
 	private JTextFieldPad txtDe = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
 	private JTextFieldPad txtA = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
@@ -101,7 +103,7 @@ public class DLRCliente extends FFDialogo {
 
 		super( cOrig );
 		setTitulo( "Relatório de Clientes" );
-		setAtribos( 465, 520 );
+		setAtribos( 465, 540 );
 		setLocationRelativeTo( this );
 
 		vLabsOrdem.addElement( "Código" );
@@ -115,19 +117,21 @@ public class DLRCliente extends FFDialogo {
 
 		vLabsModo.addElement( "Resumido 1" );
 		vLabsModo.addElement( "Resumido 2" );
+		vLabsModo.addElement( "Resumido 3" );
 		vLabsModo.addElement( "Completo" );
 		vLabsModo.addElement( "Alinhar  Filial" );
-		vValsModo.addElement( "R" );
-		vValsModo.addElement( "J" );
+		vValsModo.addElement( "1" );
+		vValsModo.addElement( "2" );
+		vValsModo.addElement( "3" );
 		vValsModo.addElement( "C" );
 		vValsModo.addElement( "A" );
 
-		rgModo = new JRadioGroup( 1, 4, vLabsModo, vValsModo );
+		rgModo = new JRadioGroup( 2, 3, vLabsModo, vValsModo );
 		rgModo.setVlrString( "R" );
 		
-		vLabsEnd.addElement( "Cadastro" );
-		vLabsEnd.addElement( "Entrega" );
-		vLabsEnd.addElement( "Cobrança" );
+		vLabsEnd.addElement( "Cadast." );
+		vLabsEnd.addElement( "Ent." );
+		vLabsEnd.addElement( "Cob." );
 		vValsEnd.addElement( "A" );
 		vValsEnd.addElement( "E" );
 		vValsEnd.addElement( "C" );
@@ -190,42 +194,42 @@ public class DLRCliente extends FFDialogo {
 		adic( new JLabelPad( "À:", SwingConstants.RIGHT ), 12, 125, 30, 20 );
 		adic( txtA, 47, 125, 200, 20 );
 
-		JLabelPad lbPessoa = new JLabelPad( "   Pessoa :" );
-		lbPessoa.setOpaque( true );
-		JLabelPad lbBordaPessoa = new JLabelPad();
-		lbBordaPessoa.setBorder( BorderFactory.createEtchedBorder() );		
-		adic( lbPessoa, 277, 75, 75, 20 );
-		adic( lbBordaPessoa, 270, 85, 170, 70 );
-		adic( cbFis, 290, 100, 80, 20 );
-		adic( cbJur, 290, 125, 80, 20 );
+		adic( new JLabelPad( "Cidade" ), 277, 75, 140, 20 );
+		adic( txtCid, 277, 95, 163, 20 );
+		adic( new JLabelPad( "Bairro" ), 277, 115, 140, 20 );
+		adic( txtBairro, 277, 135, 163, 20 );
 		
 		JLabelPad lbEnd = new JLabelPad( "Endereço :" );
 		lbSelecao.setOpaque( true );
 		adic( lbEnd, 7, 155, 85, 20 );
-		adic( rgEnd, 7, 175, 289, 30 );
+		adic( rgEnd, 7, 175, 259, 30 );
 
-		adic( new JLabelPad( "Cidade" ), 300, 165, 140, 20 );
-		adic( txtCid, 300, 185, 140, 20 );
+		JLabelPad lbBordaPessoa = new JLabelPad();
+		lbBordaPessoa.setBorder( BorderFactory.createEtchedBorder() );		
+		adic( new JLabelPad( "Pessoa :" ), 270, 155, 75, 20 );
+		adic( lbBordaPessoa, 270, 175, 170, 30 );
+		adic( cbFis, 287, 180, 70, 20 );
+		adic( cbJur, 357, 180, 80, 20 );
 
 		adic( new JLabelPad( "Modo do relatório:" ), 7, 205, 170, 20 );
-		adic( rgModo, 7, 225, 433, 30 );
+		adic( rgModo, 7, 225, 433, 50 );
 
-		adic( new JLabelPad( "Cód.setor" ), 7, 260, 80, 20 );
-		adic( txtCodSetor, 7, 280, 80, 20 );
-		adic( new JLabelPad( "Descrição do setor" ), 90, 260, 350, 20 );
-		adic( txtDescSetor, 90, 280, 350, 20 );
-		adic( new JLabelPad( "Cód.comiss." ), 7, 300, 80, 20 );
-		adic( txtCodVend, 7, 320, 80, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 90, 300, 350, 20 );
-		adic( txtNomeVend, 90, 320, 350, 20 );
-		adic( new JLabelPad( "Cód.tp.cli." ), 7, 340, 80, 20 );
-		adic( txtCodTipoCli, 7, 360, 80, 20 );
-		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 340, 350, 20 );
-		adic( txtDescTipoCli, 90, 360, 350, 20 );
-		adic( new JLabelPad( "Cód.cl.cli." ), 7, 380, 80, 20 );
-		adic( txtCodClasCli, 7, 400, 80, 20 );
-		adic( new JLabelPad( "Descrição da classificação do cliente" ), 90, 380, 350, 20 );
-		adic( txtDescClasCli, 90, 400, 350, 20 );
+		adic( new JLabelPad( "Cód.setor" ), 7, 280, 80, 20 );
+		adic( txtCodSetor, 7, 300, 80, 20 );
+		adic( new JLabelPad( "Descrição do setor" ), 90, 280, 350, 20 );
+		adic( txtDescSetor, 90, 300, 350, 20 );
+		adic( new JLabelPad( "Cód.comiss." ), 7, 320, 80, 20 );
+		adic( txtCodVend, 7, 340, 80, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 90, 320, 350, 20 );
+		adic( txtNomeVend, 90, 340, 350, 20 );
+		adic( new JLabelPad( "Cód.tp.cli." ), 7, 360, 80, 20 );
+		adic( txtCodTipoCli, 7, 380, 80, 20 );
+		adic( new JLabelPad( "Descrição do tipo de cliente" ), 90, 360, 350, 20 );
+		adic( txtDescTipoCli, 90, 380, 350, 20 );
+		adic( new JLabelPad( "Cód.cl.cli." ), 7, 400, 80, 20 );
+		adic( txtCodClasCli, 7, 420, 80, 20 );
+		adic( new JLabelPad( "Descrição da classificação do cliente" ), 90, 400, 350, 20 );
+		adic( txtDescClasCli, 90, 420, 350, 20 );
 
 		lcSetor.setConexao( cn );
 		lcTipoCli.setConexao( cn );
@@ -236,7 +240,7 @@ public class DLRCliente extends FFDialogo {
 
 	public String[] getValores() {
 
-		String[] sRetorno = new String[ 18 ];
+		String[] sRetorno = new String[ 19 ];
 
 		if ( rgOrdem.getVlrString().equals( "C" ) ) {
 			sRetorno[ 0 ] = "C1.CODCLI";
@@ -264,6 +268,7 @@ public class DLRCliente extends FFDialogo {
 		sRetorno[ 15 ] = txtCodClasCli.getVlrString();
 		sRetorno[ 16 ] = txtDescClasCli.getVlrString();
 		sRetorno[ 17 ] = rgEnd.getVlrString();
+		sRetorno[ 18 ] = txtBairro.getVlrString().trim();
 
 		return sRetorno;
 
