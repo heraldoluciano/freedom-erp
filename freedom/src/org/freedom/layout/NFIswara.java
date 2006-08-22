@@ -40,7 +40,7 @@ public class NFIswara extends Layout {
 		boolean bjatem = false;
 		boolean bjatem1 = false;
 		boolean bjatem2 = false;
-		final int MAXLINE = 35;
+		final int MAXLINE = 32;
 		int iNumNota = 0;
 		int iItImp = 0;
 		int iContaFrete = 0;
@@ -242,23 +242,26 @@ public class NFIswara extends Layout {
 				
 				
 				iItImp++;
-				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 1)) {
-										
-					//	Imprime o desconto ...
+				if ((iItImp == itens.getInt(NF.C_CONTAITENS)) || (imp.pRow() == MAXLINE - 2)) {
+									    
+				    if (iItImp == itens.getInt(NF.C_CONTAITENS)) {	
+				        
+						//	Imprime o desconto ...
+				        
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say(  8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9,2,String.valueOf(cab.getFloat(NF.C_VLRDESCITPED))));
+				    						
+						//	Imprime observação no corpo da nota ...
+						
+						for( int i=0; i < vObs.size(); i++ ) {
+						    if( imp.pRow() < MAXLINE ) {
+						        imp.pulaLinha( 1, imp.comprimido() );
+								imp.say(  8, (String)vObs.elementAt(i));
+						    }
+						}
+				    }
 					
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say(  8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9,2,String.valueOf(cab.getFloat(NF.C_VLRDESCITPED))));
-					
-					//	Imprime observação no corpo da nota ...
-					
-					for( int i=0; i < vObs.size(); i++ ) {
-					    if( imp.pRow() < MAXLINE ) {
-					        imp.pulaLinha( 1, imp.comprimido() );
-							imp.say(  8, (String)vObs.elementAt(i));
-					    }
-					}
-					
-					imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido());
+					imp.pulaLinha( ( MAXLINE + 2 ) - imp.pRow(), imp.comprimido());
 					
 					//	Imprime totais ...
 					
@@ -275,7 +278,7 @@ public class NFIswara extends Layout {
 						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRLIQPED))));
 						iItImp = 0;						
 					
-					} else if (imp.pRow() == MAXLINE) {
+					} else {
 
 						imp.pulaLinha( 1, imp.comprimido());
 						imp.say(  4, "********************");
@@ -345,22 +348,23 @@ public class NFIswara extends Layout {
 					sizeObs = vDescFisc.size() > sizeObs ? vDescFisc.size() : sizeObs;
 					
 					int aux = 0;
-					for( int i=indexObs; i < sizeObs; i++ ) {				
-						if( aux < 5 ) {
+					for( int i=indexObs; i < 5 ; i++ ) {				
+						if( aux < sizeObs ) {
 							imp.pulaLinha( 1, imp.comprimido());
 							if( vSigla.size() > 0 && indexSigla < vSigla.size() )
 								imp.say(  2, (String)vSigla.elementAt(indexSigla++));							
 							if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() )
 								imp.say( 31, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
-						} else 
-							break;
+						} else{
+							imp.pulaLinha( 1, imp.comprimido());							
+						} 
 					}
 					
 					// 	Fim da observação ...
 					
 					//	Imprime canhoto ...
 					
-					imp.pulaLinha( 4, imp.normal());
+					imp.pulaLinha( 3, imp.normal());
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say( 31, Funcoes.copy(cab.getString(NF.C_RAZEMIT),40) );
 					imp.say( 73, Funcoes.copy(cab.getString(NF.C_NOMEEMIT),40) );
