@@ -26,6 +26,7 @@
 
 package org.freedom.telas;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -90,6 +91,24 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 			iXPanel = 0;
 	}
 		
+	public void setaInfoTela() {
+		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim());
+		telaPrincipal.setConexao(con); // Variavel de conexão da Classe
+
+		telaPrincipal.statusBar.setUsuario(strUsuario);//Variavel de usuario da
+		telaPrincipal.statusBar.setCodFilial(iCodFilial);
+		telaPrincipal.statusBar.setRazFilial(sRazFilial);
+		telaPrincipal.statusBar.setNumEst(iNumEst);
+		telaPrincipal.statusBar.setDescEst(getDescEst());
+		
+		setaSysdba();
+		
+		telaPrincipal.adicCompInBar(pinBotoes, BorderLayout.WEST);
+		btAtualMenu.addActionListener(this);
+		bModoDemo = getModoDemo();		
+		
+	}
+	
 	public void iniConexao() {
 		String sAutoCommit = getParameter("autocommit");
 		try {

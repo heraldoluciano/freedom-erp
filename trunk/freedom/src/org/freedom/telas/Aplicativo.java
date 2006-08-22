@@ -150,23 +150,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 
     public abstract void setaSysdba();
 	
-	public void setaInfoTela() {
-		telaPrincipal.setIdent(sDescSis.trim()+" - "+sDescModu.trim());
-		telaPrincipal.setConexao(con); // Variavel de conexão da Classe
-
-		telaPrincipal.statusBar.setUsuario(strUsuario);//Variavel de usuario da
-		telaPrincipal.statusBar.setCodFilial(iCodFilial);
-		telaPrincipal.statusBar.setRazFilial(sRazFilial);
-		telaPrincipal.statusBar.setNumEst(iNumEst);
-		telaPrincipal.statusBar.setDescEst(getDescEst());
-		
-		setaSysdba();
-		
-		telaPrincipal.adicCompInBar(pinBotoes, BorderLayout.WEST);
-		btAtualMenu.addActionListener(this);
-		bModoDemo = getModoDemo();		
-		
-	}
+	public abstract void setaInfoTela();
 	
 	public JMenuItem getOpcao(int iOpcao) {
 		JMenuItem miRetorno = null;
