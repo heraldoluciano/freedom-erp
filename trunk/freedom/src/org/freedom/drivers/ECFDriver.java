@@ -23,9 +23,9 @@ public class ECFDriver {
 
 	private boolean bModoDemo = AplicativoPDV.bModoDemo;
 
-	public ECFDriver( final boolean dll ) {
+	public ECFDriver( final boolean arg0 ) {
 
-		this.dll = dll;
+		this.dll = arg0;
 
 		if ( this.dll ) {
 			bema = new JBemaFI32();
@@ -509,7 +509,7 @@ public class ECFDriver {
 			
 			if ( bRetorno ) {
 				
-				System.out.println( "Programa moeda no singular:" );
+				/*System.out.println( "Programa moeda no singular:" );
 				
 				bRetorno = trataRetornoFuncao( ecf.programaMoedaSingular( singular ) );
 				
@@ -526,7 +526,7 @@ public class ECFDriver {
 				}
 				else {
 					Logger.gravaLogTxt( "", sUserID, Logger.LGEP_PROG_MOEDA, "Moeda Singular - " + sMensErroLog );
-				}
+				}*/
 				
 			}
 			else {

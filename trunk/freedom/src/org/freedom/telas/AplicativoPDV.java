@@ -34,7 +34,7 @@ import org.freedom.modulos.pdv.FAbreCaixa;
  * 
  * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
  */
-public class AplicativoPDV extends Aplicativo {
+public class AplicativoPDV extends AplicativoPD {
 
 	public static boolean bECFTerm = false;
 
@@ -45,17 +45,14 @@ public class AplicativoPDV extends Aplicativo {
 	private static boolean ecfDriver = false;
 
 
-	public AplicativoPDV( String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem ) {
-
-		super( sIcone, sSplash, iCodSis, sDescSis, iCodModu, sDescModu, sDirImagem, new FPrincipalPD( "bgFreedomSTD.jpg" ) );
-		
-		
-		if( "ECFBematech".equals( getParameter( "ecfdriver" ) ) ) {
+	public AplicativoPDV(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem) {
+	    super(sIcone, sSplash, iCodSis, sDescSis,iCodModu, sDescModu, sDirImagem,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
+	    
+	    if( "ECFBematech".equals( getParameter( "ecfdriver" ) ) ) {
 			
 			ecfDriver = true;
 			
-		}		
-				
+		}	
 	}
 	
 	public static boolean usaEcfDriver() {		
@@ -89,10 +86,13 @@ public class AplicativoPDV extends Aplicativo {
 			if ( rs.next() ) {
 				iCodCaixa = rs.getInt( "CODCAIXA" );
 			}
+			
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
 
 			setECF();
 
