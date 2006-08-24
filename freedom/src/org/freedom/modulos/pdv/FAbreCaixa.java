@@ -1,11 +1,12 @@
 /**
  * @version 10/06/2003 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
+ * 
  * Projeto: Freedom <BR>
- *  
+ * 
  * Pacote: org.freedom.modulos.pdv <BR>
- * Classe: @(#)FAbreCaixa.java <BR>
+ * Classe:
+ * @(#)FAbreCaixa.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -14,13 +15,15 @@
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
  * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
- *
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
  * Comentários sobre a classe...
  * 
  */
 
 package org.freedom.modulos.pdv;
+
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -32,7 +35,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 
 import org.freedom.componentes.JTextFieldPad;
-import org.freedom.drivers.JBemaFI32;
+import org.freedom.drivers.ECFDriver;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -42,58 +45,83 @@ public class FAbreCaixa extends FDialogo {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTextFieldPad txtData = new JTextFieldPad(JTextFieldPad.TP_DATE,10,0);
-	private JTextFieldPad txtValor = new JTextFieldPad(JTextFieldPad.TP_DECIMAL,10,2);
-	private JBemaFI32 bf = (AplicativoPDV.bECFTerm ? new JBemaFI32() : null);
+	private JTextFieldPad txtData = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+
+	private JTextFieldPad txtValor = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 10, 2 );
+
+	private ECFDriver ecf = new ECFDriver( ! AplicativoPDV.usaEcfDriver() );
+
 	private Connection con = null;
+
 	public FAbreCaixa() {
-		setTitulo("Abrir Caixa");
-		setAtribos(250,110);
-				
-		txtData.setVlrDate(Calendar.getInstance().getTime());
-		txtData.setAtivo(false);
-		txtValor.setVlrBigDecimal(new BigDecimal(0));
-		
-		adic(new JLabel("Data"),7,5,80,15);
-		adic(txtData,7,20,80,20);
-		adic(new JLabel("Valor"),90,5,100,15);
-		adic(txtValor,90,20,100,20);
-		
-		
+
+		setTitulo( "Abrir Caixa" );
+		setAtribos( 250, 110 );
+
+		txtData.setVlrDate( Calendar.getInstance().getTime() );
+		txtData.setAtivo( false );
+		txtValor.setVlrBigDecimal( new BigDecimal( 0 ) );
+
+		adic( new JLabel( "Data" ), 7, 5, 80, 15 );
+		adic( txtData, 7, 20, 80, 20 );
+		adic( new JLabel( "Valor" ), 90, 5, 100, 15 );
+		adic( txtValor, 90, 20, 100, 20 );
+
 	}
+
 	private void dbAbrirCaixa() {
-	  System.out.println("Modo demo PDV: "+Aplicativo.bModoDemo);
-	  if (!AplicativoPDV.bECFTerm || bf.leituraX(Aplicativo.strUsuario,Aplicativo.bModoDemo)) {
-	       if (!AplicativoPDV.bECFTerm || bf.suprimento(Aplicativo.strUsuario,txtValor.getVlrBigDecimal(),"Dinheiro",AplicativoPDV.bModoDemo)) {
-	      try {
-			PreparedStatement ps = con.prepareStatement("EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)");
-			ps.setInt(1,AplicativoPDV.iCodCaixa);
-			ps.setInt(2,Aplicativo.iCodFilial);
-			ps.setInt(3,Aplicativo.iCodEmp);
-			ps.setBigDecimal(4,txtValor.getVlrBigDecimal());
-			ps.setDate(5,Funcoes.dateToSQLDate(new Date()));
-			ps.setInt(6,Aplicativo.iCodFilialPad);
-			ps.setString(7,Aplicativo.strUsuario);
-			ps.execute();
-			ps.close();
-			if (!con.getAutoCommit())
-				con.commit();
-	      }
-	      catch (SQLException err) {
-			Funcoes.mensagemErro(this,"Erro ao abrir o caixa!\n"+err.getMessage(),true,con,err);
-	      }
-	      if (AplicativoPDV.bECFTerm)
-	      	 bf.abreGaveta(Aplicativo.strUsuario,AplicativoPDV.bModoDemo);
-	    }
-	  }
+
+		System.out.println( "Modo demo PDV: " + Aplicativo.bModoDemo );
+		
+		if ( ! AplicativoPDV.bECFTerm || ecf.leituraX() ) {
+			
+			if ( ! AplicativoPDV.bECFTerm || ecf.suprimento( txtValor.getVlrBigDecimal() ) ) {
+
+				try {
+				
+					PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVABRECAIXASP(?,?,?,?,?,?,?)" );
+					
+					ps.setInt( 1, AplicativoPDV.iCodCaixa );
+					ps.setInt( 2, Aplicativo.iCodFilial );
+					ps.setInt( 3, Aplicativo.iCodEmp );
+					ps.setBigDecimal( 4, txtValor.getVlrBigDecimal() );
+					ps.setDate( 5, Funcoes.dateToSQLDate( new Date() ) );
+					ps.setInt( 6, Aplicativo.iCodFilialPad );
+					ps.setString( 7, Aplicativo.strUsuario );
+					ps.execute();
+					
+					ps.close();
+					
+					if ( !con.getAutoCommit() ) {
+						con.commit();
+					}
+					
+				} catch ( SQLException err ) {
+					Funcoes.mensagemErro( this, "Erro ao abrir o caixa!\n" + err.getMessage(), true, con, err );
+				}
+				
+				if ( AplicativoPDV.bECFTerm ) {
+					ecf.abreGaveta();
+				}
+				
+			}
+			
+		}
+		
 	}
-	public void actionPerformed(ActionEvent evt) {
-		if (evt.getSource() == btOK) {
+
+	public void actionPerformed( ActionEvent evt ) {
+
+		if ( evt.getSource() == btOK ) {
 			dbAbrirCaixa();
 		}
-		super.actionPerformed(evt);
+		
+		super.actionPerformed( evt );
+		
 	}
-	public void setConexao(Connection cn) {
+
+	public void setConexao( Connection cn ) {
+
 		con = cn;
 	}
 }
