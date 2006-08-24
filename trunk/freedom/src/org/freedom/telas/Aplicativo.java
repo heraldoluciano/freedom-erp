@@ -26,7 +26,6 @@
 
 package org.freedom.telas;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -123,6 +122,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static ObjetoEmpresa empresa = null;
 	public static boolean bModoDemo = true;
 	protected Class cLoginExec = null;
+	public static boolean bSuporte = true;
 	
 	public Connection getConIB() {
 		return conIB;
@@ -532,6 +532,7 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		miSuporte.addActionListener(this);
 		mAjuda.add(miSuporte);
 		telaPrincipal.bar.add(mAjuda);
+		
 	}
 
 	public abstract void iniConexao(); 
