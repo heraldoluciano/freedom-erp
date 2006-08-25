@@ -780,7 +780,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		
 		try {
 			
-			sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' WHERE CODEMP=?" + " AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E' AND CODITVENDA=?";
+			sSQL = "UPDATE VDITVENDA SET CANCITVENDA='S' WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E' AND CODITVENDA=?";
 			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -816,6 +816,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			sSQL = null;
 			iLinha = 0;
 		}
+		
 		return bRet;
 	}
 
