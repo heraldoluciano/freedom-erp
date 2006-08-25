@@ -518,9 +518,9 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public abstract int resetErro();// 70
 
-	public abstract int programaFormaPagamento( String descricao );// 71
+	public abstract String programaFormaPagamento( String descricao );// 71
 
-	public abstract int efetuaFormaPagamento( int indice, float valor, String descForma );// 72
+	public abstract int efetuaFormaPagamento( String indice, float valor, String descForma );// 72
 
 	public abstract int estornoFormaPagamento( String descOrigem, String descDestino, float valor );// 74
 

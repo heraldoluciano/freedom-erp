@@ -414,6 +414,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private boolean execFechamento() {
 
 		boolean bRet = false;
+		
 		if ( txtVlrPago.floatValue() == 0 ) {
 			Funcoes.mensagemInforma( this, "Digite o valor pago!" );
 			return false;
@@ -423,12 +424,15 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			return false;
 		}
 		else if ( txtVlrChequeElet.floatValue() > 0 ) {
+			
 			Properties ppCompTef;
+			
 			if ( ( ppCompTef = processaTef() ) == null ) {
 				Funcoes.mensagemInforma( this, "Não foi possível processar TEF" );
 				return false;
 			}
 			if ( 
+					
 				txtVlrChequeElet.floatValue() < txtVlrCupom.floatValue() ) {
 				bigPagoTef = bigPagoTef.add( txtVlrChequeElet.getVlrBigDecimal() );
 				txtVlrChequeElet.setVlrString( "" );
@@ -441,9 +445,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 				txtVlrDinheiro.requestFocus();
 
 				recalcPago();
+				
 				return false;
+				
 			}
+			
 			vTefsOK.add( ppCompTef );
+			
 		}
 		else if ( txtVlrPago.floatValue() < txtVlrCupom.floatValue() ) {
 			Funcoes.mensagemInforma( this, "Valor pago menor que o valor da venda!" );
@@ -451,19 +459,25 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		}
 
 		if ( bPref ) {
+			
 			if ( lcFreteVD.getStatus() == ListaCampos.LCS_EDIT || lcFreteVD.getStatus() == ListaCampos.LCS_INSERT ) {
+				
 				if ( !lcFreteVD.post() ) {
 					return false;
 				}
 				else {
 					impMens = true;
 				}
+				
 			}
 			if ( lcAuxVenda.getStatus() == ListaCampos.LCS_EDIT || lcAuxVenda.getStatus() == ListaCampos.LCS_INSERT ) {
+				
 				if ( !lcAuxVenda.post() ) {
 					return false;
 				}
+				
 			}
+			
 		}
 
 		if ( !gravaVenda() ) {
@@ -540,8 +554,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 		boolean bRet = false;
 		PreparedStatement ps = null;
-		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V3' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+		String sSQL = "UPDATE VDVENDA SET STATUSVENDA='V3' WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+	
 		try {
+
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDVENDA" ) );
@@ -549,10 +565,13 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			ps.executeUpdate();
 
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
 
 			bRet = true;
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( null, "Não foi possível finalizar a venda!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -560,6 +579,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			ps = null;
 			sSQL = null;
 		}
+		
 		return bRet;
 	}
 
@@ -736,8 +756,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 		Properties retTef = tef.solicVenda( iNumCupom, txtVlrChequeElet.getVlrBigDecimal() );
 
-		if ( retTef == null || !tef.validaTef( retTef ) )
-			return null;
+		if ( retTef == null || !tef.validaTef( retTef ) ) {
+			retTef = null;
+		}
 
 		return retTef;
 
@@ -746,7 +767,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 	private void vinculaTef( Properties prop ) {
 
 		PreparedStatement ps = null;
-		String sSQL = "INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF) " + "VALUES (?,?,?,?,?,?,?,?)";
+		String sSQL = "INSERT INTO VDTEF (CODEMP,CODFILIAL,TIPOVENDA,CODVENDA,NSUTEF,REDETEF,DTTRANSTEF,VLRTEF) VALUES (?,?,?,?,?,?,?,?)";
 		try {
 
 			ps = con.prepareStatement( sSQL );
@@ -761,8 +782,10 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			ps.executeUpdate();
 
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
 
 		} catch ( SQLException err ) {
 			err.printStackTrace();
@@ -779,20 +802,27 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sSQL = null;
+		
 		try {
-			sSQL = "SELECT CODAUXV FROM VDAUXVENDA " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+			
+			sSQL = "SELECT CODAUXV FROM VDAUXVENDA WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDAUXVENDA" ) );
 			ps.setInt( 3, txtCodVenda.getVlrInteger().intValue() );
 			rs = ps.executeQuery();
-			if ( rs.next() )
+			
+			if ( rs.next() ) {
 				iRet = rs.getInt( "CodAuxV" );
+			}
 
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
+			
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao buscar codaux.\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
@@ -801,24 +831,45 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			rs = null;
 			sSQL = null;
 		}
+		
 		return iRet;
 	}
 
 	private String getMenssage() {
 
 		String sMenssage = "";
+		
 		if ( trocouCli && impMens ) {
+			
 			String[] dadosCli = (String[]) param[ 6 ];
-			sMenssage = ( dadosCli[ 0 ] != null ? dadosCli[ 0 ].trim() : "" ) + " - " + ( dadosCli[ 1 ] != null ? dadosCli[ 1 ].trim() : "" ) + "\n" + ( dadosCli[ 2 ] != null ? dadosCli[ 2 ].trim() : "" ) + " , " + ( dadosCli[ 3 ] != null ? dadosCli[ 3 ].trim() : "" ) + " - "
-					+ ( dadosCli[ 4 ] != null ? dadosCli[ 4 ].trim() : "" ) + "/" + ( dadosCli[ 5 ] != null ? dadosCli[ 5 ].trim() : "" ) + "\n" + txtDescTran.getVlrString().trim() + " - " + txtPlacaFreteVD.getVlrString().trim();
+			
+			sMenssage = ( dadosCli[ 0 ] != null ? dadosCli[ 0 ].trim() : "" ) + " - " + 
+						( dadosCli[ 1 ] != null ? dadosCli[ 1 ].trim() : "" ) + "\n" + 
+						( dadosCli[ 2 ] != null ? dadosCli[ 2 ].trim() : "" ) + " , " + 
+						( dadosCli[ 3 ] != null ? dadosCli[ 3 ].trim() : "" ) + " - " + 
+						( dadosCli[ 4 ] != null ? dadosCli[ 4 ].trim() : "" ) + "/" + 
+						( dadosCli[ 5 ] != null ? dadosCli[ 5 ].trim() : "" ) + "\n" + 
+						txtDescTran.getVlrString().trim() + " - " + 
+						txtPlacaFreteVD.getVlrString().trim();
+			
 		}
-
 		else if ( txtNomeCliAuxV.getVlrString().trim().length() > 0 ) {
-			sMenssage = txtNomeCliAuxV.getVlrString().trim() + " - " + txtCPFCliAuxV.getVlrString().trim() + "\n" + txtEndCliAuxV.getVlrString().trim() + " , " + txtNumCliAuxV.getVlrString().trim() + " - " + txtCidCliAuxV.getVlrString().trim() + "/" + txtUFCliAuxV.getVlrString().trim() + "\n"
-					+ txtDescTran.getVlrString().trim() + " - " + txtPlacaFreteVD.getVlrString().trim();
+			
+			sMenssage = txtNomeCliAuxV.getVlrString().trim() + " - " + 
+						txtCPFCliAuxV.getVlrString().trim() + "\n" + 
+						txtEndCliAuxV.getVlrString().trim() + " , " + 
+						txtNumCliAuxV.getVlrString().trim() + " - " + 
+						txtCidCliAuxV.getVlrString().trim() + "/" + 
+						txtUFCliAuxV.getVlrString().trim() + "\n" + 
+						txtDescTran.getVlrString().trim() + " - " + 
+						txtPlacaFreteVD.getVlrString().trim();
+			
 		}
-		if ( sMenssage.length() > 300 )
+		
+		if ( sMenssage.length() > 300 ) {
 			sMenssage = sMenssage.substring( 0, 300 );
+		}
+		
 		return sMenssage;
 	}
 
@@ -837,19 +888,25 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 		ResultSet rs = null;
 
 		try {
+			
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE4" ) );
 			rs = ps.executeQuery();
+			
 			if ( rs.next() ) {
 				if ( rs.getString( "ADICPDV" ).trim().equals( "S" ) ) {
 					ret = true;
 				}
 			}
+			
 			rs.close();
 			ps.close();
-			if ( !con.getAutoCommit() )
+			
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
+			
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
@@ -866,16 +923,24 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 
 		boolean bRet = false;
 		if ( evt.getSource() == btOK ) {
+			
 			lcVend.carregaDados();
+			
 			if ( execFechamento() ) {
+				
 				if ( ( AplicativoPDV.bECFTerm   ) && ( ecf != null ) ) {
+					
 					if ( ecf.fechaCupomFiscal( txtDescPlanoPag.getVlrString(), "", "", 0f, txtVlrPago.floatValue(), getMenssage() ) ) {
+						
 						if ( finalizaVenda() ) {
+							
 							btCancel.setEnabled( false );
 
 							// Verifica se existe um comprovante de TEF para imprimir.
 							if ( vTefsOK.size() > 0 ) {
+								
 								for ( int i = 0; i < vTefsOK.size(); i++ ) {
+									
 									if ( finalizaTEF( (Properties) vTefsOK.elementAt( i ) ) ) {
 										bRet = true;
 									}
@@ -883,7 +948,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 										bRet = false;
 										break;
 									}
+									
 								}
+								
 							}
 							else {
 								bRet = true;
@@ -892,23 +959,31 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 							if ( bRet && txtVlrTroco.floatValue() > 0 ) {
 								bRet = execTroco();
 							}
+							
 						}
+						
 					}
+					
 				}
 				else if ( AplicativoPDV.bECFTerm ) {
+					
 					bRet = true;
+					
 					if ( finalizaVenda() ) {
 						btCancel.setEnabled( false );
 					}
 					if ( txtVlrTroco.floatValue() > 0 ) {
 						bRet = execTroco();
 					}
+					
 				}
+				
 			}
 			
 			if ( ! bRet ) {
 				return;
 			}
+			
 		}
 
 		super.actionPerformed( evt );

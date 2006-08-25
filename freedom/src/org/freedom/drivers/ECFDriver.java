@@ -209,9 +209,10 @@ public class ECFDriver {
 			}
 
 			if ( bRetorno ) {
-				int iCodFormaPag = ecf.programaFormaPagamento( sFormaPagto );
+				String formaPag = Funcoes.adicEspacosDireita( Funcoes.tiraAcentos( sFormaPagto ), 16 );
+				String sCodFormaPag = Funcoes.strZero( ecf.programaFormaPagamento( formaPag ), 2 );
 
-				ecf.efetuaFormaPagamento( iCodFormaPag, fVlrPago, "" );
+				bRetorno = trataRetornoFuncao( ecf.efetuaFormaPagamento( sCodFormaPag, fVlrPago, "" ) );
 			}
 
 			if ( bRetorno ) {
@@ -509,7 +510,7 @@ public class ECFDriver {
 			
 			if ( bRetorno ) {
 				
-				/*System.out.println( "Programa moeda no singular:" );
+				System.out.println( "Programa moeda no singular:" );
 				
 				bRetorno = trataRetornoFuncao( ecf.programaMoedaSingular( singular ) );
 				
@@ -526,7 +527,7 @@ public class ECFDriver {
 				}
 				else {
 					Logger.gravaLogTxt( "", sUserID, Logger.LGEP_PROG_MOEDA, "Moeda Singular - " + sMensErroLog );
-				}*/
+				}
 				
 			}
 			else {
@@ -638,7 +639,11 @@ public class ECFDriver {
 			
 			String[] tmp = ecf.getStatus().split(",");
 			
-			bRetorno = "1".equals( tmp[ 1 ] );
+			if ( tmp != null && tmp.length > 1 ) {
+			
+				bRetorno = "2".equals( tmp[ 1 ] );
+			
+			}
 			
 		}
 		
@@ -743,73 +748,64 @@ public class ECFDriver {
 			String tmp = ecf.getStatus();
 			
 			if( tmp != null && tmp.length() > 0 ) {
+				
 				String[] status = tmp.split(","); 
+				
 				int st1 = Integer.parseInt( status[ 1 ] );
 				int st2 = Integer.parseInt( status[ 2 ] );
 				
 				if ( st1 >= 128 ) {
 					sMensagem += "Fim de papel.";
-					sSep = "\n";
 				}
-				if ( st1 >= 64 ) {
-					sMensagem += sSep + "Pouco papel.";
-					sSep = "\n";
+				else if ( st1 >= 64 ) {
+					sMensagem += "Pouco papel.";
 				}
-				if (st1 >= 32 ) {
-					sMensagem += sSep + "Erro no relógio.";
-					sSep = "\n";
+				else if ( st1 >= 32 ) {
+					sMensagem += "Erro no relógio.";
 				}
-				if ( st1 >= 16 ) {
-					sMensagem += sSep + "Impressora em erro.";
-					sSep = "\n";
+				else if ( st1 >= 16 ) {
+					sMensagem += "Impressora em erro.";
 				}
-				if (st1 >= 8 ) {
-					sMensagem += sSep + "Primeiro dado de CMD não foi ESC( 1Bh).";
-					sSep = "\n";
+				else if ( st1 >= 8 ) {
+					sMensagem += "Primeiro dado de CMD não foi ESC( 1Bh).";
 				}
-				if ( st1 >= 4 ) {
-					sMensagem += sSep + "Comando inexistente.";
-					sSep = "\n";
+				else if ( st1 >= 4 ) {
+					sMensagem += "Comando inexistente.";
 				}
-				if ( st1 >= 2 ) {
-					sMensagem += sSep + "Cupom fiscal aberto.";
-					sSep = "\n";
+				else if ( st1 >= 2 ) {
+					sMensagem += "Cupom fiscal aberto.";
 				}
-				if ( st1 >= 1 ) {
-					sMensagem += sSep + "Número de parâmetro de CMD inválido.";
-					sSep = "\n";
+				else if ( st1 >= 1 ) {
+					sMensagem += "Número de parâmetro de CMD inválido.";
 				}
+				
+				if ( sMensagem.length() > 0 ) {
+					sSep = "\n";					
+				}
+				
 				if ( st2 >= 128 ) {
 					sMensagem += sSep + "Tipo de parâmetro de CMD inválido.";
-					sSep = "\n";
 				}
-				if ( st2 >= 64 ) {
+				else if ( st2 >= 64 ) {
 					sMensagem += sSep + "Memória fiscal lotada.";
-					sSep = "\n";
 				}
-				if ( st2 >= 32 ) {
+				else if ( st2 >= 32 ) {
 					sMensagem += sSep + "Erro na memória RAM CMOS não volátil.";
-					sSep = "\n";
 				}
-				if ( st2 >= 16 ) {
+				else if ( st2 >= 16 ) {
 					sMensagem += sSep + "Alíquota não programada.";
-					sSep = "\n";
 				}
-				if ( st2 >= 8 ) {
+				else if ( st2 >= 8 ) {
 					sMensagem += sSep + "Capacidade de alíquotas esgotada.";
-					sSep = "\n";
 				}
-				if ( st2 >= 4 ) {
+				else if ( st2 >= 4 ) {
 					sMensagem += sSep + "Cancelamento não permitido.";
-					sSep = "\n";
 				}
-				if ( st2 >= 2 ) {
+				else if ( st2 >= 2 ) {
 					sMensagem += sSep + "CNPJ/IE do proprietário não programados.";
-					sSep = "\n";
 				}
-				if ( st2 >= 1 ) {
+				else if ( st2 >= 1 ) {
 					sMensagem += sSep + "Comando não executado.";
-					sSep = "\n";
 				}
 			}
 			

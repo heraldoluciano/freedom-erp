@@ -124,7 +124,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final StringBuffer retorno = new StringBuffer();
 
-		byte bcd = 0;
+		int bcd = 0;
 		byte byteBH = 0;
 		byte byteBL = 0;
 
@@ -132,8 +132,13 @@ public class ECFBematech extends AbstractECFDriver {
 
 			bcd = bcdParam[ i ];
 
-			byteBH = (byte) ( (int) bcd / 16 );
-			byteBL = (byte) ( (int) bcd % 16 );
+			// Ajuste dos bytes para o padrão de cálculo (o java trabalha com bytes de -128 a 127)
+			if ( bcd < 0 ) {
+				bcd += 256;
+			}
+
+			byteBH = (byte) ( bcd / 16 );
+			byteBL = (byte) ( bcd % 16 );
 
 			retorno.append( byteBH );
 			retorno.append( byteBL );
@@ -203,7 +208,8 @@ public class ECFBematech extends AbstractECFDriver {
 
 	/**
 	 * Auxilia o metodo checkRetorno.<BR>
-	 * @param ST1 
+	 * 
+	 * @param ST1
 	 * @return
 	 */
 	private int checkST1( final byte ST1 ) {
@@ -243,7 +249,8 @@ public class ECFBematech extends AbstractECFDriver {
 
 	/**
 	 * Auxilia o metodo checkRetorno.<BR>
-	 * @param ST2 
+	 * 
+	 * @param ST2
 	 * @return
 	 */
 	private int checkST2( final byte ST2 ) {
@@ -456,9 +463,14 @@ public class ECFBematech extends AbstractECFDriver {
 		final byte[] ret = enviaCmd( CMD, 3 );
 
 		final StringBuffer retorno = new StringBuffer();
-		retorno.append( ret[ 0 ] + "," );
-		retorno.append( ret[ 1 ] + "," );
-		retorno.append( ret[ 2 ] );
+		
+		if ( ret != null && ret.length > 2 ) {
+			
+			retorno.append( ret[ 0 ] + "," );
+			retorno.append( ret[ 1 ] + "," );
+			retorno.append( ret[ 2 ] );
+			
+		}
 
 		return retorno.toString();
 
@@ -699,7 +711,7 @@ public class ECFBematech extends AbstractECFDriver {
 	}
 
 	public int programaMoedaSingular( final String nomeSingular ) {
-		
+
 		byte[] CMD = { ESC, 58 };
 
 		final StringBuffer buf = new StringBuffer();
@@ -709,9 +721,9 @@ public class ECFBematech extends AbstractECFDriver {
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
 		return executaCmd( CMD, 3 );
-		
+
 	}
-	
+
 	public int programaMoedaPlural( final String nomePlurar ) {
 
 		byte[] CMD = { ESC, 59 };
@@ -723,7 +735,7 @@ public class ECFBematech extends AbstractECFDriver {
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
 		return executaCmd( CMD, 3 );
-		
+
 	}
 
 	// Programa espaço entre as linhas em dots.
@@ -903,29 +915,27 @@ public class ECFBematech extends AbstractECFDriver {
 
 	// Programa formas de pagamentos,
 	// Validas somente para o mesmo dia.
-	public int programaFormaPagamento( final String descricao ) {
+	public String programaFormaPagamento( final String descricao ) {
 
 		byte[] CMD = { ESC, 71 };
 
 		CMD = adicBytes( CMD, parseParam( descricao, 16, false ).getBytes() );
 
-		executaCmd( CMD, 5 );
+		executaCmd( CMD, 4 );
 
-		final String retorno = bcdToAsc( getBytesLidos() );
-
-		return Integer.parseInt( retorno.substring( 0, 2 ) );
+		return new String( getBytesLidos() );
 
 	}
 
 	// Efetua forma de pagamento.
 	// tem que ter troco...
-	public int efetuaFormaPagamento( final int indice, final float valor, final String descForma ) {
+	public int efetuaFormaPagamento( final String indice, final float valor, final String descForma ) {
 
 		byte[] CMD = { ESC, 72 };
 
 		final StringBuffer buf = new StringBuffer();
 
-		buf.append( parseParam( indice, 2 ) );
+		buf.append( parseParam( indice, 2, false ) );
 		buf.append( parseParam( valor, 14, 2 ) );
 		buf.append( parseParam( descForma, 80, false ) );
 
