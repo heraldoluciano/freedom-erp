@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.comm.SerialPort;
 import javax.comm.SerialPortEvent;
@@ -26,9 +27,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final byte NAK = 21;
 
-//	public static final int TIMEOUT = 1000;
-
-	public static final int TIMEOUT_ACK = 150;
+	public static final int TIMEOUT_ACK = 300;
 
 	public static final int TIMEOUT_READ = 30000;
 
@@ -56,86 +55,83 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final char HAB_CUPOM_ADIC = '1';
 
-	public static final char VAR_NUM_SERIE = 0;
+	public static final char V_NUM_SERIE = 0;
 
-	public static final char VAR_VER_FIRMWARE = 1;
+	public static final char V_VER_FIRMWARE = 1;
 
-	public static final char VAR_CNPJ_IE = 2;
+	public static final char V_CNPJ_IE = 2;
 
-	public static final char VAR_GRANDE_TOTAL = 3;
+	public static final char V_GRANDE_TOTAL = 3;
 
-	public static final char VAR_CANCELAMENTOS = 4;
+	public static final char V_CANCELAMENTOS = 4;
 
-	public static final char VAR_DESCONTOS = 5;
+	public static final char V_DESCONTOS = 5;
 
-	public static final char VAR_CONT_SEQ = 6;
+	public static final char V_CONT_SEQ = 6;
 
-	public static final char VAR_OP_N_FISCAIS = 7;
+	public static final char V_OP_N_FISCAIS = 7;
 
-	public static final char VAR_CUPONS_CANC = 8;
+	public static final char V_CUPONS_CANC = 8;
 
-	public static final char VAR_REDUCOES = 9;
+	public static final char V_REDUCOES = 9;
 
-	public static final char VAR_NUM_INT_TEC = 10;
+	public static final char V_NUM_INT_TEC = 10;
 
-	public static final char VAR_NUM_SUB_PROP = 11;
+	public static final char V_NUM_SUB_PROP = 11;
 
-	public static final char VAR_NUM_ULT_ITEM = 12;
+	public static final char V_NUM_ULT_ITEM = 12;
 
-	public static final char VAR_CLICHE = 13;
+	public static final char V_CLICHE = 13;
 
-	public static final char VAR_NUM_CAIXA = 14;
+	public static final char V_NUM_CAIXA = 14;
 
-	public static final char VAR_NUM_LOJA = 15;
+	public static final char V_NUM_LOJA = 15;
 
-	public static final char VAR_MOEDA = 16;
+	public static final char V_MOEDA = 16;
 
-	public static final char VAR_FLAG_FISCAL = 17;
+	public static final char V_FLAG_FISCAL = 17;
 
-	public static final char VAR_TMP_LIGADA = 18;
+	public static final char V_TMP_LIGADA = 18;
 
-	public static final char VAR_TMP_IMPRIMNDO = 19;
+	public static final char V_TMP_IMPRIMNDO = 19;
 
-	public static final char VAR_FLAG_TEC = 20;
+	public static final char V_FLAG_TEC = 20;
 
-	public static final char VAR_FLAG_EPROM = 21;
+	public static final char V_FLAG_EPROM = 21;
 
-	public static final char VAR_VLR_ULT_CUPOM = 22;
+	public static final char V_VLR_ULT_CUPOM = 22;
 
-	public static final char VAR_DT_HORA = 23;
+	public static final char V_DT_HORA = 23;
 
-	public static final char VAR_TOT_NICMS = 24;
+	public static final char V_TOT_NICMS = 24;
 
-	public static final char VAR_DESC_TOT_NICMS = 25;
+	public static final char V_DESC_TOT_NICMS = 25;
 
-	public static final char VAR_DT_ULT_REDUCAO = 26;
+	public static final char V_DT_ULT_REDUCAO = 26;
 
-	public static final char VAR_DT_MOVIMENTO = 27;
+	public static final char V_DT_MOVIMENTO = 27;
 
-	public static final char VAR_FLAG_TRUNCA = 28;
+	public static final char V_FLAG_TRUNCA = 28;
 
-	public static final char VAR_FLAG_VINC_ISS = 29;
+	public static final char V_FLAG_VINC_ISS = 29;
 
-	public static final char VAR_TOT_ACRECIMOS = 30;
+	public static final char V_TOT_ACRECIMOS = 30;
 
-	// public static final char VAR_CONT_BILHETE = 31;
-	public static final char VAR_FORMAS_PAG = 32;
+	public static final char V_CONT_BILHETE = 31;
+	
+	public static final char V_FORMAS_PAG = 32;
 
-	public static final char VAR_CNF_NVINCULADO = 33;
+	public static final char V_CNF_NVINCULADO = 33;
 
-	public static final char VAR_DEPARTAMENTOS = 34;
+	public static final char V_DEPARTAMENTOS = 34;
 
-	public static final char VAR_TIPO_IMP = 253;
+	public static final char V_TIPO_IMP = 253;
 
 	private byte[] bytesLidos = new byte[ 3 ];
 
-//	private InputStream entrada = null;
+	private static byte[] buffer = null;
 
-//	private OutputStream saida = null;
-
-	private byte[] buffer = null;
-
-	private boolean leuEvento = false;
+	private static boolean leuEvento = false;
 
 	protected String porta;
 
@@ -146,6 +142,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	protected SerialPort portaSerial = null;
 
 	public AbstractECFDriver() {
+		
+		Locale.setDefault( new Locale( "pt", "BR" ) );
 
 	}
 
@@ -167,17 +165,15 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	}
 
 	public boolean ativaPorta( final int com ) {
+
 		boolean retorno = true;
-		if (!Serial.getInstance().getAtivada()) {
-			retorno = Serial.getInstance().ativaPorta(com, this);
+		
+		if ( !Serial.getInstance().isAtivada() ) {
+			retorno = Serial.getInstance().ativaPorta( com, this );
 		}
+		
 		return retorno;
 	}
-
-	/*public boolean getAtivada() {
-
-		return ativada;
-	}*/
 
 	public void setBytesLidos( final byte[] arg ) {
 
@@ -196,46 +192,64 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	}
 
-	public void serialEvent( SerialPortEvent event ) {
+	public void serialEvent( final SerialPortEvent event ) {
 
 		byte[] retorno = null;
+		byte[] bufferTmp = null;
 		byte[] tmp = null;
-		InputStream entrada = Serial.getInstance().getEntrada();
+		InputStream entrada = null;
 
-//		private OutputStream saida = null;
-
+		
+		entrada = Serial.getInstance().getEntrada();
+		
 		try {
+			
 			System.out.println( "entrou no evento" );
-			switch ( event.getEventType() ) {
-				case SerialPortEvent.DATA_AVAILABLE :
-					retorno = new byte[ entrada.available() ];
-					if ( retorno != null ) {
-						entrada.read( retorno );
-						if ( buffer == null ) {
-							buffer = retorno;
-						}
-						else {
-							leuEvento = true;
-							tmp = buffer;
-							buffer = new byte[ tmp.length + retorno.length ];
-							for ( int i = 0; i < buffer.length; i++ ) {
-								if ( i < tmp.length ) {
-									buffer[ i ] = tmp[ i ];
-								}
-								else {
-									buffer[ i ] = retorno[ i - tmp.length ];
-								}
-								System.out.println( "lendo no evento " + buffer[ i ] );
-							}
-						}
+			
+			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
+				
+				System.out.println("ENTROU EM DATA_AVAILABLE");
+				System.out.println("Avalidados " + entrada.available());
+				
+				retorno = new byte[ entrada.available() ];
+				
+				if ( retorno == null ) {			
+
+					System.out.println( "Available em branco no evento" );
+					
+				}
+				else {
+					
+					System.out.println("bytes lidos " + entrada.read( retorno ));
+					
+					if ( buffer == null ) {
+						System.out.println("Setando buffer com "+retorno.toString());
+						bufferTmp = retorno;
 					}
 					else {
-						System.out.println( "Available em branco no evento" );
+						leuEvento = true;
+						tmp = buffer;
+						bufferTmp = new byte[ tmp.length + retorno.length ];
+
+						System.out.println( "tamanho do retorno " + bufferTmp.length );
+						
+						for ( int i = 0; i < bufferTmp.length; i++ ) {
+							if ( i < tmp.length ) {
+								bufferTmp[ i ] = tmp[ i ];
+							}
+							else {
+								bufferTmp[ i ] = retorno[ i - tmp.length ];
+							}
+							System.out.println( "lendo no evento " + bufferTmp[ i ] );
+						}
 					}
-					break;
-				default :
-					break;
+					
+					buffer = bufferTmp;
+					
+				}
+				
 			}
+			
 		} catch ( IOException e ) {
 			System.out.println( e.getMessage() );
 		}
@@ -247,15 +261,15 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		return enviaCmd( CMD, portaSel, tamEsperado );
 
 	}
-
+	
 	public byte[] enviaCmd( final byte[] CMD, final int com, final int tamRetorno ) {
 
 		long tempo = 0;
 		long tempoAtual = 0;
-		buffer = null;
 		leuEvento = false;
-		OutputStream saida = Serial.getInstance().getSaida();
-
+		buffer = null;
+		final OutputStream saida = Serial.getInstance().getSaida();
+		
 		if ( ativaPorta( com ) ) {
 
 			try {
@@ -264,13 +278,14 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 				saida.flush();
 				tempo = System.currentTimeMillis();
 				saida.write( CMD );
-
+				//saida.flush();
 				do {
 					Thread.sleep( TIMEOUT_ACK );
 					tempoAtual = System.currentTimeMillis();
 					System.out.println( "laço de tempo " + ( tempoAtual - tempo ) + " - " + ( TIMEOUT_READ ) );
-				} while ( ( tempoAtual - tempo ) <= ( TIMEOUT_READ ) && ( buffer == null || buffer.length <= tamRetorno || ( !leuEvento ) ) );
-				
+					System.out.println( "tamanho do retorno " + tamRetorno + " tamanho do buffer " + ( buffer == null ? "nulo" : ""+buffer.length) );
+				} while ( ( tempoAtual - tempo ) < ( TIMEOUT_READ ) && ( buffer == null || buffer.length < tamRetorno || ! leuEvento ) );
+
 			} catch ( IOException e ) {
 				System.out.println( e.getMessage() );
 			} catch ( InterruptedException e ) {
@@ -278,7 +293,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 			}
 
 		}
-		
+
 		return buffer;
 
 	}
@@ -339,7 +354,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public String parseParam( final Date param ) {
 
-		final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy" );
+		final SimpleDateFormat sdf = new SimpleDateFormat( "ddMMyy", Locale.getDefault() );
 
 		return sdf.format( param ).trim();
 
@@ -470,6 +485,10 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract int nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
 	public abstract int vendaItemTresCasas( String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto );// 56
+	
+	public abstract int programaMoedaSingular( String nomeSingular );// 58
+	
+	public abstract int programaMoedaPlural( String nomePlurar );// 59
 
 	public abstract int programarEspacoEntreLinhas( int espaco );// 60
 

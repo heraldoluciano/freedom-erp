@@ -201,6 +201,11 @@ public class ECFBematech extends AbstractECFDriver {
 
 	}
 
+	/**
+	 * Auxilia o metodo checkRetorno.<BR>
+	 * @param ST1 
+	 * @return
+	 */
 	private int checkST1( final byte ST1 ) {
 
 		int retorno = 0;
@@ -236,6 +241,11 @@ public class ECFBematech extends AbstractECFDriver {
 
 	}
 
+	/**
+	 * Auxilia o metodo checkRetorno.<BR>
+	 * @param ST2 
+	 * @return
+	 */
 	private int checkST2( final byte ST2 ) {
 
 		int retorno = 0;
@@ -536,7 +546,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 26 };
 
-		executaCmd( CMD, 68 );
+		executaCmd( CMD, 36 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -556,7 +566,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 29 };
 
-		executaCmd( CMD, 17 );
+		executaCmd( CMD, 10 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -566,7 +576,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		final byte[] CMD = { ESC, 30 };
 
-		executaCmd( CMD, 9 );
+		executaCmd( CMD, 6 );
 
 		return bcdToAsc( getBytesLidos() );
 
@@ -626,7 +636,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		String retorno = "";
 
-		if ( var == VAR_NUM_SERIE || var == VAR_CNPJ_IE || var == VAR_CLICHE || var == VAR_MOEDA ) {
+		if ( var == V_NUM_SERIE || var == V_CNPJ_IE || var == V_CLICHE || var == V_MOEDA ) {
 
 			retorno = new String( getBytesLidos() );
 
@@ -686,6 +696,34 @@ public class ECFBematech extends AbstractECFDriver {
 
 		return executaCmd( CMD, 3 );
 
+	}
+
+	public int programaMoedaSingular( final String nomeSingular ) {
+		
+		byte[] CMD = { ESC, 58 };
+
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( parseParam( nomeSingular, 19, false ) );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 3 );
+		
+	}
+	
+	public int programaMoedaPlural( final String nomePlurar ) {
+
+		byte[] CMD = { ESC, 59 };
+
+		final StringBuffer buf = new StringBuffer();
+
+		buf.append( parseParam( nomePlurar, 19, false ) );
+
+		CMD = adicBytes( CMD, buf.toString().getBytes() );
+
+		return executaCmd( CMD, 3 );
+		
 	}
 
 	// Programa espaço entre as linhas em dots.

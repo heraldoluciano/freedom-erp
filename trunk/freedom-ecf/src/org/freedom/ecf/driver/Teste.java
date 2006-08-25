@@ -21,13 +21,13 @@ public class Teste {
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
 		
 		
-		ecf.leituraX();
-		System.out.println("leu leiturax");
-		ecf.getStatus();
+		ecf.programaMoedaSingular( "Real" );
+		
+		ecf.programaMoedaPlural( "reais" );
 		
 		//System.out.println("\nRetorno de Variaveis\n");
 	
-		//System.out.println("\n" + ecf.retornoVariaveis( ecf.VAR_FORMAS_PAG ) + "\n" );
+		//System.out.println("\n" + ecf.retornoVariaveis( ecf.V_FORMAS_PAG ) + "\n" );
 		
 		
 		/*
