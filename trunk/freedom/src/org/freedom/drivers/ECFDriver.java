@@ -112,7 +112,7 @@ public class ECFDriver {
 		}
 		else if ( !bModoDemo && ecf != null ) {
 
-			Logger.gravaLogTxt( "", sUserID, Logger.LGEP_CANC_ITEM, "TENTATIVA DE CANCELAMENTO DE ITEM ANTERIOR PELO OPERADOR " + sUserID );
+			Logger.gravaLogTxt( "", sUserID, Logger.LGIF_CANC_ITEM, "TENTATIVA DE CANCELAMENTO DE ITEM ANTERIOR PELO OPERADOR " + sUserID );
 
 			bRetorno = trataRetornoFuncao( ecf.cancelaItemAnterior() );
 
