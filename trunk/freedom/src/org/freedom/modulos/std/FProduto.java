@@ -302,6 +302,8 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 
 	private JCheckBoxPad cbRMA = null;
 
+	private JCheckBoxPad cbAdicPDV = null;
+
 	private Tabela tabFatConv = new Tabela();
 
 	private JScrollPane spnFatConv = new JScrollPane( tabFatConv );
@@ -588,6 +590,9 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		cbRMA = new JCheckBoxPad( "RMA", "S", "N" );
 		cbRMA.setVlrString( "S" );
 		
+		cbAdicPDV = new JCheckBoxPad( "tela adicional", "S", "N" );
+		cbAdicPDV.setVlrString( "N" );
+		
 		cbReceita = new JCheckBoxPad( "Nescecita receita", "S", "N" );
 		cbReceita.setVlrString( "N" );
 
@@ -681,11 +686,12 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		
 		adic( lbBordaControles, 7, 245, 639, 55 );
 		
-		adicDB( cbLote, 15, 270, 100, 20, "CLoteProd", "Estoque", true );
-		adicDB( cbAtivo, 120, 270, 100, 20, "AtivoProd", "Atividade", true );
-		adicDB( cbVerif, 223, 270, 100, 20, "VerifProd", "Abaixo custo", true );
-		adicDB( cbRMA, 326, 270, 100, 20, "RMAProd", "RMA", true );
-		adicDB( cbReceita, 429, 270, 150, 20, "UsaReceitaProd", "Receita", true );
+		adicDB( cbLote, 15, 270, 80, 20, "CLoteProd", "Estoque", true );
+		adicDB( cbAtivo, 100, 270, 80, 20, "AtivoProd", "Atividade", true );
+		adicDB( cbVerif, 183, 270, 80, 20, "VerifProd", "Abaixo custo", true );
+		adicDB( cbRMA, 296, 270, 60, 20, "RMAProd", "RMA", true );
+		adicDB( cbReceita, 379, 270, 150, 20, "UsaReceitaProd", "Receita", true );
+		adicDB( cbAdicPDV, 530, 270, 100, 20, "UsaTelaAdicPDV", "PDV", true );
 
 		adicCampo( txtCodUnid, 7, 320, 110, 20, "CodUnid", "Cód.und.", ListaCampos.DB_FK, txtDescUnid, true );
 		adicDescFK( txtDescUnid, 120, 320, 327, 20, "DescUnid", "Descrição da unidade" );
