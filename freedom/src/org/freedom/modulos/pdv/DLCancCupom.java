@@ -110,7 +110,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	private boolean bCancCupom = false;
 
-	private int iCancItem = -1;
+	private String iCancItem = "";
 
 	public DLCancCupom() {
 
@@ -378,7 +378,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 						if ( cancItem( iItem ) ) {
 							if ( AplicativoPDV.bECFTerm ) {
 								if ( ecf.cancelaItemGenerico( iItem ) ) {
-									iCancItem = iItem;
+									iCancItem += "," + iItem;
 									btOK.doClick();
 								}
 							}
@@ -390,6 +390,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 				}
 			}
 		}
+		
 	}
 
 	private void carregaTabela() {
@@ -451,7 +452,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	private void marcaItem( int iItem ) {
 
-		carregaTabela();
+		//carregaTabela();
 		
 		if ( (ImageIcon) tab.getValor( iItem, 0 ) == imgCanc ) {
 			imgColuna = imgPago;
@@ -546,9 +547,19 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 		return bCancCupom;
 	}
 
-	public int getCancItem() {
+	public int[] getCancItem() {
+		
+		String[] tmp = iCancItem.substring( 1 ).split( "," );
+		
+		int[] ret = new int[ tmp.length ];
+		
+		for ( int i=0; i < ret.length; i++ ) {
+			
+			ret[ i ] = Integer.parseInt( tmp[ i ] );
+			
+		}
 
-		return iCancItem;
+		return ret;
 	}
 
 	public void setVenda( int iCodVenda ) {
@@ -587,7 +598,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	public void mouseClicked( MouseEvent mevt ) {
 
-		if ( ( mevt.getSource() == tab ) && ( mevt.getClickCount() == 2 ) && ( tab.getLinhaSel() >= 0 ) ) {
+		if ( mevt.getClickCount() == 2 && tab.getLinhaSel() >= 0 ) {
 			marcaItem( tab.getLinhaSel() );
 		}
 

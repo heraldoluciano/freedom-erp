@@ -569,8 +569,28 @@ public class ECFBematech extends AbstractECFDriver {
 		final byte[] CMD = { ESC, 27 };
 
 		executaCmd( CMD, 222 );
+		
+		final int[] tam = { 224, 14, 14, 14, 126, 14, 14, 18 };
+		
+		final String totalizadores = bcdToAsc( getBytesLidos() );
+		
+		final StringBuffer retorno = new StringBuffer();
+		
+		int index = 0;
+		
+		for ( int i=0; i < tam.length; i++ ) {
+			
+			if ( i > 0 ) {
+				retorno.append( ',' );
+			}
+			
+			retorno.append( totalizadores.substring( index , ( index + tam[ i ] ) ) );
+			
+			index += tam[ i ];
+			
+		}
 
-		return bcdToAsc( getBytesLidos() );
+		return retorno.toString();
 
 	}
 

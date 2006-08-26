@@ -837,17 +837,23 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				iniVenda();
 			}
 			else {
-				int iItem = canc.getCancItem();
-				int iLinha = getLinha( iItem );
+				int[] iItens = canc.getCancItem();
+				int iLinha = 0;
 				
-				if ( iLinha > 0 ) {
-					tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 3 );
-					tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 6 );
-					tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 7 );
-					tbItem.setValor( "C", iLinha, 8 );
-					marcaLinha( iItem );
-					minPesoFrete( txtCodProd1.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal() );
-					atualizaTot();
+				for ( int i=0; i < iItens.length; i++ ) {
+					
+					iLinha = getLinha( iItens[ i ] );
+					
+					if ( iLinha > -1 ) {
+						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 3 );
+						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 6 );
+						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 7 );
+						tbItem.setValor( "C", iLinha, 8 );
+						marcaLinha( iItens[ i ] );
+						minPesoFrete( txtCodProd1.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal() );
+						atualizaTot();
+					}
+					
 				}
 			}
 		}
