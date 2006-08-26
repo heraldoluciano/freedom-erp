@@ -183,26 +183,42 @@ public class DLFechaDia extends FFDialogo {
 
 	private void fechaCaixa( boolean bReduz ) {
 
-		if ( txtVlrCaixa.getVlrDouble().doubleValue() > 0 )
+		if ( txtVlrCaixa.getVlrDouble().doubleValue() > 0 ) {
+
 			if ( execSangria() && AplicativoPDV.bECFTerm ) {
+				
 				if ( ! ecf.sangria( txtVlrCaixa.getVlrBigDecimal() ) ) {
+					
 					Funcoes.mensagemErro( null, "Erro ao executar a sangria!" );
 					return;
+					
 				}
+				
 			}
+			
+		}
+		
 		if ( execFechamento( bReduz ) ) {
+			
 			if ( AplicativoPDV.bECFTerm && bReduz ) {
-				if ( ! ecf.reducaoZ() ) {
-					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
-					return;
-				}
-				else if ( bReduz ) {
+				
+				if ( ecf.reducaoZ() ) {
+					
 					FLeFiscal fiscal = new FLeFiscal();
 					fiscal.setConexao( con );
 					fiscal.gravaReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa );
+					
 				}
+				else {
+					
+					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
+					
+				}
+				
 			}
+			
 		}
+		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
