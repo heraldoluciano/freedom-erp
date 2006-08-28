@@ -1,7 +1,5 @@
 package org.freedom.layout.telas;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -113,17 +111,6 @@ public class DLConveniadoPDV extends FDialogo {
 		txtPercDesc.setAtivo( false );
 		txtPrecoDesc.setAtivo( false );
 		txtTotal.setAtivo( false );
-		
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-		System.exit(0);
-	}
-	
-	public static void main( String arg[] ) {
-		
-		DLConveniadoPDV teste = new DLConveniadoPDV();
-		teste.setVisible(true);
 		
 	}
 
