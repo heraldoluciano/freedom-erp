@@ -202,17 +202,21 @@ public class DLFechaDia extends FFDialogo {
 			
 			if ( AplicativoPDV.bECFTerm && bReduz ) {
 				
-				if ( ecf.reducaoZ() ) {
+				FLeFiscal fiscal = new FLeFiscal();
+				fiscal.setConexao( con );
+				
+				if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
 					
-					FLeFiscal fiscal = new FLeFiscal();
-					fiscal.setConexao( con );
-					fiscal.gravaReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa );
+					if ( ecf.reducaoZ() ) {						
+						fiscal.salvaReducaoZ();						
+					}
+					else {						
+						Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );						
+					}
 					
 				}
-				else {
-					
-					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );
-					
+				else {						
+					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );						
 				}
 				
 			}
