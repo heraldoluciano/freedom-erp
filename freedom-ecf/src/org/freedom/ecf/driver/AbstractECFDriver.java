@@ -118,7 +118,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public static final char V_TOT_ACRECIMOS = 30;
 
 	public static final char V_CONT_BILHETE = 31;
-	
+
 	public static final char V_FORMAS_PAG = 32;
 
 	public static final char V_CNF_NVINCULADO = 33;
@@ -142,7 +142,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	protected SerialPort portaSerial = null;
 
 	public AbstractECFDriver() {
-		
+
 		Locale.setDefault( new Locale( "pt", "BR" ) );
 
 	}
@@ -167,11 +167,11 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public boolean ativaPorta( final int com ) {
 
 		boolean retorno = true;
-		
+
 		if ( !Serial.getInstance().isAtivada() ) {
 			retorno = Serial.getInstance().ativaPorta( com, this );
 		}
-		
+
 		return retorno;
 	}
 
@@ -199,59 +199,45 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		byte[] tmp = null;
 		InputStream entrada = null;
 
-		
 		entrada = Serial.getInstance().getEntrada();
-		
-		try {
-			
-			System.out.println( "entrou no evento" );
-			
-			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
-				
-				System.out.println("ENTROU EM DATA_AVAILABLE");
-				System.out.println("Avalidados " + entrada.available());
-				
-				retorno = new byte[ entrada.available() ];
-				
-				if ( retorno == null ) {			
 
-					System.out.println( "Available em branco no evento" );
-					
-				}
-				else {
-					
-					System.out.println("bytes lidos " + entrada.read( retorno ));
-					
+		try {
+
+			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
+
+				retorno = new byte[ entrada.available() ];
+
+				if ( retorno != null ) {
+
 					if ( buffer == null ) {
-						System.out.println("Setando buffer com "+retorno.toString());
 						bufferTmp = retorno;
 					}
 					else {
+
 						leuEvento = true;
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + retorno.length ];
 
-						System.out.println( "tamanho do retorno " + bufferTmp.length );
-						
 						for ( int i = 0; i < bufferTmp.length; i++ ) {
+
 							if ( i < tmp.length ) {
 								bufferTmp[ i ] = tmp[ i ];
 							}
 							else {
 								bufferTmp[ i ] = retorno[ i - tmp.length ];
 							}
-							System.out.println( "lendo no evento " + bufferTmp[ i ] );
+
 						}
 					}
-					
+
 					buffer = bufferTmp;
-					
+
 				}
-				
+
 			}
-			
+
 		} catch ( IOException e ) {
-			System.out.println( e.getMessage() );
+			e.printStackTrace();
 		}
 
 	}
@@ -261,7 +247,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		return enviaCmd( CMD, portaSel, tamEsperado );
 
 	}
-	
+
 	public byte[] enviaCmd( final byte[] CMD, final int com, final int tamRetorno ) {
 
 		long tempo = 0;
@@ -269,7 +255,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 		leuEvento = false;
 		buffer = null;
 		final OutputStream saida = Serial.getInstance().getSaida();
-		
+
 		if ( ativaPorta( com ) ) {
 
 			try {
@@ -278,18 +264,18 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 				saida.flush();
 				tempo = System.currentTimeMillis();
 				saida.write( CMD );
-				//saida.flush();
+
 				do {
+
 					Thread.sleep( TIMEOUT_ACK );
 					tempoAtual = System.currentTimeMillis();
-					System.out.println( "laço de tempo " + ( tempoAtual - tempo ) + " - " + ( TIMEOUT_READ ) );
-					System.out.println( "tamanho do retorno " + tamRetorno + " tamanho do buffer " + ( buffer == null ? "nulo" : ""+buffer.length) );
-				} while ( ( tempoAtual - tempo ) < ( TIMEOUT_READ ) && ( buffer == null || buffer.length < tamRetorno || ! leuEvento ) );
+
+				} while ( ( tempoAtual - tempo ) < ( TIMEOUT_READ ) && ( buffer == null || buffer.length < tamRetorno || !leuEvento ) );
 
 			} catch ( IOException e ) {
-				System.out.println( e.getMessage() );
+				e.printStackTrace();
 			} catch ( InterruptedException e ) {
-				System.out.println( e.getMessage() );
+				e.printStackTrace();
 			}
 
 		}
@@ -485,9 +471,9 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 	public abstract int nomeiaTotalizadorNaoSujeitoICMS( int indice, String desc );// 40
 
 	public abstract int vendaItemTresCasas( String codProd, String descProd, String sitTrib, float qtd, float valor, float desconto );// 56
-	
+
 	public abstract int programaMoedaSingular( String nomeSingular );// 58
-	
+
 	public abstract int programaMoedaPlural( String nomePlurar );// 59
 
 	public abstract int programarEspacoEntreLinhas( int espaco );// 60
