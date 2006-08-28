@@ -501,7 +501,7 @@ public class FLeFiscal extends FTabDados {
 		super.actionPerformed( evt );
 	}
 
-	public boolean gravaReducaoZ( Date data, int codCaixa ) {
+	public boolean getReducaoZ( Date data, int codCaixa ) {
 
 		try {
 
@@ -512,7 +512,6 @@ public class FLeFiscal extends FTabDados {
 			buscaAliquotas();
 			carregaContadores();
 			carregaTotalizadores();
-			lcCampos.post();
 
 		} catch ( Exception e ) {
 			Funcoes.mensagemErro( null, "Erro ao gravar Redução Z\n" + e.getMessage() );
@@ -522,6 +521,12 @@ public class FLeFiscal extends FTabDados {
 
 		return true;
 
+	}
+	
+	public boolean salvaReducaoZ() {
+		
+		return lcCampos.post();
+		
 	}
 
 	public void setConexao( Connection cn ) {

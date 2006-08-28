@@ -796,7 +796,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			
 			iLinha = getLinha( iItem );
 			
-			if ( iLinha > 0 ) {
+			if ( iLinha > -1 ) {
 				tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 3 );
 				tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 6 );
 				tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 7 );

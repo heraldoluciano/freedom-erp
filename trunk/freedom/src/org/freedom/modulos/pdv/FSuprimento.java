@@ -104,7 +104,6 @@ public class FSuprimento extends FFDialogo {
 
 			PreparedStatement ps = con.prepareStatement( "SELECT DDTAMOVRET, CTIPOMOV, NVLRSLDMOV, CIDUSU FROM PVRETMOVCAIXASP(?,?,?,?)" );
 			ps.setInt( 1, AplicativoPDV.iCodCaixa );
-			System.out.println( "caixa: " + AplicativoPDV.iCodCaixa );
 			ps.setInt( 2, Aplicativo.iCodEmp );
 			ps.setInt( 3, ListaCampos.getMasterFilial( "PVMOVCAIXA" ) );
 			ps.setDate( 4, Funcoes.dateToSQLDate( new Date() ) );
@@ -138,12 +137,9 @@ public class FSuprimento extends FFDialogo {
 	}
 
 	private void executaSuprimento() {
-
-		System.out.println( "Antes do suprimento" );
 		
 		if ( !AplicativoPDV.bECFTerm || ecf.suprimento( txtValor.getVlrBigDecimal() ) ) {
 		
-			System.out.println( "depois do suprimento" );
 			try {
 				
 				PreparedStatement ps = con.prepareStatement( "EXECUTE PROCEDURE PVSUPRIMENTOSP(?,?,?,?,?,?)" );
