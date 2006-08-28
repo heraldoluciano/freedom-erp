@@ -520,17 +520,21 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 				((JMenuPad) oMenu).add(miSair);
 			}
 		}
-		JMenu mAjuda = new JMenu("Ajuda");
+		JMenu mAjuda = new JMenu("Ajuda");		
 		JMenuItem miSobre = new JMenuItem("Sobre");
 		miSobre.addActionListener(this);
 		mAjuda.add(miSobre);
 		JMenuItem miAtalhos = new JMenuItem("Atalhos");
 		miAtalhos.addActionListener(this);
 		mAjuda.add(miAtalhos);
-		mAjuda.addSeparator();
-		JMenuItem miSuporte = new JMenuItem("Suporte");
-		miSuporte.addActionListener(this);
-		mAjuda.add(miSuporte);
+				
+		if(bSuporte) {
+			mAjuda.addSeparator();
+			JMenuItem miSuporte = new JMenuItem("Suporte");
+			miSuporte.addActionListener(this);
+			mAjuda.add(miSuporte);			
+		}
+		 
 		telaPrincipal.bar.add(mAjuda);
 		
 	}

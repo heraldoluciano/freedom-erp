@@ -74,15 +74,14 @@ public class FSobre extends FFDialogo {
   		pnSobre.add(new JLabelPad ("<HTML><BR> Versão do jar: "+sVersao+"<BR> "+ Aplicativo.sEmpSis+"<BR>" +
   				(new GregorianCalendar().get(Calendar.YEAR))+"<BR></HTML>"),BorderLayout.CENTER);
 		
-	tpnSobre.addTab("Equipe "+Aplicativo.sNomeSis ,pnEquipe);
+	tpnSobre.addTab("Equipe",pnEquipe);
     String sHtmlEquipe = "<HTML><BR><CENTER>";
     for (int i = 0;Aplicativo.vEquipeSis.size()>i;i++){
         sHtmlEquipe += Aplicativo.vEquipeSis.elementAt(i).toString()+"<BR>";
     }
     
 	pnEquipe.add(new JLabelPad (sHtmlEquipe+"</CENTER><BR>"));
-	
-	
+		
 	tpnSobre.addTab("Sistema" ,pnSistema);
 	carregaInfoSis();
 	
