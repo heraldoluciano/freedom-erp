@@ -37,14 +37,17 @@ public class FTipoConv extends FDados implements ActionListener {
   private static final long serialVersionUID = 1L;
   private JTextFieldPad txtCodTipoConv = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
   private JTextFieldPad txtDescTipoConv = new JTextFieldPad(JTextFieldPad.TP_STRING,50,0);
+  private JTextFieldPad txtCodAuxTipoConv = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
   private JTextFieldPad txtClassOrc = new JTextFieldPad(JTextFieldPad.TP_STRING,20,0);
+  
   public FTipoConv () {
   	super();
     setTitulo("Cadastro de Tipo de Conveniados");
-    setAtribos( 50, 50, 370, 150);
+    setAtribos( 50, 50, 370, 190);
     adicCampo(txtCodTipoConv, 7, 20, 80, 20,"CodTpConv","Cód.tp.conv.",ListaCampos.DB_PK,true);
     adicCampo(txtDescTipoConv, 90, 20, 250, 20,"DescTpConv","Descrição do tipo de conveniado",ListaCampos.DB_SI,true);
-    adicCampo(txtClassOrc,7,60,150,20,"ClassTpConv","Layout de orçamentos",ListaCampos.DB_SI,false);
+    adicCampo(txtCodAuxTipoConv,7,60,150,20,"CodAuxTpConv","Código auxiliar",ListaCampos.DB_SI,false);
+    adicCampo(txtClassOrc,7,100,150,20,"ClassTpConv","Layout de orçamentos",ListaCampos.DB_SI,false);
     setListaCampos( true, "TIPOCONV", "AT");
     btImp.addActionListener(this);
     btPrevimp.addActionListener(this);
