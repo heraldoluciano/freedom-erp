@@ -24,7 +24,6 @@ package org.freedom.telas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -117,8 +116,7 @@ public class FSuporte extends FFDialogo implements ActionListener {
 		vLabs.add("Arquivo no corpo.");
 
 		lbStatus.setBorder(BorderFactory.createEtchedBorder());
-
-		Container c = getContentPane();
+		
 		c.setLayout(new BorderLayout());
 //		c.add(pinGeral, BorderLayout.NORTH);
 		c.add(pnCenter, BorderLayout.CENTER);
