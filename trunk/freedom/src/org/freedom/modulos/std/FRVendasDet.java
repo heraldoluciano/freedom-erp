@@ -198,15 +198,16 @@ public class FRVendasDet extends FRelatorio {
 					        "WHERE VO.CODEMP=IT.CODEMP AND VO.CODFILIAL=IT.CODFILIAL " +
 					        "AND VO.CODVENDA=IT.CODVENDA AND VO.CODITVENDA=IT.CODITVENDA AND VO.TIPOVENDA=IT.TIPOVENDA), " +
 					"V.CODVENDA,V.DOCVENDA,V.DTEMITVENDA,V.DTSAIDAVENDA,PP.DESCPLANOPAG,V.CODCLI," +
-					"C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,P.DESCPROD," +
+					"C.RAZCLI,V.VLRDESCVENDA,V.VLRLIQVENDA,IT.CODPROD,IT.REFPROD,P.DESCPROD,L.CODLOTE," +
 					"IT.QTDITVENDA,IT.PRECOITVENDA,IT.VLRDESCITVENDA,IT.VLRLIQITVENDA " +
-					"FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P , EQTIPOMOV TM " +
+					"FROM VDVENDA V, FNPLANOPAG PP, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P, EQTIPOMOV TM, EQLOTE L " +
 					"WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.CODEMP=? AND V.CODFILIAL=? " +
 					"AND PP.CODEMP=V.CODEMPPG AND PP.CODFILIAL=V.CODFILIAL AND PP.CODPLANOPAG=V.CODPLANOPAG " +
 					"AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " +
 					"AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " +
 					"AND IT.CODEMP=V.CODEMP AND IT.CODFILIAL=V.CODFILIAL AND IT.CODVENDA=V.CODVENDA AND IT.TIPOVENDA=V.TIPOVENDA " +
 					"AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND P.CODPROD=IT.CODPROD " +
+					"AND L.CODLOTE=IT.CODLOTE AND L.CODPROD=IT.CODPROD AND L.CODEMP=IT.CODEMP AND L.CODFILIAL=IT.CODFILIAL " +
 				    sWhere1 + sWhere2 + sWhere3 + sWhere4 + sWhere5 +			  
 				    "ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA";
 			
@@ -275,6 +276,7 @@ public class FRVendasDet extends FRelatorio {
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say(  0, "| Cod/Ref");
 					imp.say( 16, "| Descrição");
+					imp.say( 54, "| Lote");
 					imp.say( 69, "| Quant.");
 					imp.say( 79, "| Preco");
 					imp.say( 94, "| Vlr.Desc.");
@@ -295,7 +297,8 @@ public class FRVendasDet extends FRelatorio {
 				
 				imp.pulaLinha( 1, imp.comprimido());
 				imp.say(  0, "| " + (bComRef ? rs.getString("RefProd") : rs.getString("CodProd")));
-				imp.say( 16, "| " + rs.getString("DescProd"));
+				imp.say( 16, "| " + Funcoes.copy( rs.getString("DescProd"), 34 ) );
+				imp.say( 54, "| " + Funcoes.copy( rs.getString("CodLote"), 13 ) );
 				imp.say( 69, "| " + rs.getBigDecimal("QtdItVenda").setScale(1,BigDecimal.ROUND_HALF_UP));
 				imp.say( 79, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(rs.getFloat("PrecoItVenda"))));
 				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency(12,2, String.valueOf(rs.getFloat("VlrDescItVenda"))));
