@@ -27,7 +27,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final byte NAK = 21;
 
-	public static final int TIMEOUT_ACK = 300;
+	public static final int TIMEOUT_ACK = 500;
 
 	public static final int TIMEOUT_READ = 30000;
 
@@ -127,7 +127,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 	public static final char V_TIPO_IMP = 253;
 
-	private byte[] bytesLidos = new byte[ 3 ];
+	private static byte[] bytesLidos = new byte[ 3 ];
 
 	private static byte[] buffer = null;
 
@@ -206,15 +206,19 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 			if ( event.getEventType() == SerialPortEvent.DATA_AVAILABLE ) {
 
 				retorno = new byte[ entrada.available() ];
+				//System.out.println("Evento available");
 
 				if ( retorno != null ) {
-
+					
+					entrada.read( retorno );
+					
 					if ( buffer == null ) {
 						bufferTmp = retorno;
 					}
 					else {
 
 						leuEvento = true;
+						//System.out.println("leu evento");
 						tmp = buffer;
 						bufferTmp = new byte[ tmp.length + retorno.length ];
 
@@ -226,6 +230,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 							else {
 								bufferTmp[ i ] = retorno[ i - tmp.length ];
 							}
+							//System.out.println("buffer "+bufferTmp[i]);
 
 						}
 					}
