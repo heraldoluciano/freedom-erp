@@ -85,6 +85,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     
     //private JPanelPad pnSp = new JPanelPad() 
     //protected JScrollPane spFilho = new JScrollPane();
+    protected JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
 
     public String strTemp = "";
 
@@ -187,7 +188,7 @@ public class FFilho extends JInternalFrame implements InternalFrameListener,
     public JPanelPad adicBotaoSair() {
         Container c = getContentPane();
         JButton btSair = new JButton("Sair", Icone.novo("btSair.gif"));
-        JPanelPad pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
+        pnRod = new JPanelPad(JPanelPad.TP_JPANEL, new BorderLayout());
         pnRod.setPreferredSize(new Dimension(200, 30));
         btSair.setPreferredSize(new Dimension(110, 30));
         pnRod.add(btSair, BorderLayout.EAST);
