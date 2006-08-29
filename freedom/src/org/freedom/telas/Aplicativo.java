@@ -560,14 +560,15 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 		return retorno;
 	}
 	
-	public Connection conexao(final String strDriverP, final String strBancoP) {
+	public Connection conexao() {
 		String sVals[];
 		Connection conRetorno = null;
+		strBanco = getParameter("banco");
+		strDriver = getParameter("driver");
 
 		if (strUsuario.equals("") && strSenha.equals("")) {
-
 			Login lgBanco = (Login) criaLogin();
-			lgBanco.execLogin(strBancoP, strDriverP, sSplashImg, iNumEst);
+			lgBanco.execLogin(strBanco, strDriver, sSplashImg, iNumEst);
 			if (!lgBanco.OK)
 				System.exit(0);
 			sVals = lgBanco.getStrVals();

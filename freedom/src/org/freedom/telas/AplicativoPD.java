@@ -74,13 +74,11 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 		telaPrincipal.setIconImage(imgIcone.getImage());
 		
 		setSplashName(sSplash);
-		
-		iniConexao(); // Inicia a variável de conexão
+		iniConexao();
 		carregaCasasDec();
 		getMultiAlmox();
 		buscaInfoUsuAtual();
 		setaInfoTela();
-
 	}
 		
 	public void setaSysdba(){
@@ -165,7 +163,7 @@ public class AplicativoPD extends Aplicativo implements ActionListener, KeyListe
 						"Parametro driver nao foi preenchido");
 				return;
 			}
-			con = conexao(strDriver, strBanco);
+			con = conexao();
 			if (con == null)
 				System.exit(1);
 			try {

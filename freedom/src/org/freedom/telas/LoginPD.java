@@ -82,11 +82,13 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		return conRet;
 	}		  
 
-	protected boolean execConexao(String sUsu, String sSenha) {		
+	protected boolean execConexao(String sUsu, String sSenha) {	
+	    strBanco = Aplicativo.getParameter("banco");
+	    strDriver = Aplicativo.getParameter("driver");
 		try {
 			Class.forName(strDriver);
 		} catch (java.lang.ClassNotFoundException e) {
-			Funcoes.mensagemErro( this,"Driver nao foi encontrado: "+e.getMessage ());
+			Funcoes.mensagemErro( this,"Driver nao foi encontrado:\n"+strDriver+"\n"+e.getMessage ());
 			return false;
 		}
 		
