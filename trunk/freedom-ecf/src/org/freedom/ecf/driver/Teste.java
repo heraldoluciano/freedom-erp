@@ -30,27 +30,25 @@ public class Teste {
 		//System.out.println("\n" + ecf.retornoVariaveis( ecf.V_FORMAS_PAG ) + "\n" );
 		
 		
-		/*
-		ecf.aberturaDeCupom();
+		
+		//ecf.aberturaDeCupom();
 		
 		//ecf.programaUnidadeMedida("KG");
 		//ecf.aumentaDescItem("Caneta                       0123456789" );
 		
-		ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 1f, 0.12f, 0f);
+		//ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 1f, 0.12f, 0f);
 		
 		//ecf.vendaItemTresCasas("0000000000001", "Caneta                       ", "FF", 1f, 0.125f, 0f);
 		
 		//ecf.vendaItemDepartamento("FF", 15.001f, 1f, 0.001f, 0.001f, 3, "UN", "0000000000001", "Caneta");
 		
-		*/
+		
 		
 		//ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERC,0);
 		//ecf.efetuaFormaPagamento("01",3,"to testando...");
-		//ecf.terminaFechamentoCupom("Obrigado pela Preferencia!!!");	
+		ecf.terminaFechamentoCupom("Obrigado pela Preferencia!!!");	
+		
 		//ecf.leituraX();
-		System.out.println("Numero de cupom: "+ecf.retornoNumeroCupom());
-		
-		
 
 		//ecf.autenticacaoDeDocumento();
 		
