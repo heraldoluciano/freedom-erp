@@ -25,20 +25,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-import org.freedom.componentes.JLabelPad;
-
 import org.freedom.bmps.Icone;
 import org.freedom.componentes.JComboBoxPad;
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPasswordFieldPad;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
@@ -64,10 +58,11 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 	
 	public abstract void inicializaLogin();
 	
-	public void execLogin(String sBanco, String sDriver, String sImg, int iCodEst){
+	public void execLogin(String sBanco, String sDriver, String sImg, int iCodEstP){
 		strBanco = sBanco;
 		strDriver = sDriver;
-		this.iCodEst = iCodEst;
+			
+		this.iCodEst = iCodEstP;
 
 		ImageIcon ic = Icone.novo(sImg); 
 		JLabelPad lbImg = new JLabelPad(Icone.novo(sImg));
@@ -89,15 +84,12 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		
 	}
 	
-	public Login () {
-		
+	public Login () {		
 		String sUsuarioTst = Aplicativo.getParameter("usuariotst");
 		String sSenhaTst = Aplicativo.getParameter("senhatst");
 		 	
-		setTitulo("Login");
-		
-		lbInstrucoes.setForeground(Color.BLUE );
-				
+		setTitulo("Login");		
+		lbInstrucoes.setForeground(Color.BLUE );				
 		txtUsuario.addFocusListener(this);
 		txpSenha.addFocusListener(this);
 		cbEmp.addFocusListener(this);
@@ -107,7 +99,7 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 			if((sUsuarioTst.length()>0) && (sSenhaTst.length()>0)){
 				txtUsuario.setVlrString(sUsuarioTst);
 				txpSenha.setVlrString(sSenhaTst);
-				btOK.doClick();			
+//				btOK.doClick();			
 			}	
 		}					
 	}
