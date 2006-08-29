@@ -217,7 +217,7 @@ public class Serial {
 				e.printStackTrace();
 			} catch ( IOException e ) {
 				e.printStackTrace();
-				portaSerial = null;
+				//portaSerial = null;
 			}
 
 		}
