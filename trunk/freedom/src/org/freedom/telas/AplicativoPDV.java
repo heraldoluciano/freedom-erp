@@ -1,11 +1,11 @@
 /**
  * @version 05/06/2000 <BR>
- * @author Setpoint Informática Ltda./Robson Sanchez <BR>
+ * @author Setpoint Informática Ltda./Anderson Sanchez <BR>
  * 
  * Projeto: Freedom <BR>
  * Pacote: org.freedom.telas <BR>
  * Classe:
- * @(#)Aplicativo.java <BR>
+ * @(#)AplicativoPDV.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -29,11 +29,6 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.modulos.pdv.FAbreCaixa;
 
-/**
- * @author anderson
- * 
- * TODO To change the template for this generated type comment go to Window - Preferences - Java - Code Style - Code Templates
- */
 public class AplicativoPDV extends AplicativoPD {
 
 	public static boolean bECFTerm = false;
@@ -43,24 +38,33 @@ public class AplicativoPDV extends AplicativoPD {
 	public static int iCodCaixa = 0;
 	
 	private static boolean ecfDriver = false;
+	
+	private static String pluginVenda;
 
 
 	public AplicativoPDV(String sIcone, String sSplash, int iCodSis, String sDescSis, int iCodModu, String sDescModu, String sDirImagem) {
 	    super(sIcone, sSplash, iCodSis, sDescSis,iCodModu, sDescModu, sDirImagem,new FPrincipalPD(null, "bgFreedomSTD.jpg"),LoginPD.class);
+
+	    pluginVenda = getParameter( "pluginVenda" );
 	    
-	    if( "ECFBematech".equals( getParameter( "ecfdriver" ) ) ) {
-			
+	    if( "ECFBematech".equalsIgnoreCase( getParameter( "ecfdriver" ) ) ) {
+	    	
 			ecfDriver = true;
 			
 		}	
+	    
 	}
 	
 	public static boolean usaEcfDriver() {		
 		
-		return ecfDriver;
-		
+		return ecfDriver;		
 	}
 
+	public static String getPluginVenda() {
+		
+		return pluginVenda;
+	}
+	
 	public boolean pegaValorINI() {
 
 		boolean bRetorno = false;
