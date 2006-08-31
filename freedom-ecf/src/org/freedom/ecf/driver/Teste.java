@@ -46,7 +46,7 @@ public class Teste {
 		
 		ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERC,0);
 		ecf.efetuaFormaPagamento("01",3,"to testando...");
-		ecf.terminaFechamentoCupom("Obrigado pela Preferencia!!!");	
+		ecf.terminaFechamentoCupom("Volte sempre!!!");	
 		
 		//ecf.leituraX();
 
