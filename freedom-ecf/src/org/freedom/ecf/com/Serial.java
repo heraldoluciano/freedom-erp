@@ -206,8 +206,18 @@ public class Serial {
 
 					entrada = portaSerial.getInputStream();
 					saida = portaSerial.getOutputStream();
-					portaSerial.setFlowControlMode( SerialPort.FLOWCONTROL_RTSCTS_OUT );
-					portaSerial.setSerialPortParams( BAUDRATE, DATABITS, STOPBITS, PARITY );
+					try {
+						portaSerial.setFlowControlMode( SerialPort.FLOWCONTROL_RTSCTS_OUT );
+					} catch ( UnsupportedCommOperationException e ) {
+						e.printStackTrace();
+					}
+					try {
+						portaSerial.setSerialPortParams( BAUDRATE, DATABITS, STOPBITS, PARITY );
+					} catch ( UnsupportedCommOperationException e ) {
+						e.printStackTrace();
+					}
+					portaSerial.setDTR(true);
+					portaSerial.setRTS(true);
 					
 /*
  *
@@ -250,8 +260,6 @@ public class Serial {
 				}
 
 			} catch ( PortInUseException e ) {
-				e.printStackTrace();
-			} catch ( UnsupportedCommOperationException e ) {
 				e.printStackTrace();
 			} catch ( IOException e ) {
 				e.printStackTrace();
