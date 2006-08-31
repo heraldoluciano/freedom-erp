@@ -39,7 +39,7 @@ import org.freedom.funcoes.Funcoes;
 
 public abstract class Login extends FDialogo implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;	
-	protected JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+	protected JTextFieldPad txtUsuario = new JTextFieldPad(JTextFieldPad.TP_STRING,15,0);
 	protected JPasswordFieldPad txpSenha = new JPasswordFieldPad(9);
 	protected Vector vVals = new Vector();
 	protected Vector vLabs = new Vector();
