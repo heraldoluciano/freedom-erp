@@ -208,6 +208,44 @@ public class Serial {
 					saida = portaSerial.getOutputStream();
 					portaSerial.setFlowControlMode( SerialPort.FLOWCONTROL_RTSCTS_OUT );
 					portaSerial.setSerialPortParams( BAUDRATE, DATABITS, STOPBITS, PARITY );
+					
+/*
+ *
+ *http://bdn.borland.com/article/0,1410,31915,00.html
+ *    public ComControl() {
+
+        try {
+            TimeStamp = new java.util.Date().toString();
+            serialPort1 = (SerialPort) portId1.open("ComControl", 2000);
+            System.out.println(TimeStamp + ": " + portId1.getName() + " opened for scanner input");
+            serialPort2 = (SerialPort) portId2.open("ComControl", 2000);
+            System.out.println(TimeStamp + ": " + portId2.getName() + " opened for diverter output");
+
+        } catch (PortInUseException e) {}
+        try {
+            inputStream = serialPort1.getInputStream();
+        } catch (IOException e) {}
+        try {
+            serialPort1.addEventListener(this);
+        } catch (TooManyListenersException e) {}
+        serialPort1.notifyOnDataAvailable(true);
+        try {
+
+            serialPort1.setSerialPortParams(9600,
+                SerialPort.DATABITS_8,
+                SerialPort.STOPBITS_1,
+                SerialPort.PARITY_NONE);
+
+            serialPort1.setDTR(false);
+            serialPort1.setRTS(false);
+
+            serialPort2.setSerialPortParams(9600,
+                SerialPort.DATABITS_7,
+                SerialPort.STOPBITS_1,
+                SerialPort.PARITY_EVEN);
+
+        } catch (UnsupportedCommOperationException e) {}
+ */					
 
 				}
 
