@@ -38,8 +38,8 @@ import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -53,6 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.border.Border;
+
 import org.freedom.bmps.Icone;
 import org.freedom.bmps.Imagem;
 import org.freedom.componentes.JLabelPad;
@@ -67,52 +68,84 @@ import org.freedom.modulos.atd.FAgenda;
 public abstract class FPrincipal extends JFrame implements ActionListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
+
 	protected static Connection con = null;
+
 	public JMenuBar bar = new JMenuBar();
+
 	private JToolBar tBar = new JToolBar();
+
 	protected JMenuItem sairMI = new JMenuItem();
+
 	private Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+
 	private JButton btCalc = new JButton( Icone.novo( "btCalc.gif" ) );
+
 	private JButton btAgenda = new JButton( Icone.novo( "btAgenda.gif" ) );
+
 	public JPanelPad pinBotoesDir = new JPanelPad();
+
 	public Container c = getContentPane();
+
 	public JDesktopPane dpArea = new JDesktopPane();
+
 	public StatusBar statusBar = new StatusBar();
+
 	private JLabelPad lbFreedom = null;
+
 	private JLabelPad lbStpinf = null;
+
 	private ImageIcon icFundo = null;
+
 	private JLabelPad lbFundo = null;
+
 	private int iWidthImgFundo = 0;
+
 	private int iHeightImgFundo = 0;
+
 	private String sURLStpinf = "http://www.stpinf.com";
+
 	private String sURLFreedom = "http://www.freedom.org.br";
+
 	private Border borderStpinf = null;
+
 	private Border borderFreedom = null;
+
 	public Color padrao = new Color( 69, 62, 113 );
+
 	public String sImgFundo = null;
+
 	private JTabbedPanePad tpnAgd = new JTabbedPanePad();
+
 	private JPanelPad pnAgd = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+
 	private static Tabela tabAgd = new Tabela();
+
 	private JScrollPane spnAgd = new JScrollPane( tabAgd );
+
 	private JSplitPane splitPane = null;
+
 	private String imgLogoSis = "lgFreedom.jpg";
+
 	private String imgLogoEmp = "lgSTP.jpg";
-	
+
 	public FPrincipal( String sDirImagem, String sImgFundo ) {
-		this(sDirImagem, sImgFundo, null, null);
+
+		this( sDirImagem, sImgFundo, null, null );
 	}
-	
+
 	public FPrincipal( String sDirImagem, String sImgFundo, String sImgLogoSis, String sImgLogoEmp ) {
-	    if (sDirImagem!=null) {
-	        Imagem.dirImages = sDirImagem;
-	        Icone.dirImages = sDirImagem;
-	    } 
-	    if (sImgLogoSis!=null) {
-	    	imgLogoSis = sImgLogoSis;
-	    }
-	    if (sImgLogoEmp!=null) {
-	    	imgLogoEmp = sImgLogoEmp;
-	    }
+
+		if ( sDirImagem != null ) {
+			Imagem.dirImages = sDirImagem;
+			Icone.dirImages = sDirImagem;
+		}
+		if ( sImgLogoSis != null ) {
+			imgLogoSis = sImgLogoSis;
+		}
+		if ( sImgLogoEmp != null ) {
+			imgLogoEmp = sImgLogoEmp;
+		}
 		lbFreedom = new JLabelPad( Icone.novo( imgLogoSis ) );
 		lbStpinf = new JLabelPad( Icone.novo( imgLogoEmp ) );
 		this.sImgFundo = sImgFundo;
@@ -144,22 +177,26 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		inicializaTela();
 
 		sairMI.addActionListener( new ActionListener() {
+
 			public void actionPerformed( ActionEvent e ) {
-				
+
+				fecharJanela();
 			}
 		} );
 		addWindowListener( new WindowAdapter() {
-			public void windowClosing( WindowEvent e ) {				 
-	
+
+			public void windowClosing( WindowEvent e ) {
+
+				fecharJanela();
 			}
 		} );
 
 	}
 
-	public abstract void remConFilial();	
-	
-	public abstract void fecharJanela();	
-	
+	public abstract void remConFilial();
+
+	public abstract void fecharJanela();
+
 	public abstract void inicializaTela();
 
 	public void adicAgenda() {
@@ -323,6 +360,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public boolean temTela( String nome ) {
+
 		boolean retorno = false;
 		int i = 0;
 
@@ -361,6 +399,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public JInternalFrame getTela( String nome ) {
+
 		JInternalFrame retorno = null;
 		JInternalFrame[] telas = dpArea.getAllFrames();
 		JInternalFrame tela = null;
@@ -394,6 +433,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void criatela( String nome, FFDialogo comp, Connection cn ) {
+
 		comp.setName( nome );
 		comp.setTitulo( nome );
 		comp.setConexao( cn );
@@ -401,6 +441,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void criatela( String nome, FFilho comp, Connection cn ) {
+
 		comp.setName( nome );
 		comp.setTitulo( nome );
 		dpArea.add( nome, comp );
@@ -413,6 +454,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void criatela( String nome, FDialogo comp, Connection cn ) {
+
 		comp.setName( nome );
 		comp.setTitulo( nome );
 		comp.setConexao( cn );
@@ -421,19 +463,27 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 
 	/**
 	 * Ajusta a identificação do sistema. <BR>
-	 * @param sDesc - Descrição do sistema.
-	 * @param iCod - Código do sistema.
-	 * @param iMod - Código do módulo. 
+	 * 
+	 * @param sDesc -
+	 *            Descrição do sistema.
+	 * @param iCod -
+	 *            Código do sistema.
+	 * @param iMod -
+	 *            Código do módulo.
 	 */
-	public void setIdent( String sDesc) {
+	public void setIdent( String sDesc ) {
+
 		setTitle( sDesc );
 	}
 
 	/**
 	 * Adiciona um componente na barra de ferramentas. <BR>
-	 * @param comp - Componente a ser adicionado.
+	 * 
+	 * @param comp -
+	 *            Componente a ser adicionado.
 	 */
 	public void adicCompInBar( Component comp, String sAling ) {
+
 		tBar.add( comp, sAling );
 	}
 
@@ -483,31 +533,35 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 	}
 
 	public void adicBotoes() {
+
 		preparaBarra();
 		adicBtAgenda();
 		adicBtCalc();
 	}
-	
+
 	public void preparaBarra() {
+
 		pinBotoesDir.setBorder( null );
 		c.add( tBar, BorderLayout.NORTH );
 		tBar.setLayout( new BorderLayout() );
 		pinBotoesDir.setPreferredSize( new Dimension( 102, 34 ) );
-		tBar.add( pinBotoesDir, BorderLayout.EAST );		
+		tBar.add( pinBotoesDir, BorderLayout.EAST );
 	}
-	
-	public void adicBtAgenda(){
+
+	public void adicBtAgenda() {
+
 		btAgenda.setPreferredSize( new Dimension( 34, 34 ) );
 		btAgenda.setToolTipText( "Agenda" );
 		btAgenda.addActionListener( this );
-		pinBotoesDir.add( btAgenda );		
+		pinBotoesDir.add( btAgenda );
 	}
-	
+
 	public void adicBtCalc() {
+
 		btCalc.setPreferredSize( new Dimension( 34, 34 ) );
 		btCalc.setToolTipText( "Calculadora" );
 		btCalc.addActionListener( this );
 		pinBotoesDir.add( btCalc );
 	}
-	
+
 }
