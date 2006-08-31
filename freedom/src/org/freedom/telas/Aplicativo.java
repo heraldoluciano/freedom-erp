@@ -68,10 +68,10 @@ public abstract class Aplicativo implements ActionListener, KeyListener {
 	public static int casasDec = 2;
 	public static int casasDecFin = 2;
 	public Connection con = null; // Variavel de conexao com o banco de dados
-	protected String strSenha = "";
 	public static FPrincipal telaPrincipal = null;
 	public static Component framePrinc = null;
 	public static String strUsuario = "";		
+	public static String strSenha = "";
 	public static String strCodCCUsu = "";
 	public static String strAnoCCUsu = "";
 	public static String strTemp = "";

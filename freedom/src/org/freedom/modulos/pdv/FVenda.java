@@ -43,6 +43,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -70,6 +71,7 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.funcoes.Logger;
 import org.freedom.modulos.std.DLCodProd;
 import org.freedom.modulos.std.FAdicOrc;
+import org.freedom.plugin.AbstractControleVendaPDV;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
 import org.freedom.telas.DlgCalc;
@@ -186,6 +188,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private JTextFieldPad txtValorTotalCupom = new JTextFieldPad( JTextFieldPad.TP_DECIMAL, 12, 2 );
 
+	private JTextFieldPad txtTelaAdicPDV = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+
 	private JTextFieldPad txtCodFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
 	private JTextFieldPad txtTipoFisc = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
@@ -273,6 +277,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private int CODVEND = 0;
 	
 	private int PLANOPAG = 0;
+	
+	private String nomePluginVenda;
+	
+	private static AbstractControleVendaPDV pluginVenda; 
 
 	public FVenda() {
 
@@ -380,6 +388,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcProduto.add( new GuardaCampo( txtCodProd1, "CodProd", "Cód.prod.", ListaCampos.DB_SI, false ) );
 		lcProduto.add( new GuardaCampo( txtCodFisc, "CodFisc", "Cód.fisc.", ListaCampos.DB_FK, false ) );
 		lcProduto.add( new GuardaCampo( txtCLoteProd, "CLoteProd", "C/Lote", ListaCampos.DB_SI, false ) );
+		lcProduto.add( new GuardaCampo( txtTelaAdicPDV, "UsaTelaAdicPDV", "PDV", ListaCampos.DB_SI, false ) );
 		lcProduto.setWhereAdic( "CVPROD IN ('V','A')" );
 		lcProduto.montaSql( false, "PRODUTO", "EQ" );
 		lcProduto.setReadOnly( true );
@@ -570,7 +579,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		if ( AplicativoPDV.bTEFTerm ) {
 			tef = new Tef( Aplicativo.strTefEnv, Aplicativo.strTefRet );
 		}
-
+		
 		setPrimeiroFoco( txtCodProd );
 
 	}
@@ -859,6 +868,29 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 		
 		canc.dispose();
+		
+	}
+	
+	private void carregaPlugin() {
+
+		nomePluginVenda = AplicativoPDV.getPluginVenda();
+		
+        if ( nomePluginVenda != null ) {
+        	
+        	try {
+        		
+                pluginVenda = (AbstractControleVendaPDV) Class.forName( nomePluginVenda ).newInstance();
+                
+                pluginVenda.addAttribute( "conexao", con );
+                
+                pluginVenda.inicializa();
+                
+            } catch ( Exception e ) {
+                e.printStackTrace();
+                Funcoes.mensagemErro( null, "Erro ao carregar plugin de venda", true, con, e );
+            }
+           
+        }
 		
 	}
 
@@ -1969,6 +2001,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 					lcVenda.carregaDados();
 				}
 			}
+			else if ( kevt.getSource() == txtCodProd ) {
+				
+				if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
+					final Map map = pluginVenda.beforeVendaItem();
+					System.out.println( "\n"+map.get( "matricula" )+"\n" );
+				}
+				
+			}
 		}
 	}
 
@@ -2029,7 +2069,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	public void afterCarrega( CarregaEvent cevt ) {
 
 		if ( cevt.getListaCampos() == lcProduto && txtCodProd.getVlrString().length() > 0 ) {
+			
 			buscaPreco();
+			
 			if ( txtCLoteProd.getVlrString().equals( "S" ) ) {
 				txtCodLote.setAtivo( true );
 				getLote();
@@ -2038,7 +2080,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				txtCodLote.setVlrString( "" );
 				txtCodLote.setAtivo( false );
 			}
+			
 		}
+		
 	}
 
 	public void beforePost( PostEvent pevt ) {
@@ -2132,6 +2176,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		sbVenda.setDescEst( getDescEst() );
 
 		txtCodProd.setBuscaGenProd( new DLCodProd( con, txtQtdade ) );
+		
+		carregaPlugin();
+
 	}
 
 }
