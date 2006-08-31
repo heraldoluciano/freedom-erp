@@ -652,7 +652,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 		byte[] CMD = { ESC, 34 };
 
-		CMD = adicBytes( CMD, parseParam( menssagem, 492, true ).getBytes() );
+		CMD = adicBytes( CMD, parseParam( menssagem , 492, true ).getBytes() );
 
 		return executaCmd( CMD, 3 );
 
