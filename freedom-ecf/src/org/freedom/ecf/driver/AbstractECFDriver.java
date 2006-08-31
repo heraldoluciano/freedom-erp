@@ -305,6 +305,8 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 
 					tmp.append( param );
 					tmp.append( (char) 10 );
+					tmp.append( ESC );
+					
 
 				}
 
