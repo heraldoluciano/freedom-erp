@@ -202,6 +202,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private JTextFieldPad txtCLoteProd = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
+	private JTextFieldPad txtCodConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+
+	private JTextFieldFK txtNomeConv = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	
 	private JTextFieldFK txtRazCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
@@ -235,6 +239,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private ListaCampos lcClFiscal = new ListaCampos( this, "FC" );
 
 	private ListaCampos lcLote = new ListaCampos( this, "LE" );
+
+	private ListaCampos lcConv = new ListaCampos( this, "CV" );
 
 	private Vector vCacheItem = new Vector();
 
@@ -356,6 +362,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		txtCodTipoMov.setTabelaExterna( lcTipoMov );
 		txtCodTipoMov.setFK( true );
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
+		
+		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, true ) );
+		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_FK, false ) );
+		lcConv.montaSql( false, "CONVENIADO", "AT" );
+		lcConv.setReadOnly( true );
+		txtCodConv.setTabelaExterna( lcConv );
+		txtCodConv.setFK( true );
+		txtCodConv.setNomeCampo( "CodConv" );
 
 		lcVenda.add( new GuardaCampo( txtCodVenda, "CodVenda", "Nº pedido", ListaCampos.DB_PK, true ) );
 		lcVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tipo venda.", ListaCampos.DB_PK, true ) );
@@ -424,6 +438,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		tbItem.adicColuna( "Base cálc." );
 		tbItem.adicColuna( "Valor Icms" );
 		tbItem.adicColuna( "C" );
+		tbItem.adicColuna( "Conv" );
 
 		tbItem.setTamColuna( 40, 0 );
 		tbItem.setTamColuna( 100, 1 );
@@ -434,6 +449,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		tbItem.setTamColuna( 90, 6 );
 		tbItem.setTamColuna( 90, 7 );
 		tbItem.setTamColuna( 20, 8 );
+		tbItem.setTamColuna( 50, 9 );
 
 		c.add( pnClienteGeral, BorderLayout.CENTER );
 
@@ -1014,7 +1030,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		
 		try {
 			
-			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			sSQL = "SELECT CODITVENDA,PERCICMSITVENDA,VLRBASEICMSITVENDA,VLRICMSITVENDA,VLRLIQITVENDA FROM VDADICITEMPDVSP(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			ps = con.prepareStatement( sSQL );
 			ps.setInt( 1, txtCodVenda.getVlrInteger().intValue() );
@@ -1045,6 +1061,14 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				ps.setNull( 14, Types.SMALLINT );
 				ps.setNull( 15, Types.CHAR );
 			}
+			if ( txtCodConv.getVlrInteger().intValue() > 0 ) {
+				ps.setInt( 16, ListaCampos.getMasterFilial( "ATCONVENIADO" ) );
+				ps.setInt( 17, txtCodConv.getVlrInteger().intValue() );
+			}
+			else {
+				ps.setNull( 16, Types.SMALLINT );
+				ps.setNull( 17, Types.INTEGER );
+			}
 			rs = ps.executeQuery();
 			
 			while ( rs.next() ) {
@@ -1055,7 +1079,17 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				txtValorTotalItem.setVlrBigDecimal( rs.getBigDecimal( "VlrLiqItVenda" ) == null ? new BigDecimal( 0 ) : rs.getBigDecimal( "VlrLiqItVenda" ) );
 				txtQtdadeItem.setVlrBigDecimal( txtQtdade.getVlrBigDecimal() );
 
-				tbItem.adicLinha( new Object[] { new Integer( iCodItVenda ), txtCodProd.getVlrString().trim(), txtDescProd.getVlrString(), txtQtdade.getVlrBigDecimal(), txtPreco.getVlrBigDecimal(), txtAliqIcms.getVlrBigDecimal(), txtBaseCalc.getVlrBigDecimal(), txtValorIcms.getVlrBigDecimal(), "" } );
+				tbItem.adicLinha( new Object[] { 
+						new Integer( iCodItVenda ), 
+						txtCodProd.getVlrString().trim(), 
+						txtDescProd.getVlrString(), 
+						txtQtdade.getVlrBigDecimal(), 
+						txtPreco.getVlrBigDecimal(), 
+						txtAliqIcms.getVlrBigDecimal(), 
+						txtBaseCalc.getVlrBigDecimal(), 
+						txtValorIcms.getVlrBigDecimal(), 
+						"" } 
+				);
 			}
 
 			if ( !con.getAutoCommit() ) {
@@ -2004,8 +2038,19 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			else if ( kevt.getSource() == txtCodProd ) {
 				
 				if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
+					
 					final Map map = pluginVenda.beforeVendaItem();
-					System.out.println( "\n"+map.get( "matricula" )+"\n" );
+					
+					int iCodConv = ( (Integer) map.get( "conveniado" ) ).intValue();
+					
+					if ( iCodConv > 0 ) {
+						
+						txtCodConv.setVlrInteger( new Integer( iCodConv ) );
+						lcConv.carregaDados();
+						
+						txtQtdade.requestFocus();
+					}
+					
 				}
 				
 			}
@@ -2091,7 +2136,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	public void afterPost( PostEvent pevt ) {
 
-		System.out.println( "primeiro salvamento..." );
 		if ( pevt.getListaCampos() == lcVenda && pevt.ok ) {
 			if ( ( AplicativoPDV.bECFTerm ) && ( ecf != null ) ) {
 				ecf.abreCupom( );
@@ -2152,6 +2196,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		lcTipoMov.setConexao( con );
 		lcSerie.setConexao( con );
 		lcClFiscal.setConexao( con );
+		lcConv.setConexao( con );
 
 		setCodCaixa();
 		setTipoMov();
