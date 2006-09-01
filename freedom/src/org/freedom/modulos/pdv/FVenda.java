@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -254,6 +255,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	private Font fntTotalCupom = null;
 
+	private ImageIcon imgCanc = Icone.novo( "clVencido.gif" );
+
 	private Object[] pref = new Object[ 3 ];
 
 	private boolean trocouCli = false;
@@ -364,7 +367,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		txtCodTipoMov.setNomeCampo( "CodTipoMov" );
 		
 		lcConv.add( new GuardaCampo( txtCodConv, "CodConv", "Cód.conv.", ListaCampos.DB_PK, true ) );
-		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_FK, false ) );
+		lcConv.add( new GuardaCampo( txtNomeConv, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, false ) );
 		lcConv.montaSql( false, "CONVENIADO", "AT" );
 		lcConv.setReadOnly( true );
 		txtCodConv.setTabelaExterna( lcConv );
@@ -873,7 +876,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 3 );
 						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 6 );
 						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 7 );
-						tbItem.setValor( "C", iLinha, 8 );
+						tbItem.setValor( imgCanc, iLinha, 8 );
 						marcaLinha( iItens[ i ] );
 						minPesoFrete( txtCodProd1.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal() );
 						atualizaTot();
@@ -891,7 +894,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		nomePluginVenda = AplicativoPDV.getPluginVenda();
 		
-        if ( nomePluginVenda != null ) {
+        if ( nomePluginVenda.length() > 0 ) {
         	
         	try {
         		
@@ -1088,7 +1091,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 						txtAliqIcms.getVlrBigDecimal(), 
 						txtBaseCalc.getVlrBigDecimal(), 
 						txtValorIcms.getVlrBigDecimal(), 
-						"" } 
+						"",
+						txtCodConv.getVlrInteger() } 
 				);
 			}
 
@@ -1479,6 +1483,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				}
 			}
 		}
+		
 		super.setVisible( bVal );
 	}
 
