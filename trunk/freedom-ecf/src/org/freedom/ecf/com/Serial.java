@@ -276,7 +276,7 @@ public class Serial {
 	 * 
 	 * @return o nome do sistema operacional.<BR>
 	 */
-	public int getSistema() {
+	public static int getSistema() {
 
 		final String system = System.getProperty( "os.name" ).toLowerCase();
 
