@@ -1,0 +1,11 @@
+#!/bin/sh
+diretorio=`pwd`
+/usr/bin/unzip $diretorio/comm3.0_u1_linux.zip -d /tmp/
+cp /tmp/commapi/jar/*.jar /usr/lib/jvm/java-1.5.0-sun/jre/lib/
+cp /tmp/commapi/jar/tools/*.jar /usr/lib/jvm/java-1.5.0-sun/jre/lib
+cp /tmp/commapi/lib/*.so /usr/lib/jvm/java-1.5.0-sun/jre/lib/i386/
+cd /usr/lib
+ln -sf /usr/lib/jvm/java-1.5.0-sun/jre/lib/i386/libLinuxSerialParallel_g.so
+ln -sf /usr/lib/jvm/java-1.5.0-sun/jre/lib/i386/libLinuxSerialParallel.so
+cd $diretorio
+
