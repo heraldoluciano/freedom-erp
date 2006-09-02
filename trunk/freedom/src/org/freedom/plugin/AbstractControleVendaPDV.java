@@ -1,7 +1,5 @@
 package org.freedom.plugin;
 
-import java.util.Map;
-
 
 public abstract class AbstractControleVendaPDV extends AbstractControle {
 
@@ -10,24 +8,24 @@ public abstract class AbstractControleVendaPDV extends AbstractControle {
 		super();
 	}
 	
-	public abstract Map beforeAbreVenda();
+	public abstract boolean beforeAbreVenda();
     
-    public abstract Map afterAbreVenda();
+    public abstract boolean afterAbreVenda();
 	
-    public abstract Map beforeVendaItem();
+    public abstract boolean beforeVendaItem();
     
-    public abstract Map afterVendaItem();
+    public abstract boolean afterVendaItem();
     
-    public abstract Map beforeCancelaItem();
+    public abstract boolean beforeCancelaItem();
     
-    public abstract Map afterCancelaItem();
+    public abstract boolean afterCancelaItem();
     
-    public abstract Map beforeCancelaVenda();
+    public abstract boolean beforeCancelaVenda();
     
-    public abstract Map afterCancelaVenda();
+    public abstract boolean afterCancelaVenda();
     
-    public abstract Map beforeFechaVenda();
+    public abstract boolean beforeFechaVenda();
     
-    public abstract Map afterFechaVenda();
+    public abstract boolean afterFechaVenda();
     
 }
