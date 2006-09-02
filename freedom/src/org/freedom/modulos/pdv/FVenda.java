@@ -43,7 +43,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -902,6 +901,16 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
                 
                 pluginVenda.addAttribute( "conexao", con );
                 
+                pluginVenda.addAttribute( "CodEmp", new Integer( AplicativoPDV.iCodEmp ) );
+                pluginVenda.addAttribute( "CodFilial", new Integer( AplicativoPDV.iCodFilial ) );
+                pluginVenda.addAttribute( "IDUsuario", AplicativoPDV.strUsuario );
+                pluginVenda.addAttribute( "CodCaixa", new Integer( CODCAIXA ) );
+                
+                pluginVenda.addAttribute( "txtCodVenda", txtCodVenda );
+                pluginVenda.addAttribute( "txtNumeroCupom", txtNumeroCupom );
+                
+                pluginVenda.addAttribute( "txtCodConv", txtCodConv );
+                
                 pluginVenda.inicializa();
                 
             } catch ( Exception e ) {
@@ -990,6 +999,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 
 		fecha.dispose();
+		
+		if ( pluginVenda != null ) {
+			
+			pluginVenda.afterFechaVenda();
+			
+		}
+		
 		setFocusProd();
 		trocouCli = false;
 		
@@ -2044,17 +2060,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				
 				if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
 					
-					final Map map = pluginVenda.beforeVendaItem();
-					
-					int iCodConv = ( (Integer) map.get( "conveniado" ) ).intValue();
-					
-					if ( iCodConv > 0 ) {
-						
-						txtCodConv.setVlrInteger( new Integer( iCodConv ) );
-						lcConv.carregaDados();
-						
-						txtQtdade.requestFocus();
-					}
+					pluginVenda.beforeVendaItem();
 					
 				}
 				
