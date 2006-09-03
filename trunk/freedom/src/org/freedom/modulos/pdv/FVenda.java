@@ -2060,10 +2060,24 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				
 				if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
 					
-					pluginVenda.beforeVendaItem();
-					
-				}
-				
+					if ( pluginVenda.beforeVendaItem() ) {		
+						
+						if ( lcVenda.getStatus() == ListaCampos.LCS_INSERT ) {
+							
+							if ( lcVenda.post() ) {
+								
+								insereItem();
+								iniItem();
+							}
+						}
+						else if ( lcVenda.getStatus() == ListaCampos.LCS_SELECT ) {
+							
+							insereItem();
+							iniItem();
+							lcVenda.carregaDados();
+						}
+					}					
+				}				
 			}
 		}
 	}
