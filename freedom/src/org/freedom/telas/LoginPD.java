@@ -109,6 +109,8 @@ public class LoginPD extends Login implements ActionListener, FocusListener {
 		txpSenha.setEditable(false);
 		return true;
 	}
+	
+	
 
 	protected boolean montaCombo(String sUsu) {
 		String sSQL = null;

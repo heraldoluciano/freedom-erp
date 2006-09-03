@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -203,4 +204,29 @@ public abstract class Login extends FDialogo implements ActionListener, FocusLis
 		super.actionPerformed(evt);
 		
 	}
+	
+	public static Connection getConexao(final String strBanco, final String strDriver, final String sUsu, final String sSenha) {	
+	    Connection cRetorno = null;
+		Properties params = new Properties();
+		try {
+			Class.forName(strDriver);
+		} catch (java.lang.ClassNotFoundException e) {
+			System.out.println("Driver nao foi encontrado:\n"+strDriver+"\n"+e.getMessage ());
+		}
+		
+		try {
+			params.put("user", sUsu);
+			params.put("password", sSenha);
+			cRetorno = DriverManager.getConnection(strBanco, params);
+			cRetorno.setAutoCommit(false);
+		} catch (java.sql.SQLException e) {
+			if (e.getErrorCode() == 335544472)
+				System.out.println("Nome do usuário ou senha inválidos ! ! !");
+			else                                                                             
+				System.out.println("Não foi possível estabelecer conexão com o banco de dados.\n"+e.getMessage());
+			e.printStackTrace();
+			return cRetorno;
+		}
+		return cRetorno;
+	}	
 }    

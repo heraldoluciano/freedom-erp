@@ -336,7 +336,7 @@ public class JTextFieldPad extends JTextField implements FocusListener, KeyListe
 		texto += Funcoes.replicate("0",iDecimal-(texto.length()-(texto.indexOf(pontoDecMask)+1)));
 		super.setText(texto);
 	}
-
+	
 	public void setVlrDate(Date dVal) {
 		super.setText(Funcoes.dateToStrDate(dVal));
 	}
