@@ -928,7 +928,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 			
 			if ( execFechamento() ) {
 				
-				if ( ( ! AplicativoPDV.bECFTerm  ) && ( ecf != null ) ) {
+				if ( ! AplicativoPDV.bModoDemo  && ecf != null ) {
 					
 					if ( ecf.fechaCupomFiscal( txtDescPlanoPag.getVlrString(), "", "", 0f, txtVlrPago.floatValue(), getMenssage() ) ) {
 						
@@ -965,7 +965,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 					}
 					
 				}
-				else if ( AplicativoPDV.bECFTerm ) {
+				else if ( AplicativoPDV.bModoDemo ) {
 					
 					bRet = true;
 					

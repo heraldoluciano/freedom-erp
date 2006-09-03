@@ -31,12 +31,12 @@ public class Teste {
 		
 		
 		
-		ecf.aberturaDeCupom();
+		//ecf.aberturaDeCupom();
 		
 		//ecf.programaUnidadeMedida("KG");
 		//ecf.aumentaDescItem("Caneta                       0123456789" );
 		
-		ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 1f, 0.12f, 0f);
+		//ecf.vendaItem("0000000000001", "Caneta                       ", "FF", 1f, 0.12f, 0f);
 		
 		//ecf.vendaItemTresCasas("0000000000001", "Caneta                       ", "FF", 1f, 0.125f, 0f);
 		
@@ -45,7 +45,7 @@ public class Teste {
 		
 		
 		ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERC,0);
-		ecf.efetuaFormaPagamento("01",3,"to testando...");
+		ecf.efetuaFormaPagamento("01",15,"to testando...");
 		ecf.terminaFechamentoCupom("Volte sempre!!!");	
 		
 		//ecf.leituraX();
