@@ -46,7 +46,6 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -253,9 +252,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private Font fntTotalItem = null;
 
 	private Font fntTotalCupom = null;
-
-	private ImageIcon imgCanc = Icone.novo( "clVencido.gif" );
-
+	
 	private Object[] pref = new Object[ 3 ];
 
 	private boolean trocouCli = false;
@@ -859,29 +856,27 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		canc.setConexao( con );
 		canc.setVisible( true );
 		
-		if ( canc.OK ) {
-			if ( canc.isCancCupom() ) {
-				iniVenda();
-			}
-			else {
-				int[] iItens = canc.getCancItem();
-				int iLinha = 0;
+		if ( canc.isCancCupom() ) {
+			iniVenda();
+		}
+		else {
+			int[] iItens = canc.getCancItem();
+			int iLinha = 0;
+			
+			for ( int i=0; i < iItens.length; i++ ) {
 				
-				for ( int i=0; i < iItens.length; i++ ) {
-					
-					iLinha = getLinha( iItens[ i ] );
-					
-					if ( iLinha > -1 ) {
-						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 3 );
-						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 6 );
-						tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 7 );
-						tbItem.setValor( imgCanc, iLinha, 8 );
-						marcaLinha( iItens[ i ] );
-						minPesoFrete( txtCodProd1.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal() );
-						atualizaTot();
-					}
-					
+				iLinha = getLinha( iItens[ i ] );
+								
+				if ( iLinha > -1 ) {
+					tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 3 );
+					tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 6 );
+					tbItem.setValor( new BigDecimal( "0.00" ), iLinha, 7 );
+					tbItem.setValor( "C", iLinha, 8 );
+					marcaLinha( iItens[ i ] );
+					minPesoFrete( txtCodProd1.getVlrInteger().intValue(), txtQtdade.getVlrBigDecimal() );
+					atualizaTot();
 				}
+				
 			}
 		}
 		
@@ -907,7 +902,11 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
                 pluginVenda.addAttribute( "CodCaixa", new Integer( CODCAIXA ) );
                 
                 pluginVenda.addAttribute( "txtCodVenda", txtCodVenda );
+                pluginVenda.addAttribute( "txtTipoVenda", txtTipoVenda );
                 pluginVenda.addAttribute( "txtNumeroCupom", txtNumeroCupom );
+                pluginVenda.addAttribute( "txtCodProd", txtCodProd );
+                pluginVenda.addAttribute( "txtQtdade", txtQtdade );
+                pluginVenda.addAttribute( "txtPreco", txtPreco );
                 
                 pluginVenda.addAttribute( "txtCodConv", txtCodConv );
                 
@@ -982,6 +981,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		fecha.setVisible( true );
 
 		if ( fecha.OK ) {
+			
+			if ( pluginVenda != null ) {
+				
+				pluginVenda.afterFechaVenda();
+				
+			}
+			
 			iniVenda();
 		}
 		else if ( colocouFrete ) {
@@ -999,12 +1005,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		}
 
 		fecha.dispose();
-		
-		if ( pluginVenda != null ) {
-			
-			pluginVenda.afterFechaVenda();
-			
-		}
 		
 		setFocusProd();
 		trocouCli = false;
@@ -1108,7 +1108,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 						txtBaseCalc.getVlrBigDecimal(), 
 						txtValorIcms.getVlrBigDecimal(), 
 						"",
-						txtCodConv.getVlrInteger() } 
+						txtCodConv.getVlrInteger().intValue() > 0  ? txtCodConv.getVlrString() : "" } 
 				);
 			}
 

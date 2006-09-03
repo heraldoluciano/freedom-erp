@@ -376,11 +376,9 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 					
 					if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o item " + iItem + "?" ) == JOptionPane.YES_OPTION ) {
 						if ( cancItem( iItem ) ) {
-							if ( AplicativoPDV.bECFTerm ) {
-								if ( ecf.cancelaItemGenerico( iItem ) ) {
-									iCancItem += "," + iItem;
-									btOK.doClick();
-								}
+							if ( AplicativoPDV.bECFTerm || ecf.cancelaItemGenerico( iItem ) ) {
+								iCancItem += "," + iItem;
+								btOK.doClick();
 							}
 						}
 						else {
@@ -418,6 +416,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 			rs = ps.executeQuery();			
 
 			tab.limpa();
+			imgColuna = imgPago;
 
 			while ( rs.next() ) {
 				tab.adicLinha();
@@ -549,7 +548,13 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 	public int[] getCancItem() {
 		
-		String[] tmp = iCancItem.substring( 1 ).split( "," );
+		String[] tmp = new String[]{"-1"};
+		
+		try {
+			tmp = iCancItem.substring( 1 ).split( "," );
+		} catch ( Exception e ) {
+			// ignora o erro
+		}
 		
 		int[] ret = new int[ tmp.length ];
 		
