@@ -133,6 +133,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
       tab.setTamColuna(tam,i);
     }
     sSqlF2 += " FROM "+lcF2.getNomeTabela();
+    System.out.println("QUERY F2: " + sSqlF2);
   }
   public void trocaColuna() {
     int iTipo = 0;
@@ -311,7 +312,7 @@ public class DLF2 extends FFDialogo implements KeyListener, WindowFocusListener,
        System.out.println("ERRO AO MONTAR A SQL!:\n"+e.getMessage());
        dispose();
     }
-  //  System.out.println("DLF2 -> "+sSqlF2+sWhere);
+    System.out.println("DLF2 -> "+sSqlF2+sWhere);
   }
   
   public Object getValor(String sNomeCampo) {
