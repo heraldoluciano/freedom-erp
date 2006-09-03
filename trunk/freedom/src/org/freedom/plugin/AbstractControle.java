@@ -27,6 +27,15 @@ public abstract class AbstractControle {
 		return ret;
 	}
 	
+	public void setAttribute( String name, Object value ) {
+		
+		if ( objects != null ) {
+			objects.remove( name );
+			objects.put( name, value );
+		}
+		
+	}
+	
 	public abstract void inicializa();
 
 }
