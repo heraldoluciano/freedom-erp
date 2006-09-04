@@ -962,6 +962,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, CarregaLis
 							
 						}
 						
+						ecf.abreGaveta();
+						
 					}
 					
 				}
