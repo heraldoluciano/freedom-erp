@@ -33,13 +33,12 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
-import org.freedom.componentes.JLabelPad;
 
+import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JTextFieldFK;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.drivers.ECFDriver;
-import org.freedom.drivers.JBemaFI32;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPDV;
@@ -167,7 +166,7 @@ public class FSangria extends FFDialogo {
 			
 			if ( rs.next() ) {
 				txtDataUOper.setVlrDate( rs.getDate( "DDTAMOVRET" ) );
-				txtStatusUOper.setVlrString( JBemaFI32.transStatus( rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ] ) );
+				txtStatusUOper.setVlrString( ecf.transStatus( rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ] ) );
 				txtSaldoUOper.setVlrString( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "NVLRSLDMOV" ) ) );
 				txtUsuUOper.setVlrString( rs.getString( "CIDUSU" ) );
 			}

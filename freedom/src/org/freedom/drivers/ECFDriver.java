@@ -194,15 +194,19 @@ public class ECFDriver {
 
 		if ( dll ) {
 			bRetorno = bema.abreGaveta( sUserID, bModoDemo );
-		}/*
-			 * else { if ( ! bModoDemo ) {
-			 * 
-			 * bRetorno = trataRetornoFuncao( ecf.acionaGavetaDinheiro( 1 ) );
-			 * 
-			 * if ( ! bRetorno ) { Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); }
-			 *  } }
-			 */
-
+		}
+		else { 
+			if ( ! bModoDemo ) {
+		 
+				bRetorno = trataRetornoFuncao( ecf.acionaGavetaDinheiro( 205 ) );
+				 
+				if ( ! bRetorno ) { 
+					
+					Logger.gravaLogTxt( "", sUserID, Logger.LGEP_ABERT_GAVETA, sMensErroLog ); 
+				}
+			} 
+		}
+		
 		return bRetorno;
 
 	}
@@ -871,7 +875,7 @@ public class ECFDriver {
 		
 	}
 	
-	public static String transStatus( char cStatus ) {
+	public String transStatus( char cStatus ) {
 
 		String sRet = "";
 		switch ( cStatus ) {

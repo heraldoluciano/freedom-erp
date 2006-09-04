@@ -520,9 +520,7 @@ public class ECFBematech extends AbstractECFDriver {
 
 	public int acionaGavetaDinheiro( final int time ) {
 
-		byte[] CMD = { ESC, 22 };
-
-		CMD = adicBytes( CMD, parseParam( (char) time ).getBytes() );
+		final byte[] CMD = { ESC, 22 , (byte) time };
 
 		return executaCmd( CMD, 3 );
 

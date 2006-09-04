@@ -20,15 +20,7 @@ public class Teste {
 		Date data = new Date();
 		System.out.println("Inicio --> " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds() );
 		
-		
-		//ecf.programaMoedaSingular( "Real" );
-		
-		//ecf.programaMoedaPlural( "reais" );
-		
-		//System.out.println("\nRetorno de Variaveis\n");
-	
-		//System.out.println("\n" + ecf.retornoVariaveis( ecf.V_FORMAS_PAG ) + "\n" );
-		
+		ecf.acionaGavetaDinheiro( 200 );	
 		
 		
 		//ecf.aberturaDeCupom();
@@ -46,7 +38,7 @@ public class Teste {
 		
 		//ecf.iniciaFechamentoCupom(ECFBematech.DESCONTO_PERC,0);
 		//ecf.efetuaFormaPagamento("01",15,"to testando...");
-		ecf.terminaFechamentoCupom("Volte sempre!!!");	
+		//ecf.terminaFechamentoCupom("Volte sempre!!!");	
 		
 		//ecf.leituraX();
 

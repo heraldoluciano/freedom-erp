@@ -119,7 +119,7 @@ public class FSuprimento extends FFDialogo {
 					txtSldAnt.setVlrString( Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "NVLRSLDMOV" ) ) );
 					txtUsuarioAnt.setVlrString( rs.getString( "CIDUSU" ) );
 
-					txtStatusAnt.setVlrString( ECFDriver.transStatus( rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ] ) );
+					txtStatusAnt.setVlrString( ecf.transStatus( rs.getString( "CTIPOMOV" ).toCharArray()[ 0 ] ) );
 				}
 			}
 
