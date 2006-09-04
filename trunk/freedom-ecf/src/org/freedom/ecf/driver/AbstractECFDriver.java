@@ -310,13 +310,7 @@ public abstract class AbstractECFDriver implements SerialPortEventListener {
 					}
 					else {
 						tmp.append( (char) 10 );
-					}
-					//tmp.append( (char) 13 );
-					//tmp.append( ESC );
-					System.out.println("terminador "+tmp.toString());
-					System.out.println("tamanho "+tmp.toString().length());
-					System.out.println("term. "+(""+tmp.toString().charAt(tmp.toString().length()-1)).getBytes()[0]);
-
+					}					
 				}
 
 			}

@@ -376,7 +376,13 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 					
 					if ( Funcoes.mensagemConfirma( null, "Deseja realmente cancelar o item " + iItem + "?" ) == JOptionPane.YES_OPTION ) {
 						if ( cancItem( iItem ) ) {
-							if ( AplicativoPDV.bECFTerm || ecf.cancelaItemGenerico( iItem ) ) {
+							if ( AplicativoPDV.bModoDemo || ecf != null ) {
+								
+								if ( AplicativoPDV.bECFTerm ) {
+									
+									ecf.cancelaItemGenerico( iItem );									
+								}
+								
 								iCancItem += "," + iItem;
 								btOK.doClick();
 							}

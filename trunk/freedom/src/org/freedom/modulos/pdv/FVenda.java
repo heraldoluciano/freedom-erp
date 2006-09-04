@@ -610,7 +610,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private void abreGaveta() {
 
 		if ( mostraTelaPass() ) {
-			if ( ( FreedomPDV.bECFTerm ) && ( ecf != null ) ) {
+			if ( AplicativoPDV.bECFTerm && ecf != null ) {
 				ecf.abreGaveta();
 			}
 		}
