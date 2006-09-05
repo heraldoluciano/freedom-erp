@@ -957,7 +957,6 @@ public class ECFBematech extends AbstractECFDriver {
 		buf.append( parseParam( valor, 14, 2 ) );
 		buf.append( parseParam( descForma, 80, false ) );
 
-		System.out.println(buf.toString()+buf.length());
 		CMD = adicBytes( CMD, buf.toString().getBytes() );
 
 		return executaCmd( CMD, 3 );
