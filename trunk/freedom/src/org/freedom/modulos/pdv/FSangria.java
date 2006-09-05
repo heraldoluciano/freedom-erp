@@ -238,6 +238,7 @@ public class FSangria extends FFDialogo {
 		if ( evt.getSource() == btOK ) {
 			if ( execSangria() && AplicativoPDV.bECFTerm ) {
 				ecf.sangria( txtValor.getVlrBigDecimal() );
+				ecf.abreGaveta();
 			}
 			else {
 				return;
