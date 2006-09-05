@@ -65,13 +65,13 @@ public class DLFechaDia extends FFDialogo {
 		super( Aplicativo.telaPrincipal );
 				
 		setTitulo( "Fechamento de caixa" );
-		setAtribos( 310, 170 );
+		setAtribos( 313, 170 );
 
 		adic( new JLabelPad( "Data e Hora: " ), 7, 10, 110, 20 );
-		adic( txtDataHora, 7, 30, 110, 20 );
-		adic( new JLabelPad( "Saldo do caixa: " ), 120, 10, 120, 20 );
-		adic( txtVlrCaixa, 120, 30, 120, 20 );
-		adic( cbReducaoZ, 7, 60, 280, 20 );
+		adic( txtDataHora, 7, 30, 140, 20 );
+		adic( new JLabelPad( "Saldo do caixa: " ), 155, 10, 120, 20 );
+		adic( txtVlrCaixa, 150, 30, 140, 20 );
+		adic( cbReducaoZ, 10, 60, 280, 20 );
 
 		txtDataHora.setVlrString( ( new SimpleDateFormat( "dd/MM/yyyy HH:mm" ) ).format( new Date() ) );
 
@@ -200,6 +200,8 @@ public class DLFechaDia extends FFDialogo {
 		
 		if ( execFechamento( bReduz ) ) {
 			
+			Funcoes.mensagemInforma( null, "O caixa foi fechado." );
+			
 			if ( AplicativoPDV.bECFTerm && bReduz ) {
 				
 				FLeFiscal fiscal = new FLeFiscal();
@@ -207,39 +209,49 @@ public class DLFechaDia extends FFDialogo {
 				
 				if ( fiscal.getReducaoZ( Calendar.getInstance().getTime(), AplicativoPDV.iCodCaixa ) ) {
 					
-					if ( ecf.reducaoZ() ) {						
+					if ( ecf.reducaoZ() ) {
+						
 						fiscal.salvaReducaoZ();						
 					}
 					else {						
+						
 						Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );						
-					}
+					}					
+				}
+				else {			
 					
-				}
-				else {						
 					Funcoes.mensagemErro( null, "Erro ao executar a redução Z!" );						
-				}
-				
-			}
-			
-		}
-		
+				}			
+			}			
+		}		
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btOK ) {
+			
 			if ( Funcoes.mensagemConfirma( null, "Confirma fechamento?" ) == JOptionPane.YES_OPTION ) {
+			
 				if ( cbReducaoZ.getVlrString().equals( "S" ) ) {
-					if ( Funcoes.mensagemConfirma( null, "Atenção!\n" + "Se for executada a 'Redução Z''\n" + "o caixa será fechado em definitivo!\n" + "Deseja executar assim mesmo?" ) == JOptionPane.YES_OPTION ) {
+				
+					if ( Funcoes.mensagemConfirma( null, "Atenção!\nSe for executada a 'Redução Z'\no caixa será fechado em definitivo!\nDeseja executar assim mesmo?" ) == JOptionPane.YES_OPTION ) {
+						
 						fechaCaixa( true );
 					}
-					else return;
+					else {
+						
+						return;
+					}
 				}
 				else {
+					
 					fechaCaixa( false );
 				}
 			}
-			else return;
+			else {
+				
+				return;
+			}
 		}
 		
 		super.actionPerformed( evt );
