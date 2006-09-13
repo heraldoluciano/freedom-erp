@@ -663,6 +663,16 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 			}
 			if ( iCodTipoCli != 0 ) {
+				
+				if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
+					sWhere.append( "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND " );
+					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
+					sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ " );
+					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
+					sFiltros2.append( "AGRUP. CLI. PRINC." );
+				}
+
+				
 				if( sFrom.equals("") ) {
 					sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
 					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
@@ -1193,11 +1203,19 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				}
 			}
 			if ( iCodTipoCli != 0 ) {
+				if ( cbCliPrinc.getVlrString().equals( "S" ) ) {
+					sWhere.append( "AND C2.CODCLI=V.CODCLI AND C2.CODEMP=V.CODEMPCL AND C2.CODFILIAL=V.CODFILIALCL AND " );
+					sWhere.append( "C2.CODPESQ=C1.CODPESQ AND C2.CODEMPPQ=C1.CODEMPPQ AND " );
+					sWhere.append( "C2.CODFILIALPQ=C1.CODFILIALPQ " );
+					sFrom = ",VDCLIENTE C1, VDCLIENTE C2 ";
+					sFiltros2.append( "AGRUP. CLI. PRINC." );
+				}
+
 				if( sFrom.equals("") ) {
 					sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
 					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
 					sWhere.append( "AND TC.CODTIPOCLI=? " );
-					sFrom = ", VDCLIENTE C1, VDTIPOCLI TC ";
+					sFrom = ",VDCLIENTE C1, VDTIPOCLI TC ";
 				}
 				else {
 					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
@@ -1511,8 +1529,8 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros2.append( "-" );
 				sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 			}
-			if ( iCodTipoCli != 0 ) {			
-				sWhere.append( "AND C.CODTIPOCLI=TC.CODTIPOCLI AND C.CODEMPTC=TC.CODEMP AND C.CODFILIALTC=TC.CODFILIAL " );
+			if ( iCodTipoCli != 0 ) {				
+				sWhere.append( "AND C2.CODTIPOCLI=TC.CODTIPOCLI AND C2.CODEMPTC=TC.CODEMP AND C2.CODFILIALTC=TC.CODFILIAL " );
 				sWhere.append( "AND TC.CODTIPOCLI=? " );
 				sFrom = ", VDTIPOCLI TC ";
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
@@ -1566,8 +1584,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sSql.append( "V.DTEMITVENDA BETWEEN ? AND ? AND " );
 				sSql.append( "V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI AND " );
 				sSql.append( ( cbCliPrinc.getVlrString().equals( "S" ) ? "C2.CODEMP=C.CODEMPPQ AND C2.CODFILIAL=C.CODFILIALPQ AND C2.CODCLI=C.CODPESQ AND " : "C2.CODEMP=C.CODEMP AND C2.CODFILIAL=C.CODFILIAL AND C2.CODCLI=C.CODCLI AND " ) );
-				sSql.append( "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND " );
-				sSql.append( "TI.CODTIPOCLI=C2.CODTIPOCLI AND " );
+				
+				sSql.append( "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND TI.CODTIPOCLI=C2.CODTIPOCLI AND "  );
+				
+//				sSql.append( "TI.CODEMP=C2.CODEMPTI AND TI.CODFILIAL=C2.CODFILIALTI AND " );				
+				
 				sSql.append( "IV.CODEMP=V.CODEMP AND IV.CODFILIAL=V.CODFILIAL AND " );
 				sSql.append( "IV.CODVENDA=V.CODVENDA AND IV.TIPOVENDA=V.TIPOVENDA AND " );
 				sSql.append( "VD.CODEMP=V.CODEMPVD AND VD.CODFILIAL=V.CODFILIALVD AND " );
