@@ -2021,7 +2021,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				btF11.doClick();
 				break;
 		}
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER || kevt.getKeyCode() == KeyEvent.VK_TAB ) {
 			if ( kevt.getSource() == txtQtdade ) {
 				if ( txtCodProd.getVlrString().length() == 0 )
 					Funcoes.mensagemInforma( null, "Produto em branco." );
