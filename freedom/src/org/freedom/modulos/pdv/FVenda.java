@@ -262,6 +262,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private boolean carregaPesoFrete = false;
 
 	private boolean CTRL = false;
+	
+	private boolean ENTER = false;
 
 	private float pesoBrutFrete = 0;
 
@@ -567,6 +569,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		pnClienteGeral.add( pnNorte, BorderLayout.NORTH );
 		pnClienteGeral.add( pnCliente, BorderLayout.CENTER );
 
+		
 		addKeyListener( this );
 		txtCodProd.addKeyListener( this );
 		txtQtdade.addKeyListener( this );
@@ -584,6 +587,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 		btF10.addActionListener( this );
 		btF11.addActionListener( this );
 
+		txtQtdade.addFocusListener( this );
 		txtPercDescItOrc.addFocusListener( this );
 		txtVlrDescItOrc.addFocusListener( this );
 
@@ -1982,6 +1986,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	}
 
 	public void keyPressed( KeyEvent kevt ) {
+		
+		ENTER = false;
 
 		switch ( kevt.getKeyCode() ) {
 			case KeyEvent.VK_CONTROL :
@@ -2021,7 +2027,10 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				btF11.doClick();
 				break;
 		}
-		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER || kevt.getKeyCode() == KeyEvent.VK_TAB ) {
+		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
+			
+			ENTER = true;
+			
 			if ( kevt.getSource() == txtQtdade ) {
 				if ( txtCodProd.getVlrString().length() == 0 )
 					Funcoes.mensagemInforma( null, "Produto em branco." );
@@ -2059,6 +2068,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			else if ( kevt.getSource() == txtCodProd ) {
 				
 				if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
+
+					ENTER = false;
 					
 					if ( pluginVenda.beforeVendaItem() ) {		
 						
@@ -2076,7 +2087,17 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 							iniItem();
 							lcVenda.carregaDados();
 						}
-					}					
+						
+					}		
+					if ( pluginVenda.afterVendaItem()) {
+						
+						txtCodProd.setVlrString("");
+						txtQtdade.setVlrString("");
+		                txtPreco.setVlrString("");
+		                
+		                txtCodConv.setVlrString("");
+					}
+					
 				}				
 			}
 		}
@@ -2172,7 +2193,13 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	}
 
 	public void focusGained( FocusEvent fevt ) {
-
+		
+		if ( fevt.getSource() == txtQtdade ) {
+			if ( ! ENTER ) {
+				txtCodProd.requestFocus();
+				ENTER = false;
+			}
+		}
 	}
 
 	public void focusLost( FocusEvent fevt ) {
