@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.Robot;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -42,6 +43,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Vector;
 
@@ -262,8 +264,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 	private boolean carregaPesoFrete = false;
 
 	private boolean CTRL = false;
-	
-	private boolean ENTER = false;
 
 	private float pesoBrutFrete = 0;
 
@@ -571,6 +571,9 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 		
 		addKeyListener( this );
+		
+		txtCodProd.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
+		
 		txtCodProd.addKeyListener( this );
 		txtQtdade.addKeyListener( this );
 		txtPercDescItOrc.addKeyListener( this );
@@ -1987,8 +1990,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	public void keyPressed( KeyEvent kevt ) {
 		
-		ENTER = false;
-
 		switch ( kevt.getKeyCode() ) {
 			case KeyEvent.VK_CONTROL :
 				CTRL = true;
@@ -2028,9 +2029,7 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 				break;
 		}
 		if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-			
-			ENTER = true;
-			
+						
 			if ( kevt.getSource() == txtQtdade ) {
 				if ( txtCodProd.getVlrString().length() == 0 )
 					Funcoes.mensagemInforma( null, "Produto em branco." );
@@ -2068,8 +2067,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 			else if ( kevt.getSource() == txtCodProd ) {
 				
 				if ( "S".equals( txtTelaAdicPDV.getVlrString().trim() ) && pluginVenda != null ) {
-
-					ENTER = false;
 					
 					if ( pluginVenda.beforeVendaItem() ) {		
 						
@@ -2194,12 +2191,6 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 
 	public void focusGained( FocusEvent fevt ) {
 		
-		if ( fevt.getSource() == txtQtdade ) {
-			if ( ! ENTER ) {
-				txtCodProd.requestFocus();
-				ENTER = false;
-			}
-		}
 	}
 
 	public void focusLost( FocusEvent fevt ) {
