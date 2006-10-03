@@ -213,7 +213,7 @@ public class FRVendasGeral extends FRelatorio {
 			sSQL.append( "AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 			sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
 			sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
-			sSQL.append( "AND TM.TIPOMOV IN ('VD','PV','VT','SE') " );
+			sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
 			sSQL.append( sWhere );
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
