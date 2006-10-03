@@ -69,11 +69,11 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
 	private JCheckBoxPad cbObs = new JCheckBoxPad( "Imprimir observações?", "S", "N" );
-	
+
 	private JCheckBoxPad cbSoVendas = new JCheckBoxPad( "Mostrar somente recebimentos de vendas?", "S", "N" );
 
 	private JRadioGroup cbTipoRel = null;
-	
+
 	private JRadioGroup cbData = null;
 
 	private ListaCampos lcCli = new ListaCampos( this );
@@ -127,17 +127,17 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 
 		cbTipoRel = new JRadioGroup( 3, 1, vLabs, vVals );
 		cbTipoRel.setVlrString( "A" );
-		
+
 		Vector vVals1 = new Vector();
 		Vector vLabs1 = new Vector();
 		vLabs1.addElement( "Faturamento" );
 		vLabs1.addElement( "Vencimento" );
 		vVals1.addElement( "F" );
 		vVals1.addElement( "V" );
-		
+
 		cbData = new JRadioGroup( 2, 1, vLabs1, vVals1 );
 		cbData.setVlrString( "V" );
-		
+
 		cbObs.setVlrString( "S" );
 		cbSoVendas.setVlrString( "S" );
 
@@ -153,16 +153,16 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 		adic( new JLabelPad( "Até:" ), 157, 25, 30, 20 );
 		adic( txtDatafim, 190, 25, 100, 20 );
 		adic( cbTipoRel, 7, 58, 190, 70 );
-		
+
 		JLabelPad lbLinha2 = new JLabelPad();
 		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
 		JLabel lbData = new JLabelPad( "   Data por:" );
 		lbData.setOpaque( true );
-		adic( lbData, 205, 48, 80, 20 );		
+		adic( lbData, 205, 48, 80, 20 );
 		adic( lbLinha2, 200, 58, 160, 70 );
 		adic( cbData, 200, 68, 160, 50 );
 		cbData.setBorder( BorderFactory.createEmptyBorder() );
-		
+
 		adic( new JLabelPad( "Cód.cli." ), 7, 130, 200, 20 );
 		adic( txtCodCli, 7, 150, 80, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 90, 130, 200, 20 );
@@ -212,10 +212,10 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 			else if ( sTipoRel.equals( "A" ) ) {
 				sFiltros.append( "A RECEBER  /  RECEBIDAS" );
 			}
-			
+
 			sFrom.append( "FROM FNRECEBER R, FNITRECEBER IR, VDCLIENTE C " );
 
-			if ( iCodSetor > 0 || iCodVend > 0 ) { 
+			if ( iCodSetor > 0 || iCodVend > 0 ) {
 				sFrom.append( ", VDVENDEDOR VD " );
 				sWhere.append( "AND R.CODEMPVD=VD.CODEMP AND R.CODFILIALVD=VD.CODFILIAL AND R.CODVEND=VD.CODVEND " );
 				if ( iCodSetor > 0 ) {
@@ -223,7 +223,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 					sWhere.append( "AND S.CODEMP=VD.CODEMPSE AND S.CODFILIAL=VD.CODFILIALSE AND S.CODSETOR=VD.CODSETOR " );
 				}
 			}
-			
+
 			if ( iCodSetor > 0 ) {
 				sWhere.append( "AND S.CODSETOR=? " );
 				sFiltros.append( "SETOR = " + txtDescSetor.getVlrString().trim() );
@@ -235,10 +235,10 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 			}
 			if ( iCodVend > 0 ) {
 				sWhere.append( "AND VD.CODVEND=? " );
-				sFiltros.append(  sFiltros.indexOf( "SETOR" ) > -1 || sFiltros.indexOf( "CLIENTE" ) > -1 ? "  /  " : "\n" );
+				sFiltros.append( sFiltros.indexOf( "SETOR" ) > -1 || sFiltros.indexOf( "CLIENTE" ) > -1 ? "  /  " : "\n" );
 				sFiltros.append( "VENDEDOR = " + txtNomeVend.getVlrString().trim() );
 			}
-			
+
 			if ( "S".equals( cbSoVendas.getVlrString() ) ) {
 				sFiltros.append( "\nSOMENTE RESEBIMENTOS SOBRE VENDAS" );
 				sFrom.append( ", VDVENDA V, EQTIPOMOV TM " );
@@ -252,7 +252,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 			sSQL.append( "WHERE R.CODEMP=IR.CODEMP AND R.CODFILIAL=IR.CODFILIAL AND R.CODREC=IR.CODREC " );
 			sSQL.append( "AND R.CODEMPCL=C.CODEMP AND R.CODFILIALCL=C.CODFILIAL AND R.CODCLI=C.CODCLI " );
 			sSQL.append( "AND R.CODEMP=? AND R.CODFILIAL=? " );
-			
+
 			if ( "V".equals( cbData.getVlrString() ) ) {
 				sFiltros.append( "\nDATA POR VENCOMENTO" );
 				sSQL.append( "AND IR.DTVENCITREC BETWEEN ? AND ? " );
@@ -265,7 +265,7 @@ public class FRReceberSetor extends FRelatorio implements ActionListener {
 				sFiltros.append( "\nDATA POR FATURAMENTO" );
 				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
 			}
-			
+
 			sSQL.append( "AND IR.STATUSITREC IN (?,?,?) " );
 			sSQL.append( sWhere );
 			sSQL.append( "ORDER BY 1" );

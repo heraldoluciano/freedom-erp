@@ -107,7 +107,7 @@ public class FRVendasCli extends FRelatorio {
 		vValsFin.addElement( "N" );
 		vValsFin.addElement( "A" );
 		rgFinanceiro = new JRadioGroup( 3, 1, vLabsFin, vValsFin );
-		rgFinanceiro.setVlrString( "S" );		
+		rgFinanceiro.setVlrString( "S" );
 
 		cbDesc.setVlrString( "S" );
 
@@ -178,13 +178,13 @@ public class FRVendasCli extends FRelatorio {
 		}
 
 		if ( rgOrdem.getVlrString().equals( "C" ) ) {
-			sOrdem = "S".equals( cbDesc.getVlrString() ) ? "V.CODCLI DESC, C.RAZCLI DESC, C.FONECLI DESC" : "V.CODCLI, C.RAZCLI, C.FONECLI" ;
+			sOrdem = "S".equals( cbDesc.getVlrString() ) ? "V.CODCLI DESC, C.RAZCLI DESC, C.FONECLI DESC" : "V.CODCLI, C.RAZCLI, C.FONECLI";
 		}
 		else if ( rgOrdem.getVlrString().equals( "R" ) ) {
 			sOrdem = "S".equals( cbDesc.getVlrString() ) ? "C.RAZCLI DESC, V.CODCLI DESC, C.FONECLI DESC" : "C.RAZCLI, V.CODCLI, C.FONECLI";
 		}
 		else if ( rgOrdem.getVlrString().equals( "V" ) ) {
-			sOrdem = "S".equals( cbDesc.getVlrString() ) ? "5 DESC" : "5" ;
+			sOrdem = "S".equals( cbDesc.getVlrString() ) ? "5 DESC" : "5";
 		}
 
 		try {
