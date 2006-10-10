@@ -246,7 +246,7 @@ public class NF029 extends Layout {
 
 				// Imprime os dados do item no corpo da nota ...
 
-				imp.pulaLinha( 1, imp.comprimido() );
+				imp.pulaLinha( 2, imp.comprimido() );
 				imp.say( 0, Funcoes.alinhaCentro( itens.getInt( NF.C_CODPROD ), 5 ) );
 				imp.say( 7, Funcoes.copy( itens.getString( NF.C_DESCPROD ).trim(), 23 ) );
 				imp.say( 32, itens.getString( NF.C_CODLOTE ) );
@@ -291,7 +291,7 @@ public class NF029 extends Layout {
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 
-						imp.pulaLinha( 1, imp.comprimido() );
+						imp.pulaLinha( 3, imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
 						imp.say( 32, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRICMSPED ) ) ) );
 						imp.say( 114, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODPED ) ) ) );
@@ -325,7 +325,7 @@ public class NF029 extends Layout {
 						iContaFrete++;
 					}
 
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 4, imp.comprimido() );
 					imp.say( 2, frete.getString( NF.C_RAZTRANSP ) );
 					imp.say( 81, frete.getString( NF.C_TIPOFRETE ).equals( "C" ) ? "1" : "2" );
 					imp.say( 90, frete.getString( NF.C_PLACAFRETE ) );
@@ -387,12 +387,12 @@ public class NF029 extends Layout {
 							}
 							if ( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
 							
-								imp.say( 31, Funcoes.copy( (String) vDescFisc.elementAt( indexDescFisc++ ), 51 ) );
+								
 							}
 						}
 						else {
 							
-							imp.pulaLinha( 1, imp.comprimido() );
+							
 						}
 					}
 
@@ -400,14 +400,7 @@ public class NF029 extends Layout {
 
 					// Imprime canhoto ...
 
-					imp.pulaLinha( 3, imp.normal() );
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 31, Funcoes.copy( cab.getString( NF.C_RAZEMIT ), 40 ) );
-					imp.say( 73, Funcoes.copy( cab.getString( NF.C_NOMEEMIT ), 40 ) );
-
-					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
-					imp.setPrc( 0, 0 );
-					imp.incPags();
+				
 				}
 			}
 

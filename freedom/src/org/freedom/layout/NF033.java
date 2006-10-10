@@ -35,10 +35,8 @@ public class NF033 extends Layout {
 		boolean bjatem1 = false;
 		boolean bjatem2 = false;
 		final int MAXLINE = 32;
-		int iNumNota = 0;
 		int iItImp = 0;
 		int iContaFrete = 0;
-		int iLinPag = imp.verifLinPag("NF");
 		int sizeObs = 0;
 		int indexDescFisc = 0;
 		int indexSigla = 0;
@@ -57,7 +55,6 @@ public class NF033 extends Layout {
 		try{
 		    			
 			if ( cab.next() ) { 
-				iNumNota = cab.getInt(NF.C_DOC);
 		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),120);				
 			}
 							
