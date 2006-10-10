@@ -42,11 +42,11 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Arquivo", "", 'A', 100000000, 0, false, null );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Tabelas", "", 'T', 100100000, 1, false, null );
 			addOpcao( 100100000, TP_OPCAO_MENU, "Cliente", "", 'C', 100101000, 2, false, null );
-				addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo de cliente...", "TipoCli", 'T', 100101010, 3, true, FTipoCli.class );
-				addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente...", "Classifição de Clientes", 'f', 100101020, 3, true, FClasCli.class );
-				addOpcao( 100101000, TP_OPCAO_ITEM, "Cliente...", "Clientes", 'C', 100101030, 3, true, FCliente.class );
-				addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo fiscal de cliente...", "Tipo Fiscal de Cliente", 'p', 100101040, 3, true, FTipoFiscCli.class );
-				addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente...", "Crédito por cliente", 'r', 100101050, 3, true, FCredCli.class );
+				addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo de cliente", "TipoCli", 'T', 100101010, 3, true, FTipoCli.class );
+				addOpcao( 100101000, TP_OPCAO_ITEM, "Classificação de cliente", "Classifição de Clientes", 'f', 100101020, 3, true, FClasCli.class );
+				addOpcao( 100101000, TP_OPCAO_ITEM, "Cliente", "Clientes", 'C', 100101030, 3, true, FCliente.class );
+				addOpcao( 100101000, TP_OPCAO_ITEM, "Tipo fiscal de cliente", "Tipo Fiscal de Cliente", 'p', 100101040, 3, true, FTipoFiscCli.class );
+				addOpcao( 100101000, TP_OPCAO_ITEM, "Crédito por cliente", "Crédito por cliente", 'r', 100101050, 3, true, FCredCli.class );
 			addOpcao( 100100000, TP_OPCAO_MENU, "Comissionado", "", 'C', 100102000, 2, false, null );
 				addOpcao( 100102000, TP_OPCAO_ITEM, "Setor", "Setor", 'S', 100102010, 3, true, FSetor.class );
 				addOpcao( 100102000, TP_OPCAO_ITEM, "Comissionado", "Comissionado", 'i', 100102020, 3, true, FVendedor.class );
@@ -58,17 +58,17 @@ public class FreedomSTD extends AplicativoPD {
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100112000, 2, true, FMoeda.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Banco", "Banco", 'B', 100113000, 2, true, FBanco.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "TipoCob", 'o', 100114000, 2, true, FTipoCob.class );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "PlanoPag", 's', 100115000, 2, true, FPlanoPag.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de cobrança", "Tipo de cobrança", 'o', 100114000, 2, true, FTipoCob.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Plano de pagamento", "Plano de pagamento", 's', 100115000, 2, true, FPlanoPag.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Prazo de entrega", "Prazo de entrega", 'e', 100116000, 2, true, FPrazoEnt.class );
 			// addOpcao(100100000,TP_OPCAO_ITEM,"Tipo de expositor",'x',100116000,2,true, FTipoExp.class);
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Transportadora", "Transportadora", 'p', 100117000, 2, true, FTransp.class );
 			addSeparador( 100100000 );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "TipoFor", 'e', 100118000, 2, true, FTipoFor.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Tipo de fornecedor", "Tipo de fornecedor", 'e', 100118000, 2, true, FTipoFor.class );
 			addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'r', 100119000, 2, true, FFornecedor.class );
 			addSeparador( 100100000 );
-			addOpcao( 100100000, TP_OPCAO_ITEM, "Natureza de operação", "Naturezas", 'z', 100120000, 2, true, FNatoPer.class );
+			addOpcao( 100100000, TP_OPCAO_ITEM, "Natureza de operação", "Naturezas de operação", 'z', 100120000, 2, true, FNatoPer.class );
 			addSeparador( 100100000 );
 			addOpcao( 100100000, TP_OPCAO_MENU, "Produto", "", 'u', 100130000, 2, false, null );
 				addOpcao( 100130000, TP_OPCAO_ITEM, "Tratamento tributário", "Tratamento Tributário", 't', 100130010, 3, true, FTratTrib.class );
@@ -95,18 +95,18 @@ public class FreedomSTD extends AplicativoPD {
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Alteração de numero de nota", "Alteração de doc", 'A', 100210000, 2, true, FTrocaDoc.class );
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Exportar SVV", "Exportação SVV", 'E', 100220000, 2, true, FSVV.class );
 				addOpcao( 100200000, TP_OPCAO_MENU, "Etiquetas", "", 't', 100230000, 2, false, null );
-				addOpcao( 100230000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas", 'M', 100230100, 3, true, FModEtiqueta.class );
-				addOpcao( 100230000, TP_OPCAO_ITEM, "Imprimir", "Etiquetas", 'I', 100230200, 3, true, FREtiqueta.class ); // LOM
+					addOpcao( 100230000, TP_OPCAO_ITEM, "Modelo", "Modelo de etiquetas", 'M', 100230100, 3, true, FModEtiqueta.class );
+					addOpcao( 100230000, TP_OPCAO_ITEM, "Imprimir", "Etiquetas", 'I', 100230200, 3, true, FREtiqueta.class ); // LOM
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Imp. tabelas de fornecedores", "Imp. tabelas de fornecedores", 'I', 100240000, 2, true, FImpTabFor.class );
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Ajuste do item do orçamento", "Ajuste do item do orçamento", 'A', 100250000, 2, true, FStatusItOrc.class );
 				addOpcao( 100200000, TP_OPCAO_MENU, "Bloqueios e desbloqueios", "", 'B', 100260000, 2, false, null );
-				addOpcao( 100260000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100260100, 3, true, FBloqCompra.class );
-				addOpcao( 100260000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100260200, 3, true, FBloqVenda.class );
+					addOpcao( 100260000, TP_OPCAO_ITEM, "Compras", "Bloqueio e desbloqueio de compras", 'C', 100260100, 3, true, FBloqCompra.class );
+					addOpcao( 100260000, TP_OPCAO_ITEM, "Vendas", "Bloqueio e desbloqueio de vendas", 'V', 100260200, 3, true, FBloqVenda.class );
 				addOpcao( 100200000, TP_OPCAO_ITEM, "Canc. de vínc. venda x orçamento", "Canc. de vínc. venda x orçamento", 'v', 100270000, 2, true, FCancVendaOrc.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Preferências", "", 'P', 100300000, 1, false, null );
-				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Pref. Gerais", 'g', 100310000, 2, true, FPrefereGeral.class );
-				addOpcao( 100300000, TP_OPCAO_ITEM, "Série de NFs", "Serie NF", 'N', 100320000, 2, true, FSerie.class );
-				addOpcao( 100300000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo NF", 'M', 100330000, 2, true, FModNota.class );
+				addOpcao( 100300000, TP_OPCAO_ITEM, "Preferências gerais", "Preferências Gerais", 'g', 100310000, 2, true, FPrefereGeral.class );
+				addOpcao( 100300000, TP_OPCAO_ITEM, "Série de NFs", "Série de NFs", 'N', 100320000, 2, true, FSerie.class );
+				addOpcao( 100300000, TP_OPCAO_ITEM, "Modelo de NFs", "Modelo de NFs", 'M', 100330000, 2, true, FModNota.class );
 			addOpcao( 100000000, TP_OPCAO_MENU, "Configurações", "", 'C', 100400000, 1, false, null );
 				addOpcao( 100400000, TP_OPCAO_ITEM, "Caixa PDV", "Configurações", 'C', 100410000, 2, true, FCaixa.class );
 				addOpcao( 100400000, TP_OPCAO_ITEM, "Impressora", "Impressoras", 'I', 100420000, 2, true, FImpressora.class );
@@ -135,7 +135,7 @@ public class FreedomSTD extends AplicativoPD {
 			// addOpcao(300000000,TP_OPCAO_ITEM,"Lançamento de expositores","LancaExp",'x',300900000,1, true, FLancaExp.class);
 			addOpcao( 300000000, TP_OPCAO_MENU, "Listagens", "", 's', 301000000, 1, false, null );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Resumo diário", "Resumo Diário", 'R', 301000100, 2, true, FRResumoDiario.class );
-				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas geral", "Vendas em Geral", 'V', 301000200, 2, true, FRVendasGeral.class );
+				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas geral", "Vendas Geral", 'V', 301000200, 2, true, FRVendasGeral.class );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas físico", "Físico de Vendas", 'd', 301000300, 2, true, FRVendasFisico.class );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas detalhado", "Vendas Detalhadas", 'n', 301000400, 2, true, FRVendasDet.class );
 				addOpcao( 301000000, TP_OPCAO_ITEM, "Vendas por ítem", "Vendas por Item", 'e', 301000500, 2, true, FRVendasItem.class );
@@ -160,7 +160,7 @@ public class FreedomSTD extends AplicativoPD {
 
 		addOpcao( -1, TP_OPCAO_MENU, "Receber", "", 'R', 500000000, 0, false, null );
 			addOpcao( 500000000, TP_OPCAO_ITEM, "Manutenção", "Manutenção de contas a receber", 'M', 500100000, 1, true, FManutRec.class );
-			addOpcao( 500000000, TP_OPCAO_ITEM, "CNAB", "", 'N', 500200000, 1, true, null );
+			addOpcao( 500000000, TP_OPCAO_ITEM, "CNAB", "CNAB", 'N', 500200000, 1, true, null );
 			addOpcao( 500000000, TP_OPCAO_MENU, "Listagens", "", 's', 500300000, 1, false, null );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Receber/Recebidas", "Receber/Recebidas", 'R', 500301000, 2, true, FRReceber.class );
 				addOpcao( 500300000, TP_OPCAO_ITEM, "Inadimplentes", "Inadimplentes", 'I', 500302000, 2, true, FRInadimplentes.class );
