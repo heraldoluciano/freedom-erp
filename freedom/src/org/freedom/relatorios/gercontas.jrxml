@@ -103,11 +103,11 @@ ORDER BY 4,5,18,2]]></queryString>
 	<field name="VENDASANTERIOR" class="java.lang.Double"/>
 	<field name="VENDASANTERIOR2" class="java.lang.Double"/>
 	<field name="VENDASMETA" class="java.lang.Double"/>
-	<variable name="TOTJAN" class="java.lang.Integer" resetType="Report" incrementType="Column" calculation="Sum">
+	<variable name="TOTJAN" class="java.lang.Integer" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{JAN}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
-	<variable name="TOTFEV" class="java.lang.Integer" resetType="Report" incrementType="Column" calculation="Sum">
+	<variable name="TOTFEV" class="java.lang.Integer" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{FEV}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
@@ -2586,7 +2586,12 @@ new Integer(0)]]></variableExpression>
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{TOTVISITAS}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[new Integer(
+	   ($V{TOTJAN}.intValue())+($V{TOTFEV}.intValue())+($V{TOTMAR}.intValue())+
+   	   ($V{TOTABR}.intValue())+($V{TOTMAI}.intValue())+($V{TOTJUN}.intValue())+
+ 	   ($V{TOTJUL}.intValue())+($V{TOTAGO}.intValue())+($V{TOTSETE}.intValue())+
+    	   ($V{TOTOUT}.intValue())+($V{TOTNOV}.intValue())+($V{TOTDEZ}.intValue())
+)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
