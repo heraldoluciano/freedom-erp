@@ -307,20 +307,23 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 	public void imprimir( boolean bVisualizar ) {
 
 		if ( txtDataini.getVlrString().length() < 10 || txtDatafim.getVlrString().length() < 10 ) {
+			
 			Funcoes.mensagemInforma( this, "Período inválido!" );
 			return;
 		}
 
-		if ( rgTipoRel.getVlrString().equals( "V" ) ) {
+		if ( "V".equals( rgTipoRel.getVlrString() ) ) {
+			
 			impVendedor( bVisualizar );
 		}
-		else if ( rgTipoRel.getVlrString().equals( "P" ) ) {
+		else if ( "P".equals( rgTipoRel.getVlrString() ) ) {
+			
 			impProduto( bVisualizar );
 		}
-		else if ( rgTipoRel.getVlrString().equals( "C" ) ) {
+		else if ( "C".equals( rgTipoRel.getVlrString() ) ) {
+			
 			impCliente( bVisualizar );
 		}
-
 	}
 
 	private int getPassadas( int iTam ) {
@@ -329,6 +332,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		iRetorno = iTam / 9;
 
 		if ( ( iTam % 9 ) > 0 ) {
+			
 			iRetorno++;
 		}
 
@@ -344,22 +348,24 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		for ( int i = 0; i < vItens.size(); i++ ) {
 
 			if ( ( (Vector) vItens.elementAt( i ) ).elementAt( POS_CODSETOR ).toString().equals( sCodSetor ) ) {
+				
 				bInicio = true;
 				sCodVend = new String( ( (Vector) vItens.elementAt( i ) ).elementAt( POS_CODVEND ).toString() );
+				
 				if ( vRetorno.indexOf( sCodVend ) == -1 ) {
+					
 					vRetorno.addElement( sCodVend );
 				}
 			}
 			else if ( bInicio ) {
+				
 				break;
 			}
-
 		}
 
 		vRetorno = Funcoes.ordenaVector( vRetorno, 8 );
 
 		return vRetorno;
-
 	}
 
 	private int getPosCol( int iColSel ) {
@@ -367,14 +373,15 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		int iRetorno = 0;
 
 		if ( iColSel < NUM_COLUNAS ) { // Verifica se a coluna selecionada é menor que o número de colunas total
+			
 			iRetorno = iColSel;
 		}
 		else { // caso contrário a retorna o resto
+			
 			iRetorno = iColSel % NUM_COLUNAS;
 		}
 
 		return iRetorno;
-
 	}
 
 	private String getColSetor( final Vector vCols, final int iTotPassadas, final int iPassada ) {
@@ -388,17 +395,20 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iColunas = vCols.size() % NUM_COLUNAS;
 
 			if ( iColunas == 0 ) {
+				
 				iColunas = NUM_COLUNAS;
 			}
 		}
 
 		for ( int i = 0; i < iColunas; i++ ) {
+			
 			sRetorno.append( "| " );
 			sRetorno.append( Funcoes.adicionaEspacos( vCols.elementAt( i + ( iPassada * NUM_COLUNAS ) ).toString(), NUM_COLUNAS ) );
 			iCols = i;
 		}
 
 		for ( int i = iCols; i < ( NUM_COLUNAS - 1 ); i++ ) {
+			
 			sRetorno.append( "|" );
 			sRetorno.append( Funcoes.replicate( " ", 10 ) );
 		}
@@ -407,7 +417,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		sRetorno.append( iPassada == 0 ? "| TOTAL" : "|      " );
 
 		return sRetorno.toString();
-
 	}
 
 	private String getTotSetor( Vector vTotSetor, int iTotPassadas, int iPassada ) {
@@ -423,9 +432,9 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			iColunas = vTotSetor.size() % NUM_COLUNAS;
 
 			if ( iColunas == 0 ) {
+				
 				iColunas = NUM_COLUNAS;
 			}
-
 		}
 
 		for ( int i = 0; i < iColunas; i++ ) {
@@ -433,6 +442,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			deTemp = (Double) vTotSetor.elementAt( i + ( iPassada * NUM_COLUNAS ) );
 
 			if ( deTemp == null ) {
+				
 				deTemp = new Double( 0 );
 			}
 
@@ -440,10 +450,10 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 			sRetorno.append( "|" );
 			sRetorno.append( Funcoes.strDecimalToStrCurrency( 10, 2, deTemp.toString() ) );
 			iCols = i;
-
 		}
 
 		for ( int i = iCols; i < ( NUM_COLUNAS - 1 ); i++ ) {
+			
 			sRetorno.append( "|" );
 			sRetorno.append( Funcoes.replicate( " ", 10 ) );
 		}
@@ -461,8 +471,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		int iRetorno = -1;
 
 		if ( vCols != null ) {
+			
 			for ( int i = 0; i < vCols.size(); i++ ) {
+				
 				if ( sCodVend.equals( vCols.elementAt( i ).toString() ) ) {
+					
 					iRetorno = i;
 					break;
 				}
@@ -470,7 +483,6 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		}
 
 		return iRetorno;
-
 	}
 
 	private Vector initTotSetor( Vector vCols ) {
@@ -478,11 +490,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 		Vector vRetorno = new Vector();
 
 		for ( int i = 0; i < vCols.size(); i++ ) {
+			
 			vRetorno.addElement( new Double( 0 ) );
 		}
-
+		
 		return vRetorno;
-
 	}
 
 	private Vector adicValorSetor( int iPos, Double deValor, Vector vTotSetor ) {
@@ -501,15 +513,11 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 					dTemp = dlTemp.doubleValue() + deValor.doubleValue();
 					dlTemp = new Double( dTemp );
 					vTotSetor.setElementAt( dlTemp, iPos );
-
 				}
-
 			}
-
 		}
 
 		return vTotSetor;
-
 	}
 
 	private void impVendedor( boolean bVisualizar ) {
@@ -674,12 +682,12 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				if ( sFrom.equals( "" ) ) {
 					sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
-					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
+					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
 					sWhere.append( "AND TC.CODTIPOCLI=? " );
 					sFrom = ", VDCLIENTE C1, VDTIPOCLI TC ";
 				}
 				else {
-					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
+					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
 					sWhere.append( "AND TC.CODTIPOCLI=? " );
 					sFrom = ", VDTIPOCLI TC " + sFrom;
 				}
@@ -1207,12 +1215,12 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 				if ( sFrom.equals( "" ) ) {
 					sWhere.append( "AND C1.CODCLI=V.CODCLI AND C1.CODEMP=V.CODEMPCL AND C1.CODFILIAL=V.CODFILIALCL " );
-					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
+					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
 					sWhere.append( "AND TC.CODTIPOCLI=? " );
 					sFrom = ",VDCLIENTE C1, VDTIPOCLI TC ";
 				}
 				else {
-					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTC=TC.CODEMP AND C1.CODFILIALTC=TC.CODFILIAL " );
+					sWhere.append( "AND C1.CODTIPOCLI=TC.CODTIPOCLI AND C1.CODEMPTI=TC.CODEMP AND C1.CODFILIALTI=TC.CODFILIAL " );
 					sWhere.append( "AND TC.CODTIPOCLI=? " );
 					sFrom = ", VDTIPOCLI TC " + sFrom;
 				}
@@ -1522,7 +1530,7 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 				sFiltros2.append( Funcoes.copy( txtRazCli.getVlrString(), 30 ) );
 			}
 			if ( iCodTipoCli != 0 ) {
-				sWhere.append( "AND C2.CODTIPOCLI=TC.CODTIPOCLI AND C2.CODEMPTC=TC.CODEMP AND C2.CODFILIALTC=TC.CODFILIAL " );
+				sWhere.append( "AND C2.CODTIPOCLI=TC.CODTIPOCLI AND C2.CODEMPTI=TC.CODEMP AND C2.CODFILIALTI=TC.CODFILIAL " );
 				sWhere.append( "AND TC.CODTIPOCLI=? " );
 				sFrom = ", VDTIPOCLI TC ";
 				sFiltros2.append( sFiltros2.length() > 0 ? " / " : "" );
@@ -1790,15 +1798,13 @@ public class FRVendaSetor extends FRelatorio implements RadioGroupListener {
 
 	public void valorAlterado( RadioGroupEvent rge ) {
 
-		String sTipoRel = null;
-		try {
-			sTipoRel = rge.getRadioButton().getText();
-			if ( sTipoRel.equalsIgnoreCase( "CLIENTE" ) )
-				rgOrdemRel.setAtivo( true );
-			else
-				rgOrdemRel.setAtivo( false );
-		} finally {
-			sTipoRel = null;
+		String sTipoRel = rge.getRadioButton().getText();
+			
+		if ( "CLIENTE".equalsIgnoreCase( sTipoRel ) ) {
+			rgOrdemRel.setAtivo( true );
+		}
+		else {
+			rgOrdemRel.setAtivo( false );
 		}
 	}
 
