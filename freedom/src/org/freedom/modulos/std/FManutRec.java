@@ -841,7 +841,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		float bdVlrAReceber = 0.0f;
-		float bdVlrParc = 0.0f;
+		float bdVlrPago = 0.0f;
 
 		try {
 
@@ -873,12 +873,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 			for ( int i = 0; rs.next(); i++ ) {
 
 				bdVlrAReceber = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItRec" ) ).floatValue();
-				bdVlrParc = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrParcItRec" ) ).floatValue();
+				bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPagoItRec" ) ).floatValue();
 
 				if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0.0f ) {
 					imgColuna = imgPago;
 				}
-				else if ( bdVlrAReceber > 0.0f && bdVlrAReceber < bdVlrParc ) {
+				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
 				}
 				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
@@ -931,7 +931,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		StringBuffer sSQL = new StringBuffer();
 		String sCodBanco = null;
 		float bdVlrAReceber = 0.0f;
-		float bdVlrParc = 0.0f;
+		float bdVlrPago = 0.0f;
 
 		try {
 
@@ -971,12 +971,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 			for ( int i = 0; rs.next(); i++ ) {
 
 				bdVlrAReceber = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItRec" ) ).floatValue();
-				bdVlrParc = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrParcItRec" ) ).floatValue();
+				bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPagoItRec" ) ).floatValue();
 
 				if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0.0f ) {
 					imgColuna = imgPago;
 				}
-				else if ( bdVlrAReceber > 0.0f && bdVlrAReceber < bdVlrParc ) {
+				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
 				}
 				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
@@ -1035,7 +1035,7 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 		StringBuffer sWhereManut = new StringBuffer();
 		StringBuffer sWhereStatus = new StringBuffer();
 		float bdVlrAReceber = 0.0f;
-		float bdVlrParc = 0.0f;
+		float bdVlrPago = 0.0f;
 
 		if ( bAplicFiltros ) {
 			
@@ -1160,12 +1160,12 @@ public class FManutRec extends FFilho implements ActionListener, KeyListener, Ca
 				tabManut.adicLinha();
 
 				bdVlrAReceber = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItRec" ) ).floatValue();
-				bdVlrParc = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrParcItRec" ) ).floatValue();
+				bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPagoItRec" ) ).floatValue();
 
-				if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0.0f ) {
+				if ( rs.getString( "StatusItRec" ).equals( "RP" ) && bdVlrAReceber == 0 ) {
 					imgColuna = imgPago;
 				}
-				else if ( bdVlrAReceber > 0.0f && bdVlrAReceber < bdVlrParc ) {
+				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
 				}
 				else if ( rs.getDate( "DtVencItRec" ).before( Calendar.getInstance().getTime() ) ) {
