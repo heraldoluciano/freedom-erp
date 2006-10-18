@@ -766,7 +766,7 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
 		float bdVlrAPagar = 0.0f;
-		float bdVlrParc = 0.0f;
+		float bdVlrPago = 0.0f;
 		
 		try {
 
@@ -798,12 +798,12 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 			for ( int i = 0; rs.next(); i++ ) {
 
 				bdVlrAPagar = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItPag" ) ).floatValue();
-				bdVlrParc = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrParcItPag" ) ).floatValue();
+				bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPagoItPag" ) ).floatValue();
 
 				if ( rs.getString( "StatusItPag" ).equals( "PP" ) && bdVlrAPagar == 0.0f ) {
 					imgColuna = imgPago;
 				}
-				else if ( bdVlrAPagar > 0.0f && bdVlrAPagar < bdVlrParc ) {
+				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
 				}
 				else if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
@@ -881,17 +881,17 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 			rs = ps.executeQuery();
 			
 			double bdVlrAPagar = 0.0;
-			double bdVlrParc = 0.0;
+			double bdVlrPago = 0.0;
 
 			for ( int i = 0; rs.next(); i++ ) {
 				
 				bdVlrAPagar = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItPag" ) ).doubleValue();
-				bdVlrParc = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrParcItPag" ) ).doubleValue();
+				bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPagoItPag" ) ).doubleValue();
 
 				if ( "PP".equals( rs.getString( "StatusItPag" ) ) && bdVlrAPagar == 0.0 ) {
 					imgColuna = imgPago;
 				}
-				else if ( bdVlrAPagar > 0.0 && bdVlrAPagar < bdVlrParc ) {
+				else if ( bdVlrPago > 0 ) {
 					imgColuna = imgPagoParcial;
 				}
 				else if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
@@ -1048,19 +1048,19 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 					rs = ps.executeQuery();
 					
 					double bdVlrAPagar = 0.0;
-					double bdVlrParc = 0.0;
+					double bdVlrPago = 0.0;
 
 					for ( int i = 0; rs.next(); i++ ) {
 						
 						tabManut.adicLinha();
 						
 						bdVlrAPagar = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItPag" ) ).doubleValue();
-						bdVlrParc = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrParcItPag" ) ).doubleValue();
+						bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPargoItPag" ) ).doubleValue();
 
 						if ( "PP".equals( rs.getString( "StatusItPag" ) ) && bdVlrAPagar == 0.0 ) {
 							imgColuna = imgPago;
 						}
-						else if ( bdVlrAPagar > 0.0 && bdVlrAPagar < bdVlrParc ) {
+						else if ( bdVlrPago > 0 ) {
 							imgColuna = imgPagoParcial;
 						}
 						else if ( rs.getDate( "DtVencItPag" ).before( Calendar.getInstance().getTime() ) ) {
