@@ -33,7 +33,7 @@ public class NF099a extends Layout {
 		boolean bRetorno = super.imprimir(nf, imp);
 		boolean bNat = true;
 		int iNumNota = 0;
-		int numMax = 42;
+		int numMax = 43;
 		int iItImp = 0;
 		int iLinPag = imp.verifLinPag("NF");
 		Calendar cHora = Calendar.getInstance();
@@ -76,10 +76,10 @@ public class NF099a extends Layout {
 					else
 						imp.say( 88, "X");
 					
-					imp.pulaLinha(5, imp.comprimido());
+					imp.pulaLinha(6, imp.comprimido());
 					imp.say(  6, sNat[0]);
 					imp.say( 42, sNat[1]);
-					imp.pulaLinha(4, imp.comprimido());
+					imp.pulaLinha(3, imp.comprimido());
 					imp.say(  6, cab.getString(NF.C_RAZEMIT));
 					imp.say( 92, !cab.getString(NF.C_CPFEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
 					imp.say(125, Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)));
@@ -161,7 +161,7 @@ public class NF099a extends Layout {
 					imp.say(  6, Funcoes.copy(frete.getString(NF.C_ENDTRANSP),0,42) + ", " + 
 											Funcoes.copy(frete.getString(NF.C_NUMTRANSP),0,6));
 					imp.say( 76, frete.getString(NF.C_CIDTRANSP));
-					imp.say(104, frete.getString(NF.C_UFTRANSP));
+					imp.say(10, frete.getString(NF.C_UFTRANSP));
 					
 					if (sTipoTran.equals("C") )
 						imp.say(115, cab.getString(NF.C_INSCEMIT));
@@ -169,7 +169,7 @@ public class NF099a extends Layout {
 						imp.say(115, frete.getString(NF.C_INSCTRANSP));
 					
 					imp.pulaLinha(2, imp.comprimido());
-					imp.say(  6, Funcoes.strDecimalToStrCurrency(16,0,String.valueOf(frete.getFloat(NF.C_QTDFRETE))));
+					imp.say(  2, Funcoes.strDecimalToStrCurrency(14,0,String.valueOf(frete.getFloat(NF.C_QTDFRETE))));
 					imp.say( 27, frete.getString(NF.C_ESPFRETE));
 					imp.say( 55, frete.getString(NF.C_MARCAFRETE));
 					imp.say(102, String.valueOf(frete.getFloat(NF.C_PESOBRUTO)));
