@@ -48,7 +48,6 @@ import java.util.GregorianCalendar;
 import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.freedom.acao.CarregaEvent;
@@ -75,6 +74,7 @@ import org.freedom.layout.Layout;
 import org.freedom.layout.Leiaute;
 import org.freedom.layout.NFSaida;
 import org.freedom.telas.Aplicativo;
+import org.freedom.telas.FPassword;
 
 public class FVenda extends FVD implements PostListener, CarregaListener, FocusListener, ActionListener, InsertListener, DeleteListener {
 
@@ -2370,6 +2370,21 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 				}
 			}			
+			else if ( kevt.getSource() == txtRefProd ) {			
+				if ( kevt.getSource() == txtRefProd ) {
+					lcDet.edit();
+				}
+
+				if ( getProdUsaReceita() ) {
+					FPassword pass = new FPassword( this, FPassword.APROV_RECEITA_PROD, "Receita", con );
+					pass.setVisible( true );
+					if ( ! pass.OK ) {
+						
+						lcDet.cancel(true);
+					}
+					pass.dispose();
+				}
+			}
 		}
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F3 && kevt.getSource() == txtVlrDescItVenda ) {
 			mostraTelaDescont();
@@ -2379,20 +2394,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		}
 		else if ( kevt.getKeyCode() == KeyEvent.VK_F5 ) {
 			btConsPgto.doClick();
-		}
-		
-		if ( kevt.getSource() == txtCodProd || kevt.getSource() == txtRefProd ) {
-			if ( kevt.getKeyCode() == KeyEvent.VK_ENTER ) {
-				if ( getProdUsaReceita() ) {
-					int opt = Funcoes.mensagemConfirma( this, "Produto nescessita de Receita!" ); 
-					if ( opt != JOptionPane.YES_OPTION ) {
-						lcDet.cancel(true);
-					}
-				}
-			}
-			if ( kevt.getSource() == txtRefProd ) {
-				lcDet.edit();
-			}
 		}
 		
 		super.keyPressed( kevt );
