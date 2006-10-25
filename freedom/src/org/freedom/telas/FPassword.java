@@ -53,6 +53,11 @@ public class FPassword extends FFDialogo {
 	 */
 	public static final int ALT_PARC_VENDA = 2;
 
+	/**
+	 * Permissão para venda de produto com receita.
+	 */
+	public static final int APROV_RECEITA_PROD = 3;
+
 	private JTextFieldPad txtUsu = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
 	private JPasswordFieldPad txtPass = new JPasswordFieldPad( 8 );
@@ -61,6 +66,7 @@ public class FPassword extends FFDialogo {
 
 	private int tipo = 0;
 
+	
 	private int[] log = null;
 
 	/**
@@ -99,6 +105,8 @@ public class FPassword extends FFDialogo {
 		adic( txtUsu, 110, 10, 150, 20 );
 		adic( txtPass, 110, 30, 150, 20 );
 		adic( new JLabelPad( "Senha: " ), 7, 30, 100, 20 );
+		
+		eUltimo();
 
 		txtUsu.setVlrString( Aplicativo.strUsuario );
 		setPrimeiroFoco( txtPass );
@@ -123,6 +131,9 @@ public class FPassword extends FFDialogo {
 				break;
 			case ALT_PARC_VENDA :
 				ret = getAltParcVenda();
+				break;
+			case APROV_RECEITA_PROD :
+				ret = getAprovReceitaProd();
 				break;
 			default :
 				break;
@@ -161,6 +172,11 @@ public class FPassword extends FFDialogo {
 		return getPermissao( ALT_PARC_VENDA );
 	}
 
+	private boolean getAprovReceitaProd() {
+
+		return getPermissao( APROV_RECEITA_PROD );
+	}
+
 	private boolean getPermissao( int tipo ) {
 
 		PreparedStatement ps = null;
@@ -168,7 +184,7 @@ public class FPassword extends FFDialogo {
 		Properties props = null;
 		String sIDUsu = null;
 		StringBuffer sSQL = new StringBuffer();
-		boolean[] permissoes = new boolean[] { false, false, false };
+		boolean[] permissoes = new boolean[ 4 ];
 		
 		try {
 			
@@ -185,8 +201,9 @@ public class FPassword extends FFDialogo {
 			
 			DriverManager.getConnection( Aplicativo.strBanco, props ).close();
 
-			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA FROM SGUSUARIO " );
-			sSQL.append( "WHERE IDUSU = ? AND CODEMP=? AND CODFILIAL=?" );
+			sSQL.append( "SELECT BAIXOCUSTOUSU, ABREGAVETAUSU, ALTPARCVENDA, APROVRECEITA " );
+			sSQL.append( "FROM SGUSUARIO " );
+			sSQL.append( "WHERE IDUSU=? AND CODEMP=? AND CODFILIAL=?" );
 			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setString( 1, sIDUsu );
@@ -200,6 +217,7 @@ public class FPassword extends FFDialogo {
 				permissoes[ 0 ] = "S".equals( rs.getString( 1 ) );
 				permissoes[ 1 ] = "S".equals( rs.getString( 2 ) );
 				permissoes[ 2 ] = "S".equals( rs.getString( 3 ) );
+				permissoes[ 3 ] = "S".equals( rs.getString( 4 ) );
 			}
 			
 			if ( ! permissoes[ tipo ] ) {
