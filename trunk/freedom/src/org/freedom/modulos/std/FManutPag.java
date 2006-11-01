@@ -1055,7 +1055,7 @@ public class FManutPag extends FFilho implements ActionListener, KeyListener, Ca
 						tabManut.adicLinha();
 						
 						bdVlrAPagar = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrApagItPag" ) ).doubleValue();
-						bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPargoItPag" ) ).doubleValue();
+						bdVlrPago = Funcoes.strDecimalToBigDecimal( 2, rs.getString( "VlrPargItPag" ) ).doubleValue();
 
 						if ( "PP".equals( rs.getString( "StatusItPag" ) ) && bdVlrAPagar == 0.0 ) {
 							imgColuna = imgPago;

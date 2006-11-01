@@ -703,10 +703,11 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		if ( bPrefs[ 0 ] ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
-			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, false );
+			adicCampoInvisivel( txtRefProd, "RefProd", "Ref.prod.", ListaCampos.DB_SI, true );
 			adic( new JLabelPad( "Ref. prod." ), 40, 0, 60, 20 );
 			adic( txtRefProd, 40, 20, 60, 20 );
 			txtRefProd.setFK( true );
+			txtRefProd.removeKeyListener( this );
 		}
 		else {
 			txtCodProd.setBuscaAdic( new DLBuscaProd( con, "CODPROD", lcProd.getWhereAdic() ) );
@@ -1978,7 +1979,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			if ( rs.next() ) {
 				
-				bRetorno[ 0 ] = "S".equals( rs.getString( "TravaTmNfVd" ) );
+				bRetorno[ 0 ] = "S".equals( rs.getString( "USAREFPROD" ) );
 
 				bRetorno[ 1 ] = "S".equals( rs.getString( "USAPEDSEQ" ) );
 				
@@ -2370,16 +2371,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					}
 				}
 			}			
-			else if ( kevt.getSource() == txtRefProd ) {			
+			else if ( kevt.getSource() == txtRefProd || kevt.getSource() == txtCodProd ) {
 				if ( kevt.getSource() == txtRefProd ) {
-					lcDet.edit();
+					lcDet.edit();					
 				}
-
 				if ( getProdUsaReceita() ) {
 					FPassword pass = new FPassword( this, FPassword.APROV_RECEITA_PROD, "Receita", con );
 					pass.setVisible( true );
-					if ( ! pass.OK ) {
-						
+					if ( ! pass.OK ) {						
 						lcDet.cancel(true);
 					}
 					pass.dispose();
