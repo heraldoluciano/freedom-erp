@@ -289,7 +289,7 @@ public class DLCancCupom extends FDialogo implements ActionListener, MouseListen
 
 		if ( bRet ) {
 			
-			sSQL = "UPDATE VDVENDA SET STATUSVENDA='CV' " + "WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
+			sSQL = "UPDATE VDVENDA SET STATUSVENDA='CV' WHERE CODEMP=? AND CODFILIAL=? AND CODVENDA=? AND TIPOVENDA='E'";
 			
 			try {
 
