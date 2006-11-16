@@ -119,7 +119,7 @@ public class NFIswara extends Layout {
 					
 					//	Imprime cabeçalho da nota ...
 					
-					imp.pulaLinha( 1, imp.comprimido());
+					imp.pulaLinha( 2, imp.comprimido());
 					
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 						imp.say(103, "X");
@@ -228,10 +228,8 @@ public class NFIswara extends Layout {
 				imp.say(  7, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
 				imp.say( 32, itens.getString(NF.C_CODLOTE) );
 				imp.say( 49, Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
-				imp.say( 62, sSigla);
-				imp.say( 66, Funcoes.copy(itens.getString(NF.C_ORIGFISC),1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),2));
-				imp.say( 71, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
-				imp.say( 77, Funcoes.strDecimalToStrCurrency( 9,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
+				imp.say( 62, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
+				imp.say( 66, Funcoes.strDecimalToStrCurrency( 9,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
 				imp.say( 90, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED))));
 				imp.say(105, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED))));
 				imp.say(121, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
@@ -267,7 +265,7 @@ public class NFIswara extends Layout {
 					
 					if (iItImp == itens.getInt(NF.C_CONTAITENS)) {        
 
-						imp.pulaLinha( 1, imp.comprimido());
+						imp.pulaLinha( 2, imp.comprimido());
 						imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRBASEICMSPED))));
 						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRICMSPED))));
 						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRPRODPED))));
@@ -325,7 +323,7 @@ public class NFIswara extends Layout {
 					imp.pulaLinha( 2, imp.comprimido());
 					imp.say(  6, Funcoes.strDecimalToStrCurrency(10,0,String.valueOf(frete.getString(NF.C_QTDFRETE))));
 					imp.say( 21, Funcoes.copy(frete.getString(NF.C_ESPFRETE),17));
-					imp.say( 40, frete.getString(NF.C_MARCAFRETE));
+					imp.say( 49, frete.getString(NF.C_MARCAFRETE));
 					imp.say( 62, Funcoes.copy(frete.getString(NF.C_CONHECFRETEPED),20));
 					imp.say( 87, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(frete.getFloat(NF.C_PESOBRUTO))));
 					imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(frete.getString(NF.C_PESOLIQ))));
@@ -354,7 +352,7 @@ public class NFIswara extends Layout {
 							if( vSigla.size() > 0 && indexSigla < vSigla.size() )
 								imp.say(  2, (String)vSigla.elementAt(indexSigla++));							
 							if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() )
-								imp.say( 31, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
+								imp.say( 28, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
 						} else{
 							imp.pulaLinha( 1, imp.comprimido());							
 						} 
@@ -364,7 +362,7 @@ public class NFIswara extends Layout {
 					
 					//	Imprime canhoto ...
 					
-					imp.pulaLinha( 3, imp.normal());
+					imp.pulaLinha( 4, imp.normal());
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say( 31, Funcoes.copy(cab.getString(NF.C_RAZEMIT),40) );
 					imp.say( 73, Funcoes.copy(cab.getString(NF.C_NOMEEMIT),40) );
