@@ -688,9 +688,9 @@ public class FGeraFiscal extends FFilho implements ActionListener {
          " TM.CODFILIAL=V1.CODFILIALTM AND " +
          " TM.FISCALTIPOMOV='S' AND "+
          " (SELECT COUNT(*) from VDVENDA V3 "+
-         " WHERE V3.DOCVENDA=V1.DOCVENDA AND V3.CODEMP=V1.CODEMP AND " +
+         " WHERE V3.DOCVENDA=V1.DOCVENDA AND V3.CODEMP=V1.CODEMP AND V3.SERIE=V1.SERIE AND " +
          " V3.CODFILIAL=V1.CODFILIAL AND V3.TIPOVENDA=V1.TIPOVENDA AND "+
-         " V3.CODTIPOMOV=V1.CODTIPOMOV AND " +
+         " V1.DTEMITVENDA BETWEEN ? AND ? AND V3.CODTIPOMOV=V1.CODTIPOMOV AND " +
          " ( V3.TIPOVENDA<>'E' OR V3.CODEMPCX=V1.CODEMPCX AND " +
          " V3.CODFILIALCX=V1.CODFILIALCX AND V3.CODCAIXA=V1.CODCAIXA ))>1 "+
          " ORDER BY V1.CODVENDA,V1.SERIE,V1.DOCVENDA";
@@ -701,6 +701,8 @@ public class FGeraFiscal extends FFilho implements ActionListener {
       psChec.setDate(2,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
       psChec.setInt(3,Aplicativo.iCodEmp);
       psChec.setInt(4,ListaCampos.getMasterFilial("VDVENDA"));
+      psChec.setDate(5,Funcoes.dateToSQLDate(txtDataini.getVlrDate()));
+      psChec.setDate(6,Funcoes.dateToSQLDate(txtDatafim.getVlrDate()));
       ResultSet rsChec = psChec.executeQuery();
       iTotErros = 0;
       dl.tab.limpa();
