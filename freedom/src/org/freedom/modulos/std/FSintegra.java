@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -548,7 +549,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				sSql.append("C.DTEMITCOMPRA,C.SERIE,TM.CODMODNOTA,IC.PERCICMSITCOMPRA,");
 				sSql.append("IC.QTDITCOMPRA,IC.VLRLIQITCOMPRA,IC.VLRBASEICMSITCOMPRA,");
 				sSql.append("IC.PERCICMSITCOMPRA,IC.VLRBASEICMSITCOMPRA,IC.VLRIPIITCOMPRA,");
-				sSql.append("CF.ORIGFISC, CF.CODTRATTRIB ");
+				sSql.append("CF.ORIGFISC, CF.CODTRATTRIB, C.CODCOMPRA ");
 				sSql.append("FROM CPCOMPRA C,CPFORNECED F,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P, LFCLFISCAL CF ");
 				sSql.append("WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND ");
 				sSql.append("IC.CODCOMPRA=C.CODCOMPRA AND  IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND ");
@@ -573,7 +574,7 @@ public class FSintegra extends FFilho implements ActionListener {
 				while (rs.next()) {
 					if (!sDocTmp.equals(""+rs.getInt("DOCCOMPRA"))) {
 						iOrdem = 1;
-					}
+					}						
 								
 					/* 01 */ sBuffer.append( "54" );
 					/* 02 */ sBuffer.append( Funcoes.adicionaEspacos(rs.getString("CNPJFOR"),14) );
@@ -833,7 +834,7 @@ public class FSintegra extends FFilho implements ActionListener {
 					/* 03 */ sBuffer.append(Funcoes.strZero( rs.getString("ANO"), 4 ));
 					/* 04 */ sBuffer.append(Funcoes.adicionaEspacos( rs.getString("CODPROD").trim(), 14 ));
 					/* 05 */ sBuffer.append(Funcoes.transValor( rs.getString("QTDITVENDA"), 13, 3, true ));
-					/* 06 */ sBuffer.append(Funcoes.transValor( rs.getString("VLRBRUTO"), 16, 2, true ));
+					/* 06 */ sBuffer.append(Funcoes.transValor( String.valueOf( rs.getBigDecimal("VLRBRUTO").setScale( 2, BigDecimal.ROUND_HALF_UP ) ), 16, 2, true ));
 					/* 07 */ sBuffer.append(Funcoes.transValor( rs.getString("VLRBASEICMSITVENDA"), 16, 2, true ));	
 					
 					if("TT".equals(rs.getString("TIPOFISC").trim())) {
@@ -972,12 +973,13 @@ public class FSintegra extends FFilho implements ActionListener {
 				if ( cbEntrada.getVlrString().equals("S") ) //IC.PERCICMSITCOMPRA 
 					sSqlEntrada = "SELECT IC.CODPROD,P.REFPROD,P.DESCPROD,COALESCE(CF.ALIQIPIFISC,0),"+
 					"COALESCE(CF.ALIQLFISC,0),P.CODUNID,CF.ORIGFISC,CF.CODTRATTRIB "+
-					"FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFCLFISCAL CF "+
+					"FROM CPCOMPRA C,CPITCOMPRA IC,EQTIPOMOV TM,EQPRODUTO P,LFCLFISCAL CF, CPFORNECED F "+
 					"WHERE C.DTENTCOMPRA BETWEEN ? AND ? AND C.CODEMP=? AND C.CODFILIAL=? AND "+
 					"IC.CODCOMPRA=C.CODCOMPRA AND IC.CODEMP=C.CODEMP AND IC.CODFILIAL=C.CODFILIAL AND "+
 					"TM.CODTIPOMOV=C.CODTIPOMOV AND TM.CODEMP=C.CODEMPTM AND TM.CODFILIAL=C.CODFILIALTM AND "+
 					"P.CODPROD=IC.CODPROD AND P.CODEMP=IC.CODEMPPD AND P.CODFILIAL=IC.CODFILIALPD AND "+
 					"CF.CODFISC=P.CODFISC AND CF.CODEMP=P.CODEMPFC AND CF.CODFILIAL=P.CODFILIALFC AND "+
+					"F.CODFOR=C.CODFOR AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.PESSOAFOR='J' AND "+
 					"TM.FISCALTIPOMOV='S' ";
 				
 				if ( cbSaida.getVlrString().equals("S") ) // IV.PERCICMSITVENDA 
@@ -1012,10 +1014,10 @@ public class FSintegra extends FFilho implements ActionListener {
 					sSql.append(sSqlEntrada);
 				
 				if (!sSqlSaida.equals("")) 
-					sSql.append( ( sSql.equals("") ? "" : " UNION " ) + sSqlSaida );
+					sSql.append( ( sSql.length() > 0 ? " UNION " : "" ) + sSqlSaida );
 				
 				if (!sSqlConsumidor.equals("")) 
-					sSql.append( ( sSql.equals("") ? "" : " UNION " ) + sSqlConsumidor);
+					sSql.append( ( sSql.length() > 0 ? " UNION " : "" ) + sSqlConsumidor);
 				
 				sSql.append(" GROUP BY 1,2,3,4,5,6,7,8 ");
 				  
