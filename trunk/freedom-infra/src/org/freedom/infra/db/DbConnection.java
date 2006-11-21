@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 /**
  * Classe de conexão com o banco de dados <BR>
  * Projeto: freedom-infra <BR>
@@ -30,6 +32,10 @@ import java.sql.SQLException;
  */
 
 public class DbConnection {
+	
+	/** Log da classe. **/
+	private static final Logger LOGGER = createLogger();
+	
 	private Connection conn;
 	private boolean connected = false; 
 	private String userid;
@@ -41,6 +47,14 @@ public class DbConnection {
 		execConnection(drv, url, usrid, pwd);
 	}
 	
+   /**
+    * Cria uma instância do log4j da classe.
+    * @return Retorna a instância do log da classe.
+    */
+   private static Logger createLogger() {
+      return Logger.getLogger("org.freedom.infra.db.DbConnection");
+   }
+	
 	public PreparedStatement prepareStatement(String sql) {
 		PreparedStatement stmt = null;
 		if (conn!=null) {
@@ -48,7 +62,7 @@ public class DbConnection {
 				stmt = conn.prepareStatement(sql);
 			}
 			catch (SQLException e) {
-				e.printStackTrace();
+				LOGGER.error(e);
 			}
 		}
 		return stmt;
@@ -61,7 +75,7 @@ public class DbConnection {
 				rs = stmt.executeQuery();
 			}
 			catch (SQLException e) {
-				e.printStackTrace();
+				LOGGER.error(e);
 			}
 		}
 		return rs;
@@ -111,7 +125,7 @@ public class DbConnection {
         	conn = DriverManager.getConnection(url, usrid, pwd);
 		}
 		catch (Exception e) {
-			System.out.println(e.getMessage());
+			LOGGER.error(e);
 			ret = false;
 			
 		}
