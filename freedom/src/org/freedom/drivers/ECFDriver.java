@@ -455,28 +455,36 @@ public class ECFDriver {
 				int st2 = Integer.parseInt( status[ 2 ] );
 				
 				if ( st1 >= 128 ) {
-					sMensagem += "Fim de papel.";
+					st1 -= 128;
+					sMensagem += "Fim de papel.<BR>";
 				}
-				else if ( st1 >= 64 ) {
-					sMensagem += "Pouco papel.";
+				if ( st1 >= 64 ) {
+					st1 -= 64;
+					sMensagem += "Pouco papel.<BR>";
 				}
-				else if ( st1 >= 32 ) {
-					sMensagem += "Erro no relógio.";
+				if ( st1 >= 32 ) {
+					st1 -= 32;
+					sMensagem += "Erro no relógio.<BR>";
 				}
-				else if ( st1 >= 16 ) {
-					sMensagem += "Impressora em erro.";
+				if ( st1 >= 16 ) {
+					st1 -= 16;
+					sMensagem += "Impressora em erro.<BR>";
 				}
-				else if ( st1 >= 8 ) {
-					sMensagem += "Primeiro dado de CMD não foi ESC( 1Bh).";
+				if ( st1 >= 8 ) {
+					st1 -= 8;
+					sMensagem += "Primeiro dado de CMD não foi ESC( 1Bh).<BR>";
 				}
-				else if ( st1 >= 4 ) {
-					sMensagem += "Comando inexistente.";
+				if ( st1 >= 4 ) {
+					st1 -= 4;
+					sMensagem += "Comando inexistente.<BR>";
 				}
-				else if ( st1 >= 2 ) {
-					sMensagem += "Cupom fiscal aberto.";
+				if ( st1 >= 2 ) {
+					st1 -= 2;
+					sMensagem += "Cupom fiscal aberto.<BR>";
 				}
-				else if ( st1 >= 1 ) {
-					sMensagem += "Número de parâmetro de CMD inválido.";
+				if ( st1 >= 1 ) {
+					st1 -= 1;
+					sMensagem += "Número de parâmetro de CMD inválido.<BR>";
 				}
 				
 				if ( sMensagem.length() > 0 ) {
@@ -484,27 +492,35 @@ public class ECFDriver {
 				}
 				
 				if ( st2 >= 128 ) {
-					sMensagem += sSep + "Tipo de parâmetro de CMD inválido.";
+					st2 -= 128;
+					sMensagem += sSep + "Tipo de parâmetro de CMD inválido.<BR>";
 				}
-				else if ( st2 >= 64 ) {
-					sMensagem += sSep + "Memória fiscal lotada.";
+				if ( st2 >= 64 ) {
+					st2 -= 64;
+					sMensagem += sSep + "Memória fiscal lotada.<BR>";
 				}
-				else if ( st2 >= 32 ) {
-					sMensagem += sSep + "Erro na memória RAM CMOS não volátil.";
+				if ( st2 >= 32 ) {
+					st2 -= 32;
+					sMensagem += sSep + "Erro na memória RAM CMOS não volátil.<BR>";
 				}
-				else if ( st2 >= 16 ) {
-					sMensagem += sSep + "Alíquota não programada.";
+				if ( st2 >= 16 ) {
+					st2 -= 16;
+					sMensagem += sSep + "Alíquota não programada.<BR>";
 				}
-				else if ( st2 >= 8 ) {
-					sMensagem += sSep + "Capacidade de alíquotas esgotada.";
+				if ( st2 >= 8 ) {
+					st2 -= 8;
+					sMensagem += sSep + "Capacidade de alíquotas esgotada.<BR>";
 				}
-				else if ( st2 >= 4 ) {
-					sMensagem += sSep + "Cancelamento não permitido.";
+				if ( st2 >= 4 ) {
+					st2 -= 4;
+					sMensagem += sSep + "Cancelamento não permitido.<BR>";
 				}
-				else if ( st2 >= 2 ) {
-					sMensagem += sSep + "CNPJ/IE do proprietário não programados.";
+				if ( st2 >= 2 ) {
+					st2 -= 2;
+					sMensagem += sSep + "CNPJ/IE do proprietário não programados.<BR>";
 				}
-				else if ( st2 >= 1 ) {
+				if ( st2 >= 1 ) {
+					st2 -= 1;
 					sMensagem += sSep + "Comando não executado.";
 				}
 			}
@@ -861,14 +877,12 @@ public class ECFDriver {
 		}
 		else if ( ! bModoDemo ) {
 			
-			String[] tmp = ecf.getStatus().split(",");
+			String tmp = leStatus();
 			
-			if ( tmp != null && tmp.length > 1 ) {
-			
-				bRetorno = "2".equals( tmp[ 1 ] );
-			
-			}
-			
+			if ( tmp.indexOf( "aberto" ) > -1 ) {
+				
+				bRetorno = true;
+			}			
 		}
 		
 		return bRetorno;

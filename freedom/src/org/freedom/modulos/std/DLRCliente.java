@@ -249,7 +249,15 @@ public class DLRCliente extends FFDialogo {
 			sRetorno[ 0 ] = "C1.RAZCLI";
 		}
 		else if ( rgOrdem.getVlrString().equals( "I" ) ) {
-			sRetorno[ 0 ] = "C1.CIDCLI, C1.RAZCLI";
+			if( "A".equals( rgEnd.getVlrString() ) ) {
+				sRetorno[ 0 ] = "C1.CIDCLI, C1.RAZCLI";
+			}
+			else if( "E".equals( rgEnd.getVlrString() ) ) {
+				sRetorno[ 0 ] = "C1.CIDENT, C1.RAZCLI";
+			}
+			else if( "C".equals( rgEnd.getVlrString() ) ) {
+				sRetorno[ 0 ] = "C1.CIDCOB, C1.RAZCLI";
+			}
 		}
 		sRetorno[ 1 ] = cbObs.getVlrString();
 		sRetorno[ 2 ] = txtDe.getVlrString();
