@@ -1978,7 +1978,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 5 ] + "'" );
 			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
 		}
 		if ( sValores[ 6 ].equals( "N" ) ) {
@@ -2008,7 +2017,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
@@ -2182,7 +2200,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 5 ] + "'" );
 			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
 		}
 		if ( sValores[ 6 ].equals( "N" ) ) {
@@ -2212,7 +2239,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
@@ -2386,7 +2422,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 5 ] + "'" );
 			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
 		}
 		if ( sValores[ 6 ].equals( "N" ) ) {
@@ -2416,7 +2461,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
@@ -2582,7 +2636,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "PESSOAS JURIDICAS" );
 		}
 		if ( sValores[ 5 ].length() > 0 ) {
-			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.CIDCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 5 ] + "'" );
 			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
 		}
 		if ( sValores[ 6 ].equals( "N" ) ) {
@@ -2612,7 +2675,16 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.addSubTitulo( "CLASSIFICACAO DO CLIENTE = " + sValores[ 16 ] );
 		}
 		if ( sValores[ 18 ].length() > 0 ) {
-			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
+			if( "A".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCLI=" );
+			}
+			else if( "E".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRENT=" );
+			}
+			else if( "C".equals( sValores[ 17 ] ) ) {
+				sWhere.append( " AND C1.BAIRCOB=" );
+			}
+			sWhere.append( "'" + sValores[ 18 ] + "'" );
 			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
 		}
 
