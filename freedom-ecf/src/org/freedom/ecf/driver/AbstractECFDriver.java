@@ -17,6 +17,7 @@ import javax.comm.SerialPortEventListener;
 
 import org.freedom.ecf.com.Serial;
 
+
 /**
  * Classe base para impressoras fiscais <BR>
  * Projeto: freedom-ECF <BR>
