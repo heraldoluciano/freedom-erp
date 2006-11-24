@@ -38,7 +38,7 @@ import javax.comm.UnsupportedCommOperationException;
 /**
  * Classe para acesso e controle a porta serial <BR>
  * Projeto: freedom-ECF <BR>
- * Pacote: org.freedom-ecf.com <BR>
+ * Pacote: org.freedom.ecf.com <BR>
  * Classe: @(#)Serial.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
