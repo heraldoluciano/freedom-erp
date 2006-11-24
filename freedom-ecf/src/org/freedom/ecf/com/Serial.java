@@ -37,7 +37,7 @@ import javax.comm.SerialPortEventListener;
 import javax.comm.UnsupportedCommOperationException;
 /**
  * Classe para acesso e controle a porta serial <BR>
- * Projeto: org.freedom-ecf <BR>
+ * Projeto: freedom-ECF <BR>
  * Pacote: org.freedom-ecf.com <BR>
  * Classe: @(#)Serial.java <BR>
  * <BR>
@@ -56,6 +56,7 @@ import javax.comm.UnsupportedCommOperationException;
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 19/08/2006. <BR>
+ * @version 1.0.0 - 05/04/2006 <BR>
  */
 
 public class Serial {
