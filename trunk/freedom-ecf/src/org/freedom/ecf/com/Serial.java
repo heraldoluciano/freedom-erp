@@ -36,10 +36,10 @@ import javax.comm.SerialPort;
 import javax.comm.SerialPortEventListener;
 import javax.comm.UnsupportedCommOperationException;
 /**
- * Classe de conexão com o banco de dados <BR>
- * Projeto: org.freedom.jdbc <BR>
- * Pacote: org.freedom.ecf.com <BR>
- * Classe: Serial.java <BR>
+ * Classe para acesso e controle a porta serial <BR>
+ * Projeto: org.freedom-ecf <BR>
+ * Pacote: org.freedom-ecf.com <BR>
+ * Classe: @(#)Serial.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
@@ -55,7 +55,7 @@ import javax.comm.UnsupportedCommOperationException;
  * preciso estar de acordo com os termos da LGPL. <BR>
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
- * criada: 05/10/2004. <BR>
+ * criada: 19/08/2006. <BR>
  */
 
 public class Serial {
