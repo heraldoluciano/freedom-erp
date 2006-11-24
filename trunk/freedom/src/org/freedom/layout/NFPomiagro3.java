@@ -315,7 +315,7 @@ public class NFPomiagro3 extends Layout {
 					imp.pulaLinha( 1, imp.comprimido());
 					imp.say(  4, sMatObs[4]);
 					imp.pulaLinha( 5, imp.comprimido());
-					imp.say( 10, Funcoes.strZero(String.valueOf(iNumNota),6));
+					imp.say( 128, Funcoes.strZero(String.valueOf(iNumNota),6));
 					   
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());
 					
