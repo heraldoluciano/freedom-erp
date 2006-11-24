@@ -26,6 +26,31 @@ package org.freedom.ecf.driver;
 
 import java.util.Date;
 
+/**
+ * Classe implementa metodos de acesso a comandos de impressão <BR>
+ * Projeto: freedom-ECF <BR>
+ * Pacote: org.freedom.ecf.driver <BR>
+ * Classe: @(#)ECFBematech.java <BR>
+ * <BR>
+ * Este programa é licenciado de acordo com a LGPL (Lesser General Public
+ * License), <BR>
+ * versão 2.1, Fevereiro de 1999 <BR>
+ * A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
+ * Programa. <BR>
+ * Caso uma cópia da LGPL não esteja disponível junto com este Programa, você
+ * pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <a
+ * href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative
+ * Commons</a> <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
+ * preciso estar de acordo com os termos da LGPL. <BR>
+ * <BR>
+ * @author Robson Sanchez/Alex Rodrigues/Setpoint Informática Ltda. <BR>
+ * criada: 05/04/2006. <BR>
+ * @version 1.0.0 - 05/04/2006 <BR>
+ *  <BR>
+ */
+
 public class ECFBematech extends AbstractECFDriver {
 
 	/**
