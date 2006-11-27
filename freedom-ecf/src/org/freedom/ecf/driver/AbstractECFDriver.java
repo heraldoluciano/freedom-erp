@@ -19,7 +19,7 @@ import org.freedom.ecf.com.Serial;
 
 /**
  * Classe base para impressoras fiscais <BR>
- * Projeto: freedom-ECF <BR>
+ * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.driver <BR>
  * Classe: @(#)AbstractECFDriver.java <BR>
  * <BR>
