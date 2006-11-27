@@ -11,9 +11,9 @@ import org.freedom.jdbc.DbConnectionPool;
 
 /**
  * Classe de inicialização do pool de conexões <BR>
- * Projeto: org.freedom.pool <BR>
+ * Projeto: freedom-pool <BR>
  * Pacote: org.freedom.servlet <BR>
- * Classe: SetupServlet.java <BR>
+ * Classe: @(#)SetupServlet.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
