@@ -8,11 +8,13 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
+
+
 /**
- * Classe de conexão com o banco de dados <BR>
+ * Classe de conexão com o banco de dados<BR>
  * Projeto: freedom-infra <BR>
  * Pacote: org.freedom.infra.db <BR>
- * Classe: DbConnection.java <BR>
+ * Classe: @(#)DbConnection.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
@@ -29,6 +31,7 @@ import org.apache.log4j.Logger;
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 21/11/2006. <BR>
+ *  <BR>
  */
 
 public class DbConnection {
