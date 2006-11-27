@@ -2,11 +2,13 @@ package org.freedom.util.resource;
 
 import org.apache.log4j.Logger;
 
+
+
 /**
- * @TODO <BR>
- * Projeto: org.freedom.util.resource <BR>
+ * Classe utilizada para encapsular objetos que serão utilizados no pool. <BR>
+ * Projeto: freedom-pool <BR>
  * Pacote: org.freedom.util.resource <BR>
- * Classe: ResourceKey.java <BR>
+ * Classe: @(#)ResourceKey.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
