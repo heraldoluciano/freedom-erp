@@ -242,7 +242,7 @@ public class FreedomGMS extends AplicativoPD {
 		vEquipeSis.add("Alexandre Marcondes - Programação");
 		vEquipeSis.add("Fernando Oliveira - Programação");
 		vEquipeSis.add("Moyzes Braz - Arte gráfica");
-		vEquipeSis.add("Leandro Oliveira - Testes / Suporte");
+		vEquipeSis.add("Reginaldo Garcia - Testes / Suporte");
 		  
 	}
 

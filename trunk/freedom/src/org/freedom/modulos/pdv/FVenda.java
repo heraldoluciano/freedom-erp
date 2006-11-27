@@ -1271,6 +1271,8 @@ public class FVenda extends FDialogo implements KeyListener, CarregaListener, Po
 						ret = false;
 					}
 					
+					Funcoes.mensagemInforma( null, "Cupom fiscal em aberto!" );
+					
 					if ( ! con.getAutoCommit() ) {
 						con.commit();
 					}

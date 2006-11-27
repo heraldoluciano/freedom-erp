@@ -582,7 +582,8 @@ public abstract class FVD extends FDetalhe {
 			sDesc = sDescProd;
 		}
 
-		FObservacao obs = new FObservacao( "Descrição completa", sDesc, 500 );
+		DLBuscaDescProd obs = new DLBuscaDescProd( sDesc );
+		obs.setConexao( con );
 		obs.setVisible( true );
 		
 		if ( obs.OK ) {
