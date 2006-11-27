@@ -8,11 +8,12 @@ import org.freedom.util.resource.ResourceException;
 import org.freedom.util.resource.ResourceKey;
 import org.freedom.util.resource.AbstractResourcePool;
 
+
 /**
- * Pool de conexões JDBC. <BR>
+ * Classe Pool de conexões JDBC. <BR>
  * Projeto: freedom-pool <BR>
  * Pacote: org.freedom.jdbc <BR>
- * Classe: DbConnectionPool <BR>
+ * Classe: @(#)DbConnectionPool.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
@@ -28,7 +29,8 @@ import org.freedom.util.resource.AbstractResourcePool;
  * preciso estar de acordo com os termos da LGPL. <BR>
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
- * criada: 05/10/2004. <BR>
+ * criada: 24/07/2006. <BR>
+ *  <BR>
  */
 public class DbConnectionPool extends AbstractResourcePool {
 

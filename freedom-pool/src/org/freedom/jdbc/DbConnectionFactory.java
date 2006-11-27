@@ -14,7 +14,7 @@ import org.freedom.util.resource.ResourceKey;
  * Classe de conexão com o banco de dados <BR>
  * Projeto: org.freedom.jdbc <BR>
  * Pacote: org.freedom.jdbc <BR>
- * Classe: DbConnectionFactory.java <BR>
+ * Classe: @(#)DbConnectionFactory.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
@@ -32,6 +32,8 @@ import org.freedom.util.resource.ResourceKey;
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 05/10/2004. <BR>
  */
+
+
 public final class DbConnectionFactory {
 
    /** Log da classe. **/
