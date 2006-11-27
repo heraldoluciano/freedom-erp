@@ -262,9 +262,7 @@ public class FAgenda extends FFilho implements ActionListener {
 			ResultSet rs = ps.executeQuery();
 
 			while ( rs.next() ) {
-				iCodAge = rs.getInt( 1 );
-				sTipoAge = rs.getString( 2 );
-				iCodFilialAge = rs.getInt( 3 );
+				retorno = rs.getInt( 1 );
 			}
 
 			rs.close();
