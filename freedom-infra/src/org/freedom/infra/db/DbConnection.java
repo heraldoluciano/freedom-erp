@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 
-
 /**
  * Classe de conexão com o banco de dados<BR>
  * Projeto: freedom-infra <BR>

@@ -3,10 +3,10 @@ package org.freedom.infra.x.swing;
 import java.awt.Dimension;
 
 /**
- * Classe de derivada de JFrame <BR>
+ * Classe de derivada de JFrame. <BR>
  * Projeto: freedom-infra <BR>
  * Pacote: org.freedom.infra.x.swing <BR>
- * Classe: JFrame.java <BR>
+ * Classe: @(#)JFrame.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
  * License), <BR>
@@ -23,8 +23,8 @@ import java.awt.Dimension;
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 21/11/2006. <BR>
+ *  <BR>
  */
-
 public class JFrame extends javax.swing.JFrame {
 
 	/**

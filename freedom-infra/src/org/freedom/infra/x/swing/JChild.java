@@ -7,7 +7,29 @@ import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import java.awt.GridBagConstraints;
-
+/**
+ * Classe base para telas internas padrão MDI. <BR>
+ * Projeto: freedom-infra <BR>
+ * Pacote: org.freedom.infra.x.swing <BR>
+ * Classe: @(#)JChild.java <BR>
+ * <BR>
+ * Este programa é licenciado de acordo com a LGPL (Lesser General Public
+ * License), <BR>
+ * versão 2.1, Fevereiro de 1999 <BR>
+ * A LGPL deve acompanhar todas PUBLICAÇÕES, DISTRIBUIÇÕES e REPRODUÇÕES deste
+ * Programa. <BR>
+ * Caso uma cópia da LGPL não esteja disponível junto com este Programa, você
+ * pode contatar <BR>
+ * o LICENCIADOR ou então pegar uma cópia em: <a
+ * href=http://creativecommons.org/licenses/LGPL/2.1/legalcode.pt> Creative
+ * Commons</a> <BR>
+ * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é
+ * preciso estar de acordo com os termos da LGPL. <BR>
+ * <BR>
+ * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
+ * criada: 21/11/2006. <BR>
+ *  <BR>
+ */
 public class JChild extends JInternalFrame {
 
 	private JPanel jpnContainer = null;
