@@ -28,7 +28,7 @@ import java.util.Date;
 
 /**
  * Classe implementa metodos de acesso a comandos de impressão <BR>
- * Projeto: freedom-ECF <BR>
+ * Projeto: freedom-ecf <BR>
  * Pacote: org.freedom.ecf.driver <BR>
  * Classe: @(#)ECFBematech.java <BR>
  * <BR>
