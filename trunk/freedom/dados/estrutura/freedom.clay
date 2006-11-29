@@ -823,7 +823,7 @@
 </primary-key>
 <unique-key-list/>
 <foreign-key-list>
-<foreign-key alias="" name="ATATENDIMENTOORCFKATATENDIMENTO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATATENDIMENTOPK" referenced-table="ATATENDIMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="ATATENDOORCFKATATO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATATENDIMENTOPK" referenced-table="ATATENDIMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -832,7 +832,7 @@
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 </foreign-key>
-<foreign-key alias="" name="ATATENDIMENTOORCFKVDORCAMENTO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="VDORCAMENTOPK" referenced-table="VDORCAMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="ATATENDMTORCFKVDOR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="VDORCAMENTOPK" referenced-table="VDORCAMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -1596,25 +1596,7 @@
 </primary-key>
 <unique-key-list/>
 <foreign-key-list>
-<foreign-key alias="" name="ATCONVENIADOFKATENCAMINHADOR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATENCAMINHADORPK" referenced-table="ATENCAMINHADOR" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALEC" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODENC" referenced-key-column-name="CODENC"/>
-</foreign-key>
 <foreign-key alias="" name="ATCONVENIADOFKATENCAMINH" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATENCAMINHADORPK" referenced-table="ATENCAMINHADOR" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODEMPEC" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODENC" referenced-key-column-name="CODENC"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="ATCONVENIADOFKATENCAMINHADOR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATENCAMINHADORPK" referenced-table="ATENCAMINHADOR" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -1675,6 +1657,24 @@
 <foreign-key-column column-name="CODENC" referenced-key-column-name="CODENC"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="ATCONVOFKATENCAMIN" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATENCAMINHADORPK" referenced-table="ATENCAMINHADOR" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODEMPEC" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODENC" referenced-key-column-name="CODENC"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="ATCONVFKATENCAMINH" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATENCAMINHADORPK" referenced-table="ATENCAMINHADOR" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALEC" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODENC" referenced-key-column-name="CODENC"/>
 </foreign-key>
 </foreign-key-list>
 <index-list>
@@ -2070,15 +2070,6 @@
 </primary-key>
 <unique-key-list/>
 <foreign-key-list>
-<foreign-key alias="" name="ATSETORATENDENTEFKATATENDENTE" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATATENDENTEPK" referenced-table="ATATENDENTE" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODATEND" referenced-key-column-name="CODATEND"/>
-<foreign-key-column column-name="CODFILIALAE" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMPAE" referenced-key-column-name="CODEMP"/>
-</foreign-key>
 <foreign-key alias="" name="ATSETORATENDENTEFKATSETOR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATSETORPK" referenced-table="ATSETOR" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
@@ -2087,6 +2078,15 @@
 <foreign-key-column column-name="CODSETAT" referenced-key-column-name="CODSETAT"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="ATSETATEDTEFKATATE" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATATENDENTEPK" referenced-table="ATATENDENTE" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODATEND" referenced-key-column-name="CODATEND"/>
+<foreign-key-column column-name="CODFILIALAE" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMPAE" referenced-key-column-name="CODEMP"/>
 </foreign-key>
 </foreign-key-list>
 <index-list>
@@ -2443,7 +2443,7 @@
 <foreign-key-column column-name="CODFILIALST" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMPST" referenced-key-column-name="CODEMP"/>
 </foreign-key>
-<foreign-key alias="" name="ATTIPOATENDOSETORFKATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="ATTPATDSTORFKATTPA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -3416,15 +3416,6 @@
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODNAT" referenced-key-column-name="CODNAT"/>
-</foreign-key>
-<foreign-key alias="" name="CPEQUIVCFOPFKLFNATOPER" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="LFNATOPERPK" referenced-table="LFNATOPER" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODNAT" referenced-key-column-name="CODNAT"/>
@@ -3443,15 +3434,6 @@
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
-<foreign-key-column column-name="CODNATND" referenced-key-column-name="CODNAT"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="CPEQUIVCFFKLFNATOD" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="LFNATOPERPK" referenced-table="LFNATOPER" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
 <foreign-key-column column-name="CODFILIALND" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODNAT" referenced-key-column-name="CODNAT"/>
@@ -3462,6 +3444,24 @@
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
 <foreign-key-column column-name="CODNAT" referenced-key-column-name="CODNAT"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="CPEQUICFOPFKLFNTOP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="LFNATOPERPK" referenced-table="LFNATOPER" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODNAT" referenced-key-column-name="CODNAT"/>
+</foreign-key>
+<foreign-key alias="" name="CPEQUIVCFKLFNATODR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="LFNATOPERPK" referenced-table="LFNATOPER" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODNATND" referenced-key-column-name="CODNAT"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 </foreign-key>
@@ -11199,42 +11199,6 @@
 <foreign-key-column column-name="CODFILIALOF" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMPOF" referenced-key-column-name="CODEMP"/>
 </foreign-key>
-<foreign-key alias="" name="EQRMAFKSGUSUARIOEX" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="IDUSUEXP" referenced-key-column-name="IDUSU"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="EQRMAFKSGUSUARIOAP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="IDUSUAPROV" referenced-key-column-name="IDUSU"/>
-<foreign-key-column column-name="CODFILIALUA" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-</foreign-key>
-<foreign-key alias="" name="EQRMAFKSGUSUARIOEX" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALUE" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="IDUSU" referenced-key-column-name="IDUSU"/>
-</foreign-key>
-<foreign-key alias="" name="EQRMAFKSGUSUARIO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALUU" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="IDUSU" referenced-key-column-name="IDUSU"/>
-</foreign-key>
 <foreign-key alias="" name="EQRMAFKSGUSUARIOAP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
@@ -11268,6 +11232,42 @@
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
 <foreign-key-column column-name="IDUSU" referenced-key-column-name="IDUSU"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="EQRMAFKSGUSUARIAP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="IDUSUAPROV" referenced-key-column-name="IDUSU"/>
+<foreign-key-column column-name="CODFILIALUA" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="EQRMAFKSGUSUARIO01" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALUU" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="IDUSU" referenced-key-column-name="IDUSU"/>
+</foreign-key>
+<foreign-key alias="" name="EQRMAFKSGUSUARIOE1" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALUE" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="IDUSU" referenced-key-column-name="IDUSU"/>
+</foreign-key>
+<foreign-key alias="" name="EQRMAFKSGUSUARIOEP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGUSUARIOPK" referenced-table="SGUSUARIO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="IDUSUEXP" referenced-key-column-name="IDUSU"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 </foreign-key>
@@ -15563,20 +15563,20 @@
 </primary-key>
 <unique-key-list/>
 <foreign-key-list>
-<foreign-key alias="" name="FNPLANEJAMENTOFKFNPLANEJAMENTO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="FNPLANEJAMENTOPK" referenced-table="FNPLANEJAMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODSUBPLAN" referenced-key-column-name="CODPLAN"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-</foreign-key>
 <foreign-key alias="" name="FNPLANEJAMENTOFKSGFILIAL" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGFILIALPK" referenced-table="SGFILIAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="FNPLANEJOFKFNPLATO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="FNPLANEJAMENTOPK" referenced-table="FNPLANEJAMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODSUBPLAN" referenced-key-column-name="CODPLAN"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 </foreign-key>
@@ -15588,7 +15588,7 @@
 <index-column name="CODFILIAL" sort="ASC"/>
 <index-column name="CODEMP" sort="ASC"/>
 </index>
-<index alias="" name="FNPLANEJAMENTOFKFNPLANEJAMENTO" remarks="" unique="false">
+<index alias="" name="FNPLANJOFKFNPLANJO" remarks="" unique="false">
 <index-description></index-description>
 <index-column name="CODSUBPLAN" sort="ASC"/>
 <index-column name="CODFILIAL" sort="ASC"/>
@@ -16321,15 +16321,6 @@
 </primary-key>
 <unique-key-list/>
 <foreign-key-list>
-<foreign-key alias="" name="FNSALDOLANCAFKFNPLANEJAMENTO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="FNPLANEJAMENTOPK" referenced-table="FNPLANEJAMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODPLAN" referenced-key-column-name="CODPLAN"/>
-<foreign-key-column column-name="CODFILIALPN" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMPPN" referenced-key-column-name="CODEMP"/>
-</foreign-key>
 <foreign-key alias="" name="FNSALDOLANCAFKSGFILIAL" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGFILIALPK" referenced-table="SGFILIAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
@@ -16337,6 +16328,15 @@
 </foreign-key-figure>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="FNSLDLANCFKFNPLANO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="FNPLANEJAMENTOPK" referenced-table="FNPLANEJAMENTO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODPLAN" referenced-key-column-name="CODPLAN"/>
+<foreign-key-column column-name="CODFILIALPN" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMPPN" referenced-key-column-name="CODEMP"/>
 </foreign-key>
 </foreign-key-list>
 <index-list>
@@ -17738,7 +17738,7 @@
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 </foreign-key>
-<foreign-key alias="" name="LFITREGRAFISCALFKLFREGRAFISCAL" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="LFREGRAFISCALPK" referenced-table="LFREGRAFISCAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="LFITREGFLFKLFREGFL" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="LFREGRAFISCALPK" referenced-table="LFREGRAFISCAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -17768,7 +17768,7 @@
 <index-column name="CODFILIAL" sort="ASC"/>
 <index-column name="CODEMP" sort="ASC"/>
 </index>
-<index alias="" name="LFITREGRAFISCALFKLFREGRAFISCAL" remarks="" unique="false">
+<index alias="" name="LFITREGFLFKLFREGFL" remarks="" unique="false">
 <index-description></index-description>
 <index-column name="CODREGRA" sort="ASC"/>
 <index-column name="CODFILIAL" sort="ASC"/>
@@ -26947,141 +26947,6 @@
 <foreign-key-column column-name="CODFILIALMC" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMPMC" referenced-key-column-name="CODEMP"/>
 </foreign-key>
-<foreign-key alias="" name="SGPREFERE1FKEQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK2EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV2" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK3EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV3" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK4EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV4" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK5EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV5" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK6EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV6" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK8EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTIPOMOV8" referenced-key-column-name="CODTIPOMOV"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK2EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT2" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK3EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT3" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK4EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT4" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK5EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT5" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK6EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT6" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK8EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT8" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FKEQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALTM" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FK2EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODEMPT2" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
-</foreign-key>
 <foreign-key alias="" name="SGPREFERE1FK3EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
@@ -27168,22 +27033,6 @@
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FKSGEMPRESA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGFILIALPK" referenced-table="SGFILIAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE1FKSGFILIAL" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGFILIALPK" referenced-table="SGFILIAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 </foreign-key>
@@ -27221,6 +27070,157 @@
 <foreign-key-column column-name="CODTRAN" referenced-key-column-name="CODTRAN"/>
 <foreign-key-column column-name="CODFILIALTN" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMPTN" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFER1FK2EQTPOM" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV2" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFER1FK2EQTPMV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT2" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPRERE1FK3EQTPOMO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV3" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPRE1FK6EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV6" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FKSGEMPR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGFILIALPK" referenced-table="SGFILIAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FKSGFILI" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGFILIALPK" referenced-table="SGFILIAL" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="SGPRE1FK8EQTIPOMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV8" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFE1FK8EQTPMOV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT8" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FK3EQTIP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT3" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FK4EQTIV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV4" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FK4EQTIP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT4" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FK5EQTIP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV5" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FK2EQTIP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODEMPT2" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FKEQTIP" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE1FK5EQTPMV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT5" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFER1FK6EQTPMV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT6" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFEE1FKEQTPOMV" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="EQTIPOMOVPK" referenced-table="EQTIPOMOV" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALTM" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTIPOMOV" referenced-key-column-name="CODTIPOMOV"/>
 </foreign-key>
 </foreign-key-list>
 <index-list>
@@ -27643,60 +27643,6 @@
 <foreign-key-column column-name="CODFILIALAE" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMPAE" referenced-key-column-name="CODEMP"/>
 </foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FK2ATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTPATENDO2" referenced-key-column-name="CODTPATENDO"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FK3ATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTPATENDO3" referenced-key-column-name="CODTPATENDO"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FK2ATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT2" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FK3ATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALT3" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALTO" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
-</foreign-key>
 <foreign-key alias="" name="SGPREFERE2FK2ATTIPOATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
@@ -27723,66 +27669,6 @@
 <foreign-key-column column-name="CODEMPTO" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKSGITTABELA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODITTBA" referenced-key-column-name="CODITTB"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKSGITTABELA02" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODITTBV" referenced-key-column-name="CODITTB"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKSGITTABELA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTBA" referenced-key-column-name="CODTB"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKSGITTABELA02" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODTBV" referenced-key-column-name="CODTB"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKSGITTABELA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALTA" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
-<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
-</foreign-key>
-<foreign-key alias="" name="SGPREFERE2FKSGITTABELA02" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODFILIALTV" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
-<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
 </foreign-key>
 <foreign-key alias="" name="SGPREFERE2FKSGITTABELA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
@@ -27830,6 +27716,120 @@
 <foreign-key-column column-name="CODVEND" referenced-key-column-name="CODVEND"/>
 <foreign-key-column column-name="CODFILIALVD" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODEMPVD" referenced-key-column-name="CODEMP"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFE2FKSGITTB02" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTBV" referenced-key-column-name="CODTB"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREF2FKSGITTBL02" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALTV" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
+<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFER2FKSGITTBA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODITTBA" referenced-key-column-name="CODITTB"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFR2FKSGITTBLA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTBA" referenced-key-column-name="CODTB"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
+</foreign-key>
+<foreign-key alias="" name="SGPRFRE2FK2ATTPOAT" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTPATENDO2" referenced-key-column-name="CODTPATENDO"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREE2FK2ATTIPATN" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT2" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
+</foreign-key>
+<foreign-key alias="" name="SGPF2FK3ATTPATENDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTPATENDO3" referenced-key-column-name="CODTPATENDO"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE2FKATTIPO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFER2FKATTIPDO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALTO" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREF2FK3ATTIPOAO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="ATTIPOATENDOPK" referenced-table="ATTIPOATENDO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALT3" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODTPATENDO" referenced-key-column-name="CODTPATENDO"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFERE2FKSGITTA" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODFILIALTA" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODITTB" referenced-key-column-name="CODITTB"/>
+<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
+</foreign-key>
+<foreign-key alias="" name="SGPREFER2FKSGITTB2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITTABELAPK" referenced-table="SGITTABELA" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODITTBV" referenced-key-column-name="CODITTB"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODTB" referenced-key-column-name="CODTB"/>
 </foreign-key>
 </foreign-key-list>
 <index-list>
@@ -29063,37 +29063,17 @@
 </primary-key>
 <unique-key-list/>
 <foreign-key-list>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
-</foreign-key>
 <foreign-key alias="" name="SGTRATARETFKSGITPROCESSO2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
-<foreign-key-column column-name="CODPROCGT" referenced-key-column-name="CODPROC"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
-</foreign-key>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
-<foreign-key-description></foreign-key-description>
-<foreign-key-figure>
-<fk-fig-bendpoint-list/>
-</foreign-key-figure>
-<foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
-<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODEMPGT" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
+<foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
 </foreign-key>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="SGTRATARETFKSGITP2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -29103,7 +29083,17 @@
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
 </foreign-key>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="SGTRATARETFKSGITPR" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
+</foreign-key>
+<foreign-key alias="" name="SGTRATARTFKSGITPRO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -29113,7 +29103,17 @@
 <foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
 <foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
 </foreign-key>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="SGTRATRTFKSGITPROC" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key-description></foreign-key-description>
+<foreign-key-figure>
+<fk-fig-bendpoint-list/>
+</foreign-key-figure>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
+<foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
+<foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
+</foreign-key>
+<foreign-key alias="" name="SGTRATRETFKSGITPR2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
@@ -29123,24 +29123,24 @@
 <foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
 <foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
 </foreign-key>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="SGTRATRETFKSGITP2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
+<foreign-key-column column-name="CODPROCGT" referenced-key-column-name="CODPROC"/>
 <foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
 <foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
-<foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
 <foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
 </foreign-key>
-<foreign-key alias="" name="SGTRATARETFKSGITPROCESSO2" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
+<foreign-key alias="" name="SGTRATRETFKSGITPR3" on-delete="NO ACTION" on-update="NO ACTION" referenced-key="SGITPROCESSOPK" referenced-table="SGITPROCESSO" referenced-table-schema="DEFAULT_SCHEMA" remarks="" source-entity-role="" source-multiplicity="0..*" source-relationship-type="" target-entity-role="" target-multiplicity="1" target-relationship-type="">
 <foreign-key-description></foreign-key-description>
 <foreign-key-figure>
 <fk-fig-bendpoint-list/>
 </foreign-key-figure>
-<foreign-key-column column-name="CODEMPGT" referenced-key-column-name="CODEMP"/>
-<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="CODPROC" referenced-key-column-name="CODPROC"/>
+<foreign-key-column column-name="CODEMP" referenced-key-column-name="CODEMP"/>
+<foreign-key-column column-name="CODFILIAL" referenced-key-column-name="CODFILIAL"/>
 <foreign-key-column column-name="SEQITPROC" referenced-key-column-name="SEQITPROC"/>
 </foreign-key>
 </foreign-key-list>
