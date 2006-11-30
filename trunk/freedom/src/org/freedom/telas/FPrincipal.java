@@ -502,7 +502,7 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		final int iWidthImgFreedom = icFreedom.getIconWidth();
 		final int iHeightImgFreedom = icFreedom.getIconHeight();
 
-		lbStpinf.setBounds( 20, (int) tela.getHeight() - 250, iWidthImgStpinf, iHeightImgStpinf );
+		lbStpinf.setBounds( 20, (int) tela.getHeight() - 265, iWidthImgStpinf, iHeightImgStpinf );
 		lbFreedom.setBounds( (int) tela.getWidth() - 155, (int) tela.getHeight() - 265, iWidthImgFreedom, iHeightImgFreedom );
 		lbStpinf.setToolTipText( sURLStpinf );
 		lbFreedom.setToolTipText( sURLFreedom );
@@ -516,20 +516,33 @@ public abstract class FPrincipal extends JFrame implements ActionListener, Mouse
 		lbFreedom.addMouseListener( this );
 		lbStpinf.addMouseListener( this );
 	}
-
+	
 	public void addFundo() {
+		
+		addFundo( null );
+	}
+
+	public void addFundo( JComponent comp ) {
 
 		final int iWidthArea = (int) tela.getWidth();
 		final int iHeightArea = (int) tela.getHeight();
 		setSize( iWidthArea, iHeightArea - 50 );
+		 
+		if ( comp == null ) {
 
-		icFundo = Icone.novo( sImgFundo );
-		lbFundo = new JLabelPad( icFundo );
+			icFundo = Icone.novo( sImgFundo );
+			lbFundo = new JLabelPad( icFundo );
 
-		iWidthImgFundo = icFundo.getIconWidth();
-		iHeightImgFundo = icFundo.getIconHeight();
-		lbFundo.setBounds( ( iWidthArea / 2 ) - ( iWidthImgFundo / 2 ), ( ( iHeightArea - 200 ) / 2 ) - ( iHeightImgFundo / 2 ), iWidthImgFundo, iHeightImgFundo );
-		dpArea.add( lbFundo );
+			iWidthImgFundo = icFundo.getIconWidth();
+			iHeightImgFundo = icFundo.getIconHeight();
+			lbFundo.setSize( iWidthImgFundo, iHeightImgFundo );
+						
+			comp = lbFundo;
+		}	
+		
+		comp.setBounds( ( iWidthArea / 2 ) - ( comp.getWidth() / 2 ), ( ( iHeightArea - 200 ) / 2 ) - ( comp.getHeight() / 2 ), comp.getWidth(), comp.getHeight() );
+		
+		dpArea.add( comp );
 	}
 
 	public void adicBotoes() {
