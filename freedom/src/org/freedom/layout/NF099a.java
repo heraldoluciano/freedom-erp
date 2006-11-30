@@ -69,7 +69,7 @@ public class NF099a extends Layout {
 				 
 				if (imp.pRow()==0) {
 					
-					imp.pulaLinha(2, imp.comprimido());
+					imp.pulaLinha(1, imp.comprimido());
 					
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 						imp.say(105, "X");
