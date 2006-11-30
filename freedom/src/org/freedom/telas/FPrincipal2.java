@@ -29,14 +29,18 @@ package org.freedom.telas;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.freedom.bmps.Icone;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.plugin.Backgroud34;
 
 public class FPrincipal2 extends FPrincipal implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
+	
+	private Backgroud34 fundo = new Backgroud34();
 	
 	public FPrincipal2(String sImgFundo) {
 		super(null, sImgFundo);
@@ -44,10 +48,15 @@ public class FPrincipal2 extends FPrincipal implements ActionListener, MouseList
 
 	public void inicializaTela() {
 		setBgColor(new Color(255,255,255)); 
-		addFundo();
 	    addLinks(Icone.novo("lgSTP2.jpg"), Icone.novo("lgFreedom2.jpg"));
 		adicBotoes();
 		adicAgenda();
+	}
+	
+	public void setConexao( Connection con ) {
+		super.setConexao( con );
+		fundo.setConexao( con );
+		addFundo( fundo );
 	}
 
 	public void remConFilial(){ 	
