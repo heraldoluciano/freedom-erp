@@ -1,5 +1,6 @@
 package org.freedom.plugin;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.freedom.bmps.Icone;
@@ -185,10 +187,16 @@ public class Backgroud34 extends JPanelPad implements MouseListener {
 
 	public void mouseEntered( MouseEvent e ) {
 
+		if ( e.getSource() instanceof JLabel ) {
+			( (JLabel) e.getSource() ).setCursor( Cursor.getPredefinedCursor( Cursor.HAND_CURSOR ) );
+		}
 	}
 
 	public void mouseExited( MouseEvent e ) {
 
+		if ( e.getSource() instanceof JLabel ) {
+			( (JLabel) e.getSource() ).setCursor( Cursor.getPredefinedCursor( Cursor.DEFAULT_CURSOR ) );
+		}
 	}
 
 	public void mousePressed( MouseEvent e ) {
