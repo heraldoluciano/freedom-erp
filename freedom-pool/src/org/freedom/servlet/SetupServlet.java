@@ -30,6 +30,7 @@ import org.freedom.jdbc.DbConnectionPool;
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 05/10/2004. <BR>
+ * @see javax.servlet.http.HttpServlet
  */
 public class SetupServlet extends HttpServlet {
    /**

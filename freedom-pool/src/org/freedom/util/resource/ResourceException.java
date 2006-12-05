@@ -31,8 +31,7 @@ public class ResourceException extends Exception {
    /**
     * Método construtor da classe.
     * @param error recebe string de descrição do erro.
-    * @see org.freedom.util.resource.ResourceException#Exception
-    * @see ResourceException#Exception
+    * @see java.lang#Exception
     */
    public ResourceException(final String error) {
       super(error);
