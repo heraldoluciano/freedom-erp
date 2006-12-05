@@ -38,7 +38,7 @@ public class SetupServlet extends HttpServlet {
    private DbConnectionPool pool;
 
    /**
-    * Versão para serialização.
+    * @version Versão para serialização.
     */
    private static final long serialVersionUID = 1L;
 
@@ -46,6 +46,8 @@ public class SetupServlet extends HttpServlet {
     * Inicilização do servlet.
     * @param config Instância do web.xml .
     * @throws ServletException Exceção de servlets.
+    * @see org.freedom.servlet.SetupServlet#HttpServlet
+    * @see SetupServlet#HttpServlet
     */
    public void init(final ServletConfig config) throws ServletException {
        super.init(config);

@@ -49,6 +49,7 @@ public final class DbConnectionFactory {
    }
 
    /**
+    
     * Tem como objetivo retornar a instância da classe.
     * @return Retorna a instância da classe DbConnectionFactory.
     */
