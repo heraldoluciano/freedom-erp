@@ -24,6 +24,8 @@ import java.awt.Dimension;
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 21/11/2006. <BR>
  *  <BR>
+ *  @see javax.swing.JFrame
+ *  
  */
 public class JFrame extends javax.swing.JFrame {
 

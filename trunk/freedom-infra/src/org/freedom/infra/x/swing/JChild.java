@@ -29,6 +29,7 @@ import java.awt.GridBagConstraints;
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 21/11/2006. <BR>
  *  <BR>
+ *  @see javax.swing.JInternalFrame
  */
 public class JChild extends JInternalFrame {
 
