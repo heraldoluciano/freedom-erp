@@ -31,6 +31,7 @@ import org.freedom.util.resource.AbstractResourcePool;
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
  * criada: 24/07/2006. <BR>
  *  <BR>
+ *  @see org.freedom.util.resource.AbstractResourcePool 
  */
 public class DbConnectionPool extends AbstractResourcePool {
 
