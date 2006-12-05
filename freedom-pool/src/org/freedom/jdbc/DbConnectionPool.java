@@ -86,6 +86,9 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @param usercon ID do usuário para conexão com o banco de dados.
     * @param passwordcon Senha do usuário para a conexão com o banco de dados.
     * @param isp Seta o comportamento do pool.
+    * @see org.freedom.jdbc.DbConnectionPool#org.freedom.jdbc.DbConnectionFactory
+    * @see DbConnectionPoll#AbstractResourcePoll
+    * @throws ResourceException Exceção gerada quando não for possível 
     */
    public DbConnectionPool(final String drivercon, final String urlcon,
          final int nInitialCons, final int nMaxCons,
@@ -205,7 +208,7 @@ public class DbConnectionPool extends AbstractResourcePool {
 
    /**
     * Seta senha corrente.
-    * @author Robson Sanchez
+    * @author Robson Sanchez/Setpoint Informática Ltda.
     * @param passwordcon senha.
     */
    public final void setPassword(final String passwordcon) {
@@ -214,7 +217,7 @@ public class DbConnectionPool extends AbstractResourcePool {
 
    /**
     * seta a sessão http corrente.
-    * @author Robson Sanchez
+    * @author Robson Sanchez/Setpoint Informática Ltda.
     * @param sessionIDcon ID da sessão corrente.
     */
    public final void setSessionID(final String sessionIDcon) {
@@ -223,7 +226,7 @@ public class DbConnectionPool extends AbstractResourcePool {
 
    /**
     * Seta o número de conexões iniciais.
-    * @author Robson Sanchez
+    * @author Robson Sanchez/Setpoint Informática Ltda.
     * @param initial número de conexões iniciais.
     */
    public final void setInitialCons(final int initial) {
