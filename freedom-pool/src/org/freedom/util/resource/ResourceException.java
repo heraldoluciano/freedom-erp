@@ -24,12 +24,15 @@ package org.freedom.util.resource;
  * criada: 05/10/2004. <BR>
  */
 public class ResourceException extends Exception {
-   /** variável de versionamento da classe para serialização. */
+   /** variável de versionamento da classe para serialização. 
+    */
    private static final long serialVersionUID = 1L;
 
    /**
     * Método construtor da classe.
     * @param error recebe string de descrição do erro.
+    * @see org.freedom.util.resource.ResourceException#Exception
+    * @see ResourceException#Exception
     */
    public ResourceException(final String error) {
       super(error);
