@@ -81,6 +81,44 @@ public class SetupServlet extends HttpServlet {
    }
 
    /**
+    * Inicilização do servlet para utilização de JPA (Toplink).
+    * @param config Instância do web.xml .
+    * @param jpa Flague que define se é jpa.
+    * @throws ServletException Exceção de servlets.
+    * @see org.freedom.servlet.SetupServlet#HttpServlet
+    * @see SetupServlet#HttpServlet
+    */
+   public void init(final ServletConfig config, boolean jpa) throws ServletException {
+       super.init(config);
+       //config.getServletContext().
+       final ServletContext app = config.getServletContext();
+       final String jdbcDriver = config.getInitParameter("jdbcDriver");
+       final String jdbcURL = config.getInitParameter("jdbcURL");
+       final String jdbcUser = config.getInitParameter("jdbcUser");
+       final String jdbcPassword = config.getInitParameter("jdbcPassword");
+       final String jdbcInitCons =
+          config.getInitParameter("jdbcInitialConnections");
+       final String jdbcMaxCons = config.getInitParameter("jdbcMaxConnections");
+       int initialCons = 0;
+       int maxCons = 0;
+       boolean ispool;
+       if ((jdbcUser == null) || ("".equals(jdbcUser))) {
+          ispool = false;
+       } else {
+          ispool = true;
+          if ((jdbcInitCons != null) && (!"".equals(jdbcInitCons))) {
+             initialCons = Integer.parseInt(jdbcInitCons);
+          }
+          if ((jdbcMaxCons != null) && (!"".equals(jdbcMaxCons))) {
+             maxCons = Integer.parseInt(jdbcMaxCons);
+          }
+       }
+       setPool(new DbConnectionPool(jdbcDriver, jdbcURL, initialCons, maxCons,
+          jdbcUser, jdbcPassword, ispool));
+       app.setAttribute("db-connection-pool", pool);
+   }
+   
+   /**
     * Acessor do Pool.
     * @return Retorna o pool de conexões.
     */
