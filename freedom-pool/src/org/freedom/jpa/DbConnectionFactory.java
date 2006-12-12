@@ -157,8 +157,8 @@ public final class DbConnectionFactory {
     */
    public EntityManager getConnection(
          final ServletContext context, final String sessionID,
-         final String fact, 
-         final String useridcon, final String passwordcon) throws SQLException {
+         final String fact, final String useridcon,
+         final String passwordcon) throws SQLException {
       final DbConnectionPool pool = (DbConnectionPool)
          context.getAttribute("db-connection-pool");
       EntityManager manager = null;
