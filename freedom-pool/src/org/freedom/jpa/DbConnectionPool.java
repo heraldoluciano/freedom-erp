@@ -1,7 +1,12 @@
 package org.freedom.jpa;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import oracle.toplink.essentials.config.TopLinkProperties;
 
 import org.apache.log4j.Logger;
 import org.freedom.util.resource.ResourceException;
@@ -10,9 +15,9 @@ import org.freedom.util.resource.AbstractResourcePool;
 
 
 /**
- * Classe Pool de conexões JDBC. <BR>
+ * Classe Pool de conexões JPA. <BR>
  * Projeto: freedom-pool <BR>
- * Pacote: org.freedom.jdbc <BR>
+ * Pacote: org.freedom.jpa <BR>
  * Classe: @(#)DbConnectionPool.java <BR>
  * <BR>
  * Este programa é licenciado de acordo com a LGPL (Lesser General Public
@@ -29,23 +34,23 @@ import org.freedom.util.resource.AbstractResourcePool;
  * preciso estar de acordo com os termos da LGPL. <BR>
  * <BR>
  * @author Robson Sanchez/Setpoint Informática Ltda. <BR>
- * criada: 24/07/2006. <BR>
+ * criada: 12/12/2006. <BR>
  *  <BR>
  *  @see org.freedom.util.resource.AbstractResourcePool 
  */
 public class DbConnectionPool extends AbstractResourcePool {
 
-   /** Caminho para o driver JDBC. **/
-   private transient String driver;
+   /** nome do descritor de parâmetros. **/
+   private transient String dscFact;
 
-   /** url URL para a conexão com o banco de dados. **/
-   private transient String url;
+   /** Fabrica de conexões. **/
+   private transient EntityManagerFactory factory;
 
+   /** Manipulador de entidades. **/
+   private transient EntityManager manager;
+   
    /** Número de conexões iniciais. **/
    private transient int initialCons;
-
-   /** Flag que indica se o driver já foi carregado. **/
-   private transient boolean driverLoaded = false;
 
    /** ID do usuário para conexão com banco de dados. **/
    private transient String user;
@@ -67,21 +72,19 @@ public class DbConnectionPool extends AbstractResourcePool {
 
    /**
     * Construtor da classe sem as informações de usuário e senha.
-    * @param drivercon Caminho para o driver de conexão JDBC.
-    * @param urlcon URL para a conexão com o banco de dados.
+    * @param fact Descritor da conexão TopLink.
     * @param nInitialCons Número inicial de conexões.
     * @param nMaxCons Número máximo de conexões.
     * @param isp Seta o comportamento do pool.
     */
-   public DbConnectionPool(final String drivercon, final String urlcon,
+   public DbConnectionPool(final String fact,
       final int nInitialCons, final int nMaxCons, final boolean isp) {
-      this(drivercon, urlcon, nInitialCons, nMaxCons, null, null, isp);
+      this(fact, nInitialCons, nMaxCons, null, null, isp);
    }
 
    /**
     * Construtor da classe com as informações de usuário e senha.
-    * @param drivercon Caminho para o driver de conexão JDBC.
-    * @param urlcon URL para a conexão com o banco de dados.
+    * @param fact Descritor das conexões TopLink.
     * @param nInitialCons Número inicial de conexões.
     * @param nMaxCons Número máximo de conexões.
     * @param usercon ID do usuário para conexão com o banco de dados.
@@ -91,15 +94,14 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @see DbConnectionPoll#AbstractResourcePoll
     * @throws ResourceException Exceção gerada quando não for possível 
     */
-   public DbConnectionPool(final String drivercon, final String urlcon,
+   public DbConnectionPool(final String fact,
          final int nInitialCons, final int nMaxCons,
          final String usercon, final String passwordcon, final boolean isp) {
       super();
+      dscFact = fact;
       setInitialCons(nInitialCons);
       setMaxResources(nMaxCons);
       setIspool(isp);
-      this.driver = drivercon;
-      this.url = urlcon;
       ResourceKey resource;
       if ((usercon != null) || (passwordcon != null)) { // se o usuário e senha
          // estiverem definidos no
@@ -111,7 +113,7 @@ public class DbConnectionPool extends AbstractResourcePool {
                resource = createResource();
                getAvailableRes().put(resource.getHashKey(), resource);
             }
-         } catch (Exception ex) {
+         } catch (Exception ex) { 
             LOGGER.error(ex);
          }
       }
@@ -122,7 +124,7 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @return Retorna o log instânciado.
     */
    private static Logger createLogger() {
-      return Logger.getLogger("org.freedom.jdbc.DbConnectionPool");
+      return Logger.getLogger("org.freedom.jpa.DbConnectionPool");
    }
 
    /**
@@ -133,28 +135,28 @@ public class DbConnectionPool extends AbstractResourcePool {
     */
 
    public final ResourceKey createResource() throws ResourceException {
-      Connection connection = null;
       ResourceKey resource = null;
       String key = null;
       String pwd = null;
+      Map<String, String> connectProps = new HashMap<String, String>();
       try {
-         if (!driverLoaded) {
-            Class.forName(driver);
-            driverLoaded = true;
-         }
          if ((user == null) || (password == null)) { // se o username ou a
             // password informada
             // estiverem nulos
             // conectará com as informações de web xml
-            connection = DriverManager.getConnection(url, userweb, passwordweb);
+            connectProps.put(TopLinkProperties.JDBC_USER, userweb);
+            connectProps.put(TopLinkProperties.JDBC_PASSWORD, passwordweb);
             key = userweb;
             pwd = passwordweb;
          } else {
-            connection = DriverManager.getConnection(url, user, password);
+            connectProps.put(TopLinkProperties.JDBC_USER, user);
+            connectProps.put(TopLinkProperties.JDBC_PASSWORD, password);
             key = user;
             pwd = password;
          }
-         resource = new ResourceKey(sessionID, key, pwd, connection);
+         factory = Persistence.createEntityManagerFactory(dscFact, connectProps);
+         manager = factory.createEntityManager();
+         resource = new ResourceKey(sessionID, key, pwd, manager);
       } catch (Exception ex) {
          // ClassNotFoundException ou SQLException
          LOGGER.error(ex);
@@ -168,16 +170,11 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @param resource Recebe o recurso a ser finalizado.
     */
    public final void closeResource(final ResourceKey resource) {
-      java.sql.Connection connection = null;
-      try {
-         clearResource(resource);
-         connection = (Connection)
-            resource.getResource();
-         connection.close();
-      } catch (SQLException ex) {
-         LOGGER.error(ex);
-         // ignora exceção
-      }
+      EntityManager manager = null;
+      clearResource(resource);
+      manager = (EntityManager)
+         resource.getResource();
+      manager.close();
    }
 
    /**
@@ -187,14 +184,9 @@ public class DbConnectionPool extends AbstractResourcePool {
     */
    public final boolean isResourceValid(final ResourceKey resource) {
       boolean valid = false;
-      try {
-         final Connection connection = (Connection)
-            resource.getResource();
-         valid = (!connection.isClosed());
-      } catch (SQLException ex) {
-         valid = false;
-         LOGGER.error(ex);
-      }
+      final EntityManager manager = (EntityManager)
+         resource.getResource();
+      valid = (manager.isOpen());
       return valid;
    }
 
@@ -234,12 +226,4 @@ public class DbConnectionPool extends AbstractResourcePool {
       this.initialCons = initial;
    }
 
-   /**
-    * Seta o flag indicando se o driver de conexão com banco de dados
-    * foi carregado.
-    * @param driverLoad Verdadeiro se o driver já foi carregado.
-    */
-   public final void setDriverLoaded(final boolean driverLoad) {
-      this.driverLoaded = driverLoad;
-   }
 }
