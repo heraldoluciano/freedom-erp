@@ -1,13 +1,12 @@
 package org.freedom.servlet;
 
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.freedom.jdbc.DbConnectionPool;
+import org.freedom.util.resource.AbstractResourcePool;
 
 /**
  * Classe de inicialização do pool de conexões <BR>
@@ -36,7 +35,7 @@ public class SetupServlet extends HttpServlet {
    /**
     * Pool de conexões.
     */
-   private DbConnectionPool pool;
+   private AbstractResourcePool pool;
 
    /**
     * @version Versão para serialização.
@@ -51,37 +50,11 @@ public class SetupServlet extends HttpServlet {
     * @see SetupServlet#HttpServlet
     */
    public void init(final ServletConfig config) throws ServletException {
-       super.init(config);
-       //config.getServletContext().
-       final ServletContext app = config.getServletContext();
-       final String jdbcDriver = config.getInitParameter("jdbcDriver");
-       final String jdbcURL = config.getInitParameter("jdbcURL");
-       final String jdbcUser = config.getInitParameter("jdbcUser");
-       final String jdbcPassword = config.getInitParameter("jdbcPassword");
-       final String jdbcInitCons =
-          config.getInitParameter("jdbcInitialConnections");
-       final String jdbcMaxCons = config.getInitParameter("jdbcMaxConnections");
-       int initialCons = 0;
-       int maxCons = 0;
-       boolean ispool;
-       if ((jdbcUser == null) || ("".equals(jdbcUser))) {
-          ispool = false;
-       } else {
-          ispool = true;
-          if ((jdbcInitCons != null) && (!"".equals(jdbcInitCons))) {
-             initialCons = Integer.parseInt(jdbcInitCons);
-          }
-          if ((jdbcMaxCons != null) && (!"".equals(jdbcMaxCons))) {
-             maxCons = Integer.parseInt(jdbcMaxCons);
-          }
-       }
-       setPool(new DbConnectionPool(jdbcDriver, jdbcURL, initialCons, maxCons,
-          jdbcUser, jdbcPassword, ispool));
-       app.setAttribute("db-connection-pool", pool);
+       this.init(config, false);
    }
 
    /**
-    * Inicilização do servlet para utilização de JPA (Toplink).
+    * Inicilização do servlet para utilização de JDBC ou JPA (Toplink).
     * @param config Instância do web.xml .
     * @param jpa Flague que define se é jpa.
     * @throws ServletException Exceção de servlets.
@@ -96,6 +69,7 @@ public class SetupServlet extends HttpServlet {
        final String jdbcURL = config.getInitParameter("jdbcURL");
        final String jdbcUser = config.getInitParameter("jdbcUser");
        final String jdbcPassword = config.getInitParameter("jdbcPassword");
+       final String jpaFactory = config.getInitParameter("jpaFactory");
        final String jdbcInitCons =
           config.getInitParameter("jdbcInitialConnections");
        final String jdbcMaxCons = config.getInitParameter("jdbcMaxConnections");
@@ -113,8 +87,13 @@ public class SetupServlet extends HttpServlet {
              maxCons = Integer.parseInt(jdbcMaxCons);
           }
        }
-       setPool(new DbConnectionPool(jdbcDriver, jdbcURL, initialCons, maxCons,
-          jdbcUser, jdbcPassword, ispool));
+       if (jpa) {
+          setPool(new org.freedom.jpa.DbConnectionPool(jpaFactory,initialCons, maxCons,
+                jdbcUser, jdbcPassword, ispool ));
+       } else {
+          setPool(new DbConnectionPool(jdbcDriver, jdbcURL, initialCons, maxCons,
+                jdbcUser, jdbcPassword, ispool));
+       }
        app.setAttribute("db-connection-pool", pool);
    }
    
@@ -122,7 +101,7 @@ public class SetupServlet extends HttpServlet {
     * Acessor do Pool.
     * @return Retorna o pool de conexões.
     */
-   public final DbConnectionPool getPool() {
+   public final AbstractResourcePool getPool() {
       return this.pool;
    }
 
@@ -130,7 +109,7 @@ public class SetupServlet extends HttpServlet {
     * Seta o pool interno.
     * @param poolParam Recebe o Pool de conexões.
     */
-   public final void setPool(final DbConnectionPool poolParam) {
+   public final void setPool(final AbstractResourcePool poolParam) {
       this.pool = poolParam;
    }
 

@@ -1,7 +1,6 @@
 package org.freedom.util.resource;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -39,7 +38,7 @@ public abstract class AbstractResourcePool implements Runnable, HttpSessionBindi
    public static final int INI_CON = 10;
 
    /** availableRes - Recursos disponíveis. */
-   private transient Map availableRes , inUseResources;
+   private transient Map<Object, Object> availableRes , inUseResources;
 
    /** maxResources - Número máximo de recursos que podem ser instânciados. */
    private transient int maxResources;
@@ -108,8 +107,8 @@ public abstract class AbstractResourcePool implements Runnable, HttpSessionBindi
     * um conexão ser liberada.
     */
    public AbstractResourcePool(final int max, final boolean waitIfMaxOut) {
-      availableRes = new HashMap();
-      inUseResources = new HashMap();
+      availableRes = new HashMap<Object, Object>();
+      inUseResources = new HashMap<Object, Object>();
       this.maxResources = max;
       this.waitIfMaxedOut = waitIfMaxOut;
    }
@@ -118,7 +117,7 @@ public abstract class AbstractResourcePool implements Runnable, HttpSessionBindi
     * Retorna um vetor com os recursos disponíveis.
     * @return HashMap com os recursos disponíveis.
     */
-   protected final Map getAvailableRes() {
+   protected final Map<Object, Object> getAvailableRes() {
       return this.availableRes;
    }
 

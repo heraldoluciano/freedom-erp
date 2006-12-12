@@ -1,9 +1,8 @@
 package org.freedom.jpa;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
@@ -69,20 +68,20 @@ public final class DbConnectionFactory {
     * Retorna uma conexão do concentrador.
     * @param context Contexto http.
     * @param sessionID Sessão utilizada como chave para o recurso.
-    * @return Retorna uma conexão JDBC.
-    * @throws SQLException Propaga exceções JDBC.
+    * @return Retorna uma conexão JPA.
+    * @throws SQLException Propaga exceções JPA.
     */
-   public java.sql.Connection getConnection(final ServletContext context,
-         final String sessionID) throws SQLException {
-      java.sql.Connection conn = null;
+   public EntityManager  getConnection(final ServletContext context,
+         final String sessionID, final String factory) throws SQLException {
+      EntityManager manager = null;
       try {
-         conn = getConnection(context, sessionID, "", "");
+         manager = getConnection(context, sessionID, factory, "", "");
          // conn = dataSource.getConnection();
       } catch (SQLException esql) {
          getLogger().error(esql);
          throw esql;
       }
-      return conn;
+      return manager;
    }
 
    /**
@@ -146,22 +145,24 @@ public final class DbConnectionFactory {
    }
 
    /**
-    * Retorna a conexão JDBC consistindo usuário e senha.
+    * Retorna a conexão JPA consistindo usuário e senha.
     * @param context Contexto do aplicativo para pesquisar o pool.
     * @param sessionID Identificação da sessão chave.
+    * @param fact String com o descritor para a conexão.
     * @param useridcon ID. do usuário a consistir.
     * @param passwordcon Senha do usuário a consistir.
     * @return Retorna uma referência para objeto de conexão JDBC.
     * @throws SQLException Propaga uma exceção SQL caso não encontre um
     * objeto consistente.
     */
-   public java.sql.Connection getConnection(
+   public EntityManager getConnection(
          final ServletContext context, final String sessionID,
+         final String fact, 
          final String useridcon, final String passwordcon) throws SQLException {
-      java.sql.Connection conn = null;
-      ResourceKey resource = null;
       final DbConnectionPool pool = (DbConnectionPool)
          context.getAttribute("db-connection-pool");
+      EntityManager manager = null;
+      ResourceKey resource = null;
       resource = pool.getResourceSession(sessionID);
       if (resource == null) {
          try {
@@ -182,13 +183,13 @@ public final class DbConnectionFactory {
                // de senha
                // inválida
             }
-            conn = (java.sql.Connection)
+            manager = (EntityManager)
                resource.getResource();
          } catch (ResourceException e) {
             getLogger().error(e);
          }
       }
-      return conn;
+      return manager;
    }
 
    /**
@@ -196,37 +197,16 @@ public final class DbConnectionFactory {
     * @return Retorna a instância do log da classe.
     */
    private static Logger createLogger() {
-      return Logger.getLogger("org.freedom.jdbc.DbConnectionFactory");
+      return Logger.getLogger("org.freedom.jpa.DbConnectionFactory");
    }
 
    /**
-    * Fecha a conexão JDBC, bem como os recursos SQL.
-    * @param conn Recebe como parâmetro a conexão.
-    * @param statement Sentença SQL aberta.
-    * @param resultset ResultSet aberto.
+    * Fecha a conexão JPA, bem como os recursos SQL.
+    * @param manager Recebe como parâmetro a conexão.
     */
-   public void closeConnection(final java.sql.Connection conn,
-         final PreparedStatement statement, final ResultSet resultset) {
-      if (resultset != null) {
-         try {
-            resultset.close();
-         } catch (SQLException e) {
-            getLogger().error(e);
-         }
-      }
-      if (statement != null) {
-         try {
-            statement.close();
-         } catch (SQLException e) {
-            getLogger().error(e);
-         }
-      }
-      if (conn != null) {
-         try {
-            conn.close();
-         } catch (SQLException e) {
-            getLogger().error(e);
-         }
+   public void closeConnection(final EntityManager manager) {
+      if (manager != null) {
+         manager.close();
       }
    }
 
