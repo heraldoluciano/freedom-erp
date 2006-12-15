@@ -56,8 +56,9 @@ public class NF035 extends Layout {
 		String sEmitente = null;
 		String[] sValsCli = new String[4];
 		String[] sNat = new String[2];
-		String[] sVencs = new String[4];
-		String[] sVals = new String[4];
+		String[] sVencs = new String[6];
+		String[] sVals = new String[6];
+		String[] sDuplics = new String[6];
 		Vector vClfisc = new Vector();
 		Vector vSigla = new Vector();
 		Vector vObs = new Vector();
@@ -77,10 +78,12 @@ public class NF035 extends Layout {
 			for ( int i=0; i < 4; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
+						sDuplics[i] = iNumNota + " / " + parc.getInt(NF.C_NPARCITREC);
 						sVencs[i] = (parc.getDate(NF.C_DTVENCTO)!=null ? Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO)) : "");
 						sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(parc.getFloat(NF.C_VLRPARC)));
 					} else {
 						bFat = false;
+						sDuplics[i] = "";
 						sVencs[i] = "";
 						sVals[i] = "";
 					}
@@ -117,7 +120,7 @@ public class NF035 extends Layout {
 				
 				if (imp.pRow()==0) {	
 					
-					//	Imprime cabeçalho da nota ...
+					//	Imprime cabeçalho da nota 
 					
 					imp.pulaLinha( 1, imp.comprimido());
 					
@@ -149,29 +152,36 @@ public class NF035 extends Layout {
 					imp.say( 83, sValsCli[3]);
 					imp.say( 91, !cab.getString(NF.C_RGEMIT).equals("") ? cab.getString(NF.C_RGEMIT) : cab.getString(NF.C_INSCEMIT));
 										
-					//	Fim do cabeçalho ...
+					//	Fim do cabeçalho 
 					
-					//	Imprime dados da fatura ...
+					//	Imprime dados da fatura 
 										
 					imp.pulaLinha( 3, imp.comprimido());
-					imp.say(  2, Funcoes.copy(cab.getString(NF.C_DESCPLANOPAG),26) + " = " +
-					             (!sVencs[0].equals("") ? ( sVencs[0] + " | " + sVals[0] ) : "" ) +
-					             (!sVencs[1].equals("") ? ( " - " + sVencs[1] + " |" + sVals[1] ) : "" ) +
-					             (!sVencs[2].equals("") ? ( " - " + sVencs[2] + " |" + sVals[2] ) : "" ) +
-					             (!sVencs[3].equals("") ? ( " - " + sVencs[3] + " |" + sVals[3] ) : "" ) );
-					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(  2, Funcoes.copy(String.valueOf(cab.getInt(NF.C_CODPED)),26));
-					imp.say( 30, Funcoes.copy(String.valueOf(cab.getInt(NF.C_CODEMIT)),26));
-					imp.say( 58, sEmitente);
-					imp.say( 86, Funcoes.copy(cab.getString(NF.C_CODVEND),26));
-					imp.say(114, Funcoes.copy(cab.getString(NF.C_NOMEBANCO),26));
+					imp.say(  6, sDuplics[0]);
+					imp.say( 36, sVencs[0]);
+					imp.say( 20, sVals[0]);
+					imp.say( 50, sDuplics[1]);
+					imp.say( 80, sVencs[1]);
+					imp.say( 65, sVals[1]);
+					imp.say(  94, sDuplics[2]);
+					imp.say( 125, sVencs[2]);
+					imp.say( 110, sVals[2]);
+					imp.pulaLinha( 1, imp.comprimido());
+					imp.say( 6, sDuplics[3]);
+					imp.say( 36, sVencs[3]);
+					imp.say( 20, sVals[3]);
+					imp.say( 80, sDuplics[4]);
+					imp.say( 80, sVencs[4]);
+					imp.say( 65, sVals[4]);
+					imp.say( 80, sDuplics[5]);
+					imp.say( 125, sVencs[5]);
+					imp.say( 110, sVals[5]);
 					
-					
-					//	Fim dos dados da fatura ...
+					//	Fim dos dados da fatura 
 					
 				}
 				
-				//	Monta a observação ...
+				//	Monta a observação 
 				
 				sTemp = itens.getString(NF.C_DESCFISC).trim();
 				if( sDescFisc.length() > 0 ) {
@@ -193,9 +203,9 @@ public class NF035 extends Layout {
 				} else 
 				    sDescFisc = sTemp;
 				
-				//	Fim da observação ...
+				//	Fim da observação 
 				
-				//	Definição da sigla para a classificação fiscal...
+				//	Definição da sigla para a classificação fiscal
 				
 				sCodfisc = itens.getString(NF.C_CODFISC);
 				   
@@ -219,32 +229,30 @@ public class NF035 extends Layout {
 					
 				}
 				
-				// 	Fim da classificação fiscal ...
+				// 	Fim da classificação fiscal 
 				
-				//	Imprime os dados do item no corpo da nota ...
+				//	Imprime os dados do item no corpo da nota
 				
 				if ( iItImp == 0 ) {
-					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 78, "CF |" );
-					imp.say( 82, " ST  |");					
+					imp.pulaLinha( 2, imp.comprimido() );
 				}
 				
-				imp.pulaLinha( 1, imp.comprimido() );
+				imp.pulaLinha( 2, imp.comprimido() );
 				imp.say(  1, Funcoes.alinhaCentro(itens.getInt(NF.C_CODPROD),5) );
 				imp.say(  17, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
 				imp.say( 32, itens.getString(NF.C_CODLOTE) );
 				imp.say( 49, Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
 				imp.say( 80, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
-				imp.say( 82, Funcoes.strDecimalToStrCurrency( 9,0,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
-				imp.say( 78, sSigla + " |" );
-				imp.say( 67, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2) + " |");
-				imp.say( 90, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED))));
+				imp.say( 81, Funcoes.strDecimalToStrCurrency(12,Aplicativo.casasDec ,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
+				imp.say( 67, sSigla );
+				imp.say( 74, Funcoes.copy(itens.getString(NF.C_ORIGFISC),0,1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),0,2)  );
+				imp.say( 93, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED))));
 				imp.say(105, Funcoes.strDecimalToStrCurrency(13,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED))));
 				imp.say(120, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
 				imp.say(125, ((int)itens.getFloat(NF.C_PERCIPIITPED))+"%");
 				imp.say(130, Funcoes.strDecimalToStrCurrency(6,2,String.valueOf(itens.getFloat(NF.C_VLRIPIITPED))));
 				
-				// 	Fim da impressão do item ...
+				// 	Fim da impressão do item 
 				
 				
 				iItImp++;
@@ -252,12 +260,12 @@ public class NF035 extends Layout {
 									    
 				    if (iItImp == itens.getInt(NF.C_CONTAITENS)) {	
 				        
-						//	Imprime o desconto ...
+						//	Imprime o desconto 
 				        
 						imp.pulaLinha( 1, imp.comprimido() );
 						imp.say(  8, "Valor do desconto : " + Funcoes.strDecimalToStrCurrency( 9,2,String.valueOf(cab.getFloat(NF.C_VLRDESCITPED))));
 				    						
-						//	Imprime observação no corpo da nota ...
+						//	Imprime observação no corpo da nota 
 						
 						for( int i=0; i < vObs.size(); i++ ) {
 						    if( imp.pRow() < MAXLINE ) {
@@ -268,12 +276,12 @@ public class NF035 extends Layout {
 				    }
 					
 					imp.pulaLinha( ( MAXLINE + 2 ) - imp.pRow(), imp.comprimido());
-					
-					//	Imprime totais ...
+				
+					//	Imprime totais 
 					
 					if (iItImp == itens.getInt(NF.C_CONTAITENS)) {        
 
-						imp.pulaLinha( 11, imp.comprimido());
+						imp.pulaLinha( 12, imp.comprimido());
 						imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRBASEICMSPED))));
 						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRICMSPED))));
 						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRPRODPED))));
@@ -297,10 +305,9 @@ public class NF035 extends Layout {
 						imp.say(114, "********************");
 						
 					}
+					//	Fim da impressão dos totais 
 					
-					//	Fim da impressão dos totais ...
-					
-					//	Imprime informações do frete ...
+					//	Imprime informações do frete 
 					
 					if (iContaFrete == 0){
 						frete.next();
@@ -309,7 +316,7 @@ public class NF035 extends Layout {
 					
 					imp.pulaLinha( 3, imp.comprimido());
 					imp.say(  2, frete.getString(NF.C_RAZTRANSP));
-					imp.say( 88, frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
+					imp.say( 89, frete.getString(NF.C_TIPOFRETE).equals("C") ? "1" : "2");
 					imp.say( 93, frete.getString(NF.C_PLACAFRETE));
 					imp.say(111, frete.getString(NF.C_UFFRETE));
 					   						
@@ -344,9 +351,9 @@ public class NF035 extends Layout {
 							     cab.getString(NF.C_UFENTEMIT));					
 					imp.pulaLinha( 1, imp.comprimido());					
 
-					//	Fim da impressão do frete ...
+					//	Fim da impressão do frete 
 					
-					//	Imprime observação e classificações fiscais ...
+					//	Imprime observação e classificações fiscais 
 					
 					vDescFisc = Funcoes.strToVectorSilabas(sDescFisc,46);
 					
@@ -366,9 +373,9 @@ public class NF035 extends Layout {
 						} 
 					}
 					
-					// 	Fim da observação ...
+					// 	Fim da observação 
 					
-					//	Imprime canhoto ...
+					//	Imprime canhoto 
 					
 					imp.pulaLinha( 3, imp.comprimido());
 					//imp.say( 31, Funcoes.copy(cab.getString(NF.C_RAZEMIT),40) );
