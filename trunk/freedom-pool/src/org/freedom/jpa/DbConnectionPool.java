@@ -40,6 +40,12 @@ import org.freedom.util.resource.AbstractResourcePool;
  */
 public class DbConnectionPool extends AbstractResourcePool {
 
+   /** Caminho para o driver JDBC. **/
+   private transient String driver;
+
+   /** url URL para a conexão com o banco de dados. **/
+   private transient String url;
+   
    /** nome do descritor de parâmetros. **/
    private transient String dscFact;
 
@@ -77,9 +83,9 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @param nMaxCons Número máximo de conexões.
     * @param isp Seta o comportamento do pool.
     */
-   public DbConnectionPool(final String fact,
+   public DbConnectionPool(final String drivercon, final String urlcon, final String fact,
       final int nInitialCons, final int nMaxCons, final boolean isp) {
-      this(fact, nInitialCons, nMaxCons, null, null, isp);
+      this(drivercon, urlcon, fact, nInitialCons, nMaxCons, null, null, isp);
    }
 
    /**
@@ -94,7 +100,7 @@ public class DbConnectionPool extends AbstractResourcePool {
     * @see DbConnectionPoll#AbstractResourcePoll
     * @throws ResourceException Exceção gerada quando não for possível 
     */
-   public DbConnectionPool(final String fact,
+   public DbConnectionPool(final String drivercon, final String urlcon, final String fact,
          final int nInitialCons, final int nMaxCons,
          final String usercon, final String passwordcon, final boolean isp) {
       super();
@@ -102,6 +108,8 @@ public class DbConnectionPool extends AbstractResourcePool {
       setInitialCons(nInitialCons);
       setMaxResources(nMaxCons);
       setIspool(isp);
+      this.driver = drivercon;
+      this.url = urlcon;
       ResourceKey resource;
       if ((usercon != null) || (passwordcon != null)) { // se o usuário e senha
          // estiverem definidos no
@@ -140,6 +148,8 @@ public class DbConnectionPool extends AbstractResourcePool {
       String pwd = null;
       Map<String, String> connectProps = new HashMap<String, String>();
       try {
+         connectProps.put(TopLinkProperties.JDBC_DRIVER, driver);
+         connectProps.put(TopLinkProperties.JDBC_URL, url);
          if ((user == null) || (password == null)) { // se o username ou a
             // password informada
             // estiverem nulos
@@ -159,6 +169,7 @@ public class DbConnectionPool extends AbstractResourcePool {
          resource = new ResourceKey(sessionID, key, pwd, manager);
       } catch (Exception ex) {
          // ClassNotFoundException ou SQLException
+         ex.printStackTrace();
          LOGGER.error(ex);
          throw new ResourceException(ex.getMessage());
       }
@@ -226,4 +237,5 @@ public class DbConnectionPool extends AbstractResourcePool {
       this.initialCons = initial;
    }
 
+   
 }

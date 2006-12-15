@@ -88,7 +88,7 @@ public class SetupServlet extends HttpServlet {
           }
        }
        if (jpa) {
-          setPool(new org.freedom.jpa.DbConnectionPool(jpaFactory,initialCons, maxCons,
+          setPool(new org.freedom.jpa.DbConnectionPool(jdbcDriver, jdbcURL, jpaFactory,initialCons, maxCons,
                 jdbcUser, jdbcPassword, ispool ));
        } else {
           setPool(new DbConnectionPool(jdbcDriver, jdbcURL, initialCons, maxCons,
