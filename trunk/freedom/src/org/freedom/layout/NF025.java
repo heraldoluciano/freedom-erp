@@ -19,6 +19,7 @@
  */
 
 package org.freedom.layout;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -49,6 +50,9 @@ public class NF025 extends Layout {
 		String[] sDuplic = new String[PARC];
 		String[] sVencs = new String[PARC];
 		String[] sVals = new String[PARC];
+		BigDecimal bdQtdItem = new BigDecimal(0);
+		BigDecimal bdVlrItem = new BigDecimal(0);
+		BigDecimal bdVlrLiqItem = new BigDecimal(0);
 		Vector vObs = new Vector();
 		Vector vDescFisc = new Vector();
 		
@@ -177,14 +181,18 @@ public class NF025 extends Layout {
 				
 				//	Imprime os dados do item no corpo da nota ...
 				
+				bdQtdItem = new BigDecimal( String.valueOf(itens.getFloat(NF.C_QTDITPED) ) ).setScale( 3, BigDecimal.ROUND_HALF_UP );
+				bdVlrItem = new BigDecimal( String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED)) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+				bdVlrLiqItem = new BigDecimal( String.valueOf(itens.getFloat(NF.C_VLRLIQITPED)) ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+				
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say(  0, itens.getString(NF.C_DESCPROD) );
 				imp.say( 65, itens.getString(NF.C_CODFISC));
 				imp.say( 79, Funcoes.copy(itens.getString(NF.C_ORIGFISC),1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),2));
 				imp.say( 84, Funcoes.copy(itens.getString(NF.C_CODUNID),2));
-				imp.say( 89, Funcoes.strDecimalToStrCurrency( 8,3,String.valueOf(itens.getFloat(NF.C_QTDITPED))));          
-				imp.say( 99, Funcoes.strDecimalToStrCurrency(10,2,String.valueOf(itens.getFloat(NF.C_VLRPRODITPED) / itens.getFloat(NF.C_QTDITPED))));
-				imp.say(113, Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(itens.getFloat(NF.C_VLRLIQITPED))));
+				imp.say( 89, Funcoes.strDecimalToStrCurrency( 8,3,bdQtdItem.toString()));          
+				imp.say( 99, Funcoes.strDecimalToStrCurrency( 9,3,bdVlrItem.toString()));
+				imp.say(113, Funcoes.strDecimalToStrCurrency(11,3,bdVlrLiqItem.toString()));
 				imp.say(129, ((int)itens.getFloat(NF.C_PERCICMSITPED))+"%");
 				imp.say(133, ((int)itens.getFloat(NF.C_PERCIPIITPED))+"%");
 				

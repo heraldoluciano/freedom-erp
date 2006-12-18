@@ -218,7 +218,7 @@ public class FRVendasGeral extends FRelatorio {
 			sSQL.append( sWhere1 );
 			sSQL.append( sWhere2 );
 			sSQL.append( sWhere3 );
-			sSQL.append( "AND V.DTSAIDAVENDA>=? AND V.DTSAIDAVENDA<=? AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
+			sSQL.append( "AND V.DTSAIDAVENDA BETWEEN ? AND ? AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) );
 			sSQL.append( "ORDER BY V.DTSAIDAVENDA,V.DOCVENDA " );
 
 			ps = con.prepareStatement( sSQL.toString() );
