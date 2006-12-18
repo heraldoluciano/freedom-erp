@@ -23,7 +23,7 @@
   	<servlet-class>org.freedom.servlet.SetupServlet</servlet-class>
    <init-param>
      <param-name>log-directory</param-name>
-     <param-value>/usr/local/tomcat/logs</param-value>
+     <param-value>/tomcat5/logs</param-value>
    </init-param>
    <init-param>
       <param-name>log4j-init-file</param-name>
