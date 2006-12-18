@@ -33,7 +33,7 @@ public class NF099a extends Layout {
 		boolean bRetorno = super.imprimir(nf, imp);
 		boolean bNat = true;
 		int iNumNota = 0;
-		int numMax = 43;
+		int numMax = 42;
 		int iItImp = 0;
 		int iLinPag = imp.verifLinPag("NF");
 		Calendar cHora = Calendar.getInstance();
@@ -69,17 +69,17 @@ public class NF099a extends Layout {
 				 
 				if (imp.pRow()==0) {
 					
-					imp.pulaLinha(1, imp.comprimido());
+					imp.pulaLinha(2, imp.comprimido());
 					
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 						imp.say(105, "X");
 					else
 						imp.say( 88, "X");
 					
-					imp.pulaLinha(6, imp.comprimido());
+					imp.pulaLinha(5, imp.comprimido());
 					imp.say(  6, sNat[0]);
 					imp.say( 42, sNat[1]);
-					imp.pulaLinha(3, imp.comprimido());
+					imp.pulaLinha(4, imp.comprimido());
 					imp.say(  6, cab.getString(NF.C_RAZEMIT));
 					imp.say( 92, !cab.getString(NF.C_CPFEMIT).equals("") ? Funcoes.setMascara(cab.getString(NF.C_CPFEMIT),"###.###.###-##") : Funcoes.setMascara(cab.getString(NF.C_CNPJEMIT),"##.###.###/####-##")) ;
 					imp.say(125, Funcoes.dateToStrDate(cab.getDate(NF.C_DTEMITPED)));
