@@ -75,7 +75,7 @@ public class NF035 extends Layout {
 		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),120);				
 			}
 							
-			for ( int i=0; i < 4; i++ ) {
+			for ( int i=0; i < 6; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
 						sDuplics[i] = iNumNota + " / " + parc.getInt(NF.C_NPARCITREC);
@@ -170,10 +170,10 @@ public class NF035 extends Layout {
 					imp.say( 6, sDuplics[3]);
 					imp.say( 36, sVencs[3]);
 					imp.say( 20, sVals[3]);
-					imp.say( 80, sDuplics[4]);
+					imp.say( 50, sDuplics[4]);
 					imp.say( 80, sVencs[4]);
 					imp.say( 65, sVals[4]);
-					imp.say( 80, sDuplics[5]);
+					imp.say( 94, sDuplics[5]);
 					imp.say( 125, sVencs[5]);
 					imp.say( 110, sVals[5]);
 					
@@ -349,6 +349,7 @@ public class NF035 extends Layout {
 							     cab.getString(NF.C_BAIRENTEMIT) + " - " + 
 							     cab.getString(NF.C_CIDENTEMIT) + " / " + 
 							     cab.getString(NF.C_UFENTEMIT));					
+					
 					imp.pulaLinha( 1, imp.comprimido());					
 
 					//	Fim da impressão do frete 
@@ -367,7 +368,7 @@ public class NF035 extends Layout {
 							if( vSigla.size() > 0 && indexSigla < vSigla.size() )
 								imp.say(  2, (String)vSigla.elementAt(indexSigla++));							
 							if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() )
-								imp.say( 28, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
+								imp.say( 60, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
 						} else{
 							imp.pulaLinha( 1, imp.comprimido());							
 						} 
