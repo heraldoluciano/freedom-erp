@@ -355,6 +355,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( cbAdicFrete, "AdicFreteVD", "frete na nota", ListaCampos.DB_SI, true ) );
 		lcFreteVD.montaSql( false, "FRETEVD", "VD" );
 		lcFreteVD.setConexao( cn );
+		txtPlacaFreteVD.setStrMascara("###-####");
+		
+		
 		rgFreteVD.setListaCampos( lcFreteVD );
 		txtPlacaFreteVD.setListaCampos( lcFreteVD );
 		txtUFFreteVD.setListaCampos( lcFreteVD );
@@ -367,7 +370,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtConhecFreteVD.setListaCampos( lcFreteVD );
 		txtCodTran.setListaCampos( lcFreteVD );
 		cbAdicFrete.setListaCampos( lcFreteVD );
-
+		
 		cbAdicFrete.setVlrString( "S" );
 
 		lcAuxVenda.add( new GuardaCampo( txtTipoVenda, "TipoVenda", "Tp.venda", ListaCampos.DB_PK, false ) );
@@ -422,7 +425,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtDtVencItRec.setListaCampos( lcItReceber );
 		lcItReceber.montaTab();
 		lcItReceber.setConexao( cn );
-
+		
 		tabRec.addMouseListener( this );
 
 		txtCodComi.setNomeCampo( "CodComi" );
@@ -466,7 +469,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbImpPed.addCheckBoxListener( this );
 		cbImpBol.addCheckBoxListener( this );
 		cbReImpNot.addCheckBoxListener( this );
-
+		
 		setPainel( pinFecha );
 		adic( lbCodPlanoPag, 7, 0, 80, 20 );
 		adic( lbDescPlanoPag, 90, 0, 270, 20 );
@@ -562,6 +565,8 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		bPrefs = prefs();
 		lcVenda.edit();
+		
+		
 	}
 
 	private void calcPeso() {
@@ -579,17 +584,20 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			sSQL.append( "SUM(I.QTDITVENDA * P.PESOBRUTPROD) AS TOTPESOBRUT " );
 			sSQL.append( "FROM VDITVENDA I,EQPRODUTO P " );
 			sSQL.append( "WHERE I.CODVENDA=? AND I.CODEMP=? AND I.CODFILIAL=? AND I.TIPOVENDA=? AND P.CODPROD=I.CODPROD" );
+			
+			
 
 			lcFreteVD.edit();
 			txtCodTran.setVlrInteger( new Integer( getCodTran() ) );
 			lcTran.carregaDados();
-			txtPlacaFreteVD.setVlrString( "***-*****" );
+			
+			txtPlacaFreteVD.setVlrString( "*******" );
 			txtUFFreteVD.setVlrString( "**" );
 			txtVlrFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
 			txtQtdFreteVD.setVlrBigDecimal( new BigDecimal( "0" ) );
 			txtEspFreteVD.setVlrString( "Volume" );
 			txtMarcaFreteVD.setVlrString( "**********" );
-
+			
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, iCodVendaFecha );
 			ps.setInt( 2, Aplicativo.iCodEmp );
@@ -625,7 +633,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			bBrut = null;
 		}
 	}
-
+	
 	private boolean finaliza() {
 
 		boolean bRet = false;
