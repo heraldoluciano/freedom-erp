@@ -624,6 +624,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
 		txtFoneCli.setMascara( JTextFieldPad.MC_FONE );
+		txtCelCli.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxCli.setMascara( JTextFieldPad.MC_FONE );
 
 		pinEnt = new JPanelPad( 500, 290 );
