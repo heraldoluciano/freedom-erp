@@ -19,8 +19,6 @@
  */
 
 package org.freedom.layout;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
@@ -29,8 +27,6 @@ import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 
 public class NF035 extends Layout {
-    
-	private NF nf = null;
 	
 	public boolean imprimir(NF nf,ImprimeOS imp) {
 	
@@ -53,7 +49,6 @@ public class NF035 extends Layout {
 		String sSigla = null;
 		String sTemp = null;
 		String sDescFisc = "";
-		String sEmitente = null;
 		String[] sValsCli = new String[4];
 		String[] sNat = new String[2];
 		String[] sVencs = new String[6];
@@ -65,11 +60,7 @@ public class NF035 extends Layout {
 		Vector vDescFisc = new Vector();
 		
 		try{
-		    
-		    this.nf = nf;
-		    
-		    sEmitente = getEmitente();
-			
+		    		    			
 			if ( cab.next() ) { 
 				iNumNota = cab.getInt(NF.C_DOC);
 		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),120);				
@@ -241,7 +232,7 @@ public class NF035 extends Layout {
 				imp.say(  1, Funcoes.alinhaCentro(itens.getInt(NF.C_CODPROD),5) );
 				imp.say(  17, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
 				imp.say( 32, itens.getString(NF.C_CODLOTE) );
-				imp.say( 49, Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)));
+				imp.say( 49, itens.getDate(NF.C_VENCLOTE) != null ? Funcoes.dateToStrDate(itens.getDate(NF.C_VENCLOTE)) : "");
 				imp.say( 80, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
 				imp.say( 81, Funcoes.strDecimalToStrCurrency(12,Aplicativo.casasDec ,String.valueOf(itens.getFloat(NF.C_QTDITPED))));
 				imp.say( 67, sSigla );
@@ -405,38 +396,6 @@ public class NF035 extends Layout {
 		
 		return retorno;
 		
-	}
-	
-	private String getEmitente() {
-	    
-	    String retorno = "";
-	    String sSQL = null;
-	    PreparedStatement ps = null;
-	    ResultSet rs = null;
-	    
-	    try {
-	        
-	        sSQL =  "SELECT COMENTUSU FROM SGUSUARIO " +
-	        		"WHERE CODEMP=? AND CODFILIAL=? AND IDUSU=?"; 
-	        ps = nf.getConexao().prepareStatement(sSQL);
-	        ps.setInt(1, Aplicativo.iCodEmp);
-	        ps.setInt(2, Aplicativo.iCodFilial);
-	        ps.setString(3, Aplicativo.strUsuario);
-	        rs = ps.executeQuery();
-	        
-	        if(rs.next()) {
-	            retorno = Funcoes.copy(rs.getString("COMENTUSU"),4);
-	        }
-	        
-	        if(!nf.getConexao().getAutoCommit())
-	            nf.getConexao().commit();
-	        
-	    } catch ( Exception e ) {
-	        e.printStackTrace();
-        }
-	    
-	    return retorno;
-	    
 	}
 	
 }
