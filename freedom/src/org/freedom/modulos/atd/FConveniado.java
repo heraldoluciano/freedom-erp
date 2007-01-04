@@ -62,7 +62,7 @@ public class FConveniado extends FTabDados implements PostListener {
 
 	private JPanelPad pnAtrib = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JTextFieldPad txtCodConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private JTextFieldPad txtCodConv = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 9, 0 );
 
 	private JTextFieldPad txtNomeConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
