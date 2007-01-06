@@ -30,7 +30,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -55,37 +55,33 @@ public class OPSwara2 extends LeiauteGR {
 
 	private Font fnArial9N = new Font( "Arial", Font.BOLD, 9 );
 
-	Vector vParamOP = new Vector();
+	private Vector vParamOP = new Vector();
 
-	final int iPosIniItens = 400;
+	private final int iPosMax = 740;
 
-	final int iPosMaxItens = 740;
+	private int iY = 140;
 
-	int iYPosProd = 0;
+	private Vector vItens = new Vector();
 
-	int iY = 100;
+	private Vector vItem = new Vector();
 
-	Vector vItens = new Vector();
+	private int iCodOP = 0;
 
-	Vector vItem = new Vector();
+	private int iSeqOP = 0;
 
-	int iCodOP = 0;
+	private String sDescProd = "";
 
-	int iSeqOP = 0;
+	private String sLote = "";
 
-	String sDescProd = "";
+	private String sQtd = "";
 
-	String sLote = "";
+	private String sCodUnid = "";
 
-	String sQtd = "";
+	private Double dbQtd = new Double( 1 );
 
-	String sCodUnid = "";
+	private String sDtFabrica = "";
 
-	Double dbQtd = new Double( 1 );
-
-	String sDtFabrica = "";
-
-	String sDtValidade = "";
+	private String sDtValidade = "";
 
 	public void montaG() {
 
@@ -104,7 +100,6 @@ public class OPSwara2 extends LeiauteGR {
 
 		iCodOP = Integer.parseInt( vParamOP.elementAt( 0 ).toString() );
 		iSeqOP = Integer.parseInt( vParamOP.elementAt( 1 ).toString() );
-		iYPosProd = iPosIniItens;
 
 		try {
 
@@ -184,55 +179,13 @@ public class OPSwara2 extends LeiauteGR {
 			rs.close();
 			ps.close();
 
-			//impAssinatura();
-			termPagina();
+			terminaOP( true );
 			finaliza();
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar o cabeçalho do relatório!!!\n" + err.getMessage() );
 			err.printStackTrace();
 		}
-	}
-
-	private void montaFases( ResultSet rsFases ) {
-
-		try {
-
-			while ( rsFases.next() ) {
-
-				if ( rsFases.getString( 4 ).equals( "EX" ) ) {
-					impFaseEx( rsFases );
-				}
-				else if ( rsFases.getString( 4 ).equals( "CQ" ) ) {
-					impFaseCq( rsFases );
-				}
-				else if ( rsFases.getString( 4 ).equals( "EB" ) ) {
-					impFaseEB( rsFases );
-				}
-			}
-		} catch ( SQLException e ) {
-			e.printStackTrace();
-		}
-	}
-
-	private int impLabelSilabas( String sTexto, int iSalto, int iMargem, int iLargura, int iY, Font fonte ) {
-
-		double iPixels = getFontMetrics( fonte ).stringWidth( sTexto );
-		double iNLinhas = iPixels / iLargura;
-		int iNCaracteres = Funcoes.tiraChar( sTexto, "\n" ).length();
-		int iNCaracPorLinha = (int) ( iNCaracteres / iNLinhas );
-
-		Vector vTextoSilabas = Funcoes.strToVectorSilabas( sTexto, iNCaracPorLinha );
-
-		for ( int i = 0; vTextoSilabas.size() > i; i++ ) {
-
-			setFonte( fonte );
-
-			drawTexto( vTextoSilabas.elementAt( i ).toString(), iMargem, iY );
-			iY += iSalto;
-		}
-
-		return iY;
 	}
 
 	private void impFaseEx( ResultSet rsFases ) {
@@ -243,62 +196,76 @@ public class OPSwara2 extends LeiauteGR {
 		String sLote = "";
 
 		try {
-
+				
+			String sFase = rsFases.getString( 3 ) != null ? rsFases.getString( 3 ).trim() : "";
+			String sRecurso = rsFases.getString( 7 ) != null ? rsFases.getString( 7 ).trim() : "";
+			String sInstrucoes = rsFases.getString( "INSTRUCOES" ) != null ? rsFases.getString( "INSTRUCOES" ).trim() : "";
+			Double dbQtdEstr = new Double( rsFases.getFloat( 5 ) / 60 );
 			int iSeqOf = rsFases.getInt( 1 );
 			int iCodFaseF = rsFases.getInt( 2 );
 			int iCodFaseI = 0;
-
-			iY = iY + 12;
 			int iYIni = iY;
 			int iInst = 0;
+			
+			iY += 3;			
 
-			if ( rsFases.getString( "INSTRUCOES" ) != null ) {
-
-				setFonte( fnArial9N );
-				drawTexto( "Instrução de preparo", 250, iY - 5 );
-				iInst = impLabelSilabas( rsFases.getString( "INSTRUCOES" ).trim(), 7, 250, 280, iY + 2, fnInstrucoes );
+			if ( iY + 60 > iPosMax ) {
+				terminaOP( false );
+				iYIni = iY;
 			}
 
 			setFonte( fnTitulo );
-			drawTexto( "FASE: " + rsFases.getString( 1 ).trim(), 10, iY );
+			drawTexto( "FASE: " + iSeqOf + " - " + sFase, 10, iY );
 
-			iY = iY + 12;
+			if ( sInstrucoes.length() > 0 ) {
+				
+				// impressão das instruções de uso.
+				
+				setFonte( fnArial9N );
+				drawTexto( "Instrução de preparo", 260, iY - 5 );
+				iInst = impLabelSilabas( sInstrucoes, 7, 260, 270, iY + 2, fnInstrucoes );
+			}
+
+			iY += 12;
 
 			setFonte( fnArial9N );
 			drawTexto( "Recurso:", 10, iY );
 			setFonte( fnArial9 );
-			drawTexto( rsFases.getString( 7 ), 60, iY );
-			iY = iY + 12;
+			drawTexto( sRecurso, 60, iY );
+			
+			iY += 12;
+			
 			setFonte( fnArial9N );
 			drawTexto( "Tempo estimado(min.):", 10, iY );
-
 			setFonte( fnArial9 );
-			Double dbQtdEstr = new Double( rsFases.getFloat( 5 ) / 60 );
-			drawTexto( ( dbQtdEstr.floatValue() ) * ( dbQtd.floatValue() ) + "", 120, iY );
+			drawTexto( String.valueOf( dbQtdEstr.floatValue() * dbQtd.floatValue() ), 120, iY );
+			
+			iY += 12;
+			
+			setFonte( fnArial9N );
+			drawTexto( "Responsavel Pesagem : ", 10, iY );
+			drawLinha( 125, iY, 255, iY );
 
-			iY = iY + 10;
+			iY += 12;
 
 			if ( iInst > iY ) {
-
+				
+				/* verifica o tamanho da instrução 
+				 * para definir onde por a linha que separa as fases.
+				 */ 				
+				
 				iY = iInst + 2;
 			}
 
-			drawLinha( 5, iY, 5, 0, AL_CDIR );
-
-			iY = iY + 12;
-
-			setFonte( fnArial9N );
-			drawTexto( "Cód.", 30, iY );
-			drawTexto( "Cód.Barras", 100, iY );
-			drawTexto( "Qtd.", 340, iY );
-			drawTexto( "Unid", 400, iY );
-			drawTexto( "Lote", 460, iY );
-			drawLinha( 5, iY + 5, 5, 0, AL_CDIR );
-
-			iY = iY + 15;
-
-			setFonte( fnArial9 );
-
+			if ( iY + 10 > iPosMax ) {
+				iY += 10;
+				drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
+				terminaOP( false );
+				iYIni = iY;
+			}
+			
+			int impCab = 0;
+			
 			for ( int i = 0; vItens.size() > i; i++ ) {
 
 				sCod = ( (Vector) vItens.elementAt( i ) ).elementAt( 0 ).toString();
@@ -308,29 +275,77 @@ public class OPSwara2 extends LeiauteGR {
 				iCodFaseI = Integer.parseInt( ( (Vector) vItens.elementAt( i ) ).elementAt( 5 ).toString() );
 
 				if ( iCodFaseI == iCodFaseF ) {
-					drawTexto( sCod, 30, iY ); // Codigo
+					
+					if ( iY + 20 > iPosMax ) {
+						iY += 10;
+						drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
+						terminaOP( false );
+						iYIni = iY;
+
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
+						
+						iY += 12;
+
+						setFonte( fnArial9N );
+						drawTexto( "Cód.", 30, iY );
+						drawTexto( "Cód.Barras", 100, iY );
+						drawTexto( "Qtd.", 340, iY );
+						drawTexto( "Unid", 380, iY );
+						drawTexto( "Lote", 420, iY );
+						drawTexto( "Qtd. Pesada", 490, iY );
+						drawLinha( 5, iY + 5, 5, 0, AL_CDIR );
+
+						iY += 18;
+
+						setFonte( fnArial9 );
+					}
+					
+					if ( impCab == 0 ) {
+						
+						// imprime cabeçalho dos itens...
+						
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
+						
+						iY += 12;
+
+						setFonte( fnArial9N );
+						drawTexto( "Cód.", 30, iY );
+						drawTexto( "Cód.Barras", 100, iY );
+						drawTexto( "Qtd.", 340, iY );
+						drawTexto( "Unid", 380, iY );
+						drawTexto( "Lote", 420, iY );
+						drawTexto( "Qtd. Pesada", 490, iY );
+						drawLinha( 5, iY + 5, 5, 0, AL_CDIR );
+
+						iY += 18;
+
+						setFonte( fnArial9 );
+						
+						impCab++;
+					}
+					
+					// Cria a imagem do Código de Barras.
 
 					Barcode128 b = new Barcode128();
 					String sBarCode = "P#" + iSeqOf + "#" + iCodOP + "#" + iSeqOP + "#" + sCod.trim() + "#" + sLote.trim() + "#" + sQtd.trim();
 					sBarCode = sBarCode.replace( '/', '_' );
 					System.out.println( sBarCode );
 					b.setCode( sBarCode );
-
 					Image image = b.createAwtImage( Color.BLACK, Color.WHITE );
 					ImageIcon icon = new ImageIcon( image );
-
-					drawImagem( icon, 100, iY - 9, 200, 15 );
-
+					
+					drawTexto( sCod, 30, iY ); // Código
+					drawImagem( icon, 100, iY - 9, 200, 15 );// Código de Barras
 					drawTexto( Funcoes.alinhaDir( sQtd, 15 ), 320, iY );// Quantidade
-					drawTexto( sUnid, 400, iY );// Unidade
-					drawTexto( sLote, 460, iY );// Lote
+					drawTexto( sUnid, 380, iY );// Unidade
+					drawTexto( sLote, 420, iY );// Lote
+					drawLinha( 490, iY, 560, iY );
 
-					iY = iY + 18;
+					iY += 18;
 				}
 			}
 
-			iY = iY + 10;
-
+			iY += 10;
 			drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
 
 		} catch ( Exception e ) {
@@ -343,90 +358,190 @@ public class OPSwara2 extends LeiauteGR {
 		}
 	}
 
-	private void impFaseEB( ResultSet rsFases ) {
-
-		int iCodFaseF = 0;
-		int iCodFaseI = 0;
-		int iYIni = 0;
-		Vector vItensEB = null;
-		Vector vColunasEB = null;
-		String sCodProd = null;
-		String sDesc = null;
-		String sQtd = null;
-		String sUnid = null;
-		String sLote = null;
-		String sBarCode = null;
-		String sSeqOP = null;
-		StringBuilder sSQL = new StringBuilder();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-
-		try {
-
-			iCodFaseF = rsFases.getInt( 2 );
-
-			iY = iY + 10;
-
-			iYIni = iY;
-
+	private void impFaseCq( ResultSet rsFases ) {
+	
+		try {		
+			
+			String sFase = rsFases.getString( 3 ) != null ? rsFases.getString( 3 ).trim() : "";
+			String sRecurso = rsFases.getString( 7 ) != null ? rsFases.getString( 7 ).trim() : "";
+			String sInstrucoes = rsFases.getString( "INSTRUCOES" ) != null ? rsFases.getString( "INSTRUCOES" ).trim() : "";
+			Double dbQtdEstr = new Double( rsFases.getFloat( 5 ) / 60 );
+			int iSeqOf = rsFases.getInt( 1 );
+			int iYIni = iY + 5;
 			int iInst = 0;
-
-			if ( rsFases.getString( "INSTRUCOES" ) != null ) {
-
+							
+			if ( iY + 60 > iPosMax ) {
+				terminaOP( false );
+				iYIni = iY;
+			}
+			
+			iY += 3;
+	
+			if ( sInstrucoes.length() > 0 ) {
+				
+				// impressão das instruções de uso.
+				
 				setFonte( fnArial9N );
-				drawTexto( "Instrução de preparo", 250, iY - 5 );
-				iInst = impLabelSilabas( rsFases.getString( "INSTRUCOES" ).trim(), 7, 250, 280, iY + 2, fnInstrucoes );
+				drawTexto( "Instrução de preparo", 260, iY - 5 );
+				iInst = impLabelSilabas( sInstrucoes, 7, 260, 270, iY + 2, fnInstrucoes );
 			}
 
 			setFonte( fnTitulo );
-			drawTexto( "FASE: " + rsFases.getString( 1 ).trim(), 10, iY );
-
-			iY = iY + 15;
-
-			drawTexto( rsFases.getString( 3 ).trim().toUpperCase(), 10, iY );
-
-			iY = iY + 13;
+			drawTexto( "FASE: " + iSeqOf, 10, iY );
+	
+			iY += 12;
+	
+			drawTexto( sFase.toUpperCase(), 10, iY );
+	
+			iY += 12;
 
 			setFonte( fnArial9N );
 			drawTexto( "Recurso:", 10, iY );
 			setFonte( fnArial9 );
-			drawTexto( rsFases.getString( 7 ), 60, iY );
-
-			iY = iY + 10;
-
+			drawTexto( sRecurso, 60, iY );
+			
+			iY += 12;
+			
 			setFonte( fnArial9N );
 			drawTexto( "Tempo estimado(min.):", 10, iY );
 			setFonte( fnArial9 );
-			drawTexto( ( rsFases.getFloat( 5 ) / 60 ) + "", 120, iY );
-			iY = iY + 10;
+			drawTexto( String.valueOf( dbQtdEstr.floatValue() * dbQtd.floatValue() ), 120, iY );
+			
+			iY += 12;
+			
+			setFonte( fnArial9N );
+			drawTexto( "Responsavel Pesagem : ", 10, iY );
+			drawLinha( 125, iY, 255, iY );
+
+			iY += 12;
 
 			if ( iInst > iY ) {
-
+				
+				/* verifica o tamanho da instrução 
+				 * para definir onde por a linha que separa as fases.
+				 */ 				
+				
 				iY = iInst + 2;
 			}
-
-			int iYIni2 = iY;
-
+			
+			if ( iY + 100 > iPosMax ) {
+				iY += 40;
+				drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
+				terminaOP( false );
+				iYIni = iY;
+			}
+				
 			drawLinha( 5, iY, 5, 0, AL_CDIR );
+			drawLinha( 283, iY, 283, iY + 100 );
+			
+			int iYP = iY;
+			int iYL = iY;
+	
+			// imprime produção...
+						
+			iYP += 10;	
+			
+			setFonte( fnArial9 );
+			drawTexto( "Produção/Semi Elaborado", 18, iYP );
+			drawTexto( "Produção/Produto Acabado", 154, iYP );
 
-			iY = iY + 5;
+			iYP += 5;
+			
+			drawRetangulo( 10, iYP, 130, 80 );
+			drawRetangulo( 146, iYP, 130, 80 );			
+			
+			iYP += 12;
 
-			setFonte( fnArial9N );
-			iY = iY + 14;
+			drawTexto( "Amostra retirada para análise", 15, iYP );
+			drawTexto( "Amostra retirada para análise", 149, iYP );
+			iYP += 20;
+			setFonte( fnArial9 );
+			drawTexto( "Quantidade:", 15, iYP );
+			drawLinha( 68, iYP, 135, iYP );
+			drawTexto( "Quantidade:", 151, iYP );
+			drawLinha( 204, iYP, 271, iYP );
+			iYP += 15;
+			drawTexto( "Nome:", 15, iYP );
+			drawLinha( 68, iYP, 135, iYP );
+			drawTexto( "Nome:", 151, iYP );
+			drawLinha( 204, iYP, 271, iYP );
+			iYP += 15;
+			drawTexto( "Data:", 15, iYP );
+			drawLinha( 68, iYP, 135, iYP );
+			drawTexto( "Data:", 151, iYP );
+			drawLinha( 204, iYP, 271, iYP );
+	
+			// imprime laboratorio...
+			
+			iYL += 10;	
+			
+			setFonte( fnArial9 );
+			drawTexto( "Laboratório/Semi Elaborado", 297, iYL );
+			drawTexto( "Laboratório/Produto Acabado", 433, iYL );
 
-			drawTexto( "EMBALAGENS A SEREM DESCARREGADAS", 150, iY );
+			iYL += 5;
+			
+			drawRetangulo( 290, iYL, 130, 80 );
+			drawRetangulo( 426, iYL, 130, 80 );			
+			
+			iYL += 12;
 
-			iY = iY + 16;
+			drawTexto( "Amostra retirada para análise", 295, iYL );
+			drawTexto( "Amostra retirada para análise", 431, iYL );
+			iYL += 20;
+			setFonte( fnArial9 );
+			drawTexto( "Resultado:", 295, iYL );
+			drawLinha( 347, iYL, 415, iYL );
+			drawTexto( "Resultado:", 431, iYL );
+			drawLinha( 484, iYL, 551, iYL );
+			iYL += 15;
+			drawTexto( "Nome:", 295, iYL );
+			drawLinha( 347, iYL, 415, iYL );
+			drawTexto( "Nome:", 431, iYL );
+			drawLinha( 484, iYL, 551, iYL );
+			iYL += 15;
+			drawTexto( "Data:", 295, iYL );
+			drawLinha( 347, iYL, 415, iYL );
+			drawTexto( "Data:", 431, iYL );
+			drawLinha( 484, iYL, 551, iYL );
 
-			setFonte( fnArial9N );
-			drawTexto( "Cód.", 10, iY );
-			drawTexto( "Tipo de Embalagem", 40, iY );
-			drawTexto( "Código de Barras", 180, iY );
-			drawTexto( "Lote", 385, iY );
-			drawTexto( "Qtd.", 450, iY );
-			drawTexto( "Emb.", 480, iY );
+			iY = iYL;
+			
+			iY += 40;
+			
+			drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
+	
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+	}
 
-			iY = iY + 20;
+	private void impFaseEB( ResultSet rsFases ) {
+
+		try {
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			StringBuilder sSQL = new StringBuilder();
+			String sCodProd = null;
+			String sDesc = null;
+			String sQtd = null;
+			String sUnid = null;
+			String sLote = null;
+			String sBarCode = null;
+			String sSeqOP = null;
+			String sFase = rsFases.getString( 3 ) != null ? rsFases.getString( 3 ).trim() : "";
+			String sInstrucoes = rsFases.getString( "INSTRUCOES" ) != null ? rsFases.getString( "INSTRUCOES" ).trim() : "";
+			String sRecurso = rsFases.getString( 7 ) != null ? rsFases.getString( 7 ).trim() : "";
+			Double dbQtdEstr = new Double( rsFases.getFloat( 5 ) / 60 );
+			Vector vItensEB = null;
+			Vector vColunasEB = null;
+			int iSeqOf = rsFases.getInt( 1 );
+			int iCodFaseF = rsFases.getInt( 2 );
+			int iCodFaseI = 0;
+			int iYIni = 0;
+			int iInst = 0;
+			
 
 			sSQL.append( "SELECT O.SEQOP, O.CODPROD, P.DESCPROD , O.CODLOTE, O.QTDPREVPRODOP, P.CODUNID, F.CODFASE " );
 			sSQL.append( "FROM PPOP O, EQPRODUTO P, PPOPFASE F " );
@@ -458,33 +573,79 @@ public class OPSwara2 extends LeiauteGR {
 
 			rs.close();
 			ps.close();
-
-			if ( !con.getAutoCommit() ) {
-				con.commit();
+			
+			if ( iY + 80 > iPosMax ) {
+				terminaOP( false );
+				iYIni = iY;
 			}
 
+			iY += 3;
+
+			iYIni = iY;
+			
+			if ( sInstrucoes.length() > 0 ) {
+				
+				// impressão das instruções de uso.
+				
+				setFonte( fnArial9N );
+				drawTexto( "Instrução de preparo", 325, iY - 5 );
+				iInst = impLabelSilabas( sInstrucoes, 7, 325, 200, iY + 2, fnInstrucoes );
+			}
+
+			setFonte( fnTitulo );
+			drawTexto( "FASE: " + iSeqOf, 10, iY );
+	
+			iY += 12;
+	
+			drawTexto( sFase.toUpperCase(), 10, iY );
+	
+			iY += 12;
+
+			setFonte( fnArial9N );
+			drawTexto( "Recurso:", 10, iY );
 			setFonte( fnArial9 );
+			drawTexto( sRecurso, 60, iY );
+			
+			iY += 12;
+			
+			setFonte( fnArial9N );
+			drawTexto( "Tempo estimado(min.):", 10, iY );
+			setFonte( fnArial9 );
+			drawTexto( String.valueOf( dbQtdEstr.floatValue() * dbQtd.floatValue() ), 120, iY );
+			setFonte( fnArial9N );
+			drawTexto( "Densidade:", 180, iY );
+			drawLinha( 240, iY, 315, iY );
+			
+			iY += 12;
+			
+			setFonte( fnArial9N );
+			drawTexto( "Responsavel : ", 10, iY );
+			drawLinha( 80, iY, 175, iY );
+			drawTexto( "Rendimento Teórico:", 180, iY );
+			drawLinha( 280, iY, 315, iY );
+
+			iY += 12;
+			
+			setFonte( fnArial9N );
+			drawTexto( "data : ", 10, iY );
+			drawLinha( 40, iY, 175, iY );
+			drawTexto( "Rendimento Prático:", 180, iY );
+			drawLinha( 280, iY, 315, iY );
+
+			iY += 12;
+
+			if ( iInst > iY ) {
+				
+				/* verifica o tamanho da instrução 
+				 * para definir onde por a linha que separa as fases.
+				 */ 				
+				
+				iY = iInst + 2;
+			}
+			
+			int impCab = 0;
 
 			for ( int i = 0; vItensEB.size() > i; i++ ) {
-
-				if ( iY >= 720 ) {
-
-					drawRetangulo( 5, iYIni - 15, 5, ( iY - iYIni2 ) + 60, AL_CDIR );
-					termPagina();
-					montaCabEmp( con );
-					montaCab();
-					iY = 110;
-					iYIni = iY;
-					iYIni2 = iY;
-					setFonte( fnArial9N );
-					drawTexto( "Cód.", 10, iY );
-					drawTexto( "Tipo de Embalagem", 40, iY );
-					drawTexto( "Código de Barras", 180, iY );
-					drawTexto( "Lote", 385, iY );
-					drawTexto( "Qtd.", 450, iY );
-					drawTexto( "Emb.", 480, iY );
-					iY = iY + 20;
-				}
 
 				vColunasEB = (Vector) vItensEB.elementAt( i );
 				sCodProd = vColunasEB.elementAt( 0 ).toString();
@@ -496,6 +657,63 @@ public class OPSwara2 extends LeiauteGR {
 				iCodFaseI = Integer.parseInt( vColunasEB.elementAt( 6 ).toString() );
 
 				if ( iCodFaseI == iCodFaseF ) {
+					
+					if ( impCab == 0 ) {
+						
+						if ( iY + 46 > iPosMax ) {
+							iY += 15;
+							drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
+							terminaOP( false );
+							iYIni = iY;
+						}
+
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
+
+						iY += 14;
+
+						setFonte( fnArial9N );
+						drawTexto( "Embalagens a serem Descarregadas", 150, iY );
+
+						iY += 14;
+
+						drawTexto( "Cód.", 10, iY );
+						drawTexto( "Tipo de Embalagem", 40, iY );
+						drawTexto( "Código de Barras", 180, iY );
+						drawTexto( "Lote", 385, iY );
+						drawTexto( "Qtd.", 450, iY );
+						drawTexto( "Emb.", 480, iY );
+
+						iY += 18;
+						
+						setFonte( fnArial9 );
+						
+						impCab++;
+					}
+					
+					if ( iY + 20 > iPosMax ) {
+						iY += 15;
+						drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
+						terminaOP( false );
+						iYIni = iY;
+						
+						iY += 14;
+
+						setFonte( fnArial9N );
+						drawTexto( "Embalagens a serem Descarregadas", 150, iY );
+
+						iY += 14;
+
+						drawTexto( "Cód.", 10, iY );
+						drawTexto( "Tipo de Embalagem", 40, iY );
+						drawTexto( "Código de Barras", 180, iY );
+						drawTexto( "Lote", 385, iY );
+						drawTexto( "Qtd.", 450, iY );
+						drawTexto( "Emb.", 480, iY );
+
+						iY += 18;
+						
+						setFonte( fnArial9 );
+					}
 
 					drawTexto( sCodProd, 10, iY ); // Codigo
 					drawTexto( sDesc.substring( 0, 20 ), 40, iY ); // Descrição
@@ -513,180 +731,101 @@ public class OPSwara2 extends LeiauteGR {
 					drawTexto( sLote, 370, iY );// Lote
 					drawTexto( Funcoes.alinhaDir( sQtd, 15 ) + "   " + sUnid, 415, iY );// Quantidade
 					drawLinha( 480, iY, 50, 0, AL_BCEN );
-					iY = iY + 20;
+					iY += 20;
 				}
-			}
+			}			
 
-			if ( iY >= 710 ) {
-
-				drawRetangulo( 5, iYIni - 15, 5, ( iY - iYIni2 ) + 60, AL_CDIR );
-				termPagina();
-				montaCabEmp( con );
-				montaCab();
-				iY = 110;
-				iYIni = iY;
-				iYIni2 = iY;
-			}
-
-			setFonte( fnArial9N );
-			iY = iY + 25;
-			drawTexto( "OBS.:___________________________________________________________________________________________", 20, iY );
-			iY = iY + 15;
-			drawTexto( "Nome:__________________________________________   Data:__________________________________________", 20, iY );
-			iY = iY + 20;
-
-			drawRetangulo( 5, iYIni - 15, 5, ( iY - iYIni2 ) + 5, AL_CDIR );
-
-		} catch ( Exception e ) {
-			Funcoes.mensagemErro( null, "Erro carregando itens!\n" + e.getMessage() );
-		} finally {
-			iCodFaseF = 0;
-			iCodFaseI = 0;
-			iYIni = 0;
-			vColunasEB = null;
-			vItensEB = null;
-			sCodProd = null;
-			sDesc = null;
-			sQtd = null;
-			sUnid = null;
-			sLote = null;
-			sSQL = null;
-			sBarCode = null;
-			sSeqOP = null;
-		}
-	}
-
-	private void impFaseCq( ResultSet rsFases ) {
-
-		try {
-
-			iY = iY + 10;
-			int iYIni = iY;
-			int iInst = 0;
-
-			if ( rsFases.getString( "INSTRUCOES" ) != null ) {
-
-				setFonte( fnArial9N );
-				drawTexto( "Instrução de preparo", 250, iY - 5 );
-				iInst = impLabelSilabas( rsFases.getString( "INSTRUCOES" ).trim(), 7, 250, 280, iY + 2, fnInstrucoes );
-			}
-
-			setFonte( fnTitulo );
-			drawTexto( "FASE: " + rsFases.getString( 1 ).trim(), 10, iY );
-
-			iY = iY + 15;
-
-			drawTexto( rsFases.getString( 3 ).trim().toUpperCase(), 10, iY );
-
-			iY = iY + 13;
-
-			setFonte( fnArial9N );
-			drawTexto( "Recurso:", 10, iY );
-			setFonte( fnArial9 );
-			drawTexto( rsFases.getString( 7 ), 60, iY );
-
-			iY = iY + 13;
-
-			setFonte( fnArial9N );
-			drawTexto( "Tempo estimado(min.):", 10, iY );
-			setFonte( fnArial9 );
-			drawTexto( ( rsFases.getFloat( 5 ) / 60 ) + "", 120, iY );
-
-			iY = iY + 10;
-
-			if ( iInst > iY ) {
-				iY = iInst + 2;
-			}
-
-			drawLinha( 5, iY, 5, 0, AL_CDIR );
-
-			iY = iY + 5;
-			drawLinha( 280, iY, 280, iY + 100 );
-
-			drawRetangulo( 10, iY, 10, 100, AL_CDIR );
-
-			setFonte( fnArial9N );
-			iY = iY + 14;
-			drawTexto( "PRODUÇÃO", 110, iY );
-			iY = iY + 16;
-			setFonte( fnArial9N );
-			drawTexto( "Amostra retirada para análise", 75, iY );
-			iY = iY + 20;
-			setFonte( fnArial9 );
-			drawTexto( "Quantidade:", 15, iY );
-			drawLinha( 70, iY, 240, iY );
-			iY = iY + 15;
-			drawTexto( "Nome:", 15, iY );
-			drawLinha( 70, iY, 240, iY );
-			iY = iY + 15;
-			drawTexto( "Data:", 15, iY );
-			drawLinha( 70, iY, 240, iY );
-
-			int iX = 280;
-			iY = iY - 65;
-			setFonte( fnArial9N );
-			drawTexto( "LABORATÓRIO", 110 + iX, iY );
-			iY = iY + 16;
-			drawTexto( "Amostra retirada para análise", 75 + iX, iY );
-			iY = iY + 20;
-			setFonte( fnArial9 );
-			drawTexto( "Resultado:", 15 + iX, iY );
-			drawLinha( 70 + iX, iY, 240 + iX, iY );
-			iY = iY + 15;
-			drawTexto( "Nome:", 15 + iX, iY );
-			drawLinha( 70 + iX, iY, 240 + iX, iY );
-			iY = iY + 15;
-			drawTexto( "Data:", 15 + iX, iY );
-			drawLinha( 70 + iX, iY, 240 + iX, iY );
-			iY = iY + 39;
+			iY += 15;
 
 			drawRetangulo( 5, iYIni - 15, 5, iY - iYIni, AL_CDIR );
 
 		} catch ( Exception e ) {
 			e.printStackTrace();
+			Funcoes.mensagemErro( null, "Erro carregando itens!\n" + e.getMessage() );
+		} 
+	}
+
+	private void montaFases( ResultSet rsFases ) {
+	
+		try {
+	
+			while ( rsFases.next() ) {
+	
+				if ( rsFases.getString( 4 ).equals( "EX" ) ) {
+					impFaseEx( rsFases );
+				}
+				else if ( rsFases.getString( 4 ).equals( "CQ" ) ) {
+					impFaseCq( rsFases );
+				}
+				else if ( rsFases.getString( 4 ).equals( "EB" ) ) {
+					impFaseEB( rsFases );
+				}
+			}
+		} catch ( SQLException e ) {
+			e.printStackTrace();
 		}
+	}
+
+	private int impLabelSilabas( String sTexto, int iSalto, int iMargem, int iLargura, int iY, Font fonte ) {
+	
+		double iPixels = getFontMetrics( fonte ).stringWidth( sTexto );
+		double iNLinhas = iPixels / iLargura;
+		int iNCaracteres = Funcoes.tiraChar( sTexto, "\n" ).length();
+		int iNCaracPorLinha = (int) ( iNCaracteres / iNLinhas );
+	
+		Vector vTextoSilabas = Funcoes.strToVectorSilabas( sTexto, iNCaracPorLinha );
+	
+		for ( int i = 0; vTextoSilabas.size() > i; i++ ) {
+	
+			setFonte( fonte );
+	
+			drawTexto( vTextoSilabas.elementAt( i ).toString(), iMargem, iY );
+			iY += iSalto;
+		}
+	
+		return iY;
 	}
 
 	private void montaCabEmp() {
 
 		double dAltLogo = 50;
-		
+
 		try {
-			
+
 			String sSQL = "SELECT NOMEEMP,CNPJEMP,FONEEMP,FAXEMP,FOTOEMP,ENDEMP,NUMEMP FROM SGEMPRESA WHERE CODEMP=?";
-			
+
 			PreparedStatement ps = con.prepareStatement( sSQL );
-			
+
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			
+
 			ResultSet rs = ps.executeQuery();
-			
+
 			int iX = 0;
-			
+
 			if ( rs.next() ) {
 
 				setFonte( fnTitulo );
-				
+
 				int iLargLogo = 0;
 				byte[] bVals = new byte[ 650000 ];
-				
+
 				Blob bVal = rs.getBlob( "FotoEmp" );
-				
+
 				if ( bVal != null ) {
-					
+
 					try {
 						bVal.getBinaryStream().read( bVals, 0, bVals.length );
 					} catch ( IOException err ) {
 						Funcoes.mensagemErro( null, "Erro ao recuperar dados!\n" + err.getMessage() );
 						err.printStackTrace();
 					}
-					
+
 					ImageIcon img = new ImageIcon( bVals );
 					double dFatProp = dAltLogo / img.getIconHeight();
-					drawImagem( img, 5, 3, (int) ( img.getIconWidth() * dFatProp ), (int) dAltLogo );
+					drawImagem( img, 6, 6, (int) ( img.getIconWidth() * dFatProp ), (int) dAltLogo );
 					iLargLogo = (int) ( img.getIconWidth() * dFatProp );
 				}
-				
+
 				sNomeEmp = rs.getString( "NomeEmp" ).trim();
 				sCGCEmp = Funcoes.setMascara( rs.getString( "CnpjEmp" ), "##.###.###/####-##" );
 				sEndEmp = rs.getString( "EndEmp" ).trim() + ", " + rs.getInt( "NumEmp" );
@@ -697,17 +836,20 @@ public class OPSwara2 extends LeiauteGR {
 
 				setFonte( fnArial9 );
 
-				drawTexto( "C.N.P.J.:   " + sCGCEmp, iX, 28 );
-				drawTexto( "Telefone.:   " + Funcoes.setMascara( rs.getString( "FoneEmp" ).trim(), "####-####" ), iX, 38 );
-				drawTexto( "Fax.:   " + Funcoes.setMascara( rs.getString( "FaxEmp" ), "####-####" ), iX, 48 );				
+				drawTexto( "C.N.P.J.:   " + sCGCEmp, iX, 30 );
+				drawTexto( "Telefone.:   " + Funcoes.setMascara( rs.getString( "FoneEmp" ).trim(), "####-####" ), iX, 40 );
+				drawTexto( "Fax.:   " + Funcoes.setMascara( rs.getString( "FaxEmp" ), "####-####" ), iX, 50 );
 			}
-			
+
 			rs.close();
 			ps.close();
 
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
+			
+			drawTexto( "Etiqueta Conta Prova", 270, 9 );
+			drawRetangulo( 227, 12, 180, 48 );
 
 			String sNome = "";
 			String sCargo = "";
@@ -745,12 +887,12 @@ public class OPSwara2 extends LeiauteGR {
 				e.printStackTrace();
 			}
 
-			setFonte( fnArial9N );
-			drawLinha( 0, iY, 300, 0, AL_CEN );
-			drawTexto( sNome, 500, iY, 300, AL_CEN );
-			drawTexto( sCargo, 500, iY, 300, AL_CEN );
-			drawTexto( sID, 500, iY, 300, AL_CEN );
-			
+			setFonte( fnArial9 );
+			drawLinha( 415, 28, 560, 28 );
+			drawTexto( Funcoes.alinhaCentro( sNome, 50 ), 415, 38 );
+			drawTexto( Funcoes.alinhaCentro( sCargo, 50 ), 415, 48 );
+			drawTexto( Funcoes.alinhaCentro( sID, 50 ), 415, 58 );
+
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar o cabeçalho da empresa!!!\n" + err.getMessage() );
 		}
@@ -762,34 +904,50 @@ public class OPSwara2 extends LeiauteGR {
 
 			setBordaRel();
 			setFonte( fnTitulo );
-			drawLinha( 0, 35, 0, 0, AL_BDIR );
-			drawRetangulo( 5, 40, 5, 50, AL_CDIR );
+			drawLinha( 0, 65, 0, 0, AL_BDIR );
+			drawRetangulo( 5, 70, 5, 50, AL_CDIR );
 
-			drawTexto( "ORDEM DE PRODUÇÃO", 0, 55, 150, AL_CEN );
+			drawTexto( "ORDEM DE PRODUÇÃO", 0, 85, 150, AL_CEN );
 			setFonte( fnArial9N );
 
-			drawTexto( "O.P. número:", 10, 70 );
-			drawTexto( "Produto:", 110, 70 );
-			drawTexto( "Qtd.:", 10, 82 );
-			drawTexto( "Data de fabricação:", 110, 82 );
-			drawTexto( "Data de validade:", 270, 82 );
-			drawTexto( "Emissão:", 420, 82 );
-			drawTexto( "Lote:", 420, 70 );
+			drawTexto( "O.P. número:", 10, 100 );
+			drawTexto( "Produto:", 110, 100 );
+			drawTexto( "Lote:", 420, 100 );
+			drawTexto( "Qtd.:", 10, 112 );
+			drawTexto( "Data de fabricação:", 110, 112 );
+			drawTexto( "Data de validade:", 270, 112 );
+			drawTexto( "Emissão:", 420, 112 );
 
 			setFonte( fnArial9 );
 
-			drawTexto( ( iCodOP + "" ).trim(), 70, 70 ); // Código da OP
-			drawTexto( sDescProd, 153, 70 ); // Descrição do produto a ser fabricado
-			drawTexto( sQtd + " - " + sCodUnid, 40, 82 ); // qtd. a fabricar
-			drawTexto( sDtFabrica, 200, 82 ); // Data de fabricação
-			drawTexto( sDtValidade, 350, 82 ); // Data de validade
-			drawTexto( Funcoes.dateToStrDate( new Date() ), 475, 82 );
-			drawTexto( sLote, 475, 70 );
+			drawTexto( String.valueOf( iCodOP ), 70, 100 ); // Código da OP
+			drawTexto( sDescProd, 153, 100 ); // Descrição do produto a ser fabricado
+			drawTexto( sLote, 475, 100 );// Lote do produto
+			drawTexto( sQtd + " - " + sCodUnid, 40, 112 ); // qtd. a fabricar
+			drawTexto( sDtFabrica, 200, 112 ); // Data de fabricação
+			drawTexto( sDtValidade, 350, 112 ); // Data de validade
+			drawTexto( Funcoes.dateToStrDate( Calendar.getInstance().getTime() ), 475, 112 );// Data
 
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar dados do cliente!!!\n" + err.getMessage() );
 			err.printStackTrace();
 		}
+	}
+	
+	private void terminaOP( boolean obs ) {
+
+		if ( obs ) {
+			setFonte( fnArial9N );
+			iY = iY + 20;
+			drawTexto( "OBS.:___________________________________________________________________________________________", 20, iY );
+			iY = iY + 15;
+			drawTexto( "Nome:__________________________________________   Data:__________________________________________", 20, iY );
+		}
+		
+		termPagina();		
+		iY = 140;
+		montaCabEmp();
+		montaCab();
 	}
 
 	public void setConexao( Connection cn ) {
