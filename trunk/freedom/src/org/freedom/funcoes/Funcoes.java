@@ -899,8 +899,8 @@ public class Funcoes {
 		int iTamStr = sVal.length();
 		if(iTamStr > iTam)
 			sVal = sVal.substring(iTam);
-		else if (iTamStr < iTam) {
-			int iSpaceAdic = (iTam - iTamStr) / 2;
+		else {
+			int iSpaceAdic = (iTam - iTamStr - 1) / 2;
 			sVal = replicate(" ", iSpaceAdic) + sVal + replicate(" ", iSpaceAdic);
 		}
 		return sVal;
