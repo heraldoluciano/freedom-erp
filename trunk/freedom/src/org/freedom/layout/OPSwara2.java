@@ -49,9 +49,11 @@ public class OPSwara2 extends LeiauteGR {
 
 	private Font fnTitulo = new Font( "Times New Roman", Font.BOLD, 13 );
 
-	private Font fnArial9 = new Font( "Arial", Font.PLAIN, 9 );
-
 	private Font fnInstrucoes = new Font( "Arial", Font.PLAIN, 6 );
+	
+	private Font fnArial8 = new Font( "Arial", Font.PLAIN, 8 );
+
+	private Font fnArial9 = new Font( "Arial", Font.PLAIN, 9 );
 
 	private Font fnArial9N = new Font( "Arial", Font.BOLD, 9 );
 
@@ -375,7 +377,7 @@ public class OPSwara2 extends LeiauteGR {
 				iYIni = iY;
 			}
 			
-			iY += 3;
+			iY += 5;
 	
 			if ( sInstrucoes.length() > 0 ) {
 				
@@ -579,7 +581,7 @@ public class OPSwara2 extends LeiauteGR {
 				iYIni = iY;
 			}
 
-			iY += 3;
+			iY += 5;
 
 			iYIni = iY;
 			
@@ -595,7 +597,7 @@ public class OPSwara2 extends LeiauteGR {
 			setFonte( fnTitulo );
 			drawTexto( "FASE: " + iSeqOf, 10, iY );
 	
-			iY += 12;
+			iY += 14;
 	
 			drawTexto( sFase.toUpperCase(), 10, iY );
 	
@@ -669,12 +671,16 @@ public class OPSwara2 extends LeiauteGR {
 
 						drawLinha( 5, iY, 5, 0, AL_CDIR );
 
-						iY += 14;
+						iY += 10;
 
 						setFonte( fnArial9N );
-						drawTexto( "Embalagens a serem Descarregadas", 150, iY );
+						drawTexto( "Embalagens a serem Descarregadas", 5, iY, 150, AL_CEN );
 
-						iY += 14;
+						iY += 4;
+						
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
+
+						iY += 12;
 
 						drawTexto( "Cód.", 10, iY );
 						drawTexto( "Tipo de Embalagem", 40, iY );
@@ -683,7 +689,11 @@ public class OPSwara2 extends LeiauteGR {
 						drawTexto( "Qtd.", 450, iY );
 						drawTexto( "Emb.", 480, iY );
 
-						iY += 18;
+						iY += 4;
+						
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
+
+						iY += 14;
 						
 						setFonte( fnArial9 );
 						
@@ -696,12 +706,16 @@ public class OPSwara2 extends LeiauteGR {
 						terminaOP( false );
 						iYIni = iY;
 						
-						iY += 14;
+						iY += 2;
 
 						setFonte( fnArial9N );
-						drawTexto( "Embalagens a serem Descarregadas", 150, iY );
+						drawTexto( "Embalagens a serem Descarregadas", 5, iY, 150, AL_CEN );
+						
+						iY += 4;
+						
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
 
-						iY += 14;
+						iY += 12;
 
 						drawTexto( "Cód.", 10, iY );
 						drawTexto( "Tipo de Embalagem", 40, iY );
@@ -709,8 +723,12 @@ public class OPSwara2 extends LeiauteGR {
 						drawTexto( "Lote", 385, iY );
 						drawTexto( "Qtd.", 450, iY );
 						drawTexto( "Emb.", 480, iY );
+						
+						iY += 4;
+						
+						drawLinha( 5, iY, 5, 0, AL_CDIR );
 
-						iY += 18;
+						iY += 14;
 						
 						setFonte( fnArial9 );
 					}
@@ -793,13 +811,9 @@ public class OPSwara2 extends LeiauteGR {
 		try {
 
 			String sSQL = "SELECT NOMEEMP,CNPJEMP,FONEEMP,FAXEMP,FOTOEMP,ENDEMP,NUMEMP FROM SGEMPRESA WHERE CODEMP=?";
-
 			PreparedStatement ps = con.prepareStatement( sSQL );
-
 			ps.setInt( 1, Aplicativo.iCodEmp );
-
 			ResultSet rs = ps.executeQuery();
-
 			int iX = 0;
 
 			if ( rs.next() ) {
@@ -822,7 +836,7 @@ public class OPSwara2 extends LeiauteGR {
 
 					ImageIcon img = new ImageIcon( bVals );
 					double dFatProp = dAltLogo / img.getIconHeight();
-					drawImagem( img, 6, 6, (int) ( img.getIconWidth() * dFatProp ), (int) dAltLogo );
+					drawImagem( img, 2, 12, (int) ( img.getIconWidth() * dFatProp ), (int) dAltLogo );
 					iLargLogo = (int) ( img.getIconWidth() * dFatProp );
 				}
 
@@ -830,11 +844,11 @@ public class OPSwara2 extends LeiauteGR {
 				sCGCEmp = Funcoes.setMascara( rs.getString( "CnpjEmp" ), "##.###.###/####-##" );
 				sEndEmp = rs.getString( "EndEmp" ).trim() + ", " + rs.getInt( "NumEmp" );
 
-				iX += 15 + iLargLogo;
+				iX = 5 + iLargLogo;
 
 				drawTexto( sNomeEmp, iX, 15 );
 
-				setFonte( fnArial9 );
+				setFonte( fnArial8 );
 
 				drawTexto( "C.N.P.J.:   " + sCGCEmp, iX, 30 );
 				drawTexto( "Telefone.:   " + Funcoes.setMascara( rs.getString( "FoneEmp" ).trim(), "####-####" ), iX, 40 );
@@ -848,8 +862,8 @@ public class OPSwara2 extends LeiauteGR {
 				con.commit();
 			}
 			
-			drawTexto( "Etiqueta Conta Prova", 270, 9 );
-			drawRetangulo( 227, 12, 180, 48 );
+			drawTexto( "Etiqueta Conta Prova", 287, 9 );
+			drawRetangulo( 240, 12, 167, 48 );
 
 			String sNome = "";
 			String sCargo = "";
@@ -866,15 +880,9 @@ public class OPSwara2 extends LeiauteGR {
 
 				if ( rs.next() ) {
 
-					if ( rs.getString( "NOMERESP" ) != null ) {
-						sNome = rs.getString( "NOMERESP" ).trim();
-					}
-					if ( rs.getString( "CARGORESP" ) != null ) {
-						sCargo = rs.getString( "CARGORESP" ).trim();
-					}
-					if ( rs.getString( "IDENTPROFRESP" ) != null ) {
-						sID = rs.getString( "IDENTPROFRESP" ).trim();
-					}
+				    sNome = rs.getString( "NOMERESP" ) != null ? rs.getString( "NOMERESP" ).trim() : "";
+				    sCargo = rs.getString( "CARGORESP" ) != null ? rs.getString( "CARGORESP" ).trim() : "";
+				    sID = rs.getString( "IDENTPROFRESP" ) != null ? rs.getString( "IDENTPROFRESP" ).trim() : "";
 				}
 
 				rs.close();
@@ -887,11 +895,11 @@ public class OPSwara2 extends LeiauteGR {
 				e.printStackTrace();
 			}
 
-			setFonte( fnArial9 );
+			setFonte( fnArial8 );
 			drawLinha( 415, 28, 560, 28 );
-			drawTexto( Funcoes.alinhaCentro( sNome, 50 ), 415, 38 );
-			drawTexto( Funcoes.alinhaCentro( sCargo, 50 ), 415, 48 );
-			drawTexto( Funcoes.alinhaCentro( sID, 50 ), 415, 58 );
+			drawTexto( sNome, 415, 38 );
+			drawTexto( sCargo, 415, 48 );
+			drawTexto( sID, 415, 58 );
 
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar o cabeçalho da empresa!!!\n" + err.getMessage() );
@@ -937,17 +945,18 @@ public class OPSwara2 extends LeiauteGR {
 	private void terminaOP( boolean obs ) {
 
 		if ( obs ) {
-			setFonte( fnArial9N );
+	        setFonte( fnArial9N );
 			iY = iY + 20;
 			drawTexto( "OBS.:___________________________________________________________________________________________", 20, iY );
 			iY = iY + 15;
 			drawTexto( "Nome:__________________________________________   Data:__________________________________________", 20, iY );
 		}
-		
-		termPagina();		
-		iY = 140;
-		montaCabEmp();
-		montaCab();
+		//else {
+	    termPagina();		
+	    iY = 140;
+	    montaCabEmp();
+	    montaCab();
+		//}
 	}
 
 	public void setConexao( Connection cn ) {
