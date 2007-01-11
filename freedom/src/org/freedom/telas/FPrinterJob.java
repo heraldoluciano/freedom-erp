@@ -225,7 +225,7 @@ public class FPrinterJob extends FFilho implements ActionListener,KeyListener {
 		hParam.put("FILTROS",sFiltros);
 		hParam.put("TITULO",sTituloRel);
 		
-		if(hParam!=null)
+		if(hParamRel!=null)
 			hParam.putAll(hParamRel);		
 		
 		relJasper = JasperFillManager.fillReport(FPrinterJob.class.getResourceAsStream("/org/freedom/"+sLayout),hParam,jrRS);
