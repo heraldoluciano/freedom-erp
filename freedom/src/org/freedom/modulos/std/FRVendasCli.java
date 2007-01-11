@@ -196,7 +196,7 @@ public class FRVendasCli extends FRelatorio {
 			imp.addSubTitulo( "VENDAS  -  PERIODO DE :" + txtDataini.getVlrString() + " ATE: " + txtDatafim.getVlrString() );
 			imp.addSubTitulo( sCab.toString() );
 
-			sSQL.append( "SELECT V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI, SUM(V.VLRLIQVENDA) " );
+			sSQL.append( "SELECT V.CODCLI, C.RAZCLI, C.DDDCLI, C.FONECLI, SUM(V.VLRLIQVENDA) AS VALOR " );
 			sSQL.append( "FROM VDVENDA V, VDCLIENTE C, EQTIPOMOV TM " );
 			sSQL.append( "WHERE V.CODEMP=? AND V.CODFILIAL=? " );
 			sSQL.append( "AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL AND V.CODCLI=C.CODCLI " );

@@ -34,6 +34,8 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.GuardaCampo;
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JCheckBoxPad;
@@ -45,6 +47,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRResumoDiario extends FRelatorio {
@@ -61,58 +64,63 @@ public class FRResumoDiario extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
+	private JRadioGroup rgTipo = null;
+
 	private JRadioGroup rgFaturados = null;
 
 	private JRadioGroup rgFinanceiro = null;
 
 	private JRadioGroup rgFormato = null;
 
-	private Vector vLabs = new Vector();
-
-	private Vector vVals = new Vector();
-
-	private Vector vLabsFat = new Vector();
-
-	private Vector vValsFat = new Vector();
-
-	private Vector vLabsFin = new Vector();
-
-	private Vector vValsFin = new Vector();
-
 	private ListaCampos lcVend = new ListaCampos( this );
-
-	private int iLinha = 1;
-
-	private int iCol = 1;
 
 	public FRResumoDiario() {
 
 		setTitulo( "Resumo Diario" );
-		setAtribos( 80, 80, 296, 340 );
+		setAtribos( 80, 80, 296, 380 );
 
-		vLabs.addElement( "Detalhado" );
-		vLabs.addElement( "Resumido" );
-		vVals.addElement( "D" );
-		vVals.addElement( "R" );
-		rgFormato = new JRadioGroup( 1, 2, vLabs, vVals );
+		Vector vLabs = new Vector();
+		Vector vVals = new Vector();
+
+		vLabs.addElement( "Grafico" );
+		vLabs.addElement( "Texto" );
+		vVals.addElement( "G" );
+		vVals.addElement( "T" );
+		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo.setVlrString( "D" );
+
+		Vector vLabs1 = new Vector();
+		Vector vVals1 = new Vector();
+
+		vLabs1.addElement( "Detalhado" );
+		vLabs1.addElement( "Resumido" );
+		vVals1.addElement( "D" );
+		vVals1.addElement( "R" );
+		rgFormato = new JRadioGroup( 1, 2, vLabs1, vVals1 );
 		rgFormato.setVlrString( "D" );
 
-		vLabsFat.addElement( "Faturado" );
-		vLabsFat.addElement( "Não Faturado" );
-		vLabsFat.addElement( "Ambos" );
-		vValsFat.addElement( "S" );
-		vValsFat.addElement( "N" );
-		vValsFat.addElement( "A" );
-		rgFaturados = new JRadioGroup( 3, 1, vLabsFat, vValsFat );
+		Vector vLabs2 = new Vector();
+		Vector vVals2 = new Vector();
+
+		vLabs2.addElement( "Faturado" );
+		vLabs2.addElement( "Não Faturado" );
+		vLabs2.addElement( "Ambos" );
+		vVals2.addElement( "S" );
+		vVals2.addElement( "N" );
+		vVals2.addElement( "A" );
+		rgFaturados = new JRadioGroup( 3, 1, vLabs2, vVals2 );
 		rgFaturados.setVlrString( "S" );
 
-		vLabsFin.addElement( "Financeiro" );
-		vLabsFin.addElement( "Não Finaceiro" );
-		vLabsFin.addElement( "Ambos" );
-		vValsFin.addElement( "S" );
-		vValsFin.addElement( "N" );
-		vValsFin.addElement( "A" );
-		rgFinanceiro = new JRadioGroup( 3, 1, vLabsFin, vValsFin );
+		Vector vLabs3 = new Vector();
+		Vector vVals3 = new Vector();
+
+		vLabs3.addElement( "Financeiro" );
+		vLabs3.addElement( "Não Finaceiro" );
+		vLabs3.addElement( "Ambos" );
+		vVals3.addElement( "S" );
+		vVals3.addElement( "N" );
+		vVals3.addElement( "A" );
+		rgFinanceiro = new JRadioGroup( 3, 1, vLabs3, vVals3 );
 		rgFinanceiro.setVlrString( "S" );
 
 		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
@@ -141,17 +149,12 @@ public class FRResumoDiario extends FRelatorio {
 		adic( new JLabelPad( "Nome do comissionado" ), 80, 60, 210, 20 );
 		adic( txtDescVend, 80, 80, 190, 20 );
 
-		adic( rgFormato, 7, 115, 265, 30 );
-		adic( rgFaturados, 7, 160, 120, 70 );
-		adic( rgFinanceiro, 153, 160, 120, 70 );
-		adic( cbVendaCanc, 7, 240, 200, 20 );
+		adic( rgTipo, 7, 115, 265, 30 );
+		adic( rgFormato, 7, 155, 265, 30 );
+		adic( rgFaturados, 7, 200, 120, 70 );
+		adic( rgFinanceiro, 153, 200, 120, 70 );
+		adic( cbVendaCanc, 7, 280, 200, 20 );
 
-	}
-
-	public void setConexao( Connection cn ) {
-
-		super.setConexao( cn );
-		lcVend.setConexao( con );
 	}
 
 	public void imprimir( boolean bVisualizar ) {
@@ -163,13 +166,121 @@ public class FRResumoDiario extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sSQL = "";
-		String sWhere = "";
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sWhere = new StringBuffer();
 		String sWhere1 = "";
 		String sWhere2 = "";
 		String sWhere3 = "";
-		String sCab = "";
+
+		try {
+
+			if ( rgFaturados.getVlrString().equals( "S" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+				sCab.append( "FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "A" ) )
+				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+
+			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " / " );
+				}
+				sCab.append( "FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "NAO FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}
+
+			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			}
+
+			if ( txtCodVend.getText().trim().length() > 0 ) {
+				sWhere.append( " AND V.CODVEND = " );
+				sWhere.append( txtCodVend.getText().trim() );
+				sWhere.append( " AND V.CODEMPVD=" );
+				sWhere.append( Aplicativo.iCodEmp );
+				sWhere.append( " AND V.CODFILIALVD=" );
+				sWhere.append( lcVend.getCodFilial() );
+				sCab.append( "\nCOMISS.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim() );
+			}
+
+			if ( rgFormato.getVlrString().equals( "D" ) ) {
+				sSQL.append( "SELECT V.DTEMITVENDA,V.CODTIPOMOV,V.CODVENDA,V.DOCVENDA,V.SERIE," );
+				sSQL.append( "V.STATUSVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA,V.CODCLI,C.RAZCLI," );
+				sSQL.append( "V.CODPLANOPAG,P.DESCPLANOPAG,V.VLRCOMISVENDA,V.VLRDESCITVENDA " );
+				sSQL.append( "FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " );
+				sSQL.append( "WHERE TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM" ); 
+				sSQL.append( " AND TM.CODFILIAL=V.CODFILIALTM AND C.CODCLI=V.CODCLI" );
+				sSQL.append( " AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL" );
+				sSQL.append( " AND V.DTEMITVENDA BETWEEN ? AND ? AND " );
+				sSQL.append( "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN " );
+				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) ); 
+				sSQL.append( " AND V.CODEMP=? AND V.CODFILIAL=?" );
+				sSQL.append( sWhere );
+				sSQL.append( sWhere1 ); 
+				sSQL.append( sWhere2 );
+				sSQL.append( sWhere3 ); 
+				sSQL.append( " ORDER BY V.DTEMITVENDA,V.DOCVENDA" );
+			}
+			else if ( rgFormato.getVlrString().equals( "R" ) ) {
+				sSQL.append( "SELECT V.DTEMITVENDA,SUM(V.VLRLIQVENDA) AS VALOR " ); 
+				sSQL.append( "FROM VDVENDA V, EQTIPOMOV TM " );
+				sSQL.append( "WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN " ); 
+				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) ); 
+				sSQL.append( " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM" );
+				sSQL.append( " AND TM.CODTIPOMOV=V.CODTIPOMOV" );
+				sSQL.append( sWhere );
+				sSQL.append( sWhere1 );
+				sSQL.append( sWhere2 ); 
+				sSQL.append( sWhere3 ); 
+				sSQL.append( " AND V.CODEMP=? AND V.CODFILIAL=? " ); 
+				sSQL.append( " GROUP BY DTEMITVENDA" );
+				sSQL.append( " ORDER BY DTEMITVENDA" );
+			}
+
+			ps = con.prepareStatement( sSQL.toString() );
+			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
+			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
+			ps.setInt( 3, Aplicativo.iCodEmp );
+			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
+			rs = ps.executeQuery();
+
+			if ( "T".equals( rgTipo.getVlrString() ) ) {
+				imprimirTexto( bVisualizar, rs, sCab.toString() );
+			}
+			else if ( "G".equals( rgTipo.getVlrString() ) ) {
+				imprimirGrafico( bVisualizar, rs, sCab.toString() );
+			}
+
+		} catch ( SQLException err ) {
+			Funcoes.mensagemErro( this, "Erro consulta tabela de vendas!\n" + err.getMessage(), true, con, err );
+		} finally {
+			System.gc();
+		}
+	}
+
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+
 		String sDtemitvenda = "";
+		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaDupla = Funcoes.replicate( "=", 133 );
 		BigDecimal bTotalDiaVal = new BigDecimal( "0" );
 		BigDecimal bTotalDiaDesc = new BigDecimal( "0" );
 		BigDecimal bTotalDiaLiq = new BigDecimal( "0" );
@@ -178,130 +289,70 @@ public class FRResumoDiario extends FRelatorio {
 		BigDecimal bTotalLiq = new BigDecimal( "0" );
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
+		int iLinha = 1;
+		int iCol = 0;
 		boolean bFimDia = false;
 
-		if ( txtCodVend.getText().trim().length() > 0 ) {
-			sWhere += " AND V.CODVEND = " + txtCodVend.getText().trim();
-			sCab = "COMISS.: " + txtCodVend.getVlrString() + " - " + txtDescVend.getText().trim();
-			sWhere += " AND V.CODEMPVD=" + Aplicativo.iCodEmp + " AND V.CODFILIALVD=" + lcVend.getCodFilial();
-		}
-
-		if ( rgFaturados.getVlrString().equals( "S" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			sCab += " - SO FATURADO";
-		}
-		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
-			sCab += " - NAO FATURADO";
-		}
-		else if ( rgFaturados.getVlrString().equals( "A" ) )
-			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-
-		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			sCab += " - SO FINANCEIRO";
-		}
-		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
-			sCab += " - NAO FINANCEIRO";
-		}
-		else if ( rgFinanceiro.getVlrString().equals( "A" ) )
-			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-
-		if ( cbVendaCanc.getVlrString().equals( "N" ) )
-			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
-
-		if ( rgFormato.getVlrString().equals( "D" ) ) {
-			sSQL = "SELECT V.DTEMITVENDA,V.CODTIPOMOV,V.CODVENDA,V.DOCVENDA,V.SERIE," 
-				+ "V.STATUSVENDA,V.DOCVENDA,V.DTEMITVENDA,V.VLRPRODVENDA,V.VLRLIQVENDA," 
-				+ "V.CODPLANOPAG,P.DESCPLANOPAG,V.VLRCOMISVENDA,V.VLRDESCITVENDA," 
-				+ "V.CODCLI,C.RAZCLI,V.STATUSVENDA"
-				+ " FROM VDVENDA V,VDCLIENTE C,FNPLANOPAG P, EQTIPOMOV TM " 
-				+ "WHERE TM.CODTIPOMOV=V.CODTIPOMOV AND TM.CODEMP=V.CODEMPTM" 
-				+ " AND TM.CODFILIAL=V.CODFILIALTM AND C.CODCLI=V.CODCLI" 
-				+ " AND C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL"
-				+ " AND V.DTEMITVENDA BETWEEN ? AND ? AND " 
-				+ "P.CODPLANOPAG=V.CODPLANOPAG AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) 
-				+ " AND V.CODEMP=? AND V.CODFILIAL=?" 
-				+ sWhere + sWhere1 + sWhere2 + sWhere3
-				+ " ORDER BY V.DTEMITVENDA,V.DOCVENDA";
-
-		}
-		else if ( rgFormato.getVlrString().equals( "R" ) ) {
-			sSQL = "SELECT V.DTEMITVENDA,SUM(V.VLRLIQVENDA) FROM VDVENDA V," 
-				+ " EQTIPOMOV TM WHERE V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN " 
-				+ AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) 
-				+ " AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM"
-				+ " AND TM.CODTIPOMOV=V.CODTIPOMOV" 
-				+ sWhere + sWhere1 + sWhere2 + sWhere3 
-				+ " AND V.CODEMP=? AND V.CODFILIAL=? " 
-				+ " GROUP BY V.DTEMITVENDA";
-
-		}
-
 		try {
-			ps = con.prepareStatement( sSQL );
-			ps.setDate( 1, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
-			ps.setDate( 2, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
-			ps.setInt( 3, Aplicativo.iCodEmp );
-			ps.setInt( 4, ListaCampos.getMasterFilial( "VDVENDA" ) );
-			rs = ps.executeQuery();
 
 			if ( rgFormato.getVlrString().equals( "D" ) ) {
 
 				imp.montaCab();
 				imp.setTitulo( "Resumo Diário de Vendas" );
 				imp.addSubTitulo( "RESUMO DIARIO DE VENDAS   -   PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
-				if ( sCab.length() > 0 )
+
+				if ( sCab.length() > 0 ) {
 					imp.addSubTitulo( sCab );
+				}
+
 				imp.limpaPags();
 
 				while ( rs.next() ) {
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "+" + sLinhaFina + "+" );
 						imp.incPags();
 						imp.eject();
 					}
 					if ( imp.pRow() == 0 ) {
 						imp.impCab( 136, true );
-						imp.say( imp.pRow(), 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" );
-						imp.say( imp.pRow(), 135, "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
-						imp.say( imp.pRow() + 1, 0, "" + imp.comprimido() );
-						imp.say( imp.pRow(), 0, "| Dt. Emissao" );
-						imp.say( imp.pRow(), 17, "NF./Ped." );
-						imp.say( imp.pRow(), 31, "Cliente" );
-						imp.say( imp.pRow(), 85, "|    Valor   Desconto " + "  Liquido    F.Pagto." );
-						imp.say( imp.pRow(), 135, "|" );
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.pulaLinha( 0, imp.comprimido() );
+						imp.say( 0, "|" );
+						imp.say( 135, "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" + sLinhaFina + "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "| Dt. Emissao" );
+						imp.say( 17, "NF./Ped." );
+						imp.say( 31, "Cliente" );
+						imp.say( 85, "|    Valor   Desconto " + "  Liquido    F.Pagto." );
+						imp.say( 135, "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" + sLinhaFina + "|" );
 					}
 					if ( ( !Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ).equals( sDtemitvenda ) ) & ( bFimDia ) ) {
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" );
-						imp.say( imp.pRow(), 58, "Totais do Dia-> " + sDtemitvenda + " |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaVal ) + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaDesc ) + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalDiaLiq ) );
-						imp.say( imp.pRow(), 135, "|" );
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" + sLinhaFina + "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" );
+						imp.say( 58, "Totais do Dia-> " + sDtemitvenda + " |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaVal ) + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaDesc ) + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalDiaLiq ) );
+						imp.say( 135, "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( imp.pRow(), 0, "|" + sLinhaFina + "|" );
 						bTotalDiaVal = new BigDecimal( "0" );
 						bTotalDiaDesc = new BigDecimal( "0" );
 						bTotalDiaLiq = new BigDecimal( "0" );
 						bFimDia = false;
 					}
-					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" );
 					if ( !Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ).equals( sDtemitvenda ) ) {
-						imp.say( imp.pRow(), 3, Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ) );
+						imp.say( 3, Funcoes.sqlDateToStrDate( rs.getDate( "dtemitvenda" ) ) );
 					}
 
-					imp.say( imp.pRow(), 17, rs.getString( "StatusVenda" ).substring( 0, 1 ).equals( "P" ) ? "P-" + Funcoes.copy( rs.getString( "codvenda" ), 0, 6 ) : "V-" + Funcoes.copy( rs.getString( "docvenda" ), 0, 6 ) );
-					imp.say( imp.pRow(), 31, Funcoes.copy( rs.getString( "codcli" ), 0, 8 ) + "-" + Funcoes.copy( rs.getString( "razcli" ), 0, 45 ) + "|" + Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "vlrprodvenda" ) )
-							+ Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "vlrdescitvenda" ) ) + Funcoes.strDecimalToStrCurrency( 11, 2, rs.getString( "vlrliqvenda" ) ) + "  " + Funcoes.copy( rs.getString( "descplanopag" ), 0, 16 ) + "|" );
+					imp.say( 17, rs.getString( "StatusVenda" ).substring( 0, 1 ).equals( "P" ) ? "P-" + Funcoes.copy( rs.getString( "codvenda" ), 0, 6 ) : "V-" + Funcoes.copy( rs.getString( "docvenda" ), 0, 6 ) );
+					imp.say( 31, Funcoes.copy( rs.getString( "codcli" ), 0, 8 ) + "-" + Funcoes.copy( rs.getString( "razcli" ), 0, 45 ) + "|" + Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "vlrprodvenda" ) ) + Funcoes.strDecimalToStrCurrency( 10, 2, rs.getString( "vlrdescitvenda" ) )
+							+ Funcoes.strDecimalToStrCurrency( 11, 2, rs.getString( "vlrliqvenda" ) ) + "  " + Funcoes.copy( rs.getString( "descplanopag" ), 0, 16 ) + "|" );
 					if ( rs.getString( "VlrProdVenda" ) != null ) {
 						bTotalDiaVal = bTotalDiaVal.add( new BigDecimal( rs.getString( "VlrProdVenda" ) ) );
 						bTotalVal = bTotalVal.add( new BigDecimal( rs.getString( "VlrProdVenda" ) ) );
@@ -323,61 +374,61 @@ public class FRResumoDiario extends FRelatorio {
 				}
 
 				if ( bFimDia ) {
-					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
-					imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-					imp.say( imp.pRow(), 0, "|" );
-					imp.say( imp.pRow(), 58, "Totais do Dia-> " + sDtemitvenda + " |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaVal ) + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaDesc ) + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalDiaLiq ) );
-					imp.say( imp.pRow(), 135, "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" + sLinhaFina + "|" );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "|" );
+					imp.say( 58, "Totais do Dia-> " + sDtemitvenda + " |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaVal ) + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDiaDesc ) + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalDiaLiq ) );
+					imp.say( 135, "|" );
 				}
 
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "|" );
-				imp.say( imp.pRow(), 69, "Totais Geral    |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalVal ) + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDesc ) + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) );
-				imp.say( imp.pRow(), 135, "|" );
-				imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-				imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "=", 133 ) + "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" + sLinhaDupla + "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" );
+				imp.say( 69, "Totais Geral    |" + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalVal ) + Funcoes.strDecimalToStrCurrency( 10, 2, "" + bTotalDesc ) + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) );
+				imp.say( 135, "|" );
+				imp.pulaLinha( 1, imp.comprimido() );
+				imp.say( 0, "|" + sLinhaDupla + "|" );
 
 			}
 			else if ( rgFormato.getVlrString().equals( "R" ) ) {
-				iLinha = 1;
-				iCol = 0;
 
 				imp.montaCab();
 				imp.setTitulo( "Resumo Diário de Vendas" );
 				imp.addSubTitulo( "RESUMO DE TOTAL DE VENDAS - PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+
 				if ( sCab.length() > 0 ) {
 					imp.addSubTitulo( sCab );
 				}
 
 				while ( rs.next() ) {
 					if ( imp.pRow() >= ( linPag - 1 ) ) {
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "-", 133 ) + "+" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "+" + sLinhaFina + "+" );
 						imp.incPags();
 						imp.eject();
 					}
 					if ( imp.pRow() == 0 ) {
 						imp.impCab( 136, true );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|  Data" );
-						imp.say( imp.pRow(), 14, "        Valor" );
-						imp.say( imp.pRow(), 35, "|  Data" );
-						imp.say( imp.pRow(), 49, "        Valor" );
-						imp.say( imp.pRow(), 70, "|  Data" );
-						imp.say( imp.pRow(), 84, "        Valor" );
-						imp.say( imp.pRow(), 105, "|  Data" );
-						imp.say( imp.pRow(), 119, "       Valor" );
-						imp.say( imp.pRow(), 135, "|" );
-						imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-						imp.say( imp.pRow(), 0, "|" + Funcoes.replicate( "-", 133 ) + "|" );
+						imp.say( 0, "|" + sLinhaFina + "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|  Data" );
+						imp.say( 22, "Valor" );
+						imp.say( 35, "|  Data" );
+						imp.say( 57, "Valor" );
+						imp.say( 70, "|  Data" );
+						imp.say( 92, "Valor" );
+						imp.say( 105, "|  Data" );
+						imp.say( 126, "Valor" );
+						imp.say( 135, "|" );
+						imp.pulaLinha( 1, imp.comprimido() );
+						imp.say( 0, "|" + sLinhaFina + "|" );
 					}
 
-					imp.say( imp.pRow() + iLinha, iCol, "|  " + Funcoes.sqlDateToStrDate( rs.getDate( 1 ) ) );
-					imp.say( imp.pRow(), iCol + 14, " " + Funcoes.strDecimalToStrCurrency( 15, 2, "" + rs.getString( 2 ) ) );
+					imp.pulaLinha( iLinha, imp.comprimido() );
+					imp.say( iCol, "|  " + Funcoes.sqlDateToStrDate( rs.getDate( 1 ) ) );
+					imp.say( iCol + 14, " " + Funcoes.strDecimalToStrCurrency( 15, 2, "" + rs.getString( 2 ) ) );
 
 					if ( iCol == 0 ) {
 						iLinha = 0;
@@ -388,7 +439,7 @@ public class FRResumoDiario extends FRelatorio {
 					else if ( iCol == 70 )
 						iCol = 105;
 					else {
-						imp.say( imp.pRow() + 0, 135, "|" );
+						imp.say( 135, "|" );
 						iCol = 0;
 						iLinha = 1;
 					}
@@ -399,46 +450,64 @@ public class FRResumoDiario extends FRelatorio {
 					}
 				}
 				if ( ( iCol < 105 ) && ( iLinha == 0 ) )
-					imp.say( imp.pRow(), 135, "|" );
+					imp.say( 135, "|" );
 
 			}
 
-			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
-			imp.say( imp.pRow() + 1, 0, imp.comprimido() );
-			imp.say( imp.pRow(), 0, "|" );
-			imp.say( imp.pRow(), 85, "| Total Geral do Período   | " + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) );
-			imp.say( imp.pRow(), 135, "|" );
-			imp.say( imp.pRow() + 1, 0, "+" + Funcoes.replicate( "=", 133 ) + "+" );
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + sLinhaDupla + "+" );
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "|" );
+			imp.say( 85, "| Total Geral do Período   | " + Funcoes.strDecimalToStrCurrency( 11, 2, "" + bTotalLiq ) );
+			imp.say( 135, "|" );
+			imp.pulaLinha( 1, imp.comprimido() );
+			imp.say( 0, "+" + sLinhaDupla + "+" );
 
 			imp.eject();
 			imp.fechaGravacao();
-			if ( !con.getAutoCommit() )
+
+			if ( !con.getAutoCommit() ) {
 				con.commit();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de vendas!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			rs = null;
-			sSQL = null;
-			sWhere = null;
-			sWhere1 = null;
-			sWhere2 = null;
-			sWhere3 = null;
-			sCab = null;
-			sDtemitvenda = null;
-			bTotalDiaVal = null;
-			bTotalDiaDesc = null;
-			bTotalDiaLiq = null;
-			bTotalVal = null;
-			bTotalDesc = null;
-			bTotalLiq = null;
-			System.gc();
+			}
+
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			else {
+				imp.print();
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar o relatorio!\n" + e.getMessage(), true, con, e );
+		}
+	}
+
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+
+		FPrinterJob dlGr = null;
+
+		if ( "D".equals( rgFormato.getVlrString() ) ) {
+			dlGr = new FPrinterJob( "relatorios/ResumoDiarioDetalhado.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
+		}
+		else if ( "R".equals( rgFormato.getVlrString() ) ) { 
+			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
 		}
 
-		if ( bVisualizar )
-			imp.preview( this );
-		else
-			imp.print();
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de resumo diario!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+		lcVend.setConexao( con );
 	}
 }
