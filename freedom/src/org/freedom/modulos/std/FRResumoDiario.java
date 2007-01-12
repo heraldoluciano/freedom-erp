@@ -87,7 +87,7 @@ public class FRResumoDiario extends FRelatorio {
 		vVals.addElement( "G" );
 		vVals.addElement( "T" );
 		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
-		rgTipo.setVlrString( "D" );
+		rgTipo.setVlrString( "T" );
 
 		Vector vLabs1 = new Vector();
 		Vector vVals1 = new Vector();
@@ -192,7 +192,7 @@ public class FRResumoDiario extends FRelatorio {
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
 				if ( sCab.length() > 0 ) {
-					sCab.append( " / " );
+					sCab.append( " - " );
 				}
 				sCab.append( "FINANCEIRO" );
 			}
@@ -267,6 +267,13 @@ public class FRResumoDiario extends FRelatorio {
 			}
 			else if ( "G".equals( rgTipo.getVlrString() ) ) {
 				imprimirGrafico( bVisualizar, rs, sCab.toString() );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
 			}
 
 		} catch ( SQLException err ) {
@@ -466,10 +473,6 @@ public class FRResumoDiario extends FRelatorio {
 			imp.eject();
 			imp.fechaGravacao();
 
-			if ( !con.getAutoCommit() ) {
-				con.commit();
-			}
-
 			if ( bVisualizar ) {
 				imp.preview( this );
 			}
@@ -490,7 +493,7 @@ public class FRResumoDiario extends FRelatorio {
 			dlGr = new FPrinterJob( "relatorios/ResumoDiarioDetalhado.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
 		}
 		else if ( "R".equals( rgFormato.getVlrString() ) ) { 
-			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - detalhado", sCab, rs, null, this );
+			dlGr = new FPrinterJob( "relatorios/ResumoDiarioResumido.jasper", "Resumo de Vendas diario - resumido", sCab, rs, null, this );
 		}
 
 		if ( bVisualizar ) {
