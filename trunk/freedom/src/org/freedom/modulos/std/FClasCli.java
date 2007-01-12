@@ -57,8 +57,8 @@ public class FClasCli extends FDados implements ActionListener {
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
-		btPrevimp.addActionListener(this);
-		btImp.addActionListener(this);
+		//btPrevimp.addActionListener(this);
+		//btImp.addActionListener(this);
 		setImprimir( true );
 	}
 
@@ -85,7 +85,7 @@ public class FClasCli extends FDados implements ActionListener {
 			dl.dispose();
 			return;
 		}
-		String sSQL = "SELECT CODCLASCLI,DESCCLASCLI FROM VDCLASCLI ORDER BY " + dl.getValor();
+		String sSQL = "SELECT CODCLASCLI,DESCCLASCLI FROM VDCLASCLI ORDER BY " + dl.getOrdem();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {

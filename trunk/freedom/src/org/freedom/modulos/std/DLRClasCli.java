@@ -41,50 +41,43 @@ public class DLRClasCli extends FFDialogo {
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
 
-	private Vector vLabs = new Vector();
-
-	private Vector vVals = new Vector();
-
-	private Vector vLabs1 = new Vector();
-
-	private Vector vVals1 = new Vector();
-
 	public DLRClasCli( Component cOrig ) {
 
 		super( cOrig );
 		setTitulo( "Ordem do Relatório" );
 		setAtribos( 300, 190 );
+
+		Vector vLabs = new Vector();
+		Vector vVals = new Vector();
+		
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
 		vVals.addElement( "D" );
-
-		vVals1.addElement( "T" );
-		vVals1.addElement( "G" );
-		vLabs1.addElement( "Texto" );
-		vLabs1.addElement( "Grafico" );
-
-		rgOrdem.setVlrString( "D" );
-		rgTipo.setVlrString( "G" );
-
 		rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgOrdem.setVlrString( "D" );
+
+		Vector vLabs1 = new Vector();
+		Vector vVals1 = new Vector();
+
+		vVals1.addElement( "G" );
+		vVals1.addElement( "T" );
+		vLabs1.addElement( "Grafico" );
+		vLabs1.addElement( "Texto" );
 		rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
+		rgTipo.setVlrString( "G" );		
 
 		adic( lbOrdem, 7, 0, 80, 15 );
 		adic( rgOrdem, 7, 20, 270, 30 );
 		adic( rgTipo, 7, 60, 270, 30 );
-
 	}
 
-	public String getValor() {
+	public String getOrdem() {
 
-		String sRetorno = "";
+		String sRetorno = "DESCCLASCLI";
 
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
 			sRetorno = "CODCLASCLI";
-		}
-		else if ( rgOrdem.getVlrString().compareTo( "D" ) == 0 ) {
-			sRetorno = "DESCCLASCLI";
 		}
 		
 		return sRetorno;
