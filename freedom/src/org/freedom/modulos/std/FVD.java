@@ -538,7 +538,7 @@ public abstract class FVD extends FDetalhe {
 	 */
 	protected BigDecimal calcVlrProd( BigDecimal arg0, BigDecimal arg1 ) {
 
-		BigDecimal bdRetorno = arg0.multiply( arg1 ).divide( new BigDecimal( "1" ), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+		BigDecimal bdRetorno = arg0.multiply( arg1 ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 		return bdRetorno;
 	}
 
@@ -553,7 +553,7 @@ public abstract class FVD extends FDetalhe {
 	 */
 	protected BigDecimal calcVlrTotalProd( BigDecimal arg0, BigDecimal arg1 ) {
 
-		BigDecimal bdRetorno = arg0.subtract( arg1 ).divide( new BigDecimal( "1" ), Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
+		BigDecimal bdRetorno = arg0.subtract( arg1 ).setScale( Aplicativo.casasDecFin, BigDecimal.ROUND_HALF_UP );
 		return bdRetorno;
 	}
 

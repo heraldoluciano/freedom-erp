@@ -399,7 +399,7 @@ ORDER BY RAZCLI]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Total geral do periodo]]></text>
+				<text><![CDATA[Total]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
