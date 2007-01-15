@@ -978,7 +978,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( fICMS ) );
 				txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( fBaseICMS ) );
-				txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
+				//txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
 				txtVlrIPIItVenda.setVlrBigDecimal( new BigDecimal( fIPI ) );
 				txtBaseIPIItVenda.setVlrBigDecimal( new BigDecimal( fBaseIPI ) );
 				txtAliqIPIItVenda.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
@@ -986,7 +986,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			}
 			
-			txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
+			//txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
+			txtVlrLiqItVenda.setVlrBigDecimal( calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ) );
 			
 		} finally {
 			fRed = 0;
