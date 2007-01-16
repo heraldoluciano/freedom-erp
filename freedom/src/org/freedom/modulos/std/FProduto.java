@@ -593,7 +593,7 @@ public class FProduto extends FTabDados implements CheckBoxListener, EditListene
 		cbAdicPDV = new JCheckBoxPad( "tela adicional", "S", "N" );
 		cbAdicPDV.setVlrString( "N" );
 		
-		cbReceita = new JCheckBoxPad( "Nescecita receita", "S", "N" );
+		cbReceita = new JCheckBoxPad( "Nececita receita", "S", "N" );
 		cbReceita.setVlrString( "N" );
 
 		txtCustoMPMProd.setSoLeitura( true );
