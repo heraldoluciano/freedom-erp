@@ -373,9 +373,9 @@ public class FRVendasDet extends FRelatorio {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( imp.pRow(), 0, "|" + sLinFina + "|" );
 
-					bVlrLiq = rs.getBigDecimal( "VlrLiqVenda" );
-					bVlrDescTot = bVlrDescTot.add( bVlrDesc );
-					bVlrLiqTot = bVlrLiqTot.add( bVlrLiq );
+					bVlrLiq = rs.getBigDecimal( "VlrLiqVenda" ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+					bVlrDescTot = bVlrDescTot.add( bVlrDesc ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+					bVlrLiqTot = bVlrLiqTot.add( bVlrLiq ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 					bVlrDesc = new BigDecimal( "0" );
 				}
 
@@ -393,7 +393,6 @@ public class FRVendasDet extends FRelatorio {
 				bVlrDesc = bVlrDesc.add( rs.getBigDecimal( "VlrDescItVenda" ) );
 
 				iCodVendaAnt = rs.getInt( "CodVenda" );
-
 			}
 
 			if ( montou ) {
@@ -402,8 +401,8 @@ public class FRVendasDet extends FRelatorio {
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 64, " Totais da venda: " );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDesc ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiq ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDesc.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiq.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
 				imp.say( 124, "|" );
 				imp.say( 135, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );
@@ -413,8 +412,8 @@ public class FRVendasDet extends FRelatorio {
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 64, " TOTAL GERAL : " );
-				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDescTot ) ) );
-				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiqTot ) ) );
+				imp.say( 94, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrDescTot.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
+				imp.say( 109, "| " + Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( bVlrLiqTot.setScale( 2, BigDecimal.ROUND_HALF_UP ) ) ) );
 				imp.say( 124, "|" );
 				imp.say( 135, "|" );
 				imp.pulaLinha( 1, imp.comprimido() );

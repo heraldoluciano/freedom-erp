@@ -91,7 +91,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]></queryString>
 	<variable name="TOTGERDESC" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$V{TOTDESC}]]></variableExpression>
 	</variable>
-	<variable name="TOTGERLIQ" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+	<variable name="TOTGERLIQ" class="java.math.BigDecimal" resetType="Report" incrementType="Group" incrementGroup="VENDA" calculation="Sum">
 		<variableExpression><![CDATA[$F{VLRLIQVENDA}]]></variableExpression>
 	</variable>
 
