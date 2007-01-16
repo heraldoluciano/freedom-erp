@@ -29,11 +29,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.JTextFieldPad;
 import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.FDados;
+import org.freedom.telas.FPrinterJob;
 
 public class FClasCli extends FDados implements ActionListener {
 
@@ -57,13 +60,10 @@ public class FClasCli extends FDados implements ActionListener {
 		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
-		//btPrevimp.addActionListener(this);
-		//btImp.addActionListener(this);
 		setImprimir( true );
 	}
 
 	public void actionPerformed( ActionEvent evt ) {
-
 		if ( evt.getSource() == btPrevimp ) {
 			imprimir( true );
 		}
@@ -74,24 +74,54 @@ public class FClasCli extends FDados implements ActionListener {
 	}
 
 	private void imprimir( boolean bVisualizar ) {
+		
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sSQL = null;
+		DLRClasCli dl = new DLRClasCli( this );
+				
+		try {			
+			dl.setVisible( true );						
+			if ( dl.OK == false ) {
+				dl.dispose();
+				return;
+			}
+
+			sSQL = "SELECT CODCLASCLI,DESCCLASCLI FROM VDCLASCLI ORDER BY " + dl.getOrdem();			
+			ps = con.prepareStatement( sSQL );
+			rs = ps.executeQuery();
+			
+			if ( "T".equals( dl.getTipo() ) ) {
+				imprimirTexto( bVisualizar, rs );
+			}
+			else if ( "G".equals( dl.getTipo() ) ) {
+				imprimirGrafico( bVisualizar, rs );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+			dl.dispose();
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+		}
+	}
+	
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
 
 		ImprimeOS imp = new ImprimeOS( "", con );
 		int linPag = imp.verifLinPag() - 1;
 		imp.montaCab();
 		imp.setTitulo( "Relatório de Classificação de Clientes" );
-		DLRClasCli dl = new DLRClasCli( this );
-		dl.setVisible( true );
-		if ( dl.OK == false ) {
-			dl.dispose();
-			return;
-		}
-		String sSQL = "SELECT CODCLASCLI,DESCCLASCLI FROM VDCLASCLI ORDER BY " + dl.getOrdem();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
+		
 		try {
-			ps = con.prepareStatement( sSQL );
-			rs = ps.executeQuery();
+
 			imp.limpaPags();
+			
 			while ( rs.next() ) {
 				if ( imp.pRow() == 0 ) {
 					imp.impCab( 80, false );
@@ -113,24 +143,37 @@ public class FClasCli extends FDados implements ActionListener {
 
 			imp.say( imp.pRow() + 1, 0, "" + imp.normal() );
 			imp.say( imp.pRow() + 0, 0, Funcoes.replicate( "=", 80 ) );
+			
 			imp.eject();
-
 			imp.fechaGravacao();
 
-			// rs.close();
-			// ps.close();
-			if ( !con.getAutoCommit() )
-				con.commit();
-			dl.dispose();
-		} catch ( SQLException err ) {
-			Funcoes.mensagemErro( this, "Erro consulta tabela de clascli!\n" + err.getMessage(), true, con, err );
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			else {
+				imp.print();
+			}
+		} catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
 		}
+	}
+
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/ClasCli.jasper", "Classificação Cliente", null, rs, null, this );
 
 		if ( bVisualizar ) {
-			imp.preview( this );
+			dlGr.setVisible( true );
 		}
 		else {
-			imp.print();
+			try {
+
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				err.printStackTrace();
+				Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+			}
 		}
 	}
 }
