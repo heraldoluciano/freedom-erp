@@ -24,14 +24,19 @@
 
 package org.freedom.modulos.std;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+
+import net.sf.jasperreports.engine.JasperPrintManager;
+
 import org.freedom.componentes.JLabelPad;
 
 import org.freedom.componentes.GuardaCampo;
@@ -44,6 +49,7 @@ import org.freedom.componentes.ListaCampos;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.AplicativoPD;
+import org.freedom.telas.FPrinterJob;
 import org.freedom.telas.FRelatorio;
 
 public class FRVendasItem extends FRelatorio {
@@ -76,23 +82,13 @@ public class FRVendasItem extends FRelatorio {
 
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
+	private JRadioGroup rgTipo = null;
+
 	private JRadioGroup rgOrdem = null;
 
 	private JRadioGroup rgFaturados = null;
 
 	private JRadioGroup rgFinanceiro = null;
-
-	private Vector vLabsFat = new Vector();
-
-	private Vector vValsFat = new Vector();
-
-	private Vector vLabsFin = new Vector();
-
-	private Vector vValsFin = new Vector();
-
-	private Vector vLabs = new Vector( 2 );
-
-	private Vector vVals = new Vector( 2 );
 
 	private ListaCampos lcVend = new ListaCampos( this );
 
@@ -107,38 +103,57 @@ public class FRVendasItem extends FRelatorio {
 	public FRVendasItem() {
 
 		setTitulo( "Vendas por Item" );
-		setAtribos( 80, 80, 305, 520 );
+		setAtribos( 80, 80, 590, 350 );
 
 		txtDescVend.setAtivo( false );
 		txtDescGrup.setAtivo( false );
 		txtDescMarca.setAtivo( false );
 		txtRazCli.setAtivo( false );
 
-		vLabs.addElement( "Código" );
-		vLabs.addElement( "Descrição" );
-		vVals.addElement( "C" );
-		vVals.addElement( "D" );
-		rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
-		rgOrdem.setVlrString( "D" );
+		Vector vLabs = new Vector();
+		Vector vVals = new Vector();
 
-		vLabsFat.addElement( "Faturado" );
-		vLabsFat.addElement( "Não Faturado" );
-		vLabsFat.addElement( "Ambos" );
-		vValsFat.addElement( "S" );
-		vValsFat.addElement( "N" );
-		vValsFat.addElement( "A" );
-		rgFaturados = new JRadioGroup( 3, 1, vLabsFat, vValsFat );
+		vLabs.addElement( "Grafico" );
+		vLabs.addElement( "Texto" );
+		vVals.addElement( "G" );
+		vVals.addElement( "T" );
+		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
+		rgTipo.setVlrString( "T" );
+		
+		Vector vLabs1 = new Vector();
+		Vector vVals1 = new Vector();
+
+		vLabs1.addElement( "Faturado" );
+		vLabs1.addElement( "Não Faturado" );
+		vLabs1.addElement( "Ambos" );
+		vVals1.addElement( "S" );
+		vVals1.addElement( "N" );
+		vVals1.addElement( "A" );
+		rgFaturados = new JRadioGroup( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
+		
+		Vector vLabs2 = new Vector();
+		Vector vVals2 = new Vector();
 
-		vLabsFin.addElement( "Financeiro" );
-		vLabsFin.addElement( "Não Finaceiro" );
-		vLabsFin.addElement( "Ambos" );
-		vValsFin.addElement( "S" );
-		vValsFin.addElement( "N" );
-		vValsFin.addElement( "A" );
-		rgFinanceiro = new JRadioGroup( 3, 1, vLabsFin, vValsFin );
+		vLabs2.addElement( "Financeiro" );
+		vLabs2.addElement( "Não Finaceiro" );
+		vLabs2.addElement( "Ambos" );
+		vVals2.addElement( "S" );
+		vVals2.addElement( "N" );
+		vVals2.addElement( "A" );
+		rgFinanceiro = new JRadioGroup( 3, 1, vLabs2, vVals2 );
 		rgFinanceiro.setVlrString( "S" );
-
+		
+		Vector vLabs3 = new Vector();
+		Vector vVals3 = new Vector();
+		
+		vLabs3.addElement( "Código" );
+		vLabs3.addElement( "Descrição" );
+		vVals3.addElement( "C" );
+		vVals3.addElement( "D" );
+		rgOrdem = new JRadioGroup( 1, 2, vLabs3, vVals3 );
+		rgOrdem.setVlrString( "D" );
+		
 		lcGrup.add( new GuardaCampo( txtCodGrup, "CodGrup", "Cód.grupo", ListaCampos.DB_PK, false ) );
 		lcGrup.add( new GuardaCampo( txtDescGrup, "DescGrup", "Descrição do grupo", ListaCampos.DB_SI, false ) );
 		txtCodGrup.setTabelaExterna( lcGrup );
@@ -166,10 +181,6 @@ public class FRVendasItem extends FRelatorio {
 
 		JLabelPad lbLinha = new JLabelPad();
 		lbLinha.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbLinha2 = new JLabelPad();
-		lbLinha2.setBorder( BorderFactory.createEtchedBorder() );
-		JLabelPad lbLinha3 = new JLabelPad();
-		lbLinha3.setBorder( BorderFactory.createEtchedBorder() );
 		txtDataini.setVlrDate( new Date() );
 		txtDatafim.setVlrDate( new Date() );
 
@@ -182,35 +193,34 @@ public class FRVendasItem extends FRelatorio {
 		lcCliente.montaSql( false, "CLIENTE", "VD" );
 
 		adic( new JLabelPad( "Periodo:" ), 7, 5, 100, 20 );
-		adic( lbLinha, 60, 15, 218, 2 );
-		adic( new JLabelPad( "De:" ), 7, 30, 30, 20 );
-		adic( txtDataini, 32, 30, 97, 20 );
-		adic( new JLabelPad( "Até:" ), 140, 30, 30, 20 );
-		adic( txtDatafim, 170, 30, 100, 20 );
-		adic( lbLinha2, 7, 60, 272, 2 );
-		adic( new JLabelPad( "Cód.comiss." ), 7, 68, 200, 20 );
-		adic( txtCodVend, 7, 88, 70, 20 );
-		adic( new JLabelPad( "Nome do comissionado" ), 80, 68, 200, 20 );
-		adic( txtDescVend, 80, 88, 200, 20 );
-		adic( new JLabelPad( "Cód.grupo" ), 7, 108, 200, 20 );
-		adic( txtCodGrup, 7, 128, 70, 20 );
-		adic( new JLabelPad( "Descrição do grupo" ), 80, 108, 200, 20 );
-		adic( txtDescGrup, 80, 128, 200, 20 );
-		adic( new JLabelPad( "Cód.marca" ), 7, 148, 200, 20 );
-		adic( txtCodMarca, 7, 168, 70, 20 );
-		adic( new JLabelPad( "Descrição da marca" ), 80, 148, 200, 20 );
-		adic( txtDescMarca, 80, 168, 200, 20 );
-		adic( new JLabelPad( "Cód.cli." ), 7, 188, 200, 20 );
-		adic( txtCodCli, 7, 208, 70, 20 );
-		adic( new JLabelPad( "Razão social do cliente" ), 80, 188, 200, 20 );
-		adic( txtRazCli, 80, 208, 200, 20 );
-		adic( rgFaturados, 7, 240, 125, 70 );
-		adic( rgFinanceiro, 157, 240, 125, 70 );
-		adic( cbListaFilial, 5, 325, 250, 20 );
-		adic( lbLinha3, 7, 350, 272, 2 );
-		adic( new JLabelPad( "Ordenado por:" ), 7, 360, 180, 20 );
-		adic( rgOrdem, 7, 385, 273, 30 );
-		adic( cbVendaCanc, 7, 425, 200, 20 );
+		adic( lbLinha, 7, 25, 273, 55 );
+		adic( new JLabelPad( "De:" ), 15, 40, 30, 20 );
+		adic( txtDataini, 45, 40, 90, 20 );
+		adic( new JLabelPad( "Até:" ), 145, 40, 30, 20 );
+		adic( txtDatafim, 180, 40, 90, 20 );		
+		adic( new JLabelPad( "Ordenado por:" ), 295, 5, 180, 20 );
+		adic( rgOrdem, 295, 25, 273, 30 );
+		adic( rgTipo, 295, 65, 273, 30 );		
+		adic( new JLabelPad( "Cód.comiss." ), 7, 100, 200, 20 );
+		adic( txtCodVend, 7, 120, 70, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 80, 100, 200, 20 );
+		adic( txtDescVend, 80, 120, 200, 20 );		
+		adic( new JLabelPad( "Cód.grupo" ), 295, 100, 200, 20 );
+		adic( txtCodGrup, 295, 120, 70, 20 );
+		adic( new JLabelPad( "Descrição do grupo" ), 368, 100, 200, 20 );
+		adic( txtDescGrup, 368, 120, 200, 20 );		
+		adic( new JLabelPad( "Cód.cli." ), 7, 140, 200, 20 );
+		adic( txtCodCli, 7, 160, 70, 20 );
+		adic( new JLabelPad( "Razão social do cliente" ), 80, 140, 200, 20 );
+		adic( txtRazCli, 80, 160, 200, 20 );		
+		adic( new JLabelPad( "Cód.marca" ), 295, 140, 200, 20 );
+		adic( txtCodMarca, 295, 160, 70, 20 );
+		adic( new JLabelPad( "Descrição da marca" ), 368, 140, 200, 20 );
+		adic( txtDescMarca, 368, 160, 200, 20 );			
+		adic( rgFaturados, 7, 200, 125, 70 );
+		adic( rgFinanceiro, 157, 200, 125, 70 );
+		adic( cbListaFilial, 295, 205, 250, 20 );
+		adic( cbVendaCanc, 295, 235, 200, 20 );
 
 	}
 
@@ -223,121 +233,139 @@ public class FRVendasItem extends FRelatorio {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		StringBuffer sSQL = new StringBuffer();
+		StringBuffer sCab = new StringBuffer();
+		StringBuffer sCab2 = new StringBuffer();
 		String sWhere = "";
 		String sWhere1 = null;
 		String sWhere2 = null;
 		String sWhere3 = "";
 		String sOrdem = rgOrdem.getVlrString();
 		String sOrdenado = "";
-		String sCodRel = null;
-		String sSQL = null;
-		String sLinhaFina = Funcoes.replicate( "-", 133 );
-		String sLinhaLarga = Funcoes.replicate( "=", 133 );
-		ImprimeOS imp = new ImprimeOS( "", con );
-		int linPag = imp.verifLinPag() - 1;
-		double dQtd = 0;
-		double dVlr = 0;
+		int paran = 1;
 		boolean listaFilial = false;
-
-		if ( comref )
-			sCodRel = "REFPROD";
-		else
-			sCodRel = "CODPROD";
-
-		if ( sOrdem.equals( "C" ) ) {
-			sOrdem = "P." + sCodRel;
-			sOrdenado = "ORDENADO POR " + ( sCodRel.equals( "CODPROD" ) ? "CODIGO" : "REFERENCIA" );
-		}
-		else {
-			sOrdem = "P.DESCPROD";
-			sOrdenado = "ORDENADO POR DESCRICAO";
-		}
-
-		imp.addSubTitulo( sOrdenado );
-
-		if ( txtCodVend.getText().trim().length() > 0 ) {
-			sWhere += " AND V.CODVEND=" + txtCodVend.getText().trim();
-			imp.addSubTitulo( "REPR.: " + txtDescVend.getText().trim() );
-		}
-		if ( txtCodGrup.getText().trim().length() > 0 ) {
-			sWhere += " AND P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'";
-			imp.addSubTitulo( "GRUPO: " + txtDescGrup.getText().trim() );
-		}
-		if ( txtCodMarca.getText().trim().length() > 0 ) {
-			sWhere += " AND P.CODMARCA='" + txtCodMarca.getText().trim() + "'";
-			imp.addSubTitulo( "MARCA: " + txtDescMarca.getText().trim() );
-		}
-		if ( txtCodCli.getText().trim().length() > 0 ) {
-			if ( cbListaFilial.getVlrString().equals( "S" ) )
-				sWhere += " AND (C.CODPESQ=" + txtCodCli.getText().trim() + " OR C.CODCLI=" + txtCodCli.getText().trim() + ")";
-			else
-				sWhere += " AND V.CODCLI=" + txtCodCli.getText().trim();
-			imp.addSubTitulo( "CLIENTE: " + txtRazCli.getText().trim() );
-		}
-
-		if ( rgFaturados.getVlrString().equals( "S" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
-			imp.addSubTitulo( "FATURADOS" );
-		}
-		else if ( rgFaturados.getVlrString().equals( "N" ) ) {
-			sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
-			imp.addSubTitulo( "NÃO FATURADOS" );
-		}
-		else if ( rgFaturados.getVlrString().equals( "A" ) )
-			sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
-
-		if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
-			imp.addSubTitulo( "FINANCEIRO" );
-		}
-		else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
-			sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
-			imp.addSubTitulo( "NÃO FINANCEIRO" );
-		}
-		else if ( rgFinanceiro.getVlrString().equals( "A" ) )
-			sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
-
-		if ( cbVendaCanc.getVlrString().equals( "N" ) )
-			sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
-
-		if ( cbListaFilial.getVlrString().equals( "S" ) && ( txtCodCli.getText().trim().length() > 0 ) ) {
-			sSQL = "SELECT P." + sCodRel + ", P.DESCPROD, P.CODUNID, SUM(IT.QTDITVENDA), SUM(IT.VLRLIQITVENDA) " 
-			+ "FROM VDVENDA V,EQTIPOMOV TM, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P " 
-			+ "WHERE P.CODPROD=IT.CODPROD AND IT.CODVENDA=V.CODVENDA " 
-			+ sWhere1 + sWhere2 + sWhere3
-			+ "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " 
-			+ "AND TM.TIPOMOV IN ('VD','PV','VT','SE') " 
-			+ "AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL " 
-			+ "AND V.DTEMITVENDA BETWEEN ? AND ? " 
-			+ sWhere
-			+ " AND V.FLAG IN " + AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) 
-			+ " GROUP BY P." + sCodRel + "," + "P.DESCPROD,P.CODUNID " 
-			+ "ORDER BY " + sOrdem;
-			listaFilial = true;
-		}
-		else {
-			sSQL = "SELECT P." + sCodRel + ",P.DESCPROD,P.CODUNID,SUM(IT.QTDITVENDA),SUM(IT.VLRLIQITVENDA) " 
-			+ "FROM VDVENDA V,EQTIPOMOV TM,VDITVENDA IT, EQPRODUTO P " 
-			+ "WHERE P.CODEMP=? AND P.CODFILIAL=? " 
-			+ "AND IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD "
-			+ "AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.CODVENDA=IT.CODVENDA " 
-			+ "AND V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN ('S','N') " 
-			+ sWhere + sWhere1 + sWhere2 + sWhere3 
-			+ "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV "
-			+ "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " 
-			+ "GROUP BY P." + sCodRel + ",P.DESCPROD,P.CODUNID " 
-			+ "ORDER BY " + sOrdem;
-		}
 
 		try {
 
-			imp.limpaPags();
-			imp.montaCab();
-			imp.setTitulo( "Relatório de Vendas por ítem" );
-			imp.addSubTitulo( "RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			if ( txtCodVend.getText().trim().length() > 0 ) {
+				sWhere += " AND V.CODVEND=" + txtCodVend.getText().trim();
+				sCab.append( "REPR.: " + txtDescVend.getText().trim() );
+			}
+			if ( txtCodGrup.getText().trim().length() > 0 ) {
+				sWhere += " AND P.CODGRUP LIKE '" + txtCodGrup.getText().trim() + "%'";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "GRUPO: " + txtDescGrup.getText().trim() );
+			}
+			if ( txtCodMarca.getText().trim().length() > 0 ) {
+				sWhere += " AND P.CODMARCA='" + txtCodMarca.getText().trim() + "'";
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "MARCA: " + txtDescMarca.getText().trim() );
+			}
+			if ( txtCodCli.getText().trim().length() > 0 ) {
+				if ( cbListaFilial.getVlrString().equals( "S" ) ) {
+					sWhere += " AND (C.CODPESQ=" + txtCodCli.getText().trim() + " OR C.CODCLI=" + txtCodCli.getText().trim() + ")";
+				}
+				else {
+					sWhere += " AND V.CODCLI=" + txtCodCli.getText().trim();
+				}
+				if ( sCab.length() > 0 ) {
+					sCab.append( " - " );
+				}
+				sCab.append( "CLIENTE: " + txtRazCli.getText().trim() );
+			}
+	
+			if ( rgFaturados.getVlrString().equals( "S" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='S' ";
+				sCab2.append( "FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "N" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV='N' ";
+				if ( sCab2.length() > 0 ) {
+					sCab2.append( " - " );
+				}
+				sCab2.append( "NAO FATURADO" );
+			}
+			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
+				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+			}
+	
+			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
+				if ( sCab2.length() > 0 ) {
+					sCab2.append( " - " );
+				}
+				sCab2.append( "FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "N" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV='N' ";
+				if ( sCab2.length() > 0 ) {
+					sCab2.append( " - " );
+				}
+				sCab2.append( "NAO FINANCEIRO" );
+			}
+			else if ( rgFinanceiro.getVlrString().equals( "A" ) ) {
+				sWhere2 = " AND TM.SOMAVDTIPOMOV IN ('S','N') ";
+			}
+	
+			if ( cbVendaCanc.getVlrString().equals( "N" ) ) {
+				sWhere3 = " AND NOT SUBSTR(V.STATUSVENDA,1,1)='C' ";
+			}
+			
+			if ( sOrdem.equals( "C" ) ) {
+				sOrdem = comref ? "P.REFPROD" : "P.CODPROD";
+				sOrdenado = "\nORDENADO POR " + ( comref ? "REFERENCIA" : "CODIGO" );
+			}
+			else {
+				sOrdem = "P.DESCPROD";
+				sOrdenado = "\nORDENADO POR DESCRICAO";
+			}
+	
+			sCab2.append( sOrdenado );
+	
+			if ( cbListaFilial.getVlrString().equals( "S" ) && ( txtCodCli.getText().trim().length() > 0 ) ) {
+				sSQL.append( "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
+				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM, VDCLIENTE C, VDITVENDA IT, EQPRODUTO P " );
+				sSQL.append( "WHERE P.CODPROD=IT.CODPROD AND IT.CODVENDA=V.CODVENDA " );
+				sSQL.append( sWhere );
+				sSQL.append( sWhere1 );
+				sSQL.append( sWhere2 );
+				sSQL.append( sWhere3 );
+				sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " ); 
+				sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
+				sSQL.append( "AND V.CODCLI=C.CODCLI AND V.CODEMPCL=C.CODEMP AND V.CODFILIALCL=C.CODFILIAL " ); 
+				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? " );
+				sSQL.append( "AND V.FLAG IN " );
+				sSQL.append( AplicativoPD.carregaFiltro( con, org.freedom.telas.Aplicativo.iCodEmp ) ); 
+				sSQL.append( " GROUP BY " );
+				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) ); 
+				sSQL.append( "P.DESCPROD,P.CODUNID " );
+				sSQL.append( "ORDER BY " + sOrdem );
+				listaFilial = true;
+			}
+			else {
+				sSQL.append( "SELECT P.CODPROD,P.REFPROD,P.DESCPROD,P.CODUNID,SUM(IT.QTDITVENDA) AS QTDITVENDA,SUM(IT.VLRLIQITVENDA) AS VLRLIQITVENDA " );
+				sSQL.append( "FROM VDVENDA V,EQTIPOMOV TM,VDITVENDA IT, EQPRODUTO P " );
+				sSQL.append( "WHERE P.CODEMP=? AND P.CODFILIAL=? " );
+				sSQL.append( "AND IT.CODEMPPD=P.CODEMP AND IT.CODFILIALPD=P.CODFILIAL AND IT.CODPROD=P.CODPROD " );
+				sSQL.append( "AND V.CODEMP=IT.CODEMP AND V.CODFILIAL=IT.CODFILIAL AND V.CODVENDA=IT.CODVENDA " );
+				sSQL.append( "AND V.DTEMITVENDA BETWEEN ? AND ? AND V.FLAG IN ('S','N') " );
+				sSQL.append( sWhere );
+				sSQL.append( sWhere1 );
+				sSQL.append( sWhere2 );
+				sSQL.append( sWhere3 );
+				sSQL.append( "AND TM.CODEMP=V.CODEMPTM AND TM.CODFILIAL=V.CODFILIALTM AND TM.CODTIPOMOV=V.CODTIPOMOV " );
+				sSQL.append( "AND TM.TIPOMOV IN ('VD','VE','PV','VT','SE') " );
+				sSQL.append( "GROUP BY " );
+				sSQL.append( ( comref ? "P.REFPROD,P.CODPROD," : "P.CODPROD,P.REFPROD," ) ); 
+				sSQL.append( "P.DESCPROD,P.CODUNID " );
+				sSQL.append( "ORDER BY " + sOrdem );
+			}
 
-			int paran = 1;
-			ps = con.prepareStatement( sSQL );
+			ps = con.prepareStatement( sSQL.toString() );
 			if ( !listaFilial ) {
 				ps.setInt( paran++, Aplicativo.iCodEmp );
 				ps.setInt( paran++, ListaCampos.getMasterFilial( "EQPRODUTO" ) );
@@ -345,6 +373,48 @@ public class FRVendasItem extends FRelatorio {
 			ps.setDate( paran++, Funcoes.dateToSQLDate( txtDataini.getVlrDate() ) );
 			ps.setDate( paran++, Funcoes.dateToSQLDate( txtDatafim.getVlrDate() ) );
 			rs = ps.executeQuery();
+			
+			if ( "T".equals( rgTipo.getVlrString() ) ) {
+				imprimirTexto( bVisualizar, rs, Funcoes.strToVectorSilabas( sCab.toString() + "\n" + sCab2.toString(), 130 ), comref );
+			}
+			else if ( "G".equals( rgTipo.getVlrString() ) ) {
+				imprimirGrafico( bVisualizar, rs, sCab.toString() + "\n" + sCab2.toString(), comref );
+			}
+			
+			rs.close();
+			ps.close();
+			
+			if ( !con.getAutoCommit() ) {
+				con.commit();
+			}
+		}catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+		} finally {
+			System.gc();
+		}
+	}
+
+	public void imprimirTexto( final boolean bVisualizar, final ResultSet rs, final Vector cab, final boolean bComRef ) {
+
+		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		String sLinhaLarga = Funcoes.replicate( "=", 133 );
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		BigDecimal bdQtd = new BigDecimal("0");
+		BigDecimal bdVlr = new BigDecimal("0");
+		
+		try {
+
+			imp.limpaPags();
+			imp.montaCab();
+			imp.setTitulo( "Relatório de Vendas por ítem" );
+			imp.addSubTitulo( "RELATORIO DE VENDAS POR ITEM  -  PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			
+			for ( int i=0; i < cab.size(); i++ ) {
+				imp.addSubTitulo( (String) cab.elementAt( i ) );
+			}
+			
 			while ( rs.next() ) {
 				if ( imp.pRow() == linPag ) {
 					imp.pulaLinha( 1, imp.comprimido() );
@@ -360,12 +430,12 @@ public class FRVendasItem extends FRelatorio {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + sLinhaFina + "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
-					imp.say( 1, "| Cod.prod. " );
-					imp.say( 15, "| Desc.produto" );
-					imp.say( 69, "| Unid. " );
-					imp.say( 77, "|   Quantidade " );
-					imp.say( 100, "|    Vlr.tot.item. " );
-					imp.say( 136, "|" );
+					imp.say( 1, "| Cod.prod." );
+					imp.say( 14, "| Desc.produto" );
+					imp.say( 68, "| Unid. " );
+					imp.say( 76, "|   Quantidade " );
+					imp.say( 99, "|    Vlr.tot.item. " );
+					imp.say( 135, "|" );
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "|" + sLinhaFina + "|" );
 				}
@@ -373,14 +443,15 @@ public class FRVendasItem extends FRelatorio {
 				imp.pulaLinha( 1, imp.comprimido() );
 				imp.say( 0, "|" );
 				imp.say( 3, Funcoes.copy( rs.getString( 1 ), 0, 10 ) + " | " );
-				imp.say( 17, Funcoes.copy( rs.getString( 2 ), 0, 50 ) + " | " );
-				imp.say( 70, Funcoes.copy( rs.getString( 3 ), 0, 5 ) + " | " );
-				imp.say( 86, Funcoes.strDecimalToStrCurrency( 6, 1, rs.getString( 4 ) ) );
+				imp.say( 17, Funcoes.copy( rs.getString( 3 ), 0, 50 ) + " | " );
+				imp.say( 70, Funcoes.copy( rs.getString( 4 ), 0, 5 ) + " | " );
+				imp.say( 86, Funcoes.strDecimalToStrCurrency( 10, 1, rs.getString( 5 ) ) );
 				imp.say( 99, "|" );
-				imp.say( 100, Funcoes.strDecimalToStrCurrency( 15, 2, rs.getString( 5 ) ) );
+				imp.say( 100, Funcoes.strDecimalToStrCurrency( 20, 2, rs.getString( 6 ) ) );
 				imp.say( 135, "|" );
-				dQtd += rs.getDouble( 4 );
-				dVlr += rs.getDouble( 5 );
+				
+				bdQtd = bdQtd.add( rs.getBigDecimal( 5 ) );
+				bdVlr = bdVlr.add( rs.getBigDecimal( 6 ) );
 			}
 
 			imp.pulaLinha( 1, imp.comprimido() );
@@ -388,61 +459,69 @@ public class FRVendasItem extends FRelatorio {
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "|" );
 			imp.say( 30, "Quant. vendida -> " );
-			imp.say( 50, Funcoes.copy( String.valueOf( dQtd ), 6 ) );
+			imp.say( 50, Funcoes.copy( String.valueOf( bdQtd ), 6 ) );
 			imp.say( 60, "Valor vendido -> " );
-			imp.say( 78, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( dVlr ) ) );
+			imp.say( 78, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlr ) ) );
 			imp.say( 135, "|" );
 			imp.pulaLinha( 1, imp.comprimido() );
 			imp.say( 0, "+" + sLinhaLarga + "+" );
 
 			imp.eject();
-
 			imp.fechaGravacao();
-			if ( !con.getAutoCommit() )
-				con.commit();
-		} catch ( SQLException err ) {
-			err.printStackTrace();
-			Funcoes.mensagemErro( this, "Erro consulta tabela vendas!\n" + err.getMessage(), true, con, err );
-		} catch ( Exception err ) {
-			err.printStackTrace();
-		} finally {
-			ps = null;
-			rs = null;
-			sWhere = null;
-			sWhere1 = null;
-			sWhere2 = null;
-			sWhere3 = null;
-			sOrdem = null;
-			sOrdenado = null;
-			sCodRel = null;
-			sSQL = null;
-			sLinhaFina = null;
-			sLinhaLarga = null;
-			System.gc();
-		}
 
-		if ( bVisualizar )
-			imp.preview( this );
-		else
-			imp.print();
+			if ( bVisualizar ) {
+				imp.preview( this );
+			}
+			else {
+				imp.print();
+			}
+			
+		}catch ( Exception err ) {
+			err.printStackTrace();
+			Funcoes.mensagemErro( this, "Erro ao montar relatorio!\n" + err.getMessage(), true, con, err );
+		}
 	}
 
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
+
+		HashMap hParam = new HashMap();
+		hParam.put( "COMREF", bComRef ? "S" : "N" );
+		
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasItem.jasper", "Vendas por Item", sCab, rs, hParam, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas detalhadas!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+	
 	private boolean comRef() {
 
 		boolean bRetorno = false;
-		String sSQL = "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		
 		try {
-			ps = con.prepareStatement( sSQL );
+			ps = con.prepareStatement( "SELECT USAREFPROD FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "SGPREFERE1" ) );
 			rs = ps.executeQuery();
-			if ( rs.next() )
-				if ( rs.getString( "UsaRefProd" ).trim().equals( "S" ) )
-					bRetorno = true;
-			if ( !con.getAutoCommit() )
+			
+			if ( rs.next() ) {
+				bRetorno = "S".equals( rs.getString( "UsaRefProd" ) );
+			}
+			
+			rs.close();
+			ps.close();
+			if ( !con.getAutoCommit() ) {
 				con.commit();
+			}
 		} catch ( SQLException err ) {
 			Funcoes.mensagemErro( this, "Erro ao carregar a tabela PREFERE1!\n" + err.getMessage(), true, con, err );
 		}
