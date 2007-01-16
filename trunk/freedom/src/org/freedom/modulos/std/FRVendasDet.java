@@ -306,7 +306,8 @@ public class FRVendasDet extends FRelatorio {
 			linPag = imp.verifLinPag() - 1;
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Vendas Detalhado" );
-			imp.addSubTitulo( "RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() + sCab );
+			imp.addSubTitulo( "RELATORIO DE VENDAS DETALHADO   -   PERIODO DE :" + txtDataini.getVlrString() + " Até: " + txtDatafim.getVlrString() );
+			imp.addSubTitulo( sCab );
 			imp.limpaPags();
 
 			while ( rs.next() ) {

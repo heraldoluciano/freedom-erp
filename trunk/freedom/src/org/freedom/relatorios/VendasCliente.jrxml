@@ -273,6 +273,19 @@ ORDER BY RAZCLI]]></queryString>
 		</columnHeader>
 		<detail>
 			<band height="17"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="1"
+						y="1"
+						width="534"
+						height="16"
+						forecolor="#F4F4FF"
+						backcolor="#F4F4FF"
+						key="rectangle-3">
+							<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue()%2 == 0 )]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
