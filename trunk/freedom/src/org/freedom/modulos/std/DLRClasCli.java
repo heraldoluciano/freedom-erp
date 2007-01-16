@@ -49,7 +49,7 @@ public class DLRClasCli extends FFDialogo {
 
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
-		
+
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
@@ -65,7 +65,7 @@ public class DLRClasCli extends FFDialogo {
 		vLabs1.addElement( "Grafico" );
 		vLabs1.addElement( "Texto" );
 		rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
-		rgTipo.setVlrString( "G" );		
+		rgTipo.setVlrString( "G" );
 
 		adic( lbOrdem, 7, 0, 80, 15 );
 		adic( rgOrdem, 7, 20, 270, 30 );
@@ -79,7 +79,13 @@ public class DLRClasCli extends FFDialogo {
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
 			sRetorno = "CODCLASCLI";
 		}
-		
+
 		return sRetorno;
 	}
+	
+	public String getTipo() {
+
+		return rgTipo.getVlrString();
+	}	
+
 }

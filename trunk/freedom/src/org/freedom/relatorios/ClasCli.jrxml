@@ -61,7 +61,7 @@
 					<reportElement
 						mode="Transparent"
 						x="6"
-						y="72"
+						y="73"
 						width="63"
 						height="12"
 						forecolor="#000000"
@@ -78,7 +78,7 @@
 					<reportElement
 						mode="Transparent"
 						x="81"
-						y="72"
+						y="73"
 						width="398"
 						height="12"
 						forecolor="#000000"
