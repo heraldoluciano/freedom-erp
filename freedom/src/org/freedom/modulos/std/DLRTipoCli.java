@@ -71,4 +71,5 @@ public class DLRTipoCli extends FFDialogo {
 		
 		return sRetorno;
 	}
+	
 }
