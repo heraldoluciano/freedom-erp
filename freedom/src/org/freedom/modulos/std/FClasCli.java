@@ -91,7 +91,7 @@ public class FClasCli extends FDados implements ActionListener {
 			ps = con.prepareStatement( sSQL );
 			rs = ps.executeQuery();
 			
-			if ( "T".equals( dl.getTipo() ) ) {
+			if ( "D".equals( dl.getTipo() ) ) {
 				imprimirTexto( bVisualizar, rs );
 			}
 			else if ( "G".equals( dl.getTipo() ) ) {

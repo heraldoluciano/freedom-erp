@@ -145,7 +145,6 @@ public class FTipoCli extends FDados implements ActionListener {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
-		ImprimeOS imp = null;
 		DLRTipoCli dl = new DLRTipoCli();
 
 		try {
@@ -161,18 +160,22 @@ public class FTipoCli extends FDados implements ActionListener {
 			sSQL.append( "FROM VDTIPOCLI TP " );
 			sSQL.append( "WHERE TP.CODEMP=? AND TP.CODFILIAL=? " );
 			sSQL.append( "ORDER BY "  + dl.getValor() );
+			
 			ps = con.prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt(2, ListaCampos.getMasterFilial( "VDCLIENTE" ));
 			rs = ps.executeQuery();
 			
-			if ( "D".equals( dl.getValor()) ) {
+			if ( "T".equals( dl.getTipo()) ) {
 				imprimirTexto( bVisualizar, rs );
 			}
 			else if ( "G".equals( dl.getTipo() ) ) {
 				imprimirGrafico( bVisualizar, rs );
 			}
 			
-			ps.close();
 			rs.close();
+			ps.close();
+			
 			
 			if ( !con.getAutoCommit() ) {
 				con.commit();
@@ -187,22 +190,29 @@ public class FTipoCli extends FDados implements ActionListener {
 	}
 			private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ){
 				
+			String sLinhaFina = Funcoes.replicate( "-", 133 );	
 			ImprimeOS imp = new ImprimeOS( "", con );
 			int linPag = imp.verifLinPag() - 1;
 			imp.montaCab();
-			imp.setTitulo( "Relatório de Classificação do tipo de cliente" );
+			
 				
 				
 			try {
-
-				linPag = imp.verifLinPag() - 1;
-				linPag = imp.verifLinPag() - 1;
+				
 				imp.limpaPags();
 				imp.montaCab();
-				imp.setTitulo( "Relatório de Vendas por Cliente" );
-			
-			
+				imp.setTitulo( "Relatório de Classificação do tipo de cliente" );
+				
 			while ( rs.next() ) {
+				
+				
+				if ( imp.pRow() == linPag ) {
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 0, "+" + sLinhaFina + "+" );
+					imp.eject();
+					imp.incPags();
+				}
+				
 				
 				if ( imp.pRow() == 0 ) {
 					
@@ -264,11 +274,8 @@ public class FTipoCli extends FDados implements ActionListener {
 						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
 					} catch ( Exception err ) {
 						Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
-					}
 				}
 			}
-			
-			
-		
-}
+		}
+	}
 

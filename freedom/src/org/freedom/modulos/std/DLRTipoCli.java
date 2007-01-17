@@ -75,15 +75,10 @@ public class DLRTipoCli extends FFDialogo {
 
 	public String getValor() {
 
-		String sRetorno = "";
-		
-		if ( "C".compareTo( rgOrdem.getVlrString() ) == 0 ) {
-		
+		String sRetorno = "DESCTIPOCLI";
+
+		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
 			sRetorno = "CODTIPOCLI";
-		}
-		else if ( "D".compareTo( rgOrdem.getVlrString() ) == 0 ) {
-			
-			sRetorno = "DESCTIPOCLI";
 		}
 		
 		return sRetorno;
