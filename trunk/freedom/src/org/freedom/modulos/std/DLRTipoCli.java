@@ -35,17 +35,21 @@ public class DLRTipoCli extends FFDialogo {
 	private static final long serialVersionUID = 1L;
 
 	private JRadioGroup rgOrdem = null;
+	
+	private JRadioGroup rgTipo = null;
 
 	private JLabelPad lbOrdem = new JLabelPad( "Ordenar por:" );
 
-	private Vector vLabs = new Vector();
-
-	private Vector vVals = new Vector();
 
 	public DLRTipoCli() {
 
 		setTitulo( "Ordem do Relatório" );
-		setAtribos( 300, 140 );
+		setAtribos( 300, 190 );
+		
+		Vector vLabs = new Vector();
+
+		Vector vVals = new Vector();
+		
 		vLabs.addElement( "Código" );
 		vLabs.addElement( "Descrição" );
 		vVals.addElement( "C" );
@@ -54,6 +58,19 @@ public class DLRTipoCli extends FFDialogo {
 		rgOrdem.setVlrString( "D" );
 		adic( lbOrdem, 7, 0, 80, 15 );
 		adic( rgOrdem, 7, 20, 280, 30 );
+		
+		
+		Vector vLabs1 = new Vector();
+		Vector vVals1 = new Vector();
+		
+		vVals1.addElement( "G" );
+		vVals1.addElement( "T" );
+		vLabs1.addElement( "Grafico" );
+		vLabs1.addElement( "Texto" );
+		rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
+		rgTipo.setVlrString( "G" );
+		
+		adic( rgTipo, 7, 60, 270, 30 );
 	}
 
 	public String getValor() {
@@ -72,4 +89,8 @@ public class DLRTipoCli extends FFDialogo {
 		return sRetorno;
 	}
 	
+	public String getTipo(){
+		
+		return rgTipo.getVlrString();
+	}
 }
