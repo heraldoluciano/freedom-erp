@@ -116,7 +116,7 @@ public class FTipoCli extends FDados implements ActionListener {
 		adic( pinInfoFicha, 7, 60, 400, 180 );
 
 		setListaCampos( true, "TIPOCLI", "VD" );
-		btImp.addActionListener( this );
+		btImp.addActionListener( this ); 
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
 		setImprimir( true );
@@ -163,9 +163,9 @@ public class FTipoCli extends FDados implements ActionListener {
 			imp.setTitulo( "Relatório de Tipos de Cliente" );
 			imp.limpaPags();
 
-			sSQL.append( "SELECT TP.CODTIPOCLI,TP.DESCTIPOCLI," );
+			sSQL.append( "SELECT TP.CODTIPOCLI AS CODIGO,TP.DESCTIPOCLI AS DESCRICAO," );
 			sSQL.append( "(SELECT COUNT(CLI.CODCLI) FROM VDCLIENTE CLI " );
-			sSQL.append( "WHERE CLI.CODEMPTI=TP.CODEMP AND CLI.CODFILIALTI=TP.CODFILIAL AND CLI.CODTIPOCLI=TP.CODTIPOCLI)" );
+			sSQL.append( "WHERE CLI.CODEMPTI=TP.CODEMP AND CLI.CODFILIALTI=TP.CODFILIAL AND CLI.CODTIPOCLI=TP.CODTIPOCLI) AS QTD " );
 			sSQL.append( "FROM VDTIPOCLI TP " );
 			sSQL.append( "WHERE TP.CODEMP=? AND TP.CODFILIAL=? " );
 			sSQL.append( "ORDER BY TP." );
