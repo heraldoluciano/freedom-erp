@@ -26,17 +26,25 @@ import org.freedom.componentes.JRadioGroup;
 import org.freedom.telas.FFDialogo;
 
 import java.util.Vector;
+
 public class DLRSetor extends FFDialogo {
 
 	private static final long serialVersionUID = 1L;
+  
+	private JRadioGroup rgOrdem = null;
+ 
+	private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
+ 
+	private JRadioGroup rgTipo = null;
 
-  private JRadioGroup rgOrdem = null;
-  private JLabelPad lbOrdem = new JLabelPad("Ordenar por:");
-  private Vector vLabs = new Vector();
-  private Vector vVals = new Vector();
-  public DLRSetor() {
-    setTitulo("Ordem do Relatório");
-    setAtribos(300,140);
+	public DLRSetor() {
+  
+	setTitulo("Ordem do Relatório");
+    setAtribos(300,190);
+    
+    Vector vLabs = new Vector();
+    Vector vVals = new Vector();
+	
     vLabs.addElement("Código");
     vLabs.addElement("Descrição");
     vVals.addElement("C");
@@ -44,14 +52,34 @@ public class DLRSetor extends FFDialogo {
     rgOrdem = new JRadioGroup(1,2,vLabs,vVals);
     rgOrdem.setVlrString("D");
     adic(lbOrdem,7,0,80,15);
-    adic(rgOrdem,7,20,280,30);
-  }
-  public String getValor() {
-    String sRetorno = "";
-    if (rgOrdem.getVlrString().compareTo("C") == 0 )
+    adic(rgOrdem,7,20,270,30);
+    
+    Vector vLabs1 = new Vector();
+	Vector vVals1 = new Vector();
+	
+	vVals1.addElement( "G" );
+	vVals1.addElement( "T" );
+	vLabs1.addElement( "Grafico" );
+	vLabs1.addElement( "Texto" );
+	rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
+	rgTipo.setVlrString( "T" );
+	
+	adic( rgTipo, 7, 60, 270, 30 );
+  
+	}
+ 
+	public String getValor() {
+  
+		String sRetorno = "DESCSETOR";
+   
+		if (rgOrdem.getVlrString().compareTo("C") == 0 )
       sRetorno = "CODSETOR";
-    else if (rgOrdem.getVlrString().compareTo("D") == 0 )
-      sRetorno = "DESCSETOR";
-    return sRetorno;
-  }
+    
+		return sRetorno;
+    }
+	
+	public String getTipo(){
+		
+		return rgTipo.getVlrString();
+	}
 }

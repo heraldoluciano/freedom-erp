@@ -56,7 +56,7 @@ public class DLRTipoCli extends FFDialogo {
 		rgOrdem = new JRadioGroup( 1, 2, vLabs, vVals );
 		rgOrdem.setVlrString( "D" );
 		adic( lbOrdem, 7, 0, 80, 15 );
-		adic( rgOrdem, 7, 20, 280, 30 );
+		adic( rgOrdem, 7, 20, 270, 30 );
 		
 		
 		Vector vLabs1 = new Vector();
