@@ -186,8 +186,9 @@ public class FRResumoDiario extends FRelatorio {
 				}
 				sCab.append( "NAO FATURADO" );
 			}
-			else if ( rgFaturados.getVlrString().equals( "A" ) )
+			else if ( rgFaturados.getVlrString().equals( "A" ) ) {
 				sWhere1 = " AND TM.FISCALTIPOMOV IN ('S','N') ";
+			}
 
 			if ( rgFinanceiro.getVlrString().equals( "S" ) ) {
 				sWhere2 = " AND TM.SOMAVDTIPOMOV='S' ";
@@ -485,7 +486,7 @@ public class FRResumoDiario extends FRelatorio {
 		}
 	}
 
-	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
+	private void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab ) {
 
 		FPrinterJob dlGr = null;
 

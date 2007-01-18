@@ -205,7 +205,7 @@
 					<reportElement
 						x="0"
 						y="0"
-						width="534"
+						width="535"
 						height="16"
 						forecolor="#F4F4FF"
 						backcolor="#F4F4FF"
@@ -253,7 +253,7 @@
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="19"  isSplitAllowed="true" >
+			<band height="17"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
