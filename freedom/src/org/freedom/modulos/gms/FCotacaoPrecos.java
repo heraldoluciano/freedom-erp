@@ -155,6 +155,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 	Vector vItem = new Vector();
 	Vector vProdCan = new Vector();
 	Vector vMotivoCan = new Vector();
+	Vector vPrecCan = new Vector();
+	Vector vQtdCan = new Vector();
     String sSitSol;
     String sSitItAprov;
     String sSitItExp;
@@ -845,11 +847,11 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 		imp.verifLinPag();
 		imp.montaCab();
 
-		imp.setTitulo("Relatório de Solicitação de Compras");
+		imp.setTitulo("Relatório de Cotação de Preços");
 
 		String sSQL = "SELECT  (SELECT COUNT(IT.CODITSOL) FROM CPITSOLICITACAO IT "
 				+ " WHERE IT.CODEMP=R.CODEMP AND IT.CODFILIAL = R.CODFILIAL AND IT.CODSOL=R.CODSOL),"
-				+ "R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL,"
+				+ "R.CODSOL,R.DTINS,R.SITSOL,R.IDUSU,R.MOTIVOSOL,R.IDUSUAPROV,R.DTAAPROVSOL,R.MOTIVOCANCSOL,"
 				+ "I.CODPROD, I.QTDITSOL, I.QTDAPROVITSOL, I.SITITSOL,"
 				+ "I.SITITSOL,I.SITAPROVITSOL,I.CODITSOL,"
 				+ "P.REFPROD,P.DESCPROD, P.CODUNID,"
@@ -859,8 +861,22 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				+ "WHERE C.CODEMP=U.CODEMPCC AND C.CODFILIAL=U.CODEMPCC AND C.ANOCC=U.ANOCC "
 				+ " AND C.CODCC=U.CODCC AND U.IDUSU=R.IDUSUAPROV),"
 				+ " I.MOTIVOCANCITSOL, I.CODPROD"
-				+ " FROM CPSOLICITACAO R, CPITSOLICITACAO I, EQALMOX A, FNCC CC, EQPRODUTO P"
+				+ " C.DTCOT, C.IDUSUCOT, C.CODEMPFR, C.CODFILIALFR, C.CODFOR, "
+				+ " C.QTDCOT, C.QTDAPROVCOT, C.PRECOCOT, "
+				+ " C.SITCOMPITSOL AS SITCOMPITCOT, "
+				+ " C.SITAPROVITSOL AS SITAPROVITCOT, "
+				+ " C.SITITSOL AS SITITCOT, "
+				+ " C.MOTIVOCANCCOT, C.MOTIVOCOTABAIXO, "
+				+ " F.RAZFOR, F.NOMEFOR, F.PESSOAFOR, F.CNPJFOR, F.INSCFOR, "
+				+ " F.CPFFOR, F.RGFOR, F.FONEFOR, F.FAXFOR, F.CELFOR, "
+				+ " F.EMAILFOR, F.OBSFOR "
+				+ " FROM CPCOTACAO C, CPSOLICITACAO R, CPITSOLICITACAO I, "
+				+ "    EQALMOX A, FNCC CC, EQPRODUTO P, CPFORNECED F "
 				+ " WHERE R.CODEMP=? AND R.CODFILIAL=? AND R.CODSOL=?"
+				+ " AND C.CODEMP=R.CODEMP AND C.CODFILIAL=R.CODFILIAL AND C.CODSOL=R.CODSOL "
+				+ " AND C.SITAPROVITSOL <> 'NA' AND C.SITITSOL <> 'CA' "
+				+ " AND R.SITSOL <> 'NA' AND R.SITSOL <> 'CA' "
+				+ " AND F.CODEMP=C.CODEMPFR AND F.CODFILIAL=C.CODFILIALFR AND F.CODFOR=C.CODFOR "
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL AND I.CODSOL=R.CODSOL"
 				+ " AND P.CODEMP=I.CODEMPPD AND P.CODFILIAL=I.CODFILIALPD AND P.CODPROD=I.CODPROD"
 				+ " AND I.CODEMP=R.CODEMP AND I.CODFILIAL=R.CODFILIAL "
@@ -882,6 +898,8 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 
 			imp.limpaPags();
 
+			int codItSol = 0;
+			
 			while (rs.next()) {
 				if (imp.pRow() >= (linPag - 1)) {
 					imp.incPags();
@@ -893,7 +911,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
-					imp.say(imp.pRow() + 0, 4, "Compra   No.: ");
+					imp.say(imp.pRow() + 0, 4, "Sol. Comp. No.: ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("CODSOL"));
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -914,23 +932,12 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 4, "Aprovação   : ");
 					imp.say(imp.pRow() + 0, 19, rs.getString("IDUSUAPROV"));
-					imp.say(imp.pRow() + 0, 30, "- C.C.: ");
-					imp.say(imp.pRow() + 0, 38, (rs.getString(21) != null ? rs.getString(
-							21).trim() : ""));
-					imp.say(imp.pRow() + 0, 62, "-"
-							+ (rs.getString(22) != null ? rs.getString(22).trim() : ""));
 					imp.say(imp.pRow() + 0, 113, "- Data : ");
 					imp.say(imp.pRow() + 0, 123, Funcoes.sqlDateToStrDate(rs
 							.getDate("DTAAPROVSOL")));
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-					imp.say(imp.pRow() + 0, 1, "|");
-					imp.say(imp.pRow() + 0, 4, "- C.C.: ");
-					imp.say(imp.pRow() + 0, 12, (rs.getString(24) != null ? rs.getString(
-							24).trim() : ""));
-					imp.say(imp.pRow() + 0, 20, "-"
-							+ (rs.getString(25) != null ? rs.getString(25).trim() : ""));
-					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 0, 0, "|" + Funcoes.replicate("=", 133) + "|");
 
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
@@ -944,40 +951,70 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 					imp.say(imp.pRow() + 0, 2, "Item");
 					imp.say(imp.pRow() + 0, 8, "Referencia");
 					imp.say(imp.pRow() + 0, 22, "Descrição dos produtos");
-					imp.say(imp.pRow() + 0, 60, "Qtd.req.");
-					imp.say(imp.pRow() + 0, 75, "Qtd.aprov.");
-					imp.say(imp.pRow() + 0, 90, "Sit.item");
-					imp.say(imp.pRow() + 0, 100, "Sit.aprov.");
-					imp.say(imp.pRow() + 0, 112, "Sit.exp.");
+					imp.say(imp.pRow() + 0, 60, "Qtd.aprov.");
+					imp.say(imp.pRow() + 0, 100, "Sit.item");
+					imp.say(imp.pRow() + 0, 110, "Sit.aprov.");
 					imp.say(imp.pRow() + 0, 136, "|");
 					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 					imp.say(imp.pRow() + 0, 1, "|");
 					imp.say(imp.pRow() + 0, 136, "|");
 				}
-				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-				imp.say(imp.pRow() + 0, 1, "|");
-				imp.say(imp.pRow() + 0, 2, rs.getString("CODITSOL"));
-				imp.say(imp.pRow() + 0, 8, rs.getString("REFPROD"));
-				imp.say(imp.pRow() + 0, 22, rs.getString("DESCPROD").substring(0, 37));
-				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDITSOL"));
-				imp.say(imp.pRow() + 0, 75, "" + rs.getDouble("QTDAPROVITSOL"));
-				if (!rs.getString("SITITSOL").equals("CA"))
-					imp.say(imp.pRow() + 0, 95, "" + rs.getString("SITITSOL"));
-				if (!rs.getString("SITAPROVITSOL").equals("NA"))
-					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITAPROVITSOL"));
-				imp.say(imp.pRow() + 0, 136, "|");
+				
+				if (rs.getInt("CODITSOL") != codItSol)
+				{
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
 
-				if ((rs.getString("SITITSOL").equals("CA"))
-						|| (rs.getString("SITAPROVITSOL").equals("NA"))) {
-					if (comRef())
-						vProdCan.addElement(rs.getString("REFPROD"));
-					else
-						vProdCan.addElement(rs.getString("CODPROD"));
+					codItSol = rs.getInt("CODITSOL");
+					imp.say(imp.pRow() + 0, 2, rs.getString("CODITSOL"));
+					imp.say(imp.pRow() + 0, 8, rs.getString("REFPROD"));
+					imp.say(imp.pRow() + 0, 22, rs.getString("DESCPROD").substring(0, 37));
+					imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("QTDAPROVITSOL"));
+					imp.say(imp.pRow() + 0, 105, "" + rs.getString("SITITSOL"));
+					imp.say(imp.pRow() + 0, 115, "" + rs.getString("SITAPROVITSOL"));
+					imp.say(imp.pRow() + 0, 136, "|");
+					
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 57, "DADOS DO(S) FORNECEDOR(ES)");
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 2, "Cod.For.");
+					imp.say(imp.pRow() + 0, 19, "Nome");					
+					imp.say(imp.pRow() + 0, 60, "Fone");
+					imp.say(imp.pRow() + 0, 78, "Fax");
+					imp.say(imp.pRow() + 0, 96, "Cel.");
+					imp.say(imp.pRow() + 0, 114, "Preco");					
+					imp.say(imp.pRow() + 0, 136, "|");
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 136, "|");					
+				}
+				
+				if ((rs.getString("SITITCOT").equals("CA"))
+						|| (rs.getString("SITAPROVITCOT").equals("NA"))) {
+					vProdCan.addElement(rs.getString("NOMEFOR"));
+					vPrecCan.addElement(rs.getString("PRECOCOT"));
+					vQtdCan.addElement(rs.getString("QTDCOT"));
 					vItem.addElement(rs.getString("CODITSOL"));
-					vMotivoCan.addElement(rs.getString("MOTIVOCANCSOL") != null ? rs
-							.getString("MOTIVOCANCSOL") : "");
+					vMotivoCan.addElement(rs.getString("MOTIVOCANCCOT") != null ? rs
+							.getString("MOTIVOCANCCOT") : "");
 					cont++;
 				}
+				
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
+				imp.say(imp.pRow() + 0, 2, rs.getString("CODFOR"));
+				imp.say(imp.pRow() + 0, 19, rs.getString("NOMEFOR"));
+				imp.say(imp.pRow() + 0, 60, "" + rs.getDouble("FONEFOR"));
+				imp.say(imp.pRow() + 0, 78, "" + rs.getString("FAXFOR"));
+				imp.say(imp.pRow() + 0, 96, "" + rs.getString("CELFOR"));
+				imp.say(imp.pRow() + 0, 114, "" + rs.getString("PRECOCOT"));
+				imp.say(imp.pRow() + 0, 136, "|");
 
 			}
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
@@ -989,13 +1026,52 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 1, "|");
 			imp.say(imp.pRow() + 0, 136, "|");
+			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+			imp.say(imp.pRow() + 0, 1, "|");
+			imp.say(imp.pRow() + 0, 2, "MOTIVO DA SOLICITAÇÃO: ");
+			String sMotivoRMA = (rs.getString("MOTIVOSOL") != null ? rs
+					.getString("MOTIVOSOL") : "").trim();
+			imp.say(imp.pRow() + 0, 26, sMotivoRMA.substring(0,
+					sMotivoRMA.length() > 109 ? 109 : sMotivoRMA.length()));
+			imp.say(imp.pRow() + 0, 136, "|");
+			if (cont > 0) {
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
+				imp.say(imp.pRow() + 0, 4, "COTAÇÕES NÃO APROVADAS:");
+				imp.say(imp.pRow() + 0, 136, "|");
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
+				imp.say(imp.pRow() + 0, 2, "Item");
+				imp.say(imp.pRow() + 0, 19, "Nome");					
+				imp.say(imp.pRow() + 0, 60, "Preco");
+				imp.say(imp.pRow() + 0, 78, "Qtd.");
+				imp.say(imp.pRow() + 0, 96, "Motivo");				
+				imp.say(imp.pRow() + 0, 136, "|");
+				imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+				imp.say(imp.pRow() + 0, 1, "|");
+				imp.say(imp.pRow() + 0, 136, "|");
+				for (int i = 0; vProdCan.size() > i; i++) {
+					imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
+					imp.say(imp.pRow() + 0, 1, "|");
+					imp.say(imp.pRow() + 0, 2, vItem.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 19, vProdCan.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 60, vPrecCan.elementAt(i).toString());
+					imp.say(imp.pRow() + 0, 78, vProdCan.elementAt(i).toString());
+					String sMotivoCanc = vMotivoCan.elementAt(i).toString();
+
+					imp.say(imp.pRow() + 0, 96, "- "
+							+ sMotivoCanc.substring(0, sMotivoCanc.length() > 108 ? 108
+									: sMotivoCanc.length()));
+					imp.say(imp.pRow() + 0, 136, "|");
+				}
+			}
 
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 0, "+" + Funcoes.replicate("=", 133) + "+");
 			imp.say(imp.pRow() + 2, 0, "" + imp.comprimido());
 			imp.say(imp.pRow() + 0, 52, Funcoes.replicate("_", 41));
 			imp.say(imp.pRow() + 1, 0, "" + imp.comprimido());
-			imp.say(imp.pRow() + 0, 62, "Ass. do requisitante");
+			imp.say(imp.pRow() + 0, 62, "Ass. do funcionário");
 
 			imp.eject();
 
@@ -1005,7 +1081,7 @@ public class FCotacaoPrecos extends FDetalhe implements PostListener,
 				con.commit();
 			dl.dispose();
 		} catch (SQLException err) {
-			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Compra!"
+			Funcoes.mensagemErro(this, "Erro ao consultar a tabela de Cotações!"
 					+ err.getMessage(), true, con, err);
 		}
 
