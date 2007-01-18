@@ -47,7 +47,6 @@ public class DLRTipoCli extends FFDialogo {
 		setAtribos( 300, 190 );
 		
 		Vector vLabs = new Vector();
-
 		Vector vVals = new Vector();
 		
 		vLabs.addElement( "Código" );
