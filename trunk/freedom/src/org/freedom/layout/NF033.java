@@ -36,6 +36,7 @@ public class NF033 extends Layout {
 		boolean bjatem2 = false;
 		final int MAXLINE = 32;
 		int iItImp = 0;
+		int iNumNota = 0;
 		int iContaFrete = 0;
 		int sizeObs = 0;
 		int indexDescFisc = 0;
@@ -45,8 +46,9 @@ public class NF033 extends Layout {
 		String sDescFisc = "";
 		String[] sValsCli = new String[4];
 		String[] sNat = new String[2];
-		String[] sVencs = new String[4];
-		String[] sVals = new String[4];
+		String[] sVencs = new String[6];
+		String[] sVals = new String[6];
+		String[] sDuplics = new String[ 6 ];
 		Vector vClfisc = new Vector();
 		Vector vSigla = new Vector();
 		Vector vObs = new Vector();
@@ -57,23 +59,27 @@ public class NF033 extends Layout {
 			if ( cab.next() ) { 
 		        vObs = Funcoes.strToVectorSilabas(cab.getString(NF.C_OBSPED),120);				
 			}
-							
-			for ( int i=0; i < 4; i++ ) {
+			for ( int i = 0; i < 6; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
-						sVencs[i] = (parc.getDate(NF.C_DTVENCTO)!=null ? Funcoes.dateToStrDate(parc.getDate(NF.C_DTVENCTO)) : "");
-						sVals[i] = Funcoes.strDecimalToStrCurrency(12,2,String.valueOf(parc.getFloat(NF.C_VLRPARC)));
-					} else {
-						bFat = false;
-						sVencs[i] = "";
-						sVals[i] = "";
+						sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
+						sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
+						sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getFloat( NF.C_VLRPARC ) ) );
 					}
-				} else {
+					else {
+						bFat = false;
+						sDuplics[ i ] = "";
+						sVencs[ i ] = "";
+						sVals[ i ] = "";
+					}
+				}
+				else {
 					bFat = false;
-					sVencs[i] = "";
-					sVals[i] = "";
+					sVencs[ i ] = "";
+					sVals[ i ] = "";
 				}
 			}
+
 			
 			imp.limpaPags();
 			
@@ -103,7 +109,7 @@ public class NF033 extends Layout {
 					
 					//	Imprime cabeçalho da nota ...
 					
-					imp.pulaLinha( 4, imp.comprimido());
+					imp.pulaLinha( 2, imp.comprimido());
 					
 					if (nf.getTipoNF()==NF.TPNF_ENTRADA)
 						imp.say(103, "X");
@@ -137,17 +143,26 @@ public class NF033 extends Layout {
 					
 					//	Imprime dados da fatura ...
 										
-					imp.pulaLinha( 3, imp.comprimido());
-					imp.say(  2, Funcoes.copy(cab.getString(NF.C_DESCPLANOPAG),26) + " = " +
-					             (!sVencs[0].equals("") ? ( sVencs[0] + " | " + sVals[0] ) : "" ) +
-					             (!sVencs[1].equals("") ? ( " - " + sVencs[1] + " |" + sVals[1] ) : "" ) +
-					             (!sVencs[2].equals("") ? ( " - " + sVencs[2] + " |" + sVals[2] ) : "" ) +
-					             (!sVencs[3].equals("") ? ( " - " + sVencs[3] + " |" + sVals[3] ) : "" ) );
-					imp.pulaLinha( 2, imp.comprimido());
-					imp.say(  2, Funcoes.copy(String.valueOf(cab.getInt(NF.C_CODPED)),26));
-					imp.say( 30, Funcoes.copy(String.valueOf(cab.getInt(NF.C_CODEMIT)),26));
-					imp.say( 86, Funcoes.copy(cab.getString(NF.C_CODVEND),26));
-					imp.say(114, Funcoes.copy(cab.getString(NF.C_NOMEBANCO),26));
+					imp.pulaLinha( 3, imp.comprimido() );
+					imp.say( 4, sDuplics[ 0 ] );
+					imp.say( 20, sVals[ 0 ] );
+					imp.say( 36, sVencs[ 0 ] );
+					imp.say( 50, sDuplics[ 1 ] );
+					imp.say( 65, sVals[ 1 ] );
+					imp.say( 80, sVencs[ 1 ] );
+					imp.say( 94, sDuplics[ 2 ] );
+					imp.say( 110, sVals[ 2 ] );
+					imp.say( 125, sVencs[ 2 ] );
+					imp.pulaLinha( 2, imp.comprimido() );
+					imp.say( 4, sDuplics[ 3 ] );
+					imp.say( 20, sVals[ 3 ] );
+					imp.say( 36, sVencs[ 3 ] );
+					imp.say( 50, sDuplics[ 4 ] );
+					imp.say( 65, sVals[ 4 ] );
+					imp.say( 80, sVencs[ 4 ] );
+					imp.say( 94, sDuplics[ 5 ] );
+					imp.say( 110, sVals[ 5 ] );
+					imp.say( 125, sVencs[ 5 ] );
 					imp.pulaLinha( 4, imp.comprimido());
 					
 					//	Fim dos dados da fatura ...
@@ -182,7 +197,7 @@ public class NF033 extends Layout {
 				
 				imp.pulaLinha( 1, imp.comprimido() );
 				
-				imp.say(  2, Funcoes.copy(itens.getString(NF.C_DESCPROD).trim(), 23) );
+				imp.say(  2, itens.getString(NF.C_DESCPROD).trim());
 				imp.say( 55, itens.getString(NF.C_CODFISC));
 				imp.say( 67, Funcoes.copy(itens.getString(NF.C_ORIGFISC),1) + Funcoes.copy(itens.getString(NF.C_CODTRATTRIB),2));
 				imp.say( 73, Funcoes.copy(itens.getString(NF.C_CODUNID),4));
@@ -222,7 +237,7 @@ public class NF033 extends Layout {
 					
 					if (iItImp == itens.getInt(NF.C_CONTAITENS)) {        
 
-						imp.pulaLinha( 7, imp.comprimido());
+						imp.pulaLinha( 6, imp.comprimido());
 						imp.say(  4, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRBASEICMSPED))));
 						imp.say( 32, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRICMSPED))));
 						imp.say(114, Funcoes.strDecimalToStrCurrency(20,2,String.valueOf(itens.getFloat(NF.C_VLRPRODPED))));
