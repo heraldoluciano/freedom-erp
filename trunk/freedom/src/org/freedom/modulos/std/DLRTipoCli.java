@@ -67,7 +67,7 @@ public class DLRTipoCli extends FFDialogo {
 		vLabs1.addElement( "Grafico" );
 		vLabs1.addElement( "Texto" );
 		rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
-		rgTipo.setVlrString( "G" );
+		rgTipo.setVlrString( "T" );
 		
 		adic( rgTipo, 7, 60, 270, 30 );
 	}

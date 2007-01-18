@@ -120,7 +120,7 @@ public class FTipoCli extends FDados implements ActionListener {
 		adic( pinInfoFicha, 7, 60, 400, 180 );
 
 		setListaCampos( true, "TIPOCLI", "VD" );
-		btImp.addActionListener( this ); 
+		btImp.addActionListener( this );
 		btPrevimp.addActionListener( this );
 		lcCampos.setQueryInsert( false );
 		setImprimir( true );
@@ -129,19 +129,17 @@ public class FTipoCli extends FDados implements ActionListener {
 	public void actionPerformed( ActionEvent evt ) {
 
 		if ( evt.getSource() == btPrevimp ) {
-		
 			imprimir( true );
 		}
 		else if ( evt.getSource() == btImp ) {
-		
 			imprimir( false );
 		}
-		
+
 		super.actionPerformed( evt );
 	}
 
 	private void imprimir( boolean bVisualizar ) {
-		
+
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		StringBuffer sSQL = new StringBuffer();
@@ -149,75 +147,69 @@ public class FTipoCli extends FDados implements ActionListener {
 
 		try {
 
-			dl.setVisible( true );						
+			dl.setVisible( true );
 			if ( dl.OK == false ) {
 				dl.dispose();
 				return;
-		}
+			}
+			
 			sSQL.append( "SELECT TP.CODTIPOCLI AS CODIGO,TP.DESCTIPOCLI AS DESCRICAO," );
 			sSQL.append( "(SELECT COUNT(CLI.CODCLI) FROM VDCLIENTE CLI " );
 			sSQL.append( "WHERE CLI.CODEMPTI=TP.CODEMP AND CLI.CODFILIALTI=TP.CODFILIAL AND CLI.CODTIPOCLI=TP.CODTIPOCLI) AS QTD " );
 			sSQL.append( "FROM VDTIPOCLI TP " );
 			sSQL.append( "WHERE TP.CODEMP=? AND TP.CODFILIAL=? " );
-			sSQL.append( "ORDER BY "  + dl.getValor() );
-			
+			sSQL.append( "ORDER BY " + dl.getValor() );
+
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
-			ps.setInt(2, ListaCampos.getMasterFilial( "VDCLIENTE" ));
+			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
-			
-			if ( "T".equals( dl.getTipo()) ) {
+
+			if ( "T".equals( dl.getTipo() ) ) {
 				imprimirTexto( bVisualizar, rs );
 			}
 			else if ( "G".equals( dl.getTipo() ) ) {
 				imprimirGrafico( bVisualizar, rs );
 			}
-			
+
 			rs.close();
 			ps.close();
-			
-			
+
 			if ( !con.getAutoCommit() ) {
 				con.commit();
-			
 			}
 			dl.dispose();
 		} catch ( Exception err ) {
 			Funcoes.mensagemErro( this, "Erro ao montar relatório de classificação de cliente!\n" + err.getMessage(), true, con, err );
 			err.printStackTrace();
-		
-		} 
+
+		}
 	}
-			private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ){
-				
-			String sLinhaFina = Funcoes.replicate( "-", 133 );	
-			ImprimeOS imp = new ImprimeOS( "", con );
-			int linPag = imp.verifLinPag() - 1;
+
+	private void imprimirTexto( final boolean bVisualizar, final ResultSet rs ) {
+
+		String sLinhaFina = Funcoes.replicate( "-", 133 );
+		ImprimeOS imp = new ImprimeOS( "", con );
+		int linPag = imp.verifLinPag() - 1;
+		imp.montaCab();
+
+		try {
+
+			imp.limpaPags();
 			imp.montaCab();
-			
-				
-				
-			try {
-				
-				imp.limpaPags();
-				imp.montaCab();
-				imp.setTitulo( "Relatório de Classificação do tipo de cliente" );
-				
+			imp.setTitulo( "Relatório de Classificação do tipo de cliente" );
+
 			while ( rs.next() ) {
-				
-				
+
 				if ( imp.pRow() == linPag ) {
 					imp.pulaLinha( 1, imp.comprimido() );
 					imp.say( 0, "+" + sLinhaFina + "+" );
 					imp.eject();
 					imp.incPags();
 				}
-				
-				
+
 				if ( imp.pRow() == 0 ) {
-					
 					imp.impCab( 80, false );
-					
 					imp.say( 0, imp.normal() );
 					imp.say( 2, "Cód.tp.cli." );
 					imp.say( 20, "Descrição" );
@@ -225,18 +217,18 @@ public class FTipoCli extends FDados implements ActionListener {
 					imp.pulaLinha( 1, imp.normal() );
 					imp.say( 0, Funcoes.replicate( "-", 79 ) );
 				}
-				
+
 				imp.pulaLinha( 1, imp.normal() );
 				imp.say( 2, rs.getString( "CodTipoCli" ) );
 				imp.say( 20, rs.getString( "DescTipoCli" ) );
 				imp.say( 70, Funcoes.alinhaDir( rs.getInt( 3 ), 8 ) );
-					
+
 				if ( imp.pRow() >= linPag ) {
 					imp.incPags();
 					imp.eject();
 				}
 			}
-				
+
 			imp.pulaLinha( 1, imp.normal() );
 			imp.say( 0, Funcoes.replicate( "=", 79 ) );
 			imp.pulaLinha( 1, imp.normal() );
@@ -245,7 +237,7 @@ public class FTipoCli extends FDados implements ActionListener {
 			imp.say( 79, "|" );
 			imp.pulaLinha( 1, imp.normal() );
 			imp.say( 0, Funcoes.replicate( "=", 79 ) );
-			
+
 			imp.eject();
 			imp.fechaGravacao();
 
@@ -255,27 +247,27 @@ public class FTipoCli extends FDados implements ActionListener {
 			else {
 				imp.print();
 			}
-			
+
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro consulta tabela de tipos de cliente!\n" + err.getMessage(), true, con, err );
-		
-		} 
-	}
-		public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
 
-				FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente",null,  rs, null, this );
-
-				if ( bVisualizar ) {
-					dlGr.setVisible( true );
-				}
-				else {
-					try {
-						JasperPrintManager.printReport( dlGr.getRelatorio(), true );
-					} catch ( Exception err ) {
-						Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
-				}
-			}
 		}
 	}
 
+	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs ) {
+
+		FPrinterJob dlGr = new FPrinterJob( "relatorios/TipoCli.jasper", "Vendas por Cliente", null, rs, null, this );
+
+		if ( bVisualizar ) {
+			dlGr.setVisible( true );
+		}
+		else {
+			try {
+				JasperPrintManager.printReport( dlGr.getRelatorio(), true );
+			} catch ( Exception err ) {
+				Funcoes.mensagemErro( this, "Erro na impressão de relatório de vendas por cliente!" + err.getMessage(), true, con, err );
+			}
+		}
+	}
+}

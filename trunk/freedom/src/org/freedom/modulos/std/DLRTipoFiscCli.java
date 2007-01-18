@@ -61,7 +61,7 @@ public class DLRTipoFiscCli extends FFDialogo {
 	vLabs1.addElement( "Grafico" );
 	vLabs1.addElement( "Texto" );
 	rgTipo = new JRadioGroup( 1, 2, vLabs1, vVals1 );
-	rgTipo.setVlrString( "G" );
+	rgTipo.setVlrString( "T" );
 	
 	adic( rgTipo, 7, 60, 270, 30 );
     adic(lbOrdem,7,0,80,15);
@@ -71,10 +71,10 @@ public class DLRTipoFiscCli extends FFDialogo {
   }
 	public String getValor() {
 
-		String sRetorno = "DESCTIPOCLI";
+		String sRetorno = "DESCFISCCLI";
 
 		if ( rgOrdem.getVlrString().compareTo( "C" ) == 0 ) {
-			sRetorno = "CODTIPOCLI";
+			sRetorno = "CODFISCCLI";
 		}
 		
 		return sRetorno;

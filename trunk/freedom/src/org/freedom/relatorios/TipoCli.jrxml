@@ -46,13 +46,69 @@
 FROM VDTIPOCLI T, VDCLIENTE C
 WHERE T.CODEMP=4 AND T.CODFILIAL=1
 AND T.CODEMP=C.CODEMPTI AND T.CODFILIAL=C.CODFILIALTI AND T.CODTIPOCLI=C.CODTIPOCLI
-GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI
-]]></queryString>
+GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI]]></queryString>
 
 	<field name="CODIGO" class="java.lang.Integer"/>
 	<field name="DESCRICAO" class="java.lang.String"/>
 	<field name="QTD" class="java.lang.Integer"/>
 
+	<variable name="TOTQTD" class="java.lang.Integer" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{QTD}]]></variableExpression>
+	</variable>
+
+		<group  name="GERAL" >
+			<groupExpression><![CDATA[]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="18"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="461"
+						y="5"
+						width="74"
+						height="12"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{TOTQTD}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="361"
+						y="5"
+						width="95"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-2"
+						positionType="Float"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="" pdfFontName="Courier-Bold" size="9" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1250" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Total de clientes]]></text>
+				</staticText>
+				<line direction="BottomUp">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="2"
+						width="535"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" />
+				</line>
+			</band>
+			</groupFooter>
+		</group>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
@@ -132,7 +188,7 @@ GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI
 						mode="Opaque"
 						x="0"
 						y="89"
-						width="534"
+						width="535"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -144,7 +200,7 @@ GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI
 						mode="Opaque"
 						x="0"
 						y="71"
-						width="534"
+						width="535"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -224,6 +280,19 @@ GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI
 		</columnHeader>
 		<detail>
 			<band height="16"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="0"
+						y="0"
+						width="534"
+						height="16"
+						forecolor="#F4F4FF"
+						backcolor="#F4F4FF"
+						key="rectangle-1">
+							<printWhenExpression><![CDATA[new Boolean( $V{COLUMN_COUNT}.intValue()%2 == 0 )]]></printWhenExpression>
+						</reportElement>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -306,9 +375,9 @@ GROUP BY C.CODTIPOCLI,T.DESCTIPOCLI
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="1"
+						x="0"
 						y="3"
-						width="533"
+						width="535"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
