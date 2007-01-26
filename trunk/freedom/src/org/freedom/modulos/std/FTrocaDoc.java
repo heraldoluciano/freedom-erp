@@ -140,17 +140,21 @@ public class FTrocaDoc extends FFilho implements ActionListener {
       ps.close();
       if (!con.getAutoCommit())
       	con.commit();
+      Funcoes.mensagemInforma( this, "Numero da nota Alterado com Sucesso!" );
     }
     catch(SQLException err) {
 	  Funcoes.mensagemErro(this,"Erro ao alterar a venda!\n"+err.getMessage(),true,con,err);
 	  err.printStackTrace();
+	  
     }
+    
   }
   public void actionPerformed(ActionEvent evt) { 
     if (evt.getSource() == btSair)
       dispose();
     else if (evt.getSource() == btTrocaDoc)
       trocar();
+  
   }
   public void setConexao(Connection cn) {
     super.setConexao(cn);
