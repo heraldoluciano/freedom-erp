@@ -281,6 +281,7 @@ public class FAprovaOrc extends FFilho implements ActionListener, TabelaEditList
 				  ps2.execute();
 				  if (!con.getAutoCommit())
 				  	con.commit();
+				  Funcoes.mensagemInforma( this, "Orçamento Aprovado com Sucesso");
 				}
 			}
 			catch (SQLException err) {
