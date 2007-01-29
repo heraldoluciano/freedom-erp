@@ -367,6 +367,7 @@ public class FCpProd extends FFilho implements ActionListener,CheckBoxListener {
 //        ps.close();
         if (!con.getAutoCommit())
         	con.commit();
+        Funcoes.mensagemInforma( this, "Copia efetuada com Sucesso !");
       }
       catch(SQLException err) {
 		Funcoes.mensagemErro(this,"Erro ao consultar a tabela VDPRECOPROD!\n"+err.getMessage(),true,con,err);
