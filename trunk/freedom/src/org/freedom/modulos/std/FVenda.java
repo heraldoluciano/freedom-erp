@@ -497,13 +497,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtVlrProdVenda.setAtivo( false );
 		txtVlrDescVenda.setAtivo( false );
 		txtVlrLiqVenda.setAtivo( false );
-		
-		// Desativa as os TextFields para que os usuários não possam mexer
-
-		txtBaseICMSItVenda.setAtivo( false );
-		txtVlrICMSItVenda.setAtivo( false );
-		txtVlrLiqItVenda.setAtivo( false );
-		txtAliqIPIItVenda.setAtivo( false );
 
 		// Adiciona os Listeners
 
@@ -567,6 +560,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private void montaTela() {
 
 		bPrefs = prefs(); // Carrega as preferências
+		
+		// Desativa as os TextFields para que os usuários não possam mexer
+		// ALTERADO PARA BUSCA DO PREEFERENCIAS.
+		txtBaseICMSItVenda.setAtivo( bPrefs[ 17 ] );
+		txtVlrICMSItVenda.setAtivo( bPrefs[ 17 ] );
+		txtVlrLiqItVenda.setAtivo( bPrefs[ 17 ] );
+		txtAliqIPIItVenda.setAtivo( bPrefs[ 17 ] );
 
 		// FK Produto
 		
@@ -917,9 +917,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 				
-				txtPercICMSItVenda.setAtivo( false );
-				txtVlrICMSItVenda.setAtivo( false );
-				txtBaseICMSItVenda.setAtivo( false );
+				//txtPercICMSItVenda.setAtivo( false );
+				//txtVlrICMSItVenda.setAtivo( false );
+				//txtBaseICMSItVenda.setAtivo( false );
 				
 				if ( txtCodNat.getAtivo() ) {
 					txtUltCamp = txtCodNat;
@@ -941,9 +941,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 				
-				txtPercICMSItVenda.setAtivo( false );
-				txtVlrICMSItVenda.setAtivo( false );
-				txtBaseICMSItVenda.setAtivo( false );
+				//txtPercICMSItVenda.setAtivo( false );
+				//txtVlrICMSItVenda.setAtivo( false );
+				//txtBaseICMSItVenda.setAtivo( false );
 				txtUltCamp = txtCodNat;
 				
 			}
@@ -956,9 +956,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 				
-				txtPercICMSItVenda.setAtivo( false );
-				txtVlrICMSItVenda.setAtivo( false );
-				txtBaseICMSItVenda.setAtivo( false );
+				//txtPercICMSItVenda.setAtivo( false );
+				//txtVlrICMSItVenda.setAtivo( false );
+				//txtBaseICMSItVenda.setAtivo( false );
 				txtUltCamp = txtCodNat;
 				
 			}
@@ -988,6 +988,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			//txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
 			txtVlrLiqItVenda.setVlrBigDecimal( calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ) );
+			txtBaseICMSItVenda.setAtivo( bPrefs[ 17 ] ); 
+			txtPercICMSItVenda.setAtivo( bPrefs[ 17 ] ); 
+			txtVlrICMSItVenda.setAtivo( bPrefs[ 17 ] ); 
 			
 		} finally {
 			fRed = 0;
@@ -1961,7 +1964,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean[] prefs() {
 
-		boolean[] bRetorno = new boolean[ 17 ];
+		boolean[] bRetorno = new boolean[ 18 ];
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -1970,7 +1973,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			
 			 sSQL.append( "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," );
 			 sSQL.append( "USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " );
-			 sSQL.append( "TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT, RECALCPCVENDA, USALAYOUTPED " );
+			 sSQL.append( "TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT, RECALCPCVENDA, USALAYOUTPED, ICMSVENDA " );
 			 sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
 			
 			ps = con.prepareStatement( sSQL.toString() );
@@ -2021,6 +2024,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				bRetorno[ 15 ] = "S".equals( rs.getString( "RECALCPCVENDA" ) );
 
 				bRetorno[ 16 ] = "S".equals( rs.getString( "USALAYOUTPED" ) );
+
+				bRetorno[ 17 ] = "S".equals( rs.getString( "ICMSVENDA" ) );
 
 			}
 			
