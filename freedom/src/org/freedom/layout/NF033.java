@@ -117,6 +117,7 @@ public class NF033 extends Layout {
 						imp.say( 88, "X");
 
 					
+					imp.say(130, String.valueOf(iNumNota));
 					imp.pulaLinha( 5, imp.comprimido());
 					imp.say(  2, sNat[0]);
 					imp.say( 48, sNat[1]);
@@ -299,23 +300,20 @@ public class NF033 extends Layout {
 					imp.say( 85, Funcoes.copy(frete.getString(NF.C_CONHECFRETEPED),20));
 					imp.say(112, Funcoes.strDecimalToStrCurrency(10,2,String.valueOf(frete.getFloat(NF.C_PESOBRUTO))));
 					imp.say(125, Funcoes.strDecimalToStrCurrency(10,2,String.valueOf(frete.getString(NF.C_PESOLIQ))));
-				
+					
+					
 
 					//	Fim da impressão do frete ...
 					
 					//	Imprime observação e classificações fiscais ...
 					
-					
-					
 					sizeObs = vSigla.size();
 					sizeObs = vDescFisc.size() > sizeObs ? vDescFisc.size() : sizeObs;
 					
 					int aux = 0;
-					for( int i=indexObs; i < 5 ; i++ ) {				
+					for( int i=indexObs; i < 6 ; i++ ) {				
 						if( aux < sizeObs ) {
 							imp.pulaLinha( 1, imp.comprimido());
-							if( vSigla.size() > 0 && indexSigla < vSigla.size() )
-								imp.say(  2, (String)vSigla.elementAt(indexSigla++));							
 							if( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() )
 								imp.say( 31, Funcoes.copy((String)vDescFisc.elementAt(indexDescFisc++),51));							
 						} else{
@@ -326,6 +324,8 @@ public class NF033 extends Layout {
 					// 	Fim da observação ...
 					
 				
+					imp.pulaLinha( 6, imp.comprimido() );
+					imp.say( 130, String.valueOf( iNumNota ));
 					
 					
 				}
