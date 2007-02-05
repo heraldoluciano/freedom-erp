@@ -207,7 +207,7 @@ public class FLiberaCredito extends FDados implements ActionListener,InsertListe
 					  "(CAST('today' AS DATE)-IT.DTVENCITREC) AS ATRASO,"+
 					  "R.OBSREC,(SELECT B.NOMEBANCO FROM FNBANCO B "+
 					  "WHERE B.CODBANCO = R.CODBANCO) AS NOMEBANCO,"+
-					  "R.CODREC,IT.NPARCITREC,R.TIPOENDA" +
+					  "R.CODREC,IT.NPARCITREC,R.TIPOVENDA" +
 					  " FROM FNRECEBER R, VDVENDA V, " +
 					  "FNITRECEBER IT, VDCLIENTE CL WHERE " +
 					  "((CL.CODCLI=? AND CL.CODEMP=? AND CL.CODFILIAL=?) OR " +
