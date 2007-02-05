@@ -124,7 +124,7 @@ public class FreedomSTD extends AplicativoPD {
 		addOpcao( -1, TP_OPCAO_MENU, "Saída", "", 'S', 300000000, 0, false, null );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Venda", "Venda", 'V', 300100000, 1, true, FVenda.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Cancela venda", "Cancelamento", 'C', 300200000, 1, true, FCancVenda.class );
-			addOpcao( 300000000, TP_OPCAO_ITEM, "Devolução de vendas", "Devolução de vendas", 'D', 300300000, 1, true, FDevolucao.class );
+			//addOpcao( 300000000, TP_OPCAO_ITEM, "Devolução de vendas", "Devolução de vendas", 'D', 300300000, 1, true, FDevolucao.class );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Lançamento de Frete", "Lançamento de Frete", 'L', 300400000, 1, true, FFrete.class );
 			addSeparador( 300000000 );
 			addOpcao( 300000000, TP_OPCAO_ITEM, "Aprova orçamento", "Aprova Orcamento", 'A', 300500000, 1, true, FAprovaOrc.class );
