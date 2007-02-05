@@ -44,6 +44,7 @@ public class NF033 extends Layout {
 		int iLinPag = imp.verifLinPag("NF");
 		String sTemp = null;
 		String sDescFisc = "";
+		String sDescProd = "";
 		String sObsVenda = "";
 		String[] sValsCli = new String[ 4 ];
 		String[] sNat = new String[ 2 ];
@@ -51,6 +52,7 @@ public class NF033 extends Layout {
 		String[] sVals = new String[ 6 ];
 		String[] sDuplics = new String[ 6 ];
 		Vector vDescFisc = new Vector();
+		Vector vDescProd = new Vector();
 
 		try {
 
@@ -74,6 +76,7 @@ public class NF033 extends Layout {
 					}
 					else {
 						bFat = false;
+						sDuplics[ i ] = "";
 						sVencs[ i ] = "";
 						sVals[ i ] = "";
 					}
@@ -90,10 +93,10 @@ public class NF033 extends Layout {
 				}
 
 				if ( adic.next() ) {
-					sValsCli[ 0 ] = !adic.getString( NF.C_CPFEMITAUX ).equals( "" ) ? adic.getString( NF.C_CPFEMITAUX ) : cab.getString( NF.C_CPFEMIT );
-					sValsCli[ 1 ] = !adic.getString( NF.C_NOMEEMITAUX ).equals( "" ) ? adic.getString( NF.C_NOMEEMITAUX ) : cab.getString( NF.C_RAZEMIT );
-					sValsCli[ 2 ] = !adic.getString( NF.C_CIDEMITAUX ).equals( "" ) ? adic.getString( NF.C_CIDEMITAUX ) : cab.getString( NF.C_CIDEMIT );
-					sValsCli[ 3 ] = !adic.getString( NF.C_UFEMITAUX ).equals( "" ) ? adic.getString( NF.C_UFEMITAUX ) : cab.getString( NF.C_UFEMIT );
+					sValsCli[ 0 ] = ! "".equals( adic.getString( NF.C_CPFEMITAUX ) ) ? adic.getString( NF.C_CPFEMITAUX ) : cab.getString( NF.C_CPFEMIT );
+					sValsCli[ 1 ] = ! "".equals( adic.getString( NF.C_NOMEEMITAUX ) ) ? adic.getString( NF.C_NOMEEMITAUX ) : cab.getString( NF.C_RAZEMIT );
+					sValsCli[ 2 ] = ! "".equals( adic.getString( NF.C_CIDEMITAUX ) ) ? adic.getString( NF.C_CIDEMITAUX ) : cab.getString( NF.C_CIDEMIT );
+					sValsCli[ 3 ] = ! "".equals( adic.getString( NF.C_UFEMITAUX ) ) ? adic.getString( NF.C_UFEMITAUX ) : cab.getString( NF.C_UFEMIT );
 				}
 				else {
 					sValsCli[ 0 ] = cab.getString( NF.C_CPFEMIT );
@@ -115,13 +118,13 @@ public class NF033 extends Layout {
 						imp.say( 88, "X" );
 					}
 
-					imp.say( 130, String.valueOf( iNumNota ) );
+					imp.say( 130, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 					imp.pulaLinha( 5, imp.comprimido() );
 					imp.say( 2, sNat[ 0 ] );
 					imp.say( 48, sNat[ 1 ] );
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 2, sValsCli[ 1 ] );
-					imp.say( 89, !sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) : Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) );
+					imp.say( 89, sValsCli[ 0 ].equals( "" ) ? Funcoes.setMascara( cab.getString( NF.C_CNPJEMIT ), "##.###.###/####-##" ) : Funcoes.setMascara( sValsCli[ 0 ], "###.###.###-##" ) );
 					imp.say( 124, ( cab.getDate( NF.C_DTEMITPED ) != null ? Funcoes.dateToStrDate( cab.getDate( NF.C_DTEMITPED ) ) : "" ) );
 					imp.pulaLinha( 2, imp.comprimido() );
 					imp.say( 2, Funcoes.copy( cab.getString( NF.C_ENDEMIT ), 0, 50 ).trim() + ", " + Funcoes.copy( cab.getString( NF.C_NUMEMIT ), 0, 6 ).trim() + " - " + Funcoes.copy( cab.getString( NF.C_COMPLEMIT ), 0, 9 ).trim() );
@@ -168,7 +171,7 @@ public class NF033 extends Layout {
 
 				}
 
-				// Monta a observação ...
+				// Monta a menssagem fiscal ...
 
 				sTemp = itens.getString( NF.C_DESCFISC ).trim();
 				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
@@ -179,22 +182,34 @@ public class NF033 extends Layout {
 					sDescFisc += sTemp;
 				}
 
-				// Fim da observação ...
+				// Fim da menssagem fiscal ...
+				
+				// Monta descrição do produto ...
+				
+				sDescProd = itens.getString( NF.C_OBSITPED ).trim().length() > 0 ? itens.getString( NF.C_OBSITPED ).trim() : itens.getString( NF.C_DESCPROD ).trim();
+				vDescProd = Funcoes.strToVectorSilabas( sDescProd, 50 );
 
 				// Imprime os dados do item no corpo da nota ...
+				
+				for ( int i=0; i < vDescProd.size(); i++ ) {
+					
+					imp.pulaLinha( 1, imp.comprimido() );
+					
+					imp.say( 2, (String) vDescProd.get( i ) );
+					
+					if ( i == 0 ) {
 
-				imp.pulaLinha( 1, imp.comprimido() );
-
-				imp.say( 2, itens.getString( NF.C_DESCPROD ).trim() );
-				imp.say( 55, itens.getString( NF.C_CODFISC ) );
-				imp.say( 67, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 2 ) );
-				imp.say( 73, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
-				imp.say( 77, Funcoes.strDecimalToStrCurrency( 9, 0, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
-				imp.say( 89, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
-				imp.say( 103, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
-				imp.say( 119, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
-				imp.say( 124, ( (int) itens.getFloat( NF.C_PERCIPIITPED ) ) + "%" );
-				imp.say( 128, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
+						imp.say( 55, itens.getString( NF.C_CODFISC ) );
+						imp.say( 67, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 2 ) );
+						imp.say( 73, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
+						imp.say( 77, Funcoes.strDecimalToStrCurrency( 9, 0, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
+						imp.say( 89, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
+						imp.say( 103, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
+						imp.say( 119, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
+						imp.say( 124, ( (int) itens.getFloat( NF.C_PERCIPIITPED ) ) + "%" );
+						imp.say( 128, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
+					}					
+				}
 
 				// Fim da impressão do item ...
 
@@ -304,8 +319,8 @@ public class NF033 extends Layout {
 
 					// Fim da observação ...
 
-					imp.pulaLinha( 4, imp.comprimido() );
-					imp.say( 130, String.valueOf( iNumNota ) );
+					imp.pulaLinha( 5, imp.comprimido() );
+					imp.say( 130, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
 					
 					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());
 				}

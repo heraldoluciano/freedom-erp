@@ -66,11 +66,10 @@ public class NFSaida extends NF {
 			sql.append( "C.ENDENT, C.NUMENT, C.COMPLENT, C.BAIRENT, C.CIDENT, C.UFENT, V.CODBANCO, V.VLRDESCITVENDA, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=V.CODEMPBO AND B.CODFILIAL=V.CODFILIALBO AND B.CODBANCO=V.CODBANCO), " );
 			sql.append( "(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR)," );
-			sql.append( "ITPG.DIASPAG " );
-			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, FNPARCPAG ITPG, VDVENDEDOR VEND " );
+			sql.append( "(SELECT ITPG.DIASPAG FROM FNPARCPAG ITPG WHERE ITPG.CODEMP=PG.CODEMP AND ITPG.CODFILIAL=PG.CODFILIAL AND ITPG.CODPLANOPAG=PG.CODPLANOPAG) " );
+			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND " );
 			sql.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 			sql.append( "AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG " );
-			sql.append( "AND ITPG.CODEMP=PG.CODEMP AND ITPG.CODFILIAL=PG.CODFILIAL AND ITPG.CODPLANOPAG=PG.CODPLANOPAG " );
 			sql.append( "AND V.CODVEND=VEND.CODVEND AND V.CODEMPVD=VEND.CODEMP AND V.CODFILIALVD=VEND.CODFILIAL AND C.CODCLI=V.CODCLI " );
 			sql.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=?" );
 			ps = con.prepareStatement( sql.toString() );
@@ -86,7 +85,7 @@ public class NFSaida extends NF {
 				cab.setInt( C_CODEMIT, rs.getInt( "CODCLI" ) );
 				cab.setString( C_RAZEMIT, ( rs.getString( "RAZCLI" ) != null ? rs.getString( "RAZCLI" ) : "" ) );
 				cab.setString( C_CNPJEMIT, ( rs.getString( "CNPJCLI" ) != null ? rs.getString( "CNPJCLI" ) : "" ) );
-				cab.setString( C_CPFEMIT, rs.getString( "CPFCLI" ) != null ? rs.getString( "CPFCLI" ) : "" );
+				cab.setString( C_CPFEMIT, ( rs.getString( "CPFCLI" ) != null ? rs.getString( "CPFCLI" ) : "" ) );
 				cab.setString( C_ENDEMIT, ( rs.getString( "ENDCLI" ) != null ? rs.getString( "ENDCLI" ) : "" ) );
 				cab.setInt( C_NUMEMIT, rs.getInt( "NUMCLI" ) );
 				cab.setString( C_COMPLEMIT, ( rs.getString( "COMPLCLI" ) != null ? rs.getString( "COMPLCLI" ) : "" ) );
@@ -98,13 +97,13 @@ public class NFSaida extends NF {
 				cab.setString( C_FAXEMIT, ( rs.getString( "FAXCLI" ) != null ? rs.getString( "FAXCLI" ) : "" ) );
 				cab.setString( C_DDDEMIT, ( rs.getString( "DDDCLI" ) != null ? rs.getString( "DDDCLI" ) : "" ) );
 				cab.setString( C_INSCEMIT, ( rs.getString( "INSCCLI" ) != null ? rs.getString( "INSCCLI" ) : "" ) );
-				cab.setString( C_RGEMIT, rs.getString( "RGCLI" ) != null ? rs.getString( "RGCLI" ) : "" );
+				cab.setString( C_RGEMIT, ( rs.getString( "RGCLI" ) != null ? rs.getString( "RGCLI" ) : "" ) );
 				cab.setString( C_EMAILEMIT, ( rs.getString( "EMAILCLI" ) != null ? rs.getString( "EMAILCLI" ) : "" ) );
 				cab.setString( C_SITEEMIT, ( rs.getString( "SITECLI" ) != null ? rs.getString( "SITECLI" ) : "" ) );
 				cab.setString( C_CONTEMIT, ( rs.getString( "CONTCLI" ) != null ? rs.getString( "CONTCLI" ) : "" ) );
 				cab.setDate( C_DTEMITPED, rs.getDate( "DTEMITVENDA" ) );
 				cab.setInt( C_DOC, rs.getInt( "DOCVENDA" ) );
-				cab.setString( C_INCRAEMIT, rs.getString( "INCRACLI" ) != null ? rs.getString( "INCRACLI" ) : "" );
+				cab.setString( C_INCRAEMIT, ( rs.getString( "INCRACLI" ) != null ? rs.getString( "INCRACLI" ) : "" ) );
 				cab.setDate( C_DTSAIDA, rs.getDate( "DTSAIDAVENDA" ) );
 				cab.setString( C_CODPLANOPG, ( rs.getString( "CODPLANOPAG" ) != null ? rs.getString( "CODPLANOPAG" ) : "" ) );
 				cab.setString( C_DESCPLANOPAG, ( rs.getString( "DESCPLANOPAG" ) != null ? rs.getString( "DESCPLANOPAG" ) : "" ) );
@@ -132,7 +131,7 @@ public class NFSaida extends NF {
 				cab.setString( C_NOMEBANCO, ( rs.getString( 49 ) != null ? rs.getString( 49 ).trim() : "" ) );
 				cab.setString( C_DESCSETOR, ( rs.getString( 50 ) != null ? rs.getString( 50 ).trim() : "" ) );
 				cab.setFloat( C_VLRDESCITPED, rs.getFloat( "VLRDESCITVENDA" ) );
-				cab.setInt( C_DIASPAG, rs.getInt( "DIASPAG" ) );
+				cab.setInt( C_DIASPAG, rs.getInt( 51 ) );
 			}
 			rs.close();
 			ps.close();
@@ -219,7 +218,7 @@ public class NFSaida extends NF {
 			while ( rs.next() ) {
 				adic.addRow();
 				adic.setInt( C_CODAUXV, rs.getInt( "CODAUXV" ) );
-				adic.setString( C_CPFEMITAUX, rs.getString( "CPFCLIAUXV" ) != null ? rs.getString( "CPFCLIAUXV" ) : "" );
+				adic.setString( C_CPFEMITAUX, ( rs.getString( "CPFCLIAUXV" ) != null ? rs.getString( "CPFCLIAUXV" ) : "" ) );
 				adic.setString( C_NOMEEMITAUX, ( rs.getString( "NOMECLIAUXV" ) != null ? rs.getString( "NOMECLIAUXV" ) : "" ) );
 				adic.setString( C_CIDEMITAUX, ( rs.getString( "CIDCLIAUXV" ) != null ? rs.getString( "CIDCLIAUXV" ) : "" ) );
 				adic.setString( C_UFEMITAUX, ( rs.getString( "UFCLIAUXV" ) != null ? rs.getString( "UFCLIAUXV" ) : "" ) );
