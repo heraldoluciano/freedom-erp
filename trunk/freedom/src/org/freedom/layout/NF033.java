@@ -333,10 +333,6 @@ public class NF033 extends Layout {
 			Funcoes.mensagemErro( null, "Erro ao montar nota \n" + err.getMessage() );
 			err.printStackTrace();
 		} finally {
-			sValsCli = null;
-			sNat = null;
-			sVencs = null;
-			sVals = null;
 			System.gc();
 		}
 
