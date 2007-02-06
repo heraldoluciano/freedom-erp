@@ -77,6 +77,21 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 	<field name="VLRDESCITVENDA" class="java.math.BigDecimal"/>
 	<field name="VLRLIQITVENDA" class="java.math.BigDecimal"/>
 
+	<variable name="VLRUINTVENDA" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[$F{VLRLIQITVENDA}.divide( $F{QTDITVENDA}, 2, BigDecimal.ROUND_HALF_UP )]]></variableExpression>
+	</variable>
+	<variable name="VLRTOTCUSTO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{VLRLIQITVENDA}.multiply( $F{QTDITVENDA} )]]></variableExpression>
+	</variable>
+	<variable name="VLRUNITLUCRO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{VLRUINTVENDA}.subtract( $F{CUSTOMPMPROD} )]]></variableExpression>
+	</variable>
+	<variable name="VLRTOTLUCRO" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$F{QTDITVENDA}.multiply( $V{VLRUNITLUCRO} )]]></variableExpression>
+	</variable>
+	<variable name="MARGEN" class="java.math.BigDecimal" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[new BigDecimal( $V{VLRTOTLUCRO}.floatValue() / ( $F{VLRLIQITVENDA}.floatValue() / 100 ) )]]></variableExpression>
+	</variable>
 
 		<group  name="GERAL" >
 			<groupExpression><![CDATA[]]></groupExpression>
@@ -128,7 +143,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCGRUP}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -287,19 +302,6 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? "Referência" : "Código"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="100"
-						width="60"
-						height="14"
-						key="textField-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? "Referência" : "Código"]]></textFieldExpression>
-				</textField>
 				<line direction="BottomUp">
 					<reportElement
 						mode="Opaque"
@@ -315,7 +317,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="256"
+						x="255"
 						y="86"
 						width="32"
 						height="12"
@@ -332,7 +334,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="221"
+						x="220"
 						y="101"
 						width="29"
 						height="12"
@@ -349,7 +351,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="253"
+						x="252"
 						y="101"
 						width="35"
 						height="12"
@@ -366,7 +368,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="291"
+						x="290"
 						y="101"
 						width="43"
 						height="12"
@@ -535,7 +537,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? $F{REFPROD} : $F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["S".equals( $P{COMREF} ) ? $F{REFPROD} : String.valueOf( $F{CODPROD} )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -552,7 +554,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="221"
+						x="220"
 						y="2"
 						width="29"
 						height="14"
@@ -561,11 +563,11 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITVENDA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="253"
+						x="252"
 						y="2"
 						width="35"
 						height="14"
@@ -574,11 +576,11 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRUINTVENDA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="291"
+						x="290"
 						y="2"
 						width="43"
 						height="14"
@@ -587,7 +589,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VLRLIQITVENDA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -600,7 +602,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CUSTOMPMPROD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -613,7 +615,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRTOTCUSTO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -626,7 +628,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{MARGEN}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -639,7 +641,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRUNITLUCRO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -652,7 +654,7 @@ ORDER BY 1,P.DESCPROD]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CODPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{VLRTOTLUCRO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

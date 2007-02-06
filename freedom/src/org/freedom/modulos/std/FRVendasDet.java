@@ -67,6 +67,10 @@ public class FRVendasDet extends FRelatorio {
 
 	private JTextFieldFK txtDescProd = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
+	private JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
+
+	private JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
 	private JCheckBoxPad cbVendaCanc = new JCheckBoxPad( "Mostrar Canceladas", "S", "N" );
 
 	private JRadioGroup rgTipo = null;
@@ -79,10 +83,12 @@ public class FRVendasDet extends FRelatorio {
 
 	private ListaCampos lcProd = new ListaCampos( this );
 
+	private ListaCampos lcVend = new ListaCampos( this );
+
 	public FRVendasDet() {
 
 		setTitulo( "Vendas Detalhadas" );
-		setAtribos( 80, 80, 295, 370 );
+		setAtribos( 80, 80, 295, 410 );
 		
 		Vector vLabs = new Vector();
 		Vector vVals = new Vector();
@@ -133,6 +139,14 @@ public class FRVendasDet extends FRelatorio {
 		txtCodProd.setFK( true );
 		lcProd.setReadOnly( true );
 		lcProd.montaSql( false, "PRODUTO", "EQ" );
+		
+		lcVend.add( new GuardaCampo( txtCodVend, "CodVend", "Cód.comiss.", ListaCampos.DB_PK, false ) );
+		lcVend.add( new GuardaCampo( txtNomeVend, "NomeVend", "Nome do comissionado", ListaCampos.DB_SI, false ) );
+		txtCodVend.setTabelaExterna( lcVend );
+		txtCodVend.setNomeCampo( "CodCli" );
+		txtCodVend.setFK( true );
+		lcVend.setReadOnly( true );
+		lcVend.montaSql( false, "VENDEDOR", "VD" );
 
 		txtDataini.setRequerido( true );
 		txtDatafim.setRequerido( true );
@@ -156,15 +170,19 @@ public class FRVendasDet extends FRelatorio {
 		adic( txtCodCli, 7, 80, 80, 20 );
 		adic( new JLabelPad( "Razão social do cliente" ), 90, 60, 200, 20 );
 		adic( txtRazCli, 90, 80, 183, 20 );
-		adic( new JLabelPad( "Cód.prod" ), 7, 100, 80, 20 );
+		adic( new JLabelPad( "Cód.prod." ), 7, 100, 80, 20 );
 		adic( txtCodProd, 7, 120, 80, 20 );
 		adic( new JLabelPad( "Descrição do produto" ), 90, 100, 200, 20 );
 		adic( txtDescProd, 90, 120, 183, 20 );
+		adic( new JLabelPad( "Cód.comiss." ), 7, 140, 80, 20 );
+		adic( txtCodVend, 7, 160, 80, 20 );
+		adic( new JLabelPad( "Nome do comissionado" ), 90, 140, 200, 20 );
+		adic( txtNomeVend, 90, 160, 183, 20 );
 
-		adic( rgTipo, 7, 150, 265, 30 );
-		adic( rgFaturados, 7, 185, 120, 70 );
-		adic( rgFinanceiro, 153, 185, 120, 70 );
-		adic( cbVendaCanc, 7, 265, 200, 20 );
+		adic( rgTipo, 7, 190, 265, 30 );
+		adic( rgFaturados, 7, 225, 120, 70 );
+		adic( rgFinanceiro, 153, 225, 120, 70 );
+		adic( cbVendaCanc, 7, 305, 200, 20 );
 
 	}
 
@@ -238,6 +256,14 @@ public class FRVendasDet extends FRelatorio {
 				}
 				sCab.append( "Produto : " );
 				sCab.append( txtDescProd.getVlrString() );
+			}
+			if ( txtCodVend.getVlrInteger().intValue() > 0 ) {
+				sWhere5 = " AND V.CODVEND=" + txtCodVend.getVlrInteger().intValue() + " ";
+				if ( sCab.length() > 0 ) {
+					sCab.append( "\n" );
+				}
+				sCab.append( "Comissionado :" );
+				sCab.append( txtNomeVend.getVlrString() );
 			}
 
 			sSQL.append( "SELECT " );
@@ -488,5 +514,6 @@ public class FRVendasDet extends FRelatorio {
 		super.setConexao( cn );
 		lcProd.setConexao( cn );
 		lcCliente.setConexao( cn );
+		lcVend.setConexao( cn );
 	}
 }
