@@ -2037,7 +2037,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
 			
-			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
@@ -2259,7 +2259,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
 			
-			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
@@ -2696,7 +2696,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
 			
-			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
@@ -2893,7 +2893,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if ( sValores[ 5 ].length() > 0 ) {
 			sWhere.append( " AND C1.CIDCLI ='" + sValores[ 5 ] + "'" );
 			sWhere2.append( " AND C2.CIDCLI ='" + sValores[ 5 ] + "'" );
-			imp.addSubTitulo( "CIDADE = " + sValores[ 5 ].trim() );
+			imp.addSubTitulo( "CIDADE : " + sValores[ 5 ].trim() );
 		}
 		if ( sValores[ 6 ].equals( "N" ) ) {
 			sWhere.append( " AND C1.PESSOACLI <> 'J'" );
@@ -2903,7 +2903,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if ( !sValores[ 13 ].trim().equals( "" ) ) {
 			sWhere.append( " AND C1.CODVEND =" + sValores[ 13 ] );
 			sWhere2.append( " AND C2.CODVEND =" + sValores[ 13 ] );
-			imp.addSubTitulo( "REPRES. = " + sValores[ 13 ] + "-" + sValores[ 14 ] );
+			imp.addSubTitulo( "REPRES. : " + sValores[ 13 ] + "-" + sValores[ 14 ] );
 		}
 		if ( sValores[ 8 ].length() > 0 ) {
 			if ( !bPref[ 0 ] ) {
@@ -2915,7 +2915,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				sWhere.append( " AND C1.CODSETOR = " + sValores[ 8 ] );
 				sWhere2.append( " AND C2.CODSETOR = " + sValores[ 8 ] );
 			}
-			imp.addSubTitulo( "SETOR = " + sValores[ 9 ] );
+			imp.addSubTitulo( "SETOR : " + sValores[ 9 ] );
 		}
 		if ( sValores[ 10 ].length() > 0 ) {
 			sWhere.append( " AND C1.CODTIPOCLI=" + sValores[ 10 ] );
@@ -2930,7 +2930,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 		if ( sValores[ 18 ].length() > 0 ) {
 			sWhere.append( " AND C1.BAIRCLI='" + sValores[ 18 ] + "'" );
 			sWhere2.append( " AND C2.BAIRCLI='" + sValores[ 18 ] + "'" );
-			imp.addSubTitulo( "BAIRRO = " + sValores[ 18 ] );
+			imp.addSubTitulo( "BAIRRO : " + sValores[ 18 ] );
 		}
 
 
@@ -2940,7 +2940,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			imp.montaCab();
 			imp.setTitulo( "Relatório de Clientes" );
 			
-			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE" + sFrom + " C1 WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
+			ps = con.prepareStatement( "SELECT COUNT(*) FROM VDCLIENTE C1" + sFrom + " WHERE C1.CODEMP=? AND C1.CODFILIAL=? " + sWhere.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
 			ps.setInt( 2, ListaCampos.getMasterFilial( "VDCLIENTE" ) );
 			rs = ps.executeQuery();
@@ -2953,7 +2953,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 				con.commit();
 			}
 			
-			sSQL.append( "SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.FONECLI," );
+			sSQL.append( "SELECT C1.CODPESQ,C1.RAZCLI RAZMATRIZ,'A' TIPO,C1.CODCLI,C1.RAZCLI,C1.DDDCLI,C1.FONECLI," );
 			if( "A".equals( sValores[ 17 ] ) ) {
 				sSQL.append( "C1.ENDCLI,C1.CIDCLI " );
 			}
@@ -2986,8 +2986,6 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 			sSQL.append( "C2.CODEMP=? AND C2.CODFILIAL=? " );
 			sSQL.append( sWhere2 );
 			sSQL.append( " ORDER BY " + sOrdem );
-			
-			System.out.println( sSQL.toString() );
 
 			ps = con.prepareStatement( sSQL.toString() );
 			ps.setInt( 1, Aplicativo.iCodEmp );
@@ -3041,7 +3039,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					imp.say( 2, rs.getString( "CodCli" ) );
 					imp.say( 12, "|" );
 					imp.say( 14, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-					imp.say( 47, "(M)" );
+					imp.say( 47, "( M )" );
 					imp.say( 58, "|" );
 					imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
 					imp.say( 101, "|" );
@@ -3058,7 +3056,7 @@ public class FCliente extends FTabDados implements RadioGroupListener, PostListe
 					imp.say( 2, rs.getString( "CodCli" ) );
 					imp.say( 12, "|" );
 					imp.say( 15, rs.getString( "RazCli" ) != null ? rs.getString( "RazCli" ).substring( 0, 30 ) : "" );
-					imp.say( 47, "(F)" );
+					imp.say( 47, "( F )" );
 					imp.say( 58, "|" );
 					imp.say( 59, rs.getString( "EndCli" ) != null ? rs.getString( "EndCli" ).substring( 0, 30 ) : "" );
 					imp.say( 101, "|" );
