@@ -561,12 +561,18 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 		bPrefs = prefs(); // Carrega as preferências
 		
+		txtVlrLiqItVenda.setAtivo( false );
+
+		txtCodNat.setAtivo( bPrefs[ 6 ] );
+		
+		txtAliqIPIItVenda.setAtivo( bPrefs[ 12 ] );
+		txtVlrIPIItVenda.setAtivo( bPrefs[ 12 ] );
+		
 		// Desativa as os TextFields para que os usuários não possam mexer
 		// ALTERADO PARA BUSCA DO PREEFERENCIAS.
 		txtBaseICMSItVenda.setAtivo( bPrefs[ 17 ] );
+		txtPercICMSItVenda.setAtivo( bPrefs[ 17 ] );
 		txtVlrICMSItVenda.setAtivo( bPrefs[ 17 ] );
-		txtVlrLiqItVenda.setAtivo( bPrefs[ 17 ] );
-		txtAliqIPIItVenda.setAtivo( bPrefs[ 17 ] );
 
 		// FK Produto
 		
@@ -693,13 +699,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		setNavegador( navRod );
 		adicCampo( txtCodItVenda, 7, 20, 30, 20, "CodItVenda", "Item", ListaCampos.DB_PK, true );
 
-		if ( bPrefs[ 6 ] ) {
-			txtCodNat.setAtivo( true );
-		}
-		else {
-			txtCodNat.setAtivo( false );
-		}
-
 		if ( bPrefs[ 0 ] ) {
 			txtRefProd.setBuscaAdic( new DLBuscaProd( con, "REFPROD", lcProd2.getWhereAdic() ) );
 			adicCampoInvisivel( txtCodProd, "CodProd", "Cód.prod.", ListaCampos.DB_FK, txtDescProd, false );
@@ -739,16 +738,6 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrICMSItVenda, 480, 60, 67, 20, "VlrICMSItVenda", "V. ICMS", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtBaseIPIItVenda, "VlrBaseIPIItVenda", "B. IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtAliqIPIItVenda, 550, 60, 47, 20, "PercIPIItVenda", "% IPI", ListaCampos.DB_SI, false );
-
-		if ( bPrefs[ 12 ] ) {
-			txtAliqIPIItVenda.setAtivo( true );
-			txtVlrIPIItVenda.setAtivo( true );
-		}
-		else {
-			txtAliqIPIItVenda.setAtivo( false );
-			txtVlrIPIItVenda.setAtivo( false );
-		}
-
 		adicCampo( txtVlrIPIItVenda, 600, 60, 67, 20, "VlrIPIItVenda", "V. IPI", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtVlrProdItVenda, "VlrProdItVenda", "V. bruto", ListaCampos.DB_SI, false );
 		adicCampoInvisivel( txtStrDescItVenda, "StrDescItVenda", "Descontos", ListaCampos.DB_SI, false );
@@ -854,16 +843,12 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				if ( !con.getAutoCommit() ) {
 					con.commit();
-				}
-				
+				}				
 			}
 			
 		} catch ( SQLException err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro bloqueando a venda!\n" + err.getMessage(), true, con, err );
-		} finally {
-			ps = null;
-			sSql = null;
 		}
 	}
 
@@ -900,13 +885,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			fRed = txtRedFisc.getVlrBigDecimal() != null ? txtRedFisc.floatValue() : 0;
 			fVlrProd = calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ).floatValue();
 
-			if ( !bBuscaBase ) {
+			if ( ! bBuscaBase ) {
 				fBaseICMS = txtBaseICMSItVenda.floatValue();
 			}
-
-			txtPercICMSItVenda.setAtivo( true );
-			txtVlrICMSItVenda.setAtivo( true );
-			txtBaseICMSItVenda.setAtivo( true );
 			
 			if ( txtTipoFisc.getText().trim().equals( "II" ) ) {
 				
@@ -917,11 +898,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 				
-				//txtPercICMSItVenda.setAtivo( false );
-				//txtVlrICMSItVenda.setAtivo( false );
-				//txtBaseICMSItVenda.setAtivo( false );
-				
-				if ( txtCodNat.getAtivo() ) {
+				if ( txtVlrIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtVlrIPIItVenda;
+				}
+				else if ( txtAliqIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtAliqIPIItVenda;
+				}
+				else if ( txtCodNat.getAtivo() ) {
 					txtUltCamp = txtCodNat;
 				}
 				else if ( txtPercComItVenda.getAtivo() ) {
@@ -929,8 +912,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				}
 				else {
 					txtUltCamp = txtVlrComisItVenda;
-				}
-				
+				}				
 			}
 			else if ( txtTipoFisc.getText().trim().equals( "FF" ) ) {
 				
@@ -941,11 +923,30 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 				
-				//txtPercICMSItVenda.setAtivo( false );
-				//txtVlrICMSItVenda.setAtivo( false );
-				//txtBaseICMSItVenda.setAtivo( false );
-				txtUltCamp = txtCodNat;
-				
+				if ( txtVlrIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtVlrIPIItVenda;
+				}
+				else if ( txtAliqIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtAliqIPIItVenda;
+				}
+				else if ( txtVlrICMSItVenda.getAtivo() ) {
+					txtUltCamp = txtVlrICMSItVenda;
+				}
+				else if ( txtPercICMSItVenda.getAtivo() ) {
+					txtUltCamp = txtPercICMSItVenda;
+				}
+				else if ( txtCodNat.getAtivo() ) {
+					txtUltCamp = txtCodNat;
+				}
+				else if ( txtCodNat.getAtivo() ) {
+					txtUltCamp = txtCodNat;
+				}
+				else if ( txtPercComItVenda.getAtivo() ) {
+					txtUltCamp = txtPercComItVenda;
+				}
+				else {
+					txtUltCamp = txtVlrComisItVenda;
+				}				
 			}
 			else if ( txtTipoFisc.getText().trim().equals( "NN" ) ) {
 				
@@ -956,10 +957,24 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( "0" ) );
 				}
 				
-				//txtPercICMSItVenda.setAtivo( false );
-				//txtVlrICMSItVenda.setAtivo( false );
-				//txtBaseICMSItVenda.setAtivo( false );
-				txtUltCamp = txtCodNat;
+				if ( txtVlrIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtVlrIPIItVenda;
+				}
+				else if ( txtAliqIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtAliqIPIItVenda;
+				}
+				else if ( txtCodNat.getAtivo() ) {
+					txtUltCamp = txtCodNat;
+				}
+				else if ( txtCodNat.getAtivo() ) {
+					txtUltCamp = txtCodNat;
+				}
+				else if ( txtPercComItVenda.getAtivo() ) {
+					txtUltCamp = txtPercComItVenda;
+				}
+				else {
+					txtUltCamp = txtVlrComisItVenda;
+				}
 				
 			}
 			else if ( txtTipoFisc.getText().trim().equals( "TT" ) ) {
@@ -978,27 +993,40 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				txtVlrICMSItVenda.setVlrBigDecimal( new BigDecimal( fICMS ) );
 				txtBaseICMSItVenda.setVlrBigDecimal( new BigDecimal( fBaseICMS ) );
-				//txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
 				txtVlrIPIItVenda.setVlrBigDecimal( new BigDecimal( fIPI ) );
 				txtBaseIPIItVenda.setVlrBigDecimal( new BigDecimal( fBaseIPI ) );
 				txtAliqIPIItVenda.setVlrBigDecimal( txtAliqIPIFisc.getVlrBigDecimal() );
-				txtUltCamp = txtVlrICMSItVenda;
-			
+				
+				if ( txtVlrIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtVlrIPIItVenda;
+				}
+				else if ( txtAliqIPIItVenda.getAtivo() ) {
+					txtUltCamp = txtAliqIPIItVenda;
+				}
+				else if ( txtVlrICMSItVenda.getAtivo() ) {
+					txtUltCamp = txtVlrICMSItVenda;
+				}
+				else if ( txtPercICMSItVenda.getAtivo() ) {
+					txtUltCamp = txtPercICMSItVenda;
+				}
+				else if ( txtCodNat.getAtivo() ) {
+					txtUltCamp = txtCodNat;
+				}
+				else if ( txtCodNat.getAtivo() ) {
+					txtUltCamp = txtCodNat;
+				}
+				else if ( txtPercComItVenda.getAtivo() ) {
+					txtUltCamp = txtPercComItVenda;
+				}
+				else {
+					txtUltCamp = txtVlrComisItVenda;
+				}			
 			}
 			
-			//txtVlrLiqItVenda.setVlrBigDecimal( new BigDecimal( fVlrProd ) );
 			txtVlrLiqItVenda.setVlrBigDecimal( calcVlrTotalProd( txtVlrProdItVenda.getVlrBigDecimal(), txtVlrDescItVenda.getVlrBigDecimal() ) );
-			txtBaseICMSItVenda.setAtivo( bPrefs[ 17 ] ); 
-			txtPercICMSItVenda.setAtivo( bPrefs[ 17 ] ); 
-			txtVlrICMSItVenda.setAtivo( bPrefs[ 17 ] ); 
 			
-		} finally {
-			fRed = 0;
-			fVlrProd = 0;
-			fBaseIPI = 0;
-			fBaseICMS = 0;
-			fICMS = 0;
-			fIPI = 0;
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -2500,9 +2528,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		super.actionPerformed( evt );
 	}
 
-	public void focusGained( FocusEvent fevt ) {
-
-	}
+	public void focusGained( FocusEvent fevt ) { }
 
 	public void focusLost( FocusEvent fevt ) {
 
