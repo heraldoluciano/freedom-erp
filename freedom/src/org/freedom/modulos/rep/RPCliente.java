@@ -65,7 +65,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtEndCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	private final JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private final JTextFieldPad txtNumCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtCidCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
@@ -85,7 +85,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtEndEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtNumEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private final JTextFieldPad txtNumEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtCidEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
@@ -97,7 +97,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtEndCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtNumCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	//private final JTextFieldPad txtNumCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
 	private final JTextFieldPad txtCidCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
@@ -137,6 +137,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		setAtribos( 50, 50, 440, 400 );
 		
 		montaTela();
+		setListaCampos( true, "CLIENTE", "RP" );
 		
 		txtCnpjCli.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepCli.setMascara( JTextFieldPad.MC_CEP );
@@ -148,8 +149,6 @@ public class RPCliente extends FTabDados implements ActionListener {
 		
 		btCopiarEnt.addActionListener( this );
 		btCopiarCob.addActionListener( this );
-		
-		//setListaCampos( true, "CLIENTE", "RP" );
 	}
 	
 	private void montaTela() {
