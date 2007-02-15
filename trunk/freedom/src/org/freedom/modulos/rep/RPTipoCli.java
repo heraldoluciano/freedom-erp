@@ -47,9 +47,14 @@ public class RPTipoCli extends FDados implements ActionListener {
 		setTitulo( "Cadastro de tipos de clientes" );		
 		setAtribos( 50, 50, 410, 140 );
 		
+		montaTela();
+		setListaCampos( true, "TIPOCLI", "RP" );
+	}
+	
+	private void montaTela() {
+		
 		adicCampo( txtCodTipoCli, 7, 30, 70, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoCli, 80, 30, 250, 20, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, true );
 		adicCampo( txtTipo, 333, 30, 50, 20, "SiglaTipoCli", "Tipo", ListaCampos.DB_SI, false );
-		setListaCampos( true, "TIPOCLI", "RP" );
 	}
 }
