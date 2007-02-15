@@ -319,6 +319,11 @@ public class NF035 extends Layout {
 
 					// Imprime totais
 
+					if ( iContaFrete == 0 ) {
+						frete.next();
+						iContaFrete++;
+					}
+
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( 46 - imp.pRow(), imp.comprimido() );
 						imp.say( 4, Funcoes.strDecimalToStrCurrency( 20, 2, String.valueOf( itens.getFloat( NF.C_VLRBASEICMSPED ) ) ) );
@@ -346,11 +351,6 @@ public class NF035 extends Layout {
 					// Fim da impressão dos totais
 
 					// Imprime informações do frete
-
-					if ( iContaFrete == 0 ) {
-						frete.next();
-						iContaFrete++;
-					}
 
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 2, frete.getString( NF.C_RAZTRANSP ) );
