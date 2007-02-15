@@ -203,6 +203,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtVlrIRVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtVlrCSocialVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	
+	private JTextFieldPad txtVlrBaseICMSVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtVlrProdVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -494,6 +496,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtVlrCofinsVenda.setAtivo( false );
 		txtVlrIRVenda.setAtivo( false );
 		txtVlrCSocialVenda.setAtivo( false );
+		txtVlrBaseICMSVenda.setAtivo( false );
 		txtVlrProdVenda.setAtivo( false );
 		txtVlrDescVenda.setAtivo( false );
 		txtVlrLiqVenda.setAtivo( false );
@@ -665,7 +668,9 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicDescFK( txtDescPlanoPag, 370, 60, 197, 20, "DescPlanoPag", "Descrição do plano de pag." );
 		adicCampo( txtPedCliVenda, 570, 60, 75, 20, "PedCliVenda", "N.ped.cli.", ListaCampos.DB_SI, false );
 		adic( lbStatus, 649, 60, 95, 20 );
+		
 		setPainel( pinCabComis );
+		
 		adicCampo( txtCodVend, 7, 20, 80, 20, "CodVend", "Cód.comis.", ListaCampos.DB_FK, txtDescVend, true );
 		adicDescFK( txtDescVend, 90, 20, 197, 20, "NomeVend", "Nome do comissionado" );
 		if ( bPrefs[ 4 ] ) {
@@ -682,13 +687,17 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 			adicCampo( txtPercComisVenda, 290, 20, 57, 20, "PercComisVenda", "% comis.", ListaCampos.DB_SI, true );
 		}
 		adicCampoInvisivel( txtStatusVenda, "StatusVenda", "Sit.", ListaCampos.DB_SI, false );
+		
 		setPainel( pinCabFiscal );
+		
 		adicCampo( txtVlrIPIVenda, 7, 20, 80, 20, "VlrIPIVenda", "Vlr. IPI", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrICMSVenda, 7, 60, 80, 20, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrPisVenda, 90, 20, 77, 20, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrCofinsVenda, 90, 60, 77, 20, "VlrCofinsVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIRVenda, 170, 20, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrCSocialVenda, 170, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrPisVenda, 90, 20, 80, 20, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIRVenda, 173, 20, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBaseICMSVenda, 7, 60, 80, 20, "VlrBaseIcmsVenda", "Base ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrICMSVenda, 90, 60, 80, 20, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrCofinsVenda, 173, 60, 80, 20, "VlrCofinsVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrCSocialVenda, 256, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
+		
 		lcCampos.setWhereAdic( "TIPOVENDA='V'" );
 		setListaCampos( true, "VENDA", "VD" );
 
@@ -2303,7 +2312,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	}
 
 	public void beforeInsert( InsertEvent ievt ) {
-
+		lbStatus.setForeground( Color.WHITE );
+		lbStatus.setFont( new Font( "Arial", Font.BOLD, 13 ) );
+		lbStatus.setOpaque( true );
+		lbStatus.setVisible( false );
 	}
 
 	public void afterInsert( InsertEvent ievt ) {
