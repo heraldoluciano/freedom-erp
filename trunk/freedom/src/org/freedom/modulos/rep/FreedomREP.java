@@ -57,7 +57,7 @@ public class FreedomREP extends AplicativoPD implements ActionListener {
 			addSeparador( 100000000 );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Preferências", "Preferências", 'P', 100200000, 1, true, null );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Usuários", "Usuários", 'U', 100200000, 1, true, null );
-			addOpcao( 100000000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100300000, 1, true, null );
+			addOpcao( 100000000, TP_OPCAO_ITEM, "Empresa", "Empresa", 'E', 100300000, 1, true, RPEmpresa.class );
 
 		addOpcao( -1, TP_OPCAO_MENU, "Vendas", "", 'V', 200000000, 0, false, null );
 			addOpcao( 200000000, TP_OPCAO_ITEM, "Pedidos", "Pedidos", 'P', 200100000, 1, true, null );
