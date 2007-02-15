@@ -227,6 +227,11 @@ public class NF033 extends Layout {
 
 					// Imprime totais ...
 
+					if ( iContaFrete == 0 ) {
+						frete.next();
+						iContaFrete++;
+					}
+
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 
 						imp.pulaLinha( 3, imp.comprimido() );
@@ -258,11 +263,6 @@ public class NF033 extends Layout {
 					// Fim da impressão dos totais ...
 
 					// Imprime informações do frete ...
-
-					if ( iContaFrete == 0 ) {
-						frete.next();
-						iContaFrete++;
-					}
 
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 2, frete.getString( NF.C_RAZTRANSP ) );
