@@ -83,7 +83,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtEmailCli = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private final JTextFieldPad txtEndEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtEndEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
 	//private final JTextFieldPad txtNumEnt = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -95,7 +95,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtUFEnt = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private final JTextFieldPad txtEndCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtEndCob = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
 	//private final JTextFieldPad txtNumCob = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -113,15 +113,15 @@ public class RPCliente extends FTabDados implements ActionListener {
 
 	private final JTextFieldPad txtCodTipoCli = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescTipoCli = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 
 	private final JTextFieldPad txtCodVend = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtNomeVend = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 
 	private final JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 	
 	private final JCheckBoxPad cbAtivo = new JCheckBoxPad( "Cliente Ativo", "S", "N" );
 	
@@ -163,7 +163,7 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adicCampo( txtCodCli, 7, 30, 100, 20, "CodCli", "Cód.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazCli, 110, 30, 300, 20, "RazCli", "Razão social do cliente", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtNomeCli, 7, 70, 403, 20, "NomeCli", "Nome do cliente", ListaCampos.DB_SI, true );
+		adicCampo( txtNomeCli, 7, 70, 403, 20, "NomeCli", "Nome do fantazia", ListaCampos.DB_SI, true );
 		
 		adicCampo( txtCnpjCli, 7, 110, 200, 20, "CnpjCli", "CNPJ", ListaCampos.DB_SI, false );
 		adicCampo( txtInscCli, 210, 110, 200, 20, "InscCli", "Inscrição", ListaCampos.DB_SI, false );
