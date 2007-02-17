@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -61,11 +62,11 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtCodEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldPad txtRazEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtRazEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	private JTextFieldPad txtNomeEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 40, 0 );
+	private JTextFieldPad txtNomeEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
-	private JTextFieldPad txtEndEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldPad txtEndEmp = new JTextFieldPad( JTextFieldPad.TP_STRING, 45, 0 );
 
 	//private JTextFieldPad txtNumEmp = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
@@ -91,7 +92,7 @@ public class RPEmpresa extends FTabDados {
 
 	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
 	
-	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 45, 0 );
 
     private PainelImagem imLogoEmp = new PainelImagem( 65000 );	
 
@@ -166,6 +167,25 @@ public class RPEmpresa extends FTabDados {
 		
 		montaAbaFilial();
 		setListaCampos( false, "FILIAL", "RP" );
+		lcFilial.setOrdem( "RazFilial" );
+		lcFilial.montaTab();
+		
+		tabFilial.setTamColuna( 80, 0 );
+		tabFilial.setTamColuna( 205, 1 );
+		tabFilial.setTamColuna( 205, 2 );
+		tabFilial.setTamColuna( 40, 3 );
+		tabFilial.setTamColuna( 120, 4 );
+		tabFilial.setTamColuna( 120, 5 );
+		
+		tabFilial.setTamColuna( 200, 6 );
+		tabFilial.setTamColuna( 100, 7 );
+		tabFilial.setTamColuna( 100, 8 );
+		tabFilial.setTamColuna( 100, 9 );
+		tabFilial.setTamColuna( 50, 10 );
+		tabFilial.setTamColuna( 50, 11 );
+		tabFilial.setTamColuna( 100, 12 );
+		tabFilial.setTamColuna( 100, 13 );
+		tabFilial.setTamColuna( 200, 14 );
 		
 		txtCnpjFilial.setMascara( JTextFieldPad.MC_CNPJ );
 		txtCepFilial.setMascara( JTextFieldPad.MC_CEP );
@@ -234,14 +254,16 @@ public class RPEmpresa extends FTabDados {
 		adicCampo( txtCodFilial, 7, 30, 100, 20, "CodFilial", "Cód.filial.", ListaCampos.DB_PK, true );
 		adicCampo( txtRazFilial, 110, 30, 260, 20, "RazFilial", "Razão social da Filial", ListaCampos.DB_SI, true );
 
+		adicCampo( txtNomeFilial, 7, 70, 363, 20, "NomeFilial", "Nome fantasia", ListaCampos.DB_SI, false );		
+
 		adicDB( cbMatriz, 400, 30, 120, 20, "MzFilial", "", false );
 		
-		adicCampo( txtNomeFilial, 7, 70, 363, 20, "NomeFilial", "Nome fantasia", ListaCampos.DB_SI, false );		
 		adicCampo( txtCnpjFilial, 373, 70, 147, 20, "CnpjFilial", "Cnpj", ListaCampos.DB_SI, true );
 		
-		adicCampo( txtEndFilial, 7, 110, 363, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtInscFilial, 373, 110, 147, 20, "InscFilial", "Inscrição Estadual", ListaCampos.DB_SI, true );
 
+		adicCampo( txtEndFilial, 7, 110, 363, 20, "EndFilial", "Endereço", ListaCampos.DB_SI, false );
+		
 		adicCampo( txtCidFilial, 7, 150, 112, 20, "CidFilial", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtBairFilial, 122, 150, 112, 20, "BairFilial", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCepFilial, 237, 150, 80, 20, "CepFilial", "Cep", ListaCampos.DB_SI, false );
@@ -253,10 +275,11 @@ public class RPEmpresa extends FTabDados {
 		
 		adicCampo( txtEmailFilial, 7, 230, 363, 20, "EmailFilial", "E-Mail", ListaCampos.DB_SI, false );	
 		
-		adic( btCopiarEmp, 380, 235, 135, 30 );	
+		adic( btCopiarEmp, 380, 225, 135, 30 );	
 		
-		navFilial.setPreferredSize( new Dimension( 300, 25 ) );
+		navFilial.setPreferredSize( new Dimension( 290, 27 ) );
 		panelNavegadorFilial.add( navFilial, BorderLayout.WEST );
+		panelNavegadorFilial.setBorder( BorderFactory.createEtchedBorder() );
 	}
 	
 	private void copiarEmpresa() {
