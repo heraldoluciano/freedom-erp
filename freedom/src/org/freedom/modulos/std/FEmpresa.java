@@ -294,17 +294,19 @@ public class FEmpresa extends FTabDados implements PostListener, CarregaListener
 		adicCampo( txtPercIR, 190, 220, 87, 20, "PercIRFilial", "IR", ListaCampos.DB_SI, false );
 		adicCampo( txtPercCSocial, 280, 220, 87, 20, "PercCSocialFilial", "Cont.social", ListaCampos.DB_SI, false );
 		adicDB( cbSimples, 370, 220, 80, 20, "SimplesFilial", "Fiscal", false );
-		txtCnpjFilial.setMascara( JTextFieldPad.MC_CNPJ );
-		txtCepFilial.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneFilial.setMascara( JTextFieldPad.MC_FONEDDD );
-		txtFaxFilial.setMascara( JTextFieldPad.MC_FONE );
+		pinFilial.adic( navFilial, 0, 245, 270, 25 );
 		setListaCampos( false, "FILIAL", "SG" );
 		lcFilial.setOrdem( "RazFilial" );
 		lcFilial.montaTab();
 		lcFilial.setQueryInsert( false );
 		lcFilial.setQueryCommit( false );
+		
+		txtCnpjFilial.setMascara( JTextFieldPad.MC_CNPJ );
+		txtCepFilial.setMascara( JTextFieldPad.MC_CEP );
+		txtFoneFilial.setMascara( JTextFieldPad.MC_FONEDDD );
+		txtFaxFilial.setMascara( JTextFieldPad.MC_FONE );
+		
 		tabFilial.setTamColuna( 120, 1 );
-		pinFilial.adic( navFilial, 0, 245, 270, 25 );
 		tabFilial.setTamColuna( 80, 0 );
 		tabFilial.setTamColuna( 220, 1 );
 		tabFilial.setTamColuna( 220, 2 );
