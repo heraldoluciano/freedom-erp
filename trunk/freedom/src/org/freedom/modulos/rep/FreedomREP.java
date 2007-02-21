@@ -51,9 +51,9 @@ public class FreedomREP extends AplicativoPD implements ActionListener {
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 100107000, 2, true, null );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Produtos", "Produtos", 'P', 100108000, 2, true, null );
 				addSeparador( 100100000 );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Formas de pagamento", "Formas de pagamento", 'r', 100109000, 2, true, null );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100110000, 2, true, null );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Cotação", "Cotação", 'a', 100111000, 2, true, null );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Planos de pagamento", "Planos de pagamento", 'r', 100109000, 2, true, RPPlanoPag.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100110000, 2, true, RPMoeda.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Cotação", "Cotação", 'a', 100111000, 2, true, RPCotMoeda.class );
 			addSeparador( 100000000 );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Preferências", "Preferências", 'P', 100200000, 1, true, null );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Usuários", "Usuários", 'U', 100200000, 1, true, null );
