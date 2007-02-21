@@ -235,10 +235,10 @@ public class RPCliente extends FTabDados implements ActionListener {
 		adic( comercial, 27, 10, 80, 20 );
 		adic( linha1, 7, 20, 403, 160 );
 		
-		adicCampo( txtCodTipoCli, 17, 60, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, false );
+		adicCampo( txtCodTipoCli, 17, 60, 90, 20, "CodTipoCli", "Cód.tp.cli.", ListaCampos.DB_PK, true );
 		adicCampo( txtDescTipoCli, 110, 60, 290, 20, "DescTipoCli", "Descrição do tipo de cliente", ListaCampos.DB_SI, false );
 		
-		adicCampo( txtCodVend, 17, 100, 90, 20, "CodVend", "Cód.vend.", ListaCampos.DB_PK, false );
+		adicCampo( txtCodVend, 17, 100, 90, 20, "CodVend", "Cód.vend.", ListaCampos.DB_PK, true );
 		adicCampo( txtNomeVend, 110, 100, 290, 20, "NomeVend", "Nome do vendedor", ListaCampos.DB_SI, false );
 		
 		adicCampo( txtCodPlanoPag, 17, 140, 90, 20, "CodPlanoPag", "Cód.p.pag.", ListaCampos.DB_PK, false );
