@@ -52,9 +52,9 @@ public class NFBuzzi2 extends Layout {
 		String[] sVals = new String[ 6 ];
 		Vector vMatObs = null;
 		Vector vDesc = null;
-		Vector vValores = new Vector();
-		Vector vClfisc = new Vector();
-		Vector vSigla = new Vector();
+		Vector<String> vValores = new Vector<String>();
+		Vector<String> vClfisc = new Vector<String>();
+		Vector<String> vSigla = new Vector<String>();
 		Calendar cHora = Calendar.getInstance();
 
 		try {
@@ -152,7 +152,9 @@ public class NFBuzzi2 extends Layout {
 					
 					imp.say( 6, String.valueOf( itens.getInt( NF.C_CODPROD ) ) );
 
-					vDesc = Funcoes.strToVectorSilabas( "".equals( itens.getString( NF.C_OBSITPED ) ) ? itens.getString( NF.C_DESCPROD ).trim() : itens.getString( NF.C_OBSITPED ).trim(), 46 );
+					vDesc = Funcoes.strToVectorSilabas( 
+							( "".equals( itens.getString( NF.C_OBSITPED ) ) ? itens.getString( NF.C_DESCPROD ).trim() : itens.getString( NF.C_OBSITPED ).trim() ) 
+								+ itens.getString( NF.C_CODLOTE ), 46 );
 
 					for ( int i = 0; ( i < ( MAXPROD - iProd ) ) && ( vDesc.size() > i ); i++ ) {
 						
