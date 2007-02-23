@@ -63,7 +63,6 @@ public class NF035 extends Layout {
 		Vector vObsVenda = new Vector();
 		Vector<String> vClfisc = new Vector<String>();
 		Vector<String> vSigla = new Vector<String>();
-		Vector vDescFisc = new Vector();
 		Vector vDescServ = new Vector();
 		Vector<Object[]> vServico = new Vector<Object[]>();
 
@@ -385,7 +384,7 @@ public class NF035 extends Layout {
 								imp.say( 2, (String) vSigla.elementAt( indexSigla++ ) );
 							}
 							if ( vObsVenda.size() > 0 && indexObs < vObsVenda.size() ) {
-								imp.say( 20, Funcoes.copy( (String) vDescFisc.elementAt( indexObs++ ), 40 ) );
+								imp.say( 20, Funcoes.copy( (String) vObsVenda.elementAt( indexObs++ ), 40 ) );
 							}
 						}
 						else {
