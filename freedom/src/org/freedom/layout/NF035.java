@@ -37,8 +37,6 @@ public class NF035 extends Layout {
 		boolean bFat = true;
 		boolean bNat = true;
 		boolean bjatem = false;
-		boolean bjatem1 = false;
-		boolean bjatem2 = false;
 		final int MAXLINE = 43;
 		final int MAXPROD = 12;
 		int iNumNota = 0;
@@ -47,13 +45,14 @@ public class NF035 extends Layout {
 		int iContaFrete = 0;
 		int iLinPag = imp.verifLinPag( "NF" );
 		int sizeObs = 0;
-		int indexDescFisc = 0;
+		int indexObs = 0;
 		int indexSigla = 0;
 		int indexServ = 0;
 		String sCodfisc = null;
 		String sSigla = null;
 		String sTemp = null;
 		String sDescFisc = "";
+		String sObsVenda = "";
 		String[] sValsCli = new String[ 4 ];
 		String[] sNat = new String[ 2 ];
 		String[] sVencs = new String[ 6 ];
@@ -61,16 +60,18 @@ public class NF035 extends Layout {
 		String[] sDuplics = new String[ 6 ];
 		BigDecimal bdVlrIssServ = new BigDecimal( "0" );
 		BigDecimal bdVlrTotServ = new BigDecimal( "0" );
-		Vector vClfisc = new Vector();
-		Vector vSigla = new Vector();
+		Vector vObsVenda = new Vector();
+		Vector<String> vClfisc = new Vector<String>();
+		Vector<String> vSigla = new Vector<String>();
 		Vector vDescFisc = new Vector();
-		Vector vServico = new Vector();
 		Vector vDescServ = new Vector();
+		Vector<Object[]> vServico = new Vector<Object[]>();
 
 		try {
 
 			if ( cab.next() ) {
 				iNumNota = cab.getInt( NF.C_DOC );
+				sObsVenda = cab.getString( NF.C_OBSPED ).replace( "\n", "" );
 			}
 
 			for ( int i = 0; i < 6; i++ ) {
@@ -186,37 +187,18 @@ public class NF035 extends Layout {
 
 				}
 
-				// Monta a observação
+				// Monta a menssagem fiscal ...
 
 				sTemp = itens.getString( NF.C_DESCFISC ).trim();
-				if ( sDescFisc.length() > 0 ) {
-					if ( sDescFisc.indexOf( sTemp ) > -1 ) {
-						bjatem1 = true;
-					}
-					if ( !bjatem1 ) {
-						sDescFisc += sDescFisc;
-					}
-					bjatem1 = false;
-				}
-				else {
-					sDescFisc = sTemp;
+				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
+					sDescFisc += sTemp;
+				}	
+				sTemp = itens.getString( NF.C_DESCFISC2 ).trim();
+				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
+					sDescFisc += sTemp;
 				}
 
-				sDescFisc = itens.getString( NF.C_DESCFISC2 ).trim();
-				if ( sDescFisc.length() > 0 ) {
-					if ( sDescFisc.indexOf( sTemp ) > -1 ) {
-						bjatem2 = true;
-					}
-					if ( !bjatem2 ) {
-						sDescFisc += sDescFisc;
-					}
-					bjatem2 = false;
-				}
-				else {
-					sDescFisc = sTemp;
-				}
-
-				// Fim da observação
+				// Fim da menssagem fiscal ...
 
 				// Definição da sigla para a classificação fiscal
 
@@ -295,18 +277,18 @@ public class NF035 extends Layout {
 						iProdImp = 0;
 						int contaLinha = 0;
 						for ( int i = 0; i < vServico.size(); i++ ) {							
-							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) ( (Object[]) vServico.get( i ) )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
-							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) ( (Object[]) vServico.get( i ) )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+							bdVlrTotServ = bdVlrTotServ.add( (BigDecimal) vServico.get( i )[ 2 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
+							bdVlrIssServ = bdVlrIssServ.add( (BigDecimal) vServico.get( i )[ 3 ] ).setScale( 2, BigDecimal.ROUND_HALF_UP );
 						}
 						for ( int i = 0; i < vServico.size(); i++ ) {
-							vDescServ = Funcoes.strToVectorSilabas( (String) ( (Object[]) vServico.get( indexServ ) )[ 0 ], 80 );
+							vDescServ = Funcoes.strToVectorSilabas( (String) vServico.get( indexServ )[ 0 ], 80 );
 							for ( int j = 0; j < vDescServ.size() && contaLinha < 10; j++ ) {
 								contaLinha++;
 								imp.pulaLinha( 1, imp.comprimido() );
 								imp.say( 4, (String) vDescServ.elementAt( j ) );
 								if ( j == 0 ) {
-									imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) ( (Object[]) vServico.get( indexServ ) )[ 1 ] ) ) );
-									imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) ( (Object[]) vServico.get( indexServ ) )[ 2 ] ) ) );
+									imp.say( 87, Funcoes.strDecimalToStrCurrency( 8, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 1 ] ) ) );
+									imp.say( 100, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( (BigDecimal) vServico.get( indexServ )[ 2 ] ) ) );
 								}
 								if ( contaLinha == 6 ) {
 									imp.say( 120, Funcoes.strDecimalToStrCurrency( 15, 2, String.valueOf( bdVlrIssServ ) ) );
@@ -390,10 +372,10 @@ public class NF035 extends Layout {
 
 					// Imprime observação e classificações fiscais
 
-					vDescFisc = Funcoes.strToVectorSilabas( sDescFisc, 40 );
+					vObsVenda = Funcoes.strToVectorSilabas( sObsVenda + "\n" + sDescFisc, 40 );
 
 					sizeObs = vSigla.size();
-					sizeObs = vDescFisc.size() > sizeObs ? vDescFisc.size() : sizeObs;
+					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
 
 					int aux = 0;
 					for ( int i = 0; i < 7; i++ ) {
@@ -402,8 +384,8 @@ public class NF035 extends Layout {
 							if ( vSigla.size() > 0 && indexSigla < vSigla.size() ) {
 								imp.say( 2, (String) vSigla.elementAt( indexSigla++ ) );
 							}
-							if ( vDescFisc.size() > 0 && indexDescFisc < vDescFisc.size() ) {
-								imp.say( 20, Funcoes.copy( (String) vDescFisc.elementAt( indexDescFisc++ ), 40 ) );
+							if ( vObsVenda.size() > 0 && indexObs < vObsVenda.size() ) {
+								imp.say( 20, Funcoes.copy( (String) vDescFisc.elementAt( indexObs++ ), 40 ) );
 							}
 						}
 						else {
