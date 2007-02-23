@@ -42,6 +42,8 @@ import java.util.Vector;
 
 import org.freedom.componentes.JLabelPad;
 import org.freedom.componentes.JPanelPad;
+
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import org.freedom.componentes.JTabbedPanePad;
 
@@ -66,177 +68,139 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 	private static final long serialVersionUID = 1L;
 
-	private int casasDec = Aplicativo.casasDec;
+	private final int casasDec = Aplicativo.casasDec;
 
-	private JTabbedPanePad tpn = new JTabbedPanePad();
+	private final JTabbedPanePad tpn = new JTabbedPanePad();
 
-	private JPanelPad pinFecha = new JPanelPad( 400, 300 );
+	private final JPanelPad pinFecha = new JPanelPad( 400, 300 );
 
-	private JPanelPad pinFrete = new JPanelPad( 400, 300 );
+	private final JPanelPad pinFrete = new JPanelPad( 400, 300 );
 
-	private JPanelPad pnReceber = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
+	private final JPanelPad pnReceber = new JPanelPad( JPanelPad.TP_JPANEL, new BorderLayout() );
 
-	private JPanelPad pnComis = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );;
+	private final JPanelPad pnComis = new JPanelPad( JPanelPad.TP_JPANEL, new GridLayout( 1, 1 ) );;
 
-	private JPanelPad pinInfEspec = new JPanelPad( 0, 0 );
+	private final JPanelPad pinInfEspec = new JPanelPad( 0, 0 );
 
-	private JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodVenda = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrDescItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrDescItVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtPercDescVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private final JTextFieldPad txtPercDescVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
-	private JTextFieldPad txtVlrDescVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrDescVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtPercAdicVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
+	private final JTextFieldPad txtPercAdicVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 6, 2 );
 
-	private JTextFieldPad txtVlrAdicVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrAdicVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtVlrProdVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrProdVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodPlanoPag = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodTran = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtPlacaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtPlacaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtUFFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldPad txtUFFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtVlrFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtConhecFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
+	private final JTextFieldPad txtConhecFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 13, 0 );
 
-	private JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtQtdFreteVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtPesoBrutVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
+	private final JTextFieldPad txtPesoLiqVD = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDec );
 
-	private JTextFieldPad txtEspFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtEspFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtMarcaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
+	private final JTextFieldPad txtMarcaFreteVD = new JTextFieldPad( JTextFieldPad.TP_STRING, 10, 0 );
 
-	private JTextFieldPad txtCodAuxV = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+	private final JTextFieldPad txtCodAuxV = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
 
-	private JTextFieldPad txtCPFCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
+	private final JTextFieldPad txtCPFCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 11, 0 );
 
-	private JTextFieldPad txtNomeCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldPad txtNomeCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldPad txtCidCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
+	private final JTextFieldPad txtCidCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 30, 0 );
 
-	private JTextFieldPad txtUFCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldPad txtUFCliAuxV = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
+	private final JTextFieldPad txtCodBanco = new JTextFieldPad( JTextFieldPad.TP_STRING, 3, 0 );
 
-	private JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodModBol = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtNParcItRec = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrParcItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrDescItRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrParcRec = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtVencItRec = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtCodComi = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
+	private final JTextFieldPad txtCodComi = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 8, 0 );
 
-	private JTextFieldPad txtVlrComi = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
+	private final JTextFieldPad txtVlrComi = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, 2 );
 
-	private JTextFieldPad txtDtVencComi = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
+	private final JTextFieldPad txtDtVencComi = new JTextFieldPad( JTextFieldPad.TP_DATE, 10, 0 );
 
-	private JTextFieldPad txtStatusVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	private final JTextFieldPad txtStatusVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
 
-	private JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	private final JTextFieldPad txtTipoVenda = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
+	private final JTextFieldPad txtAltUsuRec = new JTextFieldPad( JTextFieldPad.TP_STRING, 1, 0 );
 
-	private JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldFK txtDescPlanoPag = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+	private final JTextFieldFK txtDescTran = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
 
-	private JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
+	private final JTextFieldFK txtDescBanco = new JTextFieldFK( JTextFieldPad.TP_STRING, 40, 0 );
 
-	private JLabelPad lbPercDescVenda = new JLabelPad( "% Desc." );
+	private final JCheckBoxPad cbImpPed = new JCheckBoxPad( "Imprime Pedido?", "S", "N" );
 
-	private JLabelPad lbVlrDescVenda = new JLabelPad( "V Desc." );
+	private final JCheckBoxPad cbImpNot = new JCheckBoxPad( "Imprime Nota?", "S", "N" );
 
-	private JLabelPad lbPercAdicVenda = new JLabelPad( "% Adic." );
+	private final JCheckBoxPad cbImpBol = new JCheckBoxPad( "Imprime Boleto?", "S", "N" );
 
-	private JLabelPad lbVlrAdicVenda = new JLabelPad( "V Adic." );
+	private final JCheckBoxPad cbReImpNot = new JCheckBoxPad( "Reimprime Nota?", "S", "N" );
 
-	private JLabelPad lbCodPlanoPag = new JLabelPad( "Cód.p.pg." );
+	private final JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
 
-	private JLabelPad lbCodTran = new JLabelPad( "Cód.tran." );
+	private final JRadioGroup rgFreteVD;
 
-	private JLabelPad lbDescPlanoPag = new JLabelPad( "Descrição do plano de pagamento" );
+	private final ListaCampos lcVenda = new ListaCampos( this );
 
-	private JLabelPad lbNomeTran = new JLabelPad( "Nome do transportador" );
+	private final ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
 
-	private JLabelPad lbTipoFreteVD = new JLabelPad( "Tipo" );
+	private final ListaCampos lcTran = new ListaCampos( this, "TN" );
 
-	private JLabelPad lbPlacaFreteVD = new JLabelPad( "Placa" );
+	private final ListaCampos lcAuxVenda = new ListaCampos( this );
 
-	private JLabelPad lbUFFreteVD = new JLabelPad( "UF" );
+	private final ListaCampos lcFreteVD = new ListaCampos( this );
 
-	private JLabelPad lbVlrFreteVD = new JLabelPad( "Valor" );
+	private final ListaCampos lcReceber = new ListaCampos( this );
 
-	private JLabelPad lbQtdFreteVD = new JLabelPad( "Volumes" );
+	private final ListaCampos lcBanco = new ListaCampos( this, "BO" );
 
-	private JLabelPad lbPesoBrutVD = new JLabelPad( "Peso B." );
+	private final ListaCampos lcItReceber = new ListaCampos( this );
 
-	private JLabelPad lbPesoLiqVD = new JLabelPad( "Peso L." );
+	private final ListaCampos lcComis = new ListaCampos( this );
 
-	private JLabelPad lbEspFreteVD = new JLabelPad( "Espec." );
+	private final Navegador navItRec = new Navegador( false );
 
-	private JLabelPad lbMarcaFreteVD = new JLabelPad( "Marca" );
+	private final Navegador navRec = new Navegador( false );
 
-	private JCheckBoxPad cbImpPed = new JCheckBoxPad( "Imprime Pedido?", "S", "N" );
+	private final Navegador navComis = new Navegador( false );
 
-	private JCheckBoxPad cbImpNot = new JCheckBoxPad( "Imprime Nota?", "S", "N" );
+	private final Tabela tabRec = new Tabela();
 
-	private JCheckBoxPad cbImpBol = new JCheckBoxPad( "Imprime Boleto?", "S", "N" );
-
-	private JCheckBoxPad cbReImpNot = new JCheckBoxPad( "Reimprime Nota?", "S", "N" );
-
-	private JCheckBoxPad cbAdicFrete = new JCheckBoxPad( "adiciona valor do frete na nota?", "S", "N" );
-
-	private JRadioGroup rgFreteVD = null;
-
-	private Vector vVals = new Vector();
-
-	private Vector vLabs = new Vector();
-
-	private ListaCampos lcVenda = new ListaCampos( this );
-
-	private ListaCampos lcPlanoPag = new ListaCampos( this, "PG" );
-
-	private ListaCampos lcTran = new ListaCampos( this, "TN" );
-
-	private ListaCampos lcAuxVenda = new ListaCampos( this );
-
-	private ListaCampos lcFreteVD = new ListaCampos( this );
-
-	private ListaCampos lcReceber = new ListaCampos( this );
-
-	private ListaCampos lcBanco = new ListaCampos( this, "BO" );
-
-	private ListaCampos lcItReceber = new ListaCampos( this );
-
-	private ListaCampos lcComis = new ListaCampos( this );
-
-	private Navegador navItRec = new Navegador( false );
-
-	private Navegador navRec = new Navegador( false );
-
-	private Navegador navComis = new Navegador( false );
-
-	private Tabela tabRec = new Tabela();
-
-	private Tabela tabComis = new Tabela();
+	private final Tabela tabComis = new Tabela();
 
 	private int iCodVendaFecha = 0;
 
@@ -268,15 +232,16 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		c.add( tpn );
 
-		JScrollPane spnComis = new JScrollPane( tabComis );
-		pnComis.add( spnComis );
+		pnComis.add( new JScrollPane( tabComis ) );
 
 		tpn.add( "Fechamento", pinFecha );
 		tpn.add( "Frete", pinFrete );
 		tpn.add( "Inf. específicas", pinInfEspec );
 		tpn.add( "Receber", pnReceber );
 		tpn.add( "Comissão", pnComis );
-
+		
+		Vector<String> vVals = new Vector<String>();
+		Vector<String> vLabs = new Vector<String>();
 		vVals.addElement( "C" );
 		vVals.addElement( "F" );
 		vLabs.addElement( "CIF" );
@@ -354,10 +319,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		lcFreteVD.add( new GuardaCampo( txtMarcaFreteVD, "MarcaFreteVD", "Marca", ListaCampos.DB_SI, true ) );
 		lcFreteVD.add( new GuardaCampo( cbAdicFrete, "AdicFreteVD", "frete na nota", ListaCampos.DB_SI, true ) );
 		lcFreteVD.montaSql( false, "FRETEVD", "VD" );
-		lcFreteVD.setConexao( cn );
-		txtPlacaFreteVD.setStrMascara("###-####");
-		
-		
+		lcFreteVD.setConexao( cn );	
 		rgFreteVD.setListaCampos( lcFreteVD );
 		txtPlacaFreteVD.setListaCampos( lcFreteVD );
 		txtUFFreteVD.setListaCampos( lcFreteVD );
@@ -370,6 +332,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		txtConhecFreteVD.setListaCampos( lcFreteVD );
 		txtCodTran.setListaCampos( lcFreteVD );
 		cbAdicFrete.setListaCampos( lcFreteVD );
+		txtPlacaFreteVD.setStrMascara("###-####");	
 		
 		cbAdicFrete.setVlrString( "S" );
 
@@ -471,17 +434,17 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		cbReImpNot.addCheckBoxListener( this );
 		
 		setPainel( pinFecha );
-		adic( lbCodPlanoPag, 7, 0, 80, 20 );
-		adic( lbDescPlanoPag, 90, 0, 270, 20 );
+		adic( new JLabelPad( "Cód.p.pg." ), 7, 0, 80, 20 );
+		adic( new JLabelPad( "Descrição do plano de pagamento" ), 90, 0, 270, 20 );
 		adic( txtCodPlanoPag, 7, 20, 80, 20 );
 		adic( txtDescPlanoPag, 90, 20, 270, 20 );
-		adic( lbPercDescVenda, 7, 40, 80, 20 );
+		adic( new JLabel( "% Desc." ), 7, 40, 80, 20 );
 		adic( txtPercDescVenda, 7, 60, 80, 20 );
-		adic( lbVlrDescVenda, 90, 40, 97, 20 );
+		adic( new JLabelPad( "V Desc." ), 90, 40, 97, 20 );
 		adic( txtVlrDescVenda, 90, 60, 97, 20 );
-		adic( lbPercAdicVenda, 190, 40, 77, 20 );
+		adic( new JLabelPad( "% Adic." ), 190, 40, 77, 20 );
 		adic( txtPercAdicVenda, 190, 60, 77, 20 );
-		adic( lbVlrAdicVenda, 270, 40, 90, 20 );
+		adic( new JLabelPad( "V Adic." ), 270, 40, 90, 20 );
 		adic( txtVlrAdicVenda, 270, 60, 90, 20 );
 		adic( new JLabelPad( "Cód.banco" ), 7, 80, 100, 20 );
 		adic( txtCodBanco, 7, 100, 80, 20 );
@@ -493,30 +456,30 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 		adic( cbReImpNot, 7, 190, 150, 20 );
 
 		setPainel( pinFrete );
-		adic( lbCodTran, 7, 0, 80, 20 );
-		adic( lbNomeTran, 90, 0, 270, 20 );
+		adic( new JLabelPad( "Cód.tran." ), 7, 0, 80, 20 );
 		adic( txtCodTran, 7, 20, 80, 20 );
+		adic( new JLabelPad( "Nome do transportador" ), 90, 0, 270, 20 );
 		adic( txtDescTran, 90, 20, 270, 20 );
-		adic( lbTipoFreteVD, 7, 40, 170, 20 );
+		adic( new JLabelPad( "Tipo" ), 7, 40, 170, 20 );
 		adic( rgFreteVD, 7, 60, 130, 30 );
 		adic( cbAdicFrete, 150, 60, 220, 30 );
 		adic( new JLabelPad( "Conhec." ), 7, 90, 230, 20 );
 		adic( txtConhecFreteVD, 7, 110, 175, 20 );
-		adic( lbPlacaFreteVD, 185, 90, 86, 20 );
+		adic( new JLabelPad( "Placa" ), 185, 90, 86, 20 );
 		adic( txtPlacaFreteVD, 185, 110, 86, 20 );
-		adic( lbUFFreteVD, 274, 90, 86, 20 );
+		adic( new JLabelPad( "UF" ), 274, 90, 86, 20 );
 		adic( txtUFFreteVD, 274, 110, 86, 20 );
-		adic( lbVlrFreteVD, 7, 130, 86, 20 );
+		adic( new JLabelPad( "Valor" ), 7, 130, 86, 20 );
 		adic( txtVlrFreteVD, 7, 150, 86, 20 );
-		adic( lbQtdFreteVD, 96, 130, 86, 20 );
+		adic( new JLabelPad( "Volumes" ), 96, 130, 86, 20 );
 		adic( txtQtdFreteVD, 96, 150, 86, 20 );
-		adic( lbPesoBrutVD, 185, 130, 86, 20 );
+		adic( new JLabelPad( "Peso B." ), 185, 130, 86, 20 );
 		adic( txtPesoBrutVD, 185, 150, 86, 20 );
-		adic( lbPesoLiqVD, 274, 130, 86, 20 );
+		adic( new JLabelPad( "Peso L." ), 274, 130, 86, 20 );
 		adic( txtPesoLiqVD, 274, 150, 86, 20 );
-		adic( lbEspFreteVD, 7, 170, 175, 20 );
+		adic( new JLabelPad( "Espec." ), 7, 170, 175, 20 );
 		adic( txtEspFreteVD, 7, 190, 175, 20 );
-		adic( lbMarcaFreteVD, 185, 170, 175, 20 );
+		adic( new JLabelPad( "Marca" ), 185, 170, 175, 20 );
 		adic( txtMarcaFreteVD, 185, 190, 175, 20 );
 
 		Funcoes.setBordReq( rgFreteVD );
@@ -777,67 +740,79 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			case 0 :
 				
-				if ( bPrefs[ 0 ] ) {
-					
-					tpn.setEnabledAt( 1, true );
+				txtCodVenda.setVlrInteger( new Integer( iCodVendaFecha ) );
+				txtTipoVenda.setVlrString( "V" );
+								
+				// frete
+				if ( bPrefs[ 0 ] ) {	
+					if ( ! bCarFrete ) {					
+						calcPeso();
+						getTipoFrete();
+					}
+					tpn.setEnabledAt( 0, false );		
+					tpn.setEnabledAt( 1, true );		
+					tpn.setEnabledAt( 2, false );
+					tpn.setEnabledAt( 3, false );
+					tpn.setEnabledAt( 4, false );
 					tpn.setSelectedIndex( 1 );
 				}
-				else if ( bPrefs[ 1 ] ) {
-					
-					tpn.setEnabledAt( 2, true );
+				// adicional
+				else if ( bPrefs[ 1 ] ) {			
+					tpn.setEnabledAt( 0, false );		
+					tpn.setEnabledAt( 1, false );		
+					tpn.setEnabledAt( 2, true );	
+					tpn.setEnabledAt( 3, false );
+					tpn.setEnabledAt( 4, false );
 					tpn.setSelectedIndex( 2 );
 				}
-				else {
-					
-					tpn.setEnabledAt( 0, false );
+				else {					
+					gravaVenda();	
+					tpn.setEnabledAt( 0, false );		
+					tpn.setEnabledAt( 1, false );		
+					tpn.setEnabledAt( 2, false );	
 					tpn.setEnabledAt( 3, true );
 					tpn.setEnabledAt( 4, true );
 					tpn.setSelectedIndex( 3 );
-					// gravaVenda();
+					btCancel.setEnabled( false );
 				}
-				
-				txtCodVenda.setVlrInteger( new Integer( iCodVendaFecha ) );
-				txtTipoVenda.setVlrString( "V" );
-				
-				if ( ! bCarFrete ) {
-					
-					calcPeso();
-					getTipoFrete();
-				}
-				
-				gravaVenda();
 				
 				break;
 			case 1 :
 				
-				if ( bPrefs[ 0 ] ) {
-				
+				if ( bPrefs[ 0 ] ) {				
 					lcFreteVD.edit();
 				}
-				if ( bPrefs[ 1 ] ) {
-					
-					tpn.setEnabledAt( 2, true );
+				// adicional
+				if ( bPrefs[ 1 ] ) {					
+					tpn.setEnabledAt( 0, false );		
+					tpn.setEnabledAt( 1, false );		
+					tpn.setEnabledAt( 2, true );	
+					tpn.setEnabledAt( 3, false );
+					tpn.setEnabledAt( 4, false );
 					tpn.setSelectedIndex( 2 );
 				}
-				else {
-					
-					tpn.setEnabledAt( 1, false );
+				else {					
+					gravaVenda();
+					tpn.setEnabledAt( 0, false );		
+					tpn.setEnabledAt( 1, false );		
+					tpn.setEnabledAt( 2, false );	
 					tpn.setEnabledAt( 3, true );
 					tpn.setEnabledAt( 4, true );
 					tpn.setSelectedIndex( 3 );
+					btCancel.setEnabled( false );
 				}
-				
-				gravaVenda();
 				
 				break;
 			case 2 :
-				
-				tpn.setEnabledAt( 2, false );
+
+				gravaVenda();
+				tpn.setEnabledAt( 0, false );		
+				tpn.setEnabledAt( 1, false );		
+				tpn.setEnabledAt( 2, false );	
 				tpn.setEnabledAt( 3, true );
 				tpn.setEnabledAt( 4, true );
 				tpn.setSelectedIndex( 3 );
-				
-				gravaVenda();
+				btCancel.setEnabled( false );
 				
 				break;
 			default :
@@ -866,15 +841,9 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			
 			if ( rs.next() ) {
 			
-				if ( rs.getString( "TabFreteVD" ).trim().equals( "S" ) ) {
-					bRetorno[ 0 ] = true;
-				}
-				if ( rs.getString( "TabAdicVD" ).trim().equals( "S" ) ) {
-					bRetorno[ 1 ] = true;
-				}
-				if ( rs.getString( "VerifAltParcVenda" ).trim().equals( "S" ) ) {
-					bRetorno[ 2 ] = true;
-				}
+				bRetorno[ 0 ] = rs.getString( "TabFreteVD" ).trim().equals( "S" );
+				bRetorno[ 1 ] = rs.getString( "TabAdicVD" ).trim().equals( "S" );
+				bRetorno[ 2 ] = rs.getString( "VerifAltParcVenda" ).trim().equals( "S" );
 			}
 			
 			rs.close();
@@ -1031,7 +1000,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		StringBuffer sSQL = null;
+		StringBuffer sSQL = new StringBuffer();
 		
 		try {
 			
@@ -1059,7 +1028,7 @@ public class DLFechaVenda extends FFDialogo implements FocusListener, MouseListe
 			if ( !con.getAutoCommit() ) {
 				con.commit();
 			}
-		} catch ( SQLException err ) {
+		} catch ( Exception err ) {
 			err.printStackTrace();
 			Funcoes.mensagemErro( this, "Erro ao buscar o código da conta a receber!\n" + err.getMessage(), true, con, err );
 		} finally {

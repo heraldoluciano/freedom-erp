@@ -1186,7 +1186,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	public Vector getParansDesconto() {
 
-		Vector param = new Vector();
+		Vector<Object> param = new Vector<Object>();
 		param.addElement( txtStrDescItVenda );
 		param.addElement( txtPrecoItVenda );
 		param.addElement( txtVlrDescItVenda );
@@ -1840,7 +1840,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		StringBuffer sSQLInfoAdic = new StringBuffer();
 		Object layNF = null;
 		NFSaida nf = null;
-		Vector parans = null;
+		Vector<Object> parans = null;
 		ImprimeOS imp = null;
 		DLRPedido dl = null;
 		boolean bImpOK = false;
@@ -1870,7 +1870,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				
 				if ( layNF instanceof Layout ) {
 					
-					parans = new Vector();
+					parans = new Vector<Object>();
 					parans.addElement( new Integer( Aplicativo.iCodEmp ) );
 					parans.addElement( new Integer( ListaCampos.getMasterFilial( "VDVENDA" ) ) );
 					parans.addElement( new Integer( iCodVenda ) );
