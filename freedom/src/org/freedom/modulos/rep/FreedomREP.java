@@ -48,12 +48,13 @@ public class FreedomREP extends AplicativoPD implements ActionListener {
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Fornecedor", "Fornecedor", 'F', 100105000, 2, true, RPFornecedor.class );
 				addOpcao( 100100000, TP_OPCAO_ITEM, "Transportadoras", "Transportadoras", 'T', 100106000, 2, true, RPTransportadora.class );
 				addSeparador( 100100000 );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 100107000, 2, true, null );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Produtos", "Produtos", 'P', 100108000, 2, true, null );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Grupos", "Grupos", 'G', 100107000, 2, true, RPGrupo.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Unidades", "Unidades", 'U', 100108000, 2, true, RPUnidade.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Produtos", "Produtos", 'P', 100109000, 2, true, RPProduto.class );
 				addSeparador( 100100000 );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Planos de pagamento", "Planos de pagamento", 'r', 100109000, 2, true, RPPlanoPag.class );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100110000, 2, true, RPMoeda.class );
-				addOpcao( 100100000, TP_OPCAO_ITEM, "Cotação", "Cotação", 'a', 100111000, 2, true, RPCotMoeda.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Planos de pagamento", "Planos de pagamento", 'r', 100110000, 2, true, RPPlanoPag.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Moeda", "Moeda", 'M', 100111000, 2, true, RPMoeda.class );
+				addOpcao( 100100000, TP_OPCAO_ITEM, "Cotação", "Cotação", 'a', 100112000, 2, true, RPCotMoeda.class );
 			addSeparador( 100000000 );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Preferências", "Preferências", 'P', 100200000, 1, true, null );
 			addOpcao( 100000000, TP_OPCAO_ITEM, "Usuários", "Usuários", 'U', 100200000, 1, true, null );
@@ -104,7 +105,7 @@ public class FreedomREP extends AplicativoPD implements ActionListener {
 			addBotao( "btCliente.gif", "Cliente", "Cliente", 100101000, RPCliente.class );
 			addBotao( "btAtendimento.gif", "Vendedor", "Vendedor", 100104000, RPVendedor.class );
 			addBotao( "btForneced.gif", "Fornecedor", "Fornecedor", 100105000, RPFornecedor.class );
-			addBotao( "btProduto.gif", "Produtos", "Produtos", 100108000, null );
+			addBotao( "btProduto.gif", "Produtos", "Produtos", 100108000, RPProduto.class );
 			addBotao( "btOP.gif", "Pedidos", "Pedidos", 200100000, null );
 			addBotao( "btSaida.gif", "Notas", "Notas", 200200000, null );
 			addBotao( "btContaPagar.gif", "Pagar", "Pagar", 300100000, null );
