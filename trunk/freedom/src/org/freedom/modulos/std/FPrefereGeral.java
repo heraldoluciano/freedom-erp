@@ -194,6 +194,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 	private JCheckBoxPad cbUsaBuscGenProdORC = null;
 	private JCheckBoxPad cbUsaLoteOrc = null;
 	private JCheckBoxPad cbBuscaVlrUltCompra = null;
+	private JCheckBoxPad cbUsaPrecoZero = null;
 	private ListaCampos lcMoeda = new ListaCampos(this, "MO");
 	private ListaCampos lcTabJuros = new ListaCampos(this, "TJ");
 	private ListaCampos lcMarca = new ListaCampos(this, "MC");
@@ -478,9 +479,11 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		cbUsaLoteOrc.setVlrString("N");
 		cbBuscaVlrUltCompra = new JCheckBoxPad("Busca valor da ultima compra?", "S", "N");
 		cbBuscaVlrUltCompra.setVlrString("N");
+		cbUsaPrecoZero = new JCheckBoxPad("Permite preço de produto Zero?", "S", "N");
+		cbUsaPrecoZero.setVlrString("N");
 
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 		vLabs.addElement("Custo MPM");
 		vLabs.addElement("Custo PEPS");
 		vVals.addElement("M");
@@ -488,8 +491,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		rgTipoPrecoCusto = new JRadioGroup(1, 2, vLabs, vVals);
 		rgTipoPrecoCusto.setVlrString("M");	
 		
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 		vLabs1.addElement("Por Codigo");
 		vLabs1.addElement("Por Descrição");
 		vLabs1.addElement("Por Marca");
@@ -499,8 +502,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		rgOrdNota = new JRadioGroup(3, 1, vLabs1, vVals1);
 		rgOrdNota.setVlrString("C");	
 		
-		Vector vLabs2 = new Vector();
-		Vector vVals2 = new Vector();
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<String> vVals2 = new Vector<String>();
 		vLabs2.addElement("Cliente/Setor");
 		vLabs2.addElement("Comissionado/Setor");
 		vLabs2.addElement("Ambos");
@@ -510,8 +513,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		rgSetorVenda = new JRadioGroup(3, 1, vLabs2, vVals2);
 		rgSetorVenda.setVlrString("C");
 		
-		Vector vLabs3 = new Vector();
-		Vector vVals3 = new Vector();
+		Vector<String> vLabs3 = new Vector<String>();
+		Vector<String> vVals3 = new Vector<String>();
 		vLabs3.addElement("Não vericar");
 		vLabs3.addElement("Aguardar liberação");
 		vLabs3.addElement("Liberar crédito pré-aprovado");
@@ -521,8 +524,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		rgLibCred = new JRadioGroup(3, 1, vLabs3, vVals3);
 		rgLibCred.setVlrString("N");
 
-		Vector vLabsTpValidOrc1 = new Vector();
-		Vector vValsTpValidOrc1 = new Vector();
+		Vector<String> vLabsTpValidOrc1 = new Vector<String>();
+		Vector<String> vValsTpValidOrc1 = new Vector<String>();
 		vLabsTpValidOrc1.addElement("Data");
 		vLabsTpValidOrc1.addElement("Nro. de dias");
 		vValsTpValidOrc1.addElement("D");
@@ -530,8 +533,8 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		rgTipoValidOrc = new JRadioGroup(1, 2, vLabsTpValidOrc1,vValsTpValidOrc1);
 		rgTipoValidOrc.setVlrString("D");
 
-		Vector vValsTipo = new Vector();
-		Vector vLabsTipo = new Vector();
+		Vector<Integer> vValsTipo = new Vector<Integer>();
+		Vector<String> vLabsTipo = new Vector<String>();
 		vLabsTipo.addElement("<--Selecione-->");
 		vLabsTipo.addElement("50 caracteres");
 		vLabsTipo.addElement("100 caracteres");		
@@ -595,6 +598,7 @@ public class FPrefereGeral extends FTabDados implements CheckBoxListener,
 		adicDB(cbLayoutPed, 5, 250, 300, 20, "UsaLayoutPed", "", true);
 		adicDB(cbObsCliVend, 5, 270,350,20, "ObsCliVend", "", true);
 		adicDB(cbVerifAltParVenda, 5, 290, 350, 20, "VerifAltParcVenda", "", true);
+		adicDB(cbUsaPrecoZero, 5, 310, 350, 20, "UsaPrecoZero", "", true);
 		
 		adicDB(cbUsaClasComis, 205, 10, 160, 20, "UsaClasComis", "", true);
 		adicDB(cbTabFreteVd, 205, 30, 160, 20, "TabFreteVd", "", true);
