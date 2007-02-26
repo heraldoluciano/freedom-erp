@@ -55,9 +55,9 @@ public class NF035 extends Layout {
 		String sObsVenda = "";
 		String[] sValsCli = new String[ 4 ];
 		String[] sNat = new String[ 2 ];
-		String[] sVencs = new String[ 6 ];
-		String[] sVals = new String[ 6 ];
-		String[] sDuplics = new String[ 6 ];
+		String[] sVencs = new String[ 9 ];
+		String[] sVals = new String[ 9 ];
+		String[] sDuplics = new String[ 9 ];
 		BigDecimal bdVlrIssServ = new BigDecimal( "0" );
 		BigDecimal bdVlrTotServ = new BigDecimal( "0" );
 		Vector vObsVenda = new Vector();
@@ -73,7 +73,7 @@ public class NF035 extends Layout {
 				sObsVenda = cab.getString( NF.C_OBSPED ).replace( "\n", "" );
 			}
 
-			for ( int i = 0; i < 6; i++ ) {
+			for ( int i = 0; i < 9; i++ ) {
 				if ( bFat ) {
 					if ( parc.next() ) {
 						sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
@@ -180,7 +180,17 @@ public class NF035 extends Layout {
 					imp.say( 94, sDuplics[ 5 ] );
 					imp.say( 110, sVals[ 5 ] );
 					imp.say( 125, sVencs[ 5 ] );
-					imp.pulaLinha( 3, imp.comprimido() );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 4, sDuplics[ 6 ] );
+					imp.say( 20, sVals[ 6 ] );
+					imp.say( 36, sVencs[ 6 ] );
+					imp.say( 50, sDuplics[ 7 ] );
+					imp.say( 65, sVals[ 7 ] );
+					imp.say( 80, sVencs[ 7 ] );
+					imp.say( 94, sDuplics[ 8 ] );
+					imp.say( 110, sVals[ 8 ] );
+					imp.say( 125, sVencs[ 8 ] );
+					imp.pulaLinha( 2, imp.comprimido() );
 
 					// Fim dos dados da fatura
 
@@ -371,7 +381,7 @@ public class NF035 extends Layout {
 
 					// Imprime observação e classificações fiscais
 
-					vObsVenda = Funcoes.strToVectorSilabas( sObsVenda + "\n" + sDescFisc, 40 );
+					vObsVenda = Funcoes.strToVectorSilabas( sDescFisc + "\n" + sObsVenda, 40 );
 
 					sizeObs = vSigla.size();
 					sizeObs = vObsVenda.size() > sizeObs ? vObsVenda.size() : sizeObs;
