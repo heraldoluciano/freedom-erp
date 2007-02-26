@@ -208,7 +208,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	
 	private JTextFieldPad txtVlrBaseISSVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
-	private JTextFieldPad txtVlrIssVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	private JTextFieldPad txtVlrISSVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtVlrProdVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -457,6 +457,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcVenda2.add( new GuardaCampo( txtVlrFreteVenda, "VlrFreteVenda", "Vlr. frete", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrComisVenda, "VlrComisVenda", "Vlr. comis.", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtMedComisVenda, "PercMComisVenda", "Med. comis.", ListaCampos.DB_SI, false ) );
+		lcVenda2.add( new GuardaCampo( txtVlrBaseICMSVenda, "VlrBaseICMSVenda", "Vlr. base ICMS", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrICMSVenda, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrIPIVenda, "VlrIPIVenda", "Vlr. IPI", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrPisVenda, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false ) );
@@ -467,6 +468,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		lcVenda2.add( new GuardaCampo( txtVlrDescVenda, "VlrDescItVenda", "Vlr. desc.", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrLiqVenda, "VlrLiqVenda", "Vlr. liq.", ListaCampos.DB_SI, false ) );
 		lcVenda2.add( new GuardaCampo( txtVlrBrutVenda, "VlrProdVenda", "Vlr. prod.", ListaCampos.DB_SI, false ) );
+		lcVenda2.add( new GuardaCampo( txtVlrBaseISSVenda, "VlrBaseISSVenda", "Vlr. base ISS", ListaCampos.DB_SI, false ) );
+		lcVenda2.add( new GuardaCampo( txtVlrISSVenda, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false ) );
 		lcVenda2.setWhereAdic( "TIPOVENDA='V'" );
 		lcVenda2.montaSql( false, "VENDA", "VD" );
 		lcVenda2.setQueryCommit( false );
@@ -505,7 +508,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtVlrDescVenda.setAtivo( false );
 		txtVlrLiqVenda.setAtivo( false );
 		txtVlrBaseISSVenda.setAtivo( false );
-		txtVlrIssVenda.setAtivo( false );
+		txtVlrISSVenda.setAtivo( false );
 
 		// Adiciona os Listeners
 
@@ -704,7 +707,7 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		adicCampo( txtVlrCSocialVenda, 90, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrIRVenda, 173, 60, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrBaseISSVenda, 256, 60, 80, 20, "VlrBaseISSVenda", "Base ISS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIssVenda, 339, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrISSVenda, 339, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
 		
 		lcCampos.setWhereAdic( "TIPOVENDA='V'" );
 		setListaCampos( true, "VENDA", "VD" );
