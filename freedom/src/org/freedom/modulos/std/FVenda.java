@@ -205,6 +205,10 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 	private JTextFieldPad txtVlrCSocialVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 	
 	private JTextFieldPad txtVlrBaseICMSVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+	
+	private JTextFieldPad txtVlrBaseISSVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
+
+	private JTextFieldPad txtVlrIssVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
 	private JTextFieldPad txtVlrProdVenda = new JTextFieldPad( JTextFieldPad.TP_NUMERIC, 15, casasDecFin );
 
@@ -500,6 +504,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		txtVlrProdVenda.setAtivo( false );
 		txtVlrDescVenda.setAtivo( false );
 		txtVlrLiqVenda.setAtivo( false );
+		txtVlrBaseISSVenda.setAtivo( false );
+		txtVlrIssVenda.setAtivo( false );
 
 		// Adiciona os Listeners
 
@@ -692,11 +698,13 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 		
 		adicCampo( txtVlrIPIVenda, 7, 20, 80, 20, "VlrIPIVenda", "Vlr. IPI", ListaCampos.DB_SI, false );
 		adicCampo( txtVlrPisVenda, 90, 20, 80, 20, "VlrPisVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrIRVenda, 173, 20, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrBaseICMSVenda, 7, 60, 80, 20, "VlrBaseIcmsVenda", "Base ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrICMSVenda, 90, 60, 80, 20, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrCofinsVenda, 173, 60, 80, 20, "VlrCofinsVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
-		adicCampo( txtVlrCSocialVenda, 256, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBaseICMSVenda, 173, 20, 80, 20, "VlrBaseIcmsVenda", "Base ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrICMSVenda, 256, 20, 80, 20, "VlrICMSVenda", "Vlr. ICMS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrCofinsVenda, 7, 60, 80, 20, "VlrCofinsVenda", "Vlr. PIS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrCSocialVenda, 90, 60, 80, 20, "VlrCSocialVenda", "Vlr. c. social", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIRVenda, 173, 60, 80, 20, "VlrIRVenda", "Vlr. I.R.", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrBaseISSVenda, 256, 60, 80, 20, "VlrBaseISSVenda", "Base ISS", ListaCampos.DB_SI, false );
+		adicCampo( txtVlrIssVenda, 339, 60, 80, 20, "VlrISSVenda", "Vlr. ISS", ListaCampos.DB_SI, false );
 		
 		lcCampos.setWhereAdic( "TIPOVENDA='V'" );
 		setListaCampos( true, "VENDA", "VD" );
@@ -2001,14 +2009,14 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 
 	private boolean[] prefs() {
 
-		boolean[] bRetorno = new boolean[ 18 ];
+		boolean[] bRetorno = new boolean[ 19 ];
 		StringBuffer sSQL = new StringBuffer();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			
-			 sSQL.append( "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA," );
+			 sSQL.append( "SELECT USAREFPROD,USAPEDSEQ,USALIQREL,TIPOPRECOCUSTO,ORDNOTA,USAPRECOZERO," );
 			 sSQL.append( "USACLASCOMIS,TRAVATMNFVD,NATVENDA,IPIVENDA,BLOQVENDA, VENDAMATPRIM, DESCCOMPPED, " );
 			 sSQL.append( "TAMDESCPROD, OBSCLIVEND, CONTESTOQ, DIASPEDT, RECALCPCVENDA, USALAYOUTPED, ICMSVENDA " );
 			 sSQL.append( "FROM SGPREFERE1 WHERE CODEMP=? AND CODFILIAL=?" );
@@ -2063,6 +2071,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 				bRetorno[ 16 ] = "S".equals( rs.getString( "USALAYOUTPED" ) );
 
 				bRetorno[ 17 ] = "S".equals( rs.getString( "ICMSVENDA" ) );
+
+				bRetorno[ 18 ] = "S".equals( rs.getString( "USAPRECOZERO" ) );
 
 			}
 			
@@ -2277,8 +2287,8 @@ public class FVenda extends FVD implements PostListener, CarregaListener, FocusL
 					pevt.cancela();
 					return;
 				}
-				if ( txtPrecoItVenda.getVlrBigDecimal().floatValue() <= 0 ) {
-					Funcoes.mensagemInforma( this, "Preço invalido!" );
+				if ( (! bPrefs[18]) && (txtPrecoItVenda.getVlrBigDecimal().floatValue() <= 0) ) {
+					Funcoes.mensagemInforma( this, "Preço inválido!" );
 					pevt.cancela();
 					return;
 				}
