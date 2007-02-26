@@ -129,6 +129,8 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private JCheckBoxPad chbSeqNfTipoMov = new JCheckBoxPad( "Sim", "S", "N" );
 
+	private JCheckBoxPad chbVlrMFinTipoMov = new JCheckBoxPad( "Permitir valor das parcelas menor que o total?", "S", "N" );
+
 	private Navegador navRestricoes = new Navegador( true );
 
 	private ListaCampos lcRestricoes = new ListaCampos( this, "" );
@@ -143,17 +145,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 	private ListaCampos lcTipoMov = new ListaCampos( this, "TM" );
 
-	private Vector vVals = new Vector();
+	private Vector<String> vVals = new Vector<String>();
 
-	private Vector vLabs = new Vector();
-
-	private Vector vValsES = new Vector();
-
-	private Vector vLabsES = new Vector();
-
-	private Vector vValsTF = new Vector();
-
-	private Vector vLabsTF = new Vector();
+	private Vector<String> vLabs = new Vector<String>();
 
 	private boolean[] bPrefs = null;
 
@@ -161,7 +155,7 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 
 		super();
 		setTitulo( "Cadastro de Tipos de Movimento" );
-		setAtribos( 50, 50, 427, 560 );
+		setAtribos( 50, 40, 427, 580 );
 
 		lcRestricoes.setMaster( lcCampos );
 		lcCampos.adicDetalhe( lcRestricoes );
@@ -205,6 +199,9 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		txtIDUsu.setTabelaExterna( lcUsu );
 
 		cbTipoMov = new JComboBoxPad( vLabs, vVals, JComboBoxPad.TP_STRING, 2, 0 );
+		
+		Vector<String> vValsES = new Vector<String>();
+		Vector<String> vLabsES = new Vector<String>();
 
 		vLabsES.addElement( "Entrada" );
 		vLabsES.addElement( "Saída" );
@@ -212,15 +209,15 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		vValsES.addElement( "E" );
 		vValsES.addElement( "S" );
 		vValsES.addElement( "I" );
-
 		rgESTipoMov = new JRadioGroup( 1, 3, vLabsES, vValsES );
 		rgESTipoMov.addRadioGroupListener( this );
 
+		Vector<String> vValsTF = new Vector<String>();
+		Vector<String> vLabsTF = new Vector<String>();
 		vLabsTF.addElement( "CIF" );
 		vLabsTF.addElement( "FOB" );
 		vValsTF.addElement( "C" );
 		vValsTF.addElement( "F" );
-
 		rgTipoFrete = new JRadioGroup( 2, 1, vLabsTF, vValsTF );
 		rgTipoFrete.setAtivo( false );
 
@@ -257,12 +254,12 @@ public class FTipoMov extends FTabDados implements RadioGroupListener, CheckBoxL
 		adicDB( chbImpBolTipoMov, 162, 390, 70, 20, "ImpBolTipoMov", "Imp.bol.", true );
 		adicDB( chbReImpNfTipoMov, 235, 390, 70, 20, "ReImpNfTipoMov", "Reimp.NF", true );
 		adicDB( chbSeqNfTipoMov, 310, 390, 80, 20, "SeqNfTipoMov", "Aloca NRO.NF", true );
+		adicDB( chbVlrMFinTipoMov, 13, 430, 400, 20, "VlrMFinTipoMov", "", true );
+		adicDB( chbRestritoTipoMov, 13, 450, 240, 20, "TUSUTIPOMOV", "", true );
 
 		lbInfoPadImp.setOpaque( true );
 		adic( lbInfoPadImp, 15, 353, 230, 15 );
 		adic( pinInfoPadImp, 7, 360, 390, 60 );
-
-		adicDB( chbRestritoTipoMov, 13, 430, 240, 20, "TUSUTIPOMOV", "", true );
 		chbRestritoTipoMov.addCheckBoxListener( this );
 
 		// pinLbPadImp.adic(lbInfoPadImp, 0, 0, 220, 15);
