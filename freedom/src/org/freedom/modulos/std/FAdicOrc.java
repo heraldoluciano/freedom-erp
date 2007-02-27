@@ -538,7 +538,7 @@ public class FAdicOrc extends FDialogo implements ActionListener, RadioGroupList
 					  "AND IT.CODFILIAL=O.CODFILIAL AND IT.CODEMP=O.CODEMP " +
 					  "AND IT.ACEITEITORC='S' AND IT.APROVITORC='S'), " +
 					  "O.STATUSORC " +
-					  "FROM VDORCAMENTO O" + sWhere + " ";
+					  "FROM VDORCAMENTO O" + sWhere + " ORDER BY O.CODORC";
 		
 				ps = con.prepareStatement(sSQL);
 				ps.setInt(1,iCod);	

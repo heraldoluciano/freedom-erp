@@ -133,7 +133,7 @@ public class NFApr extends Leiaute {
 					imp.say( 83, rs.getString("UfCli"));
 					imp.say( 93, rs.getString("RgCli") != null ? rs.getString("RgCli") : rs.getString("InscCli"));
 					imp.say(124, sHora);
-					imp.pulaLinha(3, imp.comprimido());
+					imp.pulaLinha(2, imp.comprimido());
 					
 				}
 				
@@ -258,27 +258,48 @@ public class NFApr extends Leiaute {
 					imp.say( 58, rs.getString("MarcaFreteVD"));
 					imp.say(100, rs.getString("PesoBrutVD"));
 					imp.say(124, rs.getString("PesoLiqVD"));
-					imp.pulaLinha(2, imp.comprimido());
-					imp.say(  2, "ENTREGA PREVISTA : "+Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(  2, "VENDEDOR : "+rs.getString("NomeVend"));
-					imp.pulaLinha(1, imp.comprimido());
-					imp.say(  2, "FORMA DE PAGAMENTO : "+rs.getString("DescPlanoPag"));
+					//imp.say(  2, "ENTREGA PREVISTA : "+Funcoes.sqlDateToStrDate(rs.getDate("DtSaidaVenda")));
+					imp.pulaLinha(0, imp.comprimido());
+					//imp.say(  2, "VENDEDOR : "+rs.getString("NomeVend"));
+					imp.pulaLinha(0, imp.comprimido());
+					//imp.say(  2, "FORMA DE PAGAMENTO : "+rs.getString("DescPlanoPag"));
 					imp.pulaLinha(1, imp.comprimido());
 					imp.say(  2, "PEDIDO No.: "+Funcoes.strZero(""+rs.getInt("CodVenda"),8));
 					
 					if (iNumPares>0)
 						imp.say(  2, "Numero de Pares: " + iNumPares);
 
-					sObs = Funcoes.strToStrArray(rs.getString("ObsVenda") != null ? rs.getString("ObsVenda") : "",3);
+					sObs = Funcoes.strToStrArray(rs.getString("ObsVenda") != null ? rs.getString("ObsVenda") : "",6);
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(  2, sObs[0].trim());
+					//imp.say(2, sObs[0].trim().length() > 58 ? sObs[0].substring( 0,58 )? Funcoes.mensagemErro(null,"Digite apenas 58 caracteres por linha no campo observações!"+err.getMessage()) : sObs[0].trim()));
+					
+					for (int i=0;i<6;i++) {
+						if (sObs[i].trim().length() > 58) {
+							Funcoes.mensagemErro(null," O campo de observação comporta apenas 6 linhas e 50 caracteres por linha! Favor revisar as observações!");
+							break;
+						}
+						else
+							imp.say(2, sObs[i]); 
+						imp.pulaLinha(1, imp.comprimido());
+					}
+					imp.pulaLinha(3, imp.comprimido());
+							
+/*					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 2, sObs[1].trim().length() > 58 ? sObs[1].substring(0,58) : sObs[1].trim());
 					imp.pulaLinha(1, imp.comprimido());
-					imp.say(  2, sObs[1].trim());
-					imp.pulaLinha(5, imp.comprimido());
+					imp.say( 2, sObs[2].trim().length() > 58 ? sObs[1].substring(0,58) : sObs[2].trim());
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 2, sObs[3].trim().length() > 58 ? sObs[1].substring(0,58) : sObs[3].trim());
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 2, sObs[4].trim().length() > 58 ? sObs[1].substring(0,58) : sObs[4].trim());
+					imp.pulaLinha(1, imp.comprimido());
+					imp.say( 2, sObs[5].trim().length() > 58 ? sObs[1].substring(0,58) : sObs[5].trim());
+					imp.pulaLinha(3, imp.comprimido()); */
 					imp.say(124, sNumNota);
 
-					imp.pulaLinha(iLinPag + 1, imp.comprimido());
+					imp.pulaLinha(5, imp.comprimido());
+					//imp.pulaLinha(iLinPag + 1, imp.comprimido());
 
 					imp.setPrc(0,0);
 					imp.incPags();
