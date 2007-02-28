@@ -22,18 +22,28 @@
 
 package org.freedom.layout;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.freedom.componentes.ImprimeOS;
 import org.freedom.componentes.NF;
 import org.freedom.funcoes.Funcoes;
+import org.freedom.telas.Aplicativo;
+
+import com.sun.crypto.provider.DESParameters;
 
 public class NF033 extends Layout {
 
+	private NF nf;
+
 	public boolean imprimir( NF nf, ImprimeOS imp ) {
 
+		this.nf = nf;
+
 		boolean retorno = super.imprimir( nf, imp );
-		boolean bFat = true;
 		boolean bNat = true;
 		final int MAXLINE = 36;
 		int iItImp = 0;
@@ -41,16 +51,18 @@ public class NF033 extends Layout {
 		int iContaFrete = 0;
 		int indexDescFisc = 0;
 		int indexObs = 0;
-		int iLinPag = imp.verifLinPag("NF");
+		int iLinPag = imp.verifLinPag( "NF" );
 		String sTemp = null;
 		String sDescFisc = "";
 		String sDescProd = "";
 		String sObsVenda = "";
 		String[] sValsCli = new String[ 4 ];
 		String[] sNat = new String[ 2 ];
-		String[] sVencs = new String[ 6 ];
-		String[] sVals = new String[ 6 ];
-		String[] sDuplics = new String[ 6 ];
+		String[] sVencs = new String[] { "", "", "", "", "", "", "", "" };
+		String[] sVals = new String[] { "", "", "", "", "", "", "", "" };
+		String[] sDuplics = new String[] { "", "", "", "", "", "", "", "" };
+		String[] sDescParcs = new String[] { "", "", "", "", "", "", "", "" };
+		Map<Integer,String> mDescParcs = null;
 		Vector vDescFisc = new Vector();
 		Vector vDescProd = new Vector();
 
@@ -58,29 +70,19 @@ public class NF033 extends Layout {
 
 			if ( cab.next() ) {
 				iNumNota = cab.getInt( NF.C_DOC );
-				sObsVenda = ( cab.getString( NF.C_PEDEMIT ).trim().length() > 0 ? "Ped.cli. : " + cab.getString( NF.C_PEDEMIT ).trim() + " - " : "" ) 
-							+ cab.getString( NF.C_OBSPED ).replace( "\n", "" );
+				sObsVenda = ( cab.getString( NF.C_PEDEMIT ).trim().length() > 0 ? "Ped.cli. : " + cab.getString( NF.C_PEDEMIT ).trim() + " - " : "" ) + cab.getString( NF.C_OBSPED ).replace( "\n", "" );
+				mDescParcs = getDescParcs( cab.getInt( NF.C_CODPED ) );
 			}
-			for ( int i = 0; i < 6; i++ ) {
-					if ( bFat ) {
-						if ( parc.next() ) {
-							sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
-							sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
-							sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getFloat( NF.C_VLRPARC ) ) );
-						}
-						else {
-							bFat = false;
-							sDuplics[ i ] = "";
-							sVencs[ i ] = "";
-							sVals[ i ] = "";
-						}
+			for ( int i = 0; i < 8; i++ ) {
+				if ( parc.next() ) {
+					sDuplics[ i ] = Funcoes.strZero( String.valueOf( iNumNota ), 6 ) + " / " + parc.getInt( NF.C_NPARCITREC );
+					sVencs[ i ] = ( parc.getDate( NF.C_DTVENCTO ) != null ? Funcoes.dateToStrDate( parc.getDate( NF.C_DTVENCTO ) ) : "" );
+					sVals[ i ] = Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( parc.getFloat( NF.C_VLRPARC ) ) );
+
+					if ( mDescParcs.get( i + 1 ) != null ) {
+						sDescParcs[ i ] = Funcoes.copy( mDescParcs.get( i + 1 ).trim(), 20 );
 					}
-					else {
-						bFat = false;
-						sDuplics[ i ] = "";
-						sVencs[ i ] = "";
-						sVals[ i ] = "";
-					}
+				}
 			}
 
 			imp.limpaPags();
@@ -94,10 +96,10 @@ public class NF033 extends Layout {
 				}
 
 				if ( adic.next() ) {
-					sValsCli[ 0 ] = ! "".equals( adic.getString( NF.C_CPFEMITAUX ) ) ? adic.getString( NF.C_CPFEMITAUX ) : cab.getString( NF.C_CPFEMIT );
-					sValsCli[ 1 ] = ! "".equals( adic.getString( NF.C_NOMEEMITAUX ) ) ? adic.getString( NF.C_NOMEEMITAUX ) : cab.getString( NF.C_RAZEMIT );
-					sValsCli[ 2 ] = ! "".equals( adic.getString( NF.C_CIDEMITAUX ) ) ? adic.getString( NF.C_CIDEMITAUX ) : cab.getString( NF.C_CIDEMIT );
-					sValsCli[ 3 ] = ! "".equals( adic.getString( NF.C_UFEMITAUX ) ) ? adic.getString( NF.C_UFEMITAUX ) : cab.getString( NF.C_UFEMIT );
+					sValsCli[ 0 ] = !"".equals( adic.getString( NF.C_CPFEMITAUX ) ) ? adic.getString( NF.C_CPFEMITAUX ) : cab.getString( NF.C_CPFEMIT );
+					sValsCli[ 1 ] = !"".equals( adic.getString( NF.C_NOMEEMITAUX ) ) ? adic.getString( NF.C_NOMEEMITAUX ) : cab.getString( NF.C_RAZEMIT );
+					sValsCli[ 2 ] = !"".equals( adic.getString( NF.C_CIDEMITAUX ) ) ? adic.getString( NF.C_CIDEMITAUX ) : cab.getString( NF.C_CIDEMIT );
+					sValsCli[ 3 ] = !"".equals( adic.getString( NF.C_UFEMITAUX ) ) ? adic.getString( NF.C_UFEMITAUX ) : cab.getString( NF.C_UFEMIT );
 				}
 				else {
 					sValsCli[ 0 ] = cab.getString( NF.C_CPFEMIT );
@@ -148,25 +150,41 @@ public class NF033 extends Layout {
 
 					imp.pulaLinha( 3, imp.comprimido() );
 					imp.say( 4, sDuplics[ 0 ] );
-					imp.say( 20, sVals[ 0 ] );
-					imp.say( 36, sVencs[ 0 ] );
-					imp.say( 50, sDuplics[ 1 ] );
-					imp.say( 65, sVals[ 1 ] );
-					imp.say( 80, sVencs[ 1 ] );
-					imp.say( 94, sDuplics[ 2 ] );
-					imp.say( 110, sVals[ 2 ] );
-					imp.say( 125, sVencs[ 2 ] );
-					imp.pulaLinha( 2, imp.comprimido() );
-					imp.say( 4, sDuplics[ 3 ] );
-					imp.say( 20, sVals[ 3 ] );
-					imp.say( 36, sVencs[ 3 ] );
-					imp.say( 50, sDuplics[ 4 ] );
-					imp.say( 65, sVals[ 4 ] );
-					imp.say( 80, sVencs[ 4 ] );
-					imp.say( 94, sDuplics[ 5 ] );
-					imp.say( 110, sVals[ 5 ] );
-					imp.say( 125, sVencs[ 5 ] );
-					imp.pulaLinha( 4, imp.comprimido() );
+					imp.say( 16, sVals[ 0 ] );
+					imp.say( 30, sVencs[ 0 ] );
+					imp.say( 42, sDescParcs[ 0 ] );
+					imp.say( 70, sDuplics[ 1 ] );
+					imp.say( 82, sVals[ 1 ] );
+					imp.say( 98, sVencs[ 1 ] );
+					imp.say( 110, sDescParcs[ 1 ] );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 4, sDuplics[ 2 ] );
+					imp.say( 16, sVals[ 2 ] );
+					imp.say( 30, sVencs[ 2 ] );
+					imp.say( 42, sDescParcs[ 2 ] );
+					imp.say( 70, sDuplics[ 3 ] );
+					imp.say( 82, sVals[ 3 ] );
+					imp.say( 98, sVencs[ 3 ] );
+					imp.say( 110, sDescParcs[ 3 ] );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 4, sDuplics[ 4 ] );
+					imp.say( 16, sVals[ 4 ] );
+					imp.say( 30, sVencs[ 4 ] );
+					imp.say( 42, sDescParcs[ 4 ] );
+					imp.say( 70, sDuplics[ 5 ] );
+					imp.say( 82, sVals[ 5 ] );
+					imp.say( 98, sVencs[ 5 ] );
+					imp.say( 110, sDescParcs[ 5 ] );
+					imp.pulaLinha( 1, imp.comprimido() );
+					imp.say( 4, sDuplics[ 6 ] );
+					imp.say( 16, sVals[ 6 ] );
+					imp.say( 30, sVencs[ 6 ] );
+					imp.say( 42, sDescParcs[ 6 ] );
+					imp.say( 70, sDuplics[ 7 ] );
+					imp.say( 82, sVals[ 7 ] );
+					imp.say( 98, sVencs[ 7 ] );
+					imp.say( 110, sDescParcs[ 7 ] );
+					imp.pulaLinha( 3, imp.comprimido() );
 
 					// Fim dos dados da fatura ...
 
@@ -177,27 +195,27 @@ public class NF033 extends Layout {
 				sTemp = itens.getString( NF.C_DESCFISC ).trim();
 				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
 					sDescFisc += sTemp;
-				}	
+				}
 				sTemp = itens.getString( NF.C_DESCFISC2 ).trim();
 				if ( sDescFisc.indexOf( sTemp ) == -1 ) {
 					sDescFisc += sTemp;
 				}
 
 				// Fim da menssagem fiscal ...
-				
+
 				// Monta descrição do produto ...
-				
+
 				sDescProd = itens.getString( NF.C_OBSITPED ).trim().length() > 0 ? itens.getString( NF.C_OBSITPED ).trim() : itens.getString( NF.C_DESCPROD ).trim();
 				vDescProd = Funcoes.strToVectorSilabas( sDescProd, 50 );
 
 				// Imprime os dados do item no corpo da nota ...
-				
-				for ( int i=0; i < vDescProd.size(); i++ ) {
-					
+
+				for ( int i = 0; i < vDescProd.size(); i++ ) {
+
 					imp.pulaLinha( 1, imp.comprimido() );
-					
+
 					imp.say( 2, (String) vDescProd.get( i ) );
-					
+
 					if ( i == 0 ) {
 
 						imp.say( 55, itens.getString( NF.C_CODFISC ) );
@@ -209,18 +227,18 @@ public class NF033 extends Layout {
 						imp.say( 119, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
 						imp.say( 124, ( (int) itens.getFloat( NF.C_PERCIPIITPED ) ) + "%" );
 						imp.say( 128, Funcoes.strDecimalToStrCurrency( 6, 2, String.valueOf( itens.getFloat( NF.C_VLRIPIITPED ) ) ) );
-					}					
+					}
 				}
 
 				// Fim da impressão do item ...
 
 				iItImp++;
-				if ( iItImp == itens.getInt( NF.C_CONTAITENS ) || imp.pRow() == MAXLINE  ) {
+				if ( iItImp == itens.getInt( NF.C_CONTAITENS ) || imp.pRow() == MAXLINE ) {
 
 					if ( iItImp == itens.getInt( NF.C_CONTAITENS ) ) {
 						imp.pulaLinha( MAXLINE - imp.pRow(), imp.comprimido() );
 					}
-					
+
 					// Imprime observação da nota
 
 					imp.pulaLinha( 1, imp.comprimido() );
@@ -298,7 +316,7 @@ public class NF033 extends Layout {
 					imp.say( 112, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getFloat( NF.C_PESOBRUTO ) ) ) );
 					imp.say( 125, Funcoes.strDecimalToStrCurrency( 10, 2, String.valueOf( frete.getString( NF.C_PESOLIQ ) ) ) );
 					imp.pulaLinha( 2, imp.comprimido() );
-					
+
 					// Fim da impressão do frete ...
 
 					// Imprime observação e classificações fiscais ...
@@ -322,8 +340,8 @@ public class NF033 extends Layout {
 
 					imp.pulaLinha( 5, imp.comprimido() );
 					imp.say( 130, Funcoes.strZero( String.valueOf( iNumNota ), 6 ) );
-					
-					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido());
+
+					imp.pulaLinha( iLinPag - imp.pRow(), imp.comprimido() );
 				}
 			}
 
@@ -335,6 +353,45 @@ public class NF033 extends Layout {
 			err.printStackTrace();
 		} finally {
 			System.gc();
+		}
+
+		return retorno;
+
+	}
+
+	private Map<Integer,String> getDescParcs( final int codvenda ) {
+
+		Map<Integer,String> retorno = new HashMap<Integer,String>();
+		StringBuilder sSQL = new StringBuilder();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+
+			sSQL.append( "SELECT PC.NROPARCPAG, PC.DESCPARCPAG " );
+			sSQL.append( "FROM FNPARCPAG PC, FNPLANOPAG P, VDVENDA V " );
+			sSQL.append( "WHERE PC.CODEMP=P.CODEMP AND PC.CODFILIAL=P.CODFILIAL AND PC.CODPLANOPAG=P.CODPLANOPAG " );
+			sSQL.append( "AND P.CODEMP=V.CODEMPPG AND P.CODFILIAL=V.CODFILIALPG AND P.CODPLANOPAG=V.CODPLANOPAG " );
+			sSQL.append( "AND V.CODEMP=? AND V.CODFILIAL=? AND V.TIPOVENDA='V' AND V.CODVENDA=? " );
+			sSQL.append( "AND DESCPARCPAG IS NOT NULL" );
+			ps = nf.getConexao().prepareStatement( sSQL.toString() );
+			ps.setInt( 1, Aplicativo.iCodEmp );
+			ps.setInt( 2, Aplicativo.iCodFilial );
+			ps.setInt( 3, codvenda );
+			rs = ps.executeQuery();
+
+			for ( int i=0; rs.next(); i++ ) {
+				retorno.put( rs.getInt( "NROPARCPAG" ), rs.getString( "DESCPARCPAG" ) );
+			}
+
+			rs.close();
+			ps.close();
+			if ( !nf.getConexao().getAutoCommit() ) {
+				nf.getConexao().commit();
+			}
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
 		}
 
 		return retorno;
