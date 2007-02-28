@@ -86,6 +86,8 @@ public class FConveniado extends FTabDados implements PostListener {
 
 	private JTextFieldPad txtCepConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
 
+	private JTextFieldPad txtDddConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 2, 0 );
+	
 	private JTextFieldPad txtFoneConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 12, 0 );
 
 	private JTextFieldPad txtCelConv = new JTextFieldPad( JTextFieldPad.TP_STRING, 8, 0 );
@@ -232,8 +234,8 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtNomeConv, 80, 20, 277, 20, "NomeConv", "Nome do conveniado", ListaCampos.DB_SI, true );
 		adicDB( cbSexo, 360, 18, 140, 24, "SexoConv", "Sexo", true );
 		adicCampo( txtDtNascConv, 7, 60, 120, 20, "DtNascConv", "Data de nascimento", ListaCampos.DB_SI, true );
-		adicCampo( txtRgConv, 130, 60, 117, 20, "RgConv", "RG", ListaCampos.DB_SI, false );
-		adicCampo( txtCPFConv, 250, 60, 117, 20, "CPFConv", "CPF", ListaCampos.DB_SI, false );
+		adicCampo( txtRgConv, 130, 60, 117, 20, "RgConv", "RG", ListaCampos.DB_SI, true );
+		adicCampo( txtCPFConv, 250, 60, 117, 20, "CPFConv", "CPF", ListaCampos.DB_SI, true );
 		adicCampo( txtIdentificConv, 370, 60, 130, 20, "IdentificConv", "Nº. identificação", ListaCampos.DB_SI, false );
 		adicCampo( txtEndConv, 7, 100, 250, 20, "EndConv", "Endereço", ListaCampos.DB_SI, false );
 		adicCampo( txtNumConv, 260, 100, 57, 20, "NumConv", "Num.", ListaCampos.DB_SI, false );
@@ -242,8 +244,9 @@ public class FConveniado extends FTabDados implements PostListener {
 		adicCampo( txtBairConv, 7, 140, 120, 20, "BairConv", "Bairro", ListaCampos.DB_SI, false );
 		adicCampo( txtCidConv, 130, 140, 117, 20, "CidConv", "Cidade", ListaCampos.DB_SI, false );
 		adicCampo( txtUFConv, 250, 140, 37, 20, "UFConv", "UF", ListaCampos.DB_SI, false );
-		adicCampo( txtFoneConv, 290, 140, 117, 20, "FoneConv", "Telefone", ListaCampos.DB_SI, false );
-		adicCampo( txtFaxConv, 410, 140, 90, 20, "Faxconv", "Fax", ListaCampos.DB_SI, false );
+		adicCampo( txtDddConv,290,140,25,20,"DddConv","DDD", ListaCampos.DB_SI,false);
+		adicCampo( txtFoneConv, 318, 140, 90, 20, "FoneConv", "Telefone", ListaCampos.DB_SI, false );
+	    adicCampo( txtFaxConv, 410, 140, 90, 20, "Faxconv", "Fax", ListaCampos.DB_SI, false );
 		adicCampo( txtCelConv, 7, 180, 90, 20, "CelConv", "Cel", ListaCampos.DB_SI, false );
 		adicCampo( txtCodGrauInst, 100, 180, 97, 20, "CodGri", "Cód.gr.inst.", ListaCampos.DB_FK, txtDescGrauInst, false );
 		adicDescFK( txtDescGrauInst, 200, 180, 300, 20, "DescGri", "Descrição do grau de instrução" );
@@ -259,7 +262,7 @@ public class FConveniado extends FTabDados implements PostListener {
 		txtRgConv.setMascara( JTextFieldPad.MC_RG );
 		txtCPFConv.setMascara( JTextFieldPad.MC_CPF );
 		txtCepConv.setMascara( JTextFieldPad.MC_CEP );
-		txtFoneConv.setMascara( JTextFieldPad.MC_FONEDDD );
+		txtFoneConv.setMascara( JTextFieldPad.MC_FONE );
 		txtCelConv.setMascara( JTextFieldPad.MC_FONE );
 		txtFaxConv.setMascara( JTextFieldPad.MC_FONE );
 
