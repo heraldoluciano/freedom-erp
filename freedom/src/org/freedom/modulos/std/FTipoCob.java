@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import org.freedom.componentes.ListaCampos;
 import org.freedom.componentes.ImprimeOS;
@@ -33,20 +34,34 @@ import org.freedom.componentes.JTextFieldPad;
 import org.freedom.funcoes.Funcoes;
 import org.freedom.telas.Aplicativo;
 import org.freedom.telas.FDados;
+import org.freedom.componentes.JRadioGroup;
 
 public class FTipoCob extends FDados implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private JTextFieldPad txtCodTipoCob = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
 	private JTextFieldPad txtDescTipoCob = new JTextFieldPad(JTextFieldPad.TP_STRING,40,0);
 	private JTextFieldPad txtDuplCob = new JTextFieldPad(JTextFieldPad.TP_STRING,8,0);
+	private Vector<String> vLabsTipoFebraban = new Vector<String>();
+	private Vector<String> vValsTipoFebraban = new Vector<String>();
+	private JRadioGroup rgTipoFebraban = null;
 	
 	public FTipoCob () {
 		super();
 		setTitulo("Cadastro de Tipo de Cobrança");
-		setAtribos( 50, 50, 390, 125);
+		setAtribos( 50, 50, 390, 225);
+		vLabsTipoFebraban.addElement("NENHUM");
+		vLabsTipoFebraban.addElement("SIACC");
+		vLabsTipoFebraban.addElement("CNAB");
+		vValsTipoFebraban.addElement("00");
+		vValsTipoFebraban.addElement("01");
+		vValsTipoFebraban.addElement("02");
+		rgTipoFebraban = new JRadioGroup(1, 2, vLabsTipoFebraban, vValsTipoFebraban);
+		rgTipoFebraban.setVlrString("00");		
 		adicCampo(txtCodTipoCob, 7, 20, 70, 20,"CodTipoCob","Cód.tp.cob.", ListaCampos.DB_PK, true);
 		adicCampo(txtDescTipoCob, 80, 20, 200, 20,"DescTipoCob","Descrição do tipo de cobrança", ListaCampos.DB_SI, true);
 		adicCampo(txtDuplCob, 283, 20, 80, 20,"DuplCob","Duplicata", ListaCampos.DB_SI, false);
+		adicDB(rgTipoFebraban, 7, 60, 357, 30, "TipoFebraban", "Tipo cobrança FEBRABAN", true);
+
 		setListaCampos( true, "TIPOCOB", "FN");
 		btImp.addActionListener(this);
 		btPrevimp.addActionListener(this);
