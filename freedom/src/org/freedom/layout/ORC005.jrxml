@@ -23,11 +23,6 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<subDataset name="ITENS" >
-
-
-	</subDataset>
-
 	<parameter name="CODEMP" isForPrompting="true" class="java.lang.Integer">
 		<parameterDescription><![CDATA[Código da empresa.]]></parameterDescription>
 		<defaultValueExpression ><![CDATA[new Integer(5)]]></defaultValueExpression>
@@ -43,13 +38,15 @@
 	<queryString><![CDATA[SELECT FL.RAZFILIAL,
 ATC.NOMECONV, ATC.CNSCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
 ATC.endconv,ATC.numconv, ATC.bairconv,ATC.cidconv,ATC.ufconv,ATC.cepconv,
-VEND.nomevend,VEND.cpfvend
-FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND
+VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC
+FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND,VDITORCAMENTO IT,EQPRODUTO P
 WHERE
 ORC.codemp = $P{CODEMP} AND ORC.CODFILIAL = $P{CODFILIAL} AND ORC.codorc = $P{CODORC} AND
 FL.CODEMP = ORC.CODEMP AND FL.codfilial = ORC.CODFILIAL AND
 ATC.codemp = ORC.CODEMPCV AND ATC.CODFILIAL = ORC.codfilialcv AND ATC.codconv = orc.codconv and
-vend.codemp = orc.codempvd and vend.codfilial=orc.codfilialvd and vend.codvend=orc.codvend]]></queryString>
+vend.codemp = orc.codempvd and vend.codfilial=orc.codfilialvd and vend.codvend=orc.codvend
+and P.CODPROD=IT.CODPROD AND P.CODEMP=IT.CODEMPPD AND P.CODFILIAL=IT.CODFILIALPD AND
+IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFILIAL=orc.codfilial]]></queryString>
 
 	<field name="RAZFILIAL" class="java.lang.String"/>
 	<field name="NOMECONV" class="java.lang.String"/>
@@ -67,765 +64,15 @@ vend.codemp = orc.codempvd and vend.codfilial=orc.codfilialvd and vend.codvend=o
 	<field name="CEPCONV" class="java.lang.String"/>
 	<field name="NOMEVEND" class="java.lang.String"/>
 	<field name="CPFVEND" class="java.lang.String"/>
+	<field name="DESCPROD" class="java.lang.String"/>
+	<field name="CODBARPROD" class="java.lang.String"/>
+	<field name="QTDITORC" class="java.math.BigDecimal"/>
 
 
 		<group  name="orcamento" >
 			<groupExpression><![CDATA[]]></groupExpression>
 			<groupHeader>
-			<band height="173"  isSplitAllowed="true" >
-				<rectangle>
-					<reportElement
-						x="4"
-						y="0"
-						width="527"
-						height="15"
-						forecolor="#000000"
-						backcolor="#000000"
-						key="rectangle-3"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="2"
-						width="523"
-						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
-						key="staticText-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[IDENTIFICAÇÃO DO ESTABELECIMENTO DE SAÚDE (SOLICITANTE)]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="0"
-						y="0"
-						width="0"
-						height="173"
-						key="line-4"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="535"
-						y="0"
-						width="0"
-						height="173"
-						key="line-5"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="4"
-						y="15"
-						width="0"
-						height="25"
-						key="line-6"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="15"
-						width="0"
-						height="25"
-						key="line-7"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="4"
-						y="40"
-						width="527"
-						height="15"
-						forecolor="#000000"
-						backcolor="#000000"
-						key="rectangle-4"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="42"
-						width="523"
-						height="11"
-						forecolor="#FFFFFF"
-						backcolor="#000000"
-						key="staticText-3"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
-					</textElement>
-				<text><![CDATA[IDENTIFICAÇÃO DO PACIENTE]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="19"
-						width="412"
-						height="18"
-						key="rectangle-5"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="16"
-						width="176"
-						height="9"
-						key="staticText-4"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[1 - NOME DO ESTABELECIMENTO DE SAÚDE SOLICITANTE]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="425"
-						y="19"
-						width="102"
-						height="18"
-						key="rectangle-6"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="460"
-						y="16"
-						width="31"
-						height="7"
-						key="staticText-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[2 - CNES]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="439"
-						y="24"
-						width="0"
-						height="13"
-						key="line-8"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="454"
-						y="24"
-						width="0"
-						height="13"
-						key="line-9"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="469"
-						y="24"
-						width="0"
-						height="13"
-						key="line-10"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="484"
-						y="24"
-						width="0"
-						height="13"
-						key="line-11"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="499"
-						y="24"
-						width="0"
-						height="13"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="512"
-						y="24"
-						width="0"
-						height="13"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="60"
-						width="430"
-						height="18"
-						key="rectangle-7"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="57"
-						width="73"
-						height="9"
-						key="staticText-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[3 - NOME DO PACIENTE]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="4"
-						y="55"
-						width="0"
-						height="118"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="530"
-						y="56"
-						width="0"
-						height="117"
-						key="line-15"/>
-					<graphicElement stretchType="NoStretch" pen="1Point"/>
-				</line>
-				<rectangle>
-					<reportElement
-						x="444"
-						y="60"
-						width="83"
-						height="18"
-						key="rectangle-8"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="450"
-						y="57"
-						width="72"
-						height="7"
-						key="staticText-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[4 - N° DO PRONTUARIO]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="83"
-						width="274"
-						height="18"
-						key="rectangle-11"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="81"
-						width="125"
-						height="7"
-						key="staticText-9"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[5 - CARTÃO NACIONAL DE SAÚDE (CNS)]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="295"
-						y="83"
-						width="88"
-						height="18"
-						key="rectangle-12"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="300"
-						y="80"
-						width="79"
-						height="7"
-						key="staticText-10"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[6 - DATA DE NASCIMENTO]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="399"
-						y="83"
-						width="128"
-						height="18"
-						key="rectangle-13"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="457"
-						y="80"
-						width="30"
-						height="7"
-						key="staticText-11"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[7 - SEXO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="413"
-						y="91"
-						width="17"
-						height="8"
-						key="staticText-12"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[Masc.]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="434"
-						y="89"
-						width="12"
-						height="10"
-						key="rectangle-14"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="480"
-						y="91"
-						width="17"
-						height="8"
-						key="staticText-13"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[Fem.]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="501"
-						y="89"
-						width="12"
-						height="10"
-						key="rectangle-15"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="106"
-						width="359"
-						height="18"
-						key="rectangle-16"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="103"
-						width="115"
-						height="9"
-						key="staticText-14"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[8 - NOME DA MÃE OU RESPONSÁVEL]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="374"
-						y="106"
-						width="153"
-						height="18"
-						key="rectangle-17"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<line direction="TopDown">
-					<reportElement
-						x="406"
-						y="107"
-						width="0"
-						height="17"
-						key="line-33"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="422"
-						y="103"
-						width="84"
-						height="7"
-						key="staticText-15"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[9 - TELEFONE DE CONTATO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="385"
-						y="108"
-						width="12"
-						height="6"
-						key="staticText-16"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[DDD]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="450"
-						y="109"
-						width="50"
-						height="6"
-						key="staticText-17"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="5"/>
-					</textElement>
-				<text><![CDATA[N° DO TELEFONE]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="129"
-						width="517"
-						height="18"
-						key="rectangle-18"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="126"
-						width="107"
-						height="9"
-						key="staticText-18"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[10 - ENDEREÇO (RUA, N°, BAIRRO) RESPONSÁVEL]]></text>
-				</staticText>
-				<rectangle>
-					<reportElement
-						x="10"
-						y="152"
-						width="517"
-						height="18"
-						key="rectangle-19"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</rectangle>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="42"
-						y="149"
-						width="97"
-						height="9"
-						key="staticText-19"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[11 - MUNICÍPIO DE RESIDÊNCIA BAIRRO) RESPONSÁVEL]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="323"
-						y="153"
-						width="0"
-						height="17"
-						key="line-41"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="326"
-						y="149"
-						width="79"
-						height="7"
-						key="staticText-20"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[12 - CÓD.IBGE MUNICÍPIO CONTATO]]></text>
-				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="407"
-						y="153"
-						width="0"
-						height="17"
-						key="line-42"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="438"
-						y="153"
-						width="0"
-						height="17"
-						key="line-43"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="420"
-						y="149"
-						width="23"
-						height="7"
-						key="staticText-21"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[13 - UF]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Opaque"
-						x="470"
-						y="149"
-						width="27"
-						height="7"
-						key="staticText-22"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Bitstream Vera Sans" size="6"/>
-					</textElement>
-				<text><![CDATA[14 - CEP]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="23"
-						width="408"
-						height="15"
-						key="TXTRAZFILIAL"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="430"
-						y="23"
-						width="97"
-						height="16"
-						key="staticText-70"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<text><![CDATA[0 0 1 5 9 7 0]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="64"
-						width="424"
-						height="15"
-						key="TXTNOMECONV"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="87"
-						width="269"
-						height="17"
-						key="TXTCNSCONV"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" lineSpacing="Single">
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNSCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="297"
-						y="87"
-						width="84"
-						height="15"
-						key="TXTCNSCONV-1"
-						stretchType="RelativeToTallestObject"
-						isPrintRepeatedValues="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" lineSpacing="Single">
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTNASCCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="437"
-						y="89"
-						width="18"
-						height="11"
-						key="TXTSEXOMASC"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("M")?"X":"")]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="504"
-						y="89"
-						width="17"
-						height="11"
-						key="TXTSEXOFEM"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("F")?"X":"")]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="110"
-						width="354"
-						height="15"
-						key="TXTMAECONV"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MAECONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="410"
-						y="111"
-						width="114"
-						height="15"
-						key="TXTFONECONV"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="134"
-						width="511"
-						height="15"
-						key="TXTENDERECOCONV"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONV}.trim()+", "+$F{NUMCONV}+", "+$F{BAIRCONV}.trim()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="12"
-						y="157"
-						width="308"
-						height="15"
-						key="TXTCIDADECONV"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="380"
-						y="111"
-						width="23"
-						height="15"
-						key="TXTDDDCONV"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DDDCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="412"
-						y="157"
-						width="23"
-						height="15"
-						key="TXTDDDCONV-1"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="441"
-						y="157"
-						width="88"
-						height="15"
-						key="TXTDDDCONV-2"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CEPCONV}]]></textFieldExpression>
-				</textField>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -842,7 +89,7 @@ vend.codemp = orc.codempvd and vend.codfilial=orc.codfilialvd and vend.codvend=o
 			</band>
 		</title>
 		<pageHeader>
-			<band height="44"  isSplitAllowed="true" >
+			<band height="217"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="4"
@@ -999,6 +246,746 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						key="rectangle-10"/>
 					<graphicElement stretchType="NoStretch" pen="None"/>
 				</rectangle>
+				<rectangle>
+					<reportElement
+						x="4"
+						y="44"
+						width="527"
+						height="15"
+						forecolor="#000000"
+						backcolor="#000000"
+						key="rectangle-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="46"
+						width="523"
+						height="11"
+						forecolor="#FFFFFF"
+						backcolor="#000000"
+						key="staticText-72"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[IDENTIFICAÇÃO DO ESTABELECIMENTO DE SAÚDE (SOLICITANTE)]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="44"
+						width="0"
+						height="173"
+						key="line-155"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="535"
+						y="44"
+						width="0"
+						height="173"
+						key="line-156"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="4"
+						y="59"
+						width="0"
+						height="25"
+						key="line-157"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="530"
+						y="59"
+						width="0"
+						height="25"
+						key="line-158"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="4"
+						y="84"
+						width="527"
+						height="15"
+						forecolor="#000000"
+						backcolor="#000000"
+						key="rectangle-52"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="86"
+						width="523"
+						height="11"
+						forecolor="#FFFFFF"
+						backcolor="#000000"
+						key="staticText-73"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font fontName="Bitstream Vera Sans" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[IDENTIFICAÇÃO DO PACIENTE]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="63"
+						width="412"
+						height="18"
+						key="rectangle-53"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="60"
+						width="176"
+						height="9"
+						key="staticText-74"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[1 - NOME DO ESTABELECIMENTO DE SAÚDE SOLICITANTE]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="425"
+						y="63"
+						width="102"
+						height="18"
+						key="rectangle-54"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="460"
+						y="60"
+						width="31"
+						height="7"
+						key="staticText-75"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[2 - CNES]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="439"
+						y="68"
+						width="0"
+						height="13"
+						key="line-159"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="454"
+						y="68"
+						width="0"
+						height="13"
+						key="line-160"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="469"
+						y="68"
+						width="0"
+						height="13"
+						key="line-161"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="484"
+						y="68"
+						width="0"
+						height="13"
+						key="line-162"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="499"
+						y="68"
+						width="0"
+						height="13"
+						key="line-163"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="512"
+						y="68"
+						width="0"
+						height="13"
+						key="line-164"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="104"
+						width="430"
+						height="18"
+						key="rectangle-55"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="101"
+						width="73"
+						height="9"
+						key="staticText-76"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[3 - NOME DO PACIENTE]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="4"
+						y="99"
+						width="0"
+						height="118"
+						key="line-165"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="530"
+						y="100"
+						width="0"
+						height="117"
+						key="line-166"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<rectangle>
+					<reportElement
+						x="444"
+						y="104"
+						width="83"
+						height="18"
+						key="rectangle-56"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="450"
+						y="101"
+						width="72"
+						height="7"
+						key="staticText-77"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[4 - N° DO PRONTUARIO]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="127"
+						width="274"
+						height="18"
+						key="rectangle-57"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="125"
+						width="125"
+						height="7"
+						key="staticText-78"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[5 - CARTÃO NACIONAL DE SAÚDE (CNS)]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="295"
+						y="127"
+						width="88"
+						height="18"
+						key="rectangle-58"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="300"
+						y="124"
+						width="79"
+						height="7"
+						key="staticText-79"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[6 - DATA DE NASCIMENTO]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="399"
+						y="127"
+						width="128"
+						height="18"
+						key="rectangle-59"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="457"
+						y="124"
+						width="30"
+						height="7"
+						key="staticText-80"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[7 - SEXO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="413"
+						y="135"
+						width="17"
+						height="8"
+						key="staticText-81"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[Masc.]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="434"
+						y="133"
+						width="12"
+						height="10"
+						key="rectangle-60"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="480"
+						y="135"
+						width="17"
+						height="8"
+						key="staticText-82"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[Fem.]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="501"
+						y="133"
+						width="12"
+						height="10"
+						key="rectangle-61"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="150"
+						width="359"
+						height="18"
+						key="rectangle-62"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="147"
+						width="115"
+						height="9"
+						key="staticText-83"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[8 - NOME DA MÃE OU RESPONSÁVEL]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="374"
+						y="150"
+						width="153"
+						height="18"
+						key="rectangle-63"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="406"
+						y="151"
+						width="0"
+						height="17"
+						key="line-167"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="422"
+						y="147"
+						width="84"
+						height="7"
+						key="staticText-84"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[9 - TELEFONE DE CONTATO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="385"
+						y="152"
+						width="12"
+						height="6"
+						key="staticText-85"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[DDD]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="450"
+						y="153"
+						width="50"
+						height="6"
+						key="staticText-86"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="5"/>
+					</textElement>
+				<text><![CDATA[N° DO TELEFONE]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="173"
+						width="517"
+						height="18"
+						key="rectangle-64"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="170"
+						width="107"
+						height="9"
+						key="staticText-87"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[10 - ENDEREÇO (RUA, N°, BAIRRO) RESPONSÁVEL]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement
+						x="10"
+						y="196"
+						width="517"
+						height="18"
+						key="rectangle-65"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="42"
+						y="193"
+						width="97"
+						height="9"
+						key="staticText-88"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[11 - MUNICÍPIO DE RESIDÊNCIA BAIRRO) RESPONSÁVEL]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="323"
+						y="197"
+						width="0"
+						height="17"
+						key="line-168"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="326"
+						y="193"
+						width="79"
+						height="7"
+						key="staticText-89"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[12 - CÓD.IBGE MUNICÍPIO CONTATO]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="407"
+						y="197"
+						width="0"
+						height="17"
+						key="line-169"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="438"
+						y="197"
+						width="0"
+						height="17"
+						key="line-170"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="420"
+						y="193"
+						width="23"
+						height="7"
+						key="staticText-90"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[13 - UF]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="470"
+						y="193"
+						width="27"
+						height="7"
+						key="staticText-91"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Bitstream Vera Sans" size="6"/>
+					</textElement>
+				<text><![CDATA[14 - CEP]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="67"
+						width="408"
+						height="15"
+						key="TXTRAZFILIAL-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{RAZFILIAL}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="430"
+						y="67"
+						width="97"
+						height="16"
+						key="staticText-92"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[0 0 1 5 9 7 0]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="108"
+						width="424"
+						height="15"
+						key="TXTNOMECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOMECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="131"
+						width="269"
+						height="17"
+						key="TXTCNSCONV-1"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CNSCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="297"
+						y="131"
+						width="84"
+						height="15"
+						key="TXTCNSCONV-2"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTNASCCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="437"
+						y="133"
+						width="18"
+						height="11"
+						key="TXTSEXOMASC-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("M")?"X":"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="504"
+						y="133"
+						width="17"
+						height="11"
+						key="TXTSEXOFEM-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SEXOCONV}.equals("F")?"X":"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="154"
+						width="354"
+						height="15"
+						key="TXTMAECONV-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MAECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="410"
+						y="155"
+						width="114"
+						height="15"
+						key="TXTFONECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FONECONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="178"
+						width="511"
+						height="15"
+						key="TXTENDERECOCONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ENDCONV}.trim()+", "+$F{NUMCONV}+", "+$F{BAIRCONV}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="201"
+						width="308"
+						height="15"
+						key="TXTCIDADECONV-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CIDCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="380"
+						y="155"
+						width="23"
+						height="15"
+						key="TXTDDDCONV-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DDDCONV}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="201"
+						width="23"
+						height="15"
+						key="TXTDDDCONV-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UFCONV}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -1006,7 +993,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="498"  isSplitAllowed="true" >
+			<band height="512"  isSplitAllowed="true" >
 				<rectangle>
 					<reportElement
 						x="4"
@@ -1039,7 +1026,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="4"
 						y="16"
 						width="0"
-						height="482"
+						height="496"
 						key="line-52"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
@@ -1052,24 +1039,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						key="rectangle-21"/>
 					<graphicElement stretchType="NoStretch" pen="Thin"/>
 				</rectangle>
-				<line direction="TopDown">
-					<reportElement
-						x="28"
-						y="26"
-						width="0"
-						height="13"
-						key="line-53"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="47"
-						y="26"
-						width="0"
-						height="13"
-						key="line-54"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Opaque"
@@ -1084,51 +1053,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<text><![CDATA[15 - CÓDIGO DO PROCEDIMENTO PRINCIPAL]]></text>
 				</staticText>
-				<line direction="TopDown">
-					<reportElement
-						x="66"
-						y="26"
-						width="0"
-						height="13"
-						key="line-55"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="85"
-						y="26"
-						width="0"
-						height="13"
-						key="line-56"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="104"
-						y="26"
-						width="0"
-						height="13"
-						key="line-57"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="123"
-						y="26"
-						width="0"
-						height="13"
-						key="line-58"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="142"
-						y="26"
-						width="0"
-						height="13"
-						key="line-59"/>
-					<graphicElement stretchType="NoStretch" pen="Thin"/>
-				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="161"
@@ -1853,7 +1777,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="0"
 						y="0"
 						width="0"
-						height="498"
+						height="512"
 						key="line-101"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
@@ -1862,7 +1786,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="530"
 						y="0"
 						width="0"
-						height="498"
+						height="512"
 						key="line-102"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
@@ -1871,7 +1795,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						x="536"
 						y="0"
 						width="0"
-						height="498"
+						height="512"
 						key="line-103"/>
 					<graphicElement stretchType="NoStretch" pen="1Point"/>
 				</line>
@@ -2631,6 +2555,45 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						<font fontName="Courier New" size="12"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CPFVEND}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="12"
+						y="26"
+						width="145"
+						height="15"
+						key="TXTCODBARPROD"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODBARPROD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="163"
+						y="26"
+						width="312"
+						height="15"
+						key="TXTCODBARPROD-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="###0;-###0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="482"
+						y="25"
+						width="42"
+						height="15"
+						key="TXTDDDCONV-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
