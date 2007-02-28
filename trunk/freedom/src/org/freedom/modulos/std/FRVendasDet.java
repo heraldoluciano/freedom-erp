@@ -90,8 +90,8 @@ public class FRVendasDet extends FRelatorio {
 		setTitulo( "Vendas Detalhadas" );
 		setAtribos( 80, 80, 295, 410 );
 		
-		Vector vLabs = new Vector();
-		Vector vVals = new Vector();
+		Vector<String> vLabs = new Vector<String>();
+		Vector<String> vVals = new Vector<String>();
 
 		vLabs.addElement( "Grafico" );
 		vLabs.addElement( "Texto" );
@@ -100,8 +100,8 @@ public class FRVendasDet extends FRelatorio {
 		rgTipo = new JRadioGroup( 1, 2, vLabs, vVals );
 		rgTipo.setVlrString( "T" );
 		
-		Vector vLabs1 = new Vector();
-		Vector vVals1 = new Vector();
+		Vector<String> vLabs1 = new Vector<String>();
+		Vector<String> vVals1 = new Vector<String>();
 
 		vLabs1.addElement( "Faturado" );
 		vLabs1.addElement( "Não Faturado" );
@@ -112,8 +112,8 @@ public class FRVendasDet extends FRelatorio {
 		rgFaturados = new JRadioGroup( 3, 1, vLabs1, vVals1 );
 		rgFaturados.setVlrString( "S" );
 		
-		Vector vLabs2 = new Vector();
-		Vector vVals2 = new Vector();
+		Vector<String> vLabs2 = new Vector<String>();
+		Vector<String> vVals2 = new Vector<String>();
 
 		vLabs2.addElement( "Financeiro" );
 		vLabs2.addElement( "Não Finaceiro" );
@@ -465,7 +465,7 @@ public class FRVendasDet extends FRelatorio {
 
 	public void imprimirGrafico( final boolean bVisualizar, final ResultSet rs, final String sCab, final boolean bComRef ) {
 
-		HashMap hParam = new HashMap();
+		HashMap<String,Object> hParam = new HashMap<String,Object>();
 		hParam.put( "COMREF", bComRef ? "S" : "N" );
 		
 		FPrinterJob dlGr = new FPrinterJob( "relatorios/VendasDetalhadas.jasper", "Vendas Detalhadas", sCab, rs, hParam, this );

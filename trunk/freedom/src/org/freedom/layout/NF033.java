@@ -58,7 +58,8 @@ public class NF033 extends Layout {
 
 			if ( cab.next() ) {
 				iNumNota = cab.getInt( NF.C_DOC );
-				sObsVenda = cab.getString( NF.C_OBSPED ).replace( "\n", "" );
+				sObsVenda = ( cab.getString( NF.C_PEDEMIT ).trim().length() > 0 ? "Ped.cli. : " + cab.getString( NF.C_PEDEMIT ).trim() + " - " : "" ) 
+							+ cab.getString( NF.C_OBSPED ).replace( "\n", "" );
 			}
 			for ( int i = 0; i < 6; i++ ) {
 					if ( bFat ) {
@@ -202,7 +203,7 @@ public class NF033 extends Layout {
 						imp.say( 55, itens.getString( NF.C_CODFISC ) );
 						imp.say( 67, Funcoes.copy( itens.getString( NF.C_ORIGFISC ), 1 ) + Funcoes.copy( itens.getString( NF.C_CODTRATTRIB ), 2 ) );
 						imp.say( 73, Funcoes.copy( itens.getString( NF.C_CODUNID ), 4 ) );
-						imp.say( 77, Funcoes.strDecimalToStrCurrency( 9, 0, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
+						imp.say( 77, Funcoes.strDecimalToStrCurrency( 9, 2, String.valueOf( itens.getFloat( NF.C_QTDITPED ) ) ) );
 						imp.say( 89, Funcoes.strDecimalToStrCurrency( 12, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) / itens.getFloat( NF.C_QTDITPED ) ) ) );
 						imp.say( 103, Funcoes.strDecimalToStrCurrency( 13, 2, String.valueOf( itens.getFloat( NF.C_VLRPRODITPED ) ) ) );
 						imp.say( 119, ( (int) itens.getFloat( NF.C_PERCICMSITPED ) ) + "%" );
