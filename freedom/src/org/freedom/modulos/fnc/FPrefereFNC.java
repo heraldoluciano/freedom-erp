@@ -1,11 +1,12 @@
 /**
  * @version 11/02/2002 <BR>
  * @author Setpoint Informática Ltda./Fernando Oliveira da Silva <BR>
- *
+ * 
  * Projeto: Freedom <BR>
- *  
+ * 
  * Pacote: org.freedom.modulos.fnc <BR>
- * Classe: @(#)FPrefereGeral.java <BR>
+ * Classe:
+ * @(#)FPrefereGeral.java <BR>
  * 
  * Este programa é licenciado de acordo com a LPG-PC (Licença Pública Geral para Programas de Computador), <BR>
  * versão 2.1.0 ou qualquer versão posterior. <BR>
@@ -14,13 +15,15 @@
  * o LICENCIADOR ou então pegar uma cópia em: <BR>
  * Licença: http://www.lpg.adv.br/licencas/lpgpc.rtf <BR>
  * Para poder USAR, PUBLICAR, DISTRIBUIR, REPRODUZIR ou ALTERAR este Programa é preciso estar <BR>
- * de acordo com os termos da LPG-PC <BR> <BR>
- *
+ * de acordo com os termos da LPG-PC <BR>
+ * <BR>
+ * 
  * Comentários sobre a classe...
  * 
  */
 
 package org.freedom.modulos.fnc;
+
 import java.sql.Connection;
 
 import org.freedom.componentes.GuardaCampo;
@@ -31,50 +34,60 @@ import org.freedom.componentes.JPanelPad;
 import org.freedom.telas.FTabDados;
 
 public class FPrefereFNC extends FTabDados {
-	private static final long serialVersionUID = 1L;	
-	private JPanelPad pinGeral = new JPanelPad(330, 350);
+
+	private static final long serialVersionUID = 1L;
+
+	private JPanelPad pinGeral = new JPanelPad( 330, 350 );
+
 	private JPanelPad pinFin = new JPanelPad();
-	private JTextFieldPad txtCodMoeda = new JTextFieldPad(JTextFieldPad.TP_STRING, 4, 0);
-	private JTextFieldFK txtDescMoeda = new JTextFieldFK(JTextFieldPad.TP_STRING, 50, 0);
-	private JTextFieldPad txtAnoCC = new JTextFieldPad(JTextFieldPad.TP_INTEGER,5,0);
-	private ListaCampos lcMoeda = new ListaCampos(this,"MO");
+
+	private JTextFieldPad txtCodMoeda = new JTextFieldPad( JTextFieldPad.TP_STRING, 4, 0 );
+
+	private JTextFieldFK txtDescMoeda = new JTextFieldFK( JTextFieldPad.TP_STRING, 50, 0 );
+
+	private JTextFieldPad txtAnoCC = new JTextFieldPad( JTextFieldPad.TP_INTEGER, 5, 0 );
+
+	private ListaCampos lcMoeda = new ListaCampos( this, "MO" );
+
 	public FPrefereFNC() {
-		setTitulo("Preferências Gerais");
-		setAtribos(50, 50, 355, 200);
-		
-		lcCampos.setMensInserir(false);
-		
-		
-		lcMoeda.add(new GuardaCampo(txtCodMoeda, "CodMoeda","Cód.moeda", ListaCampos.DB_PK, true));
-		lcMoeda.add(new GuardaCampo(txtDescMoeda, "SingMoeda","Descrição da moeda", ListaCampos.DB_SI, false));
-		lcMoeda.montaSql(false, "MOEDA", "FN");
-		lcMoeda.setQueryCommit(false);
-		lcMoeda.setReadOnly(true);
-		txtCodMoeda.setTabelaExterna(lcMoeda);
 
-//Geral
-		
-		setPainel(pinGeral);
-		adicTab("Geral", pinGeral);
-		adicCampo(txtAnoCC, 7,25,100,20, "AnoCentroCusto","Ano Base C.C.", ListaCampos.DB_SI, true);
+		setTitulo( "Preferências Gerais" );
+		setAtribos( 50, 50, 355, 200 );
 
-//Financeiro
-	
-		setPainel(pinFin);
-		adicTab("Financeiro", pinFin);
+		lcCampos.setMensInserir( false );
 
-		adicCampo(txtCodMoeda,7,20,70,20,"CodMoeda","Cód.moeda", ListaCampos.DB_FK, txtDescMoeda, true);
-		adicDescFK(txtDescMoeda,80,20,230,20,"SingMoeda","Descrição da moeda corrente.");
+		lcMoeda.add( new GuardaCampo( txtCodMoeda, "CodMoeda", "Cód.moeda", ListaCampos.DB_PK, true ) );
+		lcMoeda.add( new GuardaCampo( txtDescMoeda, "SingMoeda", "Descrição da moeda", ListaCampos.DB_SI, false ) );
+		lcMoeda.montaSql( false, "MOEDA", "FN" );
+		lcMoeda.setQueryCommit( false );
+		lcMoeda.setReadOnly( true );
+		txtCodMoeda.setTabelaExterna( lcMoeda );
 
-		nav.setAtivo(0,false);
-		lcCampos.setPodeExc(false);
+		// Geral
 
-		setListaCampos(false, "PREFERE1", "SG");
-		
+		setPainel( pinGeral );
+		adicTab( "Geral", pinGeral );
+		adicCampo( txtAnoCC, 7, 25, 100, 20, "AnoCentroCusto", "Ano Base C.C.", ListaCampos.DB_SI, true );
+
+		// Financeiro
+
+		setPainel( pinFin );
+		adicTab( "Financeiro", pinFin );
+
+		adicCampo( txtCodMoeda, 7, 20, 70, 20, "CodMoeda", "Cód.moeda", ListaCampos.DB_FK, txtDescMoeda, true );
+		adicDescFK( txtDescMoeda, 80, 20, 230, 20, "SingMoeda", "Descrição da moeda corrente." );
+
+		nav.setAtivo( 0, false );
+		lcCampos.setPodeExc( false );
+
+		setListaCampos( false, "PREFERE1", "SG" );
+
 	}
-	public void setConexao(Connection cn) {
-		super.setConexao(cn);
-		lcMoeda.setConexao(cn);
+
+	public void setConexao( Connection cn ) {
+
+		super.setConexao( cn );
+		lcMoeda.setConexao( cn );
 		lcCampos.carregaDados();
 	}
 }
