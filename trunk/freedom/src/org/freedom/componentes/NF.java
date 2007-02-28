@@ -30,7 +30,6 @@ package org.freedom.componentes;
 
 import java.sql.Connection;
 import java.util.Vector;
-
 import org.freedom.telas.Aplicativo;
 
 public class NF {
@@ -96,6 +95,7 @@ public class NF {
 	public static final int C_DESCSETOR = 48;
 	public static final int C_VLRDESCITPED = 49;
 	public static final int C_DIASPAG = 50;	
+	
 	
 	//itens
 	public static final int C_CODITPED = 0;
