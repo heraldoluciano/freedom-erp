@@ -65,8 +65,9 @@ public class NFSaida extends NF {
 			sql.append( "V.CODCLCOMIS, V.PERCCOMISVENDA, V.CODVEND, C.ENDCOB, C.CIDCOB, C.NUMCOB, C.UFCOB, C.BAIRCOB, V.PERCMCOMISVENDA ,C.NOMECLI ," );
 			sql.append( "C.ENDENT, C.NUMENT, C.COMPLENT, C.BAIRENT, C.CIDENT, C.UFENT, V.CODBANCO, V.VLRDESCITVENDA, " );
 			sql.append( "(SELECT B.NOMEBANCO FROM FNBANCO B WHERE B.CODEMP=V.CODEMPBO AND B.CODFILIAL=V.CODFILIALBO AND B.CODBANCO=V.CODBANCO), " );
-			sql.append( "(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR) " );
-			//sql.append( "(SELECT ITPG.DIASPAG FROM FNPARCPAG ITPG WHERE ITPG.CODEMP=PG.CODEMP AND ITPG.CODFILIAL=PG.CODFILIAL AND ITPG.CODPLANOPAG=PG.CODPLANOPAG) " );
+			sql.append( "(SELECT S.DESCSETOR FROM VDSETOR S WHERE S.CODSETOR=C.CODSETOR AND S.CODFILIAL=C.CODFILIALSR AND S.CODEMP=C.CODEMPSR), " );
+			// sql.append( "(SELECT ITPG.DIASPAG FROM FNPARCPAG ITPG WHERE ITPG.CODEMP=PG.CODEMP AND ITPG.CODFILIAL=PG.CODFILIAL AND ITPG.CODPLANOPAG=PG.CODPLANOPAG) " );
+			sql.append( "V.PEDCLIVENDA " );
 			sql.append( "FROM VDVENDA V, VDCLIENTE C, FNPLANOPAG PG, VDVENDEDOR VEND " );
 			sql.append( "WHERE C.CODEMP=V.CODEMPCL AND C.CODFILIAL=V.CODFILIALCL AND C.CODCLI=V.CODCLI " );
 			sql.append( "AND V.CODEMPPG=PG.CODEMP AND V.CODFILIALPG=PG.CODFILIAL AND V.CODPLANOPAG=PG.CODPLANOPAG " );
@@ -78,7 +79,7 @@ public class NFSaida extends NF {
 			ps.setInt( 3, ( (Integer) parans.elementAt( 2 ) ).intValue() );
 			rs = ps.executeQuery();
 			sql.delete( 0, sql.length() );
-			cab = new TabVector( 51 );
+			cab = new TabVector( 52 );
 			while ( rs.next() ) {
 				cab.addRow();
 				cab.setInt( C_CODPED, rs.getInt( "CODVENDA" ) );
@@ -132,6 +133,7 @@ public class NFSaida extends NF {
 				cab.setString( C_DESCSETOR, ( rs.getString( 50 ) != null ? rs.getString( 50 ).trim() : "" ) );
 				cab.setFloat( C_VLRDESCITPED, rs.getFloat( "VLRDESCITVENDA" ) );
 				cab.setInt( C_DIASPAG, 0 );
+				cab.setString( C_PEDEMIT, ( rs.getString( "PEDCLIVENDA" ) != null ? rs.getString( "PEDCLIVENDA" ).trim() : "" ) );
 			}
 			rs.close();
 			ps.close();
