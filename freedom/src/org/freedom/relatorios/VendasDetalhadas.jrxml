@@ -759,7 +759,7 @@ ORDER BY V.CODVENDA,IT.CODITVENDA,V.DTEMITVENDA]]></queryString>
 					<textElement textAlignment="Center">
 						<font size="9"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{CODORC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODORC} == null ? "" : String.valueOf( $F{CODORC} )]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
