@@ -38,7 +38,7 @@
 	<queryString><![CDATA[SELECT FL.RAZFILIAL,
 ATC.NOMECONV, ATC.CNSCONV, ATC.DTNASCCONV, ATC.sexoconv, ATC.maeconv, ATC.foneconv,ATC.DDDCONV,
 ATC.endconv,ATC.numconv, ATC.bairconv,ATC.cidconv,ATC.ufconv,ATC.cepconv,
-VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC
+VEND.nomevend,VEND.cpfvend,P.DESCPROD,P.CODBARPROD,IT.QTDITORC,orc.dtorc
 FROM vdorcamento ORC, SGFILIAL FL, ATCONVENIADO ATC, vdvendedor VEND,VDITORCAMENTO IT,EQPRODUTO P
 WHERE
 ORC.codemp = $P{CODEMP} AND ORC.CODFILIAL = $P{CODFILIAL} AND ORC.codorc = $P{CODORC} AND
@@ -67,6 +67,7 @@ IT.TIPOORC = 'O' AND IT.CODORC=orc.codorc AND IT.CODEMP=orc.codemp AND IT.CODFIL
 	<field name="DESCPROD" class="java.lang.String"/>
 	<field name="CODBARPROD" class="java.lang.String"/>
 	<field name="QTDITORC" class="java.math.BigDecimal"/>
+	<field name="DTORC" class="java.sql.Date"/>
 
 
 		<group  name="orcamento" >
@@ -2028,24 +2029,6 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					</textElement>
 				<text><![CDATA[39-DATA DA SOLICITAÇÃO NASCIMENTO]]></text>
 				</staticText>
-				<line direction="BottomUp">
-					<reportElement
-						x="295"
-						y="341"
-						width="8"
-						height="12"
-						key="line-107"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="BottomUp">
-					<reportElement
-						x="319"
-						y="342"
-						width="8"
-						height="12"
-						key="line-108"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
 				<rectangle>
 					<reportElement
 						x="363"
@@ -2580,7 +2563,7 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 					<textElement>
 						<font fontName="Courier New" size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCPROD}.length()>0?$F{DESCPROD}.substring(0,40):$F{DESCPROD}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0;-###0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -2594,6 +2577,21 @@ PROCEDIMENTO AMBULATORIAL]]></text>
 						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{QTDITORC}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="277"
+						y="341"
+						width="83"
+						height="15"
+						key="TXTCNSCONV-3"
+						stretchType="RelativeToTallestObject"
+						isPrintRepeatedValues="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" lineSpacing="Single">
+						<font fontName="Courier New" pdfFontName="Helvetica" size="12" isBold="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{DTORC}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
